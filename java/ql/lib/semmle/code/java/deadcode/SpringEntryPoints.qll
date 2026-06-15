@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.deadcode.DeadCode
 import semmle.code.java.frameworks.spring.Spring
@@ -114,9 +117,6 @@ class SpringCli extends CallableEntryPoint {
         .hasQualifiedName("org.springframework.shell.core", "CommandMarker")
   }
 }
-
-/** DEPRECATED: Alias for SpringCli */
-deprecated class SpringCLI = SpringCli;
 
 /**
  * An entry point which acts as a remote API for a Flex application to access a Spring application.

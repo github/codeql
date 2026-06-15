@@ -2,8 +2,8 @@
    "Name": "CleverGo",
    "Models": [
       {
-         "Name": "UntrustedSources",
-         "Kind": "UntrustedFlowSource",
+         "Name": "RemoteSources",
+         "Kind": "RemoteFlowSource",
          "Methods": [
             {
                "Name": "{source:[](Param|Result|Fields|Type)} \u003c- $source",

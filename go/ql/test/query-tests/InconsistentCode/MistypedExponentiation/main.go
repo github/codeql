@@ -12,15 +12,22 @@ func main() {
 	expectingResponse := 1 << 5
 	power := 10
 
-	fmt.Println(3 ^ 5)                   // Not OK
+	fmt.Println(3 ^ 5)                   // $ Alert // Not OK
 	fmt.Println(0755 ^ 2423)             // OK
-	fmt.Println(2 ^ 32)                  // Not OK
-	fmt.Println(10 ^ 5)                  // Not OK
-	fmt.Println(10 ^ exp)                // Not OK
+	fmt.Println(2 ^ 32)                  // $ Alert // Not OK
+	fmt.Println(10 ^ 5)                  // $ Alert // Not OK
+	fmt.Println(10 ^ exp)                // $ Alert // Not OK
 	fmt.Println(253 ^ expectingResponse) // OK
-	fmt.Println(2 ^ power)               // Not OK
+	fmt.Println(2 ^ power)               // $ Alert // Not OK
 
 	mask := (((1 << 10) - 1) ^ 7) // OK
+
+	const (
+		c1 = 0x1234
+		c2 = 0x5678
+	)
+
+	fmt.Println(c1 ^ c2) // OK
 
 	// This is not ok, but isn't detected because the multiplication binds tighter
 	// than the xor operator and so the query doesn't see a constant on the left

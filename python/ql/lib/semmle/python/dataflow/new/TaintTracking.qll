@@ -15,6 +15,9 @@ private import python
  * global (inter-procedural) taint-tracking analyses.
  */
 module TaintTracking {
-  import internal.tainttracking1.TaintTracking
-  import internal.tainttracking1.TaintTrackingImpl
+  import semmle.python.dataflow.new.internal.TaintTrackingPublic
+  private import semmle.python.dataflow.new.internal.DataFlowImplSpecific
+  private import semmle.python.dataflow.new.internal.TaintTrackingImplSpecific
+  private import codeql.dataflow.TaintTracking
+  import TaintFlowMake<Location, PythonDataFlow, PythonTaintTracking>
 }

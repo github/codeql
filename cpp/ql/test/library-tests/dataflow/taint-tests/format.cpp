@@ -1,4 +1,4 @@
-
+#include "stl.h"
 typedef unsigned long size_t;
 typedef struct {} FILE;
 
@@ -156,4 +156,18 @@ void test2()
 
 	sink(s[strlen(s) - 1]); // $ ast,ir
 	sink(ws + (wcslen(ws) / 2)); // $ ast,ir
+}
+
+void test_format() {
+  auto s = std::format("{}", string::source());
+  sink(s); // $ ir MISSING: ast
+
+  auto s2 = std::format(string::source());
+  sink(s2); // $ ir MISSING: ast
+}
+
+void test(std::format_string s) {
+  int x = source();
+  int y = std::same_signature_as_format_but_different_name(s, x);
+  sink(y); // clean
 }

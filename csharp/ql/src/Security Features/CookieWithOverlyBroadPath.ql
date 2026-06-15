@@ -14,8 +14,8 @@ import csharp
 
 from Assignment a, PropertyAccess pa
 where
-  a.getLValue() = pa and
+  a.getLeftOperand() = pa and
   pa.getTarget().hasName("Path") and
-  pa.getTarget().getDeclaringType().hasQualifiedName("System.Web", "HttpCookie") and
-  a.getRValue().getValue() = "/"
+  pa.getTarget().getDeclaringType().hasFullyQualifiedName("System.Web", "HttpCookie") and
+  a.getRightOperand().getValue() = "/"
 select a, "Overly broad path for cookie."

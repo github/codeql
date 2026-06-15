@@ -24,7 +24,7 @@ predicate instructionHasVariable(VariableAddressInstruction vai, StackVariable v
   // Pointer-to-member types aren't properly handled in the dbscheme.
   not vai.getResultType() instanceof PointerToMemberType and
   // Rule out FPs caused by extraction errors.
-  not any(ErrorExpr e).getEnclosingFunction() = f
+  not f.hasErrors()
 }
 
 /**

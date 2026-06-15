@@ -1,1 +1,2 @@
-NodeJS/MissingExports.ql
+query: NodeJS/MissingExports.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

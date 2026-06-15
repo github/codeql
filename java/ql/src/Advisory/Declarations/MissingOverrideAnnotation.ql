@@ -6,7 +6,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/missing-override-annotation
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  */
 
 import java

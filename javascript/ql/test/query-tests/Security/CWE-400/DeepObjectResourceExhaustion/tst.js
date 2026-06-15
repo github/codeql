@@ -6,7 +6,7 @@ ajv.addSchema(require('./input-schema'), 'input');
 
 var app = express();
 app.get('/user/:id', function(req, res) {
-	if (!ajv.validate('input', req.body)) { // NOT OK
+	if (!ajv.validate('input', req.body)) { // $ Alert
 		return;
 	}
 });

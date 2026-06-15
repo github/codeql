@@ -1,4 +1,13 @@
-| * Foo | half | pkg1/tst.go:33:16:33:19 | half |
+| * EmbedsNameClash | NCMethod | pkg2/tst.go:20:20:20:27 | NCMethod |
+| * Foo | half | pkg1/tst.go:35:16:35:19 | half |
+| * NameClash | NCMethod | pkg2/tst.go:20:20:20:27 | NCMethod |
+| * P | PMethod | pkg1/promotedStructs.go:17:13:17:19 | PMethod |
+| * S | SMethod | pkg1/promotedStructs.go:8:12:8:18 | SMethod |
+| * SEmbedP | PMethod | pkg1/promotedStructs.go:17:13:17:19 | PMethod |
+| * SEmbedS | SMethod | pkg1/promotedStructs.go:8:12:8:18 | SMethod |
+| * T | half | pkg1/tst.go:35:16:35:19 | half |
+| * T3 | half | pkg1/tst.go:35:16:35:19 | half |
+| * T4 | half | pkg1/tst.go:35:16:35:19 | half |
 | * base | f | pkg1/embedding.go:10:13:10:13 | f |
 | * base | g | pkg1/embedding.go:14:14:14:14 | g |
 | * embedder | f | pkg1/embedding.go:10:13:10:13 | f |
@@ -22,8 +31,13 @@
 | B | n | pkg1/interfaces.go:9:2:9:2 | n |
 | C | n | pkg1/interfaces.go:13:2:13:2 | n |
 | C | o | pkg1/interfaces.go:14:2:14:2 | o |
-| Foo | half | pkg1/tst.go:33:16:33:19 | half |
+| EmbedsNameClash | NCMethod | pkg2/tst.go:20:20:20:27 | NCMethod |
+| Foo | half | pkg1/tst.go:35:16:35:19 | half |
 | GenericInterface | GetT | generic.go:33:2:33:5 | GetT |
+| MixedExportedAndNot | Exported | pkg1/interfaces.go:36:2:36:9 | Exported |
+| MixedExportedAndNot | Exported | pkg2/tst.go:12:2:12:9 | Exported |
+| MixedExportedAndNot | notExported | pkg1/interfaces.go:37:2:37:12 | notExported |
+| MixedExportedAndNot | notExported | pkg2/tst.go:13:2:13:12 | notExported |
 | MyInterface | clone | generic.go:48:2:48:6 | clone |
 | MyInterface | dummy1 | generic.go:49:2:49:7 | dummy1 |
 | MyInterface | dummy2 | generic.go:50:2:50:7 | dummy2 |
@@ -41,9 +55,12 @@
 | MyInterface | dummy18 | generic.go:62:2:62:8 | dummy18 |
 | MyInterface | dummy19 | generic.go:63:2:63:8 | dummy19 |
 | MyInterface | dummy20 | generic.go:64:2:64:8 | dummy20 |
-| T | half | pkg1/tst.go:33:16:33:19 | half |
-| T3 | half | pkg1/tst.go:33:16:33:19 | half |
-| T4 | half | pkg1/tst.go:33:16:33:19 | half |
+| NameClash | NCMethod | pkg2/tst.go:20:20:20:27 | NCMethod |
+| S | SMethod | pkg1/promotedStructs.go:8:12:8:18 | SMethod |
+| SEmbedS | SMethod | pkg1/promotedStructs.go:8:12:8:18 | SMethod |
+| T | half | pkg1/tst.go:35:16:35:19 | half |
+| T3 | half | pkg1/tst.go:35:16:35:19 | half |
+| T4 | half | pkg1/tst.go:35:16:35:19 | half |
 | base | f | pkg1/embedding.go:10:13:10:13 | f |
 | embedder | f | pkg1/embedding.go:10:13:10:13 | f |
 | embedder2 | f | pkg1/embedding.go:10:13:10:13 | f |

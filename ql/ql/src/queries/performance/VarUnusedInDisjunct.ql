@@ -1,5 +1,5 @@
 /**
- * @name Var only used in one side of disjunct.
+ * @name Var only used in one side of disjunct
  * @description Only using a variable on one side of a disjunction can cause a cartesian product.
  * @kind problem
  * @problem.severity warning

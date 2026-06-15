@@ -1,18 +1,19 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
+import utils.test.InlineExpectationsTest
 
-class FileSystemAccessTest extends InlineExpectationsTest {
-  FileSystemAccessTest() { this = "FileSystemAccess" }
+module FileSystemAccessTest implements TestSig {
+  string getARelevantTag() { result = "fsaccess" }
 
-  override string getARelevantTag() { result = "fsaccess" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(FileSystemAccess f |
-      f.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      f.getLocation() = location and
       element = f.toString() and
       value = f.getAPathArgument().toString() and
       tag = "fsaccess"
     )
   }
 }
+
+import MakeTest<FileSystemAccessTest>

@@ -12,8 +12,7 @@ using namespace codeql;
 //    same module one by one. In this mode, we restrict emission only to the same file ignoring
 //    all the other files.
 bool SwiftBodyEmissionStrategy::shouldEmitDeclBody(const swift::Decl& decl) {
-  auto module = decl.getModuleContext();
-  if (module != &currentModule) {
+  if (!currentTopLevelDecls.contains(&decl) && decl.getModuleContext() != &currentModule) {
     return false;
   }
   if (currentLazyDeclaration && currentLazyDeclaration != &decl) {

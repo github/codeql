@@ -1,14 +1,12 @@
 import python
 import semmle.python.dataflow.new.DataFlow
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.python.security.dataflow.ExceptionInfo
 
-class ExceptionInfoTest extends InlineExpectationsTest {
-  ExceptionInfoTest() { this = "ExceptionInfoTest" }
+module ExceptionInfoTest implements TestSig {
+  string getARelevantTag() { result = "exceptionInfo" }
 
-  override string getARelevantTag() { result = "exceptionInfo" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     exists(ExceptionInfo e |
       location = e.getLocation() and
@@ -18,3 +16,5 @@ class ExceptionInfoTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<ExceptionInfoTest>

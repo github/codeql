@@ -4,7 +4,9 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/variable-redeclaration
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       readability
  * @precision medium
  */

@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with Java Server Faces annotations. */
+overlay[local?]
+module;
 
 import default
 
@@ -7,7 +9,7 @@ import default
  */
 class FacesManagedBeanAnnotation extends Annotation {
   FacesManagedBeanAnnotation() {
-    this.getType().hasQualifiedName("javax.faces.bean", "ManagedBean")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".faces.bean", "ManagedBean")
   }
 
   /**
@@ -23,7 +25,7 @@ class FacesManagedBeanAnnotation extends Annotation {
  */
 class FacesComponentAnnotation extends Annotation {
   FacesComponentAnnotation() {
-    this.getType().hasQualifiedName("javax.faces.component", "FacesComponent")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".faces.component", "FacesComponent")
   }
 
   /**

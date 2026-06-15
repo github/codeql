@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["jsocol/django-ratelimit", "*", "input.django-version", "code-injection", "generated"]

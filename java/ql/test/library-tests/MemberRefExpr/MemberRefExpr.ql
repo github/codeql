@@ -1,10 +1,10 @@
 import java
 
-string getReferencedCallable(MemberRefExpr e) {
-  if exists(e.getReferencedCallable())
-  then result = e.getReferencedCallable().getQualifiedName()
-  else result = ""
+query string getReferencedCallable(MemberRefExpr e) {
+  // Use qualified name because some callables don't have a source location (e.g. `Object.toString`)
+  result = e.getReferencedCallable().getQualifiedName()
 }
 
-from MemberRefExpr e
-select e, getReferencedCallable(e), e.getReceiverType()
+query Expr getReceiverExpr(MemberRefExpr e) { result = e.getReceiverExpr() }
+
+query RefType getReceiverType(MemberRefExpr e) { result = e.getReceiverType() }

@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/dead-field
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-561
  */

@@ -20,7 +20,7 @@ public class D
 
     public void Callee1(object param)
     {
-        param.ToString(); // BAD (maybe)
+        param.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
     }
 
     public void Callee2(object param)
@@ -29,7 +29,7 @@ public class D
         {
             param.ToString(); // GOOD
         }
-        param.ToString(); // BAD (maybe)
+        param.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
     }
 
     private static bool CustomIsNull(object x)
@@ -59,7 +59,7 @@ public class D
         if (o5 != null)
             o4.ToString(); // GOOD
         if (o4 != null)
-            o5.ToString(); // GOOD (false positive)
+            o5.ToString(); // GOOD
 
         var o6 = maybe ? null : "";
         if (!CustomIsNull(o6))
@@ -70,7 +70,7 @@ public class D
         if (ok)
             o7.ToString(); // GOOD
         else
-            o7.ToString(); // BAD (maybe)
+            o7.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
 
         var o8 = maybe ? null : "";
         int track = o8 == null ? 42 : 1 + 1;
@@ -79,30 +79,30 @@ public class D
         if (track != 42)
             o8.ToString(); // GOOD
         if (track < 42)
-            o8.ToString(); // GOOD (false positive)
+            o8.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
         if (track <= 41)
-            o8.ToString(); // GOOD (false positive)
+            o8.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
     }
 
     public void Deref(int i)
     {
         int[] xs = maybe ? null : new int[2];
         if (i > 1)
-            xs[0] = 5; // BAD (maybe)
+            xs[0] = 5; // $ Alert[cs/dereferenced-value-may-be-null]
 
         if (i > 2)
-            maybe = xs[1] > 5; // BAD (maybe)
+            maybe = xs[1] > 5; // $ Alert[cs/dereferenced-value-may-be-null]
 
         if (i > 3)
         {
-            var l = xs.Length; // BAD (maybe)
+            var l = xs.Length; // $ Alert[cs/dereferenced-value-may-be-null]
         }
 
         if (i > 4)
-            foreach (var _ in xs) ; // BAD (maybe)
+            foreach (var _ in xs) ; // $ Alert[cs/dereferenced-value-may-be-null]
 
         if (i > 5)
-            lock (xs) // BAD (maybe)
+            lock (xs) // $ Alert[cs/dereferenced-value-may-be-null]
                 xs.ToString(); // Not reported - same basic block
 
         if (i > 6)
@@ -117,7 +117,7 @@ public class D
         var x = b ? null : "abc";
         x = x == null ? "" : x;
         if (x == null)
-            x.ToString(); // BAD (always)
+            x.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         else
             x.ToString(); // GOOD
     }
@@ -131,8 +131,8 @@ public class D
         {
             for (int i = 0; i < alen; i++)
             {
-                sum += a[i]; // GOOD (false positive)
-                sum += b[i]; // GOOD (false positive)
+                sum += a[i]; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
+                sum += b[i]; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
             }
         }
         int alen2;
@@ -142,13 +142,13 @@ public class D
             alen2 = 0;
         for (int i = 1; i <= alen2; ++i)
         {
-            sum += a[i - 1]; // GOOD (false positive)
+            sum += a[i - 1]; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
         }
     }
 
     public void MissedGuard(object obj)
     {
-        obj.ToString(); // BAD (maybe)
+        obj.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
         var x = obj != null ? 1 : 0;
     }
 
@@ -168,7 +168,7 @@ public class D
         catch (Exception e)
         {
         }
-        obj.ToString(); // BAD (maybe)
+        obj.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
 
         object obj2 = null;
         try
@@ -194,7 +194,7 @@ public class D
     {
         var o = new Object();
         if (o == null)
-            o.ToString(); // BAD (always)
+            o.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         o.ToString(); // GOOD
 
         try
@@ -204,7 +204,7 @@ public class D
         catch (Exception e)
         {
             if (e == null)
-                e.ToString(); // BAD (always)
+                e.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
             e.ToString(); // GOOD
         }
 
@@ -214,12 +214,12 @@ public class D
 
         var o3 = "abc";
         if (o3 == null)
-            o3.ToString(); // BAD (always)
+            o3.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         o3.ToString(); // GOOD
 
         var o4 = "" + null;
         if (o4 == null)
-            o4.ToString(); // BAD (always)
+            o4.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         o4.ToString(); // GOOD
     }
 
@@ -242,15 +242,15 @@ public class D
         if (other == null)
             o = "";
         if (other != null)
-            o.ToString(); // BAD (always) (reported as maybe)
+            o.ToString(); // $ Alert[cs/dereferenced-value-may-be-null] (always - but reported as maybe)
         else
-            o.ToString(); // GOOD (false positive)
+            o.ToString(); // GOOD
 
         var o2 = (num < 0) ? null : "";
         if (num < 0)
             o2 = "";
         else
-            o2.ToString(); // GOOD (false positive)
+            o2.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
     }
 
     public void TrackingVariable(int[] a)
@@ -264,7 +264,7 @@ public class D
         }
 
         if (other is string)
-            o.ToString(); // GOOD (false positive)
+            o.ToString(); // GOOD
 
         o = null;
         int count = 0;
@@ -288,16 +288,16 @@ public class D
         }
 
         if (count > 3)
-            o.ToString(); // GOOD (false positive)
+            o.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
 
         if (found)
-            o.ToString(); // GOOD (false positive)
+            o.ToString(); // GOOD
 
         object prev = null;
         for (var i = 0; i < a.Length; ++i)
         {
             if (i != 0)
-                prev.ToString(); // GOOD (false positive)
+                prev.ToString(); // GOOD
             prev = a[i];
         }
 
@@ -310,7 +310,7 @@ public class D
                 s = "" + a;
             }
             if (!s_null)
-                s.ToString(); // GOOD (false positive)
+                s.ToString(); // GOOD
         }
 
         object r = null;
@@ -321,7 +321,7 @@ public class D
             if (stat == MyStatus.INIT)
                 stat = MyStatus.READY;
         }
-        r.ToString(); // GOOD (false positive)
+        r.ToString(); // GOOD
     }
 
     public enum MyStatus
@@ -353,14 +353,14 @@ public class D
             a = new int[iters];
 
         for (var i = 0; i < iters; ++i)
-            a[i] = 0; // GOOD (false positive)
+            a[i] = 0; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
 
         if (iters > 0)
         {
             string last = null;
             for (var i = 0; i < iters; i++)
                 last = "abc";
-            last.ToString(); // GOOD (false positive)
+            last.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
         }
 
         int[] b = maybe ? null : new int[iters];
@@ -369,7 +369,7 @@ public class D
 
         for (var i = 0; i < iters; ++i)
         {
-            b[i] = 0; // GOOD (false positive)
+            b[i] = 0; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
         }
     }
 
@@ -382,7 +382,7 @@ public class D
         if (ioe != null)
             ioe = e;
         else
-            ioe.ToString(); // BAD (always)
+            ioe.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
     }
 
     public void LengthGuard2(int[] a, int[] b)
@@ -392,12 +392,12 @@ public class D
         int i;
         for (i = 0; i < alen; i++)
         {
-            sum += a[i]; // GOOD (false positive)
+            sum += a[i]; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
         }
         int blen = b == null ? 0 : b.Length; // GOOD
         for (i = 0; i < blen; i++)
         {
-            sum += b[i]; // GOOD (false positive)
+            sum += b[i]; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
         }
         i = -3;
     }
@@ -407,8 +407,8 @@ public class D
         if ((x != null && y == null) || (x == null && y != null))
             return;
         if (x != null)
-            y.ToString(); // GOOD (false positive)
+            y.ToString(); // GOOD
         if (y != null)
-            x.ToString(); // GOOD (false positive)
+            x.ToString(); // GOOD
     }
 }

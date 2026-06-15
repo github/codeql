@@ -1,0 +1,51 @@
+on:
+  issue_comment:                                     
+    types: [created, edited]
+
+jobs:
+  build:
+    if: ${{ github.event.issue.pull_request }} && contains(github.event.comment.body, '/version')
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Get PR details
+      uses: actions/github-script@v6
+      id: get-pr
+      with:
+        script: |
+          const request = {
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.issue.number
+          }
+          core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+          try {
+            const result = await github.rest.pulls.get(request)
+            return result.data
+          } catch (err) {
+            core.setFailed(`Request failed with error ${err}`)
+          }
+
+    - name: Checkout PR
+      uses: actions/checkout@v3
+      with:
+        repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
+        ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
+    
+    - name: Update version minor
+      if: contains(github.event.comment.body, '/version minor')
+      run: |
+        ./version.sh -u -n
+        echo "BUMP_TYPE=minor" >> $GITHUB_ENV
+
+    - name: Update version major
+      if: contains(github.event.comment.body, '/version major')
+      run: |
+        ./version.sh -u -m
+        echo "BUMP_TYPE=major" >> $GITHUB_ENV
+
+    - name: Update version patch
+      if: contains(github.event.comment.body, '/version patch')
+      run: |
+        ./version.sh -u -p
+        echo "BUMP_TYPE=patch" >> $GITHUB_ENV

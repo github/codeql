@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["dafny-lang/dafny/.github/workflows/publish-release-reusable.yml", "*", "input.name", "code-injection", "generated"]
+     - ["dafny-lang/dafny/.github/workflows/publish-release-reusable.yml", "*", "input.tag_name", "code-injection", "generated"]
+     - ["dafny-lang/dafny/.github/workflows/integration-tests-reusable.yml", "*", "input.all_platforms", "code-injection", "generated"]
+     - ["dafny-lang/dafny/.github/workflows/integration-tests-reusable.yml", "*", "input.num_shards", "code-injection", "generated"]

@@ -1,2 +1,1 @@
-// OK
 const s = "there";

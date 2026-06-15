@@ -1,0 +1,2 @@
+| test.kt:4:17:4:30 | Class<> | TypeAccess | forName |
+| test.kt:7:11:7:44 | StringsKt | TypeAccess | format |

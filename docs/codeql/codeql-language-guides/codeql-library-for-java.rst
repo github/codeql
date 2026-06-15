@@ -1,14 +1,14 @@
 .. _codeql-library-for-java:
 
-CodeQL library for Java
-=======================
+CodeQL library for Java and Kotlin
+==================================
 
-When you're analyzing a Java program, you can make use of the large collection of classes in the CodeQL library for Java.
+When you're analyzing a Java/Kotlin program, you can make use of the large collection of classes in the CodeQL library for Java/Kotlin.
 
-About the CodeQL library for Java
----------------------------------
+About the CodeQL library for Java and Kotlin
+--------------------------------------------
 
-There is an extensive library for analyzing CodeQL databases extracted from Java projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
+There is an extensive library for analyzing CodeQL databases extracted from Java/Kotlin projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
 
 The library is implemented as a set of QL modules, that is, files with the extension ``.qll``. The module ``java.qll`` imports all the core Java library modules, so you can include the complete library by beginning your query with:
 
@@ -27,7 +27,7 @@ The rest of this article briefly summarizes the most important classes and predi
 Summary of the library classes
 ------------------------------
 
-The most important classes in the standard Java library can be grouped into five main categories:
+The most important classes in the standard Java/Kotlin library can be grouped into five main categories:
 
 #. Classes for representing program elements (such as classes and methods)
 #. Classes for representing AST nodes (such as statements and expressions)
@@ -192,7 +192,7 @@ The wildcards ``? extends Number`` and ``? super Float`` are represented by clas
 
 For dealing with generic methods, there are classes ``GenericMethod``, ``ParameterizedMethod`` and ``RawMethod``, which are entirely analogous to the like-named classes for representing generic types.
 
-For more information on working with types, see the :doc:`Types in Java <types-in-java>`.
+For more information on working with types, see the :doc:`Types in Java and Kotlin <types-in-java>`.
 
 Variables
 ~~~~~~~~~
@@ -206,7 +206,7 @@ Class ``Variable`` represents a variable `in the Java sense <https://docs.oracle
 Abstract syntax tree
 --------------------
 
-Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). For a full list of expression and statement types available in the standard QL library, see ":doc:`Abstract syntax tree classes for working with Java programs <abstract-syntax-tree-classes-for-working-with-java-programs>`."
+Classes in this category represent abstract syntax tree (AST) nodes, that is, statements (class ``Stmt``) and expressions (class ``Expr``). For a full list of expression and statement types available in the standard QL library, see ":doc:`Abstract syntax tree classes for working with Java and Kotlin programs <abstract-syntax-tree-classes-for-working-with-java-programs>`."
 
 Both ``Expr`` and ``Stmt`` provide member predicates for exploring the abstract syntax tree of a program:
 
@@ -254,12 +254,12 @@ Finally, here is a query that finds method bodies:
 
 As these examples show, the parent node of an expression is not always an expression: it may also be a statement, for example, an ``IfStmt``. Similarly, the parent node of a statement is not always a statement: it may also be a method or a constructor. To capture this, the QL Java library provides two abstract class ``ExprParent`` and ``StmtParent``, the former representing any node that may be the parent node of an expression, and the latter any node that may be the parent node of a statement.
 
-For more information on working with AST classes, see the :doc:`article on overflow-prone comparisons in Java <overflow-prone-comparisons-in-java>`.
+For more information on working with AST classes, see the :doc:`article on overflow-prone comparisons in Java and Kotlin <overflow-prone-comparisons-in-java>`.
 
 Metadata
 --------
 
-Java programs have several kinds of metadata, in addition to the program code proper. In particular, there are `annotations <https://docs.oracle.com/javase/tutorial/java/annotations/>`__ and `Javadoc <https://en.wikipedia.org/wiki/Javadoc>`__ comments. Since this metadata is interesting both for enhancing code analysis and as an analysis subject in its own right, the QL library defines classes for accessing it.
+Java/Kotlin programs have several kinds of metadata, in addition to the program code proper. In particular, there are `annotations <https://docs.oracle.com/javase/tutorial/java/annotations/>`__ and `Javadoc <https://en.wikipedia.org/wiki/Javadoc>`__ comments. Since this metadata is interesting both for enhancing code analysis and as an analysis subject in its own right, the QL library defines classes for accessing it.
 
 For annotations, class ``Annotatable`` is a superclass of all program elements that can be annotated. This includes packages, reference types, fields, methods, constructors, and local variable declarations. For every such element, its predicate ``getAnAnnotation`` allows you to retrieve any annotations the element may have. For example, the following query finds all annotations on constructors:
 
@@ -344,7 +344,7 @@ Most large projects include some methods with a very high cyclomatic complexity.
 Call graph
 ----------
 
-CodeQL databases generated from Java code bases include precomputed information about the program's call graph, that is, which methods or constructors a given call may dispatch to at runtime.
+CodeQL databases generated from Java and Kotlin code bases include precomputed information about the program's call graph, that is, which methods or constructors a given call may dispatch to at runtime.
 
 The class ``Callable``, introduced above, includes both methods and constructors. Call expressions are abstracted using class ``Call``, which includes method calls, ``new`` expressions, and explicit constructor calls using ``this`` or ``super``.
 

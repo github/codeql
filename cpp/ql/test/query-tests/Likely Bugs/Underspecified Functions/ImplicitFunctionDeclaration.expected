@@ -1,9 +1,9 @@
 | test.c:28:3:28:12 | call to undeclared | Function call implicitly declares 'undeclared'. |
 | test.c:31:3:31:19 | call to not_yet_declared1 | Function call implicitly declares 'not_yet_declared1'. |
 | test.c:32:3:32:19 | call to not_yet_declared2 | Function call implicitly declares 'not_yet_declared2'. |
-| test.c:43:3:43:27 | call to not_declared_defined_with | Function call implicitly declares 'not_declared_defined_with'. |
-| test.c:54:3:54:21 | call to defined_with_double | Function call implicitly declares 'defined_with_double'. |
-| test.c:66:3:66:22 | call to defined_with_ptr_ptr | Function call implicitly declares 'defined_with_ptr_ptr'. |
-| test.c:68:3:68:22 | call to defined_with_ptr_arr | Function call implicitly declares 'defined_with_ptr_arr'. |
-| test.c:132:3:132:22 | call to implicit_declaration | Function call implicitly declares 'implicit_declaration'. |
-| test.c:133:3:133:30 | call to implicit_declaration_k_and_r | Function call implicitly declares 'implicit_declaration_k_and_r'. |
+| test.c:44:3:44:27 | call to not_declared_defined_with | Function call implicitly declares 'not_declared_defined_with'. |
+| test.c:55:3:55:21 | call to defined_with_double | Function call implicitly declares 'defined_with_double'. |
+| test.c:67:3:67:22 | call to defined_with_ptr_ptr | Function call implicitly declares 'defined_with_ptr_ptr'. |
+| test.c:69:3:69:22 | call to defined_with_ptr_arr | Function call implicitly declares 'defined_with_ptr_arr'. |
+| test.c:133:3:133:22 | call to implicit_declaration | Function call implicitly declares 'implicit_declaration'. |
+| test.c:134:3:134:30 | call to implicit_declaration_k_and_r | Function call implicitly declares 'implicit_declaration_k_and_r'. |

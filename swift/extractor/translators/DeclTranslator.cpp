@@ -137,6 +137,19 @@ codeql::EnumCaseDecl DeclTranslator::translateEnumCaseDecl(const swift::EnumCase
   return entry;
 }
 
+codeql::UsingDecl DeclTranslator::translateUsingDecl(const swift::UsingDecl& decl) {
+  auto entry = createEntry(decl);
+  switch (decl.getSpecifier()) {
+    case swift::UsingSpecifier::MainActor:
+      entry.is_main_actor = true;
+      break;
+    case swift::UsingSpecifier::Nonisolated:
+      entry.is_nonisolated = true;
+      break;
+  }
+  return entry;
+}
+
 codeql::EnumElementDecl DeclTranslator::translateEnumElementDecl(
     const swift::EnumElementDecl& decl) {
   auto entry = createEntry(decl);
@@ -196,6 +209,18 @@ codeql::Accessor DeclTranslator::translateAccessorDecl(const swift::AccessorDecl
       break;
     case swift::AccessorKind::MutableAddress:
       entry.is_unsafe_mutable_address = true;
+      break;
+    case swift::AccessorKind::DistributedGet:
+      entry.is_distributed_get = true;
+      break;
+    case swift::AccessorKind::Read2:
+      entry.is_read2 = true;
+      break;
+    case swift::AccessorKind::Modify2:
+      entry.is_modify2 = true;
+      break;
+    case swift::AccessorKind::Init:
+      entry.is_init = true;
       break;
   }
   fillFunction(decl, entry);
@@ -269,22 +294,28 @@ void DeclTranslator::fillOperatorDecl(const swift::OperatorDecl& decl,
 
 void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl& entry) {
   entry.name = decl.getNameStr().str();
-  for (auto& typeLoc : decl.getInherited()) {
-    if (auto type = typeLoc.getType()) {
-      entry.base_types.push_back(dispatcher.fetchLabel(type));
+  for (auto& inherited : decl.getInherited().getEntries()) {
+    if (auto type = inherited.getType()) {
+      entry.inherited_types.push_back(dispatcher.fetchLabel(type));
     }
   }
+  entry.declared_interface_type = dispatcher.fetchLabel(decl.getDeclaredInterfaceType());
   fillValueDecl(decl, entry);
 }
 
 void DeclTranslator::fillIterableDeclContext(const swift::IterableDeclContext& decl,
                                              codeql::Decl& entry) {
-  entry.members = dispatcher.fetchRepeatedLabels(decl.getAllMembers());
+  for (auto member : decl.getMembers()) {
+    if (member->isUnavailable()) {
+      continue;
+    }
+    entry.members.emplace_back(dispatcher.fetchLabel(member));
+  }
 }
 
 void DeclTranslator::fillVarDecl(const swift::VarDecl& decl, codeql::VarDecl& entry) {
   entry.name = decl.getNameStr().str();
-  entry.type = dispatcher.fetchLabel(decl.getType());
+  entry.type = dispatcher.fetchLabel(decl.getTypeInContext());
   entry.parent_pattern = dispatcher.fetchOptionalLabel(decl.getParentPattern());
   entry.parent_initializer = dispatcher.fetchOptionalLabel(decl.getParentInitializer());
   if (decl.hasAttachedPropertyWrapper()) {
@@ -329,27 +360,11 @@ void DeclTranslator::fillAbstractStorageDecl(const swift::AbstractStorageDecl& d
   fillValueDecl(decl, entry);
 }
 
-codeql::IfConfigDecl DeclTranslator::translateIfConfigDecl(const swift::IfConfigDecl& decl) {
-  auto entry = createEntry(decl);
-  if (auto activeClause = decl.getActiveClause()) {
-    entry.active_elements = dispatcher.fetchRepeatedLabels(activeClause->Elements);
-  }
-  return entry;
-}
-
 codeql::OpaqueTypeDecl DeclTranslator::translateOpaqueTypeDecl(const swift::OpaqueTypeDecl& decl) {
   auto entry = createEntry(decl);
   fillTypeDecl(decl, entry);
   entry.naming_declaration = dispatcher.fetchLabel(decl.getNamingDecl());
   entry.opaque_generic_params = dispatcher.fetchRepeatedLabels(decl.getOpaqueGenericParams());
-  return entry;
-}
-
-codeql::PoundDiagnosticDecl DeclTranslator::translatePoundDiagnosticDecl(
-    const swift::PoundDiagnosticDecl& decl) {
-  auto entry = createEntry(decl);
-  entry.kind = translateDiagnosticsKind(decl.getKind());
-  entry.message = dispatcher.fetchLabel(decl.getMessage());
   return entry;
 }
 
@@ -369,4 +384,32 @@ codeql::CapturedDecl DeclTranslator::translateCapturedValue(const swift::Capture
   entry.is_escaping = !capture.isNoEscape();
   return entry;
 }
+
+codeql::MacroDecl DeclTranslator::translateMacroDecl(const swift::MacroDecl& decl) {
+  auto entry = createEntry(decl);
+  fillValueDecl(decl, entry);
+  fillGenericContext(decl, entry);
+  entry.name = constructName(decl.getName());
+  for (auto attr : decl.getAttrs().getAttributes<swift::MacroRoleAttr>()) {
+    entry.roles.emplace_back(dispatcher.fetchLabel(attr));
+  }
+  if (decl.getParameterList()) {
+    for (auto param : *decl.getParameterList()) {
+      entry.parameters.emplace_back(dispatcher.fetchLabel(param));
+    }
+  }
+  return entry;
+}
+
+codeql::MacroRole DeclTranslator::translateMacroRoleAttr(const swift::MacroRoleAttr& attr) {
+  auto entry = dispatcher.createEntry(attr);
+  entry.kind = static_cast<uint32_t>(attr.getMacroRole());
+  entry.macro_syntax = static_cast<uint8_t>(attr.getMacroSyntax());
+  entry.conformances = dispatcher.fetchRepeatedLabels(attr.getConformances());
+  for (auto& declName : attr.getNames()) {
+    entry.names.emplace_back(constructName(declName.getName()));
+  }
+  return entry;
+}
+
 }  // namespace codeql

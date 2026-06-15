@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["apache/camel-k", "*", "input.test-suite", "code-injection", "generated"]
+     - ["apache/camel-k", "*", "input.image-version", "code-injection", "generated"]
+     - ["apache/camel-k", "*", "input.image-registry-insecure", "code-injection", "generated"]
+     - ["apache/camel-k", "*", "input.image-name", "code-injection", "generated"]
+     - ["apache/camel-k", "*", "input.image-registry-host", "code-injection", "generated"]
+     - ["apache/camel-k", "*", "input.catalog-source-namespace", "code-injection", "generated"]
+     - ["apache/camel-k", "*", "input.catalog-source-name", "code-injection", "generated"]
+     - ["apache/camel-k", "*", "input.image-namespace", "code-injection", "generated"]
+     - ["apache/camel-k", "*", "input.version", "code-injection", "generated"]
+     - ["apache/camel-k", "*", "input.otlp-collector-image-version", "code-injection", "generated"]
+     - ["apache/camel-k", "*", "input.otlp-collector-image-name", "code-injection", "generated"]
+     - ["apache/camel-k", "*", "input.global-operator-namespace", "code-injection", "generated"]

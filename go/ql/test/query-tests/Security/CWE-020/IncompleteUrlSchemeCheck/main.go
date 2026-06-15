@@ -14,7 +14,7 @@ func test(urlstr string) {
 
 	urlstr = strings.NewReplacer("\n", "", "\r", "", "\t", "", "\u0000", "").Replace(urlstr)
 	urlstr = strings.ToLower(urlstr)
-	if strings.HasPrefix(urlstr, "javascript:") || strings.HasPrefix(urlstr, "data:") { // NOT OK
+	if strings.HasPrefix(urlstr, "javascript:") || strings.HasPrefix(urlstr, "data:") { // $ Alert // NOT OK
 		return
 	}
 }

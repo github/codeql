@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.Maps
 import SpringWeb
@@ -153,8 +156,18 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
     result = this.getProducesExpr().(CompileTimeConstantExpr).getStringValue()
   }
 
-  /** Gets the "value" @RequestMapping annotation value, if present. */
-  string getValue() { result = requestMappingAnnotation.getStringValue("value") }
+  /**
+   * Gets a "value" @RequestMapping annotation string value, if present.
+   *
+   * If the annotation element is defined with an array initializer, then the result will be one of the
+   * elements of that array. Otherwise, the result will be the single expression used as value.
+   */
+  string getAValue() { result = requestMappingAnnotation.getAStringArrayValue("value") }
+
+  /** Gets the "method" @RequestMapping annotation value, if present. */
+  string getMethodValue() {
+    result = requestMappingAnnotation.getAnEnumConstantArrayValue("method").getName()
+  }
 
   /** Holds if this is considered an `@ResponseBody` method. */
   predicate isResponseBody() {
@@ -171,13 +184,10 @@ class SpringServletInputAnnotation extends Annotation {
       a = this.getType() and
       a.getPackage().getName() = "org.springframework.web.bind.annotation"
     |
-      a.hasName("MatrixVariable") or
-      a.hasName("RequestParam") or
-      a.hasName("RequestHeader") or
-      a.hasName("CookieValue") or
-      a.hasName("RequestPart") or
-      a.hasName("PathVariable") or
-      a.hasName("RequestBody")
+      a.hasName([
+          "MatrixVariable", "RequestParam", "RequestHeader", "CookieValue", "RequestPart",
+          "PathVariable", "RequestBody"
+        ])
     )
   }
 }
@@ -197,10 +207,22 @@ class SpringRequestMappingParameter extends Parameter {
   predicate isNotDirectlyTaintedInput() {
     this.getType().(RefType).getAnAncestor() instanceof SpringWebRequest or
     this.getType().(RefType).getAnAncestor() instanceof SpringNativeWebRequest or
-    this.getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet", "ServletRequest") or
-    this.getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet", "ServletResponse") or
-    this.getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet.http", "HttpSession") or
-    this.getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet.http", "PushBuilder") or
+    this.getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName(javaxOrJakarta() + ".servlet", "ServletRequest") or
+    this.getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName(javaxOrJakarta() + ".servlet", "ServletResponse") or
+    this.getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName(javaxOrJakarta() + ".servlet.http", "HttpSession") or
+    this.getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName(javaxOrJakarta() + ".servlet.http", "PushBuilder") or
     this.getType().(RefType).getAnAncestor().hasQualifiedName("java.security", "Principal") or
     this.getType()
         .(RefType)
@@ -237,7 +259,7 @@ class SpringRequestMappingParameter extends Parameter {
 
   private predicate isExplicitlyTaintedInput() {
     // InputStream or Reader parameters allow access to the body of a request
-    this.getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "InputStream") or
+    this.getType().(RefType).getAnAncestor() instanceof TypeInputStream or
     this.getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "Reader") or
     // The SpringServletInputAnnotations allow access to the URI, request parameters, cookie values and the body of the request
     this.getAnAnnotation() instanceof SpringServletInputAnnotation or
@@ -307,7 +329,7 @@ class SpringModelPlainMap extends SpringModel {
   SpringModelPlainMap() { this.getType() instanceof MapType }
 
   override RefType getATypeInModel() {
-    exists(MethodAccess methodCall |
+    exists(MethodCall methodCall |
       methodCall.getQualifier() = this.getAnAccess() and
       methodCall.getCallee().hasName("put")
     |
@@ -327,7 +349,7 @@ class SpringModelModel extends SpringModel {
   }
 
   override RefType getATypeInModel() {
-    exists(MethodAccess methodCall |
+    exists(MethodCall methodCall |
       methodCall.getQualifier() = this.getAnAccess() and
       methodCall.getCallee().hasName("addAttribute")
     |

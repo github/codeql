@@ -6,7 +6,7 @@ app.get("/some/path", (req, res) => {
   let response = "Hello, world!";
 
   if(req.query.jsonp && isVarName(req.query.jsonp))
-    response = req.query.jsonp + "(" + response + ")";
+    response = req.query.jsonp + "(" + response + ")"; // $ Source
 
-  res.send(response);
+  res.send(response); // $ Alert
 });

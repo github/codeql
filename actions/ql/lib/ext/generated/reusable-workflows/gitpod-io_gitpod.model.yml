@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["gitpod-io/gitpod/.github/workflows/jetbrains-auto-update-template.yml", "*", "input.productId", "code-injection", "generated"]

@@ -4,7 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/unknown-directive
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  * @precision high
  */
 
@@ -12,7 +14,7 @@ import javascript
 
 from Directive d
 where
-  not d instanceof KnownDirective and
+  not d instanceof Directive::KnownDirective and
   // ignore ":" pseudo-directive sometimes seen in dual-use shell/node.js scripts
   not d.getExpr().getStringValue() = ":" and
   // but exclude attribute top-levels: `<a href="javascript:'some-attribute-string'">`

@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/class-name-matches-super-class
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
  *       naming
  */

@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["openbao/openbao/.github/workflows/test-run-acc-tests-for-path.yml", "*", "input.path", "code-injection", "generated"]
+     - ["openbao/openbao/.github/workflows/test-run-acc-tests-for-path.yml", "*", "input.name", "code-injection", "generated"]
+     - ["openbao/openbao/.github/workflows/test-go.yml", "*", "input.name", "code-injection", "generated"]
+     - ["openbao/openbao/.github/workflows/test-go.yml", "*", "input.go-arch", "code-injection", "generated"]
+     - ["openbao/openbao/.github/workflows/test-go.yml", "*", "input.binary-tests", "code-injection", "generated"]
+     - ["openbao/openbao/.github/workflows/test-go.yml", "*", "input.total-runners", "code-injection", "generated"]

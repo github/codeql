@@ -1,0 +1,9 @@
+nameExpr
+unsupported
+| test.swift:3:1:3:38 |  |  |
+| test.swift:16:1:16:32 |  |  |
+| test.swift:23:1:23:37 |  |  |
+| test.swift:34:1:34:49 |  |  |
+| test.swift:57:1:57:30 |  |  |
+| test.swift:72:1:72:37 |  |  |
+| test.swift:84:1:84:24 |  |  |

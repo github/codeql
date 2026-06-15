@@ -1,6 +1,6 @@
 .. _introduction-to-ql:
 
-Introduction to QL 
+Introduction to QL
 ==================
 
 Work through some simple exercises and examples to learn about the basics of QL and CodeQL.
@@ -19,7 +19,7 @@ QL also supports recursion and aggregates. This allows you to write complex recu
 Running a query
 ---------------
 
-You can try out the following examples and exercises using :ref:`CodeQL for VS Code <codeql-for-visual-studio-code>` or the `CodeQL template <https://github.com/codespaces/new?template_repository=github/codespaces-codeql>`__ on GitHub Codespaces.
+You can try out the following examples and exercises using `CodeQL for VS Code <https://docs.github.com/en/code-security/codeql-for-vs-code/>`__ or the `CodeQL template <https://github.com/codespaces/new?template_repository=github/codespaces-codeql>`__ on GitHub Codespaces.
 
 Here is an example of a basic query:
 
@@ -109,12 +109,12 @@ Example CodeQL queries
 ----------------------
 
 The previous examples used the primitive types built in to QL. Although we chose a project to query, we didn't use the information in that project's database.
-The following example queries *do* use these databases and give you an idea of how to use CodeQL to analyze projects. 
+The following example queries *do* use these databases and give you an idea of how to use CodeQL to analyze projects.
 
 Queries using the CodeQL libraries can find errors and uncover variants of important security vulnerabilities in codebases.
 Visit `GitHub Security Lab <https://securitylab.github.com/>`__ to read about examples of vulnerabilities that we have recently found in open source projects.
 
-Before you can run the following examples, you will need to install the CodeQL extension for Visual Studio Code. For more information, see :ref:`Setting up CodeQL in Visual Studio Code <setting-up-codeql-in-visual-studio-code>`. You will also need to import and select a database in the corresponding programming language. For more information about obtaining CodeQL databases, see `Analyzing your projects <https://codeql.github.com/docs/codeql-for-visual-studio-code/analyzing-your-projects/#choosing-a-database>`__ in the CodeQL for VS Code documentation.
+Before you can run the following examples, you will need to install the CodeQL extension for Visual Studio Code. For more information, see `Installing CodeQL for Visual Studio Code <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code>`__ in the GitHub documentation. You will also need to import and select a database in the corresponding programming language.
 
 To import the CodeQL library for a specific programming language, type ``import <language>`` at the start of the query.
 
@@ -166,7 +166,7 @@ Exercise 1
    from string s
    where s = "lgtm"
    select s.length()
-   
+
 There is often more than one way to define a query. For example, we can also write the above query in the shorter form:
 
 .. code-block:: ql

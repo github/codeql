@@ -1,0 +1,70 @@
+models
+edges
+| Indexers.cs:6:9:6:11 | this : Partial1 [field _backingArray, element] : Object | Indexers.cs:6:22:6:34 | this access : Partial1 [field _backingArray, element] : Object | provenance |  |
+| Indexers.cs:6:9:6:11 | this : Partial1 [field _backingArray, element] : Object | Indexers.cs:6:22:6:34 | this access : Partial1 [field _backingArray, element] : Object | provenance |  |
+| Indexers.cs:6:22:6:34 | access to field _backingArray : Object[] [element] : Object | Indexers.cs:6:22:6:41 | access to array element : Object | provenance |  |
+| Indexers.cs:6:22:6:34 | access to field _backingArray : Object[] [element] : Object | Indexers.cs:6:22:6:41 | access to array element : Object | provenance |  |
+| Indexers.cs:6:22:6:34 | this access : Partial1 [field _backingArray, element] : Object | Indexers.cs:6:22:6:34 | access to field _backingArray : Object[] [element] : Object | provenance |  |
+| Indexers.cs:6:22:6:34 | this access : Partial1 [field _backingArray, element] : Object | Indexers.cs:6:22:6:34 | access to field _backingArray : Object[] [element] : Object | provenance |  |
+| Indexers.cs:7:9:7:11 | value : Object | Indexers.cs:7:38:7:42 | access to parameter value : Object | provenance |  |
+| Indexers.cs:7:9:7:11 | value : Object | Indexers.cs:7:38:7:42 | access to parameter value : Object | provenance |  |
+| Indexers.cs:7:15:7:27 | [post] access to field _backingArray : Object[] [element] : Object | Indexers.cs:7:15:7:27 | [post] this access : Partial1 [field _backingArray, element] : Object | provenance |  |
+| Indexers.cs:7:15:7:27 | [post] access to field _backingArray : Object[] [element] : Object | Indexers.cs:7:15:7:27 | [post] this access : Partial1 [field _backingArray, element] : Object | provenance |  |
+| Indexers.cs:7:15:7:27 | [post] this access : Partial1 [field _backingArray, element] : Object | Indexers.cs:7:9:7:11 | this [Return] : Partial1 [field _backingArray, element] : Object | provenance |  |
+| Indexers.cs:7:15:7:27 | [post] this access : Partial1 [field _backingArray, element] : Object | Indexers.cs:7:9:7:11 | this [Return] : Partial1 [field _backingArray, element] : Object | provenance |  |
+| Indexers.cs:7:38:7:42 | access to parameter value : Object | Indexers.cs:7:15:7:27 | [post] access to field _backingArray : Object[] [element] : Object | provenance |  |
+| Indexers.cs:7:38:7:42 | access to parameter value : Object | Indexers.cs:7:15:7:27 | [post] access to field _backingArray : Object[] [element] : Object | provenance |  |
+| Indexers.cs:34:13:34:13 | access to local variable o : Object | Indexers.cs:37:17:37:17 | access to local variable o : Object | provenance |  |
+| Indexers.cs:34:13:34:13 | access to local variable o : Object | Indexers.cs:37:17:37:17 | access to local variable o : Object | provenance |  |
+| Indexers.cs:34:17:34:33 | call to method Source<Object> : Object | Indexers.cs:34:13:34:13 | access to local variable o : Object | provenance |  |
+| Indexers.cs:34:17:34:33 | call to method Source<Object> : Object | Indexers.cs:34:13:34:13 | access to local variable o : Object | provenance |  |
+| Indexers.cs:37:9:37:10 | [post] access to local variable p1 : Partial1 [field _backingArray, element] : Object | Indexers.cs:38:14:38:15 | access to local variable p1 : Partial1 [field _backingArray, element] : Object | provenance |  |
+| Indexers.cs:37:9:37:10 | [post] access to local variable p1 : Partial1 [field _backingArray, element] : Object | Indexers.cs:38:14:38:15 | access to local variable p1 : Partial1 [field _backingArray, element] : Object | provenance |  |
+| Indexers.cs:37:17:37:17 | access to local variable o : Object | Indexers.cs:7:9:7:11 | value : Object | provenance |  |
+| Indexers.cs:37:17:37:17 | access to local variable o : Object | Indexers.cs:7:9:7:11 | value : Object | provenance |  |
+| Indexers.cs:37:17:37:17 | access to local variable o : Object | Indexers.cs:37:9:37:10 | [post] access to local variable p1 : Partial1 [field _backingArray, element] : Object | provenance |  |
+| Indexers.cs:37:17:37:17 | access to local variable o : Object | Indexers.cs:37:9:37:10 | [post] access to local variable p1 : Partial1 [field _backingArray, element] : Object | provenance |  |
+| Indexers.cs:38:14:38:15 | access to local variable p1 : Partial1 [field _backingArray, element] : Object | Indexers.cs:6:9:6:11 | this : Partial1 [field _backingArray, element] : Object | provenance |  |
+| Indexers.cs:38:14:38:15 | access to local variable p1 : Partial1 [field _backingArray, element] : Object | Indexers.cs:6:9:6:11 | this : Partial1 [field _backingArray, element] : Object | provenance |  |
+| Indexers.cs:38:14:38:15 | access to local variable p1 : Partial1 [field _backingArray, element] : Object | Indexers.cs:38:14:38:18 | access to indexer | provenance |  |
+| Indexers.cs:38:14:38:15 | access to local variable p1 : Partial1 [field _backingArray, element] : Object | Indexers.cs:38:14:38:18 | access to indexer | provenance |  |
+nodes
+| Indexers.cs:6:9:6:11 | this : Partial1 [field _backingArray, element] : Object | semmle.label | this : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:6:9:6:11 | this : Partial1 [field _backingArray, element] : Object | semmle.label | this : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:6:22:6:34 | access to field _backingArray : Object[] [element] : Object | semmle.label | access to field _backingArray : Object[] [element] : Object |
+| Indexers.cs:6:22:6:34 | access to field _backingArray : Object[] [element] : Object | semmle.label | access to field _backingArray : Object[] [element] : Object |
+| Indexers.cs:6:22:6:34 | this access : Partial1 [field _backingArray, element] : Object | semmle.label | this access : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:6:22:6:34 | this access : Partial1 [field _backingArray, element] : Object | semmle.label | this access : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:6:22:6:41 | access to array element : Object | semmle.label | access to array element : Object |
+| Indexers.cs:6:22:6:41 | access to array element : Object | semmle.label | access to array element : Object |
+| Indexers.cs:7:9:7:11 | this [Return] : Partial1 [field _backingArray, element] : Object | semmle.label | this [Return] : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:7:9:7:11 | this [Return] : Partial1 [field _backingArray, element] : Object | semmle.label | this [Return] : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:7:9:7:11 | value : Object | semmle.label | value : Object |
+| Indexers.cs:7:9:7:11 | value : Object | semmle.label | value : Object |
+| Indexers.cs:7:15:7:27 | [post] access to field _backingArray : Object[] [element] : Object | semmle.label | [post] access to field _backingArray : Object[] [element] : Object |
+| Indexers.cs:7:15:7:27 | [post] access to field _backingArray : Object[] [element] : Object | semmle.label | [post] access to field _backingArray : Object[] [element] : Object |
+| Indexers.cs:7:15:7:27 | [post] this access : Partial1 [field _backingArray, element] : Object | semmle.label | [post] this access : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:7:15:7:27 | [post] this access : Partial1 [field _backingArray, element] : Object | semmle.label | [post] this access : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:7:38:7:42 | access to parameter value : Object | semmle.label | access to parameter value : Object |
+| Indexers.cs:7:38:7:42 | access to parameter value : Object | semmle.label | access to parameter value : Object |
+| Indexers.cs:34:13:34:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Indexers.cs:34:13:34:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Indexers.cs:34:17:34:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Indexers.cs:34:17:34:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Indexers.cs:37:9:37:10 | [post] access to local variable p1 : Partial1 [field _backingArray, element] : Object | semmle.label | [post] access to local variable p1 : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:37:9:37:10 | [post] access to local variable p1 : Partial1 [field _backingArray, element] : Object | semmle.label | [post] access to local variable p1 : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:37:17:37:17 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Indexers.cs:37:17:37:17 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Indexers.cs:38:14:38:15 | access to local variable p1 : Partial1 [field _backingArray, element] : Object | semmle.label | access to local variable p1 : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:38:14:38:15 | access to local variable p1 : Partial1 [field _backingArray, element] : Object | semmle.label | access to local variable p1 : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:38:14:38:18 | access to indexer | semmle.label | access to indexer |
+| Indexers.cs:38:14:38:18 | access to indexer | semmle.label | access to indexer |
+subpaths
+| Indexers.cs:37:17:37:17 | access to local variable o : Object | Indexers.cs:7:9:7:11 | value : Object | Indexers.cs:7:9:7:11 | this [Return] : Partial1 [field _backingArray, element] : Object | Indexers.cs:37:9:37:10 | [post] access to local variable p1 : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:37:17:37:17 | access to local variable o : Object | Indexers.cs:7:9:7:11 | value : Object | Indexers.cs:7:9:7:11 | this [Return] : Partial1 [field _backingArray, element] : Object | Indexers.cs:37:9:37:10 | [post] access to local variable p1 : Partial1 [field _backingArray, element] : Object |
+| Indexers.cs:38:14:38:15 | access to local variable p1 : Partial1 [field _backingArray, element] : Object | Indexers.cs:6:9:6:11 | this : Partial1 [field _backingArray, element] : Object | Indexers.cs:6:22:6:41 | access to array element : Object | Indexers.cs:38:14:38:18 | access to indexer |
+| Indexers.cs:38:14:38:15 | access to local variable p1 : Partial1 [field _backingArray, element] : Object | Indexers.cs:6:9:6:11 | this : Partial1 [field _backingArray, element] : Object | Indexers.cs:6:22:6:41 | access to array element : Object | Indexers.cs:38:14:38:18 | access to indexer |
+testFailures
+#select
+| Indexers.cs:38:14:38:18 | access to indexer | Indexers.cs:34:17:34:33 | call to method Source<Object> : Object | Indexers.cs:38:14:38:18 | access to indexer | $@ | Indexers.cs:34:17:34:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Indexers.cs:38:14:38:18 | access to indexer | Indexers.cs:34:17:34:33 | call to method Source<Object> : Object | Indexers.cs:38:14:38:18 | access to indexer | $@ | Indexers.cs:34:17:34:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |

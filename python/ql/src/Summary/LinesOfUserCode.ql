@@ -8,15 +8,16 @@
  * @kind metric
  * @tags summary
  *       lines-of-code
+ *       debug
  * @id py/summary/lines-of-user-code
  */
 
 import python
 import semmle.python.filters.GeneratedCode
 
-select sum(Module m |
+select sum(ModuleMetrics m |
     exists(m.getFile().getRelativePath()) and
     not m.getFile() instanceof GeneratedFile
   |
-    m.getMetrics().getNumberOfLinesOfCode()
+    m.getNumberOfLinesOfCode()
   )

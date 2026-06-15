@@ -4,7 +4,7 @@
  *              insertion of forged log entries by a malicious user.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 7.8
+ * @security-severity 6.1
  * @precision medium
  * @id py/log-injection
  * @tags security
@@ -13,9 +13,9 @@
 
 import python
 import semmle.python.security.dataflow.LogInjectionQuery
-import DataFlow::PathGraph
+import LogInjectionFlow::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from LogInjectionFlow::PathNode source, LogInjectionFlow::PathNode sink
+where LogInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This log entry depends on a $@.", source.getNode(),
   "user-provided value"

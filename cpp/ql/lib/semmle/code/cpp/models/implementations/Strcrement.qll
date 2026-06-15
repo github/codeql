@@ -36,6 +36,8 @@ private class Strcrement extends ArrayFunction, TaintFunction, SideEffectFunctio
       input.isParameter(index) and output.isReturnValue()
       or
       input.isParameterDeref(index) and output.isReturnValueDeref()
+      or
+      input.isParameterDeref(index) and output.isParameterDeref(index)
     )
   }
 

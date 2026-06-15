@@ -8,6 +8,6 @@ class BadDataContractJsonSerializer
     {
         var ds = new DataContractJsonSerializer(type);
         // BAD
-        return ds.ReadObject(s);
+        return ds.ReadObject(s); // $ Alert[cs/unsafe-deserialization]
     }
 }

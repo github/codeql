@@ -61,9 +61,35 @@ try:
     val.attr
 except Exception:
     print (2)
-except AttributeError:
+except AttributeError: # $ Alert[py/unreachable-except]
     print (3)
-    
+
+class MyExc(ValueError):
+    pass
+
+try:
+    pass
+except ValueError:
+    pass
+except MyExc: # $ MISSING:Alert[py/unreachable-except] # Missing due to dataflow limitiation preventing MyExc from being tracked here.
+    pass
+
+class MyBaseExc(Exception):
+    pass
+
+class MySubExc(MyBaseExc):
+    pass
+
+try:
+    pass
+except MyBaseExc:
+    pass
+except MySubExc: # $ MISSING:Alert[py/unreachable-except] # Missing due to dataflow limitation preventing MyExc from being tracked here.
+    pass
+except Exception:
+    pass
+
+
 #Catch BaseException
 def catch_base_exception():
     try:
@@ -71,13 +97,13 @@ def catch_base_exception():
     except BaseException:
         #Consumes KeyboardInterrupt
         pass
-    
+
 def catch_base_exception_ok():
     try:
         illegal_raise()
     except BaseException:
         raise
-    
+
 def legal_handler1():
     try:
         illegal_raise()

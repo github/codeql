@@ -34,7 +34,7 @@ predicate becomesPartOf(DataFlow::Node part, DataFlow::Node whole) {
   or
   whole.(DataFlow::AddressOperationNode).getOperand() = part
   or
-  exists(Write w | w.writesField(whole.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, part))
+  exists(Write w | w.writesField(whole, _, part))
 }
 
 /**

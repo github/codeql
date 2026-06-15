@@ -18,7 +18,7 @@ func logrusCalls() {
 	var fields logrus.Fields = nil
 	var fn logrus.LogFunction = nil
 	var ctx context.Context
-	tmp := logrus.WithContext(ctx)  // $ logger=ctx
+	tmp := logrus.WithContext(ctx)  // ctx isn't output, so no match here
 	tmp.Debugf(fmt, text)           // $ logger=fmt logger=text
 	tmp = logrus.WithError(err)     // $ logger=err
 	tmp.Warn(text)                  // $ logger=text
@@ -32,4 +32,8 @@ func logrusCalls() {
 	logrus.Panicln(text)     // $ logger=text
 	logrus.Infof(fmt, text)  // $ logger=fmt logger=text
 	logrus.FatalFn(fn)       // $ logger=fn
+
+	// components corresponding to the format specifier "%T" are not considered vulnerable
+	logrus.Infof("%s: found type %T", text, v)  // $ logger="%s: found type %T" logger=text type-logger=v
+	logrus.Fatalf("%s: found type %T", text, v) // $ logger="%s: found type %T" logger=text type-logger=v
 }

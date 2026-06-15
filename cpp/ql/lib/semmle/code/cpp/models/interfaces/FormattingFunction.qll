@@ -9,8 +9,9 @@
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.Taint
 
+pragma[nomagic]
 private Type stripTopLevelSpecifiersOnly(Type t) {
-  result = stripTopLevelSpecifiersOnly(t.(SpecifiedType).getBaseType())
+  result = stripTopLevelSpecifiersOnly(pragma[only_bind_out](t.(SpecifiedType).getBaseType()))
   or
   result = t and
   not t instanceof SpecifiedType
@@ -41,6 +42,21 @@ private Type getAFormatterWideTypeOrDefault() {
  * A standard library function that uses a `printf`-like formatting string.
  */
 abstract class FormattingFunction extends ArrayFunction, TaintFunction {
+  int firstFormatArgumentIndex;
+
+  FormattingFunction() {
+    firstFormatArgumentIndex > 0 and
+    if this.hasDefinition()
+    then firstFormatArgumentIndex = this.getDefinition().getNumberOfParameters()
+    else
+      if this instanceof BuiltInFunction
+      then firstFormatArgumentIndex = this.getNumberOfParameters()
+      else
+        forex(FunctionDeclarationEntry fde | fde = this.getAnExplicitDeclarationEntry() |
+          firstFormatArgumentIndex = fde.getNumberOfParameters()
+        )
+  }
+
   /** Gets the position at which the format parameter occurs. */
   abstract int getFormatParameterIndex();
 
@@ -117,21 +133,10 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
 
   /**
    * Gets the position of the first format argument, corresponding with
-   * the first format specifier in the format string.
+   * the first format specifier in the format string. We ignore all
+   * implicit function definitions.
    */
-  int getFirstFormatArgumentIndex() {
-    result = this.getNumberOfParameters() and
-    // the formatting function either has a definition in the snapshot, or all
-    // `DeclarationEntry`s agree on the number of parameters (otherwise we don't
-    // really know the correct number)
-    (
-      this.hasDefinition()
-      or
-      forall(FunctionDeclarationEntry fde | fde = this.getADeclarationEntry() |
-        result = fde.getNumberOfParameters()
-      )
-    )
-  }
+  int getFirstFormatArgumentIndex() { result = firstFormatArgumentIndex }
 
   /**
    * Gets the position of the buffer size argument, if any.
@@ -163,6 +168,16 @@ abstract class FormattingFunction extends ArrayFunction, TaintFunction {
     |
       (input.isParameterDeref(arg) or input.isParameter(arg)) and
       output.isParameterDeref(this.getOutputParameterIndex(_))
+    )
+  }
+
+  final override predicate isPartialWrite(FunctionOutput output) {
+    exists(int outputParameterIndex |
+      output.isParameterDeref(outputParameterIndex) and
+      // We require the output to be a stream since that definitely means that
+      // it's a partial write. If it's not a stream then it will most likely
+      // fill the whole buffer.
+      outputParameterIndex = this.getOutputParameterIndex(true)
     )
   }
 }

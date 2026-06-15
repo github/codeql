@@ -1,6 +1,6 @@
 import codeql.ruby.AST
 import codeql.ruby.DataFlow
-import codeql.ruby.typetracking.TypeTracker
+import codeql.ruby.typetracking.TypeTracking
 
 class LocalSourceNode extends DataFlow::LocalSourceNode {
   LocalSourceNode() { this.getLocation().getFile().getExtension() = "rb" }

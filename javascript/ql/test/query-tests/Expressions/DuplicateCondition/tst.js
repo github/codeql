@@ -1,7 +1,7 @@
 function controller(msg) {
 	if (msg == 'start')
 		start();
-	else if (msg == 'start')
+	else if (msg == 'start') // $ Alert
 		stop();
 	else
 		throw new Error("Message not understood.");

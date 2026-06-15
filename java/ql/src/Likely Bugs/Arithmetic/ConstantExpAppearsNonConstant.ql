@@ -5,8 +5,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/evaluation-to-constant
- * @tags maintainability
- *       useless-code
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java
@@ -52,6 +53,7 @@ predicate isConstantExp(Expr e) {
 from Expr e
 where
   isConstantExp(e) and
+  not e.(TypeAccess).getType() instanceof ErrorType and
   exists(Expr child | e.getAChildExpr() = child |
     not isConstantExp(child) and
     not child instanceof Annotation

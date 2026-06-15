@@ -40,7 +40,9 @@ module CleartextStorage {
    */
   class SensitiveDataSourceAsSource extends Source, SensitiveDataSource {
     SensitiveDataSourceAsSource() {
-      not SensitiveDataSource.super.getClassification() = SensitiveDataClassification::id()
+      not SensitiveDataSource.super.getClassification() in [
+          SensitiveDataClassification::id(), SensitiveDataClassification::certificate()
+        ]
     }
 
     override SensitiveDataClassification getClassification() {

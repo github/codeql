@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Extracting Compressed files with any compression algorithm like gzip can cause a denial of service attack.</p>
+<p>Attackers can create a huge file by just repeating a single byte and compress it to a small file.</p>  
+
+</overview>
+<recommendation>
+
+<p>When decompressing a user-provided compressed file, verify the decompression ratio or decompress the files within a loop byte by byte to be able to manage the decompressed size in each cycle of the loop.</p>  
+
+</recommendation>
+<example>
+
+<p>
+In the following example, the decompressed file size is not checked before decompression, exposing the application to a denial of service.  
+</p>  
+<sample src="BadExample.java" />  
+
+<p>  
+A better approach is shown in the following example, where a ZIP file is read within a loop and a size threshold is checked every cycle.  
+</p>  
+<sample src="GoodExample.java"/>  
+
+</example>
+<references>
+
+<li>
+<a href="https://github.com/advisories/GHSA-47vx-fqr5-j2gw">CVE-2022-4565</a>
+</li>
+<li>
+David Fifield: <a href="https://www.bamsoftware.com/hacks/zipbomb/">A better zip bomb</a>.  
+</li>
+
+</references>
+</qhelp>

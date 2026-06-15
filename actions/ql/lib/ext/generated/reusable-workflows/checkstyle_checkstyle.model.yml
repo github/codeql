@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["checkstyle/checkstyle/.github/workflows/release-upload-all-jar.yml", "*", "input.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-update-xdoc-with-releasenotes.yml", "*", "input.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-update-github-page.yml", "*", "input.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-update-github-io.yml", "*", "input.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-publish-releasenotes-twitter.yml", "*", "input.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-new-milestone-and-issues-in-other-repos.yml", "*", "input.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-maven-prepare.yml", "*", "input.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-maven-perform.yml", "*", "input.version", "code-injection", "generated"]
+     - ["checkstyle/checkstyle/.github/workflows/release-copy-github-io-to-sourceforge.yml", "*", "input.version", "code-injection", "generated"]

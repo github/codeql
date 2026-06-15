@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.hadoop.hive.ql.metadata", "Hive", False, "copyFiles", "(HiveConf,Path,Path,FileSystem,boolean,boolean,boolean,List,boolean,boolean,boolean,boolean)", "", "Argument[2]", "path-injection", "ai-manual"]

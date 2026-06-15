@@ -1,1 +1,2 @@
-AngularJS/DoubleCompilation.ql
+query: AngularJS/DoubleCompilation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

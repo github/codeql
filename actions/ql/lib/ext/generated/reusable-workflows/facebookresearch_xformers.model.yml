@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["facebookresearch/xformers/.github/workflows/wheels_upload_s3.yml", "*", "input.aws_s3_cp_extra_args", "code-injection", "generated"]
+     - ["facebookresearch/xformers/.github/workflows/wheels_upload_s3.yml", "*", "input.s3_path", "code-injection", "generated"]
+     - ["facebookresearch/xformers/.github/workflows/wheels_upload_s3.yml", "*", "input.filter", "code-injection", "generated"]
+     - ["facebookresearch/xformers/.github/workflows/wheels_upload_s3.yml", "*", "input.artifact_tag", "code-injection", "generated"]
+     - ["facebookresearch/xformers/.github/workflows/wheels_upload_pip.yml", "*", "input.filter", "code-injection", "generated"]
+     - ["facebookresearch/xformers/.github/workflows/wheels_upload_pip.yml", "*", "input.artifact_tag", "code-injection", "generated"]
+     - ["facebookresearch/xformers/.github/workflows/wheels_upload_pip.yml", "*", "input.pypirc", "code-injection", "generated"]
+     - ["facebookresearch/xformers/.github/workflows/wheels_build.yml", "*", "input.cuda_short_version", "code-injection", "generated"]
+     - ["facebookresearch/xformers/.github/workflows/wheels_build.yml", "*", "input.torch_version", "code-injection", "generated"]
+     - ["facebookresearch/xformers/.github/workflows/linters_reusable.yml", "*", "input.pre-script", "code-injection", "generated"]

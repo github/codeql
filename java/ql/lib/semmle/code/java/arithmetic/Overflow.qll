@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 
 /** A subclass of `PrimitiveType` with width-based ordering methods. */
@@ -80,11 +83,18 @@ class ArithExpr extends Expr {
     (
       this instanceof UnaryAssignExpr or
       this instanceof AddExpr or
+      this instanceof AssignAddExpr or
       this instanceof MulExpr or
+      this instanceof AssignMulExpr or
       this instanceof SubExpr or
-      this instanceof DivExpr
+      this instanceof AssignSubExpr or
+      this instanceof DivExpr or
+      this instanceof AssignDivExpr
     ) and
-    forall(Expr e | e = this.(BinaryExpr).getAnOperand() or e = this.(UnaryAssignExpr).getExpr() |
+    forall(Expr e |
+      e = this.(BinaryExpr).getAnOperand() or
+      e = this.(UnaryAssignExpr).getOperand()
+    |
       e.getType() instanceof NumType
     )
   }
@@ -103,7 +113,7 @@ class ArithExpr extends Expr {
    */
   Expr getLeftOperand() {
     result = this.(BinaryExpr).getLeftOperand() or
-    result = this.(UnaryAssignExpr).getExpr()
+    result = this.(UnaryAssignExpr).getOperand()
   }
 
   /**
@@ -114,6 +124,6 @@ class ArithExpr extends Expr {
   /** Gets an operand of this arithmetic expression. */
   Expr getAnOperand() {
     result = this.(BinaryExpr).getAnOperand() or
-    result = this.(UnaryAssignExpr).getExpr()
+    result = this.(UnaryAssignExpr).getOperand()
   }
 }

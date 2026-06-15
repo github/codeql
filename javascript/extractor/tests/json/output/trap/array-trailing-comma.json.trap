@@ -1,0 +1,33 @@
+#10000=@"/array-trailing-comma.json;sourcefile"
+files(#10000,"/array-trailing-comma.json")
+#10001=@"/;folder"
+folders(#10001,"/")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=*
+json(#20000,5,#10000,0,"{\n    "" ...     ]\n}")
+#20001=@"loc,{#10000},1,1,6,1"
+locations_default(#20001,#10000,1,1,6,1)
+json_locations(#20000,#20001)
+#20002=*
+json(#20002,4,#20000,0,"[\n      ... ,\n    ]")
+#20003=@"loc,{#10000},2,14,5,5"
+locations_default(#20003,#10000,2,14,5,5)
+json_locations(#20002,#20003)
+#20004=*
+json(#20004,3,#20002,0,"""foo""")
+#20005=@"loc,{#10000},3,9,3,13"
+locations_default(#20005,#10000,3,9,3,13)
+json_locations(#20004,#20005)
+json_literals("foo","""foo""",#20004)
+#20006=*
+json(#20006,3,#20002,1,"""bar""")
+#20007=@"loc,{#10000},4,9,4,13"
+locations_default(#20007,#10000,4,9,4,13)
+json_locations(#20006,#20007)
+json_literals("bar","""bar""",#20006)
+json_properties(#20000,"array",#20002)
+numlines(#10000,6,0,0)
+filetype(#10000,"json")

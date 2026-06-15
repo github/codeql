@@ -10,7 +10,9 @@ public interface Visitor {
 
   public void visit(JSDocTag nd);
 
-  public void visit(NameExpression nd);
+  public void visit(Identifier nd);
+
+  public void visit(QualifiedNameExpression nd);
 
   public void visit(NullableLiteral nd);
 

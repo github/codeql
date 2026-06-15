@@ -1,0 +1,9 @@
+| WebSocketReadWrite.go:27:9:27:16 | selection of Header |
+| WebSocketReadWrite.go:32:11:32:14 | xnet [postupdate] |
+| WebSocketReadWrite.go:36:21:36:25 | xnet2 [postupdate] |
+| WebSocketReadWrite.go:41:3:41:40 | ... := ...[1] |
+| WebSocketReadWrite.go:44:3:44:48 | ... := ...[1] |
+| WebSocketReadWrite.go:52:26:52:35 | gorillaMsg [postupdate] |
+| WebSocketReadWrite.go:56:17:56:24 | gorilla2 [postupdate] |
+| WebSocketReadWrite.go:61:3:61:38 | ... := ...[1] |
+| WebSocketReadWrite.go:67:3:67:36 | ... := ...[0] |

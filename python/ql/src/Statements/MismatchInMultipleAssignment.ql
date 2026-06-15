@@ -3,9 +3,9 @@
  * @description Assigning multiple variables without ensuring that you define a
  *              value for each variable causes an exception at runtime.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       types
  * @problem.severity error
  * @sub-severity low
  * @precision very-high
@@ -13,6 +13,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 private int len(ExprList el) { result = count(el.getAnItem()) }
 
@@ -41,7 +42,7 @@ predicate mismatched_tuple_rhs(Assign a, int lcount, int rcount, Location loc) {
       a.getATarget().(Tuple).getElts() = l or
       a.getATarget().(List).getElts() = l
     ) and
-    a.getValue().pointsTo(r, origin) and
+    a.getValue().(ExprWithPointsTo).pointsTo(r, origin) and
     loc = origin.getLocation() and
     lcount = len(l) and
     rcount = r.length() and

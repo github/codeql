@@ -10,4 +10,4 @@ class Reads extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         prevState.p4;
     }
-}
+} // $ reactComponent

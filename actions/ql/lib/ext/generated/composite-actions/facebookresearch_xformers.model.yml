@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["facebookresearch/xformers", "*", "input.arch", "code-injection", "generated"]
+     - ["facebookresearch/xformers", "*", "input.pytorch_channel", "code-injection", "generated"]
+     - ["facebookresearch/xformers", "*", "input.pytorch_version", "code-injection", "generated"]
+     - ["facebookresearch/xformers", "*", "input.python", "code-injection", "generated"]
+     - ["facebookresearch/xformers", "*", "input.cuda", "code-injection", "generated"]

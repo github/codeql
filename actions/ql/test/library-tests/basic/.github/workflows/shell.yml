@@ -1,0 +1,23 @@
+on: push
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - shell: pwsh
+        run: Write-Output "foo"
+  job2:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "foo"
+
+  job3:
+    runs-on: windows-latest
+    steps:
+      - shell: bash
+        run: echo "foo"
+  job4:
+    runs-on: windows-latest
+    steps:
+      - run: Write-Output "foo"
+

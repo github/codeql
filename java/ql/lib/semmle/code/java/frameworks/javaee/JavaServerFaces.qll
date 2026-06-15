@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with Java Server Faces. */
+overlay[local?]
+module;
 
 import default
 import semmle.code.java.frameworks.javaee.jsf.JSFAnnotations
@@ -7,7 +9,7 @@ import semmle.code.java.frameworks.javaee.jsf.JSFFacesContextXML
 /**
  * A method that is visible to faces, if the instance type is visible to faces.
  */
-library class FacesVisibleMethod extends Method {
+class FacesVisibleMethod extends Method {
   FacesVisibleMethod() { this.isPublic() and not this.isStatic() }
 }
 
@@ -59,7 +61,7 @@ class FacesAccessibleType extends RefType {
 class FacesComponent extends Class {
   FacesComponent() {
     // Must extend UIComponent for it to be a valid component.
-    this.getAnAncestor().hasQualifiedName("javax.faces.component", "UIComponent") and
+    this.getAnAncestor().hasQualifiedName(javaxOrJakarta() + ".faces.component", "UIComponent") and
     (
       // Must be registered using either an annotation
       exists(FacesComponentAnnotation componentAnnotation |

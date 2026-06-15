@@ -7,7 +7,8 @@
  * @problem.severity error
  * @precision very-high
  * @id java/type-mismatch-modification
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       logic
  */
@@ -65,17 +66,18 @@ predicate containerModification(string package, string type, int p, string signa
   i = 0
 }
 
-class MismatchedContainerModification extends MethodAccess {
+class MismatchedContainerModification extends MethodCall {
   MismatchedContainerModification() {
     exists(string package, string type, int i |
-      containerModification(package, type, _, this.getCallee().getSignature(), i)
+      containerModification(package, type, _, this.getCallee().getSignature(),
+        pragma[only_bind_into](i))
     |
       this.getCallee()
           .getDeclaringType()
           .getASourceSupertype*()
           .getSourceDeclaration()
           .hasQualifiedName(package, type) and
-      this.getCallee().getParameter(i).getType() instanceof TypeObject
+      this.getCallee().getParameter(pragma[only_bind_into](i)).getType() instanceof TypeObject
     )
   }
 

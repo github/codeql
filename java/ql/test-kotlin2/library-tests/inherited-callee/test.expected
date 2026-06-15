@@ -1,0 +1,10 @@
+| Test.java:23:5:23:16 | toString(...) | toString | Object |
+| Test.java:24:5:24:15 | equals(...) | equals | Object |
+| Test.java:25:5:25:16 | hashCode(...) | hashCode | Object |
+| Test.java:26:5:26:17 | inheritMe(...) | inheritMe | Test |
+| Test.java:28:5:28:34 | inheritedInterfaceMethodJ(...) | inheritedInterfaceMethodJ | ParentIf |
+| Test.kt:23:5:23:16 | toString(...) | toString | Object |
+| Test.kt:24:5:24:15 | equals(...) | equals | Object |
+| Test.kt:25:5:25:16 | hashCode(...) | hashCode | Object |
+| Test.kt:26:5:26:17 | inheritMe(...) | inheritMe | TestKt |
+| Test.kt:28:5:28:35 | inheritedInterfaceMethodK(...) | inheritedInterfaceMethodK | ParentIfK |

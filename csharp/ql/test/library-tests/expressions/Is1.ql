@@ -10,5 +10,5 @@ where
   e.getEnclosingCallable() = m and
   e.getExpr().(ParameterAccess).getTarget().getName() = "o" and
   tpe = e.getPattern() and
-  tpe.getCheckedType().(Class).hasQualifiedName("Expressions", "Class")
+  tpe.getCheckedType().(Class).hasFullyQualifiedName("Expressions", "Class")
 select m, e

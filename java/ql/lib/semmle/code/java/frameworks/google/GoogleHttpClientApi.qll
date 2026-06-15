@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.Serializability
 import semmle.code.java.dataflow.DataFlow
@@ -14,7 +17,7 @@ private module TypeLiteralToParseAsFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof TypeLiteral }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getAnArgument() = sink.asExpr() and
       ma.getMethod() instanceof ParseAsMethod
     )
@@ -23,9 +26,7 @@ private module TypeLiteralToParseAsFlowConfig implements DataFlow::ConfigSig {
 
 private module TypeLiteralToParseAsFlow = DataFlow::Global<TypeLiteralToParseAsFlowConfig>;
 
-private TypeLiteral getSourceWithFlowToParseAs() {
-  TypeLiteralToParseAsFlow::flow(DataFlow::exprNode(result), _)
-}
+private TypeLiteral getSourceWithFlowToParseAs() { TypeLiteralToParseAsFlow::flowFromExpr(result) }
 
 /** A field that is deserialized by `HttpResponse.parseAs`. */
 class HttpResponseParseAsDeserializableField extends DeserializableField {

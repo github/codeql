@@ -1,4 +1,6 @@
 /** Provides a remote flow source for Android's `Activity.onActivityResult` method. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
@@ -37,7 +39,7 @@ class OnActivityResultIncomingIntent extends DataFlow::Node {
       or
       // A fragment calls `startActivityForResult`
       // and the activity it belongs to defines `onActivityResult`.
-      exists(MethodAccess ma |
+      exists(MethodCall ma |
         ma.getMethod().hasName(["add", "attach", "replace"]) and
         ma.getMethod()
             .getDeclaringType()
@@ -71,7 +73,7 @@ private module ImplicitStartActivityForResultConfig implements DataFlow::ConfigS
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess startActivityForResult |
+    exists(MethodCall startActivityForResult |
       startActivityForResult.getMethod().hasName("startActivityForResult") and
       startActivityForResult.getMethod().getDeclaringType().getAnAncestor() instanceof
         ActivityOrFragment and
@@ -83,7 +85,7 @@ private module ImplicitStartActivityForResultConfig implements DataFlow::ConfigS
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // Wrapping the Intent in a chooser
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       ma.getMethod() = m and
       m.hasName("createChooser") and
       m.getDeclaringType() instanceof TypeIntent

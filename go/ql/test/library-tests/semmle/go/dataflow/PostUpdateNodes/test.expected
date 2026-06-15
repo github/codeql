@@ -1,15 +1,26 @@
-| test.go:19:2:19:2 | definition of a |
-| test.go:20:11:20:14 | &... |
-| test.go:20:12:20:14 | selection of b |
-| test.go:21:2:21:5 | selection of bs |
-| test.go:21:2:21:8 | index expression |
-| test.go:21:17:21:20 | &... |
-| test.go:21:18:21:20 | struct literal |
-| test.go:22:2:22:5 | selection of bs |
-| test.go:22:2:22:8 | index expression |
-| test.go:22:2:22:13 | implicit dereference |
-| test.go:22:2:22:13 | selection of cptr |
-| test.go:23:2:23:7 | implicit dereference |
-| test.go:23:2:23:7 | selection of bptr |
-| test.go:23:2:23:12 | implicit dereference |
-| test.go:23:2:23:12 | selection of cptr |
+| file://:0:0:0:0 | [summary param] 0 in copy | file://:0:0:0:0 | [summary] to write: Argument[0] in copy |
+| test.go:23:2:23:2 | a | test.go:23:2:23:2 | a [postupdate] |
+| test.go:23:11:23:14 | &... | test.go:23:11:23:14 | &... [postupdate] |
+| test.go:23:12:23:14 | selection of b | test.go:23:12:23:14 | selection of b [postupdate] |
+| test.go:24:2:24:2 | a | test.go:24:2:24:2 | a [postupdate] |
+| test.go:24:2:24:5 | selection of bs | test.go:24:2:24:5 | selection of bs [postupdate] |
+| test.go:24:2:24:8 | index expression | test.go:24:2:24:8 | index expression [postupdate] |
+| test.go:24:17:24:20 | &... | test.go:24:17:24:20 | &... [postupdate] |
+| test.go:24:18:24:20 | struct literal | test.go:24:18:24:20 | struct literal [postupdate] |
+| test.go:25:2:25:2 | a | test.go:25:2:25:2 | a [postupdate] |
+| test.go:25:2:25:5 | selection of bs | test.go:25:2:25:5 | selection of bs [postupdate] |
+| test.go:25:2:25:8 | index expression | test.go:25:2:25:8 | index expression [postupdate] |
+| test.go:25:2:25:13 | implicit dereference | test.go:25:2:25:13 | implicit dereference [postupdate] |
+| test.go:25:2:25:13 | selection of cptr | test.go:25:2:25:13 | selection of cptr [postupdate] |
+| test.go:26:2:26:2 | a | test.go:26:2:26:2 | a [postupdate] |
+| test.go:26:2:26:7 | implicit dereference | test.go:26:2:26:7 | implicit dereference [postupdate] |
+| test.go:26:2:26:7 | selection of bptr | test.go:26:2:26:7 | selection of bptr [postupdate] |
+| test.go:26:2:26:12 | implicit dereference | test.go:26:2:26:12 | implicit dereference [postupdate] |
+| test.go:26:2:26:12 | selection of cptr | test.go:26:2:26:12 | selection of cptr [postupdate] |
+| test.go:28:7:28:10 | struct literal | test.go:28:7:28:10 | struct literal [postupdate] |
+| test.go:29:2:29:2 | c | test.go:29:2:29:2 | c [postupdate] |
+| test.go:29:6:29:6 | a | test.go:29:6:29:6 | a [postupdate] |
+| test.go:30:2:30:2 | c | test.go:30:2:30:2 | c [postupdate] |
+| test.go:30:7:30:7 | a | test.go:30:7:30:7 | a [postupdate] |
+| test.go:35:4:35:4 | a | test.go:35:4:35:4 | a [postupdate] |
+| test.go:36:5:36:5 | a | test.go:36:5:36:5 | a [postupdate] |

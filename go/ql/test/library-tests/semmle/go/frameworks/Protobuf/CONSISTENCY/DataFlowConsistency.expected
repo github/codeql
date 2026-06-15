@@ -1,0 +1,32 @@
+reverseRead
+| protos/query/query.pb.go:58:9:58:34 | file_query_proto_enumTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:62:10:62:35 | file_query_proto_enumTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:88:10:88:34 | file_query_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:101:9:101:33 | file_query_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:156:10:156:34 | file_query_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:169:9:169:33 | file_query_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:204:10:204:34 | file_query_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:217:9:217:33 | file_query_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:318:13:318:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:320:13:320:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:322:13:322:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:330:13:330:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:332:13:332:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:334:13:334:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:342:13:342:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:344:13:344:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:346:13:346:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| testDeprecatedApi.go:74:24:74:28 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| testDeprecatedApi.go:85:24:85:28 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| testDeprecatedApi.go:98:13:98:24 | selection of Alerts | Origin of readStep is missing a PostUpdateNode. |
+| testDeprecatedApi.go:124:12:124:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| testDeprecatedApi.go:167:12:167:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| testDeprecatedApi.go:176:24:176:28 | query | Origin of readStep is missing a PostUpdateNode. |
+| testModernApi.go:94:12:94:21 | serialized | Origin of readStep is missing a PostUpdateNode. |
+| testModernApi.go:102:24:102:28 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| testModernApi.go:113:24:113:28 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| testModernApi.go:126:13:126:24 | selection of Alerts | Origin of readStep is missing a PostUpdateNode. |
+| testModernApi.go:162:12:162:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| testModernApi.go:186:12:186:21 | serialized | Origin of readStep is missing a PostUpdateNode. |
+| testModernApi.go:224:12:224:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| testModernApi.go:233:24:233:28 | query | Origin of readStep is missing a PostUpdateNode. |

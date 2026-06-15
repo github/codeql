@@ -97,7 +97,7 @@ private predicate nonTrivialValue(string value, Literal literal, string context)
   not literalIsConstantInitializer(literal, _) and
   not literal.getParent*() instanceof ArrayInit and
   not literal.getParent+() instanceof Annotation and
-  exists(MethodAccess ma | literal = ma.getAnArgument() and ma.getMethod().getName() = context)
+  exists(MethodCall ma | literal = ma.getAnArgument() and ma.getMethod().getName() = context)
 }
 
 private predicate valueOccurrenceCount(string value, int n, string context) {
@@ -105,7 +105,7 @@ private predicate valueOccurrenceCount(string value, int n, string context) {
   n > 20
 }
 
-private predicate occurenceCount(Literal lit, string value, int n, string context) {
+private predicate occurrenceCount(Literal lit, string value, int n, string context) {
   valueOccurrenceCount(value, n, context) and
   value = lit.getValue() and
   nonTrivialValue(_, lit, context)
@@ -119,7 +119,7 @@ private predicate check(Literal lit, string value, int n, string context, Compil
   // Check that the literal is nontrivial
   not trivial(lit) and
   // Check that it is repeated a number of times
-  occurenceCount(lit, value, n, context) and
+  occurrenceCount(lit, value, n, context) and
   n > 20 and
   f = lit.getCompilationUnit()
 }
@@ -173,7 +173,7 @@ private predicate relevantType(RefType t, string value, Package p) {
 
 private predicate fieldUsedInContext(Field constField, string context) {
   literalIsConstantInitializer(_, constField) and
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     constField.getAnAccess() = ma.getAnArgument() and
     ma.getMethod().getName() = context
   )
@@ -282,5 +282,5 @@ private predicate excludedLiteral(Literal lit) {
   // Remove test cases
   lit.getEnclosingCallable().getDeclaringType() instanceof TestClass
   or
-  exists(MethodAccess ma | lit = ma.getAnArgument() | ma.getMethod() instanceof TestMethod)
+  exists(MethodCall ma | lit = ma.getAnArgument() | ma.getMethod() instanceof TestMethod)
 }

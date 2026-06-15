@@ -17,21 +17,27 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import experimental.semmle.python.security.TimingAttack
-import DataFlow::PathGraph
 
 /**
  * A configuration that tracks data flow from cryptographic operations
  * to equality test
  */
-class PossibleTimingAttackAgainstHash extends TaintTracking::Configuration {
-  PossibleTimingAttackAgainstHash() { this = "PossibleTimingAttackAgainstHash" }
+private module PossibleTimingAttackAgainstHashConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ProduceCryptoCall }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof ProduceCryptoCall }
+  predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-from PossibleTimingAttackAgainstHash config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+module PossibleTimingAttackAgainstHashFlow =
+  TaintTracking::Global<PossibleTimingAttackAgainstHashConfig>;
+
+import PossibleTimingAttackAgainstHashFlow::PathGraph
+
+from
+  PossibleTimingAttackAgainstHashFlow::PathNode source,
+  PossibleTimingAttackAgainstHashFlow::PathNode sink
+where PossibleTimingAttackAgainstHashFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Possible Timing attack against $@ validation.",
-  source.getNode().(ProduceCryptoCall).getResultType(), "message"
+  source.getNode(), source.getNode().(ProduceCryptoCall).getResultType() + " message"

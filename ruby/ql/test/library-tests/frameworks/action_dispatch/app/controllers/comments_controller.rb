@@ -33,6 +33,9 @@ class CommentsController < ApplicationController
     response.last_modified = Date.yesterday
     response.weak_etag = "value"
     response.strong_etag = "value"
+
+    req = ActionDispatch::Request.new(request.env)
+    req.params
   end
 
   def show

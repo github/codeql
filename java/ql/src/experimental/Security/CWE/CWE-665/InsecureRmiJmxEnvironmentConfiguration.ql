@@ -18,13 +18,15 @@ import semmle.code.java.Maps
 predicate isRmiOrJmxServerCreateConstructor(Constructor constructor) {
   constructor
       .getDeclaringType()
-      .hasQualifiedName("javax.management.remote.rmi", "RMIConnectorServer")
+      .hasQualifiedName(javaxOrJakarta() + ".management.remote.rmi", "RMIConnectorServer")
 }
 
 /** Holds if `method` creates an RMI or JMX server. */
 predicate isRmiOrJmxServerCreateMethod(Method method) {
   method.getName() = "newJMXConnectorServer" and
-  method.getDeclaringType().hasQualifiedName("javax.management.remote", "JMXConnectorServerFactory")
+  method
+      .getDeclaringType()
+      .hasQualifiedName(javaxOrJakarta() + ".management.remote", "JMXConnectorServerFactory")
 }
 
 /**
@@ -59,7 +61,7 @@ module SafeFlowConfig implements DataFlow::ConfigSig {
       put.getKey()
           .(FieldAccess)
           .getField()
-          .hasQualifiedName("javax.management.remote.rmi", "RMIConnectorServer",
+          .hasQualifiedName(javaxOrJakarta() + ".management.remote.rmi", "RMIConnectorServer",
             ["CREDENTIAL_TYPES", "CREDENTIALS_FILTER_PATTERN"])
     |
       put.getQualifier() = qualifier and
@@ -83,9 +85,10 @@ string getRmiResult(Expr e) {
       "RMI/JMX server initialized with insecure environment $@, which never restricts accepted client objects to 'java.lang.String'. This exposes to deserialization attacks against the RMI authentication method."
 }
 
-from Call c, Expr envArg
-where
+deprecated query predicate problems(Call c, string message1, Expr envArg, string message2) {
   (isRmiOrJmxServerCreateConstructor(c.getCallee()) or isRmiOrJmxServerCreateMethod(c.getCallee())) and
   envArg = c.getArgument(1) and
-  not SafeFlow::flowToExpr(envArg)
-select c, getRmiResult(envArg), envArg, envArg.toString()
+  not SafeFlow::flowToExpr(envArg) and
+  message1 = getRmiResult(envArg) and
+  message2 = envArg.toString()
+}

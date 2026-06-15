@@ -7,6 +7,23 @@ import Instruction
 private import internal.IRBlockImports as Imports
 import Imports::EdgeKind
 private import Cached
+private import codeql.controlflow.BasicBlock as BB
+
+/**
+ * Holds if `block` is a block in `func` and `sortOverride`, `sortKey1`, and `sortKey2` are the
+ * sort keys of the block (derived from its first instruction)
+ */
+pragma[nomagic]
+private predicate blockSortKeys(
+  IRFunction func, IRBlockBase block, int sortOverride, int sortKey1, int sortKey2
+) {
+  block.getEnclosingIRFunction() = func and
+  block.getFirstInstruction().hasSortKeys(sortKey1, sortKey2) and
+  // Ensure that the block containing `EnterFunction` always comes first.
+  if block.getFirstInstruction() instanceof EnterFunctionInstruction
+  then sortOverride = 0
+  else sortOverride = 1
+}
 
 /**
  * A basic block in the IR. A basic block consists of a sequence of `Instructions` with the only
@@ -37,17 +54,14 @@ class IRBlockBase extends TIRBlock {
     exists(IRConfiguration::IRConfiguration config |
       config.shouldEvaluateDebugStringsForFunction(this.getEnclosingFunction())
     ) and
-    this =
-      rank[result + 1](IRBlock funcBlock, int sortOverride, int sortKey1, int sortKey2 |
-        funcBlock.getEnclosingFunction() = this.getEnclosingFunction() and
-        funcBlock.getFirstInstruction().hasSortKeys(sortKey1, sortKey2) and
-        // Ensure that the block containing `EnterFunction` always comes first.
-        if funcBlock.getFirstInstruction() instanceof EnterFunctionInstruction
-        then sortOverride = 0
-        else sortOverride = 1
-      |
-        funcBlock order by sortOverride, sortKey1, sortKey2
-      )
+    exists(IRFunction func |
+      this =
+        rank[result + 1](IRBlock funcBlock, int sortOverride, int sortKey1, int sortKey2 |
+          blockSortKeys(func, funcBlock, sortOverride, sortKey1, sortKey2)
+        |
+          funcBlock order by sortOverride, sortKey1, sortKey2
+        )
+    )
   }
 
   /**
@@ -248,6 +262,54 @@ private predicate adjacentInBlock(Instruction i1, Instruction i2) {
 
 private predicate isEntryBlock(TIRBlock block) {
   block = MkIRBlock(any(EnterFunctionInstruction enter))
+}
+
+module IRCfg implements BB::CfgSig<Language::Location> {
+  private import codeql.controlflow.SuccessorType
+
+  class ControlFlowNode = Instruction;
+
+  final private class FinalIRBlock = IRBlock;
+
+  class BasicBlock extends FinalIRBlock {
+    ControlFlowNode getNode(int i) { result = this.getInstruction(i) }
+
+    ControlFlowNode getLastNode() { result = super.getLastInstruction() }
+
+    int length() { result = this.getInstructionCount() }
+
+    BasicBlock getASuccessor() { result = super.getASuccessor() }
+
+    BasicBlock getASuccessor(SuccessorType t) {
+      exists(EdgeKind k |
+        result = super.getSuccessor(k) and
+        t = getAMatchingSuccessorType(k)
+      )
+    }
+
+    predicate strictlyDominates(BasicBlock bb) { super.strictlyDominates(bb) }
+
+    predicate dominates(BasicBlock bb) { super.dominates(bb) }
+
+    BasicBlock getImmediateDominator() { result.immediatelyDominates(this) }
+
+    predicate inDominanceFrontier(BasicBlock df) { super.dominanceFrontier() = df }
+
+    predicate strictlyPostDominates(BasicBlock bb) { super.strictlyPostDominates(bb) }
+
+    predicate postDominates(BasicBlock bb) { super.postDominates(bb) }
+  }
+
+  class EntryBasicBlock extends BasicBlock {
+    EntryBasicBlock() { isEntryBlock(this) }
+  }
+
+  pragma[nomagic]
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
+    bb1.getASuccessor() = bb2 and
+    bb1 = bb2.getImmediateDominator() and
+    forall(BasicBlock pred | pred = bb2.getAPredecessor() and pred != bb1 | bb2.dominates(pred))
+  }
 }
 
 cached

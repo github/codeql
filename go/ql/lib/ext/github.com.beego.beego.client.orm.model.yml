@@ -1,0 +1,60 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["beego-orm", "github.com/beego/beego/client/orm"]
+      - ["beego-orm", "github.com/astaxie/beego/orm"]
+      - ["beego-orm", "github.com/beego/beego/orm"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["group:beego-orm", "DB", True, "Query", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:beego-orm", "DB", True, "QueryContext", "", "", "ReturnValue[0]", "database", "manual"]
+      - ["group:beego-orm", "DB", True, "QueryRow", "", "", "ReturnValue", "database", "manual"]
+      - ["group:beego-orm", "DB", True, "QueryRowContext", "", "", "ReturnValue", "database", "manual"]
+      - ["group:beego-orm", "DQL", True, "Read", "", "", "Argument[0]", "database", "manual"]
+      - ["group:beego-orm", "DQL", True, "ReadWithCtx", "", "", "Argument[1]", "database", "manual"]
+      - ["group:beego-orm", "DQL", True, "ReadForUpdate", "", "", "Argument[0]", "database", "manual"]
+      - ["group:beego-orm", "DQL", True, "ReadForUpdateWithCtx", "", "", "Argument[1]", "database", "manual"]
+      - ["group:beego-orm", "DQL", True, "ReadOrCreate", "", "", "Argument[0]", "database", "manual"]
+      - ["group:beego-orm", "DQL", True, "ReadOrCreateWithCtx", "", "", "Argument[1]", "database", "manual"]
+      - ["group:beego-orm", "Ormer", True, "Read", "", "", "Argument[0]", "database", "manual"]
+      - ["group:beego-orm", "Ormer", True, "ReadForUpdate", "", "", "Argument[0]", "database", "manual"]
+      - ["group:beego-orm", "Ormer", True, "ReadOrCreate", "", "", "Argument[0]", "database", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:beego-orm", "Condition", True, "Raw", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["group:beego-orm", "DB", True, "Exec", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "DB", True, "ExecContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["group:beego-orm", "DB", True, "Prepare", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "DB", True, "PrepareContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["group:beego-orm", "DB", True, "Query", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "DB", True, "QueryContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["group:beego-orm", "DB", True, "QueryRow", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "DB", True, "QueryRowContext", "", "", "Argument[1]", "sql-injection", "manual"]
+      - ["group:beego-orm", "Ormer", True, "Raw", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "And", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "Delete", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "From", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "GroupBy", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "Having", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "In", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "InnerJoin", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "InsertInto", "", "", "Argument[0..1]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "LeftJoin", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "On", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "Or", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "OrderBy", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "RightJoin", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "Select", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "Set", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "Subquery", "", "", "Argument[0..1]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "Update", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "Values", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QueryBuilder", True, "Where", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["group:beego-orm", "QuerySeter", True, "FilterRaw", "", "", "Argument[1]", "sql-injection", "manual"]
+

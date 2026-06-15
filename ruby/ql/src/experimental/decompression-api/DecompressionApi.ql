@@ -16,7 +16,6 @@ import codeql.ruby.ApiGraphs
 import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.RemoteFlowSources
 import codeql.ruby.TaintTracking
-import DataFlow::PathGraph
 
 class DecompressionApiUse extends DataFlow::Node {
   private DataFlow::CallNode call;
@@ -34,18 +33,28 @@ class DecompressionApiUse extends DataFlow::Node {
   DataFlow::CallNode getCall() { result = call }
 }
 
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "DecompressionApiUse" }
-
+private module DecompressionApiConfig implements DataFlow::ConfigSig {
   // this predicate will be used to constrain our query to find instances where only remote user-controlled data flows to the sink
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   // our Decompression APIs defined above will be the sinks we use for this query
-  override predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionApiUse }
+  predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionApiUse }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(DecompressionApiUse).getLocation()
+    or
+    result = sink.(DecompressionApiUse).getCall().getLocation()
+  }
 }
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+private module DecompressionApiFlow = TaintTracking::Global<DecompressionApiConfig>;
+
+import DecompressionApiFlow::PathGraph
+
+from DecompressionApiFlow::PathNode source, DecompressionApiFlow::PathNode sink
+where DecompressionApiFlow::flowPath(source, sink)
 select sink.getNode().(DecompressionApiUse), source, sink,
   "This call to $@ is unsafe because user-controlled data is used to set the object being decompressed, which could lead to a denial of service attack or malicious code extracted from an unknown source.",
   sink.getNode().(DecompressionApiUse).getCall(),

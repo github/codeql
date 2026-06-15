@@ -1,9 +1,8 @@
 /**
  * Provides classes for working with concepts relating to the [github.com/go-kit/kit](https://pkg.go.dev/github.com/go-kit/kit) package.
- *
- * Note that these models are not included by default; to include them, add `import semmle.go.frameworks.GoKit` to your query or to
- * `Customizations.qll`.
  */
+overlay[local?]
+module;
 
 import go
 
@@ -38,7 +37,7 @@ module GoKit {
       DataFlow::exprNode(result.(FuncLit)) = getAnEndpointFactoryResult()
     }
 
-    private class EndpointRequest extends UntrustedFlowSource::Range {
+    private class EndpointRequest extends RemoteFlowSource::Range {
       EndpointRequest() { this = DataFlow::parameterNode(getAnEndpointFunction().getParameter(1)) }
     }
   }

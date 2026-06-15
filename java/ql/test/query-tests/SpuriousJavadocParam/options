@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -source 16 -target 16

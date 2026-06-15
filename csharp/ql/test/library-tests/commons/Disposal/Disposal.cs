@@ -14,11 +14,11 @@ class Disposal : IDisposable
         Close();
     }
 
-    public Disposal(IDisposable p1, object p2, System.IO.TextWriter fs)
+    public Disposal(IDisposable p1, object p2, System.IO.TextWriter fs, IDisposable p3)
     {
         field1 = p1;
-        if(p2 is IDisposable d)
+        if (p2 is IDisposable d)
             d.Dispose();
-        DisposalTests.Class1.Dispose(fs);
+        fs.Dispose();
     }
 }

@@ -10,5 +10,5 @@
 import csharp
 
 from CatchClause catch
-where catch.getCaughtExceptionType().hasQualifiedName("System.IO", "IOException")
+where catch.getCaughtExceptionType().hasFullyQualifiedName("System.IO", "IOException")
 select catch

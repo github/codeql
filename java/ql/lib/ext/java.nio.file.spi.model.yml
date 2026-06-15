@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      # sink neutrals
+      - ["java.nio.file.spi", "FileSystemProvider", "isHidden", "", "sink", "hq-manual"]
+      - ["java.nio.file.spi", "FileSystemProvider", "isSameFile", "", "sink", "hq-manual"]

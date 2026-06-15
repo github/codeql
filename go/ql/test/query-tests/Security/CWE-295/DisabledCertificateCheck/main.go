@@ -6,7 +6,7 @@ import (
 )
 
 func bad1(cfg *tls.Config) {
-	cfg.InsecureSkipVerify = true // NOT OK
+	cfg.InsecureSkipVerify = true // $ Alert // NOT OK
 }
 
 func good1(cfg *tls.Config) {
@@ -54,19 +54,32 @@ func makeInsecureConfig() *tls.Config {
 }
 
 func makeConfig() *tls.Config {
-	return &tls.Config{InsecureSkipVerify: true} // NOT OK
+	return &tls.Config{InsecureSkipVerify: true} // $ Alert // NOT OK
 }
 
 func bad3() *http.Transport {
 	transport := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // NOT OK
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // $ Alert // NOT OK
 	}
 	return transport
 }
 
-func good3() *http.Transport {
-	insecureTransport := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // OK
+func good3(i int) *http.Transport {
+	if i == 0 {
+		insecureTransport := &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // OK
+		}
+		return insecureTransport
+	} else if i == 1 {
+		temp1 := tls.Config{InsecureSkipVerify: true}
+		temp2 := &temp1
+		selfSignConfig := &http.Transport{TLSClientConfig: temp2} // OK
+		return selfSignConfig
+	} else if i == 2 {
+		temp1 := tls.Config{}
+		temp1.InsecureSkipVerify = true
+		untrustedTransport := &http.Transport{TLSClientConfig: &temp1} // OK
+		return untrustedTransport
 	}
-	return insecureTransport
+	return nil
 }

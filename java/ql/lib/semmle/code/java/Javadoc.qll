@@ -1,8 +1,11 @@
 /**
  * Provides classes and predicates for working with Javadoc documentation.
  */
+overlay[local?]
+module;
 
 import semmle.code.Location
+private import semmle.code.java.Overlay
 
 /** A Javadoc parent is an element whose child can be some Javadoc documentation. */
 class JavadocParent extends @javadocParent, Top {
@@ -194,3 +197,6 @@ class KtCommentSection extends @ktcommentsection {
   /** Gets the string representation of this section. */
   string toString() { result = this.getContent() }
 }
+
+overlay[local]
+private class DiscardableJavadoc extends DiscardableLocatable, @javadoc { }

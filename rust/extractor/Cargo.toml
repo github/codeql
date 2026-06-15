@@ -1,0 +1,44 @@
+[package]
+name = "codeql-rust"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+
+# When updating these dependencies, run `rust/update_cargo_deps.sh`
+[dependencies]
+anyhow = "1.0.100"
+clap = { version = "4.5.48", features = ["derive"] }
+figment = { version = "0.10.19", features = ["env", "yaml"] }
+num-traits = "0.2.19"
+ra_ap_base_db = "0.0.301"
+ra_ap_hir = "0.0.301"
+ra_ap_hir_def = "0.0.301"
+ra_ap_ide_db = "0.0.301"
+ra_ap_hir_ty = "0.0.301"
+ra_ap_hir_expand = "0.0.301"
+ra_ap_load-cargo = "0.0.301"
+ra_ap_paths = "0.0.301"
+ra_ap_project_model = "0.0.301"
+ra_ap_syntax = "0.0.301"
+ra_ap_vfs = "0.0.301"
+ra_ap_parser = "0.0.301"
+ra_ap_span = "0.0.301"
+ra_ap_cfg = "0.0.301"
+ra_ap_intern = "0.0.301"
+serde = "1.0.228"
+serde_with = "3.14.1"
+triomphe = "0.1.14"
+argfile = "0.2.1"
+codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
+rust-extractor-macros = { path = "macros" }
+itertools = "0.14.0"
+glob = "0.3.3"
+chrono = { version = "0.4.42", features = ["serde"] }
+serde_json = "1.0.145"
+dunce = "1.0.5"
+toml = "0.9.7"
+tracing = "0.1.41"
+tracing-flame = "0.2.0"
+tracing-subscriber = "0.3.20"
+chalk-ir = "0.104.0"
+mustache = "0.9.0"

@@ -1,0 +1,29 @@
+name: Issue Forms Body Parser
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        type: string
+        description: issue number
+        required: true
+env:
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch the issue
+        id: read_issue_body
+        run:
+          echo "body=$(gh issue view ${{ inputs.issue_number }} --repo ${{ github.repository }} --json body --jq '.body')" >> $GITHUB_OUTPUT
+
+      - name: Issue Forms Body Parser
+        id: parse
+        uses: zentered/issue-forms-body-parser@v2.0.0
+        with:
+          body: ${{ steps.read_issue_body.outputs.body }}
+
+      - run: echo ${{ steps.parse.outputs.data }}
+      - run: echo ${{ toJSON(steps.parse.outputs.data) }}

@@ -16,7 +16,7 @@
 import java
 import Chaining
 
-predicate checkedMethodCall(MethodAccess ma) {
+predicate checkedMethodCall(MethodCall ma) {
   relevantMethodCall(ma, _) and
   not ma instanceof ValueDiscardingExpr
 }
@@ -73,31 +73,31 @@ predicate isMustBeQualifierMockingMethod(Method m) {
   m.hasName("verify")
 }
 
-predicate relevantMethodCall(MethodAccess ma, Method m) {
+predicate relevantMethodCall(MethodCall ma, Method m) {
   // For "return value ignored", all method calls are relevant.
   not ma.getFile().isKotlinSourceFile() and
   ma.getMethod() = m and
   not m.getReturnType().hasName("void") and
   (not isMockingMethod(m) or isMustBeQualifierMockingMethod(m)) and
-  not isMockingMethod(ma.getQualifier().(MethodAccess).getMethod())
+  not isMockingMethod(ma.getQualifier().(MethodCall).getMethod())
 }
 
 predicate methodStats(Method m, int used, int total, int percentage) {
-  used = strictcount(MethodAccess ma | checkedMethodCall(ma) and m = ma.getMethod()) and
-  total = strictcount(MethodAccess ma | relevantMethodCall(ma, m)) and
+  used = strictcount(MethodCall ma | checkedMethodCall(ma) and m = ma.getMethod()) and
+  total = strictcount(MethodCall ma | relevantMethodCall(ma, m)) and
   percentage = used * 100 / total
 }
 
 int chainedUses(Method m) {
   result =
-    count(MethodAccess ma, MethodAccess qual |
+    count(MethodCall ma, MethodCall qual |
       ma.getMethod() = m and
       ma.getQualifier() = qual and
       qual.getMethod() = m
     )
 }
 
-from MethodAccess unchecked, Method m, int percent, int total
+from MethodCall unchecked, Method m, int percent, int total
 where
   relevantMethodCall(unchecked, m) and
   not checkedMethodCall(unchecked) and

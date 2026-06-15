@@ -6,23 +6,24 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/misleading-indentation
- * @tags changeability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       correctness
- *       logic
  */
 
 import csharp
 
 // Iterate the control flow until we reach a Stmt
-Stmt findSuccessorStmt(ControlFlow::Node n) {
-  result = n.getElement()
+Stmt findSuccessorStmt(ControlFlowNode n) {
+  result = n.asStmt()
   or
-  not n.getElement() instanceof Stmt and result = findSuccessorStmt(n.getASuccessor())
+  not exists(n.asStmt()) and result = findSuccessorStmt(n.getASuccessor())
 }
 
 // Return a successor statement to s
 Stmt getASuccessorStmt(Stmt s) {
-  result = findSuccessorStmt(s.getAControlFlowNode().getASuccessor())
+  result = findSuccessorStmt(s.getControlFlowNode().getASuccessor())
 }
 
 class IfThenStmt extends IfStmt {

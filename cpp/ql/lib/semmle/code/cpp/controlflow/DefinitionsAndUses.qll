@@ -78,7 +78,7 @@ predicate parameterUsePair(Parameter p, VariableAccess va) {
 /**
  * Utility class: A definition or use of a stack variable.
  */
-library class DefOrUse extends ControlFlowNodeBase {
+class DefOrUse extends ControlFlowNodeBase {
   DefOrUse() {
     // Uninstantiated templates are purely syntax, and only on instantiation
     // will they be complete with information about types, conversions, call
@@ -140,7 +140,7 @@ library class DefOrUse extends ControlFlowNodeBase {
 }
 
 /** A definition of a stack variable. */
-library class Def extends DefOrUse {
+class Def extends DefOrUse {
   Def() { definition(_, this) }
 
   override SemanticStackVariable getVariable(boolean isDef) {
@@ -155,7 +155,7 @@ private predicate parameterIsOverwritten(Function f, Parameter p) {
 }
 
 /** A definition of a parameter. */
-library class ParameterDef extends DefOrUse {
+class ParameterDef extends DefOrUse {
   ParameterDef() {
     // Optimization: parameters that are not overwritten do not require
     // reachability analysis
@@ -169,7 +169,7 @@ library class ParameterDef extends DefOrUse {
 }
 
 /** A use of a stack variable. */
-library class Use extends DefOrUse {
+class Use extends DefOrUse {
   Use() { useOfVar(_, this) }
 
   override SemanticStackVariable getVariable(boolean isDef) {

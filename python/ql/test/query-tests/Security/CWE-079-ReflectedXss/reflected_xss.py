@@ -1,5 +1,5 @@
 import json
-from flask import Flask, request, make_response, escape
+from flask import Flask, request, make_response, escape, jsonify
 
 app = Flask(__name__)
 
@@ -26,3 +26,9 @@ def unsafe_json():
 def safe_json():
     data = json.loads(request.data)
     return make_response(json.dumps(data), 200, {'Content-Type': 'application/json'})  # OK, FP
+
+
+@app.route("/jsonify")
+def jsonify():
+    data = request.data
+    return jsonify(data)  # OK, FP

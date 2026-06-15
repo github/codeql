@@ -124,4 +124,40 @@ namespace Properties
             set { }
         }
     }
+
+    class UseFieldKeyword
+    {
+        public object Prop
+        {
+            get { return field; }
+            set { field = value; }
+        }
+    }
+
+    public ref struct S
+    {
+        private ref int x;
+
+        public S(ref int v)
+        {
+            x = ref v;
+        }
+
+        public ref int Prop
+        {
+            get { return ref x; }
+        }
+    }
+
+    public class TestRefReturns
+    {
+        public void M()
+        {
+            int a = 0;
+
+            S s = new S(ref a);
+            s.Prop = 1;
+            var x = s.Prop;
+        }
+    }
 }

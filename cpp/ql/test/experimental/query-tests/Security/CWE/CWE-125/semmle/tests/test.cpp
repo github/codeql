@@ -6,7 +6,7 @@ int wprintf (const wchar_t* format, ...);
 int strlen( const char * string );
 int checkErrors();
 
-void goodTest0()
+static void goodTest0()
 {
   char * ptr = "123456789";
   int ret;
@@ -17,7 +17,7 @@ void goodTest0()
     ptr += ret;
   }
 }
-void goodTest1(const char* ptr)
+static void goodTest1(const char* ptr)
 {
   int ret;
   int len;
@@ -27,7 +27,7 @@ void goodTest1(const char* ptr)
     ptr += ret;
   }
 }
-void goodTest2(char* ptr)
+static void goodTest2(char* ptr)
 {
   int ret;
   ptr[10]=0;
@@ -38,7 +38,7 @@ void goodTest2(char* ptr)
   }
 }
 
-void goodTest3(const char* ptr)
+static void goodTest3(const char* ptr)
 {
   int ret;
   int len;
@@ -48,7 +48,7 @@ void goodTest3(const char* ptr)
     ptr += ret;
   }
 }
-void goodTest4(const char* ptr)
+static void goodTest4(const char* ptr)
 {
   int ret;
   int len;
@@ -58,7 +58,7 @@ void goodTest4(const char* ptr)
     ptr += ret;
   }
 }
-void badTest1(const char* ptr)
+static void badTest1(const char* ptr)
 {
   int ret;
   int len;
@@ -68,7 +68,7 @@ void badTest1(const char* ptr)
     ptr += ret;
   }
 }
-void badTest2(const char* ptr)
+static void badTest2(const char* ptr)
 {
   int ret;
   int len;
@@ -79,7 +79,7 @@ void badTest2(const char* ptr)
   }
 }
 
-void goodTest5(const char* ptr,wchar_t *wc,int wc_len)
+static void goodTest5(const char* ptr,wchar_t *wc,int wc_len)
 {
   int ret;
   int len;
@@ -96,7 +96,7 @@ void goodTest5(const char* ptr,wchar_t *wc,int wc_len)
   }
 }
 
-void badTest3(const char* ptr,int wc_len)
+static void badTest3(const char* ptr,int wc_len)
 {
   int ret;
   int len;
@@ -113,7 +113,7 @@ void badTest3(const char* ptr,int wc_len)
     wc++;
   }
 }
-void badTest4(const char* ptr,int wc_len)
+static void badTest4(const char* ptr,int wc_len)
 {
   int ret;
   int len;
@@ -130,7 +130,7 @@ void badTest4(const char* ptr,int wc_len)
     wc++;
   }
 }
-void badTest5(const char* ptr,int wc_len)
+static void badTest5(const char* ptr,int wc_len)
 {
   int ret;
   int len;
@@ -148,7 +148,7 @@ void badTest5(const char* ptr,int wc_len)
   }
 }
 
-void badTest6(const char* ptr,int wc_len)
+static void badTest6(const char* ptr,int wc_len)
 {
   int ret;
   int len;
@@ -171,7 +171,7 @@ void badTest6(const char* ptr,int wc_len)
     ptr+=ret;
   }
 }
-void badTest7(const char* ptr,int wc_len)
+static void badTest7(const char* ptr,int wc_len)
 {
   int ret;
   int len;
@@ -188,7 +188,7 @@ void badTest7(const char* ptr,int wc_len)
     ptr+=ret;
   }
 }
-void badTest8(const char* ptr,wchar_t *wc)
+static void badTest8(const char* ptr,wchar_t *wc)
 {
   int ret;
   int len;

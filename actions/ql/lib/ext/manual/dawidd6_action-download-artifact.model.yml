@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      - ["dawidd6/action-download-artifact", "*", "output.artifacts", "artifact", "manual"]

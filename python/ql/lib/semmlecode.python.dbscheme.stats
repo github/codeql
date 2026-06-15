@@ -1,5 +1,14 @@
 <dbstats>
   <typesizes><e>
+  <k>@py_ParamSpec</k><v>100</v></e><e>
+  <k>@py_TypeAlias</k><v>100</v></e><e>
+  <k>@py_TypeVar</k><v>100</v></e><e>
+  <k>@py_TypeVarTuple</k><v>100</v></e><e>
+  <k>@py_type_parameter_list</k><v>100</v></e><e>
+  <k>@py_TemplateStringPart</k><v>100</v></e><e>
+  <k>@py_TemplateString_list</k><v>100</v></e><e>
+  <k>@py_JoinedTemplateString</k><v>100</v></e><e>
+  <k>@py_TemplateString</k><v>100</v></e><e>
 <k>@py_Guard</k><v>100</v></e><e>
 <k>@py_MatchAsPattern</k><v>100</v></e><e>
 <k>@py_MatchOrPattern</k><v>100</v></e><e>
@@ -1056,7 +1065,7 @@
 <v>20</v>
 </e>
 <e>
-<k>queryPath</k>
+<k>path</k>
 <v>2</v>
 </e>
 <e>
@@ -1064,14 +1073,14 @@
 <v>5</v>
 </e>
 <e>
-<k>data</k>
+<k>value</k>
 <v>41</v>
 </e>
 </columnsizes>
 <dependencies>
 <dep>
 <src>id</src>
-<trg>queryPath</trg>
+<trg>path</trg>
 <val>
 <hist>
 <budget>12</budget>
@@ -1103,7 +1112,7 @@
 </dep>
 <dep>
 <src>id</src>
-<trg>data</trg>
+<trg>value</trg>
 <val>
 <hist>
 <budget>12</budget>
@@ -1118,7 +1127,7 @@
 </val>
 </dep>
 <dep>
-<src>queryPath</src>
+<src>path</src>
 <trg>id</trg>
 <val>
 <hist>
@@ -1134,7 +1143,7 @@
 </val>
 </dep>
 <dep>
-<src>queryPath</src>
+<src>path</src>
 <trg>column</trg>
 <val>
 <hist>
@@ -1150,8 +1159,8 @@
 </val>
 </dep>
 <dep>
-<src>queryPath</src>
-<trg>data</trg>
+<src>path</src>
+<trg>value</trg>
 <val>
 <hist>
 <budget>12</budget>
@@ -1183,7 +1192,7 @@
 </dep>
 <dep>
 <src>column</src>
-<trg>queryPath</trg>
+<trg>path</trg>
 <val>
 <hist>
 <budget>12</budget>
@@ -1199,7 +1208,7 @@
 </dep>
 <dep>
 <src>column</src>
-<trg>data</trg>
+<trg>value</trg>
 <val>
 <hist>
 <budget>12</budget>
@@ -1214,7 +1223,7 @@
 </val>
 </dep>
 <dep>
-<src>data</src>
+<src>value</src>
 <trg>id</trg>
 <val>
 <hist>
@@ -1230,8 +1239,8 @@
 </val>
 </dep>
 <dep>
-<src>data</src>
-<trg>queryPath</trg>
+<src>value</src>
+<trg>path</trg>
 <val>
 <hist>
 <budget>12</budget>
@@ -1246,7 +1255,7 @@
 </val>
 </dep>
 <dep>
-<src>data</src>
+<src>value</src>
 <trg>column</trg>
 <val>
 <hist>
@@ -1262,6 +1271,53 @@
 </val>
 </dep>
 </dependencies>
+</relation>
+<relation>
+<name>databaseMetadata</name>
+<cardinality>1</cardinality>
+<columnsizes>
+<e>
+<k>metadataKey</k>
+<v>1</v>
+</e>
+<e>
+<k>value</k>
+<v>1</v>
+</e>
+</columnsizes>
+<dependencies>
+<dep>
+<src>metadataKey</src>
+<trg>value</trg>
+<val>
+<hist>
+<budget>12</budget>
+<bs/>
+</hist>
+</val>
+</dep>
+<dep>
+<src>value</src>
+<trg>metadataKey</trg>
+<val>
+<hist>
+<budget>12</budget>
+<bs/>
+</hist>
+</val>
+</dep>
+</dependencies>
+</relation>
+<relation>
+<name>overlayChangedFiles</name>
+<cardinality>50</cardinality>
+<columnsizes>
+<e>
+<k>path</k>
+<v>50</v>
+</e>
+</columnsizes>
+<dependencies/>
 </relation>
 <relation>
 <name>snapshotDate</name>
@@ -7548,6 +7604,44 @@
 <dependencies/>
 </relation>
 <relation>
+<name>py_type_parameters</name>
+<cardinality>1000</cardinality>
+<columnsizes>
+<e>
+<k>id</k>
+<v>1000</v>
+</e>
+<e>
+<k>kind</k>
+<v>3</v>
+</e>
+<e>
+<k>parent</k>
+<v>1000</v>
+</e>
+<e>
+<k>idx</k>
+<v>100</v>
+</e>
+</columnsizes>
+<dependencies/>
+</relation>
+<relation>
+<name>py_type_parameter_lists</name>
+<cardinality>1000</cardinality>
+<columnsizes>
+<e>
+<k>id</k>
+<v>1000</v>
+</e>
+<e>
+<k>parent</k>
+<v>1000</v>
+</e>
+</columnsizes>
+<dependencies/>
+</relation>
+<relation>
 <name>py_pattern_lists</name>
 <cardinality>1000</cardinality>
 <columnsizes>
@@ -7867,6 +7961,21 @@
 </val>
 </dep>
 </dependencies>
+</relation>
+<relation>
+<name>py_TemplateString_lists</name>
+<cardinality>1000</cardinality>
+<columnsizes>
+<e>
+<k>id</k>
+<v>1000</v>
+</e>
+<e>
+<k>parent</k>
+<v>1000</v>
+</e>
+</columnsizes>
+<dependencies/>
 </relation>
 <relation>
 <name>py_aliases</name>

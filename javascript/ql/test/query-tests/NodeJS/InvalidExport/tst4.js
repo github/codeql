@@ -1,2 +1,2 @@
-module.exports.a = 23; // OK
-module.exports = 56; // OK
+module.exports.a = 23;
+module.exports = 56;

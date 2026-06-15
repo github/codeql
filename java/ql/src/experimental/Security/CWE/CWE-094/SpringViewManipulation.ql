@@ -11,12 +11,19 @@
  */
 
 import java
-import SpringViewManipulationLib
-import SpringViewManipulationFlow::PathGraph
+import semmle.code.java.dataflow.DataFlow
+deprecated import SpringViewManipulationLib
+deprecated import SpringViewManipulationFlow::PathGraph
 
-from SpringViewManipulationFlow::PathNode source, SpringViewManipulationFlow::PathNode sink
-where
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, SpringViewManipulationFlow::PathNode source,
+  SpringViewManipulationFlow::PathNode sink, string message1, DataFlow::Node sourceNode,
+  string message2
+) {
   thymeleafIsUsed() and
-  SpringViewManipulationFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Potential Spring Expression Language injection from $@.",
-  source.getNode(), "this user input"
+  SpringViewManipulationFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Potential Spring Expression Language injection from $@." and
+  sourceNode = source.getNode() and
+  message2 = "this user input"
+}

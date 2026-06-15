@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: barrierGuardModel
+    data:
+      - ['AntiSSRF', 'Member[URIValidator].Member[in_domain,in_azure_keyvault_domain,in_azure_storage_domain].Argument[0]', "true", 'request-forgery']

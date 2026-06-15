@@ -1,5 +1,5 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.IO;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -11,6 +11,14 @@ namespace Semmle.Extraction.CSharp.Entities
             : base(cx, trivia)
         {
             this.start = start;
+        }
+
+        public override void WriteId(EscapingTextWriter trapFile)
+        {
+            trapFile.WriteSubId(Context.CreateLocation(ReportingLocation));
+            trapFile.WriteSubId(start);
+            trapFile.Write(Symbol.IsActive);
+            trapFile.Write(";trivia");
         }
 
         protected override void PopulatePreprocessor(TextWriter trapFile)

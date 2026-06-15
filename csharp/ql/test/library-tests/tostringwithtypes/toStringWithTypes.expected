@@ -1,5 +1,5 @@
-| Delegate<> | Delegate<T>(int, T) |
 | Delegate<String> | Delegate<string> |
+| Delegate`1 | Delegate<T>(int, T) |
 | Item | Item[T, bool] |
 | M | M(IEnumerable<int>) |
 | M | M(Int32[,,,][][,][,,]) |
@@ -23,10 +23,10 @@
 | M | M(uint) |
 | M | M(ulong) |
 | M | M(ushort) |
-| M<> | M<S>(params S[]) |
-| M<> | M<S>(ref S) |
 | M<Nullable<Char>> | M<char?>(ref char?) |
-| ToStringWithTypes<> | ToStringWithTypes<T> |
+| M`1 | M<S>(params S[]) |
+| M`1 | M<S>(ref S) |
+| ToStringWithTypes`1 | ToStringWithTypes<T> |
 | add_Event | add_Event(Delegate<string>) |
 | get_Item | get_Item(T, bool) |
 | remove_Event | remove_Event(Delegate<string>) |

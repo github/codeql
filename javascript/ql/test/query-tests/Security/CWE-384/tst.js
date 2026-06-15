@@ -6,15 +6,15 @@ app.use(session({
     secret: 'keyboard cat'
 }));
 // handle login
-app.get('/login', function (req, res) { // NOT OK - no regenerate
+app.get('/login', function (req, res) { // no regenerate
     req.session.user = {
         userId: something
     };
     res.send('logged in');
-});
+}); // $ Alert
 
 // with regenerate
-app.get('/login2', function (req, res) { // OK
+app.get('/login2', function (req, res) {
     req.session.regenerate(function (err) {
         req.session.user = {
             userId: something
@@ -29,7 +29,7 @@ app.get('/passport', passport.authenticate('local'), function (req, res) { // OK
 });
 
 // with regenerate, still using passport
-app.get('/passport2', passport.authenticate('local'), function (req, res) { // OK
+app.get('/passport2', passport.authenticate('local'), function (req, res) {
     var passport = req._passport.instance;
     req.session.regenerate(function(err, done, user) {
         req.session[passport._key] = {};

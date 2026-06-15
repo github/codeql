@@ -34,11 +34,31 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
     // for example in `realmObj.data = sensitive`.
     isSink(node) and
     exists(NominalTypeDecl d, Decl cx |
-      d.getType().getABaseType*().getUnderlyingType().getName() =
-        ["NSManagedObject", "RealmSwiftObject"] and
+      (
+        d.getType().getUnderlyingType().getABaseType*().getName() = "NSManagedObject" or
+        d.getType() instanceof RealmSwiftObjectType
+      ) and
       cx.asNominalTypeDecl() = d and
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember()
     )
+    or
+    // flow out from dictionary tuple values at the sink (this is essential
+    // for some of the SQLite.swift models).
+    isSink(node) and
+    node.asExpr().getType().getUnderlyingType() instanceof DictionaryType and
+    c.getAReadContent().(DataFlow::Content::TupleContent).getIndex() = 1
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(CleartextStorageDatabaseSink).getLocation()
+    or
+    result =
+      sink.(CleartextStorageDatabaseSink)
+          .(DataFlow::PostUpdateNode)
+          .getPreUpdateNode()
+          .getLocation()
   }
 }
 

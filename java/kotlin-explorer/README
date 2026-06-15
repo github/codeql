@@ -1,9 +1,0 @@
-
-This shows what is encoded in the kotlin.Metadata section shown in the
-output of `javap -v SomeKotlinClass`.
-
-It is not currently able to extract the information from .class files
-itself; the values are hard coded in src/main/kotlin/Explorer.kt
-
-Run `gradle run` in this directory to run it.
-

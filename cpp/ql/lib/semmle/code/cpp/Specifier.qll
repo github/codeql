@@ -13,7 +13,7 @@ class Specifier extends Element, @specifier {
   /** Gets a dummy location for the specifier. */
   override Location getLocation() {
     exists(this) and
-    result instanceof UnknownDefaultLocation
+    result instanceof UnknownLocation
   }
 
   override string getAPrimaryQlClass() { result = "Specifier" }
@@ -95,6 +95,18 @@ class AccessSpecifier extends Specifier {
   }
 
   override string getAPrimaryQlClass() { result = "AccessSpecifier" }
+}
+
+/**
+ * A C/C++ calling convention specifier: `cdecl`, `fastcall`, `stdcall`, `thiscall`,
+ * `vectorcall`, or `clrcall`.
+ */
+class CallingConventionSpecifier extends Specifier {
+  CallingConventionSpecifier() {
+    this.hasName(["cdecl", "fastcall", "stdcall", "thiscall", "vectorcall", "clrcall"])
+  }
+
+  override string getAPrimaryQlClass() { result = "CallingConventionSpecifier" }
 }
 
 /**
@@ -282,6 +294,11 @@ class AttributeArgument extends Element, @attribute_arg {
   }
 
   /**
+   * Gets the value of this argument, if its value is an expression.
+   */
+  Expr getValueExpr() { attribute_arg_expr(underlyingElement(this), unresolveElement(result)) }
+
+  /**
    * Gets the attribute to which this is an argument.
    */
   Attribute getAttribute() {
@@ -308,7 +325,10 @@ class AttributeArgument extends Element, @attribute_arg {
           else
             if underlyingElement(this) instanceof @attribute_arg_constant_expr
             then tail = this.getValueConstant().toString()
-            else tail = this.getValueText()
+            else
+              if underlyingElement(this) instanceof @attribute_arg_expr
+              then tail = this.getValueExpr().toString()
+              else tail = this.getValueText()
         ) and
         result = prefix + tail
       )

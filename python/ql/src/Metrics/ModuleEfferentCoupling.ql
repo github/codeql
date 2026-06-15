@@ -11,6 +11,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
-from ModuleMetrics m
+from ModuleMetricsWithPointsTo m
 select m, m.getEfferentCoupling() as n order by n desc

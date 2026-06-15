@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --microsoft
+// semmle-extractor-options: --microsoft
 
 void f(__declspec(guard(overflow)) size_t length) {
 }

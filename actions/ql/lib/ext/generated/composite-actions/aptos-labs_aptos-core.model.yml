@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["aptos-labs/aptos-core", "*", "input.GIT_CREDENTIALS", "code-injection", "generated"]
+     - ["aptos-labs/aptos-core", "*", "input.GCP_DOCKER_ARTIFACT_REPO", "code-injection", "generated"]
+     - ["aptos-labs/aptos-core", "*", "input.IMAGE_TAG", "code-injection", "generated"]

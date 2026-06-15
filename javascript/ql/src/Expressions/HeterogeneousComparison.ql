@@ -6,7 +6,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/comparison-between-incompatible-types
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-570
  *       external/cwe/cwe-571

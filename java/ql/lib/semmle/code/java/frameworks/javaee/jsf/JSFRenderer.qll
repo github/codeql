@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with JavaServer Faces renderer. */
+overlay[local?]
+module;
 
 import java
 
@@ -6,9 +8,7 @@ import java
  * The JSF class `FacesContext` for processing HTTP requests.
  */
 class FacesContext extends RefType {
-  FacesContext() {
-    this.hasQualifiedName(["javax.faces.context", "jakarta.faces.context"], "FacesContext")
-  }
+  FacesContext() { this.hasQualifiedName(javaxOrJakarta() + ".faces.context", "FacesContext") }
 }
 
 /**

@@ -11,7 +11,7 @@ public class VelocitySSTI {
 
 		String s = "We are using $project $name to render this.";
 		StringWriter w = new StringWriter();
-		Velocity.evaluate(context, w, "mystring", s);
+		Velocity.evaluate(context, w, "mystring", s); // GOOD: s is a constant string
 		System.out.println(" string : " + w);
 	}
 }

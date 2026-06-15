@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.deadcode.DeadCode
 import semmle.code.java.frameworks.javaee.Persistence
@@ -9,7 +12,7 @@ import semmle.code.java.frameworks.jackson.JacksonSerializability
  *
  * This defines the set of fields for which we will determine liveness.
  */
-library class SourceField extends Field {
+class SourceField extends Field {
   SourceField() { this.fromSource() }
 }
 
@@ -97,9 +100,6 @@ class SerialVersionUidField extends ReflectivelyReadField {
   }
 }
 
-/** DEPRECATED: Alias for SerialVersionUidField */
-deprecated class SerialVersionUIDField = SerialVersionUidField;
-
 /**
  * A field is read by the JAXB during serialization if it is a JAXB bound field, and if the
  * containing class is considered "live".
@@ -130,7 +130,7 @@ class JUnitAnnotatedField extends ReflectivelyReadField {
  */
 class ClassReflectivelyReadField extends ReflectivelyReadField {
   ClassReflectivelyReadField() {
-    exists(ReflectiveFieldAccess fieldAccess | this = fieldAccess.inferAccessedField())
+    exists(ReflectiveGetFieldCall fieldAccess | this = fieldAccess.inferAccessedField())
   }
 }
 
@@ -164,15 +164,12 @@ class JpaReadField extends ReflectivelyReadField {
       this = entity.getAField() and
       (
         entity.getAccessType() = "field" or
-        this.hasAnnotation("javax.persistence", "Access")
+        this.hasAnnotation(getAPersistencePackageName(), "Access")
       )
     |
-      not this.hasAnnotation("javax.persistence", "Transient") and
+      not this.hasAnnotation(getAPersistencePackageName(), "Transient") and
       not this.isStatic() and
       not this.isFinal()
     )
   }
 }
-
-/** DEPRECATED: Alias for JpaReadField */
-deprecated class JPAReadField = JpaReadField;

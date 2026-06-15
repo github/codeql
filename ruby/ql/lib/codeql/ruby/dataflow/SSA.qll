@@ -1,6 +1,8 @@
 /**
  * Provides the module `Ssa` for working with static single assignment (SSA) form.
  */
+overlay[local]
+module;
 
 /**
  * Provides classes for working with static single assignment (SSA) form.
@@ -77,34 +79,6 @@ module Ssa {
     final VariableReadAccessCfgNode getAFirstRead() { SsaImpl::firstRead(this, result) }
 
     /**
-     * Gets a last control-flow node that reads the value of this SSA definition.
-     * That is, a read that can reach the end of the enclosing CFG scope, or another
-     * SSA definition for the source variable, without passing through any other read.
-     *
-     * Example:
-     *
-     * ```rb
-     * def m b        # defines b_0
-     *   i = 0        # defines i_0
-     *   puts i
-     *   puts i + 1   # last read of i_0
-     *   if b         # last read of b_0
-     *     i = 1      # defines i_1
-     *     puts i
-     *     puts i + 1 # last read of i_1
-     *   else
-     *     i = 2      # defines i_2
-     *     puts i
-     *     puts i + 1 # last read of i_2
-     *   end
-     *                # defines i_3 = phi(i_1, i_2)
-     *   puts i       # last read of i3
-     * end
-     * ```
-     */
-    final VariableReadAccessCfgNode getALastRead() { SsaImpl::lastRead(this, result) }
-
-    /**
      * Holds if `read1` and `read2` are adjacent reads of this SSA definition.
      * That is, `read2` can be reached from `read1` without passing through
      * another read.
@@ -176,9 +150,6 @@ module Ssa {
 
     override string toString() { result = this.getControlFlowNode().toString() }
 
-    /** Gets the location of this SSA definition. */
-    Location getLocation() { result = this.getControlFlowNode().getLocation() }
-
     /** Gets the scope of this SSA definition. */
     CfgScope getScope() { result = this.getBasicBlock().getScope() }
   }
@@ -205,14 +176,31 @@ module Ssa {
     final VariableWriteAccessCfgNode getWriteAccess() { result = write }
 
     /**
-     * Holds if this SSA definition represents a direct assignment of `value`
-     * to the underlying variable.
+     * Holds if this SSA definition assigns `value` to the underlying variable.
+     *
+     * This is either a direct assignment, `x = value`, or an assignment via
+     * simple pattern matching
+     *
+     * ```rb
+     * case value
+     *  in Foo => x then ...
+     *  in y => then ...
+     * end
+     * ```
      */
     predicate assigns(CfgNodes::ExprCfgNode value) {
       exists(CfgNodes::ExprNodes::AssignExprCfgNode a, BasicBlock bb, int i |
         this.definesAt(_, bb, i) and
         a = bb.getNode(i) and
         value = a.getRhs()
+      )
+      or
+      exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::AstCfgNode pattern |
+        case.getValue() = value and
+        pattern = case.getBranch(_).(CfgNodes::ExprNodes::InClauseCfgNode).getPattern()
+      |
+        this.getWriteAccess() =
+          [pattern, pattern.(CfgNodes::ExprNodes::AsPatternCfgNode).getVariableAccess()]
       )
     }
 
@@ -256,14 +244,16 @@ module Ssa {
    * `x` is inserted at the start of `m`.
    */
   class UninitializedDefinition extends Definition, SsaImpl::WriteDefinition {
+    private Variable v;
+
     UninitializedDefinition() {
-      exists(BasicBlock bb, int i, Variable v |
+      exists(BasicBlock bb, int i |
         this.definesAt(v, bb, i) and
         SsaImpl::uninitializedWrite(bb, i, v)
       )
     }
 
-    final override string toString() { result = "<uninitialized>" }
+    final override string toString() { result = "<uninitialized> " + v }
 
     final override Location getLocation() { result = this.getBasicBlock().getLocation() }
   }

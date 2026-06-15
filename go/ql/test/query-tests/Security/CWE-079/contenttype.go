@@ -8,13 +8,13 @@ import (
 func serve2() {
 	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
-		data := r.Form.Get("data")
+		data := r.Form.Get("data") // $ Source[go/reflected-xss]
 
 		// Not OK; direct flow from request body to output.
 		// The response Content-Type header is derived from a call to
 		// `http.DetectContentType`, which can be easily manipulated into returning
 		// `text/html` for XSS.
-		w.Write([]byte(data))
+		w.Write([]byte(data)) // $ Alert[go/reflected-xss]
 	})
 	http.ListenAndServe(":80", nil)
 }
@@ -46,11 +46,11 @@ func serve4() {
 func serve5() {
 	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
-		data := r.Form.Get("data")
+		data := r.Form.Get("data") // $ Source[go/reflected-xss]
 
 		w.Header().Set("Content-Type", "text/html")
 
-		fmt.Fprintf(w, "Constant: %s", data) // Not OK; the content-type header is explicitly set to html
+		fmt.Fprintf(w, "Constant: %s", data) // $ Alert[go/reflected-xss] // The content-type header is explicitly set to html
 	})
 	http.ListenAndServe(":80", nil)
 }
@@ -60,8 +60,8 @@ func serve10() {
 		r.ParseForm()
 		data := r.Form.Get("data")
 
-		data = r.FormValue("data")
-		fmt.Fprintf(w, "\t<html><body>%s</body></html>", data) // Not OK
+		data = r.FormValue("data")                             // $ Source[go/reflected-xss]
+		fmt.Fprintf(w, "\t<html><body>%s</body></html>", data) // $ Alert[go/reflected-xss]
 	})
 }
 
@@ -70,13 +70,13 @@ func serve11() {
 		r.ParseForm()
 		data := r.Form.Get("data")
 
-		data = r.FormValue("data")
+		data = r.FormValue("data") // $ Source[go/reflected-xss]
 		fmt.Fprintf(w, `
 <html>
   <body>
     %s
   </body>
-</html>`, data) // Not OK
+</html>`, data) // $ Alert[go/reflected-xss]
 	})
 }
 
@@ -85,10 +85,10 @@ func serve12() {
 		r.ParseForm()
 		data := r.Form.Get("data")
 
-		data = r.FormValue("data")
+		data = r.FormValue("data") // $ Source[go/reflected-xss]
 		fmt.Fprintf(w, `
     %s
-`, data) // Not OK
+`, data) // $ Alert[go/reflected-xss]
 	})
 }
 
@@ -110,7 +110,7 @@ func serve14() {
 		r.ParseForm()
 		data := r.Form.Get("data")
 
-		data = r.FormValue("data")
-		fmt.Fprintf(w, "<html><body>%s</body></html>", data) // Not OK
+		data = r.FormValue("data")                           // $ Source[go/reflected-xss]
+		fmt.Fprintf(w, "<html><body>%s</body></html>", data) // $ Alert[go/reflected-xss]
 	})
 }

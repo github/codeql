@@ -13,11 +13,13 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 import semmle.javascript.security.dataflow.UnsafeHtmlConstructionQuery
+import DataFlow::DeduplicatePathGraph<UnsafeHtmlConstructionFlow::PathNode, UnsafeHtmlConstructionFlow::PathGraph>
 
-from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
-where cfg.hasFlowPath(source, sink) and sink.getNode() = sinkNode
+from PathNode source, PathNode sink, Sink sinkNode
+where
+  UnsafeHtmlConstructionFlow::flowPath(source.getAnOriginalPathNode(), sink.getAnOriginalPathNode()) and
+  sink.getNode() = sinkNode
 select sinkNode, source, sink,
   "This " + sinkNode.describe() + " which depends on $@ might later allow $@.", source.getNode(),
   "library input", sinkNode.getSink(), sinkNode.getVulnerabilityKind().toLowerCase()

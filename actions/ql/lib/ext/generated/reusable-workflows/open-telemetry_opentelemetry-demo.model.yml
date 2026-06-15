@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["open-telemetry/opentelemetry-demo/.github/workflows/build-images.yml", "*", "input.push", "code-injection", "generated"]

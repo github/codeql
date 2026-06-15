@@ -2,3 +2,4 @@ name: codeql/ruby-downgrades
 groups: ruby
 downgrades: .
 library: true
+warnOnImplicitThis: true

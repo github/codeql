@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 export const handler = async (req, res, next) => {
-  const { target } = req.body;
+  const { target } = req.body;
 
   try {
     // BAD: `target` is controlled by the attacker

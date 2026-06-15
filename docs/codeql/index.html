@@ -36,13 +36,6 @@
                     <li><a class="dropdown-item" href="codeql-overview">CodeQL overview</a></li>
                     <li class="dropdown-divider" role="separator"></li>
                     <div class="dropdown-header">
-                        CodeQL tools
-                    </div>
-                    <li><a class="dropdown-item" href="codeql-for-visual-studio-code">CodeQL for VS Code</a>
-                    <li><a class="dropdown-item" href="codeql-cli">CodeQL CLI</a>
-                    </li>
-                    <li class="dropdown-divider" role="separator"></li>
-                    <div class="dropdown-header">
                         CodeQL guides
                     </div>
                     <li><a class="dropdown-item" href="writing-codeql-queries">Writing CodeQL queries</a></li>
@@ -62,6 +55,11 @@
                         Source files
                     </div>
                     <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+                    <li class="dropdown-divider" role="separator"></li>
+                    <div class="dropdown-header">
+                        Academic
+                    </div>
+                    <li><a class="dropdown-item" href="../publications">QL publications</a>
                 </ul>
             </details>
         </div>
@@ -70,32 +68,30 @@
         <div class="blankslate">
             <img src="https://ghicons.github.com/assets/images/blue/svg/Code%20QL.svg" class="mb-3" />
             <h1>CodeQL documentation</h1>
-            <p class="f2">Discover vulnerabilities across a codebase with CodeQL, our industry-leading semantic code
-                analysis
-                engine. CodeQL lets you query code as though it were data. Write a query to find all variants of a
+            <p class="f2">CodeQL enables you to query code as though it were data. Write a query to find all variants of a
                 vulnerability, eradicating it forever. Then share your query to help others do the same.</p>
         </div>
         <div class="d-flex flex-column flex-md-row flex-justify-center">
             <div class="Box col-lg-5 col-sm-12 border-0">
 
                 <div class="Box-header border-0 bg-white">
-                    <h3 class="Box-title text-mono f3 text-center">
-                        BACKGROUND INFORMATION
-                    </h3>
+                    <h2 class="Box-title text-mono f2 text-center">
+                        CODEQL RELEASE INFORMATION
+                    </h2>
                 </div>
                 <div class="Box-body border-bottom-0">
-                    <div class="Subhead border-0">
-                        <a href="codeql-overview/about-codeql">
-                            <div class="Subhead-heading f4 text-center">About CodeQL</div>
-                        </a>
-                        <div class="Subhead-description">Learn more about how CodeQL works...</div>
-                    </div>
                     <div class="Subhead border-0">
                         <a href="codeql-overview/supported-languages-and-frameworks/">
                             <div class="Subhead-heading f4 text-center">Supported languages and frameworks</div>
                         </a>
                         <div class="Subhead-description">View the languages, libraries, and frameworks supported in the
-                            latest version of CodeQL...</div>
+                            latest release of CodeQL...</div>
+                    </div>
+                    <div class="Subhead border-0">
+                        <a href="codeql-overview/codeql-changelog/">
+                            <div class="Subhead-heading f4 text-center">Change logs</div>
+                        </a>
+                        <div class="Subhead-description">Read about the improvements to the queries, libraries, and tooling in each release...</div>
                     </div>
                     <div class="Subhead border-0">
                         <a href="codeql-overview/system-requirements/">
@@ -105,90 +101,83 @@
                             latest version of CodeQL...</div>
                     </div>
                     <div class="Subhead border-0">
-                        <a href="../publications">
-                            <div class="Subhead-heading f4 text-center">Academic publications</div>
+                        <a href="../codeql-query-help/codeql-cwe-coverage/">
+                            <div class="Subhead-heading f4 text-center">CodeQL coverage of CWEs</div>
                         </a>
-                        <div class="Subhead-description">Read academic articles published by the team behind CodeQL...
-                        </div>
+                        <div class="Subhead-description">Detailed information on the coverage of Common Weakness Enumerations (CWEs) in the latest release...</div>
                     </div>
-
                 </div>
             </div>
             <div class="Box col-lg-5 col-sm-12 border-0">
                 <div class="Box-header border-0 bg-white">
-                    <h3 class="Box-title text-mono f3 text-center">
-                        CODEQL TOOLS
-                    </h3>
+                    <h2 class="Box-title text-mono f2 text-center">
+                        LEARN TO WRITE CODEQL
+                    </h2>
                 </div>
-                <div class="Box-body border-bottom-0">
-                    <div class="Subhead border-0">
-                        <a href="codeql-cli">
-                            <div class="Subhead-heading f4 text-center">CodeQL CLI</div>
-                        </a>
-                        <div class="Subhead-description border-bottom-0">The CodeQL command-line interface (CLI) is used
-                            to create
-                            databases for security research....</div>
-                    </div>
-                    <div class="Subhead border-0">
-                        <a href="codeql-for-visual-studio-code">
-                            <div class="Subhead-heading f4 text-center">CodeQL for Visual Studio Code</div>
-                        </a>
-                        <div class="Subhead-description">CodeQL for Visual Studio Code adds rich language
-                            support for CodeQL...</div>
-                    </div>
-                    <div class="Subhead border-0">
-                        <a
-                            href="https://docs.github.com/en/github/finding-security-vulnerabilities-and-errors-in-your-code/about-code-scanning">
-                            <div class="Subhead-heading f4 text-center">Code scanning with CodeQL</div>
-                        </a>
-                        <div class="Subhead-description">Use code scanning with CodeQL to analyze the code in a GitHub
-                            repository to find
-                            security
-                            vulnerabilities...</div>
-                    </div>
-
+                <div class="Subhead border-0">
+                    <a href="codeql-overview/about-codeql">
+                        <div class="Subhead-heading f4 text-center">About CodeQL</div>
+                    </a>
+                    <div class="Subhead-description">Learn what CodeQL is and how it works...</div>
+                </div>
+                <div class="Subhead border-0">
+                    <a href="writing-codeql-queries">
+                        <div class="Subhead-heading f4 text-center">Writing CodeQL queries</div>
+                    </a>
+                    <div class="Subhead-description">Get to know more about queries and learn some key
+                        query-writing skills by solving puzzles...</div>
+                </div>
+                <div class="Subhead border-0">
+                    <a href="codeql-language-guides">
+                        <div class="Subhead-heading f4 text-center">CodeQL language guides</div>
+                    </a>
+                    <div class="Subhead-description">Experiment and learn how to write effective and efficient
+                        queries for CodeQL databases generated from the languages supported in CodeQL
+                        analysis...</div>
+                </div>
+                <div class="Subhead border-0">
+                    <a href="writing-codeql-queries/running-codeql-queries">
+                        <div class="Subhead-heading f4 text-center">Running CodeQL queries</div>
+                    </a>
+                    <div class="Subhead-description">Learn about the options available for running CodeQL queries on one or multiple codebases...</div>
                 </div>
             </div>
-
-
-
-
-        </div>
         </div>
 
 
 
         <div class="d-flex flex-column flex-md-row flex-justify-center">
-
             <div class="Box col-lg-5 col-sm-12 border-0">
                 <div class="Box-header border-0 bg-white">
-                    <h3 class="Box-title text-mono f3 text-center">
-                        CODEQL GUIDES
-                    </h3>
+                    <h2 class="Box-title text-mono f2 text-center">
+                        CODEQL RESOURCES
+                    </h2>
                 </div>
-                <div class="Box-body border-bottom-0">
-                    <div class="Subhead border-0">
-                        <a href="writing-codeql-queries">
-                            <div class="Subhead-heading f4 text-center">Writing CodeQL queries</div>
-                        </a>
-                        <div class="Subhead-description">Get to know more about queries and learn some key
-                            query-writing skills by solving puzzles.....</div>
-                    </div>
-                    <div class="Subhead border-0">
-                        <a href="codeql-language-guides">
-                            <div class="Subhead-heading f4 text-center">CodeQL language guides</div>
-                        </a>
-                        <div class="Subhead-description">Experiment and learn how to write effective and efficient
-                            queries for CodeQL databases generated from the languages supported in CodeQL
-                            analysis...</div>
+                <div class="Subhead border-0">
+                    <a href="https://github.com/github/codeql-cli-binaries/releases">
+                        <div class="Subhead-heading f4 text-center">CodeQL CLI releases</div>
+                    </a>
+                    <div class="Subhead-description">Download the latest version of the CodeQL CLI...</div>
+                </div>
+                <div class="Subhead border-0">
+                    <a href="https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-codeql">
+                        <div class="Subhead-heading f4 text-center">CodeQL extension for Visual Studio Code</div>
+                    </a>
+                    <div class="Subhead-description">Download the extension from the Visual Studio Code Marketplace...</div>
+                </div>
+                <div class="Subhead border-0">
+                    <a href="https://github.com/github/codeql">
+                        <div class="Subhead-heading f4 text-center">CodeQL repository</div>
+                    </a>
+                    <div class="Subhead-description">Contribute to the source code of the libraries and queries for CodeQL...
                     </div>
                 </div>
             </div>
             <div class="Box col-lg-5 col-sm-12 border-0">
                 <div class="Box-header border-0 bg-white">
-                    <h3 class="Box-title text-mono f3 text-center">
+                    <h2 class="Box-title text-mono f2 text-center">
                         CODEQL REFERENCE DOCS
-                    </h3>
+                    </h2>
                 </div>
                 <div class="Box-body border-bottom-0">
                     <div class="Subhead border-0">
@@ -213,10 +202,8 @@
                         <div class="Subhead-description">View the query help for the queries included in the code
                             scanning query suites...</div>
                     </div>
-
                 </div>
             </div>
-
         </div>
     </article>
     <div class="footer mt-6 bg-gray-light border-y border-gray-dark no-print">
@@ -234,7 +221,7 @@
                     </a>
                 </div>
                 <div class="col-6 col-sm-3 col-lg-2 mb-6 mb-md-2 pr-3 pr-lg-0 pl-lg-4">
-                    <h4 class="mb-3 text-mono text-gray-light text-normal">Product</h4>
+                    <h3 class="mb-3 text-mono text-gray-light text-normal">Product</h3>
                     <ul class="list-style-none text-gray f5">
                         <li class="lh-condensed mb-3"><a href="https://github.com/features"
                                 data-ga-click="Footer, go to features, text:features" class="link-gray">Features</a>
@@ -242,6 +229,9 @@
                         <li class="lh-condensed mb-3"><a href="https://github.com/security"
                                 data-ga-click="Footer, go to security, text:security" class="link-gray">Security</a>
                         </li>
+                        <li class="lh-condensed mb-3"><a href="https://github.com/features/copilot"
+                            data-ga-click="Footer, go to copilot, text:copilot"
+                            class="link-gray">Copilot</a></li>
                         <li class="lh-condensed mb-3"><a href="https://github.com/enterprise"
                                 data-ga-click="Footer, go to enterprise, text:enterprise"
                                 class="link-gray">Enterprise</a></li>
@@ -256,16 +246,16 @@
                     </ul>
                 </div>
                 <div class="col-6 col-sm-3 col-lg-2 mb-6 mb-md-2 pr-3 pr-md-0 pl-md-4">
-                    <h4 class="mb-3 text-mono text-gray-light text-normal">Platform</h4>
+                    <h3 class="mb-3 text-mono text-gray-light text-normal">Platform</h3>
                     <ul class="list-style-none f5">
-                        <li class="lh-condensed mb-3"><a href="https://developer.github.com/"
+                        <li class="lh-condensed mb-3"><a href="https://docs.github.com/get-started/exploring-integrations/about-building-integrations"
                                 data-ga-click="Footer, go to api, text:api" class="link-gray">Developer API</a></li>
                         <li class="lh-condensed mb-3"><a href="http://partner.github.com/"
                                 data-ga-click="Footer, go to partner, text:partner" class="link-gray">Partners</a></li>
-                        <li class="lh-condensed mb-3"><a href="https://atom.io"
-                                data-ga-click="Footer, go to atom, text:atom" class="link-gray">Atom</a></li>
-                        <li class="lh-condensed mb-3"><a href="http://electron.atom.io/"
-                                data-ga-click="Footer, go to electron, text:electron" class="link-gray">Electron</a>
+                        <li class="lh-condensed mb-3"><a href="https://github.com/edu"
+                                data-ga-click="Footer, go to education, text:education" class="link-gray">Education</a></li>
+                        <li class="lh-condensed mb-3"><a href="https://cli.github.com/"
+                                data-ga-click="Footer, go to cli, text:cli" class="link-gray">GitHub CLI</a>
                         </li>
                         <li class="lh-condensed mb-3"><a href="https://desktop.github.com/"
                                 data-ga-click="Footer, go to desktop, text:desktop" class="link-gray">GitHub Desktop</a>
@@ -273,9 +263,9 @@
                     </ul>
                 </div>
                 <div class="col-6 col-sm-3 col-lg-2 mb-6 mb-md-2 pr-3 pr-md-0 pl-md-4">
-                    <h4 class="mb-3 text-mono text-gray-light text-normal">Support</h4>
+                    <h3 class="mb-3 text-mono text-gray-light text-normal">Support</h3>
                     <ul class="list-style-none f5">
-                        <li class="lh-condensed mb-3"><a href="/" class="link-gray">Help</a></li>
+                        <li class="lh-condensed mb-3"><a href="https://docs.github.com" class="link-gray">GitHub Docs</a></li>
                         <li class="lh-condensed mb-3"><a href="https://github.community" class="link-gray">Community
                                 Forum</a></li>
                         <li class="lh-condensed mb-3"><a href="https://services.github.com/"
@@ -287,12 +277,12 @@
                     </ul>
                 </div>
                 <div class="col-6 col-sm-3 col-lg-2 mb-6 mb-md-2 pr-3 pr-md-0 pl-md-4">
-                    <h4 class="mb-3 text-mono text-gray-light text-normal">Company</h4>
+                    <h3 class="mb-3 text-mono text-gray-light text-normal">Company</h3>
                     <ul class="list-style-none f5">
                         <li class="lh-condensed mb-3"><a href="https://github.com/about" class="link-gray">About</a>
                         </li>
                         <li class="lh-condensed mb-3"><a href="https://github.blog/" class="link-gray">Blog</a></li>
-                        <li class="lh-condensed mb-3"><a href="https://github.com/about/careers"
+                        <li class="lh-condensed mb-3"><a href="https://github.careers/"
                                 class="link-gray">Careers</a></li>
                         <li class="lh-condensed mb-3"><a href="https://github.com/about/press"
                                 class="link-gray">Press</a></li>
@@ -356,12 +346,12 @@
                     </li>
                 </ul>
                 <ul class="list-style-none d-flex text-gray">
-                    <li class="mr-3">&copy; 
+                    <li class="mr-3">&copy;
                         <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
                     <li class="mr-3"><a
-                            href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                            href="https://docs.github.com/site-policy/github-terms/github-terms-of-service"
                             class="link-gray">Terms </a></li>
-                    <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    <li><a href="https://docs.github.com/site-policy/privacy-policies/github-privacy-statement"
                             class="link-gray">Privacy </a></li>
                 </ul>
             </div>

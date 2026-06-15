@@ -49,6 +49,7 @@ namespace System.Net.Http
     {
         public StringContent(string s) { }
     }
+
 }
 
 namespace System.Net.Mail

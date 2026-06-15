@@ -18,7 +18,7 @@ func oldVersionFunc() bool {
 func minMaxTlsVersion() {
 	{
 		config := &tls.Config{}
-		config.MinVersion = 0 // BAD
+		config.MinVersion = 0 // $ Alert[go/insecure-tls] // BAD
 	}
 	{
 		config := &tls.Config{}
@@ -27,7 +27,7 @@ func minMaxTlsVersion() {
 	///
 	{
 		config := &tls.Config{
-			MinVersion: 0, // BAD
+			MinVersion: 0, // $ Alert[go/insecure-tls] // BAD
 		}
 		_ = config
 	}
@@ -40,40 +40,40 @@ func minMaxTlsVersion() {
 	///
 	{
 		config := &tls.Config{}
-		config.MinVersion = tls.VersionSSL30 // BAD
+		config.MinVersion = tls.VersionSSL30 // $ Alert[go/insecure-tls] // BAD
 	}
 	{
 		config := &tls.Config{}
-		config.MaxVersion = tls.VersionSSL30 // BAD
-	}
-	///
-	{
-		config := &tls.Config{}
-		config.MinVersion = tls.VersionTLS10 // BAD
-	}
-	{
-		config := &tls.Config{}
-		config.MaxVersion = tls.VersionTLS10 // BAD
+		config.MaxVersion = tls.VersionSSL30 // $ Alert[go/insecure-tls] // BAD
 	}
 	///
 	{
 		config := &tls.Config{}
-		config.MinVersion = tls.VersionTLS11 // BAD
+		config.MinVersion = tls.VersionTLS10 // $ Alert[go/insecure-tls] // BAD
 	}
 	{
 		config := &tls.Config{}
-		config.MaxVersion = tls.VersionTLS11 // BAD
+		config.MaxVersion = tls.VersionTLS10 // $ Alert[go/insecure-tls] // BAD
+	}
+	///
+	{
+		config := &tls.Config{}
+		config.MinVersion = tls.VersionTLS11 // $ Alert[go/insecure-tls] // BAD
+	}
+	{
+		config := &tls.Config{}
+		config.MaxVersion = tls.VersionTLS11 // $ Alert[go/insecure-tls] // BAD
 	}
 	///
 	{
 		config := &tls.Config{
-			MinVersion: tls.VersionTLS11, // BAD
+			MinVersion: tls.VersionTLS11, // $ Alert[go/insecure-tls] // BAD
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
-			MaxVersion: tls.VersionTLS11, // BAD
+			MaxVersion: tls.VersionTLS11, // $ Alert[go/insecure-tls] // BAD
 		}
 		_ = config
 	}
@@ -92,13 +92,13 @@ func minMaxTlsVersion() {
 	///
 	{
 		config := &tls.Config{
-			MinVersion: 0x0300, // BAD
+			MinVersion: 0x0300, // $ Alert[go/insecure-tls] // BAD
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
-			MaxVersion: 0x0301, // BAD
+			MaxVersion: 0x0301, // $ Alert[go/insecure-tls] // BAD
 		}
 		_ = config
 	}
@@ -108,7 +108,7 @@ func minMaxTlsVersion() {
 	oldVersionFlag := len(os.Args) > 3
 	if unknown {
 		config := &tls.Config{
-			MinVersion: 0, // BAD
+			MinVersion: 0, // $ Alert[go/insecure-tls] // BAD
 		}
 		_ = config
 	}
@@ -198,7 +198,7 @@ func minMaxTlsVersion() {
 			_ = config
 		default:
 			config := &tls.Config{
-				MinVersion: 0, // BAD
+				MinVersion: 0, // $ Alert[go/insecure-tls] // BAD
 			}
 			_ = config
 		}
@@ -216,7 +216,7 @@ func minMaxTlsVersion() {
 			_ = config
 		default:
 			config := &tls.Config{
-				MinVersion: 0, // BAD
+				MinVersion: 0, // $ Alert[go/insecure-tls] // BAD
 			}
 			_ = config
 		}
@@ -257,61 +257,61 @@ func cipherSuites() {
 	{
 		config := &tls.Config{
 			CipherSuites: []uint16{
-				tls.TLS_RSA_WITH_RC4_128_SHA,                // BAD
-				tls.TLS_RSA_WITH_AES_128_CBC_SHA256,         // BAD
-				tls.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,        // BAD
-				tls.TLS_ECDHE_RSA_WITH_RC4_128_SHA,          // BAD
-				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // BAD
-				tls.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,   // BAD
-			},
+				tls.TLS_RSA_WITH_RC4_128_SHA,                // $ Source[go/insecure-tls] // BAD
+				tls.TLS_RSA_WITH_AES_128_CBC_SHA256,         // $ Source[go/insecure-tls] // BAD
+				tls.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,        // $ Source[go/insecure-tls] // BAD
+				tls.TLS_ECDHE_RSA_WITH_RC4_128_SHA,          // $ Source[go/insecure-tls] // BAD
+				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
+				tls.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,   // $ Source[go/insecure-tls] // BAD
+			}, // $ Alert[go/insecure-tls]
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
 			CipherSuites: []uint16{
-				tls.TLS_RSA_WITH_RC4_128_SHA, // BAD
-			},
+				tls.TLS_RSA_WITH_RC4_128_SHA, // $ Source[go/insecure-tls] // BAD
+			}, // $ Alert[go/insecure-tls]
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
 			CipherSuites: []uint16{
-				tls.TLS_RSA_WITH_AES_128_CBC_SHA256, // BAD
-			},
+				tls.TLS_RSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
+			}, // $ Alert[go/insecure-tls]
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
 			CipherSuites: []uint16{
-				tls.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA, // BAD
-			},
+				tls.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA, // $ Source[go/insecure-tls] // BAD
+			}, // $ Alert[go/insecure-tls]
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
 			CipherSuites: []uint16{
-				tls.TLS_ECDHE_RSA_WITH_RC4_128_SHA, // BAD
-			},
+				tls.TLS_ECDHE_RSA_WITH_RC4_128_SHA, // $ Source[go/insecure-tls] // BAD
+			}, // $ Alert[go/insecure-tls]
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
 			CipherSuites: []uint16{
-				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // BAD
-			},
+				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
+			}, // $ Alert[go/insecure-tls]
 		}
 		_ = config
 	}
 	{
 		config := &tls.Config{
 			CipherSuites: []uint16{
-				tls.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, // BAD
-			},
+				tls.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
+			}, // $ Alert[go/insecure-tls]
 		}
 		_ = config
 	}
@@ -326,33 +326,33 @@ func cipherSuites() {
 	{
 		config := &tls.Config{}
 		config.CipherSuites = make([]uint16, 0)
-		config.CipherSuites = append(config.CipherSuites, tls.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) // BAD
+		config.CipherSuites = append(config.CipherSuites, tls.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) // $ Alert[go/insecure-tls] // BAD
 	}
 	{
 		config := &tls.Config{}
 		config.CipherSuites = make([]uint16, 0)
-		suites := tls.InsecureCipherSuites()
+		suites := tls.InsecureCipherSuites() // $ Source[go/insecure-tls]
 		for _, v := range suites {
-			config.CipherSuites = append(config.CipherSuites, v.ID) // BAD
+			config.CipherSuites = append(config.CipherSuites, v.ID) // $ Alert[go/insecure-tls] // BAD
 		}
 	}
 	{
 		config := &tls.Config{}
 		cipherSuites := make([]uint16, 0)
-		suites := tls.InsecureCipherSuites()
+		suites := tls.InsecureCipherSuites() // $ Source[go/insecure-tls]
 		for _, v := range suites {
 			cipherSuites = append(cipherSuites, v.ID)
 		}
-		config.CipherSuites = cipherSuites // BAD
+		config.CipherSuites = cipherSuites // $ Alert[go/insecure-tls] // BAD
 	}
 	{
 		config := &tls.Config{}
 		cipherSuites := make([]uint16, 0)
-		suites := tls.InsecureCipherSuites()
+		suites := tls.InsecureCipherSuites() // $ Source[go/insecure-tls]
 		for i := range suites {
 			cipherSuites = append(cipherSuites, suites[i].ID)
 		}
-		config.CipherSuites = cipherSuites // BAD
+		config.CipherSuites = cipherSuites // $ Alert[go/insecure-tls] // BAD
 	}
 	unknown := len(os.Args) > 1
 	insecureFlag := len(os.Args) > 2
@@ -360,8 +360,8 @@ func cipherSuites() {
 	if unknown {
 		config := &tls.Config{
 			CipherSuites: []uint16{
-				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // BAD
-			},
+				tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
+			}, // $ Alert[go/insecure-tls]
 		}
 		_ = config
 	}
@@ -430,8 +430,8 @@ func cipherSuites() {
 		default:
 			config := &tls.Config{
 				CipherSuites: []uint16{
-					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // BAD
-				},
+					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
+				}, // $ Alert[go/insecure-tls]
 			}
 			_ = config
 		}
@@ -454,8 +454,8 @@ func cipherSuites() {
 		default:
 			config := &tls.Config{
 				CipherSuites: []uint16{
-					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // BAD
-				},
+					tls.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, // $ Source[go/insecure-tls] // BAD
+				}, // $ Alert[go/insecure-tls]
 			}
 			_ = config
 		}

@@ -3,6 +3,8 @@
  * an expression, `b` is a `Bound` (typically zero or the value of an SSA
  * variable), and `v` is an integer in the range `[0 .. m-1]`.
  */
+overlay[local?]
+module;
 
 private import internal.rangeanalysis.ModulusAnalysisSpecific::Private
 private import Bound
@@ -17,7 +19,7 @@ private predicate valueFlowStepSsa(SsaVariable v, SsaReadPosition pos, Expr e, i
   exists(Guard guard, boolean testIsTrue |
     pos.hasReadOfVar(v) and
     guard = eqFlowCond(v, e, delta, true, testIsTrue) and
-    guardDirectlyControlsSsaRead(guard, pos, testIsTrue)
+    guardControlsSsaRead(guard, pos, testIsTrue)
   )
 }
 

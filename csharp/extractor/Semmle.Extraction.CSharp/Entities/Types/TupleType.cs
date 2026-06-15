@@ -1,9 +1,8 @@
-﻿using Microsoft.CodeAnalysis;
-using Semmle.Extraction.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -52,11 +51,15 @@ namespace Semmle.Extraction.CSharp.Entities
                     trapFile.tuple_element(this, index++, element);
             }
 
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
             // Note: symbol.Locations seems to be very inconsistent
             // about what locations are available for a tuple type.
             // Sometimes it's the source code, and sometimes it's empty.
-            foreach (var l in Symbol.Locations)
-                trapFile.type_location(this, Context.CreateLocation(l));
+            var locations = Context.GetLocations(Symbol);
+            WriteLocationsToTrap(trapFile.type_location, this, locations);
         }
 
         private readonly Lazy<Field?[]> tupleElementsLazy;

@@ -1,0 +1,286 @@
+expressions
+| A.cs:8:16:8:16 | call to constructor Object |
+| A.cs:8:16:8:16 | call to method <object initializer> |
+| A.cs:8:16:8:16 | this access |
+| A.cs:10:13:10:16 | access to field name |
+| A.cs:10:13:10:16 | this access |
+| A.cs:10:13:10:20 | ... = ... |
+| A.cs:10:20:10:20 | access to parameter x |
+| A.cs:16:13:16:19 | access to type Console |
+| A.cs:16:13:16:51 | call to method WriteLine |
+| A.cs:16:31:16:50 | "Destructor called!" |
+| A.cs:19:23:19:26 | access to property Prop |
+| A.cs:19:23:19:26 | this access |
+| A.cs:19:42:19:50 | ... = ... |
+| A.cs:19:44:19:50 | "Hello" |
+| A.cs:23:26:23:37 | object creation of type Object |
+| A.cs:34:17:34:23 | access to type Console |
+| A.cs:34:17:34:50 | call to method WriteLine |
+| A.cs:34:35:34:49 | "Handler added" |
+| A.cs:38:17:38:23 | access to type Console |
+| A.cs:38:17:38:52 | call to method WriteLine |
+| A.cs:38:35:38:51 | "Handler removed" |
+| A.cs:44:20:44:20 | access to parameter a |
+| A.cs:52:17:52:17 | access to local variable y |
+| A.cs:52:17:52:25 | Int32 y = ... |
+| A.cs:52:21:52:21 | access to parameter x |
+| A.cs:52:21:52:25 | ... + ... |
+| A.cs:52:25:52:25 | 1 |
+| A.cs:53:20:53:20 | access to local variable y |
+| A.cs:58:17:58:17 | access to local variable x |
+| A.cs:58:17:58:32 | String x = ... |
+| A.cs:58:21:58:32 | $"..." |
+| A.cs:58:23:58:25 | "A: " |
+| A.cs:58:26:58:31 | {...} |
+| A.cs:58:27:58:30 | access to field name |
+| A.cs:58:27:58:30 | this access |
+| A.cs:59:20:59:20 | access to local variable x |
+| A.cs:63:18:63:36 | call to constructor Attribute |
+| A.cs:63:18:63:36 | call to method <object initializer> |
+| A.cs:63:18:63:36 | this access |
+| A.cs:65:18:65:18 | call to constructor Object |
+| A.cs:65:18:65:18 | call to method <object initializer> |
+| A.cs:65:18:65:18 | this access |
+| Program.cs:9:17:9:20 | access to parameter args |
+| Program.cs:9:17:9:27 | access to property Length |
+| Program.cs:9:17:9:32 | ... == ... |
+| Program.cs:9:32:9:32 | 0 |
+| Program.cs:11:17:11:23 | access to type Console |
+| Program.cs:11:17:11:67 | call to method WriteLine |
+| Program.cs:11:35:11:66 | "Print usage instructions here." |
+| Program.cs:14:17:14:17 | access to local variable x |
+| Program.cs:14:17:14:27 | String x = ... |
+| Program.cs:14:21:14:24 | access to parameter args |
+| Program.cs:14:21:14:27 | access to array element |
+| Program.cs:14:26:14:26 | 0 |
+| Program.cs:15:17:15:17 | access to local variable a |
+| Program.cs:15:17:15:28 | A a = ... |
+| Program.cs:15:21:15:28 | object creation of type A |
+| Program.cs:15:27:15:27 | access to local variable x |
+| Program.cs:16:13:16:19 | access to type Console |
+| Program.cs:16:13:16:43 | call to method WriteLine |
+| Program.cs:16:31:16:31 | access to local variable a |
+| Program.cs:16:31:16:42 | call to method ToString |
+| Program.cs:21:16:21:22 | call to constructor Object |
+| Program.cs:21:16:21:22 | call to method <object initializer> |
+| Program.cs:21:16:21:22 | this access |
+| Program.cs:23:13:23:23 | access to field programName |
+| Program.cs:23:13:23:23 | this access |
+| Program.cs:23:13:23:27 | ... = ... |
+| Program.cs:23:27:23:27 | access to parameter x |
+| Program.cs:29:13:29:19 | access to type Console |
+| Program.cs:29:13:29:59 | call to method WriteLine |
+| Program.cs:29:31:29:58 | "Program destructor called!" |
+| Program.cs:32:23:32:33 | access to property ProgramProp |
+| Program.cs:32:23:32:33 | this access |
+| Program.cs:32:49:32:64 | ... = ... |
+| Program.cs:32:51:32:64 | "Hello World!" |
+| Program.cs:36:26:36:31 | access to type String |
+| Program.cs:36:26:36:37 | access to field Empty |
+| Program.cs:47:17:47:23 | access to type Console |
+| Program.cs:47:17:47:58 | call to method WriteLine |
+| Program.cs:47:35:47:57 | "Program handler added" |
+| Program.cs:51:17:51:23 | access to type Console |
+| Program.cs:51:17:51:60 | call to method WriteLine |
+| Program.cs:51:35:51:59 | "Program handler removed" |
+| Program.cs:57:20:57:20 | access to parameter b |
+| Program.cs:64:18:64:33 | call to constructor Attribute |
+| Program.cs:64:18:64:33 | call to method <object initializer> |
+| Program.cs:64:18:64:33 | this access |
+statements
+| A.cs:9:9:11:9 | {...} |
+| A.cs:10:13:10:21 | ...; |
+| A.cs:15:9:17:9 | {...} |
+| A.cs:16:13:16:52 | ...; |
+| A.cs:23:17:23:40 | {...} |
+| A.cs:23:19:23:38 | return ...; |
+| A.cs:24:17:24:19 | {...} |
+| A.cs:33:13:35:13 | {...} |
+| A.cs:34:17:34:51 | ...; |
+| A.cs:37:13:39:13 | {...} |
+| A.cs:38:17:38:53 | ...; |
+| A.cs:43:9:45:9 | {...} |
+| A.cs:44:13:44:21 | return ...; |
+| A.cs:48:38:48:40 | {...} |
+| A.cs:51:9:54:9 | {...} |
+| A.cs:52:13:52:26 | ... ...; |
+| A.cs:53:13:53:21 | return ...; |
+| A.cs:57:9:60:9 | {...} |
+| A.cs:58:13:58:33 | ... ...; |
+| A.cs:59:13:59:21 | return ...; |
+| A.cs:63:18:63:36 | {...} |
+| A.cs:65:18:65:18 | {...} |
+| Program.cs:8:9:17:9 | {...} |
+| Program.cs:9:13:13:13 | if (...) ... |
+| Program.cs:10:13:13:13 | {...} |
+| Program.cs:11:17:11:68 | ...; |
+| Program.cs:12:17:12:23 | return ...; |
+| Program.cs:14:13:14:28 | ... ...; |
+| Program.cs:15:13:15:29 | ... ...; |
+| Program.cs:16:13:16:44 | ...; |
+| Program.cs:22:9:24:9 | {...} |
+| Program.cs:23:13:23:28 | ...; |
+| Program.cs:28:9:30:9 | {...} |
+| Program.cs:29:13:29:60 | ...; |
+| Program.cs:36:17:36:40 | {...} |
+| Program.cs:36:19:36:38 | return ...; |
+| Program.cs:37:17:37:19 | {...} |
+| Program.cs:46:13:48:13 | {...} |
+| Program.cs:47:17:47:59 | ...; |
+| Program.cs:50:13:52:13 | {...} |
+| Program.cs:51:17:51:61 | ...; |
+| Program.cs:56:9:58:9 | {...} |
+| Program.cs:57:13:57:21 | return ...; |
+| Program.cs:61:39:61:41 | {...} |
+| Program.cs:64:18:64:33 | {...} |
+methods
+| A.cs:48:21:48:34 | ObsoleteMethod |
+| A.cs:50:20:50:28 | OldMethod |
+| A.cs:56:32:56:39 | ToString |
+| Program.cs:7:28:7:31 | Main |
+| Program.cs:61:21:61:35 | AnnotatedMethod |
+types
+| A.cs:5:18:5:18 | A |
+| A.cs:63:18:63:36 | MyObsoleteAttribute |
+| A.cs:65:18:65:18 | B |
+| Program.cs:5:20:5:26 | Program |
+| Program.cs:64:18:64:33 | ProgramAttribute |
+parameters
+| A.cs:8:25:8:25 | x |
+| A.cs:19:35:19:37 | value |
+| A.cs:21:32:21:32 | i |
+| A.cs:21:32:21:32 | i |
+| A.cs:21:32:21:32 | i |
+| A.cs:24:13:24:15 | value |
+| A.cs:32:13:32:15 | value |
+| A.cs:36:13:36:18 | value |
+| A.cs:42:38:42:38 | a |
+| A.cs:42:43:42:43 | b |
+| A.cs:50:34:50:34 | x |
+| Program.cs:7:42:7:45 | args |
+| Program.cs:21:31:21:31 | x |
+| Program.cs:32:42:32:44 | value |
+| Program.cs:34:32:34:32 | i |
+| Program.cs:34:32:34:32 | i |
+| Program.cs:34:32:34:32 | i |
+| Program.cs:37:13:37:15 | value |
+| Program.cs:45:13:45:15 | value |
+| Program.cs:49:13:49:18 | value |
+| Program.cs:55:50:55:50 | a |
+| Program.cs:55:61:55:61 | b |
+operators
+| A.cs:42:34:42:34 | + |
+| Program.cs:55:40:55:40 | - |
+constructors
+| A.cs:8:16:8:16 | A |
+| Program.cs:21:16:21:22 | Program |
+destructors
+| A.cs:14:10:14:10 | ~A |
+| Program.cs:27:10:27:16 | ~Program |
+fields
+| A.cs:7:24:7:27 | name |
+| Program.cs:19:24:19:34 | programName |
+properties
+| A.cs:19:23:19:26 | Prop |
+| Program.cs:32:23:32:33 | ProgramProp |
+indexers
+| A.cs:21:23:21:26 | Item |
+| Program.cs:34:23:34:26 | Item |
+accessors
+| A.cs:19:30:19:32 | get_Prop |
+| A.cs:19:35:19:37 | set_Prop |
+| A.cs:23:13:23:15 | get_Item |
+| A.cs:24:13:24:15 | set_Item |
+| A.cs:32:13:32:15 | add_Clicked |
+| A.cs:36:13:36:18 | remove_Clicked |
+| Program.cs:32:37:32:39 | get_ProgramProp |
+| Program.cs:32:42:32:44 | set_ProgramProp |
+| Program.cs:36:13:36:15 | get_Item |
+| Program.cs:37:13:37:15 | set_Item |
+| Program.cs:45:13:45:15 | add_ProgramClicked |
+| Program.cs:49:13:49:18 | remove_ProgramClicked |
+attributes
+| A.cs:47:10:47:19 | [MyObsolete(...)] |
+| Program.cs:60:10:60:16 | [Program(...)] |
+events
+| A.cs:30:35:30:41 | Clicked |
+| Program.cs:43:35:43:48 | ProgramClicked |
+eventAccessors
+| A.cs:32:13:32:15 | add_Clicked |
+| A.cs:36:13:36:18 | remove_Clicked |
+| Program.cs:45:13:45:15 | add_ProgramClicked |
+| Program.cs:49:13:49:18 | remove_ProgramClicked |
+usingDirectives
+| A.cs:1:1:1:13 | using ...; |
+| Program.cs:1:1:1:13 | using ...; |
+commentLines
+| A.cs:13:9:13:21 | // ... |
+| A.cs:27:9:27:10 | /* ... */ |
+| A.cs:28:1:28:27 | /* ... */ |
+| A.cs:29:1:29:11 | /* ... */ |
+| Program.cs:26:9:26:29 | // ... |
+| Program.cs:40:9:40:10 | /* ... */ |
+| Program.cs:41:1:41:27 | /* ... */ |
+| Program.cs:42:1:42:11 | /* ... */ |
+commentBlocks
+| A.cs:13:9:13:21 | // ... |
+| A.cs:27:9:29:11 | /* ... */ |
+| Program.cs:26:9:26:29 | // ... |
+| Program.cs:40:9:42:11 | /* ... */ |
+typeMentions
+| A.cs:7:17:7:22 | String |
+| A.cs:8:18:8:23 | String |
+| A.cs:16:13:16:19 | Console |
+| A.cs:19:16:19:21 | String |
+| A.cs:21:16:21:21 | Object |
+| A.cs:21:28:21:30 | Int32 |
+| A.cs:23:30:23:35 | Object |
+| A.cs:34:17:34:23 | Console |
+| A.cs:38:17:38:23 | Console |
+| A.cs:42:23:42:23 | A |
+| A.cs:42:36:42:36 | A |
+| A.cs:42:41:42:41 | A |
+| A.cs:47:10:47:19 | MyObsoleteAttribute |
+| A.cs:48:16:48:19 | Void |
+| A.cs:50:16:50:18 | Int32 |
+| A.cs:50:30:50:32 | Int32 |
+| A.cs:52:13:52:15 | Int32 |
+| A.cs:56:25:56:30 | String |
+| A.cs:58:13:58:15 | String |
+| A.cs:63:40:63:48 | Attribute |
+| Program.cs:7:23:7:26 | Void |
+| Program.cs:7:33:7:38 | String |
+| Program.cs:7:33:7:40 | String[] |
+| Program.cs:11:17:11:23 | Console |
+| Program.cs:14:13:14:15 | String |
+| Program.cs:15:13:15:15 | A |
+| Program.cs:15:25:15:25 | A |
+| Program.cs:16:13:16:19 | Console |
+| Program.cs:19:17:19:22 | String |
+| Program.cs:21:24:21:29 | String |
+| Program.cs:29:13:29:19 | Console |
+| Program.cs:32:16:32:21 | String |
+| Program.cs:34:16:34:21 | String |
+| Program.cs:34:28:34:30 | Int32 |
+| Program.cs:36:26:36:31 | String |
+| Program.cs:47:17:47:23 | Console |
+| Program.cs:51:17:51:23 | Console |
+| Program.cs:55:23:55:29 | Program |
+| Program.cs:55:42:55:48 | Program |
+| Program.cs:55:53:55:59 | Program |
+| Program.cs:60:10:60:16 | ProgramAttribute |
+| Program.cs:61:16:61:19 | Void |
+| Program.cs:64:37:64:45 | Attribute |
+xmlLocatables
+| web.changed.config:2:1:12:17 | configuration |
+| web.changed.config:3:3:4:16 | system.web |
+| web.changed.config:5:3:11:22 | system.webServer |
+| web.changed.config:6:5:10:20 | httpProtocol |
+| web.changed.config:7:7:9:23 | customHeaders |
+| web.changed.config:8:9:8:42 | add |
+| web.changed.config:8:9:8:42 | name=MyOption |
+| web.changed.config:8:9:8:42 | value=1 |
+| web.unchanged.config:2:1:6:17 | configuration |
+| web.unchanged.config:3:3:5:16 | system.web |
+| web.unchanged.config:4:5:4:37 | httpCookies |
+| web.unchanged.config:4:5:4:37 | requireSSL=true |

@@ -3,6 +3,8 @@
  *
  * QL classes are provided for detecting uses of Mockito annotations on fields.
  */
+overlay[local?]
+module;
 
 import java
 
@@ -17,11 +19,11 @@ class MockitoVerifyMethod extends Method {
 }
 
 /**
- * A MethodAccess which is called as part of a Mockito verification setup.
+ * A MethodCall which is called as part of a Mockito verification setup.
  */
-class MockitoVerifiedMethodAccess extends MethodAccess {
-  MockitoVerifiedMethodAccess() {
-    this.getQualifier().(MethodAccess).getMethod() instanceof MockitoVerifyMethod
+class MockitoVerifiedMethodCall extends MethodCall {
+  MockitoVerifiedMethodCall() {
+    this.getQualifier().(MethodCall).getMethod() instanceof MockitoVerifyMethod
   }
 }
 
@@ -75,9 +77,7 @@ class MockitoInitedTest extends Class {
         m.calls*(initMocks)
       )
       or
-      exists(MethodAccess call | call.getCallee() = initMocks |
-        call.getArgument(0).getType() = this
-      )
+      exists(MethodCall call | call.getCallee() = initMocks | call.getArgument(0).getType() = this)
     )
   }
 }
@@ -223,10 +223,10 @@ class MockitoInjectedField extends MockitoAnnotatedField {
         // If there is no initializer for this field, and there is a most mockable constructor,
         // then we are doing a parameterized injection of mocks into a most mockable constructor.
         result = mockInjectedClass.getAMostMockableConstructor()
-      else
-        if this.usingPropertyInjection()
-        then
-          // We will call the no-arg constructor if the field wasn't initialized.
+      else (
+        this.usingPropertyInjection() and
+        // We will call the no-arg constructor if the field wasn't initialized.
+        (
           not exists(this.getInitializer()) and
           result = mockInjectedClass.getNoArgsConstructor()
           or
@@ -241,9 +241,8 @@ class MockitoInjectedField extends MockitoAnnotatedField {
             // once, but we instead assume that there are sufficient mocks to go around.
             mockedField.getType().(RefType).getAnAncestor() = result.getParameterType(0)
           )
-        else
-          // There's no instance, and no no-arg constructor we can call, so injection fails.
-          none()
+        )
+      )
     )
   }
 
@@ -253,18 +252,16 @@ class MockitoInjectedField extends MockitoAnnotatedField {
    * Field injection only occurs if property injection and not constructor injection is used.
    */
   Field getASetField() {
-    if this.usingPropertyInjection()
-    then
-      result = this.getMockInjectedClass().getASetField() and
-      exists(MockitoMockedField mockedField |
-        mockedField.getDeclaringType() = this.getDeclaringType() and
-        mockedField.isValid()
-      |
-        // We make a simplifying assumption here - in theory, each mock can only be injected
-        // once, but we instead assume that there are sufficient mocks to go around.
-        mockedField.getType().(RefType).getAnAncestor() = result.getType()
-      )
-    else none()
+    this.usingPropertyInjection() and
+    result = this.getMockInjectedClass().getASetField() and
+    exists(MockitoMockedField mockedField |
+      mockedField.getDeclaringType() = this.getDeclaringType() and
+      mockedField.isValid()
+    |
+      // We make a simplifying assumption here - in theory, each mock can only be injected
+      // once, but we instead assume that there are sufficient mocks to go around.
+      mockedField.getType().(RefType).getAnAncestor() = result.getType()
+    )
   }
 }
 
@@ -301,7 +298,7 @@ private int mockableParameterCount(Constructor constructor) {
 /**
  * A class which is referenced by an `@InjectMocks` field.
  */
-library class MockitoMockInjectedClass extends Class {
+class MockitoMockInjectedClass extends Class {
   MockitoMockInjectedClass() {
     // There must be an `@InjectMock` field that has `this` as the type.
     exists(MockitoInjectedField injectedField | this = injectedField.getType())
@@ -383,13 +380,13 @@ class MockitoMockMethod extends Method {
 
 class MockitoMockedObject extends Expr {
   MockitoMockedObject() {
-    this.(MethodAccess).getMethod() instanceof MockitoMockMethod
+    this.(MethodCall).getMethod() instanceof MockitoMockMethod
     or
     this.(VarAccess).getVariable().getAnAssignedValue() instanceof MockitoMockedObject
     or
     exists(ReturnStmt ret |
-      this.(MethodAccess).getMethod() = ret.getEnclosingCallable() and
-      ret.getResult() instanceof MockitoMockedObject
+      this.(MethodCall).getMethod() = ret.getEnclosingCallable() and
+      ret.getExpr() instanceof MockitoMockedObject
     )
   }
 }

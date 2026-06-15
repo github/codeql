@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["microsoft/playwright", "*", "input.report_dir", "code-injection", "generated"]
+     - ["microsoft/playwright", "*", "input.connection_string", "code-injection", "generated"]
+     - ["microsoft/playwright", "*", "input.blob_prefix", "code-injection", "generated"]
+     - ["microsoft/playwright", "*", "input.output_dir", "code-injection", "generated"]
+     - ["microsoft/playwright", "*", "input.path", "code-injection", "generated"]
+     - ["microsoft/playwright", "*", "input.namePrefix", "code-injection", "generated"]

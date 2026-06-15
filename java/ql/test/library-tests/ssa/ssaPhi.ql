@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.SSA
 
-from SsaPhiNode ssa, SsaSourceVariable v, SsaVariable phiInput
-where ssa.getAPhiInput() = phiInput and ssa.getSourceVariable() = v
-select v, ssa.getCfgNode(), phiInput.getCfgNode()
+from SsaPhiDefinition ssa, SsaSourceVariable v, SsaDefinition phiInput
+where ssa.getAnInput() = phiInput and ssa.getSourceVariable() = v
+select v, ssa.getControlFlowNode(), phiInput.getControlFlowNode()

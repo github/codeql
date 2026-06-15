@@ -1,4 +1,0 @@
-import javascript
-import testUtilities.ConsistencyChecking
-import semmle.javascript.security.dataflow.SqlInjectionQuery as SqlInjection
-import semmle.javascript.security.dataflow.NosqlInjectionQuery as NosqlInjection

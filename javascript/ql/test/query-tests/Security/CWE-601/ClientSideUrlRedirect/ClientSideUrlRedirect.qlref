@@ -1,1 +1,2 @@
-Security/CWE-601/ClientSideUrlRedirect.ql
+query: Security/CWE-601/ClientSideUrlRedirect.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

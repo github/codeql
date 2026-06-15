@@ -104,8 +104,7 @@ module Vuex {
       storeName = this.getNamespace() + localName
       or
       // mapGetters(['foo', 'bar'])
-      this.getLastParameter().getUnknownMember().getAValueReachingSink().getStringValue() =
-        localName and
+      this.getLastParameter().getArrayElement().getAValueReachingSink().getStringValue() = localName and
       storeName = this.getNamespace() + localName
       or
       // mapGetters({foo: 'bar'})
@@ -289,7 +288,8 @@ module Vuex {
     or
     exists(string base, string prop |
       result = stateRefByAccessPath(base).getMember(prop) and
-      path = appendToNamespace(base, prop)
+      path = appendToNamespace(base, prop) and
+      path.length() < 100
     )
   }
 

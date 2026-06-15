@@ -13,14 +13,14 @@ public class B {
   }
 
   public void callee1(Object param) {
-    param.toString(); // NPE
+    param.toString(); // $ Alert[java/dereferenced-value-may-be-null] // NPE
   }
 
   public void callee2(Object param) {
     if (param != null) {
       param.toString(); // OK
     }
-    param.toString(); // NPE
+    param.toString(); // $ Alert[java/dereferenced-value-may-be-null] // NPE
   }
 
   private static boolean customIsNull(Object x) {
@@ -54,7 +54,7 @@ public class B {
     if (ok)
       o7.hashCode(); // OK
     else
-      o7.hashCode(); // NPE
+      o7.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // NPE
 
     Object o8 = maybe ? null : "";
     int track = o8 == null ? 42 : 1+1;
@@ -66,16 +66,16 @@ public class B {
 
   public void deref() {
     int[] xs = maybe ? null : new int[2];
-    if (2 > 1) xs[0] = 5; // NPE
-    if (2 > 1) maybe = xs[1] > 5; // NPE
+    if (2 > 1) xs[0] = 5; // $ Alert[java/dereferenced-value-may-be-null] // NPE
+    if (2 > 1) maybe = xs[1] > 5; // $ Alert[java/dereferenced-value-may-be-null] // NPE
     if (2 > 1) {
-      int l = xs.length; // NPE
+      int l = xs.length; // $ Alert[java/dereferenced-value-may-be-null] // NPE
     }
     if (2 > 1) {
-      for (int i : xs) { } // NPE
+      for (int i : xs) { } // $ Alert[java/dereferenced-value-may-be-null] // NPE
     }
     if (2 > 1) {
-      synchronized(xs) { // NPE
+      synchronized(xs) { // $ Alert[java/dereferenced-value-may-be-null] // NPE
         xs.hashCode(); // Not reported - same basic block
       }
     }
@@ -115,7 +115,7 @@ public class B {
   }
 
   public void missedGuard(Object obj) {
-    obj.hashCode(); // NPE
+    obj.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // NPE
     int x = obj != null ? 1 : 0;
   }
 
@@ -130,7 +130,7 @@ public class B {
       obj = mkMaybe();
     } catch(Exception e) {
     }
-    obj.hashCode(); // NPE
+    obj.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // NPE
 
     Object obj2 = null;
     try {
@@ -187,7 +187,7 @@ public class B {
     Object other = maybe ? null : "";
     if (other == null) o = "";
     if (other != null)
-      o.hashCode(); // NPE
+      o.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // NPE
     else
       o.hashCode(); // OK
 
@@ -276,7 +276,7 @@ public class B {
     int[] a = null;
     if (iters > 0) a = new int[iters];
     for (int i = 0; i < iters; ++i)
-      a[i] = 0; // NPE - false positive
+      a[i] = 0; // OK
 
     if (iters > 0) {
       String last = null;
@@ -289,7 +289,7 @@ public class B {
       throw new RuntimeException();
     }
     for (int i = 0; i < iters; ++i) {
-      b[i] = 0; // NPE - false positive
+      b[i] = 0; // OK
     }
   }
 
@@ -301,7 +301,7 @@ public class B {
     if (ioe != null) {
       ioe = e;
     } else {
-      ioe.getMessage(); // NPE; always
+      ioe.getMessage(); // $ Alert[java/dereferenced-value-is-always-null] // NPE; always
     }
   }
 
@@ -331,7 +331,7 @@ public class B {
       x = new Object();
     }
     if(y instanceof String) {
-      x.hashCode(); // OK
+      x.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
     }
   }
 
@@ -341,7 +341,7 @@ public class B {
       x = new Object();
     }
     if(!(y instanceof String)) {
-      x.hashCode(); // OK
+      x.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
     }
   }
 
@@ -351,7 +351,7 @@ public class B {
       x = new Object();
     }
     if(y == z) {
-      x.hashCode(); // OK
+      x.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
     }
 
     Object x2 = null;
@@ -359,7 +359,7 @@ public class B {
       x2 = new Object();
     }
     if(y != z) {
-      x2.hashCode(); // OK
+      x2.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
     }
 
     Object x3 = null;
@@ -367,7 +367,7 @@ public class B {
       x3 = new Object();
     }
     if(!(y == z)) {
-      x3.hashCode(); // OK
+      x3.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
     }
   }
 
@@ -405,7 +405,175 @@ public class B {
 
     g5 |= b;
     if (g5) {
-      x.hashCode(); // NPE
+      x.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // NPE
     }
+  }
+
+  public void corrCondLoop1(boolean a[]) {
+    Object x = new Object();
+    for (int i = 0; i < a.length; i++) {
+      boolean b = a[i];
+      if (b) {
+        x = null;
+      }
+      if (!b) {
+        x.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // NPE
+      }
+      // flow can loop around from one iteration to the next
+    }
+  }
+
+  public void corrCondLoop2(boolean a[]) {
+    for (int i = 0; i < a.length; i++) {
+      // x is local to the loop iteration and thus cannot loop around and reach the sink
+      Object x = new Object();
+      boolean b = a[i];
+      if (b) {
+        x = null;
+      }
+      if (!b) {
+        x.hashCode(); // OK
+      }
+    }
+  }
+
+  public void loopCorrTest1(int[] a) {
+    boolean ready = a.length > 7;
+    Object x = new Object();
+    for (int i = 0; i < a.length; i++) {
+      // condition correlates with itself through iterations when ready isn't updated
+      if (!ready) {
+        x = null;
+      } else {
+        x.hashCode(); // OK
+      }
+      if ((a[i] & 1) != 0) {
+        ready = (a[i] & 2) != 0;
+        x = new Object();
+      }
+    }
+  }
+
+  public void loopCorrTest2(boolean[] a) {
+    Object x = new Object();
+    boolean cur = a[0];
+    for (int i = 1; i < a.length; i++) {
+      boolean prev = cur;
+      cur = a[i];
+      if (!prev) {
+        // correctly guarded by !cur from the _previous_ iteration
+        x.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
+      } else {
+        x = new Object();
+      }
+      if (cur) {
+        x = null;
+      }
+    }
+  }
+
+  public void loopCorrTest3(String[] ss) {
+    Object x = null;
+    Object t = null;
+    for (String s : ss) {
+      if (t == null) {
+        t = s;
+      } else {
+        if (t instanceof String) {
+          x = new Object();
+          t = new Object();
+        }
+        // correctly guarded by t: null -> String -> Object
+        x.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
+      }
+    }
+  }
+
+  public void initCorr(boolean b) {
+    Object o2 = b ? null : "";
+    if (b)
+      o2 = "";
+    else
+      o2.hashCode(); // OK
+  }
+
+  public void complexLoopTest(int[] xs, int[] ys) {
+    int len = ys != null ? ys.length : 0;
+    for (int i = 0, j = 0; i < xs.length; i++) {
+      if (j < len && ys[j] == 42) { // OK
+        j++;
+      } else if (j > 0) {
+        ys[0]++; // OK
+      }
+    }
+  }
+
+  public void trackTest(Object o, int n) {
+    boolean isnull = o == null;
+    int c = -1;
+    if (maybe) { }
+    if (c == 100) { return; }
+    o.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // NPE
+  }
+
+  public void testFinally(int[] xs, int[] ys) {
+    if (xs.length == 0) return;
+    if (ys.length == 0) return;
+    String s1 = null;
+    String s2 = null;
+    for (int x : xs) {
+      try {
+        if (x == 0) { break; }
+        s1 = "1";
+        for (int y : ys) {
+          if (y == 0) { break; }
+          s2 = "2";
+        }
+      } finally {
+      }
+      s1.hashCode(); // OK
+      s2.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // NPE
+    }
+    s1.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // NPE
+  }
+
+  public void lenCheck(int[] xs, int n, int t) {
+    if (n > 42) return;
+    if (maybe) {}
+    if (n > 0 && (xs == null || xs.length < n)) {
+      return;
+    }
+    if (maybe) {}
+    if (n > 21) return;
+    if (maybe) {}
+    for (int i = 0; i < n; ++i) {
+      xs[i]++; // OK
+    }
+  }
+
+  public void rangetest(int n) {
+    String s = null;
+    if (n < 0 || n > 10) s = "A";
+    if (n > 100) s.hashCode(); // OK
+    if (n == 42) s.hashCode(); // OK
+  }
+
+  public void testFinally2(int[] xs) {
+    String s = null;
+    int i = 0;
+    while (true) {
+      try {
+        int x = xs[i++];
+        if (x == 0) {
+          s = "foo";
+          break;
+        } else if (x == 1) {
+          continue;
+        }
+      } finally {
+      }
+    }
+    s.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
+    // CFG reachability does not distinguish abrupt successors
   }
 }

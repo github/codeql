@@ -17,28 +17,24 @@ import UrlConcatenation
 module OpenUrlRedirect {
   import OpenUrlRedirectCustomizations::OpenUrlRedirect
 
-  /**
-   * A data-flow configuration for reasoning about unvalidated URL redirections.
-   */
-  class Configuration extends DataFlow::Configuration {
-    Configuration() { this = "OpenUrlRedirect" }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
 
-    override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
-
-    override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       // taint steps that do not include flow through fields
-      TaintTracking::localTaintStep(pred, succ) and not TaintTracking::fieldReadStep(pred, succ)
+      TaintTracking::defaultAdditionalTaintStep(pred, succ, _) and
+      not TaintTracking::fieldReadStep(pred, succ)
       or
       // explicit extra taint steps for this query
       any(AdditionalStep s).hasTaintStep(pred, succ)
       or
       // propagate to a URL when its host is assigned to
-      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
+      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
+        w.writesField(succ, f, pred)
       )
       or
       // propagate out of most URL fields, but not `ForceQuery` and `Scheme`
@@ -50,17 +46,20 @@ module OpenUrlRedirect {
       )
     }
 
-    override predicate isBarrierOut(DataFlow::Node node) {
+    predicate isBarrierOut(DataFlow::Node node) {
       // block propagation of this unsafe value when its host is overwritten
-      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(node.getASuccessor(), f, _)
+      exists(Write w, Field f, DataFlow::Node base |
+        f.hasQualifiedName("net/url", "URL", "Host") and
+        w.writesField(base, f, _) and
+        base.(DataFlow::PostUpdateNode).getPreUpdateNode() = node
       )
       or
       hostnameSanitizingPrefixEdge(node, _)
     }
 
-    deprecated override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof BarrierGuard
-    }
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
+
+  /** Tracks taint flow from unvalidated, untrusted data to URL redirections. */
+  module Flow = DataFlow::Global<Config>;
 }

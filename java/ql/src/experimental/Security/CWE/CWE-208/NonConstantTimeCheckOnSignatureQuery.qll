@@ -1,13 +1,14 @@
 /**
  * Provides classes and predicates for queries that detect timing attacks.
  */
+deprecated module;
 
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 
 /** A method call that produces cryptographic result. */
-abstract private class ProduceCryptoCall extends MethodAccess {
+abstract private class ProduceCryptoCall extends MethodCall {
   Expr output;
 
   /** Gets the result of cryptographic operation. */
@@ -20,7 +21,7 @@ abstract private class ProduceCryptoCall extends MethodAccess {
 /** A method call that produces a MAC. */
 private class ProduceMacCall extends ProduceCryptoCall {
   ProduceMacCall() {
-    this.getMethod().getDeclaringType().hasQualifiedName("javax.crypto", "Mac") and
+    this.getMethod().getDeclaringType().hasQualifiedName(javaxOrJakarta() + ".crypto", "Mac") and
     (
       this.getMethod().hasStringSignature(["doFinal()", "doFinal(byte[])"]) and this = output
       or
@@ -51,16 +52,16 @@ private class ProduceSignatureCall extends ProduceCryptoCall {
  */
 private module InitializeEncryptorConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(MethodAccess ma |
-      ma.getMethod().hasQualifiedName("javax.crypto", "Cipher", "init") and
+    exists(MethodCall ma |
+      ma.getMethod().hasQualifiedName(javaxOrJakarta() + ".crypto", "Cipher", "init") and
       ma.getArgument(0).(VarAccess).getVariable().hasName("ENCRYPT_MODE") and
       ma.getQualifier() = source.asExpr()
     )
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod().hasQualifiedName("javax.crypto", "Cipher", "doFinal") and
+    exists(MethodCall ma |
+      ma.getMethod().hasQualifiedName(javaxOrJakarta() + ".crypto", "Cipher", "doFinal") and
       ma.getQualifier() = sink.asExpr()
     )
   }
@@ -72,7 +73,7 @@ private module InitializeEncryptorFlow = DataFlow::Global<InitializeEncryptorCon
 private class ProduceCiphertextCall extends ProduceCryptoCall {
   ProduceCiphertextCall() {
     exists(Method m | m = this.getMethod() |
-      m.getDeclaringType().hasQualifiedName("javax.crypto", "Cipher") and
+      m.getDeclaringType().hasQualifiedName(javaxOrJakarta() + ".crypto", "Cipher") and
       (
         m.hasStringSignature(["doFinal()", "doFinal(byte[])", "doFinal(byte[], int, int)"]) and
         this = output
@@ -95,38 +96,38 @@ private class ProduceCiphertextCall extends ProduceCryptoCall {
 }
 
 /** Holds if `fromNode` to `toNode` is a dataflow step that updates a cryptographic operation. */
-private predicate updateCryptoOperationStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
-  exists(MethodAccess call, Method m |
+private predicate updateCryptoOperationStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(MethodCall call, Method m |
     m = call.getMethod() and
     call.getQualifier() = toNode.asExpr() and
     call.getArgument(0) = fromNode.asExpr()
   |
     m.hasQualifiedName("java.security", "Signature", "update")
     or
-    m.hasQualifiedName("javax.crypto", ["Mac", "Cipher"], "update")
+    m.hasQualifiedName(javaxOrJakarta() + ".crypto", ["Mac", "Cipher"], "update")
     or
-    m.hasQualifiedName("javax.crypto", ["Mac", "Cipher"], "doFinal") and
+    m.hasQualifiedName(javaxOrJakarta() + ".crypto", ["Mac", "Cipher"], "doFinal") and
     not m.hasStringSignature("doFinal(byte[], int)")
   )
 }
 
 /** Holds if `fromNode` to `toNode` is a dataflow step that creates a hash. */
-private predicate createMessageDigestStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+private predicate createMessageDigestStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(MethodCall ma, Method m | m = ma.getMethod() |
     m.getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
     m.hasStringSignature("digest()") and
     ma.getQualifier() = fromNode.asExpr() and
     ma = toNode.asExpr()
   )
   or
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+  exists(MethodCall ma, Method m | m = ma.getMethod() |
     m.getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
     m.hasStringSignature("digest(byte[], int, int)") and
     ma.getQualifier() = fromNode.asExpr() and
     ma.getArgument(0) = toNode.asExpr()
   )
   or
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+  exists(MethodCall ma, Method m | m = ma.getMethod() |
     m.getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
     m.hasStringSignature("digest(byte[])") and
     ma.getArgument(0) = fromNode.asExpr() and
@@ -135,8 +136,8 @@ private predicate createMessageDigestStep(DataFlow2::Node fromNode, DataFlow2::N
 }
 
 /** Holds if `fromNode` to `toNode` is a dataflow step that updates a hash. */
-private predicate updateMessageDigestStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+private predicate updateMessageDigestStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  exists(MethodCall ma, Method m | m = ma.getMethod() |
     m.hasQualifiedName("java.security", "MessageDigest", "update") and
     ma.getArgument(0) = fromNode.asExpr() and
     ma.getQualifier() = toNode.asExpr()
@@ -148,13 +149,13 @@ private predicate updateMessageDigestStep(DataFlow2::Node fromNode, DataFlow2::N
  * such as cipher, MAC or signature.
  */
 private module UserInputInCryptoOperationConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(ProduceCryptoCall call | call.getQualifier() = sink.asExpr())
   }
 
-  predicate isAdditionalFlowStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
+  predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     updateCryptoOperationStep(fromNode, toNode)
     or
     createMessageDigestStep(fromNode, toNode)
@@ -190,7 +191,7 @@ class CryptoOperationSource extends DataFlow::Node {
 }
 
 /** Methods that use a non-constant-time algorithm for comparing inputs. */
-private class NonConstantTimeEqualsCall extends MethodAccess {
+private class NonConstantTimeEqualsCall extends MethodCall {
   NonConstantTimeEqualsCall() {
     this.getMethod()
         .hasQualifiedName("java.lang", "String", ["equals", "contentEquals", "equalsIgnoreCase"]) or
@@ -199,7 +200,7 @@ private class NonConstantTimeEqualsCall extends MethodAccess {
 }
 
 /** A static method that uses a non-constant-time algorithm for comparing inputs. */
-private class NonConstantTimeComparisonCall extends StaticMethodAccess {
+private class NonConstantTimeComparisonCall extends StaticMethodCall {
   NonConstantTimeComparisonCall() {
     this.getMethod().hasQualifiedName("java.util", "Arrays", ["equals", "deepEquals"]) or
     this.getMethod().hasQualifiedName("java.util", "Objects", "deepEquals") or
@@ -214,7 +215,7 @@ private class NonConstantTimeComparisonCall extends StaticMethodAccess {
  * that compare inputs using a non-constant-time algorithm.
  */
 private module UserInputInComparisonConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(NonConstantTimeEqualsCall call |

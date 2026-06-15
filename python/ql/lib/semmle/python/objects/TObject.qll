@@ -6,6 +6,7 @@ private import semmle.python.objects.ObjectInternal
 private import semmle.python.pointsto.PointsTo
 private import semmle.python.pointsto.PointsToContext
 private import semmle.python.internal.CachedStages
+private import semmle.python.pointsto.Context
 
 /**
  * Internal type backing `ObjectInternal` and `Value`
@@ -84,7 +85,7 @@ newtype TObject =
   /** The unicode string `s` */
   TUnicode(string s) {
     // Any string explicitly mentioned in the source code.
-    exists(StrConst str |
+    exists(StringLiteral str |
       s = str.getText() and
       str.isUnicode()
     )
@@ -100,7 +101,7 @@ newtype TObject =
   /** The byte string `s` */
   TBytes(string s) {
     // Any string explicitly mentioned in the source code.
-    exists(StrConst str |
+    exists(StringLiteral str |
       s = str.getText() and
       not str.isUnicode()
     )
@@ -333,36 +334,6 @@ predicate call3(
   arg2 = call.getArg(2)
 }
 
-bindingset[self, function]
-deprecated predicate method_binding(
-  AttrNode instantiation, ObjectInternal self, CallableObjectInternal function,
-  PointsToContext context
-) {
-  exists(ObjectInternal obj, string name | receiver(instantiation, context, obj, name) |
-    exists(ObjectInternal cls |
-      cls = obj.getClass() and
-      cls != ObjectInternal::superType() and
-      cls.attribute(name, function, _) and
-      self = obj
-    )
-    or
-    exists(SuperInstance sup, ClassObjectInternal decl |
-      sup = obj and
-      decl = Types::getMro(self.getClass()).startingAt(sup.getStartClass()).findDeclaringClass(name) and
-      Types::declaredAttribute(decl, name, function, _) and
-      self = sup.getSelf()
-    )
-  )
-}
-
-/** Helper for method_binding */
-pragma[noinline]
-deprecated predicate receiver(
-  AttrNode instantiation, PointsToContext context, ObjectInternal obj, string name
-) {
-  PointsToInternal::pointsTo(instantiation.getObject(name), context, obj, _)
-}
-
 /** Helper self parameters: `def meth(self, ...): ...`. */
 pragma[noinline]
 private predicate self_parameter(
@@ -426,6 +397,12 @@ private predicate neither_class_nor_static_method(Function f) {
   )
 }
 
+/** Join-order helper for `missing_imported_module`. */
+pragma[nomagic]
+private predicate module_has_syntaxerror(Module m) {
+  exists(SyntaxError se | se.getFile() = m.getFile())
+}
+
 predicate missing_imported_module(ControlFlowNode imp, Context ctx, string name) {
   ctx.isImport() and
   imp.(ImportExprNode).getNode().getAnImportedModuleName() = name and
@@ -433,9 +410,9 @@ predicate missing_imported_module(ControlFlowNode imp, Context ctx, string name)
     not exists(Module m | m.getName() = name) and
     not exists(Builtin b | b.isModule() and b.getName() = name)
     or
-    exists(Module m, SyntaxError se |
+    exists(Module m |
       m.getName() = name and
-      se.getFile() = m.getFile()
+      module_has_syntaxerror(m)
     )
   )
   or

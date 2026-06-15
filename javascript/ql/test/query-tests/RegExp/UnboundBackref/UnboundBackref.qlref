@@ -1,1 +1,2 @@
-RegExp/UnboundBackref.ql
+query: RegExp/UnboundBackref.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

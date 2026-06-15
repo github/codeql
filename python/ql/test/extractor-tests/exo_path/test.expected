@@ -1,0 +1,6 @@
+| package1 | path1/package1 |
+| package1.__init__ | path1/package1/__init__.py |
+| package1.module | path1/package1/module.py |
+| package2 | path2/package2 |
+| package2.__init__ | path2/package2/__init__.py |
+| package2.module | path2/package2/module.py |

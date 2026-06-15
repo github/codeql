@@ -14,10 +14,10 @@
  */
 
 import go
-import semmle.go.security.CleartextLogging::CleartextLogging
-import DataFlow::PathGraph
+import semmle.go.security.CleartextLogging
+import CleartextLogging::Flow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from CleartextLogging::Flow::PathNode source, CleartextLogging::Flow::PathNode sink
+where CleartextLogging::Flow::flowPath(source, sink)
 select sink.getNode(), source, sink, "$@ flows to a logging call.", source.getNode(),
-  "Sensitive data returned by " + source.getNode().(Source).describe()
+  "Sensitive data returned by " + source.getNode().(CleartextLogging::Source).describe()

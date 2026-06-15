@@ -6,7 +6,8 @@
  * @problem.severity warning
  * @precision medium
  * @id java/thread-unsafe-dateformat
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       concurrency
  */
@@ -19,7 +20,7 @@ where
   (f.isPublic() or f.isProtected()) and
   dateFormat.hasQualifiedName("java.text", "DateFormat") and
   f.getType().(RefType).hasSupertype*(dateFormat) and
-  exists(MethodAccess m | m.getQualifier().(VarAccess).getVariable() = f)
+  exists(MethodCall m | m.getQualifier().(VarAccess).getVariable() = f)
 select f,
   "Found static field of type " + f.getType().getName() + " in " + f.getDeclaringType().getName() +
     "."

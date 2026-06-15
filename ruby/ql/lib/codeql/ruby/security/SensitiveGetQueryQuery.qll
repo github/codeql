@@ -2,30 +2,28 @@
  * Provides a taint-tracking configuration for detecting flow of query string
  * data to sensitive actions in GET query request handlers.
  *
- * Note, for performance reasons: only import this file if `Configuration` is
- * needed, otherwise `SensitiveGetQueryCustomizations` should be imported
- * instead.
+ * Note, for performance reasons: only import this file if
+ * `SensitiveGetQueryFlow` is needed, otherwise
+ * `SensitiveGetQueryCustomizations` should be imported instead.
  */
 
 private import ruby
 private import codeql.ruby.TaintTracking
 
-/**
- * Provides a taint-tracking configuration for detecting flow of query string
- * data to sensitive actions in GET query request handlers.
- */
-module SensitiveGetQuery {
+private module SensitiveGetQueryConfig implements DataFlow::ConfigSig {
   import SensitiveGetQueryCustomizations::SensitiveGetQuery
 
-  /**
-   * A taint-tracking configuration for reasoning about use of sensitive data
-   * from a GET request query string.
-   */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "SensitiveGetQuery" }
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Disabled since the alert references `Source.getHandler()`
   }
 }
+
+/**
+ * Taint-tracking for reasoning about use of sensitive data from a
+ *  GET request query string.
+ */
+module SensitiveGetQueryFlow = TaintTracking::Global<SensitiveGetQueryConfig>;

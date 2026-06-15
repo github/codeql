@@ -14,11 +14,11 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 import semmle.javascript.security.dataflow.ResourceExhaustionQuery
 import semmle.javascript.heuristics.AdditionalSources
+import ResourceExhaustionFlow::PathGraph
 
-from Configuration dataflow, DataFlow::PathNode source, DataFlow::PathNode sink
-where dataflow.hasFlowPath(source, sink) and source.getNode() instanceof HeuristicSource
+from ResourceExhaustionFlow::PathNode source, ResourceExhaustionFlow::PathNode sink
+where ResourceExhaustionFlow::flowPath(source, sink) and source.getNode() instanceof HeuristicSource
 select sink, source, sink, sink.getNode().(Sink).getProblemDescription() + " from a $@.", source,
   "user-provided value"

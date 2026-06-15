@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 import codeql.Locations
 private import TreeSitter
 private import codeql.ruby.ast.Erb

@@ -1,4 +1,6 @@
 /** This module provides general utility classes and predicates. */
+overlay[local]
+module;
 
 /**
  * A Boolean value.
@@ -16,6 +18,3 @@ string commonTld() {
   // according to ranking by http://google.com/search?q=site:.<<TLD>>
   result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
 }
-
-/** DEPRECATED: Alias for commonTld */
-deprecated string commonTLD() { result = commonTld() }

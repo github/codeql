@@ -12,6 +12,6 @@
 
 import python
 
-from Module m, int n
-where n = m.getMetrics().getNumberOfLinesOfCode()
+from ModuleMetrics m, int n
+where n = m.getNumberOfLinesOfCode()
 select m, n order by n desc

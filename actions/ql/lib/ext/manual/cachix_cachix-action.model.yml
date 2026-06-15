@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["cachix/cachix-action", "*", "input.signingKey", "env.CACHIX_SIGNING_KEY", "taint", "manual"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["cachix/cachix-action", "*", "input.installCommand", "command-injection", "manual"]
+      - ["cachix/cachix-action", "*", "input.cachixBin", "command-injection", "manual"]

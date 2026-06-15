@@ -2,7 +2,8 @@
  * @name Wrong number of arguments in a call
  * @description Using too many or too few arguments in a call to a function will result in a TypeError at runtime.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-685
  * @problem.severity error
@@ -12,6 +13,7 @@
  */
 
 import python
+private import LegacyPointsTo
 import CallArgs
 
 from Call call, FunctionValue func, string too, string should, int limit

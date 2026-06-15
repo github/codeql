@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["dotintent/react-native-ble-plx", "*", "input.REACT_NATIVE_VERSION", "code-injection", "generated"]

@@ -27,7 +27,7 @@ predicate summaryModelRow(
   string package, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind, string provenance, string row
 ) {
-  summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance) and
+  summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance, _) and
   row =
     package + ";" //
       + type + ";" //
@@ -61,7 +61,7 @@ private class CallableToTest extends Callable {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
-      summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) and
+      summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _) and
       this = interpretElement(namespace, type, subtypes, name, signature, ext) and
       this.isPublic() and
       getRootType(this.getDeclaringType()).(RefType).isPublic()
@@ -253,7 +253,7 @@ class TestCase extends TTestCase {
 
   /**
    * Returns a call to `source()` wrapped in `newWith` methods as needed according to `input`.
-   * For example, if the input specification is `ArrayElement of MapValue of Argument[0]`, this
+   * For example, if the `stack` is `Argument[0].MapValue.ArrayElement`, this
    * will return `newWithMapValue(newWithArrayElement(source()))`.
    */
   string getInput(SummaryComponentStack stack) {
@@ -269,7 +269,7 @@ class TestCase extends TTestCase {
 
   /**
    * Returns `out` wrapped in `get` methods as needed according to `output`.
-   * For example, if the output specification is `ArrayElement of MapValue of Argument[0]`, this
+   * For example, if the `componentStack` is `Argument[0].MapValue.ArrayElement`, this
    * will return `getArrayElement(getMapValue(out))`.
    */
   string getOutput(SummaryComponentStack componentStack) {

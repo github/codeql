@@ -3,7 +3,8 @@
  */
 
 import csharp
-import Types::PathGraph
+import utils.test.InlineFlowTest
+import PathGraph
 
 module TypesConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
@@ -19,8 +20,8 @@ module TypesConfig implements DataFlow::ConfigSig {
   }
 }
 
-module Types = DataFlow::Global<TypesConfig>;
+import ValueFlowTest<TypesConfig>
 
-from Types::PathNode source, Types::PathNode sink
-where Types::flowPath(source, sink)
+from PathNode source, PathNode sink
+where flowPath(source, sink)
 select source, source, sink, "$@", sink, sink.toString()

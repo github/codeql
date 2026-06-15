@@ -6,10 +6,74 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.DataFlowImplSpecific
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.Files
 private import semmle.python.Frameworks
 private import semmle.python.security.internal.EncryptionKeySizes
+private import semmle.python.dataflow.new.SensitiveDataSources
+private import codeql.threatmodels.ThreatModels
+private import codeql.concepts.ConceptsShared
+private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.ModelsAsData
+
+private module ConceptsShared = ConceptsMake<Location, PythonDataFlow>;
+
+/**
+ * A data flow source, for a specific threat-model.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `ThreatModelSource::Range` instead.
+ */
+class ThreatModelSource extends DataFlow::Node instanceof ThreatModelSource::Range {
+  /**
+   * Gets a string that represents the source kind with respect to threat modeling.
+   *
+   * See
+   * - https://github.com/github/codeql/blob/main/docs/codeql/reusables/threat-model-description.rst
+   * - https://github.com/github/codeql/blob/main/shared/threat-models/ext/threat-model-grouping.model.yml
+   */
+  string getThreatModel() { result = super.getThreatModel() }
+
+  /** Gets a string that describes the type of this threat-model source. */
+  string getSourceType() { result = super.getSourceType() }
+}
+
+/** Provides a class for modeling new sources for specific threat-models. */
+module ThreatModelSource {
+  /**
+   * A data flow source, for a specific threat-model.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `ThreatModelSource` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets a string that represents the source kind with respect to threat modeling.
+     *
+     * See
+     * - https://github.com/github/codeql/blob/main/docs/codeql/reusables/threat-model-description.rst
+     * - https://github.com/github/codeql/blob/main/shared/threat-models/ext/threat-model-grouping.model.yml
+     */
+    abstract string getThreatModel();
+
+    /** Gets a string that describes the type of this threat-model source. */
+    abstract string getSourceType();
+  }
+}
+
+/**
+ * A data flow source that is enabled in the current threat model configuration.
+ */
+class ActiveThreatModelSource extends ThreatModelSource {
+  ActiveThreatModelSource() {
+    exists(string kind |
+      currentThreatModel(kind) and
+      this.getThreatModel() = kind
+    )
+  }
+}
 
 /**
  * A data-flow node that executes an operating system command,
@@ -54,6 +118,16 @@ module SystemCommandExecution {
 class FileSystemAccess extends DataFlow::Node instanceof FileSystemAccess::Range {
   /** Gets an argument to this file system access that is interpreted as a path. */
   DataFlow::Node getAPathArgument() { result = super.getAPathArgument() }
+
+  /**
+   * Gets an argument to this file system access that is interpreted as a path
+   * which is vulnerable to path injection.
+   *
+   * By default all path arguments are considered vulnerable, but this can be overridden to
+   * exclude certain arguments that are known to be safe, for example because they are
+   * restricted to a specific directory.
+   */
+  DataFlow::Node getAVulnerablePathArgument() { result = super.getAVulnerablePathArgument() }
 }
 
 /** Provides a class for modeling new file system access APIs. */
@@ -68,6 +142,16 @@ module FileSystemAccess {
   abstract class Range extends DataFlow::Node {
     /** Gets an argument to this file system access that is interpreted as a path. */
     abstract DataFlow::Node getAPathArgument();
+
+    /**
+     * Gets an argument to this file system access that is interpreted as a path
+     * which is vulnerable to path injection.
+     *
+     * By default all path arguments are considered vulnerable, but this can be overridden to
+     * exclude certain arguments that are known to be safe, for example because they are
+     * restricted to a specific directory.
+     */
+    DataFlow::Node getAVulnerablePathArgument() { result = this.getAPathArgument() }
   }
 }
 
@@ -125,7 +209,7 @@ module Path {
     }
   }
 
-  /** A data-flow node that checks that a path is safe to access. */
+  /** A data-flow node that checks that a path is safe to access in some way, for example by having a controlled prefix. */
   class SafeAccessCheck extends DataFlow::ExprNode {
     SafeAccessCheck() { this = DataFlow::BarrierGuard<safeAccessCheck/3>::getABarrierNode() }
   }
@@ -136,7 +220,7 @@ module Path {
 
   /** Provides a class for modeling new path safety checks. */
   module SafeAccessCheck {
-    /** A data-flow node that checks that a path is safe to access. */
+    /** A data-flow node that checks that a path is safe to access in some way, for example by having a controlled prefix. */
     abstract class Range extends DataFlow::GuardNode {
       /** Holds if this guard validates `node` upon evaluating to `branch`. */
       abstract predicate checks(ControlFlowNode node, boolean branch);
@@ -200,10 +284,11 @@ module Decoding {
 }
 
 private class DecodingAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
-  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
     exists(Decoding decoding |
       nodeFrom = decoding.getAnInput() and
-      nodeTo = decoding.getOutput()
+      nodeTo = decoding.getOutput() and
+      model = "Decoding-" + decoding.getFormat()
     )
   }
 }
@@ -376,6 +461,68 @@ module SqlExecution {
     /** Gets the argument that specifies the SQL statements to be executed. */
     abstract DataFlow::Node getSql();
   }
+}
+
+/** Provides a class for modeling NoSQL execution APIs. */
+module NoSqlExecution {
+  /**
+   * A data-flow node that executes NoSQL queries.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `NoSqlExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the NoSQL query to be executed. */
+    abstract DataFlow::Node getQuery();
+
+    /** Holds if this query will unpack/interpret a dictionary */
+    abstract predicate interpretsDict();
+
+    /** Holds if this query can be dangerous when run on a user-controlled string */
+    abstract predicate vulnerableToStrings();
+  }
+}
+
+/**
+ * A data-flow node that executes NoSQL queries.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `NoSqlExecution::Range` instead.
+ */
+class NoSqlExecution extends DataFlow::Node instanceof NoSqlExecution::Range {
+  /** Gets the argument that specifies the NoSQL query to be executed. */
+  DataFlow::Node getQuery() { result = super.getQuery() }
+
+  /** Holds if this query will unpack/interpret a dictionary */
+  predicate interpretsDict() { super.interpretsDict() }
+
+  /** Holds if this query can be dangerous when run on a user-controlled string */
+  predicate vulnerableToStrings() { super.vulnerableToStrings() }
+}
+
+/** Provides classes for modeling NoSql sanitization-related APIs. */
+module NoSqlSanitizer {
+  /**
+   * A data-flow node that collects functions sanitizing NoSQL queries.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `NoSQLSanitizer` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the NoSql query to be sanitized. */
+    abstract DataFlow::Node getAnInput();
+  }
+}
+
+/**
+ * A data-flow node that collects functions sanitizing NoSQL queries.
+ *
+ * Extend this class to model new APIs. If you want to refine existing API models,
+ * extend `NoSQLSanitizer::Range` instead.
+ */
+class NoSqlSanitizer extends DataFlow::Node instanceof NoSqlSanitizer::Range {
+  /** Gets the argument that specifies the NoSql query to be sanitized. */
+  DataFlow::Node getAnInput() { result = super.getAnInput() }
 }
 
 /**
@@ -623,9 +770,6 @@ module Ldap {
   }
 }
 
-/** DEPRECATED: Alias for Ldap */
-deprecated module LDAP = Ldap;
-
 /**
  * A data-flow node that escapes meta-characters, which could be used to prevent
  * injection attacks.
@@ -680,6 +824,9 @@ module Escaping {
   /** Gets the escape-kind for escaping a string so it can safely be included in HTML. */
   string getHtmlKind() { result = "html" }
 
+  /** Gets the escape-kind for escaping a string so it can safely be included in XML. */
+  string getXmlKind() { result = "xml" }
+
   /** Gets the escape-kind for escaping a string so it can safely be included in a regular expression. */
   string getRegexKind() { result = "regex" }
 
@@ -712,6 +859,15 @@ class HtmlEscaping extends Escaping {
 
 /**
  * An escape of a string so it can be safely included in
+ * the body of an XML element, for example, replacing `&` and `<>` in
+ * `<foo>&xxe;<foo>`.
+ */
+class XmlEscaping extends Escaping {
+  XmlEscaping() { super.getKind() = Escaping::getXmlKind() }
+}
+
+/**
+ * An escape of a string so it can be safely included in
  * the body of a regex.
  */
 class RegexEscaping extends Escaping {
@@ -731,6 +887,31 @@ class LdapDnEscaping extends Escaping {
  */
 class LdapFilterEscaping extends Escaping {
   LdapFilterEscaping() { super.getKind() = Escaping::getLdapFilterKind() }
+}
+
+/**
+ * A data-flow node that constructs a template in a templating engine.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `TemplateConstruction::Range` instead.
+ */
+class TemplateConstruction extends DataFlow::Node instanceof TemplateConstruction::Range {
+  /** Gets the argument that specifies the template source. */
+  DataFlow::Node getSourceArg() { result = super.getSourceArg() }
+}
+
+/** Provides classes for modeling template construction APIs. */
+module TemplateConstruction {
+  /**
+   * A data-flow node that constructs a template in a templating engine.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `TemplateConstruction` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the template source. */
+    abstract DataFlow::Node getSourceArg();
+  }
 }
 
 /** Provides classes for modeling HTTP-related APIs. */
@@ -784,7 +965,7 @@ module Http {
 
         /** Gets the URL pattern for this route, if it can be statically determined. */
         string getUrlPattern() {
-          exists(StrConst str |
+          exists(StringLiteral str |
             this.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(str) and
             result = str.getText()
           )
@@ -854,7 +1035,10 @@ module Http {
 
       override Parameter getARoutedParameter() {
         result = rs.getARoutedParameter() and
-        result in [this.getArg(_), this.getArgByName(_)]
+        result in [
+            this.getArg(_), this.getArgByName(_), this.getVararg().(Parameter),
+            this.getKwarg().(Parameter)
+          ]
       }
 
       override string getFramework() { result = rs.getFramework() }
@@ -909,7 +1093,7 @@ module Http {
 
         /** Gets the mimetype of this HTTP response, if it can be statically determined. */
         string getMimetype() {
-          exists(StrConst str |
+          exists(StringLiteral str |
             this.getMimetypeOrContentTypeArg().getALocalSource() = DataFlow::exprNode(str) and
             result = str.getText().splitAt(";", 0)
           )
@@ -952,6 +1136,162 @@ module Http {
     }
 
     /**
+     * A data-flow node that sets a header in an HTTP response.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `ResponseHeaderWrite::Range` instead.
+     */
+    class ResponseHeaderWrite extends DataFlow::Node instanceof ResponseHeaderWrite::Range {
+      /**
+       * Gets the argument containing the header name.
+       */
+      DataFlow::Node getNameArg() { result = super.getNameArg() }
+
+      /**
+       * Gets the argument containing the header value.
+       */
+      DataFlow::Node getValueArg() { result = super.getValueArg() }
+
+      /**
+       * Holds if newlines are accepted in the header name argument.
+       */
+      predicate nameAllowsNewline() { super.nameAllowsNewline() }
+
+      /**
+       * Holds if newlines are accepted in the header value argument.
+       */
+      predicate valueAllowsNewline() { super.valueAllowsNewline() }
+    }
+
+    /** Provides a class for modeling header writes on HTTP responses. */
+    module ResponseHeaderWrite {
+      /**
+       *A data-flow node that sets a header in an HTTP response.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `ResponseHeaderWrite` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the argument containing the header name.
+         */
+        abstract DataFlow::Node getNameArg();
+
+        /**
+         * Gets the argument containing the header value.
+         */
+        abstract DataFlow::Node getValueArg();
+
+        /**
+         * Holds if newlines are accepted in the header name argument.
+         */
+        abstract predicate nameAllowsNewline();
+
+        /**
+         * Holds if newlines are accepted in the header value argument.
+         */
+        abstract predicate valueAllowsNewline();
+      }
+    }
+
+    /**
+     * A data-flow node that sets multiple headers in an HTTP response using a dict or a list of tuples.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `ResponseHeaderBulkWrite::Range` instead.
+     */
+    class ResponseHeaderBulkWrite extends DataFlow::Node instanceof ResponseHeaderBulkWrite::Range {
+      /**
+       * Gets the argument containing the headers dictionary.
+       */
+      DataFlow::Node getBulkArg() { result = super.getBulkArg() }
+
+      /**
+       * Holds if newlines are accepted in the header name argument.
+       */
+      predicate nameAllowsNewline() { super.nameAllowsNewline() }
+
+      /**
+       * Holds if newlines are accepted in the header value argument.
+       */
+      predicate valueAllowsNewline() { super.valueAllowsNewline() }
+    }
+
+    /** Provides a class for modeling bulk header writes on HTTP responses. */
+    module ResponseHeaderBulkWrite {
+      /**
+       * A data-flow node that sets multiple headers in an HTTP response using a dict.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `ResponseHeaderBulkWrite` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the argument containing the headers dictionary.
+         */
+        abstract DataFlow::Node getBulkArg();
+
+        /**
+         * Holds if newlines are accepted in the header name argument.
+         */
+        abstract predicate nameAllowsNewline();
+
+        /**
+         * Holds if newlines are accepted in the header value argument.
+         */
+        abstract predicate valueAllowsNewline();
+      }
+    }
+
+    /** A key-value pair in a literal for a bulk header update, considered as a single header update. */
+    private class HeaderBulkWriteDictLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
+    {
+      KeyValuePair item;
+
+      HeaderBulkWriteDictLiteral() {
+        exists(Dict dict | DataFlow::localFlow(DataFlow::exprNode(dict), super.getBulkArg()) |
+          item = dict.getAnItem()
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result.asExpr() = item.getKey() }
+
+      override DataFlow::Node getValueArg() { result.asExpr() = item.getValue() }
+
+      override predicate nameAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
+      }
+
+      override predicate valueAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
+      }
+    }
+
+    /** A tuple in a list for a bulk header update, considered as a single header update. */
+    private class HeaderBulkWriteListLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
+    {
+      Tuple item;
+
+      HeaderBulkWriteListLiteral() {
+        exists(List list | DataFlow::localFlow(DataFlow::exprNode(list), super.getBulkArg()) |
+          item = list.getAnElt()
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result.asExpr() = item.getElt(0) }
+
+      override DataFlow::Node getValueArg() { result.asExpr() = item.getElt(1) }
+
+      override predicate nameAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
+      }
+
+      override predicate valueAllowsNewline() {
+        Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
+      }
+    }
+
+    /**
      * A data-flow node that sets a cookie in an HTTP response.
      *
      * Extend this class to refine existing API models. If you want to model new APIs,
@@ -972,6 +1312,89 @@ module Http {
        * Gets the argument, if any, specifying the cookie value.
        */
       DataFlow::Node getValueArg() { result = super.getValueArg() }
+
+      /** Holds if the name of this cookie indicates it may contain sensitive information. */
+      predicate isSensitive() {
+        exists(DataFlow::Node name |
+          name = [this.getNameArg(), this.getHeaderArg()] and
+          (
+            DataFlow::localFlow(any(SensitiveDataSource src), name)
+            or
+            name = sensitiveLookupStringConst(_)
+          )
+        )
+      }
+
+      /**
+       * Holds if the `Secure` flag of the cookie is known to have a value of `b`.
+       */
+      predicate hasSecureFlag(boolean b) { super.hasSecureFlag(b) }
+
+      /**
+       * Holds if the `HttpOnly` flag of the cookie is known to have a value of `b`.
+       */
+      predicate hasHttpOnlyFlag(boolean b) { super.hasHttpOnlyFlag(b) }
+
+      /**
+       * Holds if the `SameSite` attribute of the cookie is known to have a value of `v`.
+       */
+      predicate hasSameSiteAttribute(CookieWrite::SameSiteValue v) { super.hasSameSiteAttribute(v) }
+    }
+
+    /**
+     * A dataflow call node to a method that sets a cookie in an http response,
+     * and has common keyword arguments `secure`, `httponly`, and `samesite` to set the attributes of the cookie.
+     *
+     * See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+     */
+    abstract class SetCookieCall extends CookieWrite::Range, DataFlow::CallCfgNode {
+      override predicate hasSecureFlag(boolean b) {
+        super.hasSecureFlag(b)
+        or
+        exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("secure") |
+          DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
+          b = bool.booleanValue()
+        )
+        or
+        not exists(this.getArgByName("secure")) and
+        not exists(this.getKwargs()) and
+        b = false
+      }
+
+      override predicate hasHttpOnlyFlag(boolean b) {
+        super.hasHttpOnlyFlag(b)
+        or
+        exists(DataFlow::Node arg, BooleanLiteral bool | arg = this.getArgByName("httponly") |
+          DataFlow::localFlow(DataFlow::exprNode(bool), arg) and
+          b = bool.booleanValue()
+        )
+        or
+        not exists(this.getArgByName("httponly")) and
+        not exists(this.getKwargs()) and
+        b = false
+      }
+
+      override predicate hasSameSiteAttribute(CookieWrite::SameSiteValue v) {
+        super.hasSameSiteAttribute(v)
+        or
+        exists(DataFlow::Node arg, StringLiteral str | arg = this.getArgByName("samesite") |
+          DataFlow::localFlow(DataFlow::exprNode(str), arg) and
+          (
+            str.getText().toLowerCase() = "strict" and
+            v instanceof CookieWrite::SameSiteStrict
+            or
+            str.getText().toLowerCase() = "lax" and
+            v instanceof CookieWrite::SameSiteLax
+            or
+            str.getText().toLowerCase() = "none" and
+            v instanceof CookieWrite::SameSiteNone
+          )
+        )
+        or
+        not exists(this.getArgByName("samesite")) and
+        not exists(this.getKwargs()) and
+        v instanceof CookieWrite::SameSiteLax // Lax is the default
+      }
     }
 
     /** Provides a class for modeling new cookie writes on HTTP responses. */
@@ -1000,6 +1423,165 @@ module Http {
          * Gets the argument, if any, specifying the cookie value.
          */
         abstract DataFlow::Node getValueArg();
+
+        /**
+         * Holds if the `Secure` flag of the cookie is known to have a value of `b`.
+         */
+        predicate hasSecureFlag(boolean b) {
+          exists(StringLiteral sl |
+            // `sl` is likely a substring of the header
+            TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            sl.getText().regexpMatch("(?i).*;\\s*secure(;.*|\\s*)") and
+            b = true
+            or
+            // `sl` is the entire header
+            DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            not sl.getText().regexpMatch("(?i).*;\\s*secure(;.*|\\s*)") and
+            b = false
+          )
+        }
+
+        /**
+         * Holds if the `HttpOnly` flag of the cookie is known to have a value of `b`.
+         */
+        predicate hasHttpOnlyFlag(boolean b) {
+          exists(StringLiteral sl |
+            // `sl` is likely a substring of the header
+            TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            sl.getText().regexpMatch("(?i).*;\\s*httponly(;.*|\\s*)") and
+            b = true
+            or
+            // `sl` is the entire header
+            DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            not sl.getText().regexpMatch("(?i).*;\\s*httponly(;.*|\\s*)") and
+            b = false
+          )
+        }
+
+        /**
+         * Holds if the `SameSite` flag of the cookie is known to have a value of `v`.
+         */
+        predicate hasSameSiteAttribute(SameSiteValue v) {
+          exists(StringLiteral sl |
+            // `sl` is likely a substring of the header
+            TaintTracking::localTaint(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            (
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=strict(;.*|\\s*)") and
+              v instanceof SameSiteStrict
+              or
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=lax(;.*|\\s*)") and
+              v instanceof SameSiteLax
+              or
+              sl.getText().regexpMatch("(?i).*;\\s*samesite=none(;.*|\\s*)") and
+              v instanceof SameSiteNone
+            )
+            or
+            // `sl` is the entire header
+            DataFlow::localFlow(DataFlow::exprNode(sl), this.getHeaderArg()) and
+            not sl.getText().regexpMatch("(?i).*;\\s*samesite=(strict|lax|none)(;.*|\\s*)") and
+            v instanceof SameSiteLax // Lax is the default
+          )
+        }
+      }
+
+      private newtype TSameSiteValue =
+        TSameSiteStrict() or
+        TSameSiteLax() or
+        TSameSiteNone()
+
+      /** A possible value for the SameSite attribute of a cookie. */
+      class SameSiteValue extends TSameSiteValue {
+        /** Gets a string representation of this value. */
+        string toString() { none() }
+      }
+
+      /** A `Strict` value of the `SameSite` attribute. */
+      class SameSiteStrict extends SameSiteValue, TSameSiteStrict {
+        override string toString() { result = "Strict" }
+      }
+
+      /** A `Lax` value of the `SameSite` attribute. */
+      class SameSiteLax extends SameSiteValue, TSameSiteLax {
+        override string toString() { result = "Lax" }
+      }
+
+      /** A `None` value of the `SameSite` attribute. */
+      class SameSiteNone extends SameSiteValue, TSameSiteNone {
+        override string toString() { result = "None" }
+      }
+    }
+
+    /** A write to a `Set-Cookie` header that sets a cookie directly. */
+    private class CookieHeaderWrite extends CookieWrite::Range instanceof Http::Server::ResponseHeaderWrite
+    {
+      CookieHeaderWrite() {
+        exists(StringLiteral str |
+          str.getText().toLowerCase() = "set-cookie" and
+          DataFlow::exprNode(str)
+              .(DataFlow::LocalSourceNode)
+              .flowsTo(this.(Http::Server::ResponseHeaderWrite).getNameArg())
+        )
+      }
+
+      override DataFlow::Node getNameArg() { none() }
+
+      override DataFlow::Node getHeaderArg() {
+        result = this.(Http::Server::ResponseHeaderWrite).getValueArg()
+      }
+
+      override DataFlow::Node getValueArg() { none() }
+    }
+
+    /**
+     * A data-flow node that enables or disables CORS
+     * in a global manner.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `CorsMiddleware::Range` instead.
+     */
+    class CorsMiddleware extends DataFlow::Node instanceof CorsMiddleware::Range {
+      /**
+       * Gets the string corresponding to the middleware
+       */
+      string getMiddlewareName() { result = super.getMiddlewareName() }
+
+      /**
+       * Gets the dataflow node corresponding to the allowed CORS origins
+       */
+      DataFlow::Node getOrigins() { result = super.getOrigins() }
+
+      /**
+       * Gets the boolean value corresponding to if CORS credentials is enabled
+       * (`true`) or disabled (`false`) by this node.
+       */
+      DataFlow::Node getCredentialsAllowed() { result = super.getCredentialsAllowed() }
+    }
+
+    /** Provides a class for modeling new CORS middleware APIs. */
+    module CorsMiddleware {
+      /**
+       * A data-flow node that enables or disables Cross-site request forgery protection
+       * in a global manner.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `CorsMiddleware` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the name corresponding to the middleware
+         */
+        abstract string getMiddlewareName();
+
+        /**
+         * Gets the strings corresponding to the origins allowed by the cors policy
+         */
+        abstract DataFlow::Node getOrigins();
+
+        /**
+         * Gets the boolean value corresponding to if CORS credentials is enabled
+         * (`true`) or disabled (`false`) by this node.
+         */
+        abstract DataFlow::Node getCredentialsAllowed();
       }
     }
 
@@ -1075,13 +1657,37 @@ module Http {
     }
   }
 
-  import semmle.python.internal.ConceptsShared::Http::Client as Client
+  import ConceptsShared::Http::Client as Client
+
   // TODO: investigate whether we should treat responses to client requests as
   // remote-flow-sources in general.
-}
+  /**
+   * An HTTP request modeled from `request-forgery` sinks, modeled using MaD.
+   */
+  class HttpClientRequestFromModel extends Http::Client::Request::Range instanceof API::CallNode {
+    DataFlow::Node urlArg;
 
-/** DEPRECATED: Alias for Http */
-deprecated module HTTP = Http;
+    HttpClientRequestFromModel() {
+      (
+        this.getArg(_) = urlArg
+        or
+        this.getArgByName(_) = urlArg
+      ) and
+      ModelOutput::sinkNode(urlArg, "request-forgery")
+    }
+
+    override DataFlow::Node getAUrlPart() { result = urlArg }
+
+    override string getFramework() { result = "MaD" }
+
+    override predicate disablesCertificateValidation(
+      DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+    ) {
+      // NOTE: if you need to define this, you have to special case it for every possible API in MaD
+      none()
+    }
+  }
+}
 
 /**
  * Provides models for cryptographic things.
@@ -1186,5 +1792,5 @@ module Cryptography {
     }
   }
 
-  import semmle.python.internal.ConceptsShared::Cryptography
+  import ConceptsShared::Cryptography
 }

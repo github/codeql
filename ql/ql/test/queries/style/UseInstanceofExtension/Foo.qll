@@ -22,6 +22,8 @@ class Inst3 extends string {
   Range range;
 
   Inst3() { this = range }
+
+  Range getRange() { result = range }
 }
 
 class Inst4 extends string {

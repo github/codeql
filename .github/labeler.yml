@@ -11,17 +11,16 @@ Go:
   - change-notes/**/*go.*
 
 Java:
-  - any: [ 'java/**/*', '!java/kotlin-extractor/**/*', '!java/kotlin-explorer/**/*', '!java/ql/test/kotlin/**/*' ]
+  - any: [ 'java/**/*', '!java/kotlin-extractor/**/*', '!java/ql/test/kotlin/**/*' ]
   - change-notes/**/*java.*
 
 JS:
-  - any: [ 'javascript/**/*', '!javascript/ql/experimental/adaptivethreatmodeling/**/*' ]
+  - any: [ 'javascript/**/*' ]
   - change-notes/**/*javascript*
 
 Kotlin:
   - java/kotlin-extractor/**/*
-  - java/kotlin-explorer/**/*
-  - java/ql/test/kotlin/**/*
+  - java/ql/test-kotlin*/**/*
 
 Python:
   - python/**/*
@@ -31,9 +30,17 @@ Ruby:
   - ruby/**/*
   - change-notes/**/*ruby*
 
+Rust:
+  - rust/**/*
+  - change-notes/**/*rust*
+
 Swift:
   - swift/**/*
   - change-notes/**/*swift*
+
+Actions:
+  - actions/**/*
+  - change-notes/**/*actions*
 
 documentation:
   - "**/*.qhelp"
@@ -46,11 +53,4 @@ documentation:
 
 # Since these are all shared files that need to be synced, just pick _one_ copy of each.
 "DataFlow Library":
-  - "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl.qll"
-  - "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll"
-  - "java/ql/lib/semmle/code/java/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
-  - "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll"
-  - "java/ql/lib/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll"
-
-"ATM":
-  - javascript/ql/experimental/adaptivethreatmodeling/**/*
+  - "shared/dataflow/**/*"

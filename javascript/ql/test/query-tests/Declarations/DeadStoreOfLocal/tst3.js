@@ -1,2 +1,1 @@
-// NOT OK
-exports = module.exports = { a: 23 };
+exports = module.exports = { a: 23 }; // $ Alert

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["chia-network/chia-blockchain", "*", "input.command-prefix", "code-injection", "generated"]

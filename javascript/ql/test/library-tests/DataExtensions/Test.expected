@@ -1,7 +1,0 @@
-commandInjectionSinks
-| execa.example.js:2:7:2:9 | cmd |
-sqlInjectionSinks
-| connection.example.ts:4:20:4:20 | q |
-| connection.example.ts:9:18:9:18 | q |
-remoteFlowSources
-| message.example.js:1:46:1:50 | event |

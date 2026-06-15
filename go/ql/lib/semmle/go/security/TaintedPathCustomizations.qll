@@ -5,6 +5,7 @@
 
 import go
 import semmle.go.dataflow.barrierguardutil.RegexpCheck
+import DataFlow
 
 /**
  * Provides extension points for customizing the taint tracking configuration for reasoning about
@@ -44,28 +45,20 @@ module TaintedPath {
   }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for path-traversal vulnerabilities, as a `DataFlow::BarrierGuard`.
-   *
-   * Use this class if you want all `TaintedPath::SanitizerGuard`s as a `DataFlow::BarrierGuard`,
-   * e.g. to use directly in a `DataFlow::Configuration::isSanitizerGuard` method. If you want to
-   * provide a new instance of a tainted path sanitizer, extend `TaintedPath::SanitizerGuard` instead.
+   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
    */
-  deprecated class SanitizerGuardAsBarrierGuard extends DataFlow::BarrierGuard {
-    SanitizerGuard guardImpl;
-
-    SanitizerGuardAsBarrierGuard() { this = guardImpl }
-
-    override predicate checks(Expr e, boolean branch) { guardImpl.checks(e, branch) }
-  }
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
 
   /** A source of untrusted data, considered as a taint source for path traversal. */
-  class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
   /** A path expression, considered as a taint sink for path traversal. */
   class PathAsSink extends Sink {
     PathAsSink() { this = any(FileSystemAccess fsa).getAPathArgument() }
+  }
+
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, "path-injection") }
   }
 
   /**
@@ -78,29 +71,34 @@ module TaintedPath {
   }
 
   /**
-   * A call to `filepath.Rel`, considered as a sanitizer for path traversal.
+   * A call to `filepath.Clean("/" + e)`, considered to sanitize `e` against path traversal.
    */
-  class FilepathRelSanitizer extends Sanitizer {
-    FilepathRelSanitizer() {
-      exists(Function f, FunctionOutput outp |
-        f.hasQualifiedName("path/filepath", "Rel") and
-        outp.isResult(0) and
-        this = outp.getNode(f.getACall())
+  class FilepathCleanSanitizer extends Sanitizer {
+    FilepathCleanSanitizer() {
+      exists(DataFlow::CallNode cleanCall, StringOps::Concatenation concatNode |
+        cleanCall = any(Function f | f.hasQualifiedName("path/filepath", "Clean")).getACall() and
+        concatNode = cleanCall.getArgument(0) and
+        concatNode.getOperand(0).getStringValue().prefix(1) = ["/", "\\"] and
+        this = cleanCall.getResult()
       )
     }
   }
 
   /**
-   * A call to `[file]path.Clean("/" + e)`, considered to sanitize `e` against path traversal.
+   * A call to `mux.Vars(path)`, considered to sanitize `path` against path traversal.
+   * Only enabled when `SkipClean` is not set true.
    */
-  class FilepathCleanSanitizer extends Sanitizer {
-    FilepathCleanSanitizer() {
-      exists(DataFlow::CallNode cleanCall, StringOps::Concatenation concatNode |
-        cleanCall =
-          any(Function f | f.hasQualifiedName(["path", "path/filepath"], "Clean")).getACall() and
-        concatNode = cleanCall.getArgument(0) and
-        concatNode.getOperand(0).asExpr().(StringLit).getValue() = "/" and
-        this = cleanCall.getResult()
+  class MuxVarsSanitizer extends Sanitizer {
+    MuxVarsSanitizer() {
+      exists(Function m |
+        m.hasQualifiedName(package("github.com/gorilla/mux", ""), "Vars") and
+        this = m.getACall().getResult()
+      ) and
+      not exists(CallExpr f |
+        f.getTarget()
+            .(Method)
+            .hasQualifiedName(package("github.com/gorilla/mux", ""), "Router", "SkipClean") and
+        f.getArgument(0).getBoolValue() = true
       )
     }
   }
@@ -121,6 +119,14 @@ module TaintedPath {
       e = this.getArgument(0).asExpr() and
       branch = false
     }
+  }
+
+  /**
+   * A replacement of the form `!strings.ReplaceAll(nd, "..")` or `!strings.ReplaceAll(nd, ".")`, considered as a sanitizer for
+   * path traversal.
+   */
+  class DotDotReplaceAll extends StringOps::ReplaceAll, Sanitizer {
+    DotDotReplaceAll() { this.getReplacedString() = ["..", "."] }
   }
 
   /**
@@ -189,5 +195,21 @@ module TaintedPath {
     RegexpCheckAsSanitizerGuard() { regexpFunctionChecksExpr(this, _, _) }
 
     override predicate checks(Expr e, boolean branch) { regexpFunctionChecksExpr(this, e, branch) }
+  }
+
+  /**
+   * A call of the form `filepath.IsLocal(path)` considered as a sanitizer guard for `path`.
+   */
+  class IsLocalCheck extends SanitizerGuard, DataFlow::CallNode {
+    IsLocalCheck() {
+      exists(Function f |
+        f.hasQualifiedName("path/filepath", "IsLocal") and
+        this = f.getACall()
+      )
+    }
+
+    override predicate checks(Expr e, boolean branch) {
+      e = this.getArgument(0).asExpr() and branch = true
+    }
   }
 }

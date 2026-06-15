@@ -4,7 +4,7 @@
  * @kind problem
  * @id java/android/websettings-javascript-enabled
  * @problem.severity warning
- * @security-severity 6.1
+ * @security-severity 7.8
  * @precision medium
  * @tags security
  *       external/cwe/cwe-079
@@ -13,7 +13,7 @@
 import java
 import semmle.code.java.frameworks.android.WebView
 
-from MethodAccess ma
+from MethodCall ma
 where
   ma.getMethod() instanceof AllowJavaScriptMethod and
   ma.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true

@@ -4,9 +4,10 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/debugger-statement
- * @tags efficiency
- *       maintainability
- *       language-features
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       performance
  *       external/cwe/cwe-489
  * @precision medium
  */

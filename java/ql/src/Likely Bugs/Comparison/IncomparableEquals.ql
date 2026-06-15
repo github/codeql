@@ -6,14 +6,16 @@
  * @problem.severity error
  * @precision very-high
  * @id java/equals-on-unrelated-types
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
+ *       external/cwe/cwe-571
  */
 
 import java
 
 /** A call to an `equals` method. */
-class EqualsCall extends MethodAccess {
+class EqualsCall extends MethodCall {
   EqualsCall() { this.getMethod() instanceof EqualsMethod }
 
   /**
@@ -22,7 +24,7 @@ class EqualsCall extends MethodAccess {
    */
   predicate whitelisted() {
     // Allow tests and assertions to verify that `equals` methods return `false`.
-    this.getParent*().(MethodAccess).getMethod().getName().matches("assert%") or
+    this.getParent*().(MethodCall).getMethod().getName().matches("assert%") or
     this.getEnclosingStmt() instanceof AssertStmt
   }
 

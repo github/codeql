@@ -3,7 +3,8 @@
 </template>
 <script>
   export default {
-    data: function() { return { dataA: 42 } }
+    props: ['input'],
+    data: function() { return { dataA: 42 + this.input } }
   }
 </script>
 <style>

@@ -2,9 +2,9 @@
  * @name Overwriting attribute in super-class or sub-class
  * @description Assignment to self attribute overwrites attribute previously defined in subclass or superclass `__init__` method.
  * @kind problem
- * @tags reliability
- *       maintainability
- *       modularity
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity warning
  * @sub-severity low
  * @precision medium
@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 class InitCallStmt extends ExprStmt {
   InitCallStmt() {

@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["trezor/trezor-firmware", "*", "input.lang", "code-injection", "generated"]
+     - ["trezor/trezor-firmware", "*", "input.model", "code-injection", "generated"]
+     - ["trezor/trezor-firmware", "*", "input.status", "code-injection", "generated"]
+     - ["trezor/trezor-firmware", "*", "input.full-deps", "code-injection", "generated"]

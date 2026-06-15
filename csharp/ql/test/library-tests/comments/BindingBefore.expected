@@ -1,3 +1,4 @@
+| comments1.cs:1:16:1:46 | // ... | comments1.cs:1:9:1:14 | ... ...; | A mapped single-line comment |
 | comments1.cs:11:1:11:25 | /* ... */ | comments1.cs:9:7:9:7 | C | A multiline comment |
 | comments1.cs:13:1:13:20 | // ... | comments1.cs:9:7:9:7 | C | 2) Comment blocks |
 | comments1.cs:15:1:15:38 | // ... | comments1.cs:9:7:9:7 | C | A line on its own is a commentblock |
@@ -45,7 +46,7 @@
 | comments2.cs:107:23:108:26 | // ... | comments2.cs:107:20:107:20 | E | E |
 | comments2.cs:118:5:118:21 | // ... | comments2.cs:111:5:116:5 | {...} | GenericClass<> |
 | comments2.cs:121:17:121:20 | // ... | comments2.cs:121:13:121:13 | f | f |
-| comments2.cs:124:5:124:16 | // ... | comments2.cs:119:11:119:25 | GenericClass<> | GenericFn |
+| comments2.cs:124:5:124:16 | // ... | comments2.cs:119:11:119:25 | GenericClass`1 | GenericFn |
 | comments2.cs:127:20:127:23 | // ... | comments2.cs:127:9:127:18 | ... ...; | x |
 | comments2.cs:132:1:132:21 | // ... | comments2.cs:11:7:11:8 | C2 | End of comment2.cs |
 | trivia.cs:25:14:25:38 | // ... | trivia.cs:24:9:24:16 | ... ...; | numbering not affected |

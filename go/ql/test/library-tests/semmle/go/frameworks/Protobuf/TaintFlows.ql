@@ -1,27 +1,20 @@
 import go
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
+import utils.test.InlineFlowTest
 
-class UntrustedFunction extends Function {
-  UntrustedFunction() { this.getName() = ["getUntrustedString", "getUntrustedBytes"] }
-}
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(Function fn | fn.hasQualifiedName(_, ["getUntrustedString", "getUntrustedBytes"]) |
+      source = fn.getACall().getResult()
+    )
+  }
 
-class UntrustedSource extends DataFlow::Node, UntrustedFlowSource::Range {
-  UntrustedSource() { this = any(UntrustedFunction f).getACall() }
-}
-
-class SinkFunction extends Function {
-  SinkFunction() { this.getName() = ["sinkString", "sinkBytes"] }
-}
-
-class TestConfig extends TaintTracking::Configuration {
-  TestConfig() { this = "testconfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink = any(SinkFunction f).getACall().getAnArgument()
+  predicate isSink(DataFlow::Node sink) {
+    exists(Function fn | fn.hasQualifiedName(_, ["sinkString", "sinkBytes"]) |
+      sink = fn.getACall().getAnArgument()
+    )
   }
 }
 
-from TaintTracking::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
-select source, sink
+import TaintFlowTest<Config>

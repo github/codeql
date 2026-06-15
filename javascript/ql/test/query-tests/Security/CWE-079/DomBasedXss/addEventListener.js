@@ -1,16 +1,16 @@
-this.addEventListener('message', function(event) {
-    document.write(event.data); // NOT OK
+this.addEventListener('message', function(event) { // $ Source
+    document.write(event.data); // $ Alert
 })
 
-this.addEventListener('message', function({data}) {
-    document.write(data); // NOT OK
+this.addEventListener('message', function({data}) { // $ Source
+    document.write(data); // $ Alert
 })
 
 function test() {
-    function foo(x, event, y) {
-        document.write(x.data);     // OK
-        document.write(event.data); // NOT OK
-        document.write(y.data);     // OK
+    function foo(x, event, y) { // $ Source
+        document.write(x.data);
+        document.write(event.data); // $ Alert
+        document.write(y.data);
     }
 
     window.addEventListener("message", foo.bind(null, {data: 'items'}));

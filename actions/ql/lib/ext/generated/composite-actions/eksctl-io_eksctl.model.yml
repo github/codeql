@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["eksctl-io/eksctl", "*", "input.token", "code-injection", "generated"]
+     - ["eksctl-io/eksctl", "*", "input.email", "code-injection", "generated"]
+     - ["eksctl-io/eksctl", "*", "input.name", "code-injection", "generated"]

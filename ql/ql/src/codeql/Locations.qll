@@ -1,4 +1,6 @@
 /** Provides classes for working with locations. */
+overlay[local]
+module;
 
 import files.FileSystem
 
@@ -8,7 +10,7 @@ import files.FileSystem
  *
  * For more information about locations see [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
-class Location extends @location {
+class Location extends @location_default {
   /** Gets the file for this location. */
   File getFile() { locations_default(this, result, _, _, _, _) }
 

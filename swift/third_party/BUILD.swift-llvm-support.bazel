@@ -1,24 +1,34 @@
-load("@rules_pkg//:mappings.bzl", "pkg_files", "strip_prefix")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "swift-llvm-support-static",
+    srcs = glob(
+        [
+            "*.a",
+        ],
+    ),
+    hdrs = glob([
+        "include/**/*",
+        "stdlib/**/*",
+    ]),
+    includes = [
+        "include",
+        "stdlib/public/SwiftShims",
+    ],
+    deps = [
+        "@zstd",
+    ],
+)
 
 cc_library(
     name = "swift-llvm-support",
-    srcs = [
-        "libCodeQLSwiftFrontendTool.a",
-    ] + select({
-        "@platforms//os:linux": [
-            "libCodeQLSwiftFrontendTool.so",
-            "libswiftCore.so",
+    srcs = glob(
+        [
+            "*.so",
+            "*.dylib",
         ],
-        "@platforms//os:macos": [
-            "libCodeQLSwiftFrontendTool.dylib",
-            "libswiftCore.dylib",
-            "libswiftCompatibility50.a",
-            "libswiftCompatibility51.a",
-            "libswiftCompatibilityConcurrency.a",
-            "libswiftCompatibilityDynamicReplacements.a",
-        ],
-    }),
-    hdrs = glob(["include/**/*", "stdlib/**/*" ]),
+        allow_empty = True,  # Either *.so or *.dylib will be empty
+    ),
     linkopts = [
         "-lm",
         "-lz",
@@ -34,15 +44,6 @@ cc_library(
         ],
         "//conditions:default": [],
     }),
-    includes = [ "include" ],
     visibility = ["//visibility:public"],
-)
-
-pkg_files(
-    name = "swift-test-sdk",
-    srcs = glob([
-        "sdk/**/*",
-    ]),
-    strip_prefix = strip_prefix.from_pkg(),
-    visibility = ["//visibility:public"],
+    deps = [":swift-llvm-support-static"],
 )

@@ -1,0 +1,5 @@
+src/main/java/com/example/App.java
+src/main/resources/my-app.properties
+src/main/resources/page.xml
+src/main/resources/struts.xml
+src/test/java/com/example/AppTest.java

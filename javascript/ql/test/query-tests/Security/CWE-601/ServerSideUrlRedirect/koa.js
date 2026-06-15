@@ -3,27 +3,27 @@ const urlLib = require('url');
 const app = new Koa();
 
 app.use(async ctx => {
-	var url = ctx.query.target;
-	ctx.redirect(url); // NOT OK
-	ctx.redirect(`${url}${x}`); // NOT OK
+	var url = ctx.query.target; // $ Source
+	ctx.redirect(url); // $ Alert
+	ctx.redirect(`${url}${x}`); // $ Alert
 
 	var isCrossDomainRedirect = urlLib.parse(url || '', false, true).hostname;
 	if(!url || isCrossDomainRedirect) {
-		ctx.redirect('/'); // OK
+		ctx.redirect('/');
 	} else {
-		ctx.redirect(url); // NOT OK
+		ctx.redirect(url); // $ Alert
 	}
 
 	if(!url || isCrossDomainRedirect || url.match(VALID)) {
-		ctx.redirect('/'); // OK
+		ctx.redirect('/');
 	} else {
-		ctx.redirect(url); // possibly OK - flagged anyway
+		ctx.redirect(url); // $ Alert - possibly OK but flagged anyway
 	}
 
 	if(!url || isCrossDomainRedirect || url.match(/[^\w/-]/)) {
-		ctx.redirect('/'); // OK
+		ctx.redirect('/');
 	} else {
-		ctx.redirect(url); // OK
+		ctx.redirect(url);
 	}
 });
 

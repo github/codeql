@@ -1,4 +1,6 @@
 /** Provides classes for working with statements. */
+overlay[local?]
+module;
 
 import javascript
 
@@ -259,151 +261,220 @@ class Directive extends MaybeDirective {
 }
 
 /**
- * A known directive, such as a strict mode declaration.
- *
- * Example:
- *
- * ```
- * "use strict";
- * ```
+ * Module containing subclasses of the `Directive` class.
  */
-abstract class KnownDirective extends Directive { }
+module Directive {
+  /**
+   * A known directive, such as a strict mode declaration.
+   *
+   * Example:
+   *
+   * ```
+   * "use strict";
+   * ```
+   */
+  abstract class KnownDirective extends Directive { }
 
-/**
- * A strict mode declaration.
- *
- * Example:
- *
- * ```
- * "use strict";
- * ```
- */
-class StrictModeDecl extends KnownDirective {
-  StrictModeDecl() { this.getDirectiveText() = "use strict" }
-}
-
-/**
- * An asm.js directive.
- *
- * Example:
- *
- * ```
- * "use asm";
- * ```
- */
-class AsmJSDirective extends KnownDirective {
-  AsmJSDirective() { this.getDirectiveText() = "use asm" }
-}
-
-/** DEPRECATED: Alias for AsmJSDirective */
-deprecated class ASMJSDirective = AsmJSDirective;
-
-/**
- * A Babel directive.
- *
- * Example:
- *
- * ```
- * "use babel";
- * ```
- */
-class BabelDirective extends KnownDirective {
-  BabelDirective() { this.getDirectiveText() = "use babel" }
-}
-
-/**
- * A legacy 6to5 directive.
- *
- * Example:
- *
- * ```
- * "use 6to5";
- * ```
- */
-class SixToFiveDirective extends KnownDirective {
-  SixToFiveDirective() { this.getDirectiveText() = "use 6to5" }
-}
-
-/**
- * A SystemJS `format` directive.
- *
- * Example:
- *
- * ```
- * "format global";
- * ```
- */
-class SystemJSFormatDirective extends KnownDirective {
-  SystemJSFormatDirective() {
-    this.getDirectiveText().regexpMatch("format (cjs|esm|global|register)")
+  /**
+   * A strict mode declaration.
+   *
+   * Example:
+   *
+   * ```
+   * "use strict";
+   * ```
+   */
+  class StrictModeDecl extends KnownDirective {
+    StrictModeDecl() { this.getDirectiveText() = "use strict" }
   }
-}
 
-/**
- * A SystemJS `format register` directive.
- *
- * Example:
- *
- * ```
- * "format register";
- * ```
- */
-class FormatRegisterDirective extends SystemJSFormatDirective {
-  FormatRegisterDirective() { this.getDirectiveText() = "format register" }
-}
-
-/**
- * A `ngInject` or `ngNoInject` directive.
- *
- * Example:
- *
- * ```
- * "ngInject";
- * ```
- */
-class NgInjectDirective extends KnownDirective {
-  NgInjectDirective() { this.getDirectiveText().regexpMatch("ng(No)?Inject") }
-}
-
-/**
- * A YUI compressor directive.
- *
- * Example:
- *
- * ```
- * "console:nomunge";
- * ```
- */
-class YuiDirective extends KnownDirective {
-  YuiDirective() {
-    this.getDirectiveText().regexpMatch("([a-z0-9_]+:nomunge, ?)*([a-z0-9_]+:nomunge)")
+  /**
+   * An asm.js directive.
+   *
+   * Example:
+   *
+   * ```
+   * "use asm";
+   * ```
+   */
+  class AsmJSDirective extends KnownDirective {
+    AsmJSDirective() { this.getDirectiveText() = "use asm" }
   }
-}
 
-/**
- * A SystemJS `deps` directive.
- *
- * Example:
- *
- * ```
- * "deps fs";
- * ```
- */
-class SystemJSDepsDirective extends KnownDirective {
-  SystemJSDepsDirective() { this.getDirectiveText().regexpMatch("deps [^ ]+") }
-}
+  /**
+   * A Babel directive.
+   *
+   * Example:
+   *
+   * ```
+   * "use babel";
+   * ```
+   */
+  class BabelDirective extends KnownDirective {
+    BabelDirective() { this.getDirectiveText() = "use babel" }
+  }
 
-/**
- * A `bundle` directive.
- *
- * Example:
- *
- * ```
- * "bundle";
- * ```
- */
-class BundleDirective extends KnownDirective {
-  BundleDirective() { this.getDirectiveText() = "bundle" }
+  /**
+   * A legacy 6to5 directive.
+   *
+   * Example:
+   *
+   * ```
+   * "use 6to5";
+   * ```
+   */
+  class SixToFiveDirective extends KnownDirective {
+    SixToFiveDirective() { this.getDirectiveText() = "use 6to5" }
+  }
+
+  /**
+   * A SystemJS `format` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "format global";
+   * ```
+   */
+  class SystemJSFormatDirective extends KnownDirective {
+    SystemJSFormatDirective() {
+      this.getDirectiveText().regexpMatch("format (cjs|esm|global|register)")
+    }
+  }
+
+  /**
+   * A SystemJS `format register` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "format register";
+   * ```
+   */
+  class FormatRegisterDirective extends SystemJSFormatDirective {
+    FormatRegisterDirective() { this.getDirectiveText() = "format register" }
+  }
+
+  /**
+   * A `ngInject` or `ngNoInject` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "ngInject";
+   * ```
+   */
+  class NgInjectDirective extends KnownDirective {
+    NgInjectDirective() { this.getDirectiveText().regexpMatch("ng(No)?Inject") }
+  }
+
+  /**
+   * A YUI compressor directive.
+   *
+   * Example:
+   *
+   * ```
+   * "console:nomunge";
+   * ```
+   */
+  class YuiDirective extends KnownDirective {
+    YuiDirective() {
+      this.getDirectiveText().regexpMatch("([a-z0-9_]+:nomunge, ?)*([a-z0-9_]+:nomunge)")
+    }
+  }
+
+  /**
+   * A SystemJS `deps` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "deps fs";
+   * ```
+   */
+  class SystemJSDepsDirective extends KnownDirective {
+    SystemJSDepsDirective() { this.getDirectiveText().regexpMatch("deps [^ ]+") }
+  }
+
+  /**
+   * A `bundle` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "bundle";
+   * ```
+   */
+  class BundleDirective extends KnownDirective {
+    BundleDirective() { this.getDirectiveText() = "bundle" }
+  }
+
+  /**
+   * A `use server` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "use server";
+   * ```
+   */
+  class UseServerDirective extends KnownDirective {
+    UseServerDirective() { this.getDirectiveText() = "use server" }
+  }
+
+  /**
+   * A `use client` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "use client";
+   * ```
+   */
+  class UseClientDirective extends KnownDirective {
+    UseClientDirective() { this.getDirectiveText() = "use client" }
+  }
+
+  /**
+   * A `use memo` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "use memo";
+   * ```
+   */
+  class UseMemoDirective extends KnownDirective {
+    UseMemoDirective() { this.getDirectiveText() = "use memo" }
+  }
+
+  /**
+   * A `use no memo` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "use no memo";
+   * ```
+   */
+  class UseNoMemoDirective extends KnownDirective {
+    UseNoMemoDirective() { this.getDirectiveText() = "use no memo" }
+  }
+
+  /**
+   * A `use cache` directive.
+   *
+   * Examples:
+   *
+   * ```
+   * "use cache";
+   * "use cache: remote";
+   * "use cache: private";
+   * ```
+   */
+  class UseCacheDirective extends KnownDirective {
+    UseCacheDirective() { this.getDirectiveText().regexpMatch("use cache(:.*)?") }
+  }
 }
 
 /**
@@ -1040,6 +1111,17 @@ class VarDeclStmt extends @var_decl_stmt, DeclStmt { }
  * ```
  */
 class ConstDeclStmt extends @const_decl_stmt, DeclStmt { }
+
+/**
+ * A `using` declaration statement.
+ *
+ * Example:
+ *
+ * ```
+ * using file = new TextFile("file.txt");
+ * ```
+ */
+class UsingDeclStmt extends @using_decl_stmt, DeclStmt { }
 
 /**
  * A `let` declaration statement.

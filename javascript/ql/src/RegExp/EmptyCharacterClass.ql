@@ -4,7 +4,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/regex/empty-character-class
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       regular-expressions
  * @precision very-high

@@ -10,39 +10,38 @@ import go
  * (SSRF) vulnerabilities.
  */
 module ServerSideRequestForgery {
-  private import semmle.go.frameworks.Gin
   private import validator
   private import semmle.go.security.UrlConcatenation
   private import semmle.go.dataflow.barrierguardutil.RegexpCheck
   private import semmle.go.dataflow.Properties
 
-  /**
-   * A taint-tracking configuration for reasoning about request forgery.
-   */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "SSRF" }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       // propagate to a URL when its host is assigned to
-      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
+      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
+        w.writesField(node2, f, node1)
       )
     }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof Sanitizer
-    }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate isSanitizerOut(DataFlow::Node node) {
-      super.isSanitizerOut(node) or
-      node instanceof SanitizerEdge
+    predicate isBarrierOut(DataFlow::Node node) { node instanceof SanitizerEdge }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.(Sink).getLocation()
+      or
+      result = sink.(Sink).getARequest().getLocation()
     }
   }
+
+  /** Tracks taint flow for reasoning about request forgery vulnerabilities. */
+  module Flow = TaintTracking::Global<Config>;
 
   /** A data flow source for request forgery vulnerabilities. */
   abstract class Source extends DataFlow::Node { }
@@ -66,9 +65,14 @@ module ServerSideRequestForgery {
   abstract class SanitizerEdge extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
+   */
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
+
+  /**
    * An user controlled input, considered as a flow source for request forgery.
    */
-  class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
   /**
    * The URL of an HTTP request, viewed as a sink for request forgery.
@@ -109,7 +113,7 @@ module ServerSideRequestForgery {
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, Sanitizer { }
+  class RegexpCheckAsBarrierGuard extends Sanitizer instanceof RegexpCheckBarrier { }
 
   private predicate equalityAsSanitizerGuard(DataFlow::Node g, Expr e, boolean outcome) {
     exists(DataFlow::Node url, DataFlow::EqualityTestNode eq |
@@ -152,5 +156,5 @@ module ServerSideRequestForgery {
    * The method Var of package validator is a sanitizer guard only if the check
    * of the error binding exists, and the tag to check is one of "alpha", "alphanum", "alphaunicode", "alphanumunicode", "number", "numeric".
    */
-  class ValidatorAsSanitizer extends Sanitizer, ValidatorVarCheckBarrier { }
+  class ValidatorAsSanitizer extends Sanitizer instanceof ValidatorVarCheckBarrier { }
 }

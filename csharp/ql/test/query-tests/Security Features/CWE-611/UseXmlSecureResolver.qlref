@@ -1,1 +1,2 @@
-Security Features/CWE-611/UseXmlSecureResolver.ql
+query: Security Features/CWE-611/UseXmlSecureResolver.ql
+postprocess: utils/test/PrettyPrintModels.ql

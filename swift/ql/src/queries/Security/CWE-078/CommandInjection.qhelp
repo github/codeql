@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Constructing a system command with unsanitized user input is dangerous,
+since a malicious user may be able to craft input that executes arbitrary code.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If possible, use hard-coded string literals to specify the command to run. Instead of interpreting
+user input directly as command names, examine the input and then choose among hard-coded string
+literals.
+</p>
+<p>
+If this is not possible, then add sanitization code to verify that the user input is safe before
+using it.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example executes code from user input without
+sanitizing it first:
+</p>
+<sample src="CommandInjectionBad.swift" />
+<p>
+If user input is used to construct a command it should be checked
+first. This ensures that the user cannot insert characters that have special
+meanings:
+</p>
+<sample src="CommandInjectionGood.swift" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+</li>
+</references>
+</qhelp>

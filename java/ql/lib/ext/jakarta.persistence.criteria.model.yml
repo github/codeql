@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["jakarta.persistence.criteria", "CriteriaBuilder", True, "concat", "(String,Expression)", "", "Argument[1]", "ReturnValue", "taint", "ai-manual"]

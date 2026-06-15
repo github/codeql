@@ -1,0 +1,44 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Text.Encodings.Web", "TextEncoder", False, "Encode", "(System.IO.TextWriter,System.String)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.IO.TextWriter,System.Char[],System.Int32,System.Int32)", "", "Argument[1].Element", "Argument[0]", "taint", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.IO.TextWriter,System.String,System.Int32,System.Int32)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.ReadOnlySpan<System.Char>,System.Span<System.Char>,System.Int32,System.Int32,System.Boolean)", "", "Argument[0].Element", "Argument[1].Element", "value", "dfc-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", True, "Encode", "(System.String)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", True, "EncodeUtf8", "(System.ReadOnlySpan<System.Byte>,System.Span<System.Byte>,System.Int32,System.Int32,System.Boolean)", "", "Argument[0].Element", "Argument[1].Element", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Text.Encodings.Web", "HtmlEncoder", "Create", "(System.Text.Encodings.Web.TextEncoderSettings)", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "HtmlEncoder", "Create", "(System.Text.Unicode.UnicodeRange[])", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "HtmlEncoder", "get_Default", "()", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "JavaScriptEncoder", "Create", "(System.Text.Encodings.Web.TextEncoderSettings)", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "JavaScriptEncoder", "Create", "(System.Text.Unicode.UnicodeRange[])", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "JavaScriptEncoder", "get_Default", "()", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "JavaScriptEncoder", "get_UnsafeRelaxedJsonEscaping", "()", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", "FindFirstCharacterToEncode", "(System.Char*,System.Int32)", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", "FindFirstCharacterToEncodeUtf8", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", "TryEncodeUnicodeScalar", "(System.Int32,System.Char*,System.Int32,System.Int32)", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", "WillEncode", "(System.Int32)", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoder", "get_MaxOutputCharactersPerInputCharacter", "()", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoderSettings", "AllowCharacter", "(System.Char)", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoderSettings", "AllowCharacters", "(System.Char[])", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoderSettings", "AllowCodePoints", "(System.Collections.Generic.IEnumerable<System.Int32>)", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoderSettings", "AllowRange", "(System.Text.Unicode.UnicodeRange)", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoderSettings", "AllowRanges", "(System.Text.Unicode.UnicodeRange[])", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoderSettings", "Clear", "()", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoderSettings", "ForbidCharacter", "(System.Char)", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoderSettings", "ForbidCharacters", "(System.Char[])", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoderSettings", "ForbidRange", "(System.Text.Unicode.UnicodeRange)", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoderSettings", "ForbidRanges", "(System.Text.Unicode.UnicodeRange[])", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoderSettings", "GetAllowedCodePoints", "()", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoderSettings", "TextEncoderSettings", "(System.Text.Encodings.Web.TextEncoderSettings)", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "TextEncoderSettings", "TextEncoderSettings", "(System.Text.Unicode.UnicodeRange[])", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "UrlEncoder", "Create", "(System.Text.Encodings.Web.TextEncoderSettings)", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "UrlEncoder", "Create", "(System.Text.Unicode.UnicodeRange[])", "summary", "df-generated"]
+      - ["System.Text.Encodings.Web", "UrlEncoder", "get_Default", "()", "summary", "df-generated"]

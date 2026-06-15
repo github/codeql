@@ -1,6 +1,6 @@
 import csharp
 
-from Ssa::SourceVariable v, Ssa::Definition def, AssignableRead read
+from Ssa::SourceVariable v, SsaDefinition def, AssignableRead read
 where
   read = def.getARead() and
   v = def.getSourceVariable()

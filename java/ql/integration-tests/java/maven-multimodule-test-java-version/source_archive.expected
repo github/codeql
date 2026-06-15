@@ -1,0 +1,7 @@
+main-module/pom.xml
+main-module/src/main/java/com/example/App.java
+main-module/target/maven-archiver/pom.properties
+pom.xml
+test-module/pom.xml
+test-module/src/main/java/com/example/tests/TestUtils.java
+test-module/target/maven-archiver/pom.properties

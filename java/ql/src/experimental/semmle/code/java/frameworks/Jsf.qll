@@ -1,6 +1,7 @@
 /**
  * Provides classes and predicates for working with the Java Server Faces (JSF).
  */
+deprecated module;
 
 import java
 
@@ -9,7 +10,7 @@ import java
  */
 class ExternalContext extends RefType {
   ExternalContext() {
-    this.hasQualifiedName(["javax.faces.context", "jakarta.faces.context"], "ExternalContext")
+    this.hasQualifiedName(javaxOrJakarta() + ".faces.context", "ExternalContext")
   }
 }
 

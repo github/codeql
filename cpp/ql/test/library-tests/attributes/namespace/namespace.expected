@@ -1,0 +1,11 @@
+| file://:0:0:0:0 | MultiSquared | test.cpp:10:13:10:22 | deprecated |
+| file://:0:0:0:0 | MultiSquared | test.cpp:10:25:10:36 | maybe_unused |
+| file://:0:0:0:0 | MultiSquared | test.cpp:11:13:11:22 | deprecated |
+| file://:0:0:0:0 | MultiSquared | test.cpp:11:25:11:36 | maybe_unused |
+| file://:0:0:0:0 | NamespaceTest | test.cpp:1:26:1:35 | deprecated |
+| file://:0:0:0:0 | NamespaceTest | test.cpp:2:26:2:35 | deprecated |
+| file://:0:0:0:0 | NamespaceTest | test.cpp:3:26:3:37 | maybe_unused |
+| test.cpp:4:53:4:61 | MultiAttr | test.cpp:4:26:4:35 | deprecated |
+| test.cpp:4:53:4:61 | MultiAttr | test.cpp:4:38:4:49 | maybe_unused |
+| test.cpp:6:43:6:56 | OuterNamespace::InnerNamespace | test.cpp:6:30:6:39 | deprecated |
+| test.cpp:9:46:9:61 | NamespaceSquared | test.cpp:9:13:9:22 | deprecated |

@@ -4,6 +4,8 @@
  * Subclass `PropertyProjection` to refine the behavior of the analysis on existing property projections.
  * Subclass `CustomPropertyProjection` to introduce new kinds of property projections.
  */
+overlay[local?]
+module;
 
 import javascript
 
@@ -137,6 +139,7 @@ private class VarArgsPropertyProjection extends PropertyProjection::Range {
 /**
  * A taint step for a property projection.
  */
+overlay[global]
 private class PropertyProjectionTaintStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     // reading from a tainted object yields a tainted result

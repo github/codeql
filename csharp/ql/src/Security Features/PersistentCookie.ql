@@ -17,7 +17,7 @@ class FutureDateExpr extends MethodCall {
     exists(PropertyAccess pa |
       pa = this.getQualifier() and
       pa.getTarget().hasName("Now") and
-      pa.getTarget().getDeclaringType().hasQualifiedName("System", "DateTime")
+      pa.getTarget().getDeclaringType().hasFullyQualifiedName("System", "DateTime")
     ) and
     this.getTarget().getName().matches("Add%")
   }
@@ -52,9 +52,9 @@ class FutureDateExpr extends MethodCall {
 
 from Assignment a, PropertyAccess pa, FutureDateExpr fde
 where
-  a.getLValue() = pa and
-  a.getRValue() = fde and
+  a.getLeftOperand() = pa and
+  a.getRightOperand() = fde and
   pa.getTarget().hasName("Expires") and
-  pa.getTarget().getDeclaringType().hasQualifiedName("System.Web", "HttpCookie") and
+  pa.getTarget().getDeclaringType().hasFullyQualifiedName("System.Web", "HttpCookie") and
   (fde.timeIsNotClear() or fde.getTimeInSecond() > 300) // 5 minutes max
 select a, "Avoid persistent cookies."

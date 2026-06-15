@@ -1,5 +1,5 @@
 /**
- * @name Unsafe usage of v1 version of Azure Storage client-side encryption (CVE-2022-30187).
+ * @name Unsafe usage of v1 version of Azure Storage client-side encryption (CVE-2022-30187)
  * @description Unsafe usage of v1 version of Azure Storage client-side encryption, please refer to http://aka.ms/azstorageclientencryptionblog
  * @kind problem
  * @tags security
@@ -78,12 +78,14 @@ predicate isCreatingSafeAzureClientSideEncryptionObject(Call call, Class c, Expr
   )
 }
 
-from Expr e, Class c
-where
-  exists(Expr argVersion |
-    isCreatingAzureClientSideEncryptionObjectNewVersion(e, c, argVersion) and
-    not isCreatingSafeAzureClientSideEncryptionObject(e, c, argVersion)
-  )
-  or
-  isCreatingOutdatedAzureClientSideEncryptionObject(e, c)
-select e, "Unsafe usage of v1 version of Azure Storage client-side encryption."
+deprecated query predicate problems(Expr e, string message) {
+  exists(Class c |
+    exists(Expr argVersion |
+      isCreatingAzureClientSideEncryptionObjectNewVersion(e, c, argVersion) and
+      not isCreatingSafeAzureClientSideEncryptionObject(e, c, argVersion)
+    )
+    or
+    isCreatingOutdatedAzureClientSideEncryptionObject(e, c)
+  ) and
+  message = "Unsafe usage of v1 version of Azure Storage client-side encryption."
+}

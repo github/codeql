@@ -1,0 +1,28 @@
+name: Write prerelease comment
+
+on:
+  workflow_run:
+    workflows: ["Create Pull Request Prerelease"]
+    types:
+      - completed
+
+jobs:
+  comment:
+    if: ${{ github.repository_owner == 'foo' }}
+    runs-on: ubuntu-latest
+    name: Write comment to the PR
+    steps:
+      - name: "Download runtime versions"
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          run_id: ${{ github.event.workflow_run.id }}
+          name: runtime-versions.md
+
+      - name: "Put runtime versions on the environment"
+        id: runtime_versions
+        run: |
+          {
+            echo 'RUNTIME_VERSIONS<<EOF'
+            cat runtime-versions.md
+            echo EOF
+          } >> "$GITHUB_ENV"

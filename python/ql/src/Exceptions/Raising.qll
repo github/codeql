@@ -1,8 +1,9 @@
 import python
+private import LegacyPointsTo
 
 /** Whether the raise statement 'r' raises 'type' from origin 'orig' */
 predicate type_or_typeof(Raise r, ClassValue type, AstNode orig) {
-  exists(Expr exception | exception = r.getRaised() |
+  exists(ExprWithPointsTo exception | exception = r.getRaised() |
     exception.pointsTo(type, orig)
     or
     not exists(ClassValue exc_type | exception.pointsTo(exc_type)) and

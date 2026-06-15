@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["openvinotoolkit/openvino", "*", "input.skip_when_only_listed_files_changed", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "input.skip_when_only_listed_labels_set", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "input.labeler_config", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "input.components_config_schema", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "input.components_config", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "input.component_pattern", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "input.ref_name", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "input.repository", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "input.commit_sha", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "input.pr", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "input.pip-cache-path", "code-injection", "generated"]

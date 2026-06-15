@@ -8,8 +8,9 @@ import Stmt
 import Type
 import exprs.Call
 private import commons.QualifiedName
-private import dotnet
+private import commons.Collections
 private import semmle.code.csharp.ExprOrStmtParent
+private import semmle.code.csharp.internal.Callable
 private import semmle.code.csharp.metrics.Complexity
 private import TypeRef
 
@@ -21,8 +22,9 @@ private import TypeRef
  * an anonymous function (`AnonymousFunctionExpr`), or a local function
  * (`LocalFunction`).
  */
-class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @callable {
-  override Type getReturnType() { none() }
+class Callable extends Parameterizable, ControlFlowElementOrCallable, @callable {
+  /** Gets the return type of this callable. */
+  Type getReturnType() { none() }
 
   /** Gets the annotated return type of this callable. */
   final AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
@@ -65,7 +67,8 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
     result = this.getExpressionBody()
   }
 
-  override predicate hasBody() { exists(this.getBody()) }
+  /** Holds if this callable has a body or an implementation. */
+  predicate hasBody() { exists(this.getBody()) }
 
   /**
    * Holds if this callable has a non-empty body. That is, either it has
@@ -105,7 +108,10 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * then both `{ return 0; }` and `{ return 1; }` are statement bodies of
    * `N.C.M()`.
    */
-  final BlockStmt getStatementBody() { result = this.getAChildStmt() }
+  final BlockStmt getStatementBody() {
+    result = getStatementBody(this) and
+    not this.getFile().isStub()
+  }
 
   /**
    * DEPRECATED: Use `getStatementBody` instead.
@@ -143,18 +149,18 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * then both `0` and `1` are expression bodies of `N.C.M()`.
    */
   final Expr getExpressionBody() {
-    result = this.getAChildExpr() and
-    not result = this.(Constructor).getInitializer()
+    result = getExpressionBody(this) and
+    not this.getFile().isStub()
   }
 
   /** Holds if this callable has an expression body. */
   final predicate hasExpressionBody() { exists(this.getExpressionBody()) }
 
   /** Gets the entry point in the control graph for this callable. */
-  ControlFlow::Nodes::EntryNode getEntryPoint() { result.getCallable() = this }
+  ControlFlow::EntryNode getEntryPoint() { result.getEnclosingCallable() = this }
 
   /** Gets the exit point in the control graph for this callable. */
-  ControlFlow::Nodes::ExitNode getExitPoint() { result.getCallable() = this }
+  ControlFlow::ExitNode getExitPoint() { result.getEnclosingCallable() = this }
 
   /**
    * Gets the enclosing callable of this callable, if any.
@@ -193,7 +199,8 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
     )
   }
 
-  override predicate canReturn(DotNet::Expr e) {
+  /** Holds if this callable can return expression `e`. */
+  predicate canReturn(Expr e) {
     exists(ReturnStmt ret | ret.getEnclosingCallable() = this | e = ret.getExpr())
     or
     e = this.getExpressionBody() and
@@ -215,9 +222,9 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
 
   /** Gets a `Call` that has this callable as a target. */
   Call getACall() { this = result.getTarget() }
-
-  override Parameter getAParameter() { result = Parameterizable.super.getAParameter() }
 }
+
+final class ExtensionCallable = ExtensionCallableImpl;
 
 /**
  * A method, for example
@@ -236,7 +243,12 @@ class Method extends Callable, Virtualizable, Attributable, @method {
 
   override ValueOrRefType getDeclaringType() { methods(this, _, result, _, _) }
 
-  override Type getReturnType() { methods(this, _, _, getTypeRef(result), _) }
+  override Type getReturnType() {
+    methods(this, _, _, result, _)
+    or
+    not methods(this, _, _, any(Type t), _) and
+    methods(this, _, _, getTypeRef(result), _)
+  }
 
   override Method getUnboundDeclaration() { methods(this, _, _, _, result) }
 
@@ -256,23 +268,25 @@ class Method extends Callable, Virtualizable, Attributable, @method {
     result = Virtualizable.super.getAnUltimateImplementor()
   }
 
-  override Location getALocation() { method_location(this, result) }
+  override Location getALocation() { method_location(this.getUnboundDeclaration(), result) }
+
+  /** Holds if this method is a classic extension method. */
+  predicate isClassicExtensionMethod() { this.getParameter(0).hasExtensionMethodModifier() }
 
   /** Holds if this method is an extension method. */
-  predicate isExtensionMethod() { this.getParameter(0).hasExtensionMethodModifier() }
+  predicate isExtensionMethod() { this.isClassicExtensionMethod() or this.isInExtension() }
 
   /** Gets the type of the `params` parameter of this method, if any. */
   Type getParamsType() {
     exists(Parameter last | last = this.getParameter(this.getNumberOfParameters() - 1) |
       last.isParams() and
-      result = last.getType().(ArrayType).getElementType()
+      result = last.getType().(ParamsCollectionType).getElementType()
     )
   }
 
   /** Holds if this method has a `params` parameter. */
   predicate hasParams() { exists(this.getParamsType()) }
 
-  // Remove when `Callable.isOverridden()` is removed
   override predicate fromSource() {
     Callable.super.fromSource() and
     not this.isCompilerGenerated()
@@ -287,8 +301,10 @@ class Method extends Callable, Virtualizable, Attributable, @method {
   override string getAPrimaryQlClass() { result = "Method" }
 }
 
+final class ExtensionMethod = ExtensionMethodImpl;
+
 /**
- * An extension method, for example
+ *  An extension method, for example
  *
  * ```csharp
  * static bool IsDefined(this Widget w) {
@@ -296,16 +312,68 @@ class Method extends Callable, Virtualizable, Attributable, @method {
  * }
  * ```
  */
-class ExtensionMethod extends Method {
-  ExtensionMethod() { this.isExtensionMethod() }
+class ClassicExtensionMethod extends ExtensionMethodImpl {
+  ClassicExtensionMethod() { this.isClassicExtensionMethod() }
+
+  pragma[noinline]
+  override Type getExtendedType() { result = this.getParameter(0).getType() }
 
   override predicate isStatic() { any() }
+}
 
-  /** Gets the type being extended by this method. */
-  pragma[noinline]
-  Type getExtendedType() { result = this.getParameter(0).getType() }
+/**
+ * An extension method declared in an extension type, for example `IsNullOrEmpty` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public bool IsNullOrEmpty() { ... }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionTypeExtensionMethod extends ExtensionMethodImpl {
+  ExtensionTypeExtensionMethod() { this.isInExtension() }
+}
 
-  override string getAPrimaryQlClass() { result = "ExtensionMethod" }
+/**
+ * A non-static member with an initializer, for example a field `int Field = 0`.
+ */
+private class InitializedInstanceMember extends Member {
+  private AssignExpr ae;
+
+  InitializedInstanceMember() {
+    not this.isStatic() and
+    expr_parent_top_level(ae, _, this) and
+    not ae = getExpressionBody(_)
+  }
+
+  /** Gets the initializer expression. */
+  AssignExpr getInitializer() { result = ae }
+}
+
+/**
+ * An object initializer method.
+ *
+ * This is an extractor-synthesized method that executes the field
+ * initializers. Note that the AST nodes for the field initializers are nested
+ * directly under the class, and therefore this method has no body in the AST.
+ * On the other hand, this provides the unique enclosing callable for the field
+ * initializers and their control flow graph.
+ */
+class ObjectInitMethod extends Method {
+  ObjectInitMethod() { this.getName() = "<object initializer>" }
+
+  /**
+   * Holds if this object initializer method performs the initialization
+   * of a member via assignment `init`.
+   */
+  predicate initializes(AssignExpr init) {
+    exists(InitializedInstanceMember m |
+      this.getDeclaringType().getAMember() = m and
+      init = m.getInitializer()
+    )
+  }
 }
 
 /**
@@ -317,7 +385,7 @@ class ExtensionMethod extends Method {
  * }
  * ```
  */
-class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @constructor {
+class Constructor extends Callable, Member, Attributable, @constructor {
   override string getName() { constructors(this, result, _, _) }
 
   override Type getReturnType() {
@@ -341,6 +409,9 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
    */
   ConstructorInitializer getInitializer() { result = this.getChildExpr(-1) }
 
+  /** Gets the object initializer call of this constructor, if any. */
+  MethodCall getObjectInitializerCall() { result = this.getChildExpr(-2) }
+
   /** Holds if this constructor has an initializer. */
   predicate hasInitializer() { exists(this.getInitializer()) }
 
@@ -348,7 +419,7 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
 
   override Constructor getUnboundDeclaration() { constructors(this, _, _, result) }
 
-  override Location getALocation() { constructor_location(this, result) }
+  override Location getALocation() { constructor_location(this.getUnboundDeclaration(), result) }
 
   override predicate fromSource() { Member.super.fromSource() and not this.isCompilerGenerated() }
 
@@ -399,6 +470,26 @@ class InstanceConstructor extends Constructor {
 }
 
 /**
+ * A primary constructor, for example `public class C(object o)` on line 1 in
+ * ```csharp
+ * public class C(object o) {
+ *  ...
+ * }
+ * ```
+ */
+class PrimaryConstructor extends Constructor {
+  PrimaryConstructor() {
+    // In the extractor we use the constructor location as the location for the
+    // synthesized empty body of the constructor.
+    this.getLocation() = this.getBody().getLocation() and
+    this.getDeclaringType().fromSource() and
+    this.fromSource()
+  }
+
+  override string getAPrimaryQlClass() { result = "PrimaryConstructor" }
+}
+
+/**
  * A destructor, for example `~C() { }` on line 2 in
  *
  * ```csharp
@@ -407,7 +498,7 @@ class InstanceConstructor extends Constructor {
  * }
  * ```
  */
-class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @destructor {
+class Destructor extends Callable, Member, Attributable, @destructor {
   override string getName() { destructors(this, result, _, _) }
 
   override Type getReturnType() {
@@ -421,7 +512,7 @@ class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @de
 
   override Destructor getUnboundDeclaration() { destructors(this, _, _, result) }
 
-  override Location getALocation() { destructor_location(this, result) }
+  override Location getALocation() { destructor_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = Callable.super.toString() }
 
@@ -435,13 +526,6 @@ class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @de
  * (`BinaryOperator`), or a conversion operator (`ConversionOperator`).
  */
 class Operator extends Callable, Member, Attributable, Overridable, @operator {
-  /**
-   * DEPRECATED: use `getFunctionName()` instead.
-   *
-   * Gets the assembly name of this operator.
-   */
-  deprecated string getAssemblyName() { result = this.getFunctionName() }
-
   override string getName() { operators(this, _, result, _, _, _) }
 
   override string getUndecoratedName() { operators(this, _, result, _, _, _) }
@@ -453,32 +537,65 @@ class Operator extends Callable, Member, Attributable, Overridable, @operator {
 
   override ValueOrRefType getDeclaringType() { operators(this, _, _, result, _, _) }
 
-  override Type getReturnType() { operators(this, _, _, _, getTypeRef(result), _) }
+  override Type getReturnType() {
+    operators(this, _, _, _, result, _)
+    or
+    not operators(this, _, _, _, any(Type t), _) and
+    operators(this, _, _, _, getTypeRef(result), _)
+  }
 
   override Operator getUnboundDeclaration() { operators(this, _, _, _, _, result) }
 
-  override Location getALocation() { operator_location(this, result) }
+  override Location getALocation() { operator_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = Callable.super.toString() }
 
   override Parameter getRawParameter(int i) { result = this.getParameter(i) }
+}
 
-  override predicate hasQualifiedName(string qualifier, string name) {
-    super.hasQualifiedName(qualifier, _) and
-    name = this.getFunctionName()
-  }
-
-  override predicate hasQualifiedName(string namespace, string type, string name) {
-    super.hasQualifiedName(namespace, type, _) and
-    name = this.getFunctionName()
-  }
+pragma[nomagic]
+private ValueOrRefType getARecordBaseType(ValueOrRefType t) {
+  exists(Callable c |
+    c.hasName("<Clone>$") and
+    c.getNumberOfParameters() = 0 and
+    t = c.getDeclaringType() and
+    result = t
+  )
+  or
+  result = getARecordBaseType(t).getABaseType()
 }
 
 /** A clone method on a record. */
-class RecordCloneMethod extends Method, DotNet::RecordCloneCallable {
-  override Constructor getConstructor() {
-    result = DotNet::RecordCloneCallable.super.getConstructor()
+class RecordCloneMethod extends Method {
+  RecordCloneMethod() {
+    this.hasName("<Clone>$") and
+    this.getNumberOfParameters() = 0 and
+    this.getReturnType() = getARecordBaseType(this.getDeclaringType()) and
+    this.isPublic() and
+    not this.isStatic()
   }
+
+  /** Gets the constructor that this clone method calls. */
+  Constructor getConstructor() {
+    result.getDeclaringType() = this.getDeclaringType() and
+    result.getNumberOfParameters() = 1 and
+    result.getParameter(0).getType() = this.getDeclaringType()
+  }
+}
+
+/**
+ * An extension operator, for example `*` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public static string operator *(int s1, string s2) { ... }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionOperator extends ExtensionCallableImpl, Operator {
+  ExtensionOperator() { this.isInExtension() }
 }
 
 /**
@@ -494,7 +611,11 @@ class RecordCloneMethod extends Method, DotNet::RecordCloneCallable {
 class UnaryOperator extends Operator {
   UnaryOperator() {
     this.getNumberOfParameters() = 1 and
-    not this instanceof ConversionOperator
+    not this instanceof ConversionOperator and
+    not this instanceof CompoundAssignmentOperator
+    or
+    // Instance increment and decrement operators don't have a parameter (only a qualifier).
+    this.getNumberOfParameters() = 0 and not this.isStatic()
   }
 }
 
@@ -667,8 +788,8 @@ class TrueOperator extends UnaryOperator {
  * A user-defined binary operator.
  *
  * Either an addition operator (`AddOperator`), a checked addition operator
- * (`CheckedAddOperator`) a subtraction operator (`SubOperator`), a checked
- * substraction operator (`CheckedSubOperator`), a multiplication operator
+ * (`CheckedAddOperator`), a subtraction operator (`SubOperator`), a checked
+ * subtraction operator (`CheckedSubOperator`), a multiplication operator
  * (`MulOperator`), a checked multiplication operator (`CheckedMulOperator`),
  * a division operator (`DivOperator`), a checked division operator
  * (`CheckedDivOperator`), a remainder operator (`RemOperator`), an and
@@ -678,10 +799,16 @@ class TrueOperator extends UnaryOperator {
  * operator(`UnsignedRightShiftOperator`), an equals operator (`EQOperator`),
  * a not equals operator (`NEOperator`), a lesser than operator (`LTOperator`),
  * a greater than operator (`GTOperator`), a less than or equals operator
- * (`LEOperator`), or a greater than or equals operator (`GEOperator`).
+ * (`LEOperator`), a greater than or equals operator (`GEOperator`), or
+ * a compound assignment operator (`CompoundAssignmentOperator`).
  */
 class BinaryOperator extends Operator {
-  BinaryOperator() { this.getNumberOfParameters() = 2 }
+  BinaryOperator() {
+    this.getNumberOfParameters() = 2
+    or
+    // Instance compound assignment operators only have one parameter.
+    this.getNumberOfParameters() = 1 and not this.isStatic()
+  }
 }
 
 /**
@@ -879,9 +1006,6 @@ class LeftShiftOperator extends BinaryOperator {
   override string getAPrimaryQlClass() { result = "LeftShiftOperator" }
 }
 
-/** DEPRECATED: Alias for LeftShiftOperator. */
-deprecated class LShiftOperator = LeftShiftOperator;
-
 /**
  * A user-defined right shift operator (`>>`), for example
  *
@@ -896,9 +1020,6 @@ class RightShiftOperator extends BinaryOperator {
 
   override string getAPrimaryQlClass() { result = "RightShiftOperator" }
 }
-
-/** DEPRECATED: Alias for RightShiftOperator. */
-deprecated class RShiftOperator = RightShiftOperator;
 
 /**
  * A user-defined unsigned right shift operator (`>>>`), for example
@@ -1073,6 +1194,249 @@ class CheckedExplicitConversionOperator extends ConversionOperator {
   override string getAPrimaryQlClass() { result = "CheckedExplicitConversionOperator" }
 }
 
+abstract private class CompoundAssignmentOperatorImpl extends BinaryOperator { }
+
+/**
+ * A user-defined compound assignment operator.
+ *
+ * Either an addition operator (`AddCompoundAssignmentOperator`), a checked addition operator
+ * (`CheckedAddCompoundAssignmentOperator`), a subtraction operator (`SubCompoundAssignmentOperator`), a checked
+ * subtraction operator (`CheckedSubCompoundAssignmentOperator`), a multiplication operator
+ * (`MulCompoundAssignmentOperator`), a checked multiplication operator (`CheckedMulCompoundAssignmentOperator`),
+ * a division operator (`DivCompoundAssignmentOperator`), a checked division operator
+ * (`CheckedDivCompoundAssignmentOperator`), a remainder operator (`RemCompoundAssignmentOperator`), an and
+ * operator (`AndCompoundAssignmentOperator`), an or operator (`OrCompoundAssignmentOperator`), an xor
+ * operator (`XorCompoundAssignmentOperator`), a left shift operator (`LeftShiftCompoundAssignmentOperator`),
+ * a right shift operator (`RightShiftCompoundAssignmentOperator`), or an unsigned right shift
+ * operator(`UnsignedRightShiftCompoundAssignmentOperator`).
+ */
+final class CompoundAssignmentOperator = CompoundAssignmentOperatorImpl;
+
+/**
+ * A user-defined compound assignment addition operator (`+=`), for example
+ *
+ * ```csharp
+ * public void operator checked +=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class AddCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  AddCompoundAssignmentOperator() { this.getName() = "+=" }
+
+  override string getAPrimaryQlClass() { result = "AddCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined checked compound assignment addition operator (`checked +=`), for example
+ *
+ * ```csharp
+ * public void operator checked +=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedAddCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  CheckedAddCompoundAssignmentOperator() { this.getName() = "checked +=" }
+
+  override string getAPrimaryQlClass() { result = "CheckedAddCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment subtraction operator (`-=`), for example
+ *
+ * ```csharp
+ * public void operator -=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class SubCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  SubCompoundAssignmentOperator() { this.getName() = "-=" }
+
+  override string getAPrimaryQlClass() { result = "SubCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined checked compound assignment subtraction operator (`checked -=`), for example
+ *
+ * ```csharp
+ * public void operator checked -=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedSubCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  CheckedSubCompoundAssignmentOperator() { this.getName() = "checked -=" }
+
+  override string getAPrimaryQlClass() { result = "CheckedSubCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment multiplication operator (`*=`), for example
+ *
+ * ```csharp
+ * public void operator *=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class MulCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  MulCompoundAssignmentOperator() { this.getName() = "*=" }
+
+  override string getAPrimaryQlClass() { result = "MulCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined checked compound assignment multiplication operator (`checked *=`), for example
+ *
+ * ```csharp
+ * public void operator checked *=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedMulCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  CheckedMulCompoundAssignmentOperator() { this.getName() = "checked *=" }
+
+  override string getAPrimaryQlClass() { result = "CheckedMulCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment division operator (`/=`), for example
+ *
+ * ```csharp
+ * public void operator /=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class DivCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  DivCompoundAssignmentOperator() { this.getName() = "/=" }
+
+  override string getAPrimaryQlClass() { result = "DivCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined checked compound assignment division operator (`checked /=`), for example
+ *
+ * ```csharp
+ * public void operator checked /=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedDivCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  CheckedDivCompoundAssignmentOperator() { this.getName() = "checked /=" }
+
+  override string getAPrimaryQlClass() { result = "CheckedDivCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment remainder operator (`%=`), for example
+ *
+ * ```csharp
+ * public void operator %=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class RemCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  RemCompoundAssignmentOperator() { this.getName() = "%=" }
+
+  override string getAPrimaryQlClass() { result = "RemCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment and operator (`&=`), for example
+ *
+ * ```csharp
+ * public void operator &=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class AndCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  AndCompoundAssignmentOperator() { this.getName() = "&=" }
+
+  override string getAPrimaryQlClass() { result = "AndCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment or operator (`|=`), for example
+ *
+ * ```csharp
+ * public void operator |=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class OrCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  OrCompoundAssignmentOperator() { this.getName() = "|=" }
+
+  override string getAPrimaryQlClass() { result = "OrCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment xor operator (`^=`), for example
+ *
+ * ```csharp
+ * public void operator ^=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class XorCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  XorCompoundAssignmentOperator() { this.getName() = "^=" }
+
+  override string getAPrimaryQlClass() { result = "XorCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment left shift operator (`<<=`), for example
+ *
+ * ```csharp
+ * public void operator <<=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class LeftShiftCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  LeftShiftCompoundAssignmentOperator() { this.getName() = "<<=" }
+
+  override string getAPrimaryQlClass() { result = "LeftShiftCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment right shift operator (`>>=`), for example
+ *
+ * ```csharp
+ * public void operator >>=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class RightShiftCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  RightShiftCompoundAssignmentOperator() { this.getName() = ">>=" }
+
+  override string getAPrimaryQlClass() { result = "RightShiftCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment unsigned right shift operator (`>>>=`), for example
+ *
+ * ```csharp
+ * public void operator >>>=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class UnsignedRightShiftCompoundAssignmentOperator extends CompoundAssignmentOperatorImpl {
+  UnsignedRightShiftCompoundAssignmentOperator() { this.getName() = ">>>=" }
+
+  override string getAPrimaryQlClass() { result = "UnsignedRightShiftCompoundAssignmentOperator" }
+}
+
 /**
  * A local function, defined within the scope of another callable.
  * For example, `Fac` on lines 2--4 in
@@ -1102,14 +1466,6 @@ class LocalFunction extends Callable, Modifiable, Attributable, @local_function 
   LocalFunctionStmt getStatement() { result.getLocalFunction() = this.getUnboundDeclaration() }
 
   override Callable getEnclosingCallable() { result = this.getStatement().getEnclosingCallable() }
-
-  override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string cqualifier, string type |
-      this.getEnclosingCallable().hasQualifiedName(cqualifier, type) and
-      qualifier = getQualifiedName(cqualifier, type)
-    ) and
-    name = this.getName()
-  }
 
   override Location getALocation() { result = this.getStatement().getALocation() }
 

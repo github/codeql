@@ -13,7 +13,7 @@ private import semmle.code.java.dataflow.ExternalFlow
  */
 private predicate alwaysReturnsTrue(HostnameVerifierVerify m) {
   forex(ReturnStmt rs | rs.getEnclosingCallable() = m |
-    rs.getResult().(CompileTimeConstantExpr).getBooleanValue() = true
+    rs.getExpr().(CompileTimeConstantExpr).getBooleanValue() = true
   )
 }
 
@@ -65,6 +65,17 @@ module TrustAllHostnameVerifierConfig implements DataFlow::ConfigSig {
             "|(set)?(accept|trust|ignore|allow)(all|every|any)" +
             "|(use|do|enable)insecure|(set|do|use)?no.*(check|validation|verify|verification)|disable).*$")
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    isSource(source) and
+    (
+      result = source.getLocation()
+      or
+      result = source.asExpr().(ClassInstanceExpr).getConstructedType().getLocation()
+    )
+  }
 }
 
 /** Data flow to model the flow of a `TrustAllHostnameVerifier` to a `set(Default)HostnameVerifier` call. */
@@ -74,7 +85,7 @@ module TrustAllHostnameVerifierFlow = DataFlow::Global<TrustAllHostnameVerifierC
  * A sink that sets the `HostnameVerifier` on `HttpsURLConnection`.
  */
 private class HostnameVerifierSink extends DataFlow::Node {
-  HostnameVerifierSink() { sinkNode(this, "set-hostname-verifier") }
+  HostnameVerifierSink() { sinkNode(this, "hostname-verification") }
 }
 
 /**

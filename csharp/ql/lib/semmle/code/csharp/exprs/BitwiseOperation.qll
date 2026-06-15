@@ -10,16 +10,16 @@ import Expr
  * A bitwise operation. Either a unary bitwise operation (`UnaryBitwiseOperation`)
  * or a binary bitwise operation (`BinaryBitwiseOperation`).
  */
-class BitwiseOperation extends Operation, @bit_expr { }
+class BitwiseOperation extends Operation, @bit_operation { }
 
 /**
  * A unary bitwise operation, that is, a bitwise complement operation
  * (`ComplementExpr`).
  */
-class UnaryBitwiseOperation extends BitwiseOperation, UnaryOperation, @un_bit_op_expr { }
+class UnaryBitwiseOperation extends BitwiseOperation, UnaryOperation, @un_bit_operation { }
 
 /**
- * A bitwise complement operation, for example `~x`.
+ * A bitwise complement expression, for example `~x`.
  */
 class ComplementExpr extends UnaryBitwiseOperation, @bit_not_expr {
   override string getOperator() { result = "~" }
@@ -28,71 +28,101 @@ class ComplementExpr extends UnaryBitwiseOperation, @bit_not_expr {
 }
 
 /**
- * A binary bitwise operation. Either a bitwise-and operation
- * (`BitwiseAndExpr`), a bitwise-or operation (`BitwiseOrExpr`),
- * a bitwise exclusive-or operation (`BitwiseXorExpr`), a left-shift
- * operation (`LeftShiftExpr`), a right-shift operation (`RightShiftExpr`),
- * or an unsigned right-shift operation (`UnsignedRightShiftExpr`).
+ * A binary bitwise operation. Either a binary bitwise expression (`BinaryBitwiseExpr`) or
+ * a bitwise assignment expression (`AssignBitwiseExpr`).
  */
-class BinaryBitwiseOperation extends BitwiseOperation, BinaryOperation, @bin_bit_op_expr {
+class BinaryBitwiseOperation extends BitwiseOperation, BinaryOperation, @bin_bit_operation {
   override string getOperator() { none() }
 }
 
 /**
- * A left-shift operation, for example `x << y`.
+ * A bitwise-and operation, either `x & y` or `x &= y`.
  */
-class LeftShiftExpr extends BinaryBitwiseOperation, @lshift_expr {
+class BitwiseAndOperation extends BinaryBitwiseOperation, @and_operation { }
+
+/**
+ * A bitwise-or operation, either `x | y` or `x |= y`.
+ */
+class BitwiseOrOperation extends BinaryBitwiseOperation, @or_operation { }
+
+/**
+ * A bitwise exclusive-or operation, either `x ^ y` or `x ^= y`.
+ */
+class BitwiseXorOperation extends BinaryBitwiseOperation, @xor_operation { }
+
+/**
+ * A left-shift operation, either `x << y` or `x <<= y`.
+ */
+class LeftShiftOperation extends BinaryBitwiseOperation, @lshift_operation { }
+
+/**
+ * A right-shift operation, either `x >> y` or `x >>= y`.
+ */
+class RightShiftOperation extends BinaryBitwiseOperation, @rshift_operation { }
+
+/**
+ * An unsigned right-shift operation, either `x >>> y` or `x >>>= y`.
+ */
+class UnsignedRightShiftOperation extends BinaryBitwiseOperation, @urshift_operation { }
+
+/**
+ * A binary bitwise expression. Either a bitwise-and expression
+ * (`BitwiseAndExpr`), a bitwise-or expression (`BitwiseOrExpr`),
+ * a bitwise exclusive-or expression (`BitwiseXorExpr`), a left-shift
+ * expression (`LeftShiftExpr`), a right-shift expression (`RightShiftExpr`),
+ * or an unsigned right-shift expression (`UnsignedRightShiftExpr`).
+ */
+class BinaryBitwiseExpr extends BinaryBitwiseOperation, @bin_bit_expr { }
+
+/**
+ * A left-shift expression, for example `x << y`.
+ */
+class LeftShiftExpr extends BinaryBitwiseExpr, LeftShiftOperation, @lshift_expr {
   override string getOperator() { result = "<<" }
 
   override string getAPrimaryQlClass() { result = "LeftShiftExpr" }
 }
 
-/** DEPRECATED: Alias for LeftShiftExpr. */
-deprecated class LShiftExpr = LeftShiftExpr;
-
 /**
- * A right-shift operation, for example `x >> y`.
+ * A right-shift expression, for example `x >> y`.
  */
-class RightShiftExpr extends BinaryBitwiseOperation, @rshift_expr {
+class RightShiftExpr extends BinaryBitwiseExpr, RightShiftOperation, @rshift_expr {
   override string getOperator() { result = ">>" }
 
   override string getAPrimaryQlClass() { result = "RightShiftExpr" }
 }
 
-/** DEPRECATED: Alias for RightShiftExpr. */
-deprecated class RShiftExpr = RightShiftExpr;
-
 /**
- * An unsigned right-shift operation, for example `x >>> y`.
+ * An unsigned right-shift expression, for example `x >>> y`.
  */
-class UnsignedRightShiftExpr extends BinaryBitwiseOperation, @urshift_expr {
+class UnsignedRightShiftExpr extends BinaryBitwiseExpr, UnsignedRightShiftOperation, @urshift_expr {
   override string getOperator() { result = ">>>" }
 
   override string getAPrimaryQlClass() { result = "UnsignedRightShiftExpr" }
 }
 
 /**
- * A bitwise-and operation, for example `x & y`.
+ * A bitwise-and expression, for example `x & y`.
  */
-class BitwiseAndExpr extends BinaryBitwiseOperation, @bit_and_expr {
+class BitwiseAndExpr extends BinaryBitwiseExpr, BitwiseAndOperation, @bit_and_expr {
   override string getOperator() { result = "&" }
 
   override string getAPrimaryQlClass() { result = "BitwiseAndExpr" }
 }
 
 /**
- * A bitwise-or operation, for example `x | y`.
+ * A bitwise-or expression, for example `x | y`.
  */
-class BitwiseOrExpr extends BinaryBitwiseOperation, @bit_or_expr {
+class BitwiseOrExpr extends BinaryBitwiseExpr, BitwiseOrOperation, @bit_or_expr {
   override string getOperator() { result = "|" }
 
   override string getAPrimaryQlClass() { result = "BitwiseOrExpr" }
 }
 
 /**
- * A bitwise exclusive-or operation, for example `x ^ y`.
+ * A bitwise exclusive-or expression, for example `x ^ y`.
  */
-class BitwiseXorExpr extends BinaryBitwiseOperation, @bit_xor_expr {
+class BitwiseXorExpr extends BinaryBitwiseExpr, BitwiseXorOperation, @bit_xor_expr {
   override string getOperator() { result = "^" }
 
   override string getAPrimaryQlClass() { result = "BitwiseXorExpr" }

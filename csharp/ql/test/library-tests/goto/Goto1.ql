@@ -1,8 +1,8 @@
 import csharp
 
-query predicate edges(ControlFlow::Node node, ControlFlow::Node successor, string attr, string val) {
-  not node.getElement().fromLibrary() and
-  exists(ControlFlow::SuccessorType t | successor = node.getASuccessorByType(t) |
+query predicate edges(ControlFlowNode node, ControlFlowNode successor, string attr, string val) {
+  not node.getAstNode().fromLibrary() and
+  exists(ControlFlow::SuccessorType t | successor = node.getASuccessor(t) |
     attr = "semmle.label" and
     val = t.toString()
   )

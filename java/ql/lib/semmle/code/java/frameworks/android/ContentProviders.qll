@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Content Providers.
  */
+overlay[local?]
+module;
 
 import java
 

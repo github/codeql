@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["felangel/bloc", "*", "input.coverage_excludes", "code-injection", "generated"]
+     - ["felangel/bloc", "*", "input.analyze_directories", "code-injection", "generated"]
+     - ["felangel/bloc", "*", "input.report_on", "code-injection", "generated"]
+     - ["felangel/bloc", "*", "input.concurrency", "code-injection", "generated"]

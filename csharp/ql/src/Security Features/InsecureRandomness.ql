@@ -49,6 +49,8 @@ module Random {
       // succ = array_or_indexer[pred] - use of random numbers in an index
       succ.asExpr().(ElementAccess).getAnIndex() = pred.asExpr()
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**
@@ -61,13 +63,13 @@ module Random {
     RandomSource() {
       this.getExpr() =
         any(MethodCall mc |
-          mc.getQualifier().getType().(RefType).hasQualifiedName("System", "Random")
+          mc.getQualifier().getType().(RefType).hasFullyQualifiedName("System", "Random")
           or
           // by using `% 87` on a `byte`, `System.Web.Security.Membership.GeneratePassword` has a bias
           mc.getQualifier()
               .getType()
               .(RefType)
-              .hasQualifiedName("System.Web.Security", "Membership") and
+              .hasFullyQualifiedName("System.Web.Security", "Membership") and
           mc.getTarget().hasName("GeneratePassword")
         )
     }
@@ -87,14 +89,10 @@ module Random {
         e = any(SensitiveLibraryParameter v).getAnAssignedArgument()
         or
         // Assignment operation, e.g. += or similar
-        exists(AssignOperation ao |
-          ao.getRValue() = e and
-          // "expanded" assignments will be covered by simple assignment
-          not ao.hasExpandedAssignment()
-        |
-          ao.getLValue() = any(SensitiveVariable v).getAnAccess() or
-          ao.getLValue() = any(SensitiveProperty v).getAnAccess() or
-          ao.getLValue() = any(SensitiveLibraryParameter v).getAnAccess()
+        exists(AssignOperation ao | ao.getRightOperand() = e |
+          ao.getLeftOperand() = any(SensitiveVariable v).getAnAccess() or
+          ao.getLeftOperand() = any(SensitiveProperty v).getAnAccess() or
+          ao.getLeftOperand() = any(SensitiveLibraryParameter v).getAnAccess()
         )
       )
     }

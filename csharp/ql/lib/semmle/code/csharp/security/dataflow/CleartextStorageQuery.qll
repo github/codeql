@@ -4,6 +4,7 @@
 
 import csharp
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.security.SensitiveActions
 private import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
@@ -24,21 +25,6 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `ClearTextStorage` instead.
- *
- * A taint-tracking configuration for cleartext storage of sensitive information.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "ClearTextStorage" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for cleartext storage of sensitive information.
  */
 private module ClearTextStorageConfig implements DataFlow::ConfigSig {
@@ -47,6 +33,8 @@ private module ClearTextStorageConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -75,3 +63,5 @@ class ProtectSanitizer extends Sanitizer {
  * An external location sink.
  */
 class ExternalSink extends Sink instanceof ExternalLocationSink { }
+
+private class ExternalSanitizer extends Sanitizer instanceof ExternalLocationSanitizer { }

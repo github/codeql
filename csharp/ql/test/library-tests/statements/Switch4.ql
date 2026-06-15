@@ -1,5 +1,5 @@
 /**
- * @name Test the implicit switch field isn't populated.
+ * @name Test the implicit switch field isn't populated
  */
 
 import csharp

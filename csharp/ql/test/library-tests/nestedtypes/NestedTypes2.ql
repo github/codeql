@@ -6,8 +6,8 @@ import csharp
 
 from Class c, Interface i
 where
-  c.hasQualifiedName("NestedTypes", "Base") and
-  i.hasQualifiedName("NestedTypes", "Base+I") and
+  c.hasFullyQualifiedName("NestedTypes", "Base") and
+  i.hasFullyQualifiedName("NestedTypes", "Base+I") and
   i.(NestedType).isPrivate() and
   i = c.getANestedType()
 select c, i

@@ -11,11 +11,11 @@ import (
 func serve6() {
 	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
-		username := r.Form.Get("username")
+		username := r.Form.Get("username") // $ Source[go/reflected-xss]
 		if !isValidUsername(username) {
 			// BAD: a request parameter is incorporated without validation into the response
 			a := []string{username, "is", "an", "unknown", "user"}
-			w.Write([]byte(strings.Join(a, " ")))
+			w.Write([]byte(strings.Join(a, " "))) // $ Alert[go/reflected-xss]
 		} else {
 			// TODO: do something exciting
 		}
@@ -45,12 +45,12 @@ func serve7() {
 func serve8() {
 	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
-		service := r.Form.Get("service")
+		service := r.Form.Get("service") // $ Source[go/reflected-xss]
 		if service != "service1" && service != "service2" {
 			fmt.Fprintln(w, "Service not found")
 		} else {
 			// OK (service is known to be either "service1" or "service2" here), but currently flagged
-			w.Write([]byte(service))
+			w.Write([]byte(service)) // $ SPURIOUS: Alert[go/reflected-xss]
 		}
 	})
 }

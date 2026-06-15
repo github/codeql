@@ -3,36 +3,57 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Accessing paths controlled by users can allow an attacker to access unexpected resources. This
+<p>Accessing paths controlled by users can allow an attacker to access unexpected resources. This 
 can result in sensitive information being revealed or deleted, or an attacker being able to influence
 behavior by modifying unexpected files.</p>
 
-<p>Paths that are naively constructed from data controlled by a user may contain unexpected special characters,
-such as "..". Such a path may potentially point to any directory on the filesystem.</p>
+<p>Paths that are naively constructed from data controlled by a user may be absolute paths, or may contain
+unexpected special characters such as "..". Such a path could point anywhere on the file system.</p>
 
 </overview>
 <recommendation>
 
-<p>Validate user input before using it to construct a filepath. Ideally, follow these rules:</p>
+<p>Validate user input before using it to construct a file path.</p>
 
-<ul>
-<li>Do not allow more than a single "." character.</li>
-<li>Do not allow directory separators such as "/" or "\" (depending on the filesystem).</li>
-<li>Do not rely on simply replacing problematic sequences such as "../". For example, after applying this filter to
-".../...//" the resulting string would still be "../".</li>
-<li>Ideally use a whitelist of known good patterns.</li>
-</ul>
+<p>Common validation methods include checking that the normalized path is relative and does not contain
+any ".." components, or checking that the path is contained within a safe folder. The method you should use depends 
+on how the path is used in the application, and whether the path should be a single path component.
+</p>
+
+<p>If the path should be a single path component (such as a file name), you can check for the existence 
+of any path separators ("/" or "\"), or ".." sequences in the input, and reject the input if any are found.
+</p>
+
+<p>
+Note that removing "../" sequences is <i>not</i> sufficient, since the input could still contain a path separator
+followed by "..". For example, the input ".../...//" would still result in the string "../" if only "../" sequences
+are removed.
+</p>
+
+<p>Finally, the simplest (but most restrictive) option is to use an allow list of safe patterns and make sure that
+the user input matches one of these patterns.</p>
 
 </recommendation>
 <example>
 
-<p>In this example, a username and file are read from the arguments to main and then used to access a file in the
-user's home directory. However, a malicious user could enter a filename which contains special
-characters. For example, the string "../../etc/passwd" will result in the code reading the file located at
-"/home/[user]/../../etc/passwd", which is the system's password file. This could potentially allow them to
-access all the system's passwords.</p>
+<p>In this example, a file name is read from a user and then used to access a file. 
+However, a malicious user could enter a file name anywhere on the file system,
+such as "/etc/passwd" or "../../../etc/passwd".</p>
 
-<sample src="TaintedPath.c" />
+<sample src="examples/TaintedPath.c" />
+
+<p>
+If the input should only be a file name, you can check that it doesn't contain any path separators or ".." sequences.
+</p>
+
+<sample src="examples/TaintedPathNormalize.c" />
+
+<p>
+If the input should be within a specific directory, you can check that the resolved path 
+is still contained within that directory.
+</p>
+
+<sample src="examples/TaintedPathFolder.c" />
 
 </example>
 <references>
@@ -41,6 +62,7 @@ access all the system's passwords.</p>
 OWASP:
 <a href="https://owasp.org/www-community/attacks/Path_Traversal">Path Traversal</a>.
 </li>
+<li>Linux man pages: <a href="https://man7.org/linux/man-pages/man3/realpath.3.html">realpath(3)</a>.</li>
 
 </references>
 </qhelp>

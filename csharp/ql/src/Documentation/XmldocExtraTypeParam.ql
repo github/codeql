@@ -7,6 +7,7 @@
  * @precision medium
  * @id cs/xmldoc/unknown-type-parameter
  * @tags maintainability
+ *       readability
  */
 
 import Documentation

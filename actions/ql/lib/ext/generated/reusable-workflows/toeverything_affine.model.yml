@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["toeverything/affine/.github/workflows/build-server-image.yml", "*", "input.flavor", "code-injection", "generated"]

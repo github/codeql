@@ -54,6 +54,7 @@ predicate undefinedLocalUse(VariableAccess va) {
     // it is hard to tell when a struct or array has been initialized, so we
     // ignore them
     not isAggregateType(lv.getUnderlyingType()) and
+    not lv.isStatic() and // static variables are initialized to zero or null by default
     not lv.getType().hasName("va_list") and
     va = lv.getAnAccess() and
     noDefPath(lv, va) and
@@ -70,7 +71,8 @@ predicate uninitialisedGlobal(GlobalVariable gv) {
     va = gv.getAnAccess() and
     va.isRValue() and
     not gv.hasInitializer() and
-    not gv.hasSpecifier("extern")
+    not gv.hasSpecifier("extern") and
+    not gv.isStatic() // static variables are initialized to zero or null by default
   )
 }
 

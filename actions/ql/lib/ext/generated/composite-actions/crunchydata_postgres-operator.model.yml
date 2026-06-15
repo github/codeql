@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["crunchydata/postgres-operator", "*", "input.k3s-channel", "code-injection", "generated"]

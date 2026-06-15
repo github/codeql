@@ -37,16 +37,6 @@ module UnsafeUnzipSymlink {
   abstract class EvalSymlinksInvalidator extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `EvalSymlinksInvalidator` instead.
-   *
-   * A sanitizer guard that prevents reaching an `EvalSymlinksSink`.
-   *
-   * This is called an invalidator instead of a sanitizer because reaching a EvalSymlinksSink
-   * is a good thing from a security perspective.
-   */
-  abstract deprecated class EvalSymlinksInvalidatorGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * A sanitizer for an unsafe symbolic-link unzip vulnerability.
    *
    * Extend this to mark a particular path as safe for use in an `os.Symlink` or similar call.
@@ -54,17 +44,6 @@ module UnsafeUnzipSymlink {
    * `EvalSymlinksSink` instead.
    */
   abstract class SymlinkSanitizer extends DataFlow::Node { }
-
-  /**
-   * DEPRECATED: Use `SymlinkSanitizer` instead.
-   *
-   * A sanitizer guard for an unsafe symbolic-link unzip vulnerability.
-   *
-   * Extend this to mark a particular path as safe for use in an `os.Symlink` or similar call.
-   * To exclude a source from the query entirely if it reaches a particular node, extend
-   * `EvalSymlinksSink` instead.
-   */
-  abstract deprecated class SymlinkSanitizerGuard extends DataFlow::BarrierGuard { }
 
   /** A file name from a zip or tar entry, as a source for unsafe unzipping of symlinks. */
   class FileNameSource extends FilenameWithSymlinks, DataFlow::FieldReadNode {
@@ -147,7 +126,7 @@ module UnsafeUnzipSymlink {
    * An argument to a call to `os.Symlink` within a loop that extracts a zip or tar archive,
    * taken as a sink for unsafe unzipping of symlinks.
    */
-  class OsSymlink extends DataFlow::Node, SymlinkSink {
+  class OsSymlink extends SymlinkSink {
     OsSymlink() {
       exists(DataFlow::CallNode n | n.asExpr() = getASymlinkCall() |
         this = n.getArgument([0, 1]) and
@@ -160,7 +139,7 @@ module UnsafeUnzipSymlink {
    * An argument to `path/filepath.EvalSymlinks` or `os.Readlink`, taken as a sink for detecting target
    * paths that are likely safe to extract to.
    */
-  class StdlibSymlinkResolvers extends DataFlow::Node, EvalSymlinksSink {
+  class StdlibSymlinkResolvers extends EvalSymlinksSink {
     StdlibSymlinkResolvers() {
       exists(DataFlow::CallNode n |
         n.getTarget().hasQualifiedName("path/filepath", "EvalSymlinks")

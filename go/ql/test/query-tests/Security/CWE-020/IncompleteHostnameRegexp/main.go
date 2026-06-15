@@ -3,10 +3,11 @@
 package main
 
 import (
-	"github.com/elazarl/goproxy"
 	"net/http"
 	"regexp"
 	"time"
+
+	"github.com/elazarl/goproxy"
 )
 
 func Match(notARegex string) bool {
@@ -36,11 +37,30 @@ func proxy() {
 		HandleConnect(goproxy.AlwaysReject) // OK (rejecting all requests)
 	proxy.OnRequest(goproxy.ReqHostMatches(regexp.MustCompile("^test1.github.com$"))).
 		DoFunc(reject) // OK (rejecting all requests)
-	proxy.OnRequest(goproxy.ReqHostMatches(regexp.MustCompile("^test2.github.com$"))).
-		DoFunc(sometimesReject) // NOT OK (sometimes accepts requests)
+	proxy.OnRequest(goproxy.ReqHostMatches(regexp.MustCompile("^test2.github.com$"))). // $ Alert
+												DoFunc(sometimesReject) // NOT OK (sometimes accepts requests)
 }
 
 func main() {
-	regexp.Match(`https://www.example.com`, []byte(""))   // NOT OK
+	regexp.Match(`https://www.example.com`, []byte(""))   // $ Alert // NOT OK
 	regexp.Match(`https://www\.example\.com`, []byte("")) // OK
+}
+
+const sourceConst = `https://www.example.com` // $ Alert
+const firstHalfConst = `https://www.example.`
+
+func concatenateStrings() {
+	firstHalf := `https://www.example.`
+	regexp.Match(firstHalf+`com`, []byte("")) // MISSING: NOT OK
+
+	regexp.Match(firstHalfConst+`com`, []byte("")) // $ Alert // NOT OK
+
+	regexp.Match(`https://www.example.`+`com`, []byte("")) // $ Alert // NOT OK
+}
+
+func avoidDuplicateResults() {
+	localVar1 := sourceConst
+	localVar2 := localVar1
+	localVar3 := localVar2
+	regexp.Match(localVar3, []byte("")) // $ Sink // NOT OK
 }

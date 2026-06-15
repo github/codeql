@@ -5,9 +5,10 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/regex/backspace-escape
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
- *       regular-expressions
+ *       correctness
  * @precision medium
  */
 

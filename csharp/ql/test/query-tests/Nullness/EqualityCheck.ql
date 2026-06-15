@@ -1,5 +1,6 @@
 import csharp
 import semmle.code.csharp.controlflow.Guards
 
-from Expr e1, AbstractValue v, Expr e2
-select Internal::getAnEqualityCheck(e1, v, e2), v, e1, e2
+from Guard guard, Expr e1, Expr e2, boolean eqval
+where guard.isEquality(e1, e2, eqval)
+select guard, eqval, e1, e2

@@ -57,7 +57,7 @@ function doLoadLoad(obj) {
 }
 function storeBackloadCallLoadLoadReturn(obj) {
     obj.x.y = source();
-    sink(doLoadStore(obj)); // NOT OK - but not found
+    sink(doLoadStore(obj)); // NOT OK - but not found [INCONSISTENCY]
 }
 
 function doStoreReturn(val) {

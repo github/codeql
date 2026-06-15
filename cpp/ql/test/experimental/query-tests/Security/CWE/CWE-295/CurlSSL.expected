@@ -1,0 +1,2 @@
+| CurlSSL.cpp:25:2:25:17 | call to curl_easy_setopt | This call disables Secure Socket Layer and could potentially lead to MITM attacks |
+| CurlSSL.cpp:26:2:26:17 | call to curl_easy_setopt | This call disables Secure Socket Layer and could potentially lead to MITM attacks |

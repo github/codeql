@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["streetsidesoftware/cspell/.github/workflows/reuseable-pr-from-artifact.yml", "*", "input.patch_path", "code-injection", "generated"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["streetsidesoftware/cspell/.github/workflows/reuseable-load-integrations-repo-list.yml", "*", "input.ref", "output.ref", "taint", "manual"]

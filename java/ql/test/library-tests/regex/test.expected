@@ -1,0 +1,132 @@
+models
+| 1 | Summary: java.util.regex; Matcher; false; group; ; ; Argument[this]; ReturnValue; taint; manual |
+| 2 | Summary: java.util.regex; Matcher; false; replaceAll; ; ; Argument[0]; ReturnValue; taint; manual |
+| 3 | Summary: java.util.regex; Matcher; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: java.util.regex; Matcher; false; replaceFirst; ; ; Argument[0]; ReturnValue; taint; manual |
+| 5 | Summary: java.util.regex; Matcher; false; replaceFirst; ; ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: java.util.regex; Pattern; false; matcher; ; ; Argument[0]; ReturnValue; taint; manual |
+| 7 | Summary: java.util.regex; Pattern; false; quote; ; ; Argument[0]; ReturnValue; taint; manual |
+| 8 | Summary: java.util.regex; Pattern; false; split; ; ; Argument[0]; ReturnValue; taint; manual |
+edges
+| Test.java:20:19:20:35 | (...)... : String | Test.java:21:35:21:36 | in : String | provenance |  |
+| Test.java:20:28:20:35 | source(...) : Object | Test.java:20:19:20:35 | (...)... : String | provenance |  |
+| Test.java:21:19:21:37 | matcher(...) : Matcher | Test.java:22:13:22:13 | m : Matcher | provenance |  |
+| Test.java:21:35:21:36 | in : String | Test.java:21:19:21:37 | matcher(...) : Matcher | provenance | MaD:6 |
+| Test.java:22:13:22:13 | m : Matcher | Test.java:22:13:22:26 | group(...) : String | provenance | MaD:1 |
+| Test.java:22:13:22:26 | group(...) : String | Test.java:23:12:23:14 | out | provenance |  |
+| Test.java:28:19:28:35 | (...)... : String | Test.java:29:35:29:36 | in : String | provenance |  |
+| Test.java:28:28:28:35 | source(...) : Object | Test.java:28:19:28:35 | (...)... : String | provenance |  |
+| Test.java:29:19:29:37 | matcher(...) : Matcher | Test.java:30:13:30:13 | m : Matcher | provenance |  |
+| Test.java:29:35:29:36 | in : String | Test.java:29:19:29:37 | matcher(...) : Matcher | provenance | MaD:6 |
+| Test.java:30:13:30:13 | m : Matcher | Test.java:30:13:30:21 | group(...) : String | provenance | MaD:1 |
+| Test.java:30:13:30:21 | group(...) : String | Test.java:31:12:31:14 | out | provenance |  |
+| Test.java:36:19:36:35 | (...)... : String | Test.java:37:35:37:36 | in : String | provenance |  |
+| Test.java:36:28:36:35 | source(...) : Object | Test.java:36:19:36:35 | (...)... : String | provenance |  |
+| Test.java:37:19:37:37 | matcher(...) : Matcher | Test.java:38:13:38:13 | m : Matcher | provenance |  |
+| Test.java:37:35:37:36 | in : String | Test.java:37:19:37:37 | matcher(...) : Matcher | provenance | MaD:6 |
+| Test.java:38:13:38:13 | m : Matcher | Test.java:38:13:38:22 | group(...) : String | provenance | MaD:1 |
+| Test.java:38:13:38:22 | group(...) : String | Test.java:39:12:39:14 | out | provenance |  |
+| Test.java:44:19:44:35 | (...)... : String | Test.java:45:35:45:36 | in : String | provenance |  |
+| Test.java:44:28:44:35 | source(...) : Object | Test.java:44:19:44:35 | (...)... : String | provenance |  |
+| Test.java:45:19:45:37 | matcher(...) : Matcher | Test.java:46:13:46:13 | m : Matcher | provenance |  |
+| Test.java:45:35:45:36 | in : String | Test.java:45:19:45:37 | matcher(...) : Matcher | provenance | MaD:6 |
+| Test.java:46:13:46:13 | m : Matcher | Test.java:46:13:46:31 | replaceAll(...) : String | provenance | MaD:3 |
+| Test.java:46:13:46:31 | replaceAll(...) : String | Test.java:47:12:47:14 | out | provenance |  |
+| Test.java:52:19:52:35 | (...)... : String | Test.java:54:26:54:27 | in : String | provenance |  |
+| Test.java:52:28:52:35 | source(...) : Object | Test.java:52:19:52:35 | (...)... : String | provenance |  |
+| Test.java:54:13:54:28 | replaceAll(...) : String | Test.java:55:12:55:14 | out | provenance |  |
+| Test.java:54:26:54:27 | in : String | Test.java:54:13:54:28 | replaceAll(...) : String | provenance | MaD:2 |
+| Test.java:60:19:60:35 | (...)... : String | Test.java:61:35:61:36 | in : String | provenance |  |
+| Test.java:60:28:60:35 | source(...) : Object | Test.java:60:19:60:35 | (...)... : String | provenance |  |
+| Test.java:61:19:61:37 | matcher(...) : Matcher | Test.java:62:13:62:13 | m : Matcher | provenance |  |
+| Test.java:61:35:61:36 | in : String | Test.java:61:19:61:37 | matcher(...) : Matcher | provenance | MaD:6 |
+| Test.java:62:13:62:13 | m : Matcher | Test.java:62:13:62:33 | replaceFirst(...) : String | provenance | MaD:5 |
+| Test.java:62:13:62:33 | replaceFirst(...) : String | Test.java:63:12:63:14 | out | provenance |  |
+| Test.java:68:19:68:35 | (...)... : String | Test.java:70:28:70:29 | in : String | provenance |  |
+| Test.java:68:28:68:35 | source(...) : Object | Test.java:68:19:68:35 | (...)... : String | provenance |  |
+| Test.java:70:13:70:30 | replaceFirst(...) : String | Test.java:71:12:71:14 | out | provenance |  |
+| Test.java:70:28:70:29 | in : String | Test.java:70:13:70:30 | replaceFirst(...) : String | provenance | MaD:4 |
+| Test.java:76:25:76:46 | (...)... : CharSequence | Test.java:77:29:77:30 | in : CharSequence | provenance |  |
+| Test.java:76:39:76:46 | source(...) : Object | Test.java:76:25:76:46 | (...)... : CharSequence | provenance |  |
+| Test.java:77:13:77:31 | matcher(...) : Matcher | Test.java:78:12:78:14 | out | provenance |  |
+| Test.java:77:29:77:30 | in : CharSequence | Test.java:77:13:77:31 | matcher(...) : Matcher | provenance | MaD:6 |
+| Test.java:83:19:83:34 | (...)... : String | Test.java:84:27:84:28 | in : String | provenance |  |
+| Test.java:83:27:83:34 | source(...) : Object | Test.java:83:19:83:34 | (...)... : String | provenance |  |
+| Test.java:84:13:84:29 | quote(...) : String | Test.java:85:12:85:14 | out | provenance |  |
+| Test.java:84:27:84:28 | in : String | Test.java:84:13:84:29 | quote(...) : String | provenance | MaD:7 |
+| Test.java:90:25:90:46 | (...)... : CharSequence | Test.java:91:27:91:28 | in : CharSequence | provenance |  |
+| Test.java:90:39:90:46 | source(...) : Object | Test.java:90:25:90:46 | (...)... : CharSequence | provenance |  |
+| Test.java:91:13:91:29 | split(...) : String[] | Test.java:92:12:92:14 | out | provenance |  |
+| Test.java:91:27:91:28 | in : CharSequence | Test.java:91:13:91:29 | split(...) : String[] | provenance | MaD:8 |
+| Test.java:97:25:97:46 | (...)... : CharSequence | Test.java:98:27:98:28 | in : CharSequence | provenance |  |
+| Test.java:97:39:97:46 | source(...) : Object | Test.java:97:25:97:46 | (...)... : CharSequence | provenance |  |
+| Test.java:98:13:98:32 | split(...) : String[] | Test.java:99:12:99:14 | out | provenance |  |
+| Test.java:98:27:98:28 | in : CharSequence | Test.java:98:13:98:32 | split(...) : String[] | provenance | MaD:8 |
+nodes
+| Test.java:20:19:20:35 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:20:28:20:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:21:19:21:37 | matcher(...) : Matcher | semmle.label | matcher(...) : Matcher |
+| Test.java:21:35:21:36 | in : String | semmle.label | in : String |
+| Test.java:22:13:22:13 | m : Matcher | semmle.label | m : Matcher |
+| Test.java:22:13:22:26 | group(...) : String | semmle.label | group(...) : String |
+| Test.java:23:12:23:14 | out | semmle.label | out |
+| Test.java:28:19:28:35 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:28:28:28:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:29:19:29:37 | matcher(...) : Matcher | semmle.label | matcher(...) : Matcher |
+| Test.java:29:35:29:36 | in : String | semmle.label | in : String |
+| Test.java:30:13:30:13 | m : Matcher | semmle.label | m : Matcher |
+| Test.java:30:13:30:21 | group(...) : String | semmle.label | group(...) : String |
+| Test.java:31:12:31:14 | out | semmle.label | out |
+| Test.java:36:19:36:35 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:36:28:36:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:37:19:37:37 | matcher(...) : Matcher | semmle.label | matcher(...) : Matcher |
+| Test.java:37:35:37:36 | in : String | semmle.label | in : String |
+| Test.java:38:13:38:13 | m : Matcher | semmle.label | m : Matcher |
+| Test.java:38:13:38:22 | group(...) : String | semmle.label | group(...) : String |
+| Test.java:39:12:39:14 | out | semmle.label | out |
+| Test.java:44:19:44:35 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:44:28:44:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:45:19:45:37 | matcher(...) : Matcher | semmle.label | matcher(...) : Matcher |
+| Test.java:45:35:45:36 | in : String | semmle.label | in : String |
+| Test.java:46:13:46:13 | m : Matcher | semmle.label | m : Matcher |
+| Test.java:46:13:46:31 | replaceAll(...) : String | semmle.label | replaceAll(...) : String |
+| Test.java:47:12:47:14 | out | semmle.label | out |
+| Test.java:52:19:52:35 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:52:28:52:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:54:13:54:28 | replaceAll(...) : String | semmle.label | replaceAll(...) : String |
+| Test.java:54:26:54:27 | in : String | semmle.label | in : String |
+| Test.java:55:12:55:14 | out | semmle.label | out |
+| Test.java:60:19:60:35 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:60:28:60:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:61:19:61:37 | matcher(...) : Matcher | semmle.label | matcher(...) : Matcher |
+| Test.java:61:35:61:36 | in : String | semmle.label | in : String |
+| Test.java:62:13:62:13 | m : Matcher | semmle.label | m : Matcher |
+| Test.java:62:13:62:33 | replaceFirst(...) : String | semmle.label | replaceFirst(...) : String |
+| Test.java:63:12:63:14 | out | semmle.label | out |
+| Test.java:68:19:68:35 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:68:28:68:35 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:70:13:70:30 | replaceFirst(...) : String | semmle.label | replaceFirst(...) : String |
+| Test.java:70:28:70:29 | in : String | semmle.label | in : String |
+| Test.java:71:12:71:14 | out | semmle.label | out |
+| Test.java:76:25:76:46 | (...)... : CharSequence | semmle.label | (...)... : CharSequence |
+| Test.java:76:39:76:46 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:77:13:77:31 | matcher(...) : Matcher | semmle.label | matcher(...) : Matcher |
+| Test.java:77:29:77:30 | in : CharSequence | semmle.label | in : CharSequence |
+| Test.java:78:12:78:14 | out | semmle.label | out |
+| Test.java:83:19:83:34 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:83:27:83:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:84:13:84:29 | quote(...) : String | semmle.label | quote(...) : String |
+| Test.java:84:27:84:28 | in : String | semmle.label | in : String |
+| Test.java:85:12:85:14 | out | semmle.label | out |
+| Test.java:90:25:90:46 | (...)... : CharSequence | semmle.label | (...)... : CharSequence |
+| Test.java:90:39:90:46 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:91:13:91:29 | split(...) : String[] | semmle.label | split(...) : String[] |
+| Test.java:91:27:91:28 | in : CharSequence | semmle.label | in : CharSequence |
+| Test.java:92:12:92:14 | out | semmle.label | out |
+| Test.java:97:25:97:46 | (...)... : CharSequence | semmle.label | (...)... : CharSequence |
+| Test.java:97:39:97:46 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:98:13:98:32 | split(...) : String[] | semmle.label | split(...) : String[] |
+| Test.java:98:27:98:28 | in : CharSequence | semmle.label | in : CharSequence |
+| Test.java:99:12:99:14 | out | semmle.label | out |
+subpaths
+testFailures

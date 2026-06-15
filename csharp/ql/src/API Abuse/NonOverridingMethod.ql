@@ -5,9 +5,10 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/nonoverriding-method
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       readability
- *       naming
  */
 
 import csharp
@@ -41,6 +42,6 @@ from Method m, Method vm, string namespace, string type, string name
 where
   m.fromSource() and
   nonOverridingMethod(m, vm) and
-  vm.hasQualifiedName(namespace, type, name)
+  vm.hasFullyQualifiedName(namespace, type, name)
 select m, "Method '" + m.getName() + "' looks like it should override $@ but does not do so.",
   vm.getUnboundDeclaration(), getQualifiedName(namespace, type, name)

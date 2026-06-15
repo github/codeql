@@ -2,9 +2,9 @@ import cpp
 
 from SizeofOperator sto, string elemDesc, Element e
 where
-  elemDesc = "SizeofTypeOperator.getTypeOperand()" and
-  e = sto.(SizeofTypeOperator).getTypeOperand()
+  elemDesc = "SizeofOperator.getTypeOperand()" and
+  e = sto.getTypeOperand()
   or
   elemDesc = "SizeofExprOperator.getExprOperand()" and
   e = sto.(SizeofExprOperator).getExprOperand()
-select sto, elemDesc, e
+select sto, sto.getValue(), elemDesc, e

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["ruby/ruby.wasm/.github/workflows/build.yml", "*", "input.prerel_name", "code-injection", "generated"]

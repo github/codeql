@@ -1,1 +1,2 @@
-RedundantCode/DuplicateBranches.ql
+query: RedundantCode/DuplicateBranches.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

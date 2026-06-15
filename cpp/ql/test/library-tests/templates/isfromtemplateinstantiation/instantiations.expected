@@ -10,3 +10,4 @@
 | isfromtemplateinstantiation.cpp:134:29:134:33 | Outer<int> | ClassTemplateInstantiation | file://:0:0:0:0 | int |
 | isfromtemplateinstantiation.cpp:135:31:135:35 | Inner<long> | ClassTemplateInstantiation | file://:0:0:0:0 | long |
 | load.cpp:13:7:13:27 | basic_text_iprimitive<std_istream_mockup> | ClassTemplateInstantiation | load.cpp:3:7:3:24 | std_istream_mockup |
+| load.cpp:22:10:22:10 | load | FunctionTemplateInstantiation | file://:0:0:0:0 | short |

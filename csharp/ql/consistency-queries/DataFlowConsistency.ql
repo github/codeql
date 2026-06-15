@@ -1,76 +1,70 @@
 import csharp
-import cil
-import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-import semmle.code.csharp.dataflow.internal.DataFlowPublic
-import semmle.code.csharp.dataflow.internal.DataFlowDispatch
-import semmle.code.csharp.dataflow.internal.DataFlowImplConsistency::Consistency
+private import semmle.code.csharp.dataflow.internal.DataFlowImplSpecific
+private import semmle.code.csharp.dataflow.internal.TaintTrackingImplSpecific
+private import codeql.dataflow.internal.DataFlowImplConsistency
 
-private class MyConsistencyConfiguration extends ConsistencyConfiguration {
-  override predicate uniqueEnclosingCallableExclude(Node n) {
-    // TODO: Remove once static initializers are folded into the
-    // static constructors
-    exists(ControlFlow::Node cfn |
-      cfn.getElement() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
-      cfn = n.getControlFlowNode()
-    )
-  }
+private module Input implements InputSig<Location, CsharpDataFlow> {
+  private import CsharpDataFlow
 
-  override predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) {
-    // TODO: Remove once static initializers are folded into the
-    // static constructors
-    exists(ControlFlow::Node cfn |
-      cfn.getElement() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
-      cfn = call.getControlFlowNode()
-    )
-  }
-
-  override predicate uniqueNodeLocationExclude(Node n) {
+  predicate uniqueNodeLocationExclude(Node n) {
     // Methods with multiple implementations
     n instanceof ParameterNode
     or
-    this.missingLocationExclude(n)
+    missingLocationExclude(n)
+    or
+    n instanceof FlowInsensitiveFieldNode
   }
 
-  override predicate missingLocationExclude(Node n) {
-    // Some CIL methods are missing locations
-    n.asParameter() instanceof CIL::Parameter
-  }
-
-  override predicate postWithInFlowExclude(Node n) {
-    n instanceof SummaryNode
+  predicate postWithInFlowExclude(Node n) {
+    n instanceof FlowSummaryNode
     or
     n.asExpr().(ObjectCreation).hasInitializer()
+    or
+    n.(PostUpdateNode).getPreUpdateNode().asExpr() = LocalFlow::getPostUpdateReverseStep(_)
   }
 
-  override predicate argHasPostUpdateExclude(ArgumentNode n) {
-    n instanceof SummaryNode
-    or
-    not exists(LocalFlow::getAPostUpdateNodeForArg(n.getControlFlowNode()))
-    or
-    n instanceof ImplicitCapturedArgumentNode
+  predicate argHasPostUpdateExclude(ArgumentNode n) {
+    n instanceof FlowSummaryNode
     or
     n instanceof ParamsArgumentNode
     or
-    n.asExpr() instanceof CIL::Expr
+    n.asExpr() = any(Expr e | not exprMayHavePostUpdateNode(e))
   }
 
-  override predicate postHasUniquePreExclude(PostUpdateNode n) {
-    exists(ControlFlow::Nodes::ExprNode e, ControlFlow::Nodes::ExprNode arg |
-      e = LocalFlow::getAPostUpdateNodeForArg(arg) and
-      e != arg and
-      n = TExprPostUpdateNode(e)
+  predicate reverseReadExclude(Node n) { n.asExpr() = any(AwaitExpr ae).getExpr() }
+
+  predicate missingArgumentCallExclude(ArgumentNode arg) {
+    // TODO: Remove once object initializers are modeled properly
+    arg.(Private::PostUpdateNodes::ObjectInitializerNode).getInitializer() instanceof
+      ObjectInitializer
+    or
+    // TODO: Remove once underlying issue is fixed
+    exists(QualifiableExpr qe |
+      qe.isConditional() and
+      qe.getQualifier() = arg.asExpr()
     )
   }
 
-  override predicate uniquePostUpdateExclude(Node n) {
-    exists(ControlFlow::Nodes::ExprNode e, ControlFlow::Nodes::ExprNode arg |
-      e = LocalFlow::getAPostUpdateNodeForArg(arg) and
-      e != arg and
-      n.asExpr() = arg.getExpr()
+  predicate multipleArgumentCallExclude(ArgumentNode arg, DataFlowCall call) {
+    isArgumentNode(arg, call, _) and
+    (
+      // TODO: Remove once object initializers are modeled properly
+      arg =
+        any(Private::PostUpdateNodes::ObjectInitializerNode init |
+          init.argumentOf(call, _) and
+          init.getInitializer().getNumberOfChildren() > 1
+        )
+      or
+      call.(NonDelegateDataFlowCall).getDispatchCall().isReflection()
+      or
+      // Exclude calls that are both getter and setter calls, as they share the same argument nodes.
+      exists(AccessorCall ac |
+        call.(NonDelegateDataFlowCall).getDispatchCall().getCall() = ac and
+        ac instanceof AssignableRead and
+        ac instanceof AssignableWrite
+      )
     )
   }
-
-  override predicate reverseReadExclude(Node n) { n.asExpr() = any(AwaitExpr ae).getExpr() }
-
-  override predicate identityLocalStepExclude(Node n) { none() }
 }
+
+import MakeConsistency<Location, CsharpDataFlow, CsharpTaintTracking, Input>

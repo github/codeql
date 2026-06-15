@@ -20,7 +20,7 @@ predicate authenticatesImproperly(LdapBind ldapBind) {
     not exists(ldapBind.getPassword())
   )
   or
-  exists(StrConst emptyString |
+  exists(StringLiteral emptyString |
     emptyString.getText() = "" and
     DataFlow::localFlow(DataFlow::exprNode(emptyString), ldapBind.getPassword())
   )

@@ -3,17 +3,17 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.XSS
 import semmle.code.java.security.UrlRedirect
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod().hasName("taint")
+    n.asExpr().(MethodCall).getMethod().hasName("taint")
     or
-    n instanceof RemoteFlowSource
+    n instanceof ActiveThreatModelSource
   }
 
   predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+    exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
     or
     n instanceof XssSink
     or
@@ -21,10 +21,4 @@ module Config implements DataFlow::ConfigSig {
   }
 }
 
-module Flow = TaintTracking::Global<Config>;
-
-class HasFlowTest extends InlineFlowTest {
-  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
-
-  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) { Flow::flow(src, sink) }
-}
+import TaintFlowTest<Config>

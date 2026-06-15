@@ -1,7 +1,10 @@
 /** Provides classes to reason about OGNL injection vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.frameworks.MyBatis
 
@@ -10,7 +13,7 @@ private import semmle.code.java.frameworks.MyBatis
  *
  * Extend this class to add your own OGNL injection sinks.
  */
-abstract class OgnlInjectionSink extends DataFlow::Node { }
+abstract class OgnlInjectionSink extends ApiSinkNode { }
 
 /**
  * A unit class for adding additional taint steps.
@@ -51,7 +54,7 @@ private class TypeExpressionAccessor extends Interface {
  * i.e. `Ognl.parseExpression(tainted)` or `Ognl.compileExpression(tainted)`.
  */
 private predicate parseCompileExpressionStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(MethodAccess ma, Method m, int index |
+  exists(MethodCall ma, Method m, int index |
     n1.asExpr() = ma.getArgument(index) and
     n2.asExpr() = ma and
     ma.getMethod() = m and
@@ -68,7 +71,7 @@ private predicate parseCompileExpressionStep(DataFlow::Node n1, DataFlow::Node n
  * i.e. `Node.getAccessor()`.
  */
 private predicate getAccessorStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     ma.getMethod() = m and
     m.getDeclaringType().getAnAncestor() instanceof TypeNode and
     m.hasName("getAccessor")
@@ -83,7 +86,7 @@ private predicate getAccessorStep(DataFlow::Node n1, DataFlow::Node n2) {
  * in a `setExpression` call, i.e. `accessor.setExpression(tainted)`
  */
 private predicate setExpressionStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(MethodAccess ma, Method m |
+  exists(MethodCall ma, Method m |
     ma.getMethod() = m and
     m.hasName("setExpression") and
     m.getDeclaringType().getAnAncestor() instanceof TypeExpressionAccessor

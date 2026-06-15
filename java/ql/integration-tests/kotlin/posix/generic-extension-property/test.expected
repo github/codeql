@@ -1,0 +1,4 @@
+| User.java:5:5:5:34 | getKotlinVal(...) | getKotlinVal | String |
+| test.kt:8:43:8:78 | with(...) | with | Function1<? super T,? extends R> |
+| test.kt:8:43:8:78 | with(...) | with | T |
+| test.kt:8:54:8:76 | getKotlinVal(...) | getKotlinVal | String |

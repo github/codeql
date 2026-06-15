@@ -28,13 +28,13 @@ import com.semmle.util.trap.TrapWriter.Label;
  */
 public class FileExtractor {
   /**
-   * Pattern to use on the shebang line of a script to identify whether it is a Node.js script.
+   * Pattern to use on the shebang line of a script to identify whether it is a JavaScript script.
    *
-   * <p>There are many different ways of invoking the Node.js interpreter (directly, through {@code
+   * <p>There are many different ways of invoking a JavaScript interpreter (directly, through {@code
    * env}, with or without flags, with or without modified environment, etc.), so we simply look for
-   * the word {@code "node"} or {@code "nodejs"}.
+   * the word {@code "node"}, {@code "nodejs"}, {@code "bun"}, or {@code "tsx"}.
    */
-  private static final Pattern NODE_INVOCATION = Pattern.compile("\\bnode(js)?\\b");
+  private static final Pattern JS_INVOCATION = Pattern.compile("\\b(node(js)?|bun|tsx)\\b");
 
   /** A pattern that matches strings starting with `{ "...":`, suggesting JSON data. */
   public static final Pattern JSON_OBJECT_START =
@@ -103,7 +103,7 @@ public class FileExtractor {
 
   /** Information about supported file types. */
   public static enum FileType {
-    HTML(".htm", ".html", ".xhtm", ".xhtml", ".vue", ".hbs", ".ejs", ".njk", ".erb") {
+    HTML(".htm", ".html", ".xhtm", ".xhtml", ".vue", ".hbs", ".ejs", ".njk", ".erb", ".jsp", ".dot") {
       @Override
       public IExtractor mkExtractor(ExtractorConfig config, ExtractorState state) {
         return new HTMLExtractor(config, state);
@@ -125,11 +125,17 @@ public class FileExtractor {
             return false;
           }
         }
+        // for DOT files we are only interrested in `.html.dot` files
+        if (FileUtil.extension(f).equalsIgnoreCase(".dot")) {
+          if (!f.getName().toLowerCase().endsWith(".html.dot")) {
+            return false;
+          }
+        }
         return super.contains(f, lcExt, config);
       }
     },
 
-    JS(".js", ".jsx", ".mjs", ".cjs", ".es6", ".es") {
+    JS(".js", ".jsx", ".mjs", ".cjs", ".es6", ".es", ".xsjs", ".xsjslib") {
       @Override
       public IExtractor mkExtractor(ExtractorConfig config, ExtractorState state) {
         return new ScriptExtractor(config, state);
@@ -151,7 +157,7 @@ public class FileExtractor {
             // do a cheap check first
             if (firstLine != null && firstLine.startsWith("#!")) {
               // now do the slightly more expensive one
-              return NODE_INVOCATION.matcher(firstLine).find();
+              return JS_INVOCATION.matcher(firstLine).find();
             }
           } catch (IOException e) {
             Exceptions.ignore(e, "We simply skip this file.");
@@ -178,8 +184,8 @@ public class FileExtractor {
         if (super.contains(f, lcExt, config)) return true;
 
         // detect JSON-encoded configuration files whose name starts with `.` and ends with `rc`
-        // (e.g., `.eslintrc` or `.babelrc`)
-        if (f.isFile() && f.getName().matches("\\..*rc")) {
+        // (e.g., `.eslintrc` or `.babelrc`) as well as `.xsaccess` files
+        if (f.isFile() && f.getName().matches("\\..*rc|\\.xsaccess")) {
           try (BufferedReader br = new BufferedReader(new FileReader(f))) {
             // check whether the first two non-empty lines look like the start of a JSON object
             // (two lines because the opening brace is usually on a line by itself)
@@ -211,8 +217,6 @@ public class FileExtractor {
     TYPESCRIPT(".ts", ".tsx", ".mts", ".cts") {
       @Override
       protected boolean contains(File f, String lcExt, ExtractorConfig config) {
-        if (config.getTypeScriptMode() == TypeScriptMode.NONE) return false;
-
         // Read the beginning of the file to guess the file type.
         if (hasBadFileHeader(f, lcExt, config)) {
           return false;
@@ -298,7 +302,7 @@ public class FileExtractor {
         int lengthOfText = endOfLine - startOfText;
         String text = new String(bytes, startOfText, lengthOfText, StandardCharsets.UTF_8);
         // Check if the shebang is a recognized JavaScript intepreter.
-        return !NODE_INVOCATION.matcher(text).find();
+        return !JS_INVOCATION.matcher(text).find();
       }
 
       @Override
@@ -545,10 +549,15 @@ public class FileExtractor {
           new TextualExtractor(
               trapwriter, locationManager, source, config.getExtractLines(), metrics, extractedFile);
       ParseResultInfo loc = extractor.extract(textualExtractor);
-      int numLines = textualExtractor.isSnippet() ? 0 : textualExtractor.getNumLines();
-      int linesOfCode = loc.getLinesOfCode(), linesOfComments = loc.getLinesOfComments();
-      trapwriter.addTuple("numlines", fileLabel, numLines, linesOfCode, linesOfComments);
-      trapwriter.addTuple("filetype", fileLabel, fileType.toString());
+      if (loc.getSkipReason() != null) {
+        System.err.println("Skipping file " + extractedFile + ": " + loc.getSkipReason());
+        System.err.flush();
+      } else {
+        int numLines = textualExtractor.isSnippet() ? 0 : textualExtractor.getNumLines();
+        int linesOfCode = loc.getLinesOfCode(), linesOfComments = loc.getLinesOfComments();
+        trapwriter.addTuple("numlines", fileLabel, numLines, linesOfCode, linesOfComments);
+        trapwriter.addTuple("filetype", fileLabel, fileType.toString());
+      }
       metrics.stopPhase(ExtractionPhase.FileExtractor_extractContents);
       metrics.writeTimingsToTrap(trapwriter);
       successful = true;

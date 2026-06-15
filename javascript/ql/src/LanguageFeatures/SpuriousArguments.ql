@@ -4,7 +4,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/superfluous-trailing-arguments
- * @tags maintainability
+ * @tags quality
+ *       reliability
  *       correctness
  *       language-features
  *       external/cwe/cwe-685
@@ -46,7 +47,8 @@ class SpuriousArguments extends Expr {
 
   SpuriousArguments() {
     this = invk.getArgument(maxArity(invk)).asExpr() and
-    not invk.isIncomplete()
+    not invk.isIncomplete() and
+    not invk.getAstNode() instanceof TaggedTemplateExpr
   }
 
   /**

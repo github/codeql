@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func bad(x int) {
-	if x < 0 { // NOT OK
+	if x < 0 { // $ Alert // NOT OK
 		fmt.Println("x is negative")
 	} else {
 		fmt.Println("x is negative")

@@ -121,15 +121,20 @@ class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
   }
 
   private int getSynthAstNodeIndex() {
-    this.parentIsSynthesized() and
     exists(AstNode parent |
       shouldPrintAstEdge(parent, _, astNode) and
-      parent.isSynthesized() and
       synthChild(parent, result, astNode)
     )
     or
-    not this.parentIsSynthesized() and
+    not exists(AstNode parent |
+      shouldPrintAstEdge(parent, _, astNode) and
+      synthChild(parent, _, astNode)
+    ) and
     result = 0
+  }
+
+  private int getSynthAstNodeIndexForSynthParent() {
+    if this.parentIsSynthesized() then result = this.getSynthAstNodeIndex() else result = 0
   }
 
   override int getOrder() {
@@ -140,8 +145,9 @@ class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
       |
         p
         order by
-          f.getBaseName(), f.getAbsolutePath(), l.getStartLine(), p.getSynthAstNodeIndex(),
-          l.getStartColumn(), l.getEndLine(), l.getEndColumn()
+          f.getBaseName(), f.getAbsolutePath(), l.getStartLine(),
+          p.getSynthAstNodeIndexForSynthParent(), l.getStartColumn(), p.getSynthAstNodeIndex(),
+          l.getEndLine(), l.getEndColumn()
       )
   }
 

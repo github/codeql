@@ -18,6 +18,7 @@ from Include i, File f, string extension
 where
   f = i.getIncludedFile() and
   extension = f.getExtension().toLowerCase() and
+  extension != "def" and
   extension != "inc" and
   extension != "inl" and
   extension != "tcc" and

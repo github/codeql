@@ -1,5 +1,5 @@
 const cp = require("child_process");
 
-module.exports = function (name) {
-	cp.exec("rm -rf " + name); // NOT OK - this function is exported from `amd.js`
+module.exports = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert - this function is exported from `amd.js`
 };

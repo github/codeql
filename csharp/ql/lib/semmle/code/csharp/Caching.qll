@@ -8,29 +8,6 @@ private import csharp
  */
 module Stages {
   cached
-  module ControlFlowStage {
-    private import semmle.code.csharp.controlflow.internal.Splitting
-    private import semmle.code.csharp.controlflow.internal.SuccessorType
-    private import semmle.code.csharp.controlflow.Guards as Guards
-
-    cached
-    predicate forceCachingInSameStage() { any() }
-
-    cached
-    private predicate forceCachingInSameStageRev() {
-      exists(Split s)
-      or
-      exists(SuccessorType st)
-      or
-      exists(ControlFlow::Node n)
-      or
-      Guards::Internal::isCustomNullCheck(_, _, _, _)
-      or
-      forceCachingInSameStageRev()
-    }
-  }
-
-  cached
   module GuardsStage {
     private import semmle.code.csharp.controlflow.Guards
 
@@ -39,8 +16,6 @@ module Stages {
 
     cached
     private predicate forceCachingInSameStageRev() {
-      any(ControlFlowElement cfe).controlsBlock(_, _, _)
-      or
       exists(GuardedExpr ge)
       or
       forceCachingInSameStageRev()

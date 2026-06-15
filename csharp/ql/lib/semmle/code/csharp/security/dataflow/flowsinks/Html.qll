@@ -13,7 +13,7 @@ private import semmle.code.csharp.frameworks.system.web.UI
 private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.system.windows.Forms
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.asp.AspNet
 
 /**
@@ -23,7 +23,7 @@ private import semmle.code.asp.AspNet
 abstract class HtmlSink extends DataFlow::ExprNode, RemoteFlowSink { }
 
 private class ExternalHtmlSink extends HtmlSink {
-  ExternalHtmlSink() { sinkNode(this, "html") }
+  ExternalHtmlSink() { sinkNode(this, "html-injection") }
 }
 
 /**
@@ -56,10 +56,9 @@ class HtmlTextWriterSink extends HtmlSink {
 }
 
 /**
- * An expression that is used as an argument to an HTML sink method on
- * `AttributeCollection`.
+ * DEPRECATED: Attribute collections are no longer considered HTML sinks.
  */
-class AttributeCollectionSink extends HtmlSink {
+deprecated class AttributeCollectionSink extends DataFlow::ExprNode {
   AttributeCollectionSink() {
     exists(SystemWebUIAttributeCollectionClass ac, Parameter p |
       p = ac.getAddMethod().getParameter(1) or

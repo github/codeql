@@ -1,2 +1,18 @@
-failures
+models
+| 1 | Summary: my.qltest.synth; A; false; storeInArray; (String); ; Argument[0]; SyntheticGlobal[db1].ArrayElement; value; manual |
+| 2 | Summary: my.qltest.synth; A; false; storeTaintInArray; (String); ; Argument[0]; SyntheticGlobal[db1].ArrayElement; taint; manual |
+| 3 | Summary: my.qltest.synth; A; false; storeValue; (String); ; Argument[0]; SyntheticGlobal[db1]; value; manual |
+edges
+| A.java:16:18:16:28 | source(...) : String | A.java:23:10:23:20 | readArray(...) | provenance | MaD:1 |
+| A.java:17:23:17:33 | source(...) : String | A.java:23:10:23:20 | readArray(...) | provenance | MaD:2 |
+| A.java:18:16:18:26 | source(...) : String | A.java:22:10:22:20 | readValue(...) | provenance | MaD:3 |
+| A.java:18:16:18:26 | source(...) : String | A.java:23:10:23:20 | readArray(...) | provenance | MaD:3 |
+nodes
+| A.java:16:18:16:28 | source(...) : String | semmle.label | source(...) : String |
+| A.java:17:23:17:33 | source(...) : String | semmle.label | source(...) : String |
+| A.java:18:16:18:26 | source(...) : String | semmle.label | source(...) : String |
+| A.java:22:10:22:20 | readValue(...) | semmle.label | readValue(...) |
+| A.java:23:10:23:20 | readArray(...) | semmle.label | readArray(...) |
+subpaths
+testFailures
 invalidModelRow

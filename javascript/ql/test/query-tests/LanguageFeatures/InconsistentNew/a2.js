@@ -1,6 +1,6 @@
 function A() {}
-A(); // OK
+A();
 
 function MyString() {}
 String = MyString;
-new String(); // OK
+new String();

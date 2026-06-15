@@ -3,11 +3,13 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.text.RegularExpressions
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 /**
  * A data flow source for untrusted user input used in log entries.
@@ -17,27 +19,12 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for untrusted user input used in log entries.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for untrusted user input used in log entries.
  */
 abstract class Sanitizer extends DataFlow::ExprNode { }
-
-/**
- * DEPRECATED: Use `LogForging` instead.
- *
- * A taint-tracking configuration for untrusted user input used in log entries.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "LogForging" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
 
 /**
  * A taint-tracking configuration for untrusted user input used in log entries.
@@ -48,6 +35,8 @@ private module LogForgingConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -55,22 +44,40 @@ private module LogForgingConfig implements DataFlow::ConfigSig {
  */
 module LogForging = TaintTracking::Global<LogForgingConfig>;
 
-/** A source of remote user input. */
-private class RemoteSource extends Source instanceof RemoteFlowSource { }
+/** A source supported by the current threat model. */
+private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 private class HtmlSanitizer extends Sanitizer {
   HtmlSanitizer() { this.asExpr() instanceof HtmlSanitizedExpr }
 }
 
 /**
- * An argument to a call to a method on a logger class.
+ * An argument to a call to a method on a logger class, excluding extension methods
+ * with source code which are analyzed interprocedurally.
  */
-private class LogForgingLogMessageSink extends Sink, LogMessageSink { }
+private class LogForgingLogMessageSink extends Sink, LogMessageSink {
+  LogForgingLogMessageSink() {
+    not exists(ExtensionMethodCall mc |
+      this.getExpr() = mc.getAnArgument() and
+      mc.getTarget().fromSource()
+    )
+  }
+}
 
 /**
  * An argument to a call to a method on a trace class.
  */
 private class LogForgingTraceMessageSink extends Sink, TraceMessageSink { }
+
+/** A Log Forging sink defined through Models as Data. */
+private class ExternalLoggingExprSink extends Sink {
+  ExternalLoggingExprSink() { sinkNode(this, "log-injection") }
+}
+
+/** A sanitizer for log forging defined through Models as Data. */
+private class ExternalLogForgingSanitizer extends Sanitizer {
+  ExternalLogForgingSanitizer() { barrierNode(this, "log-injection") }
+}
 
 /**
  * A call to String replace or remove that is considered to sanitize replaced string.
@@ -78,7 +85,9 @@ private class LogForgingTraceMessageSink extends Sink, TraceMessageSink { }
 private class StringReplaceSanitizer extends Sanitizer {
   StringReplaceSanitizer() {
     exists(Method m |
-      exists(SystemStringClass s | m = s.getReplaceMethod() or m = s.getRemoveMethod())
+      exists(SystemStringClass s |
+        m = s.getReplaceMethod() or m = s.getRemoveMethod() or m = s.getReplaceLineEndingsMethod()
+      )
       or
       m = any(SystemTextRegularExpressionsRegexClass r).getAReplaceMethod()
     |

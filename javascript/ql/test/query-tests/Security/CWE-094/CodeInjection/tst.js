@@ -1,38 +1,31 @@
-// NOT OK
-eval(document.location.href.substring(document.location.href.indexOf("default=")+8))
+eval(document.location.href.substring(document.location.href.indexOf("default=")+8)) // $ Alert[js/code-injection]
 
-// NOT OK
-setTimeout(document.location.hash);
+setTimeout(document.location.hash); // $ Alert[js/code-injection]
 
-// OK
+
 setTimeout(document.location.protocol);
 
-// OK
+
 $('. ' + document.location.hostname);
 
-// NOT OK
-Function(document.location.search.replace(/.*\bfoo\s*=\s*([^;]*).*/, "$1"));
+Function(document.location.search.replace(/.*\bfoo\s*=\s*([^;]*).*/, "$1")); // $ Alert[js/code-injection]
 
-// NOT OK
-WebAssembly.compile(document.location.hash);
+WebAssembly.compile(document.location.hash); // $ Alert[js/code-injection]
 
-// NOT OK
-WebAssembly.compileStreaming(document.location.hash);
+WebAssembly.compileStreaming(document.location.hash); // $ Alert[js/code-injection]
 
-// NOT OK
-eval(atob(document.location.hash.substring(1)));
+eval(atob(document.location.hash.substring(1))); // $ Alert[js/code-injection]
 
-// NOT OK
-$('<a>').attr("onclick", location.search.substring(1));
+$('<a>').attr("onclick", location.search.substring(1)); // $ Alert[js/code-injection]
 
 (function test() {
-    var source = document.location.search.replace(/.*\bfoo\s*=\s*([^;]*).*/, "$1"); 
+    var source = document.location.search.replace(/.*\bfoo\s*=\s*([^;]*).*/, "$1");  // $ Source[js/code-injection]
 
-    new Function(source); // NOT OK
+    new Function(source); // $ Alert[js/code-injection]
 
-    Function(source); // NOT OK
+    Function(source); // $ Alert[js/code-injection]
 
-    new Function("a", "b", source); // NOT OK
+    new Function("a", "b", source); // $ Alert[js/code-injection]
 
-    new Function(...["a", "b"], source); // NOT OK
+    new Function(...["a", "b"], source); // $ Alert[js/code-injection]
 })();

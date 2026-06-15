@@ -1,3 +1,2 @@
-semmle-extractor-options: --cil
 semmle-extractor-options: ${testdir}/../../../resources/stubs/Microsoft.VisualStudio.TestTools.UnitTesting.cs
 semmle-extractor-options: /r:System.Collections.Specialized.dll /r:System.Collections.dll /r:System.Linq.dll

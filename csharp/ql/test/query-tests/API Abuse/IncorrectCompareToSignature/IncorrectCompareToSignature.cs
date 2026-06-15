@@ -1,15 +1,4 @@
-namespace System
-{
-    public interface IComparable
-    {
-        int CompareTo(object obj); // GOOD: the very definition of IComparable.CompareTo()
-    }
-
-    public interface IComparable<in T>
-    {
-        int CompareTo(T other);  // GOOD: the very definition of IComparable<T>.CompareTo()
-    }
-}
+using System;
 
 class C1<T>
 {

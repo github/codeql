@@ -14,7 +14,10 @@ public class DynamicImport extends Expression {
     return source;
   }
 
-  /** Returns the second "argument" provided to the import, such as <code>{ assert: { type: "json" }}</code>. */
+  /**
+   * Returns the second "argument" provided to the import, such as <code>{ "with": { type: "json" }}
+   * </code>.
+   */
   public Expression getAttributes() {
     return attributes;
   }

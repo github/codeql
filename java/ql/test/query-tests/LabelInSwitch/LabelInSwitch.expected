@@ -1,0 +1,2 @@
+| Test.java:14:17:14:31 | <Label>: ... | Possibly erroneous non-case label in switch statement. The case keyword might be missing. |
+| Test.java:17:17:17:39 | <Label>: ... | Confusing non-case label in switch statement. |

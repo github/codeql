@@ -1,13 +1,13 @@
-from flask import Flask, request
+from flask import Flask, request # $ Source=flask
 app = Flask(__name__)
 
 @app.route("/code-execution")
 def code_execution():
     code = request.args.get("code")
-    exec(code) # NOT OK
-    eval(code) # NOT OK
+    exec(code) # $ Alert=flask
+    eval(code) # $ Alert=flask
     cmd = compile(code, "<filename>", "exec")
-    exec(cmd) # NOT OK
+    exec(cmd) # $ Alert=flask
 
 
 @app.route("/safe-code-execution")
@@ -18,5 +18,5 @@ def code_execution():
     obj_name = request.args.get("obj")
     if obj_name == "foo" or obj_name == "bar":
         # TODO: Should not alert on this
-        obj = eval(obj_name) # OK
+        obj = eval(obj_name) # $ SPURIOUS: Alert=flask
         print(obj, obj*10)

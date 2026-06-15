@@ -10,6 +10,10 @@ Signatures
 Parameterized modules use signatures as a type system for their parameters.
 There are three categories of signatures: **predicate signatures**, **type signatures**, and **module signatures**.
 
+.. index:: predicate signature
+
+.. _predicate-signatures:
+
 Predicate signatures
 ====================
 
@@ -35,6 +39,10 @@ For example:
 .. code-block:: ql
 
     signature int operator(int lhs, int rhs);
+
+.. index:: type signature
+
+.. _type-signatures:
 
 Type signatures
 ===============
@@ -66,6 +74,10 @@ For example:
       string toString();
     }
 
+.. index:: module signature
+
+.. _module-signatures:
+
 Module signatures
 =================
 
@@ -73,7 +85,7 @@ Module signatures declare module parameters that will be substituted with module
 Module signatures specify a collection of types and predicates that a module needs to contain under given names and
 matching given signatures.
 
-Unlike type signatures and predicate signatures, the substitution of type signatures relies on nominal typing.
+Unlike type signatures and predicate signatures, the substitution of module signatures relies on nominal typing.
 That is, the definition of a module must declare the module signatures it implements.
 
 In detail, a type signature definition consists of:

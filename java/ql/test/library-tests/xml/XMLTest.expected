@@ -1,2 +1,2 @@
-| test.xml:4:5:4:32 | attribute=value | Unexpected result: hasXmlResult= |
-| test.xml:5:29:5:52 |  $ hasXmlResult  | Missing result:hasXmlResult= |
+| test.xml:4:5:4:32 | attribute=value | Unexpected result: hasXmlResult |
+| test.xml:5:29:5:52 |  $ hasXmlResult  | Missing result: hasXmlResult |

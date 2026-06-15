@@ -1,0 +1,6 @@
+# github.com/spf13/afero v1.9.5
+## explicit
+github.com/spf13/afero
+# golang.org/x/text v0.12.0
+## explicit
+golang.org/x/text

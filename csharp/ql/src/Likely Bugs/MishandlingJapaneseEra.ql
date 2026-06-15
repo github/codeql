@@ -5,8 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @precision medium
- * @tags reliability
- *       date-time
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp
@@ -23,19 +24,19 @@ predicate isEraStart(int year, int month, int day) {
 
 predicate isExactEraStartDateCreation(ObjectCreation cr) {
   (
-    cr.getType().hasQualifiedName("System", "DateTime") or
-    cr.getType().hasQualifiedName("System", "DateTimeOffset")
+    cr.getType().hasFullyQualifiedName("System", "DateTime") or
+    cr.getType().hasFullyQualifiedName("System", "DateTimeOffset")
   ) and
-  isEraStart(cr.getArgument(0).getValue().toInt(), cr.getArgument(1).getValue().toInt(),
-    cr.getArgument(2).getValue().toInt())
+  isEraStart(cr.getArgument(0).getIntValue(), cr.getArgument(1).getIntValue(),
+    cr.getArgument(2).getIntValue())
 }
 
 predicate isDateFromJapaneseCalendarToDateTime(MethodCall mc) {
   (
-    mc.getQualifier().getType().hasQualifiedName("System.Globalization", "JapaneseCalendar") or
+    mc.getQualifier().getType().hasFullyQualifiedName("System.Globalization", "JapaneseCalendar") or
     mc.getQualifier()
         .getType()
-        .hasQualifiedName("System.Globalization", "JapaneseLunisolarCalendar")
+        .hasFullyQualifiedName("System.Globalization", "JapaneseLunisolarCalendar")
   ) and
   mc.getTarget().hasName("ToDateTime") and
   mc.getArgument(0).hasValue() and
@@ -43,22 +44,22 @@ predicate isDateFromJapaneseCalendarToDateTime(MethodCall mc) {
     mc.getNumberOfArguments() = 7 // implicitly current era
     or
     mc.getNumberOfArguments() = 8 and
-    mc.getArgument(7).getValue() = "0"
+    mc.getArgument(7).getIntValue() = 0
   ) // explicitly current era
 }
 
 predicate isDateFromJapaneseCalendarCreation(ObjectCreation cr) {
   (
-    cr.getType().hasQualifiedName("System", "DateTime") or
-    cr.getType().hasQualifiedName("System", "DateTimeOffset")
+    cr.getType().hasFullyQualifiedName("System", "DateTime") or
+    cr.getType().hasFullyQualifiedName("System", "DateTimeOffset")
   ) and
   (
     cr.getArgumentForName("calendar")
         .getType()
-        .hasQualifiedName("System.Globalization", "JapaneseCalendar") or
+        .hasFullyQualifiedName("System.Globalization", "JapaneseCalendar") or
     cr.getArgumentForName("calendar")
         .getType()
-        .hasQualifiedName("System.Globalization", "JapaneseLunisolarCalendar")
+        .hasFullyQualifiedName("System.Globalization", "JapaneseLunisolarCalendar")
   ) and
   cr.getArgumentForName("year").hasValue()
 }

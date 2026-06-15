@@ -1,82 +1,85 @@
+import javascript
 import DataFlowConfig
 
-query predicate dataFlow(DataFlow::Node src, DataFlow::Node snk) {
-  exists(TestDataFlowConfiguration tttc | tttc.hasFlow(src, snk))
-}
+query predicate dataFlow(DataFlow::Node src, DataFlow::Node snk) { TestFlow::flow(src, snk) }
 
-class Parity extends DataFlow::FlowLabel {
-  Parity() { this = "even" or this = "odd" }
+module FlowLabelConfig implements DataFlow::StateConfigSig {
+  private newtype TFlowState =
+    TEven() or
+    TOdd()
 
-  Parity flip() { result != this }
-}
+  class FlowState extends TFlowState {
+    string toString() {
+      this = TEven() and result = "even"
+      or
+      this = TOdd() and result = "odd"
+    }
 
-class FLowLabelConfig extends DataFlow::Configuration {
-  FLowLabelConfig() { this = "FLowLabelConfig" }
+    FlowState flip() {
+      this = TEven() and result = TOdd()
+      or
+      this = TOdd() and result = TEven()
+    }
+  }
 
-  override predicate isSource(DataFlow::Node nd, DataFlow::FlowLabel lbl) {
+  predicate isSource(DataFlow::Node nd, FlowState state) {
     nd.(DataFlow::CallNode).getCalleeName() = "source" and
-    lbl = "even"
+    state = TEven()
   }
 
-  override predicate isSink(DataFlow::Node nd, DataFlow::FlowLabel lbl) {
+  predicate isSink(DataFlow::Node nd, FlowState state) {
     nd = any(DataFlow::CallNode c | c.getCalleeName() = "sink").getAnArgument() and
-    lbl = "even"
+    state = TEven()
   }
 
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predLabel,
-    DataFlow::FlowLabel succLabel
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    exists(DataFlow::CallNode c | c = succ |
+    exists(DataFlow::CallNode c | c = node2 |
       c.getCalleeName() = "inc" and
-      pred = c.getAnArgument() and
-      succLabel = predLabel.(Parity).flip()
+      node1 = c.getAnArgument() and
+      state2 = state1.flip()
     )
   }
 }
 
-query predicate flowLabels(DataFlow::PathNode source, DataFlow::PathNode sink) {
-  exists(FLowLabelConfig cfg | cfg.hasFlowPath(source, sink))
+module FlowLabelFlow = DataFlow::GlobalWithState<FlowLabelConfig>;
+
+query predicate flowLabels(FlowLabelFlow::PathNode source, FlowLabelFlow::PathNode sink) {
+  FlowLabelFlow::flowPath(source, sink)
 }
 
-class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
-  TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
-
-  override predicate isSource(DataFlow::Node src) {
+module TaintConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) {
     exists(VariableDeclarator vd |
       vd.getBindingPattern().(VarDecl).getName().matches("%source%") and
       src.asExpr() = vd.getInit()
     )
   }
 
-  override predicate isSink(DataFlow::Node snk) {
+  predicate isSink(DataFlow::Node snk) {
     exists(VariableDeclarator vd |
       vd.getBindingPattern().(VarDecl).getName().matches("%sink%") and
       snk.asExpr() = vd.getInit()
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(Function f |
       f.getName().matches("%noReturnTracking%") and
       node = f.getAReturnedExpr().flow()
     )
-  }
-
-  override predicate isSanitizerEdge(DataFlow::Node src, DataFlow::Node snk) {
-    src = src and
-    snk.asExpr().(PropAccess).getPropertyName() = "notTracked"
+    or
+    node.asExpr().(PropAccess).getPropertyName() = "notTracked"
   }
 }
 
-query predicate taintTracking(DataFlow::Node src, DataFlow::Node snk) {
-  exists(TestTaintTrackingConfiguration tttc | tttc.hasFlow(src, snk))
-}
+module TaintFlow = TaintTracking::Global<TaintConfig>;
 
-class GermanFlowConfig extends DataFlow::Configuration {
-  GermanFlowConfig() { this = "GermanFlowConfig" }
+query predicate taintTracking(DataFlow::Node src, DataFlow::Node snk) { TaintFlow::flow(src, snk) }
 
-  override predicate isSource(DataFlow::Node src) {
+module GermanConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) {
     exists(VariableDeclarator vd |
       vd.getBindingPattern().(VarDecl).getName().matches("%source%") and
       src.asExpr() = vd.getInit()
@@ -85,7 +88,7 @@ class GermanFlowConfig extends DataFlow::Configuration {
     src.asExpr() = any(Variable v | v.getName() = "quelle").getAnAssignedExpr()
   }
 
-  override predicate isSink(DataFlow::Node snk) {
+  predicate isSink(DataFlow::Node snk) {
     exists(VariableDeclarator vd |
       vd.getBindingPattern().(VarDecl).getName().matches("%sink%") and
       snk.asExpr() = vd.getInit()
@@ -94,19 +97,16 @@ class GermanFlowConfig extends DataFlow::Configuration {
     snk.asExpr() = any(Variable v | v.getName() = "abfluss").getAnAssignedExpr()
   }
 
-  override predicate isBarrier(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(Function f |
       f.getName().matches("%noReturnTracking%") and
       node = f.getAReturnedExpr().flow()
     )
-  }
-
-  override predicate isBarrierEdge(DataFlow::Node src, DataFlow::Node snk) {
-    src = src and
-    snk.asExpr().(PropAccess).getPropertyName() = "notTracked"
+    or
+    node.asExpr().(PropAccess).getPropertyName() = "notTracked"
   }
 }
 
-query predicate germanFlow(DataFlow::Node src, DataFlow::Node snk) {
-  exists(GermanFlowConfig tttc | tttc.hasFlow(src, snk))
-}
+module GermanFlow = DataFlow::Global<GermanConfig>;
+
+query predicate germanFlow(DataFlow::Node src, DataFlow::Node snk) { GermanFlow::flow(src, snk) }

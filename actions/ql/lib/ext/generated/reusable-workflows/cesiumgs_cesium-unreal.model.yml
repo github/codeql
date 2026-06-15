@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["cesiumgs/cesium-unreal/.github/workflows/testWindows.yml", "*", "input.unreal-program-name", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/testWindows.yml", "*", "input.test-package-base-name", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/testPackageOnWindows.yml", "*", "input.unreal-program-name", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/testPackageOnWindows.yml", "*", "input.unreal-engine-association", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/testPackageOnWindows.yml", "*", "input.test-package-base-name", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/testPackageOnWindows.yml", "*", "input.visual-studio-version", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/testPackageOnWindows.yml", "*", "input.visual-studio-components", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildiOS.yml", "*", "input.unreal-engine-version", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildiOS.yml", "*", "input.unreal-program-name", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildiOS.yml", "*", "input.upload-package-base-name", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildWindows.yml", "*", "input.unreal-engine-version", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildWindows.yml", "*", "input.cmake-generator", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildWindows.yml", "*", "input.cmake-platform", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildWindows.yml", "*", "input.cmake-toolchain", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildWindows.yml", "*", "input.upload-package-base-name", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildWindows.yml", "*", "input.unreal-program-name", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildWindows.yml", "*", "input.extra-choco-packages", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildWindows.yml", "*", "input.visual-studio-version", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildWindows.yml", "*", "input.visual-studio-components", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildMac.yml", "*", "input.unreal-engine-version", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildMac.yml", "*", "input.unreal-program-name", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildMac.yml", "*", "input.upload-package-base-name", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildLinux.yml", "*", "input.unreal-engine-version", "code-injection", "generated"]
+     - ["cesiumgs/cesium-unreal/.github/workflows/buildLinux.yml", "*", "input.clang-version", "code-injection", "generated"]

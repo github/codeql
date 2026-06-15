@@ -4,7 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id go/useless-assignment-to-field
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       useless-code
  *       external/cwe/cwe-563
  * @precision very-high
  */
@@ -87,7 +89,7 @@ Type getTypeEmbeddedViaPointer(Type t) {
 from Write w, LocalVariable v, Field f
 where
   // `w` writes `f` on `v`
-  w.writesField(v.getARead(), f, _) and
+  w.writesFieldPreUpdate(v.getARead(), f, _) and
   // but `f` is never read on `v`
   not exists(Read r | r.readsField(v.getARead(), f)) and
   // exclude pointer-typed `v`; there may be reads through an alias

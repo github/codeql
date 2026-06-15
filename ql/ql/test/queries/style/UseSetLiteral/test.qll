@@ -81,6 +81,8 @@ class MyTest8Class extends int {
   predicate is(int x) { x = this }
 
   int get() { result = this }
+
+  string getS() { result = s }
 }
 
 predicate test9(MyTest8Class c) {

@@ -1,0 +1,9 @@
+on: issue_comment
+
+jobs:
+  test1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ruby/setup-ruby@v2
+        with:
+          ruby-version: ${{ github.event.comment.body }}

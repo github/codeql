@@ -50,3 +50,193 @@ void test_inet(char *hostname, char *servname, struct addrinfo *hints) {
   addrinfo *res;
   int ret = getaddrinfo(hostname, servname, hints, &res); // $ remote_source
 }
+
+typedef unsigned int wint_t;
+
+// getc variants
+int getc(FILE *stream);
+wint_t getwc(FILE *stream);
+int _getc_nolock(FILE *stream);
+wint_t _getwc_nolock(FILE *stream);
+
+int getch(void);
+int _getch(void);
+wint_t _getwch(void);
+int _getch_nolock(void);
+wint_t _getwch_nolock(void);
+int getchar(void);
+wint_t getwchar();
+int _getchar_nolock(void);
+wint_t _getwchar_nolock(void);
+
+void test_getchar(FILE *stream) {
+  int a = getc(stream); // $ remote_source
+  wint_t b = getwc(stream); // $ remote_source
+  int c = _getc_nolock(stream); // $ remote_source
+  wint_t d = _getwc_nolock(stream); // $ remote_source
+
+  int e = getch(); // $ local_source
+  int f = _getch(); // $ local_source
+  wint_t g = _getwch(); // $ local_source
+  int h = _getch_nolock(); // $ local_source
+  wint_t i = _getwch_nolock(); // $ local_source
+  int j = getchar(); // $ local_source
+  wint_t k = getwchar(); // $ local_source
+  int l = _getchar_nolock(); // $ local_source
+  wint_t m = _getwchar_nolock(); // $ local_source
+}
+
+// ZMC networking library
+
+typedef unsigned long size_t;
+
+struct zmq_msg_t {
+};
+int zmq_msg_init(zmq_msg_t *msg);
+int zmq_msg_recv(zmq_msg_t *msg, void *socket, int flags);
+int zmq_recvmsg(void *socket, zmq_msg_t *msg, int flags); // deprecated
+int zmq_recv(void *socket, void *buf, size_t len, int flags);
+
+void test_zmc(void *socket) {
+  zmq_msg_t msg1, msg2;
+  char buffer[1024];
+
+  if (zmq_recv(socket, buffer, sizeof(buffer), 0) >= 0) { // $ remote_source
+    // ...
+  }
+
+  zmq_msg_init(&msg1);
+  if (zmq_msg_recv(&msg1, socket, 0) >= 0) { // $ remote_source
+    // ...
+  }
+
+  zmq_msg_init(&msg2);
+  if (zmq_recvmsg(socket, &msg2, 0) >= 0) { // $ remote_source
+    // ...
+  }
+}
+
+long StringCchGetsA(char *, size_t);
+long StringCchGetsExA(char *, size_t, char **, size_t *, unsigned long);
+
+void test_strsafe_gets() {
+	{
+		char dest[256] = {0};
+		StringCchGetsA(dest, sizeof(dest)); // $ local_source
+	}
+	{
+		char dest[256] = {0};
+		char *end;
+		size_t remaining;
+		StringCchGetsExA(dest, sizeof(dest), &end, &remaining, 0); // $ local_source
+	}
+}
+
+int scanf_s(const char *format, ...);
+int fscanf_s(FILE *stream, const char *format, ...);
+
+void test_scanf_s(FILE *stream) {
+  {
+  int n1, n2;
+  scanf_s(
+    "%d %d",
+    &n1, // $ local_source
+    &n2); // $ local_source
+  }
+
+  {
+  int n;
+  fscanf_s(stream, "%d", &n); // $ remote_source
+  }
+
+  {
+  int n1, n2;
+  char buf[256];
+  scanf_s("%d %s %d",
+    &n1, // $ local_source
+    buf, // $ local_source
+    256,
+    &n2); // $ local_source
+  }
+
+  {
+  int n1, n2;
+  char buf[256];
+  fscanf_s(stream, "%d %s %d",
+    &n1, // $ remote_source
+    buf, // $ remote_source
+    256,
+    &n2); // $ remote_source
+  }
+}
+
+typedef void *locale_t;
+
+int wscanf_s(const wchar_t *format, ...);
+int _scanf_s_l(const char *format, locale_t locale, ...);
+int _wscanf_s_l(const wchar_t *format, locale_t locale, ...);
+int fwscanf_s(FILE *stream, const wchar_t *format, ...);
+int _fscanf_s_l(FILE *stream, const char *format, locale_t locale, ...);
+int _fwscanf_s_l(FILE *stream, const wchar_t *format, locale_t locale, ...);
+
+void test_additional_scanf_s_variants(FILE *stream, locale_t locale) {
+  {
+  int n1, n2;
+  wchar_t buf[256];
+  wscanf_s(L"%d %s %d",
+    &n1, // $ local_source
+    buf, // $ local_source
+    256,
+    &n2); // $ local_source
+  }
+
+  {
+  int n1, n2;
+  char buf[256];
+  _scanf_s_l("%d %s %d", locale,
+    &n1, // $ local_source
+    buf, // $ local_source
+    256,
+    &n2); // $ local_source
+  }
+
+  {
+  int n1, n2;
+  wchar_t buf[256];
+  _wscanf_s_l(L"%d %s %d", locale,
+    &n1, // $ local_source
+    buf, // $ local_source
+    256,
+    &n2); // $ local_source
+  }
+
+  {
+  int n1, n2;
+  wchar_t buf[256];
+  fwscanf_s(stream, L"%d %s %d",
+    &n1, // $ remote_source
+    buf, // $ remote_source
+    256,
+    &n2); // $ remote_source
+  }
+
+  {
+  int n1, n2;
+  char buf[256];
+  _fscanf_s_l(stream, "%d %s %d", locale,
+    &n1, // $ remote_source
+    buf, // $ remote_source
+    256,
+    &n2); // $ remote_source
+  }
+
+  {
+  int n1, n2;
+  wchar_t buf[256];
+  _fwscanf_s_l(stream, L"%d %s %d", locale,
+    &n1, // $ remote_source
+    buf, // $ remote_source
+    256,
+    &n2); // $ remote_source
+  }
+}

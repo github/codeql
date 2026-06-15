@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["remix-run/remix/.github/workflows/stacks.yml", "*", "input.version", "code-injection", "generated"]

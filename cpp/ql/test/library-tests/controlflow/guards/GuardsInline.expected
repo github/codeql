@@ -1,0 +1,31 @@
+| test.cpp:351:5:351:7 | Call: call to chk | '42:not 0' |
+| test.cpp:351:5:351:7 | Call: call to chk | '... ? ... : ...:not 0' |
+| test.cpp:351:5:351:7 | Call: call to chk | 'call to testNotNull1:true' |
+| test.cpp:351:5:351:7 | Call: call to chk | 'x != 0:true' |
+| test.cpp:351:5:351:7 | Call: call to chk | 'x:not 0' |
+| test.cpp:351:5:351:7 | Call: call to chk | 'y:not null' |
+| test.cpp:377:5:377:7 | Call: call to chk | 'call to testNotNull1:true' |
+| test.cpp:377:5:377:7 | Call: call to chk | 'p:not null' |
+| test.cpp:379:5:379:7 | Call: call to chk | 'call to testNotNull1:false' |
+| test.cpp:379:5:379:7 | Call: call to chk | p:null |
+| test.cpp:383:5:383:7 | Call: call to chk | 'call to testNotNull2:true' |
+| test.cpp:383:5:383:7 | Call: call to chk | 'p:not null' |
+| test.cpp:385:5:385:7 | Call: call to chk | 'call to testNotNull2:false' |
+| test.cpp:385:5:385:7 | Call: call to chk | p:null |
+| test.cpp:389:5:389:7 | Call: call to chk | '0 == call to getNumOrDefault:true' |
+| test.cpp:389:5:389:7 | Call: call to chk | 'call to getNumOrDefault:0' |
+| test.cpp:391:5:391:7 | Call: call to chk | '0 == call to getNumOrDefault:false' |
+| test.cpp:391:5:391:7 | Call: call to chk | 'call to getNumOrDefault:not 0' |
+| test.cpp:391:5:391:7 | Call: call to chk | 'i:not null' |
+| test.cpp:395:5:395:7 | Call: call to chk | '0 == call to returnAIfNoneAreNull:true' |
+| test.cpp:395:5:395:7 | Call: call to chk | 'call to returnAIfNoneAreNull:0' |
+| test.cpp:397:5:397:7 | Call: call to chk | '0 == call to returnAIfNoneAreNull:false' |
+| test.cpp:397:5:397:7 | Call: call to chk | 'call to returnAIfNoneAreNull:not 0' |
+| test.cpp:397:5:397:7 | Call: call to chk | 's:not null' |
+| test.cpp:397:5:397:7 | Call: call to chk | 'suffix:not null' |
+| test.cpp:402:7:402:9 | Call: call to chk | 'call to testEnumWrapper:1' |
+| test.cpp:402:7:402:9 | Call: call to chk | 'call to testEnumWrapper=SUCCESS:true' |
+| test.cpp:402:7:402:9 | Call: call to chk | b:true |
+| test.cpp:405:7:405:9 | Call: call to chk | 'call to testEnumWrapper:2' |
+| test.cpp:405:7:405:9 | Call: call to chk | 'call to testEnumWrapper=FAILURE:true' |
+| test.cpp:405:7:405:9 | Call: call to chk | b:false |

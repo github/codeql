@@ -1,8 +1,8 @@
 edges
-| RequestForgery.cs:14:52:14:54 | url : String | RequestForgery.cs:16:66:16:68 | access to parameter url |
+| RequestForgery.cs:12:52:12:54 | url : String | RequestForgery.cs:14:66:14:68 | access to parameter url | provenance |  |
 nodes
-| RequestForgery.cs:14:52:14:54 | url : String | semmle.label | url : String |
-| RequestForgery.cs:16:66:16:68 | access to parameter url | semmle.label | access to parameter url |
+| RequestForgery.cs:12:52:12:54 | url : String | semmle.label | url : String |
+| RequestForgery.cs:14:66:14:68 | access to parameter url | semmle.label | access to parameter url |
 subpaths
-#select
-| RequestForgery.cs:16:66:16:68 | access to parameter url | RequestForgery.cs:14:52:14:54 | url : String | RequestForgery.cs:16:66:16:68 | access to parameter url | The URL of this request depends on a $@. | RequestForgery.cs:14:52:14:54 | url | user-provided value |
+problems
+| RequestForgery.cs:14:66:14:68 | access to parameter url | RequestForgery.cs:12:52:12:54 | url : String | RequestForgery.cs:14:66:14:68 | access to parameter url | The URL of this request depends on a $@. | RequestForgery.cs:12:52:12:54 | url | user-provided value |

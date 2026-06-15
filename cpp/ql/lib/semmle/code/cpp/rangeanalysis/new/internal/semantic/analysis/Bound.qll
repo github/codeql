@@ -61,7 +61,7 @@ class ZeroBound extends Bound, TBoundZero {
     result.(ConstantValueInstruction).getValue().toInt() = delta
   }
 
-  override Location getLocation() { result instanceof UnknownDefaultLocation }
+  override Location getLocation() { result instanceof UnknownLocation }
 }
 
 /**

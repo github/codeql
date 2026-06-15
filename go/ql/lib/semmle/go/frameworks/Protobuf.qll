@@ -1,4 +1,6 @@
 /** Provides models of commonly used functions and types in the protobuf packages. */
+overlay[local?]
+module;
 
 import go
 
@@ -64,11 +66,10 @@ module Protobuf {
    */
   private class MarshalStateStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::PostUpdateNode marshalInput, DataFlow::CallNode marshalStateCall |
+      exists(DataFlow::Node marshalInput, DataFlow::CallNode marshalStateCall |
         marshalStateCall = marshalStateMethod().getACall() and
         // pred -> marshalInput.Message
-        any(DataFlow::Write w)
-            .writesField(marshalInput.getPreUpdateNode(), inputMessageField(), pred) and
+        any(DataFlow::Write w).writesField(marshalInput, inputMessageField(), pred) and
         // marshalInput -> marshalStateCall
         marshalStateCall.getArgument(0) = globalValueNumber(marshalInput).getANode() and
         // marshalStateCall -> succ
@@ -142,10 +143,10 @@ module Protobuf {
   private class WriteMessageFieldStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       [succ.getType(), succ.getType().getPointerType()] instanceof MessageType and
-      exists(DataFlow::ReadNode base |
-        succ.(DataFlow::PostUpdateNode).getPreUpdateNode() = getUnderlyingNode(base)
+      exists(DataFlow::Write w, DataFlow::ReadNode base |
+        w.writesElementPreUpdate(base, _, pred) or w.writesFieldPreUpdate(base, _, pred)
       |
-        any(DataFlow::Write w).writesComponent(base, pred)
+        succ.(DataFlow::PostUpdateNode).getPreUpdateNode() = getUnderlyingNode(base)
       )
     }
   }

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.frameworks.spring.SpringXMLElement
 import semmle.code.java.frameworks.spring.SpringBeanRefType
@@ -19,7 +22,8 @@ class SpringBean extends SpringXmlElement {
     not this.getNamespace().getUri() = "http://camel.apache.org/schema/spring"
   }
 
-  override string toString() { result = this.getBeanIdentifier() }
+  /** Gets a printable representation of this XML element. */
+  string toString() { result = this.getBeanIdentifier() }
 
   /**
    * Holds if this element is a top-level bean definition.

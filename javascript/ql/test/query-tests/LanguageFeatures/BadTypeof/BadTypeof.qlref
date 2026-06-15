@@ -1,1 +1,2 @@
-LanguageFeatures/BadTypeof.ql
+query: LanguageFeatures/BadTypeof.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

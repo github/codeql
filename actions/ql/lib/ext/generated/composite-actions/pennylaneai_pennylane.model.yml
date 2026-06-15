@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["pennylaneai/pennylane", "*", "input.requirements_file", "code-injection", "generated"]
+     - ["pennylaneai/pennylane", "*", "input.additional_pip_packages", "code-injection", "generated"]

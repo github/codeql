@@ -4,9 +4,12 @@
 
 import javascript
 private import dataflow.internal.StepSummary
+private import semmle.javascript.dataflow.internal.FlowSteps
 
 /**
- * A definition of a `Promise` object.
+ * A call to the `Promise` constructor, such as `new Promise((resolve, reject) => { ... })`.
+ *
+ * This includes calls to the built-in `Promise` constructor as well as promise implementations from known libraries, such as `bluebird`.
  */
 abstract class PromiseDefinition extends DataFlow::SourceNode {
   /** Gets the executor function of this promise object. */
@@ -183,11 +186,13 @@ module Promises {
   /**
    * Gets the pseudo-field used to describe resolved values in a promise.
    */
+  overlay[local?]
   string valueProp() { result = "$PromiseResolveField$" }
 
   /**
    * Gets the pseudo-field used to describe rejected values in a promise.
    */
+  overlay[local?]
   string errorProp() { result = "$PromiseRejectField$" }
 
   /** A property set containing the pseudo-properites of a promise object. */
@@ -196,6 +201,8 @@ module Promises {
 
     override string getAProperty() { result = [valueProp(), errorProp()] }
   }
+
+  predicate promiseConstructorRef = getAPromiseObject/0;
 }
 
 /**
@@ -231,6 +238,7 @@ module PromiseTypeTracking {
    *
    * These type-tracking steps are already included in the default type-tracking steps (through `PreCallGraphStep`).
    */
+  overlay[caller?]
   pragma[inline]
   DataFlow::Node promiseStep(DataFlow::Node pred, StepSummary summary) {
     exists(string field | field = Promises::valueProp() |
@@ -249,6 +257,7 @@ module PromiseTypeTracking {
    * Gets the result from a single step through a promise, from `pred` with tracker `t2` to `result` with tracker `t`.
    * This can be loading a resolved value from a promise, storing a value in a promise, or copying a resolved value from one promise to another.
    */
+  overlay[caller?]
   pragma[inline]
   DataFlow::SourceNode promiseStep(
     DataFlow::SourceNode pred, DataFlow::TypeTracker t, DataFlow::TypeTracker t2
@@ -267,7 +276,7 @@ private import semmle.javascript.dataflow.internal.PreCallGraphStep
  * These steps are for `await p`, `new Promise()`, `Promise.resolve()`,
  * `Promise.then()`, `Promise.catch()`, and `Promise.finally()`.
  */
-private class PromiseStep extends PreCallGraphStep {
+private class PromiseStep extends LegacyPreCallGraphStep {
   override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
     PromiseFlow::loadStep(obj, element, prop)
   }
@@ -393,6 +402,17 @@ module PromiseFlow {
       value = call.getCallback(0).getExceptionalReturn() and
       obj = call
     )
+    or
+    exists(DataFlow::FunctionNode f | f.getFunction().isAsync() |
+      // ordinary return
+      prop = valueProp() and
+      value = f.getAReturn() and
+      obj = f.getReturnNode()
+      or
+      // exceptional return
+      prop = errorProp() and
+      localExceptionStepWithAsyncFlag(value, obj, true)
+    )
   }
 
   /**
@@ -459,7 +479,7 @@ module PromiseFlow {
   }
 }
 
-private class PromiseTaintStep extends TaintTracking::SharedTaintStep {
+private class PromiseTaintStep extends TaintTracking::LegacyTaintStep {
   override predicate promiseStep(DataFlow::Node pred, DataFlow::Node succ) {
     // from `x` to `new Promise((res, rej) => res(x))`
     pred = succ.(PromiseDefinition).getResolveParameter().getACall().getArgument(0)
@@ -521,34 +541,10 @@ private class PromiseTaintStep extends TaintTracking::SharedTaintStep {
  * Defines flow steps for return on async functions.
  */
 private module AsyncReturnSteps {
-  private predicate valueProp = Promises::valueProp/0;
-
-  private predicate errorProp = Promises::errorProp/0;
-
-  private import semmle.javascript.dataflow.internal.FlowSteps
-
-  /**
-   * A data-flow step for ordinary and exceptional returns from async functions.
-   */
-  private class AsyncReturn extends PreCallGraphStep {
-    override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-      exists(DataFlow::FunctionNode f | f.getFunction().isAsync() |
-        // ordinary return
-        prop = valueProp() and
-        pred = f.getAReturn() and
-        succ = f.getReturnNode()
-        or
-        // exceptional return
-        prop = errorProp() and
-        localExceptionStepWithAsyncFlag(pred, succ, true)
-      )
-    }
-  }
-
   /**
    * A data-flow step for ordinary return from an async function in a taint configuration.
    */
-  private class AsyncTaintReturn extends TaintTracking::SharedTaintStep {
+  private class AsyncTaintReturn extends TaintTracking::LegacyTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(Function f |
         f.isAsync() and
@@ -665,7 +661,7 @@ private module ClosurePromise {
   /**
    * Taint steps through closure promise methods.
    */
-  private class ClosurePromiseTaintStep extends TaintTracking::SharedTaintStep {
+  private class ClosurePromiseTaintStep extends TaintTracking::LegacyTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       // static methods in goog.Promise
       exists(DataFlow::CallNode call, string name |
@@ -699,7 +695,7 @@ private module DynamicImportSteps {
    * let Foo = await import('./foo');
    * ```
    */
-  class DynamicImportStep extends PreCallGraphStep {
+  class DynamicImportStep extends LegacyPreCallGraphStep {
     override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
       exists(DynamicImportExpr imprt |
         pred = imprt.getImportedModule().getAnExportedValue("default") and
@@ -735,8 +731,12 @@ module Promisify {
     PromisifyAllCall() {
       this =
         [
-          DataFlow::moduleMember("bluebird", "promisifyAll"),
-          DataFlow::moduleImport(["util-promisifyall", "pify"])
+          DataFlow::moduleMember(["bluebird", "@google-cloud/promisify", "es6-promisify"],
+            "promisifyAll"),
+          DataFlow::moduleMember("thenify-all", "withCallback"),
+          DataFlow::moduleImport([
+              "util-promisifyall", "pify", "thenify-all", "@gar/promisify", "util.promisify-all"
+            ])
         ].getACall()
     }
   }
@@ -749,11 +749,13 @@ module Promisify {
     PromisifyCall() {
       this = DataFlow::moduleImport(["util", "bluebird"]).getAMemberCall("promisify")
       or
-      this = DataFlow::moduleImport(["pify", "util.promisify"]).getACall()
+      this = DataFlow::moduleImport(["pify", "util.promisify", "util-promisify"]).getACall()
       or
-      this = DataFlow::moduleImport("thenify").getACall()
+      this = DataFlow::moduleImport(["thenify", "@gar/promisify", "es6-promisify"]).getACall()
       or
       this = DataFlow::moduleMember("thenify", "withCallback").getACall()
+      or
+      this = DataFlow::moduleMember("@google-cloud/promisify", "promisify").getACall()
     }
   }
 }

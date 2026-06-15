@@ -26,7 +26,7 @@ app.get('/form', function (req, res) {
   res.render('send', { csrfToken: req.csrfToken() })
 })
 
-app.post('/process', function (req, res) { // OK
+app.post('/process', function (req, res) {
   let newEmail = req.cookies["newEmail"];
   res.send('csrf was required to get here')
 })
@@ -39,10 +39,10 @@ function createApiRouter () {
     res.send('no csrf to get here')
   })
 
-  router.post('/getProfile_unsafe', cookieParser(), function (req, res) { // NOT OK - may use cookies
+  router.post('/getProfile_unsafe', cookieParser(), function (req, res) { // $ Alert - may use cookies
     let newEmail = req.cookies["newEmail"];
     res.send('no csrf to get here')
-  })
+  }) // $ RelatedLocation
 
   return router
 }

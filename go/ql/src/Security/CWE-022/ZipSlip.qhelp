@@ -5,9 +5,9 @@
 
 <overview>
 <p>
-Extracting files from a malicious zip archive without validating that the destination file path
-is within the destination directory can cause files outside the destination directory to be
-overwritten, due to the possible presence of directory traversal elements (<code>..</code>) in
+Extracting files from a malicious zip file, or similar type of archive,
+is at risk of directory traversal attacks if filenames from the archive are
+not properly validated.
 archive paths.
 </p>
 
@@ -15,8 +15,8 @@ archive paths.
 Zip archives contain archive entries representing each file in the archive. These entries
 include a file path for the entry, but these file paths are not restricted and may contain
 unexpected special elements such as the directory traversal element (<code>..</code>). If these
-file paths are used to determine which output file the contents of an archive item should be written to, then
-the file may be written to an unexpected location. This can result in sensitive information being
+file paths are used to create a filesystem path, then a file operation may happen in an 
+unexpected location. This can result in sensitive information being
 revealed or deleted, or an attacker being able to influence behavior by modifying unexpected
 files.
 </p>

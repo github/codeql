@@ -1,13 +1,11 @@
 import codeql.ruby.AST
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import codeql.ruby.security.InsecureDependencyQuery
 
-class InsecureDependencyTest extends InlineExpectationsTest {
-  InsecureDependencyTest() { this = "InsecureDependencyTest" }
+module InsecureDependencyTest implements TestSig {
+  string getARelevantTag() { result = "result" }
 
-  override string getARelevantTag() { result = "result" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "result" and
     value = "BAD" and
     exists(Expr e |
@@ -17,6 +15,8 @@ class InsecureDependencyTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<InsecureDependencyTest>
 
 from Expr url, string msg
 where insecureDependencyUrl(url, msg)

@@ -13,13 +13,13 @@
 
 import swift
 import codeql.swift.security.WeakSensitiveDataHashingQuery
-import WeakHashingFlow::PathGraph
+import WeakSensitiveDataHashingFlow::PathGraph
 
 from
-  WeakHashingFlow::PathNode source, WeakHashingFlow::PathNode sink, string algorithm,
-  SensitiveExpr expr
+  WeakSensitiveDataHashingFlow::PathNode source, WeakSensitiveDataHashingFlow::PathNode sink,
+  string algorithm, SensitiveExpr expr
 where
-  WeakHashingFlow::flowPath(source, sink) and
+  WeakSensitiveDataHashingFlow::flowPath(source, sink) and
   algorithm = sink.getNode().(WeakSensitiveDataHashingSink).getAlgorithm() and
   expr = source.getNode().asExpr()
 select sink.getNode(), source, sink,

@@ -77,10 +77,10 @@ func test3(obj : NSManagedObject, x : String) {
 	doSomething(password: x);
 	obj.setValue(x, forKey: "myKey") // BAD
 
-	var y = getPassword();
+	let y = getPassword();
 	obj.setValue(y, forKey: "myKey") // BAD
 
-	var z = MyClass()
+	let z = MyClass()
 	obj.setValue(z.harmless, forKey: "myKey") // GOOD (not sensitive)
 	obj.setValue(z.password, forKey: "myKey") // BAD
 }
@@ -103,4 +103,37 @@ func test4(obj : NSManagedObject, passwd : String) {
 	obj.setValue(x, forKey: "myKey") // GOOD (not sensitive)
 	obj.setValue(y, forKey: "myKey") // GOOD (not sensitive)
 	obj.setValue(z, forKey: "myKey") // GOOD (not sensitive)
+}
+
+func createSecureKey() -> String { return "" }
+func generateSecretKey() -> String { return "" }
+func getCertificate() -> String { return "" }
+
+class KeyGen {
+	func generate() -> String { return "" }
+}
+
+class KeyManager {
+	func generateKey() -> String { return "" }
+}
+
+class SecureKeyStore {
+	func getEncryptionKey() -> String { return "" }
+}
+
+func test5(obj : NSManagedObject) {
+	// more variants...
+
+	obj.setValue(createSecureKey(), forKey: "myKey") // BAD [NOT DETECTED]
+	obj.setValue(generateSecretKey(), forKey: "myKey") // BAD
+	obj.setValue(getCertificate(), forKey: "myKey") // BAD
+
+	let gen = KeyGen()
+	let v = gen.generate()
+
+	obj.setValue(KeyGen().generate(), forKey: "myKey") // BAD [NOT DETECTED]
+	obj.setValue(gen.generate(), forKey: "myKey") // BAD [NOT DETECTED]
+	obj.setValue(v, forKey: "myKey") // BAD [NOT DETECTED]
+	obj.setValue(KeyManager().generateKey(), forKey: "myKey") // BAD [NOT DETECTED]
+	obj.setValue(SecureKeyStore().getEncryptionKey(), forKey: "myKey") // BAD [NOT DETECTED]
 }

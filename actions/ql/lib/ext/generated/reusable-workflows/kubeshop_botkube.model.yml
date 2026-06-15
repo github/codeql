@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["kubeshop/botkube/.github/workflows/process-chart.yml", "*", "input.next-version", "code-injection", "generated"]
+     - ["kubeshop/botkube/.github/workflows/process-chart.yml", "*", "input.release-branch", "code-injection", "generated"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["kubeshop/botkube/.github/workflows/process-chart.yml", "*", "input.next-version", "output.new-version", "taint", "manual"]

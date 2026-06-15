@@ -1,0 +1,4 @@
+| test.cs:2:14:2:20 | Found recursive generic inheritance hierarchy. Base class of type is not extracted | 4 | GenB<GenB<T>> |
+| test.cs:2:14:2:20 | Found recursive generic inheritance hierarchy. Base class of type is not extracted | 4 | GenB<GenB<string>> |
+| test.cs:2:14:2:20 | Found recursive generic inheritance hierarchy. Base class of type is not extracted | 4 | GenB<T> |
+| test.cs:2:14:2:20 | Found recursive generic inheritance hierarchy. Base class of type is not extracted | 4 | GenB<string> |

@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Kotlin types.
  */
+overlay[local?]
+module;
 
 import java
 

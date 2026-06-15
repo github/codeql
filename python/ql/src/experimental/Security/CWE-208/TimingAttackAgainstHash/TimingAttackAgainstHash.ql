@@ -16,23 +16,26 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import experimental.semmle.python.security.TimingAttack
-import DataFlow::PathGraph
 
 /**
  * A configuration that tracks data flow from cryptographic operations
  * to Equality test.
  */
-class TimingAttackAgainsthash extends TaintTracking::Configuration {
-  TimingAttackAgainsthash() { this = "TimingAttackAgainsthash" }
+private module TimingAttackAgainstHashConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ProduceCryptoCall }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof ProduceCryptoCall }
+  predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-from TimingAttackAgainsthash config, DataFlow::PathNode source, DataFlow::PathNode sink
+module TimingAttackAgainstHashFlow = TaintTracking::Global<TimingAttackAgainstHashConfig>;
+
+import TimingAttackAgainstHashFlow::PathGraph
+
+from TimingAttackAgainstHashFlow::PathNode source, TimingAttackAgainstHashFlow::PathNode sink
 where
-  config.hasFlowPath(source, sink) and
+  TimingAttackAgainstHashFlow::flowPath(source, sink) and
   sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()
-select sink.getNode(), source, sink, "Timing attack against $@ validation.",
-  source.getNode().(ProduceCryptoCall).getResultType(), "message"
+select sink.getNode(), source, sink, "Timing attack against $@ validation.", source.getNode(),
+  source.getNode().(ProduceCryptoCall).getResultType() + " message"

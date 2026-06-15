@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["hudson.console", "AnnotatedLargeText", True, "AnnotatedLargeText", "(File,Charset,boolean,Object)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]

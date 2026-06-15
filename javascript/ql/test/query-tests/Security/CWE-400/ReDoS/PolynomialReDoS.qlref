@@ -1,1 +1,2 @@
-Performance/PolynomialReDoS.ql
+query: Performance/PolynomialReDoS.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

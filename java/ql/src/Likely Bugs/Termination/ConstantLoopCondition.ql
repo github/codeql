@@ -7,7 +7,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/constant-loop-condition
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-835
  */
 
@@ -55,13 +57,15 @@ predicate loopExitGuard(LoopStmt loop, Expr cond) {
  */
 predicate mainLoopCondition(LoopStmt loop, Expr cond) {
   loop.getCondition() = cond and
-  exists(Expr loopReentry, ControlFlowNode last |
-    if exists(loop.(ForStmt).getAnUpdate())
-    then loopReentry = loop.(ForStmt).getUpdate(0)
-    else loopReentry = cond
-  |
-    last.getEnclosingStmt().getEnclosingStmt*() = loop.getBody() and
-    last.getASuccessor().(Expr).getParent*() = loopReentry
+  exists(BasicBlock condBlock | condBlock.getANode().isBefore(cond) |
+    1 < strictcount(condBlock.getAPredecessor()) or loop instanceof DoStmt
+  )
+}
+
+predicate ssaDefinitionInLoop(LoopStmt loop, SsaDefinition ssa) {
+  exists(ControlFlowNode node | node = ssa.getControlFlowNode() |
+    node.getAstNode().(Stmt).getEnclosingStmt*() = loop or
+    node.getAstNode().(Expr).getEnclosingStmt().getEnclosingStmt*() = loop
   )
 }
 
@@ -73,12 +77,12 @@ where
     loopWhileTrue(loop) and loopExitGuard(loop, cond)
   ) and
   // None of the ssa variables in `cond` are updated inside the loop.
-  forex(SsaVariable ssa, RValue use | ssa.getAUse() = use and use.getParent*() = cond |
-    not ssa.getCfgNode().getEnclosingStmt().getEnclosingStmt*() = loop or
-    ssa.getCfgNode().(Expr).getParent*() = loop.(ForStmt).getAnInit()
+  forex(SsaDefinition ssa, VarRead use | ssa.getARead() = use and use.getParent*() = cond |
+    not ssaDefinitionInLoop(loop, ssa) or
+    ssa.getControlFlowNode().asExpr().getParent*() = loop.(ForStmt).getAnInit()
   ) and
   // And `cond` does not use method calls, field reads, or array reads.
-  not exists(MethodAccess ma | ma.getParent*() = cond) and
+  not exists(MethodCall ma | ma.getParent*() = cond) and
   not exists(FieldRead fa |
     // Ignore if field is final
     not fa.getField().isFinal() and

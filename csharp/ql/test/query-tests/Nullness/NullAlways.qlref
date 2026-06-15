@@ -1,1 +1,2 @@
-CSI/NullAlways.ql
+query: CSI/NullAlways.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

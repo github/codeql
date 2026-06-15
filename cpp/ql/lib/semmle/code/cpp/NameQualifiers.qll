@@ -144,23 +144,21 @@ class NameQualifiableElement extends Element, @namequalifiableelement {
 class NameQualifyingElement extends Element, @namequalifyingelement {
   /**
    * Gets a name qualifier for which this is the qualifying namespace or
-   * user-defined type. For example: class `X` is the
+   * user-defined type, or decltype. For example: class `X` is the
    * `NameQualifyingElement` and `X::` is the `NameQualifier`.
    */
   NameQualifier getANameQualifier() {
     namequalifiers(unresolveElement(result), _, underlyingElement(this), _)
   }
 
-  /** Gets the name of this namespace or user-defined type. */
+  /** Gets the name of this namespace, user-defined type, or decltype. */
   string getName() { none() }
 }
 
 /**
  * A special name-qualifying element. For example: `__super`.
  */
-library class SpecialNameQualifyingElement extends NameQualifyingElement,
-  @specialnamequalifyingelement
-{
+class SpecialNameQualifyingElement extends NameQualifyingElement, @specialnamequalifyingelement {
   /** Gets the name of this special qualifying element. */
   override string getName() { specialnamequalifyingelements(underlyingElement(this), result) }
 

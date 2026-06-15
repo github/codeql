@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["fossasia/visdom", "*", "input.loadprbuild", "code-injection", "generated"]
+     - ["fossasia/visdom", "*", "input.usebasebranch", "code-injection", "generated"]

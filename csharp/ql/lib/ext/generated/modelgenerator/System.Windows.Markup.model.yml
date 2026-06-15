@@ -1,0 +1,14 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Windows.Markup", "ValueSerializerAttribute", False, "ValueSerializerAttribute", "(System.String)", "", "Argument[0]", "Argument[this].SyntheticField[System.Windows.Markup.ValueSerializerAttribute._valueSerializerTypeName]", "value", "dfc-generated"]
+      - ["System.Windows.Markup", "ValueSerializerAttribute", False, "get_ValueSerializerTypeName", "()", "", "Argument[this].SyntheticField[System.Windows.Markup.ValueSerializerAttribute._valueSerializerTypeName]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Windows.Markup", "ValueSerializerAttribute", "ValueSerializerAttribute", "(System.Type)", "summary", "df-generated"]
+      - ["System.Windows.Markup", "ValueSerializerAttribute", "get_ValueSerializerType", "()", "summary", "df-generated"]

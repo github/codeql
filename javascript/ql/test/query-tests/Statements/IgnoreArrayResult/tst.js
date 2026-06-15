@@ -1,8 +1,8 @@
 var arr = [1,2,3];
 
-arr.concat([1,2,3]); // NOT OK!
+arr.concat([1,2,3]); // $ Alert
 
-arr.concat(arr); // NOT OK!
+arr.concat(arr); // $ Alert
 
 console.log(arr.concat([1,2,3]));
 

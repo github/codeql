@@ -44,6 +44,12 @@ module KeyStrengthFlowConfig implements DataFlow::ConfigSig {
       exists(getMinimumKeyStrength(name, param))
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(FunctionCall fc | result = fc.getLocation() | sink.asExpr() = fc.getArgument(_))
+  }
 }
 
 module KeyStrengthFlow = DataFlow::Global<KeyStrengthFlowConfig>;

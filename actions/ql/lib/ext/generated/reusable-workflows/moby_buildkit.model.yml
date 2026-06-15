@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["moby/buildkit/.github/workflows/.test.yml", "*", "input.env", "code-injection", "generated"]
+     - ["moby/buildkit/.github/workflows/.test.yml", "*", "input.includes", "code-injection", "generated"]
+     - ["moby/buildkit/.github/workflows/.test.yml", "*", "input.tags", "code-injection", "generated"]
+     - ["moby/buildkit/.github/workflows/.test.yml", "*", "input.kinds", "code-injection", "generated"]
+     - ["moby/buildkit/.github/workflows/.test.yml", "*", "input.pkgs", "code-injection", "generated"]

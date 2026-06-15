@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.deadcode.DeadCode
 import semmle.code.java.frameworks.gwt.GWT
@@ -42,7 +45,7 @@ class ServletListenerClass extends ReflectivelyConstructedClass {
  */
 class ServletFilterClass extends ReflectivelyConstructedClass {
   ServletFilterClass() {
-    this.getAnAncestor().hasQualifiedName("javax.servlet", "Filter") and
+    this.getAnAncestor().hasQualifiedName(javaxOrJakarta() + ".servlet", "Filter") and
     // If we have seen any `web.xml` files, this filter will be considered to be live only if it is
     // referred to as a filter-class in at least one. If no `web.xml` files are found, we assume
     // that XML extraction was not enabled, and therefore consider all filter classes as live.
@@ -56,9 +59,6 @@ class ServletFilterClass extends ReflectivelyConstructedClass {
 class GwtEntryPointConstructedClass extends ReflectivelyConstructedClass {
   GwtEntryPointConstructedClass() { this.(GwtEntryPointClass).isLive() }
 }
-
-/** DEPRECATED: Alias for GwtEntryPointConstructedClass */
-deprecated class GWTEntryPointConstructedClass = GwtEntryPointConstructedClass;
 
 /**
  * Servlets referred to from a GWT module config file.
@@ -78,9 +78,6 @@ class GwtServletClass extends ReflectivelyConstructedClass {
     )
   }
 }
-
-/** DEPRECATED: Alias for GwtServletClass */
-deprecated class GWTServletClass = GwtServletClass;
 
 /**
  * Methods that may be called reflectively by the UiHandler framework.

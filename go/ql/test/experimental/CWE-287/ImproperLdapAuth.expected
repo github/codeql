@@ -1,0 +1,17 @@
+#select
+| ImproperLdapAuth.go:28:23:28:34 | bindPassword | ImproperLdapAuth.go:18:18:18:24 | selection of URL | ImproperLdapAuth.go:28:23:28:34 | bindPassword | LDAP binding password depends on a $@. | ImproperLdapAuth.go:18:18:18:24 | selection of URL | user-provided value |
+| ImproperLdapAuth.go:97:23:97:34 | bindPassword | ImproperLdapAuth.go:87:18:87:19 | "" | ImproperLdapAuth.go:97:23:97:34 | bindPassword | LDAP binding password depends on a $@. | ImproperLdapAuth.go:87:18:87:19 | "" | user-provided value |
+edges
+| ImproperLdapAuth.go:18:18:18:24 | selection of URL | ImproperLdapAuth.go:18:18:18:32 | call to Query | provenance | Src:MaD:1 MaD:2 |
+| ImproperLdapAuth.go:18:18:18:32 | call to Query | ImproperLdapAuth.go:28:23:28:34 | bindPassword | provenance |  |
+| ImproperLdapAuth.go:87:18:87:19 | "" | ImproperLdapAuth.go:97:23:97:34 | bindPassword | provenance |  |
+models
+| 1 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
+| 2 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
+nodes
+| ImproperLdapAuth.go:18:18:18:24 | selection of URL | semmle.label | selection of URL |
+| ImproperLdapAuth.go:18:18:18:32 | call to Query | semmle.label | call to Query |
+| ImproperLdapAuth.go:28:23:28:34 | bindPassword | semmle.label | bindPassword |
+| ImproperLdapAuth.go:87:18:87:19 | "" | semmle.label | "" |
+| ImproperLdapAuth.go:97:23:97:34 | bindPassword | semmle.label | bindPassword |
+subpaths

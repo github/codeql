@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["py-actions/py-dependency-install", "*", "input.path", "command-injection", "manual"]

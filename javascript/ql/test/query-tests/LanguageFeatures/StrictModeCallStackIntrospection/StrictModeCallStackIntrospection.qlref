@@ -1,1 +1,2 @@
-LanguageFeatures/StrictModeCallStackIntrospection.ql
+query: LanguageFeatures/StrictModeCallStackIntrospection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

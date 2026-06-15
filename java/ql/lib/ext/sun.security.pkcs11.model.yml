@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["sun.security.pkcs11", "P11KeyStore$PasswordCallbackHandler", False, "PasswordCallbackHandler", "(char[])", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["sun.security.pkcs11", "Secmod$KeyStoreLoadParameter", False, "KeyStoreLoadParameter", "(Secmod$TrustType,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["sun.security.pkcs11", "P11SecretKeyFactory", False, "fixDESParity", "(byte[],int)", "", "Argument[0]", "credentials-key", "hq-generated"]

@@ -1,4 +1,6 @@
 /** Provides classes for working with functions. */
+overlay[local?]
+module;
 
 import javascript
 
@@ -237,7 +239,7 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
 
   override predicate isStrict() {
     // check for explicit strict mode directive
-    exists(StrictModeDecl smd | this = smd.getContainer()) or
+    exists(Directive::StrictModeDecl smd | this = smd.getContainer()) or
     // check for enclosing strict function
     StmtContainer.super.isStrict() or
     // all parts of a class definition are strict code
@@ -434,12 +436,14 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
    *
    * This predicate is only populated for files extracted with full TypeScript extraction.
    */
-  CanonicalFunctionName getCanonicalName() { ast_node_symbol(this, result) }
+  overlay[global]
+  deprecated CanonicalFunctionName getCanonicalName() { ast_node_symbol(this, result) }
 
   /**
    * Gets the call signature of this function, as determined by the TypeScript compiler, if any.
    */
-  CallSignatureType getCallSignature() { declared_function_signature(this, result) }
+  overlay[global]
+  deprecated CallSignatureType getCallSignature() { declared_function_signature(this, result) }
 }
 
 /**

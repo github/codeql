@@ -6,17 +6,18 @@
  * @problem.severity warning
  * @precision medium
  * @id java/iterator-hasnext-calls-next
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  */
 
 import java
 
-from MethodAccess m
+from MethodCall m
 where
   m.getMethod().hasName("next") and
   m.getMethod().getNumberOfParameters() = 0 and
-  m.isOwnMethodAccess() and
+  m.isOwnMethodCall() and
   exists(Interface i, Method hasNext |
     i.getSourceDeclaration().hasQualifiedName("java.util", "Iterator") and
     m.getEnclosingCallable() = hasNext and

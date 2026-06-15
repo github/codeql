@@ -37,10 +37,10 @@ class DoGetServletMethod extends Method {
 }
 
 /** Holds if `ma` is (perhaps indirectly) called from the `doGet` method of `HttpServlet`. */
-predicate isReachableFromServletDoGet(MethodAccess ma) {
+predicate isReachableFromServletDoGet(MethodCall ma) {
   ma.getEnclosingCallable() instanceof DoGetServletMethod
   or
-  exists(Method pm, MethodAccess pma |
+  exists(Method pm, MethodCall pma |
     ma.getEnclosingCallable() = pm and
     pma.getMethod() = pm and
     isReachableFromServletDoGet(pma)
@@ -50,7 +50,7 @@ predicate isReachableFromServletDoGet(MethodAccess ma) {
 /** Source of GET servlet requests. */
 class RequestGetParamSource extends DataFlow::ExprNode {
   RequestGetParamSource() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       isRequestGetParamMethod(ma) and
       ma = this.asExpr() and
       isReachableFromServletDoGet(ma)
@@ -73,8 +73,13 @@ module SensitiveGetQueryConfig implements DataFlow::ConfigSig {
 
 module SensitiveGetQueryFlow = TaintTracking::Global<SensitiveGetQueryConfig>;
 
-from SensitiveGetQueryFlow::PathNode source, SensitiveGetQueryFlow::PathNode sink
-where SensitiveGetQueryFlow::flowPath(source, sink)
-select sink.getNode(), source, sink,
-  "$@ uses the GET request method to transmit sensitive information.", source.getNode(),
-  "This request"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, SensitiveGetQueryFlow::PathNode source,
+  SensitiveGetQueryFlow::PathNode sink, string message1, DataFlow::Node sourceNode, string message2
+) {
+  SensitiveGetQueryFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "$@ uses the GET request method to transmit sensitive information." and
+  sourceNode = source.getNode() and
+  message2 = "This request"
+}

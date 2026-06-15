@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["tensorflow/datasets", "*", "input.extras", "code-injection", "generated"]
+     - ["tensorflow/datasets", "*", "input.tf-version", "code-injection", "generated"]

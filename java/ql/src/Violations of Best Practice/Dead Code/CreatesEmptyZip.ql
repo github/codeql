@@ -6,8 +6,9 @@
  * @problem.severity warning
  * @precision medium
  * @id java/empty-zip-file-entry
- * @tags reliability
- *       readability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java
@@ -42,15 +43,15 @@ class ZipOutputStream extends Class {
 }
 
 from
-  ZipOutputStream jos, MethodAccess putNextEntry, MethodAccess closeEntry, RValue putNextQualifier,
-  RValue closeQualifier
+  ZipOutputStream jos, MethodCall putNextEntry, MethodCall closeEntry, VarRead putNextQualifier,
+  VarRead closeQualifier
 where
   putNextEntry.getMethod() = jos.putNextEntry() and
   closeEntry.getMethod() = jos.closeEntry() and
   putNextQualifier = putNextEntry.getQualifier() and
   closeQualifier = closeEntry.getQualifier() and
   adjacentUseUseSameVar(putNextQualifier, closeQualifier) and
-  not exists(RValue other |
+  not exists(VarRead other |
     adjacentUseUseSameVar(other, closeQualifier) and
     other != putNextQualifier
   )

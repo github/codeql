@@ -11,6 +11,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -31,6 +32,8 @@ module Pydantic {
     /** Gets a reference to a `pydantic.BaseModel` subclass (a pydantic model). */
     API::Node subclassRef() {
       result = API::moduleImport("pydantic").getMember("BaseModel").getASubclass+()
+      or
+      result = ModelOutput::getATypeNode("pydantic.BaseModel~Subclass").getASubclass*()
     }
 
     /**

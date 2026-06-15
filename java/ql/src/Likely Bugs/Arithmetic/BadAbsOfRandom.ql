@@ -6,14 +6,15 @@
  * @problem.severity warning
  * @precision medium
  * @id java/abs-of-random
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java
 import semmle.code.java.security.RandomQuery
 
-from MethodAccess ma, Method abs, Method nextIntOrLong, RandomDataSource nma
+from MethodCall ma, Method abs, Method nextIntOrLong, RandomDataSource nma
 where
   ma.getMethod() = abs and
   abs.hasName("abs") and

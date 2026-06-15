@@ -1,10 +1,14 @@
 /**
+ * DEPRECATED.
+ *
  * A library providing uniform access to various assertion frameworks.
  *
  * Currently supports `org.junit.Assert`, `junit.framework.*`,
  * `org.junit.jupiter.api.Assertions`, `com.google.common.base.Preconditions`,
  * and `java.util.Objects`.
  */
+overlay[local?]
+deprecated module;
 
 import java
 
@@ -60,10 +64,10 @@ class AssertionMethod extends Method {
   AssertionMethod() { assertionMethod(this, _) }
 
   /** Gets a call to the assertion method. */
-  MethodAccess getACheck() { result.getMethod().getSourceDeclaration() = this }
+  MethodCall getACheck() { result.getMethod().getSourceDeclaration() = this }
 
   /** Gets a call to the assertion method with `checkedArg` as argument. */
-  MethodAccess getACheck(Expr checkedArg) {
+  MethodCall getACheck(Expr checkedArg) {
     result = this.getACheck() and checkedArg = result.getAnArgument()
   }
 }
@@ -109,12 +113,18 @@ predicate assertFail(BasicBlock bb, ControlFlowNode n) {
   bb = n.getBasicBlock() and
   (
     exists(AssertTrueMethod m |
-      n = m.getACheck(any(BooleanLiteral b | b.getBooleanValue() = false))
-    ) or
+      n.asExpr() = m.getACheck(any(BooleanLiteral b | b.getBooleanValue() = false))
+    )
+    or
     exists(AssertFalseMethod m |
-      n = m.getACheck(any(BooleanLiteral b | b.getBooleanValue() = true))
-    ) or
-    exists(AssertFailMethod m | n = m.getACheck()) or
-    n.(AssertStmt).getExpr().(BooleanLiteral).getBooleanValue() = false
+      n.asExpr() = m.getACheck(any(BooleanLiteral b | b.getBooleanValue() = true))
+    )
+    or
+    exists(AssertFailMethod m | n.asExpr() = m.getACheck())
+    or
+    exists(AssertStmt a |
+      n.asExpr() = a.getExpr() and
+      a.getExpr().(BooleanLiteral).getBooleanValue() = false
+    )
   )
 }

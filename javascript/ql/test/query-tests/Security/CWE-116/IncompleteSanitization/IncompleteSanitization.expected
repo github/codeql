@@ -29,3 +29,9 @@
 | tst.js:149:2:149:24 | x.repla ... replace | This replaces only the first occurrence of "\\n". |
 | tst.js:193:9:193:17 | s.replace | This replaces only the first occurrence of /'/. |
 | tst.js:202:10:202:18 | p.replace | This replaces only the first occurrence of "/../". |
+| tst.js:341:9:341:17 | p.replace | This replaces only the first occurrence of /\\.\\.//. |
+| tst.js:345:9:345:17 | s.replace | This does not escape backslash characters in the input. |
+| tst.js:349:9:349:17 | s.replace | This replaces only the first occurrence of /'/. |
+| tst.js:353:9:353:17 | s.replace | This does not escape backslash characters in the input. |
+| tst.js:362:2:362:10 | x.replace | This replaces only the first occurrence of /\n/. |
+| tst.js:363:2:363:24 | x.repla ... replace | This replaces only the first occurrence of /\n/. |

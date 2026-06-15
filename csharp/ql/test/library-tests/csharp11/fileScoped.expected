@@ -5,9 +5,9 @@ typemodifiers
 | FileScoped1.cs:7:14:7:15 | C2 | public |
 | FileScoped1.cs:9:14:9:15 | C3 | public |
 | FileScoped1.cs:11:16:11:17 | IC | file |
-| FileScoped1.cs:13:12:13:16 | C4<> | file |
 | FileScoped1.cs:13:12:13:16 | C4<S> | file |
-| FileScoped1.cs:15:12:15:16 | C5<> | file |
+| FileScoped1.cs:13:12:13:16 | C4`1 | file |
+| FileScoped1.cs:15:12:15:16 | C5`1 | file |
 | FileScoped1.cs:17:13:17:14 | S1 | file |
 | FileScoped1.cs:17:13:17:14 | S1 | sealed |
 | FileScoped1.cs:19:11:19:12 | E1 | file |
@@ -24,9 +24,9 @@ typemodifiers
 | FileScoped2.cs:5:12:5:13 | C1 | file |
 | FileScoped2.cs:7:12:7:13 | C2 | file |
 | FileScoped2.cs:9:12:9:13 | IC | file |
-| FileScoped2.cs:11:12:11:16 | C4<> | file |
 | FileScoped2.cs:11:12:11:16 | C4<S> | file |
-| FileScoped2.cs:13:12:13:16 | C5<> | file |
+| FileScoped2.cs:11:12:11:16 | C4`1 | file |
+| FileScoped2.cs:13:12:13:16 | C5`1 | file |
 | FileScoped2.cs:15:13:15:14 | S1 | file |
 | FileScoped2.cs:15:13:15:14 | S1 | sealed |
 | FileScoped2.cs:17:11:17:12 | E1 | file |
@@ -51,9 +51,9 @@ qualifiedtypes
 | FileScoped1.cs:7:14:7:15 | C2 | C2 |
 | FileScoped1.cs:9:14:9:15 | C3 | C3 |
 | FileScoped1.cs:11:16:11:17 | IC | IC |
-| FileScoped1.cs:13:12:13:16 | C4<> | C4<> |
 | FileScoped1.cs:13:12:13:16 | C4<S> | C4<S> |
-| FileScoped1.cs:15:12:15:16 | C5<> | C5<> |
+| FileScoped1.cs:13:12:13:16 | C4`1 | C4`1 |
+| FileScoped1.cs:15:12:15:16 | C5`1 | C5`1 |
 | FileScoped1.cs:17:13:17:14 | S1 | S1 |
 | FileScoped1.cs:19:11:19:12 | E1 | E1 |
 | FileScoped1.cs:21:20:21:21 | D1 | D1 |
@@ -64,9 +64,9 @@ qualifiedtypes
 | FileScoped2.cs:5:12:5:13 | C1 | C1 |
 | FileScoped2.cs:7:12:7:13 | C2 | C2 |
 | FileScoped2.cs:9:12:9:13 | IC | IC |
-| FileScoped2.cs:11:12:11:16 | C4<> | C4<> |
 | FileScoped2.cs:11:12:11:16 | C4<S> | C4<S> |
-| FileScoped2.cs:13:12:13:16 | C5<> | C5<> |
+| FileScoped2.cs:11:12:11:16 | C4`1 | C4`1 |
+| FileScoped2.cs:13:12:13:16 | C5`1 | C5`1 |
 | FileScoped2.cs:15:13:15:14 | S1 | S1 |
 | FileScoped2.cs:17:11:17:12 | E1 | E1 |
 | FileScoped2.cs:19:20:19:21 | D1 | D1 |
@@ -83,9 +83,9 @@ filetypes
 | FileScoped1.cs:3:16:3:17 | I2 |
 | FileScoped1.cs:5:12:5:13 | C1 |
 | FileScoped1.cs:11:16:11:17 | IC |
-| FileScoped1.cs:13:12:13:16 | C4<> |
 | FileScoped1.cs:13:12:13:16 | C4<S> |
-| FileScoped1.cs:15:12:15:16 | C5<> |
+| FileScoped1.cs:13:12:13:16 | C4`1 |
+| FileScoped1.cs:15:12:15:16 | C5`1 |
 | FileScoped1.cs:17:13:17:14 | S1 |
 | FileScoped1.cs:19:11:19:12 | E1 |
 | FileScoped1.cs:21:20:21:21 | D1 |
@@ -95,9 +95,9 @@ filetypes
 | FileScoped2.cs:5:12:5:13 | C1 |
 | FileScoped2.cs:7:12:7:13 | C2 |
 | FileScoped2.cs:9:12:9:13 | IC |
-| FileScoped2.cs:11:12:11:16 | C4<> |
 | FileScoped2.cs:11:12:11:16 | C4<S> |
-| FileScoped2.cs:13:12:13:16 | C5<> |
+| FileScoped2.cs:11:12:11:16 | C4`1 |
+| FileScoped2.cs:13:12:13:16 | C5`1 |
 | FileScoped2.cs:15:13:15:14 | S1 |
 | FileScoped2.cs:17:11:17:12 | E1 |
 | FileScoped2.cs:19:20:19:21 | D1 |

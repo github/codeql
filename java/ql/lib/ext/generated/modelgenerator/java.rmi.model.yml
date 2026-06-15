@@ -1,0 +1,44 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.rmi", "AccessException", True, "AccessException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "AccessException", True, "AccessException", "(String,Exception)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["java.rmi", "AlreadyBoundException", True, "AlreadyBoundException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "ConnectException", True, "ConnectException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "ConnectException", True, "ConnectException", "(String,Exception)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["java.rmi", "ConnectIOException", True, "ConnectIOException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "ConnectIOException", True, "ConnectIOException", "(String,Exception)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["java.rmi", "MarshalException", True, "MarshalException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "MarshalException", True, "MarshalException", "(String,Exception)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["java.rmi", "MarshalledObject", False, "get", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.rmi", "Naming", False, "list", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.rmi", "NoSuchObjectException", True, "NoSuchObjectException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "NotBoundException", True, "NotBoundException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "RMISecurityException", True, "RMISecurityException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "RMISecurityException", True, "RMISecurityException", "(String,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "RemoteException", True, "RemoteException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "RemoteException", True, "RemoteException", "(String,Throwable)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["java.rmi", "ServerError", True, "ServerError", "(String,Error)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["java.rmi", "ServerException", True, "ServerException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "ServerException", True, "ServerException", "(String,Exception)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["java.rmi", "ServerRuntimeException", True, "ServerRuntimeException", "(String,Exception)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["java.rmi", "StubNotFoundException", True, "StubNotFoundException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "StubNotFoundException", True, "StubNotFoundException", "(String,Exception)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["java.rmi", "UnexpectedException", True, "UnexpectedException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "UnexpectedException", True, "UnexpectedException", "(String,Exception)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["java.rmi", "UnknownHostException", True, "UnknownHostException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "UnknownHostException", True, "UnknownHostException", "(String,Exception)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["java.rmi", "UnmarshalException", True, "UnmarshalException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi", "UnmarshalException", True, "UnmarshalException", "(String,Exception)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.rmi", "MarshalledObject", "MarshalledObject", "(Object)", "summary", "df-generated"]
+      - ["java.rmi", "Naming", "bind", "(String,Remote)", "summary", "df-generated"]
+      - ["java.rmi", "Naming", "lookup", "(String)", "summary", "df-generated"]
+      - ["java.rmi", "Naming", "rebind", "(String,Remote)", "summary", "df-generated"]
+      - ["java.rmi", "Naming", "unbind", "(String)", "summary", "df-generated"]

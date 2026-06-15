@@ -16,14 +16,14 @@ public class A {
   void m1(int[] a) {
     int sum = 0;
     for (int i = 0; i <= a.length; i++) {
-      sum += a[i]; // Out of bounds
+      sum += a[i]; // $ Alert // Out of bounds
     }
   }
 
   void m2(int[] a) {
     int sum = 0;
     for (int i = 0; i < a.length; i += 2) {
-      sum += a[i] + a[i + 1]; // Out of bounds (unless len%2==0)
+      sum += a[i] + a[i + 1]; // $ Alert // Out of bounds (unless len%2==0)
     }
   }
 
@@ -42,11 +42,11 @@ public class A {
     }
     for (int i = 0; i < arr2.length; ) {
       sum += arr2[i++]; // OK
-      sum += arr2[i++]; // OK - FP
+      sum += arr2[i++]; // $ Alert // OK - FP
     }
     for (int i = 0; i < arr3.length; ) {
       sum += arr3[i++]; // OK
-      sum += arr3[i++]; // OK - FP
+      sum += arr3[i++]; // $ Alert // OK - FP
     }
     int[] b;
     if (sum > 3)
@@ -55,7 +55,7 @@ public class A {
       b = arr1;
     for (int i = 0; i < b.length; i++) {
       sum += b[i]; // OK
-      sum += b[++i]; // OK - FP
+      sum += b[++i]; // $ Alert // OK - FP
     }
   }
 
@@ -64,7 +64,7 @@ public class A {
     int sum = 0;
     for (int i = 0; i < a.length; ) {
       sum += a[i++]; // OK
-      sum += a[i++]; // OK - FP
+      sum += a[i++]; // OK
     }
     int len = b.length;
     if ((len & 1) != 0)
@@ -86,7 +86,7 @@ public class A {
   int m6(int[] a, int ix) {
     if (ix < 0 || ix > a.length)
       return 0;
-    return a[ix]; // Out of bounds
+    return a[ix]; // $ Alert // Out of bounds
   }
 
   void m7() {
@@ -97,7 +97,7 @@ public class A {
         sum += xs[i]; // OK
         sum += xs[j]; // OK
         if (i < j)
-          sum += xs[i + 11 - j]; // OK - FP
+          sum += xs[i + 11 - j]; // $ Alert // OK - FP
         else
           sum += xs[i - j]; // OK
       }
@@ -110,8 +110,8 @@ public class A {
     int sum = 0;
     for (int i = 4; i < a.length; i += 3) {
       sum += a[i]; // OK
-      sum += a[i + 1]; // OK - FP
-      sum += a[i + 2]; // OK - FP
+      sum += a[i + 1]; // $ Alert // OK - FP
+      sum += a[i + 2]; // $ Alert // OK - FP
     }
   }
 
@@ -122,7 +122,7 @@ public class A {
       if (i < 5)
         sum += a[i]; // OK
       else
-        sum += a[9 - i]; // OK - FP
+        sum += a[9 - i]; // $ Alert // OK - FP
     }
   }
 
@@ -134,7 +134,7 @@ public class A {
       sum += a[i]; // OK
       for (int j = i + 1; j < len; j++) {
         sum += a[j]; // OK
-        sum += a[i + 1]; // OK - FP
+        sum += a[i + 1]; // $ Alert // OK - FP
       }
     }
   }
@@ -182,7 +182,7 @@ public class A {
   void m14(int[] xs) {
     for (int i = 0; i < xs.length + 1; i++) {
       if (i == 0 && xs.length > 0) {
-        xs[i]++; // OK - FP
+        xs[i]++; // $ Alert // OK - FP
       }
     }
   }
@@ -192,23 +192,23 @@ public class A {
       int x = ++i;
       int y = ++i;
       if (y < xs.length) {
-        xs[x]++; // OK - FP
+        xs[x]++; // $ Alert // OK - FP
         xs[y]++; // OK
       }
     }
   }
 
   static int m16() {
-    return A.arr1[(new Random()).nextInt(arr1.length + 1)] +  // BAD: random int may be out of range
+    return A.arr1[(new Random()).nextInt(arr1.length + 1)] +  // $ Alert // BAD: random int may be out of range
       A.arr1[(new Random()).nextInt(arr1.length)] + // GOOD: random int must be in range
-      A.arr1[RandomUtils.nextInt(0, arr1.length + 1)] + // BAD: random int may be out of range
+      A.arr1[RandomUtils.nextInt(0, arr1.length + 1)] + // $ Alert // BAD: random int may be out of range
       A.arr1[RandomUtils.nextInt(0, arr1.length)]; // GOOD: random int must be in range
   }
 
   int m17() {
-    return this.arr2[(new Random()).nextInt(arr2.length + 1)] +  // BAD: random int may be out of range
+    return this.arr2[(new Random()).nextInt(arr2.length + 1)] +  // $ Alert // BAD: random int may be out of range
       this.arr2[(new Random()).nextInt(arr2.length)] + // GOOD: random int must be in range
-      this.arr2[RandomUtils.nextInt(0, arr2.length + 1)] + // BAD: random int may be out of range
+      this.arr2[RandomUtils.nextInt(0, arr2.length + 1)] + // $ Alert // BAD: random int may be out of range
       this.arr2[RandomUtils.nextInt(0, arr2.length)]; // GOOD: random int must be in range
   }
 }

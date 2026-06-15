@@ -12,9 +12,22 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import PathInjectionCustomizations::PathInjection
 
+abstract private class NormalizationState extends string {
+  bindingset[this]
+  NormalizationState() { any() }
+}
+
+/** A state signifying that the file path has not been normalized. */
+class NotNormalized extends NormalizationState {
+  NotNormalized() { this = "NotNormalized" }
+}
+
+/** A state signifying that the file path has been normalized, but not checked. */
+class NormalizedUnchecked extends NormalizationState {
+  NormalizedUnchecked() { this = "NormalizedUnchecked" }
+}
+
 /**
- * A taint-tracking configuration for detecting "path injection" vulnerabilities.
- *
  * This configuration uses two flow states, `NotNormalized` and `NormalizedUnchecked`,
  * to track the requirement that a file path must be first normalized and then checked
  * before it is safe to use.
@@ -25,14 +38,14 @@ import PathInjectionCustomizations::PathInjection
  *
  * Such checks are ineffective in the `NotNormalized` state.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "PathInjection" }
+module PathInjectionConfig implements DataFlow::StateConfigSig {
+  class FlowState = NormalizationState;
 
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+  predicate isSource(DataFlow::Node source, FlowState state) {
     source instanceof Source and state instanceof NotNormalized
   }
 
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+  predicate isSink(DataFlow::Node sink, FlowState state) {
     sink instanceof Sink and
     (
       state instanceof NotNormalized or
@@ -40,9 +53,9 @@ class Configuration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
     // Block `NotNormalized` paths here, since they change state to `NormalizedUnchecked`
     node instanceof Path::PathNormalization and
     state instanceof NotNormalized
@@ -51,26 +64,16 @@ class Configuration extends TaintTracking::Configuration {
     state instanceof NormalizedUnchecked
   }
 
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
-  }
-
-  override predicate isAdditionalTaintStep(
-    DataFlow::Node nodeFrom, DataFlow::FlowState stateFrom, DataFlow::Node nodeTo,
-    DataFlow::FlowState stateTo
+  predicate isAdditionalFlowStep(
+    DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
   ) {
     nodeFrom = nodeTo.(Path::PathNormalization).getPathArg() and
     stateFrom instanceof NotNormalized and
     stateTo instanceof NormalizedUnchecked
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-/** A state signifying that the file path has not been normalized. */
-class NotNormalized extends DataFlow::FlowState {
-  NotNormalized() { this = "NotNormalized" }
-}
-
-/** A state signifying that the file path has been normalized, but not checked. */
-class NormalizedUnchecked extends DataFlow::FlowState {
-  NormalizedUnchecked() { this = "NormalizedUnchecked" }
-}
+/** Global taint-tracking for detecting "path injection" vulnerabilities. */
+module PathInjectionFlow = TaintTracking::GlobalWithState<PathInjectionConfig>;

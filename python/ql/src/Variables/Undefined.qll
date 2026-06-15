@@ -1,6 +1,7 @@
 import python
 import Loop
 import semmle.python.dataflow.TaintTracking
+private import LegacyPointsTo
 
 /** A marker for "uninitialized". */
 class Uninitialized extends TaintKind {

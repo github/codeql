@@ -1,56 +1,26 @@
 /**
- * Provides classes for working with untrusted flow sources from the `github.com/gin-gonic/gin` package.
+ * Provides classes for modeling the `github.com/gin-gonic/gin` package.
  */
+overlay[local?]
+module;
 
 import go
+import semmle.go.concepts.HTTP
 
-private module Gin {
+/** Provides models for the `gin-gonic/gin` package. */
+module Gin {
   /** Gets the package name `github.com/gin-gonic/gin`. */
   string packagePath() { result = package("github.com/gin-gonic/gin", "") }
 
-  /**
-   * Data from a `Context` struct, considered as a source of untrusted flow.
-   */
-  private class GithubComGinGonicGinContextSource extends UntrustedFlowSource::Range {
-    GithubComGinGonicGinContextSource() {
-      // Method calls:
-      exists(DataFlow::MethodCallNode call, string methodName |
-        call.getTarget().hasQualifiedName(packagePath(), "Context", methodName) and
-        methodName in [
-            "FullPath", "GetHeader", "QueryArray", "Query", "PostFormArray", "PostForm", "Param",
-            "GetStringSlice", "GetString", "GetRawData", "ClientIP", "ContentType", "Cookie",
-            "GetQueryArray", "GetQuery", "GetPostFormArray", "GetPostForm", "DefaultPostForm",
-            "DefaultQuery", "GetPostFormMap", "GetQueryMap", "GetStringMap", "GetStringMapString",
-            "GetStringMapStringSlice", "PostFormMap", "QueryMap"
-          ]
-      |
-        this = call.getResult(0)
-      )
-      or
-      // Field reads:
-      exists(DataFlow::Field fld |
-        fld.hasQualifiedName(packagePath(), "Context", ["Accepted", "Params"]) and
-        this = fld.getARead()
-      )
-    }
-  }
+  private class GinCookieWrite extends Http::CookieWrite::Range, DataFlow::MethodCallNode {
+    GinCookieWrite() { this.getTarget().hasQualifiedName(packagePath(), "Context", "SetCookie") }
 
-  /**
-   * A call to a method on `Context` struct that unmarshals data into a target.
-   */
-  private class GithubComGinGonicGinContextBindSource extends UntrustedFlowSource::Range {
-    GithubComGinGonicGinContextBindSource() {
-      exists(DataFlow::MethodCallNode call, string methodName |
-        call.getTarget().hasQualifiedName(packagePath(), "Context", methodName) and
-        methodName in [
-            "BindJSON", "BindYAML", "BindXML", "BindUri", "BindQuery", "BindWith", "BindHeader",
-            "MustBindWith", "Bind", "ShouldBind", "ShouldBindBodyWith", "ShouldBindJSON",
-            "ShouldBindQuery", "ShouldBindUri", "ShouldBindHeader", "ShouldBindWith",
-            "ShouldBindXML", "ShouldBindYAML"
-          ]
-      |
-        this = FunctionOutput::parameter(0).getExitNode(call)
-      )
-    }
+    override DataFlow::Node getName() { result = this.getArgument(0) }
+
+    override DataFlow::Node getValue() { result = this.getArgument(1) }
+
+    override DataFlow::Node getSecure() { result = this.getArgument(5) }
+
+    override DataFlow::Node getHttpOnly() { result = this.getArgument(6) }
   }
 }

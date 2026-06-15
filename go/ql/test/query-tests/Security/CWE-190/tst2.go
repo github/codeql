@@ -6,13 +6,13 @@ import (
 )
 
 func test2(filename string) {
-	data, _ := ioutil.ReadFile(filename)
-	ignore(make([]byte, len(data)+1)) // NOT OK
+	data, _ := ioutil.ReadFile(filename) // $ Source
+	ignore(make([]byte, len(data)+1))    // $ Alert // NOT OK
 }
 
 func test3(r io.Reader) {
-	data, _ := ioutil.ReadAll(r)
-	ignore(make([]byte, len(data)+1)) // NOT OK
+	data, _ := ioutil.ReadAll(r)      // $ Source
+	ignore(make([]byte, len(data)+1)) // $ Alert // NOT OK
 }
 
 func test4(r io.Reader, ws []io.Writer) {

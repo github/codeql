@@ -1,6 +1,0 @@
-| tst.js:1:23:1:31 | "express" | SinkPoI | tst.js:1:23:1:31 | "express" | irrelevant | tst.js:1:23:1:31 | "express" | irrelevant |
-| tst.js:2:16:2:19 | "fs" | SinkPoI | tst.js:2:16:2:19 | "fs" | irrelevant | tst.js:2:16:2:19 | "fs" | irrelevant |
-| tst.js:3:16:3:30 | "child_process" | SinkPoI | tst.js:3:16:3:30 | "child_process" | irrelevant | tst.js:3:16:3:30 | "child_process" | irrelevant |
-| tst.js:16:15:16:25 | req.query.x | SourcePoI | tst.js:16:15:16:25 | req.query.x | irrelevant | tst.js:16:15:16:25 | req.query.x | irrelevant |
-| tst.js:17:11:17:21 | req.query.x | SourcePoI | tst.js:17:11:17:21 | req.query.x | irrelevant | tst.js:17:11:17:21 | req.query.x | irrelevant |
-| tst.js:18:12:18:22 | req.query.x | SourcePoI | tst.js:18:12:18:22 | req.query.x | irrelevant | tst.js:18:12:18:22 | req.query.x | irrelevant |

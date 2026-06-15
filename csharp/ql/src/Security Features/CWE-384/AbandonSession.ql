@@ -21,16 +21,16 @@ predicate loginMethod(Method m, ControlFlow::SuccessorType flowFrom) {
     or
     m = any(SystemWebSecurityFormsAuthenticationClass c).getAuthenticateMethod()
   ) and
-  flowFrom.(ControlFlow::SuccessorTypes::BooleanSuccessor).getValue() = true
+  flowFrom.(ControlFlow::BooleanSuccessor).getValue() = true
   or
   m = any(SystemWebSecurityFormsAuthenticationClass c).getSignOutMethod() and
-  flowFrom instanceof ControlFlow::SuccessorTypes::NormalSuccessor
+  flowFrom instanceof ControlFlow::DirectSuccessor
 }
 
 /** The `System.Web.SessionState.HttpSessionState` class. */
 class SystemWebSessionStateHttpSessionStateClass extends Class {
   SystemWebSessionStateHttpSessionStateClass() {
-    this.hasQualifiedName("System.Web.SessionState", "HttpSessionState")
+    this.hasFullyQualifiedName("System.Web.SessionState", "HttpSessionState")
   }
 
   /** Gets the `Abandon` method. */
@@ -56,18 +56,18 @@ predicate sessionUse(MemberAccess ma) {
 }
 
 /** A control flow step that is not sanitised by a call to clear the session. */
-predicate controlStep(ControlFlow::Node s1, ControlFlow::Node s2) {
+predicate controlStep(ControlFlowNode s1, ControlFlowNode s2) {
   s2 = s1.getASuccessor() and
-  not sessionEndMethod(s2.getElement().(MethodCall).getTarget())
+  not sessionEndMethod(s2.asExpr().(MethodCall).getTarget())
 }
 
 from
-  ControlFlow::Node loginCall, Method loginMethod, ControlFlow::Node sessionUse,
+  ControlFlowNode loginCall, Method loginMethod, ControlFlowNode sessionUse,
   ControlFlow::SuccessorType fromLoginFlow
 where
-  loginMethod = loginCall.getElement().(MethodCall).getTarget() and
+  loginMethod = loginCall.asExpr().(MethodCall).getTarget() and
   loginMethod(loginMethod, fromLoginFlow) and
-  sessionUse(sessionUse.getElement()) and
-  controlStep+(loginCall.getASuccessorByType(fromLoginFlow), sessionUse)
+  sessionUse(sessionUse.asExpr()) and
+  controlStep+(loginCall.getASuccessor(fromLoginFlow), sessionUse)
 select sessionUse, "This session has not been invalidated following the call to $@.", loginCall,
   loginMethod.getName()

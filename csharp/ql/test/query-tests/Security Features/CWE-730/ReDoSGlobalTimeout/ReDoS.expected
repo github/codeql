@@ -1,10 +1,14 @@
+#select
 edges
-| ExponentialRegex.cs:13:28:13:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:13:28:13:63 | access to indexer : String |
-| ExponentialRegex.cs:13:28:13:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:16:40:16:48 | access to local variable userInput |
-| ExponentialRegex.cs:13:28:13:63 | access to indexer : String | ExponentialRegex.cs:16:40:16:48 | access to local variable userInput |
+| ExponentialRegex.cs:13:16:13:24 | access to local variable userInput : String | ExponentialRegex.cs:16:40:16:48 | access to local variable userInput | provenance |  |
+| ExponentialRegex.cs:13:28:13:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:13:16:13:24 | access to local variable userInput : String | provenance |  |
+| ExponentialRegex.cs:13:28:13:50 | access to property QueryString : NameValueCollection | ExponentialRegex.cs:13:28:13:63 | access to indexer : String | provenance | MaD:1 |
+| ExponentialRegex.cs:13:28:13:63 | access to indexer : String | ExponentialRegex.cs:13:16:13:24 | access to local variable userInput : String | provenance |  |
+models
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
 nodes
+| ExponentialRegex.cs:13:16:13:24 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
 | ExponentialRegex.cs:13:28:13:50 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | ExponentialRegex.cs:13:28:13:63 | access to indexer : String | semmle.label | access to indexer : String |
 | ExponentialRegex.cs:16:40:16:48 | access to local variable userInput | semmle.label | access to local variable userInput |
 subpaths
-#select

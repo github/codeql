@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for computing metrics on Java methods and constructors.
  */
+overlay[local?]
+module;
 
 import semmle.code.java.Member
 
@@ -69,18 +71,28 @@ class MetricCallable extends Callable {
   }
 }
 
+private predicate fallthroughSwitchCase(SwitchCase sc1, SwitchCase sc2) {
+  exists(SwitchStmt switch, int n | switch.getStmt(n) = sc1 and switch.getStmt(n + 1) = sc2)
+  or
+  exists(SwitchExpr switch, int n | switch.getStmt(n) = sc1 and switch.getStmt(n + 1) = sc2)
+}
+
 // Branching points in the sense of cyclomatic complexity are binary,
 // so there should be a branching point for each non-default switch
 // case (ignoring those that just fall through to the next case).
 private predicate branchingSwitchCase(ConstCase sc) {
-  not sc.(ControlFlowNode).getASuccessor() instanceof ConstCase and
-  not sc.(ControlFlowNode).getASuccessor() instanceof DefaultCase and
-  not defaultFallThrough(sc)
+  if sc.isRule()
+  then any()
+  else (
+    not fallthroughSwitchCase(sc, _) and
+    not defaultFallThrough(sc)
+  )
 }
 
 private predicate defaultFallThrough(ConstCase sc) {
-  exists(DefaultCase default | default.(ControlFlowNode).getASuccessor() = sc) or
-  defaultFallThrough(sc.(ControlFlowNode).getAPredecessor())
+  exists(DefaultCase default | fallthroughSwitchCase(default, sc))
+  or
+  exists(ConstCase mid | defaultFallThrough(mid) and fallthroughSwitchCase(mid, sc))
 }
 
 /** Holds if `stmt` is a branching statement used for the computation of cyclomatic complexity. */
@@ -90,6 +102,7 @@ private predicate branchingStmt(Stmt stmt) {
   stmt instanceof DoStmt or
   stmt instanceof ForStmt or
   stmt instanceof EnhancedForStmt or
+  stmt instanceof PatternCase or
   branchingSwitchCase(stmt) or
   stmt instanceof CatchClause
 }

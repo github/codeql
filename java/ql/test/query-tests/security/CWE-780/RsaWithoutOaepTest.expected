@@ -1,0 +1,12 @@
+#select
+| RsaWithoutOaepTest.java:5:44:5:62 | "RSA/ECB/NoPadding" | RsaWithoutOaepTest.java:5:44:5:62 | "RSA/ECB/NoPadding" | RsaWithoutOaepTest.java:5:44:5:62 | "RSA/ECB/NoPadding" | This specification is used to $@ without OAEP padding. | RsaWithoutOaepTest.java:5:44:5:62 | "RSA/ECB/NoPadding" | initialize an RSA cipher |
+| RsaWithoutOaepTest.java:15:32:15:50 | "RSA/ECB/NoPadding" : String | RsaWithoutOaepTest.java:15:32:15:50 | "RSA/ECB/NoPadding" : String | RsaWithoutOaepTest.java:11:35:11:38 | spec | This specification is used to $@ without OAEP padding. | RsaWithoutOaepTest.java:11:35:11:38 | spec | initialize an RSA cipher |
+edges
+| RsaWithoutOaepTest.java:10:29:10:39 | spec : String | RsaWithoutOaepTest.java:11:35:11:38 | spec | provenance |  |
+| RsaWithoutOaepTest.java:15:32:15:50 | "RSA/ECB/NoPadding" : String | RsaWithoutOaepTest.java:10:29:10:39 | spec : String | provenance |  |
+nodes
+| RsaWithoutOaepTest.java:5:44:5:62 | "RSA/ECB/NoPadding" | semmle.label | "RSA/ECB/NoPadding" |
+| RsaWithoutOaepTest.java:10:29:10:39 | spec : String | semmle.label | spec : String |
+| RsaWithoutOaepTest.java:11:35:11:38 | spec | semmle.label | spec |
+| RsaWithoutOaepTest.java:15:32:15:50 | "RSA/ECB/NoPadding" : String | semmle.label | "RSA/ECB/NoPadding" : String |
+subpaths

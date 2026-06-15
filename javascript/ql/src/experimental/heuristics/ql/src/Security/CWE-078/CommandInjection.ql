@@ -16,17 +16,17 @@
 
 import javascript
 import semmle.javascript.security.dataflow.CommandInjectionQuery
-import DataFlow::PathGraph
 import semmle.javascript.heuristics.AdditionalSources
+import CommandInjectionFlow::PathGraph
 
 from
-  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node highlight,
-  Source sourceNode
+  CommandInjectionFlow::PathNode source, CommandInjectionFlow::PathNode sink,
+  DataFlow::Node highlight, Source sourceNode
 where
-  cfg.hasFlowPath(source, sink) and
+  CommandInjectionFlow::flowPath(source, sink) and
   (
-    if cfg.isSinkWithHighlight(sink.getNode(), _)
-    then cfg.isSinkWithHighlight(sink.getNode(), highlight)
+    if isSinkWithHighlight(sink.getNode(), _)
+    then isSinkWithHighlight(sink.getNode(), highlight)
     else highlight = sink.getNode()
   ) and
   sourceNode = source.getNode() and

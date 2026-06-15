@@ -4,8 +4,8 @@
 <qhelp>
 <overview>
 <p>Dictionary literals are constructed in the order given in the source.
-This means that if a key is duplicated the second key-value pair will overwrite
-the first as a dictionary can only have one value per key.
+This means that if a key is duplicated, the second key-value pair will overwrite
+the first; as a dictionary can only have one value per key.
 </p>
 
 </overview>
@@ -15,14 +15,14 @@ If they are then decide which value is wanted and delete the other one.</p>
 
 </recommendation>
 <example>
-<p>This example will output "c" because the mapping between 2 and "b" is overwritten by the
-mapping from 2 to "c". The programmer may have meant to map 3 to "c" instead.</p>
+<p>The following example will output <code>"c"</code>, because the mapping between 2 and <code>"b"</code> is overwritten by the
+mapping from 2 to <code>"c"</code>. The programmer may have meant to map 3 to <code>"c"</code> instead.</p>
 <sample src="DuplicateKeyInDictionaryLiteral.py" />
 
 </example>
 <references>
 
-  <li>Python: <a href="http://docs.python.org/2/reference/expressions.html#dictionary-displays">Dictionary literals</a>.</li>
+  <li>Python: <a href="http://docs.python.org/3/reference/expressions.html#dictionary-displays">Dictionary literals</a>.</li>
 
 </references>
 </qhelp>

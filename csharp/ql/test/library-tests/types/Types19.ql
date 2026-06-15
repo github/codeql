@@ -6,5 +6,5 @@
 import csharp
 
 from Class c
-where c.hasQualifiedName("Types", "Class")
+where c.hasFullyQualifiedName("Types", "Class")
 select c

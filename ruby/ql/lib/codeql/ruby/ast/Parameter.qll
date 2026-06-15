@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import internal.AST
 private import internal.Variable
@@ -131,7 +134,7 @@ class BlockParameter extends NamedParameter, TBlockParameter {
   final override string getName() { result = g.getName().getValue() }
 
   final override LocalVariable getVariable() {
-    result = TLocalVariableReal(_, _, g.getName()) or
+    result.(LocalVariableReal).getDefiningNode() = g.getName() or
     result = TLocalVariableSynth(this, 0)
   }
 
@@ -161,7 +164,7 @@ class HashSplatParameter extends NamedParameter, THashSplatParameter {
   final override string getAPrimaryQlClass() { result = "HashSplatParameter" }
 
   final override LocalVariable getVariable() {
-    result = TLocalVariableReal(_, _, g.getName()) or
+    result.(LocalVariableReal).getDefiningNode() = g.getName() or
     result = TLocalVariableSynth(this, 0)
   }
 
@@ -209,7 +212,9 @@ class KeywordParameter extends NamedParameter, TKeywordParameter {
 
   final override string getAPrimaryQlClass() { result = "KeywordParameter" }
 
-  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g.getName()) }
+  final override LocalVariable getVariable() {
+    result.(LocalVariableReal).getDefiningNode() = g.getName()
+  }
 
   /**
    * Gets the default value, i.e. the value assigned to the parameter when one
@@ -259,7 +264,9 @@ class OptionalParameter extends NamedParameter, TOptionalParameter {
    */
   final Expr getDefaultValue() { toGenerated(result) = g.getValue() }
 
-  final override LocalVariable getVariable() { result = TLocalVariableReal(_, _, g.getName()) }
+  final override LocalVariable getVariable() {
+    result.(LocalVariableReal).getDefiningNode() = g.getName()
+  }
 
   final override string toString() { result = this.getName() }
 
@@ -290,7 +297,7 @@ class SplatParameter extends NamedParameter, TSplatParameter {
   final override string getAPrimaryQlClass() { result = "SplatParameter" }
 
   final override LocalVariable getVariable() {
-    result = TLocalVariableReal(_, _, g.getName()) or
+    result.(LocalVariableReal).getDefiningNode() = g.getName() or
     result = TLocalVariableSynth(this, 0)
   }
 

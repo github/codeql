@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.cxf.configuration.jsse", "SSLUtils", True, "loadFile", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.configuration.jsse", "TLSClientParameters", True, "setHostnameVerifier", "(HostnameVerifier)", "", "Argument[0]", "hostname-verification", "manual"]

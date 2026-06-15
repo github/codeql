@@ -1,9 +1,9 @@
 (function(){
     var a = null;
-    a.p;
+    a.p; // $ Alert
     a?.p;
 
     var b = undefined;
-    b.p;
+    b.p; // $ Alert
     b?.p;
 });

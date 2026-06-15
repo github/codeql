@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/gorilla/websocket", "", False, "ReadJSON", "", "", "Argument[1]", "remote", "manual"]
+      - ["github.com/gorilla/websocket", "Conn", True, "ReadJSON", "", "", "Argument[0]", "remote", "manual"]
+      - ["github.com/gorilla/websocket", "Conn", True, "ReadMessage", "", "", "ReturnValue[1]", "remote", "manual"]

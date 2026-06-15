@@ -41,7 +41,7 @@ class NUnitTestMethod extends TestMethod {
       if expected.getArgument(0).getType() instanceof StringType
       then
         exists(string qualifier, string type |
-          result.hasQualifiedName(qualifier, type) and
+          result.hasFullyQualifiedName(qualifier, type) and
           splitQualifiedName(expected.getArgument(0).getValue(), qualifier, type)
         )
       else result = expected.getArgument(0).(TypeofExpr).getTypeAccess().getTarget()
@@ -62,12 +62,12 @@ class NUnitFile extends TestFile {
 /** An attribute of type `NUnit.Framework.ValueSourceAttribute`. */
 class ValueSourceAttribute extends Attribute {
   ValueSourceAttribute() {
-    this.getType().hasQualifiedName("NUnit.Framework", "ValueSourceAttribute")
+    this.getType().hasFullyQualifiedName("NUnit.Framework", "ValueSourceAttribute")
   }
 
   /** Holds if the first argument is the target type. */
   private predicate typeSpecified() {
-    this.getArgument(0).getType().(Class).hasQualifiedName("System", "Type") and
+    this.getArgument(0).getType().(Class).hasFullyQualifiedName("System", "Type") and
     this.getArgument(1).getType() instanceof StringType
   }
 
@@ -95,12 +95,12 @@ class ValueSourceAttribute extends Attribute {
 /** An attribute of type `NUnit.Framework.TestCaseSourceAttribute`. */
 class TestCaseSourceAttribute extends Attribute {
   TestCaseSourceAttribute() {
-    this.getType().hasQualifiedName("NUnit.Framework", "TestCaseSourceAttribute")
+    this.getType().hasFullyQualifiedName("NUnit.Framework", "TestCaseSourceAttribute")
   }
 
   /** Holds if the first argument is the target type. */
   private predicate typeSpecified() {
-    this.getArgument(0).getType().(Class).hasQualifiedName("System", "Type") and
+    this.getArgument(0).getType().(Class).hasFullyQualifiedName("System", "Type") and
     this.getArgument(1).getType() instanceof StringType
   }
 
@@ -127,7 +127,7 @@ class TestCaseSourceAttribute extends Attribute {
 
 /** The `NUnit.Framework.Assert` class. */
 class NUnitAssertClass extends Class {
-  NUnitAssertClass() { this.hasQualifiedName("NUnit.Framework", "Assert") }
+  NUnitAssertClass() { this.hasFullyQualifiedName("NUnit.Framework", "Assert") }
 
   /** Gets a `Null(object, ...)` method. */
   Method getANullMethod() {
@@ -186,5 +186,5 @@ class NUnitAssertClass extends Class {
 
 /** The `NUnit.Framework.AssertionException` class. */
 class AssertionExceptionClass extends Class {
-  AssertionExceptionClass() { this.hasQualifiedName("NUnit.Framework", "AssertionException") }
+  AssertionExceptionClass() { this.hasFullyQualifiedName("NUnit.Framework", "AssertionException") }
 }

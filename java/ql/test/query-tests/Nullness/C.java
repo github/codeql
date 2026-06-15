@@ -6,8 +6,8 @@ public class C {
     long[][] a2 = null;
     boolean haveA2 = ix < len && (a2 = a1[ix]) != null;
     long[] a3 = null;
-    final boolean haveA3 = haveA2 && (a3 = a2[ix]) != null; // NPE - false positive
-    if (haveA3) a3[0] = 0; // NPE - false positive
+    final boolean haveA3 = haveA2 && (a3 = a2[ix]) != null; // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
+    if (haveA3) a3[0] = 0; // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
   }
 
   public void ex2(boolean x, boolean y) {
@@ -18,7 +18,7 @@ public class C {
       s2 = (s1 == null) ? null : "";
     }
     if (s2 != null)
-      s1.hashCode(); // NPE - false positive
+      s1.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
   }
 
   public void ex3(List<String> ss) {
@@ -48,7 +48,7 @@ public class C {
         slice = new ArrayList<>();
         result.add(slice);
       }
-      slice.add(str); // NPE - false positive
+      slice.add(str); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
       ++index;
       iter.remove();
     }
@@ -60,7 +60,7 @@ public class C {
       arrLen = arr == null ? 0 : arr.length;
     }
     if (arrLen > 0) {
-      arr[0] = 0; // NPE - false positive
+      arr[0] = 0; // OK
     }
   }
 
@@ -97,7 +97,7 @@ public class C {
       arr2 = new int[arr1.length];
     }
     for (int i = 0; i < arr1.length; i++)
-      arr2[i] = arr1[i]; // NPE - false positive
+      arr2[i] = arr1[i]; // OK
   }
 
   public void ex8(int x, int lim) {
@@ -107,7 +107,7 @@ public class C {
     while (!stop) {
       int j = 0;
       while (!stop && j < lim) {
-        int step = (j * obj.hashCode()) % 10; // NPE - false positive
+        int step = (j * obj.hashCode()) % 10; // OK
         if (step == 0) {
           obj.hashCode();
           i += 1;
@@ -134,14 +134,14 @@ public class C {
       cond = true;
     }
     if (cond) {
-      obj2.hashCode(); // NPE - false positive
+      obj2.hashCode(); // OK
     }
   }
 
   public void ex10(int[] a) {
     int n = a == null ? 0 : a.length;
     for (int i = 0; i < n; i++) {
-      int x = a[i]; // NPE - false positive
+      int x = a[i]; // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
       if (x > 7)
         a = new int[n];
     }
@@ -185,7 +185,7 @@ public class C {
         b = true;
       } else if (a[i] == 2) {
         verifyBool(b);
-        obj.hashCode(); // NPE - false positive
+        obj.hashCode(); // OK
       }
     }
   }
@@ -204,7 +204,7 @@ public class C {
         obj = new Object();
       } else if (a[i] == 2) {
         verifyNotNull(obj);
-        obj.hashCode(); // NPE - false positive
+        obj.hashCode(); // OK
       }
     }
   }
@@ -216,7 +216,7 @@ public class C {
     if (o1 == o2) {
       return;
     }
-    if (o1.equals(o2)) { // NPE - false positive
+    if (o1.equals(o2)) { // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
       return;
     }
   }
@@ -230,7 +230,7 @@ public class C {
   public static void ex16(C c) {
     int[] xs = c.getFoo16() != null ? new int[5] : null;
     if (c.getFoo16() != null) {
-      xs[0]++; // NPE - false positive
+      xs[0]++; // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
     }
   }
 
@@ -243,5 +243,26 @@ public class C {
       xs = new int[5];
     }
     xs[0]++; // OK
+  }
+
+  public void ex18(boolean b, int[] xs, Object related) {
+    assert (!b && xs == null && related == null) ||
+           (b && xs != null && related != null) ||
+           (b && xs == null && related == null);
+    if (b) {
+      if (related == null) { return; }
+      xs[0] = 42; // OK
+    }
+  }
+
+  public void ex19(Object t, Object x) {
+    boolean b = t != null || x != null;
+    if (b) {
+      if (t != null) {
+        t.hashCode(); // OK
+      } else {
+        x.hashCode(); // OK
+      }
+    }
   }
 }

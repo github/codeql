@@ -8,7 +8,6 @@ import Expr
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dispatch.Dispatch
-private import dotnet
 
 /**
  * A call. Either a method call (`MethodCall`), a constructor initializer call
@@ -16,7 +15,7 @@ private import dotnet
  * a delegate call (`DelegateCall`), an accessor call (`AccessorCall`), a
  * constructor call (`ObjectCreation`), or a local function call (`LocalFunctionCall`).
  */
-class Call extends DotNet::Call, Expr, @call {
+class Call extends Expr, @call {
   /**
    * Gets the static (compile-time) target of this call. For example, the
    * static target of `x.M()` on line 9 is `A.M` in
@@ -38,13 +37,19 @@ class Call extends DotNet::Call, Expr, @call {
    * Use `getARuntimeTarget()` instead to get a potential run-time target (will
    * include `B.M` in the example above).
    */
-  override Callable getTarget() { none() }
+  Callable getTarget() { none() }
 
-  override Expr getArgument(int i) { result = this.getChild(i) and i >= 0 }
+  /** Gets the `i`th argument to this call, if any. */
+  Expr getArgument(int i) { result = this.getChild(i) and i >= 0 }
 
-  override Expr getRawArgument(int i) { result = this.getArgument(i) }
+  /**
+   * Gets the `i`th "raw" argument to this call, if any.
+   * For instance methods, argument 0 is the qualifier.
+   */
+  Expr getRawArgument(int i) { result = this.getArgument(i) }
 
-  override Expr getAnArgument() { result = this.getArgument(_) }
+  /** Gets an argument to this call. */
+  Expr getAnArgument() { result = this.getArgument(_) }
 
   /** Gets the number of arguments of this call. */
   int getNumberOfArguments() { result = count(this.getAnArgument()) }
@@ -57,60 +62,28 @@ class Call extends DotNet::Call, Expr, @call {
    *
    * This takes into account both positional and named arguments, but does not
    * consider default arguments.
-   *
-   * An argument must always have a type that is convertible to the relevant
-   * parameter type. Therefore, `params` arguments are only taken into account
-   * when they are passed as explicit arrays. For example, in the call to `M1`
-   * on line 5, `o` is not an argument for `M1`'s `args` parameter, while
-   * `new object[] { o }` on line 6 is, in
-   *
-   * ```csharp
-   * class C {
-   *   void M1(params object[] args) { }
-   *
-   *   void M2(object o) {
-   *     M1(o);
-   *     M1(new object[] { o });
-   *   }
-   * }
-   * ```
    */
   cached
-  override Expr getArgumentForParameter(DotNet::Parameter p) {
+  Expr getArgumentForParameter(Parameter p) {
+    // Appears in the positional part of the call
+    result = this.getImplicitArgument(p)
+    or
+    // Appears in the named part of the call
     this.getTarget().getAParameter() = p and
-    (
-      // Appears in the positional part of the call
-      result = this.getImplicitArgument(p.getPosition()) and
-      (
-        p.(Parameter).isParams()
-        implies
-        (
-          isValidExplicitParamsType(p, result.getType()) and
-          not this.hasMultipleParamsArguments()
-        )
-      )
-      or
-      // Appears in the named part of the call
-      result = this.getExplicitArgument(p.getName()) and
-      (p.(Parameter).isParams() implies isValidExplicitParamsType(p, result.getType()))
-    )
-  }
-
-  /**
-   * Holds if this call has multiple arguments for a `params` parameter
-   * of the targeted callable.
-   */
-  private predicate hasMultipleParamsArguments() {
-    exists(Parameter p | p = this.getTarget().getAParameter() |
-      p.isParams() and
-      exists(this.getArgument(any(int i | i > p.getPosition())))
-    )
+    result = this.getExplicitArgument(p.getName())
   }
 
   pragma[noinline]
-  private Expr getImplicitArgument(int pos) {
-    result = this.getArgument(pos) and
-    not exists(result.getExplicitArgumentName())
+  private Expr getImplicitArgument(Parameter p) {
+    this.getTarget().getAParameter() = p and
+    not exists(result.getExplicitArgumentName()) and
+    (
+      p.(Parameter).isParams() and
+      result = this.getArgument(any(int i | i >= p.getPosition()))
+      or
+      not p.(Parameter).isParams() and
+      result = this.getArgument(p.getPosition())
+    )
   }
 
   pragma[nomagic]
@@ -176,7 +149,7 @@ class Call extends DotNet::Call, Expr, @call {
    * - Line 16: There is no static target (delegate call) but the delegate `i => { }`
    *   (line 20) is a run-time target.
    */
-  override Callable getARuntimeTarget() {
+  Callable getARuntimeTarget() {
     exists(DispatchCall dc | dc.getCall() = this | result = dc.getADynamicTarget())
   }
 
@@ -213,13 +186,37 @@ class Call extends DotNet::Call, Expr, @call {
   /**
    * Gets the argument that corresponds to parameter `p` of a potential
    * run-time target of this call.
+   *
+   * This takes into account both positional and named arguments, but does not
+   * consider default arguments.
    */
+  cached
   Expr getRuntimeArgumentForParameter(Parameter p) {
-    exists(Callable c |
-      c = this.getARuntimeTarget() and
-      p = c.getAParameter() and
+    // Appears in the positional part of the call
+    result = this.getImplicitRuntimeArgument(p)
+    or
+    // Appears in the named part of the call
+    this.getARuntimeTarget().getAParameter() = p and
+    result = this.getExplicitRuntimeArgument(p.getName())
+  }
+
+  pragma[noinline]
+  private Expr getImplicitRuntimeArgument(Parameter p) {
+    this.getARuntimeTarget().getAParameter() = p and
+    not exists(result.getExplicitArgumentName()) and
+    (
+      p.isParams() and
+      result = this.getRuntimeArgument(any(int i | i >= p.getPosition()))
+      or
+      not p.isParams() and
       result = this.getRuntimeArgument(p.getPosition())
     )
+  }
+
+  pragma[nomagic]
+  private Expr getExplicitRuntimeArgument(string name) {
+    result = this.getARuntimeArgument() and
+    result.getExplicitArgumentName() = name
   }
 
   /**
@@ -255,28 +252,6 @@ class Call extends DotNet::Call, Expr, @call {
 }
 
 /**
- * Holds if the type `t` is a valid argument type for passing an explicit array
- * to the `params` parameter `p`. For example, the types `object[]` and `string[]`
- * of the arguments on lines 4 and 5, respectively, are valid for the parameter
- * `args` on line 1 in
- *
- * ```csharp
- * void M(params object[] args) { ... }
- *
- * void CallM(object[] os, string[] ss, string s) {
- *   M(os);
- *   M(ss);
- *   M(s);
- * }
- * ```
- */
-pragma[nomagic]
-private predicate isValidExplicitParamsType(Parameter p, Type t) {
-  p.isParams() and
-  t.isImplicitlyConvertibleTo(p.getType())
-}
-
-/**
  * A method call, for example `a.M()` on line 5 in
  *
  * ```csharp
@@ -292,9 +267,33 @@ private predicate isValidExplicitParamsType(Parameter p, Type t) {
 class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invocation_expr {
   override Method getTarget() { expr_call(this, result) }
 
+  /**
+   * Gets the accessor that was used to generate this method, if any. For example, the
+   * method call `MyExtensions.get_FirstChar(s)` on line 9 is generated from the property
+   * accessor `get_FirstChar` on line 3 in
+   *
+   * ```csharp
+   * static class MyExtensions {
+   *   extension(string s) {
+   *     public char FirstChar { get { ... } }
+   *   }
+   * }
+   *
+   * class A {
+   *   char M(string s) {
+   *     return MyExtensions.get_FirstChar(s);
+   *   }
+   * }
+   */
+  Accessor getTargetAccessor() { expr_call(this, result) }
+
   override Method getQualifiedDeclaration() { result = this.getTarget() }
 
-  override string toString() { result = "call to method " + concat(this.getTarget().getName()) }
+  override string toString() {
+    if exists(this.getTargetAccessor())
+    then result = "call to extension accessor " + concat(this.getTargetAccessor().getName())
+    else result = "call to method " + concat(this.getTarget().getName())
+  }
 
   override string getAPrimaryQlClass() { result = "MethodCall" }
 
@@ -305,6 +304,10 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
       or
       result = this.getArgument(i - 1)
     else result = this.getArgument(i)
+  }
+
+  override Expr stripImplicit() {
+    if this.isImplicit() then result = this.getQualifier().stripImplicit() else result = this
   }
 }
 
@@ -475,7 +478,7 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
 }
 
 /**
- * A call to a user-defined operator, for example `this + other`
+ * A call to an operator, for example `this + other`
  * on line 7 in
  *
  * ```csharp
@@ -490,14 +493,55 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
  * }
  * ```
  */
-class OperatorCall extends Call, LateBindableExpr, @operator_invocation_expr {
+class OperatorCall extends Call, LateBindableExpr, @op_invoke_expr {
   override Operator getTarget() { expr_call(this, result) }
 
   override Operator getARuntimeTarget() { result = Call.super.getARuntimeTarget() }
 
-  override string toString() { result = "call to operator " + this.getTarget().getName() }
+  override string toString() {
+    if this instanceof DynamicOperatorCall
+    then result = "dynamic call to operator " + this.getLateBoundTargetName()
+    else result = "call to operator " + this.getTarget().getName()
+  }
 
   override string getAPrimaryQlClass() { result = "OperatorCall" }
+}
+
+/**
+ * A call to an extension operator, for example `3 * s` on
+ * line 9 in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public static string operator *(int i, string s) { ... }
+ *   }
+ * }
+ *
+ * class A {
+ *   string M(string s) {
+ *     return 3 * s;
+ *   }
+ * }
+ * ```
+ */
+class ExtensionOperatorCall extends OperatorCall {
+  ExtensionOperatorCall() { this.getTarget() instanceof ExtensionOperator }
+
+  override string getAPrimaryQlClass() { result = "ExtensionOperatorCall" }
+
+  private predicate isOrdinaryStaticCall() {
+    not exists(Expr e | e = this.getChildExpr(-1) | not e instanceof TypeAccess)
+  }
+
+  override Expr getArgument(int i) {
+    exists(int j | result = this.getChildExpr(j) |
+      i >= 0 and
+      if this.isOrdinaryStaticCall() or this.getTarget() instanceof CompoundAssignmentOperator
+      then j = i
+      else j = i - 1
+    )
+  }
 }
 
 /**
@@ -524,6 +568,81 @@ class MutatorOperatorCall extends OperatorCall {
 
   /** Holds if the operator is in postfix position. */
   predicate isPostfix() { mutator_invocation_mode(this, 2) }
+}
+
+/**
+ * A call to an instance mutator operator, for example `a++` on
+ * line 5 in
+ *
+ * ```csharp
+ * class A {
+ *   public void operator ++() { ... }
+ *
+ *   public static void Increment(A a) {
+ *     a++;
+ *   }
+ * }
+ * ```
+ */
+class InstanceMutatorOperatorCall extends MutatorOperatorCall {
+  InstanceMutatorOperatorCall() { this.getTarget().getNumberOfParameters() = 0 }
+
+  /** Gets the qualifier of this instance mutator operator call. */
+  Expr getQualifier() { result = this.getChildExpr(0) }
+
+  override Expr getArgument(int i) { none() }
+}
+
+/**
+ * A call to a compound assignment operator, for example `this += other`
+ * on line 7 in
+ *
+ * ```csharp
+ * class A {
+ *   public void operator +=(A other) {
+ *     ...
+ *   }
+ *
+ *   public void Add(A other) {
+ *     this += other;
+ *   }
+ * }
+ * ```
+ */
+class CompoundAssignmentOperatorCall extends AssignCallExpr {
+  CompoundAssignmentOperatorCall() { this.getTarget() instanceof CompoundAssignmentOperator }
+
+  override Expr getArgument(int i) { result = this.getChildExpr(i + 1) and i >= 0 }
+
+  /** Gets the qualifier of this compound assignment operator call. */
+  override Expr getQualifier() { result = this.getChildExpr(0) }
+}
+
+/**
+ * A call to a compound assignment extension operator, for example `s1 *= s2` on
+ * line 9 in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public void operator *=(string other) { ... }
+ *   }
+ * }
+ *
+ * class A {
+ *   void M(string s1, string s2) {
+ *     s1 *= s2;
+ *   }
+ * }
+ */
+class ExtensionCompoundAssignmentOperatorCall extends CompoundAssignmentOperatorCall,
+  ExtensionOperatorCall
+{
+  override Expr getArgument(int i) { result = ExtensionOperatorCall.super.getArgument(i) }
+
+  override Expr getQualifier() { none() }
+
+  override string getAPrimaryQlClass() { result = "ExtensionCompoundAssignmentOperatorCall" }
 }
 
 private class DelegateLikeCall_ = @delegate_invocation_expr or @function_pointer_invocation_expr;
@@ -553,7 +672,7 @@ class DelegateLikeCall extends Call, DelegateLikeCall_ {
   final override Callable getARuntimeTarget() {
     exists(ExplicitDelegateLikeDataFlowCall call |
       this = call.getCall() and
-      result = viableCallableLambda(call, _).asCallable()
+      result = viableCallableLambda(call, _).asCallable(_)
     )
   }
 
@@ -602,7 +721,25 @@ class FunctionPointerCall extends DelegateLikeCall, @function_pointer_invocation
  * (`EventCall`).
  */
 class AccessorCall extends Call, QualifiableExpr, @call_access_expr {
-  override Accessor getTarget() { none() }
+  override Accessor getTarget() { result = this.getReadTarget() or result = this.getWriteTarget() }
+
+  /**
+   * Gets the static (compile-time) target of this call, assuming that this is
+   * an `AssignableRead`.
+   *
+   * Note that left-hand sides of compound assignments are both
+   * `AssignableRead`s and `AssignableWrite`s.
+   */
+  Accessor getReadTarget() { none() }
+
+  /**
+   * Gets the static (compile-time) target of this call, assuming that this is
+   * an `AssignableWrite`.
+   *
+   * Note that left-hand sides of compound assignments are both
+   * `AssignableRead`s and `AssignableWrite`s.
+   */
+  Accessor getWriteTarget() { none() }
 
   override Expr getArgument(int i) { none() }
 
@@ -624,11 +761,20 @@ class AccessorCall extends Call, QualifiableExpr, @call_access_expr {
  * ```
  */
 class PropertyCall extends AccessorCall, PropertyAccessExpr {
-  override Accessor getTarget() {
-    exists(PropertyAccess pa, Property p | pa = this and p = this.getProperty() |
-      pa instanceof AssignableRead and result = p.getGetter()
+  override Accessor getReadTarget() {
+    this instanceof AssignableRead and result = this.getProperty().getGetter()
+  }
+
+  override Accessor getWriteTarget() {
+    this instanceof AssignableWrite and
+    exists(Property p | p = this.getProperty() |
+      result = p.getSetter()
       or
-      pa instanceof AssignableWrite and result = p.getSetter()
+      result =
+        any(Getter g |
+          g = p.getGetter() and
+          g.getAnnotatedReturnType().isRef()
+        )
     )
   }
 
@@ -659,11 +805,20 @@ class PropertyCall extends AccessorCall, PropertyAccessExpr {
  * ```
  */
 class IndexerCall extends AccessorCall, IndexerAccessExpr {
-  override Accessor getTarget() {
-    exists(IndexerAccess ia, Indexer i | ia = this and i = this.getIndexer() |
-      ia instanceof AssignableRead and result = i.getGetter()
+  override Accessor getReadTarget() {
+    this instanceof AssignableRead and result = this.getIndexer().getGetter()
+  }
+
+  override Accessor getWriteTarget() {
+    this instanceof AssignableWrite and
+    exists(Indexer i | i = this.getIndexer() |
+      result = i.getSetter()
       or
-      ia instanceof AssignableWrite and result = i.getSetter()
+      result =
+        any(Getter g |
+          g = i.getGetter() and
+          g.getAnnotatedReturnType().isRef()
+        )
     )
   }
 
@@ -677,6 +832,44 @@ class IndexerCall extends AccessorCall, IndexerAccessExpr {
   override string toString() { result = IndexerAccessExpr.super.toString() }
 
   override string getAPrimaryQlClass() { result = "IndexerCall" }
+}
+
+/**
+ * A call to an extension property accessor (via the property), for example
+ * `s.FirstChar` on line 9 in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public char FirstChar { get { ... } }
+ *   }
+ * }
+ *
+ * class A {
+ *   char M(string s) {
+ *     return s.FirstChar;
+ *   }
+ * }
+ * ```
+ */
+class ExtensionPropertyCall extends PropertyCall {
+  private ExtensionProperty prop;
+
+  ExtensionPropertyCall() { this.getProperty() = prop }
+
+  override Expr getArgument(int i) {
+    if prop.isStatic()
+    then result = super.getArgument(i)
+    else (
+      // Shift arguments as the qualifier is an explicit argument in the getter/setter.
+      i = 0 and
+      result = this.getQualifier()
+      or
+      result = super.getArgument(i - 1)
+    )
+  }
+
+  override string getAPrimaryQlClass() { result = "ExtensionPropertyCall" }
 }
 
 /**
@@ -701,10 +894,10 @@ class IndexerCall extends AccessorCall, IndexerAccessExpr {
  * ```
  */
 class EventCall extends AccessorCall, EventAccessExpr {
-  override EventAccessor getTarget() {
+  override EventAccessor getWriteTarget() {
     exists(Event e, AddOrRemoveEventExpr aoree |
       e = this.getEvent() and
-      aoree.getLValue() = this
+      aoree.getLeftOperand() = this
     |
       aoree instanceof AddEventExpr and result = e.getAddEventAccessor()
       or
@@ -715,8 +908,8 @@ class EventCall extends AccessorCall, EventAccessExpr {
   override Expr getArgument(int i) {
     i = 0 and
     exists(AddOrRemoveEventExpr aoree |
-      aoree.getLValue() = this and
-      result = aoree.getRValue()
+      aoree.getLeftOperand() = this and
+      result = aoree.getRightOperand()
     )
   }
 

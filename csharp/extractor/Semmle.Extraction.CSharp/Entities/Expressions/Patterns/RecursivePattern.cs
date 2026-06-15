@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
@@ -15,14 +15,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// <param name="parent">The parent pattern/expression.</param>
         /// <param name="child">The child index of this pattern.</param>
         public RecursivePattern(Context cx, RecursivePatternSyntax syntax, IExpressionParentEntity parent, int child) :
-            base(new ExpressionInfo(cx, null, cx.CreateLocation(syntax.GetLocation()), ExprKind.RECURSIVE_PATTERN, parent, child, false, null))
+            base(new ExpressionInfo(cx, null, cx.CreateLocation(syntax.GetLocation()), ExprKind.RECURSIVE_PATTERN, parent, child, isCompilerGenerated: false, null))
         {
             // Extract the type access
             if (syntax.Type is TypeSyntax t)
                 Expressions.TypeAccess.Create(cx, t, this, 1);
 
             // Extract the local variable declaration
-            if (syntax.Designation is VariableDesignationSyntax designation && cx.GetModel(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+            if (syntax.Designation is SingleVariableDesignationSyntax designation && cx.GetModel(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
             {
                 var type = symbol.GetAnnotatedType();
 

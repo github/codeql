@@ -4,9 +4,9 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/commented-out-code
- * @tags maintainability
- *       statistical
- *       non-attributable
+ * @tags quality
+ *       maintainability
+ *       readability
  * @precision medium
  */
 

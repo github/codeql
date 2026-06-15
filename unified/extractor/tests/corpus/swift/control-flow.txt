@@ -1,0 +1,447 @@
+===
+If statement
+===
+
+if x > 0 {
+  print(x)
+}
+
+---
+
+source_file
+  statement:
+    if_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      condition:
+        if_condition
+          kind:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
+
+---
+
+top_level
+  body:
+
+===
+If-else
+===
+
+if x > 0 {
+  print(x)
+} else {
+  print(-x)
+}
+
+---
+
+source_file
+  statement:
+    if_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      condition:
+        if_condition
+          kind:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
+      else_branch:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            prefix_expression
+                              operation: -
+                              target: simple_identifier "x"
+
+---
+
+top_level
+  body:
+
+===
+If-else-if chain
+===
+
+if x > 0 {
+  print(1)
+} else if x < 0 {
+  print(2)
+} else {
+  print(3)
+}
+
+---
+
+source_file
+  statement:
+    if_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: integer_literal "1"
+      condition:
+        if_condition
+          kind:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
+      else_branch:
+        if_statement
+          body:
+            block
+              statement:
+                call_expression
+                  function: simple_identifier "print"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+                          argument:
+                            value_argument
+                              value: integer_literal "2"
+          condition:
+            if_condition
+              kind:
+                comparison_expression
+                  lhs: simple_identifier "x"
+                  op: <
+                  rhs: integer_literal "0"
+          else_branch:
+            block
+              statement:
+                call_expression
+                  function: simple_identifier "print"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+                          argument:
+                            value_argument
+                              value: integer_literal "3"
+
+---
+
+top_level
+  body:
+
+===
+If-let optional binding
+===
+
+if let value = optional {
+  print(value)
+}
+
+---
+
+source_file
+  statement:
+    if_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "value"
+      condition:
+        if_condition
+          kind:
+            if_let_binding
+              pattern:
+                pattern
+                  binding:
+                    value_binding_pattern
+                      mutability: let
+                  bound_identifier: simple_identifier "value"
+              value: simple_identifier "optional"
+
+---
+
+top_level
+  body:
+
+===
+Guard let
+===
+
+guard let value = optional else { return }
+
+---
+
+source_file
+  statement:
+    guard_statement
+      body:
+        block
+          statement:
+            control_transfer_statement
+              kind: return
+      condition:
+        if_condition
+          kind:
+            if_let_binding
+              pattern:
+                pattern
+                  binding:
+                    value_binding_pattern
+                      mutability: let
+                  bound_identifier: simple_identifier "value"
+              value: simple_identifier "optional"
+
+---
+
+top_level
+  body:
+
+===
+Ternary expression
+===
+
+let y = x > 0 ? 1 : -1
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "y"
+          value:
+            ternary_expression
+              condition:
+                comparison_expression
+                  lhs: simple_identifier "x"
+                  op: >
+                  rhs: integer_literal "0"
+              if_false:
+                prefix_expression
+                  operation: -
+                  target: integer_literal "1"
+              if_true: integer_literal "1"
+
+---
+
+top_level
+  body:
+
+===
+Switch statement
+===
+
+switch x {
+case 1:
+  print("one")
+case 2, 3:
+  print("two or three")
+default:
+  print("other")
+}
+
+---
+
+source_file
+  statement:
+    switch_statement
+      entry:
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind: integer_literal "1"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "one"
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind: integer_literal "2"
+            switch_pattern
+              pattern:
+                pattern
+                  kind: integer_literal "3"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "two or three"
+        switch_entry
+          default: default_keyword "default"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "other"
+      expr: simple_identifier "x"
+
+---
+
+top_level
+  body:
+
+===
+Switch with binding pattern
+===
+
+switch shape {
+case .circle(let r):
+  print(r)
+case .square(let s):
+  print(s)
+}
+
+---
+
+source_file
+  statement:
+    switch_statement
+      entry:
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind:
+                    case_pattern
+                      arguments:
+                        tuple_pattern
+                          item:
+                            tuple_pattern_item
+                              pattern:
+                                pattern
+                                  kind:
+                                    binding_pattern
+                                      binding:
+                                        value_binding_pattern
+                                          mutability: let
+                                      pattern:
+                                        pattern
+                                          bound_identifier: simple_identifier "r"
+                      name: simple_identifier "circle"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "r"
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind:
+                    case_pattern
+                      arguments:
+                        tuple_pattern
+                          item:
+                            tuple_pattern_item
+                              pattern:
+                                pattern
+                                  kind:
+                                    binding_pattern
+                                      binding:
+                                        value_binding_pattern
+                                          mutability: let
+                                      pattern:
+                                        pattern
+                                          bound_identifier: simple_identifier "s"
+                      name: simple_identifier "square"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "s"
+      expr: simple_identifier "shape"
+
+---
+
+top_level
+  body:

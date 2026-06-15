@@ -1,0 +1,76 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+
+			Sanitizing untrusted input with regular expressions is a
+			common technique, but malicious actors may be able to embed one of the 
+			allowed patterns in an unexpected location. To prevent this,
+			you should use anchors in your regular expressions,
+			such as <code>^</code> or <code>$</code>.
+
+		</p>
+
+		<p>
+
+			Even if the matching is not done in a security-critical
+			context, it may still cause undesirable behavior when the regular
+			expression accidentally matches.
+
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+
+			Use anchors to ensure that regular expressions match at
+			the expected locations.
+
+		</p>
+	</recommendation>
+
+	<example>
+
+		<p>
+
+			The following example code attempts to check that a URL redirection
+			will reach the <code>example.com</code> domain, and not
+			a malicious site:
+
+		</p>
+
+		<sample src="MissingRegexAnchorBad.swift"/>
+
+		<p>
+
+			However, this regular expression check can be easily bypassed,
+			and a malicious actor could embed 
+			<code>http://www.example.com/</code> in the query
+			string component of a malicious site. For example,  
+			<code>http://evil-example.net/?x=http://www.example.com/</code>.
+			Instead, you should use anchors in the regular expression check:
+
+		</p>
+
+		<sample src="MissingRegexAnchorGood.swift"/>
+
+		<p>
+
+			If you need to write a regular expression to match
+			multiple hosts, you should include an anchor for all of the
+			alternatives. For example, the regular expression
+			<code>/^www\.example\.com|beta\.example\.com/</code> will match the host
+			<code>evil.beta.example.com</code>, because the regular expression is parsed
+			as <code>/(^www\.example\.com)|(beta\.example\.com)/</code>.
+
+		</p>
+	</example>
+
+	<references>
+		<li>OWASP: <a href="https://www.owasp.org/index.php/Server_Side_Request_Forgery">SSRF</a></li>
+		<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
+	</references>
+</qhelp>

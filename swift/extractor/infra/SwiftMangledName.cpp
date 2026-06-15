@@ -1,29 +1,25 @@
 #include "swift/extractor/infra/SwiftMangledName.h"
 #include "absl/strings/str_cat.h"
 
+#include <picosha2.h>
+
 namespace codeql {
 
-namespace {
-void appendPart(std::string& out, const std::string& prefix) {
-  out += prefix;
+std::string SwiftMangledName::hash() const {
+  auto ret = picosha2::hash256_hex_string(value);
+  // half a hash is already enough for disambuiguation
+  ret.resize(ret.size() / 2);
+  return ret;
 }
 
-void appendPart(std::string& out, UntypedTrapLabel label) {
-  absl::StrAppend(&out, "{", label.str(), "}");
+SwiftMangledName& SwiftMangledName::operator<<(UntypedTrapLabel label) & {
+  absl::StrAppend(&value, "{", label.str(), "}");
+  return *this;
 }
 
-void appendPart(std::string& out, unsigned index) {
-  absl::StrAppend(&out, index);
-}
-
-}  // namespace
-
-std::string SwiftMangledName::str() const {
-  std::string out;
-  for (const auto& part : parts) {
-    std::visit([&](const auto& contents) { appendPart(out, contents); }, part);
-  }
-  return out;
+SwiftMangledName& SwiftMangledName::operator<<(unsigned int i) & {
+  absl::StrAppend(&value, i);
+  return *this;
 }
 
 }  // namespace codeql

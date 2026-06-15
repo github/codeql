@@ -3,8 +3,8 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.ExternalFlow
-import Taint::PathGraph
+import semmle.code.csharp.dataflow.internal.ExternalFlow
+import utils.test.ProvenancePathGraph::ShowProvenance<Taint::PathNode, Taint::PathGraph>
 import ModelValidation
 
 module TaintConfig implements DataFlow::ConfigSig {
@@ -19,14 +19,6 @@ module TaintConfig implements DataFlow::ConfigSig {
 }
 
 module Taint = TaintTracking::Global<TaintConfig>;
-
-/**
- * Simulate that methods with summaries are not included in the source code.
- * This is relevant for dataflow analysis using summaries tagged as generated.
- */
-private class MyMethod extends Method {
-  override predicate fromSource() { none() }
-}
 
 from Taint::PathNode source, Taint::PathNode sink
 where Taint::flowPath(source, sink)

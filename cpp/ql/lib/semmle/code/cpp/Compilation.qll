@@ -95,6 +95,25 @@ class Compilation extends @compilation {
   string getArgument(int i) { compilation_args(this, i, result) }
 
   /**
+   * Gets an expanded argument passed to the extractor on this invocation.
+   */
+  string getAnExpandedArgument() { result = this.getExpandedArgument(_) }
+
+  /**
+   * Gets the `i`th expanded argument passed to the extractor on this
+   * invocation.
+   *
+   * This is similar to `getArgument`, but for a `@someFile` argument, it
+   * includes the arguments from that file, rather than just taking the
+   * argument literally.
+   */
+  string getExpandedArgument(int i) {
+    if exists(string arg | compilation_expanded_args(this, _, arg))
+    then compilation_expanded_args(this, i, result)
+    else result = this.getArgument(i)
+  }
+
+  /**
    * Gets the total amount of CPU time spent processing all the files in the
    * front-end and extractor.
    */
@@ -112,4 +131,7 @@ class Compilation extends @compilation {
    * termination, but crashing due to something like a segfault is not.
    */
   predicate normalTermination() { compilation_finished(this, _, _) }
+
+  /** Holds if this compilation was compiled using the "none" build mode. */
+  predicate buildModeNone() { compilation_build_mode(this, 0) }
 }

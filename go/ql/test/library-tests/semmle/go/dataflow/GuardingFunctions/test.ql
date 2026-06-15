@@ -1,5 +1,7 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
+import utils.test.InlineFlowTest
 
 predicate isBad(DataFlow::Node g, Expr e, boolean branch) {
   g.(DataFlow::CallNode).getTarget().getName() = "isBad" and
@@ -7,34 +9,16 @@ predicate isBad(DataFlow::Node g, Expr e, boolean branch) {
   branch = false
 }
 
-class TestConfig extends DataFlow::Configuration {
-  TestConfig() { this = "test config" }
+module FlowWithBarrierConfig implements DataFlow::ConfigSig {
+  predicate isSource = DefaultFlowConfig::isSource/1;
 
-  override predicate isSource(DataFlow::Node source) {
-    source.(DataFlow::CallNode).getTarget().getName() = "source"
-  }
+  predicate isSink = DefaultFlowConfig::isSink/1;
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink = any(DataFlow::CallNode c | c.getTarget().getName() = "sink").getAnArgument()
-  }
+  predicate fieldFlowBranchLimit = DefaultFlowConfig::fieldFlowBranchLimit/0;
 
-  override predicate isBarrier(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node = DataFlow::BarrierGuard<isBad/3>::getABarrierNode()
   }
 }
 
-class DataFlowTest extends InlineExpectationsTest {
-  DataFlowTest() { this = "DataFlowTest" }
-
-  override string getARelevantTag() { result = "dataflow" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "dataflow" and
-    exists(DataFlow::Node sink | any(TestConfig c).hasFlow(_, sink) |
-      element = sink.toString() and
-      value = sink.toString() and
-      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
-    )
-  }
-}
+import ValueFlowTest<FlowWithBarrierConfig>

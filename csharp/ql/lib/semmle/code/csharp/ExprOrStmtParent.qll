@@ -5,6 +5,7 @@
  */
 
 import csharp
+private import internal.Location
 
 /**
  * INTERNAL: Do not use.
@@ -12,14 +13,14 @@ import csharp
  * An element that can have a child statement or expression.
  */
 class ExprOrStmtParent extends Element, @exprorstmt_parent {
-  final override ControlFlowElement getChild(int i) {
+  override ControlFlowElement getChild(int i) {
     result = this.getChildExpr(i) or
     result = this.getChildStmt(i)
   }
 
   /** Gets the `i`th child expression of this element (zero-based). */
   final Expr getChildExpr(int i) {
-    expr_parent_adjusted(result, i, this) or
+    expr_parent(result, i, this) or
     expr_parent_top_level_adjusted(result, i, this)
   }
 
@@ -41,29 +42,57 @@ class ExprOrStmtParent extends Element, @exprorstmt_parent {
  *
  * An element that can have a child top-level expression.
  */
-class TopLevelExprParent extends Element, @top_level_expr_parent {
+class TopLevelExprParent extends ExprOrStmtParent, @top_level_expr_parent {
   final override Expr getChild(int i) { result = this.getChildExpr(i) }
-
-  /** Gets the `i`th child expression of this element (zero-based). */
-  final Expr getChildExpr(int i) { expr_parent_top_level_adjusted(result, i, this) }
-
-  /** Gets a child expression of this element, if any. */
-  final Expr getAChildExpr() { result = this.getChildExpr(_) }
 }
 
-private predicate hasNoSourceLocation(Element e) { not e.getALocation() instanceof SourceLocation }
+/** INTERNAL: Do not use. */
+Expr getExpressionBody(Callable c) {
+  result = c.getAChildExpr() and
+  not result = c.(Constructor).getInitializer() and
+  not result = c.(Constructor).getObjectInitializerCall()
+}
+
+/** INTERNAL: Do not use. */
+BlockStmt getStatementBody(Callable c) { result = c.getAChildStmt() }
+
+private ControlFlowElement getBody(Callable c) {
+  result = getExpressionBody(c) or
+  result = getStatementBody(c)
+}
+
+pragma[nomagic]
+private predicate hasNoSourceLocation(Element e) { not exists(getASourceLocation(e)) }
+
+pragma[nomagic]
+private Location getFirstSourceLocation(Element e) {
+  result =
+    min(Location l, string filepath, int startline, int startcolumn, int endline, int endcolumn |
+      l = getASourceLocation(e) and
+      l.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    |
+      l order by filepath, startline, startcolumn, endline, endcolumn
+    )
+}
 
 cached
 private module Cached {
   cached
   Location bestLocation(Element e) {
-    result = e.getALocation().(SourceLocation) and
-    not exists(e.getALocation().(SourceLocation).getMappedLocation())
-    or
-    result = e.getALocation().(SourceLocation).getMappedLocation()
+    (
+      if e.(Modifiable).isPartial() or e instanceof Namespace
+      then result = getASourceLocation(e)
+      else result = getFirstSourceLocation(e)
+    )
     or
     hasNoSourceLocation(e) and
-    result = min(Location l | l = e.getALocation() | l order by l.getFile().toString())
+    result =
+      min(Location l, string filepath |
+        l = e.getALocation() and
+        l.hasLocationInfo(filepath, _, _, _, _)
+      |
+        l order by filepath
+      )
     or
     not exists(e.getALocation()) and
     result instanceof EmptyLocation
@@ -83,67 +112,9 @@ private module Cached {
     i = 0
   }
 
-  /**
-   * The `expr_parent()` relation adjusted for expandable assignments. For example,
-   * the assignment `x += y` is extracted as
-   *
-   * ```
-   *          +=
-   *           |
-   *           2
-   *           |
-   *           =
-   *          / \
-   *         1   0
-   *        /     \
-   *       x       +
-   *              / \
-   *             1   0
-   *            /     \
-   *           x       y
-   * ```
-   *
-   * in order to be able to retrieve the expanded assignment `x = x + y` as the 2nd
-   * child. This predicate changes the diagram above into
-   *
-   * ```
-   *          +=
-   *         /  \
-   *        1    0
-   *       /      \
-   *      x        y
-   * ```
-   */
-  cached
-  predicate expr_parent_adjusted(Expr child, int i, ControlFlowElement parent) {
-    if parent instanceof AssignOperation
-    then
-      parent =
-        any(AssignOperation ao |
-          exists(AssignExpr ae | ae = ao.getExpandedAssignment() |
-            i = 0 and
-            exists(Expr right |
-              // right = `x + y`
-              expr_parent(right, 0, ae)
-            |
-              expr_parent(child, 1, right)
-            )
-            or
-            i = 1 and
-            expr_parent(child, 1, ae)
-          )
-          or
-          not ao.hasExpandedAssignment() and
-          expr_parent(child, i, parent)
-        )
-    else expr_parent(child, i, parent)
-  }
-
   private Expr getAChildExpr(ExprOrStmtParent parent) {
     result = parent.getAChildExpr() and
     not result = parent.(DeclarationWithGetSetAccessors).getExpressionBody()
-    or
-    result = parent.(AssignOperation).getExpandedAssignment()
   }
 
   private ControlFlowElement getAChild(ExprOrStmtParent parent) {
@@ -152,31 +123,28 @@ private module Cached {
     result = parent.getAChildStmt()
   }
 
-  pragma[inline]
-  private ControlFlowElement enclosingStart(ControlFlowElement cfe) {
-    result = cfe
-    or
-    getAChild(result).(AnonymousFunctionExpr) = cfe
-  }
-
   private predicate parent(ControlFlowElement child, ExprOrStmtParent parent) {
     child = getAChild(parent) and
-    not child = any(Callable c).getBody()
+    not child = getBody(_)
   }
 
   /** Holds if the enclosing body of `cfe` is `body`. */
   cached
   predicate enclosingBody(ControlFlowElement cfe, ControlFlowElement body) {
-    body = any(Callable c).getBody() and
-    parent*(enclosingStart(cfe), body)
+    body = getBody(_) and
+    parent*(cfe, body)
   }
 
   /** Holds if the enclosing callable of `cfe` is `c`. */
   cached
   predicate enclosingCallable(ControlFlowElement cfe, Callable c) {
-    enclosingBody(cfe, c.getBody())
+    enclosingBody(cfe, getBody(c))
     or
-    parent*(enclosingStart(cfe), c.(Constructor).getInitializer())
+    parent*(cfe, c.(Constructor).getInitializer())
+    or
+    parent*(cfe, c.(Constructor).getObjectInitializerCall())
+    or
+    parent*(cfe, any(AssignExpr init | c.(ObjectInitMethod).initializes(init)))
   }
 
   /** Holds if the enclosing statement of expression `e` is `s`. */

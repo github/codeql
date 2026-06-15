@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["ILLink.Tasks", "ComputeManagedAssemblies", True, "Execute", "()", "", "Argument[this].Property[ILLink.Tasks.ComputeManagedAssemblies.Assemblies].Element", "Argument[this].Property[ILLink.Tasks.ComputeManagedAssemblies.ManagedAssemblies].Element", "value", "dfc-generated"]
+      - ["ILLink.Tasks", "ILLink", True, "GenerateCommandLineCommands", "()", "", "Argument[this].Property[ILLink.Tasks.ILLink.ILLinkPath]", "ReturnValue", "taint", "dfc-generated"]
+      - ["ILLink.Tasks", "ILLink", True, "GenerateFullPathToTool", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", True, "GenerateResponseFileCommands", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", True, "get_ToolName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["ILLink.Tasks", "CombineLinkerXmlFiles", "Execute", "()", "summary", "df-generated"]
+      - ["ILLink.Tasks", "CreateRuntimeRootILLinkDescriptorFile", "Execute", "()", "summary", "df-generated"]
+      - ["ILLink.Tasks", "CreateRuntimeRootILLinkDescriptorFile", "ProcessCoreTypes", "(System.String)", "summary", "df-generated"]
+      - ["ILLink.Tasks", "CreateRuntimeRootILLinkDescriptorFile", "ProcessExceptionTypes", "(System.String)", "summary", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", "get_StandardErrorLoggingImportance", "()", "summary", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", "set_BeforeFieldInit", "(System.Boolean)", "summary", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", "set_IPConstProp", "(System.Boolean)", "summary", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", "set_OverrideRemoval", "(System.Boolean)", "summary", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", "set_RemoveSymbols", "(System.Boolean)", "summary", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", "set_Sealer", "(System.Boolean)", "summary", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", "set_SingleWarn", "(System.Boolean)", "summary", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", "set_TreatWarningsAsErrors", "(System.Boolean)", "summary", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", "set_UnreachableBodies", "(System.Boolean)", "summary", "df-generated"]
+      - ["ILLink.Tasks", "ILLink", "set_UnusedInterfaces", "(System.Boolean)", "summary", "df-generated"]
+      - ["ILLink.Tasks", "Utils", "IsManagedAssembly", "(System.String)", "summary", "df-generated"]

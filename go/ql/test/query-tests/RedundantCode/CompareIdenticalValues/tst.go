@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func foo(x int) bool {
-	return x == x // NOT OK
+	return x == x // $ Alert // NOT OK
 }
 
 func isNaN(x float32) bool {
@@ -57,5 +57,5 @@ func baz2() bool {
 func baz3() bool {
 	var y counter
 	y.bimp()
-	return y == 0 // NOT OK
+	return y == 0 // $ Alert // NOT OK
 }

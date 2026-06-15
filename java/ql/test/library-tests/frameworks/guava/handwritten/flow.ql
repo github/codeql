@@ -1,35 +1,31 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module TaintFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodAccess).getMethod().hasName("taint") }
+  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodCall).getMethod().hasName("taint") }
 
   predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+    exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
 }
 
 module TaintFlow = TaintTracking::Global<TaintFlowConfig>;
 
 module ValueFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodAccess).getMethod().hasName("taint") }
+  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodCall).getMethod().hasName("taint") }
 
   predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+    exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
-
-  int fieldFlowBranchLimit() { result = 100 }
 }
 
 module ValueFlow = DataFlow::Global<ValueFlowConfig>;
 
-class HasFlowTest extends InlineExpectationsTest {
-  HasFlowTest() { this = "HasFlowTest" }
+module HasFlowTest implements TestSig {
+  string getARelevantTag() { result = ["numTaintFlow", "numValueFlow"] }
 
-  override string getARelevantTag() { result = ["numTaintFlow", "numValueFlow"] }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "numTaintFlow" and
     exists(DataFlow::Node src, DataFlow::Node sink, int num | TaintFlow::flow(src, sink) |
       not ValueFlow::flow(src, sink) and
@@ -48,3 +44,5 @@ class HasFlowTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HasFlowTest>

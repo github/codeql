@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/useless-forwarding-method
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  */
 

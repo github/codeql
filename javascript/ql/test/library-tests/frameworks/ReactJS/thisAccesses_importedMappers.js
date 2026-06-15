@@ -12,4 +12,4 @@ React.createClass({
 
         return <div/>;
     },
-});
+}); // $ reactComponent

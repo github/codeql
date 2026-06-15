@@ -7,9 +7,9 @@
  * @problem.severity warning
  * @precision medium
  * @id java/wrong-swing-event-adapter-signature
- * @tags reliability
- *       maintainability
- *       frameworks/swing
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java
@@ -19,19 +19,25 @@ class Adapter extends Class {
     this.getName().matches("%Adapter") and
     (
       this.getPackage().hasName("java.awt.event") or
-      this.getPackage().hasName("javax.swing.event")
+      this.getPackage().hasName(javaxOrJakarta() + ".swing.event")
     )
   }
 }
 
-from Class c, Adapter adapter, Method m
-where
+pragma[nomagic]
+predicate candidate(Class c, Adapter adapter, Method m, string name) {
   adapter = c.getASupertype() and
   c = m.getDeclaringType() and
-  exists(Method original | adapter = original.getDeclaringType() | m.getName() = original.getName()) and
-  not exists(Method overridden | adapter = overridden.getDeclaringType() | m.overrides(overridden)) and
+  name = m.getName() and
   // The method is not used for any other purpose.
-  not exists(MethodAccess ma | ma.getMethod() = m)
+  not exists(MethodCall ma | ma.getMethod() = m)
+}
+
+from Class c, Adapter adapter, Method m, string name
+where
+  candidate(c, adapter, m, name) and
+  exists(Method original | adapter = original.getDeclaringType() | name = original.getName()) and
+  not exists(Method overridden | adapter = overridden.getDeclaringType() | m.overrides(overridden))
 select m,
   "Method " + m.getName() + " attempts to override a method in " + adapter.getName() +
     ", but does not have the same argument types. " + m.getName() +

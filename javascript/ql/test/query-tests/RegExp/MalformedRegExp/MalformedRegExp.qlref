@@ -1,1 +1,2 @@
-RegExp/MalformedRegExp.ql
+query: RegExp/MalformedRegExp.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

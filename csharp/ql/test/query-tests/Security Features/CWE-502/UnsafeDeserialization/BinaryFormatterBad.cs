@@ -7,6 +7,6 @@ class BadBinaryFormatter
     {
         var ds = new BinaryFormatter();
         // BAD
-        return ds.Deserialize(s);
+        return ds.Deserialize(s); // $ Alert[cs/unsafe-deserialization]
     }
 }

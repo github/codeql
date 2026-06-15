@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from BinaryExpr div, ControlFlowNode left, ControlFlowNode right
 where
@@ -20,9 +21,9 @@ where
   exists(BinaryExprNode bin, Value lval, Value rval |
     bin = div.getAFlowNode() and
     bin.getNode().getOp() instanceof Div and
-    bin.getLeft().pointsTo(lval, left) and
+    bin.getLeft().(ControlFlowNodeWithPointsTo).pointsTo(lval, left) and
     lval.getClass() = ClassValue::int_() and
-    bin.getRight().pointsTo(rval, right) and
+    bin.getRight().(ControlFlowNodeWithPointsTo).pointsTo(rval, right) and
     rval.getClass() = ClassValue::int_() and
     // Ignore instances where integer division leaves no remainder
     not lval.(NumericValue).getIntValue() % rval.(NumericValue).getIntValue() = 0 and
@@ -34,4 +35,4 @@ where
     )
   )
 select div, "Result of division may be truncated as its $@ and $@ arguments may both be integers.",
-  left.getLocation(), "left", right.getLocation(), "right"
+  left, "left", right, "right"

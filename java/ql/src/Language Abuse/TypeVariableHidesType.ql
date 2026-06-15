@@ -6,7 +6,8 @@
  * @problem.severity warning
  * @precision medium
  * @id java/type-variable-hides-type
- * @tags reliability
+ * @tags quality
+ *       maintainability
  *       readability
  *       types
  */

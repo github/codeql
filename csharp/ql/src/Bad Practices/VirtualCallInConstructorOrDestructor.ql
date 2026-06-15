@@ -6,9 +6,9 @@
  * @precision medium
  * @id cs/virtual-call-in-constructor
  * @alternate-ids cs/virtual-call-in-constructor-or-destructor
- * @tags reliability
- *       maintainability
- *       modularity
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp
@@ -34,7 +34,9 @@ predicate overriddenSealed(RefType t, Virtualizable d) {
 }
 
 predicate virtualAccessWithThisQualifier(Expr e, Member d) {
-  exists(VirtualMethodCall c | c = e and c.getTarget() = d and c.hasThisQualifier())
+  exists(VirtualMethodCall c |
+    c = e and c.getTarget() = d and c.hasThisQualifier() and not c.isImplicit()
+  )
   or
   exists(VirtualMethodAccess c | c = e and c.getTarget() = d and c.hasThisQualifier())
   or

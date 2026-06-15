@@ -5,6 +5,8 @@
  * Note that unlike `TypeTracking.qll`, this library only performs
  * local tracking within a function.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.TypeTracking
@@ -192,6 +194,7 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
    *
    * See `TypeTracker` for more details about how to use this.
    */
+  overlay[global]
   pragma[inline]
   DataFlow::SourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 
@@ -200,6 +203,7 @@ class SourceNode extends DataFlow::Node instanceof SourceNode::Range {
    *
    * See `TypeBackTracker` for more details about how to use this.
    */
+  overlay[global]
   pragma[inline]
   DataFlow::SourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) {
     t2 = t.step(result, this)
@@ -254,6 +258,12 @@ private module Cached {
   cached
   predicate invocation(DataFlow::SourceNode func, DataFlow::InvokeNode invoke) {
     hasLocalSource(invoke.getCalleeNode(), func)
+    or
+    exists(ClassDefinition cls, SuperCall call |
+      hasLocalSource(cls.getSuperClass().flow(), func) and
+      call.getBinder() = cls.getConstructor().getBody() and
+      invoke = call.flow()
+    )
   }
 
   /**
@@ -322,11 +332,20 @@ module SourceNode {
         astNode instanceof FunctionBindExpr or
         astNode instanceof DynamicImportExpr or
         astNode instanceof ImportSpecifier or
+        astNode instanceof ExportNamespaceSpecifier or
         astNode instanceof ImportMetaExpr or
         astNode instanceof TaggedTemplateExpr or
         astNode instanceof Templating::PipeRefExpr or
         astNode instanceof Templating::TemplateVarRefExpr or
-        astNode instanceof StringLiteral
+        astNode instanceof StringLiteral or
+        astNode instanceof TemplateLiteral or
+        astNode instanceof TypeAssertion or
+        astNode instanceof SatisfiesExpr
+      )
+      or
+      exists(VariableDeclarator decl |
+        exists(decl.getTypeAnnotation()) and
+        this = DataFlow::valueNode(decl.getBindingPattern())
       )
       or
       DataFlow::parameterNode(this, _)

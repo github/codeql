@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["imjohnbo/issue-bot", "*", "input.body", "code-injection", "manual"]
+      - ["imjohnbo/issue-bot", "*", "input.linked-comments-previous-issue-text", "code-injection", "manual"]
+      - ["imjohnbo/issue-bot", "*", "input.linked-comments-new-issue-text", "code-injection", "manual"]

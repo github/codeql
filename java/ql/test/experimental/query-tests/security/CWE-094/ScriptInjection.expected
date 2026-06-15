@@ -1,26 +1,29 @@
 edges
-| RhinoServlet.java:28:23:28:50 | getParameter(...) : String | RhinoServlet.java:32:55:32:58 | code |
-| RhinoServlet.java:81:23:81:50 | getParameter(...) : String | RhinoServlet.java:83:54:83:57 | code |
-| RhinoServlet.java:88:23:88:50 | getParameter(...) : String | RhinoServlet.java:89:74:89:77 | code : String |
-| RhinoServlet.java:89:74:89:77 | code : String | RhinoServlet.java:89:74:89:88 | getBytes(...) |
-| ScriptEngineTest.java:20:44:20:55 | input : String | ScriptEngineTest.java:24:37:24:41 | input |
-| ScriptEngineTest.java:27:51:27:62 | input : String | ScriptEngineTest.java:31:31:31:35 | input |
-| ScriptEngineTest.java:35:58:35:69 | input : String | ScriptEngineTest.java:39:31:39:35 | input |
-| ScriptEngineTest.java:42:46:42:57 | input : String | ScriptEngineTest.java:46:31:46:35 | input |
-| ScriptEngineTest.java:49:41:49:52 | input : String | ScriptEngineTest.java:52:42:52:46 | input |
-| ScriptEngineTest.java:56:41:56:52 | input : String | ScriptEngineTest.java:59:51:59:55 | input |
-| ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:93:57:93:60 | code : String |
-| ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:94:64:94:67 | code : String |
-| ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:95:71:95:74 | code : String |
-| ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:96:59:96:62 | code : String |
-| ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:97:54:97:57 | code : String |
-| ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:98:54:98:57 | code : String |
-| ScriptEngineTest.java:93:57:93:60 | code : String | ScriptEngineTest.java:20:44:20:55 | input : String |
-| ScriptEngineTest.java:94:64:94:67 | code : String | ScriptEngineTest.java:27:51:27:62 | input : String |
-| ScriptEngineTest.java:95:71:95:74 | code : String | ScriptEngineTest.java:35:58:35:69 | input : String |
-| ScriptEngineTest.java:96:59:96:62 | code : String | ScriptEngineTest.java:42:46:42:57 | input : String |
-| ScriptEngineTest.java:97:54:97:57 | code : String | ScriptEngineTest.java:49:41:49:52 | input : String |
-| ScriptEngineTest.java:98:54:98:57 | code : String | ScriptEngineTest.java:56:41:56:52 | input : String |
+| RhinoServlet.java:28:23:28:50 | getParameter(...) : String | RhinoServlet.java:32:55:32:58 | code | provenance | Src:MaD:1  |
+| RhinoServlet.java:81:23:81:50 | getParameter(...) : String | RhinoServlet.java:83:54:83:57 | code | provenance | Src:MaD:1  |
+| RhinoServlet.java:88:23:88:50 | getParameter(...) : String | RhinoServlet.java:89:74:89:77 | code : String | provenance | Src:MaD:1  |
+| RhinoServlet.java:89:74:89:77 | code : String | RhinoServlet.java:89:74:89:88 | getBytes(...) | provenance | MaD:2 |
+| ScriptEngineTest.java:20:44:20:55 | input : String | ScriptEngineTest.java:24:37:24:41 | input | provenance |  |
+| ScriptEngineTest.java:27:51:27:62 | input : String | ScriptEngineTest.java:31:31:31:35 | input | provenance |  |
+| ScriptEngineTest.java:35:58:35:69 | input : String | ScriptEngineTest.java:39:31:39:35 | input | provenance |  |
+| ScriptEngineTest.java:42:46:42:57 | input : String | ScriptEngineTest.java:46:31:46:35 | input | provenance |  |
+| ScriptEngineTest.java:49:41:49:52 | input : String | ScriptEngineTest.java:52:42:52:46 | input | provenance |  |
+| ScriptEngineTest.java:56:41:56:52 | input : String | ScriptEngineTest.java:59:51:59:55 | input | provenance |  |
+| ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:93:57:93:60 | code : String | provenance | Src:MaD:1  |
+| ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:94:64:94:67 | code : String | provenance | Src:MaD:1  |
+| ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:95:71:95:74 | code : String | provenance | Src:MaD:1  |
+| ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:96:59:96:62 | code : String | provenance | Src:MaD:1  |
+| ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:97:54:97:57 | code : String | provenance | Src:MaD:1  |
+| ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:98:54:98:57 | code : String | provenance | Src:MaD:1  |
+| ScriptEngineTest.java:93:57:93:60 | code : String | ScriptEngineTest.java:20:44:20:55 | input : String | provenance |  |
+| ScriptEngineTest.java:94:64:94:67 | code : String | ScriptEngineTest.java:27:51:27:62 | input : String | provenance |  |
+| ScriptEngineTest.java:95:71:95:74 | code : String | ScriptEngineTest.java:35:58:35:69 | input : String | provenance |  |
+| ScriptEngineTest.java:96:59:96:62 | code : String | ScriptEngineTest.java:42:46:42:57 | input : String | provenance |  |
+| ScriptEngineTest.java:97:54:97:57 | code : String | ScriptEngineTest.java:49:41:49:52 | input : String | provenance |  |
+| ScriptEngineTest.java:98:54:98:57 | code : String | ScriptEngineTest.java:56:41:56:52 | input : String | provenance |  |
+models
+| 1 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 2 | Summary: java.lang; String; false; getBytes; ; ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | RhinoServlet.java:28:23:28:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | RhinoServlet.java:32:55:32:58 | code | semmle.label | code |
@@ -48,8 +51,7 @@ nodes
 | ScriptEngineTest.java:96:59:96:62 | code : String | semmle.label | code : String |
 | ScriptEngineTest.java:97:54:97:57 | code : String | semmle.label | code : String |
 | ScriptEngineTest.java:98:54:98:57 | code : String | semmle.label | code : String |
-subpaths
-#select
+problems
 | RhinoServlet.java:32:29:32:78 | evaluateString(...) | RhinoServlet.java:28:23:28:50 | getParameter(...) : String | RhinoServlet.java:32:55:32:58 | code | Java Script Engine evaluate $@. | RhinoServlet.java:28:23:28:50 | getParameter(...) | user input |
 | RhinoServlet.java:83:25:83:97 | compileToClassFiles(...) | RhinoServlet.java:81:23:81:50 | getParameter(...) : String | RhinoServlet.java:83:54:83:57 | code | Java Script Engine evaluate $@. | RhinoServlet.java:81:23:81:50 | getParameter(...) | user input |
 | RhinoServlet.java:89:23:89:89 | defineClass(...) | RhinoServlet.java:88:23:88:50 | getParameter(...) : String | RhinoServlet.java:89:74:89:88 | getBytes(...) | Java Script Engine evaluate $@. | RhinoServlet.java:88:23:88:50 | getParameter(...) | user input |
@@ -59,3 +61,4 @@ subpaths
 | ScriptEngineTest.java:46:19:46:36 | eval(...) | ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:46:31:46:35 | input | Java Script Engine evaluate $@. | ScriptEngineTest.java:91:18:91:45 | getParameter(...) | user input |
 | ScriptEngineTest.java:52:27:52:47 | compile(...) | ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:52:42:52:46 | input | Java Script Engine evaluate $@. | ScriptEngineTest.java:91:18:91:45 | getParameter(...) | user input |
 | ScriptEngineTest.java:59:20:59:56 | getProgram(...) | ScriptEngineTest.java:91:18:91:45 | getParameter(...) : String | ScriptEngineTest.java:59:51:59:55 | input | Java Script Engine evaluate $@. | ScriptEngineTest.java:91:18:91:45 | getParameter(...) | user input |
+subpaths

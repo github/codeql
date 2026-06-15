@@ -1,10 +1,12 @@
 edges
-| HashWithoutSalt.java:10:36:10:43 | password : String | HashWithoutSalt.java:10:36:10:54 | getBytes(...) |
-| HashWithoutSalt.java:25:13:25:20 | password : String | HashWithoutSalt.java:25:13:25:31 | getBytes(...) |
-| HashWithoutSalt.java:93:22:93:29 | password : String | HashWithoutSalt.java:93:22:93:40 | getBytes(...) : byte[] |
-| HashWithoutSalt.java:93:22:93:40 | getBytes(...) : byte[] | HashWithoutSalt.java:94:17:94:25 | passBytes |
-| HashWithoutSalt.java:111:22:111:29 | password : String | HashWithoutSalt.java:111:22:111:40 | getBytes(...) : byte[] |
-| HashWithoutSalt.java:111:22:111:40 | getBytes(...) : byte[] | HashWithoutSalt.java:112:18:112:26 | passBytes |
+| HashWithoutSalt.java:10:36:10:43 | password : String | HashWithoutSalt.java:10:36:10:54 | getBytes(...) | provenance | MaD:1 |
+| HashWithoutSalt.java:25:13:25:20 | password : String | HashWithoutSalt.java:25:13:25:31 | getBytes(...) | provenance | MaD:1 |
+| HashWithoutSalt.java:93:22:93:29 | password : String | HashWithoutSalt.java:93:22:93:40 | getBytes(...) : byte[] | provenance | MaD:1 |
+| HashWithoutSalt.java:93:22:93:40 | getBytes(...) : byte[] | HashWithoutSalt.java:94:17:94:25 | passBytes | provenance |  |
+| HashWithoutSalt.java:111:22:111:29 | password : String | HashWithoutSalt.java:111:22:111:40 | getBytes(...) : byte[] | provenance | MaD:1 |
+| HashWithoutSalt.java:111:22:111:40 | getBytes(...) : byte[] | HashWithoutSalt.java:112:18:112:26 | passBytes | provenance |  |
+models
+| 1 | Summary: java.lang; String; false; getBytes; ; ; Argument[this]; ReturnValue; taint; manual |
 nodes
 | HashWithoutSalt.java:10:36:10:43 | password : String | semmle.label | password : String |
 | HashWithoutSalt.java:10:36:10:54 | getBytes(...) | semmle.label | getBytes(...) |
@@ -16,9 +18,9 @@ nodes
 | HashWithoutSalt.java:111:22:111:29 | password : String | semmle.label | password : String |
 | HashWithoutSalt.java:111:22:111:40 | getBytes(...) : byte[] | semmle.label | getBytes(...) : byte[] |
 | HashWithoutSalt.java:112:18:112:26 | passBytes | semmle.label | passBytes |
-subpaths
-#select
+problems
 | HashWithoutSalt.java:10:36:10:54 | getBytes(...) | HashWithoutSalt.java:10:36:10:43 | password : String | HashWithoutSalt.java:10:36:10:54 | getBytes(...) | $@ is hashed without a salt. | HashWithoutSalt.java:10:36:10:43 | password : String | The password |
 | HashWithoutSalt.java:25:13:25:31 | getBytes(...) | HashWithoutSalt.java:25:13:25:20 | password : String | HashWithoutSalt.java:25:13:25:31 | getBytes(...) | $@ is hashed without a salt. | HashWithoutSalt.java:25:13:25:20 | password : String | The password |
 | HashWithoutSalt.java:94:17:94:25 | passBytes | HashWithoutSalt.java:93:22:93:29 | password : String | HashWithoutSalt.java:94:17:94:25 | passBytes | $@ is hashed without a salt. | HashWithoutSalt.java:93:22:93:29 | password : String | The password |
 | HashWithoutSalt.java:112:18:112:26 | passBytes | HashWithoutSalt.java:111:22:111:29 | password : String | HashWithoutSalt.java:112:18:112:26 | passBytes | $@ is hashed without a salt. | HashWithoutSalt.java:111:22:111:29 | password : String | The password |
+subpaths

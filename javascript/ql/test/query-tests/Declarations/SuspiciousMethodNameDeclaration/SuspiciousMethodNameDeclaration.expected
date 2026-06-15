@@ -2,3 +2,14 @@
 | tst.ts:16:3:16:21 | function(): number; | The member name 'function' does not declare a function, it declares a method named 'function'. |
 | tst.ts:37:3:37:21 | function(): number; | The member name 'function' does not declare a function, it declares a method named 'function'. |
 | tst.ts:48:3:48:13 | new(): Quz; | The member name 'new' does not declare a constructor, but 'constructor' does in class declarations. |
+| tst.ts:60:3:60:21 | function(): number; | The member name 'function' does not declare a function, it declares a method named 'function'. |
+| tst.ts:64:3:64:24 | constru ... number; | The member name 'constructor' does not declare a constructor in interfaces, but it does in classes. |
+| tst.ts:74:3:74:30 | functio ... string; | The member name 'function' does not declare a function, it declares a method named 'function'. |
+| tst.ts:75:3:75:30 | functio ... number; | The member name 'function' does not declare a function, it declares a method named 'function'. |
+| tst.ts:76:3:76:24 | functio ... ): any; | The member name 'function' does not declare a function, it declares a method named 'function'. |
+| tst.ts:80:3:80:23 | abstrac ... : void; | The member name 'new' does not declare a constructor, but 'constructor' does in class declarations. |
+| tst.ts:84:3:84:30 | abstrac ... number; | The member name 'function' does not declare a function, it declares a method named 'function'. |
+| tst.ts:93:5:93:21 | function(): void; | The member name 'function' does not declare a function, it declares a method named 'function'. |
+| tst.ts:98:3:98:21 | function(): number; | The member name 'function' does not declare a function, it declares a method named 'function'. |
+| tst.ts:110:3:110:24 | constru ... number; | The member name 'constructor' does not declare a constructor in interfaces, but it does in classes. |
+| tst.ts:116:3:116:24 | constru ... number; | The member name 'constructor' does not declare a constructor in interfaces, but it does in classes. |

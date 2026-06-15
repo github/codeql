@@ -6,14 +6,15 @@
  * @problem.severity error
  * @precision very-high
  * @id java/hashing-without-hashcode
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  */
 
 import java
 import Equality
 
-/** A class that defines an `equals` method but no `hashCode` method. */
+/** Holds if `c` defines an `equals` method but no `hashCode` method. */
 predicate eqNoHash(Class c) {
   exists(Method m | m = c.getAMethod() |
     m instanceof EqualsMethod and
@@ -38,7 +39,7 @@ predicate usedInHash(RefType t, Expr e) {
   exists(RefType s |
     s.getName().matches("%Hash%") and not s.getSourceDeclaration().getName() = "IdentityHashMap"
   |
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getQualifier().getType() = s and
       ma.getArgument(0).getType() = t and
       e = ma and

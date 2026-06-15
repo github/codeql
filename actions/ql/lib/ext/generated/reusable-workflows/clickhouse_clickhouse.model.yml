@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["clickhouse/clickhouse/.github/workflows/reusable_test.yml", "*", "input.test_name", "code-injection", "generated"]
+     - ["clickhouse/clickhouse/.github/workflows/reusable_test.yml", "*", "input.run_command", "code-injection", "generated"]
+     - ["clickhouse/clickhouse/.github/workflows/reusable_test.yml", "*", "input.working-directory", "code-injection", "generated"]
+     - ["clickhouse/clickhouse/.github/workflows/reusable_test.yml", "*", "input.additional_envs", "code-injection", "generated"]
+     - ["clickhouse/clickhouse/.github/workflows/reusable_simple_job.yml", "*", "input.test_name", "code-injection", "generated"]
+     - ["clickhouse/clickhouse/.github/workflows/reusable_simple_job.yml", "*", "input.run_command", "code-injection", "generated"]
+     - ["clickhouse/clickhouse/.github/workflows/reusable_simple_job.yml", "*", "input.working-directory", "code-injection", "generated"]
+     - ["clickhouse/clickhouse/.github/workflows/reusable_simple_job.yml", "*", "input.additional_envs", "code-injection", "generated"]
+     - ["clickhouse/clickhouse/.github/workflows/reusable_docker.yml", "*", "input.set_latest", "code-injection", "generated"]

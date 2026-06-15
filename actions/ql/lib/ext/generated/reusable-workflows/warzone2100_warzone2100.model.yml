@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["warzone2100/warzone2100/.github/workflows/publish_web_build.yml", "*", "input.architecture", "code-injection", "generated"]

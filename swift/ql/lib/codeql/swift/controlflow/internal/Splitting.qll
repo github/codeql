@@ -5,9 +5,9 @@
 private import swift
 private import Completion
 private import ControlFlowGraphImpl
-private import codeql.swift.controlflow.ControlFlowGraph
 private import AstControlFlowTrees
 private import ControlFlowElements
+private import ControlFlowGraphImplSpecific::CfgInput as CfgInput
 
 cached
 private module Cached {
@@ -26,17 +26,19 @@ class Split extends TSplit {
   string toString() { none() }
 }
 
-private module ConditionalCompletionSplitting {
+module ConditionalCompletionSplitting {
   /** A split for conditional completions. */
   class ConditionalCompletionSplit extends Split, TConditionalCompletionSplit {
     ConditionalCompletion completion;
 
     ConditionalCompletionSplit() { this = TConditionalCompletionSplit(completion) }
 
+    ConditionalCompletion getCompletion() { result = completion }
+
     override string toString() { result = completion.toString() }
   }
 
-  private class ConditionalCompletionSplitKind extends SplitKind, TConditionalCompletionSplitKind {
+  private class ConditionalCompletionSplitKind_ extends SplitKind, TConditionalCompletionSplitKind {
     override int getListOrder() { result = 0 }
 
     override predicate isEnabled(ControlFlowElement n) { this.appliesTo(n) }
@@ -44,53 +46,44 @@ private module ConditionalCompletionSplitting {
     override string toString() { result = "ConditionalCompletion" }
   }
 
-  private class ConditionalCompletionSplitImpl extends SplitImpl, ConditionalCompletionSplit {
-    override ConditionalCompletionSplitKind getKind() { any() }
+  module ConditionalCompletionSplittingInput {
+    private import Completion as Comp
 
-    override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      succ(pred, succ, c) and
-      last(succ, _, completion) and
+    class ConditionalCompletion = Comp::ConditionalCompletion;
+
+    class ConditionalCompletionSplitKind extends ConditionalCompletionSplitKind_, TSplitKind { }
+
+    class ConditionalCompletionSplit = ConditionalCompletionSplitting::ConditionalCompletionSplit;
+
+    bindingset[parent, parentCompletion]
+    private predicate condPropagateAstExpr(
+      AstNode parent, ConditionalCompletion parentCompletion, AstNode child,
+      ConditionalCompletion childCompletion
+    ) {
+      child = parent.(NotExpr).getOperand().getFullyConverted() and
+      childCompletion.(BooleanCompletion).getDual() = parentCompletion
+      or
+      childCompletion = parentCompletion and
       (
-        astLast(succ.asAstNode().(NotExpr).getOperand().getFullyConverted(), pred, c) and
-        completion.(BooleanCompletion).getDual() = c
+        child = parent.(LogicalAndExpr).getAnOperand().getFullyConverted()
         or
-        astLast(succ.asAstNode().(LogicalAndExpr).getAnOperand().getFullyConverted(), pred, c) and
-        completion = c
+        child = parent.(LogicalOrExpr).getAnOperand().getFullyConverted()
         or
-        astLast(succ.asAstNode().(LogicalOrExpr).getAnOperand().getFullyConverted(), pred, c) and
-        completion = c
+        child = parent.(IfExpr).getBranch(_).getFullyConverted()
         or
-        succ.asAstNode() =
-          any(IfExpr ce |
-            astLast(ce.getBranch(_).getFullyConverted(), pred, c) and
-            completion = c
-          )
-        or
-        exists(Expr e, Exprs::Conversions::ConversionOrIdentityTree conv |
-          succ.asAstNode() = conv.getAst() and
-          conv.convertsFrom(e) and
-          astLast(e, pred, c) and
-          completion = c
+        exists(Exprs::Conversions::ConversionOrIdentityTree conv |
+          parent = conv.getAst() and
+          conv.convertsFrom(child)
         )
       )
     }
 
-    override predicate hasEntryScope(CfgScope scope, ControlFlowElement succ) { none() }
-
-    override predicate hasExit(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      this.appliesTo(pred) and
-      succ(pred, succ, c) and
-      if c instanceof ConditionalCompletion then completion = c else any()
-    }
-
-    override predicate hasExitScope(CfgScope scope, ControlFlowElement last, Completion c) {
-      this.appliesTo(last) and
-      succExit(scope, last, c) and
-      if c instanceof ConditionalCompletion then completion = c else any()
-    }
-
-    override predicate hasSuccessor(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      none()
+    bindingset[parent, parentCompletion]
+    predicate condPropagateExpr(
+      ControlFlowElement parent, ConditionalCompletion parentCompletion, ControlFlowElement child,
+      ConditionalCompletion childCompletion
+    ) {
+      condPropagateAstExpr(parent.asAstNode(), parentCompletion, child.asAstNode(), childCompletion)
     }
   }
 }

@@ -3,11 +3,11 @@ var o = {
 
   getX: function() {
     return this.x;
-  },
+  }, // $ Alert
 
   setX: function(x) {
     this.x = x;
-  },
+  }, // $ Alert
 
   getX: function() {
     return this.x;

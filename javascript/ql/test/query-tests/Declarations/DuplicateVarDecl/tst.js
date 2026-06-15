@@ -1,7 +1,6 @@
-// NOT OK
-var a, b, a = 42;
+var a, b, a = 42; // $ Alert
 
-// OK
+
 var x;
 var y;
 var x;

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with expressions.
  */
+overlay[local]
+module;
 
 import go
 
@@ -724,16 +726,19 @@ class GenericTypeInstantiationExpr extends Expr {
  * ```go
  * a[1:3]
  * a[1:3:5]
+ * a[1:]
+ * a[:3]
+ * a[:]
  * ```
  */
 class SliceExpr extends @sliceexpr, Expr {
   /** Gets the base of this slice expression. */
   Expr getBase() { result = this.getChildExpr(0) }
 
-  /** Gets the lower bound of this slice expression. */
+  /** Gets the lower bound of this slice expression, if any. */
   Expr getLow() { result = this.getChildExpr(1) }
 
-  /** Gets the upper bound of this slice expression. */
+  /** Gets the upper bound of this slice expression, if any. */
   Expr getHigh() { result = this.getChildExpr(2) }
 
   /** Gets the maximum of this slice expression, if any. */
@@ -751,13 +756,19 @@ class SliceExpr extends @sliceexpr, Expr {
  *
  * ```go
  * x.(T)
+ * x.(type)
  * ```
  */
 class TypeAssertExpr extends @typeassertexpr, Expr {
   /** Gets the base expression whose type is being asserted. */
   Expr getExpr() { result = this.getChildExpr(0) }
 
-  /** Gets the expression representing the asserted type. */
+  /**
+   * Gets the expression representing the asserted type.
+   *
+   * Note that this is not defined when the type assertion is of the form
+   * `x.(type)`, as found in type switches.
+   */
   Expr getTypeExpr() { result = this.getChildExpr(1) }
 
   override predicate mayHaveOwnSideEffects() { any() }
@@ -820,7 +831,7 @@ class ConversionExpr extends CallOrConversionExpr {
 /**
  * A function call expression.
  *
- * On snapshots with incomplete type information, type conversions may be misclassified
+ * On databases with incomplete type information, type conversions may be misclassified
  * as function call expressions.
  *
  * Examples:
@@ -2026,6 +2037,9 @@ class ConstantName extends ValueName {
   override string getAPrimaryQlClass() { result = "ConstantName" }
 }
 
+/** Holds if `e` is an expression that refers to the `nil` constant. */
+predicate exprRefersToNil(Expr e) { e.(ConstantName).getTarget() = Builtin::nil() }
+
 /**
  * A name referring to a variable.
  *
@@ -2084,11 +2098,12 @@ class LabelName extends Name {
  * Holds if `e` is a type expression, as determined by a bottom-up syntactic
  * analysis starting with `TypeName`s.
  *
- * On a snapshot with full type information, this predicate covers all type
+ * On a database with full type information, this predicate covers all type
  * expressions. However, if type information is missing then not all type names
  * may be identified as such, so not all type expressions can be determined by
  * a bottom-up analysis. In such cases, `isTypeExprTopDown` below is useful.
  */
+pragma[nomagic]
 private predicate isTypeExprBottomUp(Expr e) {
   e instanceof TypeName
   or
@@ -2121,12 +2136,14 @@ private predicate isTypeExprBottomUp(Expr e) {
  * Holds if `e` must be a type expression because it either occurs in a syntactic
  * position where a type is expected, or it is part of a larger type expression.
  *
- * This predicate is only needed on snapshots for which type information is
- * incomplete. It is an underapproximation; in cases where it is syntactically ambiguous
- * whether an expression refers to a type or a value, we conservatively assume that
- * it may be the latter and so this predicate does not consider the expression to be
- * a type expression.
+ * This predicate is only needed on databases for which type information is
+ * incomplete - for example, when some dependencies could not be reached during
+ * extraction. It is an underapproximation; in cases where it is syntactically
+ * ambiguous whether an expression refers to a type or a value, we conservatively
+ * assume that it may be the latter and so this predicate does not consider the
+ * expression to be a type expression.
  */
+pragma[nomagic]
 private predicate isTypeExprTopDown(Expr e) {
   e = any(CompositeLit cl).getTypeExpr()
   or
@@ -2134,19 +2151,11 @@ private predicate isTypeExprTopDown(Expr e) {
   or
   e = any(ArrayTypeExpr ae).getElement()
   or
-  e = any(FieldDecl f).getTypeExpr()
-  or
-  e = any(ParameterDecl pd).getTypeExpr()
+  e = any(FieldBase fb).getTypeExpr()
   or
   e = any(TypeParamDecl tpd).getTypeConstraintExpr()
   or
   e = any(TypeParamDecl tpd).getNameExpr(_)
-  or
-  e = any(ReceiverDecl rd).getTypeExpr()
-  or
-  e = any(ResultVariableDecl rvd).getTypeExpr()
-  or
-  e = any(MethodSpec md).getTypeExpr()
   or
   e = any(MapTypeExpr mt).getKeyTypeExpr()
   or
@@ -2164,7 +2173,7 @@ private predicate isTypeExprTopDown(Expr e) {
   or
   e = any(TypeSwitchStmt s).getACase().getExpr(_) and
   // special case: `nil` is allowed in a type case but isn't a type
-  not e = Builtin::nil().getAReference()
+  not exprRefersToNil(e)
   or
   e = any(SelectorExpr sel | isTypeExprTopDown(sel)).getBase()
   or

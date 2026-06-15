@@ -1,1 +1,2 @@
-Classes/IncompleteOrdering.ql
+query: Classes/Comparisons/IncompleteOrdering.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -15,7 +15,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// BAD: Get thread pause time from request parameter without validation
-		String delayTimeStr = request.getParameter("DelayTime");
+		String delayTimeStr = request.getParameter("DelayTime"); // $ Source[java/thread-resource-abuse]
 		try {
 			int delayTime = Integer.valueOf(delayTimeStr);
 			new UncheckedSyncAction(delayTime).start();
@@ -26,7 +26,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 	protected void doGet2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// BAD: Get thread pause time from request parameter without validation
 		try {
-			int delayTime = request.getParameter("nodelay") != null ? 0 : Integer.valueOf(request.getParameter("DelayTime"));
+			int delayTime = request.getParameter("nodelay") != null ? 0 : Integer.valueOf(request.getParameter("DelayTime")); // $ Source[java/thread-resource-abuse]
 			new UncheckedSyncAction(delayTime).start();
 		} catch (NumberFormatException e) {
 		}
@@ -34,7 +34,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// BAD: Get thread pause time from context init parameter without validation
-		String delayTimeStr = getServletContext().getInitParameter("DelayTime");
+		String delayTimeStr = getServletContext().getInitParameter("DelayTime"); // $ Source[java/local-thread-resource-abuse]
 		try {
 			int delayTime = Integer.valueOf(delayTimeStr);
 			new UncheckedSyncAction(delayTime).start();
@@ -71,7 +71,7 @@ public class ThreadResourceAbuse extends HttpServlet {
 		public void run() {
 			// BAD: no boundary check on wait time
 			try {
-				Thread.sleep(waitTime);
+				Thread.sleep(waitTime); // $ Alert[java/thread-resource-abuse] Alert[java/local-thread-resource-abuse]
 				// Do other updates
 			} catch (InterruptedException e) {
 			}
@@ -138,10 +138,10 @@ public class ThreadResourceAbuse extends HttpServlet {
 			Cookie cookie = cookies[i];
 
 			if (cookie.getName().equals("DelayTime")) {
-				String delayTimeStr = cookie.getValue();
+				String delayTimeStr = cookie.getValue(); // $ Source[java/thread-resource-abuse]
 				try {
 					int delayTime = Integer.valueOf(delayTimeStr);
-					TimeUnit.MILLISECONDS.sleep(delayTime);
+					TimeUnit.MILLISECONDS.sleep(delayTime); // $ Alert[java/thread-resource-abuse]
 					// Do other updates
 				} catch (NumberFormatException ne) {
 				} catch (InterruptedException ie) {
@@ -169,11 +169,11 @@ public class ThreadResourceAbuse extends HttpServlet {
 
 	protected void doHead2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// BAD: Get thread pause time from request header without validation
-		String header = request.getHeader("Retry-After");
+		String header = request.getHeader("Retry-After"); // $ Source[java/thread-resource-abuse]
 		int retryAfter = Integer.parseInt(header);
 
 		try {
-			Thread.sleep(retryAfter);
+			Thread.sleep(retryAfter); // $ Alert[java/thread-resource-abuse]
 		} catch (InterruptedException ignore) {
 			// ignore
 		}
@@ -203,10 +203,36 @@ public class ThreadResourceAbuse extends HttpServlet {
 	protected void doHead4(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// BAD: Get thread pause time from request header without validation
 		try {
-			String uploadDelayStr = request.getParameter("delay");
+			String uploadDelayStr = request.getParameter("delay"); // $ Source[java/thread-resource-abuse]
 			int uploadDelay = Integer.parseInt(uploadDelayStr);
 
 			UploadListener listener = new UploadListener(uploadDelay, getContentLength(request));
 		} catch (Exception e) { }
+	}
+
+	protected void doHead5(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// BAD: Get thread pause time from request header with binary multiplication expression and without validation
+		String header = request.getHeader("Retry-After"); // $ Source[java/thread-resource-abuse]
+		int retryAfter = Integer.parseInt(header);
+
+		try {
+			Thread.sleep(retryAfter * 1000); // $ Alert[java/thread-resource-abuse]
+		} catch (InterruptedException ignore) {
+			// ignore
+		}
+	}
+
+	protected void doHead6(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// BAD: Get thread pause time from request header with multiplication assignment operator and without validation
+		String header = request.getHeader("Retry-After"); // $ Source[java/thread-resource-abuse]
+		int retryAfter = Integer.parseInt(header);
+
+		retryAfter *= 1000;
+
+		try {
+			Thread.sleep(retryAfter); // $ Alert[java/thread-resource-abuse]
+		} catch (InterruptedException ignore) {
+			// ignore
+		}
 	}
 }

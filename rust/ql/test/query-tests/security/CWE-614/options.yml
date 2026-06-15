@@ -1,0 +1,7 @@
+qltest_cargo_check: true
+qltest_dependencies:
+  - cookie = { version = "0.18.1", features = ["percent-encode", "signed", "private"] }
+  - biscotti = { version = "0.4.3" }
+  - actix-web = { version = "4", features = ["cookies"] }
+  - poem = { version = "3", features = ["cookie", "session"] }
+  - http-types = { version = "2", features = ["cookies"] }

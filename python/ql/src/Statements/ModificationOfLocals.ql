@@ -2,7 +2,8 @@
  * @name Modification of dictionary returned by locals()
  * @description Modifications of the dictionary returned by locals() are not propagated to the local variables of a function.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity warning
  * @sub-severity low
@@ -11,8 +12,11 @@
  */
 
 import python
+private import semmle.python.ApiGraphs
 
-predicate originIsLocals(ControlFlowNode n) { n.pointsTo(_, _, Value::named("locals").getACall()) }
+predicate originIsLocals(ControlFlowNode n) {
+  API::builtin("locals").getReturn().getAValueReachableFromSource().asCfgNode() = n
+}
 
 predicate modification_of_locals(ControlFlowNode f) {
   originIsLocals(f.(SubscriptNode).getObject()) and
@@ -33,5 +37,8 @@ where
   // in module level scope `locals() == globals()`
   // see https://docs.python.org/3/library/functions.html#locals
   // FP report in https://github.com/github/codeql/issues/6674
-  not a.getScope() instanceof ModuleScope
+  not a.getScope() instanceof Module and
+  // in class level scope `locals()` reflects the class namespace,
+  // so modifications do take effect.
+  not a.getScope() instanceof Class
 select a, "Modification of the locals() dictionary will have no effect on the local variables."

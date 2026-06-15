@@ -1,0 +1,176 @@
+models
+| 1 | Summary: java.lang; Iterable; true; iterator; (); ; Argument[this].Element; ReturnValue.Element; value; manual |
+| 2 | Summary: java.util; Iterator; true; next; ; ; Argument[this].Element; ReturnValue; value; manual |
+| 3 | Summary: java.util; Map; true; get; ; ; Argument[this].MapValue; ReturnValue; value; manual |
+| 4 | Summary: org.springframework.core.io; InputStreamSource; true; getInputStream; ; ; Argument[this]; ReturnValue; taint; manual |
+| 5 | Summary: org.springframework.web.multipart; MultipartFile; true; getBytes; ; ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: org.springframework.web.multipart; MultipartFile; true; getName; ; ; Argument[this]; ReturnValue; taint; manual |
+| 7 | Summary: org.springframework.web.multipart; MultipartFile; true; getOriginalFilename; ; ; Argument[this]; ReturnValue; taint; manual |
+| 8 | Summary: org.springframework.web.multipart; MultipartFile; true; getResource; ; ; Argument[this]; ReturnValue; taint; manual |
+| 9 | Summary: org.springframework.web.multipart; MultipartHttpServletRequest; true; getMultipartHeaders; ; ; Argument[this]; ReturnValue; taint; manual |
+| 10 | Summary: org.springframework.web.multipart; MultipartHttpServletRequest; true; getRequestHeaders; ; ; Argument[this]; ReturnValue; taint; manual |
+| 11 | Summary: org.springframework.web.multipart; MultipartRequest; true; getFile; ; ; Argument[this]; ReturnValue; taint; manual |
+| 12 | Summary: org.springframework.web.multipart; MultipartRequest; true; getFileMap; ; ; Argument[this]; ReturnValue.MapValue; taint; manual |
+| 13 | Summary: org.springframework.web.multipart; MultipartRequest; true; getFileNames; ; ; Argument[this]; ReturnValue.Element; taint; manual |
+| 14 | Summary: org.springframework.web.multipart; MultipartRequest; true; getFiles; ; ; Argument[this]; ReturnValue.Element; taint; manual |
+| 15 | Summary: org.springframework.web.multipart; MultipartRequest; true; getMultiFileMap; ; ; Argument[this]; ReturnValue.MapValue; taint; manual |
+| 16 | Summary: org.springframework.web.multipart; MultipartResolver; true; resolveMultipart; ; ; Argument[0]; ReturnValue; taint; manual |
+edges
+| Test.java:20:20:20:37 | container : Iterator [<element>] : Object | Test.java:20:49:20:57 | container : Iterator [<element>] : Object | provenance |  |
+| Test.java:20:49:20:57 | container : Iterator [<element>] : Object | Test.java:20:49:20:64 | next(...) : Object | provenance | MaD:2 |
+| Test.java:21:20:21:39 | container : List [<element>] : Object | Test.java:21:51:21:59 | container : List [<element>] : Object | provenance |  |
+| Test.java:21:51:21:59 | container : List [<element>] : Object | Test.java:21:51:21:70 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
+| Test.java:21:51:21:70 | iterator(...) : Iterator [<element>] : Object | Test.java:21:51:21:77 | next(...) : Object | provenance | MaD:2 |
+| Test.java:22:21:22:33 | container : Map [<map.value>] : Object | Test.java:22:45:22:53 | container : Map [<map.value>] : Object | provenance |  |
+| Test.java:22:21:22:33 | container : MultiValueMap [<map.value>] : Object | Test.java:22:45:22:53 | container : MultiValueMap [<map.value>] : Object | provenance |  |
+| Test.java:22:45:22:53 | container : Map [<map.value>] : Object | Test.java:22:45:22:63 | get(...) : Object | provenance | MaD:3 |
+| Test.java:22:45:22:53 | container : MultiValueMap [<map.value>] : Object | Test.java:22:45:22:63 | get(...) : Object | provenance | MaD:3 |
+| Test.java:31:23:31:45 | (...)... : MultipartFile | Test.java:32:10:32:11 | in : MultipartFile | provenance |  |
+| Test.java:31:38:31:45 | source(...) : Object | Test.java:31:23:31:45 | (...)... : MultipartFile | provenance |  |
+| Test.java:32:10:32:11 | in : MultipartFile | Test.java:32:10:32:22 | getBytes(...) : byte[] | provenance | MaD:5 |
+| Test.java:32:10:32:22 | getBytes(...) : byte[] | Test.java:33:9:33:11 | out | provenance |  |
+| Test.java:38:23:38:45 | (...)... : MultipartFile | Test.java:39:10:39:11 | in : MultipartFile | provenance |  |
+| Test.java:38:38:38:45 | source(...) : Object | Test.java:38:23:38:45 | (...)... : MultipartFile | provenance |  |
+| Test.java:39:10:39:11 | in : MultipartFile | Test.java:39:10:39:28 | getInputStream(...) : InputStream | provenance | MaD:4 |
+| Test.java:39:10:39:28 | getInputStream(...) : InputStream | Test.java:40:9:40:11 | out | provenance |  |
+| Test.java:45:23:45:45 | (...)... : MultipartFile | Test.java:46:10:46:11 | in : MultipartFile | provenance |  |
+| Test.java:45:38:45:45 | source(...) : Object | Test.java:45:23:45:45 | (...)... : MultipartFile | provenance |  |
+| Test.java:46:10:46:11 | in : MultipartFile | Test.java:46:10:46:21 | getName(...) : String | provenance | MaD:6 |
+| Test.java:46:10:46:21 | getName(...) : String | Test.java:47:9:47:11 | out | provenance |  |
+| Test.java:52:23:52:45 | (...)... : MultipartFile | Test.java:53:10:53:11 | in : MultipartFile | provenance |  |
+| Test.java:52:38:52:45 | source(...) : Object | Test.java:52:23:52:45 | (...)... : MultipartFile | provenance |  |
+| Test.java:53:10:53:11 | in : MultipartFile | Test.java:53:10:53:33 | getOriginalFilename(...) : String | provenance | MaD:7 |
+| Test.java:53:10:53:33 | getOriginalFilename(...) : String | Test.java:54:9:54:11 | out | provenance |  |
+| Test.java:59:23:59:45 | (...)... : MultipartFile | Test.java:60:10:60:11 | in : MultipartFile | provenance |  |
+| Test.java:59:38:59:45 | source(...) : Object | Test.java:59:23:59:45 | (...)... : MultipartFile | provenance |  |
+| Test.java:60:10:60:11 | in : MultipartFile | Test.java:60:10:60:25 | getResource(...) : Resource | provenance | MaD:8 |
+| Test.java:60:10:60:25 | getResource(...) : Resource | Test.java:61:9:61:11 | out | provenance |  |
+| Test.java:66:37:66:73 | (...)... : MultipartHttpServletRequest | Test.java:67:10:67:11 | in : MultipartHttpServletRequest | provenance |  |
+| Test.java:66:66:66:73 | source(...) : Object | Test.java:66:37:66:73 | (...)... : MultipartHttpServletRequest | provenance |  |
+| Test.java:67:10:67:11 | in : MultipartHttpServletRequest | Test.java:67:10:67:37 | getMultipartHeaders(...) : HttpHeaders | provenance | MaD:9 |
+| Test.java:67:10:67:37 | getMultipartHeaders(...) : HttpHeaders | Test.java:68:9:68:11 | out | provenance |  |
+| Test.java:73:37:73:73 | (...)... : MultipartHttpServletRequest | Test.java:74:10:74:11 | in : MultipartHttpServletRequest | provenance |  |
+| Test.java:73:66:73:73 | source(...) : Object | Test.java:73:37:73:73 | (...)... : MultipartHttpServletRequest | provenance |  |
+| Test.java:74:10:74:11 | in : MultipartHttpServletRequest | Test.java:74:10:74:31 | getRequestHeaders(...) : HttpHeaders | provenance | MaD:10 |
+| Test.java:74:10:74:31 | getRequestHeaders(...) : HttpHeaders | Test.java:75:9:75:11 | out | provenance |  |
+| Test.java:80:26:80:51 | (...)... : MultipartRequest | Test.java:81:10:81:11 | in : MultipartRequest | provenance |  |
+| Test.java:80:44:80:51 | source(...) : Object | Test.java:80:26:80:51 | (...)... : MultipartRequest | provenance |  |
+| Test.java:81:10:81:11 | in : MultipartRequest | Test.java:81:10:81:25 | getFile(...) : MultipartFile | provenance | MaD:11 |
+| Test.java:81:10:81:25 | getFile(...) : MultipartFile | Test.java:82:9:82:11 | out | provenance |  |
+| Test.java:87:26:87:51 | (...)... : MultipartRequest | Test.java:88:10:88:11 | in : MultipartRequest | provenance |  |
+| Test.java:87:44:87:51 | source(...) : Object | Test.java:87:26:87:51 | (...)... : MultipartRequest | provenance |  |
+| Test.java:88:10:88:11 | in : MultipartRequest | Test.java:88:10:88:24 | getFileMap(...) : Map [<map.value>] : Object | provenance | MaD:12 |
+| Test.java:88:10:88:24 | getFileMap(...) : Map [<map.value>] : Object | Test.java:89:21:89:23 | out : Map [<map.value>] : Object | provenance |  |
+| Test.java:89:21:89:23 | out : Map [<map.value>] : Object | Test.java:22:21:22:33 | container : Map [<map.value>] : Object | provenance |  |
+| Test.java:89:21:89:23 | out : Map [<map.value>] : Object | Test.java:89:9:89:24 | getMapValue(...) | provenance | MaD:3 |
+| Test.java:94:26:94:51 | (...)... : MultipartRequest | Test.java:95:10:95:11 | in : MultipartRequest | provenance |  |
+| Test.java:94:44:94:51 | source(...) : Object | Test.java:94:26:94:51 | (...)... : MultipartRequest | provenance |  |
+| Test.java:95:10:95:11 | in : MultipartRequest | Test.java:95:10:95:26 | getFileNames(...) : Iterator [<element>] : Object | provenance | MaD:13 |
+| Test.java:95:10:95:26 | getFileNames(...) : Iterator [<element>] : Object | Test.java:96:20:96:22 | out : Iterator [<element>] : Object | provenance |  |
+| Test.java:96:20:96:22 | out : Iterator [<element>] : Object | Test.java:20:20:20:37 | container : Iterator [<element>] : Object | provenance |  |
+| Test.java:96:20:96:22 | out : Iterator [<element>] : Object | Test.java:96:9:96:23 | getElement(...) | provenance | MaD:2 |
+| Test.java:101:26:101:51 | (...)... : MultipartRequest | Test.java:102:10:102:11 | in : MultipartRequest | provenance |  |
+| Test.java:101:44:101:51 | source(...) : Object | Test.java:101:26:101:51 | (...)... : MultipartRequest | provenance |  |
+| Test.java:102:10:102:11 | in : MultipartRequest | Test.java:102:10:102:26 | getFiles(...) : List [<element>] : Object | provenance | MaD:14 |
+| Test.java:102:10:102:26 | getFiles(...) : List [<element>] : Object | Test.java:103:20:103:22 | out : List [<element>] : Object | provenance |  |
+| Test.java:103:20:103:22 | out : List [<element>] : Object | Test.java:21:20:21:39 | container : List [<element>] : Object | provenance |  |
+| Test.java:103:20:103:22 | out : List [<element>] : Object | Test.java:103:9:103:23 | getElement(...) | provenance | MaD:1 |
+| Test.java:108:26:108:51 | (...)... : MultipartRequest | Test.java:109:10:109:11 | in : MultipartRequest | provenance |  |
+| Test.java:108:44:108:51 | source(...) : Object | Test.java:108:26:108:51 | (...)... : MultipartRequest | provenance |  |
+| Test.java:109:10:109:11 | in : MultipartRequest | Test.java:109:10:109:29 | getMultiFileMap(...) : MultiValueMap [<map.value>] : Object | provenance | MaD:15 |
+| Test.java:109:10:109:29 | getMultiFileMap(...) : MultiValueMap [<map.value>] : Object | Test.java:110:21:110:23 | out : MultiValueMap [<map.value>] : Object | provenance |  |
+| Test.java:110:21:110:23 | out : MultiValueMap [<map.value>] : Object | Test.java:22:21:22:33 | container : MultiValueMap [<map.value>] : Object | provenance |  |
+| Test.java:110:21:110:23 | out : MultiValueMap [<map.value>] : Object | Test.java:110:9:110:24 | getMapValue(...) | provenance | MaD:3 |
+| Test.java:115:28:115:55 | (...)... : HttpServletRequest | Test.java:117:36:117:37 | in : HttpServletRequest | provenance |  |
+| Test.java:115:48:115:55 | source(...) : Object | Test.java:115:28:115:55 | (...)... : HttpServletRequest | provenance |  |
+| Test.java:117:10:117:38 | resolveMultipart(...) : MultipartHttpServletRequest | Test.java:118:9:118:11 | out | provenance |  |
+| Test.java:117:36:117:37 | in : HttpServletRequest | Test.java:117:10:117:38 | resolveMultipart(...) : MultipartHttpServletRequest | provenance | MaD:16 |
+nodes
+| Test.java:20:20:20:37 | container : Iterator [<element>] : Object | semmle.label | container : Iterator [<element>] : Object |
+| Test.java:20:49:20:57 | container : Iterator [<element>] : Object | semmle.label | container : Iterator [<element>] : Object |
+| Test.java:20:49:20:64 | next(...) : Object | semmle.label | next(...) : Object |
+| Test.java:21:20:21:39 | container : List [<element>] : Object | semmle.label | container : List [<element>] : Object |
+| Test.java:21:51:21:59 | container : List [<element>] : Object | semmle.label | container : List [<element>] : Object |
+| Test.java:21:51:21:70 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
+| Test.java:21:51:21:77 | next(...) : Object | semmle.label | next(...) : Object |
+| Test.java:22:21:22:33 | container : Map [<map.value>] : Object | semmle.label | container : Map [<map.value>] : Object |
+| Test.java:22:21:22:33 | container : MultiValueMap [<map.value>] : Object | semmle.label | container : MultiValueMap [<map.value>] : Object |
+| Test.java:22:45:22:53 | container : Map [<map.value>] : Object | semmle.label | container : Map [<map.value>] : Object |
+| Test.java:22:45:22:53 | container : MultiValueMap [<map.value>] : Object | semmle.label | container : MultiValueMap [<map.value>] : Object |
+| Test.java:22:45:22:63 | get(...) : Object | semmle.label | get(...) : Object |
+| Test.java:22:45:22:63 | get(...) : Object | semmle.label | get(...) : Object |
+| Test.java:31:23:31:45 | (...)... : MultipartFile | semmle.label | (...)... : MultipartFile |
+| Test.java:31:38:31:45 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:32:10:32:11 | in : MultipartFile | semmle.label | in : MultipartFile |
+| Test.java:32:10:32:22 | getBytes(...) : byte[] | semmle.label | getBytes(...) : byte[] |
+| Test.java:33:9:33:11 | out | semmle.label | out |
+| Test.java:38:23:38:45 | (...)... : MultipartFile | semmle.label | (...)... : MultipartFile |
+| Test.java:38:38:38:45 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:39:10:39:11 | in : MultipartFile | semmle.label | in : MultipartFile |
+| Test.java:39:10:39:28 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| Test.java:40:9:40:11 | out | semmle.label | out |
+| Test.java:45:23:45:45 | (...)... : MultipartFile | semmle.label | (...)... : MultipartFile |
+| Test.java:45:38:45:45 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:46:10:46:11 | in : MultipartFile | semmle.label | in : MultipartFile |
+| Test.java:46:10:46:21 | getName(...) : String | semmle.label | getName(...) : String |
+| Test.java:47:9:47:11 | out | semmle.label | out |
+| Test.java:52:23:52:45 | (...)... : MultipartFile | semmle.label | (...)... : MultipartFile |
+| Test.java:52:38:52:45 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:53:10:53:11 | in : MultipartFile | semmle.label | in : MultipartFile |
+| Test.java:53:10:53:33 | getOriginalFilename(...) : String | semmle.label | getOriginalFilename(...) : String |
+| Test.java:54:9:54:11 | out | semmle.label | out |
+| Test.java:59:23:59:45 | (...)... : MultipartFile | semmle.label | (...)... : MultipartFile |
+| Test.java:59:38:59:45 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:60:10:60:11 | in : MultipartFile | semmle.label | in : MultipartFile |
+| Test.java:60:10:60:25 | getResource(...) : Resource | semmle.label | getResource(...) : Resource |
+| Test.java:61:9:61:11 | out | semmle.label | out |
+| Test.java:66:37:66:73 | (...)... : MultipartHttpServletRequest | semmle.label | (...)... : MultipartHttpServletRequest |
+| Test.java:66:66:66:73 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:67:10:67:11 | in : MultipartHttpServletRequest | semmle.label | in : MultipartHttpServletRequest |
+| Test.java:67:10:67:37 | getMultipartHeaders(...) : HttpHeaders | semmle.label | getMultipartHeaders(...) : HttpHeaders |
+| Test.java:68:9:68:11 | out | semmle.label | out |
+| Test.java:73:37:73:73 | (...)... : MultipartHttpServletRequest | semmle.label | (...)... : MultipartHttpServletRequest |
+| Test.java:73:66:73:73 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:74:10:74:11 | in : MultipartHttpServletRequest | semmle.label | in : MultipartHttpServletRequest |
+| Test.java:74:10:74:31 | getRequestHeaders(...) : HttpHeaders | semmle.label | getRequestHeaders(...) : HttpHeaders |
+| Test.java:75:9:75:11 | out | semmle.label | out |
+| Test.java:80:26:80:51 | (...)... : MultipartRequest | semmle.label | (...)... : MultipartRequest |
+| Test.java:80:44:80:51 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:81:10:81:11 | in : MultipartRequest | semmle.label | in : MultipartRequest |
+| Test.java:81:10:81:25 | getFile(...) : MultipartFile | semmle.label | getFile(...) : MultipartFile |
+| Test.java:82:9:82:11 | out | semmle.label | out |
+| Test.java:87:26:87:51 | (...)... : MultipartRequest | semmle.label | (...)... : MultipartRequest |
+| Test.java:87:44:87:51 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:88:10:88:11 | in : MultipartRequest | semmle.label | in : MultipartRequest |
+| Test.java:88:10:88:24 | getFileMap(...) : Map [<map.value>] : Object | semmle.label | getFileMap(...) : Map [<map.value>] : Object |
+| Test.java:89:9:89:24 | getMapValue(...) | semmle.label | getMapValue(...) |
+| Test.java:89:21:89:23 | out : Map [<map.value>] : Object | semmle.label | out : Map [<map.value>] : Object |
+| Test.java:94:26:94:51 | (...)... : MultipartRequest | semmle.label | (...)... : MultipartRequest |
+| Test.java:94:44:94:51 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:95:10:95:11 | in : MultipartRequest | semmle.label | in : MultipartRequest |
+| Test.java:95:10:95:26 | getFileNames(...) : Iterator [<element>] : Object | semmle.label | getFileNames(...) : Iterator [<element>] : Object |
+| Test.java:96:9:96:23 | getElement(...) | semmle.label | getElement(...) |
+| Test.java:96:20:96:22 | out : Iterator [<element>] : Object | semmle.label | out : Iterator [<element>] : Object |
+| Test.java:101:26:101:51 | (...)... : MultipartRequest | semmle.label | (...)... : MultipartRequest |
+| Test.java:101:44:101:51 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:102:10:102:11 | in : MultipartRequest | semmle.label | in : MultipartRequest |
+| Test.java:102:10:102:26 | getFiles(...) : List [<element>] : Object | semmle.label | getFiles(...) : List [<element>] : Object |
+| Test.java:103:9:103:23 | getElement(...) | semmle.label | getElement(...) |
+| Test.java:103:20:103:22 | out : List [<element>] : Object | semmle.label | out : List [<element>] : Object |
+| Test.java:108:26:108:51 | (...)... : MultipartRequest | semmle.label | (...)... : MultipartRequest |
+| Test.java:108:44:108:51 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:109:10:109:11 | in : MultipartRequest | semmle.label | in : MultipartRequest |
+| Test.java:109:10:109:29 | getMultiFileMap(...) : MultiValueMap [<map.value>] : Object | semmle.label | getMultiFileMap(...) : MultiValueMap [<map.value>] : Object |
+| Test.java:110:9:110:24 | getMapValue(...) | semmle.label | getMapValue(...) |
+| Test.java:110:21:110:23 | out : MultiValueMap [<map.value>] : Object | semmle.label | out : MultiValueMap [<map.value>] : Object |
+| Test.java:115:28:115:55 | (...)... : HttpServletRequest | semmle.label | (...)... : HttpServletRequest |
+| Test.java:115:48:115:55 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:117:10:117:38 | resolveMultipart(...) : MultipartHttpServletRequest | semmle.label | resolveMultipart(...) : MultipartHttpServletRequest |
+| Test.java:117:36:117:37 | in : HttpServletRequest | semmle.label | in : HttpServletRequest |
+| Test.java:118:9:118:11 | out | semmle.label | out |
+subpaths
+| Test.java:89:21:89:23 | out : Map [<map.value>] : Object | Test.java:22:21:22:33 | container : Map [<map.value>] : Object | Test.java:22:45:22:63 | get(...) : Object | Test.java:89:9:89:24 | getMapValue(...) |
+| Test.java:96:20:96:22 | out : Iterator [<element>] : Object | Test.java:20:20:20:37 | container : Iterator [<element>] : Object | Test.java:20:49:20:64 | next(...) : Object | Test.java:96:9:96:23 | getElement(...) |
+| Test.java:103:20:103:22 | out : List [<element>] : Object | Test.java:21:20:21:39 | container : List [<element>] : Object | Test.java:21:51:21:77 | next(...) : Object | Test.java:103:9:103:23 | getElement(...) |
+| Test.java:110:21:110:23 | out : MultiValueMap [<map.value>] : Object | Test.java:22:21:22:33 | container : MultiValueMap [<map.value>] : Object | Test.java:22:45:22:63 | get(...) : Object | Test.java:110:9:110:24 | getMapValue(...) |
+testFailures

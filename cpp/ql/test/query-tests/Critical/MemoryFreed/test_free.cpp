@@ -81,8 +81,8 @@ public:
 void test_new1() {
     A *a = new A();
     delete(a);
-    a->f(); // BAD [NOT DETECTED]
-    delete(a); // BAD [NOT DETECTED]
+    a->f(); // BAD
+    delete(a); // BAD
 }
 
 void test_dereference1(A *a) {
@@ -126,7 +126,7 @@ void test_ptr_deref(void ** a) {
     free(*a);
     *a = malloc(10);
     free(*a); // GOOD
-    free(*a); // BAD [NOT DETECTED]
+    free(*a); // BAD
     *a = malloc(10);
     free(a[0]); // GOOD
     free(a[1]); // GOOD
@@ -244,4 +244,185 @@ void test_loop3(char ** a, char ** b) {
 void test_deref(char **a) {
     free(*a);
     use(*a); // GOOD [FALSE POSITIVE]
+}
+
+// Refs
+
+void test_ref(char *&p) {
+	free(p);
+	p = (char *)malloc(sizeof(char)*10);
+	use(p);  // GOOD
+    free(p); // GOOD
+}
+
+
+void test_ref_delete(int *&p) {
+	delete p;
+	p = new int;
+	use(p);  // GOOD
+    delete p;  // GOOD
+}
+
+void test_free_assign() {
+	void *a = malloc(10);
+	void *b;
+	free(b = a); // GOOD
+}
+
+struct MyStruct {
+  char* buf;
+};
+
+void test_free_struct(MyStruct* s) {
+  free(s->buf);
+  char c = s->buf[0]; // BAD
+}
+
+void test_free_struct2(MyStruct s) {
+  free(s.buf);
+  char c = s.buf[0]; // BAD
+}
+
+void test_free_struct3(MyStruct s) {
+  char* buf = s.buf;
+  free(buf);
+  char c = s.buf[0]; // BAD [FALSE NEGATIVE]
+}
+
+void test_free_struct4(char* buf, MyStruct s) {
+  free(buf);
+  s.buf = buf;
+  char c = s.buf[0]; // BAD
+}
+
+void g_free (void*);
+
+void test_g_free(char* buf) {
+    g_free(buf);
+    g_free(buf); // BAD
+}
+
+// inspired by real world FPs
+
+void test_goto() {
+    int *a = (int *)malloc(sizeof(int));
+
+    *a = 1; // GOOD
+    if (condition())
+    {
+        delete a;
+        goto after;
+    }
+    *a = 1; // GOOD
+    if (condition())
+    {
+        delete a;
+    }
+    *a = 1; // BAD (use after free)
+    delete a; // BAD (double free)
+after:
+    *a = 1; // BAD (use after free)
+}
+
+void test_reassign() {
+    int *a = (int *)malloc(sizeof(int));
+
+    *a = 1; // GOOD
+    delete a;
+    *a = 1; // BAD (use after free)
+    a = (int *)malloc(sizeof(int));
+    *a = 1; // GOOD
+    delete a;
+}
+
+struct PtrContainer {
+    int *ptr;
+};
+
+void test_array(PtrContainer *containers) {
+    delete containers[0].ptr; // GOOD
+    delete containers[1].ptr; // GOOD
+    delete containers[2].ptr; // GOOD
+    delete containers[2].ptr; // BAD (double free) [NOT DETECTED]
+}
+
+struct E {
+    struct EC {
+        int* a;
+    } ec[2];
+};
+
+void test(E* e) {
+    free(e->ec[0].a);
+    free(e->ec[1].a); // GOOD
+}
+
+// ---
+
+void test_return_by_parameter(int **out_i, MyStruct **out_ms) {
+    int *a = (int *)malloc(sizeof(int)); // GOOD (freed)
+    int *b = (int *)malloc(sizeof(int)); // GOOD (out parameter)
+    int *d = (int *)malloc(sizeof(int)); // BAD (not freed)
+    MyStruct *e = (MyStruct *)malloc(sizeof(MyStruct)); // GOOD (freed)
+    MyStruct *f = (MyStruct *)malloc(sizeof(MyStruct)); // GOOD (out parameter)
+    MyStruct *h = (MyStruct *)malloc(sizeof(MyStruct)); // BAD (not freed)
+
+    free(a);
+    *out_i = b;
+
+    free(e);
+    *out_ms = f;
+}
+
+void test_return_by_parameter_caller() {
+    int *i;
+    MyStruct *s;
+
+    test_return_by_parameter(&i, &s);
+    free(i);
+    free(s);
+}
+
+// ---
+
+class HasGetterAndFree {
+public:
+    HasGetterAndFree() {
+        buffer = malloc(1024);
+    }
+
+    ~HasGetterAndFree() {
+        free(buffer);
+    }
+
+    void *getBuffer() {
+        return buffer;
+    }
+
+    void *buffer;
+};
+
+class HasGetterNoFree {
+public:
+    HasGetterNoFree() {
+        buffer = malloc(1024);
+    }
+
+    void *getBuffer() {
+        return buffer;
+    }
+
+    void *buffer;
+};
+
+void testHasGetter() {
+    HasGetterAndFree hg;
+    void *buffer = hg.getBuffer(); // GOOD (freed in destructor)
+
+    HasGetterNoFree hg2;
+    void *buffer2 = hg2.getBuffer(); // GOOD (freed below)
+    free(buffer2);
+
+    HasGetterNoFree hg3;
+    void *buffer3 = hg3.getBuffer(); // BAD (not freed) [NOT DETECTED]
 }

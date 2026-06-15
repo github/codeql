@@ -22,7 +22,7 @@ module NetworkToBufferSizeConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     exists(GuardCondition gc, Variable v |
-      gc.getAChild*() = v.getAnAccess() and
+      gc.(Expr).getAChild*() = v.getAnAccess() and
       node.asExpr() = v.getAnAccess() and
       gc.controls(node.asExpr().getBasicBlock(), _) and
       not exists(Loop loop | loop.getControllingExpr() = gc)

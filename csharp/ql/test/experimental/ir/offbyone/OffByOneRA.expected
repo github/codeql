@@ -1,5 +1,0 @@
-| test.cs:21:17:21:21 | Test2 | test.cs:34:41:34:51 | access to array element | This array access might be out of bounds, as the index might be equal to the array length |
-| test.cs:56:17:56:21 | Test4 | test.cs:67:41:67:51 | access to array element | This array access might be out of bounds, as the index might be equal to the array length |
-| test.cs:71:17:71:21 | Test5 | test.cs:77:22:77:27 | access to indexer | This array access might be out of bounds, as the index might be equal to the array length |
-| test.cs:81:17:81:21 | Test6 | test.cs:90:41:90:55 | access to array element | This array access might be out of bounds, as the index might be equal to the array length |
-| test.cs:94:17:94:21 | Test7 | test.cs:104:41:104:50 | access to array element | This array access might be out of bounds, as the index might be equal to the array length + 1 |

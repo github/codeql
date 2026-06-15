@@ -1,0 +1,16 @@
+| #elif defined GREEN | preprocblock.cpp:10:0:11:0 | #ifndef BLUE |
+| #elif defined GREEN | preprocblock.cpp:14:0:15:0 | #if 0 |
+| #elif defined GREEN | preprocblock.cpp:16:0:17:0 | #else |
+| #elifdef GREEN | preprocblock23.cpp:11:0:12:0 | #if 0 |
+| #elifdef GREEN | preprocblock23.cpp:13:0:14:0 | #elifndef BLUE |
+| (no parent) | file://:0:0:0:0 |  |
+| (no parent) | header.h:0:0:8:0 | header.h |
+| (no parent) | preprocblock23.cpp:0:0:22:0 | preprocblock23.cpp |
+| (no parent) | preprocblock.cpp:0:0:25:0 | preprocblock.cpp |
+| header.h | header.h:3:0:7:0 | #ifndef HEADER_H |
+| preprocblock23.cpp | preprocblock23.cpp:7:0:7:0 | #ifdef RED |
+| preprocblock23.cpp | preprocblock23.cpp:8:0:17:0 | #elifdef GREEN |
+| preprocblock23.cpp | preprocblock23.cpp:18:0:21:0 | #else |
+| preprocblock.cpp | preprocblock.cpp:6:0:6:0 | #ifdef RED |
+| preprocblock.cpp | preprocblock.cpp:7:0:20:0 | #elif defined GREEN |
+| preprocblock.cpp | preprocblock.cpp:21:0:24:0 | #else |

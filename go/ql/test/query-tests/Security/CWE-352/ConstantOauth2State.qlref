@@ -1,1 +1,2 @@
-Security/CWE-352/ConstantOauth2State.ql
+query: Security/CWE-352/ConstantOauth2State.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

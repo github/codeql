@@ -1,6 +1,6 @@
 queries.cs:
 #    5| [Class] Queries
-#    7|   5: [Method] Queries1
+#    7|   6: [Method] Queries1
 #    7|     -1: [TypeMention] Void
 #    8|     4: [BlockStmt] {...}
 #    9|       0: [LocalVariableDeclStmt] ... ...;
@@ -204,19 +204,19 @@ queries.cs:
 #   56|             1: [TupleExpr] (..., ...)
 #   56|               0: [LocalVariableAccess] access to local variable a
 #   56|               1: [LocalVariableAccess] access to local variable d
-#   59|   6: [Class] A
+#   59|   7: [Class] A
 #-----|     3: (Base types)
 #   59|       1: [TypeMention] IEnumerable
-#   61|     5: [Method] GetEnumerator
+#   61|     6: [Method] GetEnumerator
 #   61|       -1: [TypeMention] IEnumerator
 #   62|       4: [BlockStmt] {...}
 #   63|         0: [ThrowStmt] throw ...;
 #   63|           0: [ObjectCreation] object creation of type NotImplementedException
 #   63|             0: [TypeMention] NotImplementedException
-#   67|   7: [Class] B
+#   67|   8: [Class] B
 #-----|     3: (Base types)
 #   67|       0: [TypeMention] A
-#   69|   8: [Class] C
+#   69|   9: [Class] C
 #-----|     3: (Base types)
 #   69|       0: [TypeMention] List<int>
 #   69|         1: [TypeMention] int

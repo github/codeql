@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Net.PeerToPeer", "PnrpPermission", "FromXml", "(System.Security.SecurityElement)", "summary", "df-generated"]
+      - ["System.Net.PeerToPeer", "PnrpPermission", "IsSubsetOf", "(System.Security.IPermission)", "summary", "df-generated"]
+      - ["System.Net.PeerToPeer", "PnrpPermission", "IsUnrestricted", "()", "summary", "df-generated"]
+      - ["System.Net.PeerToPeer", "PnrpPermission", "PnrpPermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
+      - ["System.Net.PeerToPeer", "PnrpPermission", "ToXml", "()", "summary", "df-generated"]
+      - ["System.Net.PeerToPeer", "PnrpPermissionAttribute", "CreatePermission", "()", "summary", "df-generated"]
+      - ["System.Net.PeerToPeer", "PnrpPermissionAttribute", "PnrpPermissionAttribute", "(System.Security.Permissions.SecurityAction)", "summary", "df-generated"]

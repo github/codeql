@@ -1,6 +1,6 @@
-<a href="javascript:'some-attribute-string-1'"></a> <!-- OK -->
-<a href="javascript:'some-attribute-string-2'; foo();"></a> <!-- OK -->
-<a href="javascript:'some-attribute-string-3'; function foo(){ 'some-function-string'; };"></a> <!-- OK --> <!-- BAD -->
+<a href="javascript:'some-attribute-string-1'"></a>
+<a href="javascript:'some-attribute-string-2'; foo();"></a>
+<a href="javascript:'some-attribute-string-3'; function foo(){ 'some-function-string'; };"></a> <!-- OK --> <!-- $ Alert -->
 <script>
-'some-script-string' // BAD
+'some-script-string' // $ Alert
 </script>

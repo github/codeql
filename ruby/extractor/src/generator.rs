@@ -15,23 +15,25 @@ pub struct Options {
 }
 
 pub fn run(options: Options) -> std::io::Result<()> {
-    tracing_subscriber::fmt()
-        .with_target(false)
-        .without_time()
-        .with_level(true)
-        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
-        .init();
+    codeql_extractor::extractor::set_tracing_level("ruby");
 
     let languages = vec![
         Language {
             name: "Ruby".to_owned(),
             node_types: tree_sitter_ruby::NODE_TYPES,
+            desugar: None,
         },
         Language {
             name: "Erb".to_owned(),
             node_types: tree_sitter_embedded_template::NODE_TYPES,
+            desugar: None,
         },
     ];
 
-    generate(languages, options.dbscheme, options.library)
+    generate(
+        languages,
+        options.dbscheme,
+        options.library,
+        "run 'make dbscheme' in ql/ruby/",
+    )
 }

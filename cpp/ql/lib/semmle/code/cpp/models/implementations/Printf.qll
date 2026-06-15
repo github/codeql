@@ -7,11 +7,13 @@
 
 import semmle.code.cpp.models.interfaces.FormattingFunction
 import semmle.code.cpp.models.interfaces.Alias
+import semmle.code.cpp.models.interfaces.SideEffect
+import semmle.code.cpp.models.interfaces.NonThrowing
 
 /**
  * The standard functions `printf`, `wprintf` and their glib variants.
  */
-private class Printf extends FormattingFunction, AliasFunction {
+private class Printf extends FormattingFunction, AliasFunction, NonCppThrowingFunction {
   Printf() {
     this instanceof TopLevelFunction and
     (
@@ -35,7 +37,7 @@ private class Printf extends FormattingFunction, AliasFunction {
 /**
  * The standard functions `fprintf`, `fwprintf` and their glib variants.
  */
-private class Fprintf extends FormattingFunction {
+private class Fprintf extends FormattingFunction, NonCppThrowingFunction {
   Fprintf() {
     this instanceof TopLevelFunction and
     (
@@ -53,7 +55,7 @@ private class Fprintf extends FormattingFunction {
 /**
  * The standard function `sprintf` and its Microsoft and glib variants.
  */
-private class Sprintf extends FormattingFunction {
+private class Sprintf extends FormattingFunction, NonCppThrowingFunction {
   Sprintf() {
     this instanceof TopLevelFunction and
     (
@@ -89,14 +91,16 @@ private class Sprintf extends FormattingFunction {
   override int getFirstFormatArgumentIndex() {
     if this.hasName("__builtin___sprintf_chk")
     then result = 4
-    else result = this.getNumberOfParameters()
+    else result = super.getFirstFormatArgumentIndex()
   }
 }
 
 /**
  * Implements `Snprintf`.
  */
-private class SnprintfImpl extends Snprintf {
+private class SnprintfImpl extends Snprintf, AliasFunction, SideEffectFunction,
+  NonCppThrowingFunction
+{
   SnprintfImpl() {
     this instanceof TopLevelFunction and
     (
@@ -143,23 +147,56 @@ private class SnprintfImpl extends Snprintf {
   }
 
   override int getSizeParameterIndex() { result = 1 }
+
+  override predicate parameterNeverEscapes(int index) {
+    // We don't know how many parameters are passed to the function since it's varargs, but they also don't escape.
+    index = this.getFormatParameterIndex()
+  }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = this.getOutputParameterIndex(false) and buffer = true and mustWrite = false
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    // We don't know how many parameters are passed to the function since it's varargs, but they also have read side effects.
+    i = this.getFormatParameterIndex() and buffer = true
+  }
 }
 
 /**
  * The Microsoft `StringCchPrintf` function and variants.
+ * See: https://learn.microsoft.com/en-us/windows/win32/api/strsafe/
+ *      and
+ *      https://learn.microsoft.com/en-us/previous-versions/windows/embedded/ms860435(v=msdn.10)
  */
 private class StringCchPrintf extends FormattingFunction {
   StringCchPrintf() {
     this instanceof TopLevelFunction and
-    this.hasGlobalName([
-        "StringCchPrintf", "StringCchPrintfEx", "StringCchPrintf_l", "StringCchPrintf_lEx",
-        "StringCbPrintf", "StringCbPrintfEx", "StringCbPrintf_l", "StringCbPrintf_lEx"
-      ]) and
+    exists(string baseName |
+      baseName in [
+          "StringCchPrintf", //StringCchPrintf(pszDest, cchDest, pszFormat, ...)
+          "StringCchPrintfEx", //StringCchPrintfEx(pszDest,cchDest, ppszDestEnd, pcchRemaining, dwFlags, pszFormat, ...)
+          "StringCchPrintf_l", //StringCchPrintf_l(pszDest, cbDest, pszFormat, locale, ...)
+          "StringCchPrintf_lEx", //StringCchPrintf_lEx(pszDest, cchDest, ppszDestEnd, pcchRemaining, dwFlags, pszFormat, locale, ...)
+          "StringCbPrintf", //StringCbPrintf(pszDest, cbDest, pszFormat, ...)
+          "StringCbPrintfEx", //StringCbPrintfEx(pszDest, cbDest, ppszDestEnd, pcbRemaining, dwFlags, pszFormat, ...)
+          "StringCbPrintf_l", //StringCbPrintf_l(pszDest, cbDest, pszFormat, locale, ...)
+          "StringCbPrintf_lEx" //StringCbPrintf_lEx(pszDest, cbDest, ppszDestEnd, pcbRemaining, dwFlags, pszFormat, locale, ...)
+        ]
+    |
+      this.hasGlobalName(baseName + ["", "A", "W"])
+    ) and
     not exists(this.getDefinition().getFile().getRelativePath())
   }
 
   override int getFormatParameterIndex() {
-    if this.getName().matches("%Ex") then result = 5 else result = 2
+    if this.getName().matches("%Ex" + ["", "A", "W"]) then result = 5 else result = 2
   }
 
   override int getOutputParameterIndex(boolean isStream) { result = 0 and isStream = false }
@@ -170,7 +207,7 @@ private class StringCchPrintf extends FormattingFunction {
 /**
  * The standard function `syslog`.
  */
-private class Syslog extends FormattingFunction {
+private class Syslog extends FormattingFunction, NonCppThrowingFunction {
   Syslog() {
     this instanceof TopLevelFunction and
     this.hasGlobalName("syslog") and

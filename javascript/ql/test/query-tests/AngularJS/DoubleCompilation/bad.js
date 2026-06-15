@@ -11,7 +11,7 @@ angular.module('app').directive('addMouseover', function($compile) {
 
       attrs.$set('addMouseover', null); // To stop infinite compile loop
       element.append(newEl);
-      $compile(element)(scope); // Double compilation
+      $compile(element)(scope); // $ Alert - Double compilation
     }
   }
 })

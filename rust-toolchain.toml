@@ -1,0 +1,10 @@
+# This file specifies the Rust version used to develop the extractors written
+# in rust. Notice that this is just used by using `cargo`-related tools in a
+# local dev environment. The actual version used to build the released packs
+# is specified in `MODULE.bazel` in the internal repository (typically
+# reflected by `MODULE.bazel` in this repository).
+
+[toolchain]
+channel = "1.88"
+profile = "minimal"
+components = [ "clippy", "rustfmt" ]

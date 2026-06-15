@@ -149,6 +149,11 @@ class Call extends Expr, NameQualifiableElement, TCall {
     variableAddressEscapesTreeNonConst(va, this.getQualifier().getFullyConverted()) and
     i = -1
   }
+
+  /** Holds if this expression could be the return value of an implicitly declared function. */
+  predicate mayBeFromImplicitlyDeclaredFunction() {
+    this.getTarget().getADeclarationEntry().isImplicit()
+  }
 }
 
 /**
@@ -382,10 +387,23 @@ class OverloadedArrayExpr extends FunctionCall {
 
   /**
    * Gets the expression giving the index.
+   *
+   * DEPRECATED: Use getArrayOffset/1 instead.
    */
-  Expr getArrayOffset() {
-    if exists(this.getQualifier()) then result = this.getChild(0) else result = this.getChild(1)
+  deprecated Expr getArrayOffset() { result = this.getArrayOffset(0) }
+
+  /**
+   * Gets the expression giving the nth index.
+   */
+  Expr getArrayOffset(int n) {
+    n >= 0 and
+    if exists(this.getQualifier()) then result = this.getChild(n) else result = this.getChild(n + 1)
   }
+
+  /**
+   * Gets an expression giving an index.
+   */
+  Expr getAnArrayOffset() { result = this.getArrayOffset(_) }
 }
 
 /**
@@ -499,6 +517,8 @@ class VacuousDestructorCall extends Expr, @vacuous_destructor_call {
  */
 class ConstructorInit extends Expr, @ctorinit {
   override string getAPrimaryQlClass() { result = "ConstructorInit" }
+
+  override string toString() { result = "constructor init" }
 }
 
 /**
@@ -507,6 +527,8 @@ class ConstructorInit extends Expr, @ctorinit {
  */
 class ConstructorBaseInit extends ConstructorInit, ConstructorCall {
   override string getAPrimaryQlClass() { result = "ConstructorBaseInit" }
+
+  override string toString() { result = "call to " + this.getTarget().getName() }
 }
 
 /**
@@ -563,12 +585,15 @@ class ConstructorDelegationInit extends ConstructorBaseInit, @ctordelegatinginit
 
 /**
  * An initialization of a member variable performed as part of a
- * constructor's explicit initializer list or implicit actions.
+ * constructor's initializer list or by default initialization.
+ *
  * In the example below, member variable `b` is being initialized by
- * constructor parameter `a`:
+ * constructor parameter `a`, and `c` is initialized by default
+ * initialization:
  * ```
  * struct S {
  *   int b;
+ *   int c = 3;
  *   S(int a): b(a) {}
  * } s(2);
  * ```
@@ -592,6 +617,28 @@ class ConstructorFieldInit extends ConstructorInit, @ctorfieldinit {
   override predicate mayBeImpure() { this.getExpr().mayBeImpure() }
 
   override predicate mayBeGloballyImpure() { this.getExpr().mayBeGloballyImpure() }
+}
+
+/**
+ * An initialization of a member variable performed as part of a
+ * constructor's explicit initializer list.
+ */
+class ConstructorDirectFieldInit extends ConstructorFieldInit {
+  ConstructorDirectFieldInit() { exists(this.getChild(0)) }
+
+  override string getAPrimaryQlClass() { result = "ConstructorDirectFieldInit" }
+}
+
+/**
+ * An initialization of a member variable performed by default
+ * initialization.
+ */
+class ConstructorDefaultFieldInit extends ConstructorFieldInit {
+  ConstructorDefaultFieldInit() {
+    not exists(this.getChild(0)) and exists(this.getTarget().getInitializer())
+  }
+
+  override string getAPrimaryQlClass() { result = "ConstructorDefaultFieldInit" }
 }
 
 /**

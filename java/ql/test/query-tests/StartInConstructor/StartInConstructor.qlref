@@ -1,1 +1,2 @@
-Likely Bugs/Concurrency/StartInConstructor.ql
+query: Likely Bugs/Concurrency/StartInConstructor.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

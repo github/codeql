@@ -3,7 +3,9 @@
  * @description Method has a signature that differs from both the signature of its overriding methods and
  *              the arguments with which it is called, and if it were called, would be likely to cause an error.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity recommendation
  * @sub-severity high
  * @precision high
@@ -12,6 +14,7 @@
 
 import python
 import Expressions.CallArgs
+private import LegacyPointsTo
 
 from Call call, FunctionValue func, FunctionValue overriding, string problem
 where

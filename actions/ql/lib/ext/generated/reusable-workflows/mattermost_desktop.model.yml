@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["mattermost/desktop/.github/workflows/e2e-functional-template.yml", "*", "input.nightly", "code-injection", "generated"]

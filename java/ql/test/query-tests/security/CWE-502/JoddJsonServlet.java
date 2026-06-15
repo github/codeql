@@ -29,7 +29,7 @@ public class JoddJsonServlet extends HttpServlet {
     // BAD: dangerously configured parser with no class restriction passed to `parse`,
     // using a few different possible call sequences.
     public void doHead(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = req.getParameter("json");
+        String json = req.getParameter("json"); // $ Source
         String clazz = req.getParameter("class");
         int callOrder;
         try {
@@ -42,25 +42,25 @@ public class JoddJsonServlet extends HttpServlet {
         JsonParser parser = new JsonParser();
         if(callOrder == 0) {
             parser.setClassMetadataName("class");
-            User obj = parser.parse(json, null); // $unsafeDeserialization
+            User obj = parser.parse(json, null); // $ Alert
         } else if(callOrder == 1) {
-            parser.setClassMetadataName("class").parse(json, null); // $unsafeDeserialization
+            parser.setClassMetadataName("class").parse(json, null); // $ Alert
         } else if(callOrder == 2) {
-            parser.setClassMetadataName("class").lazy(true).parse(json, null); // $unsafeDeserialization
+            parser.setClassMetadataName("class").lazy(true).parse(json, null); // $ Alert
         } else if(callOrder == 3) {
-            parser.withClassMetadata(true).lazy(true).parse(json, null); // $unsafeDeserialization
+            parser.withClassMetadata(true).lazy(true).parse(json, null); // $ Alert
         }
     }
 
     @Override
     // BAD: allow class name to be controlled by remote source
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = req.getParameter("json");
+        String json = req.getParameter("json"); // $ Source
         String clazz = req.getParameter("class");
 
         try {
             JsonParser parser = new JsonParser();
-            Object obj = parser.parse(json, Class.forName(clazz)); // $unsafeDeserialization
+            Object obj = parser.parse(json, Class.forName(clazz)); // $ Alert
         } catch (ClassNotFoundException cne) {
             throw new IOException(cne.getMessage());
         }

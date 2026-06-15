@@ -1,6 +1,6 @@
 // Semmle test cases for rule CWE-457.
 
-void use(int data);
+void use(...);
 
 void test1() {
 	int foo = 1;
@@ -27,7 +27,7 @@ void test4(bool b) {
 	if (b) {
 		foo = 1;
 	}
-	use(foo); // BAD
+	use(foo); // BAD [NOT DETECTED]
 }
 
 void test5() {
@@ -43,7 +43,7 @@ void test5(int count) {
 	for (int i = 0; i < count; i++) {
 		foo = i;
 	}
-	use(foo); // BAD
+	use(foo); // BAD [NOT DETECTED]
 }
 
 void test6(bool b) {
@@ -52,7 +52,7 @@ void test6(bool b) {
 		foo = 42;
 	}
 	if (b) {
-		use(foo); // GOOD (REPORTED, FP)
+		use(foo); // GOOD
 	}
 }
 
@@ -64,7 +64,7 @@ void test7(bool b) {
 		set = true;
 	}
 	if (set) {
-		use(foo); // GOOD (REPORTED, FP)
+		use(foo); // GOOD
 	}
 }
 
@@ -89,7 +89,7 @@ void test9(int count) {
 	if (!set) {
 		foo = 42;
 	}
-	use(foo); // GOOD (REPORTED, FP)
+	use(foo); // GOOD
 }
 
 void test10() {
@@ -129,7 +129,7 @@ int absWrong(int i) {
 	} else if (i < 0) {
 		j = -i;
 	}
-	return j; // wrong: j may not be initialized before use
+	return j; // wrong: j may not be initialized before use [NOT DETECTED]
 }
 
 // Example from qhelp
@@ -156,11 +156,12 @@ int absCorrect2(int i) {
 	return j; // correct: j always initialized before use
 }
 
+typedef __builtin_va_list va_list;
+#define va_start(v, l)	__builtin_va_start(v,l)
+#define va_end(v)	__builtin_va_end(v)
+#define va_arg(v, l)	__builtin_va_arg(v,l)
+#define va_copy(d, s)	__builtin_va_copy(d,s)
 
-typedef void *va_list;
-#define va_start(ap, parmN)
-#define va_end(ap)
-#define va_arg(ap, type) ((type)0)
 #define NULL 0
 
 // Variadic initialisation
@@ -176,7 +177,7 @@ void init(int val, ...) {
 void test15() {
   int foo;
   init(42, &foo, NULL);
-  use(foo); //GOOD -- initialised by `init`
+  use(foo); // GOOD -- initialised by `init`
 }
 
 // Variadic non-initialisation
@@ -190,6 +191,13 @@ void test16() {
   int foo;
   nonInit(42, &foo, NULL);
   use(foo); // BAD (NOT REPORTED)
+}
+
+void test_va_copy(va_list va) {
+  va_list va2;
+  va_copy(va2, va); // GOOD -- this is an initialization
+  use(va2);
+  va_end(va2);
 }
 
 bool test17(bool b) {
@@ -326,7 +334,7 @@ int test28() {
 		a = false;
 		c = false;
 	}
-	return val; // GOOD [FALSE POSITIVE]
+	return val; // GOOD
 }
 
 int test29() {
@@ -434,4 +442,162 @@ int test38() {
 	}
 
 	return j; // BAD
+}
+
+void test39() {
+	int x;
+
+	x; // GOOD, in void context
+}
+
+void test40() {
+	int x;
+
+	(void)x; // GOOD, explicitly cast to void
+}
+
+void test41() {
+	int x;
+
+	x++; // BAD
+}
+
+void test42() {
+	int x;
+
+	void(x++); // BAD
+}
+
+void test43() {
+	int x;
+	int y = 1;
+
+	x + y; // BAD
+}
+
+void test44() {
+	int x;
+	int y = 1;
+
+	void(x + y); // BAD
+}
+
+enum class State { StateA, StateB, StateC };
+
+int exhaustive_switch(State s) {
+	int y;
+	switch(s) {
+		case State::StateA:
+			y = 1;
+			break;
+		case State::StateB:
+			y = 2;
+			break;
+		case State::StateC:
+			y = 3;
+			break;
+	}
+	return y; // GOOD (y is always initialized)
+}
+
+int exhaustive_switch_2(State s) {
+	int y;
+	switch(s) {
+		case State::StateA:
+			y = 1;
+			break;
+		default:
+			y = 2;
+			break;
+	}
+	return y; // GOOD (y is always initialized)
+}
+
+int non_exhaustive_switch(State s) {
+	int y;
+	switch(s) {
+		case State::StateA:
+			y = 1;
+			break;
+		case State::StateB:
+			y = 2;
+			break;
+	}
+	return y; // BAD [NOT DETECTED] (y is not initialized when s = StateC)
+}
+
+int non_exhaustive_switch_2(State s) {
+	int y;
+	switch(s) {
+		case State::StateA:
+			y = 1;
+			break;
+		case State::StateB:
+			y = 2;
+			break;
+	}
+	if(s != State::StateC) {
+		return y; // GOOD (y is not initialized when s = StateC, but if s = StateC we won't reach this point)
+	}
+	return 0;
+}
+
+class StaticMethodClass{
+    public:
+    static int get(){
+        return 1;
+    }
+};
+
+int static_method_false_positive(){
+    StaticMethodClass *t;
+	int i = t->get(); // GOOD: the `get` method is static and this is equivalent to StaticMethodClass::get()
+}
+
+struct LinkedList
+{
+  LinkedList* next;
+};
+
+bool getBool();
+
+void test45() {
+  LinkedList *r, *s, **rP = &r;
+
+  while(getBool())
+  {
+    s = new LinkedList;
+    *rP = s;
+    rP = &s->next;
+  }
+
+  *rP = NULL;
+  use(r); // GOOD
+}
+
+void test46()
+{
+  LinkedList *r, **rP = &r;
+
+  while (getBool())
+  {
+    LinkedList *s = nullptr;
+    *rP = s;
+    rP = &s->next;
+  }
+
+  *rP = nullptr;
+  use(r);
+}
+
+namespace std {
+	float remquo(float, float, int*);
+}
+
+void test47() {
+	float x = 1.0f;
+	float y = 2.0f;
+	int quo;
+	std::remquo(x, y, &quo);
+	use(quo); // GOOD
 }

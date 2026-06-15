@@ -19,19 +19,24 @@ module HardcodedDataInterpretedAsCode {
    * Flow states used to distinguish value-preserving flow from taint flow.
    */
   module FlowState {
-    /** Flow state used to track value-preserving flow. */
-    DataFlow::FlowState data() { result = "data" }
-
-    /** Flow state used to tainted data (non-value preserving flow). */
-    DataFlow::FlowState taint() { result = "taint" }
+    /**
+     * Flow states used to distinguish value-preserving flow from taint flow.
+     */
+    newtype State =
+      /** Flow state used to track value-preserving flow. */
+      Data() or
+      /** Flow state used to tainted data (non-value preserving flow). */
+      Taint()
   }
 
   /**
    * A data flow source for hard-coded data.
    */
   abstract class Source extends DataFlow::Node {
-    /** Gets a flow label for which this is a source. */
-    DataFlow::FlowState getLabel() { result = FlowState::data() }
+    /**
+     * Gets a flow label for which this is a source.
+     */
+    FlowState::State getALabel() { result = FlowState::Data() }
   }
 
   /**
@@ -41,12 +46,14 @@ module HardcodedDataInterpretedAsCode {
     /** Gets a description of what kind of sink this is. */
     abstract string getKind();
 
-    /** Gets a flow label for which this is a sink. */
-    DataFlow::FlowState getLabel() {
+    /**
+     * Gets a flow label for which this is a sink.
+     */
+    FlowState::State getALabel() {
       // We want to ignore value-flow and only consider taint-flow, since the
       // source is just a hex string, and evaluating that directly will just
       // cause a syntax error.
-      result = FlowState::taint()
+      result = FlowState::Taint()
     }
   }
 
@@ -79,7 +86,7 @@ module HardcodedDataInterpretedAsCode {
       forex(StringComponentCfgNode c |
         c = this.asExpr().(ExprNodes::StringlikeLiteralCfgNode).getAComponent()
       |
-        c.getNode().(Ast::StringEscapeSequenceComponent).getRawText().matches("\\x%")
+        c.getAstNode().(Ast::StringEscapeSequenceComponent).getRawText().matches("\\x%")
       )
     }
   }

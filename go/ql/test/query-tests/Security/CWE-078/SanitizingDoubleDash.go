@@ -6,12 +6,12 @@ import (
 )
 
 func testDoubleDashSanitizes(req *http.Request) {
-	tainted := req.URL.Query()["cmd"][0]
+	tainted := req.URL.Query()["cmd"][0] // $ Source[go/command-injection]
 
 	// BAD: no sanitizing "--" preceding tainted data
 	{
 		arrayLit := [1]string{tainted}
-		exec.Command("git", arrayLit[:]...)
+		exec.Command("git", arrayLit[:]...) // $ Alert[go/command-injection]
 	}
 
 	// GOOD: sanitizing "--" preceding tainted data
@@ -37,7 +37,7 @@ func testDoubleDashSanitizes(req *http.Request) {
 	{
 		arrayLit := []string{}
 		arrayLit = append(arrayLit, tainted, "--")
-		exec.Command("git", arrayLit...)
+		exec.Command("git", arrayLit...) // $ Alert[go/command-injection]
 	}
 
 	// GOOD: sanitizing "--" preceding tainted data, built in two steps
@@ -51,7 +51,7 @@ func testDoubleDashSanitizes(req *http.Request) {
 	{
 		arrayLit := []string{tainted}
 		arrayLit = append(arrayLit, "--")
-		exec.Command("git", arrayLit...)
+		exec.Command("git", arrayLit...) // $ Alert[go/command-injection]
 	}
 
 	// GOOD: sanitizing "--" preceding tainted data, built in three steps
@@ -67,7 +67,7 @@ func testDoubleDashSanitizes(req *http.Request) {
 		arrayLit := []string{"something else"}
 		arrayLit = append(arrayLit, tainted)
 		arrayLit = append(arrayLit, "--")
-		exec.Command("git", arrayLit...)
+		exec.Command("git", arrayLit...) // $ Alert[go/command-injection]
 	}
 
 	// GOOD: sanitizing "--" preceding tainted data, used directly in a Command
@@ -77,7 +77,7 @@ func testDoubleDashSanitizes(req *http.Request) {
 
 	// BAD: sanitizing "--" comes after tainted data, used directly in a Command
 	{
-		exec.Command("git", tainted, "--")
+		exec.Command("git", tainted, "--") // $ Alert[go/command-injection]
 	}
 
 	// GOOD: sanitizing "--" preceding tainted data, used directly in a Command, after several other arguments
@@ -89,66 +89,66 @@ func testDoubleDashSanitizes(req *http.Request) {
 // This test mirrors testDoubleDashSanitizes above, but uses sudo instead of git, where "--" is not sanitizing.
 // All cases are therefore BAD.
 func testDoubleDashIrrelevant(req *http.Request) {
-	tainted := req.URL.Query()["cmd"][0]
+	tainted := req.URL.Query()["cmd"][0] // $ Source[go/command-injection]
 
 	{
 		arrayLit := [1]string{tainted}
-		exec.Command("sudo", arrayLit[:]...)
+		exec.Command("sudo", arrayLit[:]...) // $ Alert[go/command-injection] // BAD
 	}
 
 	{
 		arrayLit := [2]string{"--", tainted}
-		exec.Command("sudo", arrayLit[:]...)
+		exec.Command("sudo", arrayLit[:]...) // $ Alert[go/command-injection] // BAD
 	}
 
 	{
 		arrayLit := []string{"--", tainted}
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // $ Alert[go/command-injection] // BAD
 	}
 
 	{
 		arrayLit := []string{}
 		arrayLit = append(arrayLit, "--", tainted)
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // $ Alert[go/command-injection] // BAD
 	}
 
 	{
 		arrayLit := []string{}
 		arrayLit = append(arrayLit, tainted, "--")
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // $ Alert[go/command-injection] // BAD
 	}
 
 	{
 		arrayLit := []string{"--"}
 		arrayLit = append(arrayLit, tainted)
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // $ Alert[go/command-injection] // BAD
 	}
 
 	{
 		arrayLit := []string{tainted}
 		arrayLit = append(arrayLit, "--")
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // $ Alert[go/command-injection] // BAD
 	}
 
 	{
 		arrayLit := []string{"--"}
 		arrayLit = append(arrayLit, "something else")
 		arrayLit = append(arrayLit, tainted)
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // $ Alert[go/command-injection] // BAD
 	}
 
 	{
 		arrayLit := []string{"something else"}
 		arrayLit = append(arrayLit, tainted)
 		arrayLit = append(arrayLit, "--")
-		exec.Command("sudo", arrayLit...)
+		exec.Command("sudo", arrayLit...) // $ Alert[go/command-injection] // BAD
 	}
 
 	{
-		exec.Command("sudo", "--", tainted)
+		exec.Command("sudo", "--", tainted) // $ Alert[go/command-injection] // BAD
 	}
 
 	{
-		exec.Command("sudo", tainted, "--")
+		exec.Command("sudo", tainted, "--") // $ Alert[go/command-injection] // BAD
 	}
 }

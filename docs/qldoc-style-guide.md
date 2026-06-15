@@ -30,7 +30,7 @@ Valid QL comments are known as QLDoc. This document describes the recommended st
 1. Public declarations must be documented.
 1. Non-public declarations should be documented.
 1. Declarations in query files should be documented.
-1. Library files (`.qll` files) should be have a documentation comment at the top of the file.
+1. Library files (`.qll` files) should have a documentation comment at the top of the file.
 1. Query files, except for tests, must have a QLDoc query documentation comment at the top of the file.
 
 ## QLDoc for predicates

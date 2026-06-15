@@ -1,5 +1,5 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.IO;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -18,6 +18,7 @@ namespace Semmle.Extraction.CSharp.Entities
         public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(Context.CreateLocation(ReportingLocation));
+            trapFile.WriteSubId(start);
             trapFile.Write(Symbol.IsActive);
             trapFile.Write(',');
             trapFile.Write(Symbol.BranchTaken);

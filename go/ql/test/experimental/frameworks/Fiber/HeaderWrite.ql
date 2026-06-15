@@ -1,19 +1,14 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import experimental.frameworks.Fiber
 
-class HttpHeaderWriteTest extends InlineExpectationsTest {
-  HttpHeaderWriteTest() { this = "HttpHeaderWriteTest" }
+module HttpHeaderWriteTest implements TestSig {
+  string getARelevantTag() { result = ["headerKeyNode", "headerValNode", "headerKey", "headerVal"] }
 
-  override string getARelevantTag() {
-    result = ["headerKeyNode", "headerValNode", "headerKey", "headerVal"]
-  }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     // Dynamic key-value header:
     exists(Http::HeaderWrite hw |
-      hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      hw.getLocation() = location and
       (
         element = hw.getName().toString() and
         value = hw.getName().toString() and
@@ -27,8 +22,7 @@ class HttpHeaderWriteTest extends InlineExpectationsTest {
     or
     // Static key, dynamic value header:
     exists(Http::HeaderWrite hw |
-      hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      hw.getLocation() = location and
       (
         element = hw.getHeaderName().toString() and
         value = hw.getHeaderName() and
@@ -42,8 +36,7 @@ class HttpHeaderWriteTest extends InlineExpectationsTest {
     or
     // Static key, static value header:
     exists(Http::HeaderWrite hw |
-      hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      hw.getLocation() = location and
       (
         element = hw.getHeaderName().toString() and
         value = hw.getHeaderName() and
@@ -56,3 +49,5 @@ class HttpHeaderWriteTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HttpHeaderWriteTest>

@@ -1,8 +1,7 @@
 /** Provides predicates to reason about exposure of stack-traces. */
 
 import java
-private import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.InformationLeak
 
 /**
@@ -19,10 +18,10 @@ private class PrintStackTraceMethod extends Method {
 }
 
 private module ServletWriterSourceToPrintStackTraceMethodFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof XssVulnerableWriterSource }
+  predicate isSource(DataFlow::Node src) { src instanceof XssVulnerableWriterSourceNode }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       sink.asExpr() = ma.getAnArgument() and ma.getMethod() instanceof PrintStackTraceMethod
     )
   }
@@ -35,7 +34,7 @@ private module ServletWriterSourceToPrintStackTraceMethodFlow =
  * A call that uses `Throwable.printStackTrace()` on a stream that is connected
  * to external output.
  */
-private predicate printsStackToWriter(MethodAccess call) {
+private predicate printsStackToWriter(MethodCall call) {
   exists(PrintStackTraceMethod printStackTrace |
     call.getMethod() = printStackTrace and
     ServletWriterSourceToPrintStackTraceMethodFlow::flowToExpr(call.getAnArgument())
@@ -56,8 +55,8 @@ private predicate printWriterOnStringWriter(Expr printWriter, Variable stringWri
   )
 }
 
-private predicate stackTraceExpr(Expr exception, MethodAccess stackTraceString) {
-  exists(Expr printWriter, Variable stringWriterVar, MethodAccess printStackCall |
+private predicate stackTraceExpr(Expr exception, MethodCall stackTraceString) {
+  exists(Expr printWriter, Variable stringWriterVar, MethodCall printStackCall |
     printWriterOnStringWriter(printWriter, stringWriterVar) and
     printStackCall.getMethod() instanceof PrintStackTraceMethod and
     printStackCall.getAnArgument() = printWriter and
@@ -79,7 +78,7 @@ private module StackTraceStringToHttpResponseSinkFlow =
 /**
  * Holds if `call` writes the data of `stackTrace` to an external stream.
  */
-predicate printsStackExternally(MethodAccess call, Expr stackTrace) {
+predicate printsStackExternally(MethodCall call, Expr stackTrace) {
   printsStackToWriter(call) and
   call.getQualifier() = stackTrace and
   not call.getQualifier() instanceof SuperAccess
@@ -89,34 +88,8 @@ predicate printsStackExternally(MethodAccess call, Expr stackTrace) {
  * Holds if `stackTrace` is a stringified stack trace which flows to an external sink.
  */
 predicate stringifiedStackFlowsExternally(DataFlow::Node externalExpr, Expr stackTrace) {
-  exists(MethodAccess stackTraceString |
+  exists(MethodCall stackTraceString |
     stackTraceExpr(stackTrace, stackTraceString) and
     StackTraceStringToHttpResponseSinkFlow::flow(DataFlow::exprNode(stackTraceString), externalExpr)
   )
-}
-
-private class GetMessageFlowSource extends DataFlow::Node {
-  GetMessageFlowSource() {
-    exists(Method method | this.asExpr().(MethodAccess).getMethod() = method |
-      method.hasName("getMessage") and
-      method.hasNoParameters() and
-      method.getDeclaringType().hasQualifiedName("java.lang", "Throwable")
-    )
-  }
-}
-
-private module GetMessageFlowSourceToHttpResponseSinkFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof GetMessageFlowSource }
-
-  predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
-}
-
-private module GetMessageFlowSourceToHttpResponseSinkFlow =
-  TaintTracking::Global<GetMessageFlowSourceToHttpResponseSinkFlowConfig>;
-
-/**
- * Holds if there is a call to `getMessage()` that then flows to a servlet response.
- */
-predicate getMessageFlowsExternally(DataFlow::Node externalExpr, GetMessageFlowSource getMessage) {
-  GetMessageFlowSourceToHttpResponseSinkFlow::flow(getMessage, externalExpr)
 }

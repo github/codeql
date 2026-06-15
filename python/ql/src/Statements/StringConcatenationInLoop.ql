@@ -11,6 +11,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate string_concat_in_loop(BinaryExpr b) {
   b.getOp() instanceof Add and
@@ -19,7 +20,7 @@ predicate string_concat_in_loop(BinaryExpr b) {
   |
     d.getDefinition().(DefinitionNode).getValue() = add and
     u.getAUse() = add.getAnOperand() and
-    add.getAnOperand().pointsTo().getClass() = ClassValue::str()
+    add.getAnOperand().(ControlFlowNodeWithPointsTo).pointsTo().getClass() = ClassValue::str()
   )
 }
 

@@ -29,23 +29,23 @@ public class Test extends Activity {
     public void onCreate() {
         {
             ContentResolver contentResolver = getContentResolver();
-            Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA");
-            contentResolver.openInputStream(uri); // $ hasTaintFlow
-            contentResolver.openOutputStream(uri); // $ hasTaintFlow
-            contentResolver.openAssetFile(uri, null, null); // $ hasTaintFlow
-            contentResolver.openAssetFileDescriptor(uri, null); // $ hasTaintFlow
-            contentResolver.openFile(uri, null, null); // $ hasTaintFlow
-            contentResolver.openFileDescriptor(uri, null); // $ hasTaintFlow
-            contentResolver.openTypedAssetFile(uri, null, null, null); // $ hasTaintFlow
-            contentResolver.openTypedAssetFileDescriptor(uri, null, null); // $ hasTaintFlow
+            Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA"); // $ Source
+            contentResolver.openInputStream(uri); // $ Alert
+            contentResolver.openOutputStream(uri); // $ Alert
+            contentResolver.openAssetFile(uri, null, null); // $ Alert
+            contentResolver.openAssetFileDescriptor(uri, null); // $ Alert
+            contentResolver.openFile(uri, null, null); // $ Alert
+            contentResolver.openFileDescriptor(uri, null); // $ Alert
+            contentResolver.openTypedAssetFile(uri, null, null, null); // $ Alert
+            contentResolver.openTypedAssetFileDescriptor(uri, null, null); // $ Alert
         }
         {
             ContentResolver contentResolver = getContentResolver();
-            Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA");
+            Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA"); // $ Source
             String path = uri.getPath();
             if (path.startsWith("/data"))
                 throw new SecurityException();
-            contentResolver.openInputStream(uri); // $ hasTaintFlow
+            contentResolver.openInputStream(uri); // $ Alert
         }
         // Equals checks
         {
@@ -64,11 +64,11 @@ public class Test extends Activity {
         // Allow list checks
         {
             ContentResolver contentResolver = getContentResolver();
-            Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA");
+            Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA"); // $ Source
             String path = uri.getPath();
             if (!path.startsWith("/safe/path"))
                 throw new SecurityException();
-            contentResolver.openInputStream(uri); // $ hasTaintFlow
+            contentResolver.openInputStream(uri); // $ Alert
         }
         {
             ContentResolver contentResolver = getContentResolver();
@@ -89,11 +89,11 @@ public class Test extends Activity {
         // Block list checks
         {
             ContentResolver contentResolver = getContentResolver();
-            Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA");
+            Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA"); // $ Source
             String path = uri.getPath();
             if (path.startsWith("/data"))
                 throw new SecurityException();
-            contentResolver.openInputStream(uri); // $ hasTaintFlow
+            contentResolver.openInputStream(uri); // $ Alert
         }
         {
             ContentResolver contentResolver = getContentResolver();

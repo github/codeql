@@ -1,24 +1,16 @@
 edges
-| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:50:26:50:41 | stateStringConst |
-| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:147:26:147:41 | stateStringConst |
-| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:169:26:169:41 | stateStringConst |
-| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:191:26:191:41 | stateStringConst |
-| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:210:26:210:41 | stateStringConst |
-| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:232:26:232:41 | stateStringConst |
-| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:249:26:249:41 | stateStringConst |
-| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:266:26:266:41 | stateStringConst |
-| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:282:26:282:41 | stateStringConst |
-| ConstantOauth2State.go:22:22:22:28 | "state" | ConstantOauth2State.go:65:26:65:39 | stateStringVar |
-| ConstantOauth2State.go:80:11:80:25 | call to newFixedState | ConstantOauth2State.go:81:26:81:30 | state |
-| ConstantOauth2State.go:86:9:86:15 | "state" | ConstantOauth2State.go:80:11:80:25 | call to newFixedState |
-| ConstantOauth2State.go:147:9:147:42 | call to AuthCodeURL | ConstantOauth2State.go:148:54:148:56 | url |
-| ConstantOauth2State.go:169:9:169:42 | call to AuthCodeURL | ConstantOauth2State.go:170:54:170:56 | url |
-| ConstantOauth2State.go:191:9:191:42 | call to AuthCodeURL | ConstantOauth2State.go:192:54:192:56 | url |
-| ConstantOauth2State.go:210:9:210:42 | call to AuthCodeURL | ConstantOauth2State.go:211:54:211:56 | url |
-| ConstantOauth2State.go:232:9:232:42 | call to AuthCodeURL | ConstantOauth2State.go:233:28:233:30 | url |
-| ConstantOauth2State.go:239:17:239:39 | "http://localhost:8080" | ConstantOauth2State.go:249:9:249:12 | conf |
-| ConstantOauth2State.go:256:38:256:60 | "http://localhost:8080" | ConstantOauth2State.go:266:9:266:12 | conf |
-| ConstantOauth2State.go:272:17:272:21 | "oob" | ConstantOauth2State.go:282:9:282:12 | conf |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:50:26:50:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:147:26:147:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:169:26:169:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:191:26:191:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:210:26:210:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:232:26:232:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:249:26:249:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:266:26:266:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:20:26:20:32 | "state" | ConstantOauth2State.go:282:26:282:41 | stateStringConst | provenance |  |
+| ConstantOauth2State.go:22:22:22:28 | "state" | ConstantOauth2State.go:65:26:65:39 | stateStringVar | provenance |  |
+| ConstantOauth2State.go:80:11:80:25 | call to newFixedState | ConstantOauth2State.go:81:26:81:30 | state | provenance |  |
+| ConstantOauth2State.go:86:9:86:15 | "state" | ConstantOauth2State.go:80:11:80:25 | call to newFixedState | provenance |  |
 nodes
 | ConstantOauth2State.go:20:26:20:32 | "state" | semmle.label | "state" |
 | ConstantOauth2State.go:22:22:22:28 | "state" | semmle.label | "state" |
@@ -28,29 +20,13 @@ nodes
 | ConstantOauth2State.go:80:11:80:25 | call to newFixedState | semmle.label | call to newFixedState |
 | ConstantOauth2State.go:81:26:81:30 | state | semmle.label | state |
 | ConstantOauth2State.go:86:9:86:15 | "state" | semmle.label | "state" |
-| ConstantOauth2State.go:147:9:147:42 | call to AuthCodeURL | semmle.label | call to AuthCodeURL |
 | ConstantOauth2State.go:147:26:147:41 | stateStringConst | semmle.label | stateStringConst |
-| ConstantOauth2State.go:148:54:148:56 | url | semmle.label | url |
-| ConstantOauth2State.go:169:9:169:42 | call to AuthCodeURL | semmle.label | call to AuthCodeURL |
 | ConstantOauth2State.go:169:26:169:41 | stateStringConst | semmle.label | stateStringConst |
-| ConstantOauth2State.go:170:54:170:56 | url | semmle.label | url |
-| ConstantOauth2State.go:191:9:191:42 | call to AuthCodeURL | semmle.label | call to AuthCodeURL |
 | ConstantOauth2State.go:191:26:191:41 | stateStringConst | semmle.label | stateStringConst |
-| ConstantOauth2State.go:192:54:192:56 | url | semmle.label | url |
-| ConstantOauth2State.go:210:9:210:42 | call to AuthCodeURL | semmle.label | call to AuthCodeURL |
 | ConstantOauth2State.go:210:26:210:41 | stateStringConst | semmle.label | stateStringConst |
-| ConstantOauth2State.go:211:54:211:56 | url | semmle.label | url |
-| ConstantOauth2State.go:232:9:232:42 | call to AuthCodeURL | semmle.label | call to AuthCodeURL |
 | ConstantOauth2State.go:232:26:232:41 | stateStringConst | semmle.label | stateStringConst |
-| ConstantOauth2State.go:233:28:233:30 | url | semmle.label | url |
-| ConstantOauth2State.go:239:17:239:39 | "http://localhost:8080" | semmle.label | "http://localhost:8080" |
-| ConstantOauth2State.go:249:9:249:12 | conf | semmle.label | conf |
 | ConstantOauth2State.go:249:26:249:41 | stateStringConst | semmle.label | stateStringConst |
-| ConstantOauth2State.go:256:38:256:60 | "http://localhost:8080" | semmle.label | "http://localhost:8080" |
-| ConstantOauth2State.go:266:9:266:12 | conf | semmle.label | conf |
 | ConstantOauth2State.go:266:26:266:41 | stateStringConst | semmle.label | stateStringConst |
-| ConstantOauth2State.go:272:17:272:21 | "oob" | semmle.label | "oob" |
-| ConstantOauth2State.go:282:9:282:12 | conf | semmle.label | conf |
 | ConstantOauth2State.go:282:26:282:41 | stateStringConst | semmle.label | stateStringConst |
 subpaths
 #select

@@ -6,15 +6,17 @@
  * @precision low
  * @problem.severity error
  * @security-severity 7.8
- * @tags security external/cwe/cwe-20
+ * @tags security external/cwe/cwe-020
  */
 
 import javascript
 import semmle.javascript.security.dataflow.ExternalAPIUsedWithUntrustedDataQuery
-import DataFlow::PathGraph
+import ExternalAPIUsedWithUntrustedDataFlow::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from
+  ExternalAPIUsedWithUntrustedDataFlow::PathNode source,
+  ExternalAPIUsedWithUntrustedDataFlow::PathNode sink
+where ExternalAPIUsedWithUntrustedDataFlow::flowPath(source, sink)
 select sink, source, sink,
   "Call to " + sink.getNode().(Sink).getApiName() + " with untrusted data from $@.", source,
   source.toString()

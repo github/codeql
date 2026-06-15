@@ -1,25 +1,15 @@
 /**
  * Provides classes modeling security-relevant aspects of the `net/http` package.
  */
+overlay[local?]
+module;
 
 import go
-private import semmle.go.dataflow.FlowSummary
 private import semmle.go.dataflow.internal.DataFlowPrivate
+private import semmle.go.dataflow.internal.FlowSummaryImpl::Private
 
 /** Provides models of commonly used functions in the `net/http` package. */
 module NetHttp {
-  /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
-  private class UserControlledRequestField extends UntrustedFlowSource::Range,
-    DataFlow::FieldReadNode
-  {
-    UserControlledRequestField() {
-      exists(string fieldName | this.getField().hasQualifiedName("net/http", "Request", fieldName) |
-        fieldName =
-          ["Body", "GetBody", "Form", "PostForm", "MultipartForm", "Header", "Trailer", "URL"]
-      )
-    }
-  }
-
   /** The declaration of a variable which either is or has a field that implements the http.ResponseWriter type */
   private class StdlibResponseWriter extends Http::ResponseWriter::Range {
     SsaWithFields v;
@@ -58,13 +48,13 @@ module NetHttp {
     }
   }
 
-  private class MapWrite extends Http::HeaderWrite::Range, DataFlow::Node {
+  private class MapWrite extends Http::HeaderWrite::Range {
     DataFlow::Node index;
     DataFlow::Node rhs;
 
     MapWrite() {
       this.getType().hasQualifiedName("net/http", "Header") and
-      any(Write write).writesElement(this, index, rhs)
+      any(Write write).writesElementPreUpdate(this, index, rhs)
     }
 
     override DataFlow::Node getName() { result = index }
@@ -125,9 +115,19 @@ module NetHttp {
   private DataFlow::Node getSummaryInputOrOutputNode(
     DataFlow::CallNode call, SummaryComponentStack stack
   ) {
-    exists(int n |
-      stack = SummaryComponentStack::argument(n) and
-      result = call.getArgument(n)
+    exists(int n | result = call.getSyntacticArgument(n) |
+      if result = call.getImplicitVarargsArgument(_)
+      then
+        exists(
+          int lastParamIndex, SummaryComponentStack varArgsSliceArgument,
+          SummaryComponent arrayContentSC, DataFlow::ArrayContent arrayContent
+        |
+          lastParamIndex = call.getCall().getCalleeType().getNumParameter() - 1 and
+          varArgsSliceArgument = SummaryComponentStack::argument(lastParamIndex) and
+          arrayContentSC = SummaryComponent::content(arrayContent.asContentSet()) and
+          stack = SummaryComponentStack::push(arrayContentSC, varArgsSliceArgument)
+        )
+      else stack = SummaryComponentStack::argument(n)
     )
     or
     stack = SummaryComponentStack::argument(-1) and
@@ -154,12 +154,12 @@ module NetHttp {
       )
       or
       exists(
-        SummarizedCallable callable, DataFlow::CallNode call, SummaryComponentStack input,
+        SummarizedCallableImpl callable, DataFlow::CallNode call, SummaryComponentStack input,
         SummaryComponentStack output
       |
         this = call.getASyntacticArgument() and
         callable = call.getACalleeIncludingExternals() and
-        callable.propagatesFlow(input, output, _)
+        callable.propagatesFlow(input, output, _, _, _, _)
       |
         // A modeled function conveying taint from some input to the response writer,
         // e.g. `io.Copy(responseWriter, someTaintedReader)`
@@ -177,24 +177,15 @@ module NetHttp {
     override Http::ResponseWriter getResponseWriter() { result.getANode() = responseWriter }
   }
 
-  private class RedirectCall extends Http::Redirect::Range, DataFlow::CallNode {
-    RedirectCall() { this.getTarget().hasQualifiedName("net/http", "Redirect") }
-
-    override DataFlow::Node getUrl() { result = this.getArgument(2) }
-
-    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getArgument(0) }
-  }
-
   /** A call to a function in the `net/http` package that performs an HTTP request to a URL. */
   private class RequestCall extends Http::ClientRequest::Range, DataFlow::CallNode {
     RequestCall() {
       exists(string functionName |
-        (
-          this.getTarget().hasQualifiedName("net/http", functionName)
-          or
-          this.getTarget().(Method).hasQualifiedName("net/http", "Client", functionName)
-        ) and
-        (functionName = "Get" or functionName = "Post" or functionName = "PostForm")
+        this.getTarget().hasQualifiedName("net/http", functionName)
+        or
+        this.getTarget().(Method).hasQualifiedName("net/http", "Client", functionName)
+      |
+        functionName = ["Get", "Head", "Post", "PostForm"]
       )
     }
 
@@ -287,5 +278,55 @@ module NetHttp {
     }
 
     override predicate guardedBy(DataFlow::Node check) { check = handlerReg.getArgument(0) }
+  }
+
+  /**
+   * DEPRECATED: Use `FileSystemAccess::Range` instead.
+   *
+   * The File system access sinks
+   */
+  deprecated class HttpServeFile extends FileSystemAccess::Range, DataFlow::CallNode {
+    HttpServeFile() {
+      exists(Function f |
+        f.hasQualifiedName("net/http", "ServeFile") and
+        this = f.getACall()
+      )
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(2) }
+  }
+
+  private class CookieWrite extends Http::CookieWrite::Range, DataFlow::CallNode {
+    CookieWrite() { this.getTarget().hasQualifiedName(package("net/http", ""), "SetCookie") }
+
+    override DataFlow::Node getName() { result = this.getArgument(1) }
+
+    override DataFlow::Node getValue() { result = this.getArgument(1) }
+
+    override DataFlow::Node getSecure() { result = this.getArgument(1) }
+
+    override DataFlow::Node getHttpOnly() { result = this.getArgument(1) }
+  }
+
+  private class CookieFieldWrite extends Http::CookieOptionWrite::Range {
+    DataFlow::Node written;
+    string fieldName;
+
+    CookieFieldWrite() {
+      exists(Write w, Field f |
+        f.hasQualifiedName(package("net/http", ""), "Cookie", fieldName) and
+        w.writesField(this, f, written)
+      )
+    }
+
+    override DataFlow::Node getCookieOutput() { result = this }
+
+    override DataFlow::Node getName() { fieldName = "Name" and result = written }
+
+    override DataFlow::Node getValue() { fieldName = "Value" and result = written }
+
+    override DataFlow::Node getSecure() { fieldName = "Secure" and result = written }
+
+    override DataFlow::Node getHttpOnly() { fieldName = "HttpOnly" and result = written }
   }
 }

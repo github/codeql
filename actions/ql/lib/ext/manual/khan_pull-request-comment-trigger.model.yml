@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      - ["khan/pull-request-comment-trigger", "*", "output.comment_body", "text", "manual"]
+      - ["khan/pull-request-comment-trigger", "*", "output.comment_body", "text", "manual"]

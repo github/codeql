@@ -1,5 +1,5 @@
-typedef _Complex float __attribute__((mode(TC))) _Complex128; // [COMPILER ERROR AND ERROR-TYPE DUE TO __float128 BEING DISABLED]
-typedef float __attribute__((mode(TF))) _Float128; // [COMPILER ERROR AND ERROR-TYPE DUE TO __float128 BEING DISABLED]
+typedef _Complex float __attribute__((mode(TC))) _Complex128;
+typedef float __attribute__((mode(TF))) _Float128;
 
 int main() {
   __float128 f = 1.0f;
@@ -25,4 +25,3 @@ __float128 id(__float128 q)
 {
   return q;
 }
-// semmle-extractor-options: --expect_errors

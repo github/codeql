@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with concepts relating to the Macaron web framework
  */
+overlay[local?]
+module;
 
 import go
 
@@ -16,15 +18,5 @@ private module Macaron {
     }
 
     override DataFlow::Node getANode() { result = v.similar().getAUse().getASuccessor*() }
-  }
-
-  private class RedirectCall extends Http::Redirect::Range, DataFlow::MethodCallNode {
-    RedirectCall() {
-      this.getTarget().hasQualifiedName("gopkg.in/macaron.v1", "Context", "Redirect")
-    }
-
-    override DataFlow::Node getUrl() { result = this.getArgument(0) }
-
-    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
   }
 }

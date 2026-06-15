@@ -86,7 +86,7 @@ struct HasPropertyAndObserver {
     }
   }
 
-  // A field can be marked as read-only by dirctly implementing
+  // A field can be marked as read-only by directly implementing
   // the getter between the braces.
   var readOnlyField1: Int {
     return 0
@@ -182,3 +182,13 @@ func ifConfig() {
 class B {}
 typealias A = B
 typealias C = Int?
+
+class S {
+  var bf1 = 0
+  func captureThis() {
+    var x = 0
+    var f = { [self, x] () in
+      self.bf1 = x
+    };
+  }
+}

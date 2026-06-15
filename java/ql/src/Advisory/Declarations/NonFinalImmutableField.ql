@@ -7,7 +7,10 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/non-final-immutable-field
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       readability
  */
 
 import java
@@ -29,7 +32,7 @@ class AnyAssignment extends Expr {
   /** The expression modified by this assignment. */
   Expr getDest() {
     this.(Assignment).getDest() = result or
-    this.(UnaryAssignExpr).getExpr() = result
+    this.(UnaryAssignExpr).getOperand() = result
   }
 }
 
@@ -40,7 +43,7 @@ class ImmutableField extends Field {
     this.getType() instanceof ImmutableType and
     // The field is only assigned to in a constructor or static initializer of the type it is declared in.
     forall(FieldAccess fw, AnyAssignment ae |
-      fw.getField().getSourceDeclaration() = this and
+      fw.getField() = this and
       fw = ae.getDest()
     |
       ae.getEnclosingCallable().getDeclaringType() = this.getDeclaringType() and

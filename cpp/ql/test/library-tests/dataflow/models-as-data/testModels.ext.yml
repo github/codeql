@@ -1,0 +1,84 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sourceModel
+    data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
+      - ["", "", False, "localMadSource", "", "", "ReturnValue", "local", "manual"]
+      - ["", "", False, "remoteMadSource", "", "", "ReturnValue", "remote", "manual"]
+      - ["", "", False, "localMadSourceVoid", "", "", "ReturnValue", "local", "manual"]
+      - ["", "", False, "localMadSourceHasBody", "", "", "ReturnValue", "local", "manual"]
+      - ["", "", False, "remoteMadSourceIndirect", "", "", "ReturnValue[*]", "remote", "manual"]
+      - ["", "", False, "remoteMadSourceDoubleIndirect", "", "", "ReturnValue[**]", "remote", "manual"]
+      - ["", "", False, "remoteMadSourceIndirectArg0", "", "", "Argument[*0]", "remote", "manual"]
+      - ["", "", False, "remoteMadSourceIndirectArg1", "", "", "Argument[*1]", "remote", "manual"]
+      - ["", "", False, "remoteMadSourceVar", "", "", "", "remote", "manual"]
+      - ["", "", False, "remoteMadSourceVarIndirect", "", "", "*", "remote", "manual"] # we can't express this source/sink correctly at present, "*" is not a valid access path
+      - ["", "", False, "remoteMadSourceParam0", "", "", "Parameter[0]", "remote", "manual"]
+      - ["MyNamespace", "", False, "namespaceLocalMadSource", "", "", "ReturnValue", "local", "manual"]
+      - ["MyNamespace", "", False, "namespaceLocalMadSourceVar", "", "", "", "local", "manual"]
+      - ["MyNamespace::MyNamespace2", "", False, "namespace2LocalMadSource", "", "", "ReturnValue", "local", "manual"]
+      - ["", "MyClass", True, "memberRemoteMadSource", "", "", "ReturnValue", "remote", "manual"]
+      - ["", "MyClass", True, "memberRemoteMadSourceIndirectArg0", "", "", "Argument[*0]", "remote", "manual"]
+      - ["", "MyClass", True, "memberRemoteMadSourceVar", "", "", "", "remote", "manual"]
+      - ["", "MyClass", True, "subtypeRemoteMadSource1", "", "", "ReturnValue", "remote", "manual"]
+      - ["", "MyClass", False, "subtypeNonSource", "", "", "ReturnValue", "remote", "manual"] # the tests define this in MyDerivedClass, so it should *not* be recongized as a source
+      - ["", "MyClass", True, "qualifierSource", "", "", "Argument[-1]", "remote", "manual"]
+      - ["", "MyClass", True, "qualifierFieldSource", "", "", "Argument[-1].val", "remote", "manual"]
+      - ["", "MyDerivedClass", False, "subtypeRemoteMadSource2", "", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sinkModel
+    data: # namespace, type, subtypes, name, signature, ext, input, kind, provenance
+      - ["", "", False, "madSinkArg0", "", "", "Argument[0]", "test-sink", "manual"]
+      - ["", "", False, "madSinkArg1", "", "", "Argument[1]", "test-sink", "manual"]
+      - ["", "", False, "madSinkArg01", "", "", "Argument[0..1]", "test-sink", "manual"]
+      - ["", "", False, "madSinkArg02", "", "", "Argument[0,2]", "test-sink", "manual"]
+      - ["", "", False, "madSinkIndirectArg0", "", "", "Argument[*0]", "test-sink", "manual"]
+      - ["", "", False, "madSinkDoubleIndirectArg0", "", "", "Argument[**0]", "test-sink", "manual"]
+      - ["", "", False, "madSinkVar", "", "", "", "test-sink", "manual"]
+      - ["", "", False, "madSinkVarIndirect", "", "", "*", "test-sink", "manual"] # we can't express this source/sink correctly at present, "*" is not a valid access path
+      - ["", "", False, "madSinkParam0", "", "", "Parameter[0]", "test-sink", "manual"]
+      - ["", "MyClass", True, "memberMadSinkArg0", "", "", "Argument[0]", "test-sink", "manual"]
+      - ["", "MyClass", True, "memberMadSinkVar", "", "", "", "test-sink", "manual"]
+      - ["", "MyClass", True, "qualifierSink", "", "", "Argument[-1]", "test-sink", "manual"]
+      - ["", "MyClass", True, "qualifierArg0Sink", "", "", "Argument[-1..0]", "test-sink", "manual"]
+      - ["", "MyClass", True, "qualifierFieldSink", "", "", "Argument[-1].val", "test-sink", "manual"]
+      - ["MyNamespace", "MyClass", True, "namespaceMemberMadSinkArg0", "", "", "Argument[0]", "test-sink", "manual"]
+      - ["MyNamespace", "MyClass", True, "namespaceStaticMemberMadSinkArg0", "", "", "Argument[0]", "test-sink", "manual"]
+      - ["MyNamespace", "MyClass", True, "namespaceMemberMadSinkVar", "", "", "", "test-sink", "manual"]
+      - ["MyNamespace", "MyClass", True, "namespaceStaticMemberMadSinkVar", "", "", "", "test-sink", "manual"]
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["", "", False, "madArg0ToReturn", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["", "", False, "madArg0ToReturnIndirect", "", "", "Argument[0]", "ReturnValue[*]", "taint", "manual"]
+      - ["", "", False, "madArg0ToReturnValueFlow", "", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["", "", False, "madArg0IndirectToReturn", "", "", "Argument[*0]", "ReturnValue", "taint", "manual"]
+      - ["", "", False, "madArg0DoubleIndirectToReturn", "", "", "Argument[**0]", "ReturnValue", "taint", "manual"]
+      - ["", "", False, "madArg0NotIndirectToReturn", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["", "", False, "madArg0ToArg1Indirect", "", "", "Argument[0]", "Argument[*1]", "taint", "manual"]
+      - ["", "", False, "madArg0IndirectToArg1Indirect", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "", False, "madArgsComplex", "", "", "Argument[*0..1,2]", "ReturnValue", "taint", "manual"]
+      - ["", "", False, "madAndImplementedComplex", "", "", "Argument[2]", "ReturnValue", "taint", "manual"]
+      - ["", "", False, "madArgsAny", "", "", "Argument", "ReturnValue", "taint", "manual"] # we can't express this source/sink correctly at present, "Argument" is not a valid input
+      - ["", "", False, "madArg0FieldToReturn", "", "", "Argument[0].Field[value]", "ReturnValue", "taint", "manual"]
+      - ["", "", False, "madArg0IndirectFieldToReturn", "", "", "Argument[*0].Field[value]", "ReturnValue", "taint", "manual"]
+      - ["", "", False, "madArg0FieldIndirectToReturn", "", "", "Argument[0].Field[*ptr]", "ReturnValue", "taint", "manual"]
+      - ["", "", False, "madArg0ToReturnField", "", "", "Argument[0]", "ReturnValue.Field[value]", "taint", "manual"]
+      - ["", "", False, "madArg0ToReturnIndirectField", "", "", "Argument[0]", "ReturnValue[*].Field[value]", "taint", "manual"]
+      - ["", "", False, "madArg0ToReturnFieldIndirect", "", "", "Argument[0]", "ReturnValue.Field[*ptr]", "taint", "manual"]
+      - ["", "", False, "madFieldToFieldVar", "", "", "Field[value]", "Field[value2]", "taint", "manual"] # we can't express this source/sink correctly at present, "Field[value]" is not a valid input and "Field[value2]" is not a valid output
+      - ["", "", False, "madFieldToIndirectFieldVar", "", "", "Field[value]", "Field[*ptr]", "taint", "manual"] # we can't express this source/sink correctly at present, "Field[value]" is not a valid input and "Field[*ptr]" is not a valid output
+      - ["", "", False, "madIndirectFieldToFieldVar", "", "", "Field[value]", "Field[value2]", "taint", "manual"] # we can't express this source/sink correctly at present, "Field[value]" is not a valid input and "Field[value2]" is not a valid output
+      - ["", "MyClass", True, "madArg0ToSelf", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["", "MyClass", True, "madSelfToReturn", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["", "MyClass", True, "madArg0ToField", "", "", "Argument[0]", "Argument[-1].Field[val]", "taint", "manual"]
+      - ["", "MyClass", True, "madFieldToReturn", "", "", "Argument[-1].Field[val]", "ReturnValue", "taint", "manual"]
+      - ["MyNamespace", "MyClass", True, "namespaceMadSelfToReturn", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["", "", False, "madCallArg0ReturnToReturn", "", "", "Argument[0].ReturnValue", "ReturnValue", "value", "manual"]
+      - ["", "", False, "madCallArg0ReturnToReturnFirst", "", "", "Argument[0].ReturnValue", "ReturnValue.Field[first]", "value", "manual"]
+      - ["", "", False, "madCallArg0WithValue", "", "", "Argument[1]", "Argument[0].Parameter[0]", "value", "manual"]
+      - ["", "", False, "madCallReturnValueIgnoreFunction", "", "", "Argument[1]", "ReturnValue", "value", "manual"]
+      - ["", "StructWithTypedefInParameter<T>", True, "parameter_ref_to_return_ref", "(const T &)", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
+      - ["", "", False, "receive_array", "(int[20])", "", "Argument[*0]", "ReturnValue", "taint", "manual"]

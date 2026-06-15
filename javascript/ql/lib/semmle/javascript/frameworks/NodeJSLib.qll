@@ -8,14 +8,17 @@ import semmle.javascript.security.SensitiveActions
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 module NodeJSLib {
+  overlay[local?]
   private GlobalVariable processVariable() { variables(result, "process", any(GlobalScope sc)) }
 
+  overlay[local?]
   pragma[nomagic]
   private GlobalVarAccess processExprInTopLevel(TopLevel tl) {
     result = processVariable().getAnAccess() and
     tl = result.getTopLevel()
   }
 
+  overlay[local?]
   pragma[nomagic]
   private GlobalVarAccess processExprInNodeModule() {
     result = processExprInTopLevel(any(NodeModule m))
@@ -25,6 +28,7 @@ module NodeJSLib {
    * An access to the global `process` variable in a Node.js module, interpreted as
    * an import of the `process` module.
    */
+  overlay[local?]
   private class ImplicitProcessImport extends DataFlow::ModuleImportNode::Range {
     ImplicitProcessImport() { this = DataFlow::exprNode(processExprInNodeModule()) }
 
@@ -65,34 +69,12 @@ module NodeJSLib {
   }
 
   /**
-   * DEPRECATED: Use `ResponseNode` instead.
-   * A Node.js HTTP response.
-   *
-   * A server library that provides an (enhanced) NodesJS HTTP response
-   * object should implement a library specific subclass of this class.
-   */
-  deprecated class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
-    ResponseExpr() { this.flow() instanceof ResponseNode }
-  }
-
-  /**
    * A Node.js HTTP response.
    *
    * A server library that provides an (enhanced) NodesJS HTTP response
    * object should implement a library specific subclass of this class.
    */
   abstract class ResponseNode extends Http::Servers::StandardResponseNode { }
-
-  /**
-   * DEPRECATED: Use `RequestNode` instead.
-   * A Node.js HTTP request.
-   *
-   * A server library that provides an (enhanced) NodesJS HTTP request
-   * object should implement a library specific subclass of this class.
-   */
-  deprecated class RequestExpr extends HTTP::Servers::StandardRequestExpr {
-    RequestExpr() { this.flow() instanceof RequestNode }
-  }
 
   /**
    * A Node.js HTTP request.
@@ -169,26 +151,10 @@ module NodeJSLib {
   }
 
   /**
-   * DEPRECATED: Use `BuiltinRouteHandlerResponseNode` instead.
-   * A builtin Node.js HTTP response.
-   */
-  deprecated private class BuiltinRouteHandlerResponseExpr extends ResponseExpr {
-    BuiltinRouteHandlerResponseExpr() { src instanceof ResponseSource }
-  }
-
-  /**
    * A builtin Node.js HTTP response.
    */
   private class BuiltinRouteHandlerResponseNode extends ResponseNode {
     BuiltinRouteHandlerResponseNode() { src instanceof ResponseSource }
-  }
-
-  /**
-   * DEPRECATED: Use `BuiltinRouteHandlerRequestNode` instead.
-   * A builtin Node.js HTTP request.
-   */
-  deprecated private class BuiltinRouteHandlerRequestExpr extends RequestExpr {
-    BuiltinRouteHandlerRequestExpr() { src instanceof RequestSource }
   }
 
   /**
@@ -289,17 +255,12 @@ module NodeJSLib {
     override DataFlow::Node getServer() { result = server }
 
     /**
-     * DEPRECATED: Use `getRouteHandlerNode` instead.
-     * Gets the expression for the handler registered by this setup.
-     */
-    deprecated Expr getRouteHandlerExpr() { result = handler.asExpr() }
-
-    /**
      * Gets the expression for the handler registered by this setup.
      */
     DataFlow::Node getRouteHandlerNode() { result = handler }
   }
 
+  overlay[global]
   abstract private class HeaderDefinition extends Http::Servers::StandardHeaderDefinition {
     ResponseNode r;
 
@@ -478,7 +439,7 @@ module NodeJSLib {
    * method might represent a file path.
    */
   private predicate fsExtraExtensionFileParam(string methodName, int i) {
-    methodName = ["copy", "copySync", "copyFile"] and i = [0, 1]
+    methodName = ["copy", "copySync", "copyFile", "cp", "copyFileSync", "cpSync"] and i = [0, 1]
     or
     methodName = ["move", "moveSync"] and i = [0, 1]
     or
@@ -494,10 +455,13 @@ module NodeJSLib {
     or
     methodName = ["readJson", "readJSON", "readJsonSync", "readJSONSync"] and i = 0
     or
-    methodName = ["remove", "removeSync"] and i = 0
+    methodName = ["remove", "removeSync", "rmSync", "rm", "rmdir", "rmdirSync"] and i = 0
     or
     methodName =
-      ["outputJSON", "outputJson", "writeJSON", "writeJson", "writeJSONSync", "writeJsonSync"] and
+      [
+        "outputJSON", "outputJson", "writeJSON", "writeJson", "writeJSONSync", "writeJsonSync",
+        "outputJSONSync", "outputJsonSync"
+      ] and
     i = 0
     or
     methodName = ["ensureFile", "ensureFileSync"] and i = 0
@@ -506,9 +470,15 @@ module NodeJSLib {
     or
     methodName = ["ensureSymlink", "ensureSymlinkSync"] and i = [0, 1]
     or
-    methodName = ["emptyDir", "emptyDirSync"] and i = 0
+    methodName = ["emptyDir", "emptyDirSync", "emptydir", "emptydirSync"] and i = 0
     or
     methodName = ["pathExists", "pathExistsSync"] and i = 0
+    or
+    methodName = ["lutimes", "lutimesSync"] and i = 0
+    or
+    methodName =
+      ["opendir", "opendirSync", "openAsBlob", "statfs", "statfsSync", "open", "openSync"] and
+    i = 0
   }
 
   /**
@@ -554,7 +524,11 @@ module NodeJSLib {
       t.start()
       or
       t.start() and
-      result = DataFlow::moduleMember("fs", "promises")
+      (
+        result = DataFlow::moduleMember("fs", "promises")
+        or
+        result = DataFlow::moduleImport("fs/promises")
+      )
       or
       exists(DataFlow::TypeTracker t2, DataFlow::SourceNode pred | pred = fsModule(t2) |
         result = pred.track(t2, t)
@@ -632,6 +606,13 @@ module NodeJSLib {
     }
   }
 
+  /** A vectored write to the file system using `writev` or `writevSync` methods. */
+  private class NodeJSFileSystemVectorWrite extends FileSystemWriteAccess, NodeJSFileSystemAccess {
+    NodeJSFileSystemVectorWrite() { methodName = ["writev", "writevSync"] }
+
+    override DataFlow::Node getADataNode() { result = this.getArgument(1) }
+  }
+
   /** A file system read. */
   private class NodeJSFileSystemAccessRead extends FileSystemReadAccess, NodeJSFileSystemAccess {
     NodeJSFileSystemAccessRead() { methodName = ["read", "readSync", "readFile", "readFileSync"] }
@@ -639,7 +620,7 @@ module NodeJSLib {
     override DataFlow::Node getADataNode() {
       if methodName.matches("%Sync")
       then result = this
-      else
+      else (
         exists(int i, string paramName | fsDataParam(methodName, i, paramName) |
           if paramName = "callback"
           then
@@ -650,6 +631,28 @@ module NodeJSLib {
             )
           else result = this.getArgument(i)
         )
+        or
+        exists(AwaitExpr await |
+          this.getEnclosingExpr() = await.getOperand() and
+          result = DataFlow::valueNode(await)
+        )
+      )
+    }
+  }
+
+  /** A vectored read to the file system. */
+  private class NodeJSFileSystemAccessVectorRead extends FileSystemReadAccess,
+    NodeJSFileSystemAccess
+  {
+    NodeJSFileSystemAccessVectorRead() { methodName = ["readv", "readvSync"] }
+
+    override DataFlow::Node getADataNode() {
+      result = this.getArgument(1)
+      or
+      exists(DataFlow::ArrayCreationNode array |
+        array.flowsTo(this.getArgument(1)) and
+        result = array.getAnElement()
+      )
     }
   }
 
@@ -1043,7 +1046,7 @@ module NodeJSLib {
       exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(0))
     }
 
-    override string getCredentialsKind() { result = "Node.js http(s) client login username" }
+    override string getCredentialsKind() { result = "user name" }
   }
 
   /**
@@ -1054,7 +1057,7 @@ module NodeJSLib {
       exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(1))
     }
 
-    override string getCredentialsKind() { result = "Node.js http(s) client login password" }
+    override string getCredentialsKind() { result = "password" }
   }
 
   /**
@@ -1283,5 +1286,14 @@ module NodeJSLib {
     DataFlow::SourceNode moduleMember(string member) {
       result = moduleImport().getAPropertyRead(member)
     }
+  }
+
+  /** A read of `process.env`, considered as a threat-model source. */
+  private class ProcessEnvThreatSource extends ThreatModelSource::Range {
+    ProcessEnvThreatSource() { this = NodeJSLib::process().getAPropertyRead("env") }
+
+    override string getThreatModel() { result = "environment" }
+
+    override string getSourceType() { result = "process.env" }
   }
 }

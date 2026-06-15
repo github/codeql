@@ -1,10 +1,14 @@
 /**
  * Provides classes for working with the AST-based representation of JavaScript programs.
  */
+overlay[local?]
+module;
 
 import javascript
 private import internal.StmtContainers
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.internal.TypeResolution
+private import semmle.javascript.internal.BindingInfo
 
 /**
  * A program element corresponding to JavaScript code, such as an expression
@@ -23,31 +27,27 @@ private import semmle.javascript.internal.CachedStages
  * ```
  */
 class AstNode extends @ast_node, NodeInStmtContainer {
-  override Location getLocation() { hasLocation(this, result) }
-
   override File getFile() {
     result = this.getLocation().getFile() // Specialized for performance reasons
   }
 
   /** Gets the first token belonging to this element. */
   Token getFirstToken() {
-    exists(Location l1, Location l2 |
+    exists(Location l1, Location l2, string filepath, int startline, int startcolumn |
       l1 = this.getLocation() and
       l2 = result.getLocation() and
-      l1.getFile() = l2.getFile() and
-      l1.getStartLine() = l2.getStartLine() and
-      l1.getStartColumn() = l2.getStartColumn()
+      l1.hasLocationInfo(filepath, startline, startcolumn, _, _) and
+      l2.hasLocationInfo(filepath, startline, startcolumn, _, _)
     )
   }
 
   /** Gets the last token belonging to this element. */
   Token getLastToken() {
-    exists(Location l1, Location l2 |
+    exists(Location l1, Location l2, string filepath, int endline, int endcolumn |
       l1 = this.getLocation() and
       l2 = result.getLocation() and
-      l1.getFile() = l2.getFile() and
-      l1.getEndLine() = l2.getEndLine() and
-      l1.getEndColumn() = l2.getEndColumn()
+      l1.hasLocationInfo(filepath, _, _, endline, endcolumn) and
+      l2.hasLocationInfo(filepath, _, _, endline, endcolumn)
     ) and
     // exclude empty EOF token
     not result instanceof EOFToken
@@ -174,6 +174,7 @@ class AstNode extends @ast_node, NodeInStmtContainer {
    * The TypeScript compiler emits no code for ambient declarations, but they
    * can affect name resolution and type checking at compile-time.
    */
+  overlay[caller?]
   pragma[inline]
   predicate isAmbient() {
     this.isAmbientInternal()
@@ -183,9 +184,6 @@ class AstNode extends @ast_node, NodeInStmtContainer {
     this instanceof TypeExpr
   }
 }
-
-/** DEPRECATED: Alias for AstNode */
-deprecated class ASTNode = AstNode;
 
 /**
  * Holds if the given file is a `.d.ts` file.
@@ -252,7 +250,7 @@ class TopLevel extends @toplevel, StmtContainer {
   /** Gets the number of lines containing comments in this toplevel. */
   int getNumberOfLinesOfComments() { numlines(this, _, _, result) }
 
-  override predicate isStrict() { this.getAStmt() instanceof StrictModeDecl }
+  override predicate isStrict() { this.getAStmt() instanceof Directive::StrictModeDecl }
 
   override ControlFlowNode getFirstControlFlowNode() { result = this.getEntry() }
 
@@ -338,9 +336,6 @@ class EventHandlerCode extends @event_handler, CodeInAttribute { }
  * ```
  */
 class JavaScriptUrl extends @javascript_url, CodeInAttribute { }
-
-/** DEPRECATED: Alias for JavaScriptUrl */
-deprecated class JavaScriptURL = JavaScriptUrl;
 
 /**
  * A toplevel syntactic entity containing Closure-style externs definitions.
@@ -478,9 +473,31 @@ module AST {
    */
   class ValueNode extends AstNode, @dataflownode {
     /** Gets type inference results for this element. */
+    overlay[global]
     DataFlow::AnalyzedNode analyze() { result = DataFlow::valueNode(this).analyze() }
 
     /** Gets the data flow node associated with this program element. */
+    overlay[caller?]
+    pragma[inline]
     DataFlow::ValueNode flow() { result = DataFlow::valueNode(this) }
+
+    /**
+     * Gets information about the results of name-resolution for this expression.
+     *
+     * This can be used to map an expression to the class it refers to, or
+     * associate it with a named value coming from an dependency.
+     */
+    overlay[global]
+    ExprNameBindingNode getNameBinding() { result = this }
+
+    /**
+     * Gets information about the type of this expression.
+     *
+     * This can be used to map an expression to the classes it may be an instance of
+     * (according to the type system), or to associate it with a named type coming
+     * from a dependency.
+     */
+    overlay[global]
+    TypeNameBindingNode getTypeBinding() { TypeResolution::valueHasType(this, result) }
   }
 }

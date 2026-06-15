@@ -6,7 +6,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/regex/unbound-back-reference
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       regular-expressions
  * @precision very-high

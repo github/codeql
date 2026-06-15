@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["crowdsecurity/crowdsec/.github/workflows/publish-docker.yml", "*", "input.latest", "code-injection", "generated"]
+     - ["crowdsecurity/crowdsec/.github/workflows/publish-docker.yml", "*", "input.image_version", "code-injection", "generated"]

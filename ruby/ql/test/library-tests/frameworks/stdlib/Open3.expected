@@ -11,3 +11,11 @@ open3PipelineCallExecutions
 | Open3.rb:9:1:9:40 | call to pipeline_w |
 | Open3.rb:10:1:10:44 | call to pipeline_start |
 | Open3.rb:11:1:11:38 | call to pipeline |
+open4CallExecutions
+| Open3.rb:13:1:13:24 | call to open4 |
+| Open3.rb:14:1:14:25 | call to popen4 |
+| Open3.rb:15:1:15:23 | call to spawn |
+| Open3.rb:16:1:16:27 | call to popen4ext |
+| Open3.rb:17:1:17:30 | call to popen4ext |
+| Open3.rb:18:1:18:33 | call to popen4ext |
+| Open3.rb:19:1:19:36 | call to popen4ext |

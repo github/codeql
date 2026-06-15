@@ -1,0 +1,6 @@
+{
+    "name": "explicit-this",
+    "dependencies": {
+        "something": "*"
+    }
+}

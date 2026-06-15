@@ -1,9 +1,9 @@
 .. _using-flow-labels-for-precise-data-flow-analysis:
 
-Using flow labels for precise data flow analysis
+Using flow state for precise data flow analysis
 ================================================
 
-You can associate flow labels with each value tracked by the flow analysis to determine whether the flow contains potential vulnerabilities.
+You can associate a flow state with each value tracked by the flow analysis to determine whether the flow contains potential vulnerabilities.
 
 Overview
 --------
@@ -16,9 +16,9 @@ program, and associates a flag with every data value telling us whether it might
 source node.
 
 In some cases, you may want to track more detailed information about data values. This can be done
-by associating flow labels with data values, as shown in this tutorial. We will first discuss the
-general idea behind flow labels and then show how to use them in practice. Finally, we will give an
-overview of the API involved and provide some pointers to standard queries that use flow labels.
+by associating flow states with data values, as shown in this tutorial. We will first discuss the
+general idea behind flow states and then show how to use them in practice. Finally, we will give an
+overview of the API involved and provide some pointers to standard queries that use flow states.
 
 Limitations of basic data-flow analysis
 ---------------------------------------
@@ -47,22 +47,21 @@ contain ``..`` components. Untrusted user input has both bits set initially, ind
 off individual bits, and if a value that has at least one bit set is interpreted as a path, a
 potential vulnerability is flagged.
 
-Using flow labels
+Using flow states
 -----------------
 
-You can handle these cases and others like them by associating a set of `flow labels` (sometimes
-also referred to as `taint kinds`) with each value being tracked by the analysis. Value-preserving
+You can handle these cases and others like them by associating a set of `flow states` (sometimes
+also referred to as `flow labels` or `taint kinds`) with each value being tracked by the analysis. Value-preserving
 data-flow steps (such as flow steps from writes to a variable to its reads) preserve the set of flow
-labels, but other steps may add or remove flow labels. Sanitizers, in particular, are simply flow
-steps that remove some or all flow labels. The initial set of flow labels for a value is determined
+states, but other steps may add or remove flow states. The initial set of flow states for a value is determined
 by the source node that gives rise to it. Similarly, sink nodes can specify that an incoming value
-needs to have a certain flow label (or one of a set of flow labels) in order for the flow to be
+needs to have a certain flow state (or one of a set of flow states) in order for the flow to be
 flagged as a potential vulnerability.
 
 Example
 -------
 
-As an example of using flow labels, we will show how to write a query that flags property accesses
+As an example of using flow state, we will show how to write a query that flags property accesses
 on JSON values that come from user-controlled input where we have not checked whether the value is
 ``null``, so that the property access may cause a runtime exception.
 
@@ -70,22 +69,26 @@ For example, we would like to flag this code:
 
 .. code-block:: javascript
 
-  var data = JSON.parse(str);
-  if (data.length > 0) {  // problematic: `data` may be `null`
-    ...
+  function test(str) {
+    var data = JSON.parse(str);
+    if (data.length > 0) {  // problematic: `data` may be `null`
+      ...
+    }
   }
 
 This code, on the other hand, should not be flagged:
 
 .. code-block:: javascript
 
-  var data = JSON.parse(str);
-  if (data && data.length > 0) { // unproblematic: `data` is first checked for nullness
-    ...
+  function test(str) {
+    var data = JSON.parse(str);
+    if (data && data.length > 0) { // unproblematic: `data` is first checked for nullness
+      ...
+    }
   }
 
-We will first try to write a query to find this kind of problem without flow labels, and use the
-difficulties we encounter as a motivation for bringing flow labels into play, which will make the
+We will first try to write a query to find this kind of problem without flow state, and use the
+difficulties we encounter as a motivation for bringing flow state into play, which will make the
 query much easier to implement.
 
 To get started, let's write a query that simply flags any flow from ``JSON.parse`` into the base of
@@ -95,24 +98,24 @@ a property access:
 
   import javascript
 
-  class JsonTrackingConfig extends DataFlow::Configuration {
-    JsonTrackingConfig() { this = "JsonTrackingConfig" }
-
-    override predicate isSource(DataFlow::Node nd) {
+  module JsonTrackingConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node nd) {
       exists(JsonParserCall jpc |
         nd = jpc.getOutput()
       )
     }
 
-    override predicate isSink(DataFlow::Node nd) {
+    predicate isSink(DataFlow::Node nd) {
       exists(DataFlow::PropRef pr |
         nd = pr.getBase()
       )
     }
   }
 
-  from JsonTrackingConfig cfg, DataFlow::Node source, DataFlow::Node sink
-  where cfg.hasFlow(source, sink)
+  module JsonTrackingFlow = DataFlow::Global<JsonTrackingConfig>;
+
+  from DataFlow::Node source, DataFlow::Node sink
+  where JsonTrackingFlow::flow(source, sink)
   select sink, "Property access on JSON value originating $@.", source, "here"
 
 Note that we use the ``JsonParserCall`` class from the standard library to model various JSON
@@ -123,8 +126,7 @@ introduced any sanitizers yet.
 
 There are many ways of checking for nullness directly or indirectly. Since this is not the main
 focus of this tutorial, we will only show how to model one specific case: if some variable ``v`` is
-known to be truthy, it cannot be ``null``. This kind of condition is easily expressed using a
-``BarrierGuardNode`` (or its counterpart ``SanitizerGuardNode`` for taint-tracking configurations).
+known to be truthy, it cannot be ``null``. This kind of condition is expressed using a "barrier guard".
 A barrier guard node is a data-flow node ``b`` that blocks flow through some other node ``nd``,
 provided that some condition checked at ``b`` is known to hold, that is, evaluate to a truthy value.
 
@@ -135,29 +137,29 @@ is a barrier guard blocking flow through the use of ``data`` on the right-hand s
 At this point we know that ``data`` has evaluated to a truthy value, so it cannot be ``null``
 anymore.
 
-Implementing this additional condition is easy. We implement a subclass of ``DataFlow::BarrierGuardNode``:
+Implementing this additional condition is easy. We implement a class with a predicate called ``blocksExpr``:
 
 .. code-block:: ql
 
-  class TruthinessCheck extends DataFlow::BarrierGuardNode, DataFlow::ValueNode {
+  class TruthinessCheck extends DataFlow::ValueNode {
     SsaVariable v;
 
     TruthinessCheck() {
       astNode = v.getAUse()
     }
 
-    override predicate blocks(boolean outcome, Expr e) {
+    predicate blocksExpr(boolean outcome, Expr e) {
       outcome = true and
       e = astNode
     }
   }
 
-and then use it to override predicate ``isBarrierGuard`` in our configuration class:
+and then use it to implement the predicate ``isBarrier`` in our configuration module:
 
 .. code-block:: ql
 
-  override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
-    guard instanceof TruthinessCheck
+  predicate isBarrier(DataFlow::Node node) {
+    node = DataFlow::MakeBarrierGuard<TruthinessCheck>::getABarrierNode()
   }
 
 With this change, we now flag the problematic case and don't flag the unproblematic case above.
@@ -168,19 +170,21 @@ checked for null-guardedness:
 
 .. code-block:: javascript
 
-  var root = JSON.parse(str);
-  if (root) {
-    var payload = root.data;   // unproblematic: `root` cannot be `null` here
-    if (payload.length > 0) {  // problematic: `payload` may be `null` here
-      ...
+  function test(str) {
+    var root = JSON.parse(str);
+    if (root) {
+      var payload = root.data;   // unproblematic: `root` cannot be `null` here
+      if (payload.length > 0) {  // problematic: `payload` may be `null` here
+        ...
+      }
     }
   }
 
-We could try to remedy the situation by overriding ``isAdditionalFlowStep`` in our configuration class to track values through property reads:
+We could try to remedy the situation by adding ``isAdditionalFlowStep`` in our configuration module to track values through property reads:
 
 .. code-block:: ql
 
-  override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     succ.(DataFlow::PropRead).getBase() = pred
   }
 
@@ -193,79 +197,86 @@ altogether, it should simply record the fact that ``root`` itself is known to be
 Any property read from ``root``, on the other hand, may well be null and needs to be checked
 separately.
 
-We can achieve this by introducing two different flow labels, ``json`` and ``maybe-null``. The former
+We can achieve this by introducing two different flow states, ``json`` and ``maybe-null``. The former
 means that the value we are dealing with comes from a JSON object, the latter that it may be
-``null``. The result of any call to ``JSON.parse`` has both labels. A property read from a value
-with label ``json`` also has both labels. Checking truthiness removes the ``maybe-null`` label.
-Accessing a property on a value that has the ``maybe-null`` label should be flagged.
+``null``. The result of any call to ``JSON.parse`` has both states. A property read from a value
+with state ``json`` also results in a value with both states. Checking truthiness removes the ``maybe-null`` state.
+Accessing a property on a value that has the ``maybe-null`` state should be flagged.
 
-To implement this, we start by defining two new subclasses of the class ``DataFlow::FlowLabel``:
-
-.. code-block:: ql
-
-  class JsonLabel extends DataFlow::FlowLabel {
-    JsonLabel() {
-      this = "json"
-    }
-  }
-
-  class MaybeNullLabel extends DataFlow::FlowLabel {
-    MaybeNullLabel() {
-      this = "maybe-null"
-    }
-  }
-
-Then we extend our ``isSource`` predicate from above to track flow labels by overriding the two-argument version instead of the one-argument version:
+To implement this, we first change the signature of our configuration module to ``DataFlow::StateConfigSig``, and
+replace ``DataFlow::Global<...>`` with ``DataFlow::GlobalWithState<...>``:
 
 .. code-block:: ql
 
-  override predicate isSource(DataFlow::Node nd, DataFlow::FlowLabel lbl) {
+  module JsonTrackingConfig implements DataFlow::StateConfigSig {
+    /* ... */
+  }
+
+  module JsonTrackingFlow = DataFlow::GlobalWithState<JsonTrackingConfig>;
+
+We then add a class called ``FlowState`` which has one value for each flow state:
+
+.. code-block:: ql
+
+  module JsonTrackingConfig implements DataFlow::StateConfigSig {
+    class FlowState extends string {
+      FlowState() {
+        this = ["json", "maybe-null"]
+      }
+    }
+
+    /* ... */
+  }
+
+Then we extend our ``isSource`` predicate with an additional parameter to specify the flow state:
+
+.. code-block:: ql
+
+  predicate isSource(DataFlow::Node nd, FlowState state) {
     exists(JsonParserCall jpc |
       nd = jpc.getOutput() and
-      (lbl instanceof JsonLabel or lbl instanceof MaybeNullLabel)
+      state = ["json", "maybe-null"] // start in either state
     )
   }
 
-Similarly, we make ``isSink`` flow-label aware and require the base of the property read to have the ``maybe-null`` label:
+Similarly, we update ``isSink`` and require the base of the property read to have the ``maybe-null`` state:
 
 .. code-block:: ql
 
-  override predicate isSink(DataFlow::Node nd, DataFlow::FlowLabel lbl) {
+  predicate isSink(DataFlow::Node nd, FlowState state) {
     exists(DataFlow::PropRef pr |
       nd = pr.getBase() and
-      lbl instanceof MaybeNullLabel
+      state = "maybe-null"
     )
   }
 
-Our overriding definition of ``isAdditionalFlowStep`` now needs to specify two flow labels, a
-predecessor label ``predlbl`` and a successor label ``succlbl``. In addition to specifying flow from
-the predecessor node ``pred`` to the successor node ``succ``, it requires that ``pred`` has label
-``predlbl``, and adds label ``succlbl`` to ``succ``. In our case, we use this to add both the
-``json`` label and the ``maybe-null`` label to any property read from a value labeled with ``json``
-(no matter whether it has the ``maybe-null`` label):
+Our definition of ``isAdditionalFlowStep`` now needs to specify two flow states, a
+predecessor state ``predState`` and a successor state ``succState``. In addition to specifying flow from
+the predecessor node ``pred`` to the successor node ``succ``, it requires that ``pred`` has state
+``predState``, and adds state ``succState`` to ``succ``. In our case, we use this to add both the
+``json`` state and the ``maybe-null`` state to any property read from a value in the ``json`` state
+(no matter whether it has the ``maybe-null`` state):
 
 .. code-block:: ql
 
-  override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ,
-                                DataFlow::FlowLabel predlbl, DataFlow::FlowLabel succlbl) {
+  predicate isAdditionalFlowStep(DataFlow::Node pred, FlowState predState,
+                                 DataFlow::Node succ, FlowState succState) {
     succ.(DataFlow::PropRead).getBase() = pred and
-    predlbl instanceof JsonLabel and
-    (succlbl instanceof JsonLabel or succlbl instanceof MaybeNullLabel)
+    predState = "json" and
+    succState = ["json", "maybe-null"]
   }
 
-Finally, we turn ``TruthinessCheck`` from a ``BarrierGuardNode`` into a ``LabeledBarrierGuardNode``,
-specifying that it only removes the ``maybe-null`` label (but not the ``json`` label) from the
-sanitized value:
+Finally, we add an additional parameter to the ``isBarrier`` predicate to specify the flow state
+to block at the ``TruthinessCheck`` barrier.
 
 .. code-block:: ql
 
-  class TruthinessCheck extends DataFlow::LabeledBarrierGuardNode, DataFlow::ValueNode {
-    ...
+  module JsonTrackingConfig implements DataFlow::StateConfigSig {
+    /* ... */
 
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
-      outcome = true and
-      e = astNode and
-      lbl instanceof MaybeNullLabel
+    predicate isBarrier(DataFlow::Node node, FlowState state) {
+      node = DataFlow::MakeBarrierGuard<TruthinessCheck>::getABarrierNode() and
+      state = "maybe-null"
     }
   }
 
@@ -277,66 +288,60 @@ step by step in the UI:
   /** @kind path-problem */
 
   import javascript
-  import DataFlow::PathGraph
 
-  class JsonLabel extends DataFlow::FlowLabel {
-    JsonLabel() {
-      this = "json"
-    }
-  }
-
-  class MaybeNullLabel extends DataFlow::FlowLabel {
-    MaybeNullLabel() {
-      this = "maybe-null"
-    }
-  }
-
-  class TruthinessCheck extends DataFlow::LabeledBarrierGuardNode, DataFlow::ValueNode {
+  class TruthinessCheck extends DataFlow::ValueNode {
     SsaVariable v;
 
     TruthinessCheck() {
       astNode = v.getAUse()
     }
 
-    override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
+    predicate blocksExpr(boolean outcome, Expr e, JsonTrackingConfig::FlowState state) {
       outcome = true and
       e = astNode and
-      lbl instanceof MaybeNullLabel
+      state = "maybe-null"
     }
   }
 
-  class JsonTrackingConfig extends DataFlow::Configuration {
-    JsonTrackingConfig() { this = "JsonTrackingConfig" }
+  module JsonTrackingConfig implements DataFlow::StateConfigSig {
+    class FlowState extends string {
+      FlowState() {
+        this = ["json", "maybe-null"]
+      }
+    }
 
-    override predicate isSource(DataFlow::Node nd, DataFlow::FlowLabel lbl) {
+    predicate isSource(DataFlow::Node nd, FlowState state) {
       exists(JsonParserCall jpc |
         nd = jpc.getOutput() and
-        (lbl instanceof JsonLabel or lbl instanceof MaybeNullLabel)
+        state = ["json", "maybe-null"] // start in either state
       )
     }
 
-    override predicate isSink(DataFlow::Node nd, DataFlow::FlowLabel lbl) {
+    predicate isSink(DataFlow::Node nd, FlowState state) {
       exists(DataFlow::PropRef pr |
         nd = pr.getBase() and
-        lbl instanceof MaybeNullLabel
+        state = "maybe-null"
       )
     }
 
-    override predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ,
-                               DataFlow::FlowLabel predlbl, DataFlow::FlowLabel succlbl) {
+    predicate isAdditionalFlowStep(DataFlow::Node pred, FlowState predState,
+                                   DataFlow::Node succ, FlowState succState) {
       succ.(DataFlow::PropRead).getBase() = pred and
-      predlbl instanceof JsonLabel and
-      (succlbl instanceof JsonLabel or succlbl instanceof MaybeNullLabel)
+      predState = "json" and
+      succState = ["json", "maybe-null"]
     }
 
-    override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
-      guard instanceof TruthinessCheck
+    predicate isBarrier(DataFlow::Node node, FlowState state) {
+      node = DataFlow::MakeBarrierGuard<TruthinessCheck>::getABarrierNode() and
+      state = "maybe-null"
     }
   }
 
-  from JsonTrackingConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-  where cfg.hasFlowPath(source, sink)
-  select sink, source, sink, "Property access on JSON value originating $@.", source, "here"
+  module JsonTrackingFlow = DataFlow::GlobalWithState<JsonTrackingConfig>;
+
+  from DataFlow::Node source, DataFlow::Node sink
+  where JsonTrackingFlow::flow(source, sink)
+  select sink, "Property access on JSON value originating $@.", source, "here"
 
 We ran this query on the https://github.com/finos/plexus-interop repository. Many of the
 results were false positives since the query does not currently model many ways in which we can check
@@ -348,58 +353,36 @@ this tutorial.
 API
 ---
 
-Plain data-flow configurations implicitly use a single flow label "data", which indicates that a
-data value originated from a source. You can use the predicate ``DataFlow::FlowLabel::data()``,
-which returns this flow label, as a symbolic name for it.
+Flow state can be used in modules implementing the ``DataFlow::StateConfigSig`` signature. Compared to a ``DataFlow::ConfigSig`` the main differences are:
 
-Taint-tracking configurations add a second flow label "taint" (``DataFlow::FlowLabel::taint()``),
-which is similar to "data", but includes values that have passed through non-value preserving steps
-such as string operations.
+- The module must be passed to ``DataFlow::GlobalWithState<...>`` or ``TaintTracking::GlobalWithState<...>``.
+  instead of ``DataFlow::Global<...>`` or ``TaintTracking::Global<...>``.
+- The module must contain a type named ``FlowState``.
+- ``isSource`` expects an additional parameter specifying the flow state.
+- ``isSink`` optionally can take an additional parameter specifying the flow state.
+  If omitted, the sinks are in effect for all flow states.
+- ``isAdditionalFlowStep`` optionally can take two additional parameters specifying the predecessor and successor flow states.
+  If omitted, the generated steps apply for any flow state and preserve the current flow state.
+- ``isBarrier`` optionally can take an additional parameter specifying the flow state to block.
+  If omitted, the barriers block all flow states.
 
-Each of the three member predicates ``isSource``, ``isSink`` and
-``isAdditionalFlowStep``/``isAdditionalTaintStep`` has one version that uses the default flow
-labels, and one version that allows specifying custom flow labels through additional arguments.
-
-For ``isSource``, there is one additional argument specifying which flow label(s) should be
-associated with values originating from this source. If multiple flow labels are specified, each
-value is associated with `all` of them.
-
-For ``isSink``, the additional argument specifies which flow label(s) a value that flows into this
-source may be associated with. If multiple flow labels are specified, then any value that is
-associated with `at least one` of them will be considered by the configuration.
-
-For ``isAdditionalFlowStep`` there are two additional arguments ``predlbl`` and ``succlbl``, which
-allow flow steps to act as flow label transformers. If a value associated with ``predlbl`` arrives
-at the start node of the additional step, it is propagated to the end node and associated with
-``succlbl``. Of course, ``predlbl`` and ``succlbl`` may be the same, indicating that the flow step
-preserves this label. There can also be multiple values of ``succlbl`` for a single ``predlbl`` or
-vice versa.
-
-Note that if you do not restrict ``succlbl`` then it will be allowed to range over all flow labels.
-This may cause labels that were previously blocked on a path to reappear, which is not usually what
-you want.
-
-The flow label-aware version of ``isBarrier`` is called ``isLabeledBarrier``: unlike ``isBarrier``,
-which prevents any flow past the given node, it only blocks flow of values associated with one of
-the specified flow labels.
-
-Standard queries using flow labels
+Standard queries using flow state
 ----------------------------------
 
-Some of our standard security queries use flow labels. You can look at their implementation
-to get a feeling for how to use flow labels in practice.
+Some of our standard security queries use flow state. You can look at their implementation
+to get a feeling for how to use flow state in practice.
 
 In particular, both of the examples mentioned in the section on limitations of basic data flow above
-are from standard security queries that use flow labels. The `Prototype-polluting merge call
-<https://codeql.github.com/codeql-query-help/javascript/js-prototype-pollution/>`_ query uses two flow labels to distinguish completely
+are from standard security queries that use flow state. The `Prototype-polluting merge call
+<https://codeql.github.com/codeql-query-help/javascript/js-prototype-pollution/>`_ query uses two flow states to distinguish completely
 tainted objects from partially tainted objects. The `Uncontrolled data used in path expression
-<https://codeql.github.com/codeql-query-help/javascript/js-path-injection/>`_ query uses four flow labels to track whether a user-controlled
+<https://codeql.github.com/codeql-query-help/javascript/js-path-injection/>`_ query uses four flow states to track whether a user-controlled
 string may be an absolute path and whether it may contain ``..`` components.
 
 Further reading
 ---------------
 
-- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
+- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
 
 
 .. include:: ../reusables/javascript-further-reading.rst

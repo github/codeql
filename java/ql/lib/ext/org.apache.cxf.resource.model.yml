@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.cxf.resource", "ExtendedURIResolver", True, "resolve", "(String,String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.apache.cxf.resource", "ExtendedURIResolver", True, "resolve", "(String,String)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.apache.cxf.resource", "URIResolver", True, "URIResolver", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.apache.cxf.resource", "URIResolver", True, "URIResolver", "(String,String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.resource", "URIResolver", True, "URIResolver", "(String,String)", "", "Argument[1]", "request-forgery", "manual"]
+      - ["org.apache.cxf.resource", "URIResolver", True, "URIResolver", "(String,String,Class)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.resource", "URIResolver", True, "URIResolver", "(String,String,Class)", "", "Argument[1]", "request-forgery", "manual"]
+      - ["org.apache.cxf.resource", "URIResolver", True, "resolve", "(String,String,Class)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.cxf.resource", "URIResolver", True, "resolve", "(String,String,Class)", "", "Argument[1]", "request-forgery", "manual"]

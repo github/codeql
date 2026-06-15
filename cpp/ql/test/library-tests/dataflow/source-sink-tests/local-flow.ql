@@ -1,15 +1,13 @@
 /** This tests that we are able to detect local flow sources. */
 
 import cpp
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.code.cpp.security.FlowSources
 
-class LocalFlowSourceTest extends InlineExpectationsTest {
-  LocalFlowSourceTest() { this = "LocalFlowSourceTest" }
+module LocalFlowSourceTest implements TestSig {
+  string getARelevantTag() { result = "local_source" }
 
-  override string getARelevantTag() { result = "local_source" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "local_source" and
     exists(LocalFlowSource node, int n |
       n =
@@ -30,3 +28,5 @@ class LocalFlowSourceTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<LocalFlowSourceTest>

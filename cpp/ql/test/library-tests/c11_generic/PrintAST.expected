@@ -1,0 +1,458 @@
+#-----| [CopyAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
+#-----|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const __va_list_tag &
+#-----| [MoveAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
+#-----|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] __va_list_tag &&
+generic.c:
+#    3| [FormattingFunction,TopLevelFunction] int printf(char const*)
+#    3|   <params>: 
+#    3|     getParameter(0): [Parameter] format
+#    3|         Type = [PointerType] const char *
+#   14| [TopLevelFunction] int main()
+#   14|   <params>: 
+#   15|   getEntryPoint(): [BlockStmt] { ... }
+#   16|     getStmt(0): [DeclStmt] declaration
+#   16|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+#   16|           Type = [IntType] int
+#   17|     getStmt(1): [DeclStmt] declaration
+#   17|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of m
+#   17|           Type = [CTypedefType] MYINT
+#   18|     getStmt(2): [DeclStmt] declaration
+#   18|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+#   18|           Type = [PointerType] const char *
+#   19|     getStmt(3): [DeclStmt] declaration
+#   19|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of f
+#   19|           Type = [PointerType] float ***
+#   21|     getStmt(4): [ExprStmt] ExprStmt
+#   21|       getExpr(): [FormattingFunctionCall,FunctionCall] call to printf
+#   21|           Type = [IntType] int
+#   21|           ValueCategory = prvalue
+#   21|         getArgument(0): i is %s\n
+#   21|             Type = [ArrayType] char[9]
+#   21|             Value = [StringLiteral] "i is %s\n"
+#   21|             ValueCategory = lvalue
+#   21|         getArgument(1): int
+#   21|             Type = [ArrayType] char[4]
+#   21|             Value = [StringLiteral] "int"
+#   21|             ValueCategory = lvalue
+#   21|         getArgument(0).getFullyConverted(): [CStyleCast] (const char *)...
+#   21|             Conversion = [PointerConversion] pointer conversion
+#   21|             Type = [PointerType] const char *
+#   21|             ValueCategory = prvalue
+#   21|           getExpr(): [ArrayToPointerConversion] array to pointer conversion
+#   21|               Type = [CharPointerType] char *
+#   21|               ValueCategory = prvalue
+#   21|         getArgument(1).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   21|             Type = [CharPointerType] char *
+#   21|             ValueCategory = prvalue
+#   21|           getExpr(): [C11GenericExpr] _Generic
+#   21|               Type = [ArrayType] char[4]
+#   21|               Value = [C11GenericExpr] int
+#   21|               ValueCategory = lvalue
+#   21|             getControllingExpr(): [VariableAccess] i
+#   21|                 Type = [IntType] int
+#   21|                 ValueCategory = prvalue(load)
+#   21|             getAssociationType(0): [TypeName] int
+#   21|                 Type = [IntType] int
+#   21|                 ValueCategory = prvalue
+#   21|             getAssociationExpr(0): [ReuseExpr] reuse of int
+#   21|                 Type = [ArrayType] char[4]
+#   21|                 ValueCategory = lvalue
+#   21|             getAssociationType(1): [TypeName] const char *
+#   21|                 Type = [PointerType] const char *
+#   21|                 ValueCategory = prvalue
+#   21|             getAssociationExpr(1): string
+#   21|                 Type = [ArrayType] char[7]
+#   21|                 Value = [StringLiteral] "string"
+#   21|                 ValueCategory = lvalue
+#   21|             getAssociationType(2): [TypeName] void
+#   21|                 Type = [VoidType] void
+#   21|                 ValueCategory = prvalue
+#   21|             getAssociationExpr(2): unknown
+#   21|                 Type = [ArrayType] char[8]
+#   21|                 Value = [StringLiteral] "unknown"
+#   21|                 ValueCategory = lvalue
+#   21|             getControllingExpr().getFullyConverted(): [ParenthesisExpr] (...)
+#   21|                 Type = [IntType] int
+#   21|                 ValueCategory = prvalue(load)
+#   22|     getStmt(5): [ExprStmt] ExprStmt
+#   22|       getExpr(): [FormattingFunctionCall,FunctionCall] call to printf
+#   22|           Type = [IntType] int
+#   22|           ValueCategory = prvalue
+#   22|         getArgument(0): c is %s\n
+#   22|             Type = [ArrayType] char[9]
+#   22|             Value = [StringLiteral] "c is %s\n"
+#   22|             ValueCategory = lvalue
+#   22|         getArgument(1): int
+#   22|             Type = [ArrayType] char[4]
+#   22|             Value = [StringLiteral] "int"
+#   22|             ValueCategory = lvalue
+#   22|         getArgument(0).getFullyConverted(): [CStyleCast] (const char *)...
+#   22|             Conversion = [PointerConversion] pointer conversion
+#   22|             Type = [PointerType] const char *
+#   22|             ValueCategory = prvalue
+#   22|           getExpr(): [ArrayToPointerConversion] array to pointer conversion
+#   22|               Type = [CharPointerType] char *
+#   22|               ValueCategory = prvalue
+#   22|         getArgument(1).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   22|             Type = [CharPointerType] char *
+#   22|             ValueCategory = prvalue
+#   22|           getExpr(): [C11GenericExpr] _Generic
+#   22|               Type = [ArrayType] char[4]
+#   22|               Value = [C11GenericExpr] int
+#   22|               ValueCategory = lvalue
+#   22|             getControllingExpr(): [VariableAccess] m
+#   22|                 Type = [CTypedefType] MYINT
+#   22|                 ValueCategory = prvalue(load)
+#   22|             getAssociationType(0): [TypeName] int
+#   22|                 Type = [IntType] int
+#   22|                 ValueCategory = prvalue
+#   22|             getAssociationExpr(0): [ReuseExpr] reuse of int
+#   22|                 Type = [ArrayType] char[4]
+#   22|                 ValueCategory = lvalue
+#   22|             getAssociationType(1): [TypeName] const char *
+#   22|                 Type = [PointerType] const char *
+#   22|                 ValueCategory = prvalue
+#   22|             getAssociationExpr(1): string
+#   22|                 Type = [ArrayType] char[7]
+#   22|                 Value = [StringLiteral] "string"
+#   22|                 ValueCategory = lvalue
+#   22|             getAssociationType(2): [TypeName] void
+#   22|                 Type = [VoidType] void
+#   22|                 ValueCategory = prvalue
+#   22|             getAssociationExpr(2): unknown
+#   22|                 Type = [ArrayType] char[8]
+#   22|                 Value = [StringLiteral] "unknown"
+#   22|                 ValueCategory = lvalue
+#   22|             getControllingExpr().getFullyConverted(): [ParenthesisExpr] (...)
+#   22|                 Type = [CTypedefType] MYINT
+#   22|                 ValueCategory = prvalue(load)
+#   23|     getStmt(6): [ExprStmt] ExprStmt
+#   23|       getExpr(): [FormattingFunctionCall,FunctionCall] call to printf
+#   23|           Type = [IntType] int
+#   23|           ValueCategory = prvalue
+#   23|         getArgument(0): s is %s\n
+#   23|             Type = [ArrayType] char[9]
+#   23|             Value = [StringLiteral] "s is %s\n"
+#   23|             ValueCategory = lvalue
+#   23|         getArgument(1): string
+#   23|             Type = [ArrayType] char[7]
+#   23|             Value = [StringLiteral] "string"
+#   23|             ValueCategory = lvalue
+#   23|         getArgument(0).getFullyConverted(): [CStyleCast] (const char *)...
+#   23|             Conversion = [PointerConversion] pointer conversion
+#   23|             Type = [PointerType] const char *
+#   23|             ValueCategory = prvalue
+#   23|           getExpr(): [ArrayToPointerConversion] array to pointer conversion
+#   23|               Type = [CharPointerType] char *
+#   23|               ValueCategory = prvalue
+#   23|         getArgument(1).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   23|             Type = [CharPointerType] char *
+#   23|             ValueCategory = prvalue
+#   23|           getExpr(): [C11GenericExpr] _Generic
+#   23|               Type = [ArrayType] char[7]
+#   23|               Value = [C11GenericExpr] string
+#   23|               ValueCategory = lvalue
+#   23|             getControllingExpr(): [VariableAccess] s
+#   23|                 Type = [PointerType] const char *
+#   23|                 ValueCategory = prvalue(load)
+#   23|             getAssociationType(0): [TypeName] int
+#   23|                 Type = [IntType] int
+#   23|                 ValueCategory = prvalue
+#   23|             getAssociationExpr(0): int
+#   23|                 Type = [ArrayType] char[4]
+#   23|                 Value = [StringLiteral] "int"
+#   23|                 ValueCategory = lvalue
+#   23|             getAssociationType(1): [TypeName] const char *
+#   23|                 Type = [PointerType] const char *
+#   23|                 ValueCategory = prvalue
+#   23|             getAssociationExpr(1): [ReuseExpr] reuse of string
+#   23|                 Type = [ArrayType] char[7]
+#   23|                 ValueCategory = lvalue
+#   23|             getAssociationType(2): [TypeName] void
+#   23|                 Type = [VoidType] void
+#   23|                 ValueCategory = prvalue
+#   23|             getAssociationExpr(2): unknown
+#   23|                 Type = [ArrayType] char[8]
+#   23|                 Value = [StringLiteral] "unknown"
+#   23|                 ValueCategory = lvalue
+#   23|             getControllingExpr().getFullyConverted(): [ParenthesisExpr] (...)
+#   23|                 Type = [PointerType] const char *
+#   23|                 ValueCategory = prvalue(load)
+#   24|     getStmt(7): [ExprStmt] ExprStmt
+#   24|       getExpr(): [FormattingFunctionCall,FunctionCall] call to printf
+#   24|           Type = [IntType] int
+#   24|           ValueCategory = prvalue
+#   24|         getArgument(0): f is %s\n
+#   24|             Type = [ArrayType] char[9]
+#   24|             Value = [StringLiteral] "f is %s\n"
+#   24|             ValueCategory = lvalue
+#   24|         getArgument(1): unknown
+#   24|             Type = [ArrayType] char[8]
+#   24|             Value = [StringLiteral] "unknown"
+#   24|             ValueCategory = lvalue
+#   24|         getArgument(0).getFullyConverted(): [CStyleCast] (const char *)...
+#   24|             Conversion = [PointerConversion] pointer conversion
+#   24|             Type = [PointerType] const char *
+#   24|             ValueCategory = prvalue
+#   24|           getExpr(): [ArrayToPointerConversion] array to pointer conversion
+#   24|               Type = [CharPointerType] char *
+#   24|               ValueCategory = prvalue
+#   24|         getArgument(1).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   24|             Type = [CharPointerType] char *
+#   24|             ValueCategory = prvalue
+#   24|           getExpr(): [C11GenericExpr] _Generic
+#   24|               Type = [ArrayType] char[8]
+#   24|               Value = [C11GenericExpr] unknown
+#   24|               ValueCategory = lvalue
+#   24|             getControllingExpr(): [VariableAccess] f
+#   24|                 Type = [PointerType] float ***
+#   24|                 ValueCategory = prvalue(load)
+#   24|             getAssociationType(0): [TypeName] int
+#   24|                 Type = [IntType] int
+#   24|                 ValueCategory = prvalue
+#   24|             getAssociationExpr(0): int
+#   24|                 Type = [ArrayType] char[4]
+#   24|                 Value = [StringLiteral] "int"
+#   24|                 ValueCategory = lvalue
+#   24|             getAssociationType(1): [TypeName] const char *
+#   24|                 Type = [PointerType] const char *
+#   24|                 ValueCategory = prvalue
+#   24|             getAssociationExpr(1): string
+#   24|                 Type = [ArrayType] char[7]
+#   24|                 Value = [StringLiteral] "string"
+#   24|                 ValueCategory = lvalue
+#   24|             getAssociationType(2): [TypeName] void
+#   24|                 Type = [VoidType] void
+#   24|                 ValueCategory = prvalue
+#   24|             getAssociationExpr(2): [ReuseExpr] reuse of unknown
+#   24|                 Type = [ArrayType] char[8]
+#   24|                 ValueCategory = lvalue
+#   24|             getControllingExpr().getFullyConverted(): [ParenthesisExpr] (...)
+#   24|                 Type = [PointerType] float ***
+#   24|                 ValueCategory = prvalue(load)
+#   25|     getStmt(8): [ReturnStmt] return ...
+#-----|       getExpr(): [Literal] 0
+#-----|           Type = [IntType] int
+#-----|           Value = [Literal] 0
+#-----|           ValueCategory = prvalue
+generic.cpp:
+#    4| [FormattingFunction,TopLevelFunction] int printf(char const*)
+#    4|   <params>: 
+#    4|     getParameter(0): [Parameter] format
+#    4|         Type = [PointerType] const char *
+#   15| [TopLevelFunction] int main()
+#   15|   <params>: 
+#   16|   getEntryPoint(): [BlockStmt] { ... }
+#   17|     getStmt(0): [DeclStmt] declaration
+#   17|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+#   17|           Type = [IntType] int
+#   18|     getStmt(1): [DeclStmt] declaration
+#   18|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of m
+#   18|           Type = [CTypedefType] MYINT
+#   19|     getStmt(2): [DeclStmt] declaration
+#   19|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+#   19|           Type = [PointerType] const char *
+#   20|     getStmt(3): [DeclStmt] declaration
+#   20|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of f
+#   20|           Type = [PointerType] float ***
+#   22|     getStmt(4): [ExprStmt] ExprStmt
+#   22|       getExpr(): [FormattingFunctionCall,FunctionCall] call to printf
+#   22|           Type = [IntType] int
+#   22|           ValueCategory = prvalue
+#   22|         getArgument(0): i is %s\n
+#   22|             Type = [ArrayType] const char[9]
+#   22|             Value = [StringLiteral] "i is %s\n"
+#   22|             ValueCategory = lvalue
+#   22|         getArgument(1): int
+#   22|             Type = [ArrayType] const char[4]
+#   22|             Value = [StringLiteral] "int"
+#   22|             ValueCategory = lvalue
+#   22|         getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   22|             Type = [PointerType] const char *
+#   22|             ValueCategory = prvalue
+#   22|         getArgument(1).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   22|             Type = [PointerType] const char *
+#   22|             ValueCategory = prvalue
+#   22|           getExpr(): [C11GenericExpr] _Generic
+#   22|               Type = [ArrayType] const char[4]
+#   22|               Value = [C11GenericExpr] int
+#   22|               ValueCategory = lvalue
+#   22|             getControllingExpr(): [VariableAccess] i
+#   22|                 Type = [IntType] int
+#   22|                 ValueCategory = lvalue
+#   22|             getAssociationType(0): [TypeName] int
+#   22|                 Type = [IntType] int
+#   22|                 ValueCategory = prvalue
+#   22|             getAssociationExpr(0): [ReuseExpr] reuse of int
+#   22|                 Type = [ArrayType] const char[4]
+#   22|                 ValueCategory = lvalue
+#   22|             getAssociationType(1): [TypeName] const char *
+#   22|                 Type = [PointerType] const char *
+#   22|                 ValueCategory = prvalue
+#   22|             getAssociationExpr(1): string
+#   22|                 Type = [ArrayType] const char[7]
+#   22|                 Value = [StringLiteral] "string"
+#   22|                 ValueCategory = lvalue
+#   22|             getAssociationType(2): [TypeName] void
+#   22|                 Type = [VoidType] void
+#   22|                 ValueCategory = prvalue
+#   22|             getAssociationExpr(2): unknown
+#   22|                 Type = [ArrayType] const char[8]
+#   22|                 Value = [StringLiteral] "unknown"
+#   22|                 ValueCategory = lvalue
+#   22|             getControllingExpr().getFullyConverted(): [ParenthesisExpr] (...)
+#   22|                 Type = [IntType] int
+#   22|                 ValueCategory = lvalue
+#   23|     getStmt(5): [ExprStmt] ExprStmt
+#   23|       getExpr(): [FormattingFunctionCall,FunctionCall] call to printf
+#   23|           Type = [IntType] int
+#   23|           ValueCategory = prvalue
+#   23|         getArgument(0): c is %s\n
+#   23|             Type = [ArrayType] const char[9]
+#   23|             Value = [StringLiteral] "c is %s\n"
+#   23|             ValueCategory = lvalue
+#   23|         getArgument(1): int
+#   23|             Type = [ArrayType] const char[4]
+#   23|             Value = [StringLiteral] "int"
+#   23|             ValueCategory = lvalue
+#   23|         getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   23|             Type = [PointerType] const char *
+#   23|             ValueCategory = prvalue
+#   23|         getArgument(1).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   23|             Type = [PointerType] const char *
+#   23|             ValueCategory = prvalue
+#   23|           getExpr(): [C11GenericExpr] _Generic
+#   23|               Type = [ArrayType] const char[4]
+#   23|               Value = [C11GenericExpr] int
+#   23|               ValueCategory = lvalue
+#   23|             getControllingExpr(): [VariableAccess] m
+#   23|                 Type = [CTypedefType] MYINT
+#   23|                 ValueCategory = lvalue
+#   23|             getAssociationType(0): [TypeName] int
+#   23|                 Type = [IntType] int
+#   23|                 ValueCategory = prvalue
+#   23|             getAssociationExpr(0): [ReuseExpr] reuse of int
+#   23|                 Type = [ArrayType] const char[4]
+#   23|                 ValueCategory = lvalue
+#   23|             getAssociationType(1): [TypeName] const char *
+#   23|                 Type = [PointerType] const char *
+#   23|                 ValueCategory = prvalue
+#   23|             getAssociationExpr(1): string
+#   23|                 Type = [ArrayType] const char[7]
+#   23|                 Value = [StringLiteral] "string"
+#   23|                 ValueCategory = lvalue
+#   23|             getAssociationType(2): [TypeName] void
+#   23|                 Type = [VoidType] void
+#   23|                 ValueCategory = prvalue
+#   23|             getAssociationExpr(2): unknown
+#   23|                 Type = [ArrayType] const char[8]
+#   23|                 Value = [StringLiteral] "unknown"
+#   23|                 ValueCategory = lvalue
+#   23|             getControllingExpr().getFullyConverted(): [ParenthesisExpr] (...)
+#   23|                 Type = [CTypedefType] MYINT
+#   23|                 ValueCategory = lvalue
+#   24|     getStmt(6): [ExprStmt] ExprStmt
+#   24|       getExpr(): [FormattingFunctionCall,FunctionCall] call to printf
+#   24|           Type = [IntType] int
+#   24|           ValueCategory = prvalue
+#   24|         getArgument(0): s is %s\n
+#   24|             Type = [ArrayType] const char[9]
+#   24|             Value = [StringLiteral] "s is %s\n"
+#   24|             ValueCategory = lvalue
+#   24|         getArgument(1): string
+#   24|             Type = [ArrayType] const char[7]
+#   24|             Value = [StringLiteral] "string"
+#   24|             ValueCategory = lvalue
+#   24|         getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   24|             Type = [PointerType] const char *
+#   24|             ValueCategory = prvalue
+#   24|         getArgument(1).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   24|             Type = [PointerType] const char *
+#   24|             ValueCategory = prvalue
+#   24|           getExpr(): [C11GenericExpr] _Generic
+#   24|               Type = [ArrayType] const char[7]
+#   24|               Value = [C11GenericExpr] string
+#   24|               ValueCategory = lvalue
+#   24|             getControllingExpr(): [VariableAccess] s
+#   24|                 Type = [PointerType] const char *
+#   24|                 ValueCategory = lvalue
+#   24|             getAssociationType(0): [TypeName] int
+#   24|                 Type = [IntType] int
+#   24|                 ValueCategory = prvalue
+#   24|             getAssociationExpr(0): int
+#   24|                 Type = [ArrayType] const char[4]
+#   24|                 Value = [StringLiteral] "int"
+#   24|                 ValueCategory = lvalue
+#   24|             getAssociationType(1): [TypeName] const char *
+#   24|                 Type = [PointerType] const char *
+#   24|                 ValueCategory = prvalue
+#   24|             getAssociationExpr(1): [ReuseExpr] reuse of string
+#   24|                 Type = [ArrayType] const char[7]
+#   24|                 ValueCategory = lvalue
+#   24|             getAssociationType(2): [TypeName] void
+#   24|                 Type = [VoidType] void
+#   24|                 ValueCategory = prvalue
+#   24|             getAssociationExpr(2): unknown
+#   24|                 Type = [ArrayType] const char[8]
+#   24|                 Value = [StringLiteral] "unknown"
+#   24|                 ValueCategory = lvalue
+#   24|             getControllingExpr().getFullyConverted(): [ParenthesisExpr] (...)
+#   24|                 Type = [PointerType] const char *
+#   24|                 ValueCategory = lvalue
+#   25|     getStmt(7): [ExprStmt] ExprStmt
+#   25|       getExpr(): [FormattingFunctionCall,FunctionCall] call to printf
+#   25|           Type = [IntType] int
+#   25|           ValueCategory = prvalue
+#   25|         getArgument(0): f is %s\n
+#   25|             Type = [ArrayType] const char[9]
+#   25|             Value = [StringLiteral] "f is %s\n"
+#   25|             ValueCategory = lvalue
+#   25|         getArgument(1): unknown
+#   25|             Type = [ArrayType] const char[8]
+#   25|             Value = [StringLiteral] "unknown"
+#   25|             ValueCategory = lvalue
+#   25|         getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   25|             Type = [PointerType] const char *
+#   25|             ValueCategory = prvalue
+#   25|         getArgument(1).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   25|             Type = [PointerType] const char *
+#   25|             ValueCategory = prvalue
+#   25|           getExpr(): [C11GenericExpr] _Generic
+#   25|               Type = [ArrayType] const char[8]
+#   25|               Value = [C11GenericExpr] unknown
+#   25|               ValueCategory = lvalue
+#   25|             getControllingExpr(): [VariableAccess] f
+#   25|                 Type = [PointerType] float ***
+#   25|                 ValueCategory = lvalue
+#   25|             getAssociationType(0): [TypeName] int
+#   25|                 Type = [IntType] int
+#   25|                 ValueCategory = prvalue
+#   25|             getAssociationExpr(0): int
+#   25|                 Type = [ArrayType] const char[4]
+#   25|                 Value = [StringLiteral] "int"
+#   25|                 ValueCategory = lvalue
+#   25|             getAssociationType(1): [TypeName] const char *
+#   25|                 Type = [PointerType] const char *
+#   25|                 ValueCategory = prvalue
+#   25|             getAssociationExpr(1): string
+#   25|                 Type = [ArrayType] const char[7]
+#   25|                 Value = [StringLiteral] "string"
+#   25|                 ValueCategory = lvalue
+#   25|             getAssociationType(2): [TypeName] void
+#   25|                 Type = [VoidType] void
+#   25|                 ValueCategory = prvalue
+#   25|             getAssociationExpr(2): [ReuseExpr] reuse of unknown
+#   25|                 Type = [ArrayType] const char[8]
+#   25|                 ValueCategory = lvalue
+#   25|             getControllingExpr().getFullyConverted(): [ParenthesisExpr] (...)
+#   25|                 Type = [PointerType] float ***
+#   25|                 ValueCategory = lvalue
+#   26|     getStmt(8): [ReturnStmt] return ...
+#-----|       getExpr(): [Literal] 0
+#-----|           Type = [IntType] int
+#-----|           Value = [Literal] 0
+#-----|           ValueCategory = prvalue

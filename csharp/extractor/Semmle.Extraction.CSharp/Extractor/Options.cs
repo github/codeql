@@ -32,18 +32,15 @@ namespace Semmle.Extraction.CSharp
         /// </summary>
         public bool AssemblySensitiveTrap { get; private set; } = false;
 
+        /// <summary>
+        /// The paths to the binary log files, or null if unspecified.
+        /// </summary>
+        public string[]? BinaryLogPaths { get; set; }
+
         public static Options CreateWithEnvironment(string[] arguments)
         {
             var options = new Options();
-            var extractionOptions = Environment.GetEnvironmentVariable("LGTM_INDEX_EXTRACTOR");
-
             var argsList = new List<string>(arguments);
-
-            if (!string.IsNullOrEmpty(extractionOptions))
-            {
-                argsList.AddRange(extractionOptions.Split(' '));
-            }
-
             options.ParseArguments(argsList);
             return options;
         }
@@ -72,6 +69,9 @@ namespace Semmle.Extraction.CSharp
                     return true;
                 case "load-sources-from-project":
                     ProjectsToLoad.Add(value);
+                    return true;
+                case "binlog":
+                    BinaryLogPaths = value.Split(FileUtils.NewLineCharacters, StringSplitOptions.RemoveEmptyEntries);
                     return true;
                 default:
                     return base.HandleOption(key, value);

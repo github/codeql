@@ -21,9 +21,9 @@ public class UnsafeCertTrustTest {
 		SSLParameters sslParameters = sslEngine.getSSLParameters();
 		sslParameters.setEndpointIdentificationAlgorithm(null);
 		sslEngine.setSSLParameters(sslParameters);
-		sslEngine.beginHandshake(); // $hasUnsafeCertTrust
-		sslEngine.wrap(new ByteBuffer[] {}, null); // $hasUnsafeCertTrust
-		sslEngine.unwrap(null, null, 0, 0); // $hasUnsafeCertTrust
+		sslEngine.beginHandshake(); // $ Alert
+		sslEngine.wrap(new ByteBuffer[] {}, null); // $ Alert
+		sslEngine.unwrap(null, null, 0, 0); // $ Alert
 	}
 
 	public void testSSLEngineEndpointIdSetEmpty() throws Exception {
@@ -32,9 +32,9 @@ public class UnsafeCertTrustTest {
 		SSLParameters sslParameters = sslEngine.getSSLParameters();
 		sslParameters.setEndpointIdentificationAlgorithm("");
 		sslEngine.setSSLParameters(sslParameters);
-		sslEngine.beginHandshake(); // $hasUnsafeCertTrust
-		sslEngine.wrap(new ByteBuffer[] {}, null); // $hasUnsafeCertTrust
-		sslEngine.unwrap(null, null, 0, 0); // $hasUnsafeCertTrust
+		sslEngine.beginHandshake(); // $ Alert
+		sslEngine.wrap(new ByteBuffer[] {}, null); // $ Alert
+		sslEngine.unwrap(null, null, 0, 0); // $ Alert
 	}
 
 	public void testSSLEngineEndpointIdSafe() throws Exception {
@@ -61,7 +61,7 @@ public class UnsafeCertTrustTest {
 		SSLContext sslContext = SSLContext.getInstance("TLS");
 		SSLSocketFactory socketFactory = sslContext.getSocketFactory();
 		SSLSocket socket = (SSLSocket) socketFactory.createSocket();
-		socket.getOutputStream(); // $hasUnsafeCertTrust
+		socket.getOutputStream(); // $ Alert
 	}
 
 	public void testSSLSocketEndpointIdSetNull() throws Exception {
@@ -71,7 +71,7 @@ public class UnsafeCertTrustTest {
 		SSLParameters sslParameters = socket.getSSLParameters();
 		sslParameters.setEndpointIdentificationAlgorithm(null);
 		socket.setSSLParameters(sslParameters);
-		socket.getOutputStream(); // $hasUnsafeCertTrust
+		socket.getOutputStream(); // $ Alert
 	}
 
 	public void testSSLSocketEndpointIdSetEmpty() throws Exception {
@@ -81,14 +81,14 @@ public class UnsafeCertTrustTest {
 		SSLParameters sslParameters = socket.getSSLParameters();
 		sslParameters.setEndpointIdentificationAlgorithm("");
 		socket.setSSLParameters(sslParameters);
-		socket.getOutputStream(); // $hasUnsafeCertTrust
+		socket.getOutputStream(); // $ Alert
 	}
 
 	public void testSSLSocketEndpointIdAfterConnecting() throws Exception {
 		SSLContext sslContext = SSLContext.getInstance("TLS");
 		SSLSocketFactory socketFactory = sslContext.getSocketFactory();
 		SSLSocket socket = (SSLSocket) socketFactory.createSocket();
-		socket.getOutputStream(); // $hasUnsafeCertTrust
+		socket.getOutputStream(); // $ Alert
 		SSLParameters sslParameters = socket.getSSLParameters();
 		sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
 		socket.setSSLParameters(sslParameters);
@@ -138,7 +138,7 @@ public class UnsafeCertTrustTest {
 		SSLParameters sslParameters = sslSocket.getSSLParameters();
 		sslParameters.setEndpointIdentificationAlgorithm("HTTPS");
 		sslSocket.setSSLParameters(sslParameters);
-		socket.getOutputStream(); // $ SPURIOUS: hasUnsafeCertTrust
+		socket.getOutputStream(); // $ SPURIOUS: Alert
 	}
 
 	public void testSocketEndpointIdNotSet() throws Exception {
@@ -150,11 +150,11 @@ public class UnsafeCertTrustTest {
 	public void testRabbitMQFactoryEnableHostnameVerificationNotSet() throws Exception {
 		{
 			ConnectionFactory connectionFactory = new ConnectionFactory();
-			connectionFactory.useSslProtocol(SSLContext.getDefault()); // $hasUnsafeCertTrust
+			connectionFactory.useSslProtocol(SSLContext.getDefault()); // $ Alert
 		}
 		{
 			ConnectionFactory connectionFactory = new ConnectionFactory();
-			connectionFactory.setSslContextFactory(new TestSslContextFactory()); // $hasUnsafeCertTrust
+			connectionFactory.setSslContextFactory(new TestSslContextFactory()); // $ Alert
 		}
 	}
 

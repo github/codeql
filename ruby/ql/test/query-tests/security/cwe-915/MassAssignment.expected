@@ -1,0 +1,84 @@
+edges
+| test.rb:43:9:43:14 | call to params | test.rb:43:9:43:29 | call to require | provenance |  |
+| test.rb:43:9:43:29 | call to require | test.rb:43:9:43:37 | call to permit! | provenance | Config |
+| test.rb:43:9:43:37 | call to permit! | test.rb:8:18:8:28 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:18:20:18:30 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:19:21:19:31 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:20:22:20:32 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:21:21:21:31 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:22:22:22:32 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:25:21:25:31 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:26:24:26:34 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:27:22:27:32 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:28:25:28:35 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:29:21:29:31 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:31:32:31:42 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:32:33:32:43 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:33:36:33:46 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:34:32:34:42 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:35:33:35:43 | call to user_params | provenance |  |
+| test.rb:43:9:43:37 | call to permit! | test.rb:36:26:36:36 | call to user_params | provenance |  |
+| test.rb:47:9:47:9 | x | test.rb:48:9:48:9 | x | provenance |  |
+| test.rb:47:13:47:18 | call to params | test.rb:47:13:47:25 | ...[...] | provenance |  |
+| test.rb:47:13:47:25 | ...[...] | test.rb:47:9:47:9 | x | provenance |  |
+| test.rb:48:9:48:9 | [post] x | test.rb:49:18:49:18 | x | provenance |  |
+| test.rb:48:9:48:9 | x | test.rb:48:9:48:9 | [post] x | provenance | Config |
+| test.rb:51:18:51:23 | call to params | test.rb:51:18:51:40 | call to permit | provenance | Config |
+| test.rb:52:18:52:23 | call to params | test.rb:52:18:52:69 | call to permit | provenance | Config |
+| test.rb:53:18:53:23 | call to params | test.rb:53:18:53:35 | call to to_unsafe_h | provenance | Config |
+nodes
+| test.rb:8:18:8:28 | call to user_params | semmle.label | call to user_params |
+| test.rb:18:20:18:30 | call to user_params | semmle.label | call to user_params |
+| test.rb:19:21:19:31 | call to user_params | semmle.label | call to user_params |
+| test.rb:20:22:20:32 | call to user_params | semmle.label | call to user_params |
+| test.rb:21:21:21:31 | call to user_params | semmle.label | call to user_params |
+| test.rb:22:22:22:32 | call to user_params | semmle.label | call to user_params |
+| test.rb:25:21:25:31 | call to user_params | semmle.label | call to user_params |
+| test.rb:26:24:26:34 | call to user_params | semmle.label | call to user_params |
+| test.rb:27:22:27:32 | call to user_params | semmle.label | call to user_params |
+| test.rb:28:25:28:35 | call to user_params | semmle.label | call to user_params |
+| test.rb:29:21:29:31 | call to user_params | semmle.label | call to user_params |
+| test.rb:31:32:31:42 | call to user_params | semmle.label | call to user_params |
+| test.rb:32:33:32:43 | call to user_params | semmle.label | call to user_params |
+| test.rb:33:36:33:46 | call to user_params | semmle.label | call to user_params |
+| test.rb:34:32:34:42 | call to user_params | semmle.label | call to user_params |
+| test.rb:35:33:35:43 | call to user_params | semmle.label | call to user_params |
+| test.rb:36:26:36:36 | call to user_params | semmle.label | call to user_params |
+| test.rb:43:9:43:14 | call to params | semmle.label | call to params |
+| test.rb:43:9:43:29 | call to require | semmle.label | call to require |
+| test.rb:43:9:43:37 | call to permit! | semmle.label | call to permit! |
+| test.rb:47:9:47:9 | x | semmle.label | x |
+| test.rb:47:13:47:18 | call to params | semmle.label | call to params |
+| test.rb:47:13:47:25 | ...[...] | semmle.label | ...[...] |
+| test.rb:48:9:48:9 | [post] x | semmle.label | [post] x |
+| test.rb:48:9:48:9 | x | semmle.label | x |
+| test.rb:49:18:49:18 | x | semmle.label | x |
+| test.rb:51:18:51:23 | call to params | semmle.label | call to params |
+| test.rb:51:18:51:40 | call to permit | semmle.label | call to permit |
+| test.rb:52:18:52:23 | call to params | semmle.label | call to params |
+| test.rb:52:18:52:69 | call to permit | semmle.label | call to permit |
+| test.rb:53:18:53:23 | call to params | semmle.label | call to params |
+| test.rb:53:18:53:35 | call to to_unsafe_h | semmle.label | call to to_unsafe_h |
+subpaths
+#select
+| test.rb:8:18:8:28 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:8:18:8:28 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:18:20:18:30 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:18:20:18:30 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:19:21:19:31 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:19:21:19:31 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:20:22:20:32 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:20:22:20:32 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:21:21:21:31 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:21:21:21:31 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:22:22:22:32 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:22:22:22:32 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:25:21:25:31 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:25:21:25:31 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:26:24:26:34 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:26:24:26:34 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:27:22:27:32 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:27:22:27:32 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:28:25:28:35 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:28:25:28:35 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:29:21:29:31 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:29:21:29:31 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:31:32:31:42 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:31:32:31:42 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:32:33:32:43 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:32:33:32:43 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:33:36:33:46 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:33:36:33:46 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:34:32:34:42 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:34:32:34:42 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:35:33:35:43 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:35:33:35:43 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:36:26:36:36 | call to user_params | test.rb:43:9:43:14 | call to params | test.rb:36:26:36:36 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:43:9:43:14 | call to params | this remote flow source |
+| test.rb:49:18:49:18 | x | test.rb:47:13:47:18 | call to params | test.rb:49:18:49:18 | x | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:47:13:47:18 | call to params | this remote flow source |
+| test.rb:51:18:51:40 | call to permit | test.rb:51:18:51:23 | call to params | test.rb:51:18:51:40 | call to permit | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:51:18:51:23 | call to params | this remote flow source |
+| test.rb:52:18:52:69 | call to permit | test.rb:52:18:52:23 | call to params | test.rb:52:18:52:69 | call to permit | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:52:18:52:23 | call to params | this remote flow source |
+| test.rb:53:18:53:35 | call to to_unsafe_h | test.rb:53:18:53:23 | call to params | test.rb:53:18:53:35 | call to to_unsafe_h | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:53:18:53:23 | call to params | this remote flow source |

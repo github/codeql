@@ -2,6 +2,7 @@ package main
 
 import (
 	"codeql-go-tests/protobuf/protos/query"
+
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/runtime/protoiface"
 )
@@ -12,7 +13,7 @@ func testMarshalModern() {
 
 	serialized, _ := proto.Marshal(query)
 
-	sinkBytes(serialized)
+	sinkBytes(serialized) // $ hasTaintFlow="serialized"
 }
 
 func testCloneThenMarshalModern() {
@@ -23,7 +24,7 @@ func testCloneThenMarshalModern() {
 
 	serialized, _ := proto.Marshal(queryClone)
 
-	sinkBytes(serialized)
+	sinkBytes(serialized) // $ hasTaintFlow="serialized"
 }
 
 func testUnmarshalFieldAccessModern() {
@@ -31,7 +32,7 @@ func testUnmarshalFieldAccessModern() {
 	query := &query.Query{}
 	proto.Unmarshal(untrustedSerialized, query)
 
-	sinkString(query.Description)
+	sinkString(query.Description) // $ hasTaintFlow="selection of Description"
 }
 
 func testUnmarshalGetterModern() {
@@ -39,7 +40,7 @@ func testUnmarshalGetterModern() {
 	query := &query.Query{}
 	proto.Unmarshal(untrustedSerialized, query)
 
-	sinkString(query.GetDescription())
+	sinkString(query.GetDescription()) // $ hasTaintFlow="call to GetDescription"
 }
 
 func testMergeThenMarshalModern() {
@@ -51,7 +52,7 @@ func testMergeThenMarshalModern() {
 
 	serialized, _ := proto.Marshal(query2)
 
-	sinkBytes(serialized)
+	sinkBytes(serialized) // $ hasTaintFlow="serialized"
 }
 
 func testMarshalWithOptionsModern() {
@@ -61,7 +62,7 @@ func testMarshalWithOptionsModern() {
 	options := proto.MarshalOptions{}
 	serialized, _ := options.Marshal(query)
 
-	sinkBytes(serialized)
+	sinkBytes(serialized) // $ hasTaintFlow="serialized"
 }
 
 // Tests only applicable to the modern API:
@@ -74,7 +75,7 @@ func testMarshalAppend() {
 	emptyArray := []byte{}
 	serialized, _ := options.MarshalAppend(emptyArray, query)
 
-	sinkBytes(serialized)
+	sinkBytes(serialized) // $ hasTaintFlow="serialized"
 }
 
 func testMarshalState() {
@@ -102,7 +103,7 @@ func testTaintedSubmessageModern() {
 
 	serialized, _ := proto.Marshal(query)
 
-	sinkBytes(serialized) // BAD
+	sinkBytes(serialized) // $ hasTaintFlow="serialized"
 }
 
 func testTaintedSubmessageInPlaceModern() {
@@ -114,7 +115,7 @@ func testTaintedSubmessageInPlaceModern() {
 
 	serialized, _ := proto.Marshal(query)
 
-	sinkBytes(serialized) // BAD
+	sinkBytes(serialized) // $ hasTaintFlow="serialized"
 }
 
 func testUnmarshalTaintedSubmessageModern() {
@@ -122,7 +123,7 @@ func testUnmarshalTaintedSubmessageModern() {
 	query := &query.Query{}
 	proto.Unmarshal(untrustedSerialized, query)
 
-	sinkString(query.Alerts[0].Msg) // BAD
+	sinkString(query.Alerts[0].Msg) // $ hasTaintFlow="selection of Msg"
 }
 
 func testUnmarshalOptions() {
@@ -132,7 +133,7 @@ func testUnmarshalOptions() {
 	query := &query.Query{}
 	options.Unmarshal(untrustedSerialized, query)
 
-	sinkString(query.Description) // BAD
+	sinkString(query.Description) // $ hasTaintFlow="selection of Description"
 }
 
 // This test should be ok, but is flagged because writing taint to a field of a Message
@@ -140,7 +141,7 @@ func testUnmarshalOptions() {
 func testFieldConflationFalsePositiveModern() {
 	query := &query.Query{}
 	query.Description = getUntrustedString()
-	sinkString(query.Id) // OK (but incorrectly tainted)
+	sinkString(query.Id) // $ SPURIOUS: hasTaintFlow="selection of Id"
 }
 
 // This test should be ok, but it flagged because our current implementation doesn't notice
@@ -152,7 +153,7 @@ func testMessageReuseFalsePositiveModern() {
 
 	serialized, _ := proto.Marshal(query)
 
-	sinkBytes(serialized) // OK (but incorrectly tainted)
+	sinkBytes(serialized) // $ SPURIOUS: hasTaintFlow="serialized"
 }
 
 // This test should be flagged, but we don't notice tainting via an alias of a field.
@@ -163,7 +164,7 @@ func testSubmessageAliasFalseNegativeModern() {
 
 	serialized, _ := proto.Marshal(query)
 
-	sinkBytes(serialized) // BAD (but not noticed by our current implementation)
+	sinkBytes(serialized) // $ MISSING: hasTaintFlow="serialized"
 }
 
 // This test should be flagged, but we don't notice that marshalState2.Message is the
@@ -182,7 +183,7 @@ func testMarshalStateFalseNegative() {
 	marshalState2 := marshalState
 	serialized, _ := options.MarshalState(marshalState2)
 
-	sinkBytes(serialized.Buf) // BAD (but not noticed by our current implementation)
+	sinkBytes(serialized.Buf) // $ MISSING: hasTaintFlow="selection of Buf"
 }
 
 func testTaintedMapFieldWriteModern() {
@@ -191,7 +192,7 @@ func testTaintedMapFieldWriteModern() {
 
 	serialized, _ := proto.Marshal(query)
 
-	sinkBytes(serialized) // BAD
+	sinkBytes(serialized) // $ hasTaintFlow="serialized"
 }
 
 func testTaintedMapWriteWholeMapModern() {
@@ -202,7 +203,7 @@ func testTaintedMapWriteWholeMapModern() {
 
 	serialized, _ := proto.Marshal(query)
 
-	sinkBytes(serialized) // BAD
+	sinkBytes(serialized) // $ hasTaintFlow="serialized"
 }
 
 func testTaintedMapFieldReadModern() {
@@ -211,7 +212,7 @@ func testTaintedMapFieldReadModern() {
 
 	proto.Unmarshal(untrustedSerialized, query)
 
-	sinkString(query.KeyValuePairs[123]) // BAD
+	sinkString(query.KeyValuePairs[123]) // $ hasTaintFlow="index expression"
 }
 
 func testTaintedMapFieldReadViaAliasModern() {
@@ -222,7 +223,7 @@ func testTaintedMapFieldReadViaAliasModern() {
 
 	alias := &query.KeyValuePairs
 
-	sinkString((*alias)[123]) // BAD
+	sinkString((*alias)[123]) // $ hasTaintFlow="index expression"
 }
 
 func testTaintedSubmessageInPlaceNonPointerBaseModern() {
@@ -234,5 +235,5 @@ func testTaintedSubmessageInPlaceNonPointerBaseModern() {
 
 	serialized, _ := proto.Marshal(query)
 
-	sinkBytes(serialized) // BAD (but not detected by our current implementation)
+	sinkBytes(serialized) // $ hasTaintFlow="serialized"
 }

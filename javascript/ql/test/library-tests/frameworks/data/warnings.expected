@@ -1,5 +1,3 @@
-| CSV type row should have 3 columns but has 1: test.TooFewColumns |
-| CSV type row should have 3 columns but has 6: test.TooManyColumns;;Member[Foo].Instance;too;many;columns |
 | Invalid argument '0-1' in token 'Argument[0-1]' in access path: Method[foo].Argument[0-1] |
 | Invalid argument '*' in token 'Argument[*]' in access path: Method[foo].Argument[*] |
 | Invalid token 'Argument' is missing its arguments, in access path: Method[foo].Argument |

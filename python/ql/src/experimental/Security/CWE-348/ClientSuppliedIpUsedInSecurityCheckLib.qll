@@ -20,7 +20,7 @@ private class FlaskClientSuppliedIpUsedInSecurityCheck extends ClientSuppliedIpU
 {
   FlaskClientSuppliedIpUsedInSecurityCheck() {
     this = Flask::request().getMember("headers").getMember(["get", "get_all", "getlist"]).getACall() and
-    this.getArg(0).asExpr().(StrConst).getText().toLowerCase() = clientIpParameterName()
+    this.getArg(0).asExpr().(StringLiteral).getText().toLowerCase() = clientIpParameterName()
   }
 }
 
@@ -35,7 +35,7 @@ private class DjangoClientSuppliedIpUsedInSecurityCheck extends ClientSuppliedIp
       headers.getAttributeName() in ["headers", "META"] and
       this.calls(headers, "get")
     ) and
-    this.getArg(0).asExpr().(StrConst).getText().toLowerCase() = clientIpParameterName()
+    this.getArg(0).asExpr().(StringLiteral).getText().toLowerCase() = clientIpParameterName()
   }
 }
 
@@ -54,7 +54,7 @@ private class TornadoClientSuppliedIpUsedInSecurityCheck extends ClientSuppliedI
       headers.getAttributeName() = "headers" and
       this.calls(headers, ["get", "get_list"])
     ) and
-    this.getArg(0).asExpr().(StrConst).getText().toLowerCase() = clientIpParameterName()
+    this.getArg(0).asExpr().(StringLiteral).getText().toLowerCase() = clientIpParameterName()
   }
 }
 
@@ -85,8 +85,8 @@ private class CompareSink extends PossibleSecurityCheck {
   CompareSink() {
     exists(Call call |
       call.getFunc().(Attribute).getName() = "startswith" and
-      call.getArg(0).(StrConst).getText().regexpMatch(getIpAddressRegex()) and
-      not call.getArg(0).(StrConst).getText() = "0:0:0:0:0:0:0:1" and
+      call.getArg(0).(StringLiteral).getText().regexpMatch(getIpAddressRegex()) and
+      not call.getArg(0).(StringLiteral).getText() = "0:0:0:0:0:0:0:1" and
       call.getFunc().(Attribute).getObject() = this.asExpr()
     )
     or
@@ -97,12 +97,12 @@ private class CompareSink extends PossibleSecurityCheck {
       ) and
       (
         compare.getLeft() = this.asExpr() and
-        compare.getComparator(0).(StrConst).getText() instanceof PrivateHostName and
-        not compare.getComparator(0).(StrConst).getText() = "0:0:0:0:0:0:0:1"
+        compare.getComparator(0).(StringLiteral).getText() instanceof PrivateHostName and
+        not compare.getComparator(0).(StringLiteral).getText() = "0:0:0:0:0:0:0:1"
         or
         compare.getComparator(0) = this.asExpr() and
-        compare.getLeft().(StrConst).getText() instanceof PrivateHostName and
-        not compare.getLeft().(StrConst).getText() = "0:0:0:0:0:0:0:1"
+        compare.getLeft().(StringLiteral).getText() instanceof PrivateHostName and
+        not compare.getLeft().(StringLiteral).getText() = "0:0:0:0:0:0:0:1"
       )
     )
     or
@@ -115,7 +115,7 @@ private class CompareSink extends PossibleSecurityCheck {
         compare.getLeft() = this.asExpr()
         or
         compare.getComparator(0) = this.asExpr() and
-        not compare.getLeft().(StrConst).getText() in ["%", ",", "."]
+        not compare.getLeft().(StringLiteral).getText() in ["%", ",", "."]
       )
     )
   }

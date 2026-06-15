@@ -1,6 +1,6 @@
 import java
 
-from MethodAccess ma
+from MethodCall ma
 // Generally Kotlin calls will always use an explicit qualifier, except for calls
 // to the synthetic instance initializer <obinit>, which use an implicit `this`.
 where

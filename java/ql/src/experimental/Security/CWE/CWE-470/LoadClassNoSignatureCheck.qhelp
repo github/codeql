@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If an application loads classes or code from another app based solely on its package name without 
+first checking its package signature, this could allow a malicious app with the same package name 
+to be loaded through "package namespace squatting".
+If the victim user install such malicious app in the same device as the vulnerable app, the vulnerable app would load
+classes or code from the malicious app, potentially leading to arbitrary code execution.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Verify the package signature in addition to the package name before loading any classes or code from another application.
+</p>
+</recommendation>
+
+<example>
+<p>
+The <code>BadClassLoader</code> class illustrates class loading with the <code>android.content.pm.PackageInfo.packageName.startsWith()</code> method without any check on the package signature. 
+</p>
+<sample src="BadClassLoader.java" />
+<p>
+The <code>GoodClassLoader</code> class illustrates class loading with correct package signature check using the <code>android.content.pm.PackageManager.checkSignatures()</code> method.
+</p>
+<sample src="GoodClassLoader.java" />
+</example>
+
+
+<references>
+<li>
+<a href="https://blog.oversecured.com/Android-arbitrary-code-execution-via-third-party-package-contexts/">
+Oversecured (Android: arbitrary code execution via third-party package contexts)
+</a>
+</li>
+</references>
+
+</qhelp>

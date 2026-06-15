@@ -8,6 +8,6 @@ function processResponse(response) {
     if (error)
        throw error;
   } else {
-    error("Unexpected response status " + response.status);
+    error("Unexpected response status " + response.status); // $ Alert
   }
 }

@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If an LDAP query or DN is built using string concatenation or string formatting, and the
+components of the concatenation include user input without any proper sanitization, a user
+is likely to be able to run malicious LDAP queries.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If user input must be included in an LDAP query or DN, it should be escaped to
+avoid a malicious user providing special characters that change the meaning
+of the query.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following Rails example, an <code>ActionController</code> class
+has a <code>ldap_handler</code> method to handle requests.
+</p>
+
+<p>
+The user and dc is specified using a parameter, <code>user_name</code> and <code>dc</code> provided by
+the client which it then uses to build a LDAP query and DN. This value is accessible using the <code>params</code> method.
+</p>
+
+<p>The first example uses the unsanitized user input directly
+in the search filter and DN for the LDAP query.
+A malicious user could provide special characters to change the meaning of these
+components, and search for a completely different set of values.</p>
+
+<sample src="examples/LdapInjectionBad.rb" />
+
+<p>In the second example, the input provided by the user is sanitized before it is included in the search filter or DN.
+This ensures the meaning of the query cannot be changed by a malicious user.</p>
+
+<sample src="examples/LdapInjectionGood.rb" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html">LDAP Injection Prevention Cheat Sheet</a>.</li>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/LDAP_Injection">LDAP Injection</a>.</li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/LDAP_injection">LDAP injection</a>.</li>
+<li>BlackHat: <a href="https://www.blackhat.com/presentations/bh-europe-08/Alonso-Parada/Whitepaper/bh-eu-08-alonso-parada-WP.pdf">LDAP Injection and Blind LDAP Injection</a>.</li>
+<li>LDAP: <a href="https://ldap.com/2018/05/04/understanding-and-defending-against-ldap-injection-attacks/">Understanding and Defending Against LDAP Injection Attacks</a>.</li>
+</references>
+</qhelp>

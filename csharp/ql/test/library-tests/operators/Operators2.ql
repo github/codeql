@@ -6,6 +6,6 @@ import csharp
 
 from IncrementOperator o
 where
-  o.getDeclaringType().hasQualifiedName("Operators", "IntVector") and
+  o.getDeclaringType().hasFullyQualifiedName("Operators", "IntVector") and
   o.getStatementBody().getStmt(2) instanceof ReturnStmt
 select o, o.getReturnType()

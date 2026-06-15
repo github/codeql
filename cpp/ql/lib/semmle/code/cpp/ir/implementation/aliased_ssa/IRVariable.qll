@@ -17,18 +17,11 @@ private import Imports::IRType
  * The variable may be a user-declared variable (`IRUserVariable`) or a temporary variable generated
  * by the AST-to-IR translation (`IRTempVariable`).
  */
-class IRVariable extends TIRVariable {
+abstract private class AbstractIRVariable extends TIRVariable {
   Language::Declaration func;
 
-  IRVariable() {
-    this = TIRUserVariable(_, _, func) or
-    this = TIRTempVariable(func, _, _, _) or
-    this = TIRStringLiteral(func, _, _, _) or
-    this = TIRDynamicInitializationFlag(func, _, _)
-  }
-
   /** Gets a textual representation of this element. */
-  string toString() { none() }
+  abstract string toString();
 
   /**
    * Holds if this variable's value cannot be changed within a function. Currently used for string
@@ -49,22 +42,19 @@ class IRVariable extends TIRVariable {
   /**
    * Gets the type of the variable.
    */
-  Language::LanguageType getLanguageType() { none() }
+  abstract Language::LanguageType getLanguageType();
 
   /**
    * Gets the AST node that declared this variable, or that introduced this
    * variable as part of the AST-to-IR translation.
    */
-  Language::AST getAst() { none() }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated Language::AST getAST() { result = this.getAst() }
+  abstract Language::AST getAst();
 
   /**
    * Gets an identifier string for the variable. This identifier is unique
    * within the function.
    */
-  string getUniqueId() { none() }
+  abstract string getUniqueId();
 
   /**
    * Gets the source location of this variable.
@@ -74,7 +64,7 @@ class IRVariable extends TIRVariable {
   /**
    * Gets the IR for the function that references this variable.
    */
-  final IRFunction getEnclosingIRFunction() { result.getFunction() = func }
+  final IRFunction getEnclosingIRFunction() { result.getFunction() = this.getEnclosingFunction() }
 
   /**
    * Gets the function that references this variable.
@@ -83,9 +73,17 @@ class IRVariable extends TIRVariable {
 }
 
 /**
+ * A variable referenced by the IR for a function.
+ *
+ * The variable may be a user-declared variable (`IRUserVariable`) or a temporary variable generated
+ * by the AST-to-IR translation (`IRTempVariable`).
+ */
+final class IRVariable = AbstractIRVariable;
+
+/**
  * A user-declared variable referenced by the IR for a function.
  */
-class IRUserVariable extends IRVariable, TIRUserVariable {
+class IRUserVariable extends AbstractIRVariable, TIRUserVariable {
   Language::Variable var;
   Language::LanguageType type;
 
@@ -94,9 +92,6 @@ class IRUserVariable extends IRVariable, TIRUserVariable {
   final override string toString() { result = this.getVariable().toString() }
 
   final override Language::AST getAst() { result = var }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
 
   final override string getUniqueId() {
     result = this.getVariable().toString() + " " + this.getVariable().getLocation().toString()
@@ -114,26 +109,29 @@ class IRUserVariable extends IRVariable, TIRUserVariable {
  * A variable (user-declared or temporary) that is allocated on the stack. This includes all
  * parameters, non-static local variables, and temporary variables.
  */
-class IRAutomaticVariable extends IRVariable {
-  IRAutomaticVariable() {
-    exists(Language::Variable var |
-      this = TIRUserVariable(var, _, func) and
-      Language::isVariableAutomatic(var)
-    )
-    or
-    this = TIRTempVariable(func, _, _, _)
-  }
+abstract private class AbstractIRAutomaticVariable extends AbstractIRVariable { }
+
+/**
+ * A variable (user-declared or temporary) that is allocated on the stack. This includes all
+ * parameters, non-static local variables, and temporary variables.
+ */
+final class IRAutomaticVariable = AbstractIRAutomaticVariable;
+
+/**
+ * A user-declared variable that is allocated on the stack. This includes all parameters and
+ * non-static local variables.
+ */
+private class AbstractIRAutomaticUserVariable extends IRUserVariable, AbstractIRAutomaticVariable {
+  override Language::AutomaticVariable var;
+
+  final override Language::AutomaticVariable getVariable() { result = var }
 }
 
 /**
  * A user-declared variable that is allocated on the stack. This includes all parameters and
  * non-static local variables.
  */
-class IRAutomaticUserVariable extends IRUserVariable, IRAutomaticVariable {
-  override Language::AutomaticVariable var;
-
-  final override Language::AutomaticVariable getVariable() { result = var }
-}
+final class IRAutomaticUserVariable = AbstractIRAutomaticUserVariable;
 
 /**
  * A user-declared variable that is not allocated on the stack. This includes all global variables,
@@ -151,22 +149,13 @@ class IRStaticUserVariable extends IRUserVariable {
  * A variable that is not user-declared. This includes temporary variables generated as part of IR
  * construction, as well as string literals.
  */
-class IRGeneratedVariable extends IRVariable {
+abstract private class AbstractIRGeneratedVariable extends AbstractIRVariable {
   Language::AST ast;
   Language::LanguageType type;
-
-  IRGeneratedVariable() {
-    this = TIRTempVariable(func, ast, _, type) or
-    this = TIRStringLiteral(func, ast, type, _) or
-    this = TIRDynamicInitializationFlag(func, ast, type)
-  }
 
   final override Language::LanguageType getLanguageType() { result = type }
 
   final override Language::AST getAst() { result = ast }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = this.getAst() }
 
   override string toString() { result = this.getBaseString() + this.getLocationString() }
 
@@ -197,11 +186,19 @@ class IRGeneratedVariable extends IRVariable {
 }
 
 /**
+ * A variable that is not user-declared. This includes temporary variables generated as part of IR
+ * construction, as well as string literals.
+ */
+final class IRGeneratedVariable = AbstractIRGeneratedVariable;
+
+/**
  * A temporary variable introduced by IR construction. The most common examples are the variable
  * generated to hold the return value of a function, or the variable generated to hold the result of
  * a condition operator (`a ? b : c`).
  */
-class IRTempVariable extends IRGeneratedVariable, IRAutomaticVariable, TIRTempVariable {
+class IRTempVariable extends AbstractIRGeneratedVariable, AbstractIRAutomaticVariable,
+  TIRTempVariable
+{
   TempVariableTag tag;
 
   IRTempVariable() { this = TIRTempVariable(func, ast, tag, type) }
@@ -241,7 +238,7 @@ class IRThrowVariable extends IRTempVariable {
  * A temporary variable generated to hold the contents of all arguments passed to the `...` of a
  * function that accepts a variable number of arguments.
  */
-class IREllipsisVariable extends IRTempVariable, IRParameter {
+class IREllipsisVariable extends IRTempVariable, AbstractIRParameter {
   IREllipsisVariable() { tag = EllipsisTempVar() }
 
   final override string toString() { result = "#ellipsis" }
@@ -252,7 +249,7 @@ class IREllipsisVariable extends IRTempVariable, IRParameter {
 /**
  * A temporary variable generated to hold the `this` pointer.
  */
-class IRThisVariable extends IRTempVariable, IRParameter {
+class IRThisVariable extends IRTempVariable, AbstractIRParameter {
   IRThisVariable() { tag = ThisTempVar() }
 
   final override string toString() { result = "#this" }
@@ -264,7 +261,7 @@ class IRThisVariable extends IRTempVariable, IRParameter {
  * A variable generated to represent the contents of a string literal. This variable acts much like
  * a read-only global variable.
  */
-class IRStringLiteral extends IRGeneratedVariable, TIRStringLiteral {
+class IRStringLiteral extends AbstractIRGeneratedVariable, TIRStringLiteral {
   Language::StringLiteral literal;
 
   IRStringLiteral() { this = TIRStringLiteral(func, ast, type, literal) }
@@ -288,7 +285,7 @@ class IRStringLiteral extends IRGeneratedVariable, TIRStringLiteral {
  * used to model the runtime initialization of static local variables in C++, as well as static
  * fields in C#.
  */
-class IRDynamicInitializationFlag extends IRGeneratedVariable, TIRDynamicInitializationFlag {
+class IRDynamicInitializationFlag extends AbstractIRGeneratedVariable, TIRDynamicInitializationFlag {
   Language::Variable var;
 
   IRDynamicInitializationFlag() {
@@ -314,15 +311,7 @@ class IRDynamicInitializationFlag extends IRGeneratedVariable, TIRDynamicInitial
  * An IR variable which acts like a function parameter, including positional parameters and the
  * temporary variables generated for `this` and ellipsis parameters.
  */
-class IRParameter extends IRAutomaticVariable {
-  IRParameter() {
-    this.(IRAutomaticUserVariable).getVariable() instanceof Language::Parameter
-    or
-    this = TIRTempVariable(_, _, ThisTempVar(), _)
-    or
-    this = TIRTempVariable(_, _, EllipsisTempVar(), _)
-  }
-
+abstract private class AbstractIRParameter extends AbstractIRAutomaticVariable {
   /**
    * Gets the zero-based index of this parameter. The `this` parameter has index -1.
    */
@@ -330,8 +319,16 @@ class IRParameter extends IRAutomaticVariable {
 }
 
 /**
+ * An IR variable which acts like a function parameter, including positional parameters and the
+ * temporary variables generated for `this` and ellipsis parameters.
+ */
+final class IRParameter = AbstractIRParameter;
+
+/**
  * An IR variable representing a positional parameter.
  */
-class IRPositionalParameter extends IRParameter, IRAutomaticUserVariable {
+class IRPositionalParameter extends AbstractIRParameter, AbstractIRAutomaticUserVariable {
+  IRPositionalParameter() { this.getVariable() instanceof Language::Parameter }
+
   final override int getIndex() { result = this.getVariable().(Language::Parameter).getIndex() }
 }

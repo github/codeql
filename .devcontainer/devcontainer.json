@@ -7,6 +7,10 @@
     "ms-vscode.test-adapter-converter",
     "slevesque.vscode-zipexplorer"
   ],
+  "build": {
+    // Path is relative to the devcontainer.json file.
+    "dockerfile": "Dockerfile.codespaces"
+  },
   "settings": {
     "files.watcherExclude": {
       "**/target/**": true

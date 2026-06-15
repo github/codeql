@@ -8,6 +8,8 @@ class PublicallyAccessible extends string {
 
   // should be argument
   predicate hasAgrument() { none() }
+
+  int getNum() { result = numOccurences }
 }
 
 /**

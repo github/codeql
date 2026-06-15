@@ -4,4 +4,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.geogebra.web.full.main", "FileManager", True, "open", "(String,String)", "", "Argument[0]", "url-redirect", "ai-manual"]
+      - ["org.geogebra.web.full.main", "FileManager", True, "open", "(String,String)", "", "Argument[0]", "url-redirection", "ai-manual"]

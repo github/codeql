@@ -1,7 +1,8 @@
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Extraction.CSharp.Util;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -29,14 +30,13 @@ namespace Semmle.Extraction.CSharp.Entities
             var adder = Symbol.AddMethod;
             var remover = Symbol.RemoveMethod;
 
-            if (!(adder is null))
+            if (adder is not null)
                 Method.Create(Context, adder);
 
-            if (!(remover is null))
+            if (remover is not null)
                 Method.Create(Context, remover);
 
             PopulateModifiers(trapFile);
-            BindComments();
 
             var declSyntaxReferences = IsSourceDeclaration
                 ? Symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()).ToArray()
@@ -50,8 +50,17 @@ namespace Semmle.Extraction.CSharp.Entities
                     TypeMention.Create(Context, syntax.ExplicitInterfaceSpecifier!.Name, this, explicitInterface);
             }
 
-            foreach (var l in Locations)
-                trapFile.event_location(this, l);
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
+            BindComments();
+
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationsToTrap(trapFile.event_location, this, Locations);
+            }
 
             foreach (var syntaxType in declSyntaxReferences
                 .OfType<VariableDeclaratorSyntax>()
@@ -63,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntityFromSymbol(cx, symbol);
+        public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntityFromSymbol(cx, symbol.GetBodyDeclaringSymbol());
 
         private class EventFactory : CachedEntityFactory<IEventSymbol, Event>
         {

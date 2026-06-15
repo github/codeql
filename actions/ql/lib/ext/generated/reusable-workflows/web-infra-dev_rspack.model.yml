@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["web-infra-dev/rspack/.github/workflows/reusable-build.yml", "*", "input.profile", "code-injection", "generated"]
+     - ["web-infra-dev/rspack/.github/workflows/reusable-build.yml", "*", "input.target", "code-injection", "generated"]

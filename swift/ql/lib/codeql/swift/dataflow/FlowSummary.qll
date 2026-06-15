@@ -13,36 +13,9 @@ private module Summaries {
   private import codeql.swift.frameworks.Frameworks
 }
 
-class SummaryComponent = Impl::Public::SummaryComponent;
-
-/** Provides predicates for constructing summary components. */
-module SummaryComponent {
-  private import Impl::Public::SummaryComponent as SummaryComponentInternal
-
-  predicate content = SummaryComponentInternal::content/1;
-
-  predicate parameter = SummaryComponentInternal::parameter/1;
-
-  predicate argument = SummaryComponentInternal::argument/1;
-
-  predicate return = SummaryComponentInternal::return/1;
+/** Provides the `Range` class used to define the extent of `SummarizedCallable`. */
+module SummarizedCallable {
+  class Range = Impl::Public::SummarizedCallable;
 }
 
-class SummaryComponentStack = Impl::Public::SummaryComponentStack;
-
-/** Provides predicates for constructing stacks of summary components. */
-module SummaryComponentStack {
-  private import Impl::Public::SummaryComponentStack as SummaryComponentStackInternal
-
-  predicate singleton = SummaryComponentStackInternal::singleton/1;
-
-  predicate push = SummaryComponentStackInternal::push/2;
-
-  predicate argument = SummaryComponentStackInternal::argument/1;
-
-  predicate return = SummaryComponentStackInternal::return/1;
-}
-
-class SummarizedCallable = Impl::Public::SummarizedCallable;
-
-class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
+class SummarizedCallable = Impl::Public::RelevantSummarizedCallable;

@@ -1,6 +1,8 @@
 /**
  * Provides models of commonly used functions in the `github.com/davecgh/go-spew/spew` package.
  */
+overlay[local?]
+module;
 
 import go
 
@@ -31,16 +33,6 @@ module Spew {
     StringFormatter() { this.getName().matches("%f") }
 
     override int getFormatStringIndex() { result = super.getFirstPrintedArg() }
-  }
-
-  private class SpewCall extends LoggerCall::Range, DataFlow::CallNode {
-    SpewFunction target;
-
-    SpewCall() { this = target.getACall() }
-
-    override DataFlow::Node getAMessageComponent() {
-      result = this.getSyntacticArgument(any(int i | i >= target.getFirstPrintedArg()))
-    }
   }
 
   // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.

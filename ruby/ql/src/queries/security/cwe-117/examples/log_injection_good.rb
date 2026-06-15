@@ -5,9 +5,8 @@ class UsersController < ApplicationController
     logger = Logger.new STDOUT
     username = params[:username]
 
-    # GOOD: log message constructed with unsanitized user input
-    sanitized_username = username.gsub("\n", "")
-    logger.info "attempting to login user: " + sanitized_username
+    # GOOD: log message constructed with sanitized user input
+    logger.info "attempting to login user: " + sanitized_username.gsub("\n", "")
 
     # ... login logic ...
   end

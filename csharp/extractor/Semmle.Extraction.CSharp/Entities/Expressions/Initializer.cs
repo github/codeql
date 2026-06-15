@@ -1,9 +1,9 @@
+using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.Kinds;
 using Semmle.Util;
-using System.IO;
+using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int index, Extraction.Entities.Location location)
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int index, Location location)
         {
             var info = new ExpressionInfo(
                 cx,
@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.ARRAY_INIT,
                 parent,
                 index,
-                true,
+                isCompilerGenerated: true,
                 null);
 
             return new Expression(info);
@@ -83,8 +83,22 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 {
                     var assignmentInfo = new ExpressionNodeInfo(Context, init, this, child++).SetKind(ExprKind.SIMPLE_ASSIGN);
                     var assignmentEntity = new Expression(assignmentInfo);
+                    var target = Context.GetSymbolInfo(assignment.Left);
+
+                    // If the target is null, then assume that this is an array initializer (of the form `[...] = ...`)
+                    var access = target.Symbol is null ?
+                        new Expression(new ExpressionNodeInfo(Context, assignment.Left, assignmentEntity, 0).SetKind(ExprKind.ARRAY_ACCESS)) :
+                        Access.Create(new ExpressionNodeInfo(Context, assignment.Left, assignmentEntity, 0), target.Symbol, false, Context.CreateEntity(target.Symbol));
+
+                    if (assignment.Left is ImplicitElementAccessSyntax iea)
+                    {
+                        // An array/indexer initializer of the form `[...] = ...`
+                        access.PopulateArguments(trapFile, iea.ArgumentList.Arguments, 0);
+                    }
+
                     var typeInfoRight = Context.GetTypeInfo(assignment.Right);
                     if (typeInfoRight.Type is null)
+                    {
                         // The type may be null for nested initializers such as
                         // ```csharp
                         // new ClassWithArrayField() { As = { [0] = a } }
@@ -92,21 +106,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         // In this case we take the type from the assignment
                         // `As = { [0] = a }` instead
                         typeInfoRight = assignmentInfo.TypeInfo;
-                    CreateFromNode(new ExpressionNodeInfo(Context, assignment.Right, assignmentEntity, 0, typeInfoRight));
-
-                    var target = Context.GetSymbolInfo(assignment.Left);
-
-                    // If the target is null, then assume that this is an array initializer (of the form `[...] = ...`)
-
-                    var access = target.Symbol is null ?
-                        new Expression(new ExpressionNodeInfo(Context, assignment.Left, assignmentEntity, 1).SetKind(ExprKind.ARRAY_ACCESS)) :
-                        Access.Create(new ExpressionNodeInfo(Context, assignment.Left, assignmentEntity, 1), target.Symbol, false, Context.CreateEntity(target.Symbol));
-
-                    if (assignment.Left is ImplicitElementAccessSyntax iea)
-                    {
-                        // An array/indexer initializer of the form `[...] = ...`
-                        access.PopulateArguments(trapFile, iea.ArgumentList.Arguments, 0);
                     }
+                    CreateFromNode(new ExpressionNodeInfo(Context, assignment.Right, assignmentEntity, 1, typeInfoRight));
                 }
                 else
                 {
@@ -132,7 +133,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var addMethod = Method.Create(Context, collectionInfo.Symbol as IMethodSymbol);
                 var voidType = AnnotatedTypeSymbol.CreateNotAnnotated(Context.Compilation.GetSpecialType(SpecialType.System_Void));
 
-                var invocation = new Expression(new ExpressionInfo(Context, voidType, Context.CreateLocation(i.GetLocation()), ExprKind.METHOD_INVOCATION, this, child++, false, null));
+                var invocation = new Expression(new ExpressionInfo(Context, voidType, Context.CreateLocation(i.GetLocation()), ExprKind.METHOD_INVOCATION, this, child++, isCompilerGenerated: true, null));
 
                 if (addMethod is not null)
                     trapFile.expr_call(invocation, addMethod);

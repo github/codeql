@@ -31,14 +31,14 @@ sensitiveAction
 | tst.js:23:1:23:25 | require ... .exit() |
 | tst.js:24:1:24:21 | global. ... .exit() |
 sensitiveExpr
-| tst.js:1:1:1:8 | password |
-| tst.js:2:1:2:8 | PassWord |
-| tst.js:3:1:3:21 | myPassw ... eartext |
-| tst.js:4:1:4:10 | x.password |
-| tst.js:5:1:5:11 | getPassword |
-| tst.js:5:1:5:13 | getPassword() |
-| tst.js:6:1:6:13 | x.getPassword |
-| tst.js:6:1:6:15 | x.getPassword() |
-| tst.js:7:1:7:15 | get("password") |
-| tst.js:8:1:8:17 | x.get("password") |
-| tst.js:21:1:21:6 | secret |
+| tst.js:1:1:1:8 | password | password |
+| tst.js:2:1:2:8 | PassWord | password |
+| tst.js:3:1:3:21 | myPassw ... eartext | password |
+| tst.js:4:1:4:10 | x.password | password |
+| tst.js:5:1:5:11 | getPassword | password |
+| tst.js:5:1:5:13 | getPassword() | password |
+| tst.js:6:1:6:13 | x.getPassword | password |
+| tst.js:6:1:6:15 | x.getPassword() | password |
+| tst.js:7:1:7:15 | get("password") | password |
+| tst.js:8:1:8:17 | x.get("password") | password |
+| tst.js:21:1:21:6 | secret | secret |

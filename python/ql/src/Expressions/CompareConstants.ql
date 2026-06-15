@@ -2,7 +2,8 @@
  * @name Comparison of constants
  * @description Comparison of constants is always constant, but is harder to read than a simple constant.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-570
  *       external/cwe/cwe-571

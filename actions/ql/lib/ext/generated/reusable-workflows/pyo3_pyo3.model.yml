@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["pyo3/pyo3/.github/workflows/build.yml", "*", "input.extra-features", "code-injection", "generated"]

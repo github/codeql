@@ -4,6 +4,7 @@ import javascript
 private import NodeModuleResolutionImpl
 private import semmle.javascript.DynamicPropertyAccess as DynamicPropertyAccess
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.dataflow.internal.DataFlowNode
 
 /**
  * A Node.js module.
@@ -16,6 +17,7 @@ private import semmle.javascript.internal.CachedStages
  *   process.stdout.write(fs.readFileSync(process.argv[i], 'utf8'));
  * ```
  */
+overlay[local?]
 class NodeModule extends Module {
   NodeModule() {
     is_module(this) and
@@ -35,11 +37,13 @@ class NodeModule extends Module {
    * Gets an abstract value representing one or more values that may flow
    * into this module's `module.exports` property.
    */
+  overlay[global]
   pragma[noinline]
   DefiniteAbstractValue getAModuleExportsValue() {
     result = this.getAModuleExportsProperty().getAValue()
   }
 
+  overlay[global]
   pragma[noinline]
   private AbstractProperty getAModuleExportsProperty() {
     result.getBase().(AbstractModuleObject).getModule() = this and
@@ -51,12 +55,14 @@ class NodeModule extends Module {
    * For performance this predicate only computes relevant expressions (in `getAModuleExportsCandidate`).
    * So if using this predicate - consider expanding the list of relevant expressions.
    */
+  overlay[global]
   DataFlow::AnalyzedNode getAModuleExportsNode() {
     result = getAModuleExportsCandidate() and
     result.getAValue() = this.getAModuleExportsValue()
   }
 
   /** Gets a symbol exported by this module. */
+  overlay[global]
   override string getAnExportedSymbol() {
     result = super.getAnExportedSymbol()
     or
@@ -69,6 +75,7 @@ class NodeModule extends Module {
     )
   }
 
+  overlay[global]
   override DataFlow::Node getAnExportedValue(string name) {
     // a property write whose base is `exports` or `module.exports`
     exists(DataFlow::PropWrite pwn | result = pwn.getRhs() |
@@ -113,6 +120,7 @@ class NodeModule extends Module {
     )
   }
 
+  overlay[global]
   override DataFlow::Node getABulkExportedNode() {
     Stages::Imports::ref() and
     exists(DataFlow::PropWrite write |
@@ -123,6 +131,7 @@ class NodeModule extends Module {
   }
 
   /** Gets a symbol that the module object inherits from its prototypes. */
+  overlay[global]
   private string getAnImplicitlyExportedSymbol() {
     exists(ExternalConstructor ec | ec = this.getPrototypeOfExportedExpr() |
       result = ec.getAMember().getName()
@@ -135,6 +144,7 @@ class NodeModule extends Module {
   }
 
   /** Gets an externs declaration of the prototype object of a value exported by this module. */
+  overlay[global]
   private ExternalConstructor getPrototypeOfExportedExpr() {
     exists(AbstractValue exported | exported = this.getAModuleExportsValue() |
       result instanceof ObjectExternal
@@ -145,7 +155,8 @@ class NodeModule extends Module {
     )
   }
 
-  override predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
+  overlay[global]
+  deprecated override predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
     path.getEnclosingModule() = this and
     exists(string pathval | pathval = path.getValue() |
       // paths starting with `./` or `../` are resolved relative to the importing
@@ -223,6 +234,7 @@ predicate findNodeModulesFolder(Folder f, Folder nodeModules, int distance) {
 /**
  * A Node.js `require` variable.
  */
+overlay[local?]
 private class RequireVariable extends Variable {
   RequireVariable() {
     this = any(ModuleScope m).getVariable("require")
@@ -235,65 +247,81 @@ private class RequireVariable extends Variable {
   }
 }
 
-/**
- * Holds if module `m` is in file `f`.
- */
-private predicate moduleInFile(Module m, File f) { m.getFile() = f }
-
-private predicate isModuleModule(DataFlow::Node nd) {
-  exists(ImportDeclaration imp |
-    imp.getImportedPath().getValue() = "module" and
-    nd =
-      [
-        DataFlow::destructuredModuleImportNode(imp),
-        DataFlow::valueNode(imp.getASpecifier().(ImportNamespaceSpecifier))
-      ]
+overlay[local?]
+private predicate isModuleModule(EarlyStageNode nd) {
+  exists(ImportDeclaration imp | imp.getRawImportPath() = "module" |
+    nd = TDestructuredModuleImportNode(imp)
+    or
+    nd = TValueNode(imp.getASpecifier().(ImportNamespaceSpecifier))
   )
   or
-  isModuleModule(nd.getAPredecessor())
+  exists(EarlyStageNode other |
+    isModuleModule(other) and
+    DataFlow::localFlowStep(other, nd)
+  )
 }
 
-private predicate isCreateRequire(DataFlow::Node nd) {
+overlay[local?]
+private predicate isCreateRequire(EarlyStageNode nd) {
   exists(PropAccess prop |
-    isModuleModule(prop.getBase().flow()) and
+    isModuleModule(TValueNode(prop.getBase())) and
     prop.getPropertyName() = "createRequire" and
-    nd = prop.flow()
+    nd = TValueNode(prop)
   )
   or
   exists(PropertyPattern prop |
-    isModuleModule(prop.getObjectPattern().flow()) and
+    isModuleModule(TValueNode(prop.getObjectPattern())) and
     prop.getName() = "createRequire" and
-    nd = prop.getValuePattern().flow()
+    nd = TValueNode(prop.getValuePattern())
   )
   or
   exists(ImportDeclaration decl, NamedImportSpecifier spec |
-    decl.getImportedPath().getValue() = "module" and
+    decl.getRawImportPath() = "module" and
     spec = decl.getASpecifier() and
     spec.getImportedName() = "createRequire" and
-    nd = spec.flow()
+    nd = TValueNode(spec)
   )
   or
-  isCreateRequire(nd.getAPredecessor())
+  exists(EarlyStageNode other |
+    isCreateRequire(other) and
+    DataFlow::localFlowStep(other, nd)
+  )
 }
 
 /**
  * Holds if `nd` may refer to `require`, either directly or modulo local data flow.
  */
+overlay[local?]
 cached
-private predicate isRequire(DataFlow::Node nd) {
-  nd.asExpr() = any(RequireVariable req).getAnAccess() and
-  // `mjs` files explicitly disallow `require`
-  not nd.getFile().getExtension() = "mjs"
+private predicate isRequire(EarlyStageNode nd) {
+  exists(VarAccess access |
+    access = any(RequireVariable v).getAnAccess() and
+    nd = TValueNode(access) and
+    // `mjs` files explicitly disallow `require`
+    not access.getFile().getExtension() = "mjs"
+  )
   or
-  isRequire(nd.getAPredecessor())
+  exists(EarlyStageNode other |
+    isRequire(other) and
+    DataFlow::localFlowStep(other, nd)
+  )
   or
   // `import { createRequire } from 'module';`.
   // specialized to ES2015 modules to avoid recursion in the `DataFlow::moduleImport()` predicate and to avoid
   // negative recursion between `Import.getImportedModuleNode()` and `Import.getImportedModule()`, and
   // to avoid depending on `SourceNode` as this would make `SourceNode::Range` recursive.
   exists(CallExpr call |
-    isCreateRequire(call.getCallee().flow()) and
-    nd = call.flow()
+    isCreateRequire(TValueNode(call.getCallee())) and
+    nd = TValueNode(call)
+  )
+  or
+  // `$.require('underscore');`.
+  // NPM as supported in [XSJS files](https://www.npmjs.com/package/@sap/async-xsjs#npm-packages-support).
+  exists(MethodCallExpr require |
+    require.getFile().getExtension() = ["xsjs", "xsjslib"] and
+    require.getCalleeName() = "require" and
+    require.getReceiver().(GlobalVarAccess).getName() = "$" and
+    nd = TValueNode(require.getCallee())
   )
 }
 
@@ -306,102 +334,24 @@ private predicate isRequire(DataFlow::Node nd) {
  * require('fs')
  * ```
  */
+overlay[local?]
 class Require extends CallExpr, Import {
-  Require() { isRequire(this.getCallee().flow()) }
+  Require() { isRequire(TValueNode(this.getCallee())) }
 
-  override PathExpr getImportedPath() { result = this.getArgument(0) }
+  override Expr getImportedPathExpr() { result = this.getArgument(0) }
 
   override Module getEnclosingModule() { this = result.getAnImport() }
-
-  override Module resolveImportedPath() {
-    moduleInFile(result, this.load(min(int prio | moduleInFile(_, this.load(prio)))))
-    or
-    not moduleInFile(_, this.load(_)) and
-    result = Import.super.resolveImportedPath()
-  }
-
-  /**
-   * Gets the file that is imported by this `require`.
-   *
-   * The result can be a JavaScript file, a JSON file or a `.node` file.
-   * Externs files are not treated differently from other files by this predicate.
-   */
-  File getImportedFile() { result = this.load(min(int prio | exists(this.load(prio)))) }
-
-  /**
-   * Gets the file that this `require` refers to (which may not be a JavaScript file),
-   * using the root folder of priority `priority`.
-   *
-   * This predicate implements the specification of
-   * [`require.resolve`](https://nodejs.org/api/modules.html#modules_all_together),
-   * modified to allow additional JavaScript file extensions, such as `ts` and `jsx`.
-   *
-   * Module resolution order is modeled using the `priority` parameter as follows.
-   *
-   * Each candidate folder in which the path may be resolved is assigned
-   * a priority (this is actually done by `Module.searchRoot`, but we explain it
-   * here for completeness):
-   *
-   *   - if the path starts with `'./'`, `'../'`, or `/`, it has a single candidate
-   *     folder (the enclosing folder of the module for the former two, the file
-   *     system root for the latter) of priority 0
-   *   - otherwise, candidate folders are folders of the form `<prefix>/node_modules`
-   *     such that `<prefix>` is a (not necessarily proper) ancestor of the enclosing
-   *     folder of the module which is not itself named `node_modules`; the priority
-   *     of a candidate folder is the number of steps from the enclosing folder of
-   *     the module to `<prefix>`.
-   *
-   * To resolve an import of a path `p`, we consider each candidate folder `c` with
-   * priority `r` and resolve the import to the following files if they exist
-   * (in order of priority):
-   *
-   * <ul>
-   * <li> the file `c/p`;
-   * <li> the file `c/p.{tsx,ts,jsx,es6,es,mjs,cjs}`;
-   * <li> the file `c/p.js`;
-   * <li> the file `c/p.json`;
-   * <li> the file `c/p.node`;
-   * <li> if `c/p` is a folder:
-   *      <ul>
-   *      <li> if `c/p/package.json` exists and specifies a `main` module `m`:
-   *        <ul>
-   *        <li> the file `c/p/m`;
-   *        <li> the file `c/p/m.{tsx,ts,jsx,es6,es,mjs,cjs}`;
-   *        <li> the file `c/p/m.js`;
-   *        <li> the file `c/p/m.json`;
-   *        <li> the file `c/p/m.node`;
-   *        </ul>
-   *      <li> the file `c/p/index.{tsx,ts,jsx,es6,es,mjs,cjs}`;
-   *      <li> the file `c/p/index.js`;
-   *      <li> the file `c/p/index.json`;
-   *      <li> the file `c/p/index.node`.
-   *      </ul>
-   * </ul>
-   *
-   * The first four steps are factored out into predicate `loadAsFile`,
-   * the remainder into `loadAsDirectory`; both make use of an auxiliary
-   * predicate `tryExtensions` that handles the repeated distinction between
-   * `.js`, `.json` and `.node`.
-   */
-  private File load(int priority) {
-    exists(int r | this.getEnclosingModule().searchRoot(this.getImportedPath(), _, r) |
-      result = loadAsFile(this, r, priority - prioritiesPerCandidate() * r) or
-      result =
-        loadAsDirectory(this, r,
-          priority - (prioritiesPerCandidate() * r + numberOfExtensions() + 1))
-    )
-  }
 
   override DataFlow::Node getImportedModuleNode() { result = DataFlow::valueNode(this) }
 }
 
 /** An argument to `require` or `require.resolve`, considered as a path expression. */
-private class RequirePath extends PathExprCandidate {
+deprecated private class RequirePath extends PathExprCandidate {
   RequirePath() {
     this = any(Require req).getArgument(0)
     or
     exists(MethodCallExpr reqres |
-      isRequire(reqres.getReceiver().flow()) and
+      isRequire(TValueNode(reqres.getReceiver())) and
       reqres.getMethodName() = "resolve" and
       this = reqres.getArgument(0)
     )
@@ -409,14 +359,14 @@ private class RequirePath extends PathExprCandidate {
 }
 
 /** A constant path element appearing in a call to `require` or `require.resolve`. */
-private class ConstantRequirePathElement extends PathExpr, ConstantString {
+deprecated private class ConstantRequirePathElement extends PathExpr, ConstantString {
   ConstantRequirePathElement() { this = any(RequirePath rp).getAPart() }
 
   override string getValue() { result = this.getStringValue() }
 }
 
 /** A `__dirname` path expression. */
-private class DirNamePath extends PathExpr, VarAccess {
+deprecated private class DirNamePath extends PathExpr, VarAccess {
   DirNamePath() {
     this.getName() = "__dirname" and
     this.getVariable().getScope() instanceof ModuleScope
@@ -426,7 +376,7 @@ private class DirNamePath extends PathExpr, VarAccess {
 }
 
 /** A `__filename` path expression. */
-private class FileNamePath extends PathExpr, VarAccess {
+deprecated private class FileNamePath extends PathExpr, VarAccess {
   FileNamePath() {
     this.getName() = "__filename" and
     this.getVariable().getScope() instanceof ModuleScope
@@ -439,7 +389,7 @@ private class FileNamePath extends PathExpr, VarAccess {
  * A path expression of the form `path.join(p, "...")` where
  * `p` is also a path expression.
  */
-private class JoinedPath extends PathExpr, @call_expr {
+deprecated private class JoinedPath extends PathExpr, @call_expr {
   JoinedPath() {
     exists(MethodCallExpr call | call = this |
       call.getReceiver().(VarAccess).getName() = "path" and

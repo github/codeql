@@ -13,7 +13,7 @@ class RefiningEquals extends EqualsMethod {
     // For each return statement `ret` in this method, ...
     forall(ReturnStmt ret | ret.getEnclosingCallable() = this |
       // ... there is a `super` access that ...
-      exists(MethodAccess sup, SuperAccess qual |
+      exists(MethodCall sup, SuperAccess qual |
         // ... is of the form `super.something`, but not `A.super.something` ...
         qual = sup.getQualifier() and
         not exists(qual.getQualifier()) and
@@ -22,7 +22,7 @@ class RefiningEquals extends EqualsMethod {
         // ... on the (only) parameter of this method ...
         sup.getArgument(0).(VarAccess).getVariable() = this.getAParameter() and
         // ... and its result is implied by the result of `ret`.
-        exprImplies(ret.getResult(), true, sup, true)
+        exprImplies(ret.getExpr(), true, sup, true)
       )
     )
   }

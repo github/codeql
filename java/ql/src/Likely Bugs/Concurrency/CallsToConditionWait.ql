@@ -6,7 +6,8 @@
  * @problem.severity error
  * @precision medium
  * @id java/wait-on-condition-interface
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       concurrency
  *       external/cwe/cwe-662
@@ -26,7 +27,7 @@ class ConditionInterface extends Interface {
   ConditionInterface() { this.hasQualifiedName("java.util.concurrent.locks", "Condition") }
 }
 
-from MethodAccess ma, ConditionInterface condition
+from MethodCall ma, ConditionInterface condition
 where
   ma.getMethod() instanceof WaitMethod and
   ma.getQualifier().getType().(RefType).hasSupertype*(condition)

@@ -138,14 +138,14 @@ func main() {
 		if switchStatementReturningTrueOnlyWhenConstant(s) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasTaintFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if switchStatementReturningFalseOnlyWhenConstant("", s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasTaintFlow="s"
 		} else {
 			sink(s)
 		}
@@ -157,7 +157,7 @@ func main() {
 		if err != nil {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasTaintFlow="s"
 		}
 	}
 
@@ -166,7 +166,7 @@ func main() {
 		if switchStatementReturningNilOnlyWhenConstant(s) == nil {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasTaintFlow="s"
 		}
 	}
 
@@ -175,25 +175,25 @@ func main() {
 		if multipleSwitchStatementReturningTrueOnlyWhenConstant(s, getRandomString()) {
 			sink(s)
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasTaintFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if switchStatementWithoutUsefulInfo(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasTaintFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasTaintFlow="s"
 		}
 	}
 
 	{
 		s := source()
 		if switchStatementOverRandomString(s) {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasTaintFlow="s"
 		} else {
-			sink(s) // $ dataflow=s
+			sink(s) // $ hasTaintFlow="s"
 		}
 	}
 

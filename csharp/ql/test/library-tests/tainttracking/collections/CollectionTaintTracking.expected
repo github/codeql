@@ -1,0 +1,18 @@
+models
+edges
+| CollectionTaintTracking.cs:5:13:5:19 | access to local variable tainted : Object | CollectionTaintTracking.cs:6:34:6:40 | access to local variable tainted : Object | provenance |  |
+| CollectionTaintTracking.cs:5:23:5:39 | call to method Source<Object> : Object | CollectionTaintTracking.cs:5:13:5:19 | access to local variable tainted : Object | provenance |  |
+| CollectionTaintTracking.cs:6:13:6:15 | access to local variable arr : null [element] : Object | CollectionTaintTracking.cs:7:14:7:16 | access to local variable arr | provenance |  |
+| CollectionTaintTracking.cs:6:32:6:42 | { ..., ... } : null [element] : Object | CollectionTaintTracking.cs:6:13:6:15 | access to local variable arr : null [element] : Object | provenance |  |
+| CollectionTaintTracking.cs:6:34:6:40 | access to local variable tainted : Object | CollectionTaintTracking.cs:6:32:6:42 | { ..., ... } : null [element] : Object | provenance |  |
+nodes
+| CollectionTaintTracking.cs:5:13:5:19 | access to local variable tainted : Object | semmle.label | access to local variable tainted : Object |
+| CollectionTaintTracking.cs:5:23:5:39 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| CollectionTaintTracking.cs:6:13:6:15 | access to local variable arr : null [element] : Object | semmle.label | access to local variable arr : null [element] : Object |
+| CollectionTaintTracking.cs:6:32:6:42 | { ..., ... } : null [element] : Object | semmle.label | { ..., ... } : null [element] : Object |
+| CollectionTaintTracking.cs:6:34:6:40 | access to local variable tainted : Object | semmle.label | access to local variable tainted : Object |
+| CollectionTaintTracking.cs:7:14:7:16 | access to local variable arr | semmle.label | access to local variable arr |
+subpaths
+testFailures
+#select
+| CollectionTaintTracking.cs:7:14:7:16 | access to local variable arr | CollectionTaintTracking.cs:5:23:5:39 | call to method Source<Object> : Object | CollectionTaintTracking.cs:7:14:7:16 | access to local variable arr | $@ | CollectionTaintTracking.cs:5:23:5:39 | call to method Source<Object> : Object | call to method Source<Object> : Object |

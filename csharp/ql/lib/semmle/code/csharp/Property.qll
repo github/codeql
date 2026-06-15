@@ -5,9 +5,8 @@
 import Member
 import Stmt
 import Type
-private import cil
-private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
+private import semmle.code.csharp.internal.Callable
 private import TypeRef
 
 /**
@@ -113,14 +112,26 @@ class DeclarationWithGetSetAccessors extends DeclarationWithAccessors, TopLevelE
  * }
  * ```
  */
-class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @property {
+class Property extends DeclarationWithGetSetAccessors, @property {
   override string getName() { properties(this, result, _, _, _) }
 
   override string getUndecoratedName() { properties(this, result, _, _, _) }
 
   override ValueOrRefType getDeclaringType() { properties(this, _, result, _, _) }
 
-  override Type getType() { properties(this, _, _, getTypeRef(result), _) }
+  override Type getType() {
+    properties(this, _, _, result, _)
+    or
+    not properties(this, _, _, any(Type t), _) and
+    properties(this, _, _, getTypeRef(result), _)
+  }
+
+  private predicate isAutoPartial() {
+    this.fromSource() and
+    not this.isExtern() and
+    not this.isAbstract() and
+    not this.getAnAccessor().hasBody()
+  }
 
   /**
    * Holds if this property is automatically implemented. For example, `P1`
@@ -142,11 +153,22 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
    * code.
    */
   predicate isAutoImplemented() {
-    this.fromSource() and
-    this.isReadWrite() and
-    not this.isExtern() and
-    not this.isAbstract() and
-    not this.getAnAccessor().hasBody()
+    this.isAutoPartial() and
+    this.isReadWrite()
+  }
+
+  /**
+   * Holds if this property is automatically implemented and read-only. For
+   * example, `P1` on line 2 is automatically implemented and read-only
+   * ```csharp
+   * class C {
+   *   public int P1 { get; }
+   * }
+   * ```
+   */
+  predicate isAutoImplementedReadOnly() {
+    this.isAutoPartial() and
+    this.isReadOnly()
   }
 
   override Property getUnboundDeclaration() { properties(this, _, _, _, result) }
@@ -175,7 +197,7 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
 
   override PropertyAccess getAnAccess() { result.getTarget() = this }
 
-  override Location getALocation() { property_location(this, result) }
+  override Location getALocation() { property_location(this.getUnboundDeclaration(), result) }
 
   override Expr getAnAssignedValue() {
     result = DeclarationWithGetSetAccessors.super.getAnAssignedValue()
@@ -204,7 +226,7 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
    * }
    * ```
    */
-  Expr getInitializer() { result = this.getChildExpr(1).getChildExpr(0) }
+  Expr getInitializer() { result = this.getChildExpr(1).getChildExpr(1) }
 
   /**
    * Holds if this property has an initial value. For example, the initial
@@ -240,6 +262,21 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
 }
 
 /**
+ * An extension property, for example `FirstChar` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public char FirstChar { get { ... } }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionProperty extends Property {
+  ExtensionProperty() { this.isInExtension() }
+}
+
+/**
  * An indexer, for example `string this[int i]` on line 2 in
  *
  * ```csharp
@@ -260,7 +297,12 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
 
   override ValueOrRefType getDeclaringType() { indexers(this, _, result, _, _) }
 
-  override Type getType() { indexers(this, _, _, getTypeRef(result), _) }
+  override Type getType() {
+    indexers(this, _, _, result, _)
+    or
+    not indexers(this, _, _, any(Type t), _) and
+    indexers(this, _, _, getTypeRef(result), _)
+  }
 
   override IndexerAccess getAnAccess() { result.getTarget() = this }
 
@@ -302,7 +344,7 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
     result = DeclarationWithGetSetAccessors.super.getAnUltimateImplementor()
   }
 
-  override Location getALocation() { indexer_location(this, result) }
+  override Location getALocation() { indexer_location(this.getUnboundDeclaration(), result) }
 
   override string toStringWithTypes() {
     result = this.getName() + "[" + this.parameterTypesToString() + "]"
@@ -382,9 +424,25 @@ class Accessor extends Callable, Modifiable, Attributable, Overridable, @callabl
 
   override Accessor getUnboundDeclaration() { accessors(this, _, _, _, result) }
 
-  override Location getALocation() { accessor_location(this, result) }
+  override Location getALocation() { accessor_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = this.getName() }
+}
+
+/**
+ *  An extension accessor. Either a getter (`Getter`) or a setter (`Setter`) of an
+ *  extension property, for example `get` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public char FirstChar { get { ... } }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionAccessor extends ExtensionCallableImpl, Accessor {
+  ExtensionAccessor() { this.isInExtension() }
 }
 
 /**
@@ -477,8 +535,8 @@ class Setter extends Accessor, @setter {
     exists(AssignExpr assign |
       this.getStatementBody().getNumberOfStmts() = 1 and
       assign.getParent() = this.getStatementBody().getAChild() and
-      assign.getLValue() = result.getAnAccess() and
-      assign.getRValue() = accessToValue()
+      assign.getLeftOperand() = result.getAnAccess() and
+      assign.getRightOperand() = accessToValue()
     )
   }
 
@@ -530,8 +588,6 @@ class TrivialProperty extends Property {
     this.isAutoImplemented()
     or
     this.getGetter().trivialGetterField() = this.getSetter().trivialSetterField()
-    or
-    exists(CIL::TrivialProperty prop | this.matchesHandle(prop))
   }
 }
 

@@ -1,14 +1,15 @@
 #pragma once
 
+#include <bit>
 #include <cassert>
 #include <iomanip>
 #include <iostream>
 #include <string>
 #include <vector>
-#include "absl/numeric/bits.h"
 #include <binlog/binlog.hpp>
 #include <cmath>
 #include <charconv>
+#include <concepts>
 
 namespace codeql {
 
@@ -40,6 +41,7 @@ class UntypedTrapLabel {
   }
 
   std::string str() const {
+    assert(valid() && "outputting an undefined label!");
     std::string ret(strSize(), '\0');
     ret[0] = '#';
     std::to_chars(ret.data() + 1, ret.data() + ret.size(), id_, 16);
@@ -52,7 +54,7 @@ class UntypedTrapLabel {
   size_t strSize() const {
     if (id_ == 0) return 2;  // #0
     // Number of hex digits is ceil(bit_width(id) / 4), but C++ integer division can only do floor.
-    return /* # */ 1 + /* hex digits */ 1 + (absl::bit_width(id_) - 1) / 4;
+    return /* # */ 1 + /* hex digits */ 1 + (std::bit_width(id_) - 1) / 4;
   }
 
   friend bool operator!=(UntypedTrapLabel lhs, UntypedTrapLabel rhs) { return lhs.id_ != rhs.id_; }
@@ -81,9 +83,8 @@ class TrapLabel : public UntypedTrapLabel {
   static TrapLabel unsafeCreateFromUntyped(UntypedTrapLabel label) { return TrapLabel{label.id_}; }
 
   template <typename SourceTag>
-  TrapLabel(const TrapLabel<SourceTag>& other) : UntypedTrapLabel(other) {
-    static_assert(std::is_base_of_v<Tag, SourceTag>, "wrong label assignment!");
-  }
+    requires std::derived_from<SourceTag, Tag>
+  TrapLabel(const TrapLabel<SourceTag>& other) : UntypedTrapLabel(other) {}
 };
 
 // wrapper class to allow directly assigning a vector of TrapLabel<A> to a vector of
@@ -95,8 +96,8 @@ struct TrapLabelVectorWrapper {
   std::vector<TrapLabel<TagParam>> data;
 
   template <typename DestinationTag>
+    requires std::derived_from<Tag, DestinationTag>
   operator std::vector<TrapLabel<DestinationTag>>() && {
-    static_assert(std::is_base_of_v<DestinationTag, Tag>, "wrong label assignment!");
     // reinterpret_cast is safe because TrapLabel instances differ only on the type, not the
     // underlying data
     return std::move(reinterpret_cast<std::vector<TrapLabel<DestinationTag>>&>(data));

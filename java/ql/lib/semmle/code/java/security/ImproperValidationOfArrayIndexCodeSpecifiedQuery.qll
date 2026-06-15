@@ -14,6 +14,8 @@ module BoundedFlowSourceConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(CheckableArrayAccess arrayAccess | arrayAccess.canThrowOutOfBounds(sink.asExpr()))
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

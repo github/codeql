@@ -13,12 +13,12 @@ module Erb {
   /**
    * Flow summary for `ERB.new`. This method wraps a template string, compiling it.
    */
-  private class TemplateSummary extends SummarizedCallable {
+  private class TemplateSummary extends SummarizedCallable::Range {
     TemplateSummary() { this = "ERB.new" }
 
     override MethodCall getACall() { result = any(ErbTemplateNewCall c).asExpr().getExpr() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and output = "ReturnValue" and preservesValue = false
     }
   }

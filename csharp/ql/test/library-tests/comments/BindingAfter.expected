@@ -1,4 +1,5 @@
 | comments1.cs:1:1:2:46 | // ... | comments1.cs:9:7:9:7 | C | Start of comment1.cs |
+| comments1.cs:1:16:1:46 | // ... | comments1.cs:2:9:2:14 | ... ...; | A mapped single-line comment |
 | comments1.cs:4:1:4:25 | // ... | comments1.cs:9:7:9:7 | C | 1) Basic comment types |
 | comments1.cs:6:1:6:24 | // ... | comments1.cs:9:7:9:7 | C | A single-line comment |
 | comments1.cs:8:1:8:18 | /// ... | comments1.cs:9:7:9:7 | C | An XML comment |
@@ -52,8 +53,8 @@
 | comments2.cs:103:31:104:34 | // ... | comments2.cs:107:20:107:20 | E | D |
 | comments2.cs:106:5:106:8 | // ... | comments2.cs:107:20:107:20 | E | E |
 | comments2.cs:107:23:108:26 | // ... | comments2.cs:110:10:110:12 | gen | E |
-| comments2.cs:118:5:118:21 | // ... | comments2.cs:119:11:119:25 | GenericClass<> | GenericClass<> |
-| comments2.cs:124:5:124:16 | // ... | comments2.cs:125:9:125:20 | GenericFn<> | GenericFn |
+| comments2.cs:118:5:118:21 | // ... | comments2.cs:119:11:119:25 | GenericClass`1 | GenericClass<> |
+| comments2.cs:124:5:124:16 | // ... | comments2.cs:125:9:125:20 | GenericFn`1 | GenericFn |
 | comments2.cs:127:20:127:23 | // ... | comments2.cs:128:9:128:17 | return ...; | x |
 | trivia.cs:1:1:3:15 | // ... | trivia.cs:14:7:14:9 | Tr1 |  |
 | trivia.cs:13:89:13:103 | // ... | trivia.cs:14:7:14:9 | Tr1 | New checksum |

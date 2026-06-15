@@ -1,4 +1,4 @@
-failures
+testFailures
 | improper_memoization.rb:100:1:104:3 | m14 | Unexpected result: result=BAD |
 #select
 | improper_memoization.rb:50:1:55:3 | m7 | improper_memoization.rb:50:8:50:10 | arg | improper_memoization.rb:51:3:53:5 | ... \|\|= ... |

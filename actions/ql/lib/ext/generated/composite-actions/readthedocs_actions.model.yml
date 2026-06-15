@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["readthedocs/actions", "*", "input.single-version", "code-injection", "generated"]
+     - ["readthedocs/actions", "*", "input.platform", "code-injection", "generated"]
+     - ["readthedocs/actions", "*", "input.message-template", "code-injection", "generated"]
+     - ["readthedocs/actions", "*", "input.project-language", "code-injection", "generated"]
+     - ["readthedocs/actions", "*", "input.project-slug", "code-injection", "generated"]

@@ -1,13 +1,20 @@
-private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import shared.FlowSummaries
+import semmle.code.csharp.dataflow.internal.ExternalFlow
 
-private class IncludeAllSummarizedCallable extends IncludeSummarizedCallable {
-  IncludeAllSummarizedCallable() { exists(this) }
+module R implements RelevantNeutralCallableSig<NeutralSummaryCallable> {
+  class RelevantNeutralCallable extends NeutralSummaryCallable {
+    final string getCallableCsv() { result = getSignature(this) }
+  }
 }
 
-private class IncludeNeutralCallable extends RelevantNeutralCallable instanceof FlowSummaryImpl::Public::NeutralCallable
-{
-  /** Gets a string representing the callable in semi-colon separated format for use in flow summaries. */
-  final override string getCallableCsv() { result = Csv::asPartialNeutralModel(this) }
+class RelevantSourceCallable extends SourceCallable {
+  string getCallableCsv() { result = getSignature(this) }
 }
+
+class RelevantSinkCallable extends SinkCallable {
+  string getCallableCsv() { result = getSignature(this) }
+}
+
+import TestSummaryOutput<IncludeSummarizedCallable>
+import TestNeutralOutput<NeutralSummaryCallable, R>
+import External::TestSourceSinkOutput<RelevantSourceCallable, RelevantSinkCallable>

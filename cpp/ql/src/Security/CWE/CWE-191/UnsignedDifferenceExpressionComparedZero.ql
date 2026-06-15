@@ -5,7 +5,7 @@
  * @id cpp/unsigned-difference-expression-compared-zero
  * @problem.severity warning
  * @security-severity 9.8
- * @precision medium
+ * @precision high
  * @tags security
  *       correctness
  *       external/cwe/cwe-191
@@ -17,6 +17,7 @@ import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import semmle.code.cpp.controlflow.Guards
 import semmle.code.cpp.ir.dataflow.DataFlow
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 
 /**
  *  Holds if `sub` is guarded by a condition which ensures that
@@ -34,44 +35,107 @@ predicate isGuarded(SubExpr sub, Expr left, Expr right) {
 }
 
 /**
+ * Gets an expression that is less than or equal to `sub.getLeftOperand()`.
+ * These serve as the base cases for `exprIsSubLeftOrLess`.
+ */
+Expr exprIsLeftOrLessBase(SubExpr sub) {
+  interestingSubExpr(sub, _) and // Manual magic
+  exists(Expr e | globalValueNumber(e).getAnExpr() = sub.getLeftOperand() |
+    // sub = e - x
+    // result = e
+    // so:
+    // result <= e
+    result = e
+    or
+    // sub = e - x
+    // result = e & y
+    // so:
+    // result = e & y <= e
+    result.(BitwiseAndExpr).getAnOperand() = e
+    or
+    exists(SubExpr s |
+      // sub = e - x
+      // result = s
+      // s = e - y
+      // y >= 0
+      // so:
+      // result = e - y <= e
+      result = s and
+      s.getLeftOperand() = e and
+      lowerBound(s.getRightOperand().getFullyConverted()) >= 0
+    )
+    or
+    exists(Expr other |
+      // sub = e - x
+      // result = a
+      // a = e + y
+      // y <= 0
+      // so:
+      // result = e + y <= e + 0 = e
+      result.(AddExpr).hasOperands(e, other) and
+      upperBound(other.getFullyConverted()) <= 0
+    )
+    or
+    exists(DivExpr d |
+      // sub = e - x
+      // result = d
+      // d = e / y
+      // y >= 1
+      // so:
+      // result = e / y <= e / 1 = e
+      result = d and
+      d.getLeftOperand() = e and
+      lowerBound(d.getRightOperand().getFullyConverted()) >= 1
+    )
+    or
+    exists(RShiftExpr rs |
+      // sub = e - x
+      // result = rs
+      // rs = e >> y
+      // so:
+      // result = e >> y <= e
+      result = rs and
+      rs.getLeftOperand() = e
+    )
+  )
+}
+
+/**
  * Holds if `n` is known or suspected to be less than or equal to
  * `sub.getLeftOperand()`.
  */
 predicate exprIsSubLeftOrLess(SubExpr sub, DataFlow::Node n) {
-  interestingSubExpr(sub, _) and // Manual magic
-  (
-    n.asExpr() = sub.getLeftOperand()
-    or
-    exists(DataFlow::Node other |
-      // dataflow
-      exprIsSubLeftOrLess(sub, other) and
-      (
-        DataFlow::localFlowStep(n, other) or
-        DataFlow::localFlowStep(other, n)
-      )
+  n.asExpr() = exprIsLeftOrLessBase(sub)
+  or
+  exists(DataFlow::Node other |
+    // dataflow
+    exprIsSubLeftOrLess(sub, other) and
+    (
+      DataFlow::localFlowStep(n, other) or
+      DataFlow::localFlowStep(other, n)
     )
-    or
-    exists(DataFlow::Node other |
-      // guard constraining `sub`
-      exprIsSubLeftOrLess(sub, other) and
-      isGuarded(sub, other.asExpr(), n.asExpr()) // other >= n
-    )
-    or
-    exists(DataFlow::Node other, float p, float q |
-      // linear access of `other`
-      exprIsSubLeftOrLess(sub, other) and
-      linearAccess(n.asExpr(), other.asExpr(), p, q) and // n = p * other + q
-      p <= 1 and
-      q <= 0
-    )
-    or
-    exists(DataFlow::Node other, float p, float q |
-      // linear access of `n`
-      exprIsSubLeftOrLess(sub, other) and
-      linearAccess(other.asExpr(), n.asExpr(), p, q) and // other = p * n + q
-      p >= 1 and
-      q >= 0
-    )
+  )
+  or
+  exists(DataFlow::Node other |
+    // guard constraining `sub`
+    exprIsSubLeftOrLess(sub, other) and
+    isGuarded(sub, other.asExpr(), n.asExpr()) // other >= n
+  )
+  or
+  exists(DataFlow::Node other, float p, float q |
+    // linear access of `other`
+    exprIsSubLeftOrLess(sub, other) and
+    linearAccess(n.asExpr(), other.asExpr(), p, q) and // n = p * other + q
+    p <= 1 and
+    q <= 0
+  )
+  or
+  exists(DataFlow::Node other, float p, float q |
+    // linear access of `n`
+    exprIsSubLeftOrLess(sub, other) and
+    linearAccess(other.asExpr(), n.asExpr(), p, q) and // other = p * n + q
+    p >= 1 and
+    q >= 0
   )
 }
 

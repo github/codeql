@@ -41,7 +41,8 @@ public class ExtractorConfig {
     ECMA2017(2017, 8),
     ECMA2018(2018, 9),
     ECMA2019(2019, 10),
-    ECMA2020(2020, 11);
+    ECMA2020(2020, 11),
+    ECMA2024(2024, 15);
 
     private final int version;
     public final int legacyVersion;
@@ -204,6 +205,9 @@ public class ExtractorConfig {
   /** Should parse errors be reported as violations instead of aborting extraction? */
   private boolean tolerateParseErrors;
 
+  /** Should minified files be allowed? */
+  private boolean allowMinified;
+
   /** How should HTML files be extracted? */
   private HtmlPopulator.Config htmlHandling;
 
@@ -220,9 +224,6 @@ public class ExtractorConfig {
   /** Should textual information be extracted into the lines/4 relation? */
   private boolean extractLines;
 
-  /** Should TypeScript files be extracted? */
-  private TypeScriptMode typescriptMode;
-
   /** Override amount of RAM to allocate to the TypeScript compiler. */
   private int typescriptRam;
 
@@ -232,19 +233,19 @@ public class ExtractorConfig {
   private VirtualSourceRoot virtualSourceRoot;
 
   public ExtractorConfig(boolean experimental) {
-    this.ecmaVersion = experimental ? ECMAVersion.ECMA2020 : ECMAVersion.ECMA2019;
+    this.ecmaVersion = experimental ? ECMAVersion.ECMA2024 : ECMAVersion.ECMA2019;
     this.platform = Platform.AUTO;
     this.jsx = true;
     this.sourceType = SourceType.AUTO;
     this.htmlHandling = HtmlPopulator.Config.ELEMENTS;
     this.tolerateParseErrors = true;
+    this.allowMinified = false;
     if (experimental) {
       this.mozExtensions = true;
       this.jscript = true;
       this.esnext = true;
       this.v8Extensions = true;
     }
-    this.typescriptMode = TypeScriptMode.NONE;
     this.e4x = experimental;
     this.defaultEncoding = StandardCharsets.UTF_8.name();
     this.virtualSourceRoot = VirtualSourceRoot.none;
@@ -261,11 +262,11 @@ public class ExtractorConfig {
     this.v8Extensions = that.v8Extensions;
     this.e4x = that.e4x;
     this.tolerateParseErrors = that.tolerateParseErrors;
+    this.allowMinified = that.allowMinified;
     this.fileType = that.fileType;
     this.sourceType = that.sourceType;
     this.htmlHandling = that.htmlHandling;
     this.extractLines = that.extractLines;
-    this.typescriptMode = that.typescriptMode;
     this.typescriptRam = that.typescriptRam;
     this.defaultEncoding = that.defaultEncoding;
     this.virtualSourceRoot = that.virtualSourceRoot;
@@ -361,6 +362,16 @@ public class ExtractorConfig {
     return res;
   }
 
+  public boolean isAllowMinified() {
+    return allowMinified;
+  }
+
+  public ExtractorConfig withAllowMinified(boolean allowMinified) {
+    ExtractorConfig res = new ExtractorConfig(this);
+    res.allowMinified = allowMinified;
+    return res;
+  }
+
   public boolean hasFileType() {
     return fileType != null;
   }
@@ -415,18 +426,8 @@ public class ExtractorConfig {
     return res;
   }
 
-  public TypeScriptMode getTypeScriptMode() {
-    return typescriptMode;
-  }
-
   public int getTypeScriptRam() {
     return typescriptRam;
-  }
-
-  public ExtractorConfig withTypeScriptMode(TypeScriptMode typescriptMode) {
-    ExtractorConfig res = new ExtractorConfig(this);
-    res.typescriptMode = typescriptMode;
-    return res;
   }
 
   public ExtractorConfig withTypeScriptRam(int ram) {
@@ -481,6 +482,8 @@ public class ExtractorConfig {
         + e4x
         + ", tolerateParseErrors="
         + tolerateParseErrors
+        + ", allowMinified="
+        + allowMinified
         + ", htmlHandling="
         + htmlHandling
         + ", fileType="
@@ -489,8 +492,6 @@ public class ExtractorConfig {
         + sourceType
         + ", extractLines="
         + extractLines
-        + ", typescriptMode="
-        + typescriptMode
         + ", defaultEncoding="
         + defaultEncoding
         + ", virtualSourceRoot="

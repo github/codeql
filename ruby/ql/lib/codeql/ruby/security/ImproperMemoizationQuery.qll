@@ -45,7 +45,7 @@ private class MemoCandidate extends Method {
 }
 
 /**
- * Holds if parameter `p` of `m` is read in the right hand side of `assign`.
+ * Holds if parameter `p` of `m` is read in the right hand side of `a`.
  */
 private predicate parameterUsedInMemoValue(Method m, Parameter p, MemoStmt a) {
   p = m.getAParameter() and
@@ -54,7 +54,7 @@ private predicate parameterUsedInMemoValue(Method m, Parameter p, MemoStmt a) {
 }
 
 /**
- * Holds if parameter `p` of `m` is read in the left hand side of `assign`.
+ * Holds if parameter `p` of `m` is read in the left hand side of `a`.
  */
 private predicate parameterUsedInMemoKey(Method m, Parameter p, HashMemoStmt a) {
   p = m.getAParameter() and
@@ -70,7 +70,7 @@ private predicate memoReturnedFromMethod(Method m, MemoStmt s) {
   or
   // If we don't have flow (e.g. due to the dataflow library not supporting instance variable flow yet),
   // fall back to a syntactic heuristic: does the last statement in the method mention the memoization variable?
-  m.getLastStmt().getAChild*().(InstanceVariableReadAccess).getVariable() =
+  m.getBody().getLastStmt().getAChild*().(InstanceVariableReadAccess).getVariable() =
     s.getVariableAccess().getVariable()
 }
 

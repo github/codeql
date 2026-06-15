@@ -4,7 +4,8 @@
  *              parameter of the __init__ method of the class being
  *              instantiated, will result in a TypeError at runtime.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-628
  * @problem.severity error
@@ -15,6 +16,7 @@
 
 import python
 import Expressions.CallArgs
+private import LegacyPointsTo
 
 from Call call, ClassValue cls, string name, FunctionValue init
 where

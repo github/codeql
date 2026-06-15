@@ -3,8 +3,10 @@
  * @description Using a Break or Return statement in a finally block causes the
  *              Try-finally block to exit, discarding the exception.
  * @kind problem
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       error-handling
+ *       correctness
  *       external/cwe/cwe-584
  * @problem.severity warning
  * @sub-severity low

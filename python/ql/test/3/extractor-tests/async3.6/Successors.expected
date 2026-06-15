@@ -1,0 +1,32 @@
+| 5 | Function ticker | 5 | delay |
+| 5 | delay | 5 | to |
+| 5 | to | 6 | StringLiteral |
+| 6 | StringLiteral | 7 | range |
+| 7 | For | 5 | Function ticker |
+| 7 | For | 7 | i |
+| 7 | i | 8 | i |
+| 7 | range | 7 | to |
+| 7 | range() | 7 | For |
+| 7 | to | 7 | range() |
+| 8 | Yield | 9 | asyncio |
+| 8 | i | 8 | Yield |
+| 9 | Attribute | 9 | delay |
+| 9 | Attribute() | 9 | Await |
+| 9 | Await | 7 | For |
+| 9 | asyncio | 9 | Attribute |
+| 9 | delay | 9 | Attribute() |
+| 13 | Function f | 14 | aiter |
+| 14 | ListComp | 14 | a |
+| 14 | a | 15 | funcs |
+| 14 | aiter | 14 | aiter() |
+| 14 | aiter() | 14 | ListComp |
+| 15 | ListComp | 15 | b |
+| 15 | b | 16 | aiter |
+| 15 | funcs | 15 | ListComp |
+| 16 | SetComp | 16 | c |
+| 16 | aiter | 16 | aiter() |
+| 16 | aiter() | 16 | SetComp |
+| 16 | c | 17 | funcs |
+| 17 | SetComp | 17 | d |
+| 17 | d | 13 | Function f |
+| 17 | funcs | 17 | SetComp |

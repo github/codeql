@@ -5,7 +5,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/malformed-html-id
- * @tags maintainability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-758
  * @precision very-high

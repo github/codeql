@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with JSX code.
  */
+overlay[local?]
+module;
 
 import javascript
 
@@ -29,9 +31,6 @@ class JsxNode extends Expr, @jsx_element {
 
   override string getAPrimaryQlClass() { result = "JsxNode" }
 }
-
-/** DEPRECATED: Alias for JsxNode */
-deprecated class JSXNode = JsxNode;
 
 /**
  * A JSX element.
@@ -76,13 +75,7 @@ class JsxElement extends JsxNode {
    * That is, the name starts with a lowercase letter.
    */
   predicate isHtmlElement() { this.getName().regexpMatch("[a-z].*") }
-
-  /** DEPRECATED: Alias for isHtmlElement */
-  deprecated predicate isHTMLElement() { this.isHtmlElement() }
 }
-
-/** DEPRECATED: Alias for JsxElement */
-deprecated class JSXElement = JsxElement;
 
 /**
  * A JSX fragment.
@@ -104,9 +97,6 @@ class JsxFragment extends JsxNode {
 
   override string getAPrimaryQlClass() { result = "JsxFragment" }
 }
-
-/** DEPRECATED: Alias for JsxFragment */
-deprecated class JSXFragment = JsxFragment;
 
 /**
  * An attribute of a JSX element, including spread attributes.
@@ -154,9 +144,6 @@ class JsxAttribute extends AstNode, @jsx_attribute {
   override string getAPrimaryQlClass() { result = "JsxAttribute" }
 }
 
-/** DEPRECATED: Alias for JsxAttribute */
-deprecated class JSXAttribute = JsxAttribute;
-
 /**
  * A spread attribute of a JSX element.
  *
@@ -174,9 +161,6 @@ class JsxSpreadAttribute extends JsxAttribute {
     result = super.getValue()
   }
 }
-
-/** DEPRECATED: Alias for JsxSpreadAttribute */
-deprecated class JSXSpreadAttribute = JsxSpreadAttribute;
 
 /**
  * A namespace-qualified name such as `n:a`.
@@ -200,9 +184,6 @@ class JsxQualifiedName extends Expr, @jsx_qualified_name {
 
   override string getAPrimaryQlClass() { result = "JsxQualifiedName" }
 }
-
-/** DEPRECATED: Alias for JsxQualifiedName */
-deprecated class JSXQualifiedName = JsxQualifiedName;
 
 /**
  * A name of an JSX element or attribute (which is
@@ -244,9 +225,6 @@ class JsxName extends Expr {
   }
 }
 
-/** DEPRECATED: Alias for JsxName */
-deprecated class JSXName = JsxName;
-
 /**
  * An interpolating expression that interpolates nothing.
  *
@@ -259,9 +237,6 @@ deprecated class JSXName = JsxName;
 class JsxEmptyExpr extends Expr, @jsx_empty_expr {
   override string getAPrimaryQlClass() { result = "JsxEmptyExpr" }
 }
-
-/** DEPRECATED: Alias for JsxEmptyExpr */
-deprecated class JSXEmptyExpr = JsxEmptyExpr;
 
 /**
  * A legacy `@jsx` pragma.
@@ -280,10 +255,4 @@ class JsxPragma extends JSDocTag {
    * the result is `React.DOM`.
    */
   string getDomName() { result = this.getDescription().trim() }
-
-  /** DEPRECATED: Alias for getDomName */
-  deprecated string getDOMName() { result = this.getDomName() }
 }
-
-/** DEPRECATED: Alias for JsxPragma */
-deprecated class JSXPragma = JsxPragma;

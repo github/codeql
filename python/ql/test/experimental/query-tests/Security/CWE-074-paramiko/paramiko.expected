@@ -1,0 +1,18 @@
+edges
+| paramiko.py:15:21:15:23 | ControlFlowNode for cmd | paramiko.py:16:62:16:64 | ControlFlowNode for cmd | provenance |  |
+| paramiko.py:20:21:20:23 | ControlFlowNode for cmd | paramiko.py:21:70:21:72 | ControlFlowNode for cmd | provenance |  |
+| paramiko.py:25:21:25:23 | ControlFlowNode for cmd | paramiko.py:26:136:26:138 | ControlFlowNode for cmd | provenance |  |
+| paramiko.py:26:136:26:138 | ControlFlowNode for cmd | paramiko.py:26:114:26:139 | ControlFlowNode for Attribute() | provenance | Config |
+nodes
+| paramiko.py:15:21:15:23 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+| paramiko.py:16:62:16:64 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+| paramiko.py:20:21:20:23 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+| paramiko.py:21:70:21:72 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+| paramiko.py:25:21:25:23 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+| paramiko.py:26:114:26:139 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| paramiko.py:26:136:26:138 | ControlFlowNode for cmd | semmle.label | ControlFlowNode for cmd |
+subpaths
+#select
+| paramiko.py:16:62:16:64 | ControlFlowNode for cmd | paramiko.py:15:21:15:23 | ControlFlowNode for cmd | paramiko.py:16:62:16:64 | ControlFlowNode for cmd | This code execution depends on a $@. | paramiko.py:15:21:15:23 | ControlFlowNode for cmd | a user-provided value |
+| paramiko.py:21:70:21:72 | ControlFlowNode for cmd | paramiko.py:20:21:20:23 | ControlFlowNode for cmd | paramiko.py:21:70:21:72 | ControlFlowNode for cmd | This code execution depends on a $@. | paramiko.py:20:21:20:23 | ControlFlowNode for cmd | a user-provided value |
+| paramiko.py:26:114:26:139 | ControlFlowNode for Attribute() | paramiko.py:25:21:25:23 | ControlFlowNode for cmd | paramiko.py:26:114:26:139 | ControlFlowNode for Attribute() | This code execution depends on a $@. | paramiko.py:25:21:25:23 | ControlFlowNode for cmd | a user-provided value |

@@ -17,12 +17,12 @@ namespace Test
             {
                 connection.Open();
                 SqlCommand customerCommand = new SqlCommand("SELECT * FROM customers", connection);
-                SqlDataReader customerReader = customerCommand.ExecuteReader();
+                SqlDataReader customerReader = customerCommand.ExecuteReader(); // $ Source[cs/sql-injection]
 
                 while (customerReader.Read())
                 {
                     // BAD: Read from database, write it straight to another query
-                    SqlCommand secondCustomerCommand = new SqlCommand("SELECT * FROM customers WHERE customerName=" + customerReader.GetString(1), connection);
+                    SqlCommand secondCustomerCommand = new SqlCommand("SELECT * FROM customers WHERE customerName=" + customerReader.GetString(1), connection); // $ Alert[cs/sql-injection]
                 }
                 customerReader.Close();
             }
@@ -30,7 +30,7 @@ namespace Test
 
         public void RunSQLFromFile()
         {
-            using (FileStream fs = new FileStream("myfile.txt", FileMode.Open))
+            using (FileStream fs = new FileStream("myfile.txt", FileMode.Open)) // $ Source[cs/sql-injection]
             {
                 using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
                 {
@@ -42,7 +42,7 @@ namespace Test
                             continue;
                         using (var connection = new SQLiteConnection(""))
                         {
-                            var cmd = new SQLiteCommand(sql, connection);
+                            var cmd = new SQLiteCommand(sql, connection); // $ Alert[cs/sql-injection]
                             cmd.ExecuteScalar();
                         }
                     }

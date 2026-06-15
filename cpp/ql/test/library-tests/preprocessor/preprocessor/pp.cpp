@@ -9,8 +9,8 @@
 #endif
 // semmle-extractor-options: -I${testdir}/more_headers/ "-U SOME_SYM"
 #undef BAR
-//#define SCARY(a,aa,aaah) /* we ignore a */ (aa /* but we take aa */) /* and we ignore aaa */
-#define LOG(fmt, ...)  printf("Warning: %s", fmt, __VA__ARGS__)  
+#define SCARY(a,aa,aaah) /* we ignore a */ (aa /* but we take aa */) /* and we ignore aaa */
+#define LOG(fmt, ...)  printf("Warning: %s", fmt, __VA__ARGS__)
 #include "pp.h"
 
 #if 0
@@ -59,7 +59,7 @@ public:
 	#else
 		#define IN_TEMPLATE
 	#endif
-	
+
 	static int val;
 };
 
@@ -68,3 +68,131 @@ int templateClassContext<T> :: val = MACRO_TEMPLATECLASSCONTEXT_REFERENCED;
 
 #define INSTANTIATION
 templateClassContext<int> tcci;
+
+#define BAR
+
+#if defined(BAR) &&\
+  defined(BAR)
+#warning BAR defined
+#endif
+
+#if defined MACROTHREE/**hello*/ && /*world*/\
+/*hw*/ (defined(MACROONE)) /* macroone */
+#endif
+
+#if defined SIMPLE_COMMENT  //this comment \
+     (defined(SIMPLE_COMMENT)) spans over multiple lines
+#endif
+
+#if defined(FOO) &&\
+    defined(BAR)
+#define CONDITIONAL_MACRO_1 1
+#endif
+
+#if defined(FOO) && \
+    defined(BAR) && \
+    !defined(BAZ)
+#define CONDITIONAL_MACRO_2 2
+#endif
+
+#define FOO 8
+#define BAR 2
+#define BAZ 4
+#if ((FOO / BAR) \
+   == 4) && ((BAZ \
+   * QUX) \
+   > 10)
+#define CONDITIONAL_MACRO_3 3
+#endif
+
+// Testing \t spaced PreprocessorIf
+#if defined(FOO)	&&	\
+	defined(BAR)	&&	\
+	defined(BAZ)
+#define CONDITIONAL_MACRO_4 4
+#endif
+
+
+#if defined /* //test */ SIMPLE_COMMENT   //this comment \
+     (defined(SIMPLE_COMMENT)) spans over multiple lines
+#endif
+
+#warning foo \
+
+#warning foo \
+\
+/* a comment */
+
+#warning foo \
+\
+
+#warning foo \
+\
+// a comment
+
+
+#define FOO 8
+#define BAR 2
+#define BAZ 4
+#if ((FOO / BAR) \
+   == 4) && ((BAZ \
+    /** comment */ \
+   * QUX) \
+   /** comment */ \
+   > 10)
+#define CONDITIONAL_MACRO_3 3
+#endif
+
+#define X 1
+#define Y 2
+#if defined(X) && \
+    /*this is a comment*/ defined(Y) \
+    // another comment
+#endif
+
+#warning FOO\
+	 \
+	 \
+	 \
+BAR
+
+
+#warning foo \
+\
+/* comment */     \
+\
+
+
+#if/** */A/* ... */&&B
+#endif
+
+
+#if/** */  /**/    A
+#endif
+
+#if \
+\
+A && B
+#endif
+
+
+#ifdef /*
+
+
+
+*/ FOOBAR
+#warning a
+#else
+#warning b
+#endif
+
+
+#if /*
+
+//test
+
+*/ FOOBAR
+#endif
+
+#if/*...*//*...*/A
+#endif

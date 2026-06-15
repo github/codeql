@@ -14,6 +14,7 @@ import com.semmle.js.ast.Expression;
 import com.semmle.js.ast.ExpressionStatement;
 import com.semmle.js.ast.FieldDefinition;
 import com.semmle.js.ast.Identifier;
+import com.semmle.js.ast.ImportPhaseModifier;
 import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.Literal;
 import com.semmle.js.ast.MethodDefinition;
@@ -140,6 +141,7 @@ public class FlowParser extends ESNextParser {
       options.onRecoverableError(this.onRecoverableError);
     }
 
+    @SuppressWarnings("ReturnValueIgnored")
     private void commit() {
       // commit buffered tokens
       options.onToken(this.onToken);
@@ -943,12 +945,12 @@ public class FlowParser extends ESNextParser {
           // `export type { foo, bar };`
           List<ExportSpecifier> specifiers = this.parseExportSpecifiers(exports);
           this.parseExportFrom(specifiers, null, false);
-          this.parseImportOrExportAssertionAndSemicolon();
+          this.parseImportOrExportAttributesAndSemicolon();
           return null;
         } else if (this.eat(TokenType.star)) {
           if (this.eatContextual("as")) this.parseIdent(true);
           this.parseExportFrom(null, null, true);
-          this.parseImportOrExportAssertionAndSemicolon();
+          this.parseImportOrExportAttributesAndSemicolon();
           return null;
         } else {
           // `export type Foo = Bar;`
@@ -1064,13 +1066,13 @@ public class FlowParser extends ESNextParser {
   }
 
   @Override
-  protected List<ImportSpecifier> parseImportSpecifiers() {
+  protected List<ImportSpecifier> parseImportSpecifiers(ImportPhaseModifier[] phaseModifier) {
     String kind = null;
     if (flow()) {
       kind = flowParseImportSpecifiers();
     }
 
-    List<ImportSpecifier> specs = super.parseImportSpecifiers();
+    List<ImportSpecifier> specs = super.parseImportSpecifiers(phaseModifier);
     if (kind != null || specs.isEmpty()) return null;
     return specs;
   }

@@ -272,6 +272,8 @@
  * Note that the `import` statement as a whole is part of the CFG of the body, while its single
  * import specifier `x as y` forms part of the preamble.
  */
+overlay[local?]
+module;
 
 import javascript
 private import internal.StmtContainers
@@ -356,9 +358,7 @@ class ControlFlowNode extends @cfg_node, Locatable, NodeInStmtContainer {
  * A synthetic CFG node that does not correspond to a statement or expression;
  * examples include guard nodes and entry/exit nodes.
  */
-class SyntheticControlFlowNode extends @synthetic_cfg_node, ControlFlowNode {
-  override Location getLocation() { hasLocation(this, result) }
-}
+class SyntheticControlFlowNode extends @synthetic_cfg_node, ControlFlowNode { }
 
 /** A synthetic CFG node marking the entry point of a function or toplevel script. */
 class ControlFlowEntryNode extends SyntheticControlFlowNode, @entry_node {

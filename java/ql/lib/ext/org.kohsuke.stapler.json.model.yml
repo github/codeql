@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.kohsuke.stapler.json", "SubmittedForm", True, "", "", "Annotated", "Parameter", "remote", "manual"]
+      - ["org.kohsuke.stapler.json", "JsonBody", True, "", "", "Annotated", "Parameter", "remote", "manual"]

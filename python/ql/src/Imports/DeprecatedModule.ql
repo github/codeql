@@ -11,6 +11,7 @@
  */
 
 import python
+private import semmle.python.ApiGraphs
 
 /**
  * Holds if the module `name` was deprecated in Python version `major`.`minor`,
@@ -79,7 +80,7 @@ where
   name = imp.getName() and
   deprecated_module(name, instead, _, _) and
   not exists(Try try, ExceptStmt except | except = try.getAHandler() |
-    except.getType().pointsTo(ClassValue::importError()) and
+    except.getType() = API::builtin("ImportError").getAValueReachableFromSource().asExpr() and
     except.containsInScope(imp)
   )
 select imp, deprecation_message(name) + replacement_message(name)

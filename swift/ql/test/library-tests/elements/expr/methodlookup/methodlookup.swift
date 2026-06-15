@@ -14,7 +14,7 @@ actor Bar {
 @MainActor
 class Baz {
     init() {}
-    func instanceMethod() {}
+    nonisolated func instanceMethod() {}
     static func staticMethod() {}
     class func classMethod() {}
 }

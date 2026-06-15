@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Cookies without the <code>Secure</code> flag set may be transmitted using HTTP instead of HTTPS.
+This leaves them vulnerable to being read by a third party attacker. If a sensitive cookie such as a session
+key is intercepted this way, it would allow the attacker to perform actions on a user's behalf.</p>
+</overview>
+
+<recommendation>
+<p>Always set <code>secure</code> to <code>True</code>, or add <code>; Secure;</code> to the cookie's raw header value, to ensure SSL is used to transmit the cookie
+with encryption.</p>
+</recommendation>
+
+<example>
+<p>In the following examples, the cases marked GOOD show secure cookie attributes being set; whereas in the case marked BAD they are not set.</p>
+<sample src="examples/InsecureCookie.py" />
+</example>
+
+<references>
+<li>Detectify: <a href="https://support.detectify.com/support/solutions/articles/48001048982-cookie-lack-secure-flag">Cookie lack Secure flag</a>.</li>
+<li>PortSwigger: <a href="https://portswigger.net/kb/issues/00500200_tls-cookie-without-secure-flag-set">TLS cookie without secure flag set</a>.</li>
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a>.</li>
+</references>
+
+</qhelp>

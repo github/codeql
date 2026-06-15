@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["neovim/neovim", "*", "input.install_flags", "code-injection", "generated"]

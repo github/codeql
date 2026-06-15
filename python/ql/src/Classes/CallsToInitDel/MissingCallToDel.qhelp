@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Python, unlike some other object-oriented languages such as Java, allows the developer complete freedom in 
+when and how superclass finalizers are called during object finalization.
+However, the developer has responsibility for ensuring that objects are properly cleaned up, and that all superclass <code>__del__</code> 
+methods are called.
+</p>
+<p>
+Classes with a <code>__del__</code> method (a finalizer) typically hold some resource such as a file handle that needs to be cleaned up. 
+If the  <code>__del__</code> method of a superclass is not called during object finalization, it is likely that
+resources may be leaked.
+</p>
+
+<p>A call to the <code>__del__</code> method of a superclass during object initialization may be unintentionally skipped:
+</p>
+<ul>
+        <li>If a subclass calls the <code>__del__</code> method of the wrong class.</li>
+        <li>If a call to the <code>__del__</code> method of one its base classes is omitted.</li>
+        <li>If a call to <code>super().__del__</code> is used, but not all <code>__del__</code> methods in the Method Resolution Order (MRO)
+        chain themselves call <code>super()</code>. This in particular arises more often in cases of multiple inheritance. </li>
+</ul>
+
+
+</overview>
+<recommendation>
+<p>Ensure that all superclass <code>__del__</code> methods are properly called. 
+Either each base class's finalize method should be explicitly called, or <code>super()</code> calls 
+should be consistently used throughout the inheritance hierarchy.</p>
+
+
+</recommendation>
+<example>
+<p>In the following example, explicit calls to <code>__del__</code> are used, but <code>SportsCar</code> erroneously calls
+<code>Vehicle.__del__</code>. This is fixed in <code>FixedSportsCar</code> by calling <code>Car.__del__</code>.
+</p>
+
+<sample src="examples/MissingCallToDel.py" />
+
+</example>
+<references>
+
+        <li>Python Reference: <a href="https://docs.python.org/3/reference/datamodel.html#object.__del__">__del__</a>.</li>
+        <li>Python Standard Library: <a href="https://docs.python.org/3/library/functions.html#super">super</a>.</li>
+        <li>Python Glossary: <a href="https://docs.python.org/3/glossary.html#term-method-resolution-order">Method resolution order</a>.</li>
+
+</references>
+</qhelp>

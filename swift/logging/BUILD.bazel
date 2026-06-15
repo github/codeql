@@ -1,9 +1,12 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
 cc_library(
     name = "logging",
     srcs = glob(["*.cpp"]),
     hdrs = glob(["*.h"]),
     visibility = ["//visibility:public"],
     deps = [
+        "//shared/cpp:extractor_shared",
         "@absl//absl/strings",
         "@binlog",
         "@fmt",

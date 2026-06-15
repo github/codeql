@@ -9,7 +9,6 @@
  */
 
 import javascript
-import meta.MetaMetrics
 private import Expressions.ExprHasNoEffect
 import meta.internal.TaintMetrics
 
@@ -24,8 +23,6 @@ predicate unmodeled(API::Node callee, API::CallNode call, DataFlow::Node pred, D
     TaintTracking::sharedTaintStep(_, succ)
     or
     DataFlow::SharedFlowStep::step(_, succ)
-    or
-    DataFlow::SharedFlowStep::step(_, succ, _, _)
     or
     DataFlow::SharedFlowStep::loadStep(_, succ, _)
     or

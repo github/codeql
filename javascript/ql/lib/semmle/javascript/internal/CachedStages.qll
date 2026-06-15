@@ -25,6 +25,7 @@ private import StmtContainers
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
 private import semmle.javascript.dataflow.internal.FlowSteps
 private import semmle.javascript.dataflow.internal.AccessPaths
+private import semmle.javascript.dataflow.internal.TaintTrackingPrivate as TaintTrackingPrivate
 
 /**
  * Contains a `cached module` for each stage.
@@ -39,6 +40,7 @@ module Stages {
   /**
    * The `ast` stage.
    */
+  overlay[local?]
   cached
   module Ast {
     /**
@@ -83,6 +85,7 @@ module Stages {
   /**
    * The `basicblocks` stage.
    */
+  overlay[local?]
   cached
   module BasicBlocks {
     /**
@@ -107,8 +110,34 @@ module Stages {
   }
 
   /**
+   * The part of data flow computed before flow summary nodes.
+   */
+  overlay[local?]
+  cached
+  module EarlyDataFlowStage {
+    /**
+     * Always holds.
+     * Ensures that a predicate is evaluated as part of the early DataFlow stage.
+     */
+    cached
+    predicate ref() { 1 = 1 }
+
+    /**
+     * DONT USE!
+     * Contains references to each predicate that use the above `ref` predicate.
+     */
+    cached
+    predicate backref() {
+      1 = 1
+      or
+      DataFlow::localFlowStep(_, _)
+    }
+  }
+
+  /**
    * The `dataflow` stage.
    */
+  overlay[local?]
   cached
   module DataFlowStage {
     /**
@@ -128,15 +157,13 @@ module Stages {
       or
       exists(AmdModule a)
       or
-      DataFlow::localFlowStep(_, _)
-      or
       exists(any(DataFlow::SourceNode s).getAPropertyReference("foo"))
       or
       exists(any(Expr e).getExceptionTarget())
       or
       exists(DataFlow::ssaDefinitionNode(_))
       or
-      any(DataFlow::Node node).hasLocationInfo(_, _, _, _, _)
+      exists(any(DataFlow::Node node).getLocation())
       or
       exists(any(DataFlow::Node node).toString())
       or
@@ -144,7 +171,11 @@ module Stages {
       or
       exists(any(DataFlow::PropRef ref).getBase())
       or
-      exists(any(DataFlow::ClassNode cls))
+      exists(any(DataFlow::CallNode node).getArgument(_))
+      or
+      exists(any(DataFlow::CallNode node).getAnArgument())
+      or
+      exists(any(DataFlow::CallNode node).getLastArgument())
     }
   }
 
@@ -172,8 +203,6 @@ module Stages {
       1 = 1
       or
       exists(any(Import i).getImportedModule())
-      or
-      exists(DataFlow::moduleImport(_))
       or
       exists(any(ReExportDeclaration d).getReExportedModule())
       or
@@ -268,13 +297,12 @@ module Stages {
       exists(
         API::moduleImport("foo")
             .getMember("bar")
-            .getUnknownMember()
+            .getArrayElement()
             .getAMember()
             .getAParameter()
             .getPromised()
             .getReturn()
             .getParameter(2)
-            .getUnknownMember()
             .getInstance()
             .getReceiver()
             .getForwardingFunction()
@@ -285,9 +313,6 @@ module Stages {
       )
     }
   }
-
-  /** DEPRECATED: Alias for ApiStage */
-  deprecated module APIStage = ApiStage;
 
   /**
    * The `taint` stage.
@@ -319,19 +344,7 @@ module Stages {
       or
       any(RegExpTerm t).isUsedAsRegExp()
       or
-      any(TaintTracking::AdditionalSanitizerGuardNode e).appliesTo(_)
-    }
-
-    cached
-    class DummySanitizer extends TaintTracking::AdditionalSanitizerGuardNode {
-      cached
-      DummySanitizer() { none() }
-
-      cached
-      override predicate appliesTo(TaintTracking::Configuration cfg) { none() }
-
-      cached
-      override predicate sanitizes(boolean outcome, Expr e) { none() }
+      TaintTrackingPrivate::defaultTaintSanitizer(_)
     }
   }
 }

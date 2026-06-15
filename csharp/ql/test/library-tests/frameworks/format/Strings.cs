@@ -38,4 +38,9 @@ class Strings
     {
         return string.Format(s, args);
     }
+
+    string MyReadOnlyStringFormat(string s, params ReadOnlySpan<object> args)
+    {
+        return string.Format(s, args);
+    }
 }

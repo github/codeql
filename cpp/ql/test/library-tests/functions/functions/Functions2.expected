@@ -1,10 +1,5 @@
-| ODASA-5186.cpp:4:8:4:14 | MyClass<T> | Class | ODASA-5186.cpp:5:8:5:17 | operator== |  |
-| ODASA-5186.cpp:4:8:4:14 | MyClass<int> | Struct | ODASA-5186.cpp:4:8:4:8 | MyClass | Constructor, NoArgConstructor, getAConstructor() |
-| ODASA-5186.cpp:4:8:4:14 | MyClass<int> | Struct | ODASA-5186.cpp:4:8:4:8 | operator= |  |
-| ODASA-5186.cpp:4:8:4:14 | MyClass<int> | Struct | ODASA-5186.cpp:4:8:4:8 | operator= |  |
+| ODASA-5186.cpp:4:8:4:14 | MyClass<T> | Struct | ODASA-5186.cpp:5:8:5:17 | operator== |  |
 | ODASA-5186.cpp:4:8:4:14 | MyClass<int> | Struct | ODASA-5186.cpp:5:8:5:8 | operator== |  |
-| ODASA-5186.hpp:2:8:2:17 | NEQ_helper<MyClass<int>> | Struct | ODASA-5186.hpp:2:8:2:8 | operator= |  |
-| ODASA-5186.hpp:2:8:2:17 | NEQ_helper<MyClass<int>> | Struct | ODASA-5186.hpp:2:8:2:8 | operator= |  |
 | file://:0:0:0:0 | __va_list_tag | Struct | file://:0:0:0:0 | operator= |  |
 | file://:0:0:0:0 | __va_list_tag | Struct | file://:0:0:0:0 | operator= |  |
 | functions.cpp:7:8:7:8 | A | Struct | functions.cpp:7:8:7:8 | operator= |  |

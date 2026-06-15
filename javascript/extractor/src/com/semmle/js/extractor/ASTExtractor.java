@@ -1,15 +1,5 @@
 package com.semmle.js.extractor;
 
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
-import java.util.regex.Matcher;
-
 import com.semmle.js.ast.AClass;
 import com.semmle.js.ast.AFunction;
 import com.semmle.js.ast.AFunctionExpression;
@@ -150,11 +140,11 @@ import com.semmle.ts.ast.OptionalTypeExpr;
 import com.semmle.ts.ast.ParenthesizedTypeExpr;
 import com.semmle.ts.ast.PredicateTypeExpr;
 import com.semmle.ts.ast.RestTypeExpr;
+import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
-import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.ts.ast.TypeExpression;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
@@ -166,6 +156,13 @@ import com.semmle.util.locations.OffsetTranslation;
 import com.semmle.util.locations.SourceMap;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+import java.util.regex.Matcher;
 
 /** Extractor for AST-based information; invoked by the {@link JSExtractor}. */
 public class ASTExtractor {
@@ -387,7 +384,8 @@ public class ASTExtractor {
       return visit(child, parent, childIndex, IdContext.VAR_BIND, binopOperand);
     }
 
-    private Label visit(INode child, Label parent, int childIndex, IdContext idContext, boolean binopOperand) {
+    private Label visit(
+        INode child, Label parent, int childIndex, IdContext idContext, boolean binopOperand) {
       if (child == null) return null;
       return child.accept(this, new Context(parent, childIndex, idContext, binopOperand));
     }
@@ -590,15 +588,28 @@ public class ASTExtractor {
 
       trapwriter.addTuple("literals", valueString, source, key);
       Position start = nd.getLoc().getStart();
-      com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn() + 1 /* Convert from 0-based to 1-based. */, start.getOffset());
+      com.semmle.util.locations.Position startPos =
+          new com.semmle.util.locations.Position(
+              start.getLine(),
+              start.getColumn() + 1 /* Convert from 0-based to 1-based. */,
+              start.getOffset());
 
       if (nd.isRegExp()) {
         OffsetTranslation offsets = new OffsetTranslation();
         offsets.set(0, 1); // skip the initial '/'
-        SourceMap sourceMap = SourceMap.legacyWithStartPos(SourceMap.fromString(nd.getRaw()).offsetBy(0, offsets), startPos);
-        regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), sourceMap, nd, false);
-      } else if (nd.isStringLiteral() && !c.isInsideType() && nd.getRaw().length() < 1000 && !c.isBinopOperand()) {
-        SourceMap sourceMap = SourceMap.legacyWithStartPos(SourceMap.fromString(nd.getRaw()).offsetBy(0, makeStringLiteralOffsets(nd.getRaw())), startPos);
+        SourceMap sourceMap =
+            SourceMap.legacyWithStartPos(
+                SourceMap.fromString(nd.getRaw()).offsetBy(0, offsets), startPos);
+        regexpExtractor.extract(source.substring(1, source.lastIndexOf('/')), sourceMap, nd, false, source.substring(source.lastIndexOf('/'), source.length()));
+      } else if (nd.isStringLiteral()
+          && !c.isInsideType()
+          && nd.getRaw().length() < 1000
+          && !c.isBinopOperand()) {
+        SourceMap sourceMap =
+            SourceMap.legacyWithStartPos(
+                SourceMap.fromString(nd.getRaw())
+                    .offsetBy(0, makeStringLiteralOffsets(nd.getRaw())),
+                startPos);
         regexpExtractor.extract(valueString, sourceMap, nd, true);
 
         // Scan the string for template tags, if we're in a context where such tags are relevant.
@@ -621,8 +632,8 @@ public class ASTExtractor {
     }
 
     /**
-     * Constant-folds simple string concatenations in `exp` while keeping an offset translation
-     * that tracks back to the original source.
+     * Constant-folds simple string concatenations in `exp` while keeping an offset translation that
+     * tracks back to the original source.
      */
     private Pair<String, OffsetTranslation> getStringConcatResult(Expression exp) {
       if (exp instanceof BinaryExpression) {
@@ -638,7 +649,9 @@ public class ASTExtractor {
             return null;
           }
 
-          int delta = be.getRight().getLoc().getStart().getOffset() - be.getLeft().getLoc().getStart().getOffset();
+          int delta =
+              be.getRight().getLoc().getStart().getOffset()
+                  - be.getLeft().getLoc().getStart().getOffset();
           int offset = left.fst().length();
           return Pair.make(str, left.snd().append(right.snd(), offset, delta));
         }
@@ -748,7 +761,9 @@ public class ASTExtractor {
         visit(nd.getProperty(), key, 1, IdContext.TYPE_LABEL);
       } else {
         IdContext baseIdContext =
-            (c.idcontext == IdContext.EXPORT || c.idcontext == IdContext.EXPORT_BASE) ? IdContext.EXPORT_BASE : IdContext.VAR_BIND;
+            (c.idcontext == IdContext.EXPORT || c.idcontext == IdContext.EXPORT_BASE)
+                ? IdContext.EXPORT_BASE
+                : IdContext.VAR_BIND;
         visit(nd.getObject(), key, 0, baseIdContext);
         visit(nd.getProperty(), key, 1, nd.isComputed() ? IdContext.VAR_BIND : IdContext.LABEL);
       }
@@ -804,6 +819,7 @@ public class ASTExtractor {
       // add all declared global (or module-scoped) names, both non-lexical and lexical
       scopeManager.addNames(scopeManager.collectDeclaredNames(nd, isStrict, false, DeclKind.none));
       scopeManager.addNames(scopeManager.collectDeclaredNames(nd, isStrict, true, DeclKind.none));
+      scopeManager.addVariables("this");
 
       visitAll(nd.getBody(), toplevelLabel);
 
@@ -848,8 +864,11 @@ public class ASTExtractor {
     @Override
     public Label visit(BinaryExpression nd, Context c) {
       Label key = super.visit(nd, c);
-      if (nd.getOperator().equals("in") && nd.getLeft() instanceof Identifier && ((Identifier)nd.getLeft()).getName().startsWith("#")) {
-        // this happens with Ergonomic brand checks for Private Fields (see https://github.com/tc39/proposal-private-fields-in-in).
+      if (nd.getOperator().equals("in")
+          && nd.getLeft() instanceof Identifier
+          && ((Identifier) nd.getLeft()).getName().startsWith("#")) {
+        // this happens with Ergonomic brand checks for Private Fields (see
+        // https://github.com/tc39/proposal-private-fields-in-in).
         // it's the only case where private field identifiers are used not as a field.
         visit(nd.getLeft(), key, 0, IdContext.LABEL, true);
       } else {
@@ -875,8 +894,14 @@ public class ASTExtractor {
       }
       OffsetTranslation offsets = concatResult.snd();
       Position start = nd.getLoc().getStart();
-      com.semmle.util.locations.Position startPos = new com.semmle.util.locations.Position(start.getLine(), start.getColumn() + 1 /* Convert from 0-based to 1-based. */, start.getOffset());
-      SourceMap sourceMap = SourceMap.legacyWithStartPos(SourceMap.fromString(nd.getLoc().getSource()).offsetBy(0, offsets), startPos);
+      com.semmle.util.locations.Position startPos =
+          new com.semmle.util.locations.Position(
+              start.getLine(),
+              start.getColumn() + 1 /* Convert from 0-based to 1-based. */,
+              start.getOffset());
+      SourceMap sourceMap =
+          SourceMap.legacyWithStartPos(
+              SourceMap.fromString(nd.getLoc().getSource()).offsetBy(0, offsets), startPos);
       regexpExtractor.extract(foldedString, sourceMap, nd, true);
       return;
     }
@@ -1046,6 +1071,9 @@ public class ASTExtractor {
 
       scopeManager.enterScope((Node) nd);
       scopeManager.addNames(locals);
+      if (!(nd instanceof ArrowFunctionExpression)) {
+        scopeManager.addVariables("this");
+      }
 
       // The name of a function expression binds to its own scope.
       if (nd.getId() != null && nd instanceof AFunctionExpression) {
@@ -1517,8 +1545,9 @@ public class ASTExtractor {
       if (!isClassExpression) {
         visit(ac.getId(), key, 0, IdContext.VAR_AND_TYPE_DECL);
       }
+      scopeManager.enterScope(scopeNode);
+      scopeManager.addVariables("this"); // 'this' in static field initialiers refers to the class
       if (ac.hasId() || ac.hasTypeParameters()) {
-        scopeManager.enterScope(scopeNode);
         if (isClassExpression && ac.hasId()) {
           scopeManager.addVariables(ac.getId().getName());
           scopeManager.addTypeName(ac.getId().getName());
@@ -1541,9 +1570,7 @@ public class ASTExtractor {
         addDefaultConstructor(ac);
       }
       visit(ac.getBody(), key, 2);
-      if (ac.hasId() || ac.hasTypeParameters()) {
-        scopeManager.leaveScope();
-      }
+      scopeManager.leaveScope();
       emitNodeSymbol(ac, key);
       return key;
     }
@@ -1759,7 +1786,7 @@ public class ASTExtractor {
     public Label visit(ExportAllDeclaration nd, Context c) {
       Label lbl = super.visit(nd, c);
       visit(nd.getSource(), lbl, 0);
-      visit(nd.getAssertion(), lbl, -10);
+      visit(nd.getAttributes(), lbl, -10);
       return lbl;
     }
 
@@ -1775,7 +1802,7 @@ public class ASTExtractor {
       Label lbl = super.visit(nd, c);
       visit(nd.getDeclaration(), lbl, -1);
       visit(nd.getSource(), lbl, -2);
-      visit(nd.getAssertion(), lbl, -10);
+      visit(nd.getAttributes(), lbl, -10);
       IdContext childContext =
           nd.hasSource()
               ? IdContext.LABEL
@@ -1799,7 +1826,7 @@ public class ASTExtractor {
     public Label visit(ImportDeclaration nd, Context c) {
       Label lbl = super.visit(nd, c);
       visit(nd.getSource(), lbl, -1);
-      visit(nd.getAssertion(), lbl, -10);
+      visit(nd.getAttributes(), lbl, -10);
       IdContext childContext =
           nd.hasTypeKeyword()
               ? IdContext.TYPE_ONLY_IMPORT
@@ -1808,6 +1835,9 @@ public class ASTExtractor {
       emitNodeSymbol(nd, lbl);
       if (nd.hasTypeKeyword()) {
         trapwriter.addTuple("has_type_keyword", lbl);
+      }
+      if (nd.hasDeferKeyword()) {
+        trapwriter.addTuple("has_defer_keyword", lbl);
       }
       return lbl;
     }
@@ -1864,6 +1894,15 @@ public class ASTExtractor {
     @Override
     public Label visit(JSXThisExpr nd, Context c) {
       return visit((ThisExpression) nd, c);
+    }
+
+    @Override
+    public Label visit(ThisExpression nd, Context c) {
+      Label key = super.visit(nd, c);
+      if (c.idcontext == IdContext.VAR_BIND || c.idcontext == IdContext.VAR_IN_TYPE_BIND) {
+        addVariableBinding("bind", key, "this");
+      }
+      return key;
     }
 
     @Override

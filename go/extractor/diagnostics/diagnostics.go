@@ -3,10 +3,12 @@ package diagnostics
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+	"log/slog"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/github/codeql-go/extractor/util"
 )
 
 type sourceStruct struct {
@@ -54,18 +56,65 @@ type diagnostic struct {
 var diagnosticsEmitted, diagnosticsLimit uint = 0, 100
 var noDiagnosticDirPrinted bool = false
 
-func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagnosticSeverity, visibility *visibilityStruct, location *locationStruct) {
+type DiagnosticsWriter interface {
+	WriteDiagnostic(d diagnostic)
+}
+
+type FileDiagnosticsWriter struct {
+	diagnosticDir string
+}
+
+func (writer *FileDiagnosticsWriter) WriteDiagnostic(d diagnostic) {
+	if writer == nil {
+		return
+	}
+
+	content, err := json.Marshal(d)
+	if err != nil {
+		slog.Error("Failed to encode diagnostic as JSON", slog.Any("err", err))
+		return
+	}
+
+	targetFile, err := os.CreateTemp(writer.diagnosticDir, "go-extractor.*.json")
+	if err != nil {
+		slog.Error("Failed to create diagnostic file", slog.Any("err", err))
+		return
+	}
+	defer func() {
+		if err := targetFile.Close(); err != nil {
+			slog.Error("Failed to close diagnostic file", slog.Any("err", err))
+		}
+	}()
+
+	_, err = targetFile.Write(content)
+	if err != nil {
+		slog.Error("Failed to write to diagnostic file", slog.Any("err", err))
+	}
+}
+
+var DefaultWriter *FileDiagnosticsWriter = nil
+
+func NewFileDiagnosticsWriter() *FileDiagnosticsWriter {
+	diagnosticDir := os.Getenv("CODEQL_EXTRACTOR_GO_DIAGNOSTIC_DIR")
+	if diagnosticDir == "" {
+		if !noDiagnosticDirPrinted {
+			slog.Warn("No diagnostic directory set, so not emitting diagnostics")
+			noDiagnosticDirPrinted = true
+		}
+		return nil
+	}
+
+	return &FileDiagnosticsWriter{diagnosticDir}
+}
+
+func init() {
+	DefaultWriter = NewFileDiagnosticsWriter()
+}
+
+// Emits a diagnostic using the specified `DiagnosticsWriter`.
+func emitDiagnosticTo(writer DiagnosticsWriter, sourceid, sourcename, markdownMessage string, severity diagnosticSeverity, visibility *visibilityStruct, location *locationStruct) {
 	if diagnosticsEmitted < diagnosticsLimit {
 		diagnosticsEmitted += 1
-
-		diagnosticDir := os.Getenv("CODEQL_EXTRACTOR_GO_DIAGNOSTIC_DIR")
-		if diagnosticDir == "" {
-			if !noDiagnosticDirPrinted {
-				log.Println("No diagnostic directory set, so not emitting diagnostic")
-				noDiagnosticDirPrinted = true
-			}
-			return
-		}
 
 		timestamp := time.Now().UTC().Format("2006-01-02T15:04:05.000") + "Z"
 
@@ -91,31 +140,13 @@ func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagn
 			}
 		}
 
-		content, err := json.Marshal(d)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		targetFile, err := os.CreateTemp(diagnosticDir, "go-extractor.*.json")
-		if err != nil {
-			log.Println("Failed to create diagnostic file: ")
-			log.Println(err)
-			return
-		}
-		defer func() {
-			if err := targetFile.Close(); err != nil {
-				log.Println("Failed to close diagnostic file:")
-				log.Println(err)
-			}
-		}()
-
-		_, err = targetFile.Write(content)
-		if err != nil {
-			log.Println("Failed to write to diagnostic file: ")
-			log.Println(err)
-		}
+		writer.WriteDiagnostic(d)
 	}
+}
+
+// Emits a diagnostic using the default `DiagnosticsWriter`.
+func emitDiagnostic(sourceid, sourcename, markdownMessage string, severity diagnosticSeverity, visibility *visibilityStruct, location *locationStruct) {
+	emitDiagnosticTo(DefaultWriter, sourceid, sourcename, markdownMessage, severity, visibility, location)
 }
 
 func EmitPackageDifferentOSArchitecture(pkgPath string) {
@@ -129,15 +160,18 @@ func EmitPackageDifferentOSArchitecture(pkgPath string) {
 	)
 }
 
+func plural(n int, singular, plural string) string {
+	if n == 1 {
+		return singular
+	} else {
+		return plural
+	}
+}
+
 const maxNumPkgPaths = 5
 
-func EmitCannotFindPackages(pkgPaths []string) {
+func EmitCannotFindPackages(writer DiagnosticsWriter, pkgPaths []string) {
 	numPkgPaths := len(pkgPaths)
-
-	ending := "s"
-	if numPkgPaths == 1 {
-		ending = ""
-	}
 
 	numPrinted := numPkgPaths
 	truncated := false
@@ -151,21 +185,54 @@ func EmitCannotFindPackages(pkgPaths []string) {
 		secondLine += fmt.Sprintf(" and %d more", numPkgPaths-maxNumPkgPaths)
 	}
 
-	emitDiagnostic(
+	message := fmt.Sprintf(
+		"%d package%s could not be found:\n\n%s.\n\n"+
+			"CodeQL is able to analyze your code without those packages, but definitions from them may not be recognized and "+
+			"source files that use them may only be partially analyzed.\n\n"+
+			"To ensure that you have comprehensive alert coverage, check that the paths are correct and make sure any private packages can be accessed by CodeQL. ",
+		numPkgPaths,
+		plural(len(pkgPaths), "", "s"),
+		secondLine,
+	)
+
+	// Depending on the environment we are running in, provide a different message for how to configure access to private registries.
+	if util.IsDynamicActionsWorkflow() {
+		// For GitHub-managed (dynamic) workflows, we offer built-in support for private registries that customers can set up.
+		message = message +
+			"Organizations [can grant access to private registries for GitHub security products](https://docs.github.com/en/code-security/how-tos/secure-at-scale/configure-organization-security/manage-usage-and-access/giving-org-access-private-registries). "
+	} else {
+		if util.IsActionsWorkflow() {
+			// For custom workflows, users can add a workflow step to set up credentials or environment variables.
+			message = message +
+				"To set up access to a private registry, add a step to your workflow which sets up the necessary credentials and environment variables. "
+		} else {
+			// Otherwise, we are running locally or in some other CI system.
+			message = message +
+				"To set up access to private registries, ensure that the necessary credentials and environment variables are set up for `go` to use. "
+		}
+
+		// This should be less likely since we improved Go project discovery. We only include it in the message if we are not running in a
+		// GitHub-managed workflow, since users would not be able to act on this there.
+		message = message +
+			"If any of the packages are already present in the repository, but were not found, then you may need a [custom build command](https://docs.github.com/en/code-security/how-tos/scan-code-for-vulnerabilities/manage-your-configuration/codeql-code-scanning-for-compiled-languages)."
+	}
+
+	emitDiagnosticTo(
+		writer,
 		"go/autobuilder/package-not-found",
 		"Some packages could not be found",
-		fmt.Sprintf("%d package%s could not be found:\n\n%s.\n\nDefinitions in those packages may not be recognized by CodeQL, and files that use them may only be partially analyzed.\n\nCheck that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).", numPkgPaths, ending, secondLine),
+		message,
 		severityWarning,
 		fullVisibility,
 		noLocation,
 	)
 }
 
-func EmitNewerGoVersionNeeded() {
+func EmitNewerGoVersionNeeded(installedVersion string, requiredVersion string) {
 	emitDiagnostic(
 		"go/autobuilder/newer-go-version-needed",
 		"Newer Go version needed",
-		"The detected version of Go is lower than the version specified in `go.mod`. [Install a newer version](https://github.com/actions/setup-go#basic).",
+		"Version `"+installedVersion+"` of Go is installed, but this is lower than `"+requiredVersion+"` required by your project's `go.mod`. [Install a newer version of Go before analyzing your project](https://github.com/actions/setup-go#basic).",
 		severityError,
 		fullVisibility,
 		noLocation,
@@ -193,6 +260,123 @@ func EmitRelativeImportPaths() {
 		noLocation,
 	)
 }
+
+// The following diagnostics are telemetry-only.
+
+func EmitBazelBuildFilesFound(bazelPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/bazel-build-file-found",
+		"Bazel BUILD files were found",
+		fmt.Sprintf(
+			"%d bazel BUILD %s found:\n\n`%s`",
+			len(bazelPaths),
+			plural(len(bazelPaths), "file was", "files were"),
+			strings.Join(bazelPaths, "`, `")),
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGopkgTomlFound() {
+	emitDiagnostic(
+		"go/autobuilder/gopkg-toml-found",
+		"A dep `Gopkg.toml` file was found",
+		"A dep `Gopkg.toml` file was found",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGlideYamlFound() {
+	emitDiagnostic(
+		"go/autobuilder/glide-yaml-found",
+		"A Glide `glide.yaml` file was found",
+		"A Glide `glide.yaml` file was found",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoWorkFound(goWorkPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/go-work-found",
+		"`go.work` file found",
+		fmt.Sprintf(
+			"%d `go.work` %s found:\n\n`%s`",
+			len(goWorkPaths),
+			plural(len(goWorkPaths), "file was", "files were"),
+			strings.Join(goWorkPaths, "`, `")),
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoFilesOutsideGoModules(goModPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/go-files-outside-go-modules",
+		"Go files were found outside Go modules",
+		"Go files were found outside of the Go modules corresponding to these `go.mod` files.\n\n`"+strings.Join(goModPaths, "`, `")+"`",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitMultipleGoModFoundNested(goModPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/multiple-go-mod-found-nested",
+		"Multiple `go.mod` files were found, all nested under one root `go.mod` file",
+		fmt.Sprintf(
+			"%d `go.mod` files were found:\n\n`%s`",
+			len(goModPaths),
+			strings.Join(goModPaths, "`, `")),
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitMultipleGoModFoundNotNested(goModPaths []string) {
+	emitDiagnostic(
+		"go/autobuilder/multiple-go-mod-found-not-nested",
+		"Multiple `go.mod` files found, not all nested under one root `go.mod` file",
+		fmt.Sprintf(
+			"%d `go.mod` files were found:\n\n`%s`",
+			len(goModPaths),
+			strings.Join(goModPaths, "`, `")),
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitSingleRootGoModFound(goModPath string) {
+	emitDiagnostic(
+		"go/autobuilder/single-root-go-mod-found",
+		"A single `go.mod` file was found in the root",
+		"A single `go.mod` file was found.\n\n`"+goModPath+"`",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitSingleNonRootGoModFound(goModPath string) {
+	emitDiagnostic(
+		"go/autobuilder/single-non-root-go-mod-found",
+		"A single, non-root `go.mod` file was found",
+		"A single, non-root `go.mod` file was found.\n\n`"+goModPath+"`",
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+// The following diagnostics are related to identifying the build environment.
 
 func EmitNoGoModAndNoGoEnv(msg string) {
 	emitDiagnostic(
@@ -355,6 +539,54 @@ func EmitGoModVersionSupportedLowerEqualGoEnv(msg string) {
 		msg,
 		severityNote,
 		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitNewerSystemGoRequired(requiredVersion string) {
+	emitDiagnostic(
+		"go/autobuilder/newer-system-go-version-required",
+		"The Go version installed on the system is too old to support this project",
+		"At least Go version `"+requiredVersion+"` is required to build this project, but the version installed on the system is older. [Install a newer version](https://github.com/actions/setup-go#basic).",
+		severityError,
+		fullVisibility,
+		noLocation,
+	)
+}
+
+func EmitExtractionFailedForProjects(path []string) {
+	emitDiagnostic(
+		"go/autobuilder/extraction-failed-for-project",
+		"Unable to extract some Go projects",
+		fmt.Sprintf(
+			"The following %d Go project%s could not be extracted successfully:\n\n`%s`\n",
+			len(path),
+			plural(len(path), "", "s"),
+			strings.Join(path, "`, `")),
+		severityWarning,
+		fullVisibility,
+		noLocation,
+	)
+}
+
+func EmitPrivateRegistryUsed(writer DiagnosticsWriter, configs []string) {
+	n := len(configs)
+	lines := make([]string, n)
+
+	for i := range configs {
+		lines[i] = fmt.Sprintf("* %s", configs[i])
+	}
+
+	emitDiagnosticTo(
+		writer,
+		"go/autobuilder/analysis-using-private-registries",
+		"Go extraction used private package registries",
+		fmt.Sprintf(
+			"Go was extracted using the following private package registr%s:\n\n%s\n",
+			plural(n, "y", "ies"),
+			strings.Join(lines, "\n")),
+		severityNote,
+		fullVisibility,
 		noLocation,
 	)
 }

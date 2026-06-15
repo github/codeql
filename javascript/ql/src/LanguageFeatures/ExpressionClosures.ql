@@ -5,8 +5,10 @@
  * @kind problem
  * @problem.severity warning
  * @id js/non-standard-language-feature
- * @tags portability
+ * @tags quality
  *       maintainability
+ *       readability
+ *       portability
  *       language-features
  *       external/cwe/cwe-758
  * @precision very-high

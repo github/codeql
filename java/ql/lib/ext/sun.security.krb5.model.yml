@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["sun.security.krb5", "EncryptionKey", False, "EncryptionKey", "(char[],String,String)", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["sun.security.krb5", "EncryptionKey", False, "acquireSecretKey", "(PrincipalName,char[],int,PAData$SaltAndParams)", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["sun.security.krb5", "EncryptionKey", False, "acquireSecretKey", "(char[],String,int,byte[])", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["sun.security.krb5", "EncryptionKey", False, "acquireSecretKeys", "(char[],String)", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["sun.security.krb5", "EncryptionKey", False, "stringToKey", "(char[],String,byte[],int)", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["sun.security.krb5", "KrbAsRep", False, "decryptUsingPassword", "(char[],KrbAsReq,PrincipalName)", "", "Argument[0]", "credentials-password", "hq-generated"]
+      - ["sun.security.krb5", "Credentials", False, "Credentials", "(byte[],String,String,byte[],int,boolean[],Date,Date,Date,Date,InetAddress[])", "", "Argument[3]", "credentials-key", "hq-generated"]
+      - ["sun.security.krb5", "EncryptionKey", False, "EncryptionKey", "(byte[],int,Integer)", "", "Argument[0]", "credentials-key", "hq-generated"]
+      - ["sun.security.krb5", "EncryptionKey", False, "EncryptionKey", "(int,byte[])", "", "Argument[1]", "credentials-key", "hq-generated"]

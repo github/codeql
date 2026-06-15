@@ -10,7 +10,7 @@ fs.exists(fileName, function (exists) {
     fs.stat(fileName, function (error, stats) {
       var readable = fs.createReadStream(fileName);
       readable.on('readable', () => {
-        let chunk = readable.read();
+        let chunk = readable.read(); // $ Source[js/file-access-to-http]
 
         const options = {
           hostname: 'www.google.com',
@@ -26,8 +26,7 @@ fs.exists(fileName, function (exists) {
           res.setEncoding('utf8');
         });
         
-        // BAD: write data from file to request body
-        req.write(chunk);
+        req.write(chunk); // $ Alert[js/file-access-to-http] - write data from file to request body
 
         req.end(); 
       });

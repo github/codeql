@@ -130,6 +130,9 @@ namespace Semmle.Extraction.Kinds
         URSHIFT = 133,
         ASSIGN_URSHIFT = 134,
         UTF8_STRING_LITERAL = 135,
+        COLLECTION = 136,
+        SPREAD_ELEMENT = 137,
+        INTERPOLATED_STRING_INSERT = 138,
         DEFINE_SYMBOL = 999,
     }
 }

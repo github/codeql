@@ -1,0 +1,11 @@
+name: assets-test
+
+on:
+  pull_request_target:
+
+jobs:
+  check-execution-context:
+    uses: ./.github/workflows/reusable_local.yml
+    with:
+      branch: ${{ github.event.pull_request.head.ref }}
+

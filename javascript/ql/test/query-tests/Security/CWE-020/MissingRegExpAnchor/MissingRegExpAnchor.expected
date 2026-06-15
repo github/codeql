@@ -49,7 +49,7 @@
 | tst-UnanchoredUrlRegExp.js:8:47:8:90 | "(https ... e.com)" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
 | tst-UnanchoredUrlRegExp.js:10:2:10:22 | /https? ... od.com/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | tst-UnanchoredUrlRegExp.js:11:13:11:31 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
-| tst-UnanchoredUrlRegExp.js:13:44:13:62 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:13:48:13:66 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | tst-UnanchoredUrlRegExp.js:15:13:15:31 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | tst-UnanchoredUrlRegExp.js:19:47:19:65 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | tst-UnanchoredUrlRegExp.js:20:47:20:70 | "https? ... m:8080" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
@@ -59,3 +59,12 @@
 | tst-UnanchoredUrlRegExp.js:26:3:26:22 | "^https?://good.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
 | tst-UnanchoredUrlRegExp.js:35:2:35:32 | /https? ... 0-9]+)/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | tst-UnanchoredUrlRegExp.js:77:11:77:32 | /vimeo\\ ... 0-9]+)/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:111:50:111:68 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:112:61:112:79 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:113:50:113:69 | "^https?://good.com" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-UnanchoredUrlRegExp.js:114:50:114:72 | /^https ... d.com/g | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-UnanchoredUrlRegExp.js:115:50:115:94 | "(^http ... 2.com)" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-UnanchoredUrlRegExp.js:116:50:116:93 | "(https ... e.com)" | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
+| tst-UnanchoredUrlRegExp.js:117:50:117:59 | "good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:118:50:118:68 | "https?://good.com" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| tst-UnanchoredUrlRegExp.js:119:50:119:73 | "https? ... m:8080" | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |

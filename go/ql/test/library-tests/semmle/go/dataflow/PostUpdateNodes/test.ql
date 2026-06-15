@@ -1,4 +1,4 @@
 import go
 
 from DataFlow::PostUpdateNode pun
-select pun
+select pun.getPreUpdateNode(), pun

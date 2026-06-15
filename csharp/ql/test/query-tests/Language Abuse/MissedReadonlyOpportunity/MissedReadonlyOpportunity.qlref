@@ -1,1 +1,2 @@
-Language Abuse/MissedReadonlyOpportunity.ql
+query: Language Abuse/MissedReadonlyOpportunity.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

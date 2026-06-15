@@ -11,18 +11,15 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import XxeCustomizations::Xxe
 
-/**
- * A taint-tracking configuration for detecting "XML External Entity (XXE)" vulnerabilities.
- */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "Xxe" }
+private module XxeConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof Sanitizer
-  }
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/** Global taint-tracking for detecting "XML External Entity (XXE)" vulnerabilities. */
+module XxeFlow = TaintTracking::Global<XxeConfig>;

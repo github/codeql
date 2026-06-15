@@ -12,11 +12,33 @@ private import semmle.python.ApiGraphs
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
 /**
+ * Holds if default taint tracking should read content `contentSet` implicitly and
+ * propagate taint from a container to reads of that content.
+ */
+private predicate defaultTaintReadContent(DataFlow::ContentSet contentSet) {
+  // Tuple and dictionary content is precise, so use wildcard content sets to avoid
+  // blowing up the size of `Stage1::readSetEx` (otherwise this predicate would
+  // expand to one row per (node, distinct key or index) and the framework's
+  // read-set relation grows quadratically). `ContentSet.getAReadContent` expands
+  // these wildcards back to the specific contents when matching against stores.
+  contentSet.isAnyTupleOrDictionaryElement()
+  or
+  // List and set element content is already imprecise, so no wildcard expansion is
+  // needed.
+  contentSet.getAStoreContent() instanceof DataFlow::ListElementContent
+  or
+  contentSet.getAStoreContent() instanceof DataFlow::SetElementContent
+}
+
+/**
  * Holds if default `TaintTracking::Configuration`s should allow implicit reads
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
+  exists(node) and
+  defaultTaintReadContent(c)
+}
 
 private module Cached {
   /**
@@ -24,10 +46,10 @@ private module Cached {
    * global taint flow configurations.
    */
   cached
-  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    localAdditionalTaintStep(nodeFrom, nodeTo)
+  predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
+    localAdditionalTaintStep(nodeFrom, nodeTo, model)
     or
-    any(AdditionalTaintStep a).step(nodeFrom, nodeTo)
+    any(AdditionalTaintStep a).hasStep(nodeFrom, nodeTo, model)
   }
 
   /**
@@ -36,28 +58,32 @@ private module Cached {
    * different objects.
    */
   cached
-  predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    concatStep(nodeFrom, nodeTo)
+  predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
+    (
+      concatStep(nodeFrom, nodeTo)
+      or
+      subscriptStep(nodeFrom, nodeTo)
+      or
+      stringManipulation(nodeFrom, nodeTo)
+      or
+      containerStep(nodeFrom, nodeTo)
+      or
+      DataFlowPrivate::forReadStep(nodeFrom, _, nodeTo)
+      or
+      DataFlowPrivate::iterableUnpackingReadStep(nodeFrom, _, nodeTo)
+      or
+      DataFlowPrivate::iterableUnpackingStoreStep(nodeFrom, _, nodeTo)
+      or
+      awaitStep(nodeFrom, nodeTo)
+      or
+      asyncWithStep(nodeFrom, nodeTo)
+    ) and
+    model = ""
     or
-    subscriptStep(nodeFrom, nodeTo)
-    or
-    stringManipulation(nodeFrom, nodeTo)
-    or
-    containerStep(nodeFrom, nodeTo)
-    or
-    copyStep(nodeFrom, nodeTo)
-    or
-    DataFlowPrivate::forReadStep(nodeFrom, _, nodeTo)
-    or
-    DataFlowPrivate::iterableUnpackingReadStep(nodeFrom, _, nodeTo)
-    or
-    DataFlowPrivate::iterableUnpackingStoreStep(nodeFrom, _, nodeTo)
-    or
-    awaitStep(nodeFrom, nodeTo)
-    or
-    asyncWithStep(nodeFrom, nodeTo)
-    or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom
+          .(DataFlowPrivate::FlowSummaryNode)
+          .getSummaryNode(), nodeTo.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false,
+      model)
   }
 }
 
@@ -124,11 +150,6 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
     nodeFrom.getNode() = object and
     method_name in ["partition", "rpartition", "rsplit", "split", "splitlines"]
     or
-    // Iterable[str] -> str
-    // TODO: check if these should be handled differently in regards to content
-    method_name = "join" and
-    nodeFrom.getNode() = call.getArg(0)
-    or
     // Mapping[str, Any] -> str
     method_name = "format_map" and
     nodeFrom.getNode() = call.getArg(0)
@@ -157,65 +178,20 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
 }
 
 /**
- * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to containers
- * (lists/sets/dictionaries): literals, constructor invocation, methods. Note that this
- * is currently very imprecise, as an example, since we model `dict.get`, we treat any
- * `<tainted object>.get(<arg>)` will be tainted, whether it's true or not.
+ * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to reading
+ * content from containers (lists/sets/dictionaries/tuples): subscripts, iteration,
+ * constructor invocation, methods.
  */
 predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  // construction by literal
-  //
-  // TODO: once we have proper flow-summary modeling, we might not need this step any
-  // longer -- but there needs to be a matching read-step for the store-step, and we
-  // don't provide that right now.
-  DataFlowPrivate::listStoreStep(nodeFrom, _, nodeTo)
-  or
-  DataFlowPrivate::setStoreStep(nodeFrom, _, nodeTo)
-  or
-  DataFlowPrivate::tupleStoreStep(nodeFrom, _, nodeTo)
-  or
-  DataFlowPrivate::dictStoreStep(nodeFrom, _, nodeTo)
-  or
-  // comprehension, so there is taint-flow from `x` in `[x for x in xs]` to the
-  // resulting list of the list-comprehension.
-  //
-  // TODO: once we have proper flow-summary modeling, we might not need this step any
-  // longer -- but there needs to be a matching read-step for the store-step, and we
-  // don't provide that right now.
-  DataFlowPrivate::comprehensionStoreStep(nodeFrom, _, nodeTo)
-  or
-  // functions operating on collections
-  exists(DataFlow::CallCfgNode call | call = nodeTo |
-    call = API::builtin(["sorted", "reversed", "iter", "next"]).getACall() and
-    call.getArg(0) = nodeFrom
-  )
-  or
-  // methods
-  exists(DataFlow::MethodCallNode call, string methodName | call = nodeTo |
-    methodName in [
-        // general
-        "copy", "pop",
-        // dict
-        "values", "items", "get", "popitem"
-      ] and
-    call.calls(nodeFrom, methodName)
-  )
-  or
-  // list.append, set.add
-  exists(DataFlow::MethodCallNode call, DataFlow::Node obj |
-    call.calls(obj, ["append", "add"]) and
-    obj = nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() and
-    call.getArg(0) = nodeFrom
-  )
-}
-
-/**
- * Holds if taint can flow from `nodeFrom` to `nodeTo` with a step related to copying.
- */
-predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
-  exists(DataFlow::CallCfgNode call | call = nodeTo |
-    call = API::moduleImport("copy").getMember(["copy", "deepcopy"]).getACall() and
-    call.getArg(0) = nodeFrom
+  exists(DataFlow::ContentSet contentSet |
+    DataFlowPrivate::readStep(nodeFrom, contentSet, nodeTo) and
+    exists(DataFlow::Content c | c = contentSet.getAReadContent() |
+      c instanceof DataFlow::TupleElementContent or
+      c instanceof DataFlow::DictionaryElementContent or
+      c instanceof DataFlow::DictionaryElementAnyContent or
+      c instanceof DataFlow::ListElementContent or
+      c instanceof DataFlow::SetElementContent
+    )
   )
 }
 
@@ -238,12 +214,47 @@ predicate awaitStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
  */
 predicate asyncWithStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
+    var = any(WithDefinition wd).getDefiningNode()
+  |
     nodeFrom.(DataFlow::CfgNode).getNode() = contextManager and
-    nodeTo.(DataFlow::EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
+    nodeTo.(DataFlow::CfgNode).getNode() = var and
     // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
     with.getContextExpr() = contextManager.getNode() and
     with.getOptionalVars() = var.getNode() and
     with.isAsync() and
     contextManager.strictlyDominates(var)
   )
+}
+
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
+  private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowDispatch::DataFlowCall call, DataFlowDispatch::ArgumentPosition argpos |
+      // TODO: exclude neutrals and anything that has QL modeling.
+      not exists(DataFlowDispatch::DataFlowCall call0 |
+        // Workaround for the fact that python currently associates several
+        // DataFlowCalls with a single call.
+        src.(DataFlowPublic::ArgumentNode).argumentOf(call0, _) and
+        exists(DataFlowDispatch::viableCallable(call0))
+      ) and
+      call instanceof DataFlowDispatch::PotentialLibraryCall and
+      src.(DataFlowPublic::ArgumentNode).argumentOf(call, argpos)
+    |
+      not argpos.isSelf() and
+      sink.(DataFlowPublic::PostUpdateNode)
+          .getPreUpdateNode()
+          .(DataFlowPublic::ArgumentNode)
+          .argumentOf(call, any(DataFlowDispatch::ArgumentPosition qualpos | qualpos.isSelf()))
+      or
+      sink.(DataFlowDispatch::OutNode).getCall(_) = call
+    )
+  }
 }

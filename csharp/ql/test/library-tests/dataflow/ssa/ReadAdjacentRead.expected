@@ -1,6 +1,3 @@
-| Capture.cs:6:16:6:16 | i | Capture.cs:8:17:8:17 | access to parameter i | Capture.cs:33:13:33:13 | access to parameter i |
-| Capture.cs:8:13:8:13 | x | Capture.cs:16:17:16:17 | access to local variable x | Capture.cs:17:21:17:21 | access to local variable x |
-| Capture.cs:8:13:8:13 | x | Capture.cs:45:13:45:13 | access to local variable x | Capture.cs:47:13:47:13 | access to local variable x |
 | Capture.cs:10:16:10:16 | a | Capture.cs:38:9:38:9 | access to local variable a | Capture.cs:46:12:46:12 | access to local variable a |
 | Capture.cs:65:45:65:51 | strings | Capture.cs:68:18:68:24 | access to parameter strings | Capture.cs:70:9:70:15 | access to parameter strings |
 | Consistency.cs:5:9:5:13 | Field | Consistency.cs:26:13:26:19 | access to field Field | Consistency.cs:27:13:27:19 | access to field Field |
@@ -22,7 +19,6 @@
 | DefUse.cs:144:22:144:22 | x | DefUse.cs:146:17:146:17 | access to local variable x | DefUse.cs:147:17:147:17 | access to local variable x |
 | DefUse.cs:152:9:152:14 | Field4 | DefUse.cs:156:13:156:18 | access to field Field4 | DefUse.cs:157:13:157:18 | access to field Field4 |
 | DefUse.cs:152:9:152:14 | Field4 | DefUse.cs:162:13:162:18 | access to field Field4 | DefUse.cs:163:13:163:18 | access to field Field4 |
-| DefUse.cs:167:23:167:23 | i | DefUse.cs:177:21:177:21 | access to parameter i | DefUse.cs:178:21:178:21 | access to parameter i |
 | Example.cs:4:9:4:13 | Field | Example.cs:14:13:14:22 | access to field Field | Example.cs:15:13:15:22 | access to field Field |
 | Example.cs:6:23:6:23 | i | Example.cs:8:22:8:22 | access to parameter i | Example.cs:10:13:10:13 | access to parameter i |
 | Example.cs:6:23:6:23 | i | Example.cs:10:13:10:13 | access to parameter i | Example.cs:11:26:11:26 | access to parameter i |
@@ -98,14 +94,6 @@
 | Properties.cs:104:16:104:20 | Props | Properties.cs:114:20:114:35 | access to field Props | Properties.cs:115:21:115:36 | access to field Props |
 | Properties.cs:104:16:104:20 | Props | Properties.cs:115:21:115:30 | access to field Props | Properties.cs:116:17:116:26 | access to field Props |
 | Properties.cs:104:16:104:20 | Props | Properties.cs:115:21:115:36 | access to field Props | Properties.cs:116:17:116:32 | access to field Props |
-| Splitting.cs:3:18:3:18 | b | Splitting.cs:6:13:6:13 | access to parameter b | Splitting.cs:15:13:15:13 | access to parameter b |
-| Splitting.cs:5:13:5:13 | x | Splitting.cs:13:9:13:9 | access to local variable x | Splitting.cs:14:9:14:9 | access to local variable x |
-| Splitting.cs:5:13:5:13 | x | Splitting.cs:14:9:14:9 | access to local variable x | Splitting.cs:17:13:17:13 | access to local variable x |
-| Splitting.cs:22:18:22:18 | b | Splitting.cs:25:13:25:13 | access to parameter b | Splitting.cs:35:13:35:13 | access to parameter b |
-| Splitting.cs:24:13:24:13 | x | Splitting.cs:33:9:33:9 | access to local variable x | Splitting.cs:34:9:34:9 | access to local variable x |
-| Splitting.cs:24:13:24:13 | x | Splitting.cs:34:9:34:9 | access to local variable x | Splitting.cs:37:13:37:13 | access to local variable x |
-| Splitting.cs:42:18:42:18 | b | Splitting.cs:45:13:45:13 | access to parameter b | Splitting.cs:52:13:52:13 | access to parameter b |
-| Splitting.cs:44:13:44:13 | x | Splitting.cs:54:9:54:9 | access to local variable x | Splitting.cs:55:9:55:9 | access to local variable x |
 | Test.cs:8:13:8:13 | x | Test.cs:25:16:25:16 | access to local variable x | Test.cs:25:16:25:16 | access to local variable x |
 | Test.cs:9:13:9:13 | y | Test.cs:25:20:25:20 | access to local variable y | Test.cs:31:13:31:13 | access to local variable y |
 | Test.cs:9:13:9:13 | y | Test.cs:25:20:25:20 | access to local variable y | Test.cs:43:20:43:20 | access to local variable y |

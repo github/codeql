@@ -30,6 +30,18 @@ module CleartextStoragePreferencesConfig implements DataFlow::ConfigSig {
     // make sources barriers so that we only report the closest instance
     isSource(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(CleartextStoragePreferencesSink).getLocation()
+    or
+    result =
+      sink.(CleartextStoragePreferencesSink)
+          .(DataFlow::PostUpdateNode)
+          .getPreUpdateNode()
+          .getLocation()
+  }
 }
 
 /**

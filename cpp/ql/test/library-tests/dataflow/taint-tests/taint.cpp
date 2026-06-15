@@ -134,7 +134,7 @@ void pointer_test() {
 	sink(*p3); // $ ast,ir
 
 	*p3 = 0;
-	sink(*p3); // $ SPURIOUS: ast,ir
+	sink(*p3); // $ SPURIOUS: ast
 }
 
 // --- return values ---
@@ -212,7 +212,7 @@ void test_swap() {
 
 	std::swap(x, y);
 
-	sink(x); // $ SPURIOUS: ast,ir
+	sink(x); // $ SPURIOUS: ast
 	sink(y); // $ ast,ir
 }
 
@@ -450,7 +450,7 @@ void test_qualifiers()
 	b.member = source();
 	sink(b); // $ ir MISSING: ast
 	sink(b.member); // $ ast,ir
-	sink(b.getMember()); // $ ir MISSING: ast
+	sink(b.getMember()); // $ MISSING: ir ast
 
 	c = new MyClass2(0);
 
@@ -693,4 +693,309 @@ void test_argument_source_field_to_obj() {
 	sink(s); // $ SPURIOUS: ast,ir
 	sink(s.x); // $ ast,ir
 	sink(s.y); // clean
+}
+
+namespace strings {
+	void test_write_to_read_then_incr_then_deref() {
+		char* s = source();
+		char* p;
+		*p++ = *s;
+		sink(p); // $ ast ir
+	}
+}
+
+char * strncpy (char *, const char *, unsigned long);
+
+void test_strncpy(char* d, char* s) {
+	argument_source(s);
+	strncpy(d, s, 16);
+	sink(d); // $ ast ir
+}
+
+char* indirect_source();
+
+void test_strtok_indirect() {
+	char *source = indirect_source();
+	const char* delim = ",.-;:_";
+	char* tokenized = strtok(source, delim);
+	sink(*tokenized); // $ ir MISSING: ast
+	sink(*delim);
+}
+
+long int strtol(const char*, char**, int);
+
+void test_strtol(char *source) {
+	char* endptr = nullptr;
+	long l = strtol(source, &endptr, 10);
+	sink(l); // $ ast,ir
+	sink(endptr); // $ ast,ir
+	sink(*endptr); // $ ast,ir
+}
+
+void *malloc(size_t);
+void *realloc(void *, size_t);
+
+void test_realloc() {
+	char *source = indirect_source();
+	char *dest = (char*)realloc(source, 16);
+	sink(dest); // $ ir MISSING: ast
+}
+
+void test_realloc_2_indirections(int **buffer) {
+  **buffer = source();
+  buffer = (int**)realloc(buffer, 16);
+  sink(**buffer); // $ ir MISSING: ast
+}
+
+void test_realloc_struct_field() {
+	struct A { int x; };
+	A* a = (A*)malloc(sizeof(A));
+	a->x = source();
+	A* a2 = (A*)realloc(a, sizeof(A));
+	sink(a2->x); // $ ir MISSING: ast
+}
+
+int sprintf(char *, const char *, ...);
+
+void call_sprintf_twice(char* path, char* data) {
+	sprintf(path, "%s", "abc");
+	sprintf(path, "%s", data);
+}
+
+void test_call_sprintf() {
+	char path[10];
+	call_sprintf_twice(path, indirect_source());
+	sink(*path); // $ ast,ir
+}
+
+struct TaintInheritingContentObject {
+	int flowFromObject;
+};
+
+TaintInheritingContentObject source(bool);
+
+void test_TaintInheritingContent() {
+	TaintInheritingContentObject obj = source(true);
+	sink(obj.flowFromObject); // $ ir MISSING: ast
+}
+
+FILE* fopen(const char*, const char*);
+int fopen_s(FILE** pFile, const char *filename, const char *mode);
+
+void fopen_test(char* source) {
+	FILE* f = fopen(source, "r");
+	sink(f); // $ ast,ir
+
+	FILE* f2;
+	fopen_s(&f2, source, "r");
+	sink(f2); // $ ast,ir
+}
+
+typedef wchar_t OLECHAR;
+typedef OLECHAR* LPOLESTR;
+typedef const LPOLESTR LPCOLESTR;
+typedef OLECHAR* BSTR;
+typedef const char* LPCSTR;
+
+BSTR SysAllocString(const OLECHAR *);
+BSTR SysAllocStringByteLen(LPCSTR, unsigned );
+BSTR SysAllocStringLen(const OLECHAR *,unsigned);
+
+void test_sysalloc() {
+	auto p1 = SysAllocString((LPOLESTR)indirect_source());
+	sink(*p1); // $ ir MISSING: ast
+
+	auto p2 = SysAllocStringByteLen(indirect_source(), 10);
+	sink(*p2); // $ ir MISSING: ast
+
+	auto p3 = SysAllocStringLen((LPOLESTR)indirect_source(), 10);
+	sink(*p3); // $ ir MISSING: ast
+}
+
+char* strchr(const char*, int);
+
+void write_to_const_ptr_ptr(const char **p_out, const char **p_in) {
+  const char* q = *p_in;
+  *p_out = strchr(q, '/');
+}
+
+void take_const_ptr(const char *out, const char *in) {
+  // NOTE: We take the address of `out` in `take_const_ptr`'s stack space.
+  // Assigning to this pointer does not change `out` in
+  // `test_write_to_const_ptr_ptr`.
+  write_to_const_ptr_ptr(&out, &in);
+}
+
+void test_write_to_const_ptr_ptr() {
+  const char* in = indirect_source();
+  const char* out;
+  take_const_ptr(out, in);
+  sink(out); // $ SPURIOUS: ast
+}
+
+void indirect_sink(FILE *fp);
+int fprintf(FILE *fp, const char *format, ...);
+
+int f7(void)
+{
+  FILE* fp = (FILE*)indirect_source();
+  fprintf(fp, "");
+	indirect_sink(fp); // $ ir MISSING: ast
+  return 0;
+}
+
+int toupper(int);
+int tolower(int);
+
+void test_toupper_and_tolower() {
+	int s = source();
+	int u = toupper(s);
+	sink(u); // $ ir MISSING: ast
+	int l = tolower(s);
+	sink(l); // $ ir MISSING: ast
+}
+
+typedef int iconv_t;
+size_t iconv(iconv_t cd, char **, size_t *, char **, size_t *);
+
+void test_iconv(size_t size) {
+	char* s = indirect_source();
+	char out[10];
+	char* p = out;
+	size_t size_out;
+	iconv(0, &s, &size, &p, &size_out);
+	sink(*p); // $ ast,ir
+}
+
+using va_list = void*;
+
+long StringCchCopyA(char *, size_t, const char *);
+long StringCchCopyW(wchar_t *, size_t, const wchar_t *);
+long StringCbCopyA(char *, size_t, const char *);
+long StringCchCopyExA(char *, size_t, const char *, char **, size_t *, unsigned long);
+long StringCchCopyNA(char *, size_t, const char *, size_t);
+long StringCchCopyNExA(char *, size_t, const char *, size_t, char **, size_t *, unsigned long);
+long StringCchCatA(char *, size_t, const char *);
+long StringCchCatW(wchar_t *, size_t, const wchar_t *);
+long StringCbCatA(char *, size_t, const char *);
+long StringCchCatExA(char *, size_t, const char *, char **, size_t *, unsigned long);
+long StringCchCatNA(char *, size_t, const char *, size_t);
+long StringCchCatNExA(char *, size_t, const char *, size_t, char **, size_t *, unsigned long);
+long StringCchPrintfA(char *, size_t, const char *, ...);
+long StringCchPrintfW(wchar_t *, size_t, const wchar_t *, ...);
+long StringCbPrintfA(char *, size_t, const char *, ...);
+long StringCchPrintfExA(char *, size_t, char **, size_t *, unsigned long, const char *, ...);
+long StringCchVPrintfA(char *, size_t, const char *, va_list);
+long StringCchVPrintfExA(char *, size_t, char **, size_t *, unsigned long, const char *, va_list);
+
+void test_strsafe() {
+	char *source = indirect_source();
+	wchar_t *wsource = (wchar_t *)indirect_source();
+
+	{
+		char dest[256] = {0};
+		StringCchCopyA(dest, sizeof(dest), source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		wchar_t dest[256] = {0};
+		StringCchCopyW(dest, sizeof(dest), wsource);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		StringCbCopyA(dest, sizeof(dest), source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		char *end;
+		size_t remaining;
+		StringCchCopyExA(dest, sizeof(dest), source, &end, &remaining, 0);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		StringCchCopyNA(dest, sizeof(dest), source, 128);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		char *end;
+		size_t remaining;
+		StringCchCopyNExA(dest, sizeof(dest), source, 128, &end, &remaining, 0);
+		sink(dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = "prefix";
+		StringCchCatA(dest, sizeof(dest), source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		wchar_t dest[256] = L"prefix";
+		StringCchCatW(dest, sizeof(dest), wsource);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = "prefix";
+		StringCbCatA(dest, sizeof(dest), source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = "prefix";
+		char *end;
+		size_t remaining;
+		StringCchCatExA(dest, sizeof(dest), source, &end, &remaining, 0);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = "prefix";
+		StringCchCatNA(dest, sizeof(dest), source, 128);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = "prefix";
+		char *end;
+		size_t remaining;
+		StringCchCatNExA(dest, sizeof(dest), source, 128, &end, &remaining, 0);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		StringCchPrintfA(dest, sizeof(dest), "%s", source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		wchar_t dest[256] = {0};
+		StringCchPrintfW(dest, sizeof(dest), L"%s", wsource);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		StringCbPrintfA(dest, sizeof(dest), "%s", source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		char *end;
+		size_t remaining;
+		StringCchPrintfExA(dest, sizeof(dest), &end, &remaining, 0, "%s", source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		char *fmt = indirect_source();
+		StringCchPrintfA(dest, sizeof(dest), fmt);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		StringCchPrintfA(dest, sizeof(dest), "%d", 42);
+		sink(*dest); // clean
+	}
+	{
+		char dest[256] = {0};
+		StringCchCopyA(dest, sizeof(dest), "hello");
+		sink(*dest); // clean
+	}
 }

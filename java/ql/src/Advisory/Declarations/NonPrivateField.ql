@@ -6,7 +6,10 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/non-private-field
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
+ *       complexity
  */
 
 import java

@@ -1,0 +1,26 @@
+reverseRead
+| OpenUrlRedirect.go:10:23:10:23 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| OpenUrlRedirectGood.go:12:16:12:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:13:13:13:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:22:13:22:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:33:13:33:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:48:13:48:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:56:13:56:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:68:13:68:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:77:13:77:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:85:13:85:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:93:13:93:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:102:13:102:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:115:6:115:6 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:117:24:117:24 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:126:13:126:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:138:13:138:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:150:13:150:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:163:11:163:11 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:176:6:176:6 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:177:35:177:35 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:220:3:220:3 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:226:23:226:23 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:227:23:227:23 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:228:23:228:23 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| stdlib.go:232:23:232:33 | call to Cookies | Origin of readStep is missing a PostUpdateNode. |

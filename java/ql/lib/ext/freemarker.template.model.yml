@@ -3,10 +3,10 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["freemarker.template", "Template", True, "Template", "(String,Reader)", "", "Argument[1]", "ssti", "manual"]
-      - ["freemarker.template", "Template", True, "Template", "(String,Reader,Configuration)", "", "Argument[1]", "ssti", "manual"]
-      - ["freemarker.template", "Template", True, "Template", "(String,Reader,Configuration,String)", "", "Argument[1]", "ssti", "manual"]
-      - ["freemarker.template", "Template", True, "Template", "(String,String,Configuration)", "", "Argument[1]", "ssti", "manual"]
-      - ["freemarker.template", "Template", True, "Template", "(String,String,Reader,Configuration)", "", "Argument[2]", "ssti", "manual"]
-      - ["freemarker.template", "Template", True, "Template", "(String,String,Reader,Configuration,ParserConfiguration,String)", "", "Argument[2]", "ssti", "manual"]
-      - ["freemarker.template", "Template", True, "Template", "(String,String,Reader,Configuration,String)", "", "Argument[2]", "ssti", "manual"]
+      - ["freemarker.template", "Template", True, "Template", "(String,Reader)", "", "Argument[1]", "template-injection", "manual"]
+      - ["freemarker.template", "Template", True, "Template", "(String,Reader,Configuration)", "", "Argument[1]", "template-injection", "manual"]
+      - ["freemarker.template", "Template", True, "Template", "(String,Reader,Configuration,String)", "", "Argument[1]", "template-injection", "manual"]
+      - ["freemarker.template", "Template", True, "Template", "(String,String,Configuration)", "", "Argument[1]", "template-injection", "manual"]
+      - ["freemarker.template", "Template", True, "Template", "(String,String,Reader,Configuration)", "", "Argument[2]", "template-injection", "manual"]
+      - ["freemarker.template", "Template", True, "Template", "(String,String,Reader,Configuration,ParserConfiguration,String)", "", "Argument[2]", "template-injection", "manual"]
+      - ["freemarker.template", "Template", True, "Template", "(String,String,Reader,Configuration,String)", "", "Argument[2]", "template-injection", "manual"]

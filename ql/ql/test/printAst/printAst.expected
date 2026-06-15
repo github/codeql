@@ -1,8 +1,8 @@
 nodes
 | Foo.qll:1:1:1:17 | Import | semmle.label | [Import] Import |
 | Foo.qll:1:1:1:17 | Import | semmle.order | 1 |
-| Foo.qll:1:1:36:44 | TopLevel | semmle.label | [TopLevel] TopLevel |
-| Foo.qll:1:1:36:44 | TopLevel | semmle.order | 1 |
+| Foo.qll:1:1:33:44 | TopLevel | semmle.label | [TopLevel] TopLevel |
+| Foo.qll:1:1:33:44 | TopLevel | semmle.order | 1 |
 | Foo.qll:1:8:1:17 | javascript | semmle.label | [ModuleExpr] javascript |
 | Foo.qll:1:8:1:17 | javascript | semmle.order | 3 |
 | Foo.qll:3:7:3:9 | Class Foo | semmle.label | [Class] Class Foo |
@@ -155,44 +155,36 @@ nodes
 | Foo.qll:26:10:26:14 | Boolean | semmle.order | 77 |
 | Foo.qll:29:9:29:17 | NewType TPathNode | semmle.label | [NewType] NewType TPathNode |
 | Foo.qll:29:9:29:17 | NewType TPathNode | semmle.order | 78 |
-| Foo.qll:30:3:30:28 | annotation | semmle.label | [Annotation] annotation |
-| Foo.qll:30:3:30:28 | annotation | semmle.order | 79 |
-| Foo.qll:30:10:30:27 | assume_small_delta | semmle.label | [AnnotationArg] assume_small_delta |
-| Foo.qll:30:10:30:27 | assume_small_delta | semmle.order | 80 |
-| Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | semmle.label | [NewTypeBranch] NewTypeBranch TPathNodeMid |
-| Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | semmle.order | 81 |
-| Foo.qll:33:1:33:7 | annotation | semmle.label | [Annotation] annotation |
-| Foo.qll:33:1:33:7 | annotation | semmle.order | 82 |
-| Foo.qll:33:17:33:26 | NewType TPathNode2 | semmle.label | [NewType] NewType TPathNode2 |
-| Foo.qll:33:17:33:26 | NewType TPathNode2 | semmle.order | 83 |
-| Foo.qll:34:3:34:28 | annotation | semmle.label | [Annotation] annotation |
-| Foo.qll:34:3:34:28 | annotation | semmle.order | 84 |
-| Foo.qll:34:10:34:27 | assume_small_delta | semmle.label | [AnnotationArg] assume_small_delta |
-| Foo.qll:34:10:34:27 | assume_small_delta | semmle.order | 85 |
-| Foo.qll:35:3:35:15 | NewTypeBranch TPathNodeMid2 | semmle.label | [NewTypeBranch] NewTypeBranch TPathNodeMid2 |
-| Foo.qll:35:3:35:15 | NewTypeBranch TPathNodeMid2 | semmle.order | 86 |
-| Foo.qll:35:17:35:23 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
-| Foo.qll:35:17:35:23 | TypeExpr | semmle.order | 87 |
-| Foo.qll:35:17:35:27 | foo | semmle.label | [VarDecl] foo |
-| Foo.qll:35:17:35:27 | foo | semmle.order | 87 |
-| Foo.qll:35:32:35:34 | foo | semmle.label | [VarAccess] foo |
-| Foo.qll:35:32:35:34 | foo | semmle.order | 89 |
-| Foo.qll:35:32:35:41 | ComparisonFormula | semmle.label | [ComparisonFormula] ComparisonFormula |
-| Foo.qll:35:32:35:41 | ComparisonFormula | semmle.order | 89 |
-| Foo.qll:35:38:35:41 | Boolean | semmle.label | [Boolean] Boolean |
-| Foo.qll:35:38:35:41 | Boolean | semmle.order | 91 |
-| Foo.qll:36:3:36:15 | NewTypeBranch TPathNodeSink | semmle.label | [NewTypeBranch] NewTypeBranch TPathNodeSink |
-| Foo.qll:36:3:36:15 | NewTypeBranch TPathNodeSink | semmle.order | 92 |
-| Foo.qll:36:17:36:22 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
-| Foo.qll:36:17:36:22 | TypeExpr | semmle.order | 93 |
-| Foo.qll:36:17:36:26 | bar | semmle.label | [VarDecl] bar |
-| Foo.qll:36:17:36:26 | bar | semmle.order | 93 |
-| Foo.qll:36:31:36:33 | bar | semmle.label | [VarAccess] bar |
-| Foo.qll:36:31:36:33 | bar | semmle.order | 95 |
-| Foo.qll:36:31:36:41 | ComparisonFormula | semmle.label | [ComparisonFormula] ComparisonFormula |
-| Foo.qll:36:31:36:41 | ComparisonFormula | semmle.order | 95 |
-| Foo.qll:36:37:36:41 | String | semmle.label | [String] String |
-| Foo.qll:36:37:36:41 | String | semmle.order | 97 |
+| Foo.qll:29:21:29:32 | NewTypeBranch TPathNodeMid | semmle.label | [NewTypeBranch] NewTypeBranch TPathNodeMid |
+| Foo.qll:29:21:29:32 | NewTypeBranch TPathNodeMid | semmle.order | 79 |
+| Foo.qll:31:1:31:7 | annotation | semmle.label | [Annotation] annotation |
+| Foo.qll:31:1:31:7 | annotation | semmle.order | 80 |
+| Foo.qll:31:17:31:26 | NewType TPathNode2 | semmle.label | [NewType] NewType TPathNode2 |
+| Foo.qll:31:17:31:26 | NewType TPathNode2 | semmle.order | 81 |
+| Foo.qll:32:3:32:15 | NewTypeBranch TPathNodeMid2 | semmle.label | [NewTypeBranch] NewTypeBranch TPathNodeMid2 |
+| Foo.qll:32:3:32:15 | NewTypeBranch TPathNodeMid2 | semmle.order | 82 |
+| Foo.qll:32:17:32:23 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
+| Foo.qll:32:17:32:23 | TypeExpr | semmle.order | 83 |
+| Foo.qll:32:17:32:27 | foo | semmle.label | [VarDecl] foo |
+| Foo.qll:32:17:32:27 | foo | semmle.order | 83 |
+| Foo.qll:32:32:32:34 | foo | semmle.label | [VarAccess] foo |
+| Foo.qll:32:32:32:34 | foo | semmle.order | 85 |
+| Foo.qll:32:32:32:41 | ComparisonFormula | semmle.label | [ComparisonFormula] ComparisonFormula |
+| Foo.qll:32:32:32:41 | ComparisonFormula | semmle.order | 85 |
+| Foo.qll:32:38:32:41 | Boolean | semmle.label | [Boolean] Boolean |
+| Foo.qll:32:38:32:41 | Boolean | semmle.order | 87 |
+| Foo.qll:33:3:33:15 | NewTypeBranch TPathNodeSink | semmle.label | [NewTypeBranch] NewTypeBranch TPathNodeSink |
+| Foo.qll:33:3:33:15 | NewTypeBranch TPathNodeSink | semmle.order | 88 |
+| Foo.qll:33:17:33:22 | TypeExpr | semmle.label | [TypeExpr] TypeExpr |
+| Foo.qll:33:17:33:22 | TypeExpr | semmle.order | 89 |
+| Foo.qll:33:17:33:26 | bar | semmle.label | [VarDecl] bar |
+| Foo.qll:33:17:33:26 | bar | semmle.order | 89 |
+| Foo.qll:33:31:33:33 | bar | semmle.label | [VarAccess] bar |
+| Foo.qll:33:31:33:33 | bar | semmle.order | 91 |
+| Foo.qll:33:31:33:41 | ComparisonFormula | semmle.label | [ComparisonFormula] ComparisonFormula |
+| Foo.qll:33:31:33:41 | ComparisonFormula | semmle.order | 91 |
+| Foo.qll:33:37:33:41 | String | semmle.label | [String] String |
+| Foo.qll:33:37:33:41 | String | semmle.order | 93 |
 | file://:0:0:0:0 | abs | semmle.label | [BuiltinPredicate] abs |
 | file://:0:0:0:0 | abs | semmle.label | [BuiltinPredicate] abs |
 | file://:0:0:0:0 | acos | semmle.label | [BuiltinPredicate] acos |
@@ -275,26 +267,26 @@ nodes
 | file://:0:0:0:0 | trim | semmle.label | [BuiltinPredicate] trim |
 | file://:0:0:0:0 | ulp | semmle.label | [BuiltinPredicate] ulp |
 | printAst.ql:1:1:1:28 | Import | semmle.label | [Import] Import |
-| printAst.ql:1:1:1:28 | Import | semmle.order | 98 |
+| printAst.ql:1:1:1:28 | Import | semmle.order | 94 |
 | printAst.ql:1:1:1:29 | TopLevel | semmle.label | [TopLevel] TopLevel |
-| printAst.ql:1:1:1:29 | TopLevel | semmle.order | 98 |
+| printAst.ql:1:1:1:29 | TopLevel | semmle.order | 94 |
 | printAst.ql:1:18:1:28 | printAstAst | semmle.label | [ModuleExpr] printAstAst |
-| printAst.ql:1:18:1:28 | printAstAst | semmle.order | 100 |
+| printAst.ql:1:18:1:28 | printAstAst | semmle.order | 96 |
 edges
 | Foo.qll:1:1:1:17 | Import | Foo.qll:1:8:1:17 | javascript | semmle.label | getModuleExpr() |
 | Foo.qll:1:1:1:17 | Import | Foo.qll:1:8:1:17 | javascript | semmle.order | 3 |
-| Foo.qll:1:1:36:44 | TopLevel | Foo.qll:1:1:1:17 | Import | semmle.label | getAnImport() |
-| Foo.qll:1:1:36:44 | TopLevel | Foo.qll:1:1:1:17 | Import | semmle.order | 1 |
-| Foo.qll:1:1:36:44 | TopLevel | Foo.qll:3:7:3:9 | Class Foo | semmle.label | getAClass() |
-| Foo.qll:1:1:36:44 | TopLevel | Foo.qll:3:7:3:9 | Class Foo | semmle.order | 4 |
-| Foo.qll:1:1:36:44 | TopLevel | Foo.qll:9:17:9:19 | ClasslessPredicate foo | semmle.label | getAPredicate() |
-| Foo.qll:1:1:36:44 | TopLevel | Foo.qll:9:17:9:19 | ClasslessPredicate foo | semmle.order | 16 |
-| Foo.qll:1:1:36:44 | TopLevel | Foo.qll:13:11:13:15 | ClasslessPredicate calls | semmle.label | getAPredicate() |
-| Foo.qll:1:1:36:44 | TopLevel | Foo.qll:13:11:13:15 | ClasslessPredicate calls | semmle.order | 32 |
-| Foo.qll:1:1:36:44 | TopLevel | Foo.qll:29:9:29:17 | NewType TPathNode | semmle.label | getANewType() |
-| Foo.qll:1:1:36:44 | TopLevel | Foo.qll:29:9:29:17 | NewType TPathNode | semmle.order | 78 |
-| Foo.qll:1:1:36:44 | TopLevel | Foo.qll:33:17:33:26 | NewType TPathNode2 | semmle.label | getANewType() |
-| Foo.qll:1:1:36:44 | TopLevel | Foo.qll:33:17:33:26 | NewType TPathNode2 | semmle.order | 83 |
+| Foo.qll:1:1:33:44 | TopLevel | Foo.qll:1:1:1:17 | Import | semmle.label | getAnImport() |
+| Foo.qll:1:1:33:44 | TopLevel | Foo.qll:1:1:1:17 | Import | semmle.order | 1 |
+| Foo.qll:1:1:33:44 | TopLevel | Foo.qll:3:7:3:9 | Class Foo | semmle.label | getAClass() |
+| Foo.qll:1:1:33:44 | TopLevel | Foo.qll:3:7:3:9 | Class Foo | semmle.order | 4 |
+| Foo.qll:1:1:33:44 | TopLevel | Foo.qll:9:17:9:19 | ClasslessPredicate foo | semmle.label | getAPredicate() |
+| Foo.qll:1:1:33:44 | TopLevel | Foo.qll:9:17:9:19 | ClasslessPredicate foo | semmle.order | 16 |
+| Foo.qll:1:1:33:44 | TopLevel | Foo.qll:13:11:13:15 | ClasslessPredicate calls | semmle.label | getAPredicate() |
+| Foo.qll:1:1:33:44 | TopLevel | Foo.qll:13:11:13:15 | ClasslessPredicate calls | semmle.order | 32 |
+| Foo.qll:1:1:33:44 | TopLevel | Foo.qll:29:9:29:17 | NewType TPathNode | semmle.label | getANewType() |
+| Foo.qll:1:1:33:44 | TopLevel | Foo.qll:29:9:29:17 | NewType TPathNode | semmle.order | 78 |
+| Foo.qll:1:1:33:44 | TopLevel | Foo.qll:31:17:31:26 | NewType TPathNode2 | semmle.label | getANewType() |
+| Foo.qll:1:1:33:44 | TopLevel | Foo.qll:31:17:31:26 | NewType TPathNode2 | semmle.order | 81 |
 | Foo.qll:3:7:3:9 | Class Foo | Foo.qll:3:19:3:22 | TypeExpr | semmle.label | getASuperType() |
 | Foo.qll:3:7:3:9 | Class Foo | Foo.qll:3:19:3:22 | TypeExpr | semmle.order | 5 |
 | Foo.qll:3:7:3:9 | Class Foo | Foo.qll:4:3:4:17 | CharPred Foo | semmle.label | getCharPred() |
@@ -437,45 +429,37 @@ edges
 | Foo.qll:26:3:26:14 | ComparisonFormula | Foo.qll:26:3:26:6 | Boolean | semmle.order | 75 |
 | Foo.qll:26:3:26:14 | ComparisonFormula | Foo.qll:26:10:26:14 | Boolean | semmle.label | getRightOperand() |
 | Foo.qll:26:3:26:14 | ComparisonFormula | Foo.qll:26:10:26:14 | Boolean | semmle.order | 77 |
-| Foo.qll:29:9:29:17 | NewType TPathNode | Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | semmle.label | getABranch() |
-| Foo.qll:29:9:29:17 | NewType TPathNode | Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | semmle.order | 81 |
-| Foo.qll:30:3:30:28 | annotation | Foo.qll:30:10:30:27 | assume_small_delta | semmle.label | getArgs(_) |
-| Foo.qll:30:3:30:28 | annotation | Foo.qll:30:10:30:27 | assume_small_delta | semmle.order | 80 |
-| Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | Foo.qll:30:3:30:28 | annotation | semmle.label | getAnAnnotation() |
-| Foo.qll:31:3:31:14 | NewTypeBranch TPathNodeMid | Foo.qll:30:3:30:28 | annotation | semmle.order | 79 |
-| Foo.qll:33:17:33:26 | NewType TPathNode2 | Foo.qll:33:1:33:7 | annotation | semmle.label | getAnAnnotation() |
-| Foo.qll:33:17:33:26 | NewType TPathNode2 | Foo.qll:33:1:33:7 | annotation | semmle.order | 82 |
-| Foo.qll:33:17:33:26 | NewType TPathNode2 | Foo.qll:35:3:35:15 | NewTypeBranch TPathNodeMid2 | semmle.label | getABranch() |
-| Foo.qll:33:17:33:26 | NewType TPathNode2 | Foo.qll:35:3:35:15 | NewTypeBranch TPathNodeMid2 | semmle.order | 86 |
-| Foo.qll:33:17:33:26 | NewType TPathNode2 | Foo.qll:36:3:36:15 | NewTypeBranch TPathNodeSink | semmle.label | getABranch() |
-| Foo.qll:33:17:33:26 | NewType TPathNode2 | Foo.qll:36:3:36:15 | NewTypeBranch TPathNodeSink | semmle.order | 92 |
-| Foo.qll:34:3:34:28 | annotation | Foo.qll:34:10:34:27 | assume_small_delta | semmle.label | getArgs(_) |
-| Foo.qll:34:3:34:28 | annotation | Foo.qll:34:10:34:27 | assume_small_delta | semmle.order | 85 |
-| Foo.qll:35:3:35:15 | NewTypeBranch TPathNodeMid2 | Foo.qll:34:3:34:28 | annotation | semmle.label | getAnAnnotation() |
-| Foo.qll:35:3:35:15 | NewTypeBranch TPathNodeMid2 | Foo.qll:34:3:34:28 | annotation | semmle.order | 84 |
-| Foo.qll:35:3:35:15 | NewTypeBranch TPathNodeMid2 | Foo.qll:35:17:35:27 | foo | semmle.label | getField(_) |
-| Foo.qll:35:3:35:15 | NewTypeBranch TPathNodeMid2 | Foo.qll:35:17:35:27 | foo | semmle.order | 87 |
-| Foo.qll:35:3:35:15 | NewTypeBranch TPathNodeMid2 | Foo.qll:35:32:35:41 | ComparisonFormula | semmle.label | getBody() |
-| Foo.qll:35:3:35:15 | NewTypeBranch TPathNodeMid2 | Foo.qll:35:32:35:41 | ComparisonFormula | semmle.order | 89 |
-| Foo.qll:35:17:35:27 | foo | Foo.qll:35:17:35:23 | TypeExpr | semmle.label | getTypeExpr() |
-| Foo.qll:35:17:35:27 | foo | Foo.qll:35:17:35:23 | TypeExpr | semmle.order | 87 |
-| Foo.qll:35:32:35:41 | ComparisonFormula | Foo.qll:35:32:35:34 | foo | semmle.label | getLeftOperand() |
-| Foo.qll:35:32:35:41 | ComparisonFormula | Foo.qll:35:32:35:34 | foo | semmle.order | 89 |
-| Foo.qll:35:32:35:41 | ComparisonFormula | Foo.qll:35:38:35:41 | Boolean | semmle.label | getRightOperand() |
-| Foo.qll:35:32:35:41 | ComparisonFormula | Foo.qll:35:38:35:41 | Boolean | semmle.order | 91 |
-| Foo.qll:36:3:36:15 | NewTypeBranch TPathNodeSink | Foo.qll:36:17:36:26 | bar | semmle.label | getField(_) |
-| Foo.qll:36:3:36:15 | NewTypeBranch TPathNodeSink | Foo.qll:36:17:36:26 | bar | semmle.order | 93 |
-| Foo.qll:36:3:36:15 | NewTypeBranch TPathNodeSink | Foo.qll:36:31:36:41 | ComparisonFormula | semmle.label | getBody() |
-| Foo.qll:36:3:36:15 | NewTypeBranch TPathNodeSink | Foo.qll:36:31:36:41 | ComparisonFormula | semmle.order | 95 |
-| Foo.qll:36:17:36:26 | bar | Foo.qll:36:17:36:22 | TypeExpr | semmle.label | getTypeExpr() |
-| Foo.qll:36:17:36:26 | bar | Foo.qll:36:17:36:22 | TypeExpr | semmle.order | 93 |
-| Foo.qll:36:31:36:41 | ComparisonFormula | Foo.qll:36:31:36:33 | bar | semmle.label | getLeftOperand() |
-| Foo.qll:36:31:36:41 | ComparisonFormula | Foo.qll:36:31:36:33 | bar | semmle.order | 95 |
-| Foo.qll:36:31:36:41 | ComparisonFormula | Foo.qll:36:37:36:41 | String | semmle.label | getRightOperand() |
-| Foo.qll:36:31:36:41 | ComparisonFormula | Foo.qll:36:37:36:41 | String | semmle.order | 97 |
+| Foo.qll:29:9:29:17 | NewType TPathNode | Foo.qll:29:21:29:32 | NewTypeBranch TPathNodeMid | semmle.label | getABranch() |
+| Foo.qll:29:9:29:17 | NewType TPathNode | Foo.qll:29:21:29:32 | NewTypeBranch TPathNodeMid | semmle.order | 79 |
+| Foo.qll:31:17:31:26 | NewType TPathNode2 | Foo.qll:31:1:31:7 | annotation | semmle.label | getAnAnnotation() |
+| Foo.qll:31:17:31:26 | NewType TPathNode2 | Foo.qll:31:1:31:7 | annotation | semmle.order | 80 |
+| Foo.qll:31:17:31:26 | NewType TPathNode2 | Foo.qll:32:3:32:15 | NewTypeBranch TPathNodeMid2 | semmle.label | getABranch() |
+| Foo.qll:31:17:31:26 | NewType TPathNode2 | Foo.qll:32:3:32:15 | NewTypeBranch TPathNodeMid2 | semmle.order | 82 |
+| Foo.qll:31:17:31:26 | NewType TPathNode2 | Foo.qll:33:3:33:15 | NewTypeBranch TPathNodeSink | semmle.label | getABranch() |
+| Foo.qll:31:17:31:26 | NewType TPathNode2 | Foo.qll:33:3:33:15 | NewTypeBranch TPathNodeSink | semmle.order | 88 |
+| Foo.qll:32:3:32:15 | NewTypeBranch TPathNodeMid2 | Foo.qll:32:17:32:27 | foo | semmle.label | getField(_) |
+| Foo.qll:32:3:32:15 | NewTypeBranch TPathNodeMid2 | Foo.qll:32:17:32:27 | foo | semmle.order | 83 |
+| Foo.qll:32:3:32:15 | NewTypeBranch TPathNodeMid2 | Foo.qll:32:32:32:41 | ComparisonFormula | semmle.label | getBody() |
+| Foo.qll:32:3:32:15 | NewTypeBranch TPathNodeMid2 | Foo.qll:32:32:32:41 | ComparisonFormula | semmle.order | 85 |
+| Foo.qll:32:17:32:27 | foo | Foo.qll:32:17:32:23 | TypeExpr | semmle.label | getTypeExpr() |
+| Foo.qll:32:17:32:27 | foo | Foo.qll:32:17:32:23 | TypeExpr | semmle.order | 83 |
+| Foo.qll:32:32:32:41 | ComparisonFormula | Foo.qll:32:32:32:34 | foo | semmle.label | getLeftOperand() |
+| Foo.qll:32:32:32:41 | ComparisonFormula | Foo.qll:32:32:32:34 | foo | semmle.order | 85 |
+| Foo.qll:32:32:32:41 | ComparisonFormula | Foo.qll:32:38:32:41 | Boolean | semmle.label | getRightOperand() |
+| Foo.qll:32:32:32:41 | ComparisonFormula | Foo.qll:32:38:32:41 | Boolean | semmle.order | 87 |
+| Foo.qll:33:3:33:15 | NewTypeBranch TPathNodeSink | Foo.qll:33:17:33:26 | bar | semmle.label | getField(_) |
+| Foo.qll:33:3:33:15 | NewTypeBranch TPathNodeSink | Foo.qll:33:17:33:26 | bar | semmle.order | 89 |
+| Foo.qll:33:3:33:15 | NewTypeBranch TPathNodeSink | Foo.qll:33:31:33:41 | ComparisonFormula | semmle.label | getBody() |
+| Foo.qll:33:3:33:15 | NewTypeBranch TPathNodeSink | Foo.qll:33:31:33:41 | ComparisonFormula | semmle.order | 91 |
+| Foo.qll:33:17:33:26 | bar | Foo.qll:33:17:33:22 | TypeExpr | semmle.label | getTypeExpr() |
+| Foo.qll:33:17:33:26 | bar | Foo.qll:33:17:33:22 | TypeExpr | semmle.order | 89 |
+| Foo.qll:33:31:33:41 | ComparisonFormula | Foo.qll:33:31:33:33 | bar | semmle.label | getLeftOperand() |
+| Foo.qll:33:31:33:41 | ComparisonFormula | Foo.qll:33:31:33:33 | bar | semmle.order | 91 |
+| Foo.qll:33:31:33:41 | ComparisonFormula | Foo.qll:33:37:33:41 | String | semmle.label | getRightOperand() |
+| Foo.qll:33:31:33:41 | ComparisonFormula | Foo.qll:33:37:33:41 | String | semmle.order | 93 |
 | printAst.ql:1:1:1:28 | Import | printAst.ql:1:18:1:28 | printAstAst | semmle.label | getModuleExpr() |
-| printAst.ql:1:1:1:28 | Import | printAst.ql:1:18:1:28 | printAstAst | semmle.order | 100 |
+| printAst.ql:1:1:1:28 | Import | printAst.ql:1:18:1:28 | printAstAst | semmle.order | 96 |
 | printAst.ql:1:1:1:29 | TopLevel | printAst.ql:1:1:1:28 | Import | semmle.label | getAnImport() |
-| printAst.ql:1:1:1:29 | TopLevel | printAst.ql:1:1:1:28 | Import | semmle.order | 98 |
+| printAst.ql:1:1:1:29 | TopLevel | printAst.ql:1:1:1:28 | Import | semmle.order | 94 |
 graphProperties
 | semmle.graphKind | tree |

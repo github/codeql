@@ -1,5 +1,4 @@
 import csharp
-private import semmle.code.csharp.commons.QualifiedName
 
 private predicate isInteresting(Type t) {
   (
@@ -20,10 +19,7 @@ query predicate typemodifiers(Type t, string modifier) {
 
 query predicate qualifiedtypes(Type t, string qualifiedName) {
   isInteresting(t) and
-  exists(string qualifier, string name |
-    t.hasQualifiedName(qualifier, name) and
-    qualifiedName = getQualifiedName(qualifier, name)
-  )
+  qualifiedName = t.getFullyQualifiedNameDebug()
 }
 
 query predicate filetypes(Type t) {

@@ -1,5 +1,5 @@
 var cp = require("child_process")
 
-module.exports = function (name) {
-	cp.exec("rm -rf " + name); // NOT OK - the "files" directory points to this file.
+module.exports = function (name) { // $ Source
+	cp.exec("rm -rf " + name); // $ Alert - the "files" directory points to this file.
 };

@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["saltstack/salt", "*", "input.version", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.upload-chunk-size", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.restore-keys", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.save-always", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.lookup-only", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.fail-on-cache-miss", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.enableCrossOsArchive", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.key", "code-injection", "generated"]
+     - ["saltstack/salt", "*", "input.path", "code-injection", "generated"]

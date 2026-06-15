@@ -1,0 +1,12 @@
+edges
+| .github/workflows/reusable_workflow.yml:22:7:24:4 | Job outputs node [job-output2] | .github/workflows/reusable_workflow.yml:13:17:13:52 | jobs.job1.outputs.job-output2 | provenance |  |
+| .github/workflows/reusable_workflow.yml:23:21:23:63 | steps.step2.outputs.all_changed_files | .github/workflows/reusable_workflow.yml:22:7:24:4 | Job outputs node [job-output2] | provenance |  |
+| .github/workflows/reusable_workflow.yml:31:9:33:43 | Uses Step: step2 | .github/workflows/reusable_workflow.yml:23:21:23:63 | steps.step2.outputs.all_changed_files | provenance |  |
+nodes
+| .github/workflows/reusable_workflow.yml:13:17:13:52 | jobs.job1.outputs.job-output2 | semmle.label | jobs.job1.outputs.job-output2 |
+| .github/workflows/reusable_workflow.yml:22:7:24:4 | Job outputs node [job-output2] | semmle.label | Job outputs node [job-output2] |
+| .github/workflows/reusable_workflow.yml:23:21:23:63 | steps.step2.outputs.all_changed_files | semmle.label | steps.step2.outputs.all_changed_files |
+| .github/workflows/reusable_workflow.yml:31:9:33:43 | Uses Step: step2 | semmle.label | Uses Step: step2 |
+subpaths
+#select
+| .github/workflows/reusable_workflow.yml:13:17:13:52 | jobs.job1.outputs.job-output2 | .github/workflows/reusable_workflow.yml:31:9:33:43 | Uses Step: step2 | .github/workflows/reusable_workflow.yml:13:17:13:52 | jobs.job1.outputs.job-output2 | Source |

@@ -1,7 +1,7 @@
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Linq;
 
 namespace Semmle.Extraction.CSharp.Populators
 {
@@ -13,7 +13,7 @@ namespace Semmle.Extraction.CSharp.Populators
         /// <param name="l1">The location to extend.</param>
         /// <param name="n2">The node to extend the location to.</param>
         /// <returns>Extended location.</returns>
-        public static Location ExtendLocation(this Location l1, SyntaxNode n2)
+        public static Location ExtendLocation(this Location l1, SyntaxNode n2, bool onlyStart = false)
         {
             if (n2 is null)
             {
@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Populators
 
             var l2 = n2.FixedLocation();
             var start = System.Math.Min(l1.SourceSpan.Start, l2.SourceSpan.Start);
-            var end = System.Math.Max(l1.SourceSpan.End, l2.SourceSpan.End);
+            var end = onlyStart ? l1.SourceSpan.End : System.Math.Max(l1.SourceSpan.End, l2.SourceSpan.End);
             return Location.Create(n2.SyntaxTree, new Microsoft.CodeAnalysis.Text.TextSpan(start, end - start));
         }
 
@@ -85,6 +85,17 @@ namespace Semmle.Extraction.CSharp.Populators
                     return ((CatchDeclarationSyntax)node).Identifier.GetLocation();
                 case SyntaxKind.LabeledStatement:
                     return ((LabeledStatementSyntax)node).Identifier.GetLocation();
+                case SyntaxKind.ElementBindingExpression:
+                    return node.GetLocation().ExtendLocation(Entities.Expression.FindConditionalAccessParent((ElementBindingExpressionSyntax)node).Root, onlyStart: true);
+                case SyntaxKind.MemberBindingExpression:
+                    return node.GetLocation().ExtendLocation(Entities.Expression.FindConditionalAccessParent((MemberBindingExpressionSyntax)node).Root, onlyStart: true);
+                case SyntaxKind.ElementAccessExpression:
+                    return node.GetLocation().ExtendLocation(((ElementAccessExpressionSyntax)node).Expression);
+                case SyntaxKind.SimpleMemberAccessExpression:
+                    return node.GetLocation().ExtendLocation(((MemberAccessExpressionSyntax)node).Expression);
+                case SyntaxKind.InvocationExpression:
+                    return node.GetLocation().ExtendLocation(((InvocationExpressionSyntax)node).Expression);
+
                 default:
                     result = node.GetLocation();
                     break;
@@ -96,7 +107,7 @@ namespace Semmle.Extraction.CSharp.Populators
         {
             return symbol.DeclaringSyntaxReferences.Any() ?
                 symbol.DeclaringSyntaxReferences.First().GetSyntax().FixedLocation() :
-                symbol.Locations.First();
+                symbol.Locations.Best();
         }
     }
 }

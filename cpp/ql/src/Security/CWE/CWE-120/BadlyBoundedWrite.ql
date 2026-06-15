@@ -16,6 +16,7 @@
  */
 
 import semmle.code.cpp.security.BufferWrite
+import semmle.code.cpp.ConfigurationTestFile
 
 /*
  * See CWE-120/UnboundedWrite.ql for a summary of CWE-120 alert cases.
@@ -24,8 +25,10 @@ import semmle.code.cpp.security.BufferWrite
 from BufferWrite bw, int destSize
 where
   bw.hasExplicitLimit() and // has an explicit size limit
-  destSize = getBufferSize(bw.getDest(), _) and
-  bw.getExplicitLimit() > destSize // but it's larger than the destination
+  destSize = max(getBufferSize(bw.getDest(), _)) and
+  bw.getExplicitLimit() > destSize and // but it's larger than the destination
+  not bw.getDest().getType().stripType() instanceof ErroneousType and // destSize may be incorrect
+  not bw.getFile() instanceof ConfigurationTestFile // expressions in files generated during configuration are likely false positives
 select bw,
   "This '" + bw.getBWDesc() + "' operation is limited to " + bw.getExplicitLimit() +
     " bytes but the destination is only " + destSize + " bytes."

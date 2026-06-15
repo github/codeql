@@ -1,0 +1,55 @@
+#select
+| MissingJWTSignatureCheckTest.java:83:9:83:14 | parser | MissingJWTSignatureCheckTest.java:13:16:13:66 | setSigningKey(...) : JwtParser | MissingJWTSignatureCheckTest.java:83:9:83:14 | parser | This parser sets a $@, but the signature is not verified. | MissingJWTSignatureCheckTest.java:13:16:13:66 | setSigningKey(...) | JWT signing key |
+| MissingJWTSignatureCheckTest.java:83:9:83:14 | parser | MissingJWTSignatureCheckTest.java:17:16:17:73 | setSigningKey(...) : DefaultJwtParserBuilder | MissingJWTSignatureCheckTest.java:83:9:83:14 | parser | This parser sets a $@, but the signature is not verified. | MissingJWTSignatureCheckTest.java:17:16:17:73 | setSigningKey(...) | JWT signing key |
+| MissingJWTSignatureCheckTest.java:83:9:83:14 | parser | MissingJWTSignatureCheckTest.java:21:16:21:75 | setSigningKey(...) : JwtParser | MissingJWTSignatureCheckTest.java:83:9:83:14 | parser | This parser sets a $@, but the signature is not verified. | MissingJWTSignatureCheckTest.java:21:16:21:75 | setSigningKey(...) | JWT signing key |
+| MissingJWTSignatureCheckTest.java:87:9:87:14 | parser | MissingJWTSignatureCheckTest.java:13:16:13:66 | setSigningKey(...) : JwtParser | MissingJWTSignatureCheckTest.java:87:9:87:14 | parser | This parser sets a $@, but the signature is not verified. | MissingJWTSignatureCheckTest.java:13:16:13:66 | setSigningKey(...) | JWT signing key |
+| MissingJWTSignatureCheckTest.java:87:9:87:14 | parser | MissingJWTSignatureCheckTest.java:17:16:17:73 | setSigningKey(...) : DefaultJwtParserBuilder | MissingJWTSignatureCheckTest.java:87:9:87:14 | parser | This parser sets a $@, but the signature is not verified. | MissingJWTSignatureCheckTest.java:17:16:17:73 | setSigningKey(...) | JWT signing key |
+| MissingJWTSignatureCheckTest.java:87:9:87:14 | parser | MissingJWTSignatureCheckTest.java:21:16:21:75 | setSigningKey(...) : JwtParser | MissingJWTSignatureCheckTest.java:87:9:87:14 | parser | This parser sets a $@, but the signature is not verified. | MissingJWTSignatureCheckTest.java:21:16:21:75 | setSigningKey(...) | JWT signing key |
+| MissingJWTSignatureCheckTest.java:110:9:110:74 | build(...) | MissingJWTSignatureCheckTest.java:110:9:110:66 | setSigningKey(...) : DefaultJwtParserBuilder | MissingJWTSignatureCheckTest.java:110:9:110:74 | build(...) | This parser sets a $@, but the signature is not verified. | MissingJWTSignatureCheckTest.java:110:9:110:66 | setSigningKey(...) | JWT signing key |
+| MissingJWTSignatureCheckTest.java:114:9:114:83 | build(...) | MissingJWTSignatureCheckTest.java:114:9:114:75 | setSigningKey(...) : DefaultJwtParserBuilder | MissingJWTSignatureCheckTest.java:114:9:114:83 | build(...) | This parser sets a $@, but the signature is not verified. | MissingJWTSignatureCheckTest.java:114:9:114:75 | setSigningKey(...) | JWT signing key |
+| MissingJWTSignatureCheckTest.java:118:9:118:59 | setSigningKey(...) | MissingJWTSignatureCheckTest.java:118:9:118:59 | setSigningKey(...) | MissingJWTSignatureCheckTest.java:118:9:118:59 | setSigningKey(...) | This parser sets a $@, but the signature is not verified. | MissingJWTSignatureCheckTest.java:118:9:118:59 | setSigningKey(...) | JWT signing key |
+edges
+| MissingJWTSignatureCheckTest.java:13:16:13:66 | setSigningKey(...) : JwtParser | MissingJWTSignatureCheckTest.java:25:29:25:46 | getASignedParser(...) : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:17:16:17:73 | setSigningKey(...) : DefaultJwtParserBuilder | MissingJWTSignatureCheckTest.java:17:16:17:81 | build(...) : JwtParser | provenance | Config |
+| MissingJWTSignatureCheckTest.java:17:16:17:81 | build(...) : JwtParser | MissingJWTSignatureCheckTest.java:31:29:31:63 | getASignedParserFromParserBuilder(...) : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:21:16:21:75 | setSigningKey(...) : JwtParser | MissingJWTSignatureCheckTest.java:37:29:37:49 | getASignedNewParser(...) : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:25:29:25:46 | getASignedParser(...) : JwtParser | MissingJWTSignatureCheckTest.java:26:31:26:37 | parser1 : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:25:29:25:46 | getASignedParser(...) : JwtParser | MissingJWTSignatureCheckTest.java:27:38:27:44 | parser1 : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:26:31:26:37 | parser1 : JwtParser | MissingJWTSignatureCheckTest.java:82:40:82:55 | parser : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:27:38:27:44 | parser1 : JwtParser | MissingJWTSignatureCheckTest.java:86:47:86:62 | parser : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:31:29:31:63 | getASignedParserFromParserBuilder(...) : JwtParser | MissingJWTSignatureCheckTest.java:32:31:32:37 | parser2 : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:31:29:31:63 | getASignedParserFromParserBuilder(...) : JwtParser | MissingJWTSignatureCheckTest.java:33:38:33:44 | parser2 : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:32:31:32:37 | parser2 : JwtParser | MissingJWTSignatureCheckTest.java:82:40:82:55 | parser : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:33:38:33:44 | parser2 : JwtParser | MissingJWTSignatureCheckTest.java:86:47:86:62 | parser : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:37:29:37:49 | getASignedNewParser(...) : JwtParser | MissingJWTSignatureCheckTest.java:38:31:38:37 | parser3 : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:37:29:37:49 | getASignedNewParser(...) : JwtParser | MissingJWTSignatureCheckTest.java:39:38:39:44 | parser3 : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:38:31:38:37 | parser3 : JwtParser | MissingJWTSignatureCheckTest.java:82:40:82:55 | parser : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:39:38:39:44 | parser3 : JwtParser | MissingJWTSignatureCheckTest.java:86:47:86:62 | parser : JwtParser | provenance |  |
+| MissingJWTSignatureCheckTest.java:82:40:82:55 | parser : JwtParser | MissingJWTSignatureCheckTest.java:83:9:83:14 | parser | provenance |  |
+| MissingJWTSignatureCheckTest.java:86:47:86:62 | parser : JwtParser | MissingJWTSignatureCheckTest.java:87:9:87:14 | parser | provenance |  |
+| MissingJWTSignatureCheckTest.java:110:9:110:66 | setSigningKey(...) : DefaultJwtParserBuilder | MissingJWTSignatureCheckTest.java:110:9:110:74 | build(...) | provenance | Config |
+| MissingJWTSignatureCheckTest.java:114:9:114:75 | setSigningKey(...) : DefaultJwtParserBuilder | MissingJWTSignatureCheckTest.java:114:9:114:83 | build(...) | provenance | Config |
+nodes
+| MissingJWTSignatureCheckTest.java:13:16:13:66 | setSigningKey(...) : JwtParser | semmle.label | setSigningKey(...) : JwtParser |
+| MissingJWTSignatureCheckTest.java:17:16:17:73 | setSigningKey(...) : DefaultJwtParserBuilder | semmle.label | setSigningKey(...) : DefaultJwtParserBuilder |
+| MissingJWTSignatureCheckTest.java:17:16:17:81 | build(...) : JwtParser | semmle.label | build(...) : JwtParser |
+| MissingJWTSignatureCheckTest.java:21:16:21:75 | setSigningKey(...) : JwtParser | semmle.label | setSigningKey(...) : JwtParser |
+| MissingJWTSignatureCheckTest.java:25:29:25:46 | getASignedParser(...) : JwtParser | semmle.label | getASignedParser(...) : JwtParser |
+| MissingJWTSignatureCheckTest.java:26:31:26:37 | parser1 : JwtParser | semmle.label | parser1 : JwtParser |
+| MissingJWTSignatureCheckTest.java:27:38:27:44 | parser1 : JwtParser | semmle.label | parser1 : JwtParser |
+| MissingJWTSignatureCheckTest.java:31:29:31:63 | getASignedParserFromParserBuilder(...) : JwtParser | semmle.label | getASignedParserFromParserBuilder(...) : JwtParser |
+| MissingJWTSignatureCheckTest.java:32:31:32:37 | parser2 : JwtParser | semmle.label | parser2 : JwtParser |
+| MissingJWTSignatureCheckTest.java:33:38:33:44 | parser2 : JwtParser | semmle.label | parser2 : JwtParser |
+| MissingJWTSignatureCheckTest.java:37:29:37:49 | getASignedNewParser(...) : JwtParser | semmle.label | getASignedNewParser(...) : JwtParser |
+| MissingJWTSignatureCheckTest.java:38:31:38:37 | parser3 : JwtParser | semmle.label | parser3 : JwtParser |
+| MissingJWTSignatureCheckTest.java:39:38:39:44 | parser3 : JwtParser | semmle.label | parser3 : JwtParser |
+| MissingJWTSignatureCheckTest.java:82:40:82:55 | parser : JwtParser | semmle.label | parser : JwtParser |
+| MissingJWTSignatureCheckTest.java:83:9:83:14 | parser | semmle.label | parser |
+| MissingJWTSignatureCheckTest.java:86:47:86:62 | parser : JwtParser | semmle.label | parser : JwtParser |
+| MissingJWTSignatureCheckTest.java:87:9:87:14 | parser | semmle.label | parser |
+| MissingJWTSignatureCheckTest.java:110:9:110:66 | setSigningKey(...) : DefaultJwtParserBuilder | semmle.label | setSigningKey(...) : DefaultJwtParserBuilder |
+| MissingJWTSignatureCheckTest.java:110:9:110:74 | build(...) | semmle.label | build(...) |
+| MissingJWTSignatureCheckTest.java:114:9:114:75 | setSigningKey(...) : DefaultJwtParserBuilder | semmle.label | setSigningKey(...) : DefaultJwtParserBuilder |
+| MissingJWTSignatureCheckTest.java:114:9:114:83 | build(...) | semmle.label | build(...) |
+| MissingJWTSignatureCheckTest.java:118:9:118:59 | setSigningKey(...) | semmle.label | setSigningKey(...) |
+subpaths

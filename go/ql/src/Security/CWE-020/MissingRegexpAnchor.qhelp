@@ -45,6 +45,12 @@ one of the alternatives. As an example, the regular expression
 <code>(^www\.example\.com)|(beta\.example\.com)/</code>, so the second alternative
 <code>beta\.example\.com</code> is not anchored at the beginning of the string.
 </p>
+
+<p>
+When checking for a domain name that may have subdomains, it is important to anchor the regular expression
+or ensure that the domain name is prefixed with a dot.
+</p>
+<sample src="MissingRegexpAnchorGoodDomain.go"/>
 </example>
 
 <references>

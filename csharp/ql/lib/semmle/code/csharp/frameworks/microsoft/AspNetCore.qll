@@ -205,7 +205,6 @@ class MicrosoftAspNetCoreMvcController extends Class {
       )
     ) and
     this.isPublic() and
-    (not this.isAbstract() or this instanceof MicrosoftAspNetCoreMvcControllerBaseClass) and
     not this instanceof Generic and
     (
       this.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
@@ -217,7 +216,7 @@ class MicrosoftAspNetCoreMvcController extends Class {
           .getType()
           .getABaseType*()
           // ApiControllerAttribute is derived from ControllerAttribute
-          .hasQualifiedName("Microsoft.AspNetCore.Mvc", "ControllerAttribute")
+          .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "ControllerAttribute")
     ) and
     not this.getABaseType*().getAnAttribute() instanceof
       MicrosoftAspNetCoreMvcNonControllerAttribute
@@ -258,7 +257,7 @@ class MicrosoftAspNetCoreMvcRenderingIHtmlHelperInterface extends Interface {
 /** A class deriving from `Microsoft.AspNetCore.Mvc.Razor.RazorPageBase`, implements Razor page in ASPNET Core. */
 class MicrosoftAspNetCoreMvcRazorPageBase extends Class {
   MicrosoftAspNetCoreMvcRazorPageBase() {
-    this.getABaseType*().hasQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorPageBase")
+    this.getABaseType*().hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.Razor", "RazorPageBase")
   }
 
   /** Gets the `WriteLiteral` method. */
@@ -268,14 +267,14 @@ class MicrosoftAspNetCoreMvcRazorPageBase extends Class {
 /** A class deriving from `Microsoft.AspNetCore.Http.HttpRequest`, implements `HttpRequest` in ASP.NET Core. */
 class MicrosoftAspNetCoreHttpHttpRequest extends Class {
   MicrosoftAspNetCoreHttpHttpRequest() {
-    this.getABaseType*().hasQualifiedName("Microsoft.AspNetCore.Http", "HttpRequest")
+    this.getABaseType*().hasFullyQualifiedName("Microsoft.AspNetCore.Http", "HttpRequest")
   }
 }
 
 /** A class deriving from `Microsoft.AspNetCore.Http.HttpResponse`, implements `HttpResponse` in ASP.NET Core. */
 class MicrosoftAspNetCoreHttpHttpResponse extends Class {
   MicrosoftAspNetCoreHttpHttpResponse() {
-    this.getABaseType*().hasQualifiedName("Microsoft.AspNetCore.Http", "HttpResponse")
+    this.getABaseType*().hasFullyQualifiedName("Microsoft.AspNetCore.Http", "HttpResponse")
   }
 
   /** Gets the `Redirect` method. */
@@ -288,7 +287,7 @@ class MicrosoftAspNetCoreHttpHttpResponse extends Class {
 /** An interface that is a wrapper around the collection of cookies in the response. */
 class MicrosoftAspNetCoreHttpResponseCookies extends Interface {
   MicrosoftAspNetCoreHttpResponseCookies() {
-    this.hasQualifiedName("Microsoft.AspNetCore.Http", "IResponseCookies")
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IResponseCookies")
   }
 
   /** Gets the `Append` method. */
@@ -298,21 +297,21 @@ class MicrosoftAspNetCoreHttpResponseCookies extends Interface {
 /** The class `Microsoft.AspNetCore.Http.QueryString`, holds query string in ASP.NET Core. */
 class MicrosoftAspNetCoreHttpQueryString extends Struct {
   MicrosoftAspNetCoreHttpQueryString() {
-    this.hasQualifiedName("Microsoft.AspNetCore.Http", "QueryString")
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Http", "QueryString")
   }
 }
 
 /** A class or interface implementing `IQueryCollection`, holds parsed query string in ASP.NET Core. */
 class MicrosoftAspNetCoreHttpQueryCollection extends RefType {
   MicrosoftAspNetCoreHttpQueryCollection() {
-    this.getABaseInterface().hasQualifiedName("Microsoft.AspNetCore.Http", "IQueryCollection")
+    this.getABaseInterface().hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IQueryCollection")
   }
 }
 
 /** The helper class `ResponseHeaders` for setting headers. */
 class MicrosoftAspNetCoreHttpResponseHeaders extends RefType {
   MicrosoftAspNetCoreHttpResponseHeaders() {
-    this.hasQualifiedName("Microsoft.AspNetCore.Http.Headers", "ResponseHeaders")
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Http.Headers", "ResponseHeaders")
   }
 
   /** Gets the `Location` property. */
@@ -322,7 +321,7 @@ class MicrosoftAspNetCoreHttpResponseHeaders extends RefType {
 /** The `Microsoft.AspNetCore.Http.HeaderDictionaryExtensions` class. */
 class MicrosoftAspNetCoreHttpHeaderDictionaryExtensions extends RefType {
   MicrosoftAspNetCoreHttpHeaderDictionaryExtensions() {
-    this.hasQualifiedName("Microsoft.AspNetCore.Http", "HeaderDictionaryExtensions")
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Http", "HeaderDictionaryExtensions")
   }
 
   /** Gets the `Append` extension method. */
@@ -340,35 +339,35 @@ class MicrosoftAspNetCoreHttpHeaderDictionaryExtensions extends RefType {
 /** The `Microsoft.AspNetCore.Http.CookieOptions` class. */
 class MicrosoftAspNetCoreHttpCookieOptions extends RefType {
   MicrosoftAspNetCoreHttpCookieOptions() {
-    this.hasQualifiedName("Microsoft.AspNetCore.Http", "CookieOptions")
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Http", "CookieOptions")
   }
 }
 
 /** The `Microsoft.AspNetCore.Http.CookieBuilder` class. */
 class MicrosoftAspNetCoreHttpCookieBuilder extends RefType {
   MicrosoftAspNetCoreHttpCookieBuilder() {
-    this.hasQualifiedName("Microsoft.AspNetCore.Http", "CookieBuilder")
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Http", "CookieBuilder")
   }
 }
 
 /** The `Microsoft.AspNetCore.Builder.CookiePolicyOptions` class. */
 class MicrosoftAspNetCoreBuilderCookiePolicyOptions extends RefType {
   MicrosoftAspNetCoreBuilderCookiePolicyOptions() {
-    this.hasQualifiedName("Microsoft.AspNetCore.Builder", "CookiePolicyOptions")
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Builder", "CookiePolicyOptions")
   }
 }
 
 /** The `Microsoft.AspNetCore.CookiePolicy.AppendCookieContext` class. */
 class MicrosoftAspNetCoreCookiePolicyAppendCookieContext extends RefType {
   MicrosoftAspNetCoreCookiePolicyAppendCookieContext() {
-    this.hasQualifiedName("Microsoft.AspNetCore.CookiePolicy", "AppendCookieContext")
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.CookiePolicy", "AppendCookieContext")
   }
 }
 
 /** The `Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions` class. */
 class MicrosoftAspNetCoreAuthenticationCookiesCookieAuthenticationOptions extends RefType {
   MicrosoftAspNetCoreAuthenticationCookiesCookieAuthenticationOptions() {
-    this.hasQualifiedName("Microsoft.AspNetCore.Authentication.Cookies",
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Authentication.Cookies",
       "CookieAuthenticationOptions")
   }
 }
@@ -376,7 +375,7 @@ class MicrosoftAspNetCoreAuthenticationCookiesCookieAuthenticationOptions extend
 /** The `Microsoft.AspNetCore.Builder.CookiePolicyAppBuilderExtensions` class. */
 class MicrosoftAspNetCoreBuilderCookiePolicyAppBuilderExtensions extends RefType {
   MicrosoftAspNetCoreBuilderCookiePolicyAppBuilderExtensions() {
-    this.hasQualifiedName("Microsoft.AspNetCore.Builder", "CookiePolicyAppBuilderExtensions")
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Builder", "CookiePolicyAppBuilderExtensions")
   }
 
   /** Gets the `UseCookiePolicy` extension method. */
@@ -389,7 +388,7 @@ class MicrosoftAspNetCoreBuilderCookiePolicyAppBuilderExtensions extends RefType
  */
 class MicrosoftAspNetCoreHttpHtmlString extends Class {
   MicrosoftAspNetCoreHttpHtmlString() {
-    this.hasQualifiedName("Microsoft.AspNetCore.Html", "HtmlString")
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Html", "HtmlString")
   }
 }
 
@@ -398,7 +397,7 @@ class MicrosoftAspNetCoreHttpHtmlString extends Class {
  */
 class MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions extends Class {
   MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions() {
-    this.hasQualifiedName("Microsoft.AspNetCore.Builder", "EndpointRouteBuilderExtensions")
+    this.hasFullyQualifiedName("Microsoft.AspNetCore.Builder", "EndpointRouteBuilderExtensions")
   }
 
   /** Gets the `Map` extension method. */

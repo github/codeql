@@ -1,6 +1,19 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.naming.directory", "BasicAttributes", True, "BasicAttributes", "(String,Object)", "", "Argument[0..1]", "Argument[this]", "taint", "manual"]
+      - ["javax.naming.directory", "BasicAttributes", True, "BasicAttributes", "(String,Object,boolean)", "", "Argument[0..1]", "Argument[this]", "taint", "manual"]
+      - ["javax.naming.directory", "BasicAttributes", True, "clone", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["javax.naming.directory", "BasicAttributes", True, "get", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["javax.naming.directory", "BasicAttributes", True, "put", "(Attribute)", "", "Argument[0..1]", "Argument[this]", "taint", "manual"]
+      - ["javax.naming.directory", "BasicAttributes", True, "put", "(Attribute)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["javax.naming.directory", "BasicAttributes", True, "put", "(String,Object)", "", "Argument[0..1]", "Argument[this]", "taint", "manual"]
+      - ["javax.naming.directory", "BasicAttributes", True, "put", "(String,Object)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["javax.naming.directory", "DirContext", True, "search", "", "", "Argument[0..1]", "ldap", "manual"]
+      - ["javax.naming.directory", "DirContext", True, "search", "", "", "Argument[0..1]", "ldap-injection", "manual"]

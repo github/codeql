@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["hashicorp/boundary/.github/workflows/test-cli-ui_oss.yml", "*", "input.artifact-name", "code-injection", "generated"]

@@ -2,41 +2,31 @@
  * Provides a taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
  *
  * Note, for performance reasons: only import this file if
- * `ReflectedXSS::Configuration` is needed, otherwise
- * `XSS::ReflectedXSS` should be imported instead.
+ * `ReflectedXssFlow` is needed, otherwise
+ * `XSS::ReflectedXss` should be imported instead.
  */
 
 private import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 
-/**
- * Provides a taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
- */
-module ReflectedXss {
-  import XSS::ReflectedXss
+private module ReflectedXssConfig implements DataFlow::ConfigSig {
+  private import XSS::ReflectedXss as RX
 
-  /**
-   * A taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
-   */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "ReflectedXSS" }
+  predicate isSource(DataFlow::Node source) { source instanceof RX::Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof RX::Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isBarrier(DataFlow::Node node) { node instanceof RX::Sanitizer }
 
-    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
-    }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-      isAdditionalXssTaintStep(node1, node2)
-    }
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    RX::isAdditionalXssTaintStep(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
-/** DEPRECATED: Alias for ReflectedXss */
-deprecated module ReflectedXSS = ReflectedXss;
+/**
+ * Taint-tracking for detecting "reflected server-side cross-site scripting" vulnerabilities.
+ */
+module ReflectedXssFlow = TaintTracking::Global<ReflectedXssConfig>;

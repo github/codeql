@@ -1,0 +1,19 @@
+
+on: [ workflow_dispatch, pull_request ]
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Preliminary Information
+        run: |
+          echo "The job was automatically triggered by a ${{ github.event_name }} event."
+          echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+          echo "The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+          echo "  "
+          echo "github.ref = ${{ github.ref }}"
+          echo "github.sha = ${{ github.sha }}"
+          echo "github.event.pull_request.head.ref = ${{ github.event.pull_request.head.ref }}"
+          echo "github.event.pull_request.head.sha = ${{ github.event.pull_request.head.sha }}"
+          echo "github.event.pull_request.base.ref = ${{ github.event.pull_request.base.ref }}"
+          echo "github.event.pull_request.base.sha = ${{ github.event.pull_request.base.sha }}"
+          echo "  "

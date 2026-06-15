@@ -1,0 +1,4 @@
+| src/bar.erb:0:0:0:0 | src/bar.erb |  |
+| src/foo.rb:0:0:0:0 | src/foo.rb |  |
+| src/not_ruby.rb:0:0:0:0 | src/not_ruby.rb |  |
+| src/vendor/cache/lib.rb:0:0:0:0 | src/vendor/cache/lib.rb |  |

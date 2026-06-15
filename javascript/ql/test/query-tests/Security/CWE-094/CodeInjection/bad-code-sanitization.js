@@ -1,22 +1,22 @@
 function safeProp(key) {
-    return /^[_$a-zA-Z][_$a-zA-Z0-9]*$/.test(key) ? `.${key}` : `[${JSON.stringify(key)}]`;
+    return /^[_$a-zA-Z][_$a-zA-Z0-9]*$/.test(key) ? `.${key}` : `[${JSON.stringify(key)}]`; // $ Source[js/bad-code-sanitization]
 }
 
 function test1() {
     const statements = [];
     statements.push(`${name}${safeProp(key)}=${stringify(thing[key])}`);
-    return `(function(){${statements.join(';')}})` // NOT OK
+    return `(function(){${statements.join(';')}})` // $ Alert[js/bad-code-sanitization]
 }
 
 import htmlescape from 'htmlescape'
 
 function test2(props) {
     const pathname = props.data.pathname;
-    return `function(){return new Error('${htmlescape(pathname)}')}`; // NOT OK
+    return `function(){return new Error('${htmlescape(pathname)}')}`; // $ Alert[js/bad-code-sanitization]
 }
 
 function test3(input) {
-    return `(function(){${JSON.stringify(input)}))` // NOT OK
+    return `(function(){${JSON.stringify(input)}))` // $ Alert[js/bad-code-sanitization]
 }
 
 function evenSaferProp(key) {
@@ -24,24 +24,24 @@ function evenSaferProp(key) {
 }
 
 function test4(input) {
-    return `(function(){${evenSaferProp(input)}))` // OK
+    return `(function(){${evenSaferProp(input)}))`
 }
 
 function test4(input) {
-    var foo = `(function(){${JSON.stringify(input)}))` // NOT OK - we can type-track to a code-injection sink, the source is not remote flow.
+    var foo = `(function(){${JSON.stringify(input)}))` // $ Alert[js/bad-code-sanitization] - we can type-track to a code-injection sink, the source is not remote flow.
     setTimeout(foo);
 }
 
 function test5(input) {
-    console.log('methodName() => ' + JSON.stringify(input)); // OK
+    console.log('methodName() => ' + JSON.stringify(input));
 }
 
 function test6(input) {
-    return `(() => {${JSON.stringify(input)})` // NOT OK
+    return `(() => {${JSON.stringify(input)})` // $ Alert[js/bad-code-sanitization]
 }
 
 function test7(input) {
-    return `() => {${JSON.stringify(input)}` // NOT OK
+    return `() => {${JSON.stringify(input)}` // $ Alert[js/bad-code-sanitization]
 }
 
 var express = require('express');
@@ -49,7 +49,7 @@ var express = require('express');
 var app = express();
 
 app.get('/some/path', function(req, res) {
-  var foo = `(function(){${JSON.stringify(req.param("wobble"))}))` // NOT - the source is remote-flow, but we know of no sink.
+  var foo = `(function(){${JSON.stringify(req.param("wobble"))}))` // $ Alert[js/bad-code-sanitization] - the source is remote-flow, but we know of no sink.
 
   setTimeout(`(function(){${JSON.stringify(req.param("wobble"))}))`); // OK - the source is remote-flow, and the sink is code-injection.
 
@@ -60,8 +60,8 @@ app.get('/some/path', function(req, res) {
 
 // Bad documentation example: 
 function createObjectWrite() {
-    const assignment = `obj[${JSON.stringify(key)}]=42`;
-    return `(function(){${assignment}})` // NOT OK
+    const assignment = `obj[${JSON.stringify(key)}]=42`; // $ Source[js/bad-code-sanitization]
+    return `(function(){${assignment}})` // $ Alert[js/bad-code-sanitization]
 }
 
 // Good documentation example: 
@@ -87,6 +87,6 @@ function good() {
     
     function createObjectWrite() {
         const assignment = `obj[${escapeUnsafeChars(JSON.stringify(key))}]=42`;
-        return `(function(){${assignment}})` // OK
+        return `(function(){${assignment}})`
     }
 }

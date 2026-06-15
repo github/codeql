@@ -43,6 +43,11 @@ edges
 | test.cpp:189:16:189:16 | p | test.cpp:189:16:189:16 | (reference to) |
 | test.cpp:190:10:190:13 | (reference dereference) | test.cpp:190:10:190:13 | (reference to) |
 | test.cpp:190:10:190:13 | pRef | test.cpp:190:10:190:13 | (reference dereference) |
+| test.cpp:237:12:237:17 | call to alloca | test.cpp:237:12:237:17 | call to alloca |
+| test.cpp:237:12:237:17 | call to alloca | test.cpp:238:9:238:9 | p |
+| test.cpp:249:13:249:20 | call to strndupa | test.cpp:249:13:249:20 | call to strndupa |
+| test.cpp:249:13:249:20 | call to strndupa | test.cpp:250:9:250:10 | s2 |
+| test.cpp:250:9:250:10 | s2 | test.cpp:250:9:250:10 | (void *)... |
 nodes
 | test.cpp:17:9:17:11 | & ... | semmle.label | & ... |
 | test.cpp:17:10:17:11 | mc | semmle.label | mc |
@@ -101,6 +106,14 @@ nodes
 | test.cpp:190:10:190:13 | (reference dereference) | semmle.label | (reference dereference) |
 | test.cpp:190:10:190:13 | (reference to) | semmle.label | (reference to) |
 | test.cpp:190:10:190:13 | pRef | semmle.label | pRef |
+| test.cpp:237:12:237:17 | call to alloca | semmle.label | call to alloca |
+| test.cpp:237:12:237:17 | call to alloca | semmle.label | call to alloca |
+| test.cpp:238:9:238:9 | p | semmle.label | p |
+| test.cpp:245:9:245:15 | call to strdupa | semmle.label | call to strdupa |
+| test.cpp:249:13:249:20 | call to strndupa | semmle.label | call to strndupa |
+| test.cpp:249:13:249:20 | call to strndupa | semmle.label | call to strndupa |
+| test.cpp:250:9:250:10 | (void *)... | semmle.label | (void *)... |
+| test.cpp:250:9:250:10 | s2 | semmle.label | s2 |
 #select
 | test.cpp:17:9:17:11 | CopyValue: & ... | test.cpp:17:10:17:11 | mc | test.cpp:17:9:17:11 | & ... | May return stack-allocated memory from $@. | test.cpp:17:10:17:11 | mc | mc |
 | test.cpp:25:9:25:11 | Load: ptr | test.cpp:23:18:23:19 | mc | test.cpp:25:9:25:11 | ptr | May return stack-allocated memory from $@. | test.cpp:23:18:23:19 | mc | mc |
@@ -115,3 +128,6 @@ nodes
 | test.cpp:177:10:177:23 | Convert: (void *)... | test.cpp:176:25:176:34 | localArray | test.cpp:177:10:177:23 | (void *)... | May return stack-allocated memory from $@. | test.cpp:176:25:176:34 | localArray | localArray |
 | test.cpp:183:10:183:19 | CopyValue: (reference to) | test.cpp:182:21:182:27 | myLocal | test.cpp:183:10:183:19 | (reference to) | May return stack-allocated memory from $@. | test.cpp:182:21:182:27 | myLocal | myLocal |
 | test.cpp:190:10:190:13 | CopyValue: (reference to) | test.cpp:189:16:189:16 | p | test.cpp:190:10:190:13 | (reference to) | May return stack-allocated memory from $@. | test.cpp:189:16:189:16 | p | p |
+| test.cpp:238:9:238:9 | Load: p | test.cpp:237:12:237:17 | call to alloca | test.cpp:238:9:238:9 | p | May return stack-allocated memory from $@. | test.cpp:237:12:237:17 | call to alloca | call to alloca |
+| test.cpp:245:9:245:15 | Call: call to strdupa | test.cpp:245:9:245:15 | call to strdupa | test.cpp:245:9:245:15 | call to strdupa | May return stack-allocated memory from $@. | test.cpp:245:9:245:15 | call to strdupa | call to strdupa |
+| test.cpp:250:9:250:10 | Convert: (void *)... | test.cpp:249:13:249:20 | call to strndupa | test.cpp:250:9:250:10 | (void *)... | May return stack-allocated memory from $@. | test.cpp:249:13:249:20 | call to strndupa | call to strndupa |

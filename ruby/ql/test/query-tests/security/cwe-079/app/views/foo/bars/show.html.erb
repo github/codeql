@@ -77,3 +77,13 @@
 
 <%# GOOD: input is sanitized %>
 <%= sanitize(params[:comment]).html_safe %>
+
+<%# BAD: A local rendered raw as a local variable %>
+<%== display_text %>
+
+<%# BAD: translate preserves taint %>
+<%= raw translate("welcome", name: display_text) %>
+<%= raw t("welcome", name: display_text) %>
+
+<%# GOOD: translate sanitizes for html keys %>
+<%= raw t("welcome1.html", name: display_text) %>

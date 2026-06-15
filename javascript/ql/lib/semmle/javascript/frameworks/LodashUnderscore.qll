@@ -9,6 +9,7 @@ module LodashUnderscore {
   /**
    * A data flow node that accesses a given member of `lodash` or `underscore`.
    */
+  overlay[local?]
   abstract class Member extends DataFlow::SourceNode {
     /** Gets the name of the accessed member. */
     abstract string getName();
@@ -17,6 +18,7 @@ module LodashUnderscore {
   /**
    * An import of `lodash` or `underscore` accessing a given member of that package.
    */
+  overlay[local?]
   private class DefaultMember extends Member {
     string name;
 
@@ -39,12 +41,14 @@ module LodashUnderscore {
    * In addition to normal imports, this supports per-method imports such as `require("lodash.map")` and `require("lodash/map")`.
    * In addition, the global variable `_` is assumed to refer to `lodash` or `underscore`.
    */
+  overlay[local?]
   DataFlow::SourceNode member(string name) { result.(Member).getName() = name }
 
   /**
    * Holds if `name` is the name of a member exported from the `lodash` package
    * which has a corresponding `lodash.xxx` NPM package.
    */
+  overlay[local?]
   private predicate isLodashMember(string name) {
     // Can be generated using Object.keys(require('lodash'))
     name =
@@ -96,7 +100,7 @@ module LodashUnderscore {
   /**
    * A data flow step propagating an exception thrown from a callback to a Lodash/Underscore function.
    */
-  private class ExceptionStep extends DataFlow::SharedFlowStep {
+  private class ExceptionStep extends DataFlow::LegacyFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call, string name |
         // Members ending with By, With, or While indicate that they are a variant of
@@ -144,7 +148,13 @@ module LodashUnderscore {
       name = ["union", "zip"] and
       pred = call.getAnArgument() and
       succ = call
-      or
+    )
+  }
+
+  private predicate underscoreTaintStepLegacy(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(string name, DataFlow::CallNode call |
+      call = any(Member member | member.getName() = name).getACall()
+    |
       name =
         ["each", "map", "every", "some", "max", "min", "sortBy", "partition", "mapObject", "tap"] and
       pred = call.getArgument(0) and
@@ -166,6 +176,206 @@ module LodashUnderscore {
   private class UnderscoreTaintStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       underscoreTaintStep(pred, succ)
+    }
+  }
+
+  private class UnderscoreTaintStepLegacy extends TaintTracking::LegacyTaintStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      underscoreTaintStepLegacy(pred, succ)
+    }
+  }
+
+  overlay[local?]
+  private class LodashEach extends DataFlow::SummarizedCallable::Range {
+    LodashEach() { this = "_.each-like" }
+
+    overlay[global]
+    override DataFlow::CallNode getACall() {
+      result = member(["each", "eachRight", "forEach", "forEachRight", "every", "some"]).getACall()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      preservesValue = true and
+      input = "Argument[0].ArrayElement" and
+      output = "Argument[1].Parameter[0]"
+    }
+  }
+
+  overlay[local?]
+  private class LodashMap extends DataFlow::SummarizedCallable::Range {
+    LodashMap() { this = "_.map" }
+
+    overlay[global]
+    override DataFlow::CallNode getACall() { result = member("map").getACall() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      (
+        input = "Argument[0].ArrayElement" and
+        output = "Argument[1].Parameter[0]"
+        or
+        input = "Argument[1].ReturnValue" and
+        output = "ReturnValue.ArrayElement"
+      ) and
+      preservesValue = true
+    }
+  }
+
+  overlay[local?]
+  private class LodashFlatMap extends DataFlow::SummarizedCallable::Range {
+    LodashFlatMap() { this = "_.flatMap" }
+
+    overlay[global]
+    override DataFlow::CallNode getACall() { result = member("flatMap").getACall() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      (
+        input = "Argument[0].ArrayElement" and
+        output = "Argument[1].Parameter[0]"
+        or
+        input = "Argument[1].ReturnValue.WithoutArrayElement" and
+        output = "ReturnValue.ArrayElement"
+        or
+        input = "Argument[1].ReturnValue.ArrayElement" and
+        output = "ReturnValue.ArrayElement"
+      ) and
+      preservesValue = true
+    }
+  }
+
+  overlay[local?]
+  private class LodashFlatMapDeep extends DataFlow::SummarizedCallable::Range {
+    LodashFlatMapDeep() { this = "_.flatMapDeep" }
+
+    overlay[global]
+    override DataFlow::CallNode getACall() {
+      result = member(["flatMapDeep", "flatMapDepth"]).getACall()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      (
+        input = "Argument[0].ArrayElement" and
+        output = "Argument[1].Parameter[0]"
+        or
+        input = "Argument[1].ReturnValue.WithoutArrayElement" and
+        output = "ReturnValue.ArrayElement"
+        or
+        input = "Argument[1].ReturnValue.ArrayElementDeep" and
+        output = "ReturnValue.ArrayElement"
+      ) and
+      preservesValue = true
+    }
+  }
+
+  overlay[local?]
+  private class LodashReduce extends DataFlow::SummarizedCallable::Range {
+    LodashReduce() { this = "_.reduce-like" }
+
+    overlay[global]
+    override DataFlow::CallNode getACall() { result = member(["reduce", "reduceRight"]).getACall() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      (
+        input = "Argument[0].ArrayElement" and
+        output = "Argument[1].Parameter[1]"
+        or
+        input = ["Argument[1].ReturnValue", "Argument[2]"] and
+        output = ["ReturnValue", "Argument[1].Parameter[0]"]
+      ) and
+      preservesValue = true
+    }
+  }
+
+  overlay[local?]
+  private class LoashSortBy extends DataFlow::SummarizedCallable::Range {
+    LoashSortBy() { this = "_.sortBy-like" }
+
+    overlay[global]
+    override DataFlow::CallNode getACall() { result = member(["sortBy", "orderBy"]).getACall() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input = "Argument[0].ArrayElement" and
+      output =
+        [
+          "Argument[1].Parameter[0]", "Argument[1].ArrayElement.Parameter[0]",
+          "ReturnValue.ArrayElement"
+        ] and
+      preservesValue = true
+    }
+  }
+
+  overlay[local?]
+  private class LodashMinMaxBy extends DataFlow::SummarizedCallable::Range {
+    LodashMinMaxBy() { this = "_.minBy / _.maxBy" }
+
+    overlay[global]
+    override DataFlow::CallNode getACall() { result = member(["minBy", "maxBy"]).getACall() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input = "Argument[0].ArrayElement" and
+      output = ["Argument[1].Parameter[1]", "ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  overlay[local?]
+  private class LodashPartition extends DataFlow::SummarizedCallable::Range {
+    LodashPartition() { this = "_.partition" }
+
+    overlay[global]
+    override DataFlow::CallNode getACall() { result = member("partition").getACall() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input = "Argument[0].ArrayElement" and
+      output = ["Argument[1].Parameter[1]", "ReturnValue.ArrayElement.ArrayElement"] and
+      preservesValue = true
+    }
+  }
+
+  overlay[local?]
+  private class UnderscoreMapObject extends DataFlow::SummarizedCallable::Range {
+    UnderscoreMapObject() { this = "_.mapObject" }
+
+    overlay[global]
+    override DataFlow::CallNode getACall() { result = member("mapObject").getACall() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      // Just collapse all properties with AnyMember. We could be more precise by generating a summary
+      // for each property name, but for a rarely-used method like this it dosn't seem worth it.
+      (
+        input = "Argument[0].AnyMember" and
+        output = "Argument[1].Parameter[1]"
+        or
+        input = "Argument[1].ReturnValue" and
+        output = "ReturnValue.AnyMember"
+      ) and
+      preservesValue = true
+    }
+  }
+
+  overlay[local?]
+  private class LodashTap extends DataFlow::SummarizedCallable::Range {
+    LodashTap() { this = "_.tap" }
+
+    overlay[global]
+    override DataFlow::CallNode getACall() { result = member("tap").getACall() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and
+      output = ["Argument[1].Parameter[0]", "ReturnValue"] and
+      preservesValue = true
+    }
+  }
+
+  overlay[local?]
+  private class LodashGroupBy extends DataFlow::SummarizedCallable::Range {
+    LodashGroupBy() { this = "_.groupBy" }
+
+    override DataFlow::CallNode getACall() { result = member("groupBy").getACall() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and
+      output = ["Argument[1].Parameter[0]", "ReturnValue"] and
+      preservesValue = false
     }
   }
 }

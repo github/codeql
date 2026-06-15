@@ -1,29 +1,25 @@
 /** Definitions related to JAXB. */
+overlay[local?]
+module;
 
 import semmle.code.java.Type
 
-library class JaxbElement extends Class {
+class JaxbElement extends Class {
   JaxbElement() {
-    this.getAnAncestor().getQualifiedName() = "javax.xml.bind.JAXBElement" or
+    this.getAnAncestor().hasQualifiedName(javaxOrJakarta() + ".xml.bind", "JAXBElement") or
     this.getAnAnnotation().getType().getName() = "XmlRootElement"
   }
 }
 
-/** DEPRECATED: Alias for JaxbElement */
-deprecated class JAXBElement = JaxbElement;
-
-library class JaxbMarshalMethod extends Method {
+class JaxbMarshalMethod extends Method {
   JaxbMarshalMethod() {
-    this.getDeclaringType().getQualifiedName() = "javax.xml.bind.Marshaller" and
+    this.getDeclaringType().hasQualifiedName(javaxOrJakarta() + ".xml.bind", "Marshaller") and
     this.getName() = "marshal"
   }
 }
 
-/** DEPRECATED: Alias for JaxbMarshalMethod */
-deprecated class JAXBMarshalMethod = JaxbMarshalMethod;
-
 class JaxbAnnotationType extends AnnotationType {
-  JaxbAnnotationType() { this.getPackage().getName() = "javax.xml.bind.annotation" }
+  JaxbAnnotationType() { this.getPackage().getName() = javaxOrJakarta() + ".xml.bind.annotation" }
 }
 
 class JaxbAnnotated extends Annotatable {
@@ -111,10 +107,7 @@ class XmlAccessType extends EnumConstant {
  */
 class JaxbMemberAnnotation extends JaxbAnnotationType {
   JaxbMemberAnnotation() {
-    this.hasName("XmlElement") or
-    this.hasName("XmlAttribute") or
-    this.hasName("XmlElementRefs") or
-    this.hasName("XmlElements")
+    this.hasName(["XmlElement", "XmlAttribute", "XmlElementRefs", "XmlElements"])
   }
 }
 
@@ -151,7 +144,7 @@ class JaxbBoundField extends Field {
 /**
  * A getter or setter method, as defined by whether the method name starts with "set" or "get".
  */
-library class GetterOrSetterMethod extends Method {
+class GetterOrSetterMethod extends Method {
   GetterOrSetterMethod() { this.getName().matches("get%") or this.getName().matches("set%") }
 
   Field getField() {

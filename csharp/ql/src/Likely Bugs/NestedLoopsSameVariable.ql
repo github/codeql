@@ -6,9 +6,9 @@
  * @problem.severity warning
  * @precision high
  * @id cs/nested-loops-with-same-variable
- * @tags maintainability
+ * @tags quality
+ *       reliability
  *       correctness
- *       logic
  */
 
 import csharp
@@ -80,21 +80,20 @@ class NestedForLoopSameVariable extends ForStmt {
   }
 
   /** Finds elements inside the outer loop that are no longer guarded by the loop invariant. */
-  private ControlFlow::Node getAnUnguardedNode() {
-    hasChild(this.getOuterForStmt().getBody(), result.getElement()) and
+  private ControlFlowNode getAnUnguardedNode() {
+    hasChild(this.getOuterForStmt().getBody(), result.getAstNode()) and
     (
-      result =
-        this.getCondition().(ControlFlowElement).getAControlFlowExitNode().getAFalseSuccessor()
+      result.isAfterFalse(this.getCondition())
       or
-      exists(ControlFlow::Node mid | mid = this.getAnUnguardedNode() |
+      exists(ControlFlowNode mid | mid = this.getAnUnguardedNode() |
         mid.getASuccessor() = result and
-        not exists(this.getAComparisonTest(result.getElement()))
+        not exists(this.getAComparisonTest(result.asExpr()))
       )
     )
   }
 
   private VariableAccess getAnUnguardedAccess() {
-    result = this.getAnUnguardedNode().getElement() and
+    result = this.getAnUnguardedNode().asExpr() and
     result.getTarget() = iteration
   }
 }

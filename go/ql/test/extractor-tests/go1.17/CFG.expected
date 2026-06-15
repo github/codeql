@@ -2,13 +2,13 @@ nodes
 edges
 | conversions.go:0:0:0:0 | entry | conversions.go:3:1:3:15 | skip |
 | conversions.go:3:1:3:15 | skip | conversions.go:5:6:5:8 | skip |
-| conversions.go:5:1:5:1 | entry | conversions.go:5:10:5:10 | argument corresponding to _ |
+| conversions.go:5:1:5:29 | entry | conversions.go:5:10:5:10 | argument corresponding to _ |
 | conversions.go:5:1:5:29 | function declaration | conversions.go:7:6:7:9 | skip |
 | conversions.go:5:6:5:8 | skip | conversions.go:5:1:5:29 | function declaration |
 | conversions.go:5:10:5:10 | argument corresponding to _ | conversions.go:5:10:5:10 | initialization of _ |
 | conversions.go:5:10:5:10 | initialization of _ | conversions.go:5:28:5:29 | skip |
-| conversions.go:5:28:5:29 | skip | conversions.go:5:29:5:29 | exit |
-| conversions.go:7:1:7:1 | entry | conversions.go:8:6:8:6 | skip |
+| conversions.go:5:28:5:29 | skip | conversions.go:5:1:5:29 | exit |
+| conversions.go:7:1:26:1 | entry | conversions.go:8:6:8:6 | skip |
 | conversions.go:7:1:26:1 | function declaration | conversions.go:0:0:0:0 | exit |
 | conversions.go:7:6:7:9 | skip | conversions.go:7:1:26:1 | function declaration |
 | conversions.go:8:6:8:6 | assignment to a | conversions.go:10:2:10:2 | skip |
@@ -21,8 +21,8 @@ edges
 | conversions.go:10:18:10:18 | a | conversions.go:10:21:10:22 | 10 |
 | conversions.go:10:21:10:22 | 10 | conversions.go:10:7:10:23 | call to Add |
 | conversions.go:11:2:11:4 | use | conversions.go:11:6:11:6 | b |
+| conversions.go:11:2:11:7 | call to use | conversions.go:7:1:26:1 | exit |
 | conversions.go:11:2:11:7 | call to use | conversions.go:13:6:13:8 | skip |
-| conversions.go:11:2:11:7 | call to use | conversions.go:26:1:26:1 | exit |
 | conversions.go:11:6:11:6 | b | conversions.go:11:2:11:7 | call to use |
 | conversions.go:13:6:13:8 | assignment to arr | conversions.go:14:2:14:6 | skip |
 | conversions.go:13:6:13:8 | skip | conversions.go:13:6:13:8 | zero value for arr |
@@ -35,12 +35,12 @@ edges
 | conversions.go:14:29:14:30 | 20 | conversions.go:14:11:14:31 | call to Slice |
 | conversions.go:17:2:17:4 | assignment to ptr | conversions.go:18:2:18:4 | use |
 | conversions.go:17:2:17:4 | skip | conversions.go:17:20:17:24 | slice |
+| conversions.go:17:9:17:25 | type conversion | conversions.go:7:1:26:1 | exit |
 | conversions.go:17:9:17:25 | type conversion | conversions.go:17:2:17:4 | assignment to ptr |
-| conversions.go:17:9:17:25 | type conversion | conversions.go:26:1:26:1 | exit |
 | conversions.go:17:20:17:24 | slice | conversions.go:17:9:17:25 | type conversion |
 | conversions.go:18:2:18:4 | use | conversions.go:18:6:18:8 | ptr |
+| conversions.go:18:2:18:9 | call to use | conversions.go:7:1:26:1 | exit |
 | conversions.go:18:2:18:9 | call to use | conversions.go:21:2:21:4 | skip |
-| conversions.go:18:2:18:9 | call to use | conversions.go:26:1:26:1 | exit |
 | conversions.go:18:6:18:8 | ptr | conversions.go:18:2:18:9 | call to use |
 | conversions.go:21:2:21:4 | assignment to str | conversions.go:22:2:22:6 | skip |
 | conversions.go:21:2:21:4 | skip | conversions.go:21:9:21:18 | "a string" |
@@ -50,15 +50,15 @@ edges
 | conversions.go:22:11:22:21 | type conversion | conversions.go:22:2:22:6 | assignment to bytes |
 | conversions.go:22:18:22:20 | str | conversions.go:22:11:22:21 | type conversion |
 | conversions.go:23:2:23:4 | use | conversions.go:23:6:23:10 | bytes |
+| conversions.go:23:2:23:11 | call to use | conversions.go:7:1:26:1 | exit |
 | conversions.go:23:2:23:11 | call to use | conversions.go:24:2:24:6 | skip |
-| conversions.go:23:2:23:11 | call to use | conversions.go:26:1:26:1 | exit |
 | conversions.go:23:6:23:10 | bytes | conversions.go:23:2:23:11 | call to use |
 | conversions.go:24:2:24:6 | assignment to runes | conversions.go:25:2:25:4 | use |
 | conversions.go:24:2:24:6 | skip | conversions.go:24:18:24:20 | str |
 | conversions.go:24:11:24:21 | type conversion | conversions.go:24:2:24:6 | assignment to runes |
 | conversions.go:24:18:24:20 | str | conversions.go:24:11:24:21 | type conversion |
 | conversions.go:25:2:25:4 | use | conversions.go:25:6:25:10 | runes |
-| conversions.go:25:2:25:11 | call to use | conversions.go:26:1:26:1 | exit |
+| conversions.go:25:2:25:11 | call to use | conversions.go:7:1:26:1 | exit |
 | conversions.go:25:6:25:10 | runes | conversions.go:25:2:25:11 | call to use |
 #select
 |  |

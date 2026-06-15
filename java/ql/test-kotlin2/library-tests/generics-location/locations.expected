@@ -1,0 +1,25 @@
+classLocations
+| main.A | A.class:0:0:0:0 | A.class:0:0:0:0 |
+| main.A | A.java:3:14:3:14 | A.java:3:14:3:14 |
+| main.A<Integer> | A.class:0:0:0:0 | A.class:0:0:0:0 |
+| main.A<Object> | file:///!unknown-binary-location/main/A.class:0:0:0:0 | file:///!unknown-binary-location/main/A.class:0:0:0:0 |
+| main.A<String> | A.class:0:0:0:0 | A.class:0:0:0:0 |
+| main.A<String> | file:///!unknown-binary-location/main/A.class:0:0:0:0 | file:///!unknown-binary-location/main/A.class:0:0:0:0 |
+| main.B | generics.kt:3:1:11:1 | generics.kt:3:1:11:1 |
+| main.B<Integer> | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 |
+| main.B<Object> | file:///!unknown-binary-location/main/B.class:0:0:0:0 | file:///!unknown-binary-location/main/B.class:0:0:0:0 |
+| main.B<String> | file:///!unknown-binary-location/main/B.class:0:0:0:0 | file:///!unknown-binary-location/main/B.class:0:0:0:0 |
+| main.B<String> | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 |
+callableLocations
+| main.A.fn | A.class:0:0:0:0 | A.class:0:0:0:0 |
+| main.A.fn | A.java:4:17:4:18 | A.java:4:17:4:18 |
+| main.A<Integer>.fn | A.class:0:0:0:0 | A.class:0:0:0:0 |
+| main.A<Object>.fn | file:///!unknown-binary-location/main/A.class:0:0:0:0 | file:///!unknown-binary-location/main/A.class:0:0:0:0 |
+| main.A<String>.fn | A.class:0:0:0:0 | A.class:0:0:0:0 |
+| main.A<String>.fn | file:///!unknown-binary-location/main/A.class:0:0:0:0 | file:///!unknown-binary-location/main/A.class:0:0:0:0 |
+| main.B.fn | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 |
+| main.B.fn | generics.kt:4:5:10:5 | generics.kt:4:5:10:5 |
+| main.B<Integer>.fn | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 |
+| main.B<Object>.fn | file:///!unknown-binary-location/main/B.class:0:0:0:0 | file:///!unknown-binary-location/main/B.class:0:0:0:0 |
+| main.B<String>.fn | file:///!unknown-binary-location/main/B.class:0:0:0:0 | file:///!unknown-binary-location/main/B.class:0:0:0:0 |
+| main.B<String>.fn | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 |

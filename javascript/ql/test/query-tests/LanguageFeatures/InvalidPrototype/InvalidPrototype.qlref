@@ -1,1 +1,2 @@
-LanguageFeatures/InvalidPrototype.ql
+query: LanguageFeatures/InvalidPrototype.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

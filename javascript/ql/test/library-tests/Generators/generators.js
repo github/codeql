@@ -31,6 +31,26 @@
     sink(e); // NOT OK
   }
 
+  try {
+    gen4();
+  } catch (e) {
+    sink(e); // OK - exception is only thrown upon iteration
+  }
+
+  const iterator = gen4();
+  try {
+    for (let v of iterator) {
+      sink(v); // OK
+    }
+  } catch (e) {
+    sink(e); // NOT OK
+  }
+  try {
+    Array.from(iterator);
+  } catch (e) {
+    sink(e); // NOT OK
+  }
+
   function *delegating() {
     yield* delegate();
   }

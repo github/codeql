@@ -1,0 +1,4 @@
+| CommandArgs.cs:11:29:11:60 | call to method GetCommandLineArgs |
+| CommandArgs.cs:16:29:16:51 | access to property CommandLine |
+| CommandArgs.cs:19:42:19:45 | args |
+| CommandArgs.cs:31:33:31:64 | call to method GetCommandLineArgs |

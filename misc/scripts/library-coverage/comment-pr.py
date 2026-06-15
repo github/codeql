@@ -56,6 +56,20 @@ def comment_pr(repo, run_id):
         if os.path.isdir("pr"):
             shutil.rmtree("pr")
 
+    try:
+        utils.download_artifact(repo, "comment", "comment", run_id)
+        with open("comment/ID") as file:
+            raw_comment_id = int(file.read().strip())
+    except Exception as e:
+        # If there is no existing comment, the `comment/ID` artifact
+        # will not exist. This will cause `utils.download_artifact`
+        # to fail, so we catch that and set `raw_comment_id` to `None`.
+        print("Could not retrieve an existing comment ID. \n", e)
+        raw_comment_id = None
+    finally:
+        if os.path.isdir("comment"):
+            shutil.rmtree("comment")
+
     # Try storing diff for previous run:
     prev_run_id = 0
     prev_diff_exists = False
@@ -95,14 +109,37 @@ def comment_pr(repo, run_id):
 
         comment = comment_first_line + \
             "A recent commit removed the previously reported differences."
-    post_comment(comment, repo, pr_number)
+
+    if raw_comment_id is None:
+        post_initial_comment(comment, repo, pr_number)
+    else:
+        update_existing_comment(comment, repo, pr_number, raw_comment_id)
 
 
-def post_comment(comment, repo, pr_number):
+def post_initial_comment(comment, repo, pr_number):
     print(f"Posting comment to PR #{pr_number}")
     utils.subprocess_run(["gh", "pr", "comment", str(pr_number),
                          "--repo", repo, "--body", comment])
 
+def update_existing_comment(comment, repo, pr_number, raw_comment_id):
+    # Fetch existing comment, and validate:
+    # - comment belongs to the PR with number `pr_number`
+    # - comment starts with the expected prefix `comment_first_line`
+    # - comment author is github-actions[bot]
+    comment_author = "github-actions[bot]"
+    filter = f"select(.issue_url | endswith(\"{repo}/issues/{pr_number}\")) " + \
+        f"| select(.body | startswith(\"{comment_first_line}\")) " + \
+        f"| select(.user.login == \"{comment_author}\") " + \
+        "| .id"
+    comment_id = utils.subprocess_check_output(["gh", "api", f"repos/{repo}/issues/comments/{raw_comment_id}",
+                                                "--jq", filter]).strip()
+
+    if comment_id:
+        print(f"Updating comment {comment_id} on PR #{pr_number}")
+        utils.subprocess_run(["gh", "api", f"repos/{repo}/issues/comments/{comment_id}",
+                          "-X", "PATCH", "-f", f"body={comment}"])
+    else:
+        print(f"Comment {raw_comment_id} did not pass validations: not editing.")
 
 def get_previous_run_id(repo, run_id, pr_number):
     """
@@ -118,7 +155,7 @@ def get_previous_run_id(repo, run_id, pr_number):
     pr_repo = this_run["head_repository"]
 
     # Get all previous runs that match branch, repo and workflow name:
-    output = utils.subprocess_check_output(["gh", "api", "-X", "GET", f"repos/{repo}/actions/runs", "-f", "event=pull_request", "-f", "status=success", "-f", f"branch='{pr_branch}'", "--paginate",
+    output = utils.subprocess_check_output(["gh", "api", "-X", "GET", f"repos/{repo}/actions/runs", "-f", "event=pull_request", "-f", "status=success", "-f", f"branch={pr_branch}", "--paginate",
                                             "--jq", f'[.workflow_runs.[] | select(.head_repository.full_name=="{pr_repo}" and .name=="{artifacts_workflow_name}")] | sort_by(.id) | reverse | [.[].id]'])
 
     ids = []

@@ -1,5 +1,5 @@
 /**
- * @name Dangerous use SSL_shutdown.
+ * @name Dangerous use SSL_shutdown
  * @description Incorrect closing of the connection leads to the creation of different states for the server and client, which can be exploited by an attacker.
  * @kind problem
  * @id cpp/dangerous-use-of-ssl-shutdown

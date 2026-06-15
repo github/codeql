@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Logging.EventSource", "EventSourceLoggerProvider", False, "EventSourceLoggerProvider", "(Microsoft.Extensions.Logging.EventSource.LoggingEventSource)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Logging.EventSource", "EventSourceLoggerProvider", "Dispose", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.EventSource", "LoggingEventSource", "OnEventCommand", "(System.Diagnostics.Tracing.EventCommandEventArgs)", "summary", "df-generated"]

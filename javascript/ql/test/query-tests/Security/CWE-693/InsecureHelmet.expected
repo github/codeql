@@ -1,0 +1,2 @@
+| InsecureHelmetBad.js:6:9:9:2 | helmet( ... uard\\n}) | Helmet security middleware, configured with security setting $@ set to 'false', which disables enforcing that feature. | InsecureHelmetBad.js:7:5:7:32 | content ... : false | contentSecurityPolicy |
+| InsecureHelmetBad.js:6:9:9:2 | helmet( ... uard\\n}) | Helmet security middleware, configured with security setting $@ set to 'false', which disables enforcing that feature. | InsecureHelmetBad.js:8:5:8:21 | frameguard: false | frameguard |

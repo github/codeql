@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["ansible/ansible-lint", "*", "input.args", "code-injection", "generated"]
+     - ["ansible/ansible-lint", "*", "input.working_directory", "code-injection", "generated"]

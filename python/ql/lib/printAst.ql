@@ -25,4 +25,9 @@ class PrintAstConfigurationOverride extends PrintAstConfiguration {
     super.shouldPrint(e, l) and
     l.getFile() = getFileBySourceArchiveName(selectedSourceFile())
   }
+
+  override predicate shouldPrintYaml(YamlNode y, Location l) {
+    super.shouldPrintYaml(y, l) and
+    l.getFile() = getFileBySourceArchiveName(selectedSourceFile())
+  }
 }

@@ -10,6 +10,6 @@ class BadDataContractSerializer
     {
         var ds = new DataContractSerializer(Type.GetType(type.Text));
         // BAD
-        return ds.ReadObject(new MemoryStream(Encoding.UTF8.GetBytes(data.Text)));
+        return ds.ReadObject(new MemoryStream(Encoding.UTF8.GetBytes(data.Text))); // $ Alert[cs/unsafe-deserialization-untrusted-input]
     }
 }

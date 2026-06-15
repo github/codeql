@@ -1,27 +1,31 @@
 edges
-| SensitiveGetQuery2.java:12:13:12:37 | getParameterMap(...) : Map | SensitiveGetQuery2.java:14:30:14:32 | map : Map |
-| SensitiveGetQuery2.java:14:21:14:48 | (...)... : Object | SensitiveGetQuery2.java:15:29:15:36 | password |
-| SensitiveGetQuery2.java:14:21:14:48 | (...)... : Object | SensitiveGetQuery2.java:15:29:15:36 | password : Object |
-| SensitiveGetQuery2.java:14:30:14:32 | map : Map | SensitiveGetQuery2.java:14:30:14:48 | get(...) : Object |
-| SensitiveGetQuery2.java:14:30:14:48 | get(...) : Object | SensitiveGetQuery2.java:14:21:14:48 | (...)... : Object |
-| SensitiveGetQuery2.java:15:29:15:36 | password : Object | SensitiveGetQuery2.java:18:40:18:54 | password : Object |
-| SensitiveGetQuery2.java:18:40:18:54 | password : Object | SensitiveGetQuery2.java:19:61:19:68 | password |
-| SensitiveGetQuery3.java:12:21:12:60 | getRequestParameter(...) : String | SensitiveGetQuery3.java:13:57:13:64 | password |
-| SensitiveGetQuery3.java:17:10:17:40 | getParameter(...) : String | SensitiveGetQuery3.java:12:21:12:60 | getRequestParameter(...) : String |
-| SensitiveGetQuery4.java:14:24:14:66 | getRequestParameter(...) : String | SensitiveGetQuery4.java:16:37:16:47 | accessToken |
-| SensitiveGetQuery4.java:20:10:20:40 | getParameter(...) : String | SensitiveGetQuery4.java:14:24:14:66 | getRequestParameter(...) : String |
-| SensitiveGetQuery.java:12:21:12:52 | getParameter(...) : String | SensitiveGetQuery.java:14:29:14:36 | password |
-| SensitiveGetQuery.java:12:21:12:52 | getParameter(...) : String | SensitiveGetQuery.java:14:29:14:36 | password : String |
-| SensitiveGetQuery.java:14:29:14:36 | password : String | SensitiveGetQuery.java:17:40:17:54 | password : String |
-| SensitiveGetQuery.java:17:40:17:54 | password : String | SensitiveGetQuery.java:18:61:18:68 | password |
+| SensitiveGetQuery2.java:12:13:12:37 | getParameterMap(...) : Map | SensitiveGetQuery2.java:14:30:14:32 | map : Map | provenance | Src:MaD:2  |
+| SensitiveGetQuery2.java:14:21:14:48 | (...)... : String | SensitiveGetQuery2.java:15:29:15:36 | password | provenance |  |
+| SensitiveGetQuery2.java:14:21:14:48 | (...)... : String | SensitiveGetQuery2.java:15:29:15:36 | password : String | provenance |  |
+| SensitiveGetQuery2.java:14:30:14:32 | map : Map | SensitiveGetQuery2.java:14:30:14:48 | get(...) : Object | provenance | MaD:3 |
+| SensitiveGetQuery2.java:14:30:14:48 | get(...) : Object | SensitiveGetQuery2.java:14:21:14:48 | (...)... : String | provenance |  |
+| SensitiveGetQuery2.java:15:29:15:36 | password : String | SensitiveGetQuery2.java:18:40:18:54 | password : String | provenance |  |
+| SensitiveGetQuery2.java:18:40:18:54 | password : String | SensitiveGetQuery2.java:19:61:19:68 | password | provenance |  |
+| SensitiveGetQuery3.java:12:21:12:60 | getRequestParameter(...) : String | SensitiveGetQuery3.java:13:57:13:64 | password | provenance |  |
+| SensitiveGetQuery3.java:17:10:17:40 | getParameter(...) : String | SensitiveGetQuery3.java:12:21:12:60 | getRequestParameter(...) : String | provenance | Src:MaD:1  |
+| SensitiveGetQuery4.java:14:24:14:66 | getRequestParameter(...) : String | SensitiveGetQuery4.java:16:37:16:47 | accessToken | provenance |  |
+| SensitiveGetQuery4.java:20:10:20:40 | getParameter(...) : String | SensitiveGetQuery4.java:14:24:14:66 | getRequestParameter(...) : String | provenance | Src:MaD:1  |
+| SensitiveGetQuery.java:12:21:12:52 | getParameter(...) : String | SensitiveGetQuery.java:14:29:14:36 | password | provenance | Src:MaD:1  |
+| SensitiveGetQuery.java:12:21:12:52 | getParameter(...) : String | SensitiveGetQuery.java:14:29:14:36 | password : String | provenance | Src:MaD:1  |
+| SensitiveGetQuery.java:14:29:14:36 | password : String | SensitiveGetQuery.java:17:40:17:54 | password : String | provenance |  |
+| SensitiveGetQuery.java:17:40:17:54 | password : String | SensitiveGetQuery.java:18:61:18:68 | password | provenance |  |
+models
+| 1 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 2 | Source: javax.servlet; ServletRequest; false; getParameterMap; (); ; ReturnValue; remote; manual |
+| 3 | Summary: java.util; Map; true; get; ; ; Argument[this].MapValue; ReturnValue; value; manual |
 nodes
 | SensitiveGetQuery2.java:12:13:12:37 | getParameterMap(...) : Map | semmle.label | getParameterMap(...) : Map |
-| SensitiveGetQuery2.java:14:21:14:48 | (...)... : Object | semmle.label | (...)... : Object |
+| SensitiveGetQuery2.java:14:21:14:48 | (...)... : String | semmle.label | (...)... : String |
 | SensitiveGetQuery2.java:14:30:14:32 | map : Map | semmle.label | map : Map |
 | SensitiveGetQuery2.java:14:30:14:48 | get(...) : Object | semmle.label | get(...) : Object |
 | SensitiveGetQuery2.java:15:29:15:36 | password | semmle.label | password |
-| SensitiveGetQuery2.java:15:29:15:36 | password : Object | semmle.label | password : Object |
-| SensitiveGetQuery2.java:18:40:18:54 | password : Object | semmle.label | password : Object |
+| SensitiveGetQuery2.java:15:29:15:36 | password : String | semmle.label | password : String |
+| SensitiveGetQuery2.java:18:40:18:54 | password : String | semmle.label | password : String |
 | SensitiveGetQuery2.java:19:61:19:68 | password | semmle.label | password |
 | SensitiveGetQuery3.java:12:21:12:60 | getRequestParameter(...) : String | semmle.label | getRequestParameter(...) : String |
 | SensitiveGetQuery3.java:13:57:13:64 | password | semmle.label | password |
@@ -34,11 +38,11 @@ nodes
 | SensitiveGetQuery.java:14:29:14:36 | password : String | semmle.label | password : String |
 | SensitiveGetQuery.java:17:40:17:54 | password : String | semmle.label | password : String |
 | SensitiveGetQuery.java:18:61:18:68 | password | semmle.label | password |
-subpaths
-#select
+problems
 | SensitiveGetQuery2.java:15:29:15:36 | password | SensitiveGetQuery2.java:12:13:12:37 | getParameterMap(...) : Map | SensitiveGetQuery2.java:15:29:15:36 | password | $@ uses the GET request method to transmit sensitive information. | SensitiveGetQuery2.java:12:13:12:37 | getParameterMap(...) | This request |
 | SensitiveGetQuery2.java:19:61:19:68 | password | SensitiveGetQuery2.java:12:13:12:37 | getParameterMap(...) : Map | SensitiveGetQuery2.java:19:61:19:68 | password | $@ uses the GET request method to transmit sensitive information. | SensitiveGetQuery2.java:12:13:12:37 | getParameterMap(...) | This request |
 | SensitiveGetQuery3.java:13:57:13:64 | password | SensitiveGetQuery3.java:17:10:17:40 | getParameter(...) : String | SensitiveGetQuery3.java:13:57:13:64 | password | $@ uses the GET request method to transmit sensitive information. | SensitiveGetQuery3.java:17:10:17:40 | getParameter(...) | This request |
 | SensitiveGetQuery4.java:16:37:16:47 | accessToken | SensitiveGetQuery4.java:20:10:20:40 | getParameter(...) : String | SensitiveGetQuery4.java:16:37:16:47 | accessToken | $@ uses the GET request method to transmit sensitive information. | SensitiveGetQuery4.java:20:10:20:40 | getParameter(...) | This request |
 | SensitiveGetQuery.java:14:29:14:36 | password | SensitiveGetQuery.java:12:21:12:52 | getParameter(...) : String | SensitiveGetQuery.java:14:29:14:36 | password | $@ uses the GET request method to transmit sensitive information. | SensitiveGetQuery.java:12:21:12:52 | getParameter(...) | This request |
 | SensitiveGetQuery.java:18:61:18:68 | password | SensitiveGetQuery.java:12:21:12:52 | getParameter(...) : String | SensitiveGetQuery.java:18:61:18:68 | password | $@ uses the GET request method to transmit sensitive information. | SensitiveGetQuery.java:12:21:12:52 | getParameter(...) | This request |
+subpaths

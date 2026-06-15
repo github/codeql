@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.clean-command", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.deploy-command", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.wait-between-retries", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.retries-on-failure", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.check-command", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.build-command", "code-injection", "generated"]
+     - ["danysk/build-check-deploy-gradle-action", "*", "input.pre-build-command", "code-injection", "generated"]

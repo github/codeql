@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["datafuselabs/databend", "*", "input.dataset", "code-injection", "generated"]
+     - ["datafuselabs/databend", "*", "input.dirs", "code-injection", "generated"]

@@ -14,7 +14,7 @@ public class JxBrowserWithoutCertValidationV6_23_1 {
     }
 
     private static void badUsage() {
-        Browser browser = new Browser();
+        Browser browser = new Browser(); // $ Alert
         browser.loadURL("https://example.com");
         // no further calls
         // BAD: The browser ignores any certificate error by default!

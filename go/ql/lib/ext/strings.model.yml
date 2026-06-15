@@ -34,6 +34,6 @@ extensions:
       - ["strings", "", False, "TrimRightFunc", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["strings", "", False, "TrimSpace", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["strings", "", False, "TrimSuffix", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["strings", "Reader", True, "Reset", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["strings", "Reader", True, "Reset", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
       - ["strings", "Replacer", True, "Replace", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["strings", "Replacer", True, "WriteString", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]

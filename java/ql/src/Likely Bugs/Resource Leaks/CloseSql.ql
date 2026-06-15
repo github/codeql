@@ -5,7 +5,9 @@
  * @problem.severity warning
  * @precision high
  * @id java/database-resource-leak
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       performance
  *       resources
  *       external/cwe/cwe-404
  *       external/cwe/cwe-772

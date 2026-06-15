@@ -1,8 +1,8 @@
 edges
-| Test.java:206:14:206:57 | nextInt(...) : Number | Test.java:210:17:210:20 | data |
-| Test.java:206:14:206:57 | nextInt(...) : Number | Test.java:241:37:241:40 | data |
-| Test.java:245:15:245:35 | nextInt(...) : Number | Test.java:249:17:249:21 | data2 |
-| Test.java:245:15:245:35 | nextInt(...) : Number | Test.java:280:37:280:41 | data2 |
+| Test.java:206:14:206:57 | nextInt(...) : Number | Test.java:210:17:210:20 | data | provenance |  |
+| Test.java:206:14:206:57 | nextInt(...) : Number | Test.java:241:37:241:40 | data | provenance |  |
+| Test.java:245:15:245:35 | nextInt(...) : Number | Test.java:249:17:249:21 | data2 | provenance |  |
+| Test.java:245:15:245:35 | nextInt(...) : Number | Test.java:280:37:280:41 | data2 | provenance |  |
 nodes
 | Test.java:206:14:206:57 | nextInt(...) : Number | semmle.label | nextInt(...) : Number |
 | Test.java:210:17:210:20 | data | semmle.label | data |

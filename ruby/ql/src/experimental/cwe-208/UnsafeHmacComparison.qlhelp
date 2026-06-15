@@ -1,0 +1,21 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Using the `==` or `!=` operator to compare a known valid HMAC with a user-supplied HMAC digest could lead to a timing attack, as these operations do not occur in constant time.
+    </p>
+  </overview>
+  <recommendation>
+    <p>
+      Instead of using `==` or `!=` to compare a known valid HMAC with a user-supplied HMAC digest use Rack::Utils#secure_compare, ActiveSupport::SecurityUtils#secure_compare or OpenSSL.secure_compare
+    </p>
+  </recommendation>
+  <example>
+    <p>
+    In this example, the HMAC is validated using the `==` operation.
+    </p>
+    <sample src="./examples/unsafe_hmac_comparison.rb" />
+  </example>
+</qhelp>

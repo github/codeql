@@ -2,8 +2,10 @@
  * @name Useless class
  * @description Class only defines one public method (apart from `__init__` or `__new__`) and should be replaced by a function
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
+ *       complexity
  * @problem.severity recommendation
  * @sub-severity low
  * @precision medium
@@ -11,6 +13,7 @@
  */
 
 import python
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
 predicate fewer_than_two_public_methods(Class cls, int methods) {
   (methods = 0 or methods = 1) and
@@ -22,13 +25,8 @@ predicate does_not_define_special_method(Class cls) {
 }
 
 predicate no_inheritance(Class c) {
-  not exists(ClassValue cls, ClassValue other |
-    cls.getScope() = c and
-    other != ClassValue::object()
-  |
-    other.getABaseType() = cls or
-    cls.getABaseType() = other
-  ) and
+  not exists(getADirectSubclass(c)) and
+  not exists(getADirectSuperclass(c)) and
   not exists(Expr base | base = c.getABase() |
     not base instanceof Name or base.(Name).getId() != "object"
   )

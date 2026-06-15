@@ -152,4 +152,4 @@ where cycleAlert(mod, import_, importedModule, access)
 select access,
   access.getName() + " is uninitialized if $@ is loaded first in the cyclic import:" + " " +
     repr(import_) + " => " + min(pathToModule(importedModule, mod, _)) + " => " + repr(import_) +
-    ".", import_.getImportedPath(), importedModule.getName()
+    ".", import_.getImportedPathExpr(), importedModule.getName()

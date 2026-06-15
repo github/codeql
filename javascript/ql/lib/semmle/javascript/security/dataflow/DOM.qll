@@ -18,89 +18,16 @@ class DomGlobalVariable extends GlobalVariable {
   }
 }
 
-/** DEPRECATED: Alias for DomGlobalVariable */
-deprecated class DOMGlobalVariable = DomGlobalVariable;
-
-/**
- * DEPRECATED: Use `isDomNode` instead.
- * Holds if `e` could hold a value that comes from the DOM.
- */
-deprecated predicate isDomValue(Expr e) { isDomNode(e.flow()) }
-
 /**
  * Holds if `e` could hold a value that comes from the DOM.
  */
 predicate isDomNode(DataFlow::Node e) { DOM::domValueRef().flowsTo(e) }
-
-/**
- * DEPRECATED: Use `isLocationNode` instead.
- * Holds if `e` could refer to the `location` property of a DOM node.
- */
-deprecated predicate isLocation(Expr e) { isLocationNode(e.flow()) }
 
 /** Holds if `e` could refer to the `location` property of a DOM node. */
 predicate isLocationNode(DataFlow::Node e) {
   e = DOM::domValueRef().getAPropertyReference("location")
   or
   e = DataFlow::globalVarRef("location")
-}
-
-/**
- * DEPRECATED: Use DOM::documentRef() instead.
- * Gets a reference to the 'document' object.
- */
-deprecated DataFlow::SourceNode document() { result = DOM::documentRef() }
-
-/**
- * DEPRECATED: Use DOM::documentRef() instead.
- * Holds if `e` could refer to the `document` object.
- */
-deprecated predicate isDocument(Expr e) { DOM::documentRef().flowsToExpr(e) }
-
-/**
- * DEPRECATED: Use DOM::locationSource() instead.
- * Holds if `e` could refer to the document URL.
- */
-deprecated predicate isDocumentUrl(Expr e) { e.flow() = DOM::locationSource() }
-
-/** DEPRECATED: Alias for isDocumentUrl */
-deprecated predicate isDocumentURL = isDocumentUrl/1;
-
-/**
- * DEPRECATED. In most cases, a sanitizer based on this predicate can be removed, as
- * taint tracking no longer step through the properties of the location object by default.
- *
- * Holds if `pacc` accesses a part of `document.location` that is
- * not considered user-controlled, that is, anything except
- * `href`, `hash` and `search`.
- */
-deprecated predicate isSafeLocationProperty(PropAccess pacc) {
-  exists(string prop | pacc = DOM::locationRef().getAPropertyRead(prop).asExpr() |
-    prop != "href" and prop != "hash" and prop != "search"
-  )
-}
-
-/**
- * DEPRECATED: Use `DomMethodCallNode` instead.
- * A call to a DOM method.
- */
-deprecated class DomMethodCallExpr extends MethodCallExpr {
-  DomMethodCallNode node;
-
-  DomMethodCallExpr() { this.flow() = node }
-
-  /** Holds if `arg` is an argument that is interpreted as HTML. */
-  deprecated predicate interpretsArgumentsAsHtml(Expr arg) {
-    node.interpretsArgumentsAsHtml(arg.flow())
-  }
-
-  /** Holds if `arg` is an argument that is used as an URL. */
-  deprecated predicate interpretsArgumentsAsURL(Expr arg) {
-    node.interpretsArgumentsAsURL(arg.flow())
-  }
-
-  /** DEPRECATED: Alias for interpretsArgumentsAsHtml */
-  deprecated predicate interpretsArgumentsAsHTML(Expr arg) { this.interpretsArgumentsAsHtml(arg) }
 }
 
 /**
@@ -153,39 +80,6 @@ class DomMethodCallNode extends DataFlow::MethodCallNode {
       )
     )
   }
-
-  /** DEPRECATED: Alias for interpretsArgumentsAsUrl */
-  deprecated predicate interpretsArgumentsAsURL(DataFlow::Node arg) {
-    this.interpretsArgumentsAsUrl(arg)
-  }
-
-  /** DEPRECATED: Alias for interpretsArgumentsAsHtml */
-  deprecated predicate interpretsArgumentsAsHTML(DataFlow::Node arg) {
-    this.interpretsArgumentsAsHtml(arg)
-  }
-}
-
-/**
- * DEPRECATED: Use `DomPropertyWrite` instead.
- * An assignment to a property of a DOM object.
- */
-deprecated class DomPropWriteNode extends Assignment {
-  DomPropertyWrite node;
-
-  DomPropWriteNode() { this.flow() = node }
-
-  /**
-   * Holds if the assigned value is interpreted as HTML.
-   */
-  predicate interpretsValueAsHtml() { node.interpretsValueAsHtml() }
-
-  /** DEPRECATED: Alias for interpretsValueAsHtml */
-  deprecated predicate interpretsValueAsHTML() { this.interpretsValueAsHtml() }
-
-  /**
-   * Holds if the assigned value is interpreted as JavaScript via javascript: protocol.
-   */
-  predicate interpretsValueAsJavaScriptUrl() { node.interpretsValueAsJavaScriptUrl() }
 }
 
 /**
@@ -313,12 +207,14 @@ class PostMessageEventHandler extends Function {
  * An event parameter for a `postMessage` event handler, considered as an untrusted
  * source of data.
  */
-private class PostMessageEventParameter extends RemoteFlowSource {
+private class PostMessageEventParameter extends ClientSideRemoteFlowSource {
   PostMessageEventParameter() {
     this = DataFlow::parameterNode(any(PostMessageEventHandler pmeh).getEventParameter())
   }
 
   override string getSourceType() { result = "postMessage event" }
+
+  override ClientSideRemoteFlowKind getKind() { result.isMessageEvent() }
 }
 
 /**

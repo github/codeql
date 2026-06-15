@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["walletconnect/walletconnectswiftv2", "*", "input.js-client-api-host", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "input.project-id", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "input.relay-endpoint", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "input.gm-dapp-host", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "input.gm-dapp-project-secret", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "input.gm-dapp-project-id", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "input.explorer-endpoint", "code-injection", "generated"]
+     - ["walletconnect/walletconnectswiftv2", "*", "input.notify-endpoint", "code-injection", "generated"]

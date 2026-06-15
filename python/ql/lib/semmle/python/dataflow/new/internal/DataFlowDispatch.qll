@@ -31,30 +31,43 @@
  * Note: This hasn't been 100% realized yet, so we don't currently expose a predicate to
  * ask what targets any data-flow node has. But it's still the plan to do this!
  */
+overlay[local?]
+module;
 
 private import python
 private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
-private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import semmle.python.internal.CachedStages
+private import semmle.python.dataflow.new.internal.TypeTrackingImpl::CallGraphConstruction as CallGraphConstruction
 
+overlay[local]
 newtype TParameterPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfParameterPosition() or
+  /**
+   * This is used for tracking flow through captured variables, and
+   * we use separate parameter/argument positions in order to distinguish
+   * "lambda self" from "normal self", as lambdas may also access outer `self`
+   * variables (through variable capture).
+   */
+  TLambdaSelfParameterPosition() or
   TPositionalParameterPosition(int index) {
     index = any(Parameter p).getPosition()
     or
     // since synthetic parameters are made for a synthetic summary callable, based on
     // what Argument positions they have flow for, we need to make sure we have such
     // parameter positions available.
-    FlowSummaryImplSpecific::ParsePositions::isParsedPositionalArgumentPosition(_, index)
+    FlowSummaryImpl::ParsePositions::isParsedPositionalArgumentPosition(_, index)
+  } or
+  TPositionalParameterLowerBoundPosition(int pos) {
+    FlowSummaryImpl::ParsePositions::isParsedArgumentLowerBoundPosition(_, pos)
   } or
   TKeywordParameterPosition(string name) {
     name = any(Parameter p).getName()
     or
     // see comment for TPositionalParameterPosition
-    FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
+    FlowSummaryImpl::ParsePositions::isParsedKeywordArgumentPosition(_, name)
   } or
   TStarArgsParameterPosition(int index) {
     // since `.getPosition` does not work for `*args`, we need *args parameter positions
@@ -74,12 +87,19 @@ newtype TParameterPosition =
   TSynthDictSplatParameterPosition()
 
 /** A parameter position. */
+overlay[local]
 class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a `self`/`cls` parameter. */
   predicate isSelf() { this = TSelfParameterPosition() }
 
+  /** Holds if this position represents a reference to a lambda itself. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfParameterPosition() }
+
   /** Holds if this position represents a positional parameter at (0-based) `index`. */
   predicate isPositional(int index) { this = TPositionalParameterPosition(index) }
+
+  /** Holds if this position represents any positional parameter starting from position `pos`. */
+  predicate isPositionalLowerBound(int pos) { this = TPositionalParameterLowerBoundPosition(pos) }
 
   /** Holds if this position represents a keyword parameter named `name`. */
   predicate isKeyword(string name) { this = TKeywordParameterPosition(name) }
@@ -109,7 +129,11 @@ class ParameterPosition extends TParameterPosition {
   string toString() {
     this.isSelf() and result = "self"
     or
+    this.isLambdaSelf() and result = "lambda self"
+    or
     exists(int index | this.isPositional(index) and result = "position " + index)
+    or
+    exists(int pos | this.isPositionalLowerBound(pos) and result = "position " + pos + "..")
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
     or
@@ -126,22 +150,34 @@ class ParameterPosition extends TParameterPosition {
   }
 }
 
+overlay[local]
 newtype TArgumentPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfArgumentPosition() or
+  /**
+   * This is used for tracking flow through captured variables, and
+   * we use separate parameter/argument positions in order to distinguish
+   * "lambda self" from "normal self", as lambdas may also access outer `self`
+   * variables (through variable capture).
+   */
+  TLambdaSelfArgumentPosition() or
   TPositionalArgumentPosition(int index) {
     exists(any(CallNode c).getArg(index))
     or
     // since synthetic calls within a summarized callable could use a unique argument
     // position, we need to ensure we make these available (these are specified as
     // parameters in the flow-summary spec)
-    FlowSummaryImplSpecific::ParsePositions::isParsedPositionalParameterPosition(_, index)
+    FlowSummaryImpl::ParsePositions::isParsedPositionalParameterPosition(_, index)
+    or
+    // the generated function inside a comprehension has a positional argument at index 0
+    exists(Comp c) and
+    index = 0
   } or
   TKeywordArgumentPosition(string name) {
     exists(any(CallNode c).getArgByName(name))
     or
     // see comment for TPositionalArgumentPosition
-    FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
+    FlowSummaryImpl::ParsePositions::isParsedKeywordParameterPosition(_, name)
   } or
   TStarArgsArgumentPosition(int index) {
     exists(Call c | c.getPositionalArg(index) instanceof Starred)
@@ -149,9 +185,13 @@ newtype TArgumentPosition =
   TDictSplatArgumentPosition()
 
 /** An argument position. */
+overlay[local]
 class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a `self`/`cls` argument. */
   predicate isSelf() { this = TSelfArgumentPosition() }
+
+  /** Holds if this position represents a lambda `self` argument. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfArgumentPosition() }
 
   /** Holds if this position represents a positional argument at (0-based) `index`. */
   predicate isPositional(int index) { this = TPositionalArgumentPosition(index) }
@@ -169,6 +209,8 @@ class ArgumentPosition extends TArgumentPosition {
   string toString() {
     this.isSelf() and result = "self"
     or
+    this.isLambdaSelf() and result = "lambda self"
+    or
     exists(int pos | this.isPositional(pos) and result = "position " + pos)
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
@@ -183,7 +225,13 @@ class ArgumentPosition extends TArgumentPosition {
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isSelf() and apos.isSelf()
   or
+  ppos.isLambdaSelf() and apos.isLambdaSelf()
+  or
   exists(int index | ppos.isPositional(index) and apos.isPositional(index))
+  or
+  exists(int index1, int index2 |
+    ppos.isPositionalLowerBound(index1) and apos.isPositional(index2) and index2 >= index1
+  )
   or
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
   or
@@ -206,10 +254,14 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
  * `@staticmethod` decorator or by convention
  * (like a `__new__` method on a class is a classmethod even without the decorator).
  */
+overlay[local]
 predicate isStaticmethod(Function func) {
-  exists(NameNode id | id.getId() = "staticmethod" and id.isGlobal() |
-    func.getADecorator() = id.getNode()
-  )
+  // The decorator is *syntactically* a `Name` "staticmethod" — we don't
+  // care which variable it resolves to. `staticmethod` is a builtin and
+  // is almost never shadowed in a module-level scope; even if a class
+  // redefines `staticmethod` in its body, the class body has not started
+  // executing yet at the decorator position, so Python uses the builtin.
+  func.getADecorator().(Name).getId() = "staticmethod"
 }
 
 /**
@@ -217,10 +269,11 @@ predicate isStaticmethod(Function func) {
  * `@classmethod` decorator or by convention
  * (like a `__new__` method on a class is a classmethod even without the decorator).
  */
+overlay[local]
 predicate isClassmethod(Function func) {
-  exists(NameNode id | id.getId() = "classmethod" and id.isGlobal() |
-    func.getADecorator() = id.getNode()
-  )
+  // See `isStaticmethod` for the rationale for matching on the AST `Name`
+  // rather than going via the CFG and `isGlobal()`.
+  func.getADecorator().(Name).getId() = "classmethod"
   or
   exists(Class cls |
     cls.getAMethod() = func and
@@ -233,9 +286,42 @@ predicate isClassmethod(Function func) {
 }
 
 /** Holds if the function `func` has a `property` decorator. */
+overlay[local]
 predicate hasPropertyDecorator(Function func) {
-  exists(NameNode id | id.getId() = "property" and id.isGlobal() |
-    func.getADecorator() = id.getNode()
+  // See `isStaticmethod` for the rationale for matching on the AST `Name`.
+  func.getADecorator().(Name).getId() = "property"
+}
+
+/**
+ * Holds if the function `func` has a `contextlib.contextmanager`.
+ */
+overlay[local]
+predicate hasContextmanagerDecorator(Function func) {
+  exists(ControlFlowNode contextmanager |
+    contextmanager.(NameNode).getId() = "contextmanager" and contextmanager.(NameNode).isGlobal()
+    or
+    contextmanager.(AttrNode).getObject("contextmanager").(NameNode).getId() = "contextlib"
+  |
+    func.getADecorator() = contextmanager.getNode()
+  )
+}
+
+/**
+ * Holds if the function `func` has a `typing.overload` decorator.
+ * Such functions are type stubs that declare an overload signature but are
+ * not the actual implementation.
+ *
+ * Normally we would want to model this using API graphs for more precision, but since this
+ * predicate is used in the call graph computation, we have to use a more syntactic approach.
+ */
+overlay[local]
+private predicate hasOverloadDecorator(Function func) {
+  exists(ControlFlowNode overload |
+    overload.(NameNode).getId() = "overload" and overload.(NameNode).isGlobal()
+    or
+    overload.(AttrNode).getObject("overload").(NameNode).isGlobal()
+  |
+    func.getADecorator() = overload.getNode()
   )
 }
 
@@ -243,35 +329,43 @@ predicate hasPropertyDecorator(Function func) {
 // Callables
 // =============================================================================
 /** A callable defined in library code, identified by a unique string. */
+overlay[local]
 abstract class LibraryCallable extends string {
   bindingset[this]
   LibraryCallable() { any() }
 
   /** Gets a call to this library callable. */
+  overlay[global]
   abstract CallCfgNode getACall();
 
+  /** Same as `getACall` but without referring to the call graph or API graph. */
+  overlay[global]
+  CallCfgNode getACallSimple() { none() }
+
   /** Gets a data-flow node, where this library callable is used as a call-back. */
+  overlay[global]
   abstract ArgumentNode getACallback();
 }
 
+overlay[local]
 newtype TDataFlowCallable =
   /**
    * Is used as the target for all calls: plain functions, lambdas, methods on classes,
    * class instantiations, and (in the future) special methods.
    */
   TFunction(Function func) {
-    // For generators/list-comprehensions we create a synthetic function. In the
-    // points-to call-graph these were not considered callable, and instead we added
-    // data-flow steps (read/write) for these. As an easy solution for now, we do the
-    // same to keep things easy to reason about (and therefore exclude things that do
-    // not have a definition)
+    // Functions with an explicit definition
     exists(func.getDefinition())
+    or
+    // For generators/list-comprehensions we create a synthetic function.
+    exists(Comp c | c.getFunction() = func)
   } or
   /** see QLDoc for `DataFlowModuleScope` for why we need this. */
   TModule(Module m) or
   TLibraryCallable(LibraryCallable callable)
 
 /** A callable. */
+overlay[local]
 abstract class DataFlowCallable extends TDataFlowCallable {
   /** Gets a textual representation of this element. */
   abstract string toString();
@@ -293,6 +387,7 @@ abstract class DataFlowCallable extends TDataFlowCallable {
 }
 
 /** A callable function. */
+overlay[local]
 abstract class DataFlowFunction extends DataFlowCallable, TFunction {
   Function func;
 
@@ -313,7 +408,11 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
   /** Gets the positional parameter offset, to take into account self/cls parameters. */
   int positionalOffset() { result = 0 }
 
+  overlay[local]
   override ParameterNode getParameter(ParameterPosition ppos) {
+    // Do not handle lower bound positions (such as `[1..]`) here
+    // they are handled by parameter matching and would create
+    // inconsistencies here as multiple parameters could match such a position.
     exists(int index | ppos.isPositional(index) |
       result.getParameter() = func.getArg(index + this.positionalOffset())
     )
@@ -348,11 +447,13 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
 }
 
 /** A plain (non-method) function. */
+overlay[local]
 class DataFlowPlainFunction extends DataFlowFunction {
   DataFlowPlainFunction() { not this instanceof DataFlowMethod }
 }
 
 /** A method. */
+overlay[local]
 class DataFlowMethod extends DataFlowFunction {
   Class cls;
 
@@ -371,11 +472,13 @@ class DataFlowMethod extends DataFlowFunction {
 }
 
 /** A classmethod. */
+overlay[local]
 class DataFlowClassmethod extends DataFlowMethod {
   DataFlowClassmethod() { isClassmethod(func) }
 }
 
 /** A staticmethod. */
+overlay[local]
 class DataFlowStaticmethod extends DataFlowMethod, DataFlowFunction {
   DataFlowStaticmethod() { isStaticmethod(func) }
 
@@ -390,6 +493,7 @@ class DataFlowStaticmethod extends DataFlowMethod, DataFlowFunction {
  * A module. This is not actually a callable, but we need this so a
  * `ModuleVariableNode` have an enclosing callable.
  */
+overlay[local]
 class DataFlowModuleScope extends DataFlowCallable, TModule {
   Module mod;
 
@@ -406,6 +510,7 @@ class DataFlowModuleScope extends DataFlowCallable, TModule {
   override ParameterNode getParameter(ParameterPosition ppos) { none() }
 }
 
+overlay[local]
 class LibraryCallableValue extends DataFlowCallable, TLibraryCallable {
   LibraryCallable callable;
 
@@ -416,6 +521,7 @@ class LibraryCallableValue extends DataFlowCallable, TLibraryCallable {
   override string getQualifiedName() { result = callable.toString() }
 
   /** Gets a data-flow node, where this library callable is used as a call-back. */
+  overlay[global]
   ArgumentNode getACallback() { result = callable.getACallback() }
 
   override Scope getScope() { none() }
@@ -464,103 +570,110 @@ private predicate ignoreForCallGraph(File f) {
   f.getAbsolutePath().matches("%/site-packages/sympy/%")
 }
 
-/**
- * Gets a reference to the function `func`.
- */
-private TypeTrackingNode functionTracker(TypeTracker t, Function func) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  (
-    result.asExpr() = func.getDefinition()
+private module TrackFunctionInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Function;
+
+  predicate start(Node start, Function func) {
+    start.asExpr() = func.getDefinition()
     or
     // when a function is decorated, it's the result of the (last) decorator call that
     // is used
-    result.asExpr() = func.getDefinition().(FunctionExpr).getADecoratorCall()
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = functionTracker(t2, func).track(t2, t))
+    start.asExpr() = func.getDefinition().(FunctionExpr).getADecoratorCall()
+  }
+
+  predicate filter(Node n) { ignoreForCallGraph(n.getLocation().getFile()) }
 }
 
 /**
  * Gets a reference to the function `func`.
  */
-Node functionTracker(Function func) { functionTracker(TypeTracker::end(), func).flowsTo(result) }
+Node functionTracker(Function func) {
+  CallGraphConstruction::Simple::Make<TrackFunctionInput>::track(func)
+      .(LocalSourceNode)
+      .flowsTo(result)
+}
 
-/**
- * Gets a reference to the class `cls`.
- */
-private TypeTrackingNode classTracker(TypeTracker t, Class cls) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  (
-    result.asExpr() = cls.getParent()
+private module TrackClassInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Class;
+
+  predicate start(Node start, Class cls) {
+    start.asExpr() = cls.getParent()
     or
     // when a class is decorated, it's the result of the (last) decorator call that
     // is used
-    result.asExpr() = cls.getParent().getADecoratorCall()
+    start.asExpr() = cls.getParent().getADecoratorCall()
     or
     // `type(obj)`, where obj is an instance of this class
-    result = getTypeCall() and
-    result.(CallCfgNode).getArg(0) = classInstanceTracker(cls)
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = classTracker(t2, cls).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+    start = getTypeCall() and
+    start.(CallCfgNode).getArg(0) = classInstanceTracker(cls)
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /**
  * Gets a reference to the class `cls`.
  */
-Node classTracker(Class cls) { classTracker(TypeTracker::end(), cls).flowsTo(result) }
+Node classTracker(Class cls) {
+  CallGraphConstruction::Simple::Make<TrackClassInput>::track(cls).(LocalSourceNode).flowsTo(result)
+}
 
-/**
- * Gets a reference to an instance of the class `cls`.
- */
-private TypeTrackingNode classInstanceTracker(TypeTracker t, Class cls) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  resolveClassCall(result.(CallCfgNode).asCfgNode(), cls)
-  or
-  // result of `super().__new__` as used in a `__new__` method implementation
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  exists(Class classUsedInSuper |
-    fromSuperNewCall(result.(CallCfgNode).asCfgNode(), classUsedInSuper, _, _) and
-    classUsedInSuper = getADirectSuperclass*(cls)
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = classInstanceTracker(t2, cls).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+private module TrackClassInstanceInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Class;
+
+  predicate start(Node start, Class cls) {
+    exists(Annotation ann |
+      ann = classTracker(cls).asExpr() and
+      start.asExpr() = ann.getAnnotatedExpression()
+    )
+    or
+    resolveClassCall(start.(CallCfgNode).asCfgNode(), cls)
+    or
+    // result of `super().__new__` as used in a `__new__` method implementation
+    exists(Class classUsedInSuper |
+      fromSuperNewCall(start.(CallCfgNode).asCfgNode(), classUsedInSuper, _, _) and
+      classUsedInSuper = getADirectSuperclass*(cls)
+    )
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /**
  * Gets a reference to an instance of the class `cls`.
  */
 Node classInstanceTracker(Class cls) {
-  classInstanceTracker(TypeTracker::end(), cls).flowsTo(result)
+  CallGraphConstruction::Simple::Make<TrackClassInstanceInput>::track(cls)
+      .(LocalSourceNode)
+      .flowsTo(result)
 }
 
-/**
- * Gets a reference to the `self` argument of a method on class `classWithMethod`.
- * The method cannot be a `staticmethod` or `classmethod`.
- */
-private TypeTrackingNode selfTracker(TypeTracker t, Class classWithMethod) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  exists(Function func |
-    func = classWithMethod.getAMethod() and
-    not isStaticmethod(func) and
-    not isClassmethod(func)
-  |
-    result.asExpr() = func.getArg(0)
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = selfTracker(t2, classWithMethod).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+private module TrackSelfInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Class;
+
+  predicate start(Node start, Class classWithMethod) {
+    exists(Function func |
+      func = classWithMethod.getAMethod() and
+      not isStaticmethod(func) and
+      not isClassmethod(func)
+    |
+      start.asExpr() = func.getArg(0)
+    )
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /**
@@ -568,33 +681,32 @@ private TypeTrackingNode selfTracker(TypeTracker t, Class classWithMethod) {
  * The method cannot be a `staticmethod` or `classmethod`.
  */
 Node selfTracker(Class classWithMethod) {
-  selfTracker(TypeTracker::end(), classWithMethod).flowsTo(result)
+  CallGraphConstruction::Simple::Make<TrackSelfInput>::track(classWithMethod)
+      .(LocalSourceNode)
+      .flowsTo(result)
 }
 
-/**
- * Gets a reference to the enclosing class `classWithMethod` from within one of its
- * methods, either through the `cls` argument from a `classmethod` or from `type(self)`
- * from a normal method.
- */
-private TypeTrackingNode clsArgumentTracker(TypeTracker t, Class classWithMethod) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  (
+private module TrackClsArgumentInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Class;
+
+  predicate start(Node start, Class classWithMethod) {
     exists(Function func |
       func = classWithMethod.getAMethod() and
       isClassmethod(func)
     |
-      result.asExpr() = func.getArg(0)
+      start.asExpr() = func.getArg(0)
     )
     or
     // type(self)
-    result = getTypeCall() and
-    result.(CallCfgNode).getArg(0) = selfTracker(classWithMethod)
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = clsArgumentTracker(t2, classWithMethod).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+    start = getTypeCall() and
+    start.(CallCfgNode).getArg(0) = selfTracker(classWithMethod)
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /**
@@ -603,26 +715,28 @@ private TypeTrackingNode clsArgumentTracker(TypeTracker t, Class classWithMethod
  * from a normal method.
  */
 Node clsArgumentTracker(Class classWithMethod) {
-  clsArgumentTracker(TypeTracker::end(), classWithMethod).flowsTo(result)
+  CallGraphConstruction::Simple::Make<TrackClsArgumentInput>::track(classWithMethod)
+      .(LocalSourceNode)
+      .flowsTo(result)
 }
 
-/**
- * Gets a reference to the result of calling `super` without any argument, where the
- * call happened in the method `func` (either a method or a classmethod).
- */
-private TypeTrackingNode superCallNoArgumentTracker(TypeTracker t, Function func) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  not isStaticmethod(func) and
-  exists(CallCfgNode call | result = call |
-    call = getSuperCall() and
-    not exists(call.getArg(_)) and
-    call.getScope() = func
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = superCallNoArgumentTracker(t2, func).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+private module TrackSuperCallNoArgumentInput implements CallGraphConstruction::Simple::InputSig {
+  class State = Function;
+
+  predicate start(Node start, Function func) {
+    not isStaticmethod(func) and
+    exists(CallCfgNode call | start = call |
+      call = getSuperCall() and
+      not exists(call.getArg(_)) and
+      call.getScope() = func
+    )
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /**
@@ -630,25 +744,30 @@ private TypeTrackingNode superCallNoArgumentTracker(TypeTracker t, Function func
  * call happened in the method `func` (either a method or a classmethod).
  */
 Node superCallNoArgumentTracker(Function func) {
-  superCallNoArgumentTracker(TypeTracker::end(), func).flowsTo(result)
+  CallGraphConstruction::Simple::Make<TrackSuperCallNoArgumentInput>::track(func)
+      .(LocalSourceNode)
+      .flowsTo(result)
 }
 
-/**
- * Gets a reference to the result of calling `super` with 2 arguments, where the
- * first is a reference to the class `cls`, and the second argument is `obj`.
- */
-private TypeTrackingNode superCallTwoArgumentTracker(TypeTracker t, Class cls, Node obj) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  exists(CallCfgNode call | result = call |
+private module TrackSuperCallTwoArgumentInput implements CallGraphConstruction::Simple::InputSig {
+  additional predicate superCall(CallCfgNode call, Class cls, Node obj) {
     call = getSuperCall() and
     call.getArg(0) = classTracker(cls) and
     call.getArg(1) = obj
-  )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = superCallTwoArgumentTracker(t2, cls, obj).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
+
+  class State = CallCfgNode;
+
+  predicate start(Node start, CallCfgNode call) {
+    superCall(call, _, _) and
+    start = call
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /**
@@ -656,7 +775,12 @@ private TypeTrackingNode superCallTwoArgumentTracker(TypeTracker t, Class cls, N
  * first is a reference to the class `cls`, and the second argument is `obj`.
  */
 Node superCallTwoArgumentTracker(Class cls, Node obj) {
-  superCallTwoArgumentTracker(TypeTracker::end(), cls, obj).flowsTo(result)
+  exists(CallCfgNode call |
+    TrackSuperCallTwoArgumentInput::superCall(call, cls, obj) and
+    CallGraphConstruction::Simple::Make<TrackSuperCallTwoArgumentInput>::track(call)
+        .(LocalSourceNode)
+        .flowsTo(result)
+  )
 }
 
 // =============================================================================
@@ -746,11 +870,18 @@ private Class getNextClassInMro(Class cls) {
  */
 Function findFunctionAccordingToMro(Class cls, string name) {
   result = cls.getAMethod() and
-  result.getName() = name
+  result.getName() = name and
+  not hasOverloadDecorator(result)
   or
-  not cls.getAMethod().getName() = name and
+  not class_has_method(cls, name) and
   result = findFunctionAccordingToMro(getNextClassInMro(cls), name)
 }
+
+/**
+ * Join-order helper for `findFunctionAccordingToMro` and `findFunctionAccordingToMroKnownStartingClass`.
+ */
+pragma[nomagic]
+private predicate class_has_method(Class cls, string name) { cls.getAMethod().getName() = name }
 
 /**
  * Gets a class that, from an approximated MRO calculation, might be the next class
@@ -772,14 +903,20 @@ Class getNextClassInMroKnownStartingClass(Class cls, Class startingClass) {
   )
 }
 
-private Function findFunctionAccordingToMroKnownStartingClass(
-  Class cls, Class startingClass, string name
-) {
+/**
+ * Gets a potential definition of the function `name` of the class `cls` according to our approximation of
+ * MRO for the class `startingCls` (see `getNextClassInMroKnownStartingClass` for more information).
+ *
+ * Note: this is almost the same as `findFunctionAccordingToMro`, except we know the
+ * `startingClass`, which can give slightly more precise results.
+ */
+Function findFunctionAccordingToMroKnownStartingClass(Class cls, Class startingClass, string name) {
   result = cls.getAMethod() and
   result.getName() = name and
+  not hasOverloadDecorator(result) and
   cls = getADirectSuperclass*(startingClass)
   or
-  not cls.getAMethod().getName() = name and
+  not class_has_method(cls, name) and
   result =
     findFunctionAccordingToMroKnownStartingClass(getNextClassInMroKnownStartingClass(cls,
         startingClass), startingClass, name)
@@ -787,7 +924,7 @@ private Function findFunctionAccordingToMroKnownStartingClass(
 
 /**
  * Gets a potential definition of the function `name` according to our approximation of
- * MRO for the class `cls` (see `getNextClassInMroKnownStartingClass` for more information).
+ * MRO for the class `startingCls` (see `getNextClassInMroKnownStartingClass` for more information).
  *
  * Note: this is almost the same as `findFunctionAccordingToMro`, except we know the
  * `startingClass`, which can give slightly more precise results.
@@ -800,20 +937,30 @@ Function findFunctionAccordingToMroKnownStartingClass(Class startingClass, strin
 // =============================================================================
 // attribute trackers
 // =============================================================================
-/** Gets a reference to the attribute read `attr` */
-private TypeTrackingNode attrReadTracker(TypeTracker t, AttrRead attr) {
-  t.start() and
-  result = attr and
-  attr.getObject() in [
-      classTracker(_), classInstanceTracker(_), selfTracker(_), clsArgumentTracker(_),
-      superCallNoArgumentTracker(_), superCallTwoArgumentTracker(_, _)
-    ]
-  or
-  exists(TypeTracker t2 | result = attrReadTracker(t2, attr).track(t2, t))
+private module TrackAttrReadInput implements CallGraphConstruction::Simple::InputSig {
+  class State = AttrRead;
+
+  predicate start(Node start, AttrRead attr) {
+    start = attr and
+    pragma[only_bind_into](attr.getObject()) in [
+        classTracker(_), classInstanceTracker(_), selfTracker(_), clsArgumentTracker(_),
+        superCallNoArgumentTracker(_), superCallTwoArgumentTracker(_, _)
+      ]
+  }
+
+  predicate filter(Node n) {
+    ignoreForCallGraph(n.getLocation().getFile())
+    or
+    n.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+  }
 }
 
 /** Gets a reference to the attribute read `attr` */
-Node attrReadTracker(AttrRead attr) { attrReadTracker(TypeTracker::end(), attr).flowsTo(result) }
+Node attrReadTracker(AttrRead attr) {
+  CallGraphConstruction::Simple::Make<TrackAttrReadInput>::track(attr)
+      .(LocalSourceNode)
+      .flowsTo(result)
+}
 
 // =============================================================================
 // call and argument resolution
@@ -1111,6 +1258,7 @@ predicate resolveCall(CallNode call, Function target, CallType type) {
  * Holds if the argument of `call` at position `apos` is `arg`. This is just a helper
  * predicate that maps ArgumentPositions to the arguments of the underlying `CallNode`.
  */
+overlay[local]
 cached
 predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
   exists(int index |
@@ -1200,7 +1348,6 @@ predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
  * time the bound method is used, such that the `clear()` call would essentially be
  * translated into `l.clear()`, and we can still have use-use flow.
  */
-pragma[assume_small_delta]
 cached
 predicate getCallArg(CallNode call, Function target, CallType type, Node arg, ArgumentPosition apos) {
   Stages::DataFlow::ref() and
@@ -1222,9 +1369,7 @@ predicate getCallArg(CallNode call, Function target, CallType type, Node arg, Ar
     //
     // call_func(my_obj.some_method)
     // ```
-    exists(CfgNode cfgNode | cfgNode.getNode() = call |
-      cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
-    )
+    exists(CfgNode cfgNode | cfgNode.getNode() = call | sameEnclosingCallable(cfgNode, arg))
     or
     // cls argument for classmethod calls -- see note above about bound methods
     type instanceof CallTypeClassMethod and
@@ -1232,9 +1377,7 @@ predicate getCallArg(CallNode call, Function target, CallType type, Node arg, Ar
     resolveMethodCall(call, target, type, arg) and
     (arg = classTracker(_) or arg = clsArgumentTracker(_)) and
     // dataflow lib has requirement that arguments and calls are in same enclosing callable.
-    exists(CfgNode cfgNode | cfgNode.getNode() = call |
-      cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
-    )
+    exists(CfgNode cfgNode | cfgNode.getNode() = call | sameEnclosingCallable(cfgNode, arg))
     or
     // normal arguments for method calls
     (
@@ -1285,14 +1428,28 @@ predicate getCallArg(CallNode call, Function target, CallType type, Node arg, Ar
   )
 }
 
+/**
+ * join-order helper for getCallArg, since otherwise we would do cartesian product of
+ * the enclosing callables
+ */
+bindingset[node1, node2]
+pragma[inline_late]
+private predicate sameEnclosingCallable(Node node1, Node node2) {
+  node1.getEnclosingCallable() = node2.getEnclosingCallable()
+}
+
 // =============================================================================
 // DataFlowCall
 // =============================================================================
 newtype TDataFlowCall =
   TNormalCall(CallNode call, Function target, CallType type) { resolveCall(call, target, type) } or
+  /** A call to the generated function inside a comprehension */
+  TComprehensionCall(Comp c) or
   TPotentialLibraryCall(CallNode call) or
   /** A synthesized call inside a summarized callable */
-  TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
+  TSummaryCall(
+    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
+  ) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
 
@@ -1311,7 +1468,10 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract ControlFlowNode getNode();
 
   /** Gets the enclosing callable of this call. */
-  abstract DataFlowCallable getEnclosingCallable();
+  DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
+
+  /** Gets the scope of this node, if any. */
+  abstract Scope getScope();
 
   /** Gets the location of this dataflow call. */
   abstract Location getLocation();
@@ -1359,7 +1519,7 @@ class NormalCall extends ExtractedDataFlowCall, TNormalCall {
 
   override ControlFlowNode getNode() { result = call }
 
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
+  override Scope getScope() { result = call.getScope() }
 
   override DataFlowCallable getCallable() { result.(DataFlowFunction).getScope() = target }
 
@@ -1369,6 +1529,34 @@ class NormalCall extends ExtractedDataFlowCall, TNormalCall {
 
   /** Gets the `CallType` of this call. */
   CallType getCallType() { result = type }
+}
+
+/** A call to the generated function inside a comprhension */
+class ComprehensionCall extends ExtractedDataFlowCall, TComprehensionCall {
+  Comp c;
+  Function target;
+
+  ComprehensionCall() {
+    this = TComprehensionCall(c) and
+    target = c.getFunction()
+  }
+
+  Comp getComprehension() { result = c }
+
+  override string toString() { result = "comprehension call" }
+
+  override ControlFlowNode getNode() { result.getNode() = c }
+
+  override Scope getScope() { result = c.getScope() }
+
+  override DataFlowCallable getCallable() { result.(DataFlowFunction).getScope() = target }
+
+  override ArgumentNode getArgument(ArgumentPosition apos) {
+    result.asExpr() = c.getIterable() and
+    apos.isPositional(0)
+  }
+
+  override Location getLocation() { result = c.getLocation() }
 }
 
 /**
@@ -1409,7 +1597,7 @@ class PotentialLibraryCall extends ExtractedDataFlowCall, TPotentialLibraryCall 
 
   override ControlFlowNode getNode() { result = call }
 
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
+  override Scope getScope() { result = call.getScope() }
 }
 
 /**
@@ -1424,14 +1612,16 @@ class PotentialLibraryCall extends ExtractedDataFlowCall, TPotentialLibraryCall 
  */
 class SummaryCall extends DataFlowCall, TSummaryCall {
   private FlowSummaryImpl::Public::SummarizedCallable c;
-  private Node receiver;
+  private FlowSummaryImpl::Private::SummaryNode receiver;
 
   SummaryCall() { this = TSummaryCall(c, receiver) }
 
   /** Gets the data flow node that this call targets. */
-  Node getReceiver() { result = receiver }
+  FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
+
+  override Scope getScope() { none() }
 
   override DataFlowCallable getCallable() { none() }
 
@@ -1448,6 +1638,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
+overlay[local]
 abstract class ParameterNodeImpl extends Node {
   /** Gets the `Parameter` this `ParameterNode` represents. */
   abstract Parameter getParameter();
@@ -1461,48 +1652,72 @@ abstract class ParameterNodeImpl extends Node {
   }
 }
 
-/** A parameter for a library callable with a flow summary. */
-class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
-  private FlowSummaryImpl::Public::SummarizedCallable sc;
-  private ParameterPosition pos;
+/**
+ * A synthetic parameter representing the values of the variables captured
+ * by the callable being called. This parameter represents a single object
+ * where all the values are stored as attributes.
+ * This is also known as the environment part of a closure.
+ *
+ * This is used for tracking flow through captured variables.
+ */
+overlay[local]
+class SynthCapturedVariablesParameterNode extends ParameterNodeImpl,
+  TSynthCapturedVariablesParameterNode
+{
+  private Function callable;
 
-  SummaryParameterNode() { this = TSummaryParameterNode(sc, pos) }
+  SynthCapturedVariablesParameterNode() { this = TSynthCapturedVariablesParameterNode(callable) }
+
+  final Function getCallable() { result = callable }
+
+  override Parameter getParameter() { none() }
+
+  override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+    c = TFunction(callable) and
+    pos.isLambdaSelf()
+  }
+
+  override Scope getScope() { result = callable }
+
+  override Location getLocation() { result = callable.getLocation() }
+
+  override string toString() { result = "lambda self in " + callable }
+}
+
+/** A parameter for a library callable with a flow summary. */
+overlay[local]
+class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
+  SummaryParameterNode() {
+    FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
+  }
+
+  private ParameterPosition getPosition() {
+    FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
+  }
 
   override Parameter getParameter() { none() }
 
   override predicate isParameterOf(DataFlowCallable c, ParameterPosition ppos) {
-    sc = c.asLibraryCallable() and ppos = pos
-  }
-
-  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = sc }
-
-  override string toString() { result = "parameter " + pos + " of " + sc }
-
-  // Hack to return "empty location"
-  override predicate hasLocationInfo(
-    string file, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    file = "" and
-    startline = 0 and
-    startcolumn = 0 and
-    endline = 0 and
-    endcolumn = 0
+    this.getSummarizedCallable() = c.asLibraryCallable() and ppos = this.getPosition()
   }
 }
 
 /** A data-flow node used to model flow summaries. */
-class SummaryNode extends Node, TSummaryNode {
-  private FlowSummaryImpl::Public::SummarizedCallable c;
-  private FlowSummaryImpl::Private::SummaryNodeState state;
+class FlowSummaryNode extends Node, TFlowSummaryNode {
+  FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
-  SummaryNode() { this = TSummaryNode(c, state) }
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() {
+    result = this.getSummaryNode().getSummarizedCallable()
+  }
 
-  override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
+  override DataFlowCallable getEnclosingCallable() {
+    result.asLibraryCallable() = this.getSummarizedCallable()
+  }
 
-  override string toString() { result = "[summary] " + state + " in " + c }
+  override string toString() { result = this.getSummaryNode().toString() }
 
   // Hack to return "empty location"
-  override predicate hasLocationInfo(
+  deprecated override predicate hasLocationInfo(
     string file, int startline, int startcolumn, int endline, int endcolumn
   ) {
     file = "" and
@@ -1513,32 +1728,152 @@ class SummaryNode extends Node, TSummaryNode {
   }
 }
 
-private class SummaryReturnNode extends SummaryNode, ReturnNode {
+private class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
   private ReturnKind rk;
 
-  SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this, rk) }
+  SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), rk) }
 
   override ReturnKind getKind() { result = rk }
 }
 
-private class SummaryArgumentNode extends SummaryNode, ArgumentNode {
-  SummaryArgumentNode() { FlowSummaryImpl::Private::summaryArgumentNode(_, this, _) }
+overlay[global]
+private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
+  private SummaryCall call_;
+  private ArgumentPosition pos_;
+
+  SummaryArgumentNode() {
+    FlowSummaryImpl::Private::summaryArgumentNode(call_.getReceiver(), this.getSummaryNode(), pos_)
+  }
 
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
+    call = call_ and pos = pos_
   }
 }
 
-private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNodeImpl {
-  private Node pre;
+private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl {
+  private FlowSummaryNode pre;
 
-  SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }
+  SummaryPostUpdateNode() {
+    FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), pre.getSummaryNode())
+  }
 
   override Node getPreUpdateNode() { result = pre }
 }
 
+/**
+ * A synthetic argument representing the values of the variables captured
+ * by the callable being called. This argument represents a single object
+ * where all the values are stored as attributes.
+ * This is also known as the environment part of a closure.
+ *
+ * This is used for tracking flow through captured variables.
+ */
+class SynthCapturedVariablesArgumentNode extends Node, TSynthCapturedVariablesArgumentNode {
+  ControlFlowNode callable;
+
+  SynthCapturedVariablesArgumentNode() { this = TSynthCapturedVariablesArgumentNode(callable) }
+
+  /** Gets the `CallNode` corresponding to this captured variables argument node. */
+  CallNode getCallNode() { result.getFunction() = callable }
+
+  /** Gets the `CfgNode` that corresponds to this synthetic node. */
+  CfgNode getUnderlyingNode() { result.asCfgNode() = callable }
+
+  override Scope getScope() { result = callable.getScope() }
+
+  override Location getLocation() { result = callable.getLocation() }
+
+  override string toString() { result = "Capturing closure argument" }
+}
+
+/** A captured variables argument node viewed as an argument node. Needed because `argumentOf` is a global predicate. */
+class CapturedVariablesArgumentNodeAsArgumentNode extends ArgumentNode,
+  SynthCapturedVariablesArgumentNode
+{
+  overlay[global]
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    exists(CallNode callNode | callNode = this.getCallNode() |
+      callNode = call.getNode() and
+      exists(Function target | resolveCall(callNode, target, _) |
+        target = any(VariableCapture::CapturedVariable v).getACapturingScope()
+      ) and
+      pos.isLambdaSelf()
+    )
+  }
+}
+
+/** A synthetic node representing the values of captured variables after the output has been computed. */
+class SynthCapturedVariablesArgumentPostUpdateNode extends PostUpdateNodeImpl,
+  TSynthCapturedVariablesArgumentPostUpdateNode
+{
+  ControlFlowNode callable;
+
+  SynthCapturedVariablesArgumentPostUpdateNode() {
+    this = TSynthCapturedVariablesArgumentPostUpdateNode(callable)
+  }
+
+  /** Gets the `PostUpdateNode` (for a `CfgNode`) that corresponds to this synthetic node. */
+  PostUpdateNode getUnderlyingNode() { result.getPreUpdateNode().asCfgNode() = callable }
+
+  override string toString() { result = "[post] Capturing closure argument" }
+
+  override Scope getScope() { result = callable.getScope() }
+
+  override Location getLocation() { result = callable.getLocation() }
+
+  override SynthCapturedVariablesArgumentNode getPreUpdateNode() {
+    result = TSynthCapturedVariablesArgumentNode(callable)
+  }
+}
+
+/** A synthetic node representing the values of variables captured by a comprehension. */
+overlay[local]
+class SynthCompCapturedVariablesArgumentNode extends Node, TSynthCompCapturedVariablesArgumentNode {
+  Comp comp;
+
+  SynthCompCapturedVariablesArgumentNode() { this = TSynthCompCapturedVariablesArgumentNode(comp) }
+
+  override string toString() { result = "Capturing closure argument (comp)" }
+
+  override Scope getScope() { result = comp.getScope() }
+
+  override Location getLocation() { result = comp.getLocation() }
+
+  Comp getComprehension() { result = comp }
+}
+
+class SynthCompCapturedVariablesArgumentNodeAsArgumentNode extends SynthCompCapturedVariablesArgumentNode,
+  ArgumentNode
+{
+  overlay[global]
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    call.(ComprehensionCall).getComprehension() = comp and
+    pos.isLambdaSelf()
+  }
+}
+
+/** A synthetic node representing the values of variables captured by a comprehension after the output has been computed. */
+class SynthCompCapturedVariablesArgumentPostUpdateNode extends PostUpdateNodeImpl,
+  TSynthCompCapturedVariablesArgumentPostUpdateNode
+{
+  Comp comp;
+
+  SynthCompCapturedVariablesArgumentPostUpdateNode() {
+    this = TSynthCompCapturedVariablesArgumentPostUpdateNode(comp)
+  }
+
+  override string toString() { result = "[post] Capturing closure argument (comp)" }
+
+  override Scope getScope() { result = comp.getScope() }
+
+  override Location getLocation() { result = comp.getLocation() }
+
+  override Node getPreUpdateNode() { result = TSynthCompCapturedVariablesArgumentNode(comp) }
+}
+
 /** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(ExtractedDataFlowCall call) {
+DataFlowCallable viableCallable(DataFlowCall call) {
+  call instanceof ExtractedDataFlowCall and
   result = call.getCallable()
   or
   // A call to a library callable with a flow summary
@@ -1555,12 +1890,14 @@ DataFlowCallable viableCallable(ExtractedDataFlowCall call) {
 // =============================================================================
 // Remaining required data-flow things
 // =============================================================================
+overlay[local]
 private newtype TReturnKind = TNormalReturnKind()
 
 /**
  * A return kind. A return kind describes how a value can be returned
  * from a callable. For Python, this is simply a method return.
  */
+overlay[local]
 class ReturnKind extends TReturnKind {
   /** Gets a textual representation of this element. */
   string toString() { result = "return" }
@@ -1575,7 +1912,28 @@ abstract class ReturnNode extends Node {
 /** A data flow node that represents a value returned by a callable. */
 class ExtractedReturnNode extends ReturnNode, CfgNode {
   // See `TaintTrackingImplementation::returnFlowStep`
-  ExtractedReturnNode() { node = any(Return ret).getValue().getAFlowNode() }
+  ExtractedReturnNode() {
+    node = any(Return ret).getValue().getAFlowNode() or
+    node = any(Yield yield).getAFlowNode()
+  }
+
+  override ReturnKind getKind() { any() }
+}
+
+/**
+ * A data flow node that represents the value yielded by a callable with a
+ * `contextlib.contextmanager` decorator. We treat this as a normal return, which makes
+ * things just work when used in a `with` statement -- technically calling the function
+ * directly will give you a `contextlib._GeneratorContextManager` instance, so it's a
+ * slight workaround solution.
+ *
+ * See https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager
+ */
+class YieldNodeInContextManagerFunction extends ReturnNode, CfgNode {
+  YieldNodeInContextManagerFunction() {
+    hasContextmanagerDecorator(node.getScope()) and
+    node = any(Yield yield).getValue().getAFlowNode()
+  }
 
   override ReturnKind getKind() { any() }
 }
@@ -1601,11 +1959,17 @@ private module OutNodes {
     }
   }
 
-  private class SummaryOutNode extends SummaryNode, OutNode {
-    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this, _) }
+  private class SummaryOutNode extends FlowSummaryNode, OutNode {
+    private SummaryCall call;
+    private ReturnKind kind_;
+
+    SummaryOutNode() {
+      FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), kind_)
+    }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      FlowSummaryImpl::Private::summaryOutNode(result, this, kind)
+      result = call and
+      kind = kind_
     }
   }
 }
@@ -1617,11 +1981,183 @@ private module OutNodes {
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
 
 /**
- * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
+ * Provides predicates for approximating type properties of user-defined classes
+ * based on their structure (method declarations, base classes).
  *
- * This is a temporary hook to support technical debt in the Go language; do not use.
+ * This module should _not_ be used in the call graph computation itself, as parts of it may depend
+ * on layers that themselves build upon the call graph (e.g. API graphs).
  */
-pragma[inline]
-predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
-  any()
+module DuckTyping {
+  private import semmle.python.ApiGraphs
+
+  /**
+   * Holds if `cls` or any of its resolved superclasses declares a method with the given `name`.
+   */
+  predicate hasMethod(Class cls, string name) {
+    cls.getAMethod().getName() = name
+    or
+    hasMethod(getADirectSuperclass(cls), name)
+  }
+
+  /**
+   * Holds if `cls` has a base class that cannot be resolved to a user-defined class
+   * and is not just `object`, meaning it may inherit methods from an unknown class.
+   */
+  predicate hasUnresolvedBase(Class cls) {
+    exists(Expr base | base = cls.getABase() |
+      not base = classTracker(_).asExpr() and
+      not base = API::builtin("object").getAValueReachableFromSource().asExpr()
+    )
+  }
+
+  /**
+   * Holds if `cls` supports the container protocol, i.e. it declares
+   * `__contains__`, `__iter__`, or `__getitem__`.
+   */
+  predicate isContainer(Class cls) {
+    hasMethod(cls, "__contains__") or
+    hasMethod(cls, "__iter__") or
+    hasMethod(cls, "__getitem__")
+  }
+
+  /**
+   * Holds if `cls` supports the iterable protocol, i.e. it declares
+   * `__iter__` or `__getitem__`.
+   */
+  predicate isIterable(Class cls) {
+    hasMethod(cls, "__iter__") or
+    hasMethod(cls, "__getitem__")
+  }
+
+  /**
+   * Holds if `cls` supports the iterator protocol, i.e. it declares
+   * both `__iter__` and `__next__`.
+   */
+  predicate isIterator(Class cls) {
+    hasMethod(cls, "__iter__") and
+    hasMethod(cls, "__next__")
+  }
+
+  /**
+   * Holds if `cls` supports the context manager protocol, i.e. it declares
+   * both `__enter__` and `__exit__`.
+   */
+  predicate isContextManager(Class cls) {
+    hasMethod(cls, "__enter__") and
+    hasMethod(cls, "__exit__")
+  }
+
+  /**
+   * Holds if `cls` supports the descriptor protocol, i.e. it declares
+   * `__get__`, `__set__`, or `__delete__`.
+   */
+  predicate isDescriptor(Class cls) {
+    hasMethod(cls, "__get__") or
+    hasMethod(cls, "__set__") or
+    hasMethod(cls, "__delete__")
+  }
+
+  /**
+   * Holds if `cls` directly assigns to an attribute named `name` in its class body.
+   * This covers attribute assignments like `x = value`, but not method definitions.
+   */
+  predicate declaresAttribute(Class cls, string name) { exists(getAnAttributeValue(cls, name)) }
+
+  /**
+   * Gets the value expression assigned to attribute `name` directly in the class body of `cls`.
+   */
+  Expr getAnAttributeValue(Class cls, string name) {
+    exists(Assign a |
+      a.getScope() = cls and
+      a.getATarget().(Name).getId() = name and
+      result = a.getValue()
+    )
+  }
+
+  /**
+   * Holds if `cls` is callable, i.e. it declares `__call__`.
+   */
+  predicate isCallable(Class cls) { hasMethod(cls, "__call__") }
+
+  /**
+   * Holds if `cls` supports the mapping protocol, i.e. it declares
+   * `__getitem__` and `keys`, or `__getitem__` and `__iter__`.
+   */
+  predicate isMapping(Class cls) {
+    hasMethod(cls, "__getitem__") and
+    (hasMethod(cls, "keys") or hasMethod(cls, "__iter__"))
+  }
+
+  /**
+   * Holds if `cls` is a new-style class. In Python 3, all classes are new-style.
+   * In Python 2, a class is new-style if it (transitively) inherits from `object`,
+   * or has a declared `__metaclass__`, or is in a module with a module-level
+   * `__metaclass__` declaration, or has an unresolved base class.
+   */
+  predicate isNewStyle(Class cls) {
+    major_version() = 3
+    or
+    major_version() = 2 and
+    (
+      cls.getABase() = API::builtin("object").getAValueReachableFromSource().asExpr()
+      or
+      isNewStyle(getADirectSuperclass(cls))
+      or
+      hasUnresolvedBase(cls)
+      or
+      exists(cls.getMetaClass())
+      or
+      // Module-level __metaclass__ = type makes all classes in the module new-style
+      exists(Assign a |
+        a.getScope() = cls.getEnclosingModule() and
+        a.getATarget().(Name).getId() = "__metaclass__" and
+        a.getValue() = API::builtin("type").getAValueReachableFromSource().asExpr()
+      )
+    )
+  }
+
+  /**
+   * Gets the `__init__` function that will be invoked when `cls` is constructed,
+   * resolved according to the MRO.
+   */
+  Function getInit(Class cls) { result = invokedFunctionFromClassConstruction(cls, "__init__") }
+
+  /**
+   * Holds if `cls` or any of its superclasses uses multiple inheritance, or
+   * has an unresolved base class. In these cases, our MRO approximation may
+   * resolve to the wrong `__init__`, so we should not flag argument mismatches.
+   */
+  predicate hasUnreliableMro(Class cls) {
+    exists(Class sup | sup = getADirectSuperclass*(cls) |
+      exists(sup.getBase(1))
+      or
+      hasUnresolvedBase(sup)
+    )
+  }
+
+  /**
+   * Holds if `f` overrides a method in a superclass with the same name.
+   */
+  predicate overridesMethod(Function f) { overridesMethod(f, _, _) }
+
+  /**
+   * Holds if `f` overrides `overridden` declared in `superclass`.
+   */
+  predicate overridesMethod(Function f, Class superclass, Function overridden) {
+    exists(Class cls |
+      f.getScope() = cls and
+      superclass = getADirectSuperclass+(cls) and
+      overridden = superclass.getMethod(f.getName())
+    )
+  }
+
+  /**
+   * Holds if `f` is a property accessor (decorated with `@property`, `@name.setter`,
+   * or `@name.deleter`).
+   */
+  predicate isPropertyAccessor(Function f) {
+    exists(Attribute a | a = f.getADecorator() | a.getName() = "setter" or a.getName() = "deleter")
+    or
+    f.getADecorator().(Name).getId() = "property"
+  }
 }

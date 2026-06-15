@@ -1,0 +1,10 @@
+on: issue_comment
+
+jobs:
+  test1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: octokit/request-action@v2
+        with:
+          route: ${{ github.event.comment.body }}
+

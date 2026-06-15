@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["android-actions/setup-android", "*", "input.cmdline-tools-version", "output.ANDROID_COMMANDLINE_TOOLS_VERSION", "taint", "manual"]

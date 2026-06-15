@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["philosowaffle/peloton-to-garmin", "*", "input.framework", "code-injection", "generated"]
+     - ["philosowaffle/peloton-to-garmin", "*", "input.os", "code-injection", "generated"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["philosowaffle/peloton-to-garmin", "*", "input.os", "output.artifact_name", "taint", "manual"]

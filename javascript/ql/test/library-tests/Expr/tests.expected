@@ -1,3 +1,711 @@
+test_isPure
+| assignment2.ts:1:5:1:5 | a |
+| assignment2.ts:1:9:1:9 | 2 |
+| assignment2.ts:2:5:2:5 | b |
+| assignment2.ts:2:9:2:9 | 3 |
+| assignment2.ts:4:1:4:1 | a |
+| assignment2.ts:4:5:4:6 | 23 |
+| assignment2.ts:5:1:5:1 | a |
+| assignment2.ts:5:6:5:7 | 19 |
+| assignment2.ts:7:1:7:1 | a |
+| assignment2.ts:7:7:7:7 | 4 |
+| assignment2.ts:8:1:8:1 | a |
+| assignment2.ts:8:7:8:7 | 5 |
+| assignment2.ts:9:1:9:1 | a |
+| assignment2.ts:9:7:9:7 | 6 |
+| assignment.js:1:1:1:1 | a |
+| assignment.js:1:5:1:6 | 23 |
+| assignment.js:2:1:2:1 | a |
+| assignment.js:2:6:2:7 | 19 |
+| assignment.js:3:1:3:1 | a |
+| assignment.js:3:6:3:6 | 9 |
+| assignment.js:4:1:4:1 | a |
+| assignment.js:4:6:4:6 | b |
+| assignment.js:5:1:5:1 | a |
+| assignment.js:5:6:5:6 | 2 |
+| assignment.js:6:1:6:1 | a |
+| assignment.js:6:6:6:6 | 2 |
+| assignment.js:7:1:7:1 | a |
+| assignment.js:7:7:7:7 | 8 |
+| assignment.js:8:1:8:1 | a |
+| assignment.js:8:7:8:7 | 7 |
+| assignment.js:9:1:9:1 | a |
+| assignment.js:9:8:9:8 | 2 |
+| assignment.js:10:1:10:1 | a |
+| assignment.js:10:6:10:6 | 2 |
+| assignment.js:11:1:11:1 | a |
+| assignment.js:11:6:11:6 | 1 |
+| assignment.js:12:1:12:1 | a |
+| assignment.js:12:6:12:6 | 3 |
+| binary.js:1:1:1:1 | 1 |
+| binary.js:1:1:1:6 | 1 << 2 |
+| binary.js:1:6:1:6 | 2 |
+| binary.js:2:1:2:1 | 2 |
+| binary.js:2:1:2:6 | 2 >> 1 |
+| binary.js:2:6:2:6 | 1 |
+| binary.js:3:1:3:1 | 2 |
+| binary.js:3:1:3:7 | 2 >>> 1 |
+| binary.js:3:7:3:7 | 1 |
+| binary.js:4:1:4:2 | 23 |
+| binary.js:4:1:4:7 | 23 + 19 |
+| binary.js:4:6:4:7 | 19 |
+| binary.js:5:1:5:2 | 42 |
+| binary.js:5:1:5:7 | 42 - 19 |
+| binary.js:5:6:5:7 | 19 |
+| binary.js:6:1:6:1 | 2 |
+| binary.js:6:1:6:5 | 2 * 3 |
+| binary.js:6:5:6:5 | 3 |
+| binary.js:7:1:7:1 | 8 |
+| binary.js:7:1:7:5 | 8 / 5 |
+| binary.js:7:5:7:5 | 5 |
+| binary.js:8:1:8:1 | 2 |
+| binary.js:8:1:8:5 | 2 % 1 |
+| binary.js:8:5:8:5 | 1 |
+| binary.js:9:1:9:1 | 2 |
+| binary.js:9:1:9:5 | 2 \| 3 |
+| binary.js:9:5:9:5 | 3 |
+| binary.js:10:1:10:1 | 2 |
+| binary.js:10:1:10:5 | 2 ^ 3 |
+| binary.js:10:5:10:5 | 3 |
+| binary.js:11:1:11:1 | 2 |
+| binary.js:11:1:11:5 | 2 & 3 |
+| binary.js:11:5:11:5 | 3 |
+| binary.js:12:1:12:11 | 'prototype' |
+| binary.js:12:1:12:21 | 'protot ...  Object |
+| binary.js:12:16:12:21 | Object |
+| binary.js:13:1:13:2 | [] |
+| binary.js:13:1:13:19 | [] instanceof Array |
+| binary.js:13:15:13:19 | Array |
+| binary.js:14:1:14:1 | 1 |
+| binary.js:14:1:14:6 | 1 && 2 |
+| binary.js:14:6:14:6 | 2 |
+| binary.js:15:1:15:1 | 1 |
+| binary.js:15:1:15:6 | 1 \|\| 2 |
+| binary.js:15:6:15:6 | 2 |
+| comparison.js:1:1:1:1 | 1 |
+| comparison.js:1:1:1:6 | 1 == 1 |
+| comparison.js:1:6:1:6 | 1 |
+| comparison.js:2:1:2:1 | 1 |
+| comparison.js:2:1:2:6 | 1 != 2 |
+| comparison.js:2:6:2:6 | 2 |
+| comparison.js:3:1:3:1 | 1 |
+| comparison.js:3:1:3:7 | 1 === 1 |
+| comparison.js:3:7:3:7 | 1 |
+| comparison.js:4:1:4:1 | 1 |
+| comparison.js:4:1:4:7 | 1 !== 2 |
+| comparison.js:4:7:4:7 | 2 |
+| comparison.js:5:1:5:1 | 1 |
+| comparison.js:5:1:5:5 | 1 < 2 |
+| comparison.js:5:5:5:5 | 2 |
+| comparison.js:6:1:6:1 | 1 |
+| comparison.js:6:1:6:6 | 1 <= 2 |
+| comparison.js:6:6:6:6 | 2 |
+| comparison.js:7:1:7:1 | 2 |
+| comparison.js:7:1:7:5 | 2 > 1 |
+| comparison.js:7:5:7:5 | 1 |
+| comparison.js:8:1:8:1 | 2 |
+| comparison.js:8:1:8:6 | 2 >= 1 |
+| comparison.js:8:6:8:6 | 1 |
+| computedFieldNames.ts:1:7:1:10 | key1 |
+| computedFieldNames.ts:1:14:1:19 | "key1" |
+| computedFieldNames.ts:2:7:2:19 | NoConstructor |
+| computedFieldNames.ts:2:21:2:20 | () {} |
+| computedFieldNames.ts:2:21:2:20 | constructor |
+| computedFieldNames.ts:3:4:3:7 | key1 |
+| computedFieldNames.ts:3:12:3:12 | 4 |
+| computedFieldNames.ts:6:7:6:10 | key2 |
+| computedFieldNames.ts:6:14:6:19 | "key2" |
+| computedFieldNames.ts:7:7:7:21 | WithConstructor |
+| computedFieldNames.ts:8:4:8:7 | key2 |
+| computedFieldNames.ts:8:12:8:12 | 4 |
+| computedFieldNames.ts:10:3:10:18 | constructor() {} |
+| computedFieldNames.ts:10:3:10:18 | constructor() {} |
+| es2015.js:1:1:1:18 | ["a", "ab", "abc"] |
+| es2015.js:1:1:1:22 | ["a", " ... c"].map |
+| es2015.js:1:2:1:4 | "a" |
+| es2015.js:1:7:1:10 | "ab" |
+| es2015.js:1:13:1:17 | "abc" |
+| es2015.js:1:20:1:22 | map |
+| es2015.js:1:24:1:24 | s |
+| es2015.js:1:24:1:36 | s => s.length |
+| es2015.js:1:29:1:29 | s |
+| es2015.js:1:29:1:36 | s.length |
+| es2015.js:1:31:1:36 | length |
+| es2015.js:2:1:2:11 | setInterval |
+| es2015.js:2:13:2:23 | () => ++cnt |
+| es2015.js:2:21:2:23 | cnt |
+| es2015.js:2:26:2:29 | 1000 |
+| es2015.js:3:1:3:10 | setTimeout |
+| es2015.js:3:12:3:39 | () => { ... p!"); } |
+| es2015.js:3:20:3:24 | alert |
+| es2015.js:3:26:3:35 | "Wake up!" |
+| es2015.js:3:42:3:46 | 60000 |
+| es2015.js:5:1:5:10 | [a, ...as] |
+| es2015.js:5:2:5:2 | a |
+| es2015.js:5:5:5:9 | ...as |
+| es2015.js:5:8:5:9 | as |
+| es2015.js:6:5:6:9 | Array |
+| es2015.js:6:11:6:17 | ...elts |
+| es2015.js:6:14:6:17 | elts |
+| es2015.js:8:10:8:10 | f |
+| es2015.js:8:12:8:17 | [x, y] |
+| es2015.js:8:13:8:13 | x |
+| es2015.js:8:16:8:16 | y |
+| es2015.js:9:6:9:15 | [a, [, c]] |
+| es2015.js:9:7:9:7 | a |
+| es2015.js:9:10:9:14 | [, c] |
+| es2015.js:9:13:9:13 | c |
+| es2015.js:9:19:9:19 | x |
+| es2015.js:11:9:11:14 | [a, c] |
+| es2015.js:11:10:11:10 | a |
+| es2015.js:11:13:11:13 | c |
+| es2015.js:12:11:12:11 | d |
+| es2015.js:13:3:13:9 | console |
+| es2015.js:13:3:13:13 | console.log |
+| es2015.js:13:11:13:13 | log |
+| es2015.js:13:15:13:15 | d |
+| es2015.js:17:10:17:10 | g |
+| es2015.js:17:12:17:22 | { x, y: z } |
+| es2015.js:17:14:17:14 | x |
+| es2015.js:17:14:17:14 | x |
+| es2015.js:17:17:17:17 | y |
+| es2015.js:17:20:17:20 | z |
+| es2015.js:18:6:18:15 | { [x]: w } |
+| es2015.js:18:9:18:9 | x |
+| es2015.js:18:13:18:13 | w |
+| es2015.js:18:19:18:19 | z |
+| es2015.js:19:9:19:9 | w |
+| es2015.js:22:11:22:13 | foo |
+| es2015.js:22:15:22:15 | n |
+| es2015.js:23:8:23:8 | n |
+| es2015.js:23:12:23:12 | 0 |
+| es2015.js:24:9:24:9 | n |
+| es2015.js:25:9:25:11 | foo |
+| es2015.js:25:13:25:13 | 1 |
+| es2015.js:28:10:28:12 | bar |
+| es2015.js:28:14:28:14 | x |
+| es2015.js:28:17:28:17 | y |
+| es2015.js:28:19:28:19 | x |
+| es2015.js:28:19:28:22 | x+19 |
+| es2015.js:28:21:28:22 | 19 |
+| functions.js:1:10:1:10 | f |
+| functions.js:2:2:2:5 | in_f |
+| functions.js:3:9:3:17 | also_in_f |
+| functions.js:4:3:6:4 | (functi ... f;\\n\\t\\t}) |
+| functions.js:4:4:6:3 | functio ... _f;\\n\\t\\t} |
+| functions.js:5:4:5:11 | not_in_f |
+| functions.js:6:6:8:3 | {\\n\\t\\t\\tx: ... ain\\n\\t\\t} |
+| functions.js:7:4:7:4 | x |
+| functions.js:7:7:7:16 | in_f_again |
+| functions.js:10:1:10:6 | global |
+| legacyletexpr.js:1:1:1:7 | console |
+| legacyletexpr.js:1:1:1:11 | console.log |
+| legacyletexpr.js:1:9:1:11 | log |
+| legacyletexpr.js:1:18:1:18 | x |
+| legacyletexpr.js:1:22:1:23 | 23 |
+| legacyletexpr.js:1:26:1:26 | y |
+| legacyletexpr.js:1:30:1:31 | 19 |
+| legacyletexpr.js:1:34:1:34 | x |
+| legacyletexpr.js:1:34:1:38 | x + y |
+| legacyletexpr.js:1:38:1:38 | y |
+| mozextensions.js:1:1:1:5 | array |
+| mozextensions.js:1:1:1:9 | array.map |
+| mozextensions.js:1:7:1:9 | map |
+| mozextensions.js:1:11:1:25 | function(x) x+1 |
+| mozextensions.js:1:20:1:20 | x |
+| mozextensions.js:1:23:1:23 | x |
+| mozextensions.js:1:23:1:25 | x+1 |
+| mozextensions.js:1:25:1:25 | 1 |
+| nullSensitiveContexts.js:7:1:7:3 | foo |
+| nullSensitiveContexts.js:7:1:7:8 | foo[bar] |
+| nullSensitiveContexts.js:7:5:7:7 | bar |
+| nullSensitiveContexts.js:8:1:8:3 | foo |
+| nullSensitiveContexts.js:8:1:8:7 | foo.bar |
+| nullSensitiveContexts.js:8:5:8:7 | bar |
+| nullSensitiveContexts.js:9:5:9:7 | Foo |
+| nullSensitiveContexts.js:10:5:10:7 | Foo |
+| nullSensitiveContexts.js:11:1:11:3 | foo |
+| nullSensitiveContexts.js:11:1:11:7 | foo.bar |
+| nullSensitiveContexts.js:11:5:11:7 | bar |
+| nullSensitiveContexts.js:11:11:11:11 | 5 |
+| nullSensitiveContexts.js:12:1:12:3 | foo |
+| nullSensitiveContexts.js:12:5:12:7 | bar |
+| nullSensitiveContexts.js:13:1:13:1 | x |
+| nullSensitiveContexts.js:13:1:13:5 | x + y |
+| nullSensitiveContexts.js:13:5:13:5 | y |
+| nullSensitiveContexts.js:14:1:14:1 | x |
+| nullSensitiveContexts.js:14:1:14:5 | x - y |
+| nullSensitiveContexts.js:14:5:14:5 | y |
+| nullSensitiveContexts.js:15:1:15:1 | x |
+| nullSensitiveContexts.js:15:1:15:5 | x * y |
+| nullSensitiveContexts.js:15:5:15:5 | y |
+| nullSensitiveContexts.js:16:1:16:1 | x |
+| nullSensitiveContexts.js:16:1:16:5 | x / y |
+| nullSensitiveContexts.js:16:5:16:5 | y |
+| nullSensitiveContexts.js:17:1:17:1 | x |
+| nullSensitiveContexts.js:17:1:17:5 | x % y |
+| nullSensitiveContexts.js:17:5:17:5 | y |
+| nullSensitiveContexts.js:18:1:18:2 | +x |
+| nullSensitiveContexts.js:18:2:18:2 | x |
+| nullSensitiveContexts.js:19:1:19:2 | -x |
+| nullSensitiveContexts.js:19:2:19:2 | x |
+| nullSensitiveContexts.js:20:3:20:3 | x |
+| nullSensitiveContexts.js:21:1:21:1 | x |
+| nullSensitiveContexts.js:22:3:22:3 | x |
+| nullSensitiveContexts.js:23:1:23:1 | x |
+| nullSensitiveContexts.js:24:1:24:1 | x |
+| nullSensitiveContexts.js:24:6:24:6 | y |
+| nullSensitiveContexts.js:25:1:25:1 | x |
+| nullSensitiveContexts.js:25:6:25:6 | y |
+| nullSensitiveContexts.js:26:1:26:1 | x |
+| nullSensitiveContexts.js:26:6:26:6 | y |
+| nullSensitiveContexts.js:27:1:27:1 | x |
+| nullSensitiveContexts.js:27:6:27:6 | y |
+| nullSensitiveContexts.js:28:1:28:1 | x |
+| nullSensitiveContexts.js:28:6:28:6 | y |
+| nullSensitiveContexts.js:29:1:29:7 | [x , y] |
+| nullSensitiveContexts.js:29:2:29:2 | x |
+| nullSensitiveContexts.js:29:6:29:6 | y |
+| nullSensitiveContexts.js:29:11:29:11 | p |
+| nullSensitiveContexts.js:31:1:31:1 | x |
+| nullSensitiveContexts.js:31:1:31:5 | x & y |
+| nullSensitiveContexts.js:31:5:31:5 | y |
+| nullSensitiveContexts.js:32:1:32:1 | x |
+| nullSensitiveContexts.js:32:1:32:5 | x \| y |
+| nullSensitiveContexts.js:32:5:32:5 | y |
+| nullSensitiveContexts.js:33:1:33:1 | x |
+| nullSensitiveContexts.js:33:1:33:5 | x ^ y |
+| nullSensitiveContexts.js:33:5:33:5 | y |
+| nullSensitiveContexts.js:34:1:34:1 | x |
+| nullSensitiveContexts.js:34:1:34:6 | x << y |
+| nullSensitiveContexts.js:34:6:34:6 | y |
+| nullSensitiveContexts.js:35:1:35:1 | x |
+| nullSensitiveContexts.js:35:1:35:6 | x >> y |
+| nullSensitiveContexts.js:35:6:35:6 | y |
+| nullSensitiveContexts.js:36:1:36:1 | x |
+| nullSensitiveContexts.js:36:1:36:7 | x >>> y |
+| nullSensitiveContexts.js:36:7:36:7 | y |
+| nullSensitiveContexts.js:37:1:37:2 | ~x |
+| nullSensitiveContexts.js:37:2:37:2 | x |
+| nullSensitiveContexts.js:38:1:38:1 | x |
+| nullSensitiveContexts.js:38:6:38:6 | y |
+| nullSensitiveContexts.js:39:1:39:1 | x |
+| nullSensitiveContexts.js:39:6:39:6 | y |
+| nullSensitiveContexts.js:40:1:40:1 | x |
+| nullSensitiveContexts.js:40:6:40:6 | y |
+| nullSensitiveContexts.js:41:1:41:1 | x |
+| nullSensitiveContexts.js:41:7:41:7 | y |
+| nullSensitiveContexts.js:42:1:42:1 | x |
+| nullSensitiveContexts.js:42:7:42:7 | y |
+| nullSensitiveContexts.js:43:1:43:1 | x |
+| nullSensitiveContexts.js:43:8:43:8 | y |
+| nullSensitiveContexts.js:44:10:44:10 | x |
+| nullSensitiveContexts.js:44:15:44:15 | y |
+| nullSensitiveContexts.js:54:1:54:1 | x |
+| nullSensitiveContexts.js:54:1:54:6 | x && y |
+| nullSensitiveContexts.js:54:6:54:6 | y |
+| nullSensitiveContexts.js:55:1:55:1 | x |
+| nullSensitiveContexts.js:55:1:55:6 | x \|\| y |
+| nullSensitiveContexts.js:55:6:55:6 | y |
+| nullSensitiveContexts.js:56:1:56:2 | !x |
+| nullSensitiveContexts.js:56:2:56:2 | x |
+| nullSensitiveContexts.js:57:5:57:5 | x |
+| nullSensitiveContexts.js:58:8:58:8 | x |
+| nullSensitiveContexts.js:59:8:59:8 | y |
+| nullSensitiveContexts.js:59:11:59:11 | z |
+| nullSensitiveContexts.js:60:10:60:10 | x |
+| nullSensitiveContexts.js:60:15:60:15 | y |
+| others.js:1:1:1:2 | 23 |
+| others.js:1:1:1:6 | 23, 42 |
+| others.js:1:5:1:6 | 42 |
+| others.js:2:1:2:2 | 23 |
+| others.js:2:1:2:10 | 23, 42, 56 |
+| others.js:2:5:2:6 | 42 |
+| others.js:2:9:2:10 | 56 |
+| others.js:3:1:3:4 | true |
+| others.js:3:1:3:12 | true ? 0 : 1 |
+| others.js:3:8:3:8 | 0 |
+| others.js:3:12:3:12 | 1 |
+| others.js:4:10:4:10 | p |
+| others.js:4:15:4:15 | o |
+| primaries.js:1:1:1:4 | null |
+| primaries.js:2:1:2:4 | true |
+| primaries.js:3:1:3:5 | false |
+| primaries.js:4:1:4:2 | 23 |
+| primaries.js:5:1:5:3 | 2.3 |
+| primaries.js:6:1:6:3 | .42 |
+| primaries.js:7:1:7:6 | 7.6e23 |
+| primaries.js:8:1:8:5 | 1E-42 |
+| primaries.js:9:1:9:10 | 0xdeadbeef |
+| primaries.js:10:1:10:7 | "Hello" |
+| primaries.js:11:1:11:7 | 'world' |
+| primaries.js:12:1:12:13 | "'what?'\\x0a" |
+| primaries.js:13:1:13:10 | '"why?"\\n' |
+| primaries.js:14:1:14:15 | /^(need?le)+/gi |
+| primaries.js:15:1:15:4 | (23) |
+| primaries.js:15:2:15:3 | 23 |
+| primaries.js:16:1:16:17 | [23, 42, , "hi" ] |
+| primaries.js:16:2:16:3 | 23 |
+| primaries.js:16:6:16:7 | 42 |
+| primaries.js:16:12:16:15 | "hi" |
+| primaries.js:17:1:21:16 | ({ x: 2 ... v) {}}) |
+| primaries.js:17:2:21:15 | { x: 23 ... (v) {}} |
+| primaries.js:17:4:17:4 | x |
+| primaries.js:17:7:17:8 | 23 |
+| primaries.js:18:4:18:4 | y |
+| primaries.js:18:7:18:10 | this |
+| primaries.js:19:8:19:8 | o |
+| primaries.js:19:9:19:13 | () {} |
+| primaries.js:20:8:20:8 | p |
+| primaries.js:20:9:20:13 | () {} |
+| primaries.js:21:8:21:8 | p |
+| primaries.js:21:9:21:14 | (v) {} |
+| primaries.js:21:10:21:10 | v |
+| primaries.js:22:5:22:9 | Array |
+| primaries.js:23:5:23:10 | Object |
+| primaries.js:24:5:24:10 | String |
+| primaries.js:24:12:24:15 | "hi" |
+| primaries.js:25:1:25:6 | String |
+| primaries.js:25:8:25:9 | "" |
+| primaries.js:26:1:26:6 | Object |
+| primaries.js:26:1:26:13 | Object.create |
+| primaries.js:26:8:26:13 | create |
+| primaries.js:26:15:26:16 | {} |
+| primaries.js:27:1:27:6 | String |
+| primaries.js:27:8:27:18 | 'epytotorp' |
+| primaries.js:27:8:27:26 | 'epytotorp'.reverse |
+| primaries.js:27:20:27:26 | reverse |
+| primaries.js:28:1:28:6 | ((42)) |
+| primaries.js:28:2:28:5 | (42) |
+| primaries.js:28:3:28:4 | 42 |
+| primaries.js:29:1:29:13 | /\\2147483648/ |
+| primaries.js:30:1:30:26 | /a{2147 ... 83649}/ |
+| primaries.js:31:1:31:16 | /a{-2147483648}/ |
+| primaries.js:32:1:32:16 | /a{-2147483649}/ |
+| surrogates.js:1:5:1:5 | a |
+| surrogates.js:1:9:1:16 | "\\ud800" |
+| surrogates.js:2:1:2:8 | /\\uD800/ |
+| surrogates.js:2:1:2:13 | /\\uD800/.test |
+| surrogates.js:2:10:2:13 | test |
+| surrogates.js:2:15:2:15 | a |
+| surrogates.js:3:1:3:14 | "\\uD834\\uDF06" |
+| surrogates.js:4:1:4:14 | '\\udc00\\ud800' |
+| unary.js:1:1:1:3 | -23 |
+| unary.js:1:2:1:3 | 23 |
+| unary.js:2:1:2:3 | +42 |
+| unary.js:2:2:2:3 | 42 |
+| unary.js:3:1:3:5 | !true |
+| unary.js:3:2:3:5 | true |
+| unary.js:4:1:4:2 | ~2 |
+| unary.js:4:2:4:2 | 2 |
+| unary.js:5:1:5:13 | typeof Object |
+| unary.js:5:8:5:13 | Object |
+| unary.js:6:1:6:7 | void(0) |
+| unary.js:6:5:6:7 | (0) |
+| unary.js:6:6:6:6 | 0 |
+| unary.js:7:8:7:13 | Object |
+| unary.js:7:8:7:23 | Object.prototype |
+| unary.js:7:15:7:23 | prototype |
+| update.js:1:3:1:3 | a |
+| update.js:2:1:2:1 | a |
+| update.js:3:3:3:3 | b |
+| update.js:4:1:4:1 | b |
+test_LetExpr
+| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | 0 | legacyletexpr.js:1:18:1:23 | x = 23 | legacyletexpr.js:1:34:1:38 | x + y |
+| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | 1 | legacyletexpr.js:1:26:1:31 | y = 19 | legacyletexpr.js:1:34:1:38 | x + y |
+test_getChild
+| assignment2.ts:1:5:1:9 | a = 2 | 0 | assignment2.ts:1:5:1:5 | a |
+| assignment2.ts:1:5:1:9 | a = 2 | 1 | assignment2.ts:1:9:1:9 | 2 |
+| assignment2.ts:2:5:2:9 | b = 3 | 0 | assignment2.ts:2:5:2:5 | b |
+| assignment2.ts:2:5:2:9 | b = 3 | 1 | assignment2.ts:2:9:2:9 | 3 |
+| assignment2.ts:4:1:4:6 | a = 23 | 0 | assignment2.ts:4:1:4:1 | a |
+| assignment2.ts:4:1:4:6 | a = 23 | 1 | assignment2.ts:4:5:4:6 | 23 |
+| assignment2.ts:5:1:5:7 | a += 19 | 0 | assignment2.ts:5:1:5:1 | a |
+| assignment2.ts:5:1:5:7 | a += 19 | 1 | assignment2.ts:5:6:5:7 | 19 |
+| assignment2.ts:7:1:7:7 | a &&= 4 | 0 | assignment2.ts:7:1:7:1 | a |
+| assignment2.ts:7:1:7:7 | a &&= 4 | 1 | assignment2.ts:7:7:7:7 | 4 |
+| assignment2.ts:8:1:8:7 | a \|\|= 5 | 0 | assignment2.ts:8:1:8:1 | a |
+| assignment2.ts:8:1:8:7 | a \|\|= 5 | 1 | assignment2.ts:8:7:8:7 | 5 |
+| assignment2.ts:9:1:9:7 | a ??= 6 | 0 | assignment2.ts:9:1:9:1 | a |
+| assignment2.ts:9:1:9:7 | a ??= 6 | 1 | assignment2.ts:9:7:9:7 | 6 |
+| assignment.js:1:1:1:6 | a = 23 | 0 | assignment.js:1:1:1:1 | a |
+| assignment.js:1:1:1:6 | a = 23 | 1 | assignment.js:1:5:1:6 | 23 |
+| assignment.js:2:1:2:7 | a += 19 | 0 | assignment.js:2:1:2:1 | a |
+| assignment.js:2:1:2:7 | a += 19 | 1 | assignment.js:2:6:2:7 | 19 |
+| assignment.js:3:1:3:6 | a -= 9 | 0 | assignment.js:3:1:3:1 | a |
+| assignment.js:3:1:3:6 | a -= 9 | 1 | assignment.js:3:6:3:6 | 9 |
+| assignment.js:4:1:4:6 | a *= b | 0 | assignment.js:4:1:4:1 | a |
+| assignment.js:4:1:4:6 | a *= b | 1 | assignment.js:4:6:4:6 | b |
+| assignment.js:5:1:5:6 | a /= 2 | 0 | assignment.js:5:1:5:1 | a |
+| assignment.js:5:1:5:6 | a /= 2 | 1 | assignment.js:5:6:5:6 | 2 |
+| assignment.js:6:1:6:6 | a %= 2 | 0 | assignment.js:6:1:6:1 | a |
+| assignment.js:6:1:6:6 | a %= 2 | 1 | assignment.js:6:6:6:6 | 2 |
+| assignment.js:7:1:7:7 | a <<= 8 | 0 | assignment.js:7:1:7:1 | a |
+| assignment.js:7:1:7:7 | a <<= 8 | 1 | assignment.js:7:7:7:7 | 8 |
+| assignment.js:8:1:8:7 | a >>= 7 | 0 | assignment.js:8:1:8:1 | a |
+| assignment.js:8:1:8:7 | a >>= 7 | 1 | assignment.js:8:7:8:7 | 7 |
+| assignment.js:9:1:9:8 | a >>>= 2 | 0 | assignment.js:9:1:9:1 | a |
+| assignment.js:9:1:9:8 | a >>>= 2 | 1 | assignment.js:9:8:9:8 | 2 |
+| assignment.js:10:1:10:6 | a \|= 2 | 0 | assignment.js:10:1:10:1 | a |
+| assignment.js:10:1:10:6 | a \|= 2 | 1 | assignment.js:10:6:10:6 | 2 |
+| assignment.js:11:1:11:6 | a ^= 1 | 0 | assignment.js:11:1:11:1 | a |
+| assignment.js:11:1:11:6 | a ^= 1 | 1 | assignment.js:11:6:11:6 | 1 |
+| assignment.js:12:1:12:6 | a &= 3 | 0 | assignment.js:12:1:12:1 | a |
+| assignment.js:12:1:12:6 | a &= 3 | 1 | assignment.js:12:6:12:6 | 3 |
+| binary.js:1:1:1:6 | 1 << 2 | 0 | binary.js:1:1:1:1 | 1 |
+| binary.js:1:1:1:6 | 1 << 2 | 1 | binary.js:1:6:1:6 | 2 |
+| binary.js:2:1:2:6 | 2 >> 1 | 0 | binary.js:2:1:2:1 | 2 |
+| binary.js:2:1:2:6 | 2 >> 1 | 1 | binary.js:2:6:2:6 | 1 |
+| binary.js:3:1:3:7 | 2 >>> 1 | 0 | binary.js:3:1:3:1 | 2 |
+| binary.js:3:1:3:7 | 2 >>> 1 | 1 | binary.js:3:7:3:7 | 1 |
+| binary.js:4:1:4:7 | 23 + 19 | 0 | binary.js:4:1:4:2 | 23 |
+| binary.js:4:1:4:7 | 23 + 19 | 1 | binary.js:4:6:4:7 | 19 |
+| binary.js:5:1:5:7 | 42 - 19 | 0 | binary.js:5:1:5:2 | 42 |
+| binary.js:5:1:5:7 | 42 - 19 | 1 | binary.js:5:6:5:7 | 19 |
+| binary.js:6:1:6:5 | 2 * 3 | 0 | binary.js:6:1:6:1 | 2 |
+| binary.js:6:1:6:5 | 2 * 3 | 1 | binary.js:6:5:6:5 | 3 |
+| binary.js:7:1:7:5 | 8 / 5 | 0 | binary.js:7:1:7:1 | 8 |
+| binary.js:7:1:7:5 | 8 / 5 | 1 | binary.js:7:5:7:5 | 5 |
+| binary.js:8:1:8:5 | 2 % 1 | 0 | binary.js:8:1:8:1 | 2 |
+| binary.js:8:1:8:5 | 2 % 1 | 1 | binary.js:8:5:8:5 | 1 |
+| binary.js:9:1:9:5 | 2 \| 3 | 0 | binary.js:9:1:9:1 | 2 |
+| binary.js:9:1:9:5 | 2 \| 3 | 1 | binary.js:9:5:9:5 | 3 |
+| binary.js:10:1:10:5 | 2 ^ 3 | 0 | binary.js:10:1:10:1 | 2 |
+| binary.js:10:1:10:5 | 2 ^ 3 | 1 | binary.js:10:5:10:5 | 3 |
+| binary.js:11:1:11:5 | 2 & 3 | 0 | binary.js:11:1:11:1 | 2 |
+| binary.js:11:1:11:5 | 2 & 3 | 1 | binary.js:11:5:11:5 | 3 |
+| binary.js:12:1:12:21 | 'protot ...  Object | 0 | binary.js:12:1:12:11 | 'prototype' |
+| binary.js:12:1:12:21 | 'protot ...  Object | 1 | binary.js:12:16:12:21 | Object |
+| binary.js:13:1:13:19 | [] instanceof Array | 0 | binary.js:13:1:13:2 | [] |
+| binary.js:13:1:13:19 | [] instanceof Array | 1 | binary.js:13:15:13:19 | Array |
+| binary.js:14:1:14:6 | 1 && 2 | 0 | binary.js:14:1:14:1 | 1 |
+| binary.js:14:1:14:6 | 1 && 2 | 1 | binary.js:14:6:14:6 | 2 |
+| binary.js:15:1:15:6 | 1 \|\| 2 | 0 | binary.js:15:1:15:1 | 1 |
+| binary.js:15:1:15:6 | 1 \|\| 2 | 1 | binary.js:15:6:15:6 | 2 |
+| comparison.js:1:1:1:6 | 1 == 1 | 0 | comparison.js:1:1:1:1 | 1 |
+| comparison.js:1:1:1:6 | 1 == 1 | 1 | comparison.js:1:6:1:6 | 1 |
+| comparison.js:2:1:2:6 | 1 != 2 | 0 | comparison.js:2:1:2:1 | 1 |
+| comparison.js:2:1:2:6 | 1 != 2 | 1 | comparison.js:2:6:2:6 | 2 |
+| comparison.js:3:1:3:7 | 1 === 1 | 0 | comparison.js:3:1:3:1 | 1 |
+| comparison.js:3:1:3:7 | 1 === 1 | 1 | comparison.js:3:7:3:7 | 1 |
+| comparison.js:4:1:4:7 | 1 !== 2 | 0 | comparison.js:4:1:4:1 | 1 |
+| comparison.js:4:1:4:7 | 1 !== 2 | 1 | comparison.js:4:7:4:7 | 2 |
+| comparison.js:5:1:5:5 | 1 < 2 | 0 | comparison.js:5:1:5:1 | 1 |
+| comparison.js:5:1:5:5 | 1 < 2 | 1 | comparison.js:5:5:5:5 | 2 |
+| comparison.js:6:1:6:6 | 1 <= 2 | 0 | comparison.js:6:1:6:1 | 1 |
+| comparison.js:6:1:6:6 | 1 <= 2 | 1 | comparison.js:6:6:6:6 | 2 |
+| comparison.js:7:1:7:5 | 2 > 1 | 0 | comparison.js:7:1:7:1 | 2 |
+| comparison.js:7:1:7:5 | 2 > 1 | 1 | comparison.js:7:5:7:5 | 1 |
+| comparison.js:8:1:8:6 | 2 >= 1 | 0 | comparison.js:8:1:8:1 | 2 |
+| comparison.js:8:1:8:6 | 2 >= 1 | 1 | comparison.js:8:6:8:6 | 1 |
+| computedFieldNames.ts:1:7:1:19 | key1 = "key1" | 0 | computedFieldNames.ts:1:7:1:10 | key1 |
+| computedFieldNames.ts:1:7:1:19 | key1 = "key1" | 1 | computedFieldNames.ts:1:14:1:19 | "key1" |
+| computedFieldNames.ts:6:7:6:19 | key2 = "key2" | 0 | computedFieldNames.ts:6:7:6:10 | key2 |
+| computedFieldNames.ts:6:7:6:19 | key2 = "key2" | 1 | computedFieldNames.ts:6:14:6:19 | "key2" |
+| es2015.js:1:1:1:18 | ["a", "ab", "abc"] | 0 | es2015.js:1:2:1:4 | "a" |
+| es2015.js:1:1:1:18 | ["a", "ab", "abc"] | 1 | es2015.js:1:7:1:10 | "ab" |
+| es2015.js:1:1:1:18 | ["a", "ab", "abc"] | 2 | es2015.js:1:13:1:17 | "abc" |
+| es2015.js:1:1:1:22 | ["a", " ... c"].map | 0 | es2015.js:1:1:1:18 | ["a", "ab", "abc"] |
+| es2015.js:1:1:1:22 | ["a", " ... c"].map | 1 | es2015.js:1:20:1:22 | map |
+| es2015.js:1:1:1:37 | ["a", " ... length) | 0 | es2015.js:1:24:1:36 | s => s.length |
+| es2015.js:1:1:1:37 | ["a", " ... length) | -1 | es2015.js:1:1:1:22 | ["a", " ... c"].map |
+| es2015.js:1:24:1:36 | s => s.length | 0 | es2015.js:1:24:1:24 | s |
+| es2015.js:1:24:1:36 | s => s.length | -2 | es2015.js:1:29:1:36 | s.length |
+| es2015.js:1:29:1:36 | s.length | 0 | es2015.js:1:29:1:29 | s |
+| es2015.js:1:29:1:36 | s.length | 1 | es2015.js:1:31:1:36 | length |
+| es2015.js:2:1:2:30 | setInte ... , 1000) | 0 | es2015.js:2:13:2:23 | () => ++cnt |
+| es2015.js:2:1:2:30 | setInte ... , 1000) | 1 | es2015.js:2:26:2:29 | 1000 |
+| es2015.js:2:1:2:30 | setInte ... , 1000) | -1 | es2015.js:2:1:2:11 | setInterval |
+| es2015.js:2:13:2:23 | () => ++cnt | -2 | es2015.js:2:19:2:23 | ++cnt |
+| es2015.js:2:19:2:23 | ++cnt | 0 | es2015.js:2:21:2:23 | cnt |
+| es2015.js:3:1:3:47 | setTime ...  60000) | 0 | es2015.js:3:12:3:39 | () => { ... p!"); } |
+| es2015.js:3:1:3:47 | setTime ...  60000) | 1 | es2015.js:3:42:3:46 | 60000 |
+| es2015.js:3:1:3:47 | setTime ...  60000) | -1 | es2015.js:3:1:3:10 | setTimeout |
+| es2015.js:3:20:3:36 | alert("Wake up!") | 0 | es2015.js:3:26:3:35 | "Wake up!" |
+| es2015.js:3:20:3:36 | alert("Wake up!") | -1 | es2015.js:3:20:3:24 | alert |
+| es2015.js:5:1:5:10 | [a, ...as] | 0 | es2015.js:5:2:5:2 | a |
+| es2015.js:5:1:5:10 | [a, ...as] | 1 | es2015.js:5:5:5:9 | ...as |
+| es2015.js:5:5:5:9 | ...as | 0 | es2015.js:5:8:5:9 | as |
+| es2015.js:6:1:6:18 | new Array(...elts) | 0 | es2015.js:6:11:6:17 | ...elts |
+| es2015.js:6:1:6:18 | new Array(...elts) | -1 | es2015.js:6:5:6:9 | Array |
+| es2015.js:6:11:6:17 | ...elts | 0 | es2015.js:6:14:6:17 | elts |
+| es2015.js:8:12:8:17 | [x, y] | 0 | es2015.js:8:13:8:13 | x |
+| es2015.js:8:12:8:17 | [x, y] | 1 | es2015.js:8:16:8:16 | y |
+| es2015.js:9:6:9:15 | [a, [, c]] | 0 | es2015.js:9:7:9:7 | a |
+| es2015.js:9:6:9:15 | [a, [, c]] | 1 | es2015.js:9:10:9:14 | [, c] |
+| es2015.js:9:6:9:19 | [a, [, c]] = x | 0 | es2015.js:9:6:9:15 | [a, [, c]] |
+| es2015.js:9:6:9:19 | [a, [, c]] = x | 1 | es2015.js:9:19:9:19 | x |
+| es2015.js:9:10:9:14 | [, c] | 1 | es2015.js:9:13:9:13 | c |
+| es2015.js:11:9:11:14 | [a, c] | 0 | es2015.js:11:10:11:10 | a |
+| es2015.js:11:9:11:14 | [a, c] | 1 | es2015.js:11:13:11:13 | c |
+| es2015.js:13:3:13:13 | console.log | 0 | es2015.js:13:3:13:9 | console |
+| es2015.js:13:3:13:13 | console.log | 1 | es2015.js:13:11:13:13 | log |
+| es2015.js:13:3:13:16 | console.log(d) | 0 | es2015.js:13:15:13:15 | d |
+| es2015.js:13:3:13:16 | console.log(d) | -1 | es2015.js:13:3:13:13 | console.log |
+| es2015.js:18:6:18:19 | { [x]: w } = z | 0 | es2015.js:18:6:18:15 | { [x]: w } |
+| es2015.js:18:6:18:19 | { [x]: w } = z | 1 | es2015.js:18:19:18:19 | z |
+| es2015.js:23:8:23:10 | n-- | 0 | es2015.js:23:8:23:8 | n |
+| es2015.js:23:8:23:12 | n-->0 | 0 | es2015.js:23:8:23:10 | n-- |
+| es2015.js:23:8:23:12 | n-->0 | 1 | es2015.js:23:12:23:12 | 0 |
+| es2015.js:24:3:24:9 | yield n | 0 | es2015.js:24:9:24:9 | n |
+| es2015.js:25:2:25:14 | yield* foo(1) | 0 | es2015.js:25:9:25:14 | foo(1) |
+| es2015.js:25:9:25:14 | foo(1) | 0 | es2015.js:25:13:25:13 | 1 |
+| es2015.js:25:9:25:14 | foo(1) | -1 | es2015.js:25:9:25:11 | foo |
+| es2015.js:28:19:28:22 | x+19 | 0 | es2015.js:28:19:28:19 | x |
+| es2015.js:28:19:28:22 | x+19 | 1 | es2015.js:28:21:28:22 | 19 |
+| functions.js:4:3:6:4 | (functi ... f;\\n\\t\\t}) | 0 | functions.js:4:4:6:3 | functio ... _f;\\n\\t\\t} |
+| functions.js:4:3:8:4 | (functi ... in\\n\\t\\t}) | 0 | functions.js:6:6:8:3 | {\\n\\t\\t\\tx: ... ain\\n\\t\\t} |
+| functions.js:4:3:8:4 | (functi ... in\\n\\t\\t}) | -1 | functions.js:4:3:6:4 | (functi ... f;\\n\\t\\t}) |
+| legacyletexpr.js:1:1:1:11 | console.log | 0 | legacyletexpr.js:1:1:1:7 | console |
+| legacyletexpr.js:1:1:1:11 | console.log | 1 | legacyletexpr.js:1:9:1:11 | log |
+| legacyletexpr.js:1:1:1:39 | console ...  x + y) | 0 | legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y |
+| legacyletexpr.js:1:1:1:39 | console ...  x + y) | -1 | legacyletexpr.js:1:1:1:11 | console.log |
+| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | 0 | legacyletexpr.js:1:18:1:23 | x = 23 |
+| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | 1 | legacyletexpr.js:1:26:1:31 | y = 19 |
+| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | -1 | legacyletexpr.js:1:34:1:38 | x + y |
+| legacyletexpr.js:1:18:1:23 | x = 23 | 0 | legacyletexpr.js:1:18:1:18 | x |
+| legacyletexpr.js:1:18:1:23 | x = 23 | 1 | legacyletexpr.js:1:22:1:23 | 23 |
+| legacyletexpr.js:1:26:1:31 | y = 19 | 0 | legacyletexpr.js:1:26:1:26 | y |
+| legacyletexpr.js:1:26:1:31 | y = 19 | 1 | legacyletexpr.js:1:30:1:31 | 19 |
+| legacyletexpr.js:1:34:1:38 | x + y | 0 | legacyletexpr.js:1:34:1:34 | x |
+| legacyletexpr.js:1:34:1:38 | x + y | 1 | legacyletexpr.js:1:38:1:38 | y |
+| mozextensions.js:1:1:1:9 | array.map | 0 | mozextensions.js:1:1:1:5 | array |
+| mozextensions.js:1:1:1:9 | array.map | 1 | mozextensions.js:1:7:1:9 | map |
+| mozextensions.js:1:1:1:26 | array.m ... x) x+1) | 0 | mozextensions.js:1:11:1:25 | function(x) x+1 |
+| mozextensions.js:1:1:1:26 | array.m ... x) x+1) | -1 | mozextensions.js:1:1:1:9 | array.map |
+| mozextensions.js:1:11:1:25 | function(x) x+1 | 0 | mozextensions.js:1:20:1:20 | x |
+| mozextensions.js:1:11:1:25 | function(x) x+1 | -2 | mozextensions.js:1:23:1:25 | x+1 |
+| mozextensions.js:1:23:1:25 | x+1 | 0 | mozextensions.js:1:23:1:23 | x |
+| mozextensions.js:1:23:1:25 | x+1 | 1 | mozextensions.js:1:25:1:25 | 1 |
+| nullSensitiveContexts.js:7:1:7:8 | foo[bar] | 0 | nullSensitiveContexts.js:7:1:7:3 | foo |
+| nullSensitiveContexts.js:7:1:7:8 | foo[bar] | 1 | nullSensitiveContexts.js:7:5:7:7 | bar |
+| nullSensitiveContexts.js:8:1:8:7 | foo.bar | 0 | nullSensitiveContexts.js:8:1:8:3 | foo |
+| nullSensitiveContexts.js:8:1:8:7 | foo.bar | 1 | nullSensitiveContexts.js:8:5:8:7 | bar |
+| nullSensitiveContexts.js:9:1:9:7 | new Foo | -1 | nullSensitiveContexts.js:9:5:9:7 | Foo |
+| nullSensitiveContexts.js:10:1:10:9 | new Foo() | -1 | nullSensitiveContexts.js:10:5:10:7 | Foo |
+| nullSensitiveContexts.js:11:1:11:7 | foo.bar | 0 | nullSensitiveContexts.js:11:1:11:3 | foo |
+| nullSensitiveContexts.js:11:1:11:7 | foo.bar | 1 | nullSensitiveContexts.js:11:5:11:7 | bar |
+| nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 | 0 | nullSensitiveContexts.js:11:1:11:7 | foo.bar |
+| nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 | 1 | nullSensitiveContexts.js:11:11:11:11 | 5 |
+| nullSensitiveContexts.js:12:1:12:8 | foo(bar) | 0 | nullSensitiveContexts.js:12:5:12:7 | bar |
+| nullSensitiveContexts.js:12:1:12:8 | foo(bar) | -1 | nullSensitiveContexts.js:12:1:12:3 | foo |
+| nullSensitiveContexts.js:13:1:13:5 | x + y | 0 | nullSensitiveContexts.js:13:1:13:1 | x |
+| nullSensitiveContexts.js:13:1:13:5 | x + y | 1 | nullSensitiveContexts.js:13:5:13:5 | y |
+| nullSensitiveContexts.js:14:1:14:5 | x - y | 0 | nullSensitiveContexts.js:14:1:14:1 | x |
+| nullSensitiveContexts.js:14:1:14:5 | x - y | 1 | nullSensitiveContexts.js:14:5:14:5 | y |
+| nullSensitiveContexts.js:15:1:15:5 | x * y | 0 | nullSensitiveContexts.js:15:1:15:1 | x |
+| nullSensitiveContexts.js:15:1:15:5 | x * y | 1 | nullSensitiveContexts.js:15:5:15:5 | y |
+| nullSensitiveContexts.js:16:1:16:5 | x / y | 0 | nullSensitiveContexts.js:16:1:16:1 | x |
+| nullSensitiveContexts.js:16:1:16:5 | x / y | 1 | nullSensitiveContexts.js:16:5:16:5 | y |
+| nullSensitiveContexts.js:17:1:17:5 | x % y | 0 | nullSensitiveContexts.js:17:1:17:1 | x |
+| nullSensitiveContexts.js:17:1:17:5 | x % y | 1 | nullSensitiveContexts.js:17:5:17:5 | y |
+| nullSensitiveContexts.js:18:1:18:2 | +x | 0 | nullSensitiveContexts.js:18:2:18:2 | x |
+| nullSensitiveContexts.js:19:1:19:2 | -x | 0 | nullSensitiveContexts.js:19:2:19:2 | x |
+| nullSensitiveContexts.js:20:1:20:3 | ++x | 0 | nullSensitiveContexts.js:20:3:20:3 | x |
+| nullSensitiveContexts.js:21:1:21:3 | x++ | 0 | nullSensitiveContexts.js:21:1:21:1 | x |
+| nullSensitiveContexts.js:22:1:22:3 | --x | 0 | nullSensitiveContexts.js:22:3:22:3 | x |
+| nullSensitiveContexts.js:23:1:23:3 | x-- | 0 | nullSensitiveContexts.js:23:1:23:1 | x |
+| nullSensitiveContexts.js:24:1:24:6 | x += y | 0 | nullSensitiveContexts.js:24:1:24:1 | x |
+| nullSensitiveContexts.js:24:1:24:6 | x += y | 1 | nullSensitiveContexts.js:24:6:24:6 | y |
+| nullSensitiveContexts.js:25:1:25:6 | x -= y | 0 | nullSensitiveContexts.js:25:1:25:1 | x |
+| nullSensitiveContexts.js:25:1:25:6 | x -= y | 1 | nullSensitiveContexts.js:25:6:25:6 | y |
+| nullSensitiveContexts.js:26:1:26:6 | x *= y | 0 | nullSensitiveContexts.js:26:1:26:1 | x |
+| nullSensitiveContexts.js:26:1:26:6 | x *= y | 1 | nullSensitiveContexts.js:26:6:26:6 | y |
+| nullSensitiveContexts.js:27:1:27:6 | x /= y | 0 | nullSensitiveContexts.js:27:1:27:1 | x |
+| nullSensitiveContexts.js:27:1:27:6 | x /= y | 1 | nullSensitiveContexts.js:27:6:27:6 | y |
+| nullSensitiveContexts.js:28:1:28:6 | x %= y | 0 | nullSensitiveContexts.js:28:1:28:1 | x |
+| nullSensitiveContexts.js:28:1:28:6 | x %= y | 1 | nullSensitiveContexts.js:28:6:28:6 | y |
+| nullSensitiveContexts.js:29:1:29:7 | [x , y] | 0 | nullSensitiveContexts.js:29:2:29:2 | x |
+| nullSensitiveContexts.js:29:1:29:7 | [x , y] | 1 | nullSensitiveContexts.js:29:6:29:6 | y |
+| nullSensitiveContexts.js:29:1:29:11 | [x , y] = p | 0 | nullSensitiveContexts.js:29:1:29:7 | [x , y] |
+| nullSensitiveContexts.js:29:1:29:11 | [x , y] = p | 1 | nullSensitiveContexts.js:29:11:29:11 | p |
+| nullSensitiveContexts.js:31:1:31:5 | x & y | 0 | nullSensitiveContexts.js:31:1:31:1 | x |
+| nullSensitiveContexts.js:31:1:31:5 | x & y | 1 | nullSensitiveContexts.js:31:5:31:5 | y |
+| nullSensitiveContexts.js:32:1:32:5 | x \| y | 0 | nullSensitiveContexts.js:32:1:32:1 | x |
+| nullSensitiveContexts.js:32:1:32:5 | x \| y | 1 | nullSensitiveContexts.js:32:5:32:5 | y |
+| nullSensitiveContexts.js:33:1:33:5 | x ^ y | 0 | nullSensitiveContexts.js:33:1:33:1 | x |
+| nullSensitiveContexts.js:33:1:33:5 | x ^ y | 1 | nullSensitiveContexts.js:33:5:33:5 | y |
+| nullSensitiveContexts.js:34:1:34:6 | x << y | 0 | nullSensitiveContexts.js:34:1:34:1 | x |
+| nullSensitiveContexts.js:34:1:34:6 | x << y | 1 | nullSensitiveContexts.js:34:6:34:6 | y |
+| nullSensitiveContexts.js:35:1:35:6 | x >> y | 0 | nullSensitiveContexts.js:35:1:35:1 | x |
+| nullSensitiveContexts.js:35:1:35:6 | x >> y | 1 | nullSensitiveContexts.js:35:6:35:6 | y |
+| nullSensitiveContexts.js:36:1:36:7 | x >>> y | 0 | nullSensitiveContexts.js:36:1:36:1 | x |
+| nullSensitiveContexts.js:36:1:36:7 | x >>> y | 1 | nullSensitiveContexts.js:36:7:36:7 | y |
+| nullSensitiveContexts.js:37:1:37:2 | ~x | 0 | nullSensitiveContexts.js:37:2:37:2 | x |
+| nullSensitiveContexts.js:38:1:38:6 | x &= y | 0 | nullSensitiveContexts.js:38:1:38:1 | x |
+| nullSensitiveContexts.js:38:1:38:6 | x &= y | 1 | nullSensitiveContexts.js:38:6:38:6 | y |
+| nullSensitiveContexts.js:39:1:39:6 | x \|= y | 0 | nullSensitiveContexts.js:39:1:39:1 | x |
+| nullSensitiveContexts.js:39:1:39:6 | x \|= y | 1 | nullSensitiveContexts.js:39:6:39:6 | y |
+| nullSensitiveContexts.js:40:1:40:6 | x ^= y | 0 | nullSensitiveContexts.js:40:1:40:1 | x |
+| nullSensitiveContexts.js:40:1:40:6 | x ^= y | 1 | nullSensitiveContexts.js:40:6:40:6 | y |
+| nullSensitiveContexts.js:41:1:41:7 | x <<= y | 0 | nullSensitiveContexts.js:41:1:41:1 | x |
+| nullSensitiveContexts.js:41:1:41:7 | x <<= y | 1 | nullSensitiveContexts.js:41:7:41:7 | y |
+| nullSensitiveContexts.js:42:1:42:7 | x >>= y | 0 | nullSensitiveContexts.js:42:1:42:1 | x |
+| nullSensitiveContexts.js:42:1:42:7 | x >>= y | 1 | nullSensitiveContexts.js:42:7:42:7 | y |
+| nullSensitiveContexts.js:43:1:43:8 | x >>>= y | 0 | nullSensitiveContexts.js:43:1:43:1 | x |
+| nullSensitiveContexts.js:43:1:43:8 | x >>>= y | 1 | nullSensitiveContexts.js:43:8:43:8 | y |
+| nullSensitiveContexts.js:44:10:44:10 | x | 0 | nullSensitiveContexts.js:44:10:44:10 | x |
+| nullSensitiveContexts.js:54:1:54:6 | x && y | 0 | nullSensitiveContexts.js:54:1:54:1 | x |
+| nullSensitiveContexts.js:54:1:54:6 | x && y | 1 | nullSensitiveContexts.js:54:6:54:6 | y |
+| nullSensitiveContexts.js:55:1:55:6 | x \|\| y | 0 | nullSensitiveContexts.js:55:1:55:1 | x |
+| nullSensitiveContexts.js:55:1:55:6 | x \|\| y | 1 | nullSensitiveContexts.js:55:6:55:6 | y |
+| nullSensitiveContexts.js:56:1:56:2 | !x | 0 | nullSensitiveContexts.js:56:2:56:2 | x |
+| nullSensitiveContexts.js:60:10:60:10 | x | 0 | nullSensitiveContexts.js:60:10:60:10 | x |
+| others.js:1:1:1:6 | 23, 42 | 0 | others.js:1:1:1:2 | 23 |
+| others.js:1:1:1:6 | 23, 42 | 1 | others.js:1:5:1:6 | 42 |
+| others.js:2:1:2:10 | 23, 42, 56 | 0 | others.js:2:1:2:2 | 23 |
+| others.js:2:1:2:10 | 23, 42, 56 | 1 | others.js:2:5:2:6 | 42 |
+| others.js:2:1:2:10 | 23, 42, 56 | 2 | others.js:2:9:2:10 | 56 |
+| others.js:3:1:3:12 | true ? 0 : 1 | 0 | others.js:3:1:3:4 | true |
+| others.js:3:1:3:12 | true ? 0 : 1 | 1 | others.js:3:8:3:8 | 0 |
+| others.js:3:1:3:12 | true ? 0 : 1 | 2 | others.js:3:12:3:12 | 1 |
+| others.js:4:10:4:10 | p | 0 | others.js:4:10:4:10 | p |
+| primaries.js:15:1:15:4 | (23) | 0 | primaries.js:15:2:15:3 | 23 |
+| primaries.js:16:1:16:17 | [23, 42, , "hi" ] | 0 | primaries.js:16:2:16:3 | 23 |
+| primaries.js:16:1:16:17 | [23, 42, , "hi" ] | 1 | primaries.js:16:6:16:7 | 42 |
+| primaries.js:16:1:16:17 | [23, 42, , "hi" ] | 3 | primaries.js:16:12:16:15 | "hi" |
+| primaries.js:17:1:21:16 | ({ x: 2 ... v) {}}) | 0 | primaries.js:17:2:21:15 | { x: 23 ... (v) {}} |
+| primaries.js:21:9:21:14 | (v) {} | 0 | primaries.js:21:10:21:10 | v |
+| primaries.js:22:1:22:9 | new Array | -1 | primaries.js:22:5:22:9 | Array |
+| primaries.js:23:1:23:12 | new Object() | -1 | primaries.js:23:5:23:10 | Object |
+| primaries.js:24:1:24:16 | new String("hi") | 0 | primaries.js:24:12:24:15 | "hi" |
+| primaries.js:24:1:24:16 | new String("hi") | -1 | primaries.js:24:5:24:10 | String |
+| primaries.js:25:1:25:10 | String("") | 0 | primaries.js:25:8:25:9 | "" |
+| primaries.js:25:1:25:10 | String("") | -1 | primaries.js:25:1:25:6 | String |
+| primaries.js:26:1:26:13 | Object.create | 0 | primaries.js:26:1:26:6 | Object |
+| primaries.js:26:1:26:13 | Object.create | 1 | primaries.js:26:8:26:13 | create |
+| primaries.js:26:1:26:17 | Object.create({}) | 0 | primaries.js:26:15:26:16 | {} |
+| primaries.js:26:1:26:17 | Object.create({}) | -1 | primaries.js:26:1:26:13 | Object.create |
+| primaries.js:27:1:27:29 | String[ ... erse()] | 0 | primaries.js:27:1:27:6 | String |
+| primaries.js:27:1:27:29 | String[ ... erse()] | 1 | primaries.js:27:8:27:28 | 'epytot ... verse() |
+| primaries.js:27:8:27:26 | 'epytotorp'.reverse | 0 | primaries.js:27:8:27:18 | 'epytotorp' |
+| primaries.js:27:8:27:26 | 'epytotorp'.reverse | 1 | primaries.js:27:20:27:26 | reverse |
+| primaries.js:27:8:27:28 | 'epytot ... verse() | -1 | primaries.js:27:8:27:26 | 'epytotorp'.reverse |
+| primaries.js:28:1:28:6 | ((42)) | 0 | primaries.js:28:2:28:5 | (42) |
+| primaries.js:28:2:28:5 | (42) | 0 | primaries.js:28:3:28:4 | 42 |
+| surrogates.js:1:5:1:16 | a = "\\ud800" | 0 | surrogates.js:1:5:1:5 | a |
+| surrogates.js:1:5:1:16 | a = "\\ud800" | 1 | surrogates.js:1:9:1:16 | "\\ud800" |
+| surrogates.js:2:1:2:13 | /\\uD800/.test | 0 | surrogates.js:2:1:2:8 | /\\uD800/ |
+| surrogates.js:2:1:2:13 | /\\uD800/.test | 1 | surrogates.js:2:10:2:13 | test |
+| surrogates.js:2:1:2:16 | /\\uD800/.test(a) | 0 | surrogates.js:2:15:2:15 | a |
+| surrogates.js:2:1:2:16 | /\\uD800/.test(a) | -1 | surrogates.js:2:1:2:13 | /\\uD800/.test |
+| unary.js:1:1:1:3 | -23 | 0 | unary.js:1:2:1:3 | 23 |
+| unary.js:2:1:2:3 | +42 | 0 | unary.js:2:2:2:3 | 42 |
+| unary.js:3:1:3:5 | !true | 0 | unary.js:3:2:3:5 | true |
+| unary.js:4:1:4:2 | ~2 | 0 | unary.js:4:2:4:2 | 2 |
+| unary.js:5:1:5:13 | typeof Object | 0 | unary.js:5:8:5:13 | Object |
+| unary.js:6:1:6:7 | void(0) | 0 | unary.js:6:5:6:7 | (0) |
+| unary.js:6:5:6:7 | (0) | 0 | unary.js:6:6:6:6 | 0 |
+| unary.js:7:1:7:23 | delete  ... ototype | 0 | unary.js:7:8:7:23 | Object.prototype |
+| unary.js:7:8:7:23 | Object.prototype | 0 | unary.js:7:8:7:13 | Object |
+| unary.js:7:8:7:23 | Object.prototype | 1 | unary.js:7:15:7:23 | prototype |
+| update.js:1:1:1:3 | ++a | 0 | update.js:1:3:1:3 | a |
+| update.js:2:1:2:3 | a++ | 0 | update.js:2:1:2:1 | a |
+| update.js:3:1:3:3 | --b | 0 | update.js:3:3:3:3 | b |
+| update.js:4:1:4:3 | b-- | 0 | update.js:4:1:4:1 | b |
+test_YieldExpr
+| es2015.js:24:3:24:9 | yield n | not delegating |
+| es2015.js:25:2:25:14 | yield* foo(1) | delegating |
 test_getParent
 | assignment2.ts:1:5:1:5 | a | assignment2.ts:1:5:1:9 | a = 2 |
 | assignment2.ts:1:5:1:9 | a = 2 | assignment2.ts:1:1:1:10 | let a = 2; |
@@ -978,798 +1686,6 @@ test_getTopLevel
 | update.js:3:3:3:3 | b | update.js:1:1:5:0 | <toplevel> |
 | update.js:4:1:4:1 | b | update.js:1:1:5:0 | <toplevel> |
 | update.js:4:1:4:3 | b-- | update.js:1:1:5:0 | <toplevel> |
-test_getChild
-| assignment2.ts:1:5:1:9 | a = 2 | 0 | assignment2.ts:1:5:1:5 | a |
-| assignment2.ts:1:5:1:9 | a = 2 | 1 | assignment2.ts:1:9:1:9 | 2 |
-| assignment2.ts:2:5:2:9 | b = 3 | 0 | assignment2.ts:2:5:2:5 | b |
-| assignment2.ts:2:5:2:9 | b = 3 | 1 | assignment2.ts:2:9:2:9 | 3 |
-| assignment2.ts:4:1:4:6 | a = 23 | 0 | assignment2.ts:4:1:4:1 | a |
-| assignment2.ts:4:1:4:6 | a = 23 | 1 | assignment2.ts:4:5:4:6 | 23 |
-| assignment2.ts:5:1:5:7 | a += 19 | 0 | assignment2.ts:5:1:5:1 | a |
-| assignment2.ts:5:1:5:7 | a += 19 | 1 | assignment2.ts:5:6:5:7 | 19 |
-| assignment2.ts:7:1:7:7 | a &&= 4 | 0 | assignment2.ts:7:1:7:1 | a |
-| assignment2.ts:7:1:7:7 | a &&= 4 | 1 | assignment2.ts:7:7:7:7 | 4 |
-| assignment2.ts:8:1:8:7 | a \|\|= 5 | 0 | assignment2.ts:8:1:8:1 | a |
-| assignment2.ts:8:1:8:7 | a \|\|= 5 | 1 | assignment2.ts:8:7:8:7 | 5 |
-| assignment2.ts:9:1:9:7 | a ??= 6 | 0 | assignment2.ts:9:1:9:1 | a |
-| assignment2.ts:9:1:9:7 | a ??= 6 | 1 | assignment2.ts:9:7:9:7 | 6 |
-| assignment.js:1:1:1:6 | a = 23 | 0 | assignment.js:1:1:1:1 | a |
-| assignment.js:1:1:1:6 | a = 23 | 1 | assignment.js:1:5:1:6 | 23 |
-| assignment.js:2:1:2:7 | a += 19 | 0 | assignment.js:2:1:2:1 | a |
-| assignment.js:2:1:2:7 | a += 19 | 1 | assignment.js:2:6:2:7 | 19 |
-| assignment.js:3:1:3:6 | a -= 9 | 0 | assignment.js:3:1:3:1 | a |
-| assignment.js:3:1:3:6 | a -= 9 | 1 | assignment.js:3:6:3:6 | 9 |
-| assignment.js:4:1:4:6 | a *= b | 0 | assignment.js:4:1:4:1 | a |
-| assignment.js:4:1:4:6 | a *= b | 1 | assignment.js:4:6:4:6 | b |
-| assignment.js:5:1:5:6 | a /= 2 | 0 | assignment.js:5:1:5:1 | a |
-| assignment.js:5:1:5:6 | a /= 2 | 1 | assignment.js:5:6:5:6 | 2 |
-| assignment.js:6:1:6:6 | a %= 2 | 0 | assignment.js:6:1:6:1 | a |
-| assignment.js:6:1:6:6 | a %= 2 | 1 | assignment.js:6:6:6:6 | 2 |
-| assignment.js:7:1:7:7 | a <<= 8 | 0 | assignment.js:7:1:7:1 | a |
-| assignment.js:7:1:7:7 | a <<= 8 | 1 | assignment.js:7:7:7:7 | 8 |
-| assignment.js:8:1:8:7 | a >>= 7 | 0 | assignment.js:8:1:8:1 | a |
-| assignment.js:8:1:8:7 | a >>= 7 | 1 | assignment.js:8:7:8:7 | 7 |
-| assignment.js:9:1:9:8 | a >>>= 2 | 0 | assignment.js:9:1:9:1 | a |
-| assignment.js:9:1:9:8 | a >>>= 2 | 1 | assignment.js:9:8:9:8 | 2 |
-| assignment.js:10:1:10:6 | a \|= 2 | 0 | assignment.js:10:1:10:1 | a |
-| assignment.js:10:1:10:6 | a \|= 2 | 1 | assignment.js:10:6:10:6 | 2 |
-| assignment.js:11:1:11:6 | a ^= 1 | 0 | assignment.js:11:1:11:1 | a |
-| assignment.js:11:1:11:6 | a ^= 1 | 1 | assignment.js:11:6:11:6 | 1 |
-| assignment.js:12:1:12:6 | a &= 3 | 0 | assignment.js:12:1:12:1 | a |
-| assignment.js:12:1:12:6 | a &= 3 | 1 | assignment.js:12:6:12:6 | 3 |
-| binary.js:1:1:1:6 | 1 << 2 | 0 | binary.js:1:1:1:1 | 1 |
-| binary.js:1:1:1:6 | 1 << 2 | 1 | binary.js:1:6:1:6 | 2 |
-| binary.js:2:1:2:6 | 2 >> 1 | 0 | binary.js:2:1:2:1 | 2 |
-| binary.js:2:1:2:6 | 2 >> 1 | 1 | binary.js:2:6:2:6 | 1 |
-| binary.js:3:1:3:7 | 2 >>> 1 | 0 | binary.js:3:1:3:1 | 2 |
-| binary.js:3:1:3:7 | 2 >>> 1 | 1 | binary.js:3:7:3:7 | 1 |
-| binary.js:4:1:4:7 | 23 + 19 | 0 | binary.js:4:1:4:2 | 23 |
-| binary.js:4:1:4:7 | 23 + 19 | 1 | binary.js:4:6:4:7 | 19 |
-| binary.js:5:1:5:7 | 42 - 19 | 0 | binary.js:5:1:5:2 | 42 |
-| binary.js:5:1:5:7 | 42 - 19 | 1 | binary.js:5:6:5:7 | 19 |
-| binary.js:6:1:6:5 | 2 * 3 | 0 | binary.js:6:1:6:1 | 2 |
-| binary.js:6:1:6:5 | 2 * 3 | 1 | binary.js:6:5:6:5 | 3 |
-| binary.js:7:1:7:5 | 8 / 5 | 0 | binary.js:7:1:7:1 | 8 |
-| binary.js:7:1:7:5 | 8 / 5 | 1 | binary.js:7:5:7:5 | 5 |
-| binary.js:8:1:8:5 | 2 % 1 | 0 | binary.js:8:1:8:1 | 2 |
-| binary.js:8:1:8:5 | 2 % 1 | 1 | binary.js:8:5:8:5 | 1 |
-| binary.js:9:1:9:5 | 2 \| 3 | 0 | binary.js:9:1:9:1 | 2 |
-| binary.js:9:1:9:5 | 2 \| 3 | 1 | binary.js:9:5:9:5 | 3 |
-| binary.js:10:1:10:5 | 2 ^ 3 | 0 | binary.js:10:1:10:1 | 2 |
-| binary.js:10:1:10:5 | 2 ^ 3 | 1 | binary.js:10:5:10:5 | 3 |
-| binary.js:11:1:11:5 | 2 & 3 | 0 | binary.js:11:1:11:1 | 2 |
-| binary.js:11:1:11:5 | 2 & 3 | 1 | binary.js:11:5:11:5 | 3 |
-| binary.js:12:1:12:21 | 'protot ...  Object | 0 | binary.js:12:1:12:11 | 'prototype' |
-| binary.js:12:1:12:21 | 'protot ...  Object | 1 | binary.js:12:16:12:21 | Object |
-| binary.js:13:1:13:19 | [] instanceof Array | 0 | binary.js:13:1:13:2 | [] |
-| binary.js:13:1:13:19 | [] instanceof Array | 1 | binary.js:13:15:13:19 | Array |
-| binary.js:14:1:14:6 | 1 && 2 | 0 | binary.js:14:1:14:1 | 1 |
-| binary.js:14:1:14:6 | 1 && 2 | 1 | binary.js:14:6:14:6 | 2 |
-| binary.js:15:1:15:6 | 1 \|\| 2 | 0 | binary.js:15:1:15:1 | 1 |
-| binary.js:15:1:15:6 | 1 \|\| 2 | 1 | binary.js:15:6:15:6 | 2 |
-| comparison.js:1:1:1:6 | 1 == 1 | 0 | comparison.js:1:1:1:1 | 1 |
-| comparison.js:1:1:1:6 | 1 == 1 | 1 | comparison.js:1:6:1:6 | 1 |
-| comparison.js:2:1:2:6 | 1 != 2 | 0 | comparison.js:2:1:2:1 | 1 |
-| comparison.js:2:1:2:6 | 1 != 2 | 1 | comparison.js:2:6:2:6 | 2 |
-| comparison.js:3:1:3:7 | 1 === 1 | 0 | comparison.js:3:1:3:1 | 1 |
-| comparison.js:3:1:3:7 | 1 === 1 | 1 | comparison.js:3:7:3:7 | 1 |
-| comparison.js:4:1:4:7 | 1 !== 2 | 0 | comparison.js:4:1:4:1 | 1 |
-| comparison.js:4:1:4:7 | 1 !== 2 | 1 | comparison.js:4:7:4:7 | 2 |
-| comparison.js:5:1:5:5 | 1 < 2 | 0 | comparison.js:5:1:5:1 | 1 |
-| comparison.js:5:1:5:5 | 1 < 2 | 1 | comparison.js:5:5:5:5 | 2 |
-| comparison.js:6:1:6:6 | 1 <= 2 | 0 | comparison.js:6:1:6:1 | 1 |
-| comparison.js:6:1:6:6 | 1 <= 2 | 1 | comparison.js:6:6:6:6 | 2 |
-| comparison.js:7:1:7:5 | 2 > 1 | 0 | comparison.js:7:1:7:1 | 2 |
-| comparison.js:7:1:7:5 | 2 > 1 | 1 | comparison.js:7:5:7:5 | 1 |
-| comparison.js:8:1:8:6 | 2 >= 1 | 0 | comparison.js:8:1:8:1 | 2 |
-| comparison.js:8:1:8:6 | 2 >= 1 | 1 | comparison.js:8:6:8:6 | 1 |
-| computedFieldNames.ts:1:7:1:19 | key1 = "key1" | 0 | computedFieldNames.ts:1:7:1:10 | key1 |
-| computedFieldNames.ts:1:7:1:19 | key1 = "key1" | 1 | computedFieldNames.ts:1:14:1:19 | "key1" |
-| computedFieldNames.ts:6:7:6:19 | key2 = "key2" | 0 | computedFieldNames.ts:6:7:6:10 | key2 |
-| computedFieldNames.ts:6:7:6:19 | key2 = "key2" | 1 | computedFieldNames.ts:6:14:6:19 | "key2" |
-| es2015.js:1:1:1:18 | ["a", "ab", "abc"] | 0 | es2015.js:1:2:1:4 | "a" |
-| es2015.js:1:1:1:18 | ["a", "ab", "abc"] | 1 | es2015.js:1:7:1:10 | "ab" |
-| es2015.js:1:1:1:18 | ["a", "ab", "abc"] | 2 | es2015.js:1:13:1:17 | "abc" |
-| es2015.js:1:1:1:22 | ["a", " ... c"].map | 0 | es2015.js:1:1:1:18 | ["a", "ab", "abc"] |
-| es2015.js:1:1:1:22 | ["a", " ... c"].map | 1 | es2015.js:1:20:1:22 | map |
-| es2015.js:1:1:1:37 | ["a", " ... length) | 0 | es2015.js:1:24:1:36 | s => s.length |
-| es2015.js:1:1:1:37 | ["a", " ... length) | -1 | es2015.js:1:1:1:22 | ["a", " ... c"].map |
-| es2015.js:1:24:1:36 | s => s.length | 0 | es2015.js:1:24:1:24 | s |
-| es2015.js:1:24:1:36 | s => s.length | -2 | es2015.js:1:29:1:36 | s.length |
-| es2015.js:1:29:1:36 | s.length | 0 | es2015.js:1:29:1:29 | s |
-| es2015.js:1:29:1:36 | s.length | 1 | es2015.js:1:31:1:36 | length |
-| es2015.js:2:1:2:30 | setInte ... , 1000) | 0 | es2015.js:2:13:2:23 | () => ++cnt |
-| es2015.js:2:1:2:30 | setInte ... , 1000) | 1 | es2015.js:2:26:2:29 | 1000 |
-| es2015.js:2:1:2:30 | setInte ... , 1000) | -1 | es2015.js:2:1:2:11 | setInterval |
-| es2015.js:2:13:2:23 | () => ++cnt | -2 | es2015.js:2:19:2:23 | ++cnt |
-| es2015.js:2:19:2:23 | ++cnt | 0 | es2015.js:2:21:2:23 | cnt |
-| es2015.js:3:1:3:47 | setTime ...  60000) | 0 | es2015.js:3:12:3:39 | () => { ... p!"); } |
-| es2015.js:3:1:3:47 | setTime ...  60000) | 1 | es2015.js:3:42:3:46 | 60000 |
-| es2015.js:3:1:3:47 | setTime ...  60000) | -1 | es2015.js:3:1:3:10 | setTimeout |
-| es2015.js:3:20:3:36 | alert("Wake up!") | 0 | es2015.js:3:26:3:35 | "Wake up!" |
-| es2015.js:3:20:3:36 | alert("Wake up!") | -1 | es2015.js:3:20:3:24 | alert |
-| es2015.js:5:1:5:10 | [a, ...as] | 0 | es2015.js:5:2:5:2 | a |
-| es2015.js:5:1:5:10 | [a, ...as] | 1 | es2015.js:5:5:5:9 | ...as |
-| es2015.js:5:5:5:9 | ...as | 0 | es2015.js:5:8:5:9 | as |
-| es2015.js:6:1:6:18 | new Array(...elts) | 0 | es2015.js:6:11:6:17 | ...elts |
-| es2015.js:6:1:6:18 | new Array(...elts) | -1 | es2015.js:6:5:6:9 | Array |
-| es2015.js:6:11:6:17 | ...elts | 0 | es2015.js:6:14:6:17 | elts |
-| es2015.js:8:12:8:17 | [x, y] | 0 | es2015.js:8:13:8:13 | x |
-| es2015.js:8:12:8:17 | [x, y] | 1 | es2015.js:8:16:8:16 | y |
-| es2015.js:9:6:9:15 | [a, [, c]] | 0 | es2015.js:9:7:9:7 | a |
-| es2015.js:9:6:9:15 | [a, [, c]] | 1 | es2015.js:9:10:9:14 | [, c] |
-| es2015.js:9:6:9:19 | [a, [, c]] = x | 0 | es2015.js:9:6:9:15 | [a, [, c]] |
-| es2015.js:9:6:9:19 | [a, [, c]] = x | 1 | es2015.js:9:19:9:19 | x |
-| es2015.js:9:10:9:14 | [, c] | 1 | es2015.js:9:13:9:13 | c |
-| es2015.js:11:9:11:14 | [a, c] | 0 | es2015.js:11:10:11:10 | a |
-| es2015.js:11:9:11:14 | [a, c] | 1 | es2015.js:11:13:11:13 | c |
-| es2015.js:13:3:13:13 | console.log | 0 | es2015.js:13:3:13:9 | console |
-| es2015.js:13:3:13:13 | console.log | 1 | es2015.js:13:11:13:13 | log |
-| es2015.js:13:3:13:16 | console.log(d) | 0 | es2015.js:13:15:13:15 | d |
-| es2015.js:13:3:13:16 | console.log(d) | -1 | es2015.js:13:3:13:13 | console.log |
-| es2015.js:18:6:18:19 | { [x]: w } = z | 0 | es2015.js:18:6:18:15 | { [x]: w } |
-| es2015.js:18:6:18:19 | { [x]: w } = z | 1 | es2015.js:18:19:18:19 | z |
-| es2015.js:23:8:23:10 | n-- | 0 | es2015.js:23:8:23:8 | n |
-| es2015.js:23:8:23:12 | n-->0 | 0 | es2015.js:23:8:23:10 | n-- |
-| es2015.js:23:8:23:12 | n-->0 | 1 | es2015.js:23:12:23:12 | 0 |
-| es2015.js:24:3:24:9 | yield n | 0 | es2015.js:24:9:24:9 | n |
-| es2015.js:25:2:25:14 | yield* foo(1) | 0 | es2015.js:25:9:25:14 | foo(1) |
-| es2015.js:25:9:25:14 | foo(1) | 0 | es2015.js:25:13:25:13 | 1 |
-| es2015.js:25:9:25:14 | foo(1) | -1 | es2015.js:25:9:25:11 | foo |
-| es2015.js:28:19:28:22 | x+19 | 0 | es2015.js:28:19:28:19 | x |
-| es2015.js:28:19:28:22 | x+19 | 1 | es2015.js:28:21:28:22 | 19 |
-| functions.js:4:3:6:4 | (functi ... f;\\n\\t\\t}) | 0 | functions.js:4:4:6:3 | functio ... _f;\\n\\t\\t} |
-| functions.js:4:3:8:4 | (functi ... in\\n\\t\\t}) | 0 | functions.js:6:6:8:3 | {\\n\\t\\t\\tx: ... ain\\n\\t\\t} |
-| functions.js:4:3:8:4 | (functi ... in\\n\\t\\t}) | -1 | functions.js:4:3:6:4 | (functi ... f;\\n\\t\\t}) |
-| legacyletexpr.js:1:1:1:11 | console.log | 0 | legacyletexpr.js:1:1:1:7 | console |
-| legacyletexpr.js:1:1:1:11 | console.log | 1 | legacyletexpr.js:1:9:1:11 | log |
-| legacyletexpr.js:1:1:1:39 | console ...  x + y) | 0 | legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y |
-| legacyletexpr.js:1:1:1:39 | console ...  x + y) | -1 | legacyletexpr.js:1:1:1:11 | console.log |
-| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | 0 | legacyletexpr.js:1:18:1:23 | x = 23 |
-| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | 1 | legacyletexpr.js:1:26:1:31 | y = 19 |
-| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | -1 | legacyletexpr.js:1:34:1:38 | x + y |
-| legacyletexpr.js:1:18:1:23 | x = 23 | 0 | legacyletexpr.js:1:18:1:18 | x |
-| legacyletexpr.js:1:18:1:23 | x = 23 | 1 | legacyletexpr.js:1:22:1:23 | 23 |
-| legacyletexpr.js:1:26:1:31 | y = 19 | 0 | legacyletexpr.js:1:26:1:26 | y |
-| legacyletexpr.js:1:26:1:31 | y = 19 | 1 | legacyletexpr.js:1:30:1:31 | 19 |
-| legacyletexpr.js:1:34:1:38 | x + y | 0 | legacyletexpr.js:1:34:1:34 | x |
-| legacyletexpr.js:1:34:1:38 | x + y | 1 | legacyletexpr.js:1:38:1:38 | y |
-| mozextensions.js:1:1:1:9 | array.map | 0 | mozextensions.js:1:1:1:5 | array |
-| mozextensions.js:1:1:1:9 | array.map | 1 | mozextensions.js:1:7:1:9 | map |
-| mozextensions.js:1:1:1:26 | array.m ... x) x+1) | 0 | mozextensions.js:1:11:1:25 | function(x) x+1 |
-| mozextensions.js:1:1:1:26 | array.m ... x) x+1) | -1 | mozextensions.js:1:1:1:9 | array.map |
-| mozextensions.js:1:11:1:25 | function(x) x+1 | 0 | mozextensions.js:1:20:1:20 | x |
-| mozextensions.js:1:11:1:25 | function(x) x+1 | -2 | mozextensions.js:1:23:1:25 | x+1 |
-| mozextensions.js:1:23:1:25 | x+1 | 0 | mozextensions.js:1:23:1:23 | x |
-| mozextensions.js:1:23:1:25 | x+1 | 1 | mozextensions.js:1:25:1:25 | 1 |
-| nullSensitiveContexts.js:7:1:7:8 | foo[bar] | 0 | nullSensitiveContexts.js:7:1:7:3 | foo |
-| nullSensitiveContexts.js:7:1:7:8 | foo[bar] | 1 | nullSensitiveContexts.js:7:5:7:7 | bar |
-| nullSensitiveContexts.js:8:1:8:7 | foo.bar | 0 | nullSensitiveContexts.js:8:1:8:3 | foo |
-| nullSensitiveContexts.js:8:1:8:7 | foo.bar | 1 | nullSensitiveContexts.js:8:5:8:7 | bar |
-| nullSensitiveContexts.js:9:1:9:7 | new Foo | -1 | nullSensitiveContexts.js:9:5:9:7 | Foo |
-| nullSensitiveContexts.js:10:1:10:9 | new Foo() | -1 | nullSensitiveContexts.js:10:5:10:7 | Foo |
-| nullSensitiveContexts.js:11:1:11:7 | foo.bar | 0 | nullSensitiveContexts.js:11:1:11:3 | foo |
-| nullSensitiveContexts.js:11:1:11:7 | foo.bar | 1 | nullSensitiveContexts.js:11:5:11:7 | bar |
-| nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 | 0 | nullSensitiveContexts.js:11:1:11:7 | foo.bar |
-| nullSensitiveContexts.js:11:1:11:11 | foo.bar = 5 | 1 | nullSensitiveContexts.js:11:11:11:11 | 5 |
-| nullSensitiveContexts.js:12:1:12:8 | foo(bar) | 0 | nullSensitiveContexts.js:12:5:12:7 | bar |
-| nullSensitiveContexts.js:12:1:12:8 | foo(bar) | -1 | nullSensitiveContexts.js:12:1:12:3 | foo |
-| nullSensitiveContexts.js:13:1:13:5 | x + y | 0 | nullSensitiveContexts.js:13:1:13:1 | x |
-| nullSensitiveContexts.js:13:1:13:5 | x + y | 1 | nullSensitiveContexts.js:13:5:13:5 | y |
-| nullSensitiveContexts.js:14:1:14:5 | x - y | 0 | nullSensitiveContexts.js:14:1:14:1 | x |
-| nullSensitiveContexts.js:14:1:14:5 | x - y | 1 | nullSensitiveContexts.js:14:5:14:5 | y |
-| nullSensitiveContexts.js:15:1:15:5 | x * y | 0 | nullSensitiveContexts.js:15:1:15:1 | x |
-| nullSensitiveContexts.js:15:1:15:5 | x * y | 1 | nullSensitiveContexts.js:15:5:15:5 | y |
-| nullSensitiveContexts.js:16:1:16:5 | x / y | 0 | nullSensitiveContexts.js:16:1:16:1 | x |
-| nullSensitiveContexts.js:16:1:16:5 | x / y | 1 | nullSensitiveContexts.js:16:5:16:5 | y |
-| nullSensitiveContexts.js:17:1:17:5 | x % y | 0 | nullSensitiveContexts.js:17:1:17:1 | x |
-| nullSensitiveContexts.js:17:1:17:5 | x % y | 1 | nullSensitiveContexts.js:17:5:17:5 | y |
-| nullSensitiveContexts.js:18:1:18:2 | +x | 0 | nullSensitiveContexts.js:18:2:18:2 | x |
-| nullSensitiveContexts.js:19:1:19:2 | -x | 0 | nullSensitiveContexts.js:19:2:19:2 | x |
-| nullSensitiveContexts.js:20:1:20:3 | ++x | 0 | nullSensitiveContexts.js:20:3:20:3 | x |
-| nullSensitiveContexts.js:21:1:21:3 | x++ | 0 | nullSensitiveContexts.js:21:1:21:1 | x |
-| nullSensitiveContexts.js:22:1:22:3 | --x | 0 | nullSensitiveContexts.js:22:3:22:3 | x |
-| nullSensitiveContexts.js:23:1:23:3 | x-- | 0 | nullSensitiveContexts.js:23:1:23:1 | x |
-| nullSensitiveContexts.js:24:1:24:6 | x += y | 0 | nullSensitiveContexts.js:24:1:24:1 | x |
-| nullSensitiveContexts.js:24:1:24:6 | x += y | 1 | nullSensitiveContexts.js:24:6:24:6 | y |
-| nullSensitiveContexts.js:25:1:25:6 | x -= y | 0 | nullSensitiveContexts.js:25:1:25:1 | x |
-| nullSensitiveContexts.js:25:1:25:6 | x -= y | 1 | nullSensitiveContexts.js:25:6:25:6 | y |
-| nullSensitiveContexts.js:26:1:26:6 | x *= y | 0 | nullSensitiveContexts.js:26:1:26:1 | x |
-| nullSensitiveContexts.js:26:1:26:6 | x *= y | 1 | nullSensitiveContexts.js:26:6:26:6 | y |
-| nullSensitiveContexts.js:27:1:27:6 | x /= y | 0 | nullSensitiveContexts.js:27:1:27:1 | x |
-| nullSensitiveContexts.js:27:1:27:6 | x /= y | 1 | nullSensitiveContexts.js:27:6:27:6 | y |
-| nullSensitiveContexts.js:28:1:28:6 | x %= y | 0 | nullSensitiveContexts.js:28:1:28:1 | x |
-| nullSensitiveContexts.js:28:1:28:6 | x %= y | 1 | nullSensitiveContexts.js:28:6:28:6 | y |
-| nullSensitiveContexts.js:29:1:29:7 | [x , y] | 0 | nullSensitiveContexts.js:29:2:29:2 | x |
-| nullSensitiveContexts.js:29:1:29:7 | [x , y] | 1 | nullSensitiveContexts.js:29:6:29:6 | y |
-| nullSensitiveContexts.js:29:1:29:11 | [x , y] = p | 0 | nullSensitiveContexts.js:29:1:29:7 | [x , y] |
-| nullSensitiveContexts.js:29:1:29:11 | [x , y] = p | 1 | nullSensitiveContexts.js:29:11:29:11 | p |
-| nullSensitiveContexts.js:31:1:31:5 | x & y | 0 | nullSensitiveContexts.js:31:1:31:1 | x |
-| nullSensitiveContexts.js:31:1:31:5 | x & y | 1 | nullSensitiveContexts.js:31:5:31:5 | y |
-| nullSensitiveContexts.js:32:1:32:5 | x \| y | 0 | nullSensitiveContexts.js:32:1:32:1 | x |
-| nullSensitiveContexts.js:32:1:32:5 | x \| y | 1 | nullSensitiveContexts.js:32:5:32:5 | y |
-| nullSensitiveContexts.js:33:1:33:5 | x ^ y | 0 | nullSensitiveContexts.js:33:1:33:1 | x |
-| nullSensitiveContexts.js:33:1:33:5 | x ^ y | 1 | nullSensitiveContexts.js:33:5:33:5 | y |
-| nullSensitiveContexts.js:34:1:34:6 | x << y | 0 | nullSensitiveContexts.js:34:1:34:1 | x |
-| nullSensitiveContexts.js:34:1:34:6 | x << y | 1 | nullSensitiveContexts.js:34:6:34:6 | y |
-| nullSensitiveContexts.js:35:1:35:6 | x >> y | 0 | nullSensitiveContexts.js:35:1:35:1 | x |
-| nullSensitiveContexts.js:35:1:35:6 | x >> y | 1 | nullSensitiveContexts.js:35:6:35:6 | y |
-| nullSensitiveContexts.js:36:1:36:7 | x >>> y | 0 | nullSensitiveContexts.js:36:1:36:1 | x |
-| nullSensitiveContexts.js:36:1:36:7 | x >>> y | 1 | nullSensitiveContexts.js:36:7:36:7 | y |
-| nullSensitiveContexts.js:37:1:37:2 | ~x | 0 | nullSensitiveContexts.js:37:2:37:2 | x |
-| nullSensitiveContexts.js:38:1:38:6 | x &= y | 0 | nullSensitiveContexts.js:38:1:38:1 | x |
-| nullSensitiveContexts.js:38:1:38:6 | x &= y | 1 | nullSensitiveContexts.js:38:6:38:6 | y |
-| nullSensitiveContexts.js:39:1:39:6 | x \|= y | 0 | nullSensitiveContexts.js:39:1:39:1 | x |
-| nullSensitiveContexts.js:39:1:39:6 | x \|= y | 1 | nullSensitiveContexts.js:39:6:39:6 | y |
-| nullSensitiveContexts.js:40:1:40:6 | x ^= y | 0 | nullSensitiveContexts.js:40:1:40:1 | x |
-| nullSensitiveContexts.js:40:1:40:6 | x ^= y | 1 | nullSensitiveContexts.js:40:6:40:6 | y |
-| nullSensitiveContexts.js:41:1:41:7 | x <<= y | 0 | nullSensitiveContexts.js:41:1:41:1 | x |
-| nullSensitiveContexts.js:41:1:41:7 | x <<= y | 1 | nullSensitiveContexts.js:41:7:41:7 | y |
-| nullSensitiveContexts.js:42:1:42:7 | x >>= y | 0 | nullSensitiveContexts.js:42:1:42:1 | x |
-| nullSensitiveContexts.js:42:1:42:7 | x >>= y | 1 | nullSensitiveContexts.js:42:7:42:7 | y |
-| nullSensitiveContexts.js:43:1:43:8 | x >>>= y | 0 | nullSensitiveContexts.js:43:1:43:1 | x |
-| nullSensitiveContexts.js:43:1:43:8 | x >>>= y | 1 | nullSensitiveContexts.js:43:8:43:8 | y |
-| nullSensitiveContexts.js:44:10:44:10 | x | 0 | nullSensitiveContexts.js:44:10:44:10 | x |
-| nullSensitiveContexts.js:54:1:54:6 | x && y | 0 | nullSensitiveContexts.js:54:1:54:1 | x |
-| nullSensitiveContexts.js:54:1:54:6 | x && y | 1 | nullSensitiveContexts.js:54:6:54:6 | y |
-| nullSensitiveContexts.js:55:1:55:6 | x \|\| y | 0 | nullSensitiveContexts.js:55:1:55:1 | x |
-| nullSensitiveContexts.js:55:1:55:6 | x \|\| y | 1 | nullSensitiveContexts.js:55:6:55:6 | y |
-| nullSensitiveContexts.js:56:1:56:2 | !x | 0 | nullSensitiveContexts.js:56:2:56:2 | x |
-| nullSensitiveContexts.js:60:10:60:10 | x | 0 | nullSensitiveContexts.js:60:10:60:10 | x |
-| others.js:1:1:1:6 | 23, 42 | 0 | others.js:1:1:1:2 | 23 |
-| others.js:1:1:1:6 | 23, 42 | 1 | others.js:1:5:1:6 | 42 |
-| others.js:2:1:2:10 | 23, 42, 56 | 0 | others.js:2:1:2:2 | 23 |
-| others.js:2:1:2:10 | 23, 42, 56 | 1 | others.js:2:5:2:6 | 42 |
-| others.js:2:1:2:10 | 23, 42, 56 | 2 | others.js:2:9:2:10 | 56 |
-| others.js:3:1:3:12 | true ? 0 : 1 | 0 | others.js:3:1:3:4 | true |
-| others.js:3:1:3:12 | true ? 0 : 1 | 1 | others.js:3:8:3:8 | 0 |
-| others.js:3:1:3:12 | true ? 0 : 1 | 2 | others.js:3:12:3:12 | 1 |
-| others.js:4:10:4:10 | p | 0 | others.js:4:10:4:10 | p |
-| primaries.js:15:1:15:4 | (23) | 0 | primaries.js:15:2:15:3 | 23 |
-| primaries.js:16:1:16:17 | [23, 42, , "hi" ] | 0 | primaries.js:16:2:16:3 | 23 |
-| primaries.js:16:1:16:17 | [23, 42, , "hi" ] | 1 | primaries.js:16:6:16:7 | 42 |
-| primaries.js:16:1:16:17 | [23, 42, , "hi" ] | 3 | primaries.js:16:12:16:15 | "hi" |
-| primaries.js:17:1:21:16 | ({ x: 2 ... v) {}}) | 0 | primaries.js:17:2:21:15 | { x: 23 ... (v) {}} |
-| primaries.js:21:9:21:14 | (v) {} | 0 | primaries.js:21:10:21:10 | v |
-| primaries.js:22:1:22:9 | new Array | -1 | primaries.js:22:5:22:9 | Array |
-| primaries.js:23:1:23:12 | new Object() | -1 | primaries.js:23:5:23:10 | Object |
-| primaries.js:24:1:24:16 | new String("hi") | 0 | primaries.js:24:12:24:15 | "hi" |
-| primaries.js:24:1:24:16 | new String("hi") | -1 | primaries.js:24:5:24:10 | String |
-| primaries.js:25:1:25:10 | String("") | 0 | primaries.js:25:8:25:9 | "" |
-| primaries.js:25:1:25:10 | String("") | -1 | primaries.js:25:1:25:6 | String |
-| primaries.js:26:1:26:13 | Object.create | 0 | primaries.js:26:1:26:6 | Object |
-| primaries.js:26:1:26:13 | Object.create | 1 | primaries.js:26:8:26:13 | create |
-| primaries.js:26:1:26:17 | Object.create({}) | 0 | primaries.js:26:15:26:16 | {} |
-| primaries.js:26:1:26:17 | Object.create({}) | -1 | primaries.js:26:1:26:13 | Object.create |
-| primaries.js:27:1:27:29 | String[ ... erse()] | 0 | primaries.js:27:1:27:6 | String |
-| primaries.js:27:1:27:29 | String[ ... erse()] | 1 | primaries.js:27:8:27:28 | 'epytot ... verse() |
-| primaries.js:27:8:27:26 | 'epytotorp'.reverse | 0 | primaries.js:27:8:27:18 | 'epytotorp' |
-| primaries.js:27:8:27:26 | 'epytotorp'.reverse | 1 | primaries.js:27:20:27:26 | reverse |
-| primaries.js:27:8:27:28 | 'epytot ... verse() | -1 | primaries.js:27:8:27:26 | 'epytotorp'.reverse |
-| primaries.js:28:1:28:6 | ((42)) | 0 | primaries.js:28:2:28:5 | (42) |
-| primaries.js:28:2:28:5 | (42) | 0 | primaries.js:28:3:28:4 | 42 |
-| surrogates.js:1:5:1:16 | a = "\\ud800" | 0 | surrogates.js:1:5:1:5 | a |
-| surrogates.js:1:5:1:16 | a = "\\ud800" | 1 | surrogates.js:1:9:1:16 | "\\ud800" |
-| surrogates.js:2:1:2:13 | /\\uD800/.test | 0 | surrogates.js:2:1:2:8 | /\\uD800/ |
-| surrogates.js:2:1:2:13 | /\\uD800/.test | 1 | surrogates.js:2:10:2:13 | test |
-| surrogates.js:2:1:2:16 | /\\uD800/.test(a) | 0 | surrogates.js:2:15:2:15 | a |
-| surrogates.js:2:1:2:16 | /\\uD800/.test(a) | -1 | surrogates.js:2:1:2:13 | /\\uD800/.test |
-| unary.js:1:1:1:3 | -23 | 0 | unary.js:1:2:1:3 | 23 |
-| unary.js:2:1:2:3 | +42 | 0 | unary.js:2:2:2:3 | 42 |
-| unary.js:3:1:3:5 | !true | 0 | unary.js:3:2:3:5 | true |
-| unary.js:4:1:4:2 | ~2 | 0 | unary.js:4:2:4:2 | 2 |
-| unary.js:5:1:5:13 | typeof Object | 0 | unary.js:5:8:5:13 | Object |
-| unary.js:6:1:6:7 | void(0) | 0 | unary.js:6:5:6:7 | (0) |
-| unary.js:6:5:6:7 | (0) | 0 | unary.js:6:6:6:6 | 0 |
-| unary.js:7:1:7:23 | delete  ... ototype | 0 | unary.js:7:8:7:23 | Object.prototype |
-| unary.js:7:8:7:23 | Object.prototype | 0 | unary.js:7:8:7:13 | Object |
-| unary.js:7:8:7:23 | Object.prototype | 1 | unary.js:7:15:7:23 | prototype |
-| update.js:1:1:1:3 | ++a | 0 | update.js:1:3:1:3 | a |
-| update.js:2:1:2:3 | a++ | 0 | update.js:2:1:2:1 | a |
-| update.js:3:1:3:3 | --b | 0 | update.js:3:3:3:3 | b |
-| update.js:4:1:4:3 | b-- | 0 | update.js:4:1:4:1 | b |
-test_isPure
-| assignment2.ts:1:5:1:5 | a |
-| assignment2.ts:1:9:1:9 | 2 |
-| assignment2.ts:2:5:2:5 | b |
-| assignment2.ts:2:9:2:9 | 3 |
-| assignment2.ts:4:1:4:1 | a |
-| assignment2.ts:4:5:4:6 | 23 |
-| assignment2.ts:5:1:5:1 | a |
-| assignment2.ts:5:6:5:7 | 19 |
-| assignment2.ts:7:1:7:1 | a |
-| assignment2.ts:7:7:7:7 | 4 |
-| assignment2.ts:8:1:8:1 | a |
-| assignment2.ts:8:7:8:7 | 5 |
-| assignment2.ts:9:1:9:1 | a |
-| assignment2.ts:9:7:9:7 | 6 |
-| assignment.js:1:1:1:1 | a |
-| assignment.js:1:5:1:6 | 23 |
-| assignment.js:2:1:2:1 | a |
-| assignment.js:2:6:2:7 | 19 |
-| assignment.js:3:1:3:1 | a |
-| assignment.js:3:6:3:6 | 9 |
-| assignment.js:4:1:4:1 | a |
-| assignment.js:4:6:4:6 | b |
-| assignment.js:5:1:5:1 | a |
-| assignment.js:5:6:5:6 | 2 |
-| assignment.js:6:1:6:1 | a |
-| assignment.js:6:6:6:6 | 2 |
-| assignment.js:7:1:7:1 | a |
-| assignment.js:7:7:7:7 | 8 |
-| assignment.js:8:1:8:1 | a |
-| assignment.js:8:7:8:7 | 7 |
-| assignment.js:9:1:9:1 | a |
-| assignment.js:9:8:9:8 | 2 |
-| assignment.js:10:1:10:1 | a |
-| assignment.js:10:6:10:6 | 2 |
-| assignment.js:11:1:11:1 | a |
-| assignment.js:11:6:11:6 | 1 |
-| assignment.js:12:1:12:1 | a |
-| assignment.js:12:6:12:6 | 3 |
-| binary.js:1:1:1:1 | 1 |
-| binary.js:1:1:1:6 | 1 << 2 |
-| binary.js:1:6:1:6 | 2 |
-| binary.js:2:1:2:1 | 2 |
-| binary.js:2:1:2:6 | 2 >> 1 |
-| binary.js:2:6:2:6 | 1 |
-| binary.js:3:1:3:1 | 2 |
-| binary.js:3:1:3:7 | 2 >>> 1 |
-| binary.js:3:7:3:7 | 1 |
-| binary.js:4:1:4:2 | 23 |
-| binary.js:4:1:4:7 | 23 + 19 |
-| binary.js:4:6:4:7 | 19 |
-| binary.js:5:1:5:2 | 42 |
-| binary.js:5:1:5:7 | 42 - 19 |
-| binary.js:5:6:5:7 | 19 |
-| binary.js:6:1:6:1 | 2 |
-| binary.js:6:1:6:5 | 2 * 3 |
-| binary.js:6:5:6:5 | 3 |
-| binary.js:7:1:7:1 | 8 |
-| binary.js:7:1:7:5 | 8 / 5 |
-| binary.js:7:5:7:5 | 5 |
-| binary.js:8:1:8:1 | 2 |
-| binary.js:8:1:8:5 | 2 % 1 |
-| binary.js:8:5:8:5 | 1 |
-| binary.js:9:1:9:1 | 2 |
-| binary.js:9:1:9:5 | 2 \| 3 |
-| binary.js:9:5:9:5 | 3 |
-| binary.js:10:1:10:1 | 2 |
-| binary.js:10:1:10:5 | 2 ^ 3 |
-| binary.js:10:5:10:5 | 3 |
-| binary.js:11:1:11:1 | 2 |
-| binary.js:11:1:11:5 | 2 & 3 |
-| binary.js:11:5:11:5 | 3 |
-| binary.js:12:1:12:11 | 'prototype' |
-| binary.js:12:1:12:21 | 'protot ...  Object |
-| binary.js:12:16:12:21 | Object |
-| binary.js:13:1:13:2 | [] |
-| binary.js:13:1:13:19 | [] instanceof Array |
-| binary.js:13:15:13:19 | Array |
-| binary.js:14:1:14:1 | 1 |
-| binary.js:14:1:14:6 | 1 && 2 |
-| binary.js:14:6:14:6 | 2 |
-| binary.js:15:1:15:1 | 1 |
-| binary.js:15:1:15:6 | 1 \|\| 2 |
-| binary.js:15:6:15:6 | 2 |
-| comparison.js:1:1:1:1 | 1 |
-| comparison.js:1:1:1:6 | 1 == 1 |
-| comparison.js:1:6:1:6 | 1 |
-| comparison.js:2:1:2:1 | 1 |
-| comparison.js:2:1:2:6 | 1 != 2 |
-| comparison.js:2:6:2:6 | 2 |
-| comparison.js:3:1:3:1 | 1 |
-| comparison.js:3:1:3:7 | 1 === 1 |
-| comparison.js:3:7:3:7 | 1 |
-| comparison.js:4:1:4:1 | 1 |
-| comparison.js:4:1:4:7 | 1 !== 2 |
-| comparison.js:4:7:4:7 | 2 |
-| comparison.js:5:1:5:1 | 1 |
-| comparison.js:5:1:5:5 | 1 < 2 |
-| comparison.js:5:5:5:5 | 2 |
-| comparison.js:6:1:6:1 | 1 |
-| comparison.js:6:1:6:6 | 1 <= 2 |
-| comparison.js:6:6:6:6 | 2 |
-| comparison.js:7:1:7:1 | 2 |
-| comparison.js:7:1:7:5 | 2 > 1 |
-| comparison.js:7:5:7:5 | 1 |
-| comparison.js:8:1:8:1 | 2 |
-| comparison.js:8:1:8:6 | 2 >= 1 |
-| comparison.js:8:6:8:6 | 1 |
-| computedFieldNames.ts:1:7:1:10 | key1 |
-| computedFieldNames.ts:1:14:1:19 | "key1" |
-| computedFieldNames.ts:2:7:2:19 | NoConstructor |
-| computedFieldNames.ts:2:21:2:20 | () {} |
-| computedFieldNames.ts:2:21:2:20 | constructor |
-| computedFieldNames.ts:3:4:3:7 | key1 |
-| computedFieldNames.ts:3:12:3:12 | 4 |
-| computedFieldNames.ts:6:7:6:10 | key2 |
-| computedFieldNames.ts:6:14:6:19 | "key2" |
-| computedFieldNames.ts:7:7:7:21 | WithConstructor |
-| computedFieldNames.ts:8:4:8:7 | key2 |
-| computedFieldNames.ts:8:12:8:12 | 4 |
-| computedFieldNames.ts:10:3:10:18 | constructor() {} |
-| computedFieldNames.ts:10:3:10:18 | constructor() {} |
-| es2015.js:1:1:1:18 | ["a", "ab", "abc"] |
-| es2015.js:1:1:1:22 | ["a", " ... c"].map |
-| es2015.js:1:2:1:4 | "a" |
-| es2015.js:1:7:1:10 | "ab" |
-| es2015.js:1:13:1:17 | "abc" |
-| es2015.js:1:20:1:22 | map |
-| es2015.js:1:24:1:24 | s |
-| es2015.js:1:24:1:36 | s => s.length |
-| es2015.js:1:29:1:29 | s |
-| es2015.js:1:29:1:36 | s.length |
-| es2015.js:1:31:1:36 | length |
-| es2015.js:2:1:2:11 | setInterval |
-| es2015.js:2:13:2:23 | () => ++cnt |
-| es2015.js:2:21:2:23 | cnt |
-| es2015.js:2:26:2:29 | 1000 |
-| es2015.js:3:1:3:10 | setTimeout |
-| es2015.js:3:12:3:39 | () => { ... p!"); } |
-| es2015.js:3:20:3:24 | alert |
-| es2015.js:3:26:3:35 | "Wake up!" |
-| es2015.js:3:42:3:46 | 60000 |
-| es2015.js:5:1:5:10 | [a, ...as] |
-| es2015.js:5:2:5:2 | a |
-| es2015.js:5:5:5:9 | ...as |
-| es2015.js:5:8:5:9 | as |
-| es2015.js:6:5:6:9 | Array |
-| es2015.js:6:11:6:17 | ...elts |
-| es2015.js:6:14:6:17 | elts |
-| es2015.js:8:10:8:10 | f |
-| es2015.js:8:12:8:17 | [x, y] |
-| es2015.js:8:13:8:13 | x |
-| es2015.js:8:16:8:16 | y |
-| es2015.js:9:6:9:15 | [a, [, c]] |
-| es2015.js:9:7:9:7 | a |
-| es2015.js:9:10:9:14 | [, c] |
-| es2015.js:9:13:9:13 | c |
-| es2015.js:9:19:9:19 | x |
-| es2015.js:11:9:11:14 | [a, c] |
-| es2015.js:11:10:11:10 | a |
-| es2015.js:11:13:11:13 | c |
-| es2015.js:12:11:12:11 | d |
-| es2015.js:13:3:13:9 | console |
-| es2015.js:13:3:13:13 | console.log |
-| es2015.js:13:11:13:13 | log |
-| es2015.js:13:15:13:15 | d |
-| es2015.js:17:10:17:10 | g |
-| es2015.js:17:12:17:22 | { x, y: z } |
-| es2015.js:17:14:17:14 | x |
-| es2015.js:17:14:17:14 | x |
-| es2015.js:17:17:17:17 | y |
-| es2015.js:17:20:17:20 | z |
-| es2015.js:18:6:18:15 | { [x]: w } |
-| es2015.js:18:9:18:9 | x |
-| es2015.js:18:13:18:13 | w |
-| es2015.js:18:19:18:19 | z |
-| es2015.js:19:9:19:9 | w |
-| es2015.js:22:11:22:13 | foo |
-| es2015.js:22:15:22:15 | n |
-| es2015.js:23:8:23:8 | n |
-| es2015.js:23:12:23:12 | 0 |
-| es2015.js:24:9:24:9 | n |
-| es2015.js:25:9:25:11 | foo |
-| es2015.js:25:13:25:13 | 1 |
-| es2015.js:28:10:28:12 | bar |
-| es2015.js:28:14:28:14 | x |
-| es2015.js:28:17:28:17 | y |
-| es2015.js:28:19:28:19 | x |
-| es2015.js:28:19:28:22 | x+19 |
-| es2015.js:28:21:28:22 | 19 |
-| functions.js:1:10:1:10 | f |
-| functions.js:2:2:2:5 | in_f |
-| functions.js:3:9:3:17 | also_in_f |
-| functions.js:4:3:6:4 | (functi ... f;\\n\\t\\t}) |
-| functions.js:4:4:6:3 | functio ... _f;\\n\\t\\t} |
-| functions.js:5:4:5:11 | not_in_f |
-| functions.js:6:6:8:3 | {\\n\\t\\t\\tx: ... ain\\n\\t\\t} |
-| functions.js:7:4:7:4 | x |
-| functions.js:7:7:7:16 | in_f_again |
-| functions.js:10:1:10:6 | global |
-| legacyletexpr.js:1:1:1:7 | console |
-| legacyletexpr.js:1:1:1:11 | console.log |
-| legacyletexpr.js:1:9:1:11 | log |
-| legacyletexpr.js:1:18:1:18 | x |
-| legacyletexpr.js:1:22:1:23 | 23 |
-| legacyletexpr.js:1:26:1:26 | y |
-| legacyletexpr.js:1:30:1:31 | 19 |
-| legacyletexpr.js:1:34:1:34 | x |
-| legacyletexpr.js:1:34:1:38 | x + y |
-| legacyletexpr.js:1:38:1:38 | y |
-| mozextensions.js:1:1:1:5 | array |
-| mozextensions.js:1:1:1:9 | array.map |
-| mozextensions.js:1:7:1:9 | map |
-| mozextensions.js:1:11:1:25 | function(x) x+1 |
-| mozextensions.js:1:20:1:20 | x |
-| mozextensions.js:1:23:1:23 | x |
-| mozextensions.js:1:23:1:25 | x+1 |
-| mozextensions.js:1:25:1:25 | 1 |
-| nullSensitiveContexts.js:7:1:7:3 | foo |
-| nullSensitiveContexts.js:7:1:7:8 | foo[bar] |
-| nullSensitiveContexts.js:7:5:7:7 | bar |
-| nullSensitiveContexts.js:8:1:8:3 | foo |
-| nullSensitiveContexts.js:8:1:8:7 | foo.bar |
-| nullSensitiveContexts.js:8:5:8:7 | bar |
-| nullSensitiveContexts.js:9:5:9:7 | Foo |
-| nullSensitiveContexts.js:10:5:10:7 | Foo |
-| nullSensitiveContexts.js:11:1:11:3 | foo |
-| nullSensitiveContexts.js:11:1:11:7 | foo.bar |
-| nullSensitiveContexts.js:11:5:11:7 | bar |
-| nullSensitiveContexts.js:11:11:11:11 | 5 |
-| nullSensitiveContexts.js:12:1:12:3 | foo |
-| nullSensitiveContexts.js:12:5:12:7 | bar |
-| nullSensitiveContexts.js:13:1:13:1 | x |
-| nullSensitiveContexts.js:13:1:13:5 | x + y |
-| nullSensitiveContexts.js:13:5:13:5 | y |
-| nullSensitiveContexts.js:14:1:14:1 | x |
-| nullSensitiveContexts.js:14:1:14:5 | x - y |
-| nullSensitiveContexts.js:14:5:14:5 | y |
-| nullSensitiveContexts.js:15:1:15:1 | x |
-| nullSensitiveContexts.js:15:1:15:5 | x * y |
-| nullSensitiveContexts.js:15:5:15:5 | y |
-| nullSensitiveContexts.js:16:1:16:1 | x |
-| nullSensitiveContexts.js:16:1:16:5 | x / y |
-| nullSensitiveContexts.js:16:5:16:5 | y |
-| nullSensitiveContexts.js:17:1:17:1 | x |
-| nullSensitiveContexts.js:17:1:17:5 | x % y |
-| nullSensitiveContexts.js:17:5:17:5 | y |
-| nullSensitiveContexts.js:18:1:18:2 | +x |
-| nullSensitiveContexts.js:18:2:18:2 | x |
-| nullSensitiveContexts.js:19:1:19:2 | -x |
-| nullSensitiveContexts.js:19:2:19:2 | x |
-| nullSensitiveContexts.js:20:3:20:3 | x |
-| nullSensitiveContexts.js:21:1:21:1 | x |
-| nullSensitiveContexts.js:22:3:22:3 | x |
-| nullSensitiveContexts.js:23:1:23:1 | x |
-| nullSensitiveContexts.js:24:1:24:1 | x |
-| nullSensitiveContexts.js:24:6:24:6 | y |
-| nullSensitiveContexts.js:25:1:25:1 | x |
-| nullSensitiveContexts.js:25:6:25:6 | y |
-| nullSensitiveContexts.js:26:1:26:1 | x |
-| nullSensitiveContexts.js:26:6:26:6 | y |
-| nullSensitiveContexts.js:27:1:27:1 | x |
-| nullSensitiveContexts.js:27:6:27:6 | y |
-| nullSensitiveContexts.js:28:1:28:1 | x |
-| nullSensitiveContexts.js:28:6:28:6 | y |
-| nullSensitiveContexts.js:29:1:29:7 | [x , y] |
-| nullSensitiveContexts.js:29:2:29:2 | x |
-| nullSensitiveContexts.js:29:6:29:6 | y |
-| nullSensitiveContexts.js:29:11:29:11 | p |
-| nullSensitiveContexts.js:31:1:31:1 | x |
-| nullSensitiveContexts.js:31:1:31:5 | x & y |
-| nullSensitiveContexts.js:31:5:31:5 | y |
-| nullSensitiveContexts.js:32:1:32:1 | x |
-| nullSensitiveContexts.js:32:1:32:5 | x \| y |
-| nullSensitiveContexts.js:32:5:32:5 | y |
-| nullSensitiveContexts.js:33:1:33:1 | x |
-| nullSensitiveContexts.js:33:1:33:5 | x ^ y |
-| nullSensitiveContexts.js:33:5:33:5 | y |
-| nullSensitiveContexts.js:34:1:34:1 | x |
-| nullSensitiveContexts.js:34:1:34:6 | x << y |
-| nullSensitiveContexts.js:34:6:34:6 | y |
-| nullSensitiveContexts.js:35:1:35:1 | x |
-| nullSensitiveContexts.js:35:1:35:6 | x >> y |
-| nullSensitiveContexts.js:35:6:35:6 | y |
-| nullSensitiveContexts.js:36:1:36:1 | x |
-| nullSensitiveContexts.js:36:1:36:7 | x >>> y |
-| nullSensitiveContexts.js:36:7:36:7 | y |
-| nullSensitiveContexts.js:37:1:37:2 | ~x |
-| nullSensitiveContexts.js:37:2:37:2 | x |
-| nullSensitiveContexts.js:38:1:38:1 | x |
-| nullSensitiveContexts.js:38:6:38:6 | y |
-| nullSensitiveContexts.js:39:1:39:1 | x |
-| nullSensitiveContexts.js:39:6:39:6 | y |
-| nullSensitiveContexts.js:40:1:40:1 | x |
-| nullSensitiveContexts.js:40:6:40:6 | y |
-| nullSensitiveContexts.js:41:1:41:1 | x |
-| nullSensitiveContexts.js:41:7:41:7 | y |
-| nullSensitiveContexts.js:42:1:42:1 | x |
-| nullSensitiveContexts.js:42:7:42:7 | y |
-| nullSensitiveContexts.js:43:1:43:1 | x |
-| nullSensitiveContexts.js:43:8:43:8 | y |
-| nullSensitiveContexts.js:44:10:44:10 | x |
-| nullSensitiveContexts.js:44:15:44:15 | y |
-| nullSensitiveContexts.js:54:1:54:1 | x |
-| nullSensitiveContexts.js:54:1:54:6 | x && y |
-| nullSensitiveContexts.js:54:6:54:6 | y |
-| nullSensitiveContexts.js:55:1:55:1 | x |
-| nullSensitiveContexts.js:55:1:55:6 | x \|\| y |
-| nullSensitiveContexts.js:55:6:55:6 | y |
-| nullSensitiveContexts.js:56:1:56:2 | !x |
-| nullSensitiveContexts.js:56:2:56:2 | x |
-| nullSensitiveContexts.js:57:5:57:5 | x |
-| nullSensitiveContexts.js:58:8:58:8 | x |
-| nullSensitiveContexts.js:59:8:59:8 | y |
-| nullSensitiveContexts.js:59:11:59:11 | z |
-| nullSensitiveContexts.js:60:10:60:10 | x |
-| nullSensitiveContexts.js:60:15:60:15 | y |
-| others.js:1:1:1:2 | 23 |
-| others.js:1:1:1:6 | 23, 42 |
-| others.js:1:5:1:6 | 42 |
-| others.js:2:1:2:2 | 23 |
-| others.js:2:1:2:10 | 23, 42, 56 |
-| others.js:2:5:2:6 | 42 |
-| others.js:2:9:2:10 | 56 |
-| others.js:3:1:3:4 | true |
-| others.js:3:1:3:12 | true ? 0 : 1 |
-| others.js:3:8:3:8 | 0 |
-| others.js:3:12:3:12 | 1 |
-| others.js:4:10:4:10 | p |
-| others.js:4:15:4:15 | o |
-| primaries.js:1:1:1:4 | null |
-| primaries.js:2:1:2:4 | true |
-| primaries.js:3:1:3:5 | false |
-| primaries.js:4:1:4:2 | 23 |
-| primaries.js:5:1:5:3 | 2.3 |
-| primaries.js:6:1:6:3 | .42 |
-| primaries.js:7:1:7:6 | 7.6e23 |
-| primaries.js:8:1:8:5 | 1E-42 |
-| primaries.js:9:1:9:10 | 0xdeadbeef |
-| primaries.js:10:1:10:7 | "Hello" |
-| primaries.js:11:1:11:7 | 'world' |
-| primaries.js:12:1:12:13 | "'what?'\\x0a" |
-| primaries.js:13:1:13:10 | '"why?"\\n' |
-| primaries.js:14:1:14:15 | /^(need?le)+/gi |
-| primaries.js:15:1:15:4 | (23) |
-| primaries.js:15:2:15:3 | 23 |
-| primaries.js:16:1:16:17 | [23, 42, , "hi" ] |
-| primaries.js:16:2:16:3 | 23 |
-| primaries.js:16:6:16:7 | 42 |
-| primaries.js:16:12:16:15 | "hi" |
-| primaries.js:17:1:21:16 | ({ x: 2 ... v) {}}) |
-| primaries.js:17:2:21:15 | { x: 23 ... (v) {}} |
-| primaries.js:17:4:17:4 | x |
-| primaries.js:17:7:17:8 | 23 |
-| primaries.js:18:4:18:4 | y |
-| primaries.js:18:7:18:10 | this |
-| primaries.js:19:8:19:8 | o |
-| primaries.js:19:9:19:13 | () {} |
-| primaries.js:20:8:20:8 | p |
-| primaries.js:20:9:20:13 | () {} |
-| primaries.js:21:8:21:8 | p |
-| primaries.js:21:9:21:14 | (v) {} |
-| primaries.js:21:10:21:10 | v |
-| primaries.js:22:5:22:9 | Array |
-| primaries.js:23:5:23:10 | Object |
-| primaries.js:24:5:24:10 | String |
-| primaries.js:24:12:24:15 | "hi" |
-| primaries.js:25:1:25:6 | String |
-| primaries.js:25:8:25:9 | "" |
-| primaries.js:26:1:26:6 | Object |
-| primaries.js:26:1:26:13 | Object.create |
-| primaries.js:26:8:26:13 | create |
-| primaries.js:26:15:26:16 | {} |
-| primaries.js:27:1:27:6 | String |
-| primaries.js:27:8:27:18 | 'epytotorp' |
-| primaries.js:27:8:27:26 | 'epytotorp'.reverse |
-| primaries.js:27:20:27:26 | reverse |
-| primaries.js:28:1:28:6 | ((42)) |
-| primaries.js:28:2:28:5 | (42) |
-| primaries.js:28:3:28:4 | 42 |
-| primaries.js:29:1:29:13 | /\\2147483648/ |
-| primaries.js:30:1:30:26 | /a{2147 ... 83649}/ |
-| primaries.js:31:1:31:16 | /a{-2147483648}/ |
-| primaries.js:32:1:32:16 | /a{-2147483649}/ |
-| surrogates.js:1:5:1:5 | a |
-| surrogates.js:1:9:1:16 | "\\ud800" |
-| surrogates.js:2:1:2:8 | /\\uD800/ |
-| surrogates.js:2:1:2:13 | /\\uD800/.test |
-| surrogates.js:2:10:2:13 | test |
-| surrogates.js:2:15:2:15 | a |
-| surrogates.js:3:1:3:14 | "\\uD834\\uDF06" |
-| surrogates.js:4:1:4:14 | '\\udc00\\ud800' |
-| unary.js:1:1:1:3 | -23 |
-| unary.js:1:2:1:3 | 23 |
-| unary.js:2:1:2:3 | +42 |
-| unary.js:2:2:2:3 | 42 |
-| unary.js:3:1:3:5 | !true |
-| unary.js:3:2:3:5 | true |
-| unary.js:4:1:4:2 | ~2 |
-| unary.js:4:2:4:2 | 2 |
-| unary.js:5:1:5:13 | typeof Object |
-| unary.js:5:8:5:13 | Object |
-| unary.js:6:1:6:7 | void(0) |
-| unary.js:6:5:6:7 | (0) |
-| unary.js:6:6:6:6 | 0 |
-| unary.js:7:8:7:13 | Object |
-| unary.js:7:8:7:23 | Object.prototype |
-| unary.js:7:15:7:23 | prototype |
-| update.js:1:3:1:3 | a |
-| update.js:2:1:2:1 | a |
-| update.js:3:3:3:3 | b |
-| update.js:4:1:4:1 | b |
-test_YieldExpr
-| es2015.js:24:3:24:9 | yield n | not delegating |
-| es2015.js:25:2:25:14 | yield* foo(1) | delegating |
-test_RelationalComparisons
-| comparison.js:5:1:5:5 | 1 < 2 | comparison.js:5:1:5:1 | 1 | comparison.js:5:5:5:5 | 2 |
-| comparison.js:6:1:6:6 | 1 <= 2 | comparison.js:6:1:6:1 | 1 | comparison.js:6:6:6:6 | 2 |
-| comparison.js:7:1:7:5 | 2 > 1 | comparison.js:7:5:7:5 | 1 | comparison.js:7:1:7:1 | 2 |
-| comparison.js:8:1:8:6 | 2 >= 1 | comparison.js:8:6:8:6 | 1 | comparison.js:8:1:8:1 | 2 |
-| es2015.js:23:8:23:12 | n-->0 | es2015.js:23:12:23:12 | 0 | es2015.js:23:8:23:10 | n-- |
-test_getEnclosingFunction
-| computedFieldNames.ts:3:4:3:7 | key1 | computedFieldNames.ts:2:21:2:20 | () {} |
-| computedFieldNames.ts:3:12:3:12 | 4 | computedFieldNames.ts:2:21:2:20 | () {} |
-| computedFieldNames.ts:8:4:8:7 | key2 | computedFieldNames.ts:10:3:10:18 | constructor() {} |
-| computedFieldNames.ts:8:12:8:12 | 4 | computedFieldNames.ts:10:3:10:18 | constructor() {} |
-| es2015.js:1:24:1:24 | s | es2015.js:1:24:1:36 | s => s.length |
-| es2015.js:1:29:1:29 | s | es2015.js:1:24:1:36 | s => s.length |
-| es2015.js:1:29:1:36 | s.length | es2015.js:1:24:1:36 | s => s.length |
-| es2015.js:1:31:1:36 | length | es2015.js:1:24:1:36 | s => s.length |
-| es2015.js:2:19:2:23 | ++cnt | es2015.js:2:13:2:23 | () => ++cnt |
-| es2015.js:2:21:2:23 | cnt | es2015.js:2:13:2:23 | () => ++cnt |
-| es2015.js:3:20:3:24 | alert | es2015.js:3:12:3:39 | () => { ... p!"); } |
-| es2015.js:3:20:3:36 | alert("Wake up!") | es2015.js:3:12:3:39 | () => { ... p!"); } |
-| es2015.js:3:26:3:35 | "Wake up!" | es2015.js:3:12:3:39 | () => { ... p!"); } |
-| es2015.js:8:10:8:10 | f | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:8:12:8:17 | [x, y] | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:8:13:8:13 | x | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:8:16:8:16 | y | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:9:6:9:15 | [a, [, c]] | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:9:6:9:19 | [a, [, c]] = x | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:9:7:9:7 | a | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:9:10:9:14 | [, c] | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:9:13:9:13 | c | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:9:19:9:19 | x | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:11:9:11:14 | [a, c] | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:11:10:11:10 | a | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:11:13:11:13 | c | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:12:11:12:11 | d | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:13:3:13:9 | console | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:13:3:13:13 | console.log | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:13:3:13:16 | console.log(d) | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:13:11:13:13 | log | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:13:15:13:15 | d | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
-| es2015.js:17:10:17:10 | g | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:17:12:17:22 | { x, y: z } | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:17:14:17:14 | x | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:17:14:17:14 | x | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:17:17:17:17 | y | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:17:20:17:20 | z | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:18:6:18:15 | { [x]: w } | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:18:6:18:19 | { [x]: w } = z | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:18:9:18:9 | x | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:18:13:18:13 | w | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:18:19:18:19 | z | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:19:9:19:9 | w | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
-| es2015.js:22:11:22:13 | foo | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:22:15:22:15 | n | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:23:8:23:8 | n | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:23:8:23:10 | n-- | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:23:8:23:12 | n-->0 | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:23:12:23:12 | 0 | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:24:3:24:9 | yield n | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:24:9:24:9 | n | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:25:2:25:14 | yield* foo(1) | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:25:9:25:11 | foo | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:25:9:25:14 | foo(1) | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:25:13:25:13 | 1 | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
-| es2015.js:28:10:28:12 | bar | es2015.js:28:1:28:26 | functio ... +19) {} |
-| es2015.js:28:14:28:14 | x | es2015.js:28:1:28:26 | functio ... +19) {} |
-| es2015.js:28:17:28:17 | y | es2015.js:28:1:28:26 | functio ... +19) {} |
-| es2015.js:28:19:28:19 | x | es2015.js:28:1:28:26 | functio ... +19) {} |
-| es2015.js:28:19:28:22 | x+19 | es2015.js:28:1:28:26 | functio ... +19) {} |
-| es2015.js:28:21:28:22 | 19 | es2015.js:28:1:28:26 | functio ... +19) {} |
-| functions.js:1:10:1:10 | f | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
-| functions.js:2:2:2:5 | in_f | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
-| functions.js:3:9:3:17 | also_in_f | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
-| functions.js:4:3:6:4 | (functi ... f;\\n\\t\\t}) | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
-| functions.js:4:3:8:4 | (functi ... in\\n\\t\\t}) | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
-| functions.js:4:4:6:3 | functio ... _f;\\n\\t\\t} | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
-| functions.js:5:4:5:11 | not_in_f | functions.js:4:4:6:3 | functio ... _f;\\n\\t\\t} |
-| functions.js:6:6:8:3 | {\\n\\t\\t\\tx: ... ain\\n\\t\\t} | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
-| functions.js:7:4:7:4 | x | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
-| functions.js:7:7:7:16 | in_f_again | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
-| mozextensions.js:1:20:1:20 | x | mozextensions.js:1:11:1:25 | function(x) x+1 |
-| mozextensions.js:1:23:1:23 | x | mozextensions.js:1:11:1:25 | function(x) x+1 |
-| mozextensions.js:1:23:1:25 | x+1 | mozextensions.js:1:11:1:25 | function(x) x+1 |
-| mozextensions.js:1:25:1:25 | 1 | mozextensions.js:1:11:1:25 | function(x) x+1 |
-| primaries.js:21:10:21:10 | v | primaries.js:21:9:21:14 | (v) {} |
-test_LetExpr
-| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | 0 | legacyletexpr.js:1:18:1:23 | x = 23 | legacyletexpr.js:1:34:1:38 | x + y |
-| legacyletexpr.js:1:13:1:38 | let (x  ... ) x + y | 1 | legacyletexpr.js:1:26:1:31 | y = 19 | legacyletexpr.js:1:34:1:38 | x + y |
 test_stripParens
 | functions.js:4:3:6:4 | (functi ... f;\\n\\t\\t}) | functions.js:4:4:6:3 | functio ... _f;\\n\\t\\t} |
 | primaries.js:15:1:15:4 | (23) | primaries.js:15:2:15:3 | 23 |
@@ -2723,6 +2639,90 @@ test_getEnclosingStmt
 | update.js:3:3:3:3 | b | update.js:3:1:3:4 | --b; |
 | update.js:4:1:4:1 | b | update.js:4:1:4:4 | b--; |
 | update.js:4:1:4:3 | b-- | update.js:4:1:4:4 | b--; |
+test_getEnclosingFunction
+| computedFieldNames.ts:3:4:3:7 | key1 | computedFieldNames.ts:2:21:2:20 | () {} |
+| computedFieldNames.ts:3:12:3:12 | 4 | computedFieldNames.ts:2:21:2:20 | () {} |
+| computedFieldNames.ts:8:4:8:7 | key2 | computedFieldNames.ts:10:3:10:18 | constructor() {} |
+| computedFieldNames.ts:8:12:8:12 | 4 | computedFieldNames.ts:10:3:10:18 | constructor() {} |
+| es2015.js:1:24:1:24 | s | es2015.js:1:24:1:36 | s => s.length |
+| es2015.js:1:29:1:29 | s | es2015.js:1:24:1:36 | s => s.length |
+| es2015.js:1:29:1:36 | s.length | es2015.js:1:24:1:36 | s => s.length |
+| es2015.js:1:31:1:36 | length | es2015.js:1:24:1:36 | s => s.length |
+| es2015.js:2:19:2:23 | ++cnt | es2015.js:2:13:2:23 | () => ++cnt |
+| es2015.js:2:21:2:23 | cnt | es2015.js:2:13:2:23 | () => ++cnt |
+| es2015.js:3:20:3:24 | alert | es2015.js:3:12:3:39 | () => { ... p!"); } |
+| es2015.js:3:20:3:36 | alert("Wake up!") | es2015.js:3:12:3:39 | () => { ... p!"); } |
+| es2015.js:3:26:3:35 | "Wake up!" | es2015.js:3:12:3:39 | () => { ... p!"); } |
+| es2015.js:8:10:8:10 | f | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:8:12:8:17 | [x, y] | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:8:13:8:13 | x | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:8:16:8:16 | y | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:9:6:9:15 | [a, [, c]] | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:9:6:9:19 | [a, [, c]] = x | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:9:7:9:7 | a | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:9:10:9:14 | [, c] | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:9:13:9:13 | c | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:9:19:9:19 | x | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:11:9:11:14 | [a, c] | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:11:10:11:10 | a | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:11:13:11:13 | c | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:12:11:12:11 | d | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:13:3:13:9 | console | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:13:3:13:13 | console.log | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:13:3:13:16 | console.log(d) | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:13:11:13:13 | log | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:13:15:13:15 | d | es2015.js:8:1:15:1 | functio ... );\\n\\t}\\n} |
+| es2015.js:17:10:17:10 | g | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
+| es2015.js:17:12:17:22 | { x, y: z } | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
+| es2015.js:17:14:17:14 | x | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
+| es2015.js:17:14:17:14 | x | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
+| es2015.js:17:17:17:17 | y | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
+| es2015.js:17:20:17:20 | z | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
+| es2015.js:18:6:18:15 | { [x]: w } | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
+| es2015.js:18:6:18:19 | { [x]: w } = z | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
+| es2015.js:18:9:18:9 | x | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
+| es2015.js:18:13:18:13 | w | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
+| es2015.js:18:19:18:19 | z | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
+| es2015.js:19:9:19:9 | w | es2015.js:17:1:20:1 | functio ... rn w;\\n} |
+| es2015.js:22:11:22:13 | foo | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
+| es2015.js:22:15:22:15 | n | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
+| es2015.js:23:8:23:8 | n | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
+| es2015.js:23:8:23:10 | n-- | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
+| es2015.js:23:8:23:12 | n-->0 | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
+| es2015.js:23:12:23:12 | 0 | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
+| es2015.js:24:3:24:9 | yield n | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
+| es2015.js:24:9:24:9 | n | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
+| es2015.js:25:2:25:14 | yield* foo(1) | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
+| es2015.js:25:9:25:11 | foo | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
+| es2015.js:25:9:25:14 | foo(1) | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
+| es2015.js:25:13:25:13 | 1 | es2015.js:22:1:26:1 | functio ... o(1);\\n} |
+| es2015.js:28:10:28:12 | bar | es2015.js:28:1:28:26 | functio ... +19) {} |
+| es2015.js:28:14:28:14 | x | es2015.js:28:1:28:26 | functio ... +19) {} |
+| es2015.js:28:17:28:17 | y | es2015.js:28:1:28:26 | functio ... +19) {} |
+| es2015.js:28:19:28:19 | x | es2015.js:28:1:28:26 | functio ... +19) {} |
+| es2015.js:28:19:28:22 | x+19 | es2015.js:28:1:28:26 | functio ... +19) {} |
+| es2015.js:28:21:28:22 | 19 | es2015.js:28:1:28:26 | functio ... +19) {} |
+| functions.js:1:10:1:10 | f | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
+| functions.js:2:2:2:5 | in_f | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
+| functions.js:3:9:3:17 | also_in_f | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
+| functions.js:4:3:6:4 | (functi ... f;\\n\\t\\t}) | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
+| functions.js:4:3:8:4 | (functi ... in\\n\\t\\t}) | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
+| functions.js:4:4:6:3 | functio ... _f;\\n\\t\\t} | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
+| functions.js:5:4:5:11 | not_in_f | functions.js:4:4:6:3 | functio ... _f;\\n\\t\\t} |
+| functions.js:6:6:8:3 | {\\n\\t\\t\\tx: ... ain\\n\\t\\t} | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
+| functions.js:7:4:7:4 | x | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
+| functions.js:7:7:7:16 | in_f_again | functions.js:1:1:9:1 | functio ... \\t\\t});\\n} |
+| mozextensions.js:1:20:1:20 | x | mozextensions.js:1:11:1:25 | function(x) x+1 |
+| mozextensions.js:1:23:1:23 | x | mozextensions.js:1:11:1:25 | function(x) x+1 |
+| mozextensions.js:1:23:1:25 | x+1 | mozextensions.js:1:11:1:25 | function(x) x+1 |
+| mozextensions.js:1:25:1:25 | 1 | mozextensions.js:1:11:1:25 | function(x) x+1 |
+| primaries.js:21:10:21:10 | v | primaries.js:21:9:21:14 | (v) {} |
+test_RelationalComparisons
+| comparison.js:5:1:5:5 | 1 < 2 | comparison.js:5:1:5:1 | 1 | comparison.js:5:5:5:5 | 2 |
+| comparison.js:6:1:6:6 | 1 <= 2 | comparison.js:6:1:6:1 | 1 | comparison.js:6:6:6:6 | 2 |
+| comparison.js:7:1:7:5 | 2 > 1 | comparison.js:7:5:7:5 | 1 | comparison.js:7:1:7:1 | 2 |
+| comparison.js:8:1:8:6 | 2 >= 1 | comparison.js:8:6:8:6 | 1 | comparison.js:8:1:8:1 | 2 |
+| es2015.js:23:8:23:12 | n-->0 | es2015.js:23:12:23:12 | 0 | es2015.js:23:8:23:10 | n-- |
 test_inNullSensitiveContext
 | assignment2.ts:5:1:5:1 | a |
 | assignment2.ts:5:6:5:7 | 19 |

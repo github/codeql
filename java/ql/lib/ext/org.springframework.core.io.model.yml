@@ -1,0 +1,40 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.springframework.core.io", "Resource", True, "createRelative", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "ResourceLoader", True, "getResource", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["org.springframework.core.io", "ResourceLoader", True, "getResource", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.springframework.core.io", "FileSystemResource", True, "FileSystemResource", "(FileSystem,String)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "FileSystemResource", True, "FileSystemResource", "(File)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "FileSystemResource", True, "FileSystemResource", "(Path)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "FileSystemResource", True, "FileSystemResource", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "FileUrlResource", True, "FileUrlResource", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "FileUrlResource", True, "FileUrlResource", "(URL)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "PathResource", True, "PathResource", "(Path)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "PathResource", True, "PathResource", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "PathResource", True, "PathResource", "(URI)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "UrlResource", True, "UrlResource", "(String,String,String)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "UrlResource", True, "UrlResource", "(String,String)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "UrlResource", True, "UrlResource", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "UrlResource", True, "UrlResource", "(URI)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.core.io", "UrlResource", True, "UrlResource", "(URL)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.util", "FileSystemUtils", True, "copyRecursively", "(Path,Path)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.util", "FileSystemUtils", True, "copyRecursively", "(Path,Path)", "", "Argument[1]", "path-injection", "manual"]
+      - ["org.springframework.util", "FileSystemUtils", True, "deleteRecursively", "(File)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.util", "FileSystemUtils", True, "deleteRecursively", "(Path)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.util", "ResourceUtils", True, "getFile", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.util", "FileCopyUtils", True, "copyToByteArray", "(File)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.springframework.util", "FileSystemUtils", True, "copyRecursively", "(File,File)", "", "Argument[0]", "path-injection", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.springframework.core.io", "ClassPathResource", False, "ClassPathResource", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["org.springframework.core.io", "ClassPathResource", True, "getFilename", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.core.io", "ClassPathResource", True, "getPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.core.io", "ClassPathResource", True, "getURL", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.core.io", "ClassPathResource", True, "resolveURL", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.core.io", "InputStreamSource", True, "getInputStream", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]

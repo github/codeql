@@ -1,1 +1,2 @@
-Security Features/CWE-601/UrlRedirect.ql
+query: Security Features/CWE-601/UrlRedirect.ql
+postprocess: utils/test/PrettyPrintModels.ql

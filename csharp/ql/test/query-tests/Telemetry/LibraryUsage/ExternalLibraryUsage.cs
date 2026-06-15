@@ -25,4 +25,10 @@ public class LibraryUsage
     {
         var guid1 = Guid.Parse("{12345678-1234-1234-1234-123456789012}"); // Has no flow summary
     }
+
+    public void M4()
+    {
+        var d = new Dictionary<string, object>(); // Uninteresting parameterless constructor
+        var e = d.Keys.GetEnumerator().MoveNext(); // Methods on nested classes
+    }
 }

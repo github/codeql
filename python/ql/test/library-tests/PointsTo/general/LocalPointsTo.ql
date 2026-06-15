@@ -6,10 +6,11 @@
  */
 
 import python
+private import LegacyPointsTo
 import interesting
 import Util
 
-from int line, ControlFlowNode f, Object o
+from int line, ControlFlowNodeWithPointsTo f, Object o
 where
   of_interest(f, line) and
   f.refersTo(o)

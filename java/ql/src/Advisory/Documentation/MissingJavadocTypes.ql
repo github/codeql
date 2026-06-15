@@ -7,6 +7,7 @@
  * @precision medium
  * @id java/undocumented-type
  * @tags maintainability
+ *       readability
  */
 
 import java

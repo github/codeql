@@ -1,0 +1,57 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+In a thread-safe class, values must be published safely to avoid inconsistent or unexpected behavior caused by visibility issues between threads. If a value is not safely published, one thread may see a stale or partially constructed value written by another thread, leading to subtle concurrency bugs.
+</p>
+<p>
+In particular, values of primitive types should not be initialised to anything but their default values (which for <code>Object</code> is <code>null</code>) unless this happens in a static context.
+</p>
+<p>
+Techniques for safe publication include:
+</p>
+<ul>
+<li>Using synchronized blocks or methods to ensure that a value is fully constructed before it is published.</li>
+<li>Using volatile fields to ensure visibility of changes across threads.</li>
+<li>Using thread-safe collections or classes that provide built-in synchronization, such as are found in <code>java.util.concurrent</code>.</li>
+<li>Using the <code>final</code> keyword to ensure that a reference to an object is safely published when the object is constructed.</li>
+</ul>
+
+</overview>
+<recommendation>
+
+<p>
+Choose a safe publication technique that fits your use case. If the value only needs to be written once, say for a singleton, consider using the <code>final</code> keyword. If the value is mutable and needs to be shared across threads, consider using synchronized blocks or methods, or using a thread-safe collection from <code>java.util.concurrent</code>.
+</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the values of <code>value</code> and <code>server_id</code> are not safely published. The constructor creates a new object and assigns it to the field <code>value</code>. However, the field is not declared as <code>volatile</code> or <code>final</code>, and there are no synchronization mechanisms in place to ensure that the value is fully constructed before it is published. A different thread may see the default value <code>null</code>. Similarly, the field <code>server_id</code> may be observed to be <code>0</code>.</p>
+
+<sample src="UnsafePublication.java" />
+
+<p>To fix this example, we declare the field <code>value</code> as volatile. This will ensure that all changes to the field are visible to all threads. The field <code>server_id</code> is only meant to be written once, so we only need the write inside the constructor to be visible to other threads; declaring it <code>final</code> guarantees this:</p>
+
+<sample src="SafePublication.java" />
+
+</example>
+<references>
+
+
+<li>
+  Java Language Specification, chapter 17:
+  <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-17.html#jls-17.4">Threads and Locks</a>.
+</li>
+<li>
+  Java concurrency package:
+  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html">java.util.concurrent</a>.
+</li>
+
+
+</references>
+</qhelp>

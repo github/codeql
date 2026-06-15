@@ -1,7 +1,7 @@
-﻿using Microsoft.CodeAnalysis;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -102,7 +102,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
         }
 
-        public override Location ReportingLocation => throw new System.NotImplementedException();
+        public override Microsoft.CodeAnalysis.Location ReportingLocation => throw new System.NotImplementedException();
 
         public override bool NeedsPopulation => true;
 
@@ -209,8 +209,8 @@ namespace Semmle.Extraction.CSharp.Entities
         /// This is so that we can avoid populating nullability in most cases.
         /// For example,
         /// <code>
-        /// IEnumerable&lt;string?&gt // false
-        /// IEnumerable&lt;string?&gt? // true
+        /// IEnumerable&lt;string?&gt; // false
+        /// IEnumerable&lt;string?&gt;? // true
         /// string? // true
         /// string[] // true
         /// string?[] // false

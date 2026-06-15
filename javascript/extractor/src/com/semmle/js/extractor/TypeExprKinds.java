@@ -7,6 +7,7 @@ import com.semmle.js.ast.Identifier;
 import com.semmle.js.ast.Literal;
 import com.semmle.js.ast.MemberExpression;
 import com.semmle.js.ast.TemplateElement;
+import com.semmle.js.ast.ThisExpression;
 import com.semmle.js.extractor.ASTExtractor.IdContext;
 import com.semmle.ts.ast.ArrayTypeExpr;
 import com.semmle.ts.ast.ConditionalTypeExpr;
@@ -98,6 +99,11 @@ public class TypeExprKinds {
                   return thisVarTypeAccess;
                 }
                 return keywordTypeExpr;
+              }
+
+              @Override
+              public Integer visit(ThisExpression nd, Void c) {
+                return thisVarTypeAccess;
               }
 
               @Override

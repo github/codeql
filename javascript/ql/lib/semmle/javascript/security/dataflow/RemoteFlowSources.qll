@@ -11,10 +11,9 @@ cached
 private module Cached {
   /** A data flow source of remote user input. */
   cached
-  abstract class RemoteFlowSource extends DataFlow::Node {
-    /** Gets a human-readable string that describes the type of this remote flow source. */
+  abstract class RemoteFlowSource extends ThreatModelSource::Range {
     cached
-    abstract string getSourceType();
+    override string getThreatModel() { result = "remote" }
 
     /**
      * Holds if this can be a user-controlled object, such as a JSON object parsed from user-controlled data.
@@ -25,12 +24,18 @@ private module Cached {
 
   /**
    * A source of remote input in a web browser environment.
+   *
+   * Note that this does not include `view-component-input` sources even if that threat model has been enabled by the user.
+   * Consider using the predicate `ThreatModelSource#isClientSideSource()` to check for a broader class of client-side sources.
    */
   cached
   abstract class ClientSideRemoteFlowSource extends RemoteFlowSource {
     /** Gets a string indicating what part of the browser environment this was derived from. */
     cached
     abstract ClientSideRemoteFlowKind getKind();
+
+    cached
+    final override predicate isClientSideSource() { any() }
   }
 }
 
@@ -38,45 +43,65 @@ import Cached
 
 /**
  * A type of remote flow source that is specific to the browser environment.
+ *
+ * The underlying string also corresponds to a source kind.
  */
 class ClientSideRemoteFlowKind extends string {
-  ClientSideRemoteFlowKind() { this = ["query", "fragment", "path", "url", "name"] }
+  ClientSideRemoteFlowKind() {
+    this =
+      [
+        "browser", "browser-url-query", "browser-url-fragment", "browser-url-path", "browser-url",
+        "browser-window-name", "browser-message-event"
+      ]
+  }
 
   /**
-   * Holds if this is the `query` kind, describing sources derived from the query parameters of the browser URL,
+   * Holds if this is the `browser` kind, indicating a remote source in a browser context, that does not fit into one
+   * of the more specific kinds.
+   */
+  predicate isGenericBrowserSourceKind() { this = "browser" }
+
+  /**
+   * Holds if this is the `browser-url-query` kind, describing sources derived from the query parameters of the browser URL,
    * such as `location.search`.
    */
-  predicate isQuery() { this = "query" }
+  predicate isQuery() { this = "browser-url-query" }
 
   /**
-   * Holds if this is the `frgament` kind, describing sources derived from the fragment part of the browser URL,
+   * Holds if this is the `browser-url-fragment` kind, describing sources derived from the fragment part of the browser URL,
    * such as `location.hash`.
    */
-  predicate isFragment() { this = "fragment" }
+  predicate isFragment() { this = "browser-url-fragment" }
 
   /**
-   * Holds if this is the `path` kind, describing sources derived from the pathname of the browser URL,
+   * Holds if this is the `browser-url-path` kind, describing sources derived from the pathname of the browser URL,
    * such as `location.pathname`.
    */
-  predicate isPath() { this = "path" }
+  predicate isPath() { this = "browser-url-path" }
 
   /**
-   * Holds if this is the `url` kind, describing sources derived from the browser URL,
+   * Holds if this is the `browser-url` kind, describing sources derived from the browser URL,
    * where the untrusted part of the URL is prefixed by trusted data, such as the scheme and hostname.
    */
-  predicate isUrl() { this = "url" }
+  predicate isUrl() { this = "browser-url" }
 
-  /** Holds if this is the `query` or `fragment` kind. */
+  /** Holds if this is the `browser-url-query` or `browser-url-fragment` kind. */
   predicate isQueryOrFragment() { this.isQuery() or this.isFragment() }
 
-  /** Holds if this is the `path`, `query`, or `fragment` kind. */
+  /** Holds if this is the `browser-url-path`, `browser-url-query`, or `browser-url-fragment` kind. */
   predicate isPathOrQueryOrFragment() { this.isPath() or this.isQuery() or this.isFragment() }
 
-  /** Holds if this is the `path` or `url` kind. */
+  /** Holds if this is the `browser-url-path` or `browser-url` kind. */
   predicate isPathOrUrl() { this.isPath() or this.isUrl() }
 
-  /** Holds if this is the `name` kind, describing sources derived from the window name, such as `window.name`. */
-  predicate isWindowName() { this = "name" }
+  /** Holds if this is the `browser-window-name` kind, describing sources derived from the window name, such as `window.name`. */
+  predicate isWindowName() { this = "browser-window-name" }
+
+  /**
+   * Holds if this is the `browser-message-event` kind, describing sources derived from cross-window message passing,
+   * such as `event` in `window.onmessage = event => {...}`.
+   */
+  predicate isMessageEvent() { this = "browser-message-event" }
 }
 
 /**
@@ -101,6 +126,7 @@ class ClientSideRemoteFlowKind extends string {
  * `name` and `address` of global variable `user` should be considered as remote flow sources with
  * source type "user input".
  */
+overlay[local?]
 private class RemoteFlowSourceAccessPath extends JsonString {
   string sourceType;
 
@@ -154,6 +180,7 @@ private class RemoteFlowSourceAccessPath extends JsonString {
  * The global variable referenced by a `RemoteFlowSourceAccessPath`, declared as an API
  * entry point.
  */
+overlay[local?]
 private class ExternalRemoteFlowSourceSpecEntryPoint extends API::EntryPoint {
   string name;
 

@@ -42,7 +42,7 @@ in the previous example, one solution is to make the log message a trailing argu
 <p>An alternative solution is to allow <code>log_with_timestamp</code> to accept format arguments:</p>
 <sample src="NonConstantFormat-2-good.c" />
 <p>In this formulation, the non-constant format string to <code>printf</code> has been replaced with
-a non-constant format string to <code>vprintf</code>. Semmle will no longer consider the body of
+a non-constant format string to <code>vprintf</code>. The analysis will no longer consider the body of
 <code>log_with_timestamp</code> to be a problem, and will instead check that every call to
 <code>log_with_timestamp</code> passes a constant format string.</p>
 

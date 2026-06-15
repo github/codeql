@@ -47,10 +47,16 @@ class UserType extends Type, Declaration, NameQualifyingElement, AccessHolder, @
     else result = this.getADeclarationLocation()
   }
 
+  pragma[nomagic]
+  private TypeDeclarationEntry getADeclarationEntryBase() {
+    type_decls(underlyingElement(result), unresolveElement(this), _)
+  }
+
   override TypeDeclarationEntry getADeclarationEntry() {
-    if type_decls(_, unresolveElement(this), _)
-    then type_decls(underlyingElement(result), unresolveElement(this), _)
-    else exists(Class t | this.(Class).isConstructedFrom(t) and result = t.getADeclarationEntry())
+    pragma[only_bind_into](result) = pragma[only_bind_into](this).getADeclarationEntryBase()
+    or
+    not exists(this.getADeclarationEntryBase()) and
+    exists(Class t | this.(Class).isConstructedFrom(t) and result = t.getADeclarationEntry())
   }
 
   override Location getADeclarationLocation() { result = this.getADeclarationEntry().getLocation() }
@@ -129,4 +135,9 @@ class TypeDeclarationEntry extends DeclarationEntry, @type_decl {
    * class or typedef.
    */
   predicate isTopLevel() { type_decl_top(underlyingElement(this)) }
+
+  /**
+   * Gets the requires clause if this declaration is a template with such a clause.
+   */
+  Expr getRequiresClause() { type_requires(underlyingElement(this), unresolveElement(result)) }
 }

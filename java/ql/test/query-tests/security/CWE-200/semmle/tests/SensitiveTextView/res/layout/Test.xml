@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <EditText
+        android:id="@+id/test1"
+        android:inputType="text"/>
+
+    <TextView
+        android:id="@+id/test2"/>
+
+    <EditText
+        android:id="@+id/test3"/>
+
+    <LinearLayout
+        android:id="@+id/test4">
+        <TextView
+            android:id="@+id/test5"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/test6"
+        android:inputType="textPassword"/>
+
+    <EditText
+        android:id="@+id/test7"
+        android:inputType="textWebPassword"/>
+
+    <EditText
+        android:id="@+id/test8"
+        android:inputType="numberPassword"/>
+
+    <EditText
+        android:id="@+id/test9"
+        android:inputType="textVisiblePassword"/>
+
+    <EditText
+        android:id="@+id/test10"
+        android:visibility="invisible"/>
+
+    <EditText
+        android:id="@+id/test11"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:visibility="invisible">
+        <TextView
+            android:id="@+id/test12"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@id/test13"
+        android:inputType="textPassword"/>
+
+    <EditText
+        android:id="@+id/test14"
+        android:inputType="textPassword"/>
+
+</LinearLayout>

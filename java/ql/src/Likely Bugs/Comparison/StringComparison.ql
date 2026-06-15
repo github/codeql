@@ -6,7 +6,9 @@
  * @problem.severity warning
  * @precision medium
  * @id java/reference-equality-on-strings
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-597
  */
 
@@ -21,12 +23,12 @@ class StringValue extends Expr {
     exists(Method intern |
       intern.getDeclaringType() instanceof TypeString and
       intern.hasName("intern") and
-      this.(MethodAccess).getMethod() = intern
+      this.(MethodCall).getMethod() = intern
     )
     or
     // Ternary conditional operator.
-    this.(ConditionalExpr).getTrueExpr().(StringValue).isInterned() and
-    this.(ConditionalExpr).getFalseExpr().(StringValue).isInterned()
+    this.(ConditionalExpr).getThen().(StringValue).isInterned() and
+    this.(ConditionalExpr).getElse().(StringValue).isInterned()
     or
     // Values of type `String` that are compile-time constant expressions (JLS 15.28).
     this instanceof CompileTimeConstantExpr
@@ -35,8 +37,8 @@ class StringValue extends Expr {
     variableValuesInterned(this.(VarAccess).getVariable())
     or
     // Method accesses whose results are all interned.
-    forex(ReturnStmt rs | rs.getEnclosingCallable() = this.(MethodAccess).getMethod() |
-      rs.getResult().(StringValue).isInterned()
+    forex(ReturnStmt rs | rs.getEnclosingCallable() = this.(MethodCall).getMethod() |
+      rs.getExpr().(StringValue).isInterned()
     )
   }
 }

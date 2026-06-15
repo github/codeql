@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.windowsBuildArgs", "code-injection", "generated"]
+     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.bazelBuildArgs", "code-injection", "generated"]
+     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.iosBuildArgs", "code-injection", "generated"]
+     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.macosBuildArgs", "code-injection", "generated"]
+     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.androidBuildArgs", "code-injection", "generated"]
+     - ["homuler/mediapipeunityplugin/.github/workflows/package.yml", "*", "input.linuxBuildArgs", "code-injection", "generated"]

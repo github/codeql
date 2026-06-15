@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["wasmedge/wasmedge/.github/workflows/reusable-create-source-tarball.yml", "*", "input.version", "code-injection", "generated"]
+     - ["wasmedge/wasmedge/.github/workflows/reusable-build-on-windows.yml", "*", "input.version", "code-injection", "generated"]
+     - ["wasmedge/wasmedge/.github/workflows/reusable-build-on-windows-msvc.yml", "*", "input.version", "code-injection", "generated"]
+     - ["wasmedge/wasmedge/.github/workflows/reusable-build-on-ubuntu.yml", "*", "input.version", "code-injection", "generated"]
+     - ["wasmedge/wasmedge/.github/workflows/reusable-build-on-manylinux.yml", "*", "input.version", "code-injection", "generated"]

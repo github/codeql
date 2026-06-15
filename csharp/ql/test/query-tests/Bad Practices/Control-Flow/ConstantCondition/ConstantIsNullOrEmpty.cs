@@ -7,17 +7,20 @@ namespace ConstantIsNullOrEmpty
         static void Main(string[] args)
         {
             {
-                if (string.IsNullOrEmpty(nameof(args))) // bad: always false
+                // All of the IsNullOrEmpty constant checks have been descoped
+                // from the query as it didn't seem worth the effort to keep them.
+
+                if (string.IsNullOrEmpty(nameof(args))) // Missing Alert (always false)
                 {
                 }
 
                 string? x = null;
-                if (string.IsNullOrEmpty(x)) // would be nice... bad: always true
+                if (string.IsNullOrEmpty(x)) // Missing Alert (always true)
                 {
                 }
 
                 string y = "";
-                if (string.IsNullOrEmpty(y)) // would be nice... bad: always true
+                if (string.IsNullOrEmpty(y)) // Missing Alert (always true)
                 {
                 }
 
@@ -28,12 +31,12 @@ namespace ConstantIsNullOrEmpty
                 }
 
                 string z = " ";
-                if (string.IsNullOrEmpty(z)) // would be nice... bad: always false
+                if (string.IsNullOrEmpty(z)) // Missing Alert (always false)
                 {
                 }
 
                 string a = "a";
-                if (string.IsNullOrEmpty(a)) // would be nice... bad: always false
+                if (string.IsNullOrEmpty(a)) // Missing Alert (always false)
                 {
                 }
 
@@ -43,15 +46,15 @@ namespace ConstantIsNullOrEmpty
                 {
                 }
 
-                if (string.IsNullOrEmpty(null)) // bad: always true
+                if (string.IsNullOrEmpty(null)) // Missing Alert
                 {
                 }
 
-                if (string.IsNullOrEmpty("")) // bad: always true
+                if (string.IsNullOrEmpty("")) // Missing Alert
                 {
                 }
 
-                if (string.IsNullOrEmpty(" ")) // bad: always false
+                if (string.IsNullOrEmpty(" ")) // Missing Alert
                 {
                 }
             }

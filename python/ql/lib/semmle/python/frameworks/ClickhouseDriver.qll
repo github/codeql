@@ -9,6 +9,7 @@ private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.PEP249
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -37,6 +38,9 @@ module ClickhouseDriver {
         or
         // commonly used alias
         classRef = API::moduleImport("clickhouse_driver").getMember("Client")
+        or
+        // Models-as-Data subclass
+        classRef = ModelOutput::getATypeNode("clickhouse_driver.client.Client~Subclass")
       |
         result = classRef.getASubclass*()
       )

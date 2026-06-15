@@ -1,0 +1,14 @@
+| Test.java:13:59:13:63 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: DES. |
+| Test.java:15:47:15:51 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: DES. |
+| Test.java:20:62:20:69 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: DES. |
+| Test.java:22:50:22:57 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: DES. |
+| Test.java:27:64:27:73 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: Blowfish. |
+| Test.java:29:52:29:61 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: Blowfish. |
+| Test.java:34:59:34:63 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: RC2. |
+| Test.java:36:47:36:51 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: RC2. |
+| Test.java:41:59:41:63 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: RC4. |
+| Test.java:43:47:43:51 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: RC4. |
+| Test.java:48:60:48:65 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: IDEA. |
+| Test.java:50:48:50:53 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: IDEA. |
+| Test.java:55:64:55:73 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: Skipjack. |
+| Test.java:57:52:57:61 | KeyOperationAlgorithm | Use of unapproved symmetric cipher algorithm or API: Skipjack. |

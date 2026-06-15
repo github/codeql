@@ -17,7 +17,7 @@ from InstanceOfExpr ioe, RefType t, RefType ct
 where
   ioe.getExpr() instanceof ThisAccess and
   t = ioe.getExpr().getType() and
-  ct = ioe.getCheckedType() and
+  ct = ioe.getSyntacticCheckedType() and
   ct.getAnAncestor() = t
 select ioe,
   "Testing whether 'this' is an instance of $@ in $@ introduces a dependency cycle between the two types.",

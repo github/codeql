@@ -1,5 +1,7 @@
+overlay[local]
+module;
+
 import python
-private import semmle.python.objects.Modules
 private import semmle.python.internal.CachedStages
 
 /**
@@ -66,15 +68,6 @@ class Module extends Module_, Scope, AstNode {
   /** Whether this module is a package initializer */
   predicate isPackageInit() { this.getName().matches("%\\_\\_init\\_\\_") and not this.isPackage() }
 
-  /** Gets a name exported by this module, that is the names that will be added to a namespace by 'from this-module import *' */
-  string getAnExport() {
-    py_exports(this, result)
-    or
-    exists(ModuleObjectInternal mod | mod.getSource() = this.getEntryNode() |
-      mod.(ModuleValue).exports(result)
-    )
-  }
-
   /** Gets the source file for this module */
   File getFile() { py_module_path(this, result) }
 
@@ -95,9 +88,6 @@ class Module extends Module_, Scope, AstNode {
     this.getName().matches("%.%") and
     result = this.getName().regexpReplaceAll("\\.[^.]*$", "")
   }
-
-  /** Gets the metrics for this module */
-  ModuleMetrics getMetrics() { result = this }
 
   string getAnImportedModuleName() {
     exists(Import i | i.getEnclosingModule() = this | result = i.getAnImportedModuleName())
@@ -125,9 +115,9 @@ class Module extends Module_, Scope, AstNode {
       a.getScope() = this and
       all.getId() = "__all__" and
       (
-        a.getValue().(List).getAnElt().(StrConst).getText() = name
+        a.getValue().(List).getAnElt().(StringLiteral).getText() = name
         or
-        a.getValue().(Tuple).getAnElt().(StrConst).getText() = name
+        a.getValue().(Tuple).getAnElt().(StringLiteral).getText() = name
       )
     )
   }
@@ -177,25 +167,25 @@ private predicate legalDottedName(string name) {
 }
 
 bindingset[name]
-private predicate legalShortName(string name) { name.regexpMatch("(\\p{L}|_)(\\p{L}|\\d|_)*") }
-
-/**
- * Holds if `f` is potentially a source package.
- * Does it have an __init__.py file (or --respect-init=False for Python 2) and is it within the source archive?
- */
-private predicate isPotentialSourcePackage(Folder f) {
-  f.getRelativePath() != "" and
-  isPotentialPackage(f)
-}
-
-private predicate isPotentialPackage(Folder f) {
-  exists(f.getFile("__init__.py"))
-  or
-  py_flags_versioned("options.respect_init", "False", _) and major_version() = 2 and exists(f)
-}
+predicate legalShortName(string name) { name.regexpMatch("(\\p{L}|_)(\\p{L}|\\d|_)*") }
 
 private string moduleNameFromBase(Container file) {
-  isPotentialPackage(file) and result = file.getBaseName()
+  // We used to also require `isPotentialPackage(f)` to hold in this case,
+  // but we saw modules not getting resolved because their folder did not
+  // contain an `__init__.py` file.
+  //
+  // This makes the folder not be a package but a namespace package instead.
+  // In most cases this is a mistake :| See following links for more details
+  // - https://dev.to/methane/don-t-omit-init-py-3hga
+  // - https://packaging.python.org/en/latest/guides/packaging-namespace-packages/
+  // - https://discuss.python.org/t/init-py-pep-420-and-iter-modules-confusion/9642
+  //
+  // It is possible that we can keep the original requirement on
+  // `isPotentialPackage(f)` here, but relax `isPotentialPackage` itself to allow
+  // for this behavior of missing `__init__.py` files. However, doing so involves
+  // cascading changes (for example to `moduleNameFromFile`), and was a more involved
+  // task than we wanted to take on.
+  result = file.getBaseName()
   or
   file instanceof File and result = file.getStem()
 }
@@ -221,31 +211,114 @@ private predicate transitively_imported_from_entry_point(File file) {
   )
 }
 
+/**
+ * Holds if the folder `f` is a regular Python package,
+ * containing an `__init__.py` file.
+ */
+private predicate isRegularPackage(Folder f, string name) {
+  legalShortName(name) and
+  name = f.getStem() and
+  exists(f.getFile("__init__.py"))
+}
+
+/** Gets the name of a module imported in package `c`. */
+private string moduleImportedInPackage(Container c) {
+  legalShortName(result) and
+  // it has to be imported in this folder
+  result =
+    any(ImportExpr i | i.getLocation().getFile().getParent() = c)
+        .getName()
+        // strip everything after the first `.`
+        .regexpReplaceAll("\\..*", "") and
+  result != ""
+}
+
+/** Holds if the file `f` could be resolved to a module named `name`. */
+private predicate isPotentialModuleFile(File file, string name) {
+  legalShortName(name) and
+  name = file.getStem() and
+  file.getExtension() = ["py", "pyc", "so", "pyd"] and
+  // it has to be imported in this folder
+  name = moduleImportedInPackage(file.getParent())
+}
+
+/**
+ * Holds if the folder `f` is a namespace package named `name`.
+ *
+ * See https://peps.python.org/pep-0420/#specification
+ * for details on namespace packages.
+ */
+private predicate isNameSpacePackage(Folder f, string name) {
+  legalShortName(name) and
+  name = f.getStem() and
+  not isRegularPackage(f, name) and
+  // it has to be imported in a file
+  // either in this folder or next to this folder
+  name = moduleImportedInPackage([f, f.getParent()]) and
+  // no sibling regular package
+  // and no sibling module
+  not exists(Folder sibling | sibling.getParent() = f.getParent() |
+    isRegularPackage(sibling.getFolder(name), name)
+    or
+    isPotentialModuleFile(sibling.getAFile(), name)
+  )
+}
+
+/**
+ * Holds if the folder `f` is a package (either a regular package
+ * or a namespace package) named `name`.
+ */
+private predicate isPackage(Folder f, string name) {
+  isRegularPackage(f, name)
+  or
+  isNameSpacePackage(f, name)
+}
+
+/**
+ * Holds if the file `f` is a module named `name`.
+ */
+private predicate isModuleFile(File file, string name) {
+  isPotentialModuleFile(file, name) and
+  not isPackage(file.getParent(), _)
+}
+
+/**
+ * Holds if the folder `f` is a package named `name`
+ * and does reside inside another package.
+ */
+private predicate isOutermostPackage(Folder f, string name) {
+  isPackage(f, name) and
+  not isPackage(f.getParent(), _)
+}
+
+/** Gets the name of the module that `c` resolves to, if any. */
 cached
-string moduleNameFromFile(Container file) {
+string moduleNameFromFile(Container c) {
+  // package
+  isOutermostPackage(c, result)
+  or
+  // module
+  isModuleFile(c, result)
+  or
   Stages::AST::ref() and
   exists(string basename |
-    basename = moduleNameFromBase(file) and
+    basename = moduleNameFromBase(c) and
     legalShortName(basename)
   |
-    result = moduleNameFromFile(file.getParent()) + "." + basename
+    // recursive case
+    result = moduleNameFromFile(c.getParent()) + "." + basename
     or
     // If `file` is a transitive import of a file that's executed directly, we allow references
     // to it by its `basename`.
-    transitively_imported_from_entry_point(file) and
+    transitively_imported_from_entry_point(c) and
     result = basename
   )
   or
-  isPotentialSourcePackage(file) and
-  result = file.getStem() and
-  (
-    not isPotentialSourcePackage(file.getParent()) or
-    not legalShortName(file.getParent().getBaseName())
-  )
+  //
+  // standard library
+  result = c.getStem() and c.getParent() = c.getImportRoot()
   or
-  result = file.getStem() and file.getParent() = file.getImportRoot()
-  or
-  result = file.getStem() and isStubRoot(file.getParent())
+  result = c.getStem() and isStubRoot(c.getParent())
 }
 
 private predicate isStubRoot(Folder f) {

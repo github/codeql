@@ -98,8 +98,8 @@ private predicate exprReleases(Expr e, Expr released, string kind) {
       e.(FunctionCall).getTarget() = f or
       e.(FunctionCall).getTarget().(MemberFunction).getAnOverridingFunction+() = f
     ) and
-    access = f.getParameter(arg).getAnAccess() and
-    e.(FunctionCall).getArgument(arg) = released and
+    access = f.getParameter(pragma[only_bind_into](arg)).getAnAccess() and
+    e.(FunctionCall).getArgument(pragma[only_bind_into](arg)) = released and
     exprReleases(_,
       pragma[only_bind_into](exprOrDereference(globalValueNumber(access).getAnExpr())), kind)
   )
@@ -126,13 +126,13 @@ class Resource extends MemberVariable {
   }
 
   private predicate calledFromDestructor(Function f) {
-    f instanceof Destructor and f.getDeclaringType() = this.getDeclaringType()
+    pragma[only_bind_into](f) instanceof Destructor and
+    f.getDeclaringType() = this.getDeclaringType()
     or
-    exists(Function mid, FunctionCall fc |
+    exists(Function mid |
       this.calledFromDestructor(mid) and
-      fc.getEnclosingFunction() = mid and
-      fc.getTarget() = f and
-      f.getDeclaringType() = this.getDeclaringType()
+      mid.calls(f) and
+      pragma[only_bind_out](f.getDeclaringType()) = pragma[only_bind_out](this.getDeclaringType())
     )
   }
 

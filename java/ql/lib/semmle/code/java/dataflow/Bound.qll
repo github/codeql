@@ -1,78 +1,36 @@
 /**
  * Provides classes for representing abstract bounds for use in, for example, range analysis.
  */
+overlay[local?]
+module;
 
-private import internal.rangeanalysis.BoundSpecific
+private import java as J
+private import semmle.code.java.dataflow.SSA
+private import semmle.code.java.dataflow.RangeUtils as RU
+private import codeql.rangeanalysis.Bound as SharedBound
 
-private newtype TBound =
-  TBoundZero() or
-  TBoundSsa(SsaVariable v) { v.getSourceVariable().getType() instanceof IntegralType } or
-  TBoundExpr(Expr e) {
-    interestingExprBound(e) and
-    not exists(SsaVariable v | e = v.getAUse())
+private module BoundDefs implements SharedBound::BoundDefinitions<J::Location> {
+  class SsaVariable extends Ssa::SsaDefinition {
+    /** Gets a use of this variable. */
+    Expr getAUse() { result = super.getARead() }
   }
 
-/**
- * A bound that may be inferred for an expression plus/minus an integer delta.
- */
-abstract class Bound extends TBound {
-  /** Gets a textual representation of this bound. */
-  abstract string toString();
+  class SsaSourceVariable = Ssa::SourceVariable;
 
-  /** Gets an expression that equals this bound plus `delta`. */
-  abstract Expr getExpr(int delta);
+  class Type = J::Type;
 
-  /** Gets an expression that equals this bound. */
-  Expr getExpr() { result = this.getExpr(0) }
+  class Expr = J::Expr;
 
-  /**
-   * Holds if this element is at the specified location.
-   * The location spans column `sc` of line `sl` to
-   * column `ec` of line `el` in file `path`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    path = "" and sl = 0 and sc = 0 and el = 0 and ec = 0
+  class IntegralType = J::IntegralType;
+
+  class ConstantIntegerExpr = RU::ConstantIntegerExpr;
+
+  /** Holds if `e` is a bound expression and it is not an SSA variable read. */
+  predicate interestingExprBound(Expr e) {
+    e.(J::FieldRead).getField() instanceof J::ArrayLengthField
   }
 }
 
-/**
- * The bound that corresponds to the integer 0. This is used to represent all
- * integer bounds as bounds are always accompanied by an added integer delta.
- */
-class ZeroBound extends Bound, TBoundZero {
-  override string toString() { result = "0" }
+module BoundImpl = SharedBound::Bound<J::Location, BoundDefs>;
 
-  override Expr getExpr(int delta) { result.(ConstantIntegerExpr).getIntValue() = delta }
-}
-
-/**
- * A bound corresponding to the value of an SSA variable.
- */
-class SsaBound extends Bound, TBoundSsa {
-  /** Gets the SSA variable that equals this bound. */
-  SsaVariable getSsa() { this = TBoundSsa(result) }
-
-  override string toString() { result = this.getSsa().toString() }
-
-  override Expr getExpr(int delta) { result = this.getSsa().getAUse() and delta = 0 }
-
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    this.getSsa().getLocation().hasLocationInfo(path, sl, sc, el, ec)
-  }
-}
-
-/**
- * A bound that corresponds to the value of a specific expression that might be
- * interesting, but isn't otherwise represented by the value of an SSA variable.
- */
-class ExprBound extends Bound, TBoundExpr {
-  override string toString() { result = this.getExpr().toString() }
-
-  override Expr getExpr(int delta) { this = TBoundExpr(result) and delta = 0 }
-
-  override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    this.getExpr().getLocation().hasLocationInfo(path, sl, sc, el, ec)
-  }
-}
+import BoundImpl

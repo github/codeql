@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["rethinkdb/rethinkdb", "*", "input.command", "code-injection", "generated"]
+     - ["rethinkdb/rethinkdb", "*", "input.install_command", "code-injection", "generated"]
+     - ["rethinkdb/rethinkdb", "*", "input.env_activate", "code-injection", "generated"]
+     - ["rethinkdb/rethinkdb", "*", "input.default_python_driver_commit_hash", "code-injection", "generated"]

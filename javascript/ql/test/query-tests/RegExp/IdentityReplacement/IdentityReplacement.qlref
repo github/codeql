@@ -1,1 +1,2 @@
-RegExp/IdentityReplacement.ql
+query: RegExp/IdentityReplacement.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

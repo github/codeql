@@ -11,17 +11,12 @@ import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.TaintTracking
 import PamAuthorizationCustomizations::PamAuthorizationCustomizations
 
-/**
- * A taint-tracking configuration for detecting "PAM Authorization" vulnerabilities.
- */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "PamAuthorization" }
+private module PamAuthorizationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node node) { node instanceof Sink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // Models flow from a remotely supplied username field to a PAM `handle`.
     // `retval = pam_start(service, username, byref(conv), byref(handle))`
     exists(API::CallNode pamStart, DataFlow::Node handle, API::CallNode pointer |
@@ -36,4 +31,9 @@ class Configuration extends TaintTracking::Configuration {
     // Flow from handle to the authenticate call in the final step
     exists(VulnPamAuthCall c | c.getArg(0) = node1 | node2 = c)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/** Global taint-tracking for detecting "PAM Authorization" vulnerabilities. */
+module PamAuthorizationFlow = TaintTracking::Global<PamAuthorizationConfig>;

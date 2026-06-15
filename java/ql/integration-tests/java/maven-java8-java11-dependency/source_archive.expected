@@ -1,0 +1,4 @@
+pom.xml
+src/main/java/com/example/Calculator.java
+src/test/java/com/example/CalculatorTest.java
+target/maven-archiver/pom.properties

@@ -46,6 +46,8 @@ httpRequests
 | NetHttp.rb:16:6:16:19 | call to patch |
 | NetHttp.rb:24:3:24:33 | call to get |
 | NetHttp.rb:29:1:29:32 | call to post |
+| NetHttp.rb:33:1:33:22 | call to request |
+| NetHttp.rb:36:3:36:15 | call to get |
 | OpenURI.rb:3:9:3:41 | call to open |
 | OpenURI.rb:6:9:6:34 | call to open |
 | OpenURI.rb:9:9:9:38 | call to open |
@@ -67,6 +69,14 @@ httpRequests
 | Typhoeus.rb:15:9:15:46 | call to delete |
 | Typhoeus.rb:18:9:18:44 | call to head |
 | Typhoeus.rb:21:9:21:47 | call to options |
+| Typhoeus.rb:24:8:24:50 | call to new |
+| Typhoeus.rb:27:8:27:50 | call to new |
+| Typhoeus.rb:31:9:31:51 | call to new |
+| Typhoeus.rb:34:9:34:51 | call to new |
+| Typhoeus.rb:39:9:39:51 | call to new |
+| Typhoeus.rb:44:9:44:51 | call to new |
+| Typhoeus.rb:49:9:49:51 | call to new |
+| Typhoeus.rb:54:9:54:51 | call to new |
 getFramework
 | Excon.rb:3:9:3:40 | call to get | Excon |
 | Excon.rb:6:9:6:60 | call to post | Excon |
@@ -115,6 +125,8 @@ getFramework
 | NetHttp.rb:16:6:16:19 | call to patch | Net::HTTP |
 | NetHttp.rb:24:3:24:33 | call to get | Net::HTTP |
 | NetHttp.rb:29:1:29:32 | call to post | Net::HTTP |
+| NetHttp.rb:33:1:33:22 | call to request | Net::HTTP |
+| NetHttp.rb:36:3:36:15 | call to get | Net::HTTP |
 | OpenURI.rb:3:9:3:41 | call to open | OpenURI |
 | OpenURI.rb:6:9:6:34 | call to open | OpenURI |
 | OpenURI.rb:9:9:9:38 | call to open | OpenURI |
@@ -136,6 +148,14 @@ getFramework
 | Typhoeus.rb:15:9:15:46 | call to delete | Typhoeus |
 | Typhoeus.rb:18:9:18:44 | call to head | Typhoeus |
 | Typhoeus.rb:21:9:21:47 | call to options | Typhoeus |
+| Typhoeus.rb:24:8:24:50 | call to new | Typhoeus |
+| Typhoeus.rb:27:8:27:50 | call to new | Typhoeus |
+| Typhoeus.rb:31:9:31:51 | call to new | Typhoeus |
+| Typhoeus.rb:34:9:34:51 | call to new | Typhoeus |
+| Typhoeus.rb:39:9:39:51 | call to new | Typhoeus |
+| Typhoeus.rb:44:9:44:51 | call to new | Typhoeus |
+| Typhoeus.rb:49:9:49:51 | call to new | Typhoeus |
+| Typhoeus.rb:54:9:54:51 | call to new | Typhoeus |
 getResponseBody
 | Excon.rb:3:9:3:40 | call to get | Excon.rb:4:1:4:10 | call to body |
 | Excon.rb:6:9:6:60 | call to post | Excon.rb:7:1:7:10 | call to body |
@@ -205,6 +225,14 @@ getResponseBody
 | Typhoeus.rb:15:9:15:46 | call to delete | Typhoeus.rb:16:1:16:10 | call to body |
 | Typhoeus.rb:18:9:18:44 | call to head | Typhoeus.rb:19:1:19:10 | call to body |
 | Typhoeus.rb:21:9:21:47 | call to options | Typhoeus.rb:22:1:22:10 | call to body |
+| Typhoeus.rb:24:8:24:50 | call to new | Typhoeus.rb:25:1:25:13 | call to body |
+| Typhoeus.rb:27:8:27:50 | call to new | Typhoeus.rb:29:1:29:18 | call to body |
+| Typhoeus.rb:31:9:31:51 | call to new | Typhoeus.rb:32:1:32:23 | call to response_body |
+| Typhoeus.rb:34:9:34:51 | call to new | Typhoeus.rb:36:5:36:15 | call to body |
+| Typhoeus.rb:39:9:39:51 | call to new | Typhoeus.rb:41:5:41:15 | call to body |
+| Typhoeus.rb:44:9:44:51 | call to new | Typhoeus.rb:46:5:46:15 | call to body |
+| Typhoeus.rb:49:9:49:51 | call to new | Typhoeus.rb:51:5:51:15 | call to body |
+| Typhoeus.rb:54:9:54:51 | call to new | Typhoeus.rb:55:19:55:24 | body15 |
 getAUrlPart
 | Excon.rb:3:9:3:40 | call to get | Excon.rb:3:19:3:39 | "http://example.com/" |
 | Excon.rb:6:9:6:60 | call to post | Excon.rb:6:20:6:40 | "http://example.com/" |
@@ -268,6 +296,9 @@ getAUrlPart
 | NetHttp.rb:24:3:24:33 | call to get | NetHttp.rb:24:17:24:22 | domain |
 | NetHttp.rb:24:3:24:33 | call to get | NetHttp.rb:24:29:24:32 | path |
 | NetHttp.rb:29:1:29:32 | call to post | NetHttp.rb:29:16:29:18 | uri |
+| NetHttp.rb:33:1:33:22 | call to request | NetHttp.rb:31:22:31:42 | "https://example.com" |
+| NetHttp.rb:33:1:33:22 | call to request | NetHttp.rb:33:14:33:21 | root_get |
+| NetHttp.rb:36:3:36:15 | call to get | NetHttp.rb:36:12:36:14 | "/" |
 | OpenURI.rb:3:9:3:41 | call to open | OpenURI.rb:3:21:3:40 | "http://example.com" |
 | OpenURI.rb:6:9:6:34 | call to open | OpenURI.rb:6:14:6:33 | "http://example.com" |
 | OpenURI.rb:9:9:9:38 | call to open | OpenURI.rb:9:18:9:37 | "http://example.com" |
@@ -287,3 +318,11 @@ getAUrlPart
 | Typhoeus.rb:15:9:15:46 | call to delete | Typhoeus.rb:15:25:15:45 | "http://example.com/" |
 | Typhoeus.rb:18:9:18:44 | call to head | Typhoeus.rb:18:23:18:43 | "http://example.com/" |
 | Typhoeus.rb:21:9:21:47 | call to options | Typhoeus.rb:21:26:21:46 | "http://example.com/" |
+| Typhoeus.rb:24:8:24:50 | call to new | Typhoeus.rb:24:30:24:49 | "http://example.com" |
+| Typhoeus.rb:27:8:27:50 | call to new | Typhoeus.rb:27:30:27:49 | "http://example.com" |
+| Typhoeus.rb:31:9:31:51 | call to new | Typhoeus.rb:31:31:31:50 | "http://example.com" |
+| Typhoeus.rb:34:9:34:51 | call to new | Typhoeus.rb:34:31:34:50 | "http://example.com" |
+| Typhoeus.rb:39:9:39:51 | call to new | Typhoeus.rb:39:31:39:50 | "http://example.com" |
+| Typhoeus.rb:44:9:44:51 | call to new | Typhoeus.rb:44:31:44:50 | "http://example.com" |
+| Typhoeus.rb:49:9:49:51 | call to new | Typhoeus.rb:49:31:49:50 | "http://example.com" |
+| Typhoeus.rb:54:9:54:51 | call to new | Typhoeus.rb:54:31:54:50 | "http://example.com" |

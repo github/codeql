@@ -314,3 +314,40 @@ function usePolyfill() {
             return response.text()
         })
 }
+
+function useSuperagent(url){
+    superagent('GET', url);
+    superagent.del(url);
+    superagent.agent().post(url).send(data);
+}
+
+import { Options } from 'got';
+
+function gotTests(url){
+    const options = new Options({url});
+    got(undefined, undefined, options);
+    got(undefined, undefined, new Options({url}));
+
+    const options2 = new Options({url});
+    got.extend(options2).extend(options).get();
+
+    got.paginate(url, {});
+
+    const jsonClient = got.extend({url: url});
+    jsonClient.get();
+
+    const jsonClient2 = got.extend({url: url}).extend({url: url});
+    jsonClient2.get();
+}
+
+function moreAxiosTests(url, data, config){
+    axios.postForm(url, data, config);
+    axios.putForm(url, data);
+    axios.putForm(url, data, config);
+    axios.patchForm(url, data);
+    axios.patchForm(url, data, config);
+    axios.getUri({ url: url });
+
+    const axiosInstance = axios.create({});
+    axiosInstance({method: "get", url: url, responseType: "text"});
+}

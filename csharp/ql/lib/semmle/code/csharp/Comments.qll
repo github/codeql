@@ -8,6 +8,13 @@
 import Element
 import Location
 
+private Location unmapLoc(Location l) {
+  result.(SourceLocation).getMappedLocation() = l
+  or
+  not exists(result.(SourceLocation).getMappedLocation()) and
+  result = l
+}
+
 /**
  * A single line of comment.
  *
@@ -19,7 +26,7 @@ class CommentLine extends @commentline {
   string toString() { none() }
 
   /** Gets the location of this comment line. */
-  Location getLocation() { commentline_location(this, result) }
+  Location getLocation() { commentline_location(this, unmapLoc(result)) }
 
   /** Gets the containing comment block. */
   CommentBlock getParent() { result.getAChild() = this }
@@ -159,7 +166,7 @@ class CommentBlock extends @commentblock {
   string toString() { result = this.getChild(0).toString() }
 
   /** Gets the location of this comment block */
-  Location getLocation() { commentblock_location(this, result) }
+  Location getLocation() { commentblock_location(this, unmapLoc(result)) }
 
   /** Gets the number of lines in this comment block. */
   int getNumLines() { result = count(this.getAChild()) }

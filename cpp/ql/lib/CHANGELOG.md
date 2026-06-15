@@ -1,3 +1,747 @@
+## 10.2.0
+
+### Deprecated APIs
+
+* The `UsingAliasTypedefType` class has been deprecated. Use `TypeAliasType` instead.
+
+### New Features
+
+* Added a `getOriginalTemplate` predicate to `TemplateClass`, `TemplateFunction`, `TemplateVariable`, and `AliasTemplateType`, which yields the class member template the template was generated from. The predicates only have results for templates that are members of class template instantiations.
+* Added `AliasTemplateType` and `AliasTemplateInstantiationType` classes, representing C++ alias templates and their instantiations.
+
+### Minor Analysis Improvements
+
+* Added flow source models for `scanf_s` and related functions.
+* Added a `Call` column to `LocalFlowSourceFunction::hasLocalFlowSource` and `RemoteFlowSourceFunction::hasRemoteFlowSource`. The old predicates without a `Call` column continue to be supported.
+
+## 10.1.1
+
+### Minor Analysis Improvements
+
+* The `RemoteFlowSourceFunction` model for `fscanf` (and variants) now implements `hasSocketInput` to reflect that these functions may read from a socket.
+
+## 10.1.0
+
+### New Features
+
+* A new predicate `getSwitchCase` was added to the `SwitchStmt` class, which yields the `n`th `case` statement from a `switch` statement.
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for C and C++](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-cpp/).
+
+### Minor Analysis Improvements
+
+* Added taint flow models for the `Strsafe.h` header from the Windows SDK.
+
+## 10.0.0
+
+### Breaking Changes
+
+* The deprecated `NonThrowingFunction` class has been removed, use `NonCppThrowingFunction` instead.
+* The deprecated `ThrowingFunction` class has been removed, use `AlwaysSehThrowingFunction` instead.
+
+### New Features
+
+* Added a subclass `AutoconfConfigureTestFile` of `ConfigurationTestFile` that represents files created by GNU autoconf configure scripts to test the build configuration.
+
+## 9.0.0
+
+### Breaking Changes
+
+* The `SourceModelCsv`, `SinkModelCsv`, and `SummaryModelCsv` classes and the associated CSV parsing infrastructure have been removed from `ExternalFlow.qll`. New models should be added as `.model.yml` files in the `ext/` directory.
+
+### New Features
+
+* Added a subclass `MesonPrivateTestFile` of `ConfigurationTestFile` that represents files created by Meson to test the build configuration.
+* Added a class `ConstructorDirectFieldInit` to represent field initializations that occur in member initializer lists.
+* Added a class `ConstructorDefaultFieldInit` to represent default field initializations.
+* Added a class `DataFlow::IndirectParameterNode` to represent the indirection of a parameter as a dataflow node.
+* Added a predicate `Node::asIndirectInstruction` which returns the `Instruction` that defines the indirect dataflow node, if any.
+* Added a class `IndirectUninitializedNode` to represent the indirection of an uninitialized local variable as a dataflow node.
+
+### Minor Analysis Improvements
+
+* Added `HttpReceiveHttpRequest`, `HttpReceiveRequestEntityBody`, and `HttpReceiveClientCertificate` from Win32's `http.h` as remote flow sources.
+* Added dataflow through members initialized via non-static data member initialization (NSDMI).
+
+## 8.0.3
+
+No user-facing changes.
+
+## 8.0.2
+
+No user-facing changes.
+
+## 8.0.1
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 8.0.0
+
+### Breaking Changes
+
+* CodeQL version 2.24.2 accidentally introduced a syntactical breaking change to `BarrierGuard<...>::getAnIndirectBarrierNode` and `InstructionBarrierGuard<...>::getAnIndirectBarrierNode`. These breaking changes have now been reverted so that the original code compiles again.
+* `MustFlow`, the inter-procedural must-flow data flow analysis library, has been re-worked to use parameterized modules. Like in the case of data flow and taint tracking, instead of extending the `MustFlowConfiguration` class, the user should now implement a module with the `MustFlow::ConfigSig` signature, and instantiate the `MustFlow::Global` parameterized module with the implemented module.
+
+### Minor Analysis Improvements
+
+* Refactored the "Year field changed using an arithmetic operation without checking for leap year" query (`cpp/leap-year/unchecked-after-arithmetic-year-modification`) to address large numbers of false positive results.
+
+### Bug Fixes
+
+* The `allowInterproceduralFlow` predicate of must-flow data flow configurations now correctly handles direct recursion.
+
+## 7.1.1
+
+### Minor Analysis Improvements
+
+* Added remote flow source models for the `winhttp.h` windows header and the Azure SDK core library for C/C++.
+
+## 7.1.0
+
+### New Features
+
+* Added a subclass `Embed` of `PreprocessorDirective` for C23 and C++26 `#embed` preprocessor directives.
+* Added modules `DataFlow::ParameterizedBarrierGuard` and `DataFlow::ParameterizedInstructionBarrierGuard`. These modules provide the same features as `DataFlow::BarrierGuard` and `DataFlow::InstructionBarrierGuard`, but allow for an additional parameter to support properly using them in dataflow configurations that uses flow states.
+
+### Minor Analysis Improvements
+
+* The `Buffer.qll` library will no longer report incorrect buffer sizes on certain malformed databases. As a result, the queries `cpp/static-buffer-overflow`, `cpp/overflow-buffer`, `cpp/badly-bounded-write`, `cpp/overrunning-write`, `cpp/overrunning-write-with-float`, and `cpp/very-likely-overrunning-write` will report fewer false positives on such databases.
+* Added `taint` summary models and `sql-injection` barrier models for the MySQL `mysql_real_escape_string` and `mysql_real_escape_string_quote` escaping functions.
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+
+### Bug Fixes
+
+* Fixed a bug in the `GuardCondition` library which sometimes prevented binary logical operators from being recognized as guard conditions. As a result, queries using `GuardCondition` may see improved results.
+* Fixed a bug which caused `Node.asDefinition()` to not have a result for certain assignments.
+
+## 7.0.0
+
+### Breaking Changes
+
+* The `_Decimal32`, `_Decimal64`, and `_Decimal128` types are no longer exposed as builtin types. Support for these gcc-specific types was incomplete, and are generally not used in C/C++ codebases.
+
+### Deprecated APIs
+
+* The `OverloadedArrayExpr::getArrayOffset/0` predicate has been deprecated. Use `OverloadedArrayExpr::getArrayOffset/1` and `OverloadedArrayExpr::getAnArrayOffset` instead.
+
+### New Features
+
+* Added subclasses of `BuiltInOperations` for the `__is_bitwise_cloneable`, `__is_invocable`, and `__is_nothrow_invocable` builtin operations.
+* Added a `isThisAccess` predicate to `ParamAccessForType` that holds when the access is to the implicit object parameter.
+* Predicates `getArrayOffset/1` and `getAnArrayOffset` have been added to the `OverloadedArrayExpr` class to support C++23 multidimensional subscript operators.
+
+### Minor Analysis Improvements
+
+* Some constants will now be represented by their unfolded expression trees. The `isConstant` predicate of `Expr` will no longer yield a result for those constants.
+
+### Bug Fixes
+
+* Fixed a bug in the `DataFlow::BarrierGuard<...>::getABarrierNode` predicate which caused the predicate to return `DataFlow::Node`s with incorrect indirections. If you use `getABarrierNode` to implement barriers in a dataflow/taint-tracking query it may result in more query results. You can use `DataFlow::BarrierGuard<...>::getAnIndirectBarrierNode` to remove those query results.
+
+## 6.1.4
+
+No user-facing changes.
+
+## 6.1.3
+
+No user-facing changes.
+
+## 6.1.2
+
+No user-facing changes.
+
+## 6.1.1
+
+### Minor Analysis Improvements
+
+* The class `DataFlow::FieldContent` now covers both `union` and `struct`/`class` types. A new predicate `FieldContent.getAField` has been added to access the union members associated with the `FieldContent`. The old `FieldContent` has been renamed to `NonUnionFieldContent`.
+
+## 6.1.0
+
+### New Features
+
+* New predicates `getAnExpandedArgument` and `getExpandedArgument` were added to the `Compilation` class, yielding compilation arguments after expansion of response files.
+
+### Bug Fixes
+
+* Improve performance of the range analysis in cases where it would otherwise take an exorbitant amount of time.
+
+## 6.0.1
+
+No user-facing changes.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The "Guards" libraries (`semmle.code.cpp.controlflow.Guards` and `semmle.code.cpp.controlflow.IRGuards`) have been totally rewritten to recognize many more guards. The API remains unchanged, but the `GuardCondition` class now extends `Element` instead of `Expr`.
+
+### New Features
+
+* C/C++ `build-mode: none` support is now generally available.
+
+## 5.6.1
+
+No user-facing changes.
+
+## 5.6.0
+
+### Deprecated APIs
+
+* The predicate `getAContructorCall` in the class `SslContextClass` has been deprecated. Use `getAConstructorCall` instead.
+
+### New Features
+
+* Added predicates `getTransitiveNumberOfVlaDimensionStmts`, `getTransitiveVlaDimensionStmt`, and `getParentVlaDecl` to `VlaDeclStmt` for handling `VlaDeclStmt`s whose base type is defined in terms of another `VlaDeclStmt` via a `typedef`.
+
+## 5.5.0
+
+### New Features
+
+* Added a new class `PchFile` representing precompiled header (PCH) files used during project compilation.
+
+### Minor Analysis Improvements
+
+* Added flow summaries for the `Microsoft::WRL::ComPtr` member functions.
+* The new dataflow/taint-tracking library (`semmle.code.cpp.dataflow.new.DataFlow` and `semmle.code.cpp.dataflow.new.TaintTracking`) now resolves virtual function calls more precisely. This results in fewer false positives when running dataflow/taint-tracking queries on C++ projects.
+
+## 5.4.1
+
+### Minor Analysis Improvements
+
+* The guards libraries (`semmle.code.cpp.controlflow.Guards` and `semmle.code.cpp.controlflow.IRGuards`) have been improved to recognize more guards.
+* Improved dataflow through global variables in the new dataflow library (`semmle.code.cpp.dataflow.new.DataFlow` and `semmle.code.cpp.dataflow.new.TaintTracking`). Queries based on these libraries will produce more results on codebases with many global variables.
+* The global value numbering library (`semmle.code.cpp.valuenumbering.GlobalValueNumbering` and `semmle.code.cpp.ir.ValueNumbering`) has been improved so more expressions are assigned the same value number.
+
+## 5.4.0
+
+### New Features
+
+* Exposed various SSA-related classes (`Definition`, `PhiNode`, `ExplicitDefinition`, `DirectExplicitDefinition`, and `IndirectExplicitDefinition`) which were previously only usable inside the internal dataflow directory.
+
+### Minor Analysis Improvements
+
+* The `cpp/overrun-write` query now recognizes more bound checks and thus produces fewer false positives.
+
+## 5.3.0
+
+### Deprecated APIs
+
+* The `UnknownDefaultLocation`, `UnknownExprLocation`, and `UnknownStmtLocation` classes have been deprecated. Use `UnknownLocation` instead.
+
+### New Features
+
+* Added a `isFinalValueOfParameter` predicate to `DataFlow::Node` which holds when a dataflow node represents the final value of an output parameter of a function.
+
+### Minor Analysis Improvements
+
+* The `FunctionWithWrappers` library (`semmle.code.cpp.security.FunctionWithWrappers`) no longer considers calls through function pointers as wrapper functions.
+* The analysis of C/C++ code targeting 64-bit Arm platforms has been improved. This includes support for the Arm-specific builtin functions, support for the `arm_neon.h` header and Neon vector types, and support for the `fp8` scalar type. The `arm_sve.h` header and scalable vectors are only partially supported at this point.
+* Added support for `__fp16 _Complex` and `__bf16 _Complex` types
+* Added `sql-injection` sink models for the Oracle Call Interface (OCI) database library functions `OCIStmtPrepare` and `OCIStmtPrepare2`.
+
+## 5.2.0
+
+### Deprecated APIs
+
+* The `ThrowingFunction` class (`semmle.code.cpp.models.interfaces.Throwing`) has been deprecated. Please use the `AlwaysSehThrowingFunction` class instead.
+
+### New Features
+
+* Added a predicate `getAnAttribute` to `Namespace` to retrieve a namespace attribute.
+* The Microsoft-specific `__leave` statement is now supported.
+* A new class `LeaveStmt` extending `JumpStmt` was added to represent `__leave` statements.
+* Added a predicate `hasParameterList` to `LambdaExpression` to capture whether a lambda has an explicitly specified parameter list.
+
+### Bug Fixes
+
+* `resolveTypedefs` now properly resolves typedefs for `ArrayType`s.
+
+## 5.1.0
+
+### New Features
+
+* Added a predicate `getReferencedMember` to `UsingDeclarationEntry`, which yields a member depending on a type template parameter.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `userInputArgument` predicate and its convenience accessor from the `Security.qll`.
+* Deleted the deprecated `userInputReturned` predicate and its convenience accessor from the `Security.qll`.
+* Deleted the deprecated `userInputReturn` predicate from the `Security.qll`.
+* Deleted the deprecated `isUserInput` predicate and its convenience accessor from the `Security.qll`.
+* Deleted the deprecated `userInputArgument` predicate from the `SecurityOptions.qll`.
+* Deleted the deprecated `userInputReturned` predicate from the `SecurityOptions.qll`.
+
+### New Features
+
+* Added local flow source models for `ReadFile`, `ReadFileEx`, `MapViewOfFile`, `MapViewOfFile2`, `MapViewOfFile3`, `MapViewOfFile3FromApp`, `MapViewOfFileEx`, `MapViewOfFileFromApp`, `MapViewOfFileNuma2`, and `NtReadFile`.
+* Added the `pCmdLine` arguments of `WinMain` and `wWinMain` as local flow sources.
+* Added source models for `GetCommandLineA`, `GetCommandLineW`, `GetEnvironmentStringsA`, `GetEnvironmentStringsW`, `GetEnvironmentVariableA`, and `GetEnvironmentVariableW`.
+* Added summary models for `CommandLineToArgvA` and `CommandLineToArgvW`.
+* Added support for `wmain` as part of the ArgvSource model.
+
+### Bug Fixes
+
+* Fixed a problem where `asExpr()` on `DataFlow::Node` would never return `ArrayAggregateLiteral`s.
+* Fixed a problem where `asExpr()` on `DataFlow::Node` would never return `ClassAggregateLiteral`s.
+
+## 4.3.1
+
+### Bug Fixes
+
+* Fixed an infinite loop in `semmle.code.cpp.rangeanalysis.new.RangeAnalysis` when computing ranges in very large and complex function bodies.
+
+## 4.3.0
+
+### New Features
+
+* New classes `TypeofType`, `TypeofExprType`, and `TypeofTypeType` were introduced, which represent the C23 `typeof` and `typeof_unqual` operators. The `TypeofExprType` class represents the variant taking an expression as its argument. The `TypeofTypeType` class represents the variant taking a type as its argument.
+* A new class `IntrinsicTransformedType` was introduced, which represents the type transforming intrinsics supported by clang, gcc, and MSVC.
+* Introduced `hasDesignator()` predicates to distinguish between designated and positional initializations for both struct/union fields and array elements.
+* Added the `isVla()` predicate to the `ArrayType` class. This allows queries to identify variable-length arrays (VLAs).
+
+## 4.2.0
+
+### New Features
+
+* Calling conventions explicitly specified on function declarations (`__cdecl`, `__stdcall`, `__fastcall`, etc.)  are now represented as specifiers of those declarations.
+* A new class `CallingConventionSpecifier` extending the `Specifier` class was introduced, which represents explicitly specified calling conventions.
+
+## 4.1.0
+
+### New Features
+
+* Added `Node.asUncertainDefinition` and `Node.asCertainDefinition` to the `DataFlow::Node` class for querying whether a definition overwrites the entire destination buffer.
+
+## 4.0.3
+
+No user-facing changes.
+
+## 4.0.2
+
+### Minor Analysis Improvements
+
+* Modified the `getBufferSize` predicate in `commons/Buffer.qll` to be more tolerant in some cases involving member variables in a larger struct or class.
+* Fixed an issue where the `getBufferSize` predicate in `commons/Buffer.qll` was returning results for references inside `offsetof` expressions, which are not accesses to a buffer.
+
+## 4.0.1
+
+No user-facing changes.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getAllocatorCall` predicate from `DeleteOrDeleteArrayExpr`, use `getDeallocatorCall` instead.
+
+### New Features
+
+* A new predicate `getOffsetInClass` was added to the `Field` class, which computes the byte offset of a field relative to a given `Class`.
+* New classes `PreprocessorElifdef` and `PreprocessorElifndef` were introduced, which represents the C23/C++23 `#elifdef` and `#elifndef` preprocessor directives.
+* A new class `TypeLibraryImport` was introduced, which represents the `#import` preprocessor directive as used by the Microsoft Visual C++ for importing type libraries.
+
+## 3.2.0
+
+### New Features
+
+* Add a new predicate `getAnIndirectBarrier` to the parameterized module `InstructionBarrierGuard` in `semmle.code.cpp.dataflow.new.DataFlow` for computing indirect dataflow nodes that are guarded by a given instruction. This predicate is similar to the `getAnIndirectBarrier` predicate on the parameterized module `BarrierGuard`.
+* A new predicate `getDecltype` was added to the `ProxyClass` class, which yields the decltype for the proxy class.
+* Template classes that are of `struct` type are now also instances of the `Struct` class.
+* Template classes that are of `union` type are now also instances of the `Union` class.
+* A new abstract class `ConfigurationTestFile` (`semmle.code.cpp.ConfigurationTestFile.ConfigurationTestFile`) was introduced, which represents files created to test the build configuration. A subclass `CmakeTryCompileFile` of `ConfigurationTestFile` was also introduced, which represents files created by CMake to test the build configuration.
+* New predicates `getARequiresClause`, `getTemplateRequiresClause` and `getFunctionRequiresClause` were added to the `FunctionDeclarationEntry` class, which yield the requires clauses when the entry represents a function template declaration with requires clauses.
+* A new predicate `getRequiresClause` was added to the `TypeDeclarationEntry` class, which yields the requires clause when the entry represents a class template declaration with a requires clause.
+* A new predicate `getRequiresClause` was added to the `VariableDeclarationEntry` class, which yields the requires clause when the entry represents a variable template declaration with a requires clause.
+* A new predicate `getTypeConstraint` was added to the `TypeTemplateParameter` class, which yields the type constraint of the parameter if it exists.
+* A new class `VariableTemplateSpecialization` was introduced, which represents explicit specializations of variable templates.
+* A new predicate `isSpecialization` was added to the `Variable` class, which holds if the variable is a template specialization.
+* A new class `ConceptIdExpr` was introduced, which represents C++20 concept id expressions.
+* A new class `Concept` was introduced, which represents C++20 concepts.
+* The `getTemplateArgumentType` and `getTemplateArgumentValue` predicates of the `Declaration` class now also yield template arguments of concepts.
+* A new class `ConstevalIfStmt` was introduced, which represents the C++23 `if consteval` and `if ! consteval` statements.
+
+### Minor Analysis Improvements
+
+* `DefaultOptions::exits` now holds for C23 functions with the `_Noreturn` or `___Noreturn__` attribute.
+
+## 3.1.0
+
+### Deprecated APIs
+
+* The `TemplateParameter` class, representing C++ type template parameters has been deprecated. Use `TypeTemplateParameter` instead.
+
+### New Features
+
+* New classes `SizeofPackExprOperator` and `SizeofPackTypeOperator` were introduced, which represent the C++ `sizeof...` operator taking expressions and type arguments, respectively.
+* A new class `TemplateTemplateParameterInstantiation` was introduced, which represents instantiations of template template parameters.
+* A new predicate `getAnInstantiation` was added to the `TemplateTemplateParameter` class, which yields instantiations of template template parameters.
+* The `getTemplateArgumentType` and `getTemplateArgumentValue` predicates of the `Declaration` class now also yield template arguments of template template parameters.
+* A new class `NonTypeTemplateParameter` was introduced, which represents C++ non-type template parameters.
+* A new class `TemplateParameterBase` was introduced, which represents C++ non-type template parameters, type template parameters, and template template parameters.
+
+### Minor Analysis Improvements
+
+* The `Guards` library (`semmle.code.cpp.controlflow.Guards`) has been improved to recognize more guard conditions.
+
+## 3.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Deprecated APIs
+
+* The `NonThrowingFunction` class (`semmle.code.cpp.models.interfaces.NonThrowing.NonThrowingFunction`) has been deprecated. Please use the `NonCppThrowingFunction` class instead.
+
+## 2.1.1
+
+No user-facing changes.
+
+## 2.1.0
+
+### New Features
+
+* Added a new predicate `DataFlow::getARuntimeTarget` for getting a function that may be invoked by a `Call` expression. Unlike `Call.getTarget` this new predicate may also resolve function pointers.
+* Added the predicate `mayBeFromImplicitlyDeclaredFunction()` to the `Call` class to represent calls that may be the return value of an implicitly declared C function.
+* Added the predicate `getAnExplicitDeclarationEntry()` to the `Function` class to get a `FunctionDeclarationEntry` that is not implicit.
+* Added classes `RequiresExpr`, `SimpleRequirementExpr`, `TypeRequirementExpr`, `CompoundRequirementExpr`, and `NestedRequirementExpr` to represent C++20 requires expressions and the simple, type, compound, and nested requirements that can occur in `requires` expressions.
+
+### Minor Analysis Improvements
+
+* The function call target resolution algorithm has been improved to resolve more calls through function pointers. As a result, dataflow queries may have more results.
+
+## 2.0.2
+
+### Minor Analysis Improvements
+
+* Added taint flow model for `fopen` and related functions.
+* The `SimpleRangeAnalysis` library (`semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis`) now generates more precise ranges for calls to `fgetc` and `getc`.
+
+## 2.0.1
+
+No user-facing changes.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
+* Deleted the deprecated `hasQualifiedName` and `isDefined` predicates from the `Declaration` class, use `hasGlobalName` and `hasDefinition` respectively instead.
+* Deleted the `getFullSignature` predicate from the `Function` class, use `getIdentityString(Declaration)` from `semmle.code.cpp.Print` instead.
+* Deleted the deprecated `freeCall` predicate from `Alloc.qll`. Use `DeallocationExpr` instead.
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+* Deleted the deprecated `getFieldExpr` predicate from `ClassAggregateLiteral`, use `getAFieldExpr` instead.
+* Deleted the deprecated `getElementExpr` predicate from `ArrayOrVectorAggregateLiteral`, use `getAnElementExpr` instead.
+
+### New Features
+
+* Added a class `C11GenericExpr` to represent C11 generic selection expressions. The generic selection is represented as a `Conversion` on the expression that will be selected.
+* Added subclasses of `BuiltInOperations` for the `__is_scoped_enum`, `__is_trivially_equality_comparable`, and `__is_trivially_relocatable` builtin operations.
+* Added a subclass of `Expr` for `__datasizeof` expressions.
+
+### Minor Analysis Improvements
+
+* Added a data flow model for `swap` member functions, which were previously modeled as taint tracking functions. This change improves the precision of queries where flow through `swap` member functions might affect the results.
+* Added a data flow model for `realloc`-like functions, which were previously modeled as a taint tracking functions. This change improves the precision of queries where flow through `realloc`-like functions might affect the results.
+
+## 1.4.2
+
+No user-facing changes.
+
+## 1.4.1
+
+No user-facing changes.
+
+## 1.4.0
+
+### New Features
+
+* A `getTemplateClass` predicate was added to the `DeductionGuide` class to get the class template for which the deduction guide is a guide.
+* An `isExplicit` predicate was added to the `Function` class that determines whether the function was declared as explicit.
+* A `getExplicitExpr` predicate was added to the `Function` class that yields the constant boolean expression (if any) that conditionally determines whether the function is explicit.
+* A `isDestroyingDeleteDeallocation` predicate was added to the `NewOrNewArrayExpr` and `DeleteOrDeleteArrayExpr` classes to indicate whether the deallocation function is a destroying delete. 
+
+### Minor Analysis Improvements
+
+* The controlling expression of a `constexpr if` is now always recognized as an unevaluated expression.
+* Improved performance of alias analysis of large function bodies. In rare cases, alerts that depend on alias analysis of large function bodies may be affected.
+* A `UsingEnumDeclarationEntry` class has been added for C++ `using enum` declarations. As part of this, synthesized `UsingDeclarationEntry`s are no longer emitted for individual enumerators of the referenced enumeration.
+
+## 1.3.0
+
+### New Features
+
+* Models-as-data alert provenance information has been extended to the C/C++ language. Any qltests that include the edges relation in their output (for example, `.qlref`s that reference path-problem queries) will need to be have their expected output updated accordingly.
+* Added subclasses of `BuiltInOperations` for `__builtin_has_attribute`, `__builtin_is_corresponding_member`, `__builtin_is_pointer_interconvertible_with_class`, `__is_assignable_no_precondition_check`, `__is_bounded_array`, `__is_convertible`, `__is_corresponding_member`, `__is_nothrow_convertible`, `__is_pointer_interconvertible_with_class`, `__is_referenceable`, `__is_same_as`, `__is_trivially_copy_assignable`, `__is_unbounded_array`, `__is_valid_winrt_type`, `_is_win_class`, `__is_win_interface`, `__reference_binds_to_temporary`, `__reference_constructs_from_temporary`, and `__reference_converts_from_temporary`.
+* The class `NewArrayExpr` adds a predicate `getArraySize()` to allow a more convenient way to access the static size of the array when the extent is missing.
+
+## 1.2.0
+
+### New Features
+
+* The syntax for models-as-data rows has been extended to make it easier to select sources, sinks, and summaries that involve templated functions and classes. Additionally, the syntax has also been extended to make it easier to specify models with arbitrary levels of indirection. See `dataflow/ExternalFlow.qll` for the updated documentation and specification for the model format.
+* It is now possible to extend the classes `AllocationFunction` and `DeallocationFunction` via data extensions. Extensions of these classes should be added to the `lib/ext/allocation` and `lib/ext/deallocation` directories respectively.
+
+### Minor Analysis Improvements
+
+* The queries "Potential double free" (`cpp/double-free`) and "Potential use after free" (`cpp/use-after-free`) now produce fewer false positives.
+* The "Guards" library (`semmle.code.cpp.controlflow.Guards`) now also infers guards from calls to the builtin operation `__builtin_expect`. As a result, some queries may produce fewer false positives.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### New Features
+
+* Data models can now be added with data extensions. In this way source, sink and summary models can be added in extension `.model.yml` files, rather than by writing classes in QL code. New models should be added in the `lib/ext` folder.
+
+### Minor Analysis Improvements
+
+* A partial model for the `Boost.Asio` network library has been added. This includes sources, sinks and summaries for certain functions in `Boost.Asio`, such as `read_until` and `write`.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+## 0.13.1
+
+No user-facing changes.
+
+## 0.13.0
+
+### Breaking Changes
+
+* Deleted the deprecated `GlobalValueNumberingImpl.qll` implementation.
+
+### New Features
+
+* Models-as-Data support has been added for C/C++. This feature allows flow sources, sinks and summaries to be expressed in compact strings as an alternative to modelling each source / sink / summary with explicit QL. See `dataflow/ExternalFlow.qll` for documentation and specification of the model format, and `models/implementations/ZMQ.qll` for a simple example of models. Importing models from `.yml` is not yet supported.
+
+### Minor Analysis Improvements
+
+* Source models have been added for the standard library function `getc` (and variations).
+* Source, sink and flow models for the ZeroMQ (ZMQ) networking library have been added.
+* Parameters of functions without definitions now have `ParameterNode`s.
+* The alias analysis used internally by various libraries has been improved to answer alias questions more conservatively. As a result, some queries may report fewer false positives.
+
+## 0.12.11
+
+No user-facing changes.
+
+## 0.12.10
+
+### New Features
+
+* Added a `TaintInheritingContent` class that can be extended to model taint flowing from a qualifier to a field.
+* Added a predicate `GuardCondition.comparesEq/4` to query whether an expression is compared to a constant. 
+* Added a predicate `GuardCondition.ensuresEq/4` to query whether a basic block is guarded by an expression being equal to a constant.
+* Added a predicate `GuardCondition.comparesLt/4` to query whether an expression is compared to a constant. 
+* Added a predicate `GuardCondition.ensuresLt/4` to query whether a basic block is guarded by an expression being less than a constant.
+* Added a predicate `GuardCondition.valueControls` to query whether a basic block is guarded by a particular `case` of a `switch` statement.
+
+### Minor Analysis Improvements
+
+* Added destructors for temporary objects with extended lifetimes to the intermediate representation.
+
+## 0.12.9
+
+No user-facing changes.
+
+## 0.12.8
+
+No user-facing changes.
+
+## 0.12.7
+
+### Minor Analysis Improvements
+
+* Added destructors for named objects to the intermediate representation.
+
+## 0.12.6
+
+### New Features
+
+* A `getInitialization` predicate was added to the `RangeBasedForStmt` class that yields the C++20-style initializer of the range-based `for` statement when it exists.
+
+## 0.12.5
+
+### New Features
+
+* Added the `PreprocBlock.qll` library to this repository.  This library offers a view of `#if`, `#elif`, `#else` and similar directives as a tree with navigable parent-child relationships.
+* Added a new `ThrowingFunction` abstract class that can be used to model an external function that may throw an exception.
+
+## 0.12.4
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `XML`, `SSA`, `SAL`, `SQL`, etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `StrcatFunction` class, use `semmle.code.cpp.models.implementations.Strcat.qll` instead.
+
+## 0.12.3
+
+### Deprecated APIs
+
+* The `isUserInput`, `userInputArgument`, and `userInputReturned` predicates from `SecurityOptions` have been deprecated. Use `FlowSource` instead.
+
+### New Features
+
+* `UserDefineLiteral` and `DeductionGuide` classes have been added, representing C++11 user defined literals and C++17 deduction guides.
+
+### Minor Analysis Improvements
+
+* Changed the output of `Node.toString` to better reflect how many indirections a given dataflow node has.
+* Added a new predicate `Node.asDefinition` on `DataFlow::Node`s for selecting the dataflow node corresponding to a particular definition.
+* The deprecated `DefaultTaintTracking` library has been removed.
+* The `Guards` library has been replaced with the API-compatible `IRGuards` implementation, which has better precision in some cases.
+
+### Bug Fixes
+
+* Under certain circumstances a function declaration that is not also a definition could be associated with a `Function` that did not have the definition as a `FunctionDeclarationEntry`. This is now fixed when only one definition exists, and a unique `Function` will exist that has both the declaration and the definition as a `FunctionDeclarationEntry`.
+
+## 0.12.2
+
+No user-facing changes.
+
+## 0.12.1
+
+### New Features
+
+* Added an `isPrototyped` predicate to `Function` that holds when the function has a prototype.
+
+## 0.12.0
+
+### Breaking Changes
+
+* The expressions `AssignPointerAddExpr` and `AssignPointerSubExpr` are no longer subtypes of `AssignBitwiseOperation`.
+
+### Minor Analysis Improvements
+
+* The "Returning stack-allocated memory" (`cpp/return-stack-allocated-memory`) query now also detects returning stack-allocated memory allocated by calls to `alloca`, `strdupa`, and `strndupa`.
+* Added models for `strlcpy` and `strlcat`.
+* Added models for the `sprintf` variants from the `StrSafe.h` header.
+* Added SQL API models for `ODBC`.
+* Added taint models for `realloc` and related functions.
+
+## 0.11.0
+
+### Breaking Changes
+
+* The `Container` and `Folder` classes now derive from `ElementBase` instead of `Locatable`, and no longer expose the `getLocation` predicate. Use `getURL` instead.
+
+### New Features
+
+* Added a new class `AdditionalCallTarget` for specifying additional call targets.
+
+### Minor Analysis Improvements
+
+* More field accesses are identified as `ImplicitThisFieldAccess`.
+* Added support for new floating-point types in C23 and C++23.
+
+## 0.10.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `AnalysedString` class, use the new name `AnalyzedString`.
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+
+## 0.10.0
+
+### Minor Analysis Improvements
+
+* Functions that do not return due to calling functions that don't return (e.g. `exit`) are now detected as
+ non-returning in the IR and dataflow.
+* Treat functions that reach the end of the function as returning in the IR.
+  They used to be treated as unreachable but it is allowed in C. 
+* The `DataFlow::asDefiningArgument` predicate now takes its argument from the range starting at `1` instead of `2`. Queries that depend on the single-parameter version of `DataFlow::asDefiningArgument` should have their arguments updated accordingly.
+
+## 0.9.3
+
+No user-facing changes.
+
+## 0.9.2
+
+### Deprecated APIs
+
+* `getAllocatorCall` on `DeleteExpr` and `DeleteArrayExpr` has been deprecated. `getDeallocatorCall` should be used instead.
+
+### New Features
+
+* Added `DeleteOrDeleteArrayExpr` as a super type of `DeleteExpr` and `DeleteArrayExpr`
+
+### Minor Analysis Improvements
+
+* `delete` and `delete[]` are now modeled as calls to the relevant `operator delete` in the IR. In the case of a dynamic delete call a new instruction `VirtualDeleteFunctionAddress` is used to represent a function that dispatches to the correct delete implementation.
+* Only the 2 level indirection of `argv` (corresponding to `**argv`) is consided for `FlowSource`.
+
+## 0.9.1
+
+No user-facing changes.
+
+## 0.9.0
+
+### Breaking Changes
+
+* The `shouldPrintFunction` predicate from `PrintAstConfiguration` has been replaced by `shouldPrintDeclaration`. Users should now override `shouldPrintDeclaration` if they want to limit the declarations that should be printed.
+* The `shouldPrintFunction` predicate from `PrintIRConfiguration` has been replaced by `shouldPrintDeclaration`. Users should now override `shouldPrintDeclaration` if they want to limit the declarations that should be printed.
+
+### Major Analysis Improvements
+
+* The `PrintAST` library now also prints global and namespace variables and their initializers.
+
+### Minor Analysis Improvements
+
+* The `_Float128x` type is no longer exposed as a builtin type. As this type could not occur any code base, this should only affect queries that explicitly looked at the builtin types.
+
+## 0.8.1
+
+### Deprecated APIs
+
+* The library `semmle.code.cpp.dataflow.DataFlow` has been deprecated. Please use `semmle.code.cpp.dataflow.new.DataFlow` instead.
+
+### New Features
+
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+  Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Data flow configurations can now include a predicate `neverSkip(Node node)`
+  in order to ensure inclusion of certain nodes in the path explanations. The
+  predicate defaults to the end-points of the additional flow steps provided in
+  the configuration, which means that such steps now always are visible by
+  default in path explanations.
+* The `IRGuards` library has improved handling of pointer addition and subtraction operations.
+
+## 0.8.0
+
+### New Features
+
+* The `ProductFlow::StateConfigSig` signature now includes default predicates for `isBarrier1`, `isBarrier2`, `isAdditionalFlowStep1`, and `isAdditionalFlowStep1`. Hence, it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getURL` predicate from the `Container`, `Folder`, and `File` classes. Use the `getLocation` predicate instead.
+
+## 0.7.4
+
+No user-facing changes.
+
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `hasCopyConstructor` predicate from the `Class` class in `Class.qll`.
+* Deleted many deprecated predicates and classes with uppercase `AST`, `SSA`, `CFG`, `API`, etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `CodeDuplication.qll` file.
+
 ## 0.7.2
 
 ### New Features

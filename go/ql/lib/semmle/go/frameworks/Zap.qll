@@ -1,6 +1,8 @@
 /**
  * Provides models of commonly used functions in the `go.uber.org/zap` package.
  */
+overlay[local?]
+module;
 
 import go
 
@@ -34,18 +36,6 @@ module Zap {
     override int getFormatStringIndex() { result = 0 }
   }
 
-  /**
-   * A call to a logger function in Zap.
-   *
-   * Functions which add data to be included the next time a direct logging
-   * function is called are included.
-   */
-  private class ZapCall extends LoggerCall::Range, DataFlow::MethodCallNode {
-    ZapCall() { this = any(ZapFunction f).getACall() }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
-  }
-
   // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.
   /** The function `Fields` that creates an `Option` that can be added to the logger out of `Field`s. */
   class FieldsFunction extends TaintTracking::FunctionModel {
@@ -57,7 +47,7 @@ module Zap {
   }
 
   /** A Zap logging function which always panics. */
-  private class FatalLogMethod extends Method {
+  private class FatalLogMethod extends ZapFunction {
     FatalLogMethod() {
       this.hasQualifiedName(packagePath(), "Logger", "Fatal")
       or
@@ -68,7 +58,7 @@ module Zap {
   }
 
   /** A Zap logging function which always panics. */
-  private class MustPanicLogMethod extends Method {
+  private class MustPanicLogMethod extends ZapFunction {
     MustPanicLogMethod() {
       this.hasQualifiedName(packagePath(), "Logger", "Panic")
       or

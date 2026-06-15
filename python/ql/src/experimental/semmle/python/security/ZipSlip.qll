@@ -4,10 +4,8 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.TaintTracking
 
-class ZipSlipConfig extends TaintTracking::Configuration {
-  ZipSlipConfig() { this = "ZipSlipConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+private module ZipSlipConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     (
       source =
         API::moduleImport("zipfile").getMember("ZipFile").getReturn().getMember("open").getACall() or
@@ -29,11 +27,16 @@ class ZipSlipConfig extends TaintTracking::Configuration {
     not source.getScope().getLocation().getFile().inStdlib()
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     (
       sink = any(CopyFile copyfile).getAPathArgument() or
       sink = any(CopyFile copyfile).getfsrcArgument()
     ) and
     not sink.getScope().getLocation().getFile().inStdlib()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/** Global taint-tracking for detecting "zip slip" vulnerabilities. */
+module ZipSlipFlow = TaintTracking::Global<ZipSlipConfig>;

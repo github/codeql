@@ -6,7 +6,8 @@
  * @kind problem
  * @problem.severity error
  * @id js/function-declaration-conflict
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-563
  * @precision high

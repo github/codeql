@@ -50,5 +50,6 @@ obj.f();
 /** calls:NONE */
 C.f();
 
+const d = new D();
 /** calls:NONE */
-new D().f();
+d.f();

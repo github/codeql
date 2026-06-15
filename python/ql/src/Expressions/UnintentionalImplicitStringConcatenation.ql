@@ -2,9 +2,9 @@
  * @name Implicit string concatenation in a list
  * @description Omitting a comma between strings causes implicit concatenation which is confusing in a list.
  * @kind problem
- * @tags reliability
+ * @tags quality
  *       maintainability
- *       convention
+ *       readability
  *       external/cwe/cwe-665
  * @problem.severity warning
  * @sub-severity high
@@ -15,12 +15,12 @@
 import python
 
 predicate string_const(Expr s) {
-  s instanceof StrConst
+  s instanceof StringLiteral
   or
   string_const(s.(BinaryExpr).getLeft()) and string_const(s.(BinaryExpr).getRight())
 }
 
-from StrConst s
+from StringLiteral s
 where
   // Implicitly concatenated string is in a list and that list contains at least one other string.
   exists(List l, Expr other |

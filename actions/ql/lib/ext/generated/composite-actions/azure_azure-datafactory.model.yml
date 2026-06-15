@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["azure/azure-datafactory", "*", "input.directory", "code-injection", "generated"]
+     - ["azure/azure-datafactory", "*", "input.path", "code-injection", "generated"]

@@ -3,9 +3,9 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["expvar", "Func", True, "Value", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["expvar", "Map", True, "Get", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["expvar", "Map", True, "Set", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
-      - ["expvar", "String", True, "Set", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["expvar", "String", True, "Value", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["expvar", "Var", True, "String", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["expvar", "Func", True, "Value", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["expvar", "Map", True, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["expvar", "Map", True, "Set", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
+      - ["expvar", "String", True, "Set", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      - ["expvar", "String", True, "Value", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["expvar", "Var", True, "String", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

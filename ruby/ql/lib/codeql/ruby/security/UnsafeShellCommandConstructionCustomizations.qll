@@ -6,10 +6,10 @@
 
 private import ruby
 private import codeql.ruby.DataFlow
-private import codeql.ruby.DataFlow2
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.core.Gem::Gem as Gem
 private import codeql.ruby.Concepts as Concepts
+import codeql.ruby.typetracking.TypeTracking
 
 /**
  * Module containing sources, sinks, and sanitizers for shell command constructed from library input.
@@ -45,20 +45,16 @@ module UnsafeShellCommandConstruction {
 
   /** Holds if the string constructed at `source` is executed at `shellExec` */
   predicate isUsedAsShellCommand(DataFlow::Node source, Concepts::SystemCommandExecution shellExec) {
-    source = backtrackShellExec(TypeTracker::TypeBackTracker::end(), shellExec)
+    source = backtrackShellExec(TypeBackTracker::end(), shellExec)
   }
 
-  import codeql.ruby.typetracking.TypeTracker as TypeTracker
-
   private DataFlow::LocalSourceNode backtrackShellExec(
-    TypeTracker::TypeBackTracker t, Concepts::SystemCommandExecution shellExec
+    TypeBackTracker t, Concepts::SystemCommandExecution shellExec
   ) {
     t.start() and
     result = any(DataFlow::Node n | shellExec.isShellInterpreted(n)).getALocalSource()
     or
-    exists(TypeTracker::TypeBackTracker t2 |
-      result = backtrackShellExec(t2, shellExec).backtrack(t2, t)
-    )
+    exists(TypeBackTracker t2 | result = backtrackShellExec(t2, shellExec).backtrack(t2, t))
   }
 
   /**

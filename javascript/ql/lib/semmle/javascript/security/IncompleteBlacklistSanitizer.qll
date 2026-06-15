@@ -74,7 +74,7 @@ private StringReplaceCall getAStringReplaceMethodCall(StringReplaceCall n) {
 module HtmlSanitization {
   private predicate fixedGlobalReplacement(StringReplaceCallSequence chain) {
     forall(StringReplaceCall member | member = chain.getAMember() |
-      member.isGlobal() and member.getArgument(0) instanceof DataFlow::RegExpLiteralNode
+      member.maybeGlobal() and member.getArgument(0) instanceof DataFlow::RegExpCreationNode
     )
   }
 

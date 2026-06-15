@@ -2,7 +2,8 @@
  * @name Unused global variable
  * @description Global variable is defined but not used
  * @kind problem
- * @tags efficiency
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-563
  * @problem.severity recommendation
@@ -12,6 +13,7 @@
  */
 
 import python
+private import LegacyPointsTo
 import Definition
 
 /**
@@ -24,13 +26,21 @@ predicate complex_all(Module m) {
   |
     not a.getValue() instanceof List
     or
-    exists(Expr e | e = a.getValue().(List).getAnElt() | not e instanceof StrConst)
+    exists(Expr e | e = a.getValue().(List).getAnElt() | not e instanceof StringLiteral)
   )
   or
   exists(Call c, GlobalVariable all |
     c.getFunc().(Attribute).getObject() = all.getALoad() and
     c.getScope() = m and
     all.getId() = "__all__"
+  )
+}
+
+predicate used_in_forward_declaration(Name used, Module mod) {
+  exists(StringLiteral s, Annotation annotation |
+    s.getS() = used.getId() and
+    s.getEnclosingModule() = mod and
+    annotation.getASubExpression*() = s
   )
 }
 
@@ -49,13 +59,14 @@ predicate unused_global(Name unused, GlobalVariable v) {
       // indirectly
       defn.getBasicBlock().reachesExit() and u.getScope() != unused.getScope()
     ) and
-    not unused.getEnclosingModule().getAnExport() = v.getId() and
+    not unused.getEnclosingModule().(ModuleWithPointsTo).getAnExport() = v.getId() and
     not exists(unused.getParentNode().(ClassDef).getDefinedClass().getADecorator()) and
     not exists(unused.getParentNode().(FunctionDef).getDefinedFunction().getADecorator()) and
     unused.defines(v) and
     not name_acceptable_for_unused_variable(v) and
     not complex_all(unused.getEnclosingModule())
-  )
+  ) and
+  not used_in_forward_declaration(unused, unused.getEnclosingModule())
 }
 
 from Name unused, GlobalVariable v

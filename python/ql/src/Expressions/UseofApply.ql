@@ -10,8 +10,10 @@
  */
 
 import python
-private import semmle.python.types.Builtins
+private import semmle.python.ApiGraphs
 
-from CallNode call, ControlFlowNode func
-where major_version() = 2 and call.getFunction() = func and func.pointsTo(Value::named("apply"))
+from CallNode call
+where
+  major_version() = 2 and
+  call = API::builtin("apply").getACall().asCfgNode()
 select call, "Call to the obsolete builtin function 'apply'."

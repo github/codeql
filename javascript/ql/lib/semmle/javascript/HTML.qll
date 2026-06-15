@@ -1,4 +1,6 @@
 /** Provides classes for working with HTML documents. */
+overlay[local?]
+module;
 
 import javascript
 
@@ -42,8 +44,6 @@ module HTML {
    */
   class Element extends Locatable, @xmlelement {
     Element() { exists(FileContainingHtml f | xmlElements(this, _, _, _, f)) }
-
-    override Location getLocation() { xmllocations(this, result) }
 
     /**
      * Gets the name of this HTML element.
@@ -121,8 +121,6 @@ module HTML {
    */
   class Attribute extends Locatable, @xmlattribute {
     Attribute() { exists(FileContainingHtml f | xmlAttrs(this, _, _, _, _, f)) }
-
-    override Location getLocation() { xmllocations(this, result) }
 
     /**
      * Gets the inline script of this attribute, if any.
@@ -218,7 +216,7 @@ module HTML {
         result = path.regexpCapture("file://(/.*)", 1)
         or
         not path.regexpMatch("(\\w+:)?//.*") and
-        result = this.getSourcePath().(ScriptSrcPath).resolve(this.getSearchRoot()).toString()
+        result = ResolveScriptSrc::resolve(this.getSearchRoot(), this.getSourcePath()).toString()
       )
     }
 
@@ -278,10 +276,17 @@ module HTML {
     )
   }
 
+  private module ResolverConfig implements Folder::ResolveSig {
+    predicate shouldResolve(Container base, string path) { scriptSrc(path, base) }
+  }
+
+  private module ResolveScriptSrc = Folder::Resolve<ResolverConfig>;
+
   /**
    * A path string arising from the `src` attribute of a `script` tag.
    */
-  private class ScriptSrcPath extends PathString {
+  overlay[global]
+  deprecated private class ScriptSrcPath extends PathString {
     ScriptSrcPath() { scriptSrc(this, _) }
 
     override Folder getARootFolder() { scriptSrc(this, result) }
@@ -326,8 +331,6 @@ module HTML {
      * Holds if this text node is inside a `CDATA` tag.
      */
     predicate isCData() { xmlChars(this, _, _, _, 1, _) }
-
-    override Location getLocation() { xmllocations(this, result) }
   }
 
   /**
@@ -349,7 +352,5 @@ module HTML {
     string getText() { result = this.toString().regexpCapture("(?s)<!--(.*)-->", 1) }
 
     override string toString() { xmlComments(this, result, _, _) }
-
-    override Location getLocation() { xmllocations(this, result) }
   }
 }

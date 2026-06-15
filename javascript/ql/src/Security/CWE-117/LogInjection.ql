@@ -4,7 +4,7 @@
  *              insertion of forged log entries by a malicious user.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 7.8
+ * @security-severity 6.1
  * @precision medium
  * @id js/log-injection
  * @tags security
@@ -12,10 +12,10 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 import semmle.javascript.security.dataflow.LogInjectionQuery
+import LogInjectionFlow::PathGraph
 
-from LogInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from LogInjectionFlow::PathNode source, LogInjectionFlow::PathNode sink
+where LogInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Log entry depends on a $@.", source.getNode(),
   "user-provided value"

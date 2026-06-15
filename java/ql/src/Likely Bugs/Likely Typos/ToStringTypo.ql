@@ -5,9 +5,10 @@
  * @problem.severity warning
  * @precision medium
  * @id java/tostring-typo
- * @tags maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       readability
- *       naming
  */
 
 import java

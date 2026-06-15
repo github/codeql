@@ -40,16 +40,14 @@ module RegexInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "regular expression injection" vulnerabilities.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * An active threat-model source, considered as a flow source.
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A regex escaping, considered as a sanitizer.

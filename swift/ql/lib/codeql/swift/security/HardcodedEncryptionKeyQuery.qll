@@ -17,7 +17,9 @@ abstract class KeySource extends Expr { }
  * A literal byte array is a key source.
  */
 class ByteArrayLiteralSource extends KeySource {
-  ByteArrayLiteralSource() { this = any(ArrayExpr arr | arr.getType().getName() = "Array<UInt8>") }
+  ByteArrayLiteralSource() {
+    this = any(ArrayExpr arr | arr.getType().getName() = ["Array<UInt8>", "[UInt8]"])
+  }
 }
 
 /**
@@ -36,9 +38,16 @@ module HardcodedKeyConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { node instanceof HardcodedEncryptionKeyBarrier }
 
+  predicate isBarrierIn(DataFlow::Node node) {
+    // make sources barriers so that we only report the closest instance
+    isSource(node)
+  }
+
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(HardcodedEncryptionKeyAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module HardcodedKeyFlow = TaintTracking::Global<HardcodedKeyConfig>;

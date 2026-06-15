@@ -43,9 +43,9 @@ def m2()
     hash['b'] = 3
     sink(hash[0]) # $ hasValueFlow=2.1
     sink(hash[1])
-    sink(hash[:a]) # $ hasValueFlow=2.2
+    sink(hash[:a]) # $ hasValueFlow=2.2 $ SPURIOUS hasValueFlow=2.3
     sink(hash[:b])
-    sink(hash['a']) # $ hasValueFlow=2.3
+    sink(hash['a']) # $ hasValueFlow=2.3 $ SPURIOUS hasValueFlow=2.2
     sink(hash['b'])
 end
 
@@ -59,7 +59,7 @@ def m3()
     x = {a: taint(3.2), b: 1}
     hash2 = Hash[x]
     sink(hash2[:a]) # $ hasValueFlow=3.2
-    sink(hash2[:b])
+    sink(hash2[:b]) # $ hasTaintFlow=3.2
 
     hash3 = Hash[[[:a, taint(3.3)], [:b, 1]]]
     sink(hash3[:a]) # $ hasValueFlow=3.3
@@ -75,7 +75,7 @@ def m3()
 
     hash6 = Hash[{"a" => taint(3.6), "b" => 1}]
     sink(hash6["a"]) # $ hasValueFlow=3.6
-    sink(hash6["b"])
+    sink(hash6["b"]) # $ hasTaintFlow=3.6
 end
 
 m3()
@@ -966,3 +966,51 @@ def m52()
 end
 
 m52()
+
+def m53(i)
+    h = Hash[a: 1, b: taint(53), c: 2]
+    sink(h[:a])
+    sink(h[:b]) # $ hasValueFlow=53
+    sink(h[:c])
+    sink(h[i]) # $ hasValueFlow=53
+end
+
+m53(:b)
+
+class M54
+    class Hash
+        def self.[](**kwargs)
+            ::Hash.new
+        end
+    end
+
+    def m54(i)
+        h = Hash[a: 0, b: taint(54.1), c: 2]
+        sink(h[:a])
+        sink(h[:b])
+        sink(h[:c])
+        sink(h[i])
+
+        h2 = ::Hash[a: 0, b: taint(54.2), c: 2]
+        sink(h2[:a])
+        sink(h2[:b]) # $ hasValueFlow=54.2
+        sink(h2[:c])
+        sink(h2[i]) # $ hasValueFlow=54.2
+    end
+end
+
+M54.new.m54(:b)
+
+def m55
+    h = taint(55.1)
+    keys = h.keys
+    sink(keys[f()]) # $ hasTaintFlow=55.1
+end
+
+def m56
+    h = { a: taint(56.1), taint(56.2) => :b }
+    h.map do |k, v|
+        sink(v) # $ hasValueFlow=56.1
+        sink(k) # $ MISSING: hasValueFlow=56.2 SPURIOUS: hasValueFlow=56.1
+    end
+end

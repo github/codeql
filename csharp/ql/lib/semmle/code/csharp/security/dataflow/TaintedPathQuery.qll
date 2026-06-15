@@ -5,7 +5,8 @@
 
 import csharp
 private import semmle.code.csharp.controlflow.Guards
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.IO
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.security.Sanitizers
@@ -18,27 +19,12 @@ abstract class Source extends DataFlow::Node { }
 /**
  * A data flow sink for uncontrolled data in path expression vulnerabilities.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract class Sink extends ApiSinkExprNode { }
 
 /**
  * A sanitizer for uncontrolled data in path expression vulnerabilities.
  */
 abstract class Sanitizer extends DataFlow::ExprNode { }
-
-/**
- * DEPRECATED: Use `TaintedPath` instead.
- *
- * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "TaintedPath" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
 
 /**
  * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
@@ -49,6 +35,8 @@ private module TaintedPathConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -56,8 +44,15 @@ private module TaintedPathConfig implements DataFlow::ConfigSig {
  */
 module TaintedPath = TaintTracking::Global<TaintedPathConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /**
  * A path argument to a `File` method call.
@@ -121,7 +116,7 @@ private class WeakGuard extends Guard {
     )
     or
     // Checking against `null` has no bearing on path traversal.
-    this.controlsNode(_, _, any(AbstractValues::NullValue nv))
+    this.controlsNode(_, _, any(GuardValue nv | nv.isNullness(_)))
     or
     this.(LogicalOperation).getAnOperand() instanceof WeakGuard
   }
@@ -135,8 +130,9 @@ private class WeakGuard extends Guard {
 class PathCheck extends Sanitizer {
   PathCheck() {
     // This expression is structurally replicated in a dominating guard which is not a "weak" check
-    exists(Guard g, AbstractValues::BooleanValue v |
+    exists(Guard g, GuardValue v |
       g = this.(GuardedDataFlowNode).getAGuard(_, v) and
+      exists(v.asBooleanValue()) and
       not g instanceof WeakGuard
     )
   }

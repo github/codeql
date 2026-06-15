@@ -1,1 +1,2 @@
-experimental/Unsafe/WrongUsageOfUnsafe.ql
+query: experimental/Unsafe/WrongUsageOfUnsafe.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

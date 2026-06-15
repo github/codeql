@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import internal.AST
 private import internal.Pattern
@@ -203,6 +206,7 @@ class HashPattern extends CasePattern, THashPattern {
   }
 
   /** Gets the value for a given key name. */
+  overlay[global]
   CasePattern getValueByKey(string key) {
     exists(int i |
       this.getKey(i).getConstantValue().isStringlikeValue(key) and result = this.getValue(i)
@@ -362,20 +366,4 @@ class ReferencePattern extends CasePattern, TReferencePattern {
     or
     pred = "getExpr" and result = this.getExpr()
   }
-}
-
-/**
- * DEPRECATED: Use `ReferencePattern` instead.
- *
- * A variable reference in a pattern, i.e. `^x` in the following example:
- * ```rb
- * x = 10
- * case expr
- *   in ^x then puts "ok"
- * end
- * ```
- */
-deprecated class VariableReferencePattern extends ReferencePattern, TVariableReferencePattern {
-  /** Gets the variable access corresponding to this variable reference pattern. */
-  final VariableReadAccess getVariableAccess() { result = this.getExpr() }
 }

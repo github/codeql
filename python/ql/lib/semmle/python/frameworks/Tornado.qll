@@ -12,6 +12,7 @@ private import semmle.python.ApiGraphs
 private import semmle.python.regex
 private import semmle.python.frameworks.Stdlib
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -62,10 +63,51 @@ module Tornado {
 
       override string getAsyncMethodName() { none() }
     }
-  }
 
-  /** DEPRECATED: Alias for HttpHeaders */
-  deprecated module HTTPHeaders = HttpHeaders;
+    /**
+     * A dict-like write to an item of an `HTTPHeaders` object.
+     */
+    private class TornadoHeaderSubscriptWrite extends Http::Server::ResponseHeaderWrite::Range {
+      DataFlow::Node index;
+      DataFlow::Node value;
+
+      TornadoHeaderSubscriptWrite() {
+        exists(SubscriptNode subscript |
+          subscript.getObject() = instance().asCfgNode() and
+          value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+          index.asCfgNode() = subscript.getIndex() and
+          this.asCfgNode() = subscript
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result = index }
+
+      override DataFlow::Node getValueArg() { result = value }
+
+      override predicate nameAllowsNewline() { none() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
+
+    /**
+     * A call to `HTTPHeaders.add`.
+     */
+    private class TornadoHeadersAppendCall extends Http::Server::ResponseHeaderWrite::Range,
+      DataFlow::MethodCallNode
+    {
+      TornadoHeadersAppendCall() { this.calls(instance(), "add") }
+
+      override DataFlow::Node getNameArg() { result = [this.getArg(0), this.getArgByName("name")] }
+
+      override DataFlow::Node getValueArg() {
+        result in [this.getArg(1), this.getArgByName("value")]
+      }
+
+      override predicate nameAllowsNewline() { none() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
+  }
 
   // ---------------------------------------------------------------------------
   // tornado
@@ -90,7 +132,13 @@ module Tornado {
        */
       module RequestHandler {
         /** Gets a reference to the `tornado.web.RequestHandler` class or any subclass. */
-        API::Node subclassRef() { result = web().getMember("RequestHandler").getASubclass*() }
+        API::Node subclassRef() {
+          result = web().getMember("RequestHandler").getASubclass*()
+          or
+          result = WebSocket::WebSocketHandler::subclassRef()
+          or
+          result = ModelOutput::getATypeNode("tornado.web.RequestHandler~Subclass").getASubclass*()
+        }
 
         /** A RequestHandler class (most likely in project code). */
         class RequestHandlerClass extends Class {
@@ -207,6 +255,25 @@ module Tornado {
             this.(DataFlow::AttrRead).getAttributeName() = "request"
           }
         }
+
+        /** A call to `RequestHandler.set_header` or `RequestHandler.add_header` */
+        private class TornadoSetHeaderCall extends Http::Server::ResponseHeaderWrite::Range,
+          DataFlow::MethodCallNode
+        {
+          TornadoSetHeaderCall() { this.calls(instance(), ["set_header", "add_header"]) }
+
+          override DataFlow::Node getNameArg() {
+            result = [this.getArg(0), this.getArgByName("name")]
+          }
+
+          override DataFlow::Node getValueArg() {
+            result in [this.getArg(1), this.getArgByName("value")]
+          }
+
+          override predicate nameAllowsNewline() { none() }
+
+          override predicate valueAllowsNewline() { none() }
+        }
       }
 
       /**
@@ -216,7 +283,11 @@ module Tornado {
        */
       module Application {
         /** Gets a reference to the `tornado.web.Application` class. */
-        API::Node classRef() { result = web().getMember("Application") }
+        API::Node classRef() {
+          result = web().getMember("Application")
+          or
+          result = ModelOutput::getATypeNode("tornado.web.Application~Subclass").getASubclass*()
+        }
 
         /**
          * A source of instances of `tornado.web.Application`, extend this class to model new instances.
@@ -273,7 +344,12 @@ module Tornado {
        */
       module HttpServerRequest {
         /** Gets a reference to the `tornado.httputil.HttpServerRequest` class. */
-        API::Node classRef() { result = httputil().getMember("HttpServerRequest") }
+        API::Node classRef() {
+          result = httputil().getMember("HttpServerRequest")
+          or
+          result =
+            ModelOutput::getATypeNode("tornado.httputil.HttpServerRequest~Subclass").getASubclass*()
+        }
 
         /**
          * A source of instances of `tornado.httputil.HttpServerRequest`, extend this class to model new instances.
@@ -354,6 +430,49 @@ module Tornado {
         }
       }
     }
+
+    // ---------------------------------------------------------------------------
+    // tornado.websocket
+    // ---------------------------------------------------------------------------
+    /** Gets a reference to the `tornado.websocket` module. */
+    API::Node websocket() { result = Tornado::tornado().getMember("websocket") }
+
+    /** Provides models for the `tornado.websocket` module */
+    module WebSocket {
+      /**
+       * Provides models for the `tornado.websocket.WebSocketHandler` class and subclasses.
+       *
+       * See https://www.tornadoweb.org/en/stable/websocket.html#tornado.websocket.WebSocketHandler.
+       */
+      module WebSocketHandler {
+        /** Gets a reference to the `tornado.websocket.WebSocketHandler` class or any subclass. */
+        API::Node subclassRef() {
+          result = websocket().getMember("WebSocketHandler").getASubclass*()
+          or
+          result =
+            ModelOutput::getATypeNode("tornado.websocket.WebSocketHandler~Subclass").getASubclass*()
+        }
+
+        /** A subclass of `tornado.websocket.WebSocketHandler`. */
+        class WebSocketHandlerClass extends Web::RequestHandler::RequestHandlerClass {
+          WebSocketHandlerClass() { this.getParent() = subclassRef().asSource().asExpr() }
+
+          override Function getARequestHandler() {
+            result = super.getARequestHandler()
+            or
+            result = this.getAMethod() and
+            result.getName() = "open"
+          }
+
+          /** Gets a function that could handle incoming WebSocket events, if any. */
+          Function getAWebSocketEventHandler() {
+            result = this.getAMethod() and
+            result.getName() =
+              ["on_message", "on_close", "on_ping", "on_pong", "select_subprotocol", "check_origin"]
+          }
+        }
+      }
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -419,7 +538,10 @@ module Tornado {
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
       exists(Function requestHandler | requestHandler = this.getARequestHandler() |
         not exists(this.getUrlPattern()) and
-        result in [requestHandler.getArg(_), requestHandler.getArgByName(_)] and
+        result in [
+            requestHandler.getArg(_), requestHandler.getArgByName(_),
+            requestHandler.getVararg().(Parameter), requestHandler.getKwarg().(Parameter)
+          ] and
         not result = requestHandler.getArg(0)
       )
       or
@@ -432,6 +554,12 @@ module Tornado {
         result = requestHandler.getArg(regex.getGroupNumber(_, _))
         or
         result = requestHandler.getArgByName(regex.getGroupName(_, _))
+        or
+        exists(regex.getGroupNumber(_, _)) and
+        result = requestHandler.getVararg()
+        or
+        exists(regex.getGroupName(_, _)) and
+        result = requestHandler.getKwarg()
       )
     }
   }
@@ -449,7 +577,31 @@ module Tornado {
       // Since we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
       // more FPs. If this turns out to be the wrong tradeoff, we can always change our mind.
-      result in [this.getArg(_), this.getArgByName(_)] and
+      result in [
+          this.getArg(_), this.getArgByName(_), this.getVararg().(Parameter),
+          this.getKwarg().(Parameter)
+        ] and
+      not result = this.getArg(0)
+    }
+
+    override string getFramework() { result = "Tornado" }
+  }
+
+  /** A request handler for WebSocket events. */
+  private class TornadoWebSocketEventHandler extends Http::Server::RequestHandler::Range {
+    TornadoWebSocketEventHandler() {
+      exists(TornadoModule::WebSocket::WebSocketHandler::WebSocketHandlerClass cls |
+        cls.getAWebSocketEventHandler() = this
+      )
+    }
+
+    override Parameter getARoutedParameter() {
+      // The `open` method is handled as a normal request handler in `TornadoRouteSetup` or `TornadoRequestHandlerWithoutKnownRoute`.
+      // For other event handlers (such as `on_message`), all parameters should be remote flow sources, as they are not affected by routing.
+      result in [
+          this.getArg(_), this.getArgByName(_), this.getVararg().(Parameter),
+          this.getKwarg().(Parameter)
+        ] and
       not result = this.getArg(0)
     }
 
@@ -506,7 +658,7 @@ module Tornado {
    *
    * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.set_cookie
    */
-  class TornadoRequestHandlerSetCookieCall extends Http::Server::CookieWrite::Range,
+  class TornadoRequestHandlerSetCookieCall extends Http::Server::SetCookieCall,
     DataFlow::MethodCallNode
   {
     TornadoRequestHandlerSetCookieCall() {

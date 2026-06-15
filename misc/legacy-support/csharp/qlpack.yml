@@ -3,3 +3,4 @@ version: 0.0.0
 # Note libraryPathDependencies is obsolete and should not be used in new qlpacks.
 libraryPathDependencies:
   - codeql/csharp-all
+warnOnImplicitThis: true

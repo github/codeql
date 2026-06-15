@@ -1,1 +1,1 @@
-| nestedtypes.cs:53:11:53:18 | Outer<> | nestedtypes.cs:56:15:56:22 | Inner<String> |
+| nestedtypes.cs:53:11:53:18 | Outer`1 | nestedtypes.cs:56:15:56:22 | Inner<String> |

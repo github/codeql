@@ -8,8 +8,8 @@ namespace ConstantNullCoalescingLeftHandOperand
 
         public void Foo()
         {
-            object i = NULL_OBJECT ?? ""; // BAD
-            object j = null ?? ""; // BAD
+            object i = NULL_OBJECT ?? ""; // $ Alert
+            object j = null ?? ""; // $ Alert
             object k = Bar() ?? ""; // GOOD
         }
 

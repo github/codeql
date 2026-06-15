@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeASCIINameHashCode", "(System.Byte*,System.Int32,System.Boolean)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeMethodSignatureHashCode<ARG>", "(System.Int32,ARG[])", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeNameHashCode", "(System.String)", "summary", "df-generated"]
+      - ["Internal.NativeFormat", "TypeHashingAlgorithms", "ComputeSignatureVariableHashCode", "(System.Int32,System.Boolean)", "summary", "df-generated"]

@@ -1,20 +1,40 @@
-import csharp
+private import csharp as CS
 
 /**
  * Provides a simple SSA implementation for local scope variables.
  */
 module BaseSsa {
+  private import BaseSsaImpl
+
+  class SimpleLocalScopeVariable = BaseSsaImpl::SimpleLocalScopeVariable;
+
+  module Ssa = SsaImpl::MakeSsa<SsaInput>;
+
+  import Ssa
+}
+
+private module BaseSsaImpl {
+  private import CS
   private import AssignableDefinitions
   private import codeql.ssa.Ssa as SsaImplCommon
+
+  cached
+  private module BaseSsaStage {
+    cached
+    predicate ref() { any() }
+
+    cached
+    predicate backref() { (exists(any(BaseSsa::SsaDefinition def).getARead()) implies any()) }
+  }
 
   /**
    * Holds if the `i`th node of basic block `bb` is assignable definition `def`,
    * targeting local scope variable `v`.
    */
   private predicate definitionAt(
-    AssignableDefinition def, ControlFlow::BasicBlock bb, int i, SsaInput::SourceVariable v
+    AssignableDefinition def, BasicBlock bb, int i, SsaImplInput::SourceVariable v
   ) {
-    bb.getNode(i) = def.getAControlFlowNode() and
+    bb.getNode(i) = def.getExpr().getControlFlowNode() and
     v = def.getTarget() and
     // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
     not exists(TupleAssignmentDefinition first, TupleAssignmentDefinition second | first = def |
@@ -24,75 +44,108 @@ module BaseSsa {
     )
   }
 
-  private module SsaInput implements SsaImplCommon::InputSig {
-    class BasicBlock = ControlFlow::BasicBlock;
+  private predicate entryDef(Callable c, BasicBlock bb, SsaImplInput::SourceVariable v) {
+    exists(EntryBasicBlock entry |
+      c = entry.getEnclosingCallable() and
+      // In case `c` has multiple bodies, we want each body to get its own implicit
+      // entry definition. In case `c` doesn't have multiple bodies, the line below
+      // is simply the same as `bb = entry`, because `entry.getFirstNode().getASuccessor()`
+      // will be in the entry block.
+      bb = entry.getFirstNode().getASuccessor().getBasicBlock() and
+      c = v.getCallable()
+    |
+      v.isReadonlyCapturedBy(c)
+      or
+      v instanceof Parameter
+    )
+  }
 
-    BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
-      result = bb.getImmediateDominator()
+  /** Holds if `a` is assigned in callable `c`. */
+  pragma[nomagic]
+  private predicate assignableDefinition(Assignable a, Callable c) {
+    exists(AssignableDefinition def |
+      def.getTarget() = a and
+      c = def.getEnclosingCallable()
+    |
+      not c instanceof Constructor or
+      a instanceof LocalScopeVariable
+    )
+  }
+
+  pragma[nomagic]
+  private predicate assignableUniqueWriter(Assignable a, Callable c) {
+    c = unique(Callable c0 | assignableDefinition(a, c0) | c0)
+  }
+
+  /** Holds if `a` is accessed in callable `c`. */
+  pragma[nomagic]
+  private predicate assignableAccess(Assignable a, Callable c) {
+    exists(AssignableAccess aa | aa.getTarget() = a | c = aa.getEnclosingCallable())
+  }
+
+  /**
+   * A local scope variable that is amenable to SSA analysis.
+   *
+   * This is either a local variable that is not captured, or one
+   * where all writes happen in the defining callable.
+   */
+  class SimpleLocalScopeVariable extends LocalScopeVariable {
+    SimpleLocalScopeVariable() { assignableUniqueWriter(this, this.getCallable()) }
+
+    /** Holds if this local scope variable is read-only captured by `c`. */
+    predicate isReadonlyCapturedBy(Callable c) {
+      assignableAccess(this, c) and
+      c != this.getCallable()
     }
+  }
 
-    BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
-    class ExitBasicBlock = ControlFlow::BasicBlocks::ExitBlock;
-
-    pragma[noinline]
-    private Callable getAnAssigningCallable(LocalScopeVariable v) {
-      result = any(AssignableDefinition def | def.getTarget() = v).getEnclosingCallable()
-    }
-
-    class SourceVariable extends LocalScopeVariable {
-      SourceVariable() { not getAnAssigningCallable(this) != getAnAssigningCallable(this) }
-    }
+  private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
+    class SourceVariable = SimpleLocalScopeVariable;
 
     predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+      BaseSsaStage::ref() and
       exists(AssignableDefinition def |
         definitionAt(def, bb, i, v) and
         if def.isCertain() then certain = true else certain = false
       )
+      or
+      entryDef(_, bb, v) and
+      i = -1 and
+      certain = true
     }
 
     predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       exists(AssignableRead read |
-        read.getAControlFlowNode() = bb.getNode(i) and
+        read.getControlFlowNode() = bb.getNode(i) and
         read.getTarget() = v and
         certain = true
       )
     }
   }
 
-  private module SsaImpl = SsaImplCommon::Make<SsaInput>;
+  module SsaImpl = SsaImplCommon::Make<Location, Cfg, SsaImplInput>;
 
-  class Definition extends SsaImpl::Definition {
-    final AssignableRead getARead() {
-      exists(ControlFlow::BasicBlock bb, int i |
-        SsaImpl::ssaDefReachesRead(_, this, bb, i) and
-        result.getAControlFlowNode() = bb.getNode(i)
-      )
+  module SsaInput implements SsaImpl::SsaInputSig {
+    class Expr = CS::Expr;
+
+    class Parameter = CS::Parameter;
+
+    class VariableWrite extends AssignableDefinition {
+      Expr asExpr() { result = this.getExpr() }
+
+      Expr getValue() { result = this.getSource() }
+
+      predicate isParameterInit(Parameter p) {
+        this.(ImplicitParameterDefinition).getParameter() = p
+      }
     }
 
-    final AssignableDefinition getDefinition() {
-      exists(ControlFlow::BasicBlock bb, int i, SsaInput::SourceVariable v |
-        this.definesAt(v, bb, i) and
-        definitionAt(result, bb, i, v)
-      )
+    predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, SsaImplInput::SourceVariable v) {
+      definitionAt(w, bb, i, v)
+      or
+      entryDef(_, bb, v) and
+      i = -1 and
+      w.isParameterInit(v)
     }
-
-    private Definition getAPhiInputOrPriorDefinition() {
-      result = this.(PhiNode).getAnInput() or
-      SsaImpl::uncertainWriteDefinitionInput(this, result)
-    }
-
-    final Definition getAnUltimateDefinition() {
-      result = this.getAPhiInputOrPriorDefinition*() and
-      not result instanceof PhiNode
-    }
-
-    Location getLocation() { result = this.getDefinition().getLocation() }
-  }
-
-  class PhiNode extends SsaImpl::PhiNode, Definition {
-    override Location getLocation() { result = this.getBasicBlock().getLocation() }
-
-    final Definition getAnInput() { SsaImpl::phiHasInputFromBlock(this, result, _) }
   }
 }

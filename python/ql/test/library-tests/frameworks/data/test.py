@@ -48,7 +48,7 @@ sub = SubClass()
 class Sub2Class (CommonTokens.Class):
     pass
 
-sub2 = Sub2Class() # TODO: Currently not recognized as an instance of CommonTokens.Class
+sub2 = Sub2Class()
 
 val = inst.foo()
 
@@ -60,7 +60,7 @@ class SubClass (ArgPos.MyClass):
     def foo(self, arg, named=2, otherName=3):
         pass
 
-    def secondAndAfter(self, arg1, arg2, arg3, arg4, arg5): 
+    def secondAndAfter(self, arg1, arg2, arg3, arg4, arg5):
         pass
 
 ArgPos.anyParam(arg1, arg2, name=namedThing)
@@ -72,7 +72,7 @@ mySink(Steps.preserveTaint(getSource())) # FLOW
 mySink(Steps.preserveTaint("safe", getSource())) # NO FLOW
 
 Steps.taintIntoCallback(
-    getSource(), 
+    getSource(),
     lambda x: mySink(x), # FLOW
     lambda y: mySink(y), # FLOW
     lambda z: mySink(z) # NO FLOW
@@ -106,3 +106,28 @@ class OtherSubClass (ArgPos.MyClass):
 
     def anyNamed(self, name1, name2=2): # Parameter[any-named] matches all non-self named parameters
         pass
+
+import testlib as testlib
+import testlib.nestedlib as testlib2
+import otherlib as otherlib
+
+testlib.fuzzyCall(getSource()) # NOT OK
+testlib2.fuzzyCall(getSource()) # NOT OK
+testlib.foo.bar.baz.fuzzyCall(getSource()) # NOT OK
+testlib.foo().bar().fuzzyCall(getSource()) # NOT OK
+testlib.foo(lambda x: x.fuzzyCall(getSource())) # NOT OK
+otherlib.fuzzyCall(getSource()) # OK
+
+# defining sources through content steps
+
+# dictionaries
+testlib.source_dict["key"].func() # source
+testlib.source_dict["safe"].func() # not a source
+lambda k: testlib.source_dict_any[k].func() # source
+
+# TODO: implement support for lists
+lambda i: testlib.source_list[i].func()
+
+# TODO: implement support for tuples
+testlib.source_tuple[0].func() # a source
+testlib.source_tuple[1].func() # not a source

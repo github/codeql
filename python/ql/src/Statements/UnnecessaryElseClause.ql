@@ -2,7 +2,8 @@
  * @name Unnecessary 'else' clause in loop
  * @description An 'else' clause in a 'for' or 'while' statement that does not contain a 'break' is redundant.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  * @problem.severity warning
  * @sub-severity low

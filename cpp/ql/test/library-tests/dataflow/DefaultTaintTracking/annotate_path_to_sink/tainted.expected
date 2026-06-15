@@ -1,2 +1,0 @@
-WARNING: Module TaintedWithPath has been deprecated and may be removed in future (tainted.ql:9,8-47)
-WARNING: Predicate tainted has been deprecated and may be removed in future (tainted.ql:20,49-74)

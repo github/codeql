@@ -3,8 +3,9 @@
  * @description Side-effects in assert statements result in differences between normal
  *              and optimized behavior.
  * @kind problem
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity error
  * @sub-severity low
  * @precision high
@@ -12,6 +13,7 @@
  */
 
 import python
+private import semmle.python.ApiGraphs
 
 predicate func_with_side_effects(Expr e) {
   exists(string name | name = e.(Attribute).getName() or name = e.(Name).getId() |
@@ -22,11 +24,11 @@ predicate func_with_side_effects(Expr e) {
 }
 
 predicate call_with_side_effect(Call e) {
-  e.getAFlowNode() = Value::named("subprocess.call").getACall()
-  or
-  e.getAFlowNode() = Value::named("subprocess.check_call").getACall()
-  or
-  e.getAFlowNode() = Value::named("subprocess.check_output").getACall()
+  e.getAFlowNode() =
+    API::moduleImport("subprocess")
+        .getMember(["call", "check_call", "check_output"])
+        .getACall()
+        .asCfgNode()
 }
 
 predicate probable_side_effect(Expr e) {

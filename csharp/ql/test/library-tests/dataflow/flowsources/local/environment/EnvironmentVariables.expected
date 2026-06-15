@@ -1,0 +1,11 @@
+| EnvironmentVariables.cs:11:28:11:82 | call to method GetEnvironmentVariable |
+| EnvironmentVariables.cs:12:40:12:129 | call to method GetEnvironmentVariable |
+| EnvironmentVariables.cs:13:39:13:128 | call to method GetEnvironmentVariable |
+| EnvironmentVariables.cs:18:48:18:84 | call to method GetEnvironmentVariables |
+| EnvironmentVariables.cs:19:60:19:129 | call to method GetEnvironmentVariables |
+| EnvironmentVariables.cs:20:59:20:128 | call to method GetEnvironmentVariables |
+| EnvironmentVariables.cs:25:31:25:78 | call to method ExpandEnvironmentVariables |
+| EnvironmentVariables.cs:30:26:30:51 | [post] object creation of type ConfigurationBuilder |
+| EnvironmentVariables.cs:30:26:31:42 | call to method AddEnvironmentVariables |
+| EnvironmentVariables.cs:41:13:41:19 | [post] access to local variable builder |
+| EnvironmentVariables.cs:41:13:41:53 | call to method AddEnvironmentVariables |

@@ -5,9 +5,10 @@
  * @kind problem
  * @problem.severity warning
  * @id go/missing-error-check
- * @tags reliability
- *       correctness
- *       logic
+ * @tags quality
+ *       reliability
+ *       error-handling
+ *       external/cwe/cwe-252
  * @precision high
  */
 
@@ -21,7 +22,7 @@ predicate isNil(DataFlow::Node node) { node = Builtin::nil().getARead() }
 /**
  * Matches if `call` may return a nil pointer alongside an error value.
  *
- * This is both an over- and under-estimate: over in that we assume opaque functions may use this
+ * This is both an over- and under-estimate: over in that we assume opaque functions may use this
  * convention, and under in that functions with bodies are only recognized if they use a literal
  * `nil` for the pointer return value at some return site.
  */
@@ -72,6 +73,16 @@ predicate checksValue(IR::Instruction instruction, DataFlow::SsaNode value) {
   )
 }
 
+// Now that we have use-use flow, phi nodes aren't directly involved in the flow graph. TODO: change this?
+DataFlow::SsaNode phiDefinedFrom(DataFlow::SsaNode node) {
+  result.getDefinition().(SsaPseudoDefinition).getAnInput() = node.getDefinition().getVariable()
+}
+
+DataFlow::SsaNode definedFrom(DataFlow::SsaNode node) {
+  DataFlow::localFlow(node, result) or
+  result = phiDefinedFrom*(node)
+}
+
 /**
  * Matches if `call` is a function returning (`ptr`, `err`) where `ptr` may be nil, and neither
  * `ptr` not `err` has been checked for validity as of `node`.
@@ -98,7 +109,7 @@ predicate returnUncheckedAtNode(
     // localFlow is used to permit checks via either an SSA phi node or ordinary assignment.
     returnUncheckedAtNode(call, node.getAPredecessor(), ptr, err) and
     not exists(DataFlow::SsaNode checked |
-      DataFlow::localFlow(ptr, checked) or DataFlow::localFlow(err, checked)
+      checked = definedFrom(ptr) or checked = definedFrom(err)
     |
       checksValue(node, checked)
     )

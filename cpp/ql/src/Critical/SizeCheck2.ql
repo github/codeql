@@ -15,6 +15,7 @@
 
 import cpp
 import semmle.code.cpp.models.Models
+import semmle.code.cpp.commons.Buffer
 
 predicate baseType(AllocationExpr alloc, Type base) {
   exists(PointerType pointer |
@@ -30,7 +31,8 @@ predicate baseType(AllocationExpr alloc, Type base) {
 }
 
 predicate decideOnSize(Type t, int size) {
-  // If the codebase has more than one type with the same name, it can have more than one size.
+  // If the codebase has more than one type with the same name, it can have more than one size. For
+  // most purposes in this query, we use the smallest.
   size = min(t.getSize())
 }
 
@@ -45,7 +47,8 @@ where
     size = 0 or
     (allocated / size) * size = allocated
   ) and
-  not basesize > allocated // covered by SizeCheck.ql
+  not basesize > allocated and // covered by SizeCheck.ql
+  not memberMayBeVarSize(base.getUnspecifiedType(), _) // exclude variable size types
 select alloc,
   "Allocated memory (" + allocated.toString() + " bytes) is not a multiple of the size of '" +
     base.getName() + "' (" + basesize.toString() + " bytes)."

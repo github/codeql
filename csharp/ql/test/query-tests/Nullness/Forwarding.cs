@@ -28,16 +28,16 @@ class ForwardingTests
 
         if (IsNotNull(s))
         {
-            Console.WriteLine(s.Length); // GOOD
+            Console.WriteLine(s.Length); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-is-always-null]
         }
 
         if (IsNotNullWrong(s))
         {
-            Console.WriteLine(s.Length); // BAD (always)
+            Console.WriteLine(s.Length); // $ Alert[cs/dereferenced-value-is-always-null]
         }
 
         AssertIsNotNull(s);
-        Console.WriteLine(s.Length); // GOOD (false positive)
+        Console.WriteLine(s.Length); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-is-always-null]
     }
 
     bool IsNotNull(object o)

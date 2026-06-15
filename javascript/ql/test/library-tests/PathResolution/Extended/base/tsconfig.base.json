@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        // The baseUrl is interpreted relative to this file, not the "root" tsconfig.json file extending it.
+        "baseUrl": "./../",
+        "paths": {
+            "@/*": ["lib/*"],
+            "@/*.xyz": ["lib/*"],
+            "@": ["lib/nostar.ts"]
+        }
+    }
+}

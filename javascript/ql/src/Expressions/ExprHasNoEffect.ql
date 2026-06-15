@@ -5,8 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/useless-expression
- * @tags maintainability
- *       correctness
+ * @tags quality
+ *       maintainability
+ *       useless-code
  *       external/cwe/cwe-480
  *       external/cwe/cwe-561
  * @precision very-high

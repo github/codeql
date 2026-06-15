@@ -2,7 +2,9 @@
  * @name Use of the return value of a procedure
  * @description The return value of a procedure (a function that does not return a value) is used. This is confusing to the reader as the value (None) has no meaning.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  * @problem.severity warning
  * @sub-severity low
  * @precision high
@@ -10,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 import Testing.Mox
 
 predicate is_used(Call c) {
@@ -29,10 +32,12 @@ from Call c, FunctionValue func
 where
   /* Call result is used, but callee is a procedure */
   is_used(c) and
-  c.getFunc().pointsTo(func) and
+  c.getFunc().(ExprWithPointsTo).pointsTo(func) and
   func.getScope().isProcedure() and
   /* All callees are procedures */
-  forall(FunctionValue callee | c.getFunc().pointsTo(callee) | callee.getScope().isProcedure()) and
+  forall(FunctionValue callee | c.getFunc().(ExprWithPointsTo).pointsTo(callee) |
+    callee.getScope().isProcedure()
+  ) and
   /* Mox return objects have an `AndReturn` method */
   not useOfMoxInModule(c.getEnclosingModule())
 select c, "The result of $@ is used even though it is always None.", func, func.getQualifiedName()

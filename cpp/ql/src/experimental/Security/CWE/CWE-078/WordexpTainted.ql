@@ -40,7 +40,7 @@ module WordexpTaintConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     exists(FunctionCall fc | fc.getTarget() instanceof WordexpFunction |
-      fc.getArgument(0) = sink.asExpr() and
+      fc.getArgument(0) = sink.asIndirectArgument(1) and
       not isCommandSubstitutionDisabled(fc)
     )
   }
@@ -48,6 +48,8 @@ module WordexpTaintConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module WordexpTaint = TaintTracking::Global<WordexpTaintConfig>;

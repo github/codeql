@@ -1,0 +1,61 @@
+models
+| 1 | Sink: java.sql; Statement; true; executeUpdate; ; ; Argument[0]; sql-injection; manual |
+| 2 | Sink: java.util.logging; Logger; true; severe; ; ; Argument[0]; log-injection; manual |
+| 3 | Source: java.net; Socket; false; getInputStream; (); ; ReturnValue; remote; manual |
+| 4 | Source: testlib; TestSources; false; readEnv; (String); ; ReturnValue; environment; manual |
+| 5 | Summary: java.io; InputStream; true; read; (byte[]); ; Argument[this]; Argument[0]; taint; manual |
+| 6 | Summary: java.lang; String; false; String; ; ; Argument[0]; Argument[this]; taint; manual |
+edges
+| Test.java:10:31:10:41 | data : byte[] | Test.java:11:23:11:26 | data : byte[] | provenance |  |
+| Test.java:11:23:11:26 | data : byte[] | Test.java:11:12:11:51 | new String(...) : String | provenance | MaD:6 |
+| Test.java:19:5:19:25 | getInputStream(...) : InputStream | Test.java:19:32:19:35 | data [post update] : byte[] | provenance | Src:MaD:3 MaD:5 |
+| Test.java:19:32:19:35 | data [post update] : byte[] | Test.java:22:49:22:52 | data : byte[] | provenance |  |
+| Test.java:19:32:19:35 | data [post update] : byte[] | Test.java:25:69:25:72 | data : byte[] | provenance |  |
+| Test.java:22:49:22:52 | data : byte[] | Test.java:10:31:10:41 | data : byte[] | provenance |  |
+| Test.java:22:49:22:52 | data : byte[] | Test.java:22:36:22:53 | byteToString(...) | provenance | MaD:6 Sink:MaD:2 |
+| Test.java:25:56:25:73 | byteToString(...) : String | Test.java:25:26:25:80 | ... + ... | provenance | Sink:MaD:1 |
+| Test.java:25:69:25:72 | data : byte[] | Test.java:10:31:10:41 | data : byte[] | provenance |  |
+| Test.java:25:69:25:72 | data : byte[] | Test.java:25:56:25:73 | byteToString(...) : String | provenance | MaD:6 |
+| Test.java:41:21:41:49 | readEnv(...) : String | Test.java:44:26:44:68 | ... + ... | provenance | Src:MaD:4 Sink:MaD:1 |
+| Test.java:41:21:41:49 | readEnv(...) : String | Test.java:47:36:47:41 | result | provenance | Src:MaD:4 Sink:MaD:2 |
+| Test.java:64:5:64:13 | System.in : InputStream | Test.java:64:20:64:23 | data [post update] : byte[] | provenance | MaD:5 |
+| Test.java:64:20:64:23 | data [post update] : byte[] | Test.java:67:69:67:72 | data : byte[] | provenance |  |
+| Test.java:64:20:64:23 | data [post update] : byte[] | Test.java:70:49:70:52 | data : byte[] | provenance |  |
+| Test.java:67:56:67:73 | byteToString(...) : String | Test.java:67:26:67:80 | ... + ... | provenance | Sink:MaD:1 |
+| Test.java:67:69:67:72 | data : byte[] | Test.java:10:31:10:41 | data : byte[] | provenance |  |
+| Test.java:67:69:67:72 | data : byte[] | Test.java:67:56:67:73 | byteToString(...) : String | provenance | MaD:6 |
+| Test.java:70:49:70:52 | data : byte[] | Test.java:10:31:10:41 | data : byte[] | provenance |  |
+| Test.java:70:49:70:52 | data : byte[] | Test.java:70:36:70:53 | byteToString(...) | provenance | MaD:6 Sink:MaD:2 |
+nodes
+| Test.java:10:31:10:41 | data : byte[] | semmle.label | data : byte[] |
+| Test.java:11:12:11:51 | new String(...) : String | semmle.label | new String(...) : String |
+| Test.java:11:23:11:26 | data : byte[] | semmle.label | data : byte[] |
+| Test.java:19:5:19:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| Test.java:19:32:19:35 | data [post update] : byte[] | semmle.label | data [post update] : byte[] |
+| Test.java:22:36:22:53 | byteToString(...) | semmle.label | byteToString(...) |
+| Test.java:22:49:22:52 | data : byte[] | semmle.label | data : byte[] |
+| Test.java:25:26:25:80 | ... + ... | semmle.label | ... + ... |
+| Test.java:25:56:25:73 | byteToString(...) : String | semmle.label | byteToString(...) : String |
+| Test.java:25:69:25:72 | data : byte[] | semmle.label | data : byte[] |
+| Test.java:41:21:41:49 | readEnv(...) : String | semmle.label | readEnv(...) : String |
+| Test.java:44:26:44:68 | ... + ... | semmle.label | ... + ... |
+| Test.java:47:36:47:41 | result | semmle.label | result |
+| Test.java:64:5:64:13 | System.in : InputStream | semmle.label | System.in : InputStream |
+| Test.java:64:20:64:23 | data [post update] : byte[] | semmle.label | data [post update] : byte[] |
+| Test.java:67:26:67:80 | ... + ... | semmle.label | ... + ... |
+| Test.java:67:56:67:73 | byteToString(...) : String | semmle.label | byteToString(...) : String |
+| Test.java:67:69:67:72 | data : byte[] | semmle.label | data : byte[] |
+| Test.java:70:36:70:53 | byteToString(...) | semmle.label | byteToString(...) |
+| Test.java:70:49:70:52 | data : byte[] | semmle.label | data : byte[] |
+subpaths
+| Test.java:22:49:22:52 | data : byte[] | Test.java:10:31:10:41 | data : byte[] | Test.java:11:12:11:51 | new String(...) : String | Test.java:22:36:22:53 | byteToString(...) |
+| Test.java:25:69:25:72 | data : byte[] | Test.java:10:31:10:41 | data : byte[] | Test.java:11:12:11:51 | new String(...) : String | Test.java:25:56:25:73 | byteToString(...) : String |
+| Test.java:67:69:67:72 | data : byte[] | Test.java:10:31:10:41 | data : byte[] | Test.java:11:12:11:51 | new String(...) : String | Test.java:67:56:67:73 | byteToString(...) : String |
+| Test.java:70:49:70:52 | data : byte[] | Test.java:10:31:10:41 | data : byte[] | Test.java:11:12:11:51 | new String(...) : String | Test.java:70:36:70:53 | byteToString(...) |
+#select
+| Test.java:19:5:19:25 | getInputStream(...) : InputStream | Test.java:22:36:22:53 | byteToString(...) |
+| Test.java:19:5:19:25 | getInputStream(...) : InputStream | Test.java:25:26:25:80 | ... + ... |
+| Test.java:41:21:41:49 | readEnv(...) : String | Test.java:44:26:44:68 | ... + ... |
+| Test.java:41:21:41:49 | readEnv(...) : String | Test.java:47:36:47:41 | result |
+| Test.java:64:5:64:13 | System.in : InputStream | Test.java:67:26:67:80 | ... + ... |
+| Test.java:64:5:64:13 | System.in : InputStream | Test.java:70:36:70:53 | byteToString(...) |

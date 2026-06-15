@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.Web;
 using System.Web.Security;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Identity;
 
 public class HardcodedHandler : IHttpHandler
 {
@@ -72,6 +73,21 @@ public class HardcodedHandler : IHttpHandler
 
         // BAD: Hard-coded user
         Membership.CreateUser("myusername", "mypassword");
+
+        var identityOptions = new IdentityOptions
+        {
+            User = new UserOptions
+            {
+                // GOOD: This is not a credential so hardcoding a string assignment is fine     
+                AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+"
+            }
+        };
+
+        var claimsIdentityOptions = new ClaimsIdentityOptions
+        {
+            // GOOD: This is not a credential so hardcoding a string assignment is fine
+            UserNameClaimType = "username"
+        };
     }
 
     class Foo

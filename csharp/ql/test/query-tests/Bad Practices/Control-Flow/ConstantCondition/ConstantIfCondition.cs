@@ -8,26 +8,31 @@ namespace ConstantIfCondition
 
         public void Foo()
         {
-            if (ZERO == 1 - 1)
-            { // BAD
+            if (ZERO == 1 - 1) // $ Alert
+            {
             }
-            if (false)
-            { // BAD
+            if (false) // GOOD
+            {
             }
-            if (" " == " ")
-            { // BAD
+            if (" " == " ") // $ Alert
+            {
             }
-            if (" "[0] == ' ')
-            { // BAD: but not flagged
+            if (" "[0] == ' ') // Missing Alert
+            {
             }
-            if (Bar() == 0)
-            { // GOOD
+            if (Bar() == 0) // GOOD
+            {
             }
         }
 
         public int Bar()
         {
             return ZERO;
+        }
+
+        public void UnsignedCheck(byte n)
+        {
+            while (n >= 0) { n--; } // $ Alert
         }
 
     }

@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Java compilation units.
  */
+overlay[local?]
+module;
 
 import Element
 import Package
@@ -30,6 +32,14 @@ class CompilationUnit extends Element, File {
    * Gets the module associated with this compilation unit, if any.
    */
   Module getModule() { cumodule(this, result) }
+
+  /**
+   * Holds if this compilation unit represents a compact source file.
+   * A compact source file contains an implicitly declared top-level class.
+   */
+  predicate isCompactSourceFile() {
+    exists(Class c | c.getCompilationUnit() = this and c.isImplicit())
+  }
 
   override string getAPrimaryQlClass() { result = "CompilationUnit" }
 }

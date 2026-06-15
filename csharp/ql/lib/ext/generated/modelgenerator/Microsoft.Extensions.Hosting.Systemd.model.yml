@@ -1,0 +1,22 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Hosting.Systemd", "ServiceState", False, "ServiceState", "(System.String)", "", "Argument[0]", "Argument[this].SyntheticField[Microsoft.Extensions.Hosting.Systemd.ServiceState._data]", "taint", "dfc-generated"]
+      - ["Microsoft.Extensions.Hosting.Systemd", "ServiceState", False, "ToString", "()", "", "Argument[this].SyntheticField[Microsoft.Extensions.Hosting.Systemd.ServiceState._data].Element", "ReturnValue", "taint", "dfc-generated"]
+      - ["Microsoft.Extensions.Hosting.Systemd", "SystemdLifetime", False, "SystemdLifetime", "(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Hosting.Systemd.ISystemdNotifier,Microsoft.Extensions.Logging.ILoggerFactory)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Systemd", "SystemdLifetime", False, "SystemdLifetime", "(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Hosting.Systemd.ISystemdNotifier,Microsoft.Extensions.Logging.ILoggerFactory)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Systemd", "SystemdLifetime", False, "SystemdLifetime", "(Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Hosting.Systemd.ISystemdNotifier,Microsoft.Extensions.Logging.ILoggerFactory)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Hosting.Systemd", "ISystemdNotifier", "Notify", "(Microsoft.Extensions.Hosting.Systemd.ServiceState)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Systemd", "ISystemdNotifier", "get_IsEnabled", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Systemd", "SystemdHelpers", "IsSystemdService", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Systemd", "SystemdLifetime", "Dispose", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Systemd", "SystemdLifetime", "StopAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Systemd", "SystemdNotifier", "Notify", "(Microsoft.Extensions.Hosting.Systemd.ServiceState)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Systemd", "SystemdNotifier", "get_IsEnabled", "()", "summary", "df-generated"]

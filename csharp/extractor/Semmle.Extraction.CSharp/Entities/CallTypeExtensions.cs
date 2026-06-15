@@ -9,7 +9,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         public static ExprKind AdjustKind(this Expression.CallType ct, ExprKind k)
         {
-            if (k == ExprKind.ADDRESS_OF)
+            if (k == ExprKind.ADDRESS_OF || k == ExprKind.SUPPRESS_NULLABLE_WARNING)
             {
                 return k;
             }

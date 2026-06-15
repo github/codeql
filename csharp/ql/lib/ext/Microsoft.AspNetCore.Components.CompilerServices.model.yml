@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.AspNetCore.Components.CompilerServices", "RuntimeHelpers", False, "TypeCheck<T>", "(T)", "", "Argument[0]", "ReturnValue", "value", "manual"]

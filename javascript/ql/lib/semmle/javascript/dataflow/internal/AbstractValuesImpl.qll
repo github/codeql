@@ -3,6 +3,8 @@
  *
  * Provides a representation for abstract values.
  */
+overlay[local?]
+module;
 
 private import javascript
 import semmle.javascript.dataflow.AbstractValues

@@ -1,5 +1,5 @@
-using Microsoft.CodeAnalysis;
 using System.IO;
+using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -12,6 +12,10 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             this.@event = @event;
         }
+
+        public override bool NeedsPopulation =>
+            base.NeedsPopulation &&
+            !Symbol.IsPartialDefinition; // Accessors always have an implementing declaration as well.
 
         /// <summary>
         /// Gets the event symbol associated with accessor `symbol`, or `null`
@@ -48,12 +52,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
             trapFile.event_accessors(this, kind, Symbol.Name, parent, unboundAccessor);
 
-            foreach (var l in Locations)
-                trapFile.event_accessor_location(this, l);
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationsToTrap(trapFile.event_accessor_location, this, Locations);
+            }
 
             Overrides(trapFile);
 
-            if (Symbol.FromSource() && Block is null)
+            if (Symbol.FromSource() && !HasBody)
             {
                 trapFile.compiler_generated(this);
             }

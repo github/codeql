@@ -6,12 +6,14 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/use-of-clone-method
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java
 
-from MethodAccess ma, Method m
+from MethodCall ma, Method m
 where
   m = ma.getMethod() and
   m instanceof CloneMethod and

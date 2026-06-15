@@ -1,1 +1,2 @@
-AngularJS/IncompatibleService.ql
+query: AngularJS/IncompatibleService.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

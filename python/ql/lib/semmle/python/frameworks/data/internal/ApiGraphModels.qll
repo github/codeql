@@ -1,17 +1,21 @@
 /**
  * INTERNAL use only. This is an experimental API subject to change without notice.
  *
- * Provides classes and predicates for dealing with flow models specified in CSV format.
+ * Provides classes and predicates for dealing with flow models specified in extensible predicates.
  *
- * The CSV specification has the following columns:
+ * The extensible predicates have the following columns:
  * - Sources:
- *   `type; path; kind`
+ *   `type, path, kind`
  * - Sinks:
- *   `type; path; kind`
+ *   `type, path, kind`
  * - Summaries:
- *   `type; path; input; output; kind`
+ *   `type, path, input, output, kind`
+ * - Barriers:
+ *   `type, path, kind`
+ * - BarrierGuards:
+ *   `type, path, acceptingValue, kind`
  * - Types:
- *   `type1; type2; path`
+ *   `type1, type2, path`
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -42,7 +46,8 @@
  * 3. The `input` and `output` columns specify how data enters and leaves the element selected by the
  *    first `(type, path)` tuple. Both strings are `.`-separated access paths
  *    of the same syntax as the `path` column.
- * 4. The `kind` column is a tag that can be referenced from QL to determine to
+ * 4. The `acceptingValue` column of barrier guard models specifies which branch of the guard is blocking flow. It can be "true" or "false".
+ * 5. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources `"remote"` indicates a default remote flow source, and for summaries
  *    `"taint"` indicates a default additional taint step and `"value"` indicates a
@@ -62,6 +67,8 @@
  * should be prefixed with a tilde character (`~`). For example, `~Bar` can be used to indicate that
  * the type is not intended to match a static type.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Unit
 private import ApiGraphModelsSpecific as Specific
@@ -70,17 +77,19 @@ private module API = Specific::API;
 
 private module DataFlow = Specific::DataFlow;
 
-private import Specific::AccessPathSyntax
 private import ApiGraphModelsExtensions as Extensions
+private import codeql.dataflow.internal.AccessPathSyntax
 
 /** Module containing hooks for providing input data to be interpreted as a model. */
 module ModelInput {
   /**
+   * DEPRECATED: Use the extensible predicate `sourceModel` instead.
+   *
    * A unit class for adding additional source model rows.
    *
    * Extend this class to add additional source definitions.
    */
-  class SourceModelCsv extends Unit {
+  deprecated class SourceModelCsv extends Unit {
     /**
      * Holds if `row` specifies a source definition.
      *
@@ -93,15 +102,17 @@ module ModelInput {
      *
      * The kind `remote` represents a general remote flow source.
      */
-    abstract predicate row(string row);
+    abstract deprecated predicate row(string row);
   }
 
   /**
    * A unit class for adding additional sink model rows.
    *
    * Extend this class to add additional sink definitions.
+   *
+   * DEPRECATED: Use the extensible predicate `sinkModel` instead.
    */
-  class SinkModelCsv extends Unit {
+  deprecated class SinkModelCsv extends Unit {
     /**
      * Holds if `row` specifies a sink definition.
      *
@@ -112,15 +123,17 @@ module ModelInput {
      * indicates that the value at `(type, path)` should be seen as a sink
      * of the given `kind`.
      */
-    abstract predicate row(string row);
+    abstract deprecated predicate row(string row);
   }
 
   /**
    * A unit class for adding additional summary model rows.
    *
    * Extend this class to add additional flow summary definitions.
+   *
+   * DEPRECATED: Use the extensible predicate `summaryModel` instead.
    */
-  class SummaryModelCsv extends Unit {
+  deprecated class SummaryModelCsv extends Unit {
     /**
      * Holds if `row` specifies a summary definition.
      *
@@ -134,15 +147,18 @@ module ModelInput {
      * `kind` should be either `value` or `taint`, for value-preserving or taint-preserving steps,
      * respectively.
      */
-    abstract predicate row(string row);
+    abstract deprecated predicate row(string row);
   }
 
   /**
    * A unit class for adding additional type model rows.
    *
    * Extend this class to add additional type definitions.
+   *
+   * DEPRECATED: Use the extensible predicate `typeModel` or the class
+   * `TypeModel` instead.
    */
-  class TypeModelCsv extends Unit {
+  deprecated class TypeModelCsv extends Unit {
     /**
      * Holds if `row` specifies a type definition.
      *
@@ -152,7 +168,7 @@ module ModelInput {
      * ```
      * indicates that `(type2, path)` should be seen as an instance of `type1`.
      */
-    abstract predicate row(string row);
+    abstract deprecated predicate row(string row);
   }
 
   /**
@@ -160,7 +176,18 @@ module ModelInput {
    */
   class TypeModel extends Unit {
     /**
+     * Holds if any of the other predicates in this class might have a result
+     * for the given `type`.
+     *
+     * The implementation of this predicate should not depend on `DataFlow::Node`.
+     */
+    bindingset[type]
+    predicate isTypeUsed(string type) { none() }
+
+    /**
      * Gets a data-flow node that is a source of the given `type`.
+     *
+     * Note that `type` should also be included in `isTypeUsed`.
      *
      * This must not depend on API graphs, but ensures that an API node is generated for
      * the source.
@@ -171,6 +198,8 @@ module ModelInput {
      * Gets a data-flow node that is a sink of the given `type`,
      * usually because it is an argument passed to a parameter of that type.
      *
+     * Note that `type` should also be included in `isTypeUsed`.
+     *
      * This must not depend on API graphs, but ensures that an API node is generated for
      * the sink.
      */
@@ -179,6 +208,8 @@ module ModelInput {
     /**
      * Gets an API node that is a source or sink of the given `type`.
      *
+     * Note that `type` should also be included in `isTypeUsed`.
+     *
      * Unlike `getASource` and `getASink`, this may depend on API graphs.
      */
     API::Node getAnApiNode(string type) { none() }
@@ -186,8 +217,10 @@ module ModelInput {
 
   /**
    * A unit class for adding additional type variable model rows.
+   *
+   * DEPRECATED: Use the extensible predicate `typeVariableModel` instead.
    */
-  class TypeVariableModelCsv extends Unit {
+  deprecated class TypeVariableModelCsv extends Unit {
     /**
      * Holds if `row` specifies a path through a type variable.
      *
@@ -197,7 +230,7 @@ module ModelInput {
      * ```
      * means `path` can be substituted for a token `TypeVar[name]`.
      */
-    abstract predicate row(string row);
+    abstract deprecated predicate row(string row);
   }
 }
 
@@ -216,91 +249,191 @@ abstract class TestAllModels extends Unit { }
  * does not preserve empty trailing substrings.
  */
 bindingset[result]
-private string inversePad(string s) { s = result + ";dummy" }
+deprecated private string inversePad(string s) { s = result + ";dummy" }
 
-private predicate sourceModel(string row) { any(SourceModelCsv s).row(inversePad(row)) }
+deprecated private predicate sourceModel(string row) { any(SourceModelCsv s).row(inversePad(row)) }
 
-private predicate sinkModel(string row) { any(SinkModelCsv s).row(inversePad(row)) }
+deprecated private predicate sinkModel(string row) { any(SinkModelCsv s).row(inversePad(row)) }
 
-private predicate summaryModel(string row) { any(SummaryModelCsv s).row(inversePad(row)) }
+deprecated private predicate summaryModel(string row) {
+  any(SummaryModelCsv s).row(inversePad(row))
+}
 
-private predicate typeModel(string row) { any(TypeModelCsv s).row(inversePad(row)) }
+deprecated private predicate typeModel(string row) { any(TypeModelCsv s).row(inversePad(row)) }
 
-private predicate typeVariableModel(string row) { any(TypeVariableModelCsv s).row(inversePad(row)) }
+deprecated private predicate typeVariableModel(string row) {
+  any(TypeVariableModelCsv s).row(inversePad(row))
+}
+
+private class DeprecationAdapter extends Unit {
+  abstract predicate sourceModel(string type, string path, string kind);
+
+  abstract predicate sinkModel(string type, string path, string kind);
+
+  abstract predicate summaryModel(string type, string path, string input, string output, string kind);
+
+  abstract predicate typeModel(string type1, string type2, string path);
+
+  abstract predicate typeVariableModel(string name, string path);
+}
+
+private class DeprecationAdapterImpl extends DeprecationAdapter {
+  deprecated override predicate sourceModel(string type, string path, string kind) {
+    exists(string row |
+      sourceModel(row) and
+      row.splitAt(";", 0) = type and
+      row.splitAt(";", 1) = path and
+      row.splitAt(";", 2) = kind
+    )
+  }
+
+  deprecated override predicate sinkModel(string type, string path, string kind) {
+    exists(string row |
+      sinkModel(row) and
+      row.splitAt(";", 0) = type and
+      row.splitAt(";", 1) = path and
+      row.splitAt(";", 2) = kind
+    )
+  }
+
+  deprecated override predicate summaryModel(
+    string type, string path, string input, string output, string kind
+  ) {
+    exists(string row |
+      summaryModel(row) and
+      row.splitAt(";", 0) = type and
+      row.splitAt(";", 1) = path and
+      row.splitAt(";", 2) = input and
+      row.splitAt(";", 3) = output and
+      row.splitAt(";", 4) = kind
+    )
+  }
+
+  deprecated override predicate typeModel(string type1, string type2, string path) {
+    exists(string row |
+      typeModel(row) and
+      row.splitAt(";", 0) = type1 and
+      row.splitAt(";", 1) = type2 and
+      row.splitAt(";", 2) = path
+    )
+  }
+
+  deprecated override predicate typeVariableModel(string name, string path) {
+    exists(string row |
+      typeVariableModel(row) and
+      row.splitAt(";", 0) = name and
+      row.splitAt(";", 1) = path
+    )
+  }
+}
 
 /** Holds if a source model exists for the given parameters. */
-predicate sourceModel(string type, string path, string kind) {
-  exists(string row |
-    sourceModel(row) and
-    row.splitAt(";", 0) = type and
-    row.splitAt(";", 1) = path and
-    row.splitAt(";", 2) = kind
-  )
+predicate sourceModel(string type, string path, string kind, string model) {
+  any(DeprecationAdapter a).sourceModel(type, path, kind) and
+  model = "SourceModelCsv"
   or
-  Extensions::sourceModel(type, path, kind)
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::sourceModel(type, path, kind, madId) and
+    model = "MaD:" + madId.toString()
+  )
 }
 
 /** Holds if a sink model exists for the given parameters. */
-private predicate sinkModel(string type, string path, string kind) {
-  exists(string row |
-    sinkModel(row) and
-    row.splitAt(";", 0) = type and
-    row.splitAt(";", 1) = path and
-    row.splitAt(";", 2) = kind
-  )
+private predicate sinkModel(string type, string path, string kind, string model) {
+  any(DeprecationAdapter a).sinkModel(type, path, kind) and
+  model = "SinkModelCsv"
   or
-  Extensions::sinkModel(type, path, kind)
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::sinkModel(type, path, kind, madId) and
+    model = "MaD:" + madId.toString()
+  )
+}
+
+/** Holds if a barrier model exists for the given parameters. */
+private predicate barrierModel(string type, string path, string kind, string model) {
+  // No deprecation adapter for barrier models, they were not around back then.
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::barrierModel(type, path, kind, madId) and
+    model = "MaD:" + madId.toString()
+  )
+}
+
+/** Holds if a barrier guard model exists for the given parameters. */
+private predicate barrierGuardModel(
+  string type, string path, string acceptingValue, string kind, string model
+) {
+  // No deprecation adapter for barrier models, they were not around back then.
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::barrierGuardModel(type, path, acceptingValue, kind, madId) and
+    model = "MaD:" + madId.toString()
+  )
 }
 
 /** Holds if a summary model `row` exists for the given parameters. */
-private predicate summaryModel(string type, string path, string input, string output, string kind) {
-  exists(string row |
-    summaryModel(row) and
-    row.splitAt(";", 0) = type and
-    row.splitAt(";", 1) = path and
-    row.splitAt(";", 2) = input and
-    row.splitAt(";", 3) = output and
-    row.splitAt(";", 4) = kind
-  )
+private predicate summaryModel(
+  string type, string path, string input, string output, string kind, string model
+) {
+  any(DeprecationAdapter a).summaryModel(type, path, input, output, kind) and
+  model = "SummaryModelCsv"
   or
-  Extensions::summaryModel(type, path, input, output, kind)
+  exists(QlBuiltins::ExtensionId madId |
+    Extensions::summaryModel(type, path, input, output, kind, madId) and
+    model = "MaD:" + madId.toString()
+  )
 }
 
 /** Holds if a type model exists for the given parameters. */
-private predicate typeModel(string type1, string type2, string path) {
-  exists(string row |
-    typeModel(row) and
-    row.splitAt(";", 0) = type1 and
-    row.splitAt(";", 1) = type2 and
-    row.splitAt(";", 2) = path
-  )
+predicate typeModel(string type1, string type2, string path) {
+  any(DeprecationAdapter a).typeModel(type1, type2, path)
   or
   Extensions::typeModel(type1, type2, path)
 }
 
 /** Holds if a type variable model exists for the given parameters. */
 private predicate typeVariableModel(string name, string path) {
-  exists(string row |
-    typeVariableModel(row) and
-    row.splitAt(";", 0) = name and
-    row.splitAt(";", 1) = path
-  )
+  any(DeprecationAdapter a).typeVariableModel(name, path)
   or
   Extensions::typeVariableModel(name, path)
 }
 
 /**
- * Holds if CSV rows involving `type` might be relevant for the analysis of this database.
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
+ */
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  exists(string type, string path, string kind |
+    Extensions::sourceModel(type, path, kind, madId) and
+    model = "Source: " + type + "; " + path + "; " + kind
+  )
+  or
+  exists(string type, string path, string kind |
+    Extensions::sinkModel(type, path, kind, madId) and
+    model = "Sink: " + type + "; " + path + "; " + kind
+  )
+  or
+  exists(string type, string path, string input, string output, string kind |
+    Extensions::summaryModel(type, path, input, output, kind, madId) and
+    model = "Summary: " + type + "; " + path + "; " + input + "; " + output + "; " + kind
+  )
+}
+
+/**
+ * Holds if rows involving `type` might be relevant for the analysis of this database.
  */
 predicate isRelevantType(string type) {
   (
-    sourceModel(type, _, _) or
-    sinkModel(type, _, _) or
-    summaryModel(type, _, _, _, _) or
+    sourceModel(type, _, _, _) or
+    sinkModel(type, _, _, _) or
+    barrierModel(type, _, _, _) or
+    barrierGuardModel(type, _, _, _, _) or
+    summaryModel(type, _, _, _, _, _) or
     typeModel(_, type, _)
   ) and
   (
     Specific::isTypeUsed(type)
+    or
+    any(TypeModel model).isTypeUsed(type)
     or
     exists(TestAllModels t)
   )
@@ -313,43 +446,45 @@ predicate isRelevantType(string type) {
 }
 
 /**
- * Holds if `type,path` is used in some CSV row.
+ * Holds if `type,path` is used in some row.
  */
 pragma[nomagic]
 predicate isRelevantFullPath(string type, string path) {
   isRelevantType(type) and
   (
-    sourceModel(type, path, _) or
-    sinkModel(type, path, _) or
-    summaryModel(type, path, _, _, _) or
+    sourceModel(type, path, _, _) or
+    sinkModel(type, path, _, _) or
+    barrierModel(type, path, _, _) or
+    barrierGuardModel(type, path, _, _, _) or
+    summaryModel(type, path, _, _, _, _) or
     typeModel(_, type, path)
   )
 }
 
-/** A string from a CSV row that should be parsed as an access path. */
-private class AccessPathRange extends AccessPath::Range {
-  AccessPathRange() {
-    isRelevantFullPath(_, this)
-    or
-    exists(string type | isRelevantType(type) |
-      summaryModel(type, _, this, _, _) or
-      summaryModel(type, _, _, this, _)
-    )
-    or
-    typeVariableModel(_, this)
-  }
+/** A string from a row that should be parsed as an access path. */
+private predicate accessPathRange(string s) {
+  isRelevantFullPath(_, s)
+  or
+  exists(string type | isRelevantType(type) |
+    summaryModel(type, _, s, _, _, _) or
+    summaryModel(type, _, _, s, _, _)
+  )
+  or
+  typeVariableModel(_, s)
 }
+
+import AccessPath<accessPathRange/1>
 
 /**
  * Gets a successor of `node` in the API graph.
  */
 bindingset[token]
-API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
+API::Node getSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   // API graphs use the same label for arguments and parameters. An edge originating from a
   // use-node represents an argument, and an edge originating from a def-node represents a parameter.
   // We just map both to the same thing.
   token.getName() = ["Argument", "Parameter"] and
-  result = node.getParameter(AccessPath::parseIntUnbounded(token.getAnArgument()))
+  result = node.getParameter(parseIntUnbounded(token.getAnArgument()))
   or
   token.getName() = "ReturnValue" and
   result = node.getReturn()
@@ -362,11 +497,9 @@ API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
  * Gets an API-graph successor for the given invocation.
  */
 bindingset[token]
-API::Node getSuccessorFromInvoke(Specific::InvokeNode invoke, AccessPathToken token) {
+API::Node getSuccessorFromInvoke(Specific::InvokeNode invoke, AccessPathTokenBase token) {
   token.getName() = "Argument" and
-  result =
-    invoke
-        .getParameter(AccessPath::parseIntWithArity(token.getAnArgument(), invoke.getNumArgument()))
+  result = invoke.getParameter(parseIntWithArity(token.getAnArgument(), invoke.getNumArgument()))
   or
   token.getName() = "ReturnValue" and
   result = invoke.getReturn()
@@ -378,14 +511,17 @@ API::Node getSuccessorFromInvoke(Specific::InvokeNode invoke, AccessPathToken to
 /**
  * Holds if `invoke` invokes a call-site filter given by `token`.
  */
-pragma[inline]
-private predicate invocationMatchesCallSiteFilter(Specific::InvokeNode invoke, AccessPathToken token) {
+bindingset[token]
+private predicate invocationMatchesCallSiteFilter(
+  Specific::InvokeNode invoke, AccessPathTokenBase token
+) {
   token.getName() = "WithArity" and
-  invoke.getNumArgument() = AccessPath::parseIntUnbounded(token.getAnArgument())
+  invoke.getNumArgument() = parseIntUnbounded(token.getAnArgument())
   or
   Specific::invocationMatchesExtraCallSiteFilter(invoke, token)
 }
 
+overlay[local?]
 private class TypeModelUseEntry extends API::EntryPoint {
   private string type;
 
@@ -399,6 +535,7 @@ private class TypeModelUseEntry extends API::EntryPoint {
   API::Node getNodeForType(string type_) { type = type_ and result = this.getANode() }
 }
 
+overlay[local?]
 private class TypeModelDefEntry extends API::EntryPoint {
   private string type;
 
@@ -435,7 +572,7 @@ private API::Node getNodeFromType(string type) {
  * Gets the API node identified by the first `n` tokens of `path` in the given `(type, path)` tuple.
  */
 pragma[nomagic]
-private API::Node getNodeFromPath(string type, AccessPath path, int n) {
+API::Node getNodeFromPath(string type, AccessPath path, int n) {
   isRelevantFullPath(type, path) and
   (
     n = 0 and
@@ -454,6 +591,14 @@ private API::Node getNodeFromPath(string type, AccessPath path, int n) {
   or
   // Apply a type step
   typeStep(getNodeFromPath(type, path, n), result)
+  or
+  // Apply a fuzzy step (without advancing 'n')
+  path.getToken(n).getName() = "Fuzzy" and
+  result = Specific::getAFuzzySuccessor(getNodeFromPath(type, path, n))
+  or
+  // Skip a fuzzy step (advance 'n' without changing the current node)
+  path.getToken(n - 1).getName() = "Fuzzy" and
+  result = getNodeFromPath(type, path, n - 1)
 }
 
 /**
@@ -500,6 +645,14 @@ private API::Node getNodeFromSubPath(API::Node base, AccessPath subPath, int n) 
   // will themselves find by following type-steps.
   n > 0 and
   n < subPath.getNumToken()
+  or
+  // Apply a fuzzy step (without advancing 'n')
+  subPath.getToken(n).getName() = "Fuzzy" and
+  result = Specific::getAFuzzySuccessor(getNodeFromSubPath(base, subPath, n))
+  or
+  // Skip a fuzzy step (advance 'n' without changing the current node)
+  subPath.getToken(n - 1).getName() = "Fuzzy" and
+  result = getNodeFromSubPath(base, subPath, n - 1)
 }
 
 /**
@@ -527,7 +680,7 @@ private API::Node getNodeFromPath(string type, AccessPath path) {
 
 pragma[nomagic]
 private predicate typeStepModel(string type, AccessPath basePath, AccessPath output) {
-  summaryModel(type, basePath, "", output, "type")
+  summaryModel(type, basePath, "", output, "type", _)
 }
 
 pragma[nomagic]
@@ -561,7 +714,7 @@ private Specific::InvokeNode getInvocationFromPath(string type, AccessPath path)
  */
 bindingset[name]
 private predicate isValidTokenNameInIdentifyingAccessPath(string name) {
-  name = ["Argument", "Parameter", "ReturnValue", "WithArity", "TypeVar"]
+  name = ["Argument", "Parameter", "ReturnValue", "WithArity", "TypeVar", "Fuzzy"]
   or
   Specific::isExtraValidTokenNameInIdentifyingAccessPath(name)
 }
@@ -572,7 +725,7 @@ private predicate isValidTokenNameInIdentifyingAccessPath(string name) {
  */
 bindingset[name]
 private predicate isValidNoArgumentTokenInIdentifyingAccessPath(string name) {
-  name = "ReturnValue"
+  name = ["ReturnValue", "Fuzzy"]
   or
   Specific::isExtraValidNoArgumentTokenInIdentifyingAccessPath(name)
 }
@@ -602,36 +755,62 @@ module ModelOutput {
   cached
   private module Cached {
     /**
-     * Holds if a CSV source model contributed `source` with the given `kind`.
+     * Holds if a source model contributed `source` with the given `kind`.
      */
     cached
-    API::Node getASourceNode(string kind) {
+    API::Node getASourceNode(string kind, string model) {
       exists(string type, string path |
-        sourceModel(type, path, kind) and
+        sourceModel(type, path, kind, model) and
         result = getNodeFromPath(type, path)
       )
     }
 
     /**
-     * Holds if a CSV sink model contributed `sink` with the given `kind`.
+     * Holds if a sink model contributed `sink` with the given `kind`.
      */
     cached
-    API::Node getASinkNode(string kind) {
+    API::Node getASinkNode(string kind, string model) {
       exists(string type, string path |
-        sinkModel(type, path, kind) and
+        sinkModel(type, path, kind, model) and
         result = getNodeFromPath(type, path)
       )
     }
 
     /**
-     * Holds if a relevant CSV summary exists for these parameters.
+     * Holds if a barrier model contributed `barrier` with the given `kind`.
+     */
+    cached
+    API::Node getABarrierNode(string kind, string model) {
+      exists(string type, string path |
+        barrierModel(type, path, kind, model) and
+        result = getNodeFromPath(type, path)
+      )
+    }
+
+    /**
+     * Holds if a barrier model contributed `barrier` with the given `kind` for the given `acceptingValue`.
+     */
+    cached
+    API::Node getABarrierGuardNode(string kind, boolean acceptingValue, string model) {
+      exists(string type, string path, string acceptingValue_str |
+        acceptingValue = true and acceptingValue_str = "true"
+        or
+        acceptingValue = false and acceptingValue_str = "false"
+      |
+        barrierGuardModel(type, path, acceptingValue_str, kind, model) and
+        result = getNodeFromPath(type, path)
+      )
+    }
+
+    /**
+     * Holds if a relevant summary exists for these parameters.
      */
     cached
     predicate relevantSummaryModel(
-      string type, string path, string input, string output, string kind
+      string type, string path, string input, string output, string kind, string model
     ) {
       isRelevantType(type) and
-      summaryModel(type, path, input, output, kind)
+      summaryModel(type, path, input, output, kind, model)
     }
 
     /**
@@ -639,13 +818,22 @@ module ModelOutput {
      */
     cached
     predicate resolvedSummaryBase(string type, string path, Specific::InvokeNode baseNode) {
-      summaryModel(type, path, _, _, _) and
+      summaryModel(type, path, _, _, _, _) and
       baseNode = getInvocationFromPath(type, path)
     }
 
     /**
+     * Holds if a `baseNode` is a callable identified by the `type,path` part of a summary row.
+     */
+    cached
+    predicate resolvedSummaryRefBase(string type, string path, API::Node baseNode) {
+      summaryModel(type, path, _, _, _, _) and
+      baseNode = getNodeFromPath(type, path)
+    }
+
+    /**
      * Holds if `node` is seen as an instance of `type` due to a type definition
-     * contributed by a CSV model.
+     * contributed by a model.
      */
     cached
     API::Node getATypeNode(string type) { result = getNodeFromType(type) }
@@ -653,30 +841,67 @@ module ModelOutput {
 
   import Cached
   import Specific::ModelOutputSpecific
+  private import codeql.mad.ModelValidation as SharedModelVal
+
+  /**
+   * Holds if an external model contributed `source` with the given `kind`.
+   */
+  API::Node getASourceNode(string kind) { result = getASourceNode(kind, _) }
+
+  /**
+   * Holds if an external model contributed `sink` with the given `kind`.
+   */
+  API::Node getASinkNode(string kind) { result = getASinkNode(kind, _) }
+
+  /**
+   * Holds if an external model contributed `barrier` with the given `kind`.
+   *
+   * INTERNAL: Do not use.
+   */
+  API::Node getABarrierNode(string kind) { result = getABarrierNode(kind, _) }
+
+  /**
+   * Holds if an external model contributed `barrier-guard` with the given `kind` and `acceptingValue`.
+   *
+   * INTERNAL: Do not use.
+   */
+  API::Node getABarrierGuardNode(string kind, boolean acceptingValue) {
+    result = getABarrierGuardNode(kind, acceptingValue, _)
+  }
+
+  /**
+   * Holds if `node` is specified as a source with the given kind in an external model.
+   */
+  predicate sourceNode(DataFlow::Node node, string kind) { node = getASourceNode(kind).asSource() }
+
+  /**
+   * Holds if `node` is specified as a sink with the given kind in an external model.
+   */
+  predicate sinkNode(DataFlow::Node node, string kind) { node = getASinkNode(kind).asSink() }
+
+  /**
+   * Holds if `node` is specified as a barrier with the given kind in an external model.
+   */
+  predicate barrierNode(DataFlow::Node node, string kind) {
+    node = getABarrierNode(kind).asSource()
+    or
+    node = DataFlow::ExternalBarrierGuard::getAnExternalBarrierNode(kind)
+  }
+
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, kind, _) }
+
+    predicate sinkKind(string kind) { sinkModel(_, _, kind, _) }
+
+    predicate sourceKind(string kind) { sourceModel(_, _, kind, _) }
+  }
+
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   /**
    * Gets an error message relating to an invalid CSV row in a model.
    */
   string getAWarning() {
-    // Check number of columns
-    exists(string row, string kind, int expectedArity, int actualArity |
-      any(SourceModelCsv csv).row(row) and kind = "source" and expectedArity = 3
-      or
-      any(SinkModelCsv csv).row(row) and kind = "sink" and expectedArity = 3
-      or
-      any(SummaryModelCsv csv).row(row) and kind = "summary" and expectedArity = 5
-      or
-      any(TypeModelCsv csv).row(row) and kind = "type" and expectedArity = 3
-      or
-      any(TypeVariableModelCsv csv).row(row) and kind = "type-variable" and expectedArity = 2
-    |
-      actualArity = count(row.indexOf(";")) + 1 and
-      actualArity != expectedArity and
-      result =
-        "CSV " + kind + " row should have " + expectedArity + " columns but has " + actualArity +
-          ": " + row
-    )
-    or
     // Check names and arguments of access path tokens
     exists(AccessPath path, AccessPathToken token |
       (isRelevantFullPath(_, path) or typeVariableModel(_, path)) and
@@ -698,5 +923,8 @@ module ModelOutput {
       not isValidNoArgumentTokenInIdentifyingAccessPath(token.getName()) and
       result = "Invalid token '" + token + "' is missing its arguments, in access path: " + path
     )
+    or
+    // Check for invalid model kinds
+    result = KindVal::getInvalidModelKind()
   }
 }

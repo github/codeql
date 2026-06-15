@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["sqlx_core::query::query", "Argument[0]", "sql-injection", "manual"]
+      - ["sqlx_core::query_as::query_as", "Argument[0]", "sql-injection", "manual"]
+      - ["sqlx_core::query_with::query_with", "Argument[0]", "sql-injection", "manual"]
+      - ["sqlx_core::query_as_with::query_as_with", "Argument[0]", "sql-injection", "manual"]
+      - ["sqlx_core::query_scalar::query_scalar", "Argument[0]", "sql-injection", "manual"]
+      - ["sqlx_core::query_scalar_with::query_scalar_with", "Argument[0]", "sql-injection", "manual"]
+      - ["sqlx_core::raw_sql::raw_sql", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as sqlx_core::executor::Executor>::execute", "Argument[0]", "sql-injection", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["<sqlx_core::row::Row>::get", "ReturnValue", "database", "manual"]
+      - ["<sqlx_core::row::Row>::get_unchecked", "ReturnValue", "database", "manual"]
+      - ["<sqlx_core::row::Row>::try_get", "ReturnValue.Field[core::result::Result::Ok(0)]", "database", "manual"]
+      - ["<sqlx_core::row::Row>::try_get_unchecked", "ReturnValue.Field[core::result::Result::Ok(0)]", "database", "manual"]

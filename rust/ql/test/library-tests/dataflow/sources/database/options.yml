@@ -1,0 +1,7 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - async-std = { version = "1.13.1" }
+    - futures = { version = "0.3" }
+    - mysql = { version = "26.0.1" }
+    - mysql_async = { version = "0.36.1" }
+    - tokio = { version = "1.43.0", features = ["full"] }

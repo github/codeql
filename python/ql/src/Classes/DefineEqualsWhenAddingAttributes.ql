@@ -2,7 +2,8 @@
  * @name `__eq__` not overridden when adding attributes
  * @description When adding new attributes to instances of a class, equality for that class needs to be defined.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity warning
  * @sub-severity high
@@ -12,6 +13,7 @@
 
 import python
 import Equality
+private import LegacyPointsTo
 
 predicate class_stores_to_attribute(ClassValue cls, SelfAttributeStore store, string name) {
   exists(FunctionValue f |

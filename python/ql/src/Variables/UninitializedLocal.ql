@@ -2,7 +2,8 @@
  * @name Potentially uninitialized local variable
  * @description Using a local variable before it is initialized causes an UnboundLocalError.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low
@@ -11,8 +12,8 @@
  */
 
 import python
+private import LegacyPointsTo
 import Undefined
-import semmle.python.pointsto.PointsTo
 
 predicate uninitialized_local(NameNode use) {
   exists(FastLocalVariable local | use.uses(local) or use.deletes(local) |
@@ -29,7 +30,7 @@ predicate uninitialized_local(NameNode use) {
 predicate explicitly_guarded(NameNode u) {
   exists(Try t |
     t.getBody().contains(u.getNode()) and
-    t.getAHandler().getType().pointsTo(ClassValue::nameError())
+    t.getAHandler().getType().(ExprWithPointsTo).pointsTo(ClassValue::nameError())
   )
 }
 

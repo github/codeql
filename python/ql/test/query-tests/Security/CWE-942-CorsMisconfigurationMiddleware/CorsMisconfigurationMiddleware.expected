@@ -1,0 +1,2 @@
+| fastapi.py:10:1:16:1 | ControlFlowNode for Attribute() | This CORS middleware uses a vulnerable configuration that allows arbitrary websites to make authenticated cross-site requests |
+| starlette.py:8:5:8:75 | ControlFlowNode for Middleware() | This CORS middleware uses a vulnerable configuration that allows arbitrary websites to make authenticated cross-site requests |

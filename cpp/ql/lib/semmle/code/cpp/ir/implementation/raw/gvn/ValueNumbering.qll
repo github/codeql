@@ -26,7 +26,7 @@ class ValueNumber extends TValueNumber {
             l.getFile().getAbsolutePath(), l.getStartLine(), l.getStartColumn(), l.getEndLine(),
             l.getEndColumn()
         )
-    else result instanceof Language::UnknownDefaultLocation
+    else result instanceof Language::UnknownLocation
   }
 
   /**
@@ -51,6 +51,7 @@ class ValueNumber extends TValueNumber {
   /**
    * Gets an `Operand` whose definition is exact and has this value number.
    */
+  pragma[nomagic]
   final Operand getAUse() { this = valueNumber(result.getDef()) }
 
   final string getKind() {

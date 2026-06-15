@@ -3,13 +3,13 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Collections.Specialized", "IOrderedDictionary", True, "get_Item", "(System.Int32)", "", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value]", "ReturnValue", "value", "manual"]
-      - ["System.Collections.Specialized", "IOrderedDictionary", True, "set_Item", "(System.Int32,System.Object)", "", "Argument[0]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key]", "value", "manual"]
-      - ["System.Collections.Specialized", "IOrderedDictionary", True, "set_Item", "(System.Int32,System.Object)", "", "Argument[1]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value]", "value", "manual"]
+      - ["System.Collections.Specialized", "IOrderedDictionary", True, "get_Item", "(System.Int32)", "", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "ReturnValue", "value", "manual"]
+      - ["System.Collections.Specialized", "IOrderedDictionary", True, "set_Item", "(System.Int32,System.Object)", "", "Argument[0]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "value", "manual"]
+      - ["System.Collections.Specialized", "IOrderedDictionary", True, "set_Item", "(System.Int32,System.Object)", "", "Argument[1]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "value", "manual"]
       - ["System.Collections.Specialized", "NameValueCollection", False, "Add", "(System.Collections.Specialized.NameValueCollection)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Collections.Specialized", "NameValueCollection", True, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
       - ["System.Collections.Specialized", "NameValueCollection", False, "CopyTo", "(System.Array,System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
-      - ["System.Collections.Specialized", "OrderedDictionary", False, "AsReadOnly", "()", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
+      - ["System.Collections.Specialized", "OrderedDictionary", False, "AsReadOnly", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Collections.Specialized", "StringCollection", False, "Add", "(System.String)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Collections.Specialized", "StringCollection", False, "AddRange", "(System.String[])", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
       - ["System.Collections.Specialized", "StringCollection", False, "CopyTo", "(System.String[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]

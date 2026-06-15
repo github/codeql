@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import codeql.ruby.controlflow.ControlFlowGraph
 private import internal.AST
@@ -5,7 +8,7 @@ private import internal.TreeSitter
 private import internal.Method
 
 /** A callable. */
-class Callable extends StmtSequence, Expr, Scope, TCallable {
+class Callable extends Expr, Scope, TCallable {
   /** Gets the number of parameters of this callable. */
   final int getNumberOfParameters() { result = count(this.getAParameter()) }
 
@@ -15,43 +18,46 @@ class Callable extends StmtSequence, Expr, Scope, TCallable {
   /** Gets the `n`th parameter of this callable. */
   Parameter getParameter(int n) { none() }
 
+  /** Gets the body of this callable. */
+  BodyStmt getBody() { none() }
+
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
+    or
+    pred = "getBody" and result = this.getBody()
     or
     pred = "getParameter" and result = this.getParameter(_)
   }
 }
 
 /** A method. */
-class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
+class MethodBase extends Callable, Scope, TMethodBase {
   /** Gets the name of this method. */
   string getName() { none() }
 
   /** Holds if the name of this method is `name`. */
   final predicate hasName(string name) { this.getName() = name }
 
-  override AstNode getAChild(string pred) {
-    result = Callable.super.getAChild(pred)
-    or
-    result = BodyStmt.super.getAChild(pred)
-  }
-
   /**
    * Holds if this method is public.
    * Methods are public by default.
    */
+  overlay[global]
   predicate isPublic() { this.getVisibility() = "public" }
 
   /** Holds if this method is private. */
+  overlay[global]
   predicate isPrivate() { this.getVisibility() = "private" }
 
   /** Holds if this method is protected. */
+  overlay[global]
   predicate isProtected() { this.getVisibility() = "protected" }
 
   /**
    * Gets a string describing the visibility of this method.
    * This is either 'public', 'private' or 'protected'.
    */
+  overlay[global]
   string getVisibility() {
     result = getVisibilityModifier(this).getVisibility()
     or
@@ -73,6 +79,7 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
  * end
  * ```
  */
+overlay[global]
 private VisibilityModifier getExplicitVisibilityModifier(Method m) {
   result.getMethodArgument() = m
   or
@@ -86,6 +93,7 @@ private VisibilityModifier getExplicitVisibilityModifier(Method m) {
  * Gets the visibility modifier that defines the visibility of method `m`, if
  * any.
  */
+overlay[global]
 private VisibilityModifier getVisibilityModifier(MethodBase mb) {
   mb =
     any(Method m |
@@ -202,14 +210,20 @@ class Method extends MethodBase, TMethod {
    * end
    * ```
    */
+  overlay[global]
   override predicate isPrivate() { super.isPrivate() }
 
   final override Parameter getParameter(int n) {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
+  final override BodyStmt getBody() {
+    toGenerated(result) = g.getBody() or synthChild(this, _, result)
+  }
+
   final override string toString() { result = this.getName() }
 
+  overlay[global]
   override string getVisibility() {
     result = getVisibilityModifier(this).getVisibility()
     or
@@ -223,6 +237,7 @@ class Method extends MethodBase, TMethod {
   }
 }
 
+overlay[global]
 pragma[nomagic]
 private predicate modifiesIn(VisibilityModifier vm, ModuleBase n, string name) {
   n = vm.getEnclosingModule() and
@@ -268,6 +283,10 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
+  final override BodyStmt getBody() {
+    toGenerated(result) = g.getBody() or synthChild(this, _, result)
+  }
+
   final override string toString() { result = this.getName() }
 
   final override AstNode getAChild(string pred) {
@@ -299,6 +318,7 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
    * end
    * ```
    */
+  overlay[global]
   override predicate isPrivate() { super.isPrivate() }
 }
 
@@ -308,7 +328,7 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
  * -> (x) { x + 1 }
  * ```
  */
-class Lambda extends Callable, BodyStmt, TLambda {
+class Lambda extends Callable, TLambda {
   private Ruby::Lambda g;
 
   Lambda() { this = TLambda(g) }
@@ -319,17 +339,16 @@ class Lambda extends Callable, BodyStmt, TLambda {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
-  final override string toString() { result = "-> { ... }" }
-
-  final override AstNode getAChild(string pred) {
-    result = Callable.super.getAChild(pred)
-    or
-    result = BodyStmt.super.getAChild(pred)
+  final override BodyStmt getBody() {
+    toGenerated(result) = g.getBody().(Ruby::DoBlock).getBody() or
+    toGenerated(result) = g.getBody().(Ruby::Block).getBody()
   }
+
+  final override string toString() { result = "-> { ... }" }
 }
 
 /** A block. */
-class Block extends Callable, StmtSequence, Scope, TBlock {
+class Block extends Callable, Scope, TBlock {
   /**
    * Gets a local variable declared by this block.
    * For example `local` in `{ | param; local| puts param }`.
@@ -342,17 +361,15 @@ class Block extends Callable, StmtSequence, Scope, TBlock {
    */
   LocalVariableWriteAccess getLocalVariable(int n) { none() }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = Callable.super.getAChild(pred)
-    or
-    result = StmtSequence.super.getAChild(pred)
     or
     pred = "getLocalVariable" and result = this.getLocalVariable(_)
   }
 }
 
 /** A block enclosed within `do` and `end`. */
-class DoBlock extends Block, BodyStmt, TDoBlock {
+class DoBlock extends Block, TDoBlock {
   private Ruby::DoBlock g;
 
   DoBlock() { this = TDoBlock(g) }
@@ -365,13 +382,9 @@ class DoBlock extends Block, BodyStmt, TDoBlock {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
-  final override string toString() { result = "do ... end" }
+  final override BodyStmt getBody() { toGenerated(result) = g.getBody() }
 
-  final override AstNode getAChild(string pred) {
-    result = Block.super.getAChild(pred)
-    or
-    result = BodyStmt.super.getAChild(pred)
-  }
+  final override string toString() { result = "do ... end" }
 
   final override string getAPrimaryQlClass() { result = "DoBlock" }
 }

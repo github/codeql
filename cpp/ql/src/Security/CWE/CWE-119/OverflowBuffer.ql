@@ -5,8 +5,9 @@
  *              buffer.
  * @kind problem
  * @id cpp/overflow-buffer
- * @problem.severity recommendation
+ * @problem.severity warning
  * @security-severity 9.3
+ * @precision medium
  * @tags security
  *       external/cwe/cwe-119
  *       external/cwe/cwe-121
@@ -26,6 +27,7 @@ from
   BufferAccess ba, string bufferDesc, int accessSize, int accessType, Element bufferAlloc,
   int bufferSize, string message
 where
+  accessType != 4 and
   accessSize = ba.getSize() and
   bufferSize = getBufferSize(ba.getBuffer(bufferDesc, accessType), bufferAlloc) and
   (

@@ -942,14 +942,28 @@ public class Test {
 			// "androidx.core.app;NotificationCompat$BigPictureStyle;true;bigLargeIcon;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.BigPictureStyle out = null;
 			NotificationCompat.BigPictureStyle in = (NotificationCompat.BigPictureStyle) source();
-			out = in.bigLargeIcon(null);
+			out = in.bigLargeIcon((Bitmap)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "androidx.core.app;NotificationCompat$BigPictureStyle;true;bigLargeIcon;;;Argument[this];ReturnValue;value;manual"
+			NotificationCompat.BigPictureStyle out = null;
+			NotificationCompat.BigPictureStyle in = (NotificationCompat.BigPictureStyle) source();
+			out = in.bigLargeIcon((Icon)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
 			// "androidx.core.app;NotificationCompat$BigPictureStyle;true;bigPicture;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.BigPictureStyle out = null;
 			NotificationCompat.BigPictureStyle in = (NotificationCompat.BigPictureStyle) source();
-			out = in.bigPicture(null);
+			out = in.bigPicture((Bitmap)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "androidx.core.app;NotificationCompat$BigPictureStyle;true;bigPicture;;;Argument[this];ReturnValue;value;manual"
+			NotificationCompat.BigPictureStyle out = null;
+			NotificationCompat.BigPictureStyle in = (NotificationCompat.BigPictureStyle) source();
+			out = in.bigPicture((Icon)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
@@ -1040,7 +1054,14 @@ public class Test {
 			// "androidx.core.app;NotificationCompat$Builder;true;addPerson;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
-			out = in.addPerson(null);
+			out = in.addPerson((androidx.core.app.Person)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "androidx.core.app;NotificationCompat$Builder;true;addPerson;;;Argument[this];ReturnValue;value;manual"
+			NotificationCompat.Builder out = null;
+			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
+			out = in.addPerson((String)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
@@ -1252,7 +1273,14 @@ public class Test {
 			// "androidx.core.app;NotificationCompat$Builder;true;setLargeIcon;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
-			out = in.setLargeIcon(null);
+			out = in.setLargeIcon((Bitmap)null);
+			sink(out); // $ hasValueFlow
+		}
+		{
+			// "androidx.core.app;NotificationCompat$Builder;true;setLargeIcon;;;Argument[this];ReturnValue;value;manual"
+			NotificationCompat.Builder out = null;
+			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
+			out = in.setLargeIcon((Icon)null);
 			sink(out); // $ hasValueFlow
 		}
 		{

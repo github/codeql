@@ -34,6 +34,19 @@ A database (or CodeQL database) is a directory containing:
 - log files generated during database creation, query
   execution, and other operations.
 
+.. _codeql-packs:
+
+CodeQL packs
+------------
+
+CodeQL packs are used to create, share, depend on, and run CodeQL queries, libraries, and models. You can publish your own CodeQL packs and download packs created by others. CodeQL query packs may contain queries, library files, query suites, and metadata. CodeQL library packs include one or more CodeQL libraries. CodeQL model packs include one or more data extension files that extend the core libraries by modeling additional libraries and frameworks (dependencies of your code base).
+
+.. _data-extensions:
+
+Data extensions
+---------------
+When you want to model the sources and sinks of a custom dependency, you can create a CodeQL library (``.qll`` file) and write queries that use it, but it's usually much simpler to create a data extension file. If you model the sources and sinks in data extension, you can use this information to expand the standard queries to cover your custom dependencies. You don't need to write any new queries.
+
 .. _dil:
 
 DIL
@@ -48,7 +61,7 @@ The DIL format may change without warning between CLI releases.
 When you specify the ``--dump-dil`` option for ``codeql query compile``, CodeQL
 prints DIL to standard output for the queries it compiles. You can also
 view results in DIL format when you run queries in VS Code.
-For more information, see ":ref:`Analyzing your projects <viewing-query-results>`" in the CodeQL for VS Code help.
+For more information, see `Running CodeQL queries <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/running-codeql-queries#understanding-your-query-results>`__ in the GitHub documentation.
 
 .. _extractor:
 

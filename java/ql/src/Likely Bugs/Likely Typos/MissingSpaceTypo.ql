@@ -7,7 +7,9 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id java/missing-space-in-concatenation
- * @tags readability
+ * @tags quality
+ *       maintainability
+ *       readability
  */
 
 import java

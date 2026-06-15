@@ -14,13 +14,32 @@ the program, or security vulnerabilities, by allowing an attacker to overwrite a
 </overview>
 <recommendation>
 <p>
-Ensure that all execution paths deallocate the allocated memory at most once. If possible, reassign
-the pointer to a null value after deallocating it. This will prevent double-free vulnerabilities since
-most deallocation functions will perform a null-pointer check before attempting to deallocate the memory.
+Ensure that all execution paths deallocate the allocated memory at most once. In complex cases it may
+help to reassign a pointer to a null value after deallocating it. This will prevent double-free vulnerabilities
+since most deallocation functions will perform a null-pointer check before attempting to deallocate memory.
 </p>
 
 </recommendation>
-<example><sample src="DoubleFree.cpp" />
+<example>
+<p>
+In the following example, <code>buff</code> is allocated and then freed twice:
+</p>
+<sample src="DoubleFreeBad.cpp" />
+<p>
+Reviewing the code above, the issue can be fixed by simply deleting the additional call to
+<code>free(buff)</code>.
+</p>
+<sample src="DoubleFreeGood.cpp" />
+<p>
+In the next example, <code>task</code> may be deleted twice, if an exception occurs inside the <code>try</code>
+block after the first <code>delete</code>:
+</p>
+<sample src="DoubleFreeBad2.cpp" />
+<p>
+The problem can be solved by assigning a null value to the pointer after the first <code>delete</code>, as
+calling <code>delete</code> a second time on the null pointer is harmless.
+</p>
+<sample src="DoubleFreeGood2.cpp" />
 </example>
 <references>
 

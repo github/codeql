@@ -1,0 +1,21 @@
+| CollectionExpressions.cs:12:20:12:32 | [...] | Int32[] | 0 | CollectionExpressions.cs:12:21:12:25 | ... + ... |
+| CollectionExpressions.cs:12:20:12:32 | [...] | Int32[] | 1 | CollectionExpressions.cs:12:28:12:28 | 2 |
+| CollectionExpressions.cs:12:20:12:32 | [...] | Int32[] | 2 | CollectionExpressions.cs:12:31:12:31 | 8 |
+| CollectionExpressions.cs:13:24:13:29 | [...] | Span<Int32> | 0 | CollectionExpressions.cs:13:25:13:25 | 3 |
+| CollectionExpressions.cs:13:24:13:29 | [...] | Span<Int32> | 1 | CollectionExpressions.cs:13:28:13:28 | access to local variable y |
+| CollectionExpressions.cs:14:21:14:34 | [...] | Int32[] | 0 | CollectionExpressions.cs:14:22:14:26 | .. access to local variable x1 |
+| CollectionExpressions.cs:14:21:14:34 | [...] | Int32[] | 1 | CollectionExpressions.cs:14:29:14:33 | .. access to local variable x2 |
+| CollectionExpressions.cs:15:26:15:37 | [...] | Int32[][] | 0 | CollectionExpressions.cs:15:27:15:32 | [...] |
+| CollectionExpressions.cs:15:26:15:37 | [...] | Int32[][] | 1 | CollectionExpressions.cs:15:35:15:36 | access to local variable x1 |
+| CollectionExpressions.cs:15:27:15:32 | [...] | Int32[] | 0 | CollectionExpressions.cs:15:28:15:28 | 1 |
+| CollectionExpressions.cs:15:27:15:32 | [...] | Int32[] | 1 | CollectionExpressions.cs:15:31:15:31 | access to local variable y |
+| CollectionExpressions.cs:16:24:16:45 | [...] | Int32[] | 0 | CollectionExpressions.cs:16:25:16:25 | 1 |
+| CollectionExpressions.cs:16:24:16:45 | [...] | Int32[] | 1 | CollectionExpressions.cs:16:28:16:44 | .. (...) ... |
+| CollectionExpressions.cs:16:38:16:44 | [...] | Int32[] | 0 | CollectionExpressions.cs:16:39:16:43 | .. access to local variable x1 |
+| CollectionExpressions.cs:17:40:17:55 | [...] | IntegerCollection | 0 | CollectionExpressions.cs:17:41:17:41 | 4 |
+| CollectionExpressions.cs:17:40:17:55 | [...] | IntegerCollection | 1 | CollectionExpressions.cs:17:44:17:44 | access to local variable y |
+| CollectionExpressions.cs:17:40:17:55 | [...] | IntegerCollection | 2 | CollectionExpressions.cs:17:47:17:47 | 9 |
+| CollectionExpressions.cs:17:40:17:55 | [...] | IntegerCollection | 3 | CollectionExpressions.cs:17:50:17:54 | .. access to local variable x1 |
+| CollectionExpressions.cs:18:12:18:20 | [...] | ReadOnlySpan<Int32> | 0 | CollectionExpressions.cs:18:13:18:13 | 1 |
+| CollectionExpressions.cs:18:12:18:20 | [...] | ReadOnlySpan<Int32> | 1 | CollectionExpressions.cs:18:16:18:16 | 2 |
+| CollectionExpressions.cs:18:12:18:20 | [...] | ReadOnlySpan<Int32> | 2 | CollectionExpressions.cs:18:19:18:19 | 3 |

@@ -5,6 +5,7 @@
  * @kind metric
  * @tags summary
  *       lines-of-code
+ *       debug
  */
 
 import go

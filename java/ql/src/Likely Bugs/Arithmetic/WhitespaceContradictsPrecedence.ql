@@ -6,8 +6,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/whitespace-contradicts-precedence
- * @tags maintainability
- *       readability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-783
  */
 
@@ -137,13 +138,14 @@ int operatorWS(BinaryExpr expr) {
     endOfBinaryLhs(expr, line, lcol) and
     startOfBinaryRhs(expr, line, rcol) and
     parens = getParensNextToOp(expr) and
-    result = rcol - lcol + 1 - expr.getOp().length() - parens
+    result = rcol - lcol - 1 - expr.getOp().length() - parens
   )
 }
 
 /** Find nested binary expressions where the programmer may have made a precedence mistake. */
 predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
   inner = outer.getAChildExpr() and
+  not outer instanceof Assignment and
   not inner instanceof AssocNestedExpr and
   not inner instanceof HarmlessNestedExpr and
   not inner.isParenthesized()

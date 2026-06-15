@@ -1,4 +1,6 @@
 /** Provides models of commonly used functions in the `github.com/sirupsen/logrus` package. */
+overlay[local?]
+module;
 
 import go
 
@@ -16,7 +18,7 @@ module Logrus {
 
   bindingset[result]
   private string getAnEntryUpdatingMethodName() {
-    result.regexpMatch("With(Context|Error|Fields?|Time)")
+    result = ["WithError", "WithField", "WithFields", "WithTime"]
   }
 
   private class LogFunction extends Function {
@@ -26,12 +28,12 @@ module Logrus {
         this.(Method).hasQualifiedName(packagePath(), ["Entry", "Logger"], name)
       )
     }
-  }
 
-  private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
-    LogCall() { this = any(LogFunction f).getACall() }
-
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
+    override predicate mayReturnNormally() {
+      not exists(string level, string suffix | level = ["Fatal", "Panic"] |
+        this.getName() = level + suffix
+      )
+    }
   }
 
   private class StringFormatters extends StringOps::Formatting::Range instanceof LogFunction {

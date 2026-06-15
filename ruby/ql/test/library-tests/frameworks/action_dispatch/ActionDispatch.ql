@@ -2,6 +2,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.frameworks.ActionDispatch
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.Concepts
 private import codeql.ruby.frameworks.data.ModelsAsData
 private import codeql.ruby.DataFlow
 private import codeql.ruby.Regexp as RE
@@ -36,3 +37,5 @@ query predicate mimeTypeMatchRegExpInterpretations(
 ) {
   any()
 }
+
+query predicate requestInputAccesses(Http::Server::RequestInputAccess a) { any() }

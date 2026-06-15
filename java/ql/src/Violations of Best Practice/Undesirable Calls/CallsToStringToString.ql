@@ -5,12 +5,14 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/useless-tostring-call
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       useless-code
  */
 
 import java
 
-from MethodAccess ma, ToStringMethod tostring
+from MethodCall ma, ToStringMethod tostring
 where
   tostring.getDeclaringType() instanceof TypeString and
   ma.getMethod() = tostring

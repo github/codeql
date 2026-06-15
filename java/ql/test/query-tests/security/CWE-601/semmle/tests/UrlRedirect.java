@@ -20,7 +20,7 @@ public class UrlRedirect extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
 		// BAD: a request parameter is incorporated without validation into a URL redirect
-		response.sendRedirect(request.getParameter("target"));
+		response.sendRedirect(request.getParameter("target")); // $ Alert
 
 		// GOOD: the request parameter is validated against a known fixed string
 		if (VALID_REDIRECT.equals(request.getParameter("target"))) {
@@ -29,17 +29,17 @@ public class UrlRedirect extends HttpServlet {
 		
 		// BAD: the user attempts to clean the string, but this will fail
 		// if the argument is "hthttp://tp://malicious.com"
-		response.sendRedirect(weakCleanup(request.getParameter("target")));
+		response.sendRedirect(weakCleanup(request.getParameter("target"))); // $ Alert
 		
-		// FALSE POSITIVE: the user input is not used in a position that allows it to dictate
+		// GOOD: the user input is not used in a position that allows it to dictate
 		// the target of the redirect
 		response.sendRedirect("http://example.com?username=" + request.getParameter("username"));
 		
 		// BAD: set the "Location" header
-		response.setHeader("Location", request.getParameter("target"));
+		response.setHeader("Location", request.getParameter("target")); // $ Alert
 
 		// BAD: set the "Location" header
-		response.addHeader(LOCATION_HEADER_KEY, request.getParameter("target"));
+		response.addHeader(LOCATION_HEADER_KEY, request.getParameter("target")); // $ Alert
 	}
 	
 	public String weakCleanup(String input) {

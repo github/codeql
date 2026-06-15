@@ -12,3 +12,6 @@
 | async.cs:50:49:50:57 | OpenAsync | file://:0:0:0:0 | async |
 | async.cs:50:49:50:57 | OpenAsync | file://:0:0:0:0 | private |
 | async.cs:50:49:50:57 | OpenAsync | file://:0:0:0:0 | static |
+| async.cs:64:40:64:53 | GetObjectAsync | file://:0:0:0:0 | async |
+| async.cs:64:40:64:53 | GetObjectAsync | file://:0:0:0:0 | private |
+| async.cs:64:40:64:53 | GetObjectAsync | file://:0:0:0:0 | static |

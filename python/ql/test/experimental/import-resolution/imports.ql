@@ -1,5 +1,5 @@
 import python
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.internal.ImportResolution
 
@@ -18,12 +18,10 @@ private class ImmediateModuleRef extends DataFlow::Node {
   string getAsname() { result = alias }
 }
 
-class ImportTest extends InlineExpectationsTest {
-  ImportTest() { this = "ImportTest" }
+module ImportTest implements TestSig {
+  string getARelevantTag() { result = "imports" }
 
-  override string getARelevantTag() { result = "imports" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(ImmediateModuleRef ref |
       tag = "imports" and
       location = ref.getLocation() and
@@ -33,12 +31,10 @@ class ImportTest extends InlineExpectationsTest {
   }
 }
 
-class AliasTest extends InlineExpectationsTest {
-  AliasTest() { this = "AliasTest" }
+module AliasTest implements TestSig {
+  string getARelevantTag() { result = "as" }
 
-  override string getARelevantTag() { result = "as" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(ImmediateModuleRef ref |
       tag = "as" and
       location = ref.getLocation() and
@@ -47,3 +43,5 @@ class AliasTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<MergeTests<ImportTest, AliasTest>>

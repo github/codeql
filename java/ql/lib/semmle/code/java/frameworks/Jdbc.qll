@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the Java JDBC API.
  */
+overlay[local?]
+module;
 
 import java
 
@@ -32,5 +34,21 @@ class ResultSetGetStringMethod extends Method {
     this.getDeclaringType() instanceof TypeResultSet and
     this.hasName("getString") and
     this.getReturnType() instanceof TypeString
+  }
+}
+
+/** A method with the name `executeUpdate` declared in `java.sql.PreparedStatement`. */
+class PreparedStatementExecuteUpdateMethod extends Method {
+  PreparedStatementExecuteUpdateMethod() {
+    this.getDeclaringType() instanceof TypePreparedStatement and
+    this.hasName("executeUpdate")
+  }
+}
+
+/** A method with the name `executeLargeUpdate` declared in `java.sql.PreparedStatement`. */
+class PreparedStatementExecuteLargeUpdateMethod extends Method {
+  PreparedStatementExecuteLargeUpdateMethod() {
+    this.getDeclaringType() instanceof TypePreparedStatement and
+    this.hasName("executeLargeUpdate")
   }
 }

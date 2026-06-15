@@ -69,11 +69,11 @@ class WrongSpecials(object):
         return arg0 == arg1
 
     def __repr__():
-        pass
+        return ""
 
     def __add__(self, other="Unused default"):
-       pass
-   
+       return 4
+
     @staticmethod
     def __abs__():
         return 42
@@ -105,3 +105,7 @@ class LoggingDict(dict):
 
         
 
+class MoreSpecialMethods:
+    @staticmethod
+    def __abs__():
+        return 42

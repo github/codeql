@@ -6,7 +6,8 @@
  * @problem.severity error
  * @precision high
  * @id cs/loss-of-precision
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-190
  *       external/cwe/cwe-192
@@ -26,21 +27,21 @@ predicate convertedToFloatOrDecimal(Expr e, Type t) {
     t instanceof DecimalType
   )
   or
-  exists(BinaryArithmeticOperation op |
+  exists(BinaryOperation op |
     op.getAnOperand() = e and
     convertedToFloatOrDecimal(op, t)
   |
-    op instanceof AddExpr or
-    op instanceof SubExpr or
-    op instanceof MulExpr
+    op instanceof AddOperation or
+    op instanceof SubOperation or
+    op instanceof MulOperation
   )
 }
 
 /** Holds if `div` is an exact integer division. */
 predicate exactDivision(DivExpr div) {
   exists(int numerator, int denominator |
-    numerator = div.getNumerator().stripCasts().getValue().toInt() and
-    denominator = div.getDenominator().stripCasts().getValue().toInt() and
+    numerator = div.getNumerator().stripCasts().getIntValue() and
+    denominator = div.getDenominator().stripCasts().getIntValue() and
     numerator % denominator = 0
   )
 }

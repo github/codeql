@@ -21,7 +21,7 @@ string kindstr(Class c) {
     or
     kind = 2 and result = "Class"
     or
-    kind = 6 and result = "Template class"
+    kind = [15, 16] and result = "Template class"
   )
 }
 
@@ -168,12 +168,7 @@ where
     strictcount(string fieldName |
       exists(Field f |
         f.getDeclaringType() = c and
-        fieldName = f.getName() and
-        // IBOutlet's are a way of building GUIs
-        // automatically out of ObjC properties.
-        // We don't want to count those for the
-        // purposes of this query.
-        not f.getType().getAnAttribute().hasName("iboutlet")
+        fieldName = f.getName()
       )
     ) and
   n > 15 and

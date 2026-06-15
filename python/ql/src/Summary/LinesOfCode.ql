@@ -5,9 +5,10 @@
  *   database. This query counts the lines of code, excluding whitespace or comments.
  * @kind metric
  * @tags summary
+ *       telemetry
  * @id py/summary/lines-of-code
  */
 
 import python
 
-select sum(Module m | | m.getMetrics().getNumberOfLinesOfCode())
+select sum(ModuleMetrics m | | m.getNumberOfLinesOfCode())

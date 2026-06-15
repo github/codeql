@@ -6,4 +6,4 @@ void ComplexNumbers() {
   c = i;
   c = r;
 }
-// semmle-extractor-options: --microsoft --edg --c99
+// semmle-extractor-options: --microsoft -std=c99

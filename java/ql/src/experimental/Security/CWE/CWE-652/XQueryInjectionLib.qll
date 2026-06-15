@@ -1,13 +1,15 @@
+deprecated module;
+
 import java
 
 /** A call to `XQConnection.prepareExpression`. */
-class XQueryParserCall extends MethodAccess {
+class XQueryParserCall extends MethodCall {
   XQueryParserCall() {
     exists(Method m |
       this.getMethod() = m and
       m.getDeclaringType()
           .getASourceSupertype*()
-          .hasQualifiedName("javax.xml.xquery", "XQConnection") and
+          .hasQualifiedName(javaxOrJakarta() + ".xml.xquery", "XQConnection") and
       m.hasName("prepareExpression")
     )
   }
@@ -20,14 +22,14 @@ class XQueryParserCall extends MethodAccess {
 }
 
 /** A call to `XQPreparedExpression.executeQuery`. */
-class XQueryPreparedExecuteCall extends MethodAccess {
+class XQueryPreparedExecuteCall extends MethodCall {
   XQueryPreparedExecuteCall() {
     exists(Method m |
       this.getMethod() = m and
       m.hasName("executeQuery") and
       m.getDeclaringType()
           .getASourceSupertype*()
-          .hasQualifiedName("javax.xml.xquery", "XQPreparedExpression")
+          .hasQualifiedName(javaxOrJakarta() + ".xml.xquery", "XQPreparedExpression")
     )
   }
 
@@ -36,14 +38,14 @@ class XQueryPreparedExecuteCall extends MethodAccess {
 }
 
 /** A call to `XQExpression.executeQuery`. */
-class XQueryExecuteCall extends MethodAccess {
+class XQueryExecuteCall extends MethodCall {
   XQueryExecuteCall() {
     exists(Method m |
       this.getMethod() = m and
       m.hasName("executeQuery") and
       m.getDeclaringType()
           .getASourceSupertype*()
-          .hasQualifiedName("javax.xml.xquery", "XQExpression")
+          .hasQualifiedName(javaxOrJakarta() + ".xml.xquery", "XQExpression")
     )
   }
 
@@ -52,14 +54,14 @@ class XQueryExecuteCall extends MethodAccess {
 }
 
 /** A call to `XQExpression.executeCommand`. */
-class XQueryExecuteCommandCall extends MethodAccess {
+class XQueryExecuteCommandCall extends MethodCall {
   XQueryExecuteCommandCall() {
     exists(Method m |
       this.getMethod() = m and
       m.hasName("executeCommand") and
       m.getDeclaringType()
           .getASourceSupertype*()
-          .hasQualifiedName("javax.xml.xquery", "XQExpression")
+          .hasQualifiedName(javaxOrJakarta() + ".xml.xquery", "XQExpression")
     )
   }
 

@@ -1,0 +1,13 @@
+name: Test
+on:
+  issue_comment:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo '${{ toJSON(github.event.comment.body).foo }}'
+

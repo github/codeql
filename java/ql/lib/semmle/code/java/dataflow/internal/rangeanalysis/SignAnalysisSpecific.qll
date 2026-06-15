@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 /**
  * Provides Java-specific definitions for use in sign analysis.
  */
@@ -6,16 +9,17 @@ module Private {
   import semmle.code.java.dataflow.RangeUtils as RU
   private import semmle.code.java.dataflow.SSA as Ssa
   private import semmle.code.java.controlflow.Guards as G
+  private import SsaReadPositionCommon
   private import Sign
   import Impl
 
   class ConstantIntegerExpr = RU::ConstantIntegerExpr;
 
-  class Guard = G::Guard;
+  class Guard = G::Guards_v2::Guard;
 
-  class SsaVariable = Ssa::SsaVariable;
+  class SsaVariable = Ssa::SsaDefinition;
 
-  class SsaPhiNode = Ssa::SsaPhiNode;
+  class SsaPhiNode = Ssa::SsaPhiDefinition;
 
   class VarAccess = J::VarAccess;
 
@@ -65,10 +69,10 @@ module Private {
 
     /** Returns the operand of this expression. */
     Expr getOperand() {
-      result = this.(J::PreIncExpr).getExpr() or
-      result = this.(J::PreDecExpr).getExpr() or
-      result = this.(J::MinusExpr).getExpr() or
-      result = this.(J::BitNotExpr).getExpr()
+      result = this.(J::PreIncExpr).getOperand() or
+      result = this.(J::PreDecExpr).getOperand() or
+      result = this.(J::MinusExpr).getOperand() or
+      result = this.(J::BitNotExpr).getOperand()
     }
 
     /** Returns the operation representing this expression. */
@@ -157,18 +161,26 @@ module Private {
       this instanceof J::AssignUnsignedRightShiftExpr and result = TUnsignedRightShiftOp()
     }
 
-    Expr getLeftOperand() {
-      result = this.(J::BinaryExpr).getLeftOperand() or result = this.(J::AssignOp).getDest()
-    }
+    Expr getLeftOperand() { result = this.(J::BinaryExpr).getLeftOperand() }
 
-    Expr getRightOperand() {
-      result = this.(J::BinaryExpr).getRightOperand() or result = this.(J::AssignOp).getRhs()
-    }
+    Expr getRightOperand() { result = this.(J::BinaryExpr).getRightOperand() }
   }
 
   predicate ssaRead = RU::ssaRead/2;
 
-  predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
+  /**
+   * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
+   */
+  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
+    guard.controls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
+    or
+    exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
+      guard.controls(controlledEdge.getOrigBlock(), testIsTrue) or
+      guard
+          .controlsBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(),
+            testIsTrue)
+    )
+  }
 }
 
 private module Impl {
@@ -188,7 +200,7 @@ private module Impl {
   /** Gets the character value of expression `e`. */
   string getCharValue(Expr e) { result = e.(CharacterLiteral).getValue() }
 
-  /** Gets the constant `float` value of non-`ConstantIntegerExpr` expressions. */
+  /** Gets the constant `float` value of non-`ConstantIntegerExpr` expression `e`. */
   float getNonIntegerValue(Expr e) {
     result = e.(LongLiteral).getValue().toFloat() or
     result = e.(FloatLiteral).getValue().toFloat() or
@@ -200,11 +212,11 @@ private module Impl {
    * `Collection`).
    */
   predicate containerSizeAccess(Expr e) {
-    e.(MethodAccess).getMethod() instanceof StringLengthMethod
+    e.(MethodCall).getMethod() instanceof StringLengthMethod
     or
-    e.(MethodAccess).getMethod() instanceof CollectionSizeMethod
+    e.(MethodCall).getMethod() instanceof CollectionSizeMethod
     or
-    e.(MethodAccess).getMethod() instanceof MapSizeMethod
+    e.(MethodCall).getMethod() instanceof MapSizeMethod
   }
 
   /** Holds if `e` is by definition strictly positive. */
@@ -218,14 +230,14 @@ private module Impl {
     // types handled in `specificSubExprSign`.
     e instanceof ArrayAccess and e.getType() instanceof NumericOrCharType
     or
-    e instanceof MethodAccess and e.getType() instanceof NumericOrCharType
+    e instanceof MethodCall and e.getType() instanceof NumericOrCharType
     or
     e instanceof ClassInstanceExpr and e.getType() instanceof NumericOrCharType
   }
 
   /** Returns the underlying variable update of the explicit SSA variable `v`. */
-  VariableUpdate getExplicitSsaAssignment(SsaVariable v) {
-    result = v.(SsaExplicitUpdate).getDefiningExpr()
+  VariableUpdate getExplicitSsaAssignment(SsaDefinition v) {
+    result = v.(SsaExplicitWrite).getDefiningExpr()
   }
 
   /** Returns the assignment of the variable update `def`. */
@@ -240,24 +252,23 @@ private module Impl {
     exists(EnhancedForStmt for | def = for.getVariable())
   }
 
-  /** Returns the operand of the operation if `def` is a decrement. */
+  /** Returns the operand of the operation if `e` is a decrement. */
   Expr getDecrementOperand(Element e) {
-    result = e.(PostDecExpr).getExpr() or result = e.(PreDecExpr).getExpr()
+    result = e.(PostDecExpr).getOperand() or result = e.(PreDecExpr).getOperand()
   }
 
-  /** Returns the operand of the operation if `def` is an increment. */
+  /** Returns the operand of the operation if `e` is an increment. */
   Expr getIncrementOperand(Element e) {
-    result = e.(PostIncExpr).getExpr() or result = e.(PreIncExpr).getExpr()
+    result = e.(PostIncExpr).getOperand() or result = e.(PreIncExpr).getOperand()
   }
 
   /** Gets the variable underlying the implicit SSA variable `v`. */
-  Variable getImplicitSsaDeclaration(SsaVariable v) {
-    result = v.(SsaImplicitUpdate).getSourceVariable().getVariable() or
-    result = v.(SsaImplicitInit).getSourceVariable().getVariable()
+  Variable getImplicitSsaDeclaration(SsaDefinition v) {
+    result = v.(SsaImplicitWrite).getSourceVariable().getVariable()
   }
 
   /** Holds if the variable underlying the implicit SSA variable `v` is not a field. */
-  predicate nonFieldImplicitSsaDefinition(SsaImplicitInit v) { v.isParameterDefinition(_) }
+  predicate nonFieldImplicitSsaDefinition(SsaParameterInit v) { any() }
 
   /** Returned an expression that is assigned to `f`. */
   Expr getAssignedValueToField(Field f) {
@@ -267,19 +278,19 @@ private module Impl {
 
   /** Holds if `f` can have any sign. */
   predicate fieldWithUnknownSign(Field f) {
-    exists(ReflectiveFieldAccess rfa | rfa.inferAccessedField() = f)
+    exists(ReflectiveGetFieldCall rfa | rfa.inferAccessedField() = f)
   }
 
   /** Holds if `f` is accessed in an increment operation. */
   predicate fieldIncrementOperationOperand(Field f) {
-    any(PostIncExpr inc).getExpr() = f.getAnAccess() or
-    any(PreIncExpr inc).getExpr() = f.getAnAccess()
+    any(PostIncExpr inc).getOperand() = f.getAnAccess() or
+    any(PreIncExpr inc).getOperand() = f.getAnAccess()
   }
 
   /** Holds if `f` is accessed in a decrement operation. */
   predicate fieldDecrementOperationOperand(Field f) {
-    any(PostDecExpr dec).getExpr() = f.getAnAccess() or
-    any(PreDecExpr dec).getExpr() = f.getAnAccess()
+    any(PostDecExpr dec).getOperand() = f.getAnAccess() or
+    any(PreDecExpr dec).getOperand() = f.getAnAccess()
   }
 
   /** Returns possible signs of `f` based on the declaration. */
@@ -301,18 +312,18 @@ private module Impl {
   /** Returns a sub expression of `e` for expression types where the sign depends on the child. */
   Expr getASubExprWithSameSign(Expr e) {
     result = e.(AssignExpr).getSource() or
-    result = e.(PlusExpr).getExpr() or
-    result = e.(PostIncExpr).getExpr() or
-    result = e.(PostDecExpr).getExpr() or
+    result = e.(PlusExpr).getOperand() or
+    result = e.(PostIncExpr).getOperand() or
+    result = e.(PostDecExpr).getOperand() or
     result = e.(ChooseExpr).getAResultExpr() or
     result = e.(CastingExpr).getExpr()
   }
 
-  Expr getARead(SsaVariable v) { result = v.getAUse() }
+  Expr getARead(SsaDefinition v) { result = v.getARead() }
 
   Field getField(FieldAccess fa) { result = fa.getField() }
 
-  Expr getAnExpression(SsaReadPositionBlock bb) { result = bb.getBlock().getANode() }
+  Expr getAnExpression(SsaReadPositionBlock bb) { result = bb.getBlock().getANode().asExpr() }
 
   Guard getComparisonGuard(ComparisonExpr ce) { result = ce }
 }

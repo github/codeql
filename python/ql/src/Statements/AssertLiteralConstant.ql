@@ -3,7 +3,8 @@
  * @description An assert statement testing a literal constant value may exhibit
  *              different behavior when optimizations are enabled.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity recommendation
  * @sub-severity low
@@ -21,7 +22,7 @@ where
   exists(Expr test | test = a.getTest() |
     value = test.(IntegerLiteral).getN()
     or
-    value = "\"" + test.(StrConst).getS() + "\""
+    value = "\"" + test.(StringLiteral).getS() + "\""
     or
     value = test.(NameConstant).toString()
   ) and

@@ -28,9 +28,7 @@ private predicate hasZeroParamDecl(Function f) {
 
 /* Holds if this file (or header) was compiled as a C file. */
 private predicate isCompiledAsC(File f) {
-  f.compiledAsC()
-  or
-  exists(File src | isCompiledAsC(src) | src.getAnIncludedFile() = f)
+  exists(File src | src.compiledAsC() | src.getAnIncludedFile*() = f)
 }
 
 /** Holds if `fc` is a call to `f` with too few arguments. */
@@ -51,5 +49,7 @@ predicate tooFewArguments(FunctionCall fc, Function f) {
     hasDefiniteNumberOfParameters(fde)
   |
     fde.getNumberOfParameters() > fc.getNumberOfArguments()
-  )
+  ) and
+  // Don't report on implicit function declarations, as these are likely extraction errors.
+  not f.getADeclarationEntry().isImplicit()
 }

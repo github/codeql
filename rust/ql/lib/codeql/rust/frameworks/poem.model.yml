@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["<poem::web::cookie::CookieJar>::add", "Argument[0]", "cookie-use", "manual"]
+      - ["<poem::web::cookie::SignedCookieJar>::add", "Argument[0]", "cookie-use", "manual"]
+      - ["<poem::web::cookie::PrivateCookieJar>::add", "Argument[0]", "cookie-use", "manual"]
+      - ["<poem::session::server_session::ServerSession>::new", "Argument[0]", "cookie-use", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["<poem::web::cookie::Cookie>::set_secure", "Argument[self].OptionalBarrier[cookie-secure-arg0]", "Argument[self]", "taint", "manual"]
+      - ["<poem::session::cookie_config::CookieConfig>::secure", "Argument[self].OptionalBarrier[cookie-secure-arg0]", "ReturnValue", "taint", "manual"]
+      - ["<poem::session::cookie_config::CookieConfig>::partitioned", "Argument[self].OptionalBarrier[cookie-partitioned-arg0]", "ReturnValue", "taint", "manual"]
+      - ["<poem::session::cookie_config::CookieConfig>::name", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<poem::session::cookie_config::CookieConfig>::path", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<poem::session::cookie_config::CookieConfig>::domain", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<poem::session::cookie_config::CookieConfig>::http_only", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<poem::session::cookie_config::CookieConfig>::same_site", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<poem::session::cookie_config::CookieConfig>::max_age", "Argument[self]", "ReturnValue", "taint", "manual"]

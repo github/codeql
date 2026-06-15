@@ -1,0 +1,7 @@
+[workspace]
+[package]
+name = "file_exclusion"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]

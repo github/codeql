@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["dnsjava/dnsjava", "*", "input.name", "code-injection", "generated"]
+     - ["dnsjava/dnsjava", "*", "input.filename", "code-injection", "generated"]
+     - ["dnsjava/dnsjava", "*", "input.path", "code-injection", "generated"]

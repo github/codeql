@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Extracting Compressed files with any compression algorithm like gzip can cause denial of service attacks.</p>
+<p>Attackers can compress a huge file consisting of repeated similiar bytes into a small compressed file.</p>
+</overview>
+<recommendation>
+
+<p>When you want to decompress a user-provided compressed file you must be careful about the decompression ratio or read these files within a loop byte by byte to be able to manage the decompressed size in each cycle of the loop.</p>
+
+</recommendation>
+<example>
+
+<p>
+Reading an uncompressed Gzip file within a loop and check for a threshold size in each cycle.
+</p>
+<sample src="example_good.cpp"/>
+
+<p>
+The following example is unsafe, as we do not check the uncompressed size.
+</p>
+<sample src="example_bad.cpp" />
+
+</example>
+
+<references>
+
+<li>
+<a href="https://zlib.net/manual.html">Zlib documentation</a>
+</li>
+
+<li>
+<a href="https://www.bamsoftware.com/hacks/zipbomb/">An explanation of the attack</a>
+</li>
+
+</references>
+</qhelp>

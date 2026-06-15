@@ -1,33 +1,52 @@
 edges
-| XQueryInjection.java:45:23:45:50 | getParameter(...) : String | XQueryInjection.java:51:35:51:38 | xqpe |
-| XQueryInjection.java:59:23:59:50 | getParameter(...) : String | XQueryInjection.java:65:53:65:57 | query |
-| XQueryInjection.java:73:32:73:59 | nameStr : String | XQueryInjection.java:79:35:79:38 | xqpe |
-| XQueryInjection.java:86:33:86:60 | nameStr : String | XQueryInjection.java:92:53:92:57 | query |
-| XQueryInjection.java:100:28:100:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:104:35:104:38 | xqpe |
-| XQueryInjection.java:112:28:112:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:116:53:116:56 | name |
-| XQueryInjection.java:124:28:124:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:125:70:125:73 | name : ServletInputStream |
-| XQueryInjection.java:125:29:125:75 | new BufferedReader(...) : BufferedReader | XQueryInjection.java:129:35:129:38 | xqpe |
-| XQueryInjection.java:125:48:125:74 | new InputStreamReader(...) : InputStreamReader | XQueryInjection.java:125:29:125:75 | new BufferedReader(...) : BufferedReader |
-| XQueryInjection.java:125:70:125:73 | name : ServletInputStream | XQueryInjection.java:125:48:125:74 | new InputStreamReader(...) : InputStreamReader |
-| XQueryInjection.java:137:28:137:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:138:70:138:73 | name : ServletInputStream |
-| XQueryInjection.java:138:29:138:75 | new BufferedReader(...) : BufferedReader | XQueryInjection.java:142:53:142:54 | br |
-| XQueryInjection.java:138:48:138:74 | new InputStreamReader(...) : InputStreamReader | XQueryInjection.java:138:29:138:75 | new BufferedReader(...) : BufferedReader |
-| XQueryInjection.java:138:70:138:73 | name : ServletInputStream | XQueryInjection.java:138:48:138:74 | new InputStreamReader(...) : InputStreamReader |
-| XQueryInjection.java:150:23:150:50 | getParameter(...) : String | XQueryInjection.java:155:29:155:32 | name |
-| XQueryInjection.java:157:26:157:49 | getInputStream(...) : ServletInputStream | XQueryInjection.java:158:70:158:71 | is : ServletInputStream |
-| XQueryInjection.java:158:29:158:73 | new BufferedReader(...) : BufferedReader | XQueryInjection.java:159:29:159:30 | br |
-| XQueryInjection.java:158:48:158:72 | new InputStreamReader(...) : InputStreamReader | XQueryInjection.java:158:29:158:73 | new BufferedReader(...) : BufferedReader |
-| XQueryInjection.java:158:70:158:71 | is : ServletInputStream | XQueryInjection.java:158:48:158:72 | new InputStreamReader(...) : InputStreamReader |
+| XQueryInjection.java:45:23:45:50 | getParameter(...) : String | XQueryInjection.java:50:60:50:64 | query : String | provenance | Src:MaD:2  |
+| XQueryInjection.java:50:37:50:65 | prepareExpression(...) : XQPreparedExpression | XQueryInjection.java:51:35:51:38 | xqpe | provenance |  |
+| XQueryInjection.java:50:60:50:64 | query : String | XQueryInjection.java:50:37:50:65 | prepareExpression(...) : XQPreparedExpression | provenance | Config |
+| XQueryInjection.java:59:23:59:50 | getParameter(...) : String | XQueryInjection.java:65:53:65:57 | query | provenance | Src:MaD:2  |
+| XQueryInjection.java:73:32:73:59 | nameStr : String | XQueryInjection.java:78:60:78:64 | query : String | provenance |  |
+| XQueryInjection.java:78:37:78:65 | prepareExpression(...) : XQPreparedExpression | XQueryInjection.java:79:35:79:38 | xqpe | provenance |  |
+| XQueryInjection.java:78:60:78:64 | query : String | XQueryInjection.java:78:37:78:65 | prepareExpression(...) : XQPreparedExpression | provenance | Config |
+| XQueryInjection.java:86:33:86:60 | nameStr : String | XQueryInjection.java:92:53:92:57 | query | provenance |  |
+| XQueryInjection.java:100:28:100:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:103:60:103:63 | name : ServletInputStream | provenance | Src:MaD:1  |
+| XQueryInjection.java:103:37:103:64 | prepareExpression(...) : XQPreparedExpression | XQueryInjection.java:104:35:104:38 | xqpe | provenance |  |
+| XQueryInjection.java:103:60:103:63 | name : ServletInputStream | XQueryInjection.java:103:37:103:64 | prepareExpression(...) : XQPreparedExpression | provenance | Config |
+| XQueryInjection.java:112:28:112:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:116:53:116:56 | name | provenance | Src:MaD:1  |
+| XQueryInjection.java:124:28:124:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:125:70:125:73 | name : ServletInputStream | provenance | Src:MaD:1  |
+| XQueryInjection.java:125:29:125:75 | new BufferedReader(...) : BufferedReader | XQueryInjection.java:128:60:128:61 | br : BufferedReader | provenance |  |
+| XQueryInjection.java:125:48:125:74 | new InputStreamReader(...) : InputStreamReader | XQueryInjection.java:125:29:125:75 | new BufferedReader(...) : BufferedReader | provenance | MaD:3 |
+| XQueryInjection.java:125:70:125:73 | name : ServletInputStream | XQueryInjection.java:125:48:125:74 | new InputStreamReader(...) : InputStreamReader | provenance | MaD:4 |
+| XQueryInjection.java:128:37:128:62 | prepareExpression(...) : XQPreparedExpression | XQueryInjection.java:129:35:129:38 | xqpe | provenance |  |
+| XQueryInjection.java:128:60:128:61 | br : BufferedReader | XQueryInjection.java:128:37:128:62 | prepareExpression(...) : XQPreparedExpression | provenance | Config |
+| XQueryInjection.java:137:28:137:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:138:70:138:73 | name : ServletInputStream | provenance | Src:MaD:1  |
+| XQueryInjection.java:138:29:138:75 | new BufferedReader(...) : BufferedReader | XQueryInjection.java:142:53:142:54 | br | provenance |  |
+| XQueryInjection.java:138:48:138:74 | new InputStreamReader(...) : InputStreamReader | XQueryInjection.java:138:29:138:75 | new BufferedReader(...) : BufferedReader | provenance | MaD:3 |
+| XQueryInjection.java:138:70:138:73 | name : ServletInputStream | XQueryInjection.java:138:48:138:74 | new InputStreamReader(...) : InputStreamReader | provenance | MaD:4 |
+| XQueryInjection.java:150:23:150:50 | getParameter(...) : String | XQueryInjection.java:155:29:155:32 | name | provenance | Src:MaD:2  |
+| XQueryInjection.java:157:26:157:49 | getInputStream(...) : ServletInputStream | XQueryInjection.java:158:70:158:71 | is : ServletInputStream | provenance | Src:MaD:1  |
+| XQueryInjection.java:158:29:158:73 | new BufferedReader(...) : BufferedReader | XQueryInjection.java:159:29:159:30 | br | provenance |  |
+| XQueryInjection.java:158:48:158:72 | new InputStreamReader(...) : InputStreamReader | XQueryInjection.java:158:29:158:73 | new BufferedReader(...) : BufferedReader | provenance | MaD:3 |
+| XQueryInjection.java:158:70:158:71 | is : ServletInputStream | XQueryInjection.java:158:48:158:72 | new InputStreamReader(...) : InputStreamReader | provenance | MaD:4 |
+models
+| 1 | Source: javax.servlet; ServletRequest; false; getInputStream; (); ; ReturnValue; remote; manual |
+| 2 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 3 | Summary: java.io; BufferedReader; false; BufferedReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 4 | Summary: java.io; InputStreamReader; false; InputStreamReader; ; ; Argument[0]; Argument[this]; taint; manual |
 nodes
 | XQueryInjection.java:45:23:45:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| XQueryInjection.java:50:37:50:65 | prepareExpression(...) : XQPreparedExpression | semmle.label | prepareExpression(...) : XQPreparedExpression |
+| XQueryInjection.java:50:60:50:64 | query : String | semmle.label | query : String |
 | XQueryInjection.java:51:35:51:38 | xqpe | semmle.label | xqpe |
 | XQueryInjection.java:59:23:59:50 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | XQueryInjection.java:65:53:65:57 | query | semmle.label | query |
 | XQueryInjection.java:73:32:73:59 | nameStr : String | semmle.label | nameStr : String |
+| XQueryInjection.java:78:37:78:65 | prepareExpression(...) : XQPreparedExpression | semmle.label | prepareExpression(...) : XQPreparedExpression |
+| XQueryInjection.java:78:60:78:64 | query : String | semmle.label | query : String |
 | XQueryInjection.java:79:35:79:38 | xqpe | semmle.label | xqpe |
 | XQueryInjection.java:86:33:86:60 | nameStr : String | semmle.label | nameStr : String |
 | XQueryInjection.java:92:53:92:57 | query | semmle.label | query |
 | XQueryInjection.java:100:28:100:51 | getInputStream(...) : ServletInputStream | semmle.label | getInputStream(...) : ServletInputStream |
+| XQueryInjection.java:103:37:103:64 | prepareExpression(...) : XQPreparedExpression | semmle.label | prepareExpression(...) : XQPreparedExpression |
+| XQueryInjection.java:103:60:103:63 | name : ServletInputStream | semmle.label | name : ServletInputStream |
 | XQueryInjection.java:104:35:104:38 | xqpe | semmle.label | xqpe |
 | XQueryInjection.java:112:28:112:51 | getInputStream(...) : ServletInputStream | semmle.label | getInputStream(...) : ServletInputStream |
 | XQueryInjection.java:116:53:116:56 | name | semmle.label | name |
@@ -35,6 +54,8 @@ nodes
 | XQueryInjection.java:125:29:125:75 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
 | XQueryInjection.java:125:48:125:74 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
 | XQueryInjection.java:125:70:125:73 | name : ServletInputStream | semmle.label | name : ServletInputStream |
+| XQueryInjection.java:128:37:128:62 | prepareExpression(...) : XQPreparedExpression | semmle.label | prepareExpression(...) : XQPreparedExpression |
+| XQueryInjection.java:128:60:128:61 | br : BufferedReader | semmle.label | br : BufferedReader |
 | XQueryInjection.java:129:35:129:38 | xqpe | semmle.label | xqpe |
 | XQueryInjection.java:137:28:137:51 | getInputStream(...) : ServletInputStream | semmle.label | getInputStream(...) : ServletInputStream |
 | XQueryInjection.java:138:29:138:75 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
@@ -48,8 +69,7 @@ nodes
 | XQueryInjection.java:158:48:158:72 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
 | XQueryInjection.java:158:70:158:71 | is : ServletInputStream | semmle.label | is : ServletInputStream |
 | XQueryInjection.java:159:29:159:30 | br | semmle.label | br |
-subpaths
-#select
+problems
 | XQueryInjection.java:51:35:51:38 | xqpe | XQueryInjection.java:45:23:45:50 | getParameter(...) : String | XQueryInjection.java:51:35:51:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:45:23:45:50 | getParameter(...) | this user input |
 | XQueryInjection.java:65:53:65:57 | query | XQueryInjection.java:59:23:59:50 | getParameter(...) : String | XQueryInjection.java:65:53:65:57 | query | XQuery query might include code from $@. | XQueryInjection.java:59:23:59:50 | getParameter(...) | this user input |
 | XQueryInjection.java:79:35:79:38 | xqpe | XQueryInjection.java:73:32:73:59 | nameStr : String | XQueryInjection.java:79:35:79:38 | xqpe | XQuery query might include code from $@. | XQueryInjection.java:73:32:73:59 | nameStr | this user input |
@@ -60,3 +80,4 @@ subpaths
 | XQueryInjection.java:142:53:142:54 | br | XQueryInjection.java:137:28:137:51 | getInputStream(...) : ServletInputStream | XQueryInjection.java:142:53:142:54 | br | XQuery query might include code from $@. | XQueryInjection.java:137:28:137:51 | getInputStream(...) | this user input |
 | XQueryInjection.java:155:29:155:32 | name | XQueryInjection.java:150:23:150:50 | getParameter(...) : String | XQueryInjection.java:155:29:155:32 | name | XQuery query might include code from $@. | XQueryInjection.java:150:23:150:50 | getParameter(...) | this user input |
 | XQueryInjection.java:159:29:159:30 | br | XQueryInjection.java:157:26:157:49 | getInputStream(...) : ServletInputStream | XQueryInjection.java:159:29:159:30 | br | XQuery query might include code from $@. | XQueryInjection.java:157:26:157:49 | getInputStream(...) | this user input |
+subpaths

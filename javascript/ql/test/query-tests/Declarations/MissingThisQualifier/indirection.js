@@ -1,9 +1,9 @@
 class X {
     m() {
-        m("default"); // OK
+        m("default");
     }
 
     resty(...x) {
-        m("default"); // NOT OK
+        m("default"); // $ Alert
     }
 }

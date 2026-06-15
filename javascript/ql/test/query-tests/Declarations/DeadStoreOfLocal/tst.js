@@ -1,17 +1,15 @@
 function f() {
-	// OK: initialization to default value
+	// OK - initialization to default value
 	var x = null, y = undefined, z;
 	x = {};
-	// NOT OK
-	y = 23;
+	y = 23; // $ Alert
 	y = 42;
 	for (var p in x)
 		y+p;
-	// OK: assignment to global
+	// OK - assignment to global
 	global = 42;
-	// NOT OK
-	var a = 23; a = 42;
-	// OK: captured variable
+	var a = 23; a = 42; // $ Alert
+	// OK - captured variable
 	var b = 42;
 	return function() {
 		return b%2
@@ -20,14 +18,14 @@ function f() {
 
 function g() {
 	var x;
-	// OK
+
 	x = 23, x += 19;
-	// OK
+
 	var y = 42;
 }
 
 function h() {
-	// OK
+
 	var x = false;
 	try {
 		this.mayThrow();
@@ -37,18 +35,18 @@ function h() {
 }
 
 function k(data) {
-	// OK
+
 	for(var i=0;i<data.length;i++);
 }
 
 function l() {
-	var x = 23;
+	var x = 23; // $ Alert
 	x = 42;
 	return x;
 }
 
 function m() {
-	var x = 23, y;
+	var x = 23, y; // $ Alert
 	x = 42, y = x+14;
 	return x+y;
 }
@@ -62,7 +60,7 @@ function p() {
 	var i;
 	for (i=0; i < 10; ++i) {
 		if (Math.random() > .5)
-			// OK
+
 			i = 23;
 	}
 }
@@ -87,11 +85,11 @@ function s() {
     var container = document.createElement("div"),
         div = document.createElement("div");
     doStuffWith(container, div);
-    // OK
+
     container = div = null;
 }
 
-// OK: the function expression could be made anonymous, but it's not
+// OK - the function expression could be made anonymous, but it's not
 // worth flagging this as a violation
 defineGetter(req, 'subdomains', function subdomains() {
     var hostname = this.hostname;
@@ -103,7 +101,7 @@ defineGetter(req, 'subdomains', function subdomains() {
     return subdomains.slice(offset);
 });
 
-// OK: assigning default values
+// OK - assigning default values
 function t() {
   var x;
   x = false;
@@ -112,7 +110,7 @@ function t() {
   x = 42; return x;
 }
 
-// OK: unnecessary initialisation as type hint
+// OK - unnecessary initialisation as type hint
 function u() {
   var x;
   x = [];
@@ -120,7 +118,7 @@ function u() {
   x = 42; return x;
 }
 
-// OK: assigning `undefined`
+// OK - assigning `undefined`
 function v() {
   var x;
   x = void 0;
@@ -129,12 +127,12 @@ function v() {
 }
 
 !function(o) {
-  var {x} = o;
+  var {x} = o; // $ Alert
   x = 42;
   return x;
 }
 
-// OK: assignments in dead code not flagged
+// OK - assignments in dead code not flagged
 !function() {
   return;
   var x;
@@ -159,7 +157,7 @@ function v() {
 });
 
 (function() {
-	let [x] = [0], // OK, but flagged due to destructuring limitations
+	let [x] = [0], // $ SPURIOUS: Alert - flagged due to destructuring limitations
 	    y = 0;
 	x = 42;
 	y = 87;
@@ -169,7 +167,7 @@ function v() {
 
 (function() {
 	if (something()) {
-		var nSign = foo;
+		var nSign = foo; // $ Alert
 	} else {
 		console.log(nSign);
 	}

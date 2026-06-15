@@ -1,20 +1,20 @@
 let externalLib = require('external-lib');
 
-let untrusted = window.name;
+let untrusted = window.name; // $ Source
 
-externalLib(untrusted);
-externalLib({x: untrusted});
-externalLib(...untrusted);
-externalLib(...window.CONFIG, untrusted);
-externalLib({ ...untrusted });
-externalLib(['x', untrusted, 'y']);
-externalLib('foo', untrusted);
+externalLib(untrusted); // $ Alert
+externalLib({x: untrusted}); // $ Alert
+externalLib(...untrusted); // $ Alert
+externalLib(...window.CONFIG, untrusted); // $ Alert
+externalLib({ ...untrusted }); // $ Alert
+externalLib(['x', untrusted, 'y']); // $ Alert
+externalLib('foo', untrusted); // $ Alert
 externalLib({
     x: {
         y: {
             z: untrusted
         }
-    }
+    } // $ Alert
 });
 
 function getDeepUntrusted() {
@@ -30,16 +30,16 @@ function getDeepUntrusted() {
 externalLib(getDeepUntrusted());
 
 externalLib.get('/foo', (req, res) => {
-    res.send(untrusted);
-    req.app.locals.something.foo(untrusted);
+    res.send(untrusted); // $ Alert
+    req.app.locals.something.foo(untrusted); // $ Alert
 });
 
 let jsonSafeParse = require('json-safe-parse');
 jsonSafeParse(untrusted); // no need to report; has known taint step
 
 let merge = require('lodash.merge');
-merge({}, {
+merge({}, { // $ Alert
     x: untrusted, // should not be treated as individual named parameters
     y: untrusted,
     z: untrusted
-});
+}); // $ Alert

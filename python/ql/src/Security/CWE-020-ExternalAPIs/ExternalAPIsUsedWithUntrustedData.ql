@@ -5,7 +5,7 @@
  *              to it.
  * @id py/count-untrusted-data-external-api
  * @kind table
- * @tags security external/cwe/cwe-20
+ * @tags security external/cwe/cwe-020
  */
 
 import python

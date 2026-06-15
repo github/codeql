@@ -3,7 +3,7 @@
 
 interface I {
 	// NOT OK: no overriding method uses x
-	void foo(int x);
+	void foo(int x); // $ Alert
 	
 	// OK: no concrete implementation
 	void bar(String y);

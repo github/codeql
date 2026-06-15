@@ -21,6 +21,16 @@ module StoredXss {
   /** A sanitizer for stored XSS vulnerabilities. */
   abstract class Sanitizer extends Shared::Sanitizer { }
 
+  /**
+   * A barrier guard for stored XSS.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+  }
+
   /** An arbitrary XSS sink, considered as a flow sink for stored XSS. */
   private class AnySink extends Sink {
     AnySink() { this instanceof Shared::Sink }

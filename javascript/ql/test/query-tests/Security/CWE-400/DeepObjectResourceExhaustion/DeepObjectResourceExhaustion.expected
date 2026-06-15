@@ -1,8 +1,6 @@
 nodes
-| tst.js:9:29:9:36 | req.body |
-| tst.js:9:29:9:36 | req.body |
-| tst.js:9:29:9:36 | req.body |
+| tst.js:9:29:9:36 | req.body | semmle.label | req.body |
 edges
-| tst.js:9:29:9:36 | req.body | tst.js:9:29:9:36 | req.body |
+subpaths
 #select
 | tst.js:9:29:9:36 | req.body | tst.js:9:29:9:36 | req.body | tst.js:9:29:9:36 | req.body | Denial of service caused by processing $@ with $@. | tst.js:9:29:9:36 | req.body | user input | tst.js:4:21:4:35 | allErrors: true | allErrors: true |

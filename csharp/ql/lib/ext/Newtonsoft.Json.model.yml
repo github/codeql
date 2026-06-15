@@ -3,16 +3,16 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeAnonymousType<>", "(System.String,T)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeAnonymousType<>", "(System.String,T,Newtonsoft.Json.JsonSerializerSettings)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeAnonymousType<T>", "(System.String,T)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeAnonymousType<T>", "(System.String,T,Newtonsoft.Json.JsonSerializerSettings)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeObject", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeObject", "(System.String,Newtonsoft.Json.JsonSerializerSettings)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeObject", "(System.String,System.Type)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeObject", "(System.String,System.Type,Newtonsoft.Json.JsonConverter[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeObject", "(System.String,System.Type,Newtonsoft.Json.JsonSerializerSettings)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeObject<>", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeObject<>", "(System.String,Newtonsoft.Json.JsonConverter[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeObject<>", "(System.String,Newtonsoft.Json.JsonSerializerSettings)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeObject<T>", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeObject<T>", "(System.String,Newtonsoft.Json.JsonConverter[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeObject<T>", "(System.String,Newtonsoft.Json.JsonSerializerSettings)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeXNode", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeXNode", "(System.String,System.String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeXNode", "(System.String,System.String,System.Boolean)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

@@ -3,5 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["javax.net.ssl", "HttpsURLConnection", True, "setDefaultHostnameVerifier", "", "", "Argument[0]", "set-hostname-verifier", "manual"]
-      - ["javax.net.ssl", "HttpsURLConnection", True, "setHostnameVerifier", "", "", "Argument[0]", "set-hostname-verifier", "manual"]
+      - ["javax.net.ssl", "HttpsURLConnection", True, "setDefaultHostnameVerifier", "", "", "Argument[0]", "hostname-verification", "manual"]
+      - ["javax.net.ssl", "HttpsURLConnection", True, "setHostnameVerifier", "", "", "Argument[0]", "hostname-verification", "manual"]
+      - ["javax.net.ssl", "KeyManagerFactory", False, "init", "(KeyStore,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
+      - ["javax.net.ssl", "KeyManagerFactorySpi", False, "engineInit", "(KeyStore,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]

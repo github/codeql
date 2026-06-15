@@ -1,4 +1,6 @@
 /** Provides predicates for synthesizing AST nodes. */
+overlay[local]
+module;
 
 private import AST
 private import TreeSitter
@@ -11,16 +13,18 @@ private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.AST
 
 /** A synthesized AST node kind. */
-newtype SynthKind =
+newtype TSynthKind =
   AddExprKind() or
   AssignExprKind() or
   BitwiseAndExprKind() or
   BitwiseOrExprKind() or
   BitwiseXorExprKind() or
+  BodyStmtKind() or
   BooleanLiteralKind(boolean value) { value = true or value = false } or
   BraceBlockKind() or
   CaseMatchKind() or
   ClassVariableAccessKind(ClassVariable v) or
+  DefinedExprKind() or
   DivExprKind() or
   ElseKind() or
   ExponentExprKind() or
@@ -40,15 +44,109 @@ newtype SynthKind =
   ModuloExprKind() or
   MulExprKind() or
   NilLiteralKind() or
+  NotExprKind() or
+  PairExprKind() or
   RangeLiteralKind(boolean inclusive) { inclusive in [false, true] } or
   RShiftExprKind() or
   SimpleParameterKind() or
   SplatExprKind() or
+  HashSplatExprKind() or
+  SymbolLiteralExprKind(string value) {
+    value = any(Ruby::SimpleSymbol s).getValue()
+    or
+    value = any(Ruby::KeywordParameter p).getName().getValue()
+  } or
   StmtSequenceKind() or
   SelfKind(SelfVariable v) or
   SubExprKind() or
   ConstantReadAccessKind(string value) { any(Synthesis s).constantReadAccess(value) } or
   ConstantWriteAccessKind(string value) { any(Synthesis s).constantWriteAccess(value) }
+
+class SynthKind extends TSynthKind {
+  string toString() {
+    this = AddExprKind() and result = "AddExprKind"
+    or
+    this = AssignExprKind() and result = "AssignExprKind"
+    or
+    this = BitwiseAndExprKind() and result = "BitwiseAndExprKind"
+    or
+    this = BitwiseOrExprKind() and result = "BitwiseOrExprKind"
+    or
+    this = BitwiseXorExprKind() and result = "BitwiseXorExprKind"
+    or
+    this = BodyStmtKind() and result = "BodyStmtKind"
+    or
+    this = BooleanLiteralKind(_) and result = "BooleanLiteralKind"
+    or
+    this = BraceBlockKind() and result = "BraceBlockKind"
+    or
+    this = CaseMatchKind() and result = "CaseMatchKind"
+    or
+    this = ClassVariableAccessKind(_) and result = "ClassVariableAccessKind"
+    or
+    this = DefinedExprKind() and result = "DefinedExprKind"
+    or
+    this = DivExprKind() and result = "DivExprKind"
+    or
+    this = ElseKind() and result = "ElseKind"
+    or
+    this = ExponentExprKind() and result = "ExponentExprKind"
+    or
+    this = GlobalVariableAccessKind(_) and result = "GlobalVariableAccessKind"
+    or
+    this = IfKind() and result = "IfKind"
+    or
+    this = InClauseKind() and result = "InClauseKind"
+    or
+    this = InstanceVariableAccessKind(_) and result = "InstanceVariableAccessKind"
+    or
+    this = IntegerLiteralKind(_) and result = "IntegerLiteralKind"
+    or
+    this = LShiftExprKind() and result = "LShiftExprKind"
+    or
+    this = LocalVariableAccessRealKind(_) and result = "LocalVariableAccessRealKind"
+    or
+    this = LocalVariableAccessSynthKind(_) and result = "LocalVariableAccessSynthKind"
+    or
+    this = LogicalAndExprKind() and result = "LogicalAndExprKind"
+    or
+    this = LogicalOrExprKind() and result = "LogicalOrExprKind"
+    or
+    this = MethodCallKind(_, _, _) and result = "MethodCallKind"
+    or
+    this = ModuloExprKind() and result = "ModuloExprKind"
+    or
+    this = MulExprKind() and result = "MulExprKind"
+    or
+    this = NilLiteralKind() and result = "NilLiteralKind"
+    or
+    this = NotExprKind() and result = "NotExprKind"
+    or
+    this = PairExprKind() and result = "PairExprKind"
+    or
+    this = RangeLiteralKind(_) and result = "RangeLiteralKind"
+    or
+    this = RShiftExprKind() and result = "RShiftExprKind"
+    or
+    this = SimpleParameterKind() and result = "SimpleParameterKind"
+    or
+    this = SplatExprKind() and result = "SplatExprKind"
+    or
+    this = HashSplatExprKind() and result = "HashSplatExprKind"
+    or
+    this = SymbolLiteralExprKind(_) and result = "SymbolLiteralExprKind"
+    or
+    this = StmtSequenceKind() and result = "StmtSequenceKind"
+    or
+    this = SubExprKind() and result = "SubExprKind"
+    or
+    this = SelfKind(_) and result = "SelfKind"
+    or
+    this = ConstantReadAccessKind(_) and result = "ConstantReadAccessKind"
+    or
+    this = ConstantWriteAccessKind(_) and result = "ConstantWriteAccessKind"
+  }
+}
 
 /**
  * An AST child.
@@ -201,9 +299,12 @@ private predicate hasLocation(AstNode n, Location l) {
 private module ImplicitSelfSynthesis {
   pragma[nomagic]
   private predicate identifierMethodCallSelfSynthesis(AstNode mc, int i, Child child) {
-    child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc)).getEnclosingSelfScope()))) and
-    mc = TIdentifierMethodCall(_) and
-    i = 0
+    exists(SelfVariableImpl self |
+      self.getDeclaringScopeImpl() = scopeOf(toGenerated(mc)).getEnclosingSelfScope() and
+      child = SynthChild(SelfKind(self)) and
+      mc = TIdentifierMethodCall(_) and
+      i = 0
+    )
   }
 
   private class IdentifierMethodCallSelfSynthesis extends Synthesis {
@@ -214,13 +315,14 @@ private module ImplicitSelfSynthesis {
 
   pragma[nomagic]
   private predicate regularMethodCallSelfSynthesis(TRegularMethodCall mc, int i, Child child) {
-    exists(Ruby::AstNode g |
+    exists(Ruby::AstNode g, SelfVariableImpl self |
       mc = TRegularMethodCall(g) and
       // If there's no explicit receiver, then the receiver is implicitly `self`.
-      not exists(g.(Ruby::Call).getReceiver())
-    ) and
-    child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc)).getEnclosingSelfScope()))) and
-    i = 0
+      not exists(g.(Ruby::Call).getReceiver()) and
+      self.getDeclaringScopeImpl() = scopeOf(toGenerated(mc)).getEnclosingSelfScope() and
+      child = SynthChild(SelfKind(self)) and
+      i = 0
+    )
   }
 
   private class RegularMethodCallSelfSynthesis extends Synthesis {
@@ -243,9 +345,10 @@ private module ImplicitSelfSynthesis {
    */
   pragma[nomagic]
   private SelfKind getSelfKind(InstanceVariableAccess var) {
-    exists(Ruby::AstNode owner |
+    exists(Ruby::AstNode owner, SelfVariableImpl self |
+      self.getDeclaringScopeImpl() = scopeOf(owner).getEnclosingSelfScope() and
       owner = toGenerated(instanceVarAccessSynthParentStar(var)) and
-      result = SelfKind(TSelfVariable(scopeOf(owner).getEnclosingSelfScope()))
+      result = SelfKind(self)
     )
   }
 
@@ -439,7 +542,7 @@ private module AssignOperationDesugar {
     pragma[nomagic]
     SynthKind getVariableAccessKind() {
       result in [
-          LocalVariableAccessRealKind(v).(SynthKind), InstanceVariableAccessKind(v),
+          LocalVariableAccessRealKind(v).(TSynthKind), InstanceVariableAccessKind(v),
           ClassVariableAccessKind(v), GlobalVariableAccessKind(v)
         ]
     }
@@ -1258,6 +1361,7 @@ private module HashLiteralDesugar {
  * ```
  * desugars to, roughly,
  * ```rb
+ * if not defined? x then x = nil end
  * xs.each { |__synth__0| x = __synth__0; <loop_body> }
  * ```
  *
@@ -1267,56 +1371,165 @@ private module HashLiteralDesugar {
  * scoped to the synthesized block.
  */
 private module ForLoopDesugar {
+  private Ruby::AstNode getForLoopPatternChild(Ruby::For for) {
+    result = for.getPattern()
+    or
+    result.getParent() = getForLoopPatternChild(for)
+  }
+
+  /** Holds if `n` is an access to variable `v` in the pattern of `for`. */
+  pragma[nomagic]
+  private predicate forLoopVariableAccess(Ruby::For for, Ruby::AstNode n, VariableReal v) {
+    n = getForLoopPatternChild(for) and
+    access(n, v)
+  }
+
+  /** Holds if `v` is the `i`th iteration variable of `for`. */
+  private predicate forLoopVariable(Ruby::For for, VariableReal v, int i) {
+    v =
+      rank[i + 1](VariableReal v0, Ruby::AstNode n, Location l |
+        forLoopVariableAccess(for, n, v0) and
+        l = n.getLocation()
+      |
+        v0 order by l.getStartLine(), l.getStartColumn()
+      )
+  }
+
+  /** Gets the number of iteration variables of `for`. */
+  private int forLoopVariableCount(Ruby::For for) {
+    result = count(int j | forLoopVariable(for, _, j))
+  }
+
+  private Ruby::For toTsFor(ForExpr for) { for = TForExpr(result) }
+
+  /**
+   * Synthesizes an assignment
+   * ```rb
+   * if not defined? v then v = nil end
+   * ```
+   * anchored at index `rootIndex` of `root`.
+   */
+  bindingset[root, rootIndex, v]
+  private predicate nilAssignUndefined(
+    AstNode root, int rootIndex, AstNode parent, int i, Child child, VariableReal v
+  ) {
+    parent = root and
+    i = rootIndex and
+    child = SynthChild(IfKind())
+    or
+    exists(AstNode if_ | if_ = TIfSynth(root, rootIndex) |
+      parent = if_ and
+      i = 0 and
+      child = SynthChild(NotExprKind())
+      or
+      exists(AstNode not_ | not_ = TNotExprSynth(if_, 0) |
+        parent = not_ and
+        i = 0 and
+        child = SynthChild(DefinedExprKind())
+        or
+        parent = TDefinedExprSynth(not_, 0) and
+        i = 0 and
+        child = SynthChild(LocalVariableAccessRealKind(v))
+      )
+      or
+      parent = if_ and
+      i = 1 and
+      child = SynthChild(AssignExprKind())
+      or
+      parent = TAssignExprSynth(if_, 1) and
+      (
+        i = 0 and
+        child = SynthChild(LocalVariableAccessRealKind(v))
+        or
+        i = 1 and
+        child = SynthChild(NilLiteralKind())
+      )
+    )
+  }
+
   pragma[nomagic]
   private predicate forLoopSynthesis(AstNode parent, int i, Child child) {
     exists(ForExpr for |
-      // each call
       parent = for and
       i = -1 and
-      child = SynthChild(MethodCallKind("each", false, 0))
+      child = SynthChild(StmtSequenceKind())
       or
-      exists(MethodCall eachCall | eachCall = TMethodCallSynth(for, -1, "each", false, 0) |
-        // receiver
-        parent = eachCall and
-        i = 0 and
-        child = childRef(for.getValue()) // value is the Enumerable
+      exists(AstNode seq | seq = TStmtSequenceSynth(for, -1) |
+        exists(VariableReal v, int j | forLoopVariable(toTsFor(for), v, j) |
+          nilAssignUndefined(seq, j, parent, i, child, v)
+        )
         or
-        parent = eachCall and
-        i = 1 and
-        child = SynthChild(BraceBlockKind())
-        or
-        exists(Block block | block = TBraceBlockSynth(eachCall, 1) |
-          // block params
-          parent = block and
-          i = 0 and
-          child = SynthChild(SimpleParameterKind())
+        exists(int numberOfVars | numberOfVars = forLoopVariableCount(toTsFor(for)) |
+          // each call
+          parent = seq and
+          i = numberOfVars and
+          child = SynthChild(MethodCallKind("each", false, 0))
           or
-          exists(SimpleParameter param | param = TSimpleParameterSynth(block, 0) |
-            parent = param and
+          exists(MethodCall eachCall |
+            eachCall = TMethodCallSynth(seq, numberOfVars, "each", false, 0)
+          |
+            // receiver
+            parent = eachCall and
             i = 0 and
-            child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+            child = childRef(for.getValue()) // value is the Enumerable
             or
-            // assignment to pattern from for loop to synth parameter
-            parent = block and
+            parent = eachCall and
             i = 1 and
-            child = SynthChild(AssignExprKind())
+            child = SynthChild(BraceBlockKind())
             or
-            parent = TAssignExprSynth(block, 1) and
-            (
+            exists(Block block | block = TBraceBlockSynth(eachCall, 1) |
+              // block params
+              parent = block and
               i = 0 and
-              child = childRef(for.getPattern())
+              child = SynthChild(SimpleParameterKind())
               or
+              // block body
+              parent = block and
               i = 1 and
-              child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+              child = SynthChild(BodyStmtKind())
+              or
+              exists(SimpleParameter param, BodyStmt body |
+                param = TSimpleParameterSynth(block, 0) and body = TBodyStmtSynth(block, 1)
+              |
+                parent = param and
+                i = 0 and
+                child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+                or
+                // assignment to pattern from for loop to synth parameter
+                parent = body and
+                i = 0 and
+                child = SynthChild(AssignExprKind())
+                or
+                parent = TAssignExprSynth(body, 0) and
+                (
+                  i = 0 and
+                  child = childRef(for.getPattern())
+                  or
+                  i = 1 and
+                  child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
+                )
+                or
+                // rest of block body
+                parent = body and
+                child = childRef(for.getBody().(Do).getStmt(i - 1))
+              )
             )
           )
-          or
-          // rest of block body
-          parent = block and
-          child = childRef(for.getBody().(Do).getStmt(i - 2))
         )
       )
     )
+  }
+
+  pragma[nomagic]
+  private predicate isDesugaredInitNode(ForExpr for, Variable v, AstNode n) {
+    exists(StmtSequence seq, AssignExpr ae |
+      seq = for.getDesugared() and
+      n = seq.getStmt(_) and
+      ae = n.(IfExpr).getThen() and
+      v = ae.getLeftOperand().getAVariable()
+    )
+    or
+    isDesugaredInitNode(for, v, n.getParent())
   }
 
   private class ForLoopSynthesis extends Synthesis {
@@ -1338,6 +1551,14 @@ private module ForLoopDesugar {
     final override predicate excludeFromControlFlowTree(AstNode n) {
       n = any(ForExpr for).getBody()
     }
+
+    final override predicate location(AstNode n, Location l) {
+      exists(ForExpr for, Ruby::AstNode access, Variable v |
+        forLoopVariableAccess(toTsFor(for), access, v) and
+        isDesugaredInitNode(for, v, n) and
+        l = access.getLocation()
+      )
+    }
   }
 }
 
@@ -1350,20 +1571,20 @@ private module ForLoopDesugar {
  * { a: a }
  * ```
  */
-private module ImplicitHashValueSynthesis {
-  private Ruby::AstNode keyWithoutValue(AstNode parent, int i) {
+module ImplicitHashValueSynthesis {
+  Ruby::AstNode keyWithoutValue(Ruby::AstNode parent, int i) {
     exists(Ruby::KeywordPattern pair |
       result = pair.getKey() and
-      result = toGenerated(parent.(HashPattern).getKey(i)) and
+      result = parent.(Ruby::HashPattern).getChild(i).(Ruby::KeywordPattern).getKey() and
       not exists(pair.getValue())
     )
     or
-    exists(Ruby::Pair pair |
-      i = 0 and
-      result = pair.getKey() and
-      pair = toGenerated(parent) and
-      not exists(pair.getValue())
-    )
+    parent =
+      any(Ruby::Pair pair |
+        i = 0 and
+        result = pair.getKey() and
+        not exists(pair.getValue())
+      )
   }
 
   private string keyName(Ruby::AstNode key) {
@@ -1373,7 +1594,7 @@ private module ImplicitHashValueSynthesis {
 
   private class ImplicitHashValueSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
-      exists(Ruby::AstNode key | key = keyWithoutValue(parent, i) |
+      exists(Ruby::AstNode key | key = keyWithoutValue(toGenerated(parent), i) |
         exists(TVariableReal variable |
           access(key, variable) and
           child = SynthChild(LocalVariableAccessRealKind(variable))
@@ -1400,7 +1621,7 @@ private module ImplicitHashValueSynthesis {
     }
 
     final override predicate location(AstNode n, Location l) {
-      exists(AstNode p, int i | l = keyWithoutValue(p, i).getLocation() |
+      exists(AstNode p, int i | l = keyWithoutValue(toGenerated(p), i).getLocation() |
         n = p.(HashPattern).getValue(i)
         or
         i = 0 and n = p.(Pair).getValue()
@@ -1686,6 +1907,90 @@ private module MatchPatternDesugar {
   private class MatchPatternSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       matchPatternSynthesis(parent, i, child)
+    }
+  }
+}
+
+private module ImplicitSuperArgsSynthesis {
+  pragma[nomagic]
+  private predicate superCallSynthesis(AstNode parent, int i, Child child) {
+    exists(TokenSuperCall call, SynthChild access, int pos, Ruby::AstNode param |
+      access = SynthChild(LocalVariableAccessRealKind(call.getImplicitArgument(pos, param)))
+    |
+      parent = call and
+      param instanceof Ruby::Identifier and
+      i = pos and
+      child = access
+      or
+      param instanceof Ruby::SplatParameter and
+      (
+        parent = call and
+        i = pos and
+        child = SynthChild(SplatExprKind())
+        or
+        parent = TSplatExprSynth(call, pos) and
+        i = 0 and
+        child = access
+      )
+      or
+      param instanceof Ruby::HashSplatParameter and
+      (
+        parent = call and
+        i = pos and
+        child = SynthChild(HashSplatExprKind())
+        or
+        parent = THashSplatExprSynth(call, pos) and
+        i = 0 and
+        child = access
+      )
+      or
+      exists(string name | name = param.(Ruby::KeywordParameter).getName().getValue() |
+        parent = call and
+        i = pos and
+        child = SynthChild(PairExprKind())
+        or
+        parent = TPairSynth(call, pos) and
+        i = 0 and
+        child = SynthChild(SymbolLiteralExprKind(name))
+        or
+        parent = TPairSynth(call, pos) and
+        i = 1 and
+        child = access
+      )
+    )
+  }
+
+  private class SuperCallSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      superCallSynthesis(parent, i, child)
+    }
+  }
+}
+
+private module CallableBodySynthesis {
+  private predicate bodySynthesis(AstNode parent, int i, Child child) {
+    exists(TMethodBase m, Ruby::AstNode body |
+      body = any(Ruby::Method g | m = TMethod(g)).getBody()
+      or
+      body = any(Ruby::SingletonMethod g | m = TSingletonMethod(g)).getBody()
+    |
+      parent = m and
+      not body instanceof Ruby::BodyStatement and
+      i = 0 and
+      child = SynthChild(BodyStmtKind())
+      or
+      exists(Stmt bodyStmt |
+        parent = TBodyStmtSynth(m, 0) and
+        i = 0 and
+        bodyStmt = fromGenerated(body) and
+        child = childRef(bodyStmt)
+      )
+    )
+  }
+
+  private class CallableBodySynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      bodySynthesis(parent, i, child)
     }
   }
 }

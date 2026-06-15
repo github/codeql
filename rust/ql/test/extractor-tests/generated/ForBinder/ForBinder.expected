@@ -1,0 +1,4 @@
+instances
+| gen_for_binder.rs:7:21:7:43 | for<...> |
+getGenericParamList
+| gen_for_binder.rs:7:21:7:43 | for<...> | gen_for_binder.rs:7:24:7:43 | <...> |

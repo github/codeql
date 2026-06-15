@@ -9,7 +9,7 @@ private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.UI
 private import semmle.code.csharp.security.dataflow.flowsinks.Html
 private import semmle.code.csharp.security.dataflow.flowsinks.Remote
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.frameworks.ServiceStack::XSS
 
 /**
@@ -24,7 +24,7 @@ abstract class Sink extends DataFlow::ExprNode, RemoteFlowSink {
 }
 
 private class ExternalXssSink extends Sink {
-  ExternalXssSink() { sinkNode(this, "xss") }
+  ExternalXssSink() { sinkNode(this, "js-injection") }
 }
 
 private class HtmlSinkSink extends Sink instanceof HtmlSink {

@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["bbq-beets/avocaddo-cmw/.github/workflows/mobile-ci-cd.yml", "*", "input.git-user-email", "code-injection", "generated"]
+     - ["bbq-beets/avocaddo-cmw/.github/workflows/mobile-ci-cd.yml", "*", "input.git-user-name", "code-injection", "generated"]
+     - ["bbq-beets/avocaddo-cmw/.github/workflows/mobile-ci-cd.yml", "*", "input.track", "code-injection", "generated"]
+     - ["bbq-beets/avocaddo-cmw/.github/workflows/mobile-ci-cd.yml", "*", "input.package-name", "code-injection", "generated"]

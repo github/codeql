@@ -1,0 +1,11 @@
+#select
+| ExternalAPISinkExample.java:12:5:12:70 | ... + ... | ExternalAPISinkExample.java:12:21:12:48 | getParameter(...) : String | ExternalAPISinkExample.java:12:5:12:70 | ... + ... | Call to javax.servlet.http.HttpServletResponse.sendError with untrusted data from $@. | ExternalAPISinkExample.java:12:21:12:48 | getParameter(...) : String | getParameter(...) : String |
+edges
+| ExternalAPISinkExample.java:12:21:12:48 | getParameter(...) : String | ExternalAPISinkExample.java:12:5:12:70 | ... + ... | provenance | Src:MaD:2 Sink:MaD:1 |
+models
+| 1 | Sink: javax.servlet.http; HttpServletResponse; false; sendError; (int,String); ; Argument[1]; information-leak; manual |
+| 2 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+nodes
+| ExternalAPISinkExample.java:12:5:12:70 | ... + ... | semmle.label | ... + ... |
+| ExternalAPISinkExample.java:12:21:12:48 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+subpaths

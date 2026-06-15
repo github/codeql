@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["demarches-simplifiees/demarches-simplifiees.fr", "*", "input.results_path", "code-injection", "generated"]

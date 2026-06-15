@@ -1,12 +1,12 @@
+overlay[local?]
+module;
+
 import java
 
 /**
  * Holds if any `web.xml` files are included in this snapshot.
  */
 predicate isWebXmlIncluded() { exists(WebXmlFile webXml) }
-
-/** DEPRECATED: Alias for isWebXmlIncluded */
-deprecated predicate isWebXMLIncluded = isWebXmlIncluded/0;
 
 /**
  * A deployment descriptor file, typically called `web.xml`.
@@ -31,9 +31,6 @@ class WebXmlFile extends XmlFile {
   }
 }
 
-/** DEPRECATED: Alias for WebXmlFile */
-deprecated class WebXMLFile = WebXmlFile;
-
 /**
  * An XML element in a `WebXMLFile`.
  */
@@ -45,9 +42,6 @@ class WebXmlElement extends XmlElement {
    */
   string getValue() { result = this.allCharactersString().trim() }
 }
-
-/** DEPRECATED: Alias for WebXmlElement */
-deprecated class WebXMLElement = WebXmlElement;
 
 /**
  * A `<context-param>` element in a `web.xml` file.

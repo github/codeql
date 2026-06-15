@@ -2,17 +2,17 @@ class TestContoller < ActionController::Base
   
   # this is vulnerable
   def upload
-    untar params[:file], params[:filename]
+    untar params[:file], params[:filename] # $ Source=upload
   end
 
   # this is vulnerable
   def unpload_zip
-    unzip params[:file]
+    unzip params[:file] # $ Source=upload_zip
   end
 
   # this is vulnerable
   def create_new_zip
-    zip params[:filename], files
+    zip params[:filename], files # $ Source=create_new_zip
   end
 
   # these are not vulnerable because of the string compare sanitizer
@@ -56,7 +56,7 @@ class TestContoller < ActionController::Base
         else
           destination_directory = File.dirname(destination_file)
           FileUtils.mkdir_p destination_directory unless File.directory?(destination_directory)
-          File.open destination_file, "wb" do |f|
+          File.open destination_file, "wb" do |f| # $ Alert=upload
             f.print tarfile.read
           end
         end
@@ -65,7 +65,7 @@ class TestContoller < ActionController::Base
   end
 
   def unzip(file)
-    Zip::File.open(file) do |zip_file|
+    Zip::File.open(file) do |zip_file| # $ Alert=upload_zip
       zip_file.each do |entry|
         entry.extract
       end
@@ -73,7 +73,7 @@ class TestContoller < ActionController::Base
   end
 
   def zip(filename, files = [])
-    Zip::File.new(filename) do |zf|
+    Zip::File.new(filename) do |zf| # $ Alert=create_new_zip
       files.each do |f|
         zf.add f
       end

@@ -1,4 +1,8 @@
-/** Contains predicates concerning when and where files are opened and closed. */
+/**
+ * DEPRECATED: Use FileNotAlwaysClosedQuery instead.
+ * Contains predicates concerning when and where files are opened and closed.
+ */
+deprecated module;
 
 import python
 import semmle.python.pointsto.Filters

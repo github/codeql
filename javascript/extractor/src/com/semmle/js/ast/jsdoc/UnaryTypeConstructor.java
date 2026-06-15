@@ -19,7 +19,7 @@ public abstract class UnaryTypeConstructor extends JSDocTypeExpression {
       String operator) {
     super(loc, type);
     this.expression = expression;
-    this.prefix = prefix == Boolean.TRUE;
+    this.prefix = Boolean.TRUE.equals(prefix);
     this.operator = operator;
   }
 

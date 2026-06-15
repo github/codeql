@@ -1,0 +1,6 @@
+| ExampleRuntimeExit.java:22:17:22:44 | exit(...) | Avoid calls to Runtime.exit() as this prevents runtime cleanup and makes code harder to reuse. |
+| ExampleRuntimeExit.java:25:17:25:44 | exit(...) | Avoid calls to Runtime.exit() as this prevents runtime cleanup and makes code harder to reuse. |
+| ExampleRuntimeHalt.java:18:17:18:44 | halt(...) | Avoid calls to Runtime.halt() as this prevents runtime cleanup and makes code harder to reuse. |
+| ExampleRuntimeHalt.java:21:17:21:44 | halt(...) | Avoid calls to Runtime.halt() as this prevents runtime cleanup and makes code harder to reuse. |
+| ExampleSystemExit.java:22:17:22:30 | exit(...) | Avoid calls to System.exit() as this prevents runtime cleanup and makes code harder to reuse. |
+| ExampleSystemExit.java:25:17:25:30 | exit(...) | Avoid calls to System.exit() as this prevents runtime cleanup and makes code harder to reuse. |

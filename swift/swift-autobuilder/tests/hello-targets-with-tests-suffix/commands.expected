@@ -1,0 +1,1 @@
+/usr/bin/xcodebuild build -project ./Foo.xcodeproj -target FooDemo CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO

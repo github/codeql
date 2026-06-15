@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for identifying methods and constructors called by Spring injection.
  */
+overlay[local?]
+module;
 
 import java
 import SpringComponentScan
@@ -12,7 +14,7 @@ import SpringComponentScan
 predicate hasInjectAnnotation(Annotatable a) {
   a.hasAnnotation("org.springframework.beans.factory.annotation", "Autowired") or
   a.getAnAnnotation() instanceof SpringResourceAnnotation or
-  a.hasAnnotation("javax.inject", "Inject")
+  a.hasAnnotation(javaxOrJakarta() + ".inject", "Inject")
 }
 
 /**
@@ -99,9 +101,6 @@ class SpringBeanXmlAutowiredSetterMethod extends Method {
     )
   }
 }
-
-/** DEPRECATED: Alias for SpringBeanXmlAutowiredSetterMethod */
-deprecated class SpringBeanXMLAutowiredSetterMethod = SpringBeanXmlAutowiredSetterMethod;
 
 /**
  * A callable that is annotated with `@Autowired`.
@@ -293,7 +292,7 @@ class SpringBeanAutowiredField extends Field {
 class SpringQualifierAnnotationType extends AnnotationType {
   SpringQualifierAnnotationType() {
     this.hasQualifiedName("org.springframework.beans.factory.annotation", "Qualifier") or
-    this.hasQualifiedName("javax.inject", "Qualifier") or
+    this.hasQualifiedName(javaxOrJakarta() + ".inject", "Qualifier") or
     this.getAnAnnotation().getType() instanceof SpringQualifierAnnotationType
   }
 }
@@ -341,7 +340,9 @@ class SpringQualifierAnnotation extends Annotation {
  * autowired by Spring, and can optionally specify a qualifier in the "name".
  */
 class SpringResourceAnnotation extends Annotation {
-  SpringResourceAnnotation() { this.getType().hasQualifiedName("javax.inject", "Resource") }
+  SpringResourceAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".inject", "Resource")
+  }
 
   /**
    * Gets the specified name value, if any.

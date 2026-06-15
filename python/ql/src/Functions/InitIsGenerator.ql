@@ -2,7 +2,8 @@
  * @name `__init__` method is a generator
  * @description `__init__` method is a generator.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low

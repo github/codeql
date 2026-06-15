@@ -1,0 +1,52 @@
+name: Test WR
+
+on:
+  workflow_run:
+    workflows:
+      - Test
+    types:
+      - completed
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-24.04
+    outputs:
+      github-sha: ${{ steps.get-sha.outputs.sha }}
+      chart-version: ${{ steps.get-version.outputs.chart_version }}
+    steps:
+      - name: Get triggering event SHA
+        id: get-sha
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch"  ]]; then
+            echo sha="${{ inputs.checkout_ref }}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "workflow_run" ]]; then
+            echo sha="${{ github.event.workflow_run.head_sha }}" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            echo sha="${{ github.sha }}" >> $GITHUB_OUTPUT
+          else
+            echo "Invalid event type"
+            exit 1
+          fi
+      - name: Checkout Source Code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+          ref: ${{ steps.get-sha.outputs.sha }}
+          fetch-depth: 0
+      - name: Get version
+        id: get-version
+        run: |
+          echo "chart_version=$(<ERSION)" | tee -a $GITHUB_OUTPUT
+
+  push:
+    name: Push
+    runs-on: ubuntu-24.04
+    needs: setup
+    steps:
+      - run: |
+          echo ${{ needs.setup.outputs.chart-version }}

@@ -9,5 +9,5 @@ namespace Semmle.Extraction.CSharp
         XmlDoc,                 // Comment starting /// ...
         Multiline,              // Comment starting /* ..., even if the comment only spans one line.
         MultilineContinuation   // The second and subsequent lines of comment in a multiline comment.
-    };
+    }
 }

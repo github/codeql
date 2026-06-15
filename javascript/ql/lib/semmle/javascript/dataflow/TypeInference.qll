@@ -27,10 +27,8 @@
 
 private import javascript
 import AbstractValues
-import AbstractProperties
 private import InferredTypes
 private import Refinements
-private import internal.AbstractValuesImpl
 import internal.BasicExprTypeInference
 import internal.InterModuleTypeInference
 import internal.InterProceduralTypeInference
@@ -94,10 +92,15 @@ class AnalyzedNode extends DataFlow::Node {
   PrimitiveType getAPrimitiveType() { result = this.getAValue().toPrimitive().getType() }
 
   /** Gets a Boolean value that this node evaluates to. */
+  bindingset[this]
+  overlay[caller?]
+  pragma[inline_late]
   boolean getABooleanValue() { result = this.getAValue().getBooleanValue() }
 
   /** Gets the unique Boolean value that this node evaluates to, if any. */
-  boolean getTheBooleanValue() { forex(boolean bv | bv = this.getABooleanValue() | result = bv) }
+  overlay[caller?]
+  pragma[inline]
+  boolean getTheBooleanValue() { result = unique( | | this.getABooleanValue()) }
 
   /** Gets the unique type inferred for this node, if any. */
   InferredType getTheType() { result = unique(InferredType t | t = this.getAType()) }

@@ -10,7 +10,7 @@ class Bad {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object obj) { // $ Alert
 		Bad other = (Bad) obj;
 		if (data != other.data)
 			return false;

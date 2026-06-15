@@ -1,0 +1,52 @@
+on:
+  pull_request_target:
+
+permissions:
+  actions: write
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    outputs:
+      job_output: ${{ steps.step5.outputs.MSG5 }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - id: step0 
+        uses: mad9000/actions-find-and-replace-string@3
+        with:
+          source: ${{ github.event['pull_request']['body'] }}
+          find: 'foo'
+          replace: ''
+      - id: step1
+        env:
+          BODY: ${{ steps.step0.outputs.value}}
+        run: echo "::set-output name=MSG::${BODY}"
+      - id: step2
+        env:
+            MSG: ${{steps.step1.outputs.MSG}}
+        run: echo "MSG2=$MSG" >> "$GITHUB_OUTPUT"
+      - id: step3
+        env:
+            MSG2: ${{steps.step2.outputs.MSG2}}
+        run: echo "MSG3=$MSG2" >> "${GITHUB_OUTPUT}"
+      - id: step4
+        env:
+            MSG3: ${{steps.step3.outputs.MSG3}}
+        run: echo "MSG4=$MSG3" >> ${GITHUB_OUTPUT}
+      - id: step5
+        env:
+            MSG4: ${{steps.step4.outputs.MSG4}}
+        run: echo "MSG5=$MSG4" >> $GITHUB_OUTPUT
+
+  job2:
+    runs-on: ubuntu-latest
+
+    if: ${{ always() }}
+
+    needs: job1
+
+    steps:
+      - run: echo ${{needs.job1.outputs['job_output']}}

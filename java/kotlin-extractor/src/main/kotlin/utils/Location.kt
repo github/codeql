@@ -5,8 +5,8 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 
-data class Location(val startOffset: Int, val endOffset: Int){
-    fun contains(location: Location) : Boolean {
+data class Location(val startOffset: Int, val endOffset: Int) {
+    fun contains(location: Location): Boolean {
         return this.startOffset <= location.startOffset && this.endOffset >= location.endOffset
     }
 
@@ -15,10 +15,10 @@ data class Location(val startOffset: Int, val endOffset: Int){
     }
 }
 
-fun IrElement.getLocation() : Location {
+fun IrElement.getLocation(): Location {
     return Location(this.startOffset, this.endOffset)
 }
 
-fun PsiElement.getLocation() : Location {
+fun PsiElement.getLocation(): Location {
     return Location(this.startOffset, this.endOffset)
 }

@@ -7,12 +7,15 @@ private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `invoke` PyPI package.
  * See https://www.pyinvoke.org/.
  */
-private module Invoke {
+module Invoke {
   // ---------------------------------------------------------------------------
   // invoke
   // ---------------------------------------------------------------------------
@@ -30,6 +33,8 @@ private module Invoke {
           result = API::moduleImport("invoke").getMember("context").getMember("Context")
           or
           result = API::moduleImport("invoke").getMember("Context")
+          or
+          result = ModelOutput::getATypeNode("invoke.context.Context~Subclass").getASubclass*()
         }
 
         /** Gets a reference to an instance of `invoke.context.Context`. */

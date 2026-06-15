@@ -1,13 +1,8 @@
 import csharp
-import semmle.code.csharp.commons.QualifiedName
 
-from
-  Method m, Method overrider, string mnamespace, string mtype, string mname, string onamespace,
-  string otype, string oname
+from Method m, Method overrider
 where
   m.getAnOverrider() = overrider and
-  m.getFile().getStem() = "CovariantReturn" and
-  m.hasQualifiedName(mnamespace, mtype, mname) and
-  overrider.hasQualifiedName(onamespace, otype, oname)
-select getQualifiedName(mnamespace, mtype, mname), m.getReturnType().toString(),
-  getQualifiedName(onamespace, otype, oname), overrider.getReturnType().toString()
+  m.getFile().getStem() = "CovariantReturn"
+select m.getFullyQualifiedNameDebug(), m.getReturnType().toString(),
+  overrider.getFullyQualifiedNameDebug(), overrider.getReturnType().toString()

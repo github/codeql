@@ -1,5 +1,5 @@
 /**
- * @name Unsafe deserialization with Spring's remote service exporters.
+ * @name Unsafe deserialization with Spring's remote service exporters
  * @description A Spring bean, which is based on RemoteInvocationSerializingExporter,
  *              initializes an endpoint that uses ObjectInputStream to deserialize
  *              incoming data. In the worst case, that may lead to remote code execution.
@@ -13,7 +13,7 @@
  */
 
 import java
-import UnsafeSpringExporterLib
+deprecated import UnsafeSpringExporterLib
 
 /**
  * Holds if `type` is a Spring configuration that declares beans.
@@ -34,7 +34,7 @@ private predicate isConfigurationAnnotation(Annotation annotation) {
 /**
  * A method that initializes a unsafe bean based on `RemoteInvocationSerializingExporter`.
  */
-private class UnsafeBeanInitMethod extends Method {
+deprecated private class UnsafeBeanInitMethod extends Method {
   string identifier;
 
   UnsafeBeanInitMethod() {
@@ -54,6 +54,6 @@ private class UnsafeBeanInitMethod extends Method {
   string getBeanIdentifier() { result = identifier }
 }
 
-from UnsafeBeanInitMethod method
-select method,
-  "Unsafe deserialization in a Spring exporter bean '" + method.getBeanIdentifier() + "'."
+deprecated query predicate problems(UnsafeBeanInitMethod method, string message) {
+  message = "Unsafe deserialization in a Spring exporter bean '" + method.getBeanIdentifier() + "'."
+}

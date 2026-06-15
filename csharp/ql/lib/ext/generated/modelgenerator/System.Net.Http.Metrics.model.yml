@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Net.Http.Metrics", "HttpMetricsEnrichmentContext", False, "get_Exception", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Http.Metrics", "HttpMetricsEnrichmentContext", False, "get_Request", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Http.Metrics", "HttpMetricsEnrichmentContext", False, "get_Response", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Net.Http.Metrics", "HttpMetricsEnrichmentContext", "AddCallback", "(System.Net.Http.HttpRequestMessage,System.Action<System.Net.Http.Metrics.HttpMetricsEnrichmentContext>)", "summary", "df-generated"]
+      - ["System.Net.Http.Metrics", "HttpMetricsEnrichmentContext", "AddCustomTag", "(System.String,System.Object)", "summary", "df-generated"]

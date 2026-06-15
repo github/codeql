@@ -1,0 +1,62 @@
+on:
+  issue_comment:
+jobs:
+  test1:
+    runs-on: ubuntu-latest
+    steps:
+      - id: clob1
+        env:
+          BODY: ${{ github.event.comment.body }}
+        run: |
+          # VULNERABLE
+          echo $BODY
+          echo "::set-output name=OUTPUT::SAFE"
+      - id: clob2
+        env:
+          BODY: ${{ github.event.comment.body }}
+        run: |
+          # VULNERABLE
+          echo "::set-output name=OUTPUT::SAFE"
+          echo $BODY
+      - id: clob3
+        run: |
+          echo ${{ steps.clob1.outputs.OUTPUT }}
+  test2:
+    runs-on: ubuntu-latest
+    steps:
+      - id: clob1
+        env:
+          BODY: ${{ github.event.comment.body }}
+        run: |
+          # NOT VULNERABLE
+          echo "::set-output name=OUTPUT::SAFE"
+  test3:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          run_id: ${{ github.event.workflow_run.id }}
+          name: pr_number 
+      - id: clob1
+        run: |
+          # VULNERABLE
+          PR="$(<pr-number)"
+          echo "$PR"
+          echo "::set-output name=OUTPUT::SAFE"
+      - id: clob2
+        run: |
+          # VULNERABLE
+          cat pr-number
+          echo "::set-output name=OUTPUT::SAFE"
+      - id: clob3
+        run: |
+          # VULNERABLE
+          echo "::set-output name=OUTPUT::SAFE"
+          ls *.txt
+      - id: clob4
+        run: |
+          # VULNERABLE
+          CURRENT_VERSION=$(cat gradle.properties | sed -n '/^version=/ { s/^version=//;p }')
+          echo "$CURRENT_VERSION"
+          echo "::set-output name=OUTPUT::SAFE"

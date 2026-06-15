@@ -32,13 +32,6 @@ module StackTraceExposure {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "stack trace exposure" vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * A source of exception info, considered as a flow source.
    */
   class ExceptionInfoAsSource extends Source instanceof ExceptionInfo {

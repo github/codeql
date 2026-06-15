@@ -1,10 +1,11 @@
-| test.py:3:29:3:31 | 0-9 | Suspicious character range that overlaps with 3-5 in the same character class. |
-| test.py:5:31:5:33 | A-z | Suspicious character range that overlaps with A-Z in the same character class, and is equivalent to [A-Z\\[\\\\\\]^_`a-z]. |
-| test.py:7:28:7:30 | z-a | Suspicious character range that is empty. |
-| test.py:17:38:17:40 | A-f | Suspicious character range that overlaps with a-f in the same character class, and is equivalent to [A-Z\\[\\\\\\]^_`a-f]. |
-| test.py:19:30:19:32 | $-` | Suspicious character range that is equivalent to [$%&'()*+,\\-.\\/0-9:;<=>?@A-Z\\[\\\\\\]^_`]. |
-| test.py:21:43:21:45 | +-< | Suspicious character range that is equivalent to [+,\\-.\\/0-9:;<]. |
-| test.py:23:47:23:49 | .-_ | Suspicious character range that overlaps with 1-9 in the same character class, and is equivalent to [.\\/0-9:;<=>?@A-Z\\[\\\\\\]^_]. |
-| test.py:25:34:25:36 | 7-F | Suspicious character range that is equivalent to [7-9:;<=>?@A-F]. |
-| test.py:27:38:27:40 | 0-9 | Suspicious character range that overlaps with \\d in the same character class. |
-| test.py:29:41:29:43 | .-? | Suspicious character range that overlaps with \\w in the same character class, and is equivalent to [.\\/0-9:;<=>?]. |
+| test.py:3:27:3:29 | 0-9 | Suspicious character range that overlaps with 3-5 in the same character class. |
+| test.py:5:29:5:31 | A-z | Suspicious character range that overlaps with A-Z in the same character class, and is equivalent to [A-Z\\[\\\\\\]^_`a-z]. |
+| test.py:7:26:7:28 | z-a | Suspicious character range that is empty. |
+| test.py:17:36:17:38 | A-f | Suspicious character range that overlaps with a-f in the same character class, and is equivalent to [A-Z\\[\\\\\\]^_`a-f]. |
+| test.py:19:28:19:30 | $-` | Suspicious character range that is equivalent to [$%&'()*+,\\-.\\/0-9:;<=>?@A-Z\\[\\\\\\]^_`]. |
+| test.py:21:41:21:43 | +-< | Suspicious character range that is equivalent to [+,\\-.\\/0-9:;<]. |
+| test.py:23:45:23:47 | .-_ | Suspicious character range that overlaps with 1-9 in the same character class, and is equivalent to [.\\/0-9:;<=>?@A-Z\\[\\\\\\]^_]. |
+| test.py:25:32:25:34 | 7-F | Suspicious character range that is equivalent to [7-9:;<=>?@A-F]. |
+| test.py:27:36:27:38 | 0-9 | Suspicious character range that overlaps with \\d in the same character class. |
+| test.py:29:39:29:41 | .-? | Suspicious character range that overlaps with \\w in the same character class, and is equivalent to [.\\/0-9:;<=>?]. |
+| test.py:31:30:31:32 | \ufffd-\ufffd | Suspicious character range that overlaps with \\ufffd-\\ufffd in the same character class. |

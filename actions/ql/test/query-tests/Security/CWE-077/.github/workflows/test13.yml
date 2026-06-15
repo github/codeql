@@ -1,0 +1,23 @@
+name: publish
+on:
+  pull_request_target:
+    branches:
+      - main
+jobs:
+  need-publish:
+    permissions:
+      actions: write 
+    name: Need Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Get commit message
+        run: |
+          COMMIT_MESSAGE=$(git log --format=%s)
+          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
+      - name: Get commit message
+        run: |
+          echo "COMMIT_MESSAGE=$(git log --format=%s)" >> $GITHUB_ENV

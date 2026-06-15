@@ -59,9 +59,15 @@
 | Test.java:183:22:183:31 | tableNames | 23 | Test.java:206:36:208:55 | ... + ... |
 | Test.java:183:22:183:31 | tableNames | 24 | Test.java:207:8:207:18 | userTabName |
 | Test.java:183:22:183:31 | tableNames | 26 | Test.java:209:47:209:68 | queryWithUserTableName |
-| Test.java:213:21:213:24 | main | 1 | Test.java:214:11:214:14 | args |
-| Test.java:213:21:213:24 | main | 3 | Test.java:216:8:216:11 | args |
-| Test.java:213:21:213:24 | main | 5 | Test.java:218:14:218:17 | args |
+| Test.java:213:22:213:32 | bindingVars | 3 | Test.java:216:43:216:46 | args |
+| Test.java:213:22:213:32 | bindingVars | 3 | Test.java:216:43:216:49 | ...[...] |
+| Test.java:213:22:213:32 | bindingVars | 8 | Test.java:221:81:221:102 | ... + ... |
+| Test.java:213:22:213:32 | bindingVars | 8 | Test.java:221:81:221:111 | ... + ... |
+| Test.java:213:22:213:32 | bindingVars | 8 | Test.java:221:95:221:102 | category |
+| Test.java:227:21:227:24 | main | 1 | Test.java:228:11:228:14 | args |
+| Test.java:227:21:227:24 | main | 3 | Test.java:230:8:230:11 | args |
+| Test.java:227:21:227:24 | main | 5 | Test.java:232:14:232:17 | args |
+| Test.java:227:21:227:24 | main | 6 | Test.java:233:15:233:18 | args |
 | Validation.java:6:21:6:35 | checkIdentifier | 1 | Validation.java:7:23:7:24 | id |
 | Validation.java:6:21:6:35 | checkIdentifier | 2 | Validation.java:8:13:8:14 | id |
 | Validation.java:6:21:6:35 | checkIdentifier | 2 | Validation.java:8:13:8:24 | charAt(...) |

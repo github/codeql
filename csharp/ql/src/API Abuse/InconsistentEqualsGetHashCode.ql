@@ -6,8 +6,9 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/inconsistent-equals-and-gethashcode
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-581
  */
 

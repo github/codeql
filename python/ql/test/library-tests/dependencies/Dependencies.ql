@@ -1,5 +1,6 @@
 import python
 import semmle.python.dependencies.Dependencies
+private import LegacyPointsTo
 
 from DependencyKind dk, AstNode src, Object target
 where dk.isADependency(src, target)

@@ -1,1 +1,2 @@
-NodeJS/CyclicImport.ql
+query: NodeJS/CyclicImport.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

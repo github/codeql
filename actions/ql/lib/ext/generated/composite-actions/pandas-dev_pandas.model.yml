@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["pandas-dev/pandas", "*", "input.meson_args", "code-injection", "generated"]
+     - ["pandas-dev/pandas", "*", "input.editable", "code-injection", "generated"]
+     - ["pandas-dev/pandas", "*", "input.cflags_adds", "code-injection", "generated"]

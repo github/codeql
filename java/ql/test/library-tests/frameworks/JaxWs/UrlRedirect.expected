@@ -1,8 +1,20 @@
+#select
+| UrlRedirectJakarta.java:10:24:10:62 | new URI(...) | UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJakarta.java:10:24:10:62 | new URI(...) | Untrusted URL redirection depends on a $@. | UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) | user-provided value |
+| UrlRedirectJakarta.java:13:33:13:71 | new URI(...) | UrlRedirectJakarta.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJakarta.java:13:33:13:71 | new URI(...) | Untrusted URL redirection depends on a $@. | UrlRedirectJakarta.java:13:41:13:70 | getParameter(...) | user-provided value |
+| UrlRedirectJax.java:10:24:10:62 | new URI(...) | UrlRedirectJax.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJax.java:10:24:10:62 | new URI(...) | Untrusted URL redirection depends on a $@. | UrlRedirectJax.java:10:32:10:61 | getParameter(...) | user-provided value |
+| UrlRedirectJax.java:13:33:13:71 | new URI(...) | UrlRedirectJax.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJax.java:13:33:13:71 | new URI(...) | Untrusted URL redirection depends on a $@. | UrlRedirectJax.java:13:41:13:70 | getParameter(...) | user-provided value |
 edges
-| UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJakarta.java:10:24:10:62 | new URI(...) |
-| UrlRedirectJakarta.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJakarta.java:13:33:13:71 | new URI(...) |
-| UrlRedirectJax.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJax.java:10:24:10:62 | new URI(...) |
-| UrlRedirectJax.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJax.java:13:33:13:71 | new URI(...) |
+| UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJakarta.java:10:24:10:62 | new URI(...) | provenance | Src:MaD:5 MaD:6 Sink:MaD:1 |
+| UrlRedirectJakarta.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJakarta.java:13:33:13:71 | new URI(...) | provenance | Src:MaD:5 MaD:6 Sink:MaD:2 |
+| UrlRedirectJax.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJax.java:10:24:10:62 | new URI(...) | provenance | Src:MaD:5 MaD:6 Sink:MaD:3 |
+| UrlRedirectJax.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJax.java:13:33:13:71 | new URI(...) | provenance | Src:MaD:5 MaD:6 Sink:MaD:4 |
+models
+| 1 | Sink: jakarta.ws.rs.core; Response; true; seeOther; ; ; Argument[0]; url-redirection; manual |
+| 2 | Sink: jakarta.ws.rs.core; Response; true; temporaryRedirect; ; ; Argument[0]; url-redirection; manual |
+| 3 | Sink: javax.ws.rs.core; Response; true; seeOther; ; ; Argument[0]; url-redirection; manual |
+| 4 | Sink: javax.ws.rs.core; Response; true; temporaryRedirect; ; ; Argument[0]; url-redirection; manual |
+| 5 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 6 | Summary: java.net; URI; false; URI; (String); ; Argument[0]; Argument[this]; taint; manual |
 nodes
 | UrlRedirectJakarta.java:10:24:10:62 | new URI(...) | semmle.label | new URI(...) |
 | UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) : String | semmle.label | getParameter(...) : String |
@@ -13,8 +25,3 @@ nodes
 | UrlRedirectJax.java:13:33:13:71 | new URI(...) | semmle.label | new URI(...) |
 | UrlRedirectJax.java:13:41:13:70 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 subpaths
-#select
-| UrlRedirectJakarta.java:10:24:10:62 | new URI(...) | UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJakarta.java:10:24:10:62 | new URI(...) | Untrusted URL redirection depends on a $@. | UrlRedirectJakarta.java:10:32:10:61 | getParameter(...) | user-provided value |
-| UrlRedirectJakarta.java:13:33:13:71 | new URI(...) | UrlRedirectJakarta.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJakarta.java:13:33:13:71 | new URI(...) | Untrusted URL redirection depends on a $@. | UrlRedirectJakarta.java:13:41:13:70 | getParameter(...) | user-provided value |
-| UrlRedirectJax.java:10:24:10:62 | new URI(...) | UrlRedirectJax.java:10:32:10:61 | getParameter(...) : String | UrlRedirectJax.java:10:24:10:62 | new URI(...) | Untrusted URL redirection depends on a $@. | UrlRedirectJax.java:10:32:10:61 | getParameter(...) | user-provided value |
-| UrlRedirectJax.java:13:33:13:71 | new URI(...) | UrlRedirectJax.java:13:41:13:70 | getParameter(...) : String | UrlRedirectJax.java:13:33:13:71 | new URI(...) | Untrusted URL redirection depends on a $@. | UrlRedirectJax.java:13:41:13:70 | getParameter(...) | user-provided value |

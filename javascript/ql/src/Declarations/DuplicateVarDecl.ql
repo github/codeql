@@ -5,7 +5,9 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/duplicate-variable-declaration
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  * @precision very-high
  */
 

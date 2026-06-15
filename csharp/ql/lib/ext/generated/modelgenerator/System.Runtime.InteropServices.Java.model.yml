@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Runtime.InteropServices.Java", "JavaMarshal", "CreateReferenceTrackingHandle", "(System.Object,System.Void*)", "summary", "df-generated"]
+      - ["System.Runtime.InteropServices.Java", "JavaMarshal", "FinishCrossReferenceProcessing", "(System.Runtime.InteropServices.Java.MarkCrossReferencesArgs*,System.ReadOnlySpan<System.Runtime.InteropServices.GCHandle>)", "summary", "df-generated"]
+      - ["System.Runtime.InteropServices.Java", "JavaMarshal", "GetContext", "(System.Runtime.InteropServices.GCHandle)", "summary", "df-generated"]
+      - ["System.Runtime.InteropServices.Java", "JavaMarshal", "Initialize", "()", "summary", "df-generated"]

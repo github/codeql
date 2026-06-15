@@ -9,22 +9,7 @@ Finding string formatting vulnerabilities in C/C++
 Setup
 =====
 
-For this example you should download:
-
-- `CodeQL for Visual Studio Code <https://codeql.github.com/docs/codeql-for-visual-studio-code/setting-up-codeql-in-visual-studio-code/>`__
-- `dotnet/coreclr database <http://downloads.lgtm.com/snapshots/cpp/dotnet/coreclr/dotnet_coreclr_fbe0c77.zip>`__
-
-.. note::
-
-   For the examples in this presentation, we will be analyzing `dotnet/coreclr <https://github.com/dotnet/coreclr>`__.
-
-   You can query the project in `the query console <https://lgtm.com/query/projects:1505958977333/lang:cpp/>`__ on LGTM.com.
-
-   .. insert database-note.rst to explain differences between database available to download and the version available in the query console.
-
-   .. include:: ../slide-snippets/database-note.rst
-
-   .. resume slides
+For this example you need to set up `CodeQL for Visual Studio Code <hhttps://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/installing-codeql-for-vs-code>`__ and download the CodeQL database for `dotnet/coreclr <https://github.com/dotnet/coreclr>`__ from GitHub.
 
 .. rst-class:: agenda
 

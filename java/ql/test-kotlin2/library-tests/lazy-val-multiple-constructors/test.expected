@@ -1,0 +1,2 @@
+| test.kt:3:23:3:32 | new KProperty1<Test,Integer>(...) { ... } | test.kt:3:23:3:32 | ...::... |
+| test.kt:3:28:3:32 | new Function0<Integer>(...) { ... } | test.kt:3:28:3:32 | ...->... |

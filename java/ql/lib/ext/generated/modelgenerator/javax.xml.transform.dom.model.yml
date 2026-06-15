@@ -1,0 +1,32 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.node]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,Node)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.node]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,Node)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.nextSibling]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,Node,String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.node]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,Node,String)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.nextSibling]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,Node,String)", "", "Argument[2]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.systemId]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.node]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "DOMResult", "(Node,String)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.systemId]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "getNextSibling", "()", "", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.nextSibling]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "getNode", "()", "", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.node]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "getSystemId", "()", "", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.systemId]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "setNextSibling", "(Node)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.nextSibling]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "setNode", "(Node)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.node]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMResult", True, "setSystemId", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMResult.systemId]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMSource", True, "DOMSource", "(Node)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMSource.node]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMSource", True, "DOMSource", "(Node,String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMSource.node]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMSource", True, "DOMSource", "(Node,String)", "", "Argument[1]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMSource.systemID]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMSource", True, "getNode", "()", "", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMSource.node]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMSource", True, "getSystemId", "()", "", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMSource.systemID]", "ReturnValue", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMSource", True, "setNode", "(Node)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMSource.node]", "value", "dfc-generated"]
+      - ["javax.xml.transform.dom", "DOMSource", True, "setSystemId", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[javax.xml.transform.dom.DOMSource.systemID]", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.xml.transform.dom", "DOMSource", "isEmpty", "()", "summary", "df-generated"]

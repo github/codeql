@@ -28,7 +28,7 @@ MultiCatch.java:
 #   15|               1: [LocalVariableDeclExpr] e
 #   16|             1: [BlockStmt] { ... }
 #   17|               0: [ExprStmt] <Expr>;
-#   17|                 0: [MethodAccess] printStackTrace(...)
+#   17|                 0: [MethodCall] printStackTrace(...)
 #   17|                   -1: [VarAccess] e
 #   18|               1: [ThrowStmt] throw ...
 #   18|                 0: [VarAccess] e

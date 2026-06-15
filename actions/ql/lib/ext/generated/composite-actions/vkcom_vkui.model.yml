@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["vkcom/vkui", "*", "input.next_version", "code-injection", "generated"]
+     - ["vkcom/vkui", "*", "input.package_name", "code-injection", "generated"]
+     - ["vkcom/vkui", "*", "input.npm_tag", "code-injection", "generated"]
+     - ["vkcom/vkui", "*", "input.prev_version", "code-injection", "generated"]
+     - ["vkcom/vkui", "*", "input.new_version", "code-injection", "generated"]
+     - ["vkcom/vkui", "*", "input.pre_id", "code-injection", "generated"]

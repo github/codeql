@@ -1,5 +1,5 @@
 /**
- * @name Do not add certificates to the system root store.
+ * @name Do not add certificates to the system root store
  * @description Application- or user-specific certificates placed in the system root store could
  *              weaken security for other processing running on the same system.
  * @kind path-problem
@@ -19,7 +19,7 @@ module AddCertToRootStoreConfig implements DataFlow::ConfigSig {
     exists(ObjectCreation oc | oc = source.asExpr() |
       oc.getType()
           .(RefType)
-          .hasQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store") and
+          .hasFullyQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store") and
       oc.getArgument(0).(Access).getTarget().hasName("Root")
     )
   }
@@ -28,14 +28,17 @@ module AddCertToRootStoreConfig implements DataFlow::ConfigSig {
     exists(MethodCall mc |
       (
         mc.getTarget()
-            .hasQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store", "Add") or
+            .hasFullyQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store",
+              "Add") or
         mc.getTarget()
-            .hasQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store",
+            .hasFullyQualifiedName("System.Security.Cryptography.X509Certificates", "X509Store",
               "AddRange")
       ) and
       sink.asExpr() = mc.getQualifier()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module AddCertToRootStore = DataFlow::Global<AddCertToRootStoreConfig>;

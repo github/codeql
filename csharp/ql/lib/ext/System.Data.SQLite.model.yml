@@ -3,13 +3,13 @@ extensions:
       pack: codeql/csharp-all
       extensible: sinkModel
     data:
-      - ["System.Data.SQLite", "SQLiteCommand", False, "SQLiteCommand", "(System.String)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.SQLite", "SQLiteCommand", False, "SQLiteCommand", "(System.String,System.Data.SQLite.SQLiteConnection)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.SQLite", "SQLiteCommand", False, "SQLiteCommand", "(System.String,System.Data.SQLite.SQLiteConnection,System.Data.SQLite.SQLiteTransaction)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.SQLite", "SQLiteDataAdapter", False, "SQLiteDataAdapter", "(System.Data.SQLite.SQLiteCommand)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.SQLite", "SQLiteDataAdapter", False, "SQLiteDataAdapter", "(System.String,System.Data.SQLite.SQLiteConnection)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.SQLite", "SQLiteDataAdapter", False, "SQLiteDataAdapter", "(System.String,System.String)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.SQLite", "SQLiteDataAdapter", False, "SQLiteDataAdapter", "(System.String,System.String,System.Boolean)", "", "Argument[0]", "sql", "manual"]
+      - ["System.Data.SQLite", "SQLiteCommand", False, "SQLiteCommand", "(System.String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.SQLite", "SQLiteCommand", False, "SQLiteCommand", "(System.String,System.Data.SQLite.SQLiteConnection)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.SQLite", "SQLiteCommand", False, "SQLiteCommand", "(System.String,System.Data.SQLite.SQLiteConnection,System.Data.SQLite.SQLiteTransaction)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.SQLite", "SQLiteDataAdapter", False, "SQLiteDataAdapter", "(System.Data.SQLite.SQLiteCommand)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.SQLite", "SQLiteDataAdapter", False, "SQLiteDataAdapter", "(System.String,System.Data.SQLite.SQLiteConnection)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.SQLite", "SQLiteDataAdapter", False, "SQLiteDataAdapter", "(System.String,System.String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.SQLite", "SQLiteDataAdapter", False, "SQLiteDataAdapter", "(System.String,System.String,System.Boolean)", "", "Argument[0]", "sql-injection", "manual"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: summaryModel

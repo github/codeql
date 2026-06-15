@@ -1,0 +1,3 @@
+| fixed.cs:3:7:3:11 | {...} | fixed.cs:3:7:3:11 | Fixed |
+| statements.cs:8:11:8:15 | {...} | statements.cs:8:11:8:15 | Class |
+| statements.cs:244:15:244:25 | {...} | statements.cs:244:15:244:25 | AccountLock |

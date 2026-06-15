@@ -1,0 +1,4 @@
+# artifacts of running `make test`
+data/
+lock
+size

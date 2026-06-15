@@ -35,7 +35,7 @@ class CustomOptions extends Options {
   override predicate returnsNull(Call call) { Options.super.returnsNull(call) }
 
   /**
-   * Holds if a call to this function will never return.
+   * Holds if a call to the function `f` will never return.
    *
    * By default, this holds for `exit`, `_exit`, `abort`, `__assert_fail`,
    * `longjmp`, `error`, `__builtin_unreachable` and any function with a
@@ -98,57 +98,3 @@ class CustomMutexType extends MutexType {
    */
   override predicate unlockAccess(FunctionCall fc, Expr arg) { none() }
 }
-
-/**
- * DEPRECATED: customize `CustomOptions.overrideReturnsNull` instead.
- *
- * This predicate is required to support backwards compatibility for
- * older `Options.qll` files.  It should not be removed or modified by
- * end users.
- */
-predicate overrideReturnsNull(Call call) { none() }
-
-/**
- * DEPRECATED: customize `CustomOptions.returnsNull` instead.
- *
- * This predicate is required to support backwards compatibility for
- * older `Options.qll` files.  It should not be removed or modified by
- * end users.
- */
-predicate returnsNull(Call call) { none() }
-
-/**
- * DEPRECATED: customize `CustomOptions.exits` instead.
- *
- * This predicate is required to support backwards compatibility for
- * older `Options.qll` files.  It should not be removed or modified by
- * end users.
- */
-predicate exits(Function f) { none() }
-
-/**
- * DEPRECATED: customize `CustomOptions.exprExits` instead.
- *
- * This predicate is required to support backwards compatibility for
- * older `Options.qll` files.  It should not be removed or modified by
- * end users.
- */
-predicate exprExits(Expr e) { none() }
-
-/**
- * DEPRECATED: customize `CustomOptions.alwaysCheckReturnValue` instead.
- *
- * This predicate is required to support backwards compatibility for
- * older `Options.qll` files.  It should not be removed or modified by
- * end users.
- */
-predicate alwaysCheckReturnValue(Function f) { none() }
-
-/**
- * DEPRECATED: customize `CustomOptions.okToIgnoreReturnValue` instead.
- *
- * This predicate is required to support backwards compatibility for
- * older `Options.qll` files.  It should not be removed or modified by
- * end users.
- */
-predicate okToIgnoreReturnValue(FunctionCall fc) { none() }

@@ -1,6 +1,8 @@
 /**
  * GigaSpaces XAP (eXtreme Application Platform) is a distributed in-memory "datagrid".
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.deadcode.DeadCode

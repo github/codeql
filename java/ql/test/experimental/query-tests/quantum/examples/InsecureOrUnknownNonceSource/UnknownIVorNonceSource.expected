@@ -1,0 +1,2 @@
+| InsecureIVorNonceSource.java:33:51:33:56 | Nonce | Unknown IV/Nonce initialization source at encryption operation $@ | InsecureIVorNonceSource.java:35:16:35:31 | EncryptOperation | EncryptOperation |
+| InsecureIVorNonceSource.java:97:51:97:56 | Nonce | Unknown IV/Nonce initialization source at encryption operation $@ | InsecureIVorNonceSource.java:99:16:99:31 | EncryptOperation | EncryptOperation |

@@ -2,7 +2,8 @@
  * @name Duplicate key in dict literal
  * @description Duplicate key in dict literal. All but the last will be lost.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-561
  * @problem.severity warning
@@ -22,7 +23,7 @@ predicate dict_key(Dict d, Expr k, string s) {
     // We use � to mark unrepresentable characters
     // so two instances of � may represent different strings in the source code
     not "�" = s.charAt(_) and
-    exists(StrConst c | c = k |
+    exists(StringLiteral c | c = k |
       s = "u\"" + c.getText() + "\"" and c.isUnicode()
       or
       s = "b\"" + c.getText() + "\"" and not c.isUnicode()

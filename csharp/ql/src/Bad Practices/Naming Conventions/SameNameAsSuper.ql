@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/class-name-matches-base-class
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
  *       naming
  */

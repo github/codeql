@@ -1,26 +1,40 @@
 import csharp
+private import semmle.code.csharp.dataflow.internal.BaseSSA
 
 /** "Naive" def-use implementation. */
-predicate defReaches(AssignableDefinition def, LocalScopeVariable v, ControlFlow::Node cfn) {
-  def.getTarget() = v and cfn = def.getAControlFlowNode().getASuccessor()
+predicate defReaches(
+  AssignableDefinition def, BaseSsa::SimpleLocalScopeVariable v, ControlFlowNode cfn
+) {
+  def.getTarget() = v and
+  cfn =
+    [
+      def.getExpr().getControlFlowNode(),
+      def.(AssignableDefinitions::ImplicitParameterDefinition).getParameter().getControlFlowNode()
+    ].getASuccessor()
   or
-  exists(ControlFlow::Node mid | defReaches(def, v, mid) |
+  def.getTarget() = v and
+  cfn =
+    def.(AssignableDefinitions::ImplicitParameterDefinition).getEnclosingCallable().getEntryPoint()
+  or
+  exists(ControlFlowNode mid | defReaches(def, v, mid) |
     not mid =
-      any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain()).getAControlFlowNode() and
+      any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain())
+          .getExpr()
+          .getControlFlowNode() and
     cfn = mid.getASuccessor()
   )
 }
 
 predicate defUsePair(AssignableDefinition def, AssignableRead read) {
   exists(Assignable a |
-    defReaches(def, a, read.getAControlFlowNode()) and
+    defReaches(def, a, read.getControlFlowNode()) and
     read.getTarget() = a
   )
 }
 
 private LocalScopeVariableRead getAReachableUncertainRead(AssignableDefinition def) {
-  exists(Ssa::Definition ssaDef |
-    def = ssaDef.getAnUltimateDefinition().(Ssa::ExplicitDefinition).getADefinition()
+  exists(SsaDefinition ssaDef |
+    def = ssaDef.getAnUltimateDefinition().(SsaExplicitWrite).getDefinition()
   |
     result = ssaDef.getARead()
   )

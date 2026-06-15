@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["tmelliottjr/extract-regex-action", "*", "input.input", "output.resultString", "taint", "manual"]
+      - ["tmelliottjr/extract-regex-action", "*", "input.input", "output.resultArray", "taint", "manual"]
+

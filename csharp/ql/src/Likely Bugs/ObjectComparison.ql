@@ -6,7 +6,8 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/reference-equality-with-object
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-595
  */
@@ -28,7 +29,7 @@ class ReferenceEqualityTestOnObject extends EqualityOperation {
     exists(getObjectOperand(this)) and
     // Neither operand is 'null'.
     not this.getAnOperand() instanceof NullLiteral and
-    not exists(Type t | t = this.getAnOperand().stripImplicitCasts().getType() |
+    not exists(Type t | t = this.getAnOperand().stripImplicit().getType() |
       t instanceof NullType or
       t instanceof ValueType
     ) and

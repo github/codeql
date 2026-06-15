@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["canonical/multipass", "*", "input.release-tag-re", "code-injection", "generated"]
+     - ["canonical/multipass", "*", "input.release-branch-re", "code-injection", "generated"]

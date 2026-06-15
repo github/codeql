@@ -11,10 +11,10 @@ function asyncEach(arr, iterator) {
 }
 
 function execEach(commands) {
-  asyncEach(commands, (command) => exec(command)); // NOT OK 
+  asyncEach(commands, (command) => exec(command)); // $ Alert
 };
 
 require('http').createServer(function(req, res) {
-  let cmd = require('url').parse(req.url, true).query.path;
+  let cmd = require('url').parse(req.url, true).query.path; // $ Source
   execEach([cmd]);
 });

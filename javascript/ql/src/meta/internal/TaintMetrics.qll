@@ -75,9 +75,9 @@ DataFlow::Node relevantTaintSink(string kind) {
 DataFlow::Node relevantTaintSink() { result = relevantTaintSink(_) }
 
 /**
- * Gets a relevant remote flow source.
+ * Gets a relevant threat model source.
  */
-RemoteFlowSource relevantTaintSource() { not result.getFile() instanceof IgnoredFile }
+ThreatModelSource relevantTaintSource() { not result.getFile() instanceof IgnoredFile }
 
 /**
  * Gets the output of a call that shows intent to sanitize a value
@@ -99,4 +99,11 @@ DataFlow::Node relevantSanitizerOutput() {
 DataFlow::Node relevantSanitizerInput() {
   result = any(HtmlSanitizerCall call).getInput() and
   not result.getFile() instanceof IgnoredFile
+}
+
+string getTaintSourceName(DataFlow::Node node) {
+  result = node.(ThreatModelSource).getSourceType()
+  or
+  not node instanceof ThreatModelSource and
+  result = "Taint source"
 }

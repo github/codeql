@@ -5,8 +5,9 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/asp/split-control-structure
- * @tags maintainability
- *       frameworks/asp.net
+ * @tags quality
+ *       maintainability
+ *       readability
  */
 
 import semmle.code.asp.AspNet

@@ -56,3 +56,6 @@ Set.of(source()).filter(x => true).toList().forEach(x => sink(x)); // NOT OK
 Set([source()]).filter(x => true).toList().forEach(x => sink(x)); // NOT OK
 
 OrderedSet([source()]).filter(x => true).toList().forEach(x => sink(x)); // NOT OK
+
+x.d; // ensure 'd' property exists
+x.f; // ensure 'f' property exists

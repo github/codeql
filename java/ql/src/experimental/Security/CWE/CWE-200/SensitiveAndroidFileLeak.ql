@@ -12,20 +12,20 @@
 
 import java
 import semmle.code.java.controlflow.Guards
-import AndroidFileIntentSink
-import AndroidFileIntentSource
-import AndroidFileLeakFlow::PathGraph
+deprecated import AndroidFileIntentSink
+deprecated import AndroidFileIntentSource
+deprecated import AndroidFileLeakFlow::PathGraph
 
 private predicate startsWithSanitizer(Guard g, Expr e, boolean branch) {
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     g = ma and
     ma.getMethod().hasName("startsWith") and
-    e = [ma.getQualifier(), ma.getQualifier().(MethodAccess).getQualifier()] and
+    e = [ma.getQualifier(), ma.getQualifier().(MethodCall).getQualifier()] and
     branch = false
   )
 }
 
-module AndroidFileLeakConfig implements DataFlow::ConfigSig {
+deprecated module AndroidFileLeakConfig implements DataFlow::ConfigSig {
   /**
    * Holds if `src` is a read of some Intent-typed variable guarded by a check like
    * `requestCode == someCode`, where `requestCode` is the first
@@ -51,7 +51,7 @@ module AndroidFileLeakConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof AndroidFileSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node prev, DataFlow::Node succ) {
-    exists(MethodAccess aema, AsyncTaskRunInBackgroundMethod arm |
+    exists(MethodCall aema, AsyncTaskRunInBackgroundMethod arm |
       // fileAsyncTask.execute(params) will invoke doInBackground(params) of FileAsyncTask
       aema.getQualifier().getType() = arm.getDeclaringType() and
       aema.getMethod() instanceof ExecuteAsyncTaskMethod and
@@ -59,7 +59,7 @@ module AndroidFileLeakConfig implements DataFlow::ConfigSig {
       succ.asParameter() = arm.getParameter(0)
     )
     or
-    exists(MethodAccess csma, ServiceOnStartCommandMethod ssm, ClassInstanceExpr ce |
+    exists(MethodCall csma, ServiceOnStartCommandMethod ssm, ClassInstanceExpr ce |
       // An intent passed to startService will later be passed to the onStartCommand event of the corresponding service
       csma.getMethod() instanceof ContextStartServiceMethod and
       ce.getConstructedType() instanceof TypeIntent and // Intent intent = new Intent(context, FileUploader.class);
@@ -75,9 +75,15 @@ module AndroidFileLeakConfig implements DataFlow::ConfigSig {
   }
 }
 
-module AndroidFileLeakFlow = TaintTracking::Global<AndroidFileLeakConfig>;
+deprecated module AndroidFileLeakFlow = TaintTracking::Global<AndroidFileLeakConfig>;
 
-from AndroidFileLeakFlow::PathNode source, AndroidFileLeakFlow::PathNode sink
-where AndroidFileLeakFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Leaking arbitrary Android file from $@.", source.getNode(),
-  "this user input"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, AndroidFileLeakFlow::PathNode source, AndroidFileLeakFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
+  AndroidFileLeakFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Leaking arbitrary Android file from $@." and
+  sourceNode = source.getNode() and
+  message2 = "this user input"
+}

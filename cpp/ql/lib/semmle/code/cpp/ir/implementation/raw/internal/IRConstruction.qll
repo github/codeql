@@ -11,9 +11,12 @@ private import InstructionTag
 private import TranslatedCondition
 private import TranslatedElement
 private import TranslatedExpr
+private import TranslatedCall
 private import TranslatedStmt
 private import TranslatedFunction
 private import TranslatedGlobalVar
+private import TranslatedNonStaticDataMember
+private import TranslatedInitialization
 
 TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
   instruction = TRawInstruction(result, _)
@@ -43,6 +46,9 @@ module Raw {
       or
       not var.isFromUninstantiatedTemplate(_) and
       var instanceof StaticInitializedStaticLocalVariable
+      or
+      not var.isFromUninstantiatedTemplate(_) and
+      var instanceof Field
     ) and
     var.hasInitializer() and
     (
@@ -62,6 +68,8 @@ module Raw {
     getTranslatedFunction(decl).hasUserVariable(var, type)
     or
     getTranslatedVarInit(decl).hasUserVariable(var, type)
+    or
+    getTranslatedFieldInit(decl).hasUserVariable(var, type)
   }
 
   cached
@@ -108,7 +116,7 @@ module Raw {
   }
 
   cached
-  Function getInstructionFunction(Instruction instruction) {
+  Declaration getInstructionFunction(Instruction instruction) {
     result =
       getInstructionTranslatedElement(instruction)
           .getInstructionFunction(getInstructionTag(instruction))
@@ -170,11 +178,111 @@ module Raw {
       // forwarded the result of another translated expression.
       instruction = translatedExpr.getInstruction(_)
     )
+    or
+    // Consider the snippet `if(x) { ... }` where `x` is an integer.
+    // In C++ there is a `BoolConversion` conversion on `x` which generates a
+    // `CompareNEInstruction` whose `getInstructionConvertedResultExpression`
+    // is the `BoolConversion` (by the logic in the disjunct above). Thus,
+    // calling `getInstructionUnconvertedResultExpression` on the
+    // `CompareNEInstruction` gives `x` in C++ code.
+    // However, in C there is no such conversion to return. So instead we have
+    // to map the result of `getInstructionConvertedResultExpression` on the
+    // `CompareNEInstruction` to `x` manually. This ensures that calling
+    // `getInstructionUnconvertedResultExpression` on the `CompareNEInstruction`
+    // gives `x` in both the C case and C++ case.
+    exists(TranslatedValueCondition translatedValueCondition |
+      translatedValueCondition = getTranslatedCondition(result) and
+      translatedValueCondition.shouldGenerateCompareNE() and
+      instruction = translatedValueCondition.getInstruction(ValueConditionCompareTag())
+    )
   }
 
   cached
   Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
     result = getInstructionConvertedResultExpression(instruction).getUnconverted()
+  }
+
+  /**
+   * Gets the expression associated with the instruction `instr` that computes
+   * the `Convert` instruction on the extent expression of an allocation.
+   */
+  cached
+  Expr getAllocationExtentConvertExpr(Instruction instr) {
+    exists(TranslatedNonConstantAllocationSize tas |
+      instr = tas.getInstruction(AllocationExtentConvertTag()) and
+      result = tas.getExtent().getExpr()
+    )
+  }
+
+  /**
+   * Gets the `ParenthesisExpr` associated with a transparent conversion
+   * instruction, if any.
+   */
+  cached
+  ParenthesisExpr getTransparentConversionParenthesisExpr(Instruction instr) {
+    exists(TranslatedTransparentConversion ttc |
+      result = ttc.getExpr() and
+      instr = ttc.getResult()
+    )
+  }
+
+  /**
+   * Holds if `instr` belongs to a `TranslatedCoreExpr` that produces an
+   * expression result. This indicates that the instruction represents a
+   * definition whose result should be mapped back to the expression.
+   */
+  cached
+  predicate instructionProducesExprResult(Instruction instr) {
+    exists(TranslatedCoreExpr tco |
+      tco.getInstruction(_) = instr and
+      tco.producesExprResult()
+    )
+  }
+
+  /**
+   * Gets the expression associated with a `StoreInstruction` generated
+   * by an `TranslatedAssignOperation`.
+   */
+  cached
+  Expr getAssignOperationStoreExpr(StoreInstruction store) {
+    exists(TranslatedAssignOperation tao |
+      store = tao.getInstruction(AssignmentStoreTag()) and
+      result = tao.getExpr()
+    )
+  }
+
+  /**
+   * Gets the expression associated with a `StoreInstruction` generated
+   * by an `TranslatedCrementOperation`.
+   */
+  cached
+  Expr getCrementOperationStoreExpr(StoreInstruction store) {
+    exists(TranslatedCrementOperation tco |
+      store = tco.getInstruction(CrementStoreTag()) and
+      result = tco.getExpr()
+    )
+  }
+
+  /**
+   * Holds if `store` is a `StoreInstruction` that defines the temporary
+   * `IRVariable` generated as part of the translation of a ternary expression.
+   */
+  cached
+  predicate isConditionalExprTempStore(StoreInstruction store) {
+    exists(TranslatedConditionalExpr tce |
+      store = tce.getInstruction(ConditionValueFalseStoreTag())
+      or
+      store = tce.getInstruction(ConditionValueTrueStoreTag())
+    )
+  }
+
+  /** Gets the instruction that computes the address used to initialize `v`. */
+  cached
+  Instruction getInitializationTargetAddress(IRVariable v) {
+    exists(TranslatedVariableInitialization init |
+      init.getIRVariable() = v and
+      result = init.getTargetAddress()
+    )
   }
 }
 
@@ -202,11 +310,7 @@ Instruction getMemoryOperandDefinition(
   none()
 }
 
-/**
- * Holds if the partial operand of this `ChiInstruction` updates the bit range
- * `[startBitOffset, endBitOffset)` of the total operand.
- */
-predicate getIntervalUpdatedByChi(ChiInstruction chi, int startBit, int endBit) { none() }
+predicate hasIncompleteSsa(IRFunction f) { none() }
 
 /**
  * Holds if the operand totally overlaps with its definition and consumes the
@@ -285,7 +389,7 @@ private predicate backEdgeCandidate(
   // is a back edge. This includes edges from `continue` and the fall-through
   // edge(s) after the last instruction(s) in the body.
   exists(TranslatedWhileStmt s |
-    targetInstruction = s.getFirstConditionInstruction() and
+    targetInstruction = s.getFirstConditionInstruction(_) and
     targetInstruction = sourceElement.getInstructionSuccessor(sourceTag, kind) and
     requiredAncestor = s.getBody()
   )
@@ -296,7 +400,7 @@ private predicate backEdgeCandidate(
   // { ... } while (0)` statement. Note that all `continue` statements in a
   // do-while loop produce forward edges.
   exists(TranslatedDoStmt s |
-    targetInstruction = s.getBody().getFirstInstruction() and
+    targetInstruction = s.getBody().getFirstInstruction(_) and
     targetInstruction = sourceElement.getInstructionSuccessor(sourceTag, kind) and
     requiredAncestor = s.getCondition()
   )
@@ -308,7 +412,7 @@ private predicate backEdgeCandidate(
   // last instruction(s) in the body. A for loop may not have a condition, in
   // which case `getFirstConditionInstruction` returns the body instead.
   exists(TranslatedForStmt s |
-    targetInstruction = s.getFirstConditionInstruction() and
+    targetInstruction = s.getFirstConditionInstruction(_) and
     targetInstruction = sourceElement.getInstructionSuccessor(sourceTag, kind) and
     (
       requiredAncestor = s.getUpdate()
@@ -322,7 +426,7 @@ private predicate backEdgeCandidate(
   // Any edge from within the update of the loop to the condition of
   // the loop is a back edge.
   exists(TranslatedRangeBasedForStmt s |
-    targetInstruction = s.getCondition().getFirstInstruction() and
+    targetInstruction = s.getCondition().getFirstInstruction(_) and
     targetInstruction = sourceElement.getInstructionSuccessor(sourceTag, kind) and
     requiredAncestor = s.getUpdate()
   )
@@ -375,16 +479,15 @@ Locatable getInstructionAst(TStageInstruction instr) {
   )
 }
 
-/** DEPRECATED: Alias for getInstructionAst */
-deprecated Locatable getInstructionAST(TStageInstruction instr) {
-  result = getInstructionAst(instr)
-}
-
 CppType getInstructionResultType(TStageInstruction instr) {
   getInstructionTranslatedElement(instr).hasInstruction(_, getInstructionTag(instr), result)
   or
   instr instanceof TRawUnreachedInstruction and
   result = getVoidType()
+}
+
+IRType getInstructionResultIRType(Instruction instr) {
+  result = instr.getResultLanguageType().getIRType()
 }
 
 predicate getInstructionOpcode(Opcode opcode, TStageInstruction instr) {
@@ -410,11 +513,10 @@ predicate hasUnreachedInstruction(IRFunction func) {
   exists(Call c |
     c.getEnclosingFunction() = func.getFunction() and
     any(Options opt).exits(c.getTarget())
-  ) and
-  not exists(TranslatedUnreachableReturnStmt return |
-    return.getEnclosingFunction().getFunction() = func.getFunction()
   )
 }
+
+IRVariable getAnUninitializedGroupVariable(UninitializedGroupInstruction instr) { none() }
 
 import CachedForDebugging
 
@@ -431,7 +533,12 @@ private module CachedForDebugging {
   cached
   predicate instructionHasSortKeys(Instruction instruction, int key1, int key2) {
     key1 = getInstructionTranslatedElement(instruction).getId() and
-    getInstructionTag(instruction) =
+    getInstructionTag(instruction) = tagByRank(key2)
+  }
+
+  pragma[nomagic]
+  private InstructionTag tagByRank(int key2) {
+    result =
       rank[key2](InstructionTag tag, string tagId |
         tagId = getInstructionTagId(tag)
       |

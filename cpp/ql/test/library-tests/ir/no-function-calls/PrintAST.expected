@@ -1,0 +1,36 @@
+#-----| [CopyAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
+#-----|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const __va_list_tag &
+#-----| [MoveAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
+#-----|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] __va_list_tag &&
+#-----| [Operator,TopLevelFunction] void operator delete(void*)
+#-----|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [VoidPointerType] void *
+test.cpp:
+#    5| [TopLevelFunction] void foo(int*)
+#    5|   <params>: 
+#    5|     getParameter(0): [Parameter] x
+#    5|         Type = [IntPointerType] int *
+#    5|   getEntryPoint(): [BlockStmt] { ... }
+#    6|     getStmt(0): [ExprStmt] ExprStmt
+#    6|       getExpr(): [DeleteExpr] delete
+#    6|           Type = [VoidType] void
+#    6|           ValueCategory = prvalue
+#    6|         getExprWithReuse(): [VariableAccess] x
+#    6|             Type = [IntPointerType] int *
+#    6|             ValueCategory = prvalue(load)
+#    7|     getStmt(1): [ReturnStmt] return ...
+#    9| [TopLevelFunction] void bar()
+#    9|   <params>: 
+#   11| [TopLevelFunction] void jazz()
+#   11|   <params>: 
+#   11|   getEntryPoint(): [BlockStmt] { ... }
+#   12|     getStmt(0): [ExprStmt] ExprStmt
+#   12|       getExpr(): [FunctionCall] call to bar
+#   12|           Type = [VoidType] void
+#   12|           ValueCategory = prvalue
+#   13|     getStmt(1): [ReturnStmt] return ...

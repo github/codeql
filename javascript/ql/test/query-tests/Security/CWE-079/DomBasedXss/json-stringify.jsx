@@ -2,7 +2,7 @@ var express = require("express");
 var app = express();
 
 app.get("/some/path", function (req, res) {
-  const locale = req.param("locale");
+  const locale = req.param("locale"); // $ Source
   const breadcrumbList = [
     {
       "@type": "ListItem",
@@ -28,15 +28,15 @@ app.get("/some/path", function (req, res) {
   };
   <script
     type="application/ld+json"
-    dangerouslySetInnerHTML={{ __html: JSON.stringify(locale) }} // NOT OK
+    dangerouslySetInnerHTML={{ __html: JSON.stringify(locale) }} // $ Alert
   />;
   <script
     type="application/ld+json"
-    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLD) }} // NOT OK
+    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLD) }} // $ Alert
   />;
   <script
     type="application/ld+json"
-    dangerouslySetInnerHTML={{ __html: JSON.stringify({}) }} // OK
+    dangerouslySetInnerHTML={{ __html: JSON.stringify({}) }}
   />;
-  <script type="application/ld+json">{ JSON.stringify(jsonLD) }</script> // OK
+  <script type="application/ld+json">{ JSON.stringify(jsonLD) }</script>
 });

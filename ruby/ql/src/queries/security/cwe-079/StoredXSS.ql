@@ -4,7 +4,7 @@
  *              a stored cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 6.1
+ * @security-severity 7.8
  * @precision high
  * @id rb/stored-xss
  * @tags security
@@ -14,9 +14,9 @@
 
 import codeql.ruby.AST
 import codeql.ruby.security.StoredXSSQuery
-import StoredXss::PathGraph
+import StoredXssFlow::PathGraph
 
-from StoredXss::PathNode source, StoredXss::PathNode sink
-where StoredXss::flowPath(source, sink)
+from StoredXssFlow::PathNode source, StoredXssFlow::PathNode sink
+where StoredXssFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Stored cross-site scripting vulnerability due to $@.",
   source.getNode(), "stored value"

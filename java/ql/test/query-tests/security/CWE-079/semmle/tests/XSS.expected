@@ -1,0 +1,336 @@
+#select
+| JaxXSS.java:22:59:22:72 | userControlled | JaxXSS.java:15:120:15:140 | userControlled : String | JaxXSS.java:22:59:22:72 | userControlled | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:15:120:15:140 | userControlled | user-provided value |
+| JaxXSS.java:24:33:24:46 | userControlled | JaxXSS.java:15:120:15:140 | userControlled : String | JaxXSS.java:24:33:24:46 | userControlled | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:15:120:15:140 | userControlled | user-provided value |
+| JaxXSS.java:29:34:29:47 | userControlled | JaxXSS.java:15:120:15:140 | userControlled : String | JaxXSS.java:29:34:29:47 | userControlled | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:15:120:15:140 | userControlled | user-provided value |
+| JaxXSS.java:33:18:33:59 | build(...) | JaxXSS.java:15:120:15:140 | userControlled : String | JaxXSS.java:33:18:33:59 | build(...) | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:15:120:15:140 | userControlled | user-provided value |
+| JaxXSS.java:108:16:108:70 | build(...) | JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:108:16:108:70 | build(...) | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:59:95:59:115 | userControlled | user-provided value |
+| JaxXSS.java:112:16:112:78 | build(...) | JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:112:16:112:78 | build(...) | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:59:95:59:115 | userControlled | user-provided value |
+| JaxXSS.java:116:16:116:83 | build(...) | JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:116:16:116:83 | build(...) | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:59:95:59:115 | userControlled | user-provided value |
+| JaxXSS.java:120:98:120:111 | userControlled | JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:120:98:120:111 | userControlled | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:59:95:59:115 | userControlled | user-provided value |
+| JaxXSS.java:124:89:124:102 | userControlled | JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:124:89:124:102 | userControlled | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:59:95:59:115 | userControlled | user-provided value |
+| JaxXSS.java:128:110:128:123 | userControlled | JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:128:110:128:123 | userControlled | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:59:95:59:115 | userControlled | user-provided value |
+| JaxXSS.java:132:108:132:121 | userControlled | JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:132:108:132:121 | userControlled | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:59:95:59:115 | userControlled | user-provided value |
+| JaxXSS.java:136:37:136:50 | userControlled | JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:136:37:136:50 | userControlled | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:59:95:59:115 | userControlled | user-provided value |
+| JaxXSS.java:140:16:140:81 | build(...) | JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:140:16:140:81 | build(...) | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:59:95:59:115 | userControlled | user-provided value |
+| JaxXSS.java:165:12:165:46 | build(...) | JaxXSS.java:164:50:164:70 | userControlled : String | JaxXSS.java:165:12:165:46 | build(...) | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:164:50:164:70 | userControlled | user-provided value |
+| JaxXSS.java:170:12:170:46 | build(...) | JaxXSS.java:169:54:169:74 | userControlled : String | JaxXSS.java:170:12:170:46 | build(...) | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:169:54:169:74 | userControlled | user-provided value |
+| JaxXSS.java:175:12:175:46 | build(...) | JaxXSS.java:174:63:174:83 | userControlled : String | JaxXSS.java:175:12:175:46 | build(...) | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:174:63:174:83 | userControlled | user-provided value |
+| JaxXSS.java:180:12:180:46 | build(...) | JaxXSS.java:179:53:179:73 | userControlled : String | JaxXSS.java:180:12:180:46 | build(...) | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:179:53:179:73 | userControlled | user-provided value |
+| JaxXSS.java:185:59:185:72 | userControlled | JaxXSS.java:184:68:184:88 | userControlled : String | JaxXSS.java:185:59:185:72 | userControlled | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:184:68:184:88 | userControlled | user-provided value |
+| JaxXSS.java:208:14:208:48 | build(...) | JaxXSS.java:207:41:207:61 | userControlled : String | JaxXSS.java:208:14:208:48 | build(...) | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:207:41:207:61 | userControlled | user-provided value |
+| JaxXSS.java:213:61:213:74 | userControlled | JaxXSS.java:212:42:212:62 | userControlled : String | JaxXSS.java:213:61:213:74 | userControlled | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:212:42:212:62 | userControlled | user-provided value |
+| JaxXSS.java:222:14:222:48 | build(...) | JaxXSS.java:221:26:221:46 | userControlled : String | JaxXSS.java:222:14:222:48 | build(...) | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:221:26:221:46 | userControlled | user-provided value |
+| JaxXSS.java:227:14:227:27 | userControlled | JaxXSS.java:226:36:226:56 | userControlled : String | JaxXSS.java:227:14:227:27 | userControlled | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:226:36:226:56 | userControlled | user-provided value |
+| JaxXSS.java:243:12:243:46 | build(...) | JaxXSS.java:242:48:242:68 | userControlled : String | JaxXSS.java:243:12:243:46 | build(...) | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:242:48:242:68 | userControlled | user-provided value |
+| JaxXSS.java:248:12:248:25 | userControlled | JaxXSS.java:247:46:247:66 | userControlled : String | JaxXSS.java:248:12:248:25 | userControlled | Cross-site scripting vulnerability due to a $@. | JaxXSS.java:247:46:247:66 | userControlled | user-provided value |
+| JsfXSS.java:27:22:29:27 | ... + ... | JsfXSS.java:21:50:21:107 | getRequestParameterMap(...) : Map | JsfXSS.java:27:22:29:27 | ... + ... | Cross-site scripting vulnerability due to a $@. | JsfXSS.java:21:50:21:107 | getRequestParameterMap(...) | user-provided value |
+| JsfXSS.java:60:22:60:75 | next(...) | JsfXSS.java:60:22:60:48 | getRequestParameterMap(...) : Map | JsfXSS.java:60:22:60:75 | next(...) | Cross-site scripting vulnerability due to a $@. | JsfXSS.java:60:22:60:48 | getRequestParameterMap(...) | user-provided value |
+| JsfXSS.java:61:22:61:57 | next(...) | JsfXSS.java:61:22:61:50 | getRequestParameterNames(...) : Iterator | JsfXSS.java:61:22:61:57 | next(...) | Cross-site scripting vulnerability due to a $@. | JsfXSS.java:61:22:61:50 | getRequestParameterNames(...) | user-provided value |
+| JsfXSS.java:62:22:62:72 | ...[...] | JsfXSS.java:62:22:62:54 | getRequestParameterValuesMap(...) : Map | JsfXSS.java:62:22:62:72 | ...[...] | Cross-site scripting vulnerability due to a $@. | JsfXSS.java:62:22:62:54 | getRequestParameterValuesMap(...) | user-provided value |
+| JsfXSS.java:63:22:63:81 | next(...) | JsfXSS.java:63:22:63:54 | getRequestParameterValuesMap(...) : Map | JsfXSS.java:63:22:63:81 | next(...) | Cross-site scripting vulnerability due to a $@. | JsfXSS.java:63:22:63:54 | getRequestParameterValuesMap(...) | user-provided value |
+| JsfXSS.java:64:22:64:44 | getRequestPathInfo(...) | JsfXSS.java:64:22:64:44 | getRequestPathInfo(...) | JsfXSS.java:64:22:64:44 | getRequestPathInfo(...) | Cross-site scripting vulnerability due to a $@. | JsfXSS.java:64:22:64:44 | getRequestPathInfo(...) | user-provided value |
+| JsfXSS.java:65:22:65:80 | getName(...) | JsfXSS.java:65:22:65:80 | getName(...) | JsfXSS.java:65:22:65:80 | getName(...) | Cross-site scripting vulnerability due to a $@. | JsfXSS.java:65:22:65:80 | getName(...) | user-provided value |
+| JsfXSS.java:66:22:66:60 | get(...) | JsfXSS.java:66:22:66:45 | getRequestHeaderMap(...) : Map | JsfXSS.java:66:22:66:60 | get(...) | Cross-site scripting vulnerability due to a $@. | JsfXSS.java:66:22:66:45 | getRequestHeaderMap(...) | user-provided value |
+| JsfXSS.java:67:22:67:69 | ...[...] | JsfXSS.java:67:22:67:51 | getRequestHeaderValuesMap(...) : Map | JsfXSS.java:67:22:67:69 | ...[...] | Cross-site scripting vulnerability due to a $@. | JsfXSS.java:67:22:67:51 | getRequestHeaderValuesMap(...) | user-provided value |
+| SpringXSS.java:22:62:22:75 | userControlled | SpringXSS.java:16:108:16:128 | userControlled : String | SpringXSS.java:22:62:22:75 | userControlled | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:16:108:16:128 | userControlled | user-provided value |
+| SpringXSS.java:26:30:26:43 | userControlled | SpringXSS.java:16:108:16:128 | userControlled : String | SpringXSS.java:26:30:26:43 | userControlled | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:16:108:16:128 | userControlled | user-provided value |
+| SpringXSS.java:63:12:63:44 | ok(...) | SpringXSS.java:62:64:62:84 | userControlled : String | SpringXSS.java:63:12:63:44 | ok(...) | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:62:64:62:84 | userControlled | user-provided value |
+| SpringXSS.java:68:12:68:44 | ok(...) | SpringXSS.java:67:77:67:97 | userControlled : String | SpringXSS.java:68:12:68:44 | ok(...) | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:67:77:67:97 | userControlled | user-provided value |
+| SpringXSS.java:73:12:73:44 | ok(...) | SpringXSS.java:72:67:72:87 | userControlled : String | SpringXSS.java:73:12:73:44 | ok(...) | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:72:67:72:87 | userControlled | user-provided value |
+| SpringXSS.java:78:70:78:83 | userControlled | SpringXSS.java:77:82:77:102 | userControlled : String | SpringXSS.java:78:70:78:83 | userControlled | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:77:82:77:102 | userControlled | user-provided value |
+| SpringXSS.java:91:14:91:46 | ok(...) | SpringXSS.java:87:81:87:101 | userControlled : String | SpringXSS.java:91:14:91:46 | ok(...) | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:87:81:87:101 | userControlled | user-provided value |
+| SpringXSS.java:93:14:93:59 | of(...) | SpringXSS.java:87:81:87:101 | userControlled : String | SpringXSS.java:93:14:93:59 | of(...) | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:87:81:87:101 | userControlled | user-provided value |
+| SpringXSS.java:95:14:95:53 | body(...) | SpringXSS.java:87:81:87:101 | userControlled : String | SpringXSS.java:95:14:95:53 | body(...) | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:87:81:87:101 | userControlled | user-provided value |
+| SpringXSS.java:97:14:97:70 | new ResponseEntity<String>(...) | SpringXSS.java:87:81:87:101 | userControlled : String | SpringXSS.java:97:14:97:70 | new ResponseEntity<String>(...) | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:87:81:87:101 | userControlled | user-provided value |
+| SpringXSS.java:118:14:118:46 | ok(...) | SpringXSS.java:117:55:117:75 | userControlled : String | SpringXSS.java:118:14:118:46 | ok(...) | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:117:55:117:75 | userControlled | user-provided value |
+| SpringXSS.java:123:72:123:85 | userControlled | SpringXSS.java:122:56:122:76 | userControlled : String | SpringXSS.java:123:72:123:85 | userControlled | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:122:56:122:76 | userControlled | user-provided value |
+| SpringXSS.java:132:14:132:46 | ok(...) | SpringXSS.java:131:40:131:60 | userControlled : String | SpringXSS.java:132:14:132:46 | ok(...) | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:131:40:131:60 | userControlled | user-provided value |
+| SpringXSS.java:137:14:137:27 | userControlled | SpringXSS.java:136:36:136:56 | userControlled : String | SpringXSS.java:137:14:137:27 | userControlled | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:136:36:136:56 | userControlled | user-provided value |
+| SpringXSS.java:153:12:153:44 | ok(...) | SpringXSS.java:152:62:152:82 | userControlled : String | SpringXSS.java:153:12:153:44 | ok(...) | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:152:62:152:82 | userControlled | user-provided value |
+| SpringXSS.java:158:12:158:25 | userControlled | SpringXSS.java:157:46:157:66 | userControlled : String | SpringXSS.java:158:12:158:25 | userControlled | Cross-site scripting vulnerability due to a $@. | SpringXSS.java:157:46:157:66 | userControlled | user-provided value |
+| XSS.java:19:12:19:77 | ... + ... | XSS.java:19:28:19:55 | getParameter(...) : String | XSS.java:19:12:19:77 | ... + ... | Cross-site scripting vulnerability due to a $@. | XSS.java:19:28:19:55 | getParameter(...) | user-provided value |
+| XSS.java:34:30:34:87 | ... + ... | XSS.java:34:67:34:87 | getPathInfo(...) : String | XSS.java:34:30:34:87 | ... + ... | Cross-site scripting vulnerability due to a $@. | XSS.java:34:67:34:87 | getPathInfo(...) | user-provided value |
+| XSS.java:37:36:37:67 | getBytes(...) | XSS.java:37:36:37:56 | getPathInfo(...) : String | XSS.java:37:36:37:67 | getBytes(...) | Cross-site scripting vulnerability due to a $@. | XSS.java:37:36:37:56 | getPathInfo(...) | user-provided value |
+| XSS.java:83:33:83:53 | getPathInfo(...) | XSS.java:83:33:83:53 | getPathInfo(...) | XSS.java:83:33:83:53 | getPathInfo(...) | Cross-site scripting vulnerability due to a $@. | XSS.java:83:33:83:53 | getPathInfo(...) | user-provided value |
+| XSS.java:88:33:88:53 | getPathInfo(...) | XSS.java:88:33:88:53 | getPathInfo(...) | XSS.java:88:33:88:53 | getPathInfo(...) | Cross-site scripting vulnerability due to a $@. | XSS.java:88:33:88:53 | getPathInfo(...) | user-provided value |
+| XSS.java:93:33:93:53 | getPathInfo(...) | XSS.java:93:33:93:53 | getPathInfo(...) | XSS.java:93:33:93:53 | getPathInfo(...) | Cross-site scripting vulnerability due to a $@. | XSS.java:93:33:93:53 | getPathInfo(...) | user-provided value |
+| XSS.java:100:39:100:70 | getBytes(...) | XSS.java:100:39:100:59 | getPathInfo(...) : String | XSS.java:100:39:100:70 | getBytes(...) | Cross-site scripting vulnerability due to a $@. | XSS.java:100:39:100:59 | getPathInfo(...) | user-provided value |
+| XSS.java:105:39:105:70 | getBytes(...) | XSS.java:105:39:105:59 | getPathInfo(...) : String | XSS.java:105:39:105:70 | getBytes(...) | Cross-site scripting vulnerability due to a $@. | XSS.java:105:39:105:59 | getPathInfo(...) | user-provided value |
+| XSS.java:110:39:110:70 | getBytes(...) | XSS.java:110:39:110:59 | getPathInfo(...) : String | XSS.java:110:39:110:70 | getBytes(...) | Cross-site scripting vulnerability due to a $@. | XSS.java:110:39:110:59 | getPathInfo(...) | user-provided value |
+edges
+| JaxXSS.java:15:120:15:140 | userControlled : String | JaxXSS.java:22:59:22:72 | userControlled | provenance |  |
+| JaxXSS.java:15:120:15:140 | userControlled : String | JaxXSS.java:24:33:24:46 | userControlled | provenance |  |
+| JaxXSS.java:15:120:15:140 | userControlled : String | JaxXSS.java:29:34:29:47 | userControlled | provenance |  |
+| JaxXSS.java:15:120:15:140 | userControlled : String | JaxXSS.java:32:62:32:75 | userControlled : String | provenance |  |
+| JaxXSS.java:32:47:32:76 | entity(...) : ResponseBuilder | JaxXSS.java:33:18:33:25 | builder2 : ResponseBuilder | provenance |  |
+| JaxXSS.java:32:62:32:75 | userControlled : String | JaxXSS.java:32:47:32:76 | entity(...) : ResponseBuilder | provenance | MaD:17+MaD:18 |
+| JaxXSS.java:33:18:33:25 | builder2 : ResponseBuilder | JaxXSS.java:33:18:33:51 | type(...) : ResponseBuilder | provenance | MaD:19 |
+| JaxXSS.java:33:18:33:51 | type(...) : ResponseBuilder | JaxXSS.java:33:18:33:59 | build(...) | provenance | MaD:16 |
+| JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:108:48:108:61 | userControlled : String | provenance |  |
+| JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:112:56:112:69 | userControlled : String | provenance |  |
+| JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:116:61:116:74 | userControlled : String | provenance |  |
+| JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:120:98:120:111 | userControlled | provenance |  |
+| JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:124:89:124:102 | userControlled | provenance |  |
+| JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:128:110:128:123 | userControlled | provenance |  |
+| JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:132:108:132:121 | userControlled | provenance |  |
+| JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:136:37:136:50 | userControlled | provenance |  |
+| JaxXSS.java:59:95:59:115 | userControlled : String | JaxXSS.java:140:28:140:41 | userControlled : String | provenance |  |
+| JaxXSS.java:108:16:108:62 | entity(...) : ResponseBuilder | JaxXSS.java:108:16:108:70 | build(...) | provenance | MaD:16 |
+| JaxXSS.java:108:48:108:61 | userControlled : String | JaxXSS.java:108:16:108:62 | entity(...) : ResponseBuilder | provenance | MaD:17+MaD:18 |
+| JaxXSS.java:112:16:112:70 | entity(...) : ResponseBuilder | JaxXSS.java:112:16:112:78 | build(...) | provenance | MaD:16 |
+| JaxXSS.java:112:56:112:69 | userControlled : String | JaxXSS.java:112:16:112:70 | entity(...) : ResponseBuilder | provenance | MaD:17+MaD:18 |
+| JaxXSS.java:116:16:116:75 | entity(...) : ResponseBuilder | JaxXSS.java:116:16:116:83 | build(...) | provenance | MaD:16 |
+| JaxXSS.java:116:61:116:74 | userControlled : String | JaxXSS.java:116:16:116:75 | entity(...) : ResponseBuilder | provenance | MaD:17+MaD:18 |
+| JaxXSS.java:140:16:140:42 | ok(...) : ResponseBuilder | JaxXSS.java:140:16:140:73 | type(...) : ResponseBuilder | provenance | MaD:19 |
+| JaxXSS.java:140:16:140:73 | type(...) : ResponseBuilder | JaxXSS.java:140:16:140:81 | build(...) | provenance | MaD:16 |
+| JaxXSS.java:140:28:140:41 | userControlled : String | JaxXSS.java:140:16:140:42 | ok(...) : ResponseBuilder | provenance | MaD:20 |
+| JaxXSS.java:164:50:164:70 | userControlled : String | JaxXSS.java:165:24:165:37 | userControlled : String | provenance |  |
+| JaxXSS.java:165:12:165:38 | ok(...) : ResponseBuilder | JaxXSS.java:165:12:165:46 | build(...) | provenance | MaD:16 |
+| JaxXSS.java:165:24:165:37 | userControlled : String | JaxXSS.java:165:12:165:38 | ok(...) : ResponseBuilder | provenance | MaD:20 |
+| JaxXSS.java:169:54:169:74 | userControlled : String | JaxXSS.java:170:24:170:37 | userControlled : String | provenance |  |
+| JaxXSS.java:170:12:170:38 | ok(...) : ResponseBuilder | JaxXSS.java:170:12:170:46 | build(...) | provenance | MaD:16 |
+| JaxXSS.java:170:24:170:37 | userControlled : String | JaxXSS.java:170:12:170:38 | ok(...) : ResponseBuilder | provenance | MaD:20 |
+| JaxXSS.java:174:63:174:83 | userControlled : String | JaxXSS.java:175:24:175:37 | userControlled : String | provenance |  |
+| JaxXSS.java:175:12:175:38 | ok(...) : ResponseBuilder | JaxXSS.java:175:12:175:46 | build(...) | provenance | MaD:16 |
+| JaxXSS.java:175:24:175:37 | userControlled : String | JaxXSS.java:175:12:175:38 | ok(...) : ResponseBuilder | provenance | MaD:20 |
+| JaxXSS.java:179:53:179:73 | userControlled : String | JaxXSS.java:180:24:180:37 | userControlled : String | provenance |  |
+| JaxXSS.java:180:12:180:38 | ok(...) : ResponseBuilder | JaxXSS.java:180:12:180:46 | build(...) | provenance | MaD:16 |
+| JaxXSS.java:180:24:180:37 | userControlled : String | JaxXSS.java:180:12:180:38 | ok(...) : ResponseBuilder | provenance | MaD:20 |
+| JaxXSS.java:184:68:184:88 | userControlled : String | JaxXSS.java:185:59:185:72 | userControlled | provenance |  |
+| JaxXSS.java:207:41:207:61 | userControlled : String | JaxXSS.java:208:26:208:39 | userControlled : String | provenance |  |
+| JaxXSS.java:208:14:208:40 | ok(...) : ResponseBuilder | JaxXSS.java:208:14:208:48 | build(...) | provenance | MaD:16 |
+| JaxXSS.java:208:26:208:39 | userControlled : String | JaxXSS.java:208:14:208:40 | ok(...) : ResponseBuilder | provenance | MaD:20 |
+| JaxXSS.java:212:42:212:62 | userControlled : String | JaxXSS.java:213:61:213:74 | userControlled | provenance |  |
+| JaxXSS.java:221:26:221:46 | userControlled : String | JaxXSS.java:222:26:222:39 | userControlled : String | provenance |  |
+| JaxXSS.java:222:14:222:40 | ok(...) : ResponseBuilder | JaxXSS.java:222:14:222:48 | build(...) | provenance | MaD:16 |
+| JaxXSS.java:222:26:222:39 | userControlled : String | JaxXSS.java:222:14:222:40 | ok(...) : ResponseBuilder | provenance | MaD:20 |
+| JaxXSS.java:226:36:226:56 | userControlled : String | JaxXSS.java:227:14:227:27 | userControlled | provenance |  |
+| JaxXSS.java:242:48:242:68 | userControlled : String | JaxXSS.java:243:24:243:37 | userControlled : String | provenance |  |
+| JaxXSS.java:243:12:243:38 | ok(...) : ResponseBuilder | JaxXSS.java:243:12:243:46 | build(...) | provenance | MaD:16 |
+| JaxXSS.java:243:24:243:37 | userControlled : String | JaxXSS.java:243:12:243:38 | ok(...) : ResponseBuilder | provenance | MaD:20 |
+| JaxXSS.java:247:46:247:66 | userControlled : String | JaxXSS.java:248:12:248:25 | userControlled | provenance |  |
+| JsfXSS.java:21:50:21:107 | getRequestParameterMap(...) : Map | JsfXSS.java:22:27:22:43 | requestParameters : Map | provenance | Src:MaD:5  |
+| JsfXSS.java:22:27:22:43 | requestParameters : Map | JsfXSS.java:22:27:22:60 | get(...) : String | provenance | MaD:13 |
+| JsfXSS.java:22:27:22:60 | get(...) : String | JsfXSS.java:27:22:29:27 | ... + ... | provenance | Sink:MaD:2 |
+| JsfXSS.java:60:22:60:48 | getRequestParameterMap(...) : Map | JsfXSS.java:60:22:60:57 | keySet(...) : Set [<element>] : Object | provenance | Src:MaD:5 MaD:14 |
+| JsfXSS.java:60:22:60:57 | keySet(...) : Set [<element>] : Object | JsfXSS.java:60:22:60:68 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:10 |
+| JsfXSS.java:60:22:60:68 | iterator(...) : Iterator [<element>] : Object | JsfXSS.java:60:22:60:75 | next(...) | provenance | MaD:12 Sink:MaD:2 |
+| JsfXSS.java:61:22:61:50 | getRequestParameterNames(...) : Iterator | JsfXSS.java:61:22:61:57 | next(...) | provenance | Src:MaD:6 MaD:12 Sink:MaD:2 |
+| JsfXSS.java:62:22:62:54 | getRequestParameterValuesMap(...) : Map | JsfXSS.java:62:22:62:69 | get(...) : String[] | provenance | Src:MaD:7 MaD:13 |
+| JsfXSS.java:62:22:62:69 | get(...) : String[] | JsfXSS.java:62:22:62:72 | ...[...] | provenance | Sink:MaD:2 |
+| JsfXSS.java:63:22:63:54 | getRequestParameterValuesMap(...) : Map | JsfXSS.java:63:22:63:63 | keySet(...) : Set [<element>] : Object | provenance | Src:MaD:7 MaD:14 |
+| JsfXSS.java:63:22:63:63 | keySet(...) : Set [<element>] : Object | JsfXSS.java:63:22:63:74 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:10 |
+| JsfXSS.java:63:22:63:74 | iterator(...) : Iterator [<element>] : Object | JsfXSS.java:63:22:63:81 | next(...) | provenance | MaD:12 Sink:MaD:2 |
+| JsfXSS.java:66:22:66:45 | getRequestHeaderMap(...) : Map | JsfXSS.java:66:22:66:60 | get(...) | provenance | Src:MaD:3 MaD:13 Sink:MaD:2 |
+| JsfXSS.java:67:22:67:51 | getRequestHeaderValuesMap(...) : Map | JsfXSS.java:67:22:67:66 | get(...) : String[] | provenance | Src:MaD:4 MaD:13 |
+| JsfXSS.java:67:22:67:66 | get(...) : String[] | JsfXSS.java:67:22:67:69 | ...[...] | provenance | Sink:MaD:2 |
+| SpringXSS.java:16:108:16:128 | userControlled : String | SpringXSS.java:22:62:22:75 | userControlled | provenance |  |
+| SpringXSS.java:16:108:16:128 | userControlled : String | SpringXSS.java:26:30:26:43 | userControlled | provenance |  |
+| SpringXSS.java:62:64:62:84 | userControlled : String | SpringXSS.java:63:12:63:44 | ok(...) | provenance | SpringResponseEntity |
+| SpringXSS.java:62:64:62:84 | userControlled : String | SpringXSS.java:63:30:63:43 | userControlled : String | provenance |  |
+| SpringXSS.java:63:30:63:43 | userControlled : String | SpringXSS.java:63:12:63:44 | ok(...) | provenance | MaD:24 |
+| SpringXSS.java:67:77:67:97 | userControlled : String | SpringXSS.java:68:12:68:44 | ok(...) | provenance | SpringResponseEntity |
+| SpringXSS.java:67:77:67:97 | userControlled : String | SpringXSS.java:68:30:68:43 | userControlled : String | provenance |  |
+| SpringXSS.java:68:30:68:43 | userControlled : String | SpringXSS.java:68:12:68:44 | ok(...) | provenance | MaD:24 |
+| SpringXSS.java:72:67:72:87 | userControlled : String | SpringXSS.java:73:12:73:44 | ok(...) | provenance | SpringResponseEntity |
+| SpringXSS.java:72:67:72:87 | userControlled : String | SpringXSS.java:73:30:73:43 | userControlled : String | provenance |  |
+| SpringXSS.java:73:30:73:43 | userControlled : String | SpringXSS.java:73:12:73:44 | ok(...) | provenance | MaD:24 |
+| SpringXSS.java:77:82:77:102 | userControlled : String | SpringXSS.java:78:70:78:83 | userControlled | provenance |  |
+| SpringXSS.java:87:81:87:101 | userControlled : String | SpringXSS.java:91:14:91:46 | ok(...) | provenance | SpringResponseEntity |
+| SpringXSS.java:87:81:87:101 | userControlled : String | SpringXSS.java:91:32:91:45 | userControlled : String | provenance |  |
+| SpringXSS.java:87:81:87:101 | userControlled : String | SpringXSS.java:93:44:93:57 | userControlled : String | provenance |  |
+| SpringXSS.java:87:81:87:101 | userControlled : String | SpringXSS.java:95:14:95:53 | body(...) | provenance | SpringResponseEntityBodyBuilder |
+| SpringXSS.java:87:81:87:101 | userControlled : String | SpringXSS.java:95:39:95:52 | userControlled : String | provenance |  |
+| SpringXSS.java:87:81:87:101 | userControlled : String | SpringXSS.java:97:41:97:54 | userControlled : String | provenance |  |
+| SpringXSS.java:91:32:91:45 | userControlled : String | SpringXSS.java:91:14:91:46 | ok(...) | provenance | MaD:24 |
+| SpringXSS.java:93:32:93:58 | of(...) : Optional [<element>] : String | SpringXSS.java:93:14:93:59 | of(...) | provenance | MaD:23 |
+| SpringXSS.java:93:44:93:57 | userControlled : String | SpringXSS.java:93:32:93:58 | of(...) : Optional [<element>] : String | provenance | MaD:15 |
+| SpringXSS.java:95:39:95:52 | userControlled : String | SpringXSS.java:95:14:95:53 | body(...) | provenance | MaD:21 |
+| SpringXSS.java:97:41:97:54 | userControlled : String | SpringXSS.java:97:14:97:70 | new ResponseEntity<String>(...) | provenance | MaD:22 |
+| SpringXSS.java:117:55:117:75 | userControlled : String | SpringXSS.java:118:14:118:46 | ok(...) | provenance | SpringResponseEntity |
+| SpringXSS.java:117:55:117:75 | userControlled : String | SpringXSS.java:118:32:118:45 | userControlled : String | provenance |  |
+| SpringXSS.java:118:32:118:45 | userControlled : String | SpringXSS.java:118:14:118:46 | ok(...) | provenance | MaD:24 |
+| SpringXSS.java:122:56:122:76 | userControlled : String | SpringXSS.java:123:72:123:85 | userControlled | provenance |  |
+| SpringXSS.java:131:40:131:60 | userControlled : String | SpringXSS.java:132:14:132:46 | ok(...) | provenance | SpringResponseEntity |
+| SpringXSS.java:131:40:131:60 | userControlled : String | SpringXSS.java:132:32:132:45 | userControlled : String | provenance |  |
+| SpringXSS.java:132:32:132:45 | userControlled : String | SpringXSS.java:132:14:132:46 | ok(...) | provenance | MaD:24 |
+| SpringXSS.java:136:36:136:56 | userControlled : String | SpringXSS.java:137:14:137:27 | userControlled | provenance |  |
+| SpringXSS.java:152:62:152:82 | userControlled : String | SpringXSS.java:153:12:153:44 | ok(...) | provenance | SpringResponseEntity |
+| SpringXSS.java:152:62:152:82 | userControlled : String | SpringXSS.java:153:30:153:43 | userControlled : String | provenance |  |
+| SpringXSS.java:153:30:153:43 | userControlled : String | SpringXSS.java:153:12:153:44 | ok(...) | provenance | MaD:24 |
+| SpringXSS.java:157:46:157:66 | userControlled : String | SpringXSS.java:158:12:158:25 | userControlled | provenance |  |
+| XSS.java:19:28:19:55 | getParameter(...) : String | XSS.java:19:12:19:77 | ... + ... | provenance | Src:MaD:9 Sink:MaD:1 |
+| XSS.java:34:67:34:87 | getPathInfo(...) : String | XSS.java:34:30:34:87 | ... + ... | provenance | Src:MaD:8 Sink:MaD:1 |
+| XSS.java:37:36:37:56 | getPathInfo(...) : String | XSS.java:37:36:37:67 | getBytes(...) | provenance | Src:MaD:8 MaD:11 |
+| XSS.java:100:39:100:59 | getPathInfo(...) : String | XSS.java:100:39:100:70 | getBytes(...) | provenance | Src:MaD:8 MaD:11 |
+| XSS.java:105:39:105:59 | getPathInfo(...) : String | XSS.java:105:39:105:70 | getBytes(...) | provenance | Src:MaD:8 MaD:11 |
+| XSS.java:110:39:110:59 | getPathInfo(...) : String | XSS.java:110:39:110:70 | getBytes(...) | provenance | Src:MaD:8 MaD:11 |
+models
+| 1 | Sink: java.io; PrintWriter; false; print; ; ; Argument[0]; file-content-store; manual |
+| 2 | Sink: java.io; Writer; true; write; ; ; Argument[0]; file-content-store; manual |
+| 3 | Source: javax.faces.context; ExternalContext; true; getRequestHeaderMap; (); ; ReturnValue; remote; manual |
+| 4 | Source: javax.faces.context; ExternalContext; true; getRequestHeaderValuesMap; (); ; ReturnValue; remote; manual |
+| 5 | Source: javax.faces.context; ExternalContext; true; getRequestParameterMap; (); ; ReturnValue; remote; manual |
+| 6 | Source: javax.faces.context; ExternalContext; true; getRequestParameterNames; (); ; ReturnValue; remote; manual |
+| 7 | Source: javax.faces.context; ExternalContext; true; getRequestParameterValuesMap; (); ; ReturnValue; remote; manual |
+| 8 | Source: javax.servlet.http; HttpServletRequest; false; getPathInfo; (); ; ReturnValue; remote; manual |
+| 9 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 10 | Summary: java.lang; Iterable; true; iterator; (); ; Argument[this].Element; ReturnValue.Element; value; manual |
+| 11 | Summary: java.lang; String; false; getBytes; ; ; Argument[this]; ReturnValue; taint; manual |
+| 12 | Summary: java.util; Iterator; true; next; ; ; Argument[this].Element; ReturnValue; value; manual |
+| 13 | Summary: java.util; Map; true; get; ; ; Argument[this].MapValue; ReturnValue; value; manual |
+| 14 | Summary: java.util; Map; true; keySet; (); ; Argument[this].MapKey; ReturnValue.Element; value; manual |
+| 15 | Summary: java.util; Optional; false; of; ; ; Argument[0]; ReturnValue.Element; value; manual |
+| 16 | Summary: javax.ws.rs.core; Response$ResponseBuilder; true; build; ; ; Argument[this]; ReturnValue; taint; manual |
+| 17 | Summary: javax.ws.rs.core; Response$ResponseBuilder; true; entity; ; ; Argument[0]; Argument[this]; taint; manual |
+| 18 | Summary: javax.ws.rs.core; Response$ResponseBuilder; true; entity; ; ; Argument[this]; ReturnValue; value; manual |
+| 19 | Summary: javax.ws.rs.core; Response$ResponseBuilder; true; type; ; ; Argument[this]; ReturnValue; value; manual |
+| 20 | Summary: javax.ws.rs.core; Response; false; ok; ; ; Argument[0]; ReturnValue; taint; manual |
+| 21 | Summary: org.springframework.http; ResponseEntity$BodyBuilder; true; body; (Object); ; Argument[0]; ReturnValue; taint; manual |
+| 22 | Summary: org.springframework.http; ResponseEntity; true; ResponseEntity; (Object,HttpStatus); ; Argument[0]; Argument[this]; taint; manual |
+| 23 | Summary: org.springframework.http; ResponseEntity; true; of; (Optional); ; Argument[0].Element; ReturnValue; taint; manual |
+| 24 | Summary: org.springframework.http; ResponseEntity; true; ok; (Object); ; Argument[0]; ReturnValue; taint; manual |
+nodes
+| JaxXSS.java:15:120:15:140 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:22:59:22:72 | userControlled | semmle.label | userControlled |
+| JaxXSS.java:24:33:24:46 | userControlled | semmle.label | userControlled |
+| JaxXSS.java:29:34:29:47 | userControlled | semmle.label | userControlled |
+| JaxXSS.java:32:47:32:76 | entity(...) : ResponseBuilder | semmle.label | entity(...) : ResponseBuilder |
+| JaxXSS.java:32:62:32:75 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:33:18:33:25 | builder2 : ResponseBuilder | semmle.label | builder2 : ResponseBuilder |
+| JaxXSS.java:33:18:33:51 | type(...) : ResponseBuilder | semmle.label | type(...) : ResponseBuilder |
+| JaxXSS.java:33:18:33:59 | build(...) | semmle.label | build(...) |
+| JaxXSS.java:59:95:59:115 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:108:16:108:62 | entity(...) : ResponseBuilder | semmle.label | entity(...) : ResponseBuilder |
+| JaxXSS.java:108:16:108:70 | build(...) | semmle.label | build(...) |
+| JaxXSS.java:108:48:108:61 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:112:16:112:70 | entity(...) : ResponseBuilder | semmle.label | entity(...) : ResponseBuilder |
+| JaxXSS.java:112:16:112:78 | build(...) | semmle.label | build(...) |
+| JaxXSS.java:112:56:112:69 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:116:16:116:75 | entity(...) : ResponseBuilder | semmle.label | entity(...) : ResponseBuilder |
+| JaxXSS.java:116:16:116:83 | build(...) | semmle.label | build(...) |
+| JaxXSS.java:116:61:116:74 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:120:98:120:111 | userControlled | semmle.label | userControlled |
+| JaxXSS.java:124:89:124:102 | userControlled | semmle.label | userControlled |
+| JaxXSS.java:128:110:128:123 | userControlled | semmle.label | userControlled |
+| JaxXSS.java:132:108:132:121 | userControlled | semmle.label | userControlled |
+| JaxXSS.java:136:37:136:50 | userControlled | semmle.label | userControlled |
+| JaxXSS.java:140:16:140:42 | ok(...) : ResponseBuilder | semmle.label | ok(...) : ResponseBuilder |
+| JaxXSS.java:140:16:140:73 | type(...) : ResponseBuilder | semmle.label | type(...) : ResponseBuilder |
+| JaxXSS.java:140:16:140:81 | build(...) | semmle.label | build(...) |
+| JaxXSS.java:140:28:140:41 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:164:50:164:70 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:165:12:165:38 | ok(...) : ResponseBuilder | semmle.label | ok(...) : ResponseBuilder |
+| JaxXSS.java:165:12:165:46 | build(...) | semmle.label | build(...) |
+| JaxXSS.java:165:24:165:37 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:169:54:169:74 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:170:12:170:38 | ok(...) : ResponseBuilder | semmle.label | ok(...) : ResponseBuilder |
+| JaxXSS.java:170:12:170:46 | build(...) | semmle.label | build(...) |
+| JaxXSS.java:170:24:170:37 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:174:63:174:83 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:175:12:175:38 | ok(...) : ResponseBuilder | semmle.label | ok(...) : ResponseBuilder |
+| JaxXSS.java:175:12:175:46 | build(...) | semmle.label | build(...) |
+| JaxXSS.java:175:24:175:37 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:179:53:179:73 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:180:12:180:38 | ok(...) : ResponseBuilder | semmle.label | ok(...) : ResponseBuilder |
+| JaxXSS.java:180:12:180:46 | build(...) | semmle.label | build(...) |
+| JaxXSS.java:180:24:180:37 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:184:68:184:88 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:185:59:185:72 | userControlled | semmle.label | userControlled |
+| JaxXSS.java:207:41:207:61 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:208:14:208:40 | ok(...) : ResponseBuilder | semmle.label | ok(...) : ResponseBuilder |
+| JaxXSS.java:208:14:208:48 | build(...) | semmle.label | build(...) |
+| JaxXSS.java:208:26:208:39 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:212:42:212:62 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:213:61:213:74 | userControlled | semmle.label | userControlled |
+| JaxXSS.java:221:26:221:46 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:222:14:222:40 | ok(...) : ResponseBuilder | semmle.label | ok(...) : ResponseBuilder |
+| JaxXSS.java:222:14:222:48 | build(...) | semmle.label | build(...) |
+| JaxXSS.java:222:26:222:39 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:226:36:226:56 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:227:14:227:27 | userControlled | semmle.label | userControlled |
+| JaxXSS.java:242:48:242:68 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:243:12:243:38 | ok(...) : ResponseBuilder | semmle.label | ok(...) : ResponseBuilder |
+| JaxXSS.java:243:12:243:46 | build(...) | semmle.label | build(...) |
+| JaxXSS.java:243:24:243:37 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:247:46:247:66 | userControlled : String | semmle.label | userControlled : String |
+| JaxXSS.java:248:12:248:25 | userControlled | semmle.label | userControlled |
+| JsfXSS.java:21:50:21:107 | getRequestParameterMap(...) : Map | semmle.label | getRequestParameterMap(...) : Map |
+| JsfXSS.java:22:27:22:43 | requestParameters : Map | semmle.label | requestParameters : Map |
+| JsfXSS.java:22:27:22:60 | get(...) : String | semmle.label | get(...) : String |
+| JsfXSS.java:27:22:29:27 | ... + ... | semmle.label | ... + ... |
+| JsfXSS.java:60:22:60:48 | getRequestParameterMap(...) : Map | semmle.label | getRequestParameterMap(...) : Map |
+| JsfXSS.java:60:22:60:57 | keySet(...) : Set [<element>] : Object | semmle.label | keySet(...) : Set [<element>] : Object |
+| JsfXSS.java:60:22:60:68 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
+| JsfXSS.java:60:22:60:75 | next(...) | semmle.label | next(...) |
+| JsfXSS.java:61:22:61:50 | getRequestParameterNames(...) : Iterator | semmle.label | getRequestParameterNames(...) : Iterator |
+| JsfXSS.java:61:22:61:57 | next(...) | semmle.label | next(...) |
+| JsfXSS.java:62:22:62:54 | getRequestParameterValuesMap(...) : Map | semmle.label | getRequestParameterValuesMap(...) : Map |
+| JsfXSS.java:62:22:62:69 | get(...) : String[] | semmle.label | get(...) : String[] |
+| JsfXSS.java:62:22:62:72 | ...[...] | semmle.label | ...[...] |
+| JsfXSS.java:63:22:63:54 | getRequestParameterValuesMap(...) : Map | semmle.label | getRequestParameterValuesMap(...) : Map |
+| JsfXSS.java:63:22:63:63 | keySet(...) : Set [<element>] : Object | semmle.label | keySet(...) : Set [<element>] : Object |
+| JsfXSS.java:63:22:63:74 | iterator(...) : Iterator [<element>] : Object | semmle.label | iterator(...) : Iterator [<element>] : Object |
+| JsfXSS.java:63:22:63:81 | next(...) | semmle.label | next(...) |
+| JsfXSS.java:64:22:64:44 | getRequestPathInfo(...) | semmle.label | getRequestPathInfo(...) |
+| JsfXSS.java:65:22:65:80 | getName(...) | semmle.label | getName(...) |
+| JsfXSS.java:66:22:66:45 | getRequestHeaderMap(...) : Map | semmle.label | getRequestHeaderMap(...) : Map |
+| JsfXSS.java:66:22:66:60 | get(...) | semmle.label | get(...) |
+| JsfXSS.java:67:22:67:51 | getRequestHeaderValuesMap(...) : Map | semmle.label | getRequestHeaderValuesMap(...) : Map |
+| JsfXSS.java:67:22:67:66 | get(...) : String[] | semmle.label | get(...) : String[] |
+| JsfXSS.java:67:22:67:69 | ...[...] | semmle.label | ...[...] |
+| SpringXSS.java:16:108:16:128 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:22:62:22:75 | userControlled | semmle.label | userControlled |
+| SpringXSS.java:26:30:26:43 | userControlled | semmle.label | userControlled |
+| SpringXSS.java:62:64:62:84 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:63:12:63:44 | ok(...) | semmle.label | ok(...) |
+| SpringXSS.java:63:30:63:43 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:67:77:67:97 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:68:12:68:44 | ok(...) | semmle.label | ok(...) |
+| SpringXSS.java:68:30:68:43 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:72:67:72:87 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:73:12:73:44 | ok(...) | semmle.label | ok(...) |
+| SpringXSS.java:73:30:73:43 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:77:82:77:102 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:78:70:78:83 | userControlled | semmle.label | userControlled |
+| SpringXSS.java:87:81:87:101 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:91:14:91:46 | ok(...) | semmle.label | ok(...) |
+| SpringXSS.java:91:32:91:45 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:93:14:93:59 | of(...) | semmle.label | of(...) |
+| SpringXSS.java:93:32:93:58 | of(...) : Optional [<element>] : String | semmle.label | of(...) : Optional [<element>] : String |
+| SpringXSS.java:93:44:93:57 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:95:14:95:53 | body(...) | semmle.label | body(...) |
+| SpringXSS.java:95:39:95:52 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:97:14:97:70 | new ResponseEntity<String>(...) | semmle.label | new ResponseEntity<String>(...) |
+| SpringXSS.java:97:41:97:54 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:117:55:117:75 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:118:14:118:46 | ok(...) | semmle.label | ok(...) |
+| SpringXSS.java:118:32:118:45 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:122:56:122:76 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:123:72:123:85 | userControlled | semmle.label | userControlled |
+| SpringXSS.java:131:40:131:60 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:132:14:132:46 | ok(...) | semmle.label | ok(...) |
+| SpringXSS.java:132:32:132:45 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:136:36:136:56 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:137:14:137:27 | userControlled | semmle.label | userControlled |
+| SpringXSS.java:152:62:152:82 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:153:12:153:44 | ok(...) | semmle.label | ok(...) |
+| SpringXSS.java:153:30:153:43 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:157:46:157:66 | userControlled : String | semmle.label | userControlled : String |
+| SpringXSS.java:158:12:158:25 | userControlled | semmle.label | userControlled |
+| XSS.java:19:12:19:77 | ... + ... | semmle.label | ... + ... |
+| XSS.java:19:28:19:55 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| XSS.java:34:30:34:87 | ... + ... | semmle.label | ... + ... |
+| XSS.java:34:67:34:87 | getPathInfo(...) : String | semmle.label | getPathInfo(...) : String |
+| XSS.java:37:36:37:56 | getPathInfo(...) : String | semmle.label | getPathInfo(...) : String |
+| XSS.java:37:36:37:67 | getBytes(...) | semmle.label | getBytes(...) |
+| XSS.java:83:33:83:53 | getPathInfo(...) | semmle.label | getPathInfo(...) |
+| XSS.java:88:33:88:53 | getPathInfo(...) | semmle.label | getPathInfo(...) |
+| XSS.java:93:33:93:53 | getPathInfo(...) | semmle.label | getPathInfo(...) |
+| XSS.java:100:39:100:59 | getPathInfo(...) : String | semmle.label | getPathInfo(...) : String |
+| XSS.java:100:39:100:70 | getBytes(...) | semmle.label | getBytes(...) |
+| XSS.java:105:39:105:59 | getPathInfo(...) : String | semmle.label | getPathInfo(...) : String |
+| XSS.java:105:39:105:70 | getBytes(...) | semmle.label | getBytes(...) |
+| XSS.java:110:39:110:59 | getPathInfo(...) : String | semmle.label | getPathInfo(...) : String |
+| XSS.java:110:39:110:70 | getBytes(...) | semmle.label | getBytes(...) |
+subpaths

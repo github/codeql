@@ -70,12 +70,8 @@ toplevels(#20001,0)
 #20024=@"loc,{#10000},1,1,2,0"
 locations_default(#20024,#10000,1,1,2,0)
 hasLocation(#20001,#20024)
-#20025=@"module;{#10000},1,1"
-scopes(#20025,3)
-scopenodes(#20001,#20025)
-scopenesting(#20025,#20000)
-is_module(#20001)
-is_es2015_module(#20001)
+#20025=@"var;{this};{#20000}"
+variables(#20025,"this",#20000)
 #20026=*
 entry_cfg_node(#20026,#20001)
 #20027=@"loc,{#10000},1,1,1,0"

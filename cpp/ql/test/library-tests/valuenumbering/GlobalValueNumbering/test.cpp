@@ -157,3 +157,14 @@ void test_read_global_different(int n) {
 
   int d = global_a->x;
 }
+
+struct StructWithConstMemberFunction {
+  int x;
+  void constMemberFunction() const;
+};
+
+void test_constMemberFunction() {
+  StructWithConstMemberFunction s;
+  StructWithConstMemberFunction s2 = s;
+  s.constMemberFunction();
+}

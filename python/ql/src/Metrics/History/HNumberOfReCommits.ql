@@ -29,6 +29,6 @@ int recommitsForFile(File f) {
     )
 }
 
-from Module m
-where exists(m.getMetrics().getNumberOfLinesOfCode())
+from ModuleMetrics m
+where exists(m.getNumberOfLinesOfCode())
 select m, recommitsForFile(m.getFile())

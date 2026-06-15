@@ -1,7 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/go-all
-      extensible: summaryModel
-    data:
-      - ["github.com/astaxie/beego/context", "", False, "WriteBody", "", "", "Argument[2]", "Argument[1]", "taint", "manual"]
-      - ["github.com/beego/beego/server/web/context", "", False, "WriteBody", "", "", "Argument[2]", "Argument[1]", "taint", "manual"]

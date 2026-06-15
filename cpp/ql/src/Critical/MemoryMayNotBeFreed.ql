@@ -39,7 +39,7 @@ predicate allocCallOrIndirect(Expr e) {
       allocCallOrIndirect(rtn.getExpr())
       or
       // return variable assigned with alloc
-      exists(Variable v |
+      exists(StackVariable v |
         v = rtn.getExpr().(VariableAccess).getTarget() and
         allocCallOrIndirect(v.getAnAssignedValue()) and
         not assignedToFieldOrGlobal(v, _)

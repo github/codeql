@@ -1,0 +1,4 @@
+query: Security/CWE/CWE-1004/SensitiveCookieNotHttpOnly.ql
+postprocess: 
+- utils/test/InlineExpectationsTestQuery.ql
+- utils/test/PrettyPrintModels.ql

@@ -6,7 +6,9 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id java/unknown-javadoc-parameter
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       readability
  */
 
 import java
@@ -32,12 +34,24 @@ where
     )
     or
     documentable instanceof ClassOrInterface and
+    not documentable instanceof Record and
     not exists(TypeVariable tv | tv.getGenericType() = documentable |
       "<" + tv.getName() + ">" = paramTag.getParamName()
     ) and
     msg =
       "@param tag \"" + paramTag.getParamName() +
         "\" does not match any actual type parameter of type \"" + documentable.getName() + "\"."
+    or
+    documentable instanceof Record and
+    not exists(TypeVariable tv | tv.getGenericType() = documentable |
+      "<" + tv.getName() + ">" = paramTag.getParamName()
+    ) and
+    not documentable.(Record).getCanonicalConstructor().getAParameter().getName() =
+      paramTag.getParamName() and
+    msg =
+      "@param tag \"" + paramTag.getParamName() +
+        "\" does not match any actual type parameter or record parameter of record \"" +
+        documentable.getName() + "\"."
   else
     // The tag has no value at all.
     msg = "This @param tag does not have a value."

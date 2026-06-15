@@ -4,7 +4,7 @@
  *              a cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 6.1
+ * @security-severity 7.8
  * @precision high
  * @id go/reflected-xss
  * @tags security
@@ -13,14 +13,14 @@
  */
 
 import go
-import semmle.go.security.ReflectedXss::ReflectedXss
-import DataFlow::PathGraph
+import semmle.go.security.ReflectedXss
+import ReflectedXss::Flow::PathGraph
 
 from
-  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string msg, string part,
+  ReflectedXss::Flow::PathNode source, ReflectedXss::Flow::PathNode sink, string msg, string part,
   Locatable partloc
 where
-  cfg.hasFlowPath(source, sink) and
+  ReflectedXss::Flow::flowPath(source, sink) and
   (
     exists(string kind | kind = sink.getNode().(SharedXss::Sink).getSinkKind() |
       kind = "rawtemplate" and

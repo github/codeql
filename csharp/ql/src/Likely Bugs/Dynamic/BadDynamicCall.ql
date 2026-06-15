@@ -5,9 +5,9 @@
  * @problem.severity error
  * @precision medium
  * @id cs/invalid-dynamic-call
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       logic
  *       external/cwe/cwe-628
  */
 
@@ -36,19 +36,18 @@ abstract class BadDynamicCall extends DynamicExpr {
   }
 
   private Type possibleTypeForRelevantSource(Variable v, int i, Expr source) {
-    exists(AssignableRead read, Ssa::Definition ssaDef, Ssa::ExplicitDefinition ultimateSsaDef |
+    exists(AssignableRead read, SsaDefinition ssaDef, SsaExplicitWrite ultimateSsaDef |
       read = this.getARelevantVariableAccess(i) and
       v = read.getTarget() and
       result = source.getType() and
       read = ssaDef.getARead() and
       ultimateSsaDef = ssaDef.getAnUltimateDefinition()
     |
-      ultimateSsaDef.getADefinition() =
-        any(AssignableDefinition def | source = def.getSource().stripImplicitCasts())
+      ultimateSsaDef.getValue().stripImplicit() = source
       or
-      ultimateSsaDef.getADefinition() =
+      ultimateSsaDef.getDefinition() =
         any(AssignableDefinitions::ImplicitParameterDefinition p |
-          source = p.getParameter().getAnAssignedValue().stripImplicitCasts()
+          source = p.getParameter().getAnAssignedValue().stripImplicit()
         )
     )
   }

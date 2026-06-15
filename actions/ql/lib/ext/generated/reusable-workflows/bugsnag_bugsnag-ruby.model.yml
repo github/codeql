@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["bugsnag/bugsnag-ruby/.github/workflows/run-maze-runner.yml", "*", "input.features", "code-injection", "generated"]

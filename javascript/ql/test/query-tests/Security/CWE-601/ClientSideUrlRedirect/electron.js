@@ -1,7 +1,7 @@
 import { shell } from 'electron';
 
 function getTaint() {
-    return window.name;
+    return window.name; // $ Source
 }
 
-shell.openExternal(getTaint());
+shell.openExternal(getTaint()); // $ Alert

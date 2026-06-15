@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: summaryModel
+    data:
+      # Not all of these methods are strictly defined in the `json` gem.
+      # The `JSON` namespace is heavily overloaded by other JSON parsing gems such as `oj`, `json_pure`, `multi_json` etc.
+      # This summary covers common methods we've seen called on `JSON` in the wild.
+      - ['JSON!', 'Method[generate,fast_generate,pretty_generate,dump,unparse,fast_unparse]', 'Argument[0]', 'ReturnValue', 'taint']
+      - ['JSON!', 'Method[parse,parse!,load,restore]', 'Argument[0]', 'ReturnValue', 'taint']
+  

@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.FlowSources
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 class TestRemoteFlowSource extends RemoteFlowSource {
   TestRemoteFlowSource() { this.asParameter().hasName("source") }
@@ -9,21 +9,19 @@ class TestRemoteFlowSource extends RemoteFlowSource {
 }
 
 module TaintFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node n) { n instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
+    exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
 }
 
 module TaintFlow = TaintTracking::Global<TaintFlowConfig>;
 
-class HasFlowTest extends InlineExpectationsTest {
-  HasFlowTest() { this = "HasFlowTest" }
+module HasFlowTest implements TestSig {
+  string getARelevantTag() { result = "hasTaintFlow" }
 
-  override string getARelevantTag() { result = ["hasTaintFlow"] }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasTaintFlow" and
     exists(DataFlow::Node sink | TaintFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -32,3 +30,5 @@ class HasFlowTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HasFlowTest>

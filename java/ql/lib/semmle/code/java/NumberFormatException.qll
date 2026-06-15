@@ -1,9 +1,11 @@
 /** Provides classes and predicates for reasoning about `java.lang.NumberFormatException`. */
+overlay[local?]
+module;
 
 import java
 
 /** A call to a string to number conversion. */
-private class SpecialMethodAccess extends MethodAccess {
+private class SpecialMethodCall extends MethodCall {
   predicate isValueOfMethod(string klass) {
     this.getMethod().getName() = "valueOf" and
     this.getQualifier().getType().(RefType).hasQualifiedName("java.lang", klass) and
@@ -33,9 +35,6 @@ private class SpecialMethodAccess extends MethodAccess {
     this.isValueOfMethod("Float") or
     this.isValueOfMethod("Double")
   }
-
-  /** DEPRECATED: Alias for throwsNfe */
-  deprecated predicate throwsNFE() { this.throwsNfe() }
 }
 
 /** A `ClassInstanceExpr` that constructs a number from its string representation. */
@@ -47,16 +46,8 @@ private class SpecialClassInstanceExpr extends ClassInstanceExpr {
   }
 
   predicate throwsNfe() {
-    this.isStringConstructor("Byte") or
-    this.isStringConstructor("Short") or
-    this.isStringConstructor("Integer") or
-    this.isStringConstructor("Long") or
-    this.isStringConstructor("Float") or
-    this.isStringConstructor("Double")
+    this.isStringConstructor(["Byte", "Short", "Integer", "Long", "Float", "Double"])
   }
-
-  /** DEPRECATED: Alias for throwsNfe */
-  deprecated predicate throwsNFE() { this.throwsNfe() }
 }
 
 /** The class `java.lang.NumberFormatException`. */
@@ -73,13 +64,7 @@ predicate catchesNfe(TryStmt t) {
   )
 }
 
-/** DEPRECATED: Alias for catchesNfe */
-deprecated predicate catchesNFE = catchesNfe/1;
-
 /** Holds if `java.lang.NumberFormatException` can be thrown. */
 predicate throwsNfe(Expr e) {
-  e.(SpecialClassInstanceExpr).throwsNfe() or e.(SpecialMethodAccess).throwsNfe()
+  e.(SpecialClassInstanceExpr).throwsNfe() or e.(SpecialMethodCall).throwsNfe()
 }
-
-/** DEPRECATED: Alias for throwsNfe */
-deprecated predicate throwsNFE = throwsNfe/1;

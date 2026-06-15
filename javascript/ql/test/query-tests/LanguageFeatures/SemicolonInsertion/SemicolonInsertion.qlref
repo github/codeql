@@ -1,1 +1,2 @@
-LanguageFeatures/SemicolonInsertion.ql
+query: LanguageFeatures/SemicolonInsertion.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

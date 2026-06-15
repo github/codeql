@@ -4,8 +4,10 @@
  *              makes the built-in object unusable within the current scope and makes the code
  *              more difficult to read.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
+ *       correctness
  * @problem.severity recommendation
  * @sub-severity low
  * @precision medium

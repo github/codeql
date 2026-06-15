@@ -1,8 +1,11 @@
 edges
-| UncaughtServletException.java:13:15:13:43 | getParameter(...) : String | UncaughtServletException.java:14:44:14:45 | ip |
-| UncaughtServletException.java:16:19:16:41 | getRemoteUser(...) : String | UncaughtServletException.java:17:20:17:25 | userId |
-| UncaughtServletException.java:54:16:54:44 | getParameter(...) : String | UncaughtServletException.java:55:45:55:46 | ip |
-| UncaughtServletException.java:75:21:75:43 | getRemoteUser(...) : String | UncaughtServletException.java:76:22:76:27 | userId |
+| UncaughtServletException.java:13:15:13:43 | getParameter(...) : String | UncaughtServletException.java:14:44:14:45 | ip | provenance | Src:MaD:2  |
+| UncaughtServletException.java:16:19:16:41 | getRemoteUser(...) : String | UncaughtServletException.java:17:20:17:25 | userId | provenance | Src:MaD:1  |
+| UncaughtServletException.java:54:16:54:44 | getParameter(...) : String | UncaughtServletException.java:55:45:55:46 | ip | provenance | Src:MaD:2  |
+| UncaughtServletException.java:75:21:75:43 | getRemoteUser(...) : String | UncaughtServletException.java:76:22:76:27 | userId | provenance | Src:MaD:1  |
+models
+| 1 | Source: javax.servlet.http; HttpServletRequest; false; getRemoteUser; (); ; ReturnValue; remote; manual |
+| 2 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
 nodes
 | UncaughtServletException.java:13:15:13:43 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | UncaughtServletException.java:14:44:14:45 | ip | semmle.label | ip |
@@ -12,9 +15,9 @@ nodes
 | UncaughtServletException.java:55:45:55:46 | ip | semmle.label | ip |
 | UncaughtServletException.java:75:21:75:43 | getRemoteUser(...) : String | semmle.label | getRemoteUser(...) : String |
 | UncaughtServletException.java:76:22:76:27 | userId | semmle.label | userId |
-subpaths
-#select
+problems
 | UncaughtServletException.java:14:44:14:45 | ip | UncaughtServletException.java:13:15:13:43 | getParameter(...) : String | UncaughtServletException.java:14:44:14:45 | ip | This value depends on a $@ and can throw uncaught exception. | UncaughtServletException.java:13:15:13:43 | getParameter(...) | user-provided value |
 | UncaughtServletException.java:17:20:17:25 | userId | UncaughtServletException.java:16:19:16:41 | getRemoteUser(...) : String | UncaughtServletException.java:17:20:17:25 | userId | This value depends on a $@ and can throw uncaught exception. | UncaughtServletException.java:16:19:16:41 | getRemoteUser(...) | user-provided value |
 | UncaughtServletException.java:55:45:55:46 | ip | UncaughtServletException.java:54:16:54:44 | getParameter(...) : String | UncaughtServletException.java:55:45:55:46 | ip | This value depends on a $@ and can throw uncaught exception. | UncaughtServletException.java:54:16:54:44 | getParameter(...) | user-provided value |
 | UncaughtServletException.java:76:22:76:27 | userId | UncaughtServletException.java:75:21:75:43 | getRemoteUser(...) : String | UncaughtServletException.java:76:22:76:27 | userId | This value depends on a $@ and can throw uncaught exception. | UncaughtServletException.java:75:21:75:43 | getRemoteUser(...) | user-provided value |
+subpaths

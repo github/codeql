@@ -1,7 +1,7 @@
 edges
-| impl/miss-anchor.rb:2:12:2:15 | name | impl/miss-anchor.rb:3:39:3:42 | name |
-| impl/miss-anchor.rb:6:12:6:15 | name | impl/miss-anchor.rb:7:43:7:46 | name |
-| impl/miss-anchor.rb:14:12:14:15 | name | impl/miss-anchor.rb:15:47:15:50 | name |
+| impl/miss-anchor.rb:2:12:2:15 | name | impl/miss-anchor.rb:3:39:3:42 | name | provenance |  |
+| impl/miss-anchor.rb:6:12:6:15 | name | impl/miss-anchor.rb:7:43:7:46 | name | provenance |  |
+| impl/miss-anchor.rb:14:12:14:15 | name | impl/miss-anchor.rb:15:47:15:50 | name | provenance |  |
 nodes
 | impl/miss-anchor.rb:2:12:2:15 | name | semmle.label | name |
 | impl/miss-anchor.rb:3:39:3:42 | name | semmle.label | name |

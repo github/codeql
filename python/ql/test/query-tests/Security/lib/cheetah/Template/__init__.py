@@ -1,2 +1,0 @@
-class Template(object):
-    pass

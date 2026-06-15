@@ -1,1 +1,1 @@
-| str_fmt_test.py:8:12:8:16 | Str | Invalid conversion specifier at index 0 of '%Z'. |
+| str_fmt_test.py:8:12:8:16 | StringLiteral | Invalid conversion specifier at index 0 of '%Z'. |

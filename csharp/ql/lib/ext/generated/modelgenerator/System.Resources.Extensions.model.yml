@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Resources.Extensions", "DeserializingResourceReader", False, "DeserializingResourceReader", "(System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Resources.Extensions", "PreserializedResourceWriter", False, "AddActivatorResource", "(System.String,System.IO.Stream,System.String,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Resources.Extensions", "PreserializedResourceWriter", False, "AddBinaryFormattedResource", "(System.String,System.Byte[],System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Resources.Extensions", "PreserializedResourceWriter", False, "AddResource", "(System.String,System.IO.Stream,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Resources.Extensions", "PreserializedResourceWriter", False, "AddResource", "(System.String,System.IO.Stream,System.Boolean)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Resources.Extensions", "PreserializedResourceWriter", False, "AddResource", "(System.String,System.String,System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Resources.Extensions", "PreserializedResourceWriter", False, "AddTypeConverterResource", "(System.String,System.Byte[],System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Resources.Extensions", "PreserializedResourceWriter", False, "PreserializedResourceWriter", "(System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Resources.Extensions", "PreserializedResourceWriter", False, "PreserializedResourceWriter", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Resources.Extensions", "DeserializingResourceReader", "Close", "()", "summary", "df-generated"]
+      - ["System.Resources.Extensions", "DeserializingResourceReader", "DeserializingResourceReader", "(System.String)", "summary", "df-generated"]
+      - ["System.Resources.Extensions", "DeserializingResourceReader", "Dispose", "()", "summary", "df-generated"]
+      - ["System.Resources.Extensions", "PreserializedResourceWriter", "Close", "()", "summary", "df-generated"]
+      - ["System.Resources.Extensions", "PreserializedResourceWriter", "Dispose", "()", "summary", "df-generated"]
+      - ["System.Resources.Extensions", "PreserializedResourceWriter", "Generate", "()", "summary", "df-generated"]

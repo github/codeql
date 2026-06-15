@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --c++17
+// semmle-extractor-options: -std=c++17
 
 template<typename ...Args>
 int sum(Args&&... args) {

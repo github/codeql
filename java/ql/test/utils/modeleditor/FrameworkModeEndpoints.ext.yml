@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["com.github.codeql.test","PublicClass",true,"sourceStuff","()","","ReturnValue","remote","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.github.codeql.test","PublicClass",true,"sinkStuff","(String)","","Argument[0]","sql-injection","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.github.codeql.test","PublicClass",true,"summaryStuff","(String)","","Argument[0]","ReturnValue","taint","manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["com.github.codeql.test","PublicClass","neutralStuff","(String)","summary","manual"]

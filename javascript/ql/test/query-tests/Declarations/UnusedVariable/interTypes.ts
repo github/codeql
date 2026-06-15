@@ -1,4 +1,4 @@
-import { Foo, Bar } from "somewhere"; // OK
+import { Foo, Bar } from "somewhere"; // $ Alert
 
 type FooBar<T> =
   T extends [infer S extends Foo, ...unknown[]]

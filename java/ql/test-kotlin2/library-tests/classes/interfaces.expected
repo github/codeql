@@ -1,0 +1,8 @@
+| classes.kt:20:1:22:1 | IF1 |
+| classes.kt:24:1:26:1 | IF2 |
+| classes.kt:59:1:59:23 | Interface1 |
+| classes.kt:60:1:60:23 | Interface2 |
+| classes.kt:61:1:61:26 | Interface3 |
+| generic_anonymous.kt:16:5:18:5 | C0 |
+| generic_anonymous.kt:20:5:22:5 | C1 |
+| local_anonymous.kt:38:1:38:23 | Interface2 |

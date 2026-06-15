@@ -1,0 +1,1 @@
+//semmle-extractor-options: --no-strict-javac-errors --javac-args -source 17 -target 17

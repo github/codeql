@@ -4,13 +4,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
   </head>
   <body>
-  <!-- BAD -->
-  <a href="{{help_url}}">Help</a>
+  <a href="{{help_url}}">Help</a> <!--  $ Alert  -->
   <picture>
-    <source media="(min-width: 650px)" srcset="#/resources/pics-large/{{item._id}}">
-    <img src="#/resources/pics-default/{{item._id}}">
+    <source media="(min-width: 650px)" srcset="#/resources/pics-large/{{item._id}}"> <!-- $ Alert -->
+    <img src="#/resources/pics-default/{{item._id}}"> <!-- $ Alert -->
   </picture> 
-  <!-- GOOD -->
+
   <a ng-href="{{help_url}}">Help</a>
   <picture>
     <source media="(min-width: 650px)" ng-srcset="#/resources/pics-large/{{item._id}}">

@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import TreeSitter
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
@@ -115,7 +118,7 @@ private Ruby::AstNode specialParentOf(Ruby::AstNode n) {
     ]
 }
 
-private Ruby::AstNode parentOf(Ruby::AstNode n) {
+Ruby::AstNode parentOf(Ruby::AstNode n) {
   n = getHereDocBody(result)
   or
   result = specialParentOf(n).getParent()
@@ -146,11 +149,11 @@ cached
 private module Cached {
   /** Gets the enclosing scope of a node */
   cached
-  Scope::Range scopeOf(Ruby::AstNode n) {
+  Scope::Range scopeOfImpl(Ruby::AstNode n) {
     exists(Ruby::AstNode p | p = parentOf(n) |
       p = result
       or
-      not p instanceof Scope::Range and result = scopeOf(p)
+      not p instanceof Scope::Range and result = scopeOfImpl(p)
     )
   }
 
@@ -160,16 +163,24 @@ private module Cached {
    * and synthesized scopes into account.
    */
   cached
-  Scope scopeOfInclSynth(AstNode n) {
+  Scope scopeOfInclSynthImpl(AstNode n) {
     exists(AstNode p | p = parentOfInclSynth(n) |
       p = result
       or
-      not p instanceof Scope and result = scopeOfInclSynth(p)
+      not p instanceof Scope and result = scopeOfInclSynthImpl(p)
     )
   }
 }
 
 import Cached
+
+bindingset[n]
+pragma[inline_late]
+Scope::Range scopeOf(Ruby::AstNode n) { result = scopeOfImpl(n) }
+
+bindingset[n]
+pragma[inline_late]
+Scope scopeOfInclSynth(AstNode n) { result = scopeOfInclSynthImpl(n) }
 
 abstract class ScopeImpl extends AstNode, TScopeType {
   final Scope getOuterScopeImpl() { result = scopeOfInclSynth(this) }

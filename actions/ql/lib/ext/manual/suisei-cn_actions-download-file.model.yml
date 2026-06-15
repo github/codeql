@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["suisei-cn/actions-download-file", "*", "input.filename", "output.filename", "taint", "manual"]

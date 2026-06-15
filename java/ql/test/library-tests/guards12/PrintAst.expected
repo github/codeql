@@ -6,6 +6,8 @@ Test.java:
 #-----|       4: (Parameters)
 #    2|         0: [Parameter] s
 #    2|           0: [TypeAccess] String
+#    2|         1: [Parameter] unknown
+#    2|           0: [TypeAccess] boolean
 #    2|       5: [BlockStmt] { ... }
 #    3|         0: [LocalVariableDeclStmt] var ...;
 #    3|           0: [TypeAccess] int
@@ -19,5 +21,84 @@ Test.java:
 #    5|               1: [ConstCase] case ...
 #    5|                 -1: [IntegerLiteral] 2
 #    5|                 0: [StringLiteral] "c"
-#    6|               2: [DefaultCase] default
-#    6|                 -1: [IntegerLiteral] 3
+#    6|               2: [ConstCase] case ...
+#    6|                 -1: [IntegerLiteral] 2
+#    6|                 0: [StringLiteral] "d"
+#    7|               3: [DefaultCase] default
+#    7|                 -1: [IntegerLiteral] 3
+#    9|         1: [SwitchStmt] switch (...)
+#    9|           -1: [VarAccess] s
+#   10|           0: [ConstCase] case ...
+#   10|             -1: [BlockStmt] { ... }
+#   10|             0: [StringLiteral] "a"
+#   10|             1: [StringLiteral] "b"
+#   11|           1: [ConstCase] case ...
+#   11|             -1: [BlockStmt] { ... }
+#   11|             0: [StringLiteral] "c"
+#   12|           2: [ConstCase] case ...
+#   12|             -1: [BlockStmt] { ... }
+#   12|             0: [StringLiteral] "d"
+#   13|           3: [DefaultCase] default
+#   13|             -1: [BlockStmt] { ... }
+#   15|         2: [LocalVariableDeclStmt] var ...;
+#   15|           0: [TypeAccess] int
+#   15|           1: [LocalVariableDeclExpr] len
+#   15|             0: [MethodCall] length(...)
+#   15|               -1: [VarAccess] s
+#   16|         3: [SwitchStmt] switch (...)
+#   16|           -1: [VarAccess] s
+#   17|           0: [PatternCase] case <Pattern>
+#   17|             -3: [EQExpr] ... == ...
+#   17|               0: [VarAccess] len
+#   17|               1: [IntegerLiteral] 4
+#   17|             -1: [BlockStmt] { ... }
+#-----|             0: (Pattern case declaration)
+#   17|               0: [TypeAccess] String
+#   17|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   18|           1: [ConstCase] case ...
+#   18|             -1: [BlockStmt] { ... }
+#   18|             0: [StringLiteral] "e"
+#   19|           2: [DefaultCase] default
+#   19|             -1: [BlockStmt] { ... }
+#   21|         4: [SwitchStmt] switch (...)
+#   21|           -1: [ConditionalExpr] ...?...:...
+#   21|             0: [VarAccess] unknown
+#   21|             1: [VarAccess] s
+#   21|             2: [MethodCall] toLowerCase(...)
+#   21|               -1: [VarAccess] s
+#   22|           0: [ConstCase] case ...
+#   22|             -1: [BlockStmt] { ... }
+#   22|             0: [StringLiteral] "f"
+#   23|           1: [PatternCase] case <Pattern>
+#   23|             -3: [EQExpr] ... == ...
+#   23|               0: [VarAccess] len
+#   23|               1: [IntegerLiteral] 4
+#   23|             -1: [BlockStmt] { ... }
+#-----|             0: (Pattern case declaration)
+#   23|               0: [TypeAccess] String
+#   23|               1: [LocalVariableDeclExpr] s2
+#   24|           2: [ConstCase] case ...
+#   24|             -1: [BlockStmt] { ... }
+#   24|             0: [StringLiteral] "g"
+#   25|           3: [DefaultCase] default
+#   25|             -1: [BlockStmt] { ... }
+#   27|         5: [SwitchStmt] switch (...)
+#   27|           -1: [VarAccess] s
+#   28|           0: [ConstCase] case ...
+#   28|             0: [StringLiteral] "h"
+#   29|           1: [PatternCase] case <Pattern>
+#   29|             -3: [EQExpr] ... == ...
+#   29|               0: [VarAccess] len
+#   29|               1: [IntegerLiteral] 4
+#-----|             0: (Pattern case declaration)
+#   29|               0: [TypeAccess] String
+#   29|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   30|           2: [ConstCase] case ...
+#   30|             0: [StringLiteral] "i"
+#   31|           3: [LocalVariableDeclStmt] var ...;
+#   31|             0: [TypeAccess] String
+#   31|             1: [LocalVariableDeclExpr] target
+#   31|               0: [StringLiteral] "Shouldn't be controlled by any of those tests"
+#   32|           4: [BreakStmt] break
+#   33|           5: [DefaultCase] default
+#   34|           6: [BreakStmt] break

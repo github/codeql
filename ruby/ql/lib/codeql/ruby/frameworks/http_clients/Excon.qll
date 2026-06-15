@@ -7,7 +7,6 @@ private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries as DataFlowImplForHttpClientLibraries
 
 /**
  * A call that makes an HTTP request using `Excon`.
@@ -24,29 +23,30 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries 
  * TODO: pipelining, streaming responses
  * https://github.com/excon/excon/blob/master/README.md
  */
-class ExconHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
+class ExconHttpRequest extends Http::Client::Request::Range instanceof DataFlow::CallNode {
   API::Node requestNode;
-  API::Node connectionNode;
   DataFlow::Node connectionUse;
 
   ExconHttpRequest() {
     this = requestNode.asSource() and
-    connectionUse = connectionNode.asSource() and
-    connectionNode =
-      [
-        // one-off requests
-        API::getTopLevelMember("Excon"),
-        // connection re-use
-        API::getTopLevelMember("Excon").getInstance(),
-        API::getTopLevelMember("Excon").getMember("Connection").getInstance()
-      ] and
-    requestNode =
-      connectionNode
-          .getReturn([
-              // Excon#request exists but Excon.request doesn't.
-              // This shouldn't be a problem - in real code the latter would raise NoMethodError anyway.
-              "get", "head", "delete", "options", "post", "put", "patch", "trace", "request"
-            ])
+    exists(API::Node connectionNode |
+      connectionUse = connectionNode.asSource() and
+      connectionNode =
+        [
+          // one-off requests
+          API::getTopLevelMember("Excon"),
+          // connection re-use
+          API::getTopLevelMember("Excon").getInstance(),
+          API::getTopLevelMember("Excon").getMember("Connection").getInstance()
+        ] and
+      requestNode =
+        connectionNode
+            .getReturn([
+                // Excon#request exists but Excon.request doesn't.
+                // This shouldn't be a problem - in real code the latter would raise NoMethodError anyway.
+                "get", "head", "delete", "options", "post", "put", "patch", "trace", "request"
+              ])
+    )
   }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
@@ -55,27 +55,24 @@ class ExconHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode 
     // For one-off requests, the URL is in the first argument of the request method call.
     // For connection re-use, the URL is split between the first argument of the `new` call
     // and the `path` keyword argument of the request method call.
-    result = this.getArgument(0) and not result.asExpr().getExpr() instanceof Pair
+    result = super.getArgument(0) and not result.asExpr().getExpr() instanceof Pair
     or
-    result = this.getKeywordArgument("path")
+    result = super.getKeywordArgument("path")
     or
     result = connectionUse.(DataFlow::CallNode).getArgument(0)
   }
 
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {
-    exists(DataFlow::CallNode newCall | newCall = connectionNode.getAValueReachableFromSource() |
-      // Check for `ssl_verify_peer: false`
-      result = newCall.getKeywordArgumentIncludeHashArgument("ssl_verify_peer")
-    )
+    result =
+      connectionUse.(DataFlow::CallNode).getKeywordArgumentIncludeHashArgument("ssl_verify_peer")
   }
 
   cached
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {
-    any(ExconDisablesCertificateValidationConfiguration config)
-        .hasFlow(argumentOrigin, disablingNode) and
+    ExconDisablesCertificateValidationFlow::flow(argumentOrigin, disablingNode) and
     disablingNode = this.getCertificateValidationControllingValue()
     or
     // We set `Excon.defaults[:ssl_verify_peer]` or `Excon.ssl_verify_peer` = false`
@@ -116,17 +113,17 @@ class ExconHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode 
 }
 
 /** A configuration to track values that can disable certificate validation for Excon. */
-private class ExconDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration
-{
-  ExconDisablesCertificateValidationConfiguration() {
-    this = "ExconDisablesCertificateValidationConfiguration"
-  }
+private module ExconDisablesCertificateValidationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr().getExpr().(BooleanLiteral).isFalse() }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr().getExpr().(BooleanLiteral).isFalse()
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink = any(ExconHttpRequest req).getCertificateValidationControllingValue()
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Used for a library model
+  }
 }
+
+private module ExconDisablesCertificateValidationFlow =
+  DataFlow::Global<ExconDisablesCertificateValidationConfig>;

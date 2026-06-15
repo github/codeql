@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["flyteorg/flyte/.github/workflows/publish.yml", "*", "input.before-build", "code-injection", "generated"]
+     - ["flyteorg/flyte/.github/workflows/integration.yml", "*", "input.component", "code-injection", "generated"]
+     - ["flyteorg/flyte/.github/workflows/component_docker_build.yml", "*", "input.component", "code-injection", "generated"]

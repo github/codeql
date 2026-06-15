@@ -1,1 +1,2 @@
-LanguageFeatures/SetterIgnoresParameter.ql
+query: LanguageFeatures/SetterIgnoresParameter.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

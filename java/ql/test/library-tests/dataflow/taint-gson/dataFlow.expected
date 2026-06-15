@@ -1,0 +1,50 @@
+models
+| 1 | Summary: com.google.gson; Gson; false; fromJson; ; ; Argument[0]; ReturnValue; taint; manual |
+edges
+| Test.java:9:24:9:30 | parameter this : Potato | Test.java:10:20:10:23 | name : String | provenance |  |
+| Test.java:13:24:13:31 | parameter this : Potato | Test.java:14:20:14:24 | inner : Potato | provenance |  |
+| Test.java:17:24:17:32 | parameter this : Potato | Test.java:18:20:18:25 | object : Object | provenance |  |
+| Test.java:30:20:30:27 | source(...) : String | Test.java:31:46:31:46 | s : String | provenance |  |
+| Test.java:31:26:31:61 | fromJson(...) : Potato | Test.java:32:14:32:20 | tainted | provenance |  |
+| Test.java:31:26:31:61 | fromJson(...) : Potato | Test.java:33:14:33:20 | tainted : Potato | provenance |  |
+| Test.java:31:26:31:61 | fromJson(...) : Potato | Test.java:34:14:34:20 | tainted : Potato | provenance |  |
+| Test.java:31:26:31:61 | fromJson(...) : Potato | Test.java:35:14:35:20 | tainted : Potato | provenance |  |
+| Test.java:31:26:31:61 | fromJson(...) : Potato | Test.java:36:14:36:20 | tainted : Potato | provenance |  |
+| Test.java:31:46:31:46 | s : String | Test.java:31:26:31:61 | fromJson(...) : Potato | provenance | MaD:1 |
+| Test.java:33:14:33:20 | tainted : Potato | Test.java:9:24:9:30 | parameter this : Potato | provenance |  |
+| Test.java:33:14:33:20 | tainted : Potato | Test.java:33:14:33:30 | getName(...) | provenance |  |
+| Test.java:34:14:34:20 | tainted : Potato | Test.java:13:24:13:31 | parameter this : Potato | provenance |  |
+| Test.java:34:14:34:20 | tainted : Potato | Test.java:34:14:34:31 | getInner(...) | provenance |  |
+| Test.java:35:14:35:20 | tainted : Potato | Test.java:13:24:13:31 | parameter this : Potato | provenance |  |
+| Test.java:35:14:35:20 | tainted : Potato | Test.java:35:14:35:31 | getInner(...) : Potato | provenance |  |
+| Test.java:35:14:35:31 | getInner(...) : Potato | Test.java:9:24:9:30 | parameter this : Potato | provenance |  |
+| Test.java:35:14:35:31 | getInner(...) : Potato | Test.java:35:14:35:41 | getName(...) | provenance |  |
+| Test.java:36:14:36:20 | tainted : Potato | Test.java:17:24:17:32 | parameter this : Potato | provenance |  |
+| Test.java:36:14:36:20 | tainted : Potato | Test.java:36:14:36:32 | getObject(...) | provenance |  |
+nodes
+| Test.java:9:24:9:30 | parameter this : Potato | semmle.label | parameter this : Potato |
+| Test.java:10:20:10:23 | name : String | semmle.label | name : String |
+| Test.java:13:24:13:31 | parameter this : Potato | semmle.label | parameter this : Potato |
+| Test.java:14:20:14:24 | inner : Potato | semmle.label | inner : Potato |
+| Test.java:17:24:17:32 | parameter this : Potato | semmle.label | parameter this : Potato |
+| Test.java:18:20:18:25 | object : Object | semmle.label | object : Object |
+| Test.java:30:20:30:27 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:31:26:31:61 | fromJson(...) : Potato | semmle.label | fromJson(...) : Potato |
+| Test.java:31:46:31:46 | s : String | semmle.label | s : String |
+| Test.java:32:14:32:20 | tainted | semmle.label | tainted |
+| Test.java:33:14:33:20 | tainted : Potato | semmle.label | tainted : Potato |
+| Test.java:33:14:33:30 | getName(...) | semmle.label | getName(...) |
+| Test.java:34:14:34:20 | tainted : Potato | semmle.label | tainted : Potato |
+| Test.java:34:14:34:31 | getInner(...) | semmle.label | getInner(...) |
+| Test.java:35:14:35:20 | tainted : Potato | semmle.label | tainted : Potato |
+| Test.java:35:14:35:31 | getInner(...) : Potato | semmle.label | getInner(...) : Potato |
+| Test.java:35:14:35:41 | getName(...) | semmle.label | getName(...) |
+| Test.java:36:14:36:20 | tainted : Potato | semmle.label | tainted : Potato |
+| Test.java:36:14:36:32 | getObject(...) | semmle.label | getObject(...) |
+subpaths
+| Test.java:33:14:33:20 | tainted : Potato | Test.java:9:24:9:30 | parameter this : Potato | Test.java:10:20:10:23 | name : String | Test.java:33:14:33:30 | getName(...) |
+| Test.java:34:14:34:20 | tainted : Potato | Test.java:13:24:13:31 | parameter this : Potato | Test.java:14:20:14:24 | inner : Potato | Test.java:34:14:34:31 | getInner(...) |
+| Test.java:35:14:35:20 | tainted : Potato | Test.java:13:24:13:31 | parameter this : Potato | Test.java:14:20:14:24 | inner : Potato | Test.java:35:14:35:31 | getInner(...) : Potato |
+| Test.java:35:14:35:31 | getInner(...) : Potato | Test.java:9:24:9:30 | parameter this : Potato | Test.java:10:20:10:23 | name : String | Test.java:35:14:35:41 | getName(...) |
+| Test.java:36:14:36:20 | tainted : Potato | Test.java:17:24:17:32 | parameter this : Potato | Test.java:18:20:18:25 | object : Object | Test.java:36:14:36:32 | getObject(...) |
+testFailures

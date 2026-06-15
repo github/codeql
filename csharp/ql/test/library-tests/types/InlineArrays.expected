@@ -1,0 +1,5 @@
+| types.cs:60:19:60:31 | MyInlineArray | Int32 | 1 | 10 |
+| types.cs:66:19:66:47 | MyMultiDimensionalInlineArray | MyInlineArray | 2 | 5 |
+| types.cs:72:19:72:48 | MyMultiDimensionalInlineArray2 | String[] | 2 | 7 |
+| types.cs:78:19:78:48 | MyMultiDimensionalInlineArray3 | Object[,] | 2 | 4 |
+| types.cs:84:19:84:48 | MyMultiDimensionalInlineArray4 | Object[][] | 3 | 11 |

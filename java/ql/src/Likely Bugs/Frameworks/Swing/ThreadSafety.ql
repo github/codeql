@@ -13,9 +13,14 @@
 
 import java
 
-from MethodAccess ma, Method m, MainMethod main
+from MethodCall ma, Method m, MainMethod main
 where
-  ma.getQualifier().getType().getCompilationUnit().getPackage().getName().matches("javax.swing%") and
+  ma.getQualifier()
+      .getType()
+      .getCompilationUnit()
+      .getPackage()
+      .getName()
+      .matches(javaxOrJakarta() + ".swing%") and
   (
     m.hasName("show") and m.hasNoParameters()
     or

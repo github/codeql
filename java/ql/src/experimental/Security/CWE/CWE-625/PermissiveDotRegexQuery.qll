@@ -1,4 +1,5 @@
 /** Provides classes related to security-centered regular expression matching. */
+deprecated module;
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
@@ -6,8 +7,9 @@ private import semmle.code.java.dataflow.FlowSources
 import experimental.semmle.code.java.security.SpringUrlRedirect
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.security.UrlRedirect
-import Regex
+private import semmle.code.java.frameworks.Regex
 
+overlay[local?]
 private class ActivateModels extends ActiveExperimentalModels {
   ActivateModels() { this = "permissive-dot-regex-query" }
 }
@@ -26,7 +28,7 @@ private class PermissiveDotStr extends StringLiteral {
 /** The qualifier of a request dispatch method call. */
 private class UrlDispatchSink extends UrlRedirectSink {
   UrlDispatchSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof RequestDispatchMethod and
       this.asExpr() = ma.getQualifier()
     )
@@ -36,7 +38,9 @@ private class UrlDispatchSink extends UrlRedirectSink {
 /** The `doFilter` method of `javax.servlet.FilterChain`. */
 private class ServletFilterMethod extends Method {
   ServletFilterMethod() {
-    this.getDeclaringType().getASupertype*().hasQualifiedName("javax.servlet", "FilterChain") and
+    this.getDeclaringType()
+        .getASupertype*()
+        .hasQualifiedName(javaxOrJakarta() + ".servlet", "FilterChain") and
     this.hasName("doFilter")
   }
 }
@@ -44,7 +48,7 @@ private class ServletFilterMethod extends Method {
 /** The qualifier of a servlet filter method call. */
 private class UrlFilterSink extends UrlRedirectSink {
   UrlFilterSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof ServletFilterMethod and
       this.asExpr() = ma.getQualifier()
     )
@@ -75,17 +79,12 @@ private class SpringUriInputParameterSource extends DataFlow::Node {
  */
 private class CompileRegexSink extends DataFlow::ExprNode {
   CompileRegexSink() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      (
-        ma.getArgument(0) = this.asExpr() and
-        (
-          m instanceof StringMatchMethod // input.matches(regexPattern)
-          or
-          m instanceof PatternCompileMethod // p = Pattern.compile(regexPattern)
-          or
-          m instanceof PatternMatchMethod // p = Pattern.matches(regexPattern, input)
-        )
-      )
+    exists(MethodCall ma | ma.getArgument(0) = this.asExpr() |
+      ma instanceof StringMatchesCall // input.matches(regexPattern)
+      or
+      ma instanceof PatternCompileCall // p = Pattern.compile(regexPattern)
+      or
+      ma instanceof PatternMatchesCall // p = Pattern.matches(regexPattern, input)
     )
   }
 }
@@ -94,18 +93,18 @@ private class CompileRegexSink extends DataFlow::ExprNode {
  * A data flow configuration for regular expressions that include permissive dots.
  */
 private module PermissiveDotRegexConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow2::Node src) { src.asExpr() instanceof PermissiveDotStr }
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof PermissiveDotStr }
 
-  predicate isSink(DataFlow2::Node sink) { sink instanceof CompileRegexSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof CompileRegexSink }
 
-  predicate isBarrier(DataFlow2::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(
-      MethodAccess ma, Field f // Pattern.compile(PATTERN, Pattern.DOTALL)
+      MethodCall ma, Field f // Pattern.compile(PATTERN, Pattern.DOTALL)
     |
       ma.getMethod() instanceof PatternCompileMethod and
       ma.getArgument(1) = f.getAnAccess() and
       f.hasName("DOTALL") and
-      f.getDeclaringType() instanceof Pattern and
+      f.getDeclaringType() instanceof TypeRegexPattern and
       node.asExpr() = ma.getArgument(0)
     )
   }
@@ -129,13 +128,13 @@ module MatchRegexConfig implements DataFlow::ConfigSig {
       Guard guard, Expr se, Expr ce // used in a condition to control url redirect, which is a typical security enforcement
     |
       (
-        sink.asExpr() = ce.(MethodAccess).getQualifier() or
-        sink.asExpr() = ce.(MethodAccess).getAnArgument() or
+        sink.asExpr() = ce.(MethodCall).getQualifier() or
+        sink.asExpr() = ce.(MethodCall).getAnArgument() or
         sink.asExpr() = ce
       ) and
       (
-        DataFlow::localExprFlow(ce, guard.(MethodAccess).getQualifier()) or
-        DataFlow::localExprFlow(ce, guard.(MethodAccess).getAnArgument())
+        DataFlow::localExprFlow(ce, guard.(MethodCall).getQualifier()) or
+        DataFlow::localExprFlow(ce, guard.(MethodCall).getAnArgument())
       ) and
       (
         DataFlow::exprNode(se) instanceof UrlRedirectSink or
@@ -143,21 +142,21 @@ module MatchRegexConfig implements DataFlow::ConfigSig {
       ) and
       guard.controls(se.getBasicBlock(), true)
     ) and
-    exists(MethodAccess ma | PermissiveDotRegexFlow::flowToExpr(ma.getArgument(0)) |
+    exists(MethodCall ma | PermissiveDotRegexFlow::flowToExpr(ma.getArgument(0)) |
       // input.matches(regexPattern)
-      ma.getMethod() instanceof StringMatchMethod and
+      ma instanceof StringMatchesCall and
       ma.getQualifier() = sink.asExpr()
       or
       // p = Pattern.compile(regexPattern); p.matcher(input)
-      ma.getMethod() instanceof PatternCompileMethod and
-      exists(MethodAccess pma |
+      ma instanceof PatternCompileCall and
+      exists(MethodCall pma |
         pma.getMethod() instanceof PatternMatcherMethod and
         sink.asExpr() = pma.getArgument(0) and
         DataFlow::localExprFlow(ma, pma.getQualifier())
       )
       or
       // p = Pattern.matches(regexPattern, input)
-      ma.getMethod() instanceof PatternMatchMethod and
+      ma instanceof PatternMatchesCall and
       sink.asExpr() = ma.getArgument(1)
     )
   }
@@ -174,28 +173,14 @@ abstract class MatchRegexSink extends DataFlow::ExprNode { }
  * A string being matched against a regular expression.
  */
 private class StringMatchRegexSink extends MatchRegexSink {
-  StringMatchRegexSink() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      (
-        m instanceof StringMatchMethod and
-        ma.getQualifier() = this.asExpr()
-      )
-    )
-  }
+  StringMatchRegexSink() { any(StringMatchesCall mc).getQualifier() = this.asExpr() }
 }
 
 /**
  * A string being matched against a regular expression using a pattern.
  */
 private class PatternMatchRegexSink extends MatchRegexSink {
-  PatternMatchRegexSink() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      (
-        m instanceof PatternMatchMethod and
-        ma.getArgument(1) = this.asExpr()
-      )
-    )
-  }
+  PatternMatchRegexSink() { any(PatternMatchesCall mc).getArgument(1) = this.asExpr() }
 }
 
 /**
@@ -203,7 +188,7 @@ private class PatternMatchRegexSink extends MatchRegexSink {
  */
 private class PatternMatcherRegexSink extends MatchRegexSink {
   PatternMatcherRegexSink() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    exists(MethodCall ma, Method m | m = ma.getMethod() |
       (
         m instanceof PatternMatcherMethod and
         ma.getArgument(0) = this.asExpr()

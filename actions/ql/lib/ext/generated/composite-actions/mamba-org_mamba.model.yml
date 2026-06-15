@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["mamba-org/mamba", "*", "input.key_suffix", "code-injection", "generated"]
+     - ["mamba-org/mamba", "*", "input.key_base", "code-injection", "generated"]
+     - ["mamba-org/mamba", "*", "input.key_prefix", "code-injection", "generated"]

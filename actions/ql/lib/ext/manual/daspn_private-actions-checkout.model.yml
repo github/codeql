@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["daspn/private-actions-checkout", "*", "input.actions_list", "command-injection", "manual"]
+      - ["daspn/private-actions-checkout", "*", "input.checkout_base_path", "command-injection", "manual"]

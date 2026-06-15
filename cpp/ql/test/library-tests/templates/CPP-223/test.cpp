@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --clang --edg --ms_extensions
+// semmle-extractor-options: --clang --edg --ms_extensions
 
 template <int a> class b {
   template <bool> struct c;

@@ -2,6 +2,8 @@
  * Provides classes and predicates for working with
  * EJB deployment descriptor XML files (`ejb-jar.xml`).
  */
+overlay[local?]
+module;
 
 import java
 
@@ -34,9 +36,6 @@ class EjbJarXmlFile extends XmlFile {
     result = this.getAnEnterpriseBeansElement().getAnEntityElement()
   }
 }
-
-/** DEPRECATED: Alias for EjbJarXmlFile */
-deprecated class EjbJarXMLFile = EjbJarXmlFile;
 
 /** The root `ejb-jar` XML element in an `ejb-jar.xml` file. */
 class EjbJarRootElement extends XmlElement {

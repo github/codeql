@@ -1,1 +1,2 @@
-Statements/DanglingElse.ql
+query: Statements/DanglingElse.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

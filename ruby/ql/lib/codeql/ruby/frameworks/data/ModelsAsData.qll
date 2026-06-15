@@ -27,29 +27,35 @@ private import codeql.ruby.dataflow.FlowSummary
  * A remote flow source originating from a CSV source row.
  */
 private class RemoteFlowSourceFromCsv extends RemoteFlowSource::Range {
-  RemoteFlowSourceFromCsv() { this = ModelOutput::getASourceNode("remote").asSource() }
+  RemoteFlowSourceFromCsv() { ModelOutput::sourceNode(this, "remote") }
 
   override string getSourceType() { result = "Remote flow (from model)" }
 }
 
-private class SummarizedCallableFromModel extends SummarizedCallable {
+private class SummarizedCallableFromModel extends SummarizedCallable::Range {
   string type;
   string path;
 
   SummarizedCallableFromModel() {
-    ModelOutput::relevantSummaryModel(type, path, _, _, _) and
+    ModelOutput::relevantSummaryModel(type, path, _, _, _, _) and
     this = type + ";" + path
   }
 
   override Call getACall() {
     exists(API::MethodAccessNode base |
       ModelOutput::resolvedSummaryBase(type, path, base) and
-      result = base.getCallNode().asExpr().getExpr()
+      result = base.asCall().asExpr().getExpr()
     )
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    exists(string kind | ModelOutput::relevantSummaryModel(type, path, input, output, kind) |
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
+  ) {
+    exists(string kind |
+      ModelOutput::relevantSummaryModel(type, path, input, output, kind, model) and
+      p = "manual" and
+      isExact = true
+    |
       kind = "value" and
       preservesValue = true
       or

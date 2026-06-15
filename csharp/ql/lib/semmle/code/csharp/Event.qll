@@ -23,7 +23,12 @@ class Event extends DeclarationWithAccessors, @event {
 
   override ValueOrRefType getDeclaringType() { events(this, _, result, _, _) }
 
-  override DelegateType getType() { events(this, _, _, getTypeRef(result), _) }
+  override DelegateType getType() {
+    events(this, _, _, result, _)
+    or
+    not events(this, _, _, any(Type t), _) and
+    events(this, _, _, getTypeRef(result), _)
+  }
 
   /** Gets an `add` or `remove` accessor of this event, if any. */
   EventAccessor getAnEventAccessor() { result.getDeclaration() = this }
@@ -63,7 +68,7 @@ class Event extends DeclarationWithAccessors, @event {
     result = DeclarationWithAccessors.super.getAnUltimateImplementor()
   }
 
-  override Location getALocation() { event_location(this, result) }
+  override Location getALocation() { event_location(this.getUnboundDeclaration(), result) }
 
   override string getAPrimaryQlClass() { result = "Event" }
 }
@@ -94,7 +99,7 @@ class EventAccessor extends Accessor, @event_accessor {
 
   override Event getDeclaration() { event_accessors(this, _, _, result, _) }
 
-  override Location getALocation() { event_accessor_location(this, result) }
+  override Location getALocation() { event_accessor_location(this.getUnboundDeclaration(), result) }
 }
 
 /**

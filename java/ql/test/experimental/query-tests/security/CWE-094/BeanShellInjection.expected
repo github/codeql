@@ -1,16 +1,24 @@
 edges
-| BeanShellInjection.java:13:17:13:44 | getParameter(...) : String | BeanShellInjection.java:15:22:15:49 | new StaticScriptSource(...) |
-| BeanShellInjection.java:20:17:20:44 | getParameter(...) : String | BeanShellInjection.java:22:20:22:23 | code |
-| BeanShellInjection.java:27:17:27:44 | getParameter(...) : String | BeanShellInjection.java:31:22:31:39 | staticScriptSource |
+| BeanShellInjection.java:13:17:13:44 | getParameter(...) : String | BeanShellInjection.java:15:45:15:48 | code : String | provenance | Src:MaD:1  |
+| BeanShellInjection.java:15:45:15:48 | code : String | BeanShellInjection.java:15:22:15:49 | new StaticScriptSource(...) | provenance | Config |
+| BeanShellInjection.java:20:17:20:44 | getParameter(...) : String | BeanShellInjection.java:22:20:22:23 | code | provenance | Src:MaD:1  |
+| BeanShellInjection.java:27:17:27:44 | getParameter(...) : String | BeanShellInjection.java:29:32:29:35 | code : String | provenance | Src:MaD:1  |
+| BeanShellInjection.java:29:3:29:20 | staticScriptSource : StaticScriptSource | BeanShellInjection.java:31:22:31:39 | staticScriptSource | provenance |  |
+| BeanShellInjection.java:29:32:29:35 | code : String | BeanShellInjection.java:29:3:29:20 | staticScriptSource : StaticScriptSource | provenance | Config |
+models
+| 1 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
 nodes
 | BeanShellInjection.java:13:17:13:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | BeanShellInjection.java:15:22:15:49 | new StaticScriptSource(...) | semmle.label | new StaticScriptSource(...) |
+| BeanShellInjection.java:15:45:15:48 | code : String | semmle.label | code : String |
 | BeanShellInjection.java:20:17:20:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | BeanShellInjection.java:22:20:22:23 | code | semmle.label | code |
 | BeanShellInjection.java:27:17:27:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| BeanShellInjection.java:29:3:29:20 | staticScriptSource : StaticScriptSource | semmle.label | staticScriptSource : StaticScriptSource |
+| BeanShellInjection.java:29:32:29:35 | code : String | semmle.label | code : String |
 | BeanShellInjection.java:31:22:31:39 | staticScriptSource | semmle.label | staticScriptSource |
-subpaths
-#select
+problems
 | BeanShellInjection.java:15:22:15:49 | new StaticScriptSource(...) | BeanShellInjection.java:13:17:13:44 | getParameter(...) : String | BeanShellInjection.java:15:22:15:49 | new StaticScriptSource(...) | BeanShell injection from $@. | BeanShellInjection.java:13:17:13:44 | getParameter(...) | this user input |
 | BeanShellInjection.java:22:20:22:23 | code | BeanShellInjection.java:20:17:20:44 | getParameter(...) : String | BeanShellInjection.java:22:20:22:23 | code | BeanShell injection from $@. | BeanShellInjection.java:20:17:20:44 | getParameter(...) | this user input |
 | BeanShellInjection.java:31:22:31:39 | staticScriptSource | BeanShellInjection.java:27:17:27:44 | getParameter(...) : String | BeanShellInjection.java:31:22:31:39 | staticScriptSource | BeanShell injection from $@. | BeanShellInjection.java:27:17:27:44 | getParameter(...) | this user input |
+subpaths

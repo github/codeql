@@ -1,7 +1,7 @@
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -26,9 +26,15 @@ namespace Semmle.Extraction.CSharp.Entities
             var parentNs = Namespace.Create(Context, Symbol.TypeParameterKind == TypeParameterKind.Method ? Context.Compilation.GlobalNamespace : Symbol.ContainingNamespace);
             trapFile.parent_namespace(this, parentNs);
 
-            foreach (var l in Symbol.Locations)
+            if (Context.OnlyScaffold)
             {
-                trapFile.type_location(this, Context.CreateLocation(l));
+                return;
+            }
+
+            if (Context.ExtractLocation(Symbol))
+            {
+                var locations = Context.GetLocations(Symbol);
+                WriteLocationsToTrap(trapFile.type_location, this, locations);
             }
 
             if (IsSourceDeclaration)

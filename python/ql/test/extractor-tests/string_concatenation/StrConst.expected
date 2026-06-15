@@ -1,0 +1,7 @@
+| test.py:1:5:1:15 | StringLiteral | a\u00f0 |
+| test.py:2:5:2:15 | StringLiteral | b\u00f0 |
+| test.py:3:5:3:11 | StringLiteral | cc |
+| test.py:4:5:4:19 | StringLiteral | \u00ff\u00ff |
+| test.py:5:5:5:16 | StringLiteral | e\u00ff |
+| test.py:6:5:6:16 | StringLiteral | f\u00ff |
+| test.py:7:5:7:16 | StringLiteral | \u00ffg |

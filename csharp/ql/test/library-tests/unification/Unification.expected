@@ -7,6 +7,7 @@ constrainedTypeParameterSubsumes
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:30:12:30:24 | (string, int) |
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:32:12:32:19 | (T8, T9) |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:53:8:53:9 | S3 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:1:11:1:12 | I1 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:6:7:6:8 | C0 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<C0> |
@@ -44,19 +45,23 @@ constrainedTypeParameterSubsumes
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:36:7:36:17 | Nested<T10> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:36:7:36:17 | Nested<int> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:36:7:36:17 | Nested<string> |
-| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> |
-| Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested<>+NestedB |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested`1+NestedA<T11> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested<System.String>+NestedB |
-| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested`1+NestedB |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested`1+NestedB+NestedC<T12> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:52:11:52:12 | I2 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:55:7:55:8 | C7 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:57:7:57:25 | NormalConstraint<T> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:58:7:58:27 | NegativeConstraint<T> |
 | Unification.cs:10:10:10:11 | T4 | Unification.cs:7:7:7:12 | C1<C0> |
 | Unification.cs:10:10:10:11 | T4 | Unification.cs:10:10:10:11 | T4 |
 | Unification.cs:11:10:11:11 | T5 | Unification.cs:8:7:8:12 | C2<S1> |
@@ -96,8 +101,20 @@ constrainedTypeParameterSubsumes
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:30:12:30:24 | (string, int) |
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:32:12:32:19 | (T8, T9) |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:53:8:53:9 | S3 |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:8:7:8:12 | C2<S2> |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:24:12:24:13 | Tm |
+| Unification.cs:57:24:57:24 | T | Unification.cs:52:11:52:12 | I2 |
+| Unification.cs:57:24:57:24 | T | Unification.cs:53:8:53:9 | S3 |
+| Unification.cs:57:24:57:24 | T | Unification.cs:55:7:55:8 | C7 |
+| Unification.cs:57:24:57:24 | T | Unification.cs:57:24:57:24 | T |
+| Unification.cs:57:24:57:24 | T | Unification.cs:58:26:58:26 | T |
+| Unification.cs:58:26:58:26 | T | Unification.cs:52:11:52:12 | I2 |
+| Unification.cs:58:26:58:26 | T | Unification.cs:53:8:53:9 | S3 |
+| Unification.cs:58:26:58:26 | T | Unification.cs:54:12:54:13 | RS |
+| Unification.cs:58:26:58:26 | T | Unification.cs:55:7:55:8 | C7 |
+| Unification.cs:58:26:58:26 | T | Unification.cs:57:24:57:24 | T |
+| Unification.cs:58:26:58:26 | T | Unification.cs:58:26:58:26 | T |
 constrainedTypeParameterSubsumptionImpliesUnification
 constrainedTypeParameterUnifiable
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:3:8:3:9 | S1 |
@@ -108,6 +125,7 @@ constrainedTypeParameterUnifiable
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:30:12:30:24 | (string, int) |
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:8:10:8:11 | T2 | Unification.cs:32:12:32:19 | (T8, T9) |
+| Unification.cs:8:10:8:11 | T2 | Unification.cs:53:8:53:9 | S3 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:1:11:1:12 | I1 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:6:7:6:8 | C0 |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:7:7:7:12 | C1<C0> |
@@ -145,19 +163,23 @@ constrainedTypeParameterUnifiable
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:36:7:36:17 | Nested<T10> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:36:7:36:17 | Nested<int> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:36:7:36:17 | Nested<string> |
-| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> |
-| Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested<>+NestedB |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:38:11:38:22 | Nested`1+NestedA<T11> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested<System.String>+NestedB |
-| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:39:11:39:17 | Nested`1+NestedB |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> |
 | Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:41:22:41:33 | Nested`1+NestedB+NestedC<T12> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:52:11:52:12 | I2 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:55:7:55:8 | C7 |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:57:7:57:25 | NormalConstraint<T> |
+| Unification.cs:9:10:9:11 | T3 | Unification.cs:58:7:58:27 | NegativeConstraint<T> |
 | Unification.cs:10:10:10:11 | T4 | Unification.cs:7:7:7:12 | C1<C0> |
 | Unification.cs:10:10:10:11 | T4 | Unification.cs:7:7:7:12 | C1<T1> |
 | Unification.cs:10:10:10:11 | T4 | Unification.cs:7:7:7:12 | C1<T2> |
@@ -205,9 +227,21 @@ constrainedTypeParameterUnifiable
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:30:12:30:24 | (string, int) |
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:31:12:31:23 | (string, T9) |
 | Unification.cs:12:25:12:27 | T6d | Unification.cs:32:12:32:19 | (T8, T9) |
+| Unification.cs:12:25:12:27 | T6d | Unification.cs:53:8:53:9 | S3 |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:8:7:8:12 | C2<S2> |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:8:7:8:12 | C2<T2> |
 | Unification.cs:24:12:24:13 | Tm | Unification.cs:24:12:24:13 | Tm |
+| Unification.cs:57:24:57:24 | T | Unification.cs:52:11:52:12 | I2 |
+| Unification.cs:57:24:57:24 | T | Unification.cs:53:8:53:9 | S3 |
+| Unification.cs:57:24:57:24 | T | Unification.cs:55:7:55:8 | C7 |
+| Unification.cs:57:24:57:24 | T | Unification.cs:57:24:57:24 | T |
+| Unification.cs:57:24:57:24 | T | Unification.cs:58:26:58:26 | T |
+| Unification.cs:58:26:58:26 | T | Unification.cs:52:11:52:12 | I2 |
+| Unification.cs:58:26:58:26 | T | Unification.cs:53:8:53:9 | S3 |
+| Unification.cs:58:26:58:26 | T | Unification.cs:54:12:54:13 | RS |
+| Unification.cs:58:26:58:26 | T | Unification.cs:55:7:55:8 | C7 |
+| Unification.cs:58:26:58:26 | T | Unification.cs:57:24:57:24 | T |
+| Unification.cs:58:26:58:26 | T | Unification.cs:58:26:58:26 | T |
 subsumes
 | Unification.cs:7:7:7:12 | C1<C0> | Unification.cs:7:7:7:12 | C1<C0> |
 | Unification.cs:7:7:7:12 | C1<S1> | Unification.cs:7:7:7:12 | C1<S1> |
@@ -285,33 +319,35 @@ subsumes
 | Unification.cs:36:7:36:17 | Nested<T10> | Unification.cs:36:7:36:17 | Nested<string> |
 | Unification.cs:36:7:36:17 | Nested<int> | Unification.cs:36:7:36:17 | Nested<int> |
 | Unification.cs:36:7:36:17 | Nested<string> | Unification.cs:36:7:36:17 | Nested<string> |
-| Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
-| Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> |
-| Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> |
-| Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> |
-| Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> |
 | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> |
 | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> |
 | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> |
 | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> |
 | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> |
 | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> |
-| Unification.cs:39:11:39:17 | Nested<>+NestedB | Unification.cs:39:11:39:17 | Nested<>+NestedB |
-| Unification.cs:39:11:39:17 | Nested<>+NestedB | Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB |
-| Unification.cs:39:11:39:17 | Nested<>+NestedB | Unification.cs:39:11:39:17 | Nested<System.String>+NestedB |
+| Unification.cs:38:11:38:22 | Nested`1+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested`1+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> |
+| Unification.cs:38:11:38:22 | Nested`1+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested`1+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> |
+| Unification.cs:38:11:38:22 | Nested`1+NestedA<T11> | Unification.cs:38:11:38:22 | Nested`1+NestedA<T11> |
 | Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB | Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB |
 | Unification.cs:39:11:39:17 | Nested<System.String>+NestedB | Unification.cs:39:11:39:17 | Nested<System.String>+NestedB |
-| Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
-| Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> |
-| Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> |
-| Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> |
-| Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> |
+| Unification.cs:39:11:39:17 | Nested`1+NestedB | Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB |
+| Unification.cs:39:11:39:17 | Nested`1+NestedB | Unification.cs:39:11:39:17 | Nested<System.String>+NestedB |
+| Unification.cs:39:11:39:17 | Nested`1+NestedB | Unification.cs:39:11:39:17 | Nested`1+NestedB |
 | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> |
 | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> |
 | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> |
 | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> |
 | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> |
 | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> |
+| Unification.cs:41:22:41:33 | Nested`1+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested`1+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> |
+| Unification.cs:41:22:41:33 | Nested`1+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested`1+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> |
+| Unification.cs:41:22:41:33 | Nested`1+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested`1+NestedB+NestedC<T12> |
+| Unification.cs:57:7:57:25 | NormalConstraint<T> | Unification.cs:57:7:57:25 | NormalConstraint<T> |
+| Unification.cs:58:7:58:27 | NegativeConstraint<T> | Unification.cs:58:7:58:27 | NegativeConstraint<T> |
 subsumptionImpliesUnification
 unifiable
 | Unification.cs:7:7:7:12 | C1<C0> | Unification.cs:7:7:7:12 | C1<T1> |
@@ -349,17 +385,17 @@ unifiable
 | Unification.cs:31:12:31:23 | (string, T9) | Unification.cs:32:12:32:19 | (T8, T9) |
 | Unification.cs:36:7:36:17 | Nested<int> | Unification.cs:36:7:36:17 | Nested<T10> |
 | Unification.cs:36:7:36:17 | Nested<string> | Unification.cs:36:7:36:17 | Nested<T10> |
-| Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
-| Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested`1+NestedA<T11> |
 | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> | Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<T11> |
-| Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
-| Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> | Unification.cs:38:11:38:22 | Nested<>+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested<System.Int32>+NestedA<string> | Unification.cs:38:11:38:22 | Nested`1+NestedA<T11> |
+| Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> | Unification.cs:38:11:38:22 | Nested`1+NestedA<T11> |
 | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> | Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<T11> |
-| Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB | Unification.cs:39:11:39:17 | Nested<>+NestedB |
-| Unification.cs:39:11:39:17 | Nested<System.String>+NestedB | Unification.cs:39:11:39:17 | Nested<>+NestedB |
-| Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
-| Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
+| Unification.cs:38:11:38:22 | Nested<System.String>+NestedA<int> | Unification.cs:38:11:38:22 | Nested`1+NestedA<T11> |
+| Unification.cs:39:11:39:17 | Nested<System.Int32>+NestedB | Unification.cs:39:11:39:17 | Nested`1+NestedB |
+| Unification.cs:39:11:39:17 | Nested<System.String>+NestedB | Unification.cs:39:11:39:17 | Nested`1+NestedB |
+| Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested`1+NestedB+NestedC<T12> |
 | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> | Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<T12> |
-| Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
-| Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> | Unification.cs:41:22:41:33 | Nested<>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested<System.Int32>+NestedB+NestedC<bool> | Unification.cs:41:22:41:33 | Nested`1+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> | Unification.cs:41:22:41:33 | Nested`1+NestedB+NestedC<T12> |
 | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> | Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<T12> |
+| Unification.cs:41:22:41:33 | Nested<System.String>+NestedB+NestedC<decimal> | Unification.cs:41:22:41:33 | Nested`1+NestedB+NestedC<T12> |

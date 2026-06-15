@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 import semmle.python.dataflow.TaintTracking
 
 class SimpleTest extends TaintKind {
@@ -30,7 +31,7 @@ predicate visit_call(CallNode call, FunctionObject func) {
   exists(AttrNode attr, ClassObject cls, string name |
     name.matches("visit\\_%") and
     func = cls.lookupAttribute(name) and
-    attr.getObject("visit").refersTo(_, cls, _) and
+    attr.getObject("visit").(ControlFlowNodeWithPointsTo).refersTo(_, cls, _) and
     attr = call.getFunction()
   )
 }

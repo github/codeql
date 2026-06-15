@@ -2,9 +2,9 @@
  * @name Non-exception in 'except' clause
  * @description An exception handler specifying a non-exception type will never handle any exception.
  * @kind problem
- * @tags reliability
- *       correctness
- *       types
+ * @tags quality
+ *       reliability
+ *       error-handling
  * @problem.severity error
  * @sub-severity low
  * @precision very-high
@@ -12,8 +12,9 @@
  */
 
 import python
+private import LegacyPointsTo
 
-from ExceptFlowNode ex, Value t, ClassValue c, ControlFlowNode origin, string what
+from ExceptFlowNodeWithPointsTo ex, Value t, ClassValue c, ControlFlowNode origin, string what
 where
   ex.handledException(t, c, origin) and
   (

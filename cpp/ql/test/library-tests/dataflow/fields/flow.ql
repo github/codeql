@@ -1,9 +1,11 @@
-import TestUtilities.dataflow.FlowTestCommon
+import utils.test.dataflow.FlowTestCommon
 
 module AstTest {
-  private import ASTConfiguration
+  import ASTConfiguration
 }
 
 module IRTest {
-  private import IRConfiguration
+  import IRConfiguration
 }
+
+import MakeTest<MergeTests<AstFlowTest<AstTest::AstFlow>, IRFlowTest<IRTest::IRFlow>>>

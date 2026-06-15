@@ -11,11 +11,11 @@
  */
 
 import python
-import DataFlow::PathGraph
+import CsvInjectionFlow::PathGraph
 import semmle.python.dataflow.new.DataFlow
 import experimental.semmle.python.security.injection.CsvInjection
 
-from CsvInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from CsvInjectionFlow::PathNode source, CsvInjectionFlow::PathNode sink
+where CsvInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Csv injection might include code from $@.", source.getNode(),
   "this user input"

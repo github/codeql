@@ -1,0 +1,2 @@
+| src/lib.rs:1:1:2:11 | fn foo |
+| src/lib.rs:7:1:7:14 | fn always |

@@ -3,4 +3,9 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["retrofit2", "Retrofit$Builder", True, "baseUrl", "", "", "Argument[0]", "open-url", "manual"]
+      - ["retrofit2", "Retrofit$Builder", True, "baseUrl", "", "", "Argument[0]", "request-forgery", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["retrofit2", "Retrofit$Builder", False, "baseUrl", "(String)", "", "Argument[this]", "ReturnValue", "taint", "ai-manual"]

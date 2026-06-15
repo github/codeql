@@ -100,13 +100,8 @@ private module FindRegexMode {
   private string mode_from_node(DataFlow::Node node) { node = re_flag_tracker(result) }
 }
 
-/**
- * DEPRECATED: Use `Regex` instead.
- */
-deprecated class Regex = RegExp;
-
-/** A StrConst used as a regular expression */
-class RegExp extends Expr instanceof StrConst {
+/** A StringLiteral used as a regular expression */
+class RegExp extends Expr instanceof StringLiteral {
   DataFlow::Node use;
 
   RegExp() { this = RegExpTracking::regExpSource(use).asExpr() }
@@ -116,13 +111,14 @@ class RegExp extends Expr instanceof StrConst {
 
   /**
    * Gets a mode (if any) of this regular expression. Can be any of:
-   * DEBUG
-   * IGNORECASE
-   * LOCALE
-   * MULTILINE
-   * DOTALL
-   * UNICODE
-   * VERBOSE
+   * - DEBUG
+   * - ASCII
+   * - IGNORECASE
+   * - LOCALE
+   * - MULTILINE
+   * - DOTALL
+   * - UNICODE
+   * - VERBOSE
    */
   string getAMode() {
     result = FindRegexMode::getAMode(this)
@@ -326,6 +322,17 @@ class RegExp extends Expr instanceof StrConst {
 
   /** Gets the text of this regex */
   string getText() { result = super.getText() }
+
+  /**
+   * Gets the prefix of this regex
+   *
+   * Examples:
+   *
+   *   - The prefix of `'x*y'` is `'`.
+   *   - The prefix of `r''` is `r'`.
+   *   - The prefix of `r"""x*y"""` is `r"""`.
+   */
+  string getPrefix() { result = super.getPrefix() }
 
   /** Gets the `i`th character of this regex */
   string getChar(int i) { result = this.getText().charAt(i) }
@@ -547,9 +554,9 @@ class RegExp extends Expr instanceof StrConst {
     or
     this.negativeAssertionGroup(start, end)
     or
-    this.positiveLookaheadAssertionGroup(start, end)
+    this.positiveLookaheadAssertionGroup(start, end, _, _)
     or
-    this.positiveLookbehindAssertionGroup(start, end)
+    this.positiveLookbehindAssertionGroup(start, end, _, _)
   }
 
   /** Holds if an empty group is found between `start` and `end`. */
@@ -565,7 +572,7 @@ class RegExp extends Expr instanceof StrConst {
     or
     this.negativeAssertionGroup(start, end)
     or
-    this.positiveLookaheadAssertionGroup(start, end)
+    this.positiveLookaheadAssertionGroup(start, end, _, _)
   }
 
   private predicate emptyMatchAtEndGroup(int start, int end) {
@@ -573,7 +580,7 @@ class RegExp extends Expr instanceof StrConst {
     or
     this.negativeAssertionGroup(start, end)
     or
-    this.positiveLookbehindAssertionGroup(start, end)
+    this.positiveLookbehindAssertionGroup(start, end, _, _)
   }
 
   private predicate negativeAssertionGroup(int start, int end) {
@@ -586,38 +593,46 @@ class RegExp extends Expr instanceof StrConst {
     )
   }
 
-  /** Holds if a negative lookahead is found between `start` and `end` */
-  predicate negativeLookaheadAssertionGroup(int start, int end) {
-    exists(int in_start | this.negative_lookahead_assertion_start(start, in_start) |
-      this.groupContents(start, end, in_start, _)
-    )
+  /**
+   * Holds if a negative lookahead is found between `start` and `end`, with contents
+   * between  `in_start` and `in_end`.
+   */
+  predicate negativeLookaheadAssertionGroup(int start, int end, int in_start, int in_end) {
+    this.negative_lookahead_assertion_start(start, in_start) and
+    this.groupContents(start, end, in_start, in_end)
   }
 
-  /** Holds if a negative lookbehind is found between `start` and `end` */
-  predicate negativeLookbehindAssertionGroup(int start, int end) {
-    exists(int in_start | this.negative_lookbehind_assertion_start(start, in_start) |
-      this.groupContents(start, end, in_start, _)
-    )
+  /**
+   * Holds if a negative lookbehind is found between `start` and `end`, with contents
+   * between `in_start` and `in_end`.
+   */
+  predicate negativeLookbehindAssertionGroup(int start, int end, int in_start, int in_end) {
+    this.negative_lookbehind_assertion_start(start, in_start) and
+    this.groupContents(start, end, in_start, in_end)
   }
 
-  /** Holds if a positive lookahead is found between `start` and `end` */
-  predicate positiveLookaheadAssertionGroup(int start, int end) {
-    exists(int in_start | this.lookahead_assertion_start(start, in_start) |
-      this.groupContents(start, end, in_start, _)
-    )
+  /**
+   * Holds if a positive lookahead is found between `start` and `end`, with contents
+   * between `in_start` and `in_end`.
+   */
+  predicate positiveLookaheadAssertionGroup(int start, int end, int in_start, int in_end) {
+    this.lookahead_assertion_start(start, in_start) and
+    this.groupContents(start, end, in_start, in_end)
   }
 
-  /** Holds if a positive lookbehind is found between `start` and `end` */
-  predicate positiveLookbehindAssertionGroup(int start, int end) {
-    exists(int in_start | this.lookbehind_assertion_start(start, in_start) |
-      this.groupContents(start, end, in_start, _)
-    )
+  /**
+   * Holds if a positive lookbehind is found between `start` and `end`, with contents
+   * between `in_start` and `in_end`.
+   */
+  predicate positiveLookbehindAssertionGroup(int start, int end, int in_start, int in_end) {
+    this.lookbehind_assertion_start(start, in_start) and
+    this.groupContents(start, end, in_start, in_end)
   }
 
   private predicate group_start(int start, int end) {
     this.non_capturing_group_start(start, end)
     or
-    this.flag_group_start(start, end, _)
+    this.flag_group_start(start, end)
     or
     this.named_group_start(start, end)
     or
@@ -679,12 +694,48 @@ class RegExp extends Expr instanceof StrConst {
     end = min(int i | i > start + 4 and this.getChar(i) = "?")
   }
 
-  private predicate flag_group_start(int start, int end, string c) {
+  /**
+   * Holds if a parse mode starts between `start` and `end`.
+   */
+  private predicate flag_group_start(int start, int end) {
+    this.flag_group_start_no_modes(start, _) and
+    end = max(int i | this.mode_character(start, i) | i + 1)
+  }
+
+  /**
+   * Holds if the initial part of a parse mode, not containing any
+   * mode characters is between `start` and `end`.
+   */
+  private predicate flag_group_start_no_modes(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    end = start + 3 and
-    c = this.getChar(start + 2) and
-    c in ["i", "L", "m", "s", "u", "x"]
+    this.getChar(start + 2) in ["a", "i", "L", "m", "s", "u", "x"] and
+    end = start + 2
+  }
+
+  /**
+   * Holds if `pos` contains a mode character from the
+   * flag group starting at `start`.
+   */
+  private predicate mode_character(int start, int pos) {
+    this.flag_group_start_no_modes(start, pos)
+    or
+    this.mode_character(start, pos - 1) and
+    this.getChar(pos) in ["a", "i", "L", "m", "s", "u", "x"]
+  }
+
+  /**
+   * Holds if a parse mode group includes the mode flag `c`.
+   * For example the following parse mode group, with mode flag `i`:
+   * ```
+   * (?i)
+   * ```
+   */
+  private predicate flag(string c) {
+    exists(int pos |
+      this.mode_character(_, pos) and
+      this.getChar(pos) = c
+    )
   }
 
   /**
@@ -692,7 +743,9 @@ class RegExp extends Expr instanceof StrConst {
    * it is defined by a prefix.
    */
   string getModeFromPrefix() {
-    exists(string c | this.flag_group_start(_, _, c) |
+    exists(string c | this.flag(c) |
+      c = "a" and result = "ASCII"
+      or
       c = "i" and result = "IGNORECASE"
       or
       c = "L" and result = "LOCALE"
@@ -1004,6 +1057,13 @@ class RegExp extends Expr instanceof StrConst {
       or
       this.alternationOption(x, y, start, end)
     )
+    or
+    // Lookbehind assertions can potentially match the start of the string
+    (
+      this.positiveLookbehindAssertionGroup(_, _, start, _) or
+      this.negativeLookbehindAssertionGroup(_, _, start, _)
+    ) and
+    this.item(start, end)
   }
 
   /** A part of the regex that may match the end of the string. */
@@ -1029,6 +1089,13 @@ class RegExp extends Expr instanceof StrConst {
       or
       this.alternationOption(x, y, start, end)
     )
+    or
+    // Lookahead assertions can potentially match the end of the string
+    (
+      this.positiveLookaheadAssertionGroup(_, _, _, end) or
+      this.negativeLookaheadAssertionGroup(_, _, _, end)
+    ) and
+    this.item(start, end)
   }
 
   /**

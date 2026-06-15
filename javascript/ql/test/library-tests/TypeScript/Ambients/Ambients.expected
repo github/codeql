@@ -1,1 +1,7 @@
-| tst.ts:38:3:38:19 | resolveAmbient(x) | x should not resolve to a global |
+| tst.ts:22:3:22:18 | resolveGlobal(x) | x should resolve to a global variable |
+| tst.ts:23:3:23:18 | resolveGlobal(y) | y should resolve to a global variable |
+| tst.ts:24:3:24:18 | resolveGlobal(z) | z should resolve to a global variable |
+| tst.ts:25:3:25:18 | resolveGlobal(w) | w should resolve to a global variable |
+| tst.ts:39:3:39:18 | resolveGlobal(y) | y should resolve to a global variable |
+| tst.ts:40:3:40:18 | resolveGlobal(z) | z should resolve to a global variable |
+| tst.ts:41:3:41:18 | resolveGlobal(w) | w should resolve to a global variable |

@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["raspberrypi/documentation", "*", "input.secondary_host", "code-injection", "generated"]
+     - ["raspberrypi/documentation", "*", "input.destination", "code-injection", "generated"]
+     - ["raspberrypi/documentation", "*", "input.source", "code-injection", "generated"]
+     - ["raspberrypi/documentation", "*", "input.bastion_host", "code-injection", "generated"]
+     - ["raspberrypi/documentation", "*", "input.primary_host", "code-injection", "generated"]
+     - ["raspberrypi/documentation", "*", "input.public_bastion_host_keys", "code-injection", "generated"]
+     - ["raspberrypi/documentation", "*", "input.private_ssh_key", "code-injection", "generated"]

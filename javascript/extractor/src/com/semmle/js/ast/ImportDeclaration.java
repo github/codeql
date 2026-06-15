@@ -1,8 +1,7 @@
 package com.semmle.js.ast;
 
-import java.util.List;
-
 import com.semmle.ts.ast.INodeWithSymbol;
+import java.util.List;
 
 /**
  * An import declaration, which can be of one of the following forms:
@@ -23,22 +22,28 @@ public class ImportDeclaration extends Statement implements INodeWithSymbol {
   /** The module from which declarations are imported. */
   private final Literal source;
 
-  private final Expression assertion;
+  private final Expression attributes;
 
   private int symbol = -1;
 
-  private boolean hasTypeKeyword;
+  private ImportPhaseModifier phaseModifier;
 
-  public ImportDeclaration(SourceLocation loc, List<ImportSpecifier> specifiers, Literal source, Expression assertion) {
-    this(loc, specifiers, source, assertion, false);
+  public ImportDeclaration(
+      SourceLocation loc, List<ImportSpecifier> specifiers, Literal source, Expression attributes) {
+    this(loc, specifiers, source, attributes, ImportPhaseModifier.NONE);
   }
 
-  public ImportDeclaration(SourceLocation loc, List<ImportSpecifier> specifiers, Literal source, Expression assertion, boolean hasTypeKeyword) {
+  public ImportDeclaration(
+      SourceLocation loc,
+      List<ImportSpecifier> specifiers,
+      Literal source,
+      Expression attributes,
+      ImportPhaseModifier phaseModifier) {
     super("ImportDeclaration", loc);
     this.specifiers = specifiers;
     this.source = source;
-    this.assertion = assertion;
-    this.hasTypeKeyword = hasTypeKeyword;
+    this.attributes = attributes;
+    this.phaseModifier = phaseModifier;
   }
 
   public Literal getSource() {
@@ -49,9 +54,12 @@ public class ImportDeclaration extends Statement implements INodeWithSymbol {
     return specifiers;
   }
 
-  /** Returns the expression after the <code>assert</code> keyword, if any, such as <code>{ type: "json" }</code>. */
-  public Expression getAssertion() {
-    return assertion;
+  /**
+   * Returns the expression after the <code>with</code> keyword, if any, such as <code>
+   * { type: "json" }</code>.
+   */
+  public Expression getAttributes() {
+    return attributes;
   }
 
   @Override
@@ -71,6 +79,15 @@ public class ImportDeclaration extends Statement implements INodeWithSymbol {
 
   /** Returns true if this is an <code>import type</code> declaration. */
   public boolean hasTypeKeyword() {
-    return hasTypeKeyword;
+    return phaseModifier == ImportPhaseModifier.TYPE;
+  }
+
+  /** Returns true if this is an <code>import defer</code> declaration. */
+  public boolean hasDeferKeyword() {
+    return phaseModifier == ImportPhaseModifier.DEFER;
+  }
+
+  public ImportPhaseModifier getPhaseModifier() {
+    return phaseModifier;
   }
 }

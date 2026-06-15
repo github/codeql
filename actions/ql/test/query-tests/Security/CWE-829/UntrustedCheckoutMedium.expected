@@ -1,0 +1,10 @@
+| .github/workflows/artifactpoisoning81.yml:11:9:14:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/dependabot2.yml:33:9:38:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/mend.yml:22:9:29:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/poc3.yml:18:7:25:4 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/poc.yml:30:9:36:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/priv_pull_request_checkout.yml:14:9:20:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/test3.yml:28:9:33:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/test4.yml:18:7:25:4 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/test8.yml:20:9:26:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/test9.yml:11:9:16:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |

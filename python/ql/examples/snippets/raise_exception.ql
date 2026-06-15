@@ -8,9 +8,10 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from Raise raise, ClassValue ex
 where
   ex.getName() = "AnException" and
-  raise.getException().pointsTo(ex.getASuperType())
+  raise.getException().(ExprWithPointsTo).pointsTo(ex.getASuperType())
 select raise, "Don't raise instances of 'AnException'"

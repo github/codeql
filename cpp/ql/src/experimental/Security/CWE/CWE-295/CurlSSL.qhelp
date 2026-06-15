@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Disabling verification of the SSL certificate allows man-in-the-middle attacks. A SSL
+      connection is vulnerable to man-in-the-middle attacks if the certification is not checked
+      properly. If the peer or the host's certificate verification is not verified, the underlying
+      SSL communication is insecure.</p>
+  </overview>
+  <recommendation>
+    <p>It is recommended that all communications be done post verification of the host as well as
+      the
+      peer.</p>
+  </recommendation>
+  <example>
+    <p>The following snippet disables certification verification by setting the value of <code>
+      CURLOPT_SSL_VERIFYHOST</code> and <code>CURLOPT_SSL_VERIFYHOST</code> to <code>0</code>:</p>
+    <sample src="CurlSSLBad.cpp" />
+    <p>This is bad as the certificates are not verified any more. This can be easily fixed by
+      setting the values of the options to <code>2</code>. </p>
+    <sample src="CurlSSLGood.cpp" />
+  </example>
+  <references>
+    <li> Curl Documentation:<a href="https://curl.se/libcurl/c/CURLOPT_SSL_VERIFYHOST.html">
+      CURLOPT_SSL_VERIFYHOST</a></li>
+    <li> Curl Documentation:<a href="https://curl.se/libcurl/c/CURLOPT_SSL_VERIFYPEER.html">
+      CURLOPT_SSL_VERIFYPEER</a></li>
+    <li> Related CVE: <a href="https://github.com/advisories/GHSA-5r3h-c3r7-9w4h"> CVE-2022-33684</a></li>
+    <li> Related security advisory: <a
+        href="https://huntr.com/bounties/42325662-6329-4e04-875a-49e2f5d69f78">
+      openframeworks/openframeworks
+      </a></li>
+  </references>
+</qhelp>

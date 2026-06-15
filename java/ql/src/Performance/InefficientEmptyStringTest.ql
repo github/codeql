@@ -5,13 +5,14 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/inefficient-empty-string-test
- * @tags efficiency
+ * @tags quality
  *       maintainability
+ *       readability
  */
 
 import java
 
-from MethodAccess mc
+from MethodCall mc
 where
   mc.getQualifier().getType() instanceof TypeString and
   mc.getMethod().hasName("equals") and

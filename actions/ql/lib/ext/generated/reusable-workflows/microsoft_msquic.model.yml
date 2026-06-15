@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["microsoft/msquic/.github/workflows/build-reuse-winkernel.yml", "*", "input.arch", "code-injection", "generated"]
+     - ["microsoft/msquic/.github/workflows/build-reuse-winkernel.yml", "*", "input.tls", "code-injection", "generated"]
+     - ["microsoft/msquic/.github/workflows/build-reuse-winkernel.yml", "*", "input.config", "code-injection", "generated"]
+     - ["microsoft/msquic/.github/workflows/build-reuse-win.yml", "*", "input.sanitize", "code-injection", "generated"]
+     - ["microsoft/msquic/.github/workflows/build-reuse-win.yml", "*", "input.plat", "code-injection", "generated"]
+     - ["microsoft/msquic/.github/workflows/build-reuse-win.yml", "*", "input.arch", "code-injection", "generated"]
+     - ["microsoft/msquic/.github/workflows/build-reuse-win.yml", "*", "input.static", "code-injection", "generated"]
+     - ["microsoft/msquic/.github/workflows/build-reuse-win.yml", "*", "input.tls", "code-injection", "generated"]
+     - ["microsoft/msquic/.github/workflows/build-reuse-win.yml", "*", "input.config", "code-injection", "generated"]
+     - ["microsoft/msquic/.github/workflows/build-reuse-unix.yml", "*", "input.sanitize", "code-injection", "generated"]
+     - ["microsoft/msquic/.github/workflows/build-reuse-unix.yml", "*", "input.codecheck", "code-injection", "generated"]
+     - ["microsoft/msquic/.github/workflows/build-reuse-unix.yml", "*", "input.systemcrypto", "code-injection", "generated"]
+     - ["microsoft/msquic/.github/workflows/build-reuse-unix.yml", "*", "input.plat", "code-injection", "generated"]

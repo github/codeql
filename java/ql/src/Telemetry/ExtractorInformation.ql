@@ -8,8 +8,7 @@
 
 import java
 import semmle.code.java.Diagnostics
-
-extensible predicate extractorInformationSkipKey(string key);
+import DatabaseQuality
 
 predicate compilationInfo(string key, int value) {
   exists(Compilation c, string infoKey |
@@ -87,7 +86,7 @@ predicate extractorTotalDiagnostics(string key, int value) {
 
 from string key, int value
 where
-  not extractorInformationSkipKey(key) and
+  not exists(string pattern | extractorInformationSkipKey(pattern) and key.matches(pattern)) and
   (
     compilationInfo(key, value) or
     fileCount(key, value) or
@@ -97,6 +96,12 @@ where
     totalNumberOfLinesByExtension(key, value) or
     numberOfLinesOfCodeByExtension(key, value) or
     extractorDiagnostics(key, value) or
-    extractorTotalDiagnostics(key, value)
+    extractorTotalDiagnostics(key, value) or
+    CallTargetStatsReport::numberOfOk(key, value) or
+    CallTargetStatsReport::numberOfNotOk(key, value) or
+    CallTargetStatsReport::percentageOfOk(key, any(float x | value = x.floor())) or
+    ExprTypeStatsReport::numberOfOk(key, value) or
+    ExprTypeStatsReport::numberOfNotOk(key, value) or
+    ExprTypeStatsReport::percentageOfOk(key, any(float x | value = x.floor()))
   )
 select key, value

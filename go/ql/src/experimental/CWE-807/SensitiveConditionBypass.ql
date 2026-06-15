@@ -17,13 +17,13 @@ import SensitiveConditionBypass
 
 from
   ControlFlow::ConditionGuardNode guard, DataFlow::Node sensitiveSink,
-  SensitiveExpr::Classification classification, Configuration config, DataFlow::PathNode source,
-  DataFlow::PathNode operand, ComparisonExpr comp
+  SensitiveExpr::Classification classification, DataFlow::Node source, DataFlow::Node operand,
+  ComparisonExpr comp
 where
   // there should be a flow between source and the operand sink
-  config.hasFlowPath(source, operand) and
+  Flow::flow(source, operand) and
   // both the operand should belong to the same comparison expression
-  operand.getNode().asExpr() = comp.getAnOperand() and
+  operand.asExpr() = comp.getAnOperand() and
   // get the ConditionGuardNode corresponding to the comparison expr.
   guard.getCondition() = comp and
   // the sink `sensitiveSink` should be sensitive,

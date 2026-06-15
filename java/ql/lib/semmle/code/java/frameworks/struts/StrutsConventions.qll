@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.frameworks.struts.StrutsAnnotations
 import semmle.code.java.frameworks.struts.StrutsXML
@@ -6,7 +9,7 @@ import semmle.code.xml.MavenPom
 /**
  * A Maven dependency on the Struts 2 convention plugin.
  */
-library class Struts2ConventionDependency extends Dependency {
+class Struts2ConventionDependency extends Dependency {
   Struts2ConventionDependency() {
     this.getGroup().getValue() = "org.apache.struts" and
     this.getArtifact().getValue() = "struts2-convention-plugin"
@@ -77,9 +80,6 @@ StrutsXmlFile getRootXmlFile(RefType refType) {
   )
 }
 
-/** DEPRECATED: Alias for getRootXmlFile */
-deprecated StrutsXMLFile getRootXMLFile(RefType refType) { result = getRootXmlFile(refType) }
-
 /**
  * Gets the suffix used for automatically identifying actions when using the convention plugin.
  *
@@ -96,7 +96,7 @@ private string getConventionSuffix(RefType refType) {
  *
  * The convention plugin identifies as an action class any class that has an ancestor package with
  * the name "struts", "struts2", "action" or "actions", and either has an indicative suffix on the
- * name, or extends com.opensymphony.xwork2.Action.
+ * name, or extends com.opensymphony.xwork2.Action (Struts 2.x-6.x) or org.apache.struts2.action.Action (Struts 7.x+).
  */
 class Struts2ConventionActionClass extends Class {
   Struts2ConventionActionClass() {
@@ -108,7 +108,8 @@ class Struts2ConventionActionClass extends Class {
     ) and
     (
       this.getName().matches("%" + getConventionSuffix(this)) or
-      this.getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Action")
+      this.getAnAncestor().hasQualifiedName("com.opensymphony.xwork2", "Action") or
+      this.getAnAncestor().hasQualifiedName("org.apache.struts2.action", "Action")
     )
   }
 

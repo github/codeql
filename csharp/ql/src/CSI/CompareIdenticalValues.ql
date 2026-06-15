@@ -7,7 +7,9 @@
  * @problem.severity warning
  * @precision high
  * @id cs/comparison-of-identical-expressions
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp
@@ -45,7 +47,6 @@ where
     not comparesIdenticalValuesNan(ct, _) and msg = "Comparison of identical values."
   ) and
   not isMutatingOperation(ct.getAnArgument().getAChild*()) and
-  not isConstantCondition(e, _) and // Avoid overlap with cs/constant-condition
-  not isConstantComparison(e, _) and // Avoid overlap with cs/constant-comparison
+  not isConstantComparison(e, _) and // Avoid overlap with cs/constant-condition
   not isExprInAssertion(e)
 select ct, msg

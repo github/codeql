@@ -17,9 +17,9 @@
 
 import javascript
 import semmle.javascript.security.dataflow.TaintedPathQuery
-import DataFlow::PathGraph
+import DataFlow::DeduplicatePathGraph<TaintedPathFlow::PathNode, TaintedPathFlow::PathGraph>
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from PathNode source, PathNode sink
+where TaintedPathFlow::flowPath(source.getAnOriginalPathNode(), sink.getAnOriginalPathNode())
 select sink.getNode(), source, sink, "This path depends on a $@.", source.getNode(),
   "user-provided value"

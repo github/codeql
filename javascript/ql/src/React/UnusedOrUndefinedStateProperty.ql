@@ -4,8 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/react/unused-or-undefined-state-property
- * @tags correctness
+ * @tags quality
  *       reliability
+ *       correctness
  *       frameworks/react
  * @precision high
  */

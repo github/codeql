@@ -4,3 +4,4 @@ groups:
   - examples
 dependencies:
   codeql/swift-all: ${workspace}
+warnOnImplicitThis: true

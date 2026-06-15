@@ -11,6 +11,7 @@
  *
  * The API of this library is not stable yet and may change.
  */
+deprecated module;
 
 import javascript
 

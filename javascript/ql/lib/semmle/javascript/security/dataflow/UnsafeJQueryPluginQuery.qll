@@ -10,7 +10,51 @@ import UnsafeJQueryPluginCustomizations::UnsafeJQueryPlugin
 /**
  * A taint-tracking configuration for reasoning about XSS in unsafe jQuery plugins.
  */
-class Configuration extends TaintTracking::Configuration {
+module UnsafeJQueryPluginConfig implements DataFlow::ConfigSig {
+  // Note: This query currently misses some results due to two issues:
+  // - PropertyPresenceSanitizer blocks values in a content
+  // - localFieldStep has been omitted for performance reaons
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof DomBasedXss::Sanitizer or
+    node instanceof Sanitizer or
+    node = DataFlow::MakeBarrierGuard<BarrierGuard>::getABarrierNode()
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node sink) {
+    aliasPropertyPresenceStep(node1, sink)
+  }
+
+  predicate isBarrierOut(DataFlow::Node node) {
+    // prefixing prevents forced html/css confusion:
+    // prefixing through concatenation:
+    StringConcatenation::taintStep(node, _, _, any(int i | i >= 1))
+    or
+    // prefixing through a poor-mans templating system:
+    node = any(StringReplaceCall call).getRawReplacement()
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    result = source.(Source).getLocation()
+    or
+    result = source.(Source).getPlugin().getLocation()
+  }
+}
+
+/**
+ * Taint-tracking for reasoning about XSS in unsafe jQuery plugins.
+ */
+module UnsafeJQueryPluginFlow = TaintTracking::Global<UnsafeJQueryPluginConfig>;
+
+/**
+ * DEPRECATED. Use the `UnsafeJQueryPluginFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "UnsafeJQueryPlugin" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -31,16 +75,13 @@ class Configuration extends TaintTracking::Configuration {
     aliasPropertyPresenceStep(src, sink)
   }
 
-  override predicate isSanitizerEdge(DataFlow::Node pred, DataFlow::Node succ) {
+  override predicate isSanitizerOut(DataFlow::Node node) {
     // prefixing prevents forced html/css confusion:
     // prefixing through concatenation:
-    StringConcatenation::taintStep(pred, succ, _, any(int i | i >= 1))
+    StringConcatenation::taintStep(node, _, _, any(int i | i >= 1))
     or
     // prefixing through a poor-mans templating system:
-    exists(StringReplaceCall replace |
-      replace = succ and
-      pred = replace.getRawReplacement()
-    )
+    node = any(StringReplaceCall call).getRawReplacement()
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode node) {

@@ -5,7 +5,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/login", (req, res) => {
     const username = req.query.username; // OK - usernames are fine
-    const password = req.query.password; // NOT OK - password read
+    const password = req.query.password; // $ Alert - password read
     checkUser(username, password, (result) => {
         res.send(result);
     });
@@ -22,13 +22,13 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/login2", (req, res) => {
-    const username = req.param('username'); // NOT OK - usernames are fine
-    const password = req.param('password'); // NOT OK - password read
+    const username = req.param('username'); // OK - usernames are fine
+    const password = req.param('password'); // $ Alert - password read
     checkUser(username, password, (result) => {
         res.send(result);
     });
 
-    const myPassword = req.param('word'); // NOT OK - is used in a sensitive write below.
+    const myPassword = req.param('word'); // $ Alert - is used in a sensitive write below.
     checkUser(username, myPassword, (result) => {
         res.send(result);
     });
@@ -36,7 +36,7 @@ app.get("/login2", (req, res) => {
 
 app.get("/login", ({query}, res) => {
     const username = query.username; // OK - usernames are fine
-    const currentPassword = query.current; // NOT OK - password read
+    const currentPassword = query.current; // $ Alert - password read
     checkUser(username, currentPassword, (result) => {
         res.send(result);
     });
@@ -47,7 +47,7 @@ app.get('/rest/user/change-password', mkHandler());
 function mkHandler() {
     return (req, res) => {
         const username = req.param('username'); // OK - usernames are fine
-        const currentPassword = req.param('current'); // NOT OK - password read
+        const currentPassword = req.param('current'); // $ Alert - password read
         checkUser(username, currentPassword, (result) => {
             res.send(result);
         });

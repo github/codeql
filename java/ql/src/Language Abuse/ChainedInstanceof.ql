@@ -6,6 +6,7 @@
  * @precision high
  * @id java/chained-type-tests
  * @tags maintainability
+ *       complexity
  *       language-features
  */
 

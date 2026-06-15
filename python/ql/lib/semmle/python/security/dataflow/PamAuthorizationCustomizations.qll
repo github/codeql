@@ -7,6 +7,7 @@ import python
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
+import semmle.python.Concepts
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -20,7 +21,7 @@ module PamAuthorizationCustomizations {
     exists(API::CallNode findLibCall, API::CallNode cdllCall |
       findLibCall =
         API::moduleImport("ctypes").getMember("util").getMember("find_library").getACall() and
-      findLibCall.getParameter(0).getAValueReachingSink().asExpr().(StrConst).getText() = "pam" and
+      findLibCall.getParameter(0).getAValueReachingSink().asExpr().(StringLiteral).getText() = "pam" and
       cdllCall = API::moduleImport("ctypes").getMember("CDLL").getACall() and
       cdllCall.getParameter(0).getAValueReachingSink() = findLibCall
     |
@@ -39,9 +40,14 @@ module PamAuthorizationCustomizations {
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A vulnerable `pam_authenticate` call considered as a flow sink.

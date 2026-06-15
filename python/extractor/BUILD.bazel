@@ -1,0 +1,50 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files", "strip_prefix")
+
+py_binary(
+    name = "make-zips-py",
+    srcs = [
+        "make_zips.py",
+        "python_tracer.py",
+    ],
+    data = [
+        "LICENSE-PSF.md",
+        "__main__.py",
+        "imp.py",
+    ] + glob([
+        "blib2to3/**",
+        "buildtools/**",
+        "lark/**",
+        "semmle/**",
+    ]),
+    # On @criemen's machine, without this, make-zips.py can't find its imports from
+    # python_tracer. The problem didn't show for some reason on Windows CI machines, though.
+    imports = ["."],
+    main = "make_zips.py",
+)
+
+genrule(
+    name = "python3src",
+    outs = [
+        "python3src.zip",
+    ],
+    cmd = "PYTHON_INSTALLER_OUTPUT=\"$(RULEDIR)\" $(location :make-zips-py)",
+    tools = [":make-zips-py"],
+)
+
+codeql_pkg_files(
+    name = "extractor",
+    srcs = [
+        "LICENSE-PSF.md",  # because we distribute imp.py
+        "convert_setup.py",
+        "get_venv_lib.py",
+        "imp.py",
+        "index.py",
+        "python_tracer.py",
+        "setup.py",
+        ":python3src",
+    ] + glob(["data/**"]),
+    prefix = "tools",
+    strip_prefix = strip_prefix.from_pkg(),
+    visibility = ["//python:__pkg__"],
+)

@@ -6,8 +6,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/ignored-error-status-of-call
- * @tags reliability
- *       correctness
+ * @tags quality
+ *       reliability
+ *       error-handling
  *       external/cwe/cwe-391
  */
 
@@ -43,7 +44,7 @@ predicate unboundedQueue(RefType t) {
   )
 }
 
-from MethodAccess ma, SpecialMethod m
+from MethodCall ma, SpecialMethod m
 where
   ma instanceof ValueDiscardingExpr and
   m = ma.getMethod() and

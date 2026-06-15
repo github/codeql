@@ -6,7 +6,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/local-shadows-field
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
  */
 

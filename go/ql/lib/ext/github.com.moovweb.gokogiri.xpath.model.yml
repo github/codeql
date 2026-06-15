@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: packageGrouping
+    data:
+      - ["gokogiri/xpath", "github.com/moovweb/gokogiri/xpath"]
+      - ["gokogiri/xpath", "github.com/jbowtie/gokogiri/xpath"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["group:gokogiri/xpath", "", False, "Compile", "", "", "Argument[0]", "xpath-injection", "manual"]

@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Configuration.Memory", "MemoryConfigurationProvider", False, "Add", "(System.String,System.String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Memory", "MemoryConfigurationProvider", False, "MemoryConfigurationProvider", "(Microsoft.Extensions.Configuration.Memory.MemoryConfigurationSource)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

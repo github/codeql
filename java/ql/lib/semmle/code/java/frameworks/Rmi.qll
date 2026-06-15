@@ -1,4 +1,6 @@
 /** Remote Method Invocation. */
+overlay[local?]
+module;
 
 import java
 
@@ -12,7 +14,6 @@ class RemoteCallableMethod extends Method {
   RemoteCallableMethod() { remoteCallableMethod(this) }
 }
 
-pragma[assume_small_delta]
 private predicate remoteCallableMethod(Method method) {
   method.getDeclaringType().getASupertype() instanceof TypeRemote
   or

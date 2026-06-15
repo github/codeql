@@ -3,12 +3,19 @@ extensions:
       pack: codeql/csharp-all
       extensible: sinkModel
     data:
-      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommand", "(System.Data.Entity.TransactionalBehavior,System.String,System.Object[])", "", "Argument[1]", "sql", "manual"]
-      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommand", "(System.String,System.Object[])", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommandAsync", "(System.Data.Entity.TransactionalBehavior,System.String,System.Object[])", "", "Argument[1]", "sql", "manual"]
-      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommandAsync", "(System.Data.Entity.TransactionalBehavior,System.String,System.Threading.CancellationToken,System.Object[])", "", "Argument[1]", "sql", "manual"]
-      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommandAsync", "(System.String,System.Object[])", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommandAsync", "(System.String,System.Threading.CancellationToken,System.Object[])", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.Entity", "Database", False, "SqlQuery", "(System.Type,System.String,System.Object[])", "", "Argument[1]", "sql", "manual"]
-      - ["System.Data.Entity", "Database", False, "SqlQuery<>", "(System.String,System.Object[])", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.Entity", "DbSet", False, "SqlQuery", "(System.String,System.Object[])", "", "Argument[0]", "sql", "manual"]
+      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommand", "(System.Data.Entity.TransactionalBehavior,System.String,System.Object[])", "", "Argument[1]", "sql-injection", "manual"]
+      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommand", "(System.String,System.Object[])", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommandAsync", "(System.Data.Entity.TransactionalBehavior,System.String,System.Object[])", "", "Argument[1]", "sql-injection", "manual"]
+      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommandAsync", "(System.Data.Entity.TransactionalBehavior,System.String,System.Threading.CancellationToken,System.Object[])", "", "Argument[1]", "sql-injection", "manual"]
+      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommandAsync", "(System.String,System.Object[])", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.Entity", "Database", False, "ExecuteSqlCommandAsync", "(System.String,System.Threading.CancellationToken,System.Object[])", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.Entity", "Database", False, "SqlQuery", "(System.Type,System.String,System.Object[])", "", "Argument[1]", "sql-injection", "manual"]
+      - ["System.Data.Entity", "Database", False, "SqlQuery<TElement>", "(System.String,System.Object[])", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.Entity", "DbSet", False, "SqlQuery", "(System.String,System.Object[])", "", "Argument[0]", "sql-injection", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Data.Entity", "DbSet<TEntity>", False, "Add", "(TEntity)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Data.Entity", "DbSet<TEntity>", False, "AddRange", "(System.Collections.Generic.IEnumerable<TEntity>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
+      - ["System.Data.Entity", "DbSet<TEntity>", False, "Attach", "(TEntity)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]

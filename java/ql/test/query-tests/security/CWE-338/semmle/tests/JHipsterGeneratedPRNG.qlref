@@ -1,1 +1,2 @@
-Security/CWE/CWE-338/JHipsterGeneratedPRNG.ql
+query: Security/CWE/CWE-338/JHipsterGeneratedPRNG.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

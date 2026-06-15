@@ -6,12 +6,6 @@ import go
 
 /** Provides classes and predicates shared between the XSS queries. */
 module SharedXss {
-  /**
-   * DEPRECATED: This class is not used.
-   * A data flow source for XSS vulnerabilities.
-   */
-  abstract deprecated class Source extends DataFlow::Node { }
-
   /** A data flow sink for XSS vulnerabilities. */
   abstract class Sink extends DataFlow::Node {
     /**
@@ -35,13 +29,6 @@ module SharedXss {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for XSS vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * An expression that is sent as part of an HTTP response body, considered as an
    * XSS sink.
    *
@@ -60,6 +47,10 @@ module SharedXss {
     override string getSinkKind() { result = "rawtemplate" }
 
     override Locatable getAssociatedLoc() { result = this.getRead().getEnclosingTextNode() }
+  }
+
+  private class ExternalSink extends Sink {
+    ExternalSink() { sinkNode(this, ["html-injection", "js-injection"]) }
   }
 
   /**
@@ -97,6 +88,10 @@ module SharedXss {
     body.getAContentType().regexpMatch("(?i).*html.*")
   }
 
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, ["html-injection", "js-injection"]) }
+  }
+
   /**
    * A JSON marshaler, acting to sanitize a possible XSS vulnerability because the
    * marshaled value is very unlikely to be returned as an HTML content-type.
@@ -105,6 +100,18 @@ module SharedXss {
     JsonMarshalSanitizer() {
       exists(MarshalingFunction mf | mf.getFormat() = "JSON" |
         this = mf.getOutput().getNode(mf.getACall())
+      )
+    }
+  }
+
+  /**
+   * A http.Error function returns with the ContentType of text/plain, and is not a valid XSS sink
+   */
+  class ErrorSanitizer extends Sanitizer {
+    ErrorSanitizer() {
+      exists(Function f, DataFlow::CallNode call | call = f.getACall() |
+        f.hasQualifiedName("net/http", "Error") and
+        call.getArgument(1) = this
       )
     }
   }
@@ -132,14 +139,14 @@ module SharedXss {
    * A `Template` from `html/template` will HTML-escape data automatically
    * and therefore acts as a sanitizer for XSS vulnerabilities.
    */
-  class HtmlTemplateSanitizer extends Sanitizer, DataFlow::Node {
+  class HtmlTemplateSanitizer extends Sanitizer {
     HtmlTemplateSanitizer() {
       exists(Method m, DataFlow::CallNode call | m = call.getCall().getTarget() |
         m.hasQualifiedName("html/template", "Template", "ExecuteTemplate") and
-        call.getArgument(2) = this
+        this = call.getArgument(2)
         or
         m.hasQualifiedName("html/template", "Template", "Execute") and
-        call.getArgument(1) = this
+        this = call.getArgument(1)
       )
     }
   }

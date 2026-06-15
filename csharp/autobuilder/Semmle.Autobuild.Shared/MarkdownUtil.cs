@@ -22,7 +22,7 @@ namespace Semmle.Autobuild.Shared
         public static string ToMarkdownLink(this string link, string title) => $"[{title}]({link})";
 
         /// <summary>
-        /// Renders <see cref="projects" /> as a markdown list of the project paths.
+        /// Renders <paramref name="projects"/> as a markdown list of the project paths.
         /// </summary>
         /// <param name="projects">
         /// The list of projects whose paths should be rendered as a markdown list.
@@ -35,7 +35,7 @@ namespace Semmle.Autobuild.Shared
         }
 
         /// <summary>
-        /// Renders <see cref="items" /> as a markdown list.
+        /// Renders <paramref name="items" /> as a markdown list.
         /// </summary>
         /// <typeparam name="T">The item type.</typeparam>
         /// <param name="items">The list that should be formatted as a markdown list.</param>

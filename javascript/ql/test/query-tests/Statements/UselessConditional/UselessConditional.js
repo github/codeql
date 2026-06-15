@@ -2,35 +2,35 @@ function getLastLine(input) {
   var lines = [], nextLine;
   while ((nextLine = readNextLine(input)))
     lines.push(nextLine);
-  if (!lines)
+  if (!lines) // $ Alert
     throw new Error("No lines!");
   return lines[lines.length-1];
 }
 
 function lookup(cache, k) {
   var v;
-  return k in cache ? cache[k] : (v = new Entry(recompute())) && (cache[k] = v);
+  return k in cache ? cache[k] : (v = new Entry(recompute())) && (cache[k] = v); // $ Alert
 }
 
 function test(a, b) {
   if (!a && !b) {
-    if (a);
-    if (b);
+    if (a); // $ Alert
+    if (b); // $ Alert
   }
   if (!(a || b)) {
-    if (a);
-    if (b);
+    if (a); // $ Alert
+    if (b); // $ Alert
   }
 
   var x = new X();
-  if(x){}
-  if (new X()){}
-  if((x)){}
-  if(((x))){}
-  if ((new X())){}
+  if(x){} // $ Alert
+  if (new X()){} // $ Alert
+  if((x)){} // $ Alert
+  if(((x))){} // $ Alert
+  if ((new X())){} // $ Alert
 
   x = 0n;
-  if (x) // NOT OK
+  if (x) // $ Alert
     ;
 }
 
@@ -40,7 +40,7 @@ async function awaitFlow(){
     if (y)
         v = await f()
 
-    if (v) { // OK
+    if (v) {
     }
 }
 
@@ -51,92 +51,92 @@ async function awaitFlow(){
     var known = knownF();
     if (known)
         return;
-    if (known)
+    if (known) // $ Alert
         return;
 
     var unknown = unknownF();
     if (unknown)
         return;
-    if (unknown) // NOT OK
+    if (unknown) // $ Alert
         return;
 });
 
 (function (...x) {
-    x || y // NOT OK
+    x || y // $ Alert
 });
 
 (function() {
     function f1(x) {
-        x || y // NOT OK, but whitelisted
+        x || y // OK
     }
     f1(true);
 
     function f2(x) {
         while (true)
-            x || y // NOT OK
+            x || y // $ Alert
     }
     f2(true);
 
     function f3(x) {
         (function(){
-            x || y // NOT OK, but whitelisted
+            x || y // OK
         });
     }
     f3(true);
 });
 
 (function() {
-    if ((x, true));
+    if ((x, true)); // $ Alert
 });
 
 (function (x, y) {
     if (!x) {
-        while (x) { // NOT OK
+        while (x) { // $ Alert
             f();
         }
-        while (true) { // OK
+        while (true) {
             break;
         }
-        if (true && true) {} // NOT OK
-        if (y && x) {} // NOT OK
-        if (y && (x)) {} // NOT OK
-        do { } while (x); // NOT OK
+        if (true && true) {} // $ Alert
+        if (y && x) {} // $ Alert
+        if (y && (x)) {} // $ Alert
+        do { } while (x); // $ Alert
     }
 });
 
 (function(x,y) {
-    let obj = (x && {}) || y; // OK
-    if ((x && {}) || y) {} // NOT OK
+    let obj = (x && {}) || y;
+    if ((x && {}) || y) {} // $ Alert
 });
 
 (function(){
     function constantFalse1() {
         return false;
     }
-    if (constantFalse1()) // OK
+    if (constantFalse1())
         return;
 
 	function constantFalse2() {
 		return false;
     }
 	let constantFalse = unknown? constantFalse1 : constantFalse2;
-    if (constantFalse2()) // OK
+    if (constantFalse2())
         return;
 
 	function constantUndefined() {
         return undefined;
     }
-	if (constantUndefined()) // NOT OK
+	if (constantUndefined()) // $ Alert
         return;
 
 	function constantFalseOrUndefined1() {
 		return unknown? false: undefined;
 	}
-	if (constantFalseOrUndefined1()) // NOT OK
+	if (constantFalseOrUndefined1()) // $ Alert
         return;
 
 	let constantFalseOrUndefined2 = unknown? constantFalse1 : constantUndefined;
-	if (constantFalseOrUndefined2())  // NOT OK
+	if (constantFalseOrUndefined2())  // $ Alert
         return;
 
 });
@@ -145,12 +145,12 @@ async function awaitFlow(){
 	function p() {
 		return {};
 	}
-	if (p()) { // NOT OK
+	if (p()) { // $ Alert
 	}
 	var v = p();
-	if (v) { // NOT OK
+	if (v) { // $ Alert
 	}
-	if (v) { // NOT OK, but not detected due to SSA limitations
+	if (v) { // $ MISSING: Alert - due to SSA limitations
 	}
 });
 
@@ -160,12 +160,12 @@ async function awaitFlow(){
 		if (e) return e;
 		throw new Error();
 	}
-	if(findOrThrow()){ // NOT OK
+	if(findOrThrow()){ // $ Alert
 	}
 	var v = findOrThrow();
-	if (v) { // NOT OK
+	if (v) { // $ Alert
 	}
-	if (v) { // NOT OK, but not detected due to SSA limitations
+	if (v) { // $ MISSING: Alert - due to SSA limitations
 	}
 });
 
@@ -173,14 +173,14 @@ async function awaitFlow(){
 	function f(){ return { v: unkown };}
 	f();
 	var { v } = f();
-	if (v) { // OK
+	if (v) {
 	}
 });
 
 (function() {
     function outer(x) {
         addEventListener("click", () => {
-            if (!x && something()) { // NOT OK, but whitelisted
+            if (!x && something()) { // OK
                 something();
             }
         });

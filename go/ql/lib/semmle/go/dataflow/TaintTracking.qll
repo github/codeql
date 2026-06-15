@@ -2,6 +2,8 @@
  * Provides classes for performing local (intra-procedural) and
  * global (inter-procedural) taint-tracking analyses.
  */
+overlay[local?]
+module;
 
 import semmle.go.dataflow.DataFlow
 
@@ -10,6 +12,10 @@ import semmle.go.dataflow.DataFlow
  * global (inter-procedural) taint-tracking analyses.
  */
 module TaintTracking {
-  import semmle.go.dataflow.internal.tainttracking1.TaintTracking
-  import semmle.go.dataflow.internal.tainttracking1.TaintTrackingImpl
+  import semmle.go.dataflow.internal.TaintTrackingUtil
+  private import semmle.go.dataflow.internal.DataFlowImplSpecific
+  private import semmle.go.dataflow.internal.TaintTrackingImplSpecific
+  private import semmle.go.Locations
+  private import codeql.dataflow.TaintTracking
+  import TaintFlowMake<Location, GoDataFlow, GoTaintTracking>
 }

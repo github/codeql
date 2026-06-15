@@ -9,14 +9,14 @@ void goodTest1(unsigned char *src){
   unsigned char dst[50];
   _mbsnbcpy(dst,src,sizeof(dst)); // GOOD
 }
-size_t badTest1(unsigned char *src){
+static size_t badTest1(unsigned char *src){
   int cb = 0;
   unsigned char dst[50];
   while( cb < sizeof(dst) )
     dst[cb++]=*src++; // BAD
   return _mbclen(dst);
 }
-void goodTest2(unsigned char *src){
+static void goodTest2(unsigned char *src){
 
   int cb = 0;
   unsigned char dst[50];
@@ -27,7 +27,7 @@ void goodTest2(unsigned char *src){
     src=_mbsinc(src);
   }
 }
-void badTest2(unsigned char *src){
+static void badTest2(unsigned char *src){
 
   int cb = 0;
   unsigned char dst[50];
@@ -38,11 +38,11 @@ void badTest2(unsigned char *src){
     src=_mbsinc(src);
   }
 }
-void goodTest3(){
+static void goodTest3(){
   wchar_t name[50];
   name[sizeof(name) / sizeof(*name) - 1] = L'\0'; // GOOD
 }
-void badTest3(){
+static void badTest3(){
   wchar_t name[50];
   name[sizeof(name) - 1] = L'\0'; // BAD
 }

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["vert-x3/vertx-hazelcast/.github/workflows/it.yml", "*", "input.hz", "code-injection", "generated"]
+     - ["vert-x3/vertx-hazelcast/.github/workflows/ci.yml", "*", "input.hz", "code-injection", "generated"]

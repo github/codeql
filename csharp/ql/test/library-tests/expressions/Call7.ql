@@ -10,6 +10,6 @@ where
   e.getEnclosingCallable() = m and
   t = e.getTarget() and
   t.hasName("WriteLine") and
-  t.getDeclaringType().hasQualifiedName("System", "Console") and
+  t.getDeclaringType().hasFullyQualifiedName("System", "Console") and
   e.getArgument(0) instanceof AddExpr
 select m, e.getAnArgument(), t.toString()

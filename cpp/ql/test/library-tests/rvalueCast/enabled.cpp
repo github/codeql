@@ -4,4 +4,4 @@ void enabled(void) {
    p = &(int)a;
 }
 
-// semmle-extractor-options: --microsoft /Zc:rvalueCast --expect_errors
+// semmle-extractor-options: --microsoft --edg --no_preserve_lvalues_with_same_type_casts --expect_errors

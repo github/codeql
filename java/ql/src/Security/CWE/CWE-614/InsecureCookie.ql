@@ -4,7 +4,7 @@
  *              interception.
  * @kind problem
  * @problem.severity error
- * @security-severity 5.0
+ * @security-severity 4.0
  * @precision high
  * @id java/insecure-cookie
  * @tags security
@@ -15,7 +15,7 @@ import java
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.security.InsecureCookieQuery
 
-from MethodAccess add
+from MethodCall add
 where
   add.getMethod() instanceof ResponseAddCookieMethod and
   not SecureCookieFlow::flowToExpr(add.getArgument(0))

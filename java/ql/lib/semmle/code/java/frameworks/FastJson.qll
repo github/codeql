@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the FastJson framework.
  */
+overlay[local?]
+module;
 
 import java
 
@@ -24,7 +26,7 @@ class FastJsonParseMethod extends Method {
 /**
  * A call to `ParserConfig.setSafeMode`.
  */
-class FastJsonSetSafeMode extends MethodAccess {
+class FastJsonSetSafeMode extends MethodCall {
   FastJsonSetSafeMode() {
     exists(Method m |
       this.getMethod() = m and

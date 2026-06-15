@@ -3,15 +3,15 @@
 | choose_second | 27 | 1 | { ... } | 28 | return ... |
 | choose_second | 28 | 2 | return ... | 25 | choose_second |
 | count_args_1 prototype instantiation | 11 | 1 | { ... } | 12 | return ... |
-| count_args_1 prototype instantiation | 12 | 2 | return ... | 12 | sizeof...(...) |
-| count_args_1 prototype instantiation | 12 | 3 | sizeof...(...) | 11 | count_args_1 |
+| count_args_1 prototype instantiation | 12 | 2 | return ... | 12 | sizeof...(Args) |
+| count_args_1 prototype instantiation | 12 | 3 | sizeof...(Args) | 11 | count_args_1 |
 | count_args_1<> | 11 | 1 | { ... } | 12 | return ... |
 | count_args_1<> | 12 | 2 | return ... | 12 | 0 |
 | count_args_1<> | 12 | 3 | 0 | 11 | count_args_1 |
 | count_args_2 prototype instantiation | 15 | 1 | { ... } | 16 | return ... |
 | count_args_2 prototype instantiation | 16 | 2 | return ... | 16 | a |
-| count_args_2 prototype instantiation | 16 | 3 | a | 16 | sizeof...(...) |
-| count_args_2 prototype instantiation | 16 | 4 | sizeof...(...) | 15 | count_args_2 |
+| count_args_2 prototype instantiation | 16 | 3 | a | 16 | sizeof...(<expr>) |
+| count_args_2 prototype instantiation | 16 | 4 | sizeof...(<expr>) | 15 | count_args_2 |
 | count_args_2<int,double> | 15 | 1 | { ... } | 16 | return ... |
 | count_args_2<int,double> | 16 | 2 | return ... | 16 | 2 |
 | count_args_2<int,double> | 16 | 3 | 2 | 15 | count_args_2 |

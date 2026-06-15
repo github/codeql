@@ -1,0 +1,39 @@
+on:
+  issue_comment:
+jobs:
+  test1:
+    runs-on: ubuntu-latest
+    steps:
+      - id: clob1
+        env:
+          BODY: ${{ github.event.comment.body }}
+        run: |
+          # VULNERABLE
+          echo "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT
+          echo "OUTPUT_2=$BODY" >> $GITHUB_OUTPUT
+      - id: clob2
+        run: |
+          echo ${{ steps.clob1.outputs.OUTPUT_1 }}
+          echo ${{ steps.clob1.outputs.OUTPUT_2 }}
+  test2:
+    runs-on: ubuntu-latest
+    steps:
+      - id: clob1
+        env:
+          BODY: ${{ github.event.comment.body }}
+        run: |
+          # NOT VULNERABLE
+          echo "OUTPUT_2=$BODY" >> $GITHUB_OUTPUT
+  test3:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          run_id: ${{ github.event.workflow_run.id }}
+          name: pr_number 
+      - id: clob1
+        run: |
+          # VULNERABLE
+          echo "OUTPUT_1=HARDCODED" >> $GITHUB_OUTPUT
+          echo "OUTPUT_2=$(<pr-number)" >> $GITHUB_OUTPUT

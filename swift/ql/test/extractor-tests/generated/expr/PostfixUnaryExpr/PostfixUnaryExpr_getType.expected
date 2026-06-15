@@ -1,2 +1,0 @@
-| postfix.swift:1:5:1:6 | call to ...(_:) | PartialRangeFrom<Int> |
-| postfix.swift:7:1:7:2 | call to **(_:) | () |

@@ -1,0 +1,13 @@
+edges
+nodes
+| InsufficientAsymmetricKeySize.java:5:32:5:35 | 1024 | semmle.label | 1024 |
+| InsufficientAsymmetricKeySize.java:9:32:9:35 | 1024 | semmle.label | 1024 |
+| InsufficientAsymmetricKeySize.java:13:32:13:35 | 1024 | semmle.label | 1024 |
+| InsufficientAsymmetricKeySize.java:17:32:17:35 | 2048 | semmle.label | 2048 |
+| InsufficientAsymmetricKeySize.java:21:32:21:35 | 2048 | semmle.label | 2048 |
+| InsufficientAsymmetricKeySize.java:25:32:25:35 | 2048 | semmle.label | 2048 |
+subpaths
+#select
+| InsufficientAsymmetricKeySize.java:5:32:5:35 | 1024 | InsufficientAsymmetricKeySize.java:5:32:5:35 | 1024 | InsufficientAsymmetricKeySize.java:5:32:5:35 | 1024 | Use of weak asymmetric key size (1024 bits) for algorithm $@ | InsufficientAsymmetricKeySize.java:4:69:4:73 | KeyOperationAlgorithm | RSA |
+| InsufficientAsymmetricKeySize.java:9:32:9:35 | 1024 | InsufficientAsymmetricKeySize.java:9:32:9:35 | 1024 | InsufficientAsymmetricKeySize.java:9:32:9:35 | 1024 | Use of weak asymmetric key size (1024 bits) for algorithm $@ | InsufficientAsymmetricKeySize.java:8:69:8:73 | KeyOperationAlgorithm | DSA |
+| InsufficientAsymmetricKeySize.java:13:32:13:35 | 1024 | InsufficientAsymmetricKeySize.java:13:32:13:35 | 1024 | InsufficientAsymmetricKeySize.java:13:32:13:35 | 1024 | Use of weak asymmetric key size (1024 bits) for algorithm $@ | InsufficientAsymmetricKeySize.java:12:69:12:72 | KeyAgreementAlgorithm | DH |

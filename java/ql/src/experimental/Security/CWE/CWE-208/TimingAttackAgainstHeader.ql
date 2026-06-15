@@ -17,7 +17,7 @@ import semmle.code.java.dataflow.TaintTracking
 import NonConstantTimeComparisonFlow::PathGraph
 
 /** A static method that uses a non-constant-time algorithm for comparing inputs. */
-private class NonConstantTimeComparisonCall extends StaticMethodAccess {
+private class NonConstantTimeComparisonCall extends StaticMethodCall {
   NonConstantTimeComparisonCall() {
     this.getMethod()
         .hasQualifiedName("org.apache.commons.lang3", "StringUtils",
@@ -26,7 +26,7 @@ private class NonConstantTimeComparisonCall extends StaticMethodAccess {
 }
 
 /** Methods that use a non-constant-time algorithm for comparing inputs. */
-private class NonConstantTimeEqualsCall extends MethodAccess {
+private class NonConstantTimeEqualsCall extends MethodCall {
   NonConstantTimeEqualsCall() {
     this.getMethod()
         .hasQualifiedName("java.lang", "String", ["equals", "contentEquals", "equalsIgnoreCase"])
@@ -43,7 +43,7 @@ private predicate isNonConstantComparisonCallArgument(Expr p) {
 
 class ClientSuppliedIpTokenCheck extends DataFlow::Node {
   ClientSuppliedIpTokenCheck() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasName("getHeader") and
       ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
           "x-auth-token", "x-csrf-token", "http_x_csrf_token", "x-csrf-param", "x-csrf-header",
@@ -65,7 +65,14 @@ module NonConstantTimeComparisonConfig implements DataFlow::ConfigSig {
 
 module NonConstantTimeComparisonFlow = TaintTracking::Global<NonConstantTimeComparisonConfig>;
 
-from NonConstantTimeComparisonFlow::PathNode source, NonConstantTimeComparisonFlow::PathNode sink
-where NonConstantTimeComparisonFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Possible timing attack against $@ validation.",
-  source.getNode(), "client-supplied token"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, NonConstantTimeComparisonFlow::PathNode source,
+  NonConstantTimeComparisonFlow::PathNode sink, string message1, DataFlow::Node sourceNode,
+  string message2
+) {
+  NonConstantTimeComparisonFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Possible timing attack against $@ validation." and
+  sourceNode = source.getNode() and
+  message2 = "client-supplied token"
+}

@@ -4,7 +4,6 @@
  */
 
 import swift
-import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.ExternalFlow
 
@@ -35,23 +34,27 @@ class WeakSensitiveDataHashingAdditionalFlowStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
-private class WeakHashingSinks extends SinkModelCsv {
+private class WeakSensitiveDataHashingSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
         // CryptoKit
         ";Insecure.MD5;true;hash(data:);;;Argument[0];weak-hash-input-MD5",
+        ";Insecure.MD5;true;hash(bufferPointer:);;;Argument[0];weak-hash-input-MD5",
         ";Insecure.MD5;true;update(data:);;;Argument[0];weak-hash-input-MD5",
         ";Insecure.MD5;true;update(bufferPointer:);;;Argument[0];weak-hash-input-MD5",
         ";Insecure.SHA1;true;hash(data:);;;Argument[0];weak-hash-input-SHA1",
+        ";Insecure.SHA1;true;hash(bufferPointer:);;;Argument[0];weak-hash-input-SHA1",
         ";Insecure.SHA1;true;update(data:);;;Argument[0];weak-hash-input-SHA1",
         ";Insecure.SHA1;true;update(bufferPointer:);;;Argument[0];weak-hash-input-SHA1",
         // CryptoSwift
         ";MD5;true;calculate(for:);;;Argument[0];weak-hash-input-MD5",
         ";MD5;true;callAsFunction(_:);;;Argument[0];weak-hash-input-MD5",
+        ";MD5;true;process(block:currentHash:);;;Argument[0];weak-hash-input-MD5",
         ";MD5;true;update(withBytes:isLast:);;;Argument[0];weak-hash-input-MD5",
         ";SHA1;true;calculate(for:);;;Argument[0];weak-hash-input-SHA1",
         ";SHA1;true;callAsFunction(_:);;;Argument[0];weak-hash-input-SHA1",
+        ";SHA1;true;process(block:currentHash:);;;Argument[0];weak-hash-input-SHA1",
         ";SHA1;true;update(withBytes:isLast:);;;Argument[0];weak-hash-input-SHA1",
         ";Digest;true;md5(_:);;;Argument[0];weak-hash-input-MD5",
         ";Digest;true;sha1(_:);;;Argument[0];weak-hash-input-SHA1",
@@ -68,10 +71,40 @@ private class WeakHashingSinks extends SinkModelCsv {
 /**
  * A sink defined in a CSV model.
  */
-private class DefaultWeakHashingSink extends WeakSensitiveDataHashingSink {
+private class DefaultWeakSensitiveDataHashingSink extends WeakSensitiveDataHashingSink {
   string algorithm;
 
-  DefaultWeakHashingSink() { sinkNode(this, "weak-hash-input-" + algorithm) }
+  DefaultWeakSensitiveDataHashingSink() { sinkNode(this, "weak-hash-input-" + algorithm) }
+
+  override string getAlgorithm() { result = algorithm }
+}
+
+/**
+ * A sink for weak sensitive data hashing through a call with a metatype qualifier.
+ */
+private class WeakSensitiveDataHashingMetatypeSink extends WeakSensitiveDataHashingSink {
+  string algorithm;
+
+  WeakSensitiveDataHashingMetatypeSink() {
+    exists(CallExpr ce, Type t |
+      // call target
+      ce.getStaticTarget().getName() =
+        ["hash(data:)", "hash(bufferPointer:)", "update(data:)", "update(bufferPointer:)"] and
+      // argument
+      ce.getAnArgument().getExpr() = this.asExpr() and
+      // qualifier
+      t = ce.getQualifier().getType() and
+      algorithm = ["MD5", "SHA1"] and
+      (
+        t.getFullName() = "Insecure." + algorithm
+        or
+        exists(TypeDecl td |
+          td.getInterfaceType() = t and
+          td.getFullName() = "Insecure." + algorithm
+        )
+      )
+    )
+  }
 
   override string getAlgorithm() { result = algorithm }
 }

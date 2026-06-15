@@ -1,0 +1,378 @@
+callArgs
+| JavaUser.java:7:52:7:110 | new InnerGeneric<String>(...) | JavaUser.java:7:53:7:79 | new OuterGeneric<Integer>(...) | -2 |
+| JavaUser.java:7:52:7:110 | new InnerGeneric<String>(...) | JavaUser.java:7:86:7:105 | InnerGeneric<String> | -3 |
+| JavaUser.java:7:52:7:110 | new InnerGeneric<String>(...) | JavaUser.java:7:107:7:109 | 'a' | 0 |
+| JavaUser.java:7:53:7:79 | new OuterGeneric<Integer>(...) | JavaUser.java:7:57:7:77 | OuterGeneric<Integer> | -3 |
+| JavaUser.java:8:53:8:123 | new InnerGeneric<String>(...) | JavaUser.java:8:54:8:80 | new OuterGeneric<Integer>(...) | -2 |
+| JavaUser.java:8:53:8:123 | new InnerGeneric<String>(...) | JavaUser.java:8:88:8:96 | Character | -4 |
+| JavaUser.java:8:53:8:123 | new InnerGeneric<String>(...) | JavaUser.java:8:99:8:118 | InnerGeneric<String> | -3 |
+| JavaUser.java:8:53:8:123 | new InnerGeneric<String>(...) | JavaUser.java:8:120:8:122 | 'a' | 0 |
+| JavaUser.java:8:54:8:80 | new OuterGeneric<Integer>(...) | JavaUser.java:8:58:8:78 | OuterGeneric<Integer> | -3 |
+| JavaUser.java:9:53:9:138 | new InnerGeneric<String>(...) | JavaUser.java:9:54:9:80 | new OuterGeneric<Integer>(...) | -2 |
+| JavaUser.java:9:53:9:138 | new InnerGeneric<String>(...) | JavaUser.java:9:88:9:96 | Character | -4 |
+| JavaUser.java:9:53:9:138 | new InnerGeneric<String>(...) | JavaUser.java:9:99:9:118 | InnerGeneric<String> | -3 |
+| JavaUser.java:9:53:9:138 | new InnerGeneric<String>(...) | JavaUser.java:9:120:9:122 | 'a' | 0 |
+| JavaUser.java:9:53:9:138 | new InnerGeneric<String>(...) | JavaUser.java:9:125:9:137 | "Hello world" | 1 |
+| JavaUser.java:9:54:9:80 | new OuterGeneric<Integer>(...) | JavaUser.java:9:58:9:78 | OuterGeneric<Integer> | -3 |
+| JavaUser.java:10:47:10:97 | new InnerNotGeneric(...) | JavaUser.java:10:48:10:74 | new OuterGeneric<Integer>(...) | -2 |
+| JavaUser.java:10:47:10:97 | new InnerNotGeneric(...) | JavaUser.java:10:81:10:95 | InnerNotGeneric | -3 |
+| JavaUser.java:10:48:10:74 | new OuterGeneric<Integer>(...) | JavaUser.java:10:52:10:72 | OuterGeneric<Integer> | -3 |
+| JavaUser.java:11:47:11:96 | new InnerNotGeneric(...) | JavaUser.java:11:48:11:73 | new OuterGeneric<String>(...) | -2 |
+| JavaUser.java:11:47:11:96 | new InnerNotGeneric(...) | JavaUser.java:11:80:11:94 | InnerNotGeneric | -3 |
+| JavaUser.java:11:48:11:73 | new OuterGeneric<String>(...) | JavaUser.java:11:52:11:71 | OuterGeneric<String> | -3 |
+| JavaUser.java:12:46:12:95 | new InnerGeneric<String>(...) | JavaUser.java:12:47:12:67 | new OuterNotGeneric(...) | -2 |
+| JavaUser.java:12:46:12:95 | new InnerGeneric<String>(...) | JavaUser.java:12:74:12:93 | InnerGeneric<String> | -3 |
+| JavaUser.java:12:47:12:67 | new OuterNotGeneric(...) | JavaUser.java:12:51:12:65 | OuterNotGeneric | -3 |
+| JavaUser.java:13:49:13:111 | new InnerStaticGeneric<String>(...) | JavaUser.java:13:53:13:91 | OuterGeneric<>.InnerStaticGeneric<String> | -3 |
+| JavaUser.java:13:49:13:111 | new InnerStaticGeneric<String>(...) | JavaUser.java:13:93:13:95 | 'a' | 0 |
+| JavaUser.java:13:49:13:111 | new InnerStaticGeneric<String>(...) | JavaUser.java:13:98:13:110 | "Hello world" | 1 |
+| JavaUser.java:14:103:14:248 | new InnerManyParams<Long,Short>(...) | JavaUser.java:14:104:14:200 | new MiddleManyParams<Float,Double>(...) | -2 |
+| JavaUser.java:14:103:14:248 | new InnerManyParams<Long,Short>(...) | JavaUser.java:14:207:14:234 | InnerManyParams<Long,Short> | -3 |
+| JavaUser.java:14:103:14:248 | new InnerManyParams<Long,Short>(...) | JavaUser.java:14:236:14:237 | 1L | 0 |
+| JavaUser.java:14:103:14:248 | new InnerManyParams<Long,Short>(...) | JavaUser.java:14:240:14:247 | (...)... | 1 |
+| JavaUser.java:14:104:14:200 | new MiddleManyParams<Float,Double>(...) | JavaUser.java:14:105:14:152 | new OuterManyParams<Integer,String>(...) | -2 |
+| JavaUser.java:14:104:14:200 | new MiddleManyParams<Float,Double>(...) | JavaUser.java:14:159:14:189 | MiddleManyParams<Float,Double> | -3 |
+| JavaUser.java:14:104:14:200 | new MiddleManyParams<Float,Double>(...) | JavaUser.java:14:191:14:194 | 1.0f | 0 |
+| JavaUser.java:14:104:14:200 | new MiddleManyParams<Float,Double>(...) | JavaUser.java:14:197:14:199 | 1.0 | 1 |
+| JavaUser.java:14:105:14:152 | new OuterManyParams<Integer,String>(...) | JavaUser.java:14:109:14:140 | OuterManyParams<Integer,String> | -3 |
+| JavaUser.java:14:105:14:152 | new OuterManyParams<Integer,String>(...) | JavaUser.java:14:142:14:142 | 1 | 0 |
+| JavaUser.java:14:105:14:152 | new OuterManyParams<Integer,String>(...) | JavaUser.java:14:145:14:151 | "hello" | 1 |
+| JavaUser.java:16:22:16:47 | returnsecond(...) | JavaUser.java:16:22:16:22 | a | -1 |
+| JavaUser.java:16:22:16:47 | returnsecond(...) | JavaUser.java:16:37:16:37 | 0 | 0 |
+| JavaUser.java:16:22:16:47 | returnsecond(...) | JavaUser.java:16:40:16:46 | "hello" | 1 |
+| JavaUser.java:17:23:17:53 | returnsecond(...) | JavaUser.java:17:23:17:23 | a | -1 |
+| JavaUser.java:17:23:17:53 | returnsecond(...) | JavaUser.java:17:38:17:38 | 0 | 0 |
+| JavaUser.java:17:23:17:53 | returnsecond(...) | JavaUser.java:17:41:17:47 | "hello" | 1 |
+| JavaUser.java:17:23:17:53 | returnsecond(...) | JavaUser.java:17:50:17:52 | 'a' | 2 |
+| JavaUser.java:18:23:18:35 | identity(...) | JavaUser.java:18:23:18:23 | b | -1 |
+| JavaUser.java:18:23:18:35 | identity(...) | JavaUser.java:18:34:18:34 | 5 | 0 |
+| JavaUser.java:19:23:19:42 | identity(...) | JavaUser.java:19:23:19:24 | b2 | -1 |
+| JavaUser.java:19:23:19:42 | identity(...) | JavaUser.java:19:35:19:41 | "hello" | 0 |
+| JavaUser.java:20:22:20:40 | identity(...) | JavaUser.java:20:22:20:22 | c | -1 |
+| JavaUser.java:20:22:20:40 | identity(...) | JavaUser.java:20:33:20:39 | "world" | 0 |
+| JavaUser.java:21:22:21:42 | identity(...) | JavaUser.java:21:22:21:22 | d | -1 |
+| JavaUser.java:21:22:21:42 | identity(...) | JavaUser.java:21:33:21:41 | "goodbye" | 0 |
+| JavaUser.java:22:21:22:70 | returnSixth(...) | JavaUser.java:22:21:22:21 | e | -1 |
+| JavaUser.java:22:21:22:70 | returnSixth(...) | JavaUser.java:22:35:22:35 | 1 | 0 |
+| JavaUser.java:22:21:22:70 | returnSixth(...) | JavaUser.java:22:38:22:44 | "hello" | 1 |
+| JavaUser.java:22:21:22:70 | returnSixth(...) | JavaUser.java:22:47:22:50 | 1.0f | 2 |
+| JavaUser.java:22:21:22:70 | returnSixth(...) | JavaUser.java:22:53:22:55 | 1.0 | 3 |
+| JavaUser.java:22:21:22:70 | returnSixth(...) | JavaUser.java:22:58:22:59 | 1L | 4 |
+| JavaUser.java:22:21:22:70 | returnSixth(...) | JavaUser.java:22:62:22:69 | (...)... | 5 |
+| JavaUser.java:24:60:24:108 | getInnerNotGeneric(...) | JavaUser.java:24:61:24:86 | new OuterGeneric<String>(...) | -1 |
+| JavaUser.java:24:61:24:86 | new OuterGeneric<String>(...) | JavaUser.java:24:65:24:84 | OuterGeneric<String> | -3 |
+| JavaUser.java:25:61:25:101 | getInnerGeneric(...) | JavaUser.java:25:62:25:82 | new OuterNotGeneric(...) | -1 |
+| JavaUser.java:25:62:25:82 | new OuterNotGeneric(...) | JavaUser.java:25:66:25:80 | OuterNotGeneric | -3 |
+| JavaUser.java:27:39:27:71 | new TypeParamVisibility<String>(...) | JavaUser.java:27:43:27:69 | TypeParamVisibility<String> | -3 |
+| JavaUser.java:28:83:28:110 | getVisibleBecauseInner(...) | JavaUser.java:28:83:28:85 | tpv | -1 |
+| JavaUser.java:29:136:29:171 | getVisibleBecauseInnerIndirect(...) | JavaUser.java:29:136:29:138 | tpv | -1 |
+| JavaUser.java:30:83:30:114 | getNotVisibleBecauseStatic(...) | JavaUser.java:30:83:30:85 | tpv | -1 |
+| JavaUser.java:31:140:31:179 | getNotVisibleBecauseStaticIndirect(...) | JavaUser.java:31:140:31:142 | tpv | -1 |
+| KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | KotlinUser.kt:9:13:9:31 | OuterGeneric<Integer> | -3 |
+| KotlinUser.kt:9:33:9:63 | new InnerGeneric<String>(...) | KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | -2 |
+| KotlinUser.kt:9:33:9:63 | new InnerGeneric<String>(...) | KotlinUser.kt:9:33:9:63 | InnerGeneric<String> | -3 |
+| KotlinUser.kt:9:33:9:63 | new InnerGeneric<String>(...) | KotlinUser.kt:9:60:9:62 | a | 0 |
+| KotlinUser.kt:10:14:10:32 | new OuterGeneric<Integer>(...) | KotlinUser.kt:10:14:10:32 | OuterGeneric<Integer> | -3 |
+| KotlinUser.kt:10:34:10:65 | new InnerGeneric<String>(...) | KotlinUser.kt:10:14:10:32 | new OuterGeneric<Integer>(...) | -2 |
+| KotlinUser.kt:10:34:10:65 | new InnerGeneric<String>(...) | KotlinUser.kt:10:34:10:65 | InnerGeneric<String> | -3 |
+| KotlinUser.kt:10:34:10:65 | new InnerGeneric<String>(...) | KotlinUser.kt:10:47:10:49 | a | 0 |
+| KotlinUser.kt:10:34:10:65 | new InnerGeneric<String>(...) | KotlinUser.kt:10:52:10:64 | "hello world" | 1 |
+| KotlinUser.kt:11:13:11:31 | new OuterGeneric<Integer>(...) | KotlinUser.kt:11:13:11:31 | OuterGeneric<Integer> | -3 |
+| KotlinUser.kt:11:33:11:49 | new InnerNotGeneric<>(...) | KotlinUser.kt:11:13:11:31 | new OuterGeneric<Integer>(...) | -2 |
+| KotlinUser.kt:11:33:11:49 | new InnerNotGeneric<>(...) | KotlinUser.kt:11:33:11:49 | InnerNotGeneric<> | -3 |
+| KotlinUser.kt:12:14:12:35 | new OuterGeneric<String>(...) | KotlinUser.kt:12:14:12:35 | OuterGeneric<String> | -3 |
+| KotlinUser.kt:12:37:12:53 | new InnerNotGeneric<>(...) | KotlinUser.kt:12:14:12:35 | new OuterGeneric<String>(...) | -2 |
+| KotlinUser.kt:12:37:12:53 | new InnerNotGeneric<>(...) | KotlinUser.kt:12:37:12:53 | InnerNotGeneric<> | -3 |
+| KotlinUser.kt:13:13:13:29 | new OuterNotGeneric(...) | KotlinUser.kt:13:13:13:29 | OuterNotGeneric | -3 |
+| KotlinUser.kt:13:31:13:52 | new InnerGeneric<String>(...) | KotlinUser.kt:13:13:13:29 | new OuterNotGeneric(...) | -2 |
+| KotlinUser.kt:13:31:13:52 | new InnerGeneric<String>(...) | KotlinUser.kt:13:31:13:52 | InnerGeneric<String> | -3 |
+| KotlinUser.kt:14:26:14:63 | new InnerStaticGeneric<String>(...) | KotlinUser.kt:14:26:14:63 | InnerStaticGeneric<String> | -3 |
+| KotlinUser.kt:14:26:14:63 | new InnerStaticGeneric<String>(...) | KotlinUser.kt:14:45:14:47 | a | 0 |
+| KotlinUser.kt:14:26:14:63 | new InnerStaticGeneric<String>(...) | KotlinUser.kt:14:50:14:62 | "hello world" | 1 |
+| KotlinUser.kt:15:13:15:39 | new OuterManyParams<Integer,String>(...) | KotlinUser.kt:15:13:15:39 | OuterManyParams<Integer,String> | -3 |
+| KotlinUser.kt:15:13:15:39 | new OuterManyParams<Integer,String>(...) | KotlinUser.kt:15:29:15:29 | 1 | 0 |
+| KotlinUser.kt:15:13:15:39 | new OuterManyParams<Integer,String>(...) | KotlinUser.kt:15:32:15:38 | "hello" | 1 |
+| KotlinUser.kt:15:41:15:67 | new MiddleManyParams<Float,Double>(...) | KotlinUser.kt:15:13:15:39 | new OuterManyParams<Integer,String>(...) | -2 |
+| KotlinUser.kt:15:41:15:67 | new MiddleManyParams<Float,Double>(...) | KotlinUser.kt:15:41:15:67 | MiddleManyParams<Float,Double> | -3 |
+| KotlinUser.kt:15:41:15:67 | new MiddleManyParams<Float,Double>(...) | KotlinUser.kt:15:58:15:61 | 1.0 | 0 |
+| KotlinUser.kt:15:41:15:67 | new MiddleManyParams<Float,Double>(...) | KotlinUser.kt:15:64:15:66 | 1.0 | 1 |
+| KotlinUser.kt:15:69:15:100 | new InnerManyParams<Long,Short>(...) | KotlinUser.kt:15:41:15:67 | new MiddleManyParams<Float,Double>(...) | -2 |
+| KotlinUser.kt:15:69:15:100 | new InnerManyParams<Long,Short>(...) | KotlinUser.kt:15:69:15:100 | InnerManyParams<Long,Short> | -3 |
+| KotlinUser.kt:15:69:15:100 | new InnerManyParams<Long,Short>(...) | KotlinUser.kt:15:85:15:86 | 1 | 0 |
+| KotlinUser.kt:15:69:15:100 | new InnerManyParams<Long,Short>(...) | KotlinUser.kt:15:89:15:99 | shortValue(...) | 1 |
+| KotlinUser.kt:15:89:15:99 | shortValue(...) | KotlinUser.kt:15:89:15:89 | 1 | -1 |
+| KotlinUser.kt:17:19:17:44 | returnsecond(...) | KotlinUser.kt:17:19:17:19 | a | -1 |
+| KotlinUser.kt:17:19:17:44 | returnsecond(...) | KotlinUser.kt:17:34:17:34 | 0 | 0 |
+| KotlinUser.kt:17:19:17:44 | returnsecond(...) | KotlinUser.kt:17:37:17:43 | "hello" | 1 |
+| KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:20:18:20 | a | -1 |
+| KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:20:18:50 | Character | -2 |
+| KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:35:18:35 | 0 | 0 |
+| KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:38:18:44 | "hello" | 1 |
+| KotlinUser.kt:18:20:18:50 | returnsecond(...) | KotlinUser.kt:18:47:18:49 | a | 2 |
+| KotlinUser.kt:19:19:19:31 | identity(...) | KotlinUser.kt:19:19:19:19 | b | -1 |
+| KotlinUser.kt:19:19:19:31 | identity(...) | KotlinUser.kt:19:30:19:30 | 5 | 0 |
+| KotlinUser.kt:20:20:20:39 | identity(...) | KotlinUser.kt:20:20:20:21 | b2 | -1 |
+| KotlinUser.kt:20:20:20:39 | identity(...) | KotlinUser.kt:20:32:20:38 | "hello" | 0 |
+| KotlinUser.kt:21:19:21:37 | identity(...) | KotlinUser.kt:21:19:21:19 | c | -1 |
+| KotlinUser.kt:21:19:21:37 | identity(...) | KotlinUser.kt:21:30:21:36 | "world" | 0 |
+| KotlinUser.kt:22:19:22:39 | identity(...) | KotlinUser.kt:22:19:22:19 | d | -1 |
+| KotlinUser.kt:22:19:22:39 | identity(...) | KotlinUser.kt:22:30:22:38 | "goodbye" | 0 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:19:23:19 | e | -1 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:33:23:33 | 1 | 0 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:36:23:42 | "hello" | 1 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:45:23:48 | 1.0 | 2 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:51:23:53 | 1.0 | 3 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:56:23:57 | 1 | 4 |
+| KotlinUser.kt:23:19:23:71 | returnSixth(...) | KotlinUser.kt:23:60:23:70 | shortValue(...) | 5 |
+| KotlinUser.kt:23:60:23:70 | shortValue(...) | KotlinUser.kt:23:60:23:60 | 1 | -1 |
+| KotlinUser.kt:25:27:25:48 | new OuterGeneric<String>(...) | KotlinUser.kt:25:27:25:48 | OuterGeneric<String> | -3 |
+| KotlinUser.kt:25:27:25:69 | getInnerNotGeneric(...) | KotlinUser.kt:25:27:25:48 | new OuterGeneric<String>(...) | -1 |
+| KotlinUser.kt:26:28:26:44 | new OuterNotGeneric(...) | KotlinUser.kt:26:28:26:44 | OuterNotGeneric | -3 |
+| KotlinUser.kt:26:28:26:62 | getInnerGeneric(...) | KotlinUser.kt:26:28:26:44 | new OuterNotGeneric(...) | -1 |
+| KotlinUser.kt:28:15:28:43 | new TypeParamVisibility<String>(...) | KotlinUser.kt:28:15:28:43 | TypeParamVisibility<String> | -3 |
+| KotlinUser.kt:29:31:29:58 | getVisibleBecauseInner(...) | KotlinUser.kt:29:31:29:33 | tpv | -1 |
+| KotlinUser.kt:30:39:30:74 | getVisibleBecauseInnerIndirect(...) | KotlinUser.kt:30:39:30:41 | tpv | -1 |
+| KotlinUser.kt:31:35:31:66 | getNotVisibleBecauseStatic(...) | KotlinUser.kt:31:35:31:37 | tpv | -1 |
+| KotlinUser.kt:32:43:32:82 | getNotVisibleBecauseStaticIndirect(...) | KotlinUser.kt:32:43:32:45 | tpv | -1 |
+genericTypes
+| extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | S |
+| extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | S |
+| extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | T |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | E |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | F |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams | extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | C |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams | extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | D |
+| extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams | extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | A |
+| extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams | extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | B |
+| extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | S |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStatic.class:0:0:0:0 | NotVisibleBecauseStatic | extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStatic.class:0:0:0:0 | S |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer$NotVisibleBecauseStaticIndirect.class:0:0:0:0 | NotVisibleBecauseStaticIndirect | extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer$NotVisibleBecauseStaticIndirect.class:0:0:0:0 | S |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInner.class:0:0:0:0 | VisibleBecauseInner | extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInner.class:0:0:0:0 | S |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer$VisibleBecauseInnerIndirect.class:0:0:0:0 | VisibleBecauseInnerIndirect | extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer$VisibleBecauseInnerIndirect.class:0:0:0:0 | S |
+| extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | T |
+paramTypes
+| extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric | S |
+| extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | String |
+| extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric | S |
+| extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric<String> | String |
+| extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric | T |
+| extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | Integer |
+| extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> | String |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams | E |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams | F |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> | Long |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> | Short |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams | C |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams | D |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> | Double |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> | Float |
+| extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams | A |
+| extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams | B |
+| extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams<Integer,String> | Integer |
+| extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams<Integer,String> | String |
+| extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric | S |
+| extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | String |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStatic.class:0:0:0:0 | NotVisibleBecauseStatic | S |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStatic.class:0:0:0:0 | NotVisibleBecauseStatic<String> | String |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer$NotVisibleBecauseStaticIndirect.class:0:0:0:0 | NotVisibleBecauseStaticIndirect | S |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer$NotVisibleBecauseStaticIndirect.class:0:0:0:0 | NotVisibleBecauseStaticIndirect<String> | String |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInner.class:0:0:0:0 | VisibleBecauseInner | S |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInner.class:0:0:0:0 | VisibleBecauseInner<String> | String |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInner.class:0:0:0:0 | VisibleBecauseInner<String> | String |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer$VisibleBecauseInnerIndirect.class:0:0:0:0 | VisibleBecauseInnerIndirect | S |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer$VisibleBecauseInnerIndirect.class:0:0:0:0 | VisibleBecauseInnerIndirect<String> | String |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer$VisibleBecauseInnerIndirect.class:0:0:0:0 | VisibleBecauseInnerIndirect<String> | String |
+| extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility | T |
+| extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> | String |
+constructors
+| extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric | InnerGeneric(java.lang.Object) |
+| extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric | InnerGeneric(java.lang.Object,java.lang.Object) |
+| extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | InnerGeneric<String>(java.lang.Object) |
+| extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | InnerGeneric<String>(java.lang.Object,java.lang.String) |
+| extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric | InnerNotGeneric() |
+| extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> | InnerNotGeneric<>() |
+| extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> | InnerNotGeneric<>() |
+| extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric | InnerStaticGeneric(java.lang.Object,java.lang.Object) |
+| extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric<String> | InnerStaticGeneric<String>(java.lang.Object,java.lang.String) |
+| extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric | OuterGeneric() |
+| extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | OuterGeneric<Integer>() |
+| extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> | OuterGeneric<String>() |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams | InnerManyParams(java.lang.Object,java.lang.Object) |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> | InnerManyParams<Long,Short>(java.lang.Long,java.lang.Short) |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams | MiddleManyParams(java.lang.Object,java.lang.Object) |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> | MiddleManyParams<Float,Double>(java.lang.Float,java.lang.Double) |
+| extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams | OuterManyParams(java.lang.Object,java.lang.Object) |
+| extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams<Integer,String> | OuterManyParams<Integer,String>(java.lang.Integer,java.lang.String) |
+| extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric | InnerGeneric() |
+| extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | InnerGeneric<String>() |
+| extlib.jar/extlib/OuterNotGeneric.class:0:0:0:0 | OuterNotGeneric | OuterNotGeneric() |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStatic.class:0:0:0:0 | NotVisibleBecauseStatic | NotVisibleBecauseStatic() |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer$NotVisibleBecauseStaticIndirect.class:0:0:0:0 | NotVisibleBecauseStaticIndirect | NotVisibleBecauseStaticIndirect() |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer.class:0:0:0:0 | NotVisibleBecauseStaticIndirectContainer | NotVisibleBecauseStaticIndirectContainer() |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInner.class:0:0:0:0 | VisibleBecauseInner | VisibleBecauseInner() |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer$VisibleBecauseInnerIndirect.class:0:0:0:0 | VisibleBecauseInnerIndirect | VisibleBecauseInnerIndirect() |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer.class:0:0:0:0 | VisibleBecauseInnerIndirectContainer | VisibleBecauseInnerIndirectContainer() |
+| extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility | TypeParamVisibility() |
+| extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> | TypeParamVisibility<String>() |
+methods
+| extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | returnsecond | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric | returnsecond(java.lang.Object,java.lang.Object) |
+| extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | returnsecond | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric | returnsecond(java.lang.Object,java.lang.Object,java.lang.Object) |
+| extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | returnsecond | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | returnsecond(java.lang.Integer,java.lang.String) |
+| extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | returnsecond | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | returnsecond(java.lang.Integer,java.lang.String,java.lang.Object) |
+| extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | identity | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric | identity(java.lang.Object) |
+| extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | identity | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> | identity(java.lang.Integer) |
+| extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | identity | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> | identity(java.lang.String) |
+| extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | identity | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric | identity(java.lang.Object) |
+| extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | identity | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric<String> | identity(java.lang.String) |
+| extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | getInnerNotGeneric | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric | getInnerNotGeneric() |
+| extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | getInnerNotGeneric | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | getInnerNotGeneric() |
+| extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | getInnerNotGeneric | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> | getInnerNotGeneric() |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | returnSixth | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams | returnSixth(java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object,java.lang.Object) |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | returnSixth | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> | returnSixth(java.lang.Integer,java.lang.String,java.lang.Float,java.lang.Double,java.lang.Long,java.lang.Short) |
+| extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | identity | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric | identity(java.lang.Object) |
+| extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | identity | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | identity(java.lang.String) |
+| extlib.jar/extlib/OuterNotGeneric.class:0:0:0:0 | getInnerGeneric | extlib.jar/extlib/OuterNotGeneric.class:0:0:0:0 | OuterNotGeneric | getInnerGeneric() |
+| extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getNotVisibleBecauseStatic | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility | getNotVisibleBecauseStatic() |
+| extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getNotVisibleBecauseStatic | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> | getNotVisibleBecauseStatic() |
+| extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getNotVisibleBecauseStaticIndirect | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility | getNotVisibleBecauseStaticIndirect() |
+| extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getNotVisibleBecauseStaticIndirect | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> | getNotVisibleBecauseStaticIndirect() |
+| extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getVisibleBecauseInner | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility | getVisibleBecauseInner() |
+| extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getVisibleBecauseInner | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> | getVisibleBecauseInner() |
+| extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getVisibleBecauseInnerIndirect | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility | getVisibleBecauseInnerIndirect() |
+| extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getVisibleBecauseInnerIndirect | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> | getVisibleBecauseInnerIndirect() |
+nestedTypes
+| extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric |
+| extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric |
+| extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<> |
+| extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> |
+| extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric |
+| extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric<String> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams | extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> | extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams | extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams |
+| extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> | extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams<Integer,String> |
+| extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric | extlib.jar/extlib/OuterNotGeneric.class:0:0:0:0 | OuterNotGeneric |
+| extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<> | extlib.jar/extlib/OuterNotGeneric.class:0:0:0:0 | OuterNotGeneric |
+| extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | extlib.jar/extlib/OuterNotGeneric.class:0:0:0:0 | OuterNotGeneric |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStatic.class:0:0:0:0 | NotVisibleBecauseStatic | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStatic.class:0:0:0:0 | NotVisibleBecauseStatic<> | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStatic.class:0:0:0:0 | NotVisibleBecauseStatic<String> | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer$NotVisibleBecauseStaticIndirect.class:0:0:0:0 | NotVisibleBecauseStaticIndirect | extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer.class:0:0:0:0 | NotVisibleBecauseStaticIndirectContainer |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer$NotVisibleBecauseStaticIndirect.class:0:0:0:0 | NotVisibleBecauseStaticIndirect<> | extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer.class:0:0:0:0 | NotVisibleBecauseStaticIndirectContainer |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer$NotVisibleBecauseStaticIndirect.class:0:0:0:0 | NotVisibleBecauseStaticIndirect<String> | extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer.class:0:0:0:0 | NotVisibleBecauseStaticIndirectContainer |
+| extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer.class:0:0:0:0 | NotVisibleBecauseStaticIndirectContainer | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInner.class:0:0:0:0 | VisibleBecauseInner | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInner.class:0:0:0:0 | VisibleBecauseInner<> | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<> |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInner.class:0:0:0:0 | VisibleBecauseInner<String> | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInner.class:0:0:0:0 | VisibleBecauseInner<String> | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer$VisibleBecauseInnerIndirect.class:0:0:0:0 | VisibleBecauseInnerIndirect | extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer.class:0:0:0:0 | VisibleBecauseInnerIndirectContainer |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer$VisibleBecauseInnerIndirect.class:0:0:0:0 | VisibleBecauseInnerIndirect<> | extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer.class:0:0:0:0 | VisibleBecauseInnerIndirectContainer<> |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer$VisibleBecauseInnerIndirect.class:0:0:0:0 | VisibleBecauseInnerIndirect<String> | extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer.class:0:0:0:0 | VisibleBecauseInnerIndirectContainer |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer$VisibleBecauseInnerIndirect.class:0:0:0:0 | VisibleBecauseInnerIndirect<String> | extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer.class:0:0:0:0 | VisibleBecauseInnerIndirectContainer<> |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer.class:0:0:0:0 | VisibleBecauseInnerIndirectContainer | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer.class:0:0:0:0 | VisibleBecauseInnerIndirectContainer<> | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<> |
+| extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer.class:0:0:0:0 | VisibleBecauseInnerIndirectContainer<> | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> |
+javaKotlinCalleeAgreement
+| JavaUser.java:16:22:16:47 | returnsecond(...) | KotlinUser.kt:17:19:17:44 | returnsecond(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | returnsecond |
+| JavaUser.java:17:23:17:53 | returnsecond(...) | KotlinUser.kt:18:20:18:50 | returnsecond(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | returnsecond |
+| JavaUser.java:18:23:18:35 | identity(...) | KotlinUser.kt:19:19:19:31 | identity(...) | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | identity |
+| JavaUser.java:19:23:19:42 | identity(...) | KotlinUser.kt:20:20:20:39 | identity(...) | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | identity |
+| JavaUser.java:20:22:20:40 | identity(...) | KotlinUser.kt:21:19:21:37 | identity(...) | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | identity |
+| JavaUser.java:21:22:21:42 | identity(...) | KotlinUser.kt:22:19:22:39 | identity(...) | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | identity |
+| JavaUser.java:22:21:22:70 | returnSixth(...) | KotlinUser.kt:23:19:23:71 | returnSixth(...) | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | returnSixth |
+| JavaUser.java:24:60:24:108 | getInnerNotGeneric(...) | KotlinUser.kt:25:27:25:69 | getInnerNotGeneric(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | getInnerNotGeneric |
+| JavaUser.java:25:61:25:101 | getInnerGeneric(...) | KotlinUser.kt:26:28:26:62 | getInnerGeneric(...) | extlib.jar/extlib/OuterNotGeneric.class:0:0:0:0 | getInnerGeneric |
+| JavaUser.java:28:83:28:110 | getVisibleBecauseInner(...) | KotlinUser.kt:29:31:29:58 | getVisibleBecauseInner(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getVisibleBecauseInner |
+| JavaUser.java:29:136:29:171 | getVisibleBecauseInnerIndirect(...) | KotlinUser.kt:30:39:30:74 | getVisibleBecauseInnerIndirect(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getVisibleBecauseInnerIndirect |
+| JavaUser.java:30:83:30:114 | getNotVisibleBecauseStatic(...) | KotlinUser.kt:31:35:31:66 | getNotVisibleBecauseStatic(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getNotVisibleBecauseStatic |
+| JavaUser.java:31:140:31:179 | getNotVisibleBecauseStaticIndirect(...) | KotlinUser.kt:32:43:32:82 | getNotVisibleBecauseStaticIndirect(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | getNotVisibleBecauseStaticIndirect |
+javaKotlinConstructorAgreement
+| JavaUser.java:7:52:7:110 | new InnerGeneric<String>(...) | KotlinUser.kt:9:33:9:63 | new InnerGeneric<String>(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:7:53:7:79 | new OuterGeneric<Integer>(...) | KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| JavaUser.java:7:53:7:79 | new OuterGeneric<Integer>(...) | KotlinUser.kt:10:14:10:32 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| JavaUser.java:7:53:7:79 | new OuterGeneric<Integer>(...) | KotlinUser.kt:11:13:11:31 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| JavaUser.java:8:53:8:123 | new InnerGeneric<String>(...) | KotlinUser.kt:9:33:9:63 | new InnerGeneric<String>(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:8:54:8:80 | new OuterGeneric<Integer>(...) | KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| JavaUser.java:8:54:8:80 | new OuterGeneric<Integer>(...) | KotlinUser.kt:10:14:10:32 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| JavaUser.java:8:54:8:80 | new OuterGeneric<Integer>(...) | KotlinUser.kt:11:13:11:31 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| JavaUser.java:9:53:9:138 | new InnerGeneric<String>(...) | KotlinUser.kt:10:34:10:65 | new InnerGeneric<String>(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:9:54:9:80 | new OuterGeneric<Integer>(...) | KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| JavaUser.java:9:54:9:80 | new OuterGeneric<Integer>(...) | KotlinUser.kt:10:14:10:32 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| JavaUser.java:9:54:9:80 | new OuterGeneric<Integer>(...) | KotlinUser.kt:11:13:11:31 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| JavaUser.java:10:48:10:74 | new OuterGeneric<Integer>(...) | KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| JavaUser.java:10:48:10:74 | new OuterGeneric<Integer>(...) | KotlinUser.kt:10:14:10:32 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| JavaUser.java:10:48:10:74 | new OuterGeneric<Integer>(...) | KotlinUser.kt:11:13:11:31 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| JavaUser.java:11:48:11:73 | new OuterGeneric<String>(...) | KotlinUser.kt:12:14:12:35 | new OuterGeneric<String>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> |
+| JavaUser.java:11:48:11:73 | new OuterGeneric<String>(...) | KotlinUser.kt:25:27:25:48 | new OuterGeneric<String>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> |
+| JavaUser.java:12:46:12:95 | new InnerGeneric<String>(...) | KotlinUser.kt:13:31:13:52 | new InnerGeneric<String>(...) | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:12:47:12:67 | new OuterNotGeneric(...) | KotlinUser.kt:13:13:13:29 | new OuterNotGeneric(...) | extlib.jar/extlib/OuterNotGeneric.class:0:0:0:0 | OuterNotGeneric |
+| JavaUser.java:12:47:12:67 | new OuterNotGeneric(...) | KotlinUser.kt:26:28:26:44 | new OuterNotGeneric(...) | extlib.jar/extlib/OuterNotGeneric.class:0:0:0:0 | OuterNotGeneric |
+| JavaUser.java:13:49:13:111 | new InnerStaticGeneric<String>(...) | KotlinUser.kt:14:26:14:63 | new InnerStaticGeneric<String>(...) | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric<String> |
+| JavaUser.java:14:103:14:248 | new InnerManyParams<Long,Short>(...) | KotlinUser.kt:15:69:15:100 | new InnerManyParams<Long,Short>(...) | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> |
+| JavaUser.java:14:104:14:200 | new MiddleManyParams<Float,Double>(...) | KotlinUser.kt:15:41:15:67 | new MiddleManyParams<Float,Double>(...) | extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> |
+| JavaUser.java:14:105:14:152 | new OuterManyParams<Integer,String>(...) | KotlinUser.kt:15:13:15:39 | new OuterManyParams<Integer,String>(...) | extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams<Integer,String> |
+| JavaUser.java:24:61:24:86 | new OuterGeneric<String>(...) | KotlinUser.kt:12:14:12:35 | new OuterGeneric<String>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> |
+| JavaUser.java:24:61:24:86 | new OuterGeneric<String>(...) | KotlinUser.kt:25:27:25:48 | new OuterGeneric<String>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> |
+| JavaUser.java:25:62:25:82 | new OuterNotGeneric(...) | KotlinUser.kt:13:13:13:29 | new OuterNotGeneric(...) | extlib.jar/extlib/OuterNotGeneric.class:0:0:0:0 | OuterNotGeneric |
+| JavaUser.java:25:62:25:82 | new OuterNotGeneric(...) | KotlinUser.kt:26:28:26:44 | new OuterNotGeneric(...) | extlib.jar/extlib/OuterNotGeneric.class:0:0:0:0 | OuterNotGeneric |
+| JavaUser.java:27:39:27:71 | new TypeParamVisibility<String>(...) | KotlinUser.kt:28:15:28:43 | new TypeParamVisibility<String>(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> |
+javaKotlinLocalTypeAgreement
+| JavaUser.java:7:5:7:111 | InnerGeneric<String> a | KotlinUser.kt:9:5:9:63 | InnerGeneric<String> a | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:7:5:7:111 | InnerGeneric<String> a | KotlinUser.kt:10:5:10:65 | InnerGeneric<String> a2 | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:8:5:8:124 | InnerGeneric<String> a2 | KotlinUser.kt:9:5:9:63 | InnerGeneric<String> a | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:8:5:8:124 | InnerGeneric<String> a2 | KotlinUser.kt:10:5:10:65 | InnerGeneric<String> a2 | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:9:5:9:139 | InnerGeneric<String> a3 | KotlinUser.kt:9:5:9:63 | InnerGeneric<String> a | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:9:5:9:139 | InnerGeneric<String> a3 | KotlinUser.kt:10:5:10:65 | InnerGeneric<String> a2 | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:10:5:10:98 | InnerNotGeneric<> b | KotlinUser.kt:11:5:11:49 | InnerNotGeneric<> b | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> |
+| JavaUser.java:11:5:11:97 | InnerNotGeneric<> b2 | KotlinUser.kt:12:5:12:53 | InnerNotGeneric<> b2 | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> |
+| JavaUser.java:11:5:11:97 | InnerNotGeneric<> b2 | KotlinUser.kt:25:5:25:69 | InnerNotGeneric<> innerGetterTest | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> |
+| JavaUser.java:12:5:12:96 | InnerGeneric<String> c | KotlinUser.kt:13:5:13:52 | InnerGeneric<String> c | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:12:5:12:96 | InnerGeneric<String> c | KotlinUser.kt:26:5:26:62 | InnerGeneric<String> innerGetterTest2 | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:13:5:13:112 | InnerStaticGeneric<String> d | KotlinUser.kt:14:5:14:63 | InnerStaticGeneric<String> d | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric<String> |
+| JavaUser.java:14:5:14:249 | InnerManyParams<Long,Short> e | KotlinUser.kt:15:5:15:100 | InnerManyParams<Long,Short> e | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> |
+| JavaUser.java:24:5:24:109 | InnerNotGeneric<> innerGetterTest | KotlinUser.kt:12:5:12:53 | InnerNotGeneric<> b2 | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> |
+| JavaUser.java:24:5:24:109 | InnerNotGeneric<> innerGetterTest | KotlinUser.kt:25:5:25:69 | InnerNotGeneric<> innerGetterTest | extlib.jar/extlib/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> |
+| JavaUser.java:25:5:25:102 | InnerGeneric<String> innerGetterTest2 | KotlinUser.kt:13:5:13:52 | InnerGeneric<String> c | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:25:5:25:102 | InnerGeneric<String> innerGetterTest2 | KotlinUser.kt:26:5:26:62 | InnerGeneric<String> innerGetterTest2 | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| JavaUser.java:27:5:27:72 | TypeParamVisibility<String> tpv | KotlinUser.kt:28:5:28:43 | TypeParamVisibility<String> tpv | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> |
+| JavaUser.java:28:5:28:111 | VisibleBecauseInner<String> visibleBecauseInner | KotlinUser.kt:29:5:29:58 | VisibleBecauseInner<String> visibleBecauseInner | extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInner.class:0:0:0:0 | VisibleBecauseInner<String> |
+| JavaUser.java:29:5:29:172 | VisibleBecauseInnerIndirect<String> visibleBecauseInnerIndirect | KotlinUser.kt:30:5:30:74 | VisibleBecauseInnerIndirect<String> visibleBecauseInnerIndirect | extlib.jar/extlib/TypeParamVisibility$VisibleBecauseInnerIndirectContainer$VisibleBecauseInnerIndirect.class:0:0:0:0 | VisibleBecauseInnerIndirect<String> |
+| JavaUser.java:30:5:30:115 | NotVisibleBecauseStatic<String> notVisibleBecauseStatic | KotlinUser.kt:31:5:31:66 | NotVisibleBecauseStatic<String> notVisibleBecauseStatic | extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStatic.class:0:0:0:0 | NotVisibleBecauseStatic<String> |
+| JavaUser.java:31:5:31:180 | NotVisibleBecauseStaticIndirect<String> notVisibleBecauseStaticIndirect | KotlinUser.kt:32:5:32:82 | NotVisibleBecauseStaticIndirect<String> notVisibleBecauseStaticIndirect | extlib.jar/extlib/TypeParamVisibility$NotVisibleBecauseStaticIndirectContainer$NotVisibleBecauseStaticIndirect.class:0:0:0:0 | NotVisibleBecauseStaticIndirect<String> |
+#select
+| JavaUser.java:7:52:7:110 | new InnerGeneric<String>(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | JavaUser.java:7:99:7:104 | String |
+| JavaUser.java:7:53:7:79 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | JavaUser.java:7:70:7:76 | Integer |
+| JavaUser.java:8:53:8:123 | new InnerGeneric<String>(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | JavaUser.java:8:112:8:117 | String |
+| JavaUser.java:8:54:8:80 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | JavaUser.java:8:71:8:77 | Integer |
+| JavaUser.java:9:53:9:138 | new InnerGeneric<String>(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | JavaUser.java:9:112:9:117 | String |
+| JavaUser.java:9:54:9:80 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | JavaUser.java:9:71:9:77 | Integer |
+| JavaUser.java:10:48:10:74 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | JavaUser.java:10:65:10:71 | Integer |
+| JavaUser.java:11:48:11:73 | new OuterGeneric<String>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> | JavaUser.java:11:65:11:70 | String |
+| JavaUser.java:12:46:12:95 | new InnerGeneric<String>(...) | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | JavaUser.java:12:87:12:92 | String |
+| JavaUser.java:13:49:13:111 | new InnerStaticGeneric<String>(...) | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric<String> | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric<String> | JavaUser.java:13:85:13:90 | String |
+| JavaUser.java:14:103:14:248 | new InnerManyParams<Long,Short>(...) | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> | JavaUser.java:14:223:14:226 | Long |
+| JavaUser.java:14:103:14:248 | new InnerManyParams<Long,Short>(...) | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> | JavaUser.java:14:229:14:233 | Short |
+| JavaUser.java:14:104:14:200 | new MiddleManyParams<Float,Double>(...) | extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> | extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> | JavaUser.java:14:176:14:180 | Float |
+| JavaUser.java:14:104:14:200 | new MiddleManyParams<Float,Double>(...) | extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> | extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> | JavaUser.java:14:183:14:188 | Double |
+| JavaUser.java:14:105:14:152 | new OuterManyParams<Integer,String>(...) | extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams<Integer,String> | extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams<Integer,String> | JavaUser.java:14:125:14:131 | Integer |
+| JavaUser.java:14:105:14:152 | new OuterManyParams<Integer,String>(...) | extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams<Integer,String> | extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams<Integer,String> | JavaUser.java:14:134:14:139 | String |
+| JavaUser.java:24:61:24:86 | new OuterGeneric<String>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> | JavaUser.java:24:78:24:83 | String |
+| JavaUser.java:27:39:27:71 | new TypeParamVisibility<String>(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> | JavaUser.java:27:63:27:68 | String |
+| KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | KotlinUser.kt:9:13:9:31 | Integer |
+| KotlinUser.kt:9:33:9:63 | new InnerGeneric<String>(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | KotlinUser.kt:9:33:9:63 | String |
+| KotlinUser.kt:10:14:10:32 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | KotlinUser.kt:10:14:10:32 | Integer |
+| KotlinUser.kt:10:34:10:65 | new InnerGeneric<String>(...) | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | extlib.jar/extlib/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | KotlinUser.kt:10:34:10:65 | String |
+| KotlinUser.kt:11:13:11:31 | new OuterGeneric<Integer>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | KotlinUser.kt:11:13:11:31 | Integer |
+| KotlinUser.kt:12:14:12:35 | new OuterGeneric<String>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> | KotlinUser.kt:12:14:12:35 | String |
+| KotlinUser.kt:13:31:13:52 | new InnerGeneric<String>(...) | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | extlib.jar/extlib/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | KotlinUser.kt:13:31:13:52 | String |
+| KotlinUser.kt:14:26:14:63 | new InnerStaticGeneric<String>(...) | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric<String> | extlib.jar/extlib/OuterGeneric$InnerStaticGeneric.class:0:0:0:0 | InnerStaticGeneric<String> | KotlinUser.kt:14:26:14:63 | String |
+| KotlinUser.kt:15:13:15:39 | new OuterManyParams<Integer,String>(...) | extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams<Integer,String> | extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams<Integer,String> | KotlinUser.kt:15:13:15:39 | Integer |
+| KotlinUser.kt:15:13:15:39 | new OuterManyParams<Integer,String>(...) | extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams<Integer,String> | extlib.jar/extlib/OuterManyParams.class:0:0:0:0 | OuterManyParams<Integer,String> | KotlinUser.kt:15:13:15:39 | String |
+| KotlinUser.kt:15:41:15:67 | new MiddleManyParams<Float,Double>(...) | extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> | extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> | KotlinUser.kt:15:41:15:67 | Double |
+| KotlinUser.kt:15:41:15:67 | new MiddleManyParams<Float,Double>(...) | extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> | extlib.jar/extlib/OuterManyParams$MiddleManyParams.class:0:0:0:0 | MiddleManyParams<Float,Double> | KotlinUser.kt:15:41:15:67 | Float |
+| KotlinUser.kt:15:69:15:100 | new InnerManyParams<Long,Short>(...) | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> | KotlinUser.kt:15:69:15:100 | Long |
+| KotlinUser.kt:15:69:15:100 | new InnerManyParams<Long,Short>(...) | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> | extlib.jar/extlib/OuterManyParams$MiddleManyParams$InnerManyParams.class:0:0:0:0 | InnerManyParams<Long,Short> | KotlinUser.kt:15:69:15:100 | Short |
+| KotlinUser.kt:25:27:25:48 | new OuterGeneric<String>(...) | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> | extlib.jar/extlib/OuterGeneric.class:0:0:0:0 | OuterGeneric<String> | KotlinUser.kt:25:27:25:48 | String |
+| KotlinUser.kt:28:15:28:43 | new TypeParamVisibility<String>(...) | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> | extlib.jar/extlib/TypeParamVisibility.class:0:0:0:0 | TypeParamVisibility<String> | KotlinUser.kt:28:15:28:43 | String |

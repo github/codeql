@@ -1,6 +1,7 @@
 singlelineComment
 | comments1.cs:1:1:2:46 | // ... | comments1.cs:1:1:1:23 | // ... | 2 | Start of comment1.cs | // Start of comment1.cs |
 | comments1.cs:1:1:2:46 | // ... | comments1.cs:2:1:2:46 | // ... | 2 | This tests the basic types of comment block | // This tests the basic types of comment block |
+| comments1.cs:1:16:1:46 | // ... | comments1.cs:1:16:1:46 | // ... | 1 | A mapped single-line comment | // A mapped single-line comment |
 | comments1.cs:4:1:4:25 | // ... | comments1.cs:4:1:4:25 | // ... | 1 | 1) Basic comment types | // 1) Basic comment types |
 | comments1.cs:6:1:6:24 | // ... | comments1.cs:6:1:6:24 | // ... | 1 | A single-line comment | // A single-line comment |
 | comments1.cs:13:1:13:20 | // ... | comments1.cs:13:1:13:20 | // ... | 1 | 2) Comment blocks | // 2) Comment blocks |

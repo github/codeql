@@ -4,7 +4,7 @@
  *              insertion of forged log entries by a malicious user.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 7.8
+ * @security-severity 6.1
  * @precision medium
  * @id go/log-injection
  * @tags security
@@ -13,9 +13,9 @@
 
 import go
 import semmle.go.security.LogInjection
-import DataFlow::PathGraph
+import LogInjection::Flow::PathGraph
 
-from LogInjection::Configuration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from LogInjection::Flow::PathNode source, LogInjection::Flow::PathNode sink
+where LogInjection::Flow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This log entry depends on a $@.", source.getNode(),
   "user-provided value"

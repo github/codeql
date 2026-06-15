@@ -1,0 +1,9 @@
+| test.py:2:1:2:13 | Function normal | no |
+| test.py:5:7:5:21 | Function is_async | yes |
+| test.py:8:1:8:20 | Function decorator | no |
+| test.py:12:1:12:11 | Function deco | no |
+| test.py:16:7:16:23 | Function deco_async | yes |
+| test.py:21:7:21:16 | Function foo | yes |
+| visit_trailer_fp.py:1:1:1:10 | Function foo | no |
+| visit_trailer_fp.py:4:1:4:12 | Function await | no |
+| visit_trailer_fp.py:7:1:7:15 | Function bar | no |

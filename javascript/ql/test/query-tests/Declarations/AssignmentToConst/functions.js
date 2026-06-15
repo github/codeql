@@ -1,4 +1,3 @@
 const C = 45;
 
-// NOT OK
-function C() {}
+function C() {} // $ Alert

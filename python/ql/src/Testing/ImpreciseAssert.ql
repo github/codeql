@@ -2,8 +2,9 @@
  * @name Imprecise assert
  * @description Using 'assertTrue' or 'assertFalse' rather than a more specific assertion can give uninformative failure messages.
  * @kind problem
- * @tags maintainability
- *       testability
+ * @tags quality
+ *       maintainability
+ *       readability
  * @problem.severity recommendation
  * @sub-severity high
  * @precision very-high

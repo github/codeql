@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["rasterio/rasterio/.github/workflows/test_gdal_build.yaml", "*", "input.gdal_ref", "code-injection", "generated"]

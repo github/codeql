@@ -1,0 +1,244 @@
+models
+| 1 | Summary: play.mvc; Http$Cookie; true; name; ; ; Argument[this]; ReturnValue; taint; manual |
+| 2 | Summary: play.mvc; Http$Cookie; true; value; ; ; Argument[this]; ReturnValue; taint; manual |
+| 3 | Summary: play.mvc; Http$Cookies; true; get; ; ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: play.mvc; Http$Cookies; true; getCookie; ; ; Argument[this]; ReturnValue; taint; manual |
+| 5 | Summary: play.mvc; Http$MultipartFormData$FilePart; true; getContentType; ; ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: play.mvc; Http$MultipartFormData$FilePart; true; getDispositionType; ; ; Argument[this]; ReturnValue; taint; manual |
+| 7 | Summary: play.mvc; Http$MultipartFormData$FilePart; true; getFilename; ; ; Argument[this]; ReturnValue; taint; manual |
+| 8 | Summary: play.mvc; Http$MultipartFormData$FilePart; true; getKey; ; ; Argument[this]; ReturnValue; taint; manual |
+| 9 | Summary: play.mvc; Http$MultipartFormData$FilePart; true; getRef; ; ; Argument[this]; ReturnValue; taint; manual |
+| 10 | Summary: play.mvc; Http$MultipartFormData; true; asFormUrlEncoded; ; ; Argument[this]; ReturnValue; taint; manual |
+| 11 | Summary: play.mvc; Http$MultipartFormData; true; getFile; ; ; Argument[this]; ReturnValue; taint; manual |
+| 12 | Summary: play.mvc; Http$MultipartFormData; true; getFiles; ; ; Argument[this]; ReturnValue; taint; manual |
+| 13 | Summary: play.mvc; Http$RawBuffer; true; asBytes; ; ; Argument[this]; ReturnValue; taint; manual |
+| 14 | Summary: play.mvc; Http$RawBuffer; true; asFile; ; ; Argument[this]; ReturnValue; taint; manual |
+| 15 | Summary: play.mvc; Http$RequestBody; true; as; ; ; Argument[this]; ReturnValue; taint; manual |
+| 16 | Summary: play.mvc; Http$RequestBody; true; asBytes; ; ; Argument[this]; ReturnValue; taint; manual |
+| 17 | Summary: play.mvc; Http$RequestBody; true; asFormUrlEncoded; ; ; Argument[this]; ReturnValue; taint; manual |
+| 18 | Summary: play.mvc; Http$RequestBody; true; asJson; ; ; Argument[this]; ReturnValue; taint; manual |
+| 19 | Summary: play.mvc; Http$RequestBody; true; asMultipartFormData; ; ; Argument[this]; ReturnValue; taint; manual |
+| 20 | Summary: play.mvc; Http$RequestBody; true; asRaw; ; ; Argument[this]; ReturnValue; taint; manual |
+| 21 | Summary: play.mvc; Http$RequestBody; true; asText; ; ; Argument[this]; ReturnValue; taint; manual |
+| 22 | Summary: play.mvc; Http$RequestBody; true; asXml; ; ; Argument[this]; ReturnValue; taint; manual |
+| 23 | Summary: play.mvc; Http$RequestBody; true; parseJson; ; ; Argument[this]; ReturnValue; taint; manual |
+edges
+| mad/Test.java:26:21:26:42 | (...)... : Cookie | mad/Test.java:27:10:27:11 | in : Cookie | provenance |  |
+| mad/Test.java:26:35:26:42 | source(...) : Object | mad/Test.java:26:21:26:42 | (...)... : Cookie | provenance |  |
+| mad/Test.java:27:10:27:11 | in : Cookie | mad/Test.java:27:10:27:18 | name(...) : String | provenance | MaD:1 |
+| mad/Test.java:27:10:27:18 | name(...) : String | mad/Test.java:28:9:28:11 | out | provenance |  |
+| mad/Test.java:33:21:33:42 | (...)... : Cookie | mad/Test.java:34:10:34:11 | in : Cookie | provenance |  |
+| mad/Test.java:33:35:33:42 | source(...) : Object | mad/Test.java:33:21:33:42 | (...)... : Cookie | provenance |  |
+| mad/Test.java:34:10:34:11 | in : Cookie | mad/Test.java:34:10:34:19 | value(...) : String | provenance | MaD:2 |
+| mad/Test.java:34:10:34:19 | value(...) : String | mad/Test.java:35:9:35:11 | out | provenance |  |
+| mad/Test.java:40:22:40:44 | (...)... : Cookies | mad/Test.java:41:10:41:11 | in : Cookies | provenance |  |
+| mad/Test.java:40:37:40:44 | source(...) : Object | mad/Test.java:40:22:40:44 | (...)... : Cookies | provenance |  |
+| mad/Test.java:41:10:41:11 | in : Cookies | mad/Test.java:41:10:41:21 | get(...) : Cookie | provenance | MaD:3 |
+| mad/Test.java:41:10:41:21 | get(...) : Cookie | mad/Test.java:42:9:42:11 | out | provenance |  |
+| mad/Test.java:47:22:47:44 | (...)... : Cookies | mad/Test.java:48:10:48:11 | in : Cookies | provenance |  |
+| mad/Test.java:47:37:47:44 | source(...) : Object | mad/Test.java:47:22:47:44 | (...)... : Cookies | provenance |  |
+| mad/Test.java:48:10:48:11 | in : Cookies | mad/Test.java:48:10:48:27 | getCookie(...) : Optional | provenance | MaD:4 |
+| mad/Test.java:48:10:48:27 | getCookie(...) : Optional | mad/Test.java:49:9:49:11 | out | provenance |  |
+| mad/Test.java:54:41:54:82 | (...)... : FilePart | mad/Test.java:55:10:55:11 | in : FilePart | provenance |  |
+| mad/Test.java:54:75:54:82 | source(...) : Object | mad/Test.java:54:41:54:82 | (...)... : FilePart | provenance |  |
+| mad/Test.java:55:10:55:11 | in : FilePart | mad/Test.java:55:10:55:28 | getContentType(...) : String | provenance | MaD:5 |
+| mad/Test.java:55:10:55:28 | getContentType(...) : String | mad/Test.java:56:9:56:11 | out | provenance |  |
+| mad/Test.java:61:41:61:82 | (...)... : FilePart | mad/Test.java:62:10:62:11 | in : FilePart | provenance |  |
+| mad/Test.java:61:75:61:82 | source(...) : Object | mad/Test.java:61:41:61:82 | (...)... : FilePart | provenance |  |
+| mad/Test.java:62:10:62:11 | in : FilePart | mad/Test.java:62:10:62:32 | getDispositionType(...) : String | provenance | MaD:6 |
+| mad/Test.java:62:10:62:32 | getDispositionType(...) : String | mad/Test.java:63:9:63:11 | out | provenance |  |
+| mad/Test.java:68:41:68:82 | (...)... : FilePart | mad/Test.java:69:10:69:11 | in : FilePart | provenance |  |
+| mad/Test.java:68:75:68:82 | source(...) : Object | mad/Test.java:68:41:68:82 | (...)... : FilePart | provenance |  |
+| mad/Test.java:69:10:69:11 | in : FilePart | mad/Test.java:69:10:69:25 | getFilename(...) : String | provenance | MaD:7 |
+| mad/Test.java:69:10:69:25 | getFilename(...) : String | mad/Test.java:70:9:70:11 | out | provenance |  |
+| mad/Test.java:75:41:75:82 | (...)... : FilePart | mad/Test.java:76:10:76:11 | in : FilePart | provenance |  |
+| mad/Test.java:75:75:75:82 | source(...) : Object | mad/Test.java:75:41:75:82 | (...)... : FilePart | provenance |  |
+| mad/Test.java:76:10:76:11 | in : FilePart | mad/Test.java:76:10:76:20 | getKey(...) : String | provenance | MaD:8 |
+| mad/Test.java:76:10:76:20 | getKey(...) : String | mad/Test.java:77:9:77:11 | out | provenance |  |
+| mad/Test.java:82:41:82:82 | (...)... : FilePart | mad/Test.java:83:10:83:11 | in : FilePart | provenance |  |
+| mad/Test.java:82:75:82:82 | source(...) : Object | mad/Test.java:82:41:82:82 | (...)... : FilePart | provenance |  |
+| mad/Test.java:83:10:83:11 | in : FilePart | mad/Test.java:83:10:83:20 | getRef(...) : Object | provenance | MaD:9 |
+| mad/Test.java:83:10:83:20 | getRef(...) : Object | mad/Test.java:84:9:84:11 | out | provenance |  |
+| mad/Test.java:89:32:89:64 | (...)... : MultipartFormData | mad/Test.java:90:10:90:11 | in : MultipartFormData | provenance |  |
+| mad/Test.java:89:57:89:64 | source(...) : Object | mad/Test.java:89:32:89:64 | (...)... : MultipartFormData | provenance |  |
+| mad/Test.java:90:10:90:11 | in : MultipartFormData | mad/Test.java:90:10:90:30 | asFormUrlEncoded(...) : Map | provenance | MaD:10 |
+| mad/Test.java:90:10:90:30 | asFormUrlEncoded(...) : Map | mad/Test.java:91:9:91:11 | out | provenance |  |
+| mad/Test.java:96:32:96:64 | (...)... : MultipartFormData | mad/Test.java:97:10:97:11 | in : MultipartFormData | provenance |  |
+| mad/Test.java:96:57:96:64 | source(...) : Object | mad/Test.java:96:32:96:64 | (...)... : MultipartFormData | provenance |  |
+| mad/Test.java:97:10:97:11 | in : MultipartFormData | mad/Test.java:97:10:97:25 | getFile(...) : FilePart | provenance | MaD:11 |
+| mad/Test.java:97:10:97:25 | getFile(...) : FilePart | mad/Test.java:98:9:98:11 | out | provenance |  |
+| mad/Test.java:103:32:103:64 | (...)... : MultipartFormData | mad/Test.java:104:10:104:11 | in : MultipartFormData | provenance |  |
+| mad/Test.java:103:57:103:64 | source(...) : Object | mad/Test.java:103:32:103:64 | (...)... : MultipartFormData | provenance |  |
+| mad/Test.java:104:10:104:11 | in : MultipartFormData | mad/Test.java:104:10:104:22 | getFiles(...) : List | provenance | MaD:12 |
+| mad/Test.java:104:10:104:22 | getFiles(...) : List | mad/Test.java:105:9:105:11 | out | provenance |  |
+| mad/Test.java:110:24:110:48 | (...)... : RawBuffer | mad/Test.java:111:10:111:11 | in : RawBuffer | provenance |  |
+| mad/Test.java:110:41:110:48 | source(...) : Object | mad/Test.java:110:24:110:48 | (...)... : RawBuffer | provenance |  |
+| mad/Test.java:111:10:111:11 | in : RawBuffer | mad/Test.java:111:10:111:21 | asBytes(...) : ByteString | provenance | MaD:13 |
+| mad/Test.java:111:10:111:21 | asBytes(...) : ByteString | mad/Test.java:112:9:112:11 | out | provenance |  |
+| mad/Test.java:117:24:117:48 | (...)... : RawBuffer | mad/Test.java:118:10:118:11 | in : RawBuffer | provenance |  |
+| mad/Test.java:117:41:117:48 | source(...) : Object | mad/Test.java:117:24:117:48 | (...)... : RawBuffer | provenance |  |
+| mad/Test.java:118:10:118:11 | in : RawBuffer | mad/Test.java:118:10:118:22 | asBytes(...) : ByteString | provenance | MaD:13 |
+| mad/Test.java:118:10:118:22 | asBytes(...) : ByteString | mad/Test.java:119:9:119:11 | out | provenance |  |
+| mad/Test.java:124:24:124:48 | (...)... : RawBuffer | mad/Test.java:125:10:125:11 | in : RawBuffer | provenance |  |
+| mad/Test.java:124:41:124:48 | source(...) : Object | mad/Test.java:124:24:124:48 | (...)... : RawBuffer | provenance |  |
+| mad/Test.java:125:10:125:11 | in : RawBuffer | mad/Test.java:125:10:125:20 | asFile(...) : File | provenance | MaD:14 |
+| mad/Test.java:125:10:125:20 | asFile(...) : File | mad/Test.java:126:9:126:11 | out | provenance |  |
+| mad/Test.java:131:26:131:52 | (...)... : RequestBody | mad/Test.java:132:10:132:11 | in : RequestBody | provenance |  |
+| mad/Test.java:131:45:131:52 | source(...) : Object | mad/Test.java:131:26:131:52 | (...)... : RequestBody | provenance |  |
+| mad/Test.java:132:10:132:11 | in : RequestBody | mad/Test.java:132:10:132:20 | as(...) : Object | provenance | MaD:15 |
+| mad/Test.java:132:10:132:20 | as(...) : Object | mad/Test.java:133:9:133:11 | out | provenance |  |
+| mad/Test.java:138:26:138:52 | (...)... : RequestBody | mad/Test.java:139:10:139:11 | in : RequestBody | provenance |  |
+| mad/Test.java:138:45:138:52 | source(...) : Object | mad/Test.java:138:26:138:52 | (...)... : RequestBody | provenance |  |
+| mad/Test.java:139:10:139:11 | in : RequestBody | mad/Test.java:139:10:139:21 | asBytes(...) : ByteString | provenance | MaD:16 |
+| mad/Test.java:139:10:139:21 | asBytes(...) : ByteString | mad/Test.java:140:9:140:11 | out | provenance |  |
+| mad/Test.java:145:26:145:52 | (...)... : RequestBody | mad/Test.java:146:10:146:11 | in : RequestBody | provenance |  |
+| mad/Test.java:145:45:145:52 | source(...) : Object | mad/Test.java:145:26:145:52 | (...)... : RequestBody | provenance |  |
+| mad/Test.java:146:10:146:11 | in : RequestBody | mad/Test.java:146:10:146:30 | asFormUrlEncoded(...) : Map | provenance | MaD:17 |
+| mad/Test.java:146:10:146:30 | asFormUrlEncoded(...) : Map | mad/Test.java:147:9:147:11 | out | provenance |  |
+| mad/Test.java:152:26:152:52 | (...)... : RequestBody | mad/Test.java:153:10:153:11 | in : RequestBody | provenance |  |
+| mad/Test.java:152:45:152:52 | source(...) : Object | mad/Test.java:152:26:152:52 | (...)... : RequestBody | provenance |  |
+| mad/Test.java:153:10:153:11 | in : RequestBody | mad/Test.java:153:10:153:20 | asJson(...) : JsonNode | provenance | MaD:18 |
+| mad/Test.java:153:10:153:20 | asJson(...) : JsonNode | mad/Test.java:154:9:154:11 | out | provenance |  |
+| mad/Test.java:159:26:159:52 | (...)... : RequestBody | mad/Test.java:160:10:160:11 | in : RequestBody | provenance |  |
+| mad/Test.java:159:45:159:52 | source(...) : Object | mad/Test.java:159:26:159:52 | (...)... : RequestBody | provenance |  |
+| mad/Test.java:160:10:160:11 | in : RequestBody | mad/Test.java:160:10:160:33 | asMultipartFormData(...) : MultipartFormData | provenance | MaD:19 |
+| mad/Test.java:160:10:160:33 | asMultipartFormData(...) : MultipartFormData | mad/Test.java:161:9:161:11 | out | provenance |  |
+| mad/Test.java:166:26:166:52 | (...)... : RequestBody | mad/Test.java:167:10:167:11 | in : RequestBody | provenance |  |
+| mad/Test.java:166:45:166:52 | source(...) : Object | mad/Test.java:166:26:166:52 | (...)... : RequestBody | provenance |  |
+| mad/Test.java:167:10:167:11 | in : RequestBody | mad/Test.java:167:10:167:19 | asRaw(...) : RawBuffer | provenance | MaD:20 |
+| mad/Test.java:167:10:167:19 | asRaw(...) : RawBuffer | mad/Test.java:168:9:168:11 | out | provenance |  |
+| mad/Test.java:173:26:173:52 | (...)... : RequestBody | mad/Test.java:174:10:174:11 | in : RequestBody | provenance |  |
+| mad/Test.java:173:45:173:52 | source(...) : Object | mad/Test.java:173:26:173:52 | (...)... : RequestBody | provenance |  |
+| mad/Test.java:174:10:174:11 | in : RequestBody | mad/Test.java:174:10:174:20 | asText(...) : String | provenance | MaD:21 |
+| mad/Test.java:174:10:174:20 | asText(...) : String | mad/Test.java:175:9:175:11 | out | provenance |  |
+| mad/Test.java:180:26:180:52 | (...)... : RequestBody | mad/Test.java:181:10:181:11 | in : RequestBody | provenance |  |
+| mad/Test.java:180:45:180:52 | source(...) : Object | mad/Test.java:180:26:180:52 | (...)... : RequestBody | provenance |  |
+| mad/Test.java:181:10:181:11 | in : RequestBody | mad/Test.java:181:10:181:19 | asXml(...) : Document | provenance | MaD:22 |
+| mad/Test.java:181:10:181:19 | asXml(...) : Document | mad/Test.java:182:9:182:11 | out | provenance |  |
+| mad/Test.java:187:26:187:52 | (...)... : RequestBody | mad/Test.java:188:10:188:11 | in : RequestBody | provenance |  |
+| mad/Test.java:187:45:187:52 | source(...) : Object | mad/Test.java:187:26:187:52 | (...)... : RequestBody | provenance |  |
+| mad/Test.java:188:10:188:11 | in : RequestBody | mad/Test.java:188:10:188:27 | parseJson(...) : Optional | provenance | MaD:23 |
+| mad/Test.java:188:10:188:27 | parseJson(...) : Optional | mad/Test.java:189:9:189:11 | out | provenance |  |
+nodes
+| mad/Test.java:26:21:26:42 | (...)... : Cookie | semmle.label | (...)... : Cookie |
+| mad/Test.java:26:35:26:42 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:27:10:27:11 | in : Cookie | semmle.label | in : Cookie |
+| mad/Test.java:27:10:27:18 | name(...) : String | semmle.label | name(...) : String |
+| mad/Test.java:28:9:28:11 | out | semmle.label | out |
+| mad/Test.java:33:21:33:42 | (...)... : Cookie | semmle.label | (...)... : Cookie |
+| mad/Test.java:33:35:33:42 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:34:10:34:11 | in : Cookie | semmle.label | in : Cookie |
+| mad/Test.java:34:10:34:19 | value(...) : String | semmle.label | value(...) : String |
+| mad/Test.java:35:9:35:11 | out | semmle.label | out |
+| mad/Test.java:40:22:40:44 | (...)... : Cookies | semmle.label | (...)... : Cookies |
+| mad/Test.java:40:37:40:44 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:41:10:41:11 | in : Cookies | semmle.label | in : Cookies |
+| mad/Test.java:41:10:41:21 | get(...) : Cookie | semmle.label | get(...) : Cookie |
+| mad/Test.java:42:9:42:11 | out | semmle.label | out |
+| mad/Test.java:47:22:47:44 | (...)... : Cookies | semmle.label | (...)... : Cookies |
+| mad/Test.java:47:37:47:44 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:48:10:48:11 | in : Cookies | semmle.label | in : Cookies |
+| mad/Test.java:48:10:48:27 | getCookie(...) : Optional | semmle.label | getCookie(...) : Optional |
+| mad/Test.java:49:9:49:11 | out | semmle.label | out |
+| mad/Test.java:54:41:54:82 | (...)... : FilePart | semmle.label | (...)... : FilePart |
+| mad/Test.java:54:75:54:82 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:55:10:55:11 | in : FilePart | semmle.label | in : FilePart |
+| mad/Test.java:55:10:55:28 | getContentType(...) : String | semmle.label | getContentType(...) : String |
+| mad/Test.java:56:9:56:11 | out | semmle.label | out |
+| mad/Test.java:61:41:61:82 | (...)... : FilePart | semmle.label | (...)... : FilePart |
+| mad/Test.java:61:75:61:82 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:62:10:62:11 | in : FilePart | semmle.label | in : FilePart |
+| mad/Test.java:62:10:62:32 | getDispositionType(...) : String | semmle.label | getDispositionType(...) : String |
+| mad/Test.java:63:9:63:11 | out | semmle.label | out |
+| mad/Test.java:68:41:68:82 | (...)... : FilePart | semmle.label | (...)... : FilePart |
+| mad/Test.java:68:75:68:82 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:69:10:69:11 | in : FilePart | semmle.label | in : FilePart |
+| mad/Test.java:69:10:69:25 | getFilename(...) : String | semmle.label | getFilename(...) : String |
+| mad/Test.java:70:9:70:11 | out | semmle.label | out |
+| mad/Test.java:75:41:75:82 | (...)... : FilePart | semmle.label | (...)... : FilePart |
+| mad/Test.java:75:75:75:82 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:76:10:76:11 | in : FilePart | semmle.label | in : FilePart |
+| mad/Test.java:76:10:76:20 | getKey(...) : String | semmle.label | getKey(...) : String |
+| mad/Test.java:77:9:77:11 | out | semmle.label | out |
+| mad/Test.java:82:41:82:82 | (...)... : FilePart | semmle.label | (...)... : FilePart |
+| mad/Test.java:82:75:82:82 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:83:10:83:11 | in : FilePart | semmle.label | in : FilePart |
+| mad/Test.java:83:10:83:20 | getRef(...) : Object | semmle.label | getRef(...) : Object |
+| mad/Test.java:84:9:84:11 | out | semmle.label | out |
+| mad/Test.java:89:32:89:64 | (...)... : MultipartFormData | semmle.label | (...)... : MultipartFormData |
+| mad/Test.java:89:57:89:64 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:90:10:90:11 | in : MultipartFormData | semmle.label | in : MultipartFormData |
+| mad/Test.java:90:10:90:30 | asFormUrlEncoded(...) : Map | semmle.label | asFormUrlEncoded(...) : Map |
+| mad/Test.java:91:9:91:11 | out | semmle.label | out |
+| mad/Test.java:96:32:96:64 | (...)... : MultipartFormData | semmle.label | (...)... : MultipartFormData |
+| mad/Test.java:96:57:96:64 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:97:10:97:11 | in : MultipartFormData | semmle.label | in : MultipartFormData |
+| mad/Test.java:97:10:97:25 | getFile(...) : FilePart | semmle.label | getFile(...) : FilePart |
+| mad/Test.java:98:9:98:11 | out | semmle.label | out |
+| mad/Test.java:103:32:103:64 | (...)... : MultipartFormData | semmle.label | (...)... : MultipartFormData |
+| mad/Test.java:103:57:103:64 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:104:10:104:11 | in : MultipartFormData | semmle.label | in : MultipartFormData |
+| mad/Test.java:104:10:104:22 | getFiles(...) : List | semmle.label | getFiles(...) : List |
+| mad/Test.java:105:9:105:11 | out | semmle.label | out |
+| mad/Test.java:110:24:110:48 | (...)... : RawBuffer | semmle.label | (...)... : RawBuffer |
+| mad/Test.java:110:41:110:48 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:111:10:111:11 | in : RawBuffer | semmle.label | in : RawBuffer |
+| mad/Test.java:111:10:111:21 | asBytes(...) : ByteString | semmle.label | asBytes(...) : ByteString |
+| mad/Test.java:112:9:112:11 | out | semmle.label | out |
+| mad/Test.java:117:24:117:48 | (...)... : RawBuffer | semmle.label | (...)... : RawBuffer |
+| mad/Test.java:117:41:117:48 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:118:10:118:11 | in : RawBuffer | semmle.label | in : RawBuffer |
+| mad/Test.java:118:10:118:22 | asBytes(...) : ByteString | semmle.label | asBytes(...) : ByteString |
+| mad/Test.java:119:9:119:11 | out | semmle.label | out |
+| mad/Test.java:124:24:124:48 | (...)... : RawBuffer | semmle.label | (...)... : RawBuffer |
+| mad/Test.java:124:41:124:48 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:125:10:125:11 | in : RawBuffer | semmle.label | in : RawBuffer |
+| mad/Test.java:125:10:125:20 | asFile(...) : File | semmle.label | asFile(...) : File |
+| mad/Test.java:126:9:126:11 | out | semmle.label | out |
+| mad/Test.java:131:26:131:52 | (...)... : RequestBody | semmle.label | (...)... : RequestBody |
+| mad/Test.java:131:45:131:52 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:132:10:132:11 | in : RequestBody | semmle.label | in : RequestBody |
+| mad/Test.java:132:10:132:20 | as(...) : Object | semmle.label | as(...) : Object |
+| mad/Test.java:133:9:133:11 | out | semmle.label | out |
+| mad/Test.java:138:26:138:52 | (...)... : RequestBody | semmle.label | (...)... : RequestBody |
+| mad/Test.java:138:45:138:52 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:139:10:139:11 | in : RequestBody | semmle.label | in : RequestBody |
+| mad/Test.java:139:10:139:21 | asBytes(...) : ByteString | semmle.label | asBytes(...) : ByteString |
+| mad/Test.java:140:9:140:11 | out | semmle.label | out |
+| mad/Test.java:145:26:145:52 | (...)... : RequestBody | semmle.label | (...)... : RequestBody |
+| mad/Test.java:145:45:145:52 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:146:10:146:11 | in : RequestBody | semmle.label | in : RequestBody |
+| mad/Test.java:146:10:146:30 | asFormUrlEncoded(...) : Map | semmle.label | asFormUrlEncoded(...) : Map |
+| mad/Test.java:147:9:147:11 | out | semmle.label | out |
+| mad/Test.java:152:26:152:52 | (...)... : RequestBody | semmle.label | (...)... : RequestBody |
+| mad/Test.java:152:45:152:52 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:153:10:153:11 | in : RequestBody | semmle.label | in : RequestBody |
+| mad/Test.java:153:10:153:20 | asJson(...) : JsonNode | semmle.label | asJson(...) : JsonNode |
+| mad/Test.java:154:9:154:11 | out | semmle.label | out |
+| mad/Test.java:159:26:159:52 | (...)... : RequestBody | semmle.label | (...)... : RequestBody |
+| mad/Test.java:159:45:159:52 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:160:10:160:11 | in : RequestBody | semmle.label | in : RequestBody |
+| mad/Test.java:160:10:160:33 | asMultipartFormData(...) : MultipartFormData | semmle.label | asMultipartFormData(...) : MultipartFormData |
+| mad/Test.java:161:9:161:11 | out | semmle.label | out |
+| mad/Test.java:166:26:166:52 | (...)... : RequestBody | semmle.label | (...)... : RequestBody |
+| mad/Test.java:166:45:166:52 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:167:10:167:11 | in : RequestBody | semmle.label | in : RequestBody |
+| mad/Test.java:167:10:167:19 | asRaw(...) : RawBuffer | semmle.label | asRaw(...) : RawBuffer |
+| mad/Test.java:168:9:168:11 | out | semmle.label | out |
+| mad/Test.java:173:26:173:52 | (...)... : RequestBody | semmle.label | (...)... : RequestBody |
+| mad/Test.java:173:45:173:52 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:174:10:174:11 | in : RequestBody | semmle.label | in : RequestBody |
+| mad/Test.java:174:10:174:20 | asText(...) : String | semmle.label | asText(...) : String |
+| mad/Test.java:175:9:175:11 | out | semmle.label | out |
+| mad/Test.java:180:26:180:52 | (...)... : RequestBody | semmle.label | (...)... : RequestBody |
+| mad/Test.java:180:45:180:52 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:181:10:181:11 | in : RequestBody | semmle.label | in : RequestBody |
+| mad/Test.java:181:10:181:19 | asXml(...) : Document | semmle.label | asXml(...) : Document |
+| mad/Test.java:182:9:182:11 | out | semmle.label | out |
+| mad/Test.java:187:26:187:52 | (...)... : RequestBody | semmle.label | (...)... : RequestBody |
+| mad/Test.java:187:45:187:52 | source(...) : Object | semmle.label | source(...) : Object |
+| mad/Test.java:188:10:188:11 | in : RequestBody | semmle.label | in : RequestBody |
+| mad/Test.java:188:10:188:27 | parseJson(...) : Optional | semmle.label | parseJson(...) : Optional |
+| mad/Test.java:189:9:189:11 | out | semmle.label | out |
+subpaths
+testFailures

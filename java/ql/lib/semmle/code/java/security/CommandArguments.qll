@@ -1,6 +1,8 @@
 /**
  * Definitions for reasoning about lists and arrays that are to be used as arguments to an external process.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dataflow.SSA
@@ -36,9 +38,13 @@ private predicate isShell(Expr ex) {
     cmd.regexpMatch(".*(sh|javac?|python[23]?|osascript|cmd)(\\.exe)?$")
   )
   or
-  exists(SsaVariable ssa |
-    ex = ssa.getAUse() and
-    isShell(ssa.getAnUltimateDefinition().(SsaExplicitUpdate).getDefiningExpr())
+  exists(SsaDefinition ssa, SsaExplicitWrite def |
+    ex = ssa.getARead() and
+    isShell(def.getDefiningExpr())
+  |
+    ssa.getAnUltimateDefinition() = def
+    or
+    ssa.(SsaCapturedDefinition).getAnUltimateCapturedDefinition() = def
   )
   or
   isShell(ex.(Assignment).getRhs())
@@ -59,22 +65,22 @@ private class ListOfStringType extends CollectionType {
 /**
  * A variable that could be used as a list of arguments to a command.
  */
-private class CommandArgumentList extends SsaExplicitUpdate {
+private class CommandArgumentList extends SsaExplicitWrite {
   CommandArgumentList() {
     this.getSourceVariable().getType() instanceof ListOfStringType and
-    forex(CollectionMutation ma | ma.getQualifier() = this.getAUse() |
+    forex(CollectionMutation ma | ma.getQualifier() = this.getARead() |
       ma.getMethod().getName().matches("add%")
     )
   }
 
   /** Gets a use of the variable for which the list could be empty. */
-  private RValue getAUseBeforeFirstAdd() {
-    result = this.getAFirstUse()
+  private VarRead getAUseBeforeFirstAdd() {
+    result = ssaGetAFirstUse(this)
     or
-    exists(RValue mid |
+    exists(VarRead mid |
       mid = this.getAUseBeforeFirstAdd() and
       adjacentUseUse(mid, result) and
-      not exists(MethodAccess ma |
+      not exists(MethodCall ma |
         mid = ma.getQualifier() and
         ma.getMethod().hasName("add")
       )
@@ -84,26 +90,26 @@ private class CommandArgumentList extends SsaExplicitUpdate {
   /**
    * Gets an addition to this list, i.e. a call to an `add` or `addAll` method.
    */
-  MethodAccess getAnAdd() {
-    result.getQualifier() = this.getAUse() and
+  MethodCall getAnAdd() {
+    result.getQualifier() = this.getARead() and
     result.getMethod().getName().matches("add%")
   }
 
   /** Gets an addition to this list which could be its first element. */
-  MethodAccess getAFirstAdd() {
+  MethodCall getAFirstAdd() {
     result = this.getAnAdd() and
     result.getQualifier() = this.getAUseBeforeFirstAdd()
   }
 
   /** Gets an addition to this list which is not the first element. */
-  MethodAccess getASubsequentAdd() {
+  MethodCall getASubsequentAdd() {
     result = this.getAnAdd() and
     not result = this.getAFirstAdd()
   }
 
   /** Holds if the first element of this list is a shell command. */
   predicate isShell() {
-    exists(MethodAccess ma | ma = this.getAFirstAdd() and isShell(ma.getArgument(0)))
+    exists(MethodCall ma | ma = this.getAFirstAdd() and isShell(ma.getArgument(0)))
   }
 }
 
@@ -114,24 +120,24 @@ private class ArrayOfStringType extends Array {
   ArrayOfStringType() { this.getElementType() instanceof TypeString }
 }
 
-private predicate arrayLValue(ArrayAccess acc) { exists(Assignment a | a.getDest() = acc) }
+private predicate arrayVarWrite(ArrayAccess acc) { exists(Assignment a | a.getDest() = acc) }
 
 /**
  * A variable that could be an array of arguments to a command.
  */
-private class CommandArgumentArray extends SsaExplicitUpdate {
+private class CommandArgumentArray extends SsaExplicitWrite {
   CommandArgumentArray() {
     this.getSourceVariable().getType() instanceof ArrayOfStringType and
-    forall(ArrayAccess a | a.getArray() = this.getAUse() and arrayLValue(a) |
+    forall(ArrayAccess a | a.getArray() = this.getARead() and arrayVarWrite(a) |
       a.getIndexExpr() instanceof CompileTimeConstantExpr
     )
   }
 
   /** Gets an expression that is written to the given index of this array at the given use. */
-  Expr getAWrite(int index, RValue use) {
+  Expr getAWrite(int index, VarRead use) {
     exists(Assignment a, ArrayAccess acc |
       acc.getArray() = use and
-      use = this.getAUse() and
+      use = this.getARead() and
       index = acc.getIndexExpr().(CompileTimeConstantExpr).getIntValue() and
       acc = a.getDest() and
       result = a.getRhs()
@@ -148,7 +154,7 @@ private class CommandArgumentArray extends SsaExplicitUpdate {
 private class CommandArgArrayImmutableFirst extends CommandArgumentArray {
   CommandArgArrayImmutableFirst() {
     (exists(this.getAWrite(0)) or exists(firstElementOf(this.getDefiningExpr()))) and
-    forall(RValue use | exists(this.getAWrite(0, use)) | use = this.getAFirstUse())
+    forall(VarRead use | exists(this.getAWrite(0, use)) | use = ssaGetAFirstUse(this))
   }
 
   /** Gets the first element of this array. */
@@ -171,9 +177,11 @@ private Expr firstElementOf(Expr arr) {
     or
     result = firstElementOf(arr.(LocalVariableDeclExpr).getInit())
     or
-    exists(CommandArgArrayImmutableFirst caa | arr = caa.getAUse() | result = caa.getFirstElement())
+    exists(CommandArgArrayImmutableFirst caa | arr = caa.getARead() |
+      result = caa.getFirstElement()
+    )
     or
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       arr = ma and
       ma.getMethod() = m and
       m.getDeclaringType().hasQualifiedName("java.util", "Arrays") and

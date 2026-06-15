@@ -1,1 +1,2 @@
-Likely Bugs/Arithmetic/InformationLoss.ql
+query: Likely Bugs/Arithmetic/InformationLoss.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

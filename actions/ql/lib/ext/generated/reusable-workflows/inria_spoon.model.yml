@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["inria/spoon/.github/workflows/jreleaser.yml", "*", "input.release-script-to-run", "code-injection", "generated"]

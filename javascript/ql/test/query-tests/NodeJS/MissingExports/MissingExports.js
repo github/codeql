@@ -4,5 +4,5 @@ exports.checkOne = function(x) {
 
 var checkList = exports.checkList = function(xs) {
   for (var i=0; i<xs.length; ++i)
-    checkOne(xs[i]);
+    checkOne(xs[i]); // $ Alert
 };

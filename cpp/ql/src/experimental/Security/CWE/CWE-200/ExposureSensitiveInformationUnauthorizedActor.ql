@@ -1,5 +1,5 @@
 /**
- * @name Writing to a file without setting permissions.
+ * @name Writing to a file without setting permissions
  * @description Lack of restriction on file access rights can be unsafe.
  * @kind problem
  * @id cpp/work-with-file-without-permissions-rights

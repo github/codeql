@@ -9,6 +9,6 @@ public class ParserHelperTests {
 
     @PostMapping(value = "bad4")
     public void bad4(HttpServletRequest request) throws Exception {
-        Document document = ParserHelper.loadDocument(request.getInputStream()); // $ hasTaintFlow
+        Document document = ParserHelper.loadDocument(request.getInputStream()); // $ Alert
     }
 }

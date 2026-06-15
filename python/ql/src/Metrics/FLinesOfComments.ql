@@ -11,7 +11,6 @@
 
 import python
 
-from Module m, int n
-where
-  n = m.getMetrics().getNumberOfLinesOfComments() + m.getMetrics().getNumberOfLinesOfDocStrings()
+from ModuleMetrics m, int n
+where n = m.getNumberOfLinesOfComments() + m.getNumberOfLinesOfDocStrings()
 select m, n order by n desc

@@ -74,8 +74,8 @@ public class XPathInjectionTest {
     }
 
     public void handle(HttpServletRequest request) throws Exception {
-        String user = request.getParameter("user");
-        String pass = request.getParameter("pass");
+        String user = request.getParameter("user"); // $ Source
+        String pass = request.getParameter("pass"); // $ Source
         String expression = "/users/user[@name='" + user + "' and @pass='" + pass + "']";
 
         final String xmlStr = "<users>" + "   <user name=\"aaa\" pass=\"pass1\"></user>"
@@ -88,14 +88,14 @@ public class XPathInjectionTest {
         XPathFactory factory = XPathFactory.newInstance();
         XPath xpath = factory.newXPath();
 
-        xpath.evaluate(expression, doc, XPathConstants.BOOLEAN); // $hasXPathInjection
-        xpath.evaluateExpression(expression, xmlSource); // $hasXPathInjection
-        xpath.compile("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        xpath.evaluate(expression, doc, XPathConstants.BOOLEAN); // $ Alert
+        xpath.evaluateExpression(expression, xmlSource); // $ Alert
+        xpath.compile("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
 
         XPathImplStub xpathStub = XPathImplStub.getInstance();
-        xpathStub.evaluate(expression, doc, XPathConstants.BOOLEAN); // $hasXPathInjection
-        xpathStub.evaluateExpression(expression, xmlSource); // $hasXPathInjection
-        xpathStub.compile("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        xpathStub.evaluate(expression, doc, XPathConstants.BOOLEAN); // $ Alert
+        xpathStub.evaluateExpression(expression, xmlSource); // $ Alert
+        xpathStub.compile("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
 
         StringBuffer sb = new StringBuffer("/users/user[@name=");
         sb.append(user);
@@ -104,8 +104,8 @@ public class XPathInjectionTest {
         sb.append("']");
         String query = sb.toString();
 
-        xpath.compile(query); // $hasXPathInjection
-        xpathStub.compile(query); // $hasXPathInjection
+        xpath.compile(query); // $ Alert
+        xpathStub.compile(query); // $ Alert
 
         String expression4 = "/users/user[@name=$user and @pass=$pass]";
         xpath.setXPathVariableResolver(v -> {
@@ -122,38 +122,38 @@ public class XPathInjectionTest {
 
         SAXReader reader = new SAXReader();
         org.dom4j.Document document = reader.read(new ByteArrayInputStream(xmlStr.getBytes()));
-        document.selectObject("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        document.selectNodes("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        document.selectNodes("/users/user[@name='test']", "/users/user[@pass='" + pass + "']"); // $hasXPathInjection
-        document.selectSingleNode("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        document.valueOf("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        document.numberValueOf("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        document.matches("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        document.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        document.selectObject("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        document.selectNodes("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        document.selectNodes("/users/user[@name='test']", "/users/user[@pass='" + pass + "']"); // $ Alert
+        document.selectSingleNode("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        document.valueOf("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        document.numberValueOf("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        document.matches("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        document.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
 
-        new DefaultXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        new XPathPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        new DefaultXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        new XPathPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
         new XPathPattern(new PatternStub(user)); // $ MISSING: hasXPathInjection // Jaxen is not modeled yet
 
         DocumentFactory docFactory = DocumentFactory.getInstance();
-        docFactory.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        docFactory.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        docFactory.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        docFactory.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        docFactory.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        docFactory.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
 
-        DocumentHelper.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        DocumentHelper.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        DocumentHelper.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        DocumentHelper.selectNodes("/users/user[@name='" + user + "' and @pass='" + pass + "']", new ArrayList<Node>()); // $hasXPathInjection
-        DocumentHelper.sort(new ArrayList<Node>(), "/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        DocumentHelper.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        DocumentHelper.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        DocumentHelper.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        DocumentHelper.selectNodes("/users/user[@name='" + user + "' and @pass='" + pass + "']", new ArrayList<Node>()); // $ Alert
+        DocumentHelper.sort(new ArrayList<Node>(), "/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
 
         ProxyDocumentFactoryStub proxyDocFactory = new ProxyDocumentFactoryStub();
-        proxyDocFactory.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        proxyDocFactory.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        proxyDocFactory.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        proxyDocFactory.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        proxyDocFactory.createXPath("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        proxyDocFactory.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
 
         Namespace namespace = new Namespace("prefix", "http://some.uri.io");
-        namespace.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
-        namespace.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $hasXPathInjection
+        namespace.createPattern("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
+        namespace.createXPathFilter("/users/user[@name='" + user + "' and @pass='" + pass + "']"); // $ Alert
 
         org.jaxen.SimpleVariableContext svc = new org.jaxen.SimpleVariableContext();
         svc.setVariableValue("user", user);

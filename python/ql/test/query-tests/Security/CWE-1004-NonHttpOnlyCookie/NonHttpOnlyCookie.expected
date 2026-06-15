@@ -1,0 +1,3 @@
+| test.py:8:5:8:38 | ControlFlowNode for Attribute() | Sensitive server cookie is set without HttpOnly flag. |
+| test.py:9:5:9:51 | ControlFlowNode for Attribute() | Sensitive server cookie is set without HttpOnly flag. |
+| test.py:11:5:11:57 | ControlFlowNode for Attribute() | Sensitive server cookie is set without HttpOnly flag. |

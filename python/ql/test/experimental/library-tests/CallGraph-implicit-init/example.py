@@ -16,7 +16,13 @@ Since PEP 420 was accepted in Python 3, this test is Python 3 only.
 
 from foo.bar.a import afunc
 from foo_explicit.bar.a import explicit_afunc
+from not_root.baz.foo import foo_func
+from not_root.baz.bar.a import afunc as afunc2
 
-afunc() # $ MISSING: pt,tt=afunc
+afunc() # $ pt,tt="foo/bar/a.py:afunc"
 
 explicit_afunc() # $ pt,tt="foo_explicit/bar/a.py:explicit_afunc"
+
+foo_func() # $ pt,tt="not_root/baz/foo.py:foo_func"
+
+afunc2() # $ pt,tt="not_root/baz/bar/a.py:afunc"

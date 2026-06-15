@@ -2,3 +2,4 @@ name: codeql/swift-downgrades
 groups: swift
 downgrades: .
 library: true
+warnOnImplicitThis: true

@@ -1,0 +1,44 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.annotation.processing", "Completion", True, "getMessage", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Completion", True, "getValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Completions", True, "of", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.annotation.processing.Completions$SimpleCompletion.value]", "value", "dfc-generated"]
+      - ["javax.annotation.processing", "Completions", True, "of", "(String,String)", "", "Argument[0]", "ReturnValue.SyntheticField[javax.annotation.processing.Completions$SimpleCompletion.value]", "value", "dfc-generated"]
+      - ["javax.annotation.processing", "Completions", True, "of", "(String,String)", "", "Argument[1]", "ReturnValue.SyntheticField[javax.annotation.processing.Completions$SimpleCompletion.message]", "value", "dfc-generated"]
+      - ["javax.annotation.processing", "Filer", True, "createClassFile", "(CharSequence,Element[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Filer", True, "createResource", "(JavaFileManager$Location,CharSequence,CharSequence,Element[])", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Filer", True, "createResource", "(JavaFileManager$Location,CharSequence,CharSequence,Element[])", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Filer", True, "createResource", "(JavaFileManager$Location,CharSequence,CharSequence,Element[])", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Filer", True, "createResource", "(JavaFileManager$Location,CharSequence,CharSequence,Element[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Filer", True, "createSourceFile", "(CharSequence,Element[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Filer", True, "getResource", "(JavaFileManager$Location,CharSequence,CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Filer", True, "getResource", "(JavaFileManager$Location,CharSequence,CharSequence)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Filer", True, "getResource", "(JavaFileManager$Location,CharSequence,CharSequence)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Filer", True, "getResource", "(JavaFileManager$Location,CharSequence,CharSequence)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "FilerException", True, "FilerException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.annotation.processing", "ProcessingEnvironment", True, "getElementUtils", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "ProcessingEnvironment", True, "getFiler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "ProcessingEnvironment", True, "getLocale", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "ProcessingEnvironment", True, "getMessager", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "ProcessingEnvironment", True, "getOptions", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "ProcessingEnvironment", True, "getTypeUtils", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "Processor", True, "init", "(ProcessingEnvironment)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.annotation.processing", "RoundEnvironment", True, "getElementsAnnotatedWith", "(Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "RoundEnvironment", True, "getElementsAnnotatedWith", "(TypeElement)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "RoundEnvironment", True, "getElementsAnnotatedWithAny", "(Set)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "RoundEnvironment", True, "getElementsAnnotatedWithAny", "(TypeElement[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.annotation.processing", "RoundEnvironment", True, "getRootElements", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.annotation.processing", "AbstractProcessor", "getCompletions", "(Element,AnnotationMirror,ExecutableElement,String)", "summary", "df-generated"]
+      - ["javax.annotation.processing", "AbstractProcessor", "getSupportedAnnotationTypes", "()", "summary", "df-generated"]
+      - ["javax.annotation.processing", "AbstractProcessor", "getSupportedOptions", "()", "summary", "df-generated"]
+      - ["javax.annotation.processing", "AbstractProcessor", "getSupportedSourceVersion", "()", "summary", "df-generated"]
+      - ["javax.annotation.processing", "AbstractProcessor", "process", "(Set,RoundEnvironment)", "summary", "df-generated"]
+      - ["javax.annotation.processing", "ProcessingEnvironment", "isPreviewEnabled", "()", "summary", "df-generated"]

@@ -1,35 +1,3 @@
-edges
-| HtmlEncode.cs:10:40:10:65 | call to method UrlEncode : String | HtmlEncode.cs:10:28:10:65 | ... + ... |
-| InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String | InappropriateEncoding.cs:18:46:18:51 | access to local variable query1 |
-| InappropriateEncoding.cs:34:28:34:55 | call to method UrlEncode : String | InappropriateEncoding.cs:35:32:35:43 | access to local variable encodedValue |
-| InappropriateEncoding.cs:34:28:34:55 | call to method UrlEncode : String | InappropriateEncoding.cs:36:22:36:59 | ... + ... |
-| InappropriateEncoding.cs:34:28:34:55 | call to method UrlEncode : String | InappropriateEncoding.cs:37:59:37:70 | access to local variable encodedValue : String |
-| InappropriateEncoding.cs:37:59:37:70 | access to local variable encodedValue : String | InappropriateEncoding.cs:37:22:37:71 | call to method Format |
-| InappropriateEncoding.cs:55:28:55:56 | call to method HtmlEncode : String | InappropriateEncoding.cs:56:31:56:42 | access to local variable encodedValue |
-| InappropriateEncoding.cs:66:16:66:42 | call to method Replace : String | InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String |
-| SqlEncode.cs:14:62:14:87 | call to method Replace : String | SqlEncode.cs:15:46:15:50 | access to local variable query |
-| UrlEncode.cs:10:43:10:69 | call to method HtmlEncode : String | UrlEncode.cs:10:31:10:69 | ... + ... |
-nodes
-| HtmlEncode.cs:10:28:10:65 | ... + ... | semmle.label | ... + ... |
-| HtmlEncode.cs:10:40:10:65 | call to method UrlEncode : String | semmle.label | call to method UrlEncode : String |
-| InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String | semmle.label | call to method Encode : String |
-| InappropriateEncoding.cs:18:46:18:51 | access to local variable query1 | semmle.label | access to local variable query1 |
-| InappropriateEncoding.cs:31:22:31:34 | call to method Encode | semmle.label | call to method Encode |
-| InappropriateEncoding.cs:32:22:32:49 | call to method UrlEncode | semmle.label | call to method UrlEncode |
-| InappropriateEncoding.cs:33:22:33:73 | call to method UrlEncode | semmle.label | call to method UrlEncode |
-| InappropriateEncoding.cs:34:28:34:55 | call to method UrlEncode : String | semmle.label | call to method UrlEncode : String |
-| InappropriateEncoding.cs:35:32:35:43 | access to local variable encodedValue | semmle.label | access to local variable encodedValue |
-| InappropriateEncoding.cs:36:22:36:59 | ... + ... | semmle.label | ... + ... |
-| InappropriateEncoding.cs:37:22:37:71 | call to method Format | semmle.label | call to method Format |
-| InappropriateEncoding.cs:37:59:37:70 | access to local variable encodedValue : String | semmle.label | access to local variable encodedValue : String |
-| InappropriateEncoding.cs:55:28:55:56 | call to method HtmlEncode : String | semmle.label | call to method HtmlEncode : String |
-| InappropriateEncoding.cs:56:31:56:42 | access to local variable encodedValue | semmle.label | access to local variable encodedValue |
-| InappropriateEncoding.cs:66:16:66:42 | call to method Replace : String | semmle.label | call to method Replace : String |
-| SqlEncode.cs:14:62:14:87 | call to method Replace : String | semmle.label | call to method Replace : String |
-| SqlEncode.cs:15:46:15:50 | access to local variable query | semmle.label | access to local variable query |
-| UrlEncode.cs:10:31:10:69 | ... + ... | semmle.label | ... + ... |
-| UrlEncode.cs:10:43:10:69 | call to method HtmlEncode : String | semmle.label | call to method HtmlEncode : String |
-subpaths
 #select
 | HtmlEncode.cs:10:28:10:65 | ... + ... | HtmlEncode.cs:10:40:10:65 | call to method UrlEncode : String | HtmlEncode.cs:10:28:10:65 | ... + ... | This HTML expression may include data from a $@. | HtmlEncode.cs:10:40:10:65 | call to method UrlEncode | possibly inappropriately encoded value |
 | InappropriateEncoding.cs:18:46:18:51 | access to local variable query1 | InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String | InappropriateEncoding.cs:18:46:18:51 | access to local variable query1 | This SQL expression may include data from a $@. | InappropriateEncoding.cs:13:28:13:40 | call to method Encode | possibly inappropriately encoded value |
@@ -43,3 +11,49 @@ subpaths
 | InappropriateEncoding.cs:56:31:56:42 | access to local variable encodedValue | InappropriateEncoding.cs:55:28:55:56 | call to method HtmlEncode : String | InappropriateEncoding.cs:56:31:56:42 | access to local variable encodedValue | This URL expression may include data from a $@. | InappropriateEncoding.cs:55:28:55:56 | call to method HtmlEncode | possibly inappropriately encoded value |
 | SqlEncode.cs:15:46:15:50 | access to local variable query | SqlEncode.cs:14:62:14:87 | call to method Replace : String | SqlEncode.cs:15:46:15:50 | access to local variable query | This SQL expression may include data from a $@. | SqlEncode.cs:14:62:14:87 | call to method Replace | possibly inappropriately encoded value |
 | UrlEncode.cs:10:31:10:69 | ... + ... | UrlEncode.cs:10:43:10:69 | call to method HtmlEncode : String | UrlEncode.cs:10:31:10:69 | ... + ... | This URL expression may include data from a $@. | UrlEncode.cs:10:43:10:69 | call to method HtmlEncode | possibly inappropriately encoded value |
+edges
+| HtmlEncode.cs:10:40:10:65 | call to method UrlEncode : String | HtmlEncode.cs:10:28:10:65 | ... + ... | provenance | Sink:MaD:2 |
+| InappropriateEncoding.cs:13:13:13:24 | access to local variable encodedValue : String | InappropriateEncoding.cs:16:17:16:22 | access to local variable query1 : String | provenance |  |
+| InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String | InappropriateEncoding.cs:13:13:13:24 | access to local variable encodedValue : String | provenance |  |
+| InappropriateEncoding.cs:16:17:16:22 | access to local variable query1 : String | InappropriateEncoding.cs:18:46:18:51 | access to local variable query1 | provenance | Sink:MaD:1 |
+| InappropriateEncoding.cs:34:13:34:24 | access to local variable encodedValue : String | InappropriateEncoding.cs:35:32:35:43 | access to local variable encodedValue | provenance |  |
+| InappropriateEncoding.cs:34:13:34:24 | access to local variable encodedValue : String | InappropriateEncoding.cs:36:22:36:59 | ... + ... | provenance |  |
+| InappropriateEncoding.cs:34:13:34:24 | access to local variable encodedValue : String | InappropriateEncoding.cs:37:59:37:70 | access to local variable encodedValue : String | provenance |  |
+| InappropriateEncoding.cs:34:28:34:55 | call to method UrlEncode : String | InappropriateEncoding.cs:34:13:34:24 | access to local variable encodedValue : String | provenance |  |
+| InappropriateEncoding.cs:37:59:37:70 | access to local variable encodedValue : String | InappropriateEncoding.cs:37:22:37:71 | call to method Format | provenance | MaD:3 |
+| InappropriateEncoding.cs:55:13:55:24 | access to local variable encodedValue : String | InappropriateEncoding.cs:56:31:56:42 | access to local variable encodedValue | provenance |  |
+| InappropriateEncoding.cs:55:28:55:56 | call to method HtmlEncode : String | InappropriateEncoding.cs:55:13:55:24 | access to local variable encodedValue : String | provenance |  |
+| InappropriateEncoding.cs:66:16:66:42 | call to method Replace : String | InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String | provenance |  |
+| SqlEncode.cs:14:17:14:21 | access to local variable query : String | SqlEncode.cs:15:46:15:50 | access to local variable query | provenance | Sink:MaD:1 |
+| SqlEncode.cs:14:62:14:87 | call to method Replace : String | SqlEncode.cs:14:17:14:21 | access to local variable query : String | provenance |  |
+| UrlEncode.cs:10:43:10:69 | call to method HtmlEncode : String | UrlEncode.cs:10:31:10:69 | ... + ... | provenance |  |
+models
+| 1 | Sink: System.Data.SqlClient; SqlDataAdapter; false; SqlDataAdapter; (System.String,System.Data.SqlClient.SqlConnection); ; Argument[0]; sql-injection; manual |
+| 2 | Sink: System.Web; HttpResponse; false; Write; ; ; Argument[0]; html-injection; manual |
+| 3 | Summary: System; String; false; Format; (System.String,System.Object); ; Argument[1]; ReturnValue; taint; manual |
+nodes
+| HtmlEncode.cs:10:28:10:65 | ... + ... | semmle.label | ... + ... |
+| HtmlEncode.cs:10:40:10:65 | call to method UrlEncode : String | semmle.label | call to method UrlEncode : String |
+| InappropriateEncoding.cs:13:13:13:24 | access to local variable encodedValue : String | semmle.label | access to local variable encodedValue : String |
+| InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String | semmle.label | call to method Encode : String |
+| InappropriateEncoding.cs:16:17:16:22 | access to local variable query1 : String | semmle.label | access to local variable query1 : String |
+| InappropriateEncoding.cs:18:46:18:51 | access to local variable query1 | semmle.label | access to local variable query1 |
+| InappropriateEncoding.cs:31:22:31:34 | call to method Encode | semmle.label | call to method Encode |
+| InappropriateEncoding.cs:32:22:32:49 | call to method UrlEncode | semmle.label | call to method UrlEncode |
+| InappropriateEncoding.cs:33:22:33:73 | call to method UrlEncode | semmle.label | call to method UrlEncode |
+| InappropriateEncoding.cs:34:13:34:24 | access to local variable encodedValue : String | semmle.label | access to local variable encodedValue : String |
+| InappropriateEncoding.cs:34:28:34:55 | call to method UrlEncode : String | semmle.label | call to method UrlEncode : String |
+| InappropriateEncoding.cs:35:32:35:43 | access to local variable encodedValue | semmle.label | access to local variable encodedValue |
+| InappropriateEncoding.cs:36:22:36:59 | ... + ... | semmle.label | ... + ... |
+| InappropriateEncoding.cs:37:22:37:71 | call to method Format | semmle.label | call to method Format |
+| InappropriateEncoding.cs:37:59:37:70 | access to local variable encodedValue : String | semmle.label | access to local variable encodedValue : String |
+| InappropriateEncoding.cs:55:13:55:24 | access to local variable encodedValue : String | semmle.label | access to local variable encodedValue : String |
+| InappropriateEncoding.cs:55:28:55:56 | call to method HtmlEncode : String | semmle.label | call to method HtmlEncode : String |
+| InappropriateEncoding.cs:56:31:56:42 | access to local variable encodedValue | semmle.label | access to local variable encodedValue |
+| InappropriateEncoding.cs:66:16:66:42 | call to method Replace : String | semmle.label | call to method Replace : String |
+| SqlEncode.cs:14:17:14:21 | access to local variable query : String | semmle.label | access to local variable query : String |
+| SqlEncode.cs:14:62:14:87 | call to method Replace : String | semmle.label | call to method Replace : String |
+| SqlEncode.cs:15:46:15:50 | access to local variable query | semmle.label | access to local variable query |
+| UrlEncode.cs:10:31:10:69 | ... + ... | semmle.label | ... + ... |
+| UrlEncode.cs:10:43:10:69 | call to method HtmlEncode : String | semmle.label | call to method HtmlEncode : String |
+subpaths

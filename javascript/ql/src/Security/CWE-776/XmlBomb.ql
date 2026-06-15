@@ -14,10 +14,10 @@
 
 import javascript
 import semmle.javascript.security.dataflow.XmlBombQuery
-import DataFlow::PathGraph
+import XmlBombFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from XmlBombFlow::PathNode source, XmlBombFlow::PathNode sink
+where XmlBombFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "XML parsing depends on a $@ without guarding against uncontrolled entity expansion.",
   source.getNode(), "user-provided value"

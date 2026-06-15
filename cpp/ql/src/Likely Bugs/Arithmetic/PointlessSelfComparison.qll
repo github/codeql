@@ -49,7 +49,7 @@ predicate nanTest(EqualityOperation cmp) {
   pointlessSelfComparison(cmp) and
   exists(Type t | t = cmp.getLeftOperand().getUnspecifiedType() |
     t instanceof FloatingPointType or
-    t instanceof TemplateParameter
+    t instanceof TypeTemplateParameter
   )
 }
 

@@ -2,7 +2,8 @@
  * @name `__init__` method returns a value
  * @description Explicitly returning a value from an `__init__` method will raise a TypeError.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low
@@ -11,8 +12,9 @@
  */
 
 import python
+private import LegacyPointsTo
 
-from Return r, Expr rv
+from Return r, ExprWithPointsTo rv
 where
   exists(Function init | init.isInitMethod() and r.getScope() = init) and
   r.getValue() = rv and

@@ -1,0 +1,41 @@
+name: Pull Request Open
+
+on: 
+  workflow_run:
+    workflows: ["Prev"]
+    types:
+      - completed
+
+jobs:
+  Download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: context.payload.workflow_run.id,
+            });
+            let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
+                return artifact.name == "<ARTEFACT_NAME>"
+            })[0];
+            let download = await github.rest.actions.downloadArtifact({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                artifact_id: matchArtifact.id,
+                archive_format: 'zip',
+            });
+            let fs = require('fs');
+            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/sonarcloud-data.zip`, Buffer.from(download.data)); 
+      - name: Unzip
+        run: |
+          unzip sonarcloud-data.zip -d sonarcloud-data
+          ls -a sonarcloud-data
+      - name: Run command
+        run: 
+          ./sonarcloud-data/x.py build -j$(nproc) --compiler gcc --skip-build
+
+
+

@@ -1,11 +1,12 @@
 import csharp
 private import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 
 private predicate outRefDef(DataFlow::ExprNode ne, int outRef) {
-  exists(Ssa::ExplicitDefinition def, Parameter outRefParameter |
+  exists(SsaExplicitWrite def, Parameter outRefParameter |
     outRefParameter.isOutOrRef() and
-    ne.getExpr() = def.getADefinition().getSource() and
-    def.isLiveOutRefParameterDefinition(outRefParameter) and
+    ne.getExpr() = def.getValue() and
+    SsaImpl::isLiveOutRefParameterDefinition(def, outRefParameter) and
     outRef = outRefParameter.getPosition()
   )
 }
@@ -18,9 +19,7 @@ module Config implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(AbstractValues::NullValue nv | node.(GuardedDataFlowNode).mustHaveValue(nv) |
-      nv.isNull()
-    )
+    exists(GuardValue nv | node.(GuardedDataFlowNode).mustHaveValue(nv) | nv.isNullValue())
   }
 }
 

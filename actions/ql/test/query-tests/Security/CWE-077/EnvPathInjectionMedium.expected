@@ -1,0 +1,19 @@
+edges
+| .github/workflows/path1.yml:13:21:13:58 | github.event.pull_request.title | .github/workflows/path1.yml:14:14:14:52 | echo $(echo "$PATHINJ") >> $GITHUB_PATH | provenance | Config |
+| .github/workflows/path1.yml:16:21:16:58 | github.event.pull_request.title | .github/workflows/path1.yml:17:14:17:42 | echo $PATHINJ >> $GITHUB_PATH | provenance | Config |
+| .github/workflows/path1.yml:19:21:19:58 | github.event.pull_request.title | .github/workflows/path1.yml:20:14:20:44 | echo ${PATHINJ} >> $GITHUB_PATH | provenance | Config |
+| .github/workflows/path1.yml:21:9:25:6 | Uses Step | .github/workflows/path1.yml:25:14:25:50 | echo "$(cat foo/bar)" >> $GITHUB_PATH | provenance | Config |
+| .github/workflows/path1.yml:28:21:28:58 | github.event.pull_request.title | .github/workflows/path1.yml:29:14:29:40 | echo "::add-path::$PATHINJ" | provenance | Config |
+nodes
+| .github/workflows/path1.yml:13:21:13:58 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/path1.yml:14:14:14:52 | echo $(echo "$PATHINJ") >> $GITHUB_PATH | semmle.label | echo $(echo "$PATHINJ") >> $GITHUB_PATH |
+| .github/workflows/path1.yml:16:21:16:58 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/path1.yml:17:14:17:42 | echo $PATHINJ >> $GITHUB_PATH | semmle.label | echo $PATHINJ >> $GITHUB_PATH |
+| .github/workflows/path1.yml:19:21:19:58 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/path1.yml:20:14:20:44 | echo ${PATHINJ} >> $GITHUB_PATH | semmle.label | echo ${PATHINJ} >> $GITHUB_PATH |
+| .github/workflows/path1.yml:21:9:25:6 | Uses Step | semmle.label | Uses Step |
+| .github/workflows/path1.yml:25:14:25:50 | echo "$(cat foo/bar)" >> $GITHUB_PATH | semmle.label | echo "$(cat foo/bar)" >> $GITHUB_PATH |
+| .github/workflows/path1.yml:28:21:28:58 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/path1.yml:29:14:29:40 | echo "::add-path::$PATHINJ" | semmle.label | echo "::add-path::$PATHINJ" |
+subpaths
+#select

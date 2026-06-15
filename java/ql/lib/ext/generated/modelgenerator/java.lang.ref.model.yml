@@ -1,0 +1,33 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.lang.ref", "Cleaner", False, "register", "(Object,Runnable)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.ref", "Cleaner", False, "register", "(Object,Runnable)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.ref", "Cleaner", False, "register", "(Object,Runnable)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.ref", "PhantomReference", True, "PhantomReference", "(Object,ReferenceQueue)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.lang.ref", "PhantomReference", True, "PhantomReference", "(Object,ReferenceQueue)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["java.lang.ref", "Reference", True, "get", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.ref", "ReferenceQueue", True, "poll", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.ref", "ReferenceQueue", True, "remove", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.ref", "ReferenceQueue", True, "remove", "(long)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.ref", "SoftReference", True, "SoftReference", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.ref.Reference.referent]", "value", "dfc-generated"]
+      - ["java.lang.ref", "SoftReference", True, "SoftReference", "(Object,ReferenceQueue)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.ref.Reference.referent]", "value", "dfc-generated"]
+      - ["java.lang.ref", "SoftReference", True, "get", "()", "", "Argument[this].SyntheticField[java.lang.ref.Reference.referent]", "ReturnValue", "value", "dfc-generated"]
+      - ["java.lang.ref", "WeakReference", True, "WeakReference", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.lang.ref", "WeakReference", True, "WeakReference", "(Object,ReferenceQueue)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.lang.ref", "WeakReference", True, "WeakReference", "(Object,ReferenceQueue)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.lang.ref", "Cleaner", "create", "()", "summary", "df-generated"]
+      - ["java.lang.ref", "Cleaner", "create", "(ThreadFactory)", "summary", "df-generated"]
+      - ["java.lang.ref", "PhantomReference", "get", "()", "summary", "df-generated"]
+      - ["java.lang.ref", "Reference", "clear", "()", "summary", "df-generated"]
+      - ["java.lang.ref", "Reference", "enqueue", "()", "summary", "df-generated"]
+      - ["java.lang.ref", "Reference", "isEnqueued", "()", "summary", "df-generated"]
+      - ["java.lang.ref", "Reference", "reachabilityFence", "(Object)", "summary", "df-generated"]
+      - ["java.lang.ref", "Reference", "refersTo", "(Object)", "summary", "df-generated"]

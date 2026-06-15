@@ -10,7 +10,7 @@ public abstract class Quantifier extends RegExpTerm {
   public Quantifier(SourceLocation loc, String type, RegExpTerm operand, Boolean greedy) {
     super(loc, type);
     this.operand = operand;
-    this.greedy = greedy == Boolean.TRUE;
+    this.greedy = Boolean.TRUE.equals(greedy);
   }
 
   /** The quantified term. */

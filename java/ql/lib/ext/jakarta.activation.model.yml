@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["jakarta.activation", "FileDataSource", True, "FileDataSource", "", "", "Argument[0]", "path-injection", "manual"]
+      - ["jakarta.activation", "URLDataSource", True, "URLDataSource", "", "", "Argument[0]", "request-forgery", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["jakarta.activation", "DataSource", True, "getInputStream", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["jakarta.activation", "DataSource", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

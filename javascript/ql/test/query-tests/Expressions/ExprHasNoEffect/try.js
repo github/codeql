@@ -19,7 +19,7 @@ function try2(x) {
 function try3(x) {
     try {
         x.ordinaryProperty()
-        x.ordinaryProperty // NOT OK
+        x.ordinaryProperty // $ Alert
         return x;
     } catch (e) {
         return false;

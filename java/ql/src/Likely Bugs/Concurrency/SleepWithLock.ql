@@ -6,15 +6,17 @@
  * @problem.severity error
  * @precision medium
  * @id java/sleep-with-lock-held
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       concurrency
+ *       performance
  *       external/cwe/cwe-833
  */
 
 import java
 
-from MethodAccess ma, Method sleep
+from MethodCall ma, Method sleep
 where
   ma.getMethod() = sleep and
   sleep.hasName("sleep") and

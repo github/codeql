@@ -1,0 +1,1 @@
+semmle-extractor-options: -R . --path no_exists

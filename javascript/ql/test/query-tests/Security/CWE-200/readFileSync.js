@@ -2,7 +2,7 @@
 
 var fs = require("fs");
 var http = require("http");
-let data = fs.readFileSync("input.txt");
+let data = fs.readFileSync("input.txt"); // $ Source[js/file-access-to-http]
 try {
   let s = data.toString();
   // An object of options to indicate where to post to
@@ -22,8 +22,7 @@ try {
       res.setEncoding('utf8');
   });
 
-  // BAD: post the data from file to request body
-  post_req.write(s);
+  post_req.write(s); // $ Alert[js/file-access-to-http] - post the data from file to request body
   post_req.end();
 } catch (e) {
 }

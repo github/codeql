@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>Security checks bypass due to a Unicode transformation</p>
+        <p> If security checks or logical validation is performed before unicode normalization, the
+            security checks or logical validation could be bypassed due to a potential Unicode
+            character collision. The validation we consider are: any character escaping, any regex
+            validation, or any string manipulation (such as <code>str.split</code>). </p>
+    </overview>
+    <recommendation>
+        <p> Perform Unicode normalization before the logical validation. </p>
+    </recommendation>
+    <example>
+
+        <p> The following example showcases the bypass of all checks performed by <code>
+            flask.escape()</code> due to a post-unicode normalization.</p>
+        <p>For instance: the character U+FE64 (<code>﹤</code>) is not filtered-out by the flask
+            escape function. But due to the Unicode normalization, the character is transformed and
+            would become U+003C (<code> &lt; </code> ).</p>
+
+        <sample src="escape-bypass.py" />
+
+    </example>
+    <references>
+        <li> Research study: <a
+                href="https://gosecure.github.io/presentations/2021-02-unicode-owasp-toronto/philippe_arteau_owasp_unicode_v4.pdf">
+            Unicode vulnerabilities that could bYte you
+            </a> and <a
+                href="https://gosecure.github.io/unicode-pentester-cheatsheet/">Unicode pentest
+            cheatsheet</a>. </li>
+    </references>
+</qhelp>

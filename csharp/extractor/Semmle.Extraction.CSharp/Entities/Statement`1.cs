@@ -1,7 +1,6 @@
-using Semmle.Extraction.CSharp.Populators;
-using Microsoft.CodeAnalysis.CSharp;
-using Semmle.Extraction.Entities;
 using System.IO;
+using Microsoft.CodeAnalysis.CSharp;
+using Semmle.Extraction.CSharp.Populators;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -9,13 +8,18 @@ namespace Semmle.Extraction.CSharp.Entities
     {
         protected readonly TSyntax Stmt;
         private readonly Location location;
+        private readonly bool isCompilerGenerated;
 
-        protected Statement(Context cx, TSyntax stmt, Kinds.StmtKind kind, IStatementParentEntity parent, int child, Location location)
+        protected Statement(Context cx, TSyntax stmt, Kinds.StmtKind kind, IStatementParentEntity parent, int child, Location location, bool isCompilerGenerated = false)
             : base(cx, kind, parent, child)
         {
             Stmt = stmt;
             this.location = location;
-            cx.BindComments(this, location.Symbol);
+            this.isCompilerGenerated = isCompilerGenerated;
+            if (!isCompilerGenerated)
+            {
+                cx.BindComments(this, location.Symbol);
+            }
         }
 
         protected Statement(Context cx, TSyntax stmt, Kinds.StmtKind kind, IStatementParentEntity parent, int child)
@@ -26,6 +30,11 @@ namespace Semmle.Extraction.CSharp.Entities
             base.Populate(trapFile);
 
             trapFile.stmt_location(this, location);
+
+            if (isCompilerGenerated)
+            {
+                trapFile.compiler_generated(this);
+            }
         }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => Stmt.GetLocation();

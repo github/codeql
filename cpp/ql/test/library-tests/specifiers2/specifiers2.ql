@@ -14,16 +14,20 @@ string interesting(Element e) {
   e instanceof VariableDeclarationEntry and result = "VariableDeclarationEntry"
 }
 
-from Element e, string name, string specifier
+from Element e, string name, string specifiers
 where
   (
     name = e.(Declaration).getName() or
     name = e.(DeclarationEntry).getName() or
     name = e.(Type).toString()
   ) and
-  (
-    specifier = e.(Declaration).getASpecifier().toString() or
-    specifier = e.(DeclarationEntry).getASpecifier() or
-    specifier = e.(TypedefType).getBaseType().getASpecifier().toString()
-  )
-select interesting(e), e, name, specifier
+  specifiers =
+    concat(string s |
+      s = e.(Declaration).getASpecifier().toString() or
+      s = e.(DeclarationEntry).getASpecifier() or
+      s = e.(TypedefType).getBaseType().getASpecifier().toString()
+    |
+      s, ", "
+    ) and
+  specifiers != ""
+select interesting(e), e, name, specifiers

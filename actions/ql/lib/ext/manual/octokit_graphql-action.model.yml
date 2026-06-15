@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["octokit/graphql-action", "*", "input.query", "request-forgery", "manual"]

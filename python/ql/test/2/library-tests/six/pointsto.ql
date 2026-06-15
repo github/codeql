@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 string longname(Expr e) {
   result = e.(Name).getId()
@@ -6,6 +7,6 @@ string longname(Expr e) {
   exists(Attribute a | a = e | result = longname(a.getObject()) + "." + a.getName())
 }
 
-from Expr e, Value v
+from ExprWithPointsTo e, Value v
 where e.pointsTo(v) and e.getLocation().getFile().getShortName() = "test.py"
 select longname(e), v.toString()

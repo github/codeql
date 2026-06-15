@@ -1,4 +1,6 @@
+using System.Linq;
 using Microsoft.CodeAnalysis;
+using Semmle.Extraction.CSharp.Util;
 using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
@@ -11,33 +13,95 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             private set;
         }
 
-        public ImplicitCast(ExpressionNodeInfo info)
-            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.CAST, info.Parent, info.Child, true, info.ExprValue))
+        private ImplicitCast(ExpressionNodeInfo info)
+            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.CAST, info.Parent, info.Child, isCompilerGenerated: true, info.ExprValue))
         {
             Expr = Factory.Create(new ExpressionNodeInfo(Context, info.Node, this, 0));
         }
 
-        public ImplicitCast(ExpressionNodeInfo info, IMethodSymbol method)
-            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, true, info.ExprValue))
+        private ImplicitCast(ExpressionNodeInfo info, IMethodSymbol method)
+            : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, isCompilerGenerated: true, info.ExprValue))
         {
             Expr = Factory.Create(info.SetParent(this, 0));
 
+            AddOperatorCall(method);
+        }
+
+        private ImplicitCast(ExpressionInfo info, IMethodSymbol method, object value) : base(info)
+        {
+            Expr = Literal.CreateGenerated(Context, this, 0, method.Parameters[0].Type, value, info.Location);
+
+            AddOperatorCall(method);
+        }
+
+        private void AddOperatorCall(IMethodSymbol method)
+        {
             var target = Method.Create(Context, method);
-            if (target is not null)
-                Context.TrapWriter.Writer.expr_call(this, target);
+            Context.TrapWriter.Writer.expr_call(this, target);
+        }
+
+        private static IMethodSymbol? GetImplicitConversionMethod(ITypeSymbol type, object value) =>
+            type
+                .GetMembers()
+                .OfType<IMethodSymbol>()
+                .Where(method =>
+                    method.GetName() == "op_Implicit" &&
+                    method.Parameters.Length == 1 &&
+                    method.Parameters[0].Type.Name == value.GetType().Name
+                )
+                .FirstOrDefault();
+
+        /// <summary>
+        /// Creates a new generated expression with an implicit conversion added.
+        /// </summary>
+        public static Expression CreateGeneratedConversion(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object value,
+            Location location)
+        {
+            ExpressionInfo create(ExprKind kind, string? v) =>
+                new ExpressionInfo(
+                    cx,
+                    AnnotatedTypeSymbol.CreateNotAnnotated(type),
+                    location,
+                    kind,
+                    parent,
+                    childIndex,
+                    isCompilerGenerated: true,
+                    v);
+
+            var method = GetImplicitConversionMethod(type, value);
+            if (method is not null)
+            {
+                var info = create(ExprKind.OPERATOR_INVOCATION, null);
+                return new ImplicitCast(info, method, value);
+            }
             else
-                Context.ModelError(info.Node, "Failed to resolve target for operator invocation");
+            {
+                cx.ModelError(location, "Failed to resolve target for implicit operator invocation for a parameter default.");
+                return new Expression(create(ExprKind.UNKNOWN, ValueAsString(value)));
+            }
+        }
+
+        /// <summary>
+        /// Creates a new generated cast expression.
+        /// </summary>
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object value,
+                    Location location)
+        {
+            var info = new ExpressionInfo(cx,
+                    AnnotatedTypeSymbol.CreateNotAnnotated(type),
+                    location,
+                    ExprKind.CAST,
+                    parent,
+                    childIndex,
+                    isCompilerGenerated: true,
+                    ValueAsString(value));
+
+            return new Expression(info);
         }
 
         /// <summary>
         /// Creates a new expression, adding casts as required.
         /// </summary>
-        /// <param name="cx">The extraction context.</param>
-        /// <param name="node">The expression node.</param>
-        /// <param name="parent">The parent of the expression.</param>
-        /// <param name="child">The child number.</param>
-        /// <param name="type">A type hint.</param>
-        /// <returns>A new expression.</returns>
         public static Expression Create(ExpressionNodeInfo info)
         {
             var resolvedType = info.ResolvedType;
@@ -90,6 +154,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 // int[] -> int*
                 // string -> char*
                 return new ImplicitCast(info);
+            }
+
+            if (info.ImplicitToString)
+            {
+                // x -> x.ToString() in "abc" + x
+                return ImplicitToString.Wrap(info);
             }
 
             // Default: Just create the expression without a conversion.

@@ -1,5 +1,6 @@
 {
   "omnisharp.autoStart": false,
   "cmake.sourceDirectory": "${workspaceFolder}/swift",
-  "cmake.buildDirectory": "${workspaceFolder}/bazel-cmake-build"
+  "cmake.buildDirectory": "${workspaceFolder}/bazel-cmake-build",
+  "editor.suggest.matchOnWordStartOnly": false
 }

@@ -1,0 +1,2 @@
+query: experimental/CWE-321-V2/HardCodedKeys.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

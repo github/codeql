@@ -22,21 +22,21 @@ public class JavaNetHttpSSRF extends HttpServlet {
             throws ServletException, IOException {
         try {
 
-            String sink = request.getParameter("uri");
+            String sink = request.getParameter("uri"); // $ Source
             URI uri = new URI(sink);
             URI uri2 = new URI("http", sink, "fragement");
             URL url1 = new URL(sink);
 
-            URLConnection c1 = url1.openConnection(); // $ SSRF
+            URLConnection c1 = url1.openConnection(); // $ Alert
             SocketAddress sa = new SocketAddress() {
             };
-            URLConnection c2 = url1.openConnection(new Proxy(Type.HTTP, sa)); // $ SSRF
-            InputStream c3 = url1.openStream(); // $ SSRF
+            URLConnection c2 = url1.openConnection(new Proxy(Type.HTTP, sa)); // $ Alert
+            InputStream c3 = url1.openStream(); // $ Alert
 
             // java.net.http
             HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request2 = HttpRequest.newBuilder().uri(uri2).build(); // $ SSRF
-            HttpRequest request3 = HttpRequest.newBuilder(uri).build(); // $ SSRF
+            HttpRequest request2 = HttpRequest.newBuilder().uri(uri2).build(); // $ Alert
+            HttpRequest request3 = HttpRequest.newBuilder(uri).build(); // $ Alert
 
         } catch (Exception e) {
             // TODO: handle exception

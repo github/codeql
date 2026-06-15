@@ -1,0 +1,39 @@
+#select
+| go-jose.v3.go:33:12:33:23 | DecodedToken | go-jose.v3.go:25:16:25:20 | selection of URL | go-jose.v3.go:33:12:33:23 | DecodedToken | This JWT is parsed without verification and received from $@. | go-jose.v3.go:25:16:25:20 | selection of URL | this user-controlled source |
+| golang-jwt-v5.go:34:58:34:68 | signedToken | golang-jwt-v5.go:28:16:28:20 | selection of URL | golang-jwt-v5.go:34:58:34:68 | signedToken | This JWT is parsed without verification and received from $@. | golang-jwt-v5.go:28:16:28:20 | selection of URL | this user-controlled source |
+edges
+| go-jose.v3.go:25:16:25:20 | selection of URL | go-jose.v3.go:25:16:25:28 | call to Query | provenance | Src:MaD:3 MaD:5 |
+| go-jose.v3.go:25:16:25:28 | call to Query | go-jose.v3.go:25:16:25:47 | call to Get | provenance | MaD:6 |
+| go-jose.v3.go:25:16:25:47 | call to Get | go-jose.v3.go:26:15:26:25 | signedToken | provenance |  |
+| go-jose.v3.go:26:15:26:25 | signedToken | go-jose.v3.go:29:19:29:29 | definition of signedToken | provenance |  |
+| go-jose.v3.go:29:19:29:29 | definition of signedToken | go-jose.v3.go:31:37:31:47 | signedToken | provenance |  |
+| go-jose.v3.go:31:2:31:48 | ... := ...[0] | go-jose.v3.go:33:12:33:23 | DecodedToken | provenance | Sink:MaD:2 |
+| go-jose.v3.go:31:37:31:47 | signedToken | go-jose.v3.go:31:2:31:48 | ... := ...[0] | provenance | MaD:4 |
+| golang-jwt-v5.go:28:16:28:20 | selection of URL | golang-jwt-v5.go:28:16:28:28 | call to Query | provenance | Src:MaD:3 MaD:5 |
+| golang-jwt-v5.go:28:16:28:28 | call to Query | golang-jwt-v5.go:28:16:28:47 | call to Get | provenance | MaD:6 |
+| golang-jwt-v5.go:28:16:28:47 | call to Get | golang-jwt-v5.go:29:25:29:35 | signedToken | provenance |  |
+| golang-jwt-v5.go:29:25:29:35 | signedToken | golang-jwt-v5.go:32:29:32:39 | definition of signedToken | provenance |  |
+| golang-jwt-v5.go:32:29:32:39 | definition of signedToken | golang-jwt-v5.go:34:58:34:68 | signedToken | provenance | Sink:MaD:1 |
+models
+| 1 | Sink: github.com/golang-jwt/jwt; Parser; true; ParseUnverified; ; ; Argument[0]; jwt; manual |
+| 2 | Sink: group:go-jose/jwt; JSONWebToken; true; UnsafeClaimsWithoutVerification; ; ; Argument[receiver]; jwt; manual |
+| 3 | Source: net/http; Request; true; URL; ; ; ; remote; manual |
+| 4 | Summary: group:go-jose/jwt; ; false; ParseSigned; ; ; Argument[0]; ReturnValue[0]; taint; manual |
+| 5 | Summary: net/url; URL; true; Query; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 6 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
+nodes
+| go-jose.v3.go:25:16:25:20 | selection of URL | semmle.label | selection of URL |
+| go-jose.v3.go:25:16:25:28 | call to Query | semmle.label | call to Query |
+| go-jose.v3.go:25:16:25:47 | call to Get | semmle.label | call to Get |
+| go-jose.v3.go:26:15:26:25 | signedToken | semmle.label | signedToken |
+| go-jose.v3.go:29:19:29:29 | definition of signedToken | semmle.label | definition of signedToken |
+| go-jose.v3.go:31:2:31:48 | ... := ...[0] | semmle.label | ... := ...[0] |
+| go-jose.v3.go:31:37:31:47 | signedToken | semmle.label | signedToken |
+| go-jose.v3.go:33:12:33:23 | DecodedToken | semmle.label | DecodedToken |
+| golang-jwt-v5.go:28:16:28:20 | selection of URL | semmle.label | selection of URL |
+| golang-jwt-v5.go:28:16:28:28 | call to Query | semmle.label | call to Query |
+| golang-jwt-v5.go:28:16:28:47 | call to Get | semmle.label | call to Get |
+| golang-jwt-v5.go:29:25:29:35 | signedToken | semmle.label | signedToken |
+| golang-jwt-v5.go:32:29:32:39 | definition of signedToken | semmle.label | definition of signedToken |
+| golang-jwt-v5.go:34:58:34:68 | signedToken | semmle.label | signedToken |
+subpaths

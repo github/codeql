@@ -26,7 +26,7 @@ predicate functionsMissingReturnStmt(Function f, ControlFlowNode blame) {
   exists(Type returnType |
     returnType = f.getUnspecifiedType() and
     not returnType instanceof VoidType and
-    not returnType instanceof TemplateParameter
+    not returnType instanceof TypeTemplateParameter
   ) and
   exists(ReturnStmt s |
     f.getAPredecessor() = s and
@@ -49,7 +49,7 @@ predicate functionsMissingReturnStmt(Function f, ControlFlowNode blame) {
 predicate functionImperfectlyExtracted(Function f) {
   exists(CompilerError e | f.getBlock().getLocation().subsumes(e.getLocation()))
   or
-  exists(ErrorExpr ee | ee.getEnclosingFunction() = f)
+  f.hasErrors()
   or
   count(f.getType()) > 1
   or

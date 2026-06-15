@@ -1,13 +1,15 @@
 /**
  * Provides classes and predicates for working with Java exceptions.
  */
+overlay[local?]
+module;
 
 import Element
 import Type
 
 /**
  * An Exception represents an element listed in the `throws` clause
- * of a method of constructor.
+ * of a method or constructor.
  *
  * For example, `E` is an exception thrown by method `m` in
  * `void m() throws E;`, whereas `T` is an exception _type_ in

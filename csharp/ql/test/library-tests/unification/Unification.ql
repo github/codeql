@@ -1,3 +1,4 @@
+import semmle.code.csharp.commons.QualifiedName
 import semmle.code.csharp.Unification
 
 class InterestingType extends @type {
@@ -7,9 +8,9 @@ class InterestingType extends @type {
   }
 
   string toString() {
-    result = this.(Type).getQualifiedNameWithTypes()
+    result = getFullyQualifiedNameWithTypes(this.(Type))
     or
-    not exists(this.(Type).getQualifiedNameWithTypes()) and
+    not exists(getFullyQualifiedNameWithTypes(this.(Type))) and
     result = this.(Type).toStringWithTypes()
   }
 

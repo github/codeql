@@ -1,13 +1,11 @@
 import java
 import semmle.code.xml.AndroidManifest
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
-class DebuggableAttributeEnabledTest extends InlineExpectationsTest {
-  DebuggableAttributeEnabledTest() { this = "DebuggableAttributeEnabledTest" }
+module DebuggableAttributeEnabledTest implements TestSig {
+  string getARelevantTag() { result = "hasDebuggableAttributeEnabled" }
 
-  override string getARelevantTag() { result = "hasDebuggableAttributeEnabled" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasDebuggableAttributeEnabled" and
     exists(AndroidApplicationXmlElement androidAppElem |
       androidAppElem.isDebuggable() and
@@ -19,3 +17,5 @@ class DebuggableAttributeEnabledTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<DebuggableAttributeEnabledTest>

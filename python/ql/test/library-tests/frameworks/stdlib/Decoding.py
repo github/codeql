@@ -26,7 +26,7 @@ marshal.loads(payload)  # $ decodeInput=payload decodeOutput=marshal.loads(..) d
 shelve.open(filepath)  # $ decodeInput=filepath decodeOutput=shelve.open(..) decodeFormat=pickle decodeMayExecuteInput getAPathArgument=filepath
 shelve.open(filename=filepath)  # $ decodeInput=filepath decodeOutput=shelve.open(..) decodeFormat=pickle decodeMayExecuteInput getAPathArgument=filepath
 
-# TODO: These tests should be merged with python/ql/test/experimental/dataflow/tainttracking/defaultAdditionalTaintStep/test_string.py
+# TODO: These tests should be merged with python/ql/test/library-tests/dataflow/tainttracking/defaultAdditionalTaintStep/test_string.py
 base64.b64decode(payload)  # $ decodeInput=payload decodeOutput=base64.b64decode(..) decodeFormat=Base64
 base64.standard_b64decode(payload)  # $ decodeInput=payload decodeOutput=base64.standard_b64decode(..) decodeFormat=Base64
 base64.urlsafe_b64decode(payload)  # $ decodeInput=payload decodeOutput=base64.urlsafe_b64decode(..) decodeFormat=Base64

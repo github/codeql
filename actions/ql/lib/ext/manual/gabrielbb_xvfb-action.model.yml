@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["gabrielbb/xvfb-action", "*", "input.run", "command-injection", "manual"]
+      - ["gabrielbb/xvfb-action", "*", "input.options", "command-injection", "manual"]

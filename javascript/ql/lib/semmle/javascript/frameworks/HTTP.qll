@@ -65,22 +65,8 @@ module Http {
       )
     }
 
-    /**
-     * DEPRECATED: use `definesHeaderValue` instead.
-     * Holds if the header with (lower-case) name `headerName` is set to the value of `headerValue`.
-     */
-    deprecated predicate definesExplicitly(string headerName, Expr headerValue) {
-      this.definesHeaderValue(headerName, headerValue.flow())
-    }
-
     /** Holds if the header with (lower-case) name `headerName` is set to the value of `headerValue`. */
     abstract predicate definesHeaderValue(string headerName, DataFlow::Node headerValue);
-
-    /**
-     * DEPRECATED: Use `getNameNode()` instead.
-     * Returns the expression used to compute the header name.
-     */
-    deprecated Expr getNameExpr() { result = this.getNameNode().asExpr() }
 
     /** Returns the expression used to compute the header name. */
     abstract DataFlow::Node getNameNode();
@@ -122,6 +108,12 @@ module Http {
      * Gets the route handler that sends this expression.
      */
     abstract RouteHandler getRouteHandler();
+
+    /**
+     * Gets a header definition associated with this response body, if it they are provided
+     * by the same call.
+     */
+    HeaderDefinition getAnAssociatedHeaderDefinition() { none() }
   }
 
   /**
@@ -203,24 +195,10 @@ module Http {
     final Servers::ResponseSource getAResponseSource() { result.getRouteHandler() = this }
 
     /**
-     * DEPRECATED: Use `getARequestNode()` instead.
-     * Gets an expression that contains a request object handled
-     * by this handler.
-     */
-    deprecated RequestExpr getARequestExpr() { result.flow() = this.getARequestNode() }
-
-    /**
      * Gets an expression that contains a request object handled
      * by this handler.
      */
     RequestNode getARequestNode() { result.getRouteHandler() = this }
-
-    /**
-     * DEPRECATED: Use `getAResponseNode()` instead.
-     * Gets an expression that contains a response object provided
-     * by this handler.
-     */
-    deprecated ResponseExpr getAResponseExpr() { result.flow() = this.getAResponseNode() }
 
     /**
      * Gets an expression that contains a response object provided
@@ -266,30 +244,6 @@ module Http {
   }
 
   /**
-   * DEPRECATED: Use `RequestNode` instead.
-   * An expression that may contain a request object.
-   */
-  deprecated class RequestExpr extends Expr {
-    RequestExpr() { this.flow() instanceof ResponseNode }
-
-    /**
-     * Gets the route handler that handles this request.
-     */
-    RouteHandler getRouteHandler() { result = this.flow().(ResponseNode).getRouteHandler() }
-  }
-
-  /**
-   * DEPRECATED: Use `ResponseNode` instead.
-   * An expression that may contain a response object.
-   */
-  deprecated class ResponseExpr extends Expr {
-    /**
-     * Gets the route handler that handles this request.
-     */
-    RouteHandler getRouteHandler() { result = this.flow().(ResponseNode).getRouteHandler() }
-  }
-
-  /**
    * Boiler-plate implementation of a `Server` and its associated classes.
    * Made for easily defining new HTTP servers
    */
@@ -309,12 +263,6 @@ module Http {
 
       /** Gets a data flow node referring to this server. */
       DataFlow::SourceNode ref() { result = this.ref(DataFlow::TypeTracker::end()) }
-
-      /**
-       * DEPRECATED: Use `ref().flowsToExpr()` instead.
-       * Holds if `sink` may refer to this server definition.
-       */
-      deprecated predicate flowsTo(Expr sink) { this.ref().flowsToExpr(sink) }
     }
 
     /**
@@ -400,30 +348,6 @@ module Http {
       StandardResponseNode() { src.ref().flowsTo(this) }
 
       override RouteHandler getRouteHandler() { result = src.getRouteHandler() }
-    }
-
-    /**
-     * A request expression arising from a request source.
-     */
-    deprecated class StandardRequestExpr extends RequestExpr {
-      RequestSource src;
-
-      StandardRequestExpr() { src.ref().flowsToExpr(this) }
-
-      override RouteHandler getRouteHandler() { result = src.getRouteHandler() }
-    }
-
-    /**
-     * A response expression arising from a response source.
-     */
-    deprecated class StandardResponseExpr extends ResponseExpr {
-      ResponseSource src;
-
-      StandardResponseExpr() { src.ref().flowsToExpr(this) }
-
-      override RouteHandler getRouteHandler() {
-        result = this.flow().(StandardResponseNode).getRouteHandler()
-      }
     }
 
     /**
@@ -689,6 +613,3 @@ module Http {
     }
   }
 }
-
-/** DEPRECATED: Alias for Http */
-deprecated module HTTP = Http;

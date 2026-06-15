@@ -11,7 +11,7 @@ public class JMXTest {
 
 	public static class FooIntermediate implements FooMBean {
 		// This method is dead, because it is overridden in FooImpl, which is the registered MBean.
-		public String sometimesLiveMethod(String arg) { return "foo"; }
+		public String sometimesLiveMethod(String arg) { return "foo"; } // $ Alert
 		// This method is live, because it is the most specific method for FooImpl
 		public String liveMethod2(String arg) { return "foo"; }
 	}

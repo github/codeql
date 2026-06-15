@@ -1,0 +1,12 @@
+on:
+  workflow_run:
+    workflows: [ 'Pull-Request Checks' ]
+    types: [ completed ]
+
+jobs:
+  publish-results:
+    uses: TestOrg/TestRepo/.github/workflows/publishResults.yml@master
+    with:
+      botGithubId: bot
+    secrets:
+      githubBotPAT: ${{ secrets.BOT_PAT }}

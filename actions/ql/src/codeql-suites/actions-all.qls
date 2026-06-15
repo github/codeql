@@ -1,0 +1,10 @@
+- description: Standard Code Scanning queries for GitHub Actions
+- queries: .
+- include:
+    kind:
+      - problem
+      - path-problem
+- exclude:
+    tags contain:
+      - debug
+      - model-generator

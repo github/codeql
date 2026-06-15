@@ -36,11 +36,5 @@
 | scopes.cpp:68:9:68:14 | lookup |  | 1 | 1 |
 | scopes.cpp:69:8:69:13 | insert |  | 1 | 1 |
 | scopes.cpp:72:16:72:21 | strlen | isTopLevel() | 1 | 1 |
-| scopes.cpp:77:8:77:8 | H |  | 1 | 0 |
-| scopes.cpp:77:8:77:8 | H |  | 1 | 0 |
-| scopes.cpp:77:8:77:8 | operator= |  | 1 | 0 |
-| scopes.cpp:77:8:77:8 | operator= |  | 1 | 0 |
-| scopes.cpp:77:8:77:8 | operator= |  | 1 | 0 |
-| scopes.cpp:77:8:77:8 | operator= |  | 1 | 0 |
 | scopes.cpp:95:8:95:8 | operator= |  | 1 | 0 |
 | scopes.cpp:95:8:95:8 | operator= |  | 1 | 0 |

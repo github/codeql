@@ -7,6 +7,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 ImportExpr alternative_import(ImportExpr ie) {
   exists(Alias thisalias, Alias otheralias |
@@ -53,20 +54,25 @@ string os_specific_import(ImportExpr ie) {
 string get_os() { py_flags_versioned("sys.platform", result, major_version().toString()) }
 
 predicate ok_to_fail(ImportExpr ie) {
-  alternative_import(ie).refersTo(_)
+  alternative_import(ie).(ExprWithPointsTo).refersTo(_)
   or
   os_specific_import(ie) != get_os()
 }
 
-class VersionTest extends ControlFlowNode {
+final class FinalControlFlowNode = ControlFlowNode;
+
+class VersionTest extends FinalControlFlowNode {
   VersionTest() {
     exists(string name |
       name.matches("%version%") and
-      this.(CompareNode).getAChild+().pointsTo(Module::named("sys").attr(name))
+      this.(CompareNode)
+          .getAChild+()
+          .(ControlFlowNodeWithPointsTo)
+          .pointsTo(Module::named("sys").attr(name))
     )
   }
 
-  override string toString() { result = "VersionTest" }
+  string toString() { result = "VersionTest" }
 }
 
 /** A guard on the version of the Python interpreter */
@@ -76,7 +82,7 @@ class VersionGuard extends ConditionBlock {
 
 from ImportExpr ie
 where
-  not ie.refersTo(_) and
+  not ie.(ExprWithPointsTo).refersTo(_) and
   exists(Context c | c.appliesTo(ie.getAFlowNode())) and
   not ok_to_fail(ie) and
   not exists(VersionGuard guard | guard.controls(ie.getAFlowNode().getBasicBlock(), _))

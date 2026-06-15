@@ -1,0 +1,32 @@
+| Foo | Class |
+| Gen | Class, GenericType, ParameterizedType |
+| Gen<? extends Object> | Class, ParameterizedType |
+| Gen<? extends String> | Class, ParameterizedType |
+| Gen<? super String> | Class, ParameterizedType |
+| Gen<? super Void> | Class, ParameterizedType |
+| Gen<Gen<Integer>> | Class, ParameterizedType |
+| Gen<Integer> | Class, ParameterizedType |
+| Gen<Local<Integer>> | Class, ParameterizedType |
+| Integer | Class |
+| Integer[] | Array |
+| Local | Class, GenericType, LocalClass, ParameterizedType |
+| Local<Integer> | Class, LocalClass, ParameterizedType |
+| Object | Class |
+| String | Class |
+| T | TypeVariable |
+| U | TypeVariable |
+| Unit | Class |
+| Void | Class |
+| boolean | PrimitiveType |
+| byte | PrimitiveType |
+| byte[] | Array |
+| char | PrimitiveType |
+| double | PrimitiveType |
+| float | PrimitiveType |
+| int | PrimitiveType |
+| int[] | Array |
+| long | PrimitiveType |
+| long[] | Array |
+| new Object(...) { ... } | AnonymousClass, LocalClass |
+| short | PrimitiveType |
+| short[] | Array |

@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["nginxinc/kubernetes-ingress/.github/workflows/retag-images.yml", "*", "input.target_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/retag-images.yml", "*", "input.source_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/retag-images.yml", "*", "input.dry_run", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/plus-release.yml", "*", "input.target_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/plus-release.yml", "*", "input.source_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/plus-release.yml", "*", "input.dry_run", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/plus-release.yml", "*", "input.short_target_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/oss-release.yml", "*", "input.short_target_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/oss-release.yml", "*", "input.target_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/oss-release.yml", "*", "input.source_tag", "code-injection", "generated"]
+     - ["nginxinc/kubernetes-ingress/.github/workflows/oss-release.yml", "*", "input.dry_run", "code-injection", "generated"]

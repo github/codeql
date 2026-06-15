@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["sun.misc", "Perf", False, "attach", "(String,int,String)", "", "Argument[0]", "credentials-username", "hq-generated"]
+      - ["sun.misc", "Perf", False, "attach", "(String,int,int)", "", "Argument[0]", "credentials-username", "hq-generated"]
+      - ["sun.misc", "Perf", False, "attachImpl", "(String,int,int)", "", "Argument[0]", "credentials-username", "hq-generated"]

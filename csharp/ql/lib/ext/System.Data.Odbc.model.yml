@@ -3,6 +3,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: sinkModel
     data:
-      - ["System.Data.Odbc", "OdbcCommand", False, "OdbcCommand", "(System.String)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.Odbc", "OdbcCommand", False, "OdbcCommand", "(System.String,System.Data.Odbc.OdbcConnection)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.Odbc", "OdbcCommand", False, "OdbcCommand", "(System.String,System.Data.Odbc.OdbcConnection,System.Data.Odbc.OdbcTransaction)", "", "Argument[0]", "sql", "manual"]
+      - ["System.Data.Odbc", "OdbcCommand", False, "OdbcCommand", "(System.String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.Odbc", "OdbcCommand", False, "OdbcCommand", "(System.String,System.Data.Odbc.OdbcConnection)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.Odbc", "OdbcCommand", False, "OdbcCommand", "(System.String,System.Data.Odbc.OdbcConnection,System.Data.Odbc.OdbcTransaction)", "", "Argument[0]", "sql-injection", "manual"]

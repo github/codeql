@@ -4,6 +4,8 @@
  * YAML documents are represented as abstract syntax trees whose nodes
  * are either YAML values or alias nodes referring to another YAML value.
  */
+overlay[local?]
+module;
 
 /** Provides the input specification of YAML implementation. */
 signature module InputSig {
@@ -424,14 +426,24 @@ module Make<InputSig Input> {
      * Gets the absolute path of the file included by this directive.
      */
     private string getTargetPath() {
-      exists(string path | path = this.getValue() |
-        if path.matches("/%")
-        then result = path
-        else
-          result =
-            this.getDocument().getLocation().getFile().getParentContainer().getAbsolutePath() + "/" +
-              path
-      )
+      result = this.getAbsolutePath()
+      or
+      result =
+        this.getDocument().getLocation().getFile().getParentContainer().getAbsolutePath() + "/" +
+          this.getRelativePath()
+    }
+
+    /** Join-order helper for `getTargetPath`. Gets the path but only if it is an absolute path. */
+    private string getAbsolutePath() {
+      result = this.getValue() and
+      result.matches("/%")
+    }
+
+    /** Join-order helper for `getTargetPath`. Gets the path, but only if it is a relative path. */
+    pragma[noinline]
+    private string getRelativePath() {
+      result = this.getValue() and
+      not result.matches("/%")
     }
   }
 

@@ -1,0 +1,47 @@
+name: Clone repository
+description: Clone repository
+inputs:
+  title:
+    description: Title
+    required: true
+  forked-pr:
+    description: Whether the event is operating from a forked PR
+    required: true
+  fetch-depth:
+    description: Fetch depth for actions/checkout
+    default: "1"
+outputs:
+  result:
+    description: "result"
+    value: ${{ steps.out.outputs.replaced }}
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: echo "${{ inputs.title }}"
+    - uses: frabert/replace-string-action@v2.5
+      id: out 
+      with:
+        pattern: "\""
+        string:  ${{ inputs.title }}
+        replace-with: 'foo'
+        flags: g    
+    - id: out2  
+      env:
+        FOO: ${{ inputs.title }}
+      shell: bash
+      run: echo "result=$(echo $FOO)" >> $GITHUB_OUTPUT
+    - name: Clone branch
+      if: "!fromJSON(inputs.forked-pr)"
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: ${{ inputs.fetch-depth }}
+    - name: Clone forked PR
+      if: fromJSON(inputs.forked-pr)
+      uses: actions/checkout@v3
+      with:
+        ref: refs/pull/${{ github.event.number }}/merge
+        fetch-depth: ${{ inputs.fetch-depth }}
+
+

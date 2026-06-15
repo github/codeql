@@ -1,5 +1,5 @@
 import java
 
-from MethodAccess ma, StringPartialMatchMethod m
+from MethodCall ma, StringPartialMatchMethod m
 where ma.getMethod() = m
 select ma, ma.getArgument(m.getMatchParameterIndex())

@@ -1,0 +1,2 @@
+| src/lib.rs:4:1:5:11 | fn bar |
+| src/lib.rs:7:1:7:14 | fn always |

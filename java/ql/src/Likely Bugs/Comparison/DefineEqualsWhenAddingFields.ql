@@ -32,13 +32,13 @@ predicate checksReferenceEquality(EqualsMethod em) {
     eq.getAnOperand().(VarAccess).getVariable() = em.getParameter(0) and
     (
       // `{ return (ojb==this); }`
-      eq = blk.getStmt().(ReturnStmt).getResult()
+      eq = blk.getStmt().(ReturnStmt).getExpr()
       or
       // `{ if (ojb==this) return true; else return false; }`
       exists(IfStmt ifStmt | ifStmt = blk.getStmt() |
         eq = ifStmt.getCondition() and
-        ifStmt.getThen().(ReturnStmt).getResult().(BooleanLiteral).getBooleanValue() = true and
-        ifStmt.getElse().(ReturnStmt).getResult().(BooleanLiteral).getBooleanValue() = false
+        ifStmt.getThen().(ReturnStmt).getExpr().(BooleanLiteral).getBooleanValue() = true and
+        ifStmt.getElse().(ReturnStmt).getExpr().(BooleanLiteral).getBooleanValue() = false
       )
     )
   )
@@ -46,8 +46,8 @@ predicate checksReferenceEquality(EqualsMethod em) {
   // Check whether `em` delegates to another method checking reference equality.
   // More precisely, we check whether the body of `em` is of the form `return super.equals(o);`,
   // where `o` is the (only) parameter of `em`, and the invoked method is a reference equality check.
-  exists(SuperMethodAccess sup |
-    sup = em.getBody().(SingletonBlock).getStmt().(ReturnStmt).getResult() and
+  exists(SuperMethodCall sup |
+    sup = em.getBody().(SingletonBlock).getStmt().(ReturnStmt).getExpr() and
     sup.getArgument(0) = em.getParameter(0).getAnAccess() and
     checksReferenceEquality(sup.getCallee())
   )

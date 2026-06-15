@@ -30,7 +30,7 @@ using dotnetweb;
 #line 3 "Index.cshtml"
   
     ViewData["Title"] = "ASP.NET Core";
-    var message = Request.Query["m"];
+    var message = Request.Query["m"]; // $ Source=message
 
 #line default
 #line hidden
@@ -38,7 +38,7 @@ using dotnetweb;
             WriteLiteral("<div class=\"cli\">\n    <div class=\"cli-example\">        \n");
 #nullable restore
 #line 14 "Index.cshtml"
-Write(Html.Raw(message)); // BAD
+Write(Html.Raw(message)); // $ Alert=message
 
 #line default
 #line hidden

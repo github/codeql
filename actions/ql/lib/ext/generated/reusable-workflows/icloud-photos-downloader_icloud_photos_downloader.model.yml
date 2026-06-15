@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["icloud-photos-downloader/icloud_photos_downloader/.github/workflows/build-package.yml", "*", "input.icloudpd_version", "code-injection", "generated"]

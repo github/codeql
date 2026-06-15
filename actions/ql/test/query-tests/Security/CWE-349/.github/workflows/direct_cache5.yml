@@ -1,0 +1,22 @@
+name: Cache Poisoning
+
+on:
+  pull_request_target:
+    branches-ignore:
+      - foo
+
+permissions: read-all
+
+jobs:
+  poison:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/cache@v2
+        with:
+          path: ./poison
+          key: poison_key
+      - run: |
+          cat poison

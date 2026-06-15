@@ -124,7 +124,6 @@ impl LogWriter {
                 match std::fs::OpenOptions::new()
                     .create(true)
                     .append(true)
-                    .write(true)
                     .open(path)
                 {
                     Err(e) => {
@@ -195,7 +194,7 @@ impl DiagnosticLoggers {
             path: self
                 .root
                 .as_ref()
-                .map(|root| root.to_owned().join(format!("extractor_{}.jsonl", n))),
+                .map(|root| root.to_owned().join(format!("extractor_{n}.jsonl"))),
         })
     }
 }

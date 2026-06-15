@@ -1,0 +1,14 @@
+{
+    "include": ["."],
+    "compilerOptions": {
+        // Path mappings are resolved relative to baseUrl
+        "baseUrl": "./base",
+        "paths": {
+            "@/*": ["lib/*"],
+            "#/*": ["./lib/*"], // relative paths here are also resolved from the base url
+            "^lib*": ["./lib*"], // must end with "*" but not necessarily "/*"
+            "@/*.xyz": ["lib/*"],
+            "@": ["lib/nostar.ts"]
+        }
+    }
+}

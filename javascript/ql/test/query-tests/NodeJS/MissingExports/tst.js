@@ -4,19 +4,19 @@ exports.baz = 56;
 exports.alert = 72;
 
 /*global bar*/
-bar(); // OK
+bar();
 
 baz = function() {};
-baz(); // OK
+baz();
 
-alert(); // OK
+alert();
 
-exports.isNaN = isNaN // OK
+exports.isNaN = isNaN
               || function(x) { return x !== x; };
 
 exports.someGlobal = 100;
-someGlobal(); // OK
+someGlobal();
 
 window.otherGlobal = function() {};
 exports.otherGlobal = otherGlobal;
-otherGlobal(); // OK
+otherGlobal();

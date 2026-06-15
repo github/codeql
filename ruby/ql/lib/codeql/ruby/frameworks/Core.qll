@@ -13,7 +13,6 @@ import core.Module
 import core.Array
 import core.Hash
 import core.String
-import core.Regexp
 import core.IO
 import core.Digest
 import core.Base64
@@ -58,12 +57,12 @@ class SubshellHeredocExecution extends SystemCommandExecution::Range {
   override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
 }
 
-private class SplatSummary extends SummarizedCallable {
+private class SplatSummary extends SummarizedCallable::Range {
   SplatSummary() { this = "*(splat)" }
 
   override SplatExpr getACallSimple() { any() }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     (
       // *1 = [1]
       input = "Argument[self].WithoutElement[any]" and
@@ -77,12 +76,12 @@ private class SplatSummary extends SummarizedCallable {
   }
 }
 
-private class HashSplatSummary extends SummarizedCallable {
+private class HashSplatSummary extends SummarizedCallable::Range {
   HashSplatSummary() { this = "**(hash-splat)" }
 
   override HashSplatExpr getACallSimple() { any() }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[self].WithElement[any]" and
     output = "ReturnValue" and
     preservesValue = true

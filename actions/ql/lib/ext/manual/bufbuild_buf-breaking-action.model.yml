@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["bufbuild/buf-breaking-action", "*", "input.buf_token", "env.BUF_TOKEN", "taint", "manual"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["bufbuild/buf-breaking-action", "*", "input.input", "command-injection", "manual"]
+      - ["bufbuild/buf-breaking-action", "*", "input.against", "command-injection", "manual"]

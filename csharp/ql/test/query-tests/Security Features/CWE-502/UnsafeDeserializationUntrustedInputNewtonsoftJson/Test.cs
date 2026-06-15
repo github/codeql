@@ -14,9 +14,9 @@ class Test
 
     public static object Deserialize2(TextBox data)
     {
-        return JsonConvert.DeserializeObject(data.Text, new JsonSerializerSettings
+        return JsonConvert.DeserializeObject(data.Text, new JsonSerializerSettings // $ Alert[cs/unsafe-deserialization-untrusted-input]
         {
-            TypeNameHandling = TypeNameHandling.Auto // BAD
+            TypeNameHandling = TypeNameHandling.Auto
         });
     }
 

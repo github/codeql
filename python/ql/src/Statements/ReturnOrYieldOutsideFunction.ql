@@ -2,7 +2,8 @@
  * @name Use of 'return' or 'yield' outside a function
  * @description Using 'return' or 'yield' outside a function causes a 'SyntaxError' at runtime.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low

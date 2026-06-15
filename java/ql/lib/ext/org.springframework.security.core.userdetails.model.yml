@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.springframework.security.core.userdetails", "User", False, "User", "(String,String,boolean,boolean,boolean,boolean,Collection)", "", "Argument[0]", "credentials-username", "manual"]
+      - ["org.springframework.security.core.userdetails", "User", False, "User", "(String,String,boolean,boolean,boolean,boolean,Collection)", "", "Argument[1]", "credentials-password", "manual"]

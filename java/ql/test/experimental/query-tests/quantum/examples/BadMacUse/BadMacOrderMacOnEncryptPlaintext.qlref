@@ -1,0 +1,4 @@
+query: experimental/quantum/Examples/BadMacOrderMacOnEncryptPlaintext.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql

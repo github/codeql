@@ -1,7 +1,0 @@
-| UrlsplitUrlparseTempSanitizer | [externally controlled string] | test.py:21 | Pi(urlsplit_res_0) [true] |
-| UrlsplitUrlparseTempSanitizer | [externally controlled string] | test.py:24 | Pi(urlsplit_res_3) [true] |
-| UrlsplitUrlparseTempSanitizer | [externally controlled string] | test.py:27 | Pi(urlsplit_res_6) [true] |
-| UrlsplitUrlparseTempSanitizer | [externally controlled string] | test.py:30 | Pi(urlsplit_res_9) [true] |
-| string equality sanitizer | externally controlled string | test.py:21 | Pi(urlsplit_res_0) [true] |
-| string equality sanitizer | externally controlled string | test.py:24 | Pi(urlsplit_res_3) [true] |
-| string equality sanitizer | externally controlled string | test.py:27 | Pi(urlsplit_res_6) [true] |

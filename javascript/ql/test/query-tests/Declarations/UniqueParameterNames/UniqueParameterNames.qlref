@@ -1,1 +1,2 @@
-Declarations/UniqueParameterNames.ql
+query: Declarations/UniqueParameterNames.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

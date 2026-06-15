@@ -1,16 +1,16 @@
-raw.replace("\\", "\\"); // NOT OK
-raw.replace(/(\\)/, "\\"); // NOT OK
-raw.replace(/["]/, "\""); // NOT OK
-raw.replace("\\", "\\\\"); // OK
+raw.replace("\\", "\\"); // $ Alert
+raw.replace(/(\\)/, "\\"); // $ Alert
+raw.replace(/["]/, "\""); // $ Alert
+raw.replace("\\", "\\\\");
 
-raw.replace(/foo/g, 'foo'); // NOT OK
-raw.replace(/foo/gi, 'foo'); // OK
+raw.replace(/foo/g, 'foo'); // $ Alert
+raw.replace(/foo/gi, 'foo');
 
-raw.replace(/^\\/, "\\"); // NOT OK
-raw.replace(/\\$/, "\\"); // NOT OK
-raw.replace(/\b\\/, "\\"); // NOT OK
-raw.replace(/\B\\/, "\\"); // NOT OK
-raw.replace(/\\(?!\\)/, "\\"); // NOT OK
-raw.replace(/(?<!\\)\\/, "\\"); // NOT OK
+raw.replace(/^\\/, "\\"); // $ Alert
+raw.replace(/\\$/, "\\"); // $ Alert
+raw.replace(/\b\\/, "\\"); // $ Alert
+raw.replace(/\B\\/, "\\"); // $ Alert
+raw.replace(/\\(?!\\)/, "\\"); // $ Alert
+raw.replace(/(?<!\\)\\/, "\\"); // $ Alert
 
-raw.replace(/^/, ""); // NOT OK
+raw.replace(/^/, ""); // $ Alert

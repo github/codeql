@@ -11,6 +11,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.Sanitizers
 private import codeql.ruby.frameworks.ActionController
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -32,13 +33,6 @@ module UrlRedirect {
    * A sanitizer for "URL redirection" vulnerabilities.
    */
   abstract class Sanitizer extends DataFlow::Node { }
-
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "URL redirection" vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * Additional taint steps for "URL redirection" vulnerabilities.
@@ -80,10 +74,20 @@ module UrlRedirect {
     }
   }
 
+  private class ExternalUrlRedirectSink extends Sink {
+    ExternalUrlRedirectSink() { ModelOutput::sinkNode(this, "url-redirection") }
+  }
+
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
   class StringConstCompareAsSanitizer extends Sanitizer, StringConstCompareBarrier { }
+
+  /**
+   * A string concatenation against a constant list, considered as a sanitizer-guard.
+   */
+  class StringConstArrayInclusionAsSanitizer extends Sanitizer, StringConstArrayInclusionCallBarrier
+  { }
 
   /**
    * Some methods will propagate taint to their return values.
@@ -120,6 +124,10 @@ module UrlRedirect {
    * We currently don't catch these cases.
    */
   class StringInterpolationAsSanitizer extends PrefixedStringInterpolation, Sanitizer { }
+
+  private class ExternalUrlRedirectSanitizer extends Sanitizer {
+    ExternalUrlRedirectSanitizer() { ModelOutput::barrierNode(this, "url-redirection") }
+  }
 
   /**
    * These methods return a new `ActionController::Parameters` or a `Hash` containing a subset of

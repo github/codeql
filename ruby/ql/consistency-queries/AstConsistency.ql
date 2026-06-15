@@ -1,5 +1,6 @@
 import codeql.ruby.AST
 import codeql.ruby.ast.internal.Synthesis
+import codeql.ruby.Diagnostics
 
 query predicate missingParent(AstNode node, string cls) {
   not exists(node.getParent()) and
@@ -23,3 +24,12 @@ query predicate multipleParents(AstNode node, AstNode parent, string cls) {
     one != two
   )
 }
+
+query predicate multipleToString(AstNode n, string s) {
+  s = strictconcat(n.toString(), ",") and
+  strictcount(n.toString()) > 1
+}
+
+query predicate extractionError(ExtractionError error) { any() }
+
+query predicate extractionWarning(ExtractionWarning error) { any() }

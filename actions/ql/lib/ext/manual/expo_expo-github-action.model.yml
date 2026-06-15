@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["expo/expo-github-action", "*", "input.command", "command-injection", "manual"]
+      - ["expo/expo-github-action", "*", "input.packager", "command-injection", "manual"]

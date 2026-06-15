@@ -3,6 +3,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.frameworks.system.Net
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.Http
@@ -12,19 +13,22 @@ private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.WCF
 private import semmle.code.csharp.frameworks.microsoft.Owin
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
-private import semmle.code.csharp.dataflow.ExternalFlow
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
 /** A data flow source of remote user input. */
-abstract class RemoteFlowSource extends DataFlow::Node {
-  /** Gets a string that describes the type of this remote flow source. */
-  abstract string getSourceType();
+abstract class RemoteFlowSource extends SourceNode {
+  override string getSourceType() { result = "remote flow source" }
+
+  override string getThreatModel() { result = "remote" }
 }
 
 /**
  * A module for importing frameworks that defines remote flow sources.
  */
 private module RemoteFlowSources {
-  private import semmle.code.csharp.frameworks.ServiceStack
+  private import semmle.code.csharp.frameworks.ServiceStack as ServiceStack
+  private import semmle.code.csharp.frameworks.microsoft.aspnetcore.Components as Blazor
 }
 
 /** A data flow source of remote user input (ASP.NET). */
@@ -101,7 +105,7 @@ class WcfRemoteFlowSource extends RemoteFlowSource, DataFlow::ParameterNode {
 }
 
 /** A data flow source of remote user input (ASP.NET web service). */
-class AspNetServiceRemoteFlowSource extends RemoteFlowSource, DataFlow::ParameterNode {
+class AspNetServiceRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow::ParameterNode {
   AspNetServiceRemoteFlowSource() {
     exists(Method m |
       m.getAParameter() = this.getParameter() and
@@ -112,8 +116,50 @@ class AspNetServiceRemoteFlowSource extends RemoteFlowSource, DataFlow::Paramete
   override string getSourceType() { result = "ASP.NET web service input" }
 }
 
+private class CandidateMemberToTaint extends Member {
+  CandidateMemberToTaint() {
+    this.isPublic() and
+    not this.isStatic() and
+    (
+      this =
+        any(Property p |
+          p.isAutoImplemented() and
+          p.getGetter().isPublic() and
+          p.getSetter().isPublic()
+        )
+      or
+      this = any(Field f | f.isPublic())
+    )
+  }
+}
+
+/**
+ * Taint members (transitively) on types used in
+ * 1. Action method parameters.
+ * 2. WebMethod parameters.
+ *
+ * Note that this also impacts uses of such types in other contexts.
+ */
+private class AspNetRemoteFlowSourceMember extends TaintTracking::TaintedMember,
+  CandidateMemberToTaint
+{
+  AspNetRemoteFlowSourceMember() {
+    exists(Type t, Type t0 | t = this.getDeclaringType() |
+      (t = t0 or t = t0.(CollectionType).getElementType()) and
+      (
+        t0 = any(AspNetRemoteFlowSourceMember m).getType()
+        or
+        t0 = any(ActionMethodParameter p).getType()
+        or
+        t0 = any(AspNetServiceRemoteFlowSource source).getType()
+      )
+    )
+  }
+}
+
 /** A data flow source of remote user input (ASP.NET request message). */
-class SystemNetHttpRequestMessageRemoteFlowSource extends RemoteFlowSource, DataFlow::ExprNode {
+class SystemNetHttpRequestMessageRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow::ExprNode
+{
   SystemNetHttpRequestMessageRemoteFlowSource() {
     this.getType() instanceof SystemWebHttpRequestMessageClass
   }
@@ -163,7 +209,7 @@ class MicrosoftOwinRequestRemoteFlowSource extends RemoteFlowSource, DataFlow::E
 }
 
 /** A parameter to an Mvc controller action method, viewed as a source of remote user input. */
-class ActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
+class ActionMethodParameter extends AspNetRemoteFlowSource, DataFlow::ParameterNode {
   ActionMethodParameter() {
     exists(Parameter p |
       p = this.getParameter() and
@@ -215,14 +261,18 @@ class AspNetCoreRoutingMethodParameter extends AspNetCoreRemoteFlowSource, DataF
  * Flow is defined from any ASP.NET Core remote source object to any of its member
  * properties.
  */
-private class AspNetCoreRemoteFlowSourceMember extends TaintTracking::TaintedMember, Property {
+private class AspNetCoreRemoteFlowSourceMember extends TaintTracking::TaintedMember,
+  CandidateMemberToTaint
+{
   AspNetCoreRemoteFlowSourceMember() {
-    this.getDeclaringType() = any(AspNetCoreRemoteFlowSource source).getType() and
-    this.isPublic() and
-    not this.isStatic() and
-    this.isAutoImplemented() and
-    this.getGetter().isPublic() and
-    this.getSetter().isPublic()
+    exists(Type t, Type t0 | t = this.getDeclaringType() |
+      (t = t0 or t = t0.(CollectionType).getElementType()) and
+      (
+        t0 = any(AspNetCoreRemoteFlowSourceMember m).getType()
+        or
+        t0 = any(AspNetCoreRemoteFlowSource m).getType()
+      )
+    )
   }
 }
 
@@ -241,7 +291,7 @@ class AspNetCoreQueryRemoteFlowSource extends AspNetCoreRemoteFlowSource, DataFl
     exists(Call c |
       c.getTarget()
           .getDeclaringType()
-          .hasQualifiedName("Microsoft.AspNetCore.Http", "IQueryCollection") and
+          .hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IQueryCollection") and
       c.getTarget().getName() = "TryGetValue" and
       this.asExpr() = c.getArgumentForName("value")
     )

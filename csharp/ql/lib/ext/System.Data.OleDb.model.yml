@@ -3,6 +3,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: sinkModel
     data:
-      - ["System.Data.OleDb", "OleDbCommand", False, "OleDbCommand", "(System.String)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.OleDb", "OleDbCommand", False, "OleDbCommand", "(System.String,System.Data.OleDb.OleDbConnection)", "", "Argument[0]", "sql", "manual"]
-      - ["System.Data.OleDb", "OleDbCommand", False, "OleDbCommand", "(System.String,System.Data.OleDb.OleDbConnection,System.Data.OleDb.OleDbTransaction)", "", "Argument[0]", "sql", "manual"]
+      - ["System.Data.OleDb", "OleDbCommand", False, "OleDbCommand", "(System.String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.OleDb", "OleDbCommand", False, "OleDbCommand", "(System.String,System.Data.OleDb.OleDbConnection)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["System.Data.OleDb", "OleDbCommand", False, "OleDbCommand", "(System.String,System.Data.OleDb.OleDbConnection,System.Data.OleDb.OleDbTransaction)", "", "Argument[0]", "sql-injection", "manual"]

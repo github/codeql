@@ -1,0 +1,19 @@
+on:
+  workflow_run:
+    workflows: ['Test']
+    types: [completed]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == "success"
+    env:
+      HEAD: ${{ github.event.workflow_run.head.sha }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.workflow_run.head.sha }}
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ env.HEAD }}
+

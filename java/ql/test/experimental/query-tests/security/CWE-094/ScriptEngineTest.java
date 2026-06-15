@@ -21,14 +21,14 @@ public class ScriptEngineTest extends HttpServlet {
 		ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
 		// Create with ScriptEngine reference
 		ScriptEngine scriptEngine = scriptEngineManager.getEngineByExtension("js");
-		Object result = scriptEngine.eval(input);
+		Object result = scriptEngine.eval(input); // $ Alert[java/unsafe-eval]
 	}
 	
 	public void testNashornWithScriptEngineReference(String input) throws ScriptException {
 		NashornScriptEngineFactory factory = new NashornScriptEngineFactory();
 		// Create Nashorn with ScriptEngine reference
 		ScriptEngine engine = (NashornScriptEngine) factory.getScriptEngine(new String[] { "-scripting" });
-		Object result = engine.eval(input);
+		Object result = engine.eval(input); // $ Alert[java/unsafe-eval]
 	}
 
 	
@@ -36,27 +36,27 @@ public class ScriptEngineTest extends HttpServlet {
 		NashornScriptEngineFactory factory = new NashornScriptEngineFactory();
 		// Create Nashorn with NashornScriptEngine reference
 		NashornScriptEngine engine = (NashornScriptEngine) factory.getScriptEngine(new String[] { "-scripting" });
-		Object result = engine.eval(input);
+		Object result = engine.eval(input); // $ Alert[java/unsafe-eval]
 	}
 	
 	public void testCustomScriptEngineReference(String input) throws ScriptException {
 		MyCustomFactory factory = new MyCustomFactory();
 		//Create with Custom Script Engine reference
 		MyCustomScriptEngine engine = (MyCustomScriptEngine) factory.getScriptEngine(new String[] { "-scripting" });
-		Object result = engine.eval(input);
+		Object result = engine.eval(input); // $ Alert[java/unsafe-eval]
 	}
 
 	public void testScriptEngineCompilable(String input) throws ScriptException {
 		NashornScriptEngineFactory factory = new NashornScriptEngineFactory();
 		Compilable engine = (Compilable) factory.getScriptEngine(new String[] { "-scripting" });
-		CompiledScript script = engine.compile(input);
+		CompiledScript script = engine.compile(input); // $ Alert[java/unsafe-eval]
 		Object result = script.eval();
 	}
 
 	public void testScriptEngineGetProgram(String input) throws ScriptException {
 		ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
 		ScriptEngine engine = scriptEngineManager.getEngineByName("nashorn");
-		String program = engine.getFactory().getProgram(input);
+		String program = engine.getFactory().getProgram(input); // $ Alert[java/unsafe-eval]
 		Object result = engine.eval(program);
 	}
 
@@ -88,7 +88,7 @@ public class ScriptEngineTest extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			String code = request.getParameter("code");
+			String code = request.getParameter("code"); // $ Source[java/unsafe-eval]
 
 			new ScriptEngineTest().testWithScriptEngineReference(code);
 			new ScriptEngineTest().testNashornWithScriptEngineReference(code);

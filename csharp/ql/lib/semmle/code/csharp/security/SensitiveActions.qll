@@ -186,7 +186,7 @@ class AuthMethod extends SensitiveExecutionMethod {
 class SendingMethod extends SensitiveExecutionMethod {
   SendingMethod() {
     exists(string s | s.matches("%Socket") |
-      this.getDeclaringType().hasQualifiedName("System.Net.Sockets", s) and
+      this.getDeclaringType().hasFullyQualifiedName("System.Net.Sockets", s) and
       this.hasName("Send")
     )
   }

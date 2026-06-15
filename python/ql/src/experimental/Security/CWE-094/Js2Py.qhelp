@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp SYSTEM "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+            Passing untrusted inputs to a JavaScript interpreter like `Js2Py` can lead to arbitrary
+            code execution.
+        </p>
+    </overview>
+    <recommendation>
+        <p> This vulnerability can be prevented either by preventing an untrusted user input to flow
+            to an <code>eval_js</code> call. Or, the impact of this vulnerability can be
+            significantly reduced by disabling imports from the interepreted code (note that in a <a
+                href="https://github.com/PiotrDabkowski/Js2Py/issues/45#issuecomment-258724406">
+            comment</a> the author of the library highlights that Js2Py is still insecure with this
+            option).</p>
+    </recommendation>
+    <example>
+        <p>In the example below, the Javascript code being evaluated is controlled by the user and
+            hence leads to arbitrary code execution.</p>
+        <sample src="Js2pyBad.py" />
+        <p>This can be fixed by disabling imports before evaluating the user passed buffer.</p>
+        <sample src="Js2pyGood.py" />
+    </example>
+</qhelp>

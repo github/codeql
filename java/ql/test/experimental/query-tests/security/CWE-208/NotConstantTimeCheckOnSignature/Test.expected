@@ -1,7 +1,7 @@
 edges
-| Test.java:14:28:14:44 | doFinal(...) : byte[] | Test.java:15:43:15:51 | actualMac |
-| Test.java:30:28:30:40 | sign(...) : byte[] | Test.java:31:40:31:48 | signature |
-| Test.java:47:22:47:46 | doFinal(...) : byte[] | Test.java:48:40:48:42 | tag |
+| Test.java:14:28:14:44 | doFinal(...) : byte[] | Test.java:15:43:15:51 | actualMac | provenance |  |
+| Test.java:30:28:30:40 | sign(...) : byte[] | Test.java:31:40:31:48 | signature | provenance |  |
+| Test.java:47:22:47:46 | doFinal(...) : byte[] | Test.java:48:40:48:42 | tag | provenance |  |
 nodes
 | Test.java:14:28:14:44 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
 | Test.java:15:43:15:51 | actualMac | semmle.label | actualMac |
@@ -9,8 +9,8 @@ nodes
 | Test.java:31:40:31:48 | signature | semmle.label | signature |
 | Test.java:47:22:47:46 | doFinal(...) : byte[] | semmle.label | doFinal(...) : byte[] |
 | Test.java:48:40:48:42 | tag | semmle.label | tag |
-subpaths
-#select
+problems
 | Test.java:15:43:15:51 | actualMac | Test.java:14:28:14:44 | doFinal(...) : byte[] | Test.java:15:43:15:51 | actualMac | Possible timing attack against $@ validation. | Test.java:14:28:14:44 | doFinal(...) : byte[] | MAC |
 | Test.java:31:40:31:48 | signature | Test.java:30:28:30:40 | sign(...) : byte[] | Test.java:31:40:31:48 | signature | Possible timing attack against $@ validation. | Test.java:30:28:30:40 | sign(...) : byte[] | signature |
 | Test.java:48:40:48:42 | tag | Test.java:47:22:47:46 | doFinal(...) : byte[] | Test.java:48:40:48:42 | tag | Possible timing attack against $@ validation. | Test.java:47:22:47:46 | doFinal(...) : byte[] | ciphertext |
+subpaths

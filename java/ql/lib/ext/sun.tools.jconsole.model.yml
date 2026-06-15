@@ -1,0 +1,33 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["sun.tools.jconsole", "ConnectDialog", False, "setConnectionParameters", "(String,String,int,String,String,String)", "", "Argument[4]", "credentials-password", "hq-generated"]
+      - ["sun.tools.jconsole", "JConsole", False, "addHost", "(String,int,String,String)", "", "Argument[3]", "credentials-password", "hq-generated"]
+      - ["sun.tools.jconsole", "JConsole", False, "addHost", "(String,int,String,String,boolean)", "", "Argument[3]", "credentials-password", "hq-generated"]
+      - ["sun.tools.jconsole", "JConsole", False, "addUrl", "(String,String,String,boolean)", "", "Argument[2]", "credentials-password", "hq-generated"]
+      - ["sun.tools.jconsole", "JConsole", False, "failed", "(Exception,String,String,String)", "", "Argument[3]", "credentials-password", "hq-generated"]
+      - ["sun.tools.jconsole", "JConsole", False, "showConnectDialog", "(String,String,int,String,String,String)", "", "Argument[4]", "credentials-password", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "ProxyClient", "(String,String,String)", "", "Argument[2]", "credentials-password", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "ProxyClient", "(String,int,String,String)", "", "Argument[3]", "credentials-password", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "getCacheKey", "(String,String,String)", "", "Argument[2]", "credentials-password", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "getCacheKey", "(String,int,String,String)", "", "Argument[3]", "credentials-password", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "getProxyClient", "(String,String,String)", "", "Argument[2]", "credentials-password", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "getProxyClient", "(String,int,String,String)", "", "Argument[3]", "credentials-password", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "setParameters", "(JMXServiceURL,String,String)", "", "Argument[2]", "credentials-password", "hq-generated"]
+      - ["sun.tools.jconsole", "ConnectDialog", False, "setConnectionParameters", "(String,String,int,String,String,String)", "", "Argument[3]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "JConsole", False, "addHost", "(String,int,String,String)", "", "Argument[2]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "JConsole", False, "addHost", "(String,int,String,String,boolean)", "", "Argument[2]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "JConsole", False, "addUrl", "(String,String,String,boolean)", "", "Argument[1]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "JConsole", False, "failed", "(Exception,String,String,String)", "", "Argument[2]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "JConsole", False, "showConnectDialog", "(String,String,int,String,String,String)", "", "Argument[3]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "ProxyClient", "(String,String,String)", "", "Argument[1]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "ProxyClient", "(String,int,String,String)", "", "Argument[2]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "getCacheKey", "(String,String,String)", "", "Argument[1]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "getCacheKey", "(String,int,String,String)", "", "Argument[2]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "getConnectionName", "(String,String)", "", "Argument[1]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "getConnectionName", "(String,int,String)", "", "Argument[2]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "getProxyClient", "(String,String,String)", "", "Argument[1]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "getProxyClient", "(String,int,String,String)", "", "Argument[2]", "credentials-username", "hq-generated"]
+      - ["sun.tools.jconsole", "ProxyClient", False, "setParameters", "(JMXServiceURL,String,String)", "", "Argument[1]", "credentials-username", "hq-generated"]

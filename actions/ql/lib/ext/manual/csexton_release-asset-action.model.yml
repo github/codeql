@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["csexton/release-asset-action", "*", "input.release-url", "output.url", "taint", "manual"]

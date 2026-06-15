@@ -42,15 +42,13 @@
 
 	<p>
 
-		The following server implementation checks if a client-provided
-		file path is valid and throws an exception if the check fails. It can
-		be seen that the exception is uncaught, and it is therefore reasonable to
-		expect the server to respond with an error response to client requests
-		that cause the check to fail.
-
-		But since the exception is uncaught in the context of an
-		asynchronous callback invocation (<code>fs.access(...)</code>), the
-		entire server will terminate instead.
+		The following server code checks if a client-provided file path is valid
+		before saving data to that path. It would be reasonable to expect that the
+		server responds with an error in case the request contains an invalid
+		file path. However, the server instead throws an exception, which is
+		uncaught in the context of the asynchronous callback invocation
+		(<code>fs.access(...)</code>). This causes the entire server to
+		terminate abruptly.
 
 	</p>
 
@@ -67,11 +65,9 @@
 
 	<p>
 
-		An alternative is to use an <code>async</code> and
-		<code>await</code> for the asynchronous behavior, since the server
-		will then print warning messages about uncaught exceptions instead of
-		terminating, unless the server was started with the commandline option
-		<code>--unhandled-rejections=strict</code>:
+		To simplify exception handling, it may be advisable to switch to
+		async/await syntax instead of using callbacks, which allows wrapping the
+		entire request handler in a <code>try/catch</code> block:
 
 	</p>
 

@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>This rule finds values that are assigned to variables but never used. Unused values should be removed to increase readability and avoid confusion.</p>
+</overview>
+
+<recommendation>
+<p>Remove any unused values. Also remove any variables that only hold unused values.</p>
+</recommendation>
+
+<example>
+<p>In the following example, there is a variable <code>average</code> that is initialized to <code>0</code>, but that value is never used:</p>
+<sample src="UnusedValueBad.rs" />
+<p>The problem can be fixed by removing the unused value:</p>
+<sample src="UnusedValueGood.rs" />
+</example>
+
+<references>
+<li>GeeksforGeeks: <a href="https://www.geeksforgeeks.org/how-to-avoid-unused-variable-warning-in-rust/">How to avoid unused Variable warning in Rust?</a></li>
+</references>
+</qhelp>

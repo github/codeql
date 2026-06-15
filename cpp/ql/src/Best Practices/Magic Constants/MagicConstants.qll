@@ -164,11 +164,16 @@ predicate valueOccurrenceCount(string value, int n) {
   n > 20
 }
 
-predicate occurenceCount(Literal lit, string value, int n) {
+predicate occurrenceCount(Literal lit, string value, int n) {
   valueOccurrenceCount(value, n) and
   value = lit.getValue() and
   nonTrivialValue(_, lit)
 }
+
+/**
+ * DEPRECATED: Use `occurrenceCount` instead.
+ */
+deprecated predicate occurenceCount = occurrenceCount/3;
 
 /*
  * Literals repeated frequently
@@ -178,7 +183,7 @@ predicate check(Literal lit, string value, int n, File f) {
   // Check that the literal is nontrivial
   not trivial(lit) and
   // Check that it is repeated a number of times
-  occurenceCount(lit, value, n) and
+  occurrenceCount(lit, value, n) and
   n > 20 and
   f = lit.getFile() and
   // Exclude generated files

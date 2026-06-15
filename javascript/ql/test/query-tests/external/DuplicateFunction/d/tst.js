@@ -31,7 +31,7 @@ var g2 = function() {
 	return arguments[0] * arguments[1];
 }
 
-// OK: only five statements
+// OK - only five statements
 function h() {
 	if (arguments.length == 0)
 		return 23;

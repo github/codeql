@@ -50,6 +50,8 @@
  * keyword arguments using the `__match_args__` attribute on the class. We do not
  * currently model this.
  */
+overlay[local]
+module;
 
 private import python
 private import DataFlowPublic
@@ -89,8 +91,9 @@ predicate matchAsFlowStep(Node nodeFrom, Node nodeTo) {
     or
     // the interior pattern flows to the alias
     nodeFrom.(CfgNode).getNode().getNode() = subject.getPattern() and
-    nodeTo.(EssaNode).getVar().getDefinition().(PatternAliasDefinition).getDefiningNode().getNode() =
-      alias
+    exists(PatternAliasDefinition pad | pad.getDefiningNode().getNode() = alias |
+      nodeTo.(CfgNode).getNode() = pad.getDefiningNode()
+    )
   )
 }
 
@@ -123,13 +126,9 @@ predicate matchLiteralFlowStep(Node nodeFrom, Node nodeTo) {
 predicate matchCaptureFlowStep(Node nodeFrom, Node nodeTo) {
   exists(MatchCapturePattern capture, Name var | capture.getVariable() = var |
     nodeFrom.(CfgNode).getNode().getNode() = capture and
-    nodeTo
-        .(EssaNode)
-        .getVar()
-        .getDefinition()
-        .(PatternCaptureDefinition)
-        .getDefiningNode()
-        .getNode() = var
+    exists(PatternCaptureDefinition pcd | pcd.getDefiningNode().getNode() = var |
+      nodeTo.(CfgNode).getNode() = pcd.getDefiningNode()
+    )
   )
 }
 
@@ -227,7 +226,7 @@ predicate matchMappingReadStep(Node nodeFrom, Content c, Node nodeTo) {
   |
     nodeFrom.(CfgNode).getNode().getNode() = subject and
     nodeTo.(CfgNode).getNode().getNode() = value and
-    c.(DictionaryElementContent).getKey() = key.getLiteral().(StrConst).getText()
+    c.(DictionaryElementContent).getKey() = key.getLiteral().(StringLiteral).getText()
   )
 }
 
@@ -259,7 +258,7 @@ predicate matchMappingClearStep(Node n, Content c) {
     dstar = subject.getAMapping()
   |
     n.(CfgNode).getNode().getNode() = dstar.getTarget() and
-    c.(DictionaryElementContent).getKey() = key.getLiteral().(StrConst).getText()
+    c.(DictionaryElementContent).getKey() = key.getLiteral().(StringLiteral).getText()
   )
 }
 

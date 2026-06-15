@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.jabsorb", "JSONSerializer", True, "fromJSON", "", "", "Argument[0]", "unsafe-deserialization", "manual"]

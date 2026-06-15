@@ -1,6 +1,6 @@
 /**
  * @name Missing security metadata
- * @description Security queries should have both a `@tag security` and a `@security-severity` tag.
+ * @description Security queries should have both a `@tags security` and a `@security-severity` tag.
  * @kind problem
  * @problem.severity warning
  * @precision very-high
@@ -10,45 +10,26 @@
 
 import ql
 
-predicate missingSecuritySeverity(QLDoc doc) {
-  exists(string s | s = doc.getContents() |
-    exists(string securityTag | securityTag = s.splitAt("@") |
-      securityTag.matches("tags%security%")
-    ) and
-    exists(string precisionTag | precisionTag = s.splitAt("@") |
-      precisionTag.matches("precision %")
-    ) and
-    not exists(string securitySeverity | securitySeverity = s.splitAt("@") |
-      securitySeverity.matches("security-severity %")
-    )
-  )
+predicate missingSecuritySeverity(QueryDoc doc) {
+  doc.getAQueryTag() = "security" and
+  exists(doc.getQueryPrecision()) and
+  not exists(doc.getQuerySecuritySeverity())
 }
 
-predicate missingSecurityTag(QLDoc doc) {
-  exists(string s | s = doc.getContents() |
-    exists(string securitySeverity | securitySeverity = s.splitAt("@") |
-      securitySeverity.matches("security-severity %")
-    ) and
-    exists(string precisionTag | precisionTag = s.splitAt("@") |
-      precisionTag.matches("precision %")
-    ) and
-    not exists(string securityTag | securityTag = s.splitAt("@") |
-      securityTag.matches("tags%security%")
-    )
-  )
+predicate missingSecurityTag(QueryDoc doc) {
+  exists(doc.getQuerySecuritySeverity()) and
+  exists(doc.getQueryPrecision()) and
+  not doc.getAQueryTag() = "security"
 }
 
-from TopLevel t, string msg
+from TopLevel t, QueryDoc doc, string msg
 where
-  t.getLocation().getFile().getBaseName().matches("%.ql") and
-  not t.getLocation()
-      .getFile()
-      .getRelativePath()
-      .matches("%/" + ["experimental", "examples", "test"] + "/%") and
+  doc = t.getQLDoc() and
+  not t.getLocation().getFile() instanceof TestFile and
   (
-    missingSecuritySeverity(t.getQLDoc()) and
+    missingSecuritySeverity(doc) and
     msg = "This query file is missing a `@security-severity` tag."
     or
-    missingSecurityTag(t.getQLDoc()) and msg = "This query file is missing a `@tag security`."
+    missingSecurityTag(doc) and msg = "This query file is missing a `@tags security`."
   )
-select t, msg
+select doc, msg

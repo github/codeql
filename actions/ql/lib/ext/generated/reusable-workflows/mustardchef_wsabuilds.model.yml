@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["mustardchef/wsabuilds/.github/workflows/buildarm64.yml", "*", "input.amazonflag", "code-injection", "generated"]
+     - ["mustardchef/wsabuilds/.github/workflows/buildarm64.yml", "*", "input.magiskver", "code-injection", "generated"]
+     - ["mustardchef/wsabuilds/.github/workflows/buildarm64.yml", "*", "input.root", "code-injection", "generated"]
+     - ["mustardchef/wsabuilds/.github/workflows/buildarm64.yml", "*", "input.gapps", "code-injection", "generated"]
+     - ["mustardchef/wsabuilds/.github/workflows/buildarm64.yml", "*", "input.arch", "code-injection", "generated"]
+     - ["mustardchef/wsabuilds/.github/workflows/build.yml", "*", "input.amazonflag", "code-injection", "generated"]
+     - ["mustardchef/wsabuilds/.github/workflows/build.yml", "*", "input.magiskver", "code-injection", "generated"]
+     - ["mustardchef/wsabuilds/.github/workflows/build.yml", "*", "input.root", "code-injection", "generated"]
+     - ["mustardchef/wsabuilds/.github/workflows/build.yml", "*", "input.gapps", "code-injection", "generated"]
+     - ["mustardchef/wsabuilds/.github/workflows/build.yml", "*", "input.arch", "code-injection", "generated"]

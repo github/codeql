@@ -1,1 +1,2 @@
-LanguageFeatures/IllegalInvocation.ql
+query: LanguageFeatures/IllegalInvocation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

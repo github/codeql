@@ -36,10 +36,6 @@ def ok3(x):
 def ok4(x = []):
     return len(x)
 
-def mpd(x = []):
-    x.append("x")
-
-
 def use_implicit_return_value(arg):
     x = do_nothing()
     return call_non_callable(arg)
@@ -128,12 +124,6 @@ def mutli_return(arg):
     else:
         return do_nothing()
 
-#Modification of parameter with default
-
-def augassign(x = []):
-    x += ["x"]
-
-
 #ODASA 3658
 from sys import exit
 #Consistent returns
@@ -144,61 +134,3 @@ def ok5():
     except ValueError as e:
         print(e)
         exit(EXIT_ERROR)
-
-
-
-# indirect modification of parameter with default
-def aug_assign_argument(x):
-    x += ['x']
-
-def mutate_argument(x):
-    x.append('x')
-
-def indirect_modification(y = []):
-    aug_assign_argument(y)
-    mutate_argument(y)
-
-def guarded_modification(z=[]):
-    if z:
-        z.append(0)
-    return z
-
-# This function causes a discrepancy between the
-# Python 2 and 3 versions of the analysis.
-# We comment it out until we have resoved the issue.
-#
-# def issue1143(expr, param=[]):
-#     if not param:
-#         return result
-#     for i in param:
-#         param.remove(i) # Mutation here
-
-
-# Type guarding of modification of parameter with default:
-
-def do_stuff_based_on_type(x):
-    if isinstance(x, str):
-        x = x.split()
-    elif isinstance(x, dict):
-        x.setdefault('foo', 'bar')
-    elif isinstance(x, list):
-        x.append(5)
-    elif isinstance(x, tuple):
-        x = x.unknown_method()
-
-def str_default(x="hello world"):
-    do_stuff_based_on_type(x)
-
-def dict_default(x={'baz':'quux'}):
-    do_stuff_based_on_type(x)
-
-def list_default(x=[1,2,3,4]):
-    do_stuff_based_on_type(x)
-
-def tuple_default(x=(1,2)):
-    do_stuff_based_on_type(x)
-
-# Modification of parameter with default (safe method)
-
-def safe_method(x=[]):
-    return x.count(42)

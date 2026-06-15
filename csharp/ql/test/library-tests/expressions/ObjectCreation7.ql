@@ -15,10 +15,10 @@ where
   cc.hasName("Rectangle2") and
   i = e.getInitializer() and
   a = i.getMemberInitializer(0) and
-  a.getLValue().(PropertyAccess).getTarget().hasName("P1") and
-  a.getRValue() instanceof ObjectInitializer and
+  a.getLeftOperand().(PropertyAccess).getTarget().hasName("P1") and
+  a.getRightOperand() instanceof ObjectInitializer and
   b = i.getMemberInitializer(1) and
-  b.getLValue().(PropertyAccess).getTarget().hasName("P2") and
-  b.getRValue() instanceof ObjectInitializer and
+  b.getLeftOperand().(PropertyAccess).getTarget().hasName("P2") and
+  b.getRightOperand() instanceof ObjectInitializer and
   i.getNumberOfMemberInitializers() = 2
 select m, e

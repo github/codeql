@@ -1,6 +1,8 @@
 /**
  * Provides classes modeling security-relevant aspects of the standard libraries.
  */
+overlay[local?]
+module;
 
 import go
 import semmle.go.frameworks.stdlib.ArchiveTar
@@ -24,7 +26,6 @@ import semmle.go.frameworks.stdlib.Html
 import semmle.go.frameworks.stdlib.HtmlTemplate
 import semmle.go.frameworks.stdlib.Io
 import semmle.go.frameworks.stdlib.IoFs
-import semmle.go.frameworks.stdlib.IoIoutil
 import semmle.go.frameworks.stdlib.Log
 import semmle.go.frameworks.stdlib.MimeMultipart
 import semmle.go.frameworks.stdlib.MimeQuotedprintable
@@ -43,32 +44,6 @@ import semmle.go.frameworks.stdlib.Syscall
 import semmle.go.frameworks.stdlib.TextTabwriter
 import semmle.go.frameworks.stdlib.TextTemplate
 import semmle.go.frameworks.stdlib.Unsafe
-
-// These are modeled using TaintTracking::FunctionModel because they doesn't have real type signatures,
-// and therefore currently have an InvalidType, not a SignatureType, which breaks Models as Data.
-/**
- * A model of the built-in `append` function, which propagates taint from its arguments to its
- * result.
- */
-private class AppendFunction extends TaintTracking::FunctionModel {
-  AppendFunction() { this = Builtin::append() }
-
-  override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-    inp.isParameter(_) and outp.isResult()
-  }
-}
-
-/**
- * A model of the built-in `copy` function, which propagates taint from its second argument
- * to its first.
- */
-private class CopyFunction extends TaintTracking::FunctionModel {
-  CopyFunction() { this = Builtin::copy() }
-
-  override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-    inp.isParameter(1) and outp.isParameter(0)
-  }
-}
 
 /** Provides a class for modeling functions which convert strings into integers. */
 module IntegerParser {
@@ -91,6 +66,9 @@ module IntegerParser {
      * input is 0 then it means the bit size of `int` and `uint`.
      */
     FunctionInput getTargetBitSizeInput() { none() }
+
+    /** Gets whether the function is for parsing signed or unsigned integers. */
+    boolean isSigned() { none() }
   }
 }
 
@@ -125,6 +103,3 @@ module Url {
     }
   }
 }
-
-/** DEPRECATED: Alias for Url */
-deprecated module URL = Url;

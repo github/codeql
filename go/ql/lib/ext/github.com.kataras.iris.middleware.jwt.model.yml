@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/kataras/iris/middleware/jwt", "", False, "NewSigner", "", "", "Argument[1]", "credentials-key", "manual"]
+      - ["github.com/kataras/iris/middleware/jwt", "Signer", True, "Key", "", "", "", "credentials-key", "manual"]

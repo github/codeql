@@ -6,26 +6,26 @@ concatenation
 | html-concat.js:3:14:3:26 | `<B>${x}</B>` |
 | html-concat.js:5:21:5:47 | `Hey <s ... trong>` |
 | html-concat.js:7:18:10:24 | `\\n    H ... m!</i>` |
-| html-concat.js:13:3:13:18 | buffer |
+| html-concat.js:13:3:13:8 | buffer |
 | html-concat.js:13:3:13:18 | buffer += '<li>' |
-| html-concat.js:14:3:14:13 | buffer |
+| html-concat.js:14:3:14:8 | buffer |
 | html-concat.js:14:3:14:13 | buffer += x |
-| html-concat.js:15:3:15:15 | buffer |
+| html-concat.js:15:3:15:8 | buffer |
 | html-concat.js:15:3:15:15 | buffer += '!' |
-| tst.js:3:3:3:12 | x |
+| tst.js:3:3:3:3 | x |
 | tst.js:3:3:3:12 | x += "two" |
-| tst.js:4:3:4:14 | x |
+| tst.js:4:3:4:3 | x |
 | tst.js:4:3:4:14 | x += "three" |
-| tst.js:5:3:5:13 | x |
+| tst.js:5:3:5:3 | x |
 | tst.js:5:3:5:13 | x += "four" |
-| tst.js:12:5:12:26 | x |
+| tst.js:12:5:12:5 | x |
 | tst.js:12:5:12:26 | x += "o ... + "two" |
 | tst.js:12:10:12:18 | "one" + y |
 | tst.js:12:10:12:26 | "one" + y + "two" |
-| tst.js:14:3:14:13 | x |
+| tst.js:14:3:14:3 | x |
 | tst.js:14:3:14:13 | x += "last" |
 | tst.js:19:11:19:23 | "one" + "two" |
-| tst.js:20:3:20:25 | x |
+| tst.js:20:3:20:3 | x |
 | tst.js:20:3:20:25 | x += (" ... "four") |
 | tst.js:20:9:20:24 | "three" + "four" |
 | tst.js:21:10:21:19 | x + "five" |
@@ -43,9 +43,9 @@ concatenation
 | tst.js:61:10:61:34 | `first  ... } last` |
 | tst.js:77:15:77:37 | ["one", ... three"] |
 | tst.js:79:12:79:23 | array.join() |
-| tst.js:87:5:87:14 | x |
+| tst.js:87:5:87:5 | x |
 | tst.js:87:5:87:14 | x += 'two' |
-| tst.js:89:3:89:14 | x |
+| tst.js:89:3:89:3 | x |
 | tst.js:89:3:89:14 | x += 'three' |
 | tst.js:95:7:95:30 | x.conca ... three') |
 | tst.js:104:11:104:23 | "foo" + "bar" |
@@ -262,31 +262,31 @@ concatenationNode
 | html-concat.js:8:13:8:13 | x |
 | html-concat.js:8:15:10:23 | .\\n    \\n ... um!</i> |
 | html-concat.js:13:3:13:8 | buffer |
-| html-concat.js:13:3:13:18 | buffer |
+| html-concat.js:13:3:13:8 | buffer |
 | html-concat.js:13:3:13:18 | buffer += '<li>' |
 | html-concat.js:13:13:13:18 | '<li>' |
 | html-concat.js:14:3:14:8 | buffer |
-| html-concat.js:14:3:14:13 | buffer |
+| html-concat.js:14:3:14:8 | buffer |
 | html-concat.js:14:3:14:13 | buffer += x |
 | html-concat.js:14:13:14:13 | x |
 | html-concat.js:15:3:15:8 | buffer |
-| html-concat.js:15:3:15:15 | buffer |
+| html-concat.js:15:3:15:8 | buffer |
 | html-concat.js:15:3:15:15 | buffer += '!' |
 | html-concat.js:15:13:15:15 | '!' |
 | tst.js:3:3:3:3 | x |
-| tst.js:3:3:3:12 | x |
+| tst.js:3:3:3:3 | x |
 | tst.js:3:3:3:12 | x += "two" |
 | tst.js:3:8:3:12 | "two" |
 | tst.js:4:3:4:3 | x |
-| tst.js:4:3:4:14 | x |
+| tst.js:4:3:4:3 | x |
 | tst.js:4:3:4:14 | x += "three" |
 | tst.js:4:8:4:14 | "three" |
 | tst.js:5:3:5:3 | x |
-| tst.js:5:3:5:13 | x |
+| tst.js:5:3:5:3 | x |
 | tst.js:5:3:5:13 | x += "four" |
 | tst.js:5:8:5:13 | "four" |
 | tst.js:12:5:12:5 | x |
-| tst.js:12:5:12:26 | x |
+| tst.js:12:5:12:5 | x |
 | tst.js:12:5:12:26 | x += "o ... + "two" |
 | tst.js:12:10:12:14 | "one" |
 | tst.js:12:10:12:18 | "one" + y |
@@ -294,14 +294,14 @@ concatenationNode
 | tst.js:12:18:12:18 | y |
 | tst.js:12:22:12:26 | "two" |
 | tst.js:14:3:14:3 | x |
-| tst.js:14:3:14:13 | x |
+| tst.js:14:3:14:3 | x |
 | tst.js:14:3:14:13 | x += "last" |
 | tst.js:14:8:14:13 | "last" |
 | tst.js:19:11:19:15 | "one" |
 | tst.js:19:11:19:23 | "one" + "two" |
 | tst.js:19:19:19:23 | "two" |
 | tst.js:20:3:20:3 | x |
-| tst.js:20:3:20:25 | x |
+| tst.js:20:3:20:3 | x |
 | tst.js:20:3:20:25 | x += (" ... "four") |
 | tst.js:20:8:20:25 | ("three" + "four") |
 | tst.js:20:9:20:15 | "three" |
@@ -349,11 +349,11 @@ concatenationNode
 | tst.js:77:30:77:36 | "three" |
 | tst.js:79:12:79:23 | array.join() |
 | tst.js:87:5:87:5 | x |
-| tst.js:87:5:87:14 | x |
+| tst.js:87:5:87:5 | x |
 | tst.js:87:5:87:14 | x += 'two' |
 | tst.js:87:10:87:14 | 'two' |
 | tst.js:89:3:89:3 | x |
-| tst.js:89:3:89:14 | x |
+| tst.js:89:3:89:3 | x |
 | tst.js:89:3:89:14 | x += 'three' |
 | tst.js:89:8:89:14 | 'three' |
 | tst.js:95:7:95:7 | x |
@@ -396,46 +396,46 @@ operand
 | html-concat.js:7:18:10:24 | `\\n    H ... m!</i>` | 0 | html-concat.js:7:19:8:10 | \\n    Hello  |
 | html-concat.js:7:18:10:24 | `\\n    H ... m!</i>` | 1 | html-concat.js:8:13:8:13 | x |
 | html-concat.js:7:18:10:24 | `\\n    H ... m!</i>` | 2 | html-concat.js:8:15:10:23 | .\\n    \\n ... um!</i> |
-| html-concat.js:13:3:13:18 | buffer | 0 | html-concat.js:13:3:13:8 | buffer |
-| html-concat.js:13:3:13:18 | buffer | 1 | html-concat.js:13:13:13:18 | '<li>' |
+| html-concat.js:13:3:13:8 | buffer | 0 | html-concat.js:13:3:13:8 | buffer |
+| html-concat.js:13:3:13:8 | buffer | 1 | html-concat.js:13:13:13:18 | '<li>' |
 | html-concat.js:13:3:13:18 | buffer += '<li>' | 0 | html-concat.js:13:3:13:8 | buffer |
 | html-concat.js:13:3:13:18 | buffer += '<li>' | 1 | html-concat.js:13:13:13:18 | '<li>' |
-| html-concat.js:14:3:14:13 | buffer | 0 | html-concat.js:14:3:14:8 | buffer |
-| html-concat.js:14:3:14:13 | buffer | 1 | html-concat.js:14:13:14:13 | x |
+| html-concat.js:14:3:14:8 | buffer | 0 | html-concat.js:14:3:14:8 | buffer |
+| html-concat.js:14:3:14:8 | buffer | 1 | html-concat.js:14:13:14:13 | x |
 | html-concat.js:14:3:14:13 | buffer += x | 0 | html-concat.js:14:3:14:8 | buffer |
 | html-concat.js:14:3:14:13 | buffer += x | 1 | html-concat.js:14:13:14:13 | x |
-| html-concat.js:15:3:15:15 | buffer | 0 | html-concat.js:15:3:15:8 | buffer |
-| html-concat.js:15:3:15:15 | buffer | 1 | html-concat.js:15:13:15:15 | '!' |
+| html-concat.js:15:3:15:8 | buffer | 0 | html-concat.js:15:3:15:8 | buffer |
+| html-concat.js:15:3:15:8 | buffer | 1 | html-concat.js:15:13:15:15 | '!' |
 | html-concat.js:15:3:15:15 | buffer += '!' | 0 | html-concat.js:15:3:15:8 | buffer |
 | html-concat.js:15:3:15:15 | buffer += '!' | 1 | html-concat.js:15:13:15:15 | '!' |
-| tst.js:3:3:3:12 | x | 0 | tst.js:3:3:3:3 | x |
-| tst.js:3:3:3:12 | x | 1 | tst.js:3:8:3:12 | "two" |
+| tst.js:3:3:3:3 | x | 0 | tst.js:3:3:3:3 | x |
+| tst.js:3:3:3:3 | x | 1 | tst.js:3:8:3:12 | "two" |
 | tst.js:3:3:3:12 | x += "two" | 0 | tst.js:3:3:3:3 | x |
 | tst.js:3:3:3:12 | x += "two" | 1 | tst.js:3:8:3:12 | "two" |
-| tst.js:4:3:4:14 | x | 0 | tst.js:4:3:4:3 | x |
-| tst.js:4:3:4:14 | x | 1 | tst.js:4:8:4:14 | "three" |
+| tst.js:4:3:4:3 | x | 0 | tst.js:4:3:4:3 | x |
+| tst.js:4:3:4:3 | x | 1 | tst.js:4:8:4:14 | "three" |
 | tst.js:4:3:4:14 | x += "three" | 0 | tst.js:4:3:4:3 | x |
 | tst.js:4:3:4:14 | x += "three" | 1 | tst.js:4:8:4:14 | "three" |
-| tst.js:5:3:5:13 | x | 0 | tst.js:5:3:5:3 | x |
-| tst.js:5:3:5:13 | x | 1 | tst.js:5:8:5:13 | "four" |
+| tst.js:5:3:5:3 | x | 0 | tst.js:5:3:5:3 | x |
+| tst.js:5:3:5:3 | x | 1 | tst.js:5:8:5:13 | "four" |
 | tst.js:5:3:5:13 | x += "four" | 0 | tst.js:5:3:5:3 | x |
 | tst.js:5:3:5:13 | x += "four" | 1 | tst.js:5:8:5:13 | "four" |
-| tst.js:12:5:12:26 | x | 0 | tst.js:12:5:12:5 | x |
-| tst.js:12:5:12:26 | x | 1 | tst.js:12:10:12:26 | "one" + y + "two" |
+| tst.js:12:5:12:5 | x | 0 | tst.js:12:5:12:5 | x |
+| tst.js:12:5:12:5 | x | 1 | tst.js:12:10:12:26 | "one" + y + "two" |
 | tst.js:12:5:12:26 | x += "o ... + "two" | 0 | tst.js:12:5:12:5 | x |
 | tst.js:12:5:12:26 | x += "o ... + "two" | 1 | tst.js:12:10:12:26 | "one" + y + "two" |
 | tst.js:12:10:12:18 | "one" + y | 0 | tst.js:12:10:12:14 | "one" |
 | tst.js:12:10:12:18 | "one" + y | 1 | tst.js:12:18:12:18 | y |
 | tst.js:12:10:12:26 | "one" + y + "two" | 0 | tst.js:12:10:12:18 | "one" + y |
 | tst.js:12:10:12:26 | "one" + y + "two" | 1 | tst.js:12:22:12:26 | "two" |
-| tst.js:14:3:14:13 | x | 0 | tst.js:14:3:14:3 | x |
-| tst.js:14:3:14:13 | x | 1 | tst.js:14:8:14:13 | "last" |
+| tst.js:14:3:14:3 | x | 0 | tst.js:14:3:14:3 | x |
+| tst.js:14:3:14:3 | x | 1 | tst.js:14:8:14:13 | "last" |
 | tst.js:14:3:14:13 | x += "last" | 0 | tst.js:14:3:14:3 | x |
 | tst.js:14:3:14:13 | x += "last" | 1 | tst.js:14:8:14:13 | "last" |
 | tst.js:19:11:19:23 | "one" + "two" | 0 | tst.js:19:11:19:15 | "one" |
 | tst.js:19:11:19:23 | "one" + "two" | 1 | tst.js:19:19:19:23 | "two" |
-| tst.js:20:3:20:25 | x | 0 | tst.js:20:3:20:3 | x |
-| tst.js:20:3:20:25 | x | 1 | tst.js:20:8:20:25 | ("three" + "four") |
+| tst.js:20:3:20:3 | x | 0 | tst.js:20:3:20:3 | x |
+| tst.js:20:3:20:3 | x | 1 | tst.js:20:8:20:25 | ("three" + "four") |
 | tst.js:20:3:20:25 | x += (" ... "four") | 0 | tst.js:20:3:20:3 | x |
 | tst.js:20:3:20:25 | x += (" ... "four") | 1 | tst.js:20:8:20:25 | ("three" + "four") |
 | tst.js:20:9:20:24 | "three" + "four" | 0 | tst.js:20:9:20:15 | "three" |
@@ -472,12 +472,12 @@ operand
 | tst.js:77:15:77:37 | ["one", ... three"] | 1 | tst.js:77:23:77:27 | "two" |
 | tst.js:77:15:77:37 | ["one", ... three"] | 2 | tst.js:77:30:77:36 | "three" |
 | tst.js:79:12:79:23 | array.join() | 0 | tst.js:77:15:77:37 | ["one", ... three"] |
-| tst.js:87:5:87:14 | x | 0 | tst.js:87:5:87:5 | x |
-| tst.js:87:5:87:14 | x | 1 | tst.js:87:10:87:14 | 'two' |
+| tst.js:87:5:87:5 | x | 0 | tst.js:87:5:87:5 | x |
+| tst.js:87:5:87:5 | x | 1 | tst.js:87:10:87:14 | 'two' |
 | tst.js:87:5:87:14 | x += 'two' | 0 | tst.js:87:5:87:5 | x |
 | tst.js:87:5:87:14 | x += 'two' | 1 | tst.js:87:10:87:14 | 'two' |
-| tst.js:89:3:89:14 | x | 0 | tst.js:89:3:89:3 | x |
-| tst.js:89:3:89:14 | x | 1 | tst.js:89:8:89:14 | 'three' |
+| tst.js:89:3:89:3 | x | 0 | tst.js:89:3:89:3 | x |
+| tst.js:89:3:89:3 | x | 1 | tst.js:89:8:89:14 | 'three' |
 | tst.js:89:3:89:14 | x += 'three' | 0 | tst.js:89:3:89:3 | x |
 | tst.js:89:3:89:14 | x += 'three' | 1 | tst.js:89:8:89:14 | 'three' |
 | tst.js:95:7:95:30 | x.conca ... three') | 0 | tst.js:95:7:95:7 | x |
@@ -553,7 +553,7 @@ htmlRoot
 | html-concat.js:3:14:3:26 | `<B>${x}</B>` |
 | html-concat.js:5:21:5:47 | `Hey <s ... trong>` |
 | html-concat.js:7:18:10:24 | `\\n    H ... m!</i>` |
-| html-concat.js:13:3:13:18 | buffer |
+| html-concat.js:13:3:13:8 | buffer |
 | html-concat.js:13:3:13:18 | buffer += '<li>' |
 htmlLeaf
 | html-concat.js:2:15:2:17 | <b> |

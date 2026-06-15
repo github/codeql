@@ -5,7 +5,15 @@ extensions:
     data:
       - ["com.fasterxml.jackson.databind", "ObjectMapper", True, "convertValue", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["com.fasterxml.jackson.databind", "ObjectMapper", False, "createParser", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["com.fasterxml.jackson.databind", "ObjectMapper", True, "readTree", "(URL)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"] # result is remote, but only user-controlled if the URL is
+      - ["com.fasterxml.jackson.databind", "ObjectMapper", True, "readValue", "(InputStream,Class)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["com.fasterxml.jackson.databind", "ObjectMapper", True, "valueToTree", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["com.fasterxml.jackson.databind", "ObjectMapper", True, "valueToTree", "", "", "Argument[0].MapValue", "ReturnValue", "taint", "manual"]
       - ["com.fasterxml.jackson.databind", "ObjectMapper", True, "valueToTree", "", "", "Argument[0].MapValue.Element", "ReturnValue", "taint", "manual"]
       - ["com.fasterxml.jackson.databind", "ObjectReader", False, "createParser", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.fasterxml.jackson.databind", "ObjectMapper", True, "readValue", "(File,Class)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["com.fasterxml.jackson.databind", "ObjectMapper", True, "writeValue", "(File,Object)", "", "Argument[0]", "path-injection", "ai-manual"]

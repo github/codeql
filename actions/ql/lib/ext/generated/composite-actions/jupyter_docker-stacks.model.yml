@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["jupyter/docker-stacks", "*", "input.variant", "code-injection", "generated"]
+     - ["jupyter/docker-stacks", "*", "input.image", "code-injection", "generated"]
+     - ["jupyter/docker-stacks", "*", "input.platform", "code-injection", "generated"]

@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the Java Servlet API.
  */
+overlay[local?]
+module;
 
 import semmle.code.java.Type
 
@@ -10,7 +12,7 @@ import semmle.code.java.Type
  */
 class ServletRequest extends RefType {
   ServletRequest() {
-    this.hasQualifiedName("javax.servlet", "ServletRequest") or
+    this.hasQualifiedName(javaxOrJakarta() + ".servlet", "ServletRequest") or
     this instanceof HttpServletRequest
   }
 }
@@ -19,7 +21,9 @@ class ServletRequest extends RefType {
  * The interface `javax.servlet.http.HttpServletRequest`.
  */
 class HttpServletRequest extends RefType {
-  HttpServletRequest() { this.hasQualifiedName("javax.servlet.http", "HttpServletRequest") }
+  HttpServletRequest() {
+    this.hasQualifiedName(javaxOrJakarta() + ".servlet.http", "HttpServletRequest")
+  }
 }
 
 /**
@@ -128,9 +132,6 @@ class HttpServletRequestGetRequestUrlMethod extends Method {
   }
 }
 
-/** DEPRECATED: Alias for HttpServletRequestGetRequestUrlMethod */
-deprecated class HttpServletRequestGetRequestURLMethod = HttpServletRequestGetRequestUrlMethod;
-
 /**
  * The method `getRequestURI()` declared in `javax.servlet.http.HttpServletRequest`.
  */
@@ -141,9 +142,6 @@ class HttpServletRequestGetRequestUriMethod extends Method {
     this.getNumberOfParameters() = 0
   }
 }
-
-/** DEPRECATED: Alias for HttpServletRequestGetRequestUriMethod */
-deprecated class HttpServletRequestGetRequestURIMethod = HttpServletRequestGetRequestUriMethod;
 
 /**
  * The method `getRemoteUser()` declared in `javax.servlet.http.HttpServletRequest`.
@@ -172,7 +170,7 @@ class ServletRequestGetBodyMethod extends Method {
  */
 class ServletResponse extends RefType {
   ServletResponse() {
-    this.hasQualifiedName("javax.servlet", "ServletResponse") or
+    this.hasQualifiedName(javaxOrJakarta() + ".servlet", "ServletResponse") or
     this instanceof HttpServletResponse
   }
 }
@@ -181,7 +179,9 @@ class ServletResponse extends RefType {
  * The interface `javax.servlet.http.HttpServletResponse`.
  */
 class HttpServletResponse extends RefType {
-  HttpServletResponse() { this.hasQualifiedName("javax.servlet.http", "HttpServletResponse") }
+  HttpServletResponse() {
+    this.hasQualifiedName(javaxOrJakarta() + ".servlet.http", "HttpServletResponse")
+  }
 }
 
 /**
@@ -243,17 +243,27 @@ class ServletResponseGetOutputStreamMethod extends Method {
 
 /** The class `javax.servlet.http.Cookie`. */
 class TypeCookie extends Class {
-  TypeCookie() { this.hasQualifiedName("javax.servlet.http", "Cookie") }
+  TypeCookie() { this.hasQualifiedName(javaxOrJakarta() + ".servlet.http", "Cookie") }
 }
 
 /**
- * The method `getValue(String)` declared in `javax.servlet.http.Cookie`.
+ * The method `getValue()` declared in `javax.servlet.http.Cookie`.
  */
 class CookieGetValueMethod extends Method {
   CookieGetValueMethod() {
     this.getDeclaringType() instanceof TypeCookie and
     this.hasName("getValue") and
     this.getReturnType() instanceof TypeString
+  }
+}
+
+/**
+ * The method `setValue(String)` declared in `javax.servlet.http.Cookie`.
+ */
+class CookieSetValueMethod extends Method {
+  CookieSetValueMethod() {
+    this.getDeclaringType() instanceof TypeCookie and
+    this.hasName("setValue")
   }
 }
 
@@ -312,10 +322,20 @@ class ResponseSetHeaderMethod extends Method {
 }
 
 /**
+ * The method `setContentType` declared in `javax.servlet.http.HttpServletResponse`.
+ */
+class ResponseSetContentTypeMethod extends Method {
+  ResponseSetContentTypeMethod() {
+    this.getDeclaringType() instanceof ServletResponse and
+    this.hasName("setContentType")
+  }
+}
+
+/**
  * A class that has `javax.servlet.Servlet` as an ancestor.
  */
 class ServletClass extends Class {
-  ServletClass() { this.getAnAncestor().hasQualifiedName("javax.servlet", "Servlet") }
+  ServletClass() { this.getAnAncestor().hasQualifiedName(javaxOrJakarta() + ".servlet", "Servlet") }
 }
 
 /**
@@ -326,21 +346,18 @@ class ServletClass extends Class {
  */
 class ServletWebXmlListenerType extends RefType {
   ServletWebXmlListenerType() {
-    this.hasQualifiedName("javax.servlet", "ServletContextAttributeListener") or
-    this.hasQualifiedName("javax.servlet", "ServletContextListener") or
-    this.hasQualifiedName("javax.servlet", "ServletRequestAttributeListener") or
-    this.hasQualifiedName("javax.servlet", "ServletRequestListener") or
-    this.hasQualifiedName("javax.servlet.http", "HttpSessionAttributeListener") or
-    this.hasQualifiedName("javax.servlet.http", "HttpSessionIdListener") or
-    this.hasQualifiedName("javax.servlet.http", "HttpSessionListener")
+    this.hasQualifiedName(javaxOrJakarta() + ".servlet", "ServletContextAttributeListener") or
+    this.hasQualifiedName(javaxOrJakarta() + ".servlet", "ServletContextListener") or
+    this.hasQualifiedName(javaxOrJakarta() + ".servlet", "ServletRequestAttributeListener") or
+    this.hasQualifiedName(javaxOrJakarta() + ".servlet", "ServletRequestListener") or
+    this.hasQualifiedName(javaxOrJakarta() + ".servlet.http", "HttpSessionAttributeListener") or
+    this.hasQualifiedName(javaxOrJakarta() + ".servlet.http", "HttpSessionIdListener") or
+    this.hasQualifiedName(javaxOrJakarta() + ".servlet.http", "HttpSessionListener")
     // Listeners that are not configured in `web.xml`:
     //  - `HttpSessionActivationListener`
     //  - `HttpSessionBindingListener`
   }
 }
-
-/** DEPRECATED: Alias for ServletWebXmlListenerType */
-deprecated class ServletWebXMLListenerType = ServletWebXmlListenerType;
 
 /** Holds if `m` is a request handler method (for example `doGet` or `doPost`). */
 predicate isServletRequestMethod(Method m) {
@@ -351,7 +368,7 @@ predicate isServletRequestMethod(Method m) {
 }
 
 /** Holds if `ma` is a call that gets a request parameter. */
-predicate isRequestGetParamMethod(MethodAccess ma) {
+predicate isRequestGetParamMethod(MethodCall ma) {
   ma.getMethod() instanceof ServletRequestGetParameterMethod or
   ma.getMethod() instanceof ServletRequestGetParameterMapMethod or
   ma.getMethod() instanceof HttpServletRequestGetQueryStringMethod
@@ -360,8 +377,8 @@ predicate isRequestGetParamMethod(MethodAccess ma) {
 /** The Java EE RequestDispatcher. */
 class RequestDispatcher extends RefType {
   RequestDispatcher() {
-    this.hasQualifiedName(["javax.servlet", "jakarta.servlet"], "RequestDispatcher") or
-    this.hasQualifiedName("javax.portlet", "PortletRequestDispatcher")
+    this.hasQualifiedName(javaxOrJakarta() + ".servlet", "RequestDispatcher") or
+    this.hasQualifiedName(javaxOrJakarta() + ".portlet", "PortletRequestDispatcher")
   }
 }
 
@@ -385,7 +402,7 @@ class RequestDispatchMethod extends Method {
  * The interface `javax.servlet.ServletContext`.
  */
 class ServletContext extends RefType {
-  ServletContext() { this.hasQualifiedName("javax.servlet", "ServletContext") }
+  ServletContext() { this.hasQualifiedName(javaxOrJakarta() + ".servlet", "ServletContext") }
 }
 
 /** The `getResource` method of `ServletContext`. */
@@ -402,4 +419,9 @@ class GetServletResourceAsStreamMethod extends Method {
     this.getDeclaringType() instanceof ServletContext and
     this.hasName("getResourceAsStream")
   }
+}
+
+/** The interface `javax.servlet.http.HttpSession` */
+class HttpServletSession extends RefType {
+  HttpServletSession() { this.hasQualifiedName(javaxOrJakarta() + ".servlet.http", "HttpSession") }
 }

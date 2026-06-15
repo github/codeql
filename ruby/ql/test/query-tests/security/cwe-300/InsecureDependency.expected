@@ -1,4 +1,4 @@
-failures
+testFailures
 #select
 | Gemfile:2:8:2:28 | "http://rubygems.org" | Dependency source URL uses the unencrypted protocol HTTP. Use HTTPS instead. |
 | Gemfile:3:8:3:27 | "ftp://rubygems.org" | Dependency source URL uses the unencrypted protocol FTP. Use FTPS or SFTP instead. |

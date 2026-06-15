@@ -1,0 +1,28 @@
+name: Preview Deploy
+
+on:
+  workflow_run:
+    workflows: ["Preview Build"]
+    types:
+      - completed
+
+jobs:
+  success:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: download pr artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: ${{ github.event.workflow_run.workflow_id }}
+          name: pr
+
+      - name: save PR id
+        id: pr
+        run: echo "::set-output name=id::$(<pr-id.txt)"
+
+      - name: upload surge service
+        id: deploy
+        run: |
+          export DEPLOY_DOMAIN=https://ant-design-pro-preview-pr-${{ steps.pr.outputs.id }}.surge.sh
+          npx surge --project ./ --domain $DEPLOY_DOMAIN --token ${{ secrets.SURGE_TOKEN }}

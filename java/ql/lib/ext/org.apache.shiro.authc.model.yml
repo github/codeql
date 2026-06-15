@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.shiro.authc", "AuthenticationToken", True, "getCredentials", "()", "", "ReturnValue", "remote", "manual"]

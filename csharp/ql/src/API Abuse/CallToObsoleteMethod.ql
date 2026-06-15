@@ -6,15 +6,16 @@
  * @problem.severity warning
  * @precision very-high
  * @id cs/call-to-obsolete-method
- * @tags changeability
+ * @tags quality
  *       maintainability
+ *       changeability
  *       external/cwe/cwe-477
  */
 
 import csharp
 
 class ObsoleteAttribute extends Attribute {
-  ObsoleteAttribute() { this.getType().hasQualifiedName("System", "ObsoleteAttribute") }
+  ObsoleteAttribute() { this.getType().hasFullyQualifiedName("System", "ObsoleteAttribute") }
 }
 
 from MethodCall c, Method m

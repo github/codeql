@@ -6,8 +6,9 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/constants-only-interface
- * @tags maintainability
- *       modularity
+ * @tags quality
+ *       maintainability
+ *       readability
  */
 
 import csharp
@@ -27,6 +28,7 @@ where
   c.getAMember() instanceof ConstantField and
   forex(Member m | m = c.getAMember() |
     m instanceof ConstantField or
-    m instanceof Constructor
+    m instanceof Constructor or
+    m.isCompilerGenerated()
   )
 select c, "Class '" + c.getName() + "' only declares common constants."

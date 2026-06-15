@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["javafx.scene.web", "WebEngine", False, "load", "(String)", "", "Argument[0]", "open-url", "ai-manual"]
+      - ["javafx.scene.web", "WebEngine", False, "load", "(String)", "", "Argument[0]", "request-forgery", "ai-manual"]

@@ -19,7 +19,22 @@ import CleartextStorageCustomizations::CleartextStorage
  * added either by extending the relevant class, or by subclassing this configuration itself,
  * and amending the sources and sinks.
  */
-class Configuration extends TaintTracking::Configuration {
+module ClearTextStorageConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+module ClearTextStorageFlow = TaintTracking::Global<ClearTextStorageConfig>;
+
+/**
+ * DEPRECATED. Use the `ClearTextStorageFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "ClearTextStorage" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }

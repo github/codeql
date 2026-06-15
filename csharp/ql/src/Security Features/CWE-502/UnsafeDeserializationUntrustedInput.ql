@@ -15,6 +15,12 @@ import csharp
 import semmle.code.csharp.security.dataflow.UnsafeDeserializationQuery
 import Flow::PathGraph
 
+bindingset[e1, e2]
+pragma[inline_late]
+private predicate sameParent(DataFlow::Node e1, DataFlow::Node e2) {
+  e1.asExpr().getParent() = e2.asExpr().getParent()
+}
+
 module Flow =
   DataFlow::MergePathGraph3<TaintToObjectMethodTracking::PathNode,
     TaintToConstructorOrStaticMethodTracking::PathNode, JsonConvertTracking::PathNode,
@@ -47,8 +53,8 @@ where
   // JsonConvert static method call, but with additional unsafe typename tracking
   exists(DataFlow::Node settingsCallArg |
     JsonConvertTracking::flowPath(userInput.asPathNode3(), deserializeCallArg.asPathNode3()) and
-    TypeNameTracking::flow(_, settingsCallArg) and
-    deserializeCallArg.getNode().asExpr().getParent() = settingsCallArg.asExpr().getParent()
+    TypeNameTracking::flowTo(settingsCallArg) and
+    sameParent(deserializeCallArg.getNode(), settingsCallArg)
   )
 select deserializeCallArg, userInput, deserializeCallArg, "$@ flows to unsafe deserializer.",
   userInput, "User-provided data"

@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["anchore/sbom-action", "*", "input.syft-version", "command-injection", "manual"]
+      - ["anchore/sbom-action", "*", "input.format", "command-injection", "manual"]
+      - ["anchore/sbom-action", "*", "input.path", "command-injection", "manual"]
+      - ["anchore/sbom-action", "*", "input.file", "command-injection", "manual"]
+      - ["anchore/sbom-action", "*", "input.image", "command-injection", "manual"]

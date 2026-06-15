@@ -1,1 +1,1 @@
-//semmle-extractor-options: --javac-args -source 17 -target 17
+//semmle-extractor-options: --javac-args --release 22

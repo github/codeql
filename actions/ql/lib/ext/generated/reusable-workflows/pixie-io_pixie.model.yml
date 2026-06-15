@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["pixie-io/pixie/.github/workflows/perf_common.yaml", "*", "input.tags", "code-injection", "generated"]
+     - ["pixie-io/pixie/.github/workflows/perf_common.yaml", "*", "input.suites", "code-injection", "generated"]
+     - ["pixie-io/pixie/.github/workflows/get_image.yaml", "*", "input.image-base-name", "code-injection", "generated"]

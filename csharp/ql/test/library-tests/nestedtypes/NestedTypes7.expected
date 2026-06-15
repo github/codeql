@@ -1,1 +1,1 @@
-| nestedtypes.cs:74:11:74:19 | Outer2<> | nestedtypes.cs:77:15:77:23 | Inner2<> |
+| nestedtypes.cs:74:11:74:19 | Outer2`1 | nestedtypes.cs:77:15:77:23 | Inner2`1 |

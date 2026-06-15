@@ -61,6 +61,8 @@ private class StdSetInsert extends TaintFunction {
       output.isReturnValue()
     )
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -82,6 +84,8 @@ private class StdSetEmplace extends TaintFunction {
     input.isQualifierObject() and
     output.isReturnValue()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -95,6 +99,8 @@ private class StdSetMerge extends TaintFunction {
     input.isParameterDeref(0) and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**

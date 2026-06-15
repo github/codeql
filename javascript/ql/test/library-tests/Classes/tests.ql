@@ -57,21 +57,29 @@ query string getAccessModifier(DataFlow::PropRef ref, Expr prop) {
   if ref.isPrivateField() then result = "Private" else result = "Public"
 }
 
-class Configuration extends DataFlow::Configuration {
-  Configuration() { this = "ClassDataFlowTestingConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+module TestConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source.getEnclosingExpr().(StringLiteral).getValue().toLowerCase() = "source"
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     any(DataFlow::CallNode call | call.getCalleeName() = "sink").getAnArgument() = sink
   }
 }
 
-query predicate dataflow(DataFlow::Node pred, DataFlow::Node succ) {
-  any(Configuration c).hasFlow(pred, succ)
+module TestFlow = DataFlow::Global<TestConfig>;
+
+deprecated class LegacyConfig extends DataFlow::Configuration {
+  LegacyConfig() { this = "LegacyConfig" }
+
+  override predicate isSource(DataFlow::Node source) { TestConfig::isSource(source) }
+
+  override predicate isSink(DataFlow::Node sink) { TestConfig::isSink(sink) }
 }
+
+deprecated import utils.test.LegacyDataFlowDiff::DataFlowDiff<TestFlow, LegacyConfig>
+
+query predicate dataflow = TestFlow::flow/2;
 
 query BlockStmt staticInitializer(ClassDefinition cd) { result = cd.getAStaticInitializerBlock() }
 

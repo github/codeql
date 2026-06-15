@@ -21,11 +21,6 @@ namespace System
             public string HtmlEncode(string s) => throw null;
         }
 
-        // Generated from `System.Web.IHtmlString` in `System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public interface IHtmlString
-        {
-        }
-
         // Generated from `System.Web.IPrincipalContainer` in `System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         interface IPrincipalContainer
         {

@@ -1,8 +1,18 @@
 /**
  * Provides classes for working with the token-based representation of JavaScript programs.
  */
+overlay[local?]
+module;
 
 import javascript
+
+pragma[nomagic]
+private predicate adjacentTokens(Token token1, Token token2) {
+  exists(TopLevel top, int index |
+    tokeninfo(token1, _, top, index, _) and
+    tokeninfo(token2, _, top, index + 1, _)
+  )
+}
 
 /**
  * A token occurring in a piece of JavaScript source code.
@@ -17,8 +27,6 @@ import javascript
  * ```
  */
 class Token extends Locatable, @token {
-  override Location getLocation() { hasLocation(this, result) }
-
   /** Gets the toplevel syntactic structure to which this token belongs. */
   TopLevel getTopLevel() { tokeninfo(this, _, result, _, _) }
 
@@ -29,10 +37,7 @@ class Token extends Locatable, @token {
   string getValue() { tokeninfo(this, _, _, _, result) }
 
   /** Gets the token following this token inside the same toplevel structure, if any. */
-  Token getNextToken() {
-    this.getTopLevel() = result.getTopLevel() and
-    this.getIndex() + 1 = result.getIndex()
-  }
+  Token getNextToken() { adjacentTokens(this, result) }
 
   /** Gets the token preceding this token inside the same toplevel structure, if any. */
   Token getPreviousToken() { result.getNextToken() = this }

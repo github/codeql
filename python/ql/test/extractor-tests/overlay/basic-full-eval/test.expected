@@ -1,0 +1,152 @@
+testStringLiterals
+| greeting.py:5:20:5:28 | StringLiteral | Goodbye |
+| hello.py:3:16:3:25 | StringLiteral | __main__ |
+| lib/__init__.py:1:27:1:29 | StringLiteral |  |
+| lib/__init__.py:1:31:1:34 | StringLiteral | ,  |
+| lib/__init__.py:1:36:1:38 | StringLiteral | ! |
+| new.py:2:12:2:15 | StringLiteral | \u4e16\u754c |
+testModules
+| greeting.py:0:0:0:0 | Module greeting |
+| hello.py:0:0:0:0 | Module hello |
+| lib/__init__.py:0:0:0:0 | Module lib.__init__ |
+| lib:0:0:0:0 | Package lib |
+| new.py:0:0:0:0 | Module new |
+testFunctions
+| greeting.py:4:1:4:19 | Function get_greeting |
+| lib/__init__.py:1:1:1:18 | Function combine |
+| new.py:1:1:1:21 | Function get_new_target |
+testClasses
+testLocations
+| greeting.py:0:0:0:0 | greeting.py:0 |
+| greeting.py:1:1:1:17 | greeting.py:1 |
+| greeting.py:1:6:1:8 | greeting.py:1 |
+| greeting.py:2:1:2:17 | greeting.py:2 |
+| greeting.py:2:6:2:8 | greeting.py:2 |
+| greeting.py:4:1:4:19 | greeting.py:4 |
+| greeting.py:4:1:4:19 | greeting.py:4 |
+| greeting.py:4:1:4:19 | greeting.py:4 |
+| greeting.py:4:5:4:16 | greeting.py:4 |
+| greeting.py:5:5:5:47 | greeting.py:5 |
+| greeting.py:5:12:5:18 | greeting.py:5 |
+| greeting.py:5:12:5:47 | greeting.py:5 |
+| greeting.py:5:20:5:28 | greeting.py:5 |
+| greeting.py:5:31:5:44 | greeting.py:5 |
+| greeting.py:5:31:5:46 | greeting.py:5 |
+| hello.py:0:0:0:0 | hello.py:0 |
+| hello.py:1:1:1:22 | hello.py:1 |
+| hello.py:1:6:1:13 | hello.py:1 |
+| hello.py:3:1:3:26 | hello.py:3 |
+| hello.py:3:4:3:11 | hello.py:3 |
+| hello.py:3:4:3:25 | hello.py:3 |
+| hello.py:3:16:3:25 | hello.py:3 |
+| hello.py:4:5:4:9 | hello.py:4 |
+| hello.py:4:5:4:25 | hello.py:4 |
+| hello.py:4:5:4:25 | hello.py:4 |
+| hello.py:4:11:4:22 | hello.py:4 |
+| hello.py:4:11:4:24 | hello.py:4 |
+| lib/__init__.py:0:0:0:0 | lib/__init__.py:0 |
+| lib/__init__.py:1:1:1:18 | lib/__init__.py:1 |
+| lib/__init__.py:1:1:1:18 | lib/__init__.py:1 |
+| lib/__init__.py:1:1:1:18 | lib/__init__.py:1 |
+| lib/__init__.py:1:5:1:11 | lib/__init__.py:1 |
+| lib/__init__.py:1:13:1:13 | lib/__init__.py:1 |
+| lib/__init__.py:1:16:1:16 | lib/__init__.py:1 |
+| lib/__init__.py:1:20:1:38 | lib/__init__.py:1 |
+| lib/__init__.py:1:27:1:29 | lib/__init__.py:1 |
+| lib/__init__.py:1:27:1:38 | lib/__init__.py:1 |
+| lib/__init__.py:1:30:1:30 | lib/__init__.py:1 |
+| lib/__init__.py:1:31:1:34 | lib/__init__.py:1 |
+| lib/__init__.py:1:35:1:35 | lib/__init__.py:1 |
+| lib/__init__.py:1:36:1:38 | lib/__init__.py:1 |
+| lib:0:0:0:0 | lib:0 |
+| new.py:0:0:0:0 | new.py:0 |
+| new.py:1:1:1:21 | new.py:1 |
+| new.py:1:1:1:21 | new.py:1 |
+| new.py:1:1:1:21 | new.py:1 |
+| new.py:1:5:1:18 | new.py:1 |
+| new.py:2:5:2:15 | new.py:2 |
+| new.py:2:12:2:15 | new.py:2 |
+testFiles
+| greeting.py:0:0:0:0 | greeting.py |
+| hello.py:0:0:0:0 | hello.py |
+| lib/__init__.py:0:0:0:0 | lib/__init__.py |
+| new.py:0:0:0:0 | new.py |
+testCfgNodes
+| greeting.py:0:0:0:0 | Entry node for Module greeting |
+| greeting.py:0:0:0:0 | Exit node for Module greeting |
+| greeting.py:1:1:1:17 | ControlFlowNode for from new import * |
+| greeting.py:1:6:1:8 | ControlFlowNode for ImportExpr |
+| greeting.py:2:1:2:17 | ControlFlowNode for from lib import * |
+| greeting.py:2:6:2:8 | ControlFlowNode for ImportExpr |
+| greeting.py:4:1:4:19 | ControlFlowNode for FunctionExpr |
+| greeting.py:4:1:4:19 | Entry node for Function get_greeting |
+| greeting.py:4:1:4:19 | Exit node for Function get_greeting |
+| greeting.py:4:5:4:16 | ControlFlowNode for get_greeting |
+| greeting.py:5:5:5:47 | ControlFlowNode for Return |
+| greeting.py:5:12:5:18 | ControlFlowNode for combine |
+| greeting.py:5:12:5:47 | ControlFlowNode for combine() |
+| greeting.py:5:20:5:28 | ControlFlowNode for StringLiteral |
+| greeting.py:5:31:5:44 | ControlFlowNode for get_new_target |
+| greeting.py:5:31:5:46 | ControlFlowNode for get_new_target() |
+| hello.py:0:0:0:0 | Entry node for Module hello |
+| hello.py:0:0:0:0 | Exit node for Module hello |
+| hello.py:1:1:1:22 | ControlFlowNode for from greeting import * |
+| hello.py:1:6:1:13 | ControlFlowNode for ImportExpr |
+| hello.py:3:4:3:11 | ControlFlowNode for __name__ |
+| hello.py:3:4:3:25 | ControlFlowNode for Compare |
+| hello.py:3:16:3:25 | ControlFlowNode for StringLiteral |
+| hello.py:4:5:4:9 | ControlFlowNode for print |
+| hello.py:4:5:4:25 | ControlFlowNode for print() |
+| hello.py:4:11:4:22 | ControlFlowNode for get_greeting |
+| hello.py:4:11:4:24 | ControlFlowNode for get_greeting() |
+| lib/__init__.py:0:0:0:0 | Entry node for Module lib.__init__ |
+| lib/__init__.py:0:0:0:0 | Exit node for Module lib.__init__ |
+| lib/__init__.py:1:1:1:18 | ControlFlowNode for FunctionExpr |
+| lib/__init__.py:1:1:1:18 | Entry node for Function combine |
+| lib/__init__.py:1:1:1:18 | Exit node for Function combine |
+| lib/__init__.py:1:5:1:11 | ControlFlowNode for combine |
+| lib/__init__.py:1:13:1:13 | ControlFlowNode for a |
+| lib/__init__.py:1:16:1:16 | ControlFlowNode for b |
+| lib/__init__.py:1:20:1:38 | ControlFlowNode for Return |
+| lib/__init__.py:1:27:1:29 | ControlFlowNode for StringLiteral |
+| lib/__init__.py:1:27:1:38 | ControlFlowNode for Fstring |
+| lib/__init__.py:1:30:1:30 | ControlFlowNode for a |
+| lib/__init__.py:1:31:1:34 | ControlFlowNode for StringLiteral |
+| lib/__init__.py:1:35:1:35 | ControlFlowNode for b |
+| lib/__init__.py:1:36:1:38 | ControlFlowNode for StringLiteral |
+| lib:0:0:0:0 | Entry node for Package lib |
+| new.py:0:0:0:0 | Entry node for Module new |
+| new.py:0:0:0:0 | Exit node for Module new |
+| new.py:1:1:1:21 | ControlFlowNode for FunctionExpr |
+| new.py:1:1:1:21 | Entry node for Function get_new_target |
+| new.py:1:1:1:21 | Exit node for Function get_new_target |
+| new.py:1:5:1:18 | ControlFlowNode for get_new_target |
+| new.py:2:5:2:15 | ControlFlowNode for Return |
+| new.py:2:12:2:15 | ControlFlowNode for StringLiteral |
+testSsaVars
+| file://:0:0:0:0 | SSA Variable __name__ |
+| file://:0:0:0:0 | SSA Variable get_greeting |
+| file://:0:0:0:0 | SSA Variable print |
+| greeting.py:4:5:4:16 | SSA Variable get_greeting |
+| lib/__init__.py:1:5:1:11 | SSA Variable combine |
+| lib/__init__.py:1:13:1:13 | SSA Variable a |
+| lib/__init__.py:1:16:1:16 | SSA Variable b |
+| new.py:1:5:1:18 | SSA Variable get_new_target |
+testVars
+| Global Variable __name__ | greeting.py:0:0:0:0 | Module greeting |
+| Global Variable __name__ | hello.py:0:0:0:0 | Module hello |
+| Global Variable __name__ | lib/__init__.py:0:0:0:0 | Module lib.__init__ |
+| Global Variable __name__ | new.py:0:0:0:0 | Module new |
+| Global Variable __package__ | greeting.py:0:0:0:0 | Module greeting |
+| Global Variable __package__ | hello.py:0:0:0:0 | Module hello |
+| Global Variable __package__ | lib/__init__.py:0:0:0:0 | Module lib.__init__ |
+| Global Variable __package__ | new.py:0:0:0:0 | Module new |
+| Global Variable combine | greeting.py:0:0:0:0 | Module greeting |
+| Global Variable combine | lib/__init__.py:0:0:0:0 | Module lib.__init__ |
+| Global Variable get_greeting | greeting.py:0:0:0:0 | Module greeting |
+| Global Variable get_greeting | hello.py:0:0:0:0 | Module hello |
+| Global Variable get_new_target | greeting.py:0:0:0:0 | Module greeting |
+| Global Variable get_new_target | new.py:0:0:0:0 | Module new |
+| Global Variable print | hello.py:0:0:0:0 | Module hello |
+| Local Variable a | lib/__init__.py:1:1:1:18 | Function combine |
+| Local Variable b | lib/__init__.py:1:1:1:18 | Function combine |

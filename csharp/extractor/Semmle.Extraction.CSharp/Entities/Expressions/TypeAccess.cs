@@ -1,7 +1,7 @@
+using System.IO;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
-using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new TypeAccess(info).TryPopulate();
 
-        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Microsoft.CodeAnalysis.ITypeSymbol type, Extraction.Entities.Location location)
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Microsoft.CodeAnalysis.ITypeSymbol type, Location location)
         {
             var typeAccessInfo = new ExpressionInfo(
                 cx,
@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 ExprKind.TYPE_ACCESS,
                 parent,
                 childIndex,
-                true,
+                isCompilerGenerated: true,
                 null);
 
             return new Expression(typeAccessInfo);

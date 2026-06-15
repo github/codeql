@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["kyverno/kyverno", "*", "input.version", "code-injection", "generated"]
+     - ["kyverno/kyverno", "*", "input.sbom-name", "code-injection", "generated"]
+     - ["kyverno/kyverno", "*", "input.makefile-target", "code-injection", "generated"]

@@ -5,11 +5,11 @@
 		factory(jQuery);
 	}
 }(function ($) {
-    $("<span>" + $.trim("foo") + "</span>"); // OK
+    $("<span>" + $.trim("foo") + "</span>");
 }));
 
-$.fn.myPlugin = function (stuff, options) {
-    $("#foo").html("<span>" + options.foo + "</span>"); // NOT OK
+$.fn.myPlugin = function (stuff, options) { // $ Source
+    $("#foo").html("<span>" + options.foo + "</span>"); // $ Alert
 
-    $("#foo").html("<span>" + stuff + "</span>"); // NOT OK
+    $("#foo").html("<span>" + stuff + "</span>"); // $ Alert
 }

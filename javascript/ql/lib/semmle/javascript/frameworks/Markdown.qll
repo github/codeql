@@ -22,9 +22,6 @@ module Markdown {
      * Holds if the taint-step preserves HTML.
      */
     predicate preservesHtml() { any() }
-
-    /** DEPRECATED: Alias for preservesHtml */
-    deprecated predicate preservesHTML() { this.preservesHtml() }
   }
 
   private class MarkdownStepAsTaintStep extends TaintTracking::SharedTaintStep {
@@ -43,18 +40,6 @@ module Markdown {
         or
         call = DataFlow::moduleImport("marked").getACall()
       |
-        succ = call and
-        pred = call.getArgument(0)
-      )
-    }
-  }
-
-  /**
-   * A taint step for the `markdown-table` library.
-   */
-  private class MarkdownTableStep extends MarkdownStep {
-    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(DataFlow::CallNode call | call = DataFlow::moduleImport("markdown-table").getACall() |
         succ = call and
         pred = call.getArgument(0)
       )

@@ -9,4 +9,6 @@ query predicate kernelSpawnCallExecutions(KernelSpawnCall c) { any() }
 
 query DataFlow::Node sendCallCodeExecutions(SendCallCodeExecution e) { result = e.getCode() }
 
+query DataFlow::Node methodCallCodeExecutions(MethodCallCodeExecution e) { result = e.getCode() }
+
 query DataFlow::Node evalCallCodeExecutions(EvalCallCodeExecution e) { result = e.getCode() }

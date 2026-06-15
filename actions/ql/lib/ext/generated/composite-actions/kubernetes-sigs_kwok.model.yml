@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["kubernetes-sigs/kwok", "*", "input.command", "code-injection", "generated"]

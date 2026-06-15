@@ -13,6 +13,6 @@
 import java
 import semmle.code.java.security.HardcodedCredentialsComparison
 
-from EqualsAccess sink, HardcodedExpr source, PasswordVariable p
+from EqualsCall sink, HardcodedExpr source, PasswordVariable p
 where isHardcodedCredentialsComparison(sink, source, p)
 select source, "Hard-coded value is $@ with password variable $@.", sink, "compared", p, p.getName()

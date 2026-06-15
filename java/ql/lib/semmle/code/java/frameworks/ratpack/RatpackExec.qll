@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates related to `ratpack.exec.*`.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

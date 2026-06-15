@@ -2,7 +2,8 @@
  * @name Unnecessary lambda
  * @description A lambda is used that calls through to a function without modifying any parameters
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  * @problem.severity recommendation
  * @sub-severity high
@@ -11,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 /* f consists of a single return statement, whose value is a call. The arguments of the call are exactly the parameters of f */
 predicate simple_wrapper(Lambda l, Expr wrapped) {
@@ -38,7 +40,7 @@ predicate simple_wrapper(Lambda l, Expr wrapped) {
 }
 
 /* The expression called will refer to the same object if evaluated when the lambda is created or when the lambda is executed. */
-predicate unnecessary_lambda(Lambda l, Expr e) {
+predicate unnecessary_lambda(Lambda l, ExprWithPointsTo e) {
   simple_wrapper(l, e) and
   (
     /* plain class */

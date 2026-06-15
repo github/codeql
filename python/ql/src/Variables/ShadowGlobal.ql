@@ -4,8 +4,10 @@
  *              makes the global variable unusable within the current scope and makes the code
  *              more difficult to read.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
+ *       correctness
  * @problem.severity recommendation
  * @sub-severity low
  * @precision medium
@@ -13,6 +15,7 @@
  */
 
 import python
+private import LegacyPointsTo
 import Shadowing
 import semmle.python.types.Builtins
 
@@ -33,7 +36,9 @@ predicate shadows(Name d, GlobalVariable g, Function scope, int line) {
 
 /* pytest dynamically populates its namespace so, we cannot look directly for the pytest.fixture function */
 AttrNode pytest_fixture_attr() {
-  exists(ModuleValue pytest | result.getObject("fixture").pointsTo(pytest))
+  exists(ModuleValue pytest |
+    result.getObject("fixture").(ControlFlowNodeWithPointsTo).pointsTo(pytest)
+  )
 }
 
 Value pytest_fixture() {
@@ -42,14 +47,15 @@ Value pytest_fixture() {
     or
     call.getFunction().(CallNode).getFunction() = pytest_fixture_attr()
   |
-    call.pointsTo(result)
+    call.(ControlFlowNodeWithPointsTo).pointsTo(result)
   )
 }
 
 /* pytest fixtures require that the parameter name is also a global */
 predicate assigned_pytest_fixture(GlobalVariable v) {
   exists(NameNode def |
-    def.defines(v) and def.(DefinitionNode).getValue().pointsTo(pytest_fixture())
+    def.defines(v) and
+    def.(DefinitionNode).getValue().(ControlFlowNodeWithPointsTo).pointsTo(pytest_fixture())
   )
 }
 

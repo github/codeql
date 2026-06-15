@@ -16,11 +16,11 @@ import java
 class WaitMethod extends Method {
   WaitMethod() {
     this.getName() = "wait" and
-    this.getDeclaringType().getQualifiedName() = "java.lang.Object"
+    this.getDeclaringType() instanceof TypeObject
   }
 }
 
-from MethodAccess ma
+from MethodCall ma
 where
   ma.getMethod() instanceof WaitMethod and
   not ma.getEnclosingStmt().getEnclosingStmt*() instanceof LoopStmt

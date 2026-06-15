@@ -35,6 +35,7 @@ module Stages {
    * Computes predicates based on the AST.
    * These include SSA and basic-blocks.
    */
+  overlay[local]
   cached
   module AST {
     /**
@@ -111,6 +112,7 @@ module Stages {
     predicate ref() { 1 = 1 }
 
     private import semmle.python.dataflow.new.DataFlow::DataFlow as NewDataFlow
+    private import semmle.python.dataflow.new.internal.TypeTrackingImpl as TypeTrackingImpl
     private import semmle.python.ApiGraphs::API as API
 
     /**
@@ -121,7 +123,7 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      exists(any(NewDataFlow::TypeTracker t).append(_))
+      exists(TypeTrackingImpl::append(_, _))
       or
       exists(any(API::Node n).getAMember().getAValueReachableFromSource())
     }
@@ -175,6 +177,7 @@ module Stages {
      * Always holds.
      * Ensures that a predicate is evaluated as part of the DataFlow stage.
      */
+    overlay[local]
     cached
     predicate ref() { 1 = 1 }
 
@@ -193,7 +196,7 @@ module Stages {
       or
       exists(any(DataFlowPublic::Node node).toString())
       or
-      any(DataFlowPublic::Node node).hasLocationInfo(_, _, _, _, _)
+      exists(any(DataFlowPublic::Node node).getLocation())
       or
       DataFlowDispatch::resolveCall(_, _, _)
       or

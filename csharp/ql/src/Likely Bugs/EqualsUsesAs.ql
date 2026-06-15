@@ -5,8 +5,9 @@
  * @problem.severity warning
  * @precision medium
  * @id cs/equals-uses-as
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp

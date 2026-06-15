@@ -1,6 +1,8 @@
 /**
  * Provides classes for reasoning about `extend`-like functions.
  */
+overlay[local?]
+module;
 
 import javascript
 
@@ -96,7 +98,10 @@ private class ExtendCallDeep extends ExtendCall {
       callee = LodashUnderscore::member("merge") or
       callee = LodashUnderscore::member("mergeWith") or
       callee = LodashUnderscore::member("defaultsDeep") or
-      callee = AngularJS::angular().getAPropertyRead("merge")
+      callee = AngularJS::angular().getAPropertyRead("merge") or
+      callee =
+        [DataFlow::moduleImport("webix"), DataFlow::globalVarRef("webix")]
+            .getAPropertyRead(["extend", "copy"])
     )
   }
 
@@ -166,6 +171,7 @@ private class FunctionalExtendCallShallow extends ExtendCall {
  *
  * Since all object properties are preserved, we model this as a value-preserving step.
  */
+overlay[global]
 private class ExtendCallStep extends PreCallGraphStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ExtendCall extend |
@@ -181,6 +187,7 @@ private import semmle.javascript.dataflow.internal.PreCallGraphStep
 /**
  * A step through a cloning library, such as `clone` or `fclone`.
  */
+overlay[global]
 private class CloneStep extends PreCallGraphStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(DataFlow::CallNode call |

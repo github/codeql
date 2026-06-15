@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-SOLORIGATE_ROOT="$(dirname $0)"
+SOLORIGATE_ROOT="$(readlink -f "$(dirname $0)")"
 WORKSPACE_ROOT="$SOLORIGATE_ROOT/../../../.."
 GRPS="solorigate,-test"
 

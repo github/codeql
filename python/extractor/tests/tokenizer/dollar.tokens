@@ -1,0 +1,5 @@
+1,0-1,5:            DOLLARNAME     '$name'
+1,5-1,6:            NEWLINE        '\n'
+2,0-2,5:            DOLLARNAME     '$ßðđ0'
+2,5-2,6:            NEWLINE        '\n'
+3,0-3,0:            ENDMARKER      ''

@@ -28,16 +28,9 @@ module ZipSlip {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for zip-slip vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * A tar file header, as a source for zip slip.
    */
-  class TarHeaderSource extends Source, DataFlow::Node {
+  class TarHeaderSource extends Source {
     TarHeaderSource() {
       this =
         any(DataFlow::MethodCallNode mcn |

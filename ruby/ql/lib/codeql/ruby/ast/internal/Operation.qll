@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import AST
 private import TreeSitter
@@ -35,36 +38,62 @@ class UnaryOperationGenerated extends UnaryOperationImpl {
   final override string getOperatorImpl() { result = g.getOperator() }
 }
 
-class SplatExprReal extends UnaryOperationImpl, TSplatExprReal {
-  private Ruby::SplatArgument g;
+abstract class NotExprImpl extends UnaryOperationImpl, TNotExpr { }
 
-  SplatExprReal() { this = TSplatExprReal(g) }
+class NotExprReal extends NotExprImpl, UnaryOperationGenerated, TNotExprReal { }
 
-  final override string getOperatorImpl() { result = "*" }
-
-  final override Expr getOperandImpl() {
-    toGenerated(result) = g.getChild() or
-    synthChild(this, 0, result)
-  }
-}
-
-class SplatExprSynth extends UnaryOperationImpl, TSplatExprSynth {
-  final override string getOperatorImpl() { result = "*" }
+class NotExprSynth extends NotExprImpl, TNotExprSynth {
+  final override string getOperatorImpl() { result = "!" }
 
   final override Expr getOperandImpl() { synthChild(this, 0, result) }
 }
 
-class HashSplatExprImpl extends UnaryOperationImpl, THashSplatExpr {
-  private Ruby::HashSplatArgument g;
+abstract class SplatExprImpl extends UnaryOperationImpl, TSplatExpr {
+  final override string getOperatorImpl() { result = "*" }
+}
 
-  HashSplatExprImpl() { this = THashSplatExpr(g) }
+class SplatExprReal extends SplatExprImpl, TSplatExprReal {
+  private Ruby::SplatArgument g;
+
+  SplatExprReal() { this = TSplatExprReal(g) }
 
   final override Expr getOperandImpl() {
     toGenerated(result) = g.getChild() or
     synthChild(this, 0, result)
   }
+}
 
+class SplatExprSynth extends SplatExprImpl, TSplatExprSynth {
+  final override Expr getOperandImpl() { synthChild(this, 0, result) }
+}
+
+abstract class HashSplatExprImpl extends UnaryOperationImpl, THashSplatExpr {
   final override string getOperatorImpl() { result = "**" }
+}
+
+class HashSplatExprReal extends HashSplatExprImpl, THashSplatExprReal {
+  private Ruby::HashSplatArgument g;
+
+  HashSplatExprReal() { this = THashSplatExprReal(g) }
+
+  final override Expr getOperandImpl() {
+    toGenerated(result) = g.getChild() or
+    synthChild(this, 0, result)
+  }
+}
+
+class HashSplatExprSynth extends HashSplatExprImpl, THashSplatExprSynth {
+  final override Expr getOperandImpl() { synthChild(this, 0, result) }
+}
+
+abstract class DefinedExprImpl extends UnaryOperationImpl, TDefinedExpr { }
+
+class DefinedExprReal extends DefinedExprImpl, UnaryOperationGenerated, TDefinedExprReal { }
+
+class DefinedExprSynth extends DefinedExprImpl, TDefinedExprSynth {
+  final override string getOperatorImpl() { result = "defined?" }
+
+  final override Expr getOperandImpl() { synthChild(this, 0, result) }
 }
 
 abstract class BinaryOperationImpl extends OperationImpl, MethodCallImpl, TBinaryOperation {

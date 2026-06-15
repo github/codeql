@@ -1,2 +1,1 @@
-// NOT OK
-return 42;
+return 42; // $ Alert

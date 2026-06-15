@@ -1,15 +1,14 @@
-﻿using Microsoft.Build.Construction;
-using Microsoft.Build.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
-using Semmle.Util.Logging;
+using System.Linq;
+using Microsoft.Build.Construction;
+using Microsoft.Build.Exceptions;
 
 namespace Semmle.Autobuild.Shared
 {
     /// <summary>
-    /// A solution file, extension .sln.
+    /// A solution file, extension .sln or .slnx.
     /// </summary>
     public interface ISolution : IProjectOrSolution
     {
@@ -73,7 +72,7 @@ namespace Semmle.Autobuild.Shared
                     return;
                 }
 
-                builder.Log(Severity.Info, $"Unable to read solution file {path}.");
+                builder.Logger.LogInfo($"Unable to read solution file {path}.");
                 includedProjects = Array.Empty<Project<TAutobuildOptions>>();
                 return;
             }

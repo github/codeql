@@ -1,3 +1,0 @@
-import javascript
-import semmle.javascript.security.dataflow.TaintedPathQuery
-import testUtilities.ConsistencyChecking

@@ -1,0 +1,54 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["<_ as mysql::conn::queryable::Queryable>::query", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_opt", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_drop", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_first", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_first_opt", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_fold", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_fold_opt", "Argument[0]", "sql-injection", "manual"]
+      - ["<mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::query_iter", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_map", "Argument[0]", "sql-injection", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_map_opt", "Argument[0]", "sql-injection", "manual"]
+      - ["<mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::prep", "Argument[0]", "sql-injection", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["<_ as mysql::conn::queryable::Queryable>::query", "ReturnValue.Field[core::result::Result::Ok(0)].Element", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec", "ReturnValue.Field[core::result::Result::Ok(0)].Element", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_opt", "ReturnValue.Field[core::result::Result::Ok(0)].Element.Field[core::result::Result::Ok(0)]", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec_opt", "ReturnValue.Field[core::result::Result::Ok(0)].Element.Field[core::result::Result::Ok(0)]", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_first", "ReturnValue.Field[core::result::Result::Ok(0)].Field[core::option::Option::Some(0)]", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec_first", "ReturnValue.Field[core::result::Result::Ok(0)].Field[core::option::Option::Some(0)]", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_first_opt", "ReturnValue.Field[core::result::Result::Ok(0)].Field[core::option::Option::Some(0)].Field[core::result::Result::Ok(0)]", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec_first_opt", "ReturnValue.Field[core::result::Result::Ok(0)].Field[core::option::Option::Some(0)].Field[core::result::Result::Ok(0)]", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_fold", "Argument[2].Parameter[1]", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec_fold", "Argument[3].Parameter[1]", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_fold_opt", "Argument[2].Parameter[1].Field[core::result::Result::Ok(0)]", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec_fold_opt", "Argument[3].Parameter[1].Field[core::result::Result::Ok(0)]", "database", "manual"]
+      - ["<mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::query_iter", "ReturnValue.Field[core::result::Result::Ok(0)].Element", "database", "manual"]
+      - ["<mysql::conn::pool::PooledConn as mysql::conn::queryable::Queryable>::exec_iter", "ReturnValue.Field[core::result::Result::Ok(0)].Element", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_map", "Argument[1].Parameter[0]", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_map_opt", "Argument[1].Parameter[0].Field[core::result::Result::Ok(0)]", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec_map", "Argument[2].Parameter[0]", "database", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec_map_opt", "Argument[2].Parameter[0].Field[core::result::Result::Ok(0)]", "database", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["<_ as mysql::conn::queryable::Queryable>::query_fold", "Argument[1]", "Argument[2].Parameter[0]", "value", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_fold", "Argument[2].ReturnValue", "ReturnValue.Field[core::result::Result::Ok(0)]", "value", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec_fold", "Argument[2]", "Argument[3].Parameter[0]", "value", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec_fold", "Argument[3].ReturnValue", "ReturnValue.Field[core::result::Result::Ok(0)]", "value", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_fold_opt", "Argument[1]", "Argument[2].Parameter[0]", "value", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_fold_opt", "Argument[2].ReturnValue", "ReturnValue.Field[core::result::Result::Ok(0)]", "value", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec_fold_opt", "Argument[2]", "Argument[3].Parameter[0]", "value", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec_fold_opt", "Argument[3].ReturnValue", "ReturnValue.Field[core::result::Result::Ok(0)]", "value", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_map", "Argument[1].ReturnValue", "ReturnValue.Field[core::result::Result::Ok(0)].Element", "value", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::query_map_opt", "Argument[1].ReturnValue", "ReturnValue.Field[core::result::Result::Ok(0)].Element", "value", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec_map", "Argument[2].ReturnValue", "ReturnValue.Field[core::result::Result::Ok(0)].Element", "value", "manual"]
+      - ["<_ as mysql::conn::queryable::Queryable>::exec_map_opt", "Argument[2].ReturnValue", "ReturnValue.Field[core::result::Result::Ok(0)].Element", "value", "manual"]

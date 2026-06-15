@@ -1,0 +1,1 @@
+print("Hello world! This line of code has no newline at the end.")

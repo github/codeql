@@ -64,9 +64,6 @@ module ExternalApiUsedWithUntrustedData {
     SafeExternalApiPackage() { exists(API::moduleImport(this)) }
   }
 
-  /** DEPRECATED: Alias for SafeExternalApiPackage */
-  deprecated class SafeExternalAPIPackage = SafeExternalApiPackage;
-
   private class DefaultSafeExternalApiPackage extends SafeExternalApiPackage {
     DefaultSafeExternalApiPackage() {
       // Promise libraries are safe and generate too much noise if included
@@ -83,9 +80,6 @@ module ExternalApiUsedWithUntrustedData {
    */
   abstract class SafeExternalApiFunction extends API::Node { }
 
-  /** DEPRECATED: Alias for SafeExternalApiFunction */
-  deprecated class SafeExternalAPIFunction = SafeExternalApiFunction;
-
   /** Holds if data read from a use of `f` may originate from an imported package. */
   private predicate mayComeFromLibrary(API::Node f) {
     // base case: import
@@ -94,7 +88,7 @@ module ExternalApiUsedWithUntrustedData {
       not path instanceof SafeExternalApiPackage and
       // Exclude paths that can be resolved to a file in the project
       not exists(Import imprt |
-        imprt.getImportedPath().getValue() = path and exists(imprt.getImportedModule())
+        imprt.getImportedPathString() = path and exists(imprt.getImportedModule())
       )
     )
     or
@@ -185,7 +179,6 @@ module ExternalApiUsedWithUntrustedData {
       or
       exists(string member |
         node = base.getMember(member) and
-        not node = base.getUnknownMember() and
         not isNumericString(member) and
         not (member = "default" and base = API::moduleImport(_)) and
         not member = "then" // use the 'promised' edges for .then callbacks
@@ -195,10 +188,7 @@ module ExternalApiUsedWithUntrustedData {
         else result = basename + "['" + member.regexpReplaceAll("'", "\\'") + "']"
       )
       or
-      (
-        node = base.getUnknownMember() or
-        node = base.getMember(any(string s | isNumericString(s)))
-      ) and
+      node = base.getArrayElement() and
       result = basename + "[]"
       or
       // just collapse promises
@@ -258,7 +248,6 @@ module ExternalApiUsedWithUntrustedData {
       |
         TaintTracking::sharedTaintStep(arg, _) or
         DataFlow::SharedFlowStep::step(arg, _) or
-        DataFlow::SharedFlowStep::step(arg, _, _, _) or
         DataFlow::SharedFlowStep::loadStep(arg, _, _) or
         DataFlow::SharedFlowStep::storeStep(arg, _, _) or
         DataFlow::SharedFlowStep::loadStoreStep(arg, _, _)
@@ -371,6 +360,3 @@ module ExternalApiUsedWithUntrustedData {
     }
   }
 }
-
-/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
-deprecated module ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;

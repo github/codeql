@@ -5,25 +5,25 @@ CodeQL overview
 
 Learn more about how CodeQL works, the languages and libraries supported by CodeQL analysis, and the tools you can use to run CodeQL on open source projects.
 
-- :doc:`About CodeQL <about-codeql>`: CodeQL is the analysis engine used by developers to automate security checks, and by security researchers to perform variant analysis. 
+- :doc:`About CodeQL <about-codeql>`: CodeQL is the analysis engine used by developers to automate security checks, and by security researchers to perform variant analysis.
 
 - :doc:`Supported languages and frameworks <supported-languages-and-frameworks>`: View the languages, libraries, and frameworks supported in the latest version of CodeQL.
 
 - :doc:`System requirements <system-requirements>`: View the system requirements for running the latest version of CodeQL.
 
+- :doc:`CodeQL change logs <codeql-changelog/index>`: Display a list of the CodeQL change logs.
+
 - :doc:`CodeQL tools <codeql-tools>`: GitHub provides the CodeQL command-line interface and CodeQL for Visual Studio Code for performing CodeQL analysis on open source codebases.
 
-- :doc:`CodeQL glossary <codeql-glossary>`: An overview of the technical terms and concepts in CodeQL. 
+- :doc:`CodeQL glossary <codeql-glossary>`: An overview of the technical terms and concepts in CodeQL.
 
-.. toctree:: 
+.. toctree::
    :maxdepth: 1
    :hidden:
 
    about-codeql
    supported-languages-and-frameworks
    system-requirements
+   codeql-changelog/index
    codeql-tools
    codeql-glossary
-
-
-

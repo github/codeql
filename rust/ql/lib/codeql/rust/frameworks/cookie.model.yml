@@ -1,0 +1,40 @@
+# Models for the `cookie` crate.
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      - ["<cookie::Cookie>::build", "ReturnValue", "cookie-create", "manual"]
+      - ["<cookie::builder::CookieBuilder>::new", "ReturnValue", "cookie-create", "manual"]
+      - ["<cookie::Cookie>::new", "ReturnValue", "cookie-create", "manual"]
+      - ["<cookie::Cookie>::named", "ReturnValue", "cookie-create", "manual"]
+      - ["<cookie::Cookie as core::convert::From>::from", "ReturnValue", "cookie-create", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["<cookie::builder::CookieBuilder>::build", "Argument[self]", "cookie-use", "manual"]
+      - ["<cookie::builder::CookieBuilder>::finish", "Argument[self]", "cookie-use", "manual"]
+      - ["<cookie::jar::CookieJar>::add", "Argument[0]", "cookie-use", "manual"]
+      - ["<cookie::jar::CookieJar>::add_original", "Argument[0]", "cookie-use", "manual"]
+      - ["<cookie::secure::signed::SignedJar>::add", "Argument[0]", "cookie-use", "manual"]
+      - ["<cookie::secure::signed::SignedJar>::add_original", "Argument[0]", "cookie-use", "manual"]
+      - ["<cookie::secure::private::PrivateJar>::add", "Argument[0]", "cookie-use", "manual"]
+      - ["<cookie::secure::private::PrivateJar>::add_original", "Argument[0]", "cookie-use", "manual"]
+      - ["<cookie::secure::key::Key>::from", "Argument[0].Reference", "credentials-key", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: summaryModel
+    data:
+      - ["<cookie::builder::CookieBuilder>::secure", "Argument[self].OptionalBarrier[cookie-secure-arg0]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::builder::CookieBuilder>::partitioned", "Argument[self].OptionalBarrier[cookie-partitioned-arg0]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::builder::CookieBuilder>::expires", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::builder::CookieBuilder>::max_age", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::builder::CookieBuilder>::domain", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::builder::CookieBuilder>::path", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::builder::CookieBuilder>::http_only", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::builder::CookieBuilder>::same_site", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::builder::CookieBuilder>::permanent", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::builder::CookieBuilder>::removal", "Argument[self]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::Cookie>::set_secure", "Argument[self].OptionalBarrier[cookie-secure-arg0]", "ReturnValue", "taint", "manual"]
+      - ["<cookie::Cookie>::set_partitioned", "Argument[self].OptionalBarrier[cookie-partitioned-arg0]", "ReturnValue", "taint", "manual"]

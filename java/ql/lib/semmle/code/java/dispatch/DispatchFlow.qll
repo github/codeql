@@ -8,7 +8,7 @@
 
 import java
 private import VirtualDispatch
-private import semmle.code.java.dataflow.internal.BaseSSA
+private import semmle.code.java.dataflow.internal.BaseSSA as Base
 private import semmle.code.java.dataflow.internal.DataFlowUtil as DataFlow
 private import semmle.code.java.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.code.java.dataflow.InstanceAccess
@@ -19,7 +19,7 @@ private import codeql.typetracking.TypeTracking
 /**
  * Gets a viable dispatch target for `ma`. This is the input dispatch relation.
  */
-private Method viableImpl_inp(MethodAccess ma) { result = viableImpl_v2(ma) }
+private Method viableImpl_inp(MethodCall ma) { result = viableImpl_v2(ma) }
 
 private Callable dispatchCand(Call c) {
   c instanceof ConstructorCall and result = c.getCallee().getSourceDeclaration()
@@ -31,7 +31,6 @@ private Callable dispatchCand(Call c) {
 /**
  * Holds if `t` and all its enclosing types are public.
  */
-pragma[assume_small_delta]
 private predicate veryPublic(RefType t) {
   t.isPublic() and
   (
@@ -100,7 +99,7 @@ private predicate trackedMethodOnType(Method m, SrcRefType t) {
  * by the type constructed by `cie`. Thus the dispatch from `ma` to `m` will
  * only be included if `cie` flows to the qualifier of `ma`.
  */
-private predicate dispatchOrigin(ClassInstanceExpr cie, MethodAccess ma, Method m) {
+private predicate dispatchOrigin(ClassInstanceExpr cie, MethodCall ma, Method m) {
   m = viableImpl_inp(ma) and
   not m = ma.getMethod().getSourceDeclaration() and
   trackedMethodOnType(m, cie.getConstructedType().getSourceDeclaration())
@@ -134,7 +133,7 @@ private module TypeTrackingSteps {
   class LocalSourceNode extends RelevantNode {
     LocalSourceNode() {
       this.asExpr() instanceof Call or
-      this.asExpr() instanceof RValue or
+      this.asExpr() instanceof VarRead or
       this instanceof DataFlow::ParameterNode or
       this instanceof DataFlow::ImplicitVarargsArray or
       this.asExpr() instanceof ArrayInit or
@@ -163,14 +162,28 @@ private module TypeTrackingSteps {
     storeContents = loadContents
   }
 
-  predicate simpleLocalSmallStep(Node n1, Node n2) {
-    exists(BaseSsaVariable v, BaseSsaVariable def |
-      def.(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
-      or
-      def.(BaseSsaImplicitInit).isParameterDefinition(n1.asParameter())
+  /**
+   * Holds if `n` is a read of an SSA variable that is ultimately defined by `def`.
+   *
+   * This includes reads of captured variables even though they are not technically
+   * local steps, but treating them as local is useful for type tracking purposes.
+   */
+  private predicate readsSsa(Node n, Base::SsaDefinition def) {
+    exists(Base::SsaDefinition v |
+      v.getAnUltimateDefinition() = def or
+      v.(Base::SsaCapturedDefinition).getAnUltimateCapturedDefinition() = def
     |
-      v.getAnUltimateDefinition() = def and
-      v.getAUse() = n2.asExpr()
+      v.getARead() = n.asExpr()
+    )
+  }
+
+  predicate simpleLocalSmallStep(Node n1, Node n2) {
+    exists(Base::SsaDefinition def |
+      def.(Base::SsaExplicitWrite).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
+      or
+      def.(Base::SsaParameterInit).getParameter() = n1.asParameter()
+    |
+      readsSsa(n2, def)
     )
     or
     exists(Callable c | n1.(DataFlow::InstanceParameterNode).getCallable() = c |
@@ -198,10 +211,10 @@ private module TypeTrackingSteps {
       enum.getAnEnumConstant().getAnAssignedValue() = n1.asExpr() and
       getValue.getDeclaringType() = enum and
       getValue.hasName("valueOf") and
-      n2.asExpr().(MethodAccess).getMethod() = getValue
+      n2.asExpr().(MethodCall).getMethod() = getValue
     )
     or
-    exists(Variable v, MethodAccess put, MethodAccess get |
+    exists(Variable v, MethodCall put, MethodCall get |
       put.getArgument(1) = n1.asExpr() and
       put.getMethod().(MapMethod).hasName("put") and
       put.getQualifier() = v.getAnAccess() and
@@ -210,22 +223,21 @@ private module TypeTrackingSteps {
       n2.asExpr() = get
     )
     or
-    exists(Variable v, MethodAccess add |
+    exists(Variable v, MethodCall add |
       add.getAnArgument() = n1.asExpr() and
       add.getMethod().(CollectionMethod).hasName("add") and
       add.getQualifier() = v.getAnAccess()
     |
-      exists(MethodAccess get |
+      exists(MethodCall get |
         get.getQualifier() = v.getAnAccess() and
         get.getMethod().(CollectionMethod).hasName("get") and
         n2.asExpr() = get
       )
       or
-      exists(EnhancedForStmt for, BaseSsaVariable ssa, BaseSsaVariable def |
-        for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
+      exists(EnhancedForStmt for, Base::SsaDefinition def |
+        for.getVariable() = def.(Base::SsaExplicitWrite).getDefiningExpr() and
         for.getExpr() = v.getAnAccess() and
-        ssa.getAnUltimateDefinition() = def and
-        ssa.getAUse() = n2.asExpr()
+        readsSsa(n2, def)
       )
     )
   }
@@ -237,7 +249,7 @@ private module TypeTrackingSteps {
       enum.getAnEnumConstant().getAnAssignedValue() = n1.asExpr() and
       getValue.getDeclaringType() = enum and
       getValue.hasName("values") and
-      n2.asExpr().(MethodAccess).getMethod() = getValue and
+      n2.asExpr().(MethodCall).getMethod() = getValue and
       f = ContentArray()
     )
     or
@@ -254,22 +266,21 @@ private module TypeTrackingSteps {
     exists(AssignExpr a, Variable v |
       a.getSource() = n1.asExpr() and
       a.getDest().(ArrayAccess).getArray() = v.getAnAccess() and
-      n2.asExpr() = v.getAnAccess().(RValue) and
+      n2.asExpr() = v.getAnAccess().(VarRead) and
       f = ContentArray()
     )
   }
 
   predicate loadStep(Node n1, LocalSourceNode n2, Content f) {
-    exists(BaseSsaVariable v, BaseSsaVariable def |
+    exists(Base::SsaDefinition def |
       exists(EnhancedForStmt for |
-        for.getVariable() = def.(BaseSsaUpdate).getDefiningExpr() and
+        for.getVariable() = def.(Base::SsaExplicitWrite).getDefiningExpr() and
         for.getExpr() = n1.asExpr() and
         n1.getType() instanceof Array and
         f = ContentArray()
       )
     |
-      v.getAnUltimateDefinition() = def and
-      v.getAUse() = n2.asExpr()
+      readsSsa(n2, def)
     )
     or
     n2.asExpr().(ArrayAccess).getArray() = n1.asExpr()
@@ -301,10 +312,10 @@ private module TypeTrackingSteps {
 private predicate lambdaSource(RelevantNode n) { dispatchOrigin(n.asExpr(), _, _) }
 
 private predicate lambdaSink(RelevantNode n) {
-  exists(MethodAccess ma | dispatchOrigin(_, ma, _) | n = DataFlow::getInstanceArgument(ma))
+  exists(MethodCall ma | dispatchOrigin(_, ma, _) | n = DataFlow::getInstanceArgument(ma))
 }
 
-private signature Method methodDispatchSig(MethodAccess ma);
+private signature Method methodDispatchSig(MethodCall ma);
 
 private module TrackLambda<methodDispatchSig/1 lambdaDispatch0> {
   private Callable dispatch(Call c) {
@@ -335,7 +346,7 @@ private module TrackLambda<methodDispatchSig/1 lambdaDispatch0> {
     )
   }
 
-  private module TtInput implements TypeTrackingInput {
+  private module TtInput implements TypeTrackingInput<Location> {
     import TypeTrackingSteps
 
     predicate callStep(Node n1, LocalSourceNode n2) { argParamCand(n1, n2) }
@@ -343,17 +354,17 @@ private module TrackLambda<methodDispatchSig/1 lambdaDispatch0> {
     predicate returnStep(Node n1, LocalSourceNode n2) {
       exists(ReturnStmt ret, Method m |
         ret.getEnclosingCallable() = m and
-        ret.getResult() = n1.asExpr() and
+        ret.getExpr() = n1.asExpr() and
         m = dispatch(n2.asExpr())
       )
     }
   }
 
-  private import TypeTracking<TtInput>::TypeTrack<lambdaSource/1>::Graph<lambdaSink/1>
+  private import TypeTracking<Location, TtInput>::TypeTrack<lambdaSource/1>::Graph<lambdaSink/1>
 
   private predicate edgePlus(PathNode n1, PathNode n2) = fastTC(edges/2)(n1, n2)
 
-  private predicate pairCand(PathNode p1, PathNode p2, Method m, MethodAccess ma) {
+  private predicate pairCand(PathNode p1, PathNode p2, Method m, MethodCall ma) {
     exists(ClassInstanceExpr cie |
       dispatchOrigin(cie, ma, m) and
       p1.getNode() = DataFlow::exprNode(cie) and
@@ -368,7 +379,7 @@ private module TrackLambda<methodDispatchSig/1 lambdaDispatch0> {
    * declares or inherits the tracked method `result` to the qualifier of `ma` such
    * that `ma` may dispatch to `result`.
    */
-  Method lambdaDispatch(MethodAccess ma) {
+  Method lambdaDispatch(MethodCall ma) {
     exists(PathNode p1, PathNode p2 |
       (p1 = p2 or edgePlus(p1, p2)) and
       pairCand(p1, p2, result, ma)
@@ -376,30 +387,30 @@ private module TrackLambda<methodDispatchSig/1 lambdaDispatch0> {
   }
 }
 
-private Method noDisp(MethodAccess ma) { none() }
+private Method noDisp(MethodCall ma) { none() }
 
 pragma[nomagic]
-private Method d1(MethodAccess ma) { result = TrackLambda<noDisp/1>::lambdaDispatch(ma) }
+private Method d1(MethodCall ma) { result = TrackLambda<noDisp/1>::lambdaDispatch(ma) }
 
 pragma[nomagic]
-private Method d2(MethodAccess ma) { result = TrackLambda<d1/1>::lambdaDispatch(ma) }
+private Method d2(MethodCall ma) { result = TrackLambda<d1/1>::lambdaDispatch(ma) }
 
 pragma[nomagic]
-private Method d3(MethodAccess ma) { result = TrackLambda<d2/1>::lambdaDispatch(ma) }
+private Method d3(MethodCall ma) { result = TrackLambda<d2/1>::lambdaDispatch(ma) }
 
 pragma[nomagic]
-private Method d4(MethodAccess ma) { result = TrackLambda<d3/1>::lambdaDispatch(ma) }
+private Method d4(MethodCall ma) { result = TrackLambda<d3/1>::lambdaDispatch(ma) }
 
 pragma[nomagic]
-private Method d5(MethodAccess ma) { result = TrackLambda<d4/1>::lambdaDispatch(ma) }
+private Method d5(MethodCall ma) { result = TrackLambda<d4/1>::lambdaDispatch(ma) }
 
 pragma[nomagic]
-private Method d6(MethodAccess ma) { result = TrackLambda<d5/1>::lambdaDispatch(ma) }
+private Method d6(MethodCall ma) { result = TrackLambda<d5/1>::lambdaDispatch(ma) }
 
 /**
  * Gets a viable dispatch target for `ma`. This is the output dispatch relation.
  */
-Method viableImpl_out(MethodAccess ma) {
+Method viableImpl_out(MethodCall ma) {
   result = viableImpl_inp(ma) and
   (result = d6(ma) or not dispatchOrigin(_, ma, result))
 }

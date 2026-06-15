@@ -1,0 +1,50 @@
+NameOf.cs:
+#    4| [Class] Program
+#    6|   6: [Method] M
+#    6|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#    6|       0: [Parameter] x
+#    6|         -1: [TypeMention] int
+#    7|     4: [BlockStmt] {...}
+#    8|       0: [LocalVariableDeclStmt] ... ...;
+#    8|         0: [LocalVariableDeclAndInitExpr] String test1 = ...
+#    8|           -1: [TypeMention] string
+#    8|           0: [LocalVariableAccess] access to local variable test1
+#    8|           1: [NameOfExpr] nameof(...)
+#    8|             0: [ParameterAccess] access to parameter x
+#    9|       1: [LocalVariableDeclStmt] ... ...;
+#    9|         0: [LocalVariableDeclAndInitExpr] String test2 = ...
+#    9|           -1: [TypeMention] string
+#    9|           0: [LocalVariableAccess] access to local variable test2
+#    9|           1: [NameOfExpr] nameof(...)
+#    9|             0: [MethodAccess] access to method M
+#   10|       2: [LocalVariableDeclStmt] ... ...;
+#   10|         0: [LocalVariableDeclAndInitExpr] String test3 = ...
+#   10|           -1: [TypeMention] string
+#   10|           0: [LocalVariableAccess] access to local variable test3
+#   10|           1: [NameOfExpr] nameof(...)
+#   10|             0: [TypeAccess] access to type Program
+#   10|               0: [TypeMention] Program
+#   11|       3: [LocalVariableDeclStmt] ... ...;
+#   11|         0: [LocalVariableDeclAndInitExpr] String test4 = ...
+#   11|           -1: [TypeMention] string
+#   11|           0: [LocalVariableAccess] access to local variable test4
+#   11|           1: [NameOfExpr] nameof(...)
+#   11|             0: [TypeAccess] access to type String
+#   11|               0: [TypeMention] string
+#   12|       4: [LocalVariableDeclStmt] ... ...;
+#   12|         0: [LocalVariableDeclAndInitExpr] String test5 = ...
+#   12|           -1: [TypeMention] string
+#   12|           0: [LocalVariableAccess] access to local variable test5
+#   12|           1: [NameOfExpr] nameof(...)
+#   12|             0: [TypeAccess] access to type List<Int32>
+#   12|               0: [TypeMention] List<int>
+#   12|                 1: [TypeMention] int
+#   13|       5: [LocalVariableDeclStmt] ... ...;
+#   13|         0: [LocalVariableDeclAndInitExpr] String test6 = ...
+#   13|           -1: [TypeMention] string
+#   13|           0: [LocalVariableAccess] access to local variable test6
+#   13|           1: [NameOfExpr] nameof(...)
+#   13|             0: [TypeAccess] access to type List`1
+#   13|               0: [TypeMention] List<T>
+#   13|                 1: [TypeMention] T

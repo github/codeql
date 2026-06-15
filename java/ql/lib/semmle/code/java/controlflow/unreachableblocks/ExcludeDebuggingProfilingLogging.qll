@@ -1,3 +1,9 @@
+/**
+ * DEPRECATED: This module is no longer maintained, and will be removed in a future release.
+ */
+overlay[local?]
+deprecated module;
+
 import java
 import semmle.code.java.controlflow.UnreachableBlocks
 

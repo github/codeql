@@ -6,7 +6,8 @@
  * @problem.severity error
  * @precision high
  * @id java/unchecked-cast-in-equals
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  */
 
@@ -32,7 +33,7 @@ predicate hasTypeTest(Variable v) {
   or
   any(ClassExpr c).getExpr() = v.getAnAccess()
   or
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     ma.getMethod().getName() = "getClass" and
     ma.getQualifier() = v.getAnAccess()
   )
@@ -51,7 +52,7 @@ class ReferenceEquals extends EqualsMethod {
     exists(BlockStmt b, ReturnStmt ret, EQExpr eq |
       this.getBody() = b and
       b.getStmt(0) = ret and
-      ret.getResult() = eq and
+      ret.getExpr() = eq and
       eq.getAnOperand() = this.getAParameter().getAnAccess() and
       (eq.getAnOperand() instanceof ThisAccess or eq.getAnOperand() instanceof FieldAccess)
     )
@@ -71,7 +72,7 @@ where
     not hasTypeTest(p) and
     // If the parameter is passed to a method for which we don't have the source
     // we assume it's ok
-    not exists(MethodAccess ma |
+    not exists(MethodCall ma |
       not exists(ma.getMethod().getBody()) and
       ma.getAnArgument() = p.getAnAccess()
     )

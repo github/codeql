@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.http.util", "EntityUtils", True, "updateEntity", "(HttpResponse,HttpEntity)", "", "Argument[1]", "xss", "manual"]
+      - ["org.apache.http.util", "EntityUtils", True, "updateEntity", "(HttpResponse,HttpEntity)", "", "Argument[1]", "html-injection", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

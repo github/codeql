@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["ocaml/dune", "*", "input.OCAML_COMPILER", "code-injection", "generated"]
+     - ["ocaml/dune", "*", "input.DKML_COMPILER", "code-injection", "generated"]
+     - ["ocaml/dune", "*", "input.DISKUV_OPAM_REPOSITORY", "code-injection", "generated"]
+     - ["ocaml/dune", "*", "input.CONF_DKML_CROSS_TOOLCHAIN", "code-injection", "generated"]
+     - ["ocaml/dune", "*", "input.FDOPEN_OPAMEXE_BOOTSTRAP", "code-injection", "generated"]

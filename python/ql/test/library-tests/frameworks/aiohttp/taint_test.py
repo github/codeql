@@ -39,7 +39,7 @@ async def test_taint(request: web.Request): # $ requestHandler
         request.cookies, # $ tainted
         request.cookies["key"], # $ tainted
         request.cookies.get("key"), # $ tainted
-        request.cookies.keys(), # $ MISSING: tainted
+        request.cookies.keys(), # $ tainted
         request.cookies.values(), # $ tainted
         request.cookies.items(), # $ tainted
         list(request.cookies), # $ tainted
@@ -142,10 +142,36 @@ class TaintTestClass(web.View):
             self.request.url # $ tainted
         )
 
+# not a request handler, and not called, but since we have type-annotation, should be a
+# remote-flow-source.
+async def test_source_from_type_annotation(request: web.Request):
+    # picking out just a few of the tests from `test_taint` above, to show that we have
+    # the same taint-steps :)
+    ensure_tainted(
+        request, # $ tainted
+        request.url, # $ tainted
+        await request.content.read(), # $ tainted
+    )
+
+# Test that since we can reach the `request` object in the helper function, we don't
+# introduce a new remote-flow-source, but instead use the one from the caller. (which is
+# checked to not be tainted)
+async def test_sanitizer(request): # $ requestHandler
+    ensure_tainted(request, request.url, await request.content.read()) # $ tainted
+
+    if (is_safe(request)):
+        ensure_not_tainted(request, request.url, await request.content.read())
+        test_safe_helper_function_no_route_with_type(request)
+
+
+async def test_safe_helper_function_no_route_with_type(request: web.Request):
+    ensure_not_tainted(request, request.url, await request.content.read()) # $ SPURIOUS: tainted
+
 
 app = web.Application()
 app.router.add_get(r"/test_taint/{name}/{number:\d+}", test_taint)  # $ routeSetup="/test_taint/{name}/{number:\d+}"
 app.router.add_view(r"/test_taint_class", TaintTestClass)  # $ routeSetup="/test_taint_class"
+app.router.add_view(r"/test_sanitizer", test_sanitizer)  # $ routeSetup="/test_sanitizer"
 
 
 if __name__ == "__main__":

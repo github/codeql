@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["iterative/setup-dvc", "*", "input.version", "command-injection", "manual"]

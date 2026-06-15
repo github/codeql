@@ -37,3 +37,7 @@ var j, j;
 function foo() {
   var password = "blah";
 }
+
+function m(res) {
+  res.send()
+}

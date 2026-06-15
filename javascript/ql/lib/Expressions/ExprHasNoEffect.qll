@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for the 'js/useless-expression' query.
  */
+overlay[local?]
+module;
 
 import javascript
 import DOMProperties
@@ -21,6 +23,9 @@ predicate inVoidContext(Expr e) {
       tl.getNumChildStmt() = 1 and e.stripParens() instanceof ObjectExpr
     )
   )
+  or
+  // propagate void context through parenthesized expressions
+  inVoidContext(e.getParent().(ParExpr))
   or
   exists(SeqExpr seq, int i, int n |
     e = seq.getOperand(i) and
@@ -57,6 +62,7 @@ predicate isDeclaration(Expr e) {
 /**
  * Holds if there exists a getter for a property called `name` anywhere in the program.
  */
+overlay[global]
 predicate isGetterProperty(string name) {
   // there is a call of the form `Object.defineProperty(..., name, descriptor)` ...
   exists(CallToObjectDefineProperty defProp | name = defProp.getPropertyName() |
@@ -82,6 +88,7 @@ predicate isGetterProperty(string name) {
 /**
  * A property access that may invoke a getter.
  */
+overlay[global]
 class GetterPropertyAccess extends PropAccess {
   override predicate isImpure() { isGetterProperty(this.getPropertyName()) }
 }
@@ -120,6 +127,7 @@ predicate isReceiverSuppressingCall(CallExpr c, Expr dummy, PropAccess callee) {
  * even if they do, the call itself is useless and should be flagged by this
  * query.
  */
+overlay[global]
 predicate noSideEffects(Expr e) {
   e.isPure()
   or
@@ -130,8 +138,22 @@ predicate noSideEffects(Expr e) {
 }
 
 /**
+ * Holds if `e` is a compound expression that may contain sub-expressions with side effects.
+ * We should not flag these directly as useless since we want to flag only the innermost
+ * expressions that actually have no effect.
+ */
+predicate isCompoundExpression(Expr e) {
+  e instanceof LogicalBinaryExpr
+  or
+  e instanceof SeqExpr
+  or
+  e instanceof ParExpr
+}
+
+/**
  * Holds if the expression `e` should be reported as having no effect.
  */
+overlay[global]
 predicate hasNoEffect(Expr e) {
   noSideEffects(e) and
   inVoidContext(e) and
@@ -145,6 +167,7 @@ predicate hasNoEffect(Expr e) {
   not isDeclaration(e) and
   // exclude DOM properties, which sometimes have magical auto-update properties
   not isDomProperty(e.(PropAccess).getPropertyName()) and
+  not isCompoundExpression(e) and
   // exclude xUnit.js annotations
   not e instanceof XUnitAnnotation and
   // exclude common patterns that are most likely intentional
@@ -157,7 +180,17 @@ predicate hasNoEffect(Expr e) {
     not exists(fe.getName())
   ) and
   // exclude block-level flow type annotations. For example: `(name: empty)`.
-  not e.(ParExpr).getExpression().getLastToken().getNextToken().getValue() = ":" and
+  not exists(ParExpr parent |
+    e.getParent() = parent and
+    e.getLastToken().getNextToken().getValue() = ":"
+  ) and
+  // exclude expressions that are part of a conditional expression
+  not exists(ConditionalExpr cond | e = cond.getABranch() |
+    e instanceof NullLiteral or
+    e.(GlobalVarAccess).getName() = "undefined" or
+    e.(NumberLiteral).getIntValue() = 0 or
+    e instanceof VoidExpr
+  ) and
   // exclude the first statement of a try block
   not e = any(TryStmt stmt).getBody().getStmt(0).(ExprStmt).getExpr() and
   // exclude expressions that are alone in a file, and file doesn't contain a function.

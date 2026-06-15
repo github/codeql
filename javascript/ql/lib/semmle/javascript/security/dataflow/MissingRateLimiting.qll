@@ -114,7 +114,13 @@ abstract class RateLimitingMiddleware extends DataFlow::SourceNode {
  * A rate limiter constructed using the `express-rate-limit` package.
  */
 class ExpressRateLimit extends RateLimitingMiddleware {
-  ExpressRateLimit() { this = API::moduleImport("express-rate-limit").getReturn().asSource() }
+  ExpressRateLimit() {
+    this =
+      [
+        API::moduleImport("express-rate-limit"),
+        API::moduleImport("express-rate-limit").getMember("rateLimit")
+      ].getReturn().asSource()
+  }
 }
 
 /**
@@ -184,4 +190,22 @@ class RouteHandlerLimitedByRateLimiterFlexible extends RateLimitingMiddleware in
 
 private class FastifyRateLimiter extends RateLimitingMiddleware {
   FastifyRateLimiter() { this = DataFlow::moduleImport("fastify-rate-limit") }
+}
+
+/**
+ * An options object with a `rateLimit` config passed to a Fastify shorthand route method,
+ * such as `fastify.post('/path', { config: { rateLimit: { ... } } }, handler)`.
+ */
+private class FastifyPerRouteRateLimit extends RateLimitingMiddleware {
+  FastifyPerRouteRateLimit() {
+    exists(Fastify::RouteSetup setup |
+      not setup.getMethodName() = ["route", "addHook"] and
+      setup.getNumArgument() >= 3 and
+      this.flowsTo(setup.getArgument(1))
+    |
+      exists(this.getAPropertySource("config").getAPropertySource("rateLimit"))
+      or
+      exists(this.getAPropertySource("rateLimit"))
+    )
+  }
 }

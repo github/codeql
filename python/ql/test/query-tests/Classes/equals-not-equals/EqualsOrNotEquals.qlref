@@ -1,0 +1,2 @@
+query: Classes/Comparisons/EqualsOrNotEquals.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

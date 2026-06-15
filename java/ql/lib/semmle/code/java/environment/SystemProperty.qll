@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with java system properties.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
@@ -23,8 +25,8 @@ Expr getSystemProperty(string propertyName) {
   result = getSystemPropertyFromSpringProperties(propertyName)
 }
 
-private MethodAccess getSystemPropertyFromSystem(string propertyName) {
-  result.(MethodAccessSystemGetProperty).hasCompileTimeConstantGetPropertyName(propertyName)
+private MethodCall getSystemPropertyFromSystem(string propertyName) {
+  result.(MethodCallSystemGetProperty).hasCompileTimeConstantGetPropertyName(propertyName)
   or
   result.getMethod().hasName("lineSeparator") and propertyName = "line.separator"
 }
@@ -34,7 +36,7 @@ private MethodAccess getSystemPropertyFromSystem(string propertyName) {
  *  - `System.getProperties().getProperty(...)`
  *  - `System.getProperties().get(...)`
  */
-private MethodAccess getSystemPropertyFromSystemGetProperties(string propertyName) {
+private MethodCall getSystemPropertyFromSystemGetProperties(string propertyName) {
   exists(Method getMethod |
     getMethod instanceof PropertiesGetMethod
     or
@@ -42,7 +44,7 @@ private MethodAccess getSystemPropertyFromSystemGetProperties(string propertyNam
     result.getMethod() = getMethod
   ) and
   result.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName and
-  localExprFlowPlusInitializers(any(MethodAccess m |
+  localExprFlowPlusInitializers(any(MethodCall m |
       m.getMethod().getDeclaringType() instanceof TypeSystem and
       m.getMethod().hasName("getProperties")
     ), result.getQualifier())
@@ -156,7 +158,7 @@ private FieldAccess getSystemPropertyFromApacheSystemUtils(string propertyName) 
   )
 }
 
-private MethodAccess getSystemPropertyFromApacheFileUtils(string propertyName) {
+private MethodCall getSystemPropertyFromApacheFileUtils(string propertyName) {
   exists(Method m |
     result.getMethod() = m and
     m.getDeclaringType().hasQualifiedName("org.apache.commons.io", "FileUtils")
@@ -167,7 +169,7 @@ private MethodAccess getSystemPropertyFromApacheFileUtils(string propertyName) {
   )
 }
 
-private MethodAccess getSystemPropertyFromGuava(string propertyName) {
+private MethodCall getSystemPropertyFromGuava(string propertyName) {
   exists(EnumConstant ec |
     ec.getDeclaringType().hasQualifiedName("com.google.common.base", "StandardSystemProperty") and
     // Example: `StandardSystemProperty.JAVA_IO_TMPDIR.value()`
@@ -177,10 +179,10 @@ private MethodAccess getSystemPropertyFromGuava(string propertyName) {
     )
     or
     // Example: `System.getProperty(StandardSystemProperty.JAVA_IO_TMPDIR.key())`
-    exists(MethodAccess keyMa |
+    exists(MethodCall keyMa |
       localExprFlowPlusInitializers(ec.getAnAccess(), keyMa.getQualifier()) and
       keyMa.getMethod().hasName("key") and
-      localExprFlowPlusInitializers(keyMa, result.(MethodAccessSystemGetProperty).getArgument(0))
+      localExprFlowPlusInitializers(keyMa, result.(MethodCallSystemGetProperty).getArgument(0))
     )
   |
     ec.hasName("JAVA_VERSION") and propertyName = "java.version"
@@ -241,7 +243,7 @@ private MethodAccess getSystemPropertyFromGuava(string propertyName) {
   )
 }
 
-private MethodAccess getSystemPropertyFromOperatingSystemMXBean(string propertyName) {
+private MethodCall getSystemPropertyFromOperatingSystemMXBean(string propertyName) {
   exists(Method m |
     m = result.getMethod() and
     m.getDeclaringType().hasQualifiedName("java.lang.management", "OperatingSystemMXBean")
@@ -254,7 +256,7 @@ private MethodAccess getSystemPropertyFromOperatingSystemMXBean(string propertyN
   )
 }
 
-private MethodAccess getSystemPropertyFromSpringProperties(string propertyName) {
+private MethodCall getSystemPropertyFromSpringProperties(string propertyName) {
   exists(Method m |
     m = result.getMethod() and
     m.getDeclaringType().hasQualifiedName("org.springframework.core", "SpringProperties") and
@@ -269,18 +271,24 @@ private MethodAccess getSystemPropertyFromSpringProperties(string propertyName) 
  * for final variables.
  */
 private predicate localExprFlowPlusInitializers(Expr e1, Expr e2) {
+  e1 = e2 or
   localFlowPlusInitializers(DataFlow::exprNode(e1), DataFlow::exprNode(e2))
 }
 
+private predicate localFlowPlusInitializers(DataFlow::Node pred, DataFlow::Node succ) =
+  fastTC(localFlowStepPlusInitializers/2)(pred, succ)
+
 /**
- * Holds if data can flow from `pred` to `succ` in zero or more
- * local (intra-procedural) steps or via instance or static variable intializers
+ * Holds if data can flow from `pred` to `succ` in a
+ * local (intra-procedural) step or via instance or static variable intializers
  * for final variables.
  */
-private predicate localFlowPlusInitializers(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(Variable v | v.isFinal() and pred.asExpr() = v.getInitializer() |
-    DataFlow::localFlow(DataFlow::exprNode(v.getAnAccess()), succ)
+private predicate localFlowStepPlusInitializers(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(Variable v |
+    v.isFinal() and
+    pred.asExpr() = v.getInitializer() and
+    succ.asExpr() = v.getAnAccess()
   )
   or
-  DataFlow::localFlow(pred, succ)
+  DataFlow::localFlowStep(pred, succ)
 }

@@ -1,23 +1,40 @@
 /**
  * INTERNAL use only. This is an experimental API subject to change without notice.
  *
- * Provides classes and predicates for dealing with MaD flow models specified
+ * Provides classes and predicates for dealing with flow models specified
  * in data extensions and CSV format.
  *
- * The CSV specification has the following columns:
+ * The extensible relations have the following columns:
  * - Sources:
  *   `package; type; subtypes; name; signature; ext; output; kind; provenance`
  * - Sinks:
  *   `package; type; subtypes; name; signature; ext; input; kind; provenance`
  * - Summaries:
  *   `package; type; subtypes; name; signature; ext; input; output; kind; provenance`
+ * - Barriers:
+ *   `package; type; subtypes; name; signature; ext; output; kind; provenance`
+ * - BarrierGuards:
+ *   `package; type; subtypes; name; signature; ext; input; acceptingValue; kind; provenance`
+ * - Neutrals:
+ *   `package; type; name; signature; kind; provenance`
+ *   A neutral is used to indicate that a callable is neutral with respect to flow (no summary), source (is not a source) or sink (is not a sink).
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
- * 1. The `package` column selects a package.
+ * 1. The `package` column selects a package. Note that if the package does not
+ *    contain a major version suffix (like "/v2") then we will match all major
+ *    versions. This can be disabled by putting `fixed-version:` at the start
+ *    of the package path. Also, instead of a package path, if this column is
+ *    "group:<groupname>" then it indicates that the row applies to all
+ *    packages in the group `<groupname>` according to the `packageGrouping`
+ *    predicate.
  * 2. The `type` column selects a type within that package.
- * 3. The `subtypes` is a boolean that indicates whether to jump to an
- *    arbitrary subtype of that type.
+ * 3. The `subtypes` column is a boolean that controls what restrictions we
+ *    place on the type `t` of the selector base when accessing a field or
+ *    calling a method. When it is false, `t` must be the exact type specified
+ *    by this row. When it is true, `t` may be a type which embeds the specified
+ *    type, and for interface methods `t` may be a type which implements the
+ *    interface.
  * 4. The `name` column optionally selects a specific named member of the type.
  * 5. The `signature` column is always empty.
  * 6. The `ext` column is always empty.
@@ -25,26 +42,25 @@
  *    first 6 columns, and the `output` column specifies how data leaves the
  *    element selected by the first 6 columns. An `input` can be either "",
  *    "Argument[n]", or "Argument[n1..n2]":
- *    - "": Selects a write to the selected element in case this is a field.
+ *    - "": Selects a write to the selected element in case this is a field or
+ *      package-level variable.
  *    - "Argument[n]": Selects an argument in a call to the selected element.
- *      The arguments are zero-indexed, and `-1` specifies the qualifier.
+ *      The arguments are zero-indexed, and `receiver` specifies the receiver.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but selects any argument
  *      in the given range. The range is inclusive at both ends.
  *
  *    An `output` can be either "", "Argument[n]", "Argument[n1..n2]", "Parameter",
  *    "Parameter[n]", "Parameter[n1..n2]", , "ReturnValue", "ReturnValue[n]", or
  *    "ReturnValue[n1..n2]":
- *    - "": Selects a read of a selected field, or a selected parameter.
+ *    - "": Selects a read of a selected field or package-level variable.
  *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
- *      The arguments are zero-indexed, and `-1` specifies the qualifier.
+ *      The arguments are zero-indexed, and `receiver` specifies the receiver.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
  *      the given range. The range is inclusive at both ends.
  *    - "Parameter": Selects the value of a parameter of the selected element.
- *      "Parameter" is also allowed in case the selected element is already a
- *      parameter itself.
  *    - "Parameter[n]": Similar to "Parameter" but restricted to a specific
- *      numbered parameter (zero-indexed, and `-1` specifies the value of `this`).
+ *      numbered parameter (zero-indexed, and `receiver` specifies the receiver).
  *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
  *      in the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects the first value being returned by the selected
@@ -54,159 +70,184 @@
  *      return value. The return values are zero-indexed
  *    - "ReturnValue[n1..n2]": Similar to "ReturnValue[n]" but selects any
  *      return value in the given range. The range is inclusive at both ends.
- * 8. The `kind` column is a tag that can be referenced from QL to determine to
+ *
+ *    For summaries, `input` and `output` may be suffixed by any number of the
+ *    following, separated by ".":
+ *    - "Field[pkg.className.fieldname]": Selects the contents of the field `f`
+ *      which satisfies `f.hasQualifiedName(pkg, className, fieldname)`.
+ *    - "SyntheticField[f]": Selects the contents of the synthetic field `f`.
+ *    - "ArrayElement": Selects an element in an array or slice.
+ *    - "Element": Selects an element in a collection.
+ *    - "MapKey": Selects a key in a map.
+ *    - "MapValue": Selects a value in a map.
+ *    - "Dereference": Selects the value referenced by a pointer.
+ *
+ * 8. The `acceptingValue` column of barrier guard models specifies the condition
+ *    under which the guard blocks flow. It can be one of "true" or "false". In
+ *    the future "no-exception", "not-zero", "null", "not-null" may be supported.
+ * 9. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries
  *    "taint" indicates a default additional taint step and "value" indicates a
  *    globally applicable value-preserving step.
+ * 10. The `provenance` column is a tag to indicate the origin and verification of a model.
+ *    The format is {origin}-{verification} or just "manual" where the origin describes
+ *    the origin of the model and verification describes how the model has been verified.
+ *    Some examples are:
+ *    - "df-generated": The model has been generated by the model generator tool.
+ *    - "df-manual": The model has been generated by the model generator and verified by a human.
+ *    - "manual": The model has been written by hand.
+ *    This information is used in a heuristic for dataflow analysis to determine, if a
+ *    model or source code should be used for determining flow.
  */
+overlay[local?]
+module;
 
 private import go
-private import ExternalFlowExtensions as Extensions
+private import internal.ExternalFlowExtensions::Extensions as Extensions
+private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
+private import internal.FlowSummaryImpl
+private import internal.FlowSummaryImpl::Public as Public
+private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import internal.FlowSummaryImplSpecific
-private import internal.AccessPathSyntax
-private import FlowSummary
+private import codeql.mad.ModelValidation as SharedModelVal
+private import codeql.mad.static.ModelsAsData as SharedMaD
 
-/**
- * A module importing the frameworks that provide external flow data,
- * ensuring that they are visible to the taint tracking / data flow library.
- */
-private module Frameworks {
-  private import semmle.go.frameworks.Stdlib
+private module MadInput implements SharedMaD::InputSig {
+  string namespaceSegmentSeparator() { result = "/" }
+
+  bindingset[p]
+  string cleanNamespace(string p) {
+    exists(string noPrefix |
+      p = fixedVersionPrefix() + noPrefix
+      or
+      not p = fixedVersionPrefix() + any(string s) and
+      noPrefix = p
+    |
+      result = noPrefix.regexpReplaceAll(majorVersionSuffixRegex(), "")
+    )
+  }
 }
 
-/** Holds if a source model exists for the given parameters. */
-predicate sourceModel = Extensions::sourceModel/9;
+private module MaD = SharedMaD::ModelsAsData<Extensions, MadInput>;
 
-/** Holds if a sink model exists for the given parameters. */
-predicate sinkModel = Extensions::sinkModel/9;
+import MaD
 
-/** Holds if a summary model exists for the given parameters. */
-predicate summaryModel = Extensions::summaryModel/10;
+module FlowExtensions = Extensions;
 
-/** Holds if `package` have MaD framework coverage. */
-private predicate packageHasMaDCoverage(string package) {
-  sourceModel(package, _, _, _, _, _, _, _, _) or
-  sinkModel(package, _, _, _, _, _, _, _, _) or
-  summaryModel(package, _, _, _, _, _, _, _, _, _)
-}
-
-/**
- * Holds if `package` and `subpkg` have MaD framework coverage and `subpkg`
- * is a subpackage of `package`.
- */
-private predicate packageHasASubpackage(string package, string subpkg) {
-  packageHasMaDCoverage(package) and
-  packageHasMaDCoverage(subpkg) and
-  subpkg.prefix(subpkg.indexOf(".")) = package
-}
-
-/**
- * Holds if `package` has MaD framework coverage and it is not a subpackage of
- * any other package with MaD framework coverage.
- */
-private predicate canonicalPackage(string package) {
-  packageHasMaDCoverage(package) and not packageHasASubpackage(_, package)
-}
-
-/**
- * Holds if `package` and `subpkg` have MaD framework coverage, `subpkg` is a
- * subpackage of `package` (or they are the same), and `package` is not a
- * subpackage of any other package with MaD framework coverage.
- */
-private predicate canonicalPackageHasASubpackage(string package, string subpkg) {
-  canonicalPackage(package) and
-  (subpkg = package or packageHasASubpackage(package, subpkg))
-}
-
-/**
- * Holds if MaD framework coverage of `package` is `n` api endpoints of the
- * kind `(kind, part)`, and `pkgs` is the number of subpackages of `package`
- * which have MaD framework coverage (including `package` itself).
- */
-predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
-  pkgs = strictcount(string subpkg | canonicalPackageHasASubpackage(package, subpkg)) and
-  (
-    part = "source" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string output, string provenance |
-        canonicalPackageHasASubpackage(package, subpkg) and
-        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind, provenance)
-      )
-    or
-    part = "sink" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string provenance |
-        canonicalPackageHasASubpackage(package, subpkg) and
-        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind, provenance)
-      )
-    or
-    part = "summary" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, string provenance |
-        canonicalPackageHasASubpackage(package, subpkg) and
-        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, provenance)
-      )
-  )
-}
+/** Gets the prefix for a group of packages. */
+private string groupPrefix() { result = "group:" }
 
 /** Provides a query predicate to check the MaD models for validation errors. */
 module ModelValidation {
+  private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
+
+  private predicate getRelevantAccessPath(string path) {
+    summaryModel(_, _, _, _, _, _, path, _, _, _, _) or
+    summaryModel(_, _, _, _, _, _, _, path, _, _, _) or
+    sinkModel(_, _, _, _, _, _, path, _, _, _) or
+    sourceModel(_, _, _, _, _, _, path, _, _, _) or
+    barrierModel(_, _, _, _, _, _, path, _, _, _) or
+    barrierGuardModel(_, _, _, _, _, _, path, _, _, _, _)
+  }
+
+  private module MkAccessPath = AccessPathSyntax::AccessPath<getRelevantAccessPath/1>;
+
+  class AccessPath = MkAccessPath::AccessPath;
+
+  class AccessPathToken = MkAccessPath::AccessPathToken;
+
   private string getInvalidModelInput() {
-    exists(string pred, AccessPath input, string part |
-      sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
+    exists(string pred, AccessPath input, AccessPathToken part |
+      sinkModel(_, _, _, _, _, _, input, _, _, _) and pred = "sink"
       or
-      summaryModel(_, _, _, _, _, _, input, _, _, _) and pred = "summary"
+      barrierGuardModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "barrier guard"
+      or
+      summaryModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "summary"
     |
       (
         invalidSpecComponent(input, part) and
         not part = "" and
-        not parseArg(part, _)
+        not (part = "Argument" and pred = "sink") and
+        not parseArg(part, _) and
+        // If the database does not contain any fields/pointer types then no
+        // FieldContent/PointerContent exists, so we spuriously think that
+        // these spec components are invalid.
+        not part.getName() = ["Field", "Dereference"]
         or
-        part = input.getToken(_) and
+        part = input.getToken(0) and
         parseParam(part, _)
+        or
+        invalidIndexComponent(input, part)
       ) and
       result = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
     )
   }
 
   private string getInvalidModelOutput() {
-    exists(string pred, string output, string part |
-      sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
+    exists(string pred, AccessPath output, AccessPathToken part |
+      sourceModel(_, _, _, _, _, _, output, _, _, _) and pred = "source"
       or
-      summaryModel(_, _, _, _, _, _, _, output, _, _) and pred = "summary"
+      barrierModel(_, _, _, _, _, _, output, _, _, _) and pred = "barrier"
+      or
+      summaryModel(_, _, _, _, _, _, _, output, _, _, _) and pred = "summary"
     |
-      invalidSpecComponent(output, part) and
-      not part = "" and
-      not (part = "Parameter" and pred = "source") and
+      (
+        invalidSpecComponent(output, part) and
+        not part = "" and
+        not (part = ["Argument", "Parameter"] and pred = "source") and
+        // If the database does not contain any fields/pointer types then no
+        // FieldContent/PointerContent exists, so we spuriously think that
+        // these spec components are invalid.
+        not part.getName() = ["Field", "Dereference"]
+        or
+        invalidIndexComponent(output, part)
+      ) and
       result = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
     )
   }
 
-  private string getInvalidModelKind() {
-    exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
-      not kind = ["taint", "value"] and
-      result = "Invalid kind \"" + kind + "\" in summary model."
-    )
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _, _) }
+
+    predicate sinkKind(string kind) {
+      sinkModel(_, _, _, _, _, _, _, kind, _, _)
+      or
+      barrierModel(_, _, _, _, _, _, _, kind, _, _)
+      or
+      barrierGuardModel(_, _, _, _, _, _, _, _, kind, _, _)
+    }
+
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _, _) }
+
+    predicate neutralKind(string kind) { neutralModel(_, _, _, _, kind, _) }
   }
+
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   private string getInvalidModelSignature() {
     exists(
       string pred, string package, string type, string name, string signature, string ext,
       string provenance
     |
-      sourceModel(package, type, _, name, signature, ext, _, _, provenance) and pred = "source"
+      sourceModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "source"
       or
-      sinkModel(package, type, _, name, signature, ext, _, _, provenance) and pred = "sink"
+      sinkModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "sink"
       or
-      summaryModel(package, type, _, name, signature, ext, _, _, _, provenance) and pred = "summary"
+      barrierModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "barrier"
+      or
+      barrierGuardModel(package, type, _, name, signature, ext, _, _, _, provenance, _) and
+      pred = "barrier guard"
+      or
+      summaryModel(package, type, _, name, signature, ext, _, _, _, provenance, _) and
+      pred = "summary"
+      or
+      neutralModel(package, type, name, signature, _, provenance) and
+      ext = "" and
+      pred = "neutral"
     |
-      not package.replaceAll("$ANYVERSION", "").regexpMatch("[a-zA-Z0-9_\\./-]*") and
+      not package.replaceAll(fixedVersionPrefix(), "").regexpMatch("[a-zA-Z0-9_\\./-]*") and
       result = "Dubious package \"" + package + "\" in " + pred + " model."
       or
       not type.regexpMatch("[a-zA-Z0-9_\\$<>]*") and
@@ -224,6 +265,37 @@ module ModelValidation {
       invalidProvenance(provenance) and
       result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
+    or
+    exists(string acceptingValue |
+      barrierGuardModel(_, _, _, _, _, _, _, acceptingValue, _, _, _) and
+      invalidAcceptingValue(acceptingValue) and
+      result =
+        "Unrecognized accepting value description \"" + acceptingValue +
+          "\" in barrier guard model."
+    )
+  }
+
+  private string getInvalidPackageGroup() {
+    exists(string pred, string group, string package |
+      FlowExtensions::sourceModel(package, _, _, _, _, _, _, _, _, _) and pred = "source"
+      or
+      FlowExtensions::sinkModel(package, _, _, _, _, _, _, _, _, _) and pred = "sink"
+      or
+      FlowExtensions::barrierModel(package, _, _, _, _, _, _, _, _, _) and pred = "barrier"
+      or
+      FlowExtensions::barrierGuardModel(package, _, _, _, _, _, _, _, _, _, _) and
+      pred = "barrier guard"
+      or
+      FlowExtensions::summaryModel(package, _, _, _, _, _, _, _, _, _, _) and
+      pred = "summary"
+      or
+      FlowExtensions::neutralModel(package, _, _, _, _, _) and
+      pred = "neutral"
+    |
+      package = groupPrefix() + group and
+      not FlowExtensions::packageGrouping(group, _) and
+      result = "Dubious package group \"" + package + "\" in " + pred + " model."
+    )
   }
 
   /** Holds if some row in a MaD flow model appears to contain typos. */
@@ -231,7 +303,7 @@ module ModelValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelKind()
+        KindVal::getInvalidModelKind(), getInvalidPackageGroup()
       ]
   }
 }
@@ -240,76 +312,89 @@ pragma[nomagic]
 private predicate elementSpec(
   string package, string type, boolean subtypes, string name, string signature, string ext
 ) {
-  sourceModel(package, type, subtypes, name, signature, ext, _, _, _) or
-  sinkModel(package, type, subtypes, name, signature, ext, _, _, _) or
-  summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _)
+  sourceModel(package, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  sinkModel(package, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  barrierModel(package, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  barrierGuardModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
+  or
+  summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
+  or
+  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
 }
 
-private string paramsStringPart(Function f, int i) {
-  i = -1 and result = "("
-  or
-  exists(int n, string p | f.getParameterType(n).toString() = p |
-    i = 2 * n and result = p
-    or
-    i = 2 * n - 1 and result = "," and n != 0
-  )
-  or
-  i = 2 * f.getNumParameter() and result = ")"
-}
+private string fixedVersionPrefix() { result = "fixed-version:" }
 
 /**
- * Gets a parenthesized string containing all parameter types of this callable, separated by a comma.
+ * Gets the string for the package path corresponding to `p`, if one exists.
  *
- * Returns the empty string if the callable has no parameters.
- * Parameter types are represented by their type erasure.
+ * We attempt to account for major version suffixes as follows: if `p` is
+ * `github.com/a/b/c/d` then we will return any path for a package that was
+ * imported which matches that, possibly with a major version suffix in it,
+ * so if `github.com/a/b/c/d/v2` or `github.com/a/b/v3/c/d` were imported then
+ * they will be in the results. There are two situations where we do not do
+ * this: (1) when `p` already contains a major version suffix; (2) if `p` has
+ * `fixed-version:` at the start (which we remove).
  */
-string paramsString(Function f) { result = concat(int i | | paramsStringPart(f, i) order by i) }
-
 bindingset[p]
 private string interpretPackage(string p) {
-  exists(string r | r = "([^$]+)([./]\\$ANYVERSION(/|$)(.*))?" |
-    if exists(p.regexpCapture(r, 4))
-    then result = package(p.regexpCapture(r, 1), p.regexpCapture(r, 4))
-    else result = package(p, "")
+  exists(Package pkg | result = pkg.getPath() |
+    p = fixedVersionPrefix() + result
+    or
+    not p = fixedVersionPrefix() + any(string s) and
+    (
+      if exists(p.regexpFind(majorVersionSuffixRegex(), 0, _))
+      then result = p
+      else p = pkg.getPathWithoutMajorVersionSuffix()
+    )
   )
+  or
+  // Special case for built-in functions, which are not in any package, but
+  // satisfy `hasQualifiedName` with the package path "".
+  p = "" and result = ""
 }
 
 /** Gets the source/sink/summary element corresponding to the supplied parameters. */
-SourceOrSinkElement interpretElement(
+cached
+SourceSinkInterpretationInput::SourceOrSinkElement interpretElement(
   string pkg, string type, boolean subtypes, string name, string signature, string ext
 ) {
   elementSpec(pkg, type, subtypes, name, signature, ext) and
   // Go does not need to distinguish functions with signature
   signature = "" and
-  (
-    exists(Field f | f.hasQualifiedName(interpretPackage(pkg), type, name) | result.asEntity() = f)
+  exists(string p | p = interpretPackage(pkg) |
+    exists(Entity e | result.hasFullInfo(e, p, type, subtypes) |
+      e.(Field).hasQualifiedName(p, type, name) or
+      e.(Method).hasQualifiedName(p, type, name)
+    )
     or
-    exists(Method m | m.hasQualifiedName(interpretPackage(pkg), type, name) |
-      result.asEntity() = m
-      or
-      subtypes = true and result.asEntity().(Method).implementsIncludingInterfaceMethods(m)
+    subtypes = true and
+    // p.type is an interface and we include types which implement it
+    exists(Method m2, string pkg2, string type2 |
+      m2.getReceiverType().implements(p, type) and
+      m2.getName() = name and
+      m2.getReceiverBaseType().hasQualifiedName(pkg2, type2)
+    |
+      result.hasFullInfo(m2, pkg2, type2, subtypes)
     )
     or
     type = "" and
-    exists(Entity e | e.hasQualifiedName(interpretPackage(pkg), name) | result.asEntity() = e)
-  )
-}
-
-/** Holds if there is an external specification for `f`. */
-predicate hasExternalSpecification(Function f) {
-  f = any(SummarizedCallable sc).asFunction()
-  or
-  exists(SourceOrSinkElement e | f = e.asEntity() |
-    sourceElement(e, _, _, _) or sinkElement(e, _, _, _)
+    exists(Entity e | e.hasQualifiedName(p, name) | result.asOtherEntity() = e)
   )
 }
 
 private predicate parseField(AccessPathToken c, DataFlow::FieldContent f) {
-  exists(string fieldRegex, string package, string className, string fieldName |
-    fieldRegex = "^Field\\[(.*)\\.([^.]+)\\.([^.]+)\\]$" and
-    package = c.regexpCapture(fieldRegex, 1) and
-    className = c.regexpCapture(fieldRegex, 2) and
-    fieldName = c.regexpCapture(fieldRegex, 3) and
+  exists(
+    string fieldRegex, string qualifiedName, string package, string className, string fieldName
+  |
+    c.getName() = "Field" and
+    qualifiedName = c.getAnArgument() and
+    fieldRegex = "^(.*)\\.([^.]+)\\.([^.]+)$" and
+    package = qualifiedName.regexpCapture(fieldRegex, 1) and
+    className = qualifiedName.regexpCapture(fieldRegex, 2) and
+    fieldName = qualifiedName.regexpCapture(fieldRegex, 3) and
     f.getField().hasQualifiedName(package, className, fieldName)
   )
 }
@@ -326,11 +411,12 @@ class SyntheticField extends string {
 }
 
 private predicate parseSynthField(AccessPathToken c, string f) {
-  c.regexpCapture("SyntheticField\\[([.a-zA-Z0-9]+)\\]", 1) = f
+  c.getName() = "SyntheticField" and
+  f = c.getAnArgument()
 }
 
 /** Holds if the specification component parses as a `Content`. */
-predicate parseContent(string component, DataFlow::Content content) {
+predicate parseContent(AccessPathToken component, DataFlow::Content content) {
   parseField(component, content)
   or
   parseSynthField(component, content.(DataFlow::SyntheticFieldContent).getField())
@@ -342,6 +428,8 @@ predicate parseContent(string component, DataFlow::Content content) {
   component = "MapKey" and content instanceof DataFlow::MapKeyContent
   or
   component = "MapValue" and content instanceof DataFlow::MapValueContent
+  or
+  component = "Dereference" and content instanceof DataFlow::PointerContent
 }
 
 cached
@@ -351,8 +439,10 @@ private module Cached {
    * model.
    */
   cached
-  predicate sourceNode(DataFlow::Node node, string kind) {
-    exists(InterpretNode n | isSourceNode(n, kind) and n.asNode() = node)
+  predicate sourceNode(DataFlow::Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isSourceNode(n, kind, model) and n.asNode() = node
+    )
   }
 
   /**
@@ -360,9 +450,100 @@ private module Cached {
    * model.
    */
   cached
-  predicate sinkNode(DataFlow::Node node, string kind) {
-    exists(InterpretNode n | isSinkNode(n, kind) and n.asNode() = node)
+  predicate sinkNode(DataFlow::Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isSinkNode(n, kind, model) and n.asNode() = node
+    )
+  }
+
+  private newtype TKindModelPair =
+    TMkPair(string kind, string model) { isBarrierGuardNode(_, _, kind, model) }
+
+  private boolean convertAcceptingValue(Public::AcceptingValue av) {
+    av.isTrue() and result = true
+    or
+    av.isFalse() and result = false
+    // Remaining cases are not supported yet, they depend on the shared Guards library.
+    // or
+    // av.isNoException() and result.getDualValue().isThrowsException()
+    // or
+    // av.isZero() and result.asIntValue() = 0
+    // or
+    // av.isNotZero() and result.getDualValue().asIntValue() = 0
+    // or
+    // av.isNull() and result.isNullValue()
+    // or
+    // av.isNotNull() and result.isNonNullValue()
+  }
+
+  private predicate barrierGuardChecks(DataFlow::Node g, Expr e, boolean gv, TKindModelPair kmp) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode n, Public::AcceptingValue acceptingValue,
+      string kind, string model
+    |
+      isBarrierGuardNode(n, acceptingValue, kind, model) and
+      n.asNode().asExpr() = e and
+      kmp = TMkPair(kind, model) and
+      gv = convertAcceptingValue(acceptingValue)
+    |
+      g.asExpr().(CallExpr).getAnArgument() = e // TODO: qualifier?
+    )
+  }
+
+  /**
+   * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+   * model.
+   */
+  cached
+  predicate barrierNode(DataFlow::Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isBarrierNode(n, kind, model) and n.asNode() = node
+    )
+    or
+    DataFlow::ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
+        model)) = node
   }
 }
 
 import Cached
+
+/**
+ * Holds if `node` is specified as a source with the given kind in a MaD flow
+ * model.
+ */
+predicate sourceNode(DataFlow::Node node, string kind) { sourceNode(node, kind, _) }
+
+/**
+ * Holds if `node` is specified as a sink with the given kind in a MaD flow
+ * model.
+ */
+predicate sinkNode(DataFlow::Node node, string kind) { sinkNode(node, kind, _) }
+
+/**
+ * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+ * model.
+ */
+predicate barrierNode(DataFlow::Node node, string kind) { barrierNode(node, kind, _) }
+
+// adapter class for converting Mad summaries to `SummarizedCallable`s
+private class SummarizedCallableAdapter extends Public::SummarizedCallable {
+  string input_;
+  string output_;
+  string kind;
+  Public::Provenance p_;
+  string model_;
+
+  SummarizedCallableAdapter() { summaryElement(this, input_, output_, kind, p_, model_) }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, Public::Provenance p, boolean isExact,
+    string model
+  ) {
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = p_ and
+    isExact = true and
+    model = model_
+  }
+}

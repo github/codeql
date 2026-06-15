@@ -1,0 +1,17 @@
+# generated running `bazel run //go/gazelle`, do not edit
+
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+
+go_library(
+    name = "registries",
+    srcs = ["registryproxy.go"],
+    importpath = "github.com/github/codeql-go/extractor/registries",
+    visibility = ["//visibility:public"],
+    deps = ["//go/extractor/diagnostics"],
+)
+
+go_test(
+    name = "registries_test",
+    srcs = ["registryproxy_test.go"],
+    embed = [":registries"],
+)

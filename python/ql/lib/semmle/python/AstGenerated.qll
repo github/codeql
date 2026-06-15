@@ -3,6 +3,8 @@
  *      WARNING: Any modifications to this file will be lost.
  *      Relations can be changed by modifying master.py.
  */
+overlay[local]
+module;
 
 import python
 
@@ -285,6 +287,15 @@ class ClassExpr_ extends @py_ClassExpr, Expr {
   /** Gets the class scope of this class definition. */
   Class getInnerScope() { py_Classes(result, this) }
 
+  /** Gets the type parameters of this class definition. */
+  TypeParameterList getTypeParameters() { py_type_parameter_lists(result, this) }
+
+  /** Gets the nth type parameter of this class definition. */
+  TypeParameter getTypeParameter(int index) { result = this.getTypeParameters().getItem(index) }
+
+  /** Gets a type parameter of this class definition. */
+  TypeParameter getATypeParameter() { result = this.getTypeParameters().getAnItem() }
+
   override string toString() { result = "ClassExpr" }
 }
 
@@ -554,6 +565,15 @@ class Function_ extends @py_Function {
   /** Whether the async property of this function is true. */
   predicate isAsync() { py_bools(this, 6) }
 
+  /** Gets the type parameters of this function. */
+  TypeParameterList getTypeParameters() { py_type_parameter_lists(result, this) }
+
+  /** Gets the nth type parameter of this function. */
+  TypeParameter getTypeParameter(int index) { result = this.getTypeParameters().getItem(index) }
+
+  /** Gets a type parameter of this function. */
+  TypeParameter getATypeParameter() { result = this.getTypeParameters().getAnItem() }
+
   /** Gets a parent of this function */
   FunctionParent getParent() { py_Functions(this, result) }
 
@@ -678,6 +698,9 @@ class Import_ extends @py_Import, Stmt {
   /** Gets an alias of this import statement. */
   Alias getAName() { result = this.getNames().getAnItem() }
 
+  /** Whether the lazy property of this import statement is true. */
+  predicate isLazy() { py_bools(this, 2) }
+
   override string toString() { result = "Import" }
 }
 
@@ -699,6 +722,9 @@ class ImportExpr_ extends @py_ImportExpr, Expr {
 class ImportStar_ extends @py_ImportStar, Stmt {
   /** Gets the module of this import * statement. */
   Expr getModule() { py_exprs(result, _, this, 1) }
+
+  /** Whether the lazy property of this import * statement is true. */
+  predicate isLazy() { py_bools(this, 2) }
 
   override string toString() { result = "ImportStar" }
 }
@@ -748,6 +774,20 @@ class Fstring_ extends @py_Fstring, Expr {
   override ExprParent getParent() { py_exprs(this, _, result, _) }
 
   override string toString() { result = "Fstring" }
+}
+
+/** INTERNAL: See the class `JoinedTemplateString` for further information. */
+class JoinedTemplateString_ extends @py_JoinedTemplateString, Expr {
+  /** Gets the strings of this joined template string. */
+  TemplateStringList getStrings() { py_TemplateString_lists(result, this) }
+
+  /** Gets the nth string of this joined template string. */
+  TemplateString getString(int index) { result = this.getStrings().getItem(index) }
+
+  /** Gets a string of this joined template string. */
+  TemplateString getAString() { result = this.getStrings().getAnItem() }
+
+  override string toString() { result = "JoinedTemplateString" }
 }
 
 /** INTERNAL: See the class `KeyValuePair` for further information. */
@@ -1103,6 +1143,17 @@ class Param_ extends @py_Param, ExprContext {
   override string toString() { result = "Param" }
 }
 
+/** INTERNAL: See the class `ParamSpec` for further information. */
+class ParamSpec_ extends @py_ParamSpec, TypeParameter {
+  /** Gets the name of this parameter spec. */
+  Expr getName() { py_exprs(result, _, this, 1) }
+
+  /** Gets the default of this parameter spec. */
+  Expr getDefault() { py_exprs(result, _, this, 2) }
+
+  override string toString() { result = "ParamSpec" }
+}
+
 /** INTERNAL: See the class `Pass` for further information. */
 class Pass_ extends @py_Pass, Stmt {
   override string toString() { result = "Pass" }
@@ -1344,6 +1395,48 @@ class TemplateDottedNotation_ extends @py_TemplateDottedNotation, Expr {
   override string toString() { result = "TemplateDottedNotation" }
 }
 
+/** INTERNAL: See the class `TemplateString` for further information. */
+class TemplateString_ extends @py_TemplateString, Expr {
+  /** Gets the prefix of this template string literal. */
+  string getPrefix() { py_strs(result, this, 2) }
+
+  /** Gets the values of this template string literal. */
+  ExprList getValues() { py_expr_lists(result, this, 3) }
+
+  /** Gets the nth value of this template string literal. */
+  Expr getValue(int index) { result = this.getValues().getItem(index) }
+
+  /** Gets a value of this template string literal. */
+  Expr getAValue() { result = this.getValues().getAnItem() }
+
+  override ExprParent getParent() { py_exprs(this, _, result, _) }
+
+  override string toString() { result = "TemplateString" }
+}
+
+/** INTERNAL: See the class `TemplateStringPart` for further information. */
+class TemplateStringPart_ extends @py_TemplateStringPart, Expr {
+  /** Gets the text of this string part of a template string. */
+  string getText() { py_strs(result, this, 2) }
+
+  override string toString() { result = "TemplateStringPart" }
+}
+
+/** INTERNAL: See the class `TemplateStringList` for further information. */
+class TemplateStringList_ extends @py_TemplateString_list {
+  /** Gets a parent of this template string literal list */
+  JoinedTemplateString getParent() { py_TemplateString_lists(this, result) }
+
+  /** Gets an item of this template string literal list */
+  Expr getAnItem() { py_exprs(result, _, this, _) }
+
+  /** Gets the nth item of this template string literal list */
+  Expr getItem(int index) { py_exprs(result, _, this, index) }
+
+  /** Gets a textual representation of this element. */
+  string toString() { result = "TemplateStringList" }
+}
+
 /** INTERNAL: See the class `TemplateWrite` for further information. */
 class TemplateWrite_ extends @py_TemplateWrite, Stmt {
   /** Gets the value of this template write statement. */
@@ -1410,6 +1503,51 @@ class Tuple_ extends @py_Tuple, Expr {
   override ExprParent getParent() { py_exprs(this, _, result, _) }
 
   override string toString() { result = "Tuple" }
+}
+
+/** INTERNAL: See the class `TypeAlias` for further information. */
+class TypeAlias_ extends @py_TypeAlias, Stmt {
+  /** Gets the name of this type alias. */
+  Expr getName() { py_exprs(result, _, this, 1) }
+
+  /** Gets the type_parameters of this type alias. */
+  TypeParameterList getTypeParameters() { py_type_parameter_lists(result, this) }
+
+  /** Gets the nth type_parameter of this type alias. */
+  TypeParameter getTypeParameter(int index) { result = this.getTypeParameters().getItem(index) }
+
+  /** Gets a type_parameter of this type alias. */
+  TypeParameter getATypeParameter() { result = this.getTypeParameters().getAnItem() }
+
+  /** Gets the value of this type alias. */
+  Expr getValue() { py_exprs(result, _, this, 3) }
+
+  override string toString() { result = "TypeAlias" }
+}
+
+/** INTERNAL: See the class `TypeVar` for further information. */
+class TypeVar_ extends @py_TypeVar, TypeParameter {
+  /** Gets the name of this type variable. */
+  Expr getName() { py_exprs(result, _, this, 1) }
+
+  /** Gets the bound of this type variable. */
+  Expr getBound() { py_exprs(result, _, this, 2) }
+
+  /** Gets the default of this type variable. */
+  Expr getDefault() { py_exprs(result, _, this, 3) }
+
+  override string toString() { result = "TypeVar" }
+}
+
+/** INTERNAL: See the class `TypeVarTuple` for further information. */
+class TypeVarTuple_ extends @py_TypeVarTuple, TypeParameter {
+  /** Gets the name of this type variable tuple. */
+  Expr getName() { py_exprs(result, _, this, 1) }
+
+  /** Gets the default of this type variable tuple. */
+  Expr getDefault() { py_exprs(result, _, this, 2) }
+
+  override string toString() { result = "TypeVarTuple" }
 }
 
 /** INTERNAL: See the class `UAdd` for further information. */
@@ -1906,6 +2044,39 @@ class StrListParent_ extends @py_str_list_parent {
 class StrParent_ extends @py_str_parent {
   /** Gets a textual representation of this element. */
   string toString() { result = "StrParent" }
+}
+
+/** INTERNAL: See the class `TypeParameter` for further information. */
+class TypeParameter_ extends @py_type_parameter {
+  /** Gets the location of this type parameter. */
+  Location getLocation() { py_locations(result, this) }
+
+  /** Gets a parent of this type parameter */
+  TypeParameterList getParent() { py_type_parameters(this, _, result, _) }
+
+  /** Gets a textual representation of this element. */
+  string toString() { result = "TypeParameter" }
+}
+
+/** INTERNAL: See the class `TypeParameterList` for further information. */
+class TypeParameterList_ extends @py_type_parameter_list {
+  /** Gets a parent of this type parameter list */
+  TypeParameterListParent getParent() { py_type_parameter_lists(this, result) }
+
+  /** Gets an item of this type parameter list */
+  TypeParameter getAnItem() { py_type_parameters(result, _, this, _) }
+
+  /** Gets the nth item of this type parameter list */
+  TypeParameter getItem(int index) { py_type_parameters(result, _, this, index) }
+
+  /** Gets a textual representation of this element. */
+  string toString() { result = "TypeParameterList" }
+}
+
+/** INTERNAL: See the class `TypeParameterListParent` for further information. */
+class TypeParameterListParent_ extends @py_type_parameter_list_parent {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "TypeParameterListParent" }
 }
 
 /** INTERNAL: See the class `Unaryop` for further information. */

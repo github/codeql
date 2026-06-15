@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["getsentry/sentry-unity/.github/workflows/sdk.yml", "*", "input.target", "code-injection", "generated"]
+     - ["getsentry/sentry-unity/.github/workflows/android-smoke-test.yml", "*", "input.api-level", "code-injection", "generated"]

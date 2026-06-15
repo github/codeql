@@ -1,0 +1,7 @@
+| test.cpp:6:13:6:31 | initializer for x | test.cpp:6:13:6:31 | <error expr> |
+| test.cpp:7:5:7:8 | ExprStmt | file://:0:0:0:0 | <error expr> |
+| test.cpp:8:5:8:23 | ExprStmt | file://:0:0:0:0 | <error expr> |
+| test.cpp:9:5:9:21 | ExprStmt | file://:0:0:0:0 | <error expr> |
+| test.cpp:11:5:11:8 | ExprStmt | file://:0:0:0:0 | <error expr> |
+| test.cpp:15:5:15:8 | ExprStmt | file://:0:0:0:0 | <error expr> |
+| test.cpp:16:5:16:16 | ExprStmt | file://:0:0:0:0 | <error expr> |

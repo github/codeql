@@ -103,7 +103,7 @@ module File {
    * A flow summary for several methods on the `File` class that propagate taint
    * from their first argument to the return value.
    */
-  class FilePathConversionSummary extends SummarizedCallable {
+  class FilePathConversionSummary extends SummarizedCallable::Range {
     string methodName;
 
     FilePathConversionSummary() {
@@ -115,7 +115,7 @@ module File {
       result = API::getTopLevelMember("File").getAMethodCall(methodName).asExpr().getExpr()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
@@ -126,14 +126,14 @@ module File {
    * A flow summary for `File.join`, which propagates taint from every argument to
    * its return value.
    */
-  class FileJoinSummary extends SummarizedCallable {
+  class FileJoinSummary extends SummarizedCallable::Range {
     FileJoinSummary() { this = "File.join" }
 
     override MethodCall getACall() {
       result = API::getTopLevelMember("File").getAMethodCall("join").asExpr().getExpr()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0,1..]" and
       output = "ReturnValue" and
       preservesValue = false

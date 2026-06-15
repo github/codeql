@@ -1,8 +1,17 @@
 nodes
 | file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
+| tsconfig.json:1:1:7:1 | [JsonObject] {compilerOptions: ...} | semmle.label | [JsonObject] {compilerOptions: ...} |
+| tsconfig.json:1:1:7:1 | [JsonObject] {compilerOptions: ...} | semmle.order | 1 |
+| tsconfig.json:2:24:4:5 | [JsonObject] {experimentalDecorators: ...} | semmle.label | [JsonObject] {experimentalDecorators: ...} |
+| tsconfig.json:3:35:3:38 | [JsonBoolean] true | semmle.label | [JsonBoolean] true |
+| tsconfig.json:5:16:5:26 | [JsonArray] ["**/*.ts"] | semmle.label | [JsonArray] ["**/*.ts"] |
+| tsconfig.json:5:17:5:25 | [JsonString] "**/*.ts" | semmle.label | [JsonString] "**/*.ts" |
+| tsconfig.json:6:12:6:28 | [JsonArray] ["es2015", ...] | semmle.label | [JsonArray] ["es2015", ...] |
+| tsconfig.json:6:13:6:20 | [JsonString] "es2015" | semmle.label | [JsonString] "es2015" |
+| tsconfig.json:6:23:6:27 | [JsonString] "dom" | semmle.label | [JsonString] "dom" |
 | tst.ts:1:1:1:22 | [DeclStmt] const Dec = ... | semmle.label | [DeclStmt] const Dec = ... |
-| tst.ts:1:1:1:22 | [DeclStmt] const Dec = ... | semmle.order | 1 |
+| tst.ts:1:1:1:22 | [DeclStmt] const Dec = ... | semmle.order | 2 |
 | tst.ts:1:7:1:9 | [VarDecl] Dec | semmle.label | [VarDecl] Dec |
 | tst.ts:1:7:1:21 | [VariableDeclarator] Dec: any = null | semmle.label | [VariableDeclarator] Dec: any = null |
 | tst.ts:1:12:1:14 | [KeywordTypeExpr] any | semmle.label | [KeywordTypeExpr] any |
@@ -11,7 +20,7 @@ nodes
 | tst.ts:3:2:3:4 | [VarRef] Dec | semmle.label | [VarRef] Dec |
 | tst.ts:3:2:3:6 | [CallExpr] Dec() | semmle.label | [CallExpr] Dec() |
 | tst.ts:4:1:8:1 | [ExportDeclaration] export ... id {} } | semmle.label | [ExportDeclaration] export ... id {} } |
-| tst.ts:4:1:8:1 | [ExportDeclaration] export ... id {} } | semmle.order | 2 |
+| tst.ts:4:1:8:1 | [ExportDeclaration] export ... id {} } | semmle.order | 3 |
 | tst.ts:4:8:8:1 | [ClassDefinition,TypeDefinition] class O ... id {} } | semmle.label | [ClassDefinition,TypeDefinition] class O ... id {} } |
 | tst.ts:4:14:4:30 | [VarDecl] OperatorResolvers | semmle.label | [VarDecl] OperatorResolvers |
 | tst.ts:4:32:4:31 | [BlockStmt] {} | semmle.label | [BlockStmt] {} |
@@ -30,7 +39,7 @@ nodes
 | tst.ts:7:16:7:19 | [KeywordTypeExpr] void | semmle.label | [KeywordTypeExpr] void |
 | tst.ts:7:21:7:22 | [BlockStmt] {} | semmle.label | [BlockStmt] {} |
 | tst.ts:10:1:10:41 | [DeclStmt] const createMethodDecorator = ... | semmle.label | [DeclStmt] const createMethodDecorator = ... |
-| tst.ts:10:1:10:41 | [DeclStmt] const createMethodDecorator = ... | semmle.order | 3 |
+| tst.ts:10:1:10:41 | [DeclStmt] const createMethodDecorator = ... | semmle.order | 4 |
 | tst.ts:10:7:10:27 | [VarDecl] createMethodDecorator | semmle.label | [VarDecl] createMethodDecorator |
 | tst.ts:10:7:10:40 | [VariableDeclarator] createM ... = null | semmle.label | [VariableDeclarator] createM ... = null |
 | tst.ts:10:31:10:33 | [KeywordTypeExpr] any | semmle.label | [KeywordTypeExpr] any |
@@ -38,7 +47,7 @@ nodes
 | tst.ts:12:1:12:21 | [VarRef] createMethodDecorator | semmle.label | [VarRef] createMethodDecorator |
 | tst.ts:12:1:14:2 | [CallExpr] createM ... { }) | semmle.label | [CallExpr] createM ... { }) |
 | tst.ts:12:1:14:3 | [ExprStmt] createM ... }); | semmle.label | [ExprStmt] createM ... }); |
-| tst.ts:12:1:14:3 | [ExprStmt] createM ... }); | semmle.order | 4 |
+| tst.ts:12:1:14:3 | [ExprStmt] createM ... }); | semmle.order | 5 |
 | tst.ts:12:23:14:1 | [ArrowFunctionExpr] ({ args ... { } | semmle.label | [ArrowFunctionExpr] ({ args ... { } |
 | tst.ts:12:24:12:40 | [ObjectPattern,Parameter] { args, context } | semmle.label | [ObjectPattern,Parameter] { args, context } |
 | tst.ts:12:26:12:29 | [Label] args | semmle.label | [Label] args |
@@ -56,6 +65,20 @@ edges
 | file://:0:0:0:0 | (Parameters) | tst.ts:12:24:12:40 | [ObjectPattern,Parameter] { args, context } | semmle.order | 0 |
 | file://:0:0:0:0 | (Parameters) | tst.ts:12:43:12:46 | [SimpleParameter] next | semmle.label | 1 |
 | file://:0:0:0:0 | (Parameters) | tst.ts:12:43:12:46 | [SimpleParameter] next | semmle.order | 1 |
+| tsconfig.json:1:1:7:1 | [JsonObject] {compilerOptions: ...} | tsconfig.json:2:24:4:5 | [JsonObject] {experimentalDecorators: ...} | semmle.label | 0 |
+| tsconfig.json:1:1:7:1 | [JsonObject] {compilerOptions: ...} | tsconfig.json:2:24:4:5 | [JsonObject] {experimentalDecorators: ...} | semmle.order | 0 |
+| tsconfig.json:1:1:7:1 | [JsonObject] {compilerOptions: ...} | tsconfig.json:5:16:5:26 | [JsonArray] ["**/*.ts"] | semmle.label | 1 |
+| tsconfig.json:1:1:7:1 | [JsonObject] {compilerOptions: ...} | tsconfig.json:5:16:5:26 | [JsonArray] ["**/*.ts"] | semmle.order | 1 |
+| tsconfig.json:1:1:7:1 | [JsonObject] {compilerOptions: ...} | tsconfig.json:6:12:6:28 | [JsonArray] ["es2015", ...] | semmle.label | 2 |
+| tsconfig.json:1:1:7:1 | [JsonObject] {compilerOptions: ...} | tsconfig.json:6:12:6:28 | [JsonArray] ["es2015", ...] | semmle.order | 2 |
+| tsconfig.json:2:24:4:5 | [JsonObject] {experimentalDecorators: ...} | tsconfig.json:3:35:3:38 | [JsonBoolean] true | semmle.label | 0 |
+| tsconfig.json:2:24:4:5 | [JsonObject] {experimentalDecorators: ...} | tsconfig.json:3:35:3:38 | [JsonBoolean] true | semmle.order | 0 |
+| tsconfig.json:5:16:5:26 | [JsonArray] ["**/*.ts"] | tsconfig.json:5:17:5:25 | [JsonString] "**/*.ts" | semmle.label | 0 |
+| tsconfig.json:5:16:5:26 | [JsonArray] ["**/*.ts"] | tsconfig.json:5:17:5:25 | [JsonString] "**/*.ts" | semmle.order | 0 |
+| tsconfig.json:6:12:6:28 | [JsonArray] ["es2015", ...] | tsconfig.json:6:13:6:20 | [JsonString] "es2015" | semmle.label | 0 |
+| tsconfig.json:6:12:6:28 | [JsonArray] ["es2015", ...] | tsconfig.json:6:13:6:20 | [JsonString] "es2015" | semmle.order | 0 |
+| tsconfig.json:6:12:6:28 | [JsonArray] ["es2015", ...] | tsconfig.json:6:23:6:27 | [JsonString] "dom" | semmle.label | 1 |
+| tsconfig.json:6:12:6:28 | [JsonArray] ["es2015", ...] | tsconfig.json:6:23:6:27 | [JsonString] "dom" | semmle.order | 1 |
 | tst.ts:1:1:1:22 | [DeclStmt] const Dec = ... | tst.ts:1:7:1:21 | [VariableDeclarator] Dec: any = null | semmle.label | 1 |
 | tst.ts:1:1:1:22 | [DeclStmt] const Dec = ... | tst.ts:1:7:1:21 | [VariableDeclarator] Dec: any = null | semmle.order | 1 |
 | tst.ts:1:7:1:21 | [VariableDeclarator] Dec: any = null | tst.ts:1:7:1:9 | [VarDecl] Dec | semmle.label | 1 |

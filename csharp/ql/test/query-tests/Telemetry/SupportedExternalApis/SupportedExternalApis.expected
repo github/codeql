@@ -1,6 +1,6 @@
 | System#Console.ReadLine() | 2 |
 | System#DateTime.AddYears(System.Int32) | 2 |
-| System.Collections.Generic#List<>.Add(T) | 2 |
+| System.Collections.Generic#List`1.Add(T) | 2 |
 | System.Web#HttpResponse.Write(System.Object) | 2 |
 | System#Console.Read() | 1 |
 | System#Console.SetError(System.IO.TextWriter) | 1 |
@@ -8,4 +8,5 @@
 | System#DateTime.AddDays(System.Double) | 1 |
 | System#DateTime.DateTime(System.Int32,System.Int32,System.Int32) | 1 |
 | System#Guid.Parse(System.String) | 1 |
+| System.Web#HtmlString.HtmlString(System.String) | 1 |
 | System.Web#HttpResponse.WriteFile(System.String) | 1 |

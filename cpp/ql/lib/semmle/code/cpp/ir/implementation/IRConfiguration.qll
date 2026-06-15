@@ -41,5 +41,5 @@ class IREscapeAnalysisConfiguration extends TIREscapeAnalysisConfiguration {
    * Holds if the escape analysis done by SSA construction should be sound. By default, the SSA is
    * built assuming that no variable's address ever escapes.
    */
-  predicate useSoundEscapeAnalysis() { none() }
+  predicate useSoundEscapeAnalysis() { any() }
 }

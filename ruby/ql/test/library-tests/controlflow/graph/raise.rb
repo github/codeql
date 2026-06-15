@@ -168,3 +168,15 @@ class C
     raise ""
   end
 end
+
+def m16(b1, b2)
+  begin
+    if b1 || b2 == true
+      return 1
+    else
+      return 2
+    end
+  rescue ExceptionA
+    return 3
+  end
+end

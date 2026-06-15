@@ -4,20 +4,111 @@ from dataclasses import dataclass, field
 from typing import List, ClassVar
 
 # taken from https://en.cppreference.com/w/cpp/keyword
-cpp_keywords = {"alignas", "alignof", "and", "and_eq", "asm", "atomic_cancel", "atomic_commit", "atomic_noexcept",
-                "auto", "bitand", "bitor", "bool", "break", "case", "catch", "char", "char8_t", "char16_t", "char32_t",
-                "class", "compl", "concept", "const", "consteval", "constexpr", "constinit", "const_cast", "continue",
-                "co_await", "co_return", "co_yield", "decltype", "default", "delete", "do", "double", "dynamic_cast",
-                "else", "enum", "explicit", "export", "extern", "false", "float", "for", "friend", "goto", "if",
-                "inline", "int", "long", "mutable", "namespace", "new", "noexcept", "not", "not_eq", "nullptr",
-                "operator", "or", "or_eq", "private", "protected", "public", "reflexpr", "register", "reinterpret_cast",
-                "requires", "return", "short", "signed", "sizeof", "static", "static_assert", "static_cast", "struct",
-                "switch", "synchronized", "template", "this", "thread_local", "throw", "true", "try", "typedef",
-                "typeid", "typename", "union", "unsigned", "using", "virtual", "void", "volatile", "wchar_t", "while",
-                "xor", "xor_eq"}
+cpp_keywords = {
+    "alignas",
+    "alignof",
+    "and",
+    "and_eq",
+    "asm",
+    "atomic_cancel",
+    "atomic_commit",
+    "atomic_noexcept",
+    "auto",
+    "bitand",
+    "bitor",
+    "bool",
+    "break",
+    "case",
+    "catch",
+    "char",
+    "char8_t",
+    "char16_t",
+    "char32_t",
+    "class",
+    "compl",
+    "concept",
+    "const",
+    "consteval",
+    "constexpr",
+    "constinit",
+    "const_cast",
+    "continue",
+    "co_await",
+    "co_return",
+    "co_yield",
+    "decltype",
+    "default",
+    "delete",
+    "do",
+    "double",
+    "dynamic_cast",
+    "else",
+    "enum",
+    "explicit",
+    "export",
+    "extern",
+    "false",
+    "float",
+    "for",
+    "friend",
+    "goto",
+    "if",
+    "inline",
+    "int",
+    "long",
+    "mutable",
+    "namespace",
+    "new",
+    "noexcept",
+    "not",
+    "not_eq",
+    "nullptr",
+    "operator",
+    "or",
+    "or_eq",
+    "private",
+    "protected",
+    "public",
+    "reflexpr",
+    "register",
+    "reinterpret_cast",
+    "requires",
+    "return",
+    "short",
+    "signed",
+    "sizeof",
+    "static",
+    "static_assert",
+    "static_cast",
+    "struct",
+    "switch",
+    "synchronized",
+    "template",
+    "this",
+    "thread_local",
+    "throw",
+    "true",
+    "try",
+    "typedef",
+    "typeid",
+    "typename",
+    "union",
+    "unsigned",
+    "using",
+    "virtual",
+    "void",
+    "volatile",
+    "wchar_t",
+    "while",
+    "xor",
+    "xor_eq",
+}
 
 _field_overrides = [
-    (re.compile(r"(start|end)_(line|column)|(.*_)?index|width|num_.*"), {"base_type": "unsigned"}),
+    (
+        re.compile(r"(start|end)_(line|column)|(.*_)?index|width|num_.*"),
+        {"base_type": "unsigned"},
+    ),
     (re.compile(r"(.*)_"), lambda m: {"field_name": m[1]}),
 ]
 
@@ -108,7 +199,7 @@ class Tag:
 
 @dataclass
 class TrapList:
-    template: ClassVar = 'trap_traps'
+    template: ClassVar = "trap_traps"
     extensions = ["h", "cpp"]
     traps: List[Trap]
     source: str
@@ -118,7 +209,7 @@ class TrapList:
 
 @dataclass
 class TagList:
-    template: ClassVar = 'trap_tags'
+    template: ClassVar = "trap_tags"
     extensions = ["h"]
 
     tags: List[Tag]
@@ -127,7 +218,7 @@ class TagList:
 
 @dataclass
 class ClassBase:
-    ref: 'Class'
+    ref: "Class"
     first: bool = False
 
 
@@ -140,7 +231,9 @@ class Class:
     trap_name: str = None
 
     def __post_init__(self):
-        self.bases = [ClassBase(c) for c in sorted(self.bases, key=lambda cls: cls.name)]
+        self.bases = [
+            ClassBase(c) for c in sorted(self.bases, key=lambda cls: cls.name)
+        ]
         if self.bases:
             self.bases[0].first = True
 

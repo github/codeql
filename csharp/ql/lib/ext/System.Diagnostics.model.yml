@@ -3,12 +3,15 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Diagnostics", "ActivityTagsCollection", False, "ActivityTagsCollection", "(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>)", "", "Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key]", "value", "manual"]
-      - ["System.Diagnostics", "ActivityTagsCollection", False, "ActivityTagsCollection", "(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>)", "", "Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value]", "value", "manual"]
-      - ["System.Diagnostics", "ActivityTagsCollection", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key]", "value", "manual"]
-      - ["System.Diagnostics", "ActivityTagsCollection", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value]", "value", "manual"]
+      - ["System.Diagnostics", "ActivityTagsCollection", False, "ActivityTagsCollection", "(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>)", "", "Argument[0].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "value", "manual"]
+      - ["System.Diagnostics", "ActivityTagsCollection", False, "ActivityTagsCollection", "(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>)", "", "Argument[0].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "value", "manual"]
+      - ["System.Diagnostics", "ActivityTagsCollection", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair`2.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "value", "manual"]
+      - ["System.Diagnostics", "ActivityTagsCollection", False, "Add", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "", "Argument[0].Property[System.Collections.Generic.KeyValuePair`2.Value]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "value", "manual"]
       - ["System.Diagnostics", "ActivityTagsCollection", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Diagnostics.ActivityTagsCollection+Enumerator.Current]", "value", "manual"]
       - ["System.Diagnostics", "ProcessModuleCollection", False, "CopyTo", "(System.Diagnostics.ProcessModule[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
+      - ["System.Diagnostics", "ProcessStartInfo", False, "ProcessStartInfo", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.Diagnostics.ProcessStartInfo.FileName]", "value", "manual"]
+      - ["System.Diagnostics", "ProcessStartInfo", False, "ProcessStartInfo", "(System.String,System.String)", "", "Argument[0]", "Argument[this].Property[System.Diagnostics.ProcessStartInfo.FileName]", "value", "manual"]
+      - ["System.Diagnostics", "ProcessStartInfo", False, "ProcessStartInfo", "(System.String,System.String)", "", "Argument[1]", "Argument[this].Property[System.Diagnostics.ProcessStartInfo.Arguments]", "value", "manual"]
       - ["System.Diagnostics", "ProcessThreadCollection", False, "Add", "(System.Diagnostics.ProcessThread)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Diagnostics", "ProcessThreadCollection", False, "CopyTo", "(System.Diagnostics.ProcessThread[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
       - ["System.Diagnostics", "TraceListenerCollection", False, "Add", "(System.Diagnostics.TraceListener)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
@@ -19,3 +22,8 @@ extensions:
       - ["System.Diagnostics", "TraceListenerCollection", False, "get_Item", "(System.Int32)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Diagnostics", "TraceListenerCollection", False, "get_Item", "(System.String)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["System.Diagnostics", "TraceListenerCollection", False, "set_Item", "(System.Int32,System.Diagnostics.TraceListener)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Diagnostics", "Process", "get_ProcessName", "()", "source", "manual"]

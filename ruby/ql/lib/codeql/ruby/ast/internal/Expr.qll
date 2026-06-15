@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import AST
@@ -8,6 +11,18 @@ class StmtSequenceSynth extends StmtSequence, TStmtSequenceSynth {
     result = rank[n + 1](int i, Stmt s | synthChild(this, i, s) | s order by i)
   }
 
+  final override string toString() { result = "..." }
+}
+
+class BodyStatement extends BodyStmt, TBodyStatement {
+  final override string toString() { result = "..." }
+}
+
+class BraceBlockBody extends BodyStmt, TBraceBlockBody {
+  final override string toString() { result = "..." }
+}
+
+class BodyStmtSynth extends BodyStmt, TBodyStmtSynth {
   final override string toString() { result = "..." }
 }
 
@@ -61,26 +76,9 @@ class Ensure extends StmtSequence, TEnsure {
 
 // Not defined by dispatch, as it should not be exposed
 Ruby::AstNode getBodyStmtChild(TBodyStmt b, int i) {
-  exists(Ruby::Method g, Ruby::AstNode body | b = TMethod(g) and body = g.getBody() |
-    result = body.(Ruby::BodyStatement).getChild(i)
-    or
-    i = 0 and result = body and not body instanceof Ruby::BodyStatement
-  )
+  result = any(Ruby::BlockBody g | b = TBraceBlockBody(g)).getChild(i)
   or
-  exists(Ruby::SingletonMethod g, Ruby::AstNode body |
-    b = TSingletonMethod(g) and body = g.getBody()
-  |
-    result = body.(Ruby::BodyStatement).getChild(i)
-    or
-    i = 0 and result = body and not body instanceof Ruby::BodyStatement
-  )
-  or
-  exists(Ruby::Lambda g | b = TLambda(g) |
-    result = g.getBody().(Ruby::DoBlock).getBody().getChild(i) or
-    result = g.getBody().(Ruby::Block).getBody().getChild(i)
-  )
-  or
-  result = any(Ruby::DoBlock g | b = TDoBlock(g)).getBody().getChild(i)
+  result = any(Ruby::BodyStatement g | b = TBodyStatement(g)).getChild(i)
   or
   result = any(Ruby::Program g | b = TToplevel(g)).getChild(i) and
   not result instanceof Ruby::BeginBlock
@@ -119,4 +117,39 @@ class LeftAssignmentListImpl extends DestructuredLhsExprImpl, Ruby::LeftAssignme
         else result = lal.getChild(i)
       )
   }
+}
+
+abstract class PairImpl extends Expr, TPair {
+  abstract Expr getKey();
+
+  abstract Expr getValue();
+
+  final override string toString() { result = "Pair" }
+
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getKey" and result = this.getKey()
+    or
+    pred = "getValue" and result = this.getValue()
+  }
+}
+
+class PairReal extends PairImpl, TPairReal {
+  private Ruby::Pair g;
+
+  PairReal() { this = TPairReal(g) }
+
+  final override Expr getKey() { toGenerated(result) = g.getKey() }
+
+  final override Expr getValue() {
+    toGenerated(result) = g.getValue() or
+    synthChild(this, 0, result)
+  }
+}
+
+class PairSynth extends PairImpl, TPairSynth {
+  final override Expr getKey() { synthChild(this, 0, result) }
+
+  final override Expr getValue() { synthChild(this, 1, result) }
 }

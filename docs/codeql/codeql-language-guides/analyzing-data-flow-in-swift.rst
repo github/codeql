@@ -5,8 +5,6 @@ Analyzing data flow in Swift
 
 You can use CodeQL to track the flow of data through a Swift program to places where the data is used.
 
-.. include:: ../reusables/swift-beta-note.rst
-
 About this article
 ------------------
 
@@ -34,7 +32,7 @@ The ``Node`` class has a number of useful subclasses, such as ``ExprNode`` for e
        Expr asExpr() { ... }
 
        /**
-        * Gets the control flow node that corresponds to this data flow node. 
+        * Gets the control flow node that corresponds to this data flow node.
         */
        ControlFlowNode getCfgNode() { ... }
 
@@ -74,8 +72,7 @@ For example:
 
 .. code-block:: swift
 
-     temp = x
-     y = temp + ", " + temp
+     y = "Hello " + x
 
 If ``x`` is a tainted string then ``y`` is also tainted.
 
@@ -165,7 +162,7 @@ However, global data flow is less precise than local data flow, and the analysis
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
-You can use the global data flow library by implementing the module ``DataFlow::ConfigSig``:
+We can use the global data flow library by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
 
 .. code-block:: ql
 
@@ -187,8 +184,8 @@ These predicates are defined in the configuration:
 
 -  ``isSource`` - defines where data may flow from.
 -  ``isSink`` - defines where data may flow to.
--  ``isBarrier`` - optionally, restricts the data flow.
--  ``isAdditionalFlowStep`` - optionally, adds additional flow steps.
+-  ``isBarrier`` - optional, defines where data flow is blocked.
+-  ``isAdditionalFlowStep`` - optional, adds additional flow steps.
 
 The last line (``module MyDataFlow = ...``) instantiates the parameterized module for data flow analysis by passing the configuration to the parameterized module. Data flow analysis can then be performed using ``MyDataFlow::flow(DataFlow::Node source, DataFlow::Node sink)``:
 
@@ -281,10 +278,49 @@ The following global taint-tracking query finds places where a value from a remo
    where SqlInjectionFlow::flow(sourceNode, sinkNode)
    select sinkNode, "This query depends on a $@.", sourceNode, "user-provided value"
 
+Path query example
+~~~~~~~~~~~~~~~~~~
+
+Here is the string literal example above, converted into a path query:
+
+.. code-block:: ql
+
+   /**
+    * @kind path-problem
+    * @problem.severity warning
+    * @id sql-injection
+    */
+
+   import swift
+   import codeql.swift.dataflow.DataFlow
+   import codeql.swift.dataflow.TaintTracking
+   import codeql.swift.dataflow.FlowSources
+
+   module SqlInjectionConfig implements DataFlow::ConfigSig {
+     predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
+
+     predicate isSink(DataFlow::Node node) {
+       exists(CallExpr call |
+         call.getStaticTarget().(Method).hasQualifiedName("Connection", "execute(_:)") and
+         call.getArgument(0).getExpr() = node.asExpr()
+       )
+     }
+   }
+
+   module SqlInjectionFlow = TaintTracking::Global<SqlInjectionConfig>;
+
+   import SqlInjectionFlow::PathGraph
+
+   from SqlInjectionFlow::PathNode sourceNode, SqlInjectionFlow::PathNode sinkNode
+   where SqlInjectionFlow::flowPath(sourceNode, sinkNode)
+   select sinkNode.getNode(), sourceNode, sinkNode, "This query depends on a $@.", sourceNode, "user-provided value"
+
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
+
 Further reading
 ---------------
 
-- ":ref:`Exploring data flow with path queries <exploring-data-flow-with-path-queries>`"
+- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
 
 
 .. include:: ../reusables/swift-further-reading.rst

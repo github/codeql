@@ -10,8 +10,10 @@
  */
 
 import csharp
-import DataSetSerialization
+deprecated import DataSetSerialization
 
-from UnsafeXmlReadMethodCall mc
-select mc,
-  "Making an XML deserialization call with a type derived from DataSet or DataTable types and may lead to a security problem. Please visit https://go.microsoft.com/fwlink/?linkid=2132227 for details."
+deprecated query predicate problems(UnsafeXmlReadMethodCall mc, string message) {
+  message =
+    "Making an XML deserialization call with a type derived from DataSet or DataTable types and may lead to a security problem. Please visit https://go.microsoft.com/fwlink/?linkid=2132227 for details." and
+  exists(mc)
+}

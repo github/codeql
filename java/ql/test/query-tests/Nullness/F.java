@@ -8,13 +8,13 @@ public class F {
   public void m2(Object obj) {
     if (obj == null)
       doStuff();
-    obj.hashCode(); // NPE
+    obj.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // NPE
   }
 
   public void m3(Object obj) {
     if (obj == null)
       doStuffOrThrow(0);
-    obj.hashCode(); // NPE
+    obj.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // NPE
   }
 
   public static class MyException extends RuntimeException {

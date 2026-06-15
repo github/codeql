@@ -5,7 +5,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/test-for-negative-container-size
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       logic
  */
@@ -27,21 +28,21 @@ class ArrayLengthRead extends FieldRead, SizeOfContainer {
 }
 
 /** An access to `String.length()`. */
-class StringLengthRead extends MethodAccess, SizeOfContainer {
+class StringLengthRead extends MethodCall, SizeOfContainer {
   StringLengthRead() { this.getMethod() instanceof StringLengthMethod }
 
   override string getContainerKind() { result = "a string" }
 }
 
 /** An access to `Collection.size()`. */
-class CollectionSizeCall extends MethodAccess, SizeOfContainer {
+class CollectionSizeCall extends MethodCall, SizeOfContainer {
   CollectionSizeCall() { this.getMethod() instanceof CollectionSizeMethod }
 
   override string getContainerKind() { result = "a collection" }
 }
 
 /** An access to `Map.size()`. */
-class MapSizeCall extends MethodAccess, SizeOfContainer {
+class MapSizeCall extends MethodCall, SizeOfContainer {
   MapSizeCall() { this.getMethod() instanceof MapSizeMethod }
 
   override string getContainerKind() { result = "a map" }

@@ -7,7 +7,7 @@ package main
 //go:generate depstubber -vendor github.com/davecgh/go-spew/spew "" Dump,Errorf,Print,Printf,Println,Fdump,Fprint,Fprintf,Fprintln
 //go:generate depstubber -vendor github.com/elazarl/goproxy ProxyCtx ""
 //go:generate depstubber -vendor github.com/golang/glog Level,Verbose Info,InfoDepth,Infof,Infoln,Error,ErrorDepth,Errorf,Errorln,Fatal,FatalDepth,Fatalf,Fatalln,Exit,ExitDepth,Exitf,Exitln,V
-//go:generate depstubber -vendor github.com/sirupsen/logrus Fields,Entry,Logger,Level Debug,Debugf,Debugln,Error,Errorf,Errorln,Fatal,Fatalf,Fatalln,Info,Infof,Infoln,Panic,Panicf,Panicln,Print,Printf,Println,Trace,Tracef,Traceln,Warn,Warnf,Warnln,Warning,Warningf,Warningln,WithFields,WithField
+//go:generate depstubber -vendor github.com/sirupsen/logrus FieldLogger,Fields,Entry,Logger,Level Debug,Debugf,Debugln,Error,Errorf,Errorln,Fatal,Fatalf,Fatalln,Info,Infof,Infoln,New,NewEntry,Panic,Panicf,Panicln,Print,Printf,Println,Trace,Tracef,Traceln,Warn,Warnf,Warnln,Warning,Warningf,Warningln,WithError,WithFields,WithField
 //go:generate depstubber -vendor go.uber.org/zap Logger,SugaredLogger NewProduction
 
 import (
@@ -30,51 +30,66 @@ import (
 
 func handler(req *http.Request, ctx *goproxy.ProxyCtx) {
 	username := req.URL.Query()["username"][0]
+	password := req.URL.Query()["password"][0]
+	formatString := req.URL.Query()["formatString"][0]
 	testFlag := req.URL.Query()["testFlag"][0]
+	slice := []any{"username", username}
 
 	{
-		fmt.Print(username)       // $ hasTaintFlow="username"
-		fmt.Printf(username)      // $ hasTaintFlow="username"
-		fmt.Println(username)     // $ hasTaintFlow="username"
-		fmt.Fprint(nil, username) // Fprint functions are only loggers if they target stdout/stderr
-		fmt.Fprintf(nil, username)
-		fmt.Fprintln(nil, username)
+		fmt.Print(username, password)                // $ hasTaintFlow="username" hasTaintFlow="password"
+		fmt.Printf(formatString, username, password) // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
+		fmt.Println(username, password)              // $ hasTaintFlow="username" hasTaintFlow="password"
+		fmt.Fprint(nil, username, password)          // Fprint functions are only loggers if they target stdout/stderr
+		fmt.Fprintf(nil, formatString, username, password)
+		fmt.Fprintln(nil, username, password)
 	}
 	// log
 	{
-		log.Print("user %s logged in.\n", username)   // $ hasTaintFlow="username"
-		log.Printf("user %s logged in.\n", username)  // $ hasTaintFlow="username"
-		log.Println("user %s logged in.\n", username) // $ hasTaintFlow="username"
+		log.Print("user is logged in:", username, password)   // $ hasTaintFlow="username" hasTaintFlow="password"
+		log.Printf(formatString, username, password)          // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
+		log.Println("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
 
-		if testFlag == "true" {
-			log.Fatal("user %s logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == "1" {
+			log.Fatal("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
 		}
-		if testFlag == "true" {
-			log.Fatalf("user %s logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == "2" {
+			log.Fatalf(formatString, username, password) // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
 		}
-		if testFlag == "true" {
-			log.Fatalln("user %s logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == "3" {
+			log.Fatalln("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
 		}
-		if testFlag == "true" {
-			log.Panic("user %s logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == "4" {
+			log.Panic("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
 		}
-		if testFlag == "true" {
-			log.Panicf("user %s logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == "5" {
+			log.Panicf(formatString, username, password) // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
 		}
-		if testFlag == "true" {
-			log.Panicln("user %s logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == "6" {
+			log.Panicln("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
 		}
 
 		logger := log.Default()
-		logger.Print("user %s logged in.\n", username)   // $ hasTaintFlow="username"
-		logger.Printf("user %s logged in.\n", username)  // $ hasTaintFlow="username"
-		logger.Println("user %s logged in.\n", username) // $ hasTaintFlow="username"
-		logger.Fatal("user %s logged in.\n", username)   // $ hasTaintFlow="username"
-		logger.Fatalf("user %s logged in.\n", username)  // $ hasTaintFlow="username"
-		logger.Fatalln("user %s logged in.\n", username) // $ hasTaintFlow="username"
-		logger.Panic("user %s logged in.\n", username)   // $ hasTaintFlow="username"
-		logger.Panicf("user %s logged in.\n", username)  // $ hasTaintFlow="username"
-		logger.Panicln("user %s logged in.\n", username) // $ hasTaintFlow="username"
+		logger.Print("user is logged in:", username, password)   // $ hasTaintFlow="username" hasTaintFlow="password"
+		logger.Printf(formatString, username, password)          // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
+		logger.Println("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
+		if testFlag == "7" {
+			logger.Fatal("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
+		}
+		if testFlag == "8" {
+			logger.Fatalf(formatString, username, password) // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
+		}
+		if testFlag == "9" {
+			logger.Fatalln("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
+		}
+		if testFlag == "10" {
+			logger.Panic("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
+		}
+		if testFlag == "11" {
+			logger.Panicf(formatString, username, password) // $ hasTaintFlow="formatString" hasTaintFlow="username" hasTaintFlow="password"
+		}
+		if testFlag == "12" {
+			logger.Panicln("user is logged in:", username, password) // $ hasTaintFlow="username" hasTaintFlow="password"
+		}
 	}
 	// k8s.io/klog
 	{
@@ -88,12 +103,24 @@ func handler(req *http.Request, ctx *goproxy.ProxyCtx) {
 		klog.Error(username)     // $ hasTaintFlow="username"
 		klog.Errorf(username)    // $ hasTaintFlow="username"
 		klog.Errorln(username)   // $ hasTaintFlow="username"
-		klog.Fatal(username)     // $ hasTaintFlow="username"
-		klog.Fatalf(username)    // $ hasTaintFlow="username"
-		klog.Fatalln(username)   // $ hasTaintFlow="username"
-		klog.Exit(username)      // $ hasTaintFlow="username"
-		klog.Exitf(username)     // $ hasTaintFlow="username"
-		klog.Exitln(username)    // $ hasTaintFlow="username"
+		if testFlag == "77" {
+			klog.Fatal(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "78" {
+			klog.Fatalf(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "79" {
+			klog.Fatalln(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "80" {
+			klog.Exit(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "81" {
+			klog.Exitf(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "82" {
+			klog.Exitln(username) // $ hasTaintFlow="username"
+		}
 	}
 	// astaxie/beego
 	{
@@ -158,141 +185,272 @@ func handler(req *http.Request, ctx *goproxy.ProxyCtx) {
 		glog.ErrorDepth(0, username) // $ hasTaintFlow="username"
 		glog.Errorf(username)        // $ hasTaintFlow="username"
 		glog.Errorln(username)       // $ hasTaintFlow="username"
-		glog.Fatal(username)         // $ hasTaintFlow="username"
-		glog.FatalDepth(0, username) // $ hasTaintFlow="username"
-		glog.Fatalf(username)        // $ hasTaintFlow="username"
-		glog.Fatalln(username)       // $ hasTaintFlow="username"
-		glog.Exit(username)          // $ hasTaintFlow="username"
-		glog.ExitDepth(0, username)  // $ hasTaintFlow="username"
-		glog.Exitf(username)         // $ hasTaintFlow="username"
-		glog.Exitln(username)        // $ hasTaintFlow="username"
+		if testFlag == "83" {
+			glog.Fatal(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "84" {
+			glog.FatalDepth(0, username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "85" {
+			glog.Fatalf(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "86" {
+			glog.Fatalln(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "87" {
+			glog.Exit(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "88" {
+			glog.ExitDepth(0, username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "89" {
+			glog.Exitf(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "90" {
+			glog.Exitln(username) // $ hasTaintFlow="username"
+		}
 
 	}
 	// sirupsen/logrus
 	{
-		logrus.Debug(username)        // $ hasTaintFlow="username"
-		logrus.Debugf(username, "")   // $ hasTaintFlow="username"
-		logrus.Debugf("", username)   // $ hasTaintFlow="username"
-		logrus.Debugln(username)      // $ hasTaintFlow="username"
-		logrus.Error(username)        // $ hasTaintFlow="username"
-		logrus.Errorf(username, "")   // $ hasTaintFlow="username"
-		logrus.Errorf("", username)   // $ hasTaintFlow="username"
-		logrus.Errorln(username)      // $ hasTaintFlow="username"
-		logrus.Fatal(username)        // $ hasTaintFlow="username"
-		logrus.Fatalf(username, "")   // $ hasTaintFlow="username"
-		logrus.Fatalf("", username)   // $ hasTaintFlow="username"
-		logrus.Fatalln(username)      // $ hasTaintFlow="username"
-		logrus.Info(username)         // $ hasTaintFlow="username"
-		logrus.Infof(username, "")    // $ hasTaintFlow="username"
-		logrus.Infof("", username)    // $ hasTaintFlow="username"
-		logrus.Infoln(username)       // $ hasTaintFlow="username"
-		logrus.Panic(username)        // $ hasTaintFlow="username"
-		logrus.Panicf(username, "")   // $ hasTaintFlow="username"
-		logrus.Panicf("", username)   // $ hasTaintFlow="username"
-		logrus.Panicln(username)      // $ hasTaintFlow="username"
-		logrus.Print(username)        // $ hasTaintFlow="username"
-		logrus.Printf(username, "")   // $ hasTaintFlow="username"
-		logrus.Printf("", username)   // $ hasTaintFlow="username"
-		logrus.Println(username)      // $ hasTaintFlow="username"
-		logrus.Trace(username)        // $ hasTaintFlow="username"
-		logrus.Tracef(username, "")   // $ hasTaintFlow="username"
-		logrus.Tracef("", username)   // $ hasTaintFlow="username"
-		logrus.Traceln(username)      // $ hasTaintFlow="username"
-		logrus.Warn(username)         // $ hasTaintFlow="username"
-		logrus.Warnf(username, "")    // $ hasTaintFlow="username"
-		logrus.Warnf("", username)    // $ hasTaintFlow="username"
-		logrus.Warnln(username)       // $ hasTaintFlow="username"
-		logrus.Warning(username)      // $ hasTaintFlow="username"
-		logrus.Warningf(username, "") // $ hasTaintFlow="username"
-		logrus.Warningf("", username) // $ hasTaintFlow="username"
-		logrus.Warningln(username)    // $ hasTaintFlow="username"
-
+		err := fmt.Errorf("error: %s", username)
 		fields := make(logrus.Fields)
 		fields["username"] = username
-		entry := logrus.WithFields(fields)             // $ hasTaintFlow="fields"
-		entry = logrus.WithField("username", username) // $ hasTaintFlow="username"
-		entry.Debug(username)                          // $ hasTaintFlow="username"
-		entry.Debugf(username, "")                     // $ hasTaintFlow="username"
-		entry.Debugf("", username)                     // $ hasTaintFlow="username"
-		entry.Debugln(username)                        // $ hasTaintFlow="username"
-		entry.Error(username)                          // $ hasTaintFlow="username"
-		entry.Errorf(username, "")                     // $ hasTaintFlow="username"
-		entry.Errorf("", username)                     // $ hasTaintFlow="username"
-		entry.Errorln(username)                        // $ hasTaintFlow="username"
-		entry.Fatal(username)                          // $ hasTaintFlow="username"
-		entry.Fatalf(username, "")                     // $ hasTaintFlow="username"
-		entry.Fatalf("", username)                     // $ hasTaintFlow="username"
-		entry.Fatalln(username)                        // $ hasTaintFlow="username"
-		entry.Info(username)                           // $ hasTaintFlow="username"
-		entry.Infof(username, "")                      // $ hasTaintFlow="username"
-		entry.Infof("", username)                      // $ hasTaintFlow="username"
-		entry.Infoln(username)                         // $ hasTaintFlow="username"
-		entry.Log(0, username)                         // $ hasTaintFlow="username"
-		entry.Logf(0, username, "")                    // $ hasTaintFlow="username"
-		entry.Logf(0, "", username)                    // $ hasTaintFlow="username"
-		entry.Logln(0, username)                       // $ hasTaintFlow="username"
-		entry.Panic(username)                          // $ hasTaintFlow="username"
-		entry.Panicf(username, "")                     // $ hasTaintFlow="username"
-		entry.Panicf("", username)                     // $ hasTaintFlow="username"
-		entry.Panicln(username)                        // $ hasTaintFlow="username"
-		entry.Print(username)                          // $ hasTaintFlow="username"
-		entry.Printf(username, "")                     // $ hasTaintFlow="username"
-		entry.Printf("", username)                     // $ hasTaintFlow="username"
-		entry.Println(username)                        // $ hasTaintFlow="username"
-		entry.Trace(username)                          // $ hasTaintFlow="username"
-		entry.Tracef(username, "")                     // $ hasTaintFlow="username"
-		entry.Tracef("", username)                     // $ hasTaintFlow="username"
-		entry.Traceln(username)                        // $ hasTaintFlow="username"
-		entry.Warn(username)                           // $ hasTaintFlow="username"
-		entry.Warnf(username, "")                      // $ hasTaintFlow="username"
-		entry.Warnf("", username)                      // $ hasTaintFlow="username"
-		entry.Warnln(username)                         // $ hasTaintFlow="username"
-		entry.Warning(username)                        // $ hasTaintFlow="username"
-		entry.Warningf(username, "")                   // $ hasTaintFlow="username"
-		entry.Warningf("", username)                   // $ hasTaintFlow="username"
-		entry.Warningln(username)                      // $ hasTaintFlow="username"
+		logger := logrus.New()
+		entry := logrus.NewEntry(logger)
 
-		logger := entry.Logger
-		logger.Debug(username)        // $ hasTaintFlow="username"
-		logger.Debugf(username, "")   // $ hasTaintFlow="username"
-		logger.Debugf("", username)   // $ hasTaintFlow="username"
-		logger.Debugln(username)      // $ hasTaintFlow="username"
-		logger.Error(username)        // $ hasTaintFlow="username"
-		logger.Errorf(username, "")   // $ hasTaintFlow="username"
-		logger.Errorf("", username)   // $ hasTaintFlow="username"
-		logger.Errorln(username)      // $ hasTaintFlow="username"
-		logger.Fatal(username)        // $ hasTaintFlow="username"
-		logger.Fatalf(username, "")   // $ hasTaintFlow="username"
-		logger.Fatalf("", username)   // $ hasTaintFlow="username"
-		logger.Fatalln(username)      // $ hasTaintFlow="username"
-		logger.Info(username)         // $ hasTaintFlow="username"
-		logger.Infof(username, "")    // $ hasTaintFlow="username"
-		logger.Infof("", username)    // $ hasTaintFlow="username"
-		logger.Infoln(username)       // $ hasTaintFlow="username"
-		logger.Log(0, username)       // $ hasTaintFlow="username"
-		logger.Logf(0, username, "")  // $ hasTaintFlow="username"
-		logger.Logf(0, "", username)  // $ hasTaintFlow="username"
-		logger.Logln(0, username)     // $ hasTaintFlow="username"
-		logger.Panic(username)        // $ hasTaintFlow="username"
-		logger.Panicf(username, "")   // $ hasTaintFlow="username"
-		logger.Panicf("", username)   // $ hasTaintFlow="username"
-		logger.Panicln(username)      // $ hasTaintFlow="username"
-		logger.Print(username)        // $ hasTaintFlow="username"
-		logger.Printf(username, "")   // $ hasTaintFlow="username"
-		logger.Printf("", username)   // $ hasTaintFlow="username"
-		logger.Println(username)      // $ hasTaintFlow="username"
-		logger.Trace(username)        // $ hasTaintFlow="username"
-		logger.Tracef(username, "")   // $ hasTaintFlow="username"
-		logger.Tracef("", username)   // $ hasTaintFlow="username"
-		logger.Traceln(username)      // $ hasTaintFlow="username"
-		logger.Warn(username)         // $ hasTaintFlow="username"
-		logger.Warnf(username, "")    // $ hasTaintFlow="username"
-		logger.Warnf("", username)    // $ hasTaintFlow="username"
-		logger.Warnln(username)       // $ hasTaintFlow="username"
-		logger.Warning(username)      // $ hasTaintFlow="username"
-		logger.Warningf(username, "") // $ hasTaintFlow="username"
-		logger.Warningf("", username) // $ hasTaintFlow="username"
-		logger.Warningln(username)    // $ hasTaintFlow="username"
+		logrus.Debug(username)      // $ hasTaintFlow="username"
+		logrus.Debugf(username, "") // $ hasTaintFlow="username"
+		logrus.Debugf("", username) // $ hasTaintFlow="username"
+		logrus.Debugln(username)    // $ hasTaintFlow="username"
+		logrus.Error(username)      // $ hasTaintFlow="username"
+		logrus.Errorf(username, "") // $ hasTaintFlow="username"
+		logrus.Errorf("", username) // $ hasTaintFlow="username"
+		logrus.Errorln(username)    // $ hasTaintFlow="username"
+		if testFlag == "13" {
+			logrus.Fatal(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "14" {
+			logrus.Fatalf(username, "") // $ hasTaintFlow="username"
+		}
+		if testFlag == "15" {
+			logrus.Fatalf("", username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "16" {
+			logrus.Fatalln(username) // $ hasTaintFlow="username"
+		}
+		logrus.Info(username)      // $ hasTaintFlow="username"
+		logrus.Infof(username, "") // $ hasTaintFlow="username"
+		logrus.Infof("", username) // $ hasTaintFlow="username"
+		logrus.Infoln(username)    // $ hasTaintFlow="username"
+		if testFlag == "17" {
+			logrus.Panic(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "18" {
+			logrus.Panicf(username, "") // $ hasTaintFlow="username"
+		}
+		if testFlag == "19" {
+			logrus.Panicf("", username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "20" {
+			logrus.Panicln(username) // $ hasTaintFlow="username"
+		}
+		logrus.Print(username)         // $ hasTaintFlow="username"
+		logrus.Printf(username, "")    // $ hasTaintFlow="username"
+		logrus.Printf("", username)    // $ hasTaintFlow="username"
+		logrus.Println(username)       // $ hasTaintFlow="username"
+		logrus.Trace(username)         // $ hasTaintFlow="username"
+		logrus.Tracef(username, "")    // $ hasTaintFlow="username"
+		logrus.Tracef("", username)    // $ hasTaintFlow="username"
+		logrus.Traceln(username)       // $ hasTaintFlow="username"
+		logrus.Warn(username)          // $ hasTaintFlow="username"
+		logrus.Warnf(username, "")     // $ hasTaintFlow="username"
+		logrus.Warnf("", username)     // $ hasTaintFlow="username"
+		logrus.Warnln(username)        // $ hasTaintFlow="username"
+		logrus.Warning(username)       // $ hasTaintFlow="username"
+		logrus.Warningf(username, "")  // $ hasTaintFlow="username"
+		logrus.Warningf("", username)  // $ hasTaintFlow="username"
+		logrus.Warningln(username)     // $ hasTaintFlow="username"
+		logrus.WithError(err)          // $ hasTaintFlow="err"
+		logrus.WithField(username, "") // $ hasTaintFlow="username"
+		logrus.WithField("", username) // $ hasTaintFlow="username"
+		logrus.WithFields(fields)      // $ hasTaintFlow="fields"
+
+		entry.Debug(username)      // $ hasTaintFlow="username"
+		entry.Debugf(username, "") // $ hasTaintFlow="username"
+		entry.Debugf("", username) // $ hasTaintFlow="username"
+		entry.Debugln(username)    // $ hasTaintFlow="username"
+		entry.Error(username)      // $ hasTaintFlow="username"
+		entry.Errorf(username, "") // $ hasTaintFlow="username"
+		entry.Errorf("", username) // $ hasTaintFlow="username"
+		entry.Errorln(username)    // $ hasTaintFlow="username"
+		if testFlag == "21" {
+			entry.Fatal(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "22" {
+			entry.Fatalf(username, "") // $ hasTaintFlow="username"
+		}
+		if testFlag == "23" {
+			entry.Fatalf("", username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "24" {
+			entry.Fatalln(username) // $ hasTaintFlow="username"
+		}
+		entry.Info(username)        // $ hasTaintFlow="username"
+		entry.Infof(username, "")   // $ hasTaintFlow="username"
+		entry.Infof("", username)   // $ hasTaintFlow="username"
+		entry.Infoln(username)      // $ hasTaintFlow="username"
+		entry.Log(0, username)      // $ hasTaintFlow="username"
+		entry.Logf(0, username, "") // $ hasTaintFlow="username"
+		entry.Logf(0, "", username) // $ hasTaintFlow="username"
+		entry.Logln(0, username)    // $ hasTaintFlow="username"
+		if testFlag == "25" {
+			entry.Panic(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "26" {
+			entry.Panicf(username, "") // $ hasTaintFlow="username"
+		}
+		if testFlag == "27" {
+			entry.Panicf("", username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "28" {
+			entry.Panicln(username) // $ hasTaintFlow="username"
+		}
+		entry.Print(username)         // $ hasTaintFlow="username"
+		entry.Printf(username, "")    // $ hasTaintFlow="username"
+		entry.Printf("", username)    // $ hasTaintFlow="username"
+		entry.Println(username)       // $ hasTaintFlow="username"
+		entry.Trace(username)         // $ hasTaintFlow="username"
+		entry.Tracef(username, "")    // $ hasTaintFlow="username"
+		entry.Tracef("", username)    // $ hasTaintFlow="username"
+		entry.Traceln(username)       // $ hasTaintFlow="username"
+		entry.Warn(username)          // $ hasTaintFlow="username"
+		entry.Warnf(username, "")     // $ hasTaintFlow="username"
+		entry.Warnf("", username)     // $ hasTaintFlow="username"
+		entry.Warnln(username)        // $ hasTaintFlow="username"
+		entry.Warning(username)       // $ hasTaintFlow="username"
+		entry.Warningf(username, "")  // $ hasTaintFlow="username"
+		entry.Warningf("", username)  // $ hasTaintFlow="username"
+		entry.Warningln(username)     // $ hasTaintFlow="username"
+		entry.WithError(err)          // $ hasTaintFlow="err"
+		entry.WithField(username, "") // $ hasTaintFlow="username"
+		entry.WithField("", username) // $ hasTaintFlow="username"
+		entry.WithFields(fields)      // $ hasTaintFlow="fields"
+
+		logger.Debug(username)      // $ hasTaintFlow="username"
+		logger.Debugf(username, "") // $ hasTaintFlow="username"
+		logger.Debugf("", username) // $ hasTaintFlow="username"
+		logger.Debugln(username)    // $ hasTaintFlow="username"
+		logger.Error(username)      // $ hasTaintFlow="username"
+		logger.Errorf(username, "") // $ hasTaintFlow="username"
+		logger.Errorf("", username) // $ hasTaintFlow="username"
+		logger.Errorln(username)    // $ hasTaintFlow="username"
+		if testFlag == "29" {
+			logger.Fatal(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "30" {
+			logger.Fatalf(username, "") // $ hasTaintFlow="username"
+		}
+		if testFlag == "31" {
+			logger.Fatalf("", username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "32" {
+			logger.Fatalln(username) // $ hasTaintFlow="username"
+		}
+		logger.Info(username)        // $ hasTaintFlow="username"
+		logger.Infof(username, "")   // $ hasTaintFlow="username"
+		logger.Infof("", username)   // $ hasTaintFlow="username"
+		logger.Infoln(username)      // $ hasTaintFlow="username"
+		logger.Log(0, username)      // $ hasTaintFlow="username"
+		logger.Logf(0, username, "") // $ hasTaintFlow="username"
+		logger.Logf(0, "", username) // $ hasTaintFlow="username"
+		logger.Logln(0, username)    // $ hasTaintFlow="username"
+		if testFlag == "33" {
+			logger.Panic(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "34" {
+			logger.Panicf(username, "") // $ hasTaintFlow="username"
+		}
+		if testFlag == "35" {
+			logger.Panicf("", username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "36" {
+			logger.Panicln(username) // $ hasTaintFlow="username"
+		}
+		logger.Print(username)         // $ hasTaintFlow="username"
+		logger.Printf(username, "")    // $ hasTaintFlow="username"
+		logger.Printf("", username)    // $ hasTaintFlow="username"
+		logger.Println(username)       // $ hasTaintFlow="username"
+		logger.Trace(username)         // $ hasTaintFlow="username"
+		logger.Tracef(username, "")    // $ hasTaintFlow="username"
+		logger.Tracef("", username)    // $ hasTaintFlow="username"
+		logger.Traceln(username)       // $ hasTaintFlow="username"
+		logger.Warn(username)          // $ hasTaintFlow="username"
+		logger.Warnf(username, "")     // $ hasTaintFlow="username"
+		logger.Warnf("", username)     // $ hasTaintFlow="username"
+		logger.Warnln(username)        // $ hasTaintFlow="username"
+		logger.Warning(username)       // $ hasTaintFlow="username"
+		logger.Warningf(username, "")  // $ hasTaintFlow="username"
+		logger.Warningf("", username)  // $ hasTaintFlow="username"
+		logger.Warningln(username)     // $ hasTaintFlow="username"
+		logger.WithError(err)          // $ hasTaintFlow="err"
+		logger.WithField(username, "") // $ hasTaintFlow="username"
+		logger.WithField("", username) // $ hasTaintFlow="username"
+		logger.WithFields(fields)      // $ hasTaintFlow="fields"
+
+		var fieldlogger logrus.FieldLogger = entry
+		fieldlogger.Debug(username)      // $ hasTaintFlow="username"
+		fieldlogger.Debugf(username, "") // $ hasTaintFlow="username"
+		fieldlogger.Debugf("", username) // $ hasTaintFlow="username"
+		fieldlogger.Debugln(username)    // $ hasTaintFlow="username"
+		fieldlogger.Error(username)      // $ hasTaintFlow="username"
+		fieldlogger.Errorf(username, "") // $ hasTaintFlow="username"
+		fieldlogger.Errorf("", username) // $ hasTaintFlow="username"
+		fieldlogger.Errorln(username)    // $ hasTaintFlow="username"
+		if testFlag == "37" {
+			fieldlogger.Fatal(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "38" {
+			fieldlogger.Fatalf(username, "") // $ hasTaintFlow="username"
+		}
+		if testFlag == "39" {
+			fieldlogger.Fatalf("", username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "40" {
+			fieldlogger.Fatalln(username) // $ hasTaintFlow="username"
+		}
+		fieldlogger.Info(username)      // $ hasTaintFlow="username"
+		fieldlogger.Infof(username, "") // $ hasTaintFlow="username"
+		fieldlogger.Infof("", username) // $ hasTaintFlow="username"
+		fieldlogger.Infoln(username)    // $ hasTaintFlow="username"
+		if testFlag == "41" {
+			fieldlogger.Panic(username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "42" {
+			fieldlogger.Panicf(username, "") // $ hasTaintFlow="username"
+		}
+		if testFlag == "43" {
+			fieldlogger.Panicf("", username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "44" {
+			fieldlogger.Panicln(username) // $ hasTaintFlow="username"
+		}
+		fieldlogger.Print(username)         // $ hasTaintFlow="username"
+		fieldlogger.Printf(username, "")    // $ hasTaintFlow="username"
+		fieldlogger.Printf("", username)    // $ hasTaintFlow="username"
+		fieldlogger.Println(username)       // $ hasTaintFlow="username"
+		fieldlogger.Warn(username)          // $ hasTaintFlow="username"
+		fieldlogger.Warnf(username, "")     // $ hasTaintFlow="username"
+		fieldlogger.Warnf("", username)     // $ hasTaintFlow="username"
+		fieldlogger.Warnln(username)        // $ hasTaintFlow="username"
+		fieldlogger.Warning(username)       // $ hasTaintFlow="username"
+		fieldlogger.Warningf(username, "")  // $ hasTaintFlow="username"
+		fieldlogger.Warningf("", username)  // $ hasTaintFlow="username"
+		fieldlogger.Warningln(username)     // $ hasTaintFlow="username"
+		fieldlogger.WithError(err)          // $ hasTaintFlow="err"
+		fieldlogger.WithField(username, "") // $ hasTaintFlow="username"
+		fieldlogger.WithField("", username) // $ hasTaintFlow="username"
+		fieldlogger.WithFields(fields)      // $ hasTaintFlow="fields"
 	}
 	// davecgh/go-spew/spew
 	{
@@ -312,11 +470,11 @@ func handler(req *http.Request, ctx *goproxy.ProxyCtx) {
 		logger.DPanic(username) // $ hasTaintFlow="username"
 		logger.Debug(username)  // $ hasTaintFlow="username"
 		logger.Error(username)  // $ hasTaintFlow="username"
-		if testFlag == " true" {
+		if testFlag == "45" {
 			logger.Fatal(username) // $ hasTaintFlow="username"
 		}
 		logger.Info(username) // $ hasTaintFlow="username"
-		if testFlag == " true" {
+		if testFlag == "46" {
 			logger.Panic(username) // $ hasTaintFlow="username"
 		}
 		logger.Warn(username)        // $ hasTaintFlow="username"
@@ -328,40 +486,65 @@ func handler(req *http.Request, ctx *goproxy.ProxyCtx) {
 		sLogger.DPanic(username) // $ hasTaintFlow="username"
 		sLogger.Debug(username)  // $ hasTaintFlow="username"
 		sLogger.Error(username)  // $ hasTaintFlow="username"
-		if testFlag == " true" {
+		if testFlag == "47" {
 			sLogger.Fatal(username) // $ hasTaintFlow="username"
 		}
 		sLogger.Info(username) // $ hasTaintFlow="username"
-		if testFlag == " true" {
+		if testFlag == "48" {
 			sLogger.Panic(username) // $ hasTaintFlow="username"
 		}
 		sLogger.Warn(username)    // $ hasTaintFlow="username"
 		sLogger.DPanicf(username) // $ hasTaintFlow="username"
 		sLogger.Debugf(username)  // $ hasTaintFlow="username"
 		sLogger.Errorf(username)  // $ hasTaintFlow="username"
-		if testFlag == " true" {
+		if testFlag == "49" {
 			sLogger.Fatalf(username) // $ hasTaintFlow="username"
 		}
 		sLogger.Infof(username) // $ hasTaintFlow="username"
-		if testFlag == " true" {
+		if testFlag == "50" {
 			sLogger.Panicf(username) // $ hasTaintFlow="username"
 		}
 		sLogger.Warnf(username)   // $ hasTaintFlow="username"
 		sLogger.DPanicw(username) // $ hasTaintFlow="username"
 		sLogger.Debugw(username)  // $ hasTaintFlow="username"
 		sLogger.Errorw(username)  // $ hasTaintFlow="username"
-		if testFlag == " true" {
+		if testFlag == "51" {
 			sLogger.Fatalw(username) // $ hasTaintFlow="username"
 		}
 		sLogger.Infow(username) // $ hasTaintFlow="username"
-		if testFlag == " true" {
+		if testFlag == "52" {
 			sLogger.Panicw(username) // $ hasTaintFlow="username"
 		}
 		sLogger.Warnw(username) // $ hasTaintFlow="username"
 		sLogger.Named(username) // $ hasTaintFlow="username"
 		sLogger.With(username)  // $ hasTaintFlow="username"
 	}
+	// heuristic logger interface
+	{
+		logger.Printf(username)                // $ hasTaintFlow="username"
+		logger.Printf("%s", username)          // $ hasTaintFlow="username"
+		simpleLogger.Tracew(username)          // $ hasTaintFlow="username"
+		simpleLogger.Tracew("%s", username)    // $ hasTaintFlow="username"
+		simpleLogger.Debugw("%s %s", slice...) // $ hasTaintFlow="slice"
+	}
 }
+
+type Logger interface {
+	Printf(string, ...interface{})
+}
+
+type SimpleLogger interface {
+	Debugw(msg string, keysAndValues ...any)
+	Infow(msg string, keysAndValues ...any)
+	Warnw(msg string, keysAndValues ...any)
+	Errorw(msg string, keysAndValues ...any)
+	Tracew(msg string, keysAndValues ...any)
+}
+
+var (
+	logger       Logger
+	simpleLogger SimpleLogger
+)
 
 // GOOD: The user-provided value is escaped before being written to the log.
 func handlerGood(req *http.Request) {
@@ -436,8 +619,12 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 		verbose.Infof("user %q logged in.\n", username)
 		klog.Infof("user %q logged in.\n", username)
 		klog.Errorf("user %q logged in.\n", username)
-		klog.Fatalf("user %q logged in.\n", username)
-		klog.Exitf("user %q logged in.\n", username)
+		if testFlag == "53" {
+			klog.Fatalf("user %q logged in.\n", username)
+		}
+		if testFlag == "54" {
+			klog.Exitf("user %q logged in.\n", username)
+		}
 	}
 	// elazarl/goproxy
 	{
@@ -451,16 +638,24 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 
 		glog.Infof("user %q logged in.\n", username)
 		glog.Errorf("user %q logged in.\n", username)
-		glog.Fatalf("user %q logged in.\n", username)
-		glog.Exitf("user %q logged in.\n", username)
+		if testFlag == "55" {
+			glog.Fatalf("user %q logged in.\n", username)
+		}
+		if testFlag == "56" {
+			glog.Exitf("user %q logged in.\n", username)
+		}
 	}
 	// sirupsen/logrus
 	{
 		logrus.Debugf("user %q logged in.\n", username)
 		logrus.Errorf("user %q logged in.\n", username)
-		logrus.Fatalf("user %q logged in.\n", username)
+		if testFlag == "57" {
+			logrus.Fatalf("user %q logged in.\n", username)
+		}
 		logrus.Infof("user %q logged in.\n", username)
-		logrus.Panicf("user %q logged in.\n", username)
+		if testFlag == "58" {
+			logrus.Panicf("user %q logged in.\n", username)
+		}
 		logrus.Printf("user %q logged in.\n", username)
 		logrus.Tracef("user %q logged in.\n", username)
 		logrus.Warnf("user %q logged in.\n", username)
@@ -470,10 +665,14 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 		entry := logrus.WithFields(fields)
 		entry.Debugf("user %q logged in.\n", username)
 		entry.Errorf("user %q logged in.\n", username)
-		entry.Fatalf("user %q logged in.\n", username)
+		if testFlag == "59" {
+			entry.Fatalf("user %q logged in.\n", username)
+		}
 		entry.Infof("user %q logged in.\n", username)
 		entry.Logf(0, "user %q logged in.\n", username)
-		entry.Panicf("user %q logged in.\n", username)
+		if testFlag == "60" {
+			entry.Panicf("user %q logged in.\n", username)
+		}
 		entry.Printf("user %q logged in.\n", username)
 		entry.Tracef("user %q logged in.\n", username)
 		entry.Warnf("user %q logged in.\n", username)
@@ -482,10 +681,14 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 		logger := entry.Logger
 		logger.Debugf("user %q logged in.\n", username)
 		logger.Errorf("user %q logged in.\n", username)
-		logger.Fatalf("user %q logged in.\n", username)
+		if testFlag == "61" {
+			logger.Fatalf("user %q logged in.\n", username)
+		}
 		logger.Infof("user %q logged in.\n", username)
 		logger.Logf(0, "user %q logged in.\n", username)
-		logger.Panicf("user %q logged in.\n", username)
+		if testFlag == "62" {
+			logger.Panicf("user %q logged in.\n", username)
+		}
 		logger.Printf("user %q logged in.\n", username)
 		logger.Tracef("user %q logged in.\n", username)
 		logger.Warnf("user %q logged in.\n", username)
@@ -504,11 +707,11 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 		sLogger.DPanicf("user %q logged in.\n", username)
 		sLogger.Debugf("user %q logged in.\n", username)
 		sLogger.Errorf("user %q logged in.\n", username)
-		if testFlag == " true" {
+		if testFlag == "63" {
 			sLogger.Fatalf("user %q logged in.\n", username)
 		}
 		sLogger.Infof("user %q logged in.\n", username)
-		if testFlag == " true" {
+		if testFlag == "64" {
 			sLogger.Panicf("user %q logged in.\n", username)
 		}
 		sLogger.Warnf("user %q logged in.\n", username)
@@ -521,8 +724,12 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 		verbose.Infof("user %#q logged in.\n", username) // $ hasTaintFlow="username"
 		klog.Infof("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
 		klog.Errorf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		klog.Fatalf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		klog.Exitf("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
+		if testFlag == "65" {
+			klog.Fatalf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "66" {
+			klog.Exitf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
 	}
 	// elazarl/goproxy
 	{
@@ -536,16 +743,24 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 
 		glog.Infof("user %#q logged in.\n", username)  // $ hasTaintFlow="username"
 		glog.Errorf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
-		glog.Fatalf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
-		glog.Exitf("user %#q logged in.\n", username)  // $ hasTaintFlow="username"
+		if testFlag == "67" {
+			glog.Fatalf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
+		if testFlag == "68" {
+			glog.Exitf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
 	}
 	// sirupsen/logrus
 	{
-		logrus.Debugf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		logrus.Errorf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		logrus.Fatalf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		logrus.Infof("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
-		logrus.Panicf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
+		logrus.Debugf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		logrus.Errorf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == "69" {
+			logrus.Fatalf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
+		logrus.Infof("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == "70" {
+			logrus.Panicf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
 		logrus.Printf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
 		logrus.Tracef("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
 		logrus.Warnf("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
@@ -553,24 +768,32 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 
 		fields := make(logrus.Fields)
 		entry := logrus.WithFields(fields)
-		entry.Debugf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		entry.Errorf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		entry.Fatalf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		entry.Infof("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
-		entry.Logf(0, "user %#q logged in.\n", username)  // $ hasTaintFlow="username"
-		entry.Panicf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
+		entry.Debugf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		entry.Errorf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == "71" {
+			entry.Fatalf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
+		entry.Infof("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
+		entry.Logf(0, "user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == "72" {
+			entry.Panicf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
 		entry.Printf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
 		entry.Tracef("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
 		entry.Warnf("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
 		entry.Warningf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
 
 		logger := entry.Logger
-		logger.Debugf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		logger.Errorf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		logger.Fatalf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
-		logger.Infof("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
-		logger.Logf(0, "user %#q logged in.\n", username)  // $ hasTaintFlow="username"
-		logger.Panicf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
+		logger.Debugf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		logger.Errorf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == "73" {
+			logger.Fatalf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
+		logger.Infof("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
+		logger.Logf(0, "user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		if testFlag == "74" {
+			logger.Panicf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
+		}
 		logger.Printf("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
 		logger.Tracef("user %#q logged in.\n", username)   // $ hasTaintFlow="username"
 		logger.Warnf("user %#q logged in.\n", username)    // $ hasTaintFlow="username"
@@ -589,14 +812,19 @@ func handlerGood4(req *http.Request, ctx *goproxy.ProxyCtx) {
 		sLogger.DPanicf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
 		sLogger.Debugf("user %#q logged in.\n", username)  // $ hasTaintFlow="username"
 		sLogger.Errorf("user %#q logged in.\n", username)  // $ hasTaintFlow="username"
-		if testFlag == " true" {
+		if testFlag == "75" {
 			sLogger.Fatalf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
 		}
 		sLogger.Infof("user %#q logged in.\n", username) // $ hasTaintFlow="username"
-		if testFlag == " true" {
+		if testFlag == "76" {
 			sLogger.Panicf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
 		}
 		sLogger.Warnf("user %#q logged in.\n", username) // $ hasTaintFlow="username"
 	}
+}
 
+// GOOD: User-provided values formatted using a %T directive, which prints the type of the argument
+func handlerGood5(req *http.Request) {
+	object := req.URL.Query()["username"][0]
+	log.Printf("found object of type %T.\n", object)
 }

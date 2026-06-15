@@ -6,7 +6,9 @@
  * @problem.severity error
  * @precision very-high
  * @id java/comparison-with-nan
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

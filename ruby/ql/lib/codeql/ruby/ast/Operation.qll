@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import internal.AST
 private import internal.TreeSitter
@@ -48,7 +51,7 @@ class UnaryLogicalOperation extends UnaryOperation, TUnaryLogicalOperation { }
  * not params.empty?
  * ```
  */
-class NotExpr extends UnaryLogicalOperation, TNotExpr {
+class NotExpr extends UnaryLogicalOperation instanceof NotExprImpl {
   final override string getAPrimaryQlClass() { result = "NotExpr" }
 }
 
@@ -92,10 +95,6 @@ class SplatExpr extends UnaryOperation, TSplatExpr {
  * ```
  */
 class HashSplatExpr extends UnaryOperation, THashSplatExpr {
-  private Ruby::HashSplatArgument g;
-
-  HashSplatExpr() { this = THashSplatExpr(g) }
-
   final override string getAPrimaryQlClass() { result = "HashSplatExpr" }
 }
 
@@ -118,7 +117,7 @@ class ComplementExpr extends UnaryBitwiseOperation, TComplementExpr {
  * defined? some_method
  * ```
  */
-class DefinedExpr extends UnaryOperation, TDefinedExpr {
+class DefinedExpr extends UnaryOperation instanceof DefinedExprImpl {
   final override string getAPrimaryQlClass() { result = "DefinedExpr" }
 }
 

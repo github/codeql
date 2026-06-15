@@ -8,6 +8,20 @@ import javascript
 import semmle.javascript.security.IncompleteBlacklistSanitizer
 
 module IncompleteHtmlAttributeSanitization {
+  private newtype TFlowState = TCharacter(string c) { c = ["\"", "'", "&"] }
+
+  /** A flow state to associate with a tracked value. */
+  class FlowState extends TFlowState {
+    /** Gets a string representation of this flow state. */
+    string toString() { this = TCharacter(result) }
+  }
+
+  /** Predicates for working with flow states. */
+  module FlowState {
+    /** Gets the flow state corresponding to `c`. */
+    FlowState character(string c) { result = TCharacter(c) }
+  }
+
   /**
    * A data flow source for incomplete HTML sanitization vulnerabilities.
    */

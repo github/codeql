@@ -170,3 +170,28 @@ int g19(int x)
 int g21() {
     g20(); // GOOD
 }
+
+class Aborting {
+public:
+	[[noreturn]]
+	~Aborting();
+
+	void a() {};
+};
+
+int g22() {
+	Aborting x;
+	
+	x.a(); // GOOD
+}
+
+int g23() {
+	Aborting().a(); // GOOD [FALSE POSITIVE]
+}
+
+[[__noreturn__]]
+int g24();
+
+int g25() {
+	g24(); // GOOD
+}

@@ -1,1 +1,2 @@
-LanguageFeatures/WithStatement.ql
+query: LanguageFeatures/WithStatement.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

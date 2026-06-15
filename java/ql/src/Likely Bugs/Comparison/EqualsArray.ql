@@ -6,13 +6,14 @@
  * @problem.severity error
  * @precision very-high
  * @id java/equals-on-arrays
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  */
 
 import java
 
-from MethodAccess ma, Array recvtype, Method m
+from MethodCall ma, Array recvtype, Method m
 where
   recvtype = ma.getQualifier().getType() and
   m = ma.getMethod() and

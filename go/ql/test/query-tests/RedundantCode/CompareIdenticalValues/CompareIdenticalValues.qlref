@@ -1,1 +1,2 @@
-RedundantCode/CompareIdenticalValues.ql
+query: RedundantCode/CompareIdenticalValues.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["novuhq/novu/.github/workflows/reusable-workers-service-deploy.yml", "*", "input.docker_image", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-workers-service-deploy.yml", "*", "input.terraform_workspace", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-widget-deploy.yml", "*", "input.react_app_environment", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-widget-deploy.yml", "*", "input.react_app_sentry_dsn", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-widget-deploy.yml", "*", "input.react_app_webhook_url", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-widget-deploy.yml", "*", "input.react_app_ws_url", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-widget-deploy.yml", "*", "input.react_app_api_url", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-web-deploy.yml", "*", "input.react_app_hubspot_embed", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-web-deploy.yml", "*", "input.react_app_mail_server_domain", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-web-deploy.yml", "*", "input.react_app_environment", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-web-deploy.yml", "*", "input.react_app_sentry_dsn", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-web-deploy.yml", "*", "input.react_app_widget_embed_path", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-web-deploy.yml", "*", "input.react_app_webhook_url", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-web-deploy.yml", "*", "input.react_app_ws_url", "code-injection", "generated"]
+     - ["novuhq/novu/.github/workflows/reusable-web-deploy.yml", "*", "input.react_app_api_url", "code-injection", "generated"]

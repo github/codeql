@@ -16,23 +16,48 @@ controlled by the attacker.</p>
 <p>To guard against untrusted URL redirection, it is advisable to avoid putting user input
 directly into a redirect URL. Instead, maintain a list of authorized
 redirects on the server; then choose from that list based on the user input provided.</p>
-
+<p>
+If this is not possible, then the user input should be validated in some other way,
+for example, by verifying that the target URL is on the same host as the current page.
+</p>
 </recommendation>
-<example>
 
-<p>The following example shows an HTTP request parameter being used directly in a URL redirect
-without validating the input, which facilitates phishing attacks.
-It also shows how to remedy the problem by validating the user input against a known fixed string.
+
+<example>
+<p>
+The following example shows an HTTP request parameter being used directly in a URL redirect
+without validating the input, which facilitates phishing attacks:
 </p>
 
-<sample src="UrlRedirect.cs" />
+<sample src="examples/UrlRedirect.cs"/>
+
+<p>
+One way to remedy the problem is to validate the user input against a known fixed string
+before doing the redirection:
+</p>
+
+<sample src="examples/UrlRedirectGood.cs"/>
+
+<p>
+Alternatively, we can check that the target URL does not redirect to a different host
+by checking that the URL is either relative or on a known good host:
+</p>
+
+<sample src="examples/UrlRedirectGoodDomain.cs"/>
+
+<p>
+Note that as written, the above code will allow redirects to URLs on <code>example.com</code>,
+which is harmless but perhaps not intended. You can substitute your own domain (if known) for
+<code>example.com</code> to prevent this.
+</p>
 
 </example>
+
 <references>
 
 <li>
 OWASP:
-<a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">XSS
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">
 Unvalidated Redirects and Forwards Cheat Sheet</a>.
 </li>
 <li>

@@ -6,6 +6,7 @@ import csharp
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.Sql
+private import semmle.code.csharp.security.dataflow.flowsources.Stored as Stored
 
 /** Definitions relating to the `NHibernate` package. */
 module NHibernate {
@@ -14,7 +15,7 @@ module NHibernate {
 
   /** The interface `NHibernamte.ISession`. */
   class ISessionInterface extends Interface {
-    ISessionInterface() { this.hasQualifiedName("NHibernate", "ISession") }
+    ISessionInterface() { this.hasFullyQualifiedName("NHibernate", "ISession") }
 
     /** Gets a parameter that uses a mapped object. */
     Parameter getAMappedObjectParameter() {
@@ -28,7 +29,7 @@ module NHibernate {
 
     /** Gets a type parameter that specifies a mapped class. */
     TypeParameter getAMappedObjectTp() {
-      exists(string methodName | methodName = ["Load<>", "Merge<>", "Get<>", "Query<>"] |
+      exists(string methodName | methodName = ["Load`1", "Merge`1", "Get`1", "Query`1"] |
         result = this.getAMethod(methodName).(UnboundGenericMethod).getTypeParameter(0)
       )
     }
@@ -72,7 +73,7 @@ module NHibernate {
           .getDeclaringType()
           .getDeclaringNamespace()
           .getParentNamespace*()
-          .hasQualifiedName("", "NHibernate")
+          .hasFullyQualifiedName("", "NHibernate")
     }
   }
 
@@ -86,10 +87,12 @@ module NHibernate {
   }
 
   /** A taint source where the data has come from a mapped property stored in the database. */
-  class StoredFlowSource extends DataFlow::Node {
+  class StoredFlowSource extends Stored::DatabaseInputSource {
     StoredFlowSource() {
       this.asExpr() = any(PropertyRead read | read.getTarget() instanceof MappedProperty)
     }
+
+    override string getSourceType() { result = "ORM mapped property" }
   }
 
   /**

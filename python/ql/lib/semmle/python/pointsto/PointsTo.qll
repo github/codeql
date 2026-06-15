@@ -6,7 +6,13 @@ private import semmle.python.pointsto.PointsToContext
 private import semmle.python.pointsto.MRO
 private import semmle.python.types.Builtins
 private import semmle.python.types.Extensions
+private import semmle.python.pointsto.Context
 private import semmle.python.internal.CachedStages
+private import semmle.python.types.Object
+private import semmle.python.types.FunctionObject
+private import semmle.python.types.ClassObject
+private import semmle.python.pointsto.Base
+private import semmle.python.types.ImportTime
 
 /* Use this version for speed */
 class CfgOrigin extends @py_object {
@@ -691,7 +697,7 @@ module PointsToInternal {
         sub.getObject() = sys_modules_flow and
         pointsTo(sys_modules_flow, _, ObjectInternal::sysModules(), _) and
         sub.getIndex() = n and
-        n.getNode().(StrConst).getText() = name and
+        n.getNode().(StringLiteral).getText() = name and
         sub.(DefinitionNode).getValue() = mod and
         pointsTo(mod, _, m, _)
       )
@@ -709,7 +715,7 @@ private module InterModulePointsTo {
       i.getImportedModuleName() = name and
       PointsToInternal::module_imported_as(value, name) and
       origin = f and
-      context.appliesTo(f)
+      context.appliesTo(pragma[only_bind_into](f))
     )
   }
 
@@ -1445,14 +1451,6 @@ module Expressions {
     )
   }
 
-  deprecated predicate subscriptPointsTo(
-    SubscriptNode subscr, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
-    ControlFlowNode obj, ObjectInternal objvalue
-  ) {
-    subscriptPointsTo(subscr, context, value, obj, objvalue) and
-    origin = subscr
-  }
-
   pragma[noinline]
   private predicate subscriptPointsTo(
     SubscriptNode subscr, PointsToContext context, ObjectInternal value, ControlFlowNode obj,
@@ -1489,14 +1487,6 @@ module Expressions {
     index = subscr.getIndex()
   }
 
-  deprecated predicate binaryPointsTo(
-    BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
-    ControlFlowNode operand, ObjectInternal opvalue
-  ) {
-    binaryPointsTo(b, context, value, operand, opvalue) and
-    origin = b
-  }
-
   /**
    * Tracking too many binary expressions is likely to kill performance, so just say anything other than addition or bitwise or is 'unknown'.
    */
@@ -1521,14 +1511,6 @@ module Expressions {
     )
   }
 
-  deprecated predicate addPointsTo(
-    BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
-    ControlFlowNode operand, ObjectInternal opvalue
-  ) {
-    addPointsTo(b, context, value, operand, opvalue) and
-    origin = b
-  }
-
   pragma[noinline]
   private predicate addPointsTo(
     BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode operand,
@@ -1543,14 +1525,6 @@ module Expressions {
       PointsToInternal::pointsTo(operand, context, opvalue, _) and
       value = TUnknownInstance(opvalue.getClass())
     )
-  }
-
-  deprecated predicate bitOrPointsTo(
-    BinaryExprNode b, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
-    ControlFlowNode operand, ObjectInternal opvalue
-  ) {
-    bitOrPointsTo(b, context, value, operand, opvalue) and
-    origin = b
   }
 
   pragma[noinline]
@@ -1577,14 +1551,6 @@ module Expressions {
     value = obj.intValue()
   }
 
-  deprecated predicate unaryPointsTo(
-    UnaryExprNode u, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
-    ControlFlowNode operand, ObjectInternal opvalue
-  ) {
-    unaryPointsTo(u, context, value, operand, opvalue) and
-    origin = u
-  }
-
   pragma[noinline]
   private predicate unaryPointsTo(
     UnaryExprNode u, PointsToContext context, ObjectInternal value, ControlFlowNode operand,
@@ -1601,14 +1567,6 @@ module Expressions {
       or
       not op instanceof Not and opvalue = ObjectInternal::unknown() and value = opvalue
     )
-  }
-
-  deprecated predicate builtinCallPointsTo(
-    CallNode call, PointsToContext context, ObjectInternal value, ControlFlowNode origin,
-    ControlFlowNode arg, ObjectInternal argvalue
-  ) {
-    builtinCallPointsTo(call, context, value, arg, argvalue) and
-    origin = call
   }
 
   pragma[noinline]

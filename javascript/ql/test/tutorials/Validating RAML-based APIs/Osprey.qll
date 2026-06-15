@@ -30,18 +30,12 @@ class OspreyCreateApiCall extends MethodCallExpr {
   }
 }
 
-/** DEPRECATED: Alias for OspreyCreateApiCall */
-deprecated class OspreyCreateAPICall = OspreyCreateApiCall;
-
 /** A variable in which an Osprey API object is stored. */
 class OspreyApi extends Variable {
   OspreyApi() { this.getAnAssignedExpr() instanceof OspreyCreateApiCall }
 
   File getSpecFile() { result = this.getAnAssignedExpr().(OspreyCreateApiCall).getSpecFile() }
 }
-
-/** DEPRECATED: Alias for OspreyApi */
-deprecated class OspreyAPI = OspreyApi;
 
 /** An Osprey REST method definition. */
 class OspreyMethodDefinition extends MethodCallExpr {
@@ -52,9 +46,6 @@ class OspreyMethodDefinition extends MethodCallExpr {
 
   /** Get the API to which this method belongs. */
   OspreyApi getApi() { this.getReceiver() = result.getAnAccess() }
-
-  /** DEPRECATED: Alias for getApi */
-  deprecated OspreyAPI getAPI() { result = this.getApi() }
 
   /** Get the verb which this method implements. */
   string getVerb() { result = this.getMethodName() }

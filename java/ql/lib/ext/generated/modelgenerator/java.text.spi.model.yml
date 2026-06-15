@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.text.spi", "DateFormatProvider", True, "getDateInstance", "(int,Locale)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["java.text.spi", "DateFormatProvider", True, "getDateTimeInstance", "(int,int,Locale)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["java.text.spi", "DateFormatProvider", True, "getTimeInstance", "(int,Locale)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["java.text.spi", "DateFormatSymbolsProvider", True, "getInstance", "(Locale)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.text.spi", "DecimalFormatSymbolsProvider", True, "getInstance", "(Locale)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.text.spi", "NumberFormatProvider", True, "getCompactNumberInstance", "(Locale,NumberFormat$Style)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.text.spi", "NumberFormatProvider", True, "getCurrencyInstance", "(Locale)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.text.spi", "NumberFormatProvider", True, "getIntegerInstance", "(Locale)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.text.spi", "NumberFormatProvider", True, "getNumberInstance", "(Locale)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["java.text.spi", "NumberFormatProvider", True, "getPercentInstance", "(Locale)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.text.spi", "BreakIteratorProvider", "getCharacterInstance", "(Locale)", "summary", "df-generated"]
+      - ["java.text.spi", "BreakIteratorProvider", "getLineInstance", "(Locale)", "summary", "df-generated"]
+      - ["java.text.spi", "BreakIteratorProvider", "getSentenceInstance", "(Locale)", "summary", "df-generated"]
+      - ["java.text.spi", "BreakIteratorProvider", "getWordInstance", "(Locale)", "summary", "df-generated"]
+      - ["java.text.spi", "CollatorProvider", "getInstance", "(Locale)", "summary", "df-generated"]

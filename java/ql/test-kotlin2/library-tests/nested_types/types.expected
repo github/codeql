@@ -1,0 +1,13 @@
+| file:///!unknown-binary-location/MkT.class:0:0:0:0 | MkT<MkT<MkT<MkT<MyType>>>> |
+| file:///!unknown-binary-location/MkT.class:0:0:0:0 | MkT<MkT<MkT<MyType>>> |
+| file:///!unknown-binary-location/MkT.class:0:0:0:0 | MkT<MkT<MyType>> |
+| file:///!unknown-binary-location/MkT.class:0:0:0:0 | MkT<MyType> |
+| file:///modules/java.base/java/util/List.class:0:0:0:0 | List<? extends List<? extends List<? extends List<MyType>>>> |
+| file:///modules/java.base/java/util/List.class:0:0:0:0 | List<? extends List<? extends List<MyType>>> |
+| file:///modules/java.base/java/util/List.class:0:0:0:0 | List<? extends List<MyType>> |
+| file:///modules/java.base/java/util/List.class:0:0:0:0 | List<MyType> |
+| file:///modules/java.base/java/util/List.class:0:0:0:0 | List<Stack<MyType>> |
+| file:///modules/java.base/java/util/Stack.class:0:0:0:0 | Stack<MyType> |
+| file:///modules/java.base/java/util/Stack.class:0:0:0:0 | Stack<Stack<MyType>> |
+| file:///modules/java.base/java/util/Stack.class:0:0:0:0 | Stack<Stack<Stack<MyType>>> |
+| file:///modules/java.base/java/util/Stack.class:0:0:0:0 | Stack<Stack<Stack<Stack<MyType>>>> |

@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with JMX bean types.
  */
+overlay[local?]
+module;
 
 import Type
 
@@ -16,7 +18,7 @@ class MBean extends ManagedBean {
 class MXBean extends ManagedBean {
   MXBean() {
     this.getQualifiedName().matches("%MXBean%") or
-    this.getAnAnnotation().getType().hasQualifiedName("javax.management", "MXBean")
+    this.getAnAnnotation().getType().hasQualifiedName(javaxOrJakarta() + ".management", "MXBean")
   }
 }
 
@@ -39,7 +41,7 @@ class RegisteredManagedBeanImpl extends Class {
 /**
  * A call that registers an object with the `MBeanServer`, directly or indirectly.
  */
-class JmxRegistrationCall extends MethodAccess {
+class JmxRegistrationCall extends MethodCall {
   JmxRegistrationCall() { this.getCallee() instanceof JmxRegistrationMethod }
 
   /**
@@ -50,9 +52,6 @@ class JmxRegistrationCall extends MethodAccess {
   }
 }
 
-/** DEPRECATED: Alias for JmxRegistrationCall */
-deprecated class JMXRegistrationCall = JmxRegistrationCall;
-
 /**
  * A method used to register `MBean` and `MXBean` instances with the `MBeanServer`.
  *
@@ -62,7 +61,7 @@ deprecated class JMXRegistrationCall = JmxRegistrationCall;
 class JmxRegistrationMethod extends Method {
   JmxRegistrationMethod() {
     // A direct registration with the `MBeanServer`.
-    this.getDeclaringType().hasQualifiedName("javax.management", "MBeanServer") and
+    this.getDeclaringType().hasQualifiedName(javaxOrJakarta() + ".management", "MBeanServer") and
     this.getName() = "registerMBean"
     or
     // The `MBeanServer` is often wrapped by an application specific management class, so identify
@@ -79,7 +78,7 @@ class JmxRegistrationMethod extends Method {
    */
   int getObjectPosition() {
     // Passed as the first argument to `registerMBean`.
-    this.getDeclaringType().hasQualifiedName("javax.management", "MBeanServer") and
+    this.getDeclaringType().hasQualifiedName(javaxOrJakarta() + ".management", "MBeanServer") and
     this.getName() = "registerMBean" and
     result = 0
     or
@@ -90,31 +89,23 @@ class JmxRegistrationMethod extends Method {
   }
 }
 
-/** DEPRECATED: Alias for JmxRegistrationMethod */
-deprecated class JMXRegistrationMethod = JmxRegistrationMethod;
-
 /** The class `javax.management.remote.JMXConnectorFactory`. */
 class TypeJmxConnectorFactory extends Class {
   TypeJmxConnectorFactory() {
-    this.hasQualifiedName("javax.management.remote", "JMXConnectorFactory")
+    this.hasQualifiedName(javaxOrJakarta() + ".management.remote", "JMXConnectorFactory")
   }
 }
 
-/** DEPRECATED: Alias for TypeJmxConnectorFactory */
-deprecated class TypeJMXConnectorFactory = TypeJmxConnectorFactory;
-
 /** The class `javax.management.remote.JMXServiceURL`. */
 class TypeJmxServiceUrl extends Class {
-  TypeJmxServiceUrl() { this.hasQualifiedName("javax.management.remote", "JMXServiceURL") }
+  TypeJmxServiceUrl() {
+    this.hasQualifiedName(javaxOrJakarta() + ".management.remote", "JMXServiceURL")
+  }
 }
-
-/** DEPRECATED: Alias for TypeJmxServiceUrl */
-deprecated class TypeJMXServiceURL = TypeJmxServiceUrl;
 
 /** The class `javax.management.remote.rmi.RMIConnector`. */
 class TypeRmiConnector extends Class {
-  TypeRmiConnector() { this.hasQualifiedName("javax.management.remote.rmi", "RMIConnector") }
+  TypeRmiConnector() {
+    this.hasQualifiedName(javaxOrJakarta() + ".management.remote.rmi", "RMIConnector")
+  }
 }
-
-/** DEPRECATED: Alias for TypeRmiConnector */
-deprecated class TypeRMIConnector = TypeRmiConnector;

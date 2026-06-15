@@ -1,5 +1,5 @@
-//go:build (linux && ignore) || amd64
-// +build linux,ignore amd64
+//go:build (linux && ignore) || amd64 || arm64
+// +build linux,ignore amd64 arm64
 
 package main
 

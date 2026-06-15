@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.exolab.castor.xml", "Unmarshaller", True, "unmarshal", "", "", "Argument[0..1]", "unsafe-deserialization", "manual"]

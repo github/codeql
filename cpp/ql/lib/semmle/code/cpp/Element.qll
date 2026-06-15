@@ -7,6 +7,7 @@ import semmle.code.cpp.Location
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
 private import semmle.code.cpp.internal.ResolveGlobalVariable
+private import semmle.code.cpp.internal.ResolveFunction
 
 /**
  * Get the `Element` that represents this `@element`.
@@ -30,11 +31,14 @@ pragma[inline]
 @element unresolveElement(Element e) {
   not result instanceof @usertype and
   not result instanceof @variable and
+  not result instanceof @function and
   result = e
   or
   e = resolveClass(result)
   or
   e = resolveGlobalVariable(result)
+  or
+  e = resolveFunction(result)
 }
 
 /**
@@ -83,6 +87,7 @@ class ElementBase extends @element {
  */
 class Element extends ElementBase {
   /** Gets the primary file where this element occurs. */
+  pragma[nomagic]
   File getFile() { result = this.getLocation().getFile() }
 
   /**
@@ -125,7 +130,7 @@ class Element extends ElementBase {
    * or certain kinds of `Statement`.
    */
   Element getParentScope() {
-    // result instanceof class
+    // result instanceof Class
     exists(Declaration m |
       m = this and
       result = m.getDeclaringType() and
@@ -134,31 +139,40 @@ class Element extends ElementBase {
     or
     exists(TemplateClass tc | this = tc.getATemplateArgument() and result = tc)
     or
-    // result instanceof namespace
+    // result instanceof Namespace
     exists(Namespace n | result = n and n.getADeclaration() = this)
     or
     exists(FriendDecl d, Namespace n | this = d and n.getADeclaration() = d and result = n)
     or
     exists(Namespace n | this = n and result = n.getParentNamespace())
     or
-    // result instanceof stmt
+    // result instanceof Stmt
     exists(LocalVariable v |
       this = v and
       exists(DeclStmt ds | ds.getADeclaration() = v and result = ds.getParent())
     )
     or
-    exists(Parameter p | this = p and result = p.getFunction())
+    exists(Parameter p |
+      this = p and
+      (
+        result = p.getFunction() or
+        result = p.getCatchBlock().getParent().(Handler).getParent().(TryStmt).getParent() or
+        result = p.getRequiresExpr().getEnclosingStmt().getParent()
+      )
+    )
     or
     exists(GlobalVariable g, Namespace n | this = g and n.getADeclaration() = g and result = n)
     or
+    exists(TemplateVariable tv | this = tv.getATemplateArgument() and result = tv)
+    or
     exists(EnumConstant e | this = e and result = e.getDeclaringEnum())
     or
-    // result instanceof block|function
+    // result instanceof Block|Function
     exists(BlockStmt b | this = b and blockscope(unresolveElement(b), unresolveElement(result)))
     or
     exists(TemplateFunction tf | this = tf.getATemplateArgument() and result = tf)
     or
-    // result instanceof stmt
+    // result instanceof Stmt
     exists(ControlStructure s | this = s and result = s.getParent())
     or
     using_container(unresolveElement(result), underlyingElement(this))
@@ -177,6 +191,15 @@ class Element extends ElementBase {
    * this is a super-set of `isInMacroExpansion`.
    */
   predicate isAffectedByMacro() { affectedByMacro(this) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Holds if this element is affected by the expansion of `mi`.
+   */
+  predicate isAffectedByMacro(MacroInvocation mi) {
+    affectedbymacroexpansion(underlyingElement(this), unresolveElement(mi))
+  }
 
   private Element getEnclosingElementPref() {
     enclosingfunction(underlyingElement(this), unresolveElement(result)) or
@@ -255,6 +278,15 @@ private predicate isFromTemplateInstantiationRec(Element e, Element instantiatio
   instantiation.(Variable).isConstructedFrom(_) and
   e = instantiation
   or
+  instantiation.(TypeAliasType).isConstructedFrom(_) and
+  e = instantiation
+  or
+  instantiation.(TemplateTemplateParameterInstantiation).isConstructedFrom(_) and
+  e = instantiation
+  or
+  exists(instantiation.(ConceptIdExpr).getConcept()) and
+  e = instantiation
+  or
   isFromTemplateInstantiationRec(e.getEnclosingElement(), instantiation)
 }
 
@@ -266,6 +298,15 @@ private predicate isFromUninstantiatedTemplateRec(Element e, Element template) {
   e = template
   or
   is_variable_template(unresolveElement(template)) and
+  e = template
+  or
+  is_alias_template(unresolveElement(template)) and
+  e = template
+  or
+  usertypes(unresolveElement(template), _, 8) and // template template parameter
+  e = template
+  or
+  template instanceof @concept_template and
   e = template
   or
   isFromUninstantiatedTemplateRec(e.getEnclosingElement(), template)

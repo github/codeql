@@ -65,6 +65,8 @@ class TypeTracker extends TTypeTracker {
     or
     step = CallStep() and result = MkTypeTracker(true, prop)
     or
+    step = CallReceiverStep() and result = MkTypeTracker(true, prop)
+    or
     step = ReturnStep() and hasCall = false and result = this
     or
     step = LoadStep(prop) and result = MkTypeTracker(hasCall, "")
@@ -237,6 +239,8 @@ class TypeBackTracker extends TTypeBackTracker {
     step = CopyStep(prop) and result = this
     or
     step = CallStep() and hasReturn = false and result = this
+    or
+    step = CallReceiverStep() and hasReturn = false and result = this
     or
     step = ReturnStep() and result = MkTypeBackTracker(true, prop)
     or

@@ -2,8 +2,8 @@
 
 Queries and libraries outside [the `experimental` directories](experimental.md) are _supported_ by GitHub, allowing our users to rely on their continued existence and functionality in the future:
 
-1. Once a query or library has appeared in a stable release, a one-year deprecation period is required before we can remove it. There can be exceptions to this when it's not technically possible to mark it as deprecated.
-2. Major changes to supported queries and libraries are always announced in the [change notes for stable releases](../change-notes/).
+1. Once a query has appeared in a stable release, a one-year deprecation period is required before we can remove it.
+2. Major changes to supported queries and libraries are always announced in the change notes for stable releases.
 3. We will do our best to address user reports of false positives or false negatives.
 
 Because of these commitments, we set a high bar for accepting new supported queries. The requirements are detailed in the rest of this document.
@@ -45,7 +45,7 @@ The process must begin with the first step and must conclude with the final step
    - Understand [the evaluation model of QL](https://codeql.github.com/docs/ql-language-reference/evaluation-of-ql-programs/). It's more similar to SQL than to any mainstream programming language.
    - Most performance tuning in QL boils down to computing as few tuples (rows of data) as possible. As a mental model, think of predicate evaluation as enumerating all combinations of parameters that satisfy the predicate body. This includes the implicit parameters `this` and `result`.
    - The major libraries in CodeQL are _cached_ and will only be computed once for the entire suite of queries. The first query that needs a cached _stage_ will trigger its evaluation. This means that query authors should usually only look at the run time of the last stage of evaluation.
-   - In [the settings for the VSCode extension](https://codeql.github.com/docs/codeql-for-visual-studio-code/customizing-settings/), check the box "Running Queries: Debug" (`codeQL.runningQueries.debug`). Then find "CodeQL Query Server" in the VSCode Output panel (View -> Output) and capture the output when running the query. That output contains timing and tuple counts for all computed predicates.
+   - In [the settings for the VSCode extension](https://docs.github.com/en/code-security/codeql-for-vs-code/using-the-advanced-functionality-of-the-codeql-for-vs-code-extension/customizing-settings/), check the box "Running Queries: Debug" (`codeQL.runningQueries.debug`). Then find "CodeQL Query Server" in the VSCode Output panel (View -> Output) and capture the output when running the query. That output contains timing and tuple counts for all computed predicates.
    - To clear the entire cache, invoke "CodeQL: Clear Cache" from the VSCode command palette.
 
 6. **Make sure your query has the correct metadata**

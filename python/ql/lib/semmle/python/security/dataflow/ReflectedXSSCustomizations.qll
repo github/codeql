@@ -7,6 +7,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
+private import semmle.python.frameworks.data.ModelsAsData
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 
@@ -32,16 +33,21 @@ module ReflectedXss {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for "reflected server-side cross-site scripting" vulnerabilities.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * An active threat-model source, considered as a flow source.
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
+
+  /**
+   * A data flow sink for "reflected cross-site scripting" vulnerabilities.
+   */
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { ModelOutput::sinkNode(this, ["html-injection", "js-injection"]) }
+  }
 
   /**
    * The body of a HTTP response that will be returned from a server, considered as a flow sink.
@@ -72,10 +78,17 @@ module ReflectedXss {
   }
 
   /**
-   * A comparison with a constant string, considered as a sanitizer-guard.
+   * A comparison with a constant, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
-}
+  class ConstCompareAsSanitizerGuard extends Sanitizer, ConstCompareBarrier { }
 
-/** DEPRECATED: Alias for ReflectedXss */
-deprecated module ReflectedXSS = ReflectedXss;
+  /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
+  deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
+
+  /**
+   * A sanitizer defined via models-as-data with kind "html-injection" or "js-injection".
+   */
+  class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, ["html-injection", "js-injection"]) }
+  }
+}

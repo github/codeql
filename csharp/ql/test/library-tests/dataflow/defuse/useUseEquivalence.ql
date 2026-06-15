@@ -1,55 +1,51 @@
 import csharp
+private import semmle.code.csharp.dataflow.internal.BaseSSA
 
 /** "Naive" use-use implementation. */
-predicate useReaches(LocalScopeVariableRead read, LocalScopeVariable v, ControlFlow::Node cfn) {
-  read.getTarget() = v and cfn = read.getAControlFlowNode().getASuccessor()
+predicate useReaches(
+  LocalScopeVariableRead read, BaseSsa::SimpleLocalScopeVariable v, ControlFlowNode cfn
+) {
+  read.getTarget() = v and cfn = read.getControlFlowNode().getASuccessor()
   or
-  exists(ControlFlow::Node mid | useReaches(read, v, mid) |
+  exists(ControlFlowNode mid | useReaches(read, v, mid) |
     not mid =
-      any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain()).getAControlFlowNode() and
+      any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain())
+          .getExpr()
+          .getControlFlowNode() and
     cfn = mid.getASuccessor()
   )
 }
 
 predicate useUsePair(LocalScopeVariableRead read1, LocalScopeVariableRead read2) {
   exists(Assignable a |
-    useReaches(read1, a, read2.getAControlFlowNode()) and
+    useReaches(read1, a, read2.getControlFlowNode()) and
     read2.getTarget() = a
   )
 }
 
 private newtype TLocalScopeVariableReadOrSsaDef =
   TLocalScopeVariableRead(LocalScopeVariableRead read) or
-  TSsaDefinition(Ssa::Definition ssaDef)
+  TSsaDefinition(SsaDefinition ssaDef)
 
 private TLocalScopeVariableReadOrSsaDef getANextReadOrDef(TLocalScopeVariableReadOrSsaDef prev) {
   exists(LocalScopeVariableRead read | prev = TLocalScopeVariableRead(read) |
     result = TLocalScopeVariableRead(read.getANextRead())
     or
     not exists(read.getANextRead()) and
-    exists(
-      Ssa::Definition ssaDef, Ssa::PhiNode phi, ControlFlow::Node cfn, ControlFlow::BasicBlock bb,
-      int i
-    |
-      ssaDef.getARead() = read
-    |
+    exists(SsaDefinition ssaDef, SsaPhiDefinition phi, BasicBlock bb |
+      ssaDef.getARead() = read and
       phi.getAnInput() = ssaDef and
-      phi.definesAt(_, bb, i) and
-      cfn = read.getAReachableElement().getAControlFlowNode() and
-      (
-        cfn = bb.getNode(i)
-        or
-        cfn = bb.getFirstNode() and i < 0
-      ) and
+      phi.definesAt(_, bb, _) and
+      read.getBasicBlock().getASuccessor+() = bb and
       result = TSsaDefinition(phi)
     )
   )
   or
-  exists(Ssa::Definition ssaDef | prev = TSsaDefinition(ssaDef) |
-    result = TLocalScopeVariableRead(ssaDef.getAFirstRead())
+  exists(SsaDefinition ssaDef | prev = TSsaDefinition(ssaDef) |
+    result = TLocalScopeVariableRead(Ssa::ssaGetAFirstUse(ssaDef))
     or
-    not exists(ssaDef.getAFirstRead()) and
-    exists(Ssa::PhiNode phi |
+    not exists(Ssa::ssaGetAFirstUse(ssaDef)) and
+    exists(SsaPhiDefinition phi |
       phi.getAnInput() = ssaDef and
       result = TSsaDefinition(phi)
     )

@@ -3,13 +3,13 @@
  */
 
 import codeql.ruby.AST
-import TestUtilities.InlineFlowTest
-import PathGraph
+import codeql.ruby.CFG
+import utils.test.InlineFlowTest
+import DefaultFlowTest
+import ValueFlow::PathGraph
 
-class HasFlowTest extends InlineFlowTest {
-  override DataFlow::Configuration getTaintFlowConfig() { none() }
-}
+query predicate hashLiteral(CfgNodes::ExprNodes::HashLiteralCfgNode n) { any() }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, DefaultValueFlowConf conf
-where conf.hasFlowPath(source, sink)
+from ValueFlow::PathNode source, ValueFlow::PathNode sink
+where ValueFlow::flowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()

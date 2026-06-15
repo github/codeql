@@ -5,18 +5,18 @@ class Test {
 		void unlock() { }
 		boolean isHeldByCurrentThread() { return true; }
 	}
-	
+
 	void f() throws RuntimeException { }
 	void g() throws RuntimeException { }
-	
+
 	MyLock mylock = new MyLock();
-	
+
 	void bad1() {
-		mylock.lock();
+		mylock.lock(); // $ Alert
 		f();
 		mylock.unlock();
 	}
-	
+
 	void good2() {
 		mylock.lock();
 		try {
@@ -25,9 +25,9 @@ class Test {
 			mylock.unlock();
 		}
 	}
-	
+
 	void bad3() {
-		mylock.lock();
+		mylock.lock(); // $ Alert
 		f();
 		try {
 			g();
@@ -35,9 +35,9 @@ class Test {
 			mylock.unlock();
 		}
 	}
-	
+
 	void bad4() {
-		mylock.lock();
+		mylock.lock(); // $ Alert
 		try {
 			f();
 		} finally {
@@ -45,9 +45,9 @@ class Test {
 			mylock.unlock();
 		}
 	}
-	
+
 	void bad5(boolean lockmore) {
-		mylock.lock();
+		mylock.lock(); // $ Alert
 		try {
 			f();
 			if (lockmore) {
@@ -58,7 +58,7 @@ class Test {
 			mylock.unlock();
 		}
 	}
-	
+
 	void good6() {
 		if (!mylock.tryLock()) { return; }
 		try {
@@ -67,9 +67,9 @@ class Test {
 			mylock.unlock();
 		}
 	}
-	
+
 	void bad7() {
-		if (!mylock.tryLock()) { return; }
+		if (!mylock.tryLock()) { return; } // $ Alert
 		f();
 		mylock.unlock();
 	}
@@ -94,5 +94,42 @@ class Test {
 		} finally {
 			mylock.unlock();
 		}
+	}
+
+	void good9() {
+		boolean locked = false;
+		try {
+			locked = mylock.tryLock();
+			if (!locked) { return; }
+		} finally {
+			if (locked) {
+				mylock.unlock();
+			}
+		}
+	}
+
+	void bad10() {
+		boolean locked = false;
+		try {
+			locked = mylock.tryLock(); // $ Alert
+			if (!locked) { return; }
+		} finally {
+			if (locked) {
+				g();
+				mylock.unlock();
+			}
+		}
+	}
+
+	static class TestPool {
+		void lock() {}
+		void unlock() {}
+	}
+
+	void good11() {
+		TestPool pool = new TestPool();
+		pool.lock(); // Should be excluded because of "Pool" suffix
+		f();
+		pool.unlock();
 	}
 }

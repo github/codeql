@@ -4,6 +4,8 @@
  * Class declarations and class expressions are modeled by (QL) classes `ClassDeclaration`
  * and `ClassExpression`, respectively, which are both subclasses of `ClassDefinition`.
  */
+overlay[local?]
+module;
 
 import javascript
 
@@ -119,7 +121,8 @@ class ClassOrInterface extends @class_or_interface, TypeParameterized {
    *
    * Anonymous classes and interfaces do not have a canonical name.
    */
-  TypeName getTypeName() { result.getADefinition() = this }
+  overlay[global]
+  deprecated TypeName getTypeName() { result.getADefinition() = this }
 
   /**
    * Gets the ClassOrInterface corresponding to either a super type or an implemented interface.
@@ -253,6 +256,7 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
   /**
    * Gets the definition of the super class of this class, if it can be determined.
    */
+  overlay[global]
   ClassDefinition getSuperClassDefinition() {
     result = this.getSuperClass().analyze().getAValue().(AbstractClass).getClass()
   }
@@ -517,14 +521,35 @@ class MemberDeclaration extends @property, Documentable {
   predicate hasPublicKeyword() { has_public_keyword(this) }
 
   /**
+   * Holds if this member is considered private.
+   *
+   * This may occur in two cases:
+   * - it is a TypeScript member annotated with the `private` keyword, or
+   * - the member has a private name, such as `#foo`, referring to a private field in the class
+   */
+  predicate isPrivate() { this.hasPrivateKeyword() or this.hasPrivateFieldName() }
+
+  /**
    * Holds if this is a TypeScript member annotated with the `private` keyword.
    */
-  predicate isPrivate() { has_private_keyword(this) }
+  predicate hasPrivateKeyword() { has_private_keyword(this) }
 
   /**
    * Holds if this is a TypeScript member annotated with the `protected` keyword.
    */
   predicate isProtected() { has_protected_keyword(this) }
+
+  /**
+   * Holds if the member has a private name, such as `#foo`, referring to a private field in the class.
+   *
+   * For example:
+   * ```js
+   * class Foo {
+   *   #method() {}
+   * }
+   * ```
+   */
+  predicate hasPrivateFieldName() { this.getNameExpr().(Label).getName().charAt(0) = "#" }
 
   /**
    * Gets the expression specifying the name of this member,
@@ -559,6 +584,7 @@ class MemberDeclaration extends @property, Documentable {
   int getMemberIndex() { properties(this, _, result, _, _) }
 
   /** Holds if the name of this member is computed by an impure expression. */
+  overlay[global]
   predicate hasImpureNameExpr() { this.isComputed() and this.getNameExpr().isImpure() }
 
   /**

@@ -19,7 +19,8 @@ module Kernel {
    */
   class KernelMethodCall extends DataFlow::CallNode {
     KernelMethodCall() {
-      this = API::getTopLevelMember("Kernel").getAMethodCall(_)
+      // Match Kernel calls using local flow, to avoid finding singleton calls on subclasses
+      this = DataFlow::getConstant("Kernel").getAMethodCall(_)
       or
       this.asExpr().getExpr() instanceof UnknownMethodCall and
       (
@@ -42,12 +43,15 @@ module Kernel {
    * ```
    */
   private predicate isPublicKernelMethod(string method) {
-    method in ["class", "clone", "frozen?", "tap", "then", "yield_self", "send"]
+    method in [
+        "class", "clone", "frozen?", "tap", "then", "yield_self", "send", "public_send", "__send__",
+        "method", "public_method", "singleton_method"
+      ]
   }
 
   /**
-   * Private methods in the `Kernel` module.
-   * These can be be invoked on `self`, on `Kernel`, or using a low-level primitive like `send` or `instance_eval`.
+   * Holds if `method` is a name of a private method in the `Kernel` module.
+   * These can be invoked on `self`, on `Kernel`, or using a low-level primitive like `send` or `instance_eval`.
    * ```ruby
    * puts "hello world"
    * Kernel.puts "hello world"
@@ -166,17 +170,35 @@ module Kernel {
    * ```
    */
   class SendCallCodeExecution extends CodeExecution::Range, KernelMethodCall {
-    SendCallCodeExecution() { this.getMethodName() = "send" }
+    SendCallCodeExecution() { this.getMethodName() = ["send", "public_send", "__send__"] }
 
     override DataFlow::Node getCode() { result = this.getArgument(0) }
 
     override predicate runsArbitraryCode() { none() }
   }
 
-  private class TapSummary extends SimpleSummarizedCallable {
+  /**
+   * A call to `method`, `public_method` or `singleton_method` which returns a method object.
+   * To actually execute the method, the `call` method needs to be called on the object.
+   * ```ruby
+   * m = method("exit")
+   * m.call()
+   * ```
+   */
+  class MethodCallCodeExecution extends CodeExecution::Range, KernelMethodCall {
+    MethodCallCodeExecution() {
+      this.getMethodName() = ["method", "public_method", "singleton_method"]
+    }
+
+    override DataFlow::Node getCode() { result = this.getArgument(0) }
+
+    override predicate runsArbitraryCode() { none() }
+  }
+
+  private class TapSummary extends SummarizedCallable::RangeSimple {
     TapSummary() { this = "tap" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
       output = ["ReturnValue", "Argument[block].Parameter[0]"] and
       preservesValue = true
@@ -204,7 +226,7 @@ module Kernel {
    * A call to `Array()`, that converts it's singular argument to an array.
    * This summary is based on https://ruby-doc.org/3.2.1/Kernel.html#method-i-Array
    */
-  private class KernelArraySummary extends SummarizedCallable {
+  private class KernelArraySummary extends SummarizedCallable::Range {
     KernelArraySummary() { this = "Array()" }
 
     override MethodCall getACallSimple() {
@@ -218,7 +240,7 @@ module Kernel {
       )
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         // already an array
         input = "Argument[0].WithElement[0..]" and

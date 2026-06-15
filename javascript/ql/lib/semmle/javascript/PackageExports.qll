@@ -6,6 +6,7 @@
 
 import javascript
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.internal.paths.PackageJsonEx
 
 /**
  * Gets a parameter that is a library input to a top-level package.
@@ -126,19 +127,12 @@ private DataFlow::Node getAValueExportedByPackage() {
   //   ....
   // }));
   // ```
-  // Such files are not recognized as modules, so we manually use `NodeModule::resolveMainModule` to resolve the file against a `package.json` file.
+  // Such files are not recognized as modules, so we manually use `PackageJsonEx` to resolve the file against a `package.json` file.
   exists(ImmediatelyInvokedFunctionExpr func, DataFlow::ParameterNode factory, int i |
     factory.getName() = "factory" and
     func.getParameter(i) = factory.getParameter() and
     DataFlow::globalVarRef("define").getACall().getAnArgument() = factory.getALocalUse() and
-    func.getFile() =
-      min(int j, File f |
-        f =
-          NodeModule::resolveMainModule(any(PackageJson pack | exists(pack.getPackageName())), j,
-            ".")
-      |
-        f order by j
-      )
+    func.getFile() = any(PackageJsonEx pack).getMainFileOrBestGuess()
   |
     result = func.getInvocation().getArgument(i).flow().getAFunctionValue().getAReturn()
     or

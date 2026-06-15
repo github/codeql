@@ -3,7 +3,7 @@ import cpp
 string clazz(Declaration d) {
   d instanceof ProxyClass and result = "ProxyClass"
   or
-  d instanceof TemplateParameter and result = "TemplateParameter"
+  d instanceof TypeTemplateParameter and result = "TypeTemplateParameter"
   or
   d instanceof Struct and result = "Struct"
 }

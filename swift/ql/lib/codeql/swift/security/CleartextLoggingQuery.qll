@@ -25,6 +25,8 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(CleartextLoggingAdditionalFlowStep s).step(n1, n2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

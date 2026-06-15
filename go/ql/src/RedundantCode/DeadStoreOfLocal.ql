@@ -5,7 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @id go/useless-assignment-to-local
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       useless-code
  *       external/cwe/cwe-563
  * @precision very-high
  */

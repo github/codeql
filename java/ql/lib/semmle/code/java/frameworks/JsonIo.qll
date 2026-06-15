@@ -1,11 +1,12 @@
 /**
  * Provides classes and predicates for working with the Json-io framework.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.Maps
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow2
 
 /**
  * The class `com.cedarsoftware.util.io.JsonReader`.
@@ -33,7 +34,7 @@ class JsonIoReadObjectMethod extends Method {
 /**
  * A call to `Map.put` method, set the value of the `USE_MAPS` key to `true`.
  */
-class JsonIoUseMapsSetter extends MethodAccess {
+class JsonIoUseMapsSetter extends MethodCall {
   JsonIoUseMapsSetter() {
     this.getMethod().getDeclaringType().getASourceSupertype*() instanceof MapType and
     this.getMethod().hasName("put") and
@@ -43,46 +44,18 @@ class JsonIoUseMapsSetter extends MethodAccess {
 }
 
 /**
- * DEPRECATED: Use `SafeJsonIoFlow` instead.
- *
- * A data flow configuration tracing flow from JsonIo safe settings.
- */
-deprecated class SafeJsonIoConfig extends DataFlow2::Configuration {
-  SafeJsonIoConfig() { this = "UnsafeDeserialization::SafeJsonIoConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
-    exists(MethodAccess ma |
-      ma instanceof JsonIoUseMapsSetter and
-      src.asExpr() = ma.getQualifier()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof JsonIoJsonToJavaMethod and
-      sink.asExpr() = ma.getArgument(1)
-    )
-    or
-    exists(ClassInstanceExpr cie |
-      cie.getConstructor().getDeclaringType() instanceof JsonIoJsonReader and
-      sink.asExpr() = cie.getArgument(1)
-    )
-  }
-}
-
-/**
  * A data flow configuration tracing flow from JsonIo safe settings.
  */
 module SafeJsonIoConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma instanceof JsonIoUseMapsSetter and
       src.asExpr() = ma.getQualifier()
     )
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof JsonIoJsonToJavaMethod and
       sink.asExpr() = ma.getArgument(1)
     )

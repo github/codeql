@@ -1,3 +1,313 @@
+## 1.0.51
+
+No user-facing changes.
+
+## 1.0.50
+
+No user-facing changes.
+
+## 1.0.49
+
+No user-facing changes.
+
+## 1.0.48
+
+No user-facing changes.
+
+## 1.0.47
+
+No user-facing changes.
+
+## 1.0.46
+
+No user-facing changes.
+
+## 1.0.45
+
+No user-facing changes.
+
+## 1.0.44
+
+No user-facing changes.
+
+## 1.0.43
+
+No user-facing changes.
+
+## 1.0.42
+
+No user-facing changes.
+
+## 1.0.41
+
+No user-facing changes.
+
+## 1.0.40
+
+No user-facing changes.
+
+## 1.0.39
+
+No user-facing changes.
+
+## 1.0.38
+
+No user-facing changes.
+
+## 1.0.37
+
+No user-facing changes.
+
+## 1.0.36
+
+No user-facing changes.
+
+## 1.0.35
+
+No user-facing changes.
+
+## 1.0.34
+
+No user-facing changes.
+
+## 1.0.33
+
+No user-facing changes.
+
+## 1.0.32
+
+No user-facing changes.
+
+## 1.0.31
+
+No user-facing changes.
+
+## 1.0.30
+
+No user-facing changes.
+
+## 1.0.29
+
+No user-facing changes.
+
+## 1.0.28
+
+No user-facing changes.
+
+## 1.0.27
+
+No user-facing changes.
+
+## 1.0.26
+
+No user-facing changes.
+
+## 1.0.25
+
+No user-facing changes.
+
+## 1.0.24
+
+No user-facing changes.
+
+## 1.0.23
+
+No user-facing changes.
+
+## 1.0.22
+
+No user-facing changes.
+
+## 1.0.21
+
+No user-facing changes.
+
+## 1.0.20
+
+No user-facing changes.
+
+## 1.0.19
+
+No user-facing changes.
+
+## 1.0.18
+
+No user-facing changes.
+
+## 1.0.17
+
+No user-facing changes.
+
+## 1.0.16
+
+No user-facing changes.
+
+## 1.0.15
+
+No user-facing changes.
+
+## 1.0.14
+
+No user-facing changes.
+
+## 1.0.13
+
+No user-facing changes.
+
+## 1.0.12
+
+No user-facing changes.
+
+## 1.0.11
+
+No user-facing changes.
+
+## 1.0.10
+
+No user-facing changes.
+
+## 1.0.9
+
+No user-facing changes.
+
+## 1.0.8
+
+No user-facing changes.
+
+## 1.0.7
+
+No user-facing changes.
+
+## 1.0.6
+
+No user-facing changes.
+
+## 1.0.5
+
+No user-facing changes.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
+## 1.0.0
+
+### Breaking Changes
+
+* CodeQL package management is now generally available, and all GitHub-produced CodeQL packages have had their version numbers increased to 1.0.0.
+
+## 0.7.16
+
+No user-facing changes.
+
+## 0.7.15
+
+No user-facing changes.
+
+## 0.7.14
+
+No user-facing changes.
+
+## 0.7.13
+
+No user-facing changes.
+
+## 0.7.12
+
+No user-facing changes.
+
+## 0.7.11
+
+No user-facing changes.
+
+## 0.7.10
+
+No user-facing changes.
+
+## 0.7.9
+
+No user-facing changes.
+
+## 0.7.8
+
+No user-facing changes.
+
+## 0.7.7
+
+No user-facing changes.
+
+## 0.7.6
+
+No user-facing changes.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+No user-facing changes.
+
+## 0.7.3
+
+No user-facing changes.
+
+## 0.7.2
+
+No user-facing changes.
+
+## 0.7.1
+
+No user-facing changes.
+
+## 0.7.0
+
+No user-facing changes.
+
+## 0.6.5
+
+No user-facing changes.
+
+## 0.6.4
+
+No user-facing changes.
+
+## 0.6.3
+
+No user-facing changes.
+
+## 0.6.2
+
+No user-facing changes.
+
+## 0.6.1
+
+No user-facing changes.
+
+## 0.6.0
+
+No user-facing changes.
+
+## 0.5.4
+
+No user-facing changes.
+
+## 0.5.3
+
+No user-facing changes.
+
 ## 0.5.2
 
 No user-facing changes.

@@ -41,6 +41,10 @@ domain such as <code>wwwXexample.com</code>.
 Address this vulnerability by escaping <code>.</code> appropriately:
 </p>
 <sample src="IncompleteHostnameRegexpGood.go"/>
+<p>
+You may also want to consider using raw string literals to avoid having to escape backslashes:
+</p>
+<sample src="IncompleteHostnameRegexpGood2.go"/>
 </example>
 
 <references>

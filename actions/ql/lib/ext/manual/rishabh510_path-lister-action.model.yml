@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      # https://github.com/Rishabh510/Path-lister-action
+      - ["Rishabh510/Path-lister-action", "*", "output.paths", "filename", "manual"]
+
+

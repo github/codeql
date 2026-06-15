@@ -3,9 +3,25 @@ extensions:
       pack: codeql/csharp-all
       extensible: sinkModel
     data:
-      - ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", False, "ExecuteSqlRaw", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1]", "sql", "manual"]
-      - ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", False, "ExecuteSqlRaw", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[])", "", "Argument[1]", "sql", "manual"]
-      - ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", False, "ExecuteSqlRawAsync", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>,System.Threading.CancellationToken)", "", "Argument[1]", "sql", "manual"]
-      - ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", False, "ExecuteSqlRawAsync", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[])", "", "Argument[1]", "sql", "manual"]
-      - ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", False, "ExecuteSqlRawAsync", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Threading.CancellationToken)", "", "Argument[1]", "sql", "manual"]
-      - ["Microsoft.EntityFrameworkCore", "RelationalQueryableExtensions", False, "FromSqlRaw<>", "(Microsoft.EntityFrameworkCore.DbSet<TEntity>,System.String,System.Object[])", "", "Argument[1]", "sql", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", False, "ExecuteSqlRaw", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1]", "sql-injection", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", False, "ExecuteSqlRaw", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[])", "", "Argument[1]", "sql-injection", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", False, "ExecuteSqlRawAsync", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>,System.Threading.CancellationToken)", "", "Argument[1]", "sql-injection", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", False, "ExecuteSqlRawAsync", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[])", "", "Argument[1]", "sql-injection", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", False, "ExecuteSqlRawAsync", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Threading.CancellationToken)", "", "Argument[1]", "sql-injection", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "RelationalQueryableExtensions", False, "FromSqlRaw<TEntity>", "(Microsoft.EntityFrameworkCore.DbSet<TEntity>,System.String,System.Object[])", "", "Argument[1]", "sql-injection", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", False, "Add", "(TEntity)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", False, "AddAsync", "(TEntity,System.Threading.CancellationToken)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", False, "AddRange", "(System.Collections.Generic.IEnumerable<TEntity>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", False, "AddRange", "(TEntity[])", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", False, "AddRangeAsync", "(System.Collections.Generic.IEnumerable<TEntity>,System.Threading.CancellationToken)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", False, "AddRangeAsync", "(TEntity[])", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", False, "Attach", "(TEntity)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", False, "AttachRange", "(System.Collections.Generic.IEnumerable<TEntity>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", False, "AttachRange", "(TEntity[])", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", False, "Update", "(TEntity)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", False, "UpdateRange", "(System.Collections.Generic.IEnumerable<TEntity>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<TEntity>", False, "UpdateRange", "(TEntity[])", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["shaka-project/shaka-packager/.github/workflows/publish-npm.yaml", "*", "input.latest", "code-injection", "generated"]
+     - ["shaka-project/shaka-packager/.github/workflows/publish-npm.yaml", "*", "input.tag", "code-injection", "generated"]
+     - ["shaka-project/shaka-packager/.github/workflows/build.yaml", "*", "input.self_hosted", "code-injection", "generated"]

@@ -5,5 +5,5 @@ var db = new sqlite3.Database(':memory:');
 
 angular.module('myApp', ['ngRoute'])
 .controller('FindPost', function($routeParams) {
-  db.get('SELECT * FROM Post WHERE id = "' + $routeParams.id + '"');
+  db.get('SELECT * FROM Post WHERE id = "' + $routeParams.id + '"'); // $ Alert
 });

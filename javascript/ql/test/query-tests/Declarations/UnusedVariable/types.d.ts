@@ -1,1 +1,1 @@
-declare class UnusedClass {} // OK
+declare class UnusedClass {}

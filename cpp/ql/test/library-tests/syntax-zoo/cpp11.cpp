@@ -1,4 +1,4 @@
-// semmle-extractor-options: --c++11
+// semmle-extractor-options: -std=c++11
 
 namespace range_based_for_11 {
   void array() {

@@ -10,4 +10,5 @@ def hello():
     if target == VALID_REDIRECT:
         return redirect(target, code=302)
     else:
-        ... # Error
+        # ignore the target and redirect to the home page
+        return redirect('/', code=302)

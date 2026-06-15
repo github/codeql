@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["department-of-veterans-affairs/vets-website", "*", "input.delimiter", "code-injection", "generated"]

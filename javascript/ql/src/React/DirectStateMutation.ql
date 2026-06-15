@@ -5,7 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/react/direct-state-mutation
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       frameworks/react
  * @precision very-high
  */

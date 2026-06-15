@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["ATL", "CAtlFile", True, "CAtlFile", "(CAtlFile &)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["ATL", "CAtlFile", True, "CAtlFile", "(HANDLE)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["ATL", "CAtlFile", True, "Create", "", "", "Argument[*0]", "Argument[-1]", "taint", "manual"]
+      - ["ATL", "CAtlFile", True, "Read", "", "", "Argument[-1]", "Argument[*0]", "taint", "manual"]

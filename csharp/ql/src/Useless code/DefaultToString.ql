@@ -6,8 +6,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id cs/call-to-object-tostring
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import DefaultToStringQuery

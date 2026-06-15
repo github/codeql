@@ -34,6 +34,25 @@ class ConditionalAccess
         i = 0;
         Prop?.Out(out i);
     }
+
+    string StringProp { get; set; }
+    int IntField;
+    string this[int index]
+    {
+        get { return null; }
+        set { }
+    }
+
+    void M9(ConditionalAccess ca)
+    {
+        ca?.IntField = 42;
+        ca?.StringProp = "Hello";
+        ca?[0] = "Set0";
+        ca?.Prop?.IntField = 84;
+        ca?.Prop?.StringProp = "World";
+        ca?.IntField -= 1;
+        ca?.StringProp += "!";
+    }
 }
 
 static class Ext

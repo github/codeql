@@ -1,0 +1,33 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  fetch-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch open issues
+        id: issues
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repos/foo/bar/issues?state=open
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUBACTIONS_TOKEN }}
+
+      - name: Write issues to file
+        run: |
+          echo '${{ steps.issues.outputs.data }}' > issues.json
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Print issue URLs
+        run: |
+          const fs = require('fs');
+          const issues = JSON.parse(fs.readFileSync('issues.json', 'utf8'));
+          const filteredIssues = issues.filter(issue => issue.body.includes('Is your portal managed or self-hosted?\r\n\r\nManaged'));
+          for (const issue of filteredIssues) {
+            console.log(issue.html_url);
+          }
+        shell: bash

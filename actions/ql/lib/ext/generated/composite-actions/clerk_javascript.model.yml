@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["clerk/javascript", "*", "input.auth-email", "code-injection", "generated"]
+     - ["clerk/javascript", "*", "input.auth-password", "code-injection", "generated"]
+     - ["clerk/javascript", "*", "input.auth-user", "code-injection", "generated"]
+     - ["clerk/javascript", "*", "input.registry", "code-injection", "generated"]
+     - ["clerk/javascript", "*", "input.publish-cmd", "code-injection", "generated"]

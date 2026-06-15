@@ -1,0 +1,41 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", False, "GetEnumerator", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", False, "PgoEncodedCompressedIntParser", "(System.Byte[],System.Int32)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["Internal.Pgo", "PgoProcessor", False, "Merge<TType,TMethod>", "(System.ReadOnlySpan<Internal.Pgo.PgoSchemaElem[]>)", "", "Argument[0].Element.Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "TypeSystemEntityOrUnknown", "(Internal.TypeSystem.MethodDesc)", "", "Argument[0]", "Argument[this].SyntheticField[Internal.Pgo.TypeSystemEntityOrUnknown._data]", "value", "dfc-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "TypeSystemEntityOrUnknown", "(Internal.TypeSystem.TypeDesc)", "", "Argument[0]", "Argument[this].SyntheticField[Internal.Pgo.TypeSystemEntityOrUnknown._data]", "value", "dfc-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "get_AsField", "()", "", "Argument[this].SyntheticField[Internal.Pgo.TypeSystemEntityOrUnknown._data]", "ReturnValue", "value", "dfc-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "get_AsMethod", "()", "", "Argument[this].SyntheticField[Internal.Pgo.TypeSystemEntityOrUnknown._data]", "ReturnValue", "value", "dfc-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "get_AsType", "()", "", "Argument[this].SyntheticField[Internal.Pgo.TypeSystemEntityOrUnknown._data]", "ReturnValue", "value", "dfc-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Internal.Pgo", "IPgoEncodedValueEmitter<TType,TMethod>", "EmitDone", "()", "summary", "df-generated"]
+      - ["Internal.Pgo", "IPgoEncodedValueEmitter<TType,TMethod>", "EmitLong", "(System.Int64,System.Int64)", "summary", "df-generated"]
+      - ["Internal.Pgo", "IPgoEncodedValueEmitter<TType,TMethod>", "EmitMethod", "(TMethod,TMethod)", "summary", "df-generated"]
+      - ["Internal.Pgo", "IPgoEncodedValueEmitter<TType,TMethod>", "EmitType", "(TType,TType)", "summary", "df-generated"]
+      - ["Internal.Pgo", "IPgoSchemaDataLoader<TType,TMethod>", "MethodFromLong", "(System.Int64)", "summary", "df-generated"]
+      - ["Internal.Pgo", "IPgoSchemaDataLoader<TType,TMethod>", "TypeFromLong", "(System.Int64)", "summary", "df-generated"]
+      - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", "Dispose", "()", "summary", "df-generated"]
+      - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", "MoveNext", "()", "summary", "df-generated"]
+      - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", "Reset", "()", "summary", "df-generated"]
+      - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", "get_Current", "()", "summary", "df-generated"]
+      - ["Internal.Pgo", "PgoProcessor", "EncodePgoData<TType,TMethod>", "(System.Collections.Generic.IEnumerable<Internal.Pgo.PgoSchemaElem>,Internal.Pgo.IPgoEncodedValueEmitter<TType,TMethod>,System.Boolean)", "summary", "df-generated"]
+      - ["Internal.Pgo", "PgoProcessor", "ParsePgoData<TType,TMethod>", "(Internal.Pgo.IPgoSchemaDataLoader<TType,TMethod>,System.Collections.Generic.IEnumerable<System.Int64>,System.Boolean)", "summary", "df-generated"]
+      - ["Internal.Pgo", "PgoProcessor", "PgoEncodedCompressedLongGenerator", "(System.Collections.Generic.IEnumerable<System.Int64>)", "summary", "df-generated"]
+      - ["Internal.Pgo", "PgoSchemaElem", "ToString", "()", "summary", "df-generated"]
+      - ["Internal.Pgo", "PgoSchemaElem", "get_DataHeldInDataLong", "()", "summary", "df-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", "Equals", "(Internal.Pgo.TypeSystemEntityOrUnknown)", "summary", "df-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", "Equals", "(System.Object)", "summary", "df-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", "GetHashCode", "()", "summary", "df-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", "TypeSystemEntityOrUnknown", "(System.Int32)", "summary", "df-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", "get_AsUnknown", "()", "summary", "df-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", "get_IsNull", "()", "summary", "df-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", "get_IsUnknown", "()", "summary", "df-generated"]

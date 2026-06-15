@@ -1,0 +1,282 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.h3xstream.test</groupId>
+    <artifactId>vulnerable-jsp-app</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+    
+    <name>Vulnerable JSP Application</name>
+    <description>
+    This is a demo application used to display the typical configuration required to precompiled JSP.
+    This application also contains vulnerable samples. DO NOT used this project's code as example.
+    </description>
+    
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jetty-version>9.3.3.v20150827</jetty-version>
+        <spring.version>4.0.2.RELEASE</spring.version>
+        <!--<sonar.language></sonar.language>-->
+    </properties>
+
+    <dependencies>
+
+        <!-- Servlet API -->
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <!-- Jetty -->
+
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-annotations</artifactId>
+            <version>${jetty-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>${jetty-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>apache-jsp</artifactId>
+            <version>${jetty-version}</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>apache-jstl</artifactId>
+            <version>${jetty-version}</version>
+            <type>pom</type>
+        </dependency>
+
+    </dependencies>
+
+    <profiles>
+
+        <!-- Compilation of the JSP with Weblogic 12.1.3.0 -->
+
+        <profile>
+            <id>weblogic1213Jsp</id>
+
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- This is the configuration for the
+                             weblogic-maven-plugin
+                        -->
+                        <groupId>com.oracle.weblogic</groupId>
+                        <artifactId>wls-maven-plugin</artifactId>
+                        <version>12.1.3.0</version>
+                        <configuration>
+                            <middlewareHome>C:/Oracle/Middleware/Oracle_Home</middlewareHome>
+                        </configuration>
+                        <executions>
+                            <!-- Execute the appc goal during the package phase -->
+                            <execution>
+                                <id>wls-appc</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>appc</goal>
+                                </goals>
+                                <configuration>
+                                    <continueCompilation>true</continueCompilation>
+                                    <writeInferredDescriptors>true</writeInferredDescriptors>
+                                    <commentary>true</commentary>
+                                    <lineNumbers>true</lineNumbers>
+                                    <verboseJavac>true</verboseJavac>
+                                    <idlVerbose>true</idlVerbose>
+                                    <source>${project.build.directory}/${project.artifactId}-${project.version}.${project.packaging}</source>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+
+
+        <!-- Compilation of the JSP with Jetty 9.4.20 -->
+        <profile>
+            <id>jetty9420Jsp</id>
+
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-jspc-maven-plugin</artifactId>
+                        <version>9.4.20.v20190813</version> <!-- Latest version -->
+                        <executions>
+                            <execution>
+                                <id>jspc</id>
+                                <goals>
+                                    <goal>jspc</goal>
+                                </goals>
+                                <configuration>
+                                    <jspc>
+                                        <smapSuppressed>false</smapSuppressed>
+                                        <smapDumped>true</smapDumped>
+                                    </jspc>
+                                    <keepSources>true</keepSources>
+                                    <useProvidedScope>true</useProvidedScope>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Compilation of the JSP with Jetty 9.3.6 -->
+        <profile>
+            <id>jetty936Jsp</id>
+
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-jspc-maven-plugin</artifactId>
+                        <version>9.3.6.v20151106</version>
+                        <executions>
+                            <execution>
+                                <id>jspc</id>
+                                <goals>
+                                    <goal>jspc</goal>
+                                </goals>
+                                <configuration>
+                                    <jspc>
+                                        <smapSuppressed>false</smapSuppressed>
+                                        <smapDumped>true</smapDumped>
+                                    </jspc>
+                                    <keepSources>true</keepSources>
+                                    <useProvidedScope>true</useProvidedScope>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Compilation of the JSP with Jetty 9.0.7 -->
+
+        <profile>
+            <id>jetty907Jsp</id>
+
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.eclipse.jetty</groupId>
+                        <artifactId>jetty-jspc-maven-plugin</artifactId>
+                        <version>9.0.7.v20131107</version>
+                        <executions>
+                            <execution>
+                                <id>jspc</id>
+                                <goals>
+                                    <goal>jspc</goal>
+                                </goals>
+                                <configuration>
+                                    <suppressSmap>false</suppressSmap>
+                                    <useProvidedScope>true</useProvidedScope>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+
+        <!-- Compilation of the JSP with Tomcat -->
+
+        <profile>
+            <id>tomcat8Jsp</id>
+
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.leonard.maven.plugins</groupId>
+                        <artifactId>jspc-maven-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
+    <build>
+        <plugins>
+            <!-- Compilation with Java 8 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <plugin>                
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+            </plugin>   
+
+            <!-- SpotBugs Static Analysis -->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>3.1.12</version>
+                <configuration>
+                    <effort>Max</effort>
+                    <threshold>Low</threshold>
+                    <failOnError>true</failOnError>
+                    <includeFilterFile>${session.executionRootDirectory}/spotbugs-security-include.xml</includeFilterFile>
+                    <excludeFilterFile>${session.executionRootDirectory}/spotbugs-security-exclude.xml</excludeFilterFile>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.h3xstream.findsecbugs</groupId>
+                            <artifactId>findsecbugs-plugin</artifactId>
+                            <version>1.9.0</version> <!-- Auto-update to the latest stable -->
+                        </plugin>
+                    </plugins>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

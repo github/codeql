@@ -1,5 +1,5 @@
 /**
- * @name Unused parameter.
+ * @name Unused parameter
  * @description A parameter that is not used later on, or whose value is always overwritten,
  *              can be removed.
  * @kind problem
@@ -23,5 +23,6 @@ class RelevantParameterVariable extends LocalVariable {
 }
 
 from RelevantParameterVariable v
-where not exists(Ssa::WriteDefinition def | def.getWriteAccess().getNode() = v.getDefiningAccess())
+where
+  not exists(Ssa::WriteDefinition def | def.getWriteAccess().getAstNode() = v.getDefiningAccess())
 select v, "The parameter '" + v.getName() + "' is never used."

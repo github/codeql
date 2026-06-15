@@ -5,16 +5,18 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id cs/stringbuilder-creation-in-loop
- * @tags efficiency
+ * @tags quality
+ *       reliability
+ *       performance
  */
 
 import csharp
 import semmle.code.csharp.frameworks.system.Text
 
-from ObjectCreation creation, LoopStmt loop, ControlFlow::Node loopEntryNode
+from ObjectCreation creation, LoopStmt loop, ControlFlowNode loopEntryNode
 where
   creation.getType() instanceof SystemTextStringBuilderClass and
-  loopEntryNode = loop.getBody().getAControlFlowEntryNode() and
+  loopEntryNode.isBefore(loop.getBody()) and
   loop.getBody().getAChild*() = creation and
-  creation.getAControlFlowNode().postDominates(loopEntryNode)
+  creation.getControlFlowNode().postDominates(loopEntryNode)
 select creation, "Creating a 'StringBuilder' in a loop."

@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["onflow/cadence/.github/workflows/compatibility-check-template.yml", "*", "input.base-branch", "code-injection", "generated"]
+     - ["onflow/cadence/.github/workflows/compatibility-check-template.yml", "*", "input.repo", "code-injection", "generated"]
+     - ["onflow/cadence/.github/workflows/compatibility-check-template.yml", "*", "input.current-branch", "code-injection", "generated"]
+     - ["onflow/cadence/.github/workflows/compatibility-check-template.yml", "*", "input.chain", "code-injection", "generated"]

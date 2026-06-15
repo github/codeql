@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["tgstation/tgstation/.github/workflows/run_integration_tests.yml", "*", "input.map", "code-injection", "generated"]
+     - ["tgstation/tgstation/.github/workflows/run_integration_tests.yml", "*", "input.minor", "code-injection", "generated"]
+     - ["tgstation/tgstation/.github/workflows/run_integration_tests.yml", "*", "input.major", "code-injection", "generated"]

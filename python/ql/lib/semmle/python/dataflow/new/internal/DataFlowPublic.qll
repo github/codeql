@@ -1,36 +1,42 @@
 /**
  * Provides Python-specific definitions for use in the data flow library.
  */
+overlay[local]
+module;
 
 private import python
 private import DataFlowPrivate
-import semmle.python.dataflow.new.TypeTracker
+import semmle.python.dataflow.new.TypeTracking
 import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+private import semmle.python.frameworks.data.ModelsAsData
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * IPA type for data flow nodes.
  *
- * Flow between SSA variables are computed in `Essa.qll`
+ * Nodes broadly fall into three categories.
  *
- * Flow from SSA variables to control flow nodes are generally via uses.
- *
- * Flow from control flow nodes to SSA variables are generally via assignments.
- *
- * The current implementation of these cross flows can be seen in `EssaTaintTracking`.
+ * - Control flow nodes: Flow between these is based on use-use flow computed via an SSA analysis.
+ * - Module variable nodes: These represent global variables and act as canonical targets for reads and writes of these.
+ * - Synthetic nodes: These handle flow in various special cases.
  */
+overlay[local]
 newtype TNode =
-  /** A node corresponding to an SSA variable. */
-  TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
   TCfgNode(ControlFlowNode node) {
     isExpressionNode(node)
     or
     node.getNode() instanceof Pattern
   } or
+  /**
+   * A node corresponding to a scope entry definition. That is, the value of a variable
+   * as it enters a scope.
+   */
+  TScopeEntryDefinitionNode(ScopeEntryDefinition def) { not def.getScope() instanceof Module } or
   /**
    * A synthetic node representing the value of an object before a state change.
    *
@@ -68,17 +74,12 @@ newtype TNode =
       def.getDefiningNode() = node and
       def.getParameter() = func.getArg(0)
     )
+    or
+    // the iterable argument to the implicit comprehension function
+    node.getNode() = any(Comp c).getIterable()
   } or
   /** A node representing a global (module-level) variable in a specific module. */
-  TModuleVariableNode(Module m, GlobalVariable v) {
-    v.getScope() = m and
-    (
-      v.escapes()
-      or
-      isAccessedThroughImportStar(m) and
-      ImportStar::globalNameDefinedInModule(v.getId(), m)
-    )
-  } or
+  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m } or
   /**
    * A synthetic node representing that an iterable sequence flows to consumer.
    */
@@ -105,14 +106,7 @@ newtype TNode =
   // So for now we live with having these synthetic ORM nodes for _all_ classes, which
   // is a bit wasteful, but we don't think it will hurt too much.
   TSyntheticOrmModelNode(Class cls) or
-  TSummaryNode(
-    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state
-  ) {
-    FlowSummaryImpl::Private::summaryNodeRange(c, state)
-  } or
-  TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
-    FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
-  } or
+  TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
   /** A synthetic node to capture positional arguments that are passed to a `*args` parameter. */
   TSynthStarArgsElementParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isStarArgs(_) | exists(callable.getParameter(ppos)))
@@ -122,15 +116,43 @@ newtype TNode =
   /** A synthetic node to allow flow to keyword parameters from a `**kwargs` argument. */
   TSynthDictSplatParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
+  } or
+  /** A synthetic node representing a captured variable. */
+  TSynthCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
+  /** A synthetic node representing the heap of a function. Used for variable capture. */
+  TSynthCapturedVariablesParameterNode(Function f) {
+    f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
+    exists(TFunction(f))
+  } or
+  /**
+   * A synthetic node representing the values of the variables captured
+   * by the callable being called.
+   */
+  TSynthCapturedVariablesArgumentNode(ControlFlowNode callable) {
+    callable = any(CallNode c).getFunction()
+  } or
+  /**
+   * A synthetic node representing the values of the variables captured
+   * by the callable being called, after the output has been computed.
+   */
+  TSynthCapturedVariablesArgumentPostUpdateNode(ControlFlowNode callable) {
+    callable = any(CallNode c).getFunction()
+  } or
+  /** A synthetic node representing the values of variables captured by a comprehension. */
+  TSynthCompCapturedVariablesArgumentNode(Comp comp) {
+    comp.getFunction() = any(VariableCapture::CapturedVariable v).getACapturingScope()
+  } or
+  /** A synthetic node representing the values of variables captured by a comprehension after the output has been computed. */
+  TSynthCompCapturedVariablesArgumentPostUpdateNode(Comp comp) {
+    comp.getFunction() = any(VariableCapture::CapturedVariable v).getACapturingScope()
+  } or
+  /** An empty, unused node type that exists to prevent unwanted dependencies on data flow nodes. */
+  TForbiddenRecursionGuard() {
+    none() and
+    // We want to prune irrelevant models before materialising data flow nodes, so types contributed
+    // directly from CodeQL must expose their pruning info without depending on data flow nodes.
+    (any(ModelInput::TypeModel tm).isTypeUsed("") implies any())
   }
-
-/** Helper for `Node::getEnclosingCallable`. */
-private DataFlowCallable getCallableScope(Scope s) {
-  result.getScope() = s
-  or
-  not exists(DataFlowCallable c | c.getScope() = s) and
-  result = getCallableScope(s.getEnclosingScope())
-}
 
 private import semmle.python.internal.CachedStages
 
@@ -138,6 +160,7 @@ private import semmle.python.internal.CachedStages
  * An element, viewed as a node in a data flow graph. Either an SSA variable
  * (`EssaNode`) or a control flow node (`CfgNode`).
  */
+overlay[local]
 class Node extends TNode {
   /** Gets a textual representation of this element. */
   cached
@@ -153,6 +176,7 @@ class Node extends TNode {
   DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
 
   /** Gets the location of this node */
+  cached
   Location getLocation() { none() }
 
   /**
@@ -162,16 +186,12 @@ class Node extends TNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  cached
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     Stages::DataFlow::ref() and
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
-
-  /** Gets the ESSA variable corresponding to this node, if any. */
-  EssaVariable asVar() { none() }
 
   /** Gets the control-flow node corresponding to this node, if any. */
   ControlFlowNode asCfgNode() { none() }
@@ -183,25 +203,6 @@ class Node extends TNode {
    * Gets a local source node from which data may flow to this node in zero or more local data-flow steps.
    */
   LocalSourceNode getALocalSource() { result.flowsTo(this) }
-}
-
-/** A data-flow node corresponding to an SSA variable. */
-class EssaNode extends Node, TEssaNode {
-  EssaVariable var;
-
-  EssaNode() { this = TEssaNode(var) }
-
-  /** Gets the `EssaVariable` represented by this data-flow node. */
-  EssaVariable getVar() { result = var }
-
-  override EssaVariable asVar() { result = var }
-
-  /** Gets a textual representation of this element. */
-  override string toString() { result = var.toString() }
-
-  override Scope getScope() { result = var.getScope() }
-
-  override Location getLocation() { result = var.getLocation() }
 }
 
 /** A data-flow node corresponding to a control-flow node. */
@@ -238,6 +239,12 @@ class CallCfgNode extends CfgNode, LocalSourceNode {
 
   /** Gets the data-flow node corresponding to the named argument of the call corresponding to this data-flow node */
   Node getArgByName(string name) { result.asCfgNode() = node.getArgByName(name) }
+
+  /** Gets the data-flow node corresponding to the first tuple (*) argument of the call corresponding to this data-flow node, if any. */
+  Node getStarArg() { result.asCfgNode() = node.getStarArg() }
+
+  /** Gets the data-flow node corresponding to a dictionary (**) argument of the call corresponding to this data-flow node, if any. */
+  Node getKwargs() { result.asCfgNode() = node.getKwargs() }
 }
 
 /**
@@ -296,9 +303,32 @@ class ExprNode extends CfgNode {
 ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
 
 /**
+ * A node corresponding to a scope entry definition. That is, the value of a variable
+ * as it enters a scope.
+ */
+class ScopeEntryDefinitionNode extends Node, TScopeEntryDefinitionNode {
+  ScopeEntryDefinition def;
+
+  ScopeEntryDefinitionNode() { this = TScopeEntryDefinitionNode(def) }
+
+  /** Gets the `ScopeEntryDefinition` associated with this node. */
+  ScopeEntryDefinition getDefinition() { result = def }
+
+  /** Gets the source variable represented by this node. */
+  SsaSourceVariable getVariable() { result = def.getSourceVariable() }
+
+  override Location getLocation() { result = def.getLocation() }
+
+  override Scope getScope() { result = def.getScope() }
+
+  override string toString() { result = "Entry definition for " + this.getVariable().toString() }
+}
+
+/**
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
+overlay[local]
 class ParameterNode extends Node instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
   final Parameter getParameter() { result = super.getParameter() }
@@ -320,6 +350,7 @@ class LocalSourceParameterNode extends ExtractedParameterNode, LocalSourceNode {
 ExtractedParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** A data flow node that represents a call argument. */
+overlay[global]
 abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
   abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
@@ -328,24 +359,52 @@ abstract class ArgumentNode extends Node {
   final ExtractedDataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
+/** Gets an overapproximation of the argument nodes that are included in `getCallArg`. */
+Node getCallArgApproximation() {
+  // pre-update nodes for calls
+  result = any(CallCfgNode c).(PostUpdateNode).getPreUpdateNode()
+  or
+  // self parameters in methods
+  exists(Class c | result.asExpr() = c.getAMethod().getArg(0))
+  or
+  // the object part of an attribute expression (which might be a bound method)
+  result.asCfgNode() = any(AttrNode a).getObject()
+  or
+  // the function part of any call
+  result.asCfgNode() = any(CallNode c).getFunction()
+}
+
+/** Gets the extracted argument nodes that do not rely on `getCallArg`. */
+private Node implicitArgumentNode() {
+  // for potential summaries we allow all normal call arguments
+  normalCallArg(_, result, _)
+  or
+  // and self arguments
+  result.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
+  or
+  // for comprehensions, we allow the synthetic `iterable` argument
+  result.asExpr() = any(Comp c).getIterable()
+}
+
 /**
  * A data flow node that represents a call argument found in the source code.
  */
+overlay[global]
 class ExtractedArgumentNode extends ArgumentNode {
   ExtractedArgumentNode() {
-    // for resolved calls, we need to allow all argument nodes
-    getCallArg(_, _, _, this, _)
+    this = getCallArgApproximation()
     or
-    // for potential summaries we allow all normal call arguments
-    normalCallArg(_, this, _)
-    or
-    // and self arguments
-    this.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
+    this = implicitArgumentNode()
   }
 
   final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     this = call.getArgument(pos) and
-    call instanceof ExtractedDataFlowCall
+    call instanceof ExtractedDataFlowCall and
+    (
+      this = implicitArgumentNode()
+      or
+      this = getCallArgApproximation() and getCallArg(_, _, _, this, _)
+    )
   }
 }
 
@@ -407,7 +466,7 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override Scope getScope() { result = mod }
 
   override string toString() {
-    result = "ModuleVariableNode in " + mod.toString() + " for " + var.getId()
+    result = "ModuleVariableNode in " + concat( | | mod.toString(), ",") + " for " + var.getId()
   }
 
   /** Gets the module in which this variable appears. */
@@ -417,17 +476,22 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   GlobalVariable getVariable() { result = var }
 
   /** Gets a node that reads this variable. */
+  overlay[global]
   Node getARead() {
-    result.asCfgNode() = var.getALoad().getAFlowNode() and
-    // Ignore reads that happen when the module is imported. These are only executed once.
-    not result.getScope() = mod
+    result = this.getALocalRead()
     or
     this = import_star_read(result)
   }
 
+  /** Gets a node that reads this variable, excluding reads that happen through `from ... import *`. */
+  Node getALocalRead() {
+    result.asCfgNode() = var.getALoad().getAFlowNode() and
+    not result.getScope() = mod
+  }
+
   /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
-  EssaNode getAWrite() {
-    result.getVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
+  Node getAWrite() {
+    any(EssaNodeDefinition def).definedBy(var, result.asCfgNode().(DefinitionNode))
   }
 
   /** Gets the possible values of the variable at the end of import time */
@@ -444,12 +508,12 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   override Location getLocation() { result = mod.getLocation() }
 }
 
-private predicate isAccessedThroughImportStar(Module m) { m = ImportStar::getStarImported(_) }
-
+overlay[global]
 private ModuleVariableNode import_star_read(Node n) {
   resolved_import_star_module(result.getModule(), result.getVariable().getId(), n)
 }
 
+overlay[global]
 pragma[nomagic]
 private predicate resolved_import_star_module(Module m, string name, Node n) {
   exists(NameNode nn | nn = n.asCfgNode() |
@@ -472,7 +536,7 @@ class IterableSequenceNode extends Node, TIterableSequenceNode {
 
   override string toString() { result = "IterableSequence" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -489,7 +553,7 @@ class IterableElementNode extends Node, TIterableElementNode {
 
   override string toString() { result = "IterableElement" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -504,7 +568,7 @@ class StarPatternElementNode extends Node, TStarPatternElementNode {
 
   override string toString() { result = "StarPatternElement" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -531,13 +595,41 @@ ControlFlowNode guardNode(ConditionBlock conditionBlock, boolean flipped) {
   result = conditionBlock.getLastNode() and
   flipped = false
   or
-  // Recursive case: if a guard node is a `not`-expression,
+  // Recursive cases:
+  // if a guard node is a `not`-expression,
   // the operand is also a guard node, but with inverted polarity.
   exists(UnaryExprNode notNode |
     result = notNode.getOperand() and
     notNode.getNode().getOp() instanceof Not
   |
     notNode = guardNode(conditionBlock, flipped.booleanNot())
+  )
+  or
+  // if a guard node is compared to a boolean literal,
+  // the other operand is also a guard node,
+  // but with polarity depending on the literal (and on the comparison).
+  exists(CompareNode cmpNode, Cmpop op, ControlFlowNode b, boolean should_flip |
+    (
+      cmpNode.operands(result, op, b) or
+      cmpNode.operands(b, op, result)
+    ) and
+    not result.getNode() instanceof BooleanLiteral and
+    (
+      // comparing to the boolean
+      (op instanceof Eq or op instanceof Is) and
+      // we should flip if the value compared against, here the value of `b`, is false
+      should_flip = b.getNode().(BooleanLiteral).booleanValue().booleanNot()
+      or
+      // comparing to the negation of the boolean
+      (op instanceof NotEq or op instanceof IsNot) and
+      // again, we should flip if the value compared against, here the value of `not b`, is false.
+      // That is, if the value of `b` is true.
+      should_flip = b.getNode().(BooleanLiteral).booleanValue()
+    )
+  |
+    // we flip `flipped` according to `should_flip` via the formula `flipped xor should_flip`.
+    flipped in [true, false] and
+    cmpNode = guardNode(conditionBlock, flipped.booleanXor(should_flip))
   )
 }
 
@@ -562,10 +654,6 @@ class GuardNode extends ControlFlowNode {
 
 /**
  * Holds if the guard `g` validates `node` upon evaluating to `branch`.
- *
- * The expression `e` is expected to be a syntactic part of the guard `g`.
- * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
- * the argument `x`.
  */
 signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean branch);
 
@@ -575,12 +663,39 @@ signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean br
  * This is expected to be used in `isBarrier`/`isSanitizer` definitions
  * in data flow and taint tracking.
  */
+overlay[global]
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   ExprNode getABarrierNode() {
+    result = ParameterizedBarrierGuard<Unit, extendedGuardChecks/4>::getABarrierNode(_)
+  }
+
+  private predicate extendedGuardChecks(GuardNode g, ControlFlowNode node, boolean branch, Unit u) {
+    guardChecks(g, node, branch) and
+    u = u
+  }
+}
+
+bindingset[this]
+private signature class ParamSig;
+
+private module WithParam<ParamSig P> {
+  signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean branch, P param);
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates a node.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check with parameter `param`. */
+  overlay[global]
+  ExprNode getABarrierNode(P param) {
     exists(GuardNode g, EssaDefinition def, ControlFlowNode node, boolean branch |
       AdjacentUses::useOfDef(def, node) and
-      guardChecks(g, node, branch) and
+      guardChecks(g, node, branch, param) and
       AdjacentUses::useOfDef(def, result.asCfgNode()) and
       g.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
     )
@@ -588,28 +703,36 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
 }
 
 /**
- * DEPRECATED: Use `BarrierGuard` module instead.
+ * Provides a set of barrier nodes for a guard that validates a node as described by an external predicate.
  *
- * A guard that validates some expression.
- *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * It is important that all extending classes in scope are disjoint.
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
  */
-deprecated class BarrierGuard extends GuardNode {
-  /** Holds if this guard validates `node` upon evaluating to `branch`. */
-  abstract predicate checks(ControlFlowNode node, boolean branch);
+module ExternalBarrierGuard {
+  private import semmle.python.ApiGraphs
 
-  /** Gets a node guarded by this guard. */
-  final ExprNode getAGuardedNode() {
-    exists(EssaDefinition def, ControlFlowNode node, boolean branch |
-      AdjacentUses::useOfDef(def, node) and
-      this.checks(node, branch) and
-      AdjacentUses::useOfDef(def, result.asCfgNode()) and
-      this.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
+  overlay[global]
+  private predicate guardCheck(GuardNode g, ControlFlowNode node, boolean branch, string kind) {
+    exists(API::CallNode call, API::Node parameter |
+      parameter = call.getAParameter() and
+      parameter = ModelOutput::getABarrierGuardNode(kind, branch)
+    |
+      g = call.asCfgNode() and
+      node = parameter.asSink().asCfgNode()
     )
+  }
+
+  /**
+   * Gets a node that is an external barrier of the given kind.
+   *
+   * This only provides external barrier nodes defined as guards. To get all externally defined barrer nodes,
+   * use `ModelOutput::barrierNode(node, kind)`.
+   *
+   * INTERNAL: Do not use.
+   */
+  overlay[global]
+  ExprNode getAnExternalBarrierNode(string kind) {
+    result = ParameterizedBarrierGuard<string, guardCheck/4>::getABarrierNode(kind)
   }
 }
 
@@ -617,6 +740,7 @@ deprecated class BarrierGuard extends GuardNode {
  * Algebraic datatype for tracking data content associated with values.
  * Content can be collection elements or object attributes.
  */
+overlay[local]
 newtype TContent =
   /** An element of a list. */
   TListElementContent() or
@@ -628,36 +752,87 @@ newtype TContent =
     or
     // Arguments can overflow and end up in the starred parameter tuple.
     exists(any(CallNode cn).getArg(index))
+    or
+    // since flow summaries might use tuples, we ensure that we at least have valid
+    // TTupleElementContent for the 0..7 (7 was picked to match `small_tuple` in
+    // data-flow-private)
+    index in [0 .. 7]
   } or
   /** An element of a dictionary under a specific key. */
   TDictionaryElementContent(string key) {
-    key = any(KeyValuePair kvp).getKey().(StrConst).getS()
+    // {"key": ...}
+    key = any(KeyValuePair kvp).getKey().(StringLiteral).getText()
     or
+    // func(key=...)
     key = any(Keyword kw).getArg()
+    or
+    // d["key"] = ...
+    key =
+      any(SubscriptNode sub | sub.isStore() | sub.getIndex().getNode().(StringLiteral).getText())
+    or
+    // d.setdefault("key", ...)
+    exists(CallNode call | call.getFunction().(AttrNode).getName() = "setdefault" |
+      key = call.getArg(0).getNode().(StringLiteral).getText()
+    )
   } or
   /** An element of a dictionary under any key. */
   TDictionaryElementAnyContent() or
   /** An object attribute. */
-  TAttributeContent(string attr) { attr = any(Attribute a).getName() }
+  TAttributeContent(string attr) {
+    attr = any(Attribute a).getName()
+    or
+    // Flow summaries that target attributes rely on a TAttributeContent being
+    // available. However, since the code above only constructs a TAttributeContent
+    // based on the attribute names seen in the DB, we can end up in a scenario where
+    // flow summaries don't work due to missing TAttributeContent. To get around this,
+    // we need to add the attribute names used by flow summaries. This needs to be done
+    // both for the summaries written in QL and the ones written in data-extension
+    // files.
+    //
+    // 1) Summaries in QL. Sadly the following code leads to non-monotonic recursion
+    //   name = any(AccessPathToken a).getAnArgument("Attribute")
+    // instead we use a qltest to alert if we write a new summary in QL that uses an
+    // attribute -- see
+    // python/ql/test/library-tests/dataflow/summaries-checks/missing-attribute-content.ql
+    attr in ["re", "string", "pattern"]
+    or
+    //
+    // 2) summaries in data-extension files
+    exists(string input, string output |
+      ModelOutput::relevantSummaryModel(_, _, input, output, _, _)
+    |
+      attr = [input, output].regexpFind("(?<=(^|\\.)Attribute\\[)[^\\]]+(?=\\])", _, _).trim()
+    )
+  } or
+  /** A captured variable. */
+  TCapturedVariableContent(VariableCapture::CapturedVariable v)
 
 /**
  * A data-flow value can have associated content.
  * If the value is a collection, it can have elements,
  * if it is an object, it can have attribute values.
  */
+overlay[local]
 class Content extends TContent {
   /** Gets a textual representation of this element. */
   string toString() { result = "Content" }
+
+  /** Gets the Models-as-Data representation of this content (if any). */
+  string getMaDRepresentation() { none() }
 }
 
 /** An element of a list. */
 class ListElementContent extends TListElementContent, Content {
   override string toString() { result = "List element" }
+
+  override string getMaDRepresentation() { result = "ListElement" }
 }
 
 /** An element of a set. */
 class SetElementContent extends TSetElementContent, Content {
   override string toString() { result = "Set element" }
+
+  override string getMaDRepresentation() { result = "SetElement" }
 }
 
 /** An element of a tuple at a specific index. */
@@ -670,6 +845,8 @@ class TupleElementContent extends TTupleElementContent, Content {
   int getIndex() { result = index }
 
   override string toString() { result = "Tuple element at index " + index.toString() }
+
+  override string getMaDRepresentation() { result = "TupleElement[" + index + "]" }
 }
 
 /** An element of a dictionary under a specific key. */
@@ -682,11 +859,15 @@ class DictionaryElementContent extends TDictionaryElementContent, Content {
   string getKey() { result = key }
 
   override string toString() { result = "Dictionary element at key " + key }
+
+  override string getMaDRepresentation() { result = "DictionaryElement[" + key + "]" }
 }
 
 /** An element of a dictionary under any key. */
 class DictionaryElementAnyContent extends TDictionaryElementAnyContent, Content {
   override string toString() { result = "Any dictionary element" }
+
+  override string getMaDRepresentation() { result = "DictionaryElementAny" }
 }
 
 /** An object attribute. */
@@ -699,7 +880,42 @@ class AttributeContent extends TAttributeContent, Content {
   string getAttribute() { result = attr }
 
   override string toString() { result = "Attribute " + attr }
+
+  override string getMaDRepresentation() { result = "Attribute[" + attr + "]" }
 }
+
+/** A captured variable. */
+class CapturedVariableContent extends Content, TCapturedVariableContent {
+  private VariableCapture::CapturedVariable v;
+
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+  /** Gets the captured variable. */
+  VariableCapture::CapturedVariable getVariable() { result = v }
+
+  override string toString() { result = "captured " + v }
+
+  override string getMaDRepresentation() { none() }
+}
+
+/**
+ * An entity that represents a set of `Content`s.
+ *
+ * Most `ContentSet`s are singletons (i.e. they consist of a single `Content`),
+ * but `AnyDictionaryElement` and `AnyTupleElement` act as wildcards on the
+ * read side: a read at such a `ContentSet` matches any specific dictionary
+ * key / tuple index store, as well as (for dictionaries) the
+ * "unknown-bucket" Content `DictionaryElementAnyContent`.
+ *
+ * Keeping these as wildcard `ContentSet`s (rather than enumerating one
+ * `ContentSet` per key/index) keeps the dataflow `readSetEx` relation small
+ * when implicit reads are used (e.g. at sinks via `defaultImplicitTaintRead`).
+ */
+private newtype TContentSet =
+  TSingletonContent(Content c) or
+  TAnyTupleElement() or
+  TAnyDictionaryElement() or
+  TAnyTupleOrDictionaryElement()
 
 /**
  * An entity that represents a set of `Content`s.
@@ -707,13 +923,53 @@ class AttributeContent extends TAttributeContent, Content {
  * The set may be interpreted differently depending on whether it is
  * stored into (`getAStoreContent`) or read from (`getAReadContent`).
  */
-class ContentSet instanceof Content {
+class ContentSet extends TContentSet {
+  /** Holds if this content set is the singleton `{c}`. */
+  predicate isSingleton(Content c) { this = TSingletonContent(c) }
+
+  /** Holds if this content set is the wildcard for all tuple elements. */
+  predicate isAnyTupleElement() { this = TAnyTupleElement() }
+
+  /** Holds if this content set is the wildcard for all dictionary elements. */
+  predicate isAnyDictionaryElement() { this = TAnyDictionaryElement() }
+
+  /** Holds if this content set is the wildcard for all tuple elements or dictionary elements. */
+  predicate isAnyTupleOrDictionaryElement() { this = TAnyTupleOrDictionaryElement() }
+
   /** Gets a content that may be stored into when storing into this set. */
-  Content getAStoreContent() { result = this }
+  Content getAStoreContent() { this = TSingletonContent(result) }
 
   /** Gets a content that may be read from when reading from this set. */
-  Content getAReadContent() { result = this }
+  Content getAReadContent() {
+    this = TSingletonContent(result)
+    or
+    // Wildcard expansion: a read at "any tuple element" matches a store at any
+    // specific tuple index. (Stores always target a specific index, so we don't
+    // need a `TupleElementAnyContent` Content kind here.)
+    this = TAnyTupleElement() and result instanceof TupleElementContent
+    or
+    this = TAnyDictionaryElement() and
+    (result instanceof DictionaryElementContent or result instanceof DictionaryElementAnyContent)
+    or
+    this = TAnyTupleOrDictionaryElement() and
+    (
+      result instanceof TupleElementContent or
+      result instanceof DictionaryElementContent or
+      result instanceof DictionaryElementAnyContent
+    )
+  }
 
   /** Gets a textual representation of this content set. */
-  string toString() { result = super.toString() }
+  string toString() {
+    exists(Content c | this = TSingletonContent(c) | result = c.toString())
+    or
+    this = TAnyTupleElement() and result = "Any tuple element"
+    or
+    this = TAnyDictionaryElement() and result = "Any dictionary element"
+    or
+    this = TAnyTupleOrDictionaryElement() and result = "Any tuple or dictionary element"
+  }
 }
+
+/** Gets the singleton `ContentSet` wrapping the `Content` `c`. */
+ContentSet singleton(Content c) { result = TSingletonContent(c) }

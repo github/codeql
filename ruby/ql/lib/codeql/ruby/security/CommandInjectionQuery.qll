@@ -3,7 +3,7 @@
  * command-injection vulnerabilities (CWE-078).
  *
  * Note, for performance reasons: only import this file if
- * `CommandInjection::Configuration` is needed, otherwise
+ * `CommandInjectionFlow` is needed, otherwise
  * `CommandInjectionCustomizations` should be imported instead.
  */
 
@@ -13,19 +13,21 @@ import CommandInjectionCustomizations::CommandInjection
 import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.BarrierGuards
 
-/**
- * A taint-tracking configuration for reasoning about command-injection vulnerabilities.
- */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "CommandInjection" }
+private module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node instanceof Sanitizer or
     node instanceof StringConstCompareBarrier or
     node instanceof StringConstArrayInclusionCallBarrier
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
+
+/**
+ * Taint-tracking for reasoning about command-injection vulnerabilities.
+ */
+module CommandInjectionFlow = TaintTracking::Global<Config>;

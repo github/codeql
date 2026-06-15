@@ -10,11 +10,11 @@ public class Test {
 	
 	{
 		// NOT OK
-		m();
+		m(); // $ Alert
 	}
 	
 	public static void main(String[] args) {
 		// NOT OK
-		new Test().n();
+		new Test().n(); // $ Alert
 	}
 }

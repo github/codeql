@@ -1,0 +1,81 @@
+name: Workflow with complex interpolation
+on: 
+  workflow_dispatch:
+    inputs:
+      choice-a:
+        required: true
+        type: choice
+        description: choice-a
+        default: a1
+        options: 
+        - a1
+        - a2
+        - a3
+      string-b:
+        required: false
+        type: string
+        description: string-b
+      string-c:
+        required: false
+        type: string
+        description: string-c
+      list-d:
+        required: true
+        type: string
+        default: d1 d2
+        description: list-d whitespace separated
+      list-e:
+        required: false
+        type: string
+        description: list-e whitespace separated
+      choice-f:
+        required: true
+        type: choice
+        description: choice-f
+        options: 
+        - false
+        - true
+          
+env:
+  DRY_TEST: false
+  B: ${{ github.event.inputs.string-b }}
+
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Produce values
+      id: produce-values
+      run: |
+        echo "region=region" >> $GITHUB_OUTPUT
+        echo "zone=zone" >> $GITHUB_OUTPUT
+
+    - name: Step with complex interpolation
+      id: complex
+      env:
+        CHOICE_A: ${{ github.event.inputs.choice-a }}
+        STRING_B: ${{ github.event.inputs.string-b }}
+        STRING_C: ${{ github.event.inputs.string-c }}
+        LIST_D: ${{ github.event.inputs.list-d }}
+        LIST_E: ${{ github.event.inputs.list-e }}
+        CHOICE_F: ${{ github.event.inputs.choice-f }}
+        REGION: ${{ steps.produce-values.outputs.region }}
+        ZONE: ${{ steps.produce-values.outputs.zone }}
+        DRY_TEST_JSON: ${{ fromJSON(env.DRY_TEST) }}
+        FUNCTION_NAME: my-function
+        USER_EMAIL: 'example@example.com'
+        TYPE: type
+        RANGE: '0-100'
+
+      run: |
+        comma_separated_list_d=$(echo "${LIST_D}" | sed "s/ /\",\"/g")
+        comma_separated_list_e=$(echo "${LIST_E}" | sed "s/ /\",\"/g")
+        c1=$(echo "${STRING_C}" | cut -d "-" -f 1)
+        c2=$(echo "${STRING_C}" | cut -d "-" -f 2)
+        # Similar commands that use JSON payloads with string interpolation.
+        response=$(aws lambda invoke --invocation-type RequestResponse --function-name "${FUNCTION_NAME}" --region "${REGION}" --cli-read-timeout 0 --cli-binary-format raw-in-base64-out --payload '{"appName":"my-app","chA":"'"${CHOICE_A}"'","c1":"'"${c1}"'","c2":"'"${c2}"'","a":"${CHOICE_A}","bValue":"${B}","zone":"${ZONE}","userEmail":"'"${USER_EMAIL}"'","region":"${REGION}","range":"${RANGE}","type":"${TYPE}","b":"${STRING_B}","listD":"","listE":"","dryTest":'"${DRY_TEST_JSON}"',"f":"${CHOICE_F}"}' ./config.json --log-type Tail)
+        response=$(aws lambda invoke --invocation-type RequestResponse --function-name "${FUNCTION_NAME}" --region "${REGION}" --cli-read-timeout 0 --cli-binary-format raw-in-base64-out --payload '{"appName":"my-app","chA":"'"${CHOICE_A}"'","c1":"'"${c1}"'","c2":"'"${c2}"'","a":"${CHOICE_A}","bValue":"${B}","zone":"${ZONE}","userEmail":"'"${USER_EMAIL}"'","region":"${REGION}","range":"${RANGE}","type":"${TYPE}","b":"${STRING_B}","listD":["'"${comma_separated_list_d}"'"],"listE":"","dryTest":'"${DRY_TEST_JSON}"',"f":"${CHOICE_F}"}' ./config.json --log-type Tail)
+        response=$(aws lambda invoke --invocation-type RequestResponse --function-name "${FUNCTION_NAME}" --region "${REGION}" --cli-read-timeout 0 --cli-binary-format raw-in-base64-out --payload '{"appName":"my-app","chA":"'"${CHOICE_A}"'","c1":"'"${c1}"'","c2":"'"${c2}"'","a":"${CHOICE_A}","bValue":"${B}","zone":"${ZONE}","userEmail":"'"${USER_EMAIL}"'","region":"${REGION}","range":"${RANGE}","type":"${TYPE}","b":"${STRING_B}","listD":["'"${comma_separated_list_d}"'"],"listE":"","dryTest":'"${DRY_TEST_JSON}"',"f":"${CHOICE_F}"}' ./config.json --log-type Tail)
+        response=$(aws lambda invoke --invocation-type RequestResponse --function-name "${FUNCTION_NAME}" --region "${REGION}" --cli-read-timeout 0 --cli-binary-format raw-in-base64-out --payload '{"appName":"my-app","chA":"'"${CHOICE_A}"'","c1":"'"${c1}"'","c2":"'"${c2}"'","a":"${CHOICE_A}","bValue":"${B}","zone":"${ZONE}","userEmail":"'"${USER_EMAIL}"'","region":"${REGION}","range":"${RANGE}","type":"${TYPE}","b":"${STRING_B}","listD":["'"${comma_separated_list_d}"'"],"listE":"","dryTest":'"${DRY_TEST_JSON}"',"f":"${CHOICE_F}"}' ./config.json --log-type Tail)
+        response=$(aws lambda invoke --invocation-type RequestResponse --function-name "${FUNCTION_NAME}" --region "${REGION}" --cli-read-timeout 0 --cli-binary-format raw-in-base64-out --payload '{"appName":"my-app","chA":"'"${CHOICE_A}"'","c1":"'"${c1}"'","c2":"'"${c2}"'","a":"${CHOICE_A}","bValue":"${B}","zone":"${ZONE}","userEmail":"'"${USER_EMAIL}"'","region":"${REGION}","range":"${RANGE}","type":"${TYPE}","b":"${STRING_B}","listD":"","listE":["'"${comma_separated_list_e}"'"],"dryTest":'"${DRY_TEST_JSON}"',"f":"${CHOICE_F}"}' ./config.json --log-type Tail)
+      shell: bash

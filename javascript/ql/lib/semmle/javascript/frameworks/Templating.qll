@@ -1,6 +1,8 @@
 /**
  * Provides predicates for working with templating libraries.
  */
+overlay[local?]
+module;
 
 import javascript
 
@@ -31,13 +33,11 @@ module Templating {
    */
   bindingset[prefix]
   string getDelimiterMatchingRegexpWithPrefix(string prefix) {
-    result = "(?s)" + prefix + "(" + concat("\\Q" + getADelimiter() + "\\E", "|") + ").*"
+    result = "(?s)" + prefix + "(" + strictconcat("\\Q" + getADelimiter() + "\\E", "|") + ").*"
   }
 
   /** A placeholder tag for a templating engine. */
   class TemplatePlaceholderTag extends @template_placeholder_tag, Locatable {
-    override Location getLocation() { hasLocation(this, result) }
-
     override string toString() { template_placeholder_tag_info(this, _, result) }
 
     /** Gets the full text of the template tag, including delimiters. */
@@ -47,6 +47,7 @@ module Templating {
     Locatable getParent() { template_placeholder_tag_info(this, result, _) }
 
     /** Gets a data flow node representing the value plugged into this placeholder. */
+    overlay[global]
     DataFlow::TemplatePlaceholderTagNode asDataFlowNode() { result.getTag() = this }
 
     /** Gets the top-level containing the template expression to be inserted at this placeholder. */
@@ -56,6 +57,7 @@ module Templating {
      * Holds if this performs raw interpolation, that is, inserts its result
      * in the output without escaping it.
      */
+    overlay[global]
     predicate isRawInterpolation() {
       this.getRawText()
           .regexpMatch(getLikelyTemplateSyntax(this.getFile()).getRawInterpolationRegexp())
@@ -64,6 +66,7 @@ module Templating {
     /**
      * Holds if this performs HTML escaping on the result before inserting it in the template.
      */
+    overlay[global]
     predicate isEscapingInterpolation() {
       this.getRawText()
           .regexpMatch(getLikelyTemplateSyntax(this.getFile()).getEscapingInterpolationRegexp())
@@ -95,6 +98,7 @@ module Templating {
      * Holds if this placeholder occurs in the definition of another template, which means the output
      * is susceptible to code injection.
      */
+    overlay[global]
     predicate isInNestedTemplateContext(string templateType) {
       templateType = "AngularJS" and
       AngularJS::isInterpretedByAngularJS(this.getParent()) and
@@ -107,7 +111,12 @@ module Templating {
      * Gets the innermost JavaScript expression containing this template tag, if any.
      */
     pragma[nomagic]
-    Expr getEnclosingExpr() { expr_contains_template_tag_location(result, this.getLocation()) }
+    Expr getEnclosingExpr() {
+      exists(@location loc |
+        hasLocation(this, loc) and
+        expr_contains_template_tag_location(result, loc)
+      )
+    }
   }
 
   /**
@@ -132,6 +141,7 @@ module Templating {
    *
    * For example, the call generated from `items | async` would be found by `getAPipeCall("async")`.
    */
+  overlay[global]
   DataFlow::CallNode getAPipeCall(string name) {
     result.getCalleeNode().asExpr().(PipeRefExpr).getName() = name
   }
@@ -150,16 +160,19 @@ module Templating {
     Expr getExpression() { result = this.getChildStmt(0).(ExprStmt).getExpr() }
 
     /** Gets the data flow node representing the initialization of the given variable in this scope. */
+    overlay[global]
     DataFlow::Node getVariableInit(string name) {
       result = DataFlow::ssaDefinitionNode(Ssa::implicitInit(this.getScope().getVariable(name)))
     }
 
     /** Gets a data flow node corresponding to a use of the given template variable within this top-level. */
+    overlay[global]
     DataFlow::SourceNode getAVariableUse(string name) {
       result = this.getScope().getVariable(name).getAnAccess().flow()
     }
 
     /** Gets a data flow node corresponding to a use of the given template variable within this top-level. */
+    overlay[global]
     DataFlow::SourceNode getAnAccessPathUse(string accessPath) {
       result = this.getAVariableUse(accessPath)
       or
@@ -174,6 +187,7 @@ module Templating {
   /**
    * A place where a template is instantiated or rendered.
    */
+  overlay[global]
   class TemplateInstantiation extends DataFlow::Node instanceof TemplateInstantiation::Range {
     /** Gets a data flow node that refers to the instantiated template string, if any. */
     DataFlow::SourceNode getOutput() { result = super.getOutput() }
@@ -203,6 +217,7 @@ module Templating {
   }
 
   /** Companion module to the `TemplateInstantiation` class. */
+  overlay[global]
   module TemplateInstantiation {
     abstract class Range extends DataFlow::Node {
       /** Gets a data flow node that refers to the instantiated template, if any. */
@@ -227,6 +242,7 @@ module Templating {
   }
 
   /** Gets an API node that may flow to `succ` through a template instantiation. */
+  overlay[global]
   private API::Node getTemplateInput(DataFlow::SourceNode succ) {
     exists(TemplateInstantiation inst, API::Node base, string name |
       base.asSink() = inst.getTemplateParamsNode() and
@@ -255,6 +271,7 @@ module Templating {
     )
   }
 
+  overlay[global]
   private class TemplateInputStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       getTemplateInput(succ).asSink() = pred
@@ -265,6 +282,7 @@ module Templating {
    * A data flow step from the expression in a placeholder tag to the tag itself,
    * representing the value plugged into the template.
    */
+  overlay[global]
   private class TemplatePlaceholderStep extends DataFlow::SharedFlowStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(TemplatePlaceholderTag tag |
@@ -278,6 +296,7 @@ module Templating {
    * A taint step from a `TemplatePlaceholderTag` to the enclosing expression in the
    * surrounding JavaScript program.
    */
+  overlay[global]
   private class PlaceholderToGeneratedCodeStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(TemplatePlaceholderTag tag |
@@ -293,6 +312,7 @@ module Templating {
     final TemplatePlaceholderTag getAPlaceholder() { result.getFile() = this }
 
     /** Gets a template file referenced by this one via a template inclusion tag, such as `{% include foo %}` */
+    overlay[global]
     TemplateFile getAnImportedFile() {
       result = this.getAPlaceholder().(TemplateInclusionTag).getImportedFile()
     }
@@ -311,6 +331,7 @@ module Templating {
    * - The root folder is considered unknown, and so a heuristic is used to guess the most
    *   likely template file being referenced.
    */
+  overlay[global]
   abstract class TemplateFileReference extends DataFlow::Node {
     /** Gets the value that identifies the template. */
     string getValue() {
@@ -332,6 +353,7 @@ module Templating {
   }
 
   /** Get file argument of a template instantiation, seen as a template file reference. */
+  overlay[global]
   private class DefaultTemplateFileReference extends TemplateFileReference {
     DefaultTemplateFileReference() { this = any(TemplateInstantiation inst).getTemplateFileNode() }
   }
@@ -349,6 +371,7 @@ module Templating {
    * - The root folder is considered unknown, and so a heuristic is used to guess the most
    *   likely template file being referenced.
    */
+  overlay[global]
   abstract class TemplateFileReferenceString extends string {
     bindingset[this]
     TemplateFileReferenceString() { this = this }
@@ -379,6 +402,7 @@ module Templating {
   }
 
   /** The value of a template reference node, as a template reference string. */
+  overlay[global]
   private class DefaultTemplateReferenceString extends TemplateFileReferenceString {
     TemplateFileReference r;
 
@@ -394,6 +418,7 @@ module Templating {
   }
 
   /** The `X` in a path of form `../X`, treated as a separate path string with a different context folder. */
+  overlay[global]
   private class UpwardTraversalSuffix extends TemplateFileReferenceString {
     TemplateFileReferenceString original;
 
@@ -409,6 +434,7 @@ module Templating {
    * Gets a "fingerprint" for the given template file, which is used to references
    * that might refer to it (for pruning purposes only).
    */
+  overlay[global]
   pragma[nomagic]
   private string getTemplateFileFingerprint(TemplateFile file) {
     result = file.getStem()
@@ -421,6 +447,7 @@ module Templating {
    * Gets a "fingerprint" for the given string, which must match one of the fingerprints of
    * the referenced file (for pruning purposes only).
    */
+  overlay[global]
   pragma[nomagic]
   private string getTemplateRefFingerprint(TemplateFileReferenceString ref) {
     result = ref.getStem() and not result = ["index", ""]
@@ -439,6 +466,7 @@ module Templating {
    *
    * This is only used to speed up `getAMatchingTarget` by pruning out pairs that can't match.
    */
+  overlay[global]
   pragma[nomagic]
   private TemplateFile getAPotentialTarget(TemplateFileReferenceString ref) {
     getTemplateFileFingerprint(result) = getTemplateRefFingerprint(ref)
@@ -464,6 +492,7 @@ module Templating {
    * Additionally, a file whose stem is `index` matches if `ref` would match the parent folder by
    * the above rules. For example: `bar` matches `src/bar/index.html`.
    */
+  overlay[global]
   pragma[nomagic]
   private TemplateFile getAMatchingTarget(TemplateFileReferenceString ref) {
     result = getAPotentialTarget(ref) and
@@ -488,6 +517,7 @@ module Templating {
    * The string `list` in `A/components/foo.js` will resolve to `A/views/list.html`,
    * and vice versa in `B/components/foo.js`.
    */
+  overlay[global]
   pragma[nomagic]
   private int getRankOfMatchingTarget(
     TemplateFile file, Folder baseFolder, TemplateFileReferenceString ref
@@ -505,6 +535,7 @@ module Templating {
   /**
    * Gets the template file referred to by `ref` when resolved from `baseFolder`.
    */
+  overlay[global]
   private TemplateFile getBestMatchingTarget(Folder baseFolder, TemplateFileReferenceString ref) {
     result = max(getAMatchingTarget(ref) as f order by getRankOfMatchingTarget(f, baseFolder, ref))
   }
@@ -580,6 +611,23 @@ module Templating {
     override string getAPackageName() { result = "ejs" }
   }
 
+  /**
+   * doT-style syntax, using `{{! }}` for safe interpolation, and `{{= }}` for
+   * unsafe interpolation.
+   */
+  private class DotStyleSyntax extends TemplateSyntax {
+    DotStyleSyntax() { this = "dot" }
+
+    override string getRawInterpolationRegexp() { result = "(?s)\\{\\{!(.*?)\\}\\}" }
+
+    override string getEscapingInterpolationRegexp() { result = "(?s)\\{\\{=(.*?)\\}\\}" }
+
+    override string getAFileExtension() { result = "dot" }
+
+    override string getAPackageName() { result = "dot" }
+  }
+
+  overlay[global]
   private TemplateSyntax getOwnTemplateSyntaxInFolder(Folder f) {
     exists(PackageDependencies deps |
       deps.getADependency(result.getAPackageName(), _) and
@@ -587,6 +635,7 @@ module Templating {
     )
   }
 
+  overlay[global]
   private TemplateSyntax getTemplateSyntaxInFolder(Folder f) {
     result = getOwnTemplateSyntaxInFolder(f)
     or
@@ -594,6 +643,7 @@ module Templating {
     result = getTemplateSyntaxInFolder(f.getParentContainer())
   }
 
+  overlay[global]
   private TemplateSyntax getTemplateSyntaxFromInstantiation(TemplateFile file) {
     result = any(TemplateInstantiation inst | inst.getTemplateFile() = file).getTemplateSyntax()
   }
@@ -601,6 +651,7 @@ module Templating {
   /**
    * Gets a template syntax likely to be used in the given file.
    */
+  overlay[global]
   TemplateSyntax getLikelyTemplateSyntax(TemplateFile file) {
     result = getTemplateSyntaxFromInstantiation(file)
     or
@@ -613,6 +664,7 @@ module Templating {
   }
 
   /** A step through the `safe` pipe, which bypasses HTML escaping. */
+  overlay[global]
   private class SafePipeStep extends TaintTracking::SharedTaintStep {
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(DataFlow::CallNode call |
@@ -626,6 +678,7 @@ module Templating {
   /**
    * An EJS-style `include` call within a template tag, such as `<%- include(file, { params }) %>`.
    */
+  overlay[global]
   private class EjsIncludeCallInTemplate extends TemplateInstantiation::Range, DataFlow::CallNode {
     EjsIncludeCallInTemplate() {
       exists(TemplatePlaceholderTag tag |
@@ -650,6 +703,7 @@ module Templating {
    *
    * These API nodes are used in the `getTemplateInput` predicate.
    */
+  overlay[local?]
   private class IncludeFunctionAsEntryPoint extends API::EntryPoint {
     IncludeFunctionAsEntryPoint() { this = "IncludeFunctionAsEntryPoint" }
 
@@ -684,6 +738,7 @@ module Templating {
     string getPath() { result = rawPath.trim().replaceAll("\\", "/").regexpReplaceAll("^\\./", "") }
 
     /** Gets the file referenced by this inclusion tag. */
+    overlay[global]
     TemplateFile getImportedFile() {
       result =
         this.getPath()
@@ -693,6 +748,7 @@ module Templating {
   }
 
   /** The imported string from a template inclusion tag. */
+  overlay[global]
   private class TemplateInclusionPathString extends TemplateFileReferenceString {
     TemplateInclusionTag tag;
 
@@ -704,6 +760,7 @@ module Templating {
   /**
    * A call to a member of the `consolidate` library, seen as a template instantiation.
    */
+  overlay[global]
   private class ConsolidateCall extends TemplateInstantiation::Range, API::CallNode {
     string engine;
 
