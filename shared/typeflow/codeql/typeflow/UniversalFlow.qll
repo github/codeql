@@ -46,6 +46,12 @@ signature module UniversalFlowInput<LocationSig Location> {
   }
 
   /**
+   * Gets an identifier for node `n`, if any. When not implemented for a given node,
+   * the library will use location-based ranking.
+   */
+  default int getFlowNodeId(FlowNode n) { none() }
+
+  /**
    * Holds if data can flow from `n1` to `n2` in one step.
    *
    * For a given `n2`, this predicate must include all possible `n1` that can flow to `n2`.
@@ -149,17 +155,40 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
   private module RankEdge<Edge E> implements RankedEdge<E::Node> {
     private import E
 
+    private int getFlowNodeIdByLoc(FlowNode n) {
+      n =
+        rank[result](FlowNode n0, string filePath, int startline, int startcolumn |
+          not exists(getFlowNodeId(n0)) and
+          n0.getLocation().hasLocationInfo(filePath, startline, startcolumn, _, _)
+        |
+          n0 order by filePath, startline, startcolumn
+        )
+    }
+
+    private int getFlowNodeIdExt(FlowNode n) {
+      n =
+        rank[result](FlowNode n0, int a, int b |
+          a = 0 and
+          b = getFlowNodeId(n0)
+          or
+          a = 1 and
+          b = getFlowNodeIdByLoc(n0)
+        |
+          n0 order by a, b
+        )
+    }
+
     /**
      * Holds if `r` is a ranking of the incoming edges `(n1,n2)` to `n2`. The used
      * ordering is not necessarily total, so the ranking may have gaps.
      */
     private predicate edgeRank1(int r, FlowNode n1, Node n2) {
       n1 =
-        rank[r](FlowNode n, int startline, int startcolumn |
+        rank[r](FlowNode n, int id |
           edge(n, n2) and
-          n.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+          id = getFlowNodeIdExt(n)
         |
-          n order by startline, startcolumn
+          n order by id
         )
     }
 
