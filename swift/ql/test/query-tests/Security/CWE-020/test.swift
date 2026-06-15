@@ -73,8 +73,8 @@ func testHostnames(myUrl: URL) throws {
 	_ = try Regex(#"^https?://api.example.com/"#).firstMatch(in: tainted) // $ Alert[swift/incomplete-hostname-regexp] // BAD (incomplete hostname)
 	_ = try Regex(#"^http[s]?://?sub1\.sub2\.example\.com/f/(.+)"#).firstMatch(in: tainted) // GOOD (it has a capture group after the TLD, so should be ignored)
 	_ = try Regex(#"^https://[a-z]*.example.com$"#).firstMatch(in: tainted) // $ Alert[swift/incomplete-hostname-regexp] // BAD (incomplete hostname)
-	_ = try Regex(#"^(example.dev|example.com)"#).firstMatch(in: tainted) // $ Alert[swift/missing-regexp-anchor] // GOOD (any extended hostname wouldn't be included in the capture group) [FALSE POSITIVE]
-	_ = try Regex(#"^protos?://(localhost|.+.example.net|.+.example-a.com|.+.example-b.com|.+.example.internal)"#).firstMatch(in: tainted) // $ Alert[swift/incomplete-hostname-regexp] Alert[swift/incomplete-hostname-regexp] Alert[swift/incomplete-hostname-regexp] Alert[swift/missing-regexp-anchor] // BAD (incomplete hostname x3, missing anchor x 1)
+	_ = try Regex(#"^(example.dev|example.com)"#).firstMatch(in: tainted) // $ SPURIOUS: Alert[swift/missing-regexp-anchor] // GOOD (any extended hostname wouldn't be included in the capture group) [FALSE POSITIVE]
+	_ = try Regex(#"^protos?://(localhost|.+.example.net|.+.example-a.com|.+.example-b.com|.+.example.internal)"#).firstMatch(in: tainted) // $ Alert[swift/incomplete-hostname-regexp] Alert[swift/missing-regexp-anchor] // BAD (incomplete hostname x3, missing anchor x 1)
 
 	_ = try Regex(#"^http://(..|...)\.example\.com/index\.html"#).firstMatch(in: tainted) // GOOD (wildcards are intentional)
 	_ = try Regex(#"^http://.\.example\.com/index\.html"#).firstMatch(in: tainted) // GOOD (the wildcard is intentional)
@@ -85,7 +85,7 @@ func testHostnames(myUrl: URL) throws {
 
 	_ = try Regex(id(id(id(#"test.example.com$"#)))).firstMatch(in: tainted) // $ Alert[swift/incomplete-hostname-regexp] // BAD (incomplete hostname)
 
-	let hostname = #"test.example.com$"# // BAD (incomplete hostname) [NOT DETECTED]
+	let hostname = #"test.example.com$"# // $ MISSING: Alert[swift/incomplete-hostname-regexp] // BAD (incomplete hostname) [NOT DETECTED]
 	_ = try Regex("\(hostname)").firstMatch(in: tainted)
 
 	var domain = MyDomain("")
@@ -97,17 +97,17 @@ func testHostnames(myUrl: URL) throws {
 	}
 	_ = try convert1(MyDomain(#"test.example.com$"#)).firstMatch(in: tainted) // $ Alert[swift/incomplete-hostname-regexp] // BAD (incomplete hostname)
 
-	let domains = [ MyDomain(#"test.example.com$"#) ]  // BAD (incomplete hostname) [NOT DETECTED]
+	let domains = [ MyDomain(#"test.example.com$"#) ]  // $ MISSING: Alert[swift/incomplete-hostname-regexp] // BAD (incomplete hostname) [NOT DETECTED]
 	func convert2(_ domain: MyDomain) throws -> Regex<AnyRegexOutput> {
 		return try Regex(domain.hostname)
 	}
 	_ = try domains.map({ try convert2($0).firstMatch(in: tainted) })
 
 	let primary = "example.com$"
-	_ = try Regex("test." + primary).firstMatch(in: tainted) // BAD (incomplete hostname) [NOT DETECTED]
-	_ = try Regex("test." + "example.com$").firstMatch(in: tainted) // BAD (incomplete hostname) [NOT DETECTED]
-	_ = try Regex(#"^http://localhost:8000|" + "^https?://.+\.example\.com/"#).firstMatch(in: tainted) // BAD (incomplete hostname) [NOT DETECTED]
-	_ = try Regex(#"^http://localhost:8000|" + "^https?://.+.example\.com/"#).firstMatch(in: tainted) // BAD (incomplete hostname) [NOT DETECTED]
+	_ = try Regex("test." + primary).firstMatch(in: tainted) // $ MISSING: Alert[swift/incomplete-hostname-regexp] // BAD (incomplete hostname) [NOT DETECTED]
+	_ = try Regex("test." + "example.com$").firstMatch(in: tainted) // $ MISSING: Alert[swift/incomplete-hostname-regexp] // BAD (incomplete hostname) [NOT DETECTED]
+	_ = try Regex(#"^http://localhost:8000|" + "^https?://.+\.example\.com/"#).firstMatch(in: tainted) // $ MISSING: Alert[swift/incomplete-hostname-regexp] // BAD (incomplete hostname) [NOT DETECTED]
+	_ = try Regex(#"^http://localhost:8000|" + "^https?://.+.example\.com/"#).firstMatch(in: tainted) // $ MISSING: Alert[swift/incomplete-hostname-regexp] // BAD (incomplete hostname) [NOT DETECTED]
 
 	let harmless = #"^http://test.example.com"# // GOOD (never used as a regex)
 }

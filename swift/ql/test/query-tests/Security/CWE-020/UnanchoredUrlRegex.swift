@@ -104,25 +104,25 @@ func tests(url: String, secure: Bool) throws {
 	_ = try NSRegularExpression(pattern: "verygood.com/?id=" + #"https?:\/\/good.com\/([0-9]+)"#).matches(in: url, range: urlRange)[0] // OK
 
 	_ = try NSRegularExpression(pattern: #"\.com|\.org"#).matches(in: input, range: inputRange) // OK, has no domain name
-	_ = try NSRegularExpression(pattern: #"example\.com|whatever"#).matches(in: input, range: inputRange) // $ Alert[swift/missing-regexp-anchor] // OK, the other disjunction doesn't match a hostname [FALSE POSITIVE]
+	_ = try NSRegularExpression(pattern: #"example\.com|whatever"#).matches(in: input, range: inputRange) // $ SPURIOUS: Alert[swift/missing-regexp-anchor] // OK, the other disjunction doesn't match a hostname [FALSE POSITIVE]
 
 	// tests for the `isLineAnchoredHostnameRegExp` case
 
 	let attackUrl1 =  "evil.com/blabla?\ngood.com"
 	let attackUrl1Range = NSMakeRange(0, attackUrl1.utf16.count)
 	_ = try NSRegularExpression(pattern: "^good\\.com$").matches(in: attackUrl1, range: attackUrl1Range) // OK
-	_ = try NSRegularExpression(pattern: "^good\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
+	_ = try NSRegularExpression(pattern: "^good\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // $ MISSING: Alert[swift/missing-regexp-anchor] // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
 	_ = try NSRegularExpression(pattern: "(?i)^good\\.com$").matches(in: attackUrl1, range: attackUrl1Range) // OK
-	_ = try NSRegularExpression(pattern: "(?i)^good\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
+	_ = try NSRegularExpression(pattern: "(?i)^good\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // $ MISSING: Alert[swift/missing-regexp-anchor] // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
 	_ = try NSRegularExpression(pattern: "^good\\.com$|^another\\.com$").matches(in: attackUrl1, range: attackUrl1Range) // OK
-	_ = try NSRegularExpression(pattern: "^good\\.com$|^another\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
+	_ = try NSRegularExpression(pattern: "^good\\.com$|^another\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // $ MISSING: Alert[swift/missing-regexp-anchor] // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
 
 	let attackUrl2 =  "evil.com/blabla?\ngood.com/"
 	let attackUrl2Range = NSMakeRange(0, attackUrl2.utf16.count)
 	_ = try NSRegularExpression(pattern: "^good\\.com/").matches(in: attackUrl2, range: attackUrl2Range) // OK
-	_ = try NSRegularExpression(pattern: "^good\\.com/", options: .anchorsMatchLines).matches(in: attackUrl2, range: attackUrl2Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
+	_ = try NSRegularExpression(pattern: "^good\\.com/", options: .anchorsMatchLines).matches(in: attackUrl2, range: attackUrl2Range) // $ MISSING: Alert[swift/missing-regexp-anchor] // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
 	_ = try NSRegularExpression(pattern: "(?i)^good\\.com/").matches(in: attackUrl2, range: attackUrl2Range) // OK
-	_ = try NSRegularExpression(pattern: "(?i)^good\\.com/", options: .anchorsMatchLines).matches(in: attackUrl2, range: attackUrl2Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
+	_ = try NSRegularExpression(pattern: "(?i)^good\\.com/", options: .anchorsMatchLines).matches(in: attackUrl2, range: attackUrl2Range) // $ MISSING: Alert[swift/missing-regexp-anchor] // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
 	_ = try NSRegularExpression(pattern: "^good\\.com/|^another\\.com/").matches(in: attackUrl2, range: attackUrl2Range) // OK
-	_ = try NSRegularExpression(pattern: "^good\\.com/|^another\\.com/", options: .anchorsMatchLines).matches(in: attackUrl2, range: attackUrl2Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
+	_ = try NSRegularExpression(pattern: "^good\\.com/|^another\\.com/", options: .anchorsMatchLines).matches(in: attackUrl2, range: attackUrl2Range) // $ MISSING: Alert[swift/missing-regexp-anchor] // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
 }

@@ -55,9 +55,9 @@ func test_heuristic(db: MyDatabase) throws {
 	db.execute4(remoteString as! Sql) // $ Alert
 
 	db.query(sql: remoteString) // $ Alert
-	db.query(sqlLiteral: remoteString) // BAD [NOT DETECTED]
-	db.query(sqlStatement: remoteString) // BAD [NOT DETECTED]
-	db.query(sqliteStatement: remoteString) // BAD [NOT DETECTED]
+	db.query(sqlLiteral: remoteString) // $ MISSING: Alert // BAD [NOT DETECTED]
+	db.query(sqlStatement: remoteString) // $ MISSING: Alert // BAD [NOT DETECTED]
+	db.query(sqliteStatement: remoteString) // $ MISSING: Alert // BAD [NOT DETECTED]
 
 	db.doSomething(sqlIndex: Int(remoteString) ?? 0) // GOOD
 	db.doSomething(sqliteContext: remoteString as! Sql) // GOOD

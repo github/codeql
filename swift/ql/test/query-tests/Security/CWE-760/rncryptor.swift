@@ -82,9 +82,9 @@ func test(myPassword: String) {
 	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(getARandomString() + getARandomString()), settings: myKeyDerivationSettings) // GOOD
 	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123" + getARandomString()), settings: myKeyDerivationSettings) // GOOD
 	let _ = myEncryptor.key(forPassword: myPassword, salt: Data(getARandomString() + "abc"), settings: myKeyDerivationSettings) // GOOD
-	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123" + "abc"), settings: myKeyDerivationSettings) // BAD (constant salt) [NOT DETECTED]
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123" + "abc"), settings: myKeyDerivationSettings) // $ MISSING: Alert // BAD (constant salt) [NOT DETECTED]
 	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123\(getARandomString())abc"), settings: myKeyDerivationSettings) // GOOD
-	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123\("const"))abc"), settings: myKeyDerivationSettings) // BAD (constant salt) [NOT DETECTED]
+	let _ = myEncryptor.key(forPassword: myPassword, salt: Data("123\("const"))abc"), settings: myKeyDerivationSettings) // $ MISSING: Alert // BAD (constant salt) [NOT DETECTED]
 
 	var myMutableString1 = "123"
 	myMutableString1.append(getARandomString())

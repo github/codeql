@@ -148,7 +148,7 @@ func tests() throws {
         _ = vasprintf_l(nil, nil, "%s", getVaList([cstr])) // GOOD: format not tainted
     })
 
-    myFormatMessage(string: tainted, "abc") // BAD [NOT DETECTED]
+    myFormatMessage(string: tainted, "abc") // $ MISSING: Alert // BAD [NOT DETECTED]
     myFormatMessage(string: "%s", tainted) // GOOD: format not tainted
 
     _ = MyString(format: tainted, "abc") // $ Alert

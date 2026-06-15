@@ -256,5 +256,5 @@ func testReceiver2(hasher: Insecure.MD5.Type, value: Data) {
 }
 
 func testReceiver3<H: HashFunction>(hasher: H.Type, value: Data) {
-    let _digest = hasher.hash(data: value); // BAD [NOT DETECTED]
+    let _digest = hasher.hash(data: value); // $ MISSING: Alert[swift/weak-sensitive-data-hashing] // BAD [NOT DETECTED]
 }

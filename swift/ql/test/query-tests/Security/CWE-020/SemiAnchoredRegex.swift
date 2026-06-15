@@ -104,7 +104,7 @@ func realWorld(input: String) throws {
 	_ = try Regex(#"^mouse|touch|click|contextmenu|drop|dragover|dragend"#).firstMatch(in: input) // $ Alert[swift/missing-regexp-anchor] // BAD (missing anchor)
 	_ = try Regex(#"^xxx:|yyy:"#).ignoresCase().firstMatch(in: input) // $ Alert[swift/missing-regexp-anchor] // BAD (missing anchor)
 	_ = try Regex(#"_xxx|_yyy|_zzz$"#).firstMatch(in: input) // $ Alert[swift/missing-regexp-anchor] // BAD (missing anchor)
-	_ = try Regex(#"em|%$"#).firstMatch(in: input) // BAD (missing anchor) [NOT DETECTED] - not flagged at the moment due to the anchor not being for letters
+	_ = try Regex(#"em|%$"#).firstMatch(in: input) // $ MISSING: Alert[swift/missing-regexp-anchor] // BAD (missing anchor) [NOT DETECTED] - not flagged at the moment due to the anchor not being for letters
 
 	// the following are MAYBE OK due to apparent complexity; not flagged
 	_ = try Regex(#"(?:^[#?]?|&)([^=&]+)(?:=([^&]*))?"#).firstMatch(in: input)

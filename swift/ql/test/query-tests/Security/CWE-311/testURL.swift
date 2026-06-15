@@ -66,10 +66,10 @@ func get_certain() -> String { return "" }
 func test2() {
 	// more variants...
 
-	_ = URL(string: "http://example.com/login?key=" + get_private_key()); // BAD [NOT DETECTED]
-	_ = URL(string: "http://example.com/login?key=" + get_aes_key()); // BAD [NOT DETECTED]
-	_ = URL(string: "http://example.com/login?key=" + get_aws_key()); // BAD [NOT DETECTED]
-	_ = URL(string: "http://example.com/login?key=" + get_access_key()); // BAD [NOT DETECTED]
+	_ = URL(string: "http://example.com/login?key=" + get_private_key()); // $ MISSING: Alert[swift/cleartext-transmission] // BAD [NOT DETECTED]
+	_ = URL(string: "http://example.com/login?key=" + get_aes_key()); // $ MISSING: Alert[swift/cleartext-transmission] // BAD [NOT DETECTED]
+	_ = URL(string: "http://example.com/login?key=" + get_aws_key()); // $ MISSING: Alert[swift/cleartext-transmission] // BAD [NOT DETECTED]
+	_ = URL(string: "http://example.com/login?key=" + get_access_key()); // $ MISSING: Alert[swift/cleartext-transmission] // BAD [NOT DETECTED]
 	_ = URL(string: "http://example.com/login?key=" + get_secret_key()); // $ Alert[swift/cleartext-transmission]
 	_ = URL(string: "http://example.com/login?key=" + get_key_press()); // GOOD (not sensitive)
 	_ = URL(string: "http://example.com/login?cert=" + get_cert_string()); // $ Alert[swift/cleartext-transmission]
@@ -90,13 +90,13 @@ func test3() {
 	let auth_token = get_string()
 	let next_token = get_string()
 
-	_ = URL(string: "http://example.com/login?key=\(priv_key)"); // BAD [NOT DETECTED]
-	_ = URL(string: "http://example.com/login?key=\(private_key)"); // BAD [NOT DETECTED]
+	_ = URL(string: "http://example.com/login?key=\(priv_key)"); // $ MISSING: Alert[swift/cleartext-transmission] // BAD [NOT DETECTED]
+	_ = URL(string: "http://example.com/login?key=\(private_key)"); // $ MISSING: Alert[swift/cleartext-transmission] // BAD [NOT DETECTED]
 	_ = URL(string: "http://example.com/login?key=\(pub_key)"); // GOOD (not sensitive)
 	_ = URL(string: "http://example.com/login?cert=\(certificate)"); // $ Alert[swift/cleartext-transmission]
-	_ = URL(string: "http://example.com/login?tok=\(secure_token)"); // BAD [NOT DETECTED]
-	_ = URL(string: "http://example.com/login?tok=\(access_token)"); // BAD [NOT DETECTED]
-	_ = URL(string: "http://example.com/login?tok=\(auth_token)"); // BAD [NOT DETECTED]
+	_ = URL(string: "http://example.com/login?tok=\(secure_token)"); // $ MISSING: Alert[swift/cleartext-transmission] // BAD [NOT DETECTED]
+	_ = URL(string: "http://example.com/login?tok=\(access_token)"); // $ MISSING: Alert[swift/cleartext-transmission] // BAD [NOT DETECTED]
+	_ = URL(string: "http://example.com/login?tok=\(auth_token)"); // $ MISSING: Alert[swift/cleartext-transmission] // BAD [NOT DETECTED]
 	_ = URL(string: "http://example.com/login?tok=\(next_token)"); // GOOD (not sensitive)
 }
 
@@ -115,7 +115,7 @@ func test5() {
 
 	_ = URL(string: "http://example.com/login?email=\(email)"); // $ Alert[swift/cleartext-transmission]
 	_ = URL(string: "mailto:\(email)"); // GOOD (revealing your e-amil address in an e-mail is expected)
-	_ = URL(string: "mailto:info@example.com?subject=\(secret_key)"); // BAD [NOT DETECTED]
+	_ = URL(string: "mailto:info@example.com?subject=\(secret_key)"); // $ MISSING: Alert[swift/cleartext-transmission] // BAD [NOT DETECTED]
 	_ = URL(string: "mailto:info@example.com?subject=foo&cc=\(email)"); // GOOD
 
 	let phone_number = get_string()

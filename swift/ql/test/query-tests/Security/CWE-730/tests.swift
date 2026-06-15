@@ -159,7 +159,7 @@ func regexInjectionTests(cond: Bool, varString: String, myUrl: URL) throws {
 	let okSet: Set = ["abc", "def"]
 
 	if (taintedString == okInput) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // $ Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ SPURIOUS: Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
 	} else {
 		_ = try Regex(taintedString).firstMatch(in: varString) // $ Alert
 	}
@@ -170,19 +170,19 @@ func regexInjectionTests(cond: Bool, varString: String, myUrl: URL) throws {
 		_ = try Regex(taintedString).firstMatch(in: varString) // $ Alert
 	}
 	if (okInputs.contains(taintedString)) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // $ Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ SPURIOUS: Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
 	}
 	if (okInputs.firstIndex(of: taintedString) != nil) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // $ Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ SPURIOUS: Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
 	}
 	if let index = okInputs.firstIndex(of: taintedString) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // $ Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ SPURIOUS: Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
 	}
 	if let index = okInputs.index(of: taintedString) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // $ Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ SPURIOUS: Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
 	}
 	if (okSet.contains(taintedString)) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // $ Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ SPURIOUS: Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
 	}
 
 	// --- multiple evaluations ---

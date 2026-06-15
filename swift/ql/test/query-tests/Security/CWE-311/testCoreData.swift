@@ -124,16 +124,16 @@ class SecureKeyStore {
 func test5(obj : NSManagedObject) {
 	// more variants...
 
-	obj.setValue(createSecureKey(), forKey: "myKey") // BAD [NOT DETECTED]
+	obj.setValue(createSecureKey(), forKey: "myKey") // $ MISSING: Alert[swift/cleartext-storage-database] // BAD [NOT DETECTED]
 	obj.setValue(generateSecretKey(), forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
 	obj.setValue(getCertificate(), forKey: "myKey") // $ Alert[swift/cleartext-storage-database]
 
 	let gen = KeyGen()
 	let v = gen.generate()
 
-	obj.setValue(KeyGen().generate(), forKey: "myKey") // BAD [NOT DETECTED]
-	obj.setValue(gen.generate(), forKey: "myKey") // BAD [NOT DETECTED]
-	obj.setValue(v, forKey: "myKey") // BAD [NOT DETECTED]
-	obj.setValue(KeyManager().generateKey(), forKey: "myKey") // BAD [NOT DETECTED]
-	obj.setValue(SecureKeyStore().getEncryptionKey(), forKey: "myKey") // BAD [NOT DETECTED]
+	obj.setValue(KeyGen().generate(), forKey: "myKey") // $ MISSING: Alert[swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.setValue(gen.generate(), forKey: "myKey") // $ MISSING: Alert[swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.setValue(v, forKey: "myKey") // $ MISSING: Alert[swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.setValue(KeyManager().generateKey(), forKey: "myKey") // $ MISSING: Alert[swift/cleartext-storage-database] // BAD [NOT DETECTED]
+	obj.setValue(SecureKeyStore().getEncryptionKey(), forKey: "myKey") // $ MISSING: Alert[swift/cleartext-storage-database] // BAD [NOT DETECTED]
 }
