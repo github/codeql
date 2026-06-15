@@ -46,7 +46,8 @@ class Foobar
 
   def hereDoc(x) # $ Source
     foo = <<~HERE
-        #{x} # $ Alert
+        #{x} #{# $ Alert
+}
     HERE
     eval(foo) # NOT OK
   end

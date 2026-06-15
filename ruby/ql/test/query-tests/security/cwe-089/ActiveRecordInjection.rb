@@ -66,7 +66,8 @@ class FooController < ActionController::Base
     # BAD: executes `SELECT "users".* FROM "users" WHERE id BETWEEN '#{params[:min_id]}' AND 100000`
     # where `params[:min_id]` is unsanitized
     User.where(<<-SQL, MAX_USER_ID) # $ Alert
-      id BETWEEN '#{params[:min_id]}' AND ? # $ Source
+      id BETWEEN '#{params[:min_id]}' AND ? #{# $ Source
+  }
     SQL
 
     # BAD: chained method case
