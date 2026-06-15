@@ -1,17 +1,17 @@
 <%# BAD: A local rendered raw as a local variable %>
-<%= raw display_text %> <%# $ Alert[rb/stored-xss] %>
+<%= raw display_text %>
 
 <%# BAD: A local rendered raw via the local_assigns hash %>
-<%= raw local_assigns[:display_text] %> <%# $ Alert[rb/stored-xss] %>
+<%= raw local_assigns[:display_text] %>
 
 <% key = :display_text %>
 <%# BAD: A local rendered raw via the locals_assigns hash %>
-<%= raw local_assigns[key] %> <%# $ Alert[rb/stored-xss] %>
+<%= raw local_assigns[key] %>
 
 <ul>
 <% for key in [:display_text, :safe_text] do %>
   <%# BAD: A local rendered raw via the locals hash %>
-  <li><%= raw local_assigns[key] %></li> <%# $ Alert[rb/stored-xss] %>
+  <li><%= raw local_assigns[key] %></li>
 <% end %>
 </ul>
 
@@ -29,12 +29,12 @@
 
 <%# BAD: html_safe marks string as not requiring HTML escaping %>
 <%=
-  display_text.html_safe <%# $ Alert[rb/stored-xss] %>
+  display_text.html_safe
 %>
 
 <%# BAD: html_safe marks string as not requiring HTML escaping %>
 <%=
-  @instance_text.html_safe <%# $ Alert[rb/stored-xss] %>
+  @instance_text.html_safe
 %>
 
 <%= render partial: 'foo/bars/widget', locals: { display_text: "widget_" + display_text } %>
@@ -43,7 +43,7 @@
 <%= user_name_handle.html_safe %>
 
 <%# BAD: Direct to a database value without escaping %>
-<%= @user.handle.html_safe %> <%# $ Alert[rb/stored-xss] %>
+<%= @user.handle.html_safe %>
 
 <%# BAD: Indirect to a database value without escaping %>
 <%= @user.raw_name.html_safe %>
@@ -60,7 +60,7 @@
 <%# BAD: Direct to a database value without escaping %>
 <%=
   some_user = User.find 1
-  some_user.handle.html_safe <%# $ Alert[rb/stored-xss] %>
+  some_user.handle.html_safe
 %>
 
 <%# BAD: Indirect to a database value without escaping (currently missed due to lack of 'self' handling in ORM tracking) %>
@@ -83,7 +83,7 @@
 
 <%# BAD: Kernel.sprintf is a taint-step %>
 <%=
-  sprintf("%s", @user.handle).html_safe <%# $ Alert[rb/stored-xss] %>
+  sprintf("%s", @user.handle).html_safe
 %>
 
 <%# GOOD: The `foo.bar.baz` is not recognized as a source %>
