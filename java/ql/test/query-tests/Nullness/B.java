@@ -331,7 +331,7 @@ public class B {
       x = new Object();
     }
     if(y instanceof String) {
-      x.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
+      x.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
     }
   }
 
@@ -341,7 +341,7 @@ public class B {
       x = new Object();
     }
     if(!(y instanceof String)) {
-      x.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
+      x.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
     }
   }
 
@@ -351,7 +351,7 @@ public class B {
       x = new Object();
     }
     if(y == z) {
-      x.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
+      x.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
     }
 
     Object x2 = null;
@@ -359,7 +359,7 @@ public class B {
       x2 = new Object();
     }
     if(y != z) {
-      x2.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
+      x2.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
     }
 
     Object x3 = null;
@@ -367,7 +367,7 @@ public class B {
       x3 = new Object();
     }
     if(!(y == z)) {
-      x3.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
+      x3.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
     }
   }
 
@@ -462,7 +462,7 @@ public class B {
       cur = a[i];
       if (!prev) {
         // correctly guarded by !cur from the _previous_ iteration
-        x.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
+        x.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
       } else {
         x = new Object();
       }
@@ -484,7 +484,7 @@ public class B {
           t = new Object();
         }
         // correctly guarded by t: null -> String -> Object
-        x.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
+        x.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
       }
     }
   }
@@ -573,7 +573,7 @@ public class B {
       } finally {
       }
     }
-    s.hashCode(); // $ Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
+    s.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // Spurious NPE - false positive
     // CFG reachability does not distinguish abrupt successors
   }
 }

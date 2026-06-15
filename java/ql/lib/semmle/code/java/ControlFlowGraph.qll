@@ -84,6 +84,10 @@ private module Ast implements AstSig<Location> {
 
   class DoStmt = J::DoStmt;
 
+  class UntilStmt extends LoopStmt {
+    UntilStmt() { none() }
+  }
+
   final private class FinalForStmt = J::ForStmt;
 
   class ForStmt extends FinalForStmt {

@@ -11,25 +11,25 @@ class UseBraces
 	{
 		int x = 0, y;
 		int[] branches = new int[10];
-		
+
 		// If-then statement
-		
+
 		if(1==1)
 		{
 			f();
 		}
 			g();	// No alert
-			
-		if(1==1)	
+
+		if(1==1)
 			f();
 		g();		// No alert
-		
+
 		if(1==1)
 			f(); // $ Alert
-			g();	// Alert
-			
+			g();
+
 		if(1==1)
-			f();	g();	// $ Alert // Alert
+			f();	g();	// $ Alert
 
 		// If-then-else statement
 
@@ -41,29 +41,29 @@ class UseBraces
 		{
 			g();
 		}
-		
+
 			g();	// No alert
-			
+
 		if(1==2)
 			f();
 		else
 			g();
 		f();		// No alert
-			
+
 		if(true)
 		{
 			f();
 		}
 		else
 			f(); // $ Alert
-			g();	// Alert
-			
+			g();
+
 		if(true)
 		{
 			f();
 		}
 		else
-			f();  g();	// $ Alert // Alert
+			f();  g();	// $ Alert
 
 		// While statement
 
@@ -80,44 +80,44 @@ class UseBraces
 
 		while(bb   )
 			f(); // $ Alert
-			g();		// Alert
+			g();
 			g();		// No alert
 
 		while(bb   )
-			f();	g();		// $ Alert // Alert
+			f();	g();		// $ Alert
 
 
 		while(bb)
 			if (x != 0) x = 1;
 
 		// Do-while statement
-		
+
 		do
 			f();
 		while(false);
 			g();	// No alert
-		
+
 		// For statement
 		for(int i=0; i<10; ++i)
 		{
 			f();
 		}
 			g();
-			
+
 		for(int i=0; i<10; ++i)
 			f();
 		g();
-		
+
 		for(int i=0; i<10; ++i)
 			f(); // $ Alert
-			g();				// Alert
+			g();
 
 		for(int i=0; i<10; ++i)
-			f(); g();			// $ Alert // Alert
+			f(); g();			// $ Alert
 
-		
+
 		// Foreach statement
-		
+
 		for( int b : branches)
 			x += b;
 		f();
@@ -130,42 +130,42 @@ class UseBraces
 
 		for( int b : branches)
 			f(); // $ Alert
-			g();			// Alert
+			g();
 
 		for( int b : branches)
-			f(); g();		// $ Alert // Alert
+			f(); g();		// $ Alert
 
 		// Nested ifs
 		if( true )
 		if(false)
 			f();
 		g();	// No alert
-		
+
 		if( true )
 			if(false) // $ Alert
 				f();
-			g();	// Alert
-		
+			g();
+
 		if( true )
 			;
-		else 
+		else
 		if (false)
 			f();
 		g();	// No alert
 
 		if( true )
 			;
-		else 
+		else
 			if (false)
 				f();
-			g();	// false negative
+			g();  // $ MISSING: Alert // false negative
 
 		if( true )
 			;
 		else if (false)
 			f();  // $ Alert
-			g();	// Alert
-		
+			g();
+
 		// Nested combinations
 		if (true)
 		while (x<10)
@@ -175,7 +175,7 @@ class UseBraces
 		if (true)
 			while (x<10) // $ Alert
 				f();
-			g();	// Alert
+			g();
 
 		while (x<10)
 		if (true)
@@ -185,7 +185,7 @@ class UseBraces
 		while (x<10)
 			if (true) // $ Alert
 				f();
-			g();	// Alert
+			g();
 
 		if (true)
 			f();
