@@ -220,7 +220,7 @@ def good13a(s)
   s = s.sub('[', '') # OK
   s = s.sub(']', '') # OK
   s.sub(/{/, '').sub(/}/, '') # OK
-  s.sub(']', '').sub('[', '') # $ Alert // probably OK, but still flagged
+  s.sub(']', '').sub('[', '') # $ SPURIOUS: Alert // probably OK, but still flagged
 end
 
 def good13b(s1)

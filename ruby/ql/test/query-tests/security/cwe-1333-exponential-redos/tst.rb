@@ -304,10 +304,10 @@ bad66 = /^ab(c+)+$/ # $ Alert
 # NOT GOOD
 bad67 = /(\d(\s+)*){20}/ # $ Alert
 
-# GOOD - but we spuriously conclude that a rejecting suffix exists. 
+# GOOD - but we spuriously conclude that a rejecting suffix exists.
 good36 = /(([^\/]|X)+)(\/[\S\s]*)*$/ # $ Alert
 
-# GOOD - but we spuriously conclude that a rejecting suffix exists. 
+# GOOD - but we spuriously conclude that a rejecting suffix exists.
 good37 = /^((x([^Y]+)?)*(Y|$))/ # $ Alert
 
 # NOT GOOD
@@ -326,18 +326,18 @@ bad71 = /(a?a?)*b/ # $ Alert
 good38 = /(a?)*b/
 
 # NOT GOOD - but not detected
-bad72 = /(c?a?)*b/
+bad72 = /(c?a?)*b/ # $ MISSING: Alert
 
 # NOT GOOD
 bad73 = /(?:a|a?)+b/ # $ Alert
 
-# NOT GOOD - but not detected. 
-bad74 = /(a?b?)*$/
+# NOT GOOD - but not detected.
+bad74 = /(a?b?)*$/ # $ MISSING: Alert
 
 # NOT GOOD
 bad76 = /PRE(([a-c]|[c-d])T(e?e?e?e?|X))+(cTcT|cTXcTX$)/ # $ Alert
 
-# NOT GOOD - but not detected
+# NOT GOOD
 bad77 = /^((a)+\w)+$/ # $ Alert
 
 # NOT GOOD
@@ -362,7 +362,7 @@ bad84 = /^((?:a{0|-)|\w\{\d)+X$/ # $ Alert
 bad85 = /^((?:a{0,|-)|\w\{\d,)+X$/ # $ Alert
 bad86 = /^((?:a{0,2|-)|\w\{\d,\d)+X$/ # $ Alert
 
-# NOT GOOD 
+# NOT GOOD
 bad87 = /^((?:a{0,2}|-)|\w\{\d,\d\})+X$/
 
 # NOT GOOD

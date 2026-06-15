@@ -67,7 +67,7 @@ class UsersController < ActionController::Base
     # TODO: false positive; we aren't detecting flow from `:json` to the call argument.
     more_options = { allow_blank: true }
     more_options[:mode] = :json
-    object4 = Oj.load json_data, more_options # $ Alert
+    object4 = Oj.load json_data, more_options # $ SPURIOUS: Alert
   end
 
   # GOOD
@@ -127,7 +127,7 @@ class UsersController < ActionController::Base
   # GOOD
   def route17
     yaml_data = params[:key]
-    object = Psych.parse_stream(yaml_data) 
+    object = Psych.parse_stream(yaml_data)
     object = Psych.parse(yaml_data)
     object = Psych.parse_file(yaml_data)
   end

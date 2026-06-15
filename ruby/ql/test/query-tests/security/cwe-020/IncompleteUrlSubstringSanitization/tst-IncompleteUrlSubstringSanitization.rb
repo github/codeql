@@ -1,11 +1,11 @@
 def test (x)
-    x.index("internal") != nil; # NOT OK, but not flagged
-    x.index("localhost") != nil; # NOT OK, but not flagged
+    x.index("internal") != nil; # $ MISSING: Alert # NOT OK, but not flagged
+    x.index("localhost") != nil; # $ MISSING: Alert # NOT OK, but not flagged
     x.index("secure.com") != nil; # $ Alert // NOT OK
     x.index("secure.net") != nil; # $ Alert // NOT OK
     x.index(".secure.com") != nil; # $ Alert // NOT OK
-    x.index("sub.secure.") != nil; # NOT OK, but not flagged
-    x.index(".sub.secure.") != nil; # NOT OK, but not flagged
+    x.index("sub.secure.") != nil; # $ MISSING: Alert # NOT OK, but not flagged
+    x.index(".sub.secure.") != nil; # $ MISSING: Alert # NOT OK, but not flagged
 
     x.index("secure.com") === nil; # $ Alert // NOT OK
     x.index("secure.com") === 0; # $ Alert // NOT OK
@@ -33,7 +33,7 @@ def test (x)
     x.index("https://secure.com:443") != nil; # $ Alert // NOT OK
     x.index("https://secure.com/") != nil; # $ Alert // NOT OK
 
-    x.index(".cn") != nil; # NOT OK, but not flagged
+    x.index(".cn") != nil; # $ MISSING: Alert # NOT OK, but not flagged
     x.index(".jpg") != nil; # OK
     x.index("index.html") != nil; # OK
     x.index("index.js") != nil; # OK
@@ -43,8 +43,8 @@ def test (x)
     x.index("secure=true") != nil; # OK (query param)
     x.index("&auth=") != nil; # OK (query param)
 
-    x.index(getCurrentDomain()) != nil; # NOT OK, but not flagged
-    x.index(location.origin) != nil; # NOT OK, but not flagged
+    x.index(getCurrentDomain()) != nil; # $ MISSING: Alert # NOT OK, but not flagged
+    x.index(location.origin) != nil; # $ MISSING: Alert # NOT OK, but not flagged
 
 	x.index("tar.gz") + offset; # OK
 	x.index("tar.gz") - offset; # OK
@@ -68,7 +68,7 @@ def test (x)
 	else
 		doSomeThingWithTrustedURL(x);
     end
-    
+
     x.start_with?("https://secure.com/foo/bar"); # OK - a forward slash after the domain makes prefix checks safe.
     x.index("https://secure.com/foo/bar") >= 0 # $ Alert // NOT OK - the url can be anywhere in the string.
     x.index("https://secure.com") >= 0 # $ Alert // NOT OK

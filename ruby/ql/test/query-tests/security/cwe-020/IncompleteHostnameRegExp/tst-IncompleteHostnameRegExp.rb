@@ -27,7 +27,7 @@ def foo
 
 	convert1({ hostname: 'test.example.com$' }); # $ Alert // NOT OK
 
-	domains = [ { hostname: 'test.example.com$' } ];  # NOT OK - but not flagged due to limitations of TypeTracking.
+	domains = [ { hostname: 'test.example.com$' } ]; # $ MISSING: Alert # NOT OK - but not flagged due to limitations of TypeTracking.
 
 
 
@@ -39,7 +39,7 @@ def foo
 	/^(http:\/\/sub.example.com\/)/i; # $ Alert // NOT OK
 	/^https?:\/\/api.example.com/; # $ Alert // NOT OK
 	Regexp.new('^http://localhost:8000|' + "^https?://.+\\.example\\.com/"); # $ Alert // NOT OK
-	Regexp.new("^http[s]?:\/\/?sub1\\.sub2\\.example\\.com\/f\/(.+)"); # NOT OK
+	Regexp.new("^http[s]?:\/\/?sub1\\.sub2\\.example\\.com\/f\/(.+)"); # $ MISSING: Alert # NOT OK
 	/^https:\/\/[a-z]*.example.com$/; # $ Alert // NOT OK
 	Regexp.compile('^protos?://(localhost|.+.example.net|.+.example-a.com|.+.example-b.com|.+.example.internal)'); # $ Alert // NOT OK
 
@@ -48,11 +48,11 @@ def foo
 	Regexp.new('^http://localhost:8000|' + "^https?://.+.example\\.com/"); # $ Alert // NOT OK
 
 	primary = 'example.com$';
-	Regexp.new('test.' + primary); # NOT OK, but not detected
+	Regexp.new('test.' + primary); # $ MISSING: Alert # NOT OK, but not detected
 
-	Regexp.new('test.' + 'example.com$'); # NOT OK
+	Regexp.new('test.' + 'example.com$'); # $ MISSING: Alert # NOT OK
 
-	Regexp.new('^http://test\.example.com'); # NOT OK
+	Regexp.new('^http://test\.example.com'); # $ MISSING: Alert # NOT OK
 
 	/^http:\/\/(..|...)\.example\.com\/index\.html/; # OK, wildcards are intentional
 	/^http:\/\/.\.example\.com\/index\.html/; # OK, the wildcard is intentional

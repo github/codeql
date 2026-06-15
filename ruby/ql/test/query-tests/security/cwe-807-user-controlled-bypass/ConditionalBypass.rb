@@ -18,7 +18,7 @@ class FooController < ActionController::Base
   def bad_handler3
     # BAD. Not detected: its the last statement in the method, so it doesn't
     # match the heuristic for an action.
-    login if params[:login]
+    login if params[:login] # $ MISSING: Alert
   end
 
   def bad_handler4
