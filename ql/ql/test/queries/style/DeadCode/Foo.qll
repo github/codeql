@@ -1,11 +1,11 @@
 import ql
 
 private module Mixed {
-  private predicate dead1() { none() }
+  private predicate dead1() { none() } // $ Alert
 
   predicate alive1() { none() }
 
-  predicate dead2() { none() }
+  predicate dead2() { none() } // $ Alert
 }
 
 predicate usesAlive() { Mixed::alive1() }
@@ -43,7 +43,7 @@ private module Input1 implements InputSig {
   predicate foo() { any() }
 }
 
-private module Input2 implements InputSig {
+private module Input2 implements InputSig { // $ Alert
   predicate foo() { any() }
 }
 
@@ -53,7 +53,7 @@ private module Input3 implements InputSig {
 
 module M1 = ParameterizedModule<Input1>;
 
-private module M2 = ParameterizedModule<Input2>;
+private module M2 = ParameterizedModule<Input2>; // $ Alert
 
 import ParameterizedModule<Input3>
 
@@ -65,7 +65,7 @@ private class CImpl1 extends AstNode { }
 
 final class CPublic1 = CImpl1;
 
-private class CImpl2 extends AstNode { }
+private class CImpl2 extends AstNode { } // $ Alert
 
 overlay[discard_entity]
 private predicate discard(@foo x) { any() }

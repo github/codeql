@@ -1,1 +1,2 @@
-queries/performance/VarUnusedInDisjunct.ql
+query: queries/performance/VarUnusedInDisjunct.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
