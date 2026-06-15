@@ -1,1 +1,4 @@
-| Test.java:10:15:10:25 | annotations | annotations(byte[],byte[],java.lang.String,java.lang.Class,Test.Inner,java.lang.Class,java.lang.Class[],byte,java.lang.String[],java.lang.String[]) |
+| Test.java:11:15:11:25 | annotations | annotations(byte[],byte[],java.lang.String,java.lang.Class,Test.Inner,java.lang.Class,java.lang.Class[],byte,java.lang.String[],java.lang.String[]) | annotations(byte[], byte[], String, Class<String>, Inner, Class<? extends String>, Class<String>[], byte, String[], String[]) | annotations(byte[], byte[], String, Class, Inner, Class, Class[], byte, String[], String[]) |
+| Test.java:13:19:13:31 | typeVariables | typeVariables(java.util.function.Function) | typeVariables(Function<? super T,? extends R>) | typeVariables(Function) |
+| Test.java:18:19:18:25 | varargs | varargs(java.lang.Object[]) | varargs(E[]) | varargs(Object[]) |
+| Test.java:21:34:21:49 | varargsWithBound | varargsWithBound(java.lang.Number[]) | varargsWithBound(E[]) | varargsWithBound(Number[]) |
