@@ -67,7 +67,7 @@ namespace Testing
     // Razor Page handler tests
     public class MyPageModel : Microsoft.AspNetCore.Mvc.RazorPages.PageModel
     {
-        // BAD: handler method parameters are user-controlled
+        // Handler method parameters are remote flow sources
         public void OnGet(string id) { }
 
         public void OnPost(string command, int count) { }
@@ -78,10 +78,10 @@ namespace Testing
 
         public void OnDelete(string itemId) { }
 
-        // GOOD: not a handler method (doesn't start with On)
+        // Not a handler method — does not start with "On", so not a flow source
         public void GetUser(string userId) { }
 
-        // GOOD: marked with NonHandler attribute
+        // Excluded by [NonHandler] attribute, so not a flow source
         [Microsoft.AspNetCore.Mvc.RazorPages.NonHandlerAttribute]
         public void OnGetNonHandler(string param) { }
     }
