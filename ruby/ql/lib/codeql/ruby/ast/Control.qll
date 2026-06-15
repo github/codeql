@@ -377,18 +377,18 @@ class CaseExpr extends ControlExpr instanceof CaseExprImpl {
 
   /**
    * Gets the `n`th branch of this case expression, either a `WhenClause`, an
-   * `InClause`, or a `StmtSequence`.
+   * `InClause`, or a `CaseElseBranch`.
    */
   final AstNode getBranch(int n) { result = super.getBranch(n) }
 
   /**
    * Gets a branch of this case expression, either a `WhenClause`, an
-   * `InClause`, or a `StmtSequence`.
+   * `InClause`, or a `CaseElseBranch`.
    */
   final AstNode getABranch() { result = this.getBranch(_) }
 
   /** Gets the `else` branch of this case expression, if any. */
-  final StmtSequence getElseBranch() { result = this.getABranch() }
+  final CaseElseBranch getElseBranch() { result = this.getABranch() }
 
   /**
    * Gets the number of branches of this case expression.
@@ -530,6 +530,30 @@ class InClause extends AstNode instanceof InClauseImpl {
     pred = "getPattern" and result = this.getPattern()
     or
     pred = "getCondition" and result = this.getCondition()
+  }
+}
+
+/**
+ * An `else` branch of a `case` expression.
+ * ```rb
+ * case foo
+ * when 1 then puts "one"
+ * else puts "other"
+ * end
+ * ```
+ */
+class CaseElseBranch extends AstNode instanceof CaseElseBranchImpl {
+  final override string getAPrimaryQlClass() { result = "CaseElseBranch" }
+
+  /** Gets the body of this else branch. */
+  final Stmt getBody() { result = super.getBody() }
+
+  final override string toString() { result = "else ..." }
+
+  final override AstNode getAChild(string pred) {
+    result = AstNode.super.getAChild(pred)
+    or
+    pred = "getBody" and result = this.getBody()
   }
 }
 
