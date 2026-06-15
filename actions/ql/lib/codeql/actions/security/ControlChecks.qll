@@ -85,6 +85,29 @@ abstract class ControlCheck extends AstNode {
       or
       node.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this.(Step)
     )
+    or
+    // When the node is inside a reusable workflow, check if the control check
+    // dominates the caller job in the calling workflow.
+    exists(ExternalJob caller |
+      caller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
+      (
+        this instanceof If and
+        (
+          caller.getIf() = this or
+          caller.getANeededJob().(LocalJob).getIf() = this or
+          caller.getANeededJob().(LocalJob).getAStep().getIf() = this
+        )
+        or
+        this instanceof Environment and
+        (
+          caller.getEnvironment() = this or
+          caller.getANeededJob().getEnvironment() = this
+        )
+        or
+        (this instanceof Run or this instanceof UsesStep) and
+        caller.getANeededJob().(LocalJob).getAStep() = this.(Step)
+      )
+    )
   }
 
   abstract predicate protectsCategoryAndEvent(string category, string event);

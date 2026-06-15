@@ -93,6 +93,7 @@ edges
 | .github/workflows/dependabot3.yml:15:9:20:6 | Uses Step | .github/workflows/dependabot3.yml:20:9:25:6 | Uses Step |
 | .github/workflows/dependabot3.yml:20:9:25:6 | Uses Step | .github/workflows/dependabot3.yml:25:9:48:6 | Run Step: set-milestone |
 | .github/workflows/dependabot3.yml:25:9:48:6 | Run Step: set-milestone | .github/workflows/dependabot3.yml:48:9:52:57 | Run Step |
+| .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:11:9:14:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:14:9:17:7 | Run Step |
 | .github/workflows/external/TestOrg/TestRepo/.github/workflows/formal.yml:14:9:19:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/formal.yml:19:9:25:6 | Run Step |
 | .github/workflows/external/TestOrg/TestRepo/.github/workflows/formal.yml:19:9:25:6 | Run Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/formal.yml:25:9:70:20 | Run Step |
 | .github/workflows/external/TestOrg/TestRepo/.github/workflows/reusable.yml:23:9:26:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/reusable.yml:26:9:29:7 | Run Step |
@@ -334,6 +335,11 @@ edges
 | .github/workflows/untrusted_checkout_6.yml:11:9:14:6 | Uses Step | .github/workflows/untrusted_checkout_6.yml:14:9:17:6 | Uses Step |
 | .github/workflows/untrusted_checkout_6.yml:14:9:17:6 | Uses Step | .github/workflows/untrusted_checkout_6.yml:17:9:21:6 | Uses Step |
 | .github/workflows/untrusted_checkout_6.yml:17:9:21:6 | Uses Step | .github/workflows/untrusted_checkout_6.yml:21:9:23:23 | Run Step |
+| .github/workflows/untrusted_checkout_no_needs.yml:8:9:16:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_no_needs.yml:16:9:22:2 | Run Step |
+| .github/workflows/untrusted_checkout_no_needs.yml:26:9:31:6 | Uses Step | .github/workflows/untrusted_checkout_no_needs.yml:31:9:31:23 | Run Step |
+| .github/workflows/untrusted_checkout_permission_check_reusable.yml:8:9:16:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_permission_check_reusable.yml:16:9:22:2 | Run Step |
+| .github/workflows/untrusted_checkout_permissions_check.yml:8:9:16:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_permissions_check.yml:16:9:22:2 | Run Step |
+| .github/workflows/untrusted_checkout_permissions_check.yml:26:9:31:6 | Uses Step | .github/workflows/untrusted_checkout_permissions_check.yml:31:9:31:23 | Run Step |
 | .github/workflows/workflow_run_untrusted_checkout.yml:13:9:16:6 | Uses Step | .github/workflows/workflow_run_untrusted_checkout.yml:16:9:18:31 | Uses Step |
 | .github/workflows/workflow_run_untrusted_checkout_2.yml:13:9:16:6 | Uses Step | .github/workflows/workflow_run_untrusted_checkout_2.yml:16:9:18:31 | Uses Step |
 | .github/workflows/workflow_run_untrusted_checkout_3.yml:13:9:16:6 | Uses Step | .github/workflows/workflow_run_untrusted_checkout_3.yml:16:9:18:31 | Uses Step |
@@ -377,3 +383,4 @@ edges
 | .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step | .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step | .github/workflows/untrusted_checkout4.yml:47:7:51:46 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout4.yml:2:3:2:15 | issue_comment | issue_comment |
 | .github/workflows/untrusted_checkout.yml:8:9:11:6 | Uses Step | .github/workflows/untrusted_checkout.yml:8:9:11:6 | Uses Step | .github/workflows/untrusted_checkout.yml:15:9:18:2 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout.yml:2:3:2:21 | pull_request_target | pull_request_target |
 | .github/workflows/untrusted_checkout.yml:23:9:26:6 | Uses Step | .github/workflows/untrusted_checkout.yml:23:9:26:6 | Uses Step | .github/workflows/untrusted_checkout.yml:30:9:32:23 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout.yml:2:3:2:21 | pull_request_target | pull_request_target |
+| .github/workflows/untrusted_checkout_no_needs.yml:26:9:31:6 | Uses Step | .github/workflows/untrusted_checkout_no_needs.yml:26:9:31:6 | Uses Step | .github/workflows/untrusted_checkout_no_needs.yml:31:9:31:23 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout_no_needs.yml:2:3:2:21 | pull_request_target | pull_request_target |
