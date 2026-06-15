@@ -88,14 +88,14 @@ module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
     n =
       rank[result](FlowNode n0, int a, int b |
         a = 0 and
-        idOf(any(n0.asField()), b)
+        idOf(n0.asField(), b)
         or
         // no case for `n0.asSsa()`; here we rely on the built-in location-based ranking
         a = 1 and
-        idOf(any(n0.asExpr()), b)
+        idOf(n0.asExpr(), b)
         or
         a = 2 and
-        idOf(any(n0.asMethod()), b)
+        idOf(n0.asMethod(), b)
       |
         n0 order by a, b
       )
