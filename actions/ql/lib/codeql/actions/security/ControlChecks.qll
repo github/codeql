@@ -42,6 +42,15 @@ string actor_not_attacker_event() {
     ]
 }
 
+/**
+ * Gets the outer caller of `ej`, i.e. the `ExternalJob` that calls the
+ * reusable workflow containing `ej`. Used with transitive closure to
+ * walk up nested reusable workflow chains.
+ */
+private ExternalJob getAnOuterCaller(ExternalJob ej) {
+  result = ej.getEnclosingWorkflow().(ReusableWorkflow).getACaller()
+}
+
 /** An If node that contains an actor, user or label check */
 abstract class ControlCheck extends AstNode {
   ControlCheck() {
@@ -60,7 +69,12 @@ abstract class ControlCheck extends AstNode {
     this.getATriggerEvent() = event
   }
 
+  /**
+   * Holds if this control check must execute and pass before `node` can run.
+   */
   predicate dominates(AstNode node) {
+    // Step-level: the check is an `if:` on the step containing `node`,
+    // or on the enclosing job, or on a needed job/step.
     this instanceof If and
     (
       node.getEnclosingStep().getIf() = this or
@@ -69,6 +83,7 @@ abstract class ControlCheck extends AstNode {
       node.getEnclosingJob().getANeededJob().(LocalJob).getIf() = this
     )
     or
+    // Job-level: the check is an environment on the enclosing job or a needed job.
     this instanceof Environment and
     (
       node.getEnclosingJob().getEnvironment() = this
@@ -76,6 +91,8 @@ abstract class ControlCheck extends AstNode {
       node.getEnclosingJob().getANeededJob().getEnvironment() = this
     )
     or
+    // Step-level: the check is a Run/UsesStep that precedes `node`'s step
+    // in the same job, or is a step in a needed job.
     (
       this instanceof Run or
       this instanceof UsesStep
@@ -86,10 +103,11 @@ abstract class ControlCheck extends AstNode {
       node.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this
     )
     or
-    // When the node is inside a reusable workflow, check if the control check
-    // dominates the caller job in the calling workflow.
-    exists(ExternalJob caller |
-      caller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
+    // When the node is inside a (possibly nested) reusable workflow,
+    // check if the control check dominates any caller job in the chain.
+    exists(ExternalJob directCaller, ExternalJob caller |
+      directCaller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
+      caller = getAnOuterCaller*(directCaller) and
       (
         this instanceof If and
         (
