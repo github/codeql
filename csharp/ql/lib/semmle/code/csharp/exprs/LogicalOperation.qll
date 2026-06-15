@@ -31,7 +31,7 @@ class LogicalNotExpr extends UnaryLogicalOperation, @log_not_expr {
 
 /**
  * A binary logical operation. Either a logical 'and' (`LogicalAndExpr`),
- * a logical 'or' (`LogicalAndExpr`), or a null-coalescing operation
+ * a logical 'or' (`LogicalOrExpr`), or a null-coalescing operation
  * (`NullCoalescingOperation`).
  */
 class BinaryLogicalOperation extends LogicalOperation, BinaryOperation, @bin_log_operation {

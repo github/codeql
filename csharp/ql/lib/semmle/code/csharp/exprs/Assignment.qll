@@ -144,7 +144,7 @@ class AssignSubExpr extends AssignArithmeticExpr, SubOperation, @assign_sub_expr
 }
 
 /**
- * An multiplication assignment expression, for example `x *= y`.
+ * A multiplication assignment expression, for example `x *= y`.
  */
 class AssignMulExpr extends AssignArithmeticExpr, MulOperation, @assign_mul_expr {
   override string getOperator() { result = "*=" }
