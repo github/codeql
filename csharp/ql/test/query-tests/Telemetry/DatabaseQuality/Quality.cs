@@ -23,10 +23,10 @@ public class Test
         Event1.Invoke(this, 5);
 
         var str = "abcd";
-        var sub = str[..3];         // TODO: this is not an indexer call, but rather a `str.Substring(0, 3)` call.
+        var sub = str[..3];
 
         Span<int> sp = null;
-        var slice = sp[..3];        // TODO: this is not an indexer call, but rather a `sp.Slice(0, 3)` call.
+        var slice = sp[..3];
 
         Span<byte> guidBytes = stackalloc byte[16];
         guidBytes[08] = 1;
