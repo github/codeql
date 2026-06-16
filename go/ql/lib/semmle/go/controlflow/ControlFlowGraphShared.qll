@@ -740,6 +740,25 @@ module GoCfg {
       )
     }
 
+    predicate overridesCallableEndAbruptCompletion(Ast::Callable c, AbruptCompletion completion) {
+      // For functions with result variables, the library's default routing of a
+      // `return` straight to the normal exit node is suppressed so that the
+      // return is instead caught by `endAbruptCompletion` above and routed
+      // through the result-read epilogue.
+      exists(c.(Go::FuncDef).getResultVar(0)) and
+      completion.getSuccessorType() instanceof ReturnSuccessor
+    }
+
+    predicate callableExitStep(PreControlFlowNode n, Ast::Callable c, boolean normal) {
+      // The last result-read node of the epilogue steps to the normal exit node.
+      exists(Go::FuncDef fd, int j | fd = c |
+        normal = true and
+        exists(fd.getResultVar(j)) and
+        not exists(fd.getResultVar(j + 1)) and
+        n.isAdditional(fd.getBody(), "result-read:" + j.toString())
+      )
+    }
+
     predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
       rangeLoop(n1, n2) or
       switchStmt(n1, n2) or
@@ -1566,9 +1585,10 @@ module GoCfg {
      * - Prologue: Before(body) → arg:-1 → param-init:-1 → arg:0 → param-init:0 → ...
      *             when a receiver exists; otherwise it starts at arg:0. Then
      *             result-zero-init:0 → result-init:0 → ... → first statement
-     * - Epilogue: return → result-read:0 → result-read:1 → ... → After(body)
+     * - Epilogue: return → result-read:0 → result-read:1 → ... → result-read:last
      *
-     * `After(body)` goes to `NormalExit(fd)` via the shared library's built-in step.
+     * The last result-read node goes to `NormalExit(fd)` via the shared
+     * library's `callableExitStep` hook.
      */
     private predicate hasFuncDefPrologue(Go::FuncDef fd) {
       exists(fd.getParameter(_)) or exists(fd.getResultVar(_))
@@ -1667,15 +1687,11 @@ module GoCfg {
         or
         funcDefBodyStep(fd, n1, n2)
         or
-        // result-read:j → result-read:(j+1) or After(body)
-        exists(int j | exists(fd.getResultVar(j)) |
+        // result-read:j → result-read:(j+1); the last result-read node steps to
+        // the normal exit node via the `callableExitStep` hook.
+        exists(int j | exists(fd.getResultVar(j + 1)) |
           n1.isAdditional(fd.getBody(), "result-read:" + j.toString()) and
-          (
-            exists(fd.getResultVar(j + 1)) and
-            n2.isAdditional(fd.getBody(), "result-read:" + (j + 1).toString())
-            or
-            not exists(fd.getResultVar(j + 1)) and n2.isAfter(fd.getBody())
-          )
+          n2.isAdditional(fd.getBody(), "result-read:" + (j + 1).toString())
         )
       )
     }
