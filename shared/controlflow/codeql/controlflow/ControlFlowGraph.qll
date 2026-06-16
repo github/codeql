@@ -1152,7 +1152,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     signature module InputSig2 {
       /**
        * Holds if `ast` may result in an abrupt completion `c` originating at
-       * `n`. The boolean `always`  indicates whether the abrupt completion
+       * `n`. The boolean `always` indicates whether the abrupt completion
        * always occurs or whether `n` may also terminate normally.
        *
        * This predicate is only relevant for AST constructs that are not already
@@ -1170,6 +1170,24 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
        * handled by this library.
        */
       predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c);
+
+      /**
+       * Holds if the language-specific implementation takes over the catching
+       * of the abrupt completion `completion` at the boundary of callable `c`.
+       *
+       * When this holds, the library's default routing of `completion` to the
+       * normal or exceptional exit node of `c` is suppressed, and the language
+       * is then responsible for catching `completion` itself via
+       * `endAbruptCompletion` (for example, to interpose a function epilogue
+       * such as Go's deferred calls between a `return` and the normal exit
+       * node).
+       *
+       * The default implementation does not override any completions, leaving
+       * the standard behaviour intact.
+       */
+      default predicate overridesCallableEndAbruptCompletion(Callable c, AbruptCompletion completion) {
+        none()
+      }
 
       /**
        * Holds if there is a local non-abrupt step from `n1` to `n2`.
@@ -1241,7 +1259,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       private predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
         Input2::endAbruptCompletion(ast, n, c)
         or
-        exists(Callable callable | callableHasBodyPart(callable, ast) |
+        exists(Callable callable |
+          not Input2::overridesCallableEndAbruptCompletion(callable, c) and
+          callableHasBodyPart(callable, ast)
+        |
           c.getSuccessorType() instanceof ReturnSuccessor and
           n.(NormalExitNodeImpl).getEnclosingCallable() = callable
           or
