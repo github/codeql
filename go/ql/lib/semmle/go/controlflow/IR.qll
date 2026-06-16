@@ -218,6 +218,11 @@ module IR {
     EvalInstruction() {
       this.isIn(e)
       or
+      // The call of a `defer` statement is pre-order (it has no in-order
+      // "invocation" node at the statement), so its value is produced by the
+      // `defer-invoke` node that models the call at function exit.
+      this.isAdditional(e, "defer-invoke")
+      or
       // `NotExpr` and `LogicalBinaryExpr` are not in `postOrInOrder`, so they
       // don't have an `isIn` node. Only use the after-node when the
       // expression is not in a conditional context; otherwise the value is

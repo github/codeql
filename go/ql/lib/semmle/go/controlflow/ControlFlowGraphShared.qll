@@ -354,7 +354,15 @@ module GoCfg {
       )
     }
 
-    predicate preOrderExpr(Ast::Expr e) { none() }
+    predicate preOrderExpr(Ast::Expr e) {
+      // The call of a `defer` statement is not invoked at the statement
+      // itself; its callee and arguments are evaluated in place, but the call
+      // is only invoked later, at function exit (modelled by the `defer-invoke`
+      // node and `deferExitStep`). Marking it as pre-order means no in-order
+      // "invocation" node (and hence no inline exceptional-exit edge) is
+      // created at the `defer` statement.
+      e = any(Go::DeferStmt s).getCall()
+    }
 
     predicate propagatesValue(Ast::AstNode child, Ast::AstNode parent) {
       child = parent.(Go::ParenExpr).getExpr()
