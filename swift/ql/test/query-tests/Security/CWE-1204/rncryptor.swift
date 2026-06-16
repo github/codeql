@@ -57,28 +57,28 @@ func test(myPassword: String) {
 	let myKeyDerivationSettings = RNCryptorKeyDerivationSettings()
 	let myHandler = {}
 	let myRandomIV = Data(getRandomArray())
-	let myConstIV1 = Data(0)
-	let myConstIV2 = Data(123)
-	let myConstIV3 = Data([1,2,3,4,5])
-	let myConstIV4 = Data("iv")
+	let myConstIV1 = Data(0) // $ Source
+	let myConstIV2 = Data(123) // $ Source
+	let myConstIV3 = Data([1,2,3,4,5]) // $ Source
+	let myConstIV4 = Data("iv") // $ Source
 	let mySalt = Data(0)
 	let mySalt2 = Data(0)
 
 	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myKey, hmacKey: myHMACKey, iv: myRandomIV, handler: myHandler) // GOOD
-	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myKey, hmacKey: myHMACKey, iv: myConstIV1, handler: myHandler) // BAD
+	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myKey, hmacKey: myHMACKey, iv: myConstIV1, handler: myHandler) // $ Alert
 	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myKey, HMACKey: myHMACKey, IV: myRandomIV, handler: myHandler) // GOOD
-	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myKey, HMACKey: myHMACKey, IV: myConstIV2, handler: myHandler) // BAD
+	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myKey, HMACKey: myHMACKey, IV: myConstIV2, handler: myHandler) // $ Alert
 	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, iv: myRandomIV, encryptionSalt: mySalt, hmacSalt: mySalt2, handler: myHandler) // GOOD
-	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, iv: myConstIV3, encryptionSalt: mySalt, hmacSalt: mySalt2, handler: myHandler) // BAD
+	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, iv: myConstIV3, encryptionSalt: mySalt, hmacSalt: mySalt2, handler: myHandler) // $ Alert
 	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, IV: myRandomIV, encryptionSalt: mySalt, HMACSalt: mySalt2, handler: myHandler) // GOOD
-	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, IV: myConstIV4, encryptionSalt: mySalt, HMACSalt: mySalt2, handler: myHandler) // BAD
+	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, password: myPassword, IV: myConstIV4, encryptionSalt: mySalt, HMACSalt: mySalt2, handler: myHandler) // $ Alert
 
 	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, encryptionKey: myKey, hmacKey: myHMACKey, iv: myRandomIV) // GOOD
-	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, encryptionKey: myKey, hmacKey: myHMACKey, iv: myConstIV1) // BAD
+	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, encryptionKey: myKey, hmacKey: myHMACKey, iv: myConstIV1) // $ Alert
 	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, encryptionKey: myKey, HMACKey: myHMACKey, IV: myRandomIV) // GOOD
-	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, encryptionKey: myKey, HMACKey: myHMACKey, IV: myConstIV2) // BAD
+	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, encryptionKey: myKey, HMACKey: myHMACKey, IV: myConstIV2) // $ Alert
 	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, password: myPassword, iv: myRandomIV, encryptionSalt: mySalt, hmacSalt: mySalt2) // GOOD
-	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, password: myPassword, iv: myConstIV3, encryptionSalt: mySalt, hmacSalt: mySalt2) // BAD
+	let _ = try? myEncryptor.encryptData(myData, with: kRNCryptorAES256Settings, password: myPassword, iv: myConstIV3, encryptionSalt: mySalt, hmacSalt: mySalt2) // $ Alert
 	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, password: myPassword, IV: myRandomIV, encryptionSalt: mySalt, HMACSalt: mySalt2) // GOOD
-	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, password: myPassword, IV: myConstIV4, encryptionSalt: mySalt, HMACSalt: mySalt2) // BAD
+	let _ = try? myEncryptor.encryptData(myData, withSettings: kRNCryptorAES256Settings, password: myPassword, IV: myConstIV4, encryptionSalt: mySalt, HMACSalt: mySalt2) // $ Alert
 }

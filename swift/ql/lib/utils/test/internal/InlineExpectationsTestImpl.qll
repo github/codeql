@@ -15,7 +15,7 @@ module Impl implements InlineExpectationsTestSig {
     ExpectationComment() { this = MkExpectationComment(comment) }
 
     /** Returns the contents of the given comment, _without_ the preceding comment marker (`//`). */
-    string getContents() { result = comment.getText().suffix(2) }
+    string getContents() { result = comment.getText().suffix(2).trim() }
 
     /** Gets a textual representation of this element. */
     string toString() { result = comment.toString() }
