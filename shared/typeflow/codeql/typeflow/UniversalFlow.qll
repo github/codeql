@@ -46,8 +46,8 @@ signature module UniversalFlowInput<LocationSig Location> {
   }
 
   /**
-   * Gets an identifier for node `n`, if any. When not implemented for a given node,
-   * the library will use location-based ranking.
+   * Gets an identifier for node `n`, if any. When no identifier is provided for `n`,
+   * the library falls back to location-based ranking.
    */
   default int getFlowNodeId(FlowNode n) { none() }
 
