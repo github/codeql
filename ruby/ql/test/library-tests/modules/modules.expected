@@ -1182,6 +1182,7 @@ enclosingModule
 | calls.rb:354:9:354:9 | x | calls.rb:1:1:667:52 | calls.rb |
 | calls.rb:354:9:354:18 | call to instance | calls.rb:1:1:667:52 | calls.rb |
 | calls.rb:355:5:355:8 | else ... | calls.rb:1:1:667:52 | calls.rb |
+| calls.rb:355:5:355:8 | else ... | calls.rb:1:1:667:52 | calls.rb |
 | calls.rb:358:5:362:7 | case ... | calls.rb:1:1:667:52 | calls.rb |
 | calls.rb:358:10:358:10 | x | calls.rb:1:1:667:52 | calls.rb |
 | calls.rb:359:9:359:29 | in ... then ... | calls.rb:1:1:667:52 | calls.rb |
