@@ -1,1 +1,2 @@
-experimental/cwe-502/UnsafeYamlDeserialization.ql
+query: experimental/cwe-502/UnsafeYamlDeserialization.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
