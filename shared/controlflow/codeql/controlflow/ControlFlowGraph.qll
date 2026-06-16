@@ -1190,6 +1190,23 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       }
 
       /**
+       * Holds if `n` steps directly to the normal exit node (`normal = true`)
+       * or the exceptional exit node (`normal = false`) of callable `c`.
+       *
+       * By default the only node that reaches a callable's normal exit is the
+       * "after" node of its body. This predicate lets a language route the tail
+       * of a function epilogue (such as Go's result-read or deferred-call nodes)
+       * to the appropriate exit node, which is useful when the body cannot
+       * terminate normally (e.g. it always ends in a `return`) and therefore has
+       * no "after" node to anchor the epilogue on.
+       *
+       * The default implementation adds no such steps.
+       */
+      default predicate callableExitStep(PreControlFlowNode n, Callable c, boolean normal) {
+        none()
+      }
+
+      /**
        * Holds if there is a local non-abrupt step from `n1` to `n2`.
        *
        * This predicate is only relevant for AST constructs that are not already
@@ -1463,6 +1480,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           or
           n1.isAfter(getBodyExit(c)) and
           n2.(NormalExitNodeImpl).getEnclosingCallable() = c
+          or
+          Input2::callableExitStep(n1, c, true) and
+          n2.(NormalExitNodeImpl).getEnclosingCallable() = c
+          or
+          Input2::callableExitStep(n1, c, false) and
+          n2.(ExceptionalExitNodeImpl).getEnclosingCallable() = c
           or
           n1.(AnnotatedExitNodeImpl).getEnclosingCallable() = c and
           n2.(ExitNodeImpl).getEnclosingCallable() = c
