@@ -543,6 +543,9 @@ module GoCfg {
           implicitFieldSelection(n, i, implicitField) and
           tag = "implicit-field:" + i.toString()
         )
+        or
+        // Deferred-call invocation node, placed at function exit by `deferExitStep`
+        n = any(Go::DeferStmt s).getCall() and tag = "defer-invoke"
       )
     }
 
@@ -721,6 +724,7 @@ module GoCfg {
       or
       exists(Go::FuncDef fd |
         ast = fd.getBody() and
+        not funcHasDefer(fd) and
         c.getSuccessorType() instanceof ReturnSuccessor and
         (
           // If the function has result variables, route the return completion
@@ -745,7 +749,11 @@ module GoCfg {
       // `return` straight to the normal exit node is suppressed so that the
       // return is instead caught by `endAbruptCompletion` above and routed
       // through the result-read epilogue.
-      exists(c.(Go::FuncDef).getResultVar(0)) and
+      //
+      // For functions containing `defer` statements, the default routing is
+      // likewise suppressed so that returns are routed through the deferred-call
+      // epilogue (see `deferExitStep`) instead.
+      (exists(c.(Go::FuncDef).getResultVar(0)) or funcHasDefer(c.(Go::FuncDef))) and
       completion.getSuccessorType() instanceof ReturnSuccessor
     }
 
@@ -758,6 +766,145 @@ module GoCfg {
         n.isAdditional(fd.getBody(), "result-read:" + j.toString())
       )
     }
+
+    /** Holds if `fd` contains at least one `defer` statement. */
+    private predicate funcHasDefer(Go::FuncDef fd) {
+      exists(Go::DeferStmt s | s.getEnclosingFunction() = fd)
+    }
+
+    /**
+     * Holds if `n` is the registration node of `defer` statement `s` (the
+     * post-order node of the statement, reached once its call's arguments have
+     * been evaluated).
+     *
+     * This uses the reachability-free `isInOrderNode` rather than `n.isIn(s)`
+     * because it is referenced under negation by `notDeferSucc`, and must
+     * therefore not depend on `reachable`.
+     */
+    private predicate deferRegistration(PreControlFlowNode n, Go::DeferStmt s) {
+      isInOrderNode(n, s)
+    }
+
+    /**
+     * Holds if `n` is the deferred-invocation node for `defer` statement `s`,
+     * which models the deferred call running at function exit.
+     */
+    private predicate deferInvoke(PreControlFlowNode n, Go::DeferStmt s) {
+      n.isAdditional(s.getCall(), "defer-invoke")
+    }
+
+    /**
+     * Gets a defer-free successor of `n` that is not a `defer` registration
+     * node. Walking this relation from a node stops at the next registration
+     * node, which is how the reachability gate for deferred calls is computed.
+     *
+     * This is typed over `PreControlFlowNode` and uses `succIgnoringDeferExit`
+     * so that it does not depend on `reachable` (which would otherwise create a
+     * non-monotonic cycle through `deferExitStep`).
+     */
+    private PreControlFlowNode notDeferSucc(PreControlFlowNode n) {
+      succIgnoringDeferExit(n, result, _) and
+      not deferRegistration(result, _)
+    }
+
+    /** Gets a node reachable from `start` over `notDeferSucc`, reflexively. */
+    private PreControlFlowNode notDeferReach(PreControlFlowNode start) {
+      result = start
+      or
+      result = notDeferSucc(notDeferReach(start))
+    }
+
+    /** Gets the entry node of `fd`. */
+    private PreControlFlowNode funcEntry(Go::FuncDef fd) {
+      result.(EntryNodeImpl).getEnclosingCallable() = fd
+    }
+
+    /**
+     * Holds if `s` can be the first `defer` statement registered in `fd`, and
+     * hence the last to run: its registration node is reachable from the entry
+     * node without passing through another registration node.
+     */
+    private predicate firstDefer(Go::DeferStmt s, Go::FuncDef fd) {
+      s.getEnclosingFunction() = fd and
+      exists(PreControlFlowNode reg, PreControlFlowNode m |
+        deferRegistration(reg, s) and
+        m = notDeferReach(funcEntry(fd)) and
+        succIgnoringDeferExit(m, reg, _)
+      )
+    }
+
+    /**
+     * Holds if the registration node of `predD` is the next registration node
+     * reachable from the registration node of `succD`. Then `predD` is
+     * registered immediately after `succD` and therefore runs immediately
+     * before it (deferred calls run in last-in-first-out order).
+     */
+    private predicate nextDefer(Go::DeferStmt predD, Go::DeferStmt succD) {
+      exists(PreControlFlowNode regPred, PreControlFlowNode regSucc, PreControlFlowNode m |
+        deferRegistration(regPred, predD) and
+        deferRegistration(regSucc, succD) and
+        m = notDeferReach(regSucc) and
+        succIgnoringDeferExit(m, regPred, _)
+      )
+    }
+
+    /**
+     * Holds if `n` is a normal-exit predecessor of `fd`: a `return` statement
+     * node, or the fall-through node after the body.
+     */
+    private predicate normalExitPred(PreControlFlowNode n, Go::FuncDef fd) {
+      exists(Go::ReturnStmt ret | ret.getEnclosingFunction() = fd and n.isIn(ret))
+      or
+      n.isAfter(fd.getBody())
+    }
+
+    /**
+     * Holds if, after running its deferred calls, `fd` should continue at
+     * `target` on a normal exit. For functions with result variables this is
+     * the start of the result-read epilogue; otherwise it is the normal exit
+     * node directly.
+     */
+    private predicate deferChainExitTarget(Go::FuncDef fd, PreControlFlowNode target) {
+      exists(fd.getResultVar(0)) and target.isAdditional(fd.getBody(), "result-read:0")
+      or
+      not exists(fd.getResultVar(_)) and
+      target.(NormalExitNodeImpl).getEnclosingCallable() = fd
+    }
+
+    predicate deferExitStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::FuncDef fd | funcHasDefer(fd) |
+        // (a) an exit predecessor with no active defer flows straight to the exit target
+        normalExitPred(n1, fd) and
+        n1 = notDeferReach(funcEntry(fd)) and
+        deferChainExitTarget(fd, n2)
+        or
+        // (b) an exit predecessor flows to the invocation of the last-registered active defer
+        exists(Go::DeferStmt d, PreControlFlowNode reg |
+          deferRegistration(reg, d) and
+          d.getEnclosingFunction() = fd and
+          normalExitPred(n1, fd) and
+          n1 = notDeferReach(reg) and
+          deferInvoke(n2, d)
+        )
+        or
+        // (c) deferred invocations chain in last-in-first-out order
+        exists(Go::DeferStmt predD, Go::DeferStmt succD |
+          predD.getEnclosingFunction() = fd and
+          nextDefer(predD, succD) and
+          deferInvoke(n1, predD) and
+          deferInvoke(n2, succD)
+        )
+        or
+        // (d) the invocation of the first-registered (last to run) defer flows to the exit target
+        exists(Go::DeferStmt firstD |
+          firstDefer(firstD, fd) and
+          deferInvoke(n1, firstD) and
+          deferChainExitTarget(fd, n2)
+        )
+      )
+    }
+
+    predicate overridesCallableBodyExit(Ast::Callable c) { funcHasDefer(c.(Go::FuncDef)) }
 
     predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
       rangeLoop(n1, n2) or
