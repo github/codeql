@@ -49,7 +49,7 @@ func testCoreData2_1(obj: MyManagedObject2, maybeObj: MyManagedObject2?, value: 
 	maybeObj?.myBankAccountNumber2 = value // $ MISSING: Alert[swift/cleartext-storage-database] // BAD [NOT DETECTED]
 	maybeObj?.myBankAccountNumber2 = bankAccountNo // $ Alert[swift/cleartext-storage-database]
 	maybeObj?.notStoredBankAccountNumber = value // GOOD (not stored in the database)
-	maybeObj?.notStoredBankAccountNumber = bankAccountNo // $ SPURIOUS: Alert[swift/cleartext-storage-database] // GOOD (not stored in the datbase) [FALSE POSITIVE]
+	maybeObj?.notStoredBankAccountNumber = bankAccountNo // $ SPURIOUS: Alert[swift/cleartext-storage-database] // GOOD (not stored in the database) [FALSE POSITIVE]
 }
 
 class testCoreData2_2 {
