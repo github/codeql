@@ -160,4 +160,37 @@ namespace Properties
             var x = s.Prop;
         }
     }
+
+    public class BaseClass
+    {
+        public virtual int Value
+        {
+            get { return field; }
+            set { field = value; }
+        }
+    }
+
+    public class DerivedClass1 : BaseClass
+    {
+        public override int Value
+        {
+            get { return 20; }
+        }
+    }
+
+    public class DerivedClass2 : BaseClass { }
+
+    public class TestPartialPropertyOverride
+    {
+        public void M()
+        {
+            var d1 = new DerivedClass1();
+            d1.Value = 11;
+            var test1 = d1.Value;
+
+            var d2 = new DerivedClass2();
+            d2.Value = 12;
+            var test2 = d2.Value;
+        }
+    }
 }
