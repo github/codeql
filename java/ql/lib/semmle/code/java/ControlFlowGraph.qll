@@ -61,6 +61,8 @@ private module Ast implements AstSig<Location> {
   class Parameter extends AstNode {
     Parameter() { none() }
 
+    AstNode getPattern() { none() }
+
     Expr getDefaultValue() { none() }
   }
 
