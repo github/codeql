@@ -3,6 +3,7 @@
 import python
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 import semmle.python.ApiGraphs
+private import semmle.python.dataflow.new.internal.ReExposedInstance
 
 /** A CFG node where a file is opened. */
 abstract class FileOpenSource extends DataFlow::CfgNode { }
@@ -22,11 +23,27 @@ private DataFlow::TypeTrackingNode fileOpenInstance(DataFlow::TypeTracker t) {
 }
 
 /**
+ * Holds if `node` is tracked to be an instance of an open file object.
+ */
+private predicate fileInstanceNode(DataFlow::Node node) {
+  fileOpenInstance(DataFlow::TypeTracker::end()).flowsTo(node)
+}
+
+private module FileReExposed = ReExposedInstance<fileInstanceNode/1>;
+
+/**
  * A call that returns an instance of an open file object.
  * This includes calls to methods that transitively call `open` or similar.
  */
 class FileOpen extends DataFlow::CallCfgNode {
-  FileOpen() { fileOpenInstance(DataFlow::TypeTracker::end()).flowsTo(this) }
+  FileOpen() {
+    fileOpenInstance(DataFlow::TypeTracker::end()).flowsTo(this) and
+    // Don't treat an accessor that merely re-exposes a file held in an instance attribute
+    // (e.g. `FileIO.fileno` returning `self._fd`) as opening a new file. Such flow is
+    // introduced by instance-attribute type tracking; the underlying open is tracked at its
+    // real creation site.
+    not FileReExposed::isReExposed(this)
+  }
 }
 
 /** A call that may wrap a file object in a wrapper class or `os.fdopen`. */

@@ -167,6 +167,22 @@ def no_with():
     finally:
         f.close()
 
+# Should not use a 'with' statement here: the resource is held in an instance
+# attribute, so its lifetime spans the enclosing instance and cannot be expressed
+# with a 'with' statement. Instance-attribute type tracking can launder the
+# instance out of the field, but this must not be reported.
+class HoldsCM(object):
+
+    def __init__(self):
+        self.f = CM()
+
+    def no_with_attribute(self):
+        try:
+            self.f.write("Hello ")
+            self.f.write(" World\n")
+        finally:
+            self.f.close()  # No alert: re-exposes a field, not a local resource.
+
 #Assert without side-effect
 def assert_ok(seq):
     assert all(isinstance(element, (str, unicode)) for element in seq)
@@ -180,3 +196,41 @@ class false_positive:
 class MyClass:
     locals()['x'] = 43  # OK
     y = x
+
+
+# Once a `locals()` dictionary is passed out of the scope that created it, it is
+# just an ordinary mapping. Modifying it in a different scope is meaningful and
+# effective, so these modifications must NOT be flagged: the "no effect on local
+# variables" gotcha only applies within the scope that called `locals()`.
+def modify_passed_dict(ns):
+    ns['k'] = 1  # OK: `ns` is a parameter here, not this scope's locals()
+    ns.update({'j': 2})  # OK
+    ns.pop('k')  # OK
+    del ns['j']  # OK
+    ns.clear()  # OK
+
+
+def pass_locals_to_function():
+    y = 1
+    modify_passed_dict(locals())
+    return y
+
+
+# The same situation, but where the `locals()` dictionary is laundered through an
+# instance attribute (as instance-attribute type tracking now models). These must
+# also not be flagged.
+class NamespaceHolder(object):
+
+    def __init__(self, ns):
+        self.ns = ns
+
+    def populate(self):
+        self.ns['extra'] = 1  # OK: different scope from the `locals()` call
+        self.ns.update({'more': 2})  # OK
+
+
+def launder_locals_through_instance():
+    x = 1
+    holder = NamespaceHolder(locals())
+    holder.populate()
+    return x

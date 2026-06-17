@@ -11,19 +11,19 @@ class User(models.Model):
     pass
 
 @app.route("/users/<username>")
-def show_user(username):
+def show_user(username): # $ Source
     with connection.cursor() as cursor:
         # GOOD -- Using parameters
         cursor.execute("SELECT * FROM users WHERE username = %s", username)
         User.objects.raw("SELECT * FROM users WHERE username = %s", (username,))
 
         # BAD -- Using string formatting
-        cursor.execute("SELECT * FROM users WHERE username = '%s'" % username)
+        cursor.execute("SELECT * FROM users WHERE username = '%s'" % username) # $ Alert
 
         # BAD -- other ways of executing raw SQL code with string interpolation
-        User.objects.annotate(RawSQL("insert into names_file ('name') values ('%s')" % username))
-        User.objects.raw("insert into names_file ('name') values ('%s')" % username)
-        User.objects.extra("insert into names_file ('name') values ('%s')" % username)
+        User.objects.annotate(RawSQL("insert into names_file ('name') values ('%s')" % username)) # $ Alert
+        User.objects.raw("insert into names_file ('name') values ('%s')" % username) # $ Alert
+        User.objects.extra("insert into names_file ('name') values ('%s')" % username) # $ Alert
 
         # BAD (but currently no custom query to find this)
         #
