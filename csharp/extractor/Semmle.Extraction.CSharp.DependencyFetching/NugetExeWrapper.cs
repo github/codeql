@@ -45,7 +45,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 logger.LogInfo($"Found packages.config files, trying to use nuget.exe for package restore");
                 nugetExe = ResolveNugetExe();
-                if (HasNoPackageSource() && useDefaultFeed())
+                if (!HasPackageSource() && useDefaultFeed())
                 {
                     // We only modify or add a top level nuget.config file
                     nugetConfigPath = Path.Combine(fileProvider.SourceDir.FullName, "nuget.config");
@@ -211,11 +211,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return fileProvider.PackagesConfigs.Count(TryRestoreNugetPackage);
         }
 
-        private bool HasNoPackageSource()
+        private bool HasPackageSource()
         {
             if (IsWindows)
             {
-                return false;
+                return true;
             }
 
             try
@@ -224,15 +224,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 RunMonoNugetCommand("sources list -ForceEnglishOutput", out var stdout);
                 if (stdout.All(line => line != "No sources found."))
                 {
-                    return false;
+                    return true;
                 }
 
-                return true;
+                return false;
             }
             catch (Exception e)
             {
                 logger.LogWarning($"Failed to check if default package source is added: {e}");
-                return false;
+                return true;
             }
         }
 
