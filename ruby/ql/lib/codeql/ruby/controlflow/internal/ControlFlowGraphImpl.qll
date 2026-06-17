@@ -498,6 +498,16 @@ module Trees {
     }
   }
 
+  private class CaseElseBranchTree extends ControlFlowTree instanceof CaseElseBranch {
+    final override predicate propagatesAbnormal(AstNode child) { child = super.getBody() }
+
+    final override predicate first(AstNode first) { first(super.getBody(), first) }
+
+    final override predicate last(AstNode last, Completion c) { last(super.getBody(), last, c) }
+
+    final override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
+  }
+
   private class PatternVariableAccessTree extends LocalVariableAccessTree instanceof LocalVariableWriteAccess,
     CasePattern
   {

@@ -1,1 +1,2 @@
-queries/style/NonDocBlock.ql
+query: queries/style/NonDocBlock.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

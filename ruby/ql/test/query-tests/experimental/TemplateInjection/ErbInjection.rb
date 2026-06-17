@@ -2,7 +2,7 @@ class FooController < ActionController::Base
   def some_request_handler
     # A string tainted by user input is inserted into a template 
     # (i.e a remote flow source)
-    name = params[:name]
+    name = params[:name] # $ Source
 
     # Template with the source
     bad_text = "
@@ -12,11 +12,11 @@ class FooController < ActionController::Base
 
     # BAD: user input is evaluated
     # where name is unsanitized
-    template = ERB.new(bad_text).result(binding) 
+    template = ERB.new(bad_text).result(binding)  # $ Alert
 
     # BAD: user input is evaluated
     # where name is unsanitized
-    render inline: bad_text
+    render inline: bad_text # $ Alert
 
     # Template with the source 
     good_text = "

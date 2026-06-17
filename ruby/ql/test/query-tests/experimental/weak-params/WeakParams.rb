@@ -2,22 +2,22 @@ class TestController < ActionController::Base
   
   # Should catch
   def create
-    TestObject.create(foo: request.request_parameters[:foo])
+    TestObject.create(foo: request.request_parameters[:foo]) # $ Alert
   end
 
   # Should catch
   def create_query
-    TestObject.create(foo: request.query_parameters[:foo])
+    TestObject.create(foo: request.query_parameters[:foo]) # $ Alert
   end
 
   # Should catch
   def update_unsafe
-    TestObject.update(foo: request.POST[:foo])
+    TestObject.update(foo: request.POST[:foo]) # $ Alert
   end
 
   # Should catch
   def update_unsafe_get
-    TestObject.update(foo: request.GET[:foo])
+    TestObject.update(foo: request.GET[:foo]) # $ Alert
   end
 
   # Should not catch

@@ -92,59 +92,59 @@ extension String {
 
 func regexInjectionTests(cond: Bool, varString: String, myUrl: URL) throws {
 	let constString = ".*"
-	let taintedString = String(contentsOf: myUrl) // tainted
+	let taintedString = String(contentsOf: myUrl) // $ Source // tainted
 
 	// --- Regex ---
 
 	_ = try Regex(constString).firstMatch(in: varString)
 	_ = try Regex(varString).firstMatch(in: varString)
-	_ = try Regex(taintedString).firstMatch(in: varString) // BAD
+	_ = try Regex(taintedString).firstMatch(in: varString) // $ Alert
 
 	_ = try Regex("(a|" + constString + ")").firstMatch(in: varString)
-	_ = try Regex("(a|" + taintedString + ")").firstMatch(in: varString) // BAD
+	_ = try Regex("(a|" + taintedString + ")").firstMatch(in: varString) // $ Alert
 	_ = try Regex("(a|\(constString))").firstMatch(in: varString)
-	_ = try Regex("(a|\(taintedString))").firstMatch(in: varString) // BAD
+	_ = try Regex("(a|\(taintedString))").firstMatch(in: varString) // $ Alert
 
 	_ = try Regex(cond ? constString : constString).firstMatch(in: varString)
-	_ = try Regex(cond ? taintedString : constString).firstMatch(in: varString) // BAD
-	_ = try Regex(cond ? constString : taintedString).firstMatch(in: varString) // BAD
+	_ = try Regex(cond ? taintedString : constString).firstMatch(in: varString) // $ Alert
+	_ = try Regex(cond ? constString : taintedString).firstMatch(in: varString) // $ Alert
 
 	_ = try (cond ? Regex(constString) : Regex(constString)).firstMatch(in: varString)
-	_ = try (cond ? Regex(taintedString) : Regex(constString)).firstMatch(in: varString) // BAD
-	_ = try (cond ? Regex(constString) : Regex(taintedString)).firstMatch(in: varString) // BAD
+	_ = try (cond ? Regex(taintedString) : Regex(constString)).firstMatch(in: varString) // $ Alert
+	_ = try (cond ? Regex(constString) : Regex(taintedString)).firstMatch(in: varString) // $ Alert
 
 	// --- RangeReplaceableCollection ---
 
 	var inputVar = varString
 	inputVar.replace(constString, with: "")
-	inputVar.replace(taintedString, with: "") // BAD
+	inputVar.replace(taintedString, with: "") // $ Alert
 	inputVar.replace(constString, with: taintedString)
 
 	// --- StringProtocol ---
 
 	_ = inputVar.replacingOccurrences(of: constString, with: "", options: .regularExpression)
-	_ = inputVar.replacingOccurrences(of: taintedString, with: "", options: .regularExpression) // BAD
+	_ = inputVar.replacingOccurrences(of: taintedString, with: "", options: .regularExpression) // $ Alert
 
 	// --- NSRegularExpression ---
 
 	_ = try NSRegularExpression(pattern: constString).firstMatch(in: varString, range: NSMakeRange(0, varString.utf16.count))
-	_ = try NSRegularExpression(pattern: taintedString).firstMatch(in: varString, range: NSMakeRange(0, varString.utf16.count)) // BAD
+	_ = try NSRegularExpression(pattern: taintedString).firstMatch(in: varString, range: NSMakeRange(0, varString.utf16.count)) // $ Alert
 
 	// --- NSString ---
 
 	let nsString = NSString(string: varString)
 	_ = nsString.replacingOccurrences(of: constString, with: "", options: .regularExpression, range: NSMakeRange(0, nsString.length))
-	_ = nsString.replacingOccurrences(of: taintedString, with: "", options: .regularExpression, range: NSMakeRange(0, nsString.length)) // BAD
+	_ = nsString.replacingOccurrences(of: taintedString, with: "", options: .regularExpression, range: NSMakeRange(0, nsString.length)) // $ Alert
 
 	// --- from the qhelp ---
 
 	let remoteInput = taintedString
 	let myRegex = ".*"
 
-	_ = try Regex(remoteInput) // BAD
+	_ = try Regex(remoteInput) // $ Alert
 
 	let regexStr = "abc|\(remoteInput)"
-	_ = try NSRegularExpression(pattern: regexStr) // BAD
+	_ = try NSRegularExpression(pattern: regexStr) // $ Alert
 
 	_ = try Regex(myRegex)
 
@@ -159,35 +159,35 @@ func regexInjectionTests(cond: Bool, varString: String, myUrl: URL) throws {
 	let okSet: Set = ["abc", "def"]
 
 	if (taintedString == okInput) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ SPURIOUS: Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
 	} else {
-		_ = try Regex(taintedString).firstMatch(in: varString) // BAD
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ Alert
 	}
 	if (taintedString != okInput) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // BAD
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ Alert
 	}
 	if (varString == okInput) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // BAD
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ Alert
 	}
 	if (okInputs.contains(taintedString)) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ SPURIOUS: Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
 	}
 	if (okInputs.firstIndex(of: taintedString) != nil) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ SPURIOUS: Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
 	}
 	if let index = okInputs.firstIndex(of: taintedString) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ SPURIOUS: Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
 	}
 	if let index = okInputs.index(of: taintedString) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ SPURIOUS: Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
 	}
 	if (okSet.contains(taintedString)) {
-		_ = try Regex(taintedString).firstMatch(in: varString) // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
+		_ = try Regex(taintedString).firstMatch(in: varString) // $ SPURIOUS: Alert // GOOD (effectively sanitized by the check) [FALSE POSITIVE]
 	}
 
 	// --- multiple evaluations ---
 
-	let re = try Regex(taintedString) // BAD
+	let re = try Regex(taintedString) // $ Alert
 	_ = try re.firstMatch(in: varString) // (we only want to flag one location total)
 	_ = try re.firstMatch(in: varString)
 }

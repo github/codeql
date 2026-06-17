@@ -1,7 +1,7 @@
 import ql
 
 // NOT OK -- Predicate starts with "get" but does not return a value
-predicate getValue() { none() }
+predicate getValue() { none() } // $ Alert
 
 // OK -- starts with get and returns a value
 string getData() { result = "data" }
@@ -22,13 +22,13 @@ predicate getvalue() { none() }
 predicate retrieveValue() { none() }
 
 // NOT OK -- starts with get and does not return value
-predicate getImplementation2() { none() }
+predicate getImplementation2() { none() } // $ Alert
 
 // NOT OK -- is an alias for a predicate which does not have a return value
-predicate getAlias2 = getImplementation2/0;
+predicate getAlias2 = getImplementation2/0; // $ Alert
 
 // NOT OK -- starts with as and does not return value
-predicate asValue() { none() }
+predicate asValue() { none() } // $ Alert
 
 // OK -- starts with as but followed by a lowercase letter, probably should be ignored
 predicate assessment() { none() }
@@ -45,7 +45,7 @@ HiddenType getInjectableCompositeActionNode() {
 predicate implementation4() { none() }
 
 // NOT OK -- is an alias
-predicate getAlias4 = implementation4/0;
+predicate getAlias4 = implementation4/0; // $ Alert
 
 // OK -- is an alias
 predicate alias5 = implementation4/0;
@@ -58,7 +58,7 @@ predicate edge(int x, int y) { none() }
 int getDistance(int x) = shortestDistances(root/0, edge/2)(_, x, result)
 
 // NOT OK -- Higher-order predicate that does not return a value even though has 'get' in the name
-predicate getDistance2(int x, int y) = shortestDistances(root/0, edge/2)(_, x, y)
+predicate getDistance2(int x, int y) = shortestDistances(root/0, edge/2)(_, x, y) // $ Alert
 
 // OK
 predicate unresolvedAlias = unresolved/0;

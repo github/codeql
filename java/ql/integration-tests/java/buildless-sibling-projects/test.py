@@ -1,4 +1,4 @@
-def test(codeql, use_java_11, java, actions_toolchains_file):
+def test(codeql, use_java_11, java, actions_toolchains_file, check_diagnostics_java):
     # The version of gradle used doesn't work on java 17
     codeql.database.create(
         _env={
