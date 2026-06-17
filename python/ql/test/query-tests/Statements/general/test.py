@@ -167,8 +167,10 @@ def no_with():
     finally:
         f.close()
 
-# Should use context manager, with the resource held in an instance attribute
-# (caught via instance-attribute type tracking).
+# Should not use a 'with' statement here: the resource is held in an instance
+# attribute, so its lifetime spans the enclosing instance and cannot be expressed
+# with a 'with' statement. Instance-attribute type tracking can launder the
+# instance out of the field, but this must not be reported.
 class HoldsCM(object):
 
     def __init__(self):
@@ -179,7 +181,7 @@ class HoldsCM(object):
             self.f.write("Hello ")
             self.f.write(" World\n")
         finally:
-            self.f.close()
+            self.f.close()  # No alert: re-exposes a field, not a local resource.
 
 #Assert without side-effect
 def assert_ok(seq):
