@@ -95,5 +95,5 @@ class InClauseSynth extends InClauseImpl, TInClauseSynth {
 class CaseElseBranchImpl extends AstNode, TCaseElseBranch {
   CaseElseBranchImpl() { this = TCaseElseBranchSynth(_, _) }
 
-  final Stmt getBody() { synthChild(this, 0, result) }
+  final StmtSequence getBody() { synthChild(this, 0, result) }
 }

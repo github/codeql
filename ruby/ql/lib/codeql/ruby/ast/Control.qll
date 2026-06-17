@@ -546,7 +546,7 @@ class CaseElseBranch extends AstNode instanceof CaseElseBranchImpl {
   final override string getAPrimaryQlClass() { result = "CaseElseBranch" }
 
   /** Gets the body of this else branch. */
-  final Stmt getBody() { result = super.getBody() }
+  final StmtSequence getBody() { result = super.getBody() }
 
   final override string toString() { result = "else ..." }
 
