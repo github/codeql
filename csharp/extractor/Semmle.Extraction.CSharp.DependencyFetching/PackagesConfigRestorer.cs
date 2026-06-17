@@ -85,7 +85,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     if (!HasPackageSource() && useDefaultFeed())
                     {
                         // We only modify or add a top level nuget.config file
-                        nugetConfigPath = Path.Combine(fileProvider.SourceDir.FullName, "nuget.config");
+                        nugetConfigPath = Path.Join(fileProvider.SourceDir.FullName, "nuget.config");
                         try
                         {
                             if (File.Exists(nugetConfigPath))
@@ -94,7 +94,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                                 do
                                 {
-                                    backupNugetConfig = Path.Combine(tempFolderPath, Path.GetRandomFileName());
+                                    backupNugetConfig = Path.Join(tempFolderPath, Path.GetRandomFileName());
                                 }
                                 while (File.Exists(backupNugetConfig));
                                 File.Copy(nugetConfigPath, backupNugetConfig, true);
@@ -162,7 +162,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var nugetPath = FileUtils.FindProgramOnPath(executableName);
                 if (nugetPath is not null)
                 {
-                    nugetPath = Path.Combine(nugetPath, executableName);
+                    nugetPath = Path.Join(nugetPath, executableName);
                     logger.LogInfo($"Using nuget.exe from PATH: {nugetPath}");
                     return nugetPath;
                 }
@@ -172,8 +172,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             private string DownloadNugetExe(string sourceDir)
             {
-                var directory = Path.Combine(sourceDir, ".nuget");
-                var nuget = Path.Combine(directory, "nuget.exe");
+                var directory = Path.Join(sourceDir, ".nuget");
+                var nuget = Path.Join(directory, "nuget.exe");
 
                 // Nuget.exe already exists in the .nuget directory.
                 if (File.Exists(nuget))
