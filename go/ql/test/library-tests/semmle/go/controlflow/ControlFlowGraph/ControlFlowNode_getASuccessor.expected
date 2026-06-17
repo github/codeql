@@ -735,129 +735,153 @@
 | main.go:48:11:48:12 | 42 | main.go:48:2:48:7 | assignment to result |
 | main.go:49:2:49:7 | return statement | main.go:47:13:47:18 | implicit read of result |
 | main.go:52:1:54:1 | entry | main.go:52:14:52:19 | zero value for result |
-| main.go:52:1:54:1 | function declaration | main.go:56:6:56:10 | skip |
+| main.go:52:1:54:1 | function declaration | main.go:56:6:56:9 | skip |
 | main.go:52:6:52:9 | skip | main.go:52:1:54:1 | function declaration |
 | main.go:52:14:52:19 | implicit read of result | main.go:52:1:54:1 | exit |
 | main.go:52:14:52:19 | initialization of result | main.go:53:2:53:7 | return statement |
 | main.go:52:14:52:19 | zero value for result | main.go:52:14:52:19 | initialization of result |
 | main.go:53:2:53:7 | return statement | main.go:52:14:52:19 | implicit read of result |
-| main.go:56:1:80:1 | entry | main.go:57:6:57:6 | skip |
-| main.go:56:1:80:1 | function declaration | main.go:82:6:82:13 | skip |
-| main.go:56:6:56:10 | skip | main.go:56:1:80:1 | function declaration |
-| main.go:57:6:57:6 | assignment to x | main.go:58:6:58:9 | cond |
-| main.go:57:6:57:6 | skip | main.go:57:6:57:6 | zero value for x |
-| main.go:57:6:57:6 | zero value for x | main.go:57:6:57:6 | assignment to x |
-| main.go:58:6:58:9 | cond | main.go:58:6:58:11 | call to cond |
-| main.go:58:6:58:11 | call to cond | main.go:56:1:80:1 | exit |
-| main.go:58:6:58:11 | call to cond | main.go:58:6:58:11 | call to cond is false |
-| main.go:58:6:58:11 | call to cond | main.go:58:6:58:11 | call to cond is true |
-| main.go:58:6:58:11 | call to cond is false | main.go:61:2:61:10 | selection of Print |
-| main.go:58:6:58:11 | call to cond is true | main.go:59:3:59:3 | skip |
-| main.go:59:3:59:3 | assignment to x | main.go:58:6:58:9 | cond |
-| main.go:59:3:59:3 | skip | main.go:59:7:59:7 | 2 |
-| main.go:59:7:59:7 | 2 | main.go:59:3:59:3 | assignment to x |
-| main.go:61:2:61:10 | selection of Print | main.go:61:12:61:12 | x |
-| main.go:61:2:61:13 | call to Print | main.go:56:1:80:1 | exit |
-| main.go:61:2:61:13 | call to Print | main.go:63:2:63:2 | skip |
-| main.go:61:12:61:12 | x | main.go:61:2:61:13 | call to Print |
-| main.go:63:2:63:2 | assignment to y | main.go:64:6:64:6 | skip |
-| main.go:63:2:63:2 | skip | main.go:63:7:63:7 | 1 |
-| main.go:63:7:63:7 | 1 | main.go:63:2:63:2 | assignment to y |
-| main.go:64:6:64:6 | assignment to i | main.go:65:6:65:9 | cond |
-| main.go:64:6:64:6 | skip | main.go:64:11:64:11 | 0 |
-| main.go:64:11:64:11 | 0 | main.go:64:6:64:6 | assignment to i |
-| main.go:64:16:64:16 | i | main.go:64:16:64:18 | 1 |
-| main.go:64:16:64:18 | 1 | main.go:64:16:64:18 | rhs of increment statement |
-| main.go:64:16:64:18 | increment statement | main.go:65:6:65:9 | cond |
-| main.go:64:16:64:18 | rhs of increment statement | main.go:64:16:64:18 | increment statement |
-| main.go:65:6:65:9 | cond | main.go:65:6:65:11 | call to cond |
-| main.go:65:6:65:11 | call to cond | main.go:56:1:80:1 | exit |
-| main.go:65:6:65:11 | call to cond | main.go:65:6:65:11 | call to cond is false |
-| main.go:65:6:65:11 | call to cond | main.go:65:6:65:11 | call to cond is true |
-| main.go:65:6:65:11 | call to cond is false | main.go:68:3:68:3 | skip |
-| main.go:65:6:65:11 | call to cond is true | main.go:66:4:66:8 | skip |
-| main.go:66:4:66:8 | skip | main.go:70:2:70:10 | selection of Print |
-| main.go:68:3:68:3 | assignment to y | main.go:64:16:64:16 | i |
-| main.go:68:3:68:3 | skip | main.go:68:7:68:7 | 2 |
-| main.go:68:7:68:7 | 2 | main.go:68:3:68:3 | assignment to y |
-| main.go:70:2:70:10 | selection of Print | main.go:70:12:70:12 | y |
-| main.go:70:2:70:13 | call to Print | main.go:56:1:80:1 | exit |
-| main.go:70:2:70:13 | call to Print | main.go:72:2:72:2 | skip |
-| main.go:70:12:70:12 | y | main.go:70:2:70:13 | call to Print |
-| main.go:72:2:72:2 | assignment to z | main.go:73:6:73:6 | skip |
-| main.go:72:2:72:2 | skip | main.go:72:7:72:7 | 1 |
-| main.go:72:7:72:7 | 1 | main.go:72:2:72:2 | assignment to z |
-| main.go:73:6:73:6 | assignment to i | main.go:74:3:74:3 | skip |
-| main.go:73:6:73:6 | skip | main.go:73:11:73:11 | 0 |
-| main.go:73:11:73:11 | 0 | main.go:73:6:73:6 | assignment to i |
-| main.go:73:16:73:16 | i | main.go:73:16:73:18 | 1 |
-| main.go:73:16:73:18 | 1 | main.go:73:16:73:18 | rhs of increment statement |
-| main.go:73:16:73:18 | increment statement | main.go:74:3:74:3 | skip |
-| main.go:73:16:73:18 | rhs of increment statement | main.go:73:16:73:18 | increment statement |
-| main.go:74:3:74:3 | assignment to z | main.go:75:6:75:9 | cond |
-| main.go:74:3:74:3 | skip | main.go:74:7:74:7 | 2 |
-| main.go:74:7:74:7 | 2 | main.go:74:3:74:3 | assignment to z |
+| main.go:56:1:64:1 | entry | main.go:56:11:56:18 | argument corresponding to selector |
+| main.go:56:1:64:1 | function declaration | main.go:66:6:66:10 | skip |
+| main.go:56:6:56:9 | skip | main.go:56:1:64:1 | function declaration |
+| main.go:56:11:56:18 | argument corresponding to selector | main.go:56:11:56:18 | initialization of selector |
+| main.go:56:11:56:18 | initialization of selector | main.go:56:26:56:31 | zero value for result |
+| main.go:56:26:56:31 | implicit read of result | main.go:56:1:64:1 | exit |
+| main.go:56:26:56:31 | initialization of result | main.go:57:2:57:7 | skip |
+| main.go:56:26:56:31 | zero value for result | main.go:56:26:56:31 | initialization of result |
+| main.go:57:2:57:7 | assignment to result | main.go:58:5:58:12 | selector |
+| main.go:57:2:57:7 | skip | main.go:57:11:57:11 | 0 |
+| main.go:57:11:57:11 | 0 | main.go:57:2:57:7 | assignment to result |
+| main.go:58:5:58:12 | selector | main.go:58:17:58:17 | 1 |
+| main.go:58:5:58:17 | ...==... | main.go:58:5:58:17 | ...==... is false |
+| main.go:58:5:58:17 | ...==... | main.go:58:5:58:17 | ...==... is true |
+| main.go:58:5:58:17 | ...==... is false | main.go:61:3:61:8 | skip |
+| main.go:58:5:58:17 | ...==... is true | main.go:59:10:59:10 | 1 |
+| main.go:58:17:58:17 | 1 | main.go:58:5:58:17 | ...==... |
+| main.go:59:3:59:10 | return statement | main.go:56:26:56:31 | implicit read of result |
+| main.go:59:10:59:10 | 1 | main.go:59:10:59:10 | implicit write of result |
+| main.go:59:10:59:10 | implicit write of result | main.go:59:3:59:10 | return statement |
+| main.go:61:3:61:8 | assignment to result | main.go:63:2:63:7 | return statement |
+| main.go:61:3:61:8 | skip | main.go:61:12:61:12 | 2 |
+| main.go:61:12:61:12 | 2 | main.go:61:3:61:8 | assignment to result |
+| main.go:63:2:63:7 | return statement | main.go:56:26:56:31 | implicit read of result |
+| main.go:66:1:90:1 | entry | main.go:67:6:67:6 | skip |
+| main.go:66:1:90:1 | function declaration | main.go:92:6:92:13 | skip |
+| main.go:66:6:66:10 | skip | main.go:66:1:90:1 | function declaration |
+| main.go:67:6:67:6 | assignment to x | main.go:68:6:68:9 | cond |
+| main.go:67:6:67:6 | skip | main.go:67:6:67:6 | zero value for x |
+| main.go:67:6:67:6 | zero value for x | main.go:67:6:67:6 | assignment to x |
+| main.go:68:6:68:9 | cond | main.go:68:6:68:11 | call to cond |
+| main.go:68:6:68:11 | call to cond | main.go:66:1:90:1 | exit |
+| main.go:68:6:68:11 | call to cond | main.go:68:6:68:11 | call to cond is false |
+| main.go:68:6:68:11 | call to cond | main.go:68:6:68:11 | call to cond is true |
+| main.go:68:6:68:11 | call to cond is false | main.go:71:2:71:10 | selection of Print |
+| main.go:68:6:68:11 | call to cond is true | main.go:69:3:69:3 | skip |
+| main.go:69:3:69:3 | assignment to x | main.go:68:6:68:9 | cond |
+| main.go:69:3:69:3 | skip | main.go:69:7:69:7 | 2 |
+| main.go:69:7:69:7 | 2 | main.go:69:3:69:3 | assignment to x |
+| main.go:71:2:71:10 | selection of Print | main.go:71:12:71:12 | x |
+| main.go:71:2:71:13 | call to Print | main.go:66:1:90:1 | exit |
+| main.go:71:2:71:13 | call to Print | main.go:73:2:73:2 | skip |
+| main.go:71:12:71:12 | x | main.go:71:2:71:13 | call to Print |
+| main.go:73:2:73:2 | assignment to y | main.go:74:6:74:6 | skip |
+| main.go:73:2:73:2 | skip | main.go:73:7:73:7 | 1 |
+| main.go:73:7:73:7 | 1 | main.go:73:2:73:2 | assignment to y |
+| main.go:74:6:74:6 | assignment to i | main.go:75:6:75:9 | cond |
+| main.go:74:6:74:6 | skip | main.go:74:11:74:11 | 0 |
+| main.go:74:11:74:11 | 0 | main.go:74:6:74:6 | assignment to i |
+| main.go:74:16:74:16 | i | main.go:74:16:74:18 | 1 |
+| main.go:74:16:74:18 | 1 | main.go:74:16:74:18 | rhs of increment statement |
+| main.go:74:16:74:18 | increment statement | main.go:75:6:75:9 | cond |
+| main.go:74:16:74:18 | rhs of increment statement | main.go:74:16:74:18 | increment statement |
 | main.go:75:6:75:9 | cond | main.go:75:6:75:11 | call to cond |
-| main.go:75:6:75:11 | call to cond | main.go:56:1:80:1 | exit |
+| main.go:75:6:75:11 | call to cond | main.go:66:1:90:1 | exit |
 | main.go:75:6:75:11 | call to cond | main.go:75:6:75:11 | call to cond is false |
 | main.go:75:6:75:11 | call to cond | main.go:75:6:75:11 | call to cond is true |
-| main.go:75:6:75:11 | call to cond is false | main.go:73:16:73:16 | i |
+| main.go:75:6:75:11 | call to cond is false | main.go:78:3:78:3 | skip |
 | main.go:75:6:75:11 | call to cond is true | main.go:76:4:76:8 | skip |
-| main.go:76:4:76:8 | skip | main.go:79:2:79:10 | selection of Print |
-| main.go:79:2:79:10 | selection of Print | main.go:79:12:79:12 | z |
-| main.go:79:2:79:13 | call to Print | main.go:56:1:80:1 | exit |
-| main.go:79:12:79:12 | z | main.go:79:2:79:13 | call to Print |
-| main.go:82:1:86:1 | entry | main.go:82:18:82:18 | zero value for a |
-| main.go:82:1:86:1 | function declaration | main.go:88:6:88:23 | skip |
-| main.go:82:6:82:13 | skip | main.go:82:1:86:1 | function declaration |
-| main.go:82:18:82:18 | implicit read of a | main.go:82:25:82:25 | implicit read of b |
-| main.go:82:18:82:18 | initialization of a | main.go:82:25:82:25 | zero value for b |
-| main.go:82:18:82:18 | zero value for a | main.go:82:18:82:18 | initialization of a |
-| main.go:82:25:82:25 | implicit read of b | main.go:82:1:86:1 | exit |
-| main.go:82:25:82:25 | initialization of b | main.go:83:2:83:2 | skip |
-| main.go:82:25:82:25 | zero value for b | main.go:82:25:82:25 | initialization of b |
-| main.go:83:2:83:2 | assignment to x | main.go:84:2:84:2 | skip |
-| main.go:83:2:83:2 | skip | main.go:83:7:83:8 | 23 |
-| main.go:83:7:83:8 | 23 | main.go:83:2:83:2 | assignment to x |
-| main.go:84:2:84:2 | assignment to x | main.go:84:5:84:5 | assignment to a |
-| main.go:84:2:84:2 | skip | main.go:84:5:84:5 | skip |
-| main.go:84:5:84:5 | assignment to a | main.go:85:2:85:7 | return statement |
-| main.go:84:5:84:5 | skip | main.go:84:9:84:9 | x |
-| main.go:84:9:84:9 | x | main.go:84:11:84:12 | 19 |
-| main.go:84:9:84:12 | ...+... | main.go:84:15:84:15 | x |
-| main.go:84:11:84:12 | 19 | main.go:84:9:84:12 | ...+... |
-| main.go:84:15:84:15 | x | main.go:84:2:84:2 | assignment to x |
-| main.go:85:2:85:7 | return statement | main.go:82:18:82:18 | implicit read of a |
-| main.go:88:1:96:1 | entry | main.go:88:25:88:25 | argument corresponding to x |
-| main.go:88:1:96:1 | function declaration | main.go:0:0:0:0 | exit |
-| main.go:88:6:88:23 | skip | main.go:88:1:96:1 | function declaration |
-| main.go:88:25:88:25 | argument corresponding to x | main.go:88:25:88:25 | initialization of x |
-| main.go:88:25:88:25 | initialization of x | main.go:89:2:89:2 | skip |
-| main.go:89:2:89:2 | assignment to a | main.go:89:5:89:5 | assignment to b |
-| main.go:89:2:89:2 | skip | main.go:89:5:89:5 | skip |
-| main.go:89:5:89:5 | assignment to b | main.go:90:5:90:8 | cond |
-| main.go:89:5:89:5 | skip | main.go:89:10:89:10 | x |
-| main.go:89:10:89:10 | x | main.go:89:13:89:13 | 0 |
-| main.go:89:13:89:13 | 0 | main.go:89:2:89:2 | assignment to a |
-| main.go:90:5:90:8 | cond | main.go:90:5:90:10 | call to cond |
-| main.go:90:5:90:10 | call to cond | main.go:88:1:96:1 | exit |
-| main.go:90:5:90:10 | call to cond | main.go:90:5:90:10 | call to cond is false |
-| main.go:90:5:90:10 | call to cond | main.go:90:5:90:10 | call to cond is true |
-| main.go:90:5:90:10 | call to cond is false | main.go:93:3:93:3 | skip |
-| main.go:90:5:90:10 | call to cond is true | main.go:91:3:91:3 | skip |
-| main.go:91:3:91:3 | assignment to a | main.go:95:9:95:9 | a |
-| main.go:91:3:91:3 | skip | main.go:91:6:91:6 | skip |
-| main.go:91:6:91:6 | skip | main.go:91:10:91:10 | b |
-| main.go:91:10:91:10 | b | main.go:91:13:91:13 | a |
-| main.go:91:13:91:13 | a | main.go:91:3:91:3 | assignment to a |
-| main.go:93:3:93:3 | skip | main.go:93:6:93:6 | skip |
-| main.go:93:6:93:6 | assignment to b | main.go:95:9:95:9 | a |
-| main.go:93:6:93:6 | skip | main.go:93:10:93:10 | b |
-| main.go:93:10:93:10 | b | main.go:93:13:93:13 | a |
-| main.go:93:13:93:13 | a | main.go:93:6:93:6 | assignment to b |
-| main.go:95:2:95:12 | return statement | main.go:88:1:96:1 | exit |
-| main.go:95:9:95:9 | a | main.go:95:12:95:12 | b |
-| main.go:95:12:95:12 | b | main.go:95:2:95:12 | return statement |
+| main.go:76:4:76:8 | skip | main.go:80:2:80:10 | selection of Print |
+| main.go:78:3:78:3 | assignment to y | main.go:74:16:74:16 | i |
+| main.go:78:3:78:3 | skip | main.go:78:7:78:7 | 2 |
+| main.go:78:7:78:7 | 2 | main.go:78:3:78:3 | assignment to y |
+| main.go:80:2:80:10 | selection of Print | main.go:80:12:80:12 | y |
+| main.go:80:2:80:13 | call to Print | main.go:66:1:90:1 | exit |
+| main.go:80:2:80:13 | call to Print | main.go:82:2:82:2 | skip |
+| main.go:80:12:80:12 | y | main.go:80:2:80:13 | call to Print |
+| main.go:82:2:82:2 | assignment to z | main.go:83:6:83:6 | skip |
+| main.go:82:2:82:2 | skip | main.go:82:7:82:7 | 1 |
+| main.go:82:7:82:7 | 1 | main.go:82:2:82:2 | assignment to z |
+| main.go:83:6:83:6 | assignment to i | main.go:84:3:84:3 | skip |
+| main.go:83:6:83:6 | skip | main.go:83:11:83:11 | 0 |
+| main.go:83:11:83:11 | 0 | main.go:83:6:83:6 | assignment to i |
+| main.go:83:16:83:16 | i | main.go:83:16:83:18 | 1 |
+| main.go:83:16:83:18 | 1 | main.go:83:16:83:18 | rhs of increment statement |
+| main.go:83:16:83:18 | increment statement | main.go:84:3:84:3 | skip |
+| main.go:83:16:83:18 | rhs of increment statement | main.go:83:16:83:18 | increment statement |
+| main.go:84:3:84:3 | assignment to z | main.go:85:6:85:9 | cond |
+| main.go:84:3:84:3 | skip | main.go:84:7:84:7 | 2 |
+| main.go:84:7:84:7 | 2 | main.go:84:3:84:3 | assignment to z |
+| main.go:85:6:85:9 | cond | main.go:85:6:85:11 | call to cond |
+| main.go:85:6:85:11 | call to cond | main.go:66:1:90:1 | exit |
+| main.go:85:6:85:11 | call to cond | main.go:85:6:85:11 | call to cond is false |
+| main.go:85:6:85:11 | call to cond | main.go:85:6:85:11 | call to cond is true |
+| main.go:85:6:85:11 | call to cond is false | main.go:83:16:83:16 | i |
+| main.go:85:6:85:11 | call to cond is true | main.go:86:4:86:8 | skip |
+| main.go:86:4:86:8 | skip | main.go:89:2:89:10 | selection of Print |
+| main.go:89:2:89:10 | selection of Print | main.go:89:12:89:12 | z |
+| main.go:89:2:89:13 | call to Print | main.go:66:1:90:1 | exit |
+| main.go:89:12:89:12 | z | main.go:89:2:89:13 | call to Print |
+| main.go:92:1:96:1 | entry | main.go:92:18:92:18 | zero value for a |
+| main.go:92:1:96:1 | function declaration | main.go:98:6:98:23 | skip |
+| main.go:92:6:92:13 | skip | main.go:92:1:96:1 | function declaration |
+| main.go:92:18:92:18 | implicit read of a | main.go:92:25:92:25 | implicit read of b |
+| main.go:92:18:92:18 | initialization of a | main.go:92:25:92:25 | zero value for b |
+| main.go:92:18:92:18 | zero value for a | main.go:92:18:92:18 | initialization of a |
+| main.go:92:25:92:25 | implicit read of b | main.go:92:1:96:1 | exit |
+| main.go:92:25:92:25 | initialization of b | main.go:93:2:93:2 | skip |
+| main.go:92:25:92:25 | zero value for b | main.go:92:25:92:25 | initialization of b |
+| main.go:93:2:93:2 | assignment to x | main.go:94:2:94:2 | skip |
+| main.go:93:2:93:2 | skip | main.go:93:7:93:8 | 23 |
+| main.go:93:7:93:8 | 23 | main.go:93:2:93:2 | assignment to x |
+| main.go:94:2:94:2 | assignment to x | main.go:94:5:94:5 | assignment to a |
+| main.go:94:2:94:2 | skip | main.go:94:5:94:5 | skip |
+| main.go:94:5:94:5 | assignment to a | main.go:95:2:95:7 | return statement |
+| main.go:94:5:94:5 | skip | main.go:94:9:94:9 | x |
+| main.go:94:9:94:9 | x | main.go:94:11:94:12 | 19 |
+| main.go:94:9:94:12 | ...+... | main.go:94:15:94:15 | x |
+| main.go:94:11:94:12 | 19 | main.go:94:9:94:12 | ...+... |
+| main.go:94:15:94:15 | x | main.go:94:2:94:2 | assignment to x |
+| main.go:95:2:95:7 | return statement | main.go:92:18:92:18 | implicit read of a |
+| main.go:98:1:106:1 | entry | main.go:98:25:98:25 | argument corresponding to x |
+| main.go:98:1:106:1 | function declaration | main.go:0:0:0:0 | exit |
+| main.go:98:6:98:23 | skip | main.go:98:1:106:1 | function declaration |
+| main.go:98:25:98:25 | argument corresponding to x | main.go:98:25:98:25 | initialization of x |
+| main.go:98:25:98:25 | initialization of x | main.go:99:2:99:2 | skip |
+| main.go:99:2:99:2 | assignment to a | main.go:99:5:99:5 | assignment to b |
+| main.go:99:2:99:2 | skip | main.go:99:5:99:5 | skip |
+| main.go:99:5:99:5 | assignment to b | main.go:100:5:100:8 | cond |
+| main.go:99:5:99:5 | skip | main.go:99:10:99:10 | x |
+| main.go:99:10:99:10 | x | main.go:99:13:99:13 | 0 |
+| main.go:99:13:99:13 | 0 | main.go:99:2:99:2 | assignment to a |
+| main.go:100:5:100:8 | cond | main.go:100:5:100:10 | call to cond |
+| main.go:100:5:100:10 | call to cond | main.go:98:1:106:1 | exit |
+| main.go:100:5:100:10 | call to cond | main.go:100:5:100:10 | call to cond is false |
+| main.go:100:5:100:10 | call to cond | main.go:100:5:100:10 | call to cond is true |
+| main.go:100:5:100:10 | call to cond is false | main.go:103:3:103:3 | skip |
+| main.go:100:5:100:10 | call to cond is true | main.go:101:3:101:3 | skip |
+| main.go:101:3:101:3 | assignment to a | main.go:105:9:105:9 | a |
+| main.go:101:3:101:3 | skip | main.go:101:6:101:6 | skip |
+| main.go:101:6:101:6 | skip | main.go:101:10:101:10 | b |
+| main.go:101:10:101:10 | b | main.go:101:13:101:13 | a |
+| main.go:101:13:101:13 | a | main.go:101:3:101:3 | assignment to a |
+| main.go:103:3:103:3 | skip | main.go:103:6:103:6 | skip |
+| main.go:103:6:103:6 | assignment to b | main.go:105:9:105:9 | a |
+| main.go:103:6:103:6 | skip | main.go:103:10:103:10 | b |
+| main.go:103:10:103:10 | b | main.go:103:13:103:13 | a |
+| main.go:103:13:103:13 | a | main.go:103:6:103:6 | assignment to b |
+| main.go:105:2:105:12 | return statement | main.go:98:1:106:1 | exit |
+| main.go:105:9:105:9 | a | main.go:105:12:105:12 | b |
+| main.go:105:12:105:12 | b | main.go:105:2:105:12 | return statement |
 | noretfunctions.go:0:0:0:0 | entry | noretfunctions.go:3:1:6:1 | skip |
 | noretfunctions.go:3:1:6:1 | skip | noretfunctions.go:8:6:8:12 | skip |
 | noretfunctions.go:8:1:10:1 | entry | noretfunctions.go:9:2:9:8 | selection of Exit |
