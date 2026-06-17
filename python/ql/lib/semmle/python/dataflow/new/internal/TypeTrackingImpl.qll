@@ -169,6 +169,8 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
   /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
   predicate levelStepCall(Node nodeFrom, LocalSourceNode nodeTo) {
     instanceFieldStep(nodeFrom, nodeTo)
+    or
+    inheritedFieldStep(nodeFrom, nodeTo)
   }
 
   /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which does not depend on the call graph. */
@@ -366,6 +368,11 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
    * the written value to the read reference, for any pair of methods on the class (not
    * just from `__init__`).
    *
+   * Flow across the class hierarchy (a write in one class observed in a method inherited
+   * from, or contributed by, a related class) is handled separately by
+   * `inheritedFieldStep`, because resolving superclasses depends on the call graph and so
+   * cannot appear in this call-graph-independent step.
+   *
    * This is an over-approximation: it is instance-insensitive (it does not distinguish
    * between different instances of the same class) and order-insensitive (it does not
    * require the write to happen before the read), matching the precision of
@@ -381,24 +388,65 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
   }
 
   /**
+   * Holds if `nodeFrom` is written to attribute `self.attr` in an instance method of one
+   * class, and `nodeTo` reads attribute `self.attr` in an instance method of a different
+   * class that is related to it by inheritance (one is a transitive superclass of the
+   * other).
+   *
+   * This is the cross-hierarchy counterpart of `localFieldStep`: at runtime the receiver
+   * of both methods may be an instance of the more-derived class, whose behaviour is made
+   * up of the methods it declares together with those inherited from all of its ancestors.
+   * It therefore models the common pattern of a base class storing `self.attr` that a
+   * subclass reads, and vice versa. Resolving the superclass relationship depends on the
+   * call graph (via `getADirectSuperclass`), so this step is reported as `levelStepCall`
+   * rather than `levelStepNoCall`.
+   *
+   * Like `localFieldStep`, this is an over-approximation: it is both instance-insensitive
+   * and order-insensitive.
+   */
+  private predicate inheritedFieldStep(Node nodeFrom, LocalSourceNode nodeTo) {
+    exists(
+      Class writeCls, Class readCls, string attr, DataFlowPublic::AttrWrite write,
+      DataFlowPublic::AttrRead read
+    |
+      selfAttrRef(writeCls, attr, write) and
+      nodeFrom = write.getValue() and
+      selfAttrRef(readCls, attr, read) and
+      nodeTo = read and
+      writeCls != readCls and
+      (
+        writeCls = DataFlowDispatch::getADirectSuperclass*(readCls)
+        or
+        readCls = DataFlowDispatch::getADirectSuperclass*(writeCls)
+      )
+    )
+  }
+
+  /**
    * Holds if `nodeFrom` is written to attribute `self.attr` in some instance method of a
-   * class, and `nodeTo` reads attribute `attr` from an instance of the same class outside
-   * its methods (e.g. `instance.attr`).
+   * class, and `nodeTo` reads attribute `attr` from an instance of that class (or a
+   * subclass of it) outside its methods (e.g. `instance.attr`).
    *
    * This is the cross-instance counterpart of `localFieldStep`: it relates a write of
-   * `self.attr` inside the class to a read of `attr` on a reference to an instance of the
-   * class. Identifying instances relies on the call graph (via `classInstanceTracker`), so
-   * this step is reported as `levelStepCall` rather than `levelStepNoCall`.
+   * `self.attr` inside a class to a read of `attr` on a reference to an instance of that
+   * class or one of its subclasses. Identifying instances relies on the call graph (via
+   * `classInstanceTracker`), so this step is reported as `levelStepCall` rather than
+   * `levelStepNoCall`. The write may occur in the instance's own class or in any of its
+   * superclasses, since those methods are inherited.
    *
    * Like `localFieldStep`, this is an over-approximation: it is both instance-insensitive
    * and order-insensitive.
    */
   private predicate instanceFieldStep(Node nodeFrom, LocalSourceNode nodeTo) {
-    exists(Class cls, string attr, DataFlowPublic::AttrWrite write, DataFlowPublic::AttrRead read |
-      selfAttrRef(cls, attr, write) and
+    exists(
+      Class writeCls, Class instanceCls, string attr, DataFlowPublic::AttrWrite write,
+      DataFlowPublic::AttrRead read
+    |
+      selfAttrRef(writeCls, attr, write) and
       nodeFrom = write.getValue() and
-      instanceAttrRead(cls, attr, read) and
-      nodeTo = read
+      instanceAttrRead(instanceCls, attr, read) and
+      nodeTo = read and
+      writeCls = DataFlowDispatch::getADirectSuperclass*(instanceCls)
     )
   }
 
