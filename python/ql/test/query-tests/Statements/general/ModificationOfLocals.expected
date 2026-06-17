@@ -3,10 +3,3 @@
 | test.py:101:5:101:14 | Attribute() | Modification of the locals() dictionary will have no effect on the local variables. |
 | test.py:102:9:102:14 | Subscript | Modification of the locals() dictionary will have no effect on the local variables. |
 | test.py:103:5:103:13 | Attribute() | Modification of the locals() dictionary will have no effect on the local variables. |
-| test.py:206:5:206:11 | Subscript | Modification of the locals() dictionary will have no effect on the local variables. |
-| test.py:207:5:207:23 | Attribute() | Modification of the locals() dictionary will have no effect on the local variables. |
-| test.py:208:5:208:15 | Attribute() | Modification of the locals() dictionary will have no effect on the local variables. |
-| test.py:209:9:209:15 | Subscript | Modification of the locals() dictionary will have no effect on the local variables. |
-| test.py:210:5:210:14 | Attribute() | Modification of the locals() dictionary will have no effect on the local variables. |
-| test.py:228:9:228:24 | Subscript | Modification of the locals() dictionary will have no effect on the local variables. |
-| test.py:229:9:229:35 | Attribute() | Modification of the locals() dictionary will have no effect on the local variables. |
