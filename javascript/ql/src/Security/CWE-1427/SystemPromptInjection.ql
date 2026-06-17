@@ -3,7 +3,7 @@
  * @description Untrusted input flowing into a system prompt, developer prompt, or tool description of an AI model may allow an attacker to manipulate the model's behavior.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 5.0
+ * @security-severity 7.8
  * @precision high
  * @id js/system-prompt-injection
  * @tags security
