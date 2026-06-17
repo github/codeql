@@ -1,1 +1,2 @@
-experimental/CWE-525/WebCacheDeception.ql
+query: experimental/CWE-525/WebCacheDeception.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -10,7 +10,7 @@ class UsersController < ActionController::Base
   # BAD - the safe mode set globally is overridden with an unsafe mode passed as
   # a call argument
   def route1
-    json_data = params[:key]
-    object = Oj.load json_data, mode: :object
+    json_data = params[:key] # $ Source
+    object = Oj.load json_data, mode: :object # $ Alert
   end
 end

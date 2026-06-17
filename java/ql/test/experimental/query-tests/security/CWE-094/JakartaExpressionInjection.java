@@ -20,7 +20,7 @@ public class JakartaExpressionInjection {
         try (ServerSocket serverSocket = new ServerSocket(0)) {
             try (Socket socket = serverSocket.accept()) {
                 byte[] bytes = new byte[1024];
-                int n = socket.getInputStream().read(bytes);
+                int n = socket.getInputStream().read(bytes); // $ Source[java/javaee-expression-injection]
                 String expression = new String(bytes, 0, n);
                 action.accept(expression);
             }
@@ -31,7 +31,7 @@ public class JakartaExpressionInjection {
     private static void testWithELProcessorEval() throws IOException {
         testWithSocket(expression -> {
             ELProcessor processor = new ELProcessor();
-            processor.eval(expression);
+            processor.eval(expression); // $ Alert[java/javaee-expression-injection]
         });
     }
 
@@ -39,7 +39,7 @@ public class JakartaExpressionInjection {
     private static void testWithELProcessorGetValue() throws IOException {
         testWithSocket(expression -> {   
             ELProcessor processor = new ELProcessor();
-            processor.getValue(expression, Object.class);
+            processor.getValue(expression, Object.class); // $ Alert[java/javaee-expression-injection]
         });
     }
 
@@ -50,7 +50,7 @@ public class JakartaExpressionInjection {
             StandardELContext context = new StandardELContext(factory);
             ValueExpression valueExpression = factory.createValueExpression(context, expression, Object.class);
             LambdaExpression lambdaExpression = new LambdaExpression(new ArrayList<>(), valueExpression);
-            lambdaExpression.invoke(context, new Object[0]);
+            lambdaExpression.invoke(context, new Object[0]); // $ Alert[java/javaee-expression-injection]
         });
     }
 
@@ -58,7 +58,7 @@ public class JakartaExpressionInjection {
     private static void testWithELProcessorSetValue() throws IOException {
         testWithSocket(expression -> {
             ELProcessor processor = new ELProcessor();
-            processor.setValue(expression, new Object());
+            processor.setValue(expression, new Object()); // $ Alert[java/javaee-expression-injection]
         });
     }
 
@@ -66,7 +66,7 @@ public class JakartaExpressionInjection {
     private static void testWithELProcessorSetVariable() throws IOException {
         testWithSocket(expression -> {
             ELProcessor processor = new ELProcessor();
-            processor.setVariable("test", expression);
+            processor.setVariable("test", expression); // $ Alert[java/javaee-expression-injection]
         });
     }
 
@@ -76,7 +76,7 @@ public class JakartaExpressionInjection {
             ExpressionFactory factory = new de.odysseus.el.ExpressionFactoryImpl();
             ELContext context = new de.odysseus.el.util.SimpleContext();
             ValueExpression e = factory.createValueExpression(context, expression, Object.class);
-            e.getValue(context);
+            e.getValue(context); // $ Alert[java/javaee-expression-injection]
         });
     }
 
@@ -86,7 +86,7 @@ public class JakartaExpressionInjection {
             ExpressionFactory factory = new de.odysseus.el.ExpressionFactoryImpl();
             ELContext context = new de.odysseus.el.util.SimpleContext();
             ValueExpression e = factory.createValueExpression(context, expression, Object.class);
-            e.setValue(context, new Object());
+            e.setValue(context, new Object()); // $ Alert[java/javaee-expression-injection]
         });
     }
 
@@ -96,7 +96,7 @@ public class JakartaExpressionInjection {
             ExpressionFactory factory = new de.odysseus.el.ExpressionFactoryImpl();
             ELContext context = new de.odysseus.el.util.SimpleContext();
             MethodExpression e = factory.createMethodExpression(context, expression, Object.class, new Class[0]);
-            e.invoke(context, new Object[0]);
+            e.invoke(context, new Object[0]); // $ Alert[java/javaee-expression-injection]
         });
     }
 

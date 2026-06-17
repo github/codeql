@@ -1,1 +1,2 @@
-experimental/manually-check-http-verb/ManuallyCheckHttpVerb.ql
+query: experimental/manually-check-http-verb/ManuallyCheckHttpVerb.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

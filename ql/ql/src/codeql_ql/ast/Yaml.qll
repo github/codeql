@@ -46,6 +46,12 @@ private module YamlSig implements LibYaml::InputSig {
   class ParseErrorBase extends LocatableBase, @yaml_error {
     string getMessage() { yaml_errors(this, result) }
   }
+
+  class CommentBase extends LocatableBase, @yaml_comment {
+    string getText() { yaml_comments(this, result, _) }
+
+    override string toString() { yaml_comments(this, _, result) }
+  }
 }
 
 import LibYaml::Make<YamlSig>

@@ -13,21 +13,21 @@ class MyStr extends string {
 predicate bad1(Big b) {
   b.toString().matches("%foo")
   or
-  any()
+  any() // $ Alert
 }
 
 int bad2() {
   exists(Big big, Small small |
     result = big.toString().toInt()
     or
-    result = small.toString().toInt()
+    result = small.toString().toInt() // $ Alert
   )
 }
 
 float bad3(Big t) {
   result = [1 .. 10].toString().toFloat() or
   result = [11 .. 20].toString().toFloat() or
-  result = t.toString().toFloat() or
+  result = t.toString().toFloat() or // $ Alert
   result = [21 .. 30].toString().toFloat()
 }
 
@@ -50,7 +50,7 @@ predicate bad4(Big fromType, Big toType) {
   or
   fromType.toString().matches("%foo")
   or
-  helper(toType, fromType)
+  helper(toType, fromType) // $ Alert
 }
 
 predicate good2(Big t) {
@@ -71,7 +71,7 @@ predicate mixed1(Big good, Small small) {
       small.toString().matches("%foo") and
       // the use of good is fine, the comparison further up binds it.
       // the same is not true for bad.
-      (bad.toString().matches("%foo") or good.toString().regexpMatch("foo.*")) and
+      (bad.toString().matches("%foo") or good.toString().regexpMatch("foo.*")) and // $ Alert
       small.toString().regexpMatch(".*foo")
     )
 }
@@ -112,7 +112,7 @@ predicate good5(Big bb, Big v, boolean certain) {
     )
 }
 
-predicate bad5(Big bb) { if none() then bb.toString().matches("%foo") else any() }
+predicate bad5(Big bb) { if none() then bb.toString().matches("%foo") else any() } // $ Alert
 
 pragma[inline]
 predicate good5(Big a, Big b) {
@@ -126,12 +126,12 @@ predicate bad6(Big a) {
   (
     a.toString().matches("%foo") // bad
     or
-    any()
+    any() // $ Alert
   ) and
   (
     a.toString().matches("%foo") // also bad
     or
-    any()
+    any() // $ Alert
   )
 }
 
@@ -163,7 +163,7 @@ class HasField extends Big {
   HasField() {
     field = this
     or
-    this.toString().matches("%foo") // <- field only defined here.
+    this.toString().matches("%foo") // $ Alert // <- field only defined here.
   }
 
   Big getField() { result = field }

@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["google-genai.Client", "@google/genai", "Member[GoogleGenAI].Instance"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["google-genai.Client", "Member[models].Member[generateContent,generateContentStream].Argument[0].Member[config].Member[systemInstruction]", "system-prompt-injection"]
+      - ["google-genai.Client", "Member[chats].Member[create].Argument[0].Member[config].Member[systemInstruction]", "system-prompt-injection"]
+      - ["google-genai.Client", "Member[chats].Member[create].ReturnValue.Member[sendMessage].Argument[0].Member[config].Member[systemInstruction]", "system-prompt-injection"]
+      - ["google-genai.Client", "Member[live].Member[connect].Argument[0].Member[config].Member[systemInstruction]", "system-prompt-injection"]
+      - ["google-genai.Client", "Member[models].Member[generateContent,generateContentStream].Argument[0].Member[contents]", "user-prompt-injection"]
+      - ["google-genai.Client", "Member[models].Member[generateImages].Argument[0].Member[prompt]", "user-prompt-injection"]
+      - ["google-genai.Client", "Member[models].Member[editImage].Argument[0].Member[prompt]", "user-prompt-injection"]
+      - ["google-genai.Client", "Member[models].Member[generateVideos].Argument[0].Member[prompt]", "user-prompt-injection"]
+      - ["google-genai.Client", "Member[chats].Member[create].ReturnValue.Member[sendMessage,sendMessageStream].Argument[0].Member[message]", "user-prompt-injection"]
+      - ["google-genai.Client", "Member[chats].Member[create].ReturnValue.Member[sendMessage,sendMessageStream].Argument[0].Member[content]", "user-prompt-injection"]
+      - ["google-genai.Client", "Member[interactions].Member[create].Argument[0].Member[input]", "user-prompt-injection"]

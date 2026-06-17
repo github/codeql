@@ -9,4 +9,4 @@ class Foo {
     }
 }
 
-class aaaa {}
+class aaaa {} // $ Alert

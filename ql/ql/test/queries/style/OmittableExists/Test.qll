@@ -17,7 +17,7 @@ class Location extends @location_default {
 }
 
 predicate test() {
-  exists(int i | aPredicate(i)) // BAD
+  exists(int i | aPredicate(i)) // $ Alert // BAD
   or
   exists(int i | aPredicate(i) or anotherPredicate(i)) // BAD [NOT DETECTED]
   or

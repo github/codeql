@@ -1,0 +1,2 @@
+query: Security/CWE-1427/UserPromptInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

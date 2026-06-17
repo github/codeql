@@ -14,53 +14,53 @@ public class SpringUrlRedirect {
     private final static String VALID_REDIRECT = "http://127.0.0.1";
 
     @GetMapping("url1")
-    public RedirectView bad1(String redirectUrl, HttpServletResponse response) throws Exception {
+    public RedirectView bad1(String redirectUrl, HttpServletResponse response) throws Exception { // $ Source
         RedirectView rv = new RedirectView();
-        rv.setUrl(redirectUrl);
+        rv.setUrl(redirectUrl); // $ Alert
         return rv;
     }
 
     @GetMapping("url2")
-    public String bad2(String redirectUrl) {
-        String url = "redirect:" + redirectUrl;
+    public String bad2(String redirectUrl) { // $ Source
+        String url = "redirect:" + redirectUrl; // $ Alert
         return url;
     }
 
     @GetMapping("url3")
-    public RedirectView bad3(String redirectUrl) {
-        RedirectView rv = new RedirectView(redirectUrl);
+    public RedirectView bad3(String redirectUrl) { // $ Source
+        RedirectView rv = new RedirectView(redirectUrl); // $ Alert
         return rv;
     }
 
     @GetMapping("url4")
-    public ModelAndView bad4(String redirectUrl) {
-        return new ModelAndView("redirect:" + redirectUrl);
+    public ModelAndView bad4(String redirectUrl) { // $ Source
+        return new ModelAndView("redirect:" + redirectUrl); // $ Alert
     }
 
     @GetMapping("url5")
-    public String bad5(String redirectUrl) {
+    public String bad5(String redirectUrl) { // $ Source
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("redirect:");
-        stringBuffer.append(redirectUrl);
+        stringBuffer.append(redirectUrl); // $ Alert
         return stringBuffer.toString();
     }
 
     @GetMapping("url6")
-    public String bad6(String redirectUrl) {
+    public String bad6(String redirectUrl) { // $ Source
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("redirect:");
-        stringBuilder.append(redirectUrl);
+        stringBuilder.append(redirectUrl); // $ Alert
         return stringBuilder.toString();
     }
 
     @GetMapping("url7")
-    public String bad7(String redirectUrl) {
-        return "redirect:" + String.format("%s/?aaa", redirectUrl);
+    public String bad7(String redirectUrl) { // $ Source
+        return "redirect:" + String.format("%s/?aaa", redirectUrl); // $ Alert
     }
 
     @GetMapping("url8")
-    public String bad8(String redirectUrl, String token) {
-        return "redirect:" + String.format(redirectUrl + "?token=%s", token);
+    public String bad8(String redirectUrl, String token) { // $ Source
+        return "redirect:" + String.format(redirectUrl + "?token=%s", token); // $ Alert
     }
 
     @GetMapping("url9")
@@ -86,49 +86,49 @@ public class SpringUrlRedirect {
     }
 
     @GetMapping("url12")
-    public ResponseEntity<Void> bad9(String redirectUrl) {
+    public ResponseEntity<Void> bad9(String redirectUrl) { // $ Source
         return ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(redirectUrl))
+                .location(URI.create(redirectUrl)) // $ Alert
                 .build();
     }
 
     @GetMapping("url13")
-    public ResponseEntity<Void> bad10(String redirectUrl) {
+    public ResponseEntity<Void> bad10(String redirectUrl) { // $ Source
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(URI.create(redirectUrl));
 
-        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER); // $ Alert
     }
 
     @GetMapping("url14")
-    public ResponseEntity<Void> bad11(String redirectUrl) {
+    public ResponseEntity<Void> bad11(String redirectUrl) { // $ Source
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", redirectUrl);
 
-        return ResponseEntity.status(HttpStatus.SEE_OTHER).headers(httpHeaders).build();
+        return ResponseEntity.status(HttpStatus.SEE_OTHER).headers(httpHeaders).build(); // $ Alert
     }
 
     @GetMapping("url15")
-    public ResponseEntity<Void> bad12(String redirectUrl) {
+    public ResponseEntity<Void> bad12(String redirectUrl) { // $ Source
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", redirectUrl);
 
-        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER); // $ Alert
     }
 
     @GetMapping("url16")
-    public ResponseEntity bad13(String redirectUrl) {
+    public ResponseEntity bad13(String redirectUrl) { // $ Source
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", redirectUrl);
 
-        return new ResponseEntity<>("TestBody", httpHeaders, HttpStatus.SEE_OTHER);
+        return new ResponseEntity<>("TestBody", httpHeaders, HttpStatus.SEE_OTHER); // $ Alert
     }
 
     @GetMapping("url17")
-    public ResponseEntity bad14(String redirectUrl) {
+    public ResponseEntity bad14(String redirectUrl) { // $ Source
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(URI.create(redirectUrl));
 
-        return new ResponseEntity<>("TestBody", httpHeaders, HttpStatus.SEE_OTHER);
+        return new ResponseEntity<>("TestBody", httpHeaders, HttpStatus.SEE_OTHER); // $ Alert
     }
 }

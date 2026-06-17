@@ -4,18 +4,18 @@ class UsersController < ActionController::Base
 
   def create
     file = params[:file]
-    open(file) # BAD
-    IO.read(file) # BAD
-    IO.write(file) # BAD
-    IO.binread(file) # BAD
-    IO.binwrite(file) # BAD
-    IO.foreach(file) # BAD
-    IO.readlines(file) # BAD
-    URI.open(file) # BAD
+    open(file) # $ Alert // BAD
+    IO.read(file) # $ Alert // BAD
+    IO.write(file) # $ Alert // BAD
+    IO.binread(file) # $ Alert // BAD
+    IO.binwrite(file) # $ Alert // BAD
+    IO.foreach(file) # $ Alert // BAD
+    IO.readlines(file) # $ Alert // BAD
+    URI.open(file) # $ Alert // BAD
 
     File.open(file).read # GOOD
 
-    Kernel.open(file) # BAD
+    Kernel.open(file) # $ Alert // BAD
 
     File.open(file, "r") # GOOD
 
@@ -25,7 +25,7 @@ class UsersController < ActionController::Base
 
     Kernel.open("this is #{fine}") # GOOD
 
-    Kernel.open("#{this_is} bad") # BAD
+    Kernel.open("#{this_is} bad") # $ Alert // BAD
 
     open("| #{this_is_an_explicit_command} foo bar") # GOOD
 
@@ -43,6 +43,6 @@ class UsersController < ActionController::Base
     
     open.where(external: false) # GOOD - an open method is called withoout arguments
     
-    open(file) # BAD - sanity check to verify that file was not mistakenly marked as sanitized
+    open(file) # $ Alert // BAD - sanity check to verify that file was not mistakenly marked as sanitized
   end
 end

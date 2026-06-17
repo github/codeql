@@ -11,12 +11,12 @@ class Test {
   public static void basic() {
 
     int array[] = { 0, 1, 2, 3, 4 };
-    String userProperty = System.getProperty("userProperty");
+    String userProperty = System.getProperty("userProperty"); // $ Source[java/improper-validation-of-array-index]
     try {
         int index = Integer.parseInt(userProperty.trim());
 
         // BAD Accessing array without conditional check
-        System.out.println(array[index]);
+        System.out.println(array[index]); // $ Alert[java/improper-validation-of-array-index]
 
         if (index >= 0 && index < array.length) {
           // GOOD Accessing array under conditions
@@ -38,10 +38,10 @@ class Test {
   public static void random() {
     int array[] = { 0, 1, 2, 3, 4 };
 
-    int index = (new SecureRandom()).nextInt(10);
+    int index = (new SecureRandom()).nextInt(10); // $ Source[java/improper-validation-of-array-index-code-specified]
 
     // BAD Accessing array without conditional check
-    System.out.println(array[index]);
+    System.out.println(array[index]); // $ Alert[java/improper-validation-of-array-index-code-specified]
 
     if (index < array.length) {
       // GOOD Accessing array under conditions
@@ -56,10 +56,10 @@ class Test {
   public static void apacheRandom() {
     int array[] = { 0, 1, 2, 3, 4 };
 
-    int index = RandomUtils.nextInt(0, 10);
+    int index = RandomUtils.nextInt(0, 10); // $ Source[java/improper-validation-of-array-index-code-specified]
 
     // BAD Accessing array without conditional check
-    System.out.println(array[index]);
+    System.out.println(array[index]); // $ Alert[java/improper-validation-of-array-index-code-specified]
 
     if (index < array.length) {
       // GOOD Accessing array under conditions
@@ -73,20 +73,20 @@ class Test {
 
   public static void construction() {
 
-    String userProperty = System.getProperty("userProperty");
+    String userProperty = System.getProperty("userProperty"); // $ Source[java/improper-validation-of-array-construction]
     try {
         int size = Integer.parseInt(userProperty.trim());
 
-        int[] array = new int[size];
+        int[] array = new int[size]; // $ Sink[java/improper-validation-of-array-construction]
 
         // BAD The array was created without checking the size, so this access may be dubious
-        System.out.println(array[0]);
+        System.out.println(array[0]); // $ Alert[java/improper-validation-of-array-construction]
 
         if (size >= 0) {
-          int[] array2 = new int[size];
+          int[] array2 = new int[size]; // $ Sink[java/improper-validation-of-array-construction]
 
           // BAD The array was created without checking that the size is greater than zero
-          System.out.println(array2[0]);
+          System.out.println(array2[0]); // $ Alert[java/improper-validation-of-array-construction]
         }
 
         if (size > 0) {
@@ -102,12 +102,12 @@ class Test {
 
   public static void constructionBounded() {
 
-    int size = 0;
+    int size = 0; // $ Source[java/improper-validation-of-array-construction-code-specified]
 
-    int[] array = new int[size];
+    int[] array = new int[size]; // $ Sink[java/improper-validation-of-array-construction-code-specified]
 
     // BAD Array may be empty.
-    System.out.println(array[0]);
+    System.out.println(array[0]); // $ Alert[java/improper-validation-of-array-construction-code-specified]
 
     int index = 0;
     if (index < array.length) {

@@ -36,6 +36,6 @@ public class TaintedEnvironment {
     public void exec() throws java.io.IOException {
         String kv = (String) source();
 
-        Runtime.getRuntime().exec(new String[] { "ls" }, new String[] { kv }); // $ hasTaintFlow
+        Runtime.getRuntime().exec(new String[] { "ls" }, new String[] { kv }); // $ Alert[java/relative-path-command] hasTaintFlow
     }
 }

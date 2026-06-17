@@ -1,1 +1,2 @@
-Likely Bugs/Likely Typos/ContradictoryTypeChecks.ql
+query: Likely Bugs/Likely Typos/ContradictoryTypeChecks.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

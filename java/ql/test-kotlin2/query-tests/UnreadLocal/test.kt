@@ -5,13 +5,13 @@ fun fn0(size: Int) {
 }
 
 fun fn1(a: Array<Int>) {
-    for (e in a) {
+    for (e in a) { // $ Alert
         println()
     }
 }
 
 fun fn2(a: Array<Int>) {
-    for ((idx, e) in a.withIndex()) {
+    for ((idx, e) in a.withIndex()) { // $ Alert
         println()
     }
 }

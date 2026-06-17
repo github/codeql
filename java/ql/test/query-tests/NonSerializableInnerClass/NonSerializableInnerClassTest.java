@@ -11,9 +11,9 @@ public class NonSerializableInnerClassTest {
 
   public static class Outer1{
 
-    public class Problematic1 implements Serializable{ }
+    public class Problematic1 implements Serializable{ } // $ Alert
 
-    public class Problematic2 extends S{ }
+    public class Problematic2 extends S{ } // $ Alert
 
 
     @SuppressWarnings("serial")
@@ -48,8 +48,8 @@ public class NonSerializableInnerClassTest {
     public class Ok9 implements Serializable{ }   
   }
 
-  public class Problematic3 extends S {
-    public class Problematic4 implements Serializable{ }   // because NonSerializableInnerClassTest is not serializable
+  public class Problematic3 extends S { // $ Alert
+    public class Problematic4 implements Serializable{ }   // $ Alert // because NonSerializableInnerClassTest is not serializable
   }
 
   // we currently ignore anonymous classes
@@ -66,7 +66,7 @@ public class NonSerializableInnerClassTest {
   }
 
   // the class is not used anywhere, but the serialVersionUID field is an indicator for later serialization
-  private class Problematic7 implements Serializable{
+  private class Problematic7 implements Serializable{ // $ Alert
     public static final long serialVersionUID = 123;
   }
 

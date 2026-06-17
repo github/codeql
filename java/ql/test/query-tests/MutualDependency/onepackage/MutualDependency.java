@@ -7,7 +7,7 @@ public class MutualDependency {
 		static int a = m;
 	}
 	// disallow inter-package dependencies
-	public static class B {
+	public static class B { // $ Alert
 		public static int b = otherpackage.OtherClass.c;
 	}
 }

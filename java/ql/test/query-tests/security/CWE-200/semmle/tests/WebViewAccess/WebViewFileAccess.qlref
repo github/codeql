@@ -1,1 +1,2 @@
-Security/CWE/CWE-200/AndroidWebViewSettingsFileAccess.ql
+query: Security/CWE/CWE-200/AndroidWebViewSettingsFileAccess.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

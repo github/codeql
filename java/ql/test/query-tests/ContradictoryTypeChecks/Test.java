@@ -7,31 +7,31 @@ public class Test<T> {
 	void foo(Super lhs, Super rhs) {
 		if (lhs instanceof Sub1) ;
 		else if (rhs instanceof Sub1)
-			if ((lhs instanceof Sub1) || (lhs instanceof Sub2));
+			if ((lhs instanceof Sub1) || (lhs instanceof Sub2)); // $ Alert
 	}
 
 	void bar(Super x) {
 		if (x instanceof Super);
-		else if (x instanceof Sub1);
+		else if (x instanceof Sub1); // $ Alert
 	}
 
 	// modeled after results on Apache Lucene
 	void baz(Super x, Super y) {
 		if (x instanceof Sub1);
-		else if (x instanceof Sub1);
+		else if (x instanceof Sub1); // $ Alert
 	}
 
 	// NOT OK
 	void w(Super x) {
 		if (x instanceof Sub2 || x instanceof Super);
-		else if (x instanceof Sub1);
+		else if (x instanceof Sub1); // $ Alert
 	}
 
 	// modeled after result on WildFly
 	@Override
 	public boolean equals(Object object) {
 		if ((object != null) && !(object instanceof Test)) {
-			Test<?> value = (Test<?>) object;
+			Test<?> value = (Test<?>) object; // $ Alert
 			return (this.hashCode() == value.hashCode()) && super.equals(object);
 		}
 		return super.equals(object);
@@ -40,7 +40,7 @@ public class Test<T> {
 	// NOT OK
 	Sub1 m(Super o) {
 		if (!(o instanceof Sub1))
-			return (Sub1)o;
+			return (Sub1)o; // $ Alert
 		return null;
 	}
 

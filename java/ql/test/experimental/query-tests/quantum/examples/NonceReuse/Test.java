@@ -16,7 +16,7 @@ public class Test {
 
     private static byte[] getRandomWrapper1() throws Exception {
         byte[] val = new byte[16];
-        new SecureRandom().nextBytes(val);
+        new SecureRandom().nextBytes(val); // $ Source
         return val;
     }
 
@@ -37,7 +37,7 @@ public class Test {
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         SecretKey key = generateAESKey();
-        cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec); // BAD: Reuse of `iv` in funcB1
+        cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec); // $ Alert // BAD: Reuse of `iv` in funcB1
         byte[] ciphertext = cipher.doFinal("Simple Test Data".getBytes());
     }
 
@@ -46,7 +46,7 @@ public class Test {
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         SecretKey key = generateAESKey();
-        cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec); // BAD: Reuse of `iv` in funcA1
+        cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec); // $ Alert // BAD: Reuse of `iv` in funcA1
         byte[] ciphertext = cipher.doFinal("Simple Test Data".getBytes());
     }
 
@@ -73,13 +73,13 @@ public class Test {
         IvParameterSpec ivSpec1 = new IvParameterSpec(iv);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         SecretKey key1 = generateAESKey();
-        cipher.init(Cipher.ENCRYPT_MODE, key1, ivSpec1); // BAD: reuse of `iv` below
+        cipher.init(Cipher.ENCRYPT_MODE, key1, ivSpec1); // $ Alert // BAD: reuse of `iv` below
         byte[] ciphertext = cipher.doFinal("Simple Test Data".getBytes());
 
         IvParameterSpec ivSpec2 = new IvParameterSpec(iv);
         Cipher cipher2 = Cipher.getInstance("AES/CBC/PKCS5Padding");
         SecretKey key2 = generateAESKey();
-        cipher2.init(Cipher.ENCRYPT_MODE, key2, ivSpec2); // BAD: Reuse of `iv` above
+        cipher2.init(Cipher.ENCRYPT_MODE, key2, ivSpec2); // $ Alert // BAD: Reuse of `iv` above
         byte[] ciphertext2 = cipher2.doFinal("Simple Test Data".getBytes());
     }
 

@@ -11,7 +11,7 @@ class Outer2 {
   class Inner<T> extends GenericTest<T> {
 
     public void test() {
-      f();
+      f(); // $ Alert
     }
 
   }

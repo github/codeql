@@ -1,1 +1,2 @@
-Likely Bugs/Statements/MissingEnumInSwitch.ql
+query: Likely Bugs/Statements/MissingEnumInSwitch.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

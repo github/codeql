@@ -11,6 +11,6 @@ func unzip(f string) {
 	for _, f := range r.File {
 		p, _ := filepath.Abs(f.Name)
 		// BAD: This could overwrite any file on the file system
-		ioutil.WriteFile(p, []byte("present"), 0666)
-	}
+		ioutil.WriteFile(p, []byte("present"), 0666) // $ Sink[go/zipslip]
+	} // $ Alert[go/zipslip]
 }

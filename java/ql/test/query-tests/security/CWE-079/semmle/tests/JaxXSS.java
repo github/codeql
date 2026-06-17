@@ -12,25 +12,25 @@ import java.util.Locale;
 public class JaxXSS {
 
   @GET
-  public static Response specificContentType(boolean safeContentType, boolean chainDirectly, boolean contentTypeFirst, String userControlled) { // $ Source
+  public static Response specificContentType(boolean safeContentType, boolean chainDirectly, boolean contentTypeFirst, String userControlled) { // $ Source[java/xss]
 
     Response.ResponseBuilder builder = Response.ok();
 
     if(!safeContentType) {
       if(chainDirectly) {
         if(contentTypeFirst)
-          return builder.type(MediaType.TEXT_HTML).entity(userControlled).build(); // $ Alert
+          return builder.type(MediaType.TEXT_HTML).entity(userControlled).build(); // $ Alert[java/xss]
         else
-          return builder.entity(userControlled).type(MediaType.TEXT_HTML).build(); // $ Alert
+          return builder.entity(userControlled).type(MediaType.TEXT_HTML).build(); // $ Alert[java/xss]
       }
       else {
         if(contentTypeFirst) {
           Response.ResponseBuilder builder2 = builder.type(MediaType.TEXT_HTML);
-          return builder2.entity(userControlled).build(); // $ Alert
+          return builder2.entity(userControlled).build(); // $ Alert[java/xss]
         }
         else {
           Response.ResponseBuilder builder2 = builder.entity(userControlled);
-          return builder2.type(MediaType.TEXT_HTML).build(); // $ Alert
+          return builder2.type(MediaType.TEXT_HTML).build(); // $ Alert[java/xss]
         }
       }
     }
@@ -56,7 +56,7 @@ public class JaxXSS {
   }
 
   @GET
-  public static Response specificContentTypeSetterMethods(int route, boolean safeContentType, String userControlled) { // $ Source
+  public static Response specificContentTypeSetterMethods(int route, boolean safeContentType, String userControlled) { // $ Source[java/xss]
 
     // Test the remarkably many routes to setting a content-type in Jax-RS, besides the ResponseBuilder.entity method used above:
 
@@ -105,39 +105,39 @@ public class JaxXSS {
     else {
       if(route == 0) {
         // via ok, as a string literal:
-        return Response.ok("text/html").entity(userControlled).build(); // $ Alert
+        return Response.ok("text/html").entity(userControlled).build(); // $ Alert[java/xss]
       }
       else if(route == 1) {
         // via ok, as a string constant:
-        return Response.ok(MediaType.TEXT_HTML).entity(userControlled).build(); // $ Alert
+        return Response.ok(MediaType.TEXT_HTML).entity(userControlled).build(); // $ Alert[java/xss]
       }
       else if(route == 2) {
         // via ok, as a MediaType constant:
-        return Response.ok(MediaType.TEXT_HTML_TYPE).entity(userControlled).build(); // $ Alert
+        return Response.ok(MediaType.TEXT_HTML_TYPE).entity(userControlled).build(); // $ Alert[java/xss]
       }
       else if(route == 3) {
         // via ok, as a Variant, via constructor:
-        return Response.ok(new Variant(MediaType.TEXT_HTML_TYPE, "language", "encoding")).entity(userControlled).build(); // $ Alert
+        return Response.ok(new Variant(MediaType.TEXT_HTML_TYPE, "language", "encoding")).entity(userControlled).build(); // $ Alert[java/xss]
       }
       else if(route == 4) {
         // via ok, as a Variant, via static method:
-        return Response.ok(Variant.mediaTypes(MediaType.TEXT_HTML_TYPE).build()).entity(userControlled).build(); // $ Alert
+        return Response.ok(Variant.mediaTypes(MediaType.TEXT_HTML_TYPE).build()).entity(userControlled).build(); // $ Alert[java/xss]
       }
       else if(route == 5) {
         // via ok, as a Variant, via instance method:
-        return Response.ok(Variant.languages(Locale.UK).mediaTypes(MediaType.TEXT_HTML_TYPE).build()).entity(userControlled).build(); // $ Alert
+        return Response.ok(Variant.languages(Locale.UK).mediaTypes(MediaType.TEXT_HTML_TYPE).build()).entity(userControlled).build(); // $ Alert[java/xss]
       }
       else if(route == 6) {
         // via builder variant, before entity:
-        return Response.ok().variant(new Variant(MediaType.TEXT_HTML_TYPE, "language", "encoding")).entity(userControlled).build(); // $ Alert
+        return Response.ok().variant(new Variant(MediaType.TEXT_HTML_TYPE, "language", "encoding")).entity(userControlled).build(); // $ Alert[java/xss]
       }
       else if(route == 7) {
         // via builder variant, after entity:
-        return Response.ok().entity(userControlled).variant(new Variant(MediaType.TEXT_HTML_TYPE, "language", "encoding")).build(); // $ Alert
+        return Response.ok().entity(userControlled).variant(new Variant(MediaType.TEXT_HTML_TYPE, "language", "encoding")).build(); // $ Alert[java/xss]
       }
       else if(route == 8) {
         // provide entity via ok, then content-type via builder:
-        return Response.ok(userControlled).type(MediaType.TEXT_HTML_TYPE).build(); // $ Alert
+        return Response.ok(userControlled).type(MediaType.TEXT_HTML_TYPE).build(); // $ Alert[java/xss]
       }
     }
 
@@ -161,28 +161,28 @@ public class JaxXSS {
   }
 
   @GET @Produces(MediaType.TEXT_HTML)
-  public static Response methodContentTypeUnsafe(String userControlled) { // $ Source
-    return Response.ok(userControlled).build(); // $ Alert
+  public static Response methodContentTypeUnsafe(String userControlled) { // $ Source[java/xss]
+    return Response.ok(userControlled).build(); // $ Alert[java/xss]
   }
 
   @POST @Produces(MediaType.TEXT_HTML)
-  public static Response methodContentTypeUnsafePost(String userControlled) { // $ Source
-    return Response.ok(userControlled).build(); // $ Alert
+  public static Response methodContentTypeUnsafePost(String userControlled) { // $ Source[java/xss]
+    return Response.ok(userControlled).build(); // $ Alert[java/xss]
   }
 
   @GET @Produces("text/html")
-  public static Response methodContentTypeUnsafeStringLiteral(String userControlled) { // $ Source
-    return Response.ok(userControlled).build(); // $ Alert
+  public static Response methodContentTypeUnsafeStringLiteral(String userControlled) { // $ Source[java/xss]
+    return Response.ok(userControlled).build(); // $ Alert[java/xss]
   }
 
   @GET @Produces({MediaType.TEXT_HTML, MediaType.APPLICATION_JSON})
-  public static Response methodContentTypeMaybeSafe(String userControlled) { // $ Source
-    return Response.ok(userControlled).build(); // $ Alert
+  public static Response methodContentTypeMaybeSafe(String userControlled) { // $ Source[java/xss]
+    return Response.ok(userControlled).build(); // $ Alert[java/xss]
   }
 
   @GET @Produces(MediaType.APPLICATION_JSON)
-  public static Response methodContentTypeSafeOverriddenWithUnsafe(String userControlled) { // $ Source
-    return Response.ok().type(MediaType.TEXT_HTML).entity(userControlled).build(); // $ Alert
+  public static Response methodContentTypeSafeOverriddenWithUnsafe(String userControlled) { // $ Source[java/xss]
+    return Response.ok().type(MediaType.TEXT_HTML).entity(userControlled).build(); // $ Alert[java/xss]
   }
 
   @GET @Produces(MediaType.TEXT_HTML)
@@ -204,13 +204,13 @@ public class JaxXSS {
     }
 
     @GET @Produces({"text/html"})
-    public Response overridesWithUnsafe(String userControlled) { // $ Source
-      return Response.ok(userControlled).build(); // $ Alert
+    public Response overridesWithUnsafe(String userControlled) { // $ Source[java/xss]
+      return Response.ok(userControlled).build(); // $ Alert[java/xss]
     }
 
     @GET
-    public Response overridesWithUnsafe2(String userControlled) { // $ Source
-      return Response.ok().type(MediaType.TEXT_HTML).entity(userControlled).build(); // $ Alert
+    public Response overridesWithUnsafe2(String userControlled) { // $ Source[java/xss]
+      return Response.ok().type(MediaType.TEXT_HTML).entity(userControlled).build(); // $ Alert[java/xss]
     }
   }
 
@@ -218,13 +218,13 @@ public class JaxXSS {
   @Produces({"text/html"})
   public static class ClassContentTypeUnsafe {
     @GET
-    public Response test(String userControlled) { // $ Source
-      return Response.ok(userControlled).build(); // $ Alert
+    public Response test(String userControlled) { // $ Source[java/xss]
+      return Response.ok(userControlled).build(); // $ Alert[java/xss]
     }
 
     @GET
-    public String testDirectReturn(String userControlled) { // $ Source
-      return userControlled; // $ Alert
+    public String testDirectReturn(String userControlled) { // $ Source[java/xss]
+      return userControlled; // $ Alert[java/xss]
     }
 
     @GET @Produces({"application/json"})
@@ -239,13 +239,13 @@ public class JaxXSS {
   }
 
   @GET
-  public static Response entityWithNoMediaType(String userControlled) { // $ Source
-    return Response.ok(userControlled).build(); // $ Alert
+  public static Response entityWithNoMediaType(String userControlled) { // $ Source[java/xss]
+    return Response.ok(userControlled).build(); // $ Alert[java/xss]
   }
 
   @GET
-  public static String stringWithNoMediaType(String userControlled) { // $ Source
-    return userControlled; // $ Alert
+  public static String stringWithNoMediaType(String userControlled) { // $ Source[java/xss]
+    return userControlled; // $ Alert[java/xss]
   }
 
 }

@@ -1,10 +1,10 @@
 public class InternalDeadCodeCycle {
 
-	public void foo() {
+	public void foo() { // $ Alert
 		bar();
 	}
 
-	public void bar() {
+	public void bar() { // $ Alert
 		foo();
 	}
 

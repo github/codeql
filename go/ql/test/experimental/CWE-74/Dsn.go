@@ -23,10 +23,10 @@ func good() (interface{}, error) {
 }
 
 func bad() interface{} {
-	name2 := os.Args[1:]
+	name2 := os.Args[1:] // $ Source[go/dsn-injection-local]
 	// This is bad. `name` can be something like `test?allowAllFiles=true&` which will allow an attacker to access local files.
 	dbDSN := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8", "username", "password", "127.0.0.1", 3306, name2[0])
-	db, _ := sql.Open("mysql", dbDSN)
+	db, _ := sql.Open("mysql", dbDSN) // $ Alert[go/dsn-injection-local]
 	return db
 }
 
@@ -44,10 +44,10 @@ func good2(w http.ResponseWriter, req *http.Request) (interface{}, error) {
 }
 
 func bad2(w http.ResponseWriter, req *http.Request) interface{} {
-	name := req.FormValue("name")
+	name := req.FormValue("name") // $ Source[go/dsn-injection]
 	// This is bad. `name` can be something like `test?allowAllFiles=true&` which will allow an attacker to access local files.
 	dbDSN := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8", "username", "password", "127.0.0.1", 3306, name)
-	db, _ := sql.Open("mysql", dbDSN)
+	db, _ := sql.Open("mysql", dbDSN) // $ Alert[go/dsn-injection]
 	return db
 }
 
@@ -60,12 +60,12 @@ func (Config) Parse([]string) error { return nil }
 
 func RegexFuncModelTest(w http.ResponseWriter, req *http.Request) (interface{}, error) {
 	cfg := NewConfig()
-	err := cfg.Parse(os.Args[1:]) // This is bad. `name` can be something like `test?allowAllFiles=true&` which will allow an attacker to access local files.
+	err := cfg.Parse(os.Args[1:]) // $ Source[go/dsn-injection-local] // This is bad. `name` can be something like `test?allowAllFiles=true&` which will allow an attacker to access local files.
 	if err != nil {
 		return nil, err
 	}
 	dbDSN := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8", "username", "password", "127.0.0.1", 3306, cfg.dsn)
-	db, _ := sql.Open("mysql", dbDSN)
+	db, _ := sql.Open("mysql", dbDSN) // $ Alert[go/dsn-injection-local]
 	return db, nil
 }
 

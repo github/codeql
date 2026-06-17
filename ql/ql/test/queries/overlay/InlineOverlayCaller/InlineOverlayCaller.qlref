@@ -1,1 +1,2 @@
-queries/overlay/InlineOverlayCaller.ql
+query: queries/overlay/InlineOverlayCaller.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

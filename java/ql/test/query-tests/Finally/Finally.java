@@ -3,7 +3,7 @@ class InFinally {
 	void returnVoidInFinally() {
 		try {
 		} finally {
-			return;
+			return; // $ Alert
 		}
 	}
 
@@ -14,7 +14,7 @@ class InFinally {
 			}
 		} finally {
 			if (b2) {
-				return 5;
+				return 5; // $ Alert
 			}
 		}
 		return 3;
@@ -27,7 +27,7 @@ class InFinally {
 			}
 		} finally {
 			if (b2) {
-				throw new RuntimeException("Foo 2");
+				throw new RuntimeException("Foo 2"); // $ Alert
 			}
 		}
 		throw new RuntimeException("Foo 3");
@@ -60,7 +60,7 @@ class InFinally {
 				}
 			} finally {
 				if(b) {
-					break;
+					break; // $ Alert
 				}
 			}
 		}
@@ -74,7 +74,7 @@ class InFinally {
 					}
 				} finally {
 					if(b) {
-						break;
+						break; // $ Alert
 					}
 				}
 			}
@@ -108,7 +108,7 @@ class InFinally {
 				}
 			} finally {
 				if(b) {
-					continue;
+					continue; // $ Alert
 				}
 			}
 		}
@@ -122,7 +122,7 @@ class InFinally {
 					}
 				} finally {
 					if(b) {
-						continue;
+						continue; // $ Alert
 					}
 				}
 			}

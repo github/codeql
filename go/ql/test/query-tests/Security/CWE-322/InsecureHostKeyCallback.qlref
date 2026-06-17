@@ -1,1 +1,2 @@
-Security/CWE-322/InsecureHostKeyCallback.ql
+query: Security/CWE-322/InsecureHostKeyCallback.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

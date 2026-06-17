@@ -4,7 +4,7 @@ module;
 import ql
 
 pragma[inline]
-predicate foo(int x) { x = 42 }
+predicate foo(int x) { x = 42 } // $ Alert
 
 overlay[caller]
 pragma[inline]

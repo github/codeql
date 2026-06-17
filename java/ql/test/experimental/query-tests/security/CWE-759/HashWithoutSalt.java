@@ -7,7 +7,7 @@ public class HashWithoutSalt {
 	// BAD - Hash without a salt.
 	public String getSHA256Hash(String password) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		byte[] messageDigest = md.digest(password.getBytes());
+		byte[] messageDigest = md.digest(password.getBytes()); // $ Alert
 		return Base64.getEncoder().encodeToString(messageDigest);
 	}
 
@@ -22,7 +22,7 @@ public class HashWithoutSalt {
 	// BAD - Hash without a salt.
 	public String getSHA256Hash2(String password) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
-		md.update(password.getBytes());
+		md.update(password.getBytes()); // $ Alert
 		byte[] messageDigest = md.digest();
 		return Base64.getEncoder().encodeToString(messageDigest);
 	}
@@ -90,8 +90,8 @@ public class HashWithoutSalt {
 	// BAD - Invoking a wrapper implementation through qualifier without a salt.
 	public String getWrapperSHA256Hash2(String password) throws NoSuchAlgorithmException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 		SHA256 sha256 = new SHA256();
-		byte[] passBytes = password.getBytes();
-		sha256.update(passBytes, 0, passBytes.length);
+		byte[] passBytes = password.getBytes(); // $ Source
+		sha256.update(passBytes, 0, passBytes.length); // $ Alert
 		return Base64.getEncoder().encodeToString(sha256.digest());
 	}
 
@@ -108,8 +108,8 @@ public class HashWithoutSalt {
 	// BAD - Invoking a wrapper implementation through argument without a salt.
 	public String getWrapperSHA256Hash4(String password) throws NoSuchAlgorithmException {
 		SHA256 sha256 = new SHA256();
-		byte[] passBytes = password.getBytes();
-		update(sha256, passBytes, 0, passBytes.length);
+		byte[] passBytes = password.getBytes(); // $ Source
+		update(sha256, passBytes, 0, passBytes.length); // $ Alert
 		return Base64.getEncoder().encodeToString(sha256.digest());
 	}
 

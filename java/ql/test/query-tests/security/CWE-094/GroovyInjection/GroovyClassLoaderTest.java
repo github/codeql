@@ -14,41 +14,41 @@ public class GroovyClassLoaderTest extends HttpServlet {
             throws ServletException, IOException {
         // "groovy.lang;GroovyClassLoader;false;parseClass;(GroovyCodeSource);;Argument[0];groovy;manual",
         {
-            String script = request.getParameter("script"); // $ Source
+            String script = request.getParameter("script"); // $ Source[java/groovy-injection]
             final GroovyClassLoader classLoader = new GroovyClassLoader();
             GroovyCodeSource gcs = new GroovyCodeSource(script, "test", "Test");
-            classLoader.parseClass(gcs); // $ Alert
+            classLoader.parseClass(gcs); // $ Alert[java/groovy-injection]
         }
         // "groovy.lang;GroovyClassLoader;false;parseClass;(GroovyCodeSource,boolean);;Argument[0];groovy;manual",
         {
-            String script = request.getParameter("script"); // $ Source
+            String script = request.getParameter("script"); // $ Source[java/groovy-injection]
             final GroovyClassLoader classLoader = new GroovyClassLoader();
             GroovyCodeSource gcs = new GroovyCodeSource(script, "test", "Test");
-            classLoader.parseClass(gcs, true); // $ Alert
+            classLoader.parseClass(gcs, true); // $ Alert[java/groovy-injection]
         }
         // "groovy.lang;GroovyClassLoader;false;parseClass;(InputStream,String);;Argument[0];groovy;manual",
         {
-            String script = request.getParameter("script"); // $ Source
+            String script = request.getParameter("script"); // $ Source[java/groovy-injection]
             final GroovyClassLoader classLoader = new GroovyClassLoader();
-            classLoader.parseClass(new ByteArrayInputStream(script.getBytes()), "test"); // $ Alert
+            classLoader.parseClass(new ByteArrayInputStream(script.getBytes()), "test"); // $ Alert[java/groovy-injection]
         }
         // "groovy.lang;GroovyClassLoader;false;parseClass;(Reader,String);;Argument[0];groovy;manual",
         {
-            String script = request.getParameter("script"); // $ Source
+            String script = request.getParameter("script"); // $ Source[java/groovy-injection]
             final GroovyClassLoader classLoader = new GroovyClassLoader();
-            classLoader.parseClass(new StringReader(script), "test"); // $ Alert
+            classLoader.parseClass(new StringReader(script), "test"); // $ Alert[java/groovy-injection]
         }
         // "groovy.lang;GroovyClassLoader;false;parseClass;(String);;Argument[0];groovy;manual",
         {
-            String script = request.getParameter("script"); // $ Source
+            String script = request.getParameter("script"); // $ Source[java/groovy-injection]
             final GroovyClassLoader classLoader = new GroovyClassLoader();
-            classLoader.parseClass(script); // $ Alert
+            classLoader.parseClass(script); // $ Alert[java/groovy-injection]
         }
         // "groovy.lang;GroovyClassLoader;false;parseClass;(String,String);;Argument[0];groovy;manual",
         {
-            String script = request.getParameter("script"); // $ Source
+            String script = request.getParameter("script"); // $ Source[java/groovy-injection]
             final GroovyClassLoader classLoader = new GroovyClassLoader();
-            classLoader.parseClass(script, "test"); // $ Alert
+            classLoader.parseClass(script, "test"); // $ Alert[java/groovy-injection]
         }
     }
 }
