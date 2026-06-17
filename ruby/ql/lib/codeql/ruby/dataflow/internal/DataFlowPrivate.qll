@@ -68,9 +68,9 @@ private CfgNodes::ExprCfgNode getALastEvalNode(CfgNodes::ExprCfgNode n) {
     result = branch.(CfgNodes::ExprNodes::InClauseCfgNode).getBody()
     or
     result = branch.(CfgNodes::ExprNodes::WhenClauseCfgNode).getBody()
-    or
-    result = branch
   )
+  or
+  result.getAstNode() = n.(CfgNodes::ExprNodes::CaseExprCfgNode).getExpr().getElseBranch().getBody()
 }
 
 /**
