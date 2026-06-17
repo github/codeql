@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) : this(new DotNetCliInvoker(logger, Path.Combine(dotNetPath ?? string.Empty, "dotnet"), dependabotProxy), logger, dotNetPath is null, tempWorkingDirectory) { }
+        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) : this(new DotNetCliInvoker(logger, Path.Join(dotNetPath ?? string.Empty, "dotnet"), dependabotProxy), logger, dotNetPath is null, tempWorkingDirectory) { }
 
         internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, bool runDotnetInfo) => new DotNet(dotnetCliInvoker, logger, runDotnetInfo);
 
@@ -73,7 +73,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var path = ".empty";
                 if (tempWorkingDirectory != null)
                 {
-                    path = Path.Combine(tempWorkingDirectory.ToString(), "emptyFakeDotnetRoot");
+                    path = Path.Join(tempWorkingDirectory.ToString(), "emptyFakeDotnetRoot");
                     Directory.CreateDirectory(path);
                 }
 

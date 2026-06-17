@@ -159,7 +159,7 @@ namespace Semmle.Extraction.CSharp
                 return null;
             }
 
-            return Path.GetFullPath(Path.Combine(projDir?.FullName ?? string.Empty, Path.DirectorySeparatorChar == '/' ? file.Replace("\\", "/") : file));
+            return Path.GetFullPath(Path.Join(projDir?.FullName ?? string.Empty, Path.DirectorySeparatorChar == '/' ? file.Replace("\\", "/") : file));
         }
 
         private readonly string[] references;

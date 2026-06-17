@@ -61,7 +61,7 @@ namespace Semmle.Extraction.CSharp
                      * Although GetRandomFileName() is cryptographically secure,
                      * there's a tiny chance the file could already exists.
                      */
-                    tmpFile = Path.Combine(tempPath, Path.GetRandomFileName());
+                    tmpFile = Path.Join(tempPath, Path.GetRandomFileName());
                 }
                 while (File.Exists(tmpFile));
 
