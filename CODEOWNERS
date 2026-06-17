@@ -2,7 +2,7 @@
 * @github/code-scanning-alert-coverage
 
 # CodeQL language libraries
-/actions/ @github/codeql-dynamic
+/actions/ @github/code-scanning-alert-coverage
 /cpp/ @github/codeql-c-analysis
 /csharp/ @github/codeql-csharp
 /csharp/autobuilder/Semmle.Autobuild.Cpp @github/codeql-c-extractor @github/code-scanning-language-coverage
