@@ -1,1 +1,2 @@
-Likely Bugs/Likely Typos/SelfAssignment.ql
+query: Likely Bugs/Likely Typos/SelfAssignment.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

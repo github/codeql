@@ -1,1 +1,2 @@
-queries/security/cwe-732/WeakCookieConfiguration.ql
+query: queries/security/cwe-732/WeakCookieConfiguration.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -119,6 +119,12 @@ signature module AstSig<LocationSig Location> {
     Expr getCondition();
   }
 
+  /** An `until` loop statement. */
+  class UntilStmt extends LoopStmt {
+    /** Gets the boolean condition of this `until` loop. */
+    Expr getCondition();
+  }
+
   /** A traditional C-style `for` loop. */
   class ForStmt extends LoopStmt {
     /** Gets the initializer of the loop at the specified (zero-based) position, if any. */
@@ -185,8 +191,12 @@ signature module AstSig<LocationSig Location> {
 
   /** A `try` statement with `catch` and/or `finally` clauses. */
   class TryStmt extends Stmt {
-    /** Gets the body of this `try` statement. */
-    Stmt getBody();
+    /**
+     * Gets the body of this `try` statement at the specified (zero-based)
+     * position `index`. In some languages, there is only ever a single body
+     * (with `index` 0).
+     */
+    AstNode getBody(int index);
 
     /**
      * Gets the `catch` clause at the specified (zero-based) position `index`
@@ -197,15 +207,6 @@ signature module AstSig<LocationSig Location> {
     /** Gets the `finally` block of this `try` statement, if any. */
     Stmt getFinally();
   }
-
-  /**
-   * Gets the initializer of this `try` statement at the specified (zero-based)
-   * position `index`, if any.
-   *
-   * An example of this are resource declarations in Java's try-with-resources
-   * statement.
-   */
-  default AstNode getTryInit(TryStmt try, int index) { none() }
 
   /**
    * Gets the `else` block of this `try` statement, if any.
@@ -613,6 +614,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         any(IfStmt ifstmt).getCondition() = n or
         any(WhileStmt whilestmt).getCondition() = n or
         any(DoStmt dostmt).getCondition() = n or
+        any(UntilStmt untilstmt).getCondition() = n or
         any(ForStmt forstmt).getCondition() = n or
         any(ConditionalExpr condexpr).getCondition() = n or
         any(CatchClause catch).getCondition() = n or
@@ -699,7 +701,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       exists(TryStmt trystmt |
         trystmt = n and
-        cannotTerminateNormally(trystmt.getBody()) and
+        cannotTerminateNormally(trystmt.getBody(_)) and
         forall(CatchClause catch | trystmt.getCatch(_) = catch |
           cannotTerminateNormally(catch.getBody())
         )
@@ -1256,11 +1258,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           )
         )
         or
-        exists(TryStmt trystmt |
-          ast = getTryInit(trystmt, _)
-          or
-          ast = trystmt.getBody()
-        |
+        exists(TryStmt trystmt | ast = trystmt.getBody(_) |
           c.getSuccessorType() instanceof ExceptionSuccessor and
           (
             n.isBefore(trystmt.getCatch(0))
@@ -1522,7 +1520,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isBefore(ifstmt.getCondition())
           or
           n1.isAfterTrue(ifstmt.getCondition()) and
-          n2.isBefore(ifstmt.getThen())
+          (
+            n2.isBefore(ifstmt.getThen())
+            or
+            not exists(ifstmt.getThen()) and
+            n2.isAfter(ifstmt)
+          )
           or
           n1.isAfterFalse(ifstmt.getCondition()) and
           (
@@ -1539,9 +1542,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAfter(ifstmt)
         )
         or
-        exists(WhileStmt whilestmt |
-          n1.isBefore(whilestmt) and
-          n2.isAdditional(whilestmt, loopHeaderTag())
+        exists(LoopStmt loopstmt | loopstmt instanceof WhileStmt or loopstmt instanceof UntilStmt |
+          n1.isBefore(loopstmt) and
+          n2.isAdditional(loopstmt, loopHeaderTag())
         )
         or
         exists(DoStmt dostmt |
@@ -1549,16 +1552,20 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isBefore(dostmt.getBody())
         )
         or
-        exists(LoopStmt loopstmt, AstNode cond |
-          loopstmt.(WhileStmt).getCondition() = cond or loopstmt.(DoStmt).getCondition() = cond
+        exists(LoopStmt loopstmt, AstNode cond, boolean while |
+          loopstmt.(WhileStmt).getCondition() = cond and while = true
+          or
+          loopstmt.(DoStmt).getCondition() = cond and while = true
+          or
+          loopstmt.(UntilStmt).getCondition() = cond and while = false
         |
           n1.isAdditional(loopstmt, loopHeaderTag()) and
           n2.isBefore(cond)
           or
-          n1.isAfterTrue(cond) and
+          n1.isAfterValue(cond, any(BooleanSuccessor b | b.getValue() = while)) and
           n2.isBefore(loopstmt.getBody())
           or
-          n1.isAfterFalse(cond) and
+          n1.isAfterValue(cond, any(BooleanSuccessor b | b.getValue() = while.booleanNot())) and
           n2.isAfter(loopstmt)
           or
           n1.isAfter(loopstmt.getBody()) and
@@ -1635,16 +1642,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         or
         exists(TryStmt trystmt |
           n1.isBefore(trystmt) and
-          (
-            n2.isBefore(getTryInit(trystmt, 0))
-            or
-            not exists(getTryInit(trystmt, _)) and n2.isBefore(trystmt.getBody())
-          )
+          n2.isBefore(trystmt.getBody(0))
           or
-          exists(int i | n1.isAfter(getTryInit(trystmt, i)) |
-            n2.isBefore(getTryInit(trystmt, i + 1))
-            or
-            not exists(getTryInit(trystmt, i + 1)) and n2.isBefore(trystmt.getBody())
+          exists(int i |
+            n1.isAfter(trystmt.getBody(i)) and
+            n2.isBefore(trystmt.getBody(i + 1))
           )
           or
           exists(PreControlFlowNode beforeElse, PreControlFlowNode beforeFinally |
@@ -1659,8 +1661,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
               not exists(trystmt.getFinally()) and beforeFinally.isAfter(trystmt)
             )
           |
-            n1.isAfter(trystmt.getBody()) and
-            n2 = beforeElse
+            exists(int i |
+              n1.isAfter(trystmt.getBody(i)) and
+              not exists(trystmt.getBody(i + 1)) and
+              n2 = beforeElse
+            )
             or
             n1.isAfter(getTryElse(trystmt)) and
             n2 = beforeFinally
@@ -2100,6 +2105,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         module Consistency {
           /** Holds if the consistency query `query` has `results` results. */
           query predicate consistencyOverview(string query, int results) {
+            query = "siblingsWithSameIndexInDefaultCfg" and
+            results =
+              strictcount(AstNode parent, AstNode child1, AstNode child2, int i |
+                siblingsWithSameIndexInDefaultCfg(parent, child1, child2, i)
+              )
+            or
             query = "deadEnd" and results = strictcount(ControlFlowNode node | deadEnd(node))
             or
             query = "nonUniqueEnclosingCallable" and
@@ -2143,6 +2154,20 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             query = "selfLoop" and
             results = strictcount(ControlFlowNode node, SuccessorType t | selfLoop(node, t))
+          }
+
+          /**
+           * Holds if `parent` uses default left-to-right control flow and has
+           * two different children `child1` and `child2` at the same index
+           * `i`.
+           */
+          query predicate siblingsWithSameIndexInDefaultCfg(
+            AstNode parent, AstNode child1, AstNode child2, int i
+          ) {
+            defaultCfg(parent) and
+            getChild(parent, i) = child1 and
+            getChild(parent, i) = child2 and
+            child1 != child2
           }
 
           /**

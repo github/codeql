@@ -4,7 +4,7 @@ import java.util.stream.*;
 
 public class NamingTest {
 	public boolean equals(Object other) { return false; }
-	public boolean equals(NamingTest other) { return true; }
+	public boolean equals(NamingTest other) { return true; } // $ Alert
 
 	public void visit(Object node) {}
 	public void visit(NamingTest t) {}

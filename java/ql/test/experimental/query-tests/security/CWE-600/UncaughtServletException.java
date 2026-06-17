@@ -10,11 +10,11 @@ import javax.servlet.ServletException;
 class UncaughtServletException extends HttpServlet {
 	// BAD - Tests `doGet` without catching exceptions.
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		String ip = request.getParameter("srcIP");
-		InetAddress addr = InetAddress.getByName(ip);  // getByName(String) throws UnknownHostException
+		String ip = request.getParameter("srcIP"); // $ Source
+		InetAddress addr = InetAddress.getByName(ip);  // $ Alert // getByName(String) throws UnknownHostException
 
-		String userId = request.getRemoteUser();
-		Integer.parseInt(userId);  // Integer.parse(String) throws RuntimeException
+		String userId = request.getRemoteUser(); // $ Source
+		Integer.parseInt(userId);  // $ Alert // Integer.parse(String) throws RuntimeException
 	}
 
 	// GOOD - Tests `doPost` with catching exceptions.
@@ -51,8 +51,8 @@ class UncaughtServletException extends HttpServlet {
 	// BAD - Tests rethrowing caught exceptions with stack trace.
 	public void doOptions(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		try {
-			String ip = request.getParameter("srcIP");
-			InetAddress addr = InetAddress.getByName(ip);
+			String ip = request.getParameter("srcIP"); // $ Source
+			InetAddress addr = InetAddress.getByName(ip); // $ Alert
 		} catch (UnknownHostException uhex) {
 			uhex.printStackTrace();
 			throw uhex;
@@ -72,8 +72,8 @@ class UncaughtServletException extends HttpServlet {
 			try {
 				addr = InetAddress.getByName(ip);
 
-				String userId = request.getRemoteUser();
-				Integer.parseInt(userId);  // Integer.parse(String) throws RuntimeException		
+				String userId = request.getRemoteUser(); // $ Source
+				Integer.parseInt(userId);  // $ Alert // Integer.parse(String) throws RuntimeException		
 			} catch (UnknownHostException uhex) {
 				throw new UnknownHostException("Got exception "+uhex.getMessage());
 			}

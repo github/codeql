@@ -1,1 +1,2 @@
-Likely Bugs/Collections/RemoveTypeMismatch.ql
+query: Likely Bugs/Collections/RemoveTypeMismatch.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

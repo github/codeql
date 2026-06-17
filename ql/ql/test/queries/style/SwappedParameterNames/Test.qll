@@ -9,5 +9,5 @@ class Correct extends Sup {
 }
 
 class Wrong extends Sup {
-  override predicate step(Expr succ, Expr pred) { none() } // <- swapped parameter names
+  override predicate step(Expr succ, Expr pred) { none() } // $ Alert // <- swapped parameter names
 }

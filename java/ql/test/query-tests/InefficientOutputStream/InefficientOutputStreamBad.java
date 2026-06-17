@@ -2,7 +2,7 @@ import java.io.*;
 import java.security.*;
 import java.util.*;
 
-public class InefficientOutputStreamBad extends OutputStream {
+public class InefficientOutputStreamBad extends OutputStream { // $ Alert
 	private DigestOutputStream digest;
 	private byte[] expectedMD5;
 	

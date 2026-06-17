@@ -2,7 +2,7 @@ require 'nokogiri'
 
 class FooController < ActionController::Base
   def nokogiri_handler(event:, context:)
-    name = params[:user_name]
+    name = params[:user_name] # $ Source
 
     xml = <<-XML
       <root>
@@ -18,19 +18,19 @@ class FooController < ActionController::Base
     results1 = doc.at('//foo')
 
     # BAD: XPath query is constructed from user input
-    results2 = doc.at("//#{name}")
+    results2 = doc.at("//#{name}") # $ Alert
 
     # GOOD: XPath query is not constructed from user input
     results3 = doc.xpath('//foo')
 
     # BAD: XPath query is constructed from user input
-    results4 = doc.xpath("//#{name}")
+    results4 = doc.xpath("//#{name}") # $ Alert
 
     # GOOD: XPath query is not constructed from user input
     results5 = doc.at_xpath('//foo')
 
     # BAD: XPath query is constructed from user input
-    results6 = doc.at_xpath("//#{name}")
+    results6 = doc.at_xpath("//#{name}") # $ Alert
 
     # GOOD: XPath query is not constructed from user input
     doc.xpath('//foo').each do |element|
@@ -38,7 +38,7 @@ class FooController < ActionController::Base
     end
 
     # BAD: XPath query constructed from user input
-    doc.xpath("//#{name}").each do |element|
+    doc.xpath("//#{name}").each do |element| # $ Alert
         puts element.text
     end
 
@@ -48,7 +48,7 @@ class FooController < ActionController::Base
     end
 
     # BAD: XPath query constructed from user input
-    doc.search("//#{name}").each do |element|
+    doc.search("//#{name}").each do |element| # $ Alert
         puts element.text
     end
   end

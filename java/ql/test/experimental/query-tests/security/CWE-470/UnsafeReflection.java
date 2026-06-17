@@ -18,11 +18,11 @@ public class UnsafeReflection {
 
     @GetMapping(value = "uf1")
     public void bad1(HttpServletRequest request) {
-        String className = request.getParameter("className");
+        String className = request.getParameter("className"); // $ Source[java/unsafe-reflection]
         String parameterValue = request.getParameter("parameterValue");
         try {
             Class clazz = Class.forName(className);
-            Object object = clazz.getDeclaredConstructors()[0].newInstance(parameterValue); //bad
+            Object object = clazz.getDeclaredConstructors()[0].newInstance(parameterValue); // $ Alert[java/unsafe-reflection] //bad
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,20 +30,20 @@ public class UnsafeReflection {
 
     @GetMapping(value = "uf2")
     public void bad2(HttpServletRequest request) {
-        String className = request.getParameter("className");
+        String className = request.getParameter("className"); // $ Source[java/unsafe-reflection]
         String parameterValue = request.getParameter("parameterValue");
         try {
             ClassLoader classLoader = ClassLoader.getSystemClassLoader();
             Class clazz = classLoader.loadClass(className);
             Object object = clazz.newInstance();
-            clazz.getDeclaredMethods()[0].invoke(object, parameterValue); //bad
+            clazz.getDeclaredMethods()[0].invoke(object, parameterValue); // $ Alert[java/unsafe-reflection] //bad
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @RequestMapping(value = {"/service/{beanIdOrClassName}/{methodName}"}, method = {RequestMethod.POST}, consumes = {"application/json"}, produces = {"application/json"})
-    public Object bad3(@PathVariable("beanIdOrClassName") String beanIdOrClassName, @PathVariable("methodName") String methodName, @RequestBody Map<String, Object> body) throws Exception {
+    public Object bad3(@PathVariable("beanIdOrClassName") String beanIdOrClassName, @PathVariable("methodName") String methodName, @RequestBody Map<String, Object> body) throws Exception { // $ Source[java/unsafe-reflection]
         List<Object> rawData = null;
         try {
             rawData = (List<Object>)body.get("methodInput");
@@ -116,7 +116,7 @@ public class UnsafeReflection {
 					b++;
 					continue;
 				}
-				Object result = method.invoke(bean, data);
+				Object result = method.invoke(bean, data); // $ Alert[java/unsafe-reflection]
 				Map<String, Object> map = new HashMap<>();
 				return map;
 			}

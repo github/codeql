@@ -6,14 +6,14 @@ import (
 
 // BAD: taken from https://www.gorillatoolkit.org/pkg/websocket
 func ex1(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Origin") != "http://"+r.Host {
+	if r.Header.Get("Origin") != "http://"+r.Host { // $ Alert
 		//do something
 	}
 }
 
 // BAD: both operands are from remote sources
 func ex2(w http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("Origin") != "http://"+r.Header.Get("Header") {
+	if r.Header.Get("Origin") != "http://"+r.Header.Get("Header") { // $ Alert
 		//do something
 	}
 }

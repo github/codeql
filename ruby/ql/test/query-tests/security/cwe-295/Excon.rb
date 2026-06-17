@@ -3,31 +3,31 @@ require "excon"
 def method1
   # BAD
   Excon.defaults[:ssl_verify_peer] = false
-  Excon.get("http://example.com/")
+  Excon.get("http://example.com/") # $ Alert
 end
 
 def method2
   # BAD
   Excon.ssl_verify_peer = false
-  Excon.get("http://example.com/")
+  Excon.get("http://example.com/") # $ Alert
 end
 
 def method3(secure)
   # BAD
   Excon.defaults[:ssl_verify_peer] = (secure ? true : false)
-  Excon.get("http://example.com/")
+  Excon.get("http://example.com/") # $ Alert
 end
 
 def method4
   # BAD
   conn = Excon::Connection.new("http://example.com/", ssl_verify_peer: false)
-  conn.get
+  conn.get # $ Alert
 end
 
 def method5
   # BAD
   Excon.ssl_verify_peer = true
-  Excon.new("http://example.com/", ssl_verify_peer: false).get
+  Excon.new("http://example.com/", ssl_verify_peer: false).get # $ Alert
 end
 
 def method6

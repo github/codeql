@@ -7,23 +7,23 @@ class BadCheckOdd {
 	}
 	
 	public boolean badLiteral() {
-		return -10 % 2 > 0;
+		return -10 % 2 > 0; // $ Alert
 	}
 	
 	public boolean badBrackets1() {
-		return -10 % 2 > (0);
+		return -10 % 2 > (0); // $ Alert
 	}
 	
 	public boolean badBrackets2() {
-		return -10 % (2) > 0;//
+		return -10 % (2) > 0;// $ Alert //
 	}
 	
 	public boolean badBrackets3() {
-		return (-10) % 2 > 0;
+		return (-10) % 2 > 0; // $ Alert
 	}
 	
 	public boolean badBrackets4() {
-		return (-10 % 2) > 0;
+		return (-10 % 2) > 0; // $ Alert
 	}
 
 //  TODO: support for these cases
@@ -47,11 +47,11 @@ class BadCheckOdd {
 	
 	public boolean badVarLiteral() {
 		int x = -10;
-		return x % 2 > 0;
+		return x % 2 > 0; // $ Alert
 	}
 	
 	public boolean badParam(int x) {
-		return x % 2 > 0;
+		return x % 2 > 0; // $ Alert
 	}
 	
 	public boolean badSometimes(boolean positive) {
@@ -60,11 +60,11 @@ class BadCheckOdd {
 			x = 10;
 		else
 			x = -10;
-		return x % 2 > 0;
+		return x % 2 > 0; // $ Alert
 	}
 	
 	private int f;
 	public boolean badField() {
-		return f % 2 >0;
+		return f % 2 >0; // $ Alert
 	}
 }

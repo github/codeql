@@ -22,6 +22,7 @@ newtype TSynthKind =
   BodyStmtKind() or
   BooleanLiteralKind(boolean value) { value = true or value = false } or
   BraceBlockKind() or
+  CaseElseBranchKind() or
   CaseMatchKind() or
   ClassVariableAccessKind(ClassVariable v) or
   DefinedExprKind() or
@@ -79,6 +80,8 @@ class SynthKind extends TSynthKind {
     this = BooleanLiteralKind(_) and result = "BooleanLiteralKind"
     or
     this = BraceBlockKind() and result = "BraceBlockKind"
+    or
+    this = CaseElseBranchKind() and result = "CaseElseBranchKind"
     or
     this = CaseMatchKind() and result = "CaseMatchKind"
     or
@@ -1840,7 +1843,7 @@ private module TestPatternDesugar {
           or
           child = SynthChild(InClauseKind()) and i = 1
           or
-          child = SynthChild(ElseKind()) and i = 2
+          child = SynthChild(CaseElseBranchKind()) and i = 2
         )
         or
         parent = TInClauseSynth(case, 1) and
@@ -1851,7 +1854,11 @@ private module TestPatternDesugar {
           child = SynthChild(BooleanLiteralKind(true)) and i = 1
         )
         or
-        parent = TElseSynth(case, 2) and
+        parent = TCaseElseBranchSynth(case, 2) and
+        child = SynthChild(ElseKind()) and
+        i = 0
+        or
+        parent = TElseSynth(TCaseElseBranchSynth(case, 2), 0) and
         child = SynthChild(BooleanLiteralKind(false)) and
         i = 0
       )
@@ -1991,6 +1998,64 @@ private module CallableBodySynthesis {
   private class CallableBodySynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       bodySynthesis(parent, i, child)
+    }
+  }
+}
+
+private module CaseElseBranchSynthesis {
+  pragma[nomagic]
+  private predicate caseElseBranchSynthesis(AstNode parent, int i, Child child) {
+    // Wrap the else branch of a real `case`/`when` expression
+    exists(Ruby::Case g, Ruby::Else elseNode, int elseIndex |
+      elseNode = g.getChild(elseIndex) and
+      (
+        // Create the CaseElseBranch wrapper node at the else index
+        parent = TCaseExpr(g) and
+        child = SynthChild(CaseElseBranchKind()) and
+        i = elseIndex
+        or
+        // The body of the CaseElseBranch is the Else node
+        parent = TCaseElseBranchSynth(TCaseExpr(g), elseIndex) and
+        child = RealChildRef(TElseReal(elseNode)) and
+        i = 0
+      )
+    )
+    or
+    // Wrap the else branch of a real `case`/`in` expression
+    exists(Ruby::CaseMatch g, Ruby::Else elseNode, int elseIndex |
+      elseNode = g.getElse() and
+      elseIndex = count(g.getClauses(_)) and
+      (
+        // Create the CaseElseBranch wrapper node at the else index
+        parent = TCaseMatchReal(g) and
+        child = SynthChild(CaseElseBranchKind()) and
+        i = elseIndex
+        or
+        // The body of the CaseElseBranch is the Else node
+        parent = TCaseElseBranchSynth(TCaseMatchReal(g), elseIndex) and
+        child = RealChildRef(TElseReal(elseNode)) and
+        i = 0
+      )
+    )
+  }
+
+  private class CaseElseBranchSynthesisImpl extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      caseElseBranchSynthesis(parent, i, child)
+    }
+
+    final override predicate location(AstNode n, Location l) {
+      // Give the CaseElseBranch the location of the underlying Else node
+      exists(Ruby::Case g, int elseIndex |
+        n = TCaseElseBranchSynth(TCaseExpr(g), elseIndex) and
+        l = g.getChild(elseIndex).getLocation()
+      )
+      or
+      exists(Ruby::CaseMatch g, int elseIndex |
+        elseIndex = count(g.getClauses(_)) and
+        n = TCaseElseBranchSynth(TCaseMatchReal(g), elseIndex) and
+        l = g.getElse().getLocation()
+      )
     }
   }
 }

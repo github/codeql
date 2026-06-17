@@ -8,7 +8,7 @@ import (
 
 func checkRedirect2(req *http.Request, via []*http.Request) error {
 	// BAD: the host of `req.URL` may be controlled by an attacker
-	re := "https?://www\\.example\\.com/"
+	re := "https?://www\\.example\\.com/" // $ Alert
 	if matched, _ := regexp.MatchString(re, req.URL.String()); matched {
 		return nil
 	}

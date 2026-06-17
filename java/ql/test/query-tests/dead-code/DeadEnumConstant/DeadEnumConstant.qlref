@@ -1,1 +1,2 @@
-DeadCode/DeadEnumConstant.ql
+query: DeadCode/DeadEnumConstant.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

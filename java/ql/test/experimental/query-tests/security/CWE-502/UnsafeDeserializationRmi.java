@@ -12,9 +12,9 @@ public class UnsafeDeserializationRmi {
     // BAD (bind a remote object that has a vulnerable method)
     public static void testRegistryBindWithObjectParameter() throws Exception {
         Registry registry = LocateRegistry.createRegistry(1099);
-        registry.bind("unsafe", new UnsafeRemoteObjectImpl());
-        registry.rebind("unsafe", new UnsafeRemoteObjectImpl());
-        registry.rebind("unsafe", UnicastRemoteObject.exportObject(new UnsafeRemoteObjectImpl()));
+        registry.bind("unsafe", new UnsafeRemoteObjectImpl()); // $ Alert[java/unsafe-deserialization-rmi]
+        registry.rebind("unsafe", new UnsafeRemoteObjectImpl()); // $ Alert[java/unsafe-deserialization-rmi]
+        registry.rebind("unsafe", UnicastRemoteObject.exportObject(new UnsafeRemoteObjectImpl())); // $ Alert[java/unsafe-deserialization-rmi]
     }
 
     // GOOD (bind a remote object that has methods that takes safe parameters)
@@ -26,8 +26,8 @@ public class UnsafeDeserializationRmi {
 
     // BAD (bind a remote object that has a vulnerable method)
     public static void testNamingBindWithObjectParameter() throws Exception {
-        Naming.bind("unsafe", new UnsafeRemoteObjectImpl());
-        Naming.rebind("unsafe", new UnsafeRemoteObjectImpl());
+        Naming.bind("unsafe", new UnsafeRemoteObjectImpl()); // $ Alert[java/unsafe-deserialization-rmi]
+        Naming.rebind("unsafe", new UnsafeRemoteObjectImpl()); // $ Alert[java/unsafe-deserialization-rmi]
     }
 
     // GOOD (bind a remote object that has methods that takes safe parameters)

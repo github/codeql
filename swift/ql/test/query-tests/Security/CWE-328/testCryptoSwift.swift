@@ -150,83 +150,83 @@ extension String {
 
 func testArrays(harmlessArray: Array<UInt8>, phoneNumberArray: Array<UInt8>, passwdArray: Array<UInt8>) {
     _ = MD5().calculate(for: harmlessArray) // GOOD (not sensitive)
-    _ = MD5().calculate(for: phoneNumberArray) // BAD
-    _ = MD5().calculate(for: passwdArray) // BAD
+    _ = MD5().calculate(for: phoneNumberArray) // $ Alert[swift/weak-sensitive-data-hashing]
+    _ = MD5().calculate(for: passwdArray) // $ Alert[swift/weak-password-hashing]
     _ = SHA1().calculate(for: harmlessArray) // GOOD (not sensitive)
-    _ = SHA1().calculate(for: phoneNumberArray) // BAD
-    _ = SHA1().calculate(for: passwdArray) // BAD
+    _ = SHA1().calculate(for: phoneNumberArray) // $ Alert[swift/weak-sensitive-data-hashing]
+    _ = SHA1().calculate(for: passwdArray) // $ Alert[swift/weak-password-hashing]
     _ = SHA2(variant: .sha512).calculate(for: harmlessArray) // GOOD
     _ = SHA2(variant: .sha512).calculate(for: phoneNumberArray) // GOOD
-    _ = SHA2(variant: .sha512).calculate(for: passwdArray) // BAD
+    _ = SHA2(variant: .sha512).calculate(for: passwdArray) // $ Alert[swift/weak-password-hashing]
     _ = SHA3(variant: .sha512).calculate(for: harmlessArray) // GOOD
     _ = SHA3(variant: .sha512).calculate(for: phoneNumberArray) // GOOD
-    _ = SHA3(variant: .sha512).calculate(for: passwdArray) // BAD
+    _ = SHA3(variant: .sha512).calculate(for: passwdArray) // $ Alert[swift/weak-password-hashing]
 
     _ = Digest.md5(harmlessArray) // GOOD (not sensitive)
-    _ = Digest.md5(phoneNumberArray) // BAD
-    _ = Digest.md5(passwdArray) // BAD
+    _ = Digest.md5(phoneNumberArray) // $ Alert[swift/weak-sensitive-data-hashing]
+    _ = Digest.md5(passwdArray) // $ Alert[swift/weak-password-hashing]
     _ = Digest.sha1(harmlessArray) // GOOD (not sensitive)
-    _ = Digest.sha1(phoneNumberArray) // BAD
-    _ = Digest.sha1(passwdArray) // BAD
+    _ = Digest.sha1(phoneNumberArray) // $ Alert[swift/weak-sensitive-data-hashing]
+    _ = Digest.sha1(passwdArray) // $ Alert[swift/weak-password-hashing]
     _ = Digest.sha512(harmlessArray) // GOOD (not sensitive)
     _ = Digest.sha512(phoneNumberArray) // GOOD
-    _ = Digest.sha512(passwdArray) // BAD
+    _ = Digest.sha512(passwdArray) // $ Alert[swift/weak-password-hashing]
     _ = Digest.sha2(harmlessArray, variant: .sha512) // GOOD (not sensitive)
     _ = Digest.sha2(phoneNumberArray, variant: .sha512) // GOOD
-    _ = Digest.sha2(passwdArray, variant: .sha512) // BAD
+    _ = Digest.sha2(passwdArray, variant: .sha512) // $ Alert[swift/weak-password-hashing]
     _ = Digest.sha3(harmlessArray, variant: .sha512) // GOOD (not sensitive)
     _ = Digest.sha3(phoneNumberArray, variant: .sha512) // GOOD
-    _ = Digest.sha3(passwdArray, variant: .sha512) // BAD
+    _ = Digest.sha3(passwdArray, variant: .sha512) // $ Alert[swift/weak-password-hashing]
 
     _ = harmlessArray.md5() // GOOD (not sensitive)
-    _ = phoneNumberArray.md5() // BAD
-    _ = passwdArray.md5() // BAD
+    _ = phoneNumberArray.md5() // $ Alert[swift/weak-sensitive-data-hashing]
+    _ = passwdArray.md5() // $ Alert[swift/weak-password-hashing]
     _ = harmlessArray.sha1() // GOOD (not sensitive)
-    _ = phoneNumberArray.sha1() // BAD
-    _ = passwdArray.sha1() // BAD
+    _ = phoneNumberArray.sha1() // $ Alert[swift/weak-sensitive-data-hashing]
+    _ = passwdArray.sha1() // $ Alert[swift/weak-password-hashing]
     _ = harmlessArray.sha512() // GOOD
     _ = phoneNumberArray.sha512() // GOOD
-    _ = passwdArray.sha512() // BAD
+    _ = passwdArray.sha512() // $ Alert[swift/weak-password-hashing]
     _ = harmlessArray.sha2(.sha512) // GOOD
     _ = phoneNumberArray.sha2(.sha512) // GOOD
-    _ = passwdArray.sha2(.sha512) // BAD
+    _ = passwdArray.sha2(.sha512) // $ Alert[swift/weak-password-hashing]
     _ = harmlessArray.sha3(.sha512) // GOOD
     _ = phoneNumberArray.sha3(.sha512) // GOOD
-    _ = passwdArray.sha3(.sha512) // BAD
+    _ = passwdArray.sha3(.sha512) // $ Alert[swift/weak-password-hashing]
 }
 
 func testData(harmlessData: Data, medicalData: Data, passwdData: Data) {
     _ = harmlessData.md5() // GOOD (not sensitive)
-    _ = medicalData.md5() // BAD
-    _ = passwdData.md5() // BAD
+    _ = medicalData.md5() // $ Alert[swift/weak-sensitive-data-hashing]
+    _ = passwdData.md5() // $ Alert[swift/weak-password-hashing]
     _ = harmlessData.sha1() // GOOD (not sensitive)
-    _ = medicalData.sha1() // BAD
-    _ = passwdData.sha1() // BAD
+    _ = medicalData.sha1() // $ Alert[swift/weak-sensitive-data-hashing]
+    _ = passwdData.sha1() // $ Alert[swift/weak-password-hashing]
     _ = harmlessData.sha512() // GOOD
     _ = medicalData.sha512() // GOOD
-    _ = passwdData.sha512() // BAD
+    _ = passwdData.sha512() // $ Alert[swift/weak-password-hashing]
     _ = harmlessData.sha2(.sha512) // GOOD
     _ = medicalData.sha2(.sha512) // GOOD
-    _ = passwdData.sha2(.sha512) // BAD
+    _ = passwdData.sha2(.sha512) // $ Alert[swift/weak-password-hashing]
     _ = harmlessData.sha3(.sha512) // GOOD
     _ = medicalData.sha3(.sha512) // GOOD
-    _ = passwdData.sha3(.sha512) // BAD
+    _ = passwdData.sha3(.sha512) // $ Alert[swift/weak-password-hashing]
 }
 
 func testStrings(creditCardNumber: String, passwd: String) {
     _ = "harmless".md5() // GOOD (not sensitive)
-    _ = creditCardNumber.md5() // BAD
-    _ = passwd.md5() // BAD
+    _ = creditCardNumber.md5() // $ Alert[swift/weak-sensitive-data-hashing]
+    _ = passwd.md5() // $ Alert[swift/weak-password-hashing]
     _ = "harmless".sha1() // GOOD (not sensitive)
-    _ = creditCardNumber.sha1() // BAD
-    _ = passwd.sha1() // BAD
+    _ = creditCardNumber.sha1() // $ Alert[swift/weak-sensitive-data-hashing]
+    _ = passwd.sha1() // $ Alert[swift/weak-password-hashing]
     _ = "harmless".sha512() // GOOD
     _ = creditCardNumber.sha512() // GOOD
-    _ = passwd.sha512() // BAD
+    _ = passwd.sha512() // $ Alert[swift/weak-password-hashing]
     _ = "harmless".sha2(.sha512) // GOOD
     _ = creditCardNumber.sha2(.sha512) // GOOD
-    _ = passwd.sha2(.sha512) // BAD
+    _ = passwd.sha2(.sha512) // $ Alert[swift/weak-password-hashing]
     _ = "harmless".sha3(.sha512) // GOOD
     _ = creditCardNumber.sha3(.sha512) // GOOD
-    _ = passwd.sha3(.sha512) // BAD
+    _ = passwd.sha3(.sha512) // $ Alert[swift/weak-password-hashing]
 }

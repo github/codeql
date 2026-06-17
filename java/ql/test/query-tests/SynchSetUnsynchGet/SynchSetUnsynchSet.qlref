@@ -1,1 +1,2 @@
-Likely Bugs/Concurrency/SynchSetUnsynchGet.ql
+query: Likely Bugs/Concurrency/SynchSetUnsynchGet.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

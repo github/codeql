@@ -61,6 +61,18 @@ module Unified {
     override string getAPrimaryQlClass() { result = "Token" }
   }
 
+  /** A trivia token, such as a comment, preserved from the original parse tree. */
+  class TriviaToken extends @unified_trivia_token, AstNode {
+    /** Gets the source text of this trivia token. */
+    final string getValue() { unified_trivia_tokeninfo(this, _, result) }
+
+    /** Gets a string representation of this element. */
+    final override string toString() { result = this.getValue() }
+
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "TriviaToken" }
+  }
+
   /** Gets the file containing the given `node`. */
   private @file getNodeFile(@unified_ast_node node) {
     exists(@location_default loc | unified_ast_node_location(node, loc) |

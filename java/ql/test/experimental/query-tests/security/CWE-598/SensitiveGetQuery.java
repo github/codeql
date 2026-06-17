@@ -9,13 +9,13 @@ public class SensitiveGetQuery extends HttpServlet {
 	// BAD - Tests retrieving sensitive information through `request.getParameter()` in a GET request.
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		String password = request.getParameter("password"); // $ Source
 
-		processUserInfo(username, password);
+		processUserInfo(username, password); // $ Alert
 	}
 
 	void processUserInfo(String username, String password) {
-		System.out.println("username = " + username+"; password "+password);
+		System.out.println("username = " + username+"; password "+password); // $ Alert
 	}
 
 	// GOOD - Tests retrieving sensitive information through `request.getParameter()` in a POST request.

@@ -1,1 +1,2 @@
-Performance/InefficientOutputStream.ql
+query: Performance/InefficientOutputStream.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

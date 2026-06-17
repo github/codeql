@@ -6,7 +6,7 @@
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://www.example.com:3306/test" />
 		<property name="username" value="root" />
-		<property name="password" value="mysecret" />
+		<property name="password" value="mysecret" /> <!-- $ Alert -->
 		<property name="initialSize" value="30" />
 
 		<property name="maxActive" value="500" />

@@ -79,7 +79,7 @@ func badRoutingNet() {
 
 	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("assets/"))))
 
-	http.HandleFunc("/adminusers/", ShowAdminPageCache)
+	http.HandleFunc("/adminusers/", ShowAdminPageCache) // $ Alert
 	err := http.ListenAndServe(":1337", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)

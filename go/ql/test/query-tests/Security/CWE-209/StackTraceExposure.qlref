@@ -1,1 +1,2 @@
-Security/CWE-209/StackTraceExposure.ql
+query: Security/CWE-209/StackTraceExposure.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -17,7 +17,7 @@ public class G {
       case null, default -> "bar";
     };
 
-    switch(s) { // BAD; lack of a null case means this may throw.
+    switch(s) { // $ Alert[java/dereferenced-value-may-be-null] // BAD; lack of a null case means this may throw.
       case "foo" -> System.out.println("Foo");
       case String s2 -> System.out.println("Other string of length " + s2.length());
     }

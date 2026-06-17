@@ -15,15 +15,15 @@ public class PebbleSSTI {
 
 	@GetMapping(value = "bad1")
 	public void bad1(HttpServletRequest request) {
-		String templateName = request.getParameter("templateName"); // $ Source
+		String templateName = request.getParameter("templateName"); // $ Source[java/server-side-template-injection]
 		PebbleEngine engine = new PebbleEngine.Builder().build();
-		PebbleTemplate compiledTemplate = engine.getTemplate(templateName); // $ Alert
+		PebbleTemplate compiledTemplate = engine.getTemplate(templateName); // $ Alert[java/server-side-template-injection]
 	}
 
 	@GetMapping(value = "bad2")
 	public void bad2(HttpServletRequest request) {
-		String templateName = request.getParameter("templateName"); // $ Source
+		String templateName = request.getParameter("templateName"); // $ Source[java/server-side-template-injection]
 		PebbleEngine engine = new PebbleEngine.Builder().build();
-		PebbleTemplate compiledTemplate = engine.getLiteralTemplate(templateName); // $ Alert
+		PebbleTemplate compiledTemplate = engine.getLiteralTemplate(templateName); // $ Alert[java/server-side-template-injection]
 	}
 }

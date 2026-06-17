@@ -14,7 +14,7 @@ public class ClientSuppliedIpUsedInSecurityCheck {
     @GetMapping(value = "bad1")
     public void bad1(HttpServletRequest request) {
         String ip = getClientIP();
-        if (!StringUtils.startsWith(ip, "192.168.")) {
+        if (!StringUtils.startsWith(ip, "192.168.")) { // $ Alert
             new Exception("ip illegal");
         }
     }
@@ -22,7 +22,7 @@ public class ClientSuppliedIpUsedInSecurityCheck {
     @GetMapping(value = "bad2")
     public void bad2(HttpServletRequest request) {
         String ip = getClientIP();
-        if (!"127.0.0.1".equals(ip)) {
+        if (!"127.0.0.1".equals(ip)) { // $ Alert
             new Exception("ip illegal");
         }
     }
@@ -40,7 +40,7 @@ public class ClientSuppliedIpUsedInSecurityCheck {
     }
 
     protected String getClientIP() {
-        String xfHeader = request.getHeader("X-Forwarded-For");
+        String xfHeader = request.getHeader("X-Forwarded-For"); // $ Source
         if (xfHeader == null) {
             return request.getRemoteAddr();
         }

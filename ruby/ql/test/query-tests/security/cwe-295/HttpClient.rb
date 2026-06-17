@@ -3,7 +3,7 @@ require "httpclient"
 # BAD
 client = HTTPClient.new
 client.ssl_config.verify_mode = OpenSSL::SSL::VERIFY_NONE
-client.get("https://example.com")
+client.get("https://example.com") # $ Alert
 
 # GOOD
 client = HTTPClient.new

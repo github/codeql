@@ -6,12 +6,12 @@ func f1(i int) {
 }
 
 func f2(i int, s string) {
-	for j := i + 1; j < len(s); j-- { // NOT OK
+	for j := i + 1; j < len(s); j-- { // $ Alert // NOT OK
 	}
 }
 
 func f3(s string) {
-	for i, l := 0, len(s); i > l; i++ { // NOT OK
+	for i, l := 0, len(s); i > l; i++ { // $ Alert // NOT OK
 	}
 }
 
@@ -22,7 +22,7 @@ func f4(lower int, a []int) {
 }
 
 func f5(upper int, a []int) {
-	for i := upper + 1; i < len(a); i-- { // NOT OK
+	for i := upper + 1; i < len(a); i-- { // $ Alert // NOT OK
 		a[i] = 0
 	}
 }

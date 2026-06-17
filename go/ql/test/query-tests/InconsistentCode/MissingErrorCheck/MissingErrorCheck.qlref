@@ -1,1 +1,2 @@
-InconsistentCode/MissingErrorCheck.ql
+query: InconsistentCode/MissingErrorCheck.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

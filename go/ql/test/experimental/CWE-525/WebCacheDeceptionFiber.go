@@ -12,12 +12,12 @@ func badRouting() {
 	log.Println("We are logging in Golang!")
 
 	// GET /api/register
-	app.Get("/api/*", func(c *fiber.Ctx) error {
+	app.Get("/api/*", func(c *fiber.Ctx) error { // $ Alert
 		msg := fmt.Sprintf("✋")
 		return c.SendString(msg) // => ✋ register
 	})
 
-	app.Post("/api/*", func(c *fiber.Ctx) error {
+	app.Post("/api/*", func(c *fiber.Ctx) error { // $ Alert
 		msg := fmt.Sprintf("✋")
 		return c.SendString(msg) // => ✋ register
 	})

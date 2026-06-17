@@ -199,6 +199,70 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
     }
 }
 
+/// Creates the `TriviaToken` class. Trivia tokens (e.g. comments) are
+/// `extra` nodes preserved from the original parse tree even when the tree has
+/// been rewritten by a desugaring pass. They are not part of the regular
+/// `Token` hierarchy because they do not appear in the (possibly desugared)
+/// output schema.
+pub fn create_trivia_token_class<'a>(
+    trivia_token_type: &'a str,
+    trivia_tokeninfo: &'a str,
+) -> ql::Class<'a> {
+    let trivia_tokeninfo_arity = 3; // id, kind, value
+    let get_value = ql::Predicate {
+        qldoc: Some(String::from("Gets the source text of this trivia token.")),
+        name: "getValue",
+        overridden: false,
+        is_private: false,
+        is_final: true,
+        return_type: Some(ql::Type::String),
+        formal_parameters: vec![],
+        body: create_get_field_expr_for_column_storage(
+            "result",
+            trivia_tokeninfo,
+            1,
+            trivia_tokeninfo_arity,
+        ),
+        overlay: None,
+    };
+    let to_string = ql::Predicate {
+        qldoc: Some(String::from(
+            "Gets a string representation of this element.",
+        )),
+        name: "toString",
+        overridden: true,
+        is_private: false,
+        is_final: true,
+        return_type: Some(ql::Type::String),
+        formal_parameters: vec![],
+        body: ql::Expression::Equals(
+            Box::new(ql::Expression::Var("result")),
+            Box::new(ql::Expression::Dot(
+                Box::new(ql::Expression::Var("this")),
+                "getValue",
+                vec![],
+            )),
+        ),
+        overlay: None,
+    };
+    ql::Class {
+        qldoc: Some(String::from(
+            "A trivia token, such as a comment, preserved from the original parse tree.",
+        )),
+        name: "TriviaToken",
+        is_abstract: false,
+        supertypes: vec![ql::Type::At(trivia_token_type), ql::Type::Normal("AstNode")]
+            .into_iter()
+            .collect(),
+        characteristic_predicate: None,
+        predicates: vec![
+            get_value,
+            to_string,
+            create_get_a_primary_ql_class("TriviaToken", false),
+        ],
+    }
+}
+
 // Creates the `ReservedWord` class.
 pub fn create_reserved_word_class(db_name: &str) -> ql::Class<'_> {
     let class_name = "ReservedWord";

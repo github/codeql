@@ -1,4 +1,4 @@
-def test(codeql, java, codeql_mitm_proxy):
+def test(codeql, java, codeql_mitm_proxy, check_diagnostics_java):
     codeql.database.create(
         _env={
             "CODEQL_EXTRACTOR_JAVA_OPTION_BUILDLESS": "true",

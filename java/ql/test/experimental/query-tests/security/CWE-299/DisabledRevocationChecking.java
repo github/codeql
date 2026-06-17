@@ -14,7 +14,7 @@ public class DisabledRevocationChecking {
   private boolean flag = true;
 
   public void disableRevocationChecking() {
-    flag = false;
+    flag = false; // $ Alert
   }
 
   public void testDisabledRevocationChecking(KeyStore cacerts, CertPath certPath) throws Exception {
@@ -25,7 +25,7 @@ public class DisabledRevocationChecking {
   public void validate(KeyStore cacerts, CertPath certPath) throws Exception {
     CertPathValidator validator = CertPathValidator.getInstance("PKIX");
     PKIXParameters params = new PKIXParameters(cacerts);
-    params.setRevocationEnabled(flag);
+    params.setRevocationEnabled(flag); // $ Sink
     validator.validate(certPath, params);
   }
 
