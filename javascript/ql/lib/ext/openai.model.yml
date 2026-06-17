@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["openai.Client", "openai", "Instance"]
+      - ["openai.Client", "openai", "Member[OpenAI,AzureOpenAI].Instance"]
+      - ["openai.Client", "@openai/guardrails", "Member[GuardrailsOpenAI,GuardrailsAzureOpenAI].Member[create].ReturnValue.Awaited"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["openai.Client", "Member[responses].Member[create].Argument[0].Member[instructions]", "system-prompt-injection"]
+      - ["openai.Client", "Member[completions].Member[create].Argument[0].Member[prompt]", "system-prompt-injection"]
+      - ["openai.Client", "Member[beta].Member[assistants].Member[create].Argument[0].Member[instructions]", "system-prompt-injection"]
+      - ["openai.Client", "Member[beta].Member[assistants].Member[update].Argument[1].Member[instructions]", "system-prompt-injection"]
+      - ["openai.Client", "Member[beta].Member[threads].Member[runs].Member[create].Argument[1].Member[instructions,additional_instructions]", "system-prompt-injection"]
+      - ["@openai/agents", "Member[Agent].Argument[0].Member[instructions,handoffDescription]", "system-prompt-injection"]
+      - ["@openai/guardrails", "Member[Agent].Argument[0].Member[instructions,handoffDescription]", "system-prompt-injection"]
+      - ["@openai/agents", "Member[Agent].Instance.Member[asTool].Argument[0].Member[toolDescription]", "system-prompt-injection"]
+      - ["@openai/guardrails", "Member[Agent].Instance.Member[asTool].Argument[0].Member[toolDescription]", "system-prompt-injection"]
+      - ["@openai/agents", "Member[tool].Argument[0].Member[description]", "system-prompt-injection"]
+      - ["@openai/guardrails", "Member[tool].Argument[0].Member[description]", "system-prompt-injection"]
+      - ["@openai/guardrails", "Member[GuardrailAgent].Member[create].Argument[2]", "system-prompt-injection"]
+      - ["@openai/agents", "Member[run].Argument[1]", "user-prompt-injection"]
+      - ["@openai/agents", "Member[Runner].Instance.Member[run].Argument[1]", "user-prompt-injection"]
