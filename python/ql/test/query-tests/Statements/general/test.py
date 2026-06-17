@@ -167,6 +167,20 @@ def no_with():
     finally:
         f.close()
 
+# Should use context manager, with the resource held in an instance attribute
+# (caught via instance-attribute type tracking).
+class HoldsCM(object):
+
+    def __init__(self):
+        self.f = CM()
+
+    def no_with_attribute(self):
+        try:
+            self.f.write("Hello ")
+            self.f.write(" World\n")
+        finally:
+            self.f.close()
+
 #Assert without side-effect
 def assert_ok(seq):
     assert all(isinstance(element, (str, unicode)) for element in seq)
