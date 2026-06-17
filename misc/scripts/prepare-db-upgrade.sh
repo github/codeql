@@ -89,6 +89,9 @@ case "${lang}" in
   go | ruby | rust | swift)
     scheme_file="${lang}/ql/lib/${lang}.dbscheme"
     ;;
+  ql)
+    scheme_file="${lang}/ql/src/${lang}.dbscheme"
+    ;;
   *)
     usage 2 "Unrecognised language: ${lang}"
     ;;
