@@ -22,11 +22,38 @@ private DataFlow::TypeTrackingNode fileOpenInstance(DataFlow::TypeTracker t) {
 }
 
 /**
+ * Holds if `read` is an attribute read that re-exposes an already-open file held in an
+ * instance attribute, for example `FileIO.fileno` returning `self._fd`.
+ *
+ * Instance-attribute type tracking can launder an open file out of such an accessor, which
+ * would otherwise be mistaken for a fresh file open. The underlying open is tracked, and its
+ * lifetime handled, separately at its real creation site.
+ */
+private predicate launderedAttrRead(DataFlow::AttrRead read) {
+  fileOpenInstance(DataFlow::TypeTracker::end()).flowsTo(read)
+}
+
+/** Type tracking forward from an attribute read that re-exposes a file held in a field. */
+private DataFlow::TypeTrackingNode launderedFileInstance(DataFlow::TypeTracker t) {
+  t.start() and
+  launderedAttrRead(result)
+  or
+  exists(DataFlow::TypeTracker t2 | result = launderedFileInstance(t2).track(t2, t))
+}
+
+/**
  * A call that returns an instance of an open file object.
  * This includes calls to methods that transitively call `open` or similar.
  */
 class FileOpen extends DataFlow::CallCfgNode {
-  FileOpen() { fileOpenInstance(DataFlow::TypeTracker::end()).flowsTo(this) }
+  FileOpen() {
+    fileOpenInstance(DataFlow::TypeTracker::end()).flowsTo(this) and
+    // Don't treat an accessor that merely re-exposes a file held in an instance attribute
+    // (e.g. `FileIO.fileno` returning `self._fd`) as opening a new file. Such flow is
+    // introduced by instance-attribute type tracking; the underlying open is tracked at its
+    // real creation site.
+    not launderedFileInstance(DataFlow::TypeTracker::end()).flowsTo(this)
+  }
 }
 
 /** A call that may wrap a file object in a wrapper class or `os.fdopen`. */

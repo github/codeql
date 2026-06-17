@@ -350,14 +350,14 @@ class FdHolder33():
         os.close(self._fd)
 
 def closed33(path):
-    # False positive mirroring CPython's `_pyio.open`.
+    # Regression test mirroring CPython's `_pyio.open`.
     # `holder.fileno()` merely returns the existing file descriptor; it does not
     # open a new resource. With instance-attribute type tracking, the `os.open`
-    # source flows through `self._fd` and back out of `fileno()`, so the call
-    # `holder.fileno()` is wrongly treated as a fresh file-open whose result is
-    # never closed. The descriptor is in fact owned and closed by `holder.close()`.
+    # source flows through `self._fd` and back out of `fileno()`. The query must
+    # not treat that re-exposed descriptor as a fresh file-open whose result is
+    # never closed. The descriptor is owned and closed by `holder.close()`.
     holder = FdHolder33(path)
     try:
-        n = holder.fileno() # $ SPURIOUS: Alert
+        n = holder.fileno() # No alert: this re-exposes an existing descriptor, not a new open.
     finally:
         holder.close()
