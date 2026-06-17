@@ -9,7 +9,7 @@ const client = new OpenRouter();
 const namedClient = new OpenRouterNamed();
 
 app.get("/test", async (req, res) => {
-  const persona = req.query.persona;
+  const persona = req.query.persona; // $ Source
   const query = req.query.query;
 
   // === OpenRouter Client SDK: chat.send ===
@@ -124,7 +124,7 @@ app.get("/test", async (req, res) => {
     name: "lookup",
     description: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
     inputSchema: {},
-    execute: async () => {},
+    execute: async () => { },
   });
 
   // input array with user role (SHOULD NOT ALERT)

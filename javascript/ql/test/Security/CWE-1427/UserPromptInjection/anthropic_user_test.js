@@ -5,7 +5,7 @@ const app = express();
 const client = new Anthropic();
 
 app.get("/test", async (req, res) => {
-  const userInput = req.query.userInput;
+  const userInput = req.query.userInput; // $ Source
 
   // === User role message (SHOULD ALERT) ===
 

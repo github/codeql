@@ -5,7 +5,7 @@ const app = express();
 const ai = new GoogleGenAI({ apiKey: "test-key" });
 
 app.get("/test", async (req, res) => {
-  const persona = req.query.persona;
+  const persona = req.query.persona; // $ Source
   const query = req.query.query;
 
   // === generateContent: systemInstruction ===
@@ -62,18 +62,18 @@ app.get("/test", async (req, res) => {
 
   // === generateImages: prompt ===
 
-  // SHOULD ALERT
+  // SHOULD NOT ALERT - image prompt is a user-prompt-injection sink, not system
   const g5 = await ai.models.generateImages({
     model: "imagen-3.0-generate-002",
-    prompt: "Draw a picture of " + persona, // $ Alert[js/system-prompt-injection]
+    prompt: "Draw a picture of " + persona,
   });
 
   // === editImage: prompt ===
 
-  // SHOULD ALERT
+  // SHOULD NOT ALERT - image prompt is a user-prompt-injection sink, not system
   const g6 = await ai.models.editImage({
     model: "imagen-3.0-capability-001",
-    prompt: "Edit to look like " + persona, // $ Alert[js/system-prompt-injection]
+    prompt: "Edit to look like " + persona,
   });
 
   // === chats.create: systemInstruction ===
@@ -105,7 +105,7 @@ app.get("/test", async (req, res) => {
       systemInstruction: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
     },
     callbacks: {
-      onmessage: (msg) => {},
+      onmessage: (msg) => { },
     },
   });
 

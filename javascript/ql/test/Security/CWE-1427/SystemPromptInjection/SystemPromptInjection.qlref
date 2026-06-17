@@ -1,1 +1,2 @@
-Security/CWE-1427/SystemPromptInjection.ql
+query: Security/CWE-1427/SystemPromptInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

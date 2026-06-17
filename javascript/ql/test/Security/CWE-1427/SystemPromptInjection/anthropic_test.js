@@ -5,7 +5,7 @@ const app = express();
 const client = new Anthropic();
 
 app.get("/test", async (req, res) => {
-  const persona = req.query.persona;
+  const persona = req.query.persona; // $ Source
   const query = req.query.query;
 
   // === messages.create: system as string ===
@@ -138,14 +138,14 @@ app.get("/test", async (req, res) => {
   // SHOULD ALERT — tainted data goes into system role; barrier on user role
   // must not suppress the system-role taint path.
   const messages2 = [
-    { role: "system", content: "Talk like a " + persona }, // $ Alert[js/system-prompt-injection]
+    { role: "system", content: "Talk like a " + persona },
     { role: "user", content: query },
   ];
   const systemMsg2 = messages2.find((m) => m.role === "system");
   const m7 = await client.messages.create({
     model: "claude-sonnet-4-20250514",
     max_tokens: 1024,
-    system: systemMsg2.content,
+    system: systemMsg2.content, // $ Alert[js/system-prompt-injection]
     messages: [{ role: "user", content: query }],
   });
 

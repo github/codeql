@@ -10,7 +10,7 @@ const { createAgent, initChatModel } = require("langchain");
 const app = express();
 
 app.get("/test", async (req, res) => {
-  const userInput = req.query.userInput;
+  const userInput = req.query.userInput; // $ Source
 
   // === ChatModel.invoke (SHOULD ALERT) ===
 

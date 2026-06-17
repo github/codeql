@@ -5,7 +5,7 @@ const { z } = require("zod");
 const app = express();
 
 app.get("/agents", async (req, res) => {
-  const persona = req.query.persona;
+  const persona = req.query.persona; // $ Source
   const query = req.query.query;
 
   // === Agent constructor: instructions as string ===
@@ -30,8 +30,8 @@ app.get("/agents", async (req, res) => {
   const agent3 = new Agent({
     name: "AsyncDynamic",
     instructions: async (runContext) => {
-      return "Talk like a " + persona; // $ Alert[js/system-prompt-injection]
-    },
+      return "Talk like a " + persona;
+    }, // $ Alert[js/system-prompt-injection]
   });
 
   // === Agent constructor: handoffDescription ===

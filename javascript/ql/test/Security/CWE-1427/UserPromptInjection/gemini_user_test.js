@@ -5,7 +5,7 @@ const app = express();
 const ai = new GoogleGenAI({ apiKey: "test-key" });
 
 app.get("/test", async (req, res) => {
-  const userInput = req.query.userInput;
+  const userInput = req.query.userInput; // $ Source
 
   // === generateContent with string contents (SHOULD ALERT) ===
 

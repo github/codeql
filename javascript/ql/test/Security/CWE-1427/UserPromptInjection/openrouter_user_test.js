@@ -9,7 +9,7 @@ const client = new OpenRouter();
 const namedClient = new OpenRouterNamed();
 
 app.get("/test", async (req, res) => {
-  const userInput = req.query.userInput;
+  const userInput = req.query.userInput; // $ Source
 
   // === OpenRouter Client SDK: chat.send ===
 

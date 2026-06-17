@@ -6,7 +6,7 @@ const { createAgent } = require("langchain");
 const app = express();
 
 app.get("/test", async (req, res) => {
-  const persona = req.query.persona;
+  const persona = req.query.persona; // $ Source
   const query = req.query.query;
 
   const chatModel = new ChatOpenAI({ model: "gpt-4" });

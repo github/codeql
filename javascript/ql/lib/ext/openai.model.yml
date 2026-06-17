@@ -12,7 +12,9 @@ extensions:
       extensible: sinkModel
     data:
       - ["openai.Client", "Member[responses].Member[create].Argument[0].Member[instructions]", "system-prompt-injection"]
-      - ["openai.Client", "Member[beta].Member[assistants].Member[create,update].Argument[0].Member[instructions]", "system-prompt-injection"]
+      - ["openai.Client", "Member[completions].Member[create].Argument[0].Member[prompt]", "system-prompt-injection"]
+      - ["openai.Client", "Member[beta].Member[assistants].Member[create].Argument[0].Member[instructions]", "system-prompt-injection"]
+      - ["openai.Client", "Member[beta].Member[assistants].Member[update].Argument[1].Member[instructions]", "system-prompt-injection"]
       - ["openai.Client", "Member[beta].Member[threads].Member[runs].Member[create].Argument[1].Member[instructions,additional_instructions]", "system-prompt-injection"]
       - ["@openai/agents", "Member[Agent].Argument[0].Member[instructions,handoffDescription]", "system-prompt-injection"]
       - ["@openai/guardrails", "Member[Agent].Argument[0].Member[instructions,handoffDescription]", "system-prompt-injection"]

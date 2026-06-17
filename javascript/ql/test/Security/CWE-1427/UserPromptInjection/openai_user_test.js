@@ -12,7 +12,7 @@ const client = new OpenAI();
 const azureClient = new AzureOpenAI();
 
 app.get("/test", async (req, res) => {
-  const userInput = req.query.userInput;
+  const userInput = req.query.userInput; // $ Source
 
   // === Bare OpenAI client: user prompt sinks (SHOULD ALERT) ===
 

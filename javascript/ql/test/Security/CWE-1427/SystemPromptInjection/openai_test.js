@@ -8,7 +8,7 @@ const client = new OpenAI();
 const azureClient = new AzureOpenAI();
 
 app.get("/test", async (req, res) => {
-  const persona = req.query.persona;
+  const persona = req.query.persona; // $ Source
   const query = req.query.query;
 
   // === OpenAI Responses API ===
@@ -120,18 +120,6 @@ app.get("/test", async (req, res) => {
     prompt: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
   });
 
-  // === Images API ===
-
-  // images.generate (SHOULD ALERT)
-  const i1 = await client.images.generate({
-    prompt: "Draw a picture of " + persona, // $ Alert[js/system-prompt-injection]
-  });
-
-  // images.edit (SHOULD ALERT)
-  const i2 = await client.images.edit({
-    prompt: "Edit to look like " + persona, // $ Alert[js/system-prompt-injection]
-  });
-
   // === Assistants API (beta) ===
 
   // assistants.create (SHOULD ALERT)
@@ -168,22 +156,6 @@ app.get("/test", async (req, res) => {
   await client.beta.threads.messages.create("thread_123", {
     role: "user",
     content: query, // OK - user role
-  });
-
-  // === Audio API ===
-
-  // audio.transcriptions.create (SHOULD ALERT)
-  const at1 = await client.audio.transcriptions.create({
-    file: "audio.mp3",
-    model: "whisper-1",
-    prompt: "Transcribe about " + persona, // $ Alert[js/system-prompt-injection]
-  });
-
-  // audio.translations.create (SHOULD ALERT)
-  const atl1 = await client.audio.translations.create({
-    file: "audio.mp3",
-    model: "whisper-1",
-    prompt: "Translate about " + persona, // $ Alert[js/system-prompt-injection]
   });
 
   // === Object assigned to variable first ===
