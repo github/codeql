@@ -158,3 +158,70 @@ fn test_hash_file(
     _ = std::io::copy(&mut password_file, &mut md5_hasher); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
     _ = md5_hasher.finalize();
 }
+
+// ---
+
+struct Seed {
+}
+
+impl Seed {
+    fn new() -> Self {
+        Seed { }
+    }
+}
+
+fn test_seed() {
+    // this will be misrecognized as a use of the SEED algorithm, but being a strong
+    // algorithm there is no query result anyway.
+    let _ = Seed::new(); // $ Alert[rust/summary/cryptographic-operations]
+}
+
+// ---
+
+struct Sha1 {
+}
+
+impl Sha1 {
+    const fn new() -> Self {
+        Sha1 { }
+    }
+
+    const fn update(&mut self, _data: &[u8]) {
+        // ...
+    }
+
+    const fn finalize(self) -> [u8; 20] {
+        [0; 20]
+    }
+}
+
+fn sha1_test(password: &[u8]) {
+    let mut hasher = Sha1::new(); // $ Alert[rust/summary/cryptographic-operations]
+    hasher.update(password); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
+    _ = hasher.finalize();
+}
+
+// ---
+
+struct HashCollection {
+}
+
+impl HashCollection {
+    pub fn add_sig(value: &str) -> Self {
+        _ = md5_alt::compute(value); // $ Alert[rust/summary/cryptographic-operations] Alert[rust/weak-sensitive-data-hashing]
+
+        // ...
+
+        HashCollection { }
+    }
+}
+
+fn test_hash_collection() {
+    // this indirectly performs MD5 hashing, but the data is not sensitive
+    let id: &str = "my_id_1234567890";
+    HashCollection::add_sig(id);
+
+    // this indirectly performs MD5 hashing, and the data is sensitive; the result is reported here
+    let password: &str = "password123";
+    HashCollection::add_sig(password); // $ Source
+}

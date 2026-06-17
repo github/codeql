@@ -7,3 +7,6 @@
 | test.rs:74:9:74:23 | ...::new(...) | HashingAlgorithm MD5 WEAK  |
 | test.rs:133:26:133:40 | ...::new(...) | HashingAlgorithm MD5 WEAK  |
 | test.rs:156:26:156:40 | ...::new(...) | HashingAlgorithm MD5 WEAK  |
+| test.rs:176:13:176:23 | ...::new(...) | EncryptionAlgorithm SEED   |
+| test.rs:199:22:199:32 | ...::new(...) | HashingAlgorithm SHA1 WEAK  |
+| test.rs:211:13:211:35 | ...::compute(...) | HashingAlgorithm MD5 WEAK inputs:1 |
