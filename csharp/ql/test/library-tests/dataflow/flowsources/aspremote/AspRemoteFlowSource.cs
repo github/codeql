@@ -63,4 +63,32 @@ namespace Testing
     {
         public void MyActionMethod(string param) { }
     }
+
+    // Razor Page handler tests
+    public class MyPageModel : Microsoft.AspNetCore.Mvc.RazorPages.PageModel
+    {
+        // Handler method parameters are remote flow sources
+        public void OnGet(string id) { }
+
+        public void OnPost(string command, int count) { }
+
+        public void OnPostAsync(string data) { }
+
+        public void OnPut(string value) { }
+
+        public void OnDelete(string itemId) { }
+
+        // Not a handler method — does not start with "On", so not a flow source
+        public void GetUser(string userId) { }
+
+        // Excluded by [NonHandler] attribute, so not a flow source
+        [Microsoft.AspNetCore.Mvc.RazorPages.NonHandlerAttribute]
+        public void OnGetNonHandler(string param) { }
+    }
+
+    // Subclass of a PageModel subclass
+    public class DerivedPageModel : MyPageModel
+    {
+        public void OnPost(string derivedParam) { }
+    }
 }

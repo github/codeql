@@ -333,6 +333,9 @@ pub fn extract(
             .run_from_tree(&tree, source)
             .unwrap_or_else(|e| panic!("Desugaring failed for {path_str}: {e}"));
         traverse_yeast(&ast, &mut visitor);
+        // Comments and other `extra` nodes are not represented in the desugared
+        // AST, so recover them directly from the original parse tree.
+        traverse_extras(&tree, &mut visitor);
     } else {
         traverse(&tree, &mut visitor);
     }
@@ -365,6 +368,8 @@ struct Visitor<'a> {
     ast_node_parent_table_name: String,
     /// Language-specific name of the tokeninfo table
     tokeninfo_table_name: String,
+    /// Language-specific name of the trivia tokeninfo table
+    trivia_tokeninfo_table_name: String,
     /// A lookup table from type name to node types
     schema: &'a NodeTypeMap,
     /// A stack for gathering information from child nodes. Whenever a node is
@@ -395,9 +400,31 @@ impl<'a> Visitor<'a> {
             ast_node_location_table_name: format!("{language_prefix}_ast_node_location"),
             ast_node_parent_table_name: format!("{language_prefix}_ast_node_parent"),
             tokeninfo_table_name: format!("{language_prefix}_tokeninfo"),
+            trivia_tokeninfo_table_name: format!("{language_prefix}_trivia_tokeninfo"),
             schema,
             stack: Vec::new(),
         }
+    }
+
+    /// Emits a `TriviaToken` for the given `extra` node (e.g. a comment) from
+    /// the original parse tree. Trivia tokens carry a location and their source
+    /// text, but are not attached to a parent in the (possibly desugared) AST.
+    fn emit_trivia_token(&mut self, node: &Node) {
+        let id = self.trap_writer.fresh_id();
+        let loc = location_for(self, self.file_label, node);
+        let loc_label = location_label(self.trap_writer, loc);
+        self.trap_writer.add_tuple(
+            &self.ast_node_location_table_name,
+            vec![trap::Arg::Label(id), trap::Arg::Label(loc_label)],
+        );
+        self.trap_writer.add_tuple(
+            &self.trivia_tokeninfo_table_name,
+            vec![
+                trap::Arg::Label(id),
+                trap::Arg::Int(node.kind_id() as usize),
+                sliced_source_arg(self.source, node),
+            ],
+        );
     }
 
     fn record_parse_error(&mut self, loc: trap::Label, mesg: &diagnostics::DiagnosticMessage) {
@@ -831,6 +858,24 @@ fn traverse(tree: &Tree, visitor: &mut Visitor) {
             } else {
                 break;
             }
+        }
+    }
+}
+
+/// Walks the original tree-sitter tree and emits a `TriviaToken` for every
+/// `extra` node (e.g. a comment). Used to preserve comments that would
+/// otherwise be lost after a desugaring pass rewrites the tree.
+fn traverse_extras(tree: &Tree, visitor: &mut Visitor) {
+    emit_extras_in(visitor, tree.root_node());
+}
+
+fn emit_extras_in(visitor: &mut Visitor, node: Node<'_>) {
+    let mut cursor = node.walk();
+    for child in node.children(&mut cursor) {
+        if child.is_extra() {
+            visitor.emit_trivia_token(&child);
+        } else {
+            emit_extras_in(visitor, child);
         }
     }
 }

@@ -1,1 +1,2 @@
-queries/style/Misspelling.ql
+query: queries/style/Misspelling.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

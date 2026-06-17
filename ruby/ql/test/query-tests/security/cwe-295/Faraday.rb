@@ -2,11 +2,11 @@ require "faraday"
 
 # BAD
 connection = Faraday.new("http://example.com", ssl: { verify: false })
-response = connection.get("/")
+response = connection.get("/") # $ Alert
 
 # BAD
 connection = Faraday.new("http://example.com", ssl: { verify_mode: OpenSSL::SSL::VERIFY_NONE })
-response = connection.get("/")
+response = connection.get("/") # $ Alert
 
 # GOOD
 connection = Faraday.new("http://example.com")
@@ -32,7 +32,7 @@ response = connection.get("/")
 def verify_as_arg(host, path, arg)
     # BAD, due to the call below
     connection = Faraday.new(host, ssl: { verify: arg })
-    response = connection.get(path)
+    response = connection.get(path) # $ Alert
 end
 
 verify_as_arg("http://example.com", "/", false)
@@ -41,7 +41,7 @@ verify_as_arg("http://example.com", "/", false)
 def verify_mode_as_arg(host, path, arg)
     # BAD, due to the call below
     connection = Faraday.new(host, ssl: { verify_mode: arg })
-    response = connection.get(path)
+    response = connection.get(path) # $ Alert
 end
 
 verify_mode_as_arg("http://example.com", "/", OpenSSL::SSL::VERIFY_NONE)

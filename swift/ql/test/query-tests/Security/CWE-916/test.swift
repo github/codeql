@@ -17,7 +17,7 @@ extension PKCS5 {
 }
 
 // Helper functions
-func getLowIterationCount() -> Int { return 99999 }
+func getLowIterationCount() -> Int { return 99999 } // $ Source
 
 func getEnoughIterationCount() -> Int { return 120120 }
 
@@ -34,15 +34,15 @@ func test() {
 	let enoughIterations = getEnoughIterationCount() 
 	
 	// PBKDF1 test cases
-	let pbkdf1b1 = PKCS5.PBKDF1(password: randomArray, salt: randomArray, iterations: lowIterations, keyLength: 0) // BAD
-	let pbkdf1b2 = PKCS5.PBKDF1(password: randomArray, salt: randomArray, iterations: 80000, keyLength: 0) // BAD
+	let pbkdf1b1 = PKCS5.PBKDF1(password: randomArray, salt: randomArray, iterations: lowIterations, keyLength: 0) // $ Alert
+	let pbkdf1b2 = PKCS5.PBKDF1(password: randomArray, salt: randomArray, iterations: 80000, keyLength: 0) // $ Alert
 	let pbkdf1g1 = PKCS5.PBKDF1(password: randomArray, salt: randomArray, iterations: enoughIterations, keyLength: 0) // GOOD
 	let pbkdf1g2 = PKCS5.PBKDF1(password: randomArray, salt: randomArray, iterations: 120120, keyLength: 0) // GOOD
 
 
 	// PBKDF2 test cases
-	let pbkdf2b1 = PKCS5.PBKDF2(password: randomArray, salt: randomArray, iterations: lowIterations, keyLength: 0) // BAD
-	let pbkdf2b2 = PKCS5.PBKDF2(password: randomArray, salt: randomArray, iterations: 80000, keyLength: 0) // BAD
+	let pbkdf2b1 = PKCS5.PBKDF2(password: randomArray, salt: randomArray, iterations: lowIterations, keyLength: 0) // $ Alert
+	let pbkdf2b2 = PKCS5.PBKDF2(password: randomArray, salt: randomArray, iterations: 80000, keyLength: 0) // $ Alert
 	let pbkdf2g1 = PKCS5.PBKDF2(password: randomArray, salt: randomArray, iterations: enoughIterations, keyLength: 0) // GOOD
 	let pbkdf2g2 = PKCS5.PBKDF2(password: randomArray, salt: randomArray, iterations: 120120, keyLength: 0) // GOOD
 }
