@@ -24,9 +24,6 @@ predicate inVoidContext(Expr e) {
     )
   )
   or
-  // propagate void context through parenthesized expressions
-  inVoidContext(e.getParent().(ParExpr))
-  or
   exists(SeqExpr seq, int i, int n |
     e = seq.getOperand(i) and
     n = seq.getNumOperands()
@@ -146,8 +143,6 @@ predicate isCompoundExpression(Expr e) {
   e instanceof LogicalBinaryExpr
   or
   e instanceof SeqExpr
-  or
-  e instanceof ParExpr
 }
 
 /**
@@ -177,11 +172,12 @@ predicate hasNoEffect(Expr e) {
   // from a syntax error we already flag
   not exists(FunctionExpr fe, ExprStmt es | fe = e |
     fe = es.getExpr() and
-    not exists(fe.getName())
+    not exists(fe.getName()) and
+    not fe.isParenthesized()
   ) and
   // exclude block-level flow type annotations. For example: `(name: empty)`.
-  not exists(ParExpr parent |
-    e.getParent() = parent and
+  not (
+    e.isParenthesized() and
     e.getLastToken().getNextToken().getValue() = ":"
   ) and
   // exclude expressions that are part of a conditional expression

@@ -986,8 +986,6 @@ refinement_eval
 | refinements.js:17:10:17:10 | a | [a = non-zero value] | non-zero number |
 | refinements.js:17:10:17:10 | a | [a = null] | any null |
 | refinements.js:17:10:17:10 | a | [a = null] | any null |
-| refinements.js:28:7:28:16 | (typeof a) | [a = undefined] | 'undefined' |
-| refinements.js:28:7:28:16 | (typeof a) | [a = undefined] | 'undefined' |
 | refinements.js:28:7:28:19 | (typeof a)[0] | [a = undefined] | 'u' |
 | refinements.js:28:7:28:19 | (typeof a)[0] | [a = undefined] | 'u' |
 | refinements.js:28:7:28:27 | (typeof ... !== 'u' | [a = undefined] | false |
@@ -1000,10 +998,6 @@ refinement_eval
 | refinements.js:28:18:28:18 | 0 | [a = undefined] | 0 |
 | refinements.js:28:25:28:27 | 'u' | [a = undefined] | 'u' |
 | refinements.js:28:25:28:27 | 'u' | [a = undefined] | 'u' |
-| refinements.js:36:7:36:16 | (typeof a) | [a = anonymous function] | 'function' |
-| refinements.js:36:7:36:16 | (typeof a) | [a = anonymous function] | 'function' |
-| refinements.js:36:7:36:16 | (typeof a) | [a = object literal] | 'object' |
-| refinements.js:36:7:36:16 | (typeof a) | [a = object literal] | 'object' |
 | refinements.js:36:7:36:19 | (typeof a)[0] | [a = anonymous function] | 'f' |
 | refinements.js:36:7:36:19 | (typeof a)[0] | [a = anonymous function] | 'f' |
 | refinements.js:36:7:36:19 | (typeof a)[0] | [a = object literal] | 'o' |

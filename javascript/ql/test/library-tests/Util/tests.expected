@@ -6,7 +6,6 @@ capitalize
 | Xx | Xx |
 | Xx | xx |
 describeExpression
-| tst.js:1:1:15:2 | (functi ... !'';\\n}) | expression |
 | tst.js:1:2:15:1 | functio ...  !'';\\n} | expression |
 | tst.js:2:5:2:5 | v | use of variable 'v' |
 | tst.js:3:5:3:5 | o | use of variable 'o' |

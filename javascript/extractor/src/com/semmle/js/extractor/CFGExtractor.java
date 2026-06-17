@@ -537,6 +537,11 @@ public class CFGExtractor {
       return nd.getLeft().accept(this, c);
     }
 
+    @Override
+    public Node visit(ParenthesizedExpression nd, Void c) {
+      return nd.getExpression().accept(this, c);
+    }
+
     public static Node of(Node nd) {
       return nd.accept(new First(), null);
     }
@@ -1299,7 +1304,7 @@ public class CFGExtractor {
 
     @Override
     public Void visit(ParenthesizedExpression nd, SuccessorInfo i) {
-      writeSuccessor(nd, First.of(nd.getExpression()));
+      // Bypass parenthesized expression - it has no DB entry, so just delegate to the inner expression
       return nd.getExpression().accept(this, i);
     }
 
@@ -1773,6 +1778,10 @@ public class CFGExtractor {
 
     private void postVisitChainable(Chainable chainable, Expression base, boolean optional) {
       if (optional) {
+        // Unwrap parenthesized expressions since they have no DB entry.
+        while (base instanceof ParenthesizedExpression) {
+          base = ((ParenthesizedExpression) base).getExpression();
+        }
         writeSuccessors(base, chainRootSuccessors.get(chainable).getSuccessors(false));
       }
       chainRootSuccessors.remove(chainable);

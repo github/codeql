@@ -52,3 +52,16 @@ x +   x >> 1
 
 // OK - asm.js-like
 x = x - 1|0;
+
+// OK - parenthesized inner expression clarifies precedence
+function ok_paren1(x) {
+	return (x + x)>>1;
+}
+
+function ok_paren2(o, p) {
+	return (p in o)&&o[p];
+}
+
+function ok_paren3(x) {
+	return (x  +  x) >> 1;
+}

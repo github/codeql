@@ -190,9 +190,7 @@ edges
 | exec-sh.js:19:15:19:38 | url.par ... , true) | exec-sh.js:19:9:19:11 | cmd | provenance |  |
 | exec-sh.js:19:25:19:31 | req.url | exec-sh.js:19:15:19:38 | url.par ... , true) | provenance |  |
 | exec-sh.js:20:12:20:14 | cmd | exec-sh.js:13:17:13:23 | command | provenance |  |
-| execSeries.js:3:20:3:22 | arr [0] | execSeries.js:5:3:10:4 | (functi ... );\\n  }) [arr, 0] | provenance |  |
 | execSeries.js:3:20:3:22 | arr [0] | execSeries.js:6:14:6:16 | arr [0] | provenance |  |
-| execSeries.js:5:3:10:4 | (functi ... );\\n  }) [arr, 0] | execSeries.js:6:14:6:16 | arr [0] | provenance |  |
 | execSeries.js:6:14:6:16 | arr [0] | execSeries.js:6:14:6:21 | arr[i++] | provenance |  |
 | execSeries.js:6:14:6:21 | arr[i++] | execSeries.js:14:24:14:30 | command | provenance |  |
 | execSeries.js:13:19:13:26 | commands [0] | execSeries.js:14:13:14:20 | commands [0] | provenance |  |
@@ -435,7 +433,6 @@ nodes
 | exec-sh.js:19:25:19:31 | req.url | semmle.label | req.url |
 | exec-sh.js:20:12:20:14 | cmd | semmle.label | cmd |
 | execSeries.js:3:20:3:22 | arr [0] | semmle.label | arr [0] |
-| execSeries.js:5:3:10:4 | (functi ... );\\n  }) [arr, 0] | semmle.label | (functi ... );\\n  }) [arr, 0] |
 | execSeries.js:6:14:6:16 | arr [0] | semmle.label | arr [0] |
 | execSeries.js:6:14:6:21 | arr[i++] | semmle.label | arr[i++] |
 | execSeries.js:13:19:13:26 | commands [0] | semmle.label | commands [0] |

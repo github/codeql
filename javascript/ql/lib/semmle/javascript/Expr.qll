@@ -45,8 +45,6 @@ class ExprOrType extends @expr_or_type, Documentable {
       exists(DotExpr dot | this = dot.getProperty() | result = dot.getDocumentation())
       or
       exists(AssignExpr e | this = e.getRhs() | result = e.getDocumentation())
-      or
-      exists(ParExpr p | this = p.getExpression() | result = p.getDocumentation())
     )
   }
 
@@ -108,6 +106,12 @@ class ExprOrType extends @expr_or_type, Documentable {
 class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
   /** Gets this expression, with any surrounding parentheses removed. */
   override Expr stripParens() { result = this }
+
+  /** Holds if this expression is wrapped in parentheses. */
+  predicate isParenthesized() { has_parentheses(this, _) }
+
+  /** Gets the number of enclosing parentheses around this expression. */
+  int getParenthesisDepth() { has_parentheses(this, result) }
 
   /** Gets the constant integer value this expression evaluates to, if any. */
   int getIntValue() { none() }
@@ -235,9 +239,6 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
       this = ctx.(ForOfStmt).getIterationDomain()
       or
       // recursive cases
-      this = ctx.(ParExpr).getExpression() and
-      ctx.(ParExpr).inNullSensitiveContext()
-      or
       this = ctx.(SeqExpr).getLastOperand() and
       ctx.(SeqExpr).inNullSensitiveContext()
       or
@@ -350,6 +351,11 @@ class Literal extends @literal, Expr {
 
 /**
  * A parenthesized expression.
+ *
+ * Note: in new databases, parenthesized expressions are not represented as separate
+ * AST nodes. Instead, the inner expression takes the place of the parenthesized
+ * expression and `Expr.isParenthesized()` indicates whether it was wrapped in
+ * parentheses. This class is retained for backwards compatibility with old databases.
  *
  * Example:
  *

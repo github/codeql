@@ -489,8 +489,6 @@ nodes
 | tst.js:9:28:9:33 | target | semmle.label | target |
 | tst.js:14:7:14:12 | params | semmle.label | params |
 | tst.js:14:7:14:12 | params [MapValue] | semmle.label | params [MapValue] |
-| tst.js:14:16:14:43 | (new UR ... ation)) [searchParams, MapValue] | semmle.label | (new UR ... ation)) [searchParams, MapValue] |
-| tst.js:14:16:14:43 | (new UR ... ation)) [searchParams] | semmle.label | (new UR ... ation)) [searchParams] |
 | tst.js:14:16:14:56 | (new UR ... hParams | semmle.label | (new UR ... hParams |
 | tst.js:14:16:14:56 | (new UR ... hParams [MapValue] | semmle.label | (new UR ... hParams [MapValue] |
 | tst.js:14:17:14:42 | new URL ... cation) [searchParams, MapValue] | semmle.label | new URL ... cation) [searchParams, MapValue] |
@@ -751,8 +749,8 @@ nodes
 | various-concat-obfuscations.js:12:19:12:25 | tainted | semmle.label | tainted |
 | various-concat-obfuscations.js:14:24:14:28 | attrs | semmle.label | attrs |
 | various-concat-obfuscations.js:15:10:15:83 | '<div a ... </div>' | semmle.label | '<div a ... </div>' |
-| various-concat-obfuscations.js:15:27:15:55 | (attrs. ... 'left') | semmle.label | (attrs. ... 'left') |
 | various-concat-obfuscations.js:15:28:15:32 | attrs | semmle.label | attrs |
+| various-concat-obfuscations.js:15:28:15:54 | attrs.d ...  'left' | semmle.label | attrs.d ...  'left' |
 | various-concat-obfuscations.js:17:24:17:28 | attrs | semmle.label | attrs |
 | various-concat-obfuscations.js:18:10:18:59 | '<div a ... 'left') | semmle.label | '<div a ... 'left') |
 | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) | semmle.label | '<div a ... ntent)) |
@@ -1150,12 +1148,10 @@ edges
 | tst.js:9:28:9:33 | target | tst.js:9:5:9:42 | '<div s ...  'px">' | provenance | Config |
 | tst.js:14:7:14:12 | params | tst.js:15:18:15:23 | params | provenance |  |
 | tst.js:14:7:14:12 | params [MapValue] | tst.js:15:18:15:23 | params [MapValue] | provenance |  |
-| tst.js:14:16:14:43 | (new UR ... ation)) [searchParams, MapValue] | tst.js:14:16:14:56 | (new UR ... hParams [MapValue] | provenance |  |
-| tst.js:14:16:14:43 | (new UR ... ation)) [searchParams] | tst.js:14:16:14:56 | (new UR ... hParams | provenance |  |
 | tst.js:14:16:14:56 | (new UR ... hParams | tst.js:14:7:14:12 | params | provenance |  |
 | tst.js:14:16:14:56 | (new UR ... hParams [MapValue] | tst.js:14:7:14:12 | params [MapValue] | provenance |  |
-| tst.js:14:17:14:42 | new URL ... cation) [searchParams, MapValue] | tst.js:14:16:14:43 | (new UR ... ation)) [searchParams, MapValue] | provenance |  |
-| tst.js:14:17:14:42 | new URL ... cation) [searchParams] | tst.js:14:16:14:43 | (new UR ... ation)) [searchParams] | provenance |  |
+| tst.js:14:17:14:42 | new URL ... cation) [searchParams, MapValue] | tst.js:14:16:14:56 | (new UR ... hParams [MapValue] | provenance |  |
+| tst.js:14:17:14:42 | new URL ... cation) [searchParams] | tst.js:14:16:14:56 | (new UR ... hParams | provenance |  |
 | tst.js:14:25:14:41 | document.location | tst.js:14:17:14:42 | new URL ... cation) [searchParams, MapValue] | provenance |  |
 | tst.js:14:25:14:41 | document.location | tst.js:14:17:14:42 | new URL ... cation) [searchParams] | provenance |  |
 | tst.js:15:18:15:23 | params | tst.js:15:18:15:35 | params.get('name') | provenance | Config |
@@ -1380,8 +1376,8 @@ edges
 | various-concat-obfuscations.js:12:4:12:34 | ["<div  ... "\\"/>"] | various-concat-obfuscations.js:12:4:12:41 | ["<div  ... .join() | provenance |  |
 | various-concat-obfuscations.js:12:19:12:25 | tainted | various-concat-obfuscations.js:12:4:12:34 | ["<div  ... "\\"/>"] | provenance | Config |
 | various-concat-obfuscations.js:14:24:14:28 | attrs | various-concat-obfuscations.js:15:28:15:32 | attrs | provenance |  |
-| various-concat-obfuscations.js:15:27:15:55 | (attrs. ... 'left') | various-concat-obfuscations.js:15:10:15:83 | '<div a ... </div>' | provenance | Config |
-| various-concat-obfuscations.js:15:28:15:32 | attrs | various-concat-obfuscations.js:15:27:15:55 | (attrs. ... 'left') | provenance |  |
+| various-concat-obfuscations.js:15:28:15:32 | attrs | various-concat-obfuscations.js:15:28:15:54 | attrs.d ...  'left' | provenance |  |
+| various-concat-obfuscations.js:15:28:15:54 | attrs.d ...  'left' | various-concat-obfuscations.js:15:10:15:83 | '<div a ... </div>' | provenance | Config |
 | various-concat-obfuscations.js:17:24:17:28 | attrs | various-concat-obfuscations.js:18:32:18:36 | attrs | provenance |  |
 | various-concat-obfuscations.js:18:10:18:59 | '<div a ... 'left') | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) | provenance |  |
 | various-concat-obfuscations.js:18:10:18:59 | '<div a ... 'left') | various-concat-obfuscations.js:18:10:18:88 | '<div a ... ntent)) [ArrayElement] | provenance |  |

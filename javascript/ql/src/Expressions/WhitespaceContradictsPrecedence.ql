@@ -81,6 +81,7 @@ predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
   inner = outer.getAChildExpr() and
   not inner instanceof AssocNestedExpr and
   not inner instanceof HarmlessNestedExpr and
+  not inner.isParenthesized() and
   not benignWhitespace(outer)
 }
 

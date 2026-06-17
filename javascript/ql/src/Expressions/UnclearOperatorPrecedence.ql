@@ -25,6 +25,8 @@ where
   // don't flag if the other operand is itself a comparison,
   // since the nesting tends to be visually more obvious in such cases
   not other instanceof Comparison and
+  // don't flag if the comparison is wrapped in parentheses
+  not rel.isParenthesized() and
   // don't flag occurrences in minified code
   not rel.getTopLevel().isMinified()
 select rel,

@@ -6,10 +6,10 @@
 | tst.js:17:1:17:4 | null | This expression is of type null, but it is compared to $@ of type number. | tst.js:17:9:17:9 | 0 | an expression |
 | tst.js:20:6:20:7 | 42 | This expression is of type number, but it is compared to $@ of type string. | tst.js:19:9:19:12 | "hi" | an expression |
 | tst.js:23:1:23:23 | Object. ... ) + "!" | This expression is of type string, but it is compared to $@ of type undefined. | tst.js:23:28:23:36 | undefined | 'undefined' |
-| tst.js:25:1:25:29 | (+f() \| ... + k())) | This expression is of type boolean, number or string, but it is compared to $@ of type undefined. | tst.js:25:34:25:42 | undefined | 'undefined' |
+| tst.js:25:2:25:28 | +f() \|\| ...  + k()) | This expression is of type boolean, number or string, but it is compared to $@ of type undefined. | tst.js:25:34:25:42 | undefined | 'undefined' |
 | tst.js:27:5:27:19 | !Module['load'] | This expression is of type boolean, but it is compared to $@ of type string. | tst.js:27:24:27:34 | 'undefined' | an expression |
 | tst.js:41:3:41:8 | number | Variable 'number' is of type number, but it is compared to $@ of type string. | tst.js:41:13:41:18 | "zero" | an expression |
-| tst.js:44:1:44:1 | 0 | This expression is of type number, but it is compared to $@ of type object or undefined. | tst.js:44:5:44:43 | (Math.r ... [1, 2]) | an expression |
+| tst.js:44:1:44:1 | 0 | This expression is of type number, but it is compared to $@ of type object or undefined. | tst.js:44:6:44:42 | Math.ra ...  [1, 2] | an expression |
 | tst.js:78:31:78:32 | x2 | Variable 'x2' is of type date, object or regular expression, but it is compared to $@ of type null. | tst.js:78:38:78:41 | null | an expression |
 | tst.js:81:35:81:36 | x3 | Variable 'x3' is of type date, object or regular expression, but it is compared to $@ of type null. | tst.js:81:42:81:45 | null | an expression |
 | tst.js:91:5:91:6 | x5 | Variable 'x5' cannot be of type null, but it is compared to $@ of type null. | tst.js:91:12:91:15 | null | an expression |
