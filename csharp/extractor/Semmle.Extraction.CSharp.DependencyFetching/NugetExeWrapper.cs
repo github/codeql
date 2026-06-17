@@ -22,6 +22,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
     /// <summary>
     /// Factory for creating a package manager to restore NuGet packages referenced in packages.config files.
+    /// If the environment doesn't support using nuget.exe to restore packages from packages.config files, a no-op implementation is returned.
     /// It is worth noting that for MacOS and Linux, nuget.exe is used with mono. However, mono is being deprecated and the last images to contain
     /// mono are
     /// - Ubuntu 22.04
@@ -35,7 +36,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     {
         public static IPackagesConfigRestore Create(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, Func<bool> useDefaultFeed)
         {
-            return new NugetExeWrapper(fileProvider, packageDirectory, logger, useDefaultFeed);
+            if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMonoInstalled())
+            {
+                return new NugetExeWrapper(fileProvider, packageDirectory, logger, useDefaultFeed);
+            }
+
+            return new NoOpPackagesConfig(fileProvider, logger);
         }
 
         /// <summary>
@@ -333,6 +339,31 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     logger.LogError($"Failed to restore original nuget.config file: {exc}");
                 }
             }
+        }
+
+        private class NoOpPackagesConfig : IPackagesConfigRestore
+        {
+            private readonly Semmle.Util.Logging.ILogger logger;
+            private readonly FileProvider fileProvider;
+
+            public NoOpPackagesConfig(FileProvider fileProvider, Semmle.Util.Logging.ILogger logger)
+            {
+                this.fileProvider = fileProvider;
+                this.logger = logger;
+            }
+
+            public int PackageCount => fileProvider.PackagesConfigs.Count;
+
+            public int InstallPackages()
+            {
+                if (PackageCount > 0)
+                {
+                    logger.LogInfo("Found packages.config files, but nuget.exe cannot be used to restore packages on this platform. Skipping restore of packages.config files.");
+                }
+                return 0;
+            }
+
+            public void Dispose() { }
         }
     }
 }
