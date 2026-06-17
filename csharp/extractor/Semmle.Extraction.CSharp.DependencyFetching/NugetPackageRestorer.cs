@@ -161,13 +161,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     reachableFeeds.UnionWith(reachableInheritedFeeds);
                 }
 
-                using (var nuget = new NugetExeWrapper(fileProvider, legacyPackageDirectory, logger, IsDefaultFeedReachable))
+                using (var packagesConfigRestore = PackagesConfigRestoreFactory.Create(fileProvider, legacyPackageDirectory, logger, IsDefaultFeedReachable))
                 {
-                    var count = nuget.InstallPackages();
+                    var count = packagesConfigRestore.InstallPackages();
 
-                    if (nuget.PackageCount > 0)
+                    if (packagesConfigRestore.PackageCount > 0)
                     {
-                        compilationInfoContainer.CompilationInfos.Add(("packages.config files", nuget.PackageCount.ToString()));
+                        compilationInfoContainer.CompilationInfos.Add(("packages.config files", packagesConfigRestore.PackageCount.ToString()));
                         compilationInfoContainer.CompilationInfos.Add(("Successfully restored packages.config files", count.ToString()));
                     }
                 }
