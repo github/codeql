@@ -15,6 +15,7 @@
 import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowDispatch
+private import semmle.python.dataflow.new.internal.ReExposedInstance
 
 predicate calls_close(Call c) { exists(Attribute a | c.getFunc() = a and a.getName() = "close") }
 
@@ -24,26 +25,10 @@ predicate only_stmt_in_finally(Try t, Call c) {
   )
 }
 
-/**
- * Holds if `read` is an attribute read that re-exposes an instance of `cls` held in an
- * instance attribute, for example `BufferedRWPair.reader`.
- *
- * Instance-attribute type tracking can launder such an instance out of a field. The object
- * is owned by the enclosing instance, so its lifetime spans that instance and cannot be
- * expressed with a `with` statement; closing it in a `finally` block is therefore not a
- * candidate for refactoring.
- */
-private predicate launderedAttrRead(Class cls, DataFlow::AttrRead read) {
-  read = classInstanceTracker(cls)
-}
+/** Holds if `node` is tracked to be an instance of some class. */
+private predicate classInstanceNode(DataFlow::Node node) { node = classInstanceTracker(_) }
 
-/** Type tracking forward from an attribute read that re-exposes an instance held in a field. */
-private DataFlow::TypeTrackingNode launderedInstance(Class cls, DataFlow::TypeTracker t) {
-  t.start() and
-  launderedAttrRead(cls, result)
-  or
-  exists(DataFlow::TypeTracker t2 | result = launderedInstance(cls, t2).track(t2, t))
-}
+private module ClassReExposed = ReExposedInstance<classInstanceNode/1>;
 
 from Call close, Try t, Class cls, DataFlow::Node closeTarget
 where
@@ -54,7 +39,7 @@ where
   // Don't report closing a resource that is held in an instance attribute (e.g. `self.reader`).
   // Such flow is introduced by instance-attribute type tracking; the object's lifetime is tied
   // to the enclosing instance and cannot be expressed with a `with` statement.
-  not launderedInstance(cls, DataFlow::TypeTracker::end()).flowsTo(closeTarget) and
+  not ClassReExposed::isReExposed(closeTarget) and
   DuckTyping::isContextManager(cls)
 select close,
   "Instance of context-manager class $@ is closed in a finally block. Consider using 'with' statement.",

@@ -3,6 +3,7 @@
 import python
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 import semmle.python.ApiGraphs
+private import semmle.python.dataflow.new.internal.ReExposedInstance
 
 /** A CFG node where a file is opened. */
 abstract class FileOpenSource extends DataFlow::CfgNode { }
@@ -22,24 +23,13 @@ private DataFlow::TypeTrackingNode fileOpenInstance(DataFlow::TypeTracker t) {
 }
 
 /**
- * Holds if `read` is an attribute read that re-exposes an already-open file held in an
- * instance attribute, for example `FileIO.fileno` returning `self._fd`.
- *
- * Instance-attribute type tracking can launder an open file out of such an accessor, which
- * would otherwise be mistaken for a fresh file open. The underlying open is tracked, and its
- * lifetime handled, separately at its real creation site.
+ * Holds if `node` is tracked to be an instance of an open file object.
  */
-private predicate launderedAttrRead(DataFlow::AttrRead read) {
-  fileOpenInstance(DataFlow::TypeTracker::end()).flowsTo(read)
+private predicate fileInstanceNode(DataFlow::Node node) {
+  fileOpenInstance(DataFlow::TypeTracker::end()).flowsTo(node)
 }
 
-/** Type tracking forward from an attribute read that re-exposes a file held in a field. */
-private DataFlow::TypeTrackingNode launderedFileInstance(DataFlow::TypeTracker t) {
-  t.start() and
-  launderedAttrRead(result)
-  or
-  exists(DataFlow::TypeTracker t2 | result = launderedFileInstance(t2).track(t2, t))
-}
+private module FileReExposed = ReExposedInstance<fileInstanceNode/1>;
 
 /**
  * A call that returns an instance of an open file object.
@@ -52,7 +42,7 @@ class FileOpen extends DataFlow::CallCfgNode {
     // (e.g. `FileIO.fileno` returning `self._fd`) as opening a new file. Such flow is
     // introduced by instance-attribute type tracking; the underlying open is tracked at its
     // real creation site.
-    not launderedFileInstance(DataFlow::TypeTracker::end()).flowsTo(this)
+    not FileReExposed::isReExposed(this)
   }
 }
 
