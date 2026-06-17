@@ -30,6 +30,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         private readonly DependencyDirectory packageDirectory;
 
+        private bool IsWindows => SystemBuildActions.Instance.IsWindows();
+
         /// <summary>
         /// Create the package manager for a specified source tree.
         /// </summary>
@@ -119,7 +121,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return path;
             }
 
-            var executableName = Win32.IsWindows() ? "nuget.exe" : "nuget";
+            var executableName = IsWindows ? "nuget.exe" : "nuget";
             var nugetPath = FileUtils.FindProgramOnPath(executableName);
             if (nugetPath is not null)
             {
@@ -150,7 +152,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return nuget;
         }
 
-        private bool RunWithMono => !Win32.IsWindows() && !string.IsNullOrEmpty(Path.GetExtension(nugetExe));
+        private bool RunWithMono => !IsWindows && !string.IsNullOrEmpty(Path.GetExtension(nugetExe));
 
         /// <summary>
         /// Restore all packages in the specified packages.config file.
@@ -211,7 +213,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private bool HasNoPackageSource()
         {
-            if (Win32.IsWindows())
+            if (IsWindows)
             {
                 return false;
             }
