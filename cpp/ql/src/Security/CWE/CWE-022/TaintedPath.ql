@@ -106,11 +106,7 @@ module TaintedPath = TaintTracking::Global<TaintedPathConfig>;
 from
   FileFunction fileFunction, Expr taintedArg, FlowSource taintSource,
   TaintedPath::PathNode sourceNode, TaintedPath::PathNode sinkNode, string callChain
-where
-  taintedArg = sinkNode.getNode().asIndirectArgument() and
-  fileFunction.outermostWrapperFunctionCall(taintedArg, callChain) and
-  TaintedPath::flowPath(sourceNode, sinkNode) and
-  taintSource = sourceNode.getNode()
+where none()
 select taintedArg, sourceNode, sinkNode,
   "This argument to a file access function is derived from $@ and then passed to " + callChain + ".",
   taintSource, "user input (" + taintSource.getSourceType() + ")"
