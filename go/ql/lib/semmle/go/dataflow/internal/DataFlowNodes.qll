@@ -923,9 +923,9 @@ module Public {
   /**
    * A node whose value is returned as a result from a function.
    *
-   * This can either be a node corresponding to an expression in a return statement,
-   * or a node representing the current value of a named result variable at the exit
-   * of the function.
+   * If the function declares named result variables, this is a node representing
+   * the current value of one of those variables at function exit. Otherwise, this
+   * is a node corresponding to an expression in a return statement.
    */
   class ResultNode extends InstructionNode {
     int i;
