@@ -53,3 +53,134 @@ top_level
           right:
             name_expr
               identifier: identifier "bar"
+
+===
+Simple import with single name
+===
+
+import Foundation
+
+---
+
+source_file
+  statement:
+    import_declaration
+      name:
+        identifier
+          part: simple_identifier "Foundation"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        import_declaration
+          pattern: bulk_importing_pattern "import Foundation"
+          imported_expr:
+            name_expr
+              identifier: identifier "Foundation"
+
+===
+Import with dotted path (two parts)
+===
+
+import Foundation.Networking
+
+---
+
+source_file
+  statement:
+    import_declaration
+      name:
+        identifier
+          part:
+            simple_identifier "Foundation"
+            simple_identifier "Networking"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        import_declaration
+          pattern: bulk_importing_pattern "import Foundation.Networking"
+          imported_expr:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "Foundation"
+              member: identifier "Networking"
+
+===
+Import with deeply nested path (three parts)
+===
+
+import Foundation.Networking.URLSession
+
+---
+
+source_file
+  statement:
+    import_declaration
+      name:
+        identifier
+          part:
+            simple_identifier "Foundation"
+            simple_identifier "Networking"
+            simple_identifier "URLSession"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        import_declaration
+          pattern: bulk_importing_pattern "import Foundation.Networking.URLSession"
+          imported_expr:
+            member_access_expr
+              base:
+                member_access_expr
+                  base:
+                    name_expr
+                      identifier: identifier "Foundation"
+                  member: identifier "Networking"
+              member: identifier "URLSession"
+
+===
+Scoped import uses name_pattern
+===
+
+import struct Foundation.Date
+
+---
+
+source_file
+  statement:
+    import_declaration
+      name:
+        identifier
+          part:
+            simple_identifier "Foundation"
+            simple_identifier "Date"
+      scoped_import_kind: struct
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        import_declaration
+          modifier: modifier "struct"
+          pattern:
+            name_pattern
+              identifier: identifier "Date"
+          imported_expr:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "Foundation"
+              member: identifier "Date"

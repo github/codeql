@@ -555,3 +555,97 @@ top_level
                 name_pattern
                   identifier: identifier "x"
           return_type: unsupported_node "T"
+
+===
+Leading-dot expression value
+===
+
+let x = .foo
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "x"
+          value:
+            prefix_expression
+              operation: .
+              target: simple_identifier "foo"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          value:
+            member_access_expr
+              base: inferred_type_expr ".foo"
+              member: identifier "foo"
+
+===
+Leading-dot expression call
+===
+
+let y = .some(1)
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "y"
+          value:
+            call_expression
+              function:
+                prefix_expression
+                  operation: .
+                  target: simple_identifier "some"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: integer_literal "1"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "y"
+          value:
+            call_expr
+              argument:
+                argument
+                  value: int_literal "1"
+              callee:
+                member_access_expr
+                  base: inferred_type_expr ".some"
+                  member: identifier "some"

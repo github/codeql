@@ -633,6 +633,38 @@ fn translation_rules() -> Vec<yeast::Rule> {
         rule!((check_expression op: @op target: @val type: @ty) => (type_test_expr expr: {val} operator: (infix_operator #{op}) type: {ty})),
         // Await expression → unary_expr with operator "await"
         rule!((await_expression expr: @val) => (unary_expr operator: (prefix_operator "await") operand: {val})),
+        // A multi-part identifier (for example `Foo.Bar.Baz`) is translated to
+        // a member_access_expr chain with a name_expr base.
+        rule!(
+            (identifier part: _+ @parts)
+            =>
+            {parts}.reduce_left(
+                first -> (name_expr identifier: (identifier #{first})),
+                acc, elem -> (member_access_expr base: {acc} member: (identifier #{elem})))
+        ),
+        // Scoped import declaration (for example `import struct Foo.Bar`):
+        // flatten the identifier parts into a member_access_expr and bind the
+        // final segment as a name_pattern.
+        rule!(
+            (import_declaration scoped_import_kind: @kind name: (identifier part: _+ @parts) @name modifiers: (modifiers)? @mods)
+            =>
+            (import_declaration
+                pattern: (name_pattern identifier: (identifier #{parts.last().unwrap()}))
+                imported_expr: {name}
+                modifier: (modifier #{kind})
+                modifier: {..mods})
+        ),
+        // Non-scoped import declaration (for example `import Foundation`):
+        // flatten the identifier parts into a member_access_expr and use a
+        // bulk_importing_pattern.
+        rule!(
+            (import_declaration name: @name modifiers: (modifiers)? @mods)
+            =>
+            (import_declaration
+                pattern: (bulk_importing_pattern)
+                imported_expr: {name}
+                modifier: {..mods})
+        ),
         // ---- Fallbacks ----
         rule!(
             (_)
