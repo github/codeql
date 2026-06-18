@@ -2,7 +2,7 @@ import os
 import os.path
 import shutil
 
-def test(codeql, java, check_diagnostics):
+def test(codeql, java, check_diagnostics_java):
 
     # Avoid shutil resolving mvn to the wrapper script in the test dir:
     os.environ["NoDefaultCurrentDirectoryInExePath"] = "0"

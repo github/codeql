@@ -2,14 +2,14 @@
 class DetectTest
     def test
         # These are bad
-        [].select { |i| true }.first
-        [].select { |i| true }.last
-        [].select { |i| true }[0]
-        [].select { |i| true }[-1]
-        [].filter { |i| true }.first
-        [].find_all { |i| true }.last
+        [].select { |i| true }.first # $ Alert
+        [].select { |i| true }.last # $ Alert
+        [].select { |i| true }[0] # $ Alert
+        [].select { |i| true }[-1] # $ Alert
+        [].filter { |i| true }.first # $ Alert
+        [].find_all { |i| true }.last # $ Alert
         selection1 = [].select { |i| true }
-        selection1.first
+        selection1.first # $ Alert
 
         # These are good
         [].select("").first # Selecting a string

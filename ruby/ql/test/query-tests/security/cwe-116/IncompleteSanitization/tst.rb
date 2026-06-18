@@ -1,91 +1,91 @@
 
 def bad1(s)
-  s.sub  "'", "" # NOT OK
-  s.sub! "'", "" # NOT OK
+  s.sub  "'", "" # $ Alert // NOT OK
+  s.sub! "'", "" # $ Alert // NOT OK
 end
 
 def bad2(s)
-  s.sub  /'/, "" # NOT OK
-  s.sub! /'/, "" # NOT OK
+  s.sub  /'/, "" # $ Alert // NOT OK
+  s.sub! /'/, "" # $ Alert // NOT OK
 end
 
 def bad3(s1, s2, s3)
-  s1.gsub  /'/, "\\'"  # NOT OK
-  s1.gsub  /'/, '\\\'' # NOT OK
-  s2.gsub! /'/, "\\'"  # NOT OK
-  s3.gsub! /'/, '\\\'' # NOT OK
+  s1.gsub  /'/, "\\'" # $ Alert // NOT OK
+  s1.gsub  /'/, '\\\'' # $ Alert // NOT OK
+  s2.gsub! /'/, "\\'" # $ Alert // NOT OK
+  s3.gsub! /'/, '\\\'' # $ Alert // NOT OK
 end
 
 def bad4(s1, s2, s3)
-  s1.gsub  /'/, "\\\\\\&" # NOT OK
-  s1.gsub  /'/, '\\\\\&'  # NOT OK
-  s2.gsub! /'/, "\\\\\\&" # NOT OK
-  s3.gsub! /'/, '\\\\\&'  # NOT OK
+  s1.gsub  /'/, "\\\\\\&" # $ Alert // NOT OK
+  s1.gsub  /'/, '\\\\\&' # $ Alert // NOT OK
+  s2.gsub! /'/, "\\\\\\&" # $ Alert // NOT OK
+  s3.gsub! /'/, '\\\\\&' # $ Alert // NOT OK
 end
 
 def bad5(s)
-  s.gsub  /['"]/, '\\\\\&' # NOT OK
-  s.gsub! /['"]/, '\\\\\&' # NOT OK
+  s.gsub  /['"]/, '\\\\\&' # $ Alert // NOT OK
+  s.gsub! /['"]/, '\\\\\&' # $ Alert // NOT OK
 end
 
 def bad6(s)
-  s.gsub  /(['"])/, '\\\\\\1' # NOT OK
-  s.gsub! /(['"])/, '\\\\\\1' # NOT OK
+  s.gsub  /(['"])/, '\\\\\\1' # $ Alert // NOT OK
+  s.gsub! /(['"])/, '\\\\\\1' # $ Alert // NOT OK
 end
 
 def bad7(s)
-  s.gsub  /('|")/, '\\\\\1' # NOT OK
-  s.gsub! /('|")/, '\\\\\1' # NOT OK
+  s.gsub  /('|")/, '\\\\\1' # $ Alert // NOT OK
+  s.gsub! /('|")/, '\\\\\1' # $ Alert // NOT OK
 end
 
 def bad8(s)
-  s.sub  '|', '' # NOT OK
-  s.sub! '|', '' # NOT OK
+  s.sub  '|', '' # $ Alert // NOT OK
+  s.sub! '|', '' # $ Alert // NOT OK
 end
 
 def bad9(s1, s2, s3, s4)
-  s1.gsub  /"/, "\\\"" # NOT OK
-  s1.gsub  /"/, '\\"'  # NOT OK
-  s1.gsub  '"', '\\"'  # NOT OK
-  s2.gsub! /"/, "\\\"" # NOT OK
-  s3.gsub! /"/, '\\"'  # NOT OK
-  s4.gsub! '"', '\\"'  # NOT OK
+  s1.gsub  /"/, "\\\"" # $ Alert // NOT OK
+  s1.gsub  /"/, '\\"' # $ Alert // NOT OK
+  s1.gsub  '"', '\\"' # $ Alert // NOT OK
+  s2.gsub! /"/, "\\\"" # $ Alert // NOT OK
+  s3.gsub! /"/, '\\"' # $ Alert // NOT OK
+  s4.gsub! '"', '\\"' # $ Alert // NOT OK
 end
 
 def bad10(s)
-  s.sub  "/", "%2F" # NOT OK
-  s.sub! "/", "%2F" # NOT OK
+  s.sub  "/", "%2F" # $ Alert // NOT OK
+  s.sub! "/", "%2F" # $ Alert // NOT OK
 end
 
 def bad11(s)
-  s.sub  "%25", "%" # NOT OK
-  s.sub! "%25", "%" # NOT OK
+  s.sub  "%25", "%" # $ Alert // NOT OK
+  s.sub! "%25", "%" # $ Alert // NOT OK
 end
 
 def bad12(s)
-  s.sub  %q['], %q[] # NOT OK
-  s.sub! %q['], %q[] # NOT OK
+  s.sub  %q['], %q[] # $ Alert // NOT OK
+  s.sub! %q['], %q[] # $ Alert // NOT OK
 end
 
 def bad13(s)
-  s.sub  "'" + "", "" # NOT OK
-  s.sub! "'" + "", "" # NOT OK
+  s.sub  "'" + "", "" # $ Alert // NOT OK
+  s.sub! "'" + "", "" # $ Alert // NOT OK
 end
 
 def bad14(s)
-  s.sub  "'", "" + "" # NOT OK
-  s.sub! "'", "" + "" # NOT OK
+  s.sub  "'", "" + "" # $ Alert // NOT OK
+  s.sub! "'", "" + "" # $ Alert // NOT OK
 end
 
 def bad15(s)
-  s.sub  "'" + "", "" + "" # NOT OK
-  s.sub! "'" + "", "" + "" # NOT OK
+  s.sub  "'" + "", "" + "" # $ Alert // NOT OK
+  s.sub! "'" + "", "" + "" # $ Alert // NOT OK
 end
 
 def bad16(s)
   indirect = /'/
-  s.sub(indirect, "")  # NOT OK
-  s.sub!(indirect, "") # NOT OK
+  s.sub(indirect, "") # $ Alert // NOT OK
+  s.sub!(indirect, "") # $ Alert // NOT OK
 end
 
 def good1a(s)
@@ -212,15 +212,15 @@ def good13a(s)
   s.sub('[', '').sub(']', '') # OK
   s.sub('(', '').sub(')', '') # OK
   s.sub('{', '').sub('}', '') # OK
-  s.sub('<', '').sub('>', '') # NOT OK: too common as a bad HTML sanitizer
+  s.sub('<', '').sub('>', '') # $ Alert // NOT OK: too common as a bad HTML sanitizer
 
-  s.sub('[', '\\[').sub(']', '\\]') # NOT OK
-  s.sub('{', '\\{').sub('}', '\\}') # NOT OK
+  s.sub('[', '\\[').sub(']', '\\]') # $ Alert // NOT OK
+  s.sub('{', '\\{').sub('}', '\\}') # $ Alert // NOT OK
 
   s = s.sub('[', '') # OK
   s = s.sub(']', '') # OK
   s.sub(/{/, '').sub(/}/, '') # OK
-  s.sub(']', '').sub('[', '') # probably OK, but still flagged
+  s.sub(']', '').sub('[', '') # $ SPURIOUS: Alert // probably OK, but still flagged
 end
 
 def good13b(s1)
@@ -245,8 +245,8 @@ def newlines_a(a, b, c)
   # motivation for whitelist
   `which emacs`.sub("\n", "") # OK
 
-  a.sub("\n", "").sub(b, c) # NOT OK
-  a.sub(b, c).sub("\n", "") # NOT OK
+  a.sub("\n", "").sub(b, c) # $ Alert // NOT OK
+  a.sub(b, c).sub("\n", "") # $ Alert // NOT OK
 end
 
 def newlines_b(a, b, c)
@@ -255,18 +255,18 @@ def newlines_b(a, b, c)
   output.sub!("\n", "") # OK
 
   d = a.dup
-  d.sub!("\n", "") # NOT OK
+  d.sub!("\n", "") # $ Alert // NOT OK
   d.sub!(b, c)
 
   e = a.dup
   d.sub!(b, c)
-  d.sub!("\n", "") # NOT OK
+  d.sub!("\n", "") # $ Alert // NOT OK
 end
 
 def bad_path_sanitizer(p1, p2)
   # attempt at path sanitization
-  p1.sub! "/../", "" # NOT OK
-  p2.sub  "/../", "" # NOT OK
+  p1.sub! "/../", "" # $ Alert // NOT OK
+  p2.sub  "/../", "" # $ Alert // NOT OK
 end
 
 def each_line_sanitizer(p1)

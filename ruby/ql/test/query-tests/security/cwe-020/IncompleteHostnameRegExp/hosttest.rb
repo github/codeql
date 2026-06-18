@@ -1,6 +1,6 @@
-UNSAFE_REGEX1 = /(www|beta).example.com\//
-UNSAFE_REGEX2 = Regexp.compile("(www|beta).example.com/")
-UNSAFE_REGEX3 = Regexp.new("(www|beta).example.com/")
+UNSAFE_REGEX1 = /(www|beta).example.com\// # $ Alert
+UNSAFE_REGEX2 = Regexp.compile("(www|beta).example.com/") # $ Alert
+UNSAFE_REGEX3 = Regexp.new("(www|beta).example.com/") # $ Alert
 SAFE_REGEX = /(www|beta)\.example\.com\//
 
 def unsafe

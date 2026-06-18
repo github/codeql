@@ -151,13 +151,13 @@ class MyClass2(object):
         self.foo = tracked # $ tracked=foo tracked
 
     def print_foo(self): # $ MISSING: tracked=foo
-        print(self.foo) # $ MISSING: tracked=foo tracked
+        print(self.foo) # $ tracked MISSING: tracked=foo
 
     def possibly_uncalled_method(self): # $ MISSING: tracked=foo
-        print(self.foo) # $ MISSING: tracked=foo tracked
+        print(self.foo) # $ tracked MISSING: tracked=foo
 
 instance = MyClass2()
-print(instance.foo) # $ MISSING: tracked=foo tracked
+print(instance.foo) # $ tracked MISSING: tracked=foo
 instance.print_foo() # $ MISSING: tracked=foo
 
 
@@ -177,3 +177,50 @@ instance = MyClass3() # $ tracked=foo
 instance.print_self() # $ tracked=foo
 instance.foo = tracked # $ tracked=foo tracked
 instance.print_foo() # $ tracked=foo
+
+
+# ------------------------------------------------------------------------------
+# Tracking of instance attribute across the class hierarchy
+# ------------------------------------------------------------------------------
+
+# attribute written in a base class method, read in a subclass method
+
+class Base1(object):
+    def __init__(self): # $ tracked=foo
+        self.foo = tracked # $ tracked=foo tracked
+
+class Sub1(Base1):
+    def read_foo(self): # $ MISSING: tracked=foo
+        print(self.foo) # $ tracked MISSING: tracked=foo
+
+sub1 = Sub1()
+sub1.read_foo()
+print(sub1.foo) # $ tracked MISSING: tracked=foo
+
+
+# attribute written in a subclass method, read in an inherited base class method
+
+class Base2(object):
+    def read_bar(self): # $ MISSING: tracked=bar
+        print(self.bar) # $ tracked MISSING: tracked=bar
+
+class Sub2(Base2):
+    def __init__(self): # $ tracked=bar
+        self.bar = tracked # $ tracked=bar tracked
+
+sub2 = Sub2()
+sub2.read_bar()
+print(sub2.bar) # $ tracked MISSING: tracked=bar
+
+
+# attribute written in a base class method, read on an instance of the subclass
+
+class Base3(object):
+    def __init__(self): # $ tracked=baz
+        self.baz = tracked # $ tracked=baz tracked
+
+class Sub3(Base3):
+    pass
+
+sub3 = Sub3()
+print(sub3.baz) # $ tracked MISSING: tracked=baz

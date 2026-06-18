@@ -7,17 +7,17 @@ class PostsController < ActionController::Base
         user = params[:user_id]
 
         # BAD - user can control the entire URL of the request
-        users_service_domain = params[:users_service_domain]
-        response = Excon.post("#{users_service_domain}/logins", body: {user_id: user}).body
+        users_service_domain = params[:users_service_domain] # $ Source
+        response = Excon.post("#{users_service_domain}/logins", body: {user_id: user}).body # $ Alert
         token = JSON.parse(response)["token"]
 
         # BAD - user can control the entire URL for the request using Faraday library
-        conn = Faraday.new(url: params[:url])
+        conn = Faraday.new(url: params[:url]) # $ Alert
         resp = conn.post
         token = JSON.parse(resp)["token"]
 
         # BAD - user can control the entire URL for the request using Faraday::Connection library
-        conn = Faraday::Connection.new(url: params[:url])
+        conn = Faraday::Connection.new(url: params[:url]) # $ Alert
         resp = conn.post
         token = JSON.parse(resp)["token"]
 

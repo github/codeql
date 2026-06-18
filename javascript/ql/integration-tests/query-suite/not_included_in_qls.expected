@@ -43,6 +43,7 @@ ql/javascript/ql/src/Performance/NonLocalForIn.ql
 ql/javascript/ql/src/RegExp/MalformedRegExp.ql
 ql/javascript/ql/src/Security/CWE-020/ExternalAPIsUsedWithUntrustedData.ql
 ql/javascript/ql/src/Security/CWE-020/UntrustedDataToExternalAPI.ql
+ql/javascript/ql/src/Security/CWE-1427/UserPromptInjection.ql
 ql/javascript/ql/src/Security/CWE-313/PasswordInConfigurationFile.ql
 ql/javascript/ql/src/Security/CWE-451/MissingXFrameOptions.ql
 ql/javascript/ql/src/Security/CWE-798/HardcodedCredentials.ql

@@ -62,10 +62,10 @@ public class ResponseSplitting extends HttpServlet {
 		response.setHeader("h", t.replace('\n', ' ').replace('\r', ' '));
 
 		// FALSE NEGATIVE: replace only some line breaks
-		response.setHeader("h", t.replace('\n', ' '));
+		response.setHeader("h", t.replace('\n', ' ')); // $ MISSING: Alert
 
 		// FALSE NEGATIVE: replace only some line breaks
-		response.setHeader("h", t.replaceAll("\r", ""));
+		response.setHeader("h", t.replaceAll("\r", "")); // $ MISSING: Alert
 
 		// GOOD: replace all linebreaks with a simple regex
 		response.setHeader("h", t.replaceAll("\n", "").replaceAll("\r", ""));

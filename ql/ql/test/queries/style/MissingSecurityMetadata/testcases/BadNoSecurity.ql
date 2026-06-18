@@ -7,7 +7,7 @@
  * @precision very-high
  * @id ql/some-query
  * @tags quality
- */
+ */ // $ Alert
 
 import ql
 

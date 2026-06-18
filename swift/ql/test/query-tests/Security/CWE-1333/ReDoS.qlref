@@ -1,1 +1,2 @@
-queries/Security/CWE-1333/ReDoS.ql
+query: queries/Security/CWE-1333/ReDoS.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

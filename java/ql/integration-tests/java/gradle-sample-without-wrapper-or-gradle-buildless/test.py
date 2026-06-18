@@ -4,7 +4,8 @@ import pathlib
 
 
 # The version of gradle used doesn't work on java 17
-def test(codeql, use_java_11, java, environment):
+def test(codeql, use_java_11, java, environment, check_diagnostics):
+    check_diagnostics.redact += ["attributes.java_vendor"]
     gradle_override_dir = pathlib.Path(tempfile.mkdtemp())
     if runs_on.windows:
         (gradle_override_dir / "gradle.bat").write_text("@echo off\nexit /b 2\n")

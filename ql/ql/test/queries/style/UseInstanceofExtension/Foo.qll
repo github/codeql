@@ -4,7 +4,7 @@ class Range extends string {
   string getAChild() { result = "test" }
 }
 
-class Inst extends string {
+class Inst extends string { // $ Alert
   Range range;
 
   Inst() { this = range }
@@ -12,13 +12,13 @@ class Inst extends string {
   string getAChild() { result = range.getAChild() }
 }
 
-class Inst2 extends string {
+class Inst2 extends string { // $ Alert
   Inst2() { this instanceof Range }
 
   string getAChild() { result = this.(Range).getAChild() }
 }
 
-class Inst3 extends string {
+class Inst3 extends string { // $ Alert
   Range range;
 
   Inst3() { this = range }
@@ -26,6 +26,6 @@ class Inst3 extends string {
   Range getRange() { result = range }
 }
 
-class Inst4 extends string {
+class Inst4 extends string { // $ Alert
   Inst4() { this instanceof Range }
 }

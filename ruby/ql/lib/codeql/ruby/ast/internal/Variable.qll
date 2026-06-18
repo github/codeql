@@ -11,6 +11,17 @@ private import codeql.ruby.ast.internal.Pattern
 private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.ast.internal.Synthesis
 
+private Ruby::AstNode getAssignmentParent(Ruby::AstNode n) {
+  result = n.getParent() and
+  (
+    result instanceof Ruby::DestructuredLeftAssignment
+    or
+    result instanceof Ruby::LeftAssignmentList
+    or
+    result instanceof Ruby::RestAssignment
+  )
+}
+
 /**
  * Holds if `n` is in the left-hand-side of an explicit assignment `assignment`.
  */
@@ -19,16 +30,7 @@ predicate explicitAssignmentNode(Ruby::AstNode n, Ruby::AstNode assignment) {
   or
   n = assignment.(Ruby::OperatorAssignment).getLeft()
   or
-  exists(Ruby::AstNode parent |
-    parent = n.getParent() and
-    explicitAssignmentNode(parent, assignment)
-  |
-    parent instanceof Ruby::DestructuredLeftAssignment
-    or
-    parent instanceof Ruby::LeftAssignmentList
-    or
-    parent instanceof Ruby::RestAssignment
-  )
+  explicitAssignmentNode(getAssignmentParent(n), assignment)
 }
 
 /** Holds if `n` is inside an implicit assignment. */
@@ -49,7 +51,7 @@ predicate implicitAssignmentNode(Ruby::AstNode n) {
   or
   n = any(Ruby::For for).getPattern()
   or
-  implicitAssignmentNode(n.getParent())
+  implicitAssignmentNode(getAssignmentParent(n))
 }
 
 /** Holds if `n` is inside a parameter. */

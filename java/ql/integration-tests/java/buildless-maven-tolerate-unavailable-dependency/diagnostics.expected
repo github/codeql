@@ -1,4 +1,19 @@
 {
+  "attributes": {},
+  "markdownMessage": "Internal telemetry for the Java extractor.\n\nNo action needed.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/extractor/summary",
+    "name": "Java extractor telemetry"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
   "markdownMessage": "At least one dependency JAR suggested by the build system could not be downloaded. This means the analysis will try to satisfy the dependency with its default choice for the required external package name, which may be the wrong version or the wrong package entirely. This may lead to partial analysis of code using this dependency. See the extraction log for full details. If the cause appears to be a temporary outage, consider retrying the analysis.",
   "severity": "note",
   "source": {

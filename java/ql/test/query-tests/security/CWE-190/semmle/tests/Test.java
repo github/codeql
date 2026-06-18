@@ -84,7 +84,7 @@ class Test {
 			// FALSE POSITIVE: the query check purely based on the type, it
 			// can't try to
 			// determine whether the value may in fact always be in bounds
-			i += j; // $ Alert[java/implicit-cast-in-compound-assignment]
+			i += j; // $ SPURIOUS: Alert[java/implicit-cast-in-compound-assignment]
 		}
 
 		// ArithmeticWithExtremeValues
@@ -224,7 +224,7 @@ class Test {
 				// FALSE NEGATIVE: stillLarge could still be very large, even
 				// after
 				// it has had arithmetic done on it
-				int output = stillLarge + 100;
+				int output = stillLarge + 100; // $ MISSING: Alert[java/uncontrolled-arithmetic]
 			}
 		}
 
@@ -263,7 +263,7 @@ class Test {
 				// FALSE NEGATIVE: stillLarge could still be very large, even
 				// after
 				// it has had arithmetic done on it
-				int output = stillLarge + 100;
+				int output = stillLarge + 100; // $ MISSING: Alert[java/uncontrolled-arithmetic]
 			}
 		}
 

@@ -63,7 +63,7 @@ module CallTargetStats implements StatsSig {
 
   additional predicate isNotOkCall(Call c) {
     not exists(c.getTarget()) and
-    not c instanceof DelegateCall and
+    not c instanceof DelegateLikeCall and
     not c instanceof DynamicExpr and
     not isNoSetterPropertyCallInConstructor(c) and
     not isNoSetterPropertyInitialization(c) and

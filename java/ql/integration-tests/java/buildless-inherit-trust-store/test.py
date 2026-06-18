@@ -3,7 +3,7 @@ import os
 import runs_on
 
 
-def test(codeql, java, cwd):
+def test(codeql, java, cwd, check_diagnostics_java):
     # This serves the "repo" directory on https://locahost:4443
     command = ["python3", "../server.py"]
     if runs_on.github_actions and runs_on.posix:

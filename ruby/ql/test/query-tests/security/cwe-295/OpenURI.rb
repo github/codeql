@@ -1,24 +1,24 @@
 require "open-uri"
 
 # BAD
-Kernel.open("https://example.com", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE)
+Kernel.open("https://example.com", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) # $ Alert
 
 # BAD
-Kernel.open("https://example.com", { ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE })
-
-# BAD
-options = { ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE }
-Kernel.open("https://example.com", options)
-
-# BAD
-URI.parse("https://example.com").open(ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE)
-
-# BAD
-URI.parse("https://example.com").open({ ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE })
+Kernel.open("https://example.com", { ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE }) # $ Alert
 
 # BAD
 options = { ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE }
-URI.parse("https://example.com").open(options)
+Kernel.open("https://example.com", options) # $ Alert
+
+# BAD
+URI.parse("https://example.com").open(ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) # $ Alert
+
+# BAD
+URI.parse("https://example.com").open({ ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE }) # $ Alert
+
+# BAD
+options = { ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE }
+URI.parse("https://example.com").open(options) # $ Alert
 
 # GOOD
 Kernel.open("https://example.com")
