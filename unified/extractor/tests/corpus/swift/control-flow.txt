@@ -692,7 +692,17 @@ top_level
                       callee:
                         name_expr
                           identifier: identifier "print"
-              pattern: tuple_pattern ".circle(let r)"
+              pattern:
+                constructor_pattern
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "r"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr ".circle(let r)"
+                      member: identifier "circle"
             switch_case
               body:
                 block
@@ -706,7 +716,17 @@ top_level
                       callee:
                         name_expr
                           identifier: identifier "print"
-              pattern: tuple_pattern ".square(let s)"
+              pattern:
+                constructor_pattern
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "s"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr ".square(let s)"
+                      member: identifier "square"
           value:
             name_expr
               identifier: identifier "shape"

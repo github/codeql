@@ -282,6 +282,32 @@ fn translation_rules() -> Vec<yeast::Rule> {
         rule!((type name: @inner) => {inner}),
         // `directly_assignable_expression` is just a wrapper; unwrap it
         rule!((directly_assignable_expression expr: @inner) => {inner}),
+        // tuple_pattern_item → pattern_element (preserves optional name/key)
+        rule!((tuple_pattern_item name: _? @key pattern: @pat) => (pattern_element key: {..key} pattern: {pat})),
+        rule!((tuple_pattern_item pattern: @pat) => (pattern_element pattern: {pat})),
+        // Pattern with 'let' or 'var' binding: extract the inner pattern
+        // TODO: Names in a pattern need to be translated to expr_equality_pattern if not under a 'var/let' but we lack a way to pass down context to do this.
+        rule!(
+            (pattern kind: (binding_pattern binding: _? pattern: @pattern))
+            =>
+            {pattern}
+        ),
+        // case T.foo(x,y) pattern
+        rule!(
+            (pattern kind: (case_pattern type: @typ name: @name arguments: (tuple_pattern item: (tuple_pattern_item)* @items)? ))
+            =>
+            (constructor_pattern
+                constructor: (member_access_expr base: {typ} member: (identifier #{name}))
+                element: {..items})
+        ),
+        // case .foo(x,y) pattern
+        rule!(
+            (pattern kind: (case_pattern name: @name arguments: (tuple_pattern item: (tuple_pattern_item)* @items)? ))
+            =>
+            (constructor_pattern
+                constructor: (member_access_expr base: (inferred_type_expr) member: (identifier #{name}))
+                element: {..items})
+        ),
         // Pattern with bound_identifier → name_pattern
         rule!((pattern bound_identifier: @name) => (name_pattern identifier: (identifier #{name}))),
         // Tuple pattern (destructuring)
