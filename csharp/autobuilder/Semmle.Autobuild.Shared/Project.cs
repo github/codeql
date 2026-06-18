@@ -108,7 +108,8 @@ namespace Semmle.Autobuild.Shared
                         }
 
                         var includePath = builder.Actions.PathJoin(include.Value.Split('\\', StringSplitOptions.RemoveEmptyEntries));
-                        ret.Add(new Project<TAutobuildOptions>(builder, builder.Actions.PathJoin(DirectoryName, includePath)));
+                        var path = Path.IsPathRooted(includePath) ? includePath : builder.Actions.PathJoin(DirectoryName, includePath);
+                        ret.Add(new Project<TAutobuildOptions>(builder, path));
                     }
                     return ret;
                 });
