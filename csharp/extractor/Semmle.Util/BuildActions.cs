@@ -137,11 +137,11 @@ namespace Semmle.Util
         bool IsMonoInstalled();
 
         /// <summary>
-        /// Combine path segments, Path.Join().
+        /// Joins path segments, Path.Join().
         /// </summary>
         /// <param name="parts">The parts of the path.</param>
         /// <returns>The combined path.</returns>
-        string PathCombine(params string[] parts);
+        string PathJoin(params string[] parts);
 
         /// <summary>
         /// Gets the full path for <paramref name="path"/>, Path.GetFullPath().
@@ -293,7 +293,7 @@ namespace Semmle.Util
             }
         }
 
-        string IBuildActions.PathCombine(params string[] parts) => Path.Join(parts);
+        string IBuildActions.PathJoin(params string[] parts) => Path.Join(parts);
 
         void IBuildActions.WriteAllText(string filename, string contents) => File.WriteAllText(filename, contents);
 

@@ -79,7 +79,7 @@ namespace Semmle.Autobuild.Shared
 
             includedProjects = solution.ProjectsInOrder
                 .Where(p => p.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat)
-                .Select(p => builder.Actions.PathCombine(DirectoryName, builder.Actions.PathCombine(p.RelativePath.Split('\\', StringSplitOptions.RemoveEmptyEntries))))
+                .Select(p => builder.Actions.PathJoin(DirectoryName, builder.Actions.PathJoin(p.RelativePath.Split('\\', StringSplitOptions.RemoveEmptyEntries))))
                 .Select(p => new Project<TAutobuildOptions>(builder, p))
                 .ToArray();
         }

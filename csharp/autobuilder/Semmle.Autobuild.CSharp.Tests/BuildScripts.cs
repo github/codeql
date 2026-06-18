@@ -135,7 +135,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             if (!EnumerateFiles.TryGetValue(dir, out var str))
                 throw new ArgumentException("Missing EnumerateFiles " + dir);
 
-            return str.Split("\n").Select(p => PathCombine(dir, p));
+            return str.Split("\n").Select(p => PathJoin(dir, p));
         }
 
         public IDictionary<string, string> EnumerateDirectories { get; } = new Dictionary<string, string>();
@@ -147,7 +147,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 
             return string.IsNullOrEmpty(str)
                 ? Enumerable.Empty<string>()
-                : str.Split("\n").Select(p => PathCombine(dir, p));
+                : str.Split("\n").Select(p => PathJoin(dir, p));
         }
 
         public bool IsWindows { get; set; }
@@ -170,7 +170,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         bool IBuildActions.IsMonoInstalled() => IsMonoInstalled;
 
-        public string PathCombine(params string[] parts)
+        public string PathJoin(params string[] parts)
         {
             return string.Join(IsWindows ? '\\' : '/', parts.Where(p => !string.IsNullOrWhiteSpace(p)));
         }
