@@ -1930,7 +1930,7 @@ module.exports = grammar({
       seq(
         optional("case"),
         optional(field("type", $.user_type)), // XXX this should just be _type but that creates ambiguity
-        $._dot,
+        field("dot", $._dot),
         field("name", $.simple_identifier),
         optional(field("arguments", $.tuple_pattern))
       ),

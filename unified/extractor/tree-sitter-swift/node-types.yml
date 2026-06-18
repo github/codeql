@@ -173,6 +173,7 @@ named:
     value?: expression
   case_pattern:
     arguments?: tuple_pattern
+    dot: "."
     name: simple_identifier
     type?: user_type
   catch_block:
