@@ -288,7 +288,13 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "let y = x > 0 ? 1 : -1"
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "y"
+          value: unsupported_node "x > 0 ? 1 : -1"
 
 ===
 Switch statement

@@ -51,7 +51,13 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "let f = { (x: Int) -> Int in x * 2 }"
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "f"
+          value: unsupported_node "{ (x: Int) -> Int in x * 2 }"
 
 ===
 Closure with shorthand parameters
@@ -85,7 +91,13 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "let f = { $0 + $1 }"
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "f"
+          value: unsupported_node "{ $0 + $1 }"
 
 ===
 Trailing closure
@@ -170,7 +182,13 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "let f = { [weak self] in self?.doThing() }"
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "f"
+          value: unsupported_node "{ [weak self] in self?.doThing() }"
 
 ===
 Multi-statement closure
@@ -245,4 +263,10 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "let f = { (x: Int) -> Int in\n  let y = x + 1\n  return y * 2\n}"
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "f"
+          value: unsupported_node "{ (x: Int) -> Int in\n  let y = x + 1\n  return y * 2\n}"
