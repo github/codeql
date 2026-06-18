@@ -36,3 +36,11 @@ def get_input_gemini():
         ),
     )
     print(response1)
+
+    cache = client.caches.create(
+        model="gemini-2.0-flash",
+        config=types.CreateCachedContentConfig(
+            system_instruction="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
+        ),
+    )
+    print(cache)

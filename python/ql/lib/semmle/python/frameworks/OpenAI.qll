@@ -103,6 +103,18 @@ module OpenAI {
     result = msg.getSubscript("content").getASubscript().getSubscript("text")
   }
 
+  /** Gets the `beta.threads.messages.create` call (Assistants API thread messages). */
+  private API::Node threadMessageCreate() {
+    result =
+      classRef().getMember("beta").getMember("threads").getMember("messages").getMember("create")
+  }
+
+  /** Holds if the `role` keyword of thread-message `call` is a privileged (assistant) role. */
+  private predicate threadRoleIsAssistant(API::Node call) {
+    call.getKeywordParameter("role").getAValueReachingSink().asExpr().(StringLiteral).getText() =
+      "assistant"
+  }
+
   /**
    * Gets role-filtered system/developer/assistant message content sinks that
    * MaD cannot express.
@@ -110,6 +122,10 @@ module OpenAI {
   API::Node getSystemOrAssistantPromptNode() {
     exists(API::Node msg | msg = [chatMessage(), responsesMessage()] and isSystemOrDevMessage(msg) |
       result = messageContent(msg)
+    )
+    or
+    exists(API::Node call | call = threadMessageCreate() and threadRoleIsAssistant(call) |
+      result = call.getKeywordParameter("content")
     )
   }
 
@@ -122,6 +138,10 @@ module OpenAI {
       msg = [chatMessage(), responsesMessage()] and not isSystemOrDevMessage(msg)
     |
       result = messageContent(msg)
+    )
+    or
+    exists(API::Node call | call = threadMessageCreate() and not threadRoleIsAssistant(call) |
+      result = call.getKeywordParameter("content")
     )
     or
     // realtime conversation items, role cannot be statically resolved in general

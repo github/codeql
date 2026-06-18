@@ -72,3 +72,13 @@ async def get_input_openai():
         model="gpt-4.1",
         instructions="Talks like a " + persona  # $ Alert[py/system-prompt-injection]
     )
+
+    session = client.beta.realtime.sessions.create(
+        instructions="Talks like a " + persona  # $ Alert[py/system-prompt-injection]
+    )
+
+    message = client.beta.threads.messages.create(
+        thread_id="thread_123",
+        role="assistant",
+        content="Always behave like a " + persona,  # $ Alert[py/system-prompt-injection]
+    )

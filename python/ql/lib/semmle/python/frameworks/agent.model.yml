@@ -6,6 +6,7 @@ extensions:
       # Agent instructions, handoff descriptions and tool descriptions are system-level prompts
       - ['agents', 'Member[Agent].Argument[instructions:]', 'system-prompt-injection']
       - ['agents', 'Member[Agent].Argument[handoff_description:]', 'system-prompt-injection']
+      - ['agents', 'Member[Agent].ReturnValue.Member[as_tool].Argument[1,tool_description:]', 'system-prompt-injection']
       - ['agents', 'Member[FunctionTool].Argument[description:]', 'system-prompt-injection']
       # The input passed to a run is user-level content
       - ['agents', 'Member[Runner].Member[run,run_sync,run_streamed].Argument[1]', 'user-prompt-injection']

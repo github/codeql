@@ -1,4 +1,5 @@
 from google import genai
+from google.genai import types
 from flask import Flask, request  # $ Source
 
 app = Flask(__name__)
@@ -35,4 +36,11 @@ def get_input_gemini():
         model="imagen-3.0-capability-001",
         prompt=query,  # $ Alert[py/user-prompt-injection]
     )
-    print(response1, response2, response3, response4)
+
+    cache = client.caches.create(
+        model="gemini-2.0-flash",
+        config=types.CreateCachedContentConfig(
+            contents=query,  # $ Alert[py/user-prompt-injection]
+        ),
+    )
+    print(response1, response2, response3, response4, cache)

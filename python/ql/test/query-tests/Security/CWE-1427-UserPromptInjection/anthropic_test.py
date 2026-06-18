@@ -22,3 +22,10 @@ def get_input_anthropic():
         ],
     )
     print(response1)
+
+    response2 = client.completions.create(
+        model="claude-2.1",
+        max_tokens_to_sample=256,
+        prompt="\n\nHuman: " + query + "\n\nAssistant:",  # $ Alert[py/user-prompt-injection]
+    )
+    print(response2)

@@ -23,6 +23,12 @@ def get_input_agent():
         tools=[tool],
     )
 
+    agent_tool = agent.as_tool(
+        tool_name="assistant",
+        tool_description="Delegates to " + persona,  # $ Alert[py/system-prompt-injection]
+    )
+    print(agent_tool)
+
     result = Runner.run_sync(
         agent,
         [

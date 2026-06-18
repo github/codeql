@@ -9,11 +9,15 @@ extensions:
       - ['OpenAI', 'Member[beta].Member[assistants].Member[update].Argument[instructions:]', 'system-prompt-injection']
       - ['OpenAI', 'Member[beta].Member[threads].Member[runs].Member[create].Argument[instructions:]', 'system-prompt-injection']
       - ['OpenAI', 'Member[beta].Member[threads].Member[runs].Member[create].Argument[additional_instructions:]', 'system-prompt-injection']
+      # The default system instructions for a realtime session
+      - ['OpenAI', 'Member[beta].Member[realtime].Member[sessions].Member[create].Argument[instructions:]', 'system-prompt-injection']
       # User-level prompts
       - ['OpenAI', 'Member[responses].Member[create].Argument[input:]', 'user-prompt-injection']
       - ['OpenAI', 'Member[completions].Member[create].Argument[prompt:]', 'user-prompt-injection']
       - ['OpenAI', 'Member[images].Member[generate,edit].Argument[prompt:]', 'user-prompt-injection']
       - ['OpenAI', 'Member[audio].Member[transcriptions,translations].Member[create].Argument[prompt:]', 'user-prompt-injection']
+      # Sora video generation prompts are user-level content
+      - ['OpenAI', 'Member[videos].Member[create,create_and_poll,edit,remix,extend].Argument[prompt:]', 'user-prompt-injection']
 
   - addsTo:
       pack: codeql/python-all

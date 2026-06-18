@@ -54,3 +54,14 @@ async def get_input_openai():
     image = client.images.generate(
         prompt="A picture of " + query,  # $ Alert[py/user-prompt-injection]
     )
+
+    video = client.videos.create(
+        model="sora-2",
+        prompt="A video of " + query,  # $ Alert[py/user-prompt-injection]
+    )
+
+    message = client.beta.threads.messages.create(
+        thread_id="thread_123",
+        role="user",
+        content="Please summarize " + query,  # $ Alert[py/user-prompt-injection]
+    )
