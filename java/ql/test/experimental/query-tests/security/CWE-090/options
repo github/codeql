@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../../experimental/stubs/org-apache-shiro-authc-2.0.1:${testdir}/../../../../experimental/stubs/org-apache-shiro-realm-ldap-2.0.1

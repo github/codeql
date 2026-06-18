@@ -1,0 +1,75 @@
+#select
+| LdapDnInjectionLibraryMode.java:46:41:46:42 | dn | LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | LdapDnInjectionLibraryMode.java:46:41:46:42 | dn | LDAP bind DN depends on a $@ without RFC 2253 distinguished-name escaping. | LdapDnInjectionLibraryMode.java:26:30:26:45 | principal | library-boundary login principal |
+| LdapDnInjectionLibraryMode.java:46:41:46:42 | dn | LdapDnInjectionLibraryMode.java:44:36:44:55 | getPrincipal(...) : Object | LdapDnInjectionLibraryMode.java:46:41:46:42 | dn | LDAP bind DN depends on a $@ without RFC 2253 distinguished-name escaping. | LdapDnInjectionLibraryMode.java:44:36:44:55 | getPrincipal(...) | library-boundary login principal |
+| LdapDnInjectionLibraryMode.java:60:47:60:48 | dn | LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | LdapDnInjectionLibraryMode.java:60:47:60:48 | dn | LDAP bind DN depends on a $@ without RFC 2253 distinguished-name escaping. | LdapDnInjectionLibraryMode.java:26:30:26:45 | principal | library-boundary login principal |
+| LdapDnInjectionLibraryMode.java:60:47:60:48 | dn | LdapDnInjectionLibraryMode.java:58:27:58:45 | getUsername(...) : String | LdapDnInjectionLibraryMode.java:60:47:60:48 | dn | LDAP bind DN depends on a $@ without RFC 2253 distinguished-name escaping. | LdapDnInjectionLibraryMode.java:58:27:58:45 | getUsername(...) | library-boundary login principal |
+| LdapDnInjectionLibraryMode.java:69:35:69:36 | dn | LdapDnInjectionLibraryMode.java:36:42:36:56 | username : String | LdapDnInjectionLibraryMode.java:69:35:69:36 | dn | LDAP bind DN depends on a $@ without RFC 2253 distinguished-name escaping. | LdapDnInjectionLibraryMode.java:36:42:36:56 | username | library-boundary login principal |
+| LdapDnInjectionLibraryMode.java:69:35:69:36 | dn | LdapDnInjectionLibraryMode.java:68:48:68:67 | getPrincipal(...) : Object | LdapDnInjectionLibraryMode.java:69:35:69:36 | dn | LDAP bind DN depends on a $@ without RFC 2253 distinguished-name escaping. | LdapDnInjectionLibraryMode.java:68:48:68:67 | getPrincipal(...) | library-boundary login principal |
+| LdapDnInjectionLibraryMode.java:84:23:84:24 | dn | LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | LdapDnInjectionLibraryMode.java:84:23:84:24 | dn | LDAP bind DN depends on a $@ without RFC 2253 distinguished-name escaping. | LdapDnInjectionLibraryMode.java:26:30:26:45 | principal | library-boundary login principal |
+| LdapDnInjectionLibraryMode.java:84:23:84:24 | dn | LdapDnInjectionLibraryMode.java:83:36:83:55 | getPrincipal(...) : Object | LdapDnInjectionLibraryMode.java:84:23:84:24 | dn | LDAP bind DN depends on a $@ without RFC 2253 distinguished-name escaping. | LdapDnInjectionLibraryMode.java:83:36:83:55 | getPrincipal(...) | library-boundary login principal |
+edges
+| LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | LdapDnInjectionLibraryMode.java:27:12:27:50 | ... + ... : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | LdapDnInjectionLibraryMode.java:27:12:27:50 | ... + ... : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:27:12:27:50 | ... + ... : String | LdapDnInjectionLibraryMode.java:44:17:44:56 | getUserDn(...) : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:27:12:27:50 | ... + ... : String | LdapDnInjectionLibraryMode.java:58:17:58:46 | getUserDn(...) : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:27:12:27:50 | ... + ... : String | LdapDnInjectionLibraryMode.java:83:17:83:56 | getUserDn(...) : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:36:42:36:56 | username : String | LdapDnInjectionLibraryMode.java:37:12:37:36 | ... + ... : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:36:42:36:56 | username : String | LdapDnInjectionLibraryMode.java:37:12:37:36 | ... + ... : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:37:12:37:36 | ... + ... : String | LdapDnInjectionLibraryMode.java:68:17:68:68 | getUsernameWithSuffix(...) : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:44:17:44:56 | getUserDn(...) : String | LdapDnInjectionLibraryMode.java:46:41:46:42 | dn | provenance |  |
+| LdapDnInjectionLibraryMode.java:44:27:44:55 | (...)... : String | LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:44:27:44:55 | (...)... : String | LdapDnInjectionLibraryMode.java:44:17:44:56 | getUserDn(...) : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:44:36:44:55 | getPrincipal(...) : Object | LdapDnInjectionLibraryMode.java:44:27:44:55 | (...)... : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:58:17:58:46 | getUserDn(...) : String | LdapDnInjectionLibraryMode.java:60:47:60:48 | dn | provenance |  |
+| LdapDnInjectionLibraryMode.java:58:27:58:45 | getUsername(...) : String | LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:58:27:58:45 | getUsername(...) : String | LdapDnInjectionLibraryMode.java:58:17:58:46 | getUserDn(...) : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:68:17:68:68 | getUsernameWithSuffix(...) : String | LdapDnInjectionLibraryMode.java:69:35:69:36 | dn | provenance |  |
+| LdapDnInjectionLibraryMode.java:68:39:68:67 | (...)... : String | LdapDnInjectionLibraryMode.java:36:42:36:56 | username : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:68:39:68:67 | (...)... : String | LdapDnInjectionLibraryMode.java:68:17:68:68 | getUsernameWithSuffix(...) : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:68:48:68:67 | getPrincipal(...) : Object | LdapDnInjectionLibraryMode.java:68:39:68:67 | (...)... : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:83:17:83:56 | getUserDn(...) : String | LdapDnInjectionLibraryMode.java:84:23:84:24 | dn | provenance | Sink:MaD:1 |
+| LdapDnInjectionLibraryMode.java:83:27:83:55 | (...)... : String | LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:83:27:83:55 | (...)... : String | LdapDnInjectionLibraryMode.java:83:17:83:56 | getUserDn(...) : String | provenance |  |
+| LdapDnInjectionLibraryMode.java:83:36:83:55 | getPrincipal(...) : Object | LdapDnInjectionLibraryMode.java:83:27:83:55 | (...)... : String | provenance |  |
+models
+| 1 | Sink: javax.naming; Context; true; lookup; ; ; Argument[0]; jndi-injection; manual |
+nodes
+| LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | semmle.label | principal : String |
+| LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | semmle.label | principal : String |
+| LdapDnInjectionLibraryMode.java:27:12:27:50 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapDnInjectionLibraryMode.java:27:12:27:50 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapDnInjectionLibraryMode.java:36:42:36:56 | username : String | semmle.label | username : String |
+| LdapDnInjectionLibraryMode.java:36:42:36:56 | username : String | semmle.label | username : String |
+| LdapDnInjectionLibraryMode.java:37:12:37:36 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapDnInjectionLibraryMode.java:37:12:37:36 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapDnInjectionLibraryMode.java:44:17:44:56 | getUserDn(...) : String | semmle.label | getUserDn(...) : String |
+| LdapDnInjectionLibraryMode.java:44:27:44:55 | (...)... : String | semmle.label | (...)... : String |
+| LdapDnInjectionLibraryMode.java:44:36:44:55 | getPrincipal(...) : Object | semmle.label | getPrincipal(...) : Object |
+| LdapDnInjectionLibraryMode.java:46:41:46:42 | dn | semmle.label | dn |
+| LdapDnInjectionLibraryMode.java:58:17:58:46 | getUserDn(...) : String | semmle.label | getUserDn(...) : String |
+| LdapDnInjectionLibraryMode.java:58:27:58:45 | getUsername(...) : String | semmle.label | getUsername(...) : String |
+| LdapDnInjectionLibraryMode.java:60:47:60:48 | dn | semmle.label | dn |
+| LdapDnInjectionLibraryMode.java:68:17:68:68 | getUsernameWithSuffix(...) : String | semmle.label | getUsernameWithSuffix(...) : String |
+| LdapDnInjectionLibraryMode.java:68:39:68:67 | (...)... : String | semmle.label | (...)... : String |
+| LdapDnInjectionLibraryMode.java:68:48:68:67 | getPrincipal(...) : Object | semmle.label | getPrincipal(...) : Object |
+| LdapDnInjectionLibraryMode.java:69:35:69:36 | dn | semmle.label | dn |
+| LdapDnInjectionLibraryMode.java:83:17:83:56 | getUserDn(...) : String | semmle.label | getUserDn(...) : String |
+| LdapDnInjectionLibraryMode.java:83:27:83:55 | (...)... : String | semmle.label | (...)... : String |
+| LdapDnInjectionLibraryMode.java:83:36:83:55 | getPrincipal(...) : Object | semmle.label | getPrincipal(...) : Object |
+| LdapDnInjectionLibraryMode.java:84:23:84:24 | dn | semmle.label | dn |
+subpaths
+| LdapDnInjectionLibraryMode.java:44:27:44:55 | (...)... : String | LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | LdapDnInjectionLibraryMode.java:27:12:27:50 | ... + ... : String | LdapDnInjectionLibraryMode.java:44:17:44:56 | getUserDn(...) : String |
+| LdapDnInjectionLibraryMode.java:58:27:58:45 | getUsername(...) : String | LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | LdapDnInjectionLibraryMode.java:27:12:27:50 | ... + ... : String | LdapDnInjectionLibraryMode.java:58:17:58:46 | getUserDn(...) : String |
+| LdapDnInjectionLibraryMode.java:68:39:68:67 | (...)... : String | LdapDnInjectionLibraryMode.java:36:42:36:56 | username : String | LdapDnInjectionLibraryMode.java:37:12:37:36 | ... + ... : String | LdapDnInjectionLibraryMode.java:68:17:68:68 | getUsernameWithSuffix(...) : String |
+| LdapDnInjectionLibraryMode.java:83:27:83:55 | (...)... : String | LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | LdapDnInjectionLibraryMode.java:27:12:27:50 | ... + ... : String | LdapDnInjectionLibraryMode.java:83:17:83:56 | getUserDn(...) : String |
+testFailures
+| LdapDnInjectionLibraryMode.java:26:30:26:45 | principal : String | Unexpected result: Source |
+| LdapDnInjectionLibraryMode.java:36:42:36:56 | username : String | Unexpected result: Source |
+| LdapDnInjectionLibraryMode.java:43:52:43:62 | // $ Source | Missing result: Source |
+| LdapDnInjectionLibraryMode.java:44:36:44:55 | getPrincipal(...) : Object | Unexpected result: Source |
+| LdapDnInjectionLibraryMode.java:57:64:57:74 | // $ Source | Missing result: Source |
+| LdapDnInjectionLibraryMode.java:58:27:58:45 | getUsername(...) : String | Unexpected result: Source |
+| LdapDnInjectionLibraryMode.java:66:86:66:96 | // $ Source | Missing result: Source |
+| LdapDnInjectionLibraryMode.java:68:48:68:67 | getPrincipal(...) : Object | Unexpected result: Source |
+| LdapDnInjectionLibraryMode.java:82:92:82:102 | // $ Source | Missing result: Source |
+| LdapDnInjectionLibraryMode.java:83:36:83:55 | getPrincipal(...) : Object | Unexpected result: Source |

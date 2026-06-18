@@ -1,0 +1,79 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+An LDAP distinguished name (DN) identifies an entry in a directory, for example
+<code>uid=alice,ou=people,dc=example,dc=com</code>. When an authentication framework
+builds the bind DN by concatenating the login principal into a DN template without
+escaping it for RFC 2253, an attacker can supply DN metacharacters
+(<code>, + " \ &lt; &gt; ; =</code>, a leading <code>#</code>, or leading/trailing
+whitespace) to change the structure of the DN that is used to authenticate. Depending
+on the directory, this can bypass authentication or impersonate another principal.
+</p>
+<p>
+This query targets the defect inside an authentication <em>library or framework</em>
+(Apache Shiro, a custom Spring Security realm, a CAS or pac4j SPI, a Keycloak provider),
+where the login principal does not arrive at a remote flow source such as a servlet
+parameter, but as a method parameter at the library boundary. The supported
+<code>java/ldap-injection</code> query, which starts from remote flow sources, does not
+report on such a framework because there is no remote flow source to start from.
+</p>
+<p>
+The DN escape set (RFC 2253) differs from the LDAP search-filter escape set (RFC 4515).
+A value escaped for a search filter (for example with <code>LdapEncoder.filterEncode</code>)
+is still unsafe in a DN, and vice versa. This query treats only DN escapers as
+sanitizers.
+</p>
+<p>
+The library-mode source model is name-heuristic: it treats the login-principal
+accessors of common authentication frameworks, and the string parameters of
+DN-builder-shaped methods (for example <code>getUserDn</code> or
+<code>getUsernameWithSuffix</code>), as sources. This is a deliberate
+precision/recall trade for the library case, where there is no remote flow source to
+anchor on. A framework that builds the DN in a differently named helper is missed, and
+a benign method that matches the name pattern may produce a false positive; this is why
+the query is experimental and uses medium precision. Triage a result by confirming the
+value reaches a real bind sink unescaped.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Escape the login principal for RFC 2253 before placing it in a DN, for example with
+<code>javax.naming.ldap.Rdn.escapeValue</code>, Spring LDAP
+<code>LdapEncoder.nameEncode</code>, or OWASP ESAPI <code>encodeForDN</code>. Prefer
+building the DN from structured components (an <code>LdapName</code> and
+<code>Rdn</code> objects) rather than string concatenation.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example concatenates the login principal into the bind DN with no
+escaping. An attacker who logs in as <code>*</code> or
+<code>admin,ou=admins,dc=example,dc=com&#x2B;uid=anything</code> can manipulate the DN.
+</p>
+<sample src="LdapDnInjectionLibraryModeBad.java" />
+<p>
+The following example escapes the principal with <code>Rdn.escapeValue</code> before
+building the DN, so DN metacharacters are neutralised.
+</p>
+<sample src="LdapDnInjectionLibraryModeGood.java" />
+</example>
+
+<references>
+<li>
+OWASP: <a href="https://owasp.org/www-community/attacks/LDAP_Injection">LDAP Injection</a>.
+</li>
+<li>
+RFC 2253: <a href="https://datatracker.ietf.org/doc/html/rfc2253">UTF-8 String Representation of Distinguished Names</a>.
+</li>
+<li>
+Java SE API: <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.naming/javax/naming/ldap/Rdn.html#escapeValue(java.lang.Object)">Rdn.escapeValue</a>.
+</li>
+</references>
+
+</qhelp>
