@@ -286,6 +286,106 @@ fn translation_rules() -> Vec<yeast::Rule> {
         rule!((pattern bound_identifier: @name) => (name_pattern identifier: (identifier #{name}))),
         // Tuple pattern (destructuring)
         rule!((pattern (pattern)* @elems) => (tuple_pattern element: {..elems})),
+        // ---- Functions ----
+        // Function declaration
+        // Function declaration (return type optional, body statements optional).
+        rule!(
+            (function_declaration
+                name: @name
+                parameter: _* @params
+                return_type: _? @ret
+                body: (block statement: _* @body_stmts))
+            =>
+            (function_declaration
+                name: (identifier #{name})
+                parameter: {..params}
+                return_type: {..ret}
+                body: (block stmt: {..body_stmts}))
+        ),
+        // Parameters are wrapped in function_parameter, which also carries
+        // optional default values.
+        rule!(
+            (function_parameter parameter: @p default_value: _? @def)
+            =>
+            {..{
+                let p_id: usize = p.into();
+                for &d in def.iter().rev() {
+                    __yeast_ctx.prepend_field(p_id, "default", d.into());
+                }
+                vec![p_id]
+            }}
+        ),
+        // Parameter with external name and type
+        rule!(
+            (parameter external_name: @ext name: @name)
+            =>
+            (parameter
+                external_name: (identifier #{ext})
+                pattern: (name_pattern identifier: (identifier #{name})))
+        ),
+        rule!(
+            (parameter external_name: @ext name: @name type: @ty)
+            =>
+            (parameter
+                external_name: (identifier #{ext})
+                pattern: (name_pattern identifier: (identifier #{name}))
+                type: {ty})
+        ),
+        // Parameter with just name and type (no external name)
+        rule!(
+            (parameter name: @name)
+            =>
+            (parameter
+                pattern: (name_pattern identifier: (identifier #{name})))
+        ),
+        rule!(
+            (parameter name: @name type: @ty)
+            =>
+            (parameter
+                pattern: (name_pattern identifier: (identifier #{name}))
+                type: {ty})
+        ),
+        // Reference to a function, f(x:y:z:). This is parsed as a call with a single argument with multiple reference_specifier labels.
+        // We don't want downstream QL to try to handle this as a call_expr with a weird argument, so explicitly mark it as unsupported for now.
+        // In the future we probably want to translate this to a lambda expression.
+        rule!(
+            (call_expression suffix: (call_suffix arguments: (value_arguments argument: (value_argument reference_specifier: _+) @ref_arg)))
+            =>
+            (unsupported_node)
+        ),
+        // Call expression: function(args...)
+        rule!(
+            (call_expression function: @func suffix: (call_suffix arguments: (value_arguments argument: (value_argument)* @args)))
+            =>
+            (call_expr callee: {func} argument: {..args})
+        ),
+        // Value argument with label (value: _ matches both named nodes and anonymous tokens like nil)
+        rule!(
+            (value_argument name: (value_argument_label name: @label) value: @val)
+            =>
+            (argument name: (identifier #{label}) value: {val})
+        ),
+        // Value argument without label
+        rule!(
+            (value_argument value: @val)
+            =>
+            (argument value: {val})
+        ),
+        // Navigation expression → member_access_expr
+        rule!(
+            (navigation_expression target: @target suffix: (navigation_suffix suffix: @member))
+            =>
+            (member_access_expr base: {target} member: (identifier #{member}))
+        ),
+        // Return / break / continue, one rule per keyword.
+        // The anonymous "return"/"break"/"continue" keywords are matched as
+        // string literals.
+        rule!((control_transfer_statement kind: "return" result: _? @val) => (return_expr value: {..val})),
+        rule!((control_transfer_statement kind: "break" result: @lbl) => (break_expr label: (identifier #{lbl}))),
+        rule!((control_transfer_statement kind: "break") => (break_expr)),
+        rule!((control_transfer_statement kind: "continue" result: @lbl) => (continue_expr label: (identifier #{lbl}))),
+        rule!((control_transfer_statement kind: "continue") => (continue_expr)),
+        rule!((control_transfer_statement kind: (throw_keyword) result: @val) => (throw_expr value: {val})),
         // ---- Fallbacks ----
         rule!(
             (_)

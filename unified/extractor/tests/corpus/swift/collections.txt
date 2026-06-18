@@ -281,7 +281,14 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "first"
-          value: unsupported_node "xs[0]"
+          value:
+            call_expr
+              argument:
+                argument
+                  value: int_literal "0"
+              callee:
+                name_expr
+                  identifier: identifier "xs"
 
 ===
 Dictionary subscript
@@ -330,7 +337,14 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "v"
-          value: unsupported_node "d[\"key\"]"
+          value:
+            call_expr
+              argument:
+                argument
+                  value: string_literal "\"key\""
+              callee:
+                name_expr
+                  identifier: identifier "d"
 
 ===
 Tuple member access
@@ -369,4 +383,9 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "n"
-          value: unsupported_node "t.0"
+          value:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "t"
+              member: identifier "0"
