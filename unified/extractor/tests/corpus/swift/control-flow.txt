@@ -558,6 +558,7 @@ top_level
                       callee:
                         name_expr
                           identifier: identifier "print"
+              pattern: tuple_pattern "1"
             switch_case
               body:
                 block
@@ -569,6 +570,9 @@ top_level
                       callee:
                         name_expr
                           identifier: identifier "print"
+              pattern:
+                tuple_pattern "2"
+                tuple_pattern "3"
             switch_case
               body:
                 block
@@ -688,6 +692,7 @@ top_level
                       callee:
                         name_expr
                           identifier: identifier "print"
+              pattern: tuple_pattern ".circle(let r)"
             switch_case
               body:
                 block
@@ -701,6 +706,7 @@ top_level
                       callee:
                         name_expr
                           identifier: identifier "print"
+              pattern: tuple_pattern ".square(let s)"
           value:
             name_expr
               identifier: identifier "shape"

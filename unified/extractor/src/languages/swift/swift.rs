@@ -481,7 +481,7 @@ fn translation_rules() -> Vec<yeast::Rule> {
         ),
         // Switch entry with patterns and body
         rule!(
-            (switch_entry pattern: (switch_pattern)* @pats statement: _* @body)
+            (switch_entry pattern: (switch_pattern pattern: @pats)* statement: _* @body)
             =>
             (switch_case pattern: {..pats} body: (block stmt: {..body}))
         ),
@@ -491,8 +491,6 @@ fn translation_rules() -> Vec<yeast::Rule> {
             =>
             (switch_case body: (block stmt: {..body}))
         ),
-        // Switch pattern — unwrap to inner pattern
-        rule!((switch_pattern (pattern)* @inner) => {..inner}),
         // if case let x = expr — the pattern is taken as-is (no Optional wrapping)
         rule!(
             (if_let_binding "case" (value_binding_pattern) bound_identifier: @name _ @val)
