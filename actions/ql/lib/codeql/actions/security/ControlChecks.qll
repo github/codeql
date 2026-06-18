@@ -62,7 +62,7 @@ abstract class ControlCheck extends AstNode {
 
   predicate protects(AstNode node, Event event, string category) {
     // The check dominates the step it should protect
-    this.dominates(node) and
+    this.dominates(node, event) and
     // The check is effective against the event and category
     this.protectsCategoryAndEvent(category, event.getName()) and
     // The check can be triggered by the event
@@ -72,7 +72,7 @@ abstract class ControlCheck extends AstNode {
   /**
    * Holds if this control check must execute and pass before `node` can run.
    */
-  predicate dominates(AstNode node) {
+  predicate dominates(AstNode node, Event event) {
     // Step-level: the check is an `if:` on the step containing `node`,
     // or on the enclosing job, or on a needed job/step.
     this instanceof If and
@@ -104,26 +104,34 @@ abstract class ControlCheck extends AstNode {
     )
     or
     // When the node is inside a (possibly nested) reusable workflow,
-    // check if the control check dominates any caller job in the chain.
-    exists(ExternalJob directCaller, ExternalJob caller |
+    // all direct callers for this event must be protected along their caller chain.
+    exists(ExternalJob directCaller | 
       directCaller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
-      caller = getAnOuterCaller*(directCaller) and
-      (
-        this instanceof If and
+      directCaller.getATriggerEvent() = event
+    ) and
+    forall(ExternalJob directCaller |
+      directCaller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
+      directCaller.getATriggerEvent() = event
+    |
+      exists(ExternalJob caller |
+        caller = getAnOuterCaller*(directCaller) and
         (
-          caller.getIf() = this or
-          caller.getANeededJob().(LocalJob).getIf() = this or
-          caller.getANeededJob().(LocalJob).getAStep().getIf() = this
+          this instanceof If and
+          (
+            caller.getIf() = this or
+            caller.getANeededJob().(LocalJob).getIf() = this or
+            caller.getANeededJob().(LocalJob).getAStep().getIf() = this
+          )
+          or
+          this instanceof Environment and
+          (
+            caller.getEnvironment() = this or
+            caller.getANeededJob().getEnvironment() = this
+          )
+          or
+          (this instanceof Run or this instanceof UsesStep) and
+          caller.getANeededJob().(LocalJob).getAStep() = this
         )
-        or
-        this instanceof Environment and
-        (
-          caller.getEnvironment() = this or
-          caller.getANeededJob().getEnvironment() = this
-        )
-        or
-        (this instanceof Run or this instanceof UsesStep) and
-        caller.getANeededJob().(LocalJob).getAStep() = this
       )
     )
   }
