@@ -105,7 +105,7 @@ abstract class ControlCheck extends AstNode {
     or
     // When the node is inside a (possibly nested) reusable workflow,
     // all direct callers for this event must be protected along their caller chain.
-    exists(ExternalJob directCaller | 
+    exists(ExternalJob directCaller |
       directCaller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
       directCaller.getATriggerEvent() = event
     ) and
