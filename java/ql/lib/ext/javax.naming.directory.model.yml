@@ -17,3 +17,10 @@ extensions:
       extensible: sinkModel
     data:
       - ["javax.naming.directory", "DirContext", True, "search", "", "", "Argument[0..1]", "ldap-injection", "manual"]
+      # The `String name` argument is interpreted as a (distinguished) name; an
+      # unescaped, attacker-controlled value lets the caller manipulate the bind DN
+      # (LDAP DN injection, CWE-90). Only the `(String,...)` overloads matter -- the
+      # `(Name,...)` overloads take a structured, already-parsed name.
+      - ["javax.naming.directory", "DirContext", True, "bind", "(String,Object,Attributes)", "", "Argument[0]", "ldap-injection", "manual"]
+      - ["javax.naming.directory", "DirContext", True, "rebind", "(String,Object,Attributes)", "", "Argument[0]", "ldap-injection", "manual"]
+      - ["javax.naming.directory", "DirContext", True, "createSubcontext", "(String,Attributes)", "", "Argument[0]", "ldap-injection", "manual"]

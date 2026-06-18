@@ -9,6 +9,17 @@ extensions:
       - ["javax.naming", "Context", True, "lookupLink", "", "", "Argument[0]", "jndi-injection", "manual"]
       - ["javax.naming", "Context", True, "rename", "", "", "Argument[0]", "jndi-injection", "manual"]
       - ["javax.naming", "InitialContext", True, "doLookup", "", "", "Argument[0]", "jndi-injection", "manual"]
+      # The `String name` argument of these methods is interpreted as a (distinguished)
+      # name; an unescaped, attacker-controlled value lets the caller manipulate the
+      # bind DN (LDAP DN injection, CWE-90). `bind`/`rebind`/`createSubcontext` create
+      # an entry at the given DN; `lookup`/`lookupLink` resolve it (e.g. to authenticate
+      # a bind DN). Only the `(String,...)` overloads matter -- the `(Name,...)`
+      # overloads take a structured, already-parsed name.
+      - ["javax.naming", "Context", True, "bind", "(String,Object)", "", "Argument[0]", "ldap-injection", "manual"]
+      - ["javax.naming", "Context", True, "rebind", "(String,Object)", "", "Argument[0]", "ldap-injection", "manual"]
+      - ["javax.naming", "Context", True, "createSubcontext", "(String)", "", "Argument[0]", "ldap-injection", "manual"]
+      - ["javax.naming", "Context", True, "lookup", "(String)", "", "Argument[0]", "ldap-injection", "manual"]
+      - ["javax.naming", "Context", True, "lookupLink", "(String)", "", "Argument[0]", "ldap-injection", "manual"]
 
   - addsTo:
       pack: codeql/java-all
