@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      # Embeddings input is user-level content
+      - ['OpenRouter', 'Member[embeddings].Member[create].Argument[input:]', 'user-prompt-injection']
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data:
+      - ['OpenRouter', 'openrouter', 'Member[OpenRouter].ReturnValue']

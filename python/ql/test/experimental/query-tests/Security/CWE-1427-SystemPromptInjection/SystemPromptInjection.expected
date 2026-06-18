@@ -1,0 +1,116 @@
+#select
+| agent_test.py:14:21:14:63 | ControlFlowNode for BinaryExpr | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_test.py:14:21:14:63 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| agent_test.py:21:22:21:63 | ControlFlowNode for BinaryExpr | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_test.py:21:22:21:63 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| agent_test.py:22:29:22:53 | ControlFlowNode for BinaryExpr | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_test.py:22:29:22:53 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| agent_test.py:31:28:31:51 | ControlFlowNode for BinaryExpr | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_test.py:31:28:31:51 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| anthropic_test.py:17:16:17:37 | ControlFlowNode for BinaryExpr | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | anthropic_test.py:17:16:17:37 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| anthropic_test.py:21:28:21:44 | ControlFlowNode for BinaryExpr | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | anthropic_test.py:21:28:21:44 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| anthropic_test.py:33:16:33:37 | ControlFlowNode for BinaryExpr | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | anthropic_test.py:33:16:33:37 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| anthropic_test.py:45:16:45:37 | ControlFlowNode for BinaryExpr | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | anthropic_test.py:45:16:45:37 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:17:22:17:46 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:17:22:17:46 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:22:22:22:46 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:22:22:22:46 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:26:28:26:51 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:26:28:26:51 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:44:28:44:51 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:44:28:44:51 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:61:28:61:51 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:61:28:61:51 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:73:22:73:46 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:73:22:73:46 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openrouter_test.py:18:28:18:51 | ControlFlowNode for BinaryExpr | openrouter_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openrouter_test.py:18:28:18:51 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | openrouter_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+edges
+| agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_test.py:2:26:2:32 | ControlFlowNode for request | provenance |  |
+| agent_test.py:2:26:2:32 | ControlFlowNode for request | agent_test.py:9:15:9:21 | ControlFlowNode for request | provenance |  |
+| agent_test.py:2:26:2:32 | ControlFlowNode for request | agent_test.py:10:13:10:19 | ControlFlowNode for request | provenance |  |
+| agent_test.py:9:5:9:11 | ControlFlowNode for persona | agent_test.py:21:22:21:63 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:6 |
+| agent_test.py:9:5:9:11 | ControlFlowNode for persona | agent_test.py:22:29:22:53 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:5 |
+| agent_test.py:9:5:9:11 | ControlFlowNode for persona | agent_test.py:31:28:31:51 | ControlFlowNode for BinaryExpr | provenance |  |
+| agent_test.py:9:15:9:21 | ControlFlowNode for request | agent_test.py:9:15:9:26 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| agent_test.py:9:15:9:21 | ControlFlowNode for request | agent_test.py:10:13:10:24 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| agent_test.py:9:15:9:26 | ControlFlowNode for Attribute | agent_test.py:9:15:9:41 | ControlFlowNode for Attribute() | provenance | dict.get |
+| agent_test.py:9:15:9:41 | ControlFlowNode for Attribute() | agent_test.py:9:5:9:11 | ControlFlowNode for persona | provenance |  |
+| agent_test.py:10:5:10:9 | ControlFlowNode for topic | agent_test.py:14:21:14:63 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:7 |
+| agent_test.py:10:13:10:19 | ControlFlowNode for request | agent_test.py:10:13:10:24 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| agent_test.py:10:13:10:24 | ControlFlowNode for Attribute | agent_test.py:10:13:10:37 | ControlFlowNode for Attribute() | provenance | dict.get |
+| agent_test.py:10:13:10:37 | ControlFlowNode for Attribute() | agent_test.py:10:5:10:9 | ControlFlowNode for topic | provenance |  |
+| anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | anthropic_test.py:2:26:2:32 | ControlFlowNode for request | provenance |  |
+| anthropic_test.py:2:26:2:32 | ControlFlowNode for request | anthropic_test.py:11:15:11:21 | ControlFlowNode for request | provenance |  |
+| anthropic_test.py:11:5:11:11 | ControlFlowNode for persona | anthropic_test.py:17:16:17:37 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:2 |
+| anthropic_test.py:11:5:11:11 | ControlFlowNode for persona | anthropic_test.py:21:28:21:44 | ControlFlowNode for BinaryExpr | provenance |  |
+| anthropic_test.py:11:5:11:11 | ControlFlowNode for persona | anthropic_test.py:33:16:33:37 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:2 |
+| anthropic_test.py:11:5:11:11 | ControlFlowNode for persona | anthropic_test.py:45:16:45:37 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:1 |
+| anthropic_test.py:11:15:11:21 | ControlFlowNode for request | anthropic_test.py:11:15:11:26 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| anthropic_test.py:11:15:11:26 | ControlFlowNode for Attribute | anthropic_test.py:11:15:11:41 | ControlFlowNode for Attribute() | provenance | dict.get |
+| anthropic_test.py:11:15:11:41 | ControlFlowNode for Attribute() | anthropic_test.py:11:5:11:11 | ControlFlowNode for persona | provenance |  |
+| openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:2:26:2:32 | ControlFlowNode for request | provenance |  |
+| openai_test.py:2:26:2:32 | ControlFlowNode for request | openai_test.py:12:15:12:21 | ControlFlowNode for request | provenance |  |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:17:22:17:46 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:4 |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:22:22:22:46 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:4 |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:26:28:26:51 | ControlFlowNode for BinaryExpr | provenance |  |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:44:28:44:51 | ControlFlowNode for BinaryExpr | provenance |  |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:61:28:61:51 | ControlFlowNode for BinaryExpr | provenance |  |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:73:22:73:46 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:3 |
+| openai_test.py:12:15:12:21 | ControlFlowNode for request | openai_test.py:12:15:12:26 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| openai_test.py:12:15:12:26 | ControlFlowNode for Attribute | openai_test.py:12:15:12:41 | ControlFlowNode for Attribute() | provenance | dict.get |
+| openai_test.py:12:15:12:41 | ControlFlowNode for Attribute() | openai_test.py:12:5:12:11 | ControlFlowNode for persona | provenance |  |
+| openrouter_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openrouter_test.py:2:26:2:32 | ControlFlowNode for request | provenance |  |
+| openrouter_test.py:2:26:2:32 | ControlFlowNode for request | openrouter_test.py:10:15:10:21 | ControlFlowNode for request | provenance |  |
+| openrouter_test.py:10:5:10:11 | ControlFlowNode for persona | openrouter_test.py:18:28:18:51 | ControlFlowNode for BinaryExpr | provenance |  |
+| openrouter_test.py:10:15:10:21 | ControlFlowNode for request | openrouter_test.py:10:15:10:26 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| openrouter_test.py:10:15:10:26 | ControlFlowNode for Attribute | openrouter_test.py:10:15:10:41 | ControlFlowNode for Attribute() | provenance | dict.get |
+| openrouter_test.py:10:15:10:41 | ControlFlowNode for Attribute() | openrouter_test.py:10:5:10:11 | ControlFlowNode for persona | provenance |  |
+models
+| 1 | Sink: Anthropic; Member[beta].Member[messages].Member[create,stream].Argument[system:]; system-prompt-injection |
+| 2 | Sink: Anthropic; Member[messages].Member[create,stream].Argument[system:]; system-prompt-injection |
+| 3 | Sink: OpenAI; Member[beta].Member[assistants].Member[create].Argument[instructions:]; system-prompt-injection |
+| 4 | Sink: OpenAI; Member[responses].Member[create].Argument[instructions:]; system-prompt-injection |
+| 5 | Sink: agents; Member[Agent].Argument[handoff_description:]; system-prompt-injection |
+| 6 | Sink: agents; Member[Agent].Argument[instructions:]; system-prompt-injection |
+| 7 | Sink: agents; Member[FunctionTool].Argument[description:]; system-prompt-injection |
+nodes
+| agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| agent_test.py:2:26:2:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| agent_test.py:9:5:9:11 | ControlFlowNode for persona | semmle.label | ControlFlowNode for persona |
+| agent_test.py:9:15:9:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| agent_test.py:9:15:9:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| agent_test.py:9:15:9:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| agent_test.py:10:5:10:9 | ControlFlowNode for topic | semmle.label | ControlFlowNode for topic |
+| agent_test.py:10:13:10:19 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| agent_test.py:10:13:10:24 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| agent_test.py:10:13:10:37 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| agent_test.py:14:21:14:63 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| agent_test.py:21:22:21:63 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| agent_test.py:22:29:22:53 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| agent_test.py:31:28:31:51 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| anthropic_test.py:2:26:2:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| anthropic_test.py:11:5:11:11 | ControlFlowNode for persona | semmle.label | ControlFlowNode for persona |
+| anthropic_test.py:11:15:11:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| anthropic_test.py:11:15:11:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| anthropic_test.py:11:15:11:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| anthropic_test.py:17:16:17:37 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| anthropic_test.py:21:28:21:44 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| anthropic_test.py:33:16:33:37 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| anthropic_test.py:45:16:45:37 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| openai_test.py:2:26:2:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | semmle.label | ControlFlowNode for persona |
+| openai_test.py:12:15:12:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| openai_test.py:12:15:12:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| openai_test.py:12:15:12:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| openai_test.py:17:22:17:46 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| openai_test.py:22:22:22:46 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| openai_test.py:26:28:26:51 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| openai_test.py:44:28:44:51 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| openai_test.py:61:28:61:51 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| openai_test.py:73:22:73:46 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| openrouter_test.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| openrouter_test.py:2:26:2:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| openrouter_test.py:10:5:10:11 | ControlFlowNode for persona | semmle.label | ControlFlowNode for persona |
+| openrouter_test.py:10:15:10:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| openrouter_test.py:10:15:10:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| openrouter_test.py:10:15:10:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| openrouter_test.py:18:28:18:51 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths
+testFailures
+| gemini_test.py:3:35:3:44 | Comment # $ Source | Missing result: Source |
+| gemini_test.py:21:52:21:88 | Comment # $ Alert[py/system-prompt-injection] | Missing result: Alert[py/system-prompt-injection] |
+| gemini_test.py:35:57:35:93 | Comment # $ Alert[py/system-prompt-injection] | Missing result: Alert[py/system-prompt-injection] |
+| langchain_test.py:3:35:3:44 | Comment # $ Source | Missing result: Source |
+| langchain_test.py:17:63:17:99 | Comment # $ Alert[py/system-prompt-injection] | Missing result: Alert[py/system-prompt-injection] |

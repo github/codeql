@@ -1,15 +1,28 @@
 /**
- * Provides classes modeling security-relevant aspects of the `openAI` Agents SDK package.
+ * Provides classes modeling security-relevant aspects of the `openai` Agents SDK package.
  * See https://github.com/openai/openai-agents-python.
  * As well as the regular openai python interface.
  * See https://github.com/openai/openai-python.
+ *
+ * Structurally typed sinks (instructions, prompt, input, etc.) are modeled via
+ * Models as Data: python/ql/lib/semmle/python/frameworks/openai.model.yml and
+ * python/ql/lib/semmle/python/frameworks/agent.model.yml
+ *
+ * This file retains only role-filtered message sinks that require inspecting a
+ * sibling `role` key, which MaD cannot express.
  */
 
 private import python
 private import semmle.python.ApiGraphs
 
+/** Holds if `msg` is a message dictionary with a privileged (system/developer/assistant) role. */
+private predicate isSystemOrDevMessage(API::Node msg) {
+  msg.getSubscript("role").getAValueReachingSink().asExpr().(StringLiteral).getText() =
+    ["system", "developer", "assistant"]
+}
+
 /**
- * Provides models for agents SDK (instances of the `agents.Runner` class etc).
+ * Provides models for the agents SDK (instances of the `agents.Runner` class etc).
  *
  * See https://github.com/openai/openai-agents-python.
  */
@@ -20,69 +33,109 @@ module AgentSdk {
   /** Gets a reference to the `run` members. */
   API::Node runMembers() { result = classRef().getMember(["run", "run_sync", "run_streamed"]) }
 
-  /** Gets a reference to a potential property of `agents.Runner` called input which can refer to a system prompt depending on the role specified. */
-  API::Node getContentNode() {
-    result = runMembers().getKeywordParameter("input").getASubscript().getSubscript("content")
+  /** Gets a reference to the `input` argument of a `Runner.run` call. */
+  private API::Node runInput() {
+    result = runMembers().getKeywordParameter("input")
     or
-    result = runMembers().getParameter(_).getASubscript().getSubscript("content")
+    result = runMembers().getParameter(1)
+  }
+
+  /**
+   * Gets role-filtered system/developer/assistant message content sinks that
+   * MaD cannot express.
+   */
+  API::Node getSystemOrAssistantPromptNode() {
+    exists(API::Node msg |
+      msg = runInput().getASubscript() and
+      isSystemOrDevMessage(msg)
+    |
+      result = msg.getSubscript("content")
+    )
+  }
+
+  /**
+   * Gets role-filtered user message content sinks that MaD cannot express.
+   * The string-input case is handled via MaD (agent.model.yml).
+   */
+  API::Node getUserPromptNode() {
+    exists(API::Node msg |
+      msg = runInput().getASubscript() and
+      not isSystemOrDevMessage(msg)
+    |
+      result = msg.getSubscript("content")
+    )
   }
 }
 
 /**
- * Provides models for Agent (instances of the `openai.OpenAI` class).
+ * Provides models for the OpenAI client (instances of the `openai.OpenAI` class).
  *
  * See https://github.com/openai/openai-python.
  */
 module OpenAI {
-  /** Gets a reference to the `openai.OpenAI` class. */
+  /** Gets a reference to an `openai.OpenAI` client instance. */
   API::Node classRef() {
     result =
       API::moduleImport("openai").getMember(["OpenAI", "AsyncOpenAI", "AzureOpenAI"]).getReturn()
   }
 
-  /** Gets a reference to a potential property of `openai.OpenAI` called instructions which refers to the system prompt. */
-  API::Node getContentNode() {
-    exists(API::Node content |
-      content =
-        classRef()
-            .getMember("responses")
-            .getMember("create")
-            .getKeywordParameter(["input", "instructions"])
-      or
-      content =
-        classRef()
-            .getMember("responses")
-            .getMember("create")
-            .getKeywordParameter(["input", "instructions"])
-            .getASubscript()
-            .getSubscript("content")
-      or
-      content =
-        classRef()
-            .getMember("realtime")
-            .getMember("connect")
-            .getReturn()
-            .getMember("conversation")
-            .getMember("item")
-            .getMember("create")
-            .getKeywordParameter("item")
-            .getSubscript("content")
-      or
-      content =
-        classRef()
-            .getMember("chat")
-            .getMember("completions")
-            .getMember("create")
-            .getKeywordParameter("messages")
-            .getASubscript()
-            .getSubscript("content")
-    |
-      // content
-      if not exists(content.getASubscript())
-      then result = content
-      else
-        // content.text
-        result = content.getASubscript().getSubscript("text")
+  /** Gets the message dictionaries passed to `chat.completions.create`. */
+  private API::Node chatMessage() {
+    result =
+      classRef()
+          .getMember("chat")
+          .getMember("completions")
+          .getMember("create")
+          .getKeywordParameter("messages")
+          .getASubscript()
+  }
+
+  /** Gets the message dictionaries passed as a list to `responses.create`. */
+  private API::Node responsesMessage() {
+    result =
+      classRef().getMember("responses").getMember("create").getKeywordParameter("input").getASubscript()
+  }
+
+  /** Gets the content sink of a message dictionary, including the `text` of structured content. */
+  private API::Node messageContent(API::Node msg) {
+    result = msg.getSubscript("content")
+    or
+    result = msg.getSubscript("content").getASubscript().getSubscript("text")
+  }
+
+  /**
+   * Gets role-filtered system/developer/assistant message content sinks that
+   * MaD cannot express.
+   */
+  API::Node getSystemOrAssistantPromptNode() {
+    exists(API::Node msg | msg = [chatMessage(), responsesMessage()] and isSystemOrDevMessage(msg) |
+      result = messageContent(msg)
     )
+  }
+
+  /**
+   * Gets role-filtered user message content sinks that MaD cannot express.
+   * The string-input case is handled via MaD (openai.model.yml).
+   */
+  API::Node getUserPromptNode() {
+    exists(API::Node msg |
+      msg = [chatMessage(), responsesMessage()] and not isSystemOrDevMessage(msg)
+    |
+      result = messageContent(msg)
+    )
+    or
+    // realtime conversation items, role cannot be statically resolved in general
+    result =
+      classRef()
+          .getMember("realtime")
+          .getMember("connect")
+          .getReturn()
+          .getMember("conversation")
+          .getMember("item")
+          .getMember("create")
+          .getKeywordParameter("item")
+          .getSubscript("content")
+          .getASubscript()
+          .getSubscript("text")
   }
 }

@@ -3,12 +3,11 @@ extensions:
       pack: codeql/python-all
       extensible: sinkModel
     data:
-      - ['Anthropic', 'Member[messages].Member[create].Argument[system:]', 'prompt-injection']
-      - ['Anthropic', 'Member[messages].Member[stream].Argument[system:]', 'prompt-injection']
-      - ['Anthropic', 'Member[beta].Member[messages].Member[create].Argument[system:]', 'prompt-injection']
-      - ['Anthropic', 'Member[messages].Member[create].Argument[messages:].ListElement.DictionaryElement[content]', 'prompt-injection']
-      - ['Anthropic', 'Member[messages].Member[stream].Argument[messages:].ListElement.DictionaryElement[content]', 'prompt-injection']
-      - ['Anthropic', 'Member[beta].Member[messages].Member[create].Argument[messages:].ListElement.DictionaryElement[content]', 'prompt-injection']
+      # The `system` field is a system-level prompt
+      - ['Anthropic', 'Member[messages].Member[create,stream].Argument[system:]', 'system-prompt-injection']
+      - ['Anthropic', 'Member[messages].Member[create,stream].Argument[system:].ListElement.DictionaryElement[text]', 'system-prompt-injection']
+      - ['Anthropic', 'Member[beta].Member[messages].Member[create,stream].Argument[system:]', 'system-prompt-injection']
+      - ['Anthropic', 'Member[beta].Member[messages].Member[create,stream].Argument[system:].ListElement.DictionaryElement[text]', 'system-prompt-injection']
 
   - addsTo:
       pack: codeql/python-all

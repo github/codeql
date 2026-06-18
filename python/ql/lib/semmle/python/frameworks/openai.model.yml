@@ -3,10 +3,17 @@ extensions:
       pack: codeql/python-all
       extensible: sinkModel
     data:
-      - ['OpenAI', 'Member[beta].Member[assistants].Member[create].Argument[instructions:]', 'prompt-injection']
-      - ['OpenAI', 'Member[chat].Member[completions].Member[create].Argument[messages:].ListElement.DictionaryElement[content]', 'prompt-injection']
-      - ['OpenAI', 'Member[responses].Member[create].Argument[instructions:]', 'prompt-injection']
-      - ['OpenAI', 'Member[responses].Member[create].Argument[input:]', 'prompt-injection']
+      # System-level prompts and instructions
+      - ['OpenAI', 'Member[responses].Member[create].Argument[instructions:]', 'system-prompt-injection']
+      - ['OpenAI', 'Member[beta].Member[assistants].Member[create].Argument[instructions:]', 'system-prompt-injection']
+      - ['OpenAI', 'Member[beta].Member[assistants].Member[update].Argument[instructions:]', 'system-prompt-injection']
+      - ['OpenAI', 'Member[beta].Member[threads].Member[runs].Member[create].Argument[instructions:]', 'system-prompt-injection']
+      - ['OpenAI', 'Member[beta].Member[threads].Member[runs].Member[create].Argument[additional_instructions:]', 'system-prompt-injection']
+      # User-level prompts
+      - ['OpenAI', 'Member[responses].Member[create].Argument[input:]', 'user-prompt-injection']
+      - ['OpenAI', 'Member[completions].Member[create].Argument[prompt:]', 'user-prompt-injection']
+      - ['OpenAI', 'Member[images].Member[generate,edit].Argument[prompt:]', 'user-prompt-injection']
+      - ['OpenAI', 'Member[audio].Member[transcriptions,translations].Member[create].Argument[prompt:]', 'user-prompt-injection']
 
   - addsTo:
       pack: codeql/python-all
