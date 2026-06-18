@@ -1,4 +1,19 @@
 {
+  "attributes": {},
+  "markdownMessage": "Internal telemetry for the Java extractor.\n\nNo action needed.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/extractor/summary",
+    "name": "Java extractor telemetry"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
   "markdownMessage": "A Maven process was aborted because it didn't write to the console for 5 seconds. Consider either lenghtening the timeout if appropriate by setting CODEQL_EXTRACTOR_JAVA_BUILDLESS_CHILD_PROCESS_IDLE_TIMEOUT to a higher value or zero for no timeout, or else investigate why Maven timed out. Java analysis will continue, but the analysis may be of reduced quality.",
   "severity": "note",
   "source": {
