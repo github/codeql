@@ -165,15 +165,15 @@ struct Seed {
 }
 
 impl Seed {
-    fn new() -> Self {
+    fn new(seed_value: u64) -> Self {
         Seed { }
     }
 }
 
 fn test_seed() {
     // this will be misrecognized as a use of the SEED algorithm, but being a strong
-    // algorithm there is no query result anyway.
-    let _ = Seed::new(); // $ Alert[rust/summary/cryptographic-operations]
+    // algorithm and not sensitive data, there is no query result anyway.
+    let _ = Seed::new(0); // $ Alert[rust/summary/cryptographic-operations]
 }
 
 // ---
