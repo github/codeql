@@ -23,14 +23,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// <summary>
     /// Factory for creating a package manager to restore NuGet packages referenced in packages.config files.
     /// If the environment doesn't support using nuget.exe to restore packages from packages.config files, a no-op implementation is returned.
-    /// It is worth noting that for MacOS and Linux, nuget.exe is used with mono. However, mono is being deprecated and the last images to contain
-    /// mono are
+    /// It is worth noting that for macOS and Linux, nuget.exe is used with mono. However, mono is being deprecated and the last GitHub images
+    /// to contain mono are:
     /// - Ubuntu 22.04
-    /// - MacOS 14
-    /// 
-    /// It is worth noting that even with the removal of mono, the content of the packages.config files are parsed and added to the packages list in
-    /// the FileContent implementation. If the packages are not restored in this step, there is a subsequent step that still may succeed in
-    /// restoring the packages, albeit without the help of nuget.exe.
+    /// - macOS 14
+    ///
+    /// If the packages from the packages.config files are not restored with the packages.config restore functionality below, there is a subsequent
+    /// step that still may succeed in restoring the packages without the help of nuget.exe (by attempting to restore using dotnet).
     /// </summary>
     internal class PackagesConfigRestoreFactory
     {
