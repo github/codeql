@@ -107,7 +107,9 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "x"
-          type: unsupported_node ": Int"
+          type:
+            named_type_expr
+              name: identifier "Int"
           value: int_literal "1"
 
 ===
@@ -150,7 +152,9 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "x"
-          type: unsupported_node ": Int"
+          type:
+            named_type_expr
+              name: identifier "Int"
 
 ===
 Tuple destructuring binding

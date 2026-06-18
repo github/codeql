@@ -88,7 +88,14 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "xs"
-          type: unsupported_node ": [Int]"
+          type:
+            generic_type_expr
+              base:
+                named_type_expr
+                  name: identifier "Array"
+              type_argument:
+                named_type_expr
+                  name: identifier "Int"
           value: array_literal "[]"
 
 ===
@@ -192,7 +199,9 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "s"
-          type: unsupported_node ": Set<Int>"
+          type:
+            named_type_expr
+              name: identifier "Set<Int>"
           value:
             array_literal
               element:

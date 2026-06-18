@@ -73,8 +73,12 @@ top_level
                   pattern:
                     name_pattern
                       identifier: identifier "x"
-                  type: unsupported_node "Int"
-              return_type: unsupported_node "Int"
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
+              return_type:
+                named_type_expr
+                  name: identifier "Int"
 
 ===
 Closure with shorthand parameters
@@ -245,11 +249,13 @@ top_level
                     call_expr
                       callee:
                         member_access_expr
-                          base: unsupported_node "self"
+                          base:
+                            name_expr
+                              identifier: identifier "self"
                           member: identifier "doThing"
               capture_declaration:
                 variable_declaration
-                  modifier: unsupported_node "weak" <-- ERROR: The field variable_declaration.modifier should contain modifier, but got unsupported_node
+                  modifier: modifier "weak"
                   pattern:
                     name_pattern
                       identifier: identifier "self"
@@ -363,5 +369,9 @@ top_level
                   pattern:
                     name_pattern
                       identifier: identifier "x"
-                  type: unsupported_node "Int"
-              return_type: unsupported_node "Int"
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
+              return_type:
+                named_type_expr
+                  name: identifier "Int"

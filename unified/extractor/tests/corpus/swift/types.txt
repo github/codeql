@@ -19,7 +19,10 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "class Foo {}"
+      stmt:
+        class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Foo"
 
 ===
 Class with stored properties
@@ -82,7 +85,27 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "class Point {\n  var x: Int\n  var y: Int\n}"
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "y"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+          modifier: modifier "class"
+          name: identifier "Point"
 
 ===
 Class with initializer
@@ -157,7 +180,33 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "class Point {\n  var x: Int\n  init(x: Int) {\n    self.x = x\n  }\n}"
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+            constructor_declaration
+              body:
+                block
+                  stmt:
+                    assign_expr
+                      target:
+                        member_access_expr
+                          base:
+                            name_expr
+                              identifier: identifier "self"
+                          member: identifier "x"
+                      value:
+                        name_expr
+                          identifier: identifier "x"
+          modifier: modifier "class"
+          name: identifier "Point"
 
 ===
 Class with method
@@ -207,7 +256,28 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "class Counter {\n  var n = 0\n  func bump() {\n    n += 1\n  }\n}"
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "n"
+              value: int_literal "0"
+            function_declaration
+              body:
+                block
+                  stmt:
+                    compound_assign_expr
+                      operator: infix_operator "+="
+                      target:
+                        name_expr
+                          identifier: identifier "n"
+                      value: int_literal "1"
+              name: identifier "bump"
+          modifier: modifier "class"
+          name: identifier "Counter"
 
 ===
 Class inheritance
@@ -237,7 +307,10 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "class Dog: Animal {}"
+      stmt:
+        class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Dog"
 
 ===
 Struct
@@ -300,7 +373,27 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "struct Point {\n  let x: Int\n  let y: Int\n}"
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "let"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+            variable_declaration
+              modifier: modifier "let"
+              pattern:
+                name_pattern
+                  identifier: identifier "y"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+          modifier: modifier "struct"
+          name: identifier "Point"
 
 ===
 Enum with cases
@@ -345,7 +438,31 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "enum Direction {\n  case north\n  case south\n  case east\n  case west\n}"
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "north"
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "south"
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "east"
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "west"
+          modifier: modifier "enum"
+          name: identifier "Direction"
 
 ===
 Enum with associated values
@@ -404,7 +521,39 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "enum Shape {\n  case circle(radius: Double)\n  case square(side: Double)\n}"
+      stmt:
+        class_like_declaration
+          member:
+            class_like_declaration
+              member:
+                constructor_declaration
+                  body: block "circle(radius: Double)"
+                  parameter:
+                    parameter
+                      pattern:
+                        name_pattern
+                          identifier: identifier "radius"
+                      type:
+                        named_type_expr
+                          name: identifier "Double"
+              modifier: modifier "enum_case"
+              name: identifier "circle"
+            class_like_declaration
+              member:
+                constructor_declaration
+                  body: block "square(side: Double)"
+                  parameter:
+                    parameter
+                      pattern:
+                        name_pattern
+                          identifier: identifier "side"
+                      type:
+                        named_type_expr
+                          name: identifier "Double"
+              modifier: modifier "enum_case"
+              name: identifier "square"
+          modifier: modifier "enum"
+          name: identifier "Shape"
 
 ===
 Protocol declaration
@@ -431,7 +580,14 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "protocol Drawable {\n  func draw()\n}"
+      stmt:
+        class_like_declaration
+          member:
+            function_declaration
+              body: block "func draw()"
+              name: identifier "draw"
+          modifier: modifier "protocol"
+          name: identifier "Drawable"
 
 ===
 Extension
@@ -482,7 +638,29 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "extension Int {\n  func squared() -> Int { return self * self }\n}"
+      stmt:
+        class_like_declaration
+          member:
+            function_declaration
+              body:
+                block
+                  stmt:
+                    return_expr
+                      value:
+                        binary_expr
+                          operator: infix_operator "*"
+                          left:
+                            name_expr
+                              identifier: identifier "self"
+                          right:
+                            name_expr
+                              identifier: identifier "self"
+              name: identifier "squared"
+              return_type:
+                named_type_expr
+                  name: identifier "Int"
+          modifier: modifier "extension"
+          name: identifier "Int"
 
 ===
 Computed property
@@ -576,7 +754,47 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "class Rect {\n  var w: Double\n  var h: Double\n  var area: Double {\n    return w * h\n  }\n}"
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "w"
+              type:
+                named_type_expr
+                  name: identifier "Double"
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "h"
+              type:
+                named_type_expr
+                  name: identifier "Double"
+            accessor_declaration
+              body:
+                block
+                  stmt:
+                    return_expr
+                      value:
+                        binary_expr
+                          operator: infix_operator "*"
+                          left:
+                            name_expr
+                              identifier: identifier "w"
+                          right:
+                            name_expr
+                              identifier: identifier "h"
+              modifier: modifier "var"
+              name: identifier "area"
+              type:
+                named_type_expr
+                  name: identifier "Double"
+              accessor_kind: accessor_kind "get"
+          modifier: modifier "class"
+          name: identifier "Rect"
 
 ===
 Property with getter and setter
@@ -662,4 +880,47 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "class Box {\n  private var _v = 0\n  var v: Int {\n    get { return _v }\n    set { _v = newValue }\n  }\n}"
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "_v"
+              value: int_literal "0"
+            accessor_declaration
+              body:
+                block
+                  stmt:
+                    return_expr
+                      value:
+                        name_expr
+                          identifier: identifier "_v"
+              modifier: modifier "var"
+              name: identifier "v"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+              accessor_kind: accessor_kind "get"
+            accessor_declaration
+              body:
+                block
+                  stmt:
+                    assign_expr
+                      target:
+                        name_expr
+                          identifier: identifier "_v"
+                      value:
+                        name_expr
+                          identifier: identifier "newValue"
+              modifier:
+                modifier "var"
+                modifier "chained_declaration"
+              name: identifier "v"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+              accessor_kind: accessor_kind "set"
+          modifier: modifier "class"
+          name: identifier "Box"
