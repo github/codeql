@@ -145,6 +145,8 @@ module Ast implements AstSig<Location> {
   final private class ParameterFinal = CS::Parameter;
 
   class Parameter extends ParameterFinal {
+    AstNode getPattern() { result = this }
+
     Expr getDefaultValue() {
       // Avoid combinatorial explosions for callables with multiple bodies
       result = unique( | | super.getDefaultValue())
