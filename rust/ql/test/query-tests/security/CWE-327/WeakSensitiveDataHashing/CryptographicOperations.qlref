@@ -1,1 +1,3 @@
 query: queries/summary/CryptographicOperations.ql
+postprocess:
+ - utils/test/InlineExpectationsTestQuery.ql
