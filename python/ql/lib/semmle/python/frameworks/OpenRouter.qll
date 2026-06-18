@@ -22,15 +22,10 @@ module OpenRouter {
     result = API::moduleImport("openrouter").getMember("OpenRouter").getReturn()
   }
 
-  /** Gets the message dictionaries passed to `chat.completions.create`. */
+  /** Gets the message dictionaries passed to `chat.send`. */
   private API::Node chatMessage() {
     result =
-      clientRef()
-          .getMember("chat")
-          .getMember("completions")
-          .getMember("create")
-          .getKeywordParameter("messages")
-          .getASubscript()
+      clientRef().getMember("chat").getMember("send").getKeywordParameter("messages").getASubscript()
   }
 
   /** Gets the content sink of a message dictionary, including the `text` of structured content. */

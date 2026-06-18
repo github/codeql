@@ -7,7 +7,7 @@ extensions:
       - ['google.genai', 'Member[types].Member[GenerateContentConfig].Argument[system_instruction:]', 'system-prompt-injection']
       # User-level content
       - ['GoogleGenAI', 'Member[models].Member[generate_content,generate_content_stream].Argument[contents:]', 'user-prompt-injection']
-      - ['GoogleGenAI', 'Member[models].Member[generate_images,generate_videos].Argument[prompt:]', 'user-prompt-injection']
+      - ['GoogleGenAI', 'Member[models].Member[generate_images,generate_videos,edit_image].Argument[prompt:]', 'user-prompt-injection']
       - ['GoogleGenAI', 'Member[chats].Member[create].ReturnValue.Member[send_message,send_message_stream].Argument[0]', 'user-prompt-injection']
       - ['GoogleGenAI', 'Member[chats].Member[create].ReturnValue.Member[send_message,send_message_stream].Argument[message:]', 'user-prompt-injection']
 

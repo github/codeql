@@ -30,4 +30,9 @@ def get_input_gemini():
 
     chat = client.chats.create(model="gemini-2.0-flash")
     response3 = chat.send_message("Tell me about " + query)  # $ Alert[py/user-prompt-injection]
-    print(response1, response2, response3)
+
+    response4 = client.models.edit_image(
+        model="imagen-3.0-capability-001",
+        prompt=query,  # $ Alert[py/user-prompt-injection]
+    )
+    print(response1, response2, response3, response4)

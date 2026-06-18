@@ -9,7 +9,7 @@ client = OpenRouter()
 def get_input_openrouter():
     query = request.args.get("query")
 
-    completion = client.chat.completions.create(
+    completion = client.chat.send(
         model="openai/gpt-4.1",
         messages=[
             {
@@ -22,4 +22,15 @@ def get_input_openrouter():
             }
         ]
     )
-    print(completion)
+
+    response = client.responses.send(
+        model="openai/gpt-4.1",
+        instructions="You are a helpful assistant.",
+        input=query,  # $ Alert[py/user-prompt-injection]
+    )
+
+    embedding = client.embeddings.generate(
+        model="openai/text-embedding-3-small",
+        input=query,  # $ Alert[py/user-prompt-injection]
+    )
+    print(completion, response, embedding)

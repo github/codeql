@@ -8,6 +8,8 @@ extensions:
       - ['Anthropic', 'Member[messages].Member[create,stream].Argument[system:].ListElement.DictionaryElement[text]', 'system-prompt-injection']
       - ['Anthropic', 'Member[beta].Member[messages].Member[create,stream].Argument[system:]', 'system-prompt-injection']
       - ['Anthropic', 'Member[beta].Member[messages].Member[create,stream].Argument[system:].ListElement.DictionaryElement[text]', 'system-prompt-injection']
+      # The managed agents `system` field is a system-level prompt
+      - ['Anthropic', 'Member[beta].Member[agents].Member[create,update].Argument[system:]', 'system-prompt-injection']
 
   - addsTo:
       pack: codeql/python-all

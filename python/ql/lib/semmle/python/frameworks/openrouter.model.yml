@@ -3,8 +3,11 @@ extensions:
       pack: codeql/python-all
       extensible: sinkModel
     data:
+      # `responses.send` instructions is a system-level prompt; input is user content
+      - ['OpenRouter', 'Member[responses].Member[send].Argument[instructions:]', 'system-prompt-injection']
+      - ['OpenRouter', 'Member[responses].Member[send].Argument[input:]', 'user-prompt-injection']
       # Embeddings input is user-level content
-      - ['OpenRouter', 'Member[embeddings].Member[create].Argument[input:]', 'user-prompt-injection']
+      - ['OpenRouter', 'Member[embeddings].Member[generate].Argument[input:]', 'user-prompt-injection']
 
   - addsTo:
       pack: codeql/python-all

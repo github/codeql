@@ -51,4 +51,16 @@ async def get_input_anthropic():
         ],
     )
 
+    agent = client.beta.agents.create(
+        model="claude-sonnet-4-20250514",
+        name="assistant",
+        system="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
+    )
+
+    client.beta.agents.update(
+        agent_id=agent.id,
+        version=1,
+        system="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
+    )
+
     print(response1, response2, response3)
