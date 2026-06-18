@@ -23,6 +23,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "let x = 1"
 
 ===
 Var binding
@@ -49,6 +51,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "var x = 1"
 
 ===
 Let with type annotation
@@ -84,6 +88,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "let x: Int = 1"
 
 ===
 Var without initialiser
@@ -118,6 +124,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "var x: Int"
 
 ===
 Tuple destructuring binding
@@ -154,6 +162,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "let (a, b) = pair"
 
 ===
 Multiple bindings on one line
@@ -185,6 +195,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "let x = 1, y = 2"
 
 ===
 Assignment
@@ -207,6 +219,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "x = 1"
 
 ===
 Compound assignment
@@ -229,3 +243,5 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "x += 1"

@@ -35,6 +35,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "if x > 0 {\n  print(x)\n}"
 
 ===
 If-else
@@ -90,6 +92,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "if x > 0 {\n  print(x)\n} else {\n  print(-x)\n}"
 
 ===
 If-else-if chain
@@ -165,6 +169,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "if x > 0 {\n  print(1)\n} else if x < 0 {\n  print(2)\n} else {\n  print(3)\n}"
 
 ===
 If-let optional binding
@@ -207,6 +213,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "if let value = optional {\n  print(value)\n}"
 
 ===
 Guard let
@@ -240,6 +248,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "guard let value = optional else { return }"
 
 ===
 Ternary expression
@@ -277,6 +287,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "let y = x > 0 ? 1 : -1"
 
 ===
 Switch statement
@@ -357,6 +369,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "switch x {\ncase 1:\n  print(\"one\")\ncase 2, 3:\n  print(\"two or three\")\ndefault:\n  print(\"other\")\n}"
 
 ===
 Switch with binding pattern
@@ -445,3 +459,5 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "switch shape {\ncase .circle(let r):\n  print(r)\ncase .square(let s):\n  print(s)\n}"

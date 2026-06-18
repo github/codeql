@@ -1,8 +1,20 @@
 use codeql_extractor::extractor::simple;
-use yeast::{build::BuildCtx, rule, DesugaringConfig, PhaseKind};
+use yeast::{rule, DesugaringConfig, PhaseKind};
 
 fn translation_rules() -> Vec<yeast::Rule> {
     vec![
+        // ---- Top-level ----
+        // Capture all top-level statements, including unnamed tokens like `nil`.
+        rule!(
+            (source_file statement: _* @children)
+            =>
+            (top_level
+                body: (block stmt: {..children})
+            )
+        ),
+        // Declarations may be wrapped in local/global wrapper nodes.
+        rule!((global_declaration _ @inner) => {inner}),
+        rule!((local_declaration _ @inner) => {inner}),
         // ---- Fallbacks ----
         rule!(
             (_)

@@ -13,6 +13,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "42"
 
 ===
 Negative integer literal
@@ -32,6 +34,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "-7"
 
 ===
 Floating-point literal
@@ -48,6 +52,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "3.14"
 
 ===
 Boolean literals
@@ -67,6 +73,10 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        unsupported_node "true"
+        unsupported_node "false"
 
 ===
 Nil literal
@@ -83,6 +93,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "nil"
 
 ===
 String literal
@@ -101,6 +113,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "\"hello\""
 
 ===
 String with interpolation
@@ -122,3 +136,5 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "\"hello \\(name)\""
