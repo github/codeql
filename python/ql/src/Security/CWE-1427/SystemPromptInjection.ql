@@ -8,12 +8,11 @@
  * @precision high
  * @id py/system-prompt-injection
  * @tags security
- *       experimental
  *       external/cwe/cwe-1427
  */
 
 import python
-import experimental.semmle.python.security.dataflow.SystemPromptInjectionQuery
+import semmle.python.security.dataflow.SystemPromptInjectionQuery
 import SystemPromptInjectionFlow::PathGraph
 
 from SystemPromptInjectionFlow::PathNode source, SystemPromptInjectionFlow::PathNode sink

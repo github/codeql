@@ -8,12 +8,11 @@
  * @precision low
  * @id py/user-prompt-injection
  * @tags security
- *       experimental
  *       external/cwe/cwe-1427
  */
 
 import python
-import experimental.semmle.python.security.dataflow.UserPromptInjectionQuery
+import semmle.python.security.dataflow.UserPromptInjectionQuery
 import UserPromptInjectionFlow::PathGraph
 
 from UserPromptInjectionFlow::PathNode source, UserPromptInjectionFlow::PathNode sink

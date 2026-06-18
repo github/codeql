@@ -7,14 +7,13 @@
 import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
-private import experimental.semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.frameworks.data.ModelsAsData
-private import experimental.semmle.python.frameworks.OpenAI
-private import experimental.semmle.python.frameworks.Anthropic
-private import experimental.semmle.python.frameworks.GoogleGenAI
-private import experimental.semmle.python.frameworks.OpenRouter
+private import semmle.python.frameworks.OpenAI
+private import semmle.python.frameworks.Anthropic
+private import semmle.python.frameworks.GoogleGenAI
+private import semmle.python.frameworks.OpenRouter
 
 /**
  * Provides default sources, sinks and sanitizers for detecting

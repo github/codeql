@@ -54,6 +54,7 @@ ql/python/ql/src/Metrics/NumberOfStatements.ql
 ql/python/ql/src/Metrics/TransitiveImports.ql
 ql/python/ql/src/Security/CWE-020-ExternalAPIs/ExternalAPIsUsedWithUntrustedData.ql
 ql/python/ql/src/Security/CWE-020-ExternalAPIs/UntrustedDataToExternalAPI.ql
+ql/python/ql/src/Security/CWE-1427/UserPromptInjection.ql
 ql/python/ql/src/Security/CWE-798/HardcodedCredentials.ql
 ql/python/ql/src/Statements/C_StyleParentheses.ql
 ql/python/ql/src/Statements/DocStrings.ql
@@ -87,8 +88,6 @@ ql/python/ql/src/experimental/Security/CWE-079/EmailXss.ql
 ql/python/ql/src/experimental/Security/CWE-091/XsltInjection.ql
 ql/python/ql/src/experimental/Security/CWE-094/Js2Py.ql
 ql/python/ql/src/experimental/Security/CWE-1236/CsvInjection.ql
-ql/python/ql/src/experimental/Security/CWE-1427/SystemPromptInjection.ql
-ql/python/ql/src/experimental/Security/CWE-1427/UserPromptInjection.ql
 ql/python/ql/src/experimental/Security/CWE-176/UnicodeBypassValidation.ql
 ql/python/ql/src/experimental/Security/CWE-208/TimingAttackAgainstHash/PossibleTimingAttackAgainstHash.ql
 ql/python/ql/src/experimental/Security/CWE-208/TimingAttackAgainstHash/TimingAttackAgainstHash.ql
