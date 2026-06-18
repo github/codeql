@@ -92,7 +92,12 @@ top_level
               identifier: identifier "n"
           value:
             member_access_expr
-              base: unsupported_node "obj?.foo?"
+              base:
+                member_access_expr
+                  base:
+                    name_expr
+                      identifier: identifier "obj"
+                  member: identifier "foo"
               member: identifier "bar"
 
 ===
@@ -274,7 +279,32 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "do {\n  try foo()\n} catch {\n  print(error)\n}"
+      stmt:
+        try_expr
+          body:
+            block
+              stmt:
+                unary_expr
+                  operand:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "foo"
+                  operator: prefix_operator "try"
+          catch_clause:
+            catch_clause
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "error"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
 
 ===
 Try? expression
@@ -318,7 +348,14 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "result"
-          value: unsupported_node "try? foo()"
+          value:
+            unary_expr
+              operand:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "foo"
+              operator: prefix_operator "try?"
 
 ===
 Try! expression
@@ -362,4 +399,11 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "result"
-          value: unsupported_node "try! foo()"
+          value:
+            unary_expr
+              operand:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "foo"
+              operator: prefix_operator "try!"

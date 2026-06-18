@@ -35,7 +35,12 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "xs"
-          value: unsupported_node "[1, 2, 3]"
+          value:
+            array_literal
+              element:
+                int_literal "1"
+                int_literal "2"
+                int_literal "3"
 
 ===
 Empty array literal with type
@@ -84,7 +89,7 @@ top_level
             name_pattern
               identifier: identifier "xs"
           type: unsupported_node ": [Int]"
-          value: unsupported_node "[]"
+          value: array_literal "[]"
 
 ===
 Dictionary literal
@@ -130,7 +135,7 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "d"
-          value: unsupported_node "[\"a\": 1, \"b\": 2]"
+          value: map_literal "[\"a\": 1, \"b\": 2]"
 
 ===
 Set literal
@@ -188,7 +193,12 @@ top_level
             name_pattern
               identifier: identifier "s"
           type: unsupported_node ": Set<Int>"
-          value: unsupported_node "[1, 2, 3]"
+          value:
+            array_literal
+              element:
+                int_literal "1"
+                int_literal "2"
+                int_literal "3"
 
 ===
 Tuple literal

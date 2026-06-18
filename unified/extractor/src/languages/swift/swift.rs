@@ -558,6 +558,81 @@ fn translation_rules() -> Vec<yeast::Rule> {
             let name = __yeast_ctx.literal("identifier", &text[..text.len() - 1]);
             vec![__yeast_ctx.node("labeled_stmt", vec![("label", vec![name]), ("stmt", vec![stmt.into()])])]
         }}),
+        // ---- Collections ----
+        // Array literal
+        rule!((array_literal element: _* @elems) => (array_literal element: {..elems})),
+        // Empty array literal
+        rule!((array_literal) => (array_literal)),
+        // Dictionary literal — zip keys and values into key_value_pairs
+        rule!(
+            (dictionary_literal key: _* @keys value: _* @vals)
+            =>
+            (map_literal element: {..{
+                keys.iter().zip(vals.iter()).map(|(&k, &v)| {
+                    let k_id: usize = k.into();
+                    let v_id: usize = v.into();
+                    __yeast_ctx.node("key_value_pair", vec![
+                        ("key", vec![k_id]),
+                        ("value", vec![v_id]),
+                    ])
+                }).collect::<Vec<_>>()
+            }})
+        ),
+        rule!((dictionary_literal element: _* @elems) => (map_literal element: {..elems})),
+        rule!((dictionary_literal_item key: @k value: @v) => (key_value_pair key: {k} value: {v})),
+        // ---- Optionals and errors ----
+        // Optional chaining — unwrap the marker
+        rule!((optional_chain_marker expr: @inner) => {inner}),
+        // try/try?/try! expr → unary_expr with operator "try", "try?" or "try!"
+        rule!((try_expression (try_operator) @op expr: @inner) => (unary_expr operator: (prefix_operator #{op}) operand: {inner})),
+        rule!((try_expression operator: (try_operator) @op expr: @inner) => (unary_expr operator: (prefix_operator #{op}) operand: {inner})),
+        // Do-catch → try_expr
+        rule!(
+            (do_statement body: (block statement: _* @body) catch: (catch_block)* @catches)
+            =>
+            (try_expr
+                body: (block stmt: {..body})
+                catch_clause: {..catches})
+        ),
+        // Catch block with bound identifier; optional where-clause guard.
+        rule!(
+            (catch_block
+                keyword: (catch_keyword)
+                error: @pattern
+                where: (where_clause expr: @guard)?
+                body: (block statement: _* @body))
+            =>
+            (catch_clause
+                pattern: {pattern}
+                guard: {..guard}
+                body: (block stmt: {..body}))
+        ),
+        // Catch block without error binding
+        rule!(
+            (catch_block keyword: (catch_keyword) body: (block statement: _* @body))
+            =>
+            (catch_clause body: (block stmt: {..body}))
+        ),
+        // Empty catch block: catch {}
+        rule!(
+            (catch_block (catch_keyword))
+            =>
+            (catch_clause body: (block))
+        ),
+        // Catch block with unhandled pattern — preserve pattern; optional body.
+        rule!(
+            (catch_block keyword: (catch_keyword) error: @pat body: (block statement: _* @body))
+            =>
+            (catch_clause
+                pattern: {pat}
+                body: (block stmt: {..body}))
+        ),
+        // As expression (type cast) — as?, as!
+        rule!((as_expression (as_operator) @op expr: @val type: @ty) => (type_cast_expr expr: {val} operator: (infix_operator #{op}) type: {ty})),
+        // Check expression (`x is T`) → type_test_expr
+        rule!((check_expression op: @op target: @val type: @ty) => (type_test_expr expr: {val} operator: (infix_operator #{op}) type: {ty})),
+        // Await expression → unary_expr with operator "await"
+        rule!((await_expression expr: @val) => (unary_expr operator: (prefix_operator "await") operand: {val})),
         // ---- Fallbacks ----
         rule!(
             (_)

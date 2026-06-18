@@ -245,7 +245,7 @@ top_level
                     call_expr
                       callee:
                         member_access_expr
-                          base: unsupported_node "self?"
+                          base: unsupported_node "self"
                           member: identifier "doThing"
               capture_declaration:
                 variable_declaration
