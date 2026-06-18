@@ -54,7 +54,7 @@ private module Internal {
    * modeling updates to captured variable `v`.
    */
   cached
-  predicate mayCapture(BasicBlock bb, int i, SsaSourceVariable v) {
+  predicate mayUpdateCapturedVariable(BasicBlock bb, int i, SsaSourceVariable v) {
     exists(FuncDef capturingContainer, FuncDef declContainer |
       // capture initial value of variable declared in enclosing scope
       readsCapturedVar(capturingContainer, v, declContainer) and
@@ -91,7 +91,7 @@ private module Internal {
     predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       defAt(bb, i, v) and certain = true
       or
-      mayCapture(bb, i, v) and certain = false
+      mayUpdateCapturedVariable(bb, i, v) and certain = false
     }
 
     /**
