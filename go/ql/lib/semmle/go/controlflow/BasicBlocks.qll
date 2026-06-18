@@ -42,22 +42,11 @@ private module Input implements BB::InputSig<Location> {
   predicate nodeIsPostDominanceExit(Node node) { node instanceof ExitNode }
 }
 
-private module BbImpl = BB::Make<Location, Input>;
+module Cfg = BB::Make<Location, Input>;
 
-class BasicBlock = BbImpl::BasicBlock;
+class BasicBlock = Cfg::BasicBlock;
 
-class EntryBasicBlock = BbImpl::EntryBasicBlock;
-
-/** Provides a `CfgSig` view of Go's control-flow graph for use with the shared SSA library. */
-module Cfg implements BB::CfgSig<Location> {
-  class ControlFlowNode = BbImpl::ControlFlowNode;
-
-  class BasicBlock = BbImpl::BasicBlock;
-
-  class EntryBasicBlock = BbImpl::EntryBasicBlock;
-
-  predicate dominatingEdge = BbImpl::dominatingEdge/2;
-}
+class EntryBasicBlock = Cfg::EntryBasicBlock;
 
 cached
 private predicate reachableBB(BasicBlock bb) {
