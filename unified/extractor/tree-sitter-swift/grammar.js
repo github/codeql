@@ -1368,7 +1368,7 @@ module.exports = grammar({
       seq(
         field("modifiers", optional($.modifiers)),
         "import",
-        optional($._import_kind),
+        optional(field("scoped_import_kind", $._import_kind)),
         field("name", $.identifier)
       ),
     _import_kind: ($) =>

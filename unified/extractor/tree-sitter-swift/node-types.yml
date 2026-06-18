@@ -351,6 +351,7 @@ named:
   import_declaration:
     modifiers?: modifiers
     name: identifier
+    scoped_import_kind?: ["class", "enum", "func", "let", "protocol", "struct", "typealias", "var"]
   infix_expression:
     lhs: expression
     op: custom_operator
