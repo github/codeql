@@ -1,0 +1,29 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      # Package-level convenience functions (msg string, args ...any).
+      - ["log/slog", "", False, "Debug", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["log/slog", "", False, "Info", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["log/slog", "", False, "Warn", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["log/slog", "", False, "Error", "", "", "Argument[0..1]", "log-injection", "manual"]
+      # Context variants (ctx, msg string, args ...any).
+      - ["log/slog", "", False, "DebugContext", "", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["log/slog", "", False, "InfoContext", "", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["log/slog", "", False, "WarnContext", "", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["log/slog", "", False, "ErrorContext", "", "", "Argument[1..2]", "log-injection", "manual"]
+      # Log/LogAttrs (ctx, level, msg string, args/attrs ...).
+      - ["log/slog", "", False, "Log", "", "", "Argument[2..3]", "log-injection", "manual"]
+      - ["log/slog", "", False, "LogAttrs", "", "", "Argument[2..3]", "log-injection", "manual"]
+      # Methods on *slog.Logger.
+      - ["log/slog", "Logger", True, "Debug", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["log/slog", "Logger", True, "Info", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["log/slog", "Logger", True, "Warn", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["log/slog", "Logger", True, "Error", "", "", "Argument[0..1]", "log-injection", "manual"]
+      - ["log/slog", "Logger", True, "DebugContext", "", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["log/slog", "Logger", True, "InfoContext", "", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["log/slog", "Logger", True, "WarnContext", "", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["log/slog", "Logger", True, "ErrorContext", "", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["log/slog", "Logger", True, "Log", "", "", "Argument[2..3]", "log-injection", "manual"]
+      - ["log/slog", "Logger", True, "LogAttrs", "", "", "Argument[2..3]", "log-injection", "manual"]
