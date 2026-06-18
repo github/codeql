@@ -35,7 +35,7 @@ JACKSON_VERSION="${1:-2.18.6}"
 GUAVA_VERSION="${2:-33.4.0-jre}"
 
 PLUGIN_UPSTREAM_VERSION="4.0.3"
-PLUGIN_CODEQL_VERSION="${PLUGIN_UPSTREAM_VERSION}-CodeQL-2"
+PLUGIN_CODEQL_VERSION="${PLUGIN_UPSTREAM_VERSION}-CodeQL-3"
 UPSTREAM_TAG="depgraph-maven-plugin-${PLUGIN_UPSTREAM_VERSION}"
 UPSTREAM_REPO="https://github.com/ferstl/depgraph-maven-plugin.git"
 
@@ -76,8 +76,18 @@ pom_path, old_version, new_version, new_guava, new_jackson = sys.argv[1:]
 with open(pom_path) as f:
     content = f.read()
 
-# 1. Version suffix: 4.0.3 -> 4.0.3-CodeQL-2  (first occurrence only — the <version> element)
+# 1. Version suffix: 4.0.3 -> 4.0.3-CodeQL-3  (first occurrence only — the <version> element)
 content = content.replace(f'<version>{old_version}</version>', f'<version>{new_version}</version>', 1)
+
+# 1b. Pin patched plexus-utils / commons-lang3 (transitive via maven-core) to
+#     clear CVEs in the vendored bundle. Inserted into <dependencyManagement>.
+content = content.replace(
+    '        <scope>import</scope>\n      </dependency>\n    </dependencies>\n  </dependencyManagement>',
+    '        <scope>import</scope>\n      </dependency>\n'
+    '      <dependency>\n        <groupId>org.codehaus.plexus</groupId>\n        <artifactId>plexus-utils</artifactId>\n        <version>3.6.1</version>\n      </dependency>\n'
+    '      <dependency>\n        <groupId>org.apache.commons</groupId>\n        <artifactId>commons-lang3</artifactId>\n        <version>3.18.0</version>\n      </dependency>\n'
+    '    </dependencies>\n  </dependencyManagement>',
+    1)
 
 # 2. Guava
 content = content.replace('<version>31.1-jre</version>', f'<version>{new_guava}</version>')
