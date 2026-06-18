@@ -386,6 +386,70 @@ fn translation_rules() -> Vec<yeast::Rule> {
         rule!((control_transfer_statement kind: "continue" result: @lbl) => (continue_expr label: (identifier #{lbl}))),
         rule!((control_transfer_statement kind: "continue") => (continue_expr)),
         rule!((control_transfer_statement kind: (throw_keyword) result: @val) => (throw_expr value: {val})),
+        // ---- Closures ----
+        // Lambda literal with optional type header (parameters + optional return type).
+        // The return_type capture is optional, so this rule covers both cases.
+        rule!(
+            (lambda_literal
+                attribute: _* @attrs
+                captures: (capture_list item: _* @captures)?
+                type: (lambda_function_type
+                    params: (lambda_function_type_parameters parameter: _* @params)
+                    return_type: _? @ret)?
+                statement: _* @body)
+            =>
+            (function_expr
+                modifier: {..attrs}
+                capture_declaration: {..captures}
+                parameter: {..params}
+                return_type: {..ret}
+                body: (block stmt: {..body}))
+        ),
+        // capture_list_item with ownership modifier (e.g. [weak self], [unowned x])
+        rule!(
+            (capture_list_item ownership: _? @ownership name: @name value: _? @val)
+            =>
+            (variable_declaration
+                modifier: {..ownership}
+                pattern: (name_pattern identifier: (identifier #{name}))
+                value: {..val})
+        ),
+        // Lambda parameter with type and optional external name
+        rule!(
+            (lambda_parameter external_name: @ext name: @name type: @ty)
+            =>
+            (parameter
+                external_name: (identifier #{ext})
+                pattern: (name_pattern identifier: (identifier #{name}))
+                type: {ty})
+        ),
+        rule!(
+            (lambda_parameter name: @name type: @ty)
+            =>
+            (parameter
+                pattern: (name_pattern identifier: (identifier #{name}))
+                type: {ty})
+        ),
+        rule!(
+            (lambda_parameter external_name: @ext name: @name)
+            =>
+            (parameter
+                external_name: (identifier #{ext})
+                pattern: (name_pattern identifier: (identifier #{name})))
+        ),
+        rule!(
+            (lambda_parameter name: @name)
+            =>
+            (parameter pattern: (name_pattern identifier: (identifier #{name})))
+        ),
+        // Call expression with trailing closure (no value_arguments)
+        rule!(
+            (call_expression function: @func suffix: (call_suffix lambda: (lambda_literal) @closure))
+            =>
+            (call_expr
+                callee: {func}
+                argument: (argument value: {closure}))
+        ),
         // ---- Fallbacks ----
         rule!(
             (_)
