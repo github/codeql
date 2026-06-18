@@ -38,7 +38,24 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "for x in [1, 2, 3] {\n  print(x)\n}"
+      stmt:
+        for_each_stmt
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          iterable: unsupported_node "[1, 2, 3]"
 
 ===
 For-in over range
@@ -79,7 +96,28 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "for i in 0..<10 {\n  print(i)\n}"
+      stmt:
+        for_each_stmt
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "i"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+          pattern:
+            name_pattern
+              identifier: identifier "i"
+          iterable:
+            binary_expr
+              operator: infix_operator "..<"
+              left: int_literal "0"
+              right: int_literal "10"
 
 ===
 For-in with where clause
@@ -124,7 +162,33 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "for x in xs where x > 0 {\n  print(x)\n}"
+      stmt:
+        for_each_stmt
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          guard:
+            binary_expr
+              operator: infix_operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
+          iterable:
+            name_expr
+              identifier: identifier "xs"
 
 ===
 While loop
@@ -161,7 +225,24 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "while x > 0 {\n  x -= 1\n}"
+      stmt:
+        while_stmt
+          body:
+            block
+              stmt:
+                compound_assign_expr
+                  operator: infix_operator "-="
+                  target:
+                    name_expr
+                      identifier: identifier "x"
+                  value: int_literal "1"
+          condition:
+            binary_expr
+              operator: infix_operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
 
 ===
 Repeat-while loop
@@ -198,7 +279,24 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "repeat {\n  x -= 1\n} while x > 0"
+      stmt:
+        do_while_stmt
+          body:
+            block
+              stmt:
+                compound_assign_expr
+                  operator: infix_operator "-="
+                  target:
+                    name_expr
+                      identifier: identifier "x"
+                  value: int_literal "1"
+          condition:
+            binary_expr
+              operator: infix_operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
 
 ===
 Break and continue
@@ -263,4 +361,45 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "for x in xs {\n  if x < 0 { continue }\n  if x > 100 { break }\n  print(x)\n}"
+      stmt:
+        for_each_stmt
+          body:
+            block
+              stmt:
+                if_expr
+                  condition:
+                    binary_expr
+                      operator: infix_operator "<"
+                      left:
+                        name_expr
+                          identifier: identifier "x"
+                      right: int_literal "0"
+                  then:
+                    block
+                      stmt: continue_expr "continue"
+                if_expr
+                  condition:
+                    binary_expr
+                      operator: infix_operator ">"
+                      left:
+                        name_expr
+                          identifier: identifier "x"
+                      right: int_literal "100"
+                  then:
+                    block
+                      stmt: break_expr "break"
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          iterable:
+            name_expr
+              identifier: identifier "xs"
