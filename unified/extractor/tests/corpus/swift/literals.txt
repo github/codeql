@@ -14,7 +14,7 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "42"
+      stmt: int_literal "42"
 
 ===
 Negative integer literal
@@ -35,7 +35,10 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "-7"
+      stmt:
+        unary_expr
+          operand: int_literal "7"
+          operator: prefix_operator "-"
 
 ===
 Floating-point literal
@@ -53,7 +56,7 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "3.14"
+      stmt: float_literal "3.14"
 
 ===
 Boolean literals
@@ -75,8 +78,8 @@ top_level
   body:
     block
       stmt:
-        unsupported_node "true"
-        unsupported_node "false"
+        boolean_literal "true"
+        boolean_literal "false"
 
 ===
 Nil literal
@@ -94,7 +97,7 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "nil"
+      stmt: builtin_expr "nil"
 
 ===
 String literal
@@ -114,7 +117,7 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "\"hello\""
+      stmt: string_literal "\"hello\""
 
 ===
 String with interpolation
@@ -137,4 +140,4 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "\"hello \\(name)\""
+      stmt: string_literal "\"hello \\(name)\""

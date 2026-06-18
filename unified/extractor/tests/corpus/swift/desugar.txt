@@ -18,7 +18,11 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "1 + 2"
+      stmt:
+        binary_expr
+          operator: infix_operator "+"
+          left: int_literal "1"
+          right: int_literal "2"
 
 ===
 Another additive expression is desugared
@@ -40,4 +44,12 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "foo + bar"
+      stmt:
+        binary_expr
+          operator: infix_operator "+"
+          left:
+            name_expr
+              identifier: identifier "foo"
+          right:
+            name_expr
+              identifier: identifier "bar"
