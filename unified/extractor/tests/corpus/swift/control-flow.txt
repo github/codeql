@@ -626,6 +626,7 @@ source_file
                                       pattern:
                                         pattern
                                           bound_identifier: simple_identifier "r"
+                      dot: .
                       name: simple_identifier "circle"
           statement:
             call_expression
@@ -658,6 +659,7 @@ source_file
                                       pattern:
                                         pattern
                                           bound_identifier: simple_identifier "s"
+                      dot: .
                       name: simple_identifier "square"
           statement:
             call_expression
@@ -701,7 +703,7 @@ top_level
                           identifier: identifier "r"
                   constructor:
                     member_access_expr
-                      base: inferred_type_expr ".circle(let r)"
+                      base: inferred_type_expr "."
                       member: identifier "circle"
             switch_case
               body:
@@ -725,7 +727,7 @@ top_level
                           identifier: identifier "s"
                   constructor:
                     member_access_expr
-                      base: inferred_type_expr ".square(let s)"
+                      base: inferred_type_expr "."
                       member: identifier "square"
           value:
             name_expr

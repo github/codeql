@@ -302,10 +302,10 @@ fn translation_rules() -> Vec<yeast::Rule> {
         ),
         // case .foo(x,y) pattern
         rule!(
-            (pattern kind: (case_pattern name: @name arguments: (tuple_pattern item: (tuple_pattern_item)* @items)? ))
+            (pattern kind: (case_pattern dot: @dot name: @name arguments: (tuple_pattern item: (tuple_pattern_item)* @items)? ))
             =>
             (constructor_pattern
-                constructor: (member_access_expr base: (inferred_type_expr) member: (identifier #{name}))
+                constructor: (member_access_expr base: (inferred_type_expr #{dot}) member: (identifier #{name}))
                 element: {..items})
         ),
         // Pattern with bound_identifier → name_pattern
