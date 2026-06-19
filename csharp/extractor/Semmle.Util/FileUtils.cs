@@ -240,6 +240,19 @@ namespace Semmle.Util
             return new FileInfo(outputPath);
         }
 
+        public static string? GetDirectoryName(string path, ILogger logger)
+        {
+            try
+            {
+                return new FileInfo(path).Directory?.FullName;
+            }
+            catch (Exception exc)
+            {
+                logger.LogWarning($"Failed to get directory of '{path}': {exc}");
+            }
+            return null;
+        }
+
         public static string SafeGetDirectoryName(string path, ILogger logger)
         {
             try

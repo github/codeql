@@ -28,14 +28,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IDiagnosticsWriter diagnosticsWriter;
         private readonly DependencyDirectory legacyPackageDirectory;
         private readonly DependencyDirectory missingPackageDirectory;
-        private readonly DependencyDirectory emptyPackageDirectory;
         private readonly ILogger logger;
         private readonly ICompilationInfoContainer compilationInfoContainer;
-        private readonly bool checkNugetFeedResponsiveness = EnvironmentVariables.GetBooleanOptOut(EnvironmentVariableNames.CheckNugetFeedResponsiveness);
-        private readonly ImmutableHashSet<string> privateRegistryFeeds;
-        private readonly bool hasPrivateRegistryFeeds;
+        private readonly FeedManager feedManager;
 
         public DependencyDirectory PackageDirectory { get; }
+
 
         public NugetPackageRestorer(
             FileProvider fileProvider,
@@ -50,8 +48,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.fileContent = fileContent;
             this.dotnet = dotnet;
             this.dependabotProxy = dependabotProxy;
-            this.privateRegistryFeeds = dependabotProxy?.RegistryURLs.ToImmutableHashSet() ?? [];
-            this.hasPrivateRegistryFeeds = privateRegistryFeeds.Count > 0;
             this.diagnosticsWriter = diagnosticsWriter;
             this.logger = logger;
             this.compilationInfoContainer = compilationInfoContainer;
@@ -59,7 +55,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             PackageDirectory = new DependencyDirectory("packages", "package", logger);
             legacyPackageDirectory = new DependencyDirectory("legacypackages", "legacy package", logger);
             missingPackageDirectory = new DependencyDirectory("missingpackages", "missing package", logger);
-            emptyPackageDirectory = new DependencyDirectory("empty", "empty package", logger);
+            feedManager = new FeedManager(logger, dotnet, dependabotProxy);
         }
 
         public string? TryRestore(string package)
@@ -118,8 +114,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public HashSet<AssemblyLookupLocation> Restore()
         {
             var assemblyLookupLocations = new HashSet<AssemblyLookupLocation>();
-            logger.LogInfo($"Checking NuGet feed responsiveness: {checkNugetFeedResponsiveness}");
-            compilationInfoContainer.CompilationInfos.Add(("NuGet feed responsiveness checked", checkNugetFeedResponsiveness ? "1" : "0"));
+            logger.LogInfo($"Checking NuGet feed responsiveness: {feedManager.CheckNugetFeedResponsiveness}");
+            compilationInfoContainer.CompilationInfos.Add(("NuGet feed responsiveness checked", feedManager.CheckNugetFeedResponsiveness ? "1" : "0"));
 
             HashSet<string> explicitFeeds = [];
             HashSet<string> reachableFeeds = [];
@@ -131,7 +127,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 // (including inherited ones) from other locations on the host outside of the working directory.
                 (explicitFeeds, var allFeeds) = GetAllFeeds();
 
-                if (checkNugetFeedResponsiveness)
+                if (feedManager.CheckNugetFeedResponsiveness)
                 {
                     var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
 
@@ -215,7 +211,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             var usedPackageNames = GetAllUsedPackageDirNames(dependencies);
 
-            var missingPackageLocation = checkNugetFeedResponsiveness
+            var missingPackageLocation = feedManager.CheckNugetFeedResponsiveness
                 ? DownloadMissingPackagesFromSpecificFeeds(usedPackageNames, explicitFeeds)
                 : DownloadMissingPackages(usedPackageNames);
 
@@ -264,7 +260,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private bool IsDefaultFeedReachable()
         {
-            if (checkNugetFeedResponsiveness)
+            if (feedManager.CheckNugetFeedResponsiveness)
             {
                 var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback: false);
                 return IsFeedReachable(PublicNugetOrgFeed, initialTimeout, tryCount, out var _);
@@ -321,7 +317,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var projects = fileProvider.Solutions.SelectMany(solution =>
                 {
                     logger.LogInfo($"Restoring solution {solution}...");
-                    var nugetSources = MakeRestoreSourcesArgument(solution, reachableFeeds);
+                    var nugetSources = feedManager.MakeRestoreSourcesArgument(solution, reachableFeeds);
                     var res = dotnet.Restore(new(solution, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, NugetSources: nugetSources, TargetWindows: isWindows));
                     if (res.Success)
                     {
@@ -344,57 +340,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("Failed solution restore with missing package error", nugetMissingPackageFailures.ToString()));
             compilationInfoContainer.CompilationInfos.Add(("Restored projects through solution files", projects.Count.ToString()));
             return projects;
-        }
-
-        private string FeedsToRestoreArgument(IEnumerable<string> feeds)
-        {
-            // If there are no feeds, we want to override any default feeds that `dotnet restore` would use by passing a dummy source argument.
-            if (!feeds.Any())
-            {
-                return $" -s \"{emptyPackageDirectory.DirInfo.FullName}\"";
-            }
-
-            // Add package sources. If any are present, they override all sources specified in
-            // the configuration file(s).
-            var feedArgs = new StringBuilder();
-            foreach (var feed in feeds)
-            {
-                feedArgs.Append($" -s \"{feed}\"");
-            }
-
-            return feedArgs.ToString();
-        }
-
-        /// <summary>
-        /// Constructs the list of NuGet sources to use for this restore.
-        /// (1) Use the feeds we get from `dotnet nuget list source`
-        /// (2) Use private registries, if they are configured
-        /// </summary>
-        /// <param name="path">Path to project/solution</param>
-        /// <param name="reachableFeeds">The set of reachable NuGet feeds.</param>
-        /// <returns>A string representing the NuGet sources argument for the restore command.</returns>
-        private string? MakeRestoreSourcesArgument(string path, HashSet<string> reachableFeeds)
-        {
-            // Do not construct an set of explicit NuGet sources to use for restore.
-            if (!checkNugetFeedResponsiveness && !hasPrivateRegistryFeeds)
-            {
-                return null;
-            }
-
-            // Find the path specific feeds.
-            var folder = GetDirectoryName(path);
-            var feedsToConsider = folder is not null ? GetFeeds(() => dotnet.GetNugetFeedsFromFolder(folder)).ToHashSet() : [];
-
-            if (hasPrivateRegistryFeeds)
-            {
-                feedsToConsider.UnionWith(privateRegistryFeeds);
-            }
-
-            var feedsToUse = checkNugetFeedResponsiveness
-                ? feedsToConsider.Where(reachableFeeds.Contains)
-                : feedsToConsider;
-
-            return FeedsToRestoreArgument(feedsToUse);
         }
 
         /// <summary>
@@ -421,7 +366,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 foreach (var project in projectGroup)
                 {
                     logger.LogInfo($"Restoring project {project}...");
-                    var nugetSources = MakeRestoreSourcesArgument(project, reachableFeeds);
+                    var nugetSources = feedManager.MakeRestoreSourcesArgument(project, reachableFeeds);
                     var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, NugetSources: nugetSources, TargetWindows: isWindows));
                     assets.AddDependenciesRange(res.AssetsFilePaths);
                     lock (sync)
@@ -899,47 +844,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("All NuGet feeds reachable", allFeedsReachable ? "1" : "0"));
         }
 
-        private IEnumerable<string> GetFeeds(Func<IList<string>> getNugetFeeds)
-        {
-            var results = getNugetFeeds();
-            var regex = EnabledNugetFeed();
-            foreach (var result in results)
-            {
-                var match = regex.Match(result);
-                if (!match.Success)
-                {
-                    logger.LogError($"Failed to parse feed from '{result}'");
-                    continue;
-                }
-
-                var url = match.Groups[1].Value;
-                if (!url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase) &&
-                    !url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    logger.LogInfo($"Skipping feed '{url}' as it is not a valid URL.");
-                    continue;
-                }
-
-                if (!string.IsNullOrWhiteSpace(url))
-                {
-                    yield return url;
-                }
-            }
-        }
-
-        private string? GetDirectoryName(string path)
-        {
-            try
-            {
-                return new FileInfo(path).Directory?.FullName;
-            }
-            catch (Exception exc)
-            {
-                logger.LogWarning($"Failed to get directory of '{path}': {exc}");
-            }
-            return null;
-        }
-
         private (HashSet<string> explicitFeeds, HashSet<string> allFeeds) GetAllFeeds()
         {
             var nugetConfigs = fileProvider.NugetConfigs;
@@ -981,7 +885,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             // Find feeds that are explicitly configured in the NuGet configuration files that we found.
             var explicitFeeds = nugetConfigs
-                .SelectMany(config => GetFeeds(() => dotnet.GetNugetFeeds(config)))
+                .SelectMany(config => feedManager.GetFeedsFromNugetConfig(config))
                 .ToHashSet();
 
             if (explicitFeeds.Count > 0)
@@ -995,10 +899,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             // If private package registries are configured for C#, then consider those
             // in addition to the ones that are configured in `nuget.config` files.
-            if (hasPrivateRegistryFeeds)
+            if (feedManager.HasPrivateRegistryFeeds)
             {
-                logger.LogInfo($"Found {privateRegistryFeeds.Count} private registry feeds configured for C#: {string.Join(", ", privateRegistryFeeds.OrderBy(f => f))}");
-                explicitFeeds.UnionWith(privateRegistryFeeds);
+                logger.LogInfo($"Found {feedManager.PrivateRegistryFeeds.Count} private registry feeds configured for C#: {string.Join(", ", feedManager.PrivateRegistryFeeds.OrderBy(f => f))}");
+                explicitFeeds.UnionWith(feedManager.PrivateRegistryFeeds);
             }
 
             HashSet<string> allFeeds = [];
@@ -1008,15 +912,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             // Obtain the list of feeds from the root source directory.
             // If a NuGet file is present it will be respected, otherwise we will just get the machine/environment specific feeds.
-            var nugetFeedsFromRoot = GetFeeds(() => dotnet.GetNugetFeedsFromFolder(fileProvider.SourceDir.FullName));
+            var nugetFeedsFromRoot = feedManager.GetFeedsFromFolder(fileProvider.SourceDir.FullName);
             allFeeds.UnionWith(nugetFeedsFromRoot);
 
             if (nugetConfigs.Count > 0)
             {
                 var nugetConfigFeeds = nugetConfigs
-                    .Select(GetDirectoryName)
+                    .Select(path => FileUtils.GetDirectoryName(path, logger))
                     .Where(folder => folder != null)
-                    .SelectMany(folder => GetFeeds(() => dotnet.GetNugetFeedsFromFolder(folder!)))
+                    .SelectMany(folder => feedManager.GetFeedsFromFolder(folder!))
                     .ToHashSet();
 
                 allFeeds.UnionWith(nugetConfigFeeds);
@@ -1036,15 +940,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         [GeneratedRegex(@"^(.+)\.(\d+\.\d+\.\d+(-(.+))?)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex LegacyNugetPackage();
 
-        [GeneratedRegex(@"^E\s(.*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
-        private static partial Regex EnabledNugetFeed();
-
         public void Dispose()
         {
             PackageDirectory?.Dispose();
             legacyPackageDirectory?.Dispose();
             missingPackageDirectory?.Dispose();
-            emptyPackageDirectory?.Dispose();
+            feedManager.Dispose();
         }
 
         /// <summary>
