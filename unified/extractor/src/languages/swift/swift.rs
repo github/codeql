@@ -77,7 +77,7 @@ fn translation_rules() -> Vec<yeast::Rule> {
         rule!((prefix_expression operation: @op target: @operand) => (unary_expr operator: (prefix_operator #{op}) operand: {operand})),
         // Postfix unary operators
         rule!((postfix_expression operation: @op target: @operand) => (unary_expr operator: (postfix_operator #{op}) operand: {operand})),
-        // Parenthesised single-value tuple is a grouping expression; pass through.
+        // TODO: Parenthesised single-value tuple is a grouping expression and should pass through.
         // Multi-value tuples become tuple_expr.
         rule!((tuple_expression value: _* @v) => (tuple_expr element: {..v})),
         // Blocks contain statement* directly.
