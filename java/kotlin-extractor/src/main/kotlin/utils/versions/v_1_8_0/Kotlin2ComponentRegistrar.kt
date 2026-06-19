@@ -28,6 +28,8 @@ abstract class Kotlin2ComponentRegistrar : ComponentRegistrar {
 
     fun registerExtractorExtension(extension: IrGenerationExtension) {
         val p = project ?: throw IllegalStateException("registerExtractorExtension called before registerProjectComponents")
+        // Register with LoadingOrder.LAST to ensure the extractor runs after other
+        // IR generation plugins (like kotlinx.serialization) have generated their code.
         val extensionPoint = p.extensionArea.getExtensionPoint(IrGenerationExtension.extensionPointName)
         extensionPoint.registerExtension(extension, LoadingOrder.LAST, p)
     }

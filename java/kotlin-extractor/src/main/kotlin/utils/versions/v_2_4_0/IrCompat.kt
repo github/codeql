@@ -30,33 +30,36 @@ val IrFunction.codeQlExtensionReceiverParameter: IrValueParameter?
     get() = parameters.firstOrNull { it.kind == org.jetbrains.kotlin.ir.declarations.IrParameterKind.ExtensionReceiver }
 
 // Helper: get the offset of value arguments in the arguments list
-// In 2.4.0, arguments[] includes dispatch/extension receivers before regular params
 private fun IrMemberAccessExpression<*>.valueArgumentOffset(): Int {
     val owner = symbol.owner as? IrFunction ?: return 0
     return owner.parameters.count { it.kind != org.jetbrains.kotlin.ir.declarations.IrParameterKind.Regular }
 }
 
 // IrMemberAccessExpression: valueArgumentsCount
+// In 2.4.0, arguments[] includes dispatch/extension receivers before regular params
 val IrMemberAccessExpression<*>.codeQlValueArgumentsCount: Int
     get() = arguments.size - valueArgumentOffset()
 
 // IrMemberAccessExpression: getValueArgument
+// In 2.4.0, arguments[] includes dispatch/extension receivers before regular params
 fun IrMemberAccessExpression<*>.codeQlGetValueArgument(index: Int): IrExpression? = arguments[index + valueArgumentOffset()]
 
 // IrMemberAccessExpression: putValueArgument
+// In 2.4.0, arguments[] includes dispatch/extension receivers before regular params
 fun IrMemberAccessExpression<*>.codeQlPutValueArgument(index: Int, value: IrExpression?) {
     arguments[index + valueArgumentOffset()] = value
 }
 
-// IrMemberAccessExpression: extensionReceiver
-// For IrCall/IrFunctionReference, look at symbol.owner (IrFunction) directly.
-// For IrPropertyReference, symbol.owner is IrProperty; use the getter's parameters instead.
+// Re-add accessor for the extensionReceiver property removed in Kotlin 2.4.0.
 val IrMemberAccessExpression<*>.codeQlExtensionReceiver: IrExpression?
     get() {
         val erp = extensionReceiverParameterIndex() ?: return null
         return arguments[erp]
     }
 
+// Find the argument index corresponding to the extension receiver parameter.
+// Calls and function references expose an IrFunction owner directly; property
+// references need to look through their getter or setter.
 private fun IrMemberAccessExpression<*>.extensionReceiverParameterIndex(): Int? {
     // Direct function owner (IrCall, IrFunctionReference, etc.)
     (symbol.owner as? IrFunction)?.codeQlExtensionReceiverParameter?.let {
@@ -118,4 +121,3 @@ fun codeQlAnnotationFromSymbolOwner(
 
 fun codeQlAnnotationFromSymbolOwner(type: IrType, symbol: IrConstructorSymbol): IrConstructorCall =
     IrAnnotationImpl.fromSymbolOwner(type, symbol)
-
