@@ -226,13 +226,24 @@ signature module AstSig<LocationSig Location> {
 
   /** A catch clause in a try statement. */
   class CatchClause extends AstNode {
-    /** Gets the variable declared by this catch clause. */
+    /**
+     * Gets the pattern matched by this catch clause, if any.
+     *
+     * A catch clause without a pattern is a catch-all that matches any exception.
+     */
+    AstNode getPattern();
+
+    /**
+     * Gets the variable declared by this catch clause, if any.
+     *
+     * Some languages include the variable binding as part of the pattern.
+     */
     AstNode getVariable();
 
     /** Gets the guard condition of this catch clause, if any. */
     Expr getCondition();
 
-    /** Gets the body of this catch clause. */
+    /** Gets the body of this catch clause, if any. */
     Stmt getBody();
   }
 
@@ -504,7 +515,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     default Parameter callableGetParameter(Callable c, CallableContext ctx, int index) { none() }
 
     /** Holds if catch clause `catch` catches all exceptions. */
-    default predicate catchAll(CatchClause catch) { none() }
+    default predicate catchAll(CatchClause catch) { not exists(catch.getPattern()) }
 
     /**
      * Holds if case `c` matches all possible values, for example, if it is a
@@ -636,6 +647,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       (
         n instanceof CatchClause
         or
+        exists(CatchClause catch | n = catch.getPattern())
+        or
         n instanceof Case
         or
         n = any(Case case).getPattern(_)
@@ -658,6 +671,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       not inConditionalContext(n, _)
     }
 
+    private string catchClauseEmptyBodyTag() { result = "[CatchClauseEmptyBody]" }
+
     private string loopHeaderTag() { result = "[LoopHeader]" }
 
     private string patternMatchTrueTag() { result = "[MatchTrue]" }
@@ -669,6 +684,13 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      */
     private predicate additionalNode(AstNode n, string tag, NormalSuccessor t) {
       Input1::additionalNode(n, tag, t)
+      or
+      exists(CatchClause catch |
+        n = catch and
+        not exists(catch.getBody()) and
+        tag = catchClauseEmptyBodyTag() and
+        t instanceof DirectSuccessor
+      )
       or
       n instanceof LoopStmt and
       tag = loopHeaderTag() and
@@ -808,6 +830,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         Input1::matchAll(c) and
         c.getPattern(i) = n and
         not exists(c.getPattern(i + 1)) and
+        t.(MatchingSuccessor).getValue() = true
+      )
+      or
+      exists(CatchClause catch |
+        Input1::catchAll(catch) and
+        catch.getPattern() = n and
         t.(MatchingSuccessor).getValue() = true
       )
     }
@@ -1415,6 +1443,18 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         result = getBodyEntry(c, ctx)
       }
 
+      private PreControlFlowNode getBeforeCatchBody(CatchClause catch) {
+        if exists(catch.getBody())
+        then result.isBefore(catch.getBody())
+        else result.isAdditional(catch, catchClauseEmptyBodyTag())
+      }
+
+      private PreControlFlowNode getAfterCatchBody(CatchClause catch) {
+        if exists(catch.getBody())
+        then result.isAfter(catch.getBody())
+        else result.isAdditional(catch, catchClauseEmptyBodyTag())
+      }
+
       /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
       private predicate explicitStep(PreControlFlowNode n1, PreControlFlowNode n2) {
         Input2::step(n1, n2)
@@ -1682,7 +1722,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             n1.isAfter(getTryElse(trystmt)) and
             n2 = beforeFinally
             or
-            n1.isAfter(trystmt.getCatch(_).getBody()) and
+            n1 = getAfterCatchBody(trystmt.getCatch(_)) and
             n2 = beforeFinally
           )
           or
@@ -1696,13 +1736,15 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         )
         or
         exists(CatchClause catchclause |
-          exists(MatchingSuccessor t |
-            n1.isBefore(catchclause) and
-            n2.isAfterValue(catchclause, t) and
-            if Input1::catchAll(catchclause) then t.getValue() = true else any()
-          )
-          or
-          exists(PreControlFlowNode beforeVar, PreControlFlowNode beforeCond |
+          exists(
+            PreControlFlowNode beforePattern, PreControlFlowNode beforeVar,
+            PreControlFlowNode beforeCond
+          |
+            (
+              beforePattern.isBefore(catchclause.getPattern())
+              or
+              not exists(catchclause.getPattern()) and beforePattern = beforeVar
+            ) and
             (
               beforeVar.isBefore(catchclause.getVariable())
               or
@@ -1711,9 +1753,18 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             (
               beforeCond.isBefore(catchclause.getCondition())
               or
-              not exists(catchclause.getCondition()) and beforeCond.isBefore(catchclause.getBody())
+              not exists(catchclause.getCondition()) and
+              beforeCond = getBeforeCatchBody(catchclause)
             )
           |
+            n1.isBefore(catchclause) and
+            n2 = beforePattern
+            or
+            exists(MatchingSuccessor t |
+              n1.isAfterValue(catchclause.getPattern(), t) and
+              if t.isMatch() then n2 = beforeVar else n2.isAfterValue(catchclause, t)
+            )
+            or
             n1.isAfterValue(catchclause, any(MatchingSuccessor t | t.getValue() = true)) and
             n2 = beforeVar
             or
@@ -1722,7 +1773,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           )
           or
           n1.isAfterTrue(catchclause.getCondition()) and
-          n2.isBefore(catchclause.getBody())
+          n2 = getBeforeCatchBody(catchclause)
           or
           n1.isAfterFalse(catchclause.getCondition()) and
           n2.isAfterValue(catchclause, any(MatchingSuccessor t | t.getValue() = false))

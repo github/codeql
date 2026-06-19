@@ -138,7 +138,9 @@ private module Ast implements AstSig<Location> {
   final private class FinalCatchClause = J::CatchClause;
 
   class CatchClause extends FinalCatchClause {
-    AstNode getVariable() { result = super.getVariable() }
+    AstNode getPattern() { result = super.getVariable() }
+
+    AstNode getVariable() { none() }
 
     Expr getCondition() { none() }
 
