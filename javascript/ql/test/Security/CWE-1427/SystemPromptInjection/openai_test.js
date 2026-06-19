@@ -114,10 +114,18 @@ app.get("/test", async (req, res) => {
 
   // === Legacy Completions API ===
 
-  // prompt (SHOULD ALERT)
+  // prompt (SHOULD NOT ALERT for system - reclassified as user-prompt-injection)
   const l1 = await client.completions.create({
     model: "gpt-3.5-turbo-instruct",
-    prompt: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
+    prompt: "Talk like a " + persona, // OK - legacy completions prompt is a user-prompt-injection sink
+  });
+
+  // === Realtime API (beta) ===
+
+  // beta.realtime.sessions.create instructions (SHOULD ALERT)
+  const rt1 = await client.beta.realtime.sessions.create({
+    model: "gpt-4o-realtime-preview",
+    instructions: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
   });
 
   // === Assistants API (beta) ===

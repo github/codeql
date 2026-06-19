@@ -12,7 +12,7 @@ extensions:
       extensible: sinkModel
     data:
       - ["openai.Client", "Member[responses].Member[create].Argument[0].Member[instructions]", "system-prompt-injection"]
-      - ["openai.Client", "Member[completions].Member[create].Argument[0].Member[prompt]", "system-prompt-injection"]
+      - ["openai.Client", "Member[beta].Member[realtime].Member[sessions].Member[create].Argument[0].Member[instructions]", "system-prompt-injection"]
       - ["openai.Client", "Member[beta].Member[assistants].Member[create].Argument[0].Member[instructions]", "system-prompt-injection"]
       - ["openai.Client", "Member[beta].Member[assistants].Member[update].Argument[1].Member[instructions]", "system-prompt-injection"]
       - ["openai.Client", "Member[beta].Member[threads].Member[runs].Member[create].Argument[1].Member[instructions,additional_instructions]", "system-prompt-injection"]
@@ -25,3 +25,5 @@ extensions:
       - ["@openai/guardrails", "Member[GuardrailAgent].Member[create].Argument[2]", "system-prompt-injection"]
       - ["@openai/agents", "Member[run].Argument[1]", "user-prompt-injection"]
       - ["@openai/agents", "Member[Runner].Instance.Member[run].Argument[1]", "user-prompt-injection"]
+      - ["openai.Client", "Member[videos].Member[create,edit,extend].Argument[0].Member[prompt]", "user-prompt-injection"]
+      - ["openai.Client", "Member[videos].Member[remix].Argument[1].Member[prompt]", "user-prompt-injection"]
