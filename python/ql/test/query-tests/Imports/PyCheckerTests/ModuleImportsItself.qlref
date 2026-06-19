@@ -1,2 +1,1 @@
-query: Imports/ModuleImportsItself.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Imports/ModuleImportsItself.ql

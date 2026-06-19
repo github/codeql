@@ -22,7 +22,7 @@ __hidden_marker = False
 
 #Unused parameter, local and global
 
-def u1(x): # $ Alert[py/unused-parameter]
+def u1(x):
     return 0
 
 def u2():
@@ -45,8 +45,8 @@ class D(C):
         pass
 
 #Unused module variable
-not_used_var1 = 17 # $ Alert[py/unused-global-variable]
-not_used_var2 = 18 # $ Alert[py/unused-global-variable]
+not_used_var1 = 17
+not_used_var2 = 18
 is_used_var1 = 19
 is_used_var2 = 20
 
@@ -83,7 +83,7 @@ def f(t):
 
 # Entirely unused tuple
 
-a,b,c = t # $ Alert[py/unused-global-variable]
+a,b,c = t
 
 def f(t):
     a,b,c = t # $ Alert[py/unused-local-variable]
@@ -97,7 +97,7 @@ def second_def_undefined():
 #And gloablly
 glob_var = 0
 use(glob_var)
-glob_var = 1 # $ Alert[py/unused-global-variable] # unused
+glob_var = 1 # unused
 
 
 

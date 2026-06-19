@@ -18,7 +18,7 @@ def f(x):
         s = u"Hello World"
     else:
         s = [ u'Hello', u'World']
-    for thing in s: # $ Alert[py/iteration-string-and-sequence]
+    for thing in s:
         print (thing)
 
 import fake_six

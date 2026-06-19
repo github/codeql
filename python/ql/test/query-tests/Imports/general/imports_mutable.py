@@ -1,4 +1,4 @@
-from mutable_attr import x, y # $ Alert[py/import-of-mutable-attribute]
+from mutable_attr import x, y
 
 def f():
     print(x)

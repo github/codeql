@@ -1,13 +1,13 @@
 #Multiple imports on a single line
-import module1, module2 # $ Alert
+import module1, module2
 
 #Cyclic import
 
-import cycle # $ Alert
+import cycle
 
 #Top level cyclic import
 
-import top_level_cycle # $ Alert
+import top_level_cycle
 
 #Import shadowed by loop variable
 
@@ -24,14 +24,14 @@ from module_without_all import *
 #Unused import
 
 from module2 import func1
-from module2 import func2 # $ Alert
+from module2 import func2
 
 module1.func
 func1
 
 #Duplicate import
 import module1
-import module2 # $ Alert
+import module2
 
 #OK -- Import used in epytext documentation.
 import used_in_docs
@@ -113,6 +113,6 @@ def baz() -> Optional['subexpression_return_type']:
     pass
 
 
-from pytest_fixtures import not_a_fixture  # $ Alert # BAD
+from pytest_fixtures import not_a_fixture  # BAD
 from pytest_fixtures import fixture, wrapped_fixture  # GOOD (pytest fixtures are used implicitly by pytest)
 from pytest_fixtures import session_fixture, wrapped_autouse_fixture  # GOOD (pytest fixtures are used implicitly by pytest)

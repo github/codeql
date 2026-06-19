@@ -1,2 +1,1 @@
-query: Imports/UnusedImport.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Imports/UnusedImport.ql

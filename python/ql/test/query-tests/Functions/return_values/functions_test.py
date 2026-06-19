@@ -15,11 +15,11 @@ def ok2(x):
     else:
         return "Hi"
 
-def cr1(x): # $ Alert[py/mixed-returns]
+def cr1(x):
     if x:
         return 4
 
-def cr2(x): # $ Alert[py/mixed-returns]
+def cr2(x):
     if x:
         return 4
     else:
@@ -74,7 +74,7 @@ def ok4(x):
 
 
 def use_implicit_return_value(arg):
-    x = do_nothing() # $ Alert[py/procedure-return-value-used]
+    x = do_nothing()
     return call_non_callable(arg)
 
 #The return in the lambda is OK as it is auto-generated
@@ -156,9 +156,9 @@ def do_nothing():
 
 
 def return_value_ignored():
-    ok2() # $ Alert[py/ignored-return-value]
-    ok4() # $ Alert[py/ignored-return-value]
-    sorted([1,2]) # $ Alert[py/ignored-return-value]
+    ok2()
+    ok4()
+    sorted([1,2])
 
 d = {}
 
@@ -231,7 +231,7 @@ def mutli_return(arg):
     if arg:
         return do_something()
     else:
-        return do_nothing() # $ Alert[py/procedure-return-value-used]
+        return do_nothing()
 
 #Modification of parameter with default
 
@@ -333,7 +333,7 @@ def mismatched_multi_assign(x):
     return a,b
 
 
-def ok_match(x):  # $ SPURIOUS: Alert[py/mixed-returns] # FP
+def ok_match(x):  # FP
     match x:
         case True | 'true':
             return 0
@@ -341,7 +341,7 @@ def ok_match(x):  # $ SPURIOUS: Alert[py/mixed-returns] # FP
             raise ValueError(x)
 
 
-def ok_match2(x):  # $ SPURIOUS: Alert[py/mixed-returns] # FP
+def ok_match2(x):  # FP
     match x:
         case None:
             return 0

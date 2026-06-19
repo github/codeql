@@ -26,22 +26,22 @@ def f7(x, y, z):
 
 # Too few arguments
 
-f0() # $ Alert[py/call/wrong-arguments]
-f1() # $ Alert[py/call/wrong-arguments]
-f2() # $ Alert[py/call/wrong-arguments]
-f3() # $ Alert[py/call/wrong-arguments]
-f4() # $ Alert[py/call/wrong-arguments]
-f5() # $ Alert[py/call/wrong-arguments]
-f6(1) # $ Alert[py/call/wrong-arguments]
-f7(1,2) # $ Alert[py/call/wrong-arguments]
+f0()
+f1()
+f2()
+f3()
+f4()
+f5()
+f6(1)
+f7(1,2)
 
 #Too many arguments
 
-f0(1,2) # $ Alert[py/call/wrong-arguments]
-f1(1,2,3) # $ Alert[py/call/wrong-arguments]
-f5(1,2,3) # $ Alert[py/call/wrong-arguments]
-f6(1,2,3) # $ Alert[py/call/wrong-arguments]
-f6(1,2,3,4) # $ Alert[py/call/wrong-arguments]
+f0(1,2)
+f1(1,2,3)
+f5(1,2,3)
+f6(1,2,3)
+f6(1,2,3,4)
 
 #OK
 
@@ -54,9 +54,9 @@ f2(1,2,3,4,5,6)
 
 
 #Illegal name
-f0(y=1) # $ Alert[py/call/wrong-named-argument]
-f1(z=1) # $ Alert[py/call/wrong-named-argument]
-f2(x=0, y=1) # $ Alert[py/call/wrong-named-argument]
+f0(y=1)
+f1(z=1)
+f2(x=0, y=1)
 
 
 #Ok name
@@ -78,12 +78,12 @@ l1d()
 l1d(1)
 
 #Too many
-l0(1) # $ Alert[py/call/wrong-arguments]
-l1(1,2) # $ Alert[py/call/wrong-arguments]
-l1d(1,2) # $ Alert[py/call/wrong-arguments]
+l0(1)
+l1(1,2)
+l1d(1,2)
 
 #Too few
-l1() # $ Alert[py/call/wrong-arguments]
+l1()
 
 
 t2 = (1,2)
@@ -93,14 +93,14 @@ t3 = (1,2,3)
 f(*t2)
 
 #Too many
-f6(*(1,2,3)) # $ Alert[py/call/wrong-arguments]
-f6(*t3) # $ Alert[py/call/wrong-arguments]
+f6(*(1,2,3))
+f6(*t3)
 
 #Ok
 f6(**{'x':1, 'y':2})
 
 #Illegal name
-f6(**{'x':1, 'y':2, 'z':3}) # $ Alert[py/call/wrong-named-argument]
+f6(**{'x':1, 'y':2, 'z':3})
 
 #Theoretically -1 arguments required. Don't report
 class C(object):
@@ -112,7 +112,7 @@ C().f()
 
 
 #Too many and wrong name -- check only wrong name is flagged.
-f1(x, y, z=1) # $ Alert[py/call/wrong-named-argument]
+f1(x, y, z=1)
 
 
 #Overriding and call is wrong.
@@ -127,5 +127,5 @@ class Eggs2(Eggs1):
         pass
 
 e = Eggs1() if cond else Eggs2()
-e.spam(0) # $ Alert[py/call/wrong-arguments]
+e.spam(0)
 

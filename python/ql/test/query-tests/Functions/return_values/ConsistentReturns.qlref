@@ -1,2 +1,1 @@
-query: Functions/ConsistentReturns.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Functions/ConsistentReturns.ql

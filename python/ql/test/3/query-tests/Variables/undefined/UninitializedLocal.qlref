@@ -1,2 +1,1 @@
-query: Variables/UninitializedLocal.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Variables/UninitializedLocal.ql

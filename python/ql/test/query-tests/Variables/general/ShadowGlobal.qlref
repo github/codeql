@@ -1,2 +1,1 @@
-query: Variables/ShadowGlobal.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Variables/ShadowGlobal.ql

@@ -5,4 +5,4 @@ IntEnum._convert(
         __name__,
         lambda C: C.isupper() and C.startswith('AF_'))
 
-__all__ = [ "Maybe", "Maybe_not" ] # $ Alert[py/undefined-export]
+__all__ = [ "Maybe", "Maybe_not" ]

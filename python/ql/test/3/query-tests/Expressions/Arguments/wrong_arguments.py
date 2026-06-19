@@ -9,8 +9,8 @@ f(1, 2, 3, kw1=1)
 f(1, 2, kw1=1, kw2=2)
 
 #Not OK
-f(1, 2, 3, kw1=1, kw3=3) # $ Alert[py/call/wrong-named-argument]
-f(1, 2, 3, kw3=3) # $ Alert[py/call/wrong-named-argument]
+f(1, 2, 3, kw1=1, kw3=3)
+f(1, 2, 3, kw3=3)
 
 
 #ODASA-5897
@@ -21,4 +21,4 @@ def ok():
     return analyze_member_access(msg, original=original, chk=chk)
 
 def bad():
-    return analyze_member_access(msg, original, chk=chk) # $ Alert[py/call/wrong-arguments]
+    return analyze_member_access(msg, original, chk=chk)

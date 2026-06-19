@@ -2,7 +2,7 @@
 # lines
 from typing import Optional
 
-from unknown import foo, bar # $ Alert
+from unknown import foo, bar
 
 
 var: Optional['foo'] = None

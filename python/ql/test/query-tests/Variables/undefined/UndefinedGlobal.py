@@ -19,12 +19,12 @@ def f(parameter):
     helper  # Explicitly as import
     a # Imlicitly from ud_helper
     defined
-    ug2 # $ Alert[py/undefined-global-variable] # ERROR
-    e # $ Alert[py/undefined-global-variable] # ERROR Defined in ud_helper, but not in __all__
+    ug2 # ERROR
+    e # ERROR Defined in ud_helper, but not in __all__
     int
     float
     __file__ #OK all files have __file__ defined
-    __path__ # $ Alert[py/undefined-global-variable] #ERROR only modules have __path__ defined
+    __path__ #ERROR only modules have __path__ defined
 
     len #Ok defined in builtins
     monkey1 #Ok monkey-patched builtins
@@ -120,7 +120,7 @@ class Cls(object):
         pfp3 += 1
 
 def only_report_once():
-    ug3 # $ Alert[py/undefined-global-variable]
+    ug3
     ug3
     ug3
     ug3

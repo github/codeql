@@ -47,7 +47,7 @@ class NonIterator(object):
     def __init__(self):
         pass
 
-for x in NonIterator(): # $ Alert[py/non-iterable-in-for-loop]
+for x in NonIterator():
     do_something(x)
 
 #None in for loop

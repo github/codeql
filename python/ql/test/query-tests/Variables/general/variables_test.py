@@ -11,7 +11,7 @@ def sh1(x):
 #Shadow Global
 
 def sh2(x):
-    sh1 = x + 1 # $ Alert[py/local-shadows-global] #Shadows
+    sh1 = x + 1 #Shadows
     sh1 = x + 0 # no shadowing warning for 2nd def
     return sh1
 

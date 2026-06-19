@@ -1,2 +1,1 @@
-query: Expressions/UnnecessaryLambda.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Expressions/UnnecessaryLambda.ql

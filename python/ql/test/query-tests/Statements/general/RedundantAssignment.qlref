@@ -1,2 +1,1 @@
-query: Statements/RedundantAssignment.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Statements/RedundantAssignment.ql

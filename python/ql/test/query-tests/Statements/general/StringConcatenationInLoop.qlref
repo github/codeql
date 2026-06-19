@@ -1,2 +1,1 @@
-query: Statements/StringConcatenationInLoop.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Statements/StringConcatenationInLoop.ql

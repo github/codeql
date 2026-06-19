@@ -1,2 +1,1 @@
-query: Functions/ExplicitReturnInInit.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Functions/ExplicitReturnInInit.ql

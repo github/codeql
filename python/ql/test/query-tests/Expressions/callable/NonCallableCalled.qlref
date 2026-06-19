@@ -1,2 +1,1 @@
-query: Expressions/NonCallableCalled.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Expressions/NonCallableCalled.ql

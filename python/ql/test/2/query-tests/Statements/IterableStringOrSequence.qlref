@@ -1,2 +1,1 @@
-query: Statements/IterableStringOrSequence.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Statements/IterableStringOrSequence.ql

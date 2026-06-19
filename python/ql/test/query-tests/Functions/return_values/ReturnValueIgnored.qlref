@@ -1,2 +1,1 @@
-query: Functions/ReturnValueIgnored.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Functions/ReturnValueIgnored.ql

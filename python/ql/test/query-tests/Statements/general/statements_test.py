@@ -16,7 +16,7 @@ def not_cc():
 
 #Mismatch in multiple assignment
 def mima():
-    x, y, z = 1, 2 # $ Alert[py/mismatched-multiple-assignment]
+    x, y, z = 1, 2
     return x, y, z
 
 #Statement has no effect (4 statements, 3 of which are violations)
@@ -51,10 +51,10 @@ ok = ok # Pyflakes
 class Redundant(object):
 
     x = x # OK
-    x = x # $ Alert[py/redundant-assignment] # violation
+    x = x # violation
 
     def __init__(self, args):
-        args = args # $ Alert[py/redundant-assignment] # violation
+        args = args # violation
 
 if sys.version_info < (3,):
     bytes = str
@@ -116,7 +116,7 @@ def maybe_property(x):
 class WithoutProp(object):
 
     def meth(self):
-        self.x = self.x # $ Alert[py/redundant-assignment]
+        self.x = self.x
 
 #Accessing a property has an effect:
 def prop_acc():
@@ -166,7 +166,7 @@ if False:
 
 
 def error_mismatched_multi_assign_list():
-    a,b,c = [1,2,3,4,5] # $ Alert[py/mismatched-multiple-assignment]
+    a,b,c = [1,2,3,4,5]
 
 def returning_different_tuple_sizes(x):
     if x:
@@ -175,7 +175,7 @@ def returning_different_tuple_sizes(x):
         return 1,2,3,4,5,6
 
 def error_indirect_mismatched_multi_assign(x):
-    a, b, c = returning_different_tuple_sizes(x) # $ Alert[py/mismatched-multiple-assignment]
+    a, b, c = returning_different_tuple_sizes(x)
     return a, b, c
 
 

@@ -1,2 +1,1 @@
-query: Imports/FromImportOfMutableAttribute.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Imports/FromImportOfMutableAttribute.ql

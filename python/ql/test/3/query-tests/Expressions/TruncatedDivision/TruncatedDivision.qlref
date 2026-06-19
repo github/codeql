@@ -1,2 +1,1 @@
-query: Expressions/TruncatedDivision.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Expressions/TruncatedDivision.ql

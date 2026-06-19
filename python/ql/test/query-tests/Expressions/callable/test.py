@@ -13,9 +13,9 @@ class IsCallable(object):
 
 def call_non_callable(arg):
     non = NonCallable()
-    non(arg) # $ Alert
-    ()() # $ Alert
-    []() # $ Alert
+    non(arg)
+    ()()
+    []()
     dont_know = MaybeCallable()
     dont_know() # Not a violation
     ok = IsCallable()
@@ -23,7 +23,7 @@ def call_non_callable(arg):
     if hasattr(non, "__call__"):
         non(arg) # OK due to guard
     if hasattr(non, "__init__"):
-        non(arg) # $ Alert # Not OK due to wrong guard
+        non(arg) # Not OK due to wrong guard
 
 import six
 
@@ -44,7 +44,7 @@ def foo():
     raise NotImplemented()
 
 def bar():
-    return NotImplemented() # $ Alert
+    return NotImplemented()
 
 
 # FP due to decorator
@@ -60,7 +60,7 @@ class Foo(object):
     @some_decorator
     @classmethod
     def new_instance(cls, new_arg):
-        return cls(new_arg) # $ SPURIOUS: Alert # TODO: FP
+        return cls(new_arg) # TODO: FP
 
 f1 = Foo(1)
 f2 = f1.new_instance(2)

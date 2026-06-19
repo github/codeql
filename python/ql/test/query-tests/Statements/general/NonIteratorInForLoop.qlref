@@ -1,2 +1,1 @@
-query: Statements/NonIteratorInForLoop.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Statements/NonIteratorInForLoop.ql

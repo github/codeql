@@ -23,7 +23,7 @@ class CB2(Common):
         return 0
 
 
-class Conflict(CB1, CB2): # $ Alert
+class Conflict(CB1, CB2):
     pass
 
 class Override1(Common):

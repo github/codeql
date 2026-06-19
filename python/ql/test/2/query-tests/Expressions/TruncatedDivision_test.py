@@ -62,14 +62,14 @@ print(average([1.0, 2.0]))
 # This case is bad, and is a minimal obvious case that should be bad. It
 # SHOULD be found by the query.
 
-print(3 / 2) # $ Alert[py/truncated-division]
+print(3 / 2)
 
 
 
 # This case is bad. It uses indirect returns of integers through function calls
 # to produce the problem. I
 
-print(return_three() / return_two()) # $ Alert[py/truncated-division]
+print(return_three() / return_two())
 
 
 

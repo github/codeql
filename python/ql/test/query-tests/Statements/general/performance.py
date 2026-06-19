@@ -3,10 +3,10 @@
 def y(seq):
     y_accum = ''
     for s in seq:
-        y_accum += s # $ Alert[py/string-concatenation-in-loop]
+        y_accum += s
 
 
 def z(seq):
     z_accum = ''
     for s in seq:
-        z_accum = z_accum + s # $ Alert[py/string-concatenation-in-loop]
+        z_accum = z_accum + s

@@ -1,2 +1,1 @@
-query: Classes/ConflictingAttributesInBaseClasses.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Classes/ConflictingAttributesInBaseClasses.ql

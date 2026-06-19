@@ -1,2 +1,1 @@
-query: Expressions/NonPortableComparisonUsingIs.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Expressions/NonPortableComparisonUsingIs.ql

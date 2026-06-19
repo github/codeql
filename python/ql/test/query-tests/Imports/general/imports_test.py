@@ -19,7 +19,7 @@ for module in range(10): # $ Alert[py/import-shadowed-loop-variable]
 #Import * used
 
 from module import * # $ Alert[py/import-star-used]
-from module_without_all import * # $ Alert[py/import-star-used] Alert[py/polluting-import]
+from module_without_all import * # $ Alert[py/import-star-used]
 
 #Unused import
 

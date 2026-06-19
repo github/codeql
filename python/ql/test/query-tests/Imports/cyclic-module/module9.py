@@ -1,6 +1,6 @@
 
 x = 1
 
-import main # $ Alert[py/cyclic-import]
+import main
 
 y = 2

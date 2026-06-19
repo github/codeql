@@ -1,2 +1,1 @@
-query: Classes/InconsistentMRO.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Classes/InconsistentMRO.ql

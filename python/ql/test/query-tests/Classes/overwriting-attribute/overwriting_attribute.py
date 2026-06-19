@@ -2,7 +2,7 @@
 class C(object):
 
     def __init__(self):
-        self.var = 0 # $ Alert
+        self.var = 0
 
 class D(C):
 
@@ -20,4 +20,4 @@ class F(E):
 
     def __init__(self):
         E.__init__(self)
-        self.var = 1 # $ Alert
+        self.var = 1

@@ -37,21 +37,21 @@ class NotException2(object):
     pass
 
 def illegal_raise_type():
-    raise NotException1 # $ Alert[py/illegal-raise]
+    raise NotException1
 
 def illegal_raise_value1():
-    raise "Exception" # $ Alert[py/illegal-raise]
+    raise "Exception"
 
 def illegal_raise_value2():
-    raise NotException2() # $ Alert[py/illegal-raise]
+    raise NotException2()
 
 def illegal_handler():
     try:
         illegal_raise()
-    except NotException1: # $ Alert[py/useless-except]
+    except NotException1:
         #Must do something
         print("NotException1")
-    except NotException2: # $ Alert[py/useless-except]
+    except NotException2:
         #Must do something
         print("NotException2")
 
@@ -135,7 +135,7 @@ def a_number():
 def illegal_handler2():
     try:
         illegal_raise()
-    except a_number(): # $ Alert[py/useless-except]
+    except a_number():
         print ("Caught exception")
 
 def stop_iter_ok(seq):

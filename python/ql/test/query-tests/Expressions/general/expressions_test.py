@@ -8,9 +8,9 @@ def dup_key():
 
 def simple_func(*args, **kwrgs): pass
 #Unnecessary lambdas
-lambda arg0, arg1: simple_func(arg0, arg1) # $ Alert[py/unnecessary-lambda]
-lambda arg0, *arg1: simple_func(arg0, *arg1) # $ Alert[py/unnecessary-lambda]
-lambda arg0, **arg1: simple_func(arg0, **arg1) # $ Alert[py/unnecessary-lambda]
+lambda arg0, arg1: simple_func(arg0, arg1)
+lambda arg0, *arg1: simple_func(arg0, *arg1)
+lambda arg0, **arg1: simple_func(arg0, **arg1)
 # these lambdas are_ necessary
 lambda arg0, arg1=1: simple_func(arg0, arg1)
 lambda arg0, arg1: simple_func(arg0, *arg1)
@@ -39,7 +39,7 @@ x.__del__() # $ Alert[py/explicit-call-to-delete]
 #Unhashable object
 def func():
     mapping = dict(); unhash = list()
-    return mapping[unhash] # $ Alert[py/hash-unhashable-value]
+    return mapping[unhash]
 
 #Using 'is' when should be using '=='
 s = "Hello " + "World"
@@ -86,9 +86,9 @@ class XIter(object):
 def non_container():
 
     seq = XIter()
-    if 1 in seq: # $ Alert[py/member-test-non-container]
+    if 1 in seq:
         pass
-    if 1 not in seq: # $ Alert[py/member-test-non-container]
+    if 1 not in seq:
         pass
 
 #Container inheriting from builtin
@@ -138,15 +138,15 @@ class SubTest(Test):
 
 #Some more lambdas
 #Unnecessary lambdas
-lambda arg0: len(arg0) # $ Alert[py/unnecessary-lambda]
-lambda arg0: XIter.next(arg0) # $ Alert[py/unnecessary-lambda]
+lambda arg0: len(arg0)
+lambda arg0: XIter.next(arg0)
 class UL(object):
     
     def f(self, x):
         pass
     
     def g(self):
-        return lambda x: self.f(x) # $ Alert[py/unnecessary-lambda]
+        return lambda x: self.f(x)
 
 # these lambdas are necessary
 lambda arg0: XIter.next(arg0, arg1)

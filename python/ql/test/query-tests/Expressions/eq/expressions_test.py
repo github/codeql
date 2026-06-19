@@ -48,7 +48,7 @@ if "Hello World" is s: # $ Alert[py/comparison-using-is]
 
 #This is OK in CPython, but may not be portable
 s = str(7)
-if "7" is s: # $ Alert[py/comparison-using-is-non-portable]
+if "7" is s:
     print ("OK")
 
 #And some data flow

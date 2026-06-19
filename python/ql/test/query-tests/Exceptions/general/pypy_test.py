@@ -11,9 +11,10 @@ def test():
     try:
         a = A()
         raise a
-    except 42: # $ Alert[py/useless-except]
+    except 42:
         #Some comment
         pass
     except A:
         #Another comment
         pass
+

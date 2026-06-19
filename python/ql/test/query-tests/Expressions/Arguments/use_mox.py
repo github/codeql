@@ -25,9 +25,9 @@ C.m1(1,2)
 
 #But normal functions are treated normally
 
-f0() # $ Alert[py/call/wrong-arguments]
-f1(1) # $ Alert[py/call/wrong-arguments]
+f0()
+f1(1)
 
 #As are normal methods
-C().m0() # $ Alert[py/call/wrong-arguments]
-C().m1(1) # $ Alert[py/call/wrong-arguments]
+C().m0()
+C().m1(1)

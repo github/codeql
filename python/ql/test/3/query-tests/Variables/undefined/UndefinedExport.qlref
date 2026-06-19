@@ -1,2 +1,1 @@
-query: Variables/UndefinedExport.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Variables/UndefinedExport.ql

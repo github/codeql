@@ -1,7 +1,7 @@
 class ExplicitReturnInInit(object):
 
     def __init__(self):
-        return self # $ Alert[py/explicit-return-in-init]
+        return self
 
 # These are OK
 class ExplicitReturnNoneInInit(object):
@@ -99,4 +99,4 @@ class InitReturnsCallResult6(object):
             p = procedure_implicit_none()
         else:
             p = not_ok
-        return p() # $ Alert[py/explicit-return-in-init]
+        return p()

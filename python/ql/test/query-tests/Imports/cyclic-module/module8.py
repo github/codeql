@@ -1,4 +1,4 @@
-import module1 # $ Alert[py/cyclic-import]
+import module1
 
 class Foo(object):
     a = module1.a1

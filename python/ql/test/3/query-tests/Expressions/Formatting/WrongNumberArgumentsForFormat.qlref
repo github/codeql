@@ -1,2 +1,1 @@
-query: Expressions/WrongNumberArgumentsForFormat.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Expressions/WrongNumberArgumentsForFormat.ql

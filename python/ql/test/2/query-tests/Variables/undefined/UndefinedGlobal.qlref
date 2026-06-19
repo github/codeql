@@ -1,2 +1,1 @@
-query: Variables/UndefinedGlobal.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Variables/UndefinedGlobal.ql

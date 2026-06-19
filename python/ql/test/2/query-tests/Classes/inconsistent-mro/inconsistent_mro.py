@@ -6,7 +6,7 @@ class X(object):
 class Y(X):
     pass
 
-class Z(X, Y): # $ Alert
+class Z(X, Y):
     pass
     
 class O:

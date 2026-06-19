@@ -23,5 +23,5 @@ async def good():
         yield x
 
 async def bad():
-    async for x in MissingAiter(): # $ Alert[py/non-iterable-in-for-loop]
+    async for x in MissingAiter():
         yield x

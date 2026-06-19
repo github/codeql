@@ -71,7 +71,7 @@ class AlmostIterable(object):
 
 class MegaDel(object):
 
-    def __del__(self): # $ Alert[py/overly-complex-delete]
+    def __del__(self):
         a = self.x + self.y
         if a:
             print(a)

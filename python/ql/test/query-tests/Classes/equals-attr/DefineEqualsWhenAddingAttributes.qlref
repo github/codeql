@@ -1,2 +1,1 @@
-query: Classes/DefineEqualsWhenAddingAttributes.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Classes/DefineEqualsWhenAddingAttributes.ql

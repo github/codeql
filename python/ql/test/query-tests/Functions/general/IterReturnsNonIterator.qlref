@@ -1,1 +1,1 @@
-query: Functions/IterReturnsNonIterator.ql
+Functions/IterReturnsNonIterator.ql
