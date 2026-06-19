@@ -255,6 +255,10 @@ rescue X::foo
 ensure X::bar
 end
 
+
+
+
+
 # rescue-modifier body and handler
 foo rescue bar
 X::foo rescue X::bar
