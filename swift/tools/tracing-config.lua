@@ -62,6 +62,8 @@ function RegisterExtractorPack(id)
         strip_unsupported_clang_arg(args, '-clang-vendor-feature=+thisNoAlignAttr', 0)
         strip_unsupported_clang_arg(args, '-clang-vendor-feature=+thisNoNullAttr', 0)
         strip_unsupported_clang_arg(args, '-clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError', 0)
+        strip_unsupported_clang_arg(args, "-Werror=allocator-wrappers", 0)
+        strip_unsupported_clang_arg(args, "-Wno-error=allocator-wrappers", 0)
         -- The four args below are removed to workaround version mismatches due to recent versions
         -- of Xcode defaulting to explicit modules:
         strip_unsupported_arg(args, '-disable-implicit-swift-modules', 0)
