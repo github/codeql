@@ -3,4 +3,4 @@ import sys
 import psycopg
 
 conn = psycopg.connect(...)
-conn.execute(sys.argv[1])
+conn.execute(sys.argv[1]) # $ Alert

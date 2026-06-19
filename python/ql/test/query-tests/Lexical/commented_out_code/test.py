@@ -14,56 +14,56 @@ def f(x):
         do_something()
     #else:
     #    do_something_else()
-    
-# Some non-code comments.    
+
+# Some non-code comments.
 # Space immediately after scope start and between functions.
-#    
+#
 #class CommentedOut:
-#    
+#
 #    def __init__(self):
 
 #       pass
-#    
+#
 #    def method(self):
 #
 #        pass
-#    
+#
 #def g(y):
-#    assert y  
+#    assert y
 #    with y:
 #        # Commented out comment
 #        if y:
 #             do_something()
 #        else:
 #             do_something_else()
-#               
+#
 #def h(z):
 #    '''Doc string
 #    '''
 #    # Commented out comment
-#    
+#
 #    followed_by_space()
 
-#    
+#
 #    more_code()
-    
+
 #def j():
 #    """ Doc string """
 #    pass
-        
+
 #def k():
 #
 #    """ Doc string """
 #    pass
-    
+
 #def l():
 #
-#    """ 
-#      Doc string 
+#    """
+#      Doc string
 #    """
 #
 #    pass
-    
+
 #
 #
 #
@@ -72,7 +72,7 @@ def f(x):
 #    pass
 #
 #
-#  
+#
 some_code_to_break_up_comments()
 
 #with x:
@@ -88,7 +88,7 @@ def a_function_to_break_up_comments():
     pass
 
 # An example explaining
-# something which contains 
+# something which contains
 # the following code:
 #
 #  def f():
@@ -96,5 +96,3 @@ def a_function_to_break_up_comments():
 #      x.y = z
 #      return x
 #
-    
-    

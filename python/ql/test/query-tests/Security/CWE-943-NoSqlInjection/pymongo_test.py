@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request # $ Source
 from pymongo import MongoClient
 from mongosanitizer.sanitizer import sanitize
 import json
@@ -12,7 +12,7 @@ def bad():
     unsafe_search = request.args['search']
     json_search = json.loads(unsafe_search)
 
-    return client.db.collection.find_one({'data': json_search})  # $ result=BAD
+    return client.db.collection.find_one({'data': json_search})  # $ Alert result=BAD
 
 
 @app.route("/good")
@@ -30,7 +30,7 @@ def bad2():
     client = MongoClient("localhost", 27017, maxPoolSize=50)
     db = client.localhost
     collection = db['collection']
-    cursor = collection.find_one({"$where": f"this._id == '${event_id}'"})  # $ result=BAD
+    cursor = collection.find_one({"$where": f"this._id == '${event_id}'"})  # $ Alert result=BAD
 
 
 @app.route("/bad3")
@@ -40,7 +40,7 @@ def bad3():
     client = MongoClient("localhost", 27017, maxPoolSize=50)
     db = client.get_database(name="localhost")
     collection = db.get_collection("collection")
-    cursor = collection.find_one({"$where": f"this._id == '${event_id}'"})  # $ result=BAD
+    cursor = collection.find_one({"$where": f"this._id == '${event_id}'"})  # $ Alert result=BAD
 
 
 @app.route("/bad4")
@@ -56,11 +56,11 @@ def bad4():
         "args": [ "$event_id" ],
         "lang": "js"
     }
-    collection.find_one({'$expr': {'$function': search}}) # $ result=BAD
+    collection.find_one({'$expr': {'$function': search}}) # $ Alert result=BAD
 
-    collection.find_one({'$expr': {'$function': decoded}}) # $ result=BAD
-    collection.find_one({'$expr': decoded}) # $ result=BAD
-    collection.find_one(decoded) # $ result=BAD
+    collection.find_one({'$expr': {'$function': decoded}}) # $ Alert result=BAD
+    collection.find_one({'$expr': decoded}) # $ Alert result=BAD
+    collection.find_one(decoded) # $ Alert result=BAD
 
 if __name__ == "__main__":
     app.run(debug=True)

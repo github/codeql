@@ -1,9 +1,9 @@
 def use_of_apply(func, args):
-    apply(func, args)
+    apply(func, args) # $ Alert[py/use-of-apply]
 
 
 def use_of_input():
-    return input() # NOT OK
+    return input() # $ Alert[py/use-of-input] # NOT OK
 
 
 def not_use_of_input():

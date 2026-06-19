@@ -2,14 +2,14 @@ import requests
 
 #Simple cases
 requests.get('https://semmle.com', verify=True) # GOOD
-requests.get('https://semmle.com', verify=False) # BAD
+requests.get('https://semmle.com', verify=False) # $ Alert # BAD
 requests.post('https://semmle.com', verify=True) # GOOD
-requests.post('https://semmle.com', verify=False) # BAD
+requests.post('https://semmle.com', verify=False) # $ Alert # BAD
 
 # Simple flow
 put = requests.put
 put('https://semmle.com', verify="/path/to/cert/") # GOOD
-put('https://semmle.com', verify=False) # BAD
+put('https://semmle.com', verify=False) # $ Alert # BAD
 
 #Other flow
 delete = requests.delete
@@ -25,17 +25,17 @@ def req1(verify=False):
 patch = requests.patch
 
 def req2(verify):
-    patch('https://semmle.com', verify=verify) # BAD (from line 30)
+    patch('https://semmle.com', verify=verify) # $ Alert # BAD (from line 30)
 
 req2(False) # BAD (at line 28)
 req2("/path/to/cert/") # GOOD
 
 #Falsey value
-requests.post('https://semmle.com', verify=0) # BAD
+requests.post('https://semmle.com', verify=0) # $ Alert # BAD
 
 # requests treat `None` as default value, which means it is turned on
 requests.get('https://semmle.com') # OK
 requests.get('https://semmle.com', verify=None) # OK
 
 s = requests.Session()
-s.get("url", verify=False) # BAD
+s.get("url", verify=False) # $ Alert # BAD

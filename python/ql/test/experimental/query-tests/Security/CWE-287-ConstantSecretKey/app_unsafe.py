@@ -1,11 +1,11 @@
 from flask import Flask, session
 
 app = Flask(__name__)
-aConstant = 'CHANGEME1'
-app.config['SECRET_KEY'] = aConstant
-app.secret_key = aConstant
-app.config.update(SECRET_KEY=aConstant)
-app.config.from_mapping(SECRET_KEY=aConstant)
+aConstant = 'CHANGEME1' # $ Source
+app.config['SECRET_KEY'] = aConstant # $ Alert
+app.secret_key = aConstant # $ Alert
+app.config.update(SECRET_KEY=aConstant) # $ Alert
+app.config.from_mapping(SECRET_KEY=aConstant) # $ Alert
 app.config.from_pyfile("config.py")
 app.config.from_object('config.Config')
 

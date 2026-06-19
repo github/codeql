@@ -28,36 +28,36 @@ def valid_func3():
 # invalid class with return outside a function
 class InvalidClass1(object):
     if [1, 2, 3]:
-        return "Exists"
+        return "Exists" # $ Alert
 
 # invalid class with yield outside a function
 class InvalidClass2(object):
     while True:
-        yield 1
+        yield 1 # $ Alert
 
 # invalid class with yield from outside a function
 class InvalidClass3(object):
     while True:
-        yield from [1, 2]
+        yield from [1, 2] # $ Alert
 
 # invalid statement with return outside a function
 for i in [1, 2, 3]:
-    return i
+    return i # $ Alert
 
 # invalid statement with yield outside a function
 for i in [1, 2, 3]:
-    yield i
+    yield i # $ Alert
 
 # invalid statement with yield from outside a function
 for i in [1, 2, 3]:
-    yield from i
+    yield from i # $ Alert
 
 # invalid statement with yield from outside a function
 var = [1,2,3]
-yield from var
+yield from var # $ Alert
 
 # invalid statement with return outside a function
-return False
+return False # $ Alert
 
 # invalid statement with yield outside a function
-yield False
+yield False # $ Alert

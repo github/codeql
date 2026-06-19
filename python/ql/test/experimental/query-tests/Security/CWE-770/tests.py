@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request # $ Source
 import unicodedata
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ def bad_1():
 
     # Normalize the file path using NFKC Unicode normalization
     return (
-        unicodedata.normalize("NFKC", file_path),
+        unicodedata.normalize("NFKC", file_path), # $ Alert
         200,
         {"Content-Type": "application/octet-stream"},
     )
@@ -25,7 +25,7 @@ def bad_2():
 
     if len(r) >= 10:
         # Normalize the r using NFKD Unicode normalization
-        r = unicodedata.normalize("NFKD", r)
+        r = unicodedata.normalize("NFKD", r) # $ Alert
         return r, 200, {"Content-Type": "application/octet-stream"}
     else:
         return jsonify({"error": "File not found"}), 404
@@ -37,7 +37,7 @@ def bad_3():
     length = len(r)
     if length >= 1_000:
         # Normalize the r using NFKD Unicode normalization
-        r = unicodedata.normalize("NFKD", r)
+        r = unicodedata.normalize("NFKD", r) # $ Alert
         return r, 200, {"Content-Type": "application/octet-stream"}
     else:
         return jsonify({"error": "File not found"}), 404
@@ -49,7 +49,7 @@ def bad_4():
     length = len(r)
     if 1_000 <= length:
         # Normalize the r using NFKD Unicode normalization
-        r = unicodedata.normalize("NFKD", r)
+        r = unicodedata.normalize("NFKD", r) # $ Alert
         return r, 200, {"Content-Type": "application/octet-stream"}
     else:
         return jsonify({"error": "File not found"}), 404
@@ -61,7 +61,7 @@ def bad_5():
     length = len(r)
     if not length < 1_000:
         # Normalize the r using NFKD Unicode normalization
-        r = unicodedata.normalize("NFKD", r)
+        r = unicodedata.normalize("NFKD", r) # $ Alert
         return r, 200, {"Content-Type": "application/octet-stream"}
     else:
         return jsonify({"error": "File not found"}), 404
@@ -73,7 +73,7 @@ def bad_6():
     length = len(r)
     if not 1_000 > length:
         # Normalize the r using NFKD Unicode normalization
-        r = unicodedata.normalize("NFKD", r)
+        r = unicodedata.normalize("NFKD", r) # $ Alert
         return r, 200, {"Content-Type": "application/octet-stream"}
     else:
         return jsonify({"error": "File not found"}), 404
