@@ -5,29 +5,29 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.avro", "Protocol", True, "parse", "(File)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro", "Schema", True, "parse", "(File)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro", "Schema$Parser", True, "parse", "(File)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(File)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(File,Charset)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(Path)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(Path,Charset)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(URI,Charset)", "", "Argument[0]", "request-forgery", "manual"]
-      - ["org.apache.avro", "SchemaParser", True, "parseSingle", "(Path)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.avro", "Protocol", True, "parse", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro", "Schema", True, "parse", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro", "Schema$Parser", True, "parse", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(File,Charset)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(Path)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(Path,Charset)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(URI,Charset)", "", "Argument[0]", "request-forgery", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parseSingle", "(Path)", "", "Argument[0]", "path-injection", "ai-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: sourceModel
     data:
-      - ["org.apache.avro", "Protocol", True, "main", "(String[])", "", "Parameter[0]", "commandargs", "manual"]
-      - ["org.apache.avro", "Protocol", True, "parse", "(File)", "", "ReturnValue", "file", "manual"]
-      - ["org.apache.avro", "Schema", True, "parse", "(File)", "", "ReturnValue", "file", "manual"]
-      - ["org.apache.avro", "Schema$Parser", True, "parse", "(File)", "", "ReturnValue", "file", "manual"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(File)", "", "ReturnValue", "file", "manual"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(File,Charset)", "", "ReturnValue", "file", "manual"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(Path)", "", "ReturnValue", "file", "manual"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(Path,Charset)", "", "ReturnValue", "file", "manual"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(URI,Charset)", "", "ReturnValue", "remote", "manual"]
-      - ["org.apache.avro", "SchemaParser", True, "parseSingle", "(Path)", "", "ReturnValue", "file", "manual"]
+      - ["org.apache.avro", "Protocol", True, "main", "(String[])", "", "Parameter[0]", "commandargs", "ai-generated"]
+      - ["org.apache.avro", "Protocol", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro", "Schema", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro", "Schema$Parser", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(File,Charset)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(Path)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(Path,Charset)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(URI,Charset)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parseSingle", "(Path)", "", "ReturnValue", "file", "ai-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
@@ -404,8 +404,8 @@ extensions:
       - ["org.apache.avro", "SchemaParseException", True, "SchemaParseException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["org.apache.avro", "SchemaParser", True, "SchemaParser", "(NameValidator)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["org.apache.avro", "SchemaParser", True, "getParsedNamedSchemas", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["org.apache.avro", "SchemaParser$ParseResult", True, "mainSchema", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.avro", "SchemaParser$ParseResult", True, "parsedNamedSchemas", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.avro", "SchemaParser$ParseResult", True, "mainSchema", "()", "", "Argument[this]", "ReturnValue", "taint", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser$ParseResult", True, "parsedNamedSchemas", "()", "", "Argument[this]", "ReturnValue", "taint", "ai-generated"]
       - ["org.apache.avro", "SchemaValidationException", True, "SchemaValidationException", "(Schema,Schema,Throwable)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
       - ["org.apache.avro", "SchemaValidatorBuilder", False, "canBeReadStrategy", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["org.apache.avro", "SchemaValidatorBuilder", False, "canReadStrategy", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
@@ -427,4 +427,4 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["org.apache.avro", "SchemaFormatterFactory", "getDefaultFormatter", "()", "summary", "manual"]
+      - ["org.apache.avro", "SchemaFormatterFactory", "getDefaultFormatter", "()", "summary", "ai-generated"]

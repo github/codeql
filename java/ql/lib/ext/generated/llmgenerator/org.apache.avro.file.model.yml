@@ -5,22 +5,22 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.avro.file", "DataFileReader", True, "DataFileReader", "(File,DatumReader)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro.file", "DataFileReader", True, "openReader", "(File,DatumReader)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro.file", "DataFileWriter", True, "appendTo", "(File)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro.file", "DataFileWriter", True, "create", "(Schema,File)", "", "Argument[1]", "path-injection", "manual"]
-      - ["org.apache.avro.file", "SeekableFileInput", True, "SeekableFileInput", "(File)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro.file", "SyncableFileOutputStream", True, "SyncableFileOutputStream", "(File)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro.file", "SyncableFileOutputStream", True, "SyncableFileOutputStream", "(File,boolean)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro.file", "SyncableFileOutputStream", True, "SyncableFileOutputStream", "(String)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.avro.file", "SyncableFileOutputStream", True, "SyncableFileOutputStream", "(String,boolean)", "", "Argument[0]", "path-injection", "manual"]
+      - ["org.apache.avro.file", "DataFileReader", True, "DataFileReader", "(File,DatumReader)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileReader", True, "openReader", "(File,DatumReader)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileWriter", True, "appendTo", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileWriter", True, "create", "(Schema,File)", "", "Argument[1]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "SeekableFileInput", True, "SeekableFileInput", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "SyncableFileOutputStream", True, "SyncableFileOutputStream", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "SyncableFileOutputStream", True, "SyncableFileOutputStream", "(File,boolean)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "SyncableFileOutputStream", True, "SyncableFileOutputStream", "(String)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.avro.file", "SyncableFileOutputStream", True, "SyncableFileOutputStream", "(String,boolean)", "", "Argument[0]", "path-injection", "ai-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: sourceModel
     data:
-      - ["org.apache.avro.file", "DataFileReader", True, "DataFileReader", "(File,DatumReader)", "", "Argument[this]", "file", "manual"]
-      - ["org.apache.avro.file", "DataFileReader", True, "openReader", "(File,DatumReader)", "", "ReturnValue", "file", "manual"]
-      - ["org.apache.avro.file", "SeekableFileInput", True, "SeekableFileInput", "(File)", "", "Argument[this]", "file", "manual"]
+      - ["org.apache.avro.file", "DataFileReader", True, "DataFileReader", "(File,DatumReader)", "", "Argument[this]", "file", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileReader", True, "openReader", "(File,DatumReader)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro.file", "SeekableFileInput", True, "SeekableFileInput", "(File)", "", "Argument[this]", "file", "ai-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
@@ -30,7 +30,7 @@ extensions:
       - ["org.apache.avro.file", "DataFileReader", True, "DataFileReader", "(File,DatumReader)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["org.apache.avro.file", "DataFileReader", True, "DataFileReader", "(SeekableInput,DatumReader)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["org.apache.avro.file", "DataFileReader", True, "DataFileReader", "(SeekableInput,DatumReader)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
-      - ["org.apache.avro.file", "DataFileReader", True, "openReader", "(File,DatumReader)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.avro.file", "DataFileReader", True, "openReader", "(File,DatumReader)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
       - ["org.apache.avro.file", "DataFileReader", True, "openReader", "(File,DatumReader)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["org.apache.avro.file", "DataFileReader", True, "openReader", "(SeekableInput,DatumReader)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["org.apache.avro.file", "DataFileReader", True, "openReader", "(SeekableInput,DatumReader)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]

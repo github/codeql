@@ -5,7 +5,7 @@ extensions:
       pack: codeql/java-all
       extensible: sourceModel
     data:
-      - ["org.apache.avro.util", "RandomData", True, "main", "(String[])", "", "Parameter[0]", "commandargs", "manual"]
+      - ["org.apache.avro.util", "RandomData", True, "main", "(String[])", "", "Parameter[0]", "commandargs", "ai-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

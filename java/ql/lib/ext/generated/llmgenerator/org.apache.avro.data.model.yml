@@ -5,7 +5,7 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.avro.data", "Json$ObjectReader", True, "read", "(Object,Decoder)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.avro.data", "Json$ObjectReader", True, "read", "(Object,Decoder)", "", "Argument[1]", "ReturnValue", "taint", "ai-generated"]
       - ["org.apache.avro.data", "Json$ObjectReader", True, "setSchema", "(Schema)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["org.apache.avro.data", "TimeConversions$TimeMicrosConversion", True, "adjustAndSetValue", "(String,String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
       - ["org.apache.avro.data", "TimeConversions$TimeMicrosConversion", True, "adjustAndSetValue", "(String,String)", "", "Argument[1]", "ReturnValue", "taint", "dfc-generated"]
