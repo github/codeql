@@ -377,8 +377,7 @@ private module Cached {
         TDelimitedSymbolLiteral or TDestructuredLeftAssignment or TDestructuredParameter or
         TDivExprReal or TDo or TDoBlock or TElementReference or TElseReal or TElsif or TEmptyStmt or
         TEncoding or TEndBlock or TEnsure or TEqExpr or TExceptionList or TExponentExprReal or
-        TFalseLiteral or
-        TFile or TFindPattern or TFloatLiteral or TForExpr or TForwardParameter or
+        TFalseLiteral or TFile or TFindPattern or TFloatLiteral or TForExpr or TForwardParameter or
         TForwardArgument or TGEExpr or TGTExpr or TGlobalVariableAccessReal or
         THashKeySymbolLiteral or THashLiteral or THashPattern or THashSplatExprReal or
         THashSplatNilParameter or THashSplatParameter or THereDoc or TIdentifierMethodCall or

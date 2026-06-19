@@ -397,7 +397,8 @@ class RescueClause extends Expr, TRescueClause {
     or
     // For 0 or 1 exceptions, exceptions are direct children
     not exists(this.getExceptions()) and
-    pred = "getException" and result = this.getException(_)
+    pred = "getException" and
+    result = this.getException(_)
     or
     // For 2+ exceptions, the ExceptionList node is the direct child
     pred = "getExceptions" and result = this.getExceptions()
