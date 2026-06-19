@@ -282,9 +282,8 @@ fn translation_rules() -> Vec<yeast::Rule> {
         rule!((type name: @inner) => {inner}),
         // `directly_assignable_expression` is just a wrapper; unwrap it
         rule!((directly_assignable_expression expr: @inner) => {inner}),
-        // tuple_pattern_item → pattern_element (preserves optional name/key)
-        rule!((tuple_pattern_item name: @key pattern: @pat) => (pattern_element key: (identifier #{key}) pattern: {pat})),
-        rule!((tuple_pattern_item pattern: @pat) => (pattern_element pattern: {pat})),
+        // Pattern with bound_identifier → name_pattern
+        rule!((pattern bound_identifier: @name) => (name_pattern identifier: (identifier #{name}))),
         // Pattern with 'let' or 'var' binding: extract the inner pattern
         // TODO: Names in a pattern need to be translated to expr_equality_pattern if not under a 'var/let' but we lack a way to pass down context to do this.
         rule!(
@@ -308,10 +307,18 @@ fn translation_rules() -> Vec<yeast::Rule> {
                 constructor: (member_access_expr base: (inferred_type_expr #{dot}) member: (identifier #{name}))
                 element: {..items})
         ),
-        // Pattern with bound_identifier → name_pattern
-        rule!((pattern bound_identifier: @name) => (name_pattern identifier: (identifier #{name}))),
-        // Tuple pattern (destructuring)
-        rule!((pattern (pattern)* @elems) => (tuple_pattern element: {..elems})),
+        // Tuple pattern and its (optionally named) items
+        rule!((pattern kind: (tuple_pattern item: _* @elems)) => (tuple_pattern element: {..elems})),
+        rule!((tuple_pattern_item name: @key pattern: @pat) => (pattern_element key: (identifier #{key}) pattern: {pat})),
+        rule!((tuple_pattern_item pattern: @pat) => (pattern_element pattern: {pat})),
+        // Type casting pattern (TODO)
+        rule!((pattern kind: (type_casting_pattern)) => (unsupported_node)),
+        // Wildcard pattern
+        rule!((pattern kind: (wildcard_pattern)) => (ignore_pattern)),
+        // Expression pattern
+        // We lack a way to check if 'expr' is actually an expression, but due to rule ordering
+        // the 'expression' case is the only remaining possibility when this rule tries to match.
+        rule!((pattern kind: @expr) => (expr_equality_pattern expr: {expr})),
         // ---- Functions ----
         // Function declaration
         // Function declaration (return type optional, body statements optional).

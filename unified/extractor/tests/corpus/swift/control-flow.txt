@@ -558,7 +558,9 @@ top_level
                       callee:
                         name_expr
                           identifier: identifier "print"
-              pattern: tuple_pattern "1"
+              pattern:
+                expr_equality_pattern
+                  expr: int_literal "1"
             switch_case
               body:
                 block
@@ -571,8 +573,10 @@ top_level
                         name_expr
                           identifier: identifier "print"
               pattern:
-                tuple_pattern "2"
-                tuple_pattern "3"
+                expr_equality_pattern
+                  expr: int_literal "2"
+                expr_equality_pattern
+                  expr: int_literal "3"
             switch_case
               body:
                 block
@@ -844,7 +848,9 @@ top_level
                   element:
                     pattern_element
                       key: identifier "isAcknowledged"
-                      pattern: tuple_pattern "false"
+                      pattern:
+                        expr_equality_pattern
+                          expr: boolean_literal "false"
                   constructor:
                     member_access_expr
                       base: inferred_type_expr "."
@@ -867,7 +873,7 @@ top_level
                   element:
                     pattern_element
                       key: identifier "threadRowId"
-                      pattern: tuple_pattern "_"
+                      pattern: ignore_pattern "_"
                     pattern_element
                       pattern:
                         name_pattern

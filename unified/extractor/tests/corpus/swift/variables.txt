@@ -195,7 +195,21 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern: tuple_pattern "(a, b)"
+          pattern:
+            tuple_pattern
+              element:
+                pattern_element
+                  pattern:
+                    expr_equality_pattern
+                      expr:
+                        name_expr
+                          identifier: identifier "a"
+                pattern_element
+                  pattern:
+                    expr_equality_pattern
+                      expr:
+                        name_expr
+                          identifier: identifier "b"
           value:
             name_expr
               identifier: identifier "pair"
