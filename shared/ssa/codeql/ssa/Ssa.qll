@@ -993,6 +993,11 @@ module Make<
     predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, SourceVariable v);
   }
 
+  /**
+   * Builds the user-facing SSA API (the `SsaSig` class hierarchy and associated
+   * predicates) on top of the core SSA construction, using the language-specific
+   * expressions, parameters, and writes provided by `SsaInput`.
+   */
   module MakeSsa<SsaInputSig SsaInput> implements
     SsaSig<Location, ControlFlowNode, BasicBlock, SsaInput::Expr, SsaInput::Parameter, SsaInput::VariableWrite>
   {
