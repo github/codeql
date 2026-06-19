@@ -35,7 +35,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         protected string GetTemporaryWorkingDirectory(string subfolder)
         {
-            var temp = Path.Combine(tempWorkingDirectory.ToString(), subfolder);
+            var temp = Path.Join(tempWorkingDirectory.ToString(), subfolder);
             Directory.CreateDirectory(temp);
 
             return temp;

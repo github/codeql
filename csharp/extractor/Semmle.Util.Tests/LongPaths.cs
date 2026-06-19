@@ -14,20 +14,20 @@ namespace SemmleTests.Semmle.Util
     public sealed class LongPaths
     {
         private static readonly string tmpDir = Environment.GetEnvironmentVariable("TEST_TMPDIR") ?? Path.GetTempPath();
-        private static readonly string longPathDir = Path.Combine(tmpDir, "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", "bbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        private static readonly string longPathDir = Path.Join(tmpDir, "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", "bbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
             "ccccccccccccccccccccccccccccccc", "ddddddddddddddddddddddddddddddddddddd", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "fffffffffffffffffffffffffffffffff",
             "ggggggggggggggggggggggggggggggggggg", "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
         private static string MakeLongPath()
         {
             var uniquePostfix = Guid.NewGuid().ToString("N");
-            return Path.Combine(longPathDir, $"iiiiiiiiiiiiiiii{uniquePostfix}.txt");
+            return Path.Join(longPathDir, $"iiiiiiiiiiiiiiii{uniquePostfix}.txt");
         }
 
         private static string MakeShortPath()
         {
             var uniquePostfix = Guid.NewGuid().ToString("N");
-            return Path.Combine(tmpDir, $"test{uniquePostfix}.txt");
+            return Path.Join(tmpDir, $"test{uniquePostfix}.txt");
         }
 
         public LongPaths()
@@ -62,7 +62,7 @@ namespace SemmleTests.Semmle.Util
         [Fact]
         public void ParentDirectory()
         {
-            Assert.Equal("abc", Path.GetDirectoryName(Path.Combine("abc", "def")));
+            Assert.Equal("abc", Path.GetDirectoryName(Path.Join("abc", "def")));
             Assert.Equal(Win32.IsWindows() ? "\\" : "/", Path.GetDirectoryName($@"{Path.DirectorySeparatorChar}def"));
             Assert.Equal("", Path.GetDirectoryName(@"def"));
 

@@ -209,7 +209,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             var paths = dependencies
                 .Paths
-                .Select(d => Path.Combine(PackageDirectory.DirInfo.FullName, d))
+                .Select(d => Path.Join(PackageDirectory.DirInfo.FullName, d))
                 .ToList();
             assemblyLookupLocations.UnionWith(paths.Select(p => new AssemblyLookupLocation(p)));
 
@@ -527,7 +527,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var sb = new StringBuilder();
             fallbackNugetFeeds.ForEach((feed, index) => sb.AppendLine($"<add key=\"feed{index}\" value=\"{feed}\" />"));
 
-            var nugetConfigPath = Path.Combine(folderPath, "nuget.config");
+            var nugetConfigPath = Path.Join(folderPath, "nuget.config");
             logger.LogInfo($"Creating fallback nuget.config file {nugetConfigPath}.");
             File.WriteAllText(nugetConfigPath,
                 $"""
@@ -1052,7 +1052,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         private static string ComputeTempDirectoryPath(string subfolderName)
         {
-            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out _), subfolderName);
+            return Path.Join(FileUtils.GetTemporaryWorkingDirectory(out _), subfolderName);
         }
 
         /// <summary>
@@ -1060,7 +1060,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         private static string ComputeTempDirectoryPath(string srcDir, string subfolderName)
         {
-            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out _), FileUtils.ComputeHash(srcDir), subfolderName);
+            return Path.Join(FileUtils.GetTemporaryWorkingDirectory(out _), FileUtils.ComputeHash(srcDir), subfolderName);
         }
     }
 }
