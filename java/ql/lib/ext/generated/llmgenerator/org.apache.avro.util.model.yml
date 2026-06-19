@@ -1,8 +1,63 @@
 # THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-# Generated from https://github.com/apache/avro.git#68da8fb99da5c482f17853e01e79f714e3717b42 by codeql-mads-via-llm
+# Generated from https://github.com/apache/avro#0f18ca801f25fa9435d727abba9fb979f9bde662 by codeql-mads-via-llm
 extensions:
   - addsTo:
       pack: codeql/java-all
       extensible: sourceModel
     data:
-      - ["org.apache.avro.util", "RandomData", True, "main", "(String[])", "", "Argument[0]", "commandargs", "ai-generated"]
+      - ["org.apache.avro.util", "RandomData", True, "main", "(String[])", "", "Parameter[0]", "commandargs", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.avro.util", "ByteBufferInputStream", True, "ByteBufferInputStream", "(List)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.util.ByteBufferInputStream.buffers]", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "ByteBufferInputStream", True, "readBuffer", "(int)", "", "Argument[this].SyntheticField[org.apache.avro.util.ByteBufferInputStream.buffers].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "ByteBufferOutputStream", True, "append", "(List)", "", "Argument[0].Element", "Argument[this].SyntheticField[org.apache.avro.util.ByteBufferOutputStream.buffers].Element", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "ByteBufferOutputStream", True, "getBufferList", "()", "", "Argument[this].SyntheticField[org.apache.avro.util.ByteBufferOutputStream.buffers]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "ByteBufferOutputStream", True, "write", "(ByteBuffer)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.util.ByteBufferOutputStream.buffers].Element", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "ByteBufferOutputStream", True, "writeBuffer", "(ByteBuffer)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["org.apache.avro.util", "ByteBufferOutputStream", True, "writeBuffer", "(ByteBuffer)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.util.ByteBufferOutputStream.buffers].Element", "taint", "dfc-generated"]
+      - ["org.apache.avro.util", "ClassSecurityValidator$Builder", True, "add", "(Class)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "ClassSecurityValidator$Builder", True, "add", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "MapEntry", True, "MapEntry", "(Object,Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "MapEntry", True, "MapEntry", "(Object,Object)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "MapUtil", True, "computeIfAbsent", "(ConcurrentMap,Object,Function)", "", "Argument[0].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "NonCopyingByteArrayOutputStream", True, "asByteBuffer", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.avro.util", "NonCopyingByteArrayOutputStream", True, "writeBytes", "(byte[])", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["org.apache.avro.util", "RandomData", True, "RandomData", "(GenericData,Schema,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "RandomData", True, "RandomData", "(GenericData,Schema,int)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "RandomData", True, "RandomData", "(GenericData,Schema,int,boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "RandomData", True, "RandomData", "(GenericData,Schema,int,boolean)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "RandomData", True, "RandomData", "(GenericData,Schema,int,long)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "RandomData", True, "RandomData", "(GenericData,Schema,int,long)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "RandomData", True, "RandomData", "(GenericData,Schema,int,long,boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "RandomData", True, "RandomData", "(GenericData,Schema,int,long,boolean)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "RandomData", True, "RandomData", "(Schema,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "RandomData", True, "RandomData", "(Schema,int,boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "RandomData", True, "RandomData", "(Schema,int,long)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "RandomData", True, "RandomData", "(Schema,int,long,boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "ReusableByteArrayInputStream", True, "setByteArray", "(byte[],int,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "ReusableByteBufferInputStream", True, "setByteBuffer", "(ByteBuffer)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "SchemaResolver$ResolvingVisitor", False, "ResolvingVisitor", "(Function)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "SchemaResolver$ResolvingVisitor", False, "afterVisitNonTerminal", "(Schema)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.util.SchemaResolver$ResolvingVisitor.replace].MapKey", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "SchemaResolver$ResolvingVisitor", False, "copyProperties", "(Schema,Schema)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "SchemaResolver$ResolvingVisitor", False, "getResolved", "(Schema)", "", "Argument[this].SyntheticField[org.apache.avro.util.SchemaResolver$ResolvingVisitor.replace].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "SchemaResolver$ResolvingVisitor", False, "visitNonTerminal", "(Schema)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.util.SchemaResolver$ResolvingVisitor.replace].MapKey", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "SchemaResolver$ResolvingVisitor", False, "visitTerminal", "(Schema)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.util.SchemaResolver$ResolvingVisitor.replace].MapKey", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "SchemaResolver$ResolvingVisitor", False, "visitTerminal", "(Schema)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.util.SchemaResolver$ResolvingVisitor.replace].MapValue", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "SchemaUtil", True, "describe", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.avro.util", "Schemas", False, "visit", "(Schema,SchemaVisitor)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
+      - ["org.apache.avro.util", "TimePeriod", False, "from", "(TemporalAmount)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "Utf8", True, "Utf8", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.util.Utf8.bytes]", "taint", "dfc-generated"]
+      - ["org.apache.avro.util", "Utf8", True, "Utf8", "(Utf8)", "", "Argument[0].SyntheticField[org.apache.avro.util.Utf8.bytes].ArrayElement", "Argument[this].SyntheticField[org.apache.avro.util.Utf8.bytes].ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "Utf8", True, "Utf8", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.util.Utf8.bytes]", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "Utf8", True, "getBytes", "()", "", "Argument[this].SyntheticField[org.apache.avro.util.Utf8.bytes]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "Utf8", True, "getBytesFor", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.avro.util", "Utf8", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.avro.util.Utf8.bytes]", "taint", "dfc-generated"]
+      - ["org.apache.avro.util", "Utf8", True, "set", "(String)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "Utf8", True, "set", "(Utf8)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "Utf8", True, "setByteLength", "(int)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.avro.util", "Utf8", True, "writeExternal", "(ObjectOutput)", "", "Argument[this].SyntheticField[org.apache.avro.util.Utf8.bytes]", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.apache.avro.util", "UtfTextUtils", True, "asString", "(byte[],Charset)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.avro.util", "UtfTextUtils", True, "readAllBytes", "(InputStream,Charset)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.avro.util", "UtfTextUtils", True, "readAllChars", "(Reader)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
