@@ -11,4 +11,4 @@ def bad():
     xslt_root = etree.XML(xsltQuery)
     f = StringIO('<foo><bar></bar></foo>')
     tree = etree.parse(f)
-    result_tree = tree.xslt(xslt_root)  # Not OK # $ Alert
+    result_tree = tree.xslt(xslt_root) # $ Alert # Not OK

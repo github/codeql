@@ -129,10 +129,3 @@ nodes
 | xsltInjection.py:46:38:46:48 | ControlFlowNode for xsltStrings [List element] | semmle.label | ControlFlowNode for xsltStrings [List element] |
 | xsltInjection.py:50:24:50:32 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
 subpaths
-testFailures
-| xslt.py:14:29:14:37 | ControlFlowNode for xslt_root | Unexpected result: Alert |
-| xsltInjection.py:12:28:12:36 | ControlFlowNode for xslt_root | Unexpected result: Alert |
-| xsltInjection.py:21:29:21:37 | ControlFlowNode for xslt_root | Unexpected result: Alert |
-| xsltInjection.py:31:24:31:32 | ControlFlowNode for xslt_root | Unexpected result: Alert |
-| xsltInjection.py:40:24:40:32 | ControlFlowNode for xslt_root | Unexpected result: Alert |
-| xsltInjection.py:50:24:50:32 | ControlFlowNode for xslt_root | Unexpected result: Alert |

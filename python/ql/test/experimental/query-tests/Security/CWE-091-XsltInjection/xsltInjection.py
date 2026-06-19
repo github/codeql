@@ -9,7 +9,7 @@ app = Flask(__name__)
 def a():
     xsltQuery = request.args.get('xml', '')
     xslt_root = etree.XML(xsltQuery)
-    transform = etree.XSLT(xslt_root) # Not OK # $ Alert
+    transform = etree.XSLT(xslt_root) # $ Alert # Not OK
 
 
 @app.route("/xslt2")
@@ -18,7 +18,7 @@ def b():
     xslt_root = etree.XML(xsltQuery)
     f = StringIO('<foo><bar></bar></foo>')
     tree = etree.parse(f)
-    result_tree = tree.xslt(xslt_root) # Not OK # $ Alert
+    result_tree = tree.xslt(xslt_root) # $ Alert # Not OK
 
 
 @app.route("/xslt3")
@@ -28,7 +28,7 @@ def c():
 
     f = StringIO('<foo><bar></bar></foo>')
     tree = etree.parse(f)
-    result = tree.xslt(xslt_root, a="'A'") # Not OK # $ Alert
+    result = tree.xslt(xslt_root, a="'A'") # $ Alert # Not OK
 
 @app.route("/xslt4")
 def d():
@@ -37,7 +37,7 @@ def d():
 
     f = StringIO('<foo><bar></bar></foo>')
     tree = etree.parse(f)
-    result = tree.xslt(xslt_root, a="'A'") # Not OK # $ Alert
+    result = tree.xslt(xslt_root, a="'A'") # $ Alert # Not OK
 
 @app.route("/xslt5")
 def e():
@@ -47,7 +47,7 @@ def e():
 
     f = StringIO('<foo><bar></bar></foo>')
     tree = etree.parse(f)
-    result = tree.xslt(xslt_root, a="'A'") # Not OK # $ Alert
+    result = tree.xslt(xslt_root, a="'A'") # $ Alert # Not OK
 
 
 @app.route("/xslt6")
@@ -76,4 +76,4 @@ def h():
 
     f = StringIO('<foo><bar></bar></foo>')
     tree = etree.parse(f)
-    result = tree.xslt(xslt_root, a="'A'") # OK    
+    result = tree.xslt(xslt_root, a="'A'") # OK
