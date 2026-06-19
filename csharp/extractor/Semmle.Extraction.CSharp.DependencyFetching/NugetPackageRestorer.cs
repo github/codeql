@@ -19,7 +19,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly FileProvider fileProvider;
         private readonly FileContent fileContent;
         private readonly IDotNet dotnet;
-        private readonly DependabotProxy? dependabotProxy;
         private readonly IDiagnosticsWriter diagnosticsWriter;
         private readonly DependencyDirectory legacyPackageDirectory;
         private readonly DependencyDirectory missingPackageDirectory;
@@ -42,7 +41,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.fileProvider = fileProvider;
             this.fileContent = fileContent;
             this.dotnet = dotnet;
-            this.dependabotProxy = dependabotProxy;
             this.diagnosticsWriter = diagnosticsWriter;
             this.logger = logger;
             this.compilationInfoContainer = compilationInfoContainer;
@@ -117,6 +115,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             try
             {
+                EmitNugetConfigDiagnostics();
+
                 // Find feeds that are configured in NuGet.config files and divide them into ones that
                 // are explicitly configured for the project or by a private registry, and "all feeds"
                 // (including inherited ones) from other locations on the host outside of the working directory.
@@ -627,15 +627,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("All NuGet feeds reachable", allFeedsReachable ? "1" : "0"));
         }
 
-        private (HashSet<string> explicitFeeds, HashSet<string> allFeeds) GetAllFeeds()
+        private void EmitNugetConfigDiagnostics()
         {
-            var nugetConfigs = fileProvider.NugetConfigs;
-
             // On systems with case-sensitive file systems (for simplicity, we assume that is Linux), the
             // filenames of NuGet configuration files must be named correctly. For compatibility with projects
             // that are typically built on Windows or macOS where this doesn't matter, we accept all variants
             // of `nuget.config` ourselves. However, `dotnet` does not. If we detect that incorrectly-named
             // files are present, we emit a diagnostic to warn the user.
+            var nugetConfigs = fileProvider.NugetConfigs;
+
             if (SystemBuildActions.Instance.IsLinux())
             {
                 string[] acceptedNugetConfigNames = ["nuget.config", "NuGet.config", "NuGet.Config"];
@@ -665,6 +665,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     ));
                 }
             }
+        }
+
+
+        private (HashSet<string> explicitFeeds, HashSet<string> allFeeds) GetAllFeeds()
+        {
+            var nugetConfigs = fileProvider.NugetConfigs;
 
             // Find feeds that are explicitly configured in the NuGet configuration files that we found.
             var explicitFeeds = nugetConfigs
