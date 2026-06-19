@@ -843,9 +843,7 @@ top_level
                 constructor_pattern
                   element:
                     pattern_element
-                      key:
-                        name_expr <-- ERROR: The field pattern_element.key should contain identifier, but got name_expr
-                          identifier: identifier "isAcknowledged"
+                      key: identifier "isAcknowledged"
                       pattern: tuple_pattern "false"
                   constructor:
                     member_access_expr
@@ -868,9 +866,7 @@ top_level
                 constructor_pattern
                   element:
                     pattern_element
-                      key:
-                        name_expr <-- ERROR: The field pattern_element.key should contain identifier, but got name_expr
-                          identifier: identifier "threadRowId"
+                      key: identifier "threadRowId"
                       pattern: tuple_pattern "_"
                     pattern_element
                       pattern:

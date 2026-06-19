@@ -283,7 +283,7 @@ fn translation_rules() -> Vec<yeast::Rule> {
         // `directly_assignable_expression` is just a wrapper; unwrap it
         rule!((directly_assignable_expression expr: @inner) => {inner}),
         // tuple_pattern_item → pattern_element (preserves optional name/key)
-        rule!((tuple_pattern_item name: _? @key pattern: @pat) => (pattern_element key: {..key} pattern: {pat})),
+        rule!((tuple_pattern_item name: @key pattern: @pat) => (pattern_element key: (identifier #{key}) pattern: {pat})),
         rule!((tuple_pattern_item pattern: @pat) => (pattern_element pattern: {pat})),
         // Pattern with 'let' or 'var' binding: extract the inner pattern
         // TODO: Names in a pattern need to be translated to expr_equality_pattern if not under a 'var/let' but we lack a way to pass down context to do this.
