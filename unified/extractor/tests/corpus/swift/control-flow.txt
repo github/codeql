@@ -732,3 +732,154 @@ top_level
           value:
             name_expr
               identifier: identifier "shape"
+
+===
+Switch with labeled case pattern arguments
+===
+
+switch x {
+case .implicit(isAcknowledged: false):
+  print("yes")
+case .thread(threadRowId: _, let rowId):
+  print(rowId)
+}
+
+---
+
+source_file
+  statement:
+    switch_statement
+      entry:
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind:
+                    case_pattern
+                      arguments:
+                        tuple_pattern
+                          item:
+                            tuple_pattern_item
+                              name: simple_identifier "isAcknowledged"
+                              pattern:
+                                pattern
+                                  kind:
+                                    boolean_literal
+                      dot: .
+                      name: simple_identifier "implicit"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "yes"
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind:
+                    case_pattern
+                      arguments:
+                        tuple_pattern
+                          item:
+                            tuple_pattern_item
+                              name: simple_identifier "threadRowId"
+                              pattern:
+                                pattern
+                                  kind: wildcard_pattern "_"
+                            tuple_pattern_item
+                              pattern:
+                                pattern
+                                  kind:
+                                    binding_pattern
+                                      binding:
+                                        value_binding_pattern
+                                          mutability: let
+                                      pattern:
+                                        pattern
+                                          bound_identifier: simple_identifier "rowId"
+                      dot: .
+                      name: simple_identifier "thread"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "rowId"
+      expr: simple_identifier "x"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        switch_expr
+          case:
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: string_literal "\"yes\""
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              pattern:
+                constructor_pattern
+                  element:
+                    pattern_element
+                      key:
+                        name_expr <-- ERROR: The field pattern_element.key should contain identifier, but got name_expr
+                          identifier: identifier "isAcknowledged"
+                      pattern: tuple_pattern "false"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "implicit"
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "rowId"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              pattern:
+                constructor_pattern
+                  element:
+                    pattern_element
+                      key:
+                        name_expr <-- ERROR: The field pattern_element.key should contain identifier, but got name_expr
+                          identifier: identifier "threadRowId"
+                      pattern: tuple_pattern "_"
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "rowId"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "thread"
+          value:
+            name_expr
+              identifier: identifier "x"
