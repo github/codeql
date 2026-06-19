@@ -281,6 +281,37 @@ class Pair extends Expr instanceof PairImpl {
 }
 
 /**
+ * A list of exception types in a rescue clause. For example, the exception list
+ * `FirstError, SecondError` in:
+ * ```rb
+ * begin
+ *   do_something
+ * rescue FirstError, SecondError => e
+ *   handle_error(e)
+ * end
+ * ```
+ * This node is only present when there are two or more exceptions in the list.
+ */
+class ExceptionList extends Expr, TExceptionList {
+  private Ruby::Exceptions g;
+
+  ExceptionList() { this = TExceptionList(g) }
+
+  final override string getAPrimaryQlClass() { result = "ExceptionList" }
+
+  /** Gets the `n`th exception in this list. */
+  final Expr getException(int n) { toGenerated(result) = g.getChild(n) }
+
+  final override string toString() { result = "..., ..." }
+
+  final override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = "getException" and result = this.getException(_)
+  }
+}
+
+/**
  * A rescue clause. For example:
  * ```rb
  * begin
@@ -305,8 +336,16 @@ class RescueClause extends Expr, TRescueClause {
    *   handle_error(e)
    * end
    * ```
+   * When there are two or more exceptions, use `getExceptions()` to get the `ExceptionList` node.
    */
-  final Expr getException(int n) { toGenerated(result) = g.getExceptions().getChild(n) }
+  final Expr getException(int n) {
+    // 0 or 1 exception: no ExceptionList node, access directly
+    not exists(this.getExceptions()) and
+    toGenerated(result) = g.getExceptions().getChild(n)
+    or
+    // 2+ exceptions: delegate through ExceptionList
+    result = this.getExceptions().getException(n)
+  }
 
   /**
    * Gets an exception to match, if any. For example `FirstError` or `SecondError` in:
@@ -319,6 +358,19 @@ class RescueClause extends Expr, TRescueClause {
    * ```
    */
   final Expr getAnException() { result = this.getException(_) }
+
+  /**
+   * Gets the exception list node when there are two or more exceptions to match. For example,
+   * the exception list `FirstError, SecondError` in:
+   * ```rb
+   * begin
+   *  do_something
+   * rescue FirstError, SecondError => e
+   *   handle_error(e)
+   * end
+   * ```
+   */
+  final ExceptionList getExceptions() { result = TExceptionList(g.getExceptions()) }
 
   /**
    * Gets the variable to which to assign the matched exception, if any.
@@ -343,7 +395,12 @@ class RescueClause extends Expr, TRescueClause {
   final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
+    // For 0 or 1 exceptions, exceptions are direct children
+    not exists(this.getExceptions()) and
     pred = "getException" and result = this.getException(_)
+    or
+    // For 2+ exceptions, the ExceptionList node is the direct child
+    pred = "getExceptions" and result = this.getExceptions()
     or
     pred = "getVariableExpr" and result = this.getVariableExpr()
     or

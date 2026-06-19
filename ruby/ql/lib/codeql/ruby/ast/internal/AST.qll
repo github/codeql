@@ -155,6 +155,7 @@ private module Cached {
     TEndBlock(Ruby::EndBlock g) or
     TEnsure(Ruby::Ensure g) or
     TEqExpr(Ruby::Binary g) { g instanceof @ruby_binary_equalequal } or
+    TExceptionList(Ruby::Exceptions g) { strictcount(g.getChild(_)) > 1 } or
     TExponentExprReal(Ruby::Binary g) { g instanceof @ruby_binary_starstar } or
     TExponentExprSynth(Ast::AstNode parent, int i) { mkSynthChild(ExponentExprKind(), parent, i) } or
     TFalseLiteral(Ruby::False g) or
@@ -375,7 +376,8 @@ private module Cached {
         TClassVariableAccessReal or TComplementExpr or TComplexLiteral or TDefinedExprReal or
         TDelimitedSymbolLiteral or TDestructuredLeftAssignment or TDestructuredParameter or
         TDivExprReal or TDo or TDoBlock or TElementReference or TElseReal or TElsif or TEmptyStmt or
-        TEncoding or TEndBlock or TEnsure or TEqExpr or TExponentExprReal or TFalseLiteral or
+        TEncoding or TEndBlock or TEnsure or TEqExpr or TExceptionList or TExponentExprReal or
+        TFalseLiteral or
         TFile or TFindPattern or TFloatLiteral or TForExpr or TForwardParameter or
         TForwardArgument or TGEExpr or TGTExpr or TGlobalVariableAccessReal or
         THashKeySymbolLiteral or THashLiteral or THashPattern or THashSplatExprReal or
@@ -475,6 +477,7 @@ private module Cached {
     n = TEndBlock(result) or
     n = TEnsure(result) or
     n = TEqExpr(result) or
+    n = TExceptionList(result) or
     n = TExponentExprReal(result) or
     n = TFalseLiteral(result) or
     n = TFile(result) or
@@ -765,7 +768,7 @@ class TExpr =
   TSelf or TArgumentList or TRescueClause or TRescueModifierExpr or TPair or TStringConcatenation or
       TCall or TBlockArgument or TConstantAccess or TControlExpr or TLiteral or TCallable or
       TVariableAccess or TStmtSequence or TOperation or TForwardArgument or TDestructuredLhsExpr or
-      TMatchPattern or TTestPattern;
+      TMatchPattern or TTestPattern or TExceptionList;
 
 class TSplatExpr = TSplatExprReal or TSplatExprSynth;
 

@@ -254,10 +254,10 @@ begin
 rescue X::foo
 ensure X::bar
 end
-
-
-
-
+begin
+rescue foo, X::bar
+ensure baz
+end
 
 # rescue-modifier body and handler
 foo rescue bar

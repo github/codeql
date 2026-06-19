@@ -282,6 +282,9 @@ callsWithReceiver
 | calls.rb:251:8:251:10 | call to bar | calls.rb:251:8:251:10 | self |
 | calls.rb:254:8:254:13 | call to foo | calls.rb:254:8:254:8 | X |
 | calls.rb:255:8:255:13 | call to bar | calls.rb:255:8:255:8 | X |
+| calls.rb:258:8:258:10 | call to foo | calls.rb:258:8:258:10 | self |
+| calls.rb:258:13:258:18 | call to bar | calls.rb:258:13:258:13 | X |
+| calls.rb:259:8:259:10 | call to baz | calls.rb:259:8:259:10 | self |
 | calls.rb:263:1:263:3 | call to foo | calls.rb:263:1:263:3 | self |
 | calls.rb:263:12:263:14 | call to bar | calls.rb:263:12:263:14 | self |
 | calls.rb:264:1:264:6 | call to foo | calls.rb:264:1:264:1 | X |
