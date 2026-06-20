@@ -4,13 +4,17 @@
  * Provides classes and predicates for dealing with flow models specified
  * in data extensions and CSV format.
  *
- * The CSV specification has the following columns:
+ * The extensible relations have the following columns:
  * - Sources:
  *   `package; type; subtypes; name; signature; ext; output; kind; provenance`
  * - Sinks:
  *   `package; type; subtypes; name; signature; ext; input; kind; provenance`
  * - Summaries:
  *   `package; type; subtypes; name; signature; ext; input; output; kind; provenance`
+ * - Barriers:
+ *   `package; type; subtypes; name; signature; ext; output; kind; provenance`
+ * - BarrierGuards:
+ *   `package; type; subtypes; name; signature; ext; input; acceptingValue; kind; provenance`
  * - Neutrals:
  *   `package; type; name; signature; kind; provenance`
  *   A neutral is used to indicate that a callable is neutral with respect to flow (no summary), source (is not a source) or sink (is not a sink).
@@ -69,14 +73,17 @@
  *      in the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects the return value of a call to the selected element.
  *    - "Element": Selects the collection elements of the selected element.
- * 8. The `kind` column is a tag that can be referenced from QL to determine to
+ * 8. The `acceptingValue` column of barrier guard models specifies the condition
+ *    under which the guard blocks flow. It can be one of "true" or "false". In
+ *    the future "no-exception", "not-zero", "null", "not-null" may be supported.
+ * 9. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries
  *    "taint" indicates a default additional taint step and "value" indicates a
  *    globally applicable value-preserving step. For neutrals the kind can be `summary`,
  *    `source` or `sink` to indicate that the neutral is neutral with respect to
  *    flow (no summary), source (is not a source) or sink (is not a sink).
- * 9. The `provenance` column is a tag to indicate the origin and verification of a model.
+ * 10. The `provenance` column is a tag to indicate the origin and verification of a model.
  *    The format is {origin}-{verification} or just "manual" where the origin describes
  *    the origin of the model and verification describes how the model has been verified.
  *    Some examples are:
@@ -358,11 +365,11 @@ module ModelValidation {
       result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
     or
-    exists(string acceptingvalue |
-      barrierGuardModel(_, _, _, _, _, _, _, acceptingvalue, _, _, _) and
-      invalidAcceptingValue(acceptingvalue) and
+    exists(string acceptingValue |
+      barrierGuardModel(_, _, _, _, _, _, _, acceptingValue, _, _, _) and
+      invalidAcceptingValue(acceptingValue) and
       result =
-        "Unrecognized accepting value description \"" + acceptingvalue +
+        "Unrecognized accepting value description \"" + acceptingValue +
           "\" in barrier guard model."
     )
   }
@@ -583,13 +590,13 @@ private module Cached {
 
   private predicate barrierGuardChecks(Guard g, Expr e, GuardValue gv, TKindModelPair kmp) {
     exists(
-      SourceSinkInterpretationInput::InterpretNode n, AcceptingValue acceptingvalue, string kind,
+      SourceSinkInterpretationInput::InterpretNode n, AcceptingValue acceptingValue, string kind,
       string model
     |
-      isBarrierGuardNode(n, acceptingvalue, kind, model) and
+      isBarrierGuardNode(n, acceptingValue, kind, model) and
       n.asNode().asExpr() = e and
       kmp = TMkPair(kind, model) and
-      gv = convertAcceptingValue(acceptingvalue)
+      gv = convertAcceptingValue(acceptingValue)
     |
       g.(Call).getAnArgument() = e or g.(MethodCall).getQualifier() = e
     )

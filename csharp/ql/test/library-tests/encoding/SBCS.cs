@@ -1,4 +1,4 @@
-class SBCS
+ï»¿class SBCS
 {
-    string sbcs = "’";
+    string sbcs = "ï¿½";
 }

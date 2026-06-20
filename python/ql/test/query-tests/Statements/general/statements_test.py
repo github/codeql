@@ -2,11 +2,11 @@
 #Constant in conditional
 
 def cc1():
-    if True:
+    if True: # $ Alert[py/constant-conditional-expression]
         print("Hi")
 
 def cc2():
-    if 3:
+    if 3: # $ Alert[py/constant-conditional-expression]
         print("Hi")
 
 def not_cc():
@@ -62,12 +62,12 @@ else:
     bytes = bytes # Should not be flagged
 
 #Pointless else clauses
-for x in range(10):
+for x in range(10): # $ Alert[py/redundant-else]
     func(x)
 else:
     do_something()
 
-while x < 10:
+while x < 10: # $ Alert[py/redundant-else]
     func(x)
 else:
     do_something()
@@ -184,7 +184,7 @@ def error_indirect_mismatched_multi_assign(x):
 #ODASA-6754
 def error_unnecessary_delete():
     x = big_object()
-    del x
+    del x # $ Alert[py/unnecessary-delete]
 
 def ok_delete_in_loop():
     y = 0

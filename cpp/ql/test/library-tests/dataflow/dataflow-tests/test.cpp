@@ -1313,3 +1313,27 @@ void crement_test2(bool b, int y) {
   sink(b ? (long)x++ : 0); // $ ir ast
   sink(x); // $ ir ast
 }
+
+struct nsdmi {
+    int i = source();
+
+    nsdmi() {}
+
+    nsdmi(int i) : i(i) {}
+};
+
+void nsdmi_test() {
+  nsdmi x;
+  sink(x.i); // $ ir MISSING: ast
+
+  nsdmi y(source());
+  sink(y.i); // $ ir ast
+}
+
+void certain_def_uninitialized_instruction_test() {
+  for(int i = 0; i < 10; i++) {
+    char buffer[10];
+    sink(buffer[0]); // $ SPURIOUS: ast
+    buffer[0] = source();
+  }
+}

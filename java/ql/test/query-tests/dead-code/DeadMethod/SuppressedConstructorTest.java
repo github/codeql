@@ -6,13 +6,13 @@ public class SuppressedConstructorTest {
     public static void liveMethod() { }
   }
 
-  public void deadMethod() {
+  public void deadMethod() { // $ Alert
     new NestedPrivateConstructor();
   }
 
   private static class NestedPrivateConstructor {
     // This should be dead, because it is called from a dead method.
-    private NestedPrivateConstructor() { }
+    private NestedPrivateConstructor() { } // $ Alert
 
     public static void liveMethod() { }
   }
@@ -23,7 +23,7 @@ public class SuppressedConstructorTest {
      * constructor will be added by the compiler. Therefore, we do not need to declare this private
      * in order to suppress it.
      */
-    private OtherConstructor() { }
+    private OtherConstructor() { } // $ Alert
 
     // Live constructor
     private OtherConstructor(Object foo) { }

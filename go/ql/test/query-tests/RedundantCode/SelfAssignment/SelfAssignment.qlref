@@ -1,1 +1,2 @@
-RedundantCode/SelfAssignment.ql
+query: RedundantCode/SelfAssignment.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

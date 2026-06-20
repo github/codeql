@@ -1,27 +1,27 @@
 class UsersController < ActionController::Base
   # BAD
   def route1
-    redirect_to params
+    redirect_to params # $ Alert
   end
 
   # BAD
   def route2
-    redirect_to params[:key]
+    redirect_to params[:key] # $ Alert
   end
 
   # BAD
   def route3
-    redirect_to params.fetch(:specific_arg)
+    redirect_to params.fetch(:specific_arg) # $ Alert
   end
 
   # BAD
   def route4
-    redirect_to params.to_unsafe_hash
+    redirect_to params.to_unsafe_hash # $ Alert
   end
 
   # BAD
   def route5
-    redirect_to filter_params(params)
+    redirect_to filter_params(params) # $ Alert
   end
 
   # GOOD
@@ -31,7 +31,7 @@ class UsersController < ActionController::Base
 
   # BAD
   def route7
-    redirect_to "#{params[:key]}/foo"
+    redirect_to "#{params[:key]}/foo" # $ Alert
   end
 
   # GOOD
@@ -55,22 +55,22 @@ class UsersController < ActionController::Base
   # The same as `create1` but this is reachable via a GET request, as configured
   # by the routes at the bottom of this file.
   def route9
-    redirect_to params[:key]
+    redirect_to params[:key] # $ Alert
   end
 
   # BAD
   def route10
-    redirect_back fallback_location: params[:key]
+    redirect_back fallback_location: params[:key] # $ Alert
   end
 
   # BAD
   def route11
-    redirect_back fallback_location: params[:key], allow_other_host: true
+    redirect_back fallback_location: params[:key], allow_other_host: true # $ Alert
   end
 
   # BAD
   def route12
-    redirect_back_or_to params[:key]
+    redirect_back_or_to params[:key] # $ Alert
   end
 
   # GOOD

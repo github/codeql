@@ -6,11 +6,11 @@ from django.http import HttpResponse
 from django.template import Template, Context, Engine, engines
 
 
-def a(request):
+def a(request): # $ Source
     value = request.GET['xpath']
     f = StringIO('<foo><bar></bar></foo>')
     tree = etree.parse(f)
-    r = tree.xpath("/tag[@id='%s']" % value)
+    r = tree.xpath("/tag[@id='%s']" % value) # $ Alert
 
 
 urlpatterns = [

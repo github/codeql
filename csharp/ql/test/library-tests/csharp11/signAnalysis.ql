@@ -1,7 +1,7 @@
 import csharp
 import semmle.code.csharp.dataflow.internal.rangeanalysis.SignAnalysisCommon as Common
 
-from ControlFlow::Nodes::ExprNode e, Expr expr
+from ControlFlowNodes::ExprNode e, Expr expr
 where
   e.getExpr() = expr and
   expr.getFile().getStem() = "SignAnalysis" and

@@ -12,8 +12,8 @@ app = Flask(__name__)
 @app.route('/bad', methods = ['POST', 'GET'])
 def bad():
     if request.method == 'POST':
-        password = request.form['pwd']
-        return password == "1234"
+        password = request.form['pwd'] # $ Source
+        return password == "1234" # $ Alert
     
 @app.route('/good', methods = ['POST', 'GET'])
 def good():

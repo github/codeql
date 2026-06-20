@@ -9,9 +9,9 @@ extensions:
       - ["org.apache.commons.net", "SocketClient", true, "connect", "(String)", "", "Argument[0]", "request-forgery", "manual"]
       - ["org.apache.commons.net", "SocketClient", true, "connect", "(String,int)", "", "Argument[0]", "request-forgery", "df-manual"]
       - ["org.apache.commons.net", "SocketClient", true, "connect", "(String,int,InetAddress,int)", "", "Argument[0]", "request-forgery", "manual"]
-      - ["org.apache.commons.net.util", "KeyManagerUtils", false, "createClientKeyManager", "(File,String)", "", "Argument[0]", "path-injection", "df-manual"]
-      - ["org.apache.commons.net.util", "KeyManagerUtils", false, "createClientKeyManager", "(File,String,String)", "", "Argument[0]", "path-injection", "df-manual"]
-      - ["org.apache.commons.net.util", "KeyManagerUtils", false, "createClientKeyManager", "(String,File,String,String,String)", "", "Argument[1]", "path-injection", "df-manual"]
+      - ["org.apache.commons.net.util", "KeyManagerUtils", false, "createClientKeyManager", "(File,String)", "", "Argument[0]", "path-injection[read]", "df-manual"]
+      - ["org.apache.commons.net.util", "KeyManagerUtils", false, "createClientKeyManager", "(File,String,String)", "", "Argument[0]", "path-injection[read]", "df-manual"]
+      - ["org.apache.commons.net.util", "KeyManagerUtils", false, "createClientKeyManager", "(String,File,String,String,String)", "", "Argument[1]", "path-injection[read]", "df-manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: sourceModel

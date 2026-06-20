@@ -1,2 +1,4 @@
 query: Security/CWE/CWE-129/ImproperValidationOfArrayConstructionCodeSpecified.ql
-postprocess: utils/test/PrettyPrintModels.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql

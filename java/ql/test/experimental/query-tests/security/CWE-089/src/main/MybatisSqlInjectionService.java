@@ -11,48 +11,48 @@ public class MybatisSqlInjectionService {
 	private SqlInjectionMapper sqlInjectionMapper;
 
 	public List<Test> bad1(String name) {
-		List<Test> result = sqlInjectionMapper.bad1(name);
+		List<Test> result = sqlInjectionMapper.bad1(name); // $ Alert[java/mybatis-xml-sql-injection]
 		return result;
 	}
 
 	public List<Test> bad2(String name) {
-		List<Test> result = sqlInjectionMapper.bad2(name);
+		List<Test> result = sqlInjectionMapper.bad2(name); // $ Alert[java/mybatis-xml-sql-injection]
 		return result;
 	}
 
 	public List<Test> bad3(Test test) {
-		List<Test> result = sqlInjectionMapper.bad3(test);
+		List<Test> result = sqlInjectionMapper.bad3(test); // $ Alert[java/mybatis-xml-sql-injection]
 		return result;
 	}
 
 	public void bad4(Test test) {
-		sqlInjectionMapper.bad4(test);
+		sqlInjectionMapper.bad4(test); // $ Alert[java/mybatis-xml-sql-injection]
 	}
 
 	public void bad5(Test test) {
-		sqlInjectionMapper.bad5(test);
+		sqlInjectionMapper.bad5(test); // $ Alert[java/mybatis-xml-sql-injection]
 	}
 
 	public void bad6(Map<String, String> params) {
-		sqlInjectionMapper.bad6(params);
+		sqlInjectionMapper.bad6(params); // $ Alert[java/mybatis-xml-sql-injection]
 	}
 
 	public void bad7(List<String> params) {
-		sqlInjectionMapper.bad7(params);
+		sqlInjectionMapper.bad7(params); // $ Alert[java/mybatis-xml-sql-injection]
 	}
 
 	public void bad8(String[] params) {
-		sqlInjectionMapper.bad8(params);
+		sqlInjectionMapper.bad8(params); // $ Alert[java/mybatis-xml-sql-injection]
 	}
 
 	public void bad9(String name) {
 		HashMap hashMap = new HashMap();
 		hashMap.put("name", name);
-		sqlInjectionMapper.bad9(hashMap);
+		sqlInjectionMapper.bad9(hashMap); // $ Alert[java/mybatis-annotation-sql-injection]
 	}
 
 	public void bad10(Integer id, String name) {
-		sqlInjectionMapper.bad10(id, name);
+		sqlInjectionMapper.bad10(id, name); // $ Alert[java/mybatis-annotation-sql-injection]
 	}
 
 	public List<Test> good1(Integer id) {

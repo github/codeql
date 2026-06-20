@@ -1,1 +1,2 @@
-Imports/ImportandImportFrom.ql
+query: Imports/ImportandImportFrom.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

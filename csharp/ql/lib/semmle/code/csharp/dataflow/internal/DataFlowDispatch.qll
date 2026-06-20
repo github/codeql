@@ -28,8 +28,8 @@ newtype TReturnKind =
 private predicate hasMultipleSourceLocations(Callable c) { strictcount(getASourceLocation(c)) > 1 }
 
 private predicate objectInitEntry(ObjectInitMethod m, ControlFlowElement first) {
-  exists(ControlFlow::Nodes::EntryNode en |
-    en.getCallable() = m and first.getControlFlowNode() = en.getASuccessor()
+  exists(ControlFlow::EntryNode en |
+    en.getEnclosingCallable() = m and first = en.getASuccessor().getAstNode()
   )
 }
 
@@ -73,12 +73,12 @@ private module Cached {
 
   cached
   newtype TDataFlowCall =
-    TNonDelegateCall(ControlFlow::Nodes::ElementNode cfn, DispatchCall dc) {
+    TNonDelegateCall(ControlFlowNodes::ElementNode cfn, DispatchCall dc) {
       DataFlowImplCommon::forceCachingInSameStage() and
-      cfn.getAstNode() = dc.getCall()
+      cfn.asExpr() = dc.getCall()
     } or
-    TExplicitDelegateLikeCall(ControlFlow::Nodes::ElementNode cfn, DelegateLikeCall dc) {
-      cfn.getAstNode() = dc
+    TExplicitDelegateLikeCall(ControlFlowNodes::ElementNode cfn, DelegateLikeCall dc) {
+      cfn.asExpr() = dc
     } or
     TSummaryCall(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
@@ -210,55 +210,58 @@ class DataFlowCallable extends TDataFlowCallable {
   }
 
   pragma[nomagic]
-  private ControlFlow::Nodes::ElementNode getAMultiBodyEntryNode(ControlFlow::BasicBlock bb, int i) {
+  private BasicBlock getAMultiBodyEntryBlock() {
     this.isMultiBodied() and
     exists(ControlFlowElement body, Location l |
       body = this.asCallable(l).getBody() or
       objectInitEntry(this.asCallable(l), body)
     |
       NearestLocation<NearestBodyLocationInput>::nearestLocation(body, l, _) and
-      result = body.getAControlFlowEntryNode()
-    ) and
-    bb.getNode(i) = result
-  }
-
-  pragma[nomagic]
-  private ControlFlow::Nodes::ElementNode getAMultiBodyControlFlowNodePred() {
-    result = this.getAMultiBodyEntryNode(_, _).getAPredecessor()
-    or
-    result = this.getAMultiBodyControlFlowNodePred().getAPredecessor()
-  }
-
-  pragma[nomagic]
-  private ControlFlow::Nodes::ElementNode getAMultiBodyControlFlowNodeSuccSameBasicBlock() {
-    exists(ControlFlow::BasicBlock bb, int i, int j |
-      exists(this.getAMultiBodyEntryNode(bb, i)) and
-      result = bb.getNode(j) and
-      j > i
+      result.getANode().isBefore(body)
     )
   }
 
   pragma[nomagic]
-  private ControlFlow::BasicBlock getAMultiBodyBasicBlockSucc() {
-    result = this.getAMultiBodyEntryNode(_, _).getBasicBlock().getASuccessor()
+  private BasicBlock getAMultiBodyControlFlowPred() {
+    result = this.getAMultiBodyEntryBlock().getAPredecessor()
+    or
+    result = this.getAMultiBodyControlFlowPred().getAPredecessor()
+  }
+
+  pragma[nomagic]
+  private BasicBlock getAMultiBodyBasicBlockSucc() {
+    result = this.getAMultiBodyEntryBlock().getASuccessor()
     or
     result = this.getAMultiBodyBasicBlockSucc().getASuccessor()
   }
 
-  pragma[inline]
-  private ControlFlow::Nodes::ElementNode getAMultiBodyControlFlowNode() {
+  pragma[nomagic]
+  private BasicBlock getAMultiBodyBasicBlock() {
     result =
       [
-        this.getAMultiBodyEntryNode(_, _), this.getAMultiBodyControlFlowNodePred(),
-        this.getAMultiBodyControlFlowNodeSuccSameBasicBlock(),
-        this.getAMultiBodyBasicBlockSucc().getANode()
+        this.getAMultiBodyEntryBlock(), this.getAMultiBodyControlFlowPred(),
+        this.getAMultiBodyBasicBlockSucc()
       ]
+  }
+
+  pragma[inline]
+  private ControlFlowNode getAMultiBodyControlFlowNode() {
+    result = this.getAMultiBodyBasicBlock().getANode()
   }
 
   /** Gets a control flow node belonging to this callable. */
   pragma[inline]
-  ControlFlow::Node getAControlFlowNode() {
+  ControlFlowNode getAControlFlowNode() {
     result = this.getAMultiBodyControlFlowNode()
+    or
+    not this.isMultiBodied() and
+    result.getEnclosingCallable() = this.asCallable(_)
+  }
+
+  /** Gets a basic block belonging to this callable. */
+  pragma[inline]
+  BasicBlock getABasicBlock() {
+    result = this.getAMultiBodyBasicBlock()
     or
     not this.isMultiBodied() and
     result.getEnclosingCallable() = this.asCallable(_)
@@ -307,7 +310,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlowCallable getARuntimeTarget();
 
   /** Gets the control flow node where this call happens, if any. */
-  abstract ControlFlow::Nodes::ElementNode getControlFlowNode();
+  abstract ControlFlowNodes::ElementNode getControlFlowNode();
 
   /** Gets the data flow node corresponding to this call, if any. */
   abstract DataFlow::Node getNode();
@@ -363,7 +366,7 @@ private predicate folderDist(Folder f1, Folder f2, int i) =
 
 /** A non-delegate C# call relevant for data flow. */
 class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
-  private ControlFlow::Nodes::ElementNode cfn;
+  private ControlFlowNodes::ElementNode cfn;
   private DispatchCall dc;
 
   NonDelegateDataFlowCall() { this = TNonDelegateCall(cfn, dc) }
@@ -436,7 +439,7 @@ class NonDelegateDataFlowCall extends DataFlowCall, TNonDelegateCall {
     not dc.isReflection()
   }
 
-  override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
+  override ControlFlowNodes::ElementNode getControlFlowNode() { result = cfn }
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
@@ -452,7 +455,7 @@ abstract class DelegateDataFlowCall extends DataFlowCall { }
 
 /** An explicit delegate or function pointer call relevant for data flow. */
 class ExplicitDelegateLikeDataFlowCall extends DelegateDataFlowCall, TExplicitDelegateLikeCall {
-  private ControlFlow::Nodes::ElementNode cfn;
+  private ControlFlowNodes::ElementNode cfn;
   private DelegateLikeCall dc;
 
   ExplicitDelegateLikeDataFlowCall() { this = TExplicitDelegateLikeCall(cfn, dc) }
@@ -464,7 +467,7 @@ class ExplicitDelegateLikeDataFlowCall extends DelegateDataFlowCall, TExplicitDe
     none() // handled by the shared library
   }
 
-  override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
+  override ControlFlowNodes::ElementNode getControlFlowNode() { result = cfn }
 
   override DataFlow::ExprNode getNode() { result.getControlFlowNode() = cfn }
 
@@ -495,7 +498,7 @@ class SummaryCall extends DelegateDataFlowCall, TSummaryCall {
     none() // handled by the shared library
   }
 
-  override ControlFlow::Nodes::ElementNode getControlFlowNode() { none() }
+  override ControlFlowNodes::ElementNode getControlFlowNode() { none() }
 
   override DataFlow::Node getNode() { none() }
 

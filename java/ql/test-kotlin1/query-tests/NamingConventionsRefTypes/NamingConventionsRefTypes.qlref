@@ -1,1 +1,2 @@
-Advisory/Naming/NamingConventionsRefTypes.ql
+query: Advisory/Naming/NamingConventionsRefTypes.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -12,7 +12,7 @@ public class A {
     }
     Object not = null;
     if (!(not != null)) {
-      not.hashCode();
+      not.hashCode(); // $ Alert[java/dereferenced-value-is-always-null]
     }
   }
 
@@ -45,7 +45,7 @@ public class A {
 
     Object assertNotNull_ok3 = maybe() ? null : new Object();
     assertNonNull(assertNotNull_ok3, "");
-    assertNotNull_ok3.toString();
+    assertNotNull_ok3.toString(); // $ Alert[java/dereferenced-value-may-be-null]
   }
 
   public void assertTrueTest() {
@@ -94,7 +94,7 @@ public class A {
 
   public void synchronised() {
     Object synchronized_always = null;
-    synchronized(synchronized_always) {
+    synchronized(synchronized_always) { // $ Alert[java/dereferenced-value-is-always-null]
       synchronized_always.hashCode();
     }
   }
@@ -158,18 +158,18 @@ public class A {
 
     String do_always = null;
     do {
-      System.out.println(do_always.length());
+      System.out.println(do_always.length()); // $ Alert[java/dereferenced-value-is-always-null]
       do_always = null;
     } while(do_always != null);
 
     String do_maybe1 = null;
     do {
-      System.out.println(do_maybe1.length());
+      System.out.println(do_maybe1.length()); // $ Alert[java/dereferenced-value-is-always-null]
     } while(do_maybe1 != null);
 
     String do_maybe = "";
     do {
-      System.out.println(do_maybe.length());
+      System.out.println(do_maybe.length()); // $ Alert[java/dereferenced-value-may-be-null]
       do_maybe = null;
     } while(true);
   }
@@ -184,13 +184,13 @@ public class A {
     boolean TRUE = true;
     String while_always = null;
     while(TRUE) {
-      System.out.println(while_always.length());
+      System.out.println(while_always.length()); // $ Alert[java/dereferenced-value-is-always-null]
       while_always = null;
     }
 
     String while_maybe = "";
     while(true) {
-      System.out.println(while_maybe.length());
+      System.out.println(while_maybe.length()); // $ Alert[java/dereferenced-value-may-be-null]
       while_maybe = null;
     }
   }
@@ -204,7 +204,7 @@ public class A {
 
     String if_always = null;
     if (if_always == null) {
-      System.out.println(if_always.length());
+      System.out.println(if_always.length()); // $ Alert[java/dereferenced-value-is-always-null]
       if_always = null;
     }
 
@@ -212,7 +212,7 @@ public class A {
     if (if_maybe != null && if_maybe.length() % 2 == 0) {
       if_maybe = null;
     }
-    System.out.println(if_maybe.length());
+    System.out.println(if_maybe.length()); // $ Alert[java/dereferenced-value-may-be-null]
   }
 
   public void for_() {
@@ -220,20 +220,20 @@ public class A {
     for (for_ok = ""; for_ok != null; for_ok = null) {
       System.out.println(for_ok.length());
     }
-    System.out.println(for_ok.length());
+    System.out.println(for_ok.length()); // $ Alert[java/dereferenced-value-is-always-null]
 
     for (String for_always = null; ((for_always == null)); for_always = null) {
-      System.out.println(for_always.length());
+      System.out.println(for_always.length()); // $ Alert[java/dereferenced-value-is-always-null]
     }
 
     for (String for_maybe = ""; ; for_maybe = null) {
-      System.out.println(for_maybe.length());
+      System.out.println(for_maybe.length()); // $ Alert[java/dereferenced-value-may-be-null]
     }
   }
 
   public void array_assign_test() {
     int[] array_null = null;
-    array_null[0] = 10;
+    array_null[0] = 10; // $ Alert[java/dereferenced-value-is-always-null]
 
     int[] array_ok;
     array_ok = new int[10];
@@ -245,9 +245,9 @@ public class A {
     String[] fieldaccess = null;
     Object methodaccess = null;
 
-    System.out.println(arrayaccess[1]);
-    System.out.println(fieldaccess.length);
-    System.out.println(methodaccess.toString());
+    System.out.println(arrayaccess[1]); // $ Alert[java/dereferenced-value-is-always-null]
+    System.out.println(fieldaccess.length); // $ Alert[java/dereferenced-value-is-always-null]
+    System.out.println(methodaccess.toString()); // $ Alert[java/dereferenced-value-is-always-null]
 
     System.out.println(arrayaccess[1]);
     System.out.println(fieldaccess.length);
@@ -261,16 +261,16 @@ public class A {
     System.out.println(for_ok.size());
 
     List<String> for_always = null;
-    for (String s : for_always)
+    for (String s : for_always) // $ Alert[java/dereferenced-value-is-always-null]
       System.out.println(s);
-    System.out.println(for_always.size());
+    System.out.println(for_always.size()); // $ Alert[java/dereferenced-value-is-always-null]
 
     List<String> for_maybe = java.util.Collections.emptyList();
     for (String s : for_maybe) {
       System.out.println(s);
       for_maybe = null;
     }
-    System.out.println(for_maybe.size());
+    System.out.println(for_maybe.size()); // $ Alert[java/dereferenced-value-may-be-null]
   }
 
   public void assertFalseInstanceofTest() {
@@ -290,7 +290,7 @@ public class A {
   public void assertFalseNotNullNestedTest() {
     Object s = String.valueOf(1);
     assertFalse(s != null || !"1".equals("1")); // assertTrue(s==null)
-    s.toString().isEmpty();
+    s.toString().isEmpty(); // $ Alert[java/dereferenced-value-is-always-null]
   }
 
   public void testForLoopCondition(Iterable iter) {

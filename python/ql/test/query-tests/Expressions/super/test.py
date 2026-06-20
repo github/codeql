@@ -7,7 +7,7 @@ class MyDict(dict):
 class NotMyDict(object):
 
     def f(self):
-        super(MyDict, self).f()
+        super(MyDict, self).f() # $ Alert
 
 #Splitting
 PY2 = sys.version_info[0] == 2

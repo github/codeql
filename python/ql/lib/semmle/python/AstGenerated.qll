@@ -698,6 +698,9 @@ class Import_ extends @py_Import, Stmt {
   /** Gets an alias of this import statement. */
   Alias getAName() { result = this.getNames().getAnItem() }
 
+  /** Whether the lazy property of this import statement is true. */
+  predicate isLazy() { py_bools(this, 2) }
+
   override string toString() { result = "Import" }
 }
 
@@ -719,6 +722,9 @@ class ImportExpr_ extends @py_ImportExpr, Expr {
 class ImportStar_ extends @py_ImportStar, Stmt {
   /** Gets the module of this import * statement. */
   Expr getModule() { py_exprs(result, _, this, 1) }
+
+  /** Whether the lazy property of this import * statement is true. */
+  predicate isLazy() { py_bools(this, 2) }
 
   override string toString() { result = "ImportStar" }
 }

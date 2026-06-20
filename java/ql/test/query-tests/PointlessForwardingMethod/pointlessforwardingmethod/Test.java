@@ -6,7 +6,7 @@ public class Test {
 		return x + one;
 	}
 
-	int addOne(byte x) {
+	int addOne(byte x) { // $ Alert
 		return addOne(x, 1);
 	}
 

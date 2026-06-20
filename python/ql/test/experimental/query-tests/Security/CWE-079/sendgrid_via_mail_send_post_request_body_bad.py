@@ -1,6 +1,6 @@
 import sendgrid
 import os
-from flask import request, Flask
+from flask import request, Flask # $ Source
 
 app = Flask(__name__)
 
@@ -13,7 +13,7 @@ def send():
         "content": [
             {
                 "type": "text/html",
-                "value": "<html>{}</html>".format(request.args["html_content"])
+                "value": "<html>{}</html>".format(request.args["html_content"]) # $ Alert
             }
         ],
         "from": {
@@ -24,7 +24,7 @@ def send():
         "mail_settings": {
             "footer": {
                 "enable": True,
-                "html": "<html>{}</html>".format(request.args["html_footer"]),
+                "html": "<html>{}</html>".format(request.args["html_footer"]), # $ Alert
                 "text": "Thanks,/n The SendGrid Team"
             },
         },
@@ -38,7 +38,7 @@ def send():
         "tracking_settings": {
             "subscription_tracking": {
                 "enable": True,
-                "html": "<html>{}</html>".format(request.args["html_tracking"]),
+                "html": "<html>{}</html>".format(request.args["html_tracking"]), # $ Alert
                 "substitution_tag": "<%click here%>",
                 "text": "If you would like to unsubscribe and stop receiving these emails <% click here %>."
             }

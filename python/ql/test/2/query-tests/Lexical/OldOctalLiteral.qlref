@@ -1,1 +1,2 @@
-Lexical/OldOctalLiteral.ql
+query: Lexical/OldOctalLiteral.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,1 +1,2 @@
-experimental/InconsistentCode/GORMErrorNotChecked.ql
+query: experimental/InconsistentCode/GORMErrorNotChecked.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

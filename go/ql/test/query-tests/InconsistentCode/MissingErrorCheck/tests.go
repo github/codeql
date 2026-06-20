@@ -58,7 +58,7 @@ func missingCheckMayFail(fname string) {
 
 	result, err := os.Open(fname)
 
-	fmt.Printf("Opened: %v\n", *result) // NOT OK
+	fmt.Printf("Opened: %v\n", *result) // $ Alert // NOT OK
 	fmt.Printf("%v\n", err)             // use err
 
 }
@@ -240,7 +240,7 @@ func mishandlesMyError(input int) {
 
 	result, err := returnsMyError(input)
 
-	fmt.Printf("Got: %d\n", *result) // NOT OK
+	fmt.Printf("Got: %d\n", *result) // $ Alert // NOT OK
 	fmt.Printf("%v\n", err)          // use err
 
 }

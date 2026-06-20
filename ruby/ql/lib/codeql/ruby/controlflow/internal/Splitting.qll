@@ -246,7 +246,7 @@ module EnsureSplitting {
     private predicate exit0(AstNode pred, Trees::BodyStmtTree block, int nestLevel, Completion c) {
       this.appliesToPredecessor(pred) and
       nestLevel = block.getNestLevel() and
-      block.lastInner(pred, c)
+      block.last(pred, c)
     }
 
     /**

@@ -57,6 +57,28 @@ class DeclarationWithGetSetAccessors extends DeclarationWithAccessors, TopLevelE
   /** Gets the `set` accessor of this declaration, if any. */
   Setter getSetter() { result = this.getAnAccessor() }
 
+  /** Gets the target accessor of this declaration when used in a read context, if any. */
+  Accessor getReadTarget() {
+    result = this.getGetter()
+    or
+    not exists(this.getGetter()) and
+    result = this.getOverridee().getReadTarget()
+  }
+
+  /** Gets the target accessor of this declaration when used in a write context, if any. */
+  Accessor getWriteTarget() {
+    result = this.getSetter()
+    or
+    not exists(this.getSetter()) and
+    result = this.getOverridee().getWriteTarget()
+    or
+    result =
+      any(Getter g |
+        g = this.getReadTarget() and
+        g.getAnnotatedReturnType().isRef()
+      )
+  }
+
   override DeclarationWithGetSetAccessors getOverridee() {
     result = DeclarationWithAccessors.super.getOverridee()
   }
@@ -226,7 +248,7 @@ class Property extends DeclarationWithGetSetAccessors, @property {
    * }
    * ```
    */
-  Expr getInitializer() { result = this.getChildExpr(1).getChildExpr(0) }
+  Expr getInitializer() { result = this.getChildExpr(1).getChildExpr(1) }
 
   /**
    * Holds if this property has an initial value. For example, the initial
@@ -535,8 +557,8 @@ class Setter extends Accessor, @setter {
     exists(AssignExpr assign |
       this.getStatementBody().getNumberOfStmts() = 1 and
       assign.getParent() = this.getStatementBody().getAChild() and
-      assign.getLValue() = result.getAnAccess() and
-      assign.getRValue() = accessToValue()
+      assign.getLeftOperand() = result.getAnAccess() and
+      assign.getRightOperand() = accessToValue()
     )
   }
 

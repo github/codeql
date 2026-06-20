@@ -115,34 +115,3 @@ module NumericCastFlowConfig implements DataFlow::ConfigSig {
  * Taint-tracking flow for user input that is used in a numeric cast.
  */
 module NumericCastFlow = TaintTracking::Global<NumericCastFlowConfig>;
-
-/**
- * A taint-tracking configuration for reasoning about local user input that is
- * used in a numeric cast.
- */
-deprecated module NumericCastLocalFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr() and
-    sink.asExpr() instanceof VarAccess
-  }
-
-  predicate isBarrier(DataFlow::Node node) {
-    boundedRead(node.asExpr()) or
-    castCheck(node.asExpr()) or
-    node.getType() instanceof SmallType or
-    smallExpr(node.asExpr()) or
-    node.getEnclosingCallable() instanceof HashCodeMethod or
-    exists(RightShiftOp e | e.getShiftedVariable().getAnAccess() = node.asExpr())
-  }
-
-  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
-}
-
-/**
- * DEPRECATED: Use `NumericCastFlow` instead and configure threat model sources to include `local`.
- *
- * Taint-tracking flow for local user input that is used in a numeric cast.
- */
-deprecated module NumericCastLocalFlow = TaintTracking::Global<NumericCastLocalFlowConfig>;

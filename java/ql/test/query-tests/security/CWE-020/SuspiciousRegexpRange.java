@@ -2,11 +2,11 @@ import java.util.regex.Pattern;
 
 class SuspiciousRegexpRange {
     void test() {
-        Pattern overlap1 = Pattern.compile("^[0-93-5]*$"); // NOT OK
+        Pattern overlap1 = Pattern.compile("^[0-93-5]*$"); // $ Alert[java/overly-large-range] // NOT OK
 
-        Pattern overlap2 = Pattern.compile("[A-ZA-z]*"); // NOT OK
+        Pattern overlap2 = Pattern.compile("[A-ZA-z]*"); // $ Alert[java/overly-large-range] // NOT OK
         
-        Pattern isEmpty = Pattern.compile("^[z-a]*$"); // NOT OK
+        Pattern isEmpty = Pattern.compile("^[z-a]*$"); // $ Alert[java/overly-large-range] // NOT OK
         
         Pattern isAscii = Pattern.compile("^[\\x00-\\x7F]*$"); // OK
         
@@ -16,19 +16,19 @@ class SuspiciousRegexpRange {
         
         Pattern NON_ALPHANUMERIC_REGEXP = Pattern.compile("([^\\#-~| |!])*"); // OK
         
-        Pattern smallOverlap = Pattern.compile("[0-9a-fA-f]*"); // NOT OK
+        Pattern smallOverlap = Pattern.compile("[0-9a-fA-f]*"); // $ Alert[java/overly-large-range] // NOT OK
         
-        Pattern weirdRange = Pattern.compile("[$-`]*"); // NOT OK
+        Pattern weirdRange = Pattern.compile("[$-`]*"); // $ Alert[java/overly-large-range] // NOT OK
         
-        Pattern keywordOperator = Pattern.compile("[!\\~\\*\\/%+-<>\\^|=&]*"); // NOT OK
+        Pattern keywordOperator = Pattern.compile("[!\\~\\*\\/%+-<>\\^|=&]*"); // $ Alert[java/overly-large-range] // NOT OK
         
-        Pattern notYoutube = Pattern.compile("youtu.be/[a-z1-9.-_]+"); // NOT OK
+        Pattern notYoutube = Pattern.compile("youtu.be/[a-z1-9.-_]+"); // $ Alert[java/overly-large-range] // NOT OK
         
-        Pattern numberToLetter = Pattern.compile("[7-F]*"); // NOT OK
+        Pattern numberToLetter = Pattern.compile("[7-F]*"); // $ Alert[java/overly-large-range] // NOT OK
         
-        Pattern overlapsWithClass1 = Pattern.compile("[0-9\\d]*"); // NOT OK
+        Pattern overlapsWithClass1 = Pattern.compile("[0-9\\d]*"); // $ Alert[java/overly-large-range] // NOT OK
         
-        Pattern overlapsWithClass2 = Pattern.compile("[\\w,.-?:*+]*"); // NOT OK
+        Pattern overlapsWithClass2 = Pattern.compile("[\\w,.-?:*+]*"); // $ Alert[java/overly-large-range] // NOT OK
 
         Pattern nested = Pattern.compile("[[A-Za-z_][A-Za-z0-9._-]]*"); // OK, the dash it at the end
 

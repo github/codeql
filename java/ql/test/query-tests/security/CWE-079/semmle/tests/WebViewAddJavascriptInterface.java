@@ -7,6 +7,6 @@ class WebViewAddJavascriptInterface {
     }
 
     public void addGreeter(WebView view) {
-        view.addJavascriptInterface(new Greeter(), "greeter");
+        view.addJavascriptInterface(new Greeter(), "greeter"); // $ Alert[java/android/webview-addjavascriptinterface]
     }
 }

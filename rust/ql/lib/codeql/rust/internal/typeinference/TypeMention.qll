@@ -769,7 +769,7 @@ private Type getPathConcreteAssocTypeAt(Path path, TypePath typePath) {
     TypeAlias alias, TypePath path0
   |
     pathConcreteTypeAssocType(path, tm, trait, traitOrTmTrait, alias) and
-    PathSatisfiesConstraint::satisfiesConstraintTypeThrough(tm, impl, traitOrTmTrait, path0, result) and
+    PathSatisfiesConstraint::satisfiesConstraintThrough(tm, impl, traitOrTmTrait, path0, result) and
     path0.isCons(TAssociatedTypeTypeParameter(trait, alias), typePath)
   )
 }

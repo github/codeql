@@ -39,7 +39,7 @@ module KindValidation<KindValidationConfigSig Config> {
           "response-splitting", "trust-boundary-violation", "template-injection", "url-forward",
           "xslt-injection",
           // JavaScript-only currently, but may be shared in the future
-          "cors-origin", "mongodb.sink",
+          "cors-origin", "mongodb.sink", "system-prompt-injection", "user-prompt-injection",
           // Swift-only currently, but may be shared in the future
           "database-store", "format-string", "hash-iteration-count", "predicate-injection",
           "preferences-store", "tls-protocol-version", "transmission", "webview-fetch", "xxe",
@@ -48,12 +48,14 @@ module KindValidation<KindValidationConfigSig Config> {
           // CPP-only currently
           "remote-sink",
           // Python-only currently, but may be shared in the future
-          "prompt-injection"
+          "bind-socket-all-interfaces", "prompt-injection"
         ]
       or
       this.matches([
           // shared
           "credentials-%", "encryption-%", "qltest%", "test-%", "regex-use%",
+          // Java-only currently
+          "path-injection[%]",
           // Swift-only currently, but may be shared in the future
           "%string-%length", "weak-hash-input-%",
           // Go-only currently, but may be shared in the future

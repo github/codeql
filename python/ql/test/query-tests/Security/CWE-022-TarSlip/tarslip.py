@@ -11,13 +11,13 @@ tar = tarfile.open(safe_filename_tar)
 for entry in tar:
     tar.extract(entry)
 
-tar = tarfile.open(unsafe_filename_tar)
-tar.extractall()
+tar = tarfile.open(unsafe_filename_tar) # $ Source
+tar.extractall() # $ Alert
 tar.close()
 
-tar = tarfile.open(unsafe_filename_tar)
+tar = tarfile.open(unsafe_filename_tar) # $ Source
 for entry in tar:
-    tar.extract(entry)
+    tar.extract(entry) # $ Alert
 
 tar = tarfile.open(safe_filename_tar)
 tar.extractall()
@@ -32,15 +32,15 @@ for entry in tar:
     tar.extract(entry, "/tmp/unpack/")
 
 #Part Sanitized
-tar = tarfile.open(unsafe_filename_tar)
+tar = tarfile.open(unsafe_filename_tar) # $ Source
 for entry in tar:
     if ".." in entry.name:
         raise ValueError("Illegal tar archive entry")
-    tar.extract(entry, "/tmp/unpack/")
+    tar.extract(entry, "/tmp/unpack/") # $ Alert
 
 #Unsanitized members
-tar = tarfile.open(unsafe_filename_tar)
-tar.extractall(members=tar)
+tar = tarfile.open(unsafe_filename_tar) # $ Source
+tar.extractall(members=tar) # $ Alert
 
 
 #Sanitize members
@@ -55,10 +55,10 @@ tar.extractall(members=safemembers(tar))
 
 
 # Wrong sanitizer (is missing not)
-tar = tarfile.open(unsafe_filename_tar)
+tar = tarfile.open(unsafe_filename_tar) # $ Source
 for entry in tar:
     if os.path.isabs(entry.name) or ".." in entry.name:
-        tar.extract(entry, "/tmp/unpack/")
+        tar.extract(entry, "/tmp/unpack/") # $ Alert
 
 
 # OK Sanitized using not
@@ -87,13 +87,13 @@ for entry in tar:
 
 extraction_filter = "fully_trusted"
 
-tar = tarfile.open(unsafe_filename_tar)
-tar.extractall(filter=extraction_filter) # unsafe
+tar = tarfile.open(unsafe_filename_tar) # $ Source
+tar.extractall(filter=extraction_filter) # $ Alert # unsafe
 tar.close()
 
-tar = tarfile.open(unsafe_filename_tar)
+tar = tarfile.open(unsafe_filename_tar) # $ Source
 for entry in tar:
-    tar.extract(entry, filter=extraction_filter) # unsafe
+    tar.extract(entry, filter=extraction_filter) # $ Alert # unsafe
 
 extraction_filter = "data"
 
@@ -106,11 +106,11 @@ for entry in tar:
     tar.extract(entry, filter=extraction_filter) # safe
 
 extraction_filter = None
-tar = tarfile.open(unsafe_filename_tar)
-tar.extractall(filter=extraction_filter) # unsafe
+tar = tarfile.open(unsafe_filename_tar) # $ Source
+tar.extractall(filter=extraction_filter) # $ Alert # unsafe
 
-tar = tarfile.open(unsafe_filename_tar)
-tar.extractall(members=tar, filter=extraction_filter) # unsafe
+tar = tarfile.open(unsafe_filename_tar) # $ Source
+tar.extractall(members=tar, filter=extraction_filter) # $ Alert # unsafe
 
 tar = tarfile.open(unsafe_filename_tar)
 tar.extractall(members=safemembers(tar), filter=extraction_filter) # safe -- we assume `safemembers` makes up for the unsafe filter

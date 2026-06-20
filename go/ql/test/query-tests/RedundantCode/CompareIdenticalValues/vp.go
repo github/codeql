@@ -13,5 +13,5 @@ type t struct {
 }
 
 func (x *t) foo(other t) bool {
-	return x.GetLength() != x.GetLength()
+	return x.GetLength() != x.GetLength() // $ Alert
 }

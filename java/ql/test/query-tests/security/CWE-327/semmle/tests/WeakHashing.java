@@ -12,13 +12,13 @@ public class WeakHashing {
         props.load(new FileInputStream("example.properties"));
 
         // BAD: Using a weak hashing algorithm
-        MessageDigest bad = MessageDigest.getInstance(props.getProperty("hashAlg1"));
+        MessageDigest bad = MessageDigest.getInstance(props.getProperty("hashAlg1")); // $ Alert[java/potentially-weak-cryptographic-algorithm]
 
         // BAD: Using a weak hashing algorithm even with a secure default
-        MessageDigest bad2 = MessageDigest.getInstance(props.getProperty("hashAlg1", "SHA-256"));
+        MessageDigest bad2 = MessageDigest.getInstance(props.getProperty("hashAlg1", "SHA-256")); // $ Alert[java/potentially-weak-cryptographic-algorithm]
 
         // BAD: Using a strong hashing algorithm but with a weak default
-        MessageDigest bad3 = MessageDigest.getInstance(props.getProperty("hashAlg2", "MD5"));
+        MessageDigest bad3 = MessageDigest.getInstance(props.getProperty("hashAlg2", "MD5")); // $ Alert[java/potentially-weak-cryptographic-algorithm]
 
         // GOOD: Using a strong hashing algorithm
         MessageDigest ok = MessageDigest.getInstance(props.getProperty("hashAlg2"));

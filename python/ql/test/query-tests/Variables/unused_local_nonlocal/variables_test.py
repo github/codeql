@@ -29,7 +29,7 @@ def not_fp():
     def nonlocal_test():
         nonlocal test
     def set_test():
-        test = True
+        test = True # $ Alert
     nonlocal_test()
     set_test()
     if test:

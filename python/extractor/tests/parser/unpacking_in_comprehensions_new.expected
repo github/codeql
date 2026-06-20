@@ -1,0 +1,285 @@
+Module: [4, 0] - [20, 0]
+  body: [
+    Expr: [4, 0] - [4, 15]
+      value:
+        ListComp: [4, 0] - [4, 15]
+          elt: None
+          generators: None
+          function:
+            Function: [4, 0] - [4, 15]
+              name: 'listcomp'
+              type_parameters: []
+              args: [
+                Name: [4, 0] - [4, 15]
+                  variable: Variable('.0', None)
+                  ctx: Param
+              ]
+              vararg: None
+              kwonlyargs: None
+              kwarg: None
+              body: [
+                For: [4, 0] - [4, 15]
+                  target:
+                    Name: [4, 8] - [4, 9]
+                      variable: Variable('x', None)
+                      ctx: Store
+                  iter:
+                    Name: [4, 0] - [4, 15]
+                      variable: Variable('.0', None)
+                      ctx: Load
+                  body: [
+                    Expr: [4, 1] - [4, 3]
+                      value:
+                        YieldFrom: [4, 1] - [4, 3]
+                          value:
+                            Name: [4, 2] - [4, 3]
+                              variable: Variable('x', None)
+                              ctx: Load
+                  ]
+                  orelse: None
+              ]
+          iterable:
+            Name: [4, 13] - [4, 14]
+              variable: Variable('y', None)
+              ctx: Load
+    Expr: [7, 0] - [7, 15]
+      value:
+        SetComp: [7, 0] - [7, 15]
+          elt: None
+          generators: None
+          function:
+            Function: [7, 0] - [7, 15]
+              name: 'setcomp'
+              type_parameters: []
+              args: [
+                Name: [7, 0] - [7, 15]
+                  variable: Variable('.0', None)
+                  ctx: Param
+              ]
+              vararg: None
+              kwonlyargs: None
+              kwarg: None
+              body: [
+                For: [7, 0] - [7, 15]
+                  target:
+                    Name: [7, 8] - [7, 9]
+                      variable: Variable('x', None)
+                      ctx: Store
+                  iter:
+                    Name: [7, 0] - [7, 15]
+                      variable: Variable('.0', None)
+                      ctx: Load
+                  body: [
+                    Expr: [7, 1] - [7, 3]
+                      value:
+                        YieldFrom: [7, 1] - [7, 3]
+                          value:
+                            Name: [7, 2] - [7, 3]
+                              variable: Variable('x', None)
+                              ctx: Load
+                  ]
+                  orelse: None
+              ]
+          iterable:
+            Name: [7, 13] - [7, 14]
+              variable: Variable('y', None)
+              ctx: Load
+    Expr: [10, 0] - [10, 20]
+      value:
+        DictComp: [10, 0] - [10, 20]
+          key: None
+          value: None
+          generators: None
+          function:
+            Function: [10, 0] - [10, 20]
+              name: 'dictcomp'
+              type_parameters: []
+              args: [
+                Name: [10, 0] - [10, 20]
+                  variable: Variable('.0', None)
+                  ctx: Param
+              ]
+              vararg: None
+              kwonlyargs: None
+              kwarg: None
+              body: [
+                For: [10, 0] - [10, 20]
+                  target:
+                    Name: [10, 9] - [10, 10]
+                      variable: Variable('d', None)
+                      ctx: Store
+                  iter:
+                    Name: [10, 0] - [10, 20]
+                      variable: Variable('.0', None)
+                      ctx: Load
+                  body: [
+                    Expr: [10, 1] - [10, 4]
+                      value:
+                        YieldFrom: [10, 1] - [10, 4]
+                          value:
+                            Call: [10, 3] - [10, 4]
+                              func:
+                                Attribute: [10, 3] - [10, 4]
+                                  value:
+                                    Name: [10, 3] - [10, 4]
+                                      variable: Variable('d', None)
+                                      ctx: Load
+                                  attr: 'items'
+                                  ctx: Load
+                              positional_args: []
+                              named_args: []
+                  ]
+                  orelse: None
+              ]
+          iterable:
+            Name: [10, 14] - [10, 19]
+              variable: Variable('dicts', None)
+              ctx: Load
+    Expr: [13, 0] - [13, 15]
+      value:
+        GeneratorExp: [13, 1] - [13, 14]
+          elt: None
+          generators: None
+          function:
+            Function: [13, 1] - [13, 14]
+              name: 'genexpr'
+              type_parameters: []
+              args: [
+                Name: [13, 1] - [13, 14]
+                  variable: Variable('.0', None)
+                  ctx: Param
+              ]
+              vararg: None
+              kwonlyargs: None
+              kwarg: None
+              body: [
+                For: [13, 1] - [13, 14]
+                  target:
+                    Name: [13, 8] - [13, 9]
+                      variable: Variable('x', None)
+                      ctx: Store
+                  iter:
+                    Name: [13, 1] - [13, 14]
+                      variable: Variable('.0', None)
+                      ctx: Load
+                  body: [
+                    Expr: [13, 1] - [13, 3]
+                      value:
+                        YieldFrom: [13, 1] - [13, 3]
+                          value:
+                            Name: [13, 2] - [13, 3]
+                              variable: Variable('x', None)
+                              ctx: Load
+                  ]
+                  orelse: None
+              ]
+          iterable:
+            Name: [13, 13] - [13, 14]
+              variable: Variable('y', None)
+              ctx: Load
+          parenthesised: True
+    Expr: [16, 0] - [16, 20]
+      value:
+        ListComp: [16, 0] - [16, 20]
+          elt: None
+          generators: None
+          function:
+            Function: [16, 0] - [16, 20]
+              name: 'listcomp'
+              type_parameters: []
+              args: [
+                Name: [16, 0] - [16, 20]
+                  variable: Variable('.0', None)
+                  ctx: Param
+              ]
+              vararg: None
+              kwonlyargs: None
+              kwarg: None
+              body: [
+                For: [16, 0] - [16, 20]
+                  target:
+                    Name: [16, 8] - [16, 9]
+                      variable: Variable('x', None)
+                      ctx: Store
+                  iter:
+                    Name: [16, 0] - [16, 20]
+                      variable: Variable('.0', None)
+                      ctx: Load
+                  body: [
+                    If: [16, 18] - [16, 19]
+                      test:
+                        Name: [16, 18] - [16, 19]
+                          variable: Variable('x', None)
+                          ctx: Load
+                      body: [
+                        Expr: [16, 1] - [16, 3]
+                          value:
+                            YieldFrom: [16, 1] - [16, 3]
+                              value:
+                                Name: [16, 2] - [16, 3]
+                                  variable: Variable('x', None)
+                                  ctx: Load
+                      ]
+                      orelse: None
+                  ]
+                  orelse: None
+              ]
+          iterable:
+            Name: [16, 13] - [16, 14]
+              variable: Variable('y', None)
+              ctx: Load
+    Expr: [19, 0] - [19, 26]
+      value:
+        ListComp: [19, 0] - [19, 26]
+          elt: None
+          generators: None
+          function:
+            Function: [19, 0] - [19, 26]
+              name: 'listcomp'
+              type_parameters: []
+              args: [
+                Name: [19, 0] - [19, 26]
+                  variable: Variable('.0', None)
+                  ctx: Param
+              ]
+              vararg: None
+              kwonlyargs: None
+              kwarg: None
+              body: [
+                For: [19, 0] - [19, 26]
+                  target:
+                    Name: [19, 8] - [19, 9]
+                      variable: Variable('y', None)
+                      ctx: Store
+                  iter:
+                    Name: [19, 0] - [19, 26]
+                      variable: Variable('.0', None)
+                      ctx: Load
+                  body: [
+                    For: [19, 0] - [19, 26]
+                      target:
+                        Name: [19, 19] - [19, 20]
+                          variable: Variable('x', None)
+                          ctx: Store
+                      iter:
+                        Name: [19, 24] - [19, 25]
+                          variable: Variable('y', None)
+                          ctx: Load
+                      body: [
+                        Expr: [19, 1] - [19, 3]
+                          value:
+                            YieldFrom: [19, 1] - [19, 3]
+                              value:
+                                Name: [19, 2] - [19, 3]
+                                  variable: Variable('x', None)
+                                  ctx: Load
+                      ]
+                      orelse: None
+                  ]
+                  orelse: None
+              ]
+          iterable:
+            Name: [19, 13] - [19, 14]
+              variable: Variable('z', None)
+              ctx: Load
+  ]

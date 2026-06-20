@@ -1,6 +1,6 @@
 // Result is 3 and not 4
 int foo() {
-  result = sum([1, 1, 2]) // <- Alert here
+  result = sum([1, 1, 2]) // $ Alert // <- Alert here
 }
 
 // Ok - false negative

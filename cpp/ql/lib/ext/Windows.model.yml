@@ -31,6 +31,9 @@ extensions:
       - ["", "", False, "WinHttpQueryHeadersEx", "", "", "Argument[*5]", "remote", "manual"]
       - ["", "", False, "WinHttpQueryHeadersEx", "", "", "Argument[*6]", "remote", "manual"]
       - ["", "", False, "WinHttpQueryHeadersEx", "", "", "Argument[**8]", "remote", "manual"]
+      - ["", "", False, "HttpReceiveHttpRequest", "", "", "Argument[*3]", "remote", "manual"]
+      - ["", "", False, "HttpReceiveRequestEntityBody", "", "", "Argument[*3]", "remote", "manual"]
+      - ["", "", False, "HttpReceiveClientCertificate", "", "", "Argument[*3]", "remote", "manual"]
   - addsTo:
       pack: codeql/cpp-all
       extensible: summaryModel

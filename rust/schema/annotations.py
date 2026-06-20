@@ -1269,7 +1269,7 @@ class _:
 @annotate(Impl)
 class _:
     """
-    An `impl`` block.
+    An `impl` block.
 
     For example:
     ```rust

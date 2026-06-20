@@ -72,3 +72,5 @@
 | tst2.js:113:12:113:17 | unsafe | Cross-site scripting vulnerability due to $@. | tst2.js:105:9:105:9 | p | user-provided value |
 | tst3.js:6:12:6:12 | p | Cross-site scripting vulnerability due to $@. | tst3.js:5:9:5:9 | p | user-provided value |
 | tst3.js:12:12:12:15 | code | Cross-site scripting vulnerability due to $@. | tst3.js:11:32:11:39 | reg.body | user-provided value |
+| vercel.ts:5:24:5:51 | `<h1>${ ... }</h1>` | Cross-site scripting vulnerability due to $@. | vercel.ts:5:31:5:39 | req.query | user-provided value |
+| vercel.ts:5:24:5:51 | `<h1>${ ... }</h1>` | Cross-site scripting vulnerability due to $@. | vercel.ts:5:31:5:44 | req.query.name | user-provided value |

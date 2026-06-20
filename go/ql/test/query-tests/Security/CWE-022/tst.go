@@ -26,7 +26,7 @@ func unzip2(f string, root string) {
 		if err == nil {
 			ioutil.WriteFile(filepath.Join(root, relpath), []byte("present"), 0666) // OK
 		}
-		ioutil.WriteFile(path, []byte("present"), 0666) // NOT OK
+		ioutil.WriteFile(path, []byte("present"), 0666) // $ Sink[go/zipslip] // NOT OK
 		if containedIn(path, root) {
 			ioutil.WriteFile(path, []byte("present"), 0666) // OK
 		}
@@ -40,7 +40,7 @@ func unzip2(f string, root string) {
 		if containedIn(f.Name, root) {
 			ioutil.WriteFile(f.Name, []byte("present"), 0666) // OK
 		}
-	}
+	} // $ Alert[go/zipslip]
 }
 
 func containedIn(f string, root string) bool {

@@ -74,6 +74,8 @@
 | tst2.js:113:12:113:17 | unsafe | tst2.js:105:9:105:9 | p | tst2.js:113:12:113:17 | unsafe | Cross-site scripting vulnerability due to a $@. | tst2.js:105:9:105:9 | p | user-provided value |
 | tst3.js:6:12:6:12 | p | tst3.js:5:9:5:9 | p | tst3.js:6:12:6:12 | p | Cross-site scripting vulnerability due to a $@. | tst3.js:5:9:5:9 | p | user-provided value |
 | tst3.js:12:12:12:15 | code | tst3.js:11:32:11:39 | reg.body | tst3.js:12:12:12:15 | code | Cross-site scripting vulnerability due to a $@. | tst3.js:11:32:11:39 | reg.body | user-provided value |
+| vercel.ts:5:24:5:51 | `<h1>${ ... }</h1>` | vercel.ts:5:31:5:39 | req.query | vercel.ts:5:24:5:51 | `<h1>${ ... }</h1>` | Cross-site scripting vulnerability due to a $@. | vercel.ts:5:31:5:39 | req.query | user-provided value |
+| vercel.ts:5:24:5:51 | `<h1>${ ... }</h1>` | vercel.ts:5:31:5:44 | req.query.name | vercel.ts:5:24:5:51 | `<h1>${ ... }</h1>` | Cross-site scripting vulnerability due to a $@. | vercel.ts:5:31:5:44 | req.query.name | user-provided value |
 edges
 | ReflectedXss.js:7:33:7:45 | req.params.id | ReflectedXss.js:7:14:7:45 | "Unknow ... rams.id | provenance |  |
 | ReflectedXss.js:16:31:16:39 | params.id | ReflectedXss.js:16:12:16:39 | "Unknow ... rams.id | provenance |  |
@@ -259,6 +261,8 @@ edges
 | tst3.js:11:9:11:12 | code | tst3.js:12:12:12:15 | code | provenance |  |
 | tst3.js:11:16:11:74 | prettie ... bel" }) | tst3.js:11:9:11:12 | code | provenance |  |
 | tst3.js:11:32:11:39 | reg.body | tst3.js:11:16:11:74 | prettie ... bel" }) | provenance |  |
+| vercel.ts:5:31:5:39 | req.query | vercel.ts:5:24:5:51 | `<h1>${ ... }</h1>` | provenance |  |
+| vercel.ts:5:31:5:44 | req.query.name | vercel.ts:5:24:5:51 | `<h1>${ ... }</h1>` | provenance |  |
 nodes
 | ReflectedXss.js:7:14:7:45 | "Unknow ... rams.id | semmle.label | "Unknow ... rams.id |
 | ReflectedXss.js:7:33:7:45 | req.params.id | semmle.label | req.params.id |
@@ -497,5 +501,8 @@ nodes
 | tst3.js:11:16:11:74 | prettie ... bel" }) | semmle.label | prettie ... bel" }) |
 | tst3.js:11:32:11:39 | reg.body | semmle.label | reg.body |
 | tst3.js:12:12:12:15 | code | semmle.label | code |
+| vercel.ts:5:24:5:51 | `<h1>${ ... }</h1>` | semmle.label | `<h1>${ ... }</h1>` |
+| vercel.ts:5:31:5:39 | req.query | semmle.label | req.query |
+| vercel.ts:5:31:5:44 | req.query.name | semmle.label | req.query.name |
 subpaths
 | ReflectedXssGood3.js:139:24:139:26 | url | ReflectedXssGood3.js:68:22:68:26 | value | ReflectedXssGood3.js:108:10:108:23 | parts.join('') | ReflectedXssGood3.js:139:12:139:27 | escapeHtml3(url) |

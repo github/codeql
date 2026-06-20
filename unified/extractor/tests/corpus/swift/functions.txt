@@ -1,0 +1,389 @@
+===
+Function with no parameters
+===
+
+func greet() {
+  print("hello")
+}
+
+---
+
+source_file
+  statement:
+    function_declaration
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "hello"
+      name: simple_identifier "greet"
+
+---
+
+top_level
+  body:
+
+===
+Function with parameters and return type
+===
+
+func add(_ a: Int, _ b: Int) -> Int {
+  return a + b
+}
+
+---
+
+source_file
+  statement:
+    function_declaration
+      body:
+        block
+          statement:
+            control_transfer_statement
+              kind: return
+              result:
+                additive_expression
+                  lhs: simple_identifier "a"
+                  op: +
+                  rhs: simple_identifier "b"
+      name: simple_identifier "add"
+      parameter:
+        function_parameter
+          parameter:
+            parameter
+              external_name: simple_identifier "_"
+              name: simple_identifier "a"
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "Int"
+        function_parameter
+          parameter:
+            parameter
+              external_name: simple_identifier "_"
+              name: simple_identifier "b"
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "Int"
+      return_type:
+        type
+          name:
+            user_type
+              part:
+                simple_user_type
+                  name: type_identifier "Int"
+
+---
+
+top_level
+  body:
+
+===
+Function with named parameters
+===
+
+func greet(person name: String) {
+  print(name)
+}
+
+---
+
+source_file
+  statement:
+    function_declaration
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "name"
+      name: simple_identifier "greet"
+      parameter:
+        function_parameter
+          parameter:
+            parameter
+              external_name: simple_identifier "person"
+              name: simple_identifier "name"
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "String"
+
+---
+
+top_level
+  body:
+
+===
+Function with default parameter value
+===
+
+func greet(name: String = "world") {
+  print(name)
+}
+
+---
+
+source_file
+  statement:
+    function_declaration
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "name"
+      name: simple_identifier "greet"
+      parameter:
+        function_parameter
+          default_value:
+            line_string_literal
+              text: line_str_text "world"
+          parameter:
+            parameter
+              name: simple_identifier "name"
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "String"
+
+---
+
+top_level
+  body:
+
+===
+Variadic function
+===
+
+func sum(_ values: Int...) -> Int {
+  return values.reduce(0, +)
+}
+
+---
+
+source_file
+  statement:
+    function_declaration
+      body:
+        block
+          statement:
+            control_transfer_statement
+              kind: return
+              result:
+                call_expression
+                  function:
+                    navigation_expression
+                      suffix:
+                        navigation_suffix
+                          suffix: simple_identifier "reduce"
+                      target: simple_identifier "values"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+                          argument:
+                            value_argument
+                              value: integer_literal "0"
+                            value_argument
+                              value:
+                                referenceable_operator
+                                  operator: +
+      name: simple_identifier "sum"
+      parameter:
+        function_parameter
+          parameter:
+            parameter
+              external_name: simple_identifier "_"
+              name: simple_identifier "values"
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "Int"
+      return_type:
+        type
+          name:
+            user_type
+              part:
+                simple_user_type
+                  name: type_identifier "Int"
+
+---
+
+top_level
+  body:
+
+===
+Function call
+===
+
+foo(1, 2)
+
+---
+
+source_file
+  statement:
+    call_expression
+      function: simple_identifier "foo"
+      suffix:
+        call_suffix
+          arguments:
+            value_arguments
+              argument:
+                value_argument
+                  value: integer_literal "1"
+                value_argument
+                  value: integer_literal "2"
+
+---
+
+top_level
+  body:
+
+===
+Function call with labelled arguments
+===
+
+greet(person: "Bob")
+
+---
+
+source_file
+  statement:
+    call_expression
+      function: simple_identifier "greet"
+      suffix:
+        call_suffix
+          arguments:
+            value_arguments
+              argument:
+                value_argument
+                  name:
+                    value_argument_label
+                      name: simple_identifier "person"
+                  value:
+                    line_string_literal
+                      text: line_str_text "Bob"
+
+---
+
+top_level
+  body:
+
+===
+Method call
+===
+
+list.append(1)
+
+---
+
+source_file
+  statement:
+    call_expression
+      function:
+        navigation_expression
+          suffix:
+            navigation_suffix
+              suffix: simple_identifier "append"
+          target: simple_identifier "list"
+      suffix:
+        call_suffix
+          arguments:
+            value_arguments
+              argument:
+                value_argument
+                  value: integer_literal "1"
+
+---
+
+top_level
+  body:
+
+===
+Generic function
+===
+
+func identity<T>(_ x: T) -> T {
+  return x
+}
+
+---
+
+source_file
+  statement:
+    function_declaration
+      body:
+        block
+          statement:
+            control_transfer_statement
+              kind: return
+              result: simple_identifier "x"
+      name: simple_identifier "identity"
+      parameter:
+        function_parameter
+          parameter:
+            parameter
+              external_name: simple_identifier "_"
+              name: simple_identifier "x"
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "T"
+      return_type:
+        type
+          name:
+            user_type
+              part:
+                simple_user_type
+                  name: type_identifier "T"
+      type_parameters:
+        type_parameters
+          parameter:
+            type_parameter
+              name: type_identifier "T"
+
+---
+
+top_level
+  body:

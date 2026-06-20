@@ -1,1 +1,2 @@
-Classes/ShouldBeContextManager.ql
+query: Classes/ShouldBeContextManager.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

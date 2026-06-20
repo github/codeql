@@ -13,7 +13,7 @@ public class IgnoredHostnameVerification {
 
     SSLSocket socket = (SSLSocket) SSLSocketFactory.getDefault().createSocket(host, port);
     socket.startHandshake();
-    verifier.verify(host, socket.getSession());
+    verifier.verify(host, socket.getSession()); // $ Alert[java/ignored-hostname-verification]
     return socket;
   }
 

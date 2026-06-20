@@ -9,7 +9,7 @@ private module Impl {
   private import SsaReadPositionCommon
   private import semmle.code.csharp.controlflow.Guards as G
 
-  private class ExprNode = ControlFlow::Nodes::ExprNode;
+  private class ExprNode = ControlFlowNodes::ExprNode;
 
   /** Holds if `parent` having child `child` implies `parentNode` having child `childNode`. */
   predicate hasChild(Expr parent, Expr child, ExprNode parentNode, ExprNode childNode) {
@@ -19,9 +19,13 @@ private module Impl {
   }
 
   /** Holds if SSA definition `def` equals `e + delta`. */
-  predicate ssaUpdateStep(ExplicitDefinition def, ExprNode e, int delta) {
-    exists(ControlFlow::Node cfn | cfn = def.getControlFlowNode() |
-      e = cfn.(ExprNode::Assignment).getRValue() and delta = 0
+  predicate ssaUpdateStep(SsaExplicitWrite def, ExprNode e, int delta) {
+    exists(ControlFlowNode cfn | cfn = def.getControlFlowNode() |
+      e = cfn.(ExprNode::Assignment).getRightOperand() and
+      delta = 0 and
+      not cfn instanceof ExprNode::AssignOperation
+      or
+      e = cfn.(ExprNode::AssignOperation) and delta = 0
       or
       e = cfn.(ExprNode::PostIncrExpr).getOperand() and delta = 1
       or
@@ -35,7 +39,7 @@ private module Impl {
 
   /** Holds if `e1 + delta` equals `e2`. */
   predicate valueFlowStep(ExprNode e2, ExprNode e1, int delta) {
-    e2.(ExprNode::AssignExpr).getRValue() = e1 and delta = 0
+    e2.(ExprNode::AssignExpr).getRightOperand() = e1 and delta = 0
     or
     e2.(ExprNode::UnaryPlusExpr).getOperand() = e1 and delta = 0
     or
@@ -48,15 +52,15 @@ private module Impl {
     e2.(ExprNode::PreDecrExpr).getOperand() = e1 and delta = -1
     or
     exists(ConstantIntegerExpr x |
-      e2.(ExprNode::AddExpr).getAnOperand() = e1 and
-      e2.(ExprNode::AddExpr).getAnOperand() = x and
+      e2.(ExprNode::AddOperation).getAnOperand() = e1 and
+      e2.(ExprNode::AddOperation).getAnOperand() = x and
       e1 != x and
       x.getIntValue() = delta
     )
     or
     exists(ConstantIntegerExpr x |
-      e2.(ExprNode::SubExpr).getLeftOperand() = e1 and
-      e2.(ExprNode::SubExpr).getRightOperand() = x and
+      e2.(ExprNode::SubOperation).getLeftOperand() = e1 and
+      e2.(ExprNode::SubOperation).getRightOperand() = x and
       x.getIntValue() = -delta
     )
     or
@@ -79,9 +83,7 @@ private module Impl {
     /**
      * Holds if basic block `bb` is guarded by this guard having value `v`.
      */
-    predicate controlsBasicBlock(ControlFlow::BasicBlock bb, G::GuardValue v) {
-      super.controlsBasicBlock(bb, v)
-    }
+    predicate controlsBasicBlock(BasicBlock bb, G::GuardValue v) { super.controlsBasicBlock(bb, v) }
 
     /**
      * Holds if this guard is an equality test between `e1` and `e2`. If the test is
@@ -104,7 +106,7 @@ private module Impl {
    * - `isEq = true`  : `def == e + delta`
    * - `isEq = false` : `def != e + delta`
    */
-  Guard eqFlowCond(Definition def, ExprNode e, int delta, boolean isEq, boolean testIsTrue) {
+  Guard eqFlowCond(SsaDefinition def, ExprNode e, int delta, boolean isEq, boolean testIsTrue) {
     exists(boolean eqpolarity |
       result.isEquality(ssaRead(def, delta), e, eqpolarity) and
       testIsTrue = [false, true] and
@@ -156,7 +158,7 @@ import Impl
 module ExprNode {
   private import csharp as CS
 
-  private class ExprNode = CS::ControlFlow::Nodes::ExprNode;
+  private class ExprNode = CS::ControlFlowNodes::ExprNode;
 
   private import Sign
 
@@ -203,19 +205,28 @@ module ExprNode {
     override CS::Assignment e;
 
     /** Gets the left operand of this assignment. */
-    ExprNode getLValue() {
-      result = unique(ExprNode res | hasChild(e, e.getLValue(), this, res) | res)
+    ExprNode getLeftOperand() {
+      result = unique(ExprNode res | hasChild(e, e.getLeftOperand(), this, res) | res)
     }
 
     /** Gets the right operand of this assignment. */
-    ExprNode getRValue() {
-      result = unique(ExprNode res | hasChild(e, e.getRValue(), this, res) | res)
+    ExprNode getRightOperand() {
+      result = unique(ExprNode res | hasChild(e, e.getRightOperand(), this, res) | res)
     }
   }
 
   /** A simple assignment. */
   class AssignExpr extends Assignment {
     override CS::AssignExpr e;
+  }
+
+  /** A compound assignment operation. */
+  class AssignOperation extends Assignment, BinaryOperation {
+    override CS::AssignOperation e;
+
+    override ExprNode getLeftOperand() { result = Assignment.super.getLeftOperand() }
+
+    override ExprNode getRightOperand() { result = Assignment.super.getRightOperand() }
   }
 
   /** A unary operation. */
@@ -309,78 +320,78 @@ module ExprNode {
   }
 
   /** An addition operation. */
-  class AddExpr extends BinaryOperation {
-    override CS::AddExpr e;
+  class AddOperation extends BinaryOperation {
+    override CS::AddOperation e;
 
     override TAddOp getOp() { any() }
   }
 
   /** A subtraction operation. */
-  class SubExpr extends BinaryOperation {
-    override CS::SubExpr e;
+  class SubOperation extends BinaryOperation {
+    override CS::SubOperation e;
 
     override TSubOp getOp() { any() }
   }
 
   /** A multiplication operation. */
-  class MulExpr extends BinaryOperation {
-    override CS::MulExpr e;
+  class MulOperation extends BinaryOperation {
+    override CS::MulOperation e;
 
     override TMulOp getOp() { any() }
   }
 
   /** A division operation. */
-  class DivExpr extends BinaryOperation {
-    override CS::DivExpr e;
+  class DivOperation extends BinaryOperation {
+    override CS::DivOperation e;
 
     override TDivOp getOp() { any() }
   }
 
   /** A remainder operation. */
-  class RemExpr extends BinaryOperation {
-    override CS::RemExpr e;
+  class RemOperation extends BinaryOperation {
+    override CS::RemOperation e;
 
     override TRemOp getOp() { any() }
   }
 
   /** A bitwise-and operation. */
-  class BitwiseAndExpr extends BinaryOperation {
-    override CS::BitwiseAndExpr e;
+  class BitwiseAndOperation extends BinaryOperation {
+    override CS::BitwiseAndOperation e;
 
     override TBitAndOp getOp() { any() }
   }
 
   /** A bitwise-or operation. */
-  class BitwiseOrExpr extends BinaryOperation {
-    override CS::BitwiseOrExpr e;
+  class BitwiseOrOperation extends BinaryOperation {
+    override CS::BitwiseOrOperation e;
 
     override TBitOrOp getOp() { any() }
   }
 
   /** A bitwise-xor operation. */
-  class BitwiseXorExpr extends BinaryOperation {
-    override CS::BitwiseXorExpr e;
+  class BitwiseXorOperation extends BinaryOperation {
+    override CS::BitwiseXorOperation e;
 
     override TBitXorOp getOp() { any() }
   }
 
   /** A left-shift operation. */
-  class LeftShiftExpr extends BinaryOperation {
-    override CS::LeftShiftExpr e;
+  class LeftShiftOperation extends BinaryOperation {
+    override CS::LeftShiftOperation e;
 
     override TLeftShiftOp getOp() { any() }
   }
 
   /** A right-shift operation. */
-  class RightShiftExpr extends BinaryOperation {
-    override CS::RightShiftExpr e;
+  class RightShiftOperation extends BinaryOperation {
+    override CS::RightShiftOperation e;
 
     override TRightShiftOp getOp() { any() }
   }
 
   /** An unsigned right-shift operation. */
-  class UnsignedRightShiftExpr extends BinaryOperation {
-    override CS::UnsignedRightShiftExpr e;
+  class UnsignedRightShiftOperation extends BinaryOperation {
+    override CS::UnsignedRightShiftOperation e;
 
     override TUnsignedRightShiftOp getOp() { any() }
   }

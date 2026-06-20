@@ -10,9 +10,9 @@ import (
 )
 
 func handlerExample(req *http.Request) {
-	imageName := req.URL.Query()["imageName"][0]
+	imageName := req.URL.Query()["imageName"][0] // $ Source[go/command-injection]
 	outputPath := "/tmp/output.svg"
-	cmd := exec.Command("sh", "-c", fmt.Sprintf("imagetool %s > %s", imageName, outputPath)) // NOT OK - correctly flagged
+	cmd := exec.Command("sh", "-c", fmt.Sprintf("imagetool %s > %s", imageName, outputPath)) // $ Alert[go/command-injection] // NOT OK - correctly flagged
 	cmd.Run()
 	// ...
 }
@@ -38,10 +38,10 @@ func handlerExample2(req *http.Request) {
 }
 
 func handlerExample3(req *http.Request) {
-	imageName := req.URL.Query()["imageName"][0]
+	imageName := req.URL.Query()["imageName"][0] // $ Source[go/command-injection]
 	outputPath := "/tmp/output.svg"
 
-	cmd := exec.Command("sh", "-c", fmt.Sprintf("imagetool %s > %s", imageName, outputPath)) // NOT OK - correctly flagged
+	cmd := exec.Command("sh", "-c", fmt.Sprintf("imagetool %s > %s", imageName, outputPath)) // $ Alert[go/command-injection] // NOT OK - correctly flagged
 	cmd.Run()
 
 	// Validate the imageName with a regular expression

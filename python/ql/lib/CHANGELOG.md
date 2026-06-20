@@ -1,3 +1,43 @@
+## 7.1.2
+
+### Minor Analysis Improvements
+
+* The sensitive data heuristics used to identify code that handles passwords and private data have been improved. Most of the changes permit more variations of established patterns, thereby finding more sensitive data. Queries that use the sensitive data library (for example `py/clear-text-logging-sensitive-data`) may find more correct results and fewer false positive results after these changes.
+
+## 7.1.1
+
+No user-facing changes.
+
+## 7.1.0
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for Python](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-python/).
+
+### Minor Analysis Improvements
+
+- The Python extractor now supports unpacking in comprehensions, e.g. `[*x for x in nested]` (as defined in [PEP-798](https://peps.python.org/pep-0798/)) that will be part of Python 3.15.
+
+## 7.0.5
+
+### Minor Analysis Improvements
+
+- The Python extractor now supports the new `lazy import ...` and `lazy from ... import ...` (as defined in [PEP-810](https://peps.python.org/pep-0810/)) that will be part of Python 3.15.
+
+## 7.0.4
+
+### Bug Fixes
+
+- Fixed the resolution of relative imports such as `from . import helper` inside namespace packages (directories without an `__init__.py` file), which previously did not work correctly, leading to missing flow.
+
+## 7.0.3
+
+No user-facing changes.
+
+## 7.0.2
+
+No user-facing changes.
+
 ## 7.0.1
 
 ### Minor Analysis Improvements

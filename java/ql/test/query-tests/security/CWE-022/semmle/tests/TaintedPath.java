@@ -10,10 +10,10 @@ import java.nio.file.Paths;
 public class TaintedPath {
     public void sendUserFile(Socket sock, String user) throws IOException {
         BufferedReader filenameReader =
-                new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-8")); // $ Source
+                new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-8")); // $ Source[java/path-injection]
         String filename = filenameReader.readLine();
         // BAD: read from a file without checking its path
-        BufferedReader fileReader = new BufferedReader(new FileReader(filename)); // $ Alert
+        BufferedReader fileReader = new BufferedReader(new FileReader(filename)); // $ Alert[java/path-injection]
         String fileLine = fileReader.readLine();
         while (fileLine != null) {
             sock.getOutputStream().write(fileLine.getBytes());
@@ -65,6 +65,27 @@ public class TaintedPath {
             throw new IllegalArgumentException("Invalid filename");
         }
         BufferedReader fileReader = new BufferedReader(new FileReader(filename));
+        String fileLine = fileReader.readLine();
+        while (fileLine != null) {
+            sock.getOutputStream().write(fileLine.getBytes());
+            fileLine = fileReader.readLine();
+        }
+    }
+
+    public void sendUserFileGood5(Socket sock, String user) throws Exception {
+        BufferedReader filenameReader =
+                new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-8"));
+        String filename = filenameReader.readLine();
+
+        Path publicFolder = Paths.get("/home/" + user + "/public").toRealPath();
+        Path filePath = publicFolder.resolve(filename).toRealPath();
+
+        // GOOD: toRealPath() normalizes the path (resolves ".." and symlinks),
+        // equivalent to File.getCanonicalPath()
+        if (!filePath.startsWith(publicFolder + File.separator)) {
+            throw new IllegalArgumentException("Invalid filename");
+        }
+        BufferedReader fileReader = new BufferedReader(new FileReader(filePath.toString()));
         String fileLine = fileReader.readLine();
         while (fileLine != null) {
             sock.getOutputStream().write(fileLine.getBytes());

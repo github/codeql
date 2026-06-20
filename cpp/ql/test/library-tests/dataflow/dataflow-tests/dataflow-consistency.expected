@@ -10,11 +10,13 @@ uniqueEnclosingCallable
 | test.cpp:1158:18:1158:42 | ... , ... | Node should have one enclosing callable but has 0. |
 | test.cpp:1158:23:1158:31 | recursion | Node should have one enclosing callable but has 0. |
 | test.cpp:1158:35:1158:40 | call to source | Node should have one enclosing callable but has 0. |
+| test.cpp:1318:13:1318:18 | call to source | Node should have one enclosing callable but has 0. |
 uniqueCallEnclosingCallable
 | test.cpp:864:47:864:54 | call to source | Call should have one enclosing callable but has 0. |
 | test.cpp:872:46:872:51 | call to source | Call should have one enclosing callable but has 0. |
 | test.cpp:1158:18:1158:21 | call to sink | Call should have one enclosing callable but has 0. |
 | test.cpp:1158:35:1158:40 | call to source | Call should have one enclosing callable but has 0. |
+| test.cpp:1318:13:1318:18 | call to source | Call should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation
@@ -141,6 +143,7 @@ postWithInFlow
 | test.cpp:1153:5:1153:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:1165:5:1165:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:1195:5:1195:6 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:1337:5:1337:13 | access to array [post update] | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition

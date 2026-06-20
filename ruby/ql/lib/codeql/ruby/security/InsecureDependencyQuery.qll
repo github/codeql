@@ -33,7 +33,7 @@ private class SourceCall extends RelevantGemCall {
 private class GitSourceCall extends RelevantGemCall {
   GitSourceCall() { this.getMethodName() = "git_source" }
 
-  override Expr getAUrlPart() { result = this.getBlock().getLastStmt() }
+  override Expr getAUrlPart() { result = this.getBlock().getBody().getLastStmt() }
 }
 
 /**

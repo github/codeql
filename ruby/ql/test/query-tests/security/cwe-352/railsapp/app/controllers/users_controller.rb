@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   # BAD: Disabling forgery protection may open the application to CSRF attacks
-  skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token # $ Alert[rb/csrf-protection-disabled]
 
   def change_email
     user = current_user

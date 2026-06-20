@@ -1,0 +1,32 @@
+#10000=@"/emoji_buffer_boundary.yml;sourcefile"
+files(#10000,"/emoji_buffer_boundary.yml")
+#10001=@"/;folder"
+folders(#10001,"/")
+containerparent(#10001,#10000)
+#10002=@"loc,{#10000},0,0,0,0"
+locations_default(#10002,#10000,0,0,0,0)
+hasLocation(#10000,#10002)
+#20000=*
+yaml_comments(#20000," xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx","# xxxxx ... xxxxxxx")
+#20001=@"loc,{#10000},1,1,1,1017"
+locations_default(#20001,#10000,1,1,1,1017)
+yaml_locations(#20000,#20001)
+#20002=*
+#20003=*
+yaml_scalars(#20003,0,"key")
+yaml(#20003,0,#20002,1,"tag:yaml.org,2002:str","key")
+#20004=@"loc,{#10000},2,1,2,3"
+locations_default(#20004,#10000,2,1,2,3)
+yaml_locations(#20003,#20004)
+#20005=*
+yaml_scalars(#20005,0,"🚀")
+yaml(#20005,0,#20002,-1,"tag:yaml.org,2002:str","\u1f680\ude80")
+#20006=@"loc,{#10000},2,6,2,6"
+locations_default(#20006,#10000,2,6,2,6)
+yaml_locations(#20005,#20006)
+yaml(#20002,1,#10000,0,"tag:yaml.org,2002:map","key: \u1f680\ude80")
+#20007=@"loc,{#10000},2,1,2,8"
+locations_default(#20007,#10000,2,1,2,8)
+yaml_locations(#20002,#20007)
+numlines(#10000,2,0,0)
+filetype(#10000,"yaml")

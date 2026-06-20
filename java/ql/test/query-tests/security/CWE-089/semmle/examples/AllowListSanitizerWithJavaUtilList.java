@@ -45,7 +45,7 @@ class AllowListSanitizerWithJavaUtilList {
 		return String.valueOf(System.currentTimeMillis());
 	}
 
-	public static void main(String[] args) throws IOException, SQLException {
+	public static void main(String[] args) throws IOException, SQLException { // $ Source[java/sql-injection]
 		badAllowList6 = List.of("allowed1", getNonConstantString(), "allowed3");
 		testStaticFields(args);
 		testLocal(args);
@@ -61,61 +61,61 @@ class AllowListSanitizerWithJavaUtilList {
 		if(goodAllowList1.contains(tainted.toLowerCase())){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
-			ResultSet results = connection.createStatement().executeQuery(query);
+			ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/concatenated-sql-query]
 		}
 		// GOOD: an allowlist is used with constant strings
 		if(goodAllowList2.contains(tainted.toUpperCase())){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
-			ResultSet results = connection.createStatement().executeQuery(query);
+			ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/concatenated-sql-query]
 		}
 		// GOOD: an allowlist is used with constant strings
 		if(goodAllowList3.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
-			ResultSet results = connection.createStatement().executeQuery(query);
+			ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/concatenated-sql-query]
 		}
 		// GOOD: an allowlist is used with constant strings
 		if(goodAllowList4.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
-			ResultSet results = connection.createStatement().executeQuery(query);
+			ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/concatenated-sql-query]
 		}
 		// BAD: an allowlist is used with constant strings
 		if(badAllowList1.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
-			ResultSet results = connection.createStatement().executeQuery(query);
+			ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 		}
 		// BAD: an allowlist is used with constant strings
 		if(badAllowList2.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
-			ResultSet results = connection.createStatement().executeQuery(query);
+			ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 		}
 		// BAD: an allowlist is used with constant strings
 		if(badAllowList3.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
-			ResultSet results = connection.createStatement().executeQuery(query);
+			ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 		}
 		// BAD: an allowlist is used with constant strings
 		if(badAllowList4.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
-			ResultSet results = connection.createStatement().executeQuery(query);
+			ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 		}
 		// GOOD: an allowlist is used with constant strings
 		if(goodAllowList5.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
-			ResultSet results = connection.createStatement().executeQuery(query);
+			ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/concatenated-sql-query]
 		}
 		// BAD: the allowlist is in a non-final field
 		if(badAllowList6.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
-			ResultSet results = connection.createStatement().executeQuery(query);
+			ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 		}
 	}
 
@@ -125,7 +125,7 @@ class AllowListSanitizerWithJavaUtilList {
 		if(goodAllowList7.contains(tainted)){
 			String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ tainted + "' ORDER BY PRICE";
-			ResultSet results = connection.createStatement().executeQuery(query);
+			ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/concatenated-sql-query]
 		}
 	}
 
@@ -137,7 +137,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted.toLowerCase())){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/concatenated-sql-query]
 			}
 		}
 		// BAD: an allowlist is used but one of the entries is not a compile-time constant
@@ -146,7 +146,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 			}
 		}
 		// GOOD: an allowlist is used with constant strings
@@ -156,7 +156,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted.toUpperCase())){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/concatenated-sql-query]
 			}
 		}
 		// BAD: an allowlist is used but one of the entries is not a compile-time constant
@@ -166,7 +166,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 			}
 		}
 		// GOOD: an allowlist is used with constant strings
@@ -175,7 +175,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/concatenated-sql-query]
 			}
 		}
 		// BAD: an allowlist is used but one of the entries is not a compile-time constant
@@ -184,7 +184,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 			}
 		}
 		// GOOD: an allowlist is used with constant strings
@@ -194,7 +194,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/concatenated-sql-query]
 			}
 		}
 		// BAD: an allowlist is used but one of the entries is not a compile-time constant
@@ -204,7 +204,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 			}
 		}
 		// GOOD: an allowlist is used with constant string
@@ -216,7 +216,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/concatenated-sql-query]
 			}
 		}
 		// BAD: an allowlist is used but one of the entries is not a compile-time constant
@@ -228,7 +228,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 			}
 		}
 		// BAD: an allowlist is used but it contains a non-compile-time constant element
@@ -239,7 +239,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 			}
 		}
 	}
@@ -257,7 +257,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 			}
 		}
 		{
@@ -266,7 +266,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 			}
 		}
 		{
@@ -275,7 +275,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted)){
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 			}
 		}
 	}
@@ -290,7 +290,7 @@ class AllowListSanitizerWithJavaUtilList {
 			if(allowlist.contains(tainted)){ // missing result
 				String query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 						+ tainted + "' ORDER BY PRICE";
-				ResultSet results = connection.createStatement().executeQuery(query);
+				ResultSet results = connection.createStatement().executeQuery(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 			}
 		}
 	}

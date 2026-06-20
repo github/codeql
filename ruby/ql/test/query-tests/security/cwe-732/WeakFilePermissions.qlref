@@ -1,1 +1,2 @@
-queries/security/cwe-732/WeakFilePermissions.ql
+query: queries/security/cwe-732/WeakFilePermissions.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

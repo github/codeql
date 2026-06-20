@@ -13,7 +13,7 @@ public class SpelInjectionTest {
   private static final ExpressionParser PARSER = new SpelExpressionParser();
 
   public void testGetValue(Socket socket) throws IOException {
-    InputStream in = socket.getInputStream(); // $ Source
+    InputStream in = socket.getInputStream(); // $ Source[java/spel-expression-injection]
 
     byte[] bytes = new byte[1024];
     int n = in.read(bytes);
@@ -21,33 +21,33 @@ public class SpelInjectionTest {
 
     ExpressionParser parser = new SpelExpressionParser();
     Expression expression = parser.parseExpression(input);
-    expression.getValue(); // $ Alert
+    expression.getValue(); // $ Alert[java/spel-expression-injection]
   }
 
   public void testGetValueWithParseRaw(Socket socket) throws IOException {
-    InputStream in = socket.getInputStream(); // $ Source
+    InputStream in = socket.getInputStream(); // $ Source[java/spel-expression-injection]
 
     byte[] bytes = new byte[1024];
     int n = in.read(bytes);
     String input = new String(bytes, 0, n);
     SpelExpressionParser parser = new SpelExpressionParser();
     SpelExpression expression = parser.parseRaw(input);
-    expression.getValue(); // $ Alert
+    expression.getValue(); // $ Alert[java/spel-expression-injection]
   }
 
   public void testGetValueWithChainedCalls(Socket socket) throws IOException {
-    InputStream in = socket.getInputStream(); // $ Source
+    InputStream in = socket.getInputStream(); // $ Source[java/spel-expression-injection]
 
     byte[] bytes = new byte[1024];
     int n = in.read(bytes);
     String input = new String(bytes, 0, n);
 
     Expression expression = new SpelExpressionParser().parseExpression(input);
-    expression.getValue(); // $ Alert
+    expression.getValue(); // $ Alert[java/spel-expression-injection]
   }
 
   public void testSetValueWithRootObject(Socket socket) throws IOException {
-    InputStream in = socket.getInputStream(); // $ Source
+    InputStream in = socket.getInputStream(); // $ Source[java/spel-expression-injection]
 
     byte[] bytes = new byte[1024];
     int n = in.read(bytes);
@@ -57,33 +57,33 @@ public class SpelInjectionTest {
 
     Object root = new Object();
     Object value = new Object();
-    expression.setValue(root, value); // $ Alert
+    expression.setValue(root, value); // $ Alert[java/spel-expression-injection]
   }
 
   public void testGetValueWithStaticParser(Socket socket) throws IOException {
-    InputStream in = socket.getInputStream(); // $ Source
+    InputStream in = socket.getInputStream(); // $ Source[java/spel-expression-injection]
 
     byte[] bytes = new byte[1024];
     int n = in.read(bytes);
     String input = new String(bytes, 0, n);
 
     Expression expression = PARSER.parseExpression(input);
-    expression.getValue(); // $ Alert
+    expression.getValue(); // $ Alert[java/spel-expression-injection]
   }
 
   public void testGetValueType(Socket socket) throws IOException {
-    InputStream in = socket.getInputStream(); // $ Source
+    InputStream in = socket.getInputStream(); // $ Source[java/spel-expression-injection]
 
     byte[] bytes = new byte[1024];
     int n = in.read(bytes);
     String input = new String(bytes, 0, n);
 
     Expression expression = PARSER.parseExpression(input);
-    expression.getValueType(); // $ Alert
+    expression.getValueType(); // $ Alert[java/spel-expression-injection]
   }
 
   public void testWithStandardEvaluationContext(Socket socket) throws IOException {
-    InputStream in = socket.getInputStream(); // $ Source
+    InputStream in = socket.getInputStream(); // $ Source[java/spel-expression-injection]
 
     byte[] bytes = new byte[1024];
     int n = in.read(bytes);
@@ -92,7 +92,7 @@ public class SpelInjectionTest {
     Expression expression = PARSER.parseExpression(input);
 
     StandardEvaluationContext context = new StandardEvaluationContext();
-    expression.getValue(context); // $ Alert
+    expression.getValue(context); // $ Alert[java/spel-expression-injection]
   }
 
   public void testWithSimpleEvaluationContext(Socket socket) throws IOException {

@@ -1,0 +1,641 @@
+===
+Empty class
+===
+
+class Foo {}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+      declaration_kind: class
+      name: type_identifier "Foo"
+
+---
+
+top_level
+  body:
+
+===
+Class with stored properties
+===
+
+class Point {
+  var x: Int
+  var y: Int
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+          member:
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "x"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "y"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+      declaration_kind: class
+      name: type_identifier "Point"
+
+---
+
+top_level
+  body:
+
+===
+Class with initializer
+===
+
+class Point {
+  var x: Int
+  init(x: Int) {
+    self.x = x
+  }
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+          member:
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "x"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+            init_declaration
+              body:
+                block
+                  statement:
+                    assignment
+                      operator: =
+                      result: simple_identifier "x"
+                      target:
+                        directly_assignable_expression
+                          expr:
+                            navigation_expression
+                              suffix:
+                                navigation_suffix
+                                  suffix: simple_identifier "x"
+                              target:
+                                self_expression
+              parameter:
+                function_parameter
+                  parameter:
+                    parameter
+                      name: simple_identifier "x"
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+      declaration_kind: class
+      name: type_identifier "Point"
+
+---
+
+top_level
+  body:
+
+===
+Class with method
+===
+
+class Counter {
+  var n = 0
+  func bump() {
+    n += 1
+  }
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+          member:
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "n"
+                  value: integer_literal "0"
+            function_declaration
+              body:
+                block
+                  statement:
+                    assignment
+                      operator: +=
+                      result: integer_literal "1"
+                      target:
+                        directly_assignable_expression
+                          expr: simple_identifier "n"
+              name: simple_identifier "bump"
+      declaration_kind: class
+      name: type_identifier "Counter"
+
+---
+
+top_level
+  body:
+
+===
+Class inheritance
+===
+
+class Dog: Animal {}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+      declaration_kind: class
+      inherits:
+        inheritance_specifier
+          inherits_from:
+            user_type
+              part:
+                simple_user_type
+                  name: type_identifier "Animal"
+      name: type_identifier "Dog"
+
+---
+
+top_level
+  body:
+
+===
+Struct
+===
+
+struct Point {
+  let x: Int
+  let y: Int
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+          member:
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: let
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "x"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: let
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "y"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+      declaration_kind: struct
+      name: type_identifier "Point"
+
+---
+
+top_level
+  body:
+
+===
+Enum with cases
+===
+
+enum Direction {
+  case north
+  case south
+  case east
+  case west
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        enum_class_body
+          member:
+            enum_entry
+              case:
+                enum_case_entry
+                  name: simple_identifier "north"
+            enum_entry
+              case:
+                enum_case_entry
+                  name: simple_identifier "south"
+            enum_entry
+              case:
+                enum_case_entry
+                  name: simple_identifier "east"
+            enum_entry
+              case:
+                enum_case_entry
+                  name: simple_identifier "west"
+      declaration_kind: enum
+      name: type_identifier "Direction"
+
+---
+
+top_level
+  body:
+
+===
+Enum with associated values
+===
+
+enum Shape {
+  case circle(radius: Double)
+  case square(side: Double)
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        enum_class_body
+          member:
+            enum_entry
+              case:
+                enum_case_entry
+                  data_contents:
+                    enum_type_parameters
+                      parameter:
+                        enum_type_parameter
+                          name: simple_identifier "radius"
+                          type:
+                            type
+                              name:
+                                user_type
+                                  part:
+                                    simple_user_type
+                                      name: type_identifier "Double"
+                  name: simple_identifier "circle"
+            enum_entry
+              case:
+                enum_case_entry
+                  data_contents:
+                    enum_type_parameters
+                      parameter:
+                        enum_type_parameter
+                          name: simple_identifier "side"
+                          type:
+                            type
+                              name:
+                                user_type
+                                  part:
+                                    simple_user_type
+                                      name: type_identifier "Double"
+                  name: simple_identifier "square"
+      declaration_kind: enum
+      name: type_identifier "Shape"
+
+---
+
+top_level
+  body:
+
+===
+Protocol declaration
+===
+
+protocol Drawable {
+  func draw()
+}
+
+---
+
+source_file
+  statement:
+    protocol_declaration
+      body:
+        protocol_body
+          member:
+            protocol_function_declaration
+              name: simple_identifier "draw"
+      name: type_identifier "Drawable"
+
+---
+
+top_level
+  body:
+
+===
+Extension
+===
+
+extension Int {
+  func squared() -> Int { return self * self }
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+          member:
+            function_declaration
+              body:
+                block
+                  statement:
+                    control_transfer_statement
+                      kind: return
+                      result:
+                        multiplicative_expression
+                          lhs:
+                            self_expression
+                          op: *
+                          rhs:
+                            self_expression
+              name: simple_identifier "squared"
+              return_type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "Int"
+      declaration_kind: extension
+      name:
+        user_type
+          part:
+            simple_user_type
+              name: type_identifier "Int"
+
+---
+
+top_level
+  body:
+
+===
+Computed property
+===
+
+class Rect {
+  var w: Double
+  var h: Double
+  var area: Double {
+    return w * h
+  }
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+          member:
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "w"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Double"
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "h"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Double"
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  computed_value:
+                    computed_property
+                      statement:
+                        control_transfer_statement
+                          kind: return
+                          result:
+                            multiplicative_expression
+                              lhs: simple_identifier "w"
+                              op: *
+                              rhs: simple_identifier "h"
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "area"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Double"
+      declaration_kind: class
+      name: type_identifier "Rect"
+
+---
+
+top_level
+  body:
+
+===
+Property with getter and setter
+===
+
+class Box {
+  private var _v = 0
+  var v: Int {
+    get { return _v }
+    set { _v = newValue }
+  }
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+          member:
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "_v"
+                  value: integer_literal "0"
+              modifiers:
+                modifiers
+                  modifier:
+                    visibility_modifier
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  computed_value:
+                    computed_property
+                      accessor:
+                        computed_getter
+                          body:
+                            block
+                              statement:
+                                control_transfer_statement
+                                  kind: return
+                                  result: simple_identifier "_v"
+                          specifier:
+                            getter_specifier
+                        computed_setter
+                          body:
+                            block
+                              statement:
+                                assignment
+                                  operator: =
+                                  result: simple_identifier "newValue"
+                                  target:
+                                    directly_assignable_expression
+                                      expr: simple_identifier "_v"
+                          specifier:
+                            setter_specifier
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "v"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+      declaration_kind: class
+      name: type_identifier "Box"
+
+---
+
+top_level
+  body:

@@ -1,1 +1,2 @@
-Security/CWE/CWE-079/AndroidWebViewSettingsEnabledJavaScript.ql
+query: Security/CWE/CWE-079/AndroidWebViewSettingsEnabledJavaScript.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

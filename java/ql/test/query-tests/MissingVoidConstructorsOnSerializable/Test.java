@@ -9,7 +9,7 @@ class NonSerializable {
 }
 
 // BAD: Serializable but its parent cannot be instantiated
-class A extends NonSerializable implements Serializable { 
+class A extends NonSerializable implements Serializable {  // $ Alert
   public A() { super(1); }
 }
 

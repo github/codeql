@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/avro.git#68da8fb99da5c482f17853e01e79f714e3717b42 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.avro.util", "RandomData", True, "main", "(String[])", "", "Argument[0]", "commandargs", "ai-generated"]

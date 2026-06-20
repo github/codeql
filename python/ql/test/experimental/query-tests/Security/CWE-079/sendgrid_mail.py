@@ -1,4 +1,4 @@
-from flask import request, Flask
+from flask import request, Flask # $ Source
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, Email, To, Content, MimeType, HtmlContent
 
@@ -11,7 +11,7 @@ def send():
         from_email='from_email@example.com',
         to_emails='to@example.com',
         subject='Sending with Twilio SendGrid is Fun',
-        html_content=request.args["html_content"])
+        html_content=request.args["html_content"]) # $ Alert
 
     sg = SendGridAPIClient('SENDGRID_API_KEY')
     sg.send(message)
@@ -23,7 +23,7 @@ def send():
         from_email='from_email@example.com',
         to_emails='to@example.com',
         subject='Sending with Twilio SendGrid is Fun',
-        html_content=HtmlContent(request.args["html_content"]))
+        html_content=HtmlContent(request.args["html_content"])) # $ Alert
 
     sg = SendGridAPIClient('SENDGRID_API_KEY')
     sg.send(message)
@@ -34,7 +34,7 @@ def send_post():
     from_email = Email("test@example.com")
     to_email = To("test@example.com")
     subject = "Sending with SendGrid is Fun"
-    html_content = Content("text/html", request.args["html_content"])
+    html_content = Content("text/html", request.args["html_content"]) # $ Alert
     plain_content = Content("text/plain", request.args["plain_content"])
 
     mail = Mail(from_email, to_email, subject, plain_content, html_content)

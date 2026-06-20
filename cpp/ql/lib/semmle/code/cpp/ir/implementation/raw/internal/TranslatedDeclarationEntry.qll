@@ -34,8 +34,11 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
       or
       result = entry.getDeclaration().(GlobalOrNamespaceVariable)
       or
+      result = entry.getDeclaration().(Field)
+      or
       not entry.getDeclaration() instanceof StaticInitializedStaticLocalVariable and
       not entry.getDeclaration() instanceof GlobalOrNamespaceVariable and
+      not entry.getDeclaration() instanceof Field and
       result = stmt.getEnclosingFunction()
     )
   }

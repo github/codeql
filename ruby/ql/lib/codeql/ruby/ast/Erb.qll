@@ -156,14 +156,23 @@ class ErbDirective extends TDirectiveNode, ErbAstNode {
     )
   }
 
+  pragma[nomagic]
+  private Stmt getAChildStmt0() {
+    this.containsAstNodeStart(result) and
+    not this.containsAstNodeStart(result.getParent())
+  }
+
   /**
    * Gets a statement that starts in directive that is not a child of any other
    * statement starting in this directive.
    */
   cached
   Stmt getAChildStmt() {
+    result = this.getAChildStmt0() and
+    not result instanceof BodyStmt
+    or
     this.containsAstNodeStart(result) and
-    not this.containsAstNodeStart(result.getParent())
+    result = this.getAChildStmt0().(BodyStmt).getAStmt()
   }
 
   /**

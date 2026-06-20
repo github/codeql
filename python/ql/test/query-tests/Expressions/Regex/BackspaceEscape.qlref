@@ -1,1 +1,2 @@
-Expressions/Regex/BackspaceEscape.ql
+query: Expressions/Regex/BackspaceEscape.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

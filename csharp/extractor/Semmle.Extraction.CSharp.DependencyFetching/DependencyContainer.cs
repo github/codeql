@@ -50,7 +50,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return;
             }
 
-            var path = Path.Combine(p, ParseFilePath(d));
+            var path = Path.Join(p, ParseFilePath(d));
             Paths.Add(path);
             Packages.Add(GetPackageName(p));
         }

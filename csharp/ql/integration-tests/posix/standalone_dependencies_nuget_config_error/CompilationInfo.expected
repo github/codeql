@@ -1,7 +1,10 @@
-| All NuGet feeds reachable | 1.0 |
-| Failed project restore with package source error | 1.0 |
+| All NuGet feeds reachable | 0.0 |
+| Failed project restore with missing package error | 1.0 |
+| Failed project restore with package source error | 0.0 |
+| Failed solution restore with missing package error | 0.0 |
 | Failed solution restore with package source error | 0.0 |
 | Fallback nuget restore | 1.0 |
+| Inherited NuGet feed count | 1.0 |
 | NuGet feed responsiveness checked | 1.0 |
 | Project files on filesystem | 1.0 |
 | Reachable fallback NuGet feed count | 1.0 |

@@ -2,19 +2,19 @@ public class A {
   public void missing() {
     String s;
     s = "this text" +
-      "is missing a space";
+      "is missing a space"; // $ Alert
     s = "the class java.util.ArrayList" +
-      "without a space";
+      "without a space"; // $ Alert
     s = "This isn't" +
-      "right.";
+      "right."; // $ Alert
     s = "There's 1" +
-      "thing wrong";
+      "thing wrong"; // $ Alert
     s = "There's A/B" +
-      "and no space";
+      "and no space"; // $ Alert
     s = "Wait for it...." +
-      "No space!";
+      "No space!"; // $ Alert
     s = "Is there a space?" +
-      "No!";
+      "No!"; // $ Alert
   }
 
   public void ok() {

@@ -1,1 +1,2 @@
-Likely Bugs/Comparison/UselessComparisonTest.ql
+query: Likely Bugs/Comparison/UselessComparisonTest.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

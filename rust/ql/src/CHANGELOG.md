@@ -1,3 +1,34 @@
+## 0.1.36
+
+No user-facing changes.
+
+## 0.1.35
+
+No user-facing changes.
+
+## 0.1.34
+
+No user-facing changes.
+
+## 0.1.33
+
+No user-facing changes.
+
+## 0.1.32
+
+### Query Metadata Changes
+
+* The `@security-severity` metadata of `rust/log-injection` has been increased from 2.6 (low) to 6.1 (medium).
+* The `@security-severity` metadata of `rust/xss` has been increased from 6.1 (medium) to 7.8 (high).
+
+## 0.1.31
+
+No user-facing changes.
+
+## 0.1.30
+
+No user-facing changes.
+
 ## 0.1.29
 
 No user-facing changes.

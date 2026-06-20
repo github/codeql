@@ -6,7 +6,7 @@ func niceFetch(url string) {
 	var s string
 	var e error
 	s, e = fetch(url)
-	if e != nil {
+	if e != nil { // $ Alert
 		fmt.Printf("Unable to fetch URL: %v\n", e)
 	} else {
 		fmt.Printf("URL contents: %s\n", s)

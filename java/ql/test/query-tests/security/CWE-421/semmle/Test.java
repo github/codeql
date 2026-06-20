@@ -35,7 +35,7 @@ class Test {
 		ServerSocket listenSocket = new ServerSocket(desiredPort);
 
 		if (isAuthenticated(username)) {
-			Socket connection1 = listenSocket.accept();
+			Socket connection1 = listenSocket.accept(); // $ Alert
 			// BAD: no authentication over the socket
 			connection1.getOutputStream().write(secretData);
 		}
@@ -48,7 +48,7 @@ class Test {
 
 		if (isAuthenticated(username)) {
 			// FP: we authenticate both beforehand and over the socket
-			Socket connection3 = listenSocket.accept();
+			Socket connection3 = listenSocket.accept(); // $ Alert
 			if (doAuthenticate(connection3, username)) {
 				connection3.getOutputStream().write(secretData);
 			}
@@ -62,7 +62,7 @@ class Test {
 		listenChannel.bind(port);
 
 		if (isAuthenticated(username)) {
-			SocketChannel connection1 = listenChannel.accept();
+			SocketChannel connection1 = listenChannel.accept(); // $ Alert
 			// BAD: no authentication over the socket
 			connection1.write(ByteBuffer.wrap(secretData));
 		}

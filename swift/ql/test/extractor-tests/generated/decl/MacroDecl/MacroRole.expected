@@ -11,6 +11,7 @@ instances
 | file://:0:0:0:0 | #freestanding(expression) | getKind: | 1 | getMacroSyntax: | 0 |
 | file://:0:0:0:0 | #freestanding(expression) | getKind: | 1 | getMacroSyntax: | 0 |
 | file://:0:0:0:0 | @attached(accessor) | getKind: | 4 | getMacroSyntax: | 1 |
+| file://:0:0:0:0 | @attached(extension) | getKind: | 256 | getMacroSyntax: | 1 |
 | file://:0:0:0:0 | @attached(member) | getKind: | 16 | getMacroSyntax: | 1 |
 | file://:0:0:0:0 | @attached(memberAttribute) | getKind: | 8 | getMacroSyntax: | 1 |
 | file://:0:0:0:0 | @attached(peer) | getKind: | 32 | getMacroSyntax: | 1 |
@@ -22,6 +23,7 @@ instances
 | test.swift:6:2:6:20 | @attached(extension) | getKind: | 256 | getMacroSyntax: | 1 |
 getConformance
 getName
+| file://:0:0:0:0 | @attached(extension) | 0 | _() |
 | file://:0:0:0:0 | @attached(peer) | 0 | $() |
 | file://:0:0:0:0 | @attached(peer) | 0 | _() |
 | file://:0:0:0:0 | @attached(peer) | 0 | _lldb_summary() |

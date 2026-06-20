@@ -11,7 +11,7 @@ class Outer {
   class Inner extends Test {
 
     public void test() {
-      f();
+      f(); // $ Alert
     }
 
   }

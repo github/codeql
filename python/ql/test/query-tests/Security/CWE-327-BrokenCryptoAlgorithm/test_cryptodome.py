@@ -8,11 +8,11 @@ key = os.urandom(256//8)
 secret_message = b"secret message"
 
 cipher = ARC4.new(key)
-encrypted = cipher.encrypt(secret_message) # NOT OK
+encrypted = cipher.encrypt(secret_message) # $ Alert # NOT OK
 
 print(secret_message, encrypted)
 
 cipher = AES.new(key, AES.MODE_ECB)
-encrypted = cipher.encrypt(secret_message) # NOT OK
+encrypted = cipher.encrypt(secret_message) # $ Alert # NOT OK
 
 print(secret_message, encrypted)

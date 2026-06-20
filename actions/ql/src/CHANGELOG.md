@@ -1,3 +1,62 @@
+## 0.6.29
+
+### Query Metadata Changes
+
+* Reversed adjustment of the name of `actions/untrusted-checkout/high`, but kept the portion of the previous change for the word "trusted" to "privileged". Added a missing "a" to phrasing in `actions/untrusted-checkout/high` and `actions/untrusted-checkout/medium`.
+
+### Major Analysis Improvements
+
+* Adjusted `actions/untrusted-checkout/critical` to align more with other untrusted resource queries, where the alert location is the location where the artifact is obtained from (the checkout point). This aligns with the other 2 related queries. This will cause the same alerts to re-open for closed alerts of this query.
+
+### Minor Analysis Improvements
+
+* Altered the alert message for clarity for queries: `actions/untrusted-checkout/critical`, `actions/untrusted-checkout/high`.
+* The `actions/unpinned-tag` query now recognizes 64-character SHA-256 commit hashes as properly pinned references, in addition to 40-character SHA-1 hashes.
+
+### Bug Fixes
+
+* Adjusted (minor) help file descriptions for queries: `actions/untrusted-checkout/critical`, `actions/untrusted-checkout/high`, `actions/untrusted-checkout/medium`. Clarified wording on a minor point, added one more listed resource and added one more recommendation for things to check.
+
+## 0.6.28
+
+### Query Metadata Changes
+
+* Adjusted the name of `actions/untrusted-checkout/high` to more clearly describe which parts of the scenario are in a privileged context.
+
+### Minor Analysis Improvements
+
+* The `actions/unpinned-tag` query now analyzes composite action metadata (`action.yml`/`action.yaml` files) in addition to workflow files, providing more comprehensive detection of unpinned action references across the entire Actions ecosystem.
+
+### Bug Fixes
+
+* Fixed help file descriptions for queries: `actions/untrusted-checkout/critical`, `actions/untrusted-checkout/high`, `actions/untrusted-checkout/medium`. Previously the messages were unclear as to why and how the vulnerabilities could occur. 
+
+## 0.6.27
+
+No user-facing changes.
+
+## 0.6.26
+
+### Major Analysis Improvements
+
+* Fixed alert messages in `actions/artifact-poisoning/critical` and `actions/artifact-poisoning/medium` as they previously included a redundant placeholder in the alert message that would on occasion contain a long block of yml that makes the alert difficult to understand. Also improved the wording to make it clearer that it is not the artifact that is being poisoned, but instead a potentially untrusted artifact that is consumed. Finally, changed the alert location to be the source, to align more with other queries reporting an artifact (e.g. zipslip) which is more useful.
+
+### Minor Analysis Improvements
+
+* The query `actions/missing-workflow-permissions` no longer produces false positive results on reusable workflows where all callers set permissions.
+
+## 0.6.25
+
+No user-facing changes.
+
+## 0.6.24
+
+No user-facing changes.
+
+## 0.6.23
+
+No user-facing changes.
+
 ## 0.6.22
 
 No user-facing changes.

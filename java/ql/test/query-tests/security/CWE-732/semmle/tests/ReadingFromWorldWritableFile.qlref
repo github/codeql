@@ -1,1 +1,2 @@
-Security/CWE/CWE-732/ReadingFromWorldWritableFile.ql
+query: Security/CWE/CWE-732/ReadingFromWorldWritableFile.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

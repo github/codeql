@@ -1,3 +1,33 @@
+## 5.2.2
+
+No user-facing changes.
+
+## 5.2.1
+
+No user-facing changes.
+
+## 5.2.0
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for Ruby](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-ruby/).
+
+## 5.1.16
+
+No user-facing changes.
+
+## 5.1.15
+
+No user-facing changes.
+
+## 5.1.14
+
+No user-facing changes.
+
+## 5.1.13
+
+No user-facing changes.
+
 ## 5.1.12
 
 ### Minor Analysis Improvements

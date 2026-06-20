@@ -16,7 +16,7 @@ type CustomerInfo struct {
 }
 
 // BAD constant key
-var JwtKey1 = []byte("AllYourBase")
+var JwtKey1 = []byte("AllYourBase") // $ Source
 
 func main1(r *http.Request) {
 	signedToken := r.URL.Query().Get("signedToken")
@@ -24,7 +24,7 @@ func main1(r *http.Request) {
 }
 
 func LoadJwtKey(token *jwt.Token) (interface{}, error) {
-	return JwtKey1, nil
+	return JwtKey1, nil // $ Alert
 }
 
 func verifyJWT_golangjwt(signedToken string) {

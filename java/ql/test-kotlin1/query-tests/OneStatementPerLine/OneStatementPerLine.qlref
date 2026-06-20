@@ -1,1 +1,2 @@
-Advisory/Statements/OneStatementPerLine.ql
+query: Advisory/Statements/OneStatementPerLine.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

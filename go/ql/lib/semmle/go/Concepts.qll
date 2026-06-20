@@ -413,17 +413,13 @@ private class ExternalLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
   }
 }
 
-/**
- * A call to an interface that looks like a logger. It is common to use a
- * locally-defined interface for logging to make it easy to changing logging
- * library.
- */
-private class HeuristicLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
-  HeuristicLoggerCall() {
-    exists(Method m, string tp, string logFunctionPrefix, string name |
-      m = this.getTarget() and
-      m.hasQualifiedName(_, tp, name) and
-      m.getReceiverBaseType().getUnderlyingType() instanceof InterfaceType
+private class HeuristicLoggerFunction extends Method {
+  string logFunctionPrefix;
+
+  HeuristicLoggerFunction() {
+    exists(string tp, string name |
+      this.hasQualifiedName(_, tp, name) and
+      this.getReceiverBaseType().getUnderlyingType() instanceof InterfaceType
     |
       tp.regexpMatch(".*[lL]ogger") and
       logFunctionPrefix =
@@ -434,6 +430,19 @@ private class HeuristicLoggerCall extends LoggerCall::Range, DataFlow::CallNode 
       name.matches(logFunctionPrefix + "%")
     )
   }
+
+  override predicate mayReturnNormally() { logFunctionPrefix != "Fatal" }
+
+  override predicate mustPanic() { logFunctionPrefix = "Panic" }
+}
+
+/**
+ * A call to an interface that looks like a logger. It is common to use a
+ * locally-defined interface for logging to make it easy to change logging
+ * library.
+ */
+private class HeuristicLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
+  HeuristicLoggerCall() { this.getTarget() instanceof HeuristicLoggerFunction }
 
   override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
 }
@@ -574,18 +583,16 @@ module Cryptography {
    * is one) have been initialized separately.
    */
   abstract class EncryptionOperation extends CryptographicOperation::Range {
-    DataFlow::Node encryptionFlowTarget;
-    DataFlow::Node inputNode;
+    /** Gets the target node for the encryption flow. */
+    abstract DataFlow::Node getEncryptionFlowTarget();
 
     override DataFlow::Node getInitialization() {
-      EncryptionFlow::flow(result, encryptionFlowTarget)
+      EncryptionFlow::flow(result, this.getEncryptionFlowTarget())
     }
 
     override EncryptionAlgorithm getAlgorithm() {
       result = this.getInitialization().(EncryptionAlgorithmInit).getAlgorithm()
     }
-
-    override DataFlow::Node getAnInput() { result = inputNode }
 
     override BlockMode getBlockMode() {
       result = this.getInitialization().(BlockModeInit).getMode()
@@ -601,8 +608,12 @@ module Cryptography {
     int inputArg;
 
     EncryptionMethodCall() {
-      encryptionFlowTarget = super.getReceiver() and
-      inputNode = super.getArgument(inputArg)
+      exists(super.getReceiver()) and
+      exists(super.getArgument(inputArg))
     }
+
+    override DataFlow::Node getEncryptionFlowTarget() { result = super.getReceiver() }
+
+    override DataFlow::Node getAnInput() { result = super.getArgument(inputArg) }
   }
 }

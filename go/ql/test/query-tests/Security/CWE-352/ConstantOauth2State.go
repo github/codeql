@@ -17,9 +17,9 @@ import (
 
 func main() {}
 
-const stateStringConst = "state"
+const stateStringConst = "state" // $ Source
 
-var stateStringVar = "state"
+var stateStringVar = "state" // $ Source
 
 func badWithStringLiteralState(w http.ResponseWriter) {
 	conf := &oauth2.Config{
@@ -32,7 +32,7 @@ func badWithStringLiteralState(w http.ResponseWriter) {
 		},
 	}
 
-	url := conf.AuthCodeURL("state") // BAD
+	url := conf.AuthCodeURL("state") // $ Alert // BAD
 	_ = url
 	// ...
 }
@@ -47,7 +47,7 @@ func badWithConstState(w http.ResponseWriter) {
 		},
 	}
 
-	url := conf.AuthCodeURL(stateStringConst) // BAD
+	url := conf.AuthCodeURL(stateStringConst) // $ Alert // BAD
 	_ = url
 	// ...
 }
@@ -62,7 +62,7 @@ func badWithFixedVarState(w http.ResponseWriter) {
 		},
 	}
 
-	url := conf.AuthCodeURL(stateStringVar) // BAD
+	url := conf.AuthCodeURL(stateStringVar) // $ Alert // BAD
 	_ = url
 	// ...
 }
@@ -78,12 +78,12 @@ func badWithFixedStateReturned(w http.ResponseWriter) {
 	}
 
 	state := newFixedState()
-	url := conf.AuthCodeURL(state) // BAD
+	url := conf.AuthCodeURL(state) // $ Alert // BAD
 	_ = url
 	// ...
 }
 func newFixedState() string {
-	return "state"
+	return "state" // $ Source
 }
 
 func betterWithVariableStateReturned(w http.ResponseWriter) {
@@ -229,7 +229,7 @@ func badWithConstStatePrinter(w http.ResponseWriter) {
 		},
 	}
 
-	url := conf.AuthCodeURL(stateStringConst) // BAD
+	url := conf.AuthCodeURL(stateStringConst) // $ Alert // BAD
 	fmt.Printf("LOG: URL %v", url)
 	// ...
 }

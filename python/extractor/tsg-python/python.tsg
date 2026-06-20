@@ -403,7 +403,7 @@
 
 ;;; GeneratorExp
 
-(generator_expression . "(" . (comment)* . (expression) @start [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @generatorexp
+(generator_expression . "(" . (comment)* . [(expression) (list_splat)] @start [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @generatorexp
 {
     attr (@generatorexp.node) _location_start = (location-start @start)
     attr (@generatorexp.node) _location_end = (location-end @end)
@@ -415,13 +415,13 @@
     attr (@if.node) _location_end = (location-end @expr)
 }
 
-(generator_expression . "(" . (comment)* . (expression) @start (for_in_clause) @child [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @_genexpr
+(generator_expression . "(" . (comment)* . [(expression) (list_splat)] @start (for_in_clause) @child [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @_genexpr
 {
     attr (@child.node) _location_start = (location-start @start)
     attr (@child.node) _location_end = (location-end @end)
 }
 
-(generator_expression . "(" . (comment)* . (expression) @start (for_in_clause) @end . (comment)* . ")" .) @_genexpr
+(generator_expression . "(" . (comment)* . [(expression) (list_splat)] @start (for_in_clause) @end . (comment)* . ")" .) @_genexpr
 {
     attr (@end.node) _location_start = (location-start @start)
     attr (@end.node) _location_end = (location-end @end)
@@ -795,12 +795,7 @@
 ;;;;;; DictComp (`{a: b for c in d if e}`)
 ; See GeneratorExp for details.
 
-(dictionary_comprehension
-    body: (pair
-        key: (_) @_key
-        value: (_) @_value
-    )
-) @genexpr
+(dictionary_comprehension) @genexpr
 {
     ; Synthesize the `genexpr` function
     let @genexpr.fun = (ast-node @genexpr "Function")
@@ -862,7 +857,7 @@
 ; information for the entire generator expression (yes, it is a wide parameter!) and so we must recreate the logic for
 ; setting this location information correctly.
 
-(generator_expression . "(" . (comment)* . (expression) @start  [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @genexpr
+(generator_expression . "(" . (comment)* . [(expression) (list_splat)] @start  [(for_in_clause) (if_clause)] @end . (comment)* . ")" .) @genexpr
 {
     ; Synthesize the `genexpr` function
     let @genexpr.fun = (ast-node @genexpr "Function")
@@ -1034,12 +1029,25 @@
 ; For everything except dictionary comprehensions, the innermost expression is just the `body` of the
 ; comprehension.
 [
-    (generator_expression body: (_) @body) @genexpr
-    (list_comprehension body: (_) @body) @genexpr
-    (set_comprehension body: (_) @body) @genexpr
+    (generator_expression body: (expression) @body) @genexpr
+    (list_comprehension body: (expression) @body) @genexpr
+    (set_comprehension body: (expression) @body) @genexpr
 ]
 {
     let @genexpr.result = @body.node
+    let @genexpr.yield_kind = "Yield"
+}
+
+; For starred comprehensions (PEP 798), the result is the inner expression (not the Starred
+; wrapper), and we use `yield from` instead of `yield` to represent the unpacking semantics.
+[
+    (generator_expression body: (list_splat (expression) @inner) @_body) @genexpr
+    (list_comprehension body: (list_splat (expression) @inner) @_body) @genexpr
+    (set_comprehension body: (list_splat (expression) @inner) @_body) @genexpr
+]
+{
+    let @genexpr.result = @inner.node
+    let @genexpr.yield_kind = "YieldFrom"
 }
 
 ; For dict comprehensions, we build an explicit tuple using the key and value pair.
@@ -1052,13 +1060,31 @@
 {
     let tuple = (ast-node @body "Tuple")
     edge tuple -> @key.node
-    attr (tuple -> @key.node) elts = 1
+    attr (tuple -> @key.node) elts = 0
     edge tuple -> @value.node
-    attr (tuple -> @value.node) elts = 0
-    ; TODO verify that it is correct to use a `(value, key)` tuple, and not a `(key, value)` tuple above.
-    ; That is what the current parser does...
+    attr (tuple -> @value.node) elts = 1
     attr (tuple) ctx = "load"
     let @genexpr.result = tuple
+    let @genexpr.yield_kind = "Yield"
+}
+
+; For dict comprehensions with unpacking (PEP 798), `{**d for d in dicts}` desugars to
+; `yield from d.items()` to produce (key, value) tuples consistent with the regular dict comp model.
+(dictionary_comprehension
+    body: (dictionary_splat (expression) @inner) @_body
+) @genexpr
+{
+    ; Synthesize `d.items()`: Attribute(value=d, attr='items') then Call(func=attr)
+    let attr = (ast-node @inner "Attribute")
+    attr (attr) value = @inner.node
+    attr (attr) attr = "items"
+    attr (attr) ctx = "load"
+
+    let call = (ast-node @inner "Call")
+    attr (call) func = attr
+
+    let @genexpr.result = call
+    let @genexpr.yield_kind = "YieldFrom"
 }
 
 ; For the final clause, we need to hook it up with the rest of the expression.
@@ -1094,7 +1120,7 @@
     let last = (get-last-element @last_candidates)
 
     let expr = (ast-node @body "Expr")
-    let yield = (ast-node @body "Yield")
+    let yield = (ast-node @body @genexpr.yield_kind)
 
     let @genexpr.expr = expr
     let @genexpr.yield = yield
@@ -1777,6 +1803,13 @@
 
     attr (@importfrom.importexpr) level = level
 }
+; Set is_lazy for lazy import statements (PEP 810)
+[
+    (import_statement is_lazy: _)
+    (import_from_statement is_lazy: _)
+] @lazy_import
+{ attr (@lazy_import.node) is_lazy = #true }
+
 ;;;;;; End of Import (`from ... import ...`)
 
 ;;;;;; Raise (`raise ...`)

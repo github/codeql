@@ -68,9 +68,9 @@ private CfgNodes::ExprCfgNode getALastEvalNode(CfgNodes::ExprCfgNode n) {
     result = branch.(CfgNodes::ExprNodes::InClauseCfgNode).getBody()
     or
     result = branch.(CfgNodes::ExprNodes::WhenClauseCfgNode).getBody()
-    or
-    result = branch
   )
+  or
+  result.getAstNode() = n.(CfgNodes::ExprNodes::CaseExprCfgNode).getExpr().getElseBranch().getBody()
 }
 
 /**
@@ -1662,7 +1662,7 @@ private module ReturnNodes {
    * last thing that is evaluated in the body of the callable.
    */
   class ExprReturnNode extends SourceReturnNode, ExprNode {
-    ExprReturnNode() { exists(Callable c | implicitReturn(c, this) = c.getAStmt()) }
+    ExprReturnNode() { exists(Callable c | implicitReturn(c, this) = c.getBody().getAStmt()) }
 
     override ReturnKind getKindSource() {
       exists(CfgScope scope | scope = this.(NodeImpl).getCfgScope() |

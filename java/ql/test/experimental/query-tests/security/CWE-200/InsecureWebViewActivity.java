@@ -24,7 +24,7 @@ public class InsecureWebViewActivity extends Activity {
         setContentView(-1);
         webview = (VulnerableWebView) findViewById(-1);
 
-        String inputUrl = getIntent().getStringExtra("inputUrl");
+        String inputUrl = getIntent().getStringExtra("inputUrl"); // $ Source[java/insecure-webview-resource-response]
         loadWebUrl(inputUrl);
     }
 
@@ -55,7 +55,7 @@ class VulnerableWebView extends WebView {
                     Uri uri = Uri.parse(url);
                     FileInputStream inputStream = new FileInputStream(uri.getPath());
                     String mimeType = InsecureWebViewActivity.getMimeTypeFromPath(uri.getPath());
-                    return new WebResourceResponse(mimeType, "UTF-8", inputStream);
+                    return new WebResourceResponse(mimeType, "UTF-8", inputStream); // $ Alert[java/insecure-webview-resource-response]
                 } catch (IOException ie) {
                     return new WebResourceResponse("text/plain", "UTF-8", null);
                 }

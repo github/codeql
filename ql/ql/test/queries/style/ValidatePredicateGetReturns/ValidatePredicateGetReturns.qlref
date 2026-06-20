@@ -1,1 +1,2 @@
-queries/style/ValidatePredicateGetReturns.ql
+query: queries/style/ValidatePredicateGetReturns.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

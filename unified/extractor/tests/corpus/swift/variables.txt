@@ -1,0 +1,231 @@
+===
+Let binding
+===
+
+let x = 1
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "x"
+          value: integer_literal "1"
+
+---
+
+top_level
+  body:
+
+===
+Var binding
+===
+
+var x = 1
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: var
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "x"
+          value: integer_literal "1"
+
+---
+
+top_level
+  body:
+
+===
+Let with type annotation
+===
+
+let x: Int = 1
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "x"
+          type:
+            type_annotation
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "Int"
+          value: integer_literal "1"
+
+---
+
+top_level
+  body:
+
+===
+Var without initialiser
+===
+
+var x: Int
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: var
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "x"
+          type:
+            type_annotation
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "Int"
+
+---
+
+top_level
+  body:
+
+===
+Tuple destructuring binding
+===
+
+let (a, b) = pair
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              kind:
+                tuple_pattern
+                  item:
+                    tuple_pattern_item
+                      pattern:
+                        pattern
+                          kind: simple_identifier "a"
+                    tuple_pattern_item
+                      pattern:
+                        pattern
+                          kind: simple_identifier "b"
+          value: simple_identifier "pair"
+
+---
+
+top_level
+  body:
+
+===
+Multiple bindings on one line
+===
+
+let x = 1, y = 2
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "x"
+          value: integer_literal "1"
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "y"
+          value: integer_literal "2"
+
+---
+
+top_level
+  body:
+
+===
+Assignment
+===
+
+x = 1
+
+---
+
+source_file
+  statement:
+    assignment
+      operator: =
+      result: integer_literal "1"
+      target:
+        directly_assignable_expression
+          expr: simple_identifier "x"
+
+---
+
+top_level
+  body:
+
+===
+Compound assignment
+===
+
+x += 1
+
+---
+
+source_file
+  statement:
+    assignment
+      operator: +=
+      result: integer_literal "1"
+      target:
+        directly_assignable_expression
+          expr: simple_identifier "x"
+
+---
+
+top_level
+  body:

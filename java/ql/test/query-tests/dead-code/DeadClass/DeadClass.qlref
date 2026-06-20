@@ -1,1 +1,2 @@
-DeadCode/DeadClass.ql
+query: DeadCode/DeadClass.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

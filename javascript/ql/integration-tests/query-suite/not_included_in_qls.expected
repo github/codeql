@@ -43,6 +43,7 @@ ql/javascript/ql/src/Performance/NonLocalForIn.ql
 ql/javascript/ql/src/RegExp/MalformedRegExp.ql
 ql/javascript/ql/src/Security/CWE-020/ExternalAPIsUsedWithUntrustedData.ql
 ql/javascript/ql/src/Security/CWE-020/UntrustedDataToExternalAPI.ql
+ql/javascript/ql/src/Security/CWE-1427/UserPromptInjection.ql
 ql/javascript/ql/src/Security/CWE-313/PasswordInConfigurationFile.ql
 ql/javascript/ql/src/Security/CWE-451/MissingXFrameOptions.ql
 ql/javascript/ql/src/Security/CWE-798/HardcodedCredentials.ql
@@ -63,6 +64,7 @@ ql/javascript/ql/src/experimental/Security/CWE-347/decodeJwtWithoutVerificationL
 ql/javascript/ql/src/experimental/Security/CWE-444/InsecureHttpParser.ql
 ql/javascript/ql/src/experimental/Security/CWE-522-DecompressionBombs/DecompressionBombs.ql
 ql/javascript/ql/src/experimental/Security/CWE-918/SSRF.ql
+ql/javascript/ql/src/experimental/Security/CWE-918/SsrfIpv6TransitionIncompleteGuard.ql
 ql/javascript/ql/src/experimental/StandardLibrary/MultipleArgumentsToSetConstructor.ql
 ql/javascript/ql/src/experimental/heuristics/ql/src/Security/CWE-020/UntrustedDataToExternalAPI.ql
 ql/javascript/ql/src/experimental/heuristics/ql/src/Security/CWE-078/CommandInjection.ql

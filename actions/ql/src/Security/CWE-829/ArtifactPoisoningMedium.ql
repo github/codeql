@@ -20,6 +20,5 @@ from ArtifactPoisoningFlow::PathNode source, ArtifactPoisoningFlow::PathNode sin
 where
   ArtifactPoisoningFlow::flowPath(source, sink) and
   inNonPrivilegedContext(sink.getNode().asExpr())
-select sink.getNode(), source, sink,
-  "Potential artifact poisoning in $@, which may be controlled by an external user.", sink,
-  sink.getNode().toString()
+select source.getNode(), source, sink,
+  "Potential artifact poisoning; the artifact being consumed has contents that may be controlled by an external user."

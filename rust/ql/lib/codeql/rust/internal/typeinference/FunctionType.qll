@@ -87,6 +87,7 @@ private newtype TAssocFunctionType =
   }
 
 bindingset[abs, constraint, tp]
+pragma[inline_late]
 private Type getTraitConstraintTypeAt(
   TypeAbstraction abs, TypeMention constraint, TypeParameter tp, TypePath path
 ) {
@@ -203,7 +204,7 @@ class AssocFunctionType extends MkAssocFunctionType {
 }
 
 pragma[nomagic]
-Trait getALookupTrait(Type t) {
+private Trait getALookupTrait(Type t) {
   result = t.(TypeParamTypeParameter).getTypeParam().(TypeParamItemNode).resolveABound()
   or
   result = t.(SelfTypeParameter).getTrait()
@@ -213,23 +214,47 @@ Trait getALookupTrait(Type t) {
   result = t.(DynTraitType).getTrait()
 }
 
-/**
- * Gets the type obtained by substituting in relevant traits in which to do function
- * lookup, or `t` itself when no such trait exist.
- */
 pragma[nomagic]
-Type substituteLookupTraits(Type t) {
+private Trait getAdditionalLookupTrait(ItemNode i, Type t) {
+  result =
+    t.(TypeParamTypeParameter)
+        .getTypeParam()
+        .(TypeParamItemNode)
+        .resolveAdditionalBound(i.getImmediateParent*())
+}
+
+bindingset[n, t]
+pragma[inline_late]
+Trait getALookupTrait(AstNode n, Type t) {
+  result = getALookupTrait(t)
+  or
+  result = getAdditionalLookupTrait(any(ItemNode i | n = i.getADescendant()), t)
+}
+
+bindingset[i, t]
+pragma[inline_late]
+private Type substituteLookupTraits0(ItemNode i, Type t) {
   not exists(getALookupTrait(t)) and
+  not exists(getAdditionalLookupTrait(i, t)) and
   result = t
   or
   result = TTrait(getALookupTrait(t))
+  or
+  result = TTrait(getAdditionalLookupTrait(i, t))
 }
 
 /**
- * Gets the `n`th `substituteLookupTraits` type for `t`, per some arbitrary order.
+ * Gets the type obtained by substituting in relevant traits in which to do function
+ * lookup, or `t` itself when no such trait exists, in the context of AST node `n`.
  */
+bindingset[n, t]
+pragma[inline_late]
+Type substituteLookupTraits(AstNode n, Type t) {
+  result = substituteLookupTraits0(any(ItemNode i | n = i.getADescendant()), t)
+}
+
 pragma[nomagic]
-Type getNthLookupType(Type t, int n) {
+private Type getNthLookupType(Type t, int n) {
   not exists(getALookupTrait(t)) and
   result = t and
   n = 0
@@ -244,24 +269,66 @@ Type getNthLookupType(Type t, int n) {
 }
 
 /**
- * Gets the index of the last `substituteLookupTraits` type for `t`.
+ * Gets the `n`th `substituteLookupTraits` type for `t`, per some arbitrary order,
+ * in the context of AST node `node`.
  */
+bindingset[node, t]
+pragma[inline_late]
+Type getNthLookupType(AstNode node, Type t, int n) {
+  exists(ItemNode i | node = i.getADescendant() |
+    if exists(getAdditionalLookupTrait(i, t))
+    then
+      result =
+        TTrait(rank[n + 1](Trait trait, int j |
+            trait = [getALookupTrait(t), getAdditionalLookupTrait(i, t)] and
+            j = idOfTypeParameterAstNode(trait)
+          |
+            trait order by j
+          ))
+    else result = getNthLookupType(t, n)
+  )
+}
+
 pragma[nomagic]
-int getLastLookupTypeIndex(Type t) { result = max(int n | exists(getNthLookupType(t, n))) }
+private int getLastLookupTypeIndex(Type t) { result = max(int n | exists(getNthLookupType(t, n))) }
+
+/**
+ * Gets the index of the last `substituteLookupTraits` type for `t`,
+ * in the context of AST node `node`.
+ */
+bindingset[node, t]
+pragma[inline_late]
+int getLastLookupTypeIndex(AstNode node, Type t) {
+  if exists(getAdditionalLookupTrait(node, t))
+  then result = max(int n | exists(getNthLookupType(node, t, n)))
+  else result = getLastLookupTypeIndex(t)
+}
+
+signature class ArgSig {
+  /** Gets the type of this argument at `path`. */
+  Type getTypeAt(TypePath path);
+
+  /** Gets the enclosing item node of this argument. */
+  ItemNode getEnclosingItemNode();
+
+  /** Gets a textual representation of this argument. */
+  string toString();
+
+  /** Gets the location of this argument. */
+  Location getLocation();
+}
 
 /**
  * A wrapper around `IsInstantiationOf` which ensures to substitute in lookup
  * traits when checking whether argument types are instantiations of function
  * types.
  */
-module ArgIsInstantiationOf<
-  HasTypeTreeSig Arg, IsInstantiationOfInputSig<Arg, AssocFunctionType> Input>
-{
+module ArgIsInstantiationOf<ArgSig Arg, IsInstantiationOfInputSig<Arg, AssocFunctionType> Input> {
   final private class ArgFinal = Arg;
 
   private class ArgSubst extends ArgFinal {
     Type getTypeAt(TypePath path) {
-      result = substituteLookupTraits(super.getTypeAt(path)) and
+      result = substituteLookupTraits0(this.getEnclosingItemNode(), super.getTypeAt(path)) and
       not result = TNeverType() and
       not result = TUnknownType()
     }
@@ -318,6 +385,8 @@ signature module ArgsAreInstantiationsOfInputSig {
 
     Location getLocation();
 
+    ItemNode getEnclosingItemNode();
+
     Type getArgType(FunctionPosition pos, TypePath path);
 
     predicate hasTargetCand(ImplOrTraitItemNode i, Function f);
@@ -365,6 +434,8 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
     Input::Call getCall() { result = call }
 
     FunctionPosition getPos() { result = pos }
+
+    ItemNode getEnclosingItemNode() { result = call.getEnclosingItemNode() }
 
     Location getLocation() { result = call.getLocation() }
 

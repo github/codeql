@@ -10,10 +10,10 @@ app = FastAPI()
 
 
 @app.get("/bad1")
-async def bad1(cmd: bytes):
+async def bad1(cmd: bytes):  # $ Source
     endpoint = SSHCommandClientEndpoint.newConnection(
     reactor,
-    cmd, # $ result=BAD getRemoteCommand=cmd  
+    cmd, # $ Alert result=BAD getRemoteCommand=cmd  
     b"username",
     b"ssh.example.com",
     22,
@@ -21,7 +21,7 @@ async def bad1(cmd: bytes):
 
     SSHCommandClientEndpoint.existingConnection(
         endpoint,
-        cmd) # $ result=BAD getRemoteCommand=cmd
+        cmd) # $ Alert result=BAD getRemoteCommand=cmd
     
     factory = Factory()
     d = endpoint.connect(factory)
