@@ -164,3 +164,14 @@ def test_fluent_explicitly_unsafe():
     with socket.create_connection((hostname, 443)) as sock:
         with context.wrap_socket(sock, server_hostname=hostname) as ssock: # $ Alert
             print(ssock.version())
+
+# Since Python 3.10, `ssl.create_default_context` sets `minimum_version` to
+# `TLSVersion.TLSv1_2`, so TLSv1 and TLSv1_1 are not allowed.
+# see https://docs.python.org/3/library/ssl.html#context-creation
+def test_fluent_default_context_safe():
+    hostname = 'www.python.org'
+    context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+
+    with socket.create_connection((hostname, 443)) as sock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock: # No alert
+            print(ssock.version())
