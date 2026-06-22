@@ -110,48 +110,47 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             logger.LogInfo($"Checking NuGet feed responsiveness: {feedManager.CheckNugetFeedResponsiveness}");
             compilationInfoContainer.CompilationInfos.Add(("NuGet feed responsiveness checked", feedManager.CheckNugetFeedResponsiveness ? "1" : "0"));
 
-            HashSet<string> explicitFeeds = [];
             HashSet<string> reachableFeeds = [];
+
+            EmitNugetConfigDiagnostics();
+
+            // Find feeds that are configured in NuGet.config files and divide them into ones that
+            // are explicitly configured for the project or by a private registry, and "all feeds"
+            // (including inherited ones) from other locations on the host outside of the working directory.
+            (var explicitFeeds, var allFeeds) = feedManager.GetAllFeeds();
+
+            if (feedManager.CheckNugetFeedResponsiveness)
+            {
+                var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
+
+                if (inheritedFeeds.Count > 0)
+                {
+                    compilationInfoContainer.CompilationInfos.Add(("Inherited NuGet feed count", inheritedFeeds.Count.ToString()));
+                }
+
+                var timeout = feedManager.CheckSpecifiedFeeds(explicitFeeds, out var reachableExplicitFeeds);
+                reachableFeeds.UnionWith(reachableExplicitFeeds);
+
+                var allExplicitReachable = explicitFeeds.Count == reachableExplicitFeeds.Count;
+                EmitUnreachableFeedsDiagnostics(allExplicitReachable);
+
+                if (timeout)
+                {
+                    // If we experience a timeout, we use this fallback.
+                    // todo: we could also check the reachability of the inherited nuget feeds, but to use those in the fallback we would need to handle authentication too.
+                    var unresponsiveMissingPackageLocation = DownloadMissingPackagesFromSpecificFeeds([], explicitFeeds);
+                    return unresponsiveMissingPackageLocation is null
+                        ? []
+                        : [unresponsiveMissingPackageLocation];
+                }
+
+                // Inherited feeds should only be used, if they are indeed reachable (as they may be environment specific).
+                feedManager.CheckSpecifiedFeeds(inheritedFeeds, out var reachableInheritedFeeds);
+                reachableFeeds.UnionWith(reachableInheritedFeeds);
+            }
 
             try
             {
-                EmitNugetConfigDiagnostics();
-
-                // Find feeds that are configured in NuGet.config files and divide them into ones that
-                // are explicitly configured for the project or by a private registry, and "all feeds"
-                // (including inherited ones) from other locations on the host outside of the working directory.
-                (explicitFeeds, var allFeeds) = feedManager.GetAllFeeds();
-
-                if (feedManager.CheckNugetFeedResponsiveness)
-                {
-                    var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
-
-                    if (inheritedFeeds.Count > 0)
-                    {
-                        compilationInfoContainer.CompilationInfos.Add(("Inherited NuGet feed count", inheritedFeeds.Count.ToString()));
-                    }
-
-                    var timeout = feedManager.CheckSpecifiedFeeds(explicitFeeds, out var reachableExplicitFeeds);
-                    reachableFeeds.UnionWith(reachableExplicitFeeds);
-
-                    var allExplicitReachable = explicitFeeds.Count == reachableExplicitFeeds.Count;
-                    EmitUnreachableFeedsDiagnostics(allExplicitReachable);
-
-                    if (timeout)
-                    {
-                        // If we experience a timeout, we use this fallback.
-                        // todo: we could also check the reachability of the inherited nuget feeds, but to use those in the fallback we would need to handle authentication too.
-                        var unresponsiveMissingPackageLocation = DownloadMissingPackagesFromSpecificFeeds([], explicitFeeds);
-                        return unresponsiveMissingPackageLocation is null
-                            ? []
-                            : [unresponsiveMissingPackageLocation];
-                    }
-
-                    // Inherited feeds should only be used, if they are indeed reachable (as they may be environment specific).
-                    feedManager.CheckSpecifiedFeeds(inheritedFeeds, out var reachableInheritedFeeds);
-                    reachableFeeds.UnionWith(reachableInheritedFeeds);
-                }
-
                 using (var packagesConfigRestore = PackagesConfigRestoreFactory.Create(fileProvider, legacyPackageDirectory, logger, feedManager.IsDefaultFeedReachable))
                 {
                     var count = packagesConfigRestore.InstallPackages();
