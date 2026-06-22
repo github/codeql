@@ -50,6 +50,19 @@ class TypeMentions
     }
 }
 
+class CatchTypeMentions
+{
+    void F()
+    {
+        try
+        {
+        }
+        catch (Exception)
+        {
+        }
+    }
+}
+
 class NameOfMethodGroups
 {
     int MethodGroup() => 0;
