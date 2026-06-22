@@ -1398,9 +1398,11 @@
 | ExitMethods.cs:42:13:42:31 | ...; | ExitMethods.cs:42:13:42:31 | ...; |
 | ExitMethods.cs:42:25:42:29 | false | ExitMethods.cs:42:25:42:29 | false |
 | ExitMethods.cs:44:9:47:9 | catch (...) {...} | ExitMethods.cs:44:9:47:9 | catch (...) {...} |
+| ExitMethods.cs:44:16:44:32 | access to type ArgumentException | ExitMethods.cs:44:16:44:32 | access to type ArgumentException |
 | ExitMethods.cs:45:9:47:9 | {...} | ExitMethods.cs:45:9:47:9 | {...} |
 | ExitMethods.cs:46:13:46:19 | return ...; | ExitMethods.cs:46:13:46:19 | return ...; |
 | ExitMethods.cs:48:9:51:9 | catch (...) {...} | ExitMethods.cs:48:9:51:9 | catch (...) {...} |
+| ExitMethods.cs:48:16:48:24 | access to type Exception | ExitMethods.cs:48:16:48:24 | access to type Exception |
 | ExitMethods.cs:49:9:51:9 | {...} | ExitMethods.cs:49:9:51:9 | {...} |
 | ExitMethods.cs:50:13:50:19 | return ...; | ExitMethods.cs:50:13:50:19 | return ...; |
 | ExitMethods.cs:55:5:58:5 | {...} | ExitMethods.cs:55:5:58:5 | {...} |
@@ -1569,6 +1571,7 @@
 | Finally.cs:38:23:38:43 | object creation of type Exception | Finally.cs:38:37:38:42 | "Boo!" |
 | Finally.cs:38:37:38:42 | "Boo!" | Finally.cs:38:37:38:42 | "Boo!" |
 | Finally.cs:41:9:43:9 | catch (...) {...} | Finally.cs:41:9:43:9 | catch (...) {...} |
+| Finally.cs:41:16:41:24 | access to type Exception | Finally.cs:41:16:41:24 | access to type Exception |
 | Finally.cs:42:9:43:9 | {...} | Finally.cs:42:9:43:9 | {...} |
 | Finally.cs:44:9:47:9 | catch {...} | Finally.cs:44:9:47:9 | catch {...} |
 | Finally.cs:45:9:47:9 | {...} | Finally.cs:45:9:47:9 | {...} |
@@ -1766,6 +1769,7 @@
 | Finally.cs:186:25:186:47 | throw ...; | Finally.cs:186:31:186:46 | object creation of type ExceptionB |
 | Finally.cs:186:31:186:46 | object creation of type ExceptionB | Finally.cs:186:31:186:46 | object creation of type ExceptionB |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:13:191:13 | catch (...) {...} |
+| Finally.cs:188:20:188:29 | access to type ExceptionB | Finally.cs:188:20:188:29 | access to type ExceptionB |
 | Finally.cs:188:38:188:39 | access to parameter b2 | Finally.cs:188:38:188:39 | access to parameter b2 |
 | Finally.cs:189:13:191:13 | {...} | Finally.cs:189:13:191:13 | {...} |
 | Finally.cs:190:17:190:47 | if (...) ... | Finally.cs:190:17:190:47 | if (...) ... |

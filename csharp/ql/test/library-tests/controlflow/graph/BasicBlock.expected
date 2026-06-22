@@ -447,13 +447,13 @@
 | ExitMethods.cs:20:10:20:11 | Entry | ExitMethods.cs:20:10:20:11 | Exit | 8 |
 | ExitMethods.cs:26:10:26:11 | Entry | ExitMethods.cs:26:10:26:11 | Exit | 8 |
 | ExitMethods.cs:32:10:32:11 | Entry | ExitMethods.cs:32:10:32:11 | Exit | 8 |
-| ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:44:9:47:9 | catch (...) {...} | 9 |
+| ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:44:16:44:32 | access to type ArgumentException | 10 |
 | ExitMethods.cs:38:10:38:11 | Exit | ExitMethods.cs:38:10:38:11 | Exit | 1 |
 | ExitMethods.cs:38:10:38:11 | Normal Exit | ExitMethods.cs:38:10:38:11 | Normal Exit | 1 |
-| ExitMethods.cs:44:9:47:9 | After catch (...) {...} [match] | ExitMethods.cs:46:13:46:19 | return ...; | 4 |
-| ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] | ExitMethods.cs:48:9:51:9 | catch (...) {...} | 2 |
-| ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] | ExitMethods.cs:50:13:50:19 | return ...; | 4 |
-| ExitMethods.cs:48:9:51:9 | After catch (...) {...} [no-match] | ExitMethods.cs:38:10:38:11 | Exceptional Exit | 2 |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [match] | ExitMethods.cs:46:13:46:19 | return ...; | 4 |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] | ExitMethods.cs:48:16:48:24 | access to type Exception | 4 |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [match] | ExitMethods.cs:50:13:50:19 | return ...; | 4 |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [no-match] | ExitMethods.cs:38:10:38:11 | Exceptional Exit | 3 |
 | ExitMethods.cs:54:10:54:11 | Entry | ExitMethods.cs:54:10:54:11 | Exit | 7 |
 | ExitMethods.cs:60:10:60:11 | Entry | ExitMethods.cs:60:10:60:11 | Exit | 7 |
 | ExitMethods.cs:66:17:66:26 | Entry | ExitMethods.cs:68:13:68:13 | access to parameter b | 5 |
@@ -508,13 +508,13 @@
 | Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:19:10:19:11 | Normal Exit | 1 |
 | Finally.cs:21:9:51:9 | After try {...} ... | Finally.cs:20:5:52:5 | After {...} | 2 |
 | Finally.cs:23:13:23:37 | After call to method WriteLine | Finally.cs:24:13:24:19 | return ...; | 4 |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [match] | Finally.cs:28:13:28:18 | throw ...; | 7 |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] | Finally.cs:30:9:40:9 | catch (...) {...} | 2 |
-| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:26:9:29:9 | catch (...) {...} | 1 |
-| Finally.cs:30:9:40:9 | After catch (...) {...} [match] | Finally.cs:38:17:38:44 | throw ...; | 17 |
-| Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] | Finally.cs:41:9:43:9 | catch (...) {...} | 2 |
-| Finally.cs:41:9:43:9 | After catch (...) {...} [match] | Finally.cs:42:9:43:9 | {...} | 2 |
-| Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] | Finally.cs:46:13:46:19 | return ...; | 6 |
+| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:26:38:26:39 | IOException ex | 2 |
+| Finally.cs:26:38:26:39 | After IOException ex [match] | Finally.cs:28:13:28:18 | throw ...; | 6 |
+| Finally.cs:26:38:26:39 | After IOException ex [no-match] | Finally.cs:30:41:30:42 | ArgumentException ex | 4 |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [match] | Finally.cs:38:17:38:44 | throw ...; | 16 |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] | Finally.cs:41:16:41:24 | access to type Exception | 4 |
+| Finally.cs:41:16:41:24 | After access to type Exception [match] | Finally.cs:42:9:43:9 | {...} | 2 |
+| Finally.cs:41:16:41:24 | After access to type Exception [no-match] | Finally.cs:46:13:46:19 | return ...; | 6 |
 | Finally.cs:49:9:51:9 | {...} | Finally.cs:49:9:51:9 | After {...} | 8 |
 | Finally.cs:54:10:54:11 | Entry | Finally.cs:58:13:58:37 | call to method WriteLine | 8 |
 | Finally.cs:54:10:54:11 | Exceptional Exit | Finally.cs:54:10:54:11 | Exceptional Exit | 1 |
@@ -522,11 +522,12 @@
 | Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:54:10:54:11 | Normal Exit | 1 |
 | Finally.cs:56:9:71:9 | After try {...} ... | Finally.cs:55:5:72:5 | After {...} | 2 |
 | Finally.cs:58:13:58:37 | After call to method WriteLine | Finally.cs:59:13:59:19 | return ...; | 4 |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [match] | Finally.cs:63:13:63:18 | throw ...; | 7 |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] | Finally.cs:65:9:67:9 | catch (...) {...} | 2 |
-| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:61:9:64:9 | catch (...) {...} | 1 |
-| Finally.cs:65:9:67:9 | After catch (...) {...} [match] | Finally.cs:65:35:65:51 | ... != ... | 9 |
+| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:61:38:61:39 | IOException ex | 2 |
+| Finally.cs:61:38:61:39 | After IOException ex [match] | Finally.cs:63:13:63:18 | throw ...; | 6 |
+| Finally.cs:61:38:61:39 | After IOException ex [no-match] | Finally.cs:65:26:65:26 | Exception e | 4 |
 | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] | 1 |
+| Finally.cs:65:26:65:26 | After Exception e [match] | Finally.cs:65:35:65:51 | ... != ... | 8 |
+| Finally.cs:65:26:65:26 | After Exception e [no-match] | Finally.cs:65:26:65:26 | After Exception e [no-match] | 1 |
 | Finally.cs:65:35:65:51 | After ... != ... [false] | Finally.cs:65:35:65:51 | After ... != ... [false] | 1 |
 | Finally.cs:65:35:65:51 | After ... != ... [true] | Finally.cs:66:9:67:9 | {...} | 2 |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:69:9:71:9 | After {...} | 8 |
@@ -589,9 +590,10 @@
 | Finally.cs:158:21:158:36 | After ... == ... [false] | Finally.cs:157:13:160:13 | After {...} | 3 |
 | Finally.cs:158:21:158:36 | After ... == ... [true] | Finally.cs:159:27:159:44 | object creation of type Exception | 5 |
 | Finally.cs:159:27:159:44 | After object creation of type Exception | Finally.cs:159:21:159:45 | throw ...; | 2 |
-| Finally.cs:161:13:164:13 | After catch (...) {...} [match] | Finally.cs:161:39:161:54 | ... == ... | 9 |
-| Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] | Finally.cs:166:13:168:13 | After {...} | 11 |
-| Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:13:164:13 | catch (...) {...} | 1 |
+| Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] | Finally.cs:166:13:168:13 | After {...} | 10 |
+| Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:30:161:30 | Exception e | 2 |
+| Finally.cs:161:30:161:30 | After Exception e [match] | Finally.cs:161:39:161:54 | ... == ... | 8 |
+| Finally.cs:161:30:161:30 | After Exception e [no-match] | Finally.cs:161:30:161:30 | After Exception e [no-match] | 1 |
 | Finally.cs:161:39:161:54 | After ... == ... [false] | Finally.cs:161:39:161:54 | After ... == ... [false] | 1 |
 | Finally.cs:161:39:161:54 | After ... == ... [true] | Finally.cs:162:13:164:13 | After {...} | 13 |
 | Finally.cs:172:11:172:20 | Entry | Finally.cs:172:11:172:20 | Exit | 11 |
@@ -609,9 +611,10 @@
 | Finally.cs:186:21:186:22 | After access to parameter b2 [false] | Finally.cs:185:13:187:13 | After {...} | 3 |
 | Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:186:31:186:46 | object creation of type ExceptionB | 4 |
 | Finally.cs:186:31:186:46 | After object creation of type ExceptionB | Finally.cs:186:25:186:47 | throw ...; | 2 |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:188:38:188:39 | access to parameter b2 | 2 |
 | Finally.cs:188:13:191:13 | After catch (...) {...} [no-match] | Finally.cs:188:13:191:13 | After catch (...) {...} [no-match] | 1 |
-| Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:13:191:13 | catch (...) {...} | 1 |
+| Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:20:188:29 | access to type ExceptionB | 2 |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:188:38:188:39 | access to parameter b2 | 2 |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [no-match] | Finally.cs:188:20:188:29 | After access to type ExceptionB [no-match] | 1 |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [false] | Finally.cs:188:38:188:39 | After access to parameter b2 [false] | 1 |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [true] | Finally.cs:190:21:190:22 | access to parameter b1 | 4 |
 | Finally.cs:190:21:190:22 | After access to parameter b1 [false] | Finally.cs:189:13:191:13 | After {...} | 3 |
@@ -633,7 +636,7 @@
 | Finally.cs:209:21:209:22 | After access to parameter b3 [true] | Finally.cs:209:25:209:47 | throw ...; | 6 |
 | Finally.cs:216:10:216:12 | Entry | Finally.cs:220:13:220:36 | call to method WriteLine | 8 |
 | Finally.cs:220:13:220:36 | After call to method WriteLine | Finally.cs:219:9:221:9 | After {...} | 3 |
-| Finally.cs:222:9:225:9 | catch {...} | Finally.cs:223:9:225:9 | After {...} | 10 |
+| Finally.cs:222:9:225:9 | catch {...} | Finally.cs:223:9:225:9 | After {...} | 9 |
 | Finally.cs:227:9:229:9 | {...} | Finally.cs:216:10:216:12 | Exit | 18 |
 | Finally.cs:233:10:233:12 | Entry | Finally.cs:239:21:239:22 | access to parameter b1 | 10 |
 | Finally.cs:233:10:233:12 | Exceptional Exit | Finally.cs:233:10:233:12 | Exceptional Exit | 1 |
