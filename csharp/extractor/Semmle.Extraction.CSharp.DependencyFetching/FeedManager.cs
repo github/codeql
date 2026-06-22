@@ -117,7 +117,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <returns>A string representing the NuGet sources argument for the restore command.</returns>
         public string? MakeRestoreSourcesArgument(string path, HashSet<string> reachableFeeds)
         {
-            // Do not construct an set of explicit NuGet sources to use for restore.
+            // Do not construct a set of explicit NuGet sources to use for restore.
             if (!CheckNugetFeedResponsiveness && !HasPrivateRegistryFeeds)
             {
                 return null;
