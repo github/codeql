@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             PackageDirectory = new DependencyDirectory("packages", "package", logger);
             legacyPackageDirectory = new DependencyDirectory("legacypackages", "legacy package", logger);
             missingPackageDirectory = new DependencyDirectory("missingpackages", "missing package", logger);
-            feedManager = new FeedManager(logger, dotnet, dependabotProxy);
+            feedManager = new FeedManager(logger, dotnet, dependabotProxy, fileProvider);
         }
 
         public string? TryRestore(string package)
@@ -120,7 +120,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 // Find feeds that are configured in NuGet.config files and divide them into ones that
                 // are explicitly configured for the project or by a private registry, and "all feeds"
                 // (including inherited ones) from other locations on the host outside of the working directory.
-                (explicitFeeds, var allFeeds) = GetAllFeeds();
+                (explicitFeeds, var allFeeds) = feedManager.GetAllFeeds();
 
                 if (feedManager.CheckNugetFeedResponsiveness)
                 {
@@ -665,59 +665,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     ));
                 }
             }
-        }
-
-
-        private (HashSet<string> explicitFeeds, HashSet<string> allFeeds) GetAllFeeds()
-        {
-            var nugetConfigs = fileProvider.NugetConfigs;
-
-            // Find feeds that are explicitly configured in the NuGet configuration files that we found.
-            var explicitFeeds = nugetConfigs
-                .SelectMany(config => feedManager.GetFeedsFromNugetConfig(config))
-                .ToHashSet();
-
-            if (explicitFeeds.Count > 0)
-            {
-                logger.LogInfo($"Found {explicitFeeds.Count} NuGet feeds in nuget.config files: {string.Join(", ", explicitFeeds.OrderBy(f => f))}");
-            }
-            else
-            {
-                logger.LogDebug("No NuGet feeds found in nuget.config files.");
-            }
-
-            // If private package registries are configured for C#, then consider those
-            // in addition to the ones that are configured in `nuget.config` files.
-            if (feedManager.HasPrivateRegistryFeeds)
-            {
-                logger.LogInfo($"Found {feedManager.PrivateRegistryFeeds.Count} private registry feeds configured for C#: {string.Join(", ", feedManager.PrivateRegistryFeeds.OrderBy(f => f))}");
-                explicitFeeds.UnionWith(feedManager.PrivateRegistryFeeds);
-            }
-
-            HashSet<string> allFeeds = [];
-
-            // Add all explicitFeeds to the set of all feeds.
-            allFeeds.UnionWith(explicitFeeds);
-
-            // Obtain the list of feeds from the root source directory.
-            // If a NuGet file is present it will be respected, otherwise we will just get the machine/environment specific feeds.
-            var nugetFeedsFromRoot = feedManager.GetFeedsFromFolder(fileProvider.SourceDir.FullName);
-            allFeeds.UnionWith(nugetFeedsFromRoot);
-
-            if (nugetConfigs.Count > 0)
-            {
-                var nugetConfigFeeds = nugetConfigs
-                    .Select(path => FileUtils.GetDirectoryName(path, logger))
-                    .Where(folder => folder != null)
-                    .SelectMany(folder => feedManager.GetFeedsFromFolder(folder!))
-                    .ToHashSet();
-
-                allFeeds.UnionWith(nugetConfigFeeds);
-            }
-
-            logger.LogInfo($"Found {allFeeds.Count} NuGet feeds (with inherited ones) in nuget.config files: {string.Join(", ", allFeeds.OrderBy(f => f))}");
-
-            return (explicitFeeds, allFeeds);
         }
 
         [GeneratedRegex(@"<TargetFramework>.*</TargetFramework>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]

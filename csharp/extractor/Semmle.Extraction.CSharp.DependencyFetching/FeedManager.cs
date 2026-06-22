@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -20,6 +21,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private readonly ILogger logger;
         private readonly IDotNet dotnet;
+        private readonly FileProvider fileProvider;
         private readonly DependabotProxy? dependabotProxy;
         private readonly DependencyDirectory emptyPackageDirectory;
 
@@ -27,14 +29,28 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public bool HasPrivateRegistryFeeds { get; }
         public bool CheckNugetFeedResponsiveness { get; } = EnvironmentVariables.GetBooleanOptOut(EnvironmentVariableNames.CheckNugetFeedResponsiveness);
 
-        public FeedManager(ILogger logger, IDotNet dotnet, DependabotProxy? dependabotProxy)
+        public FeedManager(ILogger logger, IDotNet dotnet, DependabotProxy? dependabotProxy, FileProvider fileProvider)
         {
             this.logger = logger;
             this.dotnet = dotnet;
             this.dependabotProxy = dependabotProxy;
+            this.fileProvider = fileProvider;
             PrivateRegistryFeeds = dependabotProxy?.RegistryURLs.ToImmutableHashSet() ?? [];
             HasPrivateRegistryFeeds = PrivateRegistryFeeds.Count > 0;
             emptyPackageDirectory = new DependencyDirectory("empty", "empty package", logger);
+        }
+
+        private string? GetDirectoryName(string path)
+        {
+            try
+            {
+                return new FileInfo(path).Directory?.FullName;
+            }
+            catch (Exception exc)
+            {
+                logger.LogWarning($"Failed to get directory of '{path}': {exc}");
+            }
+            return null;
         }
 
         private IEnumerable<string> GetFeeds(Func<IList<string>> getNugetFeeds)
@@ -65,11 +81,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        public IEnumerable<string> GetFeedsFromFolder(string folderPath) =>
+        private IEnumerable<string> GetFeedsFromFolder(string folderPath) =>
             GetFeeds(() => dotnet.GetNugetFeedsFromFolder(folderPath));
 
 
-        public IEnumerable<string> GetFeedsFromNugetConfig(string nugetConfigPath) =>
+        private IEnumerable<string> GetFeedsFromNugetConfig(string nugetConfigPath) =>
             GetFeeds(() => dotnet.GetNugetFeeds(nugetConfigPath));
 
         private string FeedsToRestoreArgument(IEnumerable<string> feeds)
@@ -108,7 +124,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             // Find the path specific feeds.
-            var folder = FileUtils.GetDirectoryName(path, logger);
+            var folder = GetDirectoryName(path);
             var feedsToConsider = folder is not null ? GetFeedsFromFolder(folder).ToHashSet() : new HashSet<string>();
 
             if (HasPrivateRegistryFeeds)
@@ -282,7 +298,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="isFallback">Whether the feeds are fallback feeds or not.</param>
         /// <param name="isTimeout">Whether a timeout occurred while checking the feeds.</param>
         /// <returns>The list of feeds that could be reached.</returns>
-        public List<string> GetReachableNuGetFeeds(HashSet<string> feedsToCheck, bool isFallback, out bool isTimeout)
+        private List<string> GetReachableNuGetFeeds(HashSet<string> feedsToCheck, bool isFallback, out bool isTimeout)
         {
             var fallbackStr = isFallback ? "fallback " : "";
             logger.LogInfo($"Checking {fallbackStr}NuGet feed reachability on feeds: {string.Join(", ", feedsToCheck.OrderBy(f => f))}");
@@ -332,6 +348,58 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             return GetReachableNuGetFeeds(fallbackFeeds, isFallback: true, out var _);
+        }
+
+        public (HashSet<string> explicitFeeds, HashSet<string> allFeeds) GetAllFeeds()
+        {
+            var nugetConfigs = fileProvider.NugetConfigs;
+
+            // Find feeds that are explicitly configured in the NuGet configuration files that we found.
+            var explicitFeeds = nugetConfigs
+                .SelectMany(GetFeedsFromNugetConfig)
+                .ToHashSet();
+
+            if (explicitFeeds.Count > 0)
+            {
+                logger.LogInfo($"Found {explicitFeeds.Count} NuGet feeds in nuget.config files: {string.Join(", ", explicitFeeds.OrderBy(f => f))}");
+            }
+            else
+            {
+                logger.LogDebug("No NuGet feeds found in nuget.config files.");
+            }
+
+            // If private package registries are configured for C#, then consider those
+            // in addition to the ones that are configured in `nuget.config` files.
+            if (HasPrivateRegistryFeeds)
+            {
+                logger.LogInfo($"Found {PrivateRegistryFeeds.Count} private registry feeds configured for C#: {string.Join(", ", PrivateRegistryFeeds.OrderBy(f => f))}");
+                explicitFeeds.UnionWith(PrivateRegistryFeeds);
+            }
+
+            HashSet<string> allFeeds = [];
+
+            // Add all explicitFeeds to the set of all feeds.
+            allFeeds.UnionWith(explicitFeeds);
+
+            // Obtain the list of feeds from the root source directory.
+            // If a NuGet file is present it will be respected, otherwise we will just get the machine/environment specific feeds.
+            var nugetFeedsFromRoot = GetFeedsFromFolder(fileProvider.SourceDir.FullName);
+            allFeeds.UnionWith(nugetFeedsFromRoot);
+
+            if (nugetConfigs.Count > 0)
+            {
+                var nugetConfigFeeds = nugetConfigs
+                    .Select(GetDirectoryName)
+                    .Where(folder => folder != null)
+                    .SelectMany(folder => GetFeedsFromFolder(folder!))
+                    .ToHashSet();
+
+                allFeeds.UnionWith(nugetConfigFeeds);
+            }
+
+            logger.LogInfo($"Found {allFeeds.Count} NuGet feeds (with inherited ones) in nuget.config files: {string.Join(", ", allFeeds.OrderBy(f => f))}");
+
+            return (explicitFeeds, allFeeds);
         }
 
         [GeneratedRegex(@"^E\s(.*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
