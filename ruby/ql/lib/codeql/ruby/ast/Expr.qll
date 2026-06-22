@@ -281,7 +281,7 @@ class Pair extends Expr instanceof PairImpl {
 }
 
 /**
- * A list of exception types in a rescue clause. For example, the exception list
+ * A disjunctive exception pattern match in a rescue clause. For example, the exception list
  * `FirstError, SecondError` in:
  * ```rb
  * begin
@@ -290,7 +290,6 @@ class Pair extends Expr instanceof PairImpl {
  *   handle_error(e)
  * end
  * ```
- * This node is only present when there are two or more exceptions in the list.
  */
 class ExceptionList extends Expr, TExceptionList {
   private Ruby::Exceptions g;
@@ -327,16 +326,18 @@ class RescueClause extends Expr, TRescueClause {
 
   final override string getAPrimaryQlClass() { result = "RescueClause" }
 
+  /** Gets the exception list pattern when there are multiple exception expressions. */
+  private ExceptionList getExceptions() { result = TExceptionList(g.getExceptions()) }
+
   /**
    * Gets the `n`th exception to match, if any. For example `FirstError` or `SecondError` in:
    * ```rb
    * begin
-   *  do_something
+   *   do_something
    * rescue FirstError, SecondError => e
    *   handle_error(e)
    * end
    * ```
-   * When there are two or more exceptions, use `getExceptions()` to get the `ExceptionList` node.
    */
   final Expr getException(int n) {
     // 0 or 1 exception: no ExceptionList node, access directly
@@ -351,7 +352,7 @@ class RescueClause extends Expr, TRescueClause {
    * Gets an exception to match, if any. For example `FirstError` or `SecondError` in:
    * ```rb
    * begin
-   *  do_something
+   *   do_something
    * rescue FirstError, SecondError => e
    *   handle_error(e)
    * end
@@ -360,24 +361,34 @@ class RescueClause extends Expr, TRescueClause {
   final Expr getAnException() { result = this.getException(_) }
 
   /**
-   * Gets the exception list node when there are two or more exceptions to match. For example,
-   * the exception list `FirstError, SecondError` in:
+   * Gets the exception pattern to match, if any.
+   *
+   * This is either a single exception expression, or an `ExceptionList`
+   * representing a disjunctive match of multiple exceptions when there are two
+   * or more exceptions expressions.
+   *
+   * For example, in the following code, the exception pattern is the
+   * exception list `FirstError, SecondError`:
    * ```rb
    * begin
-   *  do_something
+   *   do_something
    * rescue FirstError, SecondError => e
    *   handle_error(e)
    * end
    * ```
    */
-  final ExceptionList getExceptions() { result = TExceptionList(g.getExceptions()) }
+  final Expr getPattern() {
+    result = this.getExceptions()
+    or
+    not exists(this.getExceptions()) and result = this.getAnException()
+  }
 
   /**
    * Gets the variable to which to assign the matched exception, if any.
    * For example `err` in:
    * ```rb
    * begin
-   *  do_something
+   *   do_something
    * rescue StandardError => err
    *   handle_error(err)
    * end
@@ -395,13 +406,7 @@ class RescueClause extends Expr, TRescueClause {
   final override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
     or
-    // For 0 or 1 exceptions, exceptions are direct children
-    not exists(this.getExceptions()) and
-    pred = "getException" and
-    result = this.getException(_)
-    or
-    // For 2+ exceptions, the ExceptionList node is the direct child
-    pred = "getExceptions" and result = this.getExceptions()
+    pred = "getPattern" and result = this.getPattern()
     or
     pred = "getVariableExpr" and result = this.getVariableExpr()
     or
