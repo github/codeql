@@ -6,6 +6,7 @@ import Generics
 import Location
 import Namespace
 import Property
+import semmle.code.csharp.controlflow.ControlFlowElement
 private import Conversion
 private import semmle.code.csharp.metrics.Coupling
 private import TypeRef
@@ -1286,7 +1287,7 @@ class TupleType extends ValueType, @tuple_type {
  * A type mention, that is, any mention of a type in a source code file.
  * For example, `int` is mentioned in `int M() { return 1; }`.
  */
-class TypeMention extends @type_mention {
+class TypeMention extends ControlFlowElement, @type_mention {
   Type type;
   @type_mention_parent parent;
 
@@ -1319,13 +1320,13 @@ class TypeMention extends @type_mention {
    * }
    * ```
    */
-  TypeMention getParent() { result = parent }
+  override TypeMention getParent() { result = parent }
 
   /** Gets a textual representation of this type mention. */
-  string toString() { result = type.toString() }
+  override string toString() { result = type.toString() }
 
   /** Gets the location of this type mention. */
-  Location getLocation() { type_mention_location(this, result) }
+  override Location getALocation() { type_mention_location(this, result) }
 }
 
 /**

@@ -219,7 +219,7 @@ overlayChangedFiles(
 /** ELEMENTS **/
 
 @element = @declaration | @stmt | @expr | @modifier | @attribute | @namespace_declaration
-         | @using_directive | @type_parameter_constraints | @externalDataElement
+         | @using_directive | @type_parameter_constraints | @type_mention | @externalDataElement
          | @xmllocatable | @asp_element | @namespace | @preprocessor_directive;
 
 @declaration = @callable | @generic | @assignable | @namespace;
