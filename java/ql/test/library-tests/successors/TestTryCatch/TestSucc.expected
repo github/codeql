@@ -105,8 +105,8 @@
 | TestTryCatch.java:34:9:34:9 | y | TestTryCatch.java:34:13:34:13 | 1 |
 | TestTryCatch.java:34:9:34:13 | ... + ... | TestTryCatch.java:34:5:34:13 | ...=... |
 | TestTryCatch.java:34:13:34:13 | 1 | TestTryCatch.java:34:9:34:13 | ... + ... |
-| TestTryCatch.java:35:6:35:31 | catch (...) | TestTryCatch.java:4:14:4:14 | Exceptional Exit |
 | TestTryCatch.java:35:6:35:31 | catch (...) | TestTryCatch.java:35:30:35:30 | e |
+| TestTryCatch.java:35:30:35:30 | e | TestTryCatch.java:4:14:4:14 | Exceptional Exit |
 | TestTryCatch.java:35:30:35:30 | e | TestTryCatch.java:36:4:40:4 | { ... } |
 | TestTryCatch.java:36:4:40:4 | { ... } | TestTryCatch.java:37:5:37:14 | var ...; |
 | TestTryCatch.java:37:5:37:14 | var ...; | TestTryCatch.java:37:13:37:13 | 1 |
