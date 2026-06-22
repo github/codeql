@@ -165,7 +165,7 @@ struct Seed {
 }
 
 impl Seed {
-    fn new(seed_value: u64) -> Self {
+    fn new(_seed_value: u64) -> Self {
         Seed { }
     }
 }
