@@ -20,7 +20,7 @@ class ControlFlowElementOrCallable extends ExprOrStmtParent, TControlFlowElement
  */
 class ControlFlowElement extends ControlFlowElementOrCallable, @control_flow_element {
   /** Gets the enclosing callable of this element, if any. */
-  Callable getEnclosingCallable() { none() }
+  Callable getEnclosingCallable() { enclosingCallable(this, result) }
 
   /** Gets the assembly that this element was compiled into. */
   Assembly getAssembly() {

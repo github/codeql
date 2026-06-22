@@ -121,6 +121,13 @@ private module Cached {
     result = getAChildExpr(parent)
     or
     result = parent.getAChildStmt()
+    or
+    result =
+      any(TypeMention tm |
+        tm.getTarget() = parent
+        or
+        tm.getParent+().getTarget() = parent
+      )
   }
 
   private predicate parent(ControlFlowElement child, ExprOrStmtParent parent) {

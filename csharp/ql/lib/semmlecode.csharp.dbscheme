@@ -1369,7 +1369,7 @@ compiler_generated(unique int id: @element ref);
 
 /** CONTROL/DATA FLOW **/
 
-@control_flow_element = @stmt | @expr | @parameter;
+@control_flow_element = @stmt | @expr | @parameter | @type_mention;
 
 /* XML Files */
 
