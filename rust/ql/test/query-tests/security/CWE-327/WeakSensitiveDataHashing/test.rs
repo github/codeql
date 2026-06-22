@@ -171,8 +171,8 @@ impl Seed {
 }
 
 fn test_seed() {
-    // this will be misrecognized as a use of the SEED algorithm, but being a strong
-    // algorithm and not sensitive data, there is no query result anyway.
+    // this will be misrecognized as a use of the SEED algorithm, but SEED is strong and the input
+    // is not sensitive data, so `rust/weak-sensitive-data-hashing` should not report a result here.
     let _ = Seed::new(0); // $ Alert[rust/summary/cryptographic-operations]
 }
 
