@@ -151,7 +151,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             try
             {
-                using (var packagesConfigRestore = PackagesConfigRestoreFactory.Create(fileProvider, legacyPackageDirectory, logger, feedManager.IsDefaultFeedReachable))
+                using (var packagesConfigRestore = PackagesConfigRestoreFactory.Create(fileProvider, legacyPackageDirectory, logger, feedManager))
                 {
                     var count = packagesConfigRestore.InstallPackages();
 

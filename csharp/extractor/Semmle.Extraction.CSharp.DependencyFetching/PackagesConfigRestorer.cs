@@ -33,11 +33,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class PackagesConfigRestoreFactory
     {
-        public static IPackagesConfigRestore Create(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, Func<bool> useDefaultFeed)
+        public static IPackagesConfigRestore Create(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
         {
             if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMonoInstalled())
             {
-                return new NugetExeWrapper(fileProvider, packageDirectory, logger, useDefaultFeed);
+                return new NugetExeWrapper(fileProvider, packageDirectory, logger, feedManager);
             }
 
             return new NoOpPackagesConfig(fileProvider.PackagesConfigs, logger);
@@ -65,23 +65,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             /// so as to not trample the source tree.
             /// </summary>
             private readonly DependencyDirectory packageDirectory;
+            private readonly FeedManager feedManager;
 
             private bool IsWindows => SystemBuildActions.Instance.IsWindows();
 
             /// <summary>
             /// Create the package manager for a specified source tree.
             /// </summary>
-            public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, Func<bool> useDefaultFeed)
+            public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
             {
                 this.fileProvider = fileProvider;
                 this.packageDirectory = packageDirectory;
                 this.logger = logger;
+                this.feedManager = feedManager;
 
                 if (fileProvider.PackagesConfigs.Count > 0)
                 {
                     logger.LogInfo($"Found packages.config files, trying to use nuget.exe for package restore");
                     nugetExe = ResolveNugetExe();
-                    if (!HasPackageSource() && useDefaultFeed())
+                    if (!HasPackageSource() && feedManager.IsDefaultFeedReachable())
                     {
                         // We only modify or add a top level nuget.config file
                         nugetConfigPath = Path.Join(fileProvider.SourceDir.FullName, "nuget.config");
