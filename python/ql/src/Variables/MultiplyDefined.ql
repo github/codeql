@@ -24,8 +24,8 @@ predicate multiply_defined(AstNode asgn1, AstNode asgn2, Variable v) {
 
   forex(Definition def, Definition redef |
     def.getVariable() = v and
-    def = asgn1.getAFlowNode() and
-    redef = asgn2.getAFlowNode()
+    def.getNode() = asgn1 and
+    redef.getNode() = asgn2
   |
     def.isUnused() and
     def.getARedef() = redef and

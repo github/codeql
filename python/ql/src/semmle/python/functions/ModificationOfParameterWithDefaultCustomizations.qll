@@ -131,7 +131,7 @@ module ModificationOfParameterWithDefault {
       exists(DeletionNode d | d.getTarget().(SubscriptNode).getObject() = this.asCfgNode())
       or
       // augmented assignment to the value
-      exists(AugAssign a | a.getTarget().getAFlowNode() = this.asCfgNode())
+      exists(AugAssign a | this.asCfgNode().getNode() = a.getTarget())
       or
       // modifying function call
       exists(DataFlow::CallCfgNode c, DataFlow::AttrRead a | c.getFunction() = a |

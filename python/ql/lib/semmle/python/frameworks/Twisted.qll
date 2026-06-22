@@ -182,7 +182,10 @@ private module Twisted {
     DataFlow::CfgNode
   {
     TwistedResourceRenderMethodReturn() {
-      this.asCfgNode() = any(TwistedResourceRenderMethod meth).getAReturnValueFlowNode()
+      exists(Return ret |
+        ret.getScope() = any(TwistedResourceRenderMethod meth) and
+        this.asCfgNode().getNode() = ret.getValue()
+      )
     }
 
     override DataFlow::Node getBody() { result = this }

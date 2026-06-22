@@ -371,7 +371,7 @@ module Flask {
       result in [this.getArg(0), this.getArgByName("rule")]
     }
 
-    override Function getARequestHandler() { result.getADecorator().getAFlowNode() = node }
+    override Function getARequestHandler() { node.getNode() = result.getADecorator() }
   }
 
   /**
@@ -536,7 +536,7 @@ module Flask {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
         routeHandler = any(FlaskRouteSetup rs).getARequestHandler() and
-        node = routeHandler.getAReturnValueFlowNode() and
+        exists(Return ret | ret.getScope() = routeHandler and node.getNode() = ret.getValue()) and
         not this instanceof Flask::Response::InstanceSource
       )
     }
