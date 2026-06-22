@@ -1,0 +1,27 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["spark", "Request", true, "body", "", "", "ReturnValue", "remote", "manual"]
+      - ["spark", "Request", true, "bodyAsBytes", "", "", "ReturnValue", "remote", "manual"]
+      - ["spark", "Request", true, "cookie", "", "", "ReturnValue", "remote", "manual"]
+      - ["spark", "Request", true, "cookies", "", "", "ReturnValue", "remote", "manual"]
+      - ["spark", "Request", true, "headers", "", "", "ReturnValue", "remote", "manual"]
+      - ["spark", "Request", true, "params", "", "", "ReturnValue", "remote", "manual"]
+      - ["spark", "Request", true, "queryMap", "", "", "ReturnValue", "remote", "manual"]
+      - ["spark", "Request", true, "queryParams", "", "", "ReturnValue", "remote", "manual"]
+      - ["spark", "Request", true, "queryParamsSafe", "", "", "ReturnValue", "remote", "manual"]
+      - ["spark", "Request", true, "queryParamOrDefault", "", "", "ReturnValue", "remote", "manual"]
+      - ["spark", "Request", true, "queryParamsValues", "", "", "ReturnValue", "remote", "manual"]
+      - ["spark", "Request", true, "queryString", "", "", "ReturnValue", "remote", "manual"]
+      - ["spark", "Request", true, "uri", "", "", "ReturnValue", "remote", "manual"]
+      - ["spark", "Request", true, "url", "", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data: 
+      - ["spark", "QueryParamsMap", True, "get", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["spark", "QueryParamsMap", True, "toMap", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["spark", "QueryParamsMap", True, "value", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["spark", "QueryParamsMap", True, "values", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]

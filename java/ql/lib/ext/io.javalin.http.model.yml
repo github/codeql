@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.javalin.http", "Context", true, "basicAuthCredentials", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "body", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "bodyAsClass", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "cookie", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "header", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "formParam", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "formParams", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "formParamMap", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "formParamAsClass", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "formParamsAsClass", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "pathParam", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "pathParamAsClass", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "pathParamMap", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "queryParam", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "queryParams", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "queryParamAsClass", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "queryParamsAsClass", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "queryParamMap", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "queryString", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.javalin.http", "Context", true, "sessionAttribute", "", "", "ReturnValue", "remote", "manual"]
