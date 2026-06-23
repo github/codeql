@@ -31,16 +31,16 @@ edges
 | SqlInjection.go:11:3:11:17 | call to Query | SqlInjection.go:11:3:11:29 | index expression | provenance |  |
 | SqlInjection.go:11:3:11:29 | index expression | SqlInjection.go:10:7:11:30 | []type{args} [array] | provenance |  |
 | SqlInjection.go:11:3:11:29 | index expression | SqlInjection.go:10:7:11:30 | call to Sprintf | provenance | FunctionModel |
-| issue48.go:17:2:17:33 | ... := ...[0] | issue48.go:18:17:18:17 | b | provenance |  |
-| issue48.go:17:25:17:32 | selection of Body | issue48.go:17:2:17:33 | ... := ...[0] | provenance | Src:MaD:17 MaD:24 |
+| issue48.go:17:2:17:33 | extract:0 ... := ... | issue48.go:18:17:18:17 | b | provenance |  |
+| issue48.go:17:25:17:32 | selection of Body | issue48.go:17:2:17:33 | extract:0 ... := ... | provenance | Src:MaD:17 MaD:24 |
 | issue48.go:18:17:18:17 | b | issue48.go:18:20:18:39 | &... [postupdate] | provenance | MaD:22 |
 | issue48.go:18:20:18:39 | &... [postupdate] | issue48.go:21:3:21:33 | index expression | provenance |  |
 | issue48.go:20:8:21:34 | []type{args} [array] | issue48.go:20:8:21:34 | call to Sprintf | provenance | MaD:23 |
 | issue48.go:20:8:21:34 | call to Sprintf | issue48.go:22:11:22:12 | q3 | provenance | Sink:MaD:1 |
 | issue48.go:21:3:21:33 | index expression | issue48.go:20:8:21:34 | []type{args} [array] | provenance |  |
 | issue48.go:21:3:21:33 | index expression | issue48.go:20:8:21:34 | call to Sprintf | provenance | FunctionModel |
-| issue48.go:27:2:27:34 | ... := ...[0] | issue48.go:28:17:28:18 | b2 | provenance |  |
-| issue48.go:27:26:27:33 | selection of Body | issue48.go:27:2:27:34 | ... := ...[0] | provenance | Src:MaD:17 MaD:24 |
+| issue48.go:27:2:27:34 | extract:0 ... := ... | issue48.go:28:17:28:18 | b2 | provenance |  |
+| issue48.go:27:26:27:33 | selection of Body | issue48.go:27:2:27:34 | extract:0 ... := ... | provenance | Src:MaD:17 MaD:24 |
 | issue48.go:28:17:28:18 | b2 | issue48.go:28:21:28:41 | &... [postupdate] | provenance | MaD:22 |
 | issue48.go:28:21:28:41 | &... [postupdate] | issue48.go:31:3:31:31 | selection of Category | provenance |  |
 | issue48.go:30:8:31:32 | []type{args} [array] | issue48.go:30:8:31:32 | call to Sprintf | provenance | MaD:23 |
@@ -72,19 +72,19 @@ edges
 | main.go:30:13:30:39 | index expression | main.go:28:18:31:2 | struct literal [Category] | provenance |  |
 | main.go:33:7:34:23 | []type{args} [array] | main.go:33:7:34:23 | call to Sprintf | provenance | MaD:23 |
 | main.go:33:7:34:23 | call to Sprintf | main.go:35:11:35:11 | q | provenance | Sink:MaD:1 |
-| main.go:34:3:34:13 | RequestData [pointer, Category] | main.go:34:3:34:13 | implicit dereference [Category] | provenance |  |
-| main.go:34:3:34:13 | implicit dereference [Category] | main.go:34:3:34:22 | selection of Category | provenance |  |
+| main.go:34:3:34:13 | RequestData [pointer, Category] | main.go:34:3:34:13 | implicit-deref RequestData [Category] | provenance |  |
+| main.go:34:3:34:13 | implicit-deref RequestData [Category] | main.go:34:3:34:22 | selection of Category | provenance |  |
 | main.go:34:3:34:22 | selection of Category | main.go:33:7:34:23 | []type{args} [array] | provenance |  |
 | main.go:34:3:34:22 | selection of Category | main.go:33:7:34:23 | call to Sprintf | provenance | FunctionModel |
 | main.go:40:2:40:12 | RequestData [postupdate] [pointer, Category] | main.go:43:3:43:13 | RequestData [pointer, Category] | provenance |  |
-| main.go:40:2:40:12 | implicit dereference [postupdate] [Category] | main.go:40:2:40:12 | RequestData [postupdate] [pointer, Category] | provenance |  |
+| main.go:40:2:40:12 | implicit-deref RequestData [postupdate] [Category] | main.go:40:2:40:12 | RequestData [postupdate] [pointer, Category] | provenance |  |
 | main.go:40:25:40:31 | selection of URL | main.go:40:25:40:39 | call to Query | provenance | Src:MaD:21 MaD:26 |
 | main.go:40:25:40:39 | call to Query | main.go:40:25:40:51 | index expression | provenance |  |
-| main.go:40:25:40:51 | index expression | main.go:40:2:40:12 | implicit dereference [postupdate] [Category] | provenance |  |
+| main.go:40:25:40:51 | index expression | main.go:40:2:40:12 | implicit-deref RequestData [postupdate] [Category] | provenance |  |
 | main.go:42:7:43:23 | []type{args} [array] | main.go:42:7:43:23 | call to Sprintf | provenance | MaD:23 |
 | main.go:42:7:43:23 | call to Sprintf | main.go:44:11:44:11 | q | provenance | Sink:MaD:1 |
-| main.go:43:3:43:13 | RequestData [pointer, Category] | main.go:43:3:43:13 | implicit dereference [Category] | provenance |  |
-| main.go:43:3:43:13 | implicit dereference [Category] | main.go:43:3:43:22 | selection of Category | provenance |  |
+| main.go:43:3:43:13 | RequestData [pointer, Category] | main.go:43:3:43:13 | implicit-deref RequestData [Category] | provenance |  |
+| main.go:43:3:43:13 | implicit-deref RequestData [Category] | main.go:43:3:43:22 | selection of Category | provenance |  |
 | main.go:43:3:43:22 | selection of Category | main.go:42:7:43:23 | []type{args} [array] | provenance |  |
 | main.go:43:3:43:22 | selection of Category | main.go:42:7:43:23 | call to Sprintf | provenance | FunctionModel |
 | main.go:49:3:49:14 | star expression [postupdate] [Category] | main.go:49:4:49:14 | RequestData [postupdate] [pointer, Category] | provenance |  |
@@ -94,8 +94,8 @@ edges
 | main.go:49:28:49:54 | index expression | main.go:49:3:49:14 | star expression [postupdate] [Category] | provenance |  |
 | main.go:51:7:52:23 | []type{args} [array] | main.go:51:7:52:23 | call to Sprintf | provenance | MaD:23 |
 | main.go:51:7:52:23 | call to Sprintf | main.go:53:11:53:11 | q | provenance | Sink:MaD:1 |
-| main.go:52:3:52:13 | RequestData [pointer, Category] | main.go:52:3:52:13 | implicit dereference [Category] | provenance |  |
-| main.go:52:3:52:13 | implicit dereference [Category] | main.go:52:3:52:22 | selection of Category | provenance |  |
+| main.go:52:3:52:13 | RequestData [pointer, Category] | main.go:52:3:52:13 | implicit-deref RequestData [Category] | provenance |  |
+| main.go:52:3:52:13 | implicit-deref RequestData [Category] | main.go:52:3:52:22 | selection of Category | provenance |  |
 | main.go:52:3:52:22 | selection of Category | main.go:51:7:52:23 | []type{args} [array] | provenance |  |
 | main.go:52:3:52:22 | selection of Category | main.go:51:7:52:23 | call to Sprintf | provenance | FunctionModel |
 | main.go:58:3:58:14 | star expression [postupdate] [Category] | main.go:58:4:58:14 | RequestData [postupdate] [pointer, Category] | provenance |  |
@@ -161,7 +161,7 @@ nodes
 | SqlInjection.go:11:3:11:17 | call to Query | semmle.label | call to Query |
 | SqlInjection.go:11:3:11:29 | index expression | semmle.label | index expression |
 | SqlInjection.go:12:11:12:11 | q | semmle.label | q |
-| issue48.go:17:2:17:33 | ... := ...[0] | semmle.label | ... := ...[0] |
+| issue48.go:17:2:17:33 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
 | issue48.go:17:25:17:32 | selection of Body | semmle.label | selection of Body |
 | issue48.go:18:17:18:17 | b | semmle.label | b |
 | issue48.go:18:20:18:39 | &... [postupdate] | semmle.label | &... [postupdate] |
@@ -169,7 +169,7 @@ nodes
 | issue48.go:20:8:21:34 | call to Sprintf | semmle.label | call to Sprintf |
 | issue48.go:21:3:21:33 | index expression | semmle.label | index expression |
 | issue48.go:22:11:22:12 | q3 | semmle.label | q3 |
-| issue48.go:27:2:27:34 | ... := ...[0] | semmle.label | ... := ...[0] |
+| issue48.go:27:2:27:34 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
 | issue48.go:27:26:27:33 | selection of Body | semmle.label | selection of Body |
 | issue48.go:28:17:28:18 | b2 | semmle.label | b2 |
 | issue48.go:28:21:28:41 | &... [postupdate] | semmle.label | &... [postupdate] |
@@ -204,18 +204,18 @@ nodes
 | main.go:33:7:34:23 | []type{args} [array] | semmle.label | []type{args} [array] |
 | main.go:33:7:34:23 | call to Sprintf | semmle.label | call to Sprintf |
 | main.go:34:3:34:13 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
-| main.go:34:3:34:13 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
+| main.go:34:3:34:13 | implicit-deref RequestData [Category] | semmle.label | implicit-deref RequestData [Category] |
 | main.go:34:3:34:22 | selection of Category | semmle.label | selection of Category |
 | main.go:35:11:35:11 | q | semmle.label | q |
 | main.go:40:2:40:12 | RequestData [postupdate] [pointer, Category] | semmle.label | RequestData [postupdate] [pointer, Category] |
-| main.go:40:2:40:12 | implicit dereference [postupdate] [Category] | semmle.label | implicit dereference [postupdate] [Category] |
+| main.go:40:2:40:12 | implicit-deref RequestData [postupdate] [Category] | semmle.label | implicit-deref RequestData [postupdate] [Category] |
 | main.go:40:25:40:31 | selection of URL | semmle.label | selection of URL |
 | main.go:40:25:40:39 | call to Query | semmle.label | call to Query |
 | main.go:40:25:40:51 | index expression | semmle.label | index expression |
 | main.go:42:7:43:23 | []type{args} [array] | semmle.label | []type{args} [array] |
 | main.go:42:7:43:23 | call to Sprintf | semmle.label | call to Sprintf |
 | main.go:43:3:43:13 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
-| main.go:43:3:43:13 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
+| main.go:43:3:43:13 | implicit-deref RequestData [Category] | semmle.label | implicit-deref RequestData [Category] |
 | main.go:43:3:43:22 | selection of Category | semmle.label | selection of Category |
 | main.go:44:11:44:11 | q | semmle.label | q |
 | main.go:49:3:49:14 | star expression [postupdate] [Category] | semmle.label | star expression [postupdate] [Category] |
@@ -226,7 +226,7 @@ nodes
 | main.go:51:7:52:23 | []type{args} [array] | semmle.label | []type{args} [array] |
 | main.go:51:7:52:23 | call to Sprintf | semmle.label | call to Sprintf |
 | main.go:52:3:52:13 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
-| main.go:52:3:52:13 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
+| main.go:52:3:52:13 | implicit-deref RequestData [Category] | semmle.label | implicit-deref RequestData [Category] |
 | main.go:52:3:52:22 | selection of Category | semmle.label | selection of Category |
 | main.go:53:11:53:11 | q | semmle.label | q |
 | main.go:58:3:58:14 | star expression [postupdate] [Category] | semmle.label | star expression [postupdate] [Category] |

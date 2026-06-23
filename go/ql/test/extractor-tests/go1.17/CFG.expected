@@ -1,64 +1,156 @@
 nodes
 edges
-| conversions.go:0:0:0:0 | entry | conversions.go:3:1:3:15 | skip |
-| conversions.go:3:1:3:15 | skip | conversions.go:5:6:5:8 | skip |
-| conversions.go:5:1:5:29 | entry | conversions.go:5:10:5:10 | argument corresponding to _ |
-| conversions.go:5:1:5:29 | function declaration | conversions.go:7:6:7:9 | skip |
-| conversions.go:5:6:5:8 | skip | conversions.go:5:1:5:29 | function declaration |
-| conversions.go:5:10:5:10 | argument corresponding to _ | conversions.go:5:10:5:10 | initialization of _ |
-| conversions.go:5:10:5:10 | initialization of _ | conversions.go:5:28:5:29 | skip |
-| conversions.go:5:28:5:29 | skip | conversions.go:5:1:5:29 | exit |
-| conversions.go:7:1:26:1 | entry | conversions.go:8:6:8:6 | skip |
-| conversions.go:7:1:26:1 | function declaration | conversions.go:0:0:0:0 | exit |
-| conversions.go:7:6:7:9 | skip | conversions.go:7:1:26:1 | function declaration |
-| conversions.go:8:6:8:6 | assignment to a | conversions.go:10:2:10:2 | skip |
-| conversions.go:8:6:8:6 | skip | conversions.go:8:6:8:6 | zero value for a |
-| conversions.go:8:6:8:6 | zero value for a | conversions.go:8:6:8:6 | assignment to a |
-| conversions.go:10:2:10:2 | assignment to b | conversions.go:11:2:11:4 | use |
-| conversions.go:10:2:10:2 | skip | conversions.go:10:7:10:16 | selection of Add |
-| conversions.go:10:7:10:16 | selection of Add | conversions.go:10:18:10:18 | a |
-| conversions.go:10:7:10:23 | call to Add | conversions.go:10:2:10:2 | assignment to b |
-| conversions.go:10:18:10:18 | a | conversions.go:10:21:10:22 | 10 |
-| conversions.go:10:21:10:22 | 10 | conversions.go:10:7:10:23 | call to Add |
-| conversions.go:11:2:11:4 | use | conversions.go:11:6:11:6 | b |
-| conversions.go:11:2:11:7 | call to use | conversions.go:7:1:26:1 | exit |
-| conversions.go:11:2:11:7 | call to use | conversions.go:13:6:13:8 | skip |
-| conversions.go:11:6:11:6 | b | conversions.go:11:2:11:7 | call to use |
-| conversions.go:13:6:13:8 | assignment to arr | conversions.go:14:2:14:6 | skip |
-| conversions.go:13:6:13:8 | skip | conversions.go:13:6:13:8 | zero value for arr |
-| conversions.go:13:6:13:8 | zero value for arr | conversions.go:13:6:13:8 | assignment to arr |
-| conversions.go:14:2:14:6 | assignment to slice | conversions.go:17:2:17:4 | skip |
-| conversions.go:14:2:14:6 | skip | conversions.go:14:11:14:22 | selection of Slice |
-| conversions.go:14:11:14:22 | selection of Slice | conversions.go:14:24:14:26 | arr |
-| conversions.go:14:11:14:31 | call to Slice | conversions.go:14:2:14:6 | assignment to slice |
-| conversions.go:14:24:14:26 | arr | conversions.go:14:29:14:30 | 20 |
-| conversions.go:14:29:14:30 | 20 | conversions.go:14:11:14:31 | call to Slice |
-| conversions.go:17:2:17:4 | assignment to ptr | conversions.go:18:2:18:4 | use |
-| conversions.go:17:2:17:4 | skip | conversions.go:17:20:17:24 | slice |
-| conversions.go:17:9:17:25 | type conversion | conversions.go:7:1:26:1 | exit |
-| conversions.go:17:9:17:25 | type conversion | conversions.go:17:2:17:4 | assignment to ptr |
-| conversions.go:17:20:17:24 | slice | conversions.go:17:9:17:25 | type conversion |
-| conversions.go:18:2:18:4 | use | conversions.go:18:6:18:8 | ptr |
-| conversions.go:18:2:18:9 | call to use | conversions.go:7:1:26:1 | exit |
-| conversions.go:18:2:18:9 | call to use | conversions.go:21:2:21:4 | skip |
-| conversions.go:18:6:18:8 | ptr | conversions.go:18:2:18:9 | call to use |
-| conversions.go:21:2:21:4 | assignment to str | conversions.go:22:2:22:6 | skip |
-| conversions.go:21:2:21:4 | skip | conversions.go:21:9:21:18 | "a string" |
-| conversions.go:21:9:21:18 | "a string" | conversions.go:21:2:21:4 | assignment to str |
-| conversions.go:22:2:22:6 | assignment to bytes | conversions.go:23:2:23:4 | use |
-| conversions.go:22:2:22:6 | skip | conversions.go:22:18:22:20 | str |
-| conversions.go:22:11:22:21 | type conversion | conversions.go:22:2:22:6 | assignment to bytes |
-| conversions.go:22:18:22:20 | str | conversions.go:22:11:22:21 | type conversion |
-| conversions.go:23:2:23:4 | use | conversions.go:23:6:23:10 | bytes |
-| conversions.go:23:2:23:11 | call to use | conversions.go:7:1:26:1 | exit |
-| conversions.go:23:2:23:11 | call to use | conversions.go:24:2:24:6 | skip |
-| conversions.go:23:6:23:10 | bytes | conversions.go:23:2:23:11 | call to use |
-| conversions.go:24:2:24:6 | assignment to runes | conversions.go:25:2:25:4 | use |
-| conversions.go:24:2:24:6 | skip | conversions.go:24:18:24:20 | str |
-| conversions.go:24:11:24:21 | type conversion | conversions.go:24:2:24:6 | assignment to runes |
-| conversions.go:24:18:24:20 | str | conversions.go:24:11:24:21 | type conversion |
-| conversions.go:25:2:25:4 | use | conversions.go:25:6:25:10 | runes |
-| conversions.go:25:2:25:11 | call to use | conversions.go:7:1:26:1 | exit |
-| conversions.go:25:6:25:10 | runes | conversions.go:25:2:25:11 | call to use |
+| conversions.go:0:0:0:0 | After conversions.go | conversions.go:0:0:0:0 | Normal Exit |
+| conversions.go:0:0:0:0 | Entry | conversions.go:0:0:0:0 | conversions.go |
+| conversions.go:0:0:0:0 | Normal Exit | conversions.go:0:0:0:0 | Exit |
+| conversions.go:0:0:0:0 | conversions.go | conversions.go:3:1:3:15 | import declaration |
+| conversions.go:3:1:3:15 | After import declaration | conversions.go:5:1:5:29 | Before function declaration |
+| conversions.go:3:1:3:15 | import declaration | conversions.go:3:8:3:15 | import specifier |
+| conversions.go:3:8:3:15 | import specifier | conversions.go:3:1:3:15 | After import declaration |
+| conversions.go:5:1:5:29 | After function declaration | conversions.go:7:1:26:1 | Before function declaration |
+| conversions.go:5:1:5:29 | Before function declaration | conversions.go:5:1:5:29 | function declaration |
+| conversions.go:5:1:5:29 | Entry | conversions.go:5:28:5:29 | block statement |
+| conversions.go:5:1:5:29 | Normal Exit | conversions.go:5:1:5:29 | Exit |
+| conversions.go:5:1:5:29 | function declaration | conversions.go:5:1:5:29 | After function declaration |
+| conversions.go:5:28:5:29 | After block statement | conversions.go:5:1:5:29 | Normal Exit |
+| conversions.go:5:28:5:29 | arg:0 block statement | conversions.go:5:28:5:29 | param-init:0 block statement |
+| conversions.go:5:28:5:29 | block statement | conversions.go:5:28:5:29 | arg:0 block statement |
+| conversions.go:5:28:5:29 | param-init:0 block statement | conversions.go:5:28:5:29 | After block statement |
+| conversions.go:7:1:26:1 | After function declaration | conversions.go:0:0:0:0 | After conversions.go |
+| conversions.go:7:1:26:1 | Before function declaration | conversions.go:7:1:26:1 | function declaration |
+| conversions.go:7:1:26:1 | Entry | conversions.go:7:13:26:1 | block statement |
+| conversions.go:7:1:26:1 | Exceptional Exit | conversions.go:7:1:26:1 | Exit |
+| conversions.go:7:1:26:1 | Normal Exit | conversions.go:7:1:26:1 | Exit |
+| conversions.go:7:1:26:1 | function declaration | conversions.go:7:1:26:1 | After function declaration |
+| conversions.go:7:13:26:1 | After block statement | conversions.go:7:1:26:1 | Normal Exit |
+| conversions.go:7:13:26:1 | block statement | conversions.go:8:2:8:21 | declaration statement |
+| conversions.go:8:2:8:21 | After declaration statement | conversions.go:10:2:10:23 | ... := ... |
+| conversions.go:8:2:8:21 | After variable declaration | conversions.go:8:2:8:21 | After declaration statement |
+| conversions.go:8:2:8:21 | declaration statement | conversions.go:8:2:8:21 | variable declaration |
+| conversions.go:8:2:8:21 | variable declaration | conversions.go:8:6:8:21 | value declaration specifier |
+| conversions.go:8:6:8:21 | After value declaration specifier | conversions.go:8:2:8:21 | After variable declaration |
+| conversions.go:8:6:8:21 | assign:0 value declaration specifier | conversions.go:8:6:8:21 | After value declaration specifier |
+| conversions.go:8:6:8:21 | value declaration specifier | conversions.go:8:6:8:21 | zero-init:0 value declaration specifier |
+| conversions.go:8:6:8:21 | zero-init:0 value declaration specifier | conversions.go:8:6:8:21 | assign:0 value declaration specifier |
+| conversions.go:10:2:10:23 | ... := ... | conversions.go:10:7:10:23 | Before call to Add |
+| conversions.go:10:2:10:23 | After ... := ... | conversions.go:11:2:11:7 | expression statement |
+| conversions.go:10:2:10:23 | assign:0 ... := ... | conversions.go:10:2:10:23 | After ... := ... |
+| conversions.go:10:7:10:16 | After selection of Add | conversions.go:10:18:10:18 | Before a |
+| conversions.go:10:7:10:16 | Before selection of Add | conversions.go:10:7:10:16 | selection of Add |
+| conversions.go:10:7:10:16 | selection of Add | conversions.go:10:7:10:16 | After selection of Add |
+| conversions.go:10:7:10:23 | After call to Add | conversions.go:10:2:10:23 | assign:0 ... := ... |
+| conversions.go:10:7:10:23 | Before call to Add | conversions.go:10:7:10:16 | Before selection of Add |
+| conversions.go:10:7:10:23 | call to Add | conversions.go:10:7:10:23 | After call to Add |
+| conversions.go:10:18:10:18 | After a | conversions.go:10:21:10:22 | Before 10 |
+| conversions.go:10:18:10:18 | Before a | conversions.go:10:18:10:18 | a |
+| conversions.go:10:18:10:18 | a | conversions.go:10:18:10:18 | After a |
+| conversions.go:10:21:10:22 | 10 | conversions.go:10:21:10:22 | After 10 |
+| conversions.go:10:21:10:22 | After 10 | conversions.go:10:7:10:23 | call to Add |
+| conversions.go:10:21:10:22 | Before 10 | conversions.go:10:21:10:22 | 10 |
+| conversions.go:11:2:11:4 | After use | conversions.go:11:6:11:6 | Before b |
+| conversions.go:11:2:11:4 | Before use | conversions.go:11:2:11:4 | use |
+| conversions.go:11:2:11:4 | use | conversions.go:11:2:11:4 | After use |
+| conversions.go:11:2:11:7 | After call to use | conversions.go:11:2:11:7 | After expression statement |
+| conversions.go:11:2:11:7 | After expression statement | conversions.go:13:2:13:13 | declaration statement |
+| conversions.go:11:2:11:7 | Before call to use | conversions.go:11:2:11:4 | Before use |
+| conversions.go:11:2:11:7 | call to use | conversions.go:7:1:26:1 | Exceptional Exit |
+| conversions.go:11:2:11:7 | call to use | conversions.go:11:2:11:7 | After call to use |
+| conversions.go:11:2:11:7 | expression statement | conversions.go:11:2:11:7 | Before call to use |
+| conversions.go:11:6:11:6 | After b | conversions.go:11:2:11:7 | call to use |
+| conversions.go:11:6:11:6 | Before b | conversions.go:11:6:11:6 | b |
+| conversions.go:11:6:11:6 | b | conversions.go:11:6:11:6 | After b |
+| conversions.go:13:2:13:13 | After declaration statement | conversions.go:14:2:14:31 | ... := ... |
+| conversions.go:13:2:13:13 | After variable declaration | conversions.go:13:2:13:13 | After declaration statement |
+| conversions.go:13:2:13:13 | declaration statement | conversions.go:13:2:13:13 | variable declaration |
+| conversions.go:13:2:13:13 | variable declaration | conversions.go:13:6:13:13 | value declaration specifier |
+| conversions.go:13:6:13:13 | After value declaration specifier | conversions.go:13:2:13:13 | After variable declaration |
+| conversions.go:13:6:13:13 | assign:0 value declaration specifier | conversions.go:13:6:13:13 | After value declaration specifier |
+| conversions.go:13:6:13:13 | value declaration specifier | conversions.go:13:6:13:13 | zero-init:0 value declaration specifier |
+| conversions.go:13:6:13:13 | zero-init:0 value declaration specifier | conversions.go:13:6:13:13 | assign:0 value declaration specifier |
+| conversions.go:14:2:14:31 | ... := ... | conversions.go:14:11:14:31 | Before call to Slice |
+| conversions.go:14:2:14:31 | After ... := ... | conversions.go:17:2:17:25 | ... := ... |
+| conversions.go:14:2:14:31 | assign:0 ... := ... | conversions.go:14:2:14:31 | After ... := ... |
+| conversions.go:14:11:14:22 | After selection of Slice | conversions.go:14:24:14:26 | Before arr |
+| conversions.go:14:11:14:22 | Before selection of Slice | conversions.go:14:11:14:22 | selection of Slice |
+| conversions.go:14:11:14:22 | selection of Slice | conversions.go:14:11:14:22 | After selection of Slice |
+| conversions.go:14:11:14:31 | After call to Slice | conversions.go:14:2:14:31 | assign:0 ... := ... |
+| conversions.go:14:11:14:31 | Before call to Slice | conversions.go:14:11:14:22 | Before selection of Slice |
+| conversions.go:14:11:14:31 | call to Slice | conversions.go:14:11:14:31 | After call to Slice |
+| conversions.go:14:24:14:26 | After arr | conversions.go:14:29:14:30 | Before 20 |
+| conversions.go:14:24:14:26 | Before arr | conversions.go:14:24:14:26 | arr |
+| conversions.go:14:24:14:26 | arr | conversions.go:14:24:14:26 | After arr |
+| conversions.go:14:29:14:30 | 20 | conversions.go:14:29:14:30 | After 20 |
+| conversions.go:14:29:14:30 | After 20 | conversions.go:14:11:14:31 | call to Slice |
+| conversions.go:14:29:14:30 | Before 20 | conversions.go:14:29:14:30 | 20 |
+| conversions.go:17:2:17:25 | ... := ... | conversions.go:17:9:17:25 | Before type conversion |
+| conversions.go:17:2:17:25 | After ... := ... | conversions.go:18:2:18:9 | expression statement |
+| conversions.go:17:2:17:25 | assign:0 ... := ... | conversions.go:17:2:17:25 | After ... := ... |
+| conversions.go:17:9:17:25 | After type conversion | conversions.go:17:2:17:25 | assign:0 ... := ... |
+| conversions.go:17:9:17:25 | Before type conversion | conversions.go:17:20:17:24 | Before slice |
+| conversions.go:17:9:17:25 | type conversion | conversions.go:7:1:26:1 | Exceptional Exit |
+| conversions.go:17:9:17:25 | type conversion | conversions.go:17:9:17:25 | After type conversion |
+| conversions.go:17:20:17:24 | After slice | conversions.go:17:9:17:25 | type conversion |
+| conversions.go:17:20:17:24 | Before slice | conversions.go:17:20:17:24 | slice |
+| conversions.go:17:20:17:24 | slice | conversions.go:17:20:17:24 | After slice |
+| conversions.go:18:2:18:4 | After use | conversions.go:18:6:18:8 | Before ptr |
+| conversions.go:18:2:18:4 | Before use | conversions.go:18:2:18:4 | use |
+| conversions.go:18:2:18:4 | use | conversions.go:18:2:18:4 | After use |
+| conversions.go:18:2:18:9 | After call to use | conversions.go:18:2:18:9 | After expression statement |
+| conversions.go:18:2:18:9 | After expression statement | conversions.go:21:2:21:18 | ... := ... |
+| conversions.go:18:2:18:9 | Before call to use | conversions.go:18:2:18:4 | Before use |
+| conversions.go:18:2:18:9 | call to use | conversions.go:7:1:26:1 | Exceptional Exit |
+| conversions.go:18:2:18:9 | call to use | conversions.go:18:2:18:9 | After call to use |
+| conversions.go:18:2:18:9 | expression statement | conversions.go:18:2:18:9 | Before call to use |
+| conversions.go:18:6:18:8 | After ptr | conversions.go:18:2:18:9 | call to use |
+| conversions.go:18:6:18:8 | Before ptr | conversions.go:18:6:18:8 | ptr |
+| conversions.go:18:6:18:8 | ptr | conversions.go:18:6:18:8 | After ptr |
+| conversions.go:21:2:21:18 | ... := ... | conversions.go:21:9:21:18 | Before "a string" |
+| conversions.go:21:2:21:18 | After ... := ... | conversions.go:22:2:22:21 | ... := ... |
+| conversions.go:21:2:21:18 | assign:0 ... := ... | conversions.go:21:2:21:18 | After ... := ... |
+| conversions.go:21:9:21:18 | "a string" | conversions.go:21:9:21:18 | After "a string" |
+| conversions.go:21:9:21:18 | After "a string" | conversions.go:21:2:21:18 | assign:0 ... := ... |
+| conversions.go:21:9:21:18 | Before "a string" | conversions.go:21:9:21:18 | "a string" |
+| conversions.go:22:2:22:21 | ... := ... | conversions.go:22:11:22:21 | Before type conversion |
+| conversions.go:22:2:22:21 | After ... := ... | conversions.go:23:2:23:11 | expression statement |
+| conversions.go:22:2:22:21 | assign:0 ... := ... | conversions.go:22:2:22:21 | After ... := ... |
+| conversions.go:22:11:22:21 | After type conversion | conversions.go:22:2:22:21 | assign:0 ... := ... |
+| conversions.go:22:11:22:21 | Before type conversion | conversions.go:22:18:22:20 | Before str |
+| conversions.go:22:11:22:21 | type conversion | conversions.go:22:11:22:21 | After type conversion |
+| conversions.go:22:18:22:20 | After str | conversions.go:22:11:22:21 | type conversion |
+| conversions.go:22:18:22:20 | Before str | conversions.go:22:18:22:20 | str |
+| conversions.go:22:18:22:20 | str | conversions.go:22:18:22:20 | After str |
+| conversions.go:23:2:23:4 | After use | conversions.go:23:6:23:10 | Before bytes |
+| conversions.go:23:2:23:4 | Before use | conversions.go:23:2:23:4 | use |
+| conversions.go:23:2:23:4 | use | conversions.go:23:2:23:4 | After use |
+| conversions.go:23:2:23:11 | After call to use | conversions.go:23:2:23:11 | After expression statement |
+| conversions.go:23:2:23:11 | After expression statement | conversions.go:24:2:24:21 | ... := ... |
+| conversions.go:23:2:23:11 | Before call to use | conversions.go:23:2:23:4 | Before use |
+| conversions.go:23:2:23:11 | call to use | conversions.go:7:1:26:1 | Exceptional Exit |
+| conversions.go:23:2:23:11 | call to use | conversions.go:23:2:23:11 | After call to use |
+| conversions.go:23:2:23:11 | expression statement | conversions.go:23:2:23:11 | Before call to use |
+| conversions.go:23:6:23:10 | After bytes | conversions.go:23:2:23:11 | call to use |
+| conversions.go:23:6:23:10 | Before bytes | conversions.go:23:6:23:10 | bytes |
+| conversions.go:23:6:23:10 | bytes | conversions.go:23:6:23:10 | After bytes |
+| conversions.go:24:2:24:21 | ... := ... | conversions.go:24:11:24:21 | Before type conversion |
+| conversions.go:24:2:24:21 | After ... := ... | conversions.go:25:2:25:11 | expression statement |
+| conversions.go:24:2:24:21 | assign:0 ... := ... | conversions.go:24:2:24:21 | After ... := ... |
+| conversions.go:24:11:24:21 | After type conversion | conversions.go:24:2:24:21 | assign:0 ... := ... |
+| conversions.go:24:11:24:21 | Before type conversion | conversions.go:24:18:24:20 | Before str |
+| conversions.go:24:11:24:21 | type conversion | conversions.go:24:11:24:21 | After type conversion |
+| conversions.go:24:18:24:20 | After str | conversions.go:24:11:24:21 | type conversion |
+| conversions.go:24:18:24:20 | Before str | conversions.go:24:18:24:20 | str |
+| conversions.go:24:18:24:20 | str | conversions.go:24:18:24:20 | After str |
+| conversions.go:25:2:25:4 | After use | conversions.go:25:6:25:10 | Before runes |
+| conversions.go:25:2:25:4 | Before use | conversions.go:25:2:25:4 | use |
+| conversions.go:25:2:25:4 | use | conversions.go:25:2:25:4 | After use |
+| conversions.go:25:2:25:11 | After call to use | conversions.go:25:2:25:11 | After expression statement |
+| conversions.go:25:2:25:11 | After expression statement | conversions.go:7:13:26:1 | After block statement |
+| conversions.go:25:2:25:11 | Before call to use | conversions.go:25:2:25:4 | Before use |
+| conversions.go:25:2:25:11 | call to use | conversions.go:7:1:26:1 | Exceptional Exit |
+| conversions.go:25:2:25:11 | call to use | conversions.go:25:2:25:11 | After call to use |
+| conversions.go:25:2:25:11 | expression statement | conversions.go:25:2:25:11 | Before call to use |
+| conversions.go:25:6:25:10 | After runes | conversions.go:25:2:25:11 | call to use |
+| conversions.go:25:6:25:10 | Before runes | conversions.go:25:6:25:10 | runes |
+| conversions.go:25:6:25:10 | runes | conversions.go:25:6:25:10 | After runes |
 #select
 |  |

@@ -1,1 +1,1 @@
-| DeadStoreOfField.go:8:2:8:6 | assignment to field val | This assignment to val is useless since its value is never read. |
+| DeadStoreOfField.go:8:2:8:10 | assign:0 ... = ... | This assignment to val is useless since its value is never read. |

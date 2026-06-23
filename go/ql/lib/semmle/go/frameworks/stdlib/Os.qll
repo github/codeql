@@ -12,7 +12,7 @@ module Os {
   private class Exit extends Function {
     Exit() { this.hasQualifiedName("os", "Exit") }
 
-    override predicate mayReturnNormally() { none() }
+    override predicate mustNotReturnNormally() { any() }
   }
 
   // These models are not implemented using Models-as-Data because they represent reverse flow.
