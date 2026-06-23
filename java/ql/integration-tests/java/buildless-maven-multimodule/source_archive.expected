@@ -1,4 +1,5 @@
 pom.xml
+settings.xml
 submod1/pom.xml
 submod1/src/main/java/com/example/App.java
 submod1/src/main/resources/my-app.properties
