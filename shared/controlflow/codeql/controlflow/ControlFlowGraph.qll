@@ -1593,7 +1593,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           or
           n1.isAfter(loopstmt.getBody()) and
           n2.isAdditional(loopstmt, loopHeaderTag())
-          or
+        )
+        or
+        exists(LoopStmt loopstmt |
           n1.isAfter(getLoopElse(loopstmt)) and
           n2.isAfter(loopstmt)
         )
