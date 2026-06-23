@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             {
                 var type = Type.Create(Context, Context.GetType(Stmt.Declaration!.Type));
                 trapFile.catch_type(this, type.TypeRef, true);
-                TypeMention.Create(Context, Stmt.Declaration!.Type, this, type);
+                Expression.Create(Context, Stmt.Declaration!.Type, this, 0);
             }
             else // A catch clause of the form 'catch { ... }'
             {
