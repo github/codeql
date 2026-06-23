@@ -1212,8 +1212,8 @@ private predicate valuePreservingStep(Node node1, Node node2) {
   or
   node2 = FlowSteps::getThrowTarget(node1)
   or
-  FlowSummaryPrivate::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
-    node2.(FlowSummaryNode).getSummaryNode(), true, _) // TODO: preserve 'model'
+  FlowSummaryPrivate::Steps::summaryLocalStep(node1, node2.(FlowSummaryNode).getSummaryNode(), true,
+    _) // TODO: preserve 'model'
 }
 
 predicate knownSourceModel(Node sink, string model) { none() }
