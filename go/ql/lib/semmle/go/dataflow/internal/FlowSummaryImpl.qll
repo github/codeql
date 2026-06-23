@@ -31,6 +31,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
 
   class SinkBase = Void;
 
+  class FlowSummaryCallBase = Void;
+
   predicate callableFromSource(SummarizedCallableBase c) { exists(c.getFuncDef()) }
 
   predicate neutralElement(
@@ -113,6 +115,10 @@ module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
 private import Make<Location, DataFlowImplSpecific::GoDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
+  Impl::Private::SummaryNode getSummaryNode(Node n) {
+    result = n.(FlowSummaryNode).getSummaryNode()
+  }
+
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     exists(DataFlow::CallNode call |
       call.asExpr() = result and
