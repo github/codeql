@@ -224,6 +224,13 @@ signature module AstSig<LocationSig Location> {
    */
   default AstNode getTryElse(TryStmt try) { none() }
 
+  /**
+   * Gets the `else` block of loop statement `loop`, if any.
+   *
+   * Only some languages (e.g. Python) support `for-else` constructs.
+   */
+  default AstNode getLoopElse(LoopStmt loop) { none() }
+
   /** A catch clause in a try statement. */
   class CatchClause extends AstNode {
     /** Gets the variable declared by this catch clause. */
@@ -1578,10 +1585,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isBefore(loopstmt.getBody())
           or
           n1.isAfterValue(cond, any(BooleanSuccessor b | b.getValue() = while.booleanNot())) and
-          n2.isAfter(loopstmt)
+          (
+            n2.isBefore(getLoopElse(loopstmt))
+            or
+            not exists(getLoopElse(loopstmt)) and n2.isAfter(loopstmt)
+          )
           or
           n1.isAfter(loopstmt.getBody()) and
           n2.isAdditional(loopstmt, loopHeaderTag())
+        )
+        or
+        exists(LoopStmt loopstmt |
+          n1.isAfter(getLoopElse(loopstmt)) and
+          n2.isAfter(loopstmt)
         )
         or
         exists(ForeachStmt foreachstmt |
@@ -1590,7 +1606,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           or
           n1.isAfterValue(foreachstmt.getCollection(),
             any(EmptinessSuccessor t | t.getValue() = true)) and
-          n2.isAfter(foreachstmt)
+          (
+            n2.isBefore(getLoopElse(foreachstmt))
+            or
+            not exists(getLoopElse(foreachstmt)) and n2.isAfter(foreachstmt)
+          )
           or
           n1.isAfterValue(foreachstmt.getCollection(),
             any(EmptinessSuccessor t | t.getValue() = false)) and
@@ -1603,7 +1623,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAdditional(foreachstmt, loopHeaderTag())
           or
           n1.isAdditional(foreachstmt, loopHeaderTag()) and
-          n2.isAfter(foreachstmt)
+          (
+            n2.isBefore(getLoopElse(foreachstmt))
+            or
+            not exists(getLoopElse(foreachstmt)) and n2.isAfter(foreachstmt)
+          )
           or
           n1.isAdditional(foreachstmt, loopHeaderTag()) and
           n2.isBefore(foreachstmt.getVariable())
