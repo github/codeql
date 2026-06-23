@@ -18,6 +18,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::RubyDataFlow> {
 
   class SinkBase = Void;
 
+  class FlowSummaryCallBase = Void;
+
   predicate callableFromSource(SummarizedCallableBase c) { none() }
 
   ArgumentPosition callbackSelfParameterPosition() { result.isLambdaSelf() }
@@ -157,6 +159,10 @@ module Input implements InputSig<Location, DataFlowImplSpecific::RubyDataFlow> {
 private import Make<Location, DataFlowImplSpecific::RubyDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
+  Impl::Private::SummaryNode getSummaryNode(Node n) {
+    result = n.(FlowSummaryNode).getSummaryNode()
+  }
+
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     result.asCall().getAstNode() = sc.(LibraryCallable).getACall()
     or
