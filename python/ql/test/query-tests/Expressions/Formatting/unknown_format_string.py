@@ -6,7 +6,7 @@ def possibly_unknown_format_string1(x):
         fmt = user_specified
     else:
         fmt = "{a}"
-    return fmt.format(a=1,b=2)
+    return fmt.format(a=1,b=2) # $ Alert[py/str-format/surplus-named-argument]
 
 def possibly_unknown_format_string2(x):
     user_specified = input()
@@ -14,7 +14,7 @@ def possibly_unknown_format_string2(x):
         fmt = user_specified
     else:
         fmt = "{a}"
-    return fmt.format(a=1,b=2)
+    return fmt.format(a=1,b=2) # $ Alert[py/str-format/surplus-named-argument]
 
 
 def possibly_unknown_format_string3(x):
@@ -22,4 +22,4 @@ def possibly_unknown_format_string3(x):
         fmt = input()
     else:
         fmt = "{a}"
-    return fmt.format(a=1,b=2)
+    return fmt.format(a=1,b=2) # $ Alert[py/str-format/surplus-named-argument]

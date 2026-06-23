@@ -16,62 +16,62 @@ def get_cert():
 
 
 def log_password():
-    password = get_password()
-    logging.info("logging.info Password '%s'", password) # NOT OK
+    password = get_password() # $ Source
+    logging.info("logging.info Password '%s'", password) # $ Alert # NOT OK
 
-    LOGGER.log(logging.INFO, "LOGGER.log Password '%s'", password) # NOT OK
-    logging.root.info("logging.root.info Password '%s'", password) # NOT OK
+    LOGGER.log(logging.INFO, "LOGGER.log Password '%s'", password) # $ Alert # NOT OK
+    logging.root.info("logging.root.info Password '%s'", password) # $ Alert # NOT OK
 
     # name of logger variable should not matter
     foo = LOGGER
-    foo.info("foo.info Password '%s'", password) # NOT OK
+    foo.info("foo.info Password '%s'", password) # $ Alert # NOT OK
 
     # return value from function
-    get_logger().info("get_logger().info Password '%s'", password) # NOT OK
+    get_logger().info("get_logger().info Password '%s'", password) # $ Alert # NOT OK
 
 
 def log_cert():
     logging.debug("Cert=%s", get_cert()) # OK
 
 def print_password():
-    print(get_password()) # NOT OK
+    print(get_password()) # $ Alert # NOT OK
 
-    sys.stdout.write(get_password()) # NOT OK
-    sys.stderr.write(get_password()) # NOT OK
+    sys.stdout.write(get_password()) # $ Alert # NOT OK
+    sys.stderr.write(get_password()) # $ Alert # NOT OK
 
     import getpass
 
-    x = getpass.getpass()
-    print(x) # NOT OK
+    x = getpass.getpass() # $ Source
+    print(x) # $ Alert # NOT OK
 
 def log_private():
-    def log1(social_security_number, ssn, className, passportNo):
-        print(social_security_number) # NOT OK
-        print(ssn) # NOT OK
+    def log1(social_security_number, ssn, className, passportNo): # $ Source
+        print(social_security_number) # $ Alert # NOT OK
+        print(ssn) # $ Alert # NOT OK
         print(className) # OK
-        print(passportNo) # NOT OK
+        print(passportNo) # $ Alert # NOT OK
 
-    def log2(post_code, zipCode, home_address):
-        print(post_code) # NOT OK
-        print(zipCode) # NOT OK
-        print(home_address) # NOT OK
+    def log2(post_code, zipCode, home_address): # $ Source
+        print(post_code) # $ Alert # NOT OK
+        print(zipCode) # $ Alert # NOT OK
+        print(home_address) # $ Alert # NOT OK
 
-    def log3(user_latitude, user_longitude):
-        print(user_latitude) # NOT OK
-        print(user_longitude) # NOT OK
+    def log3(user_latitude, user_longitude): # $ Source
+        print(user_latitude) # $ Alert # NOT OK
+        print(user_longitude) # $ Alert # NOT OK
 
-    def log4(mobile_number, phoneNo):
-        print(mobile_number) # NOT OK
-        print(phoneNo) # NOT OK
+    def log4(mobile_number, phoneNo): # $ Source
+        print(mobile_number) # $ Alert # NOT OK
+        print(phoneNo) # $ Alert # NOT OK
 
-    def log5(creditcard, debit_card, bank_number, bank_account, accountNo, ccn, user_ccn, succNode):
-        print(creditcard) # NOT OK
-        print(debit_card) # NOT OK
-        print(bank_number) # NOT OK
-        print(bank_account) # NOT OK, but NOT FOUND - "account" is treated as having the "id" classification and thus excluded.
-        print(accountNo) # NOT OK, but NOT FOUND - "account" is treated as having the "id" classification and thus excluded.
-        print(ccn) # NOT OK
-        print(user_ccn) # NOT OK
+    def log5(creditcard, debit_card, bank_number, bank_account, accountNo, ccn, user_ccn, succNode): # $ Source
+        print(creditcard) # $ Alert # NOT OK
+        print(debit_card) # $ Alert # NOT OK
+        print(bank_number) # $ Alert # NOT OK
+        print(bank_account) # $ MISSING: Alert # NOT OK, but NOT FOUND - "account" is treated as having the "id" classification and thus excluded.
+        print(accountNo) # $ MISSING: Alert # NOT OK, but NOT FOUND - "account" is treated as having the "id" classification and thus excluded.
+        print(ccn) # $ Alert # NOT OK
+        print(user_ccn) # $ Alert # NOT OK
         print(succNode) # OK
 
 

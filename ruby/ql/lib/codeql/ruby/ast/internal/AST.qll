@@ -113,6 +113,9 @@ private module Cached {
     TBraceBlockSynth(Ast::AstNode parent, int i) { mkSynthChild(BraceBlockKind(), parent, i) } or
     TBraceBlockReal(Ruby::Block g) { not g.getParent() instanceof Ruby::Lambda } or
     TBreakStmt(Ruby::Break g) or
+    TCaseElseBranchSynth(Ast::AstNode parent, int i) {
+      mkSynthChild(CaseElseBranchKind(), parent, i)
+    } or
     TCaseEqExpr(Ruby::Binary g) { g instanceof @ruby_binary_equalequalequal } or
     TCaseExpr(Ruby::Case g) or
     TCaseMatchReal(Ruby::CaseMatch g) or
@@ -152,6 +155,7 @@ private module Cached {
     TEndBlock(Ruby::EndBlock g) or
     TEnsure(Ruby::Ensure g) or
     TEqExpr(Ruby::Binary g) { g instanceof @ruby_binary_equalequal } or
+    TExceptionList(Ruby::Exceptions g) { strictcount(g.getChild(_)) > 1 } or
     TExponentExprReal(Ruby::Binary g) { g instanceof @ruby_binary_starstar } or
     TExponentExprSynth(Ast::AstNode parent, int i) { mkSynthChild(ExponentExprKind(), parent, i) } or
     TFalseLiteral(Ruby::False g) or
@@ -372,8 +376,8 @@ private module Cached {
         TClassVariableAccessReal or TComplementExpr or TComplexLiteral or TDefinedExprReal or
         TDelimitedSymbolLiteral or TDestructuredLeftAssignment or TDestructuredParameter or
         TDivExprReal or TDo or TDoBlock or TElementReference or TElseReal or TElsif or TEmptyStmt or
-        TEncoding or TEndBlock or TEnsure or TEqExpr or TExponentExprReal or TFalseLiteral or
-        TFile or TFindPattern or TFloatLiteral or TForExpr or TForwardParameter or
+        TEncoding or TEndBlock or TEnsure or TEqExpr or TExceptionList or TExponentExprReal or
+        TFalseLiteral or TFile or TFindPattern or TFloatLiteral or TForExpr or TForwardParameter or
         TForwardArgument or TGEExpr or TGTExpr or TGlobalVariableAccessReal or
         THashKeySymbolLiteral or THashLiteral or THashPattern or THashSplatExprReal or
         THashSplatNilParameter or THashSplatParameter or THereDoc or TIdentifierMethodCall or
@@ -400,14 +404,15 @@ private module Cached {
   class TAstNodeSynth =
     TAddExprSynth or TAssignExprSynth or TBitwiseAndExprSynth or TBitwiseOrExprSynth or
         TBitwiseXorExprSynth or TBraceBlockSynth or TBodyStmtSynth or TBooleanLiteralSynth or
-        TCaseMatchSynth or TClassVariableAccessSynth or TConstantReadAccessSynth or
-        TConstantWriteAccessSynth or TDivExprSynth or TElseSynth or TExponentExprSynth or
-        TGlobalVariableAccessSynth or TIfSynth or TInClauseSynth or TInstanceVariableAccessSynth or
-        TIntegerLiteralSynth or TLShiftExprSynth or TLocalVariableAccessSynth or
-        TLogicalAndExprSynth or TLogicalOrExprSynth or TMethodCallSynth or TModuloExprSynth or
-        TMulExprSynth or TNilLiteralSynth or TRShiftExprSynth or TRangeLiteralSynth or TSelfSynth or
-        TSimpleParameterSynth or TSplatExprSynth or THashSplatExprSynth or TStmtSequenceSynth or
-        TSubExprSynth or TPairSynth or TSimpleSymbolLiteralSynth;
+        TCaseElseBranchSynth or TCaseMatchSynth or TClassVariableAccessSynth or
+        TConstantReadAccessSynth or TConstantWriteAccessSynth or TDivExprSynth or TElseSynth or
+        TExponentExprSynth or TGlobalVariableAccessSynth or TIfSynth or TInClauseSynth or
+        TInstanceVariableAccessSynth or TIntegerLiteralSynth or TLShiftExprSynth or
+        TLocalVariableAccessSynth or TLogicalAndExprSynth or TLogicalOrExprSynth or
+        TMethodCallSynth or TModuloExprSynth or TMulExprSynth or TNilLiteralSynth or
+        TRShiftExprSynth or TRangeLiteralSynth or TSelfSynth or TSimpleParameterSynth or
+        TSplatExprSynth or THashSplatExprSynth or TStmtSequenceSynth or TSubExprSynth or
+        TPairSynth or TSimpleSymbolLiteralSynth;
 
   /**
    * Gets the underlying TreeSitter entity for a given AST node. This does not
@@ -471,6 +476,7 @@ private module Cached {
     n = TEndBlock(result) or
     n = TEnsure(result) or
     n = TEqExpr(result) or
+    n = TExceptionList(result) or
     n = TExponentExprReal(result) or
     n = TFalseLiteral(result) or
     n = TFile(result) or
@@ -598,6 +604,8 @@ private module Cached {
     or
     result = TBraceBlockSynth(parent, i)
     or
+    result = TCaseElseBranchSynth(parent, i)
+    or
     result = TCaseMatchSynth(parent, i)
     or
     result = TClassVariableAccessSynth(parent, i, _)
@@ -718,6 +726,8 @@ TAstNodeReal fromGenerated(Ruby::AstNode n) { n = toGenerated(result) }
 
 class TCall = TMethodCall or TYieldCall;
 
+class TCaseElseBranch = TCaseElseBranchSynth;
+
 class TCaseMatch = TCaseMatchReal or TCaseMatchSynth;
 
 class TCase = TCaseExpr or TCaseMatch;
@@ -757,7 +767,7 @@ class TExpr =
   TSelf or TArgumentList or TRescueClause or TRescueModifierExpr or TPair or TStringConcatenation or
       TCall or TBlockArgument or TConstantAccess or TControlExpr or TLiteral or TCallable or
       TVariableAccess or TStmtSequence or TOperation or TForwardArgument or TDestructuredLhsExpr or
-      TMatchPattern or TTestPattern;
+      TMatchPattern or TTestPattern or TExceptionList;
 
 class TSplatExpr = TSplatExprReal or TSplatExprSynth;
 

@@ -1,1 +1,2 @@
-Expressions/UnintentionalImplicitStringConcatenation.ql
+query: Expressions/UnintentionalImplicitStringConcatenation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

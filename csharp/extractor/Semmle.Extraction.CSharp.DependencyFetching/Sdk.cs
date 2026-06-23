@@ -63,7 +63,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return null;
             }
 
-            var path = Path.Combine(version.FullPath, "Roslyn", "bincore", "csc.dll");
+            var path = Path.Join(version.FullPath, "Roslyn", "bincore", "csc.dll");
             logger.LogDebug($"Source generator CSC: '{path}'");
             if (!File.Exists(path))
             {

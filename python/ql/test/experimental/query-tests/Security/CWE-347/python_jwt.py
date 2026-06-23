@@ -11,4 +11,4 @@ def good(token):
 
 
 def bad(token):
-    python_jwt.process_jwt(token)
+    python_jwt.process_jwt(token) # $ Alert[py/jwt-missing-verification]

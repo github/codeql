@@ -1,3 +1,10 @@
+#select
+| xslt.py:14:29:14:37 | ControlFlowNode for xslt_root | xslt.py:3:26:3:32 | ControlFlowNode for ImportMember | xslt.py:14:29:14:37 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xslt.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| xsltInjection.py:12:28:12:36 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:12:28:12:36 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| xsltInjection.py:21:29:21:37 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:21:29:21:37 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| xsltInjection.py:31:24:31:32 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:31:24:31:32 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| xsltInjection.py:40:24:40:32 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:40:24:40:32 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| xsltInjection.py:50:24:50:32 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:50:24:50:32 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
 edges
 | xslt.py:3:26:3:32 | ControlFlowNode for ImportMember | xslt.py:3:26:3:32 | ControlFlowNode for request | provenance |  |
 | xslt.py:3:26:3:32 | ControlFlowNode for request | xslt.py:10:17:10:23 | ControlFlowNode for request | provenance |  |
@@ -122,10 +129,3 @@ nodes
 | xsltInjection.py:46:38:46:48 | ControlFlowNode for xsltStrings [List element] | semmle.label | ControlFlowNode for xsltStrings [List element] |
 | xsltInjection.py:50:24:50:32 | ControlFlowNode for xslt_root | semmle.label | ControlFlowNode for xslt_root |
 subpaths
-#select
-| xslt.py:14:29:14:37 | ControlFlowNode for xslt_root | xslt.py:3:26:3:32 | ControlFlowNode for ImportMember | xslt.py:14:29:14:37 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xslt.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
-| xsltInjection.py:12:28:12:36 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:12:28:12:36 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
-| xsltInjection.py:21:29:21:37 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:21:29:21:37 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
-| xsltInjection.py:31:24:31:32 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:31:24:31:32 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
-| xsltInjection.py:40:24:40:32 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:40:24:40:32 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
-| xsltInjection.py:50:24:50:32 | ControlFlowNode for xslt_root | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | xsltInjection.py:50:24:50:32 | ControlFlowNode for xslt_root | This XSLT query depends on $@. | xsltInjection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |

@@ -124,7 +124,7 @@ def do_action_forgotten_raise(action):
     elif action == "stop":
         stop()
     else:
-        ValueError(action)
+        ValueError(action) # $ Alert[py/unused-exception-object]
 
 def do_action(action):
     if action == "go":

@@ -16,25 +16,25 @@ def UnsafeCmacCheck(actualCmac):
     expected = cmac.CMAC(algorithms.AES(key))
     expected.update(b"message to authenticate")
     expected.finalize()
-    return actualCmac == expected 
+    return actualCmac == expected
 
 
 def UnsafeCheckSignature(expected):
     message = b'To be signed'
     key = RSA.import_key(open('private_key.der').read())
     h = SHA256.new(message)
-    signature = pkcs1_15.new(key).sign(h)
-    return expected == signature 
+    signature = pkcs1_15.new(key).sign(h) # $ Source[py/possible-timing-attack-against-hash]
+    return expected == signature  # $ Alert[py/possible-timing-attack-against-hash]
 
 def sign(pre_key, msg, alg):
-    return hmac.new(pre_key, msg, alg).digest()
+    return hmac.new(pre_key, msg, alg).digest() # $ Source[py/possible-timing-attack-against-hash]
 
 def verifyGood(msg, sig):
     return constant_time_string_compare(sig, sign(key, msg, hashlib.sha256)) #good
- 
+
 def verifyBad(msg, sig):
     key = "e179017a-62b0-4996-8a38-e91aa9f1"
-    return sig == sign(key, msg, hashlib.sha256) #bad
+    return sig == sign(key, msg, hashlib.sha256) # $ Alert[py/possible-timing-attack-against-hash] #bad
 
 def constant_time_string_compare(a, b):
     if len(a) != len(b):

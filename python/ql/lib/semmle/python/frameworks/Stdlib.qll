@@ -2254,8 +2254,9 @@ module StdlibPrivate {
       DataFlow::CfgNode
     {
       WsgirefSimpleServerApplicationReturn() {
-        exists(WsgirefSimpleServerApplication requestHandler |
-          node = requestHandler.getAReturnValueFlowNode()
+        exists(WsgirefSimpleServerApplication requestHandler, Return ret |
+          ret.getScope() = requestHandler and
+          node.getNode() = ret.getValue()
         )
       }
 

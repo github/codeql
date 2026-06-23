@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private string FullVersion =>
             version.ToString();
 
-        public string FullPath => Path.Combine(dir, FullVersion);
+        public string FullPath => Path.Join(dir, FullVersion);
 
         /**
          * The full path to the reference assemblies for this runtime.
@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 {
                     directories[^2] = "packs";
                     directories[^1] = $"{directories[^1]}.Ref";
-                    return Path.Combine(string.Join(Path.DirectorySeparatorChar, directories), FullVersion, "ref");
+                    return Path.Join(string.Join(Path.DirectorySeparatorChar, directories), FullVersion, "ref");
                 }
                 return null;
             }

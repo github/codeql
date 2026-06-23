@@ -1,1 +1,2 @@
-Expressions/DuplicateKeyInDictionaryLiteral.ql
+query: Expressions/DuplicateKeyInDictionaryLiteral.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

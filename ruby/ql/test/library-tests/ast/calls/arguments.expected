@@ -1,30 +1,30 @@
 blockArguments
-| calls.rb:263:5:263:8 | &... | calls.rb:263:6:263:8 | call to bar |
-| calls.rb:264:5:264:11 | &... | calls.rb:264:6:264:11 | call to bar |
+| calls.rb:267:5:267:8 | &... | calls.rb:267:6:267:8 | call to bar |
+| calls.rb:268:5:268:11 | &... | calls.rb:268:6:268:11 | call to bar |
 splatExpr
-| calls.rb:267:5:267:8 | * ... | calls.rb:267:6:267:8 | call to bar |
-| calls.rb:268:5:268:11 | * ... | calls.rb:268:6:268:11 | call to bar |
-| calls.rb:315:31:315:42 | * ... | calls.rb:315:31:315:42 | [...] |
-| calls.rb:316:14:316:22 | * ... | calls.rb:316:14:316:22 | [...] |
-| calls.rb:339:1:341:3 | * ... | calls.rb:339:1:341:3 | __synth__0__1 |
+| calls.rb:271:5:271:8 | * ... | calls.rb:271:6:271:8 | call to bar |
+| calls.rb:272:5:272:11 | * ... | calls.rb:272:6:272:11 | call to bar |
+| calls.rb:319:31:319:42 | * ... | calls.rb:319:31:319:42 | [...] |
+| calls.rb:320:14:320:22 | * ... | calls.rb:320:14:320:22 | [...] |
+| calls.rb:343:1:345:3 | * ... | calls.rb:343:1:345:3 | __synth__0__1 |
 hashSplatExpr
-| calls.rb:272:5:272:9 | ** ... | calls.rb:272:7:272:9 | call to bar |
-| calls.rb:273:5:273:12 | ** ... | calls.rb:273:7:273:12 | call to bar |
+| calls.rb:276:5:276:9 | ** ... | calls.rb:276:7:276:9 | call to bar |
+| calls.rb:277:5:277:12 | ** ... | calls.rb:277:7:277:12 | call to bar |
 keywordArguments
 | calls.rb:246:3:246:12 | Pair | calls.rb:246:3:246:5 | call to foo | calls.rb:246:10:246:12 | call to bar |
 | calls.rb:246:15:246:30 | Pair | calls.rb:246:15:246:20 | call to foo | calls.rb:246:25:246:30 | call to bar |
-| calls.rb:277:5:277:13 | Pair | calls.rb:277:5:277:8 | :blah | calls.rb:277:11:277:13 | call to bar |
-| calls.rb:278:5:278:16 | Pair | calls.rb:278:5:278:8 | :blah | calls.rb:278:11:278:16 | call to bar |
-| calls.rb:343:5:343:9 | Pair | calls.rb:343:5:343:5 | :x | calls.rb:343:8:343:9 | 42 |
-| calls.rb:344:5:344:6 | Pair | calls.rb:344:5:344:5 | :x | calls.rb:344:5:344:5 | x |
-| calls.rb:344:9:344:14 | Pair | calls.rb:344:9:344:13 | :novar | calls.rb:344:9:344:13 | call to novar |
-| calls.rb:345:5:345:9 | Pair | calls.rb:345:5:345:5 | :X | calls.rb:345:8:345:9 | 42 |
-| calls.rb:346:5:346:6 | Pair | calls.rb:346:5:346:5 | :X | calls.rb:346:5:346:5 | X |
+| calls.rb:281:5:281:13 | Pair | calls.rb:281:5:281:8 | :blah | calls.rb:281:11:281:13 | call to bar |
+| calls.rb:282:5:282:16 | Pair | calls.rb:282:5:282:8 | :blah | calls.rb:282:11:282:16 | call to bar |
+| calls.rb:347:5:347:9 | Pair | calls.rb:347:5:347:5 | :x | calls.rb:347:8:347:9 | 42 |
+| calls.rb:348:5:348:6 | Pair | calls.rb:348:5:348:5 | :x | calls.rb:348:5:348:5 | x |
+| calls.rb:348:9:348:14 | Pair | calls.rb:348:9:348:13 | :novar | calls.rb:348:9:348:13 | call to novar |
+| calls.rb:349:5:349:9 | Pair | calls.rb:349:5:349:5 | :X | calls.rb:349:8:349:9 | 42 |
+| calls.rb:350:5:350:6 | Pair | calls.rb:350:5:350:5 | :X | calls.rb:350:5:350:5 | X |
 keywordArgumentsByKeyword
-| calls.rb:277:1:277:14 | call to foo | blah | calls.rb:277:11:277:13 | call to bar |
-| calls.rb:278:1:278:17 | call to foo | blah | calls.rb:278:11:278:16 | call to bar |
-| calls.rb:343:1:343:10 | call to foo | x | calls.rb:343:8:343:9 | 42 |
-| calls.rb:344:1:344:15 | call to foo | novar | calls.rb:344:9:344:13 | call to novar |
-| calls.rb:344:1:344:15 | call to foo | x | calls.rb:344:5:344:5 | x |
-| calls.rb:345:1:345:10 | call to foo | X | calls.rb:345:8:345:9 | 42 |
-| calls.rb:346:1:346:7 | call to foo | X | calls.rb:346:5:346:5 | X |
+| calls.rb:281:1:281:14 | call to foo | blah | calls.rb:281:11:281:13 | call to bar |
+| calls.rb:282:1:282:17 | call to foo | blah | calls.rb:282:11:282:16 | call to bar |
+| calls.rb:347:1:347:10 | call to foo | x | calls.rb:347:8:347:9 | 42 |
+| calls.rb:348:1:348:15 | call to foo | novar | calls.rb:348:9:348:13 | call to novar |
+| calls.rb:348:1:348:15 | call to foo | x | calls.rb:348:5:348:5 | x |
+| calls.rb:349:1:349:10 | call to foo | X | calls.rb:349:8:349:9 | 42 |
+| calls.rb:350:1:350:7 | call to foo | X | calls.rb:350:5:350:5 | X |

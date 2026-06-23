@@ -1,1 +1,2 @@
-experimental/Security/CWE-347/JWTEmptyKeyOrAlgorithm.ql
+query: experimental/Security/CWE-347/JWTEmptyKeyOrAlgorithm.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

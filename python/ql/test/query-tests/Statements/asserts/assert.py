@@ -2,10 +2,10 @@ import sys
 import six
 
 def _f():
-    assert (yield 3)
+    assert (yield 3) # $ Alert[py/side-effect-in-assert]
     x = [ 1 ]
     assert len(x)   #Call without side-effects
-    assert sys.exit(1) #Call with side-effects
+    assert sys.exit(1) # $ Alert[py/side-effect-in-assert] #Call with side-effects
     expected_types = (Response, six.text_type, six.binary_type)
     assert isinstance(obj, expected_types), \
         "obj must be %s, not %s" % (
@@ -13,8 +13,8 @@ def _f():
             type(obj).__name__)
 
 def assert_tuple(x, y):
-    assert ()
-    assert (x, y)
+    assert () # $ Alert[py/asserts-tuple]
+    assert (x, y) # $ Alert[py/asserts-tuple]
 
 
 
@@ -31,31 +31,31 @@ def assert_tuple(x, y):
 
 def error_assert_true(x):
     if x:
-        assert True, "Bad"
+        assert True, "Bad" # $ Alert[py/assert-literal-constant]
     else:
-        assert True
+        assert True # $ Alert[py/assert-literal-constant]
 
 def error_assert_false(x):
     if x:
-        assert False, "Bad"
+        assert False, "Bad" # $ Alert[py/assert-literal-constant]
 
 def error_assert_zero(x):
     if x:
-        assert 0, "Bad"
+        assert 0, "Bad" # $ Alert[py/assert-literal-constant]
 
 def error_assert_one(x):
     if x:
-        assert 1, "Bad"
+        assert 1, "Bad" # $ Alert[py/assert-literal-constant]
 
 def error_assert_empty_string(x):
     if x:
-        assert "", "Bad"
+        assert "", "Bad" # $ Alert[py/assert-literal-constant]
 
 def error_assert_nonempty_string(x):
     if x:
-        assert "X", "Bad"
+        assert "X", "Bad" # $ Alert[py/assert-literal-constant]
     else:
-        assert "X"
+        assert "X" # $ Alert[py/assert-literal-constant]
 
 def ok_assert_false(x):
     if x:
@@ -91,7 +91,7 @@ def error_assert_in_final_branch1(x):
     if foo(x):
         pass
     else:
-        assert False, "Error"
+        assert False, "Error" # $ Alert[py/assert-literal-constant]
 
 def error_assert_in_intermediate_branch(x):
     if foo(x):
@@ -99,7 +99,7 @@ def error_assert_in_intermediate_branch(x):
     elif bar(x):
         pass
     elif quux(x):
-        assert False, "Error"
+        assert False, "Error" # $ Alert[py/assert-literal-constant]
     elif yks(x):
         pass
     else:

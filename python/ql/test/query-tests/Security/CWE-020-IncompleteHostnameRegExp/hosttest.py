@@ -3,7 +3,7 @@ import re
 
 app = Flask(__name__)
 
-UNSAFE_REGEX = re.compile("(www|beta).example.com/")
+UNSAFE_REGEX = re.compile("(www|beta).example.com/") # $ Alert
 SAFE_REGEX = re.compile(r"(www|beta)\.example\.com/")
 
 @app.route('/some/path/bad')

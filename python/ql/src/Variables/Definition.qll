@@ -133,7 +133,11 @@ class ListComprehensionDeclaration extends ListComp {
     major_version() = 2 and
     this.getIterationVariable(_).getId() = result.getId() and
     result.getScope() = this.getScope() and
-    this.getAFlowNode().strictlyReaches(result.getAFlowNode()) and
+    exists(ControlFlowNode thisCfg, ControlFlowNode resultCfg |
+      thisCfg.getNode() = this and resultCfg.getNode() = result
+    |
+      thisCfg.strictlyReaches(resultCfg)
+    ) and
     result.isUse()
   }
 

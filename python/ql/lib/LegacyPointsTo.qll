@@ -213,9 +213,11 @@ class ExprWithPointsTo extends Expr {
    * Gets what this expression might "refer-to" in the given `context`.
    */
   predicate refersTo(Context context, Object obj, ClassObject cls, AstNode origin) {
-    this.getAFlowNode()
-        .(ControlFlowNodeWithPointsTo)
-        .refersTo(context, obj, cls, origin.getAFlowNode())
+    exists(ControlFlowNode this_, ControlFlowNode origin_ |
+      this_.getNode() = this and origin_.getNode() = origin
+    |
+      this_.(ControlFlowNodeWithPointsTo).refersTo(context, obj, cls, origin_)
+    )
   }
 
   /**
@@ -226,7 +228,11 @@ class ExprWithPointsTo extends Expr {
    */
   pragma[nomagic]
   predicate refersTo(Object obj, AstNode origin) {
-    this.getAFlowNode().(ControlFlowNodeWithPointsTo).refersTo(obj, origin.getAFlowNode())
+    exists(ControlFlowNode this_, ControlFlowNode origin_ |
+      this_.getNode() = this and origin_.getNode() = origin
+    |
+      this_.(ControlFlowNodeWithPointsTo).refersTo(obj, origin_)
+    )
   }
 
   /**
@@ -240,16 +246,22 @@ class ExprWithPointsTo extends Expr {
    * in the given `context`.
    */
   predicate pointsTo(Context context, Value value, AstNode origin) {
-    this.getAFlowNode()
-        .(ControlFlowNodeWithPointsTo)
-        .pointsTo(context, value, origin.getAFlowNode())
+    exists(ControlFlowNode this_, ControlFlowNode origin_ |
+      this_.getNode() = this and origin_.getNode() = origin
+    |
+      this_.(ControlFlowNodeWithPointsTo).pointsTo(context, value, origin_)
+    )
   }
 
   /**
    * Holds if this expression might "point-to" to `value` which is from `origin`.
    */
   predicate pointsTo(Value value, AstNode origin) {
-    this.getAFlowNode().(ControlFlowNodeWithPointsTo).pointsTo(value, origin.getAFlowNode())
+    exists(ControlFlowNode this_, ControlFlowNode origin_ |
+      this_.getNode() = this and origin_.getNode() = origin
+    |
+      this_.(ControlFlowNodeWithPointsTo).pointsTo(value, origin_)
+    )
   }
 
   /**
@@ -475,7 +487,10 @@ class FunctionMetricsWithPointsTo extends FunctionMetrics {
     not non_coupling_method(result) and
     exists(Call call | call.getScope() = this |
       exists(FunctionObject callee | callee.getFunction() = result |
-        call.getAFlowNode().getFunction().(ControlFlowNodeWithPointsTo).refersTo(callee)
+        exists(CallNode call_ |
+          call_.getNode() = call and
+          call_.getFunction().(ControlFlowNodeWithPointsTo).refersTo(callee)
+        )
       )
       or
       exists(Attribute a | call.getFunc() = a |

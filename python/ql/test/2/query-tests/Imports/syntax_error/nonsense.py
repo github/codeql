@@ -1,4 +1,4 @@
-`Twas brillig, and the slithy toves
+`Twas brillig, and the slithy toves # $ Alert[py/syntax-error]
   Did gyre and gimble in the wabe:
 All mimsy were the borogoves,
   And the mome raths outgrabe.

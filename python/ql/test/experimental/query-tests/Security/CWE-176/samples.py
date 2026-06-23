@@ -1,5 +1,5 @@
 import unicodedata
-from flask import Flask, request, escape, render_template
+from flask import Flask, request, escape, render_template # $ Source
 
 app = Flask(__name__)
 
@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route("/unsafe1")
 def unsafe1():
     user_input = escape(request.args.get("ui"))
-    normalized_user_input = unicodedata.normalize("NFKC", user_input)  # $ result=BAD
+    normalized_user_input = unicodedata.normalize("NFKC", user_input)  # $ Alert result=BAD
     return render_template("result.html", normalized_user_input=normalized_user_input)
 
 
@@ -17,7 +17,7 @@ def unsafe1bis():
     if user_input.isascii():
         normalized_user_input = user_input
     else:
-        normalized_user_input = unicodedata.normalize("NFC", user_input)  # $ result=BAD
+        normalized_user_input = unicodedata.normalize("NFC", user_input)  # $ Alert result=BAD
     return render_template("result.html", normalized_user_input=normalized_user_input)
 
 

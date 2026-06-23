@@ -1,1 +1,2 @@
-experimental/Security/CWE-522/LdapInsecureAuth.ql
+query: experimental/Security/CWE-522/LdapInsecureAuth.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

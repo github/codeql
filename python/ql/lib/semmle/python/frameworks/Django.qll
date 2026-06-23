@@ -2872,7 +2872,10 @@ module PrivateDjango {
     DataFlow::CfgNode
   {
     DjangoRedirectViewGetRedirectUrlReturn() {
-      node = any(GetRedirectUrlFunction f).getAReturnValueFlowNode()
+      exists(Return ret |
+        ret.getScope() = any(GetRedirectUrlFunction f) and
+        node.getNode() = ret.getValue()
+      )
     }
 
     override DataFlow::Node getRedirectLocation() { result = this }

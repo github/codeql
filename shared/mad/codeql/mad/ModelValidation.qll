@@ -39,7 +39,7 @@ module KindValidation<KindValidationConfigSig Config> {
           "response-splitting", "trust-boundary-violation", "template-injection", "url-forward",
           "xslt-injection",
           // JavaScript-only currently, but may be shared in the future
-          "cors-origin", "mongodb.sink",
+          "cors-origin", "mongodb.sink", "system-prompt-injection", "user-prompt-injection",
           // Swift-only currently, but may be shared in the future
           "database-store", "format-string", "hash-iteration-count", "predicate-injection",
           "preferences-store", "tls-protocol-version", "transmission", "webview-fetch", "xxe",

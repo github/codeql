@@ -100,6 +100,24 @@ func updateInClosure(wrapper struct{ s }) int {
 	return x
 }
 
+func readInClosure(wrapper struct{ s }) int {
+	x := 0
+	wrapper.s.foo(func() {
+		y := x
+		_ = y
+	})
+	return x
+}
+
+func readAndUpdateInClosure(wrapper struct{ s }) int {
+	x := 0
+	wrapper.s.foo(func() {
+		y := x + 1
+		x = y
+	})
+	return x
+}
+
 type t struct {
 	a int
 	b s

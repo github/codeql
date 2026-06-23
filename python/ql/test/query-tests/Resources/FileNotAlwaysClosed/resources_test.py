@@ -1,5 +1,7 @@
 #File not always closed
 
+import os
+
 def not_close1():
     f1 = open("filename") # $ Alert # not closed on exception
     f1.write("Error could occur")
@@ -332,3 +334,30 @@ def closed32(path):
         # due to a check that an operation is lexically contained within a `with` block (with `expr.getParent*()`)
         # not detecting this case.
         return list(wrap.read())
+
+
+class FdHolder33():
+    # Mirrors CPython's `_pyio.FileIO`: it opens a file descriptor with `os.open`,
+    # stores it in an instance attribute, and exposes it again via `fileno()`.
+    def __init__(self, path):
+        fd = os.open(path, os.O_RDONLY)
+        self._fd = fd
+
+    def fileno(self):
+        return self._fd
+
+    def close(self):
+        os.close(self._fd)
+
+def closed33(path):
+    # Regression test mirroring CPython's `_pyio.open`.
+    # `holder.fileno()` merely returns the existing file descriptor; it does not
+    # open a new resource. With instance-attribute type tracking, the `os.open`
+    # source flows through `self._fd` and back out of `fileno()`. The query must
+    # not treat that re-exposed descriptor as a fresh file-open whose result is
+    # never closed. The descriptor is owned and closed by `holder.close()`.
+    holder = FdHolder33(path)
+    try:
+        n = holder.fileno() # No alert: this re-exposes an existing descriptor, not a new open.
+    finally:
+        holder.close()

@@ -1,1 +1,2 @@
-Expressions/Formatting/UnusedArgumentIn3101Format.ql
+query: Expressions/Formatting/UnusedArgumentIn3101Format.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

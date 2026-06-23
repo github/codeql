@@ -1,1 +1,2 @@
-Variables/Global.ql
+query: Variables/Global.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
