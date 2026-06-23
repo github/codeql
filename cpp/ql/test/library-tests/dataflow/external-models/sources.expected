@@ -13,6 +13,8 @@
 | test.cpp:146:10:146:18 | call to ymlSource | local |
 | test.cpp:155:10:155:18 | call to ymlSource | local |
 | test.cpp:170:10:170:18 | call to ymlSource | local |
+| test.cpp:188:18:188:26 | call to ymlSource | local |
+| test.cpp:194:10:194:20 | call to ymlSource | local |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | local |
 | windows.cpp:34:17:34:38 | *call to GetEnvironmentStringsA | local |
 | windows.cpp:39:36:39:38 | GetEnvironmentVariableA output argument | local |

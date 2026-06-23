@@ -172,3 +172,27 @@ void test_class1() {
 	auto y = c.templateFunction3<unsigned long>(0UL, x);
 	ymlSink(y); // $ ir
 }
+
+struct ReverseFlow {
+	int value;
+	int& get_ptr();
+};
+
+struct MyString {
+	char& operator[](unsigned);
+};
+
+void test_reverse_flow(unsigned i, unsigned j) {
+	{
+		ReverseFlow rf;
+		rf.get_ptr() = ymlSource();
+		int x = rf.value;
+		ymlSink(x); // $ MISSING: ir
+	}
+	{
+		MyString s;
+		s[i] = ymlSource();
+		char c = s[j];
+		ymlSink(c); // $ MISSING: ir
+	}
+}

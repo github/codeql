@@ -22,3 +22,6 @@ extensions:
       - ["", "TemplateClass1<T>", False, "templateFunction<U>", "(T,U)", "", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["", "TemplateClass1", True, "templateFunction2<U,V>", "(U,V)", "", "Argument[1]", "ReturnValue", "value", "manual"]
       - ["", "TemplateClass2<T,U>", True, "function", "(U,T)", "", "Argument[1]", "ReturnValue", "value", "manual"]
+      - ["", "ReverseFlow", True, "get_ptr", "", "", "ReturnValue[*]", "Argument[-1].Field[value]", "value", "manual"]
+      - ["", "MyString", True, "operator[]", "", "", "ReturnValue[*]", "Argument[-1]", "taint", "manual"]
+      - ["", "MyString", True, "operator[]", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
