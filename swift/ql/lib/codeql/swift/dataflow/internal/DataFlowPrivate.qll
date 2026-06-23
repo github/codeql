@@ -305,7 +305,7 @@ private module Cached {
     model = ""
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
       nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
   }
 

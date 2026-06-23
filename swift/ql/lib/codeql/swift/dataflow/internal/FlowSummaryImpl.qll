@@ -20,6 +20,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::SwiftDataFlow> 
 
   class SinkBase = Void;
 
+  class FlowSummaryCallBase = Void;
+
   predicate callableFromSource(SummarizedCallableBase c) { c.hasBody() }
 
   ArgumentPosition callbackSelfParameterPosition() { result instanceof ThisArgumentPosition }
@@ -113,6 +115,10 @@ module Input implements InputSig<Location, DataFlowImplSpecific::SwiftDataFlow> 
 private import Make<Location, DataFlowImplSpecific::SwiftDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
+  Impl::Private::SummaryNode getSummaryNode(Node n) {
+    result = n.(FlowSummaryNode).getSummaryNode()
+  }
+
   DataFlowCall getACall(Public::SummarizedCallable sc) { result.asCall().getStaticTarget() = sc }
 
   DataFlowCallable getSourceNodeEnclosingCallable(Input::SourceBase source) { none() }
