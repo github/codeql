@@ -341,10 +341,22 @@ private ControlFlow::Node getANonTestPassingPredecessor(
 ) {
   isPossibleInputNode(inputNode, succ.getRoot()) and
   result = succ.getAPredecessor() and
-  not exists(Expr testExpr, DataFlow::Node switchExprNode |
+  not exists(DataFlow::Node switchExprNode |
     flowsToSwitchExpression(inputNode, switchExprNode) and
-    ControlFlow::isSwitchCaseTestPassingEdge(result, succ, switchExprNode.asExpr(), testExpr) and
-    testExpr.isConst()
+    // The case body is reachable only by matching a constant: at least one of
+    // the case's test expressions is constant, and none of them is
+    // non-constant. (All test expressions of a case share the same matched
+    // edge `result -> succ`, so a case mixing constant and non-constant tests
+    // must not be treated as a constant-only match.)
+    exists(Expr testExpr |
+      ControlFlow::isSwitchCaseTestPassingEdge(result, succ, switchExprNode.asExpr(), testExpr) and
+      testExpr.isConst()
+    ) and
+    not exists(Expr nonConstTestExpr |
+      ControlFlow::isSwitchCaseTestPassingEdge(result, succ, switchExprNode.asExpr(),
+        nonConstTestExpr) and
+      not nonConstTestExpr.isConst()
+    )
   )
 }
 

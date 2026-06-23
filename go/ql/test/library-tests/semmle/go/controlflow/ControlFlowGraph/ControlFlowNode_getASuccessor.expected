@@ -14,14 +14,16 @@
 | DuplicateSwitchCase.go:3:29:12:1 | param-init:0 block statement | DuplicateSwitchCase.go:4:2:11:2 | expression-switch statement |
 | DuplicateSwitchCase.go:4:2:11:2 | After expression-switch statement | DuplicateSwitchCase.go:3:29:12:1 | After block statement |
 | DuplicateSwitchCase.go:4:2:11:2 | expression-switch statement | DuplicateSwitchCase.go:5:2:6:9 | case clause |
+| DuplicateSwitchCase.go:5:2:6:9 | After case clause [match] | DuplicateSwitchCase.go:6:3:6:9 | expression statement |
+| DuplicateSwitchCase.go:5:2:6:9 | After case clause [no-match] | DuplicateSwitchCase.go:7:2:8:8 | case clause |
 | DuplicateSwitchCase.go:5:2:6:9 | case clause | DuplicateSwitchCase.go:5:7:5:20 | Before ...==... |
 | DuplicateSwitchCase.go:5:7:5:9 | After msg | DuplicateSwitchCase.go:5:14:5:20 | Before "start" |
 | DuplicateSwitchCase.go:5:7:5:9 | Before msg | DuplicateSwitchCase.go:5:7:5:9 | msg |
 | DuplicateSwitchCase.go:5:7:5:9 | msg | DuplicateSwitchCase.go:5:7:5:9 | After msg |
-| DuplicateSwitchCase.go:5:7:5:20 | ...==... | DuplicateSwitchCase.go:5:7:5:20 | After ...==... [false] |
-| DuplicateSwitchCase.go:5:7:5:20 | ...==... | DuplicateSwitchCase.go:5:7:5:20 | After ...==... [true] |
-| DuplicateSwitchCase.go:5:7:5:20 | After ...==... [false] | DuplicateSwitchCase.go:7:2:8:8 | case clause |
-| DuplicateSwitchCase.go:5:7:5:20 | After ...==... [true] | DuplicateSwitchCase.go:6:3:6:9 | expression statement |
+| DuplicateSwitchCase.go:5:7:5:20 | ...==... | DuplicateSwitchCase.go:5:7:5:20 | After ...==... [match] |
+| DuplicateSwitchCase.go:5:7:5:20 | ...==... | DuplicateSwitchCase.go:5:7:5:20 | After ...==... [no-match] |
+| DuplicateSwitchCase.go:5:7:5:20 | After ...==... [match] | DuplicateSwitchCase.go:5:2:6:9 | After case clause [match] |
+| DuplicateSwitchCase.go:5:7:5:20 | After ...==... [no-match] | DuplicateSwitchCase.go:5:2:6:9 | After case clause [no-match] |
 | DuplicateSwitchCase.go:5:7:5:20 | Before ...==... | DuplicateSwitchCase.go:5:7:5:9 | Before msg |
 | DuplicateSwitchCase.go:5:14:5:20 | "start" | DuplicateSwitchCase.go:5:14:5:20 | After "start" |
 | DuplicateSwitchCase.go:5:14:5:20 | After "start" | DuplicateSwitchCase.go:5:7:5:20 | ...==... |
@@ -35,14 +37,16 @@
 | DuplicateSwitchCase.go:6:3:6:9 | call to start | DuplicateSwitchCase.go:3:1:12:1 | Exceptional Exit |
 | DuplicateSwitchCase.go:6:3:6:9 | call to start | DuplicateSwitchCase.go:6:3:6:9 | After call to start |
 | DuplicateSwitchCase.go:6:3:6:9 | expression statement | DuplicateSwitchCase.go:6:3:6:9 | Before call to start |
+| DuplicateSwitchCase.go:7:2:8:8 | After case clause [match] | DuplicateSwitchCase.go:8:3:8:8 | expression statement |
+| DuplicateSwitchCase.go:7:2:8:8 | After case clause [no-match] | DuplicateSwitchCase.go:9:2:10:34 | case clause |
 | DuplicateSwitchCase.go:7:2:8:8 | case clause | DuplicateSwitchCase.go:7:7:7:20 | Before ...==... |
 | DuplicateSwitchCase.go:7:7:7:9 | After msg | DuplicateSwitchCase.go:7:14:7:20 | Before "start" |
 | DuplicateSwitchCase.go:7:7:7:9 | Before msg | DuplicateSwitchCase.go:7:7:7:9 | msg |
 | DuplicateSwitchCase.go:7:7:7:9 | msg | DuplicateSwitchCase.go:7:7:7:9 | After msg |
-| DuplicateSwitchCase.go:7:7:7:20 | ...==... | DuplicateSwitchCase.go:7:7:7:20 | After ...==... [false] |
-| DuplicateSwitchCase.go:7:7:7:20 | ...==... | DuplicateSwitchCase.go:7:7:7:20 | After ...==... [true] |
-| DuplicateSwitchCase.go:7:7:7:20 | After ...==... [false] | DuplicateSwitchCase.go:9:2:10:34 | case clause |
-| DuplicateSwitchCase.go:7:7:7:20 | After ...==... [true] | DuplicateSwitchCase.go:8:3:8:8 | expression statement |
+| DuplicateSwitchCase.go:7:7:7:20 | ...==... | DuplicateSwitchCase.go:7:7:7:20 | After ...==... [match] |
+| DuplicateSwitchCase.go:7:7:7:20 | ...==... | DuplicateSwitchCase.go:7:7:7:20 | After ...==... [no-match] |
+| DuplicateSwitchCase.go:7:7:7:20 | After ...==... [match] | DuplicateSwitchCase.go:7:2:8:8 | After case clause [match] |
+| DuplicateSwitchCase.go:7:7:7:20 | After ...==... [no-match] | DuplicateSwitchCase.go:7:2:8:8 | After case clause [no-match] |
 | DuplicateSwitchCase.go:7:7:7:20 | Before ...==... | DuplicateSwitchCase.go:7:7:7:9 | Before msg |
 | DuplicateSwitchCase.go:7:14:7:20 | "start" | DuplicateSwitchCase.go:7:14:7:20 | After "start" |
 | DuplicateSwitchCase.go:7:14:7:20 | After "start" | DuplicateSwitchCase.go:7:7:7:20 | ...==... |
@@ -56,7 +60,8 @@
 | DuplicateSwitchCase.go:8:3:8:8 | call to stop | DuplicateSwitchCase.go:3:1:12:1 | Exceptional Exit |
 | DuplicateSwitchCase.go:8:3:8:8 | call to stop | DuplicateSwitchCase.go:8:3:8:8 | After call to stop |
 | DuplicateSwitchCase.go:8:3:8:8 | expression statement | DuplicateSwitchCase.go:8:3:8:8 | Before call to stop |
-| DuplicateSwitchCase.go:9:2:10:34 | case clause | DuplicateSwitchCase.go:10:3:10:34 | expression statement |
+| DuplicateSwitchCase.go:9:2:10:34 | After case clause [match] | DuplicateSwitchCase.go:10:3:10:34 | expression statement |
+| DuplicateSwitchCase.go:9:2:10:34 | case clause | DuplicateSwitchCase.go:9:2:10:34 | After case clause [match] |
 | DuplicateSwitchCase.go:10:3:10:7 | After panic | DuplicateSwitchCase.go:10:9:10:33 | Before "Message not understood." |
 | DuplicateSwitchCase.go:10:3:10:7 | Before panic | DuplicateSwitchCase.go:10:3:10:7 | panic |
 | DuplicateSwitchCase.go:10:3:10:7 | panic | DuplicateSwitchCase.go:10:3:10:7 | After panic |
@@ -3618,7 +3623,8 @@
 | stmts.go:79:21:79:22 | 19 | stmts.go:79:21:79:22 | After 19 |
 | stmts.go:79:21:79:22 | After 19 | stmts.go:79:17:79:22 | ...-... |
 | stmts.go:79:21:79:22 | Before 19 | stmts.go:79:21:79:22 | 19 |
-| stmts.go:80:2:81:14 | case clause | stmts.go:81:3:81:14 | expression statement |
+| stmts.go:80:2:81:14 | After case clause [match] | stmts.go:81:3:81:14 | expression statement |
+| stmts.go:80:2:81:14 | case clause | stmts.go:80:2:81:14 | After case clause [match] |
 | stmts.go:81:3:81:7 | After test5 | stmts.go:81:9:81:13 | Before false |
 | stmts.go:81:3:81:7 | Before test5 | stmts.go:81:3:81:7 | test5 |
 | stmts.go:81:3:81:7 | test5 | stmts.go:81:3:81:7 | After test5 |
@@ -3636,18 +3642,26 @@
 | stmts.go:84:9:84:9 | After x | stmts.go:85:2:85:8 | case clause |
 | stmts.go:84:9:84:9 | Before x | stmts.go:84:9:84:9 | x |
 | stmts.go:84:9:84:9 | x | stmts.go:84:9:84:9 | After x |
+| stmts.go:85:2:85:8 | After case clause [match] | stmts.go:84:2:88:2 | After expression-switch statement |
+| stmts.go:85:2:85:8 | After case clause [no-match] | stmts.go:86:2:87:13 | case clause |
 | stmts.go:85:2:85:8 | case clause | stmts.go:85:7:85:7 | Before 1 |
-| stmts.go:85:7:85:7 | 1 | stmts.go:85:7:85:7 | After 1 |
-| stmts.go:85:7:85:7 | After 1 | stmts.go:84:2:88:2 | After expression-switch statement |
-| stmts.go:85:7:85:7 | After 1 | stmts.go:86:2:87:13 | case clause |
+| stmts.go:85:7:85:7 | 1 | stmts.go:85:7:85:7 | After 1 [match] |
+| stmts.go:85:7:85:7 | 1 | stmts.go:85:7:85:7 | After 1 [no-match] |
+| stmts.go:85:7:85:7 | After 1 [match] | stmts.go:85:2:85:8 | After case clause [match] |
+| stmts.go:85:7:85:7 | After 1 [no-match] | stmts.go:85:2:85:8 | After case clause [no-match] |
 | stmts.go:85:7:85:7 | Before 1 | stmts.go:85:7:85:7 | 1 |
+| stmts.go:86:2:87:13 | After case clause [match] | stmts.go:87:3:87:13 | expression statement |
+| stmts.go:86:2:87:13 | After case clause [no-match] | stmts.go:84:2:88:2 | After expression-switch statement |
 | stmts.go:86:2:87:13 | case clause | stmts.go:86:7:86:7 | Before 2 |
-| stmts.go:86:7:86:7 | 2 | stmts.go:86:7:86:7 | After 2 |
-| stmts.go:86:7:86:7 | After 2 | stmts.go:86:10:86:10 | Before 3 |
+| stmts.go:86:7:86:7 | 2 | stmts.go:86:7:86:7 | After 2 [match] |
+| stmts.go:86:7:86:7 | 2 | stmts.go:86:7:86:7 | After 2 [no-match] |
+| stmts.go:86:7:86:7 | After 2 [match] | stmts.go:86:2:87:13 | After case clause [match] |
+| stmts.go:86:7:86:7 | After 2 [no-match] | stmts.go:86:10:86:10 | Before 3 |
 | stmts.go:86:7:86:7 | Before 2 | stmts.go:86:7:86:7 | 2 |
-| stmts.go:86:10:86:10 | 3 | stmts.go:86:10:86:10 | After 3 |
-| stmts.go:86:10:86:10 | After 3 | stmts.go:84:2:88:2 | After expression-switch statement |
-| stmts.go:86:10:86:10 | After 3 | stmts.go:87:3:87:13 | expression statement |
+| stmts.go:86:10:86:10 | 3 | stmts.go:86:10:86:10 | After 3 [match] |
+| stmts.go:86:10:86:10 | 3 | stmts.go:86:10:86:10 | After 3 [no-match] |
+| stmts.go:86:10:86:10 | After 3 [match] | stmts.go:86:2:87:13 | After case clause [match] |
+| stmts.go:86:10:86:10 | After 3 [no-match] | stmts.go:86:2:87:13 | After case clause [no-match] |
 | stmts.go:86:10:86:10 | Before 3 | stmts.go:86:10:86:10 | 3 |
 | stmts.go:87:3:87:7 | After test5 | stmts.go:87:9:87:12 | Before true |
 | stmts.go:87:3:87:7 | Before test5 | stmts.go:87:3:87:7 | test5 |
@@ -3666,10 +3680,13 @@
 | stmts.go:90:9:90:9 | After x | stmts.go:91:2:93:13 | case clause |
 | stmts.go:90:9:90:9 | Before x | stmts.go:90:9:90:9 | x |
 | stmts.go:90:9:90:9 | x | stmts.go:90:9:90:9 | After x |
+| stmts.go:91:2:93:13 | After case clause [match] | stmts.go:92:3:92:14 | expression statement |
+| stmts.go:91:2:93:13 | After case clause [no-match] | stmts.go:94:2:95:13 | case clause |
 | stmts.go:91:2:93:13 | case clause | stmts.go:91:7:91:7 | Before 1 |
-| stmts.go:91:7:91:7 | 1 | stmts.go:91:7:91:7 | After 1 |
-| stmts.go:91:7:91:7 | After 1 | stmts.go:92:3:92:14 | expression statement |
-| stmts.go:91:7:91:7 | After 1 | stmts.go:94:2:95:13 | case clause |
+| stmts.go:91:7:91:7 | 1 | stmts.go:91:7:91:7 | After 1 [match] |
+| stmts.go:91:7:91:7 | 1 | stmts.go:91:7:91:7 | After 1 [no-match] |
+| stmts.go:91:7:91:7 | After 1 [match] | stmts.go:91:2:93:13 | After case clause [match] |
+| stmts.go:91:7:91:7 | After 1 [no-match] | stmts.go:91:2:93:13 | After case clause [no-match] |
 | stmts.go:91:7:91:7 | Before 1 | stmts.go:91:7:91:7 | 1 |
 | stmts.go:92:3:92:7 | After test5 | stmts.go:92:9:92:13 | Before false |
 | stmts.go:92:3:92:7 | Before test5 | stmts.go:92:3:92:7 | test5 |
@@ -3683,14 +3700,17 @@
 | stmts.go:92:9:92:13 | After false | stmts.go:92:3:92:14 | call to test5 |
 | stmts.go:92:9:92:13 | Before false | stmts.go:92:9:92:13 | false |
 | stmts.go:92:9:92:13 | false | stmts.go:92:9:92:13 | After false |
-| stmts.go:93:3:93:13 | fallthrough statement | stmts.go:90:2:96:2 | After expression-switch statement |
+| stmts.go:93:3:93:13 | fallthrough statement | stmts.go:95:3:95:13 | expression statement |
+| stmts.go:94:2:95:13 | After case clause [match] | stmts.go:95:3:95:13 | expression statement |
+| stmts.go:94:2:95:13 | After case clause [no-match] | stmts.go:90:2:96:2 | After expression-switch statement |
 | stmts.go:94:2:95:13 | case clause | stmts.go:94:7:94:11 | Before ...-... |
 | stmts.go:94:7:94:7 | 2 | stmts.go:94:7:94:7 | After 2 |
 | stmts.go:94:7:94:7 | After 2 | stmts.go:94:11:94:11 | Before 5 |
 | stmts.go:94:7:94:7 | Before 2 | stmts.go:94:7:94:7 | 2 |
-| stmts.go:94:7:94:11 | ...-... | stmts.go:94:7:94:11 | After ...-... |
-| stmts.go:94:7:94:11 | After ...-... | stmts.go:90:2:96:2 | After expression-switch statement |
-| stmts.go:94:7:94:11 | After ...-... | stmts.go:95:3:95:13 | expression statement |
+| stmts.go:94:7:94:11 | ...-... | stmts.go:94:7:94:11 | After ...-... [match] |
+| stmts.go:94:7:94:11 | ...-... | stmts.go:94:7:94:11 | After ...-... [no-match] |
+| stmts.go:94:7:94:11 | After ...-... [match] | stmts.go:94:2:95:13 | After case clause [match] |
+| stmts.go:94:7:94:11 | After ...-... [no-match] | stmts.go:94:2:95:13 | After case clause [no-match] |
 | stmts.go:94:7:94:11 | Before ...-... | stmts.go:94:7:94:7 | Before 2 |
 | stmts.go:94:11:94:11 | 5 | stmts.go:94:11:94:11 | After 5 |
 | stmts.go:94:11:94:11 | After 5 | stmts.go:94:7:94:11 | ...-... |
@@ -3712,12 +3732,15 @@
 | stmts.go:98:9:98:9 | After x | stmts.go:100:2:101:13 | case clause |
 | stmts.go:98:9:98:9 | Before x | stmts.go:98:9:98:9 | x |
 | stmts.go:98:9:98:9 | x | stmts.go:98:9:98:9 | After x |
-| stmts.go:99:2:99:9 | case clause | stmts.go:98:2:102:2 | After expression-switch statement |
-| stmts.go:99:2:99:9 | case clause | stmts.go:100:2:101:13 | case clause |
+| stmts.go:99:2:99:9 | After case clause [match] | stmts.go:98:2:102:2 | After expression-switch statement |
+| stmts.go:99:2:99:9 | case clause | stmts.go:99:2:99:9 | After case clause [match] |
+| stmts.go:100:2:101:13 | After case clause [match] | stmts.go:101:3:101:13 | expression statement |
+| stmts.go:100:2:101:13 | After case clause [no-match] | stmts.go:99:2:99:9 | case clause |
 | stmts.go:100:2:101:13 | case clause | stmts.go:100:7:100:7 | Before 2 |
-| stmts.go:100:7:100:7 | 2 | stmts.go:100:7:100:7 | After 2 |
-| stmts.go:100:7:100:7 | After 2 | stmts.go:99:2:99:9 | case clause |
-| stmts.go:100:7:100:7 | After 2 | stmts.go:101:3:101:13 | expression statement |
+| stmts.go:100:7:100:7 | 2 | stmts.go:100:7:100:7 | After 2 [match] |
+| stmts.go:100:7:100:7 | 2 | stmts.go:100:7:100:7 | After 2 [no-match] |
+| stmts.go:100:7:100:7 | After 2 [match] | stmts.go:100:2:101:13 | After case clause [match] |
+| stmts.go:100:7:100:7 | After 2 [no-match] | stmts.go:100:2:101:13 | After case clause [no-match] |
 | stmts.go:100:7:100:7 | Before 2 | stmts.go:100:7:100:7 | 2 |
 | stmts.go:101:3:101:7 | After test5 | stmts.go:101:9:101:12 | Before true |
 | stmts.go:101:3:101:7 | Before test5 | stmts.go:101:3:101:7 | test5 |
@@ -3733,10 +3756,18 @@
 | stmts.go:101:9:101:12 | true | stmts.go:101:9:101:12 | After true |
 | stmts.go:104:2:108:2 | After expression-switch statement | stmts.go:75:19:109:1 | After block statement |
 | stmts.go:104:2:108:2 | expression-switch statement | stmts.go:107:2:107:11 | case clause |
+| stmts.go:105:2:106:7 | After case clause [match] | stmts.go:106:3:106:7 | Before break statement |
+| stmts.go:105:2:106:7 | case clause | stmts.go:105:2:106:7 | After case clause [match] |
+| stmts.go:106:3:106:7 | Before break statement | stmts.go:106:3:106:7 | break statement |
+| stmts.go:106:3:106:7 | break statement | stmts.go:104:2:108:2 | After expression-switch statement |
+| stmts.go:107:2:107:11 | After case clause [match] | stmts.go:104:2:108:2 | After expression-switch statement |
+| stmts.go:107:2:107:11 | After case clause [no-match] | stmts.go:105:2:106:7 | case clause |
 | stmts.go:107:2:107:11 | case clause | stmts.go:107:7:107:10 | Before true |
-| stmts.go:107:7:107:10 | After true [true] | stmts.go:104:2:108:2 | After expression-switch statement |
+| stmts.go:107:7:107:10 | After true [match] | stmts.go:107:2:107:11 | After case clause [match] |
+| stmts.go:107:7:107:10 | After true [no-match] | stmts.go:107:2:107:11 | After case clause [no-match] |
 | stmts.go:107:7:107:10 | Before true | stmts.go:107:7:107:10 | true |
-| stmts.go:107:7:107:10 | true | stmts.go:107:7:107:10 | After true [true] |
+| stmts.go:107:7:107:10 | true | stmts.go:107:7:107:10 | After true [match] |
+| stmts.go:107:7:107:10 | true | stmts.go:107:7:107:10 | After true [no-match] |
 | stmts.go:112:1:137:1 | After function declaration | stmts.go:140:1:142:1 | Before function declaration |
 | stmts.go:112:1:137:1 | Before function declaration | stmts.go:112:1:137:1 | function declaration |
 | stmts.go:112:1:137:1 | Entry | stmts.go:112:27:137:1 | block statement |
@@ -4027,38 +4058,44 @@
 | tst.go:3:19:12:1 | param-init:0 block statement | tst.go:4:2:11:2 | expression-switch statement |
 | tst.go:4:2:11:2 | After expression-switch statement | tst.go:3:19:12:1 | After block statement |
 | tst.go:4:2:11:2 | expression-switch statement | tst.go:5:2:5:13 | case clause |
+| tst.go:5:2:5:13 | After case clause [match] | tst.go:4:2:11:2 | After expression-switch statement |
+| tst.go:5:2:5:13 | After case clause [no-match] | tst.go:7:2:7:13 | case clause |
 | tst.go:5:2:5:13 | case clause | tst.go:5:7:5:12 | Before ...<... |
 | tst.go:5:7:5:7 | After x | tst.go:5:11:5:12 | Before 23 |
 | tst.go:5:7:5:7 | Before x | tst.go:5:7:5:7 | x |
 | tst.go:5:7:5:7 | x | tst.go:5:7:5:7 | After x |
-| tst.go:5:7:5:12 | ...<... | tst.go:5:7:5:12 | After ...<... [false] |
-| tst.go:5:7:5:12 | ...<... | tst.go:5:7:5:12 | After ...<... [true] |
-| tst.go:5:7:5:12 | After ...<... [false] | tst.go:7:2:7:13 | case clause |
-| tst.go:5:7:5:12 | After ...<... [true] | tst.go:4:2:11:2 | After expression-switch statement |
+| tst.go:5:7:5:12 | ...<... | tst.go:5:7:5:12 | After ...<... [match] |
+| tst.go:5:7:5:12 | ...<... | tst.go:5:7:5:12 | After ...<... [no-match] |
+| tst.go:5:7:5:12 | After ...<... [match] | tst.go:5:2:5:13 | After case clause [match] |
+| tst.go:5:7:5:12 | After ...<... [no-match] | tst.go:5:2:5:13 | After case clause [no-match] |
 | tst.go:5:7:5:12 | Before ...<... | tst.go:5:7:5:7 | Before x |
 | tst.go:5:11:5:12 | 23 | tst.go:5:11:5:12 | After 23 |
 | tst.go:5:11:5:12 | After 23 | tst.go:5:7:5:12 | ...<... |
 | tst.go:5:11:5:12 | Before 23 | tst.go:5:11:5:12 | 23 |
+| tst.go:7:2:7:13 | After case clause [match] | tst.go:4:2:11:2 | After expression-switch statement |
+| tst.go:7:2:7:13 | After case clause [no-match] | tst.go:9:2:9:13 | case clause |
 | tst.go:7:2:7:13 | case clause | tst.go:7:7:7:12 | Before ...<... |
 | tst.go:7:7:7:7 | After x | tst.go:7:11:7:12 | Before 42 |
 | tst.go:7:7:7:7 | Before x | tst.go:7:7:7:7 | x |
 | tst.go:7:7:7:7 | x | tst.go:7:7:7:7 | After x |
-| tst.go:7:7:7:12 | ...<... | tst.go:7:7:7:12 | After ...<... [false] |
-| tst.go:7:7:7:12 | ...<... | tst.go:7:7:7:12 | After ...<... [true] |
-| tst.go:7:7:7:12 | After ...<... [false] | tst.go:9:2:9:13 | case clause |
-| tst.go:7:7:7:12 | After ...<... [true] | tst.go:4:2:11:2 | After expression-switch statement |
+| tst.go:7:7:7:12 | ...<... | tst.go:7:7:7:12 | After ...<... [match] |
+| tst.go:7:7:7:12 | ...<... | tst.go:7:7:7:12 | After ...<... [no-match] |
+| tst.go:7:7:7:12 | After ...<... [match] | tst.go:7:2:7:13 | After case clause [match] |
+| tst.go:7:7:7:12 | After ...<... [no-match] | tst.go:7:2:7:13 | After case clause [no-match] |
 | tst.go:7:7:7:12 | Before ...<... | tst.go:7:7:7:7 | Before x |
 | tst.go:7:11:7:12 | 42 | tst.go:7:11:7:12 | After 42 |
 | tst.go:7:11:7:12 | After 42 | tst.go:7:7:7:12 | ...<... |
 | tst.go:7:11:7:12 | Before 42 | tst.go:7:11:7:12 | 42 |
+| tst.go:9:2:9:13 | After case clause [match] | tst.go:4:2:11:2 | After expression-switch statement |
+| tst.go:9:2:9:13 | After case clause [no-match] | tst.go:4:2:11:2 | After expression-switch statement |
 | tst.go:9:2:9:13 | case clause | tst.go:9:7:9:12 | Before ...<... |
 | tst.go:9:7:9:7 | After x | tst.go:9:11:9:12 | Before 23 |
 | tst.go:9:7:9:7 | Before x | tst.go:9:7:9:7 | x |
 | tst.go:9:7:9:7 | x | tst.go:9:7:9:7 | After x |
-| tst.go:9:7:9:12 | ...<... | tst.go:9:7:9:12 | After ...<... [false] |
-| tst.go:9:7:9:12 | ...<... | tst.go:9:7:9:12 | After ...<... [true] |
-| tst.go:9:7:9:12 | After ...<... [false] | tst.go:4:2:11:2 | After expression-switch statement |
-| tst.go:9:7:9:12 | After ...<... [true] | tst.go:4:2:11:2 | After expression-switch statement |
+| tst.go:9:7:9:12 | ...<... | tst.go:9:7:9:12 | After ...<... [match] |
+| tst.go:9:7:9:12 | ...<... | tst.go:9:7:9:12 | After ...<... [no-match] |
+| tst.go:9:7:9:12 | After ...<... [match] | tst.go:9:2:9:13 | After case clause [match] |
+| tst.go:9:7:9:12 | After ...<... [no-match] | tst.go:9:2:9:13 | After case clause [no-match] |
 | tst.go:9:7:9:12 | Before ...<... | tst.go:9:7:9:7 | Before x |
 | tst.go:9:11:9:12 | 23 | tst.go:9:11:9:12 | After 23 |
 | tst.go:9:11:9:12 | After 23 | tst.go:9:7:9:12 | ...<... |
@@ -4074,14 +4111,16 @@
 | tst.go:14:26:21:1 | param-init:0 block statement | tst.go:15:2:20:2 | expression-switch statement |
 | tst.go:15:2:20:2 | After expression-switch statement | tst.go:14:26:21:1 | After block statement |
 | tst.go:15:2:20:2 | expression-switch statement | tst.go:16:2:16:34 | case clause |
+| tst.go:16:2:16:34 | After case clause [match] | tst.go:15:2:20:2 | After expression-switch statement |
+| tst.go:16:2:16:34 | After case clause [no-match] | tst.go:18:2:18:39 | case clause |
 | tst.go:16:2:16:34 | case clause | tst.go:16:7:16:33 | Before ...<... |
 | tst.go:16:7:16:11 | After value | tst.go:16:15:16:33 | Before ...*... |
 | tst.go:16:7:16:11 | Before value | tst.go:16:7:16:11 | value |
 | tst.go:16:7:16:11 | value | tst.go:16:7:16:11 | After value |
-| tst.go:16:7:16:33 | ...<... | tst.go:16:7:16:33 | After ...<... [false] |
-| tst.go:16:7:16:33 | ...<... | tst.go:16:7:16:33 | After ...<... [true] |
-| tst.go:16:7:16:33 | After ...<... [false] | tst.go:18:2:18:39 | case clause |
-| tst.go:16:7:16:33 | After ...<... [true] | tst.go:15:2:20:2 | After expression-switch statement |
+| tst.go:16:7:16:33 | ...<... | tst.go:16:7:16:33 | After ...<... [match] |
+| tst.go:16:7:16:33 | ...<... | tst.go:16:7:16:33 | After ...<... [no-match] |
+| tst.go:16:7:16:33 | After ...<... [match] | tst.go:16:2:16:34 | After case clause [match] |
+| tst.go:16:7:16:33 | After ...<... [no-match] | tst.go:16:2:16:34 | After case clause [no-match] |
 | tst.go:16:7:16:33 | Before ...<... | tst.go:16:7:16:11 | Before value |
 | tst.go:16:15:16:18 | 1024 | tst.go:16:15:16:18 | After 1024 |
 | tst.go:16:15:16:18 | After 1024 | tst.go:16:20:16:23 | Before 1024 |
@@ -4104,14 +4143,16 @@
 | tst.go:16:30:16:33 | 1024 | tst.go:16:30:16:33 | After 1024 |
 | tst.go:16:30:16:33 | After 1024 | tst.go:16:15:16:33 | ...*... |
 | tst.go:16:30:16:33 | Before 1024 | tst.go:16:30:16:33 | 1024 |
+| tst.go:18:2:18:39 | After case clause [match] | tst.go:15:2:20:2 | After expression-switch statement |
+| tst.go:18:2:18:39 | After case clause [no-match] | tst.go:15:2:20:2 | After expression-switch statement |
 | tst.go:18:2:18:39 | case clause | tst.go:18:7:18:38 | Before ...<... |
 | tst.go:18:7:18:11 | After value | tst.go:18:15:18:38 | Before ...*... |
 | tst.go:18:7:18:11 | Before value | tst.go:18:7:18:11 | value |
 | tst.go:18:7:18:11 | value | tst.go:18:7:18:11 | After value |
-| tst.go:18:7:18:38 | ...<... | tst.go:18:7:18:38 | After ...<... [false] |
-| tst.go:18:7:18:38 | ...<... | tst.go:18:7:18:38 | After ...<... [true] |
-| tst.go:18:7:18:38 | After ...<... [false] | tst.go:15:2:20:2 | After expression-switch statement |
-| tst.go:18:7:18:38 | After ...<... [true] | tst.go:15:2:20:2 | After expression-switch statement |
+| tst.go:18:7:18:38 | ...<... | tst.go:18:7:18:38 | After ...<... [match] |
+| tst.go:18:7:18:38 | ...<... | tst.go:18:7:18:38 | After ...<... [no-match] |
+| tst.go:18:7:18:38 | After ...<... [match] | tst.go:18:2:18:39 | After case clause [match] |
+| tst.go:18:7:18:38 | After ...<... [no-match] | tst.go:18:2:18:39 | After case clause [no-match] |
 | tst.go:18:7:18:38 | Before ...<... | tst.go:18:7:18:11 | Before value |
 | tst.go:18:15:18:18 | 1024 | tst.go:18:15:18:18 | After 1024 |
 | tst.go:18:15:18:18 | After 1024 | tst.go:18:20:18:23 | Before 1024 |
@@ -4158,5 +4199,5 @@
 | tst.go:28:15:32:1 | block statement | tst.go:29:2:31:2 | expression-switch statement |
 | tst.go:29:2:31:2 | After expression-switch statement | tst.go:28:15:32:1 | After block statement |
 | tst.go:29:2:31:2 | expression-switch statement | tst.go:30:2:30:9 | case clause |
-| tst.go:30:2:30:9 | case clause | tst.go:29:2:31:2 | After expression-switch statement |
-| tst.go:30:2:30:9 | case clause | tst.go:29:9:31:2 | After block statement |
+| tst.go:30:2:30:9 | After case clause [match] | tst.go:29:2:31:2 | After expression-switch statement |
+| tst.go:30:2:30:9 | case clause | tst.go:30:2:30:9 | After case clause [match] |
