@@ -22,7 +22,6 @@
       - cs/comparison-of-identical-expressions
       - cs/complex-block
       - cs/complex-condition
-      - cs/constant-comparison
       - cs/constant-condition
       - cs/coupled-types
       - cs/dereferenced-value-is-always-null

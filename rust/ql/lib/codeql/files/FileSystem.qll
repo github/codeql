@@ -45,13 +45,16 @@ extensible predicate additionalExternalFile(string relativePath);
 
 /** A file. */
 class File extends Container, Impl::File {
+  pragma[nomagic]
+  private predicate isAdditionalExternalFile() { additionalExternalFile(this.getRelativePath()) }
+
   /**
    * Holds if this file was extracted from the source code of the target project
    * (rather than another location such as inside a dependency).
    */
   predicate fromSource() {
     exists(ExtractorStep s | s.getAction() = "Extract" and s.getFile() = this) and
-    not additionalExternalFile(this.getRelativePath())
+    not this.isAdditionalExternalFile()
   }
 
   /**

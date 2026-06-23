@@ -5,22 +5,22 @@ public class Main {
     public static void arrays(String[] args) {
 
         // NOT OK: always true
-        if (args.length >= 0) {
+        if (args.length >= 0) { // $ Alert
             System.out.println("At least zero arguments!!");
         }
         
         // NOT OK: always true
-        if (0 <= args.length) {
+        if (0 <= args.length) { // $ Alert
             System.out.println("At least zero arguments!!");
         }
 
         // NOT OK: always false
-        if (args.length < 0) {
+        if (args.length < 0) { // $ Alert
             System.out.println("At least zero arguments!!");
         }
 
         // NOT OK: always false
-        if (0 > args.length) {
+        if (0 > args.length) { // $ Alert
             System.out.println("At least zero arguments!!");
         }
 
@@ -51,12 +51,12 @@ public class Main {
         Boolean b;
         
         // NOT OK
-        b = xs.size() >= 0;
-        b = 0 <= xs.size();
-        b = 0 <= ys.size();
+        b = xs.size() >= 0; // $ Alert
+        b = 0 <= xs.size(); // $ Alert
+        b = 0 <= ys.size(); // $ Alert
 
-        b = xs.size() < 0;
-        b = 0 > ys.size();
+        b = xs.size() < 0; // $ Alert
+        b = 0 > ys.size(); // $ Alert
 
         // OK
         b = xs.size() >= -1;
@@ -80,24 +80,24 @@ public class Main {
         Boolean b;
 
         // NOT OK
-        b = xs.size() >= 0;
-        b = xs.size() < 0;
+        b = xs.size() >= 0; // $ Alert
+        b = xs.size() < 0; // $ Alert
 
         // NOT OK
-        b = xs.get(0).size() >= 0;
+        b = xs.get(0).size() >= 0; // $ Alert
 
         // NOT OK
-        b = xs.get(0).get(0).length() >= 0;
+        b = xs.get(0).get(0).length() >= 0; // $ Alert
     }
 
     public static void mapTests(TreeMap<String, String> xs) {
         Boolean b;
 
         // NOT OK: Always true        
-        b = xs.size() >= 0;
+        b = xs.size() >= 0; // $ Alert
         
         // NOT OK: Always true
-        b = 0 <= xs.size();
+        b = 0 <= xs.size(); // $ Alert
 
         // OK: can be false
         b = xs.size() >= -1;
@@ -110,9 +110,9 @@ public class Main {
         Boolean b;
 
         // NOT OK
-        b = s.size() >= 0;
-        b = a.size() >= 0;
-        b = 0 <= m.size();
+        b = s.size() >= 0; // $ Alert
+        b = a.size() >= 0; // $ Alert
+        b = 0 <= m.size(); // $ Alert
     }
 
 }

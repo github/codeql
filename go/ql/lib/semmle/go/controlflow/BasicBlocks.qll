@@ -42,11 +42,11 @@ private module Input implements BB::InputSig<Location> {
   predicate nodeIsPostDominanceExit(Node node) { node instanceof ExitNode }
 }
 
-private module BbImpl = BB::Make<Location, Input>;
+module Cfg = BB::Make<Location, Input>;
 
-class BasicBlock = BbImpl::BasicBlock;
+class BasicBlock = Cfg::BasicBlock;
 
-class EntryBasicBlock = BbImpl::EntryBasicBlock;
+class EntryBasicBlock = Cfg::EntryBasicBlock;
 
 cached
 private predicate reachableBB(BasicBlock bb) {

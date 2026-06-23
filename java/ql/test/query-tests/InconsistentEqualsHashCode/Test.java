@@ -16,14 +16,14 @@ class Super {
 	}
 }
 
-class NoEquals extends Super {
+class NoEquals extends Super { // $ Alert
 	// BAD
 	public int hashCode() {
 		return myInt+1;
 	}
 }
 
-class NoHashCode extends Super {
+class NoHashCode extends Super { // $ Alert
 	// BAD
 	public boolean equals(Object other) {
 		return true;

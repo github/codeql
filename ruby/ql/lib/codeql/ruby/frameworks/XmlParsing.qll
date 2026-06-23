@@ -38,6 +38,7 @@ private class NokogiriXmlParserCall extends XmlParserCall::Range, DataFlow::Call
         .getExpr()
         .(MethodCall)
         .getBlock()
+        .getBody()
         .getAStmt()
         .getAChild*()
         .(MethodCall)

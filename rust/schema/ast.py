@@ -312,7 +312,7 @@ class Impl(Item, ):
     is_default: predicate
     is_unsafe: predicate
     self_ty: optional["TypeRepr"] | child
-    trait_: optional["TypeRepr"] | child
+    trait_ty: optional["TypeRepr"] | child
     visibility: optional["Visibility"] | child
     where_clause: optional["WhereClause"] | child
 

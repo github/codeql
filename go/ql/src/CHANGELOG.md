@@ -1,3 +1,34 @@
+## 1.6.4
+
+No user-facing changes.
+
+## 1.6.3
+
+No user-facing changes.
+
+## 1.6.2
+
+No user-facing changes.
+
+## 1.6.1
+
+No user-facing changes.
+
+## 1.6.0
+
+### Query Metadata Changes
+
+* The `@security-severity` metadata of `go/log-injection` has been reduced from 7.8 (high) to 6.1 (medium).
+* The `@security-severity` metadata of `go/html-template-escaping-bypass-xss`, `go/reflected-xss` and `go/stored-xss` has been increased from 6.1 (medium) to 7.8 (high).
+
+## 1.5.10
+
+No user-facing changes.
+
+## 1.5.9
+
+No user-facing changes.
+
 ## 1.5.8
 
 No user-facing changes.

@@ -58,7 +58,7 @@ func isRelGoodReadlink(candidate, target string) bool {
 	if filepath.IsAbs(candidate) {
 		return false
 	}
-	realpath, err := os.Readlink(filepath.Join(target, candidate))
+	realpath, err := os.Readlink(filepath.Join(target, candidate)) // $ Sink[go/zipslip]
 	if err != nil {
 		return false
 	}
@@ -69,7 +69,7 @@ func isRelGoodReadlink(candidate, target string) bool {
 func unzipSymlinkGoodReadlink(f io.Reader, target string) {
 	r := tar.NewReader(f)
 	for {
-		header, err := r.Next()
+		header, err := r.Next() // $ Alert[go/zipslip]
 		if err != nil {
 			break
 		}

@@ -2,7 +2,7 @@ class FooController < ActionController::Base
   def some_request_handler
     # A string tainted by user input is inserted into a template 
     # (i.e a remote flow source)
-    name = params[:name]
+    name = params[:name] # $ Source
 
     # Template with the source (no sanitizer)
     bad_text = "
@@ -11,7 +11,7 @@ class FooController < ActionController::Base
       " % name
     # BAD: renders user input
     # where text is unsanitized
-    Slim::Template.new{ bad_text }.render 
+    Slim::Template.new{ bad_text }.render  # $ Alert
 
     # Template with the source (no sanitizer)
     bad2_text = "
@@ -20,7 +20,7 @@ class FooController < ActionController::Base
       " 
     # BAD: renders user input
     # where text is unsanitized
-    Slim::Template.new{ bad2_text }.render 
+    Slim::Template.new{ bad2_text }.render  # $ Alert
 
     # Template with the source (no render)
     good_text = "

@@ -7,8 +7,8 @@ def main():
     raise Exception()
 
 # bad
-app.run(debug=True)
-app.run('host', 8080, True)
+app.run(debug=True) # $ Alert
+app.run('host', 8080, True) # $ Alert
 
 # okay
 app.run()
@@ -23,11 +23,11 @@ app.notrun(debug=True)
 
 DEBUG = True
 
-app.run(debug=DEBUG) # NOT OK
+app.run(debug=DEBUG) # $ Alert # NOT OK
 
 DEBUG = 1
 
-app.run(debug=DEBUG) # NOT OK
+app.run(debug=DEBUG) # $ Alert # NOT OK
 
 if False:
     app.run(debug=True)
@@ -35,12 +35,12 @@ if False:
 
 
 runapp = app.run
-runapp(debug=True) # NOT OK
+runapp(debug=True) # $ Alert # NOT OK
 
 
 # imports from other module
 import settings
-app.run(debug=settings.ALWAYS_TRUE) # NOT OK
+app.run(debug=settings.ALWAYS_TRUE) # $ Alert # NOT OK
 
 
 # depending on environment values

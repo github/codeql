@@ -1,5 +1,5 @@
 string foo() {
-  result = concat(string x | x = [0 .. 10].toString() | x order by x desc, ", ") // BAD
+  result = concat(string x | x = [0 .. 10].toString() | x order by x desc, ", ") // $ Alert // BAD
   or
   result = concat(string x | x = [0 .. 10].toString() | x, ", " order by x desc) // GOOD
 }

@@ -8,5 +8,5 @@
 import actions
 
 from UsesStep uses
-where uses.getVersion().regexpMatch("^[A-Fa-f0-9]{40}$")
+where uses.getVersion().regexpMatch("^[A-Fa-f0-9]{40}([A-Fa-f0-9]{24})?$")
 select uses, "This 'uses' step has a pinned SHA version."

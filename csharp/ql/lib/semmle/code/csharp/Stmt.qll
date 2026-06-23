@@ -995,6 +995,23 @@ class SpecificCatchClause extends CatchClause {
   /** Gets the local variable declaration of this catch clause, if any. */
   LocalVariableDeclExpr getVariableDeclExpr() { result.getParent() = this }
 
+  /**
+   * Gets the type access of this catch clause, if it has no variable declaration.
+   *
+   * For example, the type access in
+   *
+   * ```csharp
+   * try { ... }
+   * catch (IOException) { ... }
+   * ```
+   *
+   * is `IOException`.
+   */
+  TypeAccess getTypeAccess() {
+    not exists(this.getVariableDeclExpr()) and
+    result = this.getChild(0)
+  }
+
   override string toString() { result = "catch (...) {...}" }
 
   override string getAPrimaryQlClass() { result = "SpecificCatchClause" }

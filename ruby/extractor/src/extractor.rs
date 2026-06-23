@@ -94,11 +94,14 @@ pub fn run(options: Options) -> std::io::Result<()> {
         node_types::read_node_types_str("erb", tree_sitter_embedded_template::NODE_TYPES)?;
     let lines: std::io::Result<Vec<String>> = std::io::BufReader::new(file_list).lines().collect();
     let lines = lines?;
+    let source_root = std::env::current_dir().ok().and_then(|d| d.canonicalize().ok());
     lines
         .par_iter()
         .try_for_each(|line| {
             let mut diagnostics_writer = diagnostics.logger();
             let path = PathBuf::from(line).canonicalize()?;
+            let diagnostics_file_path =
+                file_paths::relativize_for_diagnostic(&path, source_root.as_deref());
             match &overlay_changed_files {
                 Some(changed_files) if !changed_files.contains(&path) => {
                     // We are extracting an overlay and this file is not in the list of changes files, so we should skip it.
@@ -123,6 +126,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                     &path,
                     &source,
                     &[],
+                    None,
                 );
 
                 let (ranges, line_breaks) = scan_erb(
@@ -164,7 +168,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                                                     "character-decoding-error",
                                                     "Character decoding error",
                                                 )
-                                                .file(&file_paths::normalize_and_transform_path(&path, path_transformer.as_ref()))
+                                                .file(&diagnostics_file_path)
                                                 .message(
                                                     "Could not decode the file contents as {}: {}. The contents of the file must match the character encoding specified in the {} {}.",
                                                     &[
@@ -184,7 +188,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                             diagnostics_writer.write(
                                 diagnostics_writer
                                     .new_entry("unknown-character-encoding", "Could not process some files due to an unknown character encoding")
-                                    .file(&file_paths::normalize_and_transform_path(&path, path_transformer.as_ref()))
+                                    .file(&diagnostics_file_path)
                                     .message(
                                         "Unknown character encoding {} in {} {}.",
                                         &[
@@ -211,6 +215,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                 &path,
                 &source,
                 &code_ranges,
+                None,
             );
             std::fs::create_dir_all(src_archive_file.parent().unwrap())?;
             if needs_conversion {

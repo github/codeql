@@ -18,21 +18,21 @@ class Test {
 
 			// BAD: result of multiplication will be too large for
 			// int, and will overflow before being stored in the long
-			long timeInNanos = timeInSeconds * 1000000000;
+			long timeInNanos = timeInSeconds * 1000000000; // $ Alert[java/integer-multiplication-cast-to-long]
 		}
 
 		{
 			int timeInSeconds = 1000000;
 
 			// BAD
-			long timeInNanos = timeInSeconds * 1000000000 + 4;
+			long timeInNanos = timeInSeconds * 1000000000 + 4; // $ Alert[java/integer-multiplication-cast-to-long]
 		}
 
 		{
 			int timeInSeconds = 1000000;
 
 			// BAD
-			long timeInNanos = true ? timeInSeconds * 1000000000 + 4 : 0;
+			long timeInNanos = true ? timeInSeconds * 1000000000 + 4 : 0; // $ Alert[java/integer-multiplication-cast-to-long]
 		}
 
 		{
@@ -65,7 +65,7 @@ class Test {
 			while (i < 1000000) {
 				// BAD: getLargeNumber is implicitly narrowed to an integer
 				// which will result in overflows if it is large
-				i += getLargeNumber();
+				i += getLargeNumber(); // $ Alert[java/implicit-cast-in-compound-assignment]
 			}
 		}
 
@@ -84,16 +84,16 @@ class Test {
 			// FALSE POSITIVE: the query check purely based on the type, it
 			// can't try to
 			// determine whether the value may in fact always be in bounds
-			i += j;
+			i += j; // $ SPURIOUS: Alert[java/implicit-cast-in-compound-assignment]
 		}
 
 		// ArithmeticWithExtremeValues
 		{
 			int i = 0;
-			i = Integer.MAX_VALUE;
+			i = Integer.MAX_VALUE; // $ Source[java/extreme-value-arithmetic]
 			int j = 0;
 			// BAD: overflow
-			j = i + 1;
+			j = i + 1; // $ Alert[java/extreme-value-arithmetic]
 		}
 
 		{
@@ -106,9 +106,9 @@ class Test {
 		}
 
 		{
-			long i = Long.MIN_VALUE;
+			long i = Long.MIN_VALUE; // $ Source[java/extreme-value-arithmetic]
 			// BAD: overflow
-			long j = i - 1;
+			long j = i - 1; // $ Alert[java/extreme-value-arithmetic]
 		}
 
 		{
@@ -135,16 +135,16 @@ class Test {
 			int i = Integer.MAX_VALUE;
 			if (i < Integer.MAX_VALUE) {
 				// BAD: reassigned after guard
-				i = Integer.MAX_VALUE;
-				long j = i + 1;
+				i = Integer.MAX_VALUE; // $ Source[java/extreme-value-arithmetic]
+				long j = i + 1; // $ Alert[java/extreme-value-arithmetic]
 			}
 		}
 
 		{
-			int i = Integer.MAX_VALUE;
+			int i = Integer.MAX_VALUE; // $ Source[java/extreme-value-arithmetic]
 			// BAD: guarded the wrong way
 			if (i > Integer.MIN_VALUE) {
-				long j = i + 1;
+				long j = i + 1; // $ Alert[java/extreme-value-arithmetic]
 			}
 		}
 
@@ -182,32 +182,32 @@ class Test {
 		}
 
 		{
-			byte b = Byte.MAX_VALUE;
+			byte b = Byte.MAX_VALUE; // $ Source[java/extreme-value-arithmetic]
 			// BAD: extreme byte value is widened to type int, but subsequently
 			// cast to narrower type byte
-			byte widenedThenNarrowed = (byte) (b + 1);
+			byte widenedThenNarrowed = (byte) (b + 1); // $ Alert[java/extreme-value-arithmetic]
 		}
 
 		{
-			short s = Short.MAX_VALUE;
+			short s = Short.MAX_VALUE; // $ Source[java/extreme-value-arithmetic]
 			// BAD: extreme short value is widened to type int, but subsequently
 			// cast to narrower type short
-			short widenedThenNarrowed = (short) (s + 1);
+			short widenedThenNarrowed = (short) (s + 1); // $ Alert[java/extreme-value-arithmetic]
 		}
 
 		{
-			int i = Integer.MAX_VALUE;
+			int i = Integer.MAX_VALUE; // $ Source[java/extreme-value-arithmetic]
 			// BAD: extreme int value is widened to type long, but subsequently
 			// cast to narrower type int
-			int widenedThenNarrowed = (int) (i + 1L);
+			int widenedThenNarrowed = (int) (i + 1L); // $ Alert[java/extreme-value-arithmetic]
 		}
 
 		// ArithmeticUncontrolled
-		int data = (new java.security.SecureRandom()).nextInt();
+		int data = (new java.security.SecureRandom()).nextInt(); // $ Source[java/uncontrolled-arithmetic]
 
 		{
 			// BAD: may overflow if data is large
-			int output = data + 1;
+			int output = data + 1; // $ Alert[java/uncontrolled-arithmetic]
 		}
 
 		{
@@ -224,7 +224,7 @@ class Test {
 				// FALSE NEGATIVE: stillLarge could still be very large, even
 				// after
 				// it has had arithmetic done on it
-				int output = stillLarge + 100;
+				int output = stillLarge + 100; // $ MISSING: Alert[java/uncontrolled-arithmetic]
 			}
 		}
 
@@ -238,15 +238,15 @@ class Test {
 		{
 			// BAD: uncontrolled int value is widened to type long, but
 			// subsequently cast to narrower type int
-			int widenedThenNarrowed = (int) (data + 10L);
+			int widenedThenNarrowed = (int) (data + 10L); // $ Alert[java/uncontrolled-arithmetic]
 		}
 
 		// ArithmeticUncontrolled using Apache RandomUtils
-		int data2 = RandomUtils.nextInt();
+		int data2 = RandomUtils.nextInt(); // $ Source[java/uncontrolled-arithmetic]
 
 		{
 			// BAD: may overflow if data is large
-			int output = data2 + 1;
+			int output = data2 + 1; // $ Alert[java/uncontrolled-arithmetic]
 		}
 
 		{
@@ -263,7 +263,7 @@ class Test {
 				// FALSE NEGATIVE: stillLarge could still be very large, even
 				// after
 				// it has had arithmetic done on it
-				int output = stillLarge + 100;
+				int output = stillLarge + 100; // $ MISSING: Alert[java/uncontrolled-arithmetic]
 			}
 		}
 
@@ -277,7 +277,7 @@ class Test {
 		{
 			// BAD: uncontrolled int value is widened to type long, but
 			// subsequently cast to narrower type int
-			int widenedThenNarrowed = (int) (data2 + 10L);
+			int widenedThenNarrowed = (int) (data2 + 10L); // $ Alert[java/uncontrolled-arithmetic]
 		}
 
     // InformationLoss
@@ -286,11 +286,11 @@ class Test {
 			while (arr[2] < 1000000) {
 				// BAD: getLargeNumber is implicitly narrowed to an integer
 				// which will result in overflows if it is large
-				arr[2] += getLargeNumber();
+				arr[2] += getLargeNumber(); // $ Alert[java/implicit-cast-in-compound-assignment]
 			}
 
       // BAD.
-      getAnIntArray()[0] += getLargeNumber();
+      getAnIntArray()[0] += getLargeNumber(); // $ Alert[java/implicit-cast-in-compound-assignment]
 		}
 	}
 

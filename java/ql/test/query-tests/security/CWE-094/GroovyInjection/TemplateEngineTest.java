@@ -11,7 +11,7 @@ import groovy.text.TemplateEngine;
 public class TemplateEngineTest extends HttpServlet {
 
     private Object source(HttpServletRequest request) {
-        return request.getParameter("script"); // $ Source
+        return request.getParameter("script"); // $ Source[java/groovy-injection]
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -19,10 +19,10 @@ public class TemplateEngineTest extends HttpServlet {
         try {
             Object script = source(request);
             TemplateEngine engine = null;
-            engine.createTemplate(request.getParameter("script")); // $ Alert
-            engine.createTemplate((File) script); // $ Alert
-            engine.createTemplate((Reader) script); // $ Alert
-            engine.createTemplate((URL) script); // $ Alert
+            engine.createTemplate(request.getParameter("script")); // $ Alert[java/groovy-injection]
+            engine.createTemplate((File) script); // $ Alert[java/groovy-injection]
+            engine.createTemplate((Reader) script); // $ Alert[java/groovy-injection]
+            engine.createTemplate((URL) script); // $ Alert[java/groovy-injection]
         } catch (Exception e) {
         }
 

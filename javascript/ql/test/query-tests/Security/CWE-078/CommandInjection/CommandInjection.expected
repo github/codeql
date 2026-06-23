@@ -110,6 +110,8 @@
 | promisification.js:151:28:151:31 | code | promisification.js:141:18:141:25 | req.body | promisification.js:151:28:151:31 | code | This command line depends on a $@. | promisification.js:141:18:141:25 | req.body | user-provided value |
 | promisification.js:152:25:152:28 | code | promisification.js:141:18:141:25 | req.body | promisification.js:152:25:152:28 | code | This command line depends on a $@. | promisification.js:141:18:141:25 | req.body | user-provided value |
 | third-party-command-injection.js:6:21:6:27 | command | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command | This command line depends on a $@. | third-party-command-injection.js:5:20:5:26 | command | user-provided value |
+| vercel.ts:6:8:6:21 | "echo " + name | vercel.ts:5:16:5:24 | req.query | vercel.ts:6:8:6:21 | "echo " + name | This command line depends on a $@. | vercel.ts:5:16:5:24 | req.query | user-provided value |
+| vercel.ts:6:8:6:21 | "echo " + name | vercel.ts:5:16:5:29 | req.query.name | vercel.ts:6:8:6:21 | "echo " + name | This command line depends on a $@. | vercel.ts:5:16:5:29 | req.query.name | user-provided value |
 edges
 | actions.js:8:9:8:13 | title | actions.js:9:16:9:20 | title | provenance |  |
 | actions.js:8:17:8:57 | github. ... t.title | actions.js:8:9:8:13 | title | provenance |  |
@@ -340,6 +342,10 @@ edges
 | promisification.js:141:11:141:14 | code | promisification.js:152:25:152:28 | code | provenance |  |
 | promisification.js:141:18:141:25 | req.body | promisification.js:141:11:141:14 | code | provenance |  |
 | third-party-command-injection.js:5:20:5:26 | command | third-party-command-injection.js:6:21:6:27 | command | provenance |  |
+| vercel.ts:5:9:5:12 | name | vercel.ts:6:18:6:21 | name | provenance |  |
+| vercel.ts:5:16:5:24 | req.query | vercel.ts:5:9:5:12 | name | provenance |  |
+| vercel.ts:5:16:5:29 | req.query.name | vercel.ts:5:9:5:12 | name | provenance |  |
+| vercel.ts:6:18:6:21 | name | vercel.ts:6:8:6:21 | "echo " + name | provenance |  |
 nodes
 | actions.js:8:9:8:13 | title | semmle.label | title |
 | actions.js:8:17:8:57 | github. ... t.title | semmle.label | github. ... t.title |
@@ -591,6 +597,11 @@ nodes
 | promisification.js:152:25:152:28 | code | semmle.label | code |
 | third-party-command-injection.js:5:20:5:26 | command | semmle.label | command |
 | third-party-command-injection.js:6:21:6:27 | command | semmle.label | command |
+| vercel.ts:5:9:5:12 | name | semmle.label | name |
+| vercel.ts:5:16:5:24 | req.query | semmle.label | req.query |
+| vercel.ts:5:16:5:29 | req.query.name | semmle.label | req.query.name |
+| vercel.ts:6:8:6:21 | "echo " + name | semmle.label | "echo " + name |
+| vercel.ts:6:18:6:21 | name | semmle.label | name |
 subpaths
 | promisification.js:116:32:116:34 | cmd | promisification.js:118:21:118:23 | cmd | promisification.js:117:29:117:35 | resolve [Return] [resolve-value] | promisification.js:117:16:119:10 | new Pro ...      }) [PromiseValue] |
 | promisification.js:122:42:122:45 | code | promisification.js:116:32:116:34 | cmd | promisification.js:117:16:119:10 | new Pro ...      }) [PromiseValue] | promisification.js:122:24:122:46 | createE ... e(code) [PromiseValue] |

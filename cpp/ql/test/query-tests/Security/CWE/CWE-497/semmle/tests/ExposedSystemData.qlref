@@ -1,1 +1,4 @@
-Security/CWE/CWE-497/ExposedSystemData.ql
+query: Security/CWE/CWE-497/ExposedSystemData.ql
+postprocess:
+ - utils/test/PrettyPrintModels.ql
+ - utils/test/InlineExpectationsTestQuery.ql

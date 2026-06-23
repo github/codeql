@@ -4,12 +4,12 @@
 | tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:16:14:16:34 | call to Dir | Unsanitized archive entry, which may contain '..', is used in a $@. | tarslip.go:16:14:16:34 | call to Dir | file system operation |
 | tst.go:23:2:43:2 | range statement[1] | tst.go:23:2:43:2 | range statement[1] | tst.go:29:20:29:23 | path | Unsanitized archive entry, which may contain '..', is used in a $@. | tst.go:29:20:29:23 | path | file system operation |
 edges
-| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | provenance |  |
+| UnsafeUnzipSymlinkGood.go:52:24:52:32 | SSA def(candidate) | UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | provenance |  |
 | UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | provenance | FunctionModel Sink:MaD:3 |
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | provenance |  |
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | provenance |  |
-| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | provenance |  |
-| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | provenance |  |
+| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | UnsafeUnzipSymlinkGood.go:52:24:52:32 | SSA def(candidate) | provenance |  |
+| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | UnsafeUnzipSymlinkGood.go:52:24:52:32 | SSA def(candidate) | provenance |  |
 | ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:12:24:12:29 | selection of Name | provenance |  |
 | ZipSlip.go:12:3:12:30 | ... := ...[0] | ZipSlip.go:14:20:14:20 | p | provenance | Sink:MaD:1 |
 | ZipSlip.go:12:24:12:29 | selection of Name | ZipSlip.go:12:3:12:30 | ... := ...[0] | provenance | MaD:4 |
@@ -23,7 +23,7 @@ models
 | 4 | Summary: path/filepath; ; false; Abs; ; ; Argument[0]; ReturnValue[0]; taint; manual |
 | 5 | Summary: path; ; false; Dir; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
-| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | semmle.label | definition of candidate |
+| UnsafeUnzipSymlinkGood.go:52:24:52:32 | SSA def(candidate) | semmle.label | SSA def(candidate) |
 | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | semmle.label | call to Join |
 | UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | semmle.label | candidate |
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | semmle.label | ... := ...[0] |

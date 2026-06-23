@@ -705,7 +705,7 @@ cfg.swift:
 #  138|       getVariable(0): [ConcreteVarDecl] $generator
 #  138|           Type = IndexingIterator<ClosedRange<Int>>
 #  138|       getPattern(): [AnyPattern] _
-#-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
+#  138|       getIteratorVar(): [PatternBindingDecl] var ... = ...
 #  138|         getInit(0): [CallExpr] call to makeIterator()
 #  138|           getFunction(): [MethodLookupExpr] .makeIterator()
 #  138|             getBase(): [BinaryExpr] ... ....(_:_:) ...
@@ -3263,7 +3263,7 @@ cfg.swift:
 #  526|                         getVariable(1): [ConcreteVarDecl] $i$generator
 #  526|                             Type = IndexingIterator<ClosedRange<Int>>
 #  526|                         getPattern(): [NamedPattern] i
-#-----|                         getIteratorVar(): [PatternBindingDecl] var ... = ...
+#  526|                         getIteratorVar(): [PatternBindingDecl] var ... = ...
 #  526|                           getInit(0): [CallExpr] call to makeIterator()
 #  526|                             getFunction(): [MethodLookupExpr] .makeIterator()
 #  526|                               getBase(): [BinaryExpr] ... ....(_:_:) ...
@@ -3302,7 +3302,7 @@ cfg.swift:
 #  533|       getVariable(1): [ConcreteVarDecl] $i$generator
 #  533|           Type = AsyncStream<Int>.Iterator
 #  533|       getPattern(): [NamedPattern] i
-#-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
+#  533|       getIteratorVar(): [PatternBindingDecl] var ... = ...
 #  533|         getInit(0): [CallExpr] call to makeAsyncIterator()
 #  533|           getFunction(): [MethodLookupExpr] .makeAsyncIterator()
 #  533|             getBase(): [DeclRefExpr] stream
@@ -4141,7 +4141,7 @@ declarations.swift:
 #-----|             getResult(): [MemberRefExpr] .wrappedValue
 #-----|               getBase(): [DeclRefExpr] _x
 #-----|         getCapture(0): [CapturedDecl] _x
-#-----|       getPropertyWrapperBackingVarBinding(): [PatternBindingDecl] var ... = ...
+#   77|       getPropertyWrapperBackingVarBinding(): [PatternBindingDecl] var ... = ...
 #   77|         getInit(0): [CallExpr] call to ZeroWrapper.init()
 #   77|           getFunction(): [MethodLookupExpr] ZeroWrapper.init()
 #   77|             getBase(): [TypeExpr] ZeroWrapper.Type
@@ -7018,7 +7018,7 @@ statements.swift:
 #    2|       getVariable(1): [ConcreteVarDecl] $i$generator
 #    2|           Type = IndexingIterator<ClosedRange<Int>>
 #    2|       getPattern(): [NamedPattern] i
-#-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
+#    2|       getIteratorVar(): [PatternBindingDecl] var ... = ...
 #    2|         getInit(0): [CallExpr] call to makeIterator()
 #    2|           getFunction(): [MethodLookupExpr] .makeIterator()
 #    2|             getBase(): [BinaryExpr] ... ....(_:_:) ...
@@ -7470,7 +7470,7 @@ statements.swift:
 #   71|               getExpr(): [IntegerLiteralExpr] 2
 #   71|         getArgument(1): [Argument] : 0
 #   71|           getExpr(): [IntegerLiteralExpr] 0
-#-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
+#   71|       getIteratorVar(): [PatternBindingDecl] var ... = ...
 #   71|         getInit(0): [CallExpr] call to makeIterator()
 #   71|           getFunction(): [MethodLookupExpr] .makeIterator()
 #   71|             getBase(): [DeclRefExpr] numbers

@@ -536,6 +536,12 @@ public class HigherOrderParameters
     {
         a(o);
     }
+
+    private void CallApply()
+    {
+        // Test that this call to `Apply` does not interfere with the flow summaries generated for `Apply`
+        Apply(x => x, null);
+    }
 }
 
 public static class HigherOrderExtensionMethods

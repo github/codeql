@@ -2886,4 +2886,36 @@ namespace {
     }
 }
 
+struct StructInit {
+    int i = 42;
+    int j = 42;
+    int k = 42;
+    int l = k;
+    int m = get_val();
+    int n = 42;
+
+    StructInit(int j) : j(j), n(get_val()) {}
+
+    StructInit() : i(41), k(41) {}
+
+    int get_val() { return k; }
+};
+
+template<typename T>
+struct StructInitFromTemplate {
+    T t = T();
+};
+
+StructInitFromTemplate<int> StructInitFromTemplateVar;
+
+template<class T>
+constexpr T VariableTemplate = T(42);
+ 
+template<class T>
+T VariableTemplateFunc(T x) {
+    return VariableTemplate<T> + x;
+}
+
+int VariableTemplateFuncUse = VariableTemplateFunc(2.3);
+
 // semmle-extractor-options: -std=c++20 --clang

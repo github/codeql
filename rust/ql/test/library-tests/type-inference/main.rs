@@ -34,7 +34,7 @@ mod field_access {
 
     fn generic_field_access() {
         // Explicit type argument
-        let x = GenericThing::<S> { a: S }; // $ certainType=x:A.S
+        let x = GenericThing::<S> { a: S }; // $ certainType=x@GenericThing<A>:S
         println!("{:?}", x.a); // $ fieldof=GenericThing
 
         // Implicit type argument
@@ -427,7 +427,7 @@ mod method_non_parametric_trait_impl {
 
         let x = call_trait_m1(thing_s1); // $ type=x:S1 target=call_trait_m1
         println!("{:?}", x);
-        let y = call_trait_m1(thing_s2); // $ type=y:MyThing type=y:A.S2 target=call_trait_m1
+        let y = call_trait_m1(thing_s2); // $ type=y:MyThing type=y@MyThing<A>:S2 target=call_trait_m1
         println!("{:?}", y.a); // $ fieldof=MyThing
 
         // First implementation
@@ -566,7 +566,7 @@ mod trait_default_self_type_parameter {
 
     // The trait bound on `T` uses the default for `A` which contains `Self`
     fn tp_uses_default<S: TraitWithSelfTp>(thing: S) -> i64 {
-        let _ms = thing.get_a(); // $ target=TraitWithSelfTp::get_a type=_ms:T.S
+        let _ms = thing.get_a(); // $ target=TraitWithSelfTp::get_a type=_ms@Option<T>:S
         0
     }
 
@@ -575,7 +575,7 @@ mod trait_default_self_type_parameter {
 
     fn get_a_through_tp<S: SubTraitOfTraitWithSelfTp>(thing: &S) {
         // `thing` is a `TraitWithSelfTp` through the trait hierarchy
-        let _ms = get_a(thing); // $ target=get_a type=_ms:T.S
+        let _ms = get_a(thing); // $ target=get_a type=_ms@Option<T>:S
     }
 
     struct MyStruct {
@@ -593,7 +593,7 @@ mod trait_default_self_type_parameter {
 
     pub fn test() {
         let s = MyStruct { value: 0 };
-        let _ms = get_a(&s); // $ target=get_a type=_ms:T.MyStruct
+        let _ms = get_a(&s); // $ target=get_a type=_ms@Option<T>:MyStruct
     }
 }
 
@@ -871,7 +871,7 @@ mod method_supertraits {
 
     fn type_param_trait_to_supertrait<T: MyTrait3<S1>>(x: T) {
         // Test that `MyTrait3` is a subtrait of `MyTrait1<MyThing<S1>>`
-        let a = x.m1(); // $ target=MyTrait1::m1 type=a:MyThing type=a:A.S1
+        let a = x.m1(); // $ target=MyTrait1::m1 type=a@MyThing<A>:S1
         println!("{:?}", a);
     }
 
@@ -898,7 +898,7 @@ mod method_supertraits {
         let s = call_trait_m1(x); // $ type=s:S1 target=call_trait_m1
 
         let x = MyThing2 { a: S2 };
-        let s = call_trait_m1(x); // $ type=s:MyThing type=s:A.S2 target=call_trait_m1
+        let s = call_trait_m1(x); // $ type=s@MyThing<A>:S2 target=call_trait_m1
     }
 }
 
@@ -1011,20 +1011,20 @@ mod type_aliases {
         println!("{:?}", p1);
 
         // Type can be only inferred from the type alias
-        let p2: MyPair = PairOption::PairNone(); // $ certainType=p2:Fst.S1 certainType=p2:Snd.S2
+        let p2: MyPair = PairOption::PairNone(); // $ certainType=p2@PairOption<Fst>:S1 certainType=p2@PairOption<Snd>:S2
         println!("{:?}", p2);
 
         // First type from alias, second from constructor
-        let p3: AnotherPair<_> = PairOption::PairSnd(S3); // $ certainType=p3:Fst.S2
+        let p3: AnotherPair<_> = PairOption::PairSnd(S3); // $ certainType=p3@PairOption<Fst>:S2
         println!("{:?}", p3);
 
         // First type from alias definition, second from argument to alias
-        let p3: AnotherPair<S3> = PairOption::PairNone(); // $ certainType=p3:Fst.S2 certainType=p3:Snd.S3
+        let p3: AnotherPair<S3> = PairOption::PairNone(); // $ certainType=p3@PairOption<Fst>:S2 certainType=p3@PairOption<Snd>:S3
         println!("{:?}", p3);
 
         g(PairOption::PairSnd(PairOption::PairSnd(S3))); // $ target=g
 
-        let x: S7<S2>; // $ certainType=x:Result $ certainType=x:E.S1 $ certainType=x:T.S4 $ certainType=x:T.T41.S2 $ certainType=x:T.T42.S5 $ certainType=x:T.T42.T5.S2
+        let x: S7<S2>; // $ certainType=x@Result<E>:S1 $ certainType=x@Result<T>:S4 $ certainType=x@Result<T>.S4<T41>:S2 $ certainType=x@Result<T>.S4<T42>:S5 $ certainType=x@Result<T>.S4<T42>.S5<T5>:S2
     }
 }
 
@@ -1068,7 +1068,7 @@ mod option_methods {
     struct S;
 
     pub fn f() {
-        let x1 = MyOption::<S>::new(); // $ certainType=x1:T.S target=new
+        let x1 = MyOption::<S>::new(); // $ certainType=x1@MyOption<T>:S target=new
         println!("{:?}", x1);
 
         let mut x2 = MyOption::new(); // $ target=new
@@ -1192,14 +1192,14 @@ mod method_call_type_conversion {
         let x7 = S(&S2);
         // Non-implicit dereference with nested borrow in order to test that the
         // implicit dereference handling doesn't affect nested borrows.
-        let t = x7.m1(); // $ target=m1 type=t:& type=t:TRef.S2
+        let t = x7.m1(); // $ target=m1 type=t:& type=t@&<TRef>:S2
         println!("{:?}", x7);
 
         let x9: String = "Hello".to_string(); // $ certainType=x9:String target=to_string
 
         // Implicit `String` -> `str` conversion happens via the `Deref` trait:
         // https://doc.rust-lang.org/std/string/struct.String.html#deref.
-        let u = x9.parse::<u32>(); // $ target=parse type=u:T.u32
+        let u = x9.parse::<u32>(); // $ target=parse type=u@Result<T>:u32
 
         let my_thing = &MyInt { a: 37 };
         // implicit borrow of a `&`
@@ -1382,7 +1382,7 @@ mod builtins {
         let z = x + y; // $ type=z:i32 target=add
         let z = x.abs(); // $ target=abs $ type=z:i32
         let c = 'c'; // $ certainType=c:char
-        let hello = "Hello"; // $ certainType=hello:TRef.str
+        let hello = "Hello"; // $ certainType=hello@&<TRef>:str
         let f = 123.0f64; // $ certainType=f:f64
         let t = true; // $ certainType=t:bool
         let f = false; // $ certainType=f:bool
@@ -1403,8 +1403,8 @@ mod builtins {
             }
         }
 
-        let x = [1, 2, 3].my_method(); // $ target=my_method type=x:TRef.i32
-        let x = <[_; 3]>::my_method(&[1, 2, 3]); // $ target=my_method type=x:TRef.i32
+        let x = [1, 2, 3].my_method(); // $ target=my_method type=x@&<TRef>:i32
+        let x = <[_; 3]>::my_method(&[1, 2, 3]); // $ target=my_method type=x@&<TRef>:i32
         let x = <[i32; 3]>::my_func(); // $ target=my_func type=x:i32
 
         impl<T: Default> MyTrait<T> for [T] {
@@ -1418,8 +1418,8 @@ mod builtins {
         }
 
         let s: &[i32] = &[1, 2, 3];
-        let x = s.my_method(); // $ target=my_method type=x:TRef.i32
-        let x = <[_]>::my_method(s); // $ target=my_method type=x:TRef.i32
+        let x = s.my_method(); // $ target=my_method type=x@&<TRef>:i32
+        let x = <[_]>::my_method(s); // $ target=my_method type=x@&<TRef>:i32
         let x = <[i32]>::my_func(); // $ target=my_func type=x:i32
 
         impl<T: Default> MyTrait<T> for (T, i32) {
@@ -1433,8 +1433,8 @@ mod builtins {
         }
 
         let p = (42, 7);
-        let x = p.my_method(); // $ target=my_method type=x:TRef.i32
-        let x = <(_, _)>::my_method(&p); // $ target=my_method type=x:TRef.i32
+        let x = p.my_method(); // $ target=my_method type=x@&<TRef>:i32
+        let x = <(_, _)>::my_method(&p); // $ target=my_method type=x@&<TRef>:i32
         let x = <(i32, i32)>::my_func(); // $ target=my_func type=x:i32
 
         impl<T: Default> MyTrait<T> for &T {
@@ -1448,8 +1448,8 @@ mod builtins {
         }
 
         let r = &42;
-        let x = r.my_method(); // $ target=my_method type=x:TRef.i32
-        let x = <&_>::my_method(&r); // $ target=my_method type=x:TRef.i32
+        let x = r.my_method(); // $ target=my_method type=x@&<TRef>:i32
+        let x = <&_>::my_method(&r); // $ target=my_method type=x@&<TRef>:i32
         let x = <&i32>::my_func(); // $ target=my_func type=x:i32
 
         impl<T: Default> MyTrait<T> for *mut T {
@@ -1464,8 +1464,8 @@ mod builtins {
 
         let mut v = 42;
         let p: *mut i32 = &mut v;
-        let x = unsafe { p.my_method() }; // $ target=my_method type=x:TRef.i32
-        let x = unsafe { <*mut _>::my_method(&p) }; // $ target=my_method type=x:TRef.i32
+        let x = unsafe { p.my_method() }; // $ target=my_method type=x@&<TRef>:i32
+        let x = unsafe { <*mut _>::my_method(&p) }; // $ target=my_method type=x@&<TRef>:i32
         let x = <*mut i32>::my_func(); // $ target=my_func type=x:i32
     }
 }
@@ -2046,7 +2046,7 @@ mod indexers {
     }
 
     pub fn f() {
-        let mut vec = MyVec::new(); // $ type=vec:T.S target=new
+        let mut vec = MyVec::new(); // $ type=vec@MyVec<T>:S target=new
         vec.push(S); // $ target=push
         vec[0].foo(); // $ target=MyVec::index target=foo
 
@@ -2259,27 +2259,27 @@ mod loops {
         // for loops with arrays
 
         for i in [1, 2, 3] {} // $ type=i:i32
-        for i in [1, 2, 3].map(|x| x + 1) {} // $ target=map MISSING: type=i:i32
+        for i in [1, 2, 3].map(|x| x + 1) {} // $ target=map target=add type=i:i32
         for i in [1, 2, 3].into_iter() {} // $ target=into_iter type=i:i32
 
-        let vals1 = [1u8, 2, 3]; // $ type=vals1:TArray.u8
+        let vals1 = [1u8, 2, 3]; // $ type=vals1@[;]<TArray>:u8
         for u in vals1 {} // $ type=u:u8
 
-        let vals2 = [1u16; 3]; // $ type=vals2:TArray.u16
+        let vals2 = [1u16; 3]; // $ type=vals2@[;]<TArray>:u16
         for u in vals2 {} // $ type=u:u16
 
-        let vals3: [u32; 3] = [1, 2, 3]; // $ certainType=vals3:TArray.u32
+        let vals3: [u32; 3] = [1, 2, 3]; // $ certainType=vals3@[;]<TArray>:u32
         for u in vals3 {} // $ type=u:u32
 
-        let vals4: [u64; 3] = [1; 3]; // $ certainType=vals4:TArray.u64
+        let vals4: [u64; 3] = [1; 3]; // $ certainType=vals4@[;]<TArray>:u64
         for u in vals4 {} // $ type=u:u64
 
-        let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1:TArray.TRef.str
-        for s in &strings1 {} // $ type=s:TRef.TRef.str
-        for s in &mut strings1 {} // $ type=s:TRefMut.TRef.str
-        for s in strings1 {} // $ type=s:TRef.str
+        let mut strings1 = ["foo", "bar", "baz"]; // $ type=strings1@[;]<TArray>.&<TRef>:str
+        for s in &strings1 {} // $ type=s@&<TRef>.&<TRef>:str
+        for s in &mut strings1 {} // $ type=s@&mut<TRefMut>.&<TRef>:str
+        for s in strings1 {} // $ type=s@&<TRef>:str
 
-        let strings2 = // $ type=strings2:TArray.String
+        let strings2 = // $ type=strings2@[;]<TArray>:String
         [
             String::from("foo"), // $ target=from
             String::from("bar"), // $ target=from
@@ -2287,15 +2287,15 @@ mod loops {
         ];
         for s in strings2 {} // $ type=s:String
 
-        let strings3 = // $ type=strings3:TRef.TArray.String
+        let strings3 = // $ type=strings3@&<TRef>.[;]<TArray>:String
         &[
             String::from("foo"), // $ target=from
             String::from("bar"), // $ target=from
             String::from("baz"), // $ target=from
         ];
-        for s in strings3 {} // $ type=s:TRef.String
+        for s in strings3 {} // $ type=s@&<TRef>:String
 
-        let callables = [MyCallable::new(), MyCallable::new(), MyCallable::new()]; // $ target=new $ type=callables:TArray.MyCallable
+        let callables = [MyCallable::new(), MyCallable::new(), MyCallable::new()]; // $ target=new $ type=callables@[;]<TArray>:MyCallable
         for c // $ type=c:MyCallable
         in callables
         {
@@ -2305,13 +2305,13 @@ mod loops {
         // for loops with ranges
 
         for i in 0..10 {} // $ type=i:i32
-        for u in [0u8..10] {} // $ type=u:Range type=u:Idx.u8
-        let range = 0..10; // $ certainType=range:Range type=range:Idx.i32
+        for u in [0u8..10] {} // $ type=u:Range type=u@Range<Idx>:u8
+        let range = 0..10; // $ certainType=range:Range type=range@Range<Idx>:i32
         for i in range {} // $ type=i:i32
         let range_full = ..; // $ certainType=range_full:RangeFull
-        for i in &[1i64, 2i64, 3i64][range_full] {} // $ target=index MISSING: type=i:TRef.i64
+        for i in &[1i64, 2i64, 3i64][range_full] {} // $ target=index MISSING: type=i@&<TRef>:i64
 
-        let range1 = // $ certainType=range1:Range type=range1:Idx.u16
+        let range1 = // $ certainType=range1:Range type=range1@Range<Idx>:u16
         std::ops::Range {
             start: 0u16,
             end: 10u16,
@@ -2320,39 +2320,39 @@ mod loops {
 
         // for loops with containers
 
-        let vals3 = vec![1, 2, 3]; // $ type=vals3:Vec $ MISSING: type=vals3:T.i32
+        let vals3 = vec![1, 2, 3]; // $ type=vals3:Vec $ MISSING: type=vals3@Vec<T>:i32
         for i in vals3 {} // $ MISSING: type=i:i32
 
-        let vals4a: Vec<u16> = [1u16, 2, 3].to_vec(); // $ certainType=vals4a:Vec certainType=vals4a:T.u16
+        let vals4a: Vec<u16> = [1u16, 2, 3].to_vec(); // $ certainType=vals4a@Vec<T>:u16
         for u in vals4a {} // $ type=u:u16
 
-        let vals4b = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4b:Vec type=vals4b:T.u16
+        let vals4b = [1u16, 2, 3].to_vec(); // $ MISSING: type=vals4b:Vec type=vals4b@Vec<T>:u16
         for u in vals4b {} // $ MISSING: type=u:u16
 
-        let vals5 = Vec::from([1u32, 2, 3]); // $ certainType=vals5:Vec target=from type=vals5:T.u32
+        let vals5 = Vec::from([1u32, 2, 3]); // $ target=from type=vals5@Vec<T>:u32
         for u in vals5 {} // $ type=u:u32
 
-        let vals6: Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ certainType=vals6:Vec certainType=vals6:T.TRef.u64
-        for u in vals6 {} // $ type=u:TRef.u64
+        let vals6: Vec<&u64> = [1u64, 2, 3].iter().collect(); // $ certainType=vals6@Vec<T>.&<TRef>:u64
+        for u in vals6 {} // $ type=u@&<TRef>:u64
 
-        let mut vals7 = Vec::new(); // $ target=new certainType=vals7:Vec type=vals7:T.u8
+        let mut vals7 = Vec::new(); // $ target=new type=vals7@Vec<T>:u8
         vals7.push(1u8); // $ target=push
         for u in vals7 {} // $ type=u:u8
 
-        let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ type=matrix1:Vec $ MISSING: type=matrix1:T.Vec type=matrix1:T.T.i32
+        let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ type=matrix1:Vec $ MISSING: type=matrix1@Vec<T>:Vec type=matrix1@Vec<T>.Vec<T>:i32
         #[rustfmt::skip]
-        let _ = for row in matrix1 { // $ MISSING: type=row:Vec type=row:T.i32
+        let _ = for row in matrix1 { // $ MISSING: type=row:Vec type=row@Vec<T>:i32
             for cell in row { // $ MISSING: type=cell:i32
             }
         };
 
-        let mut map1 = std::collections::HashMap::new(); // $ target=new type=map1:K.i32 type=map1:V.Box $ MISSING: type=map1:Hashmap type1=map1:V.T.TRef.str
+        let mut map1 = std::collections::HashMap::new(); // $ target=new type=map1@HashMap<K>:i32 type=map1@HashMap<V>.Box<T>.&<TRef>:str
         map1.insert(1, Box::new("one")); // $ target=insert target=new
         map1.insert(2, Box::new("two")); // $ target=insert target=new
-        for key in map1.keys() {} // $ target=keys type=key:TRef.i32
-        for value in map1.values() {} // $ target=values type=value:TRef.Box type=value:TRef.T.TRef.str
-        for (key, value) in map1.iter() {} // $ target=iter type=key:TRef.i32 type=value:TRef.Box type=value:TRef.T.TRef.str
-        for (key, value) in &map1 {} // $ type=key:TRef.i32 type=value:TRef.Box type=value:TRef.T.TRef.str
+        for key in map1.keys() {} // $ target=keys type=key@&<TRef>:i32
+        for value in map1.values() {} // $ target=values type=value@&<TRef>.Box<T>.&<TRef>:str
+        for (key, value) in map1.iter() {} // $ target=iter type=key@&<TRef>:i32 type=value@&<TRef>.Box<T>.&<TRef>:str
+        for (key, value) in &map1 {} // $ type=key@&<TRef>:i32 type=value@&<TRef>.Box<T>.&<TRef>:str
 
         // while loops
 
@@ -2398,27 +2398,27 @@ mod explicit_type_args {
     }
 
     pub fn f() {
-        let x1: Option<S1<S2>> = S1::assoc_fun(); // $ certainType=x1:T.T.S2 target=assoc_fun
-        let x2 = S1::<S2>::assoc_fun(); // $ certainType=x2:T.T.S2 target=assoc_fun
-        let x3 = S3::assoc_fun(); // $ certainType=x3:T.T.S2 target=assoc_fun
-        let x4 = S1::<S2>::method(S1::default()); // $ target=method target=default certainType=x4:T.S2
-        let x5 = S3::method(S1::default()); // $ target=method target=default certainType=x5:T.S2
-        let x6 = S4::<S2>(Default::default()); // $ type=x6:T4.S2 target=default
-        let x7 = S4(S2); // $ type=x7:T4.S2
-        let x8 = S4(0); // $ type=x8:T4.i32
-        let x9 = S4(S2::default()); // $ type=x9:T4.S2 target=default
-        let x10 = S5::<S2>  // $ certainType=x10:T5.S2
+        let x1: Option<S1<S2>> = S1::assoc_fun(); // $ certainType=x1@Option<T>.S1<T>:S2 target=assoc_fun
+        let x2 = S1::<S2>::assoc_fun(); // $ certainType=x2@Option<T>.S1<T>:S2 target=assoc_fun
+        let x3 = S3::assoc_fun(); // $ certainType=x3@Option<T>.S1<T>:S2 target=assoc_fun
+        let x4 = S1::<S2>::method(S1::default()); // $ target=method target=default certainType=x4@S1<T>:S2
+        let x5 = S3::method(S1::default()); // $ target=method target=default certainType=x5@S1<T>:S2
+        let x6 = S4::<S2>(Default::default()); // $ type=x6@S4<T4>:S2 target=default
+        let x7 = S4(S2); // $ type=x7@S4<T4>:S2
+        let x8 = S4(0); // $ type=x8@S4<T4>:i32
+        let x9 = S4(S2::default()); // $ type=x9@S4<T4>:S2 target=default
+        let x10 = S5::<S2>  // $ certainType=x10@S5<T5>:S2
         {
             field: Default::default(), // $ target=default
         };
-        let x11 = S5 { field: S2 }; // $ type=x11:T5.S2
-        let x12 = S5 { field: 0 }; // $ type=x12:T5.i32
-        let x13 = S5 // $ type=x13:T5.S2
+        let x11 = S5 { field: S2 }; // $ type=x11@S5<T5>:S2
+        let x12 = S5 { field: 0 }; // $ type=x12@S5<T5>:i32
+        let x13 = S5 // $ type=x13@S5<T5>:S2
         {
             field: S2::default(), // $ target=default
         };
         let x14 = foo::<i32>(Default::default()); // $ certainType=x14:i32 target=default target=foo
-        let x15 = S1::<S2>::default(); // $ certainType=x15:T.S2 target=default
+        let x15 = S1::<S2>::default(); // $ certainType=x15@S1<T>:S2 target=default
     }
 }
 
@@ -2454,11 +2454,11 @@ mod tuples {
         // `a` and `b` to be inferred.
         let a = Default::default(); // $ target=default type=a:i64
         let b = Default::default(); // $ target=default type=b:bool
-        let pair = (a, b); // $ type=pair:T0.i64 type=pair:T1.bool
+        let pair = (a, b); // $ type=pair@(T_2)<T0>:i64 type=pair@(T_2)<T1>:bool
         let i: i64 = pair.0; // $ fieldof=Tuple2
         let j: bool = pair.1; // $ fieldof=Tuple2
 
-        let pair = [1, 1].into(); // $ type=pair:(T_2) type=pair:T0.i32 type=pair:T1.i32 target=into
+        let pair = [1, 1].into(); // $ type=pair@(T_2)<T0>:i32 type=pair@(T_2)<T1>:i32 target=into
         match pair {
             (0, 0) => print!("unexpected"),
             _ => print!("expected"),
@@ -2572,7 +2572,7 @@ mod if_expr {
     pub fn f(b: bool) -> Box<dyn MyTrait<i32>> {
         let x = if b {
             let y = Default::default(); // $ target=default
-            y // $ type=y:T.i32
+            y // $ type=y@S<T>:i32
         } else {
             S(2)
         };
@@ -2648,14 +2648,14 @@ mod context_typed {
     }
 
     pub fn f() {
-        let x = None; // $ type=x:T.i32
+        let x = None; // $ type=x@Option<T>:i32
         let x: Option<i32> = x;
-        let x = Option::<i32>::None; // $ type=x:T.i32
-        let x = Option::None::<i32>; // $ type=x:T.i32
+        let x = Option::<i32>::None; // $ type=x@Option<T>:i32
+        let x = Option::None::<i32>; // $ type=x@Option<T>:i32
 
         fn pin_option<T>(opt: Option<T>, x: T) {}
 
-        let x = None; // $ type=x:T.i32
+        let x = None; // $ type=x@Option<T>:i32
         pin_option(x, 0); // $ target=pin_option
 
         enum MyEither<T1, T2> {
@@ -2663,33 +2663,33 @@ mod context_typed {
             B { right: T2 },
         }
 
-        let x = MyEither::A { left: 0 }; // $ type=x:T1.i32 type=x:T2.String
+        let x = MyEither::A { left: 0 }; // $ type=x@MyEither<T1>:i32 type=x@MyEither<T2>:String
         let x: MyEither<i32, String> = x;
-        let x = MyEither::<_, String>::A { left: 0 }; // $ type=x:T1.i32 certainType=x:T2.String
+        let x = MyEither::<_, String>::A { left: 0 }; // $ type=x@MyEither<T1>:i32 certainType=x@MyEither<T2>:String
         #[rustfmt::skip]
-        let x = MyEither::B::<i32, _> { // $ certainType=x:T1.i32 type=x:T2.String
+        let x = MyEither::B::<i32, _> { // $ certainType=x@MyEither<T1>:i32 type=x@MyEither<T2>:String
             right: String::new(), // $ target=new
         };
 
         fn pin_my_either<T>(e: MyEither<T, String>, x: T) {}
 
         #[rustfmt::skip]
-        let x = MyEither::B {  // $ type=x:T1.i32 type=x:T2.String
+        let x = MyEither::B {  // $ type=x@MyEither<T1>:i32 type=x@MyEither<T2>:String
             right: String::new(), // $ target=new
         };
         pin_my_either(x, 0); // $ target=pin_my_either
 
-        let x = Result::Ok(0); // $ type=x:E.String
+        let x = Result::Ok(0); // $ type=x@Result<E>:String
         let x: Result<i32, String> = x;
-        let x = Result::<i32, String>::Ok(0); // $ type=x:E.String
-        let x = Result::Ok::<i32, String>(0); // $ type=x:E.String
+        let x = Result::<i32, String>::Ok(0); // $ type=x@Result<E>:String
+        let x = Result::Ok::<i32, String>(0); // $ type=x@Result<E>:String
 
         fn pin_result<T, E>(res: Result<T, E>, x: E) {}
 
-        let x = Result::Ok(0); // $ type=x:T.i32 type=x:E.bool
+        let x = Result::Ok(0); // $ type=x@Result<T>:i32 type=x@Result<E>:bool
         pin_result(x, false); // $ target=pin_result
 
-        let mut x = Vec::new(); // $ type=x:T.i32 target=new
+        let mut x = Vec::new(); // $ type=x@Vec<T>:i32 target=new
         x.push(0); // $ target=push
 
         let y = Default::default(); // $ type=y:i32 target=default
@@ -2758,6 +2758,30 @@ mod closure;
 mod dereference;
 mod dyn_type;
 mod regressions;
+
+mod arg_trait_bounds {
+    struct Gen<T>(T);
+
+    trait Container<T> {
+        fn get_input(&self) -> T;
+    }
+
+    fn my_get<T: Container<i64>>(c: &T) -> bool {
+        c.get_input() == 42 // $ target=get_input target=eq
+    }
+
+    impl<GT: Copy> Container<GT> for Gen<GT> {
+        fn get_input(&self) -> GT {
+            self.0 // $ fieldof=Gen
+        }
+    }
+
+    fn test() {
+        let v = Default::default(); // $ type=v:i64 target=default
+        let g = Gen(v);
+        let _ = my_get(&g); // $ target=my_get
+    }
+}
 
 fn main() {
     field_access::f(); // $ target=f

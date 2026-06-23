@@ -20,6 +20,9 @@ class DispatchCall extends Internal::TDispatchCall {
   /** Gets the underlying expression of this call. */
   Expr getCall() { result = Internal::getCall(this) }
 
+  /** Gets the control flow node of this call. */
+  ControlFlowNode getControlFlowNode() { result = Internal::getControlFlowNode(this) }
+
   /** Gets the `i`th argument of this call. */
   Expr getArgument(int i) { result = Internal::getArgument(this, i) }
 
@@ -70,6 +73,19 @@ class DispatchCall extends Internal::TDispatchCall {
   }
 }
 
+abstract private class InstanceOperatorCall extends OperatorCall {
+  abstract Expr getQualifier();
+}
+
+private class InstanceCompoundAssignment extends InstanceOperatorCall instanceof CompoundAssignmentOperatorCall
+{
+  override Expr getQualifier() { result = CompoundAssignmentOperatorCall.super.getQualifier() }
+}
+
+private class InstanceMutator extends InstanceOperatorCall instanceof InstanceMutatorOperatorCall {
+  override Expr getQualifier() { result = InstanceMutatorOperatorCall.super.getQualifier() }
+}
+
 /** Internal implementation details. */
 private module Internal {
   private import OverridableCallable
@@ -90,8 +106,17 @@ private module Internal {
         not mc.isLateBound() and
         not isExtensionAccessorCall(mc)
       } or
-      TDispatchAccessorCall(AccessorCall ac) or
-      TDispatchOperatorCall(OperatorCall oc) { not oc.isLateBound() } or
+      TDispatchAccessorCall(AccessorCall ac, boolean isRead) {
+        // For compound assignments an AccessorCall can be both a read and a write
+        ac instanceof AssignableRead and isRead = true
+        or
+        ac instanceof AssignableWrite and isRead = false
+      } or
+      TDispatchOperatorCall(OperatorCall oc) {
+        not oc.isLateBound() and
+        not oc instanceof InstanceOperatorCall
+      } or
+      TDispatchInstanceOperatorCall(InstanceOperatorCall ioc) or
       TDispatchReflectionCall(MethodCall mc, string name, Expr object, Expr qualifier, int args) {
         isReflectionCall(mc, name, object, qualifier, args)
       } or
@@ -99,9 +124,7 @@ private module Internal {
       TDispatchDynamicOperatorCall(DynamicOperatorCall doc) or
       TDispatchDynamicMemberAccess(DynamicMemberAccess dma) or
       TDispatchDynamicElementAccess(DynamicElementAccess dea) or
-      TDispatchDynamicEventAccess(
-        AssignArithmeticOperation aao, DynamicMemberAccess dma, string name
-      ) {
+      TDispatchDynamicEventAccess(AssignArithmeticExpr aao, DynamicMemberAccess dma, string name) {
         isPotentialEventCall(aao, dma, name)
       } or
       TDispatchDynamicObjectCreation(DynamicObjectCreation doc) or
@@ -116,6 +139,11 @@ private module Internal {
 
     cached
     Expr getCall(DispatchCall dc) { result = dc.(DispatchCallImpl).getCall() }
+
+    cached
+    ControlFlowNode getControlFlowNode(DispatchCall dc) {
+      result = dc.(DispatchCallImpl).getControlFlowNode()
+    }
 
     cached
     Expr getArgument(DispatchCall dc, int i) { result = dc.(DispatchCallImpl).getArgument(i) }
@@ -200,7 +228,7 @@ private module Internal {
    * accessor.
    */
   private predicate isPotentialEventCall(
-    AssignArithmeticOperation aao, DynamicMemberAccess dma, string name
+    AssignArithmeticExpr aao, DynamicMemberAccess dma, string name
   ) {
     aao instanceof DynamicOperatorCall and
     dma = aao.getLeftOperand() and
@@ -223,6 +251,9 @@ private module Internal {
 
     /** Gets the underlying expression of this call. */
     abstract Expr getCall();
+
+    /** Gets the control flow node of this call. */
+    ControlFlowNode getControlFlowNode() { result = this.getCall().getControlFlowNode() }
 
     /** Gets the `i`th argument of this call. */
     abstract Expr getArgument(int i);
@@ -339,8 +370,8 @@ private module Internal {
       1 < strictcount(this.getADynamicTarget().getUnboundDeclaration()) and
       c = this.getCall().getEnclosingCallable().getUnboundDeclaration() and
       (
-        exists(BaseSsa::Definition def, Parameter p |
-          def.isImplicitEntryDefinition(p) and
+        exists(BaseSsa::SsaParameterInit def, Parameter p |
+          def.getParameter() = p and
           this.getSyntheticQualifier() = def.getARead() and
           p.getPosition() = i and
           c.getAParameter() = p and
@@ -870,6 +901,18 @@ private module Internal {
     override Operator getAStaticTarget() { result = this.getCall().getTarget() }
   }
 
+  private class DispatchInstanceOperatorCall extends DispatchOverridableCall,
+    TDispatchInstanceOperatorCall
+  {
+    override InstanceOperatorCall getCall() { this = TDispatchInstanceOperatorCall(result) }
+
+    override Expr getArgument(int i) { result = this.getCall().getArgument(i) }
+
+    override Expr getQualifier() { result = this.getCall().getQualifier() }
+
+    override Operator getAStaticTarget() { result = this.getCall().getTarget() }
+  }
+
   /**
    * A call to an accessor.
    *
@@ -877,13 +920,28 @@ private module Internal {
    * into account.
    */
   private class DispatchAccessorCall extends DispatchOverridableCall, TDispatchAccessorCall {
-    override AccessorCall getCall() { this = TDispatchAccessorCall(result) }
+    private predicate isRead() { this = TDispatchAccessorCall(_, true) }
+
+    override ControlFlowNode getControlFlowNode() {
+      if this.isRead()
+      then result = this.getCall().getControlFlowNode()
+      else
+        exists(AssignableDefinition def |
+          def.getTargetAccess() = this.getCall() and result = def.getExpr().getControlFlowNode()
+        )
+    }
+
+    override AccessorCall getCall() { this = TDispatchAccessorCall(result, _) }
 
     override Expr getArgument(int i) { result = this.getCall().getArgument(i) }
 
     override Expr getQualifier() { result = this.getCall().(MemberAccess).getQualifier() }
 
-    override Accessor getAStaticTarget() { result = this.getCall().getTarget() }
+    override Accessor getAStaticTarget() {
+      if this.isRead()
+      then result = this.getCall().getReadTarget()
+      else result = this.getCall().getWriteTarget()
+    }
 
     override RuntimeAccessor getADynamicTarget() {
       result = DispatchOverridableCall.super.getADynamicTarget() and
@@ -1337,9 +1395,7 @@ private module Internal {
   private class DispatchDynamicEventAccess extends DispatchReflectionOrDynamicCall,
     TDispatchDynamicEventAccess
   {
-    override AssignArithmeticOperation getCall() {
-      this = TDispatchDynamicEventAccess(result, _, _)
-    }
+    override AssignArithmeticExpr getCall() { this = TDispatchDynamicEventAccess(result, _, _) }
 
     override string getName() { this = TDispatchDynamicEventAccess(_, _, result) }
 
@@ -1348,7 +1404,7 @@ private module Internal {
         any(DynamicMemberAccess dma | this = TDispatchDynamicEventAccess(_, dma, _)).getQualifier()
     }
 
-    override Expr getArgument(int i) { i = 0 and result = this.getCall().getRValue() }
+    override Expr getArgument(int i) { i = 0 and result = this.getCall().getRightOperand() }
   }
 
   /** A call to a constructor using dynamic types. */

@@ -11,22 +11,22 @@
    Microsoft extensions (up to VS 2022),
 
    Arm Compiler 5 [5]_","``.cpp``, ``.c++``, ``.cxx``, ``.hpp``, ``.hh``, ``.h++``, ``.hxx``, ``.c``, ``.cc``, ``.h``"
-   C#,C# up to 13,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
+   C#,C# up to 14,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
 
    .NET Core up to 3.1
 
-   .NET 5, .NET 6, .NET 7, .NET 8, .NET 9","``.sln``, ``.slnx``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
+   .NET 5, .NET 6, .NET 7, .NET 8, .NET 9, .NET 10","``.sln``, ``.slnx``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    GitHub Actions,"Not applicable",Not applicable,"``.github/workflows/*.yml``, ``.github/workflows/*.yaml``, ``**/action.yml``, ``**/action.yaml``"
    Go (aka Golang), "Go up to 1.26", "Go 1.11 or more recent", ``.go``
    Java,"Java 7 to 26 [6]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [7]_",``.java``
-   Kotlin,"Kotlin 1.8.0 to 2.3.0\ *x*","kotlinc",``.kt``
+   Kotlin,"Kotlin 1.8.0 to 2.3.2\ *x*","kotlinc",``.kt``
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [8]_"
    Python [9]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13",Not applicable,``.py``
    Ruby [10]_,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
    Rust [11]_,"Rust editions 2021 and 2024","Rust compiler","``.rs``, ``Cargo.toml``"
-   Swift [12]_ [13]_,"Swift 5.4-6.2","Swift compiler","``.swift``"
+   Swift [12]_ [13]_,"Swift 5.4-6.3","Swift compiler","``.swift``"
    TypeScript [14]_,"2.6-5.9",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group

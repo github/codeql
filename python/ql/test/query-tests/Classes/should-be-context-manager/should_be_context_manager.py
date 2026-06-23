@@ -1,6 +1,6 @@
 #Should be context manager
 
-class MegaDel(object):
+class MegaDel(object): # $ Alert
 
     def __del__(self):
         a = self.x + self.y
@@ -13,7 +13,7 @@ class MegaDel(object):
             sum += a
         print(sum)
 
-class MiniDel(object):
+class MiniDel(object): # $ Alert
 
     def close(self):
         pass

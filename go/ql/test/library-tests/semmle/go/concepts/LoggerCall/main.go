@@ -2,9 +2,12 @@ package main
 
 const fmt = "formatted %s string"
 const text = "test"
+const key = "key"
 
 var v []byte
 
 func main() {
-	stdlib()
+	glogTest(len(v))
+	stdlib(len(v))
+	slogTest()
 }

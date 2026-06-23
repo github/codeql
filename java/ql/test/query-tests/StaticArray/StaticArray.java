@@ -1,6 +1,6 @@
 class StaticArray
 {
-    public static final int[] bad = new int[42]; //NOT OK
+    public static final int[] bad = new int[42]; // $ Alert //NOT OK
 
     protected static final int[] good_protected = new int[42]; //OK (protected arrays are ok)
     /* default */ static final int[] good_default = new int[42]; //OK (default access arrays are ok)
@@ -11,10 +11,10 @@ class StaticArray
     public /* final */ static int[] good_nonfinal = new int[42]; //OK (non-final arrays are ok)
 
     public static final Object good_not_array = new int[42]; //OK (non-arrays are ok)
-    public static final int[][][] bad_multidimensional = new int[42][42][42]; //NOT OK
-    public static final int[][][] bad_multidimensional_partial_init = new int[42][][]; //NOT OK
+    public static final int[][][] bad_multidimensional = new int[42][42][42]; // $ Alert //NOT OK
+    public static final int[][][] bad_multidimensional_partial_init = new int[42][][]; // $ Alert //NOT OK
 
-    public static final int[] bad_separate_init; //NOT OK 
+    public static final int[] bad_separate_init; // $ Alert //NOT OK 
 
     static {
 	bad_separate_init = new int[42];
@@ -23,6 +23,6 @@ class StaticArray
     public static final int[] good_empty = new int[0]; //OK (empty array creation)
     public static final int[] good_empty2 = {}; //OK (empty array literal)
     public static final int[][] good_empty_multidimensional = new int[0][42]; //OK (empty array)
-    public static final int[][] bad_nonempty = { {} }; //NOT OK (first dimension is 1, so not empty)
+    public static final int[][] bad_nonempty = { {} }; // $ Alert //NOT OK (first dimension is 1, so not empty)
 
 }

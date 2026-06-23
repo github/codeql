@@ -1,1 +1,2 @@
-Expressions/Regex/MissingPartSpecialGroup.ql
+query: Expressions/Regex/MissingPartSpecialGroup.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

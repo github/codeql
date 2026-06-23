@@ -3,6 +3,8 @@
 'bundle';// and this
 'use server';
 'use client';
+'use memo';
+'use no memo';
 'use cache';
 'use cache: remote';
 'use cache: private';
@@ -18,6 +20,8 @@ function f() {
   'bundle';
   'use server';
   'use client';
+  'use memo';
+  'use no memo';
   'use cache';
   'use cache: remote';
   'use cache: private';

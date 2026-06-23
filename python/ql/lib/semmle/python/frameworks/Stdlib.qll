@@ -2254,8 +2254,9 @@ module StdlibPrivate {
       DataFlow::CfgNode
     {
       WsgirefSimpleServerApplicationReturn() {
-        exists(WsgirefSimpleServerApplication requestHandler |
-          node = requestHandler.getAReturnValueFlowNode()
+        exists(WsgirefSimpleServerApplication requestHandler, Return ret |
+          ret.getScope() = requestHandler and
+          node.getNode() = ret.getValue()
         )
       }
 
@@ -4244,6 +4245,7 @@ module StdlibPrivate {
         )
         // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
       ) and
+      // Element content is mutated into list element content
       output = "ReturnValue.ListElement" and
       preservesValue = true
       or
@@ -4270,11 +4272,9 @@ module StdlibPrivate {
         preservesValue = true
       )
       or
-      // TODO: We need to also translate iterable content such as list element
-      //       but we currently lack TupleElementAny
-      input = "Argument[0]" and
+      input = "Argument[0].ListElement" and
       output = "ReturnValue" and
-      preservesValue = false
+      preservesValue = true
     }
   }
 
@@ -4966,6 +4966,26 @@ module StdlibPrivate {
       input in ["Argument[1]", "Argument[default:]"] and
       output = "ReturnValue" and
       preservesValue = true
+    }
+  }
+
+  /** A flow summary for `str.join`. */
+  class StrJoinSummary extends SummarizedCallable::Range {
+    StrJoinSummary() { this = "str.join" }
+
+    override DataFlow::CallCfgNode getACall() { result.(DataFlow::MethodCallNode).calls(_, "join") }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result.(DataFlow::AttrRead).getAttributeName() = "join"
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      (
+        // For code like `" ".join([name])`
+        input = "Argument[0,iterable:].ListElement" and
+        preservesValue = true
+      ) and
+      output = "ReturnValue"
     }
   }
 

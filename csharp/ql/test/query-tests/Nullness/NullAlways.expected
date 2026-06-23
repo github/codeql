@@ -24,6 +24,7 @@
 | C.cs:249:9:249:9 | access to local variable a | Variable $@ is always null at this dereference. | C.cs:248:15:248:15 | a | a |
 | C.cs:260:9:260:10 | access to local variable ia | Variable $@ is always null at this dereference. | C.cs:257:15:257:16 | ia | ia |
 | C.cs:261:20:261:21 | access to local variable sa | Variable $@ is always null at this dereference. | C.cs:258:18:258:19 | sa | sa |
+| C.cs:271:9:271:10 | access to local variable c1 | Variable $@ is always null at this dereference. | C.cs:269:11:269:12 | c1 | c1 |
 | D.cs:120:13:120:13 | access to local variable x | Variable $@ is always null at this dereference. | D.cs:117:13:117:13 | x | x |
 | D.cs:197:13:197:13 | access to local variable o | Variable $@ is always null at this dereference. | D.cs:195:13:195:13 | o | o |
 | D.cs:207:17:207:17 | access to local variable e | Variable $@ is always null at this dereference. | D.cs:204:26:204:26 | e | e |

@@ -12,11 +12,11 @@ def write_cert(filename):
         file.writelines(lines) # OK
 
 def write_password(filename):
-    password = get_password()
+    password = get_password() # $ Source
     with open(filename, "w") as file:
-        file.write(password) # NOT OK
+        file.write(password) # $ Alert # NOT OK
         lines = [password + "\n"]
-        file.writelines(lines) # NOT OK
+        file.writelines(lines) # $ Alert # NOT OK
 
 def FPs():
     # just like for cleartext-logging see that file for more elaborate tests

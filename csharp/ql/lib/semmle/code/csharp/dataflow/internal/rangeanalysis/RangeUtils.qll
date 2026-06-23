@@ -9,7 +9,7 @@ private module Impl {
   private import SsaReadPositionCommon
   private import semmle.code.csharp.controlflow.Guards as G
 
-  private class ExprNode = ControlFlow::Nodes::ExprNode;
+  private class ExprNode = ControlFlowNodes::ExprNode;
 
   /** Holds if `parent` having child `child` implies `parentNode` having child `childNode`. */
   predicate hasChild(Expr parent, Expr child, ExprNode parentNode, ExprNode childNode) {
@@ -19,9 +19,9 @@ private module Impl {
   }
 
   /** Holds if SSA definition `def` equals `e + delta`. */
-  predicate ssaUpdateStep(ExplicitDefinition def, ExprNode e, int delta) {
-    exists(ControlFlow::Node cfn | cfn = def.getControlFlowNode() |
-      e = cfn.(ExprNode::Assignment).getRValue() and
+  predicate ssaUpdateStep(SsaExplicitWrite def, ExprNode e, int delta) {
+    exists(ControlFlowNode cfn | cfn = def.getControlFlowNode() |
+      e = cfn.(ExprNode::Assignment).getRightOperand() and
       delta = 0 and
       not cfn instanceof ExprNode::AssignOperation
       or
@@ -39,7 +39,7 @@ private module Impl {
 
   /** Holds if `e1 + delta` equals `e2`. */
   predicate valueFlowStep(ExprNode e2, ExprNode e1, int delta) {
-    e2.(ExprNode::AssignExpr).getRValue() = e1 and delta = 0
+    e2.(ExprNode::AssignExpr).getRightOperand() = e1 and delta = 0
     or
     e2.(ExprNode::UnaryPlusExpr).getOperand() = e1 and delta = 0
     or
@@ -83,9 +83,7 @@ private module Impl {
     /**
      * Holds if basic block `bb` is guarded by this guard having value `v`.
      */
-    predicate controlsBasicBlock(ControlFlow::BasicBlock bb, G::GuardValue v) {
-      super.controlsBasicBlock(bb, v)
-    }
+    predicate controlsBasicBlock(BasicBlock bb, G::GuardValue v) { super.controlsBasicBlock(bb, v) }
 
     /**
      * Holds if this guard is an equality test between `e1` and `e2`. If the test is
@@ -108,7 +106,7 @@ private module Impl {
    * - `isEq = true`  : `def == e + delta`
    * - `isEq = false` : `def != e + delta`
    */
-  Guard eqFlowCond(Definition def, ExprNode e, int delta, boolean isEq, boolean testIsTrue) {
+  Guard eqFlowCond(SsaDefinition def, ExprNode e, int delta, boolean isEq, boolean testIsTrue) {
     exists(boolean eqpolarity |
       result.isEquality(ssaRead(def, delta), e, eqpolarity) and
       testIsTrue = [false, true] and
@@ -160,7 +158,7 @@ import Impl
 module ExprNode {
   private import csharp as CS
 
-  private class ExprNode = CS::ControlFlow::Nodes::ExprNode;
+  private class ExprNode = CS::ControlFlowNodes::ExprNode;
 
   private import Sign
 
@@ -207,13 +205,13 @@ module ExprNode {
     override CS::Assignment e;
 
     /** Gets the left operand of this assignment. */
-    ExprNode getLValue() {
-      result = unique(ExprNode res | hasChild(e, e.getLValue(), this, res) | res)
+    ExprNode getLeftOperand() {
+      result = unique(ExprNode res | hasChild(e, e.getLeftOperand(), this, res) | res)
     }
 
     /** Gets the right operand of this assignment. */
-    ExprNode getRValue() {
-      result = unique(ExprNode res | hasChild(e, e.getRValue(), this, res) | res)
+    ExprNode getRightOperand() {
+      result = unique(ExprNode res | hasChild(e, e.getRightOperand(), this, res) | res)
     }
   }
 
@@ -225,6 +223,10 @@ module ExprNode {
   /** A compound assignment operation. */
   class AssignOperation extends Assignment, BinaryOperation {
     override CS::AssignOperation e;
+
+    override ExprNode getLeftOperand() { result = Assignment.super.getLeftOperand() }
+
+    override ExprNode getRightOperand() { result = Assignment.super.getRightOperand() }
   }
 
   /** A unary operation. */

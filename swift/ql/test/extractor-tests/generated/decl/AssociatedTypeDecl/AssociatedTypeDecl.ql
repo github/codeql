@@ -4,7 +4,8 @@ import TestUtils
 
 query predicate instances(
   AssociatedTypeDecl x, string getModule__label, ModuleDecl getModule,
-  string getInterfaceType__label, Type getInterfaceType, string getName__label, string getName
+  string getInterfaceType__label, Type getInterfaceType, string getName__label, string getName,
+  string getDeclaredInterfaceType__label, Type getDeclaredInterfaceType
 ) {
   toBeTested(x) and
   not x.isUnknown() and
@@ -13,7 +14,9 @@ query predicate instances(
   getInterfaceType__label = "getInterfaceType:" and
   getInterfaceType = x.getInterfaceType() and
   getName__label = "getName:" and
-  getName = x.getName()
+  getName = x.getName() and
+  getDeclaredInterfaceType__label = "getDeclaredInterfaceType:" and
+  getDeclaredInterfaceType = x.getDeclaredInterfaceType()
 }
 
 query predicate getMember(AssociatedTypeDecl x, int index, Decl getMember) {

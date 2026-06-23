@@ -13,11 +13,13 @@ import csharp
 import Solorigate
 import experimental.code.csharp.Cryptography.NonCryptographicHashes
 
+ControlFlowNode loopExitNode(LoopStmt loop) { result.isAfter(loop) }
+
 from Variable v, Literal l, LoopStmt loop, Expr additional_xor
 where
   maybeUsedInFnvFunction(v, _, _, loop) and
   exists(BitwiseXorOperation xor2 | xor2.getAnOperand() = l and additional_xor = xor2 |
-    loop.getAControlFlowExitNode().getASuccessor*() = xor2.getAControlFlowNode() and
+    loopExitNode(loop).getASuccessor*() = xor2.getControlFlowNode() and
     xor2.getAnOperand() = v.getAnAccess()
   )
 select l, "This literal is used in an $@ after an FNV-like hash calculation with variable $@.",

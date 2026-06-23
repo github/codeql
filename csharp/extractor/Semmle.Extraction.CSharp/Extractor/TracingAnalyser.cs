@@ -131,7 +131,7 @@ namespace Semmle.Extraction.CSharp
                 return Path.ChangeExtension(entryPointFilename, ".exe");
             }
 
-            return Path.Combine(commandLineArguments.OutputDirectory, commandLineArguments.OutputFileName);
+            return Path.Join(commandLineArguments.OutputDirectory, commandLineArguments.OutputFileName);
         }
 
         private int LogDiagnostics()

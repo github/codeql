@@ -65,23 +65,23 @@ RSA.generate(RSA_STRONG)
 
 # Weak keys
 
-dsa_gen_key(DSA_WEAK)
-ec_gen_key(EC_WEAK)
-rsa_gen_key(65537, RSA_WEAK)
+dsa_gen_key(DSA_WEAK) # $ Alert
+ec_gen_key(EC_WEAK) # $ Alert
+rsa_gen_key(65537, RSA_WEAK) # $ Alert
 
-dsa_gen_key(key_size=DSA_WEAK)
-ec_gen_key(curve=EC_WEAK)
-rsa_gen_key(65537, key_size=RSA_WEAK)
+dsa_gen_key(key_size=DSA_WEAK) # $ Alert
+ec_gen_key(curve=EC_WEAK) # $ Alert
+rsa_gen_key(65537, key_size=RSA_WEAK) # $ Alert
 
-DSA.generate(DSA_WEAK)
-RSA.generate(RSA_WEAK)
+DSA.generate(DSA_WEAK) # $ Alert
+RSA.generate(RSA_WEAK) # $ Alert
 
 # ------------------------------------------------------------------------------
 
 # Through function calls
 
 def make_new_rsa_key_weak(bits):
-    return RSA.generate(bits) # NOT OK
+    return RSA.generate(bits) # $ Alert # NOT OK
 make_new_rsa_key_weak(RSA_WEAK)
 
 

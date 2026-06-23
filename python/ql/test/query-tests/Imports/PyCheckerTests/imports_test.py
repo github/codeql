@@ -1,7 +1,7 @@
 
 #Import and import from
 
-import test_module2
+import test_module2 # $ Alert[py/import-and-import-from]
 from test_module2 import func
 
 #Module imports itself

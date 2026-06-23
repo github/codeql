@@ -6,8 +6,8 @@ public class C {
     long[][] a2 = null;
     boolean haveA2 = ix < len && (a2 = a1[ix]) != null;
     long[] a3 = null;
-    final boolean haveA3 = haveA2 && (a3 = a2[ix]) != null; // NPE - false positive
-    if (haveA3) a3[0] = 0; // NPE - false positive
+    final boolean haveA3 = haveA2 && (a3 = a2[ix]) != null; // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
+    if (haveA3) a3[0] = 0; // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
   }
 
   public void ex2(boolean x, boolean y) {
@@ -18,7 +18,7 @@ public class C {
       s2 = (s1 == null) ? null : "";
     }
     if (s2 != null)
-      s1.hashCode(); // NPE - false positive
+      s1.hashCode(); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
   }
 
   public void ex3(List<String> ss) {
@@ -48,7 +48,7 @@ public class C {
         slice = new ArrayList<>();
         result.add(slice);
       }
-      slice.add(str); // NPE - false positive
+      slice.add(str); // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
       ++index;
       iter.remove();
     }
@@ -141,7 +141,7 @@ public class C {
   public void ex10(int[] a) {
     int n = a == null ? 0 : a.length;
     for (int i = 0; i < n; i++) {
-      int x = a[i]; // NPE - false positive
+      int x = a[i]; // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
       if (x > 7)
         a = new int[n];
     }
@@ -216,7 +216,7 @@ public class C {
     if (o1 == o2) {
       return;
     }
-    if (o1.equals(o2)) { // NPE - false positive
+    if (o1.equals(o2)) { // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
       return;
     }
   }
@@ -230,7 +230,7 @@ public class C {
   public static void ex16(C c) {
     int[] xs = c.getFoo16() != null ? new int[5] : null;
     if (c.getFoo16() != null) {
-      xs[0]++; // NPE - false positive
+      xs[0]++; // $ SPURIOUS: Alert[java/dereferenced-value-may-be-null] // NPE - false positive
     }
   }
 

@@ -8,7 +8,7 @@ from
   Assignment assign, AnonymousObjectCreation o, Assignment a, AnonymousObjectCreation p,
   Assignment b
 where
-  assign.getLValue().(VariableAccess).getTarget().hasName("contacts2") and
+  assign.getLeftOperand().(VariableAccess).getTarget().hasName("contacts2") and
   o.getParent+() = assign and
   o.getInitializer().getMemberInitializer(1) = a and
   p.getParent+() = assign and

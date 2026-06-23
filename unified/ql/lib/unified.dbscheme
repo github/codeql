@@ -1,0 +1,360 @@
+// CodeQL database schema for Unified
+// Automatically generated from the tree-sitter grammar; do not edit
+// To regenerate, run unified/scripts/create-extractor-pack.sh
+
+/*- Files and folders -*/
+
+/**
+ * The location of an element.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
+locations_default(
+  unique int id: @location_default,
+  int file: @file ref,
+  int beginLine: int ref,
+  int beginColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref
+);
+
+files(
+  unique int id: @file,
+  string name: string ref
+);
+
+folders(
+  unique int id: @folder,
+  string name: string ref
+);
+
+@container = @file | @folder
+
+containerparent(
+  int parent: @container ref,
+  unique int child: @container ref
+);
+
+/*- Empty location -*/
+
+empty_location(
+  int location: @location_default ref
+);
+
+/*- Source location prefix -*/
+
+/**
+ * The source location of the snapshot.
+ */
+sourceLocationPrefix(string prefix : string ref);
+
+/*- Diagnostic messages -*/
+
+diagnostics(
+  unique int id: @diagnostic,
+  int severity: int ref,
+  string error_tag: string ref,
+  string error_message: string ref,
+  string full_error_message: string ref,
+  int location: @location_default ref
+);
+
+/*- Diagnostic messages: severity -*/
+
+case @diagnostic.severity of
+  10 = @diagnostic_debug
+| 20 = @diagnostic_info
+| 30 = @diagnostic_warning
+| 40 = @diagnostic_error
+;
+
+/*- YAML -*/
+
+#keyset[parent, idx]
+yaml (unique int id: @yaml_node,
+      int kind: int ref,
+      int parent: @yaml_node_parent ref,
+      int idx: int ref,
+      string tag: string ref,
+      string tostring: string ref);
+
+case @yaml_node.kind of
+  0 = @yaml_scalar_node
+| 1 = @yaml_mapping_node
+| 2 = @yaml_sequence_node
+| 3 = @yaml_alias_node
+;
+
+@yaml_collection_node = @yaml_mapping_node | @yaml_sequence_node;
+
+@yaml_node_parent = @yaml_collection_node | @file;
+
+yaml_anchors (unique int node: @yaml_node ref,
+              string anchor: string ref);
+
+yaml_aliases (unique int alias: @yaml_alias_node ref,
+              string target: string ref);
+
+yaml_scalars (unique int scalar: @yaml_scalar_node ref,
+              int style: int ref,
+              string value: string ref);
+
+yaml_comments (unique int id: @yaml_comment,
+               string text: string ref,
+               string tostring: string ref);
+
+yaml_errors (unique int id: @yaml_error,
+             string message: string ref);
+
+yaml_locations(unique int locatable: @yaml_locatable ref,
+             int location: @location_default ref);
+
+@yaml_locatable = @yaml_node | @yaml_error | @yaml_comment;
+
+/*- Database metadata -*/
+
+/**
+ * The CLI will automatically emit applicable tuples for this table,
+ * such as `databaseMetadata("isOverlay", "true")` when building an
+ * overlay database.
+ */
+databaseMetadata(
+  string metadataKey: string ref,
+  string value: string ref
+);
+
+/*- Overlay support -*/
+
+/**
+ * The CLI will automatically emit tuples for each new/modified/deleted file
+ * when building an overlay database.
+ */
+overlayChangedFiles(
+  string path: string ref
+);
+
+/*- Unified dbscheme -*/
+#keyset[unified_apply_pattern, index]
+unified_apply_pattern_argument(
+  int unified_apply_pattern: @unified_apply_pattern ref,
+  int index: int ref,
+  unique int argument: @unified_pattern ref
+);
+
+unified_apply_pattern_def(
+  unique int id: @unified_apply_pattern,
+  int constructor: @unified_expr ref
+);
+
+unified_binary_expr_def(
+  unique int id: @unified_binary_expr,
+  int left: @unified_expr ref,
+  int operator: @unified_token_operator ref,
+  int right: @unified_expr ref
+);
+
+#keyset[unified_block_stmt, index]
+unified_block_stmt_body(
+  int unified_block_stmt: @unified_block_stmt ref,
+  int index: int ref,
+  unique int body: @unified_stmt ref
+);
+
+unified_block_stmt_def(
+  unique int id: @unified_block_stmt
+);
+
+#keyset[unified_call_expr, index]
+unified_call_expr_argument(
+  int unified_call_expr: @unified_call_expr ref,
+  int index: int ref,
+  unique int argument: @unified_expr ref
+);
+
+unified_call_expr_def(
+  unique int id: @unified_call_expr,
+  int function: @unified_expr ref
+);
+
+@unified_condition = @unified_expr_condition | @unified_let_pattern_condition | @unified_sequence_condition | @unified_token_unsupported_node
+
+@unified_expr = @unified_binary_expr | @unified_call_expr | @unified_lambda_expr | @unified_member_access_expr | @unified_name_expr | @unified_token_int_literal | @unified_token_string_literal | @unified_token_unsupported_node | @unified_unary_expr
+
+unified_expr_condition_def(
+  unique int id: @unified_expr_condition,
+  int expr: @unified_expr ref
+);
+
+unified_expr_stmt_def(
+  unique int id: @unified_expr_stmt,
+  int expr: @unified_expr ref
+);
+
+unified_guard_if_stmt_def(
+  unique int id: @unified_guard_if_stmt,
+  int condition: @unified_condition ref,
+  int else: @unified_stmt ref
+);
+
+unified_if_stmt_else(
+  unique int unified_if_stmt: @unified_if_stmt ref,
+  unique int else: @unified_stmt ref
+);
+
+unified_if_stmt_then(
+  unique int unified_if_stmt: @unified_if_stmt ref,
+  unique int then: @unified_stmt ref
+);
+
+unified_if_stmt_def(
+  unique int id: @unified_if_stmt,
+  int condition: @unified_condition ref
+);
+
+@unified_lambda_expr_body_type = @unified_expr | @unified_stmt
+
+#keyset[unified_lambda_expr, index]
+unified_lambda_expr_parameter(
+  int unified_lambda_expr: @unified_lambda_expr ref,
+  int index: int ref,
+  unique int parameter: @unified_parameter ref
+);
+
+unified_lambda_expr_def(
+  unique int id: @unified_lambda_expr,
+  int body: @unified_lambda_expr_body_type ref
+);
+
+unified_let_pattern_condition_def(
+  unique int id: @unified_let_pattern_condition,
+  int pattern: @unified_pattern ref,
+  int value: @unified_expr ref
+);
+
+unified_member_access_expr_def(
+  unique int id: @unified_member_access_expr,
+  int member: @unified_token_identifier ref,
+  int target: @unified_expr ref
+);
+
+unified_name_expr_def(
+  unique int id: @unified_name_expr,
+  int identifier: @unified_token_identifier ref
+);
+
+unified_parameter_def(
+  unique int id: @unified_parameter,
+  int pattern: @unified_pattern ref
+);
+
+@unified_pattern = @unified_apply_pattern | @unified_token_ignore_pattern | @unified_token_unsupported_node | @unified_tuple_pattern | @unified_var_pattern
+
+#keyset[unified_sequence_condition, index]
+unified_sequence_condition_stmt(
+  int unified_sequence_condition: @unified_sequence_condition ref,
+  int index: int ref,
+  unique int stmt: @unified_stmt ref
+);
+
+unified_sequence_condition_def(
+  unique int id: @unified_sequence_condition,
+  int condition: @unified_condition ref
+);
+
+@unified_stmt = @unified_block_stmt | @unified_expr_stmt | @unified_guard_if_stmt | @unified_if_stmt | @unified_token_empty_stmt | @unified_token_unsupported_node | @unified_variable_declaration_stmt
+
+@unified_top_level_body_type = @unified_expr | @unified_stmt
+
+#keyset[unified_top_level, index]
+unified_top_level_body(
+  int unified_top_level: @unified_top_level ref,
+  int index: int ref,
+  unique int body: @unified_top_level_body_type ref
+);
+
+unified_top_level_def(
+  unique int id: @unified_top_level
+);
+
+#keyset[unified_tuple_pattern, index]
+unified_tuple_pattern_element(
+  int unified_tuple_pattern: @unified_tuple_pattern ref,
+  int index: int ref,
+  unique int element: @unified_pattern ref
+);
+
+unified_tuple_pattern_def(
+  unique int id: @unified_tuple_pattern
+);
+
+unified_unary_expr_def(
+  unique int id: @unified_unary_expr,
+  int operand: @unified_expr ref,
+  int operator: @unified_token_operator ref
+);
+
+unified_var_pattern_def(
+  unique int id: @unified_var_pattern,
+  int identifier: @unified_token_identifier ref
+);
+
+#keyset[unified_variable_declaration_stmt, index]
+unified_variable_declaration_stmt_variable_declarator(
+  int unified_variable_declaration_stmt: @unified_variable_declaration_stmt ref,
+  int index: int ref,
+  unique int variable_declarator: @unified_variable_declarator ref
+);
+
+unified_variable_declaration_stmt_def(
+  unique int id: @unified_variable_declaration_stmt
+);
+
+unified_variable_declarator_value(
+  unique int unified_variable_declarator: @unified_variable_declarator ref,
+  unique int value: @unified_expr ref
+);
+
+unified_variable_declarator_def(
+  unique int id: @unified_variable_declarator,
+  int pattern: @unified_pattern ref
+);
+
+unified_tokeninfo(
+  unique int id: @unified_token,
+  int kind: int ref,
+  string value: string ref
+);
+
+case @unified_token.kind of
+  1 = @unified_token_empty_stmt
+| 2 = @unified_token_identifier
+| 3 = @unified_token_ignore_pattern
+| 4 = @unified_token_int_literal
+| 5 = @unified_token_operator
+| 6 = @unified_token_string_literal
+| 7 = @unified_token_unsupported_node
+;
+
+
+unified_trivia_tokeninfo(
+  unique int id: @unified_trivia_token,
+  int kind: int ref,
+  string value: string ref
+);
+
+@unified_ast_node = @unified_apply_pattern | @unified_binary_expr | @unified_block_stmt | @unified_call_expr | @unified_expr_condition | @unified_expr_stmt | @unified_guard_if_stmt | @unified_if_stmt | @unified_lambda_expr | @unified_let_pattern_condition | @unified_member_access_expr | @unified_name_expr | @unified_parameter | @unified_sequence_condition | @unified_token | @unified_top_level | @unified_trivia_token | @unified_tuple_pattern | @unified_unary_expr | @unified_var_pattern | @unified_variable_declaration_stmt | @unified_variable_declarator
+
+unified_ast_node_location(
+  unique int node: @unified_ast_node ref,
+  int loc: @location_default ref
+);
+
+#keyset[parent, parent_index]
+unified_ast_node_parent(
+  unique int node: @unified_ast_node ref,
+  int parent: @unified_ast_node ref,
+  int parent_index: int ref
+);
+

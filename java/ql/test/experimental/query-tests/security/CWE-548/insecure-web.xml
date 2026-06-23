@@ -16,7 +16,7 @@
         <init-param>
             <param-name>listings</param-name>
             <param-value>true</param-value>
-        </init-param>
+        </init-param> <!-- $ Alert -->
         <load-on-startup>1</load-on-startup>
     </servlet>
 

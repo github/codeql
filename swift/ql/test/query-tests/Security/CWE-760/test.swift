@@ -26,7 +26,7 @@ final class Scrypt {
 
 // Helper functions
 func getConstantString() -> String {
-  "this string is constant"
+  "this string is constant" // $ Source
 }
 
 func getConstantArray() -> Array<UInt8> {
@@ -40,7 +40,7 @@ func getRandomArray() -> Array<UInt8> {
 // --- tests ---
 
 func test() {
-	let constantSalt: Array<UInt8> = [0x2a, 0x3a, 0x80, 0x05, 0xaf, 0x46, 0x58, 0x2d, 0x66, 0x52, 0x10, 0xae, 0x86, 0xd3, 0x8e, 0x8f]
+	let constantSalt: Array<UInt8> = [0x2a, 0x3a, 0x80, 0x05, 0xaf, 0x46, 0x58, 0x2d, 0x66, 0x52, 0x10, 0xae, 0x86, 0xd3, 0x8e, 0x8f] // $ Source
 	let constantStringSalt = getConstantArray()
 	let randomSalt = getRandomArray()
 	let randomArray = getRandomArray()
@@ -48,23 +48,23 @@ func test() {
 	let iterations = 120120
 
 	// HKDF test cases
-	let hkdfb1 = HKDF(password: randomArray, salt: constantSalt, info: randomArray, keyLength: 0, variant: variant) // BAD
-	let hkdfb2 = HKDF(password: randomArray, salt: constantStringSalt, info: randomArray, keyLength: 0, variant: variant) // BAD
+	let hkdfb1 = HKDF(password: randomArray, salt: constantSalt, info: randomArray, keyLength: 0, variant: variant) // $ Alert
+	let hkdfb2 = HKDF(password: randomArray, salt: constantStringSalt, info: randomArray, keyLength: 0, variant: variant) // $ Alert
 	let hkdfg1 = HKDF(password: randomArray, salt: randomSalt, info: randomArray, keyLength: 0, variant: variant) // GOOD
 
 	// PBKDF1 test cases
-	let pbkdf1b1 = PKCS5.PBKDF1(password: randomArray, salt: constantSalt, iterations: iterations, keyLength: 0) // BAD
-	let pbkdf1b2 = PKCS5.PBKDF1(password: randomArray, salt: constantStringSalt, iterations: iterations, keyLength: 0) // BAD
+	let pbkdf1b1 = PKCS5.PBKDF1(password: randomArray, salt: constantSalt, iterations: iterations, keyLength: 0) // $ Alert
+	let pbkdf1b2 = PKCS5.PBKDF1(password: randomArray, salt: constantStringSalt, iterations: iterations, keyLength: 0) // $ Alert
 	let pbkdf1g1 = PKCS5.PBKDF1(password: randomArray, salt: randomSalt, iterations: iterations, keyLength: 0) // GOOD
 
 
 	// PBKDF2 test cases
-	let pbkdf2b1 = PKCS5.PBKDF2(password: randomArray, salt: constantSalt, iterations: iterations, keyLength: 0) // BAD
-	let pbkdf2b2 = PKCS5.PBKDF2(password: randomArray, salt: constantStringSalt, iterations: iterations, keyLength: 0) // BAD
+	let pbkdf2b1 = PKCS5.PBKDF2(password: randomArray, salt: constantSalt, iterations: iterations, keyLength: 0) // $ Alert
+	let pbkdf2b2 = PKCS5.PBKDF2(password: randomArray, salt: constantStringSalt, iterations: iterations, keyLength: 0) // $ Alert
 	let pbkdf2g1 = PKCS5.PBKDF2(password: randomArray, salt: randomSalt, iterations: iterations, keyLength: 0) // GOOD
 
 	// Scrypt test cases
-	let scryptb1 = Scrypt(password: randomArray, salt: constantSalt, dkLen: 64, N: 16384, r: 8, p: 1) // BAD
-	let scryptb2 = Scrypt(password: randomArray, salt: constantStringSalt, dkLen: 64, N: 16384, r: 8, p: 1) // BAD
+	let scryptb1 = Scrypt(password: randomArray, salt: constantSalt, dkLen: 64, N: 16384, r: 8, p: 1) // $ Alert
+	let scryptb2 = Scrypt(password: randomArray, salt: constantStringSalt, dkLen: 64, N: 16384, r: 8, p: 1) // $ Alert
 	let scryptg1 = Scrypt(password: randomArray, salt: randomSalt, dkLen: 64, N: 16384, r: 8, p: 1) // GOOD
 }

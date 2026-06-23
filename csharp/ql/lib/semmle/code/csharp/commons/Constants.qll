@@ -4,19 +4,6 @@ import csharp
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison as StructuralComparison
 
-pragma[noinline]
-private predicate isConstantCondition0(ControlFlow::Node cfn, boolean b) {
-  exists(cfn.getASuccessorByType(any(ControlFlow::BooleanSuccessor t | t.getValue() = b))) and
-  strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
-}
-
-/**
- * Holds if `e` is a condition that always evaluates to Boolean value `b`.
- */
-predicate isConstantCondition(Expr e, boolean b) {
-  forex(ControlFlow::Node cfn | cfn = e.getAControlFlowNode() | isConstantCondition0(cfn, b))
-}
-
 /**
  * Holds if comparison operation `co` is constant with the Boolean value `b`.
  * For example, the comparison `x > x` is constantly `false` in
@@ -45,13 +32,13 @@ private module ConstantComparisonOperation {
 
   private int maxValue(Expr expr) {
     if convertedType(expr) instanceof IntegralType and exists(expr.getValue())
-    then result = expr.getValue().toInt()
+    then result = expr.getIntValue()
     else result = convertedType(expr).maxValue()
   }
 
   private int minValue(Expr expr) {
     if convertedType(expr) instanceof IntegralType and exists(expr.getValue())
-    then result = expr.getValue().toInt()
+    then result = expr.getIntValue()
     else result = convertedType(expr).minValue()
   }
 

@@ -659,6 +659,38 @@ private class ConstItemNode extends AssocItemNode instanceof Const {
   override TypeParam getTypeParam(int i) { none() }
 }
 
+private class StaticItemNode extends ItemNode instanceof Static {
+  override string getName() { result = Static.super.getName().getText() }
+
+  override Namespace getNamespace() { result.isValue() }
+
+  override Visibility getVisibility() { result = Static.super.getVisibility() }
+
+  override Attr getAnAttr() { result = Static.super.getAnAttr() }
+
+  override TypeParam getTypeParam(int i) { none() }
+
+  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
+
+  bindingset[c]
+  private string getCanonicalPathPart(Crate c, int i) {
+    i = 0 and
+    result = this.getCanonicalPathPrefix(c)
+    or
+    i = 1 and
+    result = "::"
+    or
+    i = 2 and
+    result = this.getName()
+  }
+
+  language[monotonicAggregates]
+  override string getCanonicalPath(Crate c) {
+    this.hasCanonicalPath(c) and
+    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+  }
+}
+
 private class TypeItemTypeItemNode extends NamedItemNode, TypeItemNode instanceof TypeItem {
   override string getName() { result = TypeItem.super.getName().getText() }
 
@@ -806,7 +838,7 @@ private TypeItemNode resolveBuiltin(TypeRepr tr) {
 final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   Path getSelfPath() { result = super.getSelfTy().(PathTypeRepr).getPath() }
 
-  Path getTraitPath() { result = super.getTrait().(PathTypeRepr).getPath() }
+  Path getTraitPath() { result = super.getTraitTy().(PathTypeRepr).getPath() }
 
   TypeItemNode resolveSelfTyBuiltin() { result = resolveBuiltin(this.(Impl).getSelfTy()) }
 
@@ -1202,18 +1234,21 @@ final class TypeParamItemNode extends NamedItemNode, TypeItemNode instanceof Typ
   }
 
   pragma[nomagic]
-  Path getABoundPath() { result = this.getTypeBoundAt(_, _).getTypeRepr().(PathTypeRepr).getPath() }
-
-  pragma[nomagic]
-  ItemNode resolveBound(int index) {
+  Path getBoundPath(int index) {
     result =
       rank[index + 1](int i, int j |
         |
-        resolvePath(this.getTypeBoundAt(i, j).getTypeRepr().(PathTypeRepr).getPath()) order by i, j
+        this.getTypeBoundAt(i, j).getTypeRepr().(PathTypeRepr).getPath() order by i, j
       )
   }
 
-  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+  pragma[nomagic]
+  Path getABoundPath() { result = this.getBoundPath(_) }
+
+  pragma[nomagic]
+  ItemNode resolveBound(int index) { result = resolvePath(this.getBoundPath(index)) }
+
+  ItemNode resolveABound() { result = this.resolveBound(_) }
 
   pragma[nomagic]
   ItemNode resolveAdditionalBound(ItemNode constrainingItem) {

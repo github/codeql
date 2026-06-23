@@ -196,6 +196,8 @@ methodWithDuplicate
 | List | listIterator | int |
 | List | of | E |
 | List | of | E[] |
+| List | ofLazy | IntFunction<? extends E> |
+| List | ofLazy | int |
 | List | remove | Object |
 | List | remove | int |
 | List | removeAll | Collection<?> |
@@ -222,6 +224,8 @@ methodWithDuplicate
 | List<E> | listIterator | int |
 | List<E> | of | E |
 | List<E> | of | E[] |
+| List<E> | ofLazy | IntFunction<? extends E> |
+| List<E> | ofLazy | int |
 | List<E> | remove | Object |
 | List<E> | remove | int |
 | List<E> | removeAll | Collection<?> |
@@ -248,6 +252,8 @@ methodWithDuplicate
 | List<String> | listIterator | int |
 | List<String> | of | E |
 | List<String> | of | E[] |
+| List<String> | ofLazy | IntFunction<? extends E> |
+| List<String> | ofLazy | int |
 | List<String> | remove | Object |
 | List<String> | remove | int |
 | List<String> | removeAll | Collection<?> |
@@ -280,6 +286,8 @@ methodWithDuplicate
 | Map | of | K |
 | Map | of | V |
 | Map | ofEntries | Entry<? extends K,? extends V>[] |
+| Map | ofLazy | Function<? super K,? extends V> |
+| Map | ofLazy | Set<? extends K> |
 | Map | put | K |
 | Map | put | V |
 | Map | putAll | Map<? extends K,? extends V> |
@@ -310,6 +318,8 @@ methodWithDuplicate
 | Map<Identity,Object> | of | K |
 | Map<Identity,Object> | of | V |
 | Map<Identity,Object> | ofEntries | Entry<? extends K,? extends V>[] |
+| Map<Identity,Object> | ofLazy | Function<? super K,? extends V> |
+| Map<Identity,Object> | ofLazy | Set<? extends K> |
 | Map<Identity,Object> | put | Identity |
 | Map<Identity,Object> | put | Object |
 | Map<Identity,Object> | putAll | Map<? extends Identity,? extends Object> |
@@ -341,6 +351,8 @@ methodWithDuplicate
 | Map<K,V> | of | K |
 | Map<K,V> | of | V |
 | Map<K,V> | ofEntries | Entry<? extends K,? extends V>[] |
+| Map<K,V> | ofLazy | Function<? super K,? extends V> |
+| Map<K,V> | ofLazy | Set<? extends K> |
 | Map<K,V> | put | K |
 | Map<K,V> | put | V |
 | Map<K,V> | putAll | Map<? extends K,? extends V> |
@@ -370,6 +382,8 @@ methodWithDuplicate
 | Map<Object,Object> | of | K |
 | Map<Object,Object> | of | V |
 | Map<Object,Object> | ofEntries | Entry<? extends K,? extends V>[] |
+| Map<Object,Object> | ofLazy | Function<? super K,? extends V> |
+| Map<Object,Object> | ofLazy | Set<? extends K> |
 | Map<Object,Object> | put | Object |
 | Map<Object,Object> | putAll | Map<? extends Object,? extends Object> |
 | Map<Object,Object> | putIfAbsent | Object |
@@ -397,6 +411,8 @@ methodWithDuplicate
 | Map<String,String> | of | K |
 | Map<String,String> | of | V |
 | Map<String,String> | ofEntries | Entry<? extends K,? extends V>[] |
+| Map<String,String> | ofLazy | Function<? super K,? extends V> |
+| Map<String,String> | ofLazy | Set<? extends K> |
 | Map<String,String> | put | String |
 | Map<String,String> | putAll | Map<? extends String,? extends String> |
 | Map<String,String> | putIfAbsent | String |

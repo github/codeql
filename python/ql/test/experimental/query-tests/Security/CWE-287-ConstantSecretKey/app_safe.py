@@ -2,7 +2,7 @@ from flask import Flask, session
 from flask_session import Session
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'CHANGEME'
+app.config['SECRET_KEY'] = 'CHANGEME' # $ Alert
 
 Session(app)
 

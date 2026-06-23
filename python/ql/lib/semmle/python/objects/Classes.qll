@@ -113,8 +113,9 @@ abstract class ClassObjectInternal extends ObjectInternal {
 class PythonClassObjectInternal extends ClassObjectInternal, TPythonClassObject {
   /** Gets the scope for this Python class */
   Class getScope() {
-    exists(ClassExpr expr |
-      this = TPythonClassObject(expr.getAFlowNode()) and
+    exists(ClassExpr expr, ControlFlowNode exprCfg |
+      exprCfg.getNode() = expr and
+      this = TPythonClassObject(exprCfg) and
       result = expr.getInnerScope()
     )
   }

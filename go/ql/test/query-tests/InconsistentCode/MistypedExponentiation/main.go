@@ -12,13 +12,13 @@ func main() {
 	expectingResponse := 1 << 5
 	power := 10
 
-	fmt.Println(3 ^ 5)                   // Not OK
+	fmt.Println(3 ^ 5)                   // $ Alert // Not OK
 	fmt.Println(0755 ^ 2423)             // OK
-	fmt.Println(2 ^ 32)                  // Not OK
-	fmt.Println(10 ^ 5)                  // Not OK
-	fmt.Println(10 ^ exp)                // Not OK
+	fmt.Println(2 ^ 32)                  // $ Alert // Not OK
+	fmt.Println(10 ^ 5)                  // $ Alert // Not OK
+	fmt.Println(10 ^ exp)                // $ Alert // Not OK
 	fmt.Println(253 ^ expectingResponse) // OK
-	fmt.Println(2 ^ power)               // Not OK
+	fmt.Println(2 ^ power)               // $ Alert // Not OK
 
 	mask := (((1 << 10) - 1) ^ 7) // OK
 

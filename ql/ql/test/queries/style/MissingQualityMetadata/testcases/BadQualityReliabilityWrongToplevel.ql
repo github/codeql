@@ -8,7 +8,7 @@
  * @tags quality
  *       reliability
  *       readability
- */
+ */ // $ Alert
 
 import ql
 

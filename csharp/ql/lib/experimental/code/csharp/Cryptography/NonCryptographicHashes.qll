@@ -30,7 +30,7 @@ predicate maybeUsedInFnvFunction(Variable v, Operation xor, Operation mul, LoopS
     e2.getAChild*() = v.getAnAccess() and
     e1 = xor.getAnOperand() and
     e2 = mul.getAnOperand() and
-    xor.getAControlFlowNode().getASuccessor*() = mul.getAControlFlowNode() and
+    xor.getControlFlowNode().getASuccessor*() = mul.getControlFlowNode() and
     (xor instanceof AssignXorExpr or xor instanceof BitwiseXorExpr) and
     (mul instanceof AssignMulExpr or mul instanceof MulExpr)
   ) and
@@ -50,16 +50,16 @@ private predicate maybeUsedInElfHashFunction(Variable v, Operation xor, Operatio
   |
     add instanceof AddOperation and
     e1.getAChild*() = add.getAnOperand() and
-    e1 instanceof BinaryBitwiseOperation and
-    e2 = e1.(BinaryBitwiseOperation).getLeftOperand() and
+    e1 instanceof BinaryBitwiseExpr and
+    e2 = e1.(BinaryBitwiseExpr).getLeftOperand() and
     v = addAssign.getTargetVariable() and
     addAssign.getAChild*() = add and
     (xor instanceof BitwiseXorExpr or xor instanceof AssignXorExpr) and
-    addAssign.getAControlFlowNode().getASuccessor*() = xor.getAControlFlowNode() and
+    addAssign.getControlFlowNode().getASuccessor*() = xor.getControlFlowNode() and
     xorAssign.getAChild*() = xor and
     v = xorAssign.getTargetVariable() and
-    (notOp instanceof UnaryBitwiseOperation or notOp instanceof AssignBitwiseOperation) and
-    xor.getAControlFlowNode().getASuccessor*() = notOp.getAControlFlowNode() and
+    (notOp instanceof UnaryBitwiseOperation or notOp instanceof AssignBitwiseExpr) and
+    xor.getControlFlowNode().getASuccessor*() = notOp.getControlFlowNode() and
     notAssign.getAChild*() = notOp and
     v = notAssign.getTargetVariable() and
     loop.getAChild*() = add.getEnclosingStmt() and

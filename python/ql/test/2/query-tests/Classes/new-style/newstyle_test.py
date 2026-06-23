@@ -1,7 +1,7 @@
 
 #Only works for Python2
 
-class OldStyle1:
+class OldStyle1: # $ Alert[py/slots-in-old-style-class]
 
     __slots__ = [ 'a', 'b' ]
 
@@ -12,7 +12,7 @@ class OldStyle1:
 class OldStyle2:
 
     def __init__(self, x):
-        super().__init__(x)
+        super().__init__(x) # $ Alert[py/super-in-old-style]
 
 class NewStyle1(object):
 

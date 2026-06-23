@@ -3,7 +3,7 @@ import java.util.*;
 public class MissedTernaryOpportunityTest {
 
 	public static boolean missedOpportunity1(int a){
-		if(a == 42)
+		if(a == 42) // $ Alert
 			return true;
 		else
 			return false;
@@ -29,7 +29,7 @@ public class MissedTernaryOpportunityTest {
 
 	public static boolean missedOpportunity2(int a){
 		boolean ret;
-		if(a == 42)
+		if(a == 42) // $ Alert
 			ret = true;
 		else
 			ret = false;
@@ -71,7 +71,7 @@ public class MissedTernaryOpportunityTest {
 	}
 
 	public static boolean missedOpportunity3(int a){
-        if(a == 42)
+        if(a == 42) // $ Alert
             return true;
         else
             return someOtherFn(a);
@@ -130,7 +130,7 @@ public class MissedTernaryOpportunityTest {
 
     // same variables, different qualification
 	public void missedOpportunity4(int a){
-        if(a > 42)
+        if(a > 42) // $ Alert
             memberVar1 = "hey";
         else
             MissedTernaryOpportunityTest.this.memberVar1 = "ho";
@@ -142,7 +142,7 @@ public class MissedTernaryOpportunityTest {
             System.out.println("something");
             return false;
         }else{
-            if(a == 42)
+            if(a == 42) // $ Alert
                 return true;
             else
                 return false;
@@ -152,7 +152,7 @@ public class MissedTernaryOpportunityTest {
     // nested if
     public boolean missedOpportunity6(int a){
         if(a > 42){
-            if(a == 42)
+            if(a == 42) // $ Alert
                 return true;
             else
                 return false;

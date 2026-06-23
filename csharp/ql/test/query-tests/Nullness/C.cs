@@ -264,6 +264,13 @@ public class C
         temp = sa.Length; // BAD (always), but not first
     }
 
+    public void CompoundAssignment()
+    {
+        C c1 = null;
+        C c2 = new C(true);
+        c1 += c2; // $ Alert[cs/dereferenced-value-is-always-null]
+    }
+
     bool m;
     C(bool m)
     {
@@ -271,4 +278,6 @@ public class C
     }
 
     bool Maybe() => this.m;
+
+    public void operator +=(C other) { }
 }

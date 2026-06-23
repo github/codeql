@@ -38,8 +38,8 @@ query predicate getSelfTy(Impl x, TypeRepr getSelfTy) {
   toBeTested(x) and not x.isUnknown() and getSelfTy = x.getSelfTy()
 }
 
-query predicate getTrait(Impl x, TypeRepr getTrait) {
-  toBeTested(x) and not x.isUnknown() and getTrait = x.getTrait()
+query predicate getTraitTy(Impl x, TypeRepr getTraitTy) {
+  toBeTested(x) and not x.isUnknown() and getTraitTy = x.getTraitTy()
 }
 
 query predicate getVisibility(Impl x, Visibility getVisibility) {

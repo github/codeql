@@ -1,6 +1,6 @@
 CWE,Sink identifier,Label
 CWE‑089,sql-injection,SQL injection
-CWE‑022,path-injection,Path injection
+CWE‑022,path-injection path-injection[read],Path injection
 CWE‑094,bean-validation,Code injection
 CWE‑918,request-forgery,Request Forgery
 CWE‑079,html-injection js-injection,Cross-site scripting

@@ -1,7 +1,5 @@
 | GuardsStressTest.cs:8:26:8:27 | access to field ch |
-| GuardsStressTest.cs:9:4:9:5 | access to field ch |
 | GuardsStressTest.cs:9:17:9:18 | access to field ch |
-| GuardsStressTest.cs:10:4:10:5 | access to field ch |
 | GuardsStressTest.cs:11:4:11:5 | access to field ch |
 | GuardsStressTest.cs:11:17:11:18 | access to field ch |
 | GuardsStressTest.cs:12:4:12:5 | access to field ch |
@@ -793,5 +791,4 @@
 | GuardsStressTest.cs:438:19:438:20 | access to field ch |
 | GuardsStressTest.cs:439:4:439:5 | access to field ch |
 | GuardsStressTest.cs:439:19:439:20 | access to field ch |
-| GuardsStressTest.cs:439:41:439:42 | access to field ch |
 | GuardsStressTest.cs:440:23:440:24 | access to field ch |

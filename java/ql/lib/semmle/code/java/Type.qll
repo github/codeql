@@ -637,9 +637,6 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
     this.(NestedType).getEnclosingType().getNestedName() + "$" + this.getName() = result
   }
 
-  /** DEPRECATED: Alias for `getNestedName`. */
-  deprecated string nestedName() { result = this.getNestedName() }
-
   /**
    * Gets the source declaration of this type.
    *

@@ -116,6 +116,7 @@
 | declarations.swift:77:16:77:23 | var ... = ... |  |
 | declarations.swift:77:20:77:20 | _x |  |
 | declarations.swift:77:20:77:20 | get |  |
+| declarations.swift:77:20:77:20 | var ... = ... |  |
 | declarations.swift:77:20:77:20 | x |  |
 | declarations.swift:81:1:136:1 | HasPropertyAndObserver |  |
 | declarations.swift:81:8:81:8 | HasPropertyAndObserver.init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:) |  |

@@ -1,1 +1,2 @@
-RedundantCode/DeadStoreOfLocal.ql
+query: RedundantCode/DeadStoreOfLocal.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

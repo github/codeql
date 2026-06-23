@@ -10,8 +10,8 @@ import (
 
 // BAD: Gorilla's `Vars` is not a sanitizer as `Router.SkipClean` has been called
 func GorillaHandler(w http.ResponseWriter, r *http.Request) {
-	not_tainted_path := mux.Vars(r)["id"]
-	data, _ := ioutil.ReadFile(filepath.Join("/home/user/", not_tainted_path))
+	not_tainted_path := mux.Vars(r)["id"]                                      // $ Source
+	data, _ := ioutil.ReadFile(filepath.Join("/home/user/", not_tainted_path)) // $ Alert
 	w.Write(data)
 }
 

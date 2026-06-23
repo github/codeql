@@ -7,13 +7,13 @@ class User < ApplicationRecord
 
   def self.authenticate(name, pass)
     # BAD: possible untrusted input interpolated into SQL fragment
-    find(:first, :conditions => "name='#{name}' and pass='#{pass}'")
+    find(:first, :conditions => "name='#{name}' and pass='#{pass}'") # $ Alert
     # BAD: interpolation in array argument
-    find(:first, conditions: ["name='#{name}' and pass='#{pass}'"])
+    find(:first, conditions: ["name='#{name}' and pass='#{pass}'"]) # $ Alert
     # GOOD: using SQL parameters
     find(:first, conditions: ["name = ? and pass = ?", name, pass])
     # BAD: interpolation with flow
-    conds = "name=#{name}"
+    conds = "name=#{name}" # $ Alert
     find(:first, conditions: conds)
   end
 
@@ -27,7 +27,7 @@ class Admin < User
   def self.delete_by(condition = nil)
     # BAD: `delete_by overrides an ActiveRecord method, but doesn't perform
     # any validation before passing its arguments on to another ActiveRecord method
-    destroy_by(condition)
+    destroy_by(condition) # $ Alert
   end
 end
 
@@ -39,64 +39,65 @@ class FooController < ActionController::Base
   def some_request_handler
     # BAD: executes `SELECT AVG(#{params[:column]}) FROM "users"`
     # where `params[:column]` is unsanitized
-    User.calculate(:average, params[:column])
+    User.calculate(:average, params[:column]) # $ Alert
 
     # BAD: executes `SELECT MAX(#{params[:column]}) FROM "users"`
     # where `params[:column]` is unsanitized
-    User.maximum(params[:column])
+    User.maximum(params[:column]) # $ Alert
 
     # BAD: executes `DELETE FROM "users" WHERE (id = '#{params[:id]}')`
     # where `params[:id]` is unsanitized
-    User.delete_by("id = '#{params[:id]}'")
+    User.delete_by("id = '#{params[:id]}'") # $ Alert
 
     # BAD: executes `DELETE FROM "users" WHERE (id = '#{params[:id]}')`
     # where `params[:id]` is unsanitized
     # (in Rails < 4.0)
-    User.delete_all("id = '#{params[:id]}'")
+    User.delete_all("id = '#{params[:id]}'") # $ Alert
 
     # BAD: executes `SELECT "users".* FROM "users" WHERE (id = '#{params[:id]}')`
     # where `params[:id]` is unsanitized
-    User.destroy_by(["id = '#{params[:id]}'"])
+    User.destroy_by(["id = '#{params[:id]}'"]) # $ Alert
 
     # BAD: executes `SELECT "users".* FROM "users" WHERE (id = '#{params[:id]}')`
     # where `params[:id]` is unsanitized
     # (in Rails < 4.0)
-    User.destroy_all(["id = '#{params[:id]}'"])
+    User.destroy_all(["id = '#{params[:id]}'"]) # $ Alert
 
     # BAD: executes `SELECT "users".* FROM "users" WHERE id BETWEEN '#{params[:min_id]}' AND 100000`
     # where `params[:min_id]` is unsanitized
-    User.where(<<-SQL, MAX_USER_ID)
-      id BETWEEN '#{params[:min_id]}' AND ?
+    User.where(<<-SQL, MAX_USER_ID) # $ Alert
+      id BETWEEN '#{params[:min_id]}' AND ? #{# $ Source
+  }
     SQL
 
     # BAD: chained method case
     # executes `SELECT "users".* FROM "users" WHERE (NOT (user_id = 'params[:id]'))`
     # where `params[:id]` is unsanitized
-    User.where.not("user.id = '#{params[:id]}'")
+    User.where.not("user.id = '#{params[:id]}'") # $ Alert
 
-    User.authenticate(params[:name], params[:pass])
+    User.authenticate(params[:name], params[:pass]) # $ Source
 
     # BAD: executes `SELECT "users".* FROM "users" WHERE (id = '#{params[:id]}')` LIMIT 1
     # where `params[:id]` is unsanitized
-    User.find_or_initialize_by("id = '#{params[:id]}'")
+    User.find_or_initialize_by("id = '#{params[:id]}'") # $ Alert
 
     user = User.first
     # BAD: executes `SELECT "users".* FROM "users" WHERE id = 1 LIMIT 1 #{params[:lock]}`
     # where `params[:lock]` is unsanitized
-    user.reload(lock: params[:lock])
+    user.reload(lock: params[:lock]) # $ Alert
 
     # BAD: executes `SELECT #{params[:column]} FROM "users"`
     # where `params[:column]` is unsanitized
-    User.select(params[:column])
-    User.reselect(params[:column])
+    User.select(params[:column]) # $ Alert
+    User.reselect(params[:column]) # $ Alert
 
     # BAD: executes `SELECT "users".* FROM "users" WHERE (#{params[:condition]})`
     # where `params[:condition]` is unsanitized
-    User.rewhere(params[:condition])
+    User.rewhere(params[:condition]) # $ Alert
 
     # BAD: executes `UPDATE "users" SET #{params[:fields]}`
     # where `params[:fields]` is unsanitized
-    User.update_all(params[:fields])
+    User.update_all(params[:fields]) # $ Alert
 
     # GOOD -- `update_all` sanitizes its bind variable arguments
     User.find_by(name: params[:user_name])
@@ -104,41 +105,41 @@ class FooController < ActionController::Base
 
     # BAD -- `update_all` does not sanitize its query (array arg)
     User.find_by(name: params[:user_name])
-      .update_all(["name = '#{params[:new_user_name]}'"])
+      .update_all(["name = '#{params[:new_user_name]}'"]) # $ Alert
 
     # BAD -- `update_all` does not sanitize its query (string arg)
     User.find_by(name: params[:user_name])
-      .update_all("name = '#{params[:new_user_name]}'")
+      .update_all("name = '#{params[:new_user_name]}'") # $ Alert
 
-    User.reorder(params[:direction])
+    User.reorder(params[:direction]) # $ Alert
 
-    User.select('a','b', params[:column])
-    User.reselect('a','b', params[:column])
-    User.order('a ASC', "b #{params[:direction]}")
-    User.reorder('a ASC', "b #{params[:direction]}")
-    User.group('a', params[:column])
-    User.pluck('a', params[:column])
-    User.joins(:a, params[:column])
+    User.select('a','b', params[:column]) # $ Alert
+    User.reselect('a','b', params[:column]) # $ Alert
+    User.order('a ASC', "b #{params[:direction]}") # $ Alert
+    User.reorder('a ASC', "b #{params[:direction]}") # $ Alert
+    User.group('a', params[:column]) # $ Alert
+    User.pluck('a', params[:column]) # $ Alert
+    User.joins(:a, params[:column]) # $ Alert
 
-    User.count_by_sql(params[:custom_sql_query])
+    User.count_by_sql(params[:custom_sql_query]) # $ Alert
 
     # BAD: executes `SELECT users.* FROM #{params[:tab]}`
     # where `params[:tab]` is unsanitized
-    User.all.from(params[:tab])
+    User.all.from(params[:tab]) # $ Alert
     # BAD: executes `SELECT "users".* FROM (SELECT "users".* FROM "users") #{params[:sq]}
-    User.all.from(User.all, params[:sq])
+    User.all.from(User.all, params[:sq]) # $ Alert
   end
 end
 
 class BarController < ApplicationController
   def some_other_request_handler
-    ps = params
+    ps = params # $ Source
     uid = ps[:id]
     uidEq = "= '#{uid}'"
 
     # BAD: executes `DELETE FROM "users" WHERE (id = #{uid})`
     # where `uid` is unsantized
-    User.delete_by("id " + uidEq)
+    User.delete_by("id " + uidEq) # $ Alert
   end
 
   def safe_paths
@@ -171,7 +172,7 @@ end
 
 class BazController < BarController
   def yet_another_handler
-    Admin.delete_by(params[:admin_condition])
+    Admin.delete_by(params[:admin_condition]) # $ Alert Source
   end
 end
 
@@ -185,7 +186,7 @@ class AnnotatedController < ActionController::Base
   def unsafe_action
     name = params[:user_name]
     # BAD: user input passed into annotations are vulnerable to SQLi
-    users = User.annotate("this is an unsafe annotation:#{params[:comment]}").find_by(user_name: name)
+    users = User.annotate("this is an unsafe annotation:#{params[:comment]}").find_by(user_name: name) # $ Alert
   end
 end
 
@@ -198,27 +199,27 @@ class RegressionController < ActionController::Base
   def index
     my_params = permitted_params
     query = "SELECT * FROM users WHERE id = #{my_params[:user_id]}"
-    result = Regression.find_by_sql(query)
+    result = Regression.find_by_sql(query) # $ Alert
   end
 
 
   def permitted_params
-    params.require(:my_key).permit(:id, :user_id, :my_type)
+    params.require(:my_key).permit(:id, :user_id, :my_type) # $ Source
   end
 
   def show
-    ActiveRecord::Base.connection.execute("SELECT * FROM users WHERE id = #{permitted_params[:user_id]}")
-    Regression.connection.execute("SELECT * FROM users WHERE id = #{permitted_params[:user_id]}")
+    ActiveRecord::Base.connection.execute("SELECT * FROM users WHERE id = #{permitted_params[:user_id]}") # $ Alert
+    Regression.connection.execute("SELECT * FROM users WHERE id = #{permitted_params[:user_id]}") # $ Alert
   end
 end
 
 class User
-  scope :with_role, ->(role) { where("role = #{role}") }
+  scope :with_role, ->(role) { where("role = #{role}") } # $ Alert
 end
 
 class UsersController < ActionController::Base
   def index
     # BAD: user input passed to scope which uses it without sanitization.
-    @users = User.with_role(params[:role])
+    @users = User.with_role(params[:role]) # $ Source
   end
 end

@@ -1,4 +1,19 @@
 {
+  "attributes": {},
+  "markdownMessage": "Internal telemetry for the Java extractor.\n\nNo action needed.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/extractor/summary",
+    "name": "Java extractor telemetry"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
   "markdownMessage": "Java analysis dropped the following dependencies because a sibling project depends on a higher version:\n\n* `junit/junit-4.11`",
   "severity": "unknown",
   "source": {

@@ -2,11 +2,11 @@ public class ReflectionTest {
 
 	public static class ParentClass {
 		// Not live
-		private int notInheritedField;
+		private int notInheritedField; // $ Alert
 		// Live because it is accessed through ChildClass
 		public int inheritedField;
 		// Not live because it is shadowed by the child
-		public int shadowedField;
+		public int shadowedField; // $ Alert
 	}
 
 	public static class ChildClass extends ParentClass {

@@ -1,5 +1,5 @@
 name: codeql/rust-all
-version: 0.2.9-dev
+version: 0.2.16-dev
 groups: rust
 extractor: rust
 dbscheme: rust.dbscheme
@@ -16,6 +16,7 @@ dependencies:
   codeql/tutorial: ${workspace}
   codeql/typeinference: ${workspace}
   codeql/util: ${workspace}
+  codeql/namebinding: ${workspace}
 dataExtensions:
   - /**/*.model.yml
 warnOnImplicitThis: true

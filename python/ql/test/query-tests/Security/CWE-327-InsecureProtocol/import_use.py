@@ -10,9 +10,9 @@ with socket.create_connection((hostname, 443)) as sock:
             print(ssock.version())
 
 with socket.create_connection((hostname, 443)) as sock:
-        with completely_insecure_context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        with completely_insecure_context.wrap_socket(sock, server_hostname=hostname) as ssock: # $ Alert
             print(ssock.version())
 
 with socket.create_connection((hostname, 443)) as sock:
-        with also_insecure_context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        with also_insecure_context.wrap_socket(sock, server_hostname=hostname) as ssock: # $ Alert
             print(ssock.version())

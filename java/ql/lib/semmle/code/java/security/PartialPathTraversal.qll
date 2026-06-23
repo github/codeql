@@ -40,8 +40,11 @@ private class CharacterLiteralFileSeparatorExpr extends FileSeparatorExpr, Chara
   CharacterLiteralFileSeparatorExpr() { this.getValue() = "/" or this.getValue() = "\\" }
 }
 
-private class FileSeparatorAppend extends AddExpr {
-  FileSeparatorAppend() { this.getRightOperand() instanceof FileSeparatorExpr }
+private class FileSeparatorAppend extends BinaryExpr {
+  FileSeparatorAppend() {
+    this.(AddExpr).getRightOperand() instanceof FileSeparatorExpr or
+    this.(AssignAddExpr).getRightOperand() instanceof FileSeparatorExpr
+  }
 }
 
 private predicate isSafe(Expr expr) {

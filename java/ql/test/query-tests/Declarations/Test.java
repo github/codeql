@@ -11,13 +11,13 @@ public class Test {
 				System.out.println("No args");
 				break;
 			case 1:
-			case 2:
+			case 2: // $ Alert
 				System.out.println("1-2 args");
 				// missing break.
 			case 3:
 				System.out.println("3 or more args");
 				// fall-through
-			case 4:
+			case 4: // $ Alert
 				System.out.println("4 or more args");
 				if (i > 1)
 					break;

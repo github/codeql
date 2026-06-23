@@ -13,12 +13,12 @@ public class UnsafeTlsVersion {
   public static void testSslContextWithProtocol() throws NoSuchAlgorithmException {
 
     // unsafe
-    SSLContext.getInstance("SSL");
-    SSLContext.getInstance("SSLv2");
-    SSLContext.getInstance("SSLv3");
-    SSLContext.getInstance("TLS");
-    SSLContext.getInstance("TLSv1");
-    SSLContext.getInstance("TLSv1.1");
+    SSLContext.getInstance("SSL"); // $ Alert
+    SSLContext.getInstance("SSLv2"); // $ Alert
+    SSLContext.getInstance("SSLv3"); // $ Alert
+    SSLContext.getInstance("TLS"); // $ Alert
+    SSLContext.getInstance("TLSv1"); // $ Alert
+    SSLContext.getInstance("TLSv1.1"); // $ Alert
 
     // safe
     SSLContext.getInstance("TLSv1.2");
@@ -28,11 +28,11 @@ public class UnsafeTlsVersion {
   public static void testCreateSslParametersWithProtocol(String[] cipherSuites) {
 
     // unsafe
-    createSslParameters(cipherSuites, "SSLv3");
-    createSslParameters(cipherSuites, "TLS");
-    createSslParameters(cipherSuites, "TLSv1");
-    createSslParameters(cipherSuites, "TLSv1.1");
-    createSslParameters(cipherSuites, "TLSv1", "TLSv1.1", "TLSv1.2");
+    createSslParameters(cipherSuites, "SSLv3"); // $ Source
+    createSslParameters(cipherSuites, "TLS"); // $ Source
+    createSslParameters(cipherSuites, "TLSv1"); // $ Source
+    createSslParameters(cipherSuites, "TLSv1.1"); // $ Source
+    createSslParameters(cipherSuites, "TLSv1", "TLSv1.1", "TLSv1.2"); // $ Source
     createSslParameters(cipherSuites, "TLSv1.2");
 
     // safe
@@ -41,19 +41,19 @@ public class UnsafeTlsVersion {
   }
 
   public static SSLParameters createSslParameters(String[] cipherSuites, String... protocols) {
-    return new SSLParameters(cipherSuites, protocols);
+    return new SSLParameters(cipherSuites, protocols); // $ Alert
   }
 
   public static void testSettingProtocolsForSslParameters() {
 
     // unsafe
-    new SSLParameters().setProtocols(new String[] { "SSLv3" });
-    new SSLParameters().setProtocols(new String[] { "TLS" });
-    new SSLParameters().setProtocols(new String[] { "TLSv1" });
-    new SSLParameters().setProtocols(new String[] { "TLSv1.1" });
+    new SSLParameters().setProtocols(new String[] { "SSLv3" }); // $ Alert
+    new SSLParameters().setProtocols(new String[] { "TLS" }); // $ Alert
+    new SSLParameters().setProtocols(new String[] { "TLSv1" }); // $ Alert
+    new SSLParameters().setProtocols(new String[] { "TLSv1.1" }); // $ Alert
 
     SSLParameters parameters = new SSLParameters();
-    parameters.setProtocols(new String[] { "TLSv1.1", "TLSv1.2" });
+    parameters.setProtocols(new String[] { "TLSv1.1", "TLSv1.2" }); // $ Alert
 
     // safe
     new SSLParameters().setProtocols(new String[] { "TLSv1.2" });
@@ -65,11 +65,11 @@ public class UnsafeTlsVersion {
   public static void testSettingProtocolForSslSocket() throws IOException {
 
     // unsafe
-    createSslSocket("SSLv3");
-    createSslSocket("TLS");
-    createSslSocket("TLSv1");
-    createSslSocket("TLSv1.1");
-    createSslSocket("TLSv1.1", "TLSv1.2");
+    createSslSocket("SSLv3"); // $ Source
+    createSslSocket("TLS"); // $ Source
+    createSslSocket("TLSv1"); // $ Source
+    createSslSocket("TLSv1.1"); // $ Source
+    createSslSocket("TLSv1.1", "TLSv1.2"); // $ Source
 
     // safe
     createSslSocket("TLSv1.2");
@@ -78,18 +78,18 @@ public class UnsafeTlsVersion {
 
   public static SSLSocket createSslSocket(String... protocols) throws IOException {
     SSLSocket socket = (SSLSocket) SSLSocketFactory.getDefault().createSocket();
-    socket.setEnabledProtocols(protocols);
+    socket.setEnabledProtocols(protocols); // $ Alert
     return socket;
   }
 
   public static void testSettingProtocolForSslServerSocket() throws IOException {
 
     // unsafe
-    createSslServerSocket("SSLv3");
-    createSslServerSocket("TLS");
-    createSslServerSocket("TLSv1");
-    createSslServerSocket("TLSv1.1");
-    createSslServerSocket("TLSv1.1", "TLSv1.2");
+    createSslServerSocket("SSLv3"); // $ Source
+    createSslServerSocket("TLS"); // $ Source
+    createSslServerSocket("TLSv1"); // $ Source
+    createSslServerSocket("TLSv1.1"); // $ Source
+    createSslServerSocket("TLSv1.1", "TLSv1.2"); // $ Source
 
     // safe
     createSslServerSocket("TLSv1.2");
@@ -98,18 +98,18 @@ public class UnsafeTlsVersion {
 
   public static SSLServerSocket createSslServerSocket(String... protocols) throws IOException {
     SSLServerSocket socket = (SSLServerSocket) SSLServerSocketFactory.getDefault().createServerSocket();
-    socket.setEnabledProtocols(protocols);
+    socket.setEnabledProtocols(protocols); // $ Alert
     return socket;
   }
 
   public static void testSettingProtocolForSslEngine() throws NoSuchAlgorithmException {
 
     // unsafe
-    createSslEngine("SSLv3");
-    createSslEngine("TLS");
-    createSslEngine("TLSv1");
-    createSslEngine("TLSv1.1");
-    createSslEngine("TLSv1.1", "TLSv1.2");
+    createSslEngine("SSLv3"); // $ Source
+    createSslEngine("TLS"); // $ Source
+    createSslEngine("TLSv1"); // $ Source
+    createSslEngine("TLSv1.1"); // $ Source
+    createSslEngine("TLSv1.1", "TLSv1.2"); // $ Source
 
     // safe
     createSslEngine("TLSv1.2");
@@ -118,7 +118,7 @@ public class UnsafeTlsVersion {
 
   public static SSLEngine createSslEngine(String... protocols) throws NoSuchAlgorithmException {
     SSLEngine engine = SSLContext.getDefault().createSSLEngine();
-    engine.setEnabledProtocols(protocols);
+    engine.setEnabledProtocols(protocols); // $ Alert
     return engine;
   }
 }

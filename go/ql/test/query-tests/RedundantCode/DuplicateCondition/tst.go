@@ -5,8 +5,8 @@ func check(x int) bool {
 }
 
 func main() {
-	if ok := check(42); ok {
-	} else if ok { // NOT OK
+	if ok := check(42); ok { // $ Source
+	} else if ok { // $ Alert // NOT OK
 	} else if ok := check(23); ok { // OK
 	}
 }

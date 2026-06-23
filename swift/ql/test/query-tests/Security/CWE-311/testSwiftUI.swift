@@ -77,7 +77,7 @@ struct MyStruct {
 	var myView2: some View {
 		SecureField("title", text: $secureInput, prompt: nil)
 		.onSubmit {
-			_ = URL(string: "http://example.com/login?key=\(secureInput)"); // BAD [NOT DETECTED]
+			_ = URL(string: "http://example.com/login?key=\(secureInput)"); // $ MISSING: Alert[swift/cleartext-transmission] // BAD [NOT DETECTED]
 		}
 	}
 }

@@ -8,8 +8,8 @@ jwt.encode({"alg": "HS256"}, token, "key")
 JsonWebToken().encode({"alg": "HS256"}, token, "key")
 
 # bad - empty key
-jwt.encode({"alg": "HS256"}, token, "")
-JsonWebToken().encode({"alg": "HS256"}, token, "")
+jwt.encode({"alg": "HS256"}, token, "") # $ Alert[py/jwt-empty-secret-or-algorithm]
+JsonWebToken().encode({"alg": "HS256"}, token, "") # $ Alert[py/jwt-empty-secret-or-algorithm]
 
 # Decoding
 

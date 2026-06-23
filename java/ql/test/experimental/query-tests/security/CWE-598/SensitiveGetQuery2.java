@@ -9,14 +9,14 @@ import javax.servlet.ServletException;
 public class SensitiveGetQuery2 extends HttpServlet {
 	// BAD - Tests retrieving sensitive information through `request.getParameterMap()` in a GET request.
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		Map map = request.getParameterMap();
+		Map map = request.getParameterMap(); // $ Source
 		String username = (String) map.get("username");
 		String password = (String) map.get("password");
-		processUserInfo(username, password);
+		processUserInfo(username, password); // $ Alert
 	}
 
 	void processUserInfo(String username, String password) {
-		System.out.println("username = " + username+"; password "+password);
+		System.out.println("username = " + username+"; password "+password); // $ Alert
 	}
 
 	// GOOD - Tests retrieving sensitive information through `request.getParameterMap()` in a POST request.

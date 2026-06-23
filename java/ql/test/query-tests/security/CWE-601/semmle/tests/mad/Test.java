@@ -6,11 +6,11 @@ public class Test {
     private static HttpServletRequest request;
 
     public static Object source() {
-        return request.getParameter(null);
+        return request.getParameter(null); // $ Source
     }
 
     public void test(HttpResponses r) {
         // "org.kohsuke.stapler;HttpResponses;true;redirectTo;(String);;Argument[0];open-url;ai-generated"
-        r.redirectTo((String) source());
+        r.redirectTo((String) source()); // $ Alert
     }
 }

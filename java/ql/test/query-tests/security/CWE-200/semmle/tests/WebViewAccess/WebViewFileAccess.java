@@ -5,11 +5,11 @@ class WebViewFileAccess {
     void configure(WebView view) {
         WebSettings settings = view.getSettings();
 
-        settings.setAllowFileAccess(true);
+        settings.setAllowFileAccess(true); // $ Alert[java/android/websettings-file-access]
 
-        settings.setAllowFileAccessFromFileURLs(true);
+        settings.setAllowFileAccessFromFileURLs(true); // $ Alert[java/android/websettings-file-access]
 
-        settings.setAllowUniversalAccessFromFileURLs(true);
+        settings.setAllowUniversalAccessFromFileURLs(true); // $ Alert[java/android/websettings-file-access]
     }
 
     void configureSafe(WebView view) {

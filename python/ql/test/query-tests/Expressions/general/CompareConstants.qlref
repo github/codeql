@@ -1,1 +1,2 @@
-Expressions/CompareConstants.ql
+query: Expressions/CompareConstants.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

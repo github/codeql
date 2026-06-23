@@ -82,7 +82,7 @@ namespace Semmle.Util
             {
                 exes = new[] { prog };
             }
-            var candidates = paths?.Where(path => exes.Any(exe0 => File.Exists(Path.Combine(path, exe0))));
+            var candidates = paths?.Where(path => exes.Any(exe0 => File.Exists(Path.Join(path, exe0))));
             return candidates?.FirstOrDefault();
         }
 
@@ -179,7 +179,7 @@ namespace Semmle.Util
             {
                 innerpath = ConvertPathToSafeRelativePath(innerpath);
 
-                nested = Path.Combine(outerpath, innerpath);
+                nested = Path.Join(outerpath, innerpath);
             }
             try
             {
@@ -203,7 +203,7 @@ namespace Semmle.Util
         {
             var tempPath = Path.GetTempPath();
             var name = Guid.NewGuid().ToString("N").ToUpper();
-            var tempFolder = Path.Combine(tempPath, "GitHub", name);
+            var tempFolder = Path.Join(tempPath, "GitHub", name);
             Directory.CreateDirectory(tempFolder);
             return tempFolder;
         });
@@ -231,7 +231,7 @@ namespace Semmle.Util
             string outputPath;
             do
             {
-                outputPath = Path.Combine(tempFolder, Path.GetRandomFileName() + extension);
+                outputPath = Path.Join(tempFolder, Path.GetRandomFileName() + extension);
             }
             while (File.Exists(outputPath));
 

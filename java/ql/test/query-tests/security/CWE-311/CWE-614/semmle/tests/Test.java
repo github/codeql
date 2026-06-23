@@ -16,7 +16,7 @@ class Test {
 			Cookie cookie = new Cookie("secret" ,"fakesecret");
 
 			// BAD: secure flag not set
-			response.addCookie(cookie);
+			response.addCookie(cookie); // $ Alert
 
 		}
 
@@ -25,7 +25,7 @@ class Test {
 
 			// BAD: secure flag set to false
 			cookie.setSecure(false);
-			response.addCookie(cookie);
+			response.addCookie(cookie); // $ Alert
 
 		}
 
@@ -34,7 +34,7 @@ class Test {
 
 			// BAD: secure flag set to something not clearly true or request.isSecure()
 			cookie.setSecure(otherInput);
-			response.addCookie(cookie);
+			response.addCookie(cookie); // $ Alert
 
 		}
 
@@ -48,7 +48,7 @@ class Test {
 			else
 				secureVal = otherInput;
 			cookie.setSecure(secureVal);
-			response.addCookie(cookie);
+			response.addCookie(cookie); // $ Alert
 
 		}
 

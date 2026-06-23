@@ -5,7 +5,7 @@ private import LegacyPointsTo
 
 /** Holds if the comparison `comp` uses `is` or `is not` (represented as `op`) to compare its `left` and `right` arguments. */
 predicate comparison_using_is(Compare comp, ControlFlowNode left, Cmpop op, ControlFlowNode right) {
-  exists(CompareNode fcomp | fcomp = comp.getAFlowNode() |
+  exists(CompareNode fcomp | fcomp.getNode() = comp |
     fcomp.operands(left, op, right) and
     (op instanceof Is or op instanceof IsNot)
   )
