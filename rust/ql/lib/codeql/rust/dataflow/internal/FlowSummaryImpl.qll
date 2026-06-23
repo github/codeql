@@ -11,6 +11,7 @@ private import codeql.rust.dataflow.FlowSummary
 private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.internal.ModelsAsData
 private import Content
+private import Node
 
 predicate encodeContentTupleField(TupleFieldContent c, string arg) {
   exists(Addressable a, int pos, string prefix |
@@ -28,8 +29,11 @@ predicate encodeContentStructField(StructFieldContent c, string arg) {
 
 module Input implements InputSig<Location, RustDataFlow> {
   private import codeql.rust.frameworks.stdlib.Stdlib
+  private import codeql.util.Void
 
   class SummarizedCallableBase = Function;
+
+  class FlowSummaryCallBase = Void;
 
   predicate callableFromSource(SummarizedCallableBase c) { c.fromSource() }
 
@@ -144,6 +148,10 @@ module Input implements InputSig<Location, RustDataFlow> {
 private import Make<Location, RustDataFlow, Input> as Impl
 
 module StepsInput implements Impl::Private::StepsInputSig {
+  Impl::Private::SummaryNode getSummaryNode(RustDataFlow::Node n) {
+    result = n.(FlowSummaryNode).getSummaryNode()
+  }
+
   DataFlowCall getACall(Public::SummarizedCallable sc) { result.asCall().getStaticTarget() = sc }
 
   /** Gets the argument of `source` described by `sc`, if any. */
