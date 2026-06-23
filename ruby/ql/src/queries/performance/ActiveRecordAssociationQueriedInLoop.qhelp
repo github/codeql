@@ -1,0 +1,67 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+
+			Performing database queries in a loop can be inefficient
+			compared to performing a single query up front that retrieves all the data at once.
+
+		</p>
+
+		<p>
+
+			ORMs such as ActiveRecord implicitly query the database when certain
+			members of an object are being accessed. But if such a member is accessed in a loop,
+			it can result in a separate query for each iteration. ActiveRecord
+			provides a way to eagerly load associated data using the <code>includes</code>
+			method, which can be used to speed up such queries.
+
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+
+			In ActiveRecord, use <code>includes</code> to eagerly load associated
+			data that you expect to access in a loop.
+
+		</p>
+	</recommendation>
+
+	<example>
+
+		<p>
+
+			The following example code gets the names of all podcasts followed by a user:
+
+		</p>
+
+		<sample src="examples/ActiveRecordQueryInLoop.rb"/>
+
+		<p>
+
+			However, the call to <code>name</code> inside the loop will result in a separate
+			SQL query being executed to obtain the name. To speed this up, use
+			<code>includes</code> to eagerly load the associated data:
+
+		</p>
+
+		<sample src="examples/ActiveRecordQueryInLoopFixed.rb"/>
+
+		<p>
+
+			Now all the associated podcast names are loaded up front with a single SQL query,
+			and the call to <code>name</code> no longer results in a separate query.
+
+		</p>
+
+	</example>
+
+	<references>
+		<li>OWASP: <a href="https://www.owasp.org/index.php/Server_Side_Request_Forgery">SSRF</a></li>
+		<li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
+	</references>
+</qhelp>
