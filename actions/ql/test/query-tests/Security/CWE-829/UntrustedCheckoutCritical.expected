@@ -344,6 +344,8 @@ edges
 | .github/workflows/untrusted_checkout_permissions_check.yml:8:9:16:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_permissions_check.yml:16:9:22:2 | Run Step |
 | .github/workflows/untrusted_checkout_permissions_check.yml:26:9:31:6 | Uses Step | .github/workflows/untrusted_checkout_permissions_check.yml:31:9:32:2 | Run Step |
 | .github/workflows/untrusted_checkout_permissions_check.yml:36:9:41:6 | Uses Step | .github/workflows/untrusted_checkout_permissions_check.yml:41:9:41:22 | Run Step |
+| .github/workflows/untrusted_checkout_two_callers_both_protected.yml:8:9:16:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_two_callers_both_protected.yml:16:9:22:2 | Run Step |
+| .github/workflows/untrusted_checkout_two_callers_both_protected.yml:30:9:38:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_two_callers_both_protected.yml:38:9:44:2 | Run Step |
 | .github/workflows/workflow_run_untrusted_checkout.yml:13:9:16:6 | Uses Step | .github/workflows/workflow_run_untrusted_checkout.yml:16:9:18:31 | Uses Step |
 | .github/workflows/workflow_run_untrusted_checkout_2.yml:13:9:16:6 | Uses Step | .github/workflows/workflow_run_untrusted_checkout_2.yml:16:9:18:31 | Uses Step |
 | .github/workflows/workflow_run_untrusted_checkout_3.yml:13:9:16:6 | Uses Step | .github/workflows/workflow_run_untrusted_checkout_3.yml:16:9:18:31 | Uses Step |

@@ -66,7 +66,22 @@ abstract class ControlCheck extends AstNode {
     // The check is effective against the event and category
     this.protectsCategoryAndEvent(category, event.getName()) and
     // The check can be triggered by the event
-    this.getATriggerEvent() = event
+    this.getATriggerEvent() = event and
+    // For reusable workflows, ALL callers for this event must be protected by SOME check
+    (
+      not node.getEnclosingWorkflow() instanceof ReusableWorkflow
+      or
+      forall(ExternalJob directCaller |
+        directCaller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
+        directCaller.getATriggerEvent() = event
+      |
+        exists(ControlCheck check |
+          check.protectsCategoryAndEvent(category, event.getName()) and
+          check.getATriggerEvent() = event and
+          check.dominatesViaCaller(node, event, directCaller)
+        )
+      )
+    )
   }
 
   /**
@@ -103,35 +118,36 @@ abstract class ControlCheck extends AstNode {
       node.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this
     )
     or
-    // When the node is inside a (possibly nested) reusable workflow,
-    // all direct callers for this event must be protected along their caller chain.
-    exists(ExternalJob directCaller |
-      directCaller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
-      directCaller.getATriggerEvent() = event
-    ) and
-    forall(ExternalJob directCaller |
-      directCaller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
-      directCaller.getATriggerEvent() = event
-    |
-      exists(ExternalJob caller |
-        caller = getAnOuterCaller*(directCaller) and
+    // When the node is inside a reusable workflow,
+    // this check dominates via at least one caller chain.
+    this.dominatesViaCaller(node, event, _)
+  }
+
+  /**
+   * Holds if this control check dominates `node` in a reusable workflow
+   * via the caller chain starting at `directCaller`.
+   */
+  predicate dominatesViaCaller(AstNode node, Event event, ExternalJob directCaller) {
+    directCaller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
+    directCaller.getATriggerEvent() = event and
+    exists(ExternalJob caller |
+      caller = getAnOuterCaller*(directCaller) and
+      (
+        this instanceof If and
         (
-          this instanceof If and
-          (
-            caller.getIf() = this or
-            caller.getANeededJob().(LocalJob).getIf() = this or
-            caller.getANeededJob().(LocalJob).getAStep().getIf() = this
-          )
-          or
-          this instanceof Environment and
-          (
-            caller.getEnvironment() = this or
-            caller.getANeededJob().getEnvironment() = this
-          )
-          or
-          (this instanceof Run or this instanceof UsesStep) and
-          caller.getANeededJob().(LocalJob).getAStep() = this
+          caller.getIf() = this or
+          caller.getANeededJob().(LocalJob).getIf() = this or
+          caller.getANeededJob().(LocalJob).getAStep().getIf() = this
         )
+        or
+        this instanceof Environment and
+        (
+          caller.getEnvironment() = this or
+          caller.getANeededJob().getEnvironment() = this
+        )
+        or
+        (this instanceof Run or this instanceof UsesStep) and
+        caller.getANeededJob().(LocalJob).getAStep() = this
       )
     )
   }
