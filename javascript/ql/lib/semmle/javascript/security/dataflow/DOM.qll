@@ -195,6 +195,18 @@ class PostMessageEventHandler extends Function {
       rhs = DataFlow::globalObjectRef().getAPropertyWrite("onmessage").getRhs() and
       rhs.getABoundFunctionValue(paramIndex).getFunction() = this
     )
+    or
+    // Angular's `@HostListener('window:message', ['$event'])` decorator registers
+    // a method as a `message` event handler on the global `window`/`document`
+    // target.  The decorated method receives the `MessageEvent` as its first
+    // parameter, so it is equivalent to `window.addEventListener('message', ...)`.
+    exists(MethodDefinition method, DataFlow::CallNode decorator |
+      decorator = DataFlow::moduleMember("@angular/core", "HostListener").getACall() and
+      decorator = method.getADecorator().getExpression().flow() and
+      decorator.getArgument(0).mayHaveStringValue(["window:message", "document:message", "message"]) and
+      method.getBody() = this and
+      paramIndex = 0
+    )
   }
 
   /**
