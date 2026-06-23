@@ -88,34 +88,38 @@ abstract class ControlCheck extends AstNode {
    * Holds if this control check must execute and pass before `node` can run.
    */
   predicate dominates(AstNode node, Event event) {
-    // Step-level: the check is an `if:` on the step containing `node`,
-    // or on the enclosing job, or on a needed job/step.
-    this instanceof If and
+    // Same-workflow dominance: bind event to this check's trigger event.
+    this.getATriggerEvent() = event and
     (
-      node.getEnclosingStep().getIf() = this or
-      node.getEnclosingJob().getIf() = this or
-      node.getEnclosingJob().getANeededJob().(LocalJob).getAStep().getIf() = this or
-      node.getEnclosingJob().getANeededJob().(LocalJob).getIf() = this
-    )
-    or
-    // Job-level: the check is an environment on the enclosing job or a needed job.
-    this instanceof Environment and
-    (
-      node.getEnclosingJob().getEnvironment() = this
+      // Step-level: the check is an `if:` on the step containing `node`,
+      // or on the enclosing job, or on a needed job/step.
+      this instanceof If and
+      (
+        node.getEnclosingStep().getIf() = this or
+        node.getEnclosingJob().getIf() = this or
+        node.getEnclosingJob().getANeededJob().(LocalJob).getAStep().getIf() = this or
+        node.getEnclosingJob().getANeededJob().(LocalJob).getIf() = this
+      )
       or
-      node.getEnclosingJob().getANeededJob().getEnvironment() = this
-    )
-    or
-    // Step-level: the check is a Run/UsesStep that precedes `node`'s step
-    // in the same job, or is a step in a needed job.
-    (
-      this instanceof Run or
-      this instanceof UsesStep
-    ) and
-    (
-      this.(Step).getAFollowingStep() = node.getEnclosingStep()
+      // Job-level: the check is an environment on the enclosing job or a needed job.
+      this instanceof Environment and
+      (
+        node.getEnclosingJob().getEnvironment() = this
+        or
+        node.getEnclosingJob().getANeededJob().getEnvironment() = this
+      )
       or
-      node.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this
+      // Step-level: the check is a Run/UsesStep that precedes `node`'s step
+      // in the same job, or is a step in a needed job.
+      (
+        this instanceof Run or
+        this instanceof UsesStep
+      ) and
+      (
+        this.(Step).getAFollowingStep() = node.getEnclosingStep()
+        or
+        node.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this
+      )
     )
     or
     // When the node is inside a reusable workflow,
