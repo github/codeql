@@ -7,7 +7,7 @@ using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    internal interface IPackagesConfigRestore : IDisposable
+    internal interface IPackagesConfigRestore
     {
         /// <summary>
         /// The number of packages.config files found in the source tree.
@@ -33,11 +33,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class PackagesConfigRestoreFactory
     {
-        public static IPackagesConfigRestore Create(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
+        public static IPackagesConfigRestore Create(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, HashSet<string> reachableFeeds)
         {
             if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMonoInstalled())
             {
-                return new NugetExeWrapper(fileProvider, packageDirectory, logger, feedManager);
+                return new NugetExeWrapper(fileProvider, packageDirectory, logger, feedManager, reachableFeeds);
             }
 
             return new NoOpPackagesConfig(fileProvider.PackagesConfigs, logger);
@@ -55,8 +55,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             public int PackageCount => fileProvider.PackagesConfigs.Count;
 
-            private readonly string? backupNugetConfig;
-            private readonly string? nugetConfigPath;
             private readonly FileProvider fileProvider;
 
             /// <summary>
@@ -66,58 +64,31 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             /// </summary>
             private readonly DependencyDirectory packageDirectory;
             private readonly FeedManager feedManager;
+            private readonly HashSet<string> reachableFeeds;
 
             private bool IsWindows => SystemBuildActions.Instance.IsWindows();
+
+            private bool? isDefaultFeedReachable;
+            private bool IsDefaultFeedReachable =>
+                isDefaultFeedReachable ??= feedManager.IsDefaultFeedReachable();
+
+
 
             /// <summary>
             /// Create the package manager for a specified source tree.
             /// </summary>
-            public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
+            public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, HashSet<string> reachableFeeds)
             {
                 this.fileProvider = fileProvider;
                 this.packageDirectory = packageDirectory;
                 this.logger = logger;
                 this.feedManager = feedManager;
+                this.reachableFeeds = reachableFeeds;
 
                 if (fileProvider.PackagesConfigs.Count > 0)
                 {
                     logger.LogInfo($"Found packages.config files, trying to use nuget.exe for package restore");
                     nugetExe = ResolveNugetExe();
-                    if (!HasPackageSource() && feedManager.IsDefaultFeedReachable())
-                    {
-                        // We only modify or add a top level nuget.config file
-                        nugetConfigPath = Path.Join(fileProvider.SourceDir.FullName, "nuget.config");
-                        try
-                        {
-                            if (File.Exists(nugetConfigPath))
-                            {
-                                var tempFolderPath = FileUtils.GetTemporaryWorkingDirectory(out _);
-
-                                do
-                                {
-                                    backupNugetConfig = Path.Join(tempFolderPath, Path.GetRandomFileName());
-                                }
-                                while (File.Exists(backupNugetConfig));
-                                File.Copy(nugetConfigPath, backupNugetConfig, true);
-                            }
-                            else
-                            {
-                                File.WriteAllText(nugetConfigPath,
-                                    """
-                                <?xml version="1.0" encoding="utf-8"?>
-                                <configuration>
-                                  <packageSources>
-                                  </packageSources>
-                                </configuration>
-                                """);
-                            }
-                            AddDefaultPackageSource(nugetConfigPath);
-                        }
-                        catch (Exception e)
-                        {
-                            logger.LogError($"Failed to add default package source to {nugetConfigPath}: {e}");
-                        }
-                    }
                 }
             }
 
@@ -200,6 +171,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 logger.LogInfo($"Restoring file \"{packagesConfig}\"...");
 
+                var sourcesArgument = "";
+                var feedsToUse = feedManager.FeedsToUse(packagesConfig, reachableFeeds).ToList();
+                var useDefaultFeed = feedsToUse.Count == 0 && IsDefaultFeedReachable;
+
+                // Explicitly construct the sources to be used for the restore command if any of the following is true:
+                if (feedManager.CheckNugetFeedResponsiveness || feedManager.HasPrivateRegistryFeeds || useDefaultFeed)
+                {
+                    if (useDefaultFeed)
+                    {
+                        feedsToUse.Add(FeedManager.PublicNugetOrgFeed);
+                    }
+                    sourcesArgument = feedManager.FeedsToRestoreArgument(feedsToUse, "-Source");
+                }
+
                 /* Use nuget.exe to install a package.
                  * Note that there is a clutch of NuGet assemblies which could be used to
                  * invoke this directly, which would arguably be nicer. However they are
@@ -210,12 +195,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (RunWithMono)
                 {
                     exe = "mono";
-                    args = $"\"{nugetExe}\" install -OutputDirectory \"{packageDirectory}\" \"{packagesConfig}\"";
+                    args = $"\"{nugetExe}\" install -OutputDirectory \"{packageDirectory}\" {sourcesArgument} \"{packagesConfig}\"";
                 }
                 else
                 {
                     exe = nugetExe!;
-                    args = $"install -OutputDirectory \"{packageDirectory}\" \"{packagesConfig}\"";
+                    args = $"install -OutputDirectory \"{packageDirectory}\" {sourcesArgument} \"{packagesConfig}\"";
                 }
 
                 var pi = new ProcessStartInfo(exe, args)
@@ -248,98 +233,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 return fileProvider.PackagesConfigs.Count(TryRestoreNugetPackage);
             }
-
-            private bool HasPackageSource()
-            {
-                if (IsWindows)
-                {
-                    return true;
-                }
-
-                try
-                {
-                    logger.LogInfo("Checking if default package source is available...");
-                    RunMonoNugetCommand("sources list -ForceEnglishOutput", out var stdout);
-                    if (stdout.All(line => line != "No sources found."))
-                    {
-                        return true;
-                    }
-
-                    return false;
-                }
-                catch (Exception e)
-                {
-                    logger.LogWarning($"Failed to check if default package source is added: {e}");
-                    return true;
-                }
-            }
-
-            private void RunMonoNugetCommand(string command, out IList<string> stdout)
-            {
-                string exe, args;
-                if (RunWithMono)
-                {
-                    exe = "mono";
-                    args = $"\"{nugetExe}\" {command}";
-                }
-                else
-                {
-                    exe = nugetExe!;
-                    args = command;
-                }
-
-                var pi = new ProcessStartInfo(exe, args)
-                {
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false
-                };
-
-                var threadId = Environment.CurrentManagedThreadId;
-                void onOut(string s) => logger.LogDebug(s, threadId);
-                void onError(string s) => logger.LogError(s, threadId);
-                pi.ReadOutput(out stdout, onOut, onError);
-            }
-
-            private void AddDefaultPackageSource(string nugetConfig)
-            {
-                logger.LogInfo("Adding default package source...");
-                RunMonoNugetCommand($"sources add -Name DefaultNugetOrg -Source {FeedManager.PublicNugetOrgFeed} -ConfigFile \"{nugetConfig}\"", out _);
-            }
-
-            public void Dispose()
-            {
-                if (nugetConfigPath is null)
-                {
-                    return;
-                }
-
-                try
-                {
-                    if (backupNugetConfig is null)
-                    {
-                        logger.LogInfo("Removing nuget.config file");
-                        File.Delete(nugetConfigPath);
-                        return;
-                    }
-
-                    logger.LogInfo("Reverting nuget.config file content");
-                    // The content of the original nuget.config file is reverted without changing the file's attributes or casing:
-                    using (var backup = File.OpenRead(backupNugetConfig))
-                    using (var current = File.OpenWrite(nugetConfigPath))
-                    {
-                        current.SetLength(0);   // Truncate file
-                        backup.CopyTo(current); // Restore original content
-                    }
-
-                    logger.LogInfo("Deleting backup nuget.config file");
-                    File.Delete(backupNugetConfig);
-                }
-                catch (Exception exc)
-                {
-                    logger.LogError($"Failed to restore original nuget.config file: {exc}");
-                }
-            }
         }
 
         private class NoOpPackagesConfig : IPackagesConfigRestore
@@ -363,8 +256,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
                 return 0;
             }
-
-            public void Dispose() { }
         }
     }
 }

@@ -151,16 +151,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             try
             {
-                using (var packagesConfigRestore = PackagesConfigRestoreFactory.Create(fileProvider, legacyPackageDirectory, logger, feedManager))
+                var packagesConfigRestore = PackagesConfigRestoreFactory.Create(fileProvider, legacyPackageDirectory, logger, feedManager, reachableFeeds);
+                var count = packagesConfigRestore.InstallPackages();
+                if (packagesConfigRestore.PackageCount > 0)
                 {
-                    var count = packagesConfigRestore.InstallPackages();
-
-                    if (packagesConfigRestore.PackageCount > 0)
-                    {
-                        compilationInfoContainer.CompilationInfos.Add(("packages.config files", packagesConfigRestore.PackageCount.ToString()));
-                        compilationInfoContainer.CompilationInfos.Add(("Successfully restored packages.config files", count.ToString()));
-                    }
+                    compilationInfoContainer.CompilationInfos.Add(("packages.config files", packagesConfigRestore.PackageCount.ToString()));
+                    compilationInfoContainer.CompilationInfos.Add(("Successfully restored packages.config files", count.ToString()));
                 }
+
 
                 var nugetPackageDlls = legacyPackageDirectory.DirInfo.GetFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true });
                 var nugetPackageDllPaths = nugetPackageDlls.Select(f => f.FullName).ToHashSet();
@@ -238,7 +236,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var projects = fileProvider.Solutions.SelectMany(solution =>
                 {
                     logger.LogInfo($"Restoring solution {solution}...");
-                    var nugetSources = feedManager.MakeRestoreSourcesArgument(solution, reachableFeeds);
+                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArgument(solution, reachableFeeds);
                     var res = dotnet.Restore(new(solution, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, NugetSources: nugetSources, TargetWindows: isWindows));
                     if (res.Success)
                     {
@@ -287,7 +285,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 foreach (var project in projectGroup)
                 {
                     logger.LogInfo($"Restoring project {project}...");
-                    var nugetSources = feedManager.MakeRestoreSourcesArgument(project, reachableFeeds);
+                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArgument(project, reachableFeeds);
                     var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, NugetSources: nugetSources, TargetWindows: isWindows));
                     assets.AddDependenciesRange(res.AssetsFilePaths);
                     lock (sync)
