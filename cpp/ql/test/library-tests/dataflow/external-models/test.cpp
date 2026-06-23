@@ -187,12 +187,12 @@ void test_reverse_flow(unsigned i, unsigned j) {
 		ReverseFlow rf;
 		rf.get_ptr() = ymlSource();
 		int x = rf.value;
-		ymlSink(x); // $ MISSING: ir
+		ymlSink(x); // $ ir
 	}
 	{
 		MyString s;
 		s[i] = ymlSource();
 		char c = s[j];
-		ymlSink(c); // $ MISSING: ir
+		ymlSink(c); // $ ir
 	}
 }
