@@ -90,6 +90,7 @@ module Ast implements AstSig<Location> {
   private AstNode getStmtChild0(Stmt s, int i) {
     not s instanceof FixedStmt and
     not s instanceof UsingBlockStmt and
+    not skipControlFlow(result) and
     result = s.getChild(i)
     or
     s =

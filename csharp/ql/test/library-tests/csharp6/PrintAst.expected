@@ -101,7 +101,8 @@ csharp6.cs:
 #   32|                   0: [IntLiteral] 2
 #   32|                 0: [IntLiteral] 1
 #   34|         1: [SpecificCatchClause] catch (...) {...}
-#   34|           0: [TypeMention] IndexOutOfRangeException
+#   34|           0: [TypeAccess] access to type IndexOutOfRangeException
+#   34|             0: [TypeMention] IndexOutOfRangeException
 #   35|           1: [BlockStmt] {...}
 #   34|           2: [EQExpr] ... == ...
 #   34|             0: [PropertyCall] access to property Value
