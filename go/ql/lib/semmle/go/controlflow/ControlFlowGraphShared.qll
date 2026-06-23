@@ -77,10 +77,20 @@ module GoCfg {
     }
 
     AstNode getChild(AstNode n, int index) {
-      not n instanceof Go::FuncDef and
-      not skipCfg(n) and
-      not skipCfg(result) and
-      result = n.getChild(index)
+      (
+        not n instanceof Go::FuncDef and
+        not skipCfg(n) and
+        result = n.getChild(index)
+        or
+        // The body block of an expression switch is transparent (see `skipCfg`),
+        // so it is not itself a child and contributes no children. Expose the
+        // case clauses directly as children of the switch instead, so that the
+        // AST child chain stays connected for abrupt-completion propagation
+        // (e.g. a panicking call in a case body reaching the enclosing
+        // function's exceptional exit).
+        result = n.(Go::ExpressionSwitchStmt).getBody().getChild(index)
+      ) and
+      not skipCfg(result)
     }
 
     class Callable extends AstNode {

@@ -361,9 +361,16 @@ module ControlFlow {
   }
 
   /**
-   * Holds if `pred` is the node for the case `testExpr` in an expression
-   * switch statement which is switching on `switchExpr`, and `succ` is the
-   * node to be executed next if the case test succeeds.
+   * Holds if `pred` is the node reached when a case of the expression switch
+   * statement switching on `switchExpr` matches, `testExpr` is one of that
+   * case's test expressions, and `succ` is the node to be executed next when
+   * the case matches.
+   *
+   * In the control-flow graph the individual case test expressions of a case
+   * clause all funnel into a single "matched" node for the clause, from which
+   * control transfers to the case body. Hence `pred` is that shared matched
+   * node, and the same `(pred, succ)` pair is reported once per test
+   * expression `testExpr` of the clause.
    */
   predicate isSwitchCaseTestPassingEdge(
     ControlFlow::Node pred, ControlFlow::Node succ, Expr switchExpr, Expr testExpr
@@ -372,7 +379,7 @@ module ControlFlow {
       ess.getExpr() = switchExpr and
       cc = ess.getACase() and
       testExpr = cc.getExpr(i) and
-      pred.isAfter(testExpr) and
+      pred.isAfter(cc) and
       succ.isFirstNodeOf(cc.getStmt(0))
     )
   }
