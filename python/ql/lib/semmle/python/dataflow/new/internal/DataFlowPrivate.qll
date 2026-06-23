@@ -529,7 +529,7 @@ predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
 }
 
 private predicate summaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
     nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
 }
 
