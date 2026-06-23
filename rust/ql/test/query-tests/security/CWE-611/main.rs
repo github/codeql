@@ -1,5 +1,5 @@
+use libxml::bindings;
 use std::os::fd::AsRawFd;
-
 // Stub types and constants to simulate libxml2 bindings
 pub struct XmlDoc;
 pub struct XmlParserCtxt;

@@ -1,1 +1,3 @@
 qltest_cargo_check: true
+qltest_dependencies:
+    - libxml = { version = "0.3.8" }
