@@ -54,6 +54,24 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
     none()
   }
 
+  /**
+   * A base class of calls that are candidates for flow summary modeling.
+   */
+  class FlowSummaryCallBase {
+    string toString();
+  }
+
+  /** Gets a call that targets summarized callable `sc`. */
+  default FlowSummaryCallBase getASourceCall(SummarizedCallableBase sc) { none() }
+
+  /** Gets the callable corresponding to summarized callable `c`. */
+  default Lang::DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c) {
+    none()
+  }
+
+  /** Gets the enclosing callable of `call`. */
+  default Lang::DataFlowCallable getSourceCallEnclosingCallable(FlowSummaryCallBase call) { none() }
+
   /** Gets the parameter position representing a callback itself, if any. */
   default Lang::ArgumentPosition callbackSelfParameterPosition() { none() }
 
@@ -73,6 +91,9 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
     arg = "" and
     result = getStandardReturnValueKind()
   }
+
+  /** Gets the parameter position corresponding to a flow-summary return kind `rk`, if any. */
+  default Lang::ParameterPosition getFlowSummaryParameterPosition(Lang::ReturnKind rk) { none() }
 
   /** Gets the textual representation of parameter position `pos` used in MaD. */
   string encodeParameterPosition(Lang::ParameterPosition pos);
@@ -660,6 +681,10 @@ module Make<
       s.length() = 1 and
       s.head() instanceof TArgumentSummaryComponent
       or
+      // ReturnValue.*
+      s.length() = 1 and
+      s.head() instanceof TReturnSummaryComponent
+      or
       // Argument[n].ReturnValue.*
       s.length() = 2 and
       s.head() instanceof TReturnSummaryComponent and
@@ -1137,6 +1162,13 @@ module Make<
       outputState(c, s) and s = SummaryComponentStack::argument(_)
     }
 
+    private predicate relevantFlowSummaryPosition(SummarizedCallable c, ReturnKind rk) {
+      exists(SummaryComponentStack input |
+        summary(c, input, _, _, _) and
+        input = TSingletonSummaryComponentStack(TReturnSummaryComponent(rk))
+      )
+    }
+
     pragma[nomagic]
     private predicate sourceOutputStateEntry(
       SourceElement source, SummaryComponentStack s, string kind, string model
@@ -1272,6 +1304,12 @@ module Make<
       TSummaryParameterNode(SummarizedCallable c, ParameterPosition pos) {
         summaryParameterNodeRange(c, pos)
       } or
+      TSummaryReturnArgumentNode(FlowSummaryCallBase call, ReturnKind rk) {
+        exists(SummarizedCallable sc |
+          call = getASourceCall(sc) and
+          relevantFlowSummaryPosition(sc, rk)
+        )
+      } or
       TSourceOutputNode(SourceElement source, SummaryNodeState state, string kind, string model) {
         state.isSourceOutputState(source, _, kind, model)
       } or
@@ -1319,6 +1357,39 @@ module Make<
       override SourceElement getSourceElement() { none() }
 
       override SinkElement getSinkElement() { none() }
+    }
+
+    private class SummaryReturnArgumentNode extends SummaryNode, TSummaryReturnArgumentNode {
+      private FlowSummaryCallBase call;
+      private ReturnKind rk;
+
+      SummaryReturnArgumentNode() { this = TSummaryReturnArgumentNode(call, rk) }
+
+      override string toString() { result = "[summary] value written to " + rk + " at " + call }
+
+      override SummarizedCallable getSummarizedCallable() { none() }
+
+      override SourceElement getSourceElement() { none() }
+
+      override SinkElement getSinkElement() { none() }
+    }
+
+    /**
+     * Gets the summary node that represents the for `call` returning a value
+     * with kind `rk`.
+     */
+    SummaryNode summaryArgumentNode(FlowSummaryCallBase call, ReturnKind rk) {
+      result = TSummaryReturnArgumentNode(call, rk)
+    }
+
+    /** Gets the enclosing callable for summary node `sn`. */
+    DataFlowCallable getEnclosingCallable(SummaryNode sn) {
+      result = getSummarizedCallableAsDataFlowCallable(sn.getSummarizedCallable())
+      or
+      exists(FlowSummaryCallBase call |
+        sn = TSummaryReturnArgumentNode(call, _) and
+        result = getSourceCallEnclosingCallable(call)
+      )
     }
 
     class SourceOutputNode extends SummaryNode, TSourceOutputNode {
@@ -1427,6 +1498,12 @@ module Make<
       SummarizedCallable c, SummaryNodeState state, ParameterPosition pos
     ) {
       state.isInputState(c, SummaryComponentStack::argument(pos))
+      or
+      exists(ReturnKind rk |
+        relevantFlowSummaryPosition(c, rk) and
+        state.isInputState(c, SummaryComponentStack::return(rk)) and
+        pos = getFlowSummaryParameterPosition(rk)
+      )
     }
 
     /**
@@ -1559,6 +1636,9 @@ module Make<
         s = TSingletonSummaryComponentStack(TReturnSummaryComponent(rk))
       )
     }
+
+    /** Holds if return kind `rk` is a relevant return kind for flow summary modeling. */
+    predicate relevantFlowSummaryPosition(ReturnKind rk) { relevantFlowSummaryPosition(_, rk) }
 
     /**
      * Holds if flow is allowed to pass from the parameter at position `pos` of `c`,
@@ -1736,8 +1816,14 @@ module Make<
     }
 
     signature module StepsInputSig {
+      /** Gets the summary node represented by data-flow node `n`, if any. */
+      SummaryNode getSummaryNode(Node n);
+
       /** Gets a call that targets summarized callable `sc`. */
       DataFlowCall getACall(SummarizedCallable sc);
+
+      /** Gets the out node of kind `rk` for `call`, if any. */
+      default Node getSourceOutNode(FlowSummaryCallBase call, ReturnKind rk) { none() }
 
       /** Gets the enclosing callable of `source`. */
       DataFlowCallable getSourceNodeEnclosingCallable(SourceBase source);
@@ -1765,7 +1851,7 @@ module Make<
        * Holds if there is a local step from `pred` to `succ`, which is synthesized
        * from a flow summary.
        */
-      predicate summaryLocalStep(
+      private predicate summaryLocalStepImpl(
         SummaryNode pred, SummaryNode succ, boolean preservesValue, string model
       ) {
         exists(
@@ -1811,9 +1897,27 @@ module Make<
         )
       }
 
+      /** Holds if there is a local step between data-flow nodes synthesized from a flow summary. */
+      predicate summaryLocalStep(Node pred, SummaryNode succ, boolean preservesValue, string model) {
+        exists(SummaryNode predSummary |
+          predSummary = StepsInput::getSummaryNode(pred) and
+          summaryLocalStepImpl(predSummary, succ, preservesValue, model)
+        )
+        or
+        exists(
+          FlowSummaryCallBase summaryCall, ReturnKind rk, SummarizedCallable sc,
+          SummaryComponentStack output
+        |
+          pred = StepsInput::getSourceOutNode(summaryCall, rk) and
+          summaryCall = getASourceCall(sc) and
+          summary(sc, SummaryComponentStack::return(rk), output, preservesValue, model) and
+          succ = TSummaryReturnArgumentNode(summaryCall, rk)
+        )
+      }
+
       /** Holds if the value of `succ` is uniquely determined by the value of `pred`. */
       predicate summaryLocalMustFlowStep(SummaryNode pred, SummaryNode succ) {
-        pred = unique(SummaryNode n1 | summaryLocalStep(n1, succ, true, _))
+        pred = unique(SummaryNode n1 | summaryLocalStepImpl(n1, succ, true, _))
       }
 
       /**
@@ -1935,7 +2039,7 @@ module Make<
         or
         exists(SummaryNode mid, boolean clearsOrExpectsMid |
           paramReachesLocal(p, mid, clearsOrExpectsMid) and
-          summaryLocalStep(mid, n, true, _) and
+          summaryLocalStepImpl(mid, n, true, _) and
           if
             summaryClearsContent(n, _) or
             summaryExpectsContent(n, _)
@@ -1993,7 +2097,7 @@ module Make<
        */
       predicate summaryThroughStepValue(ArgNode arg, Node out, SummarizedCallable sc) {
         exists(SummaryNode ret |
-          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), ret, true, _)
+          summaryLocalStepImpl(summaryArgParamRetOut(arg, ret, out, sc), ret, true, _)
         )
       }
 
@@ -2006,7 +2110,7 @@ module Make<
        */
       predicate summaryThroughStepTaint(ArgNode arg, Node out, SummarizedCallable sc) {
         exists(SummaryNode ret |
-          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), ret, false, _)
+          summaryLocalStepImpl(summaryArgParamRetOut(arg, ret, out, sc), ret, false, _)
         )
       }
 
@@ -2020,7 +2124,7 @@ module Make<
       predicate summaryGetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
         exists(SummaryNode mid, SummaryNode ret |
           summaryReadStep(summaryArgParamRetOut(arg, ret, out, sc), c, mid) and
-          summaryLocalStep(mid, ret, _, _)
+          summaryLocalStepImpl(mid, ret, _, _)
         )
       }
 
@@ -2033,7 +2137,7 @@ module Make<
        */
       predicate summarySetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
         exists(SummaryNode mid, SummaryNode ret |
-          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), mid, _, _) and
+          summaryLocalStepImpl(summaryArgParamRetOut(arg, ret, out, sc), mid, _, _) and
           summaryStoreStep(mid, c, ret)
         )
       }
@@ -2749,9 +2853,11 @@ module Make<
         key = "semmle.label" and val = n.toString()
       }
 
+      private Node getNode(SummaryNode sn) { sn = StepsInput::getSummaryNode(result) }
+
       private predicate edgesComponent(NodeOrCall a, NodeOrCall b, string value) {
         exists(boolean preservesValue |
-          PrivateSteps::summaryLocalStep(a.asNode(), b.asNode(), preservesValue, _) and
+          PrivateSteps::summaryLocalStep(getNode(a.asNode()), b.asNode(), preservesValue, _) and
           if preservesValue = true then value = "value" else value = "taint"
         )
         or
