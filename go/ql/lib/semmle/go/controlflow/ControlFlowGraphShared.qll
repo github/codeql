@@ -67,6 +67,13 @@ module GoCfg {
       e = any(Go::ImportSpec is).getPathExpr()
       or
       e.getParent*() = any(Go::ArrayTypeExpr ate).getLength()
+      or
+      // The body block of an expression switch is transparent: the shared
+      // switch model wires control flow directly from the switch to its case
+      // clauses (in control-flow order) and between cases, so the enclosing
+      // block must not introduce its own nodes or default left-to-right
+      // sequencing of the case clauses.
+      e = any(Go::ExpressionSwitchStmt sw).getBody()
     }
 
     AstNode getChild(AstNode n, int index) {
@@ -217,19 +224,31 @@ module GoCfg {
     }
 
     class Switch extends AstNode {
-      Switch() { none() }
+      Switch() { this instanceof Go::ExpressionSwitchStmt }
 
-      Expr getExpr() { none() }
+      Expr getExpr() { result = this.(Go::ExpressionSwitchStmt).getExpr() }
 
-      Case getCase(int index) { none() }
+      Case getCase(int index) { result = this.(Go::ExpressionSwitchStmt).getCase(index) }
 
-      Stmt getStmt(int index) { none() }
+      Stmt getStmt(int index) {
+        // Go nests each case clause's body statements under the clause rather
+        // than in a flat list, so we expose a flattened view in which every
+        // case clause is immediately followed by its own body statements. This
+        // lets the shared library compute the body of a case as the statements
+        // between it and the next clause.
+        result =
+          rank[index + 1](Go::Stmt s, int caseIdx, int inner |
+            switchFlatItem(this, s, caseIdx, inner)
+          |
+            s order by caseIdx, inner
+          )
+      }
     }
 
     class Case extends AstNode {
-      Case() { none() }
+      Case() { this = any(Go::ExpressionSwitchStmt sw).getACase() }
 
-      AstNode getPattern(int index) { none() }
+      AstNode getPattern(int index) { result = this.(Go::CaseClause).getExpr(index) }
 
       Expr getGuard() { none() }
 
@@ -237,7 +256,36 @@ module GoCfg {
     }
 
     class DefaultCase extends Case {
-      DefaultCase() { none() }
+      DefaultCase() { not exists(this.(Go::CaseClause).getExpr(_)) }
+    }
+
+    /** Gets the initializer of `switch` statement `switch`, if any. */
+    AstNode getSwitchInit(Switch switch) { result = switch.(Go::ExpressionSwitchStmt).getInit() }
+
+    /**
+     * Go has no implicit fall-through between case clauses; a case that runs to
+     * the end of its body breaks out of the switch. Fall-through only happens
+     * when the case body ends with an explicit `fallthrough` statement, in
+     * which case control transfers to the next case clause's body (in source
+     * order). The shared library models this by chaining the body of such a
+     * case to the body of the following case.
+     */
+    predicate fallsThrough(Case c) {
+      c.(Go::CaseClause).getStmt(max(int i | exists(c.(Go::CaseClause).getStmt(i)))) instanceof
+        Go::FallthroughStmt
+    }
+
+    /**
+     * Holds if `s` is the flattened body element at position (`caseIdx`,
+     * `inner`) of expression switch `sw`: either the `caseIdx`-th case clause
+     * itself (with `inner` = -1) or its `inner`-th body statement.
+     */
+    private predicate switchFlatItem(
+      Go::ExpressionSwitchStmt sw, Go::Stmt s, int caseIdx, int inner
+    ) {
+      s = sw.getCase(caseIdx) and inner = -1
+      or
+      s = sw.getCase(caseIdx).getStmt(inner)
     }
 
     class ConditionalExpr extends Expr {
@@ -315,16 +363,10 @@ module GoCfg {
 
     class CallableContext = Void;
 
-    private newtype TLabel =
-      TGoLabel(string l) { exists(Go::LabeledStmt ls | l = ls.getLabel()) } or
-      TFallthrough()
+    private newtype TLabel = TGoLabel(string l) { exists(Go::LabeledStmt ls | l = ls.getLabel()) }
 
     class Label extends TLabel {
-      string toString() {
-        exists(string l | this = TGoLabel(l) and result = l)
-        or
-        this = TFallthrough() and result = "fallthrough"
-      }
+      string toString() { exists(string l | this = TGoLabel(l) and result = l) }
     }
 
     private Label getLabelOfStmt(Go::Stmt s) {
@@ -339,19 +381,11 @@ module GoCfg {
       l = TGoLabel(n.(Go::BreakStmt).getLabel())
       or
       l = TGoLabel(n.(Go::ContinueStmt).getLabel())
-      or
-      l = TFallthrough() and n instanceof Go::FallthroughStmt
     }
 
     predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
       kind.isBoolean() and
-      (
-        n = any(Go::ForStmt fs).getCond()
-        or
-        exists(Go::ExpressionSwitchStmt ess |
-          not exists(ess.getExpr()) and n = ess.getACase().(Go::CaseClause).getExpr(_)
-        )
-      )
+      n = any(Go::ForStmt fs).getCond()
     }
 
     predicate preOrderExpr(Ast::Expr e) {
@@ -514,17 +548,6 @@ module GoCfg {
         n instanceof Go::SliceExpr and
         not exists(n.(Go::SliceExpr).getMax()) and
         tag = "implicit-max"
-        or
-        // Implicit true in tagless switch
-        n instanceof Go::ExpressionSwitchStmt and
-        not exists(n.(Go::ExpressionSwitchStmt).getExpr()) and
-        tag = "implicit-true"
-        or
-        // Case check nodes
-        exists(int i |
-          exists(n.(Go::CaseClause).getExpr(i)) and
-          tag = "case-check:" + i.toString()
-        )
         or
         // Type switch implicit variable
         exists(Go::TypeSwitchStmt ts, Go::DefineStmt ds |
@@ -708,12 +731,6 @@ module GoCfg {
       n.isIn(ast) and
       c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
       always = false
-      or
-      ast instanceof Go::FallthroughStmt and
-      n.injects(ast) and
-      c.getSuccessorType() instanceof BreakSuccessor and
-      c.hasLabel(TFallthrough()) and
-      always = true
       or
       ast instanceof Go::GotoStmt and
       n.injects(ast) and
@@ -1403,40 +1420,15 @@ module GoCfg {
     }
 
     private predicate switchStmt(PreControlFlowNode n1, PreControlFlowNode n2) {
-      exprSwitch(n1, n2) or typeSwitch(n1, n2) or caseClause(n1, n2)
+      typeSwitch(n1, n2) or typeCaseClause(n1, n2)
     }
 
-    private predicate switchCasesStartOrAfter(Go::SwitchStmt sw, PreControlFlowNode n) {
+    private predicate switchCasesStartOrAfter(Go::TypeSwitchStmt sw, PreControlFlowNode n) {
       n.isBefore(sw.getNonDefaultCase(0))
       or
       not exists(sw.getANonDefaultCase()) and n.isBefore(sw.getDefault())
       or
       not exists(sw.getACase()) and n.isAfter(sw)
-    }
-
-    private predicate exprSwitch(PreControlFlowNode n1, PreControlFlowNode n2) {
-      exists(Go::ExpressionSwitchStmt sw |
-        n1.isBefore(sw) and
-        (
-          n2.isBefore(sw.getInit())
-          or
-          not exists(sw.getInit()) and
-          (
-            n2.isBefore(sw.getExpr())
-            or
-            not exists(sw.getExpr()) and switchCasesStartOrAfter(sw, n2)
-          )
-        )
-        or
-        n1.isAfter(sw.getInit()) and
-        (
-          n2.isBefore(sw.getExpr())
-          or
-          not exists(sw.getExpr()) and switchCasesStartOrAfter(sw, n2)
-        )
-        or
-        n1.isAfter(sw.getExpr()) and switchCasesStartOrAfter(sw, n2)
-      )
     }
 
     private predicate typeSwitch(PreControlFlowNode n1, PreControlFlowNode n2) {
@@ -1455,46 +1447,6 @@ module GoCfg {
     }
 
     /**
-     * Holds if `sw` is a tagless expression switch, in which case the case
-     * expressions are themselves the boolean conditions being tested and are
-     * therefore in a boolean conditional context.
-     */
-    private predicate isBooleanSwitch(Go::SwitchStmt sw) {
-      sw instanceof Go::ExpressionSwitchStmt and
-      not exists(sw.(Go::ExpressionSwitchStmt).getExpr())
-    }
-
-    /**
-     * Holds if `n` is the control-flow node immediately after evaluating case
-     * expression `caseExpr` of switch `sw` on the branch where `caseExpr`
-     * matches.
-     */
-    private predicate afterCaseExprMatch(Go::SwitchStmt sw, Go::Expr caseExpr, PreControlFlowNode n) {
-      caseExpr = sw.getACase().(Go::CaseClause).getAnExpr() and
-      (
-        isBooleanSwitch(sw) and n.isAfterTrue(caseExpr)
-        or
-        not isBooleanSwitch(sw) and n.isAfter(caseExpr)
-      )
-    }
-
-    /**
-     * Holds if `n` is the control-flow node immediately after evaluating case
-     * expression `caseExpr` of switch `sw` on the branch where `caseExpr`
-     * does not match.
-     */
-    private predicate afterCaseExprNoMatch(
-      Go::SwitchStmt sw, Go::Expr caseExpr, PreControlFlowNode n
-    ) {
-      caseExpr = sw.getACase().(Go::CaseClause).getAnExpr() and
-      (
-        isBooleanSwitch(sw) and n.isAfterFalse(caseExpr)
-        or
-        not isBooleanSwitch(sw) and n.isAfter(caseExpr)
-      )
-    }
-
-    /**
      * Holds if `cc` is a case clause of a type switch with an assignment that
      * implicitly declares a variable whose type narrows to the case type. In
      * this situation the CFG inserts a `type-switch-var` additional node
@@ -1509,19 +1461,17 @@ module GoCfg {
       )
     }
 
-    private predicate caseClause(PreControlFlowNode n1, PreControlFlowNode n2) {
-      exists(Go::SwitchStmt sw, Go::CaseClause cc, int i | cc = sw.getNonDefaultCase(i) |
+    private predicate typeCaseClause(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::TypeSwitchStmt sw, Go::CaseClause cc, int i | cc = sw.getNonDefaultCase(i) |
         n1.isBefore(cc) and n2.isBefore(cc.getExpr(0))
         or
-        // For a tagless expression switch the case expressions are themselves
-        // booleans in a conditional context, so we only fall through to the
-        // next case expression on the false branch.
-        exists(int j |
-          afterCaseExprNoMatch(sw, cc.getExpr(j), n1) and n2.isBefore(cc.getExpr(j + 1))
-        )
+        // A type switch is not boolean, so each case type test has a single
+        // "after" node from which control flows both to the case body (on a
+        // match) and on to the next test (on a mismatch).
+        exists(int j | n1.isAfter(cc.getExpr(j)) and n2.isBefore(cc.getExpr(j + 1)))
         or
         exists(int last | last = max(int j | exists(cc.getExpr(j))) |
-          afterCaseExprMatch(sw, cc.getExpr(last), n1) and
+          n1.isAfter(cc.getExpr(last)) and
           (
             hasTypeSwitchVar(cc) and n2.isAdditional(cc, "type-switch-var")
             or
@@ -1533,7 +1483,7 @@ module GoCfg {
             )
           )
           or
-          afterCaseExprNoMatch(sw, cc.getExpr(last), n1) and
+          n1.isAfter(cc.getExpr(last)) and
           (
             n2.isBefore(sw.getNonDefaultCase(i + 1))
             or
@@ -1546,7 +1496,7 @@ module GoCfg {
         )
       )
       or
-      exists(Go::SwitchStmt sw, Go::CaseClause def | def = sw.getDefault() |
+      exists(Go::TypeSwitchStmt sw, Go::CaseClause def | def = sw.getDefault() |
         n1.isBefore(def) and
         (
           hasTypeSwitchVar(def) and n2.isAdditional(def, "type-switch-var")
@@ -1560,7 +1510,7 @@ module GoCfg {
         )
       )
       or
-      exists(Go::SwitchStmt sw, Go::CaseClause cc |
+      exists(Go::TypeSwitchStmt sw, Go::CaseClause cc |
         sw.getACase() = cc and
         hasTypeSwitchVar(cc) and
         n1.isAdditional(cc, "type-switch-var") and
@@ -1571,11 +1521,10 @@ module GoCfg {
         )
       )
       or
-      exists(Go::CaseClause cc |
+      exists(Go::TypeSwitchStmt sw, Go::CaseClause cc | cc = sw.getACase() |
         exists(int j | n1.isAfter(cc.getStmt(j)) and n2.isBefore(cc.getStmt(j + 1)))
         or
-        exists(Go::SwitchStmt sw, int last |
-          sw.getACase() = cc and
+        exists(int last |
           last = max(int j | exists(cc.getStmt(j))) and
           n1.isAfter(cc.getStmt(last)) and
           n2.isAfter(sw)
