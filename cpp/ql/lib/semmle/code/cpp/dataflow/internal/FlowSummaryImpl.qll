@@ -102,6 +102,10 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 private import Make<Location, DataFlowImplSpecific::CppDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
+  Impl::Private::SummaryNode getSummaryNode(Node n) {
+    result = n.(FlowSummaryNode).getSummaryNode()
+  }
+
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     result.getStaticCallTarget().getUnderlyingCallable() = sc
   }

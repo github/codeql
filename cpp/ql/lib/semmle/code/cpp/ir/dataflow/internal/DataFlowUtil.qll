@@ -158,7 +158,7 @@ private module Cached {
     model = ""
     or
     // models-as-data summarized flow
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
       nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
   }
 
