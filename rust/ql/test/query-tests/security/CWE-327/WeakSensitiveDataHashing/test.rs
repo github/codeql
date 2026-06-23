@@ -16,10 +16,10 @@ fn test_hash_algorithms(
     _ = md5::Md5::digest(encrypted_password);
 
     // MD5 (alternative / older library)
-    _ = md5_alt::compute(harmless);
-    _ = md5_alt::compute(credit_card_no); // $ Alert[rust/weak-sensitive-data-hashing]
-    _ = md5_alt::compute(password); // $ Alert[rust/weak-sensitive-data-hashing]
-    _ = md5_alt::compute(encrypted_password);
+    _ = md5_alt::compute(harmless); // $ Alert[rust/summary/cryptographic-operations]
+    _ = md5_alt::compute(credit_card_no); // $ Alert[rust/summary/cryptographic-operations] Alert[rust/weak-sensitive-data-hashing]
+    _ = md5_alt::compute(password); // $ Alert[rust/summary/cryptographic-operations] Alert[rust/weak-sensitive-data-hashing]
+    _ = md5_alt::compute(encrypted_password); // $ Alert[rust/summary/cryptographic-operations]
 
     // SHA-1
     _ = sha1::Sha1::digest(harmless);
@@ -64,14 +64,14 @@ fn test_hash_code_patterns(
     _ = md5::Md5::digest(password_vec); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
 
     // hash through a hasher object
-    let mut md5_hasher = md5::Md5::new();
+    let mut md5_hasher = md5::Md5::new(); // $ Alert[rust/summary/cryptographic-operations]
     md5_hasher.update(b"abc");
     md5_hasher.update(harmless);
     md5_hasher.update(password); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
     _ = md5_hasher.finalize();
 
-    _ = md5::Md5::new().chain_update(harmless).chain_update(harmless).chain_update(harmless).finalize();
-    _ = md5::Md5::new().chain_update(harmless).chain_update(password).chain_update(harmless).finalize(); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
+    _ = md5::Md5::new().chain_update(harmless).chain_update(harmless).chain_update(harmless).finalize(); // $ Alert[rust/summary/cryptographic-operations]
+    _ = md5::Md5::new().chain_update(harmless).chain_update(password).chain_update(harmless).finalize(); // $ Alert[rust/summary/cryptographic-operations] MISSING: Alert[rust/weak-sensitive-data-hashing]
 
     _ = md5::Md5::new_with_prefix(harmless).finalize();
     _ = md5::Md5::new_with_prefix(password).finalize(); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
@@ -130,7 +130,7 @@ fn test_hash_structs() {
     let str3c = serde_urlencoded::to_string(&s3).unwrap();
 
     // hash with MD5
-    let mut md5_hasher = md5::Md5::new();
+    let mut md5_hasher = md5::Md5::new(); // $ Alert[rust/summary/cryptographic-operations]
     md5_hasher.update(s1.data);
     md5_hasher.update(s2.credit_card_no); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
     md5_hasher.update(s3.password); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
@@ -153,8 +153,75 @@ fn test_hash_file(
     let mut harmless_file = std::fs::File::open(harmless_filename).unwrap();
     let mut password_file = std::fs::File::open(password_filename).unwrap();
 
-    let mut md5_hasher = md5::Md5::new();
+    let mut md5_hasher = md5::Md5::new(); // $ Alert[rust/summary/cryptographic-operations]
     _ = std::io::copy(&mut harmless_file, &mut md5_hasher);
     _ = std::io::copy(&mut password_file, &mut md5_hasher); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
     _ = md5_hasher.finalize();
+}
+
+// ---
+
+struct Seed {
+}
+
+impl Seed {
+    fn new(_seed_value: u64) -> Self {
+        Seed { }
+    }
+}
+
+fn test_seed() {
+    // this will be misrecognized as a use of the SEED algorithm, but SEED is strong and the input
+    // is not sensitive data, so `rust/weak-sensitive-data-hashing` should not report a result here.
+    let _ = Seed::new(0); // $ Alert[rust/summary/cryptographic-operations]
+}
+
+// ---
+
+struct Sha1 {
+}
+
+impl Sha1 {
+    const fn new() -> Self {
+        Sha1 { }
+    }
+
+    const fn update(&mut self, _data: &[u8]) {
+        // ...
+    }
+
+    const fn finalize(self) -> [u8; 20] {
+        [0; 20]
+    }
+}
+
+fn sha1_test(password: &[u8]) {
+    let mut hasher = Sha1::new(); // $ Alert[rust/summary/cryptographic-operations]
+    hasher.update(password); // $ MISSING: Alert[rust/weak-sensitive-data-hashing]
+    _ = hasher.finalize();
+}
+
+// ---
+
+struct HashCollection {
+}
+
+impl HashCollection {
+    pub fn add_sig(value: &str) -> Self {
+        _ = md5_alt::compute(value); // $ Alert[rust/summary/cryptographic-operations] Alert[rust/weak-sensitive-data-hashing]
+
+        // ...
+
+        HashCollection { }
+    }
+}
+
+fn test_hash_collection() {
+    // this indirectly performs MD5 hashing, but the data is not sensitive
+    let id: &str = "my_id_1234567890";
+    HashCollection::add_sig(id);
+
+    // this indirectly performs MD5 hashing, and the data is sensitive; the result is reported here
+    let password: &str = "password123";
+    HashCollection::add_sig(password); // $ Source
 }
