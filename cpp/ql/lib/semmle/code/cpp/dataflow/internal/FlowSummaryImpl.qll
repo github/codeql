@@ -6,6 +6,7 @@ private import cpp as Cpp
 private import codeql.dataflow.internal.FlowSummaryImpl
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowNodes
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific as DataFlowImplSpecific
 private import semmle.code.cpp.dataflow.ExternalFlow
@@ -20,7 +21,21 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 
   class SinkBase = Void;
 
+  class FlowSummaryCallBase = CallInstruction;
+
   predicate callableFromSource(SummarizedCallableBase c) { exists(c.getBlock()) }
+
+  FlowSummaryCallBase getASourceCall(SummarizedCallableBase sc) {
+    result.getStaticCallTarget() = sc
+  }
+
+  DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c) {
+    result.asSummarizedCallable() = c
+  }
+
+  DataFlowCallable getSourceCallEnclosingCallable(FlowSummaryCallBase call) {
+    result.asSourceCallable() = call.getEnclosingFunction()
+  }
 
   ArgumentPosition callbackSelfParameterPosition() { result = TDirectPosition(-1) }
 
@@ -28,6 +43,10 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 
   ReturnKind getReturnValueKind(string arg) {
     arg = repeatStars(result.(NormalReturnKind).getIndirectionIndex())
+  }
+
+  ParameterPosition getFlowSummaryParameterPosition(ReturnKind rk) {
+    result = TFlowSummaryPosition(rk)
   }
 
   string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
@@ -108,6 +127,14 @@ private module StepsInput implements Impl::Private::StepsInputSig {
 
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     result.getStaticCallTarget().getUnderlyingCallable() = sc
+  }
+
+  Node getSourceOutNode(Input::FlowSummaryCallBase call, ReturnKind rk) {
+    exists(IndirectReturnOutNode out | result = out |
+      out.getCallInstruction() = call and
+      pragma[only_bind_out](rk.(NormalReturnKind).getIndirectionIndex()) =
+        pragma[only_bind_out](out.getIndirectionIndex())
+    )
   }
 
   DataFlowCallable getSourceNodeEnclosingCallable(Input::SourceBase source) { none() }

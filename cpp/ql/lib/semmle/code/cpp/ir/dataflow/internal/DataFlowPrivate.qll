@@ -561,6 +561,21 @@ class SummaryArgumentNode extends ArgumentNode, FlowSummaryNode {
   }
 }
 
+/** An argument node that re-enters return output as input to a flow summary. */
+private class FlowSummaryArgumentNode extends ArgumentNode, FlowSummaryNode {
+  private CallInstruction callInstruction;
+  private ReturnKind rk;
+
+  FlowSummaryArgumentNode() {
+    this.getSummaryNode() = FlowSummaryImpl::Private::summaryArgumentNode(callInstruction, rk)
+  }
+
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    call.asCallInstruction() = callInstruction and
+    pos = TFlowSummaryPosition(rk)
+  }
+}
+
 /** A parameter position represented by an integer. */
 class ParameterPosition = Position;
 
@@ -616,6 +631,18 @@ class IndirectionPosition extends Position, TIndirectionPosition {
   final override int getIndirectionIndex() { result = indirectionIndex }
 }
 
+class FlowSummaryPosition extends Position, TFlowSummaryPosition {
+  ReturnKind rk;
+
+  FlowSummaryPosition() { this = TFlowSummaryPosition(rk) }
+
+  override string toString() { result = "write to: " + rk.toString() }
+
+  override int getArgumentIndex() { none() }
+
+  final override int getIndirectionIndex() { result = rk.getIndirectionIndex() }
+}
+
 newtype TPosition =
   TDirectPosition(int argumentIndex) {
     exists(any(CallInstruction c).getArgument(argumentIndex))
@@ -634,7 +661,8 @@ newtype TPosition =
       p = f.getParameter(argumentIndex) and
       indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1]
     )
-  }
+  } or
+  TFlowSummaryPosition(ReturnKind rk) { FlowSummaryImpl::Private::relevantFlowSummaryPosition(rk) }
 
 private newtype TReturnKind =
   TNormalReturnKind(int indirectionIndex) {
