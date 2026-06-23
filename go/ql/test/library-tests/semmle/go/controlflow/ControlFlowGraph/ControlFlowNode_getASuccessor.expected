@@ -3779,21 +3779,24 @@
 | stmts.go:112:27:137:1 | block statement | stmts.go:112:27:137:1 | arg:0 block statement |
 | stmts.go:112:27:137:1 | param-init:0 block statement | stmts.go:113:2:121:2 | type-switch statement |
 | stmts.go:113:2:121:2 | After type-switch statement | stmts.go:123:2:131:2 | type-switch statement |
-| stmts.go:113:2:121:2 | type-switch statement | stmts.go:113:9:113:21 | ... := ... |
-| stmts.go:113:9:113:21 | ... := ... | stmts.go:113:14:113:21 | Before type assertion |
-| stmts.go:113:9:113:21 | After ... := ... | stmts.go:114:2:115:16 | case clause |
-| stmts.go:113:9:113:21 | assign:0 ... := ... | stmts.go:113:9:113:21 | After ... := ... |
+| stmts.go:113:2:121:2 | type-switch statement | stmts.go:113:14:113:21 | Before type assertion |
 | stmts.go:113:14:113:14 | After x | stmts.go:113:14:113:21 | type assertion |
 | stmts.go:113:14:113:14 | Before x | stmts.go:113:14:113:14 | x |
 | stmts.go:113:14:113:14 | x | stmts.go:113:14:113:14 | After x |
-| stmts.go:113:14:113:21 | After type assertion | stmts.go:113:9:113:21 | assign:0 ... := ... |
+| stmts.go:113:14:113:21 | After type assertion | stmts.go:114:2:115:16 | case clause |
 | stmts.go:113:14:113:21 | Before type assertion | stmts.go:113:14:113:14 | Before x |
 | stmts.go:113:14:113:21 | type assertion | stmts.go:113:14:113:21 | After type assertion |
+| stmts.go:114:2:115:16 | After case clause [match] | stmts.go:115:3:115:16 | expression statement |
+| stmts.go:114:2:115:16 | After case clause [no-match] | stmts.go:116:2:118:14 | case clause |
 | stmts.go:114:2:115:16 | case clause | stmts.go:114:7:114:11 | error |
-| stmts.go:114:2:115:16 | type-switch-var case clause | stmts.go:115:3:115:16 | expression statement |
-| stmts.go:114:7:114:11 | error | stmts.go:114:14:114:19 | string |
-| stmts.go:114:14:114:19 | string | stmts.go:114:2:115:16 | type-switch-var case clause |
-| stmts.go:114:14:114:19 | string | stmts.go:116:2:118:14 | case clause |
+| stmts.go:114:7:114:11 | After error [match] | stmts.go:114:2:115:16 | After case clause [match] |
+| stmts.go:114:7:114:11 | After error [no-match] | stmts.go:114:14:114:19 | string |
+| stmts.go:114:7:114:11 | error | stmts.go:114:7:114:11 | After error [match] |
+| stmts.go:114:7:114:11 | error | stmts.go:114:7:114:11 | After error [no-match] |
+| stmts.go:114:14:114:19 | After string [match] | stmts.go:114:2:115:16 | After case clause [match] |
+| stmts.go:114:14:114:19 | After string [no-match] | stmts.go:114:2:115:16 | After case clause [no-match] |
+| stmts.go:114:14:114:19 | string | stmts.go:114:14:114:19 | After string [match] |
+| stmts.go:114:14:114:19 | string | stmts.go:114:14:114:19 | After string [no-match] |
 | stmts.go:115:3:115:13 | After selection of Println | stmts.go:115:15:115:15 | Before y |
 | stmts.go:115:3:115:13 | Before selection of Println | stmts.go:115:3:115:13 | selection of Println |
 | stmts.go:115:3:115:13 | selection of Println | stmts.go:115:3:115:13 | After selection of Println |
@@ -3806,10 +3809,13 @@
 | stmts.go:115:15:115:15 | After y | stmts.go:115:3:115:16 | call to Println |
 | stmts.go:115:15:115:15 | Before y | stmts.go:115:15:115:15 | y |
 | stmts.go:115:15:115:15 | y | stmts.go:115:15:115:15 | After y |
+| stmts.go:116:2:118:14 | After case clause [match] | stmts.go:117:3:117:13 | expression statement |
+| stmts.go:116:2:118:14 | After case clause [no-match] | stmts.go:119:2:120:7 | case clause |
 | stmts.go:116:2:118:14 | case clause | stmts.go:116:7:116:13 | float32 |
-| stmts.go:116:2:118:14 | type-switch-var case clause | stmts.go:117:3:117:13 | expression statement |
-| stmts.go:116:7:116:13 | float32 | stmts.go:116:2:118:14 | type-switch-var case clause |
-| stmts.go:116:7:116:13 | float32 | stmts.go:119:2:120:7 | case clause |
+| stmts.go:116:7:116:13 | After float32 [match] | stmts.go:116:2:118:14 | After case clause [match] |
+| stmts.go:116:7:116:13 | After float32 [no-match] | stmts.go:116:2:118:14 | After case clause [no-match] |
+| stmts.go:116:7:116:13 | float32 | stmts.go:116:7:116:13 | After float32 [match] |
+| stmts.go:116:7:116:13 | float32 | stmts.go:116:7:116:13 | After float32 [no-match] |
 | stmts.go:117:3:117:7 | After test5 | stmts.go:117:9:117:12 | Before true |
 | stmts.go:117:3:117:7 | Before test5 | stmts.go:117:3:117:7 | test5 |
 | stmts.go:117:3:117:7 | test5 | stmts.go:117:3:117:7 | After test5 |
@@ -3834,8 +3840,8 @@
 | stmts.go:118:9:118:13 | After false | stmts.go:118:3:118:14 | call to test5 |
 | stmts.go:118:9:118:13 | Before false | stmts.go:118:9:118:13 | false |
 | stmts.go:118:9:118:13 | false | stmts.go:118:9:118:13 | After false |
-| stmts.go:119:2:120:7 | case clause | stmts.go:119:2:120:7 | type-switch-var case clause |
-| stmts.go:119:2:120:7 | type-switch-var case clause | stmts.go:120:3:120:7 | ... = ... |
+| stmts.go:119:2:120:7 | After case clause [match] | stmts.go:120:3:120:7 | ... = ... |
+| stmts.go:119:2:120:7 | case clause | stmts.go:119:2:120:7 | After case clause [match] |
 | stmts.go:120:3:120:7 | ... = ... | stmts.go:120:7:120:7 | Before y |
 | stmts.go:120:3:120:7 | After ... = ... | stmts.go:113:2:121:2 | After type-switch statement |
 | stmts.go:120:7:120:7 | After y | stmts.go:120:3:120:7 | After ... = ... |
@@ -3844,7 +3850,7 @@
 | stmts.go:123:2:131:2 | After type-switch statement | stmts.go:133:2:136:2 | type-switch statement |
 | stmts.go:123:2:131:2 | type-switch statement | stmts.go:123:9:123:14 | ... := ... |
 | stmts.go:123:9:123:14 | ... := ... | stmts.go:123:14:123:14 | Before x |
-| stmts.go:123:9:123:14 | After ... := ... | stmts.go:123:17:123:24 | expression statement |
+| stmts.go:123:9:123:14 | After ... := ... | stmts.go:123:17:123:24 | Before type assertion |
 | stmts.go:123:9:123:14 | assign:0 ... := ... | stmts.go:123:9:123:14 | After ... := ... |
 | stmts.go:123:14:123:14 | After x | stmts.go:123:9:123:14 | assign:0 ... := ... |
 | stmts.go:123:14:123:14 | Before x | stmts.go:123:14:123:14 | x |
@@ -3852,15 +3858,20 @@
 | stmts.go:123:17:123:17 | After y | stmts.go:123:17:123:24 | type assertion |
 | stmts.go:123:17:123:17 | Before y | stmts.go:123:17:123:17 | y |
 | stmts.go:123:17:123:17 | y | stmts.go:123:17:123:17 | After y |
-| stmts.go:123:17:123:24 | After expression statement | stmts.go:124:2:125:16 | case clause |
-| stmts.go:123:17:123:24 | After type assertion | stmts.go:123:17:123:24 | After expression statement |
+| stmts.go:123:17:123:24 | After type assertion | stmts.go:124:2:125:16 | case clause |
 | stmts.go:123:17:123:24 | Before type assertion | stmts.go:123:17:123:17 | Before y |
-| stmts.go:123:17:123:24 | expression statement | stmts.go:123:17:123:24 | Before type assertion |
 | stmts.go:123:17:123:24 | type assertion | stmts.go:123:17:123:24 | After type assertion |
+| stmts.go:124:2:125:16 | After case clause [match] | stmts.go:125:3:125:16 | expression statement |
+| stmts.go:124:2:125:16 | After case clause [no-match] | stmts.go:126:2:128:14 | case clause |
 | stmts.go:124:2:125:16 | case clause | stmts.go:124:7:124:11 | error |
-| stmts.go:124:7:124:11 | error | stmts.go:124:14:124:19 | string |
-| stmts.go:124:14:124:19 | string | stmts.go:125:3:125:16 | expression statement |
-| stmts.go:124:14:124:19 | string | stmts.go:126:2:128:14 | case clause |
+| stmts.go:124:7:124:11 | After error [match] | stmts.go:124:2:125:16 | After case clause [match] |
+| stmts.go:124:7:124:11 | After error [no-match] | stmts.go:124:14:124:19 | string |
+| stmts.go:124:7:124:11 | error | stmts.go:124:7:124:11 | After error [match] |
+| stmts.go:124:7:124:11 | error | stmts.go:124:7:124:11 | After error [no-match] |
+| stmts.go:124:14:124:19 | After string [match] | stmts.go:124:2:125:16 | After case clause [match] |
+| stmts.go:124:14:124:19 | After string [no-match] | stmts.go:124:2:125:16 | After case clause [no-match] |
+| stmts.go:124:14:124:19 | string | stmts.go:124:14:124:19 | After string [match] |
+| stmts.go:124:14:124:19 | string | stmts.go:124:14:124:19 | After string [no-match] |
 | stmts.go:125:3:125:13 | After selection of Println | stmts.go:125:15:125:15 | Before y |
 | stmts.go:125:3:125:13 | Before selection of Println | stmts.go:125:3:125:13 | selection of Println |
 | stmts.go:125:3:125:13 | selection of Println | stmts.go:125:3:125:13 | After selection of Println |
@@ -3873,9 +3884,13 @@
 | stmts.go:125:15:125:15 | After y | stmts.go:125:3:125:16 | call to Println |
 | stmts.go:125:15:125:15 | Before y | stmts.go:125:15:125:15 | y |
 | stmts.go:125:15:125:15 | y | stmts.go:125:15:125:15 | After y |
+| stmts.go:126:2:128:14 | After case clause [match] | stmts.go:127:3:127:13 | expression statement |
+| stmts.go:126:2:128:14 | After case clause [no-match] | stmts.go:129:2:130:7 | case clause |
 | stmts.go:126:2:128:14 | case clause | stmts.go:126:7:126:13 | float32 |
-| stmts.go:126:7:126:13 | float32 | stmts.go:127:3:127:13 | expression statement |
-| stmts.go:126:7:126:13 | float32 | stmts.go:129:2:130:7 | case clause |
+| stmts.go:126:7:126:13 | After float32 [match] | stmts.go:126:2:128:14 | After case clause [match] |
+| stmts.go:126:7:126:13 | After float32 [no-match] | stmts.go:126:2:128:14 | After case clause [no-match] |
+| stmts.go:126:7:126:13 | float32 | stmts.go:126:7:126:13 | After float32 [match] |
+| stmts.go:126:7:126:13 | float32 | stmts.go:126:7:126:13 | After float32 [no-match] |
 | stmts.go:127:3:127:7 | After test5 | stmts.go:127:9:127:12 | Before true |
 | stmts.go:127:3:127:7 | Before test5 | stmts.go:127:3:127:7 | test5 |
 | stmts.go:127:3:127:7 | test5 | stmts.go:127:3:127:7 | After test5 |
@@ -3900,7 +3915,8 @@
 | stmts.go:128:9:128:13 | After false | stmts.go:128:3:128:14 | call to test5 |
 | stmts.go:128:9:128:13 | Before false | stmts.go:128:9:128:13 | false |
 | stmts.go:128:9:128:13 | false | stmts.go:128:9:128:13 | After false |
-| stmts.go:129:2:130:7 | case clause | stmts.go:130:3:130:7 | ... = ... |
+| stmts.go:129:2:130:7 | After case clause [match] | stmts.go:130:3:130:7 | ... = ... |
+| stmts.go:129:2:130:7 | case clause | stmts.go:129:2:130:7 | After case clause [match] |
 | stmts.go:130:3:130:7 | ... = ... | stmts.go:130:7:130:7 | Before y |
 | stmts.go:130:3:130:7 | After ... = ... | stmts.go:123:2:131:2 | After type-switch statement |
 | stmts.go:130:7:130:7 | After y | stmts.go:130:3:130:7 | After ... = ... |
@@ -3909,7 +3925,7 @@
 | stmts.go:133:2:136:2 | After type-switch statement | stmts.go:112:27:137:1 | After block statement |
 | stmts.go:133:2:136:2 | type-switch statement | stmts.go:133:9:133:14 | ... := ... |
 | stmts.go:133:9:133:14 | ... := ... | stmts.go:133:14:133:14 | Before x |
-| stmts.go:133:9:133:14 | After ... := ... | stmts.go:133:17:133:24 | expression statement |
+| stmts.go:133:9:133:14 | After ... := ... | stmts.go:133:17:133:24 | Before type assertion |
 | stmts.go:133:9:133:14 | assign:0 ... := ... | stmts.go:133:9:133:14 | After ... := ... |
 | stmts.go:133:14:133:14 | After x | stmts.go:133:9:133:14 | assign:0 ... := ... |
 | stmts.go:133:14:133:14 | Before x | stmts.go:133:14:133:14 | x |
@@ -3917,12 +3933,11 @@
 | stmts.go:133:17:133:17 | After y | stmts.go:133:17:133:24 | type assertion |
 | stmts.go:133:17:133:17 | Before y | stmts.go:133:17:133:17 | y |
 | stmts.go:133:17:133:17 | y | stmts.go:133:17:133:17 | After y |
-| stmts.go:133:17:133:24 | After expression statement | stmts.go:134:2:135:14 | case clause |
-| stmts.go:133:17:133:24 | After type assertion | stmts.go:133:17:133:24 | After expression statement |
+| stmts.go:133:17:133:24 | After type assertion | stmts.go:134:2:135:14 | case clause |
 | stmts.go:133:17:133:24 | Before type assertion | stmts.go:133:17:133:17 | Before y |
-| stmts.go:133:17:133:24 | expression statement | stmts.go:133:17:133:24 | Before type assertion |
 | stmts.go:133:17:133:24 | type assertion | stmts.go:133:17:133:24 | After type assertion |
-| stmts.go:134:2:135:14 | case clause | stmts.go:135:3:135:14 | expression statement |
+| stmts.go:134:2:135:14 | After case clause [match] | stmts.go:135:3:135:14 | expression statement |
+| stmts.go:134:2:135:14 | case clause | stmts.go:134:2:135:14 | After case clause [match] |
 | stmts.go:135:3:135:7 | After test5 | stmts.go:135:9:135:13 | Before false |
 | stmts.go:135:3:135:7 | Before test5 | stmts.go:135:3:135:7 | test5 |
 | stmts.go:135:3:135:7 | test5 | stmts.go:135:3:135:7 | After test5 |

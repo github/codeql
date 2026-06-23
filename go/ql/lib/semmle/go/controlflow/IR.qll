@@ -14,6 +14,7 @@ module;
 
 import go
 private import ControlFlowGraphShared
+private import codeql.controlflow.SuccessorType
 
 /** Provides predicates and classes for working with IR constructs. */
 module IR {
@@ -44,6 +45,20 @@ module IR {
   }
 
   /**
+   * Holds if `n` is the control-flow node representing a successful match of
+   * the type-switch case clause `cc` that implicitly declares a variable.
+   *
+   * This node dominates the case body and is where the implicit per-case
+   * variable declaration/assignment is materialised (see
+   * `TypeSwitchImplicitVariableInstruction`).
+   */
+  private predicate typeSwitchCaseMatch(ControlFlow::Node n, CaseClause cc) {
+    cc = any(TypeSwitchStmt ts).getACase() and
+    exists(cc.getImplicitlyDeclaredVariable()) and
+    n.isAfterValue(cc, any(MatchingSuccessor t | t.getValue() = true))
+  }
+
+  /**
    * An IR instruction.
    */
   class Instruction extends ControlFlow::Node {
@@ -55,6 +70,11 @@ module IR {
       this.isAfterTrue(_)
       or
       this.isAfterFalse(_)
+      or
+      // The successful-match node of a type-switch case that binds an implicit
+      // variable hosts that variable's declaration/assignment (see
+      // `TypeSwitchImplicitVariableInstruction`).
+      typeSwitchCaseMatch(this, _)
       or
       // `NotExpr` and `LogicalBinaryExpr` are not in `postOrInOrder`, so they
       // have no `isIn` node. When such an expression is not in a conditional
@@ -1182,7 +1202,7 @@ module IR {
   class TypeSwitchImplicitVariableInstruction extends Instruction {
     CaseClause cc;
 
-    TypeSwitchImplicitVariableInstruction() { this.isAdditional(cc, "type-switch-var") }
+    TypeSwitchImplicitVariableInstruction() { typeSwitchCaseMatch(this, cc) }
 
     override predicate writes(ValueEntity v, Instruction rhs) {
       v = cc.getImplicitlyDeclaredVariable() and
