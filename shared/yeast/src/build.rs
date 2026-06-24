@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::captures::Captures;
 use crate::tree_builder::FreshScope;
-use crate::{Ast, FieldId, Id, NodeContent};
+use crate::{Ast, FieldId, Id, NodeContent, TranslatorHandle};
 
 /// Context for building new AST nodes during a transformation.
 ///
@@ -24,6 +24,11 @@ use crate::{Ast, FieldId, Id, NodeContent};
 ///
 /// The default `C = ()` means rules that don't need any user context don't
 /// pay any cost.
+///
+/// When constructed by the framework (via the rule! macro), `BuildCtx` also
+/// carries a [`TranslatorHandle`] that the [`translate`] method delegates
+/// to. When constructed by hand (e.g. in tests), the translator is `None`
+/// and [`translate`] returns an error.
 pub struct BuildCtx<'a, C: 'a = ()> {
     pub ast: &'a mut Ast,
     pub captures: &'a Captures,
@@ -32,6 +37,9 @@ pub struct BuildCtx<'a, C: 'a = ()> {
     pub source_range: Option<tree_sitter::Range>,
     /// User-supplied context, accessible directly via `ctx.field` (via Deref).
     pub user_ctx: &'a mut C,
+    /// Optional translator handle, populated when the context is built by
+    /// the framework's rule driver. None when the context is built by hand.
+    pub(crate) translator: Option<TranslatorHandle<'a, C>>,
 }
 
 impl<'a, C> BuildCtx<'a, C> {
@@ -47,6 +55,7 @@ impl<'a, C> BuildCtx<'a, C> {
             fresh,
             source_range: None,
             user_ctx,
+            translator: None,
         }
     }
 
@@ -63,6 +72,27 @@ impl<'a, C> BuildCtx<'a, C> {
             fresh,
             source_range,
             user_ctx,
+            translator: None,
+        }
+    }
+
+    /// Construct a `BuildCtx` carrying a translator handle. Used by the
+    /// `rule!` macro to enable [`translate`] inside rule transforms.
+    pub fn with_translator(
+        ast: &'a mut Ast,
+        captures: &'a Captures,
+        fresh: &'a FreshScope,
+        source_range: Option<tree_sitter::Range>,
+        user_ctx: &'a mut C,
+        translator: TranslatorHandle<'a, C>,
+    ) -> Self {
+        Self {
+            ast,
+            captures,
+            fresh,
+            source_range,
+            user_ctx,
+            translator: Some(translator),
         }
     }
 
@@ -136,6 +166,24 @@ impl<'a, C> BuildCtx<'a, C> {
             .field_id_for_name(field_name)
             .unwrap_or_else(|| panic!("build: field '{field_name}' not found"));
         self.ast.prepend_field_child(node_id, field_id, value_id);
+    }
+}
+
+impl<C: Clone> BuildCtx<'_, C> {
+    /// Recursively translate a node via the framework's rule machinery.
+    /// In a OneShot phase, applies OneShot rules to the given node and
+    /// returns the resulting node ids. In a Repeating phase, errors
+    /// (translation is not meaningful when input and output share a
+    /// schema).
+    ///
+    /// Errors if this `BuildCtx` was constructed by hand (without a
+    /// translator handle) — for example, in unit tests that don't go
+    /// through the rule driver.
+    pub fn translate(&mut self, id: Id) -> Result<Vec<Id>, String> {
+        match &self.translator {
+            Some(t) => t.translate(self.ast, self.user_ctx, id),
+            None => Err("translate() called on a BuildCtx without a translator handle".into()),
+        }
     }
 }
 

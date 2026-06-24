@@ -888,9 +888,15 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
     Ok(quote! {
         {
             let __query = #query_code;
-            yeast::Rule::new(__query, Box::new(|__ast: &mut yeast::Ast, __captures: yeast::captures::Captures, __fresh: &yeast::tree_builder::FreshScope, __source_range: Option<tree_sitter::Range>, __user_ctx: &mut _| {
+            yeast::Rule::new(__query, Box::new(|__ast: &mut yeast::Ast, mut __captures: yeast::captures::Captures, __fresh: &yeast::tree_builder::FreshScope, __source_range: Option<tree_sitter::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
+                // Auto-translation prefix: recursively translate every
+                // captured node before invoking the user's transform body.
+                // For OneShot rules this preserves the legacy behaviour
+                // (input-schema captures translated to output-schema
+                // nodes); for Repeating rules it is a no-op.
+                __translator.auto_translate_captures(&mut __captures, __ast, __user_ctx)?;
                 #(#bindings)*
-                let mut #ctx_ident = yeast::build::BuildCtx::with_source_range(__ast, &__captures, __fresh, __source_range, __user_ctx);
+                let mut #ctx_ident = yeast::build::BuildCtx::with_translator(__ast, &__captures, __fresh, __source_range, __user_ctx, __translator);
                 let __result: Vec<usize> = { #transform_body };
                 Ok(__result)
             }))
