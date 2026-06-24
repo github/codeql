@@ -24,16 +24,52 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly FileProvider fileProvider;
         private readonly DependabotProxy? dependabotProxy;
         private readonly DependencyDirectory emptyPackageDirectory;
+        private readonly ImmutableHashSet<string> privateRegistryFeeds;
 
-        public ImmutableHashSet<string> PrivateRegistryFeeds { get; }
         public bool HasPrivateRegistryFeeds { get; }
         public bool CheckNugetFeedResponsiveness { get; } = EnvironmentVariables.GetBooleanOptOut(EnvironmentVariableNames.CheckNugetFeedResponsiveness);
 
         private readonly Lazy<ImmutableHashSet<string>> lazyExplicitFeeds;
+
+        /// <summary>
+        /// Gets the list of NuGet feeds that are explicitly configured
+        /// - NuGet configuration files.
+        /// - Private package registries that are configured for C#.
+        /// </summary>
         public ImmutableHashSet<string> ExplicitFeeds => lazyExplicitFeeds.Value;
 
         private readonly Lazy<ImmutableHashSet<string>> lazyAllFeeds;
+
+        /// <summary>
+        /// Gets the list of all NuGet feeds that are configured in the environment. That is
+        /// - Explicit feeds
+        /// - Inherited feeds from the machine and environment (if not explicitly disabled by a
+        /// root directory NuGet configuration).
+        /// </summary>
         public ImmutableHashSet<string> AllFeeds => lazyAllFeeds.Value;
+
+        /// <summary>
+        /// Gets the list of inherited NuGet feeds that are configured in the environment.
+        /// </summary>
+        public ImmutableHashSet<string> InheritedFeeds => AllFeeds.Except(ExplicitFeeds).ToImmutableHashSet();
+
+        private readonly Lazy<(bool, ImmutableHashSet<string>)> lazyReachableExplicitFeeds;
+
+        /// <summary>
+        /// Gets whether there was a timeout when checking the reachability of the explicitly configured NuGet feeds.
+        /// </summary>
+        public bool ExplicitFeedTimeout => lazyReachableExplicitFeeds.Value.Item1;
+
+        /// <summary>
+        /// Gets the list of reachable NuGet feeds that are explicitly configured.
+        /// </summary>
+        public ImmutableHashSet<string> ReachableExplicitFeeds => lazyReachableExplicitFeeds.Value.Item2;
+
+        private readonly Lazy<ImmutableHashSet<string>> lazyReachableFeeds;
+        /// <summary>
+        /// Gets the list of reachable NuGet feeds that are configured in the environment.
+        /// </summary>
+        public ImmutableHashSet<string> ReachableFeeds => lazyReachableFeeds.Value;
 
         public FeedManager(ILogger logger, IDotNet dotnet, DependabotProxy? dependabotProxy, FileProvider fileProvider)
         {
@@ -41,13 +77,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.dotnet = dotnet;
             this.dependabotProxy = dependabotProxy;
             this.fileProvider = fileProvider;
-            PrivateRegistryFeeds = dependabotProxy?.RegistryURLs.ToImmutableHashSet() ?? [];
-            HasPrivateRegistryFeeds = PrivateRegistryFeeds.Count > 0;
+            privateRegistryFeeds = dependabotProxy?.RegistryURLs.ToImmutableHashSet() ?? [];
+            HasPrivateRegistryFeeds = privateRegistryFeeds.Count > 0;
             emptyPackageDirectory = new DependencyDirectory("empty", "empty package", logger);
 
             lazyExplicitFeeds = new Lazy<ImmutableHashSet<string>>(GetExplicitFeeds);
             lazyAllFeeds = new Lazy<ImmutableHashSet<string>>(GetAllFeeds);
+            lazyReachableExplicitFeeds = new Lazy<(bool, ImmutableHashSet<string>)>(() =>
+            {
+                var timeout = CheckSpecifiedFeeds(ExplicitFeeds, out var reachableFeeds);
+                return (timeout, reachableFeeds);
+            });
+            lazyReachableFeeds = new Lazy<ImmutableHashSet<string>>(() =>
+            {
+                // Inherited feeds should only be used, if they are indeed reachable (as they may be environment specific).
+                CheckSpecifiedFeeds(InheritedFeeds, out var reachableInheritedFeeds);
+                return ReachableExplicitFeeds.Union(reachableInheritedFeeds).ToImmutableHashSet();
+            });
         }
+
 
         private string? GetDirectoryName(string path)
         {
@@ -124,7 +172,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="path">Path to project/solution/packages.config</param>
         /// <param name="reachableFeeds">The set of reachable NuGet feeds.</param>
         /// <returns>The list of NuGet feeds to use for this restore.</returns>
-        public IEnumerable<string> FeedsToUse(string path, HashSet<string> reachableFeeds)
+        public IEnumerable<string> FeedsToUse(string path, ImmutableHashSet<string> reachableFeeds)
         {
             // Find the path specific feeds.
             var folder = GetDirectoryName(path);
@@ -132,7 +180,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (HasPrivateRegistryFeeds)
             {
-                feedsToConsider.UnionWith(PrivateRegistryFeeds);
+                feedsToConsider.UnionWith(privateRegistryFeeds);
             }
 
             var feedsToUse = CheckNugetFeedResponsiveness
@@ -150,7 +198,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="path">Path to project/solution</param>
         /// <param name="reachableFeeds">The set of reachable NuGet feeds.</param>
         /// <returns>A string representing the NuGet sources argument for the restore command.</returns>
-        public string? MakeDotnetRestoreSourcesArgument(string path, HashSet<string> reachableFeeds)
+        public string? MakeDotnetRestoreSourcesArgument(string path, ImmutableHashSet<string> reachableFeeds)
         {
             // Do not construct a set of explicit NuGet sources to use for restore.
             if (!CheckNugetFeedResponsiveness && !HasPrivateRegistryFeeds)
@@ -280,7 +328,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// True if there is a timeout when trying to reach the feeds (excluding any feeds that are configured
         /// to be excluded from the check) or false otherwise.
         /// </returns>
-        public bool CheckSpecifiedFeeds(ImmutableHashSet<string> feeds, out HashSet<string> reachableFeeds)
+        private bool CheckSpecifiedFeeds(ImmutableHashSet<string> feeds, out ImmutableHashSet<string> reachableFeeds)
         {
             // Exclude any feeds from the feed check that are configured by the corresponding environment variable.
             // These feeds are always assumed to be reachable.
@@ -296,10 +344,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return true;
             }).ToHashSet();
 
-            reachableFeeds = GetReachableNuGetFeeds(feedsToCheck, isFallback: false, out var isTimeout).ToHashSet();
+            var reachable = GetReachableNuGetFeeds(feedsToCheck, isFallback: false, out var isTimeout);
 
             // Always consider feeds excluded for the reachability check as reachable.
-            reachableFeeds.UnionWith(feeds.Where(feed => excludedFeeds.Contains(feed)));
+            reachableFeeds = reachable.Union(feeds.Where(feed => excludedFeeds.Contains(feed))).ToImmutableHashSet();
 
             return isTimeout;
         }
@@ -396,8 +444,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // in addition to the ones that are configured in `nuget.config` files.
             if (HasPrivateRegistryFeeds)
             {
-                logger.LogInfo($"Found {PrivateRegistryFeeds.Count} private registry feeds configured for C#: {string.Join(", ", PrivateRegistryFeeds.OrderBy(f => f))}");
-                explicitFeeds.UnionWith(PrivateRegistryFeeds);
+                logger.LogInfo($"Found {privateRegistryFeeds.Count} private registry feeds configured for C#: {string.Join(", ", privateRegistryFeeds.OrderBy(f => f))}");
+                explicitFeeds.UnionWith(privateRegistryFeeds);
             }
 
             return explicitFeeds.ToImmutableHashSet();
