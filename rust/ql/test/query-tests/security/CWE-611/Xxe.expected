@@ -1,31 +1,4 @@
 #select
-| main.rs:95:25:95:31 | user_fd | main.rs:152:21:152:39 | ...::open | main.rs:95:25:95:31 | user_fd | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:152:21:152:39 | ...::open | user-provided value |
 edges
-| main.rs:93:32:93:43 | ...: i32 [&ref] | main.rs:95:25:95:31 | user_fd | provenance |  |
-| main.rs:152:9:152:17 | user_file [Some] | main.rs:153:19:153:27 | user_file [Some] | provenance |  |
-| main.rs:152:21:152:39 | ...::open | main.rs:152:21:152:55 | ...::open(...) [Ok] | provenance | Src:MaD:1  |
-| main.rs:152:21:152:55 | ...::open(...) [Ok] | main.rs:152:21:152:60 | ... .ok() [Some] | provenance | MaD:4 |
-| main.rs:152:21:152:60 | ... .ok() [Some] | main.rs:152:9:152:17 | user_file [Some] | provenance |  |
-| main.rs:153:9:153:15 | user_fd [&ref] | main.rs:161:30:161:36 | user_fd [&ref] | provenance |  |
-| main.rs:153:19:153:27 | user_file [Some] | main.rs:153:19:153:36 | user_file.as_ref() [Some, &ref] | provenance | MaD:2 |
-| main.rs:153:19:153:36 | user_file.as_ref() [Some, &ref] | main.rs:153:19:153:72 | ... .map_or(...) [&ref] | provenance | MaD:3 |
-| main.rs:153:19:153:72 | ... .map_or(...) [&ref] | main.rs:153:9:153:15 | user_fd [&ref] | provenance |  |
-| main.rs:161:30:161:36 | user_fd [&ref] | main.rs:93:32:93:43 | ...: i32 [&ref] | provenance |  |
-models
-| 1 | Source: <std::fs::File>::open; ReturnValue.Field[core::result::Result::Ok(0)]; file |
-| 2 | Summary: <core::option::Option>::as_ref; Argument[self].Reference.Field[core::option::Option::Some(0)]; ReturnValue.Field[core::option::Option::Some(0)].Reference; value |
-| 3 | Summary: <core::option::Option>::map_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
-| 4 | Summary: <core::result::Result>::ok; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue.Field[core::option::Option::Some(0)]; value |
 nodes
-| main.rs:93:32:93:43 | ...: i32 [&ref] | semmle.label | ...: i32 [&ref] |
-| main.rs:95:25:95:31 | user_fd | semmle.label | user_fd |
-| main.rs:152:9:152:17 | user_file [Some] | semmle.label | user_file [Some] |
-| main.rs:152:21:152:39 | ...::open | semmle.label | ...::open |
-| main.rs:152:21:152:55 | ...::open(...) [Ok] | semmle.label | ...::open(...) [Ok] |
-| main.rs:152:21:152:60 | ... .ok() [Some] | semmle.label | ... .ok() [Some] |
-| main.rs:153:9:153:15 | user_fd [&ref] | semmle.label | user_fd [&ref] |
-| main.rs:153:19:153:27 | user_file [Some] | semmle.label | user_file [Some] |
-| main.rs:153:19:153:36 | user_file.as_ref() [Some, &ref] | semmle.label | user_file.as_ref() [Some, &ref] |
-| main.rs:153:19:153:72 | ... .map_or(...) [&ref] | semmle.label | ... .map_or(...) [&ref] |
-| main.rs:161:30:161:36 | user_fd [&ref] | semmle.label | user_fd [&ref] |
 subpaths
