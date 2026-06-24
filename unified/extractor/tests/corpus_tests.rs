@@ -150,15 +150,28 @@ fn run_desugaring(
     lang: &simple::LanguageSpec,
     input: &str,
 ) -> Result<yeast::Ast, String> {
-    let runner = match lang.desugar.as_ref() {
-        Some(config) => Runner::from_config(lang.ts_language.clone(), config)
-            .map_err(|e| format!("Failed to create yeast runner: {e}"))?,
-        None => Runner::new(lang.ts_language.clone(), &[]),
-    };
-
-    runner
-        .run(input)
-        .map_err(|e| format!("Failed to parse input: {e}"))
+    match lang.desugar.as_deref() {
+        Some(desugarer) => {
+            // Parse the input ourselves so we don't depend on the desugarer
+            // knowing about the language.
+            let mut parser = tree_sitter::Parser::new();
+            parser
+                .set_language(&lang.ts_language)
+                .map_err(|e| format!("Failed to set language: {e}"))?;
+            let tree = parser
+                .parse(input, None)
+                .ok_or_else(|| "Failed to parse input".to_string())?;
+            desugarer
+                .run_from_tree(&tree, input.as_bytes())
+                .map_err(|e| format!("Desugaring failed: {e}"))
+        }
+        None => {
+            let runner: Runner = Runner::new(lang.ts_language.clone(), &[]);
+            runner
+                .run(input)
+                .map_err(|e| format!("Failed to parse input: {e}"))
+        }
+    }
 }
 
 /// Produce the raw tree-sitter parse tree dump for `input`, with no

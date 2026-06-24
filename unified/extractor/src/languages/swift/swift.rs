@@ -1,5 +1,5 @@
 use codeql_extractor::extractor::simple;
-use yeast::{rule, tree, DesugaringConfig, PhaseKind};
+use yeast::{rule, tree, ConcreteDesugarer, DesugaringConfig, PhaseKind};
 
 fn translation_rules() -> Vec<yeast::Rule> {
     vec![
@@ -966,14 +966,17 @@ fn translation_rules() -> Vec<yeast::Rule> {
 }
 
 pub fn language_spec(desugared_ast_schema: &'static str) -> simple::LanguageSpec {
-    let desugar = DesugaringConfig::new()
+    let ts_language: tree_sitter::Language = tree_sitter_swift::LANGUAGE.into();
+    let config = DesugaringConfig::new()
         .add_phase("translate", PhaseKind::OneShot, translation_rules())
         .with_output_node_types_yaml(desugared_ast_schema);
+    let desugarer = ConcreteDesugarer::new(ts_language.clone(), config)
+        .expect("failed to build Swift desugarer");
     simple::LanguageSpec {
         prefix: "swift",
-        ts_language: tree_sitter_swift::LANGUAGE.into(),
+        ts_language,
         node_types: tree_sitter_swift::NODE_TYPES,
         file_globs: vec!["*.swift".into(), "*.swiftinterface".into()],
-        desugar: Some(desugar),
+        desugar: Some(Box::new(desugarer)),
     }
 }

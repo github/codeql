@@ -1331,3 +1331,68 @@ impl<'a, C: Clone + Default> Runner<'a, C> {
         self.run_with_ctx(input, &mut user_ctx)
     }
 }
+
+// ---------------------------------------------------------------------------
+// Desugarer: type-erased view of a DesugaringConfig + Runner
+// ---------------------------------------------------------------------------
+
+/// Type-erased interface to a desugaring pipeline for a single language.
+///
+/// Consumers (e.g. a generic tree-sitter extractor) hold
+/// `Box<dyn Desugarer>` so they can dispatch through the trait without
+/// knowing the user context type `C` that's internal to yeast.
+///
+/// Construct one via [`ConcreteDesugarer::new`] from a
+/// [`DesugaringConfig<C>`] and a [`tree_sitter::Language`].
+pub trait Desugarer: Send + Sync {
+    /// The output AST schema (in YAML format), or `None` if the input
+    /// grammar's schema should be used.
+    fn output_node_types_yaml(&self) -> Option<&'static str>;
+
+    /// Parse `tree` against `source` and run the desugaring pipeline.
+    /// Each call constructs a fresh default user context internally.
+    fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8])
+        -> Result<Ast, String>;
+}
+
+/// A concrete [`Desugarer`] backed by a [`DesugaringConfig<C>`] for a
+/// specific user context type `C`. Stores the language and a pre-built
+/// schema so that per-call cost is bounded to constructing a transient
+/// [`Runner`] and cloning the schema (no YAML re-parsing).
+pub struct ConcreteDesugarer<C: Default + Clone + Send + Sync + 'static> {
+    language: tree_sitter::Language,
+    schema: schema::Schema,
+    config: DesugaringConfig<C>,
+}
+
+impl<C: Default + Clone + Send + Sync + 'static> ConcreteDesugarer<C> {
+    /// Build a desugarer for `language` from `config`. Parses the output
+    /// schema YAML once (if set) and stores it for reuse across files.
+    pub fn new(
+        language: tree_sitter::Language,
+        config: DesugaringConfig<C>,
+    ) -> Result<Self, String> {
+        let schema = config.build_schema(&language)?;
+        Ok(Self {
+            language,
+            schema,
+            config,
+        })
+    }
+}
+
+impl<C: Default + Clone + Send + Sync + 'static> Desugarer for ConcreteDesugarer<C> {
+    fn output_node_types_yaml(&self) -> Option<&'static str> {
+        self.config.output_node_types_yaml
+    }
+
+    fn run_from_tree(
+        &self,
+        tree: &tree_sitter::Tree,
+        source: &[u8],
+    ) -> Result<Ast, String> {
+        let runner =
+            Runner::with_schema(self.language.clone(), &self.schema, &self.config.phases);
+        runner.run_from_tree(tree, source)
+    }
+}
