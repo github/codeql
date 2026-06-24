@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return new NugetExeWrapper(fileProvider, packageDirectory, logger, useDefaultFeed);
             }
 
-            return new NoOpPackagesConfig(fileProvider, logger);
+            return new NoOpPackagesConfig(fileProvider.PackagesConfigs, logger);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             private void AddDefaultPackageSource(string nugetConfig)
             {
                 logger.LogInfo("Adding default package source...");
-                RunMonoNugetCommand($"sources add -Name DefaultNugetOrg -Source {NugetPackageRestorer.PublicNugetOrgFeed} -ConfigFile \"{nugetConfig}\"", out _);
+                RunMonoNugetCommand($"sources add -Name DefaultNugetOrg -Source {FeedManager.PublicNugetOrgFeed} -ConfigFile \"{nugetConfig}\"", out _);
             }
 
             public void Dispose()
@@ -343,15 +343,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private class NoOpPackagesConfig : IPackagesConfigRestore
         {
             private readonly Semmle.Util.Logging.ILogger logger;
-            private readonly FileProvider fileProvider;
+            private readonly ICollection<string> packagesConfigs;
 
-            public NoOpPackagesConfig(FileProvider fileProvider, Semmle.Util.Logging.ILogger logger)
+            public NoOpPackagesConfig(ICollection<string> packagesConfigs, Semmle.Util.Logging.ILogger logger)
             {
-                this.fileProvider = fileProvider;
+                this.packagesConfigs = packagesConfigs;
                 this.logger = logger;
             }
 
-            public int PackageCount => fileProvider.PackagesConfigs.Count;
+            public int PackageCount => packagesConfigs.Count;
 
             public int InstallPackages()
             {
