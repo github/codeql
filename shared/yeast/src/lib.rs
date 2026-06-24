@@ -701,17 +701,24 @@ impl From<tree_sitter::Range> for NodeContent {
 }
 
 /// The transform function for a rule: takes the AST, captured variables, a
-/// fresh-name scope, and the source range of the matched node, and returns
-/// the IDs of the replacement nodes.
-pub type Transform = Box<
-    dyn Fn(&mut Ast, Captures, &tree_builder::FreshScope, Option<tree_sitter::Range>) -> Vec<Id>
+/// fresh-name scope, the source range of the matched node, and a mutable
+/// reference to the user context of type `C`. Returns the IDs of the
+/// replacement nodes.
+pub type Transform<C = ()> = Box<
+    dyn Fn(
+            &mut Ast,
+            Captures,
+            &tree_builder::FreshScope,
+            Option<tree_sitter::Range>,
+            &mut C,
+        ) -> Vec<Id>
         + Send
         + Sync,
 >;
 
-pub struct Rule {
+pub struct Rule<C = ()> {
     query: QueryNode,
-    transform: Transform,
+    transform: Transform<C>,
     /// If true, after this rule fires on a node the engine will try to
     /// re-apply this same rule on the result root. Defaults to false:
     /// each rule fires at most once on a given node, which prevents
@@ -719,8 +726,8 @@ pub struct Rule {
     repeated: bool,
 }
 
-impl Rule {
-    pub fn new(query: QueryNode, transform: Transform) -> Self {
+impl<C> Rule<C> {
+    pub fn new(query: QueryNode, transform: Transform<C>) -> Self {
         Self {
             query,
             transform,
@@ -742,9 +749,10 @@ impl Rule {
         ast: &mut Ast,
         node: Id,
         fresh: &tree_builder::FreshScope,
+        user_ctx: &mut C,
     ) -> Result<Option<Vec<Id>>, String> {
         match self.try_match(ast, node)? {
-            Some(captures) => Ok(Some(self.run_transform(ast, captures, node, fresh))),
+            Some(captures) => Ok(Some(self.run_transform(ast, captures, node, fresh, user_ctx))),
             None => Ok(None),
         }
     }
@@ -768,29 +776,30 @@ impl Rule {
         captures: Captures,
         node: Id,
         fresh: &tree_builder::FreshScope,
+        user_ctx: &mut C,
     ) -> Vec<Id> {
         fresh.next_scope();
         let source_range = ast.get_node(node).and_then(|n| match n.content {
             NodeContent::Range(r) => Some(r),
             _ => n.source_range,
         });
-        (self.transform)(ast, captures, fresh, source_range)
+        (self.transform)(ast, captures, fresh, source_range, user_ctx)
     }
 }
 
 const MAX_REWRITE_DEPTH: usize = 100;
 
 /// Index of rules by their root query kind for fast lookup.
-struct RuleIndex<'a> {
+struct RuleIndex<'a, C> {
     /// Rules indexed by root node kind name.
-    by_kind: BTreeMap<&'static str, Vec<&'a Rule>>,
+    by_kind: BTreeMap<&'static str, Vec<&'a Rule<C>>>,
     /// Rules with wildcard queries (Any) that apply to all nodes.
-    wildcard: Vec<&'a Rule>,
+    wildcard: Vec<&'a Rule<C>>,
 }
 
-impl<'a> RuleIndex<'a> {
-    fn new(rules: &'a [Rule]) -> Self {
-        let mut by_kind: BTreeMap<&'static str, Vec<&'a Rule>> = BTreeMap::new();
+impl<'a, C> RuleIndex<'a, C> {
+    fn new(rules: &'a [Rule<C>]) -> Self {
+        let mut by_kind: BTreeMap<&'static str, Vec<&'a Rule<C>>> = BTreeMap::new();
         let mut wildcard = Vec::new();
         for rule in rules {
             match rule.query.root_kind() {
@@ -801,7 +810,7 @@ impl<'a> RuleIndex<'a> {
         Self { by_kind, wildcard }
     }
 
-    fn rules_for_kind(&self, kind: &str) -> impl Iterator<Item = &&'a Rule> {
+    fn rules_for_kind(&self, kind: &str) -> impl Iterator<Item = &&'a Rule<C>> {
         self.by_kind
             .get(kind)
             .into_iter()
@@ -810,23 +819,25 @@ impl<'a> RuleIndex<'a> {
     }
 }
 
-fn apply_repeating_rules(
-    rules: &[Rule],
+fn apply_repeating_rules<C: Clone>(
+    rules: &[Rule<C>],
     ast: &mut Ast,
+    user_ctx: &mut C,
     id: Id,
     fresh: &tree_builder::FreshScope,
 ) -> Result<Vec<Id>, String> {
     let index = RuleIndex::new(rules);
-    apply_repeating_rules_inner(&index, ast, id, fresh, 0, None)
+    apply_repeating_rules_inner(&index, ast, user_ctx, id, fresh, 0, None)
 }
 
-fn apply_repeating_rules_inner(
-    index: &RuleIndex,
+fn apply_repeating_rules_inner<C: Clone>(
+    index: &RuleIndex<C>,
     ast: &mut Ast,
+    user_ctx: &mut C,
     id: Id,
     fresh: &tree_builder::FreshScope,
     rewrite_depth: usize,
-    skip_rule: Option<*const Rule>,
+    skip_rule: Option<*const Rule<C>>,
 ) -> Result<Vec<Id>, String> {
     if rewrite_depth > MAX_REWRITE_DEPTH {
         return Err(format!(
@@ -837,11 +848,16 @@ fn apply_repeating_rules_inner(
 
     let node_kind = ast.get_node(id).map(|n| n.kind()).unwrap_or("");
     for rule in index.rules_for_kind(node_kind) {
-        let rule_ptr = *rule as *const Rule;
+        let rule_ptr = *rule as *const Rule<C>;
         if Some(rule_ptr) == skip_rule {
             continue;
         }
-        if let Some(result_node) = rule.try_rule(ast, id, fresh)? {
+        // Snapshot the user context before invoking the rule so that any
+        // mutations the rule makes are visible during recursive translation
+        // of its result, but not leaked to the parent's siblings.
+        let snapshot = user_ctx.clone();
+        let try_result = rule.try_rule(ast, id, fresh, user_ctx)?;
+        if let Some(result_node) = try_result {
             // For non-repeated rules, suppress further application of *this*
             // rule on the result root, so a rule whose output matches its own
             // query doesn't loop. Other rules and child traversal are
@@ -852,14 +868,19 @@ fn apply_repeating_rules_inner(
                 results.extend(apply_repeating_rules_inner(
                     index,
                     ast,
+                    user_ctx,
                     node,
                     fresh,
                     rewrite_depth + 1,
                     next_skip,
                 )?);
             }
+            *user_ctx = snapshot;
             return Ok(results);
         }
+        // Rule didn't match; restore any speculative changes (none expected
+        // since try_rule only mutates on match, but be defensive).
+        *user_ctx = snapshot;
     }
 
     // Take the parent's fields by ownership: the recursion will rewrite
@@ -874,7 +895,7 @@ fn apply_repeating_rules_inner(
     for children in fields.values_mut() {
         let mut new_children: Option<Vec<Id>> = None;
         for (i, &child_id) in children.iter().enumerate() {
-            let result = apply_repeating_rules_inner(index, ast, child_id, fresh, rewrite_depth, None)?;
+            let result = apply_repeating_rules_inner(index, ast, user_ctx, child_id, fresh, rewrite_depth, None)?;
             let unchanged = result.len() == 1 && result[0] == child_id;
             match (&mut new_children, unchanged) {
                 (None, true) => {} // unchanged so far, no allocation needed
@@ -903,19 +924,21 @@ fn apply_repeating_rules_inner(
 /// each visited node, recursion proceeds only through captured nodes (not
 /// through the input node's children directly), and an error is returned if
 /// no rule matches a visited node.
-fn apply_one_shot_rules(
-    rules: &[Rule],
+fn apply_one_shot_rules<C: Clone>(
+    rules: &[Rule<C>],
     ast: &mut Ast,
+    user_ctx: &mut C,
     id: Id,
     fresh: &tree_builder::FreshScope,
 ) -> Result<Vec<Id>, String> {
     let index = RuleIndex::new(rules);
-    apply_one_shot_rules_inner(&index, ast, id, fresh, 0)
+    apply_one_shot_rules_inner(&index, ast, user_ctx, id, fresh, 0)
 }
 
-fn apply_one_shot_rules_inner(
-    index: &RuleIndex,
+fn apply_one_shot_rules_inner<C: Clone>(
+    index: &RuleIndex<C>,
     ast: &mut Ast,
+    user_ctx: &mut C,
     id: Id,
     fresh: &tree_builder::FreshScope,
     rewrite_depth: usize,
@@ -932,6 +955,11 @@ fn apply_one_shot_rules_inner(
 
     for rule in index.rules_for_kind(node_kind) {
         if let Some(mut captures) = rule.try_match(ast, id)? {
+            // Snapshot the user context before invoking the rule so that any
+            // mutations the rule (or its transitively-translated captures)
+            // make are visible during this rule's transform, but not leaked
+            // to the parent's siblings.
+            let snapshot = user_ctx.clone();
             // Recursively translate every captured node before invoking the
             // transform. The transform's output uses output-schema kinds, so
             // we must translate captured input-schema nodes to their
@@ -944,9 +972,11 @@ fn apply_one_shot_rules_inner(
                 if captured_id == id {
                     return Ok(vec![captured_id]);
                 }
-                apply_one_shot_rules_inner(index, ast, captured_id, fresh, rewrite_depth + 1)
+                apply_one_shot_rules_inner(index, ast, user_ctx, captured_id, fresh, rewrite_depth + 1)
             })?;
-            return Ok(rule.run_transform(ast, captures, id, fresh));
+            let result = rule.run_transform(ast, captures, id, fresh, user_ctx);
+            *user_ctx = snapshot;
+            return Ok(result);
         }
     }
 
@@ -974,15 +1004,15 @@ pub enum PhaseKind {
 /// starts. Rules within a phase compete for matches as usual; rules in
 /// different phases never compete because each traversal only considers the
 /// current phase's rules.
-pub struct Phase {
+pub struct Phase<C = ()> {
     /// Name used in error messages.
     pub name: String,
-    pub rules: Vec<Rule>,
+    pub rules: Vec<Rule<C>>,
     pub kind: PhaseKind,
 }
 
-impl Phase {
-    pub fn new(name: impl Into<String>, kind: PhaseKind, rules: Vec<Rule>) -> Self {
+impl<C> Phase<C> {
+    pub fn new(name: impl Into<String>, kind: PhaseKind, rules: Vec<Rule<C>>) -> Self {
         Self {
             name: name.into(),
             rules,
@@ -1008,17 +1038,30 @@ impl Phase {
 ///     .add_phase("desugar", PhaseKind::Repeating, desugar_rules)
 ///     .with_output_node_types_yaml(yaml);
 /// ```
-#[derive(Default)]
-pub struct DesugaringConfig {
+///
+/// The optional type parameter `C` is the user context type threaded through
+/// rule transforms. Defaults to `()` (no user context).
+pub struct DesugaringConfig<C = ()> {
     /// Phases of rule application, applied in order.
-    pub phases: Vec<Phase>,
+    pub phases: Vec<Phase<C>>,
     /// Output node-types in YAML format. If `None`, the input grammar's
     /// node types are used (i.e. the desugared AST has the same node types
     /// as the tree-sitter grammar).
     pub output_node_types_yaml: Option<&'static str>,
 }
 
-impl DesugaringConfig {
+// Manual `Default` impl so users with a custom `C` that doesn't implement
+// `Default` can still construct an empty config.
+impl<C> Default for DesugaringConfig<C> {
+    fn default() -> Self {
+        Self {
+            phases: Vec::new(),
+            output_node_types_yaml: None,
+        }
+    }
+}
+
+impl<C> DesugaringConfig<C> {
     /// Create an empty configuration. Add phases via [`add_phase`] and an
     /// optional output schema via [`with_output_node_types_yaml`].
     pub fn new() -> Self {
@@ -1030,7 +1073,7 @@ impl DesugaringConfig {
         mut self,
         name: impl Into<String>,
         kind: PhaseKind,
-        rules: Vec<Rule>,
+        rules: Vec<Rule<C>>,
     ) -> Self {
         self.phases.push(Phase::new(name, kind, rules));
         self
@@ -1052,15 +1095,15 @@ impl DesugaringConfig {
     }
 }
 
-pub struct Runner<'a> {
+pub struct Runner<'a, C = ()> {
     language: tree_sitter::Language,
     schema: schema::Schema,
-    phases: &'a [Phase],
+    phases: &'a [Phase<C>],
 }
 
-impl<'a> Runner<'a> {
+impl<'a, C> Runner<'a, C> {
     /// Create a runner using the input grammar's schema for output.
-    pub fn new(language: tree_sitter::Language, phases: &'a [Phase]) -> Self {
+    pub fn new(language: tree_sitter::Language, phases: &'a [Phase<C>]) -> Self {
         let schema = schema::Schema::from_language(&language);
         Self {
             language,
@@ -1073,7 +1116,7 @@ impl<'a> Runner<'a> {
     pub fn with_schema(
         language: tree_sitter::Language,
         schema: &schema::Schema,
-        phases: &'a [Phase],
+        phases: &'a [Phase<C>],
     ) -> Self {
         Self {
             language,
@@ -1085,7 +1128,7 @@ impl<'a> Runner<'a> {
     /// Create a runner from a [`DesugaringConfig`].
     pub fn from_config(
         language: tree_sitter::Language,
-        config: &'a DesugaringConfig,
+        config: &'a DesugaringConfig<C>,
     ) -> Result<Self, String> {
         let schema = config.build_schema(&language)?;
         Ok(Self {
@@ -1094,11 +1137,17 @@ impl<'a> Runner<'a> {
             phases: &config.phases,
         })
     }
+}
 
-    pub fn run_from_tree(
+impl<'a, C: Clone> Runner<'a, C> {
+    /// Parse `tree` against `source` and run all phases, threading
+    /// `user_ctx` through every rule transform. The caller owns the
+    /// initial context state.
+    pub fn run_from_tree_with_ctx(
         &self,
         tree: &tree_sitter::Tree,
         source: &[u8],
+        user_ctx: &mut C,
     ) -> Result<Ast, String> {
         let mut ast = Ast::from_tree_with_schema_and_source(
             self.schema.clone(),
@@ -1106,11 +1155,13 @@ impl<'a> Runner<'a> {
             &self.language,
             source.to_vec(),
         );
-        self.run_phases(&mut ast)?;
+        self.run_phases(&mut ast, user_ctx)?;
         Ok(ast)
     }
 
-    pub fn run(&self, input: &str) -> Result<Ast, String> {
+    /// Parse `input` and run all phases, threading `user_ctx` through
+    /// every rule transform. The caller owns the initial context state.
+    pub fn run_with_ctx(&self, input: &str, user_ctx: &mut C) -> Result<Ast, String> {
         let mut parser = tree_sitter::Parser::new();
         parser
             .set_language(&self.language)
@@ -1124,20 +1175,20 @@ impl<'a> Runner<'a> {
             &self.language,
             input.as_bytes().to_vec(),
         );
-        self.run_phases(&mut ast)?;
+        self.run_phases(&mut ast, user_ctx)?;
         Ok(ast)
     }
 
     /// Apply each phase in turn to the AST, threading the root through.
     /// A single `FreshScope` is shared across phases so that fresh
     /// identifiers generated in different phases don't collide.
-    fn run_phases(&self, ast: &mut Ast) -> Result<(), String> {
+    fn run_phases(&self, ast: &mut Ast, user_ctx: &mut C) -> Result<(), String> {
         let fresh = tree_builder::FreshScope::new();
         let mut root = ast.get_root();
         for phase in self.phases {
             let res = match phase.kind {
-                PhaseKind::Repeating => apply_repeating_rules(&phase.rules, ast, root, &fresh),
-                PhaseKind::OneShot => apply_one_shot_rules(&phase.rules, ast, root, &fresh),
+                PhaseKind::Repeating => apply_repeating_rules(&phase.rules, ast, user_ctx, root, &fresh),
+                PhaseKind::OneShot => apply_one_shot_rules(&phase.rules, ast, user_ctx, root, &fresh),
             }
             .map_err(|e| format!("Phase `{}`: {e}", phase.name))?;
             if res.len() != 1 {
@@ -1151,5 +1202,25 @@ impl<'a> Runner<'a> {
         }
         ast.set_root(root);
         Ok(())
+    }
+}
+
+impl<'a, C: Clone + Default> Runner<'a, C> {
+    /// Parse `tree` against `source` and run all phases, using the
+    /// default context (`C::default()`) as the initial context state.
+    pub fn run_from_tree(
+        &self,
+        tree: &tree_sitter::Tree,
+        source: &[u8],
+    ) -> Result<Ast, String> {
+        let mut user_ctx = C::default();
+        self.run_from_tree_with_ctx(tree, source, &mut user_ctx)
+    }
+
+    /// Parse `input` and run all phases, using the default context
+    /// (`C::default()`) as the initial context state.
+    pub fn run(&self, input: &str) -> Result<Ast, String> {
+        let mut user_ctx = C::default();
+        self.run_with_ctx(input, &mut user_ctx)
     }
 }

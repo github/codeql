@@ -168,7 +168,7 @@ fn dump_raw_parse(
     lang: &simple::LanguageSpec,
     input: &str,
 ) -> Result<String, String> {
-    let runner = Runner::new(lang.ts_language.clone(), &[]);
+    let runner: Runner = Runner::new(lang.ts_language.clone(), &[]);
     let ast = runner
         .run(input)
         .map_err(|e| format!("Failed to parse input: {e}"))?;

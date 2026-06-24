@@ -7,23 +7,46 @@ use crate::{Ast, FieldId, Id, NodeContent};
 /// Context for building new AST nodes during a transformation.
 ///
 /// Used by the `tree!` and `trees!` macros. Holds a mutable reference to the
-/// AST, a reference to the captures from a query match, and a `FreshScope` for
-/// generating unique identifiers.
-pub struct BuildCtx<'a> {
+/// AST, a reference to the captures from a query match, a `FreshScope` for
+/// generating unique identifiers, and a mutable reference to a user-defined
+/// context of type `C`.
+///
+/// The user context `C` is shared across rules via the framework's driver:
+/// outer rules can write to it before recursive translation, and inner rules
+/// can read (or further mutate) it during their transforms. The framework
+/// snapshots and restores the user context around each rule application, so
+/// mutations made by a rule are visible to its descendants (via recursive
+/// translation) but not to its parent's siblings.
+///
+/// `BuildCtx` implements [`Deref`] and [`DerefMut`] targeting `C`, so user
+/// context fields are accessible as `ctx.my_field` directly (provided they
+/// don't collide with `BuildCtx`'s own fields like `ast`, `captures`, etc.).
+///
+/// The default `C = ()` means rules that don't need any user context don't
+/// pay any cost.
+pub struct BuildCtx<'a, C: 'a = ()> {
     pub ast: &'a mut Ast,
     pub captures: &'a Captures,
     pub fresh: &'a FreshScope,
     /// Source range of the matched node, inherited by synthetic nodes.
     pub source_range: Option<tree_sitter::Range>,
+    /// User-supplied context, accessible directly via `ctx.field` (via Deref).
+    pub user_ctx: &'a mut C,
 }
 
-impl<'a> BuildCtx<'a> {
-    pub fn new(ast: &'a mut Ast, captures: &'a Captures, fresh: &'a FreshScope) -> Self {
+impl<'a, C> BuildCtx<'a, C> {
+    pub fn new(
+        ast: &'a mut Ast,
+        captures: &'a Captures,
+        fresh: &'a FreshScope,
+        user_ctx: &'a mut C,
+    ) -> Self {
         Self {
             ast,
             captures,
             fresh,
             source_range: None,
+            user_ctx,
         }
     }
 
@@ -32,12 +55,14 @@ impl<'a> BuildCtx<'a> {
         captures: &'a Captures,
         fresh: &'a FreshScope,
         source_range: Option<tree_sitter::Range>,
+        user_ctx: &'a mut C,
     ) -> Self {
         Self {
             ast,
             captures,
             fresh,
             source_range,
+            user_ctx,
         }
     }
 
@@ -111,5 +136,18 @@ impl<'a> BuildCtx<'a> {
             .field_id_for_name(field_name)
             .unwrap_or_else(|| panic!("build: field '{field_name}' not found"));
         self.ast.prepend_field_child(node_id, field_id, value_id);
+    }
+}
+
+impl<C> std::ops::Deref for BuildCtx<'_, C> {
+    type Target = C;
+    fn deref(&self) -> &C {
+        &*self.user_ctx
+    }
+}
+
+impl<C> std::ops::DerefMut for BuildCtx<'_, C> {
+    fn deref_mut(&mut self) -> &mut C {
+        &mut *self.user_ctx
     }
 }

@@ -296,10 +296,10 @@ fn parse_query_list(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
 // tree! / trees! parsing — direct code generation against BuildCtx
 // ---------------------------------------------------------------------------
 
-const IMPLICIT_CTX: &str = "__yeast_ctx";
+const IMPLICIT_CTX: &str = "ctx";
 
 /// Determine the context identifier: either explicit `ctx,` or the implicit
-/// `__yeast_ctx` from an enclosing `rule!`.
+/// `ctx` from an enclosing `rule!`.
 fn parse_ctx_or_implicit(tokens: &mut Tokens) -> Ident {
     // Check if first token is an ident followed by a comma
     let mut lookahead = tokens.clone();
@@ -888,9 +888,9 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
     Ok(quote! {
         {
             let __query = #query_code;
-            yeast::Rule::new(__query, Box::new(|__ast: &mut yeast::Ast, __captures: yeast::captures::Captures, __fresh: &yeast::tree_builder::FreshScope, __source_range: Option<tree_sitter::Range>| {
+            yeast::Rule::new(__query, Box::new(|__ast: &mut yeast::Ast, __captures: yeast::captures::Captures, __fresh: &yeast::tree_builder::FreshScope, __source_range: Option<tree_sitter::Range>, __user_ctx: &mut _| {
                 #(#bindings)*
-                let mut #ctx_ident = yeast::build::BuildCtx::with_source_range(__ast, &__captures, __fresh, __source_range);
+                let mut #ctx_ident = yeast::build::BuildCtx::with_source_range(__ast, &__captures, __fresh, __source_range, __user_ctx);
                 #transform_body
             }))
         }
