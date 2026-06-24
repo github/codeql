@@ -673,13 +673,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (switch_case body: (block stmt: {..body}))
         ),
-        // if case let x = expr — the pattern is taken as-is (no Optional wrapping)
+        // if case PATTERN = expr — preserve the pattern directly (no Optional wrapping)
         rule!(
-            (if_let_binding "case" (value_binding_pattern) bound_identifier: @name _ @val)
+            (if_let_binding "case" pattern: @pat value: @val)
             =>
             (pattern_guard_expr
                 value: {val}
-                pattern: (name_pattern identifier: (identifier #{name})))
+                pattern: {pat})
         ),
         rule!(
             (if_let_binding
