@@ -72,10 +72,9 @@ private predicate hasXxeOption(Expr e) {
     ["xmlParserOption_XML_PARSE_NOENT", "xmlParserOption_XML_PARSE_DTDLOAD"]
   or
   // Integer literal with XML_PARSE_NOENT (bit 1) or XML_PARSE_DTDLOAD (bit 2) set
-  exists(int v |
-    v = e.(IntegerLiteralExpr).getTextValue().regexpCapture("^([0-9]+).*$", 1).toInt()
-  |
-    v.bitAnd(6) != 0 // 6 = 2 | 4 = XML_PARSE_NOENT | XML_PARSE_DTDLOAD
+  exists(string value |
+    e.(IntegerLiteralExpr).getTextValue() = value + concat(e.(IntegerLiteralExpr).getSuffix()) and
+    value.toInt().bitAnd(6) != 0 // 6 = 2 | 4 = XML_PARSE_NOENT | XML_PARSE_DTDLOAD
   )
   or
   // Bitwise OR expression

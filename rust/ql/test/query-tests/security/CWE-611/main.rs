@@ -139,7 +139,7 @@ unsafe fn test_integer_literal_good1(user_xml: &str) {
 
 unsafe fn test_integer_literal_good2(user_xml: &str) {
     // GOOD: literal value 2048 = no entity expansion
-    bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), 2_048); // $ SPURIOUS: Alert[rust/xxe]
+    bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), 2_048);
 }
 
 unsafe fn test_dataflow_bad(user_xml: &str) {
