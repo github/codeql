@@ -833,6 +833,10 @@ private module AssignOperationDesugar {
         )
       )
     }
+
+    final override predicate excludeFromControlFlowTree(AstNode n) {
+      n = any(ScopeResolutionAssignOperation sao).getLeftOperand()
+    }
   }
 
   /** An assignment operation where the left-hand side is a method call. */
