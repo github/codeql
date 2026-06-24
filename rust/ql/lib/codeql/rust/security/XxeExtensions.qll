@@ -8,6 +8,7 @@ private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
+private import codeql.rust.dataflow.internal.Node as Node
 
 /**
  * Provides default sources, sinks and barriers for detecting XML external
@@ -38,15 +39,16 @@ module Xxe {
   private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
-   * A libxml2 XML parsing call with unsafe parser options, considered as a
-   * flow sink.
+   * A sink for XXE from model data.
    */
-  private class Libxml2XxeSink extends Sink {
-    Libxml2XxeSink() {
-      exists(Call call, int xmlArg, int optionsArg |
-        libxml2ParseCall(call, xmlArg, optionsArg) and
-        this.asExpr() = call.getPositionalArgument(xmlArg) and
-        hasXxeOption(call.getPositionalArgument(optionsArg))
+  private class ModelsAsDataSink extends Sink {
+    ModelsAsDataSink() {
+      exists(Call call |
+        // an XML parse call
+        sinkNode(this, "xxe") and
+        call = this.(Node::FlowSummaryNode).getSinkElement().getCall() and
+        // with an unsafe option
+        hasXxeOption(call.getAnArgument())
       )
     }
   }
@@ -60,38 +62,14 @@ module Xxe {
 }
 
 /**
- * Holds if `call` is a call to a `libxml2` XML parsing function, where
- * `xmlArg` is the index of the XML content argument and `optionsArg` is the
- * index of the parser options argument.
- */
-private predicate libxml2ParseCall(Call call, int xmlArg, int optionsArg) {
-  exists(string fname | call.getStaticTarget().getName().getText() = fname |
-    fname = "xmlReadFile" and xmlArg = 0 and optionsArg = 2
-    or
-    fname = ["xmlReadDoc", "xmlReadFd"] and xmlArg = 0 and optionsArg = 3
-    or
-    fname = ["xmlCtxtReadFile", "xmlParseInNodeContext"] and xmlArg = 1 and optionsArg = 3
-    or
-    fname = ["xmlCtxtReadDoc", "xmlCtxtReadFd"] and xmlArg = 1 and optionsArg = 4
-    or
-    fname = "xmlReadMemory" and xmlArg = 0 and optionsArg = 4
-    or
-    fname = "xmlCtxtReadMemory" and xmlArg = 1 and optionsArg = 5
-    or
-    fname = "xmlReadIO" and xmlArg = 0 and optionsArg = 5
-    or
-    fname = "xmlCtxtReadIO" and xmlArg = 1 and optionsArg = 6
-  )
-}
-
-/**
  * Holds if `e` is an expression that includes an unsafe `xmlParserOption`,
  * specifically `XML_PARSE_NOENT` (value 2, enables entity substitution) or
  * `XML_PARSE_DTDLOAD` (value 4, loads external DTD subsets).
  */
 private predicate hasXxeOption(Expr e) {
   // Named constant XML_PARSE_NOENT or XML_PARSE_DTDLOAD
-  e.(PathExpr).getPath().getText() = ["XML_PARSE_NOENT", "XML_PARSE_DTDLOAD"]
+  e.(PathExpr).getPath().getText() =
+    ["xmlParserOption_XML_PARSE_NOENT", "xmlParserOption_XML_PARSE_DTDLOAD"]
   or
   // Integer literal with XML_PARSE_NOENT (bit 1) or XML_PARSE_DTDLOAD (bit 2) set
   exists(int v |

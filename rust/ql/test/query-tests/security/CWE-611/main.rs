@@ -67,49 +67,49 @@ use std::os::raw::{c_char, c_uchar};
 
 unsafe fn test_xml_parse_noent(user_xml: &str) {
     // BAD: XML_PARSE_NOENT enables external entity substitution
-    bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_NOENT as i32); // $ MISSING: Alert[rust/xxe]
+    bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_NOENT as i32); // $ Alert[rust/xxe]
 }
 
 unsafe fn test_xml_parse_dtdload(user_xml: &str) {
     // BAD: XML_PARSE_DTDLOAD enables loading of external DTD subsets
-    bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_DTDLOAD as i32); // $ MISSING: Alert[rust/xxe]
+    bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_DTDLOAD as i32); // $ Alert[rust/xxe]
 }
 
 unsafe fn test_xml_parse_combined(user_xml: &str) {
     // BAD: combining both unsafe options
-    bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_NOENT as i32 | bindings::xmlParserOption_XML_PARSE_DTDLOAD as i32); // $ MISSING: Alert[rust/xxe]
+    bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_NOENT as i32 | bindings::xmlParserOption_XML_PARSE_DTDLOAD as i32); // $ Alert[rust/xxe]
 }
 
 unsafe fn test_xml_read_file_bad(user_filename: &str) {
     // BAD: user-controlled filename with XML_PARSE_NOENT
-    bindings::xmlReadFile(user_filename.as_ptr() as *const c_char, std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_NOENT as i32); // $ MISSING: Alert[rust/xxe]
+    bindings::xmlReadFile(user_filename.as_ptr() as *const c_char, std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_NOENT as i32); // $ Alert[rust/xxe]
 }
 
 unsafe fn test_xml_read_doc_bad(user_xml: &str) {
     // BAD: user-controlled XML document with XML_PARSE_DTDLOAD
-    bindings::xmlReadDoc(user_xml.as_ptr() as *const c_uchar, std::ptr::null_mut(), std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_DTDLOAD as i32); // $ MISSING: Alert[rust/xxe]
+    bindings::xmlReadDoc(user_xml.as_ptr() as *const c_uchar, std::ptr::null_mut(), std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_DTDLOAD as i32); // $ Alert[rust/xxe]
 }
 
 unsafe fn test_xml_read_fd_bad(user_fd: i32) {
     // BAD: user-controlled file descriptor with XML_PARSE_DTDLOAD
-    bindings::xmlReadFd(user_fd, std::ptr::null_mut(), std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_DTDLOAD as i32); // $ MISSING: Alert[rust/xxe]
+    bindings::xmlReadFd(user_fd, std::ptr::null_mut(), std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_DTDLOAD as i32); // $ Alert[rust/xxe]
 }
 
 unsafe fn test_xml_ctxt_read_file_bad(user_filename: &str) {
     // BAD: user-controlled filename with XML_PARSE_NOENT via ctxt variant
-    bindings::xmlCtxtReadFile(std::ptr::null_mut(), user_filename.as_ptr() as *const c_char, std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_NOENT as i32); // $ MISSING: Alert[rust/xxe]
+    bindings::xmlCtxtReadFile(std::ptr::null_mut(), user_filename.as_ptr() as *const c_char, std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_NOENT as i32); // $ Alert[rust/xxe]
 }
 
 unsafe fn test_xml_ctxt_read_doc_bad(user_xml: &str) {
     // BAD: user-controlled XML with unsafe options via ctxt variant
-    bindings::xmlCtxtReadDoc(std::ptr::null_mut(), user_xml.as_ptr() as *const c_uchar, std::ptr::null_mut(), std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_NOENT as i32); // $ MISSING: Alert[rust/xxe]
+    bindings::xmlCtxtReadDoc(std::ptr::null_mut(), user_xml.as_ptr() as *const c_uchar, std::ptr::null_mut(), std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_NOENT as i32); // $ Alert[rust/xxe]
 }
 
 unsafe fn test_xml_ctxt_read_memory_bad(user_xml: &str) {
     // BAD: user-controlled XML with unsafe options via ctxt variant
-    bindings::xmlCtxtReadMemory(
+    bindings::xmlCtxtReadMemory( // $ Alert[rust/xxe]
         std::ptr::null_mut(),
-        user_xml.as_ptr() as *const c_char, // $ MISSING: Alert[rust/xxe]
+        user_xml.as_ptr() as *const c_char,
         user_xml.len() as i32,
         std::ptr::null_mut(),
         std::ptr::null_mut(),
@@ -119,7 +119,7 @@ unsafe fn test_xml_ctxt_read_memory_bad(user_xml: &str) {
 
 unsafe fn test_integer_literal_bad(user_xml: &str) {
     // BAD: literal value 2 = XML_PARSE_NOENT
-    bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), 2); // $ MISSING: Alert[rust/xxe]
+    bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), 2); // $ Alert[rust/xxe]
 }
 
 unsafe fn test_dataflow_bad(user_xml: &str) {
@@ -147,9 +147,9 @@ unsafe fn test_xml_hardcoded_unsafe() {
 }
 
 fn main() {
-    let user_xml = std::env::args().nth(1).unwrap_or_default(); // $ MISSING: Source
-    let user_filename = std::env::args().nth(2).unwrap_or_default(); // $ MISSING: Source
-    let user_file = std::fs::File::open(&user_filename).ok(); // $ MISSING: Source
+    let user_xml = std::env::args().nth(1).unwrap_or_default(); // $ Source
+    let user_filename = std::env::args().nth(2).unwrap_or_default(); // $ Source
+    let user_file = std::fs::File::open(&user_filename).ok(); // $ Source
     let user_fd = user_file.as_ref().map_or(-1, |file| file.as_raw_fd());
 
     unsafe {

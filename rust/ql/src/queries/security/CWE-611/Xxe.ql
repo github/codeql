@@ -32,6 +32,12 @@ module XxeConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof Barrier }
 
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+    // we need flow through casts as a *value* step, not just the default taint step,
+    // to get flow on reference content when the pointer itself is cast.
+    pred.asExpr() = succ.asExpr().(CastExpr).getExpr()
+  }
+
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
