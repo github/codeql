@@ -1,6 +1,8 @@
 import commands
+import pytest
 
 
+@pytest.mark.kotlin1
 def test(codeql, java_full):
     # Compile the JavaDefns2 copy outside tracing, to make sure the Kotlin view of it matches the Java view seen by the traced javac compilation of JavaDefns.java below.
     commands.run(["javac", "JavaDefns2.java"])

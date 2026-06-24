@@ -1,6 +1,8 @@
 package com.github.codeql.utils
 
 import com.github.codeql.utils.versions.CodeQLIrConst
+import com.github.codeql.utils.versions.codeQlGetValueArgument
+import com.github.codeql.utils.versions.codeQlValueArgumentsCount
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.ir.declarations.IrAnnotationContainer
 import org.jetbrains.kotlin.ir.declarations.IrClass
@@ -76,9 +78,9 @@ private fun getSpecialJvmName(f: IrFunction): String? {
 fun getJvmName(container: IrAnnotationContainer): String? {
     for (a: IrConstructorCall in container.annotations) {
         val t = a.type
-        if (t is IrSimpleType && a.valueArgumentsCount == 1) {
+        if (t is IrSimpleType && a.codeQlValueArgumentsCount == 1) {
             val owner = t.classifier.owner
-            val v = a.getValueArgument(0)
+            val v = a.codeQlGetValueArgument(0)
             if (owner is IrClass) {
                 val aPkg = owner.packageFqName?.asString()
                 val name = owner.name.asString()

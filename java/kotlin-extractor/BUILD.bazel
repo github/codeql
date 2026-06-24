@@ -53,6 +53,10 @@ _extractor_name_prefix = "%s-%s" % (
     "embeddable" if _for_embeddable else "standalone",
 )
 
+_compiler_plugin_registrar_service_source = "src/main/resources/META-INF/services/org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar"
+
+_compiler_plugin_registrar_service_target = "META-INF/services/org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar"
+
 py_binary(
     name = "generate_dbscheme",
     srcs = ["generate_dbscheme.py"],
@@ -64,7 +68,13 @@ _resources = [
         r[len("src/main/resources/"):],
     )
     for r in glob(["src/main/resources/**"])
+    if r != _compiler_plugin_registrar_service_source
 ]
+
+_compiler_plugin_registrar_service = (
+    _compiler_plugin_registrar_service_source,
+    _compiler_plugin_registrar_service_target,
+)
 
 kt_javac_options(
     name = "javac-options",
@@ -91,19 +101,32 @@ kt_javac_options(
         # * `resource_strip_prefix` is unique per jar, so we must also put other resources under the same version prefix
         genrule(
             name = "resources-%s" % v,
-            srcs = [src for src, _ in _resources],
+            srcs = [src for src, _ in _resources] + (
+                [_compiler_plugin_registrar_service[0]] if not version_less(v, "2.4.0") else []
+            ),
             outs = [
                 "%s/com/github/codeql/extractor.name" % v,
             ] + [
                 "%s/%s" % (v, target)
                 for _, target in _resources
-            ],
+            ] + (
+                ["%s/%s" % (
+                    v,
+                    _compiler_plugin_registrar_service[1],
+                )] if not version_less(v, "2.4.0") else []
+            ),
             cmd = "\n".join([
                 "echo %s-%s > $(RULEDIR)/%s/com/github/codeql/extractor.name" % (_extractor_name_prefix, v, v),
             ] + [
                 "cp $(execpath %s) $(RULEDIR)/%s/%s" % (source, v, target)
                 for source, target in _resources
-            ]),
+            ] + (
+                ["cp $(execpath %s) $(RULEDIR)/%s/%s" % (
+                    _compiler_plugin_registrar_service[0],
+                    v,
+                    _compiler_plugin_registrar_service[1],
+                )] if not version_less(v, "2.4.0") else []
+            )),
         ),
         kt_jvm_library(
             name = "%s-%s" % (_extractor_name_prefix, v),
