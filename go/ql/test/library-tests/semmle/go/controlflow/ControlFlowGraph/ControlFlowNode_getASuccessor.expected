@@ -3981,15 +3981,17 @@
 | stmts.go:145:23:159:1 | block statement | stmts.go:145:23:159:1 | arg:0 block statement |
 | stmts.go:145:23:159:1 | param-init:0 block statement | stmts.go:146:2:151:2 | range statement |
 | stmts.go:146:2:151:2 | After range statement | stmts.go:153:2:155:2 | range statement |
+| stmts.go:146:2:151:2 | [ForeachElement] range statement | stmts.go:146:2:151:2 | extract:0 range statement |
 | stmts.go:146:2:151:2 | [LoopHeader] range statement | stmts.go:146:2:151:2 | After range statement |
-| stmts.go:146:2:151:2 | [LoopHeader] range statement | stmts.go:146:2:151:2 | next range statement |
+| stmts.go:146:2:151:2 | [LoopHeader] range statement | stmts.go:146:2:151:2 | [ForeachElement] range statement |
 | stmts.go:146:2:151:2 | assign:0 range statement | stmts.go:146:20:151:2 | block statement |
 | stmts.go:146:2:151:2 | extract:0 range statement | stmts.go:146:2:151:2 | assign:0 range statement |
-| stmts.go:146:2:151:2 | next range statement | stmts.go:146:2:151:2 | extract:0 range statement |
 | stmts.go:146:2:151:2 | range statement | stmts.go:146:17:146:18 | Before xs |
-| stmts.go:146:17:146:18 | After xs | stmts.go:146:2:151:2 | [LoopHeader] range statement |
+| stmts.go:146:17:146:18 | After xs [empty] | stmts.go:146:2:151:2 | After range statement |
+| stmts.go:146:17:146:18 | After xs [non-empty] | stmts.go:146:2:151:2 | [ForeachElement] range statement |
 | stmts.go:146:17:146:18 | Before xs | stmts.go:146:17:146:18 | xs |
-| stmts.go:146:17:146:18 | xs | stmts.go:146:17:146:18 | After xs |
+| stmts.go:146:17:146:18 | xs | stmts.go:146:17:146:18 | After xs [empty] |
+| stmts.go:146:17:146:18 | xs | stmts.go:146:17:146:18 | After xs [non-empty] |
 | stmts.go:146:20:151:2 | After block statement | stmts.go:146:2:151:2 | [LoopHeader] range statement |
 | stmts.go:146:20:151:2 | block statement | stmts.go:147:3:149:3 | if statement |
 | stmts.go:147:3:149:3 | After if statement | stmts.go:150:3:150:14 | expression statement |
@@ -4021,17 +4023,19 @@
 | stmts.go:150:13:150:13 | Before x | stmts.go:150:13:150:13 | x |
 | stmts.go:150:13:150:13 | x | stmts.go:150:13:150:13 | After x |
 | stmts.go:153:2:155:2 | After range statement | stmts.go:157:2:158:2 | range statement |
+| stmts.go:153:2:155:2 | [ForeachElement] range statement | stmts.go:153:2:155:2 | extract:0 range statement |
 | stmts.go:153:2:155:2 | [LoopHeader] range statement | stmts.go:153:2:155:2 | After range statement |
-| stmts.go:153:2:155:2 | [LoopHeader] range statement | stmts.go:153:2:155:2 | next range statement |
+| stmts.go:153:2:155:2 | [LoopHeader] range statement | stmts.go:153:2:155:2 | [ForeachElement] range statement |
 | stmts.go:153:2:155:2 | assign:0 range statement | stmts.go:153:2:155:2 | extract:1 range statement |
 | stmts.go:153:2:155:2 | assign:1 range statement | stmts.go:153:23:155:2 | block statement |
 | stmts.go:153:2:155:2 | extract:0 range statement | stmts.go:153:2:155:2 | assign:0 range statement |
 | stmts.go:153:2:155:2 | extract:1 range statement | stmts.go:153:2:155:2 | assign:1 range statement |
-| stmts.go:153:2:155:2 | next range statement | stmts.go:153:2:155:2 | extract:0 range statement |
 | stmts.go:153:2:155:2 | range statement | stmts.go:153:20:153:21 | Before xs |
-| stmts.go:153:20:153:21 | After xs | stmts.go:153:2:155:2 | [LoopHeader] range statement |
+| stmts.go:153:20:153:21 | After xs [empty] | stmts.go:153:2:155:2 | After range statement |
+| stmts.go:153:20:153:21 | After xs [non-empty] | stmts.go:153:2:155:2 | [ForeachElement] range statement |
 | stmts.go:153:20:153:21 | Before xs | stmts.go:153:20:153:21 | xs |
-| stmts.go:153:20:153:21 | xs | stmts.go:153:20:153:21 | After xs |
+| stmts.go:153:20:153:21 | xs | stmts.go:153:20:153:21 | After xs [empty] |
+| stmts.go:153:20:153:21 | xs | stmts.go:153:20:153:21 | After xs [non-empty] |
 | stmts.go:153:23:155:2 | After block statement | stmts.go:153:2:155:2 | [LoopHeader] range statement |
 | stmts.go:153:23:155:2 | block statement | stmts.go:154:3:154:17 | expression statement |
 | stmts.go:154:3:154:11 | After selection of Print | stmts.go:154:13:154:13 | Before i |
@@ -4050,13 +4054,15 @@
 | stmts.go:154:16:154:16 | Before v | stmts.go:154:16:154:16 | v |
 | stmts.go:154:16:154:16 | v | stmts.go:154:16:154:16 | After v |
 | stmts.go:157:2:158:2 | After range statement | stmts.go:145:23:159:1 | After block statement |
+| stmts.go:157:2:158:2 | [ForeachElement] range statement | stmts.go:157:15:158:2 | block statement |
 | stmts.go:157:2:158:2 | [LoopHeader] range statement | stmts.go:157:2:158:2 | After range statement |
-| stmts.go:157:2:158:2 | [LoopHeader] range statement | stmts.go:157:2:158:2 | next range statement |
-| stmts.go:157:2:158:2 | next range statement | stmts.go:157:15:158:2 | block statement |
+| stmts.go:157:2:158:2 | [LoopHeader] range statement | stmts.go:157:2:158:2 | [ForeachElement] range statement |
 | stmts.go:157:2:158:2 | range statement | stmts.go:157:12:157:13 | Before xs |
-| stmts.go:157:12:157:13 | After xs | stmts.go:157:2:158:2 | [LoopHeader] range statement |
+| stmts.go:157:12:157:13 | After xs [empty] | stmts.go:157:2:158:2 | After range statement |
+| stmts.go:157:12:157:13 | After xs [non-empty] | stmts.go:157:2:158:2 | [ForeachElement] range statement |
 | stmts.go:157:12:157:13 | Before xs | stmts.go:157:12:157:13 | xs |
-| stmts.go:157:12:157:13 | xs | stmts.go:157:12:157:13 | After xs |
+| stmts.go:157:12:157:13 | xs | stmts.go:157:12:157:13 | After xs [empty] |
+| stmts.go:157:12:157:13 | xs | stmts.go:157:12:157:13 | After xs [non-empty] |
 | stmts.go:157:15:158:2 | block statement | stmts.go:157:2:158:2 | [LoopHeader] range statement |
 | tst.go:0:0:0:0 | After tst.go | tst.go:0:0:0:0 | Normal Exit |
 | tst.go:0:0:0:0 | Entry | tst.go:0:0:0:0 | tst.go |

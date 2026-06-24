@@ -212,12 +212,18 @@ module GoCfg {
     }
 
     class ForeachStmt extends LoopStmt {
-      ForeachStmt() { none() }
+      ForeachStmt() { this instanceof Go::RangeStmt }
 
+      // Go's `range` statement binds its key and value by destructuring the
+      // current element rather than by evaluating ordinary target expressions,
+      // so it opts in to the synthesized element node (see
+      // `foreachHasElementNode`) and does not use the shared variable routing.
       Expr getVariable() { none() }
 
-      Expr getCollection() { none() }
+      Expr getCollection() { result = this.(Go::RangeStmt).getDomain() }
     }
+
+    predicate foreachHasElementNode(ForeachStmt foreach) { any() }
 
     class BreakStmt = Go::BreakStmt;
 
@@ -565,9 +571,6 @@ module GoCfg {
           exists(fd.getResultVar(i).(Go::ResultVariable).getFunction().getBody()) and
           tag = "result-zero-init:" + i.toString()
         )
-        or
-        // Next node for range statements
-        n instanceof Go::RangeStmt and tag = "next"
         or
         // Send node
         n instanceof Go::SendStmt and
@@ -965,7 +968,7 @@ module GoCfg {
     predicate overridesCallableBodyExit(Ast::Callable c) { funcHasDefer(c.(Go::FuncDef)) }
 
     predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
-      rangeLoop(n1, n2) or
+      rangeStmtStep(n1, n2) or
       selectStmt(n1, n2) or
       deferStmt(n1, n2) or
       goStmtStep(n1, n2) or
@@ -1424,17 +1427,15 @@ module GoCfg {
       )
     }
 
-    private predicate rangeLoop(PreControlFlowNode n1, PreControlFlowNode n2) {
+    private predicate rangeStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::RangeStmt s |
-        // Use the shared library's auto-created `[LoopHeader]` additional node
-        // (created for every `LoopStmt`) as the join/branch point of the range loop.
-        n1.isBefore(s) and n2.isBefore(s.getDomain())
-        or
-        n1.isAfter(s.getDomain()) and n2.isAdditional(s, "[LoopHeader]")
-        or
-        n1.isAdditional(s, "[LoopHeader]") and n2.isAdditional(s, "next")
-        or
-        n1.isAdditional(s, "next") and
+        // The shared `ForeachStmt` model owns the loop skeleton (testing the
+        // domain for emptiness, the `[LoopHeader]` join/branch point, and the
+        // loop exit) and routes control flow into the synthesized
+        // `[ForeachElement]` node (see `foreachHasElementNode`). From there we
+        // destructure the current element into the key/value variables using
+        // the shared extract/assign epilogue machinery, then enter the body.
+        n1.isAdditional(s, "[ForeachElement]") and
         (
           exists(getFirstEpilogueTag(s)) and n2.isAdditional(s, getFirstEpilogueTag(s))
           or
@@ -1448,10 +1449,6 @@ module GoCfg {
         )
         or
         n1.isAdditional(s, getLastEpilogueTag(s)) and n2.isBefore(s.getBody())
-        or
-        n1.isAfter(s.getBody()) and n2.isAdditional(s, "[LoopHeader]")
-        or
-        n1.isAdditional(s, "[LoopHeader]") and n2.isAfter(s)
       )
     }
 

@@ -790,7 +790,7 @@ module IR {
         result = evalExprInstruction(baseExpr)
       )
       or
-      result.(GetNextEntryInstruction).isAdditional(s, "next")
+      result.(GetNextEntryInstruction).isAdditional(s, "[ForeachElement]")
       or
       result = evalExprInstruction(s.(ReturnStmt).getExpr())
       or
@@ -1148,7 +1148,7 @@ module IR {
   class GetNextEntryInstruction extends Instruction {
     RangeStmt rs;
 
-    GetNextEntryInstruction() { this.isAdditional(rs, "next") }
+    GetNextEntryInstruction() { this.isAdditional(rs, "[ForeachElement]") }
 
     /**
      * Gets the instruction computing the value whose key-value pairs this instruction reads.
