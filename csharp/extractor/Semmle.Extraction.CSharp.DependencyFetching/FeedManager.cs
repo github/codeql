@@ -29,6 +29,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public bool HasPrivateRegistryFeeds { get; }
         public bool CheckNugetFeedResponsiveness { get; } = EnvironmentVariables.GetBooleanOptOut(EnvironmentVariableNames.CheckNugetFeedResponsiveness);
 
+        private readonly Lazy<ImmutableHashSet<string>> lazyExplicitFeeds;
+        public ImmutableHashSet<string> ExplicitFeeds => lazyExplicitFeeds.Value;
+
+        private readonly Lazy<ImmutableHashSet<string>> lazyAllFeeds;
+        public ImmutableHashSet<string> AllFeeds => lazyAllFeeds.Value;
+
         public FeedManager(ILogger logger, IDotNet dotnet, DependabotProxy? dependabotProxy, FileProvider fileProvider)
         {
             this.logger = logger;
@@ -38,6 +44,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             PrivateRegistryFeeds = dependabotProxy?.RegistryURLs.ToImmutableHashSet() ?? [];
             HasPrivateRegistryFeeds = PrivateRegistryFeeds.Count > 0;
             emptyPackageDirectory = new DependencyDirectory("empty", "empty package", logger);
+
+            lazyExplicitFeeds = new Lazy<ImmutableHashSet<string>>(GetExplicitFeeds);
+            lazyAllFeeds = new Lazy<ImmutableHashSet<string>>(GetAllFeeds);
         }
 
         private string? GetDirectoryName(string path)
@@ -271,7 +280,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// True if there is a timeout when trying to reach the feeds (excluding any feeds that are configured
         /// to be excluded from the check) or false otherwise.
         /// </returns>
-        public bool CheckSpecifiedFeeds(HashSet<string> feeds, out HashSet<string> reachableFeeds)
+        public bool CheckSpecifiedFeeds(ImmutableHashSet<string> feeds, out HashSet<string> reachableFeeds)
         {
             // Exclude any feeds from the feed check that are configured by the corresponding environment variable.
             // These feeds are always assumed to be reachable.
@@ -342,7 +351,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return reachableFeeds;
         }
 
-        public List<string> GetReachableFallbackNugetFeeds(HashSet<string>? feedsFromNugetConfigs)
+        public List<string> GetReachableFallbackNugetFeeds(ImmutableHashSet<string>? feedsFromNugetConfigs)
         {
             var fallbackFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.FallbackNugetFeeds).ToHashSet();
             if (fallbackFeeds.Count == 0)
@@ -365,7 +374,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return GetReachableNuGetFeeds(fallbackFeeds, isFallback: true, out var _);
         }
 
-        public (HashSet<string> explicitFeeds, HashSet<string> allFeeds) GetAllFeeds()
+        private ImmutableHashSet<string> GetExplicitFeeds()
         {
             var nugetConfigs = fileProvider.NugetConfigs;
 
@@ -391,10 +400,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 explicitFeeds.UnionWith(PrivateRegistryFeeds);
             }
 
+            return explicitFeeds.ToImmutableHashSet();
+        }
+
+        private ImmutableHashSet<string> GetAllFeeds()
+        {
+            var nugetConfigs = fileProvider.NugetConfigs;
+
             HashSet<string> allFeeds = [];
 
             // Add all explicitFeeds to the set of all feeds.
-            allFeeds.UnionWith(explicitFeeds);
+            allFeeds.UnionWith(ExplicitFeeds);
 
             // Obtain the list of feeds from the root source directory.
             // If a NuGet file is present it will be respected, otherwise we will just get the machine/environment specific feeds.
@@ -414,7 +430,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             logger.LogInfo($"Found {allFeeds.Count} NuGet feeds (with inherited ones) in nuget.config files: {string.Join(", ", allFeeds.OrderBy(f => f))}");
 
-            return (explicitFeeds, allFeeds);
+            return allFeeds.ToImmutableHashSet();
         }
 
         [GeneratedRegex(@"^E\s(.*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]

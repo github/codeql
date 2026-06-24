@@ -117,11 +117,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Find feeds that are configured in NuGet.config files and divide them into ones that
             // are explicitly configured for the project or by a private registry, and "all feeds"
             // (including inherited ones) from other locations on the host outside of the working directory.
-            (var explicitFeeds, var allFeeds) = feedManager.GetAllFeeds();
+            var explicitFeeds = feedManager.ExplicitFeeds;
+            var allFeeds = feedManager.AllFeeds;
 
             if (feedManager.CheckNugetFeedResponsiveness)
             {
-                var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
+                var inheritedFeeds = allFeeds.Except(explicitFeeds).ToImmutableHashSet();
 
                 if (inheritedFeeds.Count > 0)
                 {
@@ -312,7 +313,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("Failed project restore with missing package error", nugetMissingPackageFailures.ToString()));
         }
 
-        private AssemblyLookupLocation? DownloadMissingPackagesFromSpecificFeeds(IEnumerable<string> usedPackageNames, HashSet<string>? feedsFromNugetConfigs)
+        private AssemblyLookupLocation? DownloadMissingPackagesFromSpecificFeeds(IEnumerable<string> usedPackageNames, ImmutableHashSet<string>? feedsFromNugetConfigs)
         {
             var reachableFallbackFeeds = feedManager.GetReachableFallbackNugetFeeds(feedsFromNugetConfigs);
             compilationInfoContainer.CompilationInfos.Add(("Reachable fallback NuGet feed count", reachableFallbackFeeds.Count.ToString()));
