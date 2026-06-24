@@ -978,6 +978,23 @@ module Unified {
     }
   }
 
+  /** A class representing `or_pattern` nodes. */
+  class OrPattern extends @unified_or_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "OrPattern" }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final Modifier getModifier(int i) { unified_or_pattern_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `pattern`. */
+    final Pattern getPattern(int i) { unified_or_pattern_pattern(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      unified_or_pattern_modifier(this, _, result) or unified_or_pattern_pattern(this, _, result)
+    }
+  }
+
   /** A class representing `parameter` nodes. */
   class Parameter extends @unified_parameter, AstNode {
     /** Gets the name of the primary QL class for this element. */
@@ -1109,14 +1126,14 @@ module Unified {
     final Modifier getModifier(int i) { unified_switch_case_modifier(this, i, result) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final Pattern getPattern(int i) { unified_switch_case_pattern(this, i, result) }
+    final Pattern getPattern() { unified_switch_case_pattern(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       unified_switch_case_def(this, result) or
       unified_switch_case_guard(this, result) or
       unified_switch_case_modifier(this, _, result) or
-      unified_switch_case_pattern(this, _, result)
+      unified_switch_case_pattern(this, result)
     }
   }
 
@@ -1654,6 +1671,10 @@ module Unified {
       i = -1 and
       name = "getPrecedence"
       or
+      result = node.(OrPattern).getModifier(i) and name = "getModifier"
+      or
+      result = node.(OrPattern).getPattern(i) and name = "getPattern"
+      or
       result = node.(Parameter).getDefault() and i = -1 and name = "getDefault"
       or
       result = node.(Parameter).getExternalName() and i = -1 and name = "getExternalName"
@@ -1682,7 +1703,7 @@ module Unified {
       or
       result = node.(SwitchCase).getModifier(i) and name = "getModifier"
       or
-      result = node.(SwitchCase).getPattern(i) and name = "getPattern"
+      result = node.(SwitchCase).getPattern() and i = -1 and name = "getPattern"
       or
       result = node.(SwitchExpr).getCase(i) and name = "getCase"
       or
