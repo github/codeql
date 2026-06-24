@@ -148,12 +148,38 @@ signature module AstSig<LocationSig Location> {
 
   /** A for-loop that iterates over the elements of a collection. */
   class ForeachStmt extends LoopStmt {
-    /** Gets the variable declaration of this `foreach` loop. */
+    /**
+     * Gets the variable declaration of this `foreach` loop, if any.
+     *
+     * A `foreach` loop that binds more than one variable per iteration (for
+     * example when destructuring is used, as in `for k, v := range m` in Go, or
+     * `for (a, b) in ...` in Rust/Python/Swift) should instead opt in to the
+     * synthesized per-iteration element node (see `foreachHasElementNode`) and
+     * destructure that element into its variables, in which case this predicate
+     * need not have a result.
+     */
     Expr getVariable();
 
     /** Gets the collection expression of this `foreach` loop. */
     Expr getCollection();
   }
+
+  /**
+   * Holds if `foreach` has a synthesized per-iteration "element" node, that is,
+   * an additional control flow node representing the element produced by each
+   * iteration of the loop.
+   *
+   * When this holds, the shared library routes control flow from the loop
+   * header (and from the non-empty collection) into the element node, but the
+   * language is then responsible for wiring control flow out of the element
+   * node and on to the loop body (typically destructuring the element into the
+   * loop variables). In this mode the shared `getVariable` routing is not used.
+   *
+   * This is useful for languages whose loop variables are bound by extracting
+   * components from an implicit "current element" value (as opposed to being
+   * evaluated as ordinary target expressions).
+   */
+  default predicate foreachHasElementNode(ForeachStmt foreach) { none() }
 
   /**
    * A `break` statement.
@@ -697,6 +723,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
     private string patternMatchTrueTag() { result = "[MatchTrue]" }
 
+    private string foreachElementTag() { result = "[ForeachElement]" }
+
     /**
      * Holds if an additional node tagged with `tag` should be created for
      * `n`. Edges targeting such nodes are labeled with `t` and therefore `t`
@@ -714,6 +742,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       n instanceof LoopStmt and
       tag = loopHeaderTag() and
+      t instanceof DirectSuccessor
+      or
+      foreachHasElementNode(n) and
+      tag = foreachElementTag() and
       t instanceof DirectSuccessor
       or
       n instanceof PatternMatchExpr and
@@ -1785,7 +1817,21 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAfter(loopstmt)
         )
         or
-        exists(ForeachStmt foreachstmt |
+        exists(ForeachStmt foreachstmt, PreControlFlowNode iterentry |
+          // `iterentry` is where each iteration begins, after the loop header
+          // (or after the collection is found to be non-empty): the element
+          // node if the language opts in, otherwise the loop variable, or the
+          // body directly if there is no variable.
+          foreachHasElementNode(foreachstmt) and
+          iterentry.isAdditional(foreachstmt, foreachElementTag())
+          or
+          not foreachHasElementNode(foreachstmt) and
+          (
+            iterentry.isBefore(foreachstmt.getVariable())
+            or
+            not exists(foreachstmt.getVariable()) and iterentry.isBefore(foreachstmt.getBody())
+          )
+        |
           n1.isBefore(foreachstmt) and
           n2.isBefore(foreachstmt.getCollection())
           or
@@ -1799,8 +1845,14 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           or
           n1.isAfterValue(foreachstmt.getCollection(),
             any(EmptinessSuccessor t | t.getValue() = false)) and
-          n2.isBefore(foreachstmt.getVariable())
+          n2 = iterentry
           or
+          n1.isAdditional(foreachstmt, loopHeaderTag()) and
+          n2 = iterentry
+          or
+          // After the loop variable, enter the body. When the language opts in
+          // to the element node, it is instead responsible for wiring the
+          // element node through to the body itself.
           n1.isAfter(foreachstmt.getVariable()) and
           n2.isBefore(foreachstmt.getBody())
           or
@@ -1813,9 +1865,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             not exists(getLoopElse(foreachstmt)) and n2.isAfter(foreachstmt)
           )
-          or
-          n1.isAdditional(foreachstmt, loopHeaderTag()) and
-          n2.isBefore(foreachstmt.getVariable())
         )
         or
         exists(ForStmt forstmt, PreControlFlowNode condentry |
