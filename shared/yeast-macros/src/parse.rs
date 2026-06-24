@@ -891,7 +891,8 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
             yeast::Rule::new(__query, Box::new(|__ast: &mut yeast::Ast, __captures: yeast::captures::Captures, __fresh: &yeast::tree_builder::FreshScope, __source_range: Option<tree_sitter::Range>, __user_ctx: &mut _| {
                 #(#bindings)*
                 let mut #ctx_ident = yeast::build::BuildCtx::with_source_range(__ast, &__captures, __fresh, __source_range, __user_ctx);
-                #transform_body
+                let __result: Vec<usize> = { #transform_body };
+                Ok(__result)
             }))
         }
     })

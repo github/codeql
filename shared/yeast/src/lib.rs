@@ -703,7 +703,9 @@ impl From<tree_sitter::Range> for NodeContent {
 /// The transform function for a rule: takes the AST, captured variables, a
 /// fresh-name scope, the source range of the matched node, and a mutable
 /// reference to the user context of type `C`. Returns the IDs of the
-/// replacement nodes.
+/// replacement nodes, or an error message if the transform could not be
+/// completed (for example, a required capture was missing, or a recursive
+/// translation invoked by the transform failed).
 pub type Transform<C = ()> = Box<
     dyn Fn(
             &mut Ast,
@@ -711,7 +713,7 @@ pub type Transform<C = ()> = Box<
             &tree_builder::FreshScope,
             Option<tree_sitter::Range>,
             &mut C,
-        ) -> Vec<Id>
+        ) -> Result<Vec<Id>, String>
         + Send
         + Sync,
 >;
@@ -752,7 +754,7 @@ impl<C> Rule<C> {
         user_ctx: &mut C,
     ) -> Result<Option<Vec<Id>>, String> {
         match self.try_match(ast, node)? {
-            Some(captures) => Ok(Some(self.run_transform(ast, captures, node, fresh, user_ctx))),
+            Some(captures) => Ok(Some(self.run_transform(ast, captures, node, fresh, user_ctx)?)),
             None => Ok(None),
         }
     }
@@ -777,7 +779,7 @@ impl<C> Rule<C> {
         node: Id,
         fresh: &tree_builder::FreshScope,
         user_ctx: &mut C,
-    ) -> Vec<Id> {
+    ) -> Result<Vec<Id>, String> {
         fresh.next_scope();
         let source_range = ast.get_node(node).and_then(|n| match n.content {
             NodeContent::Range(r) => Some(r),
@@ -974,7 +976,7 @@ fn apply_one_shot_rules_inner<C: Clone>(
                 }
                 apply_one_shot_rules_inner(index, ast, user_ctx, captured_id, fresh, rewrite_depth + 1)
             })?;
-            let result = rule.run_transform(ast, captures, id, fresh, user_ctx);
+            let result = rule.run_transform(ast, captures, id, fresh, user_ctx)?;
             *user_ctx = snapshot;
             return Ok(result);
         }
