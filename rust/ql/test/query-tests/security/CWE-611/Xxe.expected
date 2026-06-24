@@ -1,14 +1,16 @@
 #select
-| main.rs:70:5:70:27 | ...::xmlReadMemory | main.rs:150:20:150:33 | ...::args | main.rs:70:5:70:27 | ...::xmlReadMemory | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:150:20:150:33 | ...::args | user-provided value |
-| main.rs:75:5:75:27 | ...::xmlReadMemory | main.rs:150:20:150:33 | ...::args | main.rs:75:5:75:27 | ...::xmlReadMemory | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:150:20:150:33 | ...::args | user-provided value |
-| main.rs:80:5:80:27 | ...::xmlReadMemory | main.rs:150:20:150:33 | ...::args | main.rs:80:5:80:27 | ...::xmlReadMemory | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:150:20:150:33 | ...::args | user-provided value |
-| main.rs:85:5:85:25 | ...::xmlReadFile | main.rs:151:25:151:38 | ...::args | main.rs:85:5:85:25 | ...::xmlReadFile | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:151:25:151:38 | ...::args | user-provided value |
-| main.rs:90:5:90:24 | ...::xmlReadDoc | main.rs:150:20:150:33 | ...::args | main.rs:90:5:90:24 | ...::xmlReadDoc | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:150:20:150:33 | ...::args | user-provided value |
-| main.rs:95:5:95:23 | ...::xmlReadFd | main.rs:152:21:152:39 | ...::open | main.rs:95:5:95:23 | ...::xmlReadFd | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:152:21:152:39 | ...::open | user-provided value |
-| main.rs:100:5:100:29 | ...::xmlCtxtReadFile | main.rs:151:25:151:38 | ...::args | main.rs:100:5:100:29 | ...::xmlCtxtReadFile | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:151:25:151:38 | ...::args | user-provided value |
-| main.rs:105:5:105:28 | ...::xmlCtxtReadDoc | main.rs:150:20:150:33 | ...::args | main.rs:105:5:105:28 | ...::xmlCtxtReadDoc | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:150:20:150:33 | ...::args | user-provided value |
-| main.rs:110:5:110:31 | ...::xmlCtxtReadMemory | main.rs:150:20:150:33 | ...::args | main.rs:110:5:110:31 | ...::xmlCtxtReadMemory | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:150:20:150:33 | ...::args | user-provided value |
-| main.rs:122:5:122:27 | ...::xmlReadMemory | main.rs:150:20:150:33 | ...::args | main.rs:122:5:122:27 | ...::xmlReadMemory | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:150:20:150:33 | ...::args | user-provided value |
+| main.rs:70:5:70:27 | ...::xmlReadMemory | main.rs:170:20:170:33 | ...::args | main.rs:70:5:70:27 | ...::xmlReadMemory | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:170:20:170:33 | ...::args | user-provided value |
+| main.rs:75:5:75:27 | ...::xmlReadMemory | main.rs:170:20:170:33 | ...::args | main.rs:75:5:75:27 | ...::xmlReadMemory | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:170:20:170:33 | ...::args | user-provided value |
+| main.rs:80:5:80:27 | ...::xmlReadMemory | main.rs:170:20:170:33 | ...::args | main.rs:80:5:80:27 | ...::xmlReadMemory | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:170:20:170:33 | ...::args | user-provided value |
+| main.rs:85:5:85:25 | ...::xmlReadFile | main.rs:171:25:171:38 | ...::args | main.rs:85:5:85:25 | ...::xmlReadFile | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:171:25:171:38 | ...::args | user-provided value |
+| main.rs:90:5:90:24 | ...::xmlReadDoc | main.rs:170:20:170:33 | ...::args | main.rs:90:5:90:24 | ...::xmlReadDoc | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:170:20:170:33 | ...::args | user-provided value |
+| main.rs:95:5:95:23 | ...::xmlReadFd | main.rs:172:21:172:39 | ...::open | main.rs:95:5:95:23 | ...::xmlReadFd | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:172:21:172:39 | ...::open | user-provided value |
+| main.rs:100:5:100:29 | ...::xmlCtxtReadFile | main.rs:171:25:171:38 | ...::args | main.rs:100:5:100:29 | ...::xmlCtxtReadFile | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:171:25:171:38 | ...::args | user-provided value |
+| main.rs:105:5:105:28 | ...::xmlCtxtReadDoc | main.rs:170:20:170:33 | ...::args | main.rs:105:5:105:28 | ...::xmlCtxtReadDoc | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:170:20:170:33 | ...::args | user-provided value |
+| main.rs:110:5:110:31 | ...::xmlCtxtReadMemory | main.rs:170:20:170:33 | ...::args | main.rs:110:5:110:31 | ...::xmlCtxtReadMemory | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:170:20:170:33 | ...::args | user-provided value |
+| main.rs:122:5:122:27 | ...::xmlReadMemory | main.rs:170:20:170:33 | ...::args | main.rs:122:5:122:27 | ...::xmlReadMemory | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:170:20:170:33 | ...::args | user-provided value |
+| main.rs:127:5:127:27 | ...::xmlReadMemory | main.rs:170:20:170:33 | ...::args | main.rs:127:5:127:27 | ...::xmlReadMemory | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:170:20:170:33 | ...::args | user-provided value |
+| main.rs:142:5:142:27 | ...::xmlReadMemory | main.rs:170:20:170:33 | ...::args | main.rs:142:5:142:27 | ...::xmlReadMemory | XML parsing depends on a $@ without guarding against external entity expansion. | main.rs:170:20:170:33 | ...::args | user-provided value |
 edges
 | main.rs:68:32:68:45 | ...: ... [&ref] | main.rs:70:29:70:36 | user_xml [&ref] | provenance |  |
 | main.rs:70:29:70:36 | user_xml [&ref] | main.rs:70:29:70:45 | user_xml.as_ptr() [&ref] | provenance | MaD:15 |
@@ -52,55 +54,71 @@ edges
 | main.rs:112:9:112:25 | user_xml.as_ptr() [&ref] | main.rs:112:9:112:42 | ... as ... | provenance |  |
 | main.rs:112:9:112:25 | user_xml.as_ptr() [&ref] | main.rs:112:9:112:42 | ... as ... | provenance | Config |
 | main.rs:112:9:112:42 | ... as ... | main.rs:110:5:110:31 | ...::xmlCtxtReadMemory | provenance | MaD:3 Sink:MaD:3 |
-| main.rs:120:36:120:49 | ...: ... [&ref] | main.rs:122:29:122:36 | user_xml [&ref] | provenance |  |
+| main.rs:120:37:120:50 | ...: ... [&ref] | main.rs:122:29:122:36 | user_xml [&ref] | provenance |  |
 | main.rs:122:29:122:36 | user_xml [&ref] | main.rs:122:29:122:45 | user_xml.as_ptr() [&ref] | provenance | MaD:15 |
 | main.rs:122:29:122:45 | user_xml.as_ptr() [&ref] | main.rs:122:29:122:62 | ... as ... | provenance |  |
 | main.rs:122:29:122:45 | user_xml.as_ptr() [&ref] | main.rs:122:29:122:62 | ... as ... | provenance | Config |
 | main.rs:122:29:122:62 | ... as ... | main.rs:122:5:122:27 | ...::xmlReadMemory | provenance | MaD:7 Sink:MaD:7 |
-| main.rs:150:9:150:16 | user_xml | main.rs:156:31:156:38 | user_xml | provenance |  |
-| main.rs:150:9:150:16 | user_xml | main.rs:157:33:157:40 | user_xml | provenance |  |
-| main.rs:150:9:150:16 | user_xml | main.rs:158:34:158:41 | user_xml | provenance |  |
-| main.rs:150:9:150:16 | user_xml | main.rs:160:32:160:39 | user_xml | provenance |  |
-| main.rs:150:9:150:16 | user_xml | main.rs:163:37:163:44 | user_xml | provenance |  |
-| main.rs:150:9:150:16 | user_xml | main.rs:164:40:164:47 | user_xml | provenance |  |
-| main.rs:150:9:150:16 | user_xml | main.rs:165:35:165:42 | user_xml | provenance |  |
-| main.rs:150:20:150:33 | ...::args | main.rs:150:20:150:35 | ...::args(...) [element] | provenance | Src:MaD:9  |
-| main.rs:150:20:150:35 | ...::args(...) [element] | main.rs:150:20:150:42 | ... .nth(...) [Some] | provenance | MaD:10 |
-| main.rs:150:20:150:42 | ... .nth(...) [Some] | main.rs:150:20:150:62 | ... .unwrap_or_default() | provenance | MaD:13 |
-| main.rs:150:20:150:62 | ... .unwrap_or_default() | main.rs:150:9:150:16 | user_xml | provenance |  |
-| main.rs:151:9:151:21 | user_filename | main.rs:159:33:159:45 | user_filename | provenance |  |
-| main.rs:151:9:151:21 | user_filename | main.rs:162:38:162:50 | user_filename | provenance |  |
-| main.rs:151:25:151:38 | ...::args | main.rs:151:25:151:40 | ...::args(...) [element] | provenance | Src:MaD:9  |
-| main.rs:151:25:151:40 | ...::args(...) [element] | main.rs:151:25:151:47 | ... .nth(...) [Some] | provenance | MaD:10 |
-| main.rs:151:25:151:47 | ... .nth(...) [Some] | main.rs:151:25:151:67 | ... .unwrap_or_default() | provenance | MaD:13 |
-| main.rs:151:25:151:67 | ... .unwrap_or_default() | main.rs:151:9:151:21 | user_filename | provenance |  |
-| main.rs:152:9:152:17 | user_file [Some] | main.rs:153:19:153:27 | user_file [Some] | provenance |  |
-| main.rs:152:21:152:39 | ...::open | main.rs:152:21:152:55 | ...::open(...) [Ok] | provenance | Src:MaD:8  |
-| main.rs:152:21:152:55 | ...::open(...) [Ok] | main.rs:152:21:152:60 | ... .ok() [Some] | provenance | MaD:14 |
-| main.rs:152:21:152:60 | ... .ok() [Some] | main.rs:152:9:152:17 | user_file [Some] | provenance |  |
-| main.rs:153:9:153:15 | user_fd [&ref] | main.rs:161:30:161:36 | user_fd [&ref] | provenance |  |
-| main.rs:153:19:153:27 | user_file [Some] | main.rs:153:19:153:36 | user_file.as_ref() [Some, &ref] | provenance | MaD:11 |
-| main.rs:153:19:153:36 | user_file.as_ref() [Some, &ref] | main.rs:153:19:153:72 | ... .map_or(...) [&ref] | provenance | MaD:12 |
-| main.rs:153:19:153:72 | ... .map_or(...) [&ref] | main.rs:153:9:153:15 | user_fd [&ref] | provenance |  |
-| main.rs:156:30:156:38 | &user_xml [&ref] | main.rs:68:32:68:45 | ...: ... [&ref] | provenance |  |
-| main.rs:156:31:156:38 | user_xml | main.rs:156:30:156:38 | &user_xml [&ref] | provenance |  |
-| main.rs:157:32:157:40 | &user_xml [&ref] | main.rs:73:34:73:47 | ...: ... [&ref] | provenance |  |
-| main.rs:157:33:157:40 | user_xml | main.rs:157:32:157:40 | &user_xml [&ref] | provenance |  |
-| main.rs:158:33:158:41 | &user_xml [&ref] | main.rs:78:35:78:48 | ...: ... [&ref] | provenance |  |
-| main.rs:158:34:158:41 | user_xml | main.rs:158:33:158:41 | &user_xml [&ref] | provenance |  |
-| main.rs:159:32:159:45 | &user_filename [&ref] | main.rs:83:34:83:52 | ...: ... [&ref] | provenance |  |
-| main.rs:159:33:159:45 | user_filename | main.rs:159:32:159:45 | &user_filename [&ref] | provenance |  |
-| main.rs:160:31:160:39 | &user_xml [&ref] | main.rs:88:33:88:46 | ...: ... [&ref] | provenance |  |
-| main.rs:160:32:160:39 | user_xml | main.rs:160:31:160:39 | &user_xml [&ref] | provenance |  |
-| main.rs:161:30:161:36 | user_fd [&ref] | main.rs:93:32:93:43 | ...: i32 [&ref] | provenance |  |
-| main.rs:162:37:162:50 | &user_filename [&ref] | main.rs:98:39:98:57 | ...: ... [&ref] | provenance |  |
-| main.rs:162:38:162:50 | user_filename | main.rs:162:37:162:50 | &user_filename [&ref] | provenance |  |
-| main.rs:163:36:163:44 | &user_xml [&ref] | main.rs:103:38:103:51 | ...: ... [&ref] | provenance |  |
-| main.rs:163:37:163:44 | user_xml | main.rs:163:36:163:44 | &user_xml [&ref] | provenance |  |
-| main.rs:164:39:164:47 | &user_xml [&ref] | main.rs:108:41:108:54 | ...: ... [&ref] | provenance |  |
-| main.rs:164:40:164:47 | user_xml | main.rs:164:39:164:47 | &user_xml [&ref] | provenance |  |
-| main.rs:165:34:165:42 | &user_xml [&ref] | main.rs:120:36:120:49 | ...: ... [&ref] | provenance |  |
-| main.rs:165:35:165:42 | user_xml | main.rs:165:34:165:42 | &user_xml [&ref] | provenance |  |
+| main.rs:125:37:125:50 | ...: ... [&ref] | main.rs:127:29:127:36 | user_xml [&ref] | provenance |  |
+| main.rs:127:29:127:36 | user_xml [&ref] | main.rs:127:29:127:45 | user_xml.as_ptr() [&ref] | provenance | MaD:15 |
+| main.rs:127:29:127:45 | user_xml.as_ptr() [&ref] | main.rs:127:29:127:62 | ... as ... | provenance |  |
+| main.rs:127:29:127:45 | user_xml.as_ptr() [&ref] | main.rs:127:29:127:62 | ... as ... | provenance | Config |
+| main.rs:127:29:127:62 | ... as ... | main.rs:127:5:127:27 | ...::xmlReadMemory | provenance | MaD:7 Sink:MaD:7 |
+| main.rs:140:38:140:51 | ...: ... [&ref] | main.rs:142:29:142:36 | user_xml [&ref] | provenance |  |
+| main.rs:142:29:142:36 | user_xml [&ref] | main.rs:142:29:142:45 | user_xml.as_ptr() [&ref] | provenance | MaD:15 |
+| main.rs:142:29:142:45 | user_xml.as_ptr() [&ref] | main.rs:142:29:142:62 | ... as ... | provenance |  |
+| main.rs:142:29:142:45 | user_xml.as_ptr() [&ref] | main.rs:142:29:142:62 | ... as ... | provenance | Config |
+| main.rs:142:29:142:62 | ... as ... | main.rs:142:5:142:27 | ...::xmlReadMemory | provenance | MaD:7 Sink:MaD:7 |
+| main.rs:170:9:170:16 | user_xml | main.rs:176:31:176:38 | user_xml | provenance |  |
+| main.rs:170:9:170:16 | user_xml | main.rs:177:33:177:40 | user_xml | provenance |  |
+| main.rs:170:9:170:16 | user_xml | main.rs:178:34:178:41 | user_xml | provenance |  |
+| main.rs:170:9:170:16 | user_xml | main.rs:180:32:180:39 | user_xml | provenance |  |
+| main.rs:170:9:170:16 | user_xml | main.rs:183:37:183:44 | user_xml | provenance |  |
+| main.rs:170:9:170:16 | user_xml | main.rs:184:40:184:47 | user_xml | provenance |  |
+| main.rs:170:9:170:16 | user_xml | main.rs:185:36:185:43 | user_xml | provenance |  |
+| main.rs:170:9:170:16 | user_xml | main.rs:186:36:186:43 | user_xml | provenance |  |
+| main.rs:170:9:170:16 | user_xml | main.rs:189:37:189:44 | user_xml | provenance |  |
+| main.rs:170:20:170:33 | ...::args | main.rs:170:20:170:35 | ...::args(...) [element] | provenance | Src:MaD:9  |
+| main.rs:170:20:170:35 | ...::args(...) [element] | main.rs:170:20:170:42 | ... .nth(...) [Some] | provenance | MaD:10 |
+| main.rs:170:20:170:42 | ... .nth(...) [Some] | main.rs:170:20:170:62 | ... .unwrap_or_default() | provenance | MaD:13 |
+| main.rs:170:20:170:62 | ... .unwrap_or_default() | main.rs:170:9:170:16 | user_xml | provenance |  |
+| main.rs:171:9:171:21 | user_filename | main.rs:179:33:179:45 | user_filename | provenance |  |
+| main.rs:171:9:171:21 | user_filename | main.rs:182:38:182:50 | user_filename | provenance |  |
+| main.rs:171:25:171:38 | ...::args | main.rs:171:25:171:40 | ...::args(...) [element] | provenance | Src:MaD:9  |
+| main.rs:171:25:171:40 | ...::args(...) [element] | main.rs:171:25:171:47 | ... .nth(...) [Some] | provenance | MaD:10 |
+| main.rs:171:25:171:47 | ... .nth(...) [Some] | main.rs:171:25:171:67 | ... .unwrap_or_default() | provenance | MaD:13 |
+| main.rs:171:25:171:67 | ... .unwrap_or_default() | main.rs:171:9:171:21 | user_filename | provenance |  |
+| main.rs:172:9:172:17 | user_file [Some] | main.rs:173:19:173:27 | user_file [Some] | provenance |  |
+| main.rs:172:21:172:39 | ...::open | main.rs:172:21:172:55 | ...::open(...) [Ok] | provenance | Src:MaD:8  |
+| main.rs:172:21:172:55 | ...::open(...) [Ok] | main.rs:172:21:172:60 | ... .ok() [Some] | provenance | MaD:14 |
+| main.rs:172:21:172:60 | ... .ok() [Some] | main.rs:172:9:172:17 | user_file [Some] | provenance |  |
+| main.rs:173:9:173:15 | user_fd [&ref] | main.rs:181:30:181:36 | user_fd [&ref] | provenance |  |
+| main.rs:173:19:173:27 | user_file [Some] | main.rs:173:19:173:36 | user_file.as_ref() [Some, &ref] | provenance | MaD:11 |
+| main.rs:173:19:173:36 | user_file.as_ref() [Some, &ref] | main.rs:173:19:173:72 | ... .map_or(...) [&ref] | provenance | MaD:12 |
+| main.rs:173:19:173:72 | ... .map_or(...) [&ref] | main.rs:173:9:173:15 | user_fd [&ref] | provenance |  |
+| main.rs:176:30:176:38 | &user_xml [&ref] | main.rs:68:32:68:45 | ...: ... [&ref] | provenance |  |
+| main.rs:176:31:176:38 | user_xml | main.rs:176:30:176:38 | &user_xml [&ref] | provenance |  |
+| main.rs:177:32:177:40 | &user_xml [&ref] | main.rs:73:34:73:47 | ...: ... [&ref] | provenance |  |
+| main.rs:177:33:177:40 | user_xml | main.rs:177:32:177:40 | &user_xml [&ref] | provenance |  |
+| main.rs:178:33:178:41 | &user_xml [&ref] | main.rs:78:35:78:48 | ...: ... [&ref] | provenance |  |
+| main.rs:178:34:178:41 | user_xml | main.rs:178:33:178:41 | &user_xml [&ref] | provenance |  |
+| main.rs:179:32:179:45 | &user_filename [&ref] | main.rs:83:34:83:52 | ...: ... [&ref] | provenance |  |
+| main.rs:179:33:179:45 | user_filename | main.rs:179:32:179:45 | &user_filename [&ref] | provenance |  |
+| main.rs:180:31:180:39 | &user_xml [&ref] | main.rs:88:33:88:46 | ...: ... [&ref] | provenance |  |
+| main.rs:180:32:180:39 | user_xml | main.rs:180:31:180:39 | &user_xml [&ref] | provenance |  |
+| main.rs:181:30:181:36 | user_fd [&ref] | main.rs:93:32:93:43 | ...: i32 [&ref] | provenance |  |
+| main.rs:182:37:182:50 | &user_filename [&ref] | main.rs:98:39:98:57 | ...: ... [&ref] | provenance |  |
+| main.rs:182:38:182:50 | user_filename | main.rs:182:37:182:50 | &user_filename [&ref] | provenance |  |
+| main.rs:183:36:183:44 | &user_xml [&ref] | main.rs:103:38:103:51 | ...: ... [&ref] | provenance |  |
+| main.rs:183:37:183:44 | user_xml | main.rs:183:36:183:44 | &user_xml [&ref] | provenance |  |
+| main.rs:184:39:184:47 | &user_xml [&ref] | main.rs:108:41:108:54 | ...: ... [&ref] | provenance |  |
+| main.rs:184:40:184:47 | user_xml | main.rs:184:39:184:47 | &user_xml [&ref] | provenance |  |
+| main.rs:185:35:185:43 | &user_xml [&ref] | main.rs:120:37:120:50 | ...: ... [&ref] | provenance |  |
+| main.rs:185:36:185:43 | user_xml | main.rs:185:35:185:43 | &user_xml [&ref] | provenance |  |
+| main.rs:186:35:186:43 | &user_xml [&ref] | main.rs:125:37:125:50 | ...: ... [&ref] | provenance |  |
+| main.rs:186:36:186:43 | user_xml | main.rs:186:35:186:43 | &user_xml [&ref] | provenance |  |
+| main.rs:189:36:189:44 | &user_xml [&ref] | main.rs:140:38:140:51 | ...: ... [&ref] | provenance |  |
+| main.rs:189:37:189:44 | user_xml | main.rs:189:36:189:44 | &user_xml [&ref] | provenance |  |
 models
 | 1 | Sink: libxml::bindings::xmlCtxtReadDoc; Argument[1].Reference; xxe |
 | 2 | Sink: libxml::bindings::xmlCtxtReadFile; Argument[1].Reference; xxe |
@@ -161,46 +179,60 @@ nodes
 | main.rs:112:9:112:16 | user_xml [&ref] | semmle.label | user_xml [&ref] |
 | main.rs:112:9:112:25 | user_xml.as_ptr() [&ref] | semmle.label | user_xml.as_ptr() [&ref] |
 | main.rs:112:9:112:42 | ... as ... | semmle.label | ... as ... |
-| main.rs:120:36:120:49 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
+| main.rs:120:37:120:50 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
 | main.rs:122:5:122:27 | ...::xmlReadMemory | semmle.label | ...::xmlReadMemory |
 | main.rs:122:29:122:36 | user_xml [&ref] | semmle.label | user_xml [&ref] |
 | main.rs:122:29:122:45 | user_xml.as_ptr() [&ref] | semmle.label | user_xml.as_ptr() [&ref] |
 | main.rs:122:29:122:62 | ... as ... | semmle.label | ... as ... |
-| main.rs:150:9:150:16 | user_xml | semmle.label | user_xml |
-| main.rs:150:20:150:33 | ...::args | semmle.label | ...::args |
-| main.rs:150:20:150:35 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
-| main.rs:150:20:150:42 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
-| main.rs:150:20:150:62 | ... .unwrap_or_default() | semmle.label | ... .unwrap_or_default() |
-| main.rs:151:9:151:21 | user_filename | semmle.label | user_filename |
-| main.rs:151:25:151:38 | ...::args | semmle.label | ...::args |
-| main.rs:151:25:151:40 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
-| main.rs:151:25:151:47 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
-| main.rs:151:25:151:67 | ... .unwrap_or_default() | semmle.label | ... .unwrap_or_default() |
-| main.rs:152:9:152:17 | user_file [Some] | semmle.label | user_file [Some] |
-| main.rs:152:21:152:39 | ...::open | semmle.label | ...::open |
-| main.rs:152:21:152:55 | ...::open(...) [Ok] | semmle.label | ...::open(...) [Ok] |
-| main.rs:152:21:152:60 | ... .ok() [Some] | semmle.label | ... .ok() [Some] |
-| main.rs:153:9:153:15 | user_fd [&ref] | semmle.label | user_fd [&ref] |
-| main.rs:153:19:153:27 | user_file [Some] | semmle.label | user_file [Some] |
-| main.rs:153:19:153:36 | user_file.as_ref() [Some, &ref] | semmle.label | user_file.as_ref() [Some, &ref] |
-| main.rs:153:19:153:72 | ... .map_or(...) [&ref] | semmle.label | ... .map_or(...) [&ref] |
-| main.rs:156:30:156:38 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
-| main.rs:156:31:156:38 | user_xml | semmle.label | user_xml |
-| main.rs:157:32:157:40 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
-| main.rs:157:33:157:40 | user_xml | semmle.label | user_xml |
-| main.rs:158:33:158:41 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
-| main.rs:158:34:158:41 | user_xml | semmle.label | user_xml |
-| main.rs:159:32:159:45 | &user_filename [&ref] | semmle.label | &user_filename [&ref] |
-| main.rs:159:33:159:45 | user_filename | semmle.label | user_filename |
-| main.rs:160:31:160:39 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
-| main.rs:160:32:160:39 | user_xml | semmle.label | user_xml |
-| main.rs:161:30:161:36 | user_fd [&ref] | semmle.label | user_fd [&ref] |
-| main.rs:162:37:162:50 | &user_filename [&ref] | semmle.label | &user_filename [&ref] |
-| main.rs:162:38:162:50 | user_filename | semmle.label | user_filename |
-| main.rs:163:36:163:44 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
-| main.rs:163:37:163:44 | user_xml | semmle.label | user_xml |
-| main.rs:164:39:164:47 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
-| main.rs:164:40:164:47 | user_xml | semmle.label | user_xml |
-| main.rs:165:34:165:42 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
-| main.rs:165:35:165:42 | user_xml | semmle.label | user_xml |
+| main.rs:125:37:125:50 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
+| main.rs:127:5:127:27 | ...::xmlReadMemory | semmle.label | ...::xmlReadMemory |
+| main.rs:127:29:127:36 | user_xml [&ref] | semmle.label | user_xml [&ref] |
+| main.rs:127:29:127:45 | user_xml.as_ptr() [&ref] | semmle.label | user_xml.as_ptr() [&ref] |
+| main.rs:127:29:127:62 | ... as ... | semmle.label | ... as ... |
+| main.rs:140:38:140:51 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
+| main.rs:142:5:142:27 | ...::xmlReadMemory | semmle.label | ...::xmlReadMemory |
+| main.rs:142:29:142:36 | user_xml [&ref] | semmle.label | user_xml [&ref] |
+| main.rs:142:29:142:45 | user_xml.as_ptr() [&ref] | semmle.label | user_xml.as_ptr() [&ref] |
+| main.rs:142:29:142:62 | ... as ... | semmle.label | ... as ... |
+| main.rs:170:9:170:16 | user_xml | semmle.label | user_xml |
+| main.rs:170:20:170:33 | ...::args | semmle.label | ...::args |
+| main.rs:170:20:170:35 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| main.rs:170:20:170:42 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| main.rs:170:20:170:62 | ... .unwrap_or_default() | semmle.label | ... .unwrap_or_default() |
+| main.rs:171:9:171:21 | user_filename | semmle.label | user_filename |
+| main.rs:171:25:171:38 | ...::args | semmle.label | ...::args |
+| main.rs:171:25:171:40 | ...::args(...) [element] | semmle.label | ...::args(...) [element] |
+| main.rs:171:25:171:47 | ... .nth(...) [Some] | semmle.label | ... .nth(...) [Some] |
+| main.rs:171:25:171:67 | ... .unwrap_or_default() | semmle.label | ... .unwrap_or_default() |
+| main.rs:172:9:172:17 | user_file [Some] | semmle.label | user_file [Some] |
+| main.rs:172:21:172:39 | ...::open | semmle.label | ...::open |
+| main.rs:172:21:172:55 | ...::open(...) [Ok] | semmle.label | ...::open(...) [Ok] |
+| main.rs:172:21:172:60 | ... .ok() [Some] | semmle.label | ... .ok() [Some] |
+| main.rs:173:9:173:15 | user_fd [&ref] | semmle.label | user_fd [&ref] |
+| main.rs:173:19:173:27 | user_file [Some] | semmle.label | user_file [Some] |
+| main.rs:173:19:173:36 | user_file.as_ref() [Some, &ref] | semmle.label | user_file.as_ref() [Some, &ref] |
+| main.rs:173:19:173:72 | ... .map_or(...) [&ref] | semmle.label | ... .map_or(...) [&ref] |
+| main.rs:176:30:176:38 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
+| main.rs:176:31:176:38 | user_xml | semmle.label | user_xml |
+| main.rs:177:32:177:40 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
+| main.rs:177:33:177:40 | user_xml | semmle.label | user_xml |
+| main.rs:178:33:178:41 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
+| main.rs:178:34:178:41 | user_xml | semmle.label | user_xml |
+| main.rs:179:32:179:45 | &user_filename [&ref] | semmle.label | &user_filename [&ref] |
+| main.rs:179:33:179:45 | user_filename | semmle.label | user_filename |
+| main.rs:180:31:180:39 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
+| main.rs:180:32:180:39 | user_xml | semmle.label | user_xml |
+| main.rs:181:30:181:36 | user_fd [&ref] | semmle.label | user_fd [&ref] |
+| main.rs:182:37:182:50 | &user_filename [&ref] | semmle.label | &user_filename [&ref] |
+| main.rs:182:38:182:50 | user_filename | semmle.label | user_filename |
+| main.rs:183:36:183:44 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
+| main.rs:183:37:183:44 | user_xml | semmle.label | user_xml |
+| main.rs:184:39:184:47 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
+| main.rs:184:40:184:47 | user_xml | semmle.label | user_xml |
+| main.rs:185:35:185:43 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
+| main.rs:185:36:185:43 | user_xml | semmle.label | user_xml |
+| main.rs:186:35:186:43 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
+| main.rs:186:36:186:43 | user_xml | semmle.label | user_xml |
+| main.rs:189:36:189:44 | &user_xml [&ref] | semmle.label | &user_xml [&ref] |
+| main.rs:189:37:189:44 | user_xml | semmle.label | user_xml |
 subpaths
