@@ -1,6 +1,7 @@
 exprs
 | TestSwitchExpr.java:9:13:9:41 | case ... | TestSwitchExpr.java:9:43:9:46 | null |
 | TestSwitchExpr.java:10:13:10:22 | default | TestSwitchExpr.java:10:24:10:25 | x1 |
+| TestSwitchExpr.java:28:13:28:33 | case null, default | TestSwitchExpr.java:28:35:28:37 | "v" |
 | TestSwitchExprStmtConsistency.java:10:7:10:15 | case ... | TestSwitchExprStmtConsistency.java:10:17:10:19 | f(...) |
 | TestSwitchExprStmtConsistency.java:11:7:11:15 | case ... | TestSwitchExprStmtConsistency.java:11:17:11:19 | f(...) |
 | TestSwitchExprStmtConsistency.java:12:7:12:16 | default | TestSwitchExprStmtConsistency.java:12:18:12:20 | f(...) |

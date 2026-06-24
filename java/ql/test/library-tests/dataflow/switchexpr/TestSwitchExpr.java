@@ -22,4 +22,10 @@ class TestSwitchExpr {
         };
         sink(x4);
     }
+
+    static String f(Object x) {
+        return switch (x) {
+            case null, default -> "v";
+        };
+    }
 }
