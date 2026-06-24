@@ -131,6 +131,7 @@ exprValue
 | control/cases.rb:11:9:11:9 | d | 0 | int |
 | control/cases.rb:12:5:12:7 | 200 | 200 | int |
 | control/cases.rb:14:5:14:7 | 300 | 300 | int |
+| control/cases.rb:18:1:22:3 | true | true | boolean |
 | control/cases.rb:19:6:19:6 | a | 0 | int |
 | control/cases.rb:19:10:19:10 | b | 0 | int |
 | control/cases.rb:19:18:19:19 | 10 | 10 | int |
@@ -1094,6 +1095,7 @@ exprCfgNodeValue
 | control/cases.rb:11:9:11:9 | d | 0 | int |
 | control/cases.rb:12:5:12:7 | 200 | 200 | int |
 | control/cases.rb:14:5:14:7 | 300 | 300 | int |
+| control/cases.rb:18:1:22:3 | true | true | boolean |
 | control/cases.rb:19:6:19:6 | a | 0 | int |
 | control/cases.rb:19:10:19:10 | b | 0 | int |
 | control/cases.rb:19:18:19:19 | 10 | 10 | int |

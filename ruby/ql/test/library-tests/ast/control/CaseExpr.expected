@@ -1,5 +1,6 @@
 caseValues
 | cases.rb:8:1:15:3 | case ... | cases.rb:8:6:8:6 | a |
+| cases.rb:18:1:22:3 | case ... | cases.rb:18:1:22:3 | true |
 | cases.rb:26:1:29:3 | case ... | cases.rb:26:6:26:9 | call to expr |
 | cases.rb:31:1:37:3 | case ... | cases.rb:31:6:31:9 | call to expr |
 | cases.rb:39:1:80:3 | case ... | cases.rb:39:6:39:9 | call to expr |
@@ -15,7 +16,6 @@ caseValues
 | cases.rb:164:1:167:3 | case ... | cases.rb:165:3:165:5 | foo |
 | cases.rb:169:1:172:3 | case ... | cases.rb:170:3:170:5 | foo |
 caseNoValues
-| cases.rb:18:1:22:3 | case ... |
 caseElseBranches
 | cases.rb:8:1:15:3 | case ... | cases.rb:13:1:14:7 | else ... |
 | cases.rb:26:1:29:3 | case ... | cases.rb:28:3:28:12 | else ... |
