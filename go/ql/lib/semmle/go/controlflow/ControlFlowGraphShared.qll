@@ -296,7 +296,7 @@ module GoCfg {
     }
 
     class DefaultCase extends Case {
-      DefaultCase() { not exists(this.(Go::CaseClause).getExpr(_)) }
+      DefaultCase() { not exists(this.(Go::CaseClause).getAnExpr()) }
     }
 
     /** Gets the initializer of `switch` statement `switch`, if any. */
@@ -401,24 +401,22 @@ module GoCfg {
 
     class CallableContext = Void;
 
-    private newtype TLabel = TGoLabel(string l) { exists(Go::LabeledStmt ls | l = ls.getLabel()) }
+    class Label extends string {
+      Label() { this = any(Go::LabeledStmt ls).getLabel() }
 
-    class Label extends TLabel {
-      string toString() { exists(string l | this = TGoLabel(l) and result = l) }
-    }
-
-    private Label getLabelOfStmt(Go::Stmt s) {
-      exists(Go::LabeledStmt l | s = l.getStmt() |
-        result = TGoLabel(l.getLabel()) or result = getLabelOfStmt(l)
-      )
+      string toString() { result = this }
     }
 
     predicate hasLabel(Ast::AstNode n, Label l) {
-      l = getLabelOfStmt(n)
+      // A statement carries the label of every `LabeledStmt` that wraps it.
+      // This is recursive because Go allows stacked labels (`L1: L2: stmt`),
+      // which the extractor represents as nested `LabeledStmt`s, so a single
+      // statement may have several labels.
+      exists(Go::LabeledStmt ls | n = ls.getStmt() | l = ls.getLabel() or hasLabel(ls, l))
       or
-      l = TGoLabel(n.(Go::BreakStmt).getLabel())
+      l = n.(Go::BreakStmt).getLabel()
       or
-      l = TGoLabel(n.(Go::ContinueStmt).getLabel())
+      l = n.(Go::ContinueStmt).getLabel()
     }
 
     predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
@@ -489,7 +487,12 @@ module GoCfg {
         // Assignment write nodes: one per LHS
         exists(int i |
           (
-            notBlankIdent(n.(Go::Assignment).getLhs(i))
+            notBlankIdent(n.(Go::Assignment).getLhs(i)) and
+            // The `y := x.(type)` test statement of a type switch is transparent
+            // (see `skipCfg`): the per-case implicit variables are written at the
+            // case match nodes (see `IR::TypeSwitchImplicitVariableInstruction`),
+            // so the guard itself emits no assignment write node.
+            not n = any(Go::TypeSwitchStmt ts).getAssign()
             or
             notBlankIdent(n.(Go::ValueSpec).getNameExpr(i))
             or
@@ -497,11 +500,6 @@ module GoCfg {
             or
             notBlankIdent(n.(Go::RangeStmt).getValue()) and i = 1
           ) and
-          // The `y := x.(type)` test statement of a type switch is transparent
-          // (see `skipCfg`): the per-case implicit variables are written at the
-          // case match nodes (see `IR::TypeSwitchImplicitVariableInstruction`),
-          // so the guard itself emits no assignment write node.
-          not n = any(Go::TypeSwitchStmt ts).getTest() and
           tag = "assign:" + i.toString()
         )
         or
@@ -770,7 +768,7 @@ module GoCfg {
       ast instanceof Go::GotoStmt and
       n.injects(ast) and
       c.getSuccessorType() instanceof GotoSuccessor and
-      c.hasLabel(TGoLabel(ast.(Go::GotoStmt).getLabel())) and
+      c.hasLabel(ast.(Go::GotoStmt).getLabel()) and
       always = true
     }
 
@@ -779,7 +777,7 @@ module GoCfg {
         ast = lbl.getStmt() and
         n.isAfter(lbl) and
         c.getSuccessorType() instanceof BreakSuccessor and
-        c.hasLabel(TGoLabel(lbl.getLabel()))
+        c.hasLabel(lbl.getLabel())
       )
       or
       exists(Go::FuncDef fd |
@@ -800,7 +798,7 @@ module GoCfg {
         n.isBefore(lbl) and
         fd = lbl.getEnclosingFunction() and
         c.getSuccessorType() instanceof GotoSuccessor and
-        c.hasLabel(TGoLabel(lbl.getLabel()))
+        c.hasLabel(lbl.getLabel())
       )
     }
 
@@ -1027,16 +1025,15 @@ module GoCfg {
      */
     private predicate assignmentStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Ast::AstNode assgn |
-        (
-          assgn instanceof Go::Assignment and not assgn instanceof Go::RecvStmt
-          or
-          assgn instanceof Go::ValueSpec
-        ) and
+        assgn instanceof Go::Assignment and
+        not assgn instanceof Go::RecvStmt and
         // The `y := x.(type)` test statement of a type switch is transparent
         // (see `skipCfg`); the shared switch model evaluates the underlying
         // type-assertion expression directly, so this statement has no
         // assignment flow of its own.
-        not assgn = any(Go::TypeSwitchStmt ts).getTest()
+        not assgn = any(Go::TypeSwitchStmt ts).getAssign()
+        or
+        assgn instanceof Go::ValueSpec
       |
         // Route through children (LHS names, RHS expressions)
         childSequenceStep(assgn, n1, n2)
