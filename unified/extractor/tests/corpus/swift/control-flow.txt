@@ -559,10 +559,8 @@ top_level
                         name_expr
                           identifier: identifier "print"
               pattern:
-                or_pattern
-                  pattern:
-                    expr_equality_pattern
-                      expr: int_literal "1"
+                expr_equality_pattern
+                  expr: int_literal "1"
             switch_case
               body:
                 block
@@ -703,18 +701,16 @@ top_level
                         name_expr
                           identifier: identifier "print"
               pattern:
-                or_pattern
-                  pattern:
-                    constructor_pattern
-                      element:
-                        pattern_element
-                          pattern:
-                            name_pattern
-                              identifier: identifier "r"
-                      constructor:
-                        member_access_expr
-                          base: inferred_type_expr "."
-                          member: identifier "circle"
+                constructor_pattern
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "r"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "circle"
             switch_case
               body:
                 block
@@ -729,18 +725,16 @@ top_level
                         name_expr
                           identifier: identifier "print"
               pattern:
-                or_pattern
-                  pattern:
-                    constructor_pattern
-                      element:
-                        pattern_element
-                          pattern:
-                            name_pattern
-                              identifier: identifier "s"
-                      constructor:
-                        member_access_expr
-                          base: inferred_type_expr "."
-                          member: identifier "square"
+                constructor_pattern
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "s"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "square"
           value:
             name_expr
               identifier: identifier "shape"
@@ -852,19 +846,17 @@ top_level
                         name_expr
                           identifier: identifier "print"
               pattern:
-                or_pattern
-                  pattern:
-                    constructor_pattern
-                      element:
-                        pattern_element
-                          key: identifier "isAcknowledged"
-                          pattern:
-                            expr_equality_pattern
-                              expr: boolean_literal "false"
-                      constructor:
-                        member_access_expr
-                          base: inferred_type_expr "."
-                          member: identifier "implicit"
+                constructor_pattern
+                  element:
+                    pattern_element
+                      key: identifier "isAcknowledged"
+                      pattern:
+                        expr_equality_pattern
+                          expr: boolean_literal "false"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "implicit"
             switch_case
               body:
                 block
@@ -879,21 +871,19 @@ top_level
                         name_expr
                           identifier: identifier "print"
               pattern:
-                or_pattern
-                  pattern:
-                    constructor_pattern
-                      element:
-                        pattern_element
-                          key: identifier "threadRowId"
-                          pattern: ignore_pattern "_"
-                        pattern_element
-                          pattern:
-                            name_pattern
-                              identifier: identifier "rowId"
-                      constructor:
-                        member_access_expr
-                          base: inferred_type_expr "."
-                          member: identifier "thread"
+                constructor_pattern
+                  element:
+                    pattern_element
+                      key: identifier "threadRowId"
+                      pattern: ignore_pattern "_"
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "rowId"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "thread"
           value:
             name_expr
               identifier: identifier "x"

@@ -652,11 +652,20 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (switch_expr value: {val} case: {..cases})
         ),
-        // Switch entry with patterns and body
+        // Switch entry with multiple patterns and body
         rule!(
-            (switch_entry pattern: (switch_pattern pattern: @pats)+ statement: _* @body)
+            (switch_entry
+                pattern: (switch_pattern pattern: @first)
+                pattern: (switch_pattern pattern: @rest)+
+                statement: _* @body)
             =>
-            (switch_case pattern: (or_pattern pattern: {..pats}) body: (block stmt: {..body}))
+            (switch_case pattern: (or_pattern pattern: {first} pattern: {..rest}) body: (block stmt: {..body}))
+        ),
+        // Switch entry with exactly one pattern and body
+        rule!(
+            (switch_entry pattern: (switch_pattern pattern: @pat) statement: _* @body)
+            =>
+            (switch_case pattern: {pat} body: (block stmt: {..body}))
         ),
         // Switch entry: default case (no patterns)
         rule!(
