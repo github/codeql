@@ -1,7 +1,24 @@
 use codeql_extractor::extractor::simple;
-use yeast::{rule, tree, ConcreteDesugarer, DesugaringConfig, PhaseKind};
+use yeast::{manual_rule, rule, tree, ConcreteDesugarer, DesugaringConfig, PhaseKind, Rule};
 
-fn translation_rules() -> Vec<yeast::Rule> {
+/// User context propagated from outer `property_binding` rules down to the
+/// inner accessor-translation rules so that every `accessor_declaration`
+/// emitted by an inner rule is born with the property's `name` (and
+/// optionally its `type`) already set — no schema-invalid intermediate
+/// state requiring post-hoc mutation.
+#[derive(Clone, Default)]
+struct PropertyContext {
+    /// Identifier node for the property name, to be used as the
+    /// `accessor_declaration.name`. Set by the outer property_binding rule
+    /// before translating accessor children.
+    property_name: Option<yeast::Id>,
+    /// Translated type node for the property type, to be used as the
+    /// `accessor_declaration.type`. Set by the outer property_binding rule
+    /// when present.
+    property_type: Option<yeast::Id>,
+}
+
+fn translation_rules() -> Vec<Rule<PropertyContext>> {
     vec![
         // ---- Top-level ----
         // Capture all top-level statements, including unnamed tokens like `nil`.
@@ -88,27 +105,35 @@ fn translation_rules() -> Vec<yeast::Rule> {
         // nodes for individual declarators. The outer property_declaration rule splices these out
         // and attaches binding/modifiers from the parent.
 
-        // Computed property with explicit accessors (get/set/modify) →
-        // a sequence of accessor_declaration nodes, each with the property name
-        // attached. Subsequent accessors will be tagged chained_declaration by
-        // the outer property_declaration rule.
-        rule!(
+        // Computed property with explicit accessors (get/set/modify) → a
+        // sequence of `accessor_declaration` nodes. The outer rule
+        // publishes the property's name and type into `ctx` so that each
+        // inner accessor rule
+        // (`computed_getter`/`computed_setter`/`computed_modify`) builds
+        // its `accessor_declaration` with `name` and `type` set from the
+        // start — no schema-invalid intermediate state.
+        manual_rule!(
             (property_binding
                 name: @pattern
                 type: _? @ty
                 computed_value: (computed_property accessor: _+ @accessors))
-            =>
-            {..{
-                for &acc in &accessors {
-                    let acc_id: usize = acc.into();
-                    for &t in ty.iter().rev() {
-                        ctx.prepend_field(acc_id, "type", t.into());
-                    }
-                    let name_id = tree!((identifier #{pattern}));
-                    ctx.prepend_field(acc_id, "name", name_id);
+            {
+                // Translate `ty` first so the context holds an
+                // output-schema node id.
+                let translated_ty = ctx.translate_opt(ty)?;
+                // Build the property-name identifier from the
+                // (untranslated) pattern leaf.
+                let name_id = tree!((identifier #{pattern}));
+
+                ctx.property_name = Some(name_id);
+                ctx.property_type = translated_ty;
+
+                let mut result = Vec::new();
+                for acc in &accessors {
+                    result.extend(ctx.translate(*acc)?);
                 }
-                accessors
-            }}
+                Ok(result)
+            }
         ),
         // Computed property: shorthand getter (no explicit get/set, just statements) →
         // a single accessor_declaration with kind "get".
@@ -124,31 +149,41 @@ fn translation_rules() -> Vec<yeast::Rule> {
                 accessor_kind: (accessor_kind "get")
                 body: (block stmt: {..body}))
         ),
-        // Stored property with willSet/didSet observers (initializer optional) →
-        // variable_declaration followed by one accessor_declaration per observer,
-        // each carrying the property name. Subsequent items are tagged
-        // chained_declaration by the outer property_declaration rule.
-        rule!(
+        // Stored property with willSet/didSet observers (initializer
+        // optional) → a `variable_declaration` followed by one
+        // `accessor_declaration` per observer, each born with the
+        // property name set. Manual rule: we publish the property name
+        // into `ctx` before translating the observer children so the
+        // inner `willset_clause` / `didset_clause` rules construct
+        // valid `accessor_declaration` nodes from the start.
+        manual_rule!(
             (property_binding
                 name: (pattern bound_identifier: @name)
                 type: _? @ty
                 value: _? @val
                 observers: (willset_didset_block willset: _? @ws didset: _? @ds))
-            =>
-            (variable_declaration
-                pattern: (name_pattern identifier: (identifier #{name}))
-                type: {..ty}
-                value: {..val})
-            {..{
-                let mut obs_ids = Vec::new();
-                for &obs in ws.iter().chain(ds.iter()) {
-                    let obs_id: usize = obs.into();
-                    let ident = tree!((identifier #{name}));
-                    ctx.prepend_field(obs_id, "name", ident);
-                    obs_ids.push(obs_id);
+            {
+                // Translate ty and val so the variable_declaration
+                // below contains output-schema nodes.
+                let translated_ty = ctx.translate_opt(ty)?;
+                let translated_val = ctx.translate_opt(val)?;
+
+                let var_decl = tree!(
+                    (variable_declaration
+                        pattern: (name_pattern identifier: (identifier #{name}))
+                        type: {..translated_ty}
+                        value: {..translated_val})
+                );
+
+                // Publish the property name for the observer rules.
+                ctx.property_name = Some(tree!((identifier #{name})));
+
+                let mut result = vec![var_decl];
+                for obs in ws.into_iter().chain(ds) {
+                    result.extend(ctx.translate(obs)?);
                 }
-                obs_ids
-            }}
+                Ok(result)
+            }
         ),
         // property_binding with any pattern name (identifier or destructuring)
         rule!(
@@ -899,10 +934,14 @@ fn translation_rules() -> Vec<yeast::Rule> {
         // protocol_property_requirements wrapper — should be consumed by above; fallback
         rule!((protocol_property_requirements accessor: _* @accs) => {..accs}),
         // Computed getter → accessor_declaration (body optional).
+        // Reads `ctx.property_name`/`ctx.property_type` set by the outer
+        // property_binding manual rule.
         rule!(
             (computed_getter body: (block statement: _* @body)?)
             =>
             (accessor_declaration
+                name: {ctx.property_name.ok_or("computed_getter outside property_binding context")?}
+                type: {..ctx.property_type}
                 accessor_kind: (accessor_kind "get")
                 body: (block stmt: {..body}))
         ),
@@ -911,6 +950,8 @@ fn translation_rules() -> Vec<yeast::Rule> {
             (computed_setter parameter: @param body: (block statement: _* @body))
             =>
             (accessor_declaration
+                name: {ctx.property_name.ok_or("computed_setter outside property_binding context")?}
+                type: {..ctx.property_type}
                 accessor_kind: (accessor_kind "set")
                 parameter: (parameter pattern: (name_pattern identifier: (identifier #{param})))
                 body: (block stmt: {..body}))
@@ -920,6 +961,8 @@ fn translation_rules() -> Vec<yeast::Rule> {
             (computed_setter body: (block statement: _* @body)?)
             =>
             (accessor_declaration
+                name: {ctx.property_name.ok_or("computed_setter outside property_binding context")?}
+                type: {..ctx.property_type}
                 accessor_kind: (accessor_kind "set")
                 body: (block stmt: {..body}))
         ),
@@ -928,16 +971,22 @@ fn translation_rules() -> Vec<yeast::Rule> {
             (computed_modify body: (block statement: _* @body))
             =>
             (accessor_declaration
+                name: {ctx.property_name.ok_or("computed_modify outside property_binding context")?}
+                type: {..ctx.property_type}
                 accessor_kind: (accessor_kind "modify")
                 body: (block stmt: {..body}))
         ),
-        // willset/didset block — spread to children
+        // willset/didset block — spread to children (only reachable as a
+        // fallback; the outer property_binding manual rule normally
+        // captures the willset/didset clauses directly).
         rule!((willset_didset_block _* @clauses) => {..clauses}),
-        // willset clause → accessor_declaration (body optional).
+        // willset clause → accessor_declaration (body optional). Reads
+        // `ctx.property_name` set by the outer property_binding rule.
         rule!(
             (willset_clause body: (block statement: _* @body)?)
             =>
             (accessor_declaration
+                name: {ctx.property_name.ok_or("willset_clause outside property_binding context")?}
                 accessor_kind: (accessor_kind "willSet")
                 body: (block stmt: {..body}))
         ),
@@ -946,6 +995,7 @@ fn translation_rules() -> Vec<yeast::Rule> {
             (didset_clause body: (block statement: _* @body)?)
             =>
             (accessor_declaration
+                name: {ctx.property_name.ok_or("didset_clause outside property_binding context")?}
                 accessor_kind: (accessor_kind "didSet")
                 body: (block stmt: {..body}))
         ),
@@ -967,7 +1017,7 @@ fn translation_rules() -> Vec<yeast::Rule> {
 
 pub fn language_spec(desugared_ast_schema: &'static str) -> simple::LanguageSpec {
     let ts_language: tree_sitter::Language = tree_sitter_swift::LANGUAGE.into();
-    let config = DesugaringConfig::new()
+    let config = DesugaringConfig::<PropertyContext>::new()
         .add_phase("translate", PhaseKind::OneShot, translation_rules())
         .with_output_node_types_yaml(desugared_ast_schema);
     let desugarer = ConcreteDesugarer::new(ts_language.clone(), config)
