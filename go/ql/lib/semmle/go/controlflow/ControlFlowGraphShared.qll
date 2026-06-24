@@ -254,6 +254,8 @@ module GoCfg {
     class CatchClause extends AstNode {
       CatchClause() { none() }
 
+      AstNode getPattern() { none() }
+
       AstNode getVariable() { none() }
 
       Expr getCondition() { none() }
