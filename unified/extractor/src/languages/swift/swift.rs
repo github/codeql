@@ -1,24 +1,30 @@
 use codeql_extractor::extractor::simple;
 use yeast::{manual_rule, rule, tree, ConcreteDesugarer, DesugaringConfig, PhaseKind, Rule};
 
-/// User context propagated from outer `property_binding` rules down to the
-/// inner accessor-translation rules so that every `accessor_declaration`
-/// emitted by an inner rule is born with the property's `name` (and
-/// optionally its `type`) already set — no schema-invalid intermediate
-/// state requiring post-hoc mutation.
+/// User context propagated from outer rules down to the inner rules that
+/// emit the corresponding output declarations, so that each emitted node
+/// is born with the outer information (name, type, modifiers, etc.)
+/// already set — no schema-invalid intermediate state requiring
+/// post-hoc mutation.
 #[derive(Clone, Default)]
-struct PropertyContext {
-    /// Identifier node for the property name, to be used as the
-    /// `accessor_declaration.name`. Set by the outer property_binding rule
-    /// before translating accessor children.
+struct SwiftContext {
+    /// Identifier node for the property name. Set by the outer
+    /// `property_binding` (computed accessors / willSet-didSet) rule
+    /// before translating accessor children; read by
+    /// `computed_getter`/`computed_setter`/`computed_modify`/
+    /// `willset_clause`/`didset_clause`.
     property_name: Option<yeast::Id>,
-    /// Translated type node for the property type, to be used as the
-    /// `accessor_declaration.type`. Set by the outer property_binding rule
-    /// when present.
+    /// Translated type node for the property type. Set by the outer
+    /// `property_binding` rule (computed accessors variant) when
+    /// present; read by `computed_*` rules.
     property_type: Option<yeast::Id>,
+    /// Default-value expression for the next translated `parameter`. Set
+    /// by the outer `function_parameter` rule; read by the `parameter`
+    /// rules.
+    default_value: Option<yeast::Id>,
 }
 
-fn translation_rules() -> Vec<Rule<PropertyContext>> {
+fn translation_rules() -> Vec<Rule<SwiftContext>> {
     vec![
         // ---- Top-level ----
         // Capture all top-level statements, including unnamed tokens like `nil`.
@@ -358,17 +364,15 @@ fn translation_rules() -> Vec<Rule<PropertyContext>> {
                 body: (block stmt: {..body_stmts}))
         ),
         // Parameters are wrapped in function_parameter, which also carries
-        // optional default values.
-        rule!(
+        // optional default values. Publishes the default value into `ctx`
+        // before translating the inner `parameter` so the `parameter`
+        // rules can include it as a `default:` field directly.
+        manual_rule!(
             (function_parameter parameter: @p default_value: _? @def)
-            =>
-            {..{
-                let p_id: usize = p.into();
-                for &d in def.iter().rev() {
-                    ctx.prepend_field(p_id, "default", d.into());
-                }
-                vec![p_id]
-            }}
+            {
+                ctx.default_value = ctx.translate_opt(def)?;
+                ctx.translate(p)
+            }
         ),
         // Parameter with external name and type
         rule!(
@@ -376,7 +380,8 @@ fn translation_rules() -> Vec<Rule<PropertyContext>> {
             =>
             (parameter
                 external_name: (identifier #{ext})
-                pattern: (name_pattern identifier: (identifier #{name})))
+                pattern: (name_pattern identifier: (identifier #{name}))
+                default: {..ctx.default_value})
         ),
         rule!(
             (parameter external_name: @ext name: @name type: @ty)
@@ -384,21 +389,24 @@ fn translation_rules() -> Vec<Rule<PropertyContext>> {
             (parameter
                 external_name: (identifier #{ext})
                 pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty})
+                type: {ty}
+                default: {..ctx.default_value})
         ),
         // Parameter with just name and type (no external name)
         rule!(
             (parameter name: @name)
             =>
             (parameter
-                pattern: (name_pattern identifier: (identifier #{name})))
+                pattern: (name_pattern identifier: (identifier #{name}))
+                default: {..ctx.default_value})
         ),
         rule!(
             (parameter name: @name type: @ty)
             =>
             (parameter
                 pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty})
+                type: {ty}
+                default: {..ctx.default_value})
         ),
         // Reference to a function, f(x:y:z:). This is parsed as a call with a single argument with multiple reference_specifier labels.
         // We don't want downstream QL to try to handle this as a call_expr with a weird argument, so explicitly mark it as unsupported for now.
@@ -1017,7 +1025,7 @@ fn translation_rules() -> Vec<Rule<PropertyContext>> {
 
 pub fn language_spec(desugared_ast_schema: &'static str) -> simple::LanguageSpec {
     let ts_language: tree_sitter::Language = tree_sitter_swift::LANGUAGE.into();
-    let config = DesugaringConfig::<PropertyContext>::new()
+    let config = DesugaringConfig::<SwiftContext>::new()
         .add_phase("translate", PhaseKind::OneShot, translation_rules())
         .with_output_node_types_yaml(desugared_ast_schema);
     let desugarer = ConcreteDesugarer::new(ts_language.clone(), config)
