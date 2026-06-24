@@ -924,3 +924,93 @@ top_level
               accessor_kind: accessor_kind "set"
           modifier: modifier "class"
           name: identifier "Box"
+
+===
+Protocol with read-only and read-write property requirements
+===
+
+protocol P {
+  var foo: Int { get }
+  var bar: String { get set }
+}
+
+---
+
+source_file
+  statement:
+    protocol_declaration
+      body:
+        protocol_body
+          member:
+            protocol_property_declaration
+              name:
+                pattern
+                  binding:
+                    value_binding_pattern
+                      mutability: var
+                  bound_identifier: simple_identifier "foo"
+              requirements:
+                protocol_property_requirements
+                  accessor:
+                    getter_specifier
+              type:
+                type_annotation
+                  type:
+                    type
+                      name:
+                        user_type
+                          part:
+                            simple_user_type
+                              name: type_identifier "Int"
+            protocol_property_declaration
+              name:
+                pattern
+                  binding:
+                    value_binding_pattern
+                      mutability: var
+                  bound_identifier: simple_identifier "bar"
+              requirements:
+                protocol_property_requirements
+                  accessor:
+                    getter_specifier
+                    setter_specifier
+              type:
+                type_annotation
+                  type:
+                    type
+                      name:
+                        user_type
+                          part:
+                            simple_user_type
+                              name: type_identifier "String"
+      name: type_identifier "P"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          member:
+            accessor_declaration
+              name: identifier "foo"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+              accessor_kind: accessor_kind "get"
+            accessor_declaration
+              name: identifier "bar"
+              type:
+                named_type_expr
+                  name: identifier "String"
+              accessor_kind: accessor_kind "get"
+            accessor_declaration
+              modifier: modifier "chained_declaration"
+              name: identifier "bar"
+              type:
+                named_type_expr
+                  name: identifier "String"
+              accessor_kind: accessor_kind "set"
+          modifier: modifier "protocol"
+          name: identifier "P"

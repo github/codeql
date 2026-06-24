@@ -9,19 +9,44 @@ use yeast::{manual_rule, rule, tree, ConcreteDesugarer, DesugaringConfig, PhaseK
 #[derive(Clone, Default)]
 struct SwiftContext {
     /// Identifier node for the property name. Set by the outer
-    /// `property_binding` (computed accessors / willSet-didSet) rule
-    /// before translating accessor children; read by
-    /// `computed_getter`/`computed_setter`/`computed_modify`/
-    /// `willset_clause`/`didset_clause`.
+    /// `property_binding` (computed accessors / willSet-didSet) and
+    /// `protocol_property_declaration` rules before translating accessor
+    /// children; read by the accessor inner rules
+    /// (`computed_getter`/`computed_setter`/`computed_modify`/
+    /// `willset_clause`/`didset_clause`/`getter_specifier`/
+    /// `setter_specifier`).
     property_name: Option<yeast::Id>,
     /// Translated type node for the property type. Set by the outer
-    /// `property_binding` rule (computed accessors variant) when
-    /// present; read by `computed_*` rules.
+    /// `property_binding` rule (computed accessors variant) and
+    /// `protocol_property_declaration` when present; read by the
+    /// accessor inner rules.
     property_type: Option<yeast::Id>,
     /// Default-value expression for the next translated `parameter`. Set
     /// by the outer `function_parameter` rule; read by the `parameter`
     /// rules.
     default_value: Option<yeast::Id>,
+    /// Translated outer modifiers (e.g. visibility, attributes) to
+    /// attach to each child of a flattening outer rule. Set by
+    /// `protocol_property_declaration` (and, later,
+    /// `property_declaration`/`enum_entry`).
+    outer_modifiers: Vec<yeast::Id>,
+    /// True when the current child of a flattening outer rule is not
+    /// the first one — its inner rule should emit a
+    /// `chained_declaration` modifier so the original grouping can be
+    /// recovered downstream.
+    is_chained: bool,
+}
+
+/// Build a freshly-created `chained_declaration` modifier node if
+/// `ctx.is_chained`, else `None`. Used by inner declaration rules to
+/// emit the chained tag for non-first children of a flattening outer
+/// rule. Returns `Option<Id>` so it splices via `{..…}` to 0 or 1 ids.
+fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Option<yeast::Id> {
+    if ctx.is_chained {
+        Some(ctx.literal("modifier", "chained_declaration"))
+    } else {
+        None
+    }
 }
 
 fn translation_rules() -> Vec<Rule<SwiftContext>> {
@@ -904,41 +929,61 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 name: (identifier #{name})
                 bound: {..bound})
         ),
-        // Protocol property declaration: translate each accessor requirement to an
-        // accessor_declaration without a body, carrying the property name and type.
-        // Subsequent accessors get chained_declaration (same flattening as computed properties).
-        rule!(
+        // Protocol property declaration: translate each accessor
+        // requirement to an `accessor_declaration` carrying the property
+        // name, type, and outer modifiers. Manual rule: we publish the
+        // property's name/type/modifiers into `ctx` and translate each
+        // accessor with `ctx.is_chained` toggled per iteration so the
+        // inner `getter_specifier`/`setter_specifier` rules emit
+        // complete nodes from the start (including the
+        // `chained_declaration` tag for non-first accessors).
+        manual_rule!(
             (protocol_property_declaration
-                name: @pattern
+                name: (pattern bound_identifier: @name)
                 requirements: (protocol_property_requirements accessor: _+ @accessors)
                 type: _? @ty
                 (modifiers)* @mods)
-            =>
-            {..{
-                let name_text = ctx.ast.source_text(pattern.into());
-                let mod_ids: Vec<usize> = mods.iter().map(|&m| m.into()).collect();
-                let ty_ids: Vec<usize> = ty.iter().map(|&t| t.into()).collect();
-                let acc_ids: Vec<usize> = accessors.iter().map(|&a| a.into()).collect();
-                for (i, &acc_id) in acc_ids.iter().enumerate() {
-                    if i > 0 {
-                        let chained = ctx.literal("modifier", "chained_declaration");
-                        ctx.prepend_field(acc_id, "modifier", chained);
-                    }
-                    for &mod_id in mod_ids.iter().rev() {
-                        ctx.prepend_field(acc_id, "modifier", mod_id);
-                    }
-                    for &ty_id in ty_ids.iter().rev() {
-                        ctx.prepend_field(acc_id, "type", ty_id);
-                    }
-                    let ident = ctx.literal("identifier", &name_text);
-                    ctx.prepend_field(acc_id, "name", ident);
+            {
+                ctx.property_name = Some(tree!((identifier #{name})));
+                ctx.property_type = ctx.translate_opt(ty)?;
+                let mut modifiers = Vec::new();
+                for m in mods {
+                    modifiers.extend(ctx.translate(m)?);
                 }
-                acc_ids
-            }}
+                ctx.outer_modifiers = modifiers;
+
+                let mut result = Vec::new();
+                for (i, acc) in accessors.into_iter().enumerate() {
+                    ctx.is_chained = i > 0;
+                    result.extend(ctx.translate(acc)?);
+                }
+                Ok(result)
+            }
         ),
         // getter_specifier / setter_specifier → bodyless accessor_declaration
-        rule!((getter_specifier) => (accessor_declaration accessor_kind: (accessor_kind "get"))),
-        rule!((setter_specifier) => (accessor_declaration accessor_kind: (accessor_kind "set"))),
+        // getter_specifier / setter_specifier → bodyless
+        // accessor_declaration. Reads property name/type/modifiers from
+        // `ctx` set by the outer `protocol_property_declaration` rule.
+        rule!(
+            (getter_specifier)
+            =>
+            (accessor_declaration
+                name: {ctx.property_name.ok_or("getter_specifier outside protocol_property_declaration context")?}
+                type: {..ctx.property_type}
+                accessor_kind: (accessor_kind "get")
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)})
+        ),
+        rule!(
+            (setter_specifier)
+            =>
+            (accessor_declaration
+                name: {ctx.property_name.ok_or("setter_specifier outside protocol_property_declaration context")?}
+                type: {..ctx.property_type}
+                accessor_kind: (accessor_kind "set")
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)})
+        ),
         // protocol_property_requirements wrapper — should be consumed by above; fallback
         rule!((protocol_property_requirements accessor: _* @accs) => {..accs}),
         // Computed getter → accessor_declaration (body optional).
