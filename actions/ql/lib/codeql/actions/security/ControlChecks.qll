@@ -67,19 +67,15 @@ abstract class ControlCheck extends AstNode {
     this.protectsCategoryAndEvent(category, event.getName()) and
     // The check can be triggered by the event
     this.getATriggerEvent() = event and
-    // For reusable workflows, ALL callers for this event must be protected by SOME check
+    // For reusable workflows, there must be no unprotected caller chain for this event.
     (
       not node.getEnclosingWorkflow() instanceof ReusableWorkflow
       or
-      forall(ExternalJob directCaller |
+      this.dominatesSameWorkflow(node, event)
+      or
+      not exists(ExternalJob directCaller |
         directCaller = node.getEnclosingWorkflow().(ReusableWorkflow).getACaller() and
-        directCaller.getATriggerEvent() = event
-      |
-        exists(ControlCheck check |
-          check.protectsCategoryAndEvent(category, event.getName()) and
-          check.getATriggerEvent() = event and
-          check.dominatesViaCaller(node, event, directCaller)
-        )
+        unprotectedCallerChain(directCaller, event, category)
       )
     )
   }
@@ -88,7 +84,17 @@ abstract class ControlCheck extends AstNode {
    * Holds if this control check must execute and pass before `node` can run.
    */
   predicate dominates(AstNode node, Event event) {
-    // Same-workflow dominance: bind event to this check's trigger event.
+    this.dominatesSameWorkflow(node, event)
+    or
+    // When the node is inside a reusable workflow,
+    // this check dominates via at least one caller chain.
+    this.dominatesViaCaller(node, event, _)
+  }
+
+  /**
+   * Holds if this control check dominates `node` within the same workflow.
+   */
+  predicate dominatesSameWorkflow(AstNode node, Event event) {
     this.getATriggerEvent() = event and
     (
       // Step-level: the check is an `if:` on the step containing `node`,
@@ -121,10 +127,6 @@ abstract class ControlCheck extends AstNode {
         node.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this
       )
     )
-    or
-    // When the node is inside a reusable workflow,
-    // this check dominates via at least one caller chain.
-    this.dominatesViaCaller(node, event, _)
   }
 
   /**
@@ -136,27 +138,91 @@ abstract class ControlCheck extends AstNode {
     directCaller.getATriggerEvent() = event and
     exists(ExternalJob caller |
       caller = getAnOuterCaller*(directCaller) and
-      (
-        this instanceof If and
-        (
-          caller.getIf() = this or
-          caller.getANeededJob().(LocalJob).getIf() = this or
-          caller.getANeededJob().(LocalJob).getAStep().getIf() = this
-        )
-        or
-        this instanceof Environment and
-        (
-          caller.getEnvironment() = this or
-          caller.getANeededJob().getEnvironment() = this
-        )
-        or
-        (this instanceof Run or this instanceof UsesStep) and
-        caller.getANeededJob().(LocalJob).getAStep() = this
-      )
+      this.dominatesCaller(caller)
     )
   }
 
+  /**
+   * Holds if this control check directly dominates `caller`.
+   */
+  predicate dominatesCaller(ExternalJob caller) {
+    this instanceof If and
+    (
+      caller.getIf() = this or
+      caller.getANeededJob().(LocalJob).getIf() = this or
+      caller.getANeededJob().(LocalJob).getAStep().getIf() = this
+    )
+    or
+    this instanceof Environment and
+    (
+      caller.getEnvironment() = this or
+      caller.getANeededJob().getEnvironment() = this
+    )
+    or
+    (this instanceof Run or this instanceof UsesStep) and
+    caller.getANeededJob().(LocalJob).getAStep() = this
+  }
+
   abstract predicate protectsCategoryAndEvent(string category, string event);
+}
+
+/**
+ * Holds if this control check directly protects `caller`.
+ */
+bindingset[caller, event, category]
+private predicate protectedCaller(ExternalJob caller, Event event, string category) {
+  exists(ControlCheck check |
+    check.protectsCategoryAndEvent(category, event.getName()) and
+    check.getATriggerEvent() = event and
+    check.dominatesCaller(caller)
+  )
+}
+
+cached
+private newtype TCallerState = MkCallerState(ExternalJob caller, Event event, string category) {
+  caller.getATriggerEvent() = event and
+  category = any_category()
+}
+
+private class CallerState extends TCallerState, MkCallerState {
+  ExternalJob caller;
+  Event event;
+  string category;
+
+  CallerState() { this = MkCallerState(caller, event, category) }
+
+  ExternalJob getCaller() { result = caller }
+
+  Event getEvent() { result = event }
+
+  string getCategory() { result = category }
+
+  /**
+   * Gets an outer caller state if this caller is not protected.
+   */
+  CallerState getUnprotectedOuterState() {
+    not protectedCaller(this.getCaller(), this.getEvent(), this.getCategory()) and
+    result = MkCallerState(getAnOuterCaller(this.getCaller()), this.getEvent(), this.getCategory())
+  }
+
+  predicate isUnprotectedOutermost() {
+    not protectedCaller(this.getCaller(), this.getEvent(), this.getCategory()) and
+    not exists(getAnOuterCaller(this.getCaller()))
+  }
+
+  string toString() { result = caller + " / " + event + " / " + category }
+}
+
+/**
+ * Holds if there is a caller path from `caller` to an outer workflow that has no protection.
+ */
+bindingset[caller, event, category]
+private predicate unprotectedCallerChain(ExternalJob caller, Event event, string category) {
+  exists(CallerState start, CallerState outermost |
+    start = MkCallerState(caller, event, category) and
+    outermost = start.getUnprotectedOuterState*() and
+    outermost.isUnprotectedOutermost()
+  )
 }
 
 abstract class AssociationCheck extends ControlCheck {
