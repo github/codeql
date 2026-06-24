@@ -270,14 +270,18 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (parameter type: {ty})
         ),
-        // enum_case_entry with associated values → class_like_declaration containing
-        // a constructor whose parameters are the data parameters.
+        // enum_case_entry with associated values → class_like_declaration
+        // containing a constructor whose parameters are the data
+        // parameters. Reads outer modifiers / chained tag from `ctx`
+        // (set by the outer `enum_entry` rule).
         rule!(
             (enum_case_entry
                 name: @name
                 data_contents: (enum_type_parameters parameter: _* @params))
             =>
             (class_like_declaration
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 modifier: (modifier "enum_case")
                 name: (identifier #{name})
                 member: (constructor_declaration parameter: {..params} body: (block)))
@@ -287,6 +291,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (enum_case_entry name: @name raw_value: @val)
             =>
             (variable_declaration
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 modifier: (modifier "enum_case")
                 pattern: (name_pattern identifier: (identifier #{name}))
                 value: {val})
@@ -296,28 +302,31 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (enum_case_entry name: @name)
             =>
             (variable_declaration
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 modifier: (modifier "enum_case")
                 pattern: (name_pattern identifier: (identifier #{name})))
         ),
-        // enum_entry: flatten case entries; attach outer modifiers to each, and
-        // chained_declaration on every entry after the first.
-        rule!(
+        // enum_entry: flatten case entries; publish outer modifiers
+        // into `ctx` and translate each case with `ctx.is_chained`
+        // toggled per iteration so the inner `enum_case_entry` rules
+        // emit complete `modifier:` lists from the start.
+        manual_rule!(
             (enum_entry case: _+ @cases (modifiers)* @mods)
-            =>
-            {..{
-                let mod_ids: Vec<usize> = mods.iter().map(|&m| m.into()).collect();
-                let case_ids: Vec<usize> = cases.iter().map(|&c| c.into()).collect();
-                for (i, &case_id) in case_ids.iter().enumerate() {
-                    if i > 0 {
-                        let chained = ctx.literal("modifier", "chained_declaration");
-                        ctx.prepend_field(case_id, "modifier", chained);
-                    }
-                    for &mod_id in mod_ids.iter().rev() {
-                        ctx.prepend_field(case_id, "modifier", mod_id);
-                    }
+            {
+                let mut modifiers = Vec::new();
+                for m in mods {
+                    modifiers.extend(ctx.translate(m)?);
                 }
-                case_ids
-            }}
+                ctx.outer_modifiers = modifiers;
+
+                let mut result = Vec::new();
+                for (i, case) in cases.into_iter().enumerate() {
+                    ctx.is_chained = i > 0;
+                    result.extend(ctx.translate(case)?);
+                }
+                Ok(result)
+            }
         ),
         // Plain assignment: `x = expr`
         rule!(

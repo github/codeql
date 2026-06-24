@@ -1014,3 +1014,69 @@ top_level
               accessor_kind: accessor_kind "set"
           modifier: modifier "protocol"
           name: identifier "P"
+
+===
+Enum with comma-separated cases (chained_declaration)
+===
+
+enum Suit {
+  case clubs, diamonds, hearts, spades
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        enum_class_body
+          member:
+            enum_entry
+              case:
+                enum_case_entry
+                  name: simple_identifier "clubs"
+                enum_case_entry
+                  name: simple_identifier "diamonds"
+                enum_case_entry
+                  name: simple_identifier "hearts"
+                enum_case_entry
+                  name: simple_identifier "spades"
+      declaration_kind: enum
+      name: type_identifier "Suit"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "clubs"
+            variable_declaration
+              modifier:
+                modifier "chained_declaration"
+                modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "diamonds"
+            variable_declaration
+              modifier:
+                modifier "chained_declaration"
+                modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "hearts"
+            variable_declaration
+              modifier:
+                modifier "chained_declaration"
+                modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "spades"
+          modifier: modifier "enum"
+          name: identifier "Suit"
