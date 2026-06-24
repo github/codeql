@@ -336,11 +336,12 @@
 | patterns.cs:142:26:142:34 | { ... } | patterns.cs:142:26:142:34 | After { ... } | semmle.label | successor |
 | patterns.cs:142:31:142:32 | 10 | patterns.cs:142:26:142:34 | { ... } | semmle.label | successor |
 | patterns.cs:142:41:142:41 | 6 | patterns.cs:136:17:143:13 | After ... switch { ... } | semmle.label | successor |
-| patterns.cs:145:9:148:9 | After catch (...) {...} [match] | patterns.cs:145:41:145:42 | InvalidOperationException ex | semmle.label | successor |
 | patterns.cs:145:9:148:9 | After catch (...) {...} [no-match] | patterns.cs:123:10:123:21 | Exceptional Exit | semmle.label | exception |
-| patterns.cs:145:9:148:9 | catch (...) {...} | patterns.cs:145:9:148:9 | After catch (...) {...} [match] | semmle.label | match |
-| patterns.cs:145:9:148:9 | catch (...) {...} | patterns.cs:145:9:148:9 | After catch (...) {...} [no-match] | semmle.label | no-match |
-| patterns.cs:145:41:145:42 | InvalidOperationException ex | patterns.cs:146:9:148:9 | {...} | semmle.label | successor |
+| patterns.cs:145:9:148:9 | catch (...) {...} | patterns.cs:145:41:145:42 | InvalidOperationException ex | semmle.label | successor |
+| patterns.cs:145:41:145:42 | After InvalidOperationException ex [match] | patterns.cs:146:9:148:9 | {...} | semmle.label | successor |
+| patterns.cs:145:41:145:42 | After InvalidOperationException ex [no-match] | patterns.cs:145:9:148:9 | After catch (...) {...} [no-match] | semmle.label | no-match |
+| patterns.cs:145:41:145:42 | InvalidOperationException ex | patterns.cs:145:41:145:42 | After InvalidOperationException ex [match] | semmle.label | match |
+| patterns.cs:145:41:145:42 | InvalidOperationException ex | patterns.cs:145:41:145:42 | After InvalidOperationException ex [no-match] | semmle.label | no-match |
 | patterns.cs:146:9:148:9 | After {...} | patterns.cs:134:9:148:9 | After try {...} ... | semmle.label | successor |
 | patterns.cs:146:9:148:9 | {...} | patterns.cs:147:13:147:51 | ...; | semmle.label | successor |
 | patterns.cs:147:13:147:50 | After call to method WriteLine | patterns.cs:147:13:147:51 | After ...; | semmle.label | successor |

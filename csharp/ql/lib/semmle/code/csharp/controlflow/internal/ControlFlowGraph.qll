@@ -75,7 +75,8 @@ module Ast implements AstSig<Location> {
 
   additional predicate skipControlFlow(AstNode e) {
     e instanceof TypeAccess and
-    not e instanceof TypeAccessPatternExpr
+    not e instanceof TypeAccessPatternExpr and
+    not any(CS::SpecificCatchClause sc).getTypeAccess() = e
     or
     not e.getFile().fromSource()
   }
@@ -220,7 +221,12 @@ module Ast implements AstSig<Location> {
   final private class FinalCatchClause = CS::CatchClause;
 
   class CatchClause extends FinalCatchClause {
-    AstNode getVariable() { result = this.(CS::SpecificCatchClause).getVariableDeclExpr() }
+    AstNode getPattern() {
+      result = this.(CS::SpecificCatchClause).getVariableDeclExpr() or
+      result = this.(CS::SpecificCatchClause).getTypeAccess()
+    }
+
+    AstNode getVariable() { none() }
 
     Expr getCondition() { result = this.getFilterClause() }
 
