@@ -1,5 +1,4 @@
 import commands
-import pytest
 
 
 def test(codeql, java_full, kotlinc_2_3_20):
