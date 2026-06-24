@@ -1,0 +1,1 @@
+| html/template | net/url.Values.Get | Potential SSTI: User input flows to template parsing. |
