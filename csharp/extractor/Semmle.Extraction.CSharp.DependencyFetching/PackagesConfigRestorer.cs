@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class PackagesConfigRestoreFactory
     {
-        public static IPackagesConfigRestore Create(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, HashSet<string> reachableFeeds)
+        public static IPackagesConfigRestore Create(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, ImmutableHashSet<string> reachableFeeds)
         {
             if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMonoInstalled())
             {
@@ -64,7 +65,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             /// </summary>
             private readonly DependencyDirectory packageDirectory;
             private readonly FeedManager feedManager;
-            private readonly HashSet<string> reachableFeeds;
+            private readonly ImmutableHashSet<string> reachableFeeds;
 
             private bool IsWindows => SystemBuildActions.Instance.IsWindows();
 
@@ -75,7 +76,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             /// <summary>
             /// Create the package manager for a specified source tree.
             /// </summary>
-            public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, HashSet<string> reachableFeeds)
+            public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, ImmutableHashSet<string> reachableFeeds)
             {
                 this.fileProvider = fileProvider;
                 this.packageDirectory = packageDirectory;
