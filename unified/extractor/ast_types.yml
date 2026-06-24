@@ -42,6 +42,7 @@ supertypes:
     - name_pattern
     - tuple_pattern
     - constructor_pattern
+    - or_pattern
     - ignore_pattern
     - expr_equality_pattern
     - bulk_importing_pattern
@@ -359,12 +360,12 @@ named:
     case*: switch_case
 
   # A single `case ...:` (or `default:`) entry in a switch.
-  # An entry with multiple `case p1, p2:` patterns has multiple `pattern`s.
-  # A `default:` entry has no patterns.
+  # An entry with multiple `case p1, p2:` patterns uses an `or_pattern`.
+  # A `default:` entry has no pattern.
   # An optional `guard` corresponds to a `where`-clause on the case.
   switch_case:
     modifier*: modifier
-    pattern*: pattern
+    pattern?: pattern
     guard?: expr
     body: block
 
@@ -420,6 +421,11 @@ named:
     modifier*: modifier
     constructor: expr_or_type
     element*: pattern_element
+
+  # A disjunction pattern that matches if any of its sub-patterns match.
+  or_pattern:
+    modifier*: modifier
+    pattern*: pattern
 
   # A pattern with an optional associated name.
   pattern_element:
