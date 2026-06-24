@@ -179,10 +179,11 @@ private predicate protectedCaller(ExternalJob caller, Event event, string catego
 }
 
 cached
-private newtype TCallerState = MkCallerState(ExternalJob caller, Event event, string category) {
-  caller.getATriggerEvent() = event and
-  category = any_category()
-}
+private newtype TCallerState =
+  MkCallerState(ExternalJob caller, Event event, string category) {
+    caller.getATriggerEvent() = event and
+    category = any_category()
+  }
 
 private class CallerState extends TCallerState, MkCallerState {
   ExternalJob caller;
