@@ -647,7 +647,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       (
         n instanceof CatchClause
         or
-        exists(CatchClause catch | n = catch.getPattern())
+        n = any(CatchClause catch).getPattern()
         or
         n instanceof Case
         or
