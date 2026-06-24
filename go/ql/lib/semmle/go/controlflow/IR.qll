@@ -55,7 +55,7 @@ module IR {
   private predicate typeSwitchCaseMatch(ControlFlow::Node n, CaseClause cc) {
     cc = any(TypeSwitchStmt ts).getACase() and
     exists(cc.getImplicitlyDeclaredVariable()) and
-    n.isAfterValue(cc, any(MatchingSuccessor t | t.getValue() = true))
+    n.isAfterValue(cc, any(MatchingSuccessor t | t.isMatch()))
   }
 
   /**
