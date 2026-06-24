@@ -2,67 +2,6 @@ use libxml::bindings;
 use std::os::fd::AsRawFd;
 use std::os::raw::{c_char, c_uchar};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // --- BAD: user-controlled XML with unsafe parser options ---
 
 unsafe fn test_xml_parse_noent(user_xml: &str) {
@@ -117,27 +56,19 @@ unsafe fn test_xml_ctxt_read_memory_bad(user_xml: &str) {
     );
 }
 
-unsafe fn test_integer_literal_bad1(user_xml: &str) {
+unsafe fn test_integer_literals(user_xml: &str) {
     // BAD: literal value 2 = XML_PARSE_NOENT
     bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), 2); // $ Alert[rust/xxe]
-}
 
-unsafe fn test_integer_literal_bad2(user_xml: &str) {
     // BAD: literal value 4 = XML_PARSE_DTDLOAD
     bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), 4i32); // $ Alert[rust/xxe]
-}
 
-unsafe fn test_integer_literal_bad3(user_xml: &str) {
     // BAD: literal value 4 = XML_PARSE_DTDLOAD
     bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), 0x4i32); // $ MISSING: Alert[rust/xxe]
-}
 
-unsafe fn test_integer_literal_good1(user_xml: &str) {
     // GOOD: literal value 0 = no entity expansion
     bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), 0);
-}
 
-unsafe fn test_integer_literal_good2(user_xml: &str) {
     // GOOD: literal value 2048 = no entity expansion
     bindings::xmlReadMemory(user_xml.as_ptr() as *const c_char, user_xml.len() as i32, std::ptr::null_mut(), std::ptr::null_mut(), 2_048);
 }
@@ -182,11 +113,7 @@ fn main() {
         test_xml_ctxt_read_file_bad(&user_filename);
         test_xml_ctxt_read_doc_bad(&user_xml);
         test_xml_ctxt_read_memory_bad(&user_xml);
-        test_integer_literal_bad1(&user_xml);
-        test_integer_literal_bad2(&user_xml);
-        test_integer_literal_bad3(&user_xml);
-        test_integer_literal_good1(&user_xml);
-        test_integer_literal_good2(&user_xml);
+        test_integer_literals(&user_xml);
         test_dataflow_bad(&user_xml);
         test_xml_parse_safe_options(&user_xml);
         test_xml_hardcoded_unsafe();
