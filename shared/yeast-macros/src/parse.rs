@@ -904,6 +904,106 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
     })
 }
 
+/// Parse `manual_rule!( query { body } )`.
+///
+/// Like [`parse_rule_top`] but:
+/// - Expects a Rust block `{ ... }` after the query (no `=>` arrow).
+/// - Generates code that does NOT auto-translate captures before
+///   running the body. Capture variables refer to raw (input-schema)
+///   nodes; the body is responsible for explicit translation via
+///   `ctx.translate(...)`.
+/// - The body is included verbatim and must evaluate to
+///   `Result<Vec<usize>, String>`.
+pub fn parse_manual_rule_top(input: TokenStream) -> Result<TokenStream> {
+    let mut tokens = input.into_iter().peekable();
+
+    // Collect query tokens up to the body block `{ ... }`.
+    let mut query_tokens = Vec::new();
+    loop {
+        match tokens.peek() {
+            None => {
+                return Err(syn::Error::new(
+                    Span::call_site(),
+                    "expected a Rust block `{ ... }` after the query in manual_rule!",
+                ))
+            }
+            Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => break,
+            _ => {
+                query_tokens.push(tokens.next().unwrap());
+            }
+        }
+    }
+
+    let query_stream: TokenStream = query_tokens.into_iter().collect();
+
+    // Extract captures from the query (same as in `rule!`).
+    let captures = extract_captures(&query_stream);
+
+    // Parse the query into the QueryNode-building expression.
+    let query_code = parse_query_top(query_stream)?;
+
+    // Generate capture bindings (same as in `rule!`).
+    let ctx_ident = Ident::new(IMPLICIT_CTX, Span::call_site());
+    let bindings: Vec<TokenStream> = captures
+        .iter()
+        .map(|cap| {
+            let name = Ident::new(&cap.name, Span::call_site());
+            let name_str = &cap.name;
+            match cap.multiplicity {
+                CaptureMultiplicity::Repeated => quote! {
+                    let #name: Vec<yeast::NodeRef> = __captures.get_all(#name_str)
+                        .into_iter()
+                        .map(yeast::NodeRef)
+                        .collect();
+                },
+                CaptureMultiplicity::Optional => quote! {
+                    let #name: Option<yeast::NodeRef> =
+                        __captures.get_opt(#name_str).map(yeast::NodeRef);
+                },
+                CaptureMultiplicity::Single => quote! {
+                    let #name: yeast::NodeRef =
+                        yeast::NodeRef(__captures.get_var(#name_str).unwrap());
+                },
+            }
+        })
+        .collect();
+
+    // Consume the body block.
+    let body_group = match tokens.next() {
+        Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => g,
+        other => {
+            return Err(syn::Error::new(
+                Span::call_site(),
+                format!(
+                    "expected a Rust block `{{ ... }}` after the query in manual_rule!, found: {other:?}"
+                ),
+            ))
+        }
+    };
+    let body_stream = body_group.stream();
+
+    // No tokens should follow the body.
+    if let Some(tok) = tokens.next() {
+        return Err(syn::Error::new_spanned(
+            tok,
+            "unexpected token after manual_rule! body",
+        ));
+    }
+
+    Ok(quote! {
+        {
+            let __query = #query_code;
+            yeast::Rule::new(__query, Box::new(|__ast: &mut yeast::Ast, __captures: yeast::captures::Captures, __fresh: &yeast::tree_builder::FreshScope, __source_range: Option<tree_sitter::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
+                // No auto-translate prefix for manual rules — the body
+                // is responsible for translating captures explicitly.
+                #(#bindings)*
+                let mut #ctx_ident = yeast::build::BuildCtx::with_translator(__ast, &__captures, __fresh, __source_range, __user_ctx, __translator);
+                #body_stream
+            }))
+        }
+    })
+}
+
 // ---------------------------------------------------------------------------
 // Token utilities
 // ---------------------------------------------------------------------------

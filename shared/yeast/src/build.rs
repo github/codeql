@@ -176,13 +176,34 @@ impl<C: Clone> BuildCtx<'_, C> {
     /// (translation is not meaningful when input and output share a
     /// schema).
     ///
+    /// Accepts any value convertible to [`Id`] (including [`crate::NodeRef`]),
+    /// so manual rules can pass capture bindings directly without unwrapping.
+    ///
     /// Errors if this `BuildCtx` was constructed by hand (without a
     /// translator handle) — for example, in unit tests that don't go
     /// through the rule driver.
-    pub fn translate(&mut self, id: Id) -> Result<Vec<Id>, String> {
+    pub fn translate<I: Into<Id>>(&mut self, id: I) -> Result<Vec<Id>, String> {
+        let id = id.into();
         match &self.translator {
             Some(t) => t.translate(self.ast, self.user_ctx, id),
             None => Err("translate() called on a BuildCtx without a translator handle".into()),
+        }
+    }
+
+    /// Translate an optional capture, returning the first translated id or
+    /// `None`. Convenience for `?`-quantifier captures (`Option<NodeRef>`).
+    ///
+    /// If the underlying translation produces multiple ids for a single
+    /// input, only the first is returned. For most use cases (e.g.
+    /// translating a single type annotation) this is what you want; if
+    /// you need all ids, use [`translate`] directly.
+    pub fn translate_opt<I: Into<Id>>(
+        &mut self,
+        id: Option<I>,
+    ) -> Result<Option<Id>, String> {
+        match id {
+            Some(id) => Ok(self.translate(id)?.into_iter().next()),
+            None => Ok(None),
         }
     }
 }
