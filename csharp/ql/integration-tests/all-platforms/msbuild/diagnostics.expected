@@ -1,0 +1,16 @@
+{
+  "attributes": {},
+  "helpLinks": [],
+  "internal": false,
+  "location": {},
+  "plaintextMessage": "Too many project files specified",
+  "severity": "error",
+  "source": {
+    "extractorName": "csharp",
+    "id": "csharp/autobuilder/msbuild-4",
+    "name": "MSBUILD4"
+  },
+  "visibility": {
+    "telemetry": true
+  }
+}
