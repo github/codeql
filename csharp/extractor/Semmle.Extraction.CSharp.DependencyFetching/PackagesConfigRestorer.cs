@@ -72,8 +72,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             private bool IsDefaultFeedReachable =>
                 isDefaultFeedReachable ??= feedManager.IsDefaultFeedReachable();
 
-
-
             /// <summary>
             /// Create the package manager for a specified source tree.
             /// </summary>
@@ -175,7 +173,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var feedsToUse = feedManager.FeedsToUse(packagesConfig, reachableFeeds).ToList();
                 var useDefaultFeed = feedsToUse.Count == 0 && IsDefaultFeedReachable;
 
-                // Explicitly construct the sources to be used for the restore command if any of the following is true:
+                // Explicitly construct the sources to be used for the restore command when checking feed
+                // responsiveness, using private registries, or falling back to nuget.org.
                 if (feedManager.CheckNugetFeedResponsiveness || feedManager.HasPrivateRegistryFeeds || useDefaultFeed)
                 {
                     if (useDefaultFeed)

@@ -90,7 +90,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public string FeedsToRestoreArgument(IEnumerable<string> feeds, string sourceArgumentPrefix)
         {
-            // If there are no feeds, we want to override any default feeds that `dotnet restore` would use by passing a dummy source argument.
+            // If there are no feeds, we want to override any default feeds that `restore` would use by passing a dummy source argument.
             if (!feeds.Any())
             {
                 return $" {sourceArgumentPrefix} \"{emptyPackageDirectory.DirInfo.FullName}\"";
@@ -112,7 +112,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// (1) Use the feeds we get from `dotnet nuget list source`
         /// (2) Use private registries, if they are configured
         /// </summary>
-        /// <param name="path">Path to project/solution</param>
+        /// <param name="path">Path to project/solution/packages.config</param>
         /// <param name="reachableFeeds">The set of reachable NuGet feeds.</param>
         /// <returns>The list of NuGet feeds to use for this restore.</returns>
         public IEnumerable<string> FeedsToUse(string path, HashSet<string> reachableFeeds)
