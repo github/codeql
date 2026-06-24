@@ -1,67 +1,67 @@
 use libxml::bindings;
 use std::os::fd::AsRawFd;
 use std::os::raw::{c_char, c_uchar};
-// Stub types and constants to simulate libxml2 bindings
-pub struct XmlDoc;
-pub struct XmlParserCtxt;
+
+
+
 // xmlParserOption constants
 const XML_PARSE_NOENT: i32 = 2; // substitute entities
 const XML_PARSE_DTDLOAD: i32 = 4; // load the external subset
 
-// Stub libxml2 parsing functions (simplified signatures using &str for clarity)
-fn xmlReadFile(_url: &str, _encoding: &str, _options: i32) -> *mut XmlDoc {
-    std::ptr::null_mut()
-}
 
-fn xmlReadMemory(buffer: &str, _size: i32, _url: &str, _encoding: &str, _options: i32) -> *mut XmlDoc {
-    let _ = buffer;
-    std::ptr::null_mut()
-}
 
-fn xmlReadDoc(cur: &str, _url: &str, _encoding: &str, _options: i32) -> *mut XmlDoc {
-    let _ = cur;
-    std::ptr::null_mut()
-}
 
-fn xmlReadFd(_fd: i32, _url: &str, _encoding: &str, _options: i32) -> *mut XmlDoc {
-    std::ptr::null_mut()
-}
 
-fn xmlCtxtReadFile(
-    _ctxt: *mut XmlParserCtxt,
-    _url: &str,
-    _encoding: &str,
-    _options: i32,
-) -> *mut XmlDoc {
-    std::ptr::null_mut()
-}
 
-fn xmlCtxtReadDoc(
-    _ctxt: *mut XmlParserCtxt,
-    cur: &str,
-    _url: &str,
-    _encoding: &str,
-    _options: i32,
-) -> *mut XmlDoc {
-    let _ = cur;
-    std::ptr::null_mut()
-}
 
-fn xmlCtxtReadMemory(
-    _ctxt: *mut XmlParserCtxt,
-    buffer: &str,
-    _size: i32,
-    _url: &str,
-    _encoding: &str,
-    _options: i32,
-) -> *mut XmlDoc {
-    let _ = buffer;
-    std::ptr::null_mut()
-}
 
-fn xmlCtxtUseOptions(_ctxt: *mut XmlParserCtxt, _options: i32) -> i32 {
-    0
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // --- BAD: user-controlled XML with unsafe parser options ---
 
