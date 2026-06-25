@@ -170,9 +170,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// (2) Use private registries, if they are configured
         /// </summary>
         /// <param name="path">Path to project/solution/packages.config</param>
-        /// <param name="reachableFeeds">The set of reachable NuGet feeds.</param>
         /// <returns>The list of NuGet feeds to use for this restore.</returns>
-        public IEnumerable<string> FeedsToUse(string path, ImmutableHashSet<string> reachableFeeds)
+        public IEnumerable<string> FeedsToUse(string path)
         {
             // Find the path specific feeds.
             var folder = GetDirectoryName(path);
@@ -184,7 +183,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             var feedsToUse = CheckNugetFeedResponsiveness
-                ? feedsToConsider.Where(reachableFeeds.Contains)
+                ? feedsToConsider.Where(ReachableFeeds.Contains)
                 : feedsToConsider;
 
             return feedsToUse;
@@ -196,9 +195,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// (2) Use private registries, if they are configured
         /// </summary>
         /// <param name="path">Path to project/solution</param>
-        /// <param name="reachableFeeds">The set of reachable NuGet feeds.</param>
         /// <returns>A string representing the NuGet sources argument for the restore command.</returns>
-        public string? MakeDotnetRestoreSourcesArgument(string path, ImmutableHashSet<string> reachableFeeds)
+        public string? MakeDotnetRestoreSourcesArgument(string path)
         {
             // Do not construct a set of explicit NuGet sources to use for restore.
             if (!CheckNugetFeedResponsiveness && !HasPrivateRegistryFeeds)
@@ -206,7 +204,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return null;
             }
 
-            var feedsToUse = FeedsToUse(path, reachableFeeds);
+            var feedsToUse = FeedsToUse(path);
 
             return FeedsToRestoreArgument(feedsToUse, "-s");
         }
