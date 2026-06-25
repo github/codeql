@@ -350,10 +350,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             logger.LogInfo($"Found {notYetDownloadedPackages.Count} packages that are not yet restored");
-            using var tempDir = new TemporaryDirectory(ComputeTempDirectoryPath("nugetconfig"), "generated nuget config", logger);
-            var nugetConfig = fallbackNugetFeeds is null
-                ? GetNugetConfig()
-                : CreateFallbackNugetConfig(fallbackNugetFeeds, tempDir.DirInfo.FullName);
+
+            IEnumerable<string> feeds = [];
+            if (fallbackNugetFeeds is not null)
+            {
+                feeds = fallbackNugetFeeds;
+            }
+            else if (GetNugetConfig() is string config)
+            {
+                feeds = feedManager.FeedsToUseFromConfig(config);
+            }
+
+            var nugetSources = feedManager.FeedsToDotnetRestoreArgument(feeds);
 
             compilationInfoContainer.CompilationInfos.Add(("Fallback nuget restore", notYetDownloadedPackages.Count.ToString()));
 
@@ -362,7 +370,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, package =>
             {
-                var success = TryRestorePackageManually(package.Name, nugetConfig, package.PackageReferenceSource, tryWithoutNugetConfig: fallbackNugetFeeds is null);
+                var success = TryRestorePackageManually(package.Name, nugetSources, package.PackageReferenceSource, tryWithoutNugetConfig: fallbackNugetFeeds is null);
                 if (!success)
                 {
                     return;
@@ -377,27 +385,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("Successfully ran fallback nuget restore", successCount.ToString()));
 
             return missingPackageDirectory.DirInfo.FullName;
-        }
-
-        private string? CreateFallbackNugetConfig(IEnumerable<string> fallbackNugetFeeds, string folderPath)
-        {
-            var sb = new StringBuilder();
-            fallbackNugetFeeds.ForEach((feed, index) => sb.AppendLine($"<add key=\"feed{index}\" value=\"{feed}\" />"));
-
-            var nugetConfigPath = Path.Join(folderPath, "nuget.config");
-            logger.LogInfo($"Creating fallback nuget.config file {nugetConfigPath}.");
-            File.WriteAllText(nugetConfigPath,
-                $"""
-                <?xml version="1.0" encoding="utf-8"?>
-                <configuration>
-                    <packageSources>
-                        <clear />
-                {sb}
-                    </packageSources>
-                </configuration>
-                """);
-
-            return nugetConfigPath;
         }
 
         private string? GetNugetConfig()
@@ -489,7 +476,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .Select(d => Path.GetFileName(d).ToLowerInvariant());
         }
 
-        private bool TryRestorePackageManually(string package, string? nugetConfig = null, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj,
+        private bool TryRestorePackageManually(string package, string? nugetSources = null, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj,
             bool tryWithoutNugetConfig = true, bool tryPrereleaseVersion = true)
         {
             logger.LogInfo($"Restoring package {package}...");
@@ -512,17 +499,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return false;
             }
 
-            var res = TryRestorePackageManually(package, nugetConfig, tempDir, tryPrereleaseVersion);
+            var res = TryRestorePackageManually(package, nugetSources, tempDir, tryPrereleaseVersion);
             if (res.Success)
             {
                 return true;
             }
 
-            if (tryWithoutNugetConfig && res.HasNugetPackageSourceError && nugetConfig is not null)
+            if (tryWithoutNugetConfig && res.HasNugetPackageSourceError && nugetSources is not null && !feedManager.CheckNugetFeedResponsiveness)
             {
                 logger.LogDebug($"Trying to restore '{package}' without nuget.config.");
                 // Restore could not be completed because the listed source is unavailable. Try without the nuget.config:
-                res = TryRestorePackageManually(package, nugetConfig: null, tempDir, tryPrereleaseVersion);
+                res = TryRestorePackageManually(package, nugetSources: null, tempDir, tryPrereleaseVersion);
                 if (res.Success)
                 {
                     return true;
@@ -533,16 +520,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return false;
         }
 
-        private RestoreResult TryRestorePackageManually(string package, string? nugetConfig, TemporaryDirectory tempDir, bool tryPrereleaseVersion)
+        private RestoreResult TryRestorePackageManually(string package, string? nugetSources, TemporaryDirectory tempDir, bool tryPrereleaseVersion)
         {
-            var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: nugetConfig, ForceReevaluation: true));
+            var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, NugetSources: nugetSources, ForceReevaluation: true));
 
             if (!res.Success && tryPrereleaseVersion && res.HasNugetNoStablePackageVersionError)
             {
                 logger.LogDebug($"Failed to restore nuget package {package} because no stable version was found.");
                 TryChangePackageVersion(tempDir.DirInfo, "*-*");
 
-                res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: nugetConfig, ForceReevaluation: true));
+                res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, NugetSources: nugetSources, ForceReevaluation: true));
                 if (!res.Success)
                 {
                     TryChangePackageVersion(tempDir.DirInfo, "*");
