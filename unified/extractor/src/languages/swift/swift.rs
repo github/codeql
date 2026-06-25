@@ -1,5 +1,5 @@
 use codeql_extractor::extractor::simple;
-use yeast::{manual_rule, rule, tree, ConcreteDesugarer, DesugaringConfig, PhaseKind, Rule};
+use yeast::{ConcreteDesugarer, DesugaringConfig, PhaseKind, Rule, manual_rule, rule, tree};
 
 /// User context propagated from outer rules down to the inner rules that
 /// emit the corresponding output declarations, so that each emitted node
@@ -82,11 +82,14 @@ fn member_chain(
     parts: Vec<yeast::NodeRef>,
 ) -> yeast::Id {
     let mut iter = parts.into_iter();
-    let first = iter.next().expect("identifier with `part:` must have at least one part");
+    let first = iter
+        .next()
+        .expect("identifier with `part:` must have at least one part");
     let init = tree!((name_expr identifier: (identifier #{first})));
-    iter.fold(init, |acc, elem| {
-        tree!((member_access_expr base: {acc} member: (identifier #{elem})))
-    })
+    iter.fold(
+        init,
+        |acc, elem| tree!((member_access_expr base: {acc} member: (identifier #{elem}))),
+    )
 }
 
 fn translation_rules() -> Vec<Rule<SwiftContext>> {

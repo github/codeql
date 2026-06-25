@@ -2,7 +2,7 @@ use std::fs;
 use std::path::Path;
 
 use codeql_extractor::extractor::simple;
-use yeast::{dump::dump_ast, dump::dump_ast_with_type_errors, Runner};
+use yeast::{Runner, dump::dump_ast, dump::dump_ast_with_type_errors};
 
 #[path = "../src/languages/mod.rs"]
 mod languages;
@@ -146,10 +146,7 @@ fn render_corpus(cases: &[CorpusCase]) -> String {
     out
 }
 
-fn run_desugaring(
-    lang: &simple::LanguageSpec,
-    input: &str,
-) -> Result<yeast::Ast, String> {
+fn run_desugaring(lang: &simple::LanguageSpec, input: &str) -> Result<yeast::Ast, String> {
     match lang.desugar.as_deref() {
         Some(desugarer) => {
             // Parse the input ourselves so we don't depend on the desugarer
@@ -177,10 +174,7 @@ fn run_desugaring(
 /// Produce the raw tree-sitter parse tree dump for `input`, with no
 /// desugaring rules applied. Uses a `Runner` with an empty phase list and
 /// the input grammar's own schema.
-fn dump_raw_parse(
-    lang: &simple::LanguageSpec,
-    input: &str,
-) -> Result<String, String> {
+fn dump_raw_parse(lang: &simple::LanguageSpec, input: &str) -> Result<String, String> {
     let runner: Runner = Runner::new(lang.ts_language.clone(), &[]);
     let ast = runner
         .run(input)
@@ -285,11 +279,7 @@ fn test_corpus() {
                 }
             }
 
-            assert!(
-                failures.is_empty(),
-                "{}",
-                failures.join("\n\n") + "\n\n"
-            );
+            assert!(failures.is_empty(), "{}", failures.join("\n\n") + "\n\n");
 
             if update_mode {
                 let updated = render_corpus(&cases);
@@ -298,7 +288,9 @@ fn test_corpus() {
                     write_result.is_ok(),
                     "Failed to update corpus file {}: {}",
                     corpus_path.display(),
-                    write_result.err().map_or_else(String::new, |e| e.to_string())
+                    write_result
+                        .err()
+                        .map_or_else(String::new, |e| e.to_string())
                 );
             }
         }

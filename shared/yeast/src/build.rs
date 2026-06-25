@@ -197,10 +197,7 @@ impl<C: Clone> BuildCtx<'_, C> {
     /// input, only the first is returned. For most use cases (e.g.
     /// translating a single type annotation) this is what you want; if
     /// you need all ids, use [`translate`] directly.
-    pub fn translate_opt<I: Into<Id>>(
-        &mut self,
-        id: Option<I>,
-    ) -> Result<Option<Id>, String> {
+    pub fn translate_opt<I: Into<Id>>(&mut self, id: Option<I>) -> Result<Option<Id>, String> {
         match id {
             Some(id) => Ok(self.translate(id)?.into_iter().next()),
             None => Ok(None),

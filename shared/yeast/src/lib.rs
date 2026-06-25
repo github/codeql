@@ -297,7 +297,9 @@ impl Ast {
     /// Returns the source text for `id`, resolving `NodeContent::Range`
     /// against the stored source bytes when available.
     pub fn source_text(&self, id: Id) -> String {
-        let Some(node) = self.get_node(id) else { return String::new(); };
+        let Some(node) = self.get_node(id) else {
+            return String::new();
+        };
         let read_range = |range: &tree_sitter::Range| {
             let start = range.start_byte;
             let end = range.end_byte;
@@ -488,7 +490,10 @@ impl Ast {
 
     /// Prepend a child id to the given field of the given node.
     pub fn prepend_field_child(&mut self, node_id: Id, field_id: FieldId, value_id: Id) {
-        let node = self.nodes.get_mut(node_id).expect("prepend_field_child: invalid node id");
+        let node = self
+            .nodes
+            .get_mut(node_id)
+            .expect("prepend_field_child: invalid node id");
         node.fields.entry(field_id).or_default().insert(0, value_id);
     }
 
@@ -737,12 +742,7 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
     /// Recursively apply OneShot rules to `id` and return the resulting
     /// node ids. Errors in a Repeating phase (where translation is not
     /// meaningful).
-    pub fn translate(
-        &self,
-        ast: &mut Ast,
-        user_ctx: &mut C,
-        id: Id,
-    ) -> Result<Vec<Id>, String> {
+    pub fn translate(&self, ast: &mut Ast, user_ctx: &mut C, id: Id) -> Result<Vec<Id>, String> {
         match &self.inner {
             TranslatorImpl::OneShot {
                 index,
@@ -851,9 +851,9 @@ impl<C> Rule<C> {
         translator: TranslatorHandle<'_, C>,
     ) -> Result<Option<Vec<Id>>, String> {
         match self.try_match(ast, node)? {
-            Some(captures) => Ok(Some(self.run_transform(
-                ast, captures, node, fresh, user_ctx, translator,
-            )?)),
+            Some(captures) => Ok(Some(
+                self.run_transform(ast, captures, node, fresh, user_ctx, translator)?,
+            )),
             None => Ok(None),
         }
     }
@@ -1004,7 +1004,15 @@ fn apply_repeating_rules_inner<C: Clone>(
     for children in fields.values_mut() {
         let mut new_children: Option<Vec<Id>> = None;
         for (i, &child_id) in children.iter().enumerate() {
-            let result = apply_repeating_rules_inner(index, ast, user_ctx, child_id, fresh, rewrite_depth, None)?;
+            let result = apply_repeating_rules_inner(
+                index,
+                ast,
+                user_ctx,
+                child_id,
+                fresh,
+                rewrite_depth,
+                None,
+            )?;
             let unchanged = result.len() == 1 && result[0] == child_id;
             match (&mut new_children, unchanged) {
                 (None, true) => {} // unchanged so far, no allocation needed
@@ -1052,7 +1060,6 @@ fn apply_one_shot_rules_inner<C: Clone>(
     fresh: &tree_builder::FreshScope,
     rewrite_depth: usize,
 ) -> Result<Vec<Id>, String> {
-
     if rewrite_depth > MAX_REWRITE_DEPTH {
         return Err(format!(
             "Desugaring exceeded maximum rewrite depth ({MAX_REWRITE_DEPTH}). \
@@ -1294,8 +1301,12 @@ impl<'a, C: Clone> Runner<'a, C> {
         let mut root = ast.get_root();
         for phase in self.phases {
             let res = match phase.kind {
-                PhaseKind::Repeating => apply_repeating_rules(&phase.rules, ast, user_ctx, root, &fresh),
-                PhaseKind::OneShot => apply_one_shot_rules(&phase.rules, ast, user_ctx, root, &fresh),
+                PhaseKind::Repeating => {
+                    apply_repeating_rules(&phase.rules, ast, user_ctx, root, &fresh)
+                }
+                PhaseKind::OneShot => {
+                    apply_one_shot_rules(&phase.rules, ast, user_ctx, root, &fresh)
+                }
             }
             .map_err(|e| format!("Phase `{}`: {e}", phase.name))?;
             if res.len() != 1 {
@@ -1315,11 +1326,7 @@ impl<'a, C: Clone> Runner<'a, C> {
 impl<'a, C: Clone + Default> Runner<'a, C> {
     /// Parse `tree` against `source` and run all phases, using the
     /// default context (`C::default()`) as the initial context state.
-    pub fn run_from_tree(
-        &self,
-        tree: &tree_sitter::Tree,
-        source: &[u8],
-    ) -> Result<Ast, String> {
+    pub fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8]) -> Result<Ast, String> {
         let mut user_ctx = C::default();
         self.run_from_tree_with_ctx(tree, source, &mut user_ctx)
     }
@@ -1351,8 +1358,7 @@ pub trait Desugarer: Send + Sync {
 
     /// Parse `tree` against `source` and run the desugaring pipeline.
     /// Each call constructs a fresh default user context internally.
-    fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8])
-        -> Result<Ast, String>;
+    fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8]) -> Result<Ast, String>;
 }
 
 /// A concrete [`Desugarer`] backed by a [`DesugaringConfig<C>`] for a
@@ -1386,13 +1392,8 @@ impl<C: Default + Clone + Send + Sync + 'static> Desugarer for ConcreteDesugarer
         self.config.output_node_types_yaml
     }
 
-    fn run_from_tree(
-        &self,
-        tree: &tree_sitter::Tree,
-        source: &[u8],
-    ) -> Result<Ast, String> {
-        let runner =
-            Runner::with_schema(self.language.clone(), &self.schema, &self.config.phases);
+    fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8]) -> Result<Ast, String> {
+        let runner = Runner::with_schema(self.language.clone(), &self.schema, &self.config.phases);
         runner.run_from_tree(tree, source)
     }
 }

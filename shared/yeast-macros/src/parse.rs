@@ -121,9 +121,9 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
         std::collections::HashMap::new();
     let mut bare_children: Vec<TokenStream> = Vec::new();
     let push_field_elem = |order: &mut Vec<String>,
-                               map: &mut std::collections::HashMap<String, Vec<TokenStream>>,
-                               name: String,
-                               elem: TokenStream| {
+                           map: &mut std::collections::HashMap<String, Vec<TokenStream>>,
+                           name: String,
+                           elem: TokenStream| {
         if !map.contains_key(&name) {
             order.push(name.clone());
             map.insert(name, vec![elem]);
@@ -160,8 +160,7 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
             } else {
                 let child = if peek_is_at(tokens) {
                     tokens.next();
-                    let capture_name =
-                        expect_ident(tokens, "expected capture name after @")?;
+                    let capture_name = expect_ident(tokens, "expected capture name after @")?;
                     let name_str = capture_name.to_string();
                     quote! {
                         yeast::query::QueryNode::Capture {
@@ -420,7 +419,11 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
     // Named fields — compute each value into a temp, then reference it
     while peek_is_field(tokens) {
         let field_name = expect_ident(tokens, "expected field name")?;
-        let field_str = field_name.to_string().strip_prefix("r#").unwrap_or(&field_name.to_string()).to_string();
+        let field_str = field_name
+            .to_string()
+            .strip_prefix("r#")
+            .unwrap_or(&field_name.to_string())
+            .to_string();
         expect_punct(tokens, ':', "expected `:` after field name")?;
         let temp = Ident::new(
             &format!("__field_{field_str}_{field_counter}"),
@@ -438,7 +441,8 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
                 // Determine if a chain (.map(..)) follows the `{}` group.
                 let mut after = tokens.clone();
                 after.next(); // skip the brace group
-                let has_chain = matches!(after.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '.');
+                let has_chain =
+                    matches!(after.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '.');
 
                 if is_splice || has_chain {
                     let group = expect_group(tokens, Delimiter::Brace)?;
@@ -506,11 +510,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
 /// Each call expects the receiver to be an iterator. The `base` argument
 /// should therefore already be an iterator (use `.into_iter()` on it before
 /// calling this function).
-fn parse_chain_suffix(
-    tokens: &mut Tokens,
-    ctx: &Ident,
-    base: TokenStream,
-) -> Result<TokenStream> {
+fn parse_chain_suffix(tokens: &mut Tokens, ctx: &Ident, base: TokenStream) -> Result<TokenStream> {
     let mut current = base;
     while matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '.') {
         tokens.next(); // consume .
@@ -608,7 +608,8 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
         // {expr} or {..expr} (with optional .chain) — single node or splice
         if peek_is_group(tokens, Delimiter::Brace) {
             let group = expect_group(tokens, Delimiter::Brace)?;
-            let has_chain = matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '.');
+            let has_chain =
+                matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '.');
             let mut inner = group.stream().into_iter().peekable();
             let is_splice = peek_is_dotdot(&inner);
             if is_splice || has_chain {

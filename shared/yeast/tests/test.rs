@@ -66,8 +66,8 @@ fn parse_and_dump_typed_with_language(input: &str, schema_yaml: &str) -> String 
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let runner: Runner = Runner::new(lang.clone(), &[]);
     let ast = runner.run(input).unwrap();
-    let schema = yeast::node_types_yaml::schema_from_yaml_with_language(schema_yaml, &lang)
-        .unwrap();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(schema_yaml, &lang).unwrap();
     dump_ast_with_type_errors(&ast, ast.get_root(), input, &schema)
 }
 
@@ -166,7 +166,7 @@ fn test_parse_for_loop() {
 
 #[test]
 fn test_dump_highlights_type_errors_inline() {
-        let schema_yaml = r#"
+    let schema_yaml = r#"
 named:
     program:
         $children*: assignment
@@ -176,13 +176,13 @@ named:
     identifier:
 "#;
 
-        let dump = parse_and_dump_typed("x = 1", schema_yaml);
-        assert!(dump.contains("integer \"1\" <-- ERROR:"));
+    let dump = parse_and_dump_typed("x = 1", schema_yaml);
+    assert!(dump.contains("integer \"1\" <-- ERROR:"));
 }
 
 #[test]
 fn test_dump_reports_preserved_unknown_kind_after_transformation() {
-        let schema_yaml = r#"
+    let schema_yaml = r#"
 named:
     program:
         $children*: assignment
@@ -192,25 +192,25 @@ named:
     identifier:
 "#;
 
-        // This rewrite runs and preserves the RHS node kind via capture.
-        // With schema above, preserving `integer` should be reported inline.
+    // This rewrite runs and preserves the RHS node kind via capture.
+    // With schema above, preserving `integer` should be reported inline.
     let rules: Vec<Rule> = vec![yeast::rule!(
-                (assignment left: (_) @left right: (_) @right)
-                =>
-                (assignment
-                        left: {left}
-                        right: {right}
-                )
-        )];
+            (assignment left: (_) @left right: (_) @right)
+            =>
+            (assignment
+                    left: {left}
+                    right: {right}
+            )
+    )];
 
-        let dump = run_and_dump_typed("x = 1", rules, schema_yaml);
-        assert!(dump.contains("integer \"1\" <-- ERROR:"));
-        assert!(dump.contains("node kind 'integer' not in schema"));
+    let dump = run_and_dump_typed("x = 1", rules, schema_yaml);
+    assert!(dump.contains("integer \"1\" <-- ERROR:"));
+    assert!(dump.contains("node kind 'integer' not in schema"));
 }
 
 #[test]
 fn test_dump_reports_undeclared_field_on_node() {
-        let schema_yaml = r#"
+    let schema_yaml = r#"
 named:
     program:
         $children*: assignment
@@ -219,14 +219,14 @@ named:
     identifier:
 "#;
 
-        let dump = parse_and_dump_typed_with_language("x = y", schema_yaml);
-        assert!(dump.contains("right: identifier \"y\" <-- ERROR:"));
-        assert!(dump.contains("the node 'assignment' has no field 'right'"));
+    let dump = parse_and_dump_typed_with_language("x = y", schema_yaml);
+    assert!(dump.contains("right: identifier \"y\" <-- ERROR:"));
+    assert!(dump.contains("the node 'assignment' has no field 'right'"));
 }
 
 #[test]
 fn test_dump_reports_disallowed_kind_in_field_type() {
-        let schema_yaml = r#"
+    let schema_yaml = r#"
 named:
     program:
         $children*: assignment
@@ -237,10 +237,10 @@ named:
     integer:
 "#;
 
-        let dump = parse_and_dump_typed_with_language("x = 1", schema_yaml);
-        assert!(dump.contains("right: integer \"1\" <-- ERROR:"));
-        assert!(dump.contains("should contain"));
-        assert!(dump.contains("but got integer"));
+    let dump = parse_and_dump_typed_with_language("x = 1", schema_yaml);
+    assert!(dump.contains("right: integer \"1\" <-- ERROR:"));
+    assert!(dump.contains("should contain"));
+    assert!(dump.contains("but got integer"));
 }
 
 // ---- Query tests ----
@@ -309,15 +309,11 @@ fn test_query_skips_extras_in_positional_match() {
     let matched = query.do_match(&ast, array_id, &mut captures).unwrap();
     assert!(matched);
     assert_eq!(
-        ast.get_node(captures.get_var("a").unwrap())
-            .unwrap()
-            .kind(),
+        ast.get_node(captures.get_var("a").unwrap()).unwrap().kind(),
         "integer"
     );
     assert_eq!(
-        ast.get_node(captures.get_var("b").unwrap())
-            .unwrap()
-            .kind(),
+        ast.get_node(captures.get_var("b").unwrap()).unwrap().kind(),
         "integer"
     );
 }
@@ -325,8 +321,8 @@ fn test_query_skips_extras_in_positional_match() {
 #[test]
 fn test_reachable_nodes_excludes_orphaned_rewrite_nodes() {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
-    let schema = yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang)
-        .unwrap();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
     let phases: Vec<Phase> = vec![Phase::new(
         "test",
         PhaseKind::Repeating,
@@ -1205,7 +1201,9 @@ fn test_hash_brace_uses_capture_location_for_leaf() {
 
     let mut bar_ids: Vec<usize> = Vec::new();
     for id in ast.reachable_node_ids() {
-        let Some(node) = ast.get_node(id) else { continue; };
+        let Some(node) = ast.get_node(id) else {
+            continue;
+        };
         if node.kind() == "identifier" && ast.source_text(id) == "bar" {
             bar_ids.push(id);
         }

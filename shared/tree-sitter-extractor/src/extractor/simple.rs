@@ -95,16 +95,19 @@ impl Extractor {
 
         let mut schemas = vec![];
         for lang in &self.languages {
-            let effective_node_types: String =
-                match lang.desugar.as_ref().and_then(|d| d.output_node_types_yaml()) {
-                    Some(yaml) => yeast::node_types_yaml::convert(yaml).map_err(|e| {
-                        std::io::Error::other(format!(
-                            "Failed to convert YAML node-types to JSON for {}: {e}",
-                            lang.prefix
-                        ))
-                    })?,
-                    None => lang.node_types.to_string(),
-                };
+            let effective_node_types: String = match lang
+                .desugar
+                .as_ref()
+                .and_then(|d| d.output_node_types_yaml())
+            {
+                Some(yaml) => yeast::node_types_yaml::convert(yaml).map_err(|e| {
+                    std::io::Error::other(format!(
+                        "Failed to convert YAML node-types to JSON for {}: {e}",
+                        lang.prefix
+                    ))
+                })?,
+                None => lang.node_types.to_string(),
+            };
             let schema = node_types::read_node_types_str(lang.prefix, &effective_node_types)?;
             schemas.push(schema);
         }
