@@ -264,6 +264,10 @@ mod method_non_parametric_trait_impl {
         }
     }
 
+    trait MyTrait2<B> {
+        fn m3(self) -> B;
+    }
+
     trait MyProduct<A, B> {
         // MyProduct::fst
         fn fst(self) -> A;
@@ -273,6 +277,10 @@ mod method_non_parametric_trait_impl {
 
     fn call_trait_m1<T1, T2: MyTrait<T1>>(x: T2) -> T1 {
         x.m1() // $ target=m1
+    }
+
+    fn call_trait_m1_trait2_m3<T1, T2: MyTrait<T1>, T3: MyTrait2<T2>>(x: T3) -> T1 {
+        x.m3().m1() // $ target=m1 target=m3
     }
 
     impl MyTrait<S1> for MyThing<S1> {
@@ -286,6 +294,13 @@ mod method_non_parametric_trait_impl {
         // MyThing<S2>::m1
         fn m1(self) -> Self {
             Self { a: self.a } // $ fieldof=MyThing
+        }
+    }
+
+    impl MyTrait2<MyThing<S1>> for MyThing<S2> {
+        // MyThing<S2>::m3
+        fn m3(self) -> MyThing<S1> {
+            MyThing { a: S1 }
         }
     }
 
@@ -453,6 +468,8 @@ mod method_non_parametric_trait_impl {
         let thing = MyThing { a: S1 };
         let i = thing.convert_to(); // $ type=i:S1 target=T::convert_to
         let j = convert_to(thing); // $ target=convert_to $ MISSING: type=j:S1 -- the blanket implementation `impl<T: MyTrait<S1>> ConvertTo<S1> for T` is currently not included in the constraint analysis
+
+        let x = call_trait_m1_trait2_m3(MyThing { a: S2 }); // $ target=call_trait_m1_trait2_m3 $ MISSING: type=x:S1
     }
 }
 
