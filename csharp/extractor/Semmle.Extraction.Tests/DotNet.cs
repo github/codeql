@@ -130,11 +130,11 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, null, "myconfig.config"));
+            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, null));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
-            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal --configfile \"myconfig.config\"", lastArgs);
+            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal", lastArgs);
             Assert.Equal(2, res.AssetsFilePaths.Count());
             Assert.Contains("/path/to/project.assets.json", res.AssetsFilePaths);
             Assert.Contains("/path/to/project2.assets.json", res.AssetsFilePaths);
@@ -148,11 +148,11 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, null, "myconfig.config", true));
+            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, null, true));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
-            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal --configfile \"myconfig.config\" --force", lastArgs);
+            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal --force", lastArgs);
             Assert.Equal(2, res.AssetsFilePaths.Count());
             Assert.Contains("/path/to/project.assets.json", res.AssetsFilePaths);
             Assert.Contains("/path/to/project2.assets.json", res.AssetsFilePaths);

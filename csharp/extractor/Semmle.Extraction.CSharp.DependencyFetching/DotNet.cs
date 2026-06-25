@@ -80,11 +80,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args += $" /p:TargetFrameworkRootPath=\"{path}\" /p:NetCoreTargetingPackRoot=\"{path}\" /p:AllowMissingPrunePackageData=true";
             }
 
-            if (restoreSettings.PathToNugetConfig != null)
-            {
-                args += $" --configfile \"{restoreSettings.PathToNugetConfig}\"";
-            }
-
             if (restoreSettings.ForceReevaluation)
             {
                 args += " --force";
