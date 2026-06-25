@@ -170,9 +170,9 @@ module HardcodedCryptographicValue {
       this.asExpr() instanceof BinaryBitwiseOperation
       or
       // compound assignments (e.g. `a += b`, `a ^= b`)
-      this.asExpr() = any(AssignArithmeticOperation a | | a.getAnOperand())
+      this.asExpr() = any(AssignArithmeticOperation a).getAnOperand()
       or
-      this.asExpr() = any(AssignBitwiseOperation a | | a.getAnOperand())
+      this.asExpr() = any(AssignBitwiseOperation a).getAnOperand()
     }
   }
 }
