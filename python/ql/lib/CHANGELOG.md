@@ -1,16 +1,3 @@
-## 7.2.0
-
-### Deprecated APIs
-
-* The `Function.getAReturnValueFlowNode()` predicate has been deprecated. Bind a `Return` node explicitly instead — `exists(Return ret | ret.getScope() = f and n.getNode() = ret.getValue())`. This is a preparatory step towards migrating the dataflow library off the legacy CFG; it has no semantic effect.
-* The `AstNode.getAFlowNode()` predicate has been deprecated. Use `ControlFlowNode.getNode()` from the other direction instead: replace `e.getAFlowNode() = n` with `n.getNode() = e`. This is a preparatory step towards migrating the dataflow library off the legacy CFG; it has no semantic effect.
-
-### Minor Analysis Improvements
-
-* Python type tracking now follows values stored in instance attributes such as `self.attr` across instance methods, including across a class hierarchy (for example, a value stored on `self.attr` in a base class and read in a subclass, or vice versa). As a result, analysis is more likely to recognize user-defined objects that are stored on `self` and used later in other methods, which may produce additional results.
-* Simplified the internal predicates that detect `@staticmethod`, `@classmethod` and `@property` decorators to match the decorator's AST `Name` directly, rather than going through the CFG and requiring the name to resolve globally. Code that shadows these three builtin decorators at the module-scope will now be classified by the decorator name alone; in practice, shadowing these names is extremely rare and the call-graph results are unchanged.
-* Python taint tracking is now more precise for values flowing through container contents, such as list, set, tuple, and dictionary elements. This may remove some false positive alerts.
-
 ## 7.1.2
 
 ### Minor Analysis Improvements

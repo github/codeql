@@ -1,10 +1,3 @@
-## 0.4.38
-
-### Bug Fixes
-
-* GitHub Actions queries now better account for permission checks on jobs that call reusable workflows.
-* The query `actions/pr-on-self-hosted-runner` was updated to the latest standard runner labels reducing false positive results.
-
 ## 0.4.37
 
 ### Minor Analysis Improvements
