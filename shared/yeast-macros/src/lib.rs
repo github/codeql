@@ -44,7 +44,18 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// {expr}                       - embed a Rust expression returning Id
 /// {..expr}                     - splice an iterable of Id (in child/field position)
 /// field: {..expr}              - splice into a named field
+/// {expr}.map(p -> tpl)         - apply tpl to each element; splice result
+/// {expr}.reduce_left(f -> init, acc, e -> fold)
+///                              - fold with per-element init; splice 0 or 1 result
 /// ```
+///
+/// Chain syntax after `{expr}` or `{..expr}`:
+/// - `.map(param -> template)` — one output node per input element.
+/// - `.reduce_left(first -> init, acc, elem -> fold)` — fold left; the first
+///   element is converted by `init`, subsequent elements are folded by `fold`
+///   with the accumulator bound to `acc`. An empty iterable yields nothing.
+/// - Chains always splice (the result is iterable).
+/// - Multiple chains can be chained, e.g. `.map(...).reduce_left(...)`.
 ///
 /// Can be called with an explicit context or using the implicit context
 /// from an enclosing `rule!`:

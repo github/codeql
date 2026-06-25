@@ -50,6 +50,35 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "f"
+          value:
+            function_expr
+              body:
+                block
+                  stmt:
+                    binary_expr
+                      operator: infix_operator "*"
+                      left:
+                        name_expr
+                          identifier: identifier "x"
+                      right: int_literal "2"
+              parameter:
+                parameter
+                  pattern:
+                    name_pattern
+                      identifier: identifier "x"
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
+              return_type:
+                named_type_expr
+                  name: identifier "Int"
 
 ===
 Closure with shorthand parameters
@@ -82,6 +111,26 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "f"
+          value:
+            function_expr
+              body:
+                block
+                  stmt:
+                    binary_expr
+                      operator: infix_operator "+"
+                      left:
+                        name_expr
+                          identifier: identifier "$0"
+                      right:
+                        name_expr
+                          identifier: identifier "$1"
 
 ===
 Trailing closure
@@ -114,6 +163,28 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        call_expr
+          argument:
+            argument
+              value:
+                function_expr
+                  body:
+                    block
+                      stmt:
+                        binary_expr
+                          operator: infix_operator "*"
+                          left:
+                            name_expr
+                              identifier: identifier "$0"
+                          right: int_literal "2"
+          callee:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "xs"
+              member: identifier "map"
 
 ===
 Closure with capture list
@@ -163,6 +234,31 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "f"
+          value:
+            function_expr
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        member_access_expr
+                          base:
+                            name_expr
+                              identifier: identifier "self"
+                          member: identifier "doThing"
+              capture_declaration:
+                variable_declaration
+                  modifier: modifier "weak"
+                  pattern:
+                    name_pattern
+                      identifier: identifier "self"
 
 ===
 Multi-statement closure
@@ -236,3 +332,46 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "f"
+          value:
+            function_expr
+              body:
+                block
+                  stmt:
+                    variable_declaration
+                      modifier: modifier "let"
+                      pattern:
+                        name_pattern
+                          identifier: identifier "y"
+                      value:
+                        binary_expr
+                          operator: infix_operator "+"
+                          left:
+                            name_expr
+                              identifier: identifier "x"
+                          right: int_literal "1"
+                    return_expr
+                      value:
+                        binary_expr
+                          operator: infix_operator "*"
+                          left:
+                            name_expr
+                              identifier: identifier "y"
+                          right: int_literal "2"
+              parameter:
+                parameter
+                  pattern:
+                    name_pattern
+                      identifier: identifier "x"
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
+              return_type:
+                named_type_expr
+                  name: identifier "Int"

@@ -136,107 +136,533 @@ overlayChangedFiles(
 );
 
 /*- Unified dbscheme -*/
-#keyset[unified_apply_pattern, index]
-unified_apply_pattern_argument(
-  int unified_apply_pattern: @unified_apply_pattern ref,
-  int index: int ref,
-  unique int argument: @unified_pattern ref
+unified_accessor_declaration_body(
+  unique int unified_accessor_declaration: @unified_accessor_declaration ref,
+  unique int body: @unified_block ref
 );
 
-unified_apply_pattern_def(
-  unique int id: @unified_apply_pattern,
-  int constructor: @unified_expr ref
+#keyset[unified_accessor_declaration, index]
+unified_accessor_declaration_modifier(
+  int unified_accessor_declaration: @unified_accessor_declaration ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+#keyset[unified_accessor_declaration, index]
+unified_accessor_declaration_parameter(
+  int unified_accessor_declaration: @unified_accessor_declaration ref,
+  int index: int ref,
+  unique int parameter: @unified_parameter ref
+);
+
+unified_accessor_declaration_type(
+  unique int unified_accessor_declaration: @unified_accessor_declaration ref,
+  unique int type__: @unified_type_expr ref
+);
+
+unified_accessor_declaration_def(
+  unique int id: @unified_accessor_declaration,
+  int accessor_kind: @unified_token_accessor_kind ref,
+  int name: @unified_token_identifier ref
+);
+
+#keyset[unified_argument, index]
+unified_argument_modifier(
+  int unified_argument: @unified_argument ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_argument_name(
+  unique int unified_argument: @unified_argument ref,
+  unique int name: @unified_token_identifier ref
+);
+
+unified_argument_def(
+  unique int id: @unified_argument,
+  int value: @unified_expr ref
+);
+
+#keyset[unified_array_literal, index]
+unified_array_literal_element(
+  int unified_array_literal: @unified_array_literal ref,
+  int index: int ref,
+  unique int element: @unified_expr ref
+);
+
+unified_array_literal_def(
+  unique int id: @unified_array_literal
+);
+
+unified_assign_expr_def(
+  unique int id: @unified_assign_expr,
+  int target: @unified_expr_or_pattern ref,
+  int value: @unified_expr ref
+);
+
+unified_associated_type_declaration_bound(
+  unique int unified_associated_type_declaration: @unified_associated_type_declaration ref,
+  unique int bound: @unified_type_expr ref
+);
+
+#keyset[unified_associated_type_declaration, index]
+unified_associated_type_declaration_modifier(
+  int unified_associated_type_declaration: @unified_associated_type_declaration ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_associated_type_declaration_def(
+  unique int id: @unified_associated_type_declaration,
+  int name: @unified_token_identifier ref
+);
+
+#keyset[unified_base_type, index]
+unified_base_type_modifier(
+  int unified_base_type: @unified_base_type ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_base_type_def(
+  unique int id: @unified_base_type,
+  int type__: @unified_type_expr ref
 );
 
 unified_binary_expr_def(
   unique int id: @unified_binary_expr,
   int left: @unified_expr ref,
-  int operator: @unified_token_operator ref,
+  int operator: @unified_token_infix_operator ref,
   int right: @unified_expr ref
 );
 
-#keyset[unified_block_stmt, index]
-unified_block_stmt_body(
-  int unified_block_stmt: @unified_block_stmt ref,
+#keyset[unified_block, index]
+unified_block_stmt(
+  int unified_block: @unified_block ref,
   int index: int ref,
-  unique int body: @unified_stmt ref
+  unique int stmt: @unified_stmt ref
 );
 
-unified_block_stmt_def(
-  unique int id: @unified_block_stmt
+unified_block_def(
+  unique int id: @unified_block
+);
+
+unified_bound_type_constraint_def(
+  unique int id: @unified_bound_type_constraint,
+  int bound: @unified_type_expr ref,
+  int type__: @unified_type_expr ref
+);
+
+unified_break_expr_label(
+  unique int unified_break_expr: @unified_break_expr ref,
+  unique int label: @unified_token_identifier ref
+);
+
+unified_break_expr_def(
+  unique int id: @unified_break_expr
+);
+
+#keyset[unified_bulk_importing_pattern, index]
+unified_bulk_importing_pattern_modifier(
+  int unified_bulk_importing_pattern: @unified_bulk_importing_pattern ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_bulk_importing_pattern_def(
+  unique int id: @unified_bulk_importing_pattern
 );
 
 #keyset[unified_call_expr, index]
 unified_call_expr_argument(
   int unified_call_expr: @unified_call_expr ref,
   int index: int ref,
-  unique int argument: @unified_expr ref
+  unique int argument: @unified_argument ref
+);
+
+#keyset[unified_call_expr, index]
+unified_call_expr_modifier(
+  int unified_call_expr: @unified_call_expr ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
 );
 
 unified_call_expr_def(
   unique int id: @unified_call_expr,
-  int function: @unified_expr ref
+  int callee: @unified_expr_or_type ref
 );
 
-@unified_condition = @unified_expr_condition | @unified_let_pattern_condition | @unified_sequence_condition | @unified_token_unsupported_node
-
-@unified_expr = @unified_binary_expr | @unified_call_expr | @unified_lambda_expr | @unified_member_access_expr | @unified_name_expr | @unified_token_int_literal | @unified_token_string_literal | @unified_token_unsupported_node | @unified_unary_expr
-
-unified_expr_condition_def(
-  unique int id: @unified_expr_condition,
-  int expr: @unified_expr ref
+unified_catch_clause_guard(
+  unique int unified_catch_clause: @unified_catch_clause ref,
+  unique int guard: @unified_expr ref
 );
 
-unified_expr_stmt_def(
-  unique int id: @unified_expr_stmt,
-  int expr: @unified_expr ref
+#keyset[unified_catch_clause, index]
+unified_catch_clause_modifier(
+  int unified_catch_clause: @unified_catch_clause ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
 );
 
-unified_guard_if_stmt_def(
-  unique int id: @unified_guard_if_stmt,
-  int condition: @unified_condition ref,
-  int else: @unified_stmt ref
+unified_catch_clause_pattern(
+  unique int unified_catch_clause: @unified_catch_clause ref,
+  unique int pattern: @unified_pattern ref
 );
 
-unified_if_stmt_else(
-  unique int unified_if_stmt: @unified_if_stmt ref,
-  unique int else: @unified_stmt ref
+unified_catch_clause_def(
+  unique int id: @unified_catch_clause,
+  int body: @unified_block ref
 );
 
-unified_if_stmt_then(
-  unique int unified_if_stmt: @unified_if_stmt ref,
-  unique int then: @unified_stmt ref
+#keyset[unified_class_like_declaration, index]
+unified_class_like_declaration_base_type(
+  int unified_class_like_declaration: @unified_class_like_declaration ref,
+  int index: int ref,
+  unique int base_type: @unified_base_type ref
 );
 
-unified_if_stmt_def(
-  unique int id: @unified_if_stmt,
-  int condition: @unified_condition ref
+#keyset[unified_class_like_declaration, index]
+unified_class_like_declaration_member(
+  int unified_class_like_declaration: @unified_class_like_declaration ref,
+  int index: int ref,
+  unique int member: @unified_member ref
 );
 
-@unified_lambda_expr_body_type = @unified_expr | @unified_stmt
+#keyset[unified_class_like_declaration, index]
+unified_class_like_declaration_modifier(
+  int unified_class_like_declaration: @unified_class_like_declaration ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
 
-#keyset[unified_lambda_expr, index]
-unified_lambda_expr_parameter(
-  int unified_lambda_expr: @unified_lambda_expr ref,
+unified_class_like_declaration_name(
+  unique int unified_class_like_declaration: @unified_class_like_declaration ref,
+  unique int name: @unified_token_identifier ref
+);
+
+#keyset[unified_class_like_declaration, index]
+unified_class_like_declaration_type_constraint(
+  int unified_class_like_declaration: @unified_class_like_declaration ref,
+  int index: int ref,
+  unique int type_constraint: @unified_type_constraint ref
+);
+
+#keyset[unified_class_like_declaration, index]
+unified_class_like_declaration_type_parameter(
+  int unified_class_like_declaration: @unified_class_like_declaration ref,
+  int index: int ref,
+  unique int type_parameter: @unified_type_parameter ref
+);
+
+unified_class_like_declaration_def(
+  unique int id: @unified_class_like_declaration
+);
+
+unified_compound_assign_expr_def(
+  unique int id: @unified_compound_assign_expr,
+  int operator: @unified_token_infix_operator ref,
+  int target: @unified_expr ref,
+  int value: @unified_expr ref
+);
+
+#keyset[unified_constructor_declaration, index]
+unified_constructor_declaration_modifier(
+  int unified_constructor_declaration: @unified_constructor_declaration ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_constructor_declaration_name(
+  unique int unified_constructor_declaration: @unified_constructor_declaration ref,
+  unique int name: @unified_token_identifier ref
+);
+
+#keyset[unified_constructor_declaration, index]
+unified_constructor_declaration_parameter(
+  int unified_constructor_declaration: @unified_constructor_declaration ref,
   int index: int ref,
   unique int parameter: @unified_parameter ref
 );
 
-unified_lambda_expr_def(
-  unique int id: @unified_lambda_expr,
-  int body: @unified_lambda_expr_body_type ref
+unified_constructor_declaration_def(
+  unique int id: @unified_constructor_declaration,
+  int body: @unified_block ref
 );
 
-unified_let_pattern_condition_def(
-  unique int id: @unified_let_pattern_condition,
-  int pattern: @unified_pattern ref,
+#keyset[unified_constructor_pattern, index]
+unified_constructor_pattern_element(
+  int unified_constructor_pattern: @unified_constructor_pattern ref,
+  int index: int ref,
+  unique int element: @unified_pattern_element ref
+);
+
+#keyset[unified_constructor_pattern, index]
+unified_constructor_pattern_modifier(
+  int unified_constructor_pattern: @unified_constructor_pattern ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_constructor_pattern_def(
+  unique int id: @unified_constructor_pattern,
+  int constructor: @unified_expr_or_type ref
+);
+
+unified_continue_expr_label(
+  unique int unified_continue_expr: @unified_continue_expr ref,
+  unique int label: @unified_token_identifier ref
+);
+
+unified_continue_expr_def(
+  unique int id: @unified_continue_expr
+);
+
+#keyset[unified_destructor_declaration, index]
+unified_destructor_declaration_modifier(
+  int unified_destructor_declaration: @unified_destructor_declaration ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_destructor_declaration_def(
+  unique int id: @unified_destructor_declaration,
+  int body: @unified_block ref
+);
+
+unified_do_while_stmt_body(
+  unique int unified_do_while_stmt: @unified_do_while_stmt ref,
+  unique int body: @unified_block ref
+);
+
+#keyset[unified_do_while_stmt, index]
+unified_do_while_stmt_modifier(
+  int unified_do_while_stmt: @unified_do_while_stmt ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_do_while_stmt_def(
+  unique int id: @unified_do_while_stmt,
+  int condition: @unified_expr ref
+);
+
+unified_equality_type_constraint_def(
+  unique int id: @unified_equality_type_constraint,
+  int left: @unified_type_expr ref,
+  int right: @unified_type_expr ref
+);
+
+@unified_expr = @unified_array_literal | @unified_assign_expr | @unified_binary_expr | @unified_block | @unified_break_expr | @unified_call_expr | @unified_compound_assign_expr | @unified_continue_expr | @unified_function_expr | @unified_if_expr | @unified_key_value_pair | @unified_map_literal | @unified_member_access_expr | @unified_name_expr | @unified_pattern_guard_expr | @unified_return_expr | @unified_switch_expr | @unified_throw_expr | @unified_token_boolean_literal | @unified_token_builtin_expr | @unified_token_empty_expr | @unified_token_float_literal | @unified_token_int_literal | @unified_token_regex_literal | @unified_token_string_literal | @unified_token_super_expr | @unified_token_unsupported_node | @unified_try_expr | @unified_tuple_expr | @unified_type_cast_expr | @unified_type_test_expr | @unified_unary_expr
+
+unified_expr_equality_pattern_def(
+  unique int id: @unified_expr_equality_pattern,
+  int expr: @unified_expr ref
+);
+
+@unified_expr_or_pattern = @unified_expr | @unified_pattern
+
+@unified_expr_or_type = @unified_expr | @unified_type_expr
+
+unified_for_each_stmt_body(
+  unique int unified_for_each_stmt: @unified_for_each_stmt ref,
+  unique int body: @unified_block ref
+);
+
+unified_for_each_stmt_guard(
+  unique int unified_for_each_stmt: @unified_for_each_stmt ref,
+  unique int guard: @unified_expr ref
+);
+
+#keyset[unified_for_each_stmt, index]
+unified_for_each_stmt_modifier(
+  int unified_for_each_stmt: @unified_for_each_stmt ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_for_each_stmt_def(
+  unique int id: @unified_for_each_stmt,
+  int iterable: @unified_expr ref,
+  int pattern: @unified_pattern ref
+);
+
+unified_function_declaration_body(
+  unique int unified_function_declaration: @unified_function_declaration ref,
+  unique int body: @unified_block ref
+);
+
+#keyset[unified_function_declaration, index]
+unified_function_declaration_modifier(
+  int unified_function_declaration: @unified_function_declaration ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+#keyset[unified_function_declaration, index]
+unified_function_declaration_parameter(
+  int unified_function_declaration: @unified_function_declaration ref,
+  int index: int ref,
+  unique int parameter: @unified_parameter ref
+);
+
+unified_function_declaration_return_type(
+  unique int unified_function_declaration: @unified_function_declaration ref,
+  unique int return_type: @unified_type_expr ref
+);
+
+#keyset[unified_function_declaration, index]
+unified_function_declaration_type_constraint(
+  int unified_function_declaration: @unified_function_declaration ref,
+  int index: int ref,
+  unique int type_constraint: @unified_type_constraint ref
+);
+
+#keyset[unified_function_declaration, index]
+unified_function_declaration_type_parameter(
+  int unified_function_declaration: @unified_function_declaration ref,
+  int index: int ref,
+  unique int type_parameter: @unified_type_parameter ref
+);
+
+unified_function_declaration_def(
+  unique int id: @unified_function_declaration,
+  int name: @unified_token_identifier ref
+);
+
+#keyset[unified_function_expr, index]
+unified_function_expr_capture_declaration(
+  int unified_function_expr: @unified_function_expr ref,
+  int index: int ref,
+  unique int capture_declaration: @unified_variable_declaration ref
+);
+
+#keyset[unified_function_expr, index]
+unified_function_expr_modifier(
+  int unified_function_expr: @unified_function_expr ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+#keyset[unified_function_expr, index]
+unified_function_expr_parameter(
+  int unified_function_expr: @unified_function_expr ref,
+  int index: int ref,
+  unique int parameter: @unified_parameter ref
+);
+
+unified_function_expr_return_type(
+  unique int unified_function_expr: @unified_function_expr ref,
+  unique int return_type: @unified_type_expr ref
+);
+
+unified_function_expr_def(
+  unique int id: @unified_function_expr,
+  int body: @unified_block ref
+);
+
+#keyset[unified_function_type_expr, index]
+unified_function_type_expr_parameter(
+  int unified_function_type_expr: @unified_function_type_expr ref,
+  int index: int ref,
+  unique int parameter: @unified_parameter ref
+);
+
+unified_function_type_expr_def(
+  unique int id: @unified_function_type_expr,
+  int return_type: @unified_type_expr ref
+);
+
+#keyset[unified_generic_type_expr, index]
+unified_generic_type_expr_type_argument(
+  int unified_generic_type_expr: @unified_generic_type_expr ref,
+  int index: int ref,
+  unique int type_argument: @unified_type_expr ref
+);
+
+unified_generic_type_expr_def(
+  unique int id: @unified_generic_type_expr,
+  int base: @unified_type_expr ref
+);
+
+unified_guard_if_stmt_def(
+  unique int id: @unified_guard_if_stmt,
+  int condition: @unified_expr ref,
+  int else: @unified_block ref
+);
+
+unified_if_expr_else(
+  unique int unified_if_expr: @unified_if_expr ref,
+  unique int else: @unified_expr ref
+);
+
+unified_if_expr_then(
+  unique int unified_if_expr: @unified_if_expr ref,
+  unique int then: @unified_expr ref
+);
+
+unified_if_expr_def(
+  unique int id: @unified_if_expr,
+  int condition: @unified_expr ref
+);
+
+#keyset[unified_import_declaration, index]
+unified_import_declaration_modifier(
+  int unified_import_declaration: @unified_import_declaration ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_import_declaration_pattern(
+  unique int unified_import_declaration: @unified_import_declaration ref,
+  unique int pattern: @unified_pattern ref
+);
+
+unified_import_declaration_def(
+  unique int id: @unified_import_declaration,
+  int imported_expr: @unified_expr ref
+);
+
+#keyset[unified_initializer_declaration, index]
+unified_initializer_declaration_modifier(
+  int unified_initializer_declaration: @unified_initializer_declaration ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_initializer_declaration_def(
+  unique int id: @unified_initializer_declaration,
+  int body: @unified_block ref
+);
+
+unified_key_value_pair_def(
+  unique int id: @unified_key_value_pair,
+  int key__: @unified_expr ref,
   int value: @unified_expr ref
 );
 
+unified_labeled_stmt_def(
+  unique int id: @unified_labeled_stmt,
+  int label: @unified_token_identifier ref,
+  int stmt: @unified_stmt ref
+);
+
+#keyset[unified_map_literal, index]
+unified_map_literal_element(
+  int unified_map_literal: @unified_map_literal ref,
+  int index: int ref,
+  unique int element: @unified_expr ref
+);
+
+unified_map_literal_def(
+  unique int id: @unified_map_literal
+);
+
+@unified_member = @unified_accessor_declaration | @unified_associated_type_declaration | @unified_class_like_declaration | @unified_constructor_declaration | @unified_destructor_declaration | @unified_function_declaration | @unified_initializer_declaration | @unified_token_unsupported_node | @unified_type_alias_declaration | @unified_variable_declaration
+
 unified_member_access_expr_def(
   unique int id: @unified_member_access_expr,
-  int member: @unified_token_identifier ref,
-  int target: @unified_expr ref
+  int base: @unified_expr_or_type ref,
+  int member: @unified_token_identifier ref
 );
 
 unified_name_expr_def(
@@ -244,81 +670,356 @@ unified_name_expr_def(
   int identifier: @unified_token_identifier ref
 );
 
+#keyset[unified_name_pattern, index]
+unified_name_pattern_modifier(
+  int unified_name_pattern: @unified_name_pattern ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_name_pattern_def(
+  unique int id: @unified_name_pattern,
+  int identifier: @unified_token_identifier ref
+);
+
+unified_named_type_expr_qualifier(
+  unique int unified_named_type_expr: @unified_named_type_expr ref,
+  unique int qualifier: @unified_type_expr ref
+);
+
+unified_named_type_expr_def(
+  unique int id: @unified_named_type_expr,
+  int name: @unified_token_identifier ref
+);
+
+@unified_operator = @unified_token_infix_operator | @unified_token_postfix_operator | @unified_token_prefix_operator
+
+unified_operator_syntax_declaration_fixity(
+  unique int unified_operator_syntax_declaration: @unified_operator_syntax_declaration ref,
+  unique int fixity: @unified_token_fixity ref
+);
+
+#keyset[unified_operator_syntax_declaration, index]
+unified_operator_syntax_declaration_modifier(
+  int unified_operator_syntax_declaration: @unified_operator_syntax_declaration ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_operator_syntax_declaration_precedence(
+  unique int unified_operator_syntax_declaration: @unified_operator_syntax_declaration ref,
+  unique int precedence: @unified_expr ref
+);
+
+unified_operator_syntax_declaration_def(
+  unique int id: @unified_operator_syntax_declaration,
+  int name: @unified_token_identifier ref
+);
+
+unified_parameter_default(
+  unique int unified_parameter: @unified_parameter ref,
+  unique int default: @unified_expr ref
+);
+
+unified_parameter_external_name(
+  unique int unified_parameter: @unified_parameter ref,
+  unique int external_name: @unified_token_identifier ref
+);
+
+#keyset[unified_parameter, index]
+unified_parameter_modifier(
+  int unified_parameter: @unified_parameter ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_parameter_pattern(
+  unique int unified_parameter: @unified_parameter ref,
+  unique int pattern: @unified_pattern ref
+);
+
+unified_parameter_type(
+  unique int unified_parameter: @unified_parameter ref,
+  unique int type__: @unified_type_expr ref
+);
+
 unified_parameter_def(
-  unique int id: @unified_parameter,
+  unique int id: @unified_parameter
+);
+
+@unified_pattern = @unified_bulk_importing_pattern | @unified_constructor_pattern | @unified_expr_equality_pattern | @unified_name_pattern | @unified_token_ignore_pattern | @unified_token_unsupported_node | @unified_tuple_pattern
+
+unified_pattern_element_key(
+  unique int unified_pattern_element: @unified_pattern_element ref,
+  unique int key__: @unified_token_identifier ref
+);
+
+#keyset[unified_pattern_element, index]
+unified_pattern_element_modifier(
+  int unified_pattern_element: @unified_pattern_element ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_pattern_element_def(
+  unique int id: @unified_pattern_element,
   int pattern: @unified_pattern ref
 );
 
-@unified_pattern = @unified_apply_pattern | @unified_token_ignore_pattern | @unified_token_unsupported_node | @unified_tuple_pattern | @unified_var_pattern
-
-#keyset[unified_sequence_condition, index]
-unified_sequence_condition_stmt(
-  int unified_sequence_condition: @unified_sequence_condition ref,
-  int index: int ref,
-  unique int stmt: @unified_stmt ref
+unified_pattern_guard_expr_def(
+  unique int id: @unified_pattern_guard_expr,
+  int pattern: @unified_pattern ref,
+  int value: @unified_expr ref
 );
 
-unified_sequence_condition_def(
-  unique int id: @unified_sequence_condition,
-  int condition: @unified_condition ref
+unified_return_expr_value(
+  unique int unified_return_expr: @unified_return_expr ref,
+  unique int value: @unified_expr ref
 );
 
-@unified_stmt = @unified_block_stmt | @unified_expr_stmt | @unified_guard_if_stmt | @unified_if_stmt | @unified_token_empty_stmt | @unified_token_unsupported_node | @unified_variable_declaration_stmt
+unified_return_expr_def(
+  unique int id: @unified_return_expr
+);
 
-@unified_top_level_body_type = @unified_expr | @unified_stmt
+@unified_stmt = @unified_accessor_declaration | @unified_class_like_declaration | @unified_constructor_declaration | @unified_destructor_declaration | @unified_do_while_stmt | @unified_expr | @unified_for_each_stmt | @unified_function_declaration | @unified_guard_if_stmt | @unified_import_declaration | @unified_labeled_stmt | @unified_operator_syntax_declaration | @unified_type_alias_declaration | @unified_variable_declaration | @unified_while_stmt
 
-#keyset[unified_top_level, index]
-unified_top_level_body(
-  int unified_top_level: @unified_top_level ref,
+unified_switch_case_guard(
+  unique int unified_switch_case: @unified_switch_case ref,
+  unique int guard: @unified_expr ref
+);
+
+#keyset[unified_switch_case, index]
+unified_switch_case_modifier(
+  int unified_switch_case: @unified_switch_case ref,
   int index: int ref,
-  unique int body: @unified_top_level_body_type ref
+  unique int modifier: @unified_token_modifier ref
+);
+
+#keyset[unified_switch_case, index]
+unified_switch_case_pattern(
+  int unified_switch_case: @unified_switch_case ref,
+  int index: int ref,
+  unique int pattern: @unified_pattern ref
+);
+
+unified_switch_case_def(
+  unique int id: @unified_switch_case,
+  int body: @unified_block ref
+);
+
+#keyset[unified_switch_expr, index]
+unified_switch_expr_case(
+  int unified_switch_expr: @unified_switch_expr ref,
+  int index: int ref,
+  unique int case__: @unified_switch_case ref
+);
+
+#keyset[unified_switch_expr, index]
+unified_switch_expr_modifier(
+  int unified_switch_expr: @unified_switch_expr ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_switch_expr_def(
+  unique int id: @unified_switch_expr,
+  int value: @unified_expr ref
+);
+
+unified_throw_expr_value(
+  unique int unified_throw_expr: @unified_throw_expr ref,
+  unique int value: @unified_expr ref
+);
+
+unified_throw_expr_def(
+  unique int id: @unified_throw_expr
 );
 
 unified_top_level_def(
-  unique int id: @unified_top_level
+  unique int id: @unified_top_level,
+  int body: @unified_block ref
+);
+
+#keyset[unified_try_expr, index]
+unified_try_expr_catch_clause(
+  int unified_try_expr: @unified_try_expr ref,
+  int index: int ref,
+  unique int catch_clause: @unified_catch_clause ref
+);
+
+#keyset[unified_try_expr, index]
+unified_try_expr_modifier(
+  int unified_try_expr: @unified_try_expr ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_try_expr_def(
+  unique int id: @unified_try_expr,
+  int body: @unified_block ref
+);
+
+#keyset[unified_tuple_expr, index]
+unified_tuple_expr_element(
+  int unified_tuple_expr: @unified_tuple_expr ref,
+  int index: int ref,
+  unique int element: @unified_expr ref
+);
+
+unified_tuple_expr_def(
+  unique int id: @unified_tuple_expr
 );
 
 #keyset[unified_tuple_pattern, index]
 unified_tuple_pattern_element(
   int unified_tuple_pattern: @unified_tuple_pattern ref,
   int index: int ref,
-  unique int element: @unified_pattern ref
+  unique int element: @unified_pattern_element ref
+);
+
+#keyset[unified_tuple_pattern, index]
+unified_tuple_pattern_modifier(
+  int unified_tuple_pattern: @unified_tuple_pattern ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
 );
 
 unified_tuple_pattern_def(
   unique int id: @unified_tuple_pattern
 );
 
+unified_tuple_type_element_name(
+  unique int unified_tuple_type_element: @unified_tuple_type_element ref,
+  unique int name: @unified_token_identifier ref
+);
+
+unified_tuple_type_element_def(
+  unique int id: @unified_tuple_type_element,
+  int type__: @unified_type_expr ref
+);
+
+#keyset[unified_tuple_type_expr, index]
+unified_tuple_type_expr_element(
+  int unified_tuple_type_expr: @unified_tuple_type_expr ref,
+  int index: int ref,
+  unique int element: @unified_tuple_type_element ref
+);
+
+unified_tuple_type_expr_def(
+  unique int id: @unified_tuple_type_expr
+);
+
+#keyset[unified_type_alias_declaration, index]
+unified_type_alias_declaration_modifier(
+  int unified_type_alias_declaration: @unified_type_alias_declaration ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+#keyset[unified_type_alias_declaration, index]
+unified_type_alias_declaration_type_constraint(
+  int unified_type_alias_declaration: @unified_type_alias_declaration ref,
+  int index: int ref,
+  unique int type_constraint: @unified_type_constraint ref
+);
+
+#keyset[unified_type_alias_declaration, index]
+unified_type_alias_declaration_type_parameter(
+  int unified_type_alias_declaration: @unified_type_alias_declaration ref,
+  int index: int ref,
+  unique int type_parameter: @unified_type_parameter ref
+);
+
+unified_type_alias_declaration_def(
+  unique int id: @unified_type_alias_declaration,
+  int name: @unified_token_identifier ref,
+  int type__: @unified_type_expr ref
+);
+
+unified_type_cast_expr_def(
+  unique int id: @unified_type_cast_expr,
+  int expr: @unified_expr ref,
+  int operator: @unified_token_infix_operator ref,
+  int type__: @unified_type_expr ref
+);
+
+@unified_type_constraint = @unified_bound_type_constraint | @unified_equality_type_constraint
+
+@unified_type_expr = @unified_function_type_expr | @unified_generic_type_expr | @unified_named_type_expr | @unified_token_inferred_type_expr | @unified_token_unsupported_node | @unified_tuple_type_expr
+
+unified_type_parameter_bound(
+  unique int unified_type_parameter: @unified_type_parameter ref,
+  unique int bound: @unified_type_expr ref
+);
+
+#keyset[unified_type_parameter, index]
+unified_type_parameter_modifier(
+  int unified_type_parameter: @unified_type_parameter ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_type_parameter_def(
+  unique int id: @unified_type_parameter,
+  int name: @unified_token_identifier ref
+);
+
+unified_type_test_expr_def(
+  unique int id: @unified_type_test_expr,
+  int expr: @unified_expr ref,
+  int operator: @unified_token_infix_operator ref,
+  int type__: @unified_type_expr ref
+);
+
+unified_type_test_pattern_def(
+  unique int id: @unified_type_test_pattern,
+  int pattern: @unified_pattern ref,
+  int type__: @unified_type_expr ref
+);
+
 unified_unary_expr_def(
   unique int id: @unified_unary_expr,
   int operand: @unified_expr ref,
-  int operator: @unified_token_operator ref
+  int operator: @unified_operator ref
 );
 
-unified_var_pattern_def(
-  unique int id: @unified_var_pattern,
-  int identifier: @unified_token_identifier ref
-);
-
-#keyset[unified_variable_declaration_stmt, index]
-unified_variable_declaration_stmt_variable_declarator(
-  int unified_variable_declaration_stmt: @unified_variable_declaration_stmt ref,
+#keyset[unified_variable_declaration, index]
+unified_variable_declaration_modifier(
+  int unified_variable_declaration: @unified_variable_declaration ref,
   int index: int ref,
-  unique int variable_declarator: @unified_variable_declarator ref
+  unique int modifier: @unified_token_modifier ref
 );
 
-unified_variable_declaration_stmt_def(
-  unique int id: @unified_variable_declaration_stmt
+unified_variable_declaration_type(
+  unique int unified_variable_declaration: @unified_variable_declaration ref,
+  unique int type__: @unified_type_expr ref
 );
 
-unified_variable_declarator_value(
-  unique int unified_variable_declarator: @unified_variable_declarator ref,
+unified_variable_declaration_value(
+  unique int unified_variable_declaration: @unified_variable_declaration ref,
   unique int value: @unified_expr ref
 );
 
-unified_variable_declarator_def(
-  unique int id: @unified_variable_declarator,
+unified_variable_declaration_def(
+  unique int id: @unified_variable_declaration,
   int pattern: @unified_pattern ref
+);
+
+unified_while_stmt_body(
+  unique int unified_while_stmt: @unified_while_stmt ref,
+  unique int body: @unified_block ref
+);
+
+#keyset[unified_while_stmt, index]
+unified_while_stmt_modifier(
+  int unified_while_stmt: @unified_while_stmt ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+unified_while_stmt_def(
+  unique int id: @unified_while_stmt,
+  int condition: @unified_expr ref
 );
 
 unified_tokeninfo(
@@ -328,13 +1029,24 @@ unified_tokeninfo(
 );
 
 case @unified_token.kind of
-  1 = @unified_token_empty_stmt
-| 2 = @unified_token_identifier
-| 3 = @unified_token_ignore_pattern
-| 4 = @unified_token_int_literal
-| 5 = @unified_token_operator
-| 6 = @unified_token_string_literal
-| 7 = @unified_token_unsupported_node
+  1 = @unified_token_accessor_kind
+| 2 = @unified_token_boolean_literal
+| 3 = @unified_token_builtin_expr
+| 4 = @unified_token_empty_expr
+| 5 = @unified_token_fixity
+| 6 = @unified_token_float_literal
+| 7 = @unified_token_identifier
+| 8 = @unified_token_ignore_pattern
+| 9 = @unified_token_inferred_type_expr
+| 10 = @unified_token_infix_operator
+| 11 = @unified_token_int_literal
+| 12 = @unified_token_modifier
+| 13 = @unified_token_postfix_operator
+| 14 = @unified_token_prefix_operator
+| 15 = @unified_token_regex_literal
+| 16 = @unified_token_string_literal
+| 17 = @unified_token_super_expr
+| 18 = @unified_token_unsupported_node
 ;
 
 
@@ -344,7 +1056,7 @@ unified_trivia_tokeninfo(
   string value: string ref
 );
 
-@unified_ast_node = @unified_apply_pattern | @unified_binary_expr | @unified_block_stmt | @unified_call_expr | @unified_expr_condition | @unified_expr_stmt | @unified_guard_if_stmt | @unified_if_stmt | @unified_lambda_expr | @unified_let_pattern_condition | @unified_member_access_expr | @unified_name_expr | @unified_parameter | @unified_sequence_condition | @unified_token | @unified_top_level | @unified_trivia_token | @unified_tuple_pattern | @unified_unary_expr | @unified_var_pattern | @unified_variable_declaration_stmt | @unified_variable_declarator
+@unified_ast_node = @unified_accessor_declaration | @unified_argument | @unified_array_literal | @unified_assign_expr | @unified_associated_type_declaration | @unified_base_type | @unified_binary_expr | @unified_block | @unified_bound_type_constraint | @unified_break_expr | @unified_bulk_importing_pattern | @unified_call_expr | @unified_catch_clause | @unified_class_like_declaration | @unified_compound_assign_expr | @unified_constructor_declaration | @unified_constructor_pattern | @unified_continue_expr | @unified_destructor_declaration | @unified_do_while_stmt | @unified_equality_type_constraint | @unified_expr_equality_pattern | @unified_for_each_stmt | @unified_function_declaration | @unified_function_expr | @unified_function_type_expr | @unified_generic_type_expr | @unified_guard_if_stmt | @unified_if_expr | @unified_import_declaration | @unified_initializer_declaration | @unified_key_value_pair | @unified_labeled_stmt | @unified_map_literal | @unified_member_access_expr | @unified_name_expr | @unified_name_pattern | @unified_named_type_expr | @unified_operator_syntax_declaration | @unified_parameter | @unified_pattern_element | @unified_pattern_guard_expr | @unified_return_expr | @unified_switch_case | @unified_switch_expr | @unified_throw_expr | @unified_token | @unified_top_level | @unified_trivia_token | @unified_try_expr | @unified_tuple_expr | @unified_tuple_pattern | @unified_tuple_type_element | @unified_tuple_type_expr | @unified_type_alias_declaration | @unified_type_cast_expr | @unified_type_parameter | @unified_type_test_expr | @unified_type_test_pattern | @unified_unary_expr | @unified_variable_declaration | @unified_while_stmt
 
 unified_ast_node_location(
   unique int node: @unified_ast_node ref,

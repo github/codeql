@@ -23,6 +23,14 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          value: int_literal "1"
 
 ===
 Var binding
@@ -49,6 +57,14 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "var"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          value: int_literal "1"
 
 ===
 Let with type annotation
@@ -84,6 +100,17 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          type:
+            named_type_expr
+              name: identifier "Int"
+          value: int_literal "1"
 
 ===
 Var without initialiser
@@ -118,6 +145,16 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "var"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          type:
+            named_type_expr
+              name: identifier "Int"
 
 ===
 Tuple destructuring binding
@@ -154,6 +191,28 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            tuple_pattern
+              element:
+                pattern_element
+                  pattern:
+                    expr_equality_pattern
+                      expr:
+                        name_expr
+                          identifier: identifier "a"
+                pattern_element
+                  pattern:
+                    expr_equality_pattern
+                      expr:
+                        name_expr
+                          identifier: identifier "b"
+          value:
+            name_expr
+              identifier: identifier "pair"
 
 ===
 Multiple bindings on one line
@@ -185,6 +244,22 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          value: int_literal "1"
+        variable_declaration
+          modifier:
+            modifier "let"
+            modifier "chained_declaration"
+          pattern:
+            name_pattern
+              identifier: identifier "y"
+          value: int_literal "2"
 
 ===
 Assignment
@@ -207,6 +282,13 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        assign_expr
+          target:
+            name_expr
+              identifier: identifier "x"
+          value: int_literal "1"
 
 ===
 Compound assignment
@@ -229,3 +311,11 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        compound_assign_expr
+          operator: infix_operator "+="
+          target:
+            name_expr
+              identifier: identifier "x"
+          value: int_literal "1"

@@ -58,9 +58,27 @@ pub trait YeastDisplay {
     fn yeast_to_string(&self, ast: &Ast) -> String;
 }
 
+/// Optional source range for values used in `#{expr}` interpolations.
+///
+/// By default this returns `None`, so synthesized leaves inherit the matched
+/// rule's source range. `NodeRef` returns the referenced node's range, letting
+/// `(kind #{capture})` carry the captured node's location.
+pub trait YeastSourceRange {
+    fn yeast_source_range(&self, ast: &Ast) -> Option<tree_sitter::Range>;
+}
+
 impl YeastDisplay for NodeRef {
     fn yeast_to_string(&self, ast: &Ast) -> String {
         ast.source_text(self.0)
+    }
+}
+
+impl YeastSourceRange for NodeRef {
+    fn yeast_source_range(&self, ast: &Ast) -> Option<tree_sitter::Range> {
+        ast.get_node(self.0).and_then(|n| match &n.content {
+            NodeContent::Range(r) => Some(r.clone()),
+            _ => n.source_range,
+        })
     }
 }
 
@@ -70,6 +88,12 @@ macro_rules! impl_yeast_display_via_display {
             impl YeastDisplay for $t {
                 fn yeast_to_string(&self, _ast: &Ast) -> String {
                     ::std::string::ToString::to_string(self)
+                }
+            }
+
+            impl YeastSourceRange for $t {
+                fn yeast_source_range(&self, _ast: &Ast) -> Option<tree_sitter::Range> {
+                    None
                 }
             }
         )*
@@ -87,6 +111,12 @@ impl_yeast_display_via_display! {
 impl<T: YeastDisplay + ?Sized> YeastDisplay for &T {
     fn yeast_to_string(&self, ast: &Ast) -> String {
         (**self).yeast_to_string(ast)
+    }
+}
+
+impl<T: YeastSourceRange + ?Sized> YeastSourceRange for &T {
+    fn yeast_source_range(&self, ast: &Ast) -> Option<tree_sitter::Range> {
+        (**self).yeast_source_range(ast)
     }
 }
 
@@ -368,6 +398,15 @@ impl Ast {
         is_named: bool,
         source_range: Option<tree_sitter::Range>,
     ) -> Id {
+        let source_range = match &content {
+            // Parsed nodes already carry an exact source range in their content.
+            NodeContent::Range(_) => source_range,
+            // Synthesized nodes derive location from children when possible,
+            // and fall back to the inherited rule-match range otherwise.
+            _ => self
+                .union_source_range_of_children(&fields)
+                .or(source_range),
+        };
         let id = self.nodes.len();
         self.nodes.push(Node {
             kind,
@@ -383,8 +422,74 @@ impl Ast {
         id
     }
 
+    fn union_source_range_of_children(
+        &self,
+        fields: &BTreeMap<FieldId, Vec<Id>>,
+    ) -> Option<tree_sitter::Range> {
+        let mut start_byte: Option<usize> = None;
+        let mut end_byte: Option<usize> = None;
+        let mut start_point = tree_sitter::Point { row: 0, column: 0 };
+        let mut end_point = tree_sitter::Point { row: 0, column: 0 };
+
+        for child_ids in fields.values() {
+            for &child_id in child_ids {
+                let Some(child) = self.get_node(child_id) else {
+                    continue;
+                };
+
+                let child_start_byte = child.start_byte();
+                let child_end_byte = child.end_byte();
+
+                // Skip children that carry no usable location.
+                if child_start_byte == 0 && child_end_byte == 0 {
+                    continue;
+                }
+
+                match start_byte {
+                    None => {
+                        start_byte = Some(child_start_byte);
+                        start_point = child.start_position();
+                    }
+                    Some(current_start) if child_start_byte < current_start => {
+                        start_byte = Some(child_start_byte);
+                        start_point = child.start_position();
+                    }
+                    _ => {}
+                }
+
+                match end_byte {
+                    None => {
+                        end_byte = Some(child_end_byte);
+                        end_point = child.end_position();
+                    }
+                    Some(current_end) if child_end_byte > current_end => {
+                        end_byte = Some(child_end_byte);
+                        end_point = child.end_position();
+                    }
+                    _ => {}
+                }
+            }
+        }
+
+        match (start_byte, end_byte) {
+            (Some(start_byte), Some(end_byte)) => Some(tree_sitter::Range {
+                start_byte,
+                end_byte,
+                start_point,
+                end_point,
+            }),
+            _ => None,
+        }
+    }
+
     pub fn create_named_token(&mut self, kind: &'static str, content: String) -> Id {
         self.create_named_token_with_range(kind, content, None)
+    }
+
+    /// Prepend a child id to the given field of the given node.
+    pub fn prepend_field_child(&mut self, node_id: Id, field_id: FieldId, value_id: Id) {
+        let node = self.nodes.get_mut(node_id).expect("prepend_field_child: invalid node id");
+        node.fields.entry(field_id).or_default().insert(0, value_id);
     }
 
     pub fn create_named_token_with_range(
@@ -824,14 +929,6 @@ fn apply_one_shot_rules_inner(
     }
 
     let node_kind = ast.get_node(id).map(|n| n.kind()).unwrap_or("");
-
-    // Don't rewrite unnamed nodes (punctuation, keywords, etc.); leave them
-    // as-is. Rules target named nodes only.
-    if let Some(node) = ast.get_node(id) {
-        if !node.is_named() {
-            return Ok(vec![id]);
-        }
-    }
 
     for rule in index.rules_for_kind(node_kind) {
         if let Some(mut captures) = rule.try_match(ast, id)? {

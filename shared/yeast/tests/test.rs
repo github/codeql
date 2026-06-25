@@ -18,6 +18,16 @@ fn run_and_dump(input: &str, rules: Vec<Rule>) -> String {
     run_phased_and_dump(input, vec![Phase::new("test", PhaseKind::Repeating, rules)])
 }
 
+/// Helper: parse Ruby source with custom rules and return the transformed AST.
+fn run_and_ast(input: &str, rules: Vec<Rule>) -> Ast {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let phases = vec![Phase::new("test", PhaseKind::Repeating, rules)];
+    let runner = Runner::with_schema(lang, &schema, &phases);
+    runner.run(input).unwrap()
+}
+
 /// Helper: parse Ruby source with a custom output schema and multiple
 /// rule phases, return dump.
 fn run_phased_and_dump(input: &str, phases: Vec<Phase>) -> String {
@@ -387,6 +397,29 @@ fn test_capture_unnamed_node_parenthesized() {
     let op_node = ast.get_node(op_id).unwrap();
     assert_eq!(op_node.kind(), "=");
     assert!(!op_node.is_named());
+}
+
+#[test]
+fn test_capture_bare_underscore_repeated() {
+    // `_` matches named and unnamed nodes in bare-child position. On this
+    // assignment shape, bare children correspond to unnamed tokens (the `=`).
+    let runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let ast = runner.run("x = 1").unwrap();
+
+    let query = yeast::query!((assignment _* @all));
+
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child();
+    let assignment_id = cursor.node_id();
+
+    let mut captures = yeast::captures::Captures::new();
+    let matched = query.do_match(&ast, assignment_id, &mut captures).unwrap();
+    assert!(matched);
+
+    let all = captures.get_all("all");
+    assert_eq!(all.len(), 1);
+    assert_eq!(ast.get_node(all[0]).unwrap().kind(), "=");
+    assert!(!ast.get_node(all[0]).unwrap().is_named());
 }
 
 #[test]
@@ -1148,4 +1181,38 @@ fn test_hash_brace_renders_integer_expression() {
           identifier "3"
     "#,
     );
+}
+
+/// Regression test: `(kind #{capture})` should inherit the captured node's
+/// source location, not the full source range of the matched rule root.
+#[test]
+fn test_hash_brace_uses_capture_location_for_leaf() {
+    let rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        (call
+            method: (identifier #{name})
+            receiver: (identifier #{recv})
+            arguments: (argument_list)
+        )
+    );
+
+    let ast = run_and_ast("foo.bar()", vec![rule]);
+
+    let mut bar_ids: Vec<usize> = Vec::new();
+    for id in ast.reachable_node_ids() {
+        let Some(node) = ast.get_node(id) else { continue; };
+        if node.kind() == "identifier" && ast.source_text(id) == "bar" {
+            bar_ids.push(id);
+        }
+    }
+
+    assert_eq!(bar_ids.len(), 1, "expected exactly one identifier 'bar'");
+    let bar = ast.get_node(bar_ids[0]).unwrap();
+
+    assert_eq!(bar.start_byte(), 4);
+    assert_eq!(bar.end_byte(), 7);
 }
