@@ -8371,6 +8371,8 @@ inferType
 | main.rs:469:17:469:34 | thing.convert_to() |  | main.rs:249:5:250:14 | S1 |
 | main.rs:470:28:470:32 | thing |  | main.rs:238:5:241:5 | MyThing |
 | main.rs:470:28:470:32 | thing | A | main.rs:249:5:250:14 | S1 |
+| main.rs:472:13:472:13 | x |  | main.rs:249:5:250:14 | S1 |
+| main.rs:472:17:472:58 | call_trait_m1_trait2_m3(...) |  | main.rs:249:5:250:14 | S1 |
 | main.rs:472:41:472:57 | MyThing {...} |  | main.rs:238:5:241:5 | MyThing |
 | main.rs:472:41:472:57 | MyThing {...} | A | main.rs:251:5:252:14 | S2 |
 | main.rs:472:54:472:55 | S2 |  | main.rs:251:5:252:14 | S2 |

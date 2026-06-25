@@ -469,7 +469,7 @@ mod method_non_parametric_trait_impl {
         let i = thing.convert_to(); // $ type=i:S1 target=T::convert_to
         let j = convert_to(thing); // $ target=convert_to $ MISSING: type=j:S1 -- the blanket implementation `impl<T: MyTrait<S1>> ConvertTo<S1> for T` is currently not included in the constraint analysis
 
-        let x = call_trait_m1_trait2_m3(MyThing { a: S2 }); // $ target=call_trait_m1_trait2_m3 $ MISSING: type=x:S1
+        let x = call_trait_m1_trait2_m3(MyThing { a: S2 }); // $ target=call_trait_m1_trait2_m3 type=x:S1
     }
 }
 
