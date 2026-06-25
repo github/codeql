@@ -65,7 +65,9 @@ module Xxe {
         // (e.g. `2`), to provide additional confidence that we're actually looking at XML parsing)
         hasXxeOption(call.getAnArgument(), true) and
         // the sink is any input argument
-        this.asExpr() = call.getAnArgument()
+        this.asExpr() = call.getAnArgument() and
+        // don't duplicate modeled sinks
+        not exists(ModelsAsDataSink s | s.(Node::FlowSummaryNode).getSinkElement().getCall() = call)
       )
     }
   }

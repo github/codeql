@@ -48,7 +48,7 @@ unsafe fn test_xml_ctxt_read_memory_bad(user_xml: &str) {
     // BAD: user-controlled XML with unsafe options via ctxt variant
     bindings::xmlCtxtReadMemory( // $ Alert[rust/xxe]
         std::ptr::null_mut(),
-        user_xml.as_ptr() as *const c_char, // $ Alert[rust/xxe]
+        user_xml.as_ptr() as *const c_char,
         user_xml.len() as i32,
         std::ptr::null_mut(),
         std::ptr::null_mut(),
