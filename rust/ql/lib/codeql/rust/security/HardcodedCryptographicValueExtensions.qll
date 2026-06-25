@@ -160,7 +160,7 @@ module HardcodedCryptographicValue {
    * An arithmetic or bitwise operation that acts as a barrier.
    *
    * This prevents false positives where a hard-coded value is combined with
-   * non-constant data through operations like `+`, `^`, or `+=`.
+   * non-constant data through operations like `+`, `^`, or `+=` (including string concatenation).
    */
   private class ArithmeticOperationBarrier extends Barrier {
     ArithmeticOperationBarrier() {
