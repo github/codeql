@@ -54,6 +54,41 @@ fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Optio
     }
 }
 
+/// Combine a list of boolean sub-conditions into a single expression by
+/// left-folding with the infix `&&` operator. Used by control-flow
+/// rules (`if`, `guard`, `while`, `repeat-while`) whose tree-sitter
+/// nodes carry one or more comma-separated conditions that the target
+/// AST represents as a single `condition:` field. Panics on an empty
+/// input because every caller's grammar guarantees at least one
+/// condition.
+fn and_chain(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    conds: Vec<yeast::NodeRef>,
+) -> yeast::Id {
+    conds.into_iter()
+        .map(yeast::Id::from)
+        .reduce(|acc, elem| {
+            tree!((binary_expr operator: (infix_operator "&&") left: {acc} right: {elem}))
+        })
+        .expect("control-flow statement must have at least one condition")
+}
+
+/// Translate a multi-part identifier (for example `Foo.Bar.Baz`) into a
+/// `member_access_expr` chain rooted at a `name_expr` over the first
+/// part. Panics on an empty input because the grammar's `_+` quantifier
+/// guarantees at least one part.
+fn member_chain(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    parts: Vec<yeast::NodeRef>,
+) -> yeast::Id {
+    let mut iter = parts.into_iter();
+    let first = iter.next().expect("identifier with `part:` must have at least one part");
+    let init = tree!((name_expr identifier: (identifier #{first})));
+    iter.fold(init, |acc, elem| {
+        tree!((member_access_expr base: {acc} member: (identifier #{elem})))
+    })
+}
+
 fn translation_rules() -> Vec<Rule<SwiftContext>> {
     vec![
         // ---- Top-level ----
@@ -585,11 +620,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 argument: (argument value: {closure}))
         ),
         // ---- Control flow ----
+        // If statement
         rule!(
             (if_statement condition: _* @cond body: @then_body else_branch: _? @else_stmts)
             =>
             (if_expr
-                condition: {..cond}.reduce_left(first -> {first}, acc, elem -> (binary_expr operator: (infix_operator "&&") left: {acc} right: {elem}))
+                condition: {and_chain(&mut ctx, cond)}
                 then: {then_body}
                 else: {..else_stmts})
         ),
@@ -598,7 +634,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (guard_statement condition: _* @cond body: (block statement: _* @else_stmts))
             =>
             (guard_if_stmt
-                condition: {..cond}.reduce_left(first -> {first}, acc, elem -> (binary_expr operator: (infix_operator "&&") left: {acc} right: {elem}))
+                condition: {and_chain(&mut ctx, cond)}
                 else: (block stmt: {..else_stmts}))
         ),
         // Ternary expression → if_expr
@@ -676,13 +712,17 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (while_statement condition: _* @cond body: (block statement: _* @body))
             =>
-            (while_stmt condition: {..cond}.reduce_left(first -> {first}, acc, elem -> (binary_expr operator: (infix_operator "&&") left: {acc} right: {elem})) body: (block stmt: {..body}))
+            (while_stmt
+                condition: {and_chain(&mut ctx, cond)}
+                body: (block stmt: {..body}))
         ),
         // Repeat-while loop
         rule!(
             (repeat_while_statement condition: _* @cond body: (block statement: _* @body))
             =>
-            (do_while_stmt condition: {..cond}.reduce_left(first -> {first}, acc, elem -> (binary_expr operator: (infix_operator "&&") left: {acc} right: {elem})) body: (block stmt: {..body}))
+            (do_while_stmt
+                condition: {and_chain(&mut ctx, cond)}
+                body: (block stmt: {..body}))
         ),
         // Labeled statement (e.g. `outer: for ...`). Strip the trailing ':' from the label token.
         rule!((labeled_statement label: (statement_label) @lbl statement: @stmt) => {..{
@@ -770,9 +810,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (identifier part: _+ @parts)
             =>
-            {parts}.reduce_left(
-                first -> (name_expr identifier: (identifier #{first})),
-                acc, elem -> (member_access_expr base: {acc} member: (identifier #{elem})))
+            {member_chain(&mut ctx, parts)}
         ),
         // Scoped import declaration (for example `import struct Foo.Bar`):
         // flatten the identifier parts into a member_access_expr and bind the
