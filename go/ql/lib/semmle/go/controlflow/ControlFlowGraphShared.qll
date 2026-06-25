@@ -785,6 +785,26 @@ module GoCfg {
         c.hasLabel(lbl.getLabel())
       )
       or
+      // A `break` in a communication clause body terminates the enclosing
+      // `select` statement, continuing after it. This mirrors the shared
+      // library's handling of `break` in a `switch` case body, but `select` is
+      // modelled language-specifically (it is not a `Switch`), so the break
+      // must be caught here. The break completion bubbles up the AST until it
+      // reaches a top-level statement of the comm clause body, at which point
+      // flow resumes after the `select`. An unlabeled `break` targets the
+      // innermost enclosing construct; a labeled `break` only targets this
+      // `select` if it (or a `LabeledStmt` wrapping it) carries that label.
+      exists(Go::SelectStmt sel, Go::CommClause cc |
+        cc = sel.getACommClause() and
+        ast = cc.getStmt(_) and
+        n.isAfter(sel) and
+        c.getSuccessorType() instanceof BreakSuccessor
+      |
+        not c.hasLabel(_)
+        or
+        exists(Label l | c.hasLabel(l) and hasLabel(sel, l))
+      )
+      or
       exists(Go::FuncDef fd |
         ast = fd.getBody() and
         not funcHasDefer(fd) and
@@ -1482,20 +1502,43 @@ module GoCfg {
       )
     }
 
+    /**
+     * Holds if there is a control-flow step from `n1` to `n2` for the
+     * communication operation of a comm clause of `sel` that has been selected.
+     *
+     * The channel operands (and, for a send, the value) of every clause are
+     * evaluated up front in the prep phase (see `selectCommPrepStart` and
+     * friends), and the `select` then non-deterministically dispatches to one
+     * clause via `In(sel) -> Before(cc)`. The communication node itself
+     * (`In(recv.getExpr())` for a receive, `In(send)` for a send) is therefore
+     * only reached through that dispatch, never by ordinary left-to-right
+     * evaluation of the clause.
+     *
+     * The `Before(...) -> ...` edges below are deliberately dead (their source
+     * nodes are unreachable): they exist solely to suppress the shared
+     * library's default left-to-right child sequencing for these AST nodes,
+     * which is keyed off the presence of an explicit step out of a node's
+     * `Before` node. Without them, the default sequencing would, for example,
+     * wire `After(channel) -> In(send)`, spuriously connecting the prep phase
+     * straight to the communication and bypassing the dispatch.
+     */
     private predicate selectedCommStep(
       Go::SelectStmt sel, PreControlFlowNode n1, PreControlFlowNode n2
     ) {
       exists(Go::RecvStmt recv | recv = sel.getACommClause().getComm() |
+        // Suppress default sequencing of the receive statement and of the
+        // receive expression (both source nodes are unreachable).
         n1.isBefore(recv) and n2.isIn(recv.getExpr())
         or
         n1.isBefore(recv.getExpr()) and n2.isBefore(recv.getExpr().getOperand())
       )
       or
       exists(Go::SendStmt send | send = sel.getACommClause().getComm() |
+        // Suppress default sequencing of the send statement (source unreachable).
         n1.isBefore(send) and n2.isBefore(send.getChannel())
         or
-        n1.isAfter(send.getChannel()) and n2.isBefore(send.getValue())
-        or
+        // The send communication happens at `In(send)`; flow then continues to
+        // the clause body via `selectStmt`.
         n1.isIn(send) and n2.isAfter(send)
       )
     }

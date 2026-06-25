@@ -2780,6 +2780,7 @@
 | stmts2.go:21:6:21:6 | y | stmts2.go:21:6:21:6 | After y [true] |
 | stmts2.go:21:8:23:3 | block statement | stmts2.go:22:4:22:8 | Before break statement |
 | stmts2.go:22:4:22:8 | Before break statement | stmts2.go:22:4:22:8 | break statement |
+| stmts2.go:22:4:22:8 | break statement | stmts2.go:16:2:26:2 | After select statement |
 | stmts2.go:24:3:24:10 | Before return statement | stmts2.go:24:10:24:10 | Before 0 |
 | stmts2.go:24:3:24:10 | return statement | stmts2.go:15:1:28:1 | Normal Exit |
 | stmts2.go:24:10:24:10 | 0 | stmts2.go:24:10:24:10 | After 0 |
