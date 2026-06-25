@@ -48,6 +48,12 @@ impl From<NodeRef> for Id {
     }
 }
 
+impl From<Id> for NodeRef {
+    fn from(value: Id) -> Self {
+        NodeRef(value)
+    }
+}
+
 /// Like [`std::fmt::Display`], but the formatting routine is given access to
 /// the [`Ast`] so that node references can resolve to their source text.
 ///
