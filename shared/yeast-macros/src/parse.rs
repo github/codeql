@@ -22,10 +22,9 @@ pub fn parse_query_top(input: TokenStream) -> Result<TokenStream> {
 /// Parse a single query node (possibly with a trailing `@capture`).
 fn parse_query_node(tokens: &mut Tokens) -> Result<TokenStream> {
     let base = parse_query_atom(tokens)?;
-    // Check for trailing @capture
+    // Check for trailing @capture or @@capture
     if peek_is_at(tokens) {
-        tokens.next(); // consume @
-        let capture_name = expect_ident(tokens, "expected capture name after @")?;
+        let capture_name = consume_capture_marker(tokens)?;
         let name_str = capture_name.to_string();
         Ok(quote! {
             yeast::query::QueryNode::Capture {
@@ -159,8 +158,7 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
                 push_field_elem(&mut field_order, &mut field_elems, field_str, elem);
             } else {
                 let child = if peek_is_at(tokens) {
-                    tokens.next();
-                    let capture_name = expect_ident(tokens, "expected capture name after @")?;
+                    let capture_name = consume_capture_marker(tokens)?;
                     let name_str = capture_name.to_string();
                     quote! {
                         yeast::query::QueryNode::Capture {
@@ -650,6 +648,9 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
 struct CaptureInfo {
     name: String,
     multiplicity: CaptureMultiplicity,
+    /// `true` for `@@name` captures: the auto-translate prefix skips them,
+    /// so the bound `NodeRef` refers to the raw (input-schema) node.
+    raw: bool,
 }
 
 #[derive(Clone, Copy, PartialEq)]
@@ -708,6 +709,14 @@ fn extract_captures_inner(
                 extract_captures_inner(&mut inner, captures, child_mult);
             }
             TokenTree::Punct(p) if p.as_char() == '@' => {
+                // `@@name` marks the capture as raw (skip auto-translate).
+                let raw = matches!(
+                    tokens.peek(),
+                    Some(TokenTree::Punct(p)) if p.as_char() == '@'
+                );
+                if raw {
+                    tokens.next(); // consume the second `@`
+                }
                 if let Some(TokenTree::Ident(name)) = tokens.next() {
                     let mult = if parent_mult == CaptureMultiplicity::Repeated
                         || last_mult == CaptureMultiplicity::Repeated
@@ -723,6 +732,7 @@ fn extract_captures_inner(
                     captures.push(CaptureInfo {
                         name: name.to_string(),
                         multiplicity: mult,
+                        raw,
                     });
                 }
                 last_mult = CaptureMultiplicity::Single;
@@ -775,6 +785,14 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
 
     // Parse query
     let query_code = parse_query_top(query_stream.clone())?;
+
+    // Capture names marked `@@name` (raw) — passed to the auto-translate
+    // prefix as a skip list so those captures keep their input-schema ids.
+    let raw_capture_names: Vec<&str> = captures
+        .iter()
+        .filter(|c| c.raw)
+        .map(|c| c.name.as_str())
+        .collect();
 
     // Generate capture bindings
     let ctx_ident = Ident::new(IMPLICIT_CTX, Span::call_site());
@@ -891,11 +909,14 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
             let __query = #query_code;
             yeast::Rule::new(__query, Box::new(|__ast: &mut yeast::Ast, mut __captures: yeast::captures::Captures, __fresh: &yeast::tree_builder::FreshScope, __source_range: Option<tree_sitter::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
                 // Auto-translation prefix: recursively translate every
-                // captured node before invoking the user's transform body.
+                // captured node before invoking the user's transform body,
+                // except for `@@name` captures listed in `__skip` which the
+                // body consumes raw.
                 // For OneShot rules this preserves the legacy behaviour
                 // (input-schema captures translated to output-schema
                 // nodes); for Repeating rules it is a no-op.
-                __translator.auto_translate_captures(&mut __captures, __ast, __user_ctx)?;
+                let __skip: &[&str] = &[#(#raw_capture_names),*];
+                __translator.auto_translate_captures(&mut __captures, __ast, __user_ctx, __skip)?;
                 #(#bindings)*
                 let mut #ctx_ident = yeast::build::BuildCtx::with_translator(__ast, &__captures, __fresh, __source_range, __user_ctx, __translator);
                 let __result: Vec<usize> = { #transform_body };
@@ -1013,6 +1034,16 @@ fn peek_is_at(tokens: &mut Tokens) -> bool {
     matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '@')
 }
 
+/// Consume an `@` or `@@` capture marker and the following name ident.
+/// Caller has already verified `peek_is_at(tokens)`.
+fn consume_capture_marker(tokens: &mut Tokens) -> Result<Ident> {
+    tokens.next(); // consume the first `@`
+    if peek_is_at(tokens) {
+        tokens.next(); // consume the second `@` of `@@`
+    }
+    expect_ident(tokens, "expected capture name after `@` or `@@`")
+}
+
 fn peek_is_literal(tokens: &mut Tokens) -> bool {
     matches!(tokens.peek(), Some(TokenTree::Literal(_)))
 }
@@ -1113,8 +1144,7 @@ fn expect_repetition(tokens: &mut Tokens) -> Result<TokenStream> {
 
 fn maybe_wrap_capture(tokens: &mut Tokens, base: TokenStream) -> Result<TokenStream> {
     if peek_is_at(tokens) {
-        tokens.next(); // consume @
-        let name = expect_ident(tokens, "expected capture name after @")?;
+        let name = consume_capture_marker(tokens)?;
         let name_str = name.to_string();
         Ok(quote! {
             yeast::query::QueryNode::Capture {
@@ -1141,13 +1171,12 @@ fn maybe_wrap_repetition(tokens: &mut Tokens, single: TokenStream) -> Result<Tok
     }
 }
 
-/// If `@name` follows a Repeated list element, wrap each child SingleNode
-/// inside the repetition with a Capture. This matches tree-sitter semantics
-/// where `(_)* @name` captures each matched node.
+/// If `@name` (or `@@name`) follows a Repeated list element, wrap each
+/// child SingleNode inside the repetition with a Capture. This matches
+/// tree-sitter semantics where `(_)* @name` captures each matched node.
 fn maybe_wrap_list_capture(tokens: &mut Tokens, elem: TokenStream) -> Result<TokenStream> {
     if peek_is_at(tokens) {
-        tokens.next();
-        let name = expect_ident(tokens, "expected capture name after @")?;
+        let name = consume_capture_marker(tokens)?;
         let name_str = name.to_string();
         // Re-parse the element isn't practical, so we generate a wrapper
         // that creates a new Repeated with each child wrapped in a capture.

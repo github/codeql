@@ -1058,6 +1058,110 @@ fn test_one_shot_does_not_recurse_into_wrapper_output() {
     );
 }
 
+/// Verify that `@@name` capture markers skip the auto-translate prefix:
+/// the body sees the *raw* (input-schema) NodeRef and can read its
+/// source text or call `ctx.translate(...)` explicitly. Compare with
+/// the bare `@name` form, where the auto-translate prefix runs the
+/// same translation up front and the body sees the post-translate id.
+#[test]
+fn test_raw_capture_marker() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let rules: Vec<Rule> = vec![
+        yeast::rule!(
+            (program (_)* @stmts)
+            =>
+            (program stmt: {..stmts})
+        ),
+        // `@@raw_lhs` is untranslated: the body reads its source text
+        // ("x") and embeds it directly as the identifier content. `@rhs`
+        // is auto-translated (rhs already points to (integer "INT")).
+        yeast::rule!(
+            (assignment left: (_) @@raw_lhs right: (_) @rhs)
+            =>
+            {
+                let text = ctx.ast.source_text(raw_lhs.into());
+                tree!((call
+                    method: (identifier #{text.as_str()})
+                    receiver: {rhs}))
+            }
+        ),
+        yeast::rule!((identifier) => (identifier "ID")),
+        yeast::rule!((integer) => (integer "INT")),
+    ];
+    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+
+    let input = "x = 1";
+    let ast = runner.run(input).unwrap();
+    let dump = dump_ast(&ast, ast.get_root(), input);
+    // `method:` uses the raw source text ("x"); if `@@` were broken and
+    // auto-translation ran on `raw_lhs`, it would still produce the
+    // string "x" (source_text inherits the input range), so the dump
+    // wouldn't change. Add a second assertion: explicitly translating
+    // the raw NodeRef inside the body must succeed and produce
+    // `(identifier "ID")`.
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          stmt:
+            call
+              method: identifier "x"
+              receiver: integer "INT"
+    "#,
+    );
+}
+
+/// Companion to `test_raw_capture_marker`: confirms that calling
+/// `ctx.translate(raw)` on a `@@`-captured NodeRef from the rule body
+/// produces the correctly-translated output-schema node. With `@`, the
+/// translation has already happened, so `ctx.translate(...)` inside the
+/// body would attempt to re-translate an output node (which has no
+/// matching rule and would error).
+#[test]
+fn test_raw_capture_marker_explicit_translate() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let rules: Vec<Rule> = vec![
+        yeast::rule!(
+            (program (_)* @stmts)
+            =>
+            (program stmt: {..stmts})
+        ),
+        yeast::rule!(
+            (assignment left: (_) @@raw_lhs right: (_) @rhs)
+            =>
+            {
+                let translated_lhs = ctx.translate(raw_lhs)?;
+                tree!((call
+                    method: {..translated_lhs}
+                    receiver: {rhs}))
+            }
+        ),
+        yeast::rule!((identifier) => (identifier "ID")),
+        yeast::rule!((integer) => (integer "INT")),
+    ];
+    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+
+    let input = "x = 1";
+    let ast = runner.run(input).unwrap();
+    let dump = dump_ast(&ast, ast.get_root(), input);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          stmt:
+            call
+              method: identifier "ID"
+              receiver: integer "INT"
+    "#,
+    );
+}
+
 // ---- Cursor tests ----
 
 #[test]

@@ -292,6 +292,37 @@ Inside `rule!`, captures are Rust variables, so `{name}` inserts a
 single capture (`Id`) and `{..name}` splices a repeated capture
 (`Vec<Id>`).
 
+### Raw captures (`@@name`)
+
+The default `@name` capture marker is *auto-translated*: in OneShot
+phases the macro recursively translates the captured node before
+binding it, so `{name}` in the output template splices a node that
+already conforms to the output schema.
+
+For rules that need the raw (input-schema) capture — typically to read
+its source text or to translate it explicitly with mutable context
+state between calls — use `@@name` instead. The body sees the original
+input-schema `NodeRef`:
+
+```rust
+yeast::rule!(
+    (assignment left: (_) @@raw_lhs right: (_) @rhs)
+    =>
+    {
+        // raw_lhs is untranslated: read its original source text.
+        let text = ctx.ast.source_text(raw_lhs.into());
+        // rhs is already translated by the auto-translate prefix.
+        tree!((call
+            method: (identifier #{text.as_str()})
+            receiver: {rhs}))
+    }
+);
+```
+
+Mix `@` and `@@` freely in the same rule. In a Repeating phase both
+markers are equivalent (auto-translation is a no-op for repeating
+rules).
+
 ## Complete example: for-loop desugaring
 
 This rule rewrites Ruby's `for pat in val do body end` into

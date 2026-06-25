@@ -80,6 +80,28 @@ impl Captures {
         }
         Ok(())
     }
+
+    /// Like [`try_map_all_captures`] but leaves captures whose name appears
+    /// in `skip` untouched. Used by the `rule!` macro to support `@@name`
+    /// (raw) captures alongside the default auto-translated `@name`
+    /// captures.
+    pub fn try_map_captures_except<E>(
+        &mut self,
+        skip: &[&str],
+        mut f: impl FnMut(Id) -> Result<Vec<Id>, E>,
+    ) -> Result<(), E> {
+        for (name, ids) in self.captures.iter_mut() {
+            if skip.contains(name) {
+                continue;
+            }
+            let mut new_ids = Vec::with_capacity(ids.len());
+            for &id in ids.iter() {
+                new_ids.extend(f(id)?);
+            }
+            *ids = new_ids;
+        }
+        Ok(())
+    }
     pub fn map_captures_to(&mut self, from: &str, to: &'static str, f: &mut impl FnMut(Id) -> Id) {
         if let Some(from_ids) = self.captures.get(from) {
             let new_values = from_ids.iter().copied().map(f).collect();
