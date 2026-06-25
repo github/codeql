@@ -150,12 +150,14 @@ impl fmt::Display for Type<'_> {
 pub enum Expression<'a> {
     Var(&'a str),
     String(&'a str),
-    Integer(usize),
+    Integer(i64),
     Pred(&'a str, Vec<Expression<'a>>),
     And(Vec<Expression<'a>>),
     Or(Vec<Expression<'a>>),
     Equals(Box<Expression<'a>>, Box<Expression<'a>>),
     Dot(Box<Expression<'a>>, &'a str, Vec<Expression<'a>>),
+    /// A type cast, rendered as `x.(Type)`.
+    Cast(Box<Expression<'a>>, &'a str),
     Aggregate {
         name: &'a str,
         vars: Vec<FormalParameter<'a>>,
@@ -219,6 +221,7 @@ impl fmt::Display for Expression<'_> {
                 }
                 write!(f, ")")
             }
+            Expression::Cast(x, type_name) => write!(f, "{x}.({type_name})"),
             Expression::Aggregate {
                 name,
                 vars,
