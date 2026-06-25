@@ -1904,13 +1904,10 @@ module Make<
           summaryLocalStepImpl(predSummary, succ, preservesValue, model)
         )
         or
-        exists(
-          FlowSummaryCallBase summaryCall, ReturnKind rk, SummarizedCallable sc,
-          SummaryComponentStack output
-        |
+        exists(FlowSummaryCallBase summaryCall, ReturnKind rk, SummarizedCallable sc |
           pred = StepsInput::getSourceOutNode(summaryCall, rk) and
           summaryCall = getASourceCall(sc) and
-          summary(sc, SummaryComponentStack::return(rk), output, preservesValue, model) and
+          summary(sc, SummaryComponentStack::return(rk), _, preservesValue, model) and
           succ = TSummaryReturnArgumentNode(summaryCall, rk)
         )
       }
