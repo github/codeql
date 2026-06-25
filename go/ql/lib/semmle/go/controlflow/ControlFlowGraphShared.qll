@@ -571,11 +571,6 @@ module GoCfg {
         // Next node for range statements
         n instanceof Go::RangeStmt and tag = "next"
         or
-        // Send node
-        n instanceof Go::SendStmt and
-        not n = any(Go::CommClause cc).getComm() and
-        tag = "send"
-        or
         // Implicit deref
         implicitDerefCondition(n) and tag = "implicit-deref"
         or
