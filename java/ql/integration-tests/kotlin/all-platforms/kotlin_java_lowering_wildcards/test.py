@@ -6,8 +6,8 @@ def test(codeql, java_full, kotlinc_2_3_20):
     commands.run(["javac", "JavaDefns2.java"])
     codeql.database.create(
         command=[
-            f"{kotlinc_2_3_20} kotlindefns.kt",
+            "kotlinc kotlindefns.kt",
             "javac JavaUser.java JavaDefns.java -cp .",
-            f"{kotlinc_2_3_20} -language-version 1.9 -cp . kotlinuser.kt",
+            "kotlinc -language-version 1.9 -cp . kotlinuser.kt",
         ]
     )
