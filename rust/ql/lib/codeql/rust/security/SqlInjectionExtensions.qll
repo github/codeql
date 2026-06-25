@@ -9,7 +9,6 @@ private import codeql.rust.dataflow.DataFlow
 private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
-private import codeql.util.Unit
 private import codeql.rust.security.Barriers as Barriers
 
 /**
