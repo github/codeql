@@ -48,7 +48,24 @@ module Xxe {
         sinkNode(this, "xxe") and
         call = this.(Node::FlowSummaryNode).getSinkElement().getCall() and
         // with an unsafe option
-        hasXxeOption(call.getAnArgument())
+        hasXxeOption(call.getAnArgument(), _)
+      )
+    }
+  }
+
+  /**
+   * A heuristic sink for XXE.
+   */
+  private class HeuristicSink extends Sink {
+    HeuristicSink() {
+      exists(Call call |
+        // a call that looks it might do XML parsing (this is broad)
+        call.getStaticTarget().getName().getText().regexpMatch("(?i).*(xml|parse).*") and
+        // with an unsafe option; we require the option to be named (e.g. `XML_PARSE_NOENT`), not a literal value
+        // (e.g. `2`), to provide additional confidence that we're actually looking at XML parsing)
+        hasXxeOption(call.getAnArgument(), true) and
+        // the sink is any input argument
+        this.asExpr() = call.getAnArgument()
       )
     }
   }
@@ -65,23 +82,27 @@ module Xxe {
  * Holds if `e` is an expression that includes an unsafe `xmlParserOption`,
  * specifically `XML_PARSE_NOENT` (value 2, enables entity substitution) or
  * `XML_PARSE_DTDLOAD` (value 4, loads external DTD subsets).
+ *
+ * `named` is true if the expression is a named constant, false if it is an
+ * integer literal.
  */
-private predicate hasXxeOption(Expr e) {
-  // Named constant XML_PARSE_NOENT or XML_PARSE_DTDLOAD
-  e.(PathExpr).getPath().getText() =
-    ["xmlParserOption_XML_PARSE_NOENT", "xmlParserOption_XML_PARSE_DTDLOAD"]
+private predicate hasXxeOption(Expr e, boolean named) {
+  // named constant XML_PARSE_NOENT or XML_PARSE_DTDLOAD (or very similar)
+  e.(PathExpr).getPath().getText().matches(["%_PARSE_NOENT", "%_PARSE_DTDLOAD"]) and
+  named = true
   or
-  // Integer literal with XML_PARSE_NOENT (bit 1) or XML_PARSE_DTDLOAD (bit 2) set
+  // integer literal with XML_PARSE_NOENT (bit 1) or XML_PARSE_DTDLOAD (bit 2) set
   exists(string value |
     e.(IntegerLiteralExpr).getTextValue() = value + concat(e.(IntegerLiteralExpr).getSuffix()) and
     value.toInt().bitAnd(6) != 0 // 6 = 2 | 4 = XML_PARSE_NOENT | XML_PARSE_DTDLOAD
-  )
+  ) and
+  named = false
   or
-  // Bitwise OR expression
-  hasXxeOption(e.(BinaryExpr).getLhs())
+  // bitwise OR expression
+  hasXxeOption(e.(BinaryExpr).getLhs(), named)
   or
-  hasXxeOption(e.(BinaryExpr).getRhs())
+  hasXxeOption(e.(BinaryExpr).getRhs(), named)
   or
-  // Cast expression (e.g., `XML_PARSE_NOENT as i32`)
-  hasXxeOption(e.(CastExpr).getExpr())
+  // cast expression (e.g., `XML_PARSE_NOENT as i32`)
+  hasXxeOption(e.(CastExpr).getExpr(), named)
 }

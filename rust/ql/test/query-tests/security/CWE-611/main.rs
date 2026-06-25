@@ -48,7 +48,7 @@ unsafe fn test_xml_ctxt_read_memory_bad(user_xml: &str) {
     // BAD: user-controlled XML with unsafe options via ctxt variant
     bindings::xmlCtxtReadMemory( // $ Alert[rust/xxe]
         std::ptr::null_mut(),
-        user_xml.as_ptr() as *const c_char,
+        user_xml.as_ptr() as *const c_char, // $ Alert[rust/xxe]
         user_xml.len() as i32,
         std::ptr::null_mut(),
         std::ptr::null_mut(),
@@ -108,9 +108,9 @@ fn custom_xml_parser(xml: &str, options: i32) {
 
 fn test_custom_parser(user_xml: &str) {
     custom_xml_parser(user_xml, 0);
-    custom_xml_parser(user_xml, XML_PARSE_NOENT); // $ MISSING: Alert[rust/xxe]
-    custom_xml_parser(user_xml, XML_PARSE_DTDLOAD); // $ MISSING: Alert[rust/xxe]
-    custom_xml_parser(user_xml, XML_PARSE_NOENT | XML_PARSE_DTDLOAD); // $ MISSING: Alert[rust/xxe]
+    custom_xml_parser(user_xml, XML_PARSE_NOENT); // $ Alert[rust/xxe]
+    custom_xml_parser(user_xml, XML_PARSE_DTDLOAD); // $ Alert[rust/xxe]
+    custom_xml_parser(user_xml, XML_PARSE_NOENT | XML_PARSE_DTDLOAD); // $ Alert[rust/xxe]
     custom_xml_parser("<root/>", XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
 }
 
