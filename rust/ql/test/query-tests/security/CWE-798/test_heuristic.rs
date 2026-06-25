@@ -66,14 +66,14 @@ fn test(var_string: &str, var_data: &[u8;16], var_u64: u64) {
 
     mc2.set_salt_u64(0); // $ Alert[rust/hard-coded-cryptographic-value]
     mc2.set_salt_u64(var_u64);
-    mc2.set_salt_u64(var_u64 + 1); // $ SPURIOUS: Alert[rust/hard-coded-cryptographic-value]
-    mc2.set_salt_u64((var_u64 << 32) ^ (var_u64  & 0xFFFFFFFF)); // $ SPURIOUS: Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(var_u64 + 1);
+    mc2.set_salt_u64((var_u64 << 32) ^ (var_u64  & 0xFFFFFFFF));
 
-    let mut key1 = "foo".to_string(); // $ Alert[rust/hard-coded-cryptographic-value]
-    key1 += "bar"; // $ Alert[rust/hard-coded-cryptographic-value]
-    let _ = MyCryptor::new(&key1); // $ Sink
+    let mut key1 = "foo".to_string(); // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    key1 += "bar"; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    let _ = MyCryptor::new(&key1);
 
-    let mut key2 = "foo".to_string(); // $ SPURIOUS: Alert[rust/hard-coded-cryptographic-value]
+    let mut key2 = "foo".to_string();
     key2 += var_string;
-    let _ = MyCryptor::new(&key2); // $ Sink
+    let _ = MyCryptor::new(&key2);
 }

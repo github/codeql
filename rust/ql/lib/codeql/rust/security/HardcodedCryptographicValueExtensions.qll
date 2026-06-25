@@ -155,4 +155,24 @@ module HardcodedCryptographicValue {
       )
     }
   }
+
+  /**
+   * An arithmetic or bitwise operation that acts as a barrier.
+   *
+   * This prevents false positives where a hard-coded value is combined with
+   * non-constant data through operations like `+`, `^`, or `+=`.
+   */
+  private class ArithmeticOperationBarrier extends Barrier {
+    ArithmeticOperationBarrier() {
+      // binary operations (e.g. `a + b`, `a ^ b`)
+      this.asExpr() instanceof BinaryArithmeticOperation
+      or
+      this.asExpr() instanceof BinaryBitwiseOperation
+      or
+      // compound assignments (e.g. `a += b`, `a ^= b`)
+      this.asExpr() = any(AssignArithmeticOperation a | | a.getAnOperand())
+      or
+      this.asExpr() = any(AssignBitwiseOperation a | | a.getAnOperand())
+    }
+  }
 }
