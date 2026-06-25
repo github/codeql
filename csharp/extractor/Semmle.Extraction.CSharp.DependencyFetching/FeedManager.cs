@@ -164,6 +164,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return feedArgs.ToString();
         }
 
+        private IEnumerable<string> FeedsToUseAux(HashSet<string> feedsToConsider)
+        {
+            if (HasPrivateRegistryFeeds)
+            {
+                feedsToConsider.UnionWith(privateRegistryFeeds);
+            }
+
+            var feedsToUse = CheckNugetFeedResponsiveness
+                ? feedsToConsider.Where(ReachableFeeds.Contains)
+                : feedsToConsider;
+
+            return feedsToUse;
+        }
+
         /// <summary>
         /// Constructs the list of NuGet sources to use for this restore.
         /// (1) Use the feeds we get from `dotnet nuget list source`
@@ -177,16 +191,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var folder = GetDirectoryName(path);
             var feedsToConsider = folder is not null ? GetFeedsFromFolder(folder).ToHashSet() : new HashSet<string>();
 
-            if (HasPrivateRegistryFeeds)
-            {
-                feedsToConsider.UnionWith(privateRegistryFeeds);
-            }
+            return FeedsToUseAux(feedsToConsider);
+        }
 
-            var feedsToUse = CheckNugetFeedResponsiveness
-                ? feedsToConsider.Where(ReachableFeeds.Contains)
-                : feedsToConsider;
+        public IEnumerable<string> FeedsToUseFromConfig(string config)
+        {
+            var feedsToConsider = GetFeedsFromNugetConfig(config).ToHashSet();
 
-            return feedsToUse;
+            return FeedsToUseAux(feedsToConsider);
+        }
+
+        public string FeedsToDotnetRestoreArgument(IEnumerable<string> feeds)
+        {
+            return FeedsToRestoreArgument(feeds, "-s");
         }
 
         /// <summary>
@@ -206,7 +223,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             var feedsToUse = FeedsToUse(path);
 
-            return FeedsToRestoreArgument(feedsToUse, "-s");
+            return FeedsToDotnetRestoreArgument(feedsToUse);
         }
 
         private (int initialTimeout, int tryCount) GetFeedRequestSettings(bool isFallback)
