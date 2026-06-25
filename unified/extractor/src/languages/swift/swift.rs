@@ -27,9 +27,14 @@ struct SwiftContext {
     default_value: Option<yeast::Id>,
     /// Translated outer modifiers (e.g. visibility, attributes) to
     /// attach to each child of a flattening outer rule. Set by
-    /// `protocol_property_declaration` (and, later,
-    /// `property_declaration`/`enum_entry`).
+    /// `property_declaration`, `enum_entry`, and
+    /// `protocol_property_declaration`.
     outer_modifiers: Vec<yeast::Id>,
+    /// The `let`/`var` binding modifier for a `property_declaration`.
+    /// Set by `property_declaration`; read by the inner declaration
+    /// rules (`property_binding` variants, accessor rules) so they
+    /// emit it as part of the output node's `modifier:` field.
+    binding_modifier: Option<yeast::Id>,
     /// True when the current child of a flattening outer rule is not
     /// the first one — its inner rule should emit a
     /// `chained_declaration` modifier so the original grouping can be
@@ -143,6 +148,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // (`computed_getter`/`computed_setter`/`computed_modify`) builds
         // its `accessor_declaration` with `name` and `type` set from the
         // start — no schema-invalid intermediate state.
+        //
+        // Toggles `ctx.is_chained` per accessor iteration: the first
+        // accessor inherits the outer rule's chained state (i.e. whether
+        // this whole property_binding is itself a non-first declarator
+        // of a containing property_declaration); subsequent accessors
+        // always emit `chained_declaration`.
         manual_rule!(
             (property_binding
                 name: @pattern
@@ -160,14 +171,19 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 ctx.property_type = translated_ty;
 
                 let mut result = Vec::new();
-                for acc in &accessors {
-                    result.extend(ctx.translate(*acc)?);
+                for (i, acc) in accessors.into_iter().enumerate() {
+                    if i > 0 {
+                        ctx.is_chained = true;
+                    }
+                    result.extend(ctx.translate(acc)?);
                 }
                 Ok(result)
             }
         ),
-        // Computed property: shorthand getter (no explicit get/set, just statements) →
-        // a single accessor_declaration with kind "get".
+        // Computed property: shorthand getter (no explicit get/set, just
+        // statements) → a single accessor_declaration with kind "get".
+        // Reads outer modifiers / chained tag from `ctx` (set by the
+        // outer `property_declaration` rule).
         rule!(
             (property_binding
                 name: (pattern bound_identifier: @name)
@@ -175,6 +191,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 computed_value: (computed_property statement: _* @body))
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 name: (identifier #{name})
                 type: {..ty}
                 accessor_kind: (accessor_kind "get")
@@ -187,6 +206,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // into `ctx` before translating the observer children so the
         // inner `willset_clause` / `didset_clause` rules construct
         // valid `accessor_declaration` nodes from the start.
+        //
+        // The `variable_declaration` itself inherits the outer rule's
+        // chained state; observers always get `chained_declaration`
+        // because they're subsequent outputs of this flattening rule.
         manual_rule!(
             (property_binding
                 name: (pattern bound_identifier: @name)
@@ -201,6 +224,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
 
                 let var_decl = tree!(
                     (variable_declaration
+                        modifier: {..ctx.binding_modifier}
+                        modifier: {..ctx.outer_modifiers.clone()}
+                        modifier: {..chained_modifier(&mut ctx)}
                         pattern: (name_pattern identifier: (identifier #{name}))
                         type: {..translated_ty}
                         value: {..translated_val})
@@ -208,6 +234,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
 
                 // Publish the property name for the observer rules.
                 ctx.property_name = Some(tree!((identifier #{name})));
+                // Observers are subsequent outputs of this flattening
+                // rule, so they always get `chained_declaration`.
+                ctx.is_chained = true;
 
                 let mut result = vec![var_decl];
                 for obs in ws.into_iter().chain(ds) {
@@ -216,7 +245,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 Ok(result)
             }
         ),
-        // property_binding with any pattern name (identifier or destructuring)
+        // property_binding with any pattern name (identifier or
+        // destructuring). Reads outer modifiers / chained tag from `ctx`.
         rule!(
             (property_binding
                 name: @pattern
@@ -224,37 +254,44 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 value: _? @val)
             =>
             (variable_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 pattern: {pattern}
                 type: {..ty}
                 value: {..val})
         ),
-        // property_declaration: splice declarators (each may translate to multiple nodes —
-        // variable_declaration and/or accessor_declaration), and attach the binding modifier
-        // (let/var) and any outer modifiers to each. All children after the first additionally
-        // get a synthetic chained_declaration modifier so the grouping can be recovered.
-        rule!(
+        // property_declaration: flatten declarators (each may translate
+        // to multiple nodes — variable_declaration and/or
+        // accessor_declaration) and attach the binding modifier
+        // (let/var), outer modifiers, and `chained_declaration` for
+        // non-first declarations. Manual rule: publishes
+        // binding/outer modifiers into `ctx` and translates each
+        // declarator with `ctx.is_chained` toggled per iteration. The
+        // inner declaration rules (`property_binding` variants,
+        // accessor inner rules) read these fields and emit complete
+        // `modifier:` lists from the start.
+        manual_rule!(
             (property_declaration
                 binding: (value_binding_pattern mutability: @binding_kind)
                 declarator: _* @decls
                 (modifiers)* @mods)
-            =>
-            {..{
-                let binding_text = ctx.ast.source_text(binding_kind.into());
-                let mod_ids: Vec<usize> = mods.iter().map(|&m| m.into()).collect();
-                let decl_ids: Vec<usize> = decls.iter().map(|&d| d.into()).collect();
-                for (i, &decl_id) in decl_ids.iter().enumerate() {
-                    if i > 0 {
-                        let chained = ctx.literal("modifier", "chained_declaration");
-                        ctx.prepend_field(decl_id, "modifier", chained);
-                    }
-                    for &mod_id in mod_ids.iter().rev() {
-                        ctx.prepend_field(decl_id, "modifier", mod_id);
-                    }
-                    let binding_mod = ctx.literal("modifier", &binding_text);
-                    ctx.prepend_field(decl_id, "modifier", binding_mod);
+            {
+                let binding_text = ctx.ast.source_text(binding_kind.0);
+                ctx.binding_modifier = Some(ctx.literal("modifier", &binding_text));
+                let mut modifiers = Vec::new();
+                for m in mods {
+                    modifiers.extend(ctx.translate(m)?);
                 }
-                decl_ids
-            }}
+                ctx.outer_modifiers = modifiers;
+
+                let mut result = Vec::new();
+                for (i, decl) in decls.into_iter().enumerate() {
+                    ctx.is_chained = i > 0;
+                    result.extend(ctx.translate(decl)?);
+                }
+                Ok(result)
+            }
         ),
         // ---- Enums ----
         // enum_type_parameter → parameter (with optional name as pattern).
@@ -996,12 +1033,16 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // protocol_property_requirements wrapper — should be consumed by above; fallback
         rule!((protocol_property_requirements accessor: _* @accs) => {..accs}),
         // Computed getter → accessor_declaration (body optional).
-        // Reads `ctx.property_name`/`ctx.property_type` set by the outer
-        // property_binding manual rule.
+        // Reads property name/type from the outer property_binding rule
+        // and binding/outer modifiers + chained tag from the outer
+        // property_declaration rule.
         rule!(
             (computed_getter body: (block statement: _* @body)?)
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 name: {ctx.property_name.ok_or("computed_getter outside property_binding context")?}
                 type: {..ctx.property_type}
                 accessor_kind: (accessor_kind "get")
@@ -1012,6 +1053,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (computed_setter parameter: @param body: (block statement: _* @body))
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 name: {ctx.property_name.ok_or("computed_setter outside property_binding context")?}
                 type: {..ctx.property_type}
                 accessor_kind: (accessor_kind "set")
@@ -1023,6 +1067,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (computed_setter body: (block statement: _* @body)?)
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 name: {ctx.property_name.ok_or("computed_setter outside property_binding context")?}
                 type: {..ctx.property_type}
                 accessor_kind: (accessor_kind "set")
@@ -1033,6 +1080,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (computed_modify body: (block statement: _* @body))
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 name: {ctx.property_name.ok_or("computed_modify outside property_binding context")?}
                 type: {..ctx.property_type}
                 accessor_kind: (accessor_kind "modify")
@@ -1043,11 +1093,16 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // captures the willset/didset clauses directly).
         rule!((willset_didset_block _* @clauses) => {..clauses}),
         // willset clause → accessor_declaration (body optional). Reads
-        // `ctx.property_name` set by the outer property_binding rule.
+        // `ctx.property_name` set by the outer property_binding rule and
+        // binding/outer modifiers + chained tag from the outer
+        // property_declaration rule.
         rule!(
             (willset_clause body: (block statement: _* @body)?)
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 name: {ctx.property_name.ok_or("willset_clause outside property_binding context")?}
                 accessor_kind: (accessor_kind "willSet")
                 body: (block stmt: {..body}))
@@ -1057,6 +1112,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (didset_clause body: (block statement: _* @body)?)
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 name: {ctx.property_name.ok_or("didset_clause outside property_binding context")?}
                 accessor_kind: (accessor_kind "didSet")
                 body: (block stmt: {..body}))
