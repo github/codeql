@@ -191,8 +191,6 @@ module IR {
       or
       this instanceof ReadResultInstruction and result = "result read"
       or
-      this instanceof SendInstruction and result = "send"
-      or
       this instanceof InitParameterInstruction and result = "parameter initialization"
       or
       this instanceof ReadArgumentInstruction and result = "argument"
@@ -1044,15 +1042,6 @@ module IR {
     override Type getResultType() { result = var.getType() }
 
     override ControlFlow::Root getRoot() { var = result.(FuncDef).getAResultVar() }
-  }
-
-  /** An instruction corresponding to a send statement. */
-  class SendInstruction extends Instruction {
-    SendStmt send;
-
-    SendInstruction() { this.isAdditional(send, "send") }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(send) }
   }
 
   /** An instruction initializing a parameter to the corresponding argument. */
