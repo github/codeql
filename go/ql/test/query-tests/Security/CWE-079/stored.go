@@ -56,10 +56,10 @@ func storedserve2() {
 
 func storedserve3() {
 	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
-		filepath.WalkDir(".", func(path string, _ fs.DirEntry, err error) error { // $ Source[go/stored-xss]
+		filepath.WalkDir(".", func(path string, _ fs.DirEntry, err error) error {
 			// BAD: filenames are considered to be untrusted
 			io.WriteString(w, path) // $ Alert[go/stored-xss]
 			return nil
-		})
+		}) // $ Source[go/stored-xss]
 	})
 }

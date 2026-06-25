@@ -32,6 +32,3 @@ nodes
 | server/main.go:19:109:38:1 | SSA def(params) [Return] | semmle.label | SSA def(params) [Return] |
 | server/main.go:30:38:30:48 | selection of Text | semmle.label | selection of Text |
 subpaths
-testFailures
-| server/main.go:19:109:38:1 | SSA def(params) | Unexpected result: Source |
-| server/main.go:19:111:19:154 | comment | Missing result: Source |

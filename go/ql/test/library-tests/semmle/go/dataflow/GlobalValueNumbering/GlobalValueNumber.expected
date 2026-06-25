@@ -27,7 +27,7 @@
 | main.go:30:9:30:9 | 6 | main.go:30:9:30:9 | 6 |
 | main.go:34:2:34:8 | SSA def(res) | main.go:34:8:34:8 | 7 |
 | main.go:34:8:34:8 | 7 | main.go:34:8:34:8 | 7 |
-| main.go:35:8:37:4 | function call | main.go:35:8:37:4 | function call |
+| main.go:35:8:37:4 | defer-invoke function call | main.go:35:8:37:4 | function call |
 | main.go:36:3:36:9 | SSA def(res) | main.go:36:9:36:9 | 8 |
 | main.go:36:9:36:9 | 8 | main.go:36:9:36:9 | 8 |
 | main.go:38:9:38:9 | 9 | main.go:38:9:38:9 | 9 |
