@@ -18,7 +18,7 @@ from LocalJob job, LabelCheck check, MutableRefCheckoutStep checkout, Event even
 where
   job.isPrivileged() and
   job.getAStep() = checkout and
-  check.dominates(checkout) and
+  check.dominates(checkout, event) and
   (
     job.getATriggerEvent() = event and
     event.getName() = "pull_request_target" and
