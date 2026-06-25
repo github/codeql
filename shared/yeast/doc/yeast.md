@@ -265,7 +265,21 @@ occurrences of the same `$name` within one `BuildCtx` share the same value:
 )
 ```
 
-`{..expr}` splices a `Vec<Id>` (or any iterable of `Id`):
+The contents of `{…}` are treated as a Rust block, so multi-statement
+expressions (with `let` bindings) work too:
+
+```rust
+(assignment
+    left: {tmp}
+    right: {
+        let lit = ctx.literal("integer", "0");
+        tree!((binary_expr op: (operator "+") left: {tmp} right: {lit}))
+    })
+```
+
+`{..expr}` splices a `Vec<Id>` (or any iterable of `Id`); the contents
+are likewise a Rust block, so the splice can be the result of arbitrary
+computation:
 
 ```rust
 yeast::trees!(ctx,

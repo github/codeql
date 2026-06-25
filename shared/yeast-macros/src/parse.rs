@@ -359,7 +359,7 @@ fn parse_direct_node(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStream> {
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => {
             let group = expect_group(tokens, Delimiter::Brace)?;
             let expr = group.stream();
-            Ok(quote! { ::std::convert::Into::<usize>::into(#expr) })
+            Ok(quote! { ::std::convert::Into::<usize>::into({ #expr }) })
         }
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Parenthesis => {
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
@@ -396,7 +396,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
         let expr = group.stream();
         return Ok(quote! {
             {
-                let __expr = (#expr);
+                let __expr = { #expr };
                 let __value = yeast::YeastDisplay::yeast_to_string(&__expr, &*#ctx.ast);
                 let __source_range = yeast::YeastSourceRange::yeast_source_range(&__expr, &*#ctx.ast);
                 #ctx.literal_with_source_range(#kind_str, &__value, __source_range)
@@ -448,11 +448,11 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
                         inner.next(); // consume second .
                         let expr: TokenStream = inner.collect();
                         quote! {
-                            (#expr).into_iter().map(::std::convert::Into::<usize>::into)
+                            { #expr }.into_iter().map(::std::convert::Into::<usize>::into)
                         }
                     } else {
                         let expr = group.stream();
-                        quote! { (#expr).into_iter() }
+                        quote! { { #expr }.into_iter() }
                     };
                     let chained = parse_chain_suffix(tokens, ctx, base)?;
                     stmts.push(quote! {
@@ -617,11 +617,11 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
                     inner.next(); // consume second .
                     let expr: TokenStream = inner.collect();
                     quote! {
-                        (#expr).into_iter().map(::std::convert::Into::<usize>::into)
+                        { #expr }.into_iter().map(::std::convert::Into::<usize>::into)
                     }
                 } else {
                     let expr = group.stream();
-                    quote! { (#expr).into_iter() }
+                    quote! { { #expr }.into_iter() }
                 };
                 let chained = parse_chain_suffix(tokens, ctx, base)?;
                 items.push(quote! {
@@ -630,7 +630,7 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
             } else {
                 let expr = group.stream();
                 items.push(quote! {
-                    __nodes.push(::std::convert::Into::<usize>::into(#expr));
+                    __nodes.push(::std::convert::Into::<usize>::into({ #expr }));
                 });
             }
             continue;

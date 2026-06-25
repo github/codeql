@@ -725,11 +725,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 body: (block stmt: {..body}))
         ),
         // Labeled statement (e.g. `outer: for ...`). Strip the trailing ':' from the label token.
-        rule!((labeled_statement label: (statement_label) @lbl statement: @stmt) => {..{
+        rule!((labeled_statement label: (statement_label) @lbl statement: @stmt) => {
             let text = ctx.ast.source_text(lbl.into());
-            let name = ctx.literal("identifier", &text[..text.len() - 1]);
-            vec![ctx.node("labeled_stmt", vec![("label", vec![name]), ("stmt", vec![stmt.into()])])]
-        }}),
+            let name = &text[..text.len() - 1];
+            tree!((labeled_stmt label: (identifier #{name}) stmt: {stmt}))
+        }),
         // ---- Collections ----
         // Array literal
         rule!((array_literal element: _* @elems) => (array_literal element: {..elems})),
@@ -739,16 +739,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (dictionary_literal key: _* @keys value: _* @vals)
             =>
-            (map_literal element: {..{
-                keys.iter().zip(vals.iter()).map(|(&k, &v)| {
-                    let k_id: usize = k.into();
-                    let v_id: usize = v.into();
-                    ctx.node("key_value_pair", vec![
-                        ("key", vec![k_id]),
-                        ("value", vec![v_id]),
-                    ])
-                }).collect::<Vec<_>>()
-            }})
+            (map_literal element: {..keys.into_iter().zip(vals).map(|(k, v)|
+                tree!((key_value_pair key: {k} value: {v}))
+            )})
         ),
         rule!((dictionary_literal element: _* @elems) => (map_literal element: {..elems})),
         rule!((dictionary_literal_item key: @k value: @v) => (key_value_pair key: {k} value: {v})),
