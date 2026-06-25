@@ -115,7 +115,7 @@ named:
 
   # A literal backed by a keyword such as `nil`, `null`, or `nullptr`.
   #
-  # Altough nil/null are keyword literals in many languages there should be
+  # Although nil/null are keyword literals in many languages there should be
   # no attempt to normalize "null-like" named entities, like Python's `None`.
   builtin_expr:
 
