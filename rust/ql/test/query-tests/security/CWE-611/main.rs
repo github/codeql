@@ -97,6 +97,25 @@ unsafe fn test_xml_hardcoded_unsafe() {
     bindings::xmlReadFile("trusted/input.xml".as_ptr() as *const c_char, std::ptr::null_mut(), bindings::xmlParserOption_XML_PARSE_NOENT as i32);
 }
 
+// --- custom parser (requires heuristic match) ---
+
+const XML_PARSE_NOENT: i32 = 2;
+const XML_PARSE_DTDLOAD: i32 = 4;
+
+fn custom_xml_parser(xml: &str, options: i32) {
+    // ...
+}
+
+fn test_custom_parser(user_xml: &str) {
+    custom_xml_parser(user_xml, 0);
+    custom_xml_parser(user_xml, XML_PARSE_NOENT); // $ MISSING: Alert[rust/xxe]
+    custom_xml_parser(user_xml, XML_PARSE_DTDLOAD); // $ MISSING: Alert[rust/xxe]
+    custom_xml_parser(user_xml, XML_PARSE_NOENT | XML_PARSE_DTDLOAD); // $ MISSING: Alert[rust/xxe]
+    custom_xml_parser("<root/>", XML_PARSE_NOENT | XML_PARSE_DTDLOAD);
+}
+
+// ---
+
 fn main() {
     let user_xml = std::env::args().nth(1).unwrap_or_default(); // $ Source
     let user_filename = std::env::args().nth(2).unwrap_or_default(); // $ Source
@@ -117,5 +136,6 @@ fn main() {
         test_dataflow_bad(&user_xml);
         test_xml_parse_safe_options(&user_xml);
         test_xml_hardcoded_unsafe();
+        test_custom_parser(&user_xml);
     }
 }
