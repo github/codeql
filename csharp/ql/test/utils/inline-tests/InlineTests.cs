@@ -3,13 +3,13 @@ class C
     void Problems()
     {
         // correct expectation comment, but only for `problem-query`
-        var x = "Alert"; // $ Alert
+        var x = "Alert"; // $ Alert[problem-query]
 
         // irrelevant expectation comment, will be ignored
         x = "Not an alert"; // $ IrrelevantTag
 
         // incorrect expectation comment
-        x = "Also not an alert"; // $ Alert
+        x = "Also not an alert"; // $ MISSING: Alert[problem-query]
 
         // missing expectation comment, but only for `problem-query`
         x = "Alert";

@@ -18,7 +18,7 @@ class OneController < ActionController::Base
   end
 
   def c
-    sink @foo
+    sink @foo # $ hasTaintFlow
   end
 end
 

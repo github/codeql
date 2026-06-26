@@ -13,8 +13,6 @@
 | InlineTests.cs:88:13:88:23 | "Alert:0:1" | InlineTests.cs:88:13:88:23 | "Alert:0:1" | InlineTests.cs:87:16:87:21 | "Sink" | This is a problem |
 edges
 testFailures
-| InlineTests.cs:6:26:6:35 | // ... | Missing result: Alert |
-| InlineTests.cs:12:34:12:43 | // ... | Missing result: Alert |
 | InlineTests.cs:37:28:37:38 | // ... | Missing result: Source |
 | InlineTests.cs:38:24:38:32 | // ... | Missing result: Sink |
 | InlineTests.cs:39:33:39:42 | // ... | Missing result: Alert |

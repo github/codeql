@@ -47,7 +47,7 @@ class BadMacUse {
         SecretKey encryptionKey = new SecretKeySpec(encryptionKeyBytes, "AES");
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
         cipher.init(Cipher.DECRYPT_MODE, encryptionKey, new SecureRandom());
-        byte[] plaintext = cipher.doFinal(ciphertext); // $ Source
+        byte[] plaintext = cipher.doFinal(ciphertext); // $ MISSING: Source
 
         // Now verify MAC (too late)
         SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");
@@ -60,7 +60,7 @@ class BadMacUse {
         }
     }
 
-    public void BadMacOnPlaintext(byte[] encryptionKeyBytes, byte[] macKeyBytes, byte[] plaintext) throws Exception {// $ Source
+    public void BadMacOnPlaintext(byte[] encryptionKeyBytes, byte[] macKeyBytes, byte[] plaintext) throws Exception {// $ MISSING: Source
         // Create keys directly from provided byte arrays
         SecretKey encryptionKey = new SecretKeySpec(encryptionKeyBytes, "AES");
         SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");

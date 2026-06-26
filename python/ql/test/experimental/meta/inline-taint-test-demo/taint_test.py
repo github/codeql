@@ -38,7 +38,7 @@ def bad_usage():
 
     # if you try to get around it by adding BOTH annotations, that results in a problem
     # from the default set of inline-test-expectation rules
-    ensure_tainted(ts, should_be_tainted) # $ tainted MISSING: tainted
+    ensure_tainted(ts, should_be_tainted) # $ tainted
 
     # simulating handling something we _want_ to treat at untainted, but we currently treat as tainted
     should_not_be_tainted = "pretend this is now safe" + ts

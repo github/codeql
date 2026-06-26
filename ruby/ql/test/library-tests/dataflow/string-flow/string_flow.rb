@@ -82,7 +82,7 @@ end
 def m_clear
     a = source "a"
     a.clear
-    sink a
+    sink a # $ hasValueFlow=a
 end
 
 # concat and prepend omitted because they clash with the summaries for

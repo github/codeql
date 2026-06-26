@@ -101,4 +101,4 @@ def m14(arg)
   @m14 ||= {}
   key = "foo/#{arg}"
   @m14[key] ||= long_running_method(arg)
-end
+end # $ SPURIOUS: result=BAD

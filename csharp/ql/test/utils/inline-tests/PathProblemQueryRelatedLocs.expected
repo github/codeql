@@ -3,8 +3,6 @@
 | InlineTests.cs:100:13:100:25 | "Alert:3:2:1" | InlineTests.cs:97:18:97:25 | "Source" | InlineTests.cs:98:16:98:21 | "Sink" | This is a problem with $@ | InlineTests.cs:99:19:99:27 | "Related" | a related location |
 edges
 testFailures
-| InlineTests.cs:6:26:6:35 | // ... | Missing result: Alert |
-| InlineTests.cs:12:34:12:43 | // ... | Missing result: Alert |
 | InlineTests.cs:32:32:32:42 | // ... | Missing result: Source |
 | InlineTests.cs:33:28:33:36 | // ... | Missing result: Sink |
 | InlineTests.cs:34:30:34:39 | // ... | Missing result: Alert |

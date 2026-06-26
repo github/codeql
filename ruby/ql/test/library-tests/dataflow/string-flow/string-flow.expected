@@ -28,7 +28,6 @@ nodes
 | string_flow.rb:227:10:227:10 | a | semmle.label | a |
 subpaths
 testFailures
-| string_flow.rb:85:10:85:10 | a | Unexpected result: hasValueFlow=a |
 | string_flow.rb:227:10:227:10 | a | Unexpected result: hasValueFlow=a |
 #select
 | string_flow.rb:3:10:3:22 | call to new | string_flow.rb:2:9:2:18 | call to source | string_flow.rb:3:10:3:22 | call to new | $@ | string_flow.rb:2:9:2:18 | call to source | call to source |
