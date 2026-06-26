@@ -62,24 +62,27 @@ module HardcodedCryptographicValue {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
-   * A literal, considered as a flow source.
+   * Holds if `e` is a literal or a combination of literals that is constant.
    */
-  private class LiteralSource extends Source {
-    LiteralSource() { this.asExpr() instanceof LiteralExpr }
+  private predicate isConstant(Expr e) {
+    e instanceof LiteralExpr // e.g. `0`
+    or
+    e.(ArrayListExpr).getExpr(_) instanceof LiteralExpr // e.g. `[0, 0, 0, 0]`
+    or
+    e.(ArrayRepeatExpr).getRepeatOperand() instanceof LiteralExpr // e.g. `[0; 10]`
+    or
+    e instanceof ConstAccess // e.g. `u64::MAX`
+    or
+    // e.g. `1 << 4`
+    isConstant(e.(BinaryExpr).getLhs()) and
+    isConstant(e.(BinaryExpr).getRhs())
   }
 
   /**
-   * An array initialized from a list of literals, considered as a single flow source. For example:
-   * ```
-   * [0, 0, 0, 0]
-   * [0; 10]
-   * ```
+   * A constant, considered as a flow source.
    */
-  private class ArrayListSource extends Source {
-    ArrayListSource() {
-      this.asExpr().(ArrayListExpr).getExpr(_) instanceof LiteralExpr or
-      this.asExpr().(ArrayRepeatExpr).getRepeatOperand() instanceof LiteralExpr
-    }
+  private class ConstantSource extends Source {
+    ConstantSource() { isConstant(this.asExpr()) }
   }
 
   /**
@@ -165,9 +168,9 @@ module HardcodedCryptographicValue {
   private class ArithmeticOperationBarrier extends Barrier {
     ArithmeticOperationBarrier() {
       // binary operations (e.g. `a + b`, `a ^ b`)
-      this.asExpr() instanceof BinaryArithmeticOperation
+      this.asExpr() = any(BinaryArithmeticOperation a).getAnOperand()
       or
-      this.asExpr() instanceof BinaryBitwiseOperation
+      this.asExpr() = any(BinaryBitwiseOperation a).getAnOperand()
       or
       // compound assignments (e.g. `a += b`, `a ^= b`)
       this.asExpr() = any(AssignArithmeticOperation a).getAnOperand()

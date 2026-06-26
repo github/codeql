@@ -15,6 +15,9 @@
 | test_heuristic.rs:64:20:64:27 | [0u8; 16] | test_heuristic.rs:64:20:64:27 | [0u8; 16] | test_heuristic.rs:64:19:64:27 | &... | This hard-coded value is used as $@. | test_heuristic.rs:64:19:64:27 | &... | a nonce |
 | test_heuristic.rs:65:31:65:38 | [0u8; 16] | test_heuristic.rs:65:31:65:38 | [0u8; 16] | test_heuristic.rs:65:30:65:38 | &... | This hard-coded value is used as $@. | test_heuristic.rs:65:30:65:38 | &... | a salt |
 | test_heuristic.rs:67:22:67:22 | 0 | test_heuristic.rs:67:22:67:22 | 0 | test_heuristic.rs:67:22:67:22 | 0 | This hard-coded value is used as $@. | test_heuristic.rs:67:22:67:22 | 0 | a salt |
+| test_heuristic.rs:71:22:71:27 | ... << ... | test_heuristic.rs:71:22:71:27 | ... << ... | test_heuristic.rs:71:22:71:27 | ... << ... | This hard-coded value is used as $@. | test_heuristic.rs:71:22:71:27 | ... << ... | a salt |
+| test_heuristic.rs:72:22:72:29 | ...::MAX | test_heuristic.rs:72:22:72:29 | ...::MAX | test_heuristic.rs:72:22:72:29 | ...::MAX | This hard-coded value is used as $@. | test_heuristic.rs:72:22:72:29 | ...::MAX | a salt |
+| test_heuristic.rs:73:22:73:33 | ... / ... | test_heuristic.rs:73:22:73:33 | ... / ... | test_heuristic.rs:73:22:73:33 | ... / ... | This hard-coded value is used as $@. | test_heuristic.rs:73:22:73:33 | ... / ... | a salt |
 edges
 | test_cipher.rs:18:9:18:14 | const1 [&ref] | test_cipher.rs:19:73:19:78 | const1 [&ref] | provenance |  |
 | test_cipher.rs:18:28:18:36 | &... [&ref] | test_cipher.rs:18:9:18:14 | const1 [&ref] | provenance |  |
@@ -164,4 +167,7 @@ nodes
 | test_heuristic.rs:65:30:65:38 | &... | semmle.label | &... |
 | test_heuristic.rs:65:31:65:38 | [0u8; 16] | semmle.label | [0u8; 16] |
 | test_heuristic.rs:67:22:67:22 | 0 | semmle.label | 0 |
+| test_heuristic.rs:71:22:71:27 | ... << ... | semmle.label | ... << ... |
+| test_heuristic.rs:72:22:72:29 | ...::MAX | semmle.label | ...::MAX |
+| test_heuristic.rs:73:22:73:33 | ... / ... | semmle.label | ... / ... |
 subpaths
