@@ -32,4 +32,3 @@ nodes
 subpaths
 testFailures
 | BadMacUse.java:92:16:92:36 | doFinal(...) : byte[] | Unexpected result: Source |
-| BadMacUse.java:124:42:124:51 | ciphertext | Unexpected result: Alert |

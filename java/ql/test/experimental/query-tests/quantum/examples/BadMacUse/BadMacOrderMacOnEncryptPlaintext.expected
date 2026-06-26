@@ -44,6 +44,3 @@ nodes
 | BadMacUse.java:146:48:146:57 | ciphertext : byte[] [[]] : Object | semmle.label | ciphertext : byte[] [[]] : Object |
 | BadMacUse.java:152:42:152:51 | ciphertext | semmle.label | ciphertext |
 subpaths
-testFailures
-| BadMacUse.java:139:79:139:90 | input : byte[] | Unexpected result: Source |
-| BadMacUse.java:152:42:152:51 | ciphertext | Unexpected result: Alert |

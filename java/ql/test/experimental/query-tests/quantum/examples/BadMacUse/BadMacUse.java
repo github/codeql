@@ -121,7 +121,7 @@ class BadMacUse {
         SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");
         Mac mac = Mac.getInstance("HmacSHA256");
         mac.init(macKey);
-        byte[] computedMac = mac.doFinal(ciphertext); // False Positive
+        byte[] computedMac = mac.doFinal(ciphertext); // $ SPURIOUS: Alert[java/quantum/examples/bad-mac-order-decrypt-to-mac]
 
         // Concatenate ciphertext and MAC
         byte[] output = new byte[ciphertext.length + computedMac.length];
@@ -136,7 +136,7 @@ class BadMacUse {
      * The function decrypts THEN computes the MAC on the plaintext.
      * It should have the MAC computed on the ciphertext first.
      */
-    public void decryptThenMac(byte[] encryptionKeyBytes, byte[] macKeyBytes, byte[] input) throws Exception {
+    public void decryptThenMac(byte[] encryptionKeyBytes, byte[] macKeyBytes, byte[] input) throws Exception { // $ SPURIOUS: Source[java/quantum/examples/bad-mac-order-encrypt-plaintext-also-in-mac]
         // Split input into ciphertext and MAC
         int macLength = 32; // HMAC-SHA256 output length
         byte[] ciphertext = Arrays.copyOfRange(input, 0, input.length - macLength);
@@ -149,7 +149,7 @@ class BadMacUse {
         SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");
         Mac mac = Mac.getInstance("HmacSHA256");
         mac.init(macKey);
-        byte[] computedMac = mac.doFinal(ciphertext); // $ Alert[java/quantum/examples/bad-mac-order-decrypt-then-mac], False positive for Plaintext reuse
+        byte[] computedMac = mac.doFinal(ciphertext); // $ Alert[java/quantum/examples/bad-mac-order-decrypt-then-mac] SPURIOUS: Alert[java/quantum/examples/bad-mac-order-encrypt-plaintext-also-in-mac]
 
         if (!MessageDigest.isEqual(receivedMac, computedMac)) {
             throw new SecurityException("MAC verification failed");
