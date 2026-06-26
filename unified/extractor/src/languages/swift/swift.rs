@@ -301,7 +301,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // `modifier:` lists from the start.
         rule!(
             (property_declaration
-                binding: (value_binding_pattern mutability: @binding_kind)
+                binding: (value_binding_pattern mutability: @@binding_kind)
                 declarator: _* @@decls
                 (modifiers)* @mods)
             =>

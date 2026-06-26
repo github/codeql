@@ -1099,9 +1099,10 @@ fn test_raw_capture_marker() {
     // `method:` uses the raw source text ("x"); if `@@` were broken and
     // auto-translation ran on `raw_lhs`, it would still produce the
     // string "x" (source_text inherits the input range), so the dump
-    // wouldn't change. Add a second assertion: explicitly translating
-    // the raw NodeRef inside the body must succeed and produce
-    // `(identifier "ID")`.
+    // wouldn't change here. The companion test
+    // `test_raw_capture_marker_explicit_translate` exercises the
+    // stronger property that `ctx.translate(raw_lhs)?` succeeds and
+    // produces the translated `(identifier "ID")`.
     assert_dump_eq(
         &dump,
         r#"
