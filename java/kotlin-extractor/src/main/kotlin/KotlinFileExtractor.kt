@@ -6,6 +6,8 @@ import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.*
 import com.semmle.extractor.java.OdasaOutput
 import java.io.Closeable
+import java.nio.file.Files
+import java.nio.file.Path
 import java.util.*
 import kotlin.collections.ArrayList
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -2874,6 +2876,52 @@ open class KotlinFileExtractor(
         return v
     }
 
+    private val sourceTextCache = mutableMapOf<String, String?>()
+
+    private fun getCurrentFileSourceText() =
+        sourceTextCache.getOrPut(filePath) {
+            runCatching { Files.readString(Path.of(filePath)) }.getOrNull()
+        }
+
+    private fun getVariableNameLocation(v: IrVariable): Label<DbLocation>? {
+        if (v.startOffset < 0 || v.endOffset < v.startOffset) return null
+
+        val source = getCurrentFileSourceText() ?: return null
+        if (v.startOffset >= source.length) return null
+
+        val name = v.name.asString()
+        if (name.isEmpty()) return null
+
+        val endExclusive = minOf(v.endOffset + 1, source.length)
+        val declarationText = source.substring(v.startOffset, endExclusive)
+        val nameOffsetInDeclaration = declarationText.indexOf(name)
+        if (nameOffsetInDeclaration < 0) return null
+
+        val nameStartOffset = v.startOffset + nameOffsetInDeclaration
+        // getLocation treats the end offset as exclusive (matching IR's getEndOffset), so the
+        // identifier span is [nameStartOffset, nameStartOffset + name.length).
+        val nameEndOffset = nameStartOffset + name.length
+        return tw.getLocation(nameStartOffset, nameEndOffset)
+    }
+
+    private fun shouldUseVariableNameLocation(v: IrVariable): Boolean {
+        // For a variable initialised by an IMPLICIT_NOTNULL coercion (a platform-type not-null
+        // assertion), the K2 frontend widens the IrVariable span to cover the coercion, which would
+        // shift the location away from the identifier. Anchor those to the name token instead.
+        // Variables without this coercion keep the location-provider span, which already points at
+        // the identifier.
+        val initializer = v.initializer
+        return initializer is IrTypeOperatorCall && initializer.operator == IrTypeOperator.IMPLICIT_NOTNULL
+    }
+
+    private fun getVariableLocation(v: IrVariable): Label<DbLocation> {
+        if (shouldUseVariableNameLocation(v)) {
+            val nameLocation = getVariableNameLocation(v)
+            if (nameLocation != null) return nameLocation
+        }
+        return tw.getLocation(getVariableLocationProvider(v))
+    }
+
     private fun extractVariable(
         v: IrVariable,
         callable: Label<out DbCallable>,
@@ -2882,7 +2930,7 @@ open class KotlinFileExtractor(
     ) {
         with("variable", v) {
             val stmtId = tw.getFreshIdLabel<DbLocalvariabledeclstmt>()
-            val locId = tw.getLocation(getVariableLocationProvider(v))
+            val locId = getVariableLocation(v)
             tw.writeStmts_localvariabledeclstmt(stmtId, parent, idx, callable)
             tw.writeHasLocation(stmtId, locId)
             extractVariableExpr(v, callable, stmtId, 1, stmtId)
@@ -2900,7 +2948,7 @@ open class KotlinFileExtractor(
         with("variable expr", v) {
             val varId = useVariable(v)
             val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
-            val locId = tw.getLocation(getVariableLocationProvider(v))
+            val locId = getVariableLocation(v)
             val type = useType(v.type)
             tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, exprId)
             tw.writeLocalvarsKotlinType(varId, type.kotlinResult.id)
