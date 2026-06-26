@@ -82,7 +82,7 @@ end
 def m_clear
     a = source "a"
     a.clear
-    sink a
+    sink a # $ SPURIOUS: hasValueFlow=a
 end
 
 # concat and prepend omitted because they clash with the summaries for
@@ -224,7 +224,7 @@ def m_replace
     b = source "b"
     sink a.replace(b) # $ hasTaintFlow=b
     # TODO: currently we get value flow for a, because we don't clear content
-    sink a # $ hasTaintFlow=b
+    sink a # $ hasTaintFlow=b SPURIOUS: hasValueFlow=a
 end
 
 def m_reverse
