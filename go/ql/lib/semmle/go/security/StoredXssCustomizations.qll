@@ -33,9 +33,11 @@ module StoredXss {
         walkFn.getACall().getArgument(1) = f.getASuccessor*()
       )
       or
-      // A call to os.FileInfo.Name
-      exists(Method m | m.implements("io/fs", "FileInfo", "Name") |
-        m = this.(DataFlow::CallNode).getTarget()
+      // The return value of a call to `os.DirEntry.Name`, `os.FileInfo.Name`
+      // or `os.File.ReadDirNames`.
+      exists(DataFlow::CallNode cn, Method m | m = cn.getTarget() and this = cn.getResult(0) |
+        m.implements("io/fs", ["DirEntry", "FileInfo"], "Name") or
+        m.hasQualifiedName("os", "File", "ReadDirNames")
       )
     }
   }
