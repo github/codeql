@@ -176,14 +176,55 @@ fun getIrDeclarationBinaryPath(d: IrDeclaration): String? {
         // This is in a file class.
         val fqName = getFileClassFqName(d)
         if (fqName != null) {
+            if (d is IrMemberWithContainerSource) {
+                val containerBinaryPath = getContainerSourceBinaryPath(d.containerSource)
+                if (containerBinaryPath != null) {
+                    return normalizeExternalFileClassBinaryPath(containerBinaryPath, fqName)
+                }
+            }
             return getUnknownBinaryLocation(fqName.asString())
         }
     }
     return null
 }
 
+/**
+ * Attempts to get the binary file path from a container source (typically a
+ * [JvmPackagePartSource]). Returns null if the path is unavailable.
+ */
+fun getContainerSourceBinaryPath(containerSource: org.jetbrains.kotlin.serialization.deserialization.descriptors.DeserializedContainerSource?): String? {
+    if (containerSource !is JvmPackagePartSource) return null
+    val binaryClass = containerSource.knownJvmBinaryClass ?: return null
+    return when (binaryClass) {
+        is VirtualFileKotlinClass -> {
+            val vf = binaryClass.file
+            val path = vf.path
+            if (vf.fileSystem.protocol == StandardFileSystems.JRT_PROTOCOL)
+                "/${path.split("!/", limit = 2)[1]}"
+            else path
+        }
+        else -> binaryClass.location.takeIf { it.isNotEmpty() }
+    }
+}
+
 private fun getUnknownBinaryLocation(s: String): String {
     return "/!unknown-binary-location/${s.replace(".", "/")}.class"
+}
+
+fun normalizeExternalFileClassBinaryPath(path: String, fqName: FqName): String {
+    if (path.contains(".kotlinc_installed")) {
+        return getUnknownBinaryLocation(fqName.asString())
+    }
+    val normalizedPath = path.replace('\\', '/')
+    val classInternalPath = "${fqName.asString().replace(".", "/")}.class"
+    val classSuffix = "/$classInternalPath"
+    if (normalizedPath.endsWith(classSuffix)) {
+        val classpathRoot = normalizedPath.removeSuffix(classSuffix).substringAfterLast('/')
+        if (classpathRoot.isNotEmpty()) {
+            return "$classpathRoot/$classInternalPath"
+        }
+    }
+    return path
 }
 
 fun getJavaEquivalentClassId(c: IrClass) =

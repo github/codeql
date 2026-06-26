@@ -996,7 +996,19 @@ open class KotlinUsesExtractor(
                 )
                 return null
             }
-            return extractFileClass(fqName)
+            val fileClassId = extractFileClass(fqName)
+            // Under K2, external file class members sit directly under IrExternalPackageFragment
+            // rather than under their IrClass parent. In that case the file class entity won't
+            // get a location set through the normal extractClassSource path.
+            if (d is IrMemberWithContainerSource && tw.lm.externalFileClassLocationsExtracted.add(fqName)) {
+                val binaryPath =
+                    getContainerSourceBinaryPath(d.containerSource)
+                        ?.let { normalizeExternalFileClassBinaryPath(it, fqName) }
+                        ?: "/!unknown-binary-location/${fqName.asString().replace(".", "/")}.class"
+                val fileId = tw.mkFileId(binaryPath, true)
+                tw.writeHasLocation(fileClassId, tw.getWholeFileLocation(fileId))
+            }
+            return fileClassId
         }
         return useDeclarationParent(parent, canBeTopLevel, classTypeArguments, inReceiverContext)
     }
