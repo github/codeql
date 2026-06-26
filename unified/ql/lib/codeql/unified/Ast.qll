@@ -1654,10 +1654,6 @@ module Unified {
       i = -1 and
       name = "getPrecedence"
       or
-      result = node.(OrPattern).getModifier(i) and name = "getModifier"
-      or
-      result = node.(OrPattern).getPattern(i) and name = "getPattern"
-      or
       result = node.(Parameter).getDefault() and i = -1 and name = "getDefault"
       or
       result = node.(Parameter).getExternalName() and i = -1 and name = "getExternalName"
@@ -1686,7 +1682,7 @@ module Unified {
       or
       result = node.(SwitchCase).getModifier(i) and name = "getModifier"
       or
-      result = node.(SwitchCase).getPattern() and i = -1 and name = "getPattern"
+      result = node.(SwitchCase).getPattern(i) and name = "getPattern"
       or
       result = node.(SwitchExpr).getCase(i) and name = "getCase"
       or
