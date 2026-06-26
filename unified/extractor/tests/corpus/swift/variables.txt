@@ -319,3 +319,130 @@ top_level
             name_expr
               identifier: identifier "x"
           value: int_literal "1"
+
+===
+Property with willSet and didSet observers
+===
+
+class C {
+  var x: Int = 0 {
+    willSet { print(newValue) }
+    didSet { print(oldValue) }
+  }
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+          member:
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "x"
+                  observers:
+                    willset_didset_block
+                      didset:
+                        didset_clause
+                          body:
+                            block
+                              statement:
+                                call_expression
+                                  function: simple_identifier "print"
+                                  suffix:
+                                    call_suffix
+                                      arguments:
+                                        value_arguments
+                                          argument:
+                                            value_argument
+                                              value: simple_identifier "oldValue"
+                      willset:
+                        willset_clause
+                          body:
+                            block
+                              statement:
+                                call_expression
+                                  function: simple_identifier "print"
+                                  suffix:
+                                    call_suffix
+                                      arguments:
+                                        value_arguments
+                                          argument:
+                                            value_argument
+                                              value: simple_identifier "newValue"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+                  value: integer_literal "0"
+      declaration_kind: class
+      name: type_identifier "C"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+              value: int_literal "0"
+            accessor_declaration
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "newValue"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              modifier:
+                modifier "var"
+                modifier "chained_declaration"
+              name: identifier "x"
+              accessor_kind: accessor_kind "willSet"
+            accessor_declaration
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "oldValue"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              modifier:
+                modifier "var"
+                modifier "chained_declaration"
+              name: identifier "x"
+              accessor_kind: accessor_kind "didSet"
+          modifier: modifier "class"
+          name: identifier "C"

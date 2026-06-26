@@ -53,12 +53,7 @@ pub fn dump_ast_with_options(
 ///
 /// Any node that does not match the expected type set for its parent field is
 /// rendered with a trailing `" <-- ERROR: ..."` annotation on the same line.
-pub fn dump_ast_with_type_errors(
-    ast: &Ast,
-    root: usize,
-    source: &str,
-    schema: &Schema,
-) -> String {
+pub fn dump_ast_with_type_errors(ast: &Ast, root: usize, source: &str, schema: &Schema) -> String {
     dump_ast_with_type_errors_and_options(ast, root, source, schema, &DumpOptions::default())
 }
 
@@ -74,7 +69,15 @@ pub fn dump_ast_with_type_errors_and_options(
     options: &DumpOptions,
 ) -> String {
     let mut out = String::new();
-    dump_node(ast, root, source, options, 0, Some((schema, None, None)), &mut out);
+    dump_node(
+        ast,
+        root,
+        source,
+        options,
+        0,
+        Some((schema, None, None)),
+        &mut out,
+    );
     out
 }
 
@@ -232,8 +235,8 @@ fn dump_node(
         }
         let field_name = ast.field_name_for_id(field_id).unwrap_or("?");
         let child_type_check = type_check.map(|(schema, _, _)| {
-            let expected = expected_for_field(schema, node.kind_name(), field_id)
-                .or(Some(EMPTY_NODE_TYPES));
+            let expected =
+                expected_for_field(schema, node.kind_name(), field_id).or(Some(EMPTY_NODE_TYPES));
             let parent_field = Some((node.kind_name(), field_name));
             (schema, expected, parent_field)
         });

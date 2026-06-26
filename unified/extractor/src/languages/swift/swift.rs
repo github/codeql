@@ -1,7 +1,98 @@
 use codeql_extractor::extractor::simple;
-use yeast::{rule, DesugaringConfig, PhaseKind};
+use yeast::{ConcreteDesugarer, DesugaringConfig, PhaseKind, Rule, manual_rule, rule, tree};
 
-fn translation_rules() -> Vec<yeast::Rule> {
+/// User context propagated from outer rules down to the inner rules that
+/// emit the corresponding output declarations, so that each emitted node
+/// is born with the outer information (name, type, modifiers, etc.)
+/// already set — no schema-invalid intermediate state requiring
+/// post-hoc mutation.
+#[derive(Clone, Default)]
+struct SwiftContext {
+    /// Identifier node for the property name. Set by the outer
+    /// `property_binding` (computed accessors / willSet-didSet) and
+    /// `protocol_property_declaration` rules before translating accessor
+    /// children; read by the accessor inner rules
+    /// (`computed_getter`/`computed_setter`/`computed_modify`/
+    /// `willset_clause`/`didset_clause`/`getter_specifier`/
+    /// `setter_specifier`).
+    property_name: Option<yeast::Id>,
+    /// Translated type node for the property type. Set by the outer
+    /// `property_binding` rule (computed accessors variant) and
+    /// `protocol_property_declaration` when present; read by the
+    /// accessor inner rules.
+    property_type: Option<yeast::Id>,
+    /// Default-value expression for the next translated `parameter`. Set
+    /// by the outer `function_parameter` rule; read by the `parameter`
+    /// rules.
+    default_value: Option<yeast::Id>,
+    /// Translated outer modifiers (e.g. visibility, attributes) to
+    /// attach to each child of a flattening outer rule. Set by
+    /// `property_declaration`, `enum_entry`, and
+    /// `protocol_property_declaration`.
+    outer_modifiers: Vec<yeast::Id>,
+    /// The `let`/`var` binding modifier for a `property_declaration`.
+    /// Set by `property_declaration`; read by the inner declaration
+    /// rules (`property_binding` variants, accessor rules) so they
+    /// emit it as part of the output node's `modifier:` field.
+    binding_modifier: Option<yeast::Id>,
+    /// True when the current child of a flattening outer rule is not
+    /// the first one — its inner rule should emit a
+    /// `chained_declaration` modifier so the original grouping can be
+    /// recovered downstream.
+    is_chained: bool,
+}
+
+/// Build a freshly-created `chained_declaration` modifier node if
+/// `ctx.is_chained`, else `None`. Used by inner declaration rules to
+/// emit the chained tag for non-first children of a flattening outer
+/// rule. Returns `Option<Id>` so it splices via `{..…}` to 0 or 1 ids.
+fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Option<yeast::Id> {
+    if ctx.is_chained {
+        Some(ctx.literal("modifier", "chained_declaration"))
+    } else {
+        None
+    }
+}
+
+/// Combine a list of boolean sub-conditions into a single expression by
+/// left-folding with the infix `&&` operator. Used by control-flow
+/// rules (`if`, `guard`, `while`, `repeat-while`) whose tree-sitter
+/// nodes carry one or more comma-separated conditions that the target
+/// AST represents as a single `condition:` field. Panics on an empty
+/// input because every caller's grammar guarantees at least one
+/// condition.
+fn and_chain(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    conds: Vec<yeast::NodeRef>,
+) -> yeast::Id {
+    conds.into_iter()
+        .map(yeast::Id::from)
+        .reduce(|acc, elem| {
+            tree!((binary_expr operator: (infix_operator "&&") left: {acc} right: {elem}))
+        })
+        .expect("control-flow statement must have at least one condition")
+}
+
+/// Translate a multi-part identifier (for example `Foo.Bar.Baz`) into a
+/// `member_access_expr` chain rooted at a `name_expr` over the first
+/// part. Panics on an empty input because the grammar's `_+` quantifier
+/// guarantees at least one part.
+fn member_chain(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    parts: Vec<yeast::NodeRef>,
+) -> yeast::Id {
+    let mut iter = parts.into_iter();
+    let first = iter
+        .next()
+        .expect("identifier with `part:` must have at least one part");
+    let init = tree!((name_expr identifier: (identifier #{first})));
+    iter.fold(
+        init,
+        |acc, elem| tree!((member_access_expr base: {acc} member: (identifier #{elem}))),
+    )
+}
+
+fn translation_rules() -> Vec<Rule<SwiftContext>> {
     vec![
         // ---- Top-level ----
         // Capture all top-level statements, including unnamed tokens like `nil`.
@@ -88,32 +179,49 @@ fn translation_rules() -> Vec<yeast::Rule> {
         // nodes for individual declarators. The outer property_declaration rule splices these out
         // and attaches binding/modifiers from the parent.
 
-        // Computed property with explicit accessors (get/set/modify) →
-        // a sequence of accessor_declaration nodes, each with the property name
-        // attached. Subsequent accessors will be tagged chained_declaration by
-        // the outer property_declaration rule.
-        rule!(
+        // Computed property with explicit accessors (get/set/modify) → a
+        // sequence of `accessor_declaration` nodes. The outer rule
+        // publishes the property's name and type into `ctx` so that each
+        // inner accessor rule
+        // (`computed_getter`/`computed_setter`/`computed_modify`) builds
+        // its `accessor_declaration` with `name` and `type` set from the
+        // start — no schema-invalid intermediate state.
+        //
+        // Toggles `ctx.is_chained` per accessor iteration: the first
+        // accessor inherits the outer rule's chained state (i.e. whether
+        // this whole property_binding is itself a non-first declarator
+        // of a containing property_declaration); subsequent accessors
+        // always emit `chained_declaration`.
+        manual_rule!(
             (property_binding
                 name: @pattern
                 type: _? @ty
                 computed_value: (computed_property accessor: _+ @accessors))
-            =>
-            {..{
-                let name_text = __yeast_ctx.ast.source_text(pattern.into());
-                let ty_ids: Vec<usize> = ty.iter().map(|&t| t.into()).collect();
-                let acc_ids: Vec<usize> = accessors.iter().map(|&a| a.into()).collect();
-                for &acc_id in &acc_ids {
-                    let ident = __yeast_ctx.literal("identifier", &name_text);
-                    __yeast_ctx.prepend_field(acc_id, "name", ident);
-                    for &ty_id in ty_ids.iter().rev() {
-                        __yeast_ctx.prepend_field(acc_id, "type", ty_id);
+            {
+                // Translate `ty` first so the context holds an
+                // output-schema node id.
+                let translated_ty = ctx.translate_opt(ty)?;
+                // Build the property-name identifier from the
+                // (untranslated) pattern leaf.
+                let name_id = tree!((identifier #{pattern}));
+
+                ctx.property_name = Some(name_id);
+                ctx.property_type = translated_ty;
+
+                let mut result = Vec::new();
+                for (i, acc) in accessors.into_iter().enumerate() {
+                    if i > 0 {
+                        ctx.is_chained = true;
                     }
+                    result.extend(ctx.translate(acc)?);
                 }
-                acc_ids
-            }}
+                Ok(result)
+            }
         ),
-        // Computed property: shorthand getter (no explicit get/set, just statements) →
-        // a single accessor_declaration with kind "get".
+        // Computed property: shorthand getter (no explicit get/set, just
+        // statements) → a single accessor_declaration with kind "get".
+        // Reads outer modifiers / chained tag from `ctx` (set by the
+        // outer `property_declaration` rule).
         rule!(
             (property_binding
                 name: (pattern bound_identifier: @name)
@@ -121,49 +229,62 @@ fn translation_rules() -> Vec<yeast::Rule> {
                 computed_value: (computed_property statement: _* @body))
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 name: (identifier #{name})
                 type: {..ty}
                 accessor_kind: (accessor_kind "get")
                 body: (block stmt: {..body}))
         ),
-        // Stored property with willSet/didSet observers (initializer optional) →
-        // variable_declaration followed by one accessor_declaration per observer,
-        // each carrying the property name. Subsequent items are tagged
-        // chained_declaration by the outer property_declaration rule.
-        rule!(
+        // Stored property with willSet/didSet observers (initializer
+        // optional) → a `variable_declaration` followed by one
+        // `accessor_declaration` per observer, each born with the
+        // property name set. Manual rule: we publish the property name
+        // into `ctx` before translating the observer children so the
+        // inner `willset_clause` / `didset_clause` rules construct
+        // valid `accessor_declaration` nodes from the start.
+        //
+        // The `variable_declaration` itself inherits the outer rule's
+        // chained state; observers always get `chained_declaration`
+        // because they're subsequent outputs of this flattening rule.
+        manual_rule!(
             (property_binding
                 name: (pattern bound_identifier: @name)
                 type: _? @ty
                 value: _? @val
                 observers: (willset_didset_block willset: _? @ws didset: _? @ds))
-            =>
-            {..{
-                let name_text = __yeast_ctx.ast.source_text(name.into());
-                let val_ids: Vec<usize> = val.iter().map(|&v| v.into()).collect();
-                let ty_ids: Vec<usize> = ty.iter().map(|&t| t.into()).collect();
-                let mut obs_ids: Vec<usize> = Vec::new();
-                obs_ids.extend(ws.iter().map(|&o| { let id: usize = o.into(); id }));
-                obs_ids.extend(ds.iter().map(|&o| { let id: usize = o.into(); id }));
-                let ident_for_var = __yeast_ctx.literal("identifier", &name_text);
-                let pat = __yeast_ctx.node("name_pattern", vec![("identifier", vec![ident_for_var])]);
-                let mut var_fields: Vec<(&str, Vec<usize>)> = vec![("pattern", vec![pat])];
-                if !ty_ids.is_empty() {
-                    var_fields.push(("type", ty_ids));
+            {
+                // Translate ty and val so the variable_declaration
+                // below contains output-schema nodes.
+                let translated_ty = ctx.translate_opt(ty)?;
+                let translated_val = ctx.translate_opt(val)?;
+
+                let var_decl = tree!(
+                    (variable_declaration
+                        modifier: {..ctx.binding_modifier}
+                        modifier: {..ctx.outer_modifiers.clone()}
+                        modifier: {..chained_modifier(&mut ctx)}
+                        pattern: (name_pattern identifier: (identifier #{name}))
+                        type: {..translated_ty}
+                        value: {..translated_val})
+                );
+
+                // Publish the property name for the observer rules.
+                ctx.property_name = Some(tree!((identifier #{name})));
+                // Observers are subsequent outputs of this flattening
+                // rule, so they always get `chained_declaration`.
+                ctx.is_chained = true;
+
+                let mut result = vec![var_decl];
+                for obs in ws.into_iter().chain(ds) {
+                    result.extend(ctx.translate(obs)?);
                 }
-                if !val_ids.is_empty() {
-                    var_fields.push(("value", val_ids));
-                }
-                let var_id = __yeast_ctx.node("variable_declaration", var_fields);
-                let mut result = vec![var_id];
-                for obs_id in obs_ids {
-                    let ident = __yeast_ctx.literal("identifier", &name_text);
-                    __yeast_ctx.prepend_field(obs_id, "name", ident);
-                    result.push(obs_id);
-                }
-                result
-            }}
+                Ok(result)
+            }
         ),
-        // property_binding with any pattern name (identifier or destructuring)
+        // property_binding with any pattern name (identifier or
+        // destructuring). Reads outer modifiers / chained tag from `ctx`.
         rule!(
             (property_binding
                 name: @pattern
@@ -171,37 +292,44 @@ fn translation_rules() -> Vec<yeast::Rule> {
                 value: _? @val)
             =>
             (variable_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 pattern: {pattern}
                 type: {..ty}
                 value: {..val})
         ),
-        // property_declaration: splice declarators (each may translate to multiple nodes —
-        // variable_declaration and/or accessor_declaration), and attach the binding modifier
-        // (let/var) and any outer modifiers to each. All children after the first additionally
-        // get a synthetic chained_declaration modifier so the grouping can be recovered.
-        rule!(
+        // property_declaration: flatten declarators (each may translate
+        // to multiple nodes — variable_declaration and/or
+        // accessor_declaration) and attach the binding modifier
+        // (let/var), outer modifiers, and `chained_declaration` for
+        // non-first declarations. Manual rule: publishes
+        // binding/outer modifiers into `ctx` and translates each
+        // declarator with `ctx.is_chained` toggled per iteration. The
+        // inner declaration rules (`property_binding` variants,
+        // accessor inner rules) read these fields and emit complete
+        // `modifier:` lists from the start.
+        manual_rule!(
             (property_declaration
                 binding: (value_binding_pattern mutability: @binding_kind)
                 declarator: _* @decls
                 (modifiers)* @mods)
-            =>
-            {..{
-                let binding_text = __yeast_ctx.ast.source_text(binding_kind.into());
-                let mod_ids: Vec<usize> = mods.iter().map(|&m| m.into()).collect();
-                let decl_ids: Vec<usize> = decls.iter().map(|&d| d.into()).collect();
-                for (i, &decl_id) in decl_ids.iter().enumerate() {
-                    if i > 0 {
-                        let chained = __yeast_ctx.literal("modifier", "chained_declaration");
-                        __yeast_ctx.prepend_field(decl_id, "modifier", chained);
-                    }
-                    for &mod_id in mod_ids.iter().rev() {
-                        __yeast_ctx.prepend_field(decl_id, "modifier", mod_id);
-                    }
-                    let binding_mod = __yeast_ctx.literal("modifier", &binding_text);
-                    __yeast_ctx.prepend_field(decl_id, "modifier", binding_mod);
+            {
+                let binding_text = ctx.ast.source_text(binding_kind.0);
+                ctx.binding_modifier = Some(ctx.literal("modifier", &binding_text));
+                let mut modifiers = Vec::new();
+                for m in mods {
+                    modifiers.extend(ctx.translate(m)?);
                 }
-                decl_ids
-            }}
+                ctx.outer_modifiers = modifiers;
+
+                let mut result = Vec::new();
+                for (i, decl) in decls.into_iter().enumerate() {
+                    ctx.is_chained = i > 0;
+                    result.extend(ctx.translate(decl)?);
+                }
+                Ok(result)
+            }
         ),
         // ---- Enums ----
         // enum_type_parameter → parameter (with optional name as pattern).
@@ -217,14 +345,18 @@ fn translation_rules() -> Vec<yeast::Rule> {
             =>
             (parameter type: {ty})
         ),
-        // enum_case_entry with associated values → class_like_declaration containing
-        // a constructor whose parameters are the data parameters.
+        // enum_case_entry with associated values → class_like_declaration
+        // containing a constructor whose parameters are the data
+        // parameters. Reads outer modifiers / chained tag from `ctx`
+        // (set by the outer `enum_entry` rule).
         rule!(
             (enum_case_entry
                 name: @name
                 data_contents: (enum_type_parameters parameter: _* @params))
             =>
             (class_like_declaration
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 modifier: (modifier "enum_case")
                 name: (identifier #{name})
                 member: (constructor_declaration parameter: {..params} body: (block)))
@@ -234,6 +366,8 @@ fn translation_rules() -> Vec<yeast::Rule> {
             (enum_case_entry name: @name raw_value: @val)
             =>
             (variable_declaration
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 modifier: (modifier "enum_case")
                 pattern: (name_pattern identifier: (identifier #{name}))
                 value: {val})
@@ -243,28 +377,31 @@ fn translation_rules() -> Vec<yeast::Rule> {
             (enum_case_entry name: @name)
             =>
             (variable_declaration
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
                 modifier: (modifier "enum_case")
                 pattern: (name_pattern identifier: (identifier #{name})))
         ),
-        // enum_entry: flatten case entries; attach outer modifiers to each, and
-        // chained_declaration on every entry after the first.
-        rule!(
+        // enum_entry: flatten case entries; publish outer modifiers
+        // into `ctx` and translate each case with `ctx.is_chained`
+        // toggled per iteration so the inner `enum_case_entry` rules
+        // emit complete `modifier:` lists from the start.
+        manual_rule!(
             (enum_entry case: _+ @cases (modifiers)* @mods)
-            =>
-            {..{
-                let mod_ids: Vec<usize> = mods.iter().map(|&m| m.into()).collect();
-                let case_ids: Vec<usize> = cases.iter().map(|&c| c.into()).collect();
-                for (i, &case_id) in case_ids.iter().enumerate() {
-                    if i > 0 {
-                        let chained = __yeast_ctx.literal("modifier", "chained_declaration");
-                        __yeast_ctx.prepend_field(case_id, "modifier", chained);
-                    }
-                    for &mod_id in mod_ids.iter().rev() {
-                        __yeast_ctx.prepend_field(case_id, "modifier", mod_id);
-                    }
+            {
+                let mut modifiers = Vec::new();
+                for m in mods {
+                    modifiers.extend(ctx.translate(m)?);
                 }
-                case_ids
-            }}
+                ctx.outer_modifiers = modifiers;
+
+                let mut result = Vec::new();
+                for (i, case) in cases.into_iter().enumerate() {
+                    ctx.is_chained = i > 0;
+                    result.extend(ctx.translate(case)?);
+                }
+                Ok(result)
+            }
         ),
         // Plain assignment: `x = expr`
         rule!(
@@ -336,17 +473,15 @@ fn translation_rules() -> Vec<yeast::Rule> {
                 body: (block stmt: {..body_stmts}))
         ),
         // Parameters are wrapped in function_parameter, which also carries
-        // optional default values.
-        rule!(
+        // optional default values. Publishes the default value into `ctx`
+        // before translating the inner `parameter` so the `parameter`
+        // rules can include it as a `default:` field directly.
+        manual_rule!(
             (function_parameter parameter: @p default_value: _? @def)
-            =>
-            {..{
-                let p_id: usize = p.into();
-                for &d in def.iter().rev() {
-                    __yeast_ctx.prepend_field(p_id, "default", d.into());
-                }
-                vec![p_id]
-            }}
+            {
+                ctx.default_value = ctx.translate_opt(def)?;
+                ctx.translate(p)
+            }
         ),
         // Parameter with external name and type
         rule!(
@@ -354,7 +489,8 @@ fn translation_rules() -> Vec<yeast::Rule> {
             =>
             (parameter
                 external_name: (identifier #{ext})
-                pattern: (name_pattern identifier: (identifier #{name})))
+                pattern: (name_pattern identifier: (identifier #{name}))
+                default: {..ctx.default_value})
         ),
         rule!(
             (parameter external_name: @ext name: @name type: @ty)
@@ -362,21 +498,24 @@ fn translation_rules() -> Vec<yeast::Rule> {
             (parameter
                 external_name: (identifier #{ext})
                 pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty})
+                type: {ty}
+                default: {..ctx.default_value})
         ),
         // Parameter with just name and type (no external name)
         rule!(
             (parameter name: @name)
             =>
             (parameter
-                pattern: (name_pattern identifier: (identifier #{name})))
+                pattern: (name_pattern identifier: (identifier #{name}))
+                default: {..ctx.default_value})
         ),
         rule!(
             (parameter name: @name type: @ty)
             =>
             (parameter
                 pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty})
+                type: {ty}
+                default: {..ctx.default_value})
         ),
         // Reference to a function, f(x:y:z:). This is parsed as a call with a single argument with multiple reference_specifier labels.
         // We don't want downstream QL to try to handle this as a call_expr with a weird argument, so explicitly mark it as unsupported for now.
@@ -484,11 +623,12 @@ fn translation_rules() -> Vec<yeast::Rule> {
                 argument: (argument value: {closure}))
         ),
         // ---- Control flow ----
+        // If statement
         rule!(
             (if_statement condition: _* @cond body: @then_body else_branch: _? @else_stmts)
             =>
             (if_expr
-                condition: {..cond}.reduce_left(first -> {first}, acc, elem -> (binary_expr operator: (infix_operator "&&") left: {acc} right: {elem}))
+                condition: {and_chain(&mut ctx, cond)}
                 then: {then_body}
                 else: {..else_stmts})
         ),
@@ -497,7 +637,7 @@ fn translation_rules() -> Vec<yeast::Rule> {
             (guard_statement condition: _* @cond body: (block statement: _* @else_stmts))
             =>
             (guard_if_stmt
-                condition: {..cond}.reduce_left(first -> {first}, acc, elem -> (binary_expr operator: (infix_operator "&&") left: {acc} right: {elem}))
+                condition: {and_chain(&mut ctx, cond)}
                 else: (block stmt: {..else_stmts}))
         ),
         // Ternary expression → if_expr
@@ -575,20 +715,24 @@ fn translation_rules() -> Vec<yeast::Rule> {
         rule!(
             (while_statement condition: _* @cond body: (block statement: _* @body))
             =>
-            (while_stmt condition: {..cond}.reduce_left(first -> {first}, acc, elem -> (binary_expr operator: (infix_operator "&&") left: {acc} right: {elem})) body: (block stmt: {..body}))
+            (while_stmt
+                condition: {and_chain(&mut ctx, cond)}
+                body: (block stmt: {..body}))
         ),
         // Repeat-while loop
         rule!(
             (repeat_while_statement condition: _* @cond body: (block statement: _* @body))
             =>
-            (do_while_stmt condition: {..cond}.reduce_left(first -> {first}, acc, elem -> (binary_expr operator: (infix_operator "&&") left: {acc} right: {elem})) body: (block stmt: {..body}))
+            (do_while_stmt
+                condition: {and_chain(&mut ctx, cond)}
+                body: (block stmt: {..body}))
         ),
         // Labeled statement (e.g. `outer: for ...`). Strip the trailing ':' from the label token.
-        rule!((labeled_statement label: (statement_label) @lbl statement: @stmt) => {..{
-            let text = __yeast_ctx.ast.source_text(lbl.into());
-            let name = __yeast_ctx.literal("identifier", &text[..text.len() - 1]);
-            vec![__yeast_ctx.node("labeled_stmt", vec![("label", vec![name]), ("stmt", vec![stmt.into()])])]
-        }}),
+        rule!((labeled_statement label: (statement_label) @lbl statement: @stmt) => {
+            let text = ctx.ast.source_text(lbl.into());
+            let name = &text[..text.len() - 1];
+            tree!((labeled_stmt label: (identifier #{name}) stmt: {stmt}))
+        }),
         // ---- Collections ----
         // Array literal
         rule!((array_literal element: _* @elems) => (array_literal element: {..elems})),
@@ -598,16 +742,9 @@ fn translation_rules() -> Vec<yeast::Rule> {
         rule!(
             (dictionary_literal key: _* @keys value: _* @vals)
             =>
-            (map_literal element: {..{
-                keys.iter().zip(vals.iter()).map(|(&k, &v)| {
-                    let k_id: usize = k.into();
-                    let v_id: usize = v.into();
-                    __yeast_ctx.node("key_value_pair", vec![
-                        ("key", vec![k_id]),
-                        ("value", vec![v_id]),
-                    ])
-                }).collect::<Vec<_>>()
-            }})
+            (map_literal element: {..keys.into_iter().zip(vals).map(|(k, v)|
+                tree!((key_value_pair key: {k} value: {v}))
+            )})
         ),
         rule!((dictionary_literal element: _* @elems) => (map_literal element: {..elems})),
         rule!((dictionary_literal_item key: @k value: @v) => (key_value_pair key: {k} value: {v})),
@@ -669,9 +806,7 @@ fn translation_rules() -> Vec<yeast::Rule> {
         rule!(
             (identifier part: _+ @parts)
             =>
-            {parts}.reduce_left(
-                first -> (name_expr identifier: (identifier #{first})),
-                acc, elem -> (member_access_expr base: {acc} member: (identifier #{elem})))
+            {member_chain(&mut ctx, parts)}
         ),
         // Scoped import declaration (for example `import struct Foo.Bar`):
         // flatten the identifier parts into a member_access_expr and bind the
@@ -874,48 +1009,76 @@ fn translation_rules() -> Vec<yeast::Rule> {
                 name: (identifier #{name})
                 bound: {..bound})
         ),
-        // Protocol property declaration: translate each accessor requirement to an
-        // accessor_declaration without a body, carrying the property name and type.
-        // Subsequent accessors get chained_declaration (same flattening as computed properties).
-        rule!(
+        // Protocol property declaration: translate each accessor
+        // requirement to an `accessor_declaration` carrying the property
+        // name, type, and outer modifiers. Manual rule: we publish the
+        // property's name/type/modifiers into `ctx` and translate each
+        // accessor with `ctx.is_chained` toggled per iteration so the
+        // inner `getter_specifier`/`setter_specifier` rules emit
+        // complete nodes from the start (including the
+        // `chained_declaration` tag for non-first accessors).
+        manual_rule!(
             (protocol_property_declaration
-                name: @pattern
+                name: (pattern bound_identifier: @name)
                 requirements: (protocol_property_requirements accessor: _+ @accessors)
                 type: _? @ty
                 (modifiers)* @mods)
-            =>
-            {..{
-                let name_text = __yeast_ctx.ast.source_text(pattern.into());
-                let mod_ids: Vec<usize> = mods.iter().map(|&m| m.into()).collect();
-                let ty_ids: Vec<usize> = ty.iter().map(|&t| t.into()).collect();
-                let acc_ids: Vec<usize> = accessors.iter().map(|&a| a.into()).collect();
-                for (i, &acc_id) in acc_ids.iter().enumerate() {
-                    if i > 0 {
-                        let chained = __yeast_ctx.literal("modifier", "chained_declaration");
-                        __yeast_ctx.prepend_field(acc_id, "modifier", chained);
-                    }
-                    for &mod_id in mod_ids.iter().rev() {
-                        __yeast_ctx.prepend_field(acc_id, "modifier", mod_id);
-                    }
-                    for &ty_id in ty_ids.iter().rev() {
-                        __yeast_ctx.prepend_field(acc_id, "type", ty_id);
-                    }
-                    let ident = __yeast_ctx.literal("identifier", &name_text);
-                    __yeast_ctx.prepend_field(acc_id, "name", ident);
+            {
+                ctx.property_name = Some(tree!((identifier #{name})));
+                ctx.property_type = ctx.translate_opt(ty)?;
+                let mut modifiers = Vec::new();
+                for m in mods {
+                    modifiers.extend(ctx.translate(m)?);
                 }
-                acc_ids
-            }}
+                ctx.outer_modifiers = modifiers;
+
+                let mut result = Vec::new();
+                for (i, acc) in accessors.into_iter().enumerate() {
+                    ctx.is_chained = i > 0;
+                    result.extend(ctx.translate(acc)?);
+                }
+                Ok(result)
+            }
         ),
         // getter_specifier / setter_specifier → bodyless accessor_declaration
-        rule!((getter_specifier) => (accessor_declaration accessor_kind: (accessor_kind "get"))),
-        rule!((setter_specifier) => (accessor_declaration accessor_kind: (accessor_kind "set"))),
+        // getter_specifier / setter_specifier → bodyless
+        // accessor_declaration. Reads property name/type/modifiers from
+        // `ctx` set by the outer `protocol_property_declaration` rule.
+        rule!(
+            (getter_specifier)
+            =>
+            (accessor_declaration
+                name: {ctx.property_name.ok_or("getter_specifier outside protocol_property_declaration context")?}
+                type: {..ctx.property_type}
+                accessor_kind: (accessor_kind "get")
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)})
+        ),
+        rule!(
+            (setter_specifier)
+            =>
+            (accessor_declaration
+                name: {ctx.property_name.ok_or("setter_specifier outside protocol_property_declaration context")?}
+                type: {..ctx.property_type}
+                accessor_kind: (accessor_kind "set")
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)})
+        ),
         // protocol_property_requirements wrapper — should be consumed by above; fallback
         rule!((protocol_property_requirements accessor: _* @accs) => {..accs}),
         // Computed getter → accessor_declaration (body optional).
+        // Reads property name/type from the outer property_binding rule
+        // and binding/outer modifiers + chained tag from the outer
+        // property_declaration rule.
         rule!(
             (computed_getter body: (block statement: _* @body)?)
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
+                name: {ctx.property_name.ok_or("computed_getter outside property_binding context")?}
+                type: {..ctx.property_type}
                 accessor_kind: (accessor_kind "get")
                 body: (block stmt: {..body}))
         ),
@@ -924,6 +1087,11 @@ fn translation_rules() -> Vec<yeast::Rule> {
             (computed_setter parameter: @param body: (block statement: _* @body))
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
+                name: {ctx.property_name.ok_or("computed_setter outside property_binding context")?}
+                type: {..ctx.property_type}
                 accessor_kind: (accessor_kind "set")
                 parameter: (parameter pattern: (name_pattern identifier: (identifier #{param})))
                 body: (block stmt: {..body}))
@@ -933,6 +1101,11 @@ fn translation_rules() -> Vec<yeast::Rule> {
             (computed_setter body: (block statement: _* @body)?)
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
+                name: {ctx.property_name.ok_or("computed_setter outside property_binding context")?}
+                type: {..ctx.property_type}
                 accessor_kind: (accessor_kind "set")
                 body: (block stmt: {..body}))
         ),
@@ -941,16 +1114,30 @@ fn translation_rules() -> Vec<yeast::Rule> {
             (computed_modify body: (block statement: _* @body))
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
+                name: {ctx.property_name.ok_or("computed_modify outside property_binding context")?}
+                type: {..ctx.property_type}
                 accessor_kind: (accessor_kind "modify")
                 body: (block stmt: {..body}))
         ),
-        // willset/didset block — spread to children
+        // willset/didset block — spread to children (only reachable as a
+        // fallback; the outer property_binding manual rule normally
+        // captures the willset/didset clauses directly).
         rule!((willset_didset_block _* @clauses) => {..clauses}),
-        // willset clause → accessor_declaration (body optional).
+        // willset clause → accessor_declaration (body optional). Reads
+        // `ctx.property_name` set by the outer property_binding rule and
+        // binding/outer modifiers + chained tag from the outer
+        // property_declaration rule.
         rule!(
             (willset_clause body: (block statement: _* @body)?)
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
+                name: {ctx.property_name.ok_or("willset_clause outside property_binding context")?}
                 accessor_kind: (accessor_kind "willSet")
                 body: (block stmt: {..body}))
         ),
@@ -959,6 +1146,10 @@ fn translation_rules() -> Vec<yeast::Rule> {
             (didset_clause body: (block statement: _* @body)?)
             =>
             (accessor_declaration
+                modifier: {..ctx.binding_modifier}
+                modifier: {..ctx.outer_modifiers.clone()}
+                modifier: {..chained_modifier(&mut ctx)}
+                name: {ctx.property_name.ok_or("didset_clause outside property_binding context")?}
                 accessor_kind: (accessor_kind "didSet")
                 body: (block stmt: {..body}))
         ),
@@ -979,14 +1170,17 @@ fn translation_rules() -> Vec<yeast::Rule> {
 }
 
 pub fn language_spec(desugared_ast_schema: &'static str) -> simple::LanguageSpec {
-    let desugar = DesugaringConfig::new()
+    let ts_language: tree_sitter::Language = tree_sitter_swift::LANGUAGE.into();
+    let config = DesugaringConfig::<SwiftContext>::new()
         .add_phase("translate", PhaseKind::OneShot, translation_rules())
         .with_output_node_types_yaml(desugared_ast_schema);
+    let desugarer = ConcreteDesugarer::new(ts_language.clone(), config)
+        .expect("failed to build Swift desugarer");
     simple::LanguageSpec {
         prefix: "swift",
-        ts_language: tree_sitter_swift::LANGUAGE.into(),
+        ts_language,
         node_types: tree_sitter_swift::NODE_TYPES,
         file_globs: vec!["*.swift".into(), "*.swiftinterface".into()],
-        desugar: Some(desugar),
+        desugar: Some(Box::new(desugarer)),
     }
 }

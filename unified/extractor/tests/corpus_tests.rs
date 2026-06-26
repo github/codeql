@@ -2,7 +2,7 @@ use std::fs;
 use std::path::Path;
 
 use codeql_extractor::extractor::simple;
-use yeast::{dump::dump_ast, dump::dump_ast_with_type_errors, Runner};
+use yeast::{Runner, dump::dump_ast, dump::dump_ast_with_type_errors};
 
 #[path = "../src/languages/mod.rs"]
 mod languages;
@@ -146,29 +146,36 @@ fn render_corpus(cases: &[CorpusCase]) -> String {
     out
 }
 
-fn run_desugaring(
-    lang: &simple::LanguageSpec,
-    input: &str,
-) -> Result<yeast::Ast, String> {
-    let runner = match lang.desugar.as_ref() {
-        Some(config) => Runner::from_config(lang.ts_language.clone(), config)
-            .map_err(|e| format!("Failed to create yeast runner: {e}"))?,
-        None => Runner::new(lang.ts_language.clone(), &[]),
-    };
-
-    runner
-        .run(input)
-        .map_err(|e| format!("Failed to parse input: {e}"))
+fn run_desugaring(lang: &simple::LanguageSpec, input: &str) -> Result<yeast::Ast, String> {
+    match lang.desugar.as_deref() {
+        Some(desugarer) => {
+            // Parse the input ourselves so we don't depend on the desugarer
+            // knowing about the language.
+            let mut parser = tree_sitter::Parser::new();
+            parser
+                .set_language(&lang.ts_language)
+                .map_err(|e| format!("Failed to set language: {e}"))?;
+            let tree = parser
+                .parse(input, None)
+                .ok_or_else(|| "Failed to parse input".to_string())?;
+            desugarer
+                .run_from_tree(&tree, input.as_bytes())
+                .map_err(|e| format!("Desugaring failed: {e}"))
+        }
+        None => {
+            let runner: Runner = Runner::new(lang.ts_language.clone(), &[]);
+            runner
+                .run(input)
+                .map_err(|e| format!("Failed to parse input: {e}"))
+        }
+    }
 }
 
 /// Produce the raw tree-sitter parse tree dump for `input`, with no
 /// desugaring rules applied. Uses a `Runner` with an empty phase list and
 /// the input grammar's own schema.
-fn dump_raw_parse(
-    lang: &simple::LanguageSpec,
-    input: &str,
-) -> Result<String, String> {
-    let runner = Runner::new(lang.ts_language.clone(), &[]);
+fn dump_raw_parse(lang: &simple::LanguageSpec, input: &str) -> Result<String, String> {
+    let runner: Runner = Runner::new(lang.ts_language.clone(), &[]);
     let ast = runner
         .run(input)
         .map_err(|e| format!("Failed to parse input: {e}"))?;
@@ -272,11 +279,7 @@ fn test_corpus() {
                 }
             }
 
-            assert!(
-                failures.is_empty(),
-                "{}",
-                failures.join("\n\n") + "\n\n"
-            );
+            assert!(failures.is_empty(), "{}", failures.join("\n\n") + "\n\n");
 
             if update_mode {
                 let updated = render_corpus(&cases);
@@ -285,7 +288,9 @@ fn test_corpus() {
                     write_result.is_ok(),
                     "Failed to update corpus file {}: {}",
                     corpus_path.display(),
-                    write_result.err().map_or_else(String::new, |e| e.to_string())
+                    write_result
+                        .err()
+                        .map_or_else(String::new, |e| e.to_string())
                 );
             }
         }
