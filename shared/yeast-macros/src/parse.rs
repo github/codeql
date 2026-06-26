@@ -304,7 +304,8 @@ fn parse_ctx_or_implicit(tokens: &mut Tokens) -> Ident {
         && matches!(lookahead.next(), Some(TokenTree::Punct(p)) if p.as_char() == ',');
 
     if is_explicit {
-        let ctx = expect_ident(tokens, "").unwrap();
+        let ctx = expect_ident(tokens, "unreachable: ident was just peeked")
+            .expect("unreachable: ident was just peeked");
         let _ = tokens.next(); // consume comma
         ctx
     } else {
