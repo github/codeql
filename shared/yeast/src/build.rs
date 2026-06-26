@@ -186,20 +186,6 @@ impl<C: Clone> BuildCtx<'_, C> {
             None => Err("translate() called on a BuildCtx without a translator handle".into()),
         }
     }
-
-    /// Translate an optional capture, returning the first translated id or
-    /// `None`. Convenience for `?`-quantifier captures (`Option<Id>`).
-    ///
-    /// If the underlying translation produces multiple ids for a single
-    /// input, only the first is returned. For most use cases (e.g.
-    /// translating a single type annotation) this is what you want; if
-    /// you need all ids, use [`translate`] directly.
-    pub fn translate_opt<I: Into<Id>>(&mut self, id: Option<I>) -> Result<Option<Id>, String> {
-        match id {
-            Some(id) => Ok(self.translate(id)?.into_iter().next()),
-            None => Ok(None),
-        }
-    }
 }
 
 impl<C> std::ops::Deref for BuildCtx<'_, C> {
