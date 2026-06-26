@@ -300,7 +300,7 @@ fn test_query_skips_extras_in_positional_match() {
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child();
     let array_id = cursor.node_id();
-    assert_eq!(ast.get_node(array_id).unwrap().kind(), "array");
+    assert_eq!(ast.get_node(array_id).unwrap().kind_name(), "array");
 
     // Two positional wildcards should bind to the two integers, skipping
     // the comment that sits between them.
@@ -309,11 +309,15 @@ fn test_query_skips_extras_in_positional_match() {
     let matched = query.do_match(&ast, array_id, &mut captures).unwrap();
     assert!(matched);
     assert_eq!(
-        ast.get_node(captures.get_var("a").unwrap()).unwrap().kind(),
+        ast.get_node(captures.get_var("a").unwrap())
+            .unwrap()
+            .kind_name(),
         "integer"
     );
     assert_eq!(
-        ast.get_node(captures.get_var("b").unwrap()).unwrap().kind(),
+        ast.get_node(captures.get_var("b").unwrap())
+            .unwrap()
+            .kind_name(),
         "integer"
     );
 }
@@ -391,7 +395,7 @@ fn test_capture_unnamed_node_parenthesized() {
     assert!(matched);
     let op_id = captures.get_var("op").unwrap();
     let op_node = ast.get_node(op_id).unwrap();
-    assert_eq!(op_node.kind(), "=");
+    assert_eq!(op_node.kind_name(), "=");
     assert!(!op_node.is_named());
 }
 
@@ -414,7 +418,7 @@ fn test_capture_bare_underscore_repeated() {
 
     let all = captures.get_all("all");
     assert_eq!(all.len(), 1);
-    assert_eq!(ast.get_node(all[0]).unwrap().kind(), "=");
+    assert_eq!(ast.get_node(all[0]).unwrap().kind_name(), "=");
     assert!(!ast.get_node(all[0]).unwrap().is_named());
 }
 
@@ -441,7 +445,7 @@ fn test_capture_unnamed_node_bare_literal() {
     assert!(matched);
     let op_id = captures.get_var("op").unwrap();
     let op_node = ast.get_node(op_id).unwrap();
-    assert_eq!(op_node.kind(), "=");
+    assert_eq!(op_node.kind_name(), "=");
     assert!(!op_node.is_named());
 }
 
@@ -479,7 +483,7 @@ fn test_bare_underscore_matches_unnamed() {
         .unwrap();
     assert!(matched, "_ should match the unnamed `=`");
     let any_node = ast.get_node(captures.get_var("any").unwrap()).unwrap();
-    assert_eq!(any_node.kind(), "=");
+    assert_eq!(any_node.kind_name(), "=");
     assert!(!any_node.is_named());
 }
 
@@ -506,7 +510,7 @@ fn test_bare_forms_in_field_position() {
     assert_eq!(
         ast.get_node(captures.get_var("lhs").unwrap())
             .unwrap()
-            .kind(),
+            .kind_name(),
         "identifier"
     );
 
@@ -516,7 +520,7 @@ fn test_bare_forms_in_field_position() {
     let matched = query.do_match(&ast, assignment_id, &mut captures).unwrap();
     assert!(matched);
     let op = ast.get_node(captures.get_var("op").unwrap()).unwrap();
-    assert_eq!(op.kind(), "=");
+    assert_eq!(op.kind_name(), "=");
     assert!(!op.is_named());
 }
 
@@ -535,7 +539,7 @@ fn test_forward_scan_finds_unnamed_token_late() {
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child(); // for
     cursor.goto_first_child(); // do (the body)
-    while cursor.node().kind() != "do" || !cursor.node().is_named() {
+    while cursor.node().kind_name() != "do" || !cursor.node().is_named() {
         assert!(cursor.goto_next_sibling(), "expected to find named `do`");
     }
     let do_id = cursor.node_id();
@@ -545,7 +549,7 @@ fn test_forward_scan_finds_unnamed_token_late() {
     let matched = query.do_match(&ast, do_id, &mut captures).unwrap();
     assert!(matched, "forward-scan should find the `end` keyword");
     let kw = ast.get_node(captures.get_var("kw").unwrap()).unwrap();
-    assert_eq!(kw.kind(), "end");
+    assert_eq!(kw.kind_name(), "end");
     assert!(!kw.is_named());
 }
 
@@ -561,7 +565,7 @@ fn test_forward_scan_preserves_order() {
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child();
     cursor.goto_first_child();
-    while cursor.node().kind() != "do" || !cursor.node().is_named() {
+    while cursor.node().kind_name() != "do" || !cursor.node().is_named() {
         assert!(cursor.goto_next_sibling(), "expected to find named `do`");
     }
     let do_id = cursor.node_id();
@@ -1172,11 +1176,11 @@ fn test_cursor_navigation() {
     let mut cursor = AstCursor::new(&ast);
 
     // Start at root
-    assert_eq!(cursor.node().kind(), "program");
+    assert_eq!(cursor.node().kind_name(), "program");
 
     // Go to first child (assignment)
     assert!(cursor.goto_first_child());
-    assert_eq!(cursor.node().kind(), "assignment");
+    assert_eq!(cursor.node().kind_name(), "assignment");
 
     // No sibling
     assert!(!cursor.goto_next_sibling());
@@ -1187,10 +1191,10 @@ fn test_cursor_navigation() {
 
     // Go back up
     assert!(cursor.goto_parent());
-    assert_eq!(cursor.node().kind(), "assignment");
+    assert_eq!(cursor.node().kind_name(), "assignment");
 
     assert!(cursor.goto_parent());
-    assert_eq!(cursor.node().kind(), "program");
+    assert_eq!(cursor.node().kind_name(), "program");
 
     // Can't go further up
     assert!(!cursor.goto_parent());
@@ -1307,7 +1311,7 @@ fn test_hash_brace_uses_capture_location_for_leaf() {
         let Some(node) = ast.get_node(id) else {
             continue;
         };
-        if node.kind() == "identifier" && ast.source_text(id) == "bar" {
+        if node.kind_name() == "identifier" && ast.source_text(id) == "bar" {
             bar_ids.push(id);
         }
     }

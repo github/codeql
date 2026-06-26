@@ -623,10 +623,6 @@ pub struct Node {
 }
 
 impl Node {
-    pub fn kind(&self) -> &'static str {
-        self.kind_name
-    }
-
     pub fn kind_name(&self) -> &'static str {
         self.kind_name
     }
@@ -971,7 +967,7 @@ fn apply_repeating_rules_inner<C: Clone>(
         ));
     }
 
-    let node_kind = ast.get_node(id).map(|n| n.kind()).unwrap_or("");
+    let node_kind = ast.get_node(id).map(|n| n.kind_name()).unwrap_or("");
     for rule in index.rules_for_kind(node_kind) {
         let rule_ptr = *rule as *const Rule<C>;
         if Some(rule_ptr) == skip_rule {
@@ -1090,7 +1086,7 @@ fn apply_one_shot_rules_inner<C: Clone>(
         ));
     }
 
-    let node_kind = ast.get_node(id).map(|n| n.kind()).unwrap_or("");
+    let node_kind = ast.get_node(id).map(|n| n.kind_name()).unwrap_or("");
 
     for rule in index.rules_for_kind(node_kind) {
         if let Some(captures) = rule.try_match(ast, id)? {
