@@ -430,37 +430,16 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
         );
         field_counter += 1;
 
-        // Check for field: {expr}.chain (chain pipeline) or plain field: {expr}
-        // (trait-dispatched: handles single ids and iterables uniformly).
+        // Plain `field: {expr}` — trait-dispatched extend.
         if peek_is_group(tokens, Delimiter::Brace) {
-            // Determine if a chain (.map(..)) follows the `{}` group.
-            let mut after = tokens.clone();
-            after.next(); // skip the brace group
-            let has_chain = matches!(after.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '.');
-
-            if has_chain {
-                let group = expect_group(tokens, Delimiter::Brace)?;
-                let expr = group.stream();
-                let base = quote! { { #expr }.into_iter() };
-                let chained = parse_chain_suffix(tokens, ctx, base)?;
-                stmts.push(quote! {
-                    let #temp: Vec<yeast::Id> = #chained.collect();
-                });
-                // An empty pipeline means the field is absent — skip it
-                // entirely rather than emitting an empty named field.
-                field_args.push(quote! {
-                    if !#temp.is_empty() { __fields.push((#field_str, #temp)); }
-                });
-                continue;
-            }
-
-            // Plain `{expr}` — trait-dispatched extend.
             let group = expect_group(tokens, Delimiter::Brace)?;
             let expr = group.stream();
             stmts.push(quote! {
                 let mut #temp: Vec<yeast::Id> = Vec::new();
                 yeast::IntoFieldIds::extend_into({ #expr }, &mut #temp);
             });
+            // An empty `{expr}` means the field is absent — skip it
+            // entirely rather than emitting an empty named field.
             field_args.push(quote! {
                 if !#temp.is_empty() { __fields.push((#field_str, #temp)); }
             });
@@ -492,93 +471,6 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
     })
 }
 
-/// Parse a chain of `.method(args)` suffixes after a `{expr}` placeholder in tree templates. Currently supports:
-///
-/// ```text
-/// .map(param -> template)   -- iterator map: produces Vec<yeast::Id>
-/// ```
-///
-/// The chain may be empty (returns `base` unchanged). Multiple chained calls
-/// are supported, e.g. `.map(p -> ...).map(q -> ...)`.
-///
-/// Each call expects the receiver to be an iterator. The `base` argument
-/// should therefore already be an iterator (use `.into_iter()` on it before
-/// calling this function).
-fn parse_chain_suffix(tokens: &mut Tokens, ctx: &Ident, base: TokenStream) -> Result<TokenStream> {
-    let mut current = base;
-    while matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '.') {
-        tokens.next(); // consume .
-        let method = expect_ident(tokens, "expected method name after `.`")?;
-        let method_str = method.to_string();
-        let args_group = expect_group(tokens, Delimiter::Parenthesis)?;
-        match method_str.as_str() {
-            "map" => {
-                let mut inner = args_group.stream().into_iter().peekable();
-                let param = expect_ident(&mut inner, "expected lambda parameter name")?;
-                expect_punct(&mut inner, '-', "expected `->` after lambda parameter")?;
-                expect_punct(&mut inner, '>', "expected `->` after lambda parameter")?;
-                let body = parse_direct_node(&mut inner, ctx)?;
-                if let Some(tok) = inner.next() {
-                    return Err(syn::Error::new_spanned(
-                        tok,
-                        "unexpected token after lambda body",
-                    ));
-                }
-                current = quote! {
-                    #current.map(|#param| #body)
-                };
-            }
-            "reduce_left" => {
-                // Syntax: reduce_left(first -> init_tpl, acc, elem -> fold_tpl)
-                // - first -> init_tpl : converts the first element to the initial accumulator
-                // - acc, elem -> fold_tpl : fold step (acc = current accumulator, elem = next element)
-                // Empty iterator produces an empty iterator; non-empty produces a single-element iterator.
-                let mut inner = args_group.stream().into_iter().peekable();
-                let init_param = expect_ident(&mut inner, "expected initial lambda parameter")?;
-                expect_punct(&mut inner, '-', "expected `->` after init parameter")?;
-                expect_punct(&mut inner, '>', "expected `->` after init parameter")?;
-                let init_body = parse_direct_node(&mut inner, ctx)?;
-                expect_punct(&mut inner, ',', "expected `,` after init template")?;
-                let acc_param = expect_ident(&mut inner, "expected accumulator parameter")?;
-                expect_punct(&mut inner, ',', "expected `,` after accumulator parameter")?;
-                let elem_param = expect_ident(&mut inner, "expected element parameter")?;
-                expect_punct(&mut inner, '-', "expected `->` after element parameter")?;
-                expect_punct(&mut inner, '>', "expected `->` after element parameter")?;
-                let fold_body = parse_direct_node(&mut inner, ctx)?;
-                if let Some(tok) = inner.next() {
-                    return Err(syn::Error::new_spanned(
-                        tok,
-                        "unexpected token after fold template",
-                    ));
-                }
-                current = quote! {
-                    {
-                        let mut __iter = #current;
-                        let __result: Option<yeast::Id> = if let Some(#init_param) = __iter.next() {
-                            let mut __acc: yeast::Id = #init_body;
-                            for #elem_param in __iter {
-                                let #acc_param: yeast::Id = __acc;
-                                __acc = #fold_body;
-                            }
-                            Some(__acc)
-                        } else {
-                            None
-                        };
-                        __result.into_iter()
-                    }
-                };
-            }
-            _ => {
-                return Err(syn::Error::new_spanned(
-                    method,
-                    format!("unknown builtin method `.{method_str}()`"),
-                ));
-            }
-        }
-    }
-    Ok(current)
-}
-
 /// Parse the top-level list of a `trees!` template.
 /// Each item is a node template or `{expr}` splice.
 fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream>> {
@@ -599,25 +491,14 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
             continue;
         }
 
-        // {expr} (with optional `.chain` pipeline) — extend `__nodes` via
-        // `IntoFieldIds`, which handles single ids and iterables uniformly.
+        // `{expr}` — extend `__nodes` via `IntoFieldIds`, which handles
+        // single ids and iterables uniformly.
         if peek_is_group(tokens, Delimiter::Brace) {
             let group = expect_group(tokens, Delimiter::Brace)?;
-            let has_chain =
-                matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '.');
-            if has_chain {
-                let expr = group.stream();
-                let base = quote! { { #expr }.into_iter() };
-                let chained = parse_chain_suffix(tokens, ctx, base)?;
-                items.push(quote! {
-                    __nodes.extend(#chained);
-                });
-            } else {
-                let expr = group.stream();
-                items.push(quote! {
-                    yeast::IntoFieldIds::extend_into({ #expr }, &mut __nodes);
-                });
-            }
+            let expr = group.stream();
+            items.push(quote! {
+                yeast::IntoFieldIds::extend_into({ #expr }, &mut __nodes);
+            });
             continue;
         }
 
