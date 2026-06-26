@@ -1312,6 +1312,244 @@ module QL {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { ql_variable_def(this, result) }
   }
+
+  /** Provides predicates for mapping AST nodes to their named children. */
+  module PrintAst {
+    /** Gets a child of `node` returned by the member predicate with the given `name`. If the predicate takes an index argument, `i` is bound to that index, otherwise `i` is `-1` (which is never a valid index). */
+    AstNode getChild(AstNode node, string name, int i) {
+      result = node.(AddExpr).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(AddExpr).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(AddExpr).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Aggregate).getChild(i) and name = "getChild"
+      or
+      result = node.(AnnotArg).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Annotation).getArgs(i) and name = "getArgs"
+      or
+      result = node.(Annotation).getName() and i = -1 and name = "getName"
+      or
+      result = node.(AritylessPredicateExpr).getName() and i = -1 and name = "getName"
+      or
+      result = node.(AritylessPredicateExpr).getQualifier() and i = -1 and name = "getQualifier"
+      or
+      result = node.(AsExpr).getChild(i) and name = "getChild"
+      or
+      result = node.(AsExprs).getChild(i) and name = "getChild"
+      or
+      result = node.(Body).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Bool).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(CallBody).getChild(i) and name = "getChild"
+      or
+      result = node.(CallOrUnqualAggExpr).getChild(i) and name = "getChild"
+      or
+      result = node.(Charpred).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Charpred).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(ClassMember).getChild(i) and name = "getChild"
+      or
+      result = node.(ClasslessPredicate).getName() and i = -1 and name = "getName"
+      or
+      result = node.(ClasslessPredicate).getReturnType() and i = -1 and name = "getReturnType"
+      or
+      result = node.(ClasslessPredicate).getChild(i) and name = "getChild"
+      or
+      result = node.(CompTerm).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(CompTerm).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(CompTerm).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Conjunction).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(Conjunction).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(Dataclass).getExtends(i) and name = "getExtends"
+      or
+      result = node.(Dataclass).getInstanceof(i) and name = "getInstanceof"
+      or
+      result = node.(Dataclass).getName() and i = -1 and name = "getName"
+      or
+      result = node.(Dataclass).getChild(i) and name = "getChild"
+      or
+      result = node.(Datatype).getName() and i = -1 and name = "getName"
+      or
+      result = node.(Datatype).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(DatatypeBranch).getName() and i = -1 and name = "getName"
+      or
+      result = node.(DatatypeBranch).getChild(i) and name = "getChild"
+      or
+      result = node.(DatatypeBranches).getChild(i) and name = "getChild"
+      or
+      result = node.(Disjunction).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(Disjunction).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(ExprAggregateBody).getAsExprs() and i = -1 and name = "getAsExprs"
+      or
+      result = node.(ExprAggregateBody).getOrderBys() and i = -1 and name = "getOrderBys"
+      or
+      result = node.(ExprAnnotation).getAnnotArg() and i = -1 and name = "getAnnotArg"
+      or
+      result = node.(ExprAnnotation).getName() and i = -1 and name = "getName"
+      or
+      result = node.(ExprAnnotation).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Field).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(FullAggregateBody).getAsExprs() and i = -1 and name = "getAsExprs"
+      or
+      result = node.(FullAggregateBody).getGuard() and i = -1 and name = "getGuard"
+      or
+      result = node.(FullAggregateBody).getOrderBys() and i = -1 and name = "getOrderBys"
+      or
+      result = node.(FullAggregateBody).getChild(i) and name = "getChild"
+      or
+      result = node.(HigherOrderTerm).getName() and i = -1 and name = "getName"
+      or
+      result = node.(HigherOrderTerm).getChild(i) and name = "getChild"
+      or
+      result = node.(IfTerm).getCond() and i = -1 and name = "getCond"
+      or
+      result = node.(IfTerm).getFirst() and i = -1 and name = "getFirst"
+      or
+      result = node.(IfTerm).getSecond() and i = -1 and name = "getSecond"
+      or
+      result = node.(Implication).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(Implication).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(ImportDirective).getChild(i) and name = "getChild"
+      or
+      result = node.(ImportModuleExpr).getQualName(i) and name = "getQualName"
+      or
+      result = node.(ImportModuleExpr).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(InExpr).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(InExpr).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(InstanceOf).getChild(i) and name = "getChild"
+      or
+      result = node.(Literal).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(MemberPredicate).getName() and i = -1 and name = "getName"
+      or
+      result = node.(MemberPredicate).getReturnType() and i = -1 and name = "getReturnType"
+      or
+      result = node.(MemberPredicate).getChild(i) and name = "getChild"
+      or
+      result = node.(Module).getImplements(i) and name = "getImplements"
+      or
+      result = node.(Module).getName() and i = -1 and name = "getName"
+      or
+      result = node.(Module).getParameter(i) and name = "getParameter"
+      or
+      result = node.(Module).getChild(i) and name = "getChild"
+      or
+      result = node.(ModuleAliasBody).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(ModuleExpr).getName() and i = -1 and name = "getName"
+      or
+      result = node.(ModuleExpr).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(ModuleInstantiation).getName() and i = -1 and name = "getName"
+      or
+      result = node.(ModuleInstantiation).getChild(i) and name = "getChild"
+      or
+      result = node.(ModuleMember).getChild(i) and name = "getChild"
+      or
+      result = node.(ModuleName).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(ModuleParam).getParameter() and i = -1 and name = "getParameter"
+      or
+      result = node.(ModuleParam).getSignature() and i = -1 and name = "getSignature"
+      or
+      result = node.(MulExpr).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(MulExpr).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(MulExpr).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Negation).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(OrderBy).getChild(i) and name = "getChild"
+      or
+      result = node.(OrderBys).getChild(i) and name = "getChild"
+      or
+      result = node.(ParExpr).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(PredicateAliasBody).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(PredicateExpr).getChild(i) and name = "getChild"
+      or
+      result = node.(PrefixCast).getChild(i) and name = "getChild"
+      or
+      result = node.(Ql).getChild(i) and name = "getChild"
+      or
+      result = node.(QualifiedRhs).getName() and i = -1 and name = "getName"
+      or
+      result = node.(QualifiedRhs).getChild(i) and name = "getChild"
+      or
+      result = node.(QualifiedExpr).getChild(i) and name = "getChild"
+      or
+      result = node.(Quantified).getExpr() and i = -1 and name = "getExpr"
+      or
+      result = node.(Quantified).getFormula() and i = -1 and name = "getFormula"
+      or
+      result = node.(Quantified).getRange() and i = -1 and name = "getRange"
+      or
+      result = node.(Quantified).getChild(i) and name = "getChild"
+      or
+      result = node.(Range).getLower() and i = -1 and name = "getLower"
+      or
+      result = node.(Range).getUpper() and i = -1 and name = "getUpper"
+      or
+      result = node.(Select).getChild(i) and name = "getChild"
+      or
+      result = node.(SetLiteral).getChild(i) and name = "getChild"
+      or
+      result = node.(SignatureExpr).getModExpr() and i = -1 and name = "getModExpr"
+      or
+      result = node.(SignatureExpr).getPredicate() and i = -1 and name = "getPredicate"
+      or
+      result = node.(SignatureExpr).getTypeExpr() and i = -1 and name = "getTypeExpr"
+      or
+      result = node.(SpecialCall).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(SuperRef).getChild(i) and name = "getChild"
+      or
+      result = node.(TypeAliasBody).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(TypeExpr).getName() and i = -1 and name = "getName"
+      or
+      result = node.(TypeExpr).getQualifier() and i = -1 and name = "getQualifier"
+      or
+      result = node.(TypeExpr).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(TypeUnionBody).getChild(i) and name = "getChild"
+      or
+      result = node.(UnaryExpr).getChild(i) and name = "getChild"
+      or
+      result = node.(UnqualAggBody).getAsExprs(i) and name = "getAsExprs"
+      or
+      result = node.(UnqualAggBody).getGuard() and i = -1 and name = "getGuard"
+      or
+      result = node.(UnqualAggBody).getChild(i) and name = "getChild"
+      or
+      result = node.(VarDecl).getChild(i) and name = "getChild"
+      or
+      result = node.(VarName).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Variable).getChild() and i = -1 and name = "getChild"
+    }
+  }
 }
 
 overlay[local]
@@ -1669,6 +1907,60 @@ module Dbscheme {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Varchar" }
   }
+
+  /** Provides predicates for mapping AST nodes to their named children. */
+  module PrintAst {
+    /** Gets a child of `node` returned by the member predicate with the given `name`. If the predicate takes an index argument, `i` is bound to that index, otherwise `i` is `-1` (which is never a valid index). */
+    AstNode getChild(AstNode node, string name, int i) {
+      result = node.(Annotation).getArgsAnnotation() and i = -1 and name = "getArgsAnnotation"
+      or
+      result = node.(Annotation).getSimpleAnnotation() and i = -1 and name = "getSimpleAnnotation"
+      or
+      result = node.(ArgsAnnotation).getName() and i = -1 and name = "getName"
+      or
+      result = node.(ArgsAnnotation).getChild(i) and name = "getChild"
+      or
+      result = node.(Branch).getQldoc() and i = -1 and name = "getQldoc"
+      or
+      result = node.(Branch).getChild(i) and name = "getChild"
+      or
+      result = node.(CaseDecl).getBase() and i = -1 and name = "getBase"
+      or
+      result = node.(CaseDecl).getDiscriminator() and i = -1 and name = "getDiscriminator"
+      or
+      result = node.(CaseDecl).getChild(i) and name = "getChild"
+      or
+      result = node.(ColType).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Column).getColName() and i = -1 and name = "getColName"
+      or
+      result = node.(Column).getColType() and i = -1 and name = "getColType"
+      or
+      result = node.(Column).getIsRef() and i = -1 and name = "getIsRef"
+      or
+      result = node.(Column).getIsUnique() and i = -1 and name = "getIsUnique"
+      or
+      result = node.(Column).getQldoc() and i = -1 and name = "getQldoc"
+      or
+      result = node.(Column).getReprType() and i = -1 and name = "getReprType"
+      or
+      result = node.(Dbscheme).getChild(i) and name = "getChild"
+      or
+      result = node.(Entry).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(ReprType).getChild(i) and name = "getChild"
+      or
+      result = node.(Table).getTableName() and i = -1 and name = "getTableName"
+      or
+      result = node.(Table).getChild(i) and name = "getChild"
+      or
+      result = node.(TableName).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(UnionDecl).getBase() and i = -1 and name = "getBase"
+      or
+      result = node.(UnionDecl).getChild(i) and name = "getChild"
+    }
+  }
 }
 
 overlay[local]
@@ -1802,6 +2094,24 @@ module Blame {
   class Number extends @blame_token_number, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Number" }
+  }
+
+  /** Provides predicates for mapping AST nodes to their named children. */
+  module PrintAst {
+    /** Gets a child of `node` returned by the member predicate with the given `name`. If the predicate takes an index argument, `i` is bound to that index, otherwise `i` is `-1` (which is never a valid index). */
+    AstNode getChild(AstNode node, string name, int i) {
+      result = node.(BlameEntry).getDate() and i = -1 and name = "getDate"
+      or
+      result = node.(BlameEntry).getLine(i) and name = "getLine"
+      or
+      result = node.(BlameInfo).getFileEntry(i) and name = "getFileEntry"
+      or
+      result = node.(BlameInfo).getToday() and i = -1 and name = "getToday"
+      or
+      result = node.(FileEntry).getBlameEntry(i) and name = "getBlameEntry"
+      or
+      result = node.(FileEntry).getFileName() and i = -1 and name = "getFileName"
+    }
   }
 }
 
@@ -1976,5 +2286,23 @@ module JSON {
   class True extends @json_token_true, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "True" }
+  }
+
+  /** Provides predicates for mapping AST nodes to their named children. */
+  module PrintAst {
+    /** Gets a child of `node` returned by the member predicate with the given `name`. If the predicate takes an index argument, `i` is bound to that index, otherwise `i` is `-1` (which is never a valid index). */
+    AstNode getChild(AstNode node, string name, int i) {
+      result = node.(Array).getChild(i) and name = "getChild"
+      or
+      result = node.(Document).getChild(i) and name = "getChild"
+      or
+      result = node.(Object).getChild(i) and name = "getChild"
+      or
+      result = node.(Pair).getKey() and i = -1 and name = "getKey"
+      or
+      result = node.(Pair).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(String).getChild(i) and name = "getChild"
+    }
   }
 }
