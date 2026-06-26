@@ -28,6 +28,26 @@ multipleArgumentCall
 lambdaCallEnclosingCallableMismatch
 speculativeStepAlreadyHasModel
 testFailures
+| tests.cpp:20:25:20:45 | // $ interpretElement | Missing result: interpretElement |
+| tests.cpp:21:34:21:54 | // $ interpretElement | Missing result: interpretElement |
+| tests.cpp:25:34:25:54 | // $ interpretElement | Missing result: interpretElement |
+| tests.cpp:72:28:72:34 | // $ ir | Missing result: ir |
+| tests.cpp:79:49:79:55 | // $ ir | Missing result: ir |
+| tests.cpp:99:17:99:37 | // $ interpretElement | Missing result: interpretElement |
+| tests.cpp:100:26:100:46 | // $ interpretElement | Missing result: interpretElement |
+| tests.cpp:122:26:122:32 | // $ ir | Missing result: ir |
+| tests.cpp:128:35:128:41 | // $ ir | Missing result: ir |
+| tests.cpp:167:33:167:53 | // $ interpretElement | Missing result: interpretElement |
+| tests.cpp:168:41:168:61 | // $ interpretElement | Missing result: interpretElement |
+| tests.cpp:169:42:169:62 | // $ interpretElement | Missing result: interpretElement |
+| tests.cpp:272:32:272:52 | // $ interpretElement | Missing result: interpretElement |
+| tests.cpp:278:24:278:44 | // $ interpretElement | Missing result: interpretElement |
+| tests.cpp:309:34:309:54 | // $ interpretElement | Missing result: interpretElement |
+| tests.cpp:310:47:310:67 | // $ interpretElement | Missing result: interpretElement |
+| tests.cpp:334:37:334:43 | // $ ir | Missing result: ir |
+| tests.cpp:347:34:347:40 | // $ ir | Missing result: ir |
+| tests.cpp:351:44:351:50 | // $ ir | Missing result: ir |
+| tests.cpp:352:68:352:74 | // $ ir | Missing result: ir |
 summaryCalls
 | file://:0:0:0:0 | [summary] call to [summary param] 0 in madCallArg0ReturnToReturn in madCallArg0ReturnToReturn |
 | file://:0:0:0:0 | [summary] call to [summary param] 0 in madCallArg0ReturnToReturnFirst in madCallArg0ReturnToReturnFirst |
