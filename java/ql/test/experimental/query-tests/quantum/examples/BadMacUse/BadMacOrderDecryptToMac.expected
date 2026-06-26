@@ -30,5 +30,3 @@ nodes
 | BadMacUse.java:118:83:118:84 | iv : byte[] | semmle.label | iv : byte[] |
 | BadMacUse.java:124:42:124:51 | ciphertext | semmle.label | ciphertext |
 subpaths
-testFailures
-| BadMacUse.java:92:16:92:36 | doFinal(...) : byte[] | Unexpected result: Source |

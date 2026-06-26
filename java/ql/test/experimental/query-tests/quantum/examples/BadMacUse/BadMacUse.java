@@ -89,7 +89,7 @@ class BadMacUse {
 
         IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
         cipher.init(mode, secretKeySpec, ivParameterSpec);
-        return cipher.doFinal(bytes); // $ Source[java/quantum/examples/bad-mac-order-decrypt-then-mac]
+        return cipher.doFinal(bytes); // $ Source[java/quantum/examples/bad-mac-order-decrypt-then-mac] Source[java/quantum/examples/bad-mac-order-decrypt-to-mac]
     }
 
     /**
