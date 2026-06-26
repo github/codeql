@@ -1059,7 +1059,7 @@ fn test_one_shot_does_not_recurse_into_wrapper_output() {
 }
 
 /// Verify that `@@name` capture markers skip the auto-translate prefix:
-/// the body sees the *raw* (input-schema) NodeRef and can read its
+/// the body sees the *raw* (input-schema) `Id` and can read its
 /// source text or call `ctx.translate(...)` explicitly. Compare with
 /// the bare `@name` form, where the auto-translate prefix runs the
 /// same translation up front and the body sees the post-translate id.
@@ -1081,7 +1081,7 @@ fn test_raw_capture_marker() {
             (assignment left: (_) @@raw_lhs right: (_) @rhs)
             =>
             {
-                let text = ctx.ast.source_text(raw_lhs.into());
+                let text = ctx.ast.source_text(raw_lhs);
                 tree!((call
                     method: (identifier #{text.as_str()})
                     receiver: {rhs}))
@@ -1116,7 +1116,7 @@ fn test_raw_capture_marker() {
 }
 
 /// Companion to `test_raw_capture_marker`: confirms that calling
-/// `ctx.translate(raw)` on a `@@`-captured NodeRef from the rule body
+/// `ctx.translate(raw)` on a `@@`-captured `Id` from the rule body
 /// produces the correctly-translated output-schema node. With `@`, the
 /// translation has already happened, so `ctx.translate(...)` inside the
 /// body would attempt to re-translate an output node (which has no
@@ -1235,10 +1235,8 @@ fn test_desugar_for_with_multiple_assignment() {
 }
 
 /// Regression test: `#{capture}` in a template must render the *source text*
-/// of the captured node, not its arena `Id`. Previously, captures were bound
-/// as `usize`, so `#{cap}` printed the integer id (e.g. `"3"`) via `Display`.
-/// Captures are now bound as `NodeRef`, which has no `Display` impl and
-/// resolves to the captured node's source text via `YeastDisplay`.
+/// of the captured node, not its arena `Id`. Captures are bound as `Id`,
+/// whose `YeastDisplay` impl resolves to the captured node's source text.
 #[test]
 fn test_hash_brace_renders_capture_source_text() {
     let rule: Rule = rule!(
@@ -1266,7 +1264,7 @@ fn test_hash_brace_renders_capture_source_text() {
     );
 }
 
-/// Regression test: non-`NodeRef` values in `#{expr}` still render via their
+/// Regression test: non-`Id` values in `#{expr}` still render via their
 /// `Display` impl (covered by `YeastDisplay`'s blanket impls for primitives).
 #[test]
 fn test_hash_brace_renders_integer_expression() {
@@ -1304,7 +1302,7 @@ fn test_hash_brace_uses_capture_location_for_leaf() {
 
     let ast = run_and_ast("foo.bar()", vec![rule]);
 
-    let mut bar_ids: Vec<usize> = Vec::new();
+    let mut bar_ids: Vec<yeast::Id> = Vec::new();
     for id in ast.reachable_node_ids() {
         let Some(node) = ast.get_node(id) else {
             continue;

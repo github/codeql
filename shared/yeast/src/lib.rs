@@ -22,37 +22,31 @@ use captures::Captures;
 pub use cursor::Cursor;
 use query::QueryNode;
 
-/// Node ids are indexes into the arena
-pub type Id = usize;
+/// Node id: an index into the [`Ast`] arena. A newtype around `usize`
+/// rather than a bare alias so that it can carry its own
+/// [`YeastDisplay`] / [`YeastSourceRange`] / [`IntoFieldIds`] impls
+/// without colliding with the impls for plain integers.
+///
+/// Use `id.0` (or `id.into()`) to obtain the raw arena index.
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Debug, Hash, Serialize)]
+pub struct Id(pub usize);
 
-/// Field and Kind ids are provided by tree-sitter
-type FieldId = u16;
-type KindId = u16;
-
-/// A typed reference to a node in an [`Ast`] arena. Wraps an [`Id`] but
-/// deliberately does not implement [`std::fmt::Display`]: rendering a node
-/// requires the [`Ast`] it lives in (to resolve [`NodeContent::Range`] back
-/// to source text). Use [`YeastDisplay::yeast_to_string`] to format it.
-#[derive(Copy, Clone, Eq, PartialEq, Debug, Hash)]
-pub struct NodeRef(pub Id);
-
-impl NodeRef {
-    pub fn id(self) -> Id {
-        self.0
+impl From<usize> for Id {
+    fn from(value: usize) -> Self {
+        Id(value)
     }
 }
 
-impl From<NodeRef> for Id {
-    fn from(value: NodeRef) -> Self {
+impl From<Id> for usize {
+    fn from(value: Id) -> Self {
         value.0
     }
 }
 
-impl From<Id> for NodeRef {
-    fn from(value: Id) -> Self {
-        NodeRef(value)
-    }
-}
+/// Field and Kind ids are provided by tree-sitter
+type FieldId = u16;
+type KindId = u16;
 
 /// Like [`std::fmt::Display`], but the formatting routine is given access to
 /// the [`Ast`] so that node references can resolve to their source text.
@@ -67,21 +61,21 @@ pub trait YeastDisplay {
 /// Optional source range for values used in `#{expr}` interpolations.
 ///
 /// By default this returns `None`, so synthesized leaves inherit the matched
-/// rule's source range. `NodeRef` returns the referenced node's range, letting
+/// rule's source range. `Id` returns the referenced node's range, letting
 /// `(kind #{capture})` carry the captured node's location.
 pub trait YeastSourceRange {
     fn yeast_source_range(&self, ast: &Ast) -> Option<tree_sitter::Range>;
 }
 
-impl YeastDisplay for NodeRef {
+impl YeastDisplay for Id {
     fn yeast_to_string(&self, ast: &Ast) -> String {
-        ast.source_text(self.0)
+        ast.source_text(*self)
     }
 }
 
-impl YeastSourceRange for NodeRef {
+impl YeastSourceRange for Id {
     fn yeast_source_range(&self, ast: &Ast) -> Option<tree_sitter::Range> {
-        ast.get_node(self.0).and_then(|n| match &n.content {
+        ast.get_node(*self).and_then(|n| match &n.content {
             NodeContent::Range(r) => Some(r.clone()),
             _ => n.source_range,
         })
@@ -172,7 +166,7 @@ impl<'a> AstCursor<'a> {
 }
 impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
     fn node(&self) -> &'a Node {
-        &self.ast.nodes[self.node_id]
+        &self.ast.nodes[self.node_id.0]
     }
 
     fn field_id(&self) -> Option<FieldId> {
@@ -347,16 +341,16 @@ impl Ast {
     ///
     /// This reflects the effective AST after desugaring and excludes orphaned
     /// arena nodes left behind by rewrite operations.
-    pub fn reachable_node_ids(&self) -> Vec<usize> {
+    pub fn reachable_node_ids(&self) -> Vec<Id> {
         let mut reachable = Vec::new();
         let mut stack = vec![self.root];
         let mut seen = vec![false; self.nodes.len()];
 
         while let Some(id) = stack.pop() {
-            if id >= self.nodes.len() || seen[id] {
+            if id.0 >= self.nodes.len() || seen[id.0] {
                 continue;
             }
-            seen[id] = true;
+            seen[id.0] = true;
             reachable.push(id);
 
             if let Some(node) = self.get_node(id) {
@@ -380,11 +374,11 @@ impl Ast {
     }
 
     pub fn get_node(&self, id: Id) -> Option<&Node> {
-        self.nodes.get(id)
+        self.nodes.get(id.0)
     }
 
     pub fn print(&self, source: &str, root_id: Id) -> Value {
-        let root = &self.nodes()[root_id];
+        let root = &self.nodes()[root_id.0];
         self.print_node(root, source)
     }
 
@@ -427,7 +421,7 @@ impl Ast {
             is_named,
             source_range,
         });
-        id
+        Id(id)
     }
 
     fn union_source_range_of_children(
@@ -498,7 +492,7 @@ impl Ast {
     pub fn prepend_field_child(&mut self, node_id: Id, field_id: FieldId, value_id: Id) {
         let node = self
             .nodes
-            .get_mut(node_id)
+            .get_mut(node_id.0)
             .expect("prepend_field_child: invalid node id");
         node.fields.entry(field_id).or_default().insert(0, value_id);
     }
@@ -524,7 +518,7 @@ impl Ast {
             fields: BTreeMap::new(),
             content: NodeContent::DynamicString(content),
         });
-        id
+        Id(id)
     }
 
     pub fn field_name_for_id(&self, id: FieldId) -> Option<&'static str> {
@@ -1008,7 +1002,7 @@ fn apply_repeating_rules_inner<C: Clone>(
     //
     // Child traversal does not increment rewrite depth and starts fresh
     // (no rule is skipped on child subtrees).
-    let mut fields = std::mem::take(&mut ast.nodes[id].fields);
+    let mut fields = std::mem::take(&mut ast.nodes[id.0].fields);
     for children in fields.values_mut() {
         let mut new_children: Option<Vec<Id>> = None;
         for (i, &child_id) in children.iter().enumerate() {
@@ -1041,7 +1035,7 @@ fn apply_repeating_rules_inner<C: Clone>(
             *children = new;
         }
     }
-    ast.nodes[id].fields = fields;
+    ast.nodes[id.0].fields = fields;
     Ok(vec![id])
 }
 
