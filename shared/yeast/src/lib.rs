@@ -7,7 +7,6 @@ use serde_json::{json, Value};
 
 pub mod build;
 pub mod captures;
-pub mod cursor;
 pub mod dump;
 pub mod node_types_yaml;
 pub mod query;
@@ -19,7 +18,6 @@ mod visitor;
 pub use yeast_macros::{query, rule, tree, trees};
 
 use captures::Captures;
-pub use cursor::Cursor;
 use query::QueryNode;
 
 /// Node id: an index into the [`Ast`] arena. A newtype around `usize`
@@ -174,6 +172,36 @@ impl<'a> AstCursor<'a> {
         self.node_id
     }
 
+    pub fn node(&self) -> &'a Node {
+        &self.ast.nodes[self.node_id.0]
+    }
+
+    pub fn field_id(&self) -> Option<FieldId> {
+        let (_, children) = self.parents.last()?;
+        children.current_field()
+    }
+
+    pub fn field_name(&self) -> Option<&'static str> {
+        if self.field_id() == Some(CHILD_FIELD) {
+            None
+        } else {
+            self.field_id()
+                .and_then(|id| self.ast.field_name_for_id(id))
+        }
+    }
+
+    pub fn goto_first_child(&mut self) -> bool {
+        self.goto_first_child_opt().is_some()
+    }
+
+    pub fn goto_next_sibling(&mut self) -> bool {
+        self.goto_next_sibling_opt().is_some()
+    }
+
+    pub fn goto_parent(&mut self) -> bool {
+        self.goto_parent_opt().is_some()
+    }
+
     fn goto_next_sibling_opt(&mut self) -> Option<()> {
         self.node_id = self.parents.last_mut()?.1.next()?;
         Some(())
@@ -192,37 +220,6 @@ impl<'a> AstCursor<'a> {
     fn goto_parent_opt(&mut self) -> Option<()> {
         self.node_id = self.parents.pop()?.0;
         Some(())
-    }
-}
-impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
-    fn node(&self) -> &'a Node {
-        &self.ast.nodes[self.node_id.0]
-    }
-
-    fn field_id(&self) -> Option<FieldId> {
-        let (_, children) = self.parents.last()?;
-        children.current_field()
-    }
-
-    fn field_name(&self) -> Option<&'static str> {
-        if self.field_id() == Some(CHILD_FIELD) {
-            None
-        } else {
-            self.field_id()
-                .and_then(|id| self.ast.field_name_for_id(id))
-        }
-    }
-
-    fn goto_first_child(&mut self) -> bool {
-        self.goto_first_child_opt().is_some()
-    }
-
-    fn goto_next_sibling(&mut self) -> bool {
-        self.goto_next_sibling_opt().is_some()
-    }
-
-    fn goto_parent(&mut self) -> bool {
-        self.goto_parent_opt().is_some()
     }
 }
 
