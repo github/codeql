@@ -40,7 +40,7 @@ public class Test {
      * SAST/CBOM: - Parent: PBKDF2. - Iteration count is only 10, which is far
      * below acceptable security standards. - Flagged as insecure.
      */
-    public void pbkdf2LowIteration(String password, int iterationCount) throws Exception { // $ Source
+    public void pbkdf2LowIteration(String password, int iterationCount) throws Exception { // $ Source[java/quantum/examples/unknown-kdf-iteration-count]
         byte[] salt = generateSalt(16);
         PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, 256); // $ Alert[java/quantum/examples/unknown-kdf-iteration-count]
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
