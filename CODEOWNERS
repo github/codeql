@@ -28,7 +28,6 @@
 /swift/extractor/ @github/codeql-swift @github/code-scanning-language-coverage
 /misc/codegen/ @github/codeql-swift
 /java/kotlin-extractor/ @github/codeql-kotlin @github/code-scanning-language-coverage
-/java/ql/test-kotlin1/ @github/codeql-kotlin
 /java/ql/test-kotlin2/ @github/codeql-kotlin
 
 # Experimental CodeQL cryptography
