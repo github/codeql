@@ -1375,8 +1375,9 @@ module Make<
     }
 
     /**
-     * Gets the summary node that represents the for `call` returning a value
-     * with kind `rk`.
+     * Gets the summary node that represents the argument node used to transfer
+     * flow into the caller when a value is written to the value returned by
+     * `call` with kind `rk`.
      */
     SummaryNode summaryArgumentNode(FlowSummaryCallBase call, ReturnKind rk) {
       result = TSummaryReturnArgumentNode(call, rk)
