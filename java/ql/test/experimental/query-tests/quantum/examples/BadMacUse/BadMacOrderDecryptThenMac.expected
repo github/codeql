@@ -29,6 +29,3 @@ nodes
 | BadMacUse.java:146:48:146:57 | ciphertext : byte[] | semmle.label | ciphertext : byte[] |
 | BadMacUse.java:152:42:152:51 | ciphertext | semmle.label | ciphertext |
 subpaths
-testFailures
-| BadMacUse.java:92:31:92:35 | bytes : byte[] | Unexpected result: Source |
-| BadMacUse.java:146:95:146:159 | // $ Source[java/quantum/examples/bad-mac-order-decrypt-then-mac] | Missing result: Source[java/quantum/examples/bad-mac-order-decrypt-then-mac] |

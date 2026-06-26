@@ -89,7 +89,7 @@ class BadMacUse {
 
         IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
         cipher.init(mode, secretKeySpec, ivParameterSpec);
-        return cipher.doFinal(bytes);
+        return cipher.doFinal(bytes); // $ Source[java/quantum/examples/bad-mac-order-decrypt-then-mac]
     }
 
     /**
@@ -143,7 +143,7 @@ class BadMacUse {
         byte[] receivedMac = Arrays.copyOfRange(input, input.length - macLength, input.length);
 
         // Decrypt first (unsafe)
-        byte[] plaintext = decryptUsingWrapper(ciphertext, encryptionKeyBytes, new byte[16]); // $ Source[java/quantum/examples/bad-mac-order-decrypt-then-mac]
+        byte[] plaintext = decryptUsingWrapper(ciphertext, encryptionKeyBytes, new byte[16]);
 
         // Now verify MAC (too late)
         SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");
