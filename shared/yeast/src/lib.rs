@@ -518,15 +518,6 @@ impl Ast {
         self.create_named_token_with_range(kind, content, None)
     }
 
-    /// Prepend a child id to the given field of the given node.
-    pub fn prepend_field_child(&mut self, node_id: Id, field_id: FieldId, value_id: Id) {
-        let node = self
-            .nodes
-            .get_mut(node_id.0)
-            .expect("prepend_field_child: invalid node id");
-        node.fields.entry(field_id).or_default().insert(0, value_id);
-    }
-
     pub fn create_named_token_with_range(
         &mut self,
         kind: &'static str,
