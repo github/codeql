@@ -48,6 +48,36 @@ impl From<Id> for usize {
 type FieldId = u16;
 type KindId = u16;
 
+/// Trait for values that can be appended to a field's id list inside a
+/// `tree!`/`trees!`/`rule!` template (in `{expr}` placeholders).
+///
+/// `Id` pushes a single id; the blanket impl for
+/// `IntoIterator<Item: Into<Id>>` handles `Vec<Id>`, `Option<Id>`,
+/// arbitrary iterators yielding `Id`, etc.
+///
+/// This lets `{expr}` interpolate any of these shapes without a
+/// dedicated splice syntax — the macro emits the same trait-dispatched
+/// call regardless of the value's type.
+pub trait IntoFieldIds {
+    fn extend_into(self, out: &mut Vec<Id>);
+}
+
+impl IntoFieldIds for Id {
+    fn extend_into(self, out: &mut Vec<Id>) {
+        out.push(self);
+    }
+}
+
+impl<I, T> IntoFieldIds for I
+where
+    I: IntoIterator<Item = T>,
+    T: Into<Id>,
+{
+    fn extend_into(self, out: &mut Vec<Id>) {
+        out.extend(self.into_iter().map(Into::into));
+    }
+}
+
 /// Like [`std::fmt::Display`], but the formatting routine is given access to
 /// the [`Ast`] so that node references can resolve to their source text.
 ///

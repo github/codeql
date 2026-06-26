@@ -635,7 +635,7 @@ fn ruby_rules() -> Vec<Rule> {
             left: (identifier $tmp)
             right: {right}
         )
-        {..left.iter().enumerate().map(|(i, &lhs)|
+        {left.iter().enumerate().map(|(i, &lhs)|
             yeast::tree!(
                 (assignment
                     left: {lhs}
@@ -667,7 +667,7 @@ fn ruby_rules() -> Vec<Rule> {
                         left: {pat}
                         right: (identifier $tmp)
                     )
-                    stmt: {..body}
+                    stmt: {body}
                 )
             )
         )
@@ -903,7 +903,7 @@ fn one_shot_xeq1_rules() -> Vec<Rule> {
         yeast::rule!(
             (program (_)* @stmts)
             =>
-            (program stmt: {..stmts})
+            (program stmt: {stmts})
         ),
         yeast::rule!(
             (assignment left: (_) @left right: (_) @right)
@@ -979,7 +979,7 @@ fn test_one_shot_recurses_into_returned_capture() {
         yeast::rule!(
             (program (_)* @stmts)
             =>
-            (program stmt: {..stmts})
+            (program stmt: {stmts})
         ),
         // Returns the captured `left` verbatim, discarding `right`.
         yeast::rule!(
@@ -1021,7 +1021,7 @@ fn test_one_shot_does_not_recurse_into_wrapper_output() {
         yeast::rule!(
             (program (_)* @stmts)
             =>
-            (program stmt: {..stmts})
+            (program stmt: {stmts})
         ),
         // Wraps `left` in nested `first_node`/`second_node` output kinds.
         // Neither wrapper kind has a matching rule, so a buggy implementation
@@ -1072,7 +1072,7 @@ fn test_raw_capture_marker() {
         yeast::rule!(
             (program (_)* @stmts)
             =>
-            (program stmt: {..stmts})
+            (program stmt: {stmts})
         ),
         // `@@raw_lhs` is untranslated: the body reads its source text
         // ("x") and embeds it directly as the identifier content. `@rhs`
@@ -1130,7 +1130,7 @@ fn test_raw_capture_marker_explicit_translate() {
         yeast::rule!(
             (program (_)* @stmts)
             =>
-            (program stmt: {..stmts})
+            (program stmt: {stmts})
         ),
         yeast::rule!(
             (assignment left: (_) @@raw_lhs right: (_) @rhs)
@@ -1138,7 +1138,7 @@ fn test_raw_capture_marker_explicit_translate() {
             {
                 let translated_lhs = ctx.translate(raw_lhs)?;
                 tree!((call
-                    method: {..translated_lhs}
+                    method: {translated_lhs}
                     receiver: {rhs}))
             }
         ),

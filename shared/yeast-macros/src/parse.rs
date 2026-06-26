@@ -429,45 +429,41 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
         );
         field_counter += 1;
 
-        // Check for field: {..expr}.chain or field: {expr}.chain — splice a Vec<Id> into the field
+        // Check for field: {expr}.chain (chain pipeline) or plain field: {expr}
+        // (trait-dispatched: handles single ids and iterables uniformly).
         if peek_is_group(tokens, Delimiter::Brace) {
-            let group_clone = tokens.clone().next().unwrap();
-            if let TokenTree::Group(g) = &group_clone {
-                let mut inner_check = g.stream().into_iter();
-                let is_splice = matches!(inner_check.next(), Some(TokenTree::Punct(p)) if p.as_char() == '.')
-                    && matches!(inner_check.next(), Some(TokenTree::Punct(p)) if p.as_char() == '.');
-                // Determine if a chain (.map(..)) follows the `{}` group.
-                let mut after = tokens.clone();
-                after.next(); // skip the brace group
-                let has_chain =
-                    matches!(after.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '.');
+            // Determine if a chain (.map(..)) follows the `{}` group.
+            let mut after = tokens.clone();
+            after.next(); // skip the brace group
+            let has_chain = matches!(after.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '.');
 
-                if is_splice || has_chain {
-                    let group = expect_group(tokens, Delimiter::Brace)?;
-                    let base: TokenStream = if is_splice {
-                        let mut inner = group.stream().into_iter().peekable();
-                        inner.next(); // consume first .
-                        inner.next(); // consume second .
-                        let expr: TokenStream = inner.collect();
-                        quote! {
-                            { #expr }.into_iter().map(::std::convert::Into::<yeast::Id>::into)
-                        }
-                    } else {
-                        let expr = group.stream();
-                        quote! { { #expr }.into_iter() }
-                    };
-                    let chained = parse_chain_suffix(tokens, ctx, base)?;
-                    stmts.push(quote! {
-                        let #temp: Vec<yeast::Id> = #chained.collect();
-                    });
-                    // An empty splice means the field is absent — skip it
-                    // entirely rather than emitting an empty named field.
-                    field_args.push(quote! {
-                        if !#temp.is_empty() { __fields.push((#field_str, #temp)); }
-                    });
-                    continue;
-                }
+            if has_chain {
+                let group = expect_group(tokens, Delimiter::Brace)?;
+                let expr = group.stream();
+                let base = quote! { { #expr }.into_iter() };
+                let chained = parse_chain_suffix(tokens, ctx, base)?;
+                stmts.push(quote! {
+                    let #temp: Vec<yeast::Id> = #chained.collect();
+                });
+                // An empty pipeline means the field is absent — skip it
+                // entirely rather than emitting an empty named field.
+                field_args.push(quote! {
+                    if !#temp.is_empty() { __fields.push((#field_str, #temp)); }
+                });
+                continue;
             }
+
+            // Plain `{expr}` — trait-dispatched extend.
+            let group = expect_group(tokens, Delimiter::Brace)?;
+            let expr = group.stream();
+            stmts.push(quote! {
+                let mut #temp: Vec<yeast::Id> = Vec::new();
+                yeast::IntoFieldIds::extend_into({ #expr }, &mut #temp);
+            });
+            field_args.push(quote! {
+                if !#temp.is_empty() { __fields.push((#field_str, #temp)); }
+            });
+            continue;
         }
 
         let value = parse_direct_node(tokens, ctx)?;
@@ -495,8 +491,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
     })
 }
 
-/// Parse a chain of `.method(args)` suffixes after a `{expr}` or `{..expr}`
-/// placeholder in tree templates. Currently supports:
+/// Parse a chain of `.method(args)` suffixes after a `{expr}` placeholder in tree templates. Currently supports:
 ///
 /// ```text
 /// .map(param -> template)   -- iterator map: produces Vec<yeast::Id>
@@ -603,25 +598,15 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
             continue;
         }
 
-        // {expr} or {..expr} (with optional .chain) — single node or splice
+        // {expr} (with optional `.chain` pipeline) — extend `__nodes` via
+        // `IntoFieldIds`, which handles single ids and iterables uniformly.
         if peek_is_group(tokens, Delimiter::Brace) {
             let group = expect_group(tokens, Delimiter::Brace)?;
             let has_chain =
                 matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '.');
-            let mut inner = group.stream().into_iter().peekable();
-            let is_splice = peek_is_dotdot(&inner);
-            if is_splice || has_chain {
-                let base: TokenStream = if is_splice {
-                    inner.next(); // consume first .
-                    inner.next(); // consume second .
-                    let expr: TokenStream = inner.collect();
-                    quote! {
-                        { #expr }.into_iter().map(::std::convert::Into::<yeast::Id>::into)
-                    }
-                } else {
-                    let expr = group.stream();
-                    quote! { { #expr }.into_iter() }
-                };
+            if has_chain {
+                let expr = group.stream();
+                let base = quote! { { #expr }.into_iter() };
                 let chained = parse_chain_suffix(tokens, ctx, base)?;
                 items.push(quote! {
                     __nodes.extend(#chained);
@@ -629,7 +614,7 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
             } else {
                 let expr = group.stream();
                 items.push(quote! {
-                    __nodes.push(::std::convert::Into::<yeast::Id>::into({ #expr }));
+                    yeast::IntoFieldIds::extend_into({ #expr }, &mut __nodes);
                 });
             }
             continue;
@@ -949,13 +934,6 @@ fn peek_is_dollar(tokens: &mut Tokens) -> bool {
 
 fn peek_is_hash(tokens: &mut Tokens) -> bool {
     matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '#')
-}
-
-/// Check for `..` (two consecutive dot punctuation tokens).
-fn peek_is_dotdot(tokens: &Tokens) -> bool {
-    let mut lookahead = tokens.clone();
-    matches!(lookahead.next(), Some(TokenTree::Punct(p)) if p.as_char() == '.')
-        && matches!(lookahead.next(), Some(TokenTree::Punct(p)) if p.as_char() == '.')
 }
 
 fn peek_is_underscore(tokens: &mut Tokens) -> bool {
