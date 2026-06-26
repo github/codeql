@@ -1439,4 +1439,328 @@ module Unified {
       unified_while_stmt_modifier(this, _, result)
     }
   }
+
+  /** Provides predicates for mapping AST nodes to their named children. */
+  module PrintAst {
+    /** Gets a child of `node` returned by the member predicate with the given `name`. If the predicate takes an index argument, `i` is bound to that index, otherwise `i` is `-1` (which is never a valid index). */
+    AstNode getChild(AstNode node, string name, int i) {
+      result = node.(AccessorDeclaration).getAccessorKind() and i = -1 and name = "getAccessorKind"
+      or
+      result = node.(AccessorDeclaration).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(AccessorDeclaration).getModifier(i) and name = "getModifier"
+      or
+      result = node.(AccessorDeclaration).getName() and i = -1 and name = "getName"
+      or
+      result = node.(AccessorDeclaration).getParameter(i) and name = "getParameter"
+      or
+      result = node.(AccessorDeclaration).getType() and i = -1 and name = "getType"
+      or
+      result = node.(Argument).getModifier(i) and name = "getModifier"
+      or
+      result = node.(Argument).getName() and i = -1 and name = "getName"
+      or
+      result = node.(Argument).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(ArrayLiteral).getElement(i) and name = "getElement"
+      or
+      result = node.(AssignExpr).getTarget() and i = -1 and name = "getTarget"
+      or
+      result = node.(AssignExpr).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(AssociatedTypeDeclaration).getBound() and i = -1 and name = "getBound"
+      or
+      result = node.(AssociatedTypeDeclaration).getModifier(i) and name = "getModifier"
+      or
+      result = node.(AssociatedTypeDeclaration).getName() and i = -1 and name = "getName"
+      or
+      result = node.(BaseType).getModifier(i) and name = "getModifier"
+      or
+      result = node.(BaseType).getType() and i = -1 and name = "getType"
+      or
+      result = node.(BinaryExpr).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(BinaryExpr).getOperator() and i = -1 and name = "getOperator"
+      or
+      result = node.(BinaryExpr).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(Block).getStmt(i) and name = "getStmt"
+      or
+      result = node.(BoundTypeConstraint).getBound() and i = -1 and name = "getBound"
+      or
+      result = node.(BoundTypeConstraint).getType() and i = -1 and name = "getType"
+      or
+      result = node.(BreakExpr).getLabel() and i = -1 and name = "getLabel"
+      or
+      result = node.(BulkImportingPattern).getModifier(i) and name = "getModifier"
+      or
+      result = node.(CallExpr).getArgument(i) and name = "getArgument"
+      or
+      result = node.(CallExpr).getCallee() and i = -1 and name = "getCallee"
+      or
+      result = node.(CallExpr).getModifier(i) and name = "getModifier"
+      or
+      result = node.(CatchClause).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(CatchClause).getGuard() and i = -1 and name = "getGuard"
+      or
+      result = node.(CatchClause).getModifier(i) and name = "getModifier"
+      or
+      result = node.(CatchClause).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(ClassLikeDeclaration).getBaseType(i) and name = "getBaseType"
+      or
+      result = node.(ClassLikeDeclaration).getMember(i) and name = "getMember"
+      or
+      result = node.(ClassLikeDeclaration).getModifier(i) and name = "getModifier"
+      or
+      result = node.(ClassLikeDeclaration).getName() and i = -1 and name = "getName"
+      or
+      result = node.(ClassLikeDeclaration).getTypeConstraint(i) and name = "getTypeConstraint"
+      or
+      result = node.(ClassLikeDeclaration).getTypeParameter(i) and name = "getTypeParameter"
+      or
+      result = node.(CompoundAssignExpr).getOperator() and i = -1 and name = "getOperator"
+      or
+      result = node.(CompoundAssignExpr).getTarget() and i = -1 and name = "getTarget"
+      or
+      result = node.(CompoundAssignExpr).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(ConstructorDeclaration).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(ConstructorDeclaration).getModifier(i) and name = "getModifier"
+      or
+      result = node.(ConstructorDeclaration).getName() and i = -1 and name = "getName"
+      or
+      result = node.(ConstructorDeclaration).getParameter(i) and name = "getParameter"
+      or
+      result = node.(ConstructorPattern).getConstructor() and i = -1 and name = "getConstructor"
+      or
+      result = node.(ConstructorPattern).getElement(i) and name = "getElement"
+      or
+      result = node.(ConstructorPattern).getModifier(i) and name = "getModifier"
+      or
+      result = node.(ContinueExpr).getLabel() and i = -1 and name = "getLabel"
+      or
+      result = node.(DestructorDeclaration).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(DestructorDeclaration).getModifier(i) and name = "getModifier"
+      or
+      result = node.(DoWhileStmt).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(DoWhileStmt).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(DoWhileStmt).getModifier(i) and name = "getModifier"
+      or
+      result = node.(EqualityTypeConstraint).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(EqualityTypeConstraint).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(ExprEqualityPattern).getExpr() and i = -1 and name = "getExpr"
+      or
+      result = node.(ForEachStmt).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(ForEachStmt).getGuard() and i = -1 and name = "getGuard"
+      or
+      result = node.(ForEachStmt).getIterable() and i = -1 and name = "getIterable"
+      or
+      result = node.(ForEachStmt).getModifier(i) and name = "getModifier"
+      or
+      result = node.(ForEachStmt).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(FunctionDeclaration).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(FunctionDeclaration).getModifier(i) and name = "getModifier"
+      or
+      result = node.(FunctionDeclaration).getName() and i = -1 and name = "getName"
+      or
+      result = node.(FunctionDeclaration).getParameter(i) and name = "getParameter"
+      or
+      result = node.(FunctionDeclaration).getReturnType() and i = -1 and name = "getReturnType"
+      or
+      result = node.(FunctionDeclaration).getTypeConstraint(i) and name = "getTypeConstraint"
+      or
+      result = node.(FunctionDeclaration).getTypeParameter(i) and name = "getTypeParameter"
+      or
+      result = node.(FunctionExpr).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(FunctionExpr).getCaptureDeclaration(i) and name = "getCaptureDeclaration"
+      or
+      result = node.(FunctionExpr).getModifier(i) and name = "getModifier"
+      or
+      result = node.(FunctionExpr).getParameter(i) and name = "getParameter"
+      or
+      result = node.(FunctionExpr).getReturnType() and i = -1 and name = "getReturnType"
+      or
+      result = node.(FunctionTypeExpr).getParameter(i) and name = "getParameter"
+      or
+      result = node.(FunctionTypeExpr).getReturnType() and i = -1 and name = "getReturnType"
+      or
+      result = node.(GenericTypeExpr).getBase() and i = -1 and name = "getBase"
+      or
+      result = node.(GenericTypeExpr).getTypeArgument(i) and name = "getTypeArgument"
+      or
+      result = node.(GuardIfStmt).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(GuardIfStmt).getElse() and i = -1 and name = "getElse"
+      or
+      result = node.(IfExpr).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(IfExpr).getElse() and i = -1 and name = "getElse"
+      or
+      result = node.(IfExpr).getThen() and i = -1 and name = "getThen"
+      or
+      result = node.(ImportDeclaration).getImportedExpr() and i = -1 and name = "getImportedExpr"
+      or
+      result = node.(ImportDeclaration).getModifier(i) and name = "getModifier"
+      or
+      result = node.(ImportDeclaration).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(InitializerDeclaration).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(InitializerDeclaration).getModifier(i) and name = "getModifier"
+      or
+      result = node.(KeyValuePair).getKey() and i = -1 and name = "getKey"
+      or
+      result = node.(KeyValuePair).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(LabeledStmt).getLabel() and i = -1 and name = "getLabel"
+      or
+      result = node.(LabeledStmt).getStmt() and i = -1 and name = "getStmt"
+      or
+      result = node.(MapLiteral).getElement(i) and name = "getElement"
+      or
+      result = node.(MemberAccessExpr).getBase() and i = -1 and name = "getBase"
+      or
+      result = node.(MemberAccessExpr).getMember() and i = -1 and name = "getMember"
+      or
+      result = node.(NameExpr).getIdentifier() and i = -1 and name = "getIdentifier"
+      or
+      result = node.(NamePattern).getIdentifier() and i = -1 and name = "getIdentifier"
+      or
+      result = node.(NamePattern).getModifier(i) and name = "getModifier"
+      or
+      result = node.(NamedTypeExpr).getName() and i = -1 and name = "getName"
+      or
+      result = node.(NamedTypeExpr).getQualifier() and i = -1 and name = "getQualifier"
+      or
+      result = node.(OperatorSyntaxDeclaration).getFixity() and i = -1 and name = "getFixity"
+      or
+      result = node.(OperatorSyntaxDeclaration).getModifier(i) and name = "getModifier"
+      or
+      result = node.(OperatorSyntaxDeclaration).getName() and i = -1 and name = "getName"
+      or
+      result = node.(OperatorSyntaxDeclaration).getPrecedence() and
+      i = -1 and
+      name = "getPrecedence"
+      or
+      result = node.(Parameter).getDefault() and i = -1 and name = "getDefault"
+      or
+      result = node.(Parameter).getExternalName() and i = -1 and name = "getExternalName"
+      or
+      result = node.(Parameter).getModifier(i) and name = "getModifier"
+      or
+      result = node.(Parameter).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(Parameter).getType() and i = -1 and name = "getType"
+      or
+      result = node.(PatternElement).getKey() and i = -1 and name = "getKey"
+      or
+      result = node.(PatternElement).getModifier(i) and name = "getModifier"
+      or
+      result = node.(PatternElement).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(PatternGuardExpr).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(PatternGuardExpr).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(ReturnExpr).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(SwitchCase).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(SwitchCase).getGuard() and i = -1 and name = "getGuard"
+      or
+      result = node.(SwitchCase).getModifier(i) and name = "getModifier"
+      or
+      result = node.(SwitchCase).getPattern(i) and name = "getPattern"
+      or
+      result = node.(SwitchExpr).getCase(i) and name = "getCase"
+      or
+      result = node.(SwitchExpr).getModifier(i) and name = "getModifier"
+      or
+      result = node.(SwitchExpr).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(ThrowExpr).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(TopLevel).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(TryExpr).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(TryExpr).getCatchClause(i) and name = "getCatchClause"
+      or
+      result = node.(TryExpr).getModifier(i) and name = "getModifier"
+      or
+      result = node.(TupleExpr).getElement(i) and name = "getElement"
+      or
+      result = node.(TuplePattern).getElement(i) and name = "getElement"
+      or
+      result = node.(TuplePattern).getModifier(i) and name = "getModifier"
+      or
+      result = node.(TupleTypeElement).getName() and i = -1 and name = "getName"
+      or
+      result = node.(TupleTypeElement).getType() and i = -1 and name = "getType"
+      or
+      result = node.(TupleTypeExpr).getElement(i) and name = "getElement"
+      or
+      result = node.(TypeAliasDeclaration).getModifier(i) and name = "getModifier"
+      or
+      result = node.(TypeAliasDeclaration).getName() and i = -1 and name = "getName"
+      or
+      result = node.(TypeAliasDeclaration).getType() and i = -1 and name = "getType"
+      or
+      result = node.(TypeAliasDeclaration).getTypeConstraint(i) and name = "getTypeConstraint"
+      or
+      result = node.(TypeAliasDeclaration).getTypeParameter(i) and name = "getTypeParameter"
+      or
+      result = node.(TypeCastExpr).getExpr() and i = -1 and name = "getExpr"
+      or
+      result = node.(TypeCastExpr).getOperator() and i = -1 and name = "getOperator"
+      or
+      result = node.(TypeCastExpr).getType() and i = -1 and name = "getType"
+      or
+      result = node.(TypeParameter).getBound() and i = -1 and name = "getBound"
+      or
+      result = node.(TypeParameter).getModifier(i) and name = "getModifier"
+      or
+      result = node.(TypeParameter).getName() and i = -1 and name = "getName"
+      or
+      result = node.(TypeTestExpr).getExpr() and i = -1 and name = "getExpr"
+      or
+      result = node.(TypeTestExpr).getOperator() and i = -1 and name = "getOperator"
+      or
+      result = node.(TypeTestExpr).getType() and i = -1 and name = "getType"
+      or
+      result = node.(TypeTestPattern).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(TypeTestPattern).getType() and i = -1 and name = "getType"
+      or
+      result = node.(UnaryExpr).getOperand() and i = -1 and name = "getOperand"
+      or
+      result = node.(UnaryExpr).getOperator() and i = -1 and name = "getOperator"
+      or
+      result = node.(VariableDeclaration).getModifier(i) and name = "getModifier"
+      or
+      result = node.(VariableDeclaration).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(VariableDeclaration).getType() and i = -1 and name = "getType"
+      or
+      result = node.(VariableDeclaration).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(WhileStmt).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(WhileStmt).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(WhileStmt).getModifier(i) and name = "getModifier"
+    }
+  }
 }

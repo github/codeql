@@ -159,6 +159,7 @@ pub fn generate(
         ));
 
         body.append(&mut ql_gen::convert_nodes(&nodes));
+        body.push(ql_gen::create_print_ast_module(&nodes));
         ql::write(
             &mut ql_writer,
             &[ql::TopLevel::Module(ql::Module {
