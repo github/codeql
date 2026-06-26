@@ -989,6 +989,7 @@ module GoCfg {
       assignmentStep(n1, n2) or
       incDecStep(n1, n2) or
       returnStep(n1, n2) or
+      callExprStep(n1, n2) or
       indexExprStep(n1, n2) or
       sliceExprStep(n1, n2) or
       selectorExprStep(n1, n2) or
@@ -1248,6 +1249,47 @@ module GoCfg {
       exists(int i |
         tag1 = getReturnEpilogueTagRanked(ret, i) and
         tag2 = getReturnEpilogueTagRanked(ret, i + 1)
+      )
+    }
+
+    /**
+     * Call with spread arguments, e.g. `f(g())` where the inner call `g`
+     * returns multiple results that are passed as the arguments of the outer
+     * call `f`: evaluate the children (callee and inner call), extract each
+     * tuple element of the inner call's result, then invoke the outer call.
+     *
+     * The tuple-extraction nodes are additional nodes (see
+     * `extractNodeCondition`); without wiring them into the control flow they
+     * would be unreachable and pruned, breaking data flow through `f(g())`.
+     */
+    private predicate callExprStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::CallExpr call | postOrInOrder(call) and extractNodeCondition(call, _) |
+        // Route through the callee and the (single) inner-call argument
+        childSequenceStep(call, n1, n2)
+        or
+        // After the last child (the inner call) → first tuple-extraction node
+        n1.isAfter(getLastRankedChild(call)) and
+        n2.isAdditional(call, "extract:0")
+        or
+        // Chain the tuple-extraction nodes in index order
+        exists(int i |
+          extractNodeCondition(call, i + 1) and
+          n1.isAdditional(call, "extract:" + i.toString()) and
+          n2.isAdditional(call, "extract:" + (i + 1).toString())
+        )
+        or
+        // Last tuple-extraction node → the call's invocation node
+        exists(int last |
+          extractNodeCondition(call, last) and
+          not extractNodeCondition(call, last + 1) and
+          n1.isAdditional(call, "extract:" + last.toString()) and
+          n2.isIn(call)
+        )
+        or
+        // Invocation node → after the call (unless the call never returns normally)
+        n1.isIn(call) and
+        n2.isAfter(call) and
+        not beginAbruptCompletion(call, n1, _, true)
       )
     }
 
