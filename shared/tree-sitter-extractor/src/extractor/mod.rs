@@ -66,7 +66,7 @@ impl<'a> AstNode for Node<'a> {
 
 impl AstNode for yeast::Node {
     fn kind(&self) -> &str {
-        yeast::Node::kind(self)
+        yeast::Node::kind_name(self)
     }
     fn is_named(&self) -> bool {
         yeast::Node::is_named(self)
