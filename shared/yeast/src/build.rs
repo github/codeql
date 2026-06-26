@@ -176,9 +176,6 @@ impl<C: Clone> BuildCtx<'_, C> {
     /// (translation is not meaningful when input and output share a
     /// schema).
     ///
-    /// Accepts any value convertible to [`Id`] (including [`crate::NodeRef`]),
-    /// so manual rules can pass capture bindings directly without unwrapping.
-    ///
     /// Errors if this `BuildCtx` was constructed by hand (without a
     /// translator handle) — for example, in unit tests that don't go
     /// through the rule driver.
@@ -191,7 +188,7 @@ impl<C: Clone> BuildCtx<'_, C> {
     }
 
     /// Translate an optional capture, returning the first translated id or
-    /// `None`. Convenience for `?`-quantifier captures (`Option<NodeRef>`).
+    /// `None`. Convenience for `?`-quantifier captures (`Option<Id>`).
     ///
     /// If the underlying translation produces multiple ids for a single
     /// input, only the first is returned. For most use cases (e.g.

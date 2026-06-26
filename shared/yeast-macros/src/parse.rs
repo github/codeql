@@ -342,7 +342,7 @@ pub fn parse_trees_top(input: TokenStream) -> Result<TokenStream> {
     }
     Ok(quote! {
         {
-            let mut __nodes: Vec<usize> = Vec::new();
+            let mut __nodes: Vec<yeast::Id> = Vec::new();
             #(#items)*
             __nodes
         }
@@ -356,7 +356,7 @@ fn parse_direct_node(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStream> {
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => {
             let group = expect_group(tokens, Delimiter::Brace)?;
             let expr = group.stream();
-            Ok(quote! { ::std::convert::Into::<usize>::into({ #expr }) })
+            Ok(quote! { ::std::convert::Into::<yeast::Id>::into({ #expr }) })
         }
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Parenthesis => {
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
@@ -450,7 +450,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
                         inner.next(); // consume second .
                         let expr: TokenStream = inner.collect();
                         quote! {
-                            { #expr }.into_iter().map(::std::convert::Into::<usize>::into)
+                            { #expr }.into_iter().map(::std::convert::Into::<yeast::Id>::into)
                         }
                     } else {
                         let expr = group.stream();
@@ -458,7 +458,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
                     };
                     let chained = parse_chain_suffix(tokens, ctx, base)?;
                     stmts.push(quote! {
-                        let #temp: Vec<usize> = #chained.collect();
+                        let #temp: Vec<yeast::Id> = #chained.collect();
                     });
                     // An empty splice means the field is absent — skip it
                     // entirely rather than emitting an empty named field.
@@ -471,7 +471,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
         }
 
         let value = parse_direct_node(tokens, ctx)?;
-        stmts.push(quote! { let #temp: usize = #value; });
+        stmts.push(quote! { let #temp: yeast::Id = #value; });
         field_args.push(quote! { __fields.push((#field_str, vec![#temp])); });
     }
 
@@ -488,7 +488,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
     Ok(quote! {
         {
             #(#stmts)*
-            let mut __fields: Vec<(&str, Vec<usize>)> = Vec::new();
+            let mut __fields: Vec<(&str, Vec<yeast::Id>)> = Vec::new();
             #(#field_args)*
             #ctx.node(#kind_str, __fields)
         }
@@ -499,7 +499,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
 /// placeholder in tree templates. Currently supports:
 ///
 /// ```text
-/// .map(param -> template)   -- iterator map: produces Vec<usize>
+/// .map(param -> template)   -- iterator map: produces Vec<yeast::Id>
 /// ```
 ///
 /// The chain may be empty (returns `base` unchanged). Multiple chained calls
@@ -558,10 +558,10 @@ fn parse_chain_suffix(tokens: &mut Tokens, ctx: &Ident, base: TokenStream) -> Re
                 current = quote! {
                     {
                         let mut __iter = #current;
-                        let __result: Option<usize> = if let Some(#init_param) = __iter.next() {
-                            let mut __acc: usize = #init_body;
+                        let __result: Option<yeast::Id> = if let Some(#init_param) = __iter.next() {
+                            let mut __acc: yeast::Id = #init_body;
                             for #elem_param in __iter {
-                                let #acc_param: usize = __acc;
+                                let #acc_param: yeast::Id = __acc;
                                 __acc = #fold_body;
                             }
                             Some(__acc)
@@ -616,7 +616,7 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
                     inner.next(); // consume second .
                     let expr: TokenStream = inner.collect();
                     quote! {
-                        { #expr }.into_iter().map(::std::convert::Into::<usize>::into)
+                        { #expr }.into_iter().map(::std::convert::Into::<yeast::Id>::into)
                     }
                 } else {
                     let expr = group.stream();
@@ -629,7 +629,7 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
             } else {
                 let expr = group.stream();
                 items.push(quote! {
-                    __nodes.push(::std::convert::Into::<usize>::into({ #expr }));
+                    __nodes.push(::std::convert::Into::<yeast::Id>::into({ #expr }));
                 });
             }
             continue;
@@ -649,7 +649,7 @@ struct CaptureInfo {
     name: String,
     multiplicity: CaptureMultiplicity,
     /// `true` for `@@name` captures: the auto-translate prefix skips them,
-    /// so the bound `NodeRef` refers to the raw (input-schema) node.
+    /// so the bound `Id` refers to the raw (input-schema) node.
     raw: bool,
 }
 
@@ -804,22 +804,17 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
             match cap.multiplicity {
                 CaptureMultiplicity::Repeated => {
                     quote! {
-                        let #name: Vec<yeast::NodeRef> = __captures.get_all(#name_str)
-                            .into_iter()
-                            .map(yeast::NodeRef)
-                            .collect();
+                        let #name: Vec<yeast::Id> = __captures.get_all(#name_str);
                     }
                 }
                 CaptureMultiplicity::Optional => {
                     quote! {
-                        let #name: Option<yeast::NodeRef> =
-                            __captures.get_opt(#name_str).map(yeast::NodeRef);
+                        let #name: Option<yeast::Id> = __captures.get_opt(#name_str);
                     }
                 }
                 CaptureMultiplicity::Single => {
                     quote! {
-                        let #name: yeast::NodeRef =
-                            yeast::NodeRef(__captures.get_var(#name_str).unwrap());
+                        let #name: yeast::Id = __captures.get_var(#name_str).unwrap();
                     }
                 }
             }
@@ -850,7 +845,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
                         __fields.insert(
                             __field_id,
                             #name.into_iter()
-                                .map(::std::convert::Into::<usize>::into)
+                                .map(::std::convert::Into::<yeast::Id>::into)
                                 .collect(),
                         );
                     },
@@ -859,14 +854,14 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
                             .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
                         if let Some(__id) = #name {
                             __fields.entry(__field_id).or_insert_with(Vec::new)
-                                .push(::std::convert::Into::<usize>::into(__id));
+                                .push(::std::convert::Into::<yeast::Id>::into(__id));
                         }
                     },
                     CaptureMultiplicity::Single => quote! {
                         let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
                             .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
                         __fields.entry(__field_id).or_insert_with(Vec::new)
-                            .push(::std::convert::Into::<usize>::into(#name));
+                            .push(::std::convert::Into::<yeast::Id>::into(#name));
                     },
                 }
             })
@@ -898,7 +893,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
         }
 
         quote! {
-            let mut __nodes: Vec<usize> = Vec::new();
+            let mut __nodes: Vec<yeast::Id> = Vec::new();
             #(#transform_items)*
             __nodes
         }
@@ -919,7 +914,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
                 __translator.auto_translate_captures(&mut __captures, __ast, __user_ctx, __skip)?;
                 #(#bindings)*
                 let mut #ctx_ident = yeast::build::BuildCtx::with_translator(__ast, &__captures, __fresh, __source_range, __user_ctx, __translator);
-                let __result: Vec<usize> = { #transform_body };
+                let __result: Vec<yeast::Id> = { #transform_body };
                 Ok(__result)
             }))
         }

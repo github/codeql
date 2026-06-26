@@ -302,7 +302,7 @@ already conforms to the output schema.
 For rules that need the raw (input-schema) capture — typically to read
 its source text or to translate it explicitly with mutable context
 state between calls — use `@@name` instead. The body sees the original
-input-schema `NodeRef`:
+input-schema `Id`:
 
 ```rust
 yeast::rule!(

@@ -15,26 +15,26 @@ struct SwiftContext {
     /// (`computed_getter`/`computed_setter`/`computed_modify`/
     /// `willset_clause`/`didset_clause`/`getter_specifier`/
     /// `setter_specifier`).
-    property_name: Option<yeast::NodeRef>,
+    property_name: Option<yeast::Id>,
     /// Translated type node for the property type. Set by the outer
     /// `property_binding` rule (computed accessors variant) and
     /// `protocol_property_declaration` when present; read by the
     /// accessor inner rules.
-    property_type: Option<yeast::NodeRef>,
+    property_type: Option<yeast::Id>,
     /// Default-value expression for the next translated `parameter`. Set
     /// by the outer `function_parameter` rule; read by the `parameter`
     /// rules.
-    default_value: Option<yeast::NodeRef>,
+    default_value: Option<yeast::Id>,
     /// Translated outer modifiers (e.g. visibility, attributes) to
     /// attach to each child of a flattening outer rule. Set by
     /// `property_declaration`, `enum_entry`, and
     /// `protocol_property_declaration`.
-    outer_modifiers: Vec<yeast::NodeRef>,
+    outer_modifiers: Vec<yeast::Id>,
     /// The `let`/`var` binding modifier for a `property_declaration`.
     /// Set by `property_declaration`; read by the inner declaration
     /// rules (`property_binding` variants, accessor rules) so they
     /// emit it as part of the output node's `modifier:` field.
-    binding_modifier: Option<yeast::NodeRef>,
+    binding_modifier: Option<yeast::Id>,
     /// True when the current child of a flattening outer rule is not
     /// the first one — its inner rule should emit a
     /// `chained_declaration` modifier so the original grouping can be
@@ -45,10 +45,10 @@ struct SwiftContext {
 /// Build a freshly-created `chained_declaration` modifier node if
 /// `ctx.is_chained`, else `None`. Used by inner declaration rules to
 /// emit the chained tag for non-first children of a flattening outer
-/// rule. Returns `Option<NodeRef>` so it splices via `{..…}` to 0 or 1 ids.
-fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Option<yeast::NodeRef> {
+/// rule. Returns `Option<Id>` so it splices via `{..…}` to 0 or 1 ids.
+fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Option<yeast::Id> {
     if ctx.is_chained {
-        Some(ctx.literal("modifier", "chained_declaration").into())
+        Some(ctx.literal("modifier", "chained_declaration"))
     } else {
         None
     }
@@ -63,10 +63,10 @@ fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Optio
 /// condition.
 fn and_chain(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
-    conds: Vec<yeast::NodeRef>,
+    conds: Vec<yeast::Id>,
 ) -> yeast::Id {
-    conds.into_iter()
-        .map(yeast::Id::from)
+    conds
+        .into_iter()
         .reduce(|acc, elem| {
             tree!((binary_expr operator: (infix_operator "&&") left: {acc} right: {elem}))
         })
@@ -79,7 +79,7 @@ fn and_chain(
 /// guarantees at least one part.
 fn member_chain(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
-    parts: Vec<yeast::NodeRef>,
+    parts: Vec<yeast::Id>,
 ) -> yeast::Id {
     let mut iter = parts.into_iter();
     let first = iter
@@ -199,7 +199,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 computed_value: (computed_property accessor: _+ @@accessors))
             =>
             {..{
-                ctx.property_name = Some(tree!((identifier #{pattern})).into());
+                ctx.property_name = Some(tree!((identifier #{pattern})));
                 ctx.property_type = ty;
 
                 let mut result = Vec::new();
@@ -261,7 +261,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 );
 
                 // Publish the property name for the observer rules.
-                ctx.property_name = Some(tree!((identifier #{name})).into());
+                ctx.property_name = Some(tree!((identifier #{name})));
                 // Observers are subsequent outputs of this flattening
                 // rule, so they always get `chained_declaration`.
                 ctx.is_chained = true;
@@ -306,8 +306,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 (modifiers)* @mods)
             =>
             {..{
-                let binding_text = ctx.ast.source_text(binding_kind.into());
-                ctx.binding_modifier = Some(ctx.literal("modifier", &binding_text).into());
+                let binding_text = ctx.ast.source_text(binding_kind);
+                ctx.binding_modifier = Some(ctx.literal("modifier", &binding_text));
                 ctx.outer_modifiers = mods;
 
                 let mut result = Vec::new();
@@ -714,7 +714,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // Labeled statement (e.g. `outer: for ...`). Strip the trailing ':' from the label token.
         rule!((labeled_statement label: (statement_label) @lbl statement: @stmt) => {
-            let text = ctx.ast.source_text(lbl.into());
+            let text = ctx.ast.source_text(lbl);
             let name = &text[..text.len() - 1];
             tree!((labeled_stmt label: (identifier #{name}) stmt: {stmt}))
         }),
@@ -1010,7 +1010,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 (modifiers)* @mods)
             =>
             {..{
-                ctx.property_name = Some(tree!((identifier #{name})).into());
+                ctx.property_name = Some(tree!((identifier #{name})));
                 ctx.property_type = ty;
                 ctx.outer_modifiers = mods;
 
