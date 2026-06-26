@@ -214,7 +214,7 @@ yeast::tree!(ctx,
 ```rust
 yeast::trees!(ctx,
     (assignment left: {tmp} right: {right})
-    {..body}
+    {body}
 )
 ```
 
@@ -256,12 +256,26 @@ occurrences of the same `$name` within one `BuildCtx` share the same value:
 
 ### Embedded Rust expressions
 
-`{expr}` embeds a Rust expression that returns a single node `Id`:
+`{expr}` embeds a Rust expression whose value is appended to the
+enclosing field (or to the rule body's id list). Dispatch happens via
+the [`IntoFieldIds`] trait, which is implemented for:
+
+- `Id` — pushes the single id.
+- Any `IntoIterator<Item: Into<Id>>` — extends with all yielded ids
+  (covers `Vec<Id>`, `Option<Id>`, iterator chains, etc.).
+
+So the same `{expr}` syntax handles single ids, splices, and zero-or-many
+options uniformly:
 
 ```rust
 (assignment
-    left: {some_node_id}       // insert a pre-built node
-    right: {rhs}               // insert a captured value (inside rule!)
+    left: {some_node_id}       // a single Id
+    right: {rhs}               // a captured value (inside rule!)
+)
+
+yeast::trees!(ctx,
+    (assignment left: {tmp} right: {right})
+    {extra_nodes}              // splices a Vec<Id>
 )
 ```
 
@@ -277,20 +291,16 @@ expressions (with `let` bindings) work too:
     })
 ```
 
-`{..expr}` splices a `Vec<Id>` (or any iterable of `Id`); the contents
-are likewise a Rust block, so the splice can be the result of arbitrary
-computation:
+Inside `rule!`, captures are Rust variables — `{name}` works for
+single, optional, and repeated captures alike:
 
 ```rust
-yeast::trees!(ctx,
-    (assignment left: {tmp} right: {right})
-    {..extra_nodes}                        // splice a Vec<Id>
+rule!(
+    (assignment left: @lhs right: _* @parts)
+    =>
+    (assignment left: {lhs} right: (block stmt: {parts}))
 )
 ```
-
-Inside `rule!`, captures are Rust variables, so `{name}` inserts a
-single capture (`Id`) and `{..name}` splices a repeated capture
-(`Vec<Id>`).
 
 ### Raw captures (`@@name`)
 

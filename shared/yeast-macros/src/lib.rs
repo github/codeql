@@ -41,15 +41,18 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// (kind "literal")             - leaf with static content
 /// (kind #{expr})               - leaf with computed content (expr.to_string())
 /// (kind $fresh)                - leaf with auto-generated unique name
-/// {expr}                       - embed a Rust expression returning Id
-/// {..expr}                     - splice an iterable of Id (in child/field position)
-/// field: {..expr}              - splice into a named field
+/// {expr}                       - embed a Rust expression, dispatched via
+///                                the `IntoFieldIds` trait: `Id` pushes a
+///                                single id; iterables (`Vec<Id>`,
+///                                `Option<Id>`, iterator chains) splice
+///                                their elements
+/// field: {expr}                - extend a named field with `{expr}`'s ids
 /// {expr}.map(p -> tpl)         - apply tpl to each element; splice result
 /// {expr}.reduce_left(f -> init, acc, e -> fold)
 ///                              - fold with per-element init; splice 0 or 1 result
 /// ```
 ///
-/// Chain syntax after `{expr}` or `{..expr}`:
+/// Chain syntax after `{expr}`:
 /// - `.map(param -> template)` — one output node per input element.
 /// - `.reduce_left(first -> init, acc, elem -> fold)` — fold left; the first
 ///   element is converted by `init`, subsequent elements are folded by `fold`
@@ -100,7 +103,7 @@ pub fn trees(input: TokenStream) -> TokenStream {
 /// rule!(
 ///     (query_pattern field: (_) @name (kind)* @repeated (_)? @optional)
 ///     =>
-///     (output_template field: {name} {..repeated})
+///     (output_template field: {name} {repeated})
 /// )
 ///
 /// // Shorthand: captures become fields on the output node
