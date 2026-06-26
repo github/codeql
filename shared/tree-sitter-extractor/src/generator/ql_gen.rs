@@ -888,7 +888,10 @@ pub fn create_print_ast_module(nodes: &node_types::NodeTypeMap) -> ql::TopLevel<
                 // `ReservedWordInt` fields have string-valued getters, so they
                 // are not children and are excluded (just as they are from
                 // `getAFieldOrChild`).
-                if matches!(field.type_info, node_types::FieldTypeInfo::ReservedWordInt(_)) {
+                if matches!(
+                    field.type_info,
+                    node_types::FieldTypeInfo::ReservedWordInt(_)
+                ) {
                     continue;
                 }
                 let has_index = matches!(
