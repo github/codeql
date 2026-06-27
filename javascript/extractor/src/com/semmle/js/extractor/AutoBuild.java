@@ -796,7 +796,7 @@ public class AutoBuild {
       }
     }
     // exclude files in output directories as configured in tsconfig.json
-    filesToExtract.removeIf(f -> outDirs.stream().anyMatch(od -> f.startsWith(od)));
+    filesToExtract.removeIf(f -> FileType.forFileExtension(f.toFile()) == FileType.JS && outDirs.stream().anyMatch(od -> f.startsWith(od)));
 
     DependencyInstallationResult dependencyInstallationResult = DependencyInstallationResult.empty;
     if (!tsconfigFiles.isEmpty()) {
