@@ -129,31 +129,35 @@ private predicate safeCallable(Callable c) {
   c.hasQualifiedName("org.apache.commons.lang3", "StringUtils", "join")
 }
 
+overlay[local]
+private predicate collectionWithPossibleMutationBase(FlowNode n) {
+  not unmodifiableCollection(n) and
+  exists(Expr e |
+    n.asExpr() = e and
+    (e.getType() instanceof CollectionType or e.getType() instanceof Array) and
+    not collectionAddition(_, e, _) and
+    not collectionStep(n, _)
+  |
+    exists(ArrayAccess aa | e = aa.getArray())
+    or
+    exists(Call c, Callable tgt | c.getAnArgument() = e or c.getQualifier() = e |
+      tgt = c.getCallee().getSourceDeclaration() and
+      not safeCallable(tgt)
+    )
+  )
+}
+
 /**
  * Holds if `n` might be mutated in ways that adds elements that are not
  * tracked by the `collectionAddition` predicate.
  */
 private predicate collectionWithPossibleMutation(FlowNode n) {
+  collectionWithPossibleMutationBase(n)
+  or
   not unmodifiableCollection(n) and
-  (
-    exists(Expr e |
-      n.asExpr() = e and
-      (e.getType() instanceof CollectionType or e.getType() instanceof Array) and
-      not collectionAddition(_, e, _) and
-      not collectionStep(n, _)
-    |
-      exists(ArrayAccess aa | e = aa.getArray())
-      or
-      exists(Call c, Callable tgt | c.getAnArgument() = e or c.getQualifier() = e |
-        tgt = c.getCallee().getSourceDeclaration() and
-        not safeCallable(tgt)
-      )
-    )
-    or
-    exists(FlowNode mid |
-      FlowStepsInput::step(n, mid) and
-      collectionWithPossibleMutation(mid)
-    )
+  exists(FlowNode mid |
+    FlowStepsInput::step(n, mid) and
+    collectionWithPossibleMutation(mid)
   )
 }
 
