@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/quarkusio/quarkus.git#c6003e7b403e0d28d12ff6bb276088fa5c23024f by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.quarkus.hibernate.orm.panache.runtime", "JpaOperations", True, "createPanacheQuery", "(Session,String,String,String,Object)", "", "Argument[1..3]", "sql-injection", "ai-generated"]
+      - ["io.quarkus.hibernate.orm.panache.runtime", "JpaStatelessOperations", True, "createPanacheQuery", "(StatelessSession,String,String,String,Object)", "", "Argument[1..3]", "sql-injection", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.quarkus.hibernate.orm.panache.runtime", "JpaOperations", True, "list", "(PanacheQueryImpl)", "", "ReturnValue", "database", "ai-generated"]
+      - ["io.quarkus.hibernate.orm.panache.runtime", "JpaOperations", True, "stream", "(PanacheQueryImpl)", "", "ReturnValue", "database", "ai-generated"]
+      - ["io.quarkus.hibernate.orm.panache.runtime", "JpaStatelessOperations", True, "list", "(PanacheQueryImpl)", "", "ReturnValue", "database", "ai-generated"]
+      - ["io.quarkus.hibernate.orm.panache.runtime", "JpaStatelessOperations", True, "stream", "(PanacheQueryImpl)", "", "ReturnValue", "database", "ai-generated"]
+      - ["io.quarkus.hibernate.orm.panache.runtime", "PanacheQueryImpl", True, "firstResult", "()", "", "ReturnValue", "database", "ai-generated"]
+      - ["io.quarkus.hibernate.orm.panache.runtime", "PanacheQueryImpl", True, "firstResultOptional", "()", "", "ReturnValue", "database", "ai-generated"]
+      - ["io.quarkus.hibernate.orm.panache.runtime", "PanacheQueryImpl", True, "list", "()", "", "ReturnValue", "database", "ai-generated"]
+      - ["io.quarkus.hibernate.orm.panache.runtime", "PanacheQueryImpl", True, "singleResult", "()", "", "ReturnValue", "database", "ai-generated"]
+      - ["io.quarkus.hibernate.orm.panache.runtime", "PanacheQueryImpl", True, "singleResultOptional", "()", "", "ReturnValue", "database", "ai-generated"]
+      - ["io.quarkus.hibernate.orm.panache.runtime", "PanacheQueryImpl", True, "stream", "()", "", "ReturnValue", "database", "ai-generated"]
