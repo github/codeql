@@ -38,4 +38,7 @@ jobs:
 
 ## References
 
-- GitHub Docs: [Assigning permissions to jobs](https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/assigning-permissions-to-jobs).
+### GitHub Docs
+
+- [Modifying the permissions for the `GITHUB_TOKEN`](https://docs.github.com/en/actions/tutorials/authenticate-with-github_token#modifying-the-permissions-for-the-github_token).
+- [Workflow syntax for GitHub Actions: `permissions`](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions).
