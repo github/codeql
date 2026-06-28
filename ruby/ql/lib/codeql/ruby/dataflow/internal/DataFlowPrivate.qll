@@ -1,5 +1,6 @@
 private import codeql.util.Boolean
 private import codeql.util.Unit
+private import codeql.util.DualGraph
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Call
 private import codeql.ruby.ast.internal.Synthesis
@@ -2042,20 +2043,23 @@ private predicate compatibleTypesNonSymRefl(DataFlowType t1, DataFlowType t2) {
   isCollectionClass(t2)
 }
 
-pragma[nomagic]
-private predicate compatibleModules(Module m1, Module m2) {
-  exists(Module m3 |
-    m3.getAnAncestor() = m1 and
-    m3.getAnAncestor() = m2
-  )
+private module ModuleDualGraphInput implements DualGraphInputSig<Location> {
+  class Node = DataFlowType;
+
+  predicate edge(Node node1, Node node2) {
+    exists(Module m1, Module m2 |
+      node1 = TModuleDataFlowType(m1) and
+      node2 = TModuleDataFlowType(m2) and
+      m1.getAnImmediateAncestor() = m2
+    )
+  }
 }
 
-private predicate compatibleModuleTypes(TModuleDataFlowType t1, TModuleDataFlowType t2) {
-  exists(Module m1, Module m2 |
-    compatibleModules(m1, m2) and
-    t1 = TModuleDataFlowType(m1) and
-    t2 = TModuleDataFlowType(m2)
-  )
+module ModuleDualGraph = MakeDualGraph<Location, ModuleDualGraphInput>;
+
+pragma[inline]
+private predicate compatibleModuleTypes(DataFlowType t1, DataFlowType t2) {
+  ModuleDualGraph::hasCommonAncestor(t1, t2)
 }
 
 /**
