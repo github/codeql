@@ -1,7 +1,7 @@
 /**
  * @name Membership test with a non-container
  * @description A membership test, such as 'item in sequence', with a non-container on the right hand side will raise a 'TypeError'.
- * @kind problem
+ * @kind path-problem
  * @tags quality
  *       reliability
  *       correctness
@@ -12,25 +12,47 @@
  */
 
 import python
-private import LegacyPointsTo
+import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
+private import semmle.python.dataflow.new.internal.ClassInstanceFlow
+private import semmle.python.ApiGraphs
 
-predicate rhs_in_expr(ControlFlowNode rhs, Compare cmp) {
-  exists(Cmpop op, int i | cmp.getOp(i) = op and cmp.getComparator(i) = rhs.getNode() |
+predicate rhs_in_expr(Expr rhs, Compare cmp) {
+  exists(Cmpop op, int i | cmp.getOp(i) = op and cmp.getComparator(i) = rhs |
     op instanceof In or op instanceof NotIn
   )
 }
 
+module ContainsNonContainerSig implements ClassInstanceFlowSig {
+  predicate isRelevantClass(Class cls) {
+    not DuckTyping::isContainer(cls) and
+    not DuckTyping::hasUnresolvedBase(getADirectSuperclass*(cls)) and
+    not exists(CallNode setattr_call |
+      setattr_call.getFunction().(NameNode).getId() = "setattr" and
+      setattr_call.getArg(0).(NameNode).getId() = cls.getName() and
+      setattr_call.getScope() = cls.getScope()
+    )
+  }
+
+  predicate isInstanceSink(DataFlow::Node sink) { rhs_in_expr(sink.asExpr(), _) }
+
+  predicate isGuardType(DataFlow::Node checkedType) {
+    checkedType =
+      API::builtin(["list", "tuple", "set", "frozenset", "dict", "str", "bytes", "bytearray"])
+          .getAValueReachableFromSource()
+  }
+}
+
+module ContainsNonContainerFlow = ClassInstanceFlow<ContainsNonContainerSig>;
+
+import ContainsNonContainerFlow::Flow::PathGraph
+
 from
-  ControlFlowNodeWithPointsTo non_seq, Compare cmp, Value v, ClassValue cls, ControlFlowNode origin
+  ContainsNonContainerFlow::Flow::PathNode source, ContainsNonContainerFlow::Flow::PathNode sink,
+  ClassExpr ce
 where
-  rhs_in_expr(non_seq, cmp) and
-  non_seq.pointsTo(_, v, origin) and
-  v.getClass() = cls and
-  not Types::failedInference(cls, _) and
-  not cls.hasAttribute("__contains__") and
-  not cls.hasAttribute("__iter__") and
-  not cls.hasAttribute("__getitem__") and
-  not cls = ClassValue::nonetype() and
-  not cls = Value::named("types.MappingProxyType")
-select cmp, "This test may raise an Exception as the $@ may be of non-container class $@.", origin,
-  "target", cls, cls.getName()
+  ContainsNonContainerFlow::Flow::flowPath(source, sink) and
+  source.getNode().asExpr() = ce
+select sink.getNode(), source, sink,
+  "This test may raise an Exception as the $@ may be of non-container class $@.", source.getNode(),
+  "target", ce.getInnerScope(), ce.getInnerScope().getName()

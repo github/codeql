@@ -279,3 +279,62 @@ def useofapply():
     def apply(f):
       pass
     apply(foo)([1])
+
+# Class used as a decorator: the runtime value at attribute access is the
+# function's return value, not the decorator class instance.
+class cached_property(object):
+    def __init__(self, func):
+        self.func = func
+    def __get__(self, obj, cls):
+        val = self.func(obj)
+        setattr(obj, self.func.__name__, val)
+        return val
+
+class MyForm(object):
+    @cached_property
+    def changed_data(self):
+        return [1, 2, 3]
+
+def test_decorator_class(form):
+    f = MyForm()
+    # OK: cached_property is a descriptor; the actual runtime value is a list.
+    if "name" in f.changed_data:
+        pass
+
+# Class with dynamically added methods via setattr: we cannot statically
+# determine its full interface, so we should not flag it.
+class DynamicProxy(object):
+    def __init__(self, args):
+        self._args = args
+
+for method_name in ["__contains__", "__iter__", "__len__"]:
+    def wrapper(self, *args, __method_name=method_name):
+        pass
+    setattr(DynamicProxy, method_name, wrapper)
+
+def test_dynamic_methods():
+    proxy = DynamicProxy(())
+    # OK: __contains__ is added dynamically via setattr.
+    if "name" in proxy:
+        pass
+
+# isinstance guard should suppress non-container warning
+def guarded_contains(x):
+    obj = XIter()
+    if isinstance(obj, dict):
+        if x in obj:  # OK: guarded by isinstance
+            pass
+
+def guarded_contains_tuple(x):
+    obj = XIter()
+    if isinstance(obj, (list, dict, set)):
+        if x in obj:  # OK: guarded by isinstance with tuple of types
+            pass
+
+# Negated isinstance guard: early return when NOT a container
+def guarded_contains_negated(x):
+    obj = XIter()
+    if not isinstance(obj, dict):
+        return
+    if x in obj:  # OK: guarded by negated isinstance + early return
+        pass
