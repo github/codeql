@@ -120,14 +120,20 @@ pub fn generate(
         )));
         dbscheme::write(&mut dbscheme_writer, &dbscheme_tail)?;
 
-        let mut body = vec![
-            ql::TopLevel::Class(ql_gen::create_ast_node_class(
-                &ast_node_name,
-                &node_location_table_name,
-                &node_parent_table_name,
-            )),
-            ql::TopLevel::Class(ql_gen::create_token_class(&token_name, &tokeninfo_name)),
-        ];
+        let mut body = vec![];
+
+        for c in ql_gen::create_ast_node_class(
+            &ast_node_name,
+            &node_location_table_name,
+            &node_parent_table_name,
+        ) {
+            body.push(ql::TopLevel::Class(c));
+        }
+
+        for c in ql_gen::create_token_class(&token_name, &tokeninfo_name) {
+            body.push(ql::TopLevel::Class(c));
+        }
+
         if has_trivia_tokens {
             body.push(ql::TopLevel::Class(ql_gen::create_trivia_token_class(
                 &trivia_token_name,
