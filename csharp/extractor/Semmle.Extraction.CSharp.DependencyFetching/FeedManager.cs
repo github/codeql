@@ -26,7 +26,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly DependencyDirectory emptyPackageDirectory;
         private readonly ImmutableHashSet<string> privateRegistryFeeds;
 
+        /// <summary>
+        /// Gets whether there are private package registries configured for C#.
+        /// </summary>
         public bool HasPrivateRegistryFeeds { get; }
+
+        /// <summary>
+        /// Gets whether the reachability of the NuGet feeds should be checked before using them for restore.
+        /// </summary>
         public bool CheckNugetFeedResponsiveness { get; } = EnvironmentVariables.GetBooleanOptOut(EnvironmentVariableNames.CheckNugetFeedResponsiveness);
 
         private readonly Lazy<ImmutableHashSet<string>> lazyExplicitFeeds;
@@ -145,6 +152,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private IEnumerable<string> GetFeedsFromNugetConfig(string nugetConfigPath) =>
             GetFeeds(() => dotnet.GetNugetFeeds(nugetConfigPath));
 
+        /// <summary>
+        /// Constructs the NuGet sources argument for the restore command based on the given feeds.
+        /// If there are no feeds, a dummy source argument is added to override any default feeds that `restore` would use.
+        /// </summary>
+        /// <param name="feeds">The list of feeds to use for the restore command.</param>
+        /// <param name="sourceArgumentPrefix">The prefix to use for each source argument (e.g., "-s").</param>
+        /// <returns>The constructed NuGet sources argument for the restore command.</returns>
         public string FeedsToRestoreArgument(IEnumerable<string> feeds, string sourceArgumentPrefix)
         {
             // If there are no feeds, we want to override any default feeds that `restore` would use by passing a dummy source argument.
@@ -194,6 +208,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return FeedsToUseAux(feedsToConsider);
         }
 
+        /// <summary>
+        /// Constructs the list of NuGet sources to use for this restore.
+        /// (1) Use the feeds we get from `dotnet nuget list source --configfile`
+        /// (2) Use private registries, if they are configured
+        /// </summary>
+        /// <param name="config">Path to the NuGet configuration file.</param>
+        /// <returns>The list of NuGet feeds to use for this restore.</returns>
         public IEnumerable<string> FeedsToUseFromConfig(string config)
         {
             var feedsToConsider = GetFeedsFromNugetConfig(config).ToHashSet();
@@ -201,6 +222,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return FeedsToUseAux(feedsToConsider);
         }
 
+        /// <summary>
+        /// Constructs the NuGet sources argument for the `dotnet restore` command based on the given feeds.
+        /// </summary>
+        /// <param name="feeds">The list of NuGet feeds to use for the restore command.</param>
+        /// <returns>A string representing the NuGet sources argument for the `dotnet restore` command.</returns>
         public string FeedsToDotnetRestoreArgument(IEnumerable<string> feeds)
         {
             return FeedsToRestoreArgument(feeds, "-s");
@@ -212,7 +238,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// (2) Use private registries, if they are configured
         /// </summary>
         /// <param name="path">Path to project/solution</param>
-        /// <returns>A string representing the NuGet sources argument for the restore command.</returns>
+        /// <returns>A string representing the NuGet sources argument for the `dotnet restore` command.</returns>
         public string? MakeDotnetRestoreSourcesArgument(string path)
         {
             // Do not construct a set of explicit NuGet sources to use for restore.
@@ -367,6 +393,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return isTimeout;
         }
 
+        /// <summary>
+        /// Return true if the default NuGet feed is reachable, false otherwise.
+        /// If the reachability check is disabled, this method will always return true.
+        /// </summary>
+        /// <returns>True if the default NuGet feed is reachable, false otherwise.</returns>
         public bool IsDefaultFeedReachable()
         {
             if (CheckNugetFeedResponsiveness)
