@@ -13,39 +13,21 @@ module Impl implements InlineExpectationsTestSig {
    */
   class ExpectationComment extends TAnyComment {
     string toString() {
-      exists(Ruby::Comment c |
-        this = RubyComment(c) and
-        result = c.toString()
-      )
+      result = any(Ruby::Comment c | this = RubyComment(c)).toString()
       or
-      exists(R::ErbComment c |
-        this = ErbComment(c) and
-        result = c.toString()
-      )
+      result = any(R::ErbComment c | this = ErbComment(c)).toString()
     }
 
     Location getLocation() {
-      exists(Ruby::Comment c |
-        this = RubyComment(c) and
-        result = c.getLocation()
-      )
+      result = any(Ruby::Comment c | this = RubyComment(c)).getLocation()
       or
-      exists(R::ErbComment c |
-        this = ErbComment(c) and
-        result = c.getLocation()
-      )
+      result = any(R::ErbComment c | this = ErbComment(c)).getLocation()
     }
 
     string getContents() {
-      exists(Ruby::Comment c |
-        this = RubyComment(c) and
-        result = c.getValue().suffix(1)
-      )
+      result = any(Ruby::Comment c | this = RubyComment(c)).getValue().suffix(1)
       or
-      exists(R::ErbComment c |
-        this = ErbComment(c) and
-        result = c.getValue().suffix(1)
-      )
+      result = any(R::ErbComment c | this = ErbComment(c)).getValue().suffix(1)
     }
   }
 
