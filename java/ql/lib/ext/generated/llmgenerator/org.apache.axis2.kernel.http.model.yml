@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.kernel.http", "ApplicationXMLFormatter", True, "getContentType", "(MessageContext,OMOutputFormat,String)", "", "Argument[0].SyntheticField[org.apache.axis2.context.AbstractContext.properties].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.kernel.http", "ApplicationXMLFormatter", True, "getTargetAddress", "(MessageContext,OMOutputFormat,URL)", "", "Argument[0].SyntheticField[org.apache.axis2.context.AbstractContext.properties].MapValue", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.kernel.http", "HTTPConstants", True, "getBytes", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.kernel.http", "MultipartFormDataFormatter", True, "getTargetAddress", "(MessageContext,OMOutputFormat,URL)", "", "Argument[0].SyntheticField[org.apache.axis2.context.AbstractContext.properties].MapValue", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.kernel.http", "SOAPMessageFormatter", True, "getTargetAddress", "(MessageContext,OMOutputFormat,URL)", "", "Argument[0].SyntheticField[org.apache.axis2.context.AbstractContext.properties].MapValue", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.kernel.http", "XFormURLEncodedFormatter", True, "getTargetAddress", "(MessageContext,OMOutputFormat,URL)", "", "Argument[0].SyntheticField[org.apache.axis2.context.AbstractContext.properties].MapValue", "ReturnValue", "taint", "dfc-generated"]

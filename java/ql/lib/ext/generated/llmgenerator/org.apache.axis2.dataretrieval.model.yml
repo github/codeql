@@ -1,0 +1,55 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.dataretrieval", "DataRetrievalUtil", True, "buildOM", "(ClassLoader,String)", "", "Argument[1]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.dataretrieval", "DataRetrievalUtil", True, "convertToOMElement", "(InputStream)", "", "Argument[0]", "xxe", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.axis2.dataretrieval", "AxisDataLocator", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.dataretrieval", "AxisDataLocator", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "Parameter[1]", "remote", "ai-generated"]
+      - ["org.apache.axis2.dataretrieval", "SchemaDataLocator", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.dataretrieval", "SchemaDataLocator", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "Parameter[1]", "remote", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.dataretrieval", "AxisDataLocator", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "AxisDataLocator", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "AxisDataLocator", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "AxisDataLocator", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "AxisDataLocator", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "AxisDataLocatorImpl", True, "AxisDataLocatorImpl", "(AxisService)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "BaseAxisDataLocator", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "BaseAxisDataLocator", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "BaseAxisDataLocator", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "Data", True, "Data", "(Object,String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.dataretrieval.Data.data]", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "Data", True, "Data", "(Object,String)", "", "Argument[1]", "Argument[this].SyntheticField[org.apache.axis2.dataretrieval.Data.identifier]", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "Data", True, "getData", "()", "", "Argument[this].SyntheticField[org.apache.axis2.dataretrieval.Data.data]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "Data", True, "getIdentifier", "()", "", "Argument[this].SyntheticField[org.apache.axis2.dataretrieval.Data.identifier]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "DataLocatorFactory", True, "createDataLocator", "(String,ServiceData[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "DataRetrievalException", True, "DataRetrievalException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "DataRetrievalException", True, "DataRetrievalException", "(String,Throwable)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "DataRetrievalException", True, "DataRetrievalException", "(Throwable)", "", "Argument[0]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "DataRetrievalRequest", True, "getDialect", "()", "", "Argument[this].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "DataRetrievalRequest", True, "getIdentifier", "()", "", "Argument[this].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "DataRetrievalRequest", True, "getOutputForm", "()", "", "Argument[this].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "DataRetrievalRequest", True, "putDialect", "(String)", "", "Argument[0]", "Argument[this].MapValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "DataRetrievalRequest", True, "putIdentifier", "(String)", "", "Argument[0]", "Argument[this].MapValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "DataRetrievalRequest", True, "putOutputForm", "(OutputForm)", "", "Argument[0]", "Argument[this].MapValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "OutputForm", True, "getType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "ServiceData", True, "ServiceData", "(OMElement)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.dataretrieval.ServiceData.data]", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "ServiceData", True, "getDialect", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "ServiceData", True, "getIdentifier", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval", "ServiceData", True, "getOMData", "()", "", "Argument[this].SyntheticField[org.apache.axis2.dataretrieval.ServiceData.data]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dataretrieval", "WSDL11SupplierTemplate", True, "init", "(AxisService)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.axis2.dataretrieval", "BaseAxisDataLocator", "getData", "(DataRetrievalRequest,MessageContext)", "summary", "ai-generated"]

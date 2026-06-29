@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.phaseresolver", "PhaseException", True, "PhaseException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.phaseresolver", "PhaseException", True, "PhaseException", "(String,Throwable)", "", "Argument[1]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["org.apache.axis2.phaseresolver", "PhaseException", True, "PhaseException", "(Throwable)", "", "Argument[0]", "Argument[this].Field[java.rmi.RemoteException.detail]", "value", "dfc-generated"]
+      - ["org.apache.axis2.phaseresolver", "PhaseHolder", True, "PhaseHolder", "(List)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.phaseresolver", "PhaseResolver", True, "PhaseResolver", "(AxisConfiguration)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

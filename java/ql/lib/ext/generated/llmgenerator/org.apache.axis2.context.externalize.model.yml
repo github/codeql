@@ -1,0 +1,57 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.context.externalize", "DebugObjectInput", True, "readObject", "()", "", "Argument[this]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "DebugObjectInput", True, "trace", "(String)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readArrayList", "()", "", "Argument[this]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readHashMap", "()", "", "Argument[this]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readLinkedList", "()", "", "Argument[this]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readList", "(List)", "", "Argument[this]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readMap", "(Map)", "", "Argument[this]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readObject", "()", "", "Argument[this]", "unsafe-deserialization", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.context.externalize", "ActivateUtils", True, "findHandler", "(List,MetaDataEntry)", "", "Argument[0].Element", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "ActivateUtils", True, "findMessage", "(AxisOperation,String,String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "ActivateUtils", True, "findOperation", "(AxisConfiguration,String,QName)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "ActivateUtils", True, "findOperation", "(AxisService,String,QName)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "ActivateUtils", True, "findService", "(AxisConfiguration,String,String)", "", "Argument[0].SyntheticField[org.apache.axis2.engine.AxisConfiguration.allServices].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "ActivateUtils", True, "findService", "(AxisConfiguration,String,String,String)", "", "Argument[0].SyntheticField[org.apache.axis2.engine.AxisConfiguration.allServices].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "ActivateUtils", True, "findServiceGroup", "(AxisConfiguration,String,String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "ActivateUtils", True, "findTransportListener", "(AxisConfiguration,String)", "", "Argument[0].SyntheticField[org.apache.axis2.engine.AxisConfiguration.transportsIn].MapValue", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "DebugObjectInput", True, "DebugObjectInput", "(ObjectInput)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "DebugObjectOutputStream", True, "write", "(byte[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "DebugObjectOutputStream", True, "write", "(byte[],int,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "DebugObjectOutputStream", True, "writeBytes", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "DebugObjectOutputStream", True, "writeChars", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "DebugObjectOutputStream", True, "writeObject", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "DebugObjectOutputStream", True, "writeUTF", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "ObjectInputStreamWithCL", True, "ObjectInputStreamWithCL", "(InputStream)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "ObjectInputStreamWithCL", True, "ObjectInputStreamWithCL", "(InputStream,ClassLoader)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "ObjectInputStreamWithCL", True, "ObjectInputStreamWithCL", "(InputStream,ObjectInputStreamWithCL$ClassResolver)", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "install", "(ObjectInput)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readArrayList", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readHashMap", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readLinkedList", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readList", "(List)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readMap", "(Map)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "install", "(ObjectOutput)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "install", "(ObjectOutput)", "", "Argument[0]", "ReturnValue.SyntheticField[org.apache.axis2.context.externalize.SafeObjectOutputStream.out]", "value", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "putFields", "()", "", "Argument[this].SyntheticField[org.apache.axis2.context.externalize.SafeObjectOutputStream.out]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "write", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.context.externalize.SafeObjectOutputStream.out]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "write", "(byte[],int,int)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.context.externalize.SafeObjectOutputStream.out]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "writeBytes", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.context.externalize.SafeObjectOutputStream.out]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "writeChars", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.context.externalize.SafeObjectOutputStream.out]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "writeItem", "(Object,boolean)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.context.externalize.SafeObjectOutputStream.out]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "writeList", "(List)", "", "Argument[0].Element", "Argument[this].SyntheticField[org.apache.axis2.context.externalize.SafeObjectOutputStream.out]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "writeMap", "(Map)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "writeObject", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.context.externalize.SafeObjectOutputStream.out]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "writePair", "(Object,boolean,Object,boolean)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.context.externalize.SafeObjectOutputStream.out]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "writePair", "(Object,boolean,Object,boolean)", "", "Argument[2]", "Argument[this].SyntheticField[org.apache.axis2.context.externalize.SafeObjectOutputStream.out]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectOutputStream", True, "writeUTF", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.context.externalize.SafeObjectOutputStream.out]", "taint", "dfc-generated"]

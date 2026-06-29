@@ -1,0 +1,26 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.dataretrieval.client", "MexClient", True, "MexClient", "(ConfigurationContext,URL,QName,String)", "", "Argument[1]", "request-forgery", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.axis2.dataretrieval.client", "MexClient", True, "MexClient", "(ConfigurationContext,URL,QName,String)", "", "ReturnValue", "remote", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.dataretrieval.client", "MexClient", True, "MexClient", "(ConfigurationContext,AxisService)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval.client", "MexClient", True, "MexClient", "(ConfigurationContext,AxisService)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval.client", "MexClient", True, "MexClient", "(ConfigurationContext,Definition,QName,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.dataretrieval.client", "MexClient", True, "MexClient", "(ConfigurationContext,URL,QName,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.axis2.dataretrieval.client", "MexClient", "MexClient", "(ConfigurationContext,AxisService)", "summary", "ai-generated"]

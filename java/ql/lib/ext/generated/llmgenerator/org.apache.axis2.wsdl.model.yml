@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.wsdl", "HTTPHeaderMessage", True, "getName", "()", "", "Argument[this].SyntheticField[org.apache.axis2.wsdl.HTTPHeaderMessage.name]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "HTTPHeaderMessage", True, "getqName", "()", "", "Argument[this].SyntheticField[org.apache.axis2.wsdl.HTTPHeaderMessage.qName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "HTTPHeaderMessage", True, "setName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.wsdl.HTTPHeaderMessage.name]", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "HTTPHeaderMessage", True, "setqName", "(QName)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.wsdl.HTTPHeaderMessage.qName]", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "SOAPHeaderMessage", True, "SOAPHeaderMessage", "(QName)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.wsdl", "SOAPHeaderMessage", True, "getElement", "()", "", "Argument[this].SyntheticField[org.apache.axis2.wsdl.SOAPHeaderMessage.element]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "SOAPHeaderMessage", True, "getMessage", "()", "", "Argument[this].SyntheticField[org.apache.axis2.wsdl.SOAPHeaderMessage.messageName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "SOAPHeaderMessage", True, "getNamespaceURI", "()", "", "Argument[this].SyntheticField[org.apache.axis2.wsdl.SOAPHeaderMessage.namespaceURI]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "SOAPHeaderMessage", True, "getUse", "()", "", "Argument[this].SyntheticField[org.apache.axis2.wsdl.SOAPHeaderMessage.use]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "SOAPHeaderMessage", True, "part", "()", "", "Argument[this].SyntheticField[org.apache.axis2.wsdl.SOAPHeaderMessage.part]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "SOAPHeaderMessage", True, "setElement", "(QName)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.wsdl.SOAPHeaderMessage.element]", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "SOAPHeaderMessage", True, "setMessage", "(QName)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.wsdl.SOAPHeaderMessage.messageName]", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "SOAPHeaderMessage", True, "setNamespaceURI", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.wsdl.SOAPHeaderMessage.namespaceURI]", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "SOAPHeaderMessage", True, "setPart", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.wsdl.SOAPHeaderMessage.part]", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "SOAPHeaderMessage", True, "setUse", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.wsdl.SOAPHeaderMessage.use]", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "SOAPModuleMessage", True, "getUri", "()", "", "Argument[this].SyntheticField[org.apache.axis2.wsdl.SOAPModuleMessage.uri]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "SOAPModuleMessage", True, "setUri", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.wsdl.SOAPModuleMessage.uri]", "value", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "WSDLUtil", True, "getConstantFromHTTPLocation", "(String,String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "WSDLUtil", True, "getConstantFromHTTPLocation", "(String,String)", "", "Argument[1]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "WSDLUtil", True, "getEndpointName", "(String,String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "WSDLUtil", True, "getEndpointName", "(String,String)", "", "Argument[1]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.wsdl", "WSDLUtil", True, "getPartQName", "(String,String,String)", "", "Argument[2]", "ReturnValue.SyntheticField[javax.xml.namespace.QName.localPart]", "value", "dfc-generated"]

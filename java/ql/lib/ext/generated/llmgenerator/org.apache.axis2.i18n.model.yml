@@ -1,0 +1,39 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.i18n", "MessageBundle", True, "MessageBundle", "(String,String,String,Locale,ClassLoader,ResourceBundle)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.i18n", "MessageBundle", True, "MessageBundle", "(String,String,String,Locale,ClassLoader,ResourceBundle)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.i18n", "MessageBundle", True, "MessageBundle", "(String,String,String,Locale,ClassLoader,ResourceBundle)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.i18n", "MessageBundle", True, "MessageBundle", "(String,String,String,Locale,ClassLoader,ResourceBundle)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.i18n", "MessageBundle", True, "MessageBundle", "(String,String,String,Locale,ClassLoader,ResourceBundle)", "", "Argument[4]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.i18n", "MessageBundle", True, "MessageBundle", "(String,String,String,Locale,ClassLoader,ResourceBundle)", "", "Argument[5]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.i18n", "MessageBundle", True, "getResourceBundle", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getBundle", "(String,Class,String,Locale)", "", "Argument[2]", "ReturnValue.SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceName]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getBundle", "(String,Class,String,Locale,ResourceBundle)", "", "Argument[2]", "ReturnValue.SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceName]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getBundle", "(String,Class,String,Locale,ResourceBundle)", "", "Argument[4]", "ReturnValue.SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceBundle].SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceBundle]", "value", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getBundle", "(String,Class,String,Locale,ResourceBundle)", "", "Argument[4]", "ReturnValue.SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceBundle]", "value", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getBundle", "(String,String,String)", "", "Argument[1]", "ReturnValue.SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceName]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getBundle", "(String,String,String)", "", "Argument[2]", "ReturnValue.SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceName]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getBundle", "(String,String,String,Locale,ClassLoader)", "", "Argument[1]", "ReturnValue.SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceName]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getBundle", "(String,String,String,Locale,ClassLoader)", "", "Argument[2]", "ReturnValue.SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceName]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getBundle", "(String,String,String,Locale,ClassLoader,ResourceBundle)", "", "Argument[1]", "ReturnValue.SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceName]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getBundle", "(String,String,String,Locale,ClassLoader,ResourceBundle)", "", "Argument[2]", "ReturnValue.SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceName]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getBundle", "(String,String,String,Locale,ClassLoader,ResourceBundle)", "", "Argument[5]", "ReturnValue.SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceBundle].SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceBundle]", "value", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getBundle", "(String,String,String,Locale,ClassLoader,ResourceBundle)", "", "Argument[5]", "ReturnValue.SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceBundle]", "value", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getKeys", "()", "", "Argument[this].SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceBundle].SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceBundle]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getKeys", "()", "", "Argument[this].SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceBundle]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", True, "getResourceName", "()", "", "Argument[this].SyntheticField[org.apache.axis2.i18n.ProjectResourceBundle.resourceName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.i18n", "RB", True, "RB", "(Object,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.i18n", "RB", True, "RB", "(Object,String,Locale)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.i18n", "RB", True, "RB", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.i18n", "RB", True, "getProperties", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", "getBundle", "(String,Class,String,Locale,ResourceBundle)", "summary", "ai-generated"]
+      - ["org.apache.axis2.i18n", "ProjectResourceBundle", "getBundle", "(String,String,String,Locale,ClassLoader,ResourceBundle)", "summary", "ai-generated"]

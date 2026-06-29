@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.axis2.handlers", "AbstractHandler", True, "flowComplete", "(MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.handlers", "AbstractTemplatedHandler", True, "doInvoke", "(MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.handlers", "AbstractTemplatedHandler", True, "invoke", "(MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.handlers", "AbstractTemplatedHandler", True, "shouldInvoke", "(MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.handlers", "AbstractHandler", True, "getHandlerDesc", "()", "", "Argument[this].SyntheticField[org.apache.axis2.handlers.AbstractHandler.handlerDesc]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.handlers", "AbstractHandler", True, "init", "(HandlerDescription)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.handlers.AbstractHandler.handlerDesc]", "value", "dfc-generated"]

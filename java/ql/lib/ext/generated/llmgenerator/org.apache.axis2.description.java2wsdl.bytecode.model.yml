@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.description.java2wsdl.bytecode", "ChainedParamReader", True, "getParameterNames", "(Constructor)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.description.java2wsdl.bytecode", "ChainedParamReader", True, "getParameterNames", "(Method)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.description.java2wsdl.bytecode.ChainedParamReader.methodToParamMap].MapKey", "value", "dfc-generated"]
+      - ["org.apache.axis2.description.java2wsdl.bytecode", "ChainedParamReader", True, "getParameterNames", "(Method)", "", "Argument[this].SyntheticField[org.apache.axis2.description.java2wsdl.bytecode.ChainedParamReader.methodToParamMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.description.java2wsdl.bytecode", "MethodTable", True, "getParameterNames", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.description.java2wsdl.bytecode", "ParamReader", True, "ParamReader", "(byte[])", "", "Argument[0]", "Argument[this]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.description.java2wsdl.bytecode", "ParamReader", True, "getParameterNames", "(Constructor)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.description.java2wsdl.bytecode", "ParamReader", True, "getParameterNames", "(Method)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.axis2.description.java2wsdl.bytecode", "ParamReader", "getParameterNames", "(Constructor)", "summary", "ai-generated"]
+      - ["org.apache.axis2.description.java2wsdl.bytecode", "ParamReader", "getParameterNames", "(Method)", "summary", "ai-generated"]

@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.classloader", "BeanInfoCache", False, "getBeanInfo", "(Class,Class)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.classloader", "BeanInfoCachingClassLoader", True, "getBeanInfoCache", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.classloader", "MultiParentClassLoader", True, "MultiParentClassLoader", "(MultiParentClassLoader)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.classloader", "MultiParentClassLoader", True, "MultiParentClassLoader", "(URL[],ClassLoader)", "", "Argument[1]", "Argument[this].SyntheticField[org.apache.axis2.classloader.MultiParentClassLoader.parents].ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.axis2.classloader", "MultiParentClassLoader", True, "MultiParentClassLoader", "(URL[],ClassLoader,URLStreamHandlerFactory)", "", "Argument[1]", "Argument[this].SyntheticField[org.apache.axis2.classloader.MultiParentClassLoader.parents].ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.axis2.classloader", "MultiParentClassLoader", True, "MultiParentClassLoader", "(URL[],ClassLoader,boolean,String[],String[])", "", "Argument[1]", "Argument[this].SyntheticField[org.apache.axis2.classloader.MultiParentClassLoader.parents].ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.axis2.classloader", "MultiParentClassLoader", True, "MultiParentClassLoader", "(URL[],ClassLoader[])", "", "Argument[1].ArrayElement", "Argument[this].SyntheticField[org.apache.axis2.classloader.MultiParentClassLoader.parents].ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.axis2.classloader", "MultiParentClassLoader", True, "MultiParentClassLoader", "(URL[],ClassLoader[],URLStreamHandlerFactory)", "", "Argument[1].ArrayElement", "Argument[this].SyntheticField[org.apache.axis2.classloader.MultiParentClassLoader.parents].ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.axis2.classloader", "MultiParentClassLoader", True, "MultiParentClassLoader", "(URL[],ClassLoader[],boolean,Collection,Collection)", "", "Argument[1].ArrayElement", "Argument[this].SyntheticField[org.apache.axis2.classloader.MultiParentClassLoader.parents].ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.axis2.classloader", "MultiParentClassLoader", True, "MultiParentClassLoader", "(URL[],ClassLoader[],boolean,String[],String[])", "", "Argument[1].ArrayElement", "Argument[this].SyntheticField[org.apache.axis2.classloader.MultiParentClassLoader.parents].ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.axis2.classloader", "MultiParentClassLoader", True, "findResources", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.classloader", "MultiParentClassLoader", True, "getParents", "()", "", "Argument[this].SyntheticField[org.apache.axis2.classloader.MultiParentClassLoader.parents]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.classloader", "ThreadContextDescriptor", True, "getOldClassLoader", "()", "", "Argument[this].SyntheticField[org.apache.axis2.classloader.ThreadContextDescriptor.oldClassLoader]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.classloader", "ThreadContextDescriptor", True, "getOldMessageContext", "()", "", "Argument[this].SyntheticField[org.apache.axis2.classloader.ThreadContextDescriptor.oldMessageContext]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.classloader", "ThreadContextDescriptor", True, "setOldClassLoader", "(ClassLoader)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.classloader.ThreadContextDescriptor.oldClassLoader]", "value", "dfc-generated"]
+      - ["org.apache.axis2.classloader", "ThreadContextDescriptor", True, "setOldMessageContext", "(MessageContext)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.classloader.ThreadContextDescriptor.oldMessageContext]", "value", "dfc-generated"]

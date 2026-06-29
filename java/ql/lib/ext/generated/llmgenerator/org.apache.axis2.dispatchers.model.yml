@@ -1,0 +1,27 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.axis2.dispatchers", "AbstractOperationDispatcher", True, "invoke", "(MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.dispatchers", "AbstractServiceDispatcher", True, "findService", "(MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.dispatchers", "AbstractServiceDispatcher", True, "invoke", "(MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.dispatchers", "AbstractOperationDispatcher", True, "findOperation", "(AxisService,MessageContext)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.dispatchers", "AbstractServiceDispatcher", True, "findService", "(MessageContext)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.dispatchers", "ActionBasedOperationDispatcher", True, "findOperation", "(AxisService,MessageContext)", "", "Argument[0].SyntheticField[org.apache.axis2.description.AxisService.operationsAliasesMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dispatchers", "AddressingBasedDispatcher", True, "findOperation", "(AxisService,MessageContext)", "", "Argument[0].SyntheticField[org.apache.axis2.description.AxisService.operationsAliasesMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dispatchers", "AddressingBasedDispatcher", True, "invoke", "(MessageContext)", "", "Argument[0]", "Argument[0].SyntheticField[org.apache.axis2.context.MessageContext.axisOperation]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.dispatchers", "JSONBasedDefaultDispatcher", True, "findOperation", "(AxisService,MessageContext)", "", "Argument[0].SyntheticField[org.apache.axis2.description.AxisService.jsonMessageNameToOperationMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dispatchers", "RequestURIBasedOperationDispatcher", True, "findOperation", "(AxisService,MessageContext)", "", "Argument[0].SyntheticField[org.apache.axis2.description.AxisService.operationsAliasesMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dispatchers", "RequestURIOperationDispatcher", True, "findOperation", "(AxisService,MessageContext)", "", "Argument[0].SyntheticField[org.apache.axis2.description.AxisService.operationsAliasesMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dispatchers", "SOAPActionBasedDispatcher", True, "findOperation", "(AxisService,MessageContext)", "", "Argument[0].SyntheticField[org.apache.axis2.description.AxisService.operationsAliasesMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dispatchers", "SOAPMessageBodyBasedDispatcher", True, "findOperation", "(AxisService,MessageContext)", "", "Argument[0].SyntheticField[org.apache.axis2.description.AxisService.messageElementQNameToOperationMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dispatchers", "SOAPMessageBodyBasedDispatcher", True, "findOperation", "(AxisService,MessageContext)", "", "Argument[0].SyntheticField[org.apache.axis2.description.AxisService.operationsAliasesMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dispatchers", "SOAPMessageBodyBasedOperationDispatcher", True, "findOperation", "(AxisService,MessageContext)", "", "Argument[0].SyntheticField[org.apache.axis2.description.AxisService.messageElementQNameToOperationMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.dispatchers", "SOAPMessageBodyBasedOperationDispatcher", True, "findOperation", "(AxisService,MessageContext)", "", "Argument[0].SyntheticField[org.apache.axis2.description.AxisService.operationsAliasesMap].MapValue", "ReturnValue", "value", "dfc-generated"]

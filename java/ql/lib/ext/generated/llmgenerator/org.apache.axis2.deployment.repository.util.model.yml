@@ -1,0 +1,61 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "buildServiceDescription", "(InputStream,ConfigurationContext)", "", "Argument[0]", "xxe", "ai-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "buildServiceDescription", "(String,ConfigurationContext,boolean)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "buildServiceGroup", "(InputStream,DeploymentFileData,AxisServiceGroup,HashMap,ConfigurationContext)", "", "Argument[0]", "xxe", "ai-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "getAxisServiceFromWsdl", "(InputStream,ClassLoader,String)", "", "Argument[0]", "xxe", "ai-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "processFilesInFolder", "(File,HashMap)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "processFilesInFolder", "(File,HashMap)", "", "Argument[0]", "xxe", "ai-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "processServiceGroup", "(String,DeploymentFileData,AxisServiceGroup,boolean,HashMap,ConfigurationContext)", "", "Argument[0]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "WSInfoList", True, "addWSInfoItem", "(File,Deployer,int)", "", "Argument[0]", "path-injection", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "buildServiceGroup", "(InputStream,DeploymentFileData,AxisServiceGroup,HashMap,ConfigurationContext)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "buildServiceGroup", "(InputStream,DeploymentFileData,AxisServiceGroup,HashMap,ConfigurationContext)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "buildServiceGroup", "(InputStream,DeploymentFileData,AxisServiceGroup,HashMap,ConfigurationContext)", "", "Argument[3].Element", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "buildServiceGroup", "(OMElement,DeploymentFileData,AxisServiceGroup,Map,ConfigurationContext)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "buildServiceGroup", "(OMElement,DeploymentFileData,AxisServiceGroup,Map,ConfigurationContext)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "buildServiceGroup", "(OMElement,DeploymentFileData,AxisServiceGroup,Map,ConfigurationContext)", "", "Argument[3].Element", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "processServiceGroup", "(OMElement,DeploymentFileData,AxisServiceGroup,boolean,Map,ConfigurationContext)", "", "Argument[1]", "Argument[2]", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "processServiceGroup", "(OMElement,DeploymentFileData,AxisServiceGroup,boolean,Map,ConfigurationContext)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "processServiceGroup", "(OMElement,DeploymentFileData,AxisServiceGroup,boolean,Map,ConfigurationContext)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "processServiceGroup", "(OMElement,DeploymentFileData,AxisServiceGroup,boolean,Map,ConfigurationContext)", "", "Argument[4].Element", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "processServiceGroup", "(String,DeploymentFileData,AxisServiceGroup,boolean,HashMap,ConfigurationContext)", "", "Argument[1]", "Argument[2]", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "processServiceGroup", "(String,DeploymentFileData,AxisServiceGroup,boolean,HashMap,ConfigurationContext)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "processServiceGroup", "(String,DeploymentFileData,AxisServiceGroup,boolean,HashMap,ConfigurationContext)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "processServiceGroup", "(String,DeploymentFileData,AxisServiceGroup,boolean,HashMap,ConfigurationContext)", "", "Argument[4].Element", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "ArchiveReader", True, "readModuleArchive", "(DeploymentFileData,AxisModule,boolean,AxisConfiguration)", "", "Argument[0]", "Argument[1]", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "DeploymentFileData", "(File)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.file]", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "DeploymentFileData", "(File,Deployer)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.file]", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "DeploymentFileData", "(File,Deployer)", "", "Argument[1]", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.deployer]", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "DeploymentFileData", "(URL,Deployer,ClassLoader)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.url]", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "DeploymentFileData", "(URL,Deployer,ClassLoader)", "", "Argument[1]", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.deployer]", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "DeploymentFileData", "(URL,Deployer,ClassLoader)", "", "Argument[2]", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.classLoader]", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "getAbsolutePath", "()", "", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.file]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "getClassLoader", "()", "", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.classLoader]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "getDeployer", "()", "", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.deployer]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "getFile", "()", "", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.file]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "getFileExtension", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "getName", "()", "", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.file]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "getName", "()", "", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.url]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "getServiceMetaData", "()", "", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.serviceMetaData]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "getUrl", "()", "", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.url]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "setClassLoader", "(ClassLoader)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.classLoader]", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "setDeployer", "(Deployer)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.deployer]", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "setServiceMetaData", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.serviceMetaData]", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "DeploymentFileData", True, "setUrl", "(URL)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.DeploymentFileData.url]", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "WSInfo", True, "WSInfo", "(String,long,Deployer,int)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.WSInfo.fileName]", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "WSInfo", True, "WSInfo", "(String,long,Deployer,int)", "", "Argument[2]", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.WSInfo.deployer]", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "WSInfo", True, "getDeployer", "()", "", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.WSInfo.deployer]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "WSInfo", True, "getFileName", "()", "", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.WSInfo.fileName]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "WSInfo", True, "setFileName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.deployment.repository.util.WSInfo.fileName]", "value", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "WSInfoList", True, "WSInfoList", "(DeploymentEngine)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "WSInfoList", True, "addWSInfoItem", "(File,Deployer,int)", "", "Argument[0]", "Argument[this].Field[org.apache.axis2.deployment.repository.util.WSInfoList.currentJars].MapKey", "taint", "dfc-generated"]
+      - ["org.apache.axis2.deployment.repository.util", "WSInfoList", True, "addWSInfoItem", "(URL,Deployer,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

@@ -1,0 +1,55 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReferenceHelper", True, "fromString", "(String)", "", "Argument[0]", "xxe", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.addressing", "AddressingHelper", True, "getRequestAddressingRequirementParameterValue", "(MessageContext)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "EndpointReference", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.address]", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "addAttribute", "(OMAttribute)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.attributes].Element", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "addExtensibleElement", "(OMElement)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.extensibleElements].Element", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "addMetaData", "(OMNode)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.metaData].Element", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "addReferenceParameter", "(OMElement)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.referenceParameters].MapValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getAddress", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getAddress", "()", "", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.address]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getAddressAttributes", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getAddressAttributes", "()", "", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.addressAttributes]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getAllReferenceParameters", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getAllReferenceParameters", "()", "", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.referenceParameters]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getAttributes", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getAttributes", "()", "", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.attributes]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getExtensibleElements", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getExtensibleElements", "()", "", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.extensibleElements]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getLogCorrelationIDString", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getMetaData", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getMetaData", "()", "", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.metaData]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getMetadataAttributes", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getMetadataAttributes", "()", "", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.metaDataAttributes]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "getName", "()", "", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.name]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "setAddress", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.address]", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "setAddressAttributes", "(ArrayList)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.addressAttributes]", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "setExtensibleElements", "(ArrayList)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.extensibleElements]", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "setMetadataAttributes", "(ArrayList)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.metaDataAttributes]", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "setName", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.name]", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "setReferenceParameters", "(Map)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.EndpointReference.referenceParameters]", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "EndpointReference", True, "writeExternal", "(ObjectOutput)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["org.apache.axis2.addressing", "RelatesTo", True, "RelatesTo", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.RelatesTo.value]", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "RelatesTo", True, "RelatesTo", "(String,String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.RelatesTo.value]", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "RelatesTo", True, "RelatesTo", "(String,String)", "", "Argument[1]", "Argument[this].SyntheticField[org.apache.axis2.addressing.RelatesTo.relationshipType]", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "RelatesTo", True, "getExtensibilityAttributes", "()", "", "Argument[this].SyntheticField[org.apache.axis2.addressing.RelatesTo.extensibilityAttributes]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "RelatesTo", True, "getRelationshipType", "()", "", "Argument[this].SyntheticField[org.apache.axis2.addressing.RelatesTo.relationshipType]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "RelatesTo", True, "getValue", "()", "", "Argument[this].SyntheticField[org.apache.axis2.addressing.RelatesTo.value]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "RelatesTo", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.axis2.addressing", "RelatesTo", True, "setExtensibilityAttributes", "(ArrayList)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.RelatesTo.extensibilityAttributes]", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "RelatesTo", True, "setRelationshipType", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.RelatesTo.relationshipType]", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "RelatesTo", True, "setValue", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.addressing.RelatesTo.value]", "value", "dfc-generated"]
+      - ["org.apache.axis2.addressing", "RelatesTo", True, "writeExternal", "(ObjectOutput)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]

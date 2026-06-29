@@ -1,0 +1,47 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core#aaf1489fabd4599e54039a27f605081f301b3123 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.axis2.builder", "ApplicationXMLBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "ApplicationXMLBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "Builder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "Builder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[1]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "Builder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[2]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "Builder", True, "processDocument", "(InputStream,String,MessageContext)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "DataSourceBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "DataSourceBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[1]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "DataSourceBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[2]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MIMEAwareBuilder", True, "processMIMEMessage", "(Attachments,String,MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MIMEAwareBuilder", True, "processMIMEMessage", "(Attachments,String,MessageContext)", "", "Parameter[1]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MIMEAwareBuilder", True, "processMIMEMessage", "(Attachments,String,MessageContext)", "", "Parameter[2]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MIMEBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MIMEBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[1]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MTOMBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MTOMBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[1]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MTOMBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[2]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MTOMBuilder", True, "processMIMEMessage", "(Attachments,String,MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MTOMBuilder", True, "processMIMEMessage", "(Attachments,String,MessageContext)", "", "Parameter[1]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MTOMBuilder", True, "processMIMEMessage", "(Attachments,String,MessageContext)", "", "Parameter[2]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MultipartFormDataBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MultipartFormDataBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[1]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MultipartFormDataBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[2]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "MultipartFormDataBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "XFormURLEncodedBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "XFormURLEncodedBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[1]", "remote", "ai-generated"]
+      - ["org.apache.axis2.builder", "XFormURLEncodedBuilder", True, "processDocument", "(InputStream,String,MessageContext)", "", "Parameter[2]", "remote", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.axis2.builder", "BuilderUtil", True, "getBuilderFromSelector", "(String,MessageContext)", "", "Argument[0]", "Argument[1].SyntheticField[org.apache.axis2.context.AbstractContext.properties].MapValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.builder", "BuilderUtil", True, "getCharSetEncoding", "(PushbackInputStream,String)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.axis2.builder", "BuilderUtil", True, "getCharSetEncoding", "(String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.builder", "BuilderUtil", True, "getPushbackInputStream", "(InputStream)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.builder", "BuilderUtil", True, "getReader", "(InputStream,String)", "", "Argument[0]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.axis2.builder", "DataSourceBuilder$ByteArrayDataSourceEx", True, "ByteArrayDataSourceEx", "(byte[],String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.axis2.builder.DataSourceBuilder$ByteArrayDataSourceEx.bytes]", "value", "dfc-generated"]
+      - ["org.apache.axis2.builder", "DataSourceBuilder$ByteArrayDataSourceEx", True, "serialize", "(OutputStream,OMOutputFormat)", "", "Argument[this].SyntheticField[org.apache.axis2.builder.DataSourceBuilder$ByteArrayDataSourceEx.bytes]", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.apache.axis2.builder", "MTOMBuilder", True, "processMIMEMessage", "(Attachments,String,MessageContext)", "", "Argument[0]", "Argument[2].Field[org.apache.axis2.context.MessageContext.attachments]", "value", "dfc-generated"]
+      - ["org.apache.axis2.builder", "SOAPBuilder", True, "processMIMEMessage", "(Attachments,String,MessageContext)", "", "Argument[0]", "Argument[2].Field[org.apache.axis2.context.MessageContext.attachments]", "value", "dfc-generated"]
