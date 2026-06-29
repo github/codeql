@@ -1463,10 +1463,19 @@ module Ast implements AstSig<Py::Location> {
 
   /**
    * A function definition expression (visits positional and keyword
-   * defaults, but NOT PEP 695 type parameters — those bind in an
-   * annotation scope that nests the function body, so they belong to
-   * the inner scope's CFG, not the enclosing scope's; the legacy CFG
-   * also omitted them).
+   * defaults followed by parameter and return type annotations, but NOT
+   * PEP 695 type parameters — those bind in an annotation scope that
+   * nests the function body, so they belong to the inner scope's CFG,
+   * not the enclosing scope's; the legacy CFG also omitted them).
+   *
+   * Evaluation order follows CPython: defaults are pushed first, then
+   * keyword-only defaults, then annotations (the `__annotations__` dict
+   * is built last, before `MAKE_FUNCTION`). Annotations are emitted as
+   * CFG nodes so that flows from a class reference into a parameter's
+   * type annotation are visible to dataflow (e.g. so that framework
+   * models like FastAPI's `Depends()` can use a parameter's type hint
+   * to track that the parameter receives an instance of the annotated
+   * class — see `LocalSources::annotatedInstance`).
    */
   additional class FunctionDefExpr extends Expr {
     private Py::FunctionExpr funcExpr;
@@ -1490,13 +1499,59 @@ module Ast implements AstSig<Py::Location> {
         rank[n + 1](Py::Expr d, int i | d = funcExpr.getArgs().getKwDefault(i) | d order by i)
     }
 
+    /**
+     * Gets the `n`th annotation expression, in CPython evaluation
+     * order: positional parameter annotations (by argument position),
+     * `*args` annotation, keyword-only parameter annotations (by
+     * argument position), `**kwargs` annotation, then the return
+     * annotation. Each annotation appears at most once.
+     */
+    Expr getAnnotation(int n) {
+      result.asExpr() =
+        rank[n + 1](Py::Expr a, int subOrder, int subIndex |
+          functionAnnotation(funcExpr, a, subOrder, subIndex)
+        |
+          a order by subOrder, subIndex
+        )
+    }
+
     int getNumberOfDefaults() { result = count(funcExpr.getArgs().getADefault()) }
+
+    int getNumberOfKwDefaults() { result = count(funcExpr.getArgs().getAKwDefault()) }
+
+    int getNumberOfAnnotations() {
+      result = count(Py::Expr a | functionAnnotation(funcExpr, a, _, _))
+    }
 
     override AstNode getChild(int index) {
       result = this.getDefault(index)
       or
       result = this.getKwDefault(index - this.getNumberOfDefaults())
+      or
+      result = this.getAnnotation(index - this.getNumberOfDefaults() - this.getNumberOfKwDefaults())
     }
+  }
+
+  /**
+   * Holds if `a` is an annotation of `funcExpr` in slot
+   * `(subOrder, subIndex)`. Slots are CPython evaluation order:
+   * positional param annotations (subOrder 0, subIndex = argument
+   * position), `*args` annotation (1, 0), keyword-only annotations
+   * (2, position), `**kwargs` annotation (3, 0), return annotation
+   * (4, 0).
+   */
+  private predicate functionAnnotation(
+    Py::FunctionExpr funcExpr, Py::Expr a, int subOrder, int subIndex
+  ) {
+    a = funcExpr.getArgs().getAnnotation(subIndex) and subOrder = 0
+    or
+    a = funcExpr.getArgs().getVarargannotation() and subOrder = 1 and subIndex = 0
+    or
+    a = funcExpr.getArgs().getKwAnnotation(subIndex) and subOrder = 2
+    or
+    a = funcExpr.getArgs().getKwargannotation() and subOrder = 3 and subIndex = 0
+    or
+    a = funcExpr.getReturns() and subOrder = 4 and subIndex = 0
   }
 
   /** A lambda expression (has default args evaluated at definition time). */
