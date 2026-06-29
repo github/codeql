@@ -5,5 +5,4 @@ extensions:
     data:
       - ["veracode/veracode-sca", "*", "input.url", "command-injection", "manual"]
       - ["veracode/veracode-sca", "*", "input.path", "command-injection", "manual"]
-      - ["veracode/veracode-sca", "*", "input.skip-collectors", "command-injection", "manual"]
       - ["veracode/veracode-sca", "*", "input.url", "command-injection", "manual"]
