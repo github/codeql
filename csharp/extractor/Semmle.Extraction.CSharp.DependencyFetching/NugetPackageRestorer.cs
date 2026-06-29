@@ -133,7 +133,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 {
                     // If we experience a timeout, we use this fallback.
                     // todo: we could also check the reachability of the inherited nuget feeds, but to use those in the fallback we would need to handle authentication too.
-                    var unresponsiveMissingPackageLocation = DownloadMissingPackagesFromSpecificFeeds([], explicitFeeds);
+                    var unresponsiveMissingPackageLocation = DownloadMissingPackagesAndUseFallback([]);
                     return unresponsiveMissingPackageLocation is null
                         ? []
                         : [unresponsiveMissingPackageLocation];
@@ -196,7 +196,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var usedPackageNames = GetAllUsedPackageDirNames(dependencies);
 
             var missingPackageLocation = feedManager.CheckNugetFeedResponsiveness
-                ? DownloadMissingPackagesFromSpecificFeeds(usedPackageNames, explicitFeeds)
+                ? DownloadMissingPackagesAndUseFallback(usedPackageNames)
                 : DownloadMissingPackages(usedPackageNames);
 
             if (missingPackageLocation is not null)
@@ -303,9 +303,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("Failed project restore with missing package error", nugetMissingPackageFailures.ToString()));
         }
 
-        private AssemblyLookupLocation? DownloadMissingPackagesFromSpecificFeeds(IEnumerable<string> usedPackageNames, ImmutableHashSet<string>? feedsFromNugetConfigs)
+        private AssemblyLookupLocation? DownloadMissingPackagesAndUseFallback(IEnumerable<string> usedPackageNames)
         {
-            var reachableFallbackFeeds = feedManager.GetReachableFallbackNugetFeeds(feedsFromNugetConfigs);
+            var reachableFallbackFeeds = feedManager.GetReachableFallbackNugetFeeds();
             compilationInfoContainer.CompilationInfos.Add(("Reachable fallback NuGet feed count", reachableFallbackFeeds.Count.ToString()));
 
             if (reachableFallbackFeeds.Count > 0)
