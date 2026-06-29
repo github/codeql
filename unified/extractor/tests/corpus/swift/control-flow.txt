@@ -573,10 +573,12 @@ top_level
                         name_expr
                           identifier: identifier "print"
               pattern:
-                expr_equality_pattern
-                  expr: int_literal "2"
-                expr_equality_pattern
-                  expr: int_literal "3"
+                or_pattern
+                  pattern:
+                    expr_equality_pattern
+                      expr: int_literal "2"
+                    expr_equality_pattern
+                      expr: int_literal "3"
             switch_case
               body:
                 block
@@ -591,6 +593,83 @@ top_level
           value:
             name_expr
               identifier: identifier "x"
+
+===
+If-case-let with shadowing in condition value
+===
+
+if case let x = x + 10 {
+  print(x)
+}
+
+---
+
+source_file
+  statement:
+    if_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      condition:
+        if_condition
+          kind:
+            if_let_binding
+              pattern:
+                pattern
+                  kind:
+                    binding_pattern
+                      binding:
+                        value_binding_pattern
+                          mutability: let
+                      pattern:
+                        pattern
+                          bound_identifier: simple_identifier "x"
+              value:
+                additive_expression
+                  lhs: simple_identifier "x"
+                  op: +
+                  rhs: integer_literal "10"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        if_expr
+          condition:
+            pattern_guard_expr
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+              value:
+                binary_expr
+                  operator: infix_operator "+"
+                  left:
+                    name_expr
+                      identifier: identifier "x"
+                  right: int_literal "10"
+          then:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
 
 ===
 Switch with binding pattern
