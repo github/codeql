@@ -88,7 +88,9 @@ predicate implicit_repeat(For f) {
  * E.g. gets `x` from `{ y for y in x }`.
  */
 ControlFlowNode get_comp_iterable(For f) {
-  exists(Comp c | c.getFunction().getStmt(0) = f | c.getAFlowNode().getAPredecessor() = result)
+  exists(Comp c, ControlFlowNode cCfg |
+    c.getFunction().getStmt(0) = f and cCfg.getNode() = c and cCfg.getAPredecessor() = result
+  )
 }
 
 from For f, Variable v, string msg

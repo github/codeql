@@ -16,7 +16,7 @@ def simple_bind_example():
     search_filter = "(user={})".format(ldap.filter.escape_filter_chars(request.args['search']))
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
-    ldap_connection.simple_bind('cn=root')
+    ldap_connection.simple_bind('cn=root') # $ Alert
     user = ldap_connection.search_s(dn, ldap.SCOPE_SUBTREE, search_filter)
 
 
@@ -30,7 +30,7 @@ def simple_bind_s_example():
     search_filter = "(user={})".format(ldap.filter.escape_filter_chars(request.args['search']))
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
-    ldap_connection.simple_bind_s('cn=root')
+    ldap_connection.simple_bind_s('cn=root') # $ Alert
     user = ldap_connection.search_s(dn, ldap.SCOPE_SUBTREE, search_filter)
 
 
@@ -44,7 +44,7 @@ def bind_s_example():
     search_filter = "(user={})".format(ldap.filter.escape_filter_chars(request.args['search']))
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
-    ldap_connection.bind_s('cn=root', None)
+    ldap_connection.bind_s('cn=root', None) # $ Alert
     user = ldap_connection.search_s(dn, ldap.SCOPE_SUBTREE, search_filter)
 
 @app.route("/bind_s_example")
@@ -57,7 +57,7 @@ def bind_s_example_kwargs():
     search_filter = "(user={})".format(ldap.filter.escape_filter_chars(request.args['search']))
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
-    ldap_connection.bind_s(who='cn=root', cred=None)
+    ldap_connection.bind_s(who='cn=root', cred=None) # $ Alert
     user = ldap_connection.search_s(dn, ldap.SCOPE_SUBTREE, search_filter)
 
 @app.route("/bind_example")
@@ -70,7 +70,7 @@ def bind_example():
     search_filter = "(user={})".format(ldap.filter.escape_filter_chars(request.args['search']))
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
-    ldap_connection.bind('cn=root', "")
+    ldap_connection.bind('cn=root', "") # $ Alert
     user = ldap_connection.search_s(dn, ldap.SCOPE_SUBTREE, search_filter)
 
 
@@ -84,7 +84,7 @@ def bind_example():
     search_filter = "(user={})".format(ldap.filter.escape_filter_chars(request.args['search']))
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1:1337")
-    ldap_connection.bind(who='cn=root', cred="")
+    ldap_connection.bind(who='cn=root', cred="") # $ Alert
     user = ldap_connection.search_s(dn, ldap.SCOPE_SUBTREE, search_filter)
 
 

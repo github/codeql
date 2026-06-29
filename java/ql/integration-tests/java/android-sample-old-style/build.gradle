@@ -13,7 +13,9 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        maven {
+            url = 'https://maven-central.storage-download.googleapis.com/maven2/'
+        }
     }
 
     /**
@@ -32,13 +34,15 @@ buildscript {
  * dependencies used by all modules in your project, such as third-party plugins
  * or libraries. However, you should configure module-specific dependencies in
  * each module-level build.gradle file. For new projects, Android Studio
- * includes JCenter and Google's Maven repository by default, but it does not
+ * includes Maven Central and Google's Maven repository by default, but it does not
  * configure any dependencies (unless you select a template that requires some).
  */
 
 allprojects {
     repositories {
         google()
-        jcenter()
+        maven {
+            url = 'https://maven-central.storage-download.googleapis.com/maven2/'
+        }
     }
 }

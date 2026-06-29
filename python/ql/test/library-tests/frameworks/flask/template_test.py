@@ -1,5 +1,5 @@
 from flask import Flask, Response, stream_with_context, render_template_string, stream_template_string
-app = Flask(__name__)
+app = Flask(__name__) # $ instance
 
 @app.route("/a")  # $ routeSetup="/a"
 def a():  # $ requestHandler

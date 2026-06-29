@@ -10,15 +10,15 @@ app = Flask(__name__)
 
 @app.route('/bad1')
 def bad1():
-    client_ip = request.headers.get('x-forwarded-for')
-    if not client_ip.startswith('192.168.'):
+    client_ip = request.headers.get('x-forwarded-for') # $ Source
+    if not client_ip.startswith('192.168.'): # $ Alert
         raise Exception('ip illegal')
     return 'bad1'
 
 @app.route('/bad2')
 def bad2():
-    client_ip = request.headers.get('x-forwarded-for')
-    if not client_ip == '127.0.0.1':
+    client_ip = request.headers.get('x-forwarded-for') # $ Source
+    if not client_ip == '127.0.0.1': # $ Alert
         raise Exception('ip illegal')
     return 'bad2'
 

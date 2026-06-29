@@ -76,6 +76,26 @@ app.get("/test", async (req, res) => {
     prompt: userInput, // $ Alert[js/user-prompt-injection]
   });
 
+  // Videos API (Sora)
+  await client.videos.create({
+    model: "sora-2",
+    prompt: userInput, // $ Alert[js/user-prompt-injection]
+  });
+
+  await client.videos.edit({
+    prompt: userInput, // $ Alert[js/user-prompt-injection]
+  });
+
+  await client.videos.remix("video_123", {
+    prompt: userInput, // $ Alert[js/user-prompt-injection]
+  });
+
+  await client.videos.extend({
+    video: { id: "video_123" },
+    seconds: 4,
+    prompt: userInput, // $ Alert[js/user-prompt-injection]
+  });
+
   // Audio API
   await client.audio.transcriptions.create({
     file: "audio.mp3",

@@ -1964,6 +1964,340 @@ module Ruby {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { ruby_yield_child(this, result) }
   }
+
+  /** Provides predicates for mapping AST nodes to their named children. */
+  module PrintAst {
+    /** Gets a child of `node` returned by the member predicate with the given `name`. If the predicate takes an index argument, `i` is bound to that index, otherwise `i` is `-1` (which is never a valid index). */
+    AstNode getChild(AstNode node, string name, int i) {
+      result = node.(Alias).getAlias() and i = -1 and name = "getAlias"
+      or
+      result = node.(Alias).getName() and i = -1 and name = "getName"
+      or
+      result = node.(AlternativePattern).getAlternatives(i) and name = "getAlternatives"
+      or
+      result = node.(ArgumentList).getChild(i) and name = "getChild"
+      or
+      result = node.(Array).getChild(i) and name = "getChild"
+      or
+      result = node.(ArrayPattern).getClass() and i = -1 and name = "getClass"
+      or
+      result = node.(ArrayPattern).getChild(i) and name = "getChild"
+      or
+      result = node.(AsPattern).getName() and i = -1 and name = "getName"
+      or
+      result = node.(AsPattern).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Assignment).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(Assignment).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(BareString).getChild(i) and name = "getChild"
+      or
+      result = node.(BareSymbol).getChild(i) and name = "getChild"
+      or
+      result = node.(Begin).getChild(i) and name = "getChild"
+      or
+      result = node.(BeginBlock).getChild(i) and name = "getChild"
+      or
+      result = node.(Binary).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(Binary).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(Block).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Block).getParameters() and i = -1 and name = "getParameters"
+      or
+      result = node.(BlockArgument).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(BlockBody).getChild(i) and name = "getChild"
+      or
+      result = node.(BlockParameter).getName() and i = -1 and name = "getName"
+      or
+      result = node.(BlockParameters).getLocals(i) and name = "getLocals"
+      or
+      result = node.(BlockParameters).getChild(i) and name = "getChild"
+      or
+      result = node.(BodyStatement).getChild(i) and name = "getChild"
+      or
+      result = node.(Break).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Call).getArguments() and i = -1 and name = "getArguments"
+      or
+      result = node.(Call).getBlock() and i = -1 and name = "getBlock"
+      or
+      result = node.(Call).getMethod() and i = -1 and name = "getMethod"
+      or
+      result = node.(Call).getOperator() and i = -1 and name = "getOperator"
+      or
+      result = node.(Call).getReceiver() and i = -1 and name = "getReceiver"
+      or
+      result = node.(Case).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Case).getChild(i) and name = "getChild"
+      or
+      result = node.(CaseMatch).getClauses(i) and name = "getClauses"
+      or
+      result = node.(CaseMatch).getElse() and i = -1 and name = "getElse"
+      or
+      result = node.(CaseMatch).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(ChainedString).getChild(i) and name = "getChild"
+      or
+      result = node.(Class).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Class).getName() and i = -1 and name = "getName"
+      or
+      result = node.(Class).getSuperclass() and i = -1 and name = "getSuperclass"
+      or
+      result = node.(Complex).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Conditional).getAlternative() and i = -1 and name = "getAlternative"
+      or
+      result = node.(Conditional).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(Conditional).getConsequence() and i = -1 and name = "getConsequence"
+      or
+      result = node.(DelimitedSymbol).getChild(i) and name = "getChild"
+      or
+      result = node.(DestructuredLeftAssignment).getChild(i) and name = "getChild"
+      or
+      result = node.(DestructuredParameter).getChild(i) and name = "getChild"
+      or
+      result = node.(Do).getChild(i) and name = "getChild"
+      or
+      result = node.(DoBlock).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(DoBlock).getParameters() and i = -1 and name = "getParameters"
+      or
+      result = node.(ElementReference).getBlock() and i = -1 and name = "getBlock"
+      or
+      result = node.(ElementReference).getObject() and i = -1 and name = "getObject"
+      or
+      result = node.(ElementReference).getChild(i) and name = "getChild"
+      or
+      result = node.(Else).getChild(i) and name = "getChild"
+      or
+      result = node.(Elsif).getAlternative() and i = -1 and name = "getAlternative"
+      or
+      result = node.(Elsif).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(Elsif).getConsequence() and i = -1 and name = "getConsequence"
+      or
+      result = node.(EndBlock).getChild(i) and name = "getChild"
+      or
+      result = node.(Ensure).getChild(i) and name = "getChild"
+      or
+      result = node.(ExceptionVariable).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Exceptions).getChild(i) and name = "getChild"
+      or
+      result = node.(ExpressionReferencePattern).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(FindPattern).getClass() and i = -1 and name = "getClass"
+      or
+      result = node.(FindPattern).getChild(i) and name = "getChild"
+      or
+      result = node.(For).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(For).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(For).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Hash).getChild(i) and name = "getChild"
+      or
+      result = node.(HashPattern).getClass() and i = -1 and name = "getClass"
+      or
+      result = node.(HashPattern).getChild(i) and name = "getChild"
+      or
+      result = node.(HashSplatArgument).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(HashSplatParameter).getName() and i = -1 and name = "getName"
+      or
+      result = node.(HeredocBody).getChild(i) and name = "getChild"
+      or
+      result = node.(If).getAlternative() and i = -1 and name = "getAlternative"
+      or
+      result = node.(If).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(If).getConsequence() and i = -1 and name = "getConsequence"
+      or
+      result = node.(IfGuard).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(IfModifier).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(IfModifier).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(In).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(InClause).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(InClause).getGuard() and i = -1 and name = "getGuard"
+      or
+      result = node.(InClause).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(Interpolation).getChild(i) and name = "getChild"
+      or
+      result = node.(KeywordParameter).getName() and i = -1 and name = "getName"
+      or
+      result = node.(KeywordParameter).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(KeywordPattern).getKey() and i = -1 and name = "getKey"
+      or
+      result = node.(KeywordPattern).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Lambda).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Lambda).getParameters() and i = -1 and name = "getParameters"
+      or
+      result = node.(LambdaParameters).getChild(i) and name = "getChild"
+      or
+      result = node.(LeftAssignmentList).getChild(i) and name = "getChild"
+      or
+      result = node.(MatchPattern).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(MatchPattern).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Method).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Method).getName() and i = -1 and name = "getName"
+      or
+      result = node.(Method).getParameters() and i = -1 and name = "getParameters"
+      or
+      result = node.(MethodParameters).getChild(i) and name = "getChild"
+      or
+      result = node.(Module).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Module).getName() and i = -1 and name = "getName"
+      or
+      result = node.(Next).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(OperatorAssignment).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(OperatorAssignment).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(OptionalParameter).getName() and i = -1 and name = "getName"
+      or
+      result = node.(OptionalParameter).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Pair).getKey() and i = -1 and name = "getKey"
+      or
+      result = node.(Pair).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(ParenthesizedPattern).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(ParenthesizedStatements).getChild(i) and name = "getChild"
+      or
+      result = node.(Pattern).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Program).getChild(i) and name = "getChild"
+      or
+      result = node.(Range).getBegin() and i = -1 and name = "getBegin"
+      or
+      result = node.(Range).getEnd() and i = -1 and name = "getEnd"
+      or
+      result = node.(Rational).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Redo).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Regex).getChild(i) and name = "getChild"
+      or
+      result = node.(Rescue).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Rescue).getExceptions() and i = -1 and name = "getExceptions"
+      or
+      result = node.(Rescue).getVariable() and i = -1 and name = "getVariable"
+      or
+      result = node.(RescueModifier).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(RescueModifier).getHandler() and i = -1 and name = "getHandler"
+      or
+      result = node.(RestAssignment).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Retry).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Return).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(RightAssignmentList).getChild(i) and name = "getChild"
+      or
+      result = node.(ScopeResolution).getName() and i = -1 and name = "getName"
+      or
+      result = node.(ScopeResolution).getScope() and i = -1 and name = "getScope"
+      or
+      result = node.(Setter).getName() and i = -1 and name = "getName"
+      or
+      result = node.(SingletonClass).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(SingletonClass).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(SingletonMethod).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(SingletonMethod).getName() and i = -1 and name = "getName"
+      or
+      result = node.(SingletonMethod).getObject() and i = -1 and name = "getObject"
+      or
+      result = node.(SingletonMethod).getParameters() and i = -1 and name = "getParameters"
+      or
+      result = node.(SplatArgument).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(SplatParameter).getName() and i = -1 and name = "getName"
+      or
+      result = node.(String).getChild(i) and name = "getChild"
+      or
+      result = node.(StringArray).getChild(i) and name = "getChild"
+      or
+      result = node.(Subshell).getChild(i) and name = "getChild"
+      or
+      result = node.(Superclass).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(SymbolArray).getChild(i) and name = "getChild"
+      or
+      result = node.(TestPattern).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(TestPattern).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Then).getChild(i) and name = "getChild"
+      or
+      result = node.(Unary).getOperand() and i = -1 and name = "getOperand"
+      or
+      result = node.(Undef).getChild(i) and name = "getChild"
+      or
+      result = node.(Unless).getAlternative() and i = -1 and name = "getAlternative"
+      or
+      result = node.(Unless).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(Unless).getConsequence() and i = -1 and name = "getConsequence"
+      or
+      result = node.(UnlessGuard).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(UnlessModifier).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(UnlessModifier).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(Until).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Until).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(UntilModifier).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(UntilModifier).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(VariableReferencePattern).getName() and i = -1 and name = "getName"
+      or
+      result = node.(When).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(When).getPattern(i) and name = "getPattern"
+      or
+      result = node.(While).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(While).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(WhileModifier).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(WhileModifier).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(Yield).getChild() and i = -1 and name = "getChild"
+    }
+  }
 }
 
 overlay[local]
@@ -2106,5 +2440,21 @@ module Erb {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { erb_template_child(this, _, result) }
+  }
+
+  /** Provides predicates for mapping AST nodes to their named children. */
+  module PrintAst {
+    /** Gets a child of `node` returned by the member predicate with the given `name`. If the predicate takes an index argument, `i` is bound to that index, otherwise `i` is `-1` (which is never a valid index). */
+    AstNode getChild(AstNode node, string name, int i) {
+      result = node.(CommentDirective).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Directive).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(GraphqlDirective).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(OutputDirective).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Template).getChild(i) and name = "getChild"
+    }
   }
 }

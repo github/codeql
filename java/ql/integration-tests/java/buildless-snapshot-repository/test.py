@@ -1,3 +1,4 @@
+import os
 import subprocess
 import runs_on
 
@@ -15,7 +16,10 @@ def test(codeql, java):
     try:
         codeql.database.create(
             extractor_option="buildless=true",
-            _env={"CODEQL_EXTRACTOR_JAVA_OPTION_BUILDLESS_CLASSPATH_FROM_BUILD_FILES": "true"},
+            _env={
+                "CODEQL_EXTRACTOR_JAVA_OPTION_BUILDLESS_CLASSPATH_FROM_BUILD_FILES": "true",
+                "LGTM_INDEX_MAVEN_SETTINGS_FILE": os.path.join(os.path.dirname(os.path.realpath(__file__)), "settings.xml"),
+            },
         )
     finally:
         repo_server_process.kill()

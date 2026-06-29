@@ -12,9 +12,9 @@ session.handshake(sock)
 session.userauth_password("user", "password")
 
 @app.get("/bad1")
-async def bad1(cmd: str):
+async def bad1(cmd: str):  # $ Source
     channel = session.open_session()
-    channel.execute(cmd) # $ result=BAD getRemoteCommand=cmd
+    channel.execute(cmd) # $ Alert result=BAD getRemoteCommand=cmd
     channel.wait_eof()
     channel.close()
     channel.wait_closed()  

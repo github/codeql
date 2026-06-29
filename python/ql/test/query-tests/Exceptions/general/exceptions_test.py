@@ -193,7 +193,7 @@ def ee8(x):
 
  #These are so common, we  give warnings not errors.
 def foo():
-    raise NotImplemented
+    raise NotImplemented # $ Alert[py/raise-not-implemented]
 
 def bar():
-    raise NotImplemented()
+    raise NotImplemented() # $ Alert[py/raise-not-implemented]

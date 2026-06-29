@@ -3,25 +3,21 @@
 This is a CodeQL extractor based on tree-sitter.
 
 ## Building
-To build the extractor, run `scripts/create-extractor-pack.sh`
+- To build the extractor, run `scripts/create-extractor-pack.sh`
 
-## Editing the Swift grammar
-The vendored tree-sitter-swift grammar lives at
-`extractor/tree-sitter-swift/`. After editing `grammar.js` (or any other
-grammar source), run `scripts/regenerate-grammar.sh` to:
-- regenerate `extractor/tree-sitter-swift/src/{parser.c, grammar.json,
-  node-types.json}` (and the `src/tree_sitter/*.h` headers) via
-  `tree-sitter generate`; and
-- refresh `extractor/tree-sitter-swift/node-types.yml`, the
-  human-readable companion to `src/node-types.json` produced by yeast's
-  `node_types_yaml` binary.
+## Swift Parser
+- The Swift parser is defined by `extractor/tree-sitter-swift/grammar.js` and can be edited if needed.
 
-`node-types.yml` is the recommended review surface for grammar changes —
-it shows the impact of a grammar tweak on the named node kinds, fields,
-and child types in a form much easier to read than the raw JSON.
+- After editing the grammar, always run `scripts/regenerate-grammar.sh`.
 
-## Extractor Testing
-- To run extractor tests, run `cargo test` in the `extractor` directory.
+- The raw parse tree is described by `extractor/tree-sitter-swift/node-types.yml` and should be reviewed after grammar changes.
+
+## AST Mapping
+- The target AST shape is described by `extractor/ast_types.yml`.
+
+- The mapping from the parse tree to the target AST is found in `extractor/src/languages/swift/swift.rs`
+
+- To run tests for the parser and mapping, run `cargo test` in the `extractor` directory.
 
 - Do not edit the printed ASTs in `extractor/test/corpus` directly. To regenerate the ASTs, run `scripts/update-corpus.sh`.
 

@@ -34,6 +34,22 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          type:
+            generic_type_expr
+              base:
+                named_type_expr
+                  name: identifier "Optional"
+              type_argument:
+                named_type_expr
+                  name: identifier "Int"
+          value: builtin_expr "nil"
 
 ===
 Optional chaining
@@ -74,6 +90,22 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "n"
+          value:
+            member_access_expr
+              base:
+                member_access_expr
+                  base:
+                    name_expr
+                      identifier: identifier "obj"
+                  member: identifier "foo"
+              member: identifier "bar"
 
 ===
 Force unwrap
@@ -103,6 +135,19 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "n"
+          value:
+            unary_expr
+              operand:
+                name_expr
+                  identifier: identifier "opt"
+              operator: postfix_operator "!"
 
 ===
 Nil-coalescing
@@ -132,6 +177,20 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "n"
+          value:
+            binary_expr
+              operator: infix_operator "??"
+              left:
+                name_expr
+                  identifier: identifier "opt"
+              right: int_literal "0"
 
 ===
 Throwing function
@@ -167,6 +226,18 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                return_expr
+                  value: string_literal "\"\""
+          name: identifier "read"
+          return_type:
+            named_type_expr
+              name: identifier "String"
 
 ===
 Do-catch
@@ -216,6 +287,33 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        try_expr
+          body:
+            block
+              stmt:
+                unary_expr
+                  operand:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "foo"
+                  operator: prefix_operator "try"
+          catch_clause:
+            catch_clause
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "error"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
 
 ===
 Try? expression
@@ -252,6 +350,21 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "result"
+          value:
+            unary_expr
+              operand:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "foo"
+              operator: prefix_operator "try?"
 
 ===
 Try! expression
@@ -288,3 +401,18 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "result"
+          value:
+            unary_expr
+              operand:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "foo"
+              operator: prefix_operator "try!"

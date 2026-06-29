@@ -1,7 +1,7 @@
 
 #Unused
 def fail():
-    for t in [TypeA, TypeB]:
+    for t in [TypeA, TypeB]: # $ Alert[py/unused-loop-variable]
         x = TypeA()
         run_test(x)
 
@@ -63,19 +63,19 @@ def OK8(seq, output):
 #Not OK -- Use a constant, but also a variable
 def fail2(sequence):
     for x in sequence:
-        for y in sequence:
+        for y in sequence: # $ Alert[py/unused-loop-variable]
             do_something(x+1)
 
 def fail3(sequence):
     for x in sequence:
         do_something(x+1)
-    for y in sequence:
+    for y in sequence: # $ Alert[py/unused-loop-variable]
         do_something(x+1)
 
 def fail4(coll, sequence):
     while coll:
         x = coll.pop()
-    for s in sequence:
+    for s in sequence: # $ Alert[py/unused-loop-variable]
         do_something(x+1)
 
 #OK See ODASA-4153 and ODASA-4533
@@ -103,7 +103,7 @@ def kwargs_is_a_use(seq):
 
 #A deletion is a use, but this is almost certainly an error
 def cleanup(sessions):
-    for sess in sessions:
+    for sess in sessions: # $ Alert[py/unused-loop-variable]
         # Original code had some comment about deleting sessions
         del sess
 

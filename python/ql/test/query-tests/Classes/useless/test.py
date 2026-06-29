@@ -25,7 +25,7 @@ class Useful2(object):
         pass
 
 
-class Useless1(object):
+class Useless1(object): # $ Alert
 
     def __init__(self):
         pass
@@ -34,7 +34,7 @@ class Useless1(object):
         pass
 
 
-class Useless2(object):
+class Useless2(object): # $ Alert
 
     def do_something(self):
         pass

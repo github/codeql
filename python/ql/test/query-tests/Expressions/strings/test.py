@@ -15,13 +15,13 @@ def test():
     error1 = [
         "foo",
         "/usr/local"
-        "/usr/bin"
+        "/usr/bin" # $ Alert
     ]
     error2 = [
         "foo" +
         "bar",
         "/usr/local"
-        "/usr/bin"
+        "/usr/bin" # $ Alert
     ]
 
 #Examples from documentation
@@ -31,9 +31,9 @@ def unclear():
     return [
 
         "first part of long string"
-        " and the second part",
+        " and the second part", # $ Alert
         "/usr/local"
-        "/usr/bin"
+        "/usr/bin" # $ Alert
     ]
 
 def clarified():

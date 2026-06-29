@@ -24,7 +24,7 @@ func main() {
 	d.Decode(out)            // $ ttfnmodelstep="d -> out [postupdate]"
 
 	var w io.Writer
-	e := yaml2.NewEncoder(w) // $ ttfnmodelstep="definition of e -> w [postupdate]"
+	e := yaml2.NewEncoder(w) // $ ttfnmodelstep="SSA def(e) -> w [postupdate]"
 	e.Encode(in)             // $ ttfnmodelstep="in -> e [postupdate]"
 
 	out, _ = yaml3.Marshal(in) // $ marshaler="yaml: in -> ... = ...[0]" ttfnmodelstep="in -> ... = ...[0]"
@@ -33,7 +33,7 @@ func main() {
 	d1 := yaml3.NewDecoder(r) // $ ttfnmodelstep="r -> call to NewDecoder"
 	d1.Decode(out)            // $ ttfnmodelstep="d1 -> out [postupdate]"
 
-	e1 := yaml3.NewEncoder(w) // $ ttfnmodelstep="definition of e1 -> w [postupdate]"
+	e1 := yaml3.NewEncoder(w) // $ ttfnmodelstep="SSA def(e1) -> w [postupdate]"
 	e1.Encode(in)             // $ ttfnmodelstep="in -> e1 [postupdate]"
 
 	var n1 yaml3.Node

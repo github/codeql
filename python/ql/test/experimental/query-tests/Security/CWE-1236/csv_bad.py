@@ -6,7 +6,7 @@
 import copy
 import csv
 from flask import Flask
-from flask import request
+from flask import request # $ Source
 from typing import List
 
 app = Flask(__name__)
@@ -15,14 +15,14 @@ app = Flask(__name__)
 def bad1():
     csv_data = request.args.get('csv')
     csvWriter = csv.writer(open("test.csv", "wt"))
-    csvWriter.writerow(csv_data)    # bad
-    csvWriter.writerows(csv_data)    # bad
+    csvWriter.writerow(csv_data)    # $ Alert # bad
+    csvWriter.writerows(csv_data)    # $ Alert # bad
     return "bad1"
 
 @app.route('/bad2')
 def bad2():
     csv_data = request.args.get('csv')
-    csvWriter = csv.DictWriter(f, fieldnames=csv_data)    # bad
+    csvWriter = csv.DictWriter(f, fieldnames=csv_data)    # $ Alert # bad
     csvWriter.writeheader()
     return "bad2"
 

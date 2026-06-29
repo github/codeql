@@ -1,1 +1,2 @@
-Exceptions/RaisingTuple.ql
+query: Exceptions/RaisingTuple.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

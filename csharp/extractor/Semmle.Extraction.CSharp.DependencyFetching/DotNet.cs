@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) : this(new DotNetCliInvoker(logger, Path.Combine(dotNetPath ?? string.Empty, "dotnet"), dependabotProxy), logger, dotNetPath is null, tempWorkingDirectory) { }
+        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) : this(new DotNetCliInvoker(logger, Path.Join(dotNetPath ?? string.Empty, "dotnet"), dependabotProxy), logger, dotNetPath is null, tempWorkingDirectory) { }
 
         internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, bool runDotnetInfo) => new DotNet(dotnetCliInvoker, logger, runDotnetInfo);
 
@@ -73,7 +73,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var path = ".empty";
                 if (tempWorkingDirectory != null)
                 {
-                    path = Path.Combine(tempWorkingDirectory.ToString(), "emptyFakeDotnetRoot");
+                    path = Path.Join(tempWorkingDirectory.ToString(), "emptyFakeDotnetRoot");
                     Directory.CreateDirectory(path);
                 }
 
@@ -303,7 +303,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
                 else
                 {
-                    var dotnetInstallPath = actions.PathCombine(tempWorkingDirectory, ".dotnet", "dotnet-install.sh");
+                    var dotnetInstallPath = actions.PathJoin(tempWorkingDirectory, ".dotnet", "dotnet-install.sh");
                     var downloadDotNetInstallSh = BuildScript.DownloadFile(
                         "https://dot.net/v1/dotnet-install.sh",
                         dotnetInstallPath,
@@ -339,7 +339,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     };
                 }
 
-                var dotnetInfo = InfoScript(actions, actions.PathCombine(path, "dotnet"), MinimalEnvironment.ToDictionary(), logger);
+                var dotnetInfo = InfoScript(actions, actions.PathJoin(path, "dotnet"), MinimalEnvironment.ToDictionary(), logger);
 
                 Func<string, BuildScript> getInstallAndVerify = version =>
                     // run `dotnet --info` after install, to check that it executes successfully
@@ -384,7 +384,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public static BuildScript WithDotNet(IBuildActions actions, ILogger logger, IEnumerable<string> files, string tempWorkingDirectory, bool shouldCleanUp, bool ensureDotNetAvailable, string? version, Func<string?, BuildScript> f)
         {
-            var installDir = actions.PathCombine(tempWorkingDirectory, ".dotnet");
+            var installDir = actions.PathJoin(tempWorkingDirectory, ".dotnet");
             var installScript = DownloadDotNet(actions, logger, files, tempWorkingDirectory, shouldCleanUp, installDir, version, ensureDotNetAvailable);
             return BuildScript.Bind(installScript, installed =>
             {
