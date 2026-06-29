@@ -801,13 +801,10 @@ module GoCfg {
         ast = fd.getBody() and
         not funcHasDefer(fd) and
         c.getSuccessorType() instanceof ReturnSuccessor and
-        (
-          // If the function has result variables, route the return completion
-          // through the result-read epilogue before reaching the function exit.
-          exists(fd.getResultVar(0)) and n.isAdditional(fd.getBody(), "result-read:0")
-          or
-          not exists(fd.getResultVar(_)) and n.isAfter(fd.getBody())
-        )
+        // If the function has result variables, route the return completion
+        // through the result-read epilogue before reaching the function exit.
+        exists(fd.getResultVar(0)) and
+        n.isAdditional(fd.getBody(), "result-read:0")
       )
       or
       exists(Go::LabeledStmt lbl, Go::FuncDef fd |
@@ -1731,7 +1728,13 @@ module GoCfg {
     private predicate funcDefBodyStart(Go::FuncDef fd, PreControlFlowNode n) {
       n.isBefore(getRankedChild(fd.getBody(), 1))
       or
-      not exists(getRankedChild(fd.getBody(), _)) and n.isAfter(fd.getBody())
+      not exists(getRankedChild(fd.getBody(), _)) and
+      n.isAfter(fd.getBody()) and
+      // When Before(body) and After(body) are the same node (the shared library's
+      // "simple leaf node" optimization merges them for empty bodies without
+      // additional nodes), don't generate Before→After as it would be a self-loop.
+      // The callable exit mechanism already routes After(body) → NormalExit.
+      not n.isBefore(fd.getBody())
     }
 
     private predicate funcDefBodyStep(Go::FuncDef fd, PreControlFlowNode n1, PreControlFlowNode n2) {
