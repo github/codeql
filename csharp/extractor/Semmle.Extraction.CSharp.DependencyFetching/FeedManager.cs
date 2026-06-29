@@ -445,7 +445,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return reachableFeeds;
         }
 
-        public List<string> GetReachableFallbackNugetFeeds(ImmutableHashSet<string>? feedsFromNugetConfigs)
+        public List<string> GetReachableFallbackNugetFeeds()
         {
             var fallbackFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.FallbackNugetFeeds).ToHashSet();
             if (fallbackFeeds.Count == 0)
@@ -456,12 +456,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var shouldAddNugetConfigFeeds = EnvironmentVariables.GetBooleanOptOut(EnvironmentVariableNames.AddNugetConfigFeedsToFallback);
                 logger.LogInfo($"Adding feeds from nuget.config to fallback restore: {shouldAddNugetConfigFeeds}");
 
-                if (shouldAddNugetConfigFeeds && feedsFromNugetConfigs?.Count > 0)
+                if (shouldAddNugetConfigFeeds && ExplicitFeeds.Count > 0)
                 {
-                    // There are some feeds in `feedsFromNugetConfigs` that have already been checked for reachability, we could skip those.
-                    // But we might use different responsiveness testing settings when we try them in the fallback logic, so checking them again is safer.
-                    fallbackFeeds.UnionWith(feedsFromNugetConfigs);
-                    logger.LogInfo($"Using NuGet feeds from nuget.config files as fallback feeds: {string.Join(", ", feedsFromNugetConfigs.OrderBy(f => f))}");
+                    // Feeds in `ExplicitFeeds` may already been checked for reachability.
+                    // But we might use different responsiveness testing settings when we try them in the fallback logic, so checking them again.
+                    fallbackFeeds.UnionWith(ExplicitFeeds);
+                    logger.LogInfo($"Using NuGet feeds from nuget.config files as fallback feeds: {string.Join(", ", ExplicitFeeds.OrderBy(f => f))}");
                 }
             }
 
