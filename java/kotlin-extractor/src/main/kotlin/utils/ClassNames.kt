@@ -228,6 +228,12 @@ fun normalizeExternalFileClassBinaryPath(path: String, fqName: FqName): String {
     return path
 }
 
+fun shouldUseConcreteExternalFileClassLocation(path: String): Boolean {
+    val normalizedPath = path.replace('\\', '/')
+    return normalizedPath.contains("/") &&
+        !normalizedPath.startsWith("/!unknown-binary-location/")
+}
+
 fun getJavaEquivalentClassId(c: IrClass) =
     c.fqNameWhenAvailable?.toUnsafe()?.let { JavaToKotlinClassMap.mapKotlinToJava(it) }
 

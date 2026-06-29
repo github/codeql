@@ -1005,9 +1005,10 @@ open class KotlinUsesExtractor(
                 val binaryPath =
                     getContainerSourceBinaryPath(d.containerSource)
                         ?.let { normalizeExternalFileClassBinaryPath(it, fqName) }
-                        ?: "/!unknown-binary-location/${fqName.asString().replace(".", "/")}.class"
-                val fileId = tw.mkFileId(binaryPath, true)
-                tw.writeHasLocation(fileClassId, tw.getWholeFileLocation(fileId))
+                if (binaryPath != null && shouldUseConcreteExternalFileClassLocation(binaryPath)) {
+                    val fileId = tw.mkFileId(binaryPath, true)
+                    tw.writeHasLocation(fileClassId, tw.getWholeFileLocation(fileId))
+                }
             }
             return fileClassId
         }
