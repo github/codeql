@@ -19,3 +19,5 @@
 | test.cpp:149:10:149:10 | z | test-sink |
 | test.cpp:158:10:158:10 | z | test-sink |
 | test.cpp:173:10:173:10 | y | test-sink |
+| test.cpp:188:10:188:10 | x | test-sink |
+| test.cpp:201:10:201:10 | x | test-sink |
