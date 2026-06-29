@@ -185,7 +185,7 @@ void test_fully_qualified_field_test() {
 	MyNamespace::MyStructInNamespace s;
 	s.myField = ymlSource();
 	int x = read_field_from_struct(&s);
-	ymlSink(x); // $ MISSING: ir
+	ymlSink(x); // $ ir
 }
 
 struct MyGlobalStruct {
@@ -198,5 +198,5 @@ void test_fully_qualified_field_test_2() {
 	MyGlobalStruct s;
 	s.myField = ymlSource();
 	int x = read_field_from_struct_2(&s);
-	ymlSink(x); // $ MISSING: ir
+	ymlSink(x); // $ ir
 }
