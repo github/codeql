@@ -228,7 +228,7 @@ private class ClassDefinitionAsAttrWrite extends AttrWrite, CfgNode {
 
   override Node getValue() { result.asCfgNode() = node.getValue() }
 
-  override Node getObject() { result.asCfgNode() = cls.getAFlowNode() }
+  override Node getObject() { result.asCfgNode().getNode() = cls }
 
   override ExprNode getAttributeNameExpr() { none() }
 

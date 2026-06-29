@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request # $ Source
 from pymongo import MongoClient
 import json
 
@@ -27,8 +27,8 @@ def as_dict():
     author = json.loads(author_string)
     # Use {"$ne": 1} as author
     # Found by http://127.0.0.1:5000/dict?author={%22$ne%22:1}
-    post = posts.find_one({'author': author}) # $ result=BAD
-    post = posts.find_one(filter={'author': author}) # $ result=BAD
+    post = posts.find_one({'author': author}) # $ Alert result=BAD
+    post = posts.find_one(filter={'author': author}) # $ Alert result=BAD
     return show_post(post, author)
 
 @app.route('/dictHardened', methods=['GET'])
@@ -44,7 +44,7 @@ def by_where():
     # Use `" | "a" === "a` as author
     # making the query `this.author === "" | "a" === "a"`
     # Found by http://127.0.0.1:5000/byWhere?author=%22%20|%20%22a%22%20===%20%22a
-    post = posts.find_one({'$where': 'this.author === "'+author+'"'}) # $ result=BAD
+    post = posts.find_one({'$where': 'this.author === "'+author+'"'}) # $ Alert result=BAD
     return show_post(post, author)
 
 @app.route('/byFunction', methods=['GET'])
@@ -58,7 +58,7 @@ def by_function():
     # Use `" | "a" === "a` as author
     # making the query `this.author === "" | "a" === "a"`
     # Found by http://127.0.0.1:5000/byFunction?author=%22%20|%20%22a%22%20===%20%22a
-    post = posts.find_one({'$expr': {'$function': search}}) # $ result=BAD
+    post = posts.find_one({'$expr': {'$function': search}}) # $ Alert result=BAD
     return show_post(post, author)
 
 @app.route('/byFunctionArg', methods=['GET'])
@@ -88,8 +88,8 @@ def by_group():
     # Use `" | "a" === "a` as author
     # making the query `this.author === "" | "a" === "a"`
     # Found by http://127.0.0.1:5000/byGroup?author=%22%20|%20%22a%22%20===%20%22a
-    post = posts.aggregate([{ "$group": group }]).next() # $ result=BAD
-    post = posts.aggregate(pipeline=[{ "$group": group }]).next() # $ result=BAD
+    post = posts.aggregate([{ "$group": group }]).next() # $ Alert result=BAD
+    post = posts.aggregate(pipeline=[{ "$group": group }]).next() # $ Alert result=BAD
     return show_post(post, author)
 
 # works with pymongo 3.9, `map_reduce` is removed in pymongo 4.0
@@ -99,7 +99,7 @@ def by_map_reduce():
     mapper = 'function() { emit(this.author, this.author === "'+author+'") }'
     reducer = "function(key, values) { return values.some( x => x ) }"
     results = posts.map_reduce(
-        mapper, # $ result=BAD
+        mapper, # $ Alert result=BAD
         reducer, # $ result=OK
         "results")
     # Use `" | "a" === "a` as author

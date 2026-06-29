@@ -16,7 +16,11 @@ class CaseWhenClause extends CaseExprImpl, TCaseExpr {
 
   CaseWhenClause() { this = TCaseExpr(g) }
 
-  final override Expr getValue() { toGenerated(result) = g.getValue() }
+  final override Expr getValue() {
+    toGenerated(result) = g.getValue()
+    or
+    not exists(g.getValue()) and synthChild(this, -2, result)
+  }
 
   final override AstNode getBranch(int n) {
     // When branches map directly to WhenClause nodes

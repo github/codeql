@@ -35,6 +35,28 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        if_expr
+          condition:
+            binary_expr
+              operator: infix_operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
+          then:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
 
 ===
 If-else
@@ -90,6 +112,43 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        if_expr
+          condition:
+            binary_expr
+              operator: infix_operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
+          else:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        unary_expr
+                          operand:
+                            name_expr
+                              identifier: identifier "x"
+                          operator: prefix_operator "-"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+          then:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
 
 ===
 If-else-if chain
@@ -165,6 +224,55 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        if_expr
+          condition:
+            binary_expr
+              operator: infix_operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
+          else:
+            if_expr
+              condition:
+                binary_expr
+                  operator: infix_operator "<"
+                  left:
+                    name_expr
+                      identifier: identifier "x"
+                  right: int_literal "0"
+              else:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: int_literal "3"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              then:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: int_literal "2"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+          then:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value: int_literal "1"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
 
 ===
 If-let optional binding
@@ -207,6 +315,39 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        if_expr
+          condition:
+            pattern_guard_expr
+              pattern:
+                constructor_pattern
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "value"
+                  constructor:
+                    member_access_expr
+                      base:
+                        named_type_expr
+                          name: identifier "Optional"
+                      member: identifier "some"
+              value:
+                name_expr
+                  identifier: identifier "optional"
+          then:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "value"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
 
 ===
 Guard let
@@ -240,6 +381,30 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        guard_if_stmt
+          condition:
+            pattern_guard_expr
+              pattern:
+                constructor_pattern
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "value"
+                  constructor:
+                    member_access_expr
+                      base:
+                        named_type_expr
+                          name: identifier "Optional"
+                      member: identifier "some"
+              value:
+                name_expr
+                  identifier: identifier "optional"
+          else:
+            block
+              stmt: return_expr "return"
 
 ===
 Ternary expression
@@ -277,6 +442,27 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "y"
+          value:
+            if_expr
+              condition:
+                binary_expr
+                  operator: infix_operator ">"
+                  left:
+                    name_expr
+                      identifier: identifier "x"
+                  right: int_literal "0"
+              else:
+                unary_expr
+                  operand: int_literal "1"
+                  operator: prefix_operator "-"
+              then: int_literal "1"
 
 ===
 Switch statement
@@ -357,6 +543,54 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        switch_expr
+          case:
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: string_literal "\"one\""
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              pattern:
+                expr_equality_pattern
+                  expr: int_literal "1"
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: string_literal "\"two or three\""
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              pattern:
+                expr_equality_pattern
+                  expr: int_literal "2"
+                expr_equality_pattern
+                  expr: int_literal "3"
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: string_literal "\"other\""
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+          value:
+            name_expr
+              identifier: identifier "x"
 
 ===
 Switch with binding pattern
@@ -396,6 +630,7 @@ source_file
                                       pattern:
                                         pattern
                                           bound_identifier: simple_identifier "r"
+                      dot: .
                       name: simple_identifier "circle"
           statement:
             call_expression
@@ -428,6 +663,7 @@ source_file
                                       pattern:
                                         pattern
                                           bound_identifier: simple_identifier "s"
+                      dot: .
                       name: simple_identifier "square"
           statement:
             call_expression
@@ -445,3 +681,207 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        switch_expr
+          case:
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "r"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              pattern:
+                constructor_pattern
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "r"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "circle"
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "s"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              pattern:
+                constructor_pattern
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "s"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "square"
+          value:
+            name_expr
+              identifier: identifier "shape"
+
+===
+Switch with labeled case pattern arguments
+===
+
+switch x {
+case .implicit(isAcknowledged: false):
+  print("yes")
+case .thread(threadRowId: _, let rowId):
+  print(rowId)
+}
+
+---
+
+source_file
+  statement:
+    switch_statement
+      entry:
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind:
+                    case_pattern
+                      arguments:
+                        tuple_pattern
+                          item:
+                            tuple_pattern_item
+                              name: simple_identifier "isAcknowledged"
+                              pattern:
+                                pattern
+                                  kind:
+                                    boolean_literal
+                      dot: .
+                      name: simple_identifier "implicit"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "yes"
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind:
+                    case_pattern
+                      arguments:
+                        tuple_pattern
+                          item:
+                            tuple_pattern_item
+                              name: simple_identifier "threadRowId"
+                              pattern:
+                                pattern
+                                  kind: wildcard_pattern "_"
+                            tuple_pattern_item
+                              pattern:
+                                pattern
+                                  kind:
+                                    binding_pattern
+                                      binding:
+                                        value_binding_pattern
+                                          mutability: let
+                                      pattern:
+                                        pattern
+                                          bound_identifier: simple_identifier "rowId"
+                      dot: .
+                      name: simple_identifier "thread"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "rowId"
+      expr: simple_identifier "x"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        switch_expr
+          case:
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: string_literal "\"yes\""
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              pattern:
+                constructor_pattern
+                  element:
+                    pattern_element
+                      key: identifier "isAcknowledged"
+                      pattern:
+                        expr_equality_pattern
+                          expr: boolean_literal "false"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "implicit"
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "rowId"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              pattern:
+                constructor_pattern
+                  element:
+                    pattern_element
+                      key: identifier "threadRowId"
+                      pattern: ignore_pattern "_"
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "rowId"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "thread"
+          value:
+            name_expr
+              identifier: identifier "x"

@@ -31,6 +31,20 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value: string_literal "\"hello\""
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+          name: identifier "greet"
 
 ===
 Function with parameters and return type
@@ -93,6 +107,37 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    binary_expr
+                      operator: infix_operator "+"
+                      left:
+                        name_expr
+                          identifier: identifier "a"
+                      right:
+                        name_expr
+                          identifier: identifier "b"
+          name: identifier "add"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              pattern:
+                name_pattern
+                  identifier: identifier "a"
+            parameter
+              external_name: identifier "_"
+              pattern:
+                name_pattern
+                  identifier: identifier "b"
+          return_type:
+            named_type_expr
+              name: identifier "Int"
 
 ===
 Function with named parameters
@@ -138,6 +183,28 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "name"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+          name: identifier "greet"
+          parameter:
+            parameter
+              external_name: identifier "person"
+              pattern:
+                name_pattern
+                  identifier: identifier "name"
 
 ===
 Function with default parameter value
@@ -185,6 +252,28 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "name"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+          name: identifier "greet"
+          parameter:
+            parameter
+              default: string_literal "\"world\""
+              pattern:
+                name_pattern
+                  identifier: identifier "name"
 
 ===
 Variadic function
@@ -249,6 +338,38 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    call_expr
+                      argument:
+                        argument
+                          value: int_literal "0"
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "+"
+                      callee:
+                        member_access_expr
+                          base:
+                            name_expr
+                              identifier: identifier "values"
+                          member: identifier "reduce"
+          name: identifier "sum"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              pattern:
+                name_pattern
+                  identifier: identifier "values"
+          return_type:
+            named_type_expr
+              name: identifier "Int"
 
 ===
 Function call
@@ -276,6 +397,17 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        call_expr
+          argument:
+            argument
+              value: int_literal "1"
+            argument
+              value: int_literal "2"
+          callee:
+            name_expr
+              identifier: identifier "foo"
 
 ===
 Function call with labelled arguments
@@ -306,6 +438,16 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        call_expr
+          argument:
+            argument
+              name: identifier "person"
+              value: string_literal "\"Bob\""
+          callee:
+            name_expr
+              identifier: identifier "greet"
 
 ===
 Method call
@@ -336,6 +478,18 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        call_expr
+          argument:
+            argument
+              value: int_literal "1"
+          callee:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "list"
+              member: identifier "append"
 
 ===
 Generic function
@@ -387,3 +541,117 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    name_expr
+                      identifier: identifier "x"
+          name: identifier "identity"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+          return_type:
+            named_type_expr
+              name: identifier "T"
+
+===
+Leading-dot expression value
+===
+
+let x = .foo
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "x"
+          value:
+            prefix_expression
+              operation: .
+              target: simple_identifier "foo"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          value:
+            member_access_expr
+              base: inferred_type_expr ".foo"
+              member: identifier "foo"
+
+===
+Leading-dot expression call
+===
+
+let y = .some(1)
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "y"
+          value:
+            call_expression
+              function:
+                prefix_expression
+                  operation: .
+                  target: simple_identifier "some"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: integer_literal "1"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "y"
+          value:
+            call_expr
+              argument:
+                argument
+                  value: int_literal "1"
+              callee:
+                member_access_expr
+                  base: inferred_type_expr ".some"
+                  member: identifier "some"

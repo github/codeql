@@ -111,4 +111,30 @@
       </plugins>
     </pluginManagement>
   </build>
+
+  <!-- Use the Google Cloud Storage mirror of Maven Central for better download speeds and reliability -->
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>https://maven-central.storage-download.googleapis.com/maven2/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>central</id>
+      <url>https://maven-central.storage-download.googleapis.com/maven2/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </pluginRepository>
+  </pluginRepositories>
 </project>

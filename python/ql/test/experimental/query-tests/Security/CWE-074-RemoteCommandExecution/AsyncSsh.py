@@ -12,8 +12,8 @@ session.handshake(sock)
 session.userauth_password("user", "password")
 
 @app.get("/bad1")
-async def bad1(cmd: str):
+async def bad1(cmd: str):  # $ Source
     async with asyncssh.connect('localhost') as conn:
-        result = await conn.run(cmd, check=True) # $ result=BAD getRemoteCommand=cmd
+        result = await conn.run(cmd, check=True) # $ Alert result=BAD getRemoteCommand=cmd
         print(result.stdout, end='')
     return {"success": "Dangerous"}

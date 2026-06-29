@@ -79,7 +79,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 var monoPath = FileUtils.FindProgramOnPath(Win32.IsWindows() ? "mono.exe" : "mono");
                 string[] monoDirs = monoPath is not null
-                    ? [Path.GetFullPath(Path.Combine(monoPath, "..", "lib", "mono")), monoPath]
+                    ? [Path.GetFullPath(Path.Join(monoPath, "..", "lib", "mono")), monoPath]
                     : ["/usr/lib/mono", "/usr/local/mono", "/usr/local/bin/mono", @"C:\Program Files\Mono\lib\mono"];
 
                 var monoDir = monoDirs.FirstOrDefault(Directory.Exists);

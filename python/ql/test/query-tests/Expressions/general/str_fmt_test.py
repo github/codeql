@@ -5,7 +5,7 @@ def expected_mapping_for_fmt_string():
     print (u"%(name)s" % x)
 
 def unsupported_format_char(arg):
-    print (u"%Z" % arg)
+    print (u"%Z" % arg) # $ Alert[py/percent-format/unsupported-character]
 
 def wrong_arg_count_format(arg):
     print(u"%s %s" % (arg, arg, 0))

@@ -1,11 +1,11 @@
 from __future__ import unicode_literals
 
-mixed_format1 = "{}{1}"
+mixed_format1 = "{}{1}" # $ Alert[py/str-format/mixed-fields]
 named_format1 = "{name!r}, {0}"
 explicit_format1 = "{0}, {1}"
 implicit_format1 = "{}, {}"
 
-mixed_format2 = "{}{1}"
+mixed_format2 = "{}{1}" # $ Alert[py/str-format/mixed-fields]
 named_format2 = "{name!r}, {0}"
 explicit_format2 = "{0}, {1}"
 implicit_format2 = "{}, {}"
@@ -14,23 +14,23 @@ implicit_format2 = "{}, {}"
 mixed_format1.format("Hello", "World")
 format(mixed_format2, "Hello", "World")
 
-named_format1.format("Hello", world="World")
-format(named_format2, "Hello", world="World")
+named_format1.format("Hello", world="World") # $ Alert[py/str-format/missing-named-argument] Alert[py/str-format/surplus-named-argument]
+format(named_format2, "Hello", world="World") # $ Alert[py/str-format/missing-named-argument] Alert[py/str-format/surplus-named-argument]
 
-named_format1.format(name="Hello", world="World")
-format(named_format2, name="Hello", world="World")
+named_format1.format(name="Hello", world="World") # $ Alert[py/str-format/missing-argument] Alert[py/str-format/surplus-named-argument]
+format(named_format2, name="Hello", world="World") # $ Alert[py/str-format/missing-argument] Alert[py/str-format/surplus-named-argument]
 
-explicit_format1.format("Hello")
-format(explicit_format2, "Hello")
+explicit_format1.format("Hello") # $ Alert[py/str-format/missing-argument]
+format(explicit_format2, "Hello") # $ Alert[py/str-format/missing-argument]
 
-implicit_format1.format("Hello")
-format(implicit_format2, "Hello")
+implicit_format1.format("Hello") # $ Alert[py/str-format/missing-argument]
+format(implicit_format2, "Hello") # $ Alert[py/str-format/missing-argument]
 
-explicit_format1.format("Hello", "World", "Extra")
-format(explicit_format2, "Hello", "World", "Extra")
+explicit_format1.format("Hello", "World", "Extra") # $ Alert[py/str-format/surplus-argument]
+format(explicit_format2, "Hello", "World", "Extra") # $ Alert[py/str-format/surplus-argument]
 
-implicit_format1.format("Hello", "World", "Extra")
-format(implicit_format2, "Hello", "World", "Extra")
+implicit_format1.format("Hello", "World", "Extra") # $ Alert[py/str-format/surplus-argument]
+format(implicit_format2, "Hello", "World", "Extra") # $ Alert[py/str-format/surplus-argument]
 
 #OK ODASA-3197
 if cond:
@@ -42,8 +42,8 @@ format(x_or_y, x="x", y="y")
 x_or_y.format(x="x", y="y")
 
 #Still fail for multiple formats
-format(x_or_y, x="x", y="y", z="z")
-x_or_y.format(x="x", y="y", z="z")
+format(x_or_y, x="x", y="y", z="z") # $ Alert[py/str-format/surplus-named-argument]
+x_or_y.format(x="x", y="y", z="z") # $ Alert[py/str-format/surplus-named-argument]
 
 #False positive reported by customer. -- Verify fix.
 "<td class={}>{{}}></td>".format(html_class)

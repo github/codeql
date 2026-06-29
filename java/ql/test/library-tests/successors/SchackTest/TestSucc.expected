@@ -50,16 +50,16 @@
 | SchackTest.java:16:4:16:41 | <Expr>; | SchackTest.java:16:4:16:13 | System.out |
 | SchackTest.java:16:23:16:39 | "false successor" | SchackTest.java:16:4:16:40 | println(...) |
 | SchackTest.java:17:5:17:17 | catch (...) | SchackTest.java:17:16:17:16 | e |
-| SchackTest.java:17:5:17:17 | catch (...) | SchackTest.java:19:5:19:17 | catch (...) |
 | SchackTest.java:17:16:17:16 | e | SchackTest.java:17:19:19:3 | { ... } |
+| SchackTest.java:17:16:17:16 | e | SchackTest.java:19:5:19:17 | catch (...) |
 | SchackTest.java:17:19:19:3 | { ... } | SchackTest.java:18:4:18:41 | <Expr>; |
 | SchackTest.java:18:4:18:13 | System.out | SchackTest.java:18:23:18:39 | "false successor" |
 | SchackTest.java:18:4:18:40 | println(...) | SchackTest.java:21:13:23:3 | { ... } |
 | SchackTest.java:18:4:18:41 | <Expr>; | SchackTest.java:18:4:18:13 | System.out |
 | SchackTest.java:18:23:18:39 | "false successor" | SchackTest.java:18:4:18:40 | println(...) |
 | SchackTest.java:19:5:19:17 | catch (...) | SchackTest.java:19:16:19:16 | e |
-| SchackTest.java:19:5:19:17 | catch (...) | SchackTest.java:21:13:23:3 | { ... } |
 | SchackTest.java:19:16:19:16 | e | SchackTest.java:19:19:21:3 | { ... } |
+| SchackTest.java:19:16:19:16 | e | SchackTest.java:21:13:23:3 | { ... } |
 | SchackTest.java:19:19:21:3 | { ... } | SchackTest.java:20:4:20:74 | <Expr>; |
 | SchackTest.java:20:4:20:13 | System.out | SchackTest.java:20:23:20:72 | "successor (but neither true nor false successor)" |
 | SchackTest.java:20:4:20:73 | println(...) | SchackTest.java:21:13:23:3 | { ... } |

@@ -46,20 +46,23 @@ class SelfAttributeRead extends SelfAttribute {
   }
 
   predicate guardedByHasattr() {
-    exists(Variable var, ControlFlowNode n |
-      var.getAUse() = this.getObject().getAFlowNode() and
+    exists(Variable var, ControlFlowNode n, ControlFlowNode this_, ControlFlowNode obj_ |
+      this_.getNode() = this and obj_.getNode() = this.getObject()
+    |
+      var.getAUse() = obj_ and
       hasattr(n, var.getAUse(), this.getName()) and
-      n.strictlyDominates(this.getAFlowNode())
+      n.strictlyDominates(this_)
     )
   }
 
   pragma[noinline]
   predicate locallyDefined() {
-    exists(SelfAttributeStore store |
-      this.getName() = store.getName() and
-      this.getScope() = store.getScope()
+    exists(SelfAttributeStore store, ControlFlowNode store_, ControlFlowNode this_ |
+      store_.getNode() = store and this_.getNode() = this
     |
-      store.getAFlowNode().strictlyDominates(this.getAFlowNode())
+      this.getName() = store.getName() and
+      this.getScope() = store.getScope() and
+      store_.strictlyDominates(this_)
     )
   }
 }

@@ -34,8 +34,8 @@ where
         check instanceof AssociationCheck or
         check instanceof PermissionCheck
       ) and
-      check.dominates(checkout) and
-      date_check.dominates(checkout)
+      check.dominates(checkout, event) and
+      date_check.dominates(checkout, event)
     )
     or
     // not issue_comment triggered workflows

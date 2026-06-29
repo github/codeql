@@ -680,7 +680,7 @@ namespace Semmle.Extraction.CSharp
             {
                 try
                 {
-                    var fullPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(mappedFromPath)!, mappedToPath));
+                    var fullPath = Path.GetFullPath(Path.Join(Path.GetDirectoryName(mappedFromPath)!, mappedToPath));
                     ExtractionContext.Logger.LogDebug($"Found relative path in line mapping: '{mappedToPath}', interpreting it as '{fullPath}'");
 
                     mappedToPath = fullPath;

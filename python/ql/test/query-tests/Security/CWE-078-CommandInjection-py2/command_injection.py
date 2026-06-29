@@ -2,7 +2,7 @@ import os
 import platform
 import popen2
 
-from flask import Flask, request
+from flask import Flask, request # $ Source
 
 app = Flask(__name__)
 
@@ -16,14 +16,14 @@ def python2_specific():
     """
 
     files = request.args.get("files", "")
-    os.popen2("ls " + files)
-    os.popen3("ls " + files)
-    os.popen4("ls " + files)
+    os.popen2("ls " + files) # $ Alert
+    os.popen3("ls " + files) # $ Alert
+    os.popen4("ls " + files) # $ Alert
 
-    platform.popen("ls " + files)
+    platform.popen("ls " + files) # $ Alert
 
-    popen2.popen2("ls " + files)
-    popen2.popen3("ls " + files)
-    popen2.popen4("ls " + files)
-    popen2.Popen3("ls " + files)
-    popen2.Popen4("ls " + files)
+    popen2.popen2("ls " + files) # $ Alert
+    popen2.popen3("ls " + files) # $ Alert
+    popen2.popen4("ls " + files) # $ Alert
+    popen2.Popen3("ls " + files) # $ Alert
+    popen2.Popen4("ls " + files) # $ Alert

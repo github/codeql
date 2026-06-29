@@ -5,7 +5,7 @@ from starlette.middleware.cors import CORSMiddleware
 routes = ...
 
 middleware = [
-    Middleware(CORSMiddleware, allow_origins=['*'], allow_credentials=True)
+    Middleware(CORSMiddleware, allow_origins=['*'], allow_credentials=True) # $ Alert
 ]
 
 app = Starlette(routes=routes, middleware=middleware)

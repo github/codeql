@@ -23,6 +23,7 @@
 | gemini_test.js:85:26:85:49 | "Talk l ... persona | gemini_test.js:8:19:8:35 | req.query.persona | gemini_test.js:85:26:85:49 | "Talk l ... persona | This system prompt depends on a $@. | gemini_test.js:8:19:8:35 | req.query.persona | user-provided value |
 | gemini_test.js:95:26:95:49 | "Talk l ... persona | gemini_test.js:8:19:8:35 | req.query.persona | gemini_test.js:95:26:95:49 | "Talk l ... persona | This system prompt depends on a $@. | gemini_test.js:8:19:8:35 | req.query.persona | user-provided value |
 | gemini_test.js:105:26:105:49 | "Talk l ... persona | gemini_test.js:8:19:8:35 | req.query.persona | gemini_test.js:105:26:105:49 | "Talk l ... persona | This system prompt depends on a $@. | gemini_test.js:8:19:8:35 | req.query.persona | user-provided value |
+| gemini_test.js:119:26:119:49 | "Talk l ... persona | gemini_test.js:8:19:8:35 | req.query.persona | gemini_test.js:119:26:119:49 | "Talk l ... persona | This system prompt depends on a $@. | gemini_test.js:8:19:8:35 | req.query.persona | user-provided value |
 | langchain_test.js:16:37:16:60 | "Talk l ... persona | langchain_test.js:9:19:9:35 | req.query.persona | langchain_test.js:16:37:16:60 | "Talk l ... persona | This system prompt depends on a $@. | langchain_test.js:9:19:9:35 | req.query.persona | user-provided value |
 | langchain_test.js:19:14:19:37 | "Talk l ... persona | langchain_test.js:9:19:9:35 | req.query.persona | langchain_test.js:19:14:19:37 | "Talk l ... persona | This system prompt depends on a $@. | langchain_test.js:9:19:9:35 | req.query.persona | user-provided value |
 | langchain_test.js:25:19:25:42 | "Talk l ... persona | langchain_test.js:9:19:9:35 | req.query.persona | langchain_test.js:25:19:25:42 | "Talk l ... persona | This system prompt depends on a $@. | langchain_test.js:9:19:9:35 | req.query.persona | user-provided value |
@@ -33,13 +34,13 @@
 | openai_test.js:83:18:83:41 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:83:18:83:41 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
 | openai_test.js:97:19:97:42 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:97:19:97:42 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
 | openai_test.js:110:18:110:41 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:110:18:110:41 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
-| openai_test.js:120:13:120:36 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:120:13:120:36 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
-| openai_test.js:129:19:129:42 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:129:19:129:42 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
-| openai_test.js:134:19:134:42 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:134:19:134:42 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
-| openai_test.js:140:19:140:42 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:140:19:140:42 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
-| openai_test.js:146:30:146:58 | "Also t ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:146:30:146:58 | "Also t ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
-| openai_test.js:152:14:152:37 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:152:14:152:37 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
-| openai_test.js:164:32:164:55 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:164:32:164:55 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
+| openai_test.js:128:19:128:42 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:128:19:128:42 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
+| openai_test.js:137:19:137:42 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:137:19:137:42 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
+| openai_test.js:142:19:142:42 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:142:19:142:42 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
+| openai_test.js:148:19:148:42 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:148:19:148:42 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
+| openai_test.js:154:30:154:58 | "Also t ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:154:30:154:58 | "Also t ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
+| openai_test.js:160:14:160:37 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:160:14:160:37 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
+| openai_test.js:172:32:172:55 | "Talk l ... persona | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:172:32:172:55 | "Talk l ... persona | This system prompt depends on a $@. | openai_test.js:11:19:11:35 | req.query.persona | user-provided value |
 | openrouter_test.js:23:18:23:41 | "Talk l ... persona | openrouter_test.js:12:19:12:35 | req.query.persona | openrouter_test.js:23:18:23:41 | "Talk l ... persona | This system prompt depends on a $@. | openrouter_test.js:12:19:12:35 | req.query.persona | user-provided value |
 | openrouter_test.js:38:18:38:41 | "Talk l ... persona | openrouter_test.js:12:19:12:35 | req.query.persona | openrouter_test.js:38:18:38:41 | "Talk l ... persona | This system prompt depends on a $@. | openrouter_test.js:12:19:12:35 | req.query.persona | user-provided value |
 | openrouter_test.js:52:19:52:42 | "Talk l ... persona | openrouter_test.js:12:19:12:35 | req.query.persona | openrouter_test.js:52:19:52:42 | "Talk l ... persona | This system prompt depends on a $@. | openrouter_test.js:12:19:12:35 | req.query.persona | user-provided value |
@@ -109,6 +110,7 @@ edges
 | gemini_test.js:8:9:8:15 | persona | gemini_test.js:85:43:85:49 | persona | provenance |  |
 | gemini_test.js:8:9:8:15 | persona | gemini_test.js:95:43:95:49 | persona | provenance |  |
 | gemini_test.js:8:9:8:15 | persona | gemini_test.js:105:43:105:49 | persona | provenance |  |
+| gemini_test.js:8:9:8:15 | persona | gemini_test.js:119:43:119:49 | persona | provenance |  |
 | gemini_test.js:8:19:8:35 | req.query.persona | gemini_test.js:8:9:8:15 | persona | provenance |  |
 | gemini_test.js:18:43:18:49 | persona | gemini_test.js:18:26:18:49 | "Talk l ... persona | provenance |  |
 | gemini_test.js:30:42:30:48 | persona | gemini_test.js:30:25:30:48 | "Talk l ... persona | provenance |  |
@@ -116,6 +118,7 @@ edges
 | gemini_test.js:85:43:85:49 | persona | gemini_test.js:85:26:85:49 | "Talk l ... persona | provenance |  |
 | gemini_test.js:95:43:95:49 | persona | gemini_test.js:95:26:95:49 | "Talk l ... persona | provenance |  |
 | gemini_test.js:105:43:105:49 | persona | gemini_test.js:105:26:105:49 | "Talk l ... persona | provenance |  |
+| gemini_test.js:119:43:119:49 | persona | gemini_test.js:119:26:119:49 | "Talk l ... persona | provenance |  |
 | langchain_test.js:9:9:9:15 | persona | langchain_test.js:16:54:16:60 | persona | provenance |  |
 | langchain_test.js:9:9:9:15 | persona | langchain_test.js:19:31:19:37 | persona | provenance |  |
 | langchain_test.js:9:9:9:15 | persona | langchain_test.js:25:36:25:42 | persona | provenance |  |
@@ -130,13 +133,13 @@ edges
 | openai_test.js:11:9:11:15 | persona | openai_test.js:83:35:83:41 | persona | provenance |  |
 | openai_test.js:11:9:11:15 | persona | openai_test.js:97:36:97:42 | persona | provenance |  |
 | openai_test.js:11:9:11:15 | persona | openai_test.js:110:35:110:41 | persona | provenance |  |
-| openai_test.js:11:9:11:15 | persona | openai_test.js:120:30:120:36 | persona | provenance |  |
-| openai_test.js:11:9:11:15 | persona | openai_test.js:129:36:129:42 | persona | provenance |  |
-| openai_test.js:11:9:11:15 | persona | openai_test.js:134:36:134:42 | persona | provenance |  |
-| openai_test.js:11:9:11:15 | persona | openai_test.js:140:36:140:42 | persona | provenance |  |
-| openai_test.js:11:9:11:15 | persona | openai_test.js:146:52:146:58 | persona | provenance |  |
-| openai_test.js:11:9:11:15 | persona | openai_test.js:152:31:152:37 | persona | provenance |  |
-| openai_test.js:11:9:11:15 | persona | openai_test.js:164:49:164:55 | persona | provenance |  |
+| openai_test.js:11:9:11:15 | persona | openai_test.js:128:36:128:42 | persona | provenance |  |
+| openai_test.js:11:9:11:15 | persona | openai_test.js:137:36:137:42 | persona | provenance |  |
+| openai_test.js:11:9:11:15 | persona | openai_test.js:142:36:142:42 | persona | provenance |  |
+| openai_test.js:11:9:11:15 | persona | openai_test.js:148:36:148:42 | persona | provenance |  |
+| openai_test.js:11:9:11:15 | persona | openai_test.js:154:52:154:58 | persona | provenance |  |
+| openai_test.js:11:9:11:15 | persona | openai_test.js:160:31:160:37 | persona | provenance |  |
+| openai_test.js:11:9:11:15 | persona | openai_test.js:172:49:172:55 | persona | provenance |  |
 | openai_test.js:11:19:11:35 | req.query.persona | openai_test.js:11:9:11:15 | persona | provenance |  |
 | openai_test.js:19:36:19:42 | persona | openai_test.js:19:19:19:42 | "Talk l ... persona | provenance |  |
 | openai_test.js:29:35:29:41 | persona | openai_test.js:29:18:29:41 | "Talk l ... persona | provenance |  |
@@ -145,13 +148,13 @@ edges
 | openai_test.js:83:35:83:41 | persona | openai_test.js:83:18:83:41 | "Talk l ... persona | provenance |  |
 | openai_test.js:97:36:97:42 | persona | openai_test.js:97:19:97:42 | "Talk l ... persona | provenance |  |
 | openai_test.js:110:35:110:41 | persona | openai_test.js:110:18:110:41 | "Talk l ... persona | provenance |  |
-| openai_test.js:120:30:120:36 | persona | openai_test.js:120:13:120:36 | "Talk l ... persona | provenance |  |
-| openai_test.js:129:36:129:42 | persona | openai_test.js:129:19:129:42 | "Talk l ... persona | provenance |  |
-| openai_test.js:134:36:134:42 | persona | openai_test.js:134:19:134:42 | "Talk l ... persona | provenance |  |
-| openai_test.js:140:36:140:42 | persona | openai_test.js:140:19:140:42 | "Talk l ... persona | provenance |  |
-| openai_test.js:146:52:146:58 | persona | openai_test.js:146:30:146:58 | "Also t ... persona | provenance |  |
-| openai_test.js:152:31:152:37 | persona | openai_test.js:152:14:152:37 | "Talk l ... persona | provenance |  |
-| openai_test.js:164:49:164:55 | persona | openai_test.js:164:32:164:55 | "Talk l ... persona | provenance |  |
+| openai_test.js:128:36:128:42 | persona | openai_test.js:128:19:128:42 | "Talk l ... persona | provenance |  |
+| openai_test.js:137:36:137:42 | persona | openai_test.js:137:19:137:42 | "Talk l ... persona | provenance |  |
+| openai_test.js:142:36:142:42 | persona | openai_test.js:142:19:142:42 | "Talk l ... persona | provenance |  |
+| openai_test.js:148:36:148:42 | persona | openai_test.js:148:19:148:42 | "Talk l ... persona | provenance |  |
+| openai_test.js:154:52:154:58 | persona | openai_test.js:154:30:154:58 | "Also t ... persona | provenance |  |
+| openai_test.js:160:31:160:37 | persona | openai_test.js:160:14:160:37 | "Talk l ... persona | provenance |  |
+| openai_test.js:172:49:172:55 | persona | openai_test.js:172:32:172:55 | "Talk l ... persona | provenance |  |
 | openrouter_test.js:12:9:12:15 | persona | openrouter_test.js:23:35:23:41 | persona | provenance |  |
 | openrouter_test.js:12:9:12:15 | persona | openrouter_test.js:38:35:38:41 | persona | provenance |  |
 | openrouter_test.js:12:9:12:15 | persona | openrouter_test.js:52:36:52:42 | persona | provenance |  |
@@ -235,6 +238,8 @@ nodes
 | gemini_test.js:95:43:95:49 | persona | semmle.label | persona |
 | gemini_test.js:105:26:105:49 | "Talk l ... persona | semmle.label | "Talk l ... persona |
 | gemini_test.js:105:43:105:49 | persona | semmle.label | persona |
+| gemini_test.js:119:26:119:49 | "Talk l ... persona | semmle.label | "Talk l ... persona |
+| gemini_test.js:119:43:119:49 | persona | semmle.label | persona |
 | langchain_test.js:9:9:9:15 | persona | semmle.label | persona |
 | langchain_test.js:9:19:9:35 | req.query.persona | semmle.label | req.query.persona |
 | langchain_test.js:16:37:16:60 | "Talk l ... persona | semmle.label | "Talk l ... persona |
@@ -259,20 +264,20 @@ nodes
 | openai_test.js:97:36:97:42 | persona | semmle.label | persona |
 | openai_test.js:110:18:110:41 | "Talk l ... persona | semmle.label | "Talk l ... persona |
 | openai_test.js:110:35:110:41 | persona | semmle.label | persona |
-| openai_test.js:120:13:120:36 | "Talk l ... persona | semmle.label | "Talk l ... persona |
-| openai_test.js:120:30:120:36 | persona | semmle.label | persona |
-| openai_test.js:129:19:129:42 | "Talk l ... persona | semmle.label | "Talk l ... persona |
-| openai_test.js:129:36:129:42 | persona | semmle.label | persona |
-| openai_test.js:134:19:134:42 | "Talk l ... persona | semmle.label | "Talk l ... persona |
-| openai_test.js:134:36:134:42 | persona | semmle.label | persona |
-| openai_test.js:140:19:140:42 | "Talk l ... persona | semmle.label | "Talk l ... persona |
-| openai_test.js:140:36:140:42 | persona | semmle.label | persona |
-| openai_test.js:146:30:146:58 | "Also t ... persona | semmle.label | "Also t ... persona |
-| openai_test.js:146:52:146:58 | persona | semmle.label | persona |
-| openai_test.js:152:14:152:37 | "Talk l ... persona | semmle.label | "Talk l ... persona |
-| openai_test.js:152:31:152:37 | persona | semmle.label | persona |
-| openai_test.js:164:32:164:55 | "Talk l ... persona | semmle.label | "Talk l ... persona |
-| openai_test.js:164:49:164:55 | persona | semmle.label | persona |
+| openai_test.js:128:19:128:42 | "Talk l ... persona | semmle.label | "Talk l ... persona |
+| openai_test.js:128:36:128:42 | persona | semmle.label | persona |
+| openai_test.js:137:19:137:42 | "Talk l ... persona | semmle.label | "Talk l ... persona |
+| openai_test.js:137:36:137:42 | persona | semmle.label | persona |
+| openai_test.js:142:19:142:42 | "Talk l ... persona | semmle.label | "Talk l ... persona |
+| openai_test.js:142:36:142:42 | persona | semmle.label | persona |
+| openai_test.js:148:19:148:42 | "Talk l ... persona | semmle.label | "Talk l ... persona |
+| openai_test.js:148:36:148:42 | persona | semmle.label | persona |
+| openai_test.js:154:30:154:58 | "Also t ... persona | semmle.label | "Also t ... persona |
+| openai_test.js:154:52:154:58 | persona | semmle.label | persona |
+| openai_test.js:160:14:160:37 | "Talk l ... persona | semmle.label | "Talk l ... persona |
+| openai_test.js:160:31:160:37 | persona | semmle.label | persona |
+| openai_test.js:172:32:172:55 | "Talk l ... persona | semmle.label | "Talk l ... persona |
+| openai_test.js:172:49:172:55 | persona | semmle.label | persona |
 | openrouter_test.js:12:9:12:15 | persona | semmle.label | persona |
 | openrouter_test.js:12:19:12:35 | req.query.persona | semmle.label | req.query.persona |
 | openrouter_test.js:23:18:23:41 | "Talk l ... persona | semmle.label | "Talk l ... persona |

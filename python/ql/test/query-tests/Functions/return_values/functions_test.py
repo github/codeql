@@ -303,7 +303,7 @@ y = foo()
 
 # Returning tuples with different sizes
 
-def returning_different_tuple_sizes(x):
+def returning_different_tuple_sizes(x): # $ Alert[py/mixed-tuple-returns]
     if x:
         return 1,2
     else:
@@ -326,7 +326,7 @@ def indirectly_returning_different_tuple_sizes(x): # OK, since we only look at l
         return function_returning_2_tuple()
     else:
         return function_returning_3_tuple()
-    
+
 
 def mismatched_multi_assign(x):
     a,b = returning_different_tuple_sizes(x)

@@ -28,8 +28,8 @@
 | CloseReaderTest.java:19:11:19:15 | stdin | CloseReaderTest.java:19:11:19:26 | readLine(...) |
 | CloseReaderTest.java:19:11:19:26 | readLine(...) | CloseReaderTest.java:19:4:19:27 | return ... |
 | CloseReaderTest.java:19:11:19:26 | readLine(...) | CloseReaderTest.java:20:5:20:26 | catch (...) |
-| CloseReaderTest.java:20:5:20:26 | catch (...) | CloseReaderTest.java:9:23:9:34 | Exceptional Exit |
 | CloseReaderTest.java:20:5:20:26 | catch (...) | CloseReaderTest.java:20:24:20:25 | ex |
+| CloseReaderTest.java:20:24:20:25 | ex | CloseReaderTest.java:9:23:9:34 | Exceptional Exit |
 | CloseReaderTest.java:20:24:20:25 | ex | CloseReaderTest.java:21:3:23:3 | { ... } |
 | CloseReaderTest.java:21:3:23:3 | { ... } | CloseReaderTest.java:22:11:22:14 | null |
 | CloseReaderTest.java:22:4:22:15 | return ... | CloseReaderTest.java:9:23:9:34 | Normal Exit |

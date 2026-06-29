@@ -1,6 +1,6 @@
 from lxml import etree
 from io import StringIO
-from flask import Flask, request
+from flask import Flask, request # $ Source
 
 app = Flask(__name__)
 
@@ -11,4 +11,4 @@ def bad():
     xslt_root = etree.XML(xsltQuery)
     f = StringIO('<foo><bar></bar></foo>')
     tree = etree.parse(f)
-    result_tree = tree.xslt(xslt_root)  # Not OK
+    result_tree = tree.xslt(xslt_root) # $ Alert # Not OK

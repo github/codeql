@@ -23,7 +23,9 @@ namespace Semmle.Extraction.CSharp.Entities.Statements
             }
             else if (isSpecificCatchClause) // A catch clause of the form 'catch(Ex) { ... }'
             {
-                trapFile.catch_type(this, Type.Create(Context, Context.GetType(Stmt.Declaration!.Type)).TypeRef, true);
+                var type = Type.Create(Context, Context.GetType(Stmt.Declaration!.Type));
+                trapFile.catch_type(this, type.TypeRef, true);
+                Expression.Create(Context, Stmt.Declaration!.Type, this, 0);
             }
             else // A catch clause of the form 'catch { ... }'
             {

@@ -1,11 +1,11 @@
 callsWithNoReceiverArgumentsOrBlock
 | calls.rb:28:3:28:7 | yield ... | (none) |
-| calls.rb:269:5:269:5 | * ... | * |
-| calls.rb:274:5:274:6 | ** ... | ** |
-| calls.rb:285:5:285:9 | super call to my_method | my_method |
-| calls.rb:286:5:286:11 | super call to my_method | my_method |
-| calls.rb:304:5:304:9 | super call to another_method | another_method |
-| calls.rb:344:9:344:13 | call to novar | novar |
+| calls.rb:273:5:273:5 | * ... | * |
+| calls.rb:278:5:278:6 | ** ... | ** |
+| calls.rb:289:5:289:9 | super call to my_method | my_method |
+| calls.rb:290:5:290:11 | super call to my_method | my_method |
+| calls.rb:308:5:308:9 | super call to another_method | another_method |
+| calls.rb:348:9:348:13 | call to novar | novar |
 callsWithArguments
 | calls.rb:11:1:11:11 | call to foo | foo | 0 | calls.rb:11:5:11:5 | 0 |
 | calls.rb:11:1:11:11 | call to foo | foo | 1 | calls.rb:11:8:11:8 | 1 |
@@ -27,105 +27,105 @@ callsWithArguments
 | calls.rb:232:1:232:14 | ...[...] | [] | 0 | calls.rb:232:8:232:13 | call to bar |
 | calls.rb:246:1:246:32 | call to [] | [] | 0 | calls.rb:246:3:246:12 | Pair |
 | calls.rb:246:1:246:32 | call to [] | [] | 1 | calls.rb:246:15:246:30 | Pair |
-| calls.rb:263:1:263:9 | call to foo | foo | 0 | calls.rb:263:5:263:8 | &... |
-| calls.rb:264:1:264:12 | call to foo | foo | 0 | calls.rb:264:5:264:11 | &... |
-| calls.rb:265:1:265:6 | call to foo | foo | 0 | calls.rb:265:5:265:5 | &... |
-| calls.rb:267:1:267:9 | call to foo | foo | 0 | calls.rb:267:5:267:8 | * ... |
-| calls.rb:268:1:268:12 | call to foo | foo | 0 | calls.rb:268:5:268:11 | * ... |
-| calls.rb:269:1:269:6 | call to foo | foo | 0 | calls.rb:269:5:269:5 | * ... |
-| calls.rb:272:1:272:10 | call to foo | foo | 0 | calls.rb:272:5:272:9 | ** ... |
-| calls.rb:273:1:273:13 | call to foo | foo | 0 | calls.rb:273:5:273:12 | ** ... |
-| calls.rb:274:1:274:7 | call to foo | foo | 0 | calls.rb:274:5:274:6 | ** ... |
-| calls.rb:277:1:277:14 | call to foo | foo | 0 | calls.rb:277:5:277:13 | Pair |
-| calls.rb:278:1:278:17 | call to foo | foo | 0 | calls.rb:278:5:278:16 | Pair |
-| calls.rb:287:5:287:16 | super call to my_method | my_method | 0 | calls.rb:287:11:287:16 | "blah" |
-| calls.rb:288:5:288:17 | super call to my_method | my_method | 0 | calls.rb:288:11:288:11 | 1 |
-| calls.rb:288:5:288:17 | super call to my_method | my_method | 1 | calls.rb:288:14:288:14 | 2 |
-| calls.rb:288:5:288:17 | super call to my_method | my_method | 2 | calls.rb:288:17:288:17 | 3 |
-| calls.rb:289:17:289:21 | ... + ... | + | 0 | calls.rb:289:21:289:21 | 1 |
-| calls.rb:290:18:290:22 | ... * ... | * | 0 | calls.rb:290:22:290:22 | 2 |
-| calls.rb:291:5:291:30 | super call to my_method | my_method | 0 | calls.rb:291:11:291:11 | 4 |
-| calls.rb:291:5:291:30 | super call to my_method | my_method | 1 | calls.rb:291:14:291:14 | 5 |
-| calls.rb:291:22:291:28 | ... + ... | + | 0 | calls.rb:291:26:291:28 | 100 |
-| calls.rb:292:5:292:33 | super call to my_method | my_method | 0 | calls.rb:292:11:292:11 | 6 |
-| calls.rb:292:5:292:33 | super call to my_method | my_method | 1 | calls.rb:292:14:292:14 | 7 |
-| calls.rb:292:23:292:29 | ... + ... | + | 0 | calls.rb:292:27:292:29 | 200 |
-| calls.rb:310:1:310:7 | call to call | call | 0 | calls.rb:310:6:310:6 | 1 |
-| calls.rb:313:1:313:8 | call to foo= | foo= | 0 | calls.rb:313:12:313:13 | ... = ... |
-| calls.rb:314:1:314:6 | ...[...] | [] | 0 | calls.rb:314:5:314:5 | 0 |
-| calls.rb:314:1:314:6 | call to []= | []= | 0 | calls.rb:314:5:314:5 | 0 |
-| calls.rb:314:1:314:6 | call to []= | []= | 1 | calls.rb:314:10:314:11 | ... = ... |
-| calls.rb:315:1:315:8 | call to [] | [] | 0 | calls.rb:315:1:315:8 | 0 |
-| calls.rb:315:1:315:8 | call to foo= | foo= | 0 | calls.rb:315:1:315:8 | ... = ... |
-| calls.rb:315:12:315:19 | call to [] | [] | 0 | calls.rb:315:12:315:19 | _ .. _ |
-| calls.rb:315:12:315:19 | call to bar= | bar= | 0 | calls.rb:315:12:315:19 | ... = ... |
-| calls.rb:315:22:315:27 | ...[...] | [] | 0 | calls.rb:315:26:315:26 | 4 |
-| calls.rb:315:22:315:27 | call to [] | [] | 0 | calls.rb:315:22:315:27 | -1 |
-| calls.rb:315:22:315:27 | call to [] | [] | 0 | calls.rb:315:26:315:26 | 4 |
-| calls.rb:315:22:315:27 | call to []= | []= | 0 | calls.rb:315:26:315:26 | 4 |
-| calls.rb:315:22:315:27 | call to []= | []= | 1 | calls.rb:315:22:315:27 | ... = ... |
-| calls.rb:315:31:315:42 | call to [] | [] | 0 | calls.rb:315:32:315:32 | 1 |
-| calls.rb:315:31:315:42 | call to [] | [] | 1 | calls.rb:315:35:315:35 | 2 |
-| calls.rb:315:31:315:42 | call to [] | [] | 2 | calls.rb:315:38:315:38 | 3 |
-| calls.rb:315:31:315:42 | call to [] | [] | 3 | calls.rb:315:41:315:41 | 4 |
-| calls.rb:316:1:316:1 | call to [] | [] | 0 | calls.rb:316:1:316:1 | 0 |
-| calls.rb:316:5:316:10 | ...[...] | [] | 0 | calls.rb:316:9:316:9 | 5 |
-| calls.rb:316:5:316:10 | call to [] | [] | 0 | calls.rb:316:5:316:10 | _ .. _ |
-| calls.rb:316:5:316:10 | call to [] | [] | 0 | calls.rb:316:9:316:9 | 5 |
-| calls.rb:316:5:316:10 | call to []= | []= | 0 | calls.rb:316:9:316:9 | 5 |
-| calls.rb:316:5:316:10 | call to []= | []= | 1 | calls.rb:316:5:316:10 | ... = ... |
-| calls.rb:316:14:316:22 | call to [] | [] | 0 | calls.rb:316:15:316:15 | 1 |
-| calls.rb:316:14:316:22 | call to [] | [] | 1 | calls.rb:316:18:316:18 | 2 |
-| calls.rb:316:14:316:22 | call to [] | [] | 2 | calls.rb:316:21:316:21 | 3 |
-| calls.rb:317:1:317:10 | call to count= | count= | 0 | calls.rb:317:1:317:10 | __synth__1 |
-| calls.rb:317:12:317:13 | ... + ... | + | 0 | calls.rb:317:15:317:15 | 1 |
+| calls.rb:267:1:267:9 | call to foo | foo | 0 | calls.rb:267:5:267:8 | &... |
+| calls.rb:268:1:268:12 | call to foo | foo | 0 | calls.rb:268:5:268:11 | &... |
+| calls.rb:269:1:269:6 | call to foo | foo | 0 | calls.rb:269:5:269:5 | &... |
+| calls.rb:271:1:271:9 | call to foo | foo | 0 | calls.rb:271:5:271:8 | * ... |
+| calls.rb:272:1:272:12 | call to foo | foo | 0 | calls.rb:272:5:272:11 | * ... |
+| calls.rb:273:1:273:6 | call to foo | foo | 0 | calls.rb:273:5:273:5 | * ... |
+| calls.rb:276:1:276:10 | call to foo | foo | 0 | calls.rb:276:5:276:9 | ** ... |
+| calls.rb:277:1:277:13 | call to foo | foo | 0 | calls.rb:277:5:277:12 | ** ... |
+| calls.rb:278:1:278:7 | call to foo | foo | 0 | calls.rb:278:5:278:6 | ** ... |
+| calls.rb:281:1:281:14 | call to foo | foo | 0 | calls.rb:281:5:281:13 | Pair |
+| calls.rb:282:1:282:17 | call to foo | foo | 0 | calls.rb:282:5:282:16 | Pair |
+| calls.rb:291:5:291:16 | super call to my_method | my_method | 0 | calls.rb:291:11:291:16 | "blah" |
+| calls.rb:292:5:292:17 | super call to my_method | my_method | 0 | calls.rb:292:11:292:11 | 1 |
+| calls.rb:292:5:292:17 | super call to my_method | my_method | 1 | calls.rb:292:14:292:14 | 2 |
+| calls.rb:292:5:292:17 | super call to my_method | my_method | 2 | calls.rb:292:17:292:17 | 3 |
+| calls.rb:293:17:293:21 | ... + ... | + | 0 | calls.rb:293:21:293:21 | 1 |
+| calls.rb:294:18:294:22 | ... * ... | * | 0 | calls.rb:294:22:294:22 | 2 |
+| calls.rb:295:5:295:30 | super call to my_method | my_method | 0 | calls.rb:295:11:295:11 | 4 |
+| calls.rb:295:5:295:30 | super call to my_method | my_method | 1 | calls.rb:295:14:295:14 | 5 |
+| calls.rb:295:22:295:28 | ... + ... | + | 0 | calls.rb:295:26:295:28 | 100 |
+| calls.rb:296:5:296:33 | super call to my_method | my_method | 0 | calls.rb:296:11:296:11 | 6 |
+| calls.rb:296:5:296:33 | super call to my_method | my_method | 1 | calls.rb:296:14:296:14 | 7 |
+| calls.rb:296:23:296:29 | ... + ... | + | 0 | calls.rb:296:27:296:29 | 200 |
+| calls.rb:314:1:314:7 | call to call | call | 0 | calls.rb:314:6:314:6 | 1 |
+| calls.rb:317:1:317:8 | call to foo= | foo= | 0 | calls.rb:317:12:317:13 | ... = ... |
 | calls.rb:318:1:318:6 | ...[...] | [] | 0 | calls.rb:318:5:318:5 | 0 |
-| calls.rb:318:1:318:6 | call to [] | [] | 0 | calls.rb:318:5:318:5 | __synth__1 |
-| calls.rb:318:1:318:6 | call to []= | []= | 0 | calls.rb:318:5:318:5 | __synth__1 |
-| calls.rb:318:1:318:6 | call to []= | []= | 1 | calls.rb:318:1:318:6 | __synth__2 |
-| calls.rb:318:8:318:9 | ... + ... | + | 0 | calls.rb:318:11:318:11 | 1 |
-| calls.rb:319:1:319:32 | ...[...] | [] | 0 | calls.rb:319:9:319:9 | 0 |
-| calls.rb:319:1:319:32 | ...[...] | [] | 1 | calls.rb:319:12:319:18 | call to baz |
-| calls.rb:319:1:319:32 | ...[...] | [] | 2 | calls.rb:319:21:319:31 | ... + ... |
-| calls.rb:319:1:319:32 | call to [] | [] | 0 | calls.rb:319:9:319:9 | __synth__1 |
-| calls.rb:319:1:319:32 | call to [] | [] | 1 | calls.rb:319:12:319:18 | __synth__2 |
-| calls.rb:319:1:319:32 | call to [] | [] | 2 | calls.rb:319:21:319:31 | __synth__3 |
-| calls.rb:319:1:319:32 | call to []= | []= | 0 | calls.rb:319:9:319:9 | __synth__1 |
-| calls.rb:319:1:319:32 | call to []= | []= | 1 | calls.rb:319:12:319:18 | __synth__2 |
-| calls.rb:319:1:319:32 | call to []= | []= | 2 | calls.rb:319:21:319:31 | __synth__3 |
-| calls.rb:319:1:319:32 | call to []= | []= | 3 | calls.rb:319:1:319:32 | __synth__4 |
-| calls.rb:319:21:319:31 | ... + ... | + | 0 | calls.rb:319:31:319:31 | 1 |
-| calls.rb:319:34:319:35 | ... * ... | * | 0 | calls.rb:319:37:319:37 | 2 |
-| calls.rb:327:25:327:37 | call to print | print | 0 | calls.rb:327:31:327:37 | "error" |
-| calls.rb:331:3:331:12 | super call to foo | foo | 0 | calls.rb:331:9:331:11 | ... |
-| calls.rb:335:3:335:13 | call to bar | bar | 0 | calls.rb:335:7:335:7 | b |
-| calls.rb:335:3:335:13 | call to bar | bar | 1 | calls.rb:335:10:335:12 | ... |
-| calls.rb:339:5:339:5 | call to [] | [] | 0 | calls.rb:339:5:339:5 | 0 |
-| calls.rb:339:8:339:8 | call to [] | [] | 0 | calls.rb:339:8:339:8 | 1 |
-| calls.rb:339:11:339:11 | call to [] | [] | 0 | calls.rb:339:11:339:11 | 2 |
-| calls.rb:339:16:339:33 | call to [] | [] | 0 | calls.rb:339:17:339:23 | [...] |
-| calls.rb:339:16:339:33 | call to [] | [] | 1 | calls.rb:339:26:339:32 | [...] |
-| calls.rb:339:17:339:23 | call to [] | [] | 0 | calls.rb:339:18:339:18 | 1 |
-| calls.rb:339:17:339:23 | call to [] | [] | 1 | calls.rb:339:20:339:20 | 2 |
-| calls.rb:339:17:339:23 | call to [] | [] | 2 | calls.rb:339:22:339:22 | 3 |
-| calls.rb:339:26:339:32 | call to [] | [] | 0 | calls.rb:339:27:339:27 | 4 |
-| calls.rb:339:26:339:32 | call to [] | [] | 1 | calls.rb:339:29:339:29 | 5 |
-| calls.rb:339:26:339:32 | call to [] | [] | 2 | calls.rb:339:31:339:31 | 6 |
-| calls.rb:340:3:340:13 | call to foo | foo | 0 | calls.rb:340:7:340:7 | x |
-| calls.rb:340:3:340:13 | call to foo | foo | 1 | calls.rb:340:10:340:10 | y |
-| calls.rb:340:3:340:13 | call to foo | foo | 2 | calls.rb:340:13:340:13 | z |
-| calls.rb:343:1:343:10 | call to foo | foo | 0 | calls.rb:343:5:343:9 | Pair |
-| calls.rb:344:1:344:15 | call to foo | foo | 0 | calls.rb:344:5:344:6 | Pair |
-| calls.rb:344:1:344:15 | call to foo | foo | 1 | calls.rb:344:9:344:14 | Pair |
-| calls.rb:345:1:345:10 | call to foo | foo | 0 | calls.rb:345:5:345:9 | Pair |
-| calls.rb:346:1:346:7 | call to foo | foo | 0 | calls.rb:346:5:346:6 | Pair |
-| calls.rb:351:13:351:17 | call to foo | foo | 0 | calls.rb:351:17:351:17 | x |
-| calls.rb:361:5:361:6 | call to == | == | 0 | calls.rb:361:1:361:4 | __synth__0__1 |
-| calls.rb:363:1:363:23 | call to bar | bar | 0 | calls.rb:363:10:363:10 | 1 |
-| calls.rb:363:1:363:23 | call to bar | bar | 0 | calls.rb:363:10:363:10 | 1 |
-| calls.rb:363:1:363:23 | call to bar | bar | 1 | calls.rb:363:12:363:12 | 2 |
-| calls.rb:363:1:363:23 | call to bar | bar | 1 | calls.rb:363:12:363:12 | 2 |
-| calls.rb:363:4:363:5 | call to == | == | 0 | calls.rb:363:1:363:3 | __synth__0__1 |
+| calls.rb:318:1:318:6 | call to []= | []= | 0 | calls.rb:318:5:318:5 | 0 |
+| calls.rb:318:1:318:6 | call to []= | []= | 1 | calls.rb:318:10:318:11 | ... = ... |
+| calls.rb:319:1:319:8 | call to [] | [] | 0 | calls.rb:319:1:319:8 | 0 |
+| calls.rb:319:1:319:8 | call to foo= | foo= | 0 | calls.rb:319:1:319:8 | ... = ... |
+| calls.rb:319:12:319:19 | call to [] | [] | 0 | calls.rb:319:12:319:19 | _ .. _ |
+| calls.rb:319:12:319:19 | call to bar= | bar= | 0 | calls.rb:319:12:319:19 | ... = ... |
+| calls.rb:319:22:319:27 | ...[...] | [] | 0 | calls.rb:319:26:319:26 | 4 |
+| calls.rb:319:22:319:27 | call to [] | [] | 0 | calls.rb:319:22:319:27 | -1 |
+| calls.rb:319:22:319:27 | call to [] | [] | 0 | calls.rb:319:26:319:26 | 4 |
+| calls.rb:319:22:319:27 | call to []= | []= | 0 | calls.rb:319:26:319:26 | 4 |
+| calls.rb:319:22:319:27 | call to []= | []= | 1 | calls.rb:319:22:319:27 | ... = ... |
+| calls.rb:319:31:319:42 | call to [] | [] | 0 | calls.rb:319:32:319:32 | 1 |
+| calls.rb:319:31:319:42 | call to [] | [] | 1 | calls.rb:319:35:319:35 | 2 |
+| calls.rb:319:31:319:42 | call to [] | [] | 2 | calls.rb:319:38:319:38 | 3 |
+| calls.rb:319:31:319:42 | call to [] | [] | 3 | calls.rb:319:41:319:41 | 4 |
+| calls.rb:320:1:320:1 | call to [] | [] | 0 | calls.rb:320:1:320:1 | 0 |
+| calls.rb:320:5:320:10 | ...[...] | [] | 0 | calls.rb:320:9:320:9 | 5 |
+| calls.rb:320:5:320:10 | call to [] | [] | 0 | calls.rb:320:5:320:10 | _ .. _ |
+| calls.rb:320:5:320:10 | call to [] | [] | 0 | calls.rb:320:9:320:9 | 5 |
+| calls.rb:320:5:320:10 | call to []= | []= | 0 | calls.rb:320:9:320:9 | 5 |
+| calls.rb:320:5:320:10 | call to []= | []= | 1 | calls.rb:320:5:320:10 | ... = ... |
+| calls.rb:320:14:320:22 | call to [] | [] | 0 | calls.rb:320:15:320:15 | 1 |
+| calls.rb:320:14:320:22 | call to [] | [] | 1 | calls.rb:320:18:320:18 | 2 |
+| calls.rb:320:14:320:22 | call to [] | [] | 2 | calls.rb:320:21:320:21 | 3 |
+| calls.rb:321:1:321:10 | call to count= | count= | 0 | calls.rb:321:1:321:10 | __synth__1 |
+| calls.rb:321:12:321:13 | ... + ... | + | 0 | calls.rb:321:15:321:15 | 1 |
+| calls.rb:322:1:322:6 | ...[...] | [] | 0 | calls.rb:322:5:322:5 | 0 |
+| calls.rb:322:1:322:6 | call to [] | [] | 0 | calls.rb:322:5:322:5 | __synth__1 |
+| calls.rb:322:1:322:6 | call to []= | []= | 0 | calls.rb:322:5:322:5 | __synth__1 |
+| calls.rb:322:1:322:6 | call to []= | []= | 1 | calls.rb:322:1:322:6 | __synth__2 |
+| calls.rb:322:8:322:9 | ... + ... | + | 0 | calls.rb:322:11:322:11 | 1 |
+| calls.rb:323:1:323:32 | ...[...] | [] | 0 | calls.rb:323:9:323:9 | 0 |
+| calls.rb:323:1:323:32 | ...[...] | [] | 1 | calls.rb:323:12:323:18 | call to baz |
+| calls.rb:323:1:323:32 | ...[...] | [] | 2 | calls.rb:323:21:323:31 | ... + ... |
+| calls.rb:323:1:323:32 | call to [] | [] | 0 | calls.rb:323:9:323:9 | __synth__1 |
+| calls.rb:323:1:323:32 | call to [] | [] | 1 | calls.rb:323:12:323:18 | __synth__2 |
+| calls.rb:323:1:323:32 | call to [] | [] | 2 | calls.rb:323:21:323:31 | __synth__3 |
+| calls.rb:323:1:323:32 | call to []= | []= | 0 | calls.rb:323:9:323:9 | __synth__1 |
+| calls.rb:323:1:323:32 | call to []= | []= | 1 | calls.rb:323:12:323:18 | __synth__2 |
+| calls.rb:323:1:323:32 | call to []= | []= | 2 | calls.rb:323:21:323:31 | __synth__3 |
+| calls.rb:323:1:323:32 | call to []= | []= | 3 | calls.rb:323:1:323:32 | __synth__4 |
+| calls.rb:323:21:323:31 | ... + ... | + | 0 | calls.rb:323:31:323:31 | 1 |
+| calls.rb:323:34:323:35 | ... * ... | * | 0 | calls.rb:323:37:323:37 | 2 |
+| calls.rb:331:25:331:37 | call to print | print | 0 | calls.rb:331:31:331:37 | "error" |
+| calls.rb:335:3:335:12 | super call to foo | foo | 0 | calls.rb:335:9:335:11 | ... |
+| calls.rb:339:3:339:13 | call to bar | bar | 0 | calls.rb:339:7:339:7 | b |
+| calls.rb:339:3:339:13 | call to bar | bar | 1 | calls.rb:339:10:339:12 | ... |
+| calls.rb:343:5:343:5 | call to [] | [] | 0 | calls.rb:343:5:343:5 | 0 |
+| calls.rb:343:8:343:8 | call to [] | [] | 0 | calls.rb:343:8:343:8 | 1 |
+| calls.rb:343:11:343:11 | call to [] | [] | 0 | calls.rb:343:11:343:11 | 2 |
+| calls.rb:343:16:343:33 | call to [] | [] | 0 | calls.rb:343:17:343:23 | [...] |
+| calls.rb:343:16:343:33 | call to [] | [] | 1 | calls.rb:343:26:343:32 | [...] |
+| calls.rb:343:17:343:23 | call to [] | [] | 0 | calls.rb:343:18:343:18 | 1 |
+| calls.rb:343:17:343:23 | call to [] | [] | 1 | calls.rb:343:20:343:20 | 2 |
+| calls.rb:343:17:343:23 | call to [] | [] | 2 | calls.rb:343:22:343:22 | 3 |
+| calls.rb:343:26:343:32 | call to [] | [] | 0 | calls.rb:343:27:343:27 | 4 |
+| calls.rb:343:26:343:32 | call to [] | [] | 1 | calls.rb:343:29:343:29 | 5 |
+| calls.rb:343:26:343:32 | call to [] | [] | 2 | calls.rb:343:31:343:31 | 6 |
+| calls.rb:344:3:344:13 | call to foo | foo | 0 | calls.rb:344:7:344:7 | x |
+| calls.rb:344:3:344:13 | call to foo | foo | 1 | calls.rb:344:10:344:10 | y |
+| calls.rb:344:3:344:13 | call to foo | foo | 2 | calls.rb:344:13:344:13 | z |
+| calls.rb:347:1:347:10 | call to foo | foo | 0 | calls.rb:347:5:347:9 | Pair |
+| calls.rb:348:1:348:15 | call to foo | foo | 0 | calls.rb:348:5:348:6 | Pair |
+| calls.rb:348:1:348:15 | call to foo | foo | 1 | calls.rb:348:9:348:14 | Pair |
+| calls.rb:349:1:349:10 | call to foo | foo | 0 | calls.rb:349:5:349:9 | Pair |
+| calls.rb:350:1:350:7 | call to foo | foo | 0 | calls.rb:350:5:350:6 | Pair |
+| calls.rb:355:13:355:17 | call to foo | foo | 0 | calls.rb:355:17:355:17 | x |
+| calls.rb:365:5:365:6 | call to == | == | 0 | calls.rb:365:1:365:4 | __synth__0__1 |
+| calls.rb:367:1:367:23 | call to bar | bar | 0 | calls.rb:367:10:367:10 | 1 |
+| calls.rb:367:1:367:23 | call to bar | bar | 0 | calls.rb:367:10:367:10 | 1 |
+| calls.rb:367:1:367:23 | call to bar | bar | 1 | calls.rb:367:12:367:12 | 2 |
+| calls.rb:367:1:367:23 | call to bar | bar | 1 | calls.rb:367:12:367:12 | 2 |
+| calls.rb:367:4:367:5 | call to == | == | 0 | calls.rb:367:1:367:3 | __synth__0__1 |
 callsWithReceiver
 | calls.rb:2:1:2:5 | call to foo | calls.rb:2:1:2:5 | self |
 | calls.rb:5:1:5:10 | call to bar | calls.rb:5:1:5:3 | Foo |
@@ -282,135 +282,138 @@ callsWithReceiver
 | calls.rb:251:8:251:10 | call to bar | calls.rb:251:8:251:10 | self |
 | calls.rb:254:8:254:13 | call to foo | calls.rb:254:8:254:8 | X |
 | calls.rb:255:8:255:13 | call to bar | calls.rb:255:8:255:8 | X |
-| calls.rb:259:1:259:3 | call to foo | calls.rb:259:1:259:3 | self |
-| calls.rb:259:12:259:14 | call to bar | calls.rb:259:12:259:14 | self |
-| calls.rb:260:1:260:6 | call to foo | calls.rb:260:1:260:1 | X |
-| calls.rb:260:15:260:20 | call to bar | calls.rb:260:15:260:15 | X |
-| calls.rb:263:1:263:9 | call to foo | calls.rb:263:1:263:9 | self |
-| calls.rb:263:6:263:8 | call to bar | calls.rb:263:6:263:8 | self |
-| calls.rb:264:1:264:12 | call to foo | calls.rb:264:1:264:12 | self |
-| calls.rb:264:6:264:11 | call to bar | calls.rb:264:6:264:6 | X |
-| calls.rb:265:1:265:6 | call to foo | calls.rb:265:1:265:6 | self |
+| calls.rb:258:8:258:10 | call to foo | calls.rb:258:8:258:10 | self |
+| calls.rb:258:13:258:18 | call to bar | calls.rb:258:13:258:13 | X |
+| calls.rb:259:8:259:10 | call to baz | calls.rb:259:8:259:10 | self |
+| calls.rb:263:1:263:3 | call to foo | calls.rb:263:1:263:3 | self |
+| calls.rb:263:12:263:14 | call to bar | calls.rb:263:12:263:14 | self |
+| calls.rb:264:1:264:6 | call to foo | calls.rb:264:1:264:1 | X |
+| calls.rb:264:15:264:20 | call to bar | calls.rb:264:15:264:15 | X |
 | calls.rb:267:1:267:9 | call to foo | calls.rb:267:1:267:9 | self |
-| calls.rb:267:5:267:8 | * ... | calls.rb:267:6:267:8 | call to bar |
 | calls.rb:267:6:267:8 | call to bar | calls.rb:267:6:267:8 | self |
 | calls.rb:268:1:268:12 | call to foo | calls.rb:268:1:268:12 | self |
-| calls.rb:268:5:268:11 | * ... | calls.rb:268:6:268:11 | call to bar |
 | calls.rb:268:6:268:11 | call to bar | calls.rb:268:6:268:6 | X |
 | calls.rb:269:1:269:6 | call to foo | calls.rb:269:1:269:6 | self |
-| calls.rb:272:1:272:10 | call to foo | calls.rb:272:1:272:10 | self |
-| calls.rb:272:5:272:9 | ** ... | calls.rb:272:7:272:9 | call to bar |
-| calls.rb:272:7:272:9 | call to bar | calls.rb:272:7:272:9 | self |
-| calls.rb:273:1:273:13 | call to foo | calls.rb:273:1:273:13 | self |
-| calls.rb:273:5:273:12 | ** ... | calls.rb:273:7:273:12 | call to bar |
-| calls.rb:273:7:273:12 | call to bar | calls.rb:273:7:273:7 | X |
-| calls.rb:274:1:274:7 | call to foo | calls.rb:274:1:274:7 | self |
-| calls.rb:277:1:277:14 | call to foo | calls.rb:277:1:277:14 | self |
-| calls.rb:277:11:277:13 | call to bar | calls.rb:277:11:277:13 | self |
-| calls.rb:278:1:278:17 | call to foo | calls.rb:278:1:278:17 | self |
-| calls.rb:278:11:278:16 | call to bar | calls.rb:278:11:278:11 | X |
-| calls.rb:289:17:289:21 | ... + ... | calls.rb:289:17:289:17 | x |
-| calls.rb:290:18:290:22 | ... * ... | calls.rb:290:18:290:18 | x |
-| calls.rb:291:22:291:28 | ... + ... | calls.rb:291:22:291:22 | x |
-| calls.rb:292:23:292:29 | ... + ... | calls.rb:292:23:292:23 | x |
-| calls.rb:302:5:302:7 | call to foo | calls.rb:302:5:302:7 | self |
-| calls.rb:302:5:302:13 | call to super | calls.rb:302:5:302:7 | call to foo |
-| calls.rb:303:5:303:14 | call to super | calls.rb:303:5:303:8 | self |
-| calls.rb:304:5:304:15 | call to super | calls.rb:304:5:304:9 | super call to another_method |
-| calls.rb:309:1:309:3 | call to foo | calls.rb:309:1:309:3 | self |
-| calls.rb:309:1:309:6 | call to call | calls.rb:309:1:309:3 | call to foo |
-| calls.rb:310:1:310:3 | call to foo | calls.rb:310:1:310:3 | self |
-| calls.rb:310:1:310:7 | call to call | calls.rb:310:1:310:3 | call to foo |
-| calls.rb:313:1:313:8 | call to foo | calls.rb:313:1:313:4 | self |
-| calls.rb:313:1:313:8 | call to foo= | calls.rb:313:1:313:4 | self |
+| calls.rb:271:1:271:9 | call to foo | calls.rb:271:1:271:9 | self |
+| calls.rb:271:5:271:8 | * ... | calls.rb:271:6:271:8 | call to bar |
+| calls.rb:271:6:271:8 | call to bar | calls.rb:271:6:271:8 | self |
+| calls.rb:272:1:272:12 | call to foo | calls.rb:272:1:272:12 | self |
+| calls.rb:272:5:272:11 | * ... | calls.rb:272:6:272:11 | call to bar |
+| calls.rb:272:6:272:11 | call to bar | calls.rb:272:6:272:6 | X |
+| calls.rb:273:1:273:6 | call to foo | calls.rb:273:1:273:6 | self |
+| calls.rb:276:1:276:10 | call to foo | calls.rb:276:1:276:10 | self |
+| calls.rb:276:5:276:9 | ** ... | calls.rb:276:7:276:9 | call to bar |
+| calls.rb:276:7:276:9 | call to bar | calls.rb:276:7:276:9 | self |
+| calls.rb:277:1:277:13 | call to foo | calls.rb:277:1:277:13 | self |
+| calls.rb:277:5:277:12 | ** ... | calls.rb:277:7:277:12 | call to bar |
+| calls.rb:277:7:277:12 | call to bar | calls.rb:277:7:277:7 | X |
+| calls.rb:278:1:278:7 | call to foo | calls.rb:278:1:278:7 | self |
+| calls.rb:281:1:281:14 | call to foo | calls.rb:281:1:281:14 | self |
+| calls.rb:281:11:281:13 | call to bar | calls.rb:281:11:281:13 | self |
+| calls.rb:282:1:282:17 | call to foo | calls.rb:282:1:282:17 | self |
+| calls.rb:282:11:282:16 | call to bar | calls.rb:282:11:282:11 | X |
+| calls.rb:293:17:293:21 | ... + ... | calls.rb:293:17:293:17 | x |
+| calls.rb:294:18:294:22 | ... * ... | calls.rb:294:18:294:18 | x |
+| calls.rb:295:22:295:28 | ... + ... | calls.rb:295:22:295:22 | x |
+| calls.rb:296:23:296:29 | ... + ... | calls.rb:296:23:296:23 | x |
+| calls.rb:306:5:306:7 | call to foo | calls.rb:306:5:306:7 | self |
+| calls.rb:306:5:306:13 | call to super | calls.rb:306:5:306:7 | call to foo |
+| calls.rb:307:5:307:14 | call to super | calls.rb:307:5:307:8 | self |
+| calls.rb:308:5:308:15 | call to super | calls.rb:308:5:308:9 | super call to another_method |
+| calls.rb:313:1:313:3 | call to foo | calls.rb:313:1:313:3 | self |
+| calls.rb:313:1:313:6 | call to call | calls.rb:313:1:313:3 | call to foo |
 | calls.rb:314:1:314:3 | call to foo | calls.rb:314:1:314:3 | self |
-| calls.rb:314:1:314:6 | ...[...] | calls.rb:314:1:314:3 | call to foo |
-| calls.rb:314:1:314:6 | call to []= | calls.rb:314:1:314:3 | call to foo |
-| calls.rb:315:1:315:8 | call to [] | calls.rb:315:1:315:8 | __synth__3 |
-| calls.rb:315:1:315:8 | call to foo | calls.rb:315:1:315:4 | self |
-| calls.rb:315:1:315:8 | call to foo | calls.rb:315:1:315:8 | __synth__0 |
-| calls.rb:315:1:315:8 | call to foo= | calls.rb:315:1:315:8 | __synth__0 |
-| calls.rb:315:12:315:19 | call to [] | calls.rb:315:12:315:19 | __synth__3 |
-| calls.rb:315:12:315:19 | call to bar | calls.rb:315:12:315:15 | self |
-| calls.rb:315:12:315:19 | call to bar | calls.rb:315:12:315:19 | __synth__1 |
-| calls.rb:315:12:315:19 | call to bar= | calls.rb:315:12:315:19 | __synth__1 |
-| calls.rb:315:22:315:24 | call to foo | calls.rb:315:22:315:24 | self |
-| calls.rb:315:22:315:27 | ...[...] | calls.rb:315:22:315:24 | call to foo |
-| calls.rb:315:22:315:27 | call to [] | calls.rb:315:22:315:27 | __synth__2 |
-| calls.rb:315:22:315:27 | call to [] | calls.rb:315:22:315:27 | __synth__3 |
-| calls.rb:315:22:315:27 | call to []= | calls.rb:315:22:315:27 | __synth__2 |
-| calls.rb:315:31:315:42 | * ... | calls.rb:315:31:315:42 | [...] |
-| calls.rb:315:31:315:42 | call to [] | calls.rb:315:31:315:42 | Array |
-| calls.rb:316:1:316:1 | call to [] | calls.rb:316:1:316:1 | __synth__2 |
-| calls.rb:316:5:316:7 | call to foo | calls.rb:316:5:316:7 | self |
-| calls.rb:316:5:316:10 | ...[...] | calls.rb:316:5:316:7 | call to foo |
-| calls.rb:316:5:316:10 | call to [] | calls.rb:316:5:316:10 | __synth__1 |
-| calls.rb:316:5:316:10 | call to [] | calls.rb:316:5:316:10 | __synth__2 |
-| calls.rb:316:5:316:10 | call to []= | calls.rb:316:5:316:10 | __synth__1 |
-| calls.rb:316:14:316:22 | * ... | calls.rb:316:14:316:22 | [...] |
-| calls.rb:316:14:316:22 | call to [] | calls.rb:316:14:316:22 | Array |
-| calls.rb:317:1:317:10 | call to count | calls.rb:317:1:317:4 | __synth__0 |
-| calls.rb:317:1:317:10 | call to count | calls.rb:317:1:317:4 | self |
-| calls.rb:317:1:317:10 | call to count= | calls.rb:317:1:317:4 | __synth__0 |
-| calls.rb:317:12:317:13 | ... + ... | calls.rb:317:1:317:10 | call to count |
+| calls.rb:314:1:314:7 | call to call | calls.rb:314:1:314:3 | call to foo |
+| calls.rb:317:1:317:8 | call to foo | calls.rb:317:1:317:4 | self |
+| calls.rb:317:1:317:8 | call to foo= | calls.rb:317:1:317:4 | self |
 | calls.rb:318:1:318:3 | call to foo | calls.rb:318:1:318:3 | self |
 | calls.rb:318:1:318:6 | ...[...] | calls.rb:318:1:318:3 | call to foo |
-| calls.rb:318:1:318:6 | call to [] | calls.rb:318:1:318:3 | __synth__0 |
-| calls.rb:318:1:318:6 | call to []= | calls.rb:318:1:318:3 | __synth__0 |
-| calls.rb:318:8:318:9 | ... + ... | calls.rb:318:1:318:6 | call to [] |
-| calls.rb:319:1:319:3 | call to foo | calls.rb:319:1:319:3 | self |
-| calls.rb:319:1:319:7 | call to bar | calls.rb:319:1:319:3 | call to foo |
-| calls.rb:319:1:319:32 | ...[...] | calls.rb:319:1:319:7 | call to bar |
-| calls.rb:319:1:319:32 | call to [] | calls.rb:319:1:319:7 | __synth__0 |
-| calls.rb:319:1:319:32 | call to []= | calls.rb:319:1:319:7 | __synth__0 |
-| calls.rb:319:12:319:14 | call to foo | calls.rb:319:12:319:14 | self |
-| calls.rb:319:12:319:18 | call to baz | calls.rb:319:12:319:14 | call to foo |
-| calls.rb:319:21:319:23 | call to foo | calls.rb:319:21:319:23 | self |
-| calls.rb:319:21:319:27 | call to boo | calls.rb:319:21:319:23 | call to foo |
-| calls.rb:319:21:319:31 | ... + ... | calls.rb:319:21:319:27 | call to boo |
-| calls.rb:319:34:319:35 | ... * ... | calls.rb:319:1:319:32 | call to [] |
-| calls.rb:322:11:322:13 | call to bar | calls.rb:322:11:322:13 | self |
-| calls.rb:323:13:323:15 | call to bar | calls.rb:323:13:323:15 | self |
-| calls.rb:324:14:324:16 | call to bar | calls.rb:324:14:324:16 | self |
-| calls.rb:325:18:325:20 | call to bar | calls.rb:325:18:325:20 | self |
-| calls.rb:326:22:326:24 | call to bar | calls.rb:326:22:326:24 | self |
+| calls.rb:318:1:318:6 | call to []= | calls.rb:318:1:318:3 | call to foo |
+| calls.rb:319:1:319:8 | call to [] | calls.rb:319:1:319:8 | __synth__3 |
+| calls.rb:319:1:319:8 | call to foo | calls.rb:319:1:319:4 | self |
+| calls.rb:319:1:319:8 | call to foo | calls.rb:319:1:319:8 | __synth__0 |
+| calls.rb:319:1:319:8 | call to foo= | calls.rb:319:1:319:8 | __synth__0 |
+| calls.rb:319:12:319:19 | call to [] | calls.rb:319:12:319:19 | __synth__3 |
+| calls.rb:319:12:319:19 | call to bar | calls.rb:319:12:319:15 | self |
+| calls.rb:319:12:319:19 | call to bar | calls.rb:319:12:319:19 | __synth__1 |
+| calls.rb:319:12:319:19 | call to bar= | calls.rb:319:12:319:19 | __synth__1 |
+| calls.rb:319:22:319:24 | call to foo | calls.rb:319:22:319:24 | self |
+| calls.rb:319:22:319:27 | ...[...] | calls.rb:319:22:319:24 | call to foo |
+| calls.rb:319:22:319:27 | call to [] | calls.rb:319:22:319:27 | __synth__2 |
+| calls.rb:319:22:319:27 | call to [] | calls.rb:319:22:319:27 | __synth__3 |
+| calls.rb:319:22:319:27 | call to []= | calls.rb:319:22:319:27 | __synth__2 |
+| calls.rb:319:31:319:42 | * ... | calls.rb:319:31:319:42 | [...] |
+| calls.rb:319:31:319:42 | call to [] | calls.rb:319:31:319:42 | Array |
+| calls.rb:320:1:320:1 | call to [] | calls.rb:320:1:320:1 | __synth__2 |
+| calls.rb:320:5:320:7 | call to foo | calls.rb:320:5:320:7 | self |
+| calls.rb:320:5:320:10 | ...[...] | calls.rb:320:5:320:7 | call to foo |
+| calls.rb:320:5:320:10 | call to [] | calls.rb:320:5:320:10 | __synth__1 |
+| calls.rb:320:5:320:10 | call to [] | calls.rb:320:5:320:10 | __synth__2 |
+| calls.rb:320:5:320:10 | call to []= | calls.rb:320:5:320:10 | __synth__1 |
+| calls.rb:320:14:320:22 | * ... | calls.rb:320:14:320:22 | [...] |
+| calls.rb:320:14:320:22 | call to [] | calls.rb:320:14:320:22 | Array |
+| calls.rb:321:1:321:10 | call to count | calls.rb:321:1:321:4 | __synth__0 |
+| calls.rb:321:1:321:10 | call to count | calls.rb:321:1:321:4 | self |
+| calls.rb:321:1:321:10 | call to count= | calls.rb:321:1:321:4 | __synth__0 |
+| calls.rb:321:12:321:13 | ... + ... | calls.rb:321:1:321:10 | call to count |
+| calls.rb:322:1:322:3 | call to foo | calls.rb:322:1:322:3 | self |
+| calls.rb:322:1:322:6 | ...[...] | calls.rb:322:1:322:3 | call to foo |
+| calls.rb:322:1:322:6 | call to [] | calls.rb:322:1:322:3 | __synth__0 |
+| calls.rb:322:1:322:6 | call to []= | calls.rb:322:1:322:3 | __synth__0 |
+| calls.rb:322:8:322:9 | ... + ... | calls.rb:322:1:322:6 | call to [] |
+| calls.rb:323:1:323:3 | call to foo | calls.rb:323:1:323:3 | self |
+| calls.rb:323:1:323:7 | call to bar | calls.rb:323:1:323:3 | call to foo |
+| calls.rb:323:1:323:32 | ...[...] | calls.rb:323:1:323:7 | call to bar |
+| calls.rb:323:1:323:32 | call to [] | calls.rb:323:1:323:7 | __synth__0 |
+| calls.rb:323:1:323:32 | call to []= | calls.rb:323:1:323:7 | __synth__0 |
+| calls.rb:323:12:323:14 | call to foo | calls.rb:323:12:323:14 | self |
+| calls.rb:323:12:323:18 | call to baz | calls.rb:323:12:323:14 | call to foo |
+| calls.rb:323:21:323:23 | call to foo | calls.rb:323:21:323:23 | self |
+| calls.rb:323:21:323:27 | call to boo | calls.rb:323:21:323:23 | call to foo |
+| calls.rb:323:21:323:31 | ... + ... | calls.rb:323:21:323:27 | call to boo |
+| calls.rb:323:34:323:35 | ... * ... | calls.rb:323:1:323:32 | call to [] |
+| calls.rb:326:11:326:13 | call to bar | calls.rb:326:11:326:13 | self |
 | calls.rb:327:13:327:15 | call to bar | calls.rb:327:13:327:15 | self |
-| calls.rb:327:25:327:37 | call to print | calls.rb:327:25:327:37 | self |
-| calls.rb:335:3:335:13 | call to bar | calls.rb:335:3:335:13 | self |
-| calls.rb:339:1:341:3 | * ... | calls.rb:339:1:341:3 | __synth__0__1 |
-| calls.rb:339:1:341:3 | call to each | calls.rb:339:16:339:33 | [...] |
-| calls.rb:339:5:339:5 | ! ... | calls.rb:339:5:339:5 | defined? ... |
-| calls.rb:339:5:339:5 | call to [] | calls.rb:339:5:339:5 | __synth__3__1 |
-| calls.rb:339:5:339:5 | defined? ... | calls.rb:339:5:339:5 | x |
-| calls.rb:339:8:339:8 | ! ... | calls.rb:339:8:339:8 | defined? ... |
-| calls.rb:339:8:339:8 | call to [] | calls.rb:339:8:339:8 | __synth__3__1 |
-| calls.rb:339:8:339:8 | defined? ... | calls.rb:339:8:339:8 | y |
-| calls.rb:339:11:339:11 | ! ... | calls.rb:339:11:339:11 | defined? ... |
-| calls.rb:339:11:339:11 | call to [] | calls.rb:339:11:339:11 | __synth__3__1 |
-| calls.rb:339:11:339:11 | defined? ... | calls.rb:339:11:339:11 | z |
-| calls.rb:339:16:339:33 | call to [] | calls.rb:339:16:339:33 | Array |
-| calls.rb:339:17:339:23 | call to [] | calls.rb:339:17:339:23 | Array |
-| calls.rb:339:26:339:32 | call to [] | calls.rb:339:26:339:32 | Array |
-| calls.rb:340:3:340:13 | call to foo | calls.rb:340:3:340:13 | self |
-| calls.rb:343:1:343:10 | call to foo | calls.rb:343:1:343:10 | self |
-| calls.rb:344:1:344:15 | call to foo | calls.rb:344:1:344:15 | self |
-| calls.rb:345:1:345:10 | call to foo | calls.rb:345:1:345:10 | self |
-| calls.rb:346:1:346:7 | call to foo | calls.rb:346:1:346:7 | self |
-| calls.rb:351:13:351:17 | call to foo | calls.rb:351:13:351:17 | self |
-| calls.rb:352:13:352:24 | call to unknown_call | calls.rb:352:13:352:24 | self |
-| calls.rb:356:3:356:14 | call to unknown_call | calls.rb:356:3:356:14 | self |
-| calls.rb:360:1:360:4 | call to list | calls.rb:360:1:360:4 | self |
-| calls.rb:360:1:360:11 | call to empty? | calls.rb:360:1:360:4 | call to list |
-| calls.rb:361:1:361:4 | call to list | calls.rb:361:1:361:4 | self |
-| calls.rb:361:1:361:12 | call to empty? | calls.rb:361:1:361:4 | __synth__0__1 |
-| calls.rb:361:1:361:12 | call to empty? | calls.rb:361:1:361:4 | call to list |
-| calls.rb:361:5:361:6 | call to == | calls.rb:361:5:361:6 | nil |
-| calls.rb:362:1:362:4 | call to list | calls.rb:362:1:362:4 | self |
-| calls.rb:362:1:362:12 | call to empty? | calls.rb:362:1:362:4 | call to list |
-| calls.rb:363:1:363:3 | call to foo | calls.rb:363:1:363:3 | self |
-| calls.rb:363:1:363:23 | call to bar | calls.rb:363:1:363:3 | __synth__0__1 |
-| calls.rb:363:1:363:23 | call to bar | calls.rb:363:1:363:3 | call to foo |
-| calls.rb:363:4:363:5 | call to == | calls.rb:363:4:363:5 | nil |
+| calls.rb:328:14:328:16 | call to bar | calls.rb:328:14:328:16 | self |
+| calls.rb:329:18:329:20 | call to bar | calls.rb:329:18:329:20 | self |
+| calls.rb:330:22:330:24 | call to bar | calls.rb:330:22:330:24 | self |
+| calls.rb:331:13:331:15 | call to bar | calls.rb:331:13:331:15 | self |
+| calls.rb:331:25:331:37 | call to print | calls.rb:331:25:331:37 | self |
+| calls.rb:339:3:339:13 | call to bar | calls.rb:339:3:339:13 | self |
+| calls.rb:343:1:345:3 | * ... | calls.rb:343:1:345:3 | __synth__0__1 |
+| calls.rb:343:1:345:3 | call to each | calls.rb:343:16:343:33 | [...] |
+| calls.rb:343:5:343:5 | ! ... | calls.rb:343:5:343:5 | defined? ... |
+| calls.rb:343:5:343:5 | call to [] | calls.rb:343:5:343:5 | __synth__3__1 |
+| calls.rb:343:5:343:5 | defined? ... | calls.rb:343:5:343:5 | x |
+| calls.rb:343:8:343:8 | ! ... | calls.rb:343:8:343:8 | defined? ... |
+| calls.rb:343:8:343:8 | call to [] | calls.rb:343:8:343:8 | __synth__3__1 |
+| calls.rb:343:8:343:8 | defined? ... | calls.rb:343:8:343:8 | y |
+| calls.rb:343:11:343:11 | ! ... | calls.rb:343:11:343:11 | defined? ... |
+| calls.rb:343:11:343:11 | call to [] | calls.rb:343:11:343:11 | __synth__3__1 |
+| calls.rb:343:11:343:11 | defined? ... | calls.rb:343:11:343:11 | z |
+| calls.rb:343:16:343:33 | call to [] | calls.rb:343:16:343:33 | Array |
+| calls.rb:343:17:343:23 | call to [] | calls.rb:343:17:343:23 | Array |
+| calls.rb:343:26:343:32 | call to [] | calls.rb:343:26:343:32 | Array |
+| calls.rb:344:3:344:13 | call to foo | calls.rb:344:3:344:13 | self |
+| calls.rb:347:1:347:10 | call to foo | calls.rb:347:1:347:10 | self |
+| calls.rb:348:1:348:15 | call to foo | calls.rb:348:1:348:15 | self |
+| calls.rb:349:1:349:10 | call to foo | calls.rb:349:1:349:10 | self |
+| calls.rb:350:1:350:7 | call to foo | calls.rb:350:1:350:7 | self |
+| calls.rb:355:13:355:17 | call to foo | calls.rb:355:13:355:17 | self |
+| calls.rb:356:13:356:24 | call to unknown_call | calls.rb:356:13:356:24 | self |
+| calls.rb:360:3:360:14 | call to unknown_call | calls.rb:360:3:360:14 | self |
+| calls.rb:364:1:364:4 | call to list | calls.rb:364:1:364:4 | self |
+| calls.rb:364:1:364:11 | call to empty? | calls.rb:364:1:364:4 | call to list |
+| calls.rb:365:1:365:4 | call to list | calls.rb:365:1:365:4 | self |
+| calls.rb:365:1:365:12 | call to empty? | calls.rb:365:1:365:4 | __synth__0__1 |
+| calls.rb:365:1:365:12 | call to empty? | calls.rb:365:1:365:4 | call to list |
+| calls.rb:365:5:365:6 | call to == | calls.rb:365:5:365:6 | nil |
+| calls.rb:366:1:366:4 | call to list | calls.rb:366:1:366:4 | self |
+| calls.rb:366:1:366:12 | call to empty? | calls.rb:366:1:366:4 | call to list |
+| calls.rb:367:1:367:3 | call to foo | calls.rb:367:1:367:3 | self |
+| calls.rb:367:1:367:23 | call to bar | calls.rb:367:1:367:3 | __synth__0__1 |
+| calls.rb:367:1:367:23 | call to bar | calls.rb:367:1:367:3 | call to foo |
+| calls.rb:367:4:367:5 | call to == | calls.rb:367:4:367:5 | nil |
 callsWithBlock
 | calls.rb:14:1:14:17 | call to foo | calls.rb:14:5:14:17 | { ... } |
 | calls.rb:17:1:19:3 | call to foo | calls.rb:17:5:19:3 | do ... end |
@@ -419,52 +422,52 @@ callsWithBlock
 | calls.rb:92:1:95:3 | call to foo | calls.rb:92:7:95:3 | do ... end |
 | calls.rb:223:1:225:3 | call to each | calls.rb:223:1:225:3 | { ... } |
 | calls.rb:226:1:228:3 | call to each | calls.rb:226:1:228:3 | { ... } |
-| calls.rb:289:5:289:23 | super call to my_method | calls.rb:289:11:289:23 | { ... } |
-| calls.rb:290:5:290:26 | super call to my_method | calls.rb:290:11:290:26 | do ... end |
-| calls.rb:291:5:291:30 | super call to my_method | calls.rb:291:16:291:30 | { ... } |
-| calls.rb:292:5:292:33 | super call to my_method | calls.rb:292:16:292:33 | do ... end |
-| calls.rb:339:1:341:3 | call to each | calls.rb:339:1:341:3 | { ... } |
-| calls.rb:363:1:363:23 | call to bar | calls.rb:363:15:363:23 | { ... } |
-| calls.rb:363:1:363:23 | call to bar | calls.rb:363:15:363:23 | { ... } |
+| calls.rb:293:5:293:23 | super call to my_method | calls.rb:293:11:293:23 | { ... } |
+| calls.rb:294:5:294:26 | super call to my_method | calls.rb:294:11:294:26 | do ... end |
+| calls.rb:295:5:295:30 | super call to my_method | calls.rb:295:16:295:30 | { ... } |
+| calls.rb:296:5:296:33 | super call to my_method | calls.rb:296:16:296:33 | do ... end |
+| calls.rb:343:1:345:3 | call to each | calls.rb:343:1:345:3 | { ... } |
+| calls.rb:367:1:367:23 | call to bar | calls.rb:367:15:367:23 | { ... } |
+| calls.rb:367:1:367:23 | call to bar | calls.rb:367:15:367:23 | { ... } |
 yieldCalls
 | calls.rb:28:3:28:7 | yield ... |
 | calls.rb:33:3:33:16 | yield ... |
 superCalls
-| calls.rb:285:5:285:9 | super call to my_method |
-| calls.rb:286:5:286:11 | super call to my_method |
-| calls.rb:287:5:287:16 | super call to my_method |
-| calls.rb:288:5:288:17 | super call to my_method |
-| calls.rb:289:5:289:23 | super call to my_method |
-| calls.rb:290:5:290:26 | super call to my_method |
-| calls.rb:291:5:291:30 | super call to my_method |
-| calls.rb:292:5:292:33 | super call to my_method |
-| calls.rb:304:5:304:9 | super call to another_method |
-| calls.rb:331:3:331:12 | super call to foo |
+| calls.rb:289:5:289:9 | super call to my_method |
+| calls.rb:290:5:290:11 | super call to my_method |
+| calls.rb:291:5:291:16 | super call to my_method |
+| calls.rb:292:5:292:17 | super call to my_method |
+| calls.rb:293:5:293:23 | super call to my_method |
+| calls.rb:294:5:294:26 | super call to my_method |
+| calls.rb:295:5:295:30 | super call to my_method |
+| calls.rb:296:5:296:33 | super call to my_method |
+| calls.rb:308:5:308:9 | super call to another_method |
+| calls.rb:335:3:335:12 | super call to foo |
 superCallsWithArguments
-| calls.rb:287:5:287:16 | super call to my_method | 0 | calls.rb:287:11:287:16 | "blah" |
-| calls.rb:288:5:288:17 | super call to my_method | 0 | calls.rb:288:11:288:11 | 1 |
-| calls.rb:288:5:288:17 | super call to my_method | 1 | calls.rb:288:14:288:14 | 2 |
-| calls.rb:288:5:288:17 | super call to my_method | 2 | calls.rb:288:17:288:17 | 3 |
-| calls.rb:291:5:291:30 | super call to my_method | 0 | calls.rb:291:11:291:11 | 4 |
-| calls.rb:291:5:291:30 | super call to my_method | 1 | calls.rb:291:14:291:14 | 5 |
-| calls.rb:292:5:292:33 | super call to my_method | 0 | calls.rb:292:11:292:11 | 6 |
-| calls.rb:292:5:292:33 | super call to my_method | 1 | calls.rb:292:14:292:14 | 7 |
-| calls.rb:331:3:331:12 | super call to foo | 0 | calls.rb:331:9:331:11 | ... |
+| calls.rb:291:5:291:16 | super call to my_method | 0 | calls.rb:291:11:291:16 | "blah" |
+| calls.rb:292:5:292:17 | super call to my_method | 0 | calls.rb:292:11:292:11 | 1 |
+| calls.rb:292:5:292:17 | super call to my_method | 1 | calls.rb:292:14:292:14 | 2 |
+| calls.rb:292:5:292:17 | super call to my_method | 2 | calls.rb:292:17:292:17 | 3 |
+| calls.rb:295:5:295:30 | super call to my_method | 0 | calls.rb:295:11:295:11 | 4 |
+| calls.rb:295:5:295:30 | super call to my_method | 1 | calls.rb:295:14:295:14 | 5 |
+| calls.rb:296:5:296:33 | super call to my_method | 0 | calls.rb:296:11:296:11 | 6 |
+| calls.rb:296:5:296:33 | super call to my_method | 1 | calls.rb:296:14:296:14 | 7 |
+| calls.rb:335:3:335:12 | super call to foo | 0 | calls.rb:335:9:335:11 | ... |
 superCallsWithBlock
-| calls.rb:289:5:289:23 | super call to my_method | calls.rb:289:11:289:23 | { ... } |
-| calls.rb:290:5:290:26 | super call to my_method | calls.rb:290:11:290:26 | do ... end |
-| calls.rb:291:5:291:30 | super call to my_method | calls.rb:291:16:291:30 | { ... } |
-| calls.rb:292:5:292:33 | super call to my_method | calls.rb:292:16:292:33 | do ... end |
+| calls.rb:293:5:293:23 | super call to my_method | calls.rb:293:11:293:23 | { ... } |
+| calls.rb:294:5:294:26 | super call to my_method | calls.rb:294:11:294:26 | do ... end |
+| calls.rb:295:5:295:30 | super call to my_method | calls.rb:295:16:295:30 | { ... } |
+| calls.rb:296:5:296:33 | super call to my_method | calls.rb:296:16:296:33 | do ... end |
 setterCalls
-| calls.rb:313:1:313:8 | call to foo= |
-| calls.rb:314:1:314:6 | call to []= |
-| calls.rb:315:1:315:8 | call to foo= |
-| calls.rb:315:12:315:19 | call to bar= |
-| calls.rb:315:22:315:27 | call to []= |
-| calls.rb:316:5:316:10 | call to []= |
-| calls.rb:317:1:317:10 | call to count= |
+| calls.rb:317:1:317:8 | call to foo= |
 | calls.rb:318:1:318:6 | call to []= |
-| calls.rb:319:1:319:32 | call to []= |
+| calls.rb:319:1:319:8 | call to foo= |
+| calls.rb:319:12:319:19 | call to bar= |
+| calls.rb:319:22:319:27 | call to []= |
+| calls.rb:320:5:320:10 | call to []= |
+| calls.rb:321:1:321:10 | call to count= |
+| calls.rb:322:1:322:6 | call to []= |
+| calls.rb:323:1:323:32 | call to []= |
 callsWithSafeNavigationOperator
-| calls.rb:361:1:361:12 | call to empty? |
-| calls.rb:363:1:363:23 | call to bar |
+| calls.rb:365:1:365:12 | call to empty? |
+| calls.rb:367:1:367:23 | call to bar |

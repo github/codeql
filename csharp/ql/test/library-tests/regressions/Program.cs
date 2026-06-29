@@ -194,3 +194,16 @@ class C3<T> : C2<C4<T>> { }
 class C4<T> : C2<C3<T>> { }
 
 class C5 : C4<C5> { }
+
+class CatchTypeMentions
+{
+    void F()
+    {
+        try
+        {
+        }
+        catch (Exception)
+        {
+        }
+    }
+}

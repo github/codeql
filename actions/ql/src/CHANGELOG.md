@@ -1,3 +1,9 @@
+## 0.6.30
+
+### Query Metadata Changes
+
+* The name, description, and alert message of `actions/untrusted-checkout/medium` have been corrected to describe a non-privileged context.
+
 ## 0.6.29
 
 ### Query Metadata Changes

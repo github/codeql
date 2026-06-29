@@ -28,6 +28,19 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "xs"
+          value:
+            array_literal
+              element:
+                int_literal "1"
+                int_literal "2"
+                int_literal "3"
 
 ===
 Empty array literal with type
@@ -68,6 +81,22 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "xs"
+          type:
+            generic_type_expr
+              base:
+                named_type_expr
+                  name: identifier "Array"
+              type_argument:
+                named_type_expr
+                  name: identifier "Int"
+          value: array_literal "[]"
 
 ===
 Dictionary literal
@@ -106,6 +135,14 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "d"
+          value: map_literal "[\"a\": 1, \"b\": 2]"
 
 ===
 Set literal
@@ -155,6 +192,22 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "s"
+          type:
+            named_type_expr
+              name: identifier "Set<Int>"
+          value:
+            array_literal
+              element:
+                int_literal "1"
+                int_literal "2"
+                int_literal "3"
 
 ===
 Tuple literal
@@ -191,6 +244,14 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "t"
+          value: tuple_expr "(1, \"two\", 3.0)"
 
 ===
 Subscript access
@@ -232,9 +293,21 @@ source_file
 
 top_level
   body:
-    unsupported_node "// TODO: tree-sitter-swift parses `xs[0]` as a call_expression (same shape"
-    unsupported_node "// as `xs(0)`), so the mapping currently produces a call_expr. Update the"
-    unsupported_node "// parser / add a separate subscript_expr node and remap when fixed."
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "first"
+          value:
+            call_expr
+              argument:
+                argument
+                  value: int_literal "0"
+              callee:
+                name_expr
+                  identifier: identifier "xs"
 
 ===
 Dictionary subscript
@@ -276,8 +349,21 @@ source_file
 
 top_level
   body:
-    unsupported_node "// TODO: same parser issue as the array subscript case above —"
-    unsupported_node "// `d[\"key\"]` is parsed as `call_expression(d, (\"key\"))`."
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "v"
+          value:
+            call_expr
+              argument:
+                argument
+                  value: string_literal "\"key\""
+              callee:
+                name_expr
+                  identifier: identifier "d"
 
 ===
 Tuple member access
@@ -309,3 +395,16 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "n"
+          value:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "t"
+              member: identifier "0"

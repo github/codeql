@@ -19,8 +19,8 @@ class IndexHandler(tornado.web.RequestHandler):
         if client_ip:
             client_ip = client_ip.split(',')[len(client_ip.split(',')) - 1]
         else:
-            client_ip = self.request.headers.get('REMOTE_ADDR', None)
-        if not client_ip == '127.0.0.1':
+            client_ip = self.request.headers.get('REMOTE_ADDR', None) # $ Source
+        if not client_ip == '127.0.0.1': # $ Alert
             raise Exception('ip illegal')
         self.write("hello.")
 
