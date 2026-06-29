@@ -3,7 +3,7 @@
  * @description Finds all potential block cipher modes of operations using the supported libraries.
  * @kind problem
  * @id py/quantum-readiness/cbom/block-cipher-mode
- * @problem.severity error
+ * @severity recommendation
  * @tags cbom
  *       cryptography
  */
