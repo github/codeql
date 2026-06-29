@@ -43,7 +43,8 @@ private module Input1 implements InputSig {
   predicate foo() { any() }
 }
 
-private module Input2 implements InputSig { // $ Alert
+private module Input2 implements InputSig {
+  // $ Alert
   predicate foo() { any() }
 }
 
