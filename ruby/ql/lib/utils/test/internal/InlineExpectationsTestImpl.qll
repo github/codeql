@@ -12,22 +12,26 @@ module Impl implements InlineExpectationsTestSig {
    * A class representing comments that may contain inline expectations (Ruby line comments and ERB comments).
    */
   class ExpectationComment extends TAnyComment {
+    Ruby::Comment asRubyComment() { this = RubyComment(result) }
+
+    R::ErbComment asErbComment() { this = ErbComment(result) }
+
     string toString() {
-      result = any(Ruby::Comment c | this = RubyComment(c)).toString()
+      result = this.asRubyComment().toString()
       or
-      result = any(R::ErbComment c | this = ErbComment(c)).toString()
+      result = this.asErbComment().toString()
     }
 
     Location getLocation() {
-      result = any(Ruby::Comment c | this = RubyComment(c)).getLocation()
+      result = this.asRubyComment().getLocation()
       or
-      result = any(R::ErbComment c | this = ErbComment(c)).getLocation()
+      result = this.asErbComment().getLocation()
     }
 
     string getContents() {
-      result = any(Ruby::Comment c | this = RubyComment(c)).getValue().suffix(1)
+      result = this.asRubyComment().getValue().suffix(1)
       or
-      result = any(R::ErbComment c | this = ErbComment(c)).getValue().suffix(1)
+      result = this.asErbComment().getValue().suffix(1)
     }
   }
 
