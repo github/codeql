@@ -71,7 +71,8 @@ module HardcodedCryptographicValue {
     or
     e.(ArrayRepeatExpr).getRepeatOperand() instanceof LiteralExpr // e.g. `[0; 10]`
     or
-    e instanceof ConstAccess // e.g. `u64::MAX`
+    // e.g. `const MY_CONST: u64 = ...`
+    e = any(Const c).getBody()
     or
     // e.g. `1 << 4`
     isConstant(e.(BinaryExpr).getLhs()) and

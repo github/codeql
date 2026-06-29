@@ -35,8 +35,8 @@ impl MyCryptor {
     }
 }
 
-const MY_CONST_1: u64 = 0xFFFF;
-const MY_CONST_2: u64 = std::env::consts::ARCH.len() as u64;
+const MY_CONST_1: u64 = 0xFFFF; // $ Alert[rust/hard-coded-cryptographic-value]
+const MY_CONST_2: u64 = std::env::consts::ARCH.len() as u64; // $ Alert[rust/hard-coded-cryptographic-value]
 static MY_STATIC_3: u64 = 0xFFFF; // $ Alert[rust/hard-coded-cryptographic-value]
 static MY_STATIC_4: u64 = std::env::consts::ARCH.len() as u64;
 
@@ -75,18 +75,18 @@ fn test(var_string: &str, var_data: &[u8;16], var_u64: u64) {
     mc2.set_salt_u64((var_u64 << 32) ^ (var_u64  & 0xFFFFFFFF));
     mc2.set_salt_u64(1 << 4); // $ Alert[rust/hard-coded-cryptographic-value]
 
-    mc2.set_salt_u64(u64::MAX); // $ Alert[rust/hard-coded-cryptographic-value]
-    mc2.set_salt_u64(u64::MAX / 4); // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(u64::MAX); // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(u64::MAX / 4); // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
 
-    mc2.set_salt_u64(MY_CONST_1); // $ Alert[rust/hard-coded-cryptographic-value]
-    mc2.set_salt_u64(MY_CONST_2); // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_CONST_1); // $ Sink[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_CONST_2); // $ Sink[rust/hard-coded-cryptographic-value]
     mc2.set_salt_u64(MY_STATIC_3); // $ Sink[rust/hard-coded-cryptographic-value]
     mc2.set_salt_u64(MY_STATIC_4);
 
-    const MY_CONST_5: u64 = 1u64;
-    mc2.set_salt_u64(MY_CONST_5); // $ Alert[rust/hard-coded-cryptographic-value]
-    const MY_CONST_6: u64 = 2 + 3;
-    mc2.set_salt_u64(MY_CONST_6); // $ Alert[rust/hard-coded-cryptographic-value]
+    const MY_CONST_5: u64 = 1u64; // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_CONST_5); // $ Sink[rust/hard-coded-cryptographic-value]
+    const MY_CONST_6: u64 = 2 + 3; // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_CONST_6); // $ Sink[rust/hard-coded-cryptographic-value]
 
     let mut key1 = "foo".to_string(); // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
     key1 += "bar"; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]

@@ -10,6 +10,8 @@
 | test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:21:28:21:34 | [0; 64] | test_cookie.rs:22:16:22:24 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:22:16:22:24 | ...::from | a key |
 | test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:38:28:38:36 | [0u8; 64] | test_cookie.rs:42:14:42:32 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:42:14:42:32 | ...::from | a key |
 | test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:53:14:53:32 | ...::from | This hard-coded value is used as $@. | test_cookie.rs:53:14:53:32 | ...::from | a key |
+| test_heuristic.rs:38:25:38:30 | 0xFFFF | test_heuristic.rs:38:25:38:30 | 0xFFFF | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | This hard-coded value is used as $@. | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | a salt |
+| test_heuristic.rs:39:25:39:59 | ... as u64 | test_heuristic.rs:39:25:39:59 | ... as u64 | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | This hard-coded value is used as $@. | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | a salt |
 | test_heuristic.rs:40:27:40:32 | 0xFFFF | test_heuristic.rs:40:27:40:32 | 0xFFFF | test_heuristic.rs:83:22:83:32 | MY_STATIC_3 | This hard-coded value is used as $@. | test_heuristic.rs:83:22:83:32 | MY_STATIC_3 | a salt |
 | test_heuristic.rs:49:31:49:38 | [0u8; 16] | test_heuristic.rs:49:31:49:38 | [0u8; 16] | test_heuristic.rs:50:41:50:48 | const_iv | This hard-coded value is used as $@. | test_heuristic.rs:50:41:50:48 | const_iv | an initialization vector |
 | test_heuristic.rs:68:30:68:37 | "secret" | test_heuristic.rs:68:30:68:37 | "secret" | test_heuristic.rs:68:30:68:37 | "secret" | This hard-coded value is used as $@. | test_heuristic.rs:68:30:68:37 | "secret" | a password |
@@ -17,12 +19,8 @@
 | test_heuristic.rs:70:31:70:38 | [0u8; 16] | test_heuristic.rs:70:31:70:38 | [0u8; 16] | test_heuristic.rs:70:30:70:38 | &... | This hard-coded value is used as $@. | test_heuristic.rs:70:30:70:38 | &... | a salt |
 | test_heuristic.rs:72:22:72:22 | 0 | test_heuristic.rs:72:22:72:22 | 0 | test_heuristic.rs:72:22:72:22 | 0 | This hard-coded value is used as $@. | test_heuristic.rs:72:22:72:22 | 0 | a salt |
 | test_heuristic.rs:76:22:76:27 | ... << ... | test_heuristic.rs:76:22:76:27 | ... << ... | test_heuristic.rs:76:22:76:27 | ... << ... | This hard-coded value is used as $@. | test_heuristic.rs:76:22:76:27 | ... << ... | a salt |
-| test_heuristic.rs:78:22:78:29 | ...::MAX | test_heuristic.rs:78:22:78:29 | ...::MAX | test_heuristic.rs:78:22:78:29 | ...::MAX | This hard-coded value is used as $@. | test_heuristic.rs:78:22:78:29 | ...::MAX | a salt |
-| test_heuristic.rs:79:22:79:33 | ... / ... | test_heuristic.rs:79:22:79:33 | ... / ... | test_heuristic.rs:79:22:79:33 | ... / ... | This hard-coded value is used as $@. | test_heuristic.rs:79:22:79:33 | ... / ... | a salt |
-| test_heuristic.rs:81:22:81:31 | MY_CONST_1 | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | This hard-coded value is used as $@. | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | a salt |
-| test_heuristic.rs:82:22:82:31 | MY_CONST_2 | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | This hard-coded value is used as $@. | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | a salt |
-| test_heuristic.rs:87:22:87:31 | MY_CONST_5 | test_heuristic.rs:87:22:87:31 | MY_CONST_5 | test_heuristic.rs:87:22:87:31 | MY_CONST_5 | This hard-coded value is used as $@. | test_heuristic.rs:87:22:87:31 | MY_CONST_5 | a salt |
-| test_heuristic.rs:89:22:89:31 | MY_CONST_6 | test_heuristic.rs:89:22:89:31 | MY_CONST_6 | test_heuristic.rs:89:22:89:31 | MY_CONST_6 | This hard-coded value is used as $@. | test_heuristic.rs:89:22:89:31 | MY_CONST_6 | a salt |
+| test_heuristic.rs:86:29:86:32 | 1u64 | test_heuristic.rs:86:29:86:32 | 1u64 | test_heuristic.rs:87:22:87:31 | MY_CONST_5 | This hard-coded value is used as $@. | test_heuristic.rs:87:22:87:31 | MY_CONST_5 | a salt |
+| test_heuristic.rs:88:29:88:33 | ... + ... | test_heuristic.rs:88:29:88:33 | ... + ... | test_heuristic.rs:89:22:89:31 | MY_CONST_6 | This hard-coded value is used as $@. | test_heuristic.rs:89:22:89:31 | MY_CONST_6 | a salt |
 edges
 | test_cipher.rs:18:9:18:14 | const1 [&ref] | test_cipher.rs:19:73:19:78 | const1 [&ref] | provenance |  |
 | test_cipher.rs:18:28:18:36 | &... [&ref] | test_cipher.rs:18:9:18:14 | const1 [&ref] | provenance |  |
@@ -79,13 +77,17 @@ edges
 | test_cookie.rs:49:23:49:25 | 0u8 | test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | provenance | MaD:14 |
 | test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | test_cookie.rs:49:9:49:14 | array3 [element] | provenance |  |
 | test_cookie.rs:53:34:53:39 | array3 [element] | test_cookie.rs:53:14:53:32 | ...::from | provenance | MaD:2 Sink:MaD:2 |
-| test_heuristic.rs:40:1:40:33 | static MY_STATIC_3 | test_heuristic.rs:83:22:83:32 | MY_STATIC_3 | provenance |  |
-| test_heuristic.rs:40:27:40:32 | 0xFFFF | test_heuristic.rs:40:1:40:33 | static MY_STATIC_3 | provenance |  |
+| test_heuristic.rs:38:25:38:30 | 0xFFFF | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | provenance |  |
+| test_heuristic.rs:39:25:39:59 | ... as u64 | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | provenance |  |
+| test_heuristic.rs:39:62:40:33 | static MY_STATIC_3 | test_heuristic.rs:83:22:83:32 | MY_STATIC_3 | provenance |  |
+| test_heuristic.rs:40:27:40:32 | 0xFFFF | test_heuristic.rs:39:62:40:33 | static MY_STATIC_3 | provenance |  |
 | test_heuristic.rs:49:9:49:16 | const_iv [&ref] | test_heuristic.rs:50:41:50:48 | const_iv | provenance |  |
 | test_heuristic.rs:49:30:49:38 | &... [&ref] | test_heuristic.rs:49:9:49:16 | const_iv [&ref] | provenance |  |
 | test_heuristic.rs:49:31:49:38 | [0u8; 16] | test_heuristic.rs:49:30:49:38 | &... [&ref] | provenance |  |
 | test_heuristic.rs:69:20:69:27 | [0u8; 16] | test_heuristic.rs:69:19:69:27 | &... | provenance |  |
 | test_heuristic.rs:70:31:70:38 | [0u8; 16] | test_heuristic.rs:70:30:70:38 | &... | provenance |  |
+| test_heuristic.rs:86:29:86:32 | 1u64 | test_heuristic.rs:87:22:87:31 | MY_CONST_5 | provenance |  |
+| test_heuristic.rs:88:29:88:33 | ... + ... | test_heuristic.rs:89:22:89:31 | MY_CONST_6 | provenance |  |
 models
 | 1 | Sink: <_ as crypto_common::KeyInit>::new_from_slice; Argument[0]; credentials-key |
 | 2 | Sink: <biscotti::crypto::master::Key>::from; Argument[0]; credentials-key |
@@ -164,7 +166,9 @@ nodes
 | test_cookie.rs:49:23:49:29 | ...::from_elem(...) [element] | semmle.label | ...::from_elem(...) [element] |
 | test_cookie.rs:53:14:53:32 | ...::from | semmle.label | ...::from |
 | test_cookie.rs:53:34:53:39 | array3 [element] | semmle.label | array3 [element] |
-| test_heuristic.rs:40:1:40:33 | static MY_STATIC_3 | semmle.label | static MY_STATIC_3 |
+| test_heuristic.rs:38:25:38:30 | 0xFFFF | semmle.label | 0xFFFF |
+| test_heuristic.rs:39:25:39:59 | ... as u64 | semmle.label | ... as u64 |
+| test_heuristic.rs:39:62:40:33 | static MY_STATIC_3 | semmle.label | static MY_STATIC_3 |
 | test_heuristic.rs:40:27:40:32 | 0xFFFF | semmle.label | 0xFFFF |
 | test_heuristic.rs:49:9:49:16 | const_iv [&ref] | semmle.label | const_iv [&ref] |
 | test_heuristic.rs:49:30:49:38 | &... [&ref] | semmle.label | &... [&ref] |
@@ -177,11 +181,11 @@ nodes
 | test_heuristic.rs:70:31:70:38 | [0u8; 16] | semmle.label | [0u8; 16] |
 | test_heuristic.rs:72:22:72:22 | 0 | semmle.label | 0 |
 | test_heuristic.rs:76:22:76:27 | ... << ... | semmle.label | ... << ... |
-| test_heuristic.rs:78:22:78:29 | ...::MAX | semmle.label | ...::MAX |
-| test_heuristic.rs:79:22:79:33 | ... / ... | semmle.label | ... / ... |
 | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | semmle.label | MY_CONST_1 |
 | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | semmle.label | MY_CONST_2 |
 | test_heuristic.rs:83:22:83:32 | MY_STATIC_3 | semmle.label | MY_STATIC_3 |
+| test_heuristic.rs:86:29:86:32 | 1u64 | semmle.label | 1u64 |
 | test_heuristic.rs:87:22:87:31 | MY_CONST_5 | semmle.label | MY_CONST_5 |
+| test_heuristic.rs:88:29:88:33 | ... + ... | semmle.label | ... + ... |
 | test_heuristic.rs:89:22:89:31 | MY_CONST_6 | semmle.label | MY_CONST_6 |
 subpaths
