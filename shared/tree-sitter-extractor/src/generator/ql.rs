@@ -60,7 +60,7 @@ impl fmt::Display for Class<'_> {
             write!(f, "private ")?;
         }
         if let Some(alias) = &self.alias {
-            write!(f, "class {} = {alias} ;", &self.name)?;
+            write!(f, "class {} = {alias};", &self.name)?;
             return Ok(());
         }
         if self.is_abstract {
