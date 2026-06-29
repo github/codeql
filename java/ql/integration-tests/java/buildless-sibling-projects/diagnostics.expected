@@ -98,7 +98,7 @@
   }
 }
 {
-  "markdownMessage": "Reading the dependency graph from build files provided 4 classpath entries",
+  "markdownMessage": "Reading the dependency graph from build files provided 3 classpath entries",
   "severity": "unknown",
   "source": {
     "extractorName": "java",
@@ -108,6 +108,34 @@
   "visibility": {
     "cliSummaryTable": true,
     "statusPage": false,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Running the Gradle plugin `org.gradle:github-dependency-graph-gradle-plugin` failed. This means precise dependency information will be unavailable, and so dependencies will be guessed based on Java package names. Consider investigating why this plugin fails to run.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/github-dependency-graph-gradle-plugin-failed",
+    "name": "Java analysis failed to extract a dependency graph from Gradle"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Running the Gradle plugin `org.gradle:github-dependency-graph-gradle-plugin` failed. This means precise dependency information will be unavailable, and so dependencies will be guessed based on Java package names. Consider investigating why this plugin fails to run.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/github-dependency-graph-gradle-plugin-failed",
+    "name": "Java analysis failed to extract a dependency graph from Gradle"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
     "telemetry": true
   }
 }
