@@ -1,0 +1,14 @@
+name: Safe AI Usage
+on:
+  push:
+    branches: [main]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run AI with hardcoded prompt
+        uses: actions/ai-inference@v1
+        with:
+          prompt: |
+            Analyze the repository structure and suggest improvements.

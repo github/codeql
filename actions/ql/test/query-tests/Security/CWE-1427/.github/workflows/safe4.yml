@@ -1,0 +1,16 @@
+name: Safe AI with Non-Bot Actor Check
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  triage:
+    if: github.actor == 'admin-user'
+    runs-on: ubuntu-latest
+    steps:
+      - name: AI triage for admin only
+        uses: warpdotdev/oz-agent-action@v1
+        with:
+          prompt: |
+            Analyze this issue:
+            ${{ github.event.issue.title }}

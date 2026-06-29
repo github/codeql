@@ -1,0 +1,20 @@
+name: Summarize New Issues
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  summary:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      models: read
+    steps:
+      - name: Run AI inference
+        id: inference
+        uses: actions/ai-inference@v1
+        with:
+          prompt: |
+            Summarize the following GitHub issue:
+            Title: ${{ github.event.issue.title }}
+            Body: ${{ github.event.issue.body }}

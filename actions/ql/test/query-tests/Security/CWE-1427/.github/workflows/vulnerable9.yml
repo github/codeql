@@ -1,0 +1,18 @@
+name: Gemini PR Analysis on pull_request
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    steps:
+      - name: Gemini analysis
+        uses: google-github-actions/run-gemini-cli@v1
+        with:
+          prompt: |
+            Review this PR:
+            Title: ${{ github.event.pull_request.title }}
+            Body: ${{ github.event.pull_request.body }}
