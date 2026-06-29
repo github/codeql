@@ -35,7 +35,7 @@ module Impl implements InlineExpectationsTestSig {
   }
 
   /**
-   * A class representing line comments in Ruby.
+   * A class representing comments that may contain inline expectations (Ruby line comments and ERB comments).
    */
   class ExpectationComment extends AnyComment {
     string getContents() {
