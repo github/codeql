@@ -119,7 +119,7 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
-            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal", lastArgs);
+            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal /p:RestoreIgnoreFailedSources=true", lastArgs);
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
-            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal --configfile \"myconfig.config\"", lastArgs);
+            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal /p:RestoreIgnoreFailedSources=true --configfile \"myconfig.config\"", lastArgs);
             Assert.Equal(2, res.AssetsFilePaths.Count());
             Assert.Contains("/path/to/project.assets.json", res.AssetsFilePaths);
             Assert.Contains("/path/to/project2.assets.json", res.AssetsFilePaths);
@@ -152,7 +152,7 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
-            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal --configfile \"myconfig.config\" --force", lastArgs);
+            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal /p:RestoreIgnoreFailedSources=true --configfile \"myconfig.config\" --force", lastArgs);
             Assert.Equal(2, res.AssetsFilePaths.Count());
             Assert.Contains("/path/to/project.assets.json", res.AssetsFilePaths);
             Assert.Contains("/path/to/project2.assets.json", res.AssetsFilePaths);
@@ -170,7 +170,7 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
-            Assert.Equal("restore --no-dependencies \"mysolution.sln\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal", lastArgs);
+            Assert.Equal("restore --no-dependencies \"mysolution.sln\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal /p:RestoreIgnoreFailedSources=true", lastArgs);
             Assert.Equal(2, res.RestoredProjects.Count());
             Assert.Contains("/path/to/project.csproj", res.RestoredProjects);
             Assert.Contains("/path/to/project2.csproj", res.RestoredProjects);
@@ -192,7 +192,7 @@ namespace Semmle.Extraction.Tests
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
-            Assert.Equal("restore --no-dependencies \"mysolution.sln\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal", lastArgs);
+            Assert.Equal("restore --no-dependencies \"mysolution.sln\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal /p:RestoreIgnoreFailedSources=true", lastArgs);
             Assert.Empty(res.RestoredProjects);
             Assert.Empty(res.AssetsFilePaths);
         }
