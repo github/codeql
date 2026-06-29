@@ -934,6 +934,22 @@ module GoCfg {
     }
 
     /**
+     * Holds if `n` is an exceptional-exit predecessor of `fd`: the in-order
+     * node of a call that always panics or never returns normally. In Go,
+     * deferred functions run on panic, so these nodes must also enter the
+     * deferred-call chain.
+     */
+    private predicate exceptionalExitPred(PreControlFlowNode n, Go::FuncDef fd) {
+      exists(Go::CallExpr call |
+        call.getEnclosingFunction() = fd and
+        (call.getTarget().mustPanic() or call.getTarget().mustNotReturnNormally()) and
+        not call = any(Go::DeferStmt s).getCall() and
+        not call = any(Go::GoStmt s).getCall() and
+        n.isIn(call)
+      )
+    }
+
+    /**
      * Holds if, after running its deferred calls, `fd` should continue at
      * `target` on a normal exit. For functions with result variables this is
      * the start of the result-read epilogue; otherwise it is the normal exit
@@ -975,6 +991,15 @@ module GoCfg {
           firstDefer(firstD, fd) and
           deferInvoke(n1, firstD) and
           deferChainExitTarget(fd, n2)
+        )
+        or
+        // (e) an unconditional panic with active defers flows to the last-registered active defer
+        exists(Go::DeferStmt d, PreControlFlowNode reg |
+          deferRegistration(reg, d) and
+          d.getEnclosingFunction() = fd and
+          exceptionalExitPred(n1, fd) and
+          n1 = notDeferReach(reg) and
+          deferInvoke(n2, d)
         )
       )
     }
