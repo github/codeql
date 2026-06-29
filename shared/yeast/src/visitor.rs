@@ -49,7 +49,7 @@ impl Visitor {
 
     pub fn build_with_schema(self, schema: crate::schema::Schema) -> Ast {
         Ast {
-            root: 0,
+            root: Id(0),
             schema,
             nodes: self.nodes.into_iter().map(|n| n.inner).collect(),
             source: Vec::new(),
@@ -72,7 +72,7 @@ impl Visitor {
             },
             parent: self.current,
         });
-        id
+        Id(id)
     }
 
     fn enter_node(&mut self, node: tree_sitter::Node<'_>) -> bool {
@@ -83,10 +83,10 @@ impl Visitor {
 
     fn leave_node(&mut self, field_name: Option<&'static str>, _node: tree_sitter::Node<'_>) {
         let node_id = self.current.unwrap();
-        let node_parent = self.nodes[node_id].parent;
+        let node_parent = self.nodes[node_id.0].parent;
 
         if let Some(parent_id) = node_parent {
-            let parent = self.nodes.get_mut(parent_id).unwrap();
+            let parent = self.nodes.get_mut(parent_id.0).unwrap();
             if let Some(field) = field_name {
                 let field_id = self.language.field_id_for_name(field).unwrap().get();
                 parent
