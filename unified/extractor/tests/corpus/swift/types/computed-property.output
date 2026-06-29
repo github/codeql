@@ -1,0 +1,129 @@
+class Rect {
+  var w: Double
+  var h: Double
+  var area: Double {
+    return w * h
+  }
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+          member:
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "w"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Double"
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "h"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Double"
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  computed_value:
+                    computed_property
+                      statement:
+                        control_transfer_statement
+                          kind: return
+                          result:
+                            multiplicative_expression
+                              lhs: simple_identifier "w"
+                              op: *
+                              rhs: simple_identifier "h"
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "area"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Double"
+      declaration_kind: class
+      name: type_identifier "Rect"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "w"
+              type:
+                named_type_expr
+                  name: identifier "Double"
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "h"
+              type:
+                named_type_expr
+                  name: identifier "Double"
+            accessor_declaration
+              body:
+                block
+                  stmt:
+                    return_expr
+                      value:
+                        binary_expr
+                          operator: infix_operator "*"
+                          left:
+                            name_expr
+                              identifier: identifier "w"
+                          right:
+                            name_expr
+                              identifier: identifier "h"
+              modifier: modifier "var"
+              name: identifier "area"
+              type:
+                named_type_expr
+                  name: identifier "Double"
+              accessor_kind: accessor_kind "get"
+          modifier: modifier "class"
+          name: identifier "Rect"

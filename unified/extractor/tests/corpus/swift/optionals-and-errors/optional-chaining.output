@@ -1,0 +1,51 @@
+let n = obj?.foo?.bar
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "n"
+          value:
+            navigation_expression
+              suffix:
+                navigation_suffix
+                  suffix: simple_identifier "bar"
+              target:
+                optional_chain_marker
+                  expr:
+                    navigation_expression
+                      suffix:
+                        navigation_suffix
+                          suffix: simple_identifier "foo"
+                      target:
+                        optional_chain_marker
+                          expr: simple_identifier "obj"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "n"
+          value:
+            member_access_expr
+              base:
+                member_access_expr
+                  base:
+                    name_expr
+                      identifier: identifier "obj"
+                  member: identifier "foo"
+              member: identifier "bar"

@@ -1,0 +1,124 @@
+class Box {
+  private var _v = 0
+  var v: Int {
+    get { return _v }
+    set { _v = newValue }
+  }
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+          member:
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "_v"
+                  value: integer_literal "0"
+              modifiers:
+                modifiers
+                  modifier:
+                    visibility_modifier
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  computed_value:
+                    computed_property
+                      accessor:
+                        computed_getter
+                          body:
+                            block
+                              statement:
+                                control_transfer_statement
+                                  kind: return
+                                  result: simple_identifier "_v"
+                          specifier:
+                            getter_specifier
+                        computed_setter
+                          body:
+                            block
+                              statement:
+                                assignment
+                                  operator: =
+                                  result: simple_identifier "newValue"
+                                  target:
+                                    directly_assignable_expression
+                                      expr: simple_identifier "_v"
+                          specifier:
+                            setter_specifier
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "v"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+      declaration_kind: class
+      name: type_identifier "Box"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "_v"
+              value: int_literal "0"
+            accessor_declaration
+              body:
+                block
+                  stmt:
+                    return_expr
+                      value:
+                        name_expr
+                          identifier: identifier "_v"
+              modifier: modifier "var"
+              name: identifier "v"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+              accessor_kind: accessor_kind "get"
+            accessor_declaration
+              body:
+                block
+                  stmt:
+                    assign_expr
+                      target:
+                        name_expr
+                          identifier: identifier "_v"
+                      value:
+                        name_expr
+                          identifier: identifier "newValue"
+              modifier:
+                modifier "var"
+                modifier "chained_declaration"
+              name: identifier "v"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+              accessor_kind: accessor_kind "set"
+          modifier: modifier "class"
+          name: identifier "Box"

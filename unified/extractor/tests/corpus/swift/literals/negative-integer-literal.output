@@ -1,0 +1,19 @@
+-7
+
+---
+
+source_file
+  statement:
+    prefix_expression
+      operation: -
+      target: integer_literal "7"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        unary_expr
+          operand: int_literal "7"
+          operator: prefix_operator "-"
