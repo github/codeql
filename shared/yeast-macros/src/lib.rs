@@ -121,37 +121,3 @@ pub fn rule(input: TokenStream) -> TokenStream {
         Err(err) => err.to_compile_error().into(),
     }
 }
-
-/// Define a desugaring rule whose transform is a hand-written Rust block.
-///
-/// Use `manual_rule!` when the transform needs control over capture
-/// translation timing — for example, when an outer rule needs to set
-/// state in `ctx` (the `BuildCtx`'s user context) before recursive
-/// translation reaches inner rules that read that state.
-///
-/// ```text
-/// manual_rule!(
-///     (query_pattern field: (_) @name)
-///     {
-///         // `ctx` is a `&mut BuildCtx<'_, C>`; capture variables
-///         // (`name: NodeRef`, etc.) are bound from the query.
-///         let translated = ctx.translate(name)?;
-///         Ok(translated)
-///     }
-/// )
-/// ```
-///
-/// Differences from [`rule!`]:
-/// - Captures are **not** auto-translated before the body runs; they
-///   refer to raw input-schema nodes. Use [`BuildCtx::translate`] (or
-///   [`BuildCtx::translate_opt`]) to translate them when you choose.
-/// - The body is plain Rust returning `Result<Vec<Id>, String>` — no
-///   tree template, no `Ok(...)` wrap.
-#[proc_macro]
-pub fn manual_rule(input: TokenStream) -> TokenStream {
-    let input2: TokenStream2 = input.into();
-    match parse::parse_manual_rule_top(input2) {
-        Ok(output) => output.into(),
-        Err(err) => err.to_compile_error().into(),
-    }
-}

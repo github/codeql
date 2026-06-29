@@ -16,7 +16,7 @@ pub mod schema;
 pub mod tree_builder;
 mod visitor;
 
-pub use yeast_macros::{manual_rule, query, rule, tree, trees};
+pub use yeast_macros::{query, rule, tree, trees};
 
 use captures::Captures;
 pub use cursor::Cursor;
@@ -45,6 +45,12 @@ impl NodeRef {
 impl From<NodeRef> for Id {
     fn from(value: NodeRef) -> Self {
         value.0
+    }
+}
+
+impl From<Id> for NodeRef {
+    fn from(value: Id) -> Self {
+        NodeRef(value)
     }
 }
 
@@ -757,13 +763,14 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
     }
 
     /// Translate every captured node in `captures` in place (OneShot phase
-    /// only). In a Repeating phase this is a no-op — Repeating rules
-    /// receive raw captures.
+    /// only), except for captures whose name appears in `skip` — those are
+    /// left as raw (input-schema) ids for the rule body to consume
+    /// directly. In a Repeating phase this is a no-op — Repeating rules
+    /// receive raw captures regardless of `skip`.
     ///
-    /// Used by the `rule!` macro's generated prefix to preserve the
-    /// pre-existing "auto-translate captures before running the transform
-    /// body" behavior. Manually-written transforms typically translate
-    /// captures selectively via [`translate`] instead.
+    /// Used by the `rule!` macro's generated prefix. `skip` is populated
+    /// from the macro's `@@name` capture markers; for plain `@name`
+    /// captures (and rules with no `@@` markers) it is empty.
     ///
     /// To avoid infinite recursion, a capture whose id matches the rule's
     /// matched root (e.g. from a `(_) @_` pattern) is left unchanged.
@@ -772,11 +779,12 @@ impl<'a, C: Clone> TranslatorHandle<'a, C> {
         captures: &mut Captures,
         ast: &mut Ast,
         user_ctx: &mut C,
+        skip: &[&str],
     ) -> Result<(), String> {
         match &self.inner {
             TranslatorImpl::OneShot { matched_root, .. } => {
                 let root = *matched_root;
-                captures.try_map_all_captures(|cid| {
+                captures.try_map_captures_except(skip, |cid| {
                     if cid == root {
                         Ok(vec![cid])
                     } else {
