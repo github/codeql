@@ -1263,8 +1263,20 @@ module IR {
     MkLiteralElementTarget(ControlFlow::Node write) {
       write.isAdditional(any(CompositeLit lit).getAnElement(), "lit-init")
     } or
-    /** A result variable write target. */
-    MkResultWriteTarget(WriteResultInstruction w)
+    /**
+     * A result variable write target. Parameterized by `ControlFlow::Node`
+     * rather than `WriteResultInstruction` to avoid a circular dependency:
+     * `WriteResultInstruction extends WriteInstruction` needs
+     * `MkResultWriteTarget(this)` to hold, which would in turn require
+     * `this` to already be a `WriteResultInstruction`.
+     */
+    MkResultWriteTarget(ControlFlow::Node w) {
+      exists(ReturnStmt ret, int idx |
+        w.isAdditional(ret, "result-write:" + idx.toString()) and
+        exists(ret.getEnclosingFunction().getResultVar(idx)) and
+        exists(ret.getAnExpr())
+      )
+    }
 
   /** A representation of the target of a write instruction. */
   class WriteTarget extends TWriteTarget {
