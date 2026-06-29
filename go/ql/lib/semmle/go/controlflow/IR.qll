@@ -843,12 +843,17 @@ module IR {
    */
   class EvalImplicitInitInstruction extends Instruction {
     ValueEntity v;
-    int idx;
-    ValueSpec spec;
 
     EvalImplicitInitInstruction() {
-      this.isAdditional(spec, "zero-init:" + idx.toString()) and
-      spec.getNameExpr(idx) = v.getDeclaration()
+      exists(ValueSpec spec, int idx |
+        this.isAdditional(spec, "zero-init:" + idx.toString()) and
+        spec.getNameExpr(idx) = v.getDeclaration()
+      )
+      or
+      exists(FuncDef fd, int idx |
+        this.isAdditional(fd.getBody(), "result-zero-init:" + idx.toString()) and
+        v = fd.getResultVar(idx)
+      )
     }
 
     override Type getResultType() { result = v.getType() }
@@ -1091,46 +1096,11 @@ module IR {
 
     override Instruction getRhs() {
       result
-          .(ResultZeroInitInstruction)
+          .(EvalImplicitInitInstruction)
           .isAdditional(fd.getBody(), "result-zero-init:" + idx.toString())
     }
 
     override ControlFlow::Root getRoot() { result = res.getFunction() }
-  }
-
-  private class ResultZeroInitInstruction extends Instruction {
-    ResultVariable res;
-    int idx;
-    FuncDef fd;
-
-    ResultZeroInitInstruction() {
-      this.isAdditional(fd.getBody(), "result-zero-init:" + idx.toString()) and
-      res = fd.getResultVar(idx)
-    }
-
-    override Type getResultType() { result = res.getType() }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(fd) }
-
-    override int getIntValue() {
-      res.getType().getUnderlyingType() instanceof IntegerType and result = 0
-    }
-
-    override float getFloatValue() {
-      res.getType().getUnderlyingType() instanceof FloatType and result = 0.0
-    }
-
-    override string getStringValue() {
-      res.getType().getUnderlyingType() instanceof StringType and result = ""
-    }
-
-    override boolean getBoolValue() {
-      res.getType().getUnderlyingType() instanceof BoolType and result = false
-    }
-
-    override predicate isConst() { any() }
-
-    override predicate isPlatformIndependentConstant() { any() }
   }
 
   /** An instruction that gets the next key-value pair in a range loop. */
@@ -1530,6 +1500,11 @@ module IR {
     exists(ValueSpec spec, int i |
       spec.getNameExpr(i) = v.getDeclaration() and
       result.isAdditional(spec, "zero-init:" + i.toString())
+    )
+    or
+    exists(FuncDef fd, int i |
+      fd.getResultVar(i) = v and
+      result.isAdditional(fd.getBody(), "result-zero-init:" + i.toString())
     )
   }
 
