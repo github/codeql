@@ -19,6 +19,8 @@
 | test_heuristic.rs:70:31:70:38 | [0u8; 16] | test_heuristic.rs:70:31:70:38 | [0u8; 16] | test_heuristic.rs:70:30:70:38 | &... | This hard-coded value is used as $@. | test_heuristic.rs:70:30:70:38 | &... | a salt |
 | test_heuristic.rs:72:22:72:22 | 0 | test_heuristic.rs:72:22:72:22 | 0 | test_heuristic.rs:72:22:72:22 | 0 | This hard-coded value is used as $@. | test_heuristic.rs:72:22:72:22 | 0 | a salt |
 | test_heuristic.rs:76:22:76:27 | ... << ... | test_heuristic.rs:76:22:76:27 | ... << ... | test_heuristic.rs:76:22:76:27 | ... << ... | This hard-coded value is used as $@. | test_heuristic.rs:76:22:76:27 | ... << ... | a salt |
+| test_heuristic.rs:78:22:78:29 | ...::MAX | test_heuristic.rs:78:22:78:29 | ...::MAX | test_heuristic.rs:78:22:78:29 | ...::MAX | This hard-coded value is used as $@. | test_heuristic.rs:78:22:78:29 | ...::MAX | a salt |
+| test_heuristic.rs:79:22:79:33 | ... / ... | test_heuristic.rs:79:22:79:33 | ... / ... | test_heuristic.rs:79:22:79:33 | ... / ... | This hard-coded value is used as $@. | test_heuristic.rs:79:22:79:33 | ... / ... | a salt |
 | test_heuristic.rs:86:29:86:32 | 1u64 | test_heuristic.rs:86:29:86:32 | 1u64 | test_heuristic.rs:87:22:87:31 | MY_CONST_5 | This hard-coded value is used as $@. | test_heuristic.rs:87:22:87:31 | MY_CONST_5 | a salt |
 | test_heuristic.rs:88:29:88:33 | ... + ... | test_heuristic.rs:88:29:88:33 | ... + ... | test_heuristic.rs:89:22:89:31 | MY_CONST_6 | This hard-coded value is used as $@. | test_heuristic.rs:89:22:89:31 | MY_CONST_6 | a salt |
 edges
@@ -181,6 +183,8 @@ nodes
 | test_heuristic.rs:70:31:70:38 | [0u8; 16] | semmle.label | [0u8; 16] |
 | test_heuristic.rs:72:22:72:22 | 0 | semmle.label | 0 |
 | test_heuristic.rs:76:22:76:27 | ... << ... | semmle.label | ... << ... |
+| test_heuristic.rs:78:22:78:29 | ...::MAX | semmle.label | ...::MAX |
+| test_heuristic.rs:79:22:79:33 | ... / ... | semmle.label | ... / ... |
 | test_heuristic.rs:81:22:81:31 | MY_CONST_1 | semmle.label | MY_CONST_1 |
 | test_heuristic.rs:82:22:82:31 | MY_CONST_2 | semmle.label | MY_CONST_2 |
 | test_heuristic.rs:83:22:83:32 | MY_STATIC_3 | semmle.label | MY_STATIC_3 |

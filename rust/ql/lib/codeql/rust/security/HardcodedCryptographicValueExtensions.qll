@@ -74,6 +74,10 @@ module HardcodedCryptographicValue {
     // e.g. `const MY_CONST: u64 = ...`
     e = any(Const c).getBody()
     or
+    // e.g. `u64::MAX`
+    e instanceof ConstAccess and
+    not exists(e.(ConstAccess).getConst().getBody())
+    or
     // e.g. `1 << 4`
     isConstant(e.(BinaryExpr).getLhs()) and
     isConstant(e.(BinaryExpr).getRhs())

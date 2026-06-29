@@ -75,8 +75,8 @@ fn test(var_string: &str, var_data: &[u8;16], var_u64: u64) {
     mc2.set_salt_u64((var_u64 << 32) ^ (var_u64  & 0xFFFFFFFF));
     mc2.set_salt_u64(1 << 4); // $ Alert[rust/hard-coded-cryptographic-value]
 
-    mc2.set_salt_u64(u64::MAX); // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
-    mc2.set_salt_u64(u64::MAX / 4); // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(u64::MAX); // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(u64::MAX / 4); // $ Alert[rust/hard-coded-cryptographic-value]
 
     mc2.set_salt_u64(MY_CONST_1); // $ Sink[rust/hard-coded-cryptographic-value]
     mc2.set_salt_u64(MY_CONST_2); // $ Sink[rust/hard-coded-cryptographic-value]
