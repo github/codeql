@@ -8,7 +8,10 @@ module Impl implements InlineExpectationsTestSig {
     RubyComment(Ruby::Comment comment) or
     ErbComment(R::ErbComment comment)
 
-  private class AnyComment extends TAnyComment {
+  /**
+   * A class representing comments that may contain inline expectations (Ruby line comments and ERB comments).
+   */
+  class ExpectationComment extends TAnyComment {
     string toString() {
       exists(Ruby::Comment c |
         this = RubyComment(c) and
@@ -32,12 +35,7 @@ module Impl implements InlineExpectationsTestSig {
         result = c.getLocation()
       )
     }
-  }
 
-  /**
-   * A class representing comments that may contain inline expectations (Ruby line comments and ERB comments).
-   */
-  class ExpectationComment extends AnyComment {
     string getContents() {
       exists(Ruby::Comment c |
         this = RubyComment(c) and
