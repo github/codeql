@@ -320,7 +320,7 @@ yeast::rule!(
     =>
     {
         // raw_lhs is untranslated: read its original source text.
-        let text = ctx.ast.source_text(raw_lhs.into());
+        let text = ctx.ast.source_text(raw_lhs);
         // rhs is already translated by the auto-translate prefix.
         tree!((call
             method: (identifier #{text.as_str()})
