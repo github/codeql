@@ -172,3 +172,31 @@ void test_class1() {
 	auto y = c.templateFunction3<unsigned long>(0UL, x);
 	ymlSink(y); // $ ir
 }
+
+namespace MyNamespace {
+	struct MyStructInNamespace {
+		int myField;
+	};
+}
+
+int read_field_from_struct(MyNamespace::MyStructInNamespace* s);
+
+void test_fully_qualified_field_test() {
+	MyNamespace::MyStructInNamespace s;
+	s.myField = ymlSource();
+	int x = read_field_from_struct(&s);
+	ymlSink(x); // $ ir
+}
+
+struct MyGlobalStruct {
+	int myField;
+};
+
+int read_field_from_struct_2(MyGlobalStruct* s);
+
+void test_fully_qualified_field_test_2() {
+	MyGlobalStruct s;
+	s.myField = ymlSource();
+	int x = read_field_from_struct_2(&s);
+	ymlSink(x); // $ ir
+}

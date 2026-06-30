@@ -1378,6 +1378,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof InitialGlobalValue
   or
   n instanceof SsaSynthNode
+  or
+  n.(FlowSummaryNode).getSummaryNode().isHidden()
 }
 
 predicate neverSkipInPathGraph(Node n) {
