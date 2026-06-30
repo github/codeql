@@ -28,26 +28,6 @@ multipleArgumentCall
 lambdaCallEnclosingCallableMismatch
 speculativeStepAlreadyHasModel
 testFailures
-| tests.cpp:20:25:20:45 | // $ interpretElement | Missing result: interpretElement |
-| tests.cpp:21:34:21:54 | // $ interpretElement | Missing result: interpretElement |
-| tests.cpp:25:34:25:54 | // $ interpretElement | Missing result: interpretElement |
-| tests.cpp:72:28:72:34 | // $ ir | Missing result: ir |
-| tests.cpp:79:49:79:55 | // $ ir | Missing result: ir |
-| tests.cpp:99:17:99:37 | // $ interpretElement | Missing result: interpretElement |
-| tests.cpp:100:26:100:46 | // $ interpretElement | Missing result: interpretElement |
-| tests.cpp:122:26:122:32 | // $ ir | Missing result: ir |
-| tests.cpp:128:35:128:41 | // $ ir | Missing result: ir |
-| tests.cpp:167:33:167:53 | // $ interpretElement | Missing result: interpretElement |
-| tests.cpp:168:41:168:61 | // $ interpretElement | Missing result: interpretElement |
-| tests.cpp:169:42:169:62 | // $ interpretElement | Missing result: interpretElement |
-| tests.cpp:272:32:272:52 | // $ interpretElement | Missing result: interpretElement |
-| tests.cpp:278:24:278:44 | // $ interpretElement | Missing result: interpretElement |
-| tests.cpp:309:34:309:54 | // $ interpretElement | Missing result: interpretElement |
-| tests.cpp:310:47:310:67 | // $ interpretElement | Missing result: interpretElement |
-| tests.cpp:334:37:334:43 | // $ ir | Missing result: ir |
-| tests.cpp:347:34:347:40 | // $ ir | Missing result: ir |
-| tests.cpp:351:44:351:50 | // $ ir | Missing result: ir |
-| tests.cpp:352:68:352:74 | // $ ir | Missing result: ir |
 summaryCalls
 | file://:0:0:0:0 | [summary] call to [summary param] 0 in madCallArg0ReturnToReturn in madCallArg0ReturnToReturn |
 | file://:0:0:0:0 | [summary] call to [summary param] 0 in madCallArg0ReturnToReturnFirst in madCallArg0ReturnToReturnFirst |
@@ -102,10 +82,6 @@ sourceCallables
 | tests.cpp:19:6:19:32 | remoteMadSourceIndirectArg1 |
 | tests.cpp:19:39:19:39 | x |
 | tests.cpp:19:47:19:47 | y |
-| tests.cpp:20:5:20:22 | remoteMadSourceVar |
-| tests.cpp:21:6:21:31 | remoteMadSourceVarIndirect |
-| tests.cpp:24:6:24:28 | namespaceLocalMadSource |
-| tests.cpp:25:6:25:31 | namespaceLocalMadSourceVar |
 | tests.cpp:28:7:28:30 | namespace2LocalMadSource |
 | tests.cpp:31:6:31:19 | localMadSource |
 | tests.cpp:33:5:33:27 | namespaceLocalMadSource |
@@ -139,8 +115,6 @@ sourceCallables
 | tests.cpp:97:31:97:31 | x |
 | tests.cpp:98:6:98:30 | madSinkDoubleIndirectArg0 |
 | tests.cpp:98:38:98:38 | x |
-| tests.cpp:99:5:99:14 | madSinkVar |
-| tests.cpp:100:6:100:23 | madSinkVarIndirect |
 | tests.cpp:102:6:102:15 | test_sinks |
 | tests.cpp:116:6:116:6 | a |
 | tests.cpp:117:7:117:11 | a_ptr |
@@ -196,9 +170,6 @@ sourceCallables
 | tests.cpp:164:47:164:47 | x |
 | tests.cpp:165:13:165:40 | madArg0ToReturnFieldIndirect |
 | tests.cpp:165:46:165:46 | x |
-| tests.cpp:167:13:167:30 | madFieldToFieldVar |
-| tests.cpp:168:13:168:38 | madFieldToIndirectFieldVar |
-| tests.cpp:169:14:169:39 | madIndirectFieldToFieldVar |
 | tests.cpp:171:6:171:19 | test_summaries |
 | tests.cpp:174:6:174:6 | a |
 | tests.cpp:174:9:174:9 | b |
@@ -217,12 +188,10 @@ sourceCallables
 | tests.cpp:270:6:270:26 | memberRemoteMadSource |
 | tests.cpp:271:7:271:39 | memberRemoteMadSourceIndirectArg0 |
 | tests.cpp:271:46:271:46 | x |
-| tests.cpp:272:6:272:29 | memberRemoteMadSourceVar |
 | tests.cpp:273:7:273:21 | qualifierSource |
 | tests.cpp:274:7:274:26 | qualifierFieldSource |
 | tests.cpp:277:7:277:23 | memberMadSinkArg0 |
 | tests.cpp:277:29:277:29 | x |
-| tests.cpp:278:6:278:21 | memberMadSinkVar |
 | tests.cpp:279:7:279:19 | qualifierSink |
 | tests.cpp:280:7:280:23 | qualifierArg0Sink |
 | tests.cpp:280:29:280:29 | x |
@@ -252,8 +221,6 @@ sourceCallables
 | tests.cpp:307:39:307:39 | x |
 | tests.cpp:308:15:308:46 | namespaceStaticMemberMadSinkArg0 |
 | tests.cpp:308:52:308:52 | x |
-| tests.cpp:309:7:309:31 | namespaceMemberMadSinkVar |
-| tests.cpp:310:14:310:44 | namespaceStaticMemberMadSinkVar |
 | tests.cpp:313:7:313:30 | namespaceMadSelfToReturn |
 | tests.cpp:317:22:317:28 | source3 |
 | tests.cpp:319:6:319:23 | test_class_members |
