@@ -67,9 +67,9 @@ module HardcodedCryptographicValue {
   private predicate isConstant(Expr e) {
     e instanceof LiteralExpr // e.g. `0`
     or
-    e.(ArrayListExpr).getExpr(_) instanceof LiteralExpr // e.g. `[0, 0, 0, 0]`
+    forex(Expr elem | elem = e.(ArrayListExpr).getExpr(_) | isConstant(elem)) // e.g. `[0, 0, 0, 0]`
     or
-    e.(ArrayRepeatExpr).getRepeatOperand() instanceof LiteralExpr // e.g. `[0; 10]`
+    isConstant(e.(ArrayRepeatExpr).getRepeatOperand()) // e.g. `[0; 10]`
     or
     // e.g. `const MY_CONST: u64 = ...`
     e = any(Const c).getBody()
