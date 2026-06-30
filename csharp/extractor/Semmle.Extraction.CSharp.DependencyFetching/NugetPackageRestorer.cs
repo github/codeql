@@ -53,7 +53,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public string? TryRestore(string package)
         {
-            if (TryRestorePackageManually(package))
+            var feeds = feedManager.CheckNugetFeedResponsiveness ? feedManager.ReachableFeeds : feedManager.AllFeeds;
+            var nugetSources = feedManager.FeedsToDotnetRestoreArgument(feeds);
+            if (TryRestorePackageManually(package, nugetSources))
             {
                 var packageDir = DependencyManager.GetPackageDirectory(package, missingPackageDirectory.DirInfo);
                 if (packageDir is not null)
@@ -301,7 +303,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("Failed project restore with missing package error", nugetMissingPackageFailures.ToString()));
         }
 
-        private AssemblyLookupLocation? DownloadMissingPackages(IEnumerable<string> usedPackageNames)
+        private string? GetFallbackNugetSources()
         {
             IEnumerable<string>? feeds = null;
             if (feedManager.CheckNugetFeedResponsiveness || feedManager.HasPrivateRegistryFeeds)
@@ -323,6 +325,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             var nugetSources = feeds is not null ? feedManager.FeedsToDotnetRestoreArgument(feeds) : null;
+
+            return nugetSources;
+        }
+
+        private AssemblyLookupLocation? DownloadMissingPackages(IEnumerable<string> usedPackageNames)
+        {
+            var nugetSources = GetFallbackNugetSources();
 
             var alreadyDownloadedPackages = usedPackageNames.Select(p => p.ToLowerInvariant());
             var alreadyDownloadedLegacyPackages = GetRestoredLegacyPackageNames();
@@ -469,7 +478,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .Select(d => Path.GetFileName(d).ToLowerInvariant());
         }
 
-        private bool TryRestorePackageManually(string package, string? nugetSources = null, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj, bool tryPrereleaseVersion = true)
+        private bool TryRestorePackageManually(string package, string? nugetSources, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj, bool tryPrereleaseVersion = true)
         {
             logger.LogInfo($"Restoring package {package}...");
             using var tempDir = new TemporaryDirectory(
