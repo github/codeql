@@ -1,4 +1,5 @@
 pom.xml
+settings.xml
 src/main/java/com/example/App.java
 src/main/resources/my-app.properties
 src/main/resources/page.xml

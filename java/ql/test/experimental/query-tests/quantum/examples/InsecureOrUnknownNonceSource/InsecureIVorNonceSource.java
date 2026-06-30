@@ -39,7 +39,7 @@ public class InsecureIVorNonceSource {
     public byte[] encryptWithStaticIvByteArray(byte[] key, byte[] plaintext) throws Exception {
         byte[] iv = new byte[16];
         for (byte i = 0; i < iv.length; i++) {
-            iv[i] = 1;
+            iv[i] = 1; // $ Source[java/quantum/examples/insecure-iv-or-nonce]
         }
 
         IvParameterSpec ivSpec = new IvParameterSpec(iv);

@@ -355,7 +355,7 @@ class TernaryIfExpr extends ConditionalExpr, TTernaryIfExpr {
  */
 class CaseExpr extends ControlExpr instanceof CaseExprImpl {
   /**
-   * Gets the expression being compared, if any. For example, `foo` in the following example.
+   * Gets the expression being compared. For example, `foo` in the following example.
    * ```rb
    * case foo
    * when 0
@@ -364,7 +364,7 @@ class CaseExpr extends ControlExpr instanceof CaseExprImpl {
    *   puts 'one'
    * end
    * ```
-   * There is no result for the following example:
+   * In the following example, the result is an implicit synthesized `true` literal.
    * ```rb
    * case
    * when a then 0

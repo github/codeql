@@ -1,0 +1,1 @@
+let result = try! foo()

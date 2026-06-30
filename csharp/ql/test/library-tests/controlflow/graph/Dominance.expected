@@ -2816,16 +2816,20 @@ dominance
 | ExitMethods.cs:42:13:42:30 | call to method ErrorAlways | ExitMethods.cs:44:9:47:9 | catch (...) {...} |
 | ExitMethods.cs:42:13:42:31 | ...; | ExitMethods.cs:42:13:42:30 | Before call to method ErrorAlways |
 | ExitMethods.cs:42:25:42:29 | false | ExitMethods.cs:42:13:42:30 | call to method ErrorAlways |
-| ExitMethods.cs:44:9:47:9 | After catch (...) {...} [match] | ExitMethods.cs:45:9:47:9 | {...} |
 | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] | ExitMethods.cs:48:9:51:9 | catch (...) {...} |
-| ExitMethods.cs:44:9:47:9 | catch (...) {...} | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [match] |
-| ExitMethods.cs:44:9:47:9 | catch (...) {...} | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] |
+| ExitMethods.cs:44:9:47:9 | catch (...) {...} | ExitMethods.cs:44:16:44:32 | access to type ArgumentException |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [match] | ExitMethods.cs:45:9:47:9 | {...} |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] |
+| ExitMethods.cs:44:16:44:32 | access to type ArgumentException | ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [match] |
+| ExitMethods.cs:44:16:44:32 | access to type ArgumentException | ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] |
 | ExitMethods.cs:45:9:47:9 | {...} | ExitMethods.cs:46:13:46:19 | Before return ...; |
 | ExitMethods.cs:46:13:46:19 | Before return ...; | ExitMethods.cs:46:13:46:19 | return ...; |
-| ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] | ExitMethods.cs:49:9:51:9 | {...} |
 | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [no-match] | ExitMethods.cs:38:10:38:11 | Exceptional Exit |
-| ExitMethods.cs:48:9:51:9 | catch (...) {...} | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] |
-| ExitMethods.cs:48:9:51:9 | catch (...) {...} | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [no-match] |
+| ExitMethods.cs:48:9:51:9 | catch (...) {...} | ExitMethods.cs:48:16:48:24 | access to type Exception |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [match] | ExitMethods.cs:49:9:51:9 | {...} |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [no-match] | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [no-match] |
+| ExitMethods.cs:48:16:48:24 | access to type Exception | ExitMethods.cs:48:16:48:24 | After access to type Exception [match] |
+| ExitMethods.cs:48:16:48:24 | access to type Exception | ExitMethods.cs:48:16:48:24 | After access to type Exception [no-match] |
 | ExitMethods.cs:49:9:51:9 | {...} | ExitMethods.cs:50:13:50:19 | Before return ...; |
 | ExitMethods.cs:50:13:50:19 | Before return ...; | ExitMethods.cs:50:13:50:19 | return ...; |
 | ExitMethods.cs:54:10:54:11 | Entry | ExitMethods.cs:55:5:58:5 | {...} |
@@ -3124,20 +3128,22 @@ dominance
 | Finally.cs:23:13:23:38 | After ...; | Finally.cs:24:13:24:19 | Before return ...; |
 | Finally.cs:23:31:23:36 | "Try2" | Finally.cs:23:13:23:37 | call to method WriteLine |
 | Finally.cs:24:13:24:19 | Before return ...; | Finally.cs:24:13:24:19 | return ...; |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [match] | Finally.cs:26:38:26:39 | IOException ex |
 | Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] | Finally.cs:30:9:40:9 | catch (...) {...} |
-| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:26:9:29:9 | After catch (...) {...} [match] |
-| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] |
-| Finally.cs:26:38:26:39 | IOException ex | Finally.cs:26:48:26:51 | true |
+| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:26:38:26:39 | IOException ex |
+| Finally.cs:26:38:26:39 | After IOException ex [match] | Finally.cs:26:48:26:51 | true |
+| Finally.cs:26:38:26:39 | After IOException ex [no-match] | Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] |
+| Finally.cs:26:38:26:39 | IOException ex | Finally.cs:26:38:26:39 | After IOException ex [match] |
+| Finally.cs:26:38:26:39 | IOException ex | Finally.cs:26:38:26:39 | After IOException ex [no-match] |
 | Finally.cs:26:48:26:51 | After true [true] | Finally.cs:27:9:29:9 | {...} |
 | Finally.cs:26:48:26:51 | true | Finally.cs:26:48:26:51 | After true [true] |
 | Finally.cs:27:9:29:9 | {...} | Finally.cs:28:13:28:18 | Before throw ...; |
 | Finally.cs:28:13:28:18 | Before throw ...; | Finally.cs:28:13:28:18 | throw ...; |
-| Finally.cs:30:9:40:9 | After catch (...) {...} [match] | Finally.cs:30:41:30:42 | ArgumentException ex |
 | Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] | Finally.cs:41:9:43:9 | catch (...) {...} |
-| Finally.cs:30:9:40:9 | catch (...) {...} | Finally.cs:30:9:40:9 | After catch (...) {...} [match] |
-| Finally.cs:30:9:40:9 | catch (...) {...} | Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] |
-| Finally.cs:30:41:30:42 | ArgumentException ex | Finally.cs:31:9:40:9 | {...} |
+| Finally.cs:30:9:40:9 | catch (...) {...} | Finally.cs:30:41:30:42 | ArgumentException ex |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [match] | Finally.cs:31:9:40:9 | {...} |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] | Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] |
+| Finally.cs:30:41:30:42 | ArgumentException ex | Finally.cs:30:41:30:42 | After ArgumentException ex [match] |
+| Finally.cs:30:41:30:42 | ArgumentException ex | Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] |
 | Finally.cs:31:9:40:9 | {...} | Finally.cs:32:13:39:13 | try {...} ... |
 | Finally.cs:32:13:39:13 | try {...} ... | Finally.cs:33:13:35:13 | {...} |
 | Finally.cs:33:13:35:13 | {...} | Finally.cs:34:17:34:32 | if (...) ... |
@@ -3152,12 +3158,13 @@ dominance
 | Finally.cs:38:23:38:43 | Before object creation of type Exception | Finally.cs:38:37:38:42 | "Boo!" |
 | Finally.cs:38:23:38:43 | object creation of type Exception | Finally.cs:38:23:38:43 | After object creation of type Exception |
 | Finally.cs:38:37:38:42 | "Boo!" | Finally.cs:38:23:38:43 | object creation of type Exception |
-| Finally.cs:41:9:43:9 | After catch (...) {...} [match] | Finally.cs:42:9:43:9 | {...} |
 | Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] | Finally.cs:44:9:47:9 | catch {...} |
-| Finally.cs:41:9:43:9 | catch (...) {...} | Finally.cs:41:9:43:9 | After catch (...) {...} [match] |
-| Finally.cs:41:9:43:9 | catch (...) {...} | Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] |
-| Finally.cs:44:9:47:9 | After catch {...} [match] | Finally.cs:45:9:47:9 | {...} |
-| Finally.cs:44:9:47:9 | catch {...} | Finally.cs:44:9:47:9 | After catch {...} [match] |
+| Finally.cs:41:9:43:9 | catch (...) {...} | Finally.cs:41:16:41:24 | access to type Exception |
+| Finally.cs:41:16:41:24 | After access to type Exception [match] | Finally.cs:42:9:43:9 | {...} |
+| Finally.cs:41:16:41:24 | After access to type Exception [no-match] | Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] |
+| Finally.cs:41:16:41:24 | access to type Exception | Finally.cs:41:16:41:24 | After access to type Exception [match] |
+| Finally.cs:41:16:41:24 | access to type Exception | Finally.cs:41:16:41:24 | After access to type Exception [no-match] |
+| Finally.cs:44:9:47:9 | catch {...} | Finally.cs:45:9:47:9 | {...} |
 | Finally.cs:45:9:47:9 | {...} | Finally.cs:46:13:46:19 | Before return ...; |
 | Finally.cs:46:13:46:19 | Before return ...; | Finally.cs:46:13:46:19 | return ...; |
 | Finally.cs:49:9:51:9 | After {...} | Finally.cs:19:10:19:11 | Exceptional Exit |
@@ -3183,19 +3190,20 @@ dominance
 | Finally.cs:58:13:58:38 | After ...; | Finally.cs:59:13:59:19 | Before return ...; |
 | Finally.cs:58:31:58:36 | "Try3" | Finally.cs:58:13:58:37 | call to method WriteLine |
 | Finally.cs:59:13:59:19 | Before return ...; | Finally.cs:59:13:59:19 | return ...; |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [match] | Finally.cs:61:38:61:39 | IOException ex |
 | Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] | Finally.cs:65:9:67:9 | catch (...) {...} |
-| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:61:9:64:9 | After catch (...) {...} [match] |
-| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] |
-| Finally.cs:61:38:61:39 | IOException ex | Finally.cs:61:48:61:51 | true |
+| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:61:38:61:39 | IOException ex |
+| Finally.cs:61:38:61:39 | After IOException ex [match] | Finally.cs:61:48:61:51 | true |
+| Finally.cs:61:38:61:39 | After IOException ex [no-match] | Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] |
+| Finally.cs:61:38:61:39 | IOException ex | Finally.cs:61:38:61:39 | After IOException ex [match] |
+| Finally.cs:61:38:61:39 | IOException ex | Finally.cs:61:38:61:39 | After IOException ex [no-match] |
 | Finally.cs:61:48:61:51 | After true [true] | Finally.cs:62:9:64:9 | {...} |
 | Finally.cs:61:48:61:51 | true | Finally.cs:61:48:61:51 | After true [true] |
 | Finally.cs:62:9:64:9 | {...} | Finally.cs:63:13:63:18 | Before throw ...; |
 | Finally.cs:63:13:63:18 | Before throw ...; | Finally.cs:63:13:63:18 | throw ...; |
-| Finally.cs:65:9:67:9 | After catch (...) {...} [match] | Finally.cs:65:26:65:26 | Exception e |
-| Finally.cs:65:9:67:9 | catch (...) {...} | Finally.cs:65:9:67:9 | After catch (...) {...} [match] |
-| Finally.cs:65:9:67:9 | catch (...) {...} | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] |
-| Finally.cs:65:26:65:26 | Exception e | Finally.cs:65:35:65:51 | Before ... != ... |
+| Finally.cs:65:9:67:9 | catch (...) {...} | Finally.cs:65:26:65:26 | Exception e |
+| Finally.cs:65:26:65:26 | After Exception e [match] | Finally.cs:65:35:65:51 | Before ... != ... |
+| Finally.cs:65:26:65:26 | Exception e | Finally.cs:65:26:65:26 | After Exception e [match] |
+| Finally.cs:65:26:65:26 | Exception e | Finally.cs:65:26:65:26 | After Exception e [no-match] |
 | Finally.cs:65:35:65:35 | access to local variable e | Finally.cs:65:35:65:43 | access to property Message |
 | Finally.cs:65:35:65:43 | After access to property Message | Finally.cs:65:48:65:51 | null |
 | Finally.cs:65:35:65:43 | Before access to property Message | Finally.cs:65:35:65:35 | access to local variable e |
@@ -3468,11 +3476,11 @@ dominance
 | Finally.cs:159:27:159:44 | Before object creation of type Exception | Finally.cs:159:41:159:43 | "1" |
 | Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:27:159:44 | After object creation of type Exception |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:159:27:159:44 | object creation of type Exception |
-| Finally.cs:161:13:164:13 | After catch (...) {...} [match] | Finally.cs:161:30:161:30 | Exception e |
 | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] | Finally.cs:165:13:168:13 | catch {...} |
-| Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:13:164:13 | After catch (...) {...} [match] |
-| Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] |
-| Finally.cs:161:30:161:30 | Exception e | Finally.cs:161:39:161:54 | Before ... == ... |
+| Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:30:161:30 | Exception e |
+| Finally.cs:161:30:161:30 | After Exception e [match] | Finally.cs:161:39:161:54 | Before ... == ... |
+| Finally.cs:161:30:161:30 | Exception e | Finally.cs:161:30:161:30 | After Exception e [match] |
+| Finally.cs:161:30:161:30 | Exception e | Finally.cs:161:30:161:30 | After Exception e [no-match] |
 | Finally.cs:161:39:161:39 | access to local variable e | Finally.cs:161:39:161:47 | access to property Message |
 | Finally.cs:161:39:161:47 | After access to property Message | Finally.cs:161:52:161:54 | "1" |
 | Finally.cs:161:39:161:47 | Before access to property Message | Finally.cs:161:39:161:39 | access to local variable e |
@@ -3493,8 +3501,7 @@ dominance
 | Finally.cs:163:35:163:41 | Before access to array element | Finally.cs:163:35:163:38 | access to parameter args |
 | Finally.cs:163:35:163:41 | access to array element | Finally.cs:163:35:163:41 | After access to array element |
 | Finally.cs:163:40:163:40 | 0 | Finally.cs:163:35:163:41 | access to array element |
-| Finally.cs:165:13:168:13 | After catch {...} [match] | Finally.cs:166:13:168:13 | {...} |
-| Finally.cs:165:13:168:13 | catch {...} | Finally.cs:165:13:168:13 | After catch {...} [match] |
+| Finally.cs:165:13:168:13 | catch {...} | Finally.cs:166:13:168:13 | {...} |
 | Finally.cs:166:13:168:13 | {...} | Finally.cs:167:17:167:38 | ...; |
 | Finally.cs:167:17:167:37 | After call to method WriteLine | Finally.cs:167:17:167:38 | After ...; |
 | Finally.cs:167:17:167:37 | Before call to method WriteLine | Finally.cs:167:35:167:36 | "" |
@@ -3566,9 +3573,10 @@ dominance
 | Finally.cs:186:31:186:46 | Before object creation of type ExceptionB | Finally.cs:186:31:186:46 | object creation of type ExceptionB |
 | Finally.cs:186:31:186:46 | object creation of type ExceptionB | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
 | Finally.cs:186:31:186:46 | object creation of type ExceptionB | Finally.cs:188:13:191:13 | catch (...) {...} |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:188:38:188:39 | access to parameter b2 |
-| Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:13:191:13 | After catch (...) {...} [match] |
-| Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:13:191:13 | After catch (...) {...} [no-match] |
+| Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:20:188:29 | access to type ExceptionB |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:188:38:188:39 | access to parameter b2 |
+| Finally.cs:188:20:188:29 | access to type ExceptionB | Finally.cs:188:20:188:29 | After access to type ExceptionB [match] |
+| Finally.cs:188:20:188:29 | access to type ExceptionB | Finally.cs:188:20:188:29 | After access to type ExceptionB [no-match] |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [true] | Finally.cs:189:13:191:13 | {...} |
 | Finally.cs:188:38:188:39 | access to parameter b2 | Finally.cs:188:38:188:39 | After access to parameter b2 [false] |
 | Finally.cs:188:38:188:39 | access to parameter b2 | Finally.cs:188:38:188:39 | After access to parameter b2 [true] |
@@ -3663,8 +3671,7 @@ dominance
 | Finally.cs:220:13:220:37 | ...; | Finally.cs:220:13:220:36 | Before call to method WriteLine |
 | Finally.cs:220:13:220:37 | After ...; | Finally.cs:219:9:221:9 | After {...} |
 | Finally.cs:220:31:220:35 | "Try" | Finally.cs:220:13:220:36 | call to method WriteLine |
-| Finally.cs:222:9:225:9 | After catch {...} [match] | Finally.cs:223:9:225:9 | {...} |
-| Finally.cs:222:9:225:9 | catch {...} | Finally.cs:222:9:225:9 | After catch {...} [match] |
+| Finally.cs:222:9:225:9 | catch {...} | Finally.cs:223:9:225:9 | {...} |
 | Finally.cs:223:9:225:9 | {...} | Finally.cs:224:13:224:39 | ...; |
 | Finally.cs:224:13:224:38 | After call to method WriteLine | Finally.cs:224:13:224:39 | After ...; |
 | Finally.cs:224:13:224:38 | Before call to method WriteLine | Finally.cs:224:31:224:37 | "Catch" |
@@ -10615,13 +10622,17 @@ postDominance
 | ExitMethods.cs:42:13:42:30 | call to method ErrorAlways | ExitMethods.cs:42:25:42:29 | false |
 | ExitMethods.cs:42:13:42:31 | ...; | ExitMethods.cs:41:9:43:9 | {...} |
 | ExitMethods.cs:42:25:42:29 | false | ExitMethods.cs:42:13:42:30 | Before call to method ErrorAlways |
+| ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] | ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] |
 | ExitMethods.cs:44:9:47:9 | catch (...) {...} | ExitMethods.cs:42:13:42:30 | call to method ErrorAlways |
-| ExitMethods.cs:45:9:47:9 | {...} | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [match] |
+| ExitMethods.cs:44:16:44:32 | access to type ArgumentException | ExitMethods.cs:44:9:47:9 | catch (...) {...} |
+| ExitMethods.cs:45:9:47:9 | {...} | ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [match] |
 | ExitMethods.cs:46:13:46:19 | Before return ...; | ExitMethods.cs:45:9:47:9 | {...} |
 | ExitMethods.cs:46:13:46:19 | return ...; | ExitMethods.cs:46:13:46:19 | Before return ...; |
-| ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] | ExitMethods.cs:48:9:51:9 | catch (...) {...} |
+| ExitMethods.cs:48:9:51:9 | After catch (...) {...} [no-match] | ExitMethods.cs:48:16:48:24 | After access to type Exception [no-match] |
 | ExitMethods.cs:48:9:51:9 | catch (...) {...} | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] |
-| ExitMethods.cs:49:9:51:9 | {...} | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [match] | ExitMethods.cs:48:16:48:24 | access to type Exception |
+| ExitMethods.cs:48:16:48:24 | access to type Exception | ExitMethods.cs:48:9:51:9 | catch (...) {...} |
+| ExitMethods.cs:49:9:51:9 | {...} | ExitMethods.cs:48:16:48:24 | After access to type Exception [match] |
 | ExitMethods.cs:50:13:50:19 | Before return ...; | ExitMethods.cs:49:9:51:9 | {...} |
 | ExitMethods.cs:50:13:50:19 | return ...; | ExitMethods.cs:50:13:50:19 | Before return ...; |
 | ExitMethods.cs:54:10:54:11 | Exceptional Exit | ExitMethods.cs:56:9:56:22 | call to method ErrorAlways2 |
@@ -10911,15 +10922,17 @@ postDominance
 | Finally.cs:23:31:23:36 | "Try2" | Finally.cs:23:13:23:37 | Before call to method WriteLine |
 | Finally.cs:24:13:24:19 | Before return ...; | Finally.cs:23:13:23:38 | After ...; |
 | Finally.cs:24:13:24:19 | return ...; | Finally.cs:24:13:24:19 | Before return ...; |
-| Finally.cs:26:38:26:39 | IOException ex | Finally.cs:26:9:29:9 | After catch (...) {...} [match] |
+| Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] | Finally.cs:26:38:26:39 | After IOException ex [no-match] |
+| Finally.cs:26:38:26:39 | IOException ex | Finally.cs:26:9:29:9 | catch (...) {...} |
 | Finally.cs:26:48:26:51 | After true [true] | Finally.cs:26:48:26:51 | true |
-| Finally.cs:26:48:26:51 | true | Finally.cs:26:38:26:39 | IOException ex |
+| Finally.cs:26:48:26:51 | true | Finally.cs:26:38:26:39 | After IOException ex [match] |
 | Finally.cs:27:9:29:9 | {...} | Finally.cs:26:48:26:51 | After true [true] |
 | Finally.cs:28:13:28:18 | Before throw ...; | Finally.cs:27:9:29:9 | {...} |
 | Finally.cs:28:13:28:18 | throw ...; | Finally.cs:28:13:28:18 | Before throw ...; |
+| Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] | Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] |
 | Finally.cs:30:9:40:9 | catch (...) {...} | Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] |
-| Finally.cs:30:41:30:42 | ArgumentException ex | Finally.cs:30:9:40:9 | After catch (...) {...} [match] |
-| Finally.cs:31:9:40:9 | {...} | Finally.cs:30:41:30:42 | ArgumentException ex |
+| Finally.cs:30:41:30:42 | ArgumentException ex | Finally.cs:30:9:40:9 | catch (...) {...} |
+| Finally.cs:31:9:40:9 | {...} | Finally.cs:30:41:30:42 | After ArgumentException ex [match] |
 | Finally.cs:32:13:39:13 | try {...} ... | Finally.cs:31:9:40:9 | {...} |
 | Finally.cs:33:13:35:13 | {...} | Finally.cs:32:13:39:13 | try {...} ... |
 | Finally.cs:34:17:34:32 | if (...) ... | Finally.cs:33:13:35:13 | {...} |
@@ -10934,11 +10947,12 @@ postDominance
 | Finally.cs:38:23:38:43 | Before object creation of type Exception | Finally.cs:38:17:38:44 | Before throw ...; |
 | Finally.cs:38:23:38:43 | object creation of type Exception | Finally.cs:38:37:38:42 | "Boo!" |
 | Finally.cs:38:37:38:42 | "Boo!" | Finally.cs:38:23:38:43 | Before object creation of type Exception |
+| Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] | Finally.cs:41:16:41:24 | After access to type Exception [no-match] |
 | Finally.cs:41:9:43:9 | catch (...) {...} | Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] |
-| Finally.cs:42:9:43:9 | {...} | Finally.cs:41:9:43:9 | After catch (...) {...} [match] |
-| Finally.cs:44:9:47:9 | After catch {...} [match] | Finally.cs:44:9:47:9 | catch {...} |
+| Finally.cs:41:16:41:24 | access to type Exception | Finally.cs:41:9:43:9 | catch (...) {...} |
+| Finally.cs:42:9:43:9 | {...} | Finally.cs:41:16:41:24 | After access to type Exception [match] |
 | Finally.cs:44:9:47:9 | catch {...} | Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] |
-| Finally.cs:45:9:47:9 | {...} | Finally.cs:44:9:47:9 | After catch {...} [match] |
+| Finally.cs:45:9:47:9 | {...} | Finally.cs:44:9:47:9 | catch {...} |
 | Finally.cs:46:13:46:19 | Before return ...; | Finally.cs:45:9:47:9 | {...} |
 | Finally.cs:46:13:46:19 | return ...; | Finally.cs:46:13:46:19 | Before return ...; |
 | Finally.cs:49:9:51:9 | After {...} | Finally.cs:50:13:50:41 | After ...; |
@@ -10966,21 +10980,23 @@ postDominance
 | Finally.cs:58:31:58:36 | "Try3" | Finally.cs:58:13:58:37 | Before call to method WriteLine |
 | Finally.cs:59:13:59:19 | Before return ...; | Finally.cs:58:13:58:38 | After ...; |
 | Finally.cs:59:13:59:19 | return ...; | Finally.cs:59:13:59:19 | Before return ...; |
-| Finally.cs:61:38:61:39 | IOException ex | Finally.cs:61:9:64:9 | After catch (...) {...} [match] |
+| Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] | Finally.cs:61:38:61:39 | After IOException ex [no-match] |
+| Finally.cs:61:38:61:39 | IOException ex | Finally.cs:61:9:64:9 | catch (...) {...} |
 | Finally.cs:61:48:61:51 | After true [true] | Finally.cs:61:48:61:51 | true |
-| Finally.cs:61:48:61:51 | true | Finally.cs:61:38:61:39 | IOException ex |
+| Finally.cs:61:48:61:51 | true | Finally.cs:61:38:61:39 | After IOException ex [match] |
 | Finally.cs:62:9:64:9 | {...} | Finally.cs:61:48:61:51 | After true [true] |
 | Finally.cs:63:13:63:18 | Before throw ...; | Finally.cs:62:9:64:9 | {...} |
 | Finally.cs:63:13:63:18 | throw ...; | Finally.cs:63:13:63:18 | Before throw ...; |
+| Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] | Finally.cs:65:26:65:26 | After Exception e [no-match] |
 | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] | Finally.cs:65:35:65:51 | After ... != ... [false] |
 | Finally.cs:65:9:67:9 | catch (...) {...} | Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] |
-| Finally.cs:65:26:65:26 | Exception e | Finally.cs:65:9:67:9 | After catch (...) {...} [match] |
+| Finally.cs:65:26:65:26 | Exception e | Finally.cs:65:9:67:9 | catch (...) {...} |
 | Finally.cs:65:35:65:35 | access to local variable e | Finally.cs:65:35:65:43 | Before access to property Message |
 | Finally.cs:65:35:65:43 | After access to property Message | Finally.cs:65:35:65:43 | access to property Message |
 | Finally.cs:65:35:65:43 | Before access to property Message | Finally.cs:65:35:65:51 | Before ... != ... |
 | Finally.cs:65:35:65:43 | access to property Message | Finally.cs:65:35:65:35 | access to local variable e |
 | Finally.cs:65:35:65:51 | ... != ... | Finally.cs:65:48:65:51 | null |
-| Finally.cs:65:35:65:51 | Before ... != ... | Finally.cs:65:26:65:26 | Exception e |
+| Finally.cs:65:35:65:51 | Before ... != ... | Finally.cs:65:26:65:26 | After Exception e [match] |
 | Finally.cs:65:48:65:51 | null | Finally.cs:65:35:65:43 | After access to property Message |
 | Finally.cs:66:9:67:9 | {...} | Finally.cs:65:35:65:51 | After ... != ... [true] |
 | Finally.cs:69:9:71:9 | After {...} | Finally.cs:70:13:70:41 | After ...; |
@@ -11237,16 +11253,17 @@ postDominance
 | Finally.cs:159:27:159:44 | Before object creation of type Exception | Finally.cs:159:21:159:45 | Before throw ...; |
 | Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:159:41:159:43 | "1" |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:159:27:159:44 | Before object creation of type Exception |
+| Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] | Finally.cs:161:30:161:30 | After Exception e [no-match] |
 | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] | Finally.cs:161:39:161:54 | After ... == ... [false] |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:159:21:159:45 | throw ...; |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:159:27:159:44 | object creation of type Exception |
-| Finally.cs:161:30:161:30 | Exception e | Finally.cs:161:13:164:13 | After catch (...) {...} [match] |
+| Finally.cs:161:30:161:30 | Exception e | Finally.cs:161:13:164:13 | catch (...) {...} |
 | Finally.cs:161:39:161:39 | access to local variable e | Finally.cs:161:39:161:47 | Before access to property Message |
 | Finally.cs:161:39:161:47 | After access to property Message | Finally.cs:161:39:161:47 | access to property Message |
 | Finally.cs:161:39:161:47 | Before access to property Message | Finally.cs:161:39:161:54 | Before ... == ... |
 | Finally.cs:161:39:161:47 | access to property Message | Finally.cs:161:39:161:39 | access to local variable e |
 | Finally.cs:161:39:161:54 | ... == ... | Finally.cs:161:52:161:54 | "1" |
-| Finally.cs:161:39:161:54 | Before ... == ... | Finally.cs:161:30:161:30 | Exception e |
+| Finally.cs:161:39:161:54 | Before ... == ... | Finally.cs:161:30:161:30 | After Exception e [match] |
 | Finally.cs:161:52:161:54 | "1" | Finally.cs:161:39:161:47 | After access to property Message |
 | Finally.cs:162:13:164:13 | After {...} | Finally.cs:163:17:163:43 | After ...; |
 | Finally.cs:162:13:164:13 | {...} | Finally.cs:161:39:161:54 | After ... == ... [true] |
@@ -11260,10 +11277,9 @@ postDominance
 | Finally.cs:163:35:163:41 | Before access to array element | Finally.cs:163:17:163:42 | Before call to method WriteLine |
 | Finally.cs:163:35:163:41 | access to array element | Finally.cs:163:40:163:40 | 0 |
 | Finally.cs:163:40:163:40 | 0 | Finally.cs:163:35:163:38 | access to parameter args |
-| Finally.cs:165:13:168:13 | After catch {...} [match] | Finally.cs:165:13:168:13 | catch {...} |
 | Finally.cs:165:13:168:13 | catch {...} | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] |
 | Finally.cs:166:13:168:13 | After {...} | Finally.cs:167:17:167:38 | After ...; |
-| Finally.cs:166:13:168:13 | {...} | Finally.cs:165:13:168:13 | After catch {...} [match] |
+| Finally.cs:166:13:168:13 | {...} | Finally.cs:165:13:168:13 | catch {...} |
 | Finally.cs:167:17:167:37 | After call to method WriteLine | Finally.cs:167:17:167:37 | call to method WriteLine |
 | Finally.cs:167:17:167:37 | Before call to method WriteLine | Finally.cs:167:17:167:38 | ...; |
 | Finally.cs:167:17:167:37 | call to method WriteLine | Finally.cs:167:35:167:36 | "" |
@@ -11332,11 +11348,12 @@ postDominance
 | Finally.cs:186:25:186:47 | throw ...; | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
 | Finally.cs:186:31:186:46 | Before object creation of type ExceptionB | Finally.cs:186:25:186:47 | Before throw ...; |
 | Finally.cs:186:31:186:46 | object creation of type ExceptionB | Finally.cs:186:31:186:46 | Before object creation of type ExceptionB |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:188:13:191:13 | catch (...) {...} |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:186:25:186:47 | throw ...; |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:186:31:186:46 | object creation of type ExceptionB |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:188:20:188:29 | access to type ExceptionB |
+| Finally.cs:188:20:188:29 | access to type ExceptionB | Finally.cs:188:13:191:13 | catch (...) {...} |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [true] | Finally.cs:188:38:188:39 | access to parameter b2 |
-| Finally.cs:188:38:188:39 | access to parameter b2 | Finally.cs:188:13:191:13 | After catch (...) {...} [match] |
+| Finally.cs:188:38:188:39 | access to parameter b2 | Finally.cs:188:20:188:29 | After access to type ExceptionB [match] |
 | Finally.cs:189:13:191:13 | After {...} | Finally.cs:190:17:190:47 | After if (...) ... |
 | Finally.cs:189:13:191:13 | {...} | Finally.cs:188:38:188:39 | After access to parameter b2 [true] |
 | Finally.cs:190:17:190:47 | After if (...) ... | Finally.cs:190:21:190:22 | After access to parameter b1 [false] |
@@ -11426,9 +11443,8 @@ postDominance
 | Finally.cs:220:13:220:37 | ...; | Finally.cs:219:9:221:9 | {...} |
 | Finally.cs:220:13:220:37 | After ...; | Finally.cs:220:13:220:36 | After call to method WriteLine |
 | Finally.cs:220:31:220:35 | "Try" | Finally.cs:220:13:220:36 | Before call to method WriteLine |
-| Finally.cs:222:9:225:9 | After catch {...} [match] | Finally.cs:222:9:225:9 | catch {...} |
 | Finally.cs:223:9:225:9 | After {...} | Finally.cs:224:13:224:39 | After ...; |
-| Finally.cs:223:9:225:9 | {...} | Finally.cs:222:9:225:9 | After catch {...} [match] |
+| Finally.cs:223:9:225:9 | {...} | Finally.cs:222:9:225:9 | catch {...} |
 | Finally.cs:224:13:224:38 | After call to method WriteLine | Finally.cs:224:13:224:38 | call to method WriteLine |
 | Finally.cs:224:13:224:38 | Before call to method WriteLine | Finally.cs:224:13:224:39 | ...; |
 | Finally.cs:224:13:224:38 | call to method WriteLine | Finally.cs:224:31:224:37 | "Catch" |
@@ -17407,18 +17423,18 @@ blockDominance
 | ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:38:10:38:11 | Entry |
 | ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:38:10:38:11 | Exit |
 | ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:38:10:38:11 | Normal Exit |
-| ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [match] |
-| ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] |
-| ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] |
-| ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [no-match] |
+| ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [match] |
+| ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] |
+| ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:48:16:48:24 | After access to type Exception [match] |
+| ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:48:16:48:24 | After access to type Exception [no-match] |
 | ExitMethods.cs:38:10:38:11 | Exit | ExitMethods.cs:38:10:38:11 | Exit |
 | ExitMethods.cs:38:10:38:11 | Normal Exit | ExitMethods.cs:38:10:38:11 | Normal Exit |
-| ExitMethods.cs:44:9:47:9 | After catch (...) {...} [match] | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [match] |
-| ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] |
-| ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] |
-| ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [no-match] |
-| ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] |
-| ExitMethods.cs:48:9:51:9 | After catch (...) {...} [no-match] | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [no-match] |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [match] | ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [match] |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] | ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] | ExitMethods.cs:48:16:48:24 | After access to type Exception [match] |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] | ExitMethods.cs:48:16:48:24 | After access to type Exception [no-match] |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [match] | ExitMethods.cs:48:16:48:24 | After access to type Exception [match] |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [no-match] | ExitMethods.cs:48:16:48:24 | After access to type Exception [no-match] |
 | ExitMethods.cs:54:10:54:11 | Entry | ExitMethods.cs:54:10:54:11 | Entry |
 | ExitMethods.cs:60:10:60:11 | Entry | ExitMethods.cs:60:10:60:11 | Entry |
 | ExitMethods.cs:66:17:66:26 | Entry | ExitMethods.cs:66:17:66:26 | Entry |
@@ -17502,38 +17518,38 @@ blockDominance
 | Finally.cs:19:10:19:11 | Entry | Finally.cs:19:10:19:11 | Normal Exit |
 | Finally.cs:19:10:19:11 | Entry | Finally.cs:21:9:51:9 | After try {...} ... |
 | Finally.cs:19:10:19:11 | Entry | Finally.cs:23:13:23:37 | After call to method WriteLine |
-| Finally.cs:19:10:19:11 | Entry | Finally.cs:26:9:29:9 | After catch (...) {...} [match] |
-| Finally.cs:19:10:19:11 | Entry | Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] |
 | Finally.cs:19:10:19:11 | Entry | Finally.cs:26:9:29:9 | catch (...) {...} |
-| Finally.cs:19:10:19:11 | Entry | Finally.cs:30:9:40:9 | After catch (...) {...} [match] |
-| Finally.cs:19:10:19:11 | Entry | Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] |
-| Finally.cs:19:10:19:11 | Entry | Finally.cs:41:9:43:9 | After catch (...) {...} [match] |
-| Finally.cs:19:10:19:11 | Entry | Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] |
+| Finally.cs:19:10:19:11 | Entry | Finally.cs:26:38:26:39 | After IOException ex [match] |
+| Finally.cs:19:10:19:11 | Entry | Finally.cs:26:38:26:39 | After IOException ex [no-match] |
+| Finally.cs:19:10:19:11 | Entry | Finally.cs:30:41:30:42 | After ArgumentException ex [match] |
+| Finally.cs:19:10:19:11 | Entry | Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] |
+| Finally.cs:19:10:19:11 | Entry | Finally.cs:41:16:41:24 | After access to type Exception [match] |
+| Finally.cs:19:10:19:11 | Entry | Finally.cs:41:16:41:24 | After access to type Exception [no-match] |
 | Finally.cs:19:10:19:11 | Entry | Finally.cs:49:9:51:9 | {...} |
 | Finally.cs:19:10:19:11 | Exceptional Exit | Finally.cs:19:10:19:11 | Exceptional Exit |
 | Finally.cs:19:10:19:11 | Exit | Finally.cs:19:10:19:11 | Exit |
 | Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:19:10:19:11 | Normal Exit |
 | Finally.cs:21:9:51:9 | After try {...} ... | Finally.cs:21:9:51:9 | After try {...} ... |
 | Finally.cs:23:13:23:37 | After call to method WriteLine | Finally.cs:23:13:23:37 | After call to method WriteLine |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [match] | Finally.cs:26:9:29:9 | After catch (...) {...} [match] |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] | Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] | Finally.cs:30:9:40:9 | After catch (...) {...} [match] |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] | Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] | Finally.cs:41:9:43:9 | After catch (...) {...} [match] |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] | Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] |
-| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:26:9:29:9 | After catch (...) {...} [match] |
-| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] |
 | Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:26:9:29:9 | catch (...) {...} |
-| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:30:9:40:9 | After catch (...) {...} [match] |
-| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] |
-| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:41:9:43:9 | After catch (...) {...} [match] |
-| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] |
-| Finally.cs:30:9:40:9 | After catch (...) {...} [match] | Finally.cs:30:9:40:9 | After catch (...) {...} [match] |
-| Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] | Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] |
-| Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] | Finally.cs:41:9:43:9 | After catch (...) {...} [match] |
-| Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] | Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] |
-| Finally.cs:41:9:43:9 | After catch (...) {...} [match] | Finally.cs:41:9:43:9 | After catch (...) {...} [match] |
-| Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] | Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] |
+| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:26:38:26:39 | After IOException ex [match] |
+| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:26:38:26:39 | After IOException ex [no-match] |
+| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:30:41:30:42 | After ArgumentException ex [match] |
+| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] |
+| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:41:16:41:24 | After access to type Exception [match] |
+| Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:41:16:41:24 | After access to type Exception [no-match] |
+| Finally.cs:26:38:26:39 | After IOException ex [match] | Finally.cs:26:38:26:39 | After IOException ex [match] |
+| Finally.cs:26:38:26:39 | After IOException ex [no-match] | Finally.cs:26:38:26:39 | After IOException ex [no-match] |
+| Finally.cs:26:38:26:39 | After IOException ex [no-match] | Finally.cs:30:41:30:42 | After ArgumentException ex [match] |
+| Finally.cs:26:38:26:39 | After IOException ex [no-match] | Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] |
+| Finally.cs:26:38:26:39 | After IOException ex [no-match] | Finally.cs:41:16:41:24 | After access to type Exception [match] |
+| Finally.cs:26:38:26:39 | After IOException ex [no-match] | Finally.cs:41:16:41:24 | After access to type Exception [no-match] |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [match] | Finally.cs:30:41:30:42 | After ArgumentException ex [match] |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] | Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] | Finally.cs:41:16:41:24 | After access to type Exception [match] |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] | Finally.cs:41:16:41:24 | After access to type Exception [no-match] |
+| Finally.cs:41:16:41:24 | After access to type Exception [match] | Finally.cs:41:16:41:24 | After access to type Exception [match] |
+| Finally.cs:41:16:41:24 | After access to type Exception [no-match] | Finally.cs:41:16:41:24 | After access to type Exception [no-match] |
 | Finally.cs:49:9:51:9 | {...} | Finally.cs:19:10:19:11 | Exceptional Exit |
 | Finally.cs:49:9:51:9 | {...} | Finally.cs:19:10:19:11 | Exit |
 | Finally.cs:49:9:51:9 | {...} | Finally.cs:19:10:19:11 | Normal Exit |
@@ -17545,11 +17561,12 @@ blockDominance
 | Finally.cs:54:10:54:11 | Entry | Finally.cs:54:10:54:11 | Normal Exit |
 | Finally.cs:54:10:54:11 | Entry | Finally.cs:56:9:71:9 | After try {...} ... |
 | Finally.cs:54:10:54:11 | Entry | Finally.cs:58:13:58:37 | After call to method WriteLine |
-| Finally.cs:54:10:54:11 | Entry | Finally.cs:61:9:64:9 | After catch (...) {...} [match] |
-| Finally.cs:54:10:54:11 | Entry | Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] |
 | Finally.cs:54:10:54:11 | Entry | Finally.cs:61:9:64:9 | catch (...) {...} |
-| Finally.cs:54:10:54:11 | Entry | Finally.cs:65:9:67:9 | After catch (...) {...} [match] |
+| Finally.cs:54:10:54:11 | Entry | Finally.cs:61:38:61:39 | After IOException ex [match] |
+| Finally.cs:54:10:54:11 | Entry | Finally.cs:61:38:61:39 | After IOException ex [no-match] |
 | Finally.cs:54:10:54:11 | Entry | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] |
+| Finally.cs:54:10:54:11 | Entry | Finally.cs:65:26:65:26 | After Exception e [match] |
+| Finally.cs:54:10:54:11 | Entry | Finally.cs:65:26:65:26 | After Exception e [no-match] |
 | Finally.cs:54:10:54:11 | Entry | Finally.cs:65:35:65:51 | After ... != ... [false] |
 | Finally.cs:54:10:54:11 | Entry | Finally.cs:65:35:65:51 | After ... != ... [true] |
 | Finally.cs:54:10:54:11 | Entry | Finally.cs:69:9:71:9 | {...} |
@@ -17558,23 +17575,26 @@ blockDominance
 | Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:54:10:54:11 | Normal Exit |
 | Finally.cs:56:9:71:9 | After try {...} ... | Finally.cs:56:9:71:9 | After try {...} ... |
 | Finally.cs:58:13:58:37 | After call to method WriteLine | Finally.cs:58:13:58:37 | After call to method WriteLine |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [match] | Finally.cs:61:9:64:9 | After catch (...) {...} [match] |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] | Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] | Finally.cs:65:9:67:9 | After catch (...) {...} [match] |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] | Finally.cs:65:35:65:51 | After ... != ... [false] |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] | Finally.cs:65:35:65:51 | After ... != ... [true] |
-| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:61:9:64:9 | After catch (...) {...} [match] |
-| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] |
 | Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:61:9:64:9 | catch (...) {...} |
-| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:65:9:67:9 | After catch (...) {...} [match] |
+| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:61:38:61:39 | After IOException ex [match] |
+| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:61:38:61:39 | After IOException ex [no-match] |
 | Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] |
+| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:65:26:65:26 | After Exception e [match] |
+| Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:65:26:65:26 | After Exception e [no-match] |
 | Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:65:35:65:51 | After ... != ... [false] |
 | Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:65:35:65:51 | After ... != ... [true] |
-| Finally.cs:65:9:67:9 | After catch (...) {...} [match] | Finally.cs:65:9:67:9 | After catch (...) {...} [match] |
-| Finally.cs:65:9:67:9 | After catch (...) {...} [match] | Finally.cs:65:35:65:51 | After ... != ... [false] |
-| Finally.cs:65:9:67:9 | After catch (...) {...} [match] | Finally.cs:65:35:65:51 | After ... != ... [true] |
+| Finally.cs:61:38:61:39 | After IOException ex [match] | Finally.cs:61:38:61:39 | After IOException ex [match] |
+| Finally.cs:61:38:61:39 | After IOException ex [no-match] | Finally.cs:61:38:61:39 | After IOException ex [no-match] |
+| Finally.cs:61:38:61:39 | After IOException ex [no-match] | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] |
+| Finally.cs:61:38:61:39 | After IOException ex [no-match] | Finally.cs:65:26:65:26 | After Exception e [match] |
+| Finally.cs:61:38:61:39 | After IOException ex [no-match] | Finally.cs:65:26:65:26 | After Exception e [no-match] |
+| Finally.cs:61:38:61:39 | After IOException ex [no-match] | Finally.cs:65:35:65:51 | After ... != ... [false] |
+| Finally.cs:61:38:61:39 | After IOException ex [no-match] | Finally.cs:65:35:65:51 | After ... != ... [true] |
 | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] |
+| Finally.cs:65:26:65:26 | After Exception e [match] | Finally.cs:65:26:65:26 | After Exception e [match] |
+| Finally.cs:65:26:65:26 | After Exception e [match] | Finally.cs:65:35:65:51 | After ... != ... [false] |
+| Finally.cs:65:26:65:26 | After Exception e [match] | Finally.cs:65:35:65:51 | After ... != ... [true] |
+| Finally.cs:65:26:65:26 | After Exception e [no-match] | Finally.cs:65:26:65:26 | After Exception e [no-match] |
 | Finally.cs:65:35:65:51 | After ... != ... [false] | Finally.cs:65:35:65:51 | After ... != ... [false] |
 | Finally.cs:65:35:65:51 | After ... != ... [true] | Finally.cs:65:35:65:51 | After ... != ... [true] |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:54:10:54:11 | Exceptional Exit |
@@ -17783,9 +17803,10 @@ blockDominance
 | Finally.cs:147:10:147:11 | Entry | Finally.cs:158:21:158:36 | After ... == ... [false] |
 | Finally.cs:147:10:147:11 | Entry | Finally.cs:158:21:158:36 | After ... == ... [true] |
 | Finally.cs:147:10:147:11 | Entry | Finally.cs:159:27:159:44 | After object creation of type Exception |
-| Finally.cs:147:10:147:11 | Entry | Finally.cs:161:13:164:13 | After catch (...) {...} [match] |
 | Finally.cs:147:10:147:11 | Entry | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] |
 | Finally.cs:147:10:147:11 | Entry | Finally.cs:161:13:164:13 | catch (...) {...} |
+| Finally.cs:147:10:147:11 | Entry | Finally.cs:161:30:161:30 | After Exception e [match] |
+| Finally.cs:147:10:147:11 | Entry | Finally.cs:161:30:161:30 | After Exception e [no-match] |
 | Finally.cs:147:10:147:11 | Entry | Finally.cs:161:39:161:54 | After ... == ... [false] |
 | Finally.cs:147:10:147:11 | Entry | Finally.cs:161:39:161:54 | After ... == ... [true] |
 | Finally.cs:147:10:147:11 | Exceptional Exit | Finally.cs:147:10:147:11 | Exceptional Exit |
@@ -17804,9 +17825,10 @@ blockDominance
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:158:21:158:36 | After ... == ... [false] |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:158:21:158:36 | After ... == ... [true] |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:159:27:159:44 | After object creation of type Exception |
-| Finally.cs:155:9:169:9 | {...} | Finally.cs:161:13:164:13 | After catch (...) {...} [match] |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:161:13:164:13 | catch (...) {...} |
+| Finally.cs:155:9:169:9 | {...} | Finally.cs:161:30:161:30 | After Exception e [match] |
+| Finally.cs:155:9:169:9 | {...} | Finally.cs:161:30:161:30 | After Exception e [no-match] |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:161:39:161:54 | After ... == ... [false] |
 | Finally.cs:155:9:169:9 | {...} | Finally.cs:161:39:161:54 | After ... == ... [true] |
 | Finally.cs:156:13:168:13 | After try {...} ... | Finally.cs:147:10:147:11 | Exceptional Exit |
@@ -17821,15 +17843,17 @@ blockDominance
 | Finally.cs:158:21:158:36 | After ... == ... [true] | Finally.cs:158:21:158:36 | After ... == ... [true] |
 | Finally.cs:158:21:158:36 | After ... == ... [true] | Finally.cs:159:27:159:44 | After object creation of type Exception |
 | Finally.cs:159:27:159:44 | After object creation of type Exception | Finally.cs:159:27:159:44 | After object creation of type Exception |
-| Finally.cs:161:13:164:13 | After catch (...) {...} [match] | Finally.cs:161:13:164:13 | After catch (...) {...} [match] |
-| Finally.cs:161:13:164:13 | After catch (...) {...} [match] | Finally.cs:161:39:161:54 | After ... == ... [false] |
-| Finally.cs:161:13:164:13 | After catch (...) {...} [match] | Finally.cs:161:39:161:54 | After ... == ... [true] |
 | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] |
-| Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:13:164:13 | After catch (...) {...} [match] |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:13:164:13 | catch (...) {...} |
+| Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:30:161:30 | After Exception e [match] |
+| Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:30:161:30 | After Exception e [no-match] |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:39:161:54 | After ... == ... [false] |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:39:161:54 | After ... == ... [true] |
+| Finally.cs:161:30:161:30 | After Exception e [match] | Finally.cs:161:30:161:30 | After Exception e [match] |
+| Finally.cs:161:30:161:30 | After Exception e [match] | Finally.cs:161:39:161:54 | After ... == ... [false] |
+| Finally.cs:161:30:161:30 | After Exception e [match] | Finally.cs:161:39:161:54 | After ... == ... [true] |
+| Finally.cs:161:30:161:30 | After Exception e [no-match] | Finally.cs:161:30:161:30 | After Exception e [no-match] |
 | Finally.cs:161:39:161:54 | After ... == ... [false] | Finally.cs:161:39:161:54 | After ... == ... [false] |
 | Finally.cs:161:39:161:54 | After ... == ... [true] | Finally.cs:161:39:161:54 | After ... == ... [true] |
 | Finally.cs:172:11:172:20 | Entry | Finally.cs:172:11:172:20 | Entry |
@@ -17847,9 +17871,10 @@ blockDominance
 | Finally.cs:176:10:176:11 | Entry | Finally.cs:186:21:186:22 | After access to parameter b2 [false] |
 | Finally.cs:176:10:176:11 | Entry | Finally.cs:186:21:186:22 | After access to parameter b2 [true] |
 | Finally.cs:176:10:176:11 | Entry | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
-| Finally.cs:176:10:176:11 | Entry | Finally.cs:188:13:191:13 | After catch (...) {...} [match] |
 | Finally.cs:176:10:176:11 | Entry | Finally.cs:188:13:191:13 | After catch (...) {...} [no-match] |
 | Finally.cs:176:10:176:11 | Entry | Finally.cs:188:13:191:13 | catch (...) {...} |
+| Finally.cs:176:10:176:11 | Entry | Finally.cs:188:20:188:29 | After access to type ExceptionB [match] |
+| Finally.cs:176:10:176:11 | Entry | Finally.cs:188:20:188:29 | After access to type ExceptionB [no-match] |
 | Finally.cs:176:10:176:11 | Entry | Finally.cs:188:38:188:39 | After access to parameter b2 [false] |
 | Finally.cs:176:10:176:11 | Entry | Finally.cs:188:38:188:39 | After access to parameter b2 [true] |
 | Finally.cs:176:10:176:11 | Entry | Finally.cs:190:21:190:22 | After access to parameter b1 [false] |
@@ -17869,9 +17894,10 @@ blockDominance
 | Finally.cs:183:9:192:9 | {...} | Finally.cs:186:21:186:22 | After access to parameter b2 [false] |
 | Finally.cs:183:9:192:9 | {...} | Finally.cs:186:21:186:22 | After access to parameter b2 [true] |
 | Finally.cs:183:9:192:9 | {...} | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
-| Finally.cs:183:9:192:9 | {...} | Finally.cs:188:13:191:13 | After catch (...) {...} [match] |
 | Finally.cs:183:9:192:9 | {...} | Finally.cs:188:13:191:13 | After catch (...) {...} [no-match] |
 | Finally.cs:183:9:192:9 | {...} | Finally.cs:188:13:191:13 | catch (...) {...} |
+| Finally.cs:183:9:192:9 | {...} | Finally.cs:188:20:188:29 | After access to type ExceptionB [match] |
+| Finally.cs:183:9:192:9 | {...} | Finally.cs:188:20:188:29 | After access to type ExceptionB [no-match] |
 | Finally.cs:183:9:192:9 | {...} | Finally.cs:188:38:188:39 | After access to parameter b2 [false] |
 | Finally.cs:183:9:192:9 | {...} | Finally.cs:188:38:188:39 | After access to parameter b2 [true] |
 | Finally.cs:183:9:192:9 | {...} | Finally.cs:190:21:190:22 | After access to parameter b1 [false] |
@@ -17881,27 +17907,30 @@ blockDominance
 | Finally.cs:186:21:186:22 | After access to parameter b2 [false] | Finally.cs:186:21:186:22 | After access to parameter b2 [false] |
 | Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:186:21:186:22 | After access to parameter b2 [true] |
 | Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
-| Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:188:13:191:13 | After catch (...) {...} [match] |
 | Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:188:13:191:13 | After catch (...) {...} [no-match] |
 | Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:188:13:191:13 | catch (...) {...} |
+| Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:188:20:188:29 | After access to type ExceptionB [match] |
+| Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:188:20:188:29 | After access to type ExceptionB [no-match] |
 | Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:188:38:188:39 | After access to parameter b2 [false] |
 | Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:188:38:188:39 | After access to parameter b2 [true] |
 | Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:190:21:190:22 | After access to parameter b1 [false] |
 | Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:190:21:190:22 | After access to parameter b1 [true] |
 | Finally.cs:186:31:186:46 | After object creation of type ExceptionB | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:188:13:191:13 | After catch (...) {...} [match] |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:188:38:188:39 | After access to parameter b2 [false] |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:188:38:188:39 | After access to parameter b2 [true] |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:190:21:190:22 | After access to parameter b1 [false] |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:190:21:190:22 | After access to parameter b1 [true] |
 | Finally.cs:188:13:191:13 | After catch (...) {...} [no-match] | Finally.cs:188:13:191:13 | After catch (...) {...} [no-match] |
-| Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:13:191:13 | After catch (...) {...} [match] |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:13:191:13 | After catch (...) {...} [no-match] |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:13:191:13 | catch (...) {...} |
+| Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:20:188:29 | After access to type ExceptionB [match] |
+| Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:20:188:29 | After access to type ExceptionB [no-match] |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:38:188:39 | After access to parameter b2 [false] |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:38:188:39 | After access to parameter b2 [true] |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:190:21:190:22 | After access to parameter b1 [false] |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:190:21:190:22 | After access to parameter b1 [true] |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:188:20:188:29 | After access to type ExceptionB [match] |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:188:38:188:39 | After access to parameter b2 [false] |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:188:38:188:39 | After access to parameter b2 [true] |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:190:21:190:22 | After access to parameter b1 [false] |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:190:21:190:22 | After access to parameter b1 [true] |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [no-match] | Finally.cs:188:20:188:29 | After access to type ExceptionB [no-match] |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [false] | Finally.cs:188:38:188:39 | After access to parameter b2 [false] |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [true] | Finally.cs:188:38:188:39 | After access to parameter b2 [true] |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [true] | Finally.cs:190:21:190:22 | After access to parameter b1 [false] |
@@ -21668,14 +21697,14 @@ postBlockDominance
 | ExitMethods.cs:38:10:38:11 | Exit | ExitMethods.cs:38:10:38:11 | Exit |
 | ExitMethods.cs:38:10:38:11 | Normal Exit | ExitMethods.cs:38:10:38:11 | Entry |
 | ExitMethods.cs:38:10:38:11 | Normal Exit | ExitMethods.cs:38:10:38:11 | Normal Exit |
-| ExitMethods.cs:38:10:38:11 | Normal Exit | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [match] |
-| ExitMethods.cs:38:10:38:11 | Normal Exit | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] |
-| ExitMethods.cs:38:10:38:11 | Normal Exit | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] |
-| ExitMethods.cs:44:9:47:9 | After catch (...) {...} [match] | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [match] |
-| ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] |
-| ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] |
-| ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] |
-| ExitMethods.cs:48:9:51:9 | After catch (...) {...} [no-match] | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [no-match] |
+| ExitMethods.cs:38:10:38:11 | Normal Exit | ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [match] |
+| ExitMethods.cs:38:10:38:11 | Normal Exit | ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] |
+| ExitMethods.cs:38:10:38:11 | Normal Exit | ExitMethods.cs:48:16:48:24 | After access to type Exception [match] |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [match] | ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [match] |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] | ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [match] | ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [match] | ExitMethods.cs:48:16:48:24 | After access to type Exception [match] |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [no-match] | ExitMethods.cs:48:16:48:24 | After access to type Exception [no-match] |
 | ExitMethods.cs:54:10:54:11 | Entry | ExitMethods.cs:54:10:54:11 | Entry |
 | ExitMethods.cs:60:10:60:11 | Entry | ExitMethods.cs:60:10:60:11 | Entry |
 | ExitMethods.cs:66:17:66:26 | Entry | ExitMethods.cs:66:17:66:26 | Entry |
@@ -21743,32 +21772,32 @@ postBlockDominance
 | Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:19:10:19:11 | Normal Exit |
 | Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:21:9:51:9 | After try {...} ... |
 | Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:23:13:23:37 | After call to method WriteLine |
-| Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:26:9:29:9 | After catch (...) {...} [match] |
-| Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] |
 | Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:26:9:29:9 | catch (...) {...} |
-| Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:30:9:40:9 | After catch (...) {...} [match] |
-| Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] |
-| Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:41:9:43:9 | After catch (...) {...} [match] |
-| Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] |
+| Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:26:38:26:39 | After IOException ex [match] |
+| Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:26:38:26:39 | After IOException ex [no-match] |
+| Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:30:41:30:42 | After ArgumentException ex [match] |
+| Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] |
+| Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:41:16:41:24 | After access to type Exception [match] |
+| Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:41:16:41:24 | After access to type Exception [no-match] |
 | Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:49:9:51:9 | {...} |
 | Finally.cs:21:9:51:9 | After try {...} ... | Finally.cs:21:9:51:9 | After try {...} ... |
 | Finally.cs:23:13:23:37 | After call to method WriteLine | Finally.cs:23:13:23:37 | After call to method WriteLine |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [match] | Finally.cs:26:9:29:9 | After catch (...) {...} [match] |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] | Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] |
 | Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:26:9:29:9 | catch (...) {...} |
-| Finally.cs:30:9:40:9 | After catch (...) {...} [match] | Finally.cs:30:9:40:9 | After catch (...) {...} [match] |
-| Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] | Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] |
-| Finally.cs:41:9:43:9 | After catch (...) {...} [match] | Finally.cs:41:9:43:9 | After catch (...) {...} [match] |
-| Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] | Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] |
+| Finally.cs:26:38:26:39 | After IOException ex [match] | Finally.cs:26:38:26:39 | After IOException ex [match] |
+| Finally.cs:26:38:26:39 | After IOException ex [no-match] | Finally.cs:26:38:26:39 | After IOException ex [no-match] |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [match] | Finally.cs:30:41:30:42 | After ArgumentException ex [match] |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] | Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] |
+| Finally.cs:41:16:41:24 | After access to type Exception [match] | Finally.cs:41:16:41:24 | After access to type Exception [match] |
+| Finally.cs:41:16:41:24 | After access to type Exception [no-match] | Finally.cs:41:16:41:24 | After access to type Exception [no-match] |
 | Finally.cs:49:9:51:9 | {...} | Finally.cs:19:10:19:11 | Entry |
 | Finally.cs:49:9:51:9 | {...} | Finally.cs:23:13:23:37 | After call to method WriteLine |
-| Finally.cs:49:9:51:9 | {...} | Finally.cs:26:9:29:9 | After catch (...) {...} [match] |
-| Finally.cs:49:9:51:9 | {...} | Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] |
 | Finally.cs:49:9:51:9 | {...} | Finally.cs:26:9:29:9 | catch (...) {...} |
-| Finally.cs:49:9:51:9 | {...} | Finally.cs:30:9:40:9 | After catch (...) {...} [match] |
-| Finally.cs:49:9:51:9 | {...} | Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] |
-| Finally.cs:49:9:51:9 | {...} | Finally.cs:41:9:43:9 | After catch (...) {...} [match] |
-| Finally.cs:49:9:51:9 | {...} | Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] |
+| Finally.cs:49:9:51:9 | {...} | Finally.cs:26:38:26:39 | After IOException ex [match] |
+| Finally.cs:49:9:51:9 | {...} | Finally.cs:26:38:26:39 | After IOException ex [no-match] |
+| Finally.cs:49:9:51:9 | {...} | Finally.cs:30:41:30:42 | After ArgumentException ex [match] |
+| Finally.cs:49:9:51:9 | {...} | Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] |
+| Finally.cs:49:9:51:9 | {...} | Finally.cs:41:16:41:24 | After access to type Exception [match] |
+| Finally.cs:49:9:51:9 | {...} | Finally.cs:41:16:41:24 | After access to type Exception [no-match] |
 | Finally.cs:49:9:51:9 | {...} | Finally.cs:49:9:51:9 | {...} |
 | Finally.cs:54:10:54:11 | Entry | Finally.cs:54:10:54:11 | Entry |
 | Finally.cs:54:10:54:11 | Exceptional Exit | Finally.cs:54:10:54:11 | Exceptional Exit |
@@ -21777,31 +21806,35 @@ postBlockDominance
 | Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:54:10:54:11 | Normal Exit |
 | Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:56:9:71:9 | After try {...} ... |
 | Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:58:13:58:37 | After call to method WriteLine |
-| Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:61:9:64:9 | After catch (...) {...} [match] |
-| Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] |
 | Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:61:9:64:9 | catch (...) {...} |
-| Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:65:9:67:9 | After catch (...) {...} [match] |
+| Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:61:38:61:39 | After IOException ex [match] |
+| Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:61:38:61:39 | After IOException ex [no-match] |
 | Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] |
+| Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:65:26:65:26 | After Exception e [match] |
+| Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:65:26:65:26 | After Exception e [no-match] |
 | Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:65:35:65:51 | After ... != ... [false] |
 | Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:65:35:65:51 | After ... != ... [true] |
 | Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:69:9:71:9 | {...} |
 | Finally.cs:56:9:71:9 | After try {...} ... | Finally.cs:56:9:71:9 | After try {...} ... |
 | Finally.cs:58:13:58:37 | After call to method WriteLine | Finally.cs:58:13:58:37 | After call to method WriteLine |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [match] | Finally.cs:61:9:64:9 | After catch (...) {...} [match] |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] | Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] |
 | Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:61:9:64:9 | catch (...) {...} |
-| Finally.cs:65:9:67:9 | After catch (...) {...} [match] | Finally.cs:65:9:67:9 | After catch (...) {...} [match] |
+| Finally.cs:61:38:61:39 | After IOException ex [match] | Finally.cs:61:38:61:39 | After IOException ex [match] |
+| Finally.cs:61:38:61:39 | After IOException ex [no-match] | Finally.cs:61:38:61:39 | After IOException ex [no-match] |
 | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] |
+| Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] | Finally.cs:65:26:65:26 | After Exception e [no-match] |
 | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] | Finally.cs:65:35:65:51 | After ... != ... [false] |
+| Finally.cs:65:26:65:26 | After Exception e [match] | Finally.cs:65:26:65:26 | After Exception e [match] |
+| Finally.cs:65:26:65:26 | After Exception e [no-match] | Finally.cs:65:26:65:26 | After Exception e [no-match] |
 | Finally.cs:65:35:65:51 | After ... != ... [false] | Finally.cs:65:35:65:51 | After ... != ... [false] |
 | Finally.cs:65:35:65:51 | After ... != ... [true] | Finally.cs:65:35:65:51 | After ... != ... [true] |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:54:10:54:11 | Entry |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:58:13:58:37 | After call to method WriteLine |
-| Finally.cs:69:9:71:9 | {...} | Finally.cs:61:9:64:9 | After catch (...) {...} [match] |
-| Finally.cs:69:9:71:9 | {...} | Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:61:9:64:9 | catch (...) {...} |
-| Finally.cs:69:9:71:9 | {...} | Finally.cs:65:9:67:9 | After catch (...) {...} [match] |
+| Finally.cs:69:9:71:9 | {...} | Finally.cs:61:38:61:39 | After IOException ex [match] |
+| Finally.cs:69:9:71:9 | {...} | Finally.cs:61:38:61:39 | After IOException ex [no-match] |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] |
+| Finally.cs:69:9:71:9 | {...} | Finally.cs:65:26:65:26 | After Exception e [match] |
+| Finally.cs:69:9:71:9 | {...} | Finally.cs:65:26:65:26 | After Exception e [no-match] |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:65:35:65:51 | After ... != ... [false] |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:65:35:65:51 | After ... != ... [true] |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:69:9:71:9 | {...} |
@@ -21973,9 +22006,10 @@ postBlockDominance
 | Finally.cs:149:9:169:9 | After try {...} ... | Finally.cs:158:21:158:36 | After ... == ... [false] |
 | Finally.cs:149:9:169:9 | After try {...} ... | Finally.cs:158:21:158:36 | After ... == ... [true] |
 | Finally.cs:149:9:169:9 | After try {...} ... | Finally.cs:159:27:159:44 | After object creation of type Exception |
-| Finally.cs:149:9:169:9 | After try {...} ... | Finally.cs:161:13:164:13 | After catch (...) {...} [match] |
 | Finally.cs:149:9:169:9 | After try {...} ... | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] |
 | Finally.cs:149:9:169:9 | After try {...} ... | Finally.cs:161:13:164:13 | catch (...) {...} |
+| Finally.cs:149:9:169:9 | After try {...} ... | Finally.cs:161:30:161:30 | After Exception e [match] |
+| Finally.cs:149:9:169:9 | After try {...} ... | Finally.cs:161:30:161:30 | After Exception e [no-match] |
 | Finally.cs:149:9:169:9 | After try {...} ... | Finally.cs:161:39:161:54 | After ... == ... [false] |
 | Finally.cs:149:9:169:9 | After try {...} ... | Finally.cs:161:39:161:54 | After ... == ... [true] |
 | Finally.cs:151:17:151:28 | After ... == ... [false] | Finally.cs:151:17:151:28 | After ... == ... [false] |
@@ -21996,21 +22030,24 @@ postBlockDominance
 | Finally.cs:156:13:168:13 | After try {...} ... | Finally.cs:158:21:158:36 | After ... == ... [false] |
 | Finally.cs:156:13:168:13 | After try {...} ... | Finally.cs:158:21:158:36 | After ... == ... [true] |
 | Finally.cs:156:13:168:13 | After try {...} ... | Finally.cs:159:27:159:44 | After object creation of type Exception |
-| Finally.cs:156:13:168:13 | After try {...} ... | Finally.cs:161:13:164:13 | After catch (...) {...} [match] |
 | Finally.cs:156:13:168:13 | After try {...} ... | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] |
 | Finally.cs:156:13:168:13 | After try {...} ... | Finally.cs:161:13:164:13 | catch (...) {...} |
+| Finally.cs:156:13:168:13 | After try {...} ... | Finally.cs:161:30:161:30 | After Exception e [match] |
+| Finally.cs:156:13:168:13 | After try {...} ... | Finally.cs:161:30:161:30 | After Exception e [no-match] |
 | Finally.cs:156:13:168:13 | After try {...} ... | Finally.cs:161:39:161:54 | After ... == ... [false] |
 | Finally.cs:156:13:168:13 | After try {...} ... | Finally.cs:161:39:161:54 | After ... == ... [true] |
 | Finally.cs:158:21:158:31 | After access to property Length | Finally.cs:158:21:158:31 | After access to property Length |
 | Finally.cs:158:21:158:36 | After ... == ... [false] | Finally.cs:158:21:158:36 | After ... == ... [false] |
 | Finally.cs:158:21:158:36 | After ... == ... [true] | Finally.cs:158:21:158:36 | After ... == ... [true] |
 | Finally.cs:159:27:159:44 | After object creation of type Exception | Finally.cs:159:27:159:44 | After object creation of type Exception |
-| Finally.cs:161:13:164:13 | After catch (...) {...} [match] | Finally.cs:161:13:164:13 | After catch (...) {...} [match] |
 | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] |
+| Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] | Finally.cs:161:30:161:30 | After Exception e [no-match] |
 | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] | Finally.cs:161:39:161:54 | After ... == ... [false] |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:158:21:158:36 | After ... == ... [true] |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:159:27:159:44 | After object creation of type Exception |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:161:13:164:13 | catch (...) {...} |
+| Finally.cs:161:30:161:30 | After Exception e [match] | Finally.cs:161:30:161:30 | After Exception e [match] |
+| Finally.cs:161:30:161:30 | After Exception e [no-match] | Finally.cs:161:30:161:30 | After Exception e [no-match] |
 | Finally.cs:161:39:161:54 | After ... == ... [false] | Finally.cs:161:39:161:54 | After ... == ... [false] |
 | Finally.cs:161:39:161:54 | After ... == ... [true] | Finally.cs:161:39:161:54 | After ... == ... [true] |
 | Finally.cs:172:11:172:20 | Entry | Finally.cs:172:11:172:20 | Entry |
@@ -22029,8 +22066,8 @@ postBlockDominance
 | Finally.cs:178:9:192:9 | After try {...} ... | Finally.cs:186:21:186:22 | After access to parameter b2 [false] |
 | Finally.cs:178:9:192:9 | After try {...} ... | Finally.cs:186:21:186:22 | After access to parameter b2 [true] |
 | Finally.cs:178:9:192:9 | After try {...} ... | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
-| Finally.cs:178:9:192:9 | After try {...} ... | Finally.cs:188:13:191:13 | After catch (...) {...} [match] |
 | Finally.cs:178:9:192:9 | After try {...} ... | Finally.cs:188:13:191:13 | catch (...) {...} |
+| Finally.cs:178:9:192:9 | After try {...} ... | Finally.cs:188:20:188:29 | After access to type ExceptionB [match] |
 | Finally.cs:178:9:192:9 | After try {...} ... | Finally.cs:188:38:188:39 | After access to parameter b2 [true] |
 | Finally.cs:178:9:192:9 | After try {...} ... | Finally.cs:190:21:190:22 | After access to parameter b1 [false] |
 | Finally.cs:180:17:180:18 | After access to parameter b1 [false] | Finally.cs:180:17:180:18 | After access to parameter b1 [false] |
@@ -22050,31 +22087,32 @@ postBlockDominance
 | Finally.cs:184:13:191:13 | After try {...} ... | Finally.cs:186:21:186:22 | After access to parameter b2 [false] |
 | Finally.cs:184:13:191:13 | After try {...} ... | Finally.cs:186:21:186:22 | After access to parameter b2 [true] |
 | Finally.cs:184:13:191:13 | After try {...} ... | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
-| Finally.cs:184:13:191:13 | After try {...} ... | Finally.cs:188:13:191:13 | After catch (...) {...} [match] |
 | Finally.cs:184:13:191:13 | After try {...} ... | Finally.cs:188:13:191:13 | catch (...) {...} |
+| Finally.cs:184:13:191:13 | After try {...} ... | Finally.cs:188:20:188:29 | After access to type ExceptionB [match] |
 | Finally.cs:184:13:191:13 | After try {...} ... | Finally.cs:188:38:188:39 | After access to parameter b2 [true] |
 | Finally.cs:184:13:191:13 | After try {...} ... | Finally.cs:190:21:190:22 | After access to parameter b1 [false] |
 | Finally.cs:186:21:186:22 | After access to parameter b2 [false] | Finally.cs:186:21:186:22 | After access to parameter b2 [false] |
 | Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:186:21:186:22 | After access to parameter b2 [true] |
 | Finally.cs:186:31:186:46 | After object creation of type ExceptionB | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:186:21:186:22 | After access to parameter b2 [true] |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:188:13:191:13 | After catch (...) {...} [match] |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:188:13:191:13 | catch (...) {...} |
 | Finally.cs:188:13:191:13 | After catch (...) {...} [no-match] | Finally.cs:188:13:191:13 | After catch (...) {...} [no-match] |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:186:21:186:22 | After access to parameter b2 [true] |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:188:13:191:13 | catch (...) {...} |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:186:21:186:22 | After access to parameter b2 [true] |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:188:13:191:13 | catch (...) {...} |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:188:20:188:29 | After access to type ExceptionB [match] |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [no-match] | Finally.cs:188:20:188:29 | After access to type ExceptionB [no-match] |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [false] | Finally.cs:188:38:188:39 | After access to parameter b2 [false] |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [true] | Finally.cs:186:21:186:22 | After access to parameter b2 [true] |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [true] | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
-| Finally.cs:188:38:188:39 | After access to parameter b2 [true] | Finally.cs:188:13:191:13 | After catch (...) {...} [match] |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [true] | Finally.cs:188:13:191:13 | catch (...) {...} |
+| Finally.cs:188:38:188:39 | After access to parameter b2 [true] | Finally.cs:188:20:188:29 | After access to type ExceptionB [match] |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [true] | Finally.cs:188:38:188:39 | After access to parameter b2 [true] |
 | Finally.cs:190:21:190:22 | After access to parameter b1 [false] | Finally.cs:186:21:186:22 | After access to parameter b2 [true] |
 | Finally.cs:190:21:190:22 | After access to parameter b1 [false] | Finally.cs:186:31:186:46 | After object creation of type ExceptionB |
-| Finally.cs:190:21:190:22 | After access to parameter b1 [false] | Finally.cs:188:13:191:13 | After catch (...) {...} [match] |
 | Finally.cs:190:21:190:22 | After access to parameter b1 [false] | Finally.cs:188:13:191:13 | catch (...) {...} |
+| Finally.cs:190:21:190:22 | After access to parameter b1 [false] | Finally.cs:188:20:188:29 | After access to type ExceptionB [match] |
 | Finally.cs:190:21:190:22 | After access to parameter b1 [false] | Finally.cs:188:38:188:39 | After access to parameter b2 [true] |
 | Finally.cs:190:21:190:22 | After access to parameter b1 [false] | Finally.cs:190:21:190:22 | After access to parameter b1 [false] |
 | Finally.cs:190:21:190:22 | After access to parameter b1 [true] | Finally.cs:190:21:190:22 | After access to parameter b1 [true] |

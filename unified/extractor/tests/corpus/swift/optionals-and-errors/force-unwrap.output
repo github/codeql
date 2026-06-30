@@ -1,0 +1,37 @@
+let n = opt!
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "n"
+          value:
+            postfix_expression
+              operation: bang "!"
+              target: simple_identifier "opt"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "n"
+          value:
+            unary_expr
+              operand:
+                name_expr
+                  identifier: identifier "opt"
+              operator: postfix_operator "!"

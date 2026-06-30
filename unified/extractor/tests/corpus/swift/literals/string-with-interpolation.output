@@ -1,0 +1,18 @@
+"hello \(name)"
+
+---
+
+source_file
+  statement:
+    line_string_literal
+      interpolation:
+        interpolated_expression
+          value: simple_identifier "name"
+      text: line_str_text "hello "
+
+---
+
+top_level
+  body:
+    block
+      stmt: string_literal "\"hello \\(name)\""

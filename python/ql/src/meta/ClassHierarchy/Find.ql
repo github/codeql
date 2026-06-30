@@ -351,7 +351,7 @@ class DjangoHttpRequest extends FindSubclassesSpec {
 class FlaskClass extends FindSubclassesSpec {
   FlaskClass() { this = "flask.Flask~Subclass" }
 
-  override API::Node getAlreadyModeledClass() { result = Flask::FlaskApp::classRef() }
+  override API::Node getAlreadyModeledClass() { result = Flask::FlaskApp::subclassRef() }
 }
 
 class FlaskBlueprint extends FindSubclassesSpec {

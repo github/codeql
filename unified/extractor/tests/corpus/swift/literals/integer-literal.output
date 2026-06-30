@@ -1,0 +1,13 @@
+42
+
+---
+
+source_file
+  statement: integer_literal "42"
+
+---
+
+top_level
+  body:
+    block
+      stmt: int_literal "42"

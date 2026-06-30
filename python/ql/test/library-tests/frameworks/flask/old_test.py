@@ -1,7 +1,7 @@
 import flask
 
 from flask import Flask, request, make_response
-app = Flask(__name__)
+app = Flask(__name__) # $ instance
 
 @app.route("/")  # $ routeSetup="/"
 def hello_world():  # $ requestHandler

@@ -1,0 +1,47 @@
+let f = { $0 + $1 }
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "f"
+          value:
+            lambda_literal
+              statement:
+                additive_expression
+                  lhs: simple_identifier "$0"
+                  op: +
+                  rhs: simple_identifier "$1"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "f"
+          value:
+            function_expr
+              body:
+                block
+                  stmt:
+                    binary_expr
+                      operator: infix_operator "+"
+                      left:
+                        name_expr
+                          identifier: identifier "$0"
+                      right:
+                        name_expr
+                          identifier: identifier "$1"

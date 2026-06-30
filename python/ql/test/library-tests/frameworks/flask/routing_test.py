@@ -1,7 +1,7 @@
 import flask
 
 from flask import Flask, make_response
-app = Flask(__name__)
+app = Flask(__name__) # $ instance
 
 
 SOME_ROUTE = "/some/route"

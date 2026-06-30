@@ -1,0 +1,22 @@
+import Foundation
+
+---
+
+source_file
+  statement:
+    import_declaration
+      name:
+        identifier
+          part: simple_identifier "Foundation"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        import_declaration
+          pattern: bulk_importing_pattern "import Foundation"
+          imported_expr:
+            name_expr
+              identifier: identifier "Foundation"

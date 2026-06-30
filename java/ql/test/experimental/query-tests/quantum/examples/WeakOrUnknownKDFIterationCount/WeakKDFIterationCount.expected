@@ -12,5 +12,3 @@ nodes
 | Test.java:58:30:58:38 | 1_000_000 : Number | semmle.label | 1_000_000 : Number |
 | Test.java:59:72:59:85 | iterationCount | semmle.label | iterationCount |
 subpaths
-testFailures
-| Test.java:43:92:43:102 | // $ Source | Missing result: Source |

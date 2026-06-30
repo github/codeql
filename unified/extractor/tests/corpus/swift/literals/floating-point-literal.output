@@ -1,0 +1,13 @@
+3.14
+
+---
+
+source_file
+  statement: real_literal "3.14"
+
+---
+
+top_level
+  body:
+    block
+      stmt: float_literal "3.14"

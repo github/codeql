@@ -1,0 +1,46 @@
+let result = try! foo()
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "result"
+          value:
+            try_expression
+              expr:
+                call_expression
+                  function: simple_identifier "foo"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+              operator:
+                try_operator
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "result"
+          value:
+            unary_expr
+              operand:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "foo"
+              operator: prefix_operator "try!"

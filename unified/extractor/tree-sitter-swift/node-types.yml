@@ -173,6 +173,7 @@ named:
     value?: expression
   case_pattern:
     arguments?: tuple_pattern
+    dot: "."
     name: simple_identifier
     type?: user_type
   catch_block:
@@ -351,6 +352,7 @@ named:
   import_declaration:
     modifiers?: modifiers
     name: identifier
+    scoped_import_kind?: ["class", "enum", "func", "let", "protocol", "struct", "typealias", "var"]
   infix_expression:
     lhs: expression
     op: custom_operator

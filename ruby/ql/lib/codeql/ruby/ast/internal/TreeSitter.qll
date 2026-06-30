@@ -26,7 +26,7 @@ private predicate discardLocation(@location_default loc) {
 overlay[local]
 module Ruby {
   /** The base class for all AST nodes */
-  class AstNode extends @ruby_ast_node {
+  private class AstNodeImpl extends @ruby_ast_node {
     /** Gets a string representation of this element. */
     string toString() { result = this.getAPrimaryQlClass() }
 
@@ -49,8 +49,10 @@ module Ruby {
     string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
   }
 
+  final class AstNode = AstNodeImpl;
+
   /** A token. */
-  class Token extends @ruby_token, AstNode {
+  private class TokenImpl extends @ruby_token, AstNodeImpl {
     /** Gets the value of this token. */
     final string getValue() { ruby_tokeninfo(this, _, result) }
 
@@ -61,8 +63,10 @@ module Ruby {
     override string getAPrimaryQlClass() { result = "Token" }
   }
 
+  final class Token = TokenImpl;
+
   /** A reserved word. */
-  class ReservedWord extends @ruby_reserved_word, Token {
+  final class ReservedWord extends @ruby_reserved_word, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
   }
@@ -87,38 +91,41 @@ module Ruby {
     )
   }
 
-  class UnderscoreArg extends @ruby_underscore_arg, AstNode { }
+  final class UnderscoreArg extends @ruby_underscore_arg, AstNodeImpl { }
 
-  class UnderscoreCallOperator extends @ruby_underscore_call_operator, AstNode { }
+  final class UnderscoreCallOperator extends @ruby_underscore_call_operator, AstNodeImpl { }
 
-  class UnderscoreExpression extends @ruby_underscore_expression, AstNode { }
+  final class UnderscoreExpression extends @ruby_underscore_expression, AstNodeImpl { }
 
-  class UnderscoreLhs extends @ruby_underscore_lhs, AstNode { }
+  final class UnderscoreLhs extends @ruby_underscore_lhs, AstNodeImpl { }
 
-  class UnderscoreMethodName extends @ruby_underscore_method_name, AstNode { }
+  final class UnderscoreMethodName extends @ruby_underscore_method_name, AstNodeImpl { }
 
-  class UnderscoreNonlocalVariable extends @ruby_underscore_nonlocal_variable, AstNode { }
+  final class UnderscoreNonlocalVariable extends @ruby_underscore_nonlocal_variable, AstNodeImpl { }
 
-  class UnderscorePatternConstant extends @ruby_underscore_pattern_constant, AstNode { }
+  final class UnderscorePatternConstant extends @ruby_underscore_pattern_constant, AstNodeImpl { }
 
-  class UnderscorePatternExpr extends @ruby_underscore_pattern_expr, AstNode { }
+  final class UnderscorePatternExpr extends @ruby_underscore_pattern_expr, AstNodeImpl { }
 
-  class UnderscorePatternExprBasic extends @ruby_underscore_pattern_expr_basic, AstNode { }
+  final class UnderscorePatternExprBasic extends @ruby_underscore_pattern_expr_basic, AstNodeImpl {
+  }
 
-  class UnderscorePatternPrimitive extends @ruby_underscore_pattern_primitive, AstNode { }
+  final class UnderscorePatternPrimitive extends @ruby_underscore_pattern_primitive, AstNodeImpl { }
 
-  class UnderscorePatternTopExprBody extends @ruby_underscore_pattern_top_expr_body, AstNode { }
+  final class UnderscorePatternTopExprBody extends @ruby_underscore_pattern_top_expr_body,
+    AstNodeImpl
+  { }
 
-  class UnderscorePrimary extends @ruby_underscore_primary, AstNode { }
+  final class UnderscorePrimary extends @ruby_underscore_primary, AstNodeImpl { }
 
-  class UnderscoreSimpleNumeric extends @ruby_underscore_simple_numeric, AstNode { }
+  final class UnderscoreSimpleNumeric extends @ruby_underscore_simple_numeric, AstNodeImpl { }
 
-  class UnderscoreStatement extends @ruby_underscore_statement, AstNode { }
+  final class UnderscoreStatement extends @ruby_underscore_statement, AstNodeImpl { }
 
-  class UnderscoreVariable extends @ruby_underscore_variable, AstNode { }
+  final class UnderscoreVariable extends @ruby_underscore_variable, AstNodeImpl { }
 
   /** A class representing `alias` nodes. */
-  class Alias extends @ruby_alias, AstNode {
+  final class Alias extends @ruby_alias, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Alias" }
 
@@ -135,7 +142,7 @@ module Ruby {
   }
 
   /** A class representing `alternative_pattern` nodes. */
-  class AlternativePattern extends @ruby_alternative_pattern, AstNode {
+  final class AlternativePattern extends @ruby_alternative_pattern, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AlternativePattern" }
 
@@ -151,7 +158,7 @@ module Ruby {
   }
 
   /** A class representing `argument_list` nodes. */
-  class ArgumentList extends @ruby_argument_list, AstNode {
+  final class ArgumentList extends @ruby_argument_list, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ArgumentList" }
 
@@ -163,7 +170,7 @@ module Ruby {
   }
 
   /** A class representing `array` nodes. */
-  class Array extends @ruby_array, AstNode {
+  final class Array extends @ruby_array, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Array" }
 
@@ -175,7 +182,7 @@ module Ruby {
   }
 
   /** A class representing `array_pattern` nodes. */
-  class ArrayPattern extends @ruby_array_pattern, AstNode {
+  final class ArrayPattern extends @ruby_array_pattern, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ArrayPattern" }
 
@@ -192,7 +199,7 @@ module Ruby {
   }
 
   /** A class representing `as_pattern` nodes. */
-  class AsPattern extends @ruby_as_pattern, AstNode {
+  final class AsPattern extends @ruby_as_pattern, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AsPattern" }
 
@@ -209,7 +216,7 @@ module Ruby {
   }
 
   /** A class representing `assignment` nodes. */
-  class Assignment extends @ruby_assignment, AstNode {
+  final class Assignment extends @ruby_assignment, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Assignment" }
 
@@ -226,7 +233,7 @@ module Ruby {
   }
 
   /** A class representing `bare_string` nodes. */
-  class BareString extends @ruby_bare_string, AstNode {
+  final class BareString extends @ruby_bare_string, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BareString" }
 
@@ -238,7 +245,7 @@ module Ruby {
   }
 
   /** A class representing `bare_symbol` nodes. */
-  class BareSymbol extends @ruby_bare_symbol, AstNode {
+  final class BareSymbol extends @ruby_bare_symbol, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BareSymbol" }
 
@@ -250,7 +257,7 @@ module Ruby {
   }
 
   /** A class representing `begin` nodes. */
-  class Begin extends @ruby_begin, AstNode {
+  final class Begin extends @ruby_begin, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Begin" }
 
@@ -262,7 +269,7 @@ module Ruby {
   }
 
   /** A class representing `begin_block` nodes. */
-  class BeginBlock extends @ruby_begin_block, AstNode {
+  final class BeginBlock extends @ruby_begin_block, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BeginBlock" }
 
@@ -274,7 +281,7 @@ module Ruby {
   }
 
   /** A class representing `binary` nodes. */
-  class Binary extends @ruby_binary, AstNode {
+  final class Binary extends @ruby_binary, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Binary" }
 
@@ -346,7 +353,7 @@ module Ruby {
   }
 
   /** A class representing `block` nodes. */
-  class Block extends @ruby_block, AstNode {
+  final class Block extends @ruby_block, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Block" }
 
@@ -363,7 +370,7 @@ module Ruby {
   }
 
   /** A class representing `block_argument` nodes. */
-  class BlockArgument extends @ruby_block_argument, AstNode {
+  final class BlockArgument extends @ruby_block_argument, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BlockArgument" }
 
@@ -375,7 +382,7 @@ module Ruby {
   }
 
   /** A class representing `block_body` nodes. */
-  class BlockBody extends @ruby_block_body, AstNode {
+  final class BlockBody extends @ruby_block_body, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BlockBody" }
 
@@ -387,7 +394,7 @@ module Ruby {
   }
 
   /** A class representing `block_parameter` nodes. */
-  class BlockParameter extends @ruby_block_parameter, AstNode {
+  final class BlockParameter extends @ruby_block_parameter, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BlockParameter" }
 
@@ -399,7 +406,7 @@ module Ruby {
   }
 
   /** A class representing `block_parameters` nodes. */
-  class BlockParameters extends @ruby_block_parameters, AstNode {
+  final class BlockParameters extends @ruby_block_parameters, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BlockParameters" }
 
@@ -416,7 +423,7 @@ module Ruby {
   }
 
   /** A class representing `body_statement` nodes. */
-  class BodyStatement extends @ruby_body_statement, AstNode {
+  final class BodyStatement extends @ruby_body_statement, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BodyStatement" }
 
@@ -428,7 +435,7 @@ module Ruby {
   }
 
   /** A class representing `break` nodes. */
-  class Break extends @ruby_break, AstNode {
+  final class Break extends @ruby_break, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Break" }
 
@@ -440,7 +447,7 @@ module Ruby {
   }
 
   /** A class representing `call` nodes. */
-  class Call extends @ruby_call, AstNode {
+  final class Call extends @ruby_call, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Call" }
 
@@ -470,7 +477,7 @@ module Ruby {
   }
 
   /** A class representing `case` nodes. */
-  class Case extends @ruby_case__, AstNode {
+  final class Case extends @ruby_case__, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Case" }
 
@@ -487,7 +494,7 @@ module Ruby {
   }
 
   /** A class representing `case_match` nodes. */
-  class CaseMatch extends @ruby_case_match, AstNode {
+  final class CaseMatch extends @ruby_case_match, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "CaseMatch" }
 
@@ -509,7 +516,7 @@ module Ruby {
   }
 
   /** A class representing `chained_string` nodes. */
-  class ChainedString extends @ruby_chained_string, AstNode {
+  final class ChainedString extends @ruby_chained_string, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ChainedString" }
 
@@ -521,13 +528,13 @@ module Ruby {
   }
 
   /** A class representing `character` tokens. */
-  class Character extends @ruby_token_character, Token {
+  final class Character extends @ruby_token_character, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Character" }
   }
 
   /** A class representing `class` nodes. */
-  class Class extends @ruby_class, AstNode {
+  final class Class extends @ruby_class, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Class" }
 
@@ -549,19 +556,19 @@ module Ruby {
   }
 
   /** A class representing `class_variable` tokens. */
-  class ClassVariable extends @ruby_token_class_variable, Token {
+  final class ClassVariable extends @ruby_token_class_variable, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ClassVariable" }
   }
 
   /** A class representing `comment` tokens. */
-  class Comment extends @ruby_token_comment, Token {
+  final class Comment extends @ruby_token_comment, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Comment" }
   }
 
   /** A class representing `complex` nodes. */
-  class Complex extends @ruby_complex, AstNode {
+  final class Complex extends @ruby_complex, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Complex" }
 
@@ -573,7 +580,7 @@ module Ruby {
   }
 
   /** A class representing `conditional` nodes. */
-  class Conditional extends @ruby_conditional, AstNode {
+  final class Conditional extends @ruby_conditional, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Conditional" }
 
@@ -595,13 +602,13 @@ module Ruby {
   }
 
   /** A class representing `constant` tokens. */
-  class Constant extends @ruby_token_constant, Token {
+  final class Constant extends @ruby_token_constant, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Constant" }
   }
 
   /** A class representing `delimited_symbol` nodes. */
-  class DelimitedSymbol extends @ruby_delimited_symbol, AstNode {
+  final class DelimitedSymbol extends @ruby_delimited_symbol, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "DelimitedSymbol" }
 
@@ -613,7 +620,7 @@ module Ruby {
   }
 
   /** A class representing `destructured_left_assignment` nodes. */
-  class DestructuredLeftAssignment extends @ruby_destructured_left_assignment, AstNode {
+  final class DestructuredLeftAssignment extends @ruby_destructured_left_assignment, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "DestructuredLeftAssignment" }
 
@@ -627,7 +634,7 @@ module Ruby {
   }
 
   /** A class representing `destructured_parameter` nodes. */
-  class DestructuredParameter extends @ruby_destructured_parameter, AstNode {
+  final class DestructuredParameter extends @ruby_destructured_parameter, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "DestructuredParameter" }
 
@@ -639,7 +646,7 @@ module Ruby {
   }
 
   /** A class representing `do` nodes. */
-  class Do extends @ruby_do, AstNode {
+  final class Do extends @ruby_do, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Do" }
 
@@ -651,7 +658,7 @@ module Ruby {
   }
 
   /** A class representing `do_block` nodes. */
-  class DoBlock extends @ruby_do_block, AstNode {
+  final class DoBlock extends @ruby_do_block, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "DoBlock" }
 
@@ -668,7 +675,7 @@ module Ruby {
   }
 
   /** A class representing `element_reference` nodes. */
-  class ElementReference extends @ruby_element_reference, AstNode {
+  final class ElementReference extends @ruby_element_reference, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ElementReference" }
 
@@ -690,7 +697,7 @@ module Ruby {
   }
 
   /** A class representing `else` nodes. */
-  class Else extends @ruby_else, AstNode {
+  final class Else extends @ruby_else, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Else" }
 
@@ -702,7 +709,7 @@ module Ruby {
   }
 
   /** A class representing `elsif` nodes. */
-  class Elsif extends @ruby_elsif, AstNode {
+  final class Elsif extends @ruby_elsif, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Elsif" }
 
@@ -724,19 +731,19 @@ module Ruby {
   }
 
   /** A class representing `empty_statement` tokens. */
-  class EmptyStatement extends @ruby_token_empty_statement, Token {
+  final class EmptyStatement extends @ruby_token_empty_statement, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "EmptyStatement" }
   }
 
   /** A class representing `encoding` tokens. */
-  class Encoding extends @ruby_token_encoding, Token {
+  final class Encoding extends @ruby_token_encoding, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Encoding" }
   }
 
   /** A class representing `end_block` nodes. */
-  class EndBlock extends @ruby_end_block, AstNode {
+  final class EndBlock extends @ruby_end_block, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "EndBlock" }
 
@@ -748,7 +755,7 @@ module Ruby {
   }
 
   /** A class representing `ensure` nodes. */
-  class Ensure extends @ruby_ensure, AstNode {
+  final class Ensure extends @ruby_ensure, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Ensure" }
 
@@ -760,13 +767,13 @@ module Ruby {
   }
 
   /** A class representing `escape_sequence` tokens. */
-  class EscapeSequence extends @ruby_token_escape_sequence, Token {
+  final class EscapeSequence extends @ruby_token_escape_sequence, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "EscapeSequence" }
   }
 
   /** A class representing `exception_variable` nodes. */
-  class ExceptionVariable extends @ruby_exception_variable, AstNode {
+  final class ExceptionVariable extends @ruby_exception_variable, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ExceptionVariable" }
 
@@ -778,7 +785,7 @@ module Ruby {
   }
 
   /** A class representing `exceptions` nodes. */
-  class Exceptions extends @ruby_exceptions, AstNode {
+  final class Exceptions extends @ruby_exceptions, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Exceptions" }
 
@@ -790,7 +797,7 @@ module Ruby {
   }
 
   /** A class representing `expression_reference_pattern` nodes. */
-  class ExpressionReferencePattern extends @ruby_expression_reference_pattern, AstNode {
+  final class ExpressionReferencePattern extends @ruby_expression_reference_pattern, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ExpressionReferencePattern" }
 
@@ -804,19 +811,19 @@ module Ruby {
   }
 
   /** A class representing `false` tokens. */
-  class False extends @ruby_token_false, Token {
+  final class False extends @ruby_token_false, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "False" }
   }
 
   /** A class representing `file` tokens. */
-  class File extends @ruby_token_file, Token {
+  final class File extends @ruby_token_file, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "File" }
   }
 
   /** A class representing `find_pattern` nodes. */
-  class FindPattern extends @ruby_find_pattern, AstNode {
+  final class FindPattern extends @ruby_find_pattern, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FindPattern" }
 
@@ -833,13 +840,13 @@ module Ruby {
   }
 
   /** A class representing `float` tokens. */
-  class Float extends @ruby_token_float, Token {
+  final class Float extends @ruby_token_float, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Float" }
   }
 
   /** A class representing `for` nodes. */
-  class For extends @ruby_for, AstNode {
+  final class For extends @ruby_for, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "For" }
 
@@ -861,25 +868,25 @@ module Ruby {
   }
 
   /** A class representing `forward_argument` tokens. */
-  class ForwardArgument extends @ruby_token_forward_argument, Token {
+  final class ForwardArgument extends @ruby_token_forward_argument, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ForwardArgument" }
   }
 
   /** A class representing `forward_parameter` tokens. */
-  class ForwardParameter extends @ruby_token_forward_parameter, Token {
+  final class ForwardParameter extends @ruby_token_forward_parameter, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ForwardParameter" }
   }
 
   /** A class representing `global_variable` tokens. */
-  class GlobalVariable extends @ruby_token_global_variable, Token {
+  final class GlobalVariable extends @ruby_token_global_variable, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "GlobalVariable" }
   }
 
   /** A class representing `hash` nodes. */
-  class Hash extends @ruby_hash, AstNode {
+  final class Hash extends @ruby_hash, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Hash" }
 
@@ -891,13 +898,13 @@ module Ruby {
   }
 
   /** A class representing `hash_key_symbol` tokens. */
-  class HashKeySymbol extends @ruby_token_hash_key_symbol, Token {
+  final class HashKeySymbol extends @ruby_token_hash_key_symbol, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "HashKeySymbol" }
   }
 
   /** A class representing `hash_pattern` nodes. */
-  class HashPattern extends @ruby_hash_pattern, AstNode {
+  final class HashPattern extends @ruby_hash_pattern, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "HashPattern" }
 
@@ -914,7 +921,7 @@ module Ruby {
   }
 
   /** A class representing `hash_splat_argument` nodes. */
-  class HashSplatArgument extends @ruby_hash_splat_argument, AstNode {
+  final class HashSplatArgument extends @ruby_hash_splat_argument, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "HashSplatArgument" }
 
@@ -926,13 +933,13 @@ module Ruby {
   }
 
   /** A class representing `hash_splat_nil` tokens. */
-  class HashSplatNil extends @ruby_token_hash_splat_nil, Token {
+  final class HashSplatNil extends @ruby_token_hash_splat_nil, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "HashSplatNil" }
   }
 
   /** A class representing `hash_splat_parameter` nodes. */
-  class HashSplatParameter extends @ruby_hash_splat_parameter, AstNode {
+  final class HashSplatParameter extends @ruby_hash_splat_parameter, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "HashSplatParameter" }
 
@@ -944,13 +951,13 @@ module Ruby {
   }
 
   /** A class representing `heredoc_beginning` tokens. */
-  class HeredocBeginning extends @ruby_token_heredoc_beginning, Token {
+  final class HeredocBeginning extends @ruby_token_heredoc_beginning, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "HeredocBeginning" }
   }
 
   /** A class representing `heredoc_body` nodes. */
-  class HeredocBody extends @ruby_heredoc_body, AstNode {
+  final class HeredocBody extends @ruby_heredoc_body, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "HeredocBody" }
 
@@ -962,25 +969,25 @@ module Ruby {
   }
 
   /** A class representing `heredoc_content` tokens. */
-  class HeredocContent extends @ruby_token_heredoc_content, Token {
+  final class HeredocContent extends @ruby_token_heredoc_content, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "HeredocContent" }
   }
 
   /** A class representing `heredoc_end` tokens. */
-  class HeredocEnd extends @ruby_token_heredoc_end, Token {
+  final class HeredocEnd extends @ruby_token_heredoc_end, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "HeredocEnd" }
   }
 
   /** A class representing `identifier` tokens. */
-  class Identifier extends @ruby_token_identifier, Token {
+  final class Identifier extends @ruby_token_identifier, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Identifier" }
   }
 
   /** A class representing `if` nodes. */
-  class If extends @ruby_if, AstNode {
+  final class If extends @ruby_if, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "If" }
 
@@ -1002,7 +1009,7 @@ module Ruby {
   }
 
   /** A class representing `if_guard` nodes. */
-  class IfGuard extends @ruby_if_guard, AstNode {
+  final class IfGuard extends @ruby_if_guard, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "IfGuard" }
 
@@ -1014,7 +1021,7 @@ module Ruby {
   }
 
   /** A class representing `if_modifier` nodes. */
-  class IfModifier extends @ruby_if_modifier, AstNode {
+  final class IfModifier extends @ruby_if_modifier, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "IfModifier" }
 
@@ -1031,7 +1038,7 @@ module Ruby {
   }
 
   /** A class representing `in` nodes. */
-  class In extends @ruby_in, AstNode {
+  final class In extends @ruby_in, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "In" }
 
@@ -1043,7 +1050,7 @@ module Ruby {
   }
 
   /** A class representing `in_clause` nodes. */
-  class InClause extends @ruby_in_clause, AstNode {
+  final class InClause extends @ruby_in_clause, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InClause" }
 
@@ -1065,19 +1072,19 @@ module Ruby {
   }
 
   /** A class representing `instance_variable` tokens. */
-  class InstanceVariable extends @ruby_token_instance_variable, Token {
+  final class InstanceVariable extends @ruby_token_instance_variable, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InstanceVariable" }
   }
 
   /** A class representing `integer` tokens. */
-  class Integer extends @ruby_token_integer, Token {
+  final class Integer extends @ruby_token_integer, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Integer" }
   }
 
   /** A class representing `interpolation` nodes. */
-  class Interpolation extends @ruby_interpolation, AstNode {
+  final class Interpolation extends @ruby_interpolation, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Interpolation" }
 
@@ -1089,7 +1096,7 @@ module Ruby {
   }
 
   /** A class representing `keyword_parameter` nodes. */
-  class KeywordParameter extends @ruby_keyword_parameter, AstNode {
+  final class KeywordParameter extends @ruby_keyword_parameter, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "KeywordParameter" }
 
@@ -1106,7 +1113,7 @@ module Ruby {
   }
 
   /** A class representing `keyword_pattern` nodes. */
-  class KeywordPattern extends @ruby_keyword_pattern, AstNode {
+  final class KeywordPattern extends @ruby_keyword_pattern, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "KeywordPattern" }
 
@@ -1123,7 +1130,7 @@ module Ruby {
   }
 
   /** A class representing `lambda` nodes. */
-  class Lambda extends @ruby_lambda, AstNode {
+  final class Lambda extends @ruby_lambda, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Lambda" }
 
@@ -1140,7 +1147,7 @@ module Ruby {
   }
 
   /** A class representing `lambda_parameters` nodes. */
-  class LambdaParameters extends @ruby_lambda_parameters, AstNode {
+  final class LambdaParameters extends @ruby_lambda_parameters, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "LambdaParameters" }
 
@@ -1152,7 +1159,7 @@ module Ruby {
   }
 
   /** A class representing `left_assignment_list` nodes. */
-  class LeftAssignmentList extends @ruby_left_assignment_list, AstNode {
+  final class LeftAssignmentList extends @ruby_left_assignment_list, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "LeftAssignmentList" }
 
@@ -1164,13 +1171,13 @@ module Ruby {
   }
 
   /** A class representing `line` tokens. */
-  class Line extends @ruby_token_line, Token {
+  final class Line extends @ruby_token_line, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Line" }
   }
 
   /** A class representing `match_pattern` nodes. */
-  class MatchPattern extends @ruby_match_pattern, AstNode {
+  final class MatchPattern extends @ruby_match_pattern, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "MatchPattern" }
 
@@ -1187,7 +1194,7 @@ module Ruby {
   }
 
   /** A class representing `method` nodes. */
-  class Method extends @ruby_method, AstNode {
+  final class Method extends @ruby_method, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Method" }
 
@@ -1209,7 +1216,7 @@ module Ruby {
   }
 
   /** A class representing `method_parameters` nodes. */
-  class MethodParameters extends @ruby_method_parameters, AstNode {
+  final class MethodParameters extends @ruby_method_parameters, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "MethodParameters" }
 
@@ -1221,7 +1228,7 @@ module Ruby {
   }
 
   /** A class representing `module` nodes. */
-  class Module extends @ruby_module, AstNode {
+  final class Module extends @ruby_module, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Module" }
 
@@ -1238,7 +1245,7 @@ module Ruby {
   }
 
   /** A class representing `next` nodes. */
-  class Next extends @ruby_next, AstNode {
+  final class Next extends @ruby_next, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Next" }
 
@@ -1250,19 +1257,19 @@ module Ruby {
   }
 
   /** A class representing `nil` tokens. */
-  class Nil extends @ruby_token_nil, Token {
+  final class Nil extends @ruby_token_nil, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Nil" }
   }
 
   /** A class representing `operator` tokens. */
-  class Operator extends @ruby_token_operator, Token {
+  final class Operator extends @ruby_token_operator, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Operator" }
   }
 
   /** A class representing `operator_assignment` nodes. */
-  class OperatorAssignment extends @ruby_operator_assignment, AstNode {
+  final class OperatorAssignment extends @ruby_operator_assignment, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "OperatorAssignment" }
 
@@ -1311,7 +1318,7 @@ module Ruby {
   }
 
   /** A class representing `optional_parameter` nodes. */
-  class OptionalParameter extends @ruby_optional_parameter, AstNode {
+  final class OptionalParameter extends @ruby_optional_parameter, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "OptionalParameter" }
 
@@ -1328,7 +1335,7 @@ module Ruby {
   }
 
   /** A class representing `pair` nodes. */
-  class Pair extends @ruby_pair, AstNode {
+  final class Pair extends @ruby_pair, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Pair" }
 
@@ -1345,7 +1352,7 @@ module Ruby {
   }
 
   /** A class representing `parenthesized_pattern` nodes. */
-  class ParenthesizedPattern extends @ruby_parenthesized_pattern, AstNode {
+  final class ParenthesizedPattern extends @ruby_parenthesized_pattern, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ParenthesizedPattern" }
 
@@ -1357,7 +1364,7 @@ module Ruby {
   }
 
   /** A class representing `parenthesized_statements` nodes. */
-  class ParenthesizedStatements extends @ruby_parenthesized_statements, AstNode {
+  final class ParenthesizedStatements extends @ruby_parenthesized_statements, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ParenthesizedStatements" }
 
@@ -1371,7 +1378,7 @@ module Ruby {
   }
 
   /** A class representing `pattern` nodes. */
-  class Pattern extends @ruby_pattern, AstNode {
+  final class Pattern extends @ruby_pattern, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Pattern" }
 
@@ -1383,7 +1390,7 @@ module Ruby {
   }
 
   /** A class representing `program` nodes. */
-  class Program extends @ruby_program, AstNode {
+  final class Program extends @ruby_program, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Program" }
 
@@ -1395,7 +1402,7 @@ module Ruby {
   }
 
   /** A class representing `range` nodes. */
-  class Range extends @ruby_range, AstNode {
+  final class Range extends @ruby_range, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Range" }
 
@@ -1421,7 +1428,7 @@ module Ruby {
   }
 
   /** A class representing `rational` nodes. */
-  class Rational extends @ruby_rational, AstNode {
+  final class Rational extends @ruby_rational, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Rational" }
 
@@ -1433,7 +1440,7 @@ module Ruby {
   }
 
   /** A class representing `redo` nodes. */
-  class Redo extends @ruby_redo, AstNode {
+  final class Redo extends @ruby_redo, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Redo" }
 
@@ -1445,7 +1452,7 @@ module Ruby {
   }
 
   /** A class representing `regex` nodes. */
-  class Regex extends @ruby_regex, AstNode {
+  final class Regex extends @ruby_regex, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Regex" }
 
@@ -1457,7 +1464,7 @@ module Ruby {
   }
 
   /** A class representing `rescue` nodes. */
-  class Rescue extends @ruby_rescue, AstNode {
+  final class Rescue extends @ruby_rescue, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Rescue" }
 
@@ -1479,7 +1486,7 @@ module Ruby {
   }
 
   /** A class representing `rescue_modifier` nodes. */
-  class RescueModifier extends @ruby_rescue_modifier, AstNode {
+  final class RescueModifier extends @ruby_rescue_modifier, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "RescueModifier" }
 
@@ -1496,7 +1503,7 @@ module Ruby {
   }
 
   /** A class representing `rest_assignment` nodes. */
-  class RestAssignment extends @ruby_rest_assignment, AstNode {
+  final class RestAssignment extends @ruby_rest_assignment, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "RestAssignment" }
 
@@ -1508,7 +1515,7 @@ module Ruby {
   }
 
   /** A class representing `retry` nodes. */
-  class Retry extends @ruby_retry, AstNode {
+  final class Retry extends @ruby_retry, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Retry" }
 
@@ -1520,7 +1527,7 @@ module Ruby {
   }
 
   /** A class representing `return` nodes. */
-  class Return extends @ruby_return, AstNode {
+  final class Return extends @ruby_return, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Return" }
 
@@ -1532,7 +1539,7 @@ module Ruby {
   }
 
   /** A class representing `right_assignment_list` nodes. */
-  class RightAssignmentList extends @ruby_right_assignment_list, AstNode {
+  final class RightAssignmentList extends @ruby_right_assignment_list, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "RightAssignmentList" }
 
@@ -1544,7 +1551,7 @@ module Ruby {
   }
 
   /** A class representing `scope_resolution` nodes. */
-  class ScopeResolution extends @ruby_scope_resolution, AstNode {
+  final class ScopeResolution extends @ruby_scope_resolution, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ScopeResolution" }
 
@@ -1561,13 +1568,13 @@ module Ruby {
   }
 
   /** A class representing `self` tokens. */
-  class Self extends @ruby_token_self, Token {
+  final class Self extends @ruby_token_self, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Self" }
   }
 
   /** A class representing `setter` nodes. */
-  class Setter extends @ruby_setter, AstNode {
+  final class Setter extends @ruby_setter, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Setter" }
 
@@ -1579,13 +1586,13 @@ module Ruby {
   }
 
   /** A class representing `simple_symbol` tokens. */
-  class SimpleSymbol extends @ruby_token_simple_symbol, Token {
+  final class SimpleSymbol extends @ruby_token_simple_symbol, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SimpleSymbol" }
   }
 
   /** A class representing `singleton_class` nodes. */
-  class SingletonClass extends @ruby_singleton_class, AstNode {
+  final class SingletonClass extends @ruby_singleton_class, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SingletonClass" }
 
@@ -1602,7 +1609,7 @@ module Ruby {
   }
 
   /** A class representing `singleton_method` nodes. */
-  class SingletonMethod extends @ruby_singleton_method, AstNode {
+  final class SingletonMethod extends @ruby_singleton_method, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SingletonMethod" }
 
@@ -1628,7 +1635,7 @@ module Ruby {
   }
 
   /** A class representing `splat_argument` nodes. */
-  class SplatArgument extends @ruby_splat_argument, AstNode {
+  final class SplatArgument extends @ruby_splat_argument, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SplatArgument" }
 
@@ -1640,7 +1647,7 @@ module Ruby {
   }
 
   /** A class representing `splat_parameter` nodes. */
-  class SplatParameter extends @ruby_splat_parameter, AstNode {
+  final class SplatParameter extends @ruby_splat_parameter, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SplatParameter" }
 
@@ -1652,7 +1659,7 @@ module Ruby {
   }
 
   /** A class representing `string` nodes. */
-  class String extends @ruby_string__, AstNode {
+  final class String extends @ruby_string__, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "String" }
 
@@ -1664,7 +1671,7 @@ module Ruby {
   }
 
   /** A class representing `string_array` nodes. */
-  class StringArray extends @ruby_string_array, AstNode {
+  final class StringArray extends @ruby_string_array, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "StringArray" }
 
@@ -1676,13 +1683,13 @@ module Ruby {
   }
 
   /** A class representing `string_content` tokens. */
-  class StringContent extends @ruby_token_string_content, Token {
+  final class StringContent extends @ruby_token_string_content, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "StringContent" }
   }
 
   /** A class representing `subshell` nodes. */
-  class Subshell extends @ruby_subshell, AstNode {
+  final class Subshell extends @ruby_subshell, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Subshell" }
 
@@ -1694,13 +1701,13 @@ module Ruby {
   }
 
   /** A class representing `super` tokens. */
-  class Super extends @ruby_token_super, Token {
+  final class Super extends @ruby_token_super, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Super" }
   }
 
   /** A class representing `superclass` nodes. */
-  class Superclass extends @ruby_superclass, AstNode {
+  final class Superclass extends @ruby_superclass, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Superclass" }
 
@@ -1712,7 +1719,7 @@ module Ruby {
   }
 
   /** A class representing `symbol_array` nodes. */
-  class SymbolArray extends @ruby_symbol_array, AstNode {
+  final class SymbolArray extends @ruby_symbol_array, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SymbolArray" }
 
@@ -1724,7 +1731,7 @@ module Ruby {
   }
 
   /** A class representing `test_pattern` nodes. */
-  class TestPattern extends @ruby_test_pattern, AstNode {
+  final class TestPattern extends @ruby_test_pattern, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TestPattern" }
 
@@ -1741,7 +1748,7 @@ module Ruby {
   }
 
   /** A class representing `then` nodes. */
-  class Then extends @ruby_then, AstNode {
+  final class Then extends @ruby_then, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Then" }
 
@@ -1753,13 +1760,13 @@ module Ruby {
   }
 
   /** A class representing `true` tokens. */
-  class True extends @ruby_token_true, Token {
+  final class True extends @ruby_token_true, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "True" }
   }
 
   /** A class representing `unary` nodes. */
-  class Unary extends @ruby_unary, AstNode {
+  final class Unary extends @ruby_unary, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Unary" }
 
@@ -1788,7 +1795,7 @@ module Ruby {
   }
 
   /** A class representing `undef` nodes. */
-  class Undef extends @ruby_undef, AstNode {
+  final class Undef extends @ruby_undef, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Undef" }
 
@@ -1800,13 +1807,13 @@ module Ruby {
   }
 
   /** A class representing `uninterpreted` tokens. */
-  class Uninterpreted extends @ruby_token_uninterpreted, Token {
+  final class Uninterpreted extends @ruby_token_uninterpreted, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Uninterpreted" }
   }
 
   /** A class representing `unless` nodes. */
-  class Unless extends @ruby_unless, AstNode {
+  final class Unless extends @ruby_unless, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Unless" }
 
@@ -1828,7 +1835,7 @@ module Ruby {
   }
 
   /** A class representing `unless_guard` nodes. */
-  class UnlessGuard extends @ruby_unless_guard, AstNode {
+  final class UnlessGuard extends @ruby_unless_guard, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "UnlessGuard" }
 
@@ -1840,7 +1847,7 @@ module Ruby {
   }
 
   /** A class representing `unless_modifier` nodes. */
-  class UnlessModifier extends @ruby_unless_modifier, AstNode {
+  final class UnlessModifier extends @ruby_unless_modifier, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "UnlessModifier" }
 
@@ -1857,7 +1864,7 @@ module Ruby {
   }
 
   /** A class representing `until` nodes. */
-  class Until extends @ruby_until, AstNode {
+  final class Until extends @ruby_until, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Until" }
 
@@ -1874,7 +1881,7 @@ module Ruby {
   }
 
   /** A class representing `until_modifier` nodes. */
-  class UntilModifier extends @ruby_until_modifier, AstNode {
+  final class UntilModifier extends @ruby_until_modifier, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "UntilModifier" }
 
@@ -1891,7 +1898,7 @@ module Ruby {
   }
 
   /** A class representing `variable_reference_pattern` nodes. */
-  class VariableReferencePattern extends @ruby_variable_reference_pattern, AstNode {
+  final class VariableReferencePattern extends @ruby_variable_reference_pattern, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "VariableReferencePattern" }
 
@@ -1903,7 +1910,7 @@ module Ruby {
   }
 
   /** A class representing `when` nodes. */
-  class When extends @ruby_when, AstNode {
+  final class When extends @ruby_when, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "When" }
 
@@ -1920,7 +1927,7 @@ module Ruby {
   }
 
   /** A class representing `while` nodes. */
-  class While extends @ruby_while, AstNode {
+  final class While extends @ruby_while, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "While" }
 
@@ -1937,7 +1944,7 @@ module Ruby {
   }
 
   /** A class representing `while_modifier` nodes. */
-  class WhileModifier extends @ruby_while_modifier, AstNode {
+  final class WhileModifier extends @ruby_while_modifier, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "WhileModifier" }
 
@@ -1954,7 +1961,7 @@ module Ruby {
   }
 
   /** A class representing `yield` nodes. */
-  class Yield extends @ruby_yield, AstNode {
+  final class Yield extends @ruby_yield, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Yield" }
 
@@ -1964,12 +1971,346 @@ module Ruby {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { ruby_yield_child(this, result) }
   }
+
+  /** Provides predicates for mapping AST nodes to their named children. */
+  module PrintAst {
+    /** Gets a child of `node` returned by the member predicate with the given `name`. If the predicate takes an index argument, `i` is bound to that index, otherwise `i` is `-1` (which is never a valid index). */
+    AstNode getChild(AstNode node, string name, int i) {
+      result = node.(Alias).getAlias() and i = -1 and name = "getAlias"
+      or
+      result = node.(Alias).getName() and i = -1 and name = "getName"
+      or
+      result = node.(AlternativePattern).getAlternatives(i) and name = "getAlternatives"
+      or
+      result = node.(ArgumentList).getChild(i) and name = "getChild"
+      or
+      result = node.(Array).getChild(i) and name = "getChild"
+      or
+      result = node.(ArrayPattern).getClass() and i = -1 and name = "getClass"
+      or
+      result = node.(ArrayPattern).getChild(i) and name = "getChild"
+      or
+      result = node.(AsPattern).getName() and i = -1 and name = "getName"
+      or
+      result = node.(AsPattern).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Assignment).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(Assignment).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(BareString).getChild(i) and name = "getChild"
+      or
+      result = node.(BareSymbol).getChild(i) and name = "getChild"
+      or
+      result = node.(Begin).getChild(i) and name = "getChild"
+      or
+      result = node.(BeginBlock).getChild(i) and name = "getChild"
+      or
+      result = node.(Binary).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(Binary).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(Block).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Block).getParameters() and i = -1 and name = "getParameters"
+      or
+      result = node.(BlockArgument).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(BlockBody).getChild(i) and name = "getChild"
+      or
+      result = node.(BlockParameter).getName() and i = -1 and name = "getName"
+      or
+      result = node.(BlockParameters).getLocals(i) and name = "getLocals"
+      or
+      result = node.(BlockParameters).getChild(i) and name = "getChild"
+      or
+      result = node.(BodyStatement).getChild(i) and name = "getChild"
+      or
+      result = node.(Break).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Call).getArguments() and i = -1 and name = "getArguments"
+      or
+      result = node.(Call).getBlock() and i = -1 and name = "getBlock"
+      or
+      result = node.(Call).getMethod() and i = -1 and name = "getMethod"
+      or
+      result = node.(Call).getOperator() and i = -1 and name = "getOperator"
+      or
+      result = node.(Call).getReceiver() and i = -1 and name = "getReceiver"
+      or
+      result = node.(Case).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Case).getChild(i) and name = "getChild"
+      or
+      result = node.(CaseMatch).getClauses(i) and name = "getClauses"
+      or
+      result = node.(CaseMatch).getElse() and i = -1 and name = "getElse"
+      or
+      result = node.(CaseMatch).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(ChainedString).getChild(i) and name = "getChild"
+      or
+      result = node.(Class).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Class).getName() and i = -1 and name = "getName"
+      or
+      result = node.(Class).getSuperclass() and i = -1 and name = "getSuperclass"
+      or
+      result = node.(Complex).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Conditional).getAlternative() and i = -1 and name = "getAlternative"
+      or
+      result = node.(Conditional).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(Conditional).getConsequence() and i = -1 and name = "getConsequence"
+      or
+      result = node.(DelimitedSymbol).getChild(i) and name = "getChild"
+      or
+      result = node.(DestructuredLeftAssignment).getChild(i) and name = "getChild"
+      or
+      result = node.(DestructuredParameter).getChild(i) and name = "getChild"
+      or
+      result = node.(Do).getChild(i) and name = "getChild"
+      or
+      result = node.(DoBlock).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(DoBlock).getParameters() and i = -1 and name = "getParameters"
+      or
+      result = node.(ElementReference).getBlock() and i = -1 and name = "getBlock"
+      or
+      result = node.(ElementReference).getObject() and i = -1 and name = "getObject"
+      or
+      result = node.(ElementReference).getChild(i) and name = "getChild"
+      or
+      result = node.(Else).getChild(i) and name = "getChild"
+      or
+      result = node.(Elsif).getAlternative() and i = -1 and name = "getAlternative"
+      or
+      result = node.(Elsif).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(Elsif).getConsequence() and i = -1 and name = "getConsequence"
+      or
+      result = node.(EndBlock).getChild(i) and name = "getChild"
+      or
+      result = node.(Ensure).getChild(i) and name = "getChild"
+      or
+      result = node.(ExceptionVariable).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Exceptions).getChild(i) and name = "getChild"
+      or
+      result = node.(ExpressionReferencePattern).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(FindPattern).getClass() and i = -1 and name = "getClass"
+      or
+      result = node.(FindPattern).getChild(i) and name = "getChild"
+      or
+      result = node.(For).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(For).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(For).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Hash).getChild(i) and name = "getChild"
+      or
+      result = node.(HashPattern).getClass() and i = -1 and name = "getClass"
+      or
+      result = node.(HashPattern).getChild(i) and name = "getChild"
+      or
+      result = node.(HashSplatArgument).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(HashSplatParameter).getName() and i = -1 and name = "getName"
+      or
+      result = node.(HeredocBody).getChild(i) and name = "getChild"
+      or
+      result = node.(If).getAlternative() and i = -1 and name = "getAlternative"
+      or
+      result = node.(If).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(If).getConsequence() and i = -1 and name = "getConsequence"
+      or
+      result = node.(IfGuard).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(IfModifier).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(IfModifier).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(In).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(InClause).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(InClause).getGuard() and i = -1 and name = "getGuard"
+      or
+      result = node.(InClause).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(Interpolation).getChild(i) and name = "getChild"
+      or
+      result = node.(KeywordParameter).getName() and i = -1 and name = "getName"
+      or
+      result = node.(KeywordParameter).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(KeywordPattern).getKey() and i = -1 and name = "getKey"
+      or
+      result = node.(KeywordPattern).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Lambda).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Lambda).getParameters() and i = -1 and name = "getParameters"
+      or
+      result = node.(LambdaParameters).getChild(i) and name = "getChild"
+      or
+      result = node.(LeftAssignmentList).getChild(i) and name = "getChild"
+      or
+      result = node.(MatchPattern).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(MatchPattern).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Method).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Method).getName() and i = -1 and name = "getName"
+      or
+      result = node.(Method).getParameters() and i = -1 and name = "getParameters"
+      or
+      result = node.(MethodParameters).getChild(i) and name = "getChild"
+      or
+      result = node.(Module).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Module).getName() and i = -1 and name = "getName"
+      or
+      result = node.(Next).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(OperatorAssignment).getLeft() and i = -1 and name = "getLeft"
+      or
+      result = node.(OperatorAssignment).getRight() and i = -1 and name = "getRight"
+      or
+      result = node.(OptionalParameter).getName() and i = -1 and name = "getName"
+      or
+      result = node.(OptionalParameter).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Pair).getKey() and i = -1 and name = "getKey"
+      or
+      result = node.(Pair).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(ParenthesizedPattern).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(ParenthesizedStatements).getChild(i) and name = "getChild"
+      or
+      result = node.(Pattern).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Program).getChild(i) and name = "getChild"
+      or
+      result = node.(Range).getBegin() and i = -1 and name = "getBegin"
+      or
+      result = node.(Range).getEnd() and i = -1 and name = "getEnd"
+      or
+      result = node.(Rational).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Redo).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Regex).getChild(i) and name = "getChild"
+      or
+      result = node.(Rescue).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Rescue).getExceptions() and i = -1 and name = "getExceptions"
+      or
+      result = node.(Rescue).getVariable() and i = -1 and name = "getVariable"
+      or
+      result = node.(RescueModifier).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(RescueModifier).getHandler() and i = -1 and name = "getHandler"
+      or
+      result = node.(RestAssignment).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Retry).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Return).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(RightAssignmentList).getChild(i) and name = "getChild"
+      or
+      result = node.(ScopeResolution).getName() and i = -1 and name = "getName"
+      or
+      result = node.(ScopeResolution).getScope() and i = -1 and name = "getScope"
+      or
+      result = node.(Setter).getName() and i = -1 and name = "getName"
+      or
+      result = node.(SingletonClass).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(SingletonClass).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(SingletonMethod).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(SingletonMethod).getName() and i = -1 and name = "getName"
+      or
+      result = node.(SingletonMethod).getObject() and i = -1 and name = "getObject"
+      or
+      result = node.(SingletonMethod).getParameters() and i = -1 and name = "getParameters"
+      or
+      result = node.(SplatArgument).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(SplatParameter).getName() and i = -1 and name = "getName"
+      or
+      result = node.(String).getChild(i) and name = "getChild"
+      or
+      result = node.(StringArray).getChild(i) and name = "getChild"
+      or
+      result = node.(Subshell).getChild(i) and name = "getChild"
+      or
+      result = node.(Superclass).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(SymbolArray).getChild(i) and name = "getChild"
+      or
+      result = node.(TestPattern).getPattern() and i = -1 and name = "getPattern"
+      or
+      result = node.(TestPattern).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(Then).getChild(i) and name = "getChild"
+      or
+      result = node.(Unary).getOperand() and i = -1 and name = "getOperand"
+      or
+      result = node.(Undef).getChild(i) and name = "getChild"
+      or
+      result = node.(Unless).getAlternative() and i = -1 and name = "getAlternative"
+      or
+      result = node.(Unless).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(Unless).getConsequence() and i = -1 and name = "getConsequence"
+      or
+      result = node.(UnlessGuard).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(UnlessModifier).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(UnlessModifier).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(Until).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(Until).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(UntilModifier).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(UntilModifier).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(VariableReferencePattern).getName() and i = -1 and name = "getName"
+      or
+      result = node.(When).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(When).getPattern(i) and name = "getPattern"
+      or
+      result = node.(While).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(While).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(WhileModifier).getBody() and i = -1 and name = "getBody"
+      or
+      result = node.(WhileModifier).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(Yield).getChild() and i = -1 and name = "getChild"
+    }
+  }
 }
 
 overlay[local]
 module Erb {
   /** The base class for all AST nodes */
-  class AstNode extends @erb_ast_node {
+  private class AstNodeImpl extends @erb_ast_node {
     /** Gets a string representation of this element. */
     string toString() { result = this.getAPrimaryQlClass() }
 
@@ -1992,8 +2333,10 @@ module Erb {
     string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
   }
 
+  final class AstNode = AstNodeImpl;
+
   /** A token. */
-  class Token extends @erb_token, AstNode {
+  private class TokenImpl extends @erb_token, AstNodeImpl {
     /** Gets the value of this token. */
     final string getValue() { erb_tokeninfo(this, _, result) }
 
@@ -2004,8 +2347,10 @@ module Erb {
     override string getAPrimaryQlClass() { result = "Token" }
   }
 
+  final class Token = TokenImpl;
+
   /** A reserved word. */
-  class ReservedWord extends @erb_reserved_word, Token {
+  final class ReservedWord extends @erb_reserved_word, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
   }
@@ -2031,19 +2376,19 @@ module Erb {
   }
 
   /** A class representing `code` tokens. */
-  class Code extends @erb_token_code, Token {
+  final class Code extends @erb_token_code, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Code" }
   }
 
   /** A class representing `comment` tokens. */
-  class Comment extends @erb_token_comment, Token {
+  final class Comment extends @erb_token_comment, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Comment" }
   }
 
   /** A class representing `comment_directive` nodes. */
-  class CommentDirective extends @erb_comment_directive, AstNode {
+  final class CommentDirective extends @erb_comment_directive, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "CommentDirective" }
 
@@ -2055,13 +2400,13 @@ module Erb {
   }
 
   /** A class representing `content` tokens. */
-  class Content extends @erb_token_content, Token {
+  final class Content extends @erb_token_content, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Content" }
   }
 
   /** A class representing `directive` nodes. */
-  class Directive extends @erb_directive, AstNode {
+  final class Directive extends @erb_directive, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Directive" }
 
@@ -2073,7 +2418,7 @@ module Erb {
   }
 
   /** A class representing `graphql_directive` nodes. */
-  class GraphqlDirective extends @erb_graphql_directive, AstNode {
+  final class GraphqlDirective extends @erb_graphql_directive, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "GraphqlDirective" }
 
@@ -2085,7 +2430,7 @@ module Erb {
   }
 
   /** A class representing `output_directive` nodes. */
-  class OutputDirective extends @erb_output_directive, AstNode {
+  final class OutputDirective extends @erb_output_directive, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "OutputDirective" }
 
@@ -2097,7 +2442,7 @@ module Erb {
   }
 
   /** A class representing `template` nodes. */
-  class Template extends @erb_template, AstNode {
+  final class Template extends @erb_template, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Template" }
 
@@ -2106,5 +2451,21 @@ module Erb {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { erb_template_child(this, _, result) }
+  }
+
+  /** Provides predicates for mapping AST nodes to their named children. */
+  module PrintAst {
+    /** Gets a child of `node` returned by the member predicate with the given `name`. If the predicate takes an index argument, `i` is bound to that index, otherwise `i` is `-1` (which is never a valid index). */
+    AstNode getChild(AstNode node, string name, int i) {
+      result = node.(CommentDirective).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Directive).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(GraphqlDirective).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(OutputDirective).getChild() and i = -1 and name = "getChild"
+      or
+      result = node.(Template).getChild(i) and name = "getChild"
+    }
   }
 }

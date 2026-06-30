@@ -1,0 +1,96 @@
+class Point {
+  var x: Int
+  init(x: Int) {
+    self.x = x
+  }
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+          member:
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "x"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+            init_declaration
+              body:
+                block
+                  statement:
+                    assignment
+                      operator: =
+                      result: simple_identifier "x"
+                      target:
+                        directly_assignable_expression
+                          expr:
+                            navigation_expression
+                              suffix:
+                                navigation_suffix
+                                  suffix: simple_identifier "x"
+                              target:
+                                self_expression
+              parameter:
+                function_parameter
+                  parameter:
+                    parameter
+                      name: simple_identifier "x"
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+      declaration_kind: class
+      name: type_identifier "Point"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+            constructor_declaration
+              body:
+                block
+                  stmt:
+                    assign_expr
+                      target:
+                        member_access_expr
+                          base:
+                            name_expr
+                              identifier: identifier "self"
+                          member: identifier "x"
+                      value:
+                        name_expr
+                          identifier: identifier "x"
+          modifier: modifier "class"
+          name: identifier "Point"
