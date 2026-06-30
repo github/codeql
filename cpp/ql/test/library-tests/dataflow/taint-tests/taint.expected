@@ -3,3 +3,11 @@ WARNING: module 'DataFlow' has been deprecated and may be removed in future (tai
 WARNING: module 'DataFlow' has been deprecated and may be removed in future (taint.ql:61,22-30)
 WARNING: module 'DataFlow' has been deprecated and may be removed in future (taint.ql:68,25-33)
 WARNING: module 'TaintTracking' has been deprecated and may be removed in future (taint.ql:73,20-33)
+| smart_pointer.cpp:88:15:88:25 | // $ ast,ir | Missing result: ast |
+| smart_pointer.cpp:92:18:92:28 | // $ ast,ir | Missing result: ast |
+| smart_pointer.cpp:104:15:104:25 | // $ ast,ir | Missing result: ast |
+| smart_pointer.cpp:126:19:126:38 | // $ ast MISSING: ir | Missing result: ast |
+| smart_pointer.cpp:134:19:134:29 | // $ ast,ir | Missing result: ast |
+| taint.cpp:507:14:507:24 | // $ ir,ast | Missing result: ast |
+| taint.cpp:595:22:595:32 | // $ ast,ir | Missing result: ast |
+| taint.cpp:596:23:596:33 | // $ ast,ir | Missing result: ast |

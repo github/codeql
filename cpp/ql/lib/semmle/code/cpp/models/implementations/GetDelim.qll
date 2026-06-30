@@ -12,10 +12,10 @@ private class GetDelimFunction extends TaintFunction, AliasFunction, SideEffectF
   GetDelimFunction() { this.hasGlobalName(["getdelim", "getwdelim", "__getdelim"]) }
 
   override predicate hasTaintFlow(FunctionInput i, FunctionOutput o) {
-    i.isParameter(3) and o.isParameterDeref(0)
+    i.isParameter(3) and o.isParameterDeref(0, 2)
   }
 
-  override predicate isPartialWrite(FunctionOutput o) { o.isParameterDeref(3) }
+  override predicate isPartialWrite(FunctionOutput o) { o.isParameterDeref(0, 2) }
 
   override predicate parameterNeverEscapes(int index) { index = [0, 1, 3] }
 
@@ -38,7 +38,7 @@ private class GetDelimFunction extends TaintFunction, AliasFunction, SideEffectF
   }
 
   override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
-    output.isParameterDeref(0) and
+    output.isParameterDeref(0, 2) and
     description = "string read by " + this.getName()
   }
 }

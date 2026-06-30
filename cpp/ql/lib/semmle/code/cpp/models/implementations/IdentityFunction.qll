@@ -31,6 +31,8 @@ private class IdentityFunction extends DataFlowFunction, SideEffectFunction, Ali
     // These functions simply return the argument value.
     input.isParameter(0) and output.isReturnValue()
     or
-    input.isParameterDeref(0) and output.isReturnValueDeref()
+    exists(int indirectionIndex |
+      input.isParameterDeref(0, indirectionIndex) and output.isReturnValueDeref(indirectionIndex)
+    )
   }
 }

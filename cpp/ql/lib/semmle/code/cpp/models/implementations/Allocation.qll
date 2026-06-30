@@ -45,7 +45,10 @@ private class ReallocAllocationFunction extends AllocationFunction, DataFlowFunc
   override int getReallocPtrArg() { result = reallocArg }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(this.getReallocPtrArg()) and output.isReturnValueDeref()
+    exists(int indirectionIndex |
+      input.isParameterDeref(this.getReallocPtrArg(), indirectionIndex) and
+      output.isReturnValueDeref(indirectionIndex)
+    )
   }
 }
 

@@ -30,7 +30,7 @@ private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFuncti
   override predicate isPartialWrite(FunctionOutput output) { output.isParameterDeref(2) }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(2) and
+    input.isParameterDeref(2) and
     output.isParameterDeref(0)
   }
 

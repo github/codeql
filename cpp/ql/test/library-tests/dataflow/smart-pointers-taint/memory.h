@@ -108,7 +108,7 @@ namespace std {
 
   public:
     constexpr shared_ptr() noexcept = default;
-    shared_ptr(T* ptr) : ctrl(new ctrl_block_impl<T>(ptr, default_delete<T>())) {}
+    template<typename U> shared_ptr(U* ptr) : ctrl(new ctrl_block_impl<U>(ptr, default_delete<T>())) {}
     shared_ptr(const shared_ptr& s) noexcept : ptr(s.ptr), ctrl(s.ctrl) {
       inc();
     }

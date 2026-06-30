@@ -27,16 +27,17 @@ private class StdSetConstructor extends Constructor, TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of an iterator type to the qualifier
-    (
+    exists(int indirectionIndex |
       // AST dataflow doesn't have indirection for iterators.
       // Once we deprecate AST dataflow we can delete this first disjunct.
-      input.isParameter(this.getAnIteratorParameterIndex()) or
-      input.isParameterDeref(this.getAnIteratorParameterIndex())
-    ) and
-    (
+      input.isParameter(this.getAnIteratorParameterIndex()) and
+      indirectionIndex = 1
+      or
+      input.isParameterDeref(this.getAnIteratorParameterIndex(), indirectionIndex)
+    |
       output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
       or
-      output.isQualifierObject()
+      output.isQualifierObject(indirectionIndex)
     )
   }
 }
@@ -50,19 +51,19 @@ private class StdSetInsert extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from last parameter to qualifier and return value
     // (where the return value is a pair, this should really flow just to the first part of it)
-    (
+    exists(int indirectionIndex |
       // AST dataflow doesn't have indirection for iterators.
       // Once we deprecate AST dataflow we can delete this first disjunct.
-      input.isParameter(this.getNumberOfParameters() - 1) or
-      input.isParameterDeref(this.getNumberOfParameters() - 1)
-    ) and
-    (
-      output.isQualifierObject() or
+      input.isParameter(this.getNumberOfParameters() - 1) and indirectionIndex = 1
+      or
+      input.isParameterDeref(this.getNumberOfParameters() - 1, indirectionIndex)
+    |
+      output.isQualifierObject(indirectionIndex) or
       output.isReturnValue()
     )
   }
 
-  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject(_) }
 }
 
 /**
@@ -75,17 +76,20 @@ private class StdSetEmplace extends TaintFunction {
     // flow from any parameter to qualifier and return value
     // (here we assume taint flow from any constructor parameter to the constructed object)
     // (where the return value is a pair, this should really flow just to the first part of it)
-    input.isParameterDeref([0 .. this.getNumberOfParameters() - 1]) and
-    (
-      output.isQualifierObject() or
+    exists(int indirectionIndex |
+      input.isParameterDeref([0 .. this.getNumberOfParameters() - 1], indirectionIndex)
+    |
+      output.isQualifierObject(indirectionIndex) or
       output.isReturnValue()
     )
     or
-    input.isQualifierObject() and
-    output.isReturnValue()
+    exists(int indirectionIndex |
+      input.isQualifierObject(indirectionIndex) and
+      output.isReturnValueDeref(indirectionIndex)
+    )
   }
 
-  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject(_) }
 }
 
 /**
@@ -96,11 +100,13 @@ private class StdSetMerge extends TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // container1.merge(container2)
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
+    exists(int indirectionIndex |
+      input.isParameterDeref(0, indirectionIndex) and
+      output.isQualifierObject(indirectionIndex)
+    )
   }
 
-  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject(_) }
 }
 
 /**
@@ -110,8 +116,11 @@ private class StdSetFind extends TaintFunction {
   StdSetFind() { this.getClassAndName("find") instanceof StdSet }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
+    exists(int indirectionIndex | input.isQualifierObject(indirectionIndex) |
+      output.isReturnValueDeref(indirectionIndex)
+      or
+      output.isReturnValue()
+    )
   }
 }
 
@@ -124,8 +133,10 @@ private class StdSetErase extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to iterator return value
     this.getType().getUnderlyingType() instanceof Iterator and
-    input.isQualifierObject() and
-    output.isReturnValue()
+    exists(int indirectionIndex |
+      input.isQualifierObject(indirectionIndex) and
+      output.isReturnValueDeref(indirectionIndex)
+    )
   }
 }
 
@@ -139,7 +150,10 @@ private class StdSetEqualRange extends TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to return value
-    input.isQualifierObject() and
-    output.isReturnValue()
+    exists(int indirectionIndex | input.isQualifierObject(indirectionIndex) |
+      output.isReturnValueDeref(indirectionIndex)
+      or
+      output.isReturnValue()
+    )
   }
 }

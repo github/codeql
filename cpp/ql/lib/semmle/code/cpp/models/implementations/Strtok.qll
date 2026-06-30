@@ -67,9 +67,7 @@ private class Strsep extends ArrayFunction, AliasFunction, TaintFunction, SideEf
   override predicate parameterIsAlwaysReturned(int index) { none() }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // NOTE: What we really want here is: (input.isParameterDerefDeref(0) or input.isParameterDeref(1))
-    // as the first conjunct.
-    input.isParameterDeref([0, 1]) and
+    (input.isParameterDeref(0, 2) or input.isParameterDeref(1)) and
     (output.isReturnValue() or output.isReturnValueDeref())
   }
 

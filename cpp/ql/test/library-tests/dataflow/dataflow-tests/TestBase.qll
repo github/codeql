@@ -95,8 +95,8 @@ module IRTest {
       output.isReturnValue()
       or
       argIndToReturnInd = true and
-      input.isParameterDeref(0, 1) and
-      output.isReturnValueDeref(1)
+      input.isParameterDeref(0) and
+      output.isReturnValueDeref()
       or
       argIndInToReturnIndInd = true and
       input.isParameterDeref(0, 2) and

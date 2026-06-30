@@ -53,11 +53,13 @@ private class MemcpyFunction extends ArrayFunction, DataFlowFunction, SideEffect
   override predicate hasArrayOutput(int bufParam) { bufParam = this.getParamDest() }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(this.getParamSrc()) and
-    output.isParameterDeref(this.getParamDest())
-    or
-    input.isParameterDeref(this.getParamSrc()) and
-    output.isReturnValueDeref()
+    exists(int indirectionIndex |
+      input.isParameterDeref(this.getParamSrc(), indirectionIndex) and
+      output.isParameterDeref(this.getParamDest(), indirectionIndex)
+      or
+      input.isParameterDeref(this.getParamSrc(), indirectionIndex) and
+      output.isReturnValueDeref(indirectionIndex)
+    )
     or
     input.isParameter(this.getParamDest()) and
     output.isReturnValue()

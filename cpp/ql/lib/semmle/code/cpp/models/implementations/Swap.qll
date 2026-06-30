@@ -12,11 +12,13 @@ private class Swap extends DataFlowFunction {
   Swap() { this.hasQualifiedName(["std", "bsl"], "swap") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(0) and
-    output.isParameterDeref(1)
-    or
-    input.isParameterDeref(1) and
-    output.isParameterDeref(0)
+    exists(int indirectionIndex |
+      input.isParameterDeref(0, indirectionIndex) and
+      output.isParameterDeref(1, indirectionIndex)
+      or
+      input.isParameterDeref(1, indirectionIndex) and
+      output.isParameterDeref(0, indirectionIndex)
+    )
   }
 }
 
@@ -35,11 +37,13 @@ private class MemberSwap extends DataFlowFunction, MemberFunction, AliasFunction
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isParameterDeref(0)
-    or
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
+    exists(int indirectionIndex |
+      input.isQualifierObject(indirectionIndex) and
+      output.isParameterDeref(0, indirectionIndex)
+      or
+      input.isParameterDeref(0, indirectionIndex) and
+      output.isQualifierObject(indirectionIndex)
+    )
   }
 
   override predicate parameterNeverEscapes(int index) { none() }

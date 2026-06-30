@@ -151,7 +151,7 @@ private class Getaddrinfo extends TaintFunction, ArrayFunction, RemoteFlowSource
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isParameterDeref([0 .. 2]) and
-    output.isParameterDeref(3)
+    output.isParameterDeref(3, 2)
   }
 
   override predicate hasArrayInput(int bufParam) { bufParam in [0, 1] }
