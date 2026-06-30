@@ -60,17 +60,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public ImmutableHashSet<string> InheritedFeeds => AllFeeds.Except(ExplicitFeeds).ToImmutableHashSet();
 
-        private readonly Lazy<(bool, ImmutableHashSet<string>)> lazyReachableExplicitFeeds;
-
-        /// <summary>
-        /// Gets whether there was a timeout when checking the reachability of the explicitly configured NuGet feeds.
-        /// </summary>
-        public bool ExplicitFeedTimeout => lazyReachableExplicitFeeds.Value.Item1;
+        private readonly Lazy<ImmutableHashSet<string>> lazyReachableExplicitFeeds;
 
         /// <summary>
         /// Gets the list of reachable NuGet feeds that are explicitly configured.
         /// </summary>
-        public ImmutableHashSet<string> ReachableExplicitFeeds => lazyReachableExplicitFeeds.Value.Item2;
+        public ImmutableHashSet<string> ReachableExplicitFeeds => lazyReachableExplicitFeeds.Value;
 
         private readonly Lazy<ImmutableHashSet<string>> lazyReachableFeeds;
         /// <summary>
@@ -97,15 +92,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             lazyExplicitFeeds = new Lazy<ImmutableHashSet<string>>(GetExplicitFeeds);
             lazyAllFeeds = new Lazy<ImmutableHashSet<string>>(GetAllFeeds);
-            lazyReachableExplicitFeeds = new Lazy<(bool, ImmutableHashSet<string>)>(() =>
-            {
-                var timeout = CheckSpecifiedFeeds(ExplicitFeeds, out var reachableFeeds);
-                return (timeout, reachableFeeds);
-            });
+            lazyReachableExplicitFeeds = new Lazy<ImmutableHashSet<string>>(() => CheckSpecifiedFeeds(ExplicitFeeds));
             lazyReachableFeeds = new Lazy<ImmutableHashSet<string>>(() =>
             {
                 // Inherited feeds should only be used, if they are indeed reachable (as they may be environment specific).
-                CheckSpecifiedFeeds(InheritedFeeds, out var reachableInheritedFeeds);
+                var reachableInheritedFeeds = CheckSpecifiedFeeds(InheritedFeeds);
                 return ReachableExplicitFeeds.Union(reachableInheritedFeeds).ToImmutableHashSet();
             });
             lazyReachableFallbackFeeds = new Lazy<ImmutableHashSet<string>>(() =>
@@ -288,7 +279,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return await httpClient.GetAsync(address, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
         }
 
-        private bool IsFeedReachable(string feed, int timeoutMilliSeconds, int tryCount, out bool isTimeout)
+        private bool IsFeedReachable(string feed, int timeoutMilliSeconds, int tryCount)
         {
             logger.LogInfo($"Checking if NuGet feed '{feed}' is reachable...");
 
@@ -321,8 +312,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             using HttpClient client = new(httpClientHandler);
 
-            isTimeout = false;
-
             for (var i = 0; i < tryCount; i++)
             {
                 using var cts = new CancellationTokenSource();
@@ -352,7 +341,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             logger.LogWarning($"Didn't receive answer from NuGet feed '{feed}'. Tried it {tryCount} times.");
-            isTimeout = true;
             return false;
         }
 
@@ -376,12 +364,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Checks that we can connect to the specified NuGet feeds.
         /// </summary>
         /// <param name="feeds">The set of package feeds to check.</param>
-        /// <param name="reachableFeeds">The list of feeds that were reachable.</param>
         /// <returns>
-        /// True if there is a timeout when trying to reach the feeds (excluding any feeds that are configured
-        /// to be excluded from the check) or false otherwise.
+        /// The set of feeds that were reachable.
         /// </returns>
-        private bool CheckSpecifiedFeeds(ImmutableHashSet<string> feeds, out ImmutableHashSet<string> reachableFeeds)
+        private ImmutableHashSet<string> CheckSpecifiedFeeds(ImmutableHashSet<string> feeds)
         {
             // Exclude any feeds from the feed check that are configured by the corresponding environment variable.
             // These feeds are always assumed to be reachable.
@@ -397,12 +383,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return true;
             }).ToHashSet();
 
-            var reachable = GetReachableNuGetFeeds(feedsToCheck, isFallback: false, out var isTimeout);
+            var reachable = GetReachableNuGetFeeds(feedsToCheck, isFallback: false);
 
             // Always consider feeds excluded for the reachability check as reachable.
-            reachableFeeds = reachable.Union(feeds.Where(feed => excludedFeeds.Contains(feed))).ToImmutableHashSet();
+            var reachableFeeds = reachable.Union(feeds.Where(feed => excludedFeeds.Contains(feed))).ToImmutableHashSet();
 
-            return isTimeout;
+            return reachableFeeds;
         }
 
         /// <summary>
@@ -415,7 +401,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (CheckNugetFeedResponsiveness)
             {
                 var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback: false);
-                return IsFeedReachable(PublicNugetOrgFeed, initialTimeout, tryCount, out var _);
+                return IsFeedReachable(PublicNugetOrgFeed, initialTimeout, tryCount);
             }
 
             return true;
@@ -426,22 +412,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         /// <param name="feedsToCheck">The feeds to check.</param>
         /// <param name="isFallback">Whether the feeds are fallback feeds or not.</param>
-        /// <param name="isTimeout">Whether a timeout occurred while checking the feeds.</param>
         /// <returns>The list of feeds that could be reached.</returns>
-        private List<string> GetReachableNuGetFeeds(HashSet<string> feedsToCheck, bool isFallback, out bool isTimeout)
+        private List<string> GetReachableNuGetFeeds(HashSet<string> feedsToCheck, bool isFallback)
         {
             var fallbackStr = isFallback ? "fallback " : "";
             logger.LogInfo($"Checking {fallbackStr}NuGet feed reachability on feeds: {string.Join(", ", feedsToCheck.OrderBy(f => f))}");
 
             var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback);
-            var timeout = false;
             var reachableFeeds = feedsToCheck
-                .Where(feed =>
-                {
-                    var reachable = IsFeedReachable(feed, initialTimeout, tryCount, out var feedTimeout);
-                    timeout |= feedTimeout;
-                    return reachable;
-                })
+                .Where(feed => IsFeedReachable(feed, initialTimeout, tryCount))
                 .ToList();
 
             if (reachableFeeds.Count == 0)
@@ -453,7 +432,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.LogInfo($"Reachable {fallbackStr}NuGet feeds: {string.Join(", ", reachableFeeds.OrderBy(f => f))}");
             }
 
-            isTimeout = timeout;
             return reachableFeeds;
         }
 
@@ -477,7 +455,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
             }
 
-            return GetReachableNuGetFeeds(fallbackFeeds, isFallback: true, out var _);
+            return GetReachableNuGetFeeds(fallbackFeeds, isFallback: true);
         }
 
         private ImmutableHashSet<string> GetExplicitFeeds()
