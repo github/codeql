@@ -19,6 +19,9 @@ numberOfTypeParameters
 | genericFunctions.go:150:6:150:36 | multipleAnonymousTypeParamsFunc | 3 |
 | genericFunctions.go:152:6:152:36 | multipleAnonymousTypeParamsType | 3 |
 | genericFunctions.go:154:51:154:51 | f | 3 |
+| genericMethods.go:5:33:5:46 | GenericMethod1 | 1 |
+| genericMethods.go:7:6:7:28 | StructForGenericMethod2 | 1 |
+| genericMethods.go:9:36:9:49 | GenericMethod2 | 2 |
 #select
 | codeql-go-tests/function.EdgeConstraint | 0 | Node | interface { } |
 | codeql-go-tests/function.Element | 0 | S | interface { } |
@@ -44,6 +47,10 @@ numberOfTypeParameters
 | codeql-go-tests/function.New | 0 | Node | NodeConstraint |
 | codeql-go-tests/function.New | 1 | Edge | EdgeConstraint |
 | codeql-go-tests/function.NodeConstraint | 0 | Edge | interface { } |
+| codeql-go-tests/function.StructForGenericMethod1.GenericMethod1 | 0 | P | interface { } |
+| codeql-go-tests/function.StructForGenericMethod2 | 0 | P | interface { } |
+| codeql-go-tests/function.StructForGenericMethod2.GenericMethod2 | 0 | P | interface { } |
+| codeql-go-tests/function.StructForGenericMethod2.GenericMethod2 | 0 | Q | interface { } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 0 | _ | interface { } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 1 | _ | interface { string } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 2 | _ | interface { } |
