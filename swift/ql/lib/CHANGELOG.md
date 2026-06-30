@@ -1,7 +1,3 @@
-## 6.7.1
-
-No user-facing changes.
-
 ## 6.7.0
 
 ### Major Analysis Improvements

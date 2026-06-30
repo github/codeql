@@ -1,0 +1,4 @@
+---
+category: breaking
+---
+* The `else` branch of a `case` expression is no longer represented as a `StmtSequence` directly. Instead, a new `CaseElseBranch` AST node wraps the body (a `StmtSequence`). `CaseExpr.getElseBranch()` now returns a `CaseElseBranch`, and the body of the else branch can be accessed via `CaseElseBranch.getBody()`.
