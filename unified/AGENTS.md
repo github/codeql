@@ -19,7 +19,7 @@ This is a CodeQL extractor based on tree-sitter.
 
 - To run tests for the parser and mapping, run `cargo test` in the `extractor` directory.
 
-- Extractor test cases are located at `extractor/test/corpus/swift/*/*.swift`.
+- Extractor test cases are located at `extractor/tests/corpus/swift/*/*.swift`.
 
 - Each test case has a corresponding `.output` file containing its generated output along with a copy of the test case itself.
 
