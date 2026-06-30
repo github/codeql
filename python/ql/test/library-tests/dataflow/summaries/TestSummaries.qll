@@ -2,6 +2,7 @@ overlay[local?]
 module;
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.FlowSummary
 private import semmle.python.ApiGraphs
 
@@ -17,7 +18,7 @@ module RecursionGuard {
     RecursionGuard() { this = "RecursionGuard" }
 
     override DataFlow::CallCfgNode getACall() {
-      result.getFunction().asCfgNode().(NameNode).getId() = this and
+      result.getFunction().asCfgNode().(Cfg::NameNode).getId() = this and
       (TT::callStep(_, _) implies any())
     }
 
@@ -33,7 +34,7 @@ private class SummarizedCallableIdentity extends SummarizedCallable::Range {
   SummarizedCallableIdentity() { this = "identity" }
 
   override DataFlow::CallCfgNode getACall() {
-    result.getFunction().asCfgNode().(NameNode).getId() = this
+    result.getFunction().asCfgNode().(Cfg::NameNode).getId() = this
   }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
@@ -50,7 +51,7 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable::Range {
   SummarizedCallableApplyLambda() { this = "apply_lambda" }
 
   override DataFlow::CallCfgNode getACall() {
-    result.getFunction().asCfgNode().(NameNode).getId() = this
+    result.getFunction().asCfgNode().(Cfg::NameNode).getId() = this
   }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
@@ -70,7 +71,7 @@ private class SummarizedCallableReversed extends SummarizedCallable::Range {
   SummarizedCallableReversed() { this = "list_reversed" }
 
   override DataFlow::CallCfgNode getACall() {
-    result.getFunction().asCfgNode().(NameNode).getId() = this
+    result.getFunction().asCfgNode().(Cfg::NameNode).getId() = this
   }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
@@ -86,7 +87,7 @@ private class SummarizedCallableMap extends SummarizedCallable::Range {
   SummarizedCallableMap() { this = "list_map" }
 
   override DataFlow::CallCfgNode getACall() {
-    result.getFunction().asCfgNode().(NameNode).getId() = this
+    result.getFunction().asCfgNode().(Cfg::NameNode).getId() = this
   }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
@@ -106,7 +107,7 @@ private class SummarizedCallableAppend extends SummarizedCallable::Range {
   SummarizedCallableAppend() { this = "append_to_list" }
 
   override DataFlow::CallCfgNode getACall() {
-    result.getFunction().asCfgNode().(NameNode).getId() = this
+    result.getFunction().asCfgNode().(Cfg::NameNode).getId() = this
   }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }

@@ -1,4 +1,6 @@
 import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
+private import semmle.python.dataflow.new.internal.SsaImpl as SsaImpl
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 import utils.test.dataflow.RoutingTest
@@ -26,21 +28,21 @@ class ArgNumber extends int {
 
 module ArgumentRoutingConfig implements DataFlow::ConfigSig {
   additional predicate isArgSource(DataFlow::Node node, ArgNumber argNumber) {
-    node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "arg" + argNumber
+    node.(DataFlow::CfgNode).getNode().(Cfg::NameNode).getId() = "arg" + argNumber
   }
 
   predicate isSource(DataFlow::Node node) { isArgSource(node, _) }
 
   additional predicate isGoodSink(DataFlow::Node node, ArgNumber argNumber) {
-    exists(CallNode call |
-      call.getFunction().(NameNode).getId() = "SINK" + argNumber and
+    exists(Cfg::CallNode call |
+      call.getFunction().(Cfg::NameNode).getId() = "SINK" + argNumber and
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
 
   additional predicate isBadSink(DataFlow::Node node, ArgNumber argNumber) {
-    exists(CallNode call |
-      call.getFunction().(NameNode).getId() = "SINK" + argNumber + "_F" and
+    exists(Cfg::CallNode call |
+      call.getFunction().(Cfg::NameNode).getId() = "SINK" + argNumber + "_F" and
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
@@ -60,17 +62,17 @@ module ArgumentRoutingFlow = DataFlow::Global<ArgumentRoutingConfig>;
 
 module Argument1ExtraRoutingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
-    exists(AssignmentDefinition def, DataFlow::CallCfgNode call |
+    exists(SsaImpl::AssignmentDefinition def, DataFlow::CallCfgNode call |
       def.getDefiningNode() = node.(DataFlow::CfgNode).getNode() and
       def.getValue() = call.getNode() and
-      call.getFunction().asCfgNode().(NameNode).getId().matches("With\\_%")
+      call.getFunction().asCfgNode().(Cfg::NameNode).getId().matches("With\\_%")
     ) and
-    node.(DataFlow::CfgNode).getNode().(NameNode).getId().matches("with\\_%")
+    node.(DataFlow::CfgNode).getNode().(Cfg::NameNode).getId().matches("with\\_%")
   }
 
   predicate isSink(DataFlow::Node node) {
-    exists(CallNode call |
-      call.getFunction().(NameNode).getId() = "SINK1" and
+    exists(Cfg::CallNode call |
+      call.getFunction().(Cfg::NameNode).getId() = "SINK1" and
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }

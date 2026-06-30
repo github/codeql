@@ -11,8 +11,9 @@
 
 import python
 private import semmle.python.ApiGraphs
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
-from CallNode call
+from Cfg::CallNode call
 where
   major_version() = 2 and
   call = API::builtin("apply").getACall().asCfgNode()

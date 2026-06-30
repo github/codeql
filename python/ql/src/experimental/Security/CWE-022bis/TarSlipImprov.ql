@@ -21,6 +21,7 @@ import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.internal.Attributes
 import semmle.python.dataflow.new.BarrierGuards
 import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /**
  * Handle those three cases of Tarfile opens:
@@ -75,8 +76,8 @@ private module TarSlipImprovConfig implements DataFlow::ConfigSig {
         call = atfo.getReturn().getMember("extractall").getACall() and
         arg = call.getArgByName("members") and
         if
-          arg.asCfgNode() instanceof NameConstantNode or
-          arg.asCfgNode() instanceof ListNode
+          arg.asCfgNode() instanceof Cfg::NameConstantNode or
+          arg.asCfgNode() instanceof Cfg::ListNode
         then sink = call.getObject()
         else
           if arg.(MethodCallNode).getMethodName() = "getmembers"
