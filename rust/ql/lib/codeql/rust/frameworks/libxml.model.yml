@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sinkModel
+    data:
+      - ["libxml::bindings::xmlReadFile", "Argument[0].Reference", "xxe", "manual"]
+      - ["libxml::bindings::xmlCtxtReadFile", "Argument[1].Reference", "xxe", "manual"]
+      - ["libxml::bindings::xmlReadDoc", "Argument[0].Reference", "xxe", "manual"]
+      - ["libxml::bindings::xmlCtxtReadDoc", "Argument[1].Reference", "xxe", "manual"]
+      - ["libxml::bindings::xmlReadFd", "Argument[0]", "xxe", "manual"]
+      - ["libxml::bindings::xmlCtxtReadFd", "Argument[1]", "xxe", "manual"]
+      - ["libxml::bindings::xmlReadMemory", "Argument[0].Reference", "xxe", "manual"]
+      - ["libxml::bindings::xmlCtxtReadMemory", "Argument[1].Reference", "xxe", "manual"]
+      - ["libxml::bindings::xmlReadIO", "Argument[0].Reference", "xxe", "manual"]
+      - ["libxml::bindings::xmlCtxtReadIO", "Argument[1].Reference", "xxe", "manual"]
+      - ["libxml::bindings::xmlParseInNodeContext", "Argument[1].Reference", "xxe", "manual"]

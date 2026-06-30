@@ -126,6 +126,8 @@ extensions:
       # Str
       - ["<core::str>::as_str", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
       - ["<core::str>::as_bytes", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
+      - ["<core::str>::as_ptr", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
+      - ["<core::str>::as_mut_ptr", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
       - ["<core::str>::parse", "Argument[self].Reference", "ReturnValue.Field[core::result::Result::Ok(0)]", "taint", "manual"]
       - ["<core::str>::trim", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"]
       - ["<core::str>::to_string", "Argument[self].Reference", "ReturnValue", "taint", "manual"]
