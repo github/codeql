@@ -249,7 +249,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
     // is only fed set/list content)
     not nodeFrom instanceof DataFlowPublic::IterableElementNode
     or
-    TypeTrackerSummaryFlow::basicStoreStep(nodeFrom, nodeTo, DataFlowPublic::singleton(content))
+    TypeTrackerSummaryFlow::basicStoreStep(nodeFrom, nodeTo, content)
   }
 
   /**
@@ -280,15 +280,14 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
       nodeFrom.asCfgNode() instanceof SequenceNode
     )
     or
-    TypeTrackerSummaryFlow::basicLoadStep(nodeFrom, nodeTo, DataFlowPublic::singleton(content))
+    TypeTrackerSummaryFlow::basicLoadStep(nodeFrom, nodeTo, content)
   }
 
   /**
    * Holds if the `loadContent` of `nodeFrom` is stored in the `storeContent` of `nodeTo`.
    */
   predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content loadContent, Content storeContent) {
-    TypeTrackerSummaryFlow::basicLoadStoreStep(nodeFrom, nodeTo,
-      DataFlowPublic::singleton(loadContent), DataFlowPublic::singleton(storeContent))
+    TypeTrackerSummaryFlow::basicLoadStoreStep(nodeFrom, nodeTo, loadContent, storeContent)
   }
 
   /**
