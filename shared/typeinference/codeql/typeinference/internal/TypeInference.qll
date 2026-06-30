@@ -3,8 +3,9 @@
  *
  * The library is initialized in three phases:
  *
- * 1. `Make1`, which takes as input a definition of types (including type parameters)
- *    and constructs the `TypePath` type used to represent paths into compound types.
+ * 1. `Make1`, which takes as input a definition of atomic types (including type
+ *    parameters) and constructs the `TypePath` type used to represent paths into
+ *    compound types.
  *
  * 2. `Make2`, which takes as input a definition of type mentions (using the `TypePath`
  *    type) as well as the type hierarchy and type constraints, and constructs the
@@ -18,13 +19,14 @@
  *    nodes.
  *
  * Unlike unification-based type inference, this library does directed/bottom-up type
- * inference by default, but allowing for contextual/top-down type inference only when
+ * inference by default, but allowing for contextual/top-down type inference when
  * explicitly needed.
  *
  * For example, in order to infer the type of a conditional expression,
- * `if cond { e1 } else { e2 }`, we first infer the types of `e1` and `e2` and then
- * apply their types to the conditional expression (not taking least-upper-bound or
- * similar into account). This corresponds to the type inference rules
+ * `if cond { e1 } else { e2 }`, we propagate type information from either of the
+ * branches `e1` and `e2` into the conditional expression (for simplicity, we do not
+ * attempt to calculate least-upper-bound types or similar). This corresponds to the
+ * two bottom-up type inference rules:
  *
  * ```text
  *             e1: T
@@ -44,10 +46,11 @@
  * ```
  *
  * where the type of `Default::default()` needs to be inferred from the context, we
- * first assign `Default::default()` the special `UnknownType`, then using the
- * `cond-then` rule we conclude that the conditional has type `i64`, and then since
- * the `else` branch has `UnknownType`, we can apply the `cond-else` rule _backwards_
- * to infer that `Default::default()` has type `i64`.
+ *
+ * 1. assign `Default::default()` the special `UnknownType`,
+ * 2. using the `cond-then` rule we conclude that the conditional has type `i64`, and
+ * 3. since the `else` branch has `UnknownType`, we apply the `cond-else` rule _backwards_
+ *    to infer that `Default::default()` has type `i64`.
  *
  * Note that `UnknownType` can propagate bottom-up like any other type, which is needed
  * in cases like for example
@@ -2612,18 +2615,18 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        * context, and also implements logic for performing contextual inference.
        */
       private module ContextualTyping {
+        pragma[nomagic]
+        private TypeParameter getAConstrained(TypeParameter tp) {
+          result = getATypeParameterConstraint(tp).getTypeAt(_)
+        }
+
         /**
          * Holds if parameterizable `p` mentions type parameter `tp` at some parameter,
          * possibly via a constraint on another mentioned type parameter.
          */
         pragma[nomagic]
         private predicate mentionsTypeParameterAtParameter(Parameterizable p, TypeParameter tp) {
-          tp = p.getParameter(_).getType().getTypeAt(_)
-          or
-          exists(TypeParameter mid |
-            mentionsTypeParameterAtParameter(p, mid) and
-            tp = getATypeParameterConstraint(mid).getTypeAt(_)
-          )
+          tp = getAConstrained*(p.getParameter(_).getType().getTypeAt(_))
         }
 
         /**
@@ -2674,9 +2677,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             target = invocation.(InvocationMatchingGetTypeArgumentInput::Access).getTarget() and
             parameterizableReturnContextTypedAt(target, path, tp) and
             tp = target.getTypeParameter(_) and
-            // check that no explicit type arguments have been supplied for `tp`
-            not exists(
-              InvocationMatchingGetTypeArgument::getTypeArgument(invocation, target, tp, _)
+            // check that no explicit type arguments have been supplied which bind `tp`
+            not exists(TypeParameter supplied |
+              tp = getAConstrained*(supplied) and
+              exists(
+                InvocationMatchingGetTypeArgument::getTypeArgument(invocation, target, supplied, _)
+              )
             )
           )
         }
