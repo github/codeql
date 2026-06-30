@@ -133,7 +133,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 {
                     // If we experience a timeout, we use this fallback.
                     // todo: we could also check the reachability of the inherited nuget feeds, but to use those in the fallback we would need to handle authentication too.
-                    var unresponsiveMissingPackageLocation = DownloadMissingPackagesAndUseFallback([]);
+                    var unresponsiveMissingPackageLocation = DownloadMissingPackages([]);
                     return unresponsiveMissingPackageLocation is null
                         ? []
                         : [unresponsiveMissingPackageLocation];
@@ -195,9 +195,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             var usedPackageNames = GetAllUsedPackageDirNames(dependencies);
 
-            var missingPackageLocation = feedManager.CheckNugetFeedResponsiveness
-                ? DownloadMissingPackagesAndUseFallback(usedPackageNames)
-                : DownloadMissingPackages(usedPackageNames);
+            var missingPackageLocation = DownloadMissingPackages(usedPackageNames);
 
             if (missingPackageLocation is not null)
             {
@@ -303,22 +301,29 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             compilationInfoContainer.CompilationInfos.Add(("Failed project restore with missing package error", nugetMissingPackageFailures.ToString()));
         }
 
-        private AssemblyLookupLocation? DownloadMissingPackagesAndUseFallback(IEnumerable<string> usedPackageNames)
+        private AssemblyLookupLocation? DownloadMissingPackages(IEnumerable<string> usedPackageNames)
         {
-            var reachableFallbackFeeds = feedManager.GetReachableFallbackNugetFeeds();
-            compilationInfoContainer.CompilationInfos.Add(("Reachable fallback NuGet feed count", reachableFallbackFeeds.Count.ToString()));
-
-            if (reachableFallbackFeeds.Count > 0)
+            IEnumerable<string>? feeds = null;
+            if (feedManager.CheckNugetFeedResponsiveness || feedManager.HasPrivateRegistryFeeds)
             {
-                return DownloadMissingPackages(usedPackageNames, fallbackNugetFeeds: reachableFallbackFeeds);
+                // Attempt to get the fallback configuration.
+                var reachableFallbackFeeds = feedManager.GetReachableFallbackNugetFeeds();
+                compilationInfoContainer.CompilationInfos.Add(("Reachable fallback NuGet feed count", reachableFallbackFeeds.Count.ToString()));
+
+                if (reachableFallbackFeeds.Count == 0)
+                {
+                    logger.LogWarning("Skipping download of missing packages from specific feeds as no fallback NuGet feeds are reachable.");
+                    return null;
+                }
+                feeds = reachableFallbackFeeds;
+            }
+            else if (GetNugetConfig() is string config)
+            {
+                feeds = feedManager.FeedsToUseFromConfig(config);
             }
 
-            logger.LogWarning("Skipping download of missing packages from specific feeds as no fallback NuGet feeds are reachable.");
-            return null;
-        }
+            var nugetSources = feeds is not null ? feedManager.FeedsToDotnetRestoreArgument(feeds) : null;
 
-        private AssemblyLookupLocation? DownloadMissingPackages(IEnumerable<string> usedPackageNames, IEnumerable<string>? fallbackNugetFeeds = null)
-        {
             var alreadyDownloadedPackages = usedPackageNames.Select(p => p.ToLowerInvariant());
             var alreadyDownloadedLegacyPackages = GetRestoredLegacyPackageNames();
 
@@ -351,18 +356,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             logger.LogInfo($"Found {notYetDownloadedPackages.Count} packages that are not yet restored");
 
-            IEnumerable<string> feeds = [];
-            if (fallbackNugetFeeds is not null)
-            {
-                feeds = fallbackNugetFeeds;
-            }
-            else if (GetNugetConfig() is string config)
-            {
-                feeds = feedManager.FeedsToUseFromConfig(config);
-            }
-
-            var nugetSources = feedManager.FeedsToDotnetRestoreArgument(feeds);
-
             compilationInfoContainer.CompilationInfos.Add(("Fallback nuget restore", notYetDownloadedPackages.Count.ToString()));
 
             var successCount = 0;
@@ -370,7 +363,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = DependencyManager.Threads }, package =>
             {
-                var success = TryRestorePackageManually(package.Name, nugetSources, package.PackageReferenceSource, tryWithoutNugetConfig: fallbackNugetFeeds is null);
+                var success = TryRestorePackageManually(package.Name, nugetSources, package.PackageReferenceSource);
                 if (!success)
                 {
                     return;
@@ -476,8 +469,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .Select(d => Path.GetFileName(d).ToLowerInvariant());
         }
 
-        private bool TryRestorePackageManually(string package, string? nugetSources = null, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj,
-            bool tryWithoutNugetConfig = true, bool tryPrereleaseVersion = true)
+        private bool TryRestorePackageManually(string package, string? nugetSources = null, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj, bool tryPrereleaseVersion = true)
         {
             logger.LogInfo($"Restoring package {package}...");
             using var tempDir = new TemporaryDirectory(
@@ -505,7 +497,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return true;
             }
 
-            if (tryWithoutNugetConfig && res.HasNugetPackageSourceError && nugetSources is not null && !feedManager.CheckNugetFeedResponsiveness)
+            if (!feedManager.CheckNugetFeedResponsiveness && res.HasNugetPackageSourceError && nugetSources is not null)
             {
                 logger.LogDebug($"Trying to restore '{package}' without nuget.config.");
                 // Restore could not be completed because the listed source is unavailable. Try without the nuget.config:
