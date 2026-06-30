@@ -32,7 +32,13 @@ import (
 )
 
 var MaxGoRoutines int
-var typeParamParent map[*types.TypeParam]types.Object = make(map[*types.TypeParam]types.Object)
+
+type typeParamParentEntry struct {
+	parent types.Object
+	index  int
+}
+
+var typeParamParent map[*types.TypeParam]typeParamParentEntry = make(map[*types.TypeParam]typeParamParentEntry)
 
 func init() {
 	// this sets the number of threads that the Go runtime will spawn; this is separate
@@ -530,8 +536,10 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 			// do not appear as objects in any scope, so they have to be dealt
 			// with separately in extractMethods.
 			if funcObj, ok := obj.(*types.Func); ok {
-				populateTypeParamParents(funcObj.Type().(*types.Signature).TypeParams(), obj)
-				populateTypeParamParents(funcObj.Type().(*types.Signature).RecvTypeParams(), obj)
+				typeParams := funcObj.Type().(*types.Signature).TypeParams()
+				populateTypeParamParents(typeParams, obj, 0)
+				recvTypeParams := funcObj.Type().(*types.Signature).RecvTypeParams()
+				populateTypeParamParents(recvTypeParams, obj, typeParams.Len())
 			}
 			// Populate type parameter parents for defined types and alias types.
 			if typeNameObj, ok := obj.(*types.TypeName); ok {
@@ -542,9 +550,9 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 				// careful with alias types because before Go 1.24 they would
 				// return the underlying type.
 				if tp, ok := typeNameObj.Type().(*types.Named); ok && !typeNameObj.IsAlias() {
-					populateTypeParamParents(tp.TypeParams(), obj)
+					populateTypeParamParents(tp.TypeParams(), obj, 0)
 				} else if tp, ok := typeNameObj.Type().(*types.Alias); ok {
-					populateTypeParamParents(tp.TypeParams(), obj)
+					populateTypeParamParents(tp.TypeParams(), obj, 0)
 				}
 			}
 			extractObject(tw, obj, lbl)
@@ -570,8 +578,10 @@ func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
 	if !exists {
 		// Populate type parameter parents for methods. They do not appear as
 		// objects in any scope, so they have to be dealt with separately here.
-		populateTypeParamParents(meth.Type().(*types.Signature).TypeParams(), meth)
-		populateTypeParamParents(meth.Type().(*types.Signature).RecvTypeParams(), meth)
+		typeParams := meth.Type().(*types.Signature).TypeParams()
+		populateTypeParamParents(typeParams, meth, 0)
+		recvTypeParams := meth.Type().(*types.Signature).RecvTypeParams()
+		populateTypeParamParents(recvTypeParams, meth, typeParams.Len())
 		extractObject(tw, meth, methlbl)
 	}
 
@@ -1660,7 +1670,8 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			// parent scope, so they are not dealt with by `extractScopes`
 			for i := 0; i < origintp.NumMethods(); i++ {
 				meth := origintp.Method(i).Origin()
-
+				typeParams := tp.Method(i).Type().(*types.Signature).TypeParams()
+				populateTypeParamParents(typeParams, meth, 0)
 				extractMethod(tw, meth)
 			}
 
@@ -1684,9 +1695,9 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			}
 		case *types.TypeParam:
 			kind = dbscheme.TypeParamType.Index()
-			parentlbl := getTypeParamParentLabel(tw, tp)
+			parentlbl, idx := getTypeParamParentLabel(tw, tp)
 			constraintLabel := extractType(tw, tp.Constraint())
-			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), constraintLabel, parentlbl, tp.Index())
+			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), constraintLabel, parentlbl, idx)
 		case *types.Union:
 			kind = dbscheme.TypeSetLiteral.Index()
 			for i := 0; i < tp.Len(); i++ {
@@ -1826,8 +1837,7 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};definedtype", entitylbl))
 		case *types.TypeParam:
-			parentlbl := getTypeParamParentLabel(tw, tp)
-			idx := tp.Index()
+			parentlbl, idx := getTypeParamParentLabel(tw, tp)
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%d,%s;typeparamtype", parentlbl, idx, tp.Obj().Name()))
 		case *types.Union:
 			var b strings.Builder
@@ -2013,10 +2023,10 @@ func extractTypeParamDecls(tw *trap.Writer, fields *ast.FieldList, parent trap.L
 }
 
 // populateTypeParamParents sets `parent` as the parent of the elements of `typeparams`
-func populateTypeParamParents(typeparams *types.TypeParamList, parent types.Object) {
+func populateTypeParamParents(typeparams *types.TypeParamList, parent types.Object, offset int) {
 	if typeparams != nil {
 		for idx := 0; idx < typeparams.Len(); idx++ {
-			setTypeParamParent(typeparams.At(idx), parent)
+			setTypeParamParent(typeparams.At(idx), parent, idx+offset)
 		}
 	}
 }
@@ -2065,24 +2075,24 @@ func trackInstantiatedStructFields(tw *trap.Writer, tp, origintp *types.Named) {
 	}
 }
 
-func getTypeParamParentLabel(tw *trap.Writer, tp *types.TypeParam) trap.Label {
-	parent, exists := typeParamParent[tp]
+func getTypeParamParentLabel(tw *trap.Writer, tp *types.TypeParam) (trap.Label, int) {
+	entry, exists := typeParamParent[tp]
 	if !exists {
 		log.Fatalf("Parent of type parameter does not exist: %s %s", tp.String(), tp.Constraint().String())
 	}
-	parentlbl, _ := tw.Labeler.ScopedObjectID(parent, func() trap.Label {
+	parentlbl, _ := tw.Labeler.ScopedObjectID(entry.parent, func() trap.Label {
 		log.Fatalf("getTypeLabel() called for parent of type parameter %s", tp.String())
 		return trap.InvalidLabel
 	})
-	return parentlbl
+	return parentlbl, entry.index
 }
 
-func setTypeParamParent(tp *types.TypeParam, newobj types.Object) {
-	obj, exists := typeParamParent[tp]
+func setTypeParamParent(tp *types.TypeParam, newobj types.Object, idx int) {
+	entry, exists := typeParamParent[tp]
 	if !exists {
-		typeParamParent[tp] = newobj
-	} else if newobj != obj {
-		log.Fatalf("Parent of type parameter '%s %s' being set to a different value: '%s' vs '%s'", tp.String(), tp.Constraint().String(), obj, newobj)
+		typeParamParent[tp] = typeParamParentEntry{newobj, idx}
+	} else if entry.parent != newobj || entry.index != idx {
+		log.Fatalf("Parent of type parameter '%s %s' being set to a different value: '%s' vs '%s'", tp.String(), tp.Constraint().String(), entry.parent, newobj)
 	}
 }
 

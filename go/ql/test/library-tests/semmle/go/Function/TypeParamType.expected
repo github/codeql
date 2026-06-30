@@ -49,8 +49,8 @@ numberOfTypeParameters
 | codeql-go-tests/function.NodeConstraint | 0 | Edge | interface { } |
 | codeql-go-tests/function.StructForGenericMethod1.GenericMethod1 | 0 | P | interface { } |
 | codeql-go-tests/function.StructForGenericMethod2 | 0 | P | interface { } |
-| codeql-go-tests/function.StructForGenericMethod2.GenericMethod2 | 0 | P | interface { } |
 | codeql-go-tests/function.StructForGenericMethod2.GenericMethod2 | 0 | Q | interface { } |
+| codeql-go-tests/function.StructForGenericMethod2.GenericMethod2 | 1 | P | interface { } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 0 | _ | interface { } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 1 | _ | interface { string } |
 | codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 2 | _ | interface { } |
