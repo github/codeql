@@ -157,7 +157,7 @@ class MyClass2(object):
         print(self.foo) # $ tracked MISSING: tracked=foo
 
 instance = MyClass2()
-print(instance.foo) # $ tracked MISSING: tracked=foo
+print(instance.foo) # $ MISSING: tracked=foo tracked
 instance.print_foo() # $ MISSING: tracked=foo
 
 
@@ -195,7 +195,7 @@ class Sub1(Base1):
 
 sub1 = Sub1()
 sub1.read_foo()
-print(sub1.foo) # $ tracked MISSING: tracked=foo
+print(sub1.foo) # $ MISSING: tracked=foo tracked
 
 
 # attribute written in a subclass method, read in an inherited base class method
@@ -210,7 +210,7 @@ class Sub2(Base2):
 
 sub2 = Sub2()
 sub2.read_bar()
-print(sub2.bar) # $ tracked MISSING: tracked=bar
+print(sub2.bar) # $ MISSING: tracked=bar tracked
 
 
 # attribute written in a base class method, read on an instance of the subclass
@@ -223,4 +223,4 @@ class Sub3(Base3):
     pass
 
 sub3 = Sub3()
-print(sub3.baz) # $ tracked MISSING: tracked=baz
+print(sub3.baz) # $ MISSING: tracked=baz tracked
