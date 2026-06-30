@@ -54,10 +54,9 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
       result = "Field" and
       c.getField().hasQualifiedName(namespace, type, base)
     |
-      if arg.matches("%::%")
-      then
-        arg = repeatStars(c.getIndirectionIndex() - 1) + formatQualifiedName(namespace, type, base)
-      else arg = repeatStars(c.getIndirectionIndex() - 1) + base
+      arg = repeatStars(c.getIndirectionIndex() - 1) + formatQualifiedName(namespace, type, base)
+      or
+      arg = repeatStars(c.getIndirectionIndex() - 1) + base
     )
     or
     exists(ElementContent ec |
