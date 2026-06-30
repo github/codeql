@@ -1,0 +1,18 @@
+true
+false
+
+---
+
+source_file
+  statement:
+    boolean_literal
+    boolean_literal
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        boolean_literal "true"
+        boolean_literal "false"

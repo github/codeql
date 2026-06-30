@@ -1,0 +1,29 @@
+protocol Drawable {
+  func draw()
+}
+
+---
+
+source_file
+  statement:
+    protocol_declaration
+      body:
+        protocol_body
+          member:
+            protocol_function_declaration
+              name: simple_identifier "draw"
+      name: type_identifier "Drawable"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          member:
+            function_declaration
+              body: block "func draw()"
+              name: identifier "draw"
+          modifier: modifier "protocol"
+          name: identifier "Drawable"

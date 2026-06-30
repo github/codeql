@@ -1,0 +1,28 @@
+class Dog: Animal {}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+      declaration_kind: class
+      inherits:
+        inheritance_specifier
+          inherits_from:
+            user_type
+              part:
+                simple_user_type
+                  name: type_identifier "Animal"
+      name: type_identifier "Dog"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Dog"

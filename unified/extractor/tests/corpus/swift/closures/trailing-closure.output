@@ -1,0 +1,49 @@
+xs.map { $0 * 2 }
+
+---
+
+source_file
+  statement:
+    call_expression
+      function:
+        navigation_expression
+          suffix:
+            navigation_suffix
+              suffix: simple_identifier "map"
+          target: simple_identifier "xs"
+      suffix:
+        call_suffix
+          lambda:
+            lambda_literal
+              statement:
+                multiplicative_expression
+                  lhs: simple_identifier "$0"
+                  op: *
+                  rhs: integer_literal "2"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        call_expr
+          argument:
+            argument
+              value:
+                function_expr
+                  body:
+                    block
+                      stmt:
+                        binary_expr
+                          operator: infix_operator "*"
+                          left:
+                            name_expr
+                              identifier: identifier "$0"
+                          right: int_literal "2"
+          callee:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "xs"
+              member: identifier "map"

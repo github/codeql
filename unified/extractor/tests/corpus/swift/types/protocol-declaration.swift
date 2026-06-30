@@ -1,0 +1,3 @@
+protocol Drawable {
+  func draw()
+}

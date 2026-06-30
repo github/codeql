@@ -1,0 +1,48 @@
+let x: Int? = nil
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "x"
+          type:
+            type_annotation
+              type:
+                type
+                  name:
+                    optional_type
+                      wrapped:
+                        user_type
+                          part:
+                            simple_user_type
+                              name: type_identifier "Int"
+          value: nil
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          type:
+            generic_type_expr
+              base:
+                named_type_expr
+                  name: identifier "Optional"
+              type_argument:
+                named_type_expr
+                  name: identifier "Int"
+          value: builtin_expr "nil"

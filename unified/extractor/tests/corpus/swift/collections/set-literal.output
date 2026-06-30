@@ -1,0 +1,60 @@
+let s: Set<Int> = [1, 2, 3]
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "s"
+          type:
+            type_annotation
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          arguments:
+                            type_arguments
+                              argument:
+                                type
+                                  name:
+                                    user_type
+                                      part:
+                                        simple_user_type
+                                          name: type_identifier "Int"
+                          name: type_identifier "Set"
+          value:
+            array_literal
+              element:
+                integer_literal "1"
+                integer_literal "2"
+                integer_literal "3"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "s"
+          type:
+            named_type_expr
+              name: identifier "Set<Int>"
+          value:
+            array_literal
+              element:
+                int_literal "1"
+                int_literal "2"
+                int_literal "3"

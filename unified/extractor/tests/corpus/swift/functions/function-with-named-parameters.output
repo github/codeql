@@ -1,0 +1,62 @@
+func greet(person name: String) {
+  print(name)
+}
+
+---
+
+source_file
+  statement:
+    function_declaration
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "name"
+      name: simple_identifier "greet"
+      parameter:
+        function_parameter
+          parameter:
+            parameter
+              external_name: simple_identifier "person"
+              name: simple_identifier "name"
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "String"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "name"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+          name: identifier "greet"
+          parameter:
+            parameter
+              external_name: identifier "person"
+              pattern:
+                name_pattern
+                  identifier: identifier "name"

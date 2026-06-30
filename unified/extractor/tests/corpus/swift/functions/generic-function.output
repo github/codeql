@@ -1,0 +1,66 @@
+func identity<T>(_ x: T) -> T {
+  return x
+}
+
+---
+
+source_file
+  statement:
+    function_declaration
+      body:
+        block
+          statement:
+            control_transfer_statement
+              kind: return
+              result: simple_identifier "x"
+      name: simple_identifier "identity"
+      parameter:
+        function_parameter
+          parameter:
+            parameter
+              external_name: simple_identifier "_"
+              name: simple_identifier "x"
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "T"
+      return_type:
+        type
+          name:
+            user_type
+              part:
+                simple_user_type
+                  name: type_identifier "T"
+      type_parameters:
+        type_parameters
+          parameter:
+            type_parameter
+              name: type_identifier "T"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    name_expr
+                      identifier: identifier "x"
+          name: identifier "identity"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+          return_type:
+            named_type_expr
+              name: identifier "T"

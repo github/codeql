@@ -1,0 +1,140 @@
+switch shape {
+case .circle(let r):
+  print(r)
+case .square(let s):
+  print(s)
+}
+
+---
+
+source_file
+  statement:
+    switch_statement
+      entry:
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind:
+                    case_pattern
+                      arguments:
+                        tuple_pattern
+                          item:
+                            tuple_pattern_item
+                              pattern:
+                                pattern
+                                  kind:
+                                    binding_pattern
+                                      binding:
+                                        value_binding_pattern
+                                          mutability: let
+                                      pattern:
+                                        pattern
+                                          bound_identifier: simple_identifier "r"
+                      dot: .
+                      name: simple_identifier "circle"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "r"
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind:
+                    case_pattern
+                      arguments:
+                        tuple_pattern
+                          item:
+                            tuple_pattern_item
+                              pattern:
+                                pattern
+                                  kind:
+                                    binding_pattern
+                                      binding:
+                                        value_binding_pattern
+                                          mutability: let
+                                      pattern:
+                                        pattern
+                                          bound_identifier: simple_identifier "s"
+                      dot: .
+                      name: simple_identifier "square"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "s"
+      expr: simple_identifier "shape"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        switch_expr
+          case:
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "r"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              pattern:
+                constructor_pattern
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "r"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "circle"
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "s"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              pattern:
+                constructor_pattern
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "s"
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "square"
+          value:
+            name_expr
+              identifier: identifier "shape"

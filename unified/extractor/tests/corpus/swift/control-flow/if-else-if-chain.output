@@ -1,0 +1,119 @@
+if x > 0 {
+  print(1)
+} else if x < 0 {
+  print(2)
+} else {
+  print(3)
+}
+
+---
+
+source_file
+  statement:
+    if_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: integer_literal "1"
+      condition:
+        if_condition
+          kind:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
+      else_branch:
+        if_statement
+          body:
+            block
+              statement:
+                call_expression
+                  function: simple_identifier "print"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+                          argument:
+                            value_argument
+                              value: integer_literal "2"
+          condition:
+            if_condition
+              kind:
+                comparison_expression
+                  lhs: simple_identifier "x"
+                  op: <
+                  rhs: integer_literal "0"
+          else_branch:
+            block
+              statement:
+                call_expression
+                  function: simple_identifier "print"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+                          argument:
+                            value_argument
+                              value: integer_literal "3"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        if_expr
+          condition:
+            binary_expr
+              operator: infix_operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
+          else:
+            if_expr
+              condition:
+                binary_expr
+                  operator: infix_operator "<"
+                  left:
+                    name_expr
+                      identifier: identifier "x"
+                  right: int_literal "0"
+              else:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: int_literal "3"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              then:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: int_literal "2"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+          then:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value: int_literal "1"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"

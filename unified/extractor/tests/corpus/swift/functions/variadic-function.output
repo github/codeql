@@ -1,0 +1,91 @@
+func sum(_ values: Int...) -> Int {
+  return values.reduce(0, +)
+}
+
+---
+
+source_file
+  statement:
+    function_declaration
+      body:
+        block
+          statement:
+            control_transfer_statement
+              kind: return
+              result:
+                call_expression
+                  function:
+                    navigation_expression
+                      suffix:
+                        navigation_suffix
+                          suffix: simple_identifier "reduce"
+                      target: simple_identifier "values"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+                          argument:
+                            value_argument
+                              value: integer_literal "0"
+                            value_argument
+                              value:
+                                referenceable_operator
+                                  operator: +
+      name: simple_identifier "sum"
+      parameter:
+        function_parameter
+          parameter:
+            parameter
+              external_name: simple_identifier "_"
+              name: simple_identifier "values"
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "Int"
+      return_type:
+        type
+          name:
+            user_type
+              part:
+                simple_user_type
+                  name: type_identifier "Int"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    call_expr
+                      argument:
+                        argument
+                          value: int_literal "0"
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "+"
+                      callee:
+                        member_access_expr
+                          base:
+                            name_expr
+                              identifier: identifier "values"
+                          member: identifier "reduce"
+          name: identifier "sum"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              pattern:
+                name_pattern
+                  identifier: identifier "values"
+          return_type:
+            named_type_expr
+              name: identifier "Int"

@@ -19,7 +19,11 @@ This is a CodeQL extractor based on tree-sitter.
 
 - To run tests for the parser and mapping, run `cargo test` in the `extractor` directory.
 
-- Do not edit the printed ASTs in `extractor/test/corpus` directly. To regenerate the ASTs, run `scripts/update-corpus.sh`.
+- Extractor test cases are located at `extractor/tests/corpus/swift/*/*.swift`.
+
+- Each test case has a corresponding `.output` file containing its generated output along with a copy of the test case itself.
+
+- Check the output files for correctness but do not edit them manually. Regenerate them with `scripts/update-corpus.sh`.
 
 ## CodeQL Testing
 - If you changed the extractor code, always rebuild it before running CodeQL tests.
