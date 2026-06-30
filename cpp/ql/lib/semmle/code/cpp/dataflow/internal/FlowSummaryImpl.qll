@@ -56,6 +56,7 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
     |
       arg = repeatStars(c.getIndirectionIndex() - 1) + formatQualifiedName(namespace, type, base)
       or
+      // TODO: This disjunct can be removed once we stop supporting unqualified field names.
       arg = repeatStars(c.getIndirectionIndex() - 1) + base
     )
     or
