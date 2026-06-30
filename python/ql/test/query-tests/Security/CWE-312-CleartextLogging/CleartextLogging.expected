@@ -98,6 +98,3 @@ nodes
 | test.py:103:21:103:37 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:105:11:105:31 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 subpaths
-testFailures
-| test.py:103:21:103:37 | ControlFlowNode for Attribute | Unexpected result: Source |
-| test.py:105:11:105:31 | ControlFlowNode for Subscript | Unexpected result: Alert |
