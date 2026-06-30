@@ -18,12 +18,7 @@ int **remoteMadSourceDoubleIndirect(); // $ interpretElement
 void remoteMadSourceIndirectArg0(int *x, int *y); // $ interpretElement
 void remoteMadSourceIndirectArg1(int &x, int &y); // $ interpretElement
 
-
-
 namespace MyNamespace {
-
-
-
 	namespace MyNamespace2 {
 		int namespace2LocalMadSource(); // $ interpretElement
 	}
@@ -69,13 +64,8 @@ void test_sources() {
 	sink(c);
 	sink(d); // $ ir
 
-
-
-
 	int e = localMadSource();
 	sink(e); // $ ir
-
-
 	
 	sink(MyNamespace::MyNamespace2::namespace2LocalMadSource()); // $ ir
 	sink(MyNamespace::localMadSource()); // $ (the MyNamespace version of this function is not a source)
@@ -118,15 +108,8 @@ void test_sinks() {
 	madSinkIndirectArg0(&a); // $ ir
 	madSinkIndirectArg0(a_ptr); // $ ir
 	madSinkDoubleIndirectArg0(&a_ptr); // $ ir
-
-
-
-
-
 	madSinkArg0(localMadSource()); // $ ir
 	madSinkIndirectArg0(remoteMadSourceIndirect()); // $ ir
-	
-
 }
 
 void madSinkParam0(int x) { // $ interpretElement
@@ -163,10 +146,6 @@ int madArg0FieldIndirectToReturn(MyContainer mc); // $ interpretElement
 MyContainer madArg0ToReturnField(int x); // $ interpretElement
 MyContainer *madArg0ToReturnIndirectField(int x); // $ interpretElement
 MyContainer madArg0ToReturnFieldIndirect(int x); // $ interpretElement
-
-
-
-
 
 void test_summaries() {
 	// test summaries
@@ -241,19 +220,6 @@ void test_summaries() {
 	int *rtn2_ptr = rtn2.ptr;
 	sink(*rtn2_ptr); // $ ir
 
-	
-
-
-	
-
-
-
-	
-
-
-	
-	
-
 	// test source + sinks + summaries together
 
 	madSinkArg0(madArg0ToReturn(remoteMadSource())); // $ ir
@@ -307,8 +273,6 @@ namespace MyNamespace {
 		void namespaceMemberMadSinkArg0(int x); // $ interpretElement
 		static void namespaceStaticMemberMadSinkArg0(int x); // $ interpretElement
 
-
-
 		// summaries
 		int namespaceMadSelfToReturn(); // $ interpretElement
 	};
@@ -331,8 +295,6 @@ void test_class_members() {
 	mc.memberRemoteMadSourceIndirectArg0(&a);
 	sink(a); // $ ir
 
-
-
 	// test subtype sources
 
 	sink(mdc.memberRemoteMadSource()); // $ ir
@@ -344,12 +306,8 @@ void test_class_members() {
 
 	mc.memberMadSinkArg0(source()); // $ ir
 
-
-
 	mnc.namespaceMemberMadSinkArg0(source()); // $ ir
 	MyNamespace::MyClass::namespaceStaticMemberMadSinkArg0(source()); // $ ir
-
-
 
 	// test class member summaries
 
