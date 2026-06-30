@@ -40,15 +40,28 @@ pub struct Class<'a> {
     pub qldoc: Option<String>,
     pub name: &'a str,
     pub is_abstract: bool,
+    pub is_final: bool,
+    pub is_private: bool,
     pub supertypes: BTreeSet<Type<'a>>,
     pub characteristic_predicate: Option<Expression<'a>>,
     pub predicates: Vec<Predicate<'a>>,
+    pub alias: Option<String>,
 }
 
 impl fmt::Display for Class<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let Some(qldoc) = &self.qldoc {
             write!(f, "/** {qldoc} */")?;
+        }
+        if self.is_final {
+            write!(f, "final ")?;
+        }
+        if self.is_private {
+            write!(f, "private ")?;
+        }
+        if let Some(alias) = &self.alias {
+            write!(f, "class {} = {alias};", &self.name)?;
+            return Ok(());
         }
         if self.is_abstract {
             write!(f, "abstract ")?;

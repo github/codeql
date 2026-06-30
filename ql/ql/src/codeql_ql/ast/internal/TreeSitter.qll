@@ -26,7 +26,7 @@ private predicate discardLocation(@location_default loc) {
 overlay[local]
 module QL {
   /** The base class for all AST nodes */
-  class AstNode extends @ql_ast_node {
+  private class AstNodeImpl extends @ql_ast_node {
     /** Gets a string representation of this element. */
     string toString() { result = this.getAPrimaryQlClass() }
 
@@ -49,8 +49,10 @@ module QL {
     string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
   }
 
+  final class AstNode = AstNodeImpl;
+
   /** A token. */
-  class Token extends @ql_token, AstNode {
+  private class TokenImpl extends @ql_token, AstNodeImpl {
     /** Gets the value of this token. */
     final string getValue() { ql_tokeninfo(this, _, result) }
 
@@ -61,8 +63,10 @@ module QL {
     override string getAPrimaryQlClass() { result = "Token" }
   }
 
+  final class Token = TokenImpl;
+
   /** A reserved word. */
-  class ReservedWord extends @ql_reserved_word, Token {
+  final class ReservedWord extends @ql_reserved_word, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
   }
@@ -88,7 +92,7 @@ module QL {
   }
 
   /** A class representing `add_expr` nodes. */
-  class AddExpr extends @ql_add_expr, AstNode {
+  final class AddExpr extends @ql_add_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AddExpr" }
 
@@ -110,19 +114,19 @@ module QL {
   }
 
   /** A class representing `addop` tokens. */
-  class Addop extends @ql_token_addop, Token {
+  final class Addop extends @ql_token_addop, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Addop" }
   }
 
   /** A class representing `aggId` tokens. */
-  class AggId extends @ql_token_agg_id, Token {
+  final class AggId extends @ql_token_agg_id, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AggId" }
   }
 
   /** A class representing `aggregate` nodes. */
-  class Aggregate extends @ql_aggregate, AstNode {
+  final class Aggregate extends @ql_aggregate, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Aggregate" }
 
@@ -134,7 +138,7 @@ module QL {
   }
 
   /** A class representing `annotArg` nodes. */
-  class AnnotArg extends @ql_annot_arg, AstNode {
+  final class AnnotArg extends @ql_annot_arg, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AnnotArg" }
 
@@ -146,13 +150,13 @@ module QL {
   }
 
   /** A class representing `annotName` tokens. */
-  class AnnotName extends @ql_token_annot_name, Token {
+  final class AnnotName extends @ql_token_annot_name, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AnnotName" }
   }
 
   /** A class representing `annotation` nodes. */
-  class Annotation extends @ql_annotation, AstNode {
+  final class Annotation extends @ql_annotation, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Annotation" }
 
@@ -169,7 +173,7 @@ module QL {
   }
 
   /** A class representing `aritylessPredicateExpr` nodes. */
-  class AritylessPredicateExpr extends @ql_arityless_predicate_expr, AstNode {
+  final class AritylessPredicateExpr extends @ql_arityless_predicate_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AritylessPredicateExpr" }
 
@@ -187,7 +191,7 @@ module QL {
   }
 
   /** A class representing `asExpr` nodes. */
-  class AsExpr extends @ql_as_expr, AstNode {
+  final class AsExpr extends @ql_as_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AsExpr" }
 
@@ -199,7 +203,7 @@ module QL {
   }
 
   /** A class representing `asExprs` nodes. */
-  class AsExprs extends @ql_as_exprs, AstNode {
+  final class AsExprs extends @ql_as_exprs, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AsExprs" }
 
@@ -211,13 +215,13 @@ module QL {
   }
 
   /** A class representing `block_comment` tokens. */
-  class BlockComment extends @ql_token_block_comment, Token {
+  final class BlockComment extends @ql_token_block_comment, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BlockComment" }
   }
 
   /** A class representing `body` nodes. */
-  class Body extends @ql_body, AstNode {
+  final class Body extends @ql_body, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Body" }
 
@@ -229,7 +233,7 @@ module QL {
   }
 
   /** A class representing `bool` nodes. */
-  class Bool extends @ql_bool, AstNode {
+  final class Bool extends @ql_bool, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Bool" }
 
@@ -241,7 +245,7 @@ module QL {
   }
 
   /** A class representing `call_body` nodes. */
-  class CallBody extends @ql_call_body, AstNode {
+  final class CallBody extends @ql_call_body, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "CallBody" }
 
@@ -253,7 +257,7 @@ module QL {
   }
 
   /** A class representing `call_or_unqual_agg_expr` nodes. */
-  class CallOrUnqualAggExpr extends @ql_call_or_unqual_agg_expr, AstNode {
+  final class CallOrUnqualAggExpr extends @ql_call_or_unqual_agg_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "CallOrUnqualAggExpr" }
 
@@ -265,7 +269,7 @@ module QL {
   }
 
   /** A class representing `charpred` nodes. */
-  class Charpred extends @ql_charpred, AstNode {
+  final class Charpred extends @ql_charpred, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Charpred" }
 
@@ -282,7 +286,7 @@ module QL {
   }
 
   /** A class representing `classMember` nodes. */
-  class ClassMember extends @ql_class_member, AstNode {
+  final class ClassMember extends @ql_class_member, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ClassMember" }
 
@@ -294,13 +298,13 @@ module QL {
   }
 
   /** A class representing `className` tokens. */
-  class ClassName extends @ql_token_class_name, Token {
+  final class ClassName extends @ql_token_class_name, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ClassName" }
   }
 
   /** A class representing `classlessPredicate` nodes. */
-  class ClasslessPredicate extends @ql_classless_predicate, AstNode {
+  final class ClasslessPredicate extends @ql_classless_predicate, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ClasslessPredicate" }
 
@@ -322,13 +326,13 @@ module QL {
   }
 
   /** A class representing `closure` tokens. */
-  class Closure extends @ql_token_closure, Token {
+  final class Closure extends @ql_token_closure, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Closure" }
   }
 
   /** A class representing `comp_term` nodes. */
-  class CompTerm extends @ql_comp_term, AstNode {
+  final class CompTerm extends @ql_comp_term, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "CompTerm" }
 
@@ -350,13 +354,13 @@ module QL {
   }
 
   /** A class representing `compop` tokens. */
-  class Compop extends @ql_token_compop, Token {
+  final class Compop extends @ql_token_compop, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Compop" }
   }
 
   /** A class representing `conjunction` nodes. */
-  class Conjunction extends @ql_conjunction, AstNode {
+  final class Conjunction extends @ql_conjunction, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Conjunction" }
 
@@ -373,7 +377,7 @@ module QL {
   }
 
   /** A class representing `dataclass` nodes. */
-  class Dataclass extends @ql_dataclass, AstNode {
+  final class Dataclass extends @ql_dataclass, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Dataclass" }
 
@@ -399,7 +403,7 @@ module QL {
   }
 
   /** A class representing `datatype` nodes. */
-  class Datatype extends @ql_datatype, AstNode {
+  final class Datatype extends @ql_datatype, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Datatype" }
 
@@ -416,7 +420,7 @@ module QL {
   }
 
   /** A class representing `datatypeBranch` nodes. */
-  class DatatypeBranch extends @ql_datatype_branch, AstNode {
+  final class DatatypeBranch extends @ql_datatype_branch, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "DatatypeBranch" }
 
@@ -433,7 +437,7 @@ module QL {
   }
 
   /** A class representing `datatypeBranches` nodes. */
-  class DatatypeBranches extends @ql_datatype_branches, AstNode {
+  final class DatatypeBranches extends @ql_datatype_branches, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "DatatypeBranches" }
 
@@ -445,19 +449,19 @@ module QL {
   }
 
   /** A class representing `dbtype` tokens. */
-  class Dbtype extends @ql_token_dbtype, Token {
+  final class Dbtype extends @ql_token_dbtype, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Dbtype" }
   }
 
   /** A class representing `direction` tokens. */
-  class Direction extends @ql_token_direction, Token {
+  final class Direction extends @ql_token_direction, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Direction" }
   }
 
   /** A class representing `disjunction` nodes. */
-  class Disjunction extends @ql_disjunction, AstNode {
+  final class Disjunction extends @ql_disjunction, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Disjunction" }
 
@@ -474,13 +478,13 @@ module QL {
   }
 
   /** A class representing `empty` tokens. */
-  class Empty extends @ql_token_empty, Token {
+  final class Empty extends @ql_token_empty, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Empty" }
   }
 
   /** A class representing `expr_aggregate_body` nodes. */
-  class ExprAggregateBody extends @ql_expr_aggregate_body, AstNode {
+  final class ExprAggregateBody extends @ql_expr_aggregate_body, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ExprAggregateBody" }
 
@@ -497,7 +501,7 @@ module QL {
   }
 
   /** A class representing `expr_annotation` nodes. */
-  class ExprAnnotation extends @ql_expr_annotation, AstNode {
+  final class ExprAnnotation extends @ql_expr_annotation, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ExprAnnotation" }
 
@@ -519,13 +523,13 @@ module QL {
   }
 
   /** A class representing `false` tokens. */
-  class False extends @ql_token_false, Token {
+  final class False extends @ql_token_false, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "False" }
   }
 
   /** A class representing `field` nodes. */
-  class Field extends @ql_field, AstNode {
+  final class Field extends @ql_field, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Field" }
 
@@ -537,13 +541,13 @@ module QL {
   }
 
   /** A class representing `float` tokens. */
-  class Float extends @ql_token_float, Token {
+  final class Float extends @ql_token_float, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Float" }
   }
 
   /** A class representing `full_aggregate_body` nodes. */
-  class FullAggregateBody extends @ql_full_aggregate_body, AstNode {
+  final class FullAggregateBody extends @ql_full_aggregate_body, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FullAggregateBody" }
 
@@ -569,7 +573,7 @@ module QL {
   }
 
   /** A class representing `higherOrderTerm` nodes. */
-  class HigherOrderTerm extends @ql_higher_order_term, AstNode {
+  final class HigherOrderTerm extends @ql_higher_order_term, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "HigherOrderTerm" }
 
@@ -586,7 +590,7 @@ module QL {
   }
 
   /** A class representing `if_term` nodes. */
-  class IfTerm extends @ql_if_term, AstNode {
+  final class IfTerm extends @ql_if_term, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "IfTerm" }
 
@@ -608,7 +612,7 @@ module QL {
   }
 
   /** A class representing `implication` nodes. */
-  class Implication extends @ql_implication, AstNode {
+  final class Implication extends @ql_implication, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Implication" }
 
@@ -625,7 +629,7 @@ module QL {
   }
 
   /** A class representing `importDirective` nodes. */
-  class ImportDirective extends @ql_import_directive, AstNode {
+  final class ImportDirective extends @ql_import_directive, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ImportDirective" }
 
@@ -637,7 +641,7 @@ module QL {
   }
 
   /** A class representing `importModuleExpr` nodes. */
-  class ImportModuleExpr extends @ql_import_module_expr, AstNode {
+  final class ImportModuleExpr extends @ql_import_module_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ImportModuleExpr" }
 
@@ -654,7 +658,7 @@ module QL {
   }
 
   /** A class representing `in_expr` nodes. */
-  class InExpr extends @ql_in_expr, AstNode {
+  final class InExpr extends @ql_in_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InExpr" }
 
@@ -671,7 +675,7 @@ module QL {
   }
 
   /** A class representing `instance_of` nodes. */
-  class InstanceOf extends @ql_instance_of, AstNode {
+  final class InstanceOf extends @ql_instance_of, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InstanceOf" }
 
@@ -683,19 +687,19 @@ module QL {
   }
 
   /** A class representing `integer` tokens. */
-  class Integer extends @ql_token_integer, Token {
+  final class Integer extends @ql_token_integer, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Integer" }
   }
 
   /** A class representing `line_comment` tokens. */
-  class LineComment extends @ql_token_line_comment, Token {
+  final class LineComment extends @ql_token_line_comment, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "LineComment" }
   }
 
   /** A class representing `literal` nodes. */
-  class Literal extends @ql_literal, AstNode {
+  final class Literal extends @ql_literal, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Literal" }
 
@@ -707,13 +711,13 @@ module QL {
   }
 
   /** A class representing `literalId` tokens. */
-  class LiteralId extends @ql_token_literal_id, Token {
+  final class LiteralId extends @ql_token_literal_id, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "LiteralId" }
   }
 
   /** A class representing `memberPredicate` nodes. */
-  class MemberPredicate extends @ql_member_predicate, AstNode {
+  final class MemberPredicate extends @ql_member_predicate, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "MemberPredicate" }
 
@@ -735,7 +739,7 @@ module QL {
   }
 
   /** A class representing `module` nodes. */
-  class Module extends @ql_module, AstNode {
+  final class Module extends @ql_module, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Module" }
 
@@ -761,7 +765,7 @@ module QL {
   }
 
   /** A class representing `moduleAliasBody` nodes. */
-  class ModuleAliasBody extends @ql_module_alias_body, AstNode {
+  final class ModuleAliasBody extends @ql_module_alias_body, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ModuleAliasBody" }
 
@@ -773,7 +777,7 @@ module QL {
   }
 
   /** A class representing `moduleExpr` nodes. */
-  class ModuleExpr extends @ql_module_expr, AstNode {
+  final class ModuleExpr extends @ql_module_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ModuleExpr" }
 
@@ -790,7 +794,7 @@ module QL {
   }
 
   /** A class representing `moduleInstantiation` nodes. */
-  class ModuleInstantiation extends @ql_module_instantiation, AstNode {
+  final class ModuleInstantiation extends @ql_module_instantiation, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ModuleInstantiation" }
 
@@ -807,7 +811,7 @@ module QL {
   }
 
   /** A class representing `moduleMember` nodes. */
-  class ModuleMember extends @ql_module_member, AstNode {
+  final class ModuleMember extends @ql_module_member, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ModuleMember" }
 
@@ -819,7 +823,7 @@ module QL {
   }
 
   /** A class representing `moduleName` nodes. */
-  class ModuleName extends @ql_module_name, AstNode {
+  final class ModuleName extends @ql_module_name, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ModuleName" }
 
@@ -831,7 +835,7 @@ module QL {
   }
 
   /** A class representing `moduleParam` nodes. */
-  class ModuleParam extends @ql_module_param, AstNode {
+  final class ModuleParam extends @ql_module_param, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ModuleParam" }
 
@@ -848,7 +852,7 @@ module QL {
   }
 
   /** A class representing `mul_expr` nodes. */
-  class MulExpr extends @ql_mul_expr, AstNode {
+  final class MulExpr extends @ql_mul_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "MulExpr" }
 
@@ -870,13 +874,13 @@ module QL {
   }
 
   /** A class representing `mulop` tokens. */
-  class Mulop extends @ql_token_mulop, Token {
+  final class Mulop extends @ql_token_mulop, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Mulop" }
   }
 
   /** A class representing `negation` nodes. */
-  class Negation extends @ql_negation, AstNode {
+  final class Negation extends @ql_negation, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Negation" }
 
@@ -888,7 +892,7 @@ module QL {
   }
 
   /** A class representing `orderBy` nodes. */
-  class OrderBy extends @ql_order_by, AstNode {
+  final class OrderBy extends @ql_order_by, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "OrderBy" }
 
@@ -900,7 +904,7 @@ module QL {
   }
 
   /** A class representing `orderBys` nodes. */
-  class OrderBys extends @ql_order_bys, AstNode {
+  final class OrderBys extends @ql_order_bys, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "OrderBys" }
 
@@ -912,7 +916,7 @@ module QL {
   }
 
   /** A class representing `par_expr` nodes. */
-  class ParExpr extends @ql_par_expr, AstNode {
+  final class ParExpr extends @ql_par_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ParExpr" }
 
@@ -924,13 +928,13 @@ module QL {
   }
 
   /** A class representing `predicate` tokens. */
-  class Predicate extends @ql_token_predicate, Token {
+  final class Predicate extends @ql_token_predicate, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Predicate" }
   }
 
   /** A class representing `predicateAliasBody` nodes. */
-  class PredicateAliasBody extends @ql_predicate_alias_body, AstNode {
+  final class PredicateAliasBody extends @ql_predicate_alias_body, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "PredicateAliasBody" }
 
@@ -942,7 +946,7 @@ module QL {
   }
 
   /** A class representing `predicateExpr` nodes. */
-  class PredicateExpr extends @ql_predicate_expr, AstNode {
+  final class PredicateExpr extends @ql_predicate_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "PredicateExpr" }
 
@@ -954,13 +958,13 @@ module QL {
   }
 
   /** A class representing `predicateName` tokens. */
-  class PredicateName extends @ql_token_predicate_name, Token {
+  final class PredicateName extends @ql_token_predicate_name, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "PredicateName" }
   }
 
   /** A class representing `prefix_cast` nodes. */
-  class PrefixCast extends @ql_prefix_cast, AstNode {
+  final class PrefixCast extends @ql_prefix_cast, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "PrefixCast" }
 
@@ -972,13 +976,13 @@ module QL {
   }
 
   /** A class representing `primitiveType` tokens. */
-  class PrimitiveType extends @ql_token_primitive_type, Token {
+  final class PrimitiveType extends @ql_token_primitive_type, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "PrimitiveType" }
   }
 
   /** A class representing `ql` nodes. */
-  class Ql extends @ql_ql, AstNode {
+  final class Ql extends @ql_ql, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Ql" }
 
@@ -990,13 +994,13 @@ module QL {
   }
 
   /** A class representing `qldoc` tokens. */
-  class Qldoc extends @ql_token_qldoc, Token {
+  final class Qldoc extends @ql_token_qldoc, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Qldoc" }
   }
 
   /** A class representing `qualifiedRhs` nodes. */
-  class QualifiedRhs extends @ql_qualified_rhs, AstNode {
+  final class QualifiedRhs extends @ql_qualified_rhs, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "QualifiedRhs" }
 
@@ -1013,7 +1017,7 @@ module QL {
   }
 
   /** A class representing `qualified_expr` nodes. */
-  class QualifiedExpr extends @ql_qualified_expr, AstNode {
+  final class QualifiedExpr extends @ql_qualified_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "QualifiedExpr" }
 
@@ -1025,7 +1029,7 @@ module QL {
   }
 
   /** A class representing `quantified` nodes. */
-  class Quantified extends @ql_quantified, AstNode {
+  final class Quantified extends @ql_quantified, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Quantified" }
 
@@ -1051,13 +1055,13 @@ module QL {
   }
 
   /** A class representing `quantifier` tokens. */
-  class Quantifier extends @ql_token_quantifier, Token {
+  final class Quantifier extends @ql_token_quantifier, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Quantifier" }
   }
 
   /** A class representing `range` nodes. */
-  class Range extends @ql_range, AstNode {
+  final class Range extends @ql_range, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Range" }
 
@@ -1074,13 +1078,13 @@ module QL {
   }
 
   /** A class representing `result` tokens. */
-  class Result extends @ql_token_result, Token {
+  final class Result extends @ql_token_result, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Result" }
   }
 
   /** A class representing `select` nodes. */
-  class Select extends @ql_select, AstNode {
+  final class Select extends @ql_select, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Select" }
 
@@ -1092,7 +1096,7 @@ module QL {
   }
 
   /** A class representing `set_literal` nodes. */
-  class SetLiteral extends @ql_set_literal, AstNode {
+  final class SetLiteral extends @ql_set_literal, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SetLiteral" }
 
@@ -1104,7 +1108,7 @@ module QL {
   }
 
   /** A class representing `signatureExpr` nodes. */
-  class SignatureExpr extends @ql_signature_expr, AstNode {
+  final class SignatureExpr extends @ql_signature_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SignatureExpr" }
 
@@ -1126,19 +1130,19 @@ module QL {
   }
 
   /** A class representing `simpleId` tokens. */
-  class SimpleId extends @ql_token_simple_id, Token {
+  final class SimpleId extends @ql_token_simple_id, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SimpleId" }
   }
 
   /** A class representing `specialId` tokens. */
-  class SpecialId extends @ql_token_special_id, Token {
+  final class SpecialId extends @ql_token_special_id, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SpecialId" }
   }
 
   /** A class representing `special_call` nodes. */
-  class SpecialCall extends @ql_special_call, AstNode {
+  final class SpecialCall extends @ql_special_call, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SpecialCall" }
 
@@ -1150,19 +1154,19 @@ module QL {
   }
 
   /** A class representing `string` tokens. */
-  class String extends @ql_token_string, Token {
+  final class String extends @ql_token_string, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "String" }
   }
 
   /** A class representing `super` tokens. */
-  class Super extends @ql_token_super, Token {
+  final class Super extends @ql_token_super, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Super" }
   }
 
   /** A class representing `super_ref` nodes. */
-  class SuperRef extends @ql_super_ref, AstNode {
+  final class SuperRef extends @ql_super_ref, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SuperRef" }
 
@@ -1174,19 +1178,19 @@ module QL {
   }
 
   /** A class representing `this` tokens. */
-  class This extends @ql_token_this, Token {
+  final class This extends @ql_token_this, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "This" }
   }
 
   /** A class representing `true` tokens. */
-  class True extends @ql_token_true, Token {
+  final class True extends @ql_token_true, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "True" }
   }
 
   /** A class representing `typeAliasBody` nodes. */
-  class TypeAliasBody extends @ql_type_alias_body, AstNode {
+  final class TypeAliasBody extends @ql_type_alias_body, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TypeAliasBody" }
 
@@ -1198,7 +1202,7 @@ module QL {
   }
 
   /** A class representing `typeExpr` nodes. */
-  class TypeExpr extends @ql_type_expr, AstNode {
+  final class TypeExpr extends @ql_type_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TypeExpr" }
 
@@ -1220,7 +1224,7 @@ module QL {
   }
 
   /** A class representing `typeUnionBody` nodes. */
-  class TypeUnionBody extends @ql_type_union_body, AstNode {
+  final class TypeUnionBody extends @ql_type_union_body, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TypeUnionBody" }
 
@@ -1232,7 +1236,7 @@ module QL {
   }
 
   /** A class representing `unary_expr` nodes. */
-  class UnaryExpr extends @ql_unary_expr, AstNode {
+  final class UnaryExpr extends @ql_unary_expr, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "UnaryExpr" }
 
@@ -1244,19 +1248,19 @@ module QL {
   }
 
   /** A class representing `underscore` tokens. */
-  class Underscore extends @ql_token_underscore, Token {
+  final class Underscore extends @ql_token_underscore, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Underscore" }
   }
 
   /** A class representing `unop` tokens. */
-  class Unop extends @ql_token_unop, Token {
+  final class Unop extends @ql_token_unop, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Unop" }
   }
 
   /** A class representing `unqual_agg_body` nodes. */
-  class UnqualAggBody extends @ql_unqual_agg_body, AstNode {
+  final class UnqualAggBody extends @ql_unqual_agg_body, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "UnqualAggBody" }
 
@@ -1278,7 +1282,7 @@ module QL {
   }
 
   /** A class representing `varDecl` nodes. */
-  class VarDecl extends @ql_var_decl, AstNode {
+  final class VarDecl extends @ql_var_decl, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "VarDecl" }
 
@@ -1290,7 +1294,7 @@ module QL {
   }
 
   /** A class representing `varName` nodes. */
-  class VarName extends @ql_var_name, AstNode {
+  final class VarName extends @ql_var_name, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "VarName" }
 
@@ -1302,7 +1306,7 @@ module QL {
   }
 
   /** A class representing `variable` nodes. */
-  class Variable extends @ql_variable, AstNode {
+  final class Variable extends @ql_variable, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Variable" }
 
@@ -1555,7 +1559,7 @@ module QL {
 overlay[local]
 module Dbscheme {
   /** The base class for all AST nodes */
-  class AstNode extends @dbscheme_ast_node {
+  private class AstNodeImpl extends @dbscheme_ast_node {
     /** Gets a string representation of this element. */
     string toString() { result = this.getAPrimaryQlClass() }
 
@@ -1578,8 +1582,10 @@ module Dbscheme {
     string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
   }
 
+  final class AstNode = AstNodeImpl;
+
   /** A token. */
-  class Token extends @dbscheme_token, AstNode {
+  private class TokenImpl extends @dbscheme_token, AstNodeImpl {
     /** Gets the value of this token. */
     final string getValue() { dbscheme_tokeninfo(this, _, result) }
 
@@ -1590,8 +1596,10 @@ module Dbscheme {
     override string getAPrimaryQlClass() { result = "Token" }
   }
 
+  final class Token = TokenImpl;
+
   /** A reserved word. */
-  class ReservedWord extends @dbscheme_reserved_word, Token {
+  final class ReservedWord extends @dbscheme_reserved_word, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
   }
@@ -1617,13 +1625,13 @@ module Dbscheme {
   }
 
   /** A class representing `annotName` tokens. */
-  class AnnotName extends @dbscheme_token_annot_name, Token {
+  final class AnnotName extends @dbscheme_token_annot_name, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AnnotName" }
   }
 
   /** A class representing `annotation` nodes. */
-  class Annotation extends @dbscheme_annotation, AstNode {
+  final class Annotation extends @dbscheme_annotation, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Annotation" }
 
@@ -1641,7 +1649,7 @@ module Dbscheme {
   }
 
   /** A class representing `argsAnnotation` nodes. */
-  class ArgsAnnotation extends @dbscheme_args_annotation, AstNode {
+  final class ArgsAnnotation extends @dbscheme_args_annotation, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ArgsAnnotation" }
 
@@ -1658,19 +1666,19 @@ module Dbscheme {
   }
 
   /** A class representing `block_comment` tokens. */
-  class BlockComment extends @dbscheme_token_block_comment, Token {
+  final class BlockComment extends @dbscheme_token_block_comment, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BlockComment" }
   }
 
   /** A class representing `boolean` tokens. */
-  class Boolean extends @dbscheme_token_boolean, Token {
+  final class Boolean extends @dbscheme_token_boolean, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Boolean" }
   }
 
   /** A class representing `branch` nodes. */
-  class Branch extends @dbscheme_branch, AstNode {
+  final class Branch extends @dbscheme_branch, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Branch" }
 
@@ -1687,7 +1695,7 @@ module Dbscheme {
   }
 
   /** A class representing `caseDecl` nodes. */
-  class CaseDecl extends @dbscheme_case_decl, AstNode {
+  final class CaseDecl extends @dbscheme_case_decl, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "CaseDecl" }
 
@@ -1709,7 +1717,7 @@ module Dbscheme {
   }
 
   /** A class representing `colType` nodes. */
-  class ColType extends @dbscheme_col_type, AstNode {
+  final class ColType extends @dbscheme_col_type, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ColType" }
 
@@ -1721,7 +1729,7 @@ module Dbscheme {
   }
 
   /** A class representing `column` nodes. */
-  class Column extends @dbscheme_column, AstNode {
+  final class Column extends @dbscheme_column, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Column" }
 
@@ -1755,13 +1763,13 @@ module Dbscheme {
   }
 
   /** A class representing `date` tokens. */
-  class Date extends @dbscheme_token_date, Token {
+  final class Date extends @dbscheme_token_date, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Date" }
   }
 
   /** A class representing `dbscheme` nodes. */
-  class Dbscheme extends @dbscheme_dbscheme, AstNode {
+  final class Dbscheme extends @dbscheme_dbscheme, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Dbscheme" }
 
@@ -1773,13 +1781,13 @@ module Dbscheme {
   }
 
   /** A class representing `dbtype` tokens. */
-  class Dbtype extends @dbscheme_token_dbtype, Token {
+  final class Dbtype extends @dbscheme_token_dbtype, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Dbtype" }
   }
 
   /** A class representing `entry` nodes. */
-  class Entry extends @dbscheme_entry, AstNode {
+  final class Entry extends @dbscheme_entry, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Entry" }
 
@@ -1791,43 +1799,43 @@ module Dbscheme {
   }
 
   /** A class representing `float` tokens. */
-  class Float extends @dbscheme_token_float, Token {
+  final class Float extends @dbscheme_token_float, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Float" }
   }
 
   /** A class representing `int` tokens. */
-  class Int extends @dbscheme_token_int, Token {
+  final class Int extends @dbscheme_token_int, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Int" }
   }
 
   /** A class representing `integer` tokens. */
-  class Integer extends @dbscheme_token_integer, Token {
+  final class Integer extends @dbscheme_token_integer, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Integer" }
   }
 
   /** A class representing `line_comment` tokens. */
-  class LineComment extends @dbscheme_token_line_comment, Token {
+  final class LineComment extends @dbscheme_token_line_comment, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "LineComment" }
   }
 
   /** A class representing `qldoc` tokens. */
-  class Qldoc extends @dbscheme_token_qldoc, Token {
+  final class Qldoc extends @dbscheme_token_qldoc, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Qldoc" }
   }
 
   /** A class representing `ref` tokens. */
-  class Ref extends @dbscheme_token_ref, Token {
+  final class Ref extends @dbscheme_token_ref, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Ref" }
   }
 
   /** A class representing `reprType` nodes. */
-  class ReprType extends @dbscheme_repr_type, AstNode {
+  final class ReprType extends @dbscheme_repr_type, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReprType" }
 
@@ -1839,19 +1847,19 @@ module Dbscheme {
   }
 
   /** A class representing `simpleId` tokens. */
-  class SimpleId extends @dbscheme_token_simple_id, Token {
+  final class SimpleId extends @dbscheme_token_simple_id, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SimpleId" }
   }
 
   /** A class representing `string` tokens. */
-  class String extends @dbscheme_token_string, Token {
+  final class String extends @dbscheme_token_string, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "String" }
   }
 
   /** A class representing `table` nodes. */
-  class Table extends @dbscheme_table, AstNode {
+  final class Table extends @dbscheme_table, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Table" }
 
@@ -1868,7 +1876,7 @@ module Dbscheme {
   }
 
   /** A class representing `tableName` nodes. */
-  class TableName extends @dbscheme_table_name, AstNode {
+  final class TableName extends @dbscheme_table_name, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TableName" }
 
@@ -1880,7 +1888,7 @@ module Dbscheme {
   }
 
   /** A class representing `unionDecl` nodes. */
-  class UnionDecl extends @dbscheme_union_decl, AstNode {
+  final class UnionDecl extends @dbscheme_union_decl, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "UnionDecl" }
 
@@ -1897,13 +1905,13 @@ module Dbscheme {
   }
 
   /** A class representing `unique` tokens. */
-  class Unique extends @dbscheme_token_unique, Token {
+  final class Unique extends @dbscheme_token_unique, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Unique" }
   }
 
   /** A class representing `varchar` tokens. */
-  class Varchar extends @dbscheme_token_varchar, Token {
+  final class Varchar extends @dbscheme_token_varchar, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Varchar" }
   }
@@ -1966,7 +1974,7 @@ module Dbscheme {
 overlay[local]
 module Blame {
   /** The base class for all AST nodes */
-  class AstNode extends @blame_ast_node {
+  private class AstNodeImpl extends @blame_ast_node {
     /** Gets a string representation of this element. */
     string toString() { result = this.getAPrimaryQlClass() }
 
@@ -1989,8 +1997,10 @@ module Blame {
     string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
   }
 
+  final class AstNode = AstNodeImpl;
+
   /** A token. */
-  class Token extends @blame_token, AstNode {
+  private class TokenImpl extends @blame_token, AstNodeImpl {
     /** Gets the value of this token. */
     final string getValue() { blame_tokeninfo(this, _, result) }
 
@@ -2001,8 +2011,10 @@ module Blame {
     override string getAPrimaryQlClass() { result = "Token" }
   }
 
+  final class Token = TokenImpl;
+
   /** A reserved word. */
-  class ReservedWord extends @blame_reserved_word, Token {
+  final class ReservedWord extends @blame_reserved_word, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
   }
@@ -2028,7 +2040,7 @@ module Blame {
   }
 
   /** A class representing `blame_entry` nodes. */
-  class BlameEntry extends @blame_blame_entry, AstNode {
+  final class BlameEntry extends @blame_blame_entry, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BlameEntry" }
 
@@ -2045,7 +2057,7 @@ module Blame {
   }
 
   /** A class representing `blame_info` nodes. */
-  class BlameInfo extends @blame_blame_info, AstNode {
+  final class BlameInfo extends @blame_blame_info, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BlameInfo" }
 
@@ -2062,13 +2074,13 @@ module Blame {
   }
 
   /** A class representing `date` tokens. */
-  class Date extends @blame_token_date, Token {
+  final class Date extends @blame_token_date, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Date" }
   }
 
   /** A class representing `file_entry` nodes. */
-  class FileEntry extends @blame_file_entry, AstNode {
+  final class FileEntry extends @blame_file_entry, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FileEntry" }
 
@@ -2085,13 +2097,13 @@ module Blame {
   }
 
   /** A class representing `filename` tokens. */
-  class Filename extends @blame_token_filename, Token {
+  final class Filename extends @blame_token_filename, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Filename" }
   }
 
   /** A class representing `number` tokens. */
-  class Number extends @blame_token_number, Token {
+  final class Number extends @blame_token_number, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Number" }
   }
@@ -2118,7 +2130,7 @@ module Blame {
 overlay[local]
 module JSON {
   /** The base class for all AST nodes */
-  class AstNode extends @json_ast_node {
+  private class AstNodeImpl extends @json_ast_node {
     /** Gets a string representation of this element. */
     string toString() { result = this.getAPrimaryQlClass() }
 
@@ -2141,8 +2153,10 @@ module JSON {
     string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
   }
 
+  final class AstNode = AstNodeImpl;
+
   /** A token. */
-  class Token extends @json_token, AstNode {
+  private class TokenImpl extends @json_token, AstNodeImpl {
     /** Gets the value of this token. */
     final string getValue() { json_tokeninfo(this, _, result) }
 
@@ -2153,8 +2167,10 @@ module JSON {
     override string getAPrimaryQlClass() { result = "Token" }
   }
 
+  final class Token = TokenImpl;
+
   /** A reserved word. */
-  class ReservedWord extends @json_reserved_word, Token {
+  final class ReservedWord extends @json_reserved_word, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReservedWord" }
   }
@@ -2179,10 +2195,10 @@ module JSON {
     )
   }
 
-  class UnderscoreValue extends @json_underscore_value, AstNode { }
+  final class UnderscoreValue extends @json_underscore_value, AstNodeImpl { }
 
   /** A class representing `array` nodes. */
-  class Array extends @json_array, AstNode {
+  final class Array extends @json_array, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Array" }
 
@@ -2194,13 +2210,13 @@ module JSON {
   }
 
   /** A class representing `comment` tokens. */
-  class Comment extends @json_token_comment, Token {
+  final class Comment extends @json_token_comment, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Comment" }
   }
 
   /** A class representing `document` nodes. */
-  class Document extends @json_document, AstNode {
+  final class Document extends @json_document, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Document" }
 
@@ -2212,31 +2228,31 @@ module JSON {
   }
 
   /** A class representing `escape_sequence` tokens. */
-  class EscapeSequence extends @json_token_escape_sequence, Token {
+  final class EscapeSequence extends @json_token_escape_sequence, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "EscapeSequence" }
   }
 
   /** A class representing `false` tokens. */
-  class False extends @json_token_false, Token {
+  final class False extends @json_token_false, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "False" }
   }
 
   /** A class representing `null` tokens. */
-  class Null extends @json_token_null, Token {
+  final class Null extends @json_token_null, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Null" }
   }
 
   /** A class representing `number` tokens. */
-  class Number extends @json_token_number, Token {
+  final class Number extends @json_token_number, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Number" }
   }
 
   /** A class representing `object` nodes. */
-  class Object extends @json_object, AstNode {
+  final class Object extends @json_object, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Object" }
 
@@ -2248,7 +2264,7 @@ module JSON {
   }
 
   /** A class representing `pair` nodes. */
-  class Pair extends @json_pair, AstNode {
+  final class Pair extends @json_pair, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Pair" }
 
@@ -2265,7 +2281,7 @@ module JSON {
   }
 
   /** A class representing `string` nodes. */
-  class String extends @json_string__, AstNode {
+  final class String extends @json_string__, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "String" }
 
@@ -2277,13 +2293,13 @@ module JSON {
   }
 
   /** A class representing `string_content` tokens. */
-  class StringContent extends @json_token_string_content, Token {
+  final class StringContent extends @json_token_string_content, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "StringContent" }
   }
 
   /** A class representing `true` tokens. */
-  class True extends @json_token_true, Token {
+  final class True extends @json_token_true, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "True" }
   }
