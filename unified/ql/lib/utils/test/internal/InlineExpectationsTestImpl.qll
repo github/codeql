@@ -4,7 +4,7 @@ private import codeql.util.test.InlineExpectationsTest
 
 module Impl implements InlineExpectationsTestSig {
   class ExpectationComment extends U::Comment {
-    /** Gets the contents of the given comment, _without_ the preceding comment marker (`//`). */
+    /** Gets the text inside this comment, without the surrounding comment delimiters. */
     string getContents() { result = this.getCommentText() }
   }
 
