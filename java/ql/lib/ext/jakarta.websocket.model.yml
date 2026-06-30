@@ -1,0 +1,38 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["jakarta.websocket", "Decoder$Binary", True, "decode", "", "", "Parameter[0]", "remote", "manual"]
+      - ["jakarta.websocket", "Decoder$Binary", True, "willDecode", "", "", "Parameter[0]", "remote", "manual"]
+      - ["jakarta.websocket", "Decoder$BinaryStream", True, "decode", "", "", "Parameter[0]", "remote", "manual"]
+      - ["jakarta.websocket", "Decoder$Text", True, "decode", "", "", "Parameter[0]", "remote", "manual"]
+      - ["jakarta.websocket", "Decoder$Text", True, "willDecode", "", "", "Parameter[0]", "remote", "manual"]
+      - ["jakarta.websocket", "Decoder$TextStream", True, "decode", "", "", "Parameter[0]", "remote", "manual"]
+      - ["jakarta.websocket", "Endpoint", True, "onClose", "", "", "Parameter[0]", "remote", "manual"]
+      - ["jakarta.websocket", "Endpoint", True, "onError", "", "", "Parameter[0]", "remote", "manual"]
+      - ["jakarta.websocket", "Endpoint", True, "onOpen", "", "", "Parameter[0]", "remote", "manual"]
+      - ["jakarta.websocket", "MessageHandler$Partial", True, "onMessage", "", "", "Parameter[0]", "remote", "manual"]
+      - ["jakarta.websocket", "MessageHandler$Whole", True, "onMessage", "", "", "Parameter[0]", "remote", "manual"]
+      - ["jakarta.websocket", "OnClose", True, "", "", "Annotated", "Parameter", "remote", "manual"]
+      - ["jakarta.websocket", "OnError", True, "", "", "Annotated", "Parameter", "remote", "manual"]
+      - ["jakarta.websocket", "OnMessage", True, "", "", "Annotated", "Parameter", "remote", "manual"]
+      - ["jakarta.websocket", "OnOpen", True, "", "", "Annotated", "Parameter", "remote", "manual"]
+      - ["jakarta.websocket.server", "ServerEndpointConfig$Configurator", True, "getNegotiatedSubprotocol", "", "", "Parameter[1]", "remote", "manual"]
+      - ["jakarta.websocket.server", "ServerEndpointConfig$Configurator", True, "modifyHandshake", "", "", "Parameter[1]", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["jakarta.websocket", "Session", True, "getOpenSessions", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["jakarta.websocket", "Session", True, "getPathParameters", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["jakarta.websocket", "Session", True, "getQueryString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["jakarta.websocket", "Session", True, "getRequestParameterMap", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["jakarta.websocket", "Session", True, "getRequestURI", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["jakarta.websocket", "Session", True, "getUserPrincipal", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["jakarta.websocket", "PongMessage", True, "getApplicationData", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["jakarta.websocket.server", "HandshakeRequest", True, "getParameterMap", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["jakarta.websocket.server", "HandshakeRequest", True, "getQueryString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["jakarta.websocket.server", "HandshakeRequest", True, "getRequestURI", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["jakarta.websocket.server", "HandshakeRequest", True, "getUserPrincipal", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      
