@@ -161,6 +161,18 @@ print(instance.foo) # $ tracked MISSING: tracked=foo
 instance.print_foo() # $ MISSING: tracked=foo
 
 
+# attribute set in method, but the instance flows across a call/return before the read.
+# `instanceFieldStep` identifies the instance using only local flow from the constructor
+# call, so a value stored on `self.foo` is not seen once the instance has crossed a
+# function boundary.
+
+def make_my_class2():
+    return MyClass2()
+
+returned_instance = make_my_class2()
+print(returned_instance.foo) # $ MISSING: tracked
+
+
 # attribute set from outside of class
 
 class MyClass3(object):
