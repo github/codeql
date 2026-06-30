@@ -78,6 +78,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public ImmutableHashSet<string> ReachableFeeds => lazyReachableFeeds.Value;
 
+        private readonly Lazy<ImmutableHashSet<string>> lazyReachableFallbackFeeds;
+        /// <summary>
+        /// Gets the list of reachable NuGet feeds that are configured as fallback feeds.
+        /// </summary>
+        public ImmutableHashSet<string> ReachableFallbackFeeds => lazyReachableFallbackFeeds.Value;
+
         public FeedManager(ILogger logger, IDotNet dotnet, DependabotProxy? dependabotProxy, FileProvider fileProvider)
         {
             this.logger = logger;
@@ -101,8 +107,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 CheckSpecifiedFeeds(InheritedFeeds, out var reachableInheritedFeeds);
                 return ReachableExplicitFeeds.Union(reachableInheritedFeeds).ToImmutableHashSet();
             });
+            lazyReachableFallbackFeeds = new Lazy<ImmutableHashSet<string>>(() =>
+            {
+                var reachableFallbackFeeds = GetReachableFallbackNugetFeeds();
+                return reachableFallbackFeeds.ToImmutableHashSet();
+            });
         }
-
 
         private string? GetDirectoryName(string path)
         {
@@ -147,7 +157,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private IEnumerable<string> GetFeedsFromFolder(string folderPath) =>
             GetFeeds(() => dotnet.GetNugetFeedsFromFolder(folderPath));
-
 
         private IEnumerable<string> GetFeedsFromNugetConfig(string nugetConfigPath) =>
             GetFeeds(() => dotnet.GetNugetFeeds(nugetConfigPath));
@@ -204,20 +213,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Find the path specific feeds.
             var folder = GetDirectoryName(path);
             var feedsToConsider = folder is not null ? GetFeedsFromFolder(folder).ToHashSet() : new HashSet<string>();
-
-            return FeedsToUseAux(feedsToConsider);
-        }
-
-        /// <summary>
-        /// Constructs the list of NuGet sources to use for this restore.
-        /// (1) Use the feeds we get from `dotnet nuget list source --configfile`
-        /// (2) Use private registries, if they are configured
-        /// </summary>
-        /// <param name="config">Path to the NuGet configuration file.</param>
-        /// <returns>The list of NuGet feeds to use for this restore.</returns>
-        public IEnumerable<string> FeedsToUseFromConfig(string config)
-        {
-            var feedsToConsider = GetFeedsFromNugetConfig(config).ToHashSet();
 
             return FeedsToUseAux(feedsToConsider);
         }
