@@ -130,17 +130,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 var allExplicitReachable = explicitFeeds.Count == feedManager.ReachableExplicitFeeds.Count;
                 EmitUnreachableFeedsDiagnostics(allExplicitReachable);
-
-                if (feedManager.ExplicitFeedTimeout)
-                {
-                    // If we experience a timeout, we use this fallback.
-                    // todo: we could also check the reachability of the inherited nuget feeds, but to use those in the fallback we would need to handle authentication too.
-                    var unresponsiveMissingPackageLocation = DownloadMissingPackages([]);
-                    return unresponsiveMissingPackageLocation is null
-                        ? []
-                        : [unresponsiveMissingPackageLocation];
-                }
-
             }
 
             try
