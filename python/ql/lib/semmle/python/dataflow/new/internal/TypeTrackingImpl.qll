@@ -349,11 +349,23 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
    * `instance.attr`, where `instance` is a reference to an instance of `cls`).
    *
    * This complements `selfAttrRef`, which only handles `self.attr` accesses inside the
-   * methods of `cls`. Unlike `selfAttrRef`, this depends on the call graph (via
-   * `classInstanceTracker`), so steps using it must be reported as `levelStepCall`.
+   * methods of `cls`. The instance is identified using *local* flow from a constructor
+   * call `cls(...)` (resolved via the call graph by `resolveClassCall`), rather than a
+   * dedicated instance type-tracker (`classInstanceTracker`).
+   *
+   * Using `classInstanceTracker` here would make `levelStepCall` mutually recursive with
+   * `classInstanceTracker` -- itself a full type-tracker run -- which caused catastrophic
+   * query slowdowns on some OOP-heavy Python code bases (e.g. `mypy` and `dask`). Relying
+   * on local flow from a resolved constructor call instead depends only on `classTracker`
+   * (the same call-graph machinery already used by `inheritedFieldStep`), avoiding that
+   * blow-up. The trade-off is reduced precision: instances that flow across a call or
+   * return before being read are no longer covered by this step.
    */
   private predicate instanceAttrRead(Class cls, string attr, DataFlowPublic::AttrRead read) {
-    read.getObject() = DataFlowDispatch::classInstanceTracker(cls) and
+    exists(DataFlowPublic::CallCfgNode construction |
+      DataFlowDispatch::resolveClassCall(construction.asCfgNode(), cls) and
+      read.getObject().getALocalSource() = construction
+    ) and
     read.mayHaveAttributeName(attr)
   }
 
@@ -432,9 +444,9 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
    * This is the cross-instance counterpart of `localFieldStep`: it relates a write of
    * `self.attr` inside a class to a read of `attr` on a reference to an instance of that
    * class or one of its subclasses. Identifying instances relies on the call graph (via
-   * `classInstanceTracker`), so this step is reported as `levelStepCall` rather than
-   * `levelStepNoCall`. The write may occur in the instance's own class or in any of its
-   * superclasses, since those methods are inherited.
+   * `resolveClassCall`, see `instanceAttrRead`), so this step is reported as
+   * `levelStepCall` rather than `levelStepNoCall`. The write may occur in the instance's
+   * own class or in any of its superclasses, since those methods are inherited.
    *
    * Like `localFieldStep`, this is an over-approximation: it is both instance-insensitive
    * and order-insensitive.
