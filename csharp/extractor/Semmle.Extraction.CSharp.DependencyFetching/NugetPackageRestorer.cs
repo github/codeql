@@ -307,7 +307,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (feedManager.CheckNugetFeedResponsiveness || feedManager.HasPrivateRegistryFeeds)
             {
                 // Attempt to get the fallback configuration.
-                var reachableFallbackFeeds = feedManager.GetReachableFallbackNugetFeeds();
+                var reachableFallbackFeeds = feedManager.ReachableFallbackFeeds;
                 compilationInfoContainer.CompilationInfos.Add(("Reachable fallback NuGet feed count", reachableFallbackFeeds.Count.ToString()));
 
                 if (reachableFallbackFeeds.Count == 0)

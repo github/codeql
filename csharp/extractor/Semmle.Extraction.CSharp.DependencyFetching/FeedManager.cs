@@ -78,6 +78,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public ImmutableHashSet<string> ReachableFeeds => lazyReachableFeeds.Value;
 
+        private readonly Lazy<ImmutableHashSet<string>> lazyReachableFallbackFeeds;
+        /// <summary>
+        /// Gets the list of reachable NuGet feeds that are configured as fallback feeds.
+        /// </summary>
+        public ImmutableHashSet<string> ReachableFallbackFeeds => lazyReachableFallbackFeeds.Value;
+
+
         public FeedManager(ILogger logger, IDotNet dotnet, DependabotProxy? dependabotProxy, FileProvider fileProvider)
         {
             this.logger = logger;
@@ -100,6 +107,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 // Inherited feeds should only be used, if they are indeed reachable (as they may be environment specific).
                 CheckSpecifiedFeeds(InheritedFeeds, out var reachableInheritedFeeds);
                 return ReachableExplicitFeeds.Union(reachableInheritedFeeds).ToImmutableHashSet();
+            });
+            lazyReachableFallbackFeeds = new Lazy<ImmutableHashSet<string>>(() =>
+            {
+                var reachableFallbackFeeds = GetReachableFallbackNugetFeeds();
+                return reachableFallbackFeeds.ToImmutableHashSet();
             });
         }
 
