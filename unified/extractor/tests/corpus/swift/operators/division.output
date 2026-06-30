@@ -1,0 +1,25 @@
+a / b
+
+---
+
+source_file
+  statement:
+    multiplicative_expression
+      lhs: simple_identifier "a"
+      op: /
+      rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        binary_expr
+          operator: infix_operator "/"
+          left:
+            name_expr
+              identifier: identifier "a"
+          right:
+            name_expr
+              identifier: identifier "b"

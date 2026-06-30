@@ -238,9 +238,10 @@ module PointsToBasedCallGraph {
     Value calleeValue;
 
     ResolvableRecordedCall() {
-      exists(Call call, XmlCallee xmlCallee |
+      exists(Call call, XmlCallee xmlCallee, ControlFlowNode callCfg |
         call = this.getACall() and
-        calleeValue.getACall() = call.getAFlowNode() and
+        callCfg.getNode() = call and
+        calleeValue.getACall() = callCfg and
         xmlCallee = this.getXmlCallee() and
         (
           xmlCallee instanceof XmlPythonCallee and

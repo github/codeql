@@ -1,7 +1,7 @@
 import commands
 
 
-def test(codeql, java_full):
+def test(codeql, java_full, kotlinc_2_3_20):
     # Compile the JavaDefns2 copy outside tracing, to make sure the Kotlin view of it matches the Java view seen by the traced javac compilation of JavaDefns.java below.
     commands.run(["javac", "JavaDefns2.java"])
     codeql.database.create(

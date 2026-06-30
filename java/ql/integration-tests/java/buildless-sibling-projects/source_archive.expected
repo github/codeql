@@ -26,4 +26,5 @@ maven-project-2/src/main/resources/my-app.properties
 maven-project-2/src/main/resources/page.xml
 maven-project-2/src/main/resources/struts.xml
 maven-project-2/src/test/java/com/example/AppTest4.java
+settings.xml
 test-db/working/settings.xml

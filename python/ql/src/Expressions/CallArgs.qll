@@ -116,7 +116,7 @@ FunctionValue get_function_or_initializer(Value func_or_cls) {
 predicate illegally_named_parameter_objectapi(Call call, Object func, string name) {
   not func.isC() and
   name = call.getANamedArgumentName() and
-  call.getAFlowNode() = get_a_call_objectapi(func) and
+  exists(ControlFlowNode callCfg | callCfg.getNode() = call | callCfg = get_a_call_objectapi(func)) and
   not get_function_or_initializer_objectapi(func).isLegalArgumentName(name)
 }
 
@@ -124,7 +124,7 @@ predicate illegally_named_parameter_objectapi(Call call, Object func, string nam
 predicate illegally_named_parameter(Call call, Value func, string name) {
   not func.isBuiltin() and
   name = call.getANamedArgumentName() and
-  call.getAFlowNode() = get_a_call(func) and
+  exists(ControlFlowNode callCfg | callCfg.getNode() = call | callCfg = get_a_call(func)) and
   not get_function_or_initializer(func).isLegalArgumentName(name)
 }
 
@@ -146,7 +146,9 @@ predicate too_few_args_objectapi(Call call, Object callable, int limit) {
     call = func.getAMethodCall().getNode() and limit = func.minParameters() - 1
     or
     callable instanceof ClassObject and
-    call.getAFlowNode() = get_a_call_objectapi(callable) and
+    exists(ControlFlowNode callCfg | callCfg.getNode() = call |
+      callCfg = get_a_call_objectapi(callable)
+    ) and
     limit = func.minParameters() - 1
   )
 }
@@ -172,7 +174,7 @@ predicate too_few_args(Call call, Value callable, int limit) {
     call = func.getAMethodCall().getNode() and limit = func.minParameters() - 1
     or
     callable instanceof ClassValue and
-    call.getAFlowNode() = get_a_call(callable) and
+    exists(ControlFlowNode callCfg | callCfg.getNode() = call | callCfg = get_a_call(callable)) and
     limit = func.minParameters() - 1
   )
 }
@@ -191,7 +193,9 @@ predicate too_many_args_objectapi(Call call, Object callable, int limit) {
     call = func.getAMethodCall().getNode() and limit = func.maxParameters() - 1
     or
     callable instanceof ClassObject and
-    call.getAFlowNode() = get_a_call_objectapi(callable) and
+    exists(ControlFlowNode callCfg | callCfg.getNode() = call |
+      callCfg = get_a_call_objectapi(callable)
+    ) and
     limit = func.maxParameters() - 1
   ) and
   positional_arg_count_for_call_objectapi(call, callable) > limit
@@ -211,7 +215,7 @@ predicate too_many_args(Call call, Value callable, int limit) {
     call = func.getAMethodCall().getNode() and limit = func.maxParameters() - 1
     or
     callable instanceof ClassValue and
-    call.getAFlowNode() = get_a_call(callable) and
+    exists(ControlFlowNode callCfg | callCfg.getNode() = call | callCfg = get_a_call(callable)) and
     limit = func.maxParameters() - 1
   ) and
   positional_arg_count_for_call(call, callable) > limit

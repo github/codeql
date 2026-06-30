@@ -1,3 +1,4 @@
+| epilogues.go:115:6:115:22 | epiRecoverUnnamed | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.epiRecoverUnnamed |
 | file://:0:0:0:0 | Exit | os.Exit |
 | file://:0:0:0:0 | Fatal | log.Fatal |
 | file://:0:0:0:0 | Fatal | log.Logger.Fatal |

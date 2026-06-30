@@ -13,7 +13,7 @@ func logSomething(entry *logrus.Entry) {
 	entry.Traceln(text) // $ logger=text
 }
 
-func logrusCalls() {
+func logrusCalls(selector int) {
 	err := errors.New("Error")
 	var fields logrus.Fields = nil
 	var fn logrus.LogFunction = nil
@@ -27,11 +27,15 @@ func logrusCalls() {
 	tmp = logrus.WithFields(fields) // $ logger=fields
 	logSomething(tmp)
 
-	logrus.Error(text)       // $ logger=text
-	logrus.Fatalf(fmt, text) // $ logger=fmt logger=text
-	logrus.Panicln(text)     // $ logger=text
-	logrus.Infof(fmt, text)  // $ logger=fmt logger=text
-	logrus.FatalFn(fn)       // $ logger=fn
+	logrus.Error(text)      // $ logger=text
+	logrus.Infof(fmt, text) // $ logger=fmt logger=text
+	if selector == 0 {
+		logrus.Fatalf(fmt, text) // $ logger=fmt logger=text
+	} else if selector == 1 {
+		logrus.Panicln(text) // $ logger=text
+	} else if selector == 2 {
+		logrus.FatalFn(fn) // $ logger=fn
+	}
 
 	// components corresponding to the format specifier "%T" are not considered vulnerable
 	logrus.Infof("%s: found type %T", text, v)  // $ logger="%s: found type %T" logger=text type-logger=v

@@ -4,6 +4,7 @@ generated-2.xml
 generated-3.xml
 generated-4.xml
 pom.xml
+settings.xml
 src/main/java/com/example/App.java
 src/main/resources/my-app.properties
 src/main/resources/page.xml

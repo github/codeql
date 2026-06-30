@@ -3,7 +3,7 @@ import json
 from flask import Flask, make_response, jsonify, Response, request, redirect
 from werkzeug.datastructures import Headers
 
-app = Flask(__name__)
+app = Flask(__name__) # $ instance
 
 
 @app.route("/html1")  # $ routeSetup="/html1"

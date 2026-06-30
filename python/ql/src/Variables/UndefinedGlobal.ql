@@ -27,7 +27,7 @@ predicate guarded_against_name_error(Name u) {
   |
     globals.getFunc().(Name).getId() = "globals" and
     guard.controls(controlled, _) and
-    controlled.contains(u.getAFlowNode())
+    exists(ControlFlowNode uCfg | uCfg.getNode() = u | controlled.contains(uCfg))
   )
 }
 
@@ -101,18 +101,18 @@ predicate undefined_use(Name u) {
 }
 
 private predicate first_use_in_a_block(Name use) {
-  exists(GlobalVariable v, BasicBlock b, int i |
-    i = min(int j | b.getNode(j).getNode() = v.getALoad()) and b.getNode(i) = use.getAFlowNode()
+  exists(GlobalVariable v, BasicBlock b, int i, ControlFlowNode useCfg | useCfg.getNode() = use |
+    i = min(int j | b.getNode(j).getNode() = v.getALoad()) and b.getNode(i) = useCfg
   )
 }
 
 predicate first_undefined_use(Name use) {
   undefined_use(use) and
-  exists(GlobalVariable v | v.getALoad() = use |
+  exists(GlobalVariable v, ControlFlowNode useCfg | v.getALoad() = use and useCfg.getNode() = use |
     first_use_in_a_block(use) and
     not exists(ControlFlowNode other |
       other.getNode() = v.getALoad() and
-      other.getBasicBlock().strictlyDominates(use.getAFlowNode().getBasicBlock())
+      other.getBasicBlock().strictlyDominates(useCfg.getBasicBlock())
     )
   )
 }

@@ -137,7 +137,10 @@ class PyFunctionObject extends FunctionObject {
 
   /** Gets a control flow node corresponding to the value of a return statement */
   ControlFlowNodeWithPointsTo getAReturnedNode() {
-    result = this.getFunction().getAReturnValueFlowNode()
+    exists(Return ret |
+      ret.getScope() = this.getFunction() and
+      result.getNode() = ret.getValue()
+    )
   }
 
   override string descriptiveString() {
@@ -170,7 +173,7 @@ class PyFunctionObject extends FunctionObject {
   predicate unconditionallyReturnsParameter(int n) {
     exists(SsaVariable pvar |
       exists(Parameter p | p = this.getFunction().getArg(n) |
-        p.asName().getAFlowNode() = pvar.getDefinition()
+        pvar.getDefinition().getNode() = p.asName()
       ) and
       exists(NameNode rval |
         rval = pvar.getAUse() and

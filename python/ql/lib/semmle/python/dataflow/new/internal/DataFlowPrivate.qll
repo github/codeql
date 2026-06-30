@@ -185,8 +185,8 @@ private predicate synthDictSplatArgumentNodeStoreStep(
  */
 predicate yieldStoreStep(Node nodeFrom, Content c, Node nodeTo) {
   exists(Yield yield |
-    nodeTo.asCfgNode() = yield.getAFlowNode() and
-    nodeFrom.asCfgNode() = yield.getValue().getAFlowNode() and
+    nodeTo.asCfgNode().getNode() = yield and
+    nodeFrom.asCfgNode().getNode() = yield.getValue() and
     // TODO: Consider if this will also need to transfer dictionary content
     // once dictionary comprehensions are supported.
     c instanceof ListElementContent

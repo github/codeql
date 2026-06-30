@@ -9,7 +9,7 @@ end
 class OneController < ActionController::Base
   before_action :a
   after_action :c
-  
+
   def a
     @foo = params[:foo]
   end
@@ -18,14 +18,14 @@ class OneController < ActionController::Base
   end
 
   def c
-    sink @foo
+    sink @foo # $ hasTaintFlow
   end
 end
 
 class TwoController < ActionController::Base
   before_action :a
   after_action :c
-  
+
   def a
     @foo = params[:foo]
   end
@@ -35,14 +35,14 @@ class TwoController < ActionController::Base
   end
 
   def c
-    sink @foo
+    sink @foo # $ SPURIOUS: hasTaintFlow
   end
 end
 
 class ThreeController < ActionController::Base
   before_action :a
   after_action :c
-  
+
   def a
     @foo = params[:foo]
     @foo = "safe"
@@ -52,14 +52,14 @@ class ThreeController < ActionController::Base
   end
 
   def c
-    sink @foo
+    sink @foo # $ SPURIOUS: hasTaintFlow
   end
 end
 
 class FourController < ActionController::Base
   before_action :a
   after_action :c
-  
+
   def a
     @foo.bar = params[:foo]
   end
@@ -68,14 +68,14 @@ class FourController < ActionController::Base
   end
 
   def c
-    sink(@foo.bar)
+    sink(@foo.bar) # $ hasTaintFlow
   end
 end
 
 class FiveController < ActionController::Base
   before_action :a
   after_action :c
-  
+
   def a
     self.taint_foo
   end
@@ -84,9 +84,9 @@ class FiveController < ActionController::Base
   end
 
   def c
-    sink  @foo
+    sink  @foo # $ hasTaintFlow
   end
-  
+
   def taint_foo
     @foo = params[:foo]
   end

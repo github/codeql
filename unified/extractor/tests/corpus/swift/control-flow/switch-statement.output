@@ -1,0 +1,125 @@
+switch x {
+case 1:
+  print("one")
+case 2, 3:
+  print("two or three")
+default:
+  print("other")
+}
+
+---
+
+source_file
+  statement:
+    switch_statement
+      entry:
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind: integer_literal "1"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "one"
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind: integer_literal "2"
+            switch_pattern
+              pattern:
+                pattern
+                  kind: integer_literal "3"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "two or three"
+        switch_entry
+          default: default_keyword "default"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "other"
+      expr: simple_identifier "x"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        switch_expr
+          case:
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: string_literal "\"one\""
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              pattern:
+                expr_equality_pattern
+                  expr: int_literal "1"
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: string_literal "\"two or three\""
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+              pattern:
+                or_pattern
+                  pattern:
+                    expr_equality_pattern
+                      expr: int_literal "2"
+                    expr_equality_pattern
+                      expr: int_literal "3"
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: string_literal "\"other\""
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+          value:
+            name_expr
+              identifier: identifier "x"

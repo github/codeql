@@ -181,7 +181,7 @@ class ClassObject extends Object {
     )
   }
 
-  ControlFlowNode declaredMetaClass() { result = this.getPyClass().getMetaClass().getAFlowNode() }
+  ControlFlowNode declaredMetaClass() { result.getNode() = this.getPyClass().getMetaClass() }
 
   /** Has type inference failed to compute the full class hierarchy for this class for the reason given. */
   predicate failedInference(string reason) { Types::failedInference(this.theClass(), reason) }
@@ -195,8 +195,9 @@ class ClassObject extends Object {
    * It is guaranteed that getProbableSingletonInstance() returns at most one Object for each ClassObject.
    */
   Object getProbableSingletonInstance() {
-    exists(ControlFlowNodeWithPointsTo use, Expr origin |
-      use.refersTo(result, this, origin.getAFlowNode())
+    exists(ControlFlowNodeWithPointsTo use, Expr origin, ControlFlowNode origin_ |
+      origin_.getNode() = origin and
+      use.refersTo(result, this, origin_)
     |
       this.hasStaticallyUniqueInstance() and
       /* Ensure that original expression will be executed only one. */

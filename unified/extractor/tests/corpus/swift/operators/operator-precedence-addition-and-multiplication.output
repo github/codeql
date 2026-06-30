@@ -1,0 +1,35 @@
+a + b * c
+
+---
+
+source_file
+  statement:
+    additive_expression
+      lhs: simple_identifier "a"
+      op: +
+      rhs:
+        multiplicative_expression
+          lhs: simple_identifier "b"
+          op: *
+          rhs: simple_identifier "c"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        binary_expr
+          operator: infix_operator "+"
+          left:
+            name_expr
+              identifier: identifier "a"
+          right:
+            binary_expr
+              operator: infix_operator "*"
+              left:
+                name_expr
+                  identifier: identifier "b"
+              right:
+                name_expr
+                  identifier: identifier "c"

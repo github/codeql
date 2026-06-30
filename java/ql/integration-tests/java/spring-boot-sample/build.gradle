@@ -11,7 +11,9 @@ version = '0.0.1-SNAPSHOT'
 // but I omit it to test we recognise the Spring Boot plugin version.
 
 repositories {
-	mavenCentral()
+	maven {
+		url = 'https://maven-central.storage-download.googleapis.com/maven2/'
+	}
 }
 
 dependencies {

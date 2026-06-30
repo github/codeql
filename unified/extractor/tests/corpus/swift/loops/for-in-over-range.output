@@ -1,0 +1,57 @@
+for i in 0..<10 {
+  print(i)
+}
+
+---
+
+source_file
+  statement:
+    for_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "i"
+      collection:
+        range_expression
+          end: integer_literal "10"
+          op: ..<
+          start: integer_literal "0"
+      item:
+        pattern
+          bound_identifier: simple_identifier "i"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        for_each_stmt
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "i"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+          pattern:
+            name_pattern
+              identifier: identifier "i"
+          iterable:
+            binary_expr
+              operator: infix_operator "..<"
+              left: int_literal "0"
+              right: int_literal "10"

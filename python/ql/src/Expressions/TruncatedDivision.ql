@@ -19,7 +19,7 @@ where
   // Only relevant for Python 2, as all later versions implement true division
   major_version() = 2 and
   exists(BinaryExprNode bin, Value lval, Value rval |
-    bin = div.getAFlowNode() and
+    bin.getNode() = div and
     bin.getNode().getOp() instanceof Div and
     bin.getLeft().(ControlFlowNodeWithPointsTo).pointsTo(lval, left) and
     lval.getClass() = ClassValue::int_() and

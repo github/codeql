@@ -1913,8 +1913,8 @@ abstract class ReturnNode extends Node {
 class ExtractedReturnNode extends ReturnNode, CfgNode {
   // See `TaintTrackingImplementation::returnFlowStep`
   ExtractedReturnNode() {
-    node = any(Return ret).getValue().getAFlowNode() or
-    node = any(Yield yield).getAFlowNode()
+    node.getNode() = any(Return ret).getValue() or
+    node.getNode() = any(Yield yield)
   }
 
   override ReturnKind getKind() { any() }
@@ -1932,7 +1932,7 @@ class ExtractedReturnNode extends ReturnNode, CfgNode {
 class YieldNodeInContextManagerFunction extends ReturnNode, CfgNode {
   YieldNodeInContextManagerFunction() {
     hasContextmanagerDecorator(node.getScope()) and
-    node = any(Yield yield).getValue().getAFlowNode()
+    node.getNode() = any(Yield yield).getValue()
   }
 
   override ReturnKind getKind() { any() }

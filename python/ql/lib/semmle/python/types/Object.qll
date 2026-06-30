@@ -337,7 +337,7 @@ class TupleObject extends SequenceObject {
     or
     this instanceof TupleNode
     or
-    exists(Function func | func.getVararg().getAFlowNode() = this)
+    exists(Function func | this.(ControlFlowNode).getNode() = func.getVararg())
   }
 }
 
@@ -352,7 +352,9 @@ module TupleObject {
 }
 
 class NonEmptyTupleObject extends TupleObject {
-  NonEmptyTupleObject() { exists(Function func | func.getVararg().getAFlowNode() = this) }
+  NonEmptyTupleObject() {
+    exists(Function func | this.(ControlFlowNode).getNode() = func.getVararg())
+  }
 
   override boolean booleanValue() { result = true }
 }

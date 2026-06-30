@@ -66,7 +66,7 @@ impl<'a> AstNode for Node<'a> {
 
 impl AstNode for yeast::Node {
     fn kind(&self) -> &str {
-        yeast::Node::kind(self)
+        yeast::Node::kind_name(self)
     }
     fn is_named(&self) -> bool {
         yeast::Node::is_named(self)
@@ -280,10 +280,11 @@ pub fn location_label(writer: &mut trap::Writer, location: trap::Location) -> tr
 }
 
 /// Extracts the source file at `path`, which is assumed to be canonicalized.
-/// When `yeast_runner` is `Some`, the parsed tree is first transformed
-/// through the supplied yeast `Runner` before TRAP extraction. Building the
-/// `Runner` (which parses YAML and constructs the schema) is the caller's
-/// responsibility, allowing it to be done once and shared across files.
+/// When `desugarer` is `Some`, the parsed tree is first transformed
+/// through the supplied yeast desugarer before TRAP extraction. Building
+/// the desugarer (which parses YAML and constructs the schema) is the
+/// caller's responsibility, allowing it to be done once and shared across
+/// files.
 #[allow(clippy::too_many_arguments)]
 pub fn extract(
     language: &Language,
@@ -295,7 +296,7 @@ pub fn extract(
     path: &Path,
     source: &[u8],
     ranges: &[Range],
-    yeast_runner: Option<&yeast::Runner<'_>>,
+    desugarer: Option<&dyn yeast::Desugarer>,
 ) {
     let path_str = file_paths::normalize_and_transform_path(path, transformer);
     let source_root = std::env::current_dir()
@@ -328,8 +329,8 @@ pub fn extract(
         schema,
     );
 
-    if let Some(yeast_runner) = yeast_runner {
-        let ast = yeast_runner
+    if let Some(desugarer) = desugarer {
+        let ast = desugarer
             .run_from_tree(&tree, source)
             .unwrap_or_else(|e| panic!("Desugaring failed for {path_str}: {e}"));
         traverse_yeast(&ast, &mut visitor);
@@ -881,7 +882,6 @@ fn emit_extras_in(visitor: &mut Visitor, node: Node<'_>) {
 }
 
 fn traverse_yeast(tree: &yeast::Ast, visitor: &mut Visitor) {
-    use yeast::Cursor;
     let mut cursor = tree.walk();
     visitor.enter_node(cursor.node());
     let mut recurse = true;

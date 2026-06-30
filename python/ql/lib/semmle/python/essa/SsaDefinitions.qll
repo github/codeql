@@ -56,7 +56,7 @@ module SsaSource {
   predicate with_definition(Variable v, ControlFlowNode defn) {
     exists(With with, Name var |
       with.getOptionalVars() = var and
-      var.getAFlowNode() = defn
+      defn.getNode() = var
     |
       var = v.getAStore()
     )
@@ -67,7 +67,7 @@ module SsaSource {
   predicate pattern_capture_definition(Variable v, ControlFlowNode defn) {
     exists(MatchCapturePattern capture, Name var |
       capture.getVariable() = var and
-      var.getAFlowNode() = defn
+      defn.getNode() = var
     |
       var = v.getAStore()
     )
@@ -78,7 +78,7 @@ module SsaSource {
   predicate pattern_alias_definition(Variable v, ControlFlowNode defn) {
     exists(MatchAsPattern pattern, Name var |
       pattern.getAlias() = var and
-      var.getAFlowNode() = defn
+      defn.getNode() = var
     |
       var = v.getAStore()
     )

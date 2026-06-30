@@ -1,0 +1,53 @@
+let (a, b) = pair
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              kind:
+                tuple_pattern
+                  item:
+                    tuple_pattern_item
+                      pattern:
+                        pattern
+                          kind: simple_identifier "a"
+                    tuple_pattern_item
+                      pattern:
+                        pattern
+                          kind: simple_identifier "b"
+          value: simple_identifier "pair"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            tuple_pattern
+              element:
+                pattern_element
+                  pattern:
+                    expr_equality_pattern
+                      expr:
+                        name_expr
+                          identifier: identifier "a"
+                pattern_element
+                  pattern:
+                    expr_equality_pattern
+                      expr:
+                        name_expr
+                          identifier: identifier "b"
+          value:
+            name_expr
+              identifier: identifier "pair"

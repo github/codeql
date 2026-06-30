@@ -98,16 +98,18 @@ private predicate brace_pair(PossibleAdvancedFormatString fmt, int start, int en
 }
 
 private predicate advanced_format_call(Call format_expr, PossibleAdvancedFormatString fmt, int args) {
-  exists(CallNode call | call = format_expr.getAFlowNode() |
+  exists(CallNode call, ControlFlowNode fmtCfg |
+    call.getNode() = format_expr and fmtCfg.getNode() = fmt
+  |
     call.getFunction().(ControlFlowNodeWithPointsTo).pointsTo(Value::named("format")) and
-    call.getArg(0).(ControlFlowNodeWithPointsTo).pointsTo(_, fmt.getAFlowNode()) and
+    call.getArg(0).(ControlFlowNodeWithPointsTo).pointsTo(_, fmtCfg) and
     args = count(format_expr.getAnArg()) - 1
     or
     call.getFunction()
         .(AttrNode)
         .getObject("format")
         .(ControlFlowNodeWithPointsTo)
-        .pointsTo(_, fmt.getAFlowNode()) and
+        .pointsTo(_, fmtCfg) and
     args = count(format_expr.getAnArg())
   )
 }

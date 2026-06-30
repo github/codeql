@@ -11,6 +11,7 @@ VERSIONS = [
     "2.2.20-Beta2",
     "2.3.0",
     "2.3.20",
+    "2.4.0",
 ]
 
 def _version_to_tuple(v):

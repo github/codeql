@@ -18,8 +18,8 @@
 | TestThrow.java:20:10:20:31 | new RuntimeException(...) | TestThrow.java:20:4:20:32 | throw ... |
 | TestThrow.java:20:10:20:31 | new RuntimeException(...) | TestThrow.java:21:5:21:30 | catch (...) |
 | TestThrow.java:21:5:21:30 | catch (...) | TestThrow.java:21:29:21:29 | e |
-| TestThrow.java:21:5:21:30 | catch (...) | TestThrow.java:24:5:24:23 | catch (...) |
 | TestThrow.java:21:29:21:29 | e | TestThrow.java:22:3:24:3 | { ... } |
+| TestThrow.java:21:29:21:29 | e | TestThrow.java:24:5:24:23 | catch (...) |
 | TestThrow.java:22:3:24:3 | { ... } | TestThrow.java:23:4:23:9 | <Expr>; |
 | TestThrow.java:23:4:23:4 | z | TestThrow.java:23:8:23:8 | 1 |
 | TestThrow.java:23:4:23:8 | ...=... | TestThrow.java:29:3:29:9 | <Expr>; |
@@ -71,8 +71,8 @@
 | TestThrow.java:44:5:44:13 | thrower(...) | TestThrow.java:50:3:52:3 | { ... } |
 | TestThrow.java:44:5:44:14 | <Expr>; | TestThrow.java:44:5:44:13 | thrower(...) |
 | TestThrow.java:46:5:46:30 | catch (...) | TestThrow.java:46:29:46:29 | e |
-| TestThrow.java:46:5:46:30 | catch (...) | TestThrow.java:50:3:52:3 | { ... } |
 | TestThrow.java:46:29:46:29 | e | TestThrow.java:47:3:49:3 | { ... } |
+| TestThrow.java:46:29:46:29 | e | TestThrow.java:50:3:52:3 | { ... } |
 | TestThrow.java:47:3:49:3 | { ... } | TestThrow.java:48:4:48:9 | <Expr>; |
 | TestThrow.java:48:4:48:4 | z | TestThrow.java:48:8:48:8 | 1 |
 | TestThrow.java:48:4:48:8 | ...=... | TestThrow.java:50:3:52:3 | { ... } |
@@ -113,8 +113,8 @@
 | TestThrow.java:67:5:67:13 | thrower(...) | TestThrow.java:69:5:69:30 | catch (...) |
 | TestThrow.java:67:5:67:13 | thrower(...) | TestThrow.java:74:3:74:9 | <Expr>; |
 | TestThrow.java:67:5:67:14 | <Expr>; | TestThrow.java:67:5:67:13 | thrower(...) |
-| TestThrow.java:69:5:69:30 | catch (...) | TestThrow.java:15:14:15:14 | Exceptional Exit |
 | TestThrow.java:69:5:69:30 | catch (...) | TestThrow.java:69:29:69:29 | e |
+| TestThrow.java:69:29:69:29 | e | TestThrow.java:15:14:15:14 | Exceptional Exit |
 | TestThrow.java:69:29:69:29 | e | TestThrow.java:70:3:72:3 | { ... } |
 | TestThrow.java:70:3:72:3 | { ... } | TestThrow.java:71:4:71:9 | <Expr>; |
 | TestThrow.java:71:4:71:4 | z | TestThrow.java:71:8:71:8 | 1 |
@@ -171,8 +171,8 @@
 | TestThrow.java:97:28:97:36 | "Foo bar" | TestThrow.java:97:39:97:42 | null |
 | TestThrow.java:97:39:97:42 | null | TestThrow.java:97:12:97:43 | new IOException(...) |
 | TestThrow.java:99:6:99:31 | catch (...) | TestThrow.java:99:30:99:30 | e |
-| TestThrow.java:99:6:99:31 | catch (...) | TestThrow.java:119:5:119:25 | catch (...) |
 | TestThrow.java:99:30:99:30 | e | TestThrow.java:100:4:102:4 | { ... } |
+| TestThrow.java:99:30:99:30 | e | TestThrow.java:119:5:119:25 | catch (...) |
 | TestThrow.java:100:4:102:4 | { ... } | TestThrow.java:101:5:101:10 | <Expr>; |
 | TestThrow.java:101:5:101:5 | z | TestThrow.java:101:9:101:9 | 1 |
 | TestThrow.java:101:5:101:9 | ...=... | TestThrow.java:103:4:118:4 | try ... |
@@ -216,8 +216,8 @@
 | TestThrow.java:116:28:116:36 | "Foo bar" | TestThrow.java:116:39:116:42 | null |
 | TestThrow.java:116:39:116:42 | null | TestThrow.java:116:12:116:43 | new IOException(...) |
 | TestThrow.java:119:5:119:25 | catch (...) | TestThrow.java:119:24:119:24 | e |
-| TestThrow.java:119:5:119:25 | catch (...) | TestThrow.java:124:3:126:3 | { ... } |
 | TestThrow.java:119:24:119:24 | e | TestThrow.java:120:3:122:3 | { ... } |
+| TestThrow.java:119:24:119:24 | e | TestThrow.java:124:3:126:3 | { ... } |
 | TestThrow.java:120:3:122:3 | { ... } | TestThrow.java:121:4:121:9 | <Expr>; |
 | TestThrow.java:121:4:121:4 | z | TestThrow.java:121:8:121:8 | 2 |
 | TestThrow.java:121:4:121:8 | ...=... | TestThrow.java:124:3:126:3 | { ... } |

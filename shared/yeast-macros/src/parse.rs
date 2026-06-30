@@ -22,10 +22,9 @@ pub fn parse_query_top(input: TokenStream) -> Result<TokenStream> {
 /// Parse a single query node (possibly with a trailing `@capture`).
 fn parse_query_node(tokens: &mut Tokens) -> Result<TokenStream> {
     let base = parse_query_atom(tokens)?;
-    // Check for trailing @capture
+    // Check for trailing @capture or @@capture
     if peek_is_at(tokens) {
-        tokens.next(); // consume @
-        let capture_name = expect_ident(tokens, "expected capture name after @")?;
+        let capture_name = consume_capture_marker(tokens)?;
         let name_str = capture_name.to_string();
         Ok(quote! {
             yeast::query::QueryNode::Capture {
@@ -121,9 +120,9 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
         std::collections::HashMap::new();
     let mut bare_children: Vec<TokenStream> = Vec::new();
     let push_field_elem = |order: &mut Vec<String>,
-                               map: &mut std::collections::HashMap<String, Vec<TokenStream>>,
-                               name: String,
-                               elem: TokenStream| {
+                           map: &mut std::collections::HashMap<String, Vec<TokenStream>>,
+                           name: String,
+                           elem: TokenStream| {
         if !map.contains_key(&name) {
             order.push(name.clone());
             map.insert(name, vec![elem]);
@@ -141,7 +140,12 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
             // Parse the field's pattern. To support repetition like
             // `field: (kind)* @cap`, parse the atom first, then check for
             // a quantifier, and lastly handle a trailing `@capture`.
-            let atom = parse_query_atom(tokens)?;
+            // `field: @cap` is sugar for `field: _ @cap`.
+            let atom = if peek_is_at(tokens) {
+                quote! { yeast::query::QueryNode::Any { match_unnamed: true } }
+            } else {
+                parse_query_atom(tokens)?
+            };
             if peek_is_repetition(tokens) {
                 let rep = expect_repetition(tokens)?;
                 let elem = quote! {
@@ -154,9 +158,7 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
                 push_field_elem(&mut field_order, &mut field_elems, field_str, elem);
             } else {
                 let child = if peek_is_at(tokens) {
-                    tokens.next();
-                    let capture_name =
-                        expect_ident(tokens, "expected capture name after @")?;
+                    let capture_name = consume_capture_marker(tokens)?;
                     let name_str = capture_name.to_string();
                     quote! {
                         yeast::query::QueryNode::Capture {
@@ -259,6 +261,7 @@ fn parse_query_list(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
                     yeast::query::QueryListElem::SingleNode(#node)
                 },
             )?;
+            let elem = maybe_wrap_list_capture(tokens, elem)?;
             elems.push(elem);
             continue;
         }
@@ -276,6 +279,7 @@ fn parse_query_list(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
                     yeast::query::QueryListElem::SingleNode(#node)
                 },
             )?;
+            let elem = maybe_wrap_list_capture(tokens, elem)?;
             elems.push(elem);
             continue;
         }
@@ -289,10 +293,10 @@ fn parse_query_list(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
 // tree! / trees! parsing — direct code generation against BuildCtx
 // ---------------------------------------------------------------------------
 
-const IMPLICIT_CTX: &str = "__yeast_ctx";
+const IMPLICIT_CTX: &str = "ctx";
 
 /// Determine the context identifier: either explicit `ctx,` or the implicit
-/// `__yeast_ctx` from an enclosing `rule!`.
+/// `ctx` from an enclosing `rule!`.
 fn parse_ctx_or_implicit(tokens: &mut Tokens) -> Ident {
     // Check if first token is an ident followed by a comma
     let mut lookahead = tokens.clone();
@@ -300,7 +304,8 @@ fn parse_ctx_or_implicit(tokens: &mut Tokens) -> Ident {
         && matches!(lookahead.next(), Some(TokenTree::Punct(p)) if p.as_char() == ',');
 
     if is_explicit {
-        let ctx = expect_ident(tokens, "").unwrap();
+        let ctx = expect_ident(tokens, "unreachable: ident was just peeked")
+            .expect("unreachable: ident was just peeked");
         let _ = tokens.next(); // consume comma
         ctx
     } else {
@@ -338,7 +343,7 @@ pub fn parse_trees_top(input: TokenStream) -> Result<TokenStream> {
     }
     Ok(quote! {
         {
-            let mut __nodes: Vec<usize> = Vec::new();
+            let mut __nodes: Vec<yeast::Id> = Vec::new();
             #(#items)*
             __nodes
         }
@@ -352,7 +357,7 @@ fn parse_direct_node(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStream> {
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => {
             let group = expect_group(tokens, Delimiter::Brace)?;
             let expr = group.stream();
-            Ok(quote! { ::std::convert::Into::<usize>::into(#expr) })
+            Ok(quote! { ::std::convert::Into::<yeast::Id>::into({ #expr }) })
         }
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Parenthesis => {
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
@@ -389,8 +394,10 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
         let expr = group.stream();
         return Ok(quote! {
             {
-                let __value = yeast::YeastDisplay::yeast_to_string(&(#expr), &*#ctx.ast);
-                #ctx.literal(#kind_str, &__value)
+                let __expr = { #expr };
+                let __value = yeast::YeastDisplay::yeast_to_string(&__expr, &*#ctx.ast);
+                let __source_range = yeast::YeastSourceRange::yeast_source_range(&__expr, &*#ctx.ast);
+                #ctx.literal_with_source_range(#kind_str, &__value, __source_range)
             }
         });
     }
@@ -411,7 +418,11 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
     // Named fields — compute each value into a temp, then reference it
     while peek_is_field(tokens) {
         let field_name = expect_ident(tokens, "expected field name")?;
-        let field_str = field_name.to_string().strip_prefix("r#").unwrap_or(&field_name.to_string()).to_string();
+        let field_str = field_name
+            .to_string()
+            .strip_prefix("r#")
+            .unwrap_or(&field_name.to_string())
+            .to_string();
         expect_punct(tokens, ':', "expected `:` after field name")?;
         let temp = Ident::new(
             &format!("__field_{field_str}_{field_counter}"),
@@ -419,36 +430,24 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
         );
         field_counter += 1;
 
-        // Check for field: {..expr} — splice a Vec<Id> into the field
+        // Plain `field: {expr}` — trait-dispatched extend.
         if peek_is_group(tokens, Delimiter::Brace) {
-            let group_clone = tokens.clone().next().unwrap();
-            if let TokenTree::Group(g) = &group_clone {
-                let mut inner_check = g.stream().into_iter();
-                let is_splice = matches!(inner_check.next(), Some(TokenTree::Punct(p)) if p.as_char() == '.')
-                    && matches!(inner_check.next(), Some(TokenTree::Punct(p)) if p.as_char() == '.');
-                if is_splice {
-                    let group = expect_group(tokens, Delimiter::Brace)?;
-                    let mut inner = group.stream().into_iter().peekable();
-                    inner.next(); // consume first .
-                    inner.next(); // consume second .
-                    let expr: proc_macro2::TokenStream = inner.collect();
-                    stmts.push(quote! {
-                        let #temp: Vec<usize> = (#expr).into_iter()
-                            .map(::std::convert::Into::<usize>::into)
-                            .collect();
-                    });
-                    // An empty splice means the field is absent — skip it
-                    // entirely rather than emitting an empty named field.
-                    field_args.push(quote! {
-                        if !#temp.is_empty() { __fields.push((#field_str, #temp)); }
-                    });
-                    continue;
-                }
-            }
+            let group = expect_group(tokens, Delimiter::Brace)?;
+            let expr = group.stream();
+            stmts.push(quote! {
+                let mut #temp: Vec<yeast::Id> = Vec::new();
+                yeast::IntoFieldIds::extend_into({ #expr }, &mut #temp);
+            });
+            // An empty `{expr}` means the field is absent — skip it
+            // entirely rather than emitting an empty named field.
+            field_args.push(quote! {
+                if !#temp.is_empty() { __fields.push((#field_str, #temp)); }
+            });
+            continue;
         }
 
         let value = parse_direct_node(tokens, ctx)?;
-        stmts.push(quote! { let #temp: usize = #value; });
+        stmts.push(quote! { let #temp: yeast::Id = #value; });
         field_args.push(quote! { __fields.push((#field_str, vec![#temp])); });
     }
 
@@ -465,7 +464,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
     Ok(quote! {
         {
             #(#stmts)*
-            let mut __fields: Vec<(&str, Vec<usize>)> = Vec::new();
+            let mut __fields: Vec<(&str, Vec<yeast::Id>)> = Vec::new();
             #(#field_args)*
             #ctx.node(#kind_str, __fields)
         }
@@ -492,25 +491,14 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
             continue;
         }
 
-        // {expr} or {..expr} — single node or splice
+        // `{expr}` — extend `__nodes` via `IntoFieldIds`, which handles
+        // single ids and iterables uniformly.
         if peek_is_group(tokens, Delimiter::Brace) {
             let group = expect_group(tokens, Delimiter::Brace)?;
-            let mut inner = group.stream().into_iter().peekable();
-            if peek_is_dotdot(&inner) {
-                inner.next(); // consume first .
-                inner.next(); // consume second .
-                let expr: TokenStream = inner.collect();
-                items.push(quote! {
-                    __nodes.extend(
-                        (#expr).into_iter().map(::std::convert::Into::<usize>::into)
-                    );
-                });
-            } else {
-                let expr = group.stream();
-                items.push(quote! {
-                    __nodes.push(::std::convert::Into::<usize>::into(#expr));
-                });
-            }
+            let expr = group.stream();
+            items.push(quote! {
+                yeast::IntoFieldIds::extend_into({ #expr }, &mut __nodes);
+            });
             continue;
         }
 
@@ -527,6 +515,9 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
 struct CaptureInfo {
     name: String,
     multiplicity: CaptureMultiplicity,
+    /// `true` for `@@name` captures: the auto-translate prefix skips them,
+    /// so the bound `Id` refers to the raw (input-schema) node.
+    raw: bool,
 }
 
 #[derive(Clone, Copy, PartialEq)]
@@ -585,6 +576,14 @@ fn extract_captures_inner(
                 extract_captures_inner(&mut inner, captures, child_mult);
             }
             TokenTree::Punct(p) if p.as_char() == '@' => {
+                // `@@name` marks the capture as raw (skip auto-translate).
+                let raw = matches!(
+                    tokens.peek(),
+                    Some(TokenTree::Punct(p)) if p.as_char() == '@'
+                );
+                if raw {
+                    tokens.next(); // consume the second `@`
+                }
                 if let Some(TokenTree::Ident(name)) = tokens.next() {
                     let mult = if parent_mult == CaptureMultiplicity::Repeated
                         || last_mult == CaptureMultiplicity::Repeated
@@ -600,12 +599,16 @@ fn extract_captures_inner(
                     captures.push(CaptureInfo {
                         name: name.to_string(),
                         multiplicity: mult,
+                        raw,
                     });
                 }
                 last_mult = CaptureMultiplicity::Single;
             }
-            TokenTree::Punct(p) if matches!(p.as_char(), '*' | '+' | '?') => {
-                // Keep last_mult — the @capture follows
+            TokenTree::Punct(p) if p.as_char() == '*' || p.as_char() == '+' => {
+                last_mult = CaptureMultiplicity::Repeated;
+            }
+            TokenTree::Punct(p) if p.as_char() == '?' => {
+                last_mult = CaptureMultiplicity::Optional;
             }
             _ => {
                 last_mult = CaptureMultiplicity::Single;
@@ -650,6 +653,14 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
     // Parse query
     let query_code = parse_query_top(query_stream.clone())?;
 
+    // Capture names marked `@@name` (raw) — passed to the auto-translate
+    // prefix as a skip list so those captures keep their input-schema ids.
+    let raw_capture_names: Vec<&str> = captures
+        .iter()
+        .filter(|c| c.raw)
+        .map(|c| c.name.as_str())
+        .collect();
+
     // Generate capture bindings
     let ctx_ident = Ident::new(IMPLICIT_CTX, Span::call_site());
     let bindings: Vec<TokenStream> = captures
@@ -660,22 +671,17 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
             match cap.multiplicity {
                 CaptureMultiplicity::Repeated => {
                     quote! {
-                        let #name: Vec<yeast::NodeRef> = __captures.get_all(#name_str)
-                            .into_iter()
-                            .map(yeast::NodeRef)
-                            .collect();
+                        let #name: Vec<yeast::Id> = __captures.get_all(#name_str);
                     }
                 }
                 CaptureMultiplicity::Optional => {
                     quote! {
-                        let #name: Option<yeast::NodeRef> =
-                            __captures.get_opt(#name_str).map(yeast::NodeRef);
+                        let #name: Option<yeast::Id> = __captures.get_opt(#name_str);
                     }
                 }
                 CaptureMultiplicity::Single => {
                     quote! {
-                        let #name: yeast::NodeRef =
-                            yeast::NodeRef(__captures.get_var(#name_str).unwrap());
+                        let #name: yeast::Id = __captures.get_var(#name_str).unwrap();
                     }
                 }
             }
@@ -706,7 +712,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
                         __fields.insert(
                             __field_id,
                             #name.into_iter()
-                                .map(::std::convert::Into::<usize>::into)
+                                .map(::std::convert::Into::<yeast::Id>::into)
                                 .collect(),
                         );
                     },
@@ -715,14 +721,14 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
                             .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
                         if let Some(__id) = #name {
                             __fields.entry(__field_id).or_insert_with(Vec::new)
-                                .push(::std::convert::Into::<usize>::into(__id));
+                                .push(::std::convert::Into::<yeast::Id>::into(__id));
                         }
                     },
                     CaptureMultiplicity::Single => quote! {
                         let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
                             .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
                         __fields.entry(__field_id).or_insert_with(Vec::new)
-                            .push(::std::convert::Into::<usize>::into(#name));
+                            .push(::std::convert::Into::<yeast::Id>::into(#name));
                     },
                 }
             })
@@ -754,7 +760,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
         }
 
         quote! {
-            let mut __nodes: Vec<usize> = Vec::new();
+            let mut __nodes: Vec<yeast::Id> = Vec::new();
             #(#transform_items)*
             __nodes
         }
@@ -763,10 +769,20 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
     Ok(quote! {
         {
             let __query = #query_code;
-            yeast::Rule::new(__query, Box::new(|__ast: &mut yeast::Ast, __captures: yeast::captures::Captures, __fresh: &yeast::tree_builder::FreshScope, __source_range: Option<tree_sitter::Range>| {
+            yeast::Rule::new(__query, Box::new(|__ast: &mut yeast::Ast, mut __captures: yeast::captures::Captures, __fresh: &yeast::tree_builder::FreshScope, __source_range: Option<tree_sitter::Range>, __user_ctx: &mut _, __translator: yeast::TranslatorHandle<'_, _>| {
+                // Auto-translation prefix: recursively translate every
+                // captured node before invoking the user's transform body,
+                // except for `@@name` captures listed in `__skip` which the
+                // body consumes raw.
+                // For OneShot rules this preserves the legacy behaviour
+                // (input-schema captures translated to output-schema
+                // nodes); for Repeating rules it is a no-op.
+                let __skip: &[&str] = &[#(#raw_capture_names),*];
+                __translator.auto_translate_captures(&mut __captures, __ast, __user_ctx, __skip)?;
                 #(#bindings)*
-                let mut #ctx_ident = yeast::build::BuildCtx::with_source_range(__ast, &__captures, __fresh, __source_range);
-                #transform_body
+                let mut #ctx_ident = yeast::build::BuildCtx::with_translator(__ast, &__captures, __fresh, __source_range, __user_ctx, __translator);
+                let __result: Vec<yeast::Id> = { #transform_body };
+                Ok(__result)
             }))
         }
     })
@@ -780,6 +796,16 @@ fn peek_is_at(tokens: &mut Tokens) -> bool {
     matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '@')
 }
 
+/// Consume an `@` or `@@` capture marker and the following name ident.
+/// Caller has already verified `peek_is_at(tokens)`.
+fn consume_capture_marker(tokens: &mut Tokens) -> Result<Ident> {
+    tokens.next(); // consume the first `@`
+    if peek_is_at(tokens) {
+        tokens.next(); // consume the second `@` of `@@`
+    }
+    expect_ident(tokens, "expected capture name after `@` or `@@`")
+}
+
 fn peek_is_literal(tokens: &mut Tokens) -> bool {
     matches!(tokens.peek(), Some(TokenTree::Literal(_)))
 }
@@ -790,13 +816,6 @@ fn peek_is_dollar(tokens: &mut Tokens) -> bool {
 
 fn peek_is_hash(tokens: &mut Tokens) -> bool {
     matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == '#')
-}
-
-/// Check for `..` (two consecutive dot punctuation tokens).
-fn peek_is_dotdot(tokens: &Tokens) -> bool {
-    let mut lookahead = tokens.clone();
-    matches!(lookahead.next(), Some(TokenTree::Punct(p)) if p.as_char() == '.')
-        && matches!(lookahead.next(), Some(TokenTree::Punct(p)) if p.as_char() == '.')
 }
 
 fn peek_is_underscore(tokens: &mut Tokens) -> bool {
@@ -880,8 +899,7 @@ fn expect_repetition(tokens: &mut Tokens) -> Result<TokenStream> {
 
 fn maybe_wrap_capture(tokens: &mut Tokens, base: TokenStream) -> Result<TokenStream> {
     if peek_is_at(tokens) {
-        tokens.next(); // consume @
-        let name = expect_ident(tokens, "expected capture name after @")?;
+        let name = consume_capture_marker(tokens)?;
         let name_str = name.to_string();
         Ok(quote! {
             yeast::query::QueryNode::Capture {
@@ -908,13 +926,12 @@ fn maybe_wrap_repetition(tokens: &mut Tokens, single: TokenStream) -> Result<Tok
     }
 }
 
-/// If `@name` follows a Repeated list element, wrap each child SingleNode
-/// inside the repetition with a Capture. This matches tree-sitter semantics
-/// where `(_)* @name` captures each matched node.
+/// If `@name` (or `@@name`) follows a Repeated list element, wrap each
+/// child SingleNode inside the repetition with a Capture. This matches
+/// tree-sitter semantics where `(_)* @name` captures each matched node.
 fn maybe_wrap_list_capture(tokens: &mut Tokens, elem: TokenStream) -> Result<TokenStream> {
     if peek_is_at(tokens) {
-        tokens.next();
-        let name = expect_ident(tokens, "expected capture name after @")?;
+        let name = consume_capture_marker(tokens)?;
         let name_str = name.to_string();
         // Re-parse the element isn't practical, so we generate a wrapper
         // that creates a new Repeated with each child wrapped in a capture.

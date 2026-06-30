@@ -2002,6 +2002,25 @@ private module CallableBodySynthesis {
   }
 }
 
+private module CaseNoValueSynthesis {
+  pragma[nomagic]
+  private predicate caseNoValueSynthesis(AstNode parent, int i, Child child) {
+    // Synthesize a `true` literal as the value of a `case`/`when` expression that has no value
+    exists(Ruby::Case g |
+      not exists(g.getValue()) and
+      parent = TCaseExpr(g) and
+      child = SynthChild(BooleanLiteralKind(true)) and
+      i = -2
+    )
+  }
+
+  private class CaseNoValueSynthesisImpl extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      caseNoValueSynthesis(parent, i, child)
+    }
+  }
+}
+
 private module CaseElseBranchSynthesis {
   pragma[nomagic]
   private predicate caseElseBranchSynthesis(AstNode parent, int i, Child child) {

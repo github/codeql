@@ -1,0 +1,13 @@
+nil
+
+---
+
+source_file
+  statement: nil
+
+---
+
+top_level
+  body:
+    block
+      stmt: builtin_expr "nil"

@@ -40,15 +40,28 @@ pub struct Class<'a> {
     pub qldoc: Option<String>,
     pub name: &'a str,
     pub is_abstract: bool,
+    pub is_final: bool,
+    pub is_private: bool,
     pub supertypes: BTreeSet<Type<'a>>,
     pub characteristic_predicate: Option<Expression<'a>>,
     pub predicates: Vec<Predicate<'a>>,
+    pub alias: Option<String>,
 }
 
 impl fmt::Display for Class<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let Some(qldoc) = &self.qldoc {
             write!(f, "/** {qldoc} */")?;
+        }
+        if self.is_final {
+            write!(f, "final ")?;
+        }
+        if self.is_private {
+            write!(f, "private ")?;
+        }
+        if let Some(alias) = &self.alias {
+            write!(f, "class {} = {alias};", &self.name)?;
+            return Ok(());
         }
         if self.is_abstract {
             write!(f, "abstract ")?;
@@ -150,12 +163,14 @@ impl fmt::Display for Type<'_> {
 pub enum Expression<'a> {
     Var(&'a str),
     String(&'a str),
-    Integer(usize),
+    Integer(i64),
     Pred(&'a str, Vec<Expression<'a>>),
     And(Vec<Expression<'a>>),
     Or(Vec<Expression<'a>>),
     Equals(Box<Expression<'a>>, Box<Expression<'a>>),
     Dot(Box<Expression<'a>>, &'a str, Vec<Expression<'a>>),
+    /// A type cast, rendered as `x.(Type)`.
+    Cast(Box<Expression<'a>>, &'a str),
     Aggregate {
         name: &'a str,
         vars: Vec<FormalParameter<'a>>,
@@ -219,6 +234,7 @@ impl fmt::Display for Expression<'_> {
                 }
                 write!(f, ")")
             }
+            Expression::Cast(x, type_name) => write!(f, "{x}.({type_name})"),
             Expression::Aggregate {
                 name,
                 vars,

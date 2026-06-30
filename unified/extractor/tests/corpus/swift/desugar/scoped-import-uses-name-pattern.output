@@ -1,0 +1,31 @@
+import struct Foundation.Date
+
+---
+
+source_file
+  statement:
+    import_declaration
+      name:
+        identifier
+          part:
+            simple_identifier "Foundation"
+            simple_identifier "Date"
+      scoped_import_kind: struct
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        import_declaration
+          modifier: modifier "struct"
+          pattern:
+            name_pattern
+              identifier: identifier "Date"
+          imported_expr:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "Foundation"
+              member: identifier "Date"

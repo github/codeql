@@ -15,7 +15,7 @@
 import python
 
 predicate loop_variable_ssa(For f, Variable v, SsaVariable s) {
-  f.getTarget().getAFlowNode() = s.getDefinition() and v = s.getVariable()
+  s.getDefinition().getNode() = f.getTarget() and v = s.getVariable()
 }
 
 predicate variableUsedInNestedLoops(For inner, For outer, Variable v, Name n) {

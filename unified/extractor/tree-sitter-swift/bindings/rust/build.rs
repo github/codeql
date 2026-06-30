@@ -16,7 +16,9 @@ fn main() {
         Some(&grammar_js),
         tree_sitter_generate::ABI_VERSION_MAX,
         None,
-        None,
+        // Evaluate grammar.js with the embedded QuickJS runtime instead of
+        // spawning `node`, which isn't available inside Bazel's sandbox.
+        Some("native"),
         true,
         tree_sitter_generate::OptLevel::default(),
     )

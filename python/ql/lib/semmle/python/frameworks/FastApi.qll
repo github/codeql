@@ -129,7 +129,7 @@ module FastApi {
       result in [this.getArg(0), this.getArgByName("path")]
     }
 
-    override Function getARequestHandler() { result.getADecorator().getAFlowNode() = node }
+    override Function getARequestHandler() { node.getNode() = result.getADecorator() }
 
     override string getFramework() { result = "FastAPI" }
 
@@ -309,7 +309,10 @@ module FastApi {
       FastApiRouteSetup routeSetup;
 
       FastApiRequestHandlerReturn() {
-        node = routeSetup.getARequestHandler().getAReturnValueFlowNode()
+        exists(Return ret |
+          ret.getScope() = routeSetup.getARequestHandler() and
+          node.getNode() = ret.getValue()
+        )
       }
 
       override DataFlow::Node getBody() { result = this }

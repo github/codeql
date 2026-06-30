@@ -38,7 +38,7 @@ private module FlaskAdmin {
       result in [this.getArg(0), this.getArgByName("url")]
     }
 
-    override Function getARequestHandler() { result.getADecorator().getAFlowNode() = node }
+    override Function getARequestHandler() { node.getNode() = result.getADecorator() }
   }
 
   /**
@@ -71,7 +71,7 @@ private module FlaskAdmin {
 
     override Function getARequestHandler() {
       exists(Flask::FlaskViewClass cls |
-        cls.getADecorator().getAFlowNode() = node and
+        node.getNode() = cls.getADecorator() and
         result = cls.getARequestHandler()
       )
     }

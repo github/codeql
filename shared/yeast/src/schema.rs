@@ -198,13 +198,8 @@ impl Schema {
             .insert((parent_kind.to_string(), field_id), node_types);
     }
 
-    pub fn field_types(
-        &self,
-        parent_kind: &str,
-        field_id: FieldId,
-    ) -> Option<&Vec<NodeType>> {
-        self.field_types
-            .get(&(parent_kind.to_string(), field_id))
+    pub fn field_types(&self, parent_kind: &str, field_id: FieldId) -> Option<&Vec<NodeType>> {
+        self.field_types.get(&(parent_kind.to_string(), field_id))
     }
 
     pub fn set_field_cardinality(

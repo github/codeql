@@ -1,0 +1,86 @@
+enum Shape {
+  case circle(radius: Double)
+  case square(side: Double)
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        enum_class_body
+          member:
+            enum_entry
+              case:
+                enum_case_entry
+                  data_contents:
+                    enum_type_parameters
+                      parameter:
+                        enum_type_parameter
+                          name: simple_identifier "radius"
+                          type:
+                            type
+                              name:
+                                user_type
+                                  part:
+                                    simple_user_type
+                                      name: type_identifier "Double"
+                  name: simple_identifier "circle"
+            enum_entry
+              case:
+                enum_case_entry
+                  data_contents:
+                    enum_type_parameters
+                      parameter:
+                        enum_type_parameter
+                          name: simple_identifier "side"
+                          type:
+                            type
+                              name:
+                                user_type
+                                  part:
+                                    simple_user_type
+                                      name: type_identifier "Double"
+                  name: simple_identifier "square"
+      declaration_kind: enum
+      name: type_identifier "Shape"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          member:
+            class_like_declaration
+              member:
+                constructor_declaration
+                  body: block "circle(radius: Double)"
+                  parameter:
+                    parameter
+                      pattern:
+                        name_pattern
+                          identifier: identifier "radius"
+                      type:
+                        named_type_expr
+                          name: identifier "Double"
+              modifier: modifier "enum_case"
+              name: identifier "circle"
+            class_like_declaration
+              member:
+                constructor_declaration
+                  body: block "square(side: Double)"
+                  parameter:
+                    parameter
+                      pattern:
+                        name_pattern
+                          identifier: identifier "side"
+                      type:
+                        named_type_expr
+                          name: identifier "Double"
+              modifier: modifier "enum_case"
+              name: identifier "square"
+          modifier: modifier "enum"
+          name: identifier "Shape"

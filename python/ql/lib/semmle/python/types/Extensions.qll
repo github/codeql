@@ -36,8 +36,8 @@ class RangeIterationVariableFact extends PointsToExtension {
   RangeIterationVariableFact() {
     exists(For f, ControlFlowNode iterable |
       iterable.getBasicBlock().dominates(this.(ControlFlowNode).getBasicBlock()) and
-      f.getIter().getAFlowNode() = iterable and
-      f.getTarget().getAFlowNode() = this and
+      iterable.getNode() = f.getIter() and
+      this.(ControlFlowNode).getNode() = f.getTarget() and
       exists(ObjectInternal range |
         PointsTo::pointsTo(iterable, _, range, _) and
         range.getClass() = ObjectInternal::builtin("range")

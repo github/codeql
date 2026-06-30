@@ -27,3 +27,27 @@ extensions:
       - ["log/slog", "Logger", True, "ErrorContext", "", "", "Argument[1..2]", "log-injection", "manual"]
       - ["log/slog", "Logger", True, "Log", "", "", "Argument[2..3]", "log-injection", "manual"]
       - ["log/slog", "Logger", True, "LogAttrs", "", "", "Argument[2..3]", "log-injection", "manual"]
+      # With/WithGroup add attributes that are included in every subsequent log call.
+      - ["log/slog", "", False, "With", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["log/slog", "Logger", True, "With", "", "", "Argument[0]", "log-injection", "manual"]
+      - ["log/slog", "Logger", True, "WithGroup", "", "", "Argument[0]", "log-injection", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      # Constructors for Attr that can carry a tainted string into the result.
+      - ["log/slog", "", False, "Any", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["log/slog", "", False, "Group", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["log/slog", "", False, "Group", "", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["log/slog", "", False, "GroupAttrs", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["log/slog", "", False, "GroupAttrs", "", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["log/slog", "", False, "String", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      # Constructors for Value that can carry a tainted string into the result.
+      - ["log/slog", "", False, "AnyValue", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["log/slog", "", False, "GroupValue", "", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["log/slog", "", False, "StringValue", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      # Methods that read a string back out of an Attr or Value.
+      - ["log/slog", "Attr", True, "String", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["log/slog", "Value", True, "Any", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["log/slog", "Value", True, "Group", "", "", "Argument[receiver]", "ReturnValue.ArrayElement", "taint", "manual"]
+      - ["log/slog", "Value", True, "String", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]

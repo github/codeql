@@ -485,7 +485,7 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
 
   /** Gets a node that reads this variable, excluding reads that happen through `from ... import *`. */
   Node getALocalRead() {
-    result.asCfgNode() = var.getALoad().getAFlowNode() and
+    result.asCfgNode().getNode() = var.getALoad() and
     not result.getScope() = mod
   }
 

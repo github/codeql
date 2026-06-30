@@ -1,3 +1,20 @@
+## 7.2.0
+
+### Deprecated APIs
+
+* `FuncTypeExpr.getResultDecl()` has been deprecated. Use `FuncTypeExpr.getResultDecl(int i)` instead.
+
+### Minor Analysis Improvements
+
+* Added models for the `log/slog` package (Go 1.21+). Its logging functions and
+  `*slog.Logger` methods (`Debug`/`Info`/`Warn`/`Error`, their `Context`
+  variants, and `Log`/`LogAttrs`) are now recognized as logging sinks, so the
+  `go/log-injection` and `go/clear-text-logging` queries cover code that logs
+  through `slog`.
+* `DataFlow::ResultNode`s are no longer created for returned expressions in functions with named result parameters. In this case there are already result nodes corresponding to `IR::ReadResultInstruction`s at the end of the function body.
+* `FuncTypeExpr.getNumResult()` now gets the number of result parameters. It previously got the number of result declarations, which is different when one result declaration declares more than one variable, as in `x, y int`. All uses of it expected the number of result parameters. Its QLDoc has been updated.
+* More logging functions are now recognized as not returning or panicking.
+
 ## 7.1.2
 
 No user-facing changes.

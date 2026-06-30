@@ -1,0 +1,69 @@
+let f = { [weak self] in self?.doThing() }
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "f"
+          value:
+            lambda_literal
+              captures:
+                capture_list
+                  item:
+                    capture_list_item
+                      name: simple_identifier "self"
+                      ownership:
+                        ownership_modifier
+              statement:
+                call_expression
+                  function:
+                    navigation_expression
+                      suffix:
+                        navigation_suffix
+                          suffix: simple_identifier "doThing"
+                      target:
+                        optional_chain_marker
+                          expr:
+                            self_expression
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "f"
+          value:
+            function_expr
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        member_access_expr
+                          base:
+                            name_expr
+                              identifier: identifier "self"
+                          member: identifier "doThing"
+              capture_declaration:
+                variable_declaration
+                  modifier: modifier "weak"
+                  pattern:
+                    name_pattern
+                      identifier: identifier "self"

@@ -56,8 +56,9 @@ abstract class CallableObjectInternal extends ObjectInternal {
 /** A Python function. */
 class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFunctionObject {
   override Function getScope() {
-    exists(CallableExpr expr |
-      this = TPythonFunctionObject(expr.getAFlowNode()) and
+    exists(CallableExpr expr, ControlFlowNode exprCfg |
+      exprCfg.getNode() = expr and
+      this = TPythonFunctionObject(exprCfg) and
       result = expr.getInnerScope()
     )
   }
@@ -80,11 +81,12 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
 
   pragma[nomagic]
   override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
-    exists(Function func, ControlFlowNode rval, ControlFlowNode forigin |
+    exists(Function func, Return ret, ControlFlowNode rval, ControlFlowNode forigin |
       func = this.getScope() and
       callee.appliesToScope(func)
     |
-      rval = func.getAReturnValueFlowNode() and
+      ret.getScope() = func and
+      rval.getNode() = ret.getValue() and
       PointsToInternal::pointsTo(rval, callee, obj, forigin) and
       origin = CfgOrigin::fromCfgNode(forigin)
     )
@@ -160,10 +162,11 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
 }
 
 private BasicBlock blockReturningNone(Function func) {
-  exists(Return ret |
+  exists(Return ret, ControlFlowNode ret_ |
     not exists(ret.getValue()) and
     ret.getScope() = func and
-    result = ret.getAFlowNode().getBasicBlock()
+    ret_.getNode() = ret and
+    result = ret_.getBasicBlock()
   )
 }
 

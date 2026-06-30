@@ -1,0 +1,71 @@
+do {
+  try foo()
+} catch {
+  print(error)
+}
+
+---
+
+source_file
+  statement:
+    do_statement
+      body:
+        block
+          statement:
+            try_expression
+              expr:
+                call_expression
+                  function: simple_identifier "foo"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+              operator:
+                try_operator
+      catch:
+        catch_block
+          body:
+            block
+              statement:
+                call_expression
+                  function: simple_identifier "print"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+                          argument:
+                            value_argument
+                              value: simple_identifier "error"
+          keyword: catch_keyword "catch"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        try_expr
+          body:
+            block
+              stmt:
+                unary_expr
+                  operand:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "foo"
+                  operator: prefix_operator "try"
+          catch_clause:
+            catch_clause
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "error"
+                      callee:
+                        name_expr
+                          identifier: identifier "print"

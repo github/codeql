@@ -1,0 +1,49 @@
+while x > 0 {
+  x -= 1
+}
+
+---
+
+source_file
+  statement:
+    while_statement
+      body:
+        block
+          statement:
+            assignment
+              operator: -=
+              result: integer_literal "1"
+              target:
+                directly_assignable_expression
+                  expr: simple_identifier "x"
+      condition:
+        if_condition
+          kind:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        while_stmt
+          body:
+            block
+              stmt:
+                compound_assign_expr
+                  operator: infix_operator "-="
+                  target:
+                    name_expr
+                      identifier: identifier "x"
+                  value: int_literal "1"
+          condition:
+            binary_expr
+              operator: infix_operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"

@@ -745,7 +745,12 @@ class PythonFunctionValue extends FunctionValue {
   override int maxParameters() { result = this.getScope().getMaxPositionalArguments() }
 
   /** Gets a control flow node corresponding to a return statement in this function */
-  ControlFlowNode getAReturnedNode() { result = this.getScope().getAReturnValueFlowNode() }
+  ControlFlowNode getAReturnedNode() {
+    exists(Return ret |
+      ret.getScope() = this.getScope() and
+      result.getNode() = ret.getValue()
+    )
+  }
 
   override ClassValue getARaisedType() { scope_raises(result, this.getScope()) }
 

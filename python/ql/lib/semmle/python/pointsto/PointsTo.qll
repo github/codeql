@@ -711,7 +711,7 @@ private module InterModulePointsTo {
     ControlFlowNode f, PointsToContext context, ObjectInternal value, ControlFlowNode origin
   ) {
     exists(string name, ImportExpr i |
-      i.getAFlowNode() = f and
+      f.getNode() = i and
       i.getImportedModuleName() = name and
       PointsToInternal::module_imported_as(value, name) and
       origin = f and
@@ -2118,8 +2118,9 @@ module Types {
     result.getBuiltin() = cls.getBuiltin().getBaseClass() and n = 0
     or
     exists(Class pycls | pycls = cls.(PythonClassObjectInternal).getScope() |
-      exists(ObjectInternal base |
-        PointsToInternal::pointsTo(pycls.getBase(n).getAFlowNode(), _, base, _)
+      exists(ObjectInternal base, ControlFlowNode baseNode |
+        baseNode.getNode() = pycls.getBase(n) and
+        PointsToInternal::pointsTo(baseNode, _, base, _)
       |
         result = base and base != ObjectInternal::unknown()
         or
@@ -2223,7 +2224,10 @@ module Types {
   }
 
   private ControlFlowNode decorator_call_callee(PythonClassObjectInternal cls) {
-    result = cls.getScope().getADecorator().getAFlowNode().(CallNode).getFunction()
+    exists(CallNode deco |
+      deco.getNode() = cls.getScope().getADecorator() and
+      result = deco.getFunction()
+    )
   }
 
   private boolean has_six_add_metaclass(PythonClassObjectInternal cls) {
@@ -2262,7 +2266,7 @@ module Types {
   }
 
   private EssaVariable metaclass_var(Class cls) {
-    result.getASourceUse() = cls.getMetaClass().getAFlowNode()
+    result.getASourceUse().getNode() = cls.getMetaClass()
     or
     major_version() = 2 and
     not exists(cls.getMetaClass()) and

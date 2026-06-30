@@ -1,3 +1,5 @@
+| Angular.ts:8:19:8:23 | event | Postmessage handler has no origin check. |
+| Angular.ts:13:21:13:25 | event | Postmessage handler has no origin check. |
 | tst.js:11:20:11:24 | event | Postmessage handler has no origin check. |
 | tst.js:24:27:24:27 | e | Postmessage handler has no origin check. |
 | tst.js:40:27:40:27 | e | Postmessage handler has no origin check. |

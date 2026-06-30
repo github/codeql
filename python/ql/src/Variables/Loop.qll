@@ -26,8 +26,11 @@ private Stmt loop_probably_defines(Variable v) {
 
 /** Holds if the variable used by `use` is probably defined in a loop */
 predicate probably_defined_in_loop(Name use) {
-  exists(Stmt loop | loop = loop_probably_defines(use.getVariable()) |
-    loop.getAFlowNode().strictlyReaches(use.getAFlowNode())
+  exists(Stmt loop, ControlFlowNode loopCfg, ControlFlowNode useCfg |
+    loop = loop_probably_defines(use.getVariable()) and
+    loopCfg.getNode() = loop and
+    useCfg.getNode() = use and
+    loopCfg.strictlyReaches(useCfg)
   )
 }
 
