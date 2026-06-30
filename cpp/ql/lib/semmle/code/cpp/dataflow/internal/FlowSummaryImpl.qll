@@ -40,12 +40,24 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
     arg = repeatStars(rk.(NormalReturnKind).getIndirectionIndex())
   }
 
+  bindingset[namespace, type, base]
+  private string formatQualifiedName(string namespace, string type, string base) {
+    if namespace = ""
+    then result = type + "::" + base
+    else result = namespace + "::" + type + "::" + base
+  }
+
   string encodeContent(ContentSet cs, string arg) {
-    exists(FieldContent c |
+    exists(FieldContent c, string namespace, string type, string base |
       cs.isSingleton(c) and
       // FieldContent indices have 0 for the address, 1 for content, so we need to subtract one.
       result = "Field" and
-      arg = repeatStars(c.getIndirectionIndex() - 1) + c.getField().getName()
+      c.getField().hasQualifiedName(namespace, type, base)
+    |
+      arg = repeatStars(c.getIndirectionIndex() - 1) + formatQualifiedName(namespace, type, base)
+      or
+      // TODO: This disjunct can be removed once we stop supporting unqualified field names.
+      arg = repeatStars(c.getIndirectionIndex() - 1) + base
     )
     or
     exists(ElementContent ec |
