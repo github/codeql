@@ -91,6 +91,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow>
     cs.isAnyTupleOrDictionaryElement() and result = "AnyTupleOrDictionaryElement" and arg = ""
   }
 
+  string encodeWithContent(ContentSet c, string arg) { result = "With" + encodeContent(c, arg) }
+
   bindingset[token]
   ParameterPosition decodeUnknownParameterPosition(AccessPath::AccessPathTokenBase token) {
     // needed to support `Argument[x..y]` ranges

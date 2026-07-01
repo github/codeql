@@ -1138,7 +1138,9 @@ predicate clearsContent(Node n, ContentSet cs) {
  * Holds if the value that is being tracked is expected to be stored inside content `c`
  * at node `n`.
  */
-predicate expectsContent(Node n, ContentSet c) { none() }
+predicate expectsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+}
 
 /**
  * Holds if values stored inside attribute `c` are cleared at node `n`.
