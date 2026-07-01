@@ -37,26 +37,6 @@ private module Input1 implements InputSig1<Location> {
 
   class TypeAbstraction = TA::TypeAbstraction;
 
-  class TypeArgumentPosition = int;
-
-  private newtype TTypeParameterPosition = TTypeParamTypeParameterPosition(TypeParameter tp)
-
-  class TypeParameterPosition extends TTypeParameterPosition {
-    TypeParameter asTypeParameter() { this = TTypeParamTypeParameterPosition(result) }
-
-    TypeParam asTypeParam() {
-      result = this.asTypeParameter().(TypeParamTypeParameter).getTypeParam()
-    }
-
-    string toString() { result = this.asTypeParameter().toString() }
-  }
-
-  bindingset[apos]
-  bindingset[ppos]
-  predicate typeArgumentParameterPositionMatch(TypeArgumentPosition apos, TypeParameterPosition ppos) {
-    apos = ppos.asTypeParam().getPosition()
-  }
-
   int getTypeParameterId(TypeParameter tp) {
     tp =
       rank[result](TypeParameter tp0, int kind, int id1, int id2 |
@@ -421,7 +401,7 @@ private module Input3 implements InputSig3 {
   final class Parameterizable = ParameterizableImpl;
 
   abstract private class ParameterizableImpl extends AstNode {
-    abstract TypeParameter getTypeParameter(TypeParameterPosition ppos);
+    abstract TypeParameter getTypeParameter(int pos);
 
     abstract TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp);
 
@@ -443,8 +423,8 @@ private module Input3 implements InputSig3 {
       )
     }
 
-    override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-      result = this.(FunctionDeclaration).getTypeParameter(ppos)
+    override TypeParameter getTypeParameter(int pos) {
+      result = this.(FunctionDeclaration).getTypeParameter(pos)
     }
 
     override TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp) {
@@ -475,9 +455,9 @@ private module Input3 implements InputSig3 {
 
     override TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp) { none() }
 
-    override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-      result = ppos.asTypeParameter() and
-      ppos.asTypeParam() = this.getTypeItem().getGenericParamList().getATypeParam()
+    override TypeParameter getTypeParameter(int pos) {
+      result.(TypeParamTypeParameter).getTypeParam() =
+        this.getTypeItem().getGenericParamList().getTypeParam(pos)
     }
 
     override TypeMention getType() { result = this.getTypeItem() }
@@ -547,7 +527,7 @@ private module Input3 implements InputSig3 {
   abstract private class InvocationImpl extends Expr {
     abstract TypeMention getTypeQualifier();
 
-    abstract Type getTypeArgument(TypeArgumentPosition apos, TypePath path);
+    abstract Type getTypeArgument(int pos, TypePath path);
 
     abstract AstNode getArgument(int i);
 
@@ -559,11 +539,11 @@ private module Input3 implements InputSig3 {
     override TypeMention getTypeQualifier() { result = getCallExprTypeArgument2(this) }
 
     pragma[nomagic]
-    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+    override Type getTypeArgument(int pos, TypePath path) {
       result =
-        this.(MethodCallExpr).getGenericArgList().getTypeArg(apos).(TypeMention).getTypeAt(path)
+        this.(MethodCallExpr).getGenericArgList().getTypeArg(pos).(TypeMention).getTypeAt(path)
       or
-      result = getCallExprTypeArgument(this, apos, path)
+      result = getCallExprTypeArgument(this, pos, path)
     }
 
     override AstNode getArgument(int i) {
@@ -606,8 +586,8 @@ private module Input3 implements InputSig3 {
     override TypeMention getTypeQualifier() { none() }
 
     pragma[nomagic]
-    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
-      result = NonAssocCallExpr.super.getTypeArgument(apos, path)
+    override Type getTypeArgument(int pos, TypePath path) {
+      result = NonAssocCallExpr.super.getTypeArgument(pos, path)
     }
 
     override AstNode getArgument(int i) {
@@ -643,8 +623,8 @@ private module Input3 implements InputSig3 {
 
     override TypeMention getTypeQualifier() { result = getCallExprTypeArgument2(this) }
 
-    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
-      result = NonAssocCallExpr.super.getTypeArgument(apos, path)
+    override Type getTypeArgument(int pos, TypePath path) {
+      result = NonAssocCallExpr.super.getTypeArgument(pos, path)
     }
 
     override AstNode getArgument(int i) {
@@ -667,7 +647,7 @@ private module Input3 implements InputSig3 {
     }
 
     pragma[nomagic]
-    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
+    override Type getTypeArgument(int pos, TypePath path) { none() }
   }
 
   private class StructExprConstruction extends StructConstruction, StructExpr {
@@ -1150,21 +1130,27 @@ private class FunctionDeclaration extends Function {
     this = i.asSome().getAnAssocItem()
   }
 
-  TypeParam getTypeParam(ImplOrTraitItemNodeOption i) {
+  private TypeParam getTypeParam(ImplOrTraitItemNodeOption i, int j) {
     i = parent and
-    result = [this.getGenericParamList().getATypeParam(), i.asSome().getTypeParam(_)]
+    (
+      result = this.getGenericParamList().getTypeParam(j)
+      or
+      result = i.asSome().getTypeParam(_) and
+      j = -1
+    )
   }
 
-  private TypeParameter getTypeParameter(ImplOrTraitItemNodeOption i, TypeParameterPosition ppos) {
-    result = ppos.asTypeParameter() and
+  private TypeParameter getTypeParameter(ImplOrTraitItemNodeOption i, int pos) {
     (
-      result = TTypeParamTypeParameter(this.getTypeParam(i))
+      result = TTypeParamTypeParameter(this.getTypeParam(i, pos))
       or
       // For every `TypeParam` of this function, any associated types accessed on
       // the type parameter are also type parameters.
-      result.(TypeParamAssociatedTypeTypeParameter).getTypeParam() = this.getTypeParam(i)
+      result.(TypeParamAssociatedTypeTypeParameter).getTypeParam() = this.getTypeParam(i, _) and
+      pos = -1
       or
       i = parent and
+      pos = -1 and
       (
         result = TSelfTypeParameter(i.asSome())
         or
@@ -1175,8 +1161,8 @@ private class FunctionDeclaration extends Function {
     )
   }
 
-  TypeParameter getTypeParameter(TypeParameterPosition ppos) {
-    exists(ImplOrTraitItemNodeOption i | result = this.getTypeParameter(i, ppos) |
+  TypeParameter getTypeParameter(int pos) {
+    exists(ImplOrTraitItemNodeOption i | result = this.getTypeParameter(i, pos) |
       i.isNone()
       or
       i.asSome().getAnAssocItem() = this
@@ -1337,9 +1323,7 @@ private class NonAssocCallExpr extends CallExpr {
   ItemNode resolveCallTargetViaPathResolution() { result = CallExprImpl::getResolvedFunction(this) }
 
   pragma[nomagic]
-  Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
-    result = getCallExprTypeArgument(this, apos, path)
-  }
+  Type getTypeArgument(int pos, TypePath path) { result = getCallExprTypeArgument(this, pos, path) }
 
   AstNode getNodeAt(FunctionPosition pos) {
     result = this.getSyntacticArgument(pos.asArgumentPosition())
@@ -3072,7 +3056,7 @@ private module DeconstructionPatMatchingInput implements MatchingInputSig {
   class Access extends Pat instanceof PathAstNode {
     Access() { this instanceof TupleStructPat or this instanceof StructPat }
 
-    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
+    Type getTypeArgument(int pos, TypePath path) { none() }
 
     AstNode getNodeAt(AccessPosition apos) {
       this =

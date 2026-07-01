@@ -142,35 +142,6 @@ signature module InputSig1<LocationSig Location> {
   int getTypeParameterId(TypeParameter tp);
 
   /**
-   * A type argument position, for example an integer.
-   *
-   * Type argument positions are used when type arguments are supplied explicitly,
-   * for example in a method call like `M<int>()` the type argument `int` is at
-   * position `0`.
-   */
-  bindingset[this]
-  class TypeArgumentPosition {
-    /** Gets the textual representation of this position. */
-    bindingset[this]
-    string toString();
-  }
-
-  /** A type parameter position, for example an integer. */
-  bindingset[this]
-  class TypeParameterPosition {
-    /** Gets the textual representation of this position. */
-    bindingset[this]
-    string toString();
-  }
-
-  /** Holds if `tapos` and `tppos` match. */
-  bindingset[tapos]
-  bindingset[tppos]
-  predicate typeArgumentParameterPositionMatch(
-    TypeArgumentPosition tapos, TypeParameterPosition tppos
-  );
-
-  /**
    * Gets the limit on the length of type paths. Set to `none()` if there should
    * be no limit.
    *
@@ -1211,8 +1182,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         /** Gets the location of this declaration. */
         Location getLocation();
 
-        /** Gets the type parameter at position `tppos` of this declaration, if any. */
-        TypeParameter getTypeParameter(TypeParameterPosition tppos);
+        /** Gets the type parameter at position `pos` of this declaration, if any. */
+        TypeParameter getTypeParameter(int pos);
 
         /**
          * Gets the declared type of this declaration at `path` for position `dpos`.
@@ -1262,13 +1233,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Location getLocation();
 
         /**
-         * Gets the type at `path` for the type argument at position `tapos` of
+         * Gets the type at `path` for the type argument at position `pos` of
          * this access, if any.
          *
          * For example, in a method call like `M<int>()`, `int` is an explicit
          * type argument at position `0`.
          */
-        Type getTypeArgument(TypeArgumentPosition tapos, TypePath path);
+        Type getTypeArgument(int pos, TypePath path);
 
         /**
          * Gets the inferred type at `path` for the position `apos` and environment `e`
@@ -1299,14 +1270,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     module MatchingWithEnvironment<MatchingWithEnvironmentInputSig Input> {
       private import Input
 
-      pragma[nomagic]
-      private TypeParameter getDeclTypeParameter(Declaration decl, TypeArgumentPosition tapos) {
-        exists(TypeParameterPosition tppos |
-          result = decl.getTypeParameter(tppos) and
-          typeArgumentParameterPositionMatch(tapos, tppos)
-        )
-      }
-
       /**
        * Gets the type of the type argument at `path` in `a` that corresponds to
        * the type parameter `tp` in `target`, if any.
@@ -1318,9 +1281,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       bindingset[a, target]
       pragma[inline_late]
       Type getTypeArgument(Access a, Declaration target, TypeParameter tp, TypePath path) {
-        exists(TypeArgumentPosition tapos |
-          result = a.getTypeArgument(tapos, path) and
-          tp = getDeclTypeParameter(target, tapos) and
+        exists(int pos |
+          result = a.getTypeArgument(pos, path) and
+          tp = target.getTypeParameter(pos) and
           not result instanceof PseudoType
         )
       }
@@ -1819,8 +1782,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         /** Gets the location of this declaration. */
         Location getLocation();
 
-        /** Gets the type parameter at position `tppos` of this declaration, if any. */
-        TypeParameter getTypeParameter(TypeParameterPosition tppos);
+        /** Gets the type parameter at position `pos` of this declaration, if any. */
+        TypeParameter getTypeParameter(int pos);
 
         /**
          * Gets the declared type of this declaration at `path` for position `dpos`.
@@ -1868,7 +1831,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * For example, in a method call like `M<int>()`, `int` is an explicit
          * type argument at position `0`.
          */
-        Type getTypeArgument(TypeArgumentPosition tapos, TypePath path);
+        Type getTypeArgument(int pos, TypePath path);
 
         /**
          * Gets the inferred type at `path` for the position `apos` of this access.
@@ -2120,12 +2083,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Type getDeclaringType(TypePath path);
 
         /**
-         * Gets the type parameter at position `ppos` of this element, if any.
+         * Gets the type parameter at position `pos` of this element, if any.
          *
+         * TODO:
          * This should include type parameters declared on the element itself,
          * as well as type parameters declared on the enclosing declaration(s).
          */
-        TypeParameter getTypeParameter(TypeParameterPosition ppos);
+        TypeParameter getTypeParameter(int pos);
 
         /**
          * Gets an additional type parameter constraint for the given type parameter,
@@ -2182,8 +2146,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /** An invocation expression, for example a call or a variant construction. */
       class Invocation extends Expr {
-        /** Gets the explicit type argument at position `apos` and `path` for this invocation, if any. */
-        Type getTypeArgument(TypeArgumentPosition apos, TypePath path);
+        /** Gets the explicit type argument at position `pos` and `path` for this invocation, if any. */
+        Type getTypeArgument(int pos, TypePath path);
 
         /**
          * Gets the AST node corresponding to the `i`th argument of this invocation.
@@ -3037,7 +3001,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         final private class MemberFinal = Member;
 
         class Declaration extends MemberFinal {
-          TypeParameter getTypeParameter(TypeParameterPosition ppos) { none() }
+          TypeParameter getTypeParameter(int pos) { none() }
 
           Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
             dpos.isReceiver() and
@@ -3057,7 +3021,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         final private class MemberAccessFinal = MemberAccess;
 
         class Access extends MemberAccessFinal {
-          Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
+          Type getTypeArgument(int pos, TypePath path) { none() }
 
           Type getInferredType(AccessPosition apos, TypePath path) {
             apos.isReceiver() and
