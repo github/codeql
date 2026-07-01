@@ -38,4 +38,29 @@ public class A {
 
     return 0;
   }
+
+
+  int f3(char size) {
+    int i = 0;
+    while (i < size) {
+      i++;
+    }
+    return i;
+  }
+
+  int f4(int size) {
+    int i = 0;
+    while (i < size) {
+      i++;
+    }
+    return i;
+  }
+
+  int f5(char size) {
+    int i = 10;
+    while (i < size) {
+      i++;
+    }
+    return i;
+  }
 }
