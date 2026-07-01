@@ -22,15 +22,6 @@ private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 
 class Type = T::Type;
 
-private newtype TTypeArgumentPosition =
-  // method type parameters are matched by position instead of by type
-  // parameter entity, to avoid extra recursion through method call resolution
-  TMethodTypeArgumentPosition(int pos) {
-    exists(any(MethodCallExpr mce).getGenericArgList().getTypeArg(pos))
-  } or
-  TTypeParamTypeArgumentPosition(TypeParam tp) or
-  TTypeQualifierArgumentPosition()
-
 private module Input1 implements InputSig1<Location> {
   private import Type as T
   private import codeql.rust.elements.internal.generated.Raw
@@ -46,22 +37,7 @@ private module Input1 implements InputSig1<Location> {
 
   class TypeAbstraction = TA::TypeAbstraction;
 
-  class TypeArgumentPosition extends TTypeArgumentPosition {
-    int asMethodTypeArgumentPosition() { this = TMethodTypeArgumentPosition(result) }
-
-    TypeParam asTypeParam() { this = TTypeParamTypeArgumentPosition(result) }
-
-    predicate isTypeQualifierArgumentPosition() { this = TTypeQualifierArgumentPosition() }
-
-    string toString() {
-      result = this.asMethodTypeArgumentPosition().toString()
-      or
-      result = this.asTypeParam().toString()
-      or
-      this.isTypeQualifierArgumentPosition() and
-      result = "type qualifier"
-    }
-  }
+  class TypeArgumentPosition = int;
 
   private newtype TTypeParameterPosition = TTypeParamTypeParameterPosition(TypeParameter tp)
 
@@ -78,18 +54,7 @@ private module Input1 implements InputSig1<Location> {
   bindingset[apos]
   bindingset[ppos]
   predicate typeArgumentParameterPositionMatch(TypeArgumentPosition apos, TypeParameterPosition ppos) {
-    TTypeParamTypeParameter(apos.asTypeParam()) = ppos.asTypeParameter()
-    or
-    apos.asMethodTypeArgumentPosition() = ppos.asTypeParam().getPosition()
-    or
-    // Type qualifiers can match against implicit `Self` type parameters and blanket
-    // type parameters.
-    apos.isTypeQualifierArgumentPosition() and
-    (
-      ppos.asTypeParameter() instanceof SelfTypeParameter
-      or
-      exists(ImplItemNode i | ppos.asTypeParam() = i.getBlanketImplementationTypeParam())
-    )
+    apos = ppos.asTypeParam().getPosition()
   }
 
   int getTypeParameterId(TypeParameter tp) {
@@ -460,12 +425,24 @@ private module Input3 implements InputSig3 {
 
     abstract TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp);
 
+    abstract TypeMention getDeclaringType();
+
+    // todo
+    Type getDeclaringType(TypePath path) { result = this.getDeclaringType().getTypeAt(path) }
+
     abstract Parameter getParameter(int i);
 
     abstract TypeMention getType();
   }
 
   class Callable extends ParameterizableImpl instanceof Rust::Callable {
+    override TypeMention getDeclaringType() {
+      exists(ImplOrTraitItemNode implOrTrait | this = implOrTrait.getAnAssocItem() |
+        result = implOrTrait.(Impl).getSelfTy() or
+        result = implOrTrait.(Trait)
+      )
+    }
+
     override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
       result = this.(FunctionDeclaration).getTypeParameter(ppos)
     }
@@ -492,6 +469,10 @@ private module Input3 implements InputSig3 {
   additional final class Constructor = ConstructorImpl;
 
   abstract private class ConstructorImpl extends ParameterizableImpl {
+    override TypeMention getDeclaringType() {
+      result = this.getTypeItem() // todo?
+    }
+
     override TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp) { none() }
 
     override TypeParameter getTypeParameter(TypeParameterPosition ppos) {
@@ -564,6 +545,8 @@ private module Input3 implements InputSig3 {
   final class Invocation = InvocationImpl;
 
   abstract private class InvocationImpl extends Expr {
+    abstract TypeMention getTypeQualifier();
+
     abstract Type getTypeArgument(TypeArgumentPosition apos, TypePath path);
 
     abstract AstNode getArgument(int i);
@@ -573,14 +556,12 @@ private module Input3 implements InputSig3 {
 
   private class AssocFunctionCall extends InvocationImpl instanceof AssocFunctionResolution::AssocFunctionCall
   {
+    override TypeMention getTypeQualifier() { result = getCallExprTypeArgument2(this) }
+
     pragma[nomagic]
     override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       result =
-        this.(MethodCallExpr)
-            .getGenericArgList()
-            .getTypeArg(apos.asMethodTypeArgumentPosition())
-            .(TypeMention)
-            .getTypeAt(path)
+        this.(MethodCallExpr).getGenericArgList().getTypeArg(apos).(TypeMention).getTypeAt(path)
       or
       result = getCallExprTypeArgument(this, apos, path)
     }
@@ -622,6 +603,8 @@ private module Input3 implements InputSig3 {
   private class NonAssocFunctionCall extends InvocationImpl instanceof NonAssocCallExpr,
     CallExprImpl::CallExprCall
   {
+    override TypeMention getTypeQualifier() { none() }
+
     pragma[nomagic]
     override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       result = NonAssocCallExpr.super.getTypeArgument(apos, path)
@@ -658,6 +641,8 @@ private module Input3 implements InputSig3 {
       this instanceof CallExprImpl::TupleVariantExpr
     }
 
+    override TypeMention getTypeQualifier() { result = getCallExprTypeArgument2(this) }
+
     override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
       result = NonAssocCallExpr.super.getTypeArgument(apos, path)
     }
@@ -676,27 +661,16 @@ private module Input3 implements InputSig3 {
     pragma[nomagic]
     override Constructor getTarget() { result = resolvePath(super.getPath()) }
 
-    pragma[nomagic]
-    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
+    override TypeMention getTypeQualifier() {
       // Handle constructions that use `Self {...}` syntax
-      exists(TypeMention tm, TypePath path0 |
-        tm = super.getPath() and
-        result = tm.getTypeAt(path0) and
-        path0.isCons(TTypeParamTypeParameter(apos.asTypeParam()), path)
-      )
+      result = super.getPath()
     }
+
+    pragma[nomagic]
+    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
   }
 
   private class StructExprConstruction extends StructConstruction, StructExpr {
-    override Type getTypeArgument(TypeArgumentPosition apos, TypePath path) {
-      result = super.getTypeArgument(apos, path)
-      or
-      exists(TypePath suffix |
-        suffix.isCons(TTypeParamTypeParameter(apos.asTypeParam()), path) and
-        result = inferTypeCertain(this, suffix)
-      )
-    }
-
     override AstNode getArgument(int i) {
       result =
         this.getFieldExpr(pragma[only_bind_into](this.getNthStructField(i).getName().getText()))
@@ -1215,61 +1189,28 @@ private class AssocFunctionDeclaration extends FunctionDeclaration {
 }
 
 pragma[nomagic]
-private TypePath getPathToImplSelfTypeParam(TypeParam tp) {
-  exists(ImplItemNode impl |
-    tp = impl.getTypeParam(_) and
-    TTypeParamTypeParameter(tp) = impl.(Impl).getSelfTy().(TypeMention).getTypeAt(result)
+private Type getCallExprTypeArgument(CallExpr ce, int pos, TypePath path) {
+  exists(Path p | p = CallExprImpl::getFunctionPath(ce) |
+    result = getPathTypeArgument(p, pos).getTypeAt(path)
   )
 }
 
 pragma[nomagic]
-private Type getCallExprTypeArgument(CallExpr ce, TypeArgumentPosition apos, TypePath path) {
+private TypeMention getCallExprTypeArgument2(CallExpr ce) {
   exists(Path p | p = CallExprImpl::getFunctionPath(ce) |
-    exists(ItemNode resolved, TypeParam tp |
-      resolved = resolvePath(p) and
-      apos.asTypeParam() = tp
-    |
-      // For type parameters of the function we must resolve their
-      // instantiation from the path. For instance, for `fn bar<A>(a: A) -> A`
-      // and the path `bar<i64>`, we must resolve `A` to `i64`.
-      exists(int i |
-        tp = resolved.getTypeParam(pragma[only_bind_into](i)) and
-        result = getPathTypeArgument(p, pragma[only_bind_into](i)).getTypeAt(path)
-      )
-      or
-      // For type parameters of the `impl` block we must resolve their
-      // instantiation from the path. For instance, for `impl<A> for Foo<A>`
-      // and the path `Foo<i64>::bar` we must resolve `A` to `i64`.
-      exists(ImplItemNode impl, TypePath pathToTp |
-        resolved = impl.getASuccessor(_) and
-        tp = impl.getTypeParam(_) and
-        pathToTp = getPathToImplSelfTypeParam(tp) and
-        result = p.getQualifier().(TypeMention).getTypeAt(pathToTp.appendInverse(path))
-      )
-    )
-    or
-    exists(Path qualifier, TypeMention tm |
+    exists(Path qualifier |
       qualifier = p.getQualifier() and
-      result = tm.getTypeAt(path) and
-      not tm.getType() instanceof TraitType and
-      apos.isTypeQualifierArgumentPosition()
+      not result.getType() instanceof TraitType
     |
-      tm = qualifier
+      result = qualifier
       or
       // `<Foo as Bar>::baz()`; `Foo` is the type qualifier
       exists(PathSegment segment |
         segment = qualifier.getSegment() and
-        tm = segment.getTypeRepr() and
+        result = segment.getTypeRepr() and
         segment.hasTraitTypeRepr()
       )
     )
-  )
-  or
-  // Handle constructions that use `Self(...)` syntax
-  exists(Path p, TypePath path0 |
-    p = CallExprImpl::getFunctionPath(ce) and
-    result = p.(TypeMention).getTypeAt(path0) and
-    path0.isCons(TTypeParamTypeParameter(apos.asTypeParam()), path)
   )
 }
 

@@ -2116,6 +2116,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       /** A parameterizable element, such as a function or variant constructor. */
       class Parameterizable extends AstNode {
+        /** Gets the type at `path` of the entity that declares this member. */
+        Type getDeclaringType(TypePath path);
+
         /**
          * Gets the type parameter at position `ppos` of this element, if any.
          *
@@ -2188,6 +2191,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
          * This should include the receiver argument for method calls, using index `0`.
          */
         AstNode getArgument(int i);
+
+        TypeMention getTypeQualifier();
 
         /** Gets the target of this invocation in the given resolution context. */
         Parameterizable getTarget(ResolutionContext ctx);
@@ -2933,6 +2938,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         /** Gets the position used to represent the return type of a callable/type of a call. */
         additional int getReturnPosition() { result = -1 }
 
+        /** Gets the position used to represent the declaring type of a callable/type qualifier of a call. */
+        additional int getDeclaringPosition() { result = -2 }
+
         final private class ParameterizableFinal = Parameterizable;
 
         class Declaration extends ParameterizableFinal {
@@ -2941,6 +2949,9 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             or
             dpos = getReturnPosition() and
             result = getParameterizableType(this, path)
+            or
+            dpos = getDeclaringPosition() and
+            result = this.getDeclaringType(path)
           }
         }
 
@@ -2968,6 +2979,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             result = inferInvocationArgumentType(this, e, apos, path)
             or
             result = this.getInferredResultType(apos, path) and
+            exists(e)
+            or
+            result = this.getTypeQualifier().getTypeAt(path) and
+            apos = getDeclaringPosition() and
             exists(e)
           }
 
