@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -33,11 +34,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class PackagesConfigRestoreFactory
     {
-        public static IPackagesConfigRestore Create(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, HashSet<string> reachableFeeds)
+        public static IPackagesConfigRestore Create(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
         {
             if (SystemBuildActions.Instance.IsWindows() || SystemBuildActions.Instance.IsMonoInstalled())
             {
-                return new NugetExeWrapper(fileProvider, packageDirectory, logger, feedManager, reachableFeeds);
+                return new NugetExeWrapper(fileProvider, packageDirectory, logger, feedManager);
             }
 
             return new NoOpPackagesConfig(fileProvider.PackagesConfigs, logger);
@@ -64,7 +65,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             /// </summary>
             private readonly DependencyDirectory packageDirectory;
             private readonly FeedManager feedManager;
-            private readonly HashSet<string> reachableFeeds;
 
             private bool IsWindows => SystemBuildActions.Instance.IsWindows();
 
@@ -75,13 +75,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             /// <summary>
             /// Create the package manager for a specified source tree.
             /// </summary>
-            public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager, HashSet<string> reachableFeeds)
+            public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, FeedManager feedManager)
             {
                 this.fileProvider = fileProvider;
                 this.packageDirectory = packageDirectory;
                 this.logger = logger;
                 this.feedManager = feedManager;
-                this.reachableFeeds = reachableFeeds;
 
                 if (fileProvider.PackagesConfigs.Count > 0)
                 {
@@ -170,7 +169,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.LogInfo($"Restoring file \"{packagesConfig}\"...");
 
                 var sourcesArgument = "";
-                var feedsToUse = feedManager.FeedsToUse(packagesConfig, reachableFeeds).ToList();
+                var feedsToUse = feedManager.FeedsToUse(packagesConfig).ToList();
                 var useDefaultFeed = feedsToUse.Count == 0 && IsDefaultFeedReachable;
 
                 // Explicitly construct the sources to be used for the restore command when checking feed
