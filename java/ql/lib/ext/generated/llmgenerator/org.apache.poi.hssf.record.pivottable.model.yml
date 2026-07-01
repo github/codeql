@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.hssf.record.pivottable", "DataItemRecord", False, "DataItemRecord", "(DataItemRecord)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.pivottable", "ExtendedPivotTableViewFieldsRecord", False, "ExtendedPivotTableViewFieldsRecord", "(ExtendedPivotTableViewFieldsRecord)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.pivottable", "ViewDefinitionRecord", False, "ViewDefinitionRecord", "(RecordInputStream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.pivottable", "ViewDefinitionRecord", False, "ViewDefinitionRecord", "(ViewDefinitionRecord)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.pivottable", "ViewFieldsRecord", False, "ViewFieldsRecord", "(ViewFieldsRecord)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

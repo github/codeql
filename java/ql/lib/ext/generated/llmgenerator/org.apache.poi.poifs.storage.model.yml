@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.poifs.storage", "BATBlock$BATBlockAndIndex", False, "getBlock", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.storage.BATBlock$BATBlockAndIndex.block]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.storage", "BATBlock", False, "createBATBlock", "(POIFSBigBlockSize,ByteBuffer)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.poifs.storage", "BATBlock", False, "createEmptyBATBlock", "(POIFSBigBlockSize,boolean)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.poifs.storage", "BATBlock", False, "getBATBlockAndIndex", "(int,HeaderBlock,List)", "", "Argument[2].Element", "ReturnValue.SyntheticField[org.apache.poi.poifs.storage.BATBlock$BATBlockAndIndex.block]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.storage", "BATBlock", False, "getSBATBlockAndIndex", "(int,HeaderBlock,List)", "", "Argument[2].Element", "ReturnValue.SyntheticField[org.apache.poi.poifs.storage.BATBlock$BATBlockAndIndex.block]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.storage", "HeaderBlock", False, "HeaderBlock", "(ByteBuffer)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.storage.HeaderBlock._data]", "taint", "dfc-generated"]
+      - ["org.apache.poi.poifs.storage", "HeaderBlock", False, "HeaderBlock", "(InputStream)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.storage.HeaderBlock._data]", "taint", "dfc-generated"]
+      - ["org.apache.poi.poifs.storage", "HeaderBlock", False, "HeaderBlock", "(POIFSBigBlockSize)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.storage.HeaderBlock.bigBlockSize]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.storage", "HeaderBlock", False, "getBigBlockSize", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.storage.HeaderBlock.bigBlockSize]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.storage", "HeaderBlock", False, "writeData", "(OutputStream)", "", "Argument[this].SyntheticField[org.apache.poi.poifs.storage.HeaderBlock._data]", "Argument[0]", "taint", "dfc-generated"]

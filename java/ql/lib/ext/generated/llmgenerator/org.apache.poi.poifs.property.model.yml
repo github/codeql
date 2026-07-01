@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.poifs.property", "DirectoryProperty", True, "DirectoryProperty", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.poifs.property", "DirectoryProperty", True, "addChild", "(Property)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.property.DirectoryProperty._children].Element", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "DirectoryProperty", True, "changeName", "(Property,String)", "", "Argument[1]", "Argument[0].SyntheticField[org.apache.poi.poifs.property.Property._name]", "taint", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "DirectoryProperty", True, "getChildren", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.property.DirectoryProperty._children].Element", "ReturnValue.Element", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "DocumentProperty", True, "DocumentProperty", "(String,int)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.poifs.property", "DocumentProperty", True, "getDocument", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.property.DocumentProperty._document]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "DocumentProperty", True, "setDocument", "(POIFSDocument)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.property.DocumentProperty._document]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "Property", True, "getName", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.property.Property._name]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "Property", True, "getNextChild", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.property.Property._next_child]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "Property", True, "getPreviousChild", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.property.Property._previous_child]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "Property", True, "getShortDescription", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.property.Property._name]", "ReturnValue", "taint", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "Property", True, "getStorageClsid", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.property.Property._storage_clsid]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "Property", True, "getViewableArray", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.property.Property._name]", "ReturnValue.ArrayElement", "taint", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "Property", True, "setNextChild", "(Child)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.property.Property._next_child]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "Property", True, "setPreviousChild", "(Child)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.property.Property._previous_child]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "Property", True, "setStorageClsid", "(ClassID)", "", "Argument[0].SyntheticField[org.apache.poi.hpsf.ClassID.bytes]", "Argument[this].SyntheticField[org.apache.poi.poifs.property.Property._raw_data]", "taint", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "Property", True, "setStorageClsid", "(ClassID)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.property.Property._storage_clsid]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "Property", True, "writeData", "(OutputStream)", "", "Argument[this].SyntheticField[org.apache.poi.poifs.property.Property._raw_data]", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "PropertyTable", False, "PropertyTable", "(HeaderBlock)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.poifs.property", "PropertyTable", False, "PropertyTable", "(HeaderBlock,POIFSFileSystem)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.poifs.property", "PropertyTable", False, "addProperty", "(Property)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.property.PropertyTable._properties].Element", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.property", "PropertyTable", False, "getRoot", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.property.PropertyTable._properties].Element", "ReturnValue", "value", "dfc-generated"]

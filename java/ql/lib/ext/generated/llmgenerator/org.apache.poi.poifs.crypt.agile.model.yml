@@ -1,0 +1,53 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.poi.poifs.crypt.agile", "AgileEncryptionInfoBuilder", True, "parseDescriptor", "(InputStream)", "", "Argument[0]", "xxe", "ai-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "AgileEncryptionInfoBuilder", True, "parseDescriptor", "(String)", "", "Argument[0]", "xxe", "ai-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "AgileEncryptionVerifier", True, "AgileEncryptionVerifier", "(String)", "", "Argument[0]", "xxe", "ai-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "AgileEncryptor", True, "updateIntegrityHMAC", "(File,int)", "", "Argument[0]", "path-injection", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.poifs.crypt.agile", "AgileEncryptionHeader", True, "AgileEncryptionHeader", "(AgileEncryptionHeader)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "AgileEncryptionHeader", True, "getEncryptedHmacKey", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "AgileEncryptionHeader", True, "getEncryptedHmacValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "AgileEncryptionHeader", True, "setKeySalt", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.EncryptionHeader.keySalt]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "AgileEncryptionVerifier", True, "AgileEncryptionVerifier", "(AgileEncryptionVerifier)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "AgileEncryptionVerifier", True, "setEncryptedKey", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.EncryptionVerifier.encryptedKey]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "AgileEncryptionVerifier", True, "setEncryptedVerifier", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.EncryptionVerifier.encryptedVerifier]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "AgileEncryptionVerifier", True, "setEncryptedVerifierHash", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.EncryptionVerifier.encryptedVerifierHash]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "AgileEncryptionVerifier", True, "setSalt", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.EncryptionVerifier.salt]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "CertificateKeyEncryptor", True, "getCertVerifier", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.CertificateKeyEncryptor.certVerifier]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "CertificateKeyEncryptor", True, "getEncryptedKeyValue", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.CertificateKeyEncryptor.encryptedKeyValue]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "CertificateKeyEncryptor", True, "getX509Certificate", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.CertificateKeyEncryptor.x509Certificate]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "CertificateKeyEncryptor", True, "setCertVerifier", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.CertificateKeyEncryptor.certVerifier]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "CertificateKeyEncryptor", True, "setEncryptedKeyValue", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.CertificateKeyEncryptor.encryptedKeyValue]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "CertificateKeyEncryptor", True, "setX509Certificate", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.CertificateKeyEncryptor.x509Certificate]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "DataIntegrity", True, "getEncryptedHmacKey", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.DataIntegrity.encryptedHmacKey]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "DataIntegrity", True, "getEncryptedHmacValue", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.DataIntegrity.encryptedHmacValue]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "DataIntegrity", True, "setEncryptedHmacKey", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.DataIntegrity.encryptedHmacKey]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "DataIntegrity", True, "setEncryptedHmacValue", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.DataIntegrity.encryptedHmacValue]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "EncryptionDocument", True, "getDataIntegrity", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.EncryptionDocument.dataIntegrity]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "EncryptionDocument", True, "getKeyData", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.EncryptionDocument.keyData]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "EncryptionDocument", True, "getKeyEncryptors", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "EncryptionDocument", True, "setDataIntegrity", "(DataIntegrity)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.EncryptionDocument.dataIntegrity]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "EncryptionDocument", True, "setKeyData", "(KeyData)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.EncryptionDocument.keyData]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "KeyData", True, "getSaltValue", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.KeyData.saltValue]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "KeyData", True, "setSaltValue", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.KeyData.saltValue]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "KeyEncryptor", True, "getCertificateKeyEncryptor", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.KeyEncryptor.certificateKeyEncryptor]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "KeyEncryptor", True, "getPasswordKeyEncryptor", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.KeyEncryptor.passwordKeyEncryptor]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "KeyEncryptor", True, "setCertificateKeyEncryptor", "(CertificateKeyEncryptor)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.KeyEncryptor.certificateKeyEncryptor]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "KeyEncryptor", True, "setPasswordKeyEncryptor", "(PasswordKeyEncryptor)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.KeyEncryptor.passwordKeyEncryptor]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "PasswordKeyEncryptor", True, "getEncryptedKeyValue", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.PasswordKeyEncryptor.encryptedKeyValue]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "PasswordKeyEncryptor", True, "getEncryptedVerifierHashInput", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.PasswordKeyEncryptor.encryptedVerifierHashInput]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "PasswordKeyEncryptor", True, "getEncryptedVerifierHashValue", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.PasswordKeyEncryptor.encryptedVerifierHashValue]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "PasswordKeyEncryptor", True, "getSaltValue", "()", "", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.PasswordKeyEncryptor.saltValue]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "PasswordKeyEncryptor", True, "setEncryptedKeyValue", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.PasswordKeyEncryptor.encryptedKeyValue]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "PasswordKeyEncryptor", True, "setEncryptedVerifierHashInput", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.PasswordKeyEncryptor.encryptedVerifierHashInput]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "PasswordKeyEncryptor", True, "setEncryptedVerifierHashValue", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.PasswordKeyEncryptor.encryptedVerifierHashValue]", "value", "dfc-generated"]
+      - ["org.apache.poi.poifs.crypt.agile", "PasswordKeyEncryptor", True, "setSaltValue", "(byte[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.poifs.crypt.agile.PasswordKeyEncryptor.saltValue]", "value", "dfc-generated"]

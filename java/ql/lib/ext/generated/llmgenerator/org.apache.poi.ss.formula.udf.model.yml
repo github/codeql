@@ -1,0 +1,16 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.ss.formula.udf", "AggregatingUDFFinder", True, "AggregatingUDFFinder", "(UDFFinder[])", "", "Argument[0].ArrayElement", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.ss.formula.udf", "AggregatingUDFFinder", True, "add", "(UDFFinder)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.ss.formula.udf", "DefaultUDFFinder", False, "DefaultUDFFinder", "(String[],FreeRefFunction[])", "", "Argument[0].ArrayElement", "Argument[this].SyntheticField[org.apache.poi.ss.formula.udf.DefaultUDFFinder._functionsByName].MapKey", "taint", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.udf", "DefaultUDFFinder", False, "DefaultUDFFinder", "(String[],FreeRefFunction[])", "", "Argument[1].ArrayElement", "Argument[this].SyntheticField[org.apache.poi.ss.formula.udf.DefaultUDFFinder._functionsByName].MapValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.udf", "DefaultUDFFinder", False, "findFunction", "(String)", "", "Argument[this].SyntheticField[org.apache.poi.ss.formula.udf.DefaultUDFFinder._functionsByName].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.udf", "IndexedUDFFinder", True, "IndexedUDFFinder", "(UDFFinder[])", "", "Argument[0].ArrayElement", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.ss.formula.udf", "IndexedUDFFinder", True, "findFunction", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.ss.formula.udf.IndexedUDFFinder._funcMap].MapValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.udf", "IndexedUDFFinder", True, "getFunctionName", "(int)", "", "Argument[this].SyntheticField[org.apache.poi.ss.formula.udf.IndexedUDFFinder._funcMap].MapValue", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.formula.udf", "UDFFinder", True, "findFunction", "(String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

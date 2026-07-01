@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.hssf.record.chart", "ChartEndBlockRecord", False, "ChartEndBlockRecord", "(ChartEndBlockRecord)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.chart", "ChartEndBlockRecord", False, "ChartEndBlockRecord", "(RecordInputStream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.chart", "ChartEndBlockRecord", False, "serialize", "(LittleEndianOutput)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.chart", "ChartEndObjectRecord", False, "ChartEndObjectRecord", "(ChartEndObjectRecord)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.chart", "ChartEndObjectRecord", False, "ChartEndObjectRecord", "(RecordInputStream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.chart", "ChartEndObjectRecord", False, "serialize", "(LittleEndianOutput)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.chart", "DataLabelExtensionRecord", False, "DataLabelExtensionRecord", "(DataLabelExtensionRecord)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.chart", "DataLabelExtensionRecord", False, "DataLabelExtensionRecord", "(RecordInputStream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.chart", "LinkedDataRecord", False, "LinkedDataRecord", "(LinkedDataRecord)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.chart", "LinkedDataRecord", False, "LinkedDataRecord", "(RecordInputStream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.chart", "LinkedDataRecord", False, "getFormulaOfLink", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.chart", "LinkedDataRecord", False, "serialize", "(LittleEndianOutput)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.chart", "SeriesTextRecord", False, "SeriesTextRecord", "(SeriesTextRecord)", "", "Argument[0].SyntheticField[org.apache.poi.hssf.record.chart.SeriesTextRecord.field_4_text]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.chart.SeriesTextRecord.field_4_text]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.chart", "SeriesTextRecord", False, "copy", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.chart.SeriesTextRecord.field_4_text]", "ReturnValue.SyntheticField[org.apache.poi.hssf.record.chart.SeriesTextRecord.field_4_text]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.chart", "SeriesTextRecord", False, "getText", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.chart.SeriesTextRecord.field_4_text]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.chart", "SeriesTextRecord", False, "serialize", "(LittleEndianOutput)", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.chart.SeriesTextRecord.field_4_text]", "Argument[0]", "taint", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.chart", "SeriesTextRecord", False, "setText", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.chart.SeriesTextRecord.field_4_text]", "value", "dfc-generated"]

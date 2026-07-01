@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.ss.usermodel.helpers", "BaseRowColShifter", True, "shiftRange", "(FormulaShifter,CellRangeAddress,int)", "", "Argument[1]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.ss.usermodel.helpers", "RowShifter", True, "RowShifter", "(Sheet)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.ss.usermodel.helpers", "ColumnShifter", True, "ColumnShifter", "(Sheet)", "", "Argument[0]", "Argument[this]", "taint", "manual"]

@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.hssf.record.cf", "ColorGradientFormatting", False, "getColors", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.cf.ColorGradientFormatting.colors]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.cf", "ColorGradientFormatting", False, "getThresholds", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.cf.ColorGradientFormatting.thresholds]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.cf", "ColorGradientFormatting", False, "serialize", "(LittleEndianOutput)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "ColorGradientFormatting", False, "setColors", "(ExtendedColor[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.cf.ColorGradientFormatting.colors]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.cf", "ColorGradientFormatting", False, "setThresholds", "(ColorGradientThreshold[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.cf.ColorGradientFormatting.thresholds]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.cf", "ColorGradientThreshold", False, "ColorGradientThreshold", "(ColorGradientThreshold)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "ColorGradientThreshold", False, "ColorGradientThreshold", "(LittleEndianInput)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "DataBarFormatting", False, "DataBarFormatting", "(DataBarFormatting)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "DataBarFormatting", False, "DataBarFormatting", "(LittleEndianInput)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "DataBarFormatting", False, "getColor", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.cf.DataBarFormatting.color]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.cf", "DataBarFormatting", False, "getThresholdMax", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.cf.DataBarFormatting.thresholdMax]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.cf", "DataBarFormatting", False, "getThresholdMin", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.cf.DataBarFormatting.thresholdMin]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.cf", "DataBarFormatting", False, "serialize", "(LittleEndianOutput)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "DataBarFormatting", False, "setColor", "(ExtendedColor)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.cf.DataBarFormatting.color]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.cf", "DataBarFormatting", False, "setThresholdMax", "(DataBarThreshold)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.cf.DataBarFormatting.thresholdMax]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.cf", "DataBarFormatting", False, "setThresholdMin", "(DataBarThreshold)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.cf.DataBarFormatting.thresholdMin]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.cf", "DataBarThreshold", False, "DataBarThreshold", "(DataBarThreshold)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "DataBarThreshold", False, "DataBarThreshold", "(LittleEndianInput)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "FontFormatting", False, "FontFormatting", "(FontFormatting)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "FontFormatting", False, "FontFormatting", "(RecordInputStream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "FontFormatting", False, "getRawRecord", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "IconMultiStateFormatting", False, "getThresholds", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.record.cf.IconMultiStateFormatting.thresholds]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.cf", "IconMultiStateFormatting", False, "setThresholds", "(Threshold[])", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.record.cf.IconMultiStateFormatting.thresholds]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.record.cf", "IconMultiStateThreshold", False, "IconMultiStateThreshold", "(IconMultiStateThreshold)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "IconMultiStateThreshold", False, "IconMultiStateThreshold", "(LittleEndianInput)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "Threshold", True, "getParsedExpression", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.record.cf", "Threshold", True, "serialize", "(LittleEndianOutput)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
