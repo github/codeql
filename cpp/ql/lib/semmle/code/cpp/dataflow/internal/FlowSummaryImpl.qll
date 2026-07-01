@@ -13,13 +13,32 @@ private import semmle.code.cpp.dataflow.ExternalFlow
 private import semmle.code.cpp.ir.IR
 
 module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
-  private import codeql.util.Void
-
   class SummarizedCallableBase = Function;
 
-  class SourceBase = Void;
+  abstract private class SourceSinkBase extends Element {
+    /** Gets the call associated with this element, if any. */
+    CallInstruction getCall() { none() }
 
-  class SinkBase = Void;
+    /** Gets the function associated with this element, if any. */
+    Function getFunction() { none() }
+
+    /** Gets the enclosing function of this element. */
+    abstract Declaration getEnclosingFunction();
+  }
+
+  abstract class SourceBase extends SourceSinkBase { }
+
+  abstract class SinkBase extends SourceSinkBase { }
+
+  private class SourceSinkCall extends SourceBase, SinkBase instanceof Call {
+    CallInstruction call;
+
+    SourceSinkCall() { call.getUnconvertedResultExpression() = this }
+
+    final override CallInstruction getCall() { result = call }
+
+    final override Declaration getEnclosingFunction() { result = Call.super.getEnclosingFunction() }
+  }
 
   class FlowSummaryCallBase = CallInstruction;
 
@@ -149,9 +168,46 @@ private module StepsInput implements Impl::Private::StepsInputSig {
     )
   }
 
-  DataFlowCallable getSourceNodeEnclosingCallable(Input::SourceBase source) { none() }
+  DataFlowCallable getSourceNodeEnclosingCallable(Input::SourceBase source) {
+    result.asSourceCallable() = source.getEnclosingFunction()
+  }
 
-  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponentStack s) { none() }
+  private ArgumentNode getSourceNodeArgument(
+    Input::SourceBase source, Impl::Private::SummaryComponent sc
+  ) {
+    exists(Position pos, DataFlowCall call |
+      sc = Impl::Private::SummaryComponent::argument(pos) and
+      source.getCall() = call.asCallInstruction() and
+      result.argumentOf(call, pos)
+    )
+  }
+
+  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponentStack s) {
+    exists(ReturnKind rk, DataFlowCall call |
+      s.head() = Impl::Private::SummaryComponent::return(rk) and
+      source.getCall() = call.asCallInstruction() and
+      result = getAnOutNode(call, rk)
+    )
+    or
+    exists(Position pos, DataFlowCallable callable |
+      s.head() = Impl::Private::SummaryComponent::parameter(pos) and
+      result.(ParameterNode).isParameterOf(callable, pos)
+    |
+      exists(ArgumentNode arg, DataFlowCall call |
+        arg = getSourceNodeArgument(source, s.tail().headOfSingleton()) and
+        arg.argumentOf(call, pos) and
+        callable = call.getStaticCallTarget()
+      )
+      or
+      source.getFunction() = callable.asSourceCallable()
+    )
+    or
+    exists(Position pos |
+      s.head() = Impl::Private::SummaryComponent::argument(pos) and
+      result.(PostUpdateNode).getPreUpdateNode() =
+        getSourceNodeArgument(source, s.headOfSingleton())
+    )
+  }
 
   Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
@@ -310,3 +366,23 @@ module Private {
 }
 
 module Public = Impl::Public;
+
+private class SourceModelCall extends Public::SourceElement instanceof Call {
+  private string namespace;
+  private string type;
+  private boolean subtypes;
+  private string name;
+  private string signature;
+  private string ext;
+
+  SourceModelCall() {
+    sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) and
+    this.getTarget() = interpretElement(namespace, type, subtypes, name, signature, ext)
+  }
+
+  override predicate isSource(
+    string output, string kind, Public::Provenance provenance, string model
+  ) {
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, model)
+  }
+}

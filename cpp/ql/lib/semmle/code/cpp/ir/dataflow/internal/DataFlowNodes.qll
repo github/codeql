@@ -1534,11 +1534,46 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
     result = this.getSummaryNode().getSummarizedCallable()
   }
 
-  override DataFlowCallable getEnclosingCallable() {
-    result = FlowSummaryImpl::Private::getEnclosingCallable(this.getSummaryNode())
+  /** Gets the source element that this node belongs to, if any. */
+  FlowSummaryImpl::Public::SourceElement getSourceElement() {
+    result = this.getSummaryNode().getSourceElement()
   }
 
-  override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
+  /** Gets the sink element that this node belongs to, if any. */
+  FlowSummaryImpl::Public::SinkElement getSinkElement() {
+    result = this.getSummaryNode().getSinkElement()
+  }
+
+  /** Holds if this node is a source node of kind `kind`. */
+  predicate isSource(string kind, string model) {
+    this.getSummaryNode().(FlowSummaryImpl::Private::SourceOutputNode).isEntry(kind, model)
+  }
+
+  /** Holds if this node is a sink node of kind `kind`. */
+  predicate isSink(string kind, string model) {
+    this.getSummaryNode().(FlowSummaryImpl::Private::SinkInputNode).isExit(kind, model)
+  }
+
+  /**
+   * Gets the enclosing callable. For a `FlowSummaryNode` this is always the
+   * summarized function this node is part of.
+   */
+  override DataFlowCallable getEnclosingCallable() {
+    result = FlowSummaryImpl::Private::getEnclosingCallable(this.getSummaryNode())
+    or
+    // TODO: This could actually be done by the shared library.
+    result.asSourceCallable() = this.getSourceElement().getEnclosingFunction()
+    or
+    result.asSourceCallable() = this.getSinkElement().getEnclosingFunction()
+  }
+
+  override Location getLocationImpl() {
+    result = this.getSummarizedCallable().getLocation()
+    or
+    result = this.getSourceElement().getLocation()
+    or
+    result = this.getSinkElement().getLocation()
+  }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
 }
