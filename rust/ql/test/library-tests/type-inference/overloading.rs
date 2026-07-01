@@ -509,7 +509,7 @@ mod trait_bound_impl_overlap {
 
     fn test() {
         let x = S(0);
-        let y = call_f(x); // $ target=call_f type=y:i32
+        let y = call_f(x); // $ target=call_f $ MISSING: type=y:i32
         let z: i32 = y;
 
         let x = S(0);

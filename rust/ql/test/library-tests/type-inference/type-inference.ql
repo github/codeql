@@ -12,14 +12,14 @@ private predicate relevantNode(AstNode n) {
 }
 
 query predicate inferCertainType(AstNode n, TypePath path, Type t) {
-  t = TypeInference::CertainTypeInference::inferCertainType(n, path) and
-  t != TUnknownType() and
+  t = TypeInference::inferTypeCertain(n, path) and
+  not t instanceof PseudoType and
   relevantNode(n)
 }
 
 query predicate inferType(AstNode n, TypePath path, Type t) {
   t = TypeInference::inferType(n, path) and
-  t != TUnknownType() and
+  not t instanceof PseudoType and
   relevantNode(n)
 }
 
@@ -70,7 +70,7 @@ module TypeTest implements TestSig {
       (
         tag = "type"
         or
-        t = TypeInference::CertainTypeInference::inferCertainType(n, path) and
+        t = TypeInference::inferTypeCertain(n, path) and
         tag = "certainType"
       ) and
       location = n.getLocation() and

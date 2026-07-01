@@ -601,10 +601,12 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
   }
 
   pragma[nomagic]
-  TypeMention getReturnTypeMention(Function f) {
-    result.(ShorthandReturnTypeMention) = f.getName()
+  TypeMention getReturnTypeMention(Callable c) {
+    result.(ShorthandReturnTypeMention) = c.(Function).getName()
     or
-    result = f.getRetType().getTypeRepr()
+    result = c.(Function).getRetType().getTypeRepr()
+    or
+    result = c.(ClosureExpr).getRetType().getTypeRepr()
   }
 
   class DynTraitTypeReprMention extends TypeMentionImpl instanceof DynTraitTypeRepr {
@@ -676,7 +678,7 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
   }
 
   class NeverTypeReprMention extends TypeMentionImpl, NeverTypeRepr {
-    override Type getTypeAt(TypePath path) { result = TNeverType() and path.isEmpty() }
+    override Type getTypeAt(TypePath path) { result = TUnknownType() and path.isEmpty() }
   }
 
   class PtrTypeReprMention extends TypeMentionImpl instanceof PtrTypeRepr {
@@ -692,6 +694,24 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
       exists(TypePath suffix |
         result = super.getTypeRepr().(TypeMention).getTypeAt(suffix) and
         path = TypePath::cons(this.resolveRootType().getPositionalTypeParameter(0), suffix)
+      )
+    }
+  }
+
+  class InferTypeReprMention extends TypeMentionImpl, InferTypeRepr {
+    override Type getTypeAt(TypePath path) { result = TUnknownType() and path.isEmpty() }
+  }
+
+  /** A type item mention that resolves to itself. */
+  class TypeItemMention extends TypeMentionImpl instanceof TypeItem {
+    override Type getTypeAt(TypePath typePath) {
+      typePath.isEmpty() and
+      result = TDataType(this)
+      or
+      exists(TypeParam tp |
+        tp = this.(ItemNode).getTypeParam(_) and
+        typePath = TypePath::singleton(result) and
+        result = TTypeParamTypeParameter(tp)
       )
     }
   }
