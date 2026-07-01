@@ -3,13 +3,17 @@ load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 
 cc_binary(
     name = "codeql_canonical_path.dll",
-    srcs = ["canonicalize.cpp", "canonicalize_jni.cpp", "canonicalize.h"],
+    srcs = [
+        "canonicalize.cpp",
+        "canonicalize.h",
+        "canonicalize_jni.cpp",
+    ],
     defines = ["CODEQL_CANONICALIZE_EXPORTS"],
     linkopts = ["-lkernel32"],
     linkshared = True,
     target_compatible_with = ["@platforms//os:windows"],
-    deps = ["@rules_java//toolchains:jni"],
     visibility = ["//visibility:public"],
+    deps = ["@rules_java//toolchains:jni"],
 )
 
 cc_library(

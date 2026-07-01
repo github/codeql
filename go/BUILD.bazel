@@ -58,7 +58,10 @@ codeql_pkg_files(
 
 codeql_pkg_files(
     name = "canonicalize-dll",
-    srcs = ["//shared/canonicalize:pkg"],
+    srcs = select({
+        "@platforms//os:windows": ["//shared/canonicalize:pkg"],
+        "//conditions:default": [],
+    }),
     prefix = "tools/{CODEQL_PLATFORM}",
 )
 
