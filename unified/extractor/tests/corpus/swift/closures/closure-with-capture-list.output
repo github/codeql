@@ -1,4 +1,4 @@
-let f = { [weak self] in self?.doThing() }
+let f = { [weak self] in self?.doThingBlah() }
 
 ---
 
@@ -28,7 +28,7 @@ source_file
                     navigation_expression
                       suffix:
                         navigation_suffix
-                          suffix: simple_identifier "doThing"
+                          suffix: simple_identifier "doThingBlah"
                       target:
                         optional_chain_marker
                           expr:
@@ -60,7 +60,7 @@ top_level
                           base:
                             name_expr
                               identifier: identifier "self"
-                          member: identifier "doThing"
+                          member: identifier "doThingBlah"
               capture_declaration:
                 variable_declaration
                   modifier: modifier "weak"

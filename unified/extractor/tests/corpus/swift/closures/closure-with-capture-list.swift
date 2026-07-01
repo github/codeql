@@ -1,1 +1,1 @@
-let f = { [weak self] in self?.doThing() }
+let f = { [weak self] in self?.doThingBlah() }
