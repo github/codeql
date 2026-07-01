@@ -1,13 +1,3 @@
-## 9.2.0
-
-### New Features
-
-* Kotlin 2.4.0 can now be analysed.
-
-### Minor Analysis Improvements
-
-* Improved modeling of Apache HttpClient `execute` method sinks for `java/ssrf` and `java/non-https-url`.
-
 ## 9.1.2
 
 ### Minor Analysis Improvements

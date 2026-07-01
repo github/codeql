@@ -1,7 +1,3 @@
-## 1.11.5
-
-No user-facing changes.
-
 ## 1.11.4
 
 No user-facing changes.
