@@ -234,8 +234,3 @@ subpaths
 | use.kt:9:14:9:25 | taint(...) : Closeable | use.kt:9:31:9:36 | it : Closeable | use.kt:9:33:9:34 | it : Closeable | use.kt:9:14:9:36 | use(...) |
 | with.kt:7:19:7:30 | taint(...) : String | with.kt:7:33:7:40 | $this$with : String | with.kt:7:35:7:38 | this : String | with.kt:7:14:7:40 | with(...) |
 testFailures
-| test.kt:28:14:28:21 | getSecond(...) | Unexpected result: hasTaintFlow=a |
-| test.kt:35:14:35:27 | component1(...) | Unexpected result: hasTaintFlow=d |
-| test.kt:41:14:41:22 | getSecond(...) | Unexpected result: hasTaintFlow=e |
-| test.kt:53:14:53:24 | getDuration(...) | Unexpected result: hasTaintFlow=f |
-| test.kt:58:14:58:29 | component2(...) | Unexpected result: hasTaintFlow=g |
