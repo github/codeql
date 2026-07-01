@@ -17,13 +17,8 @@ int *remoteMadSourceIndirect(); // $ interpretElement
 int **remoteMadSourceDoubleIndirect(); // $ interpretElement
 void remoteMadSourceIndirectArg0(int *x, int *y); // $ interpretElement
 void remoteMadSourceIndirectArg1(int &x, int &y); // $ interpretElement
-int remoteMadSourceVar; // $ interpretElement
-int *remoteMadSourceVarIndirect; // $ interpretElement
 
 namespace MyNamespace {
-	int namespaceLocalMadSource(); // $ interpretElement
-	int namespaceLocalMadSourceVar; // $ interpretElement
-
 	namespace MyNamespace2 {
 		int namespace2LocalMadSource(); // $ interpretElement
 	}
@@ -69,14 +64,9 @@ void test_sources() {
 	sink(c);
 	sink(d); // $ ir
 
-	sink(remoteMadSourceVar); // $ ir
-	sink(*remoteMadSourceVarIndirect); // $ MISSING: ir
-
 	int e = localMadSource();
 	sink(e); // $ ir
-
-	sink(MyNamespace::namespaceLocalMadSource()); // $ ir
-	sink(MyNamespace::namespaceLocalMadSourceVar); // $ ir
+	
 	sink(MyNamespace::MyNamespace2::namespace2LocalMadSource()); // $ ir
 	sink(MyNamespace::localMadSource()); // $ (the MyNamespace version of this function is not a source)
 	sink(namespaceLocalMadSource()); // (the global namespace version of this function is not a source)
@@ -96,8 +86,8 @@ void madSinkArg01(int x, int y, int z); // $ interpretElement
 void madSinkArg02(int x, int y, int z); // $ interpretElement
 void madSinkIndirectArg0(int *x); // $ interpretElement
 void madSinkDoubleIndirectArg0(int **x); // $ interpretElement
-int madSinkVar; // $ interpretElement
-int *madSinkVarIndirect; // $ interpretElement
+
+
 
 void test_sinks() {
 	// test sinks
@@ -118,15 +108,8 @@ void test_sinks() {
 	madSinkIndirectArg0(&a); // $ ir
 	madSinkIndirectArg0(a_ptr); // $ ir
 	madSinkDoubleIndirectArg0(&a_ptr); // $ ir
-
-	madSinkVar = source();  // $ ir
-
-	// test sources + sinks together
-
 	madSinkArg0(localMadSource()); // $ ir
 	madSinkIndirectArg0(remoteMadSourceIndirect()); // $ ir
-	madSinkVar = remoteMadSourceVar; // $ ir
-	*madSinkVarIndirect = remoteMadSourceVar; // $ MISSING: ir
 }
 
 void madSinkParam0(int x) { // $ interpretElement
@@ -163,10 +146,6 @@ int madArg0FieldIndirectToReturn(MyContainer mc); // $ interpretElement
 MyContainer madArg0ToReturnField(int x); // $ interpretElement
 MyContainer *madArg0ToReturnIndirectField(int x); // $ interpretElement
 MyContainer madArg0ToReturnFieldIndirect(int x); // $ interpretElement
-
-MyContainer madFieldToFieldVar; // $ interpretElement
-MyContainer madFieldToIndirectFieldVar; // $ interpretElement
-MyContainer *madIndirectFieldToFieldVar; // $ interpretElement
 
 void test_summaries() {
 	// test summaries
@@ -241,19 +220,6 @@ void test_summaries() {
 	int *rtn2_ptr = rtn2.ptr;
 	sink(*rtn2_ptr); // $ ir
 
-	// test global variable summaries
-
-	madFieldToFieldVar.value = source();
-	sink(madFieldToFieldVar.value2); // $ MISSING: ir
-
-	madFieldToIndirectFieldVar.value = source();
-	sink(madFieldToIndirectFieldVar.ptr);
-	sink(*(madFieldToIndirectFieldVar.ptr)); // $ MISSING: ir
-
-	madIndirectFieldToFieldVar->value = source();
-	sink((*madIndirectFieldToFieldVar).value2); // $ MISSING: ir
-	sink(madIndirectFieldToFieldVar->value2); // $ MISSING: ir
-
 	// test source + sinks + summaries together
 
 	madSinkArg0(madArg0ToReturn(remoteMadSource())); // $ ir
@@ -269,13 +235,13 @@ public:
 	// sources
 	int memberRemoteMadSource(); // $ interpretElement
 	void memberRemoteMadSourceIndirectArg0(int *x); // $ interpretElement
-	int memberRemoteMadSourceVar; // $ interpretElement
+	
 	void qualifierSource(); // $ interpretElement
 	void qualifierFieldSource(); // $ interpretElement
 
 	// sinks
 	void memberMadSinkArg0(int x); // $ interpretElement
-	int memberMadSinkVar; // $ interpretElement
+
 	void qualifierSink(); // $ interpretElement
 	void qualifierArg0Sink(int x); // $ interpretElement
 	void qualifierFieldSink(); // $ interpretElement
@@ -306,8 +272,6 @@ namespace MyNamespace {
 		// sinks
 		void namespaceMemberMadSinkArg0(int x); // $ interpretElement
 		static void namespaceStaticMemberMadSinkArg0(int x); // $ interpretElement
-		int namespaceMemberMadSinkVar; // $ interpretElement
-		static int namespaceStaticMemberMadSinkVar; // $ interpretElement
 
 		// summaries
 		int namespaceMadSelfToReturn(); // $ interpretElement
@@ -331,8 +295,6 @@ void test_class_members() {
 	mc.memberRemoteMadSourceIndirectArg0(&a);
 	sink(a); // $ ir
 
-	sink(mc.memberRemoteMadSourceVar); // $ ir
-
 	// test subtype sources
 
 	sink(mdc.memberRemoteMadSource()); // $ ir
@@ -344,12 +306,8 @@ void test_class_members() {
 
 	mc.memberMadSinkArg0(source()); // $ ir
 
-	mc.memberMadSinkVar = source(); // $ ir
-
 	mnc.namespaceMemberMadSinkArg0(source()); // $ ir
 	MyNamespace::MyClass::namespaceStaticMemberMadSinkArg0(source()); // $ ir
-	mnc.namespaceMemberMadSinkVar = source(); // $ ir
-	MyNamespace::MyClass::namespaceStaticMemberMadSinkVar = source(); // $ ir
 
 	// test class member summaries
 

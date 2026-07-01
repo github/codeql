@@ -230,40 +230,11 @@ module SourceSinkInterpretationInput implements
 
   /** Provides additional sink specification logic. */
   bindingset[c]
-  predicate interpretOutput(string c, InterpretNode mid, InterpretNode node) {
-    // Allow variables to be picked as output nodes.
-    exists(Node n, Element ast |
-      n = node.asNode() and
-      ast = mid.asElement()
-    |
-      c = "" and
-      n.asExpr().(VariableAccess).getTarget() = ast
-    )
-  }
+  predicate interpretOutput(string c, InterpretNode mid, InterpretNode node) { none() }
 
   /** Provides additional source specification logic. */
   bindingset[c]
-  predicate interpretInput(string c, InterpretNode mid, InterpretNode node) {
-    exists(Node n, Element ast, VariableAccess e |
-      n = node.asNode() and
-      ast = mid.asElement() and
-      e.getTarget() = ast
-    |
-      // Allow variables to be picked as input nodes.
-      // We could simply do this as `e = n.asExpr()`, but that would not allow
-      // us to pick `x` as a sink in an example such as `x = source()` (but
-      // only subsequent uses of `x`) since the variable access on `x` doesn't
-      // actually load the value of `x`. So instead, we pick the instruction
-      // node corresponding to the generated `StoreInstruction` and use the
-      // expression associated with the destination instruction. This means
-      // that the `x` in `x = source()` can be marked as an input.
-      c = "" and
-      exists(StoreInstruction store |
-        store.getDestinationAddress().getUnconvertedResultExpression() = e and
-        n.asInstruction() = store
-      )
-    )
-  }
+  predicate interpretInput(string c, InterpretNode mid, InterpretNode node) { none() }
 }
 
 module Private {
