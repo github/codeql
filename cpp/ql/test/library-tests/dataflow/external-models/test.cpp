@@ -233,6 +233,6 @@ SourceWrapper ymlFieldSource();
 
 void test_source_access_path() {
 	SourceWrapper wrapper = ymlFieldSource();
-	ymlSink(wrapper.value); // $ MISSING: ir
+	ymlSink(wrapper.value); // $ ir
 }
 
