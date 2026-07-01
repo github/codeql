@@ -761,7 +761,7 @@ class CaseClause extends @caseclause, Stmt, ScopeNode {
    *
    * Note that the default clause does not have any expressions.
    */
-  Expr getAnExpr() { result = this.getAChildExpr() }
+  Expr getAnExpr() { result = this.getExpr(_) }
 
   /**
    * Gets the number of expressions of this `case` clause.

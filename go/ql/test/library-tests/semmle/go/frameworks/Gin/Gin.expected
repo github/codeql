@@ -7,18 +7,18 @@
 | Gin.go:58:10:58:25 | call to Param |
 | Gin.go:62:10:62:34 | call to GetStringSlice |
 | Gin.go:66:10:66:29 | call to GetString |
-| Gin.go:70:3:70:28 | ... := ...[0] |
+| Gin.go:70:3:70:28 | extract:0 ... := ... |
 | Gin.go:74:10:74:23 | call to ClientIP |
 | Gin.go:78:10:78:26 | call to ContentType |
-| Gin.go:82:3:82:29 | ... := ...[0] |
-| Gin.go:86:3:86:36 | ... := ...[0] |
-| Gin.go:90:3:90:31 | ... := ...[0] |
-| Gin.go:94:3:94:39 | ... := ...[0] |
-| Gin.go:98:3:98:34 | ... := ...[0] |
+| Gin.go:82:3:82:29 | extract:0 ... := ... |
+| Gin.go:86:3:86:36 | extract:0 ... := ... |
+| Gin.go:90:3:90:31 | extract:0 ... := ... |
+| Gin.go:94:3:94:39 | extract:0 ... := ... |
+| Gin.go:98:3:98:34 | extract:0 ... := ... |
 | Gin.go:102:10:102:52 | call to DefaultPostForm |
 | Gin.go:106:10:106:49 | call to DefaultQuery |
-| Gin.go:110:3:110:37 | ... := ...[0] |
-| Gin.go:114:3:114:34 | ... := ...[0] |
+| Gin.go:110:3:110:37 | extract:0 ... := ... |
+| Gin.go:114:3:114:34 | extract:0 ... := ... |
 | Gin.go:118:10:118:32 | call to GetStringMap |
 | Gin.go:122:10:122:38 | call to GetStringMapString |
 | Gin.go:126:10:126:43 | call to GetStringMapStringSlice |

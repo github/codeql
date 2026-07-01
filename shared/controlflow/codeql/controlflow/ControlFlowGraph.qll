@@ -148,12 +148,38 @@ signature module AstSig<LocationSig Location> {
 
   /** A for-loop that iterates over the elements of a collection. */
   class ForeachStmt extends LoopStmt {
-    /** Gets the variable declaration of this `foreach` loop. */
+    /**
+     * Gets the variable declaration of this `foreach` loop, if any.
+     *
+     * A `foreach` loop that binds more than one variable per iteration (for
+     * example when destructuring is used, as in `for k, v := range m` in Go, or
+     * `for (a, b) in ...` in Rust/Python/Swift) should instead opt in to the
+     * synthesized per-iteration element node (see `foreachHasElementNode`) and
+     * destructure that element into its variables, in which case this predicate
+     * need not have a result.
+     */
     Expr getVariable();
 
     /** Gets the collection expression of this `foreach` loop. */
     Expr getCollection();
   }
+
+  /**
+   * Holds if `foreach` has a synthesized per-iteration "element" node, that is,
+   * an additional control flow node representing the element produced by each
+   * iteration of the loop.
+   *
+   * When this holds, the shared library routes control flow from the loop
+   * header (and from the non-empty collection) into the element node, but the
+   * language is then responsible for wiring control flow out of the element
+   * node and on to the loop body (typically destructuring the element into the
+   * loop variables). In this mode the shared `getVariable` routing is not used.
+   *
+   * This is useful for languages whose loop variables are bound by extracting
+   * components from an implicit "current element" value (as opposed to being
+   * evaluated as ordinary target expressions).
+   */
+  default predicate foreachHasElementNode(ForeachStmt foreach) { none() }
 
   /**
    * A `break` statement.
@@ -283,6 +309,14 @@ signature module AstSig<LocationSig Location> {
      */
     Stmt getStmt(int index);
   }
+
+  /**
+   * Gets the initializer of `switch` statement `switch`, if any.
+   *
+   * Only some languages (e.g. Go) support an initializer that is evaluated
+   * before the switch expression.
+   */
+  default AstNode getSwitchInit(Switch switch) { none() }
 
   /** A case in a switch. */
   class Case extends AstNode {
@@ -675,7 +709,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       not exists(getChild(n, _)) and
       not postOrInOrder(n) and
       not additionalNode(n, _, _) and
-      not inConditionalContext(n, _)
+      not inConditionalContext(n, _) and
+      // A switch is a branching construct with an explicit step from its
+      // "before" node to its "after" node, so it must keep distinct before and
+      // after nodes even when it has no children (e.g. an empty `switch {}`).
+      // Merging them would otherwise turn that step into a spurious self-loop.
+      not n instanceof Switch
     }
 
     private string catchClauseEmptyBodyTag() { result = "[CatchClauseEmptyBody]" }
@@ -683,6 +722,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     private string loopHeaderTag() { result = "[LoopHeader]" }
 
     private string patternMatchTrueTag() { result = "[MatchTrue]" }
+
+    private string foreachElementTag() { result = "[ForeachElement]" }
 
     /**
      * Holds if an additional node tagged with `tag` should be created for
@@ -701,6 +742,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       n instanceof LoopStmt and
       tag = loopHeaderTag() and
+      t instanceof DirectSuccessor
+      or
+      foreachHasElementNode(n) and
+      tag = foreachElementTag() and
       t instanceof DirectSuccessor
       or
       n instanceof PatternMatchExpr and
@@ -1015,6 +1060,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      */
     final class PreControlFlowNode = NodeImpl;
 
+    /**
+     * Holds if `n` is the in-order or post-order control flow node for `ast`.
+     *
+     * Unlike the `PreControlFlowNode.isIn` member predicate, this is computed
+     * structurally (directly from the underlying node representation) and so
+     * does not give rise to a dependency on node reachability. It is intended
+     * for languages implementing `Input2::deferExitStep`, whose definition must
+     * not depend on `reachable` (see `succIgnoringDeferExit`); such languages
+     * can use this to identify nodes inside a negation without introducing a
+     * non-monotonic cycle.
+     */
+    predicate isInOrderNode(PreControlFlowNode n, AstNode ast) { n = TAstNode(ast) }
+
     private class BeforeNode extends NodeImpl, TBeforeNode {
       private AstNode n;
 
@@ -1086,7 +1144,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     /** The `PreControlFlowNode` at the entry point of a callable. */
-    final private class EntryNodeImpl extends NodeImpl, TEntryNode {
+    final class EntryNodeImpl extends NodeImpl, TEntryNode {
       private Callable c;
 
       EntryNodeImpl() { this = TEntryNode(c) }
@@ -1187,7 +1245,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     signature module InputSig2 {
       /**
        * Holds if `ast` may result in an abrupt completion `c` originating at
-       * `n`. The boolean `always`  indicates whether the abrupt completion
+       * `n`. The boolean `always` indicates whether the abrupt completion
        * always occurs or whether `n` may also terminate normally.
        *
        * This predicate is only relevant for AST constructs that are not already
@@ -1205,6 +1263,79 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
        * handled by this library.
        */
       predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c);
+
+      /**
+       * Holds if the language-specific implementation takes over the catching
+       * of the abrupt completion `completion` at the boundary of callable `c`.
+       *
+       * When this holds, the library's default routing of `completion` to the
+       * normal or exceptional exit node of `c` is suppressed, and the language
+       * is then responsible for catching `completion` itself via
+       * `endAbruptCompletion` (for example, to interpose a function epilogue
+       * such as Go's deferred calls between a `return` and the normal exit
+       * node).
+       *
+       * The default implementation does not override any completions, leaving
+       * the standard behaviour intact.
+       */
+      default predicate overridesCallableEndAbruptCompletion(Callable c, AbruptCompletion completion) {
+        none()
+      }
+
+      /**
+       * Holds if `n` steps directly to the normal exit node (`normal = true`)
+       * or the exceptional exit node (`normal = false`) of callable `c`.
+       *
+       * By default the only node that reaches a callable's normal exit is the
+       * "after" node of its body. This predicate lets a language route the tail
+       * of a function epilogue (such as Go's result-read or deferred-call nodes)
+       * to the appropriate exit node, which is useful when the body cannot
+       * terminate normally (e.g. it always ends in a `return`) and therefore has
+       * no "after" node to anchor the epilogue on.
+       *
+       * The default implementation adds no such steps.
+       */
+      default predicate callableExitStep(PreControlFlowNode n, Callable c, boolean normal) {
+        none()
+      }
+
+      /**
+       * Holds if the language-specific implementation takes over the routing of
+       * the normal fall-through from callable `c`'s body to its normal exit
+       * node.
+       *
+       * When this holds, the library's default edge from the "after" node of
+       * `c`'s body to the normal exit node is suppressed, and the language is
+       * responsible for routing the fall-through to the normal exit itself (for
+       * example, to interpose a function-exit epilogue such as Go's deferred
+       * calls). This complements `callableExitStep`, which the language can use
+       * to add the replacement edge into the normal exit node.
+       *
+       * The default implementation does not override any fall-through edges.
+       */
+      default predicate overridesCallableBodyExit(Callable c) { none() }
+
+      /**
+       * Holds if there is a local non-abrupt step from `n1` to `n2` that forms
+       * part of a function-exit epilogue whose placement depends on
+       * reachability (such as Go's deferred calls, which run at function exit in
+       * last-in-first-out order, gated by whether their registration is
+       * reachable on the path to a given exit).
+       *
+       * Edges added here are included in the final control flow graph exactly
+       * like ordinary `step` edges, but they are *excluded* when the library
+       * computes the defer-free reachability exposed through
+       * `getASuccessorIgnoringDeferredExit`. This lets a language compute the
+       * reachability gate without observing the epilogue edges it is in the
+       * process of defining, avoiding a circularity.
+       *
+       * Each `deferExitStep` edge must be disjoint from every other `step` edge
+       * (i.e. a pair `(n1, n2)` that is a `deferExitStep` must not also arise
+       * from `step`), so that the defer-free reachability is well defined.
+       *
+       * The default implementation adds no such steps.
+       */
+      default predicate deferExitStep(PreControlFlowNode n1, PreControlFlowNode n2) { none() }
 
       /**
        * Holds if there is a local non-abrupt step from `n1` to `n2`.
@@ -1276,7 +1407,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       private predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
         Input2::endAbruptCompletion(ast, n, c)
         or
-        exists(Callable callable | callableHasBodyPart(callable, ast) |
+        exists(Callable callable |
+          not Input2::overridesCallableEndAbruptCompletion(callable, c) and
+          callableHasBodyPart(callable, ast)
+        |
           c.getSuccessorType() instanceof ReturnSuccessor and
           n.(NormalExitNodeImpl).getEnclosingCallable() = callable
           or
@@ -1464,6 +1598,22 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
       private predicate explicitStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+        explicitStepCommon(n1, n2)
+        or
+        Input2::deferExitStep(n1, n2)
+      }
+
+      /**
+       * Holds if there is a local non-abrupt step from `n1` to `n2`, excluding
+       * the reachability-dependent function-exit epilogue edges contributed by
+       * `Input2::deferExitStep`.
+       *
+       * This is the basis for the defer-free reachability exposed through
+       * `getASuccessorIgnoringDeferredExit`, and it must not depend on
+       * `deferExitStep` (so that a language can compute the reachability gate
+       * for its `deferExitStep` edges without circularity).
+       */
+      private predicate explicitStepCommon(PreControlFlowNode n1, PreControlFlowNode n2) {
         Input2::step(n1, n2)
         or
         exists(Callable c |
@@ -1488,7 +1638,14 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           )
           or
           n1.isAfter(getBodyExit(c)) and
+          n2.(NormalExitNodeImpl).getEnclosingCallable() = c and
+          not Input2::overridesCallableBodyExit(c)
+          or
+          Input2::callableExitStep(n1, c, true) and
           n2.(NormalExitNodeImpl).getEnclosingCallable() = c
+          or
+          Input2::callableExitStep(n1, c, false) and
+          n2.(ExceptionalExitNodeImpl).getEnclosingCallable() = c
           or
           n1.(AnnotatedExitNodeImpl).getEnclosingCallable() = c and
           n2.(ExitNodeImpl).getEnclosingCallable() = c
@@ -1545,6 +1702,26 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           or
           n1.isAfterFalse(condexpr.getCondition()) and
           n2.isBefore(condexpr.getElse())
+        )
+        or
+        exists(PatternMatchExpr pme |
+          n1.isBefore(pme) and
+          n2.isBefore(pme.getExpr())
+          or
+          n1.isAfter(pme.getExpr()) and
+          n2.isIn(pme)
+          or
+          n1.isIn(pme) and
+          n2.isAfterValue(pme, any(BooleanSuccessor s | s.getValue() = false))
+          or
+          n1.isIn(pme) and
+          n2.isAdditional(pme, patternMatchTrueTag())
+          or
+          n1.isAdditional(pme, patternMatchTrueTag()) and
+          n2.isBefore(pme.getPattern())
+          or
+          n1.isAfter(pme.getPattern()) and
+          n2.isAfterValue(pme, any(BooleanSuccessor s | s.getValue() = true))
         )
         or
         exists(PatternMatchExpr pme |
@@ -1640,7 +1817,21 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAfter(loopstmt)
         )
         or
-        exists(ForeachStmt foreachstmt |
+        exists(ForeachStmt foreachstmt, PreControlFlowNode iterentry |
+          // `iterentry` is where each iteration begins, after the loop header
+          // (or after the collection is found to be non-empty): the element
+          // node if the language opts in, otherwise the loop variable, or the
+          // body directly if there is no variable.
+          foreachHasElementNode(foreachstmt) and
+          iterentry.isAdditional(foreachstmt, foreachElementTag())
+          or
+          not foreachHasElementNode(foreachstmt) and
+          (
+            iterentry.isBefore(foreachstmt.getVariable())
+            or
+            not exists(foreachstmt.getVariable()) and iterentry.isBefore(foreachstmt.getBody())
+          )
+        |
           n1.isBefore(foreachstmt) and
           n2.isBefore(foreachstmt.getCollection())
           or
@@ -1654,8 +1845,14 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           or
           n1.isAfterValue(foreachstmt.getCollection(),
             any(EmptinessSuccessor t | t.getValue() = false)) and
-          n2.isBefore(foreachstmt.getVariable())
+          n2 = iterentry
           or
+          n1.isAdditional(foreachstmt, loopHeaderTag()) and
+          n2 = iterentry
+          or
+          // After the loop variable, enter the body. When the language opts in
+          // to the element node, it is instead responsible for wiring the
+          // element node through to the body itself.
           n1.isAfter(foreachstmt.getVariable()) and
           n2.isBefore(foreachstmt.getBody())
           or
@@ -1668,9 +1865,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             not exists(getLoopElse(foreachstmt)) and n2.isAfter(foreachstmt)
           )
-          or
-          n1.isAdditional(foreachstmt, loopHeaderTag()) and
-          n2.isBefore(foreachstmt.getVariable())
         )
         or
         exists(ForStmt forstmt, PreControlFlowNode condentry |
@@ -1809,11 +2003,25 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           not exists(getRankedCaseCfgOrder(switch, _)) and firstCase.isAfter(switch)
         |
           n1.isBefore(switch) and
-          n2.isBefore(switch.getExpr())
+          (
+            n2.isBefore(getSwitchInit(switch))
+            or
+            not exists(getSwitchInit(switch)) and
+            (
+              n2.isBefore(switch.getExpr())
+              or
+              not exists(switch.getExpr()) and
+              n2 = firstCase
+            )
+          )
           or
-          n1.isBefore(switch) and
-          not exists(switch.getExpr()) and
-          n2 = firstCase
+          n1.isAfter(getSwitchInit(switch)) and
+          (
+            n2.isBefore(switch.getExpr())
+            or
+            not exists(switch.getExpr()) and
+            n2 = firstCase
+          )
           or
           n1.isAfter(switch.getExpr()) and
           n2 = firstCase
@@ -1881,10 +2089,15 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       /**
        * Holds if `ast` does not have explicitly defined control flow steps
        * and therefore should use default left-to-right evaluation.
+       *
+       * This uses `explicitStepCommon` rather than `explicitStep` so that it
+       * does not depend on `Input2::deferExitStep` (whose edges never originate
+       * from a "before" node, so the two agree on `before` nodes anyway). This
+       * keeps the defer-free reachability independent of `deferExitStep`.
        */
       private predicate defaultCfg(AstNode ast) {
         hasCfg(ast) and
-        not explicitStep(any(PreControlFlowNode n | n.isBefore(ast)), _)
+        not explicitStepCommon(any(PreControlFlowNode n | n.isBefore(ast)), _)
       }
 
       private module ChildDenseRankInput implements DenseRankInputSig1 {
@@ -1936,6 +2149,14 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
       private predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
         explicitStep(n1, n2) or defaultStep(n1, n2)
+      }
+
+      /**
+       * Holds if there is a local non-abrupt step from `n1` to `n2`, excluding
+       * the function-exit epilogue edges contributed by `Input2::deferExitStep`.
+       */
+      private predicate stepIgnoringDeferExit(PreControlFlowNode n1, PreControlFlowNode n2) {
+        explicitStepCommon(n1, n2) or defaultStep(n1, n2)
       }
 
       /**
@@ -1999,6 +2220,45 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         preSucc(n1, n2, t)
       }
 
+      /**
+       * Holds if `n2` is a normal successor of `n1` of type `t`, computed over
+       * the defer-free step relation `stepIgnoringDeferExit` (i.e. ignoring the
+       * epilogue edges added through `Input2::deferExitStep`).
+       *
+       * Abrupt-completion edges are deliberately omitted: this relation only
+       * needs to expose the normal control flow used to compute a language's
+       * reachability gate for its `deferExitStep` edges.
+       */
+      private predicate preSuccIgnoringDeferExit(
+        PreControlFlowNode n1, PreControlFlowNode n2, SuccessorType t
+      ) {
+        stepIgnoringDeferExit(n1, n2) and n2 = TAfterValueNode(_, t)
+        or
+        stepIgnoringDeferExit(n1, n2) and n2.(AdditionalNode).getSuccessorType() = t
+        or
+        stepIgnoringDeferExit(n1, n2) and
+        not n2 instanceof AfterValueNode and
+        not n2 instanceof AdditionalNode and
+        t instanceof DirectSuccessor
+      }
+
+      /**
+       * Holds if `n2` is a successor of `n1` of type `t`, ignoring the
+       * epilogue edges added through `Input2::deferExitStep`.
+       *
+       * This exposes the defer-free reachability that a language needs in order
+       * to compute the reachability gate for its `deferExitStep` edges without
+       * observing those edges. It is typed over `PreControlFlowNode` (rather
+       * than the reachability-restricted `ControlFlowNode`) so that a language
+       * can use it to compute `deferExitStep` without a non-monotonic cycle
+       * through `reachable`.
+       */
+      cached
+      predicate succIgnoringDeferExit(PreControlFlowNode n1, PreControlFlowNode n2, SuccessorType t) {
+        Input1::cfgCachedStageRef() and
+        preSuccIgnoringDeferExit(n1, n2, t)
+      }
+
       /** The cached stage of the control flow graph. */
       cached
       module CfgCachedStage {
@@ -2013,7 +2273,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           (simpleLeafNode(_) implies any()) and
           (exists(TBeforeNode(_)) implies any()) and
           (reachable(_) implies any()) and
-          (succ(_, _, _) implies any())
+          (succ(_, _, _) implies any()) and
+          (succIgnoringDeferExit(_, _, _) implies any())
         }
       }
 
@@ -2036,6 +2297,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
           /** Gets an immediate successor of this node, if this is not an `ExitNode`. */
           ControlFlowNode getASuccessor() { result = this.getASuccessor(_) }
+
+          /**
+           * Gets an immediate successor of this node, ignoring the
+           * reachability-dependent function-exit epilogue edges added through
+           * `deferExitStep` (such as Go's deferred calls).
+           *
+           * This is intended for languages that need to compute reachability
+           * before those epilogue edges are added; it should not be used as a
+           * general successor relation.
+           */
+          ControlFlowNode getASuccessorIgnoringDeferredExit() {
+            succIgnoringDeferExit(this, result, _)
+          }
 
           /** Gets an immediate predecessor of this node, if this is not an `EntryNode`. */
           ControlFlowNode getAPredecessor() { result.getASuccessor() = this }

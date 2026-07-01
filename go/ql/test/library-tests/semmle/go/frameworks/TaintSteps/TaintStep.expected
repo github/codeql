@@ -1,12 +1,12 @@
 invalidModelRow
 #select
-| crypto.go:9:14:9:31 | call to NewCipher | crypto.go:9:2:9:31 | ... := ...[0] |
-| crypto.go:9:14:9:31 | call to NewCipher | crypto.go:9:2:9:31 | ... := ...[1] |
-| crypto.go:10:15:10:34 | call to NewGCM | crypto.go:10:2:10:34 | ... := ...[0] |
-| crypto.go:10:15:10:34 | call to NewGCM | crypto.go:10:2:10:34 | ... := ...[1] |
-| crypto.go:11:18:11:57 | call to Open | crypto.go:11:2:11:57 | ... := ...[0] |
-| crypto.go:11:18:11:57 | call to Open | crypto.go:11:2:11:57 | ... := ...[1] |
-| crypto.go:11:42:11:51 | ciphertext | crypto.go:11:2:11:57 | ... := ...[0] |
+| crypto.go:9:14:9:31 | call to NewCipher | crypto.go:9:2:9:31 | extract:0 ... := ... |
+| crypto.go:9:14:9:31 | call to NewCipher | crypto.go:9:2:9:31 | extract:1 ... := ... |
+| crypto.go:10:15:10:34 | call to NewGCM | crypto.go:10:2:10:34 | extract:0 ... := ... |
+| crypto.go:10:15:10:34 | call to NewGCM | crypto.go:10:2:10:34 | extract:1 ... := ... |
+| crypto.go:11:18:11:57 | call to Open | crypto.go:11:2:11:57 | extract:0 ... := ... |
+| crypto.go:11:18:11:57 | call to Open | crypto.go:11:2:11:57 | extract:1 ... := ... |
+| crypto.go:11:42:11:51 | ciphertext | crypto.go:11:2:11:57 | extract:0 ... := ... |
 | io.go:14:31:14:43 | "some string" | io.go:14:13:14:44 | call to NewReader |
 | io.go:16:23:16:27 | &... | io.go:16:24:16:27 | buf1 [postupdate] |
 | io.go:16:23:16:27 | &... [postupdate] | io.go:16:24:16:27 | buf1 [postupdate] |
@@ -31,9 +31,9 @@ invalidModelRow
 | io.go:33:20:33:23 | buf1 | io.go:33:19:33:23 | &... |
 | io.go:33:20:33:23 | buf1 [postupdate] | io.go:33:19:33:23 | &... |
 | io.go:35:16:35:21 | reader | io.go:35:12:35:13 | w2 [postupdate] |
-| io.go:39:11:39:19 | call to Pipe | io.go:39:3:39:19 | ... := ...[0] |
-| io.go:39:11:39:19 | call to Pipe | io.go:39:3:39:19 | ... := ...[1] |
-| io.go:40:14:40:14 | w [postupdate] | io.go:39:3:39:19 | ... := ...[0] |
+| io.go:39:11:39:19 | call to Pipe | io.go:39:3:39:19 | extract:0 ... := ... |
+| io.go:39:11:39:19 | call to Pipe | io.go:39:3:39:19 | extract:1 ... := ... |
+| io.go:40:14:40:14 | w [postupdate] | io.go:39:3:39:19 | extract:0 ... := ... |
 | io.go:40:17:40:31 | "some string\\n" | io.go:40:14:40:14 | w [postupdate] |
 | io.go:43:16:43:16 | r | io.go:43:3:43:5 | buf [postupdate] |
 | io.go:44:13:44:15 | buf | io.go:44:13:44:24 | call to String |
@@ -74,35 +74,35 @@ invalidModelRow
 | io.go:101:26:101:38 | "some string" | io.go:101:8:101:39 | call to NewReader |
 | io.go:102:3:102:3 | r | io.go:102:13:102:21 | selection of Stdout [postupdate] |
 | io.go:108:30:108:42 | "some string" | io.go:108:12:108:43 | call to NewReader |
-| io.go:109:12:109:33 | call to ReadAll | io.go:109:2:109:33 | ... := ...[0] |
-| io.go:109:12:109:33 | call to ReadAll | io.go:109:2:109:33 | ... := ...[1] |
-| io.go:109:27:109:32 | reader | io.go:109:2:109:33 | ... := ...[0] |
+| io.go:109:12:109:33 | call to ReadAll | io.go:109:2:109:33 | extract:0 ... := ... |
+| io.go:109:12:109:33 | call to ReadAll | io.go:109:2:109:33 | extract:1 ... := ... |
+| io.go:109:27:109:32 | reader | io.go:109:2:109:33 | extract:0 ... := ... |
 | io.go:110:18:110:20 | buf | io.go:110:2:110:10 | selection of Stdout [postupdate] |
-| main.go:11:12:11:26 | call to Marshal | main.go:11:2:11:26 | ... := ...[0] |
-| main.go:11:12:11:26 | call to Marshal | main.go:11:2:11:26 | ... := ...[1] |
-| main.go:11:25:11:25 | v | main.go:11:2:11:26 | ... := ...[0] |
-| main.go:13:14:13:52 | call to MarshalIndent | main.go:13:2:13:52 | ... := ...[0] |
-| main.go:13:14:13:52 | call to MarshalIndent | main.go:13:2:13:52 | ... := ...[1] |
-| main.go:13:33:13:33 | v | main.go:13:2:13:52 | ... := ...[0] |
-| main.go:13:36:13:45 | "/*JSON*/" | main.go:13:2:13:52 | ... := ...[0] |
-| main.go:13:48:13:51 | "  " | main.go:13:2:13:52 | ... := ...[0] |
+| main.go:11:12:11:26 | call to Marshal | main.go:11:2:11:26 | extract:0 ... := ... |
+| main.go:11:12:11:26 | call to Marshal | main.go:11:2:11:26 | extract:1 ... := ... |
+| main.go:11:25:11:25 | v | main.go:11:2:11:26 | extract:0 ... := ... |
+| main.go:13:14:13:52 | call to MarshalIndent | main.go:13:2:13:52 | extract:0 ... := ... |
+| main.go:13:14:13:52 | call to MarshalIndent | main.go:13:2:13:52 | extract:1 ... := ... |
+| main.go:13:33:13:33 | v | main.go:13:2:13:52 | extract:0 ... := ... |
+| main.go:13:36:13:45 | "/*JSON*/" | main.go:13:2:13:52 | extract:0 ... := ... |
+| main.go:13:48:13:51 | "  " | main.go:13:2:13:52 | extract:0 ... := ... |
 | main.go:14:25:14:25 | b | main.go:14:9:14:41 | slice literal |
 | main.go:14:28:14:30 | err | main.go:14:9:14:41 | slice literal |
 | main.go:14:33:14:34 | b2 | main.go:14:9:14:41 | slice literal |
 | main.go:14:37:14:40 | err2 | main.go:14:9:14:41 | slice literal |
-| main.go:19:18:19:42 | call to DecodeString | main.go:19:2:19:42 | ... := ...[0] |
-| main.go:19:18:19:42 | call to DecodeString | main.go:19:2:19:42 | ... := ...[1] |
-| main.go:19:35:19:41 | encoded | main.go:19:2:19:42 | ... := ...[0] |
+| main.go:19:18:19:42 | call to DecodeString | main.go:19:2:19:42 | extract:0 ... := ... |
+| main.go:19:18:19:42 | call to DecodeString | main.go:19:2:19:42 | extract:1 ... := ... |
+| main.go:19:35:19:41 | encoded | main.go:19:2:19:42 | extract:0 ... := ... |
 | main.go:23:25:23:31 | decoded | main.go:23:9:23:48 | slice literal |
 | main.go:23:34:23:36 | err | main.go:23:9:23:48 | slice literal |
 | main.go:23:39:23:47 | reEncoded | main.go:23:9:23:48 | slice literal |
-| main.go:28:2:28:4 | implicit dereference | main.go:28:2:28:4 | req [postupdate] |
-| main.go:28:2:28:4 | implicit dereference | main.go:28:2:28:9 | selection of Body |
-| main.go:28:2:28:4 | req | main.go:28:2:28:4 | implicit dereference |
-| main.go:28:2:28:4 | req [postupdate] | main.go:28:2:28:4 | implicit dereference |
+| main.go:28:2:28:4 | implicit-deref req | main.go:28:2:28:4 | req [postupdate] |
+| main.go:28:2:28:4 | implicit-deref req | main.go:28:2:28:9 | selection of Body |
+| main.go:28:2:28:4 | req | main.go:28:2:28:4 | implicit-deref req |
+| main.go:28:2:28:4 | req [postupdate] | main.go:28:2:28:4 | implicit-deref req |
 | main.go:28:2:28:9 | selection of Body | main.go:28:16:28:16 | b [postupdate] |
-| main.go:34:2:34:4 | implicit dereference | main.go:34:2:34:4 | req [postupdate] |
-| main.go:34:2:34:4 | implicit dereference | main.go:34:2:34:9 | selection of Body |
-| main.go:34:2:34:4 | req | main.go:34:2:34:4 | implicit dereference |
-| main.go:34:2:34:4 | req [postupdate] | main.go:34:2:34:4 | implicit dereference |
+| main.go:34:2:34:4 | implicit-deref req | main.go:34:2:34:4 | req [postupdate] |
+| main.go:34:2:34:4 | implicit-deref req | main.go:34:2:34:9 | selection of Body |
+| main.go:34:2:34:4 | req | main.go:34:2:34:4 | implicit-deref req |
+| main.go:34:2:34:4 | req [postupdate] | main.go:34:2:34:4 | implicit-deref req |
 | main.go:34:2:34:9 | selection of Body | main.go:34:16:34:16 | b [postupdate] |

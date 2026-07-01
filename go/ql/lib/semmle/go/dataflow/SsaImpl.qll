@@ -9,6 +9,7 @@ module;
 import go
 private import codeql.ssa.Ssa as SsaImplCommon
 private import semmle.go.controlflow.BasicBlocks as BasicBlocks
+private import semmle.go.controlflow.ControlFlowGraphShared
 
 private class BasicBlock = BasicBlocks::BasicBlock;
 
@@ -38,7 +39,7 @@ private module Internal {
   /** Holds if the `i`th node of `bb` in function `f` is an entry node. */
   private predicate entryNode(FuncDef f, BasicBlock bb, int i) {
     f = bb.getScope() and
-    bb.getNode(i).isEntryNode()
+    bb.getNode(i).(ControlFlow::Node).isEntryNode()
   }
 
   /**
@@ -110,7 +111,7 @@ private module Internal {
       v.isCaptured() and
       exists(FuncDef f |
         f = bb.getScope() and
-        bb.getLastNode().isExitNode() and
+        bb.getLastNode().(ControlFlow::Node).isExitNode() and
         i = bb.length() - 1 and
         certain = false
       |
@@ -126,7 +127,7 @@ private module Internal {
 }
 
 import Internal
-import SsaImplCommon::Make<Location, BasicBlocks::Cfg, SsaInput> as Impl
+import SsaImplCommon::Make<Location, GoCfg::Cfg, SsaInput> as Impl
 
 final class Definition = Impl::Definition;
 

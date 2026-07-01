@@ -1,19 +1,19 @@
 #select
 | server/main.go:30:38:30:48 | selection of Text | rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | server/main.go:30:38:30:48 | selection of Text | The $@ of this request depends on a $@. | server/main.go:30:38:30:48 | selection of Text | URL | rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | user-provided value |
-| server/main.go:30:38:30:48 | selection of Text | server/main.go:19:56:19:61 | SSA def(params) | server/main.go:30:38:30:48 | selection of Text | The $@ of this request depends on a $@. | server/main.go:30:38:30:48 | selection of Text | URL | server/main.go:19:56:19:61 | SSA def(params) | user-provided value |
+| server/main.go:30:38:30:48 | selection of Text | server/main.go:19:109:38:1 | SSA def(params) | server/main.go:30:38:30:48 | selection of Text | The $@ of this request depends on a $@. | server/main.go:30:38:30:48 | selection of Text | URL | server/main.go:19:109:38:1 | SSA def(params) | user-provided value |
 edges
-| client/main.go:16:35:16:78 | &... | server/main.go:19:56:19:61 | SSA def(params) | provenance |  |
+| client/main.go:16:35:16:78 | &... | server/main.go:19:109:38:1 | SSA def(params) | provenance |  |
 | client/main.go:16:35:16:78 | &... [postupdate] | client/main.go:16:35:16:78 | &... | provenance |  |
-| rpc/notes/service.twirp.go:538:2:538:33 | ... := ...[0] | rpc/notes/service.twirp.go:544:27:544:29 | buf | provenance |  |
-| rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | rpc/notes/service.twirp.go:538:2:538:33 | ... := ...[0] | provenance | Src:MaD:1 MaD:3 |
+| rpc/notes/service.twirp.go:538:2:538:33 | extract:0 ... := ... | rpc/notes/service.twirp.go:544:27:544:29 | buf | provenance |  |
+| rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | rpc/notes/service.twirp.go:538:2:538:33 | extract:0 ... := ... | provenance | Src:MaD:1 MaD:3 |
 | rpc/notes/service.twirp.go:544:27:544:29 | buf | rpc/notes/service.twirp.go:544:32:544:41 | reqContent [postupdate] | provenance | MaD:2 |
 | rpc/notes/service.twirp.go:544:32:544:41 | reqContent [postupdate] | rpc/notes/service.twirp.go:574:2:577:2 | SSA def(reqContent) | provenance |  |
 | rpc/notes/service.twirp.go:574:2:577:2 | SSA def(reqContent) | rpc/notes/service.twirp.go:576:35:576:44 | reqContent | provenance |  |
-| rpc/notes/service.twirp.go:576:35:576:44 | reqContent | server/main.go:19:56:19:61 | SSA def(params) | provenance |  |
-| server/main.go:19:56:19:61 | SSA def(params) | server/main.go:19:56:19:61 | SSA def(params) [Return] | provenance |  |
-| server/main.go:19:56:19:61 | SSA def(params) | server/main.go:30:38:30:48 | selection of Text | provenance |  |
-| server/main.go:19:56:19:61 | SSA def(params) | server/main.go:30:38:30:48 | selection of Text | provenance |  |
-| server/main.go:19:56:19:61 | SSA def(params) [Return] | client/main.go:16:35:16:78 | &... [postupdate] | provenance |  |
+| rpc/notes/service.twirp.go:576:35:576:44 | reqContent | server/main.go:19:109:38:1 | SSA def(params) | provenance |  |
+| server/main.go:19:109:38:1 | SSA def(params) | server/main.go:19:109:38:1 | SSA def(params) [Return] | provenance |  |
+| server/main.go:19:109:38:1 | SSA def(params) | server/main.go:30:38:30:48 | selection of Text | provenance |  |
+| server/main.go:19:109:38:1 | SSA def(params) | server/main.go:30:38:30:48 | selection of Text | provenance |  |
+| server/main.go:19:109:38:1 | SSA def(params) [Return] | client/main.go:16:35:16:78 | &... [postupdate] | provenance |  |
 models
 | 1 | Source: net/http; Request; true; Body; ; ; ; remote; manual |
 | 2 | Summary: google.golang.org/protobuf/proto; ; false; Unmarshal; ; ; Argument[0]; Argument[1]; taint; manual |
@@ -21,14 +21,17 @@ models
 nodes
 | client/main.go:16:35:16:78 | &... | semmle.label | &... |
 | client/main.go:16:35:16:78 | &... [postupdate] | semmle.label | &... [postupdate] |
-| rpc/notes/service.twirp.go:538:2:538:33 | ... := ...[0] | semmle.label | ... := ...[0] |
+| rpc/notes/service.twirp.go:538:2:538:33 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
 | rpc/notes/service.twirp.go:538:25:538:32 | selection of Body | semmle.label | selection of Body |
 | rpc/notes/service.twirp.go:544:27:544:29 | buf | semmle.label | buf |
 | rpc/notes/service.twirp.go:544:32:544:41 | reqContent [postupdate] | semmle.label | reqContent [postupdate] |
 | rpc/notes/service.twirp.go:574:2:577:2 | SSA def(reqContent) | semmle.label | SSA def(reqContent) |
 | rpc/notes/service.twirp.go:576:35:576:44 | reqContent | semmle.label | reqContent |
-| server/main.go:19:56:19:61 | SSA def(params) | semmle.label | SSA def(params) |
-| server/main.go:19:56:19:61 | SSA def(params) | semmle.label | SSA def(params) |
-| server/main.go:19:56:19:61 | SSA def(params) [Return] | semmle.label | SSA def(params) [Return] |
+| server/main.go:19:109:38:1 | SSA def(params) | semmle.label | SSA def(params) |
+| server/main.go:19:109:38:1 | SSA def(params) | semmle.label | SSA def(params) |
+| server/main.go:19:109:38:1 | SSA def(params) [Return] | semmle.label | SSA def(params) [Return] |
 | server/main.go:30:38:30:48 | selection of Text | semmle.label | selection of Text |
 subpaths
+testFailures
+| server/main.go:19:109:38:1 | SSA def(params) | Unexpected result: Source |
+| server/main.go:19:111:19:154 | comment | Missing result: Source |

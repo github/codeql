@@ -4,9 +4,9 @@ invalidModelRow
 | test.go:40:8:40:15 | call to Src2 | qltest |
 | test.go:40:8:40:15 | call to Src2 | qltest-w-subtypes |
 | test.go:41:8:41:16 | call to Src2 | qltest-w-subtypes |
-| test.go:42:2:42:21 | ... = ...[0] | qltest |
-| test.go:42:2:42:21 | ... = ...[1] | qltest-w-subtypes |
-| test.go:43:2:43:22 | ... = ...[1] | qltest-w-subtypes |
+| test.go:42:2:42:21 | extract:0 ... = ... | qltest |
+| test.go:42:2:42:21 | extract:1 ... = ... | qltest-w-subtypes |
+| test.go:43:2:43:22 | extract:1 ... = ... | qltest-w-subtypes |
 | test.go:44:11:44:13 | arg [postupdate] | qltest-arg |
 | test.go:59:9:59:16 | call to Src1 | qltest |
 | test.go:102:46:102:53 | call to Src1 | qltest |
@@ -22,4 +22,4 @@ invalidModelRow
 | test.go:187:24:187:31 | call to Src1 | qltest |
 | test.go:191:24:191:31 | call to Src1 | qltest |
 | test.go:209:10:209:28 | selection of SourceVariable | qltest |
-| test.go:216:15:216:17 | SSA def(src) | qltest |
+| test.go:216:37:218:1 | SSA def(src) | qltest |
