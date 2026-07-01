@@ -124,7 +124,7 @@ def m_sole
     sink(empty.sole)
     sink(single.sole) # $ hasValueFlow=a
     # TODO: model that 'sole' does not return if the receiver has multiple elements
-    sink(multi.sole) # $ SPURIOUS: Unexpected result: hasValueFlow=b
+    sink(multi.sole) # $ SPURIOUS: hasValueFlow=b
 end
 
 m_sole()
