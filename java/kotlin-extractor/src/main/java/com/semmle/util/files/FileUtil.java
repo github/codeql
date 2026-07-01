@@ -1242,11 +1242,11 @@ public class FileUtil
 	public static File tryMakeCanonical (File f)
 	{
 		try {
-			return f.getCanonicalFile();
+			return NativeCanonicalizer.resolve(f.getCanonicalFile());
 		}
 		catch (IOException ignored) {
 			Exceptions.ignore(ignored, "Can't log error: Could be too verbose.");
-			return new File(simplifyPath(f));
+			return NativeCanonicalizer.resolve(new File(simplifyPath(f)));
 		}
 	}
 

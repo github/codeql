@@ -1,0 +1,31 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
+
+cc_binary(
+    name = "codeql_canonical_path.dll",
+    srcs = ["canonicalize.cpp", "canonicalize_jni.cpp", "canonicalize.h"],
+    defines = ["CODEQL_CANONICALIZE_EXPORTS"],
+    linkopts = ["-lkernel32"],
+    linkshared = True,
+    target_compatible_with = ["@platforms//os:windows"],
+    deps = ["@rules_java//toolchains:jni"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "canonicalize",
+    srcs = ["canonicalize.cpp"],
+    hdrs = ["canonicalize.h"],
+    defines = ["CODEQL_CANONICALIZE_EXPORTS"],
+    linkopts = ["-lkernel32"],
+    target_compatible_with = ["@platforms//os:windows"],
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "pkg",
+    srcs = [":codeql_canonical_path.dll"],
+    attributes = pkg_attributes(mode = "0755"),
+    target_compatible_with = ["@platforms//os:windows"],
+    visibility = ["//visibility:public"],
+)

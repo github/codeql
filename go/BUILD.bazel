@@ -56,9 +56,16 @@ codeql_pkg_files(
     prefix = "tools/{CODEQL_PLATFORM}",
 )
 
+codeql_pkg_files(
+    name = "canonicalize-dll",
+    srcs = ["//shared/canonicalize:pkg"],
+    prefix = "tools/{CODEQL_PLATFORM}",
+)
+
 codeql_pack(
     name = "go",
     srcs = [
+        ":canonicalize-dll",
         ":extractor-pack-arch",
         ":resources",
         "//go/codeql-tools",

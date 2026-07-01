@@ -22,6 +22,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/github/codeql-go/extractor/canonicalize"
 	"github.com/github/codeql-go/extractor/dbscheme"
 	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/srcarchive"
@@ -766,7 +767,7 @@ func normalizedPath(ast *ast.File, fset *token.FileSet) string {
 	if err != nil {
 		return file
 	}
-	return path
+	return canonicalize.CanonicalizePath(path)
 }
 
 // extractFile extracts AST information for the given file

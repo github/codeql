@@ -16,6 +16,7 @@ go_library(
     importpath = "github.com/github/codeql-go/extractor",
     visibility = ["//visibility:public"],
     deps = [
+        "//go/extractor/canonicalize",
         "//go/extractor/dbscheme",
         "//go/extractor/diagnostics",
         "//go/extractor/srcarchive",

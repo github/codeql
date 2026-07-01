@@ -1,0 +1,11 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "canonicalize",
+    srcs = [
+        "canonicalize_other.go",
+        "canonicalize_windows.go",
+    ],
+    importpath = "github.com/github/codeql-go/extractor/canonicalize",
+    visibility = ["//visibility:public"],
+)
