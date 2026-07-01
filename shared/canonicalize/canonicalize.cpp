@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include <shared_mutex>
-#include <cstdlib>
+#include <random>
 
 namespace {
 
@@ -40,12 +40,13 @@ public:
 
         // Evict a random entry if at capacity (matches C# strategy)
         if (cache_.size() >= max_capacity_) {
+            std::uniform_int_distribution<size_t> dist(0, cache_.size() - 1);
             auto evict = cache_.begin();
-            std::advance(evict, std::rand() % cache_.size());
+            std::advance(evict, dist(rng_));
             cache_.erase(evict);
         }
 
-        auto [inserted, _] = cache_.emplace(std::move(key), std::move(resolved));
+        auto inserted = cache_.emplace(std::move(key), std::move(resolved)).first;
         return _wcsdup(inserted->second.c_str());
     }
 
@@ -55,6 +56,7 @@ private:
     static constexpr size_t max_capacity_ = 4096;
     std::unordered_map<std::wstring, std::wstring> cache_;
     std::shared_mutex mutex_;
+    std::mt19937 rng_{std::random_device{}()};
 
     static std::wstring resolve(const wchar_t* path) {
         HANDLE h = CreateFileW(
