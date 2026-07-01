@@ -1,3 +1,5 @@
+Dummy text to make the test fail
+
 nameExpr
 | name_expr.swift:1:9:1:9 | NameExpr | y |
 | test.swift:1:8:1:17 | NameExpr | Foundation |
