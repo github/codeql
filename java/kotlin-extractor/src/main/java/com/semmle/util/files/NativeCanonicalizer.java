@@ -26,7 +26,7 @@ public class NativeCanonicalizer {
 
   private NativeCanonicalizer() {}
 
-  // UTF-16 JNI interface — no encoding conversion
+  // UTF-16 JNI interface - no encoding conversion
   private static native String nativeCanonicalizePath(String path);
 
   public static File resolve(File path) {
