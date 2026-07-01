@@ -17,11 +17,11 @@ var (
 )
 
 func init() {
-	dist := os.Getenv("CODEQL_DIST")
-	if dist == "" {
+	root := os.Getenv("CODEQL_EXTRACTOR_GO_ROOT")
+	if root == "" {
 		return
 	}
-	dllPath := filepath.Join(dist, "tools", "win64", "codeql_canonical_path.dll")
+	dllPath := filepath.Join(root, "tools", "win64", "codeql_canonical_path.dll")
 	d, err := syscall.LoadDLL(dllPath)
 	if err != nil {
 		return
