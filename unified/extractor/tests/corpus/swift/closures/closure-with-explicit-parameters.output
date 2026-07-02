@@ -1,0 +1,77 @@
+let f = { (x: Int) -> Int in x * 2 }
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "f"
+          value:
+            lambda_literal
+              statement:
+                multiplicative_expression
+                  lhs: simple_identifier "x"
+                  op: *
+                  rhs: integer_literal "2"
+              type:
+                lambda_function_type
+                  params:
+                    lambda_function_type_parameters
+                      parameter:
+                        lambda_parameter
+                          name: simple_identifier "x"
+                          type:
+                            type
+                              name:
+                                user_type
+                                  part:
+                                    simple_user_type
+                                      name: type_identifier "Int"
+                  return_type:
+                    type
+                      name:
+                        user_type
+                          part:
+                            simple_user_type
+                              name: type_identifier "Int"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "f"
+          value:
+            function_expr
+              body:
+                block
+                  stmt:
+                    binary_expr
+                      operator: infix_operator "*"
+                      left:
+                        name_expr
+                          identifier: identifier "x"
+                      right: int_literal "2"
+              parameter:
+                parameter
+                  pattern:
+                    name_pattern
+                      identifier: identifier "x"
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
+              return_type:
+                named_type_expr
+                  name: identifier "Int"

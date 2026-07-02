@@ -41,21 +41,13 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// (kind "literal")             - leaf with static content
 /// (kind #{expr})               - leaf with computed content (expr.to_string())
 /// (kind $fresh)                - leaf with auto-generated unique name
-/// {expr}                       - embed a Rust expression returning Id
-/// {..expr}                     - splice an iterable of Id (in child/field position)
-/// field: {..expr}              - splice into a named field
-/// {expr}.map(p -> tpl)         - apply tpl to each element; splice result
-/// {expr}.reduce_left(f -> init, acc, e -> fold)
-///                              - fold with per-element init; splice 0 or 1 result
+/// {expr}                       - embed a Rust expression, dispatched via
+///                                the `IntoFieldIds` trait: `Id` pushes a
+///                                single id; iterables (`Vec<Id>`,
+///                                `Option<Id>`, iterator chains) splice
+///                                their elements
+/// field: {expr}                - extend a named field with `{expr}`'s ids
 /// ```
-///
-/// Chain syntax after `{expr}` or `{..expr}`:
-/// - `.map(param -> template)` — one output node per input element.
-/// - `.reduce_left(first -> init, acc, elem -> fold)` — fold left; the first
-///   element is converted by `init`, subsequent elements are folded by `fold`
-///   with the accumulator bound to `acc`. An empty iterable yields nothing.
-/// - Chains always splice (the result is iterable).
-/// - Multiple chains can be chained, e.g. `.map(...).reduce_left(...)`.
 ///
 /// Can be called with an explicit context or using the implicit context
 /// from an enclosing `rule!`:
@@ -100,7 +92,7 @@ pub fn trees(input: TokenStream) -> TokenStream {
 /// rule!(
 ///     (query_pattern field: (_) @name (kind)* @repeated (_)? @optional)
 ///     =>
-///     (output_template field: {name} {..repeated})
+///     (output_template field: {name} {repeated})
 /// )
 ///
 /// // Shorthand: captures become fields on the output node
@@ -117,40 +109,6 @@ pub fn trees(input: TokenStream) -> TokenStream {
 pub fn rule(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
     match parse::parse_rule_top(input2) {
-        Ok(output) => output.into(),
-        Err(err) => err.to_compile_error().into(),
-    }
-}
-
-/// Define a desugaring rule whose transform is a hand-written Rust block.
-///
-/// Use `manual_rule!` when the transform needs control over capture
-/// translation timing — for example, when an outer rule needs to set
-/// state in `ctx` (the `BuildCtx`'s user context) before recursive
-/// translation reaches inner rules that read that state.
-///
-/// ```text
-/// manual_rule!(
-///     (query_pattern field: (_) @name)
-///     {
-///         // `ctx` is a `&mut BuildCtx<'_, C>`; capture variables
-///         // (`name: NodeRef`, etc.) are bound from the query.
-///         let translated = ctx.translate(name)?;
-///         Ok(translated)
-///     }
-/// )
-/// ```
-///
-/// Differences from [`rule!`]:
-/// - Captures are **not** auto-translated before the body runs; they
-///   refer to raw input-schema nodes. Use [`BuildCtx::translate`] (or
-///   [`BuildCtx::translate_opt`]) to translate them when you choose.
-/// - The body is plain Rust returning `Result<Vec<Id>, String>` — no
-///   tree template, no `Ok(...)` wrap.
-#[proc_macro]
-pub fn manual_rule(input: TokenStream) -> TokenStream {
-    let input2: TokenStream2 = input.into();
-    match parse::parse_manual_rule_top(input2) {
         Ok(output) => output.into(),
         Err(err) => err.to_compile_error().into(),
     }

@@ -529,7 +529,7 @@ predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
 }
 
 private predicate summaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
     nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
 }
 
@@ -1138,7 +1138,9 @@ predicate clearsContent(Node n, ContentSet cs) {
  * Holds if the value that is being tracked is expected to be stored inside content `c`
  * at node `n`.
  */
-predicate expectsContent(Node n, ContentSet c) { none() }
+predicate expectsContent(Node n, ContentSet c) {
+  FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+}
 
 /**
  * Holds if values stored inside attribute `c` are cleared at node `n`.

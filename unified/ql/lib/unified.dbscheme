@@ -716,6 +716,24 @@ unified_operator_syntax_declaration_def(
   int name: @unified_token_identifier ref
 );
 
+#keyset[unified_or_pattern, index]
+unified_or_pattern_modifier(
+  int unified_or_pattern: @unified_or_pattern ref,
+  int index: int ref,
+  unique int modifier: @unified_token_modifier ref
+);
+
+#keyset[unified_or_pattern, index]
+unified_or_pattern_pattern(
+  int unified_or_pattern: @unified_or_pattern ref,
+  int index: int ref,
+  unique int pattern: @unified_pattern ref
+);
+
+unified_or_pattern_def(
+  unique int id: @unified_or_pattern
+);
+
 unified_parameter_default(
   unique int unified_parameter: @unified_parameter ref,
   unique int default: @unified_expr ref
@@ -747,7 +765,7 @@ unified_parameter_def(
   unique int id: @unified_parameter
 );
 
-@unified_pattern = @unified_bulk_importing_pattern | @unified_constructor_pattern | @unified_expr_equality_pattern | @unified_name_pattern | @unified_token_ignore_pattern | @unified_token_unsupported_node | @unified_tuple_pattern
+@unified_pattern = @unified_bulk_importing_pattern | @unified_constructor_pattern | @unified_expr_equality_pattern | @unified_name_pattern | @unified_or_pattern | @unified_token_ignore_pattern | @unified_token_unsupported_node | @unified_tuple_pattern
 
 unified_pattern_element_key(
   unique int unified_pattern_element: @unified_pattern_element ref,
@@ -795,10 +813,8 @@ unified_switch_case_modifier(
   unique int modifier: @unified_token_modifier ref
 );
 
-#keyset[unified_switch_case, index]
 unified_switch_case_pattern(
-  int unified_switch_case: @unified_switch_case ref,
-  int index: int ref,
+  unique int unified_switch_case: @unified_switch_case ref,
   unique int pattern: @unified_pattern ref
 );
 
@@ -1056,7 +1072,7 @@ unified_trivia_tokeninfo(
   string value: string ref
 );
 
-@unified_ast_node = @unified_accessor_declaration | @unified_argument | @unified_array_literal | @unified_assign_expr | @unified_associated_type_declaration | @unified_base_type | @unified_binary_expr | @unified_block | @unified_bound_type_constraint | @unified_break_expr | @unified_bulk_importing_pattern | @unified_call_expr | @unified_catch_clause | @unified_class_like_declaration | @unified_compound_assign_expr | @unified_constructor_declaration | @unified_constructor_pattern | @unified_continue_expr | @unified_destructor_declaration | @unified_do_while_stmt | @unified_equality_type_constraint | @unified_expr_equality_pattern | @unified_for_each_stmt | @unified_function_declaration | @unified_function_expr | @unified_function_type_expr | @unified_generic_type_expr | @unified_guard_if_stmt | @unified_if_expr | @unified_import_declaration | @unified_initializer_declaration | @unified_key_value_pair | @unified_labeled_stmt | @unified_map_literal | @unified_member_access_expr | @unified_name_expr | @unified_name_pattern | @unified_named_type_expr | @unified_operator_syntax_declaration | @unified_parameter | @unified_pattern_element | @unified_pattern_guard_expr | @unified_return_expr | @unified_switch_case | @unified_switch_expr | @unified_throw_expr | @unified_token | @unified_top_level | @unified_trivia_token | @unified_try_expr | @unified_tuple_expr | @unified_tuple_pattern | @unified_tuple_type_element | @unified_tuple_type_expr | @unified_type_alias_declaration | @unified_type_cast_expr | @unified_type_parameter | @unified_type_test_expr | @unified_type_test_pattern | @unified_unary_expr | @unified_variable_declaration | @unified_while_stmt
+@unified_ast_node = @unified_accessor_declaration | @unified_argument | @unified_array_literal | @unified_assign_expr | @unified_associated_type_declaration | @unified_base_type | @unified_binary_expr | @unified_block | @unified_bound_type_constraint | @unified_break_expr | @unified_bulk_importing_pattern | @unified_call_expr | @unified_catch_clause | @unified_class_like_declaration | @unified_compound_assign_expr | @unified_constructor_declaration | @unified_constructor_pattern | @unified_continue_expr | @unified_destructor_declaration | @unified_do_while_stmt | @unified_equality_type_constraint | @unified_expr_equality_pattern | @unified_for_each_stmt | @unified_function_declaration | @unified_function_expr | @unified_function_type_expr | @unified_generic_type_expr | @unified_guard_if_stmt | @unified_if_expr | @unified_import_declaration | @unified_initializer_declaration | @unified_key_value_pair | @unified_labeled_stmt | @unified_map_literal | @unified_member_access_expr | @unified_name_expr | @unified_name_pattern | @unified_named_type_expr | @unified_operator_syntax_declaration | @unified_or_pattern | @unified_parameter | @unified_pattern_element | @unified_pattern_guard_expr | @unified_return_expr | @unified_switch_case | @unified_switch_expr | @unified_throw_expr | @unified_token | @unified_top_level | @unified_trivia_token | @unified_try_expr | @unified_tuple_expr | @unified_tuple_pattern | @unified_tuple_type_element | @unified_tuple_type_expr | @unified_type_alias_declaration | @unified_type_cast_expr | @unified_type_parameter | @unified_type_test_expr | @unified_type_test_pattern | @unified_unary_expr | @unified_variable_declaration | @unified_while_stmt
 
 unified_ast_node_location(
   unique int node: @unified_ast_node ref,

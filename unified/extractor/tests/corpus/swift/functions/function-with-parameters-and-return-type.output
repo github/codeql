@@ -1,0 +1,88 @@
+func add(_ a: Int, _ b: Int) -> Int {
+  return a + b
+}
+
+---
+
+source_file
+  statement:
+    function_declaration
+      body:
+        block
+          statement:
+            control_transfer_statement
+              kind: return
+              result:
+                additive_expression
+                  lhs: simple_identifier "a"
+                  op: +
+                  rhs: simple_identifier "b"
+      name: simple_identifier "add"
+      parameter:
+        function_parameter
+          parameter:
+            parameter
+              external_name: simple_identifier "_"
+              name: simple_identifier "a"
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "Int"
+        function_parameter
+          parameter:
+            parameter
+              external_name: simple_identifier "_"
+              name: simple_identifier "b"
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "Int"
+      return_type:
+        type
+          name:
+            user_type
+              part:
+                simple_user_type
+                  name: type_identifier "Int"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    binary_expr
+                      operator: infix_operator "+"
+                      left:
+                        name_expr
+                          identifier: identifier "a"
+                      right:
+                        name_expr
+                          identifier: identifier "b"
+          name: identifier "add"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              pattern:
+                name_pattern
+                  identifier: identifier "a"
+            parameter
+              external_name: identifier "_"
+              pattern:
+                name_pattern
+                  identifier: identifier "b"
+          return_type:
+            named_type_expr
+              name: identifier "Int"

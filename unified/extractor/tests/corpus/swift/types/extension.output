@@ -1,0 +1,68 @@
+extension Int {
+  func squared() -> Int { return self * self }
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+          member:
+            function_declaration
+              body:
+                block
+                  statement:
+                    control_transfer_statement
+                      kind: return
+                      result:
+                        multiplicative_expression
+                          lhs:
+                            self_expression
+                          op: *
+                          rhs:
+                            self_expression
+              name: simple_identifier "squared"
+              return_type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "Int"
+      declaration_kind: extension
+      name:
+        user_type
+          part:
+            simple_user_type
+              name: type_identifier "Int"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          member:
+            function_declaration
+              body:
+                block
+                  stmt:
+                    return_expr
+                      value:
+                        binary_expr
+                          operator: infix_operator "*"
+                          left:
+                            name_expr
+                              identifier: identifier "self"
+                          right:
+                            name_expr
+                              identifier: identifier "self"
+              name: identifier "squared"
+              return_type:
+                named_type_expr
+                  name: identifier "Int"
+          modifier: modifier "extension"
+          name: identifier "Int"

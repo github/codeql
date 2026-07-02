@@ -589,11 +589,11 @@ def test_zip_tuple():
 
     SINK(z[0][0])  # $ flow="SOURCE, l:-7 -> z[0][0]"
     SINK(z[0][1])  # $ flow="SOURCE, l:-7 -> z[0][1]"
-    SINK_F(z[0][2])
+    SINK_F(z[0][2]) # $ SPURIOUS: flow="SOURCE, l:-7 -> z[0][2]"
     SINK_F(z[0][3])
     SINK(z[1][0])  # $ flow="SOURCE, l:-11 -> z[1][0]"
     SINK_F(z[1][1]) # $ SPURIOUS: flow="SOURCE, l:-11 -> z[1][1]"
-    SINK(z[1][2]) # $ MISSING: flow="SOURCE, l:-11 -> z[1][2]" # Tuple contents are not tracked beyond the first two arguments for performance.
+    SINK(z[1][2]) # $ flow="SOURCE, l:-11 -> z[1][2]"
     SINK_F(z[1][3])
 
 @expects(4)

@@ -110,58 +110,55 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             logger.LogInfo($"Checking NuGet feed responsiveness: {feedManager.CheckNugetFeedResponsiveness}");
             compilationInfoContainer.CompilationInfos.Add(("NuGet feed responsiveness checked", feedManager.CheckNugetFeedResponsiveness ? "1" : "0"));
 
-            HashSet<string> explicitFeeds = [];
             HashSet<string> reachableFeeds = [];
+
+            EmitNugetConfigDiagnostics();
+
+            // Find feeds that are configured in NuGet.config files and divide them into ones that
+            // are explicitly configured for the project or by a private registry, and "all feeds"
+            // (including inherited ones) from other locations on the host outside of the working directory.
+            (var explicitFeeds, var allFeeds) = feedManager.GetAllFeeds();
+
+            if (feedManager.CheckNugetFeedResponsiveness)
+            {
+                var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
+
+                if (inheritedFeeds.Count > 0)
+                {
+                    compilationInfoContainer.CompilationInfos.Add(("Inherited NuGet feed count", inheritedFeeds.Count.ToString()));
+                }
+
+                var timeout = feedManager.CheckSpecifiedFeeds(explicitFeeds, out var reachableExplicitFeeds);
+                reachableFeeds.UnionWith(reachableExplicitFeeds);
+
+                var allExplicitReachable = explicitFeeds.Count == reachableExplicitFeeds.Count;
+                EmitUnreachableFeedsDiagnostics(allExplicitReachable);
+
+                if (timeout)
+                {
+                    // If we experience a timeout, we use this fallback.
+                    // todo: we could also check the reachability of the inherited nuget feeds, but to use those in the fallback we would need to handle authentication too.
+                    var unresponsiveMissingPackageLocation = DownloadMissingPackagesFromSpecificFeeds([], explicitFeeds);
+                    return unresponsiveMissingPackageLocation is null
+                        ? []
+                        : [unresponsiveMissingPackageLocation];
+                }
+
+                // Inherited feeds should only be used, if they are indeed reachable (as they may be environment specific).
+                feedManager.CheckSpecifiedFeeds(inheritedFeeds, out var reachableInheritedFeeds);
+                reachableFeeds.UnionWith(reachableInheritedFeeds);
+            }
 
             try
             {
-                EmitNugetConfigDiagnostics();
-
-                // Find feeds that are configured in NuGet.config files and divide them into ones that
-                // are explicitly configured for the project or by a private registry, and "all feeds"
-                // (including inherited ones) from other locations on the host outside of the working directory.
-                (explicitFeeds, var allFeeds) = feedManager.GetAllFeeds();
-
-                if (feedManager.CheckNugetFeedResponsiveness)
+                var packagesConfigRestore = PackagesConfigRestoreFactory.Create(fileProvider, legacyPackageDirectory, logger, feedManager, reachableFeeds);
+                var count = packagesConfigRestore.InstallPackages();
+                if (packagesConfigRestore.PackageCount > 0)
                 {
-                    var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
-
-                    if (inheritedFeeds.Count > 0)
-                    {
-                        compilationInfoContainer.CompilationInfos.Add(("Inherited NuGet feed count", inheritedFeeds.Count.ToString()));
-                    }
-
-                    var timeout = feedManager.CheckSpecifiedFeeds(explicitFeeds, out var reachableExplicitFeeds);
-                    reachableFeeds.UnionWith(reachableExplicitFeeds);
-
-                    var allExplicitReachable = explicitFeeds.Count == reachableExplicitFeeds.Count;
-                    EmitUnreachableFeedsDiagnostics(allExplicitReachable);
-
-                    if (timeout)
-                    {
-                        // If we experience a timeout, we use this fallback.
-                        // todo: we could also check the reachability of the inherited nuget feeds, but to use those in the fallback we would need to handle authentication too.
-                        var unresponsiveMissingPackageLocation = DownloadMissingPackagesFromSpecificFeeds([], explicitFeeds);
-                        return unresponsiveMissingPackageLocation is null
-                            ? []
-                            : [unresponsiveMissingPackageLocation];
-                    }
-
-                    // Inherited feeds should only be used, if they are indeed reachable (as they may be environment specific).
-                    feedManager.CheckSpecifiedFeeds(inheritedFeeds, out var reachableInheritedFeeds);
-                    reachableFeeds.UnionWith(reachableInheritedFeeds);
+                    compilationInfoContainer.CompilationInfos.Add(("packages.config files", packagesConfigRestore.PackageCount.ToString()));
+                    compilationInfoContainer.CompilationInfos.Add(("Successfully restored packages.config files", count.ToString()));
                 }
 
-                using (var packagesConfigRestore = PackagesConfigRestoreFactory.Create(fileProvider, legacyPackageDirectory, logger, feedManager.IsDefaultFeedReachable))
-                {
-                    var count = packagesConfigRestore.InstallPackages();
-
-                    if (packagesConfigRestore.PackageCount > 0)
-                    {
-                        compilationInfoContainer.CompilationInfos.Add(("packages.config files", packagesConfigRestore.PackageCount.ToString()));
-                        compilationInfoContainer.CompilationInfos.Add(("Successfully restored packages.config files", count.ToString()));
-                    }
-                }
 
                 var nugetPackageDlls = legacyPackageDirectory.DirInfo.GetFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true });
                 var nugetPackageDllPaths = nugetPackageDlls.Select(f => f.FullName).ToHashSet();
@@ -239,7 +236,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var projects = fileProvider.Solutions.SelectMany(solution =>
                 {
                     logger.LogInfo($"Restoring solution {solution}...");
-                    var nugetSources = feedManager.MakeRestoreSourcesArgument(solution, reachableFeeds);
+                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArgument(solution, reachableFeeds);
                     var res = dotnet.Restore(new(solution, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, NugetSources: nugetSources, TargetWindows: isWindows));
                     if (res.Success)
                     {
@@ -288,7 +285,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 foreach (var project in projectGroup)
                 {
                     logger.LogInfo($"Restoring project {project}...");
-                    var nugetSources = feedManager.MakeRestoreSourcesArgument(project, reachableFeeds);
+                    var nugetSources = feedManager.MakeDotnetRestoreSourcesArgument(project, reachableFeeds);
                     var res = dotnet.Restore(new(project, PackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true, NugetSources: nugetSources, TargetWindows: isWindows));
                     assets.AddDependenciesRange(res.AssetsFilePaths);
                     lock (sync)

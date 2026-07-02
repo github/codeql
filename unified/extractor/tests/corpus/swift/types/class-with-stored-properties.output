@@ -1,0 +1,78 @@
+class Point {
+  var x: Int
+  var y: Int
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+          member:
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "x"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+            property_declaration
+              binding:
+                value_binding_pattern
+                  mutability: var
+              declarator:
+                property_binding
+                  name:
+                    pattern
+                      bound_identifier: simple_identifier "y"
+                  type:
+                    type_annotation
+                      type:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+      declaration_kind: class
+      name: type_identifier "Point"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "y"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+          modifier: modifier "class"
+          name: identifier "Point"

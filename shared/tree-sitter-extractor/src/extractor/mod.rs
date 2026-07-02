@@ -66,7 +66,7 @@ impl<'a> AstNode for Node<'a> {
 
 impl AstNode for yeast::Node {
     fn kind(&self) -> &str {
-        yeast::Node::kind(self)
+        yeast::Node::kind_name(self)
     }
     fn is_named(&self) -> bool {
         yeast::Node::is_named(self)
@@ -882,7 +882,6 @@ fn emit_extras_in(visitor: &mut Visitor, node: Node<'_>) {
 }
 
 fn traverse_yeast(tree: &yeast::Ast, visitor: &mut Visitor) {
-    use yeast::Cursor;
     let mut cursor = tree.walk();
     visitor.enter_node(cursor.node());
     let mut recurse = true;

@@ -1,0 +1,15 @@
+"hello"
+
+---
+
+source_file
+  statement:
+    line_string_literal
+      text: line_str_text "hello"
+
+---
+
+top_level
+  body:
+    block
+      stmt: string_literal "\"hello\""

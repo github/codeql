@@ -1,0 +1,35 @@
+greet(person: "Bob")
+
+---
+
+source_file
+  statement:
+    call_expression
+      function: simple_identifier "greet"
+      suffix:
+        call_suffix
+          arguments:
+            value_arguments
+              argument:
+                value_argument
+                  name:
+                    value_argument_label
+                      name: simple_identifier "person"
+                  value:
+                    line_string_literal
+                      text: line_str_text "Bob"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        call_expr
+          argument:
+            argument
+              name: identifier "person"
+              value: string_literal "\"Bob\""
+          callee:
+            name_expr
+              identifier: identifier "greet"

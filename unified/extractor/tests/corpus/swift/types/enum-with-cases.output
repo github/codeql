@@ -1,0 +1,64 @@
+enum Direction {
+  case north
+  case south
+  case east
+  case west
+}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        enum_class_body
+          member:
+            enum_entry
+              case:
+                enum_case_entry
+                  name: simple_identifier "north"
+            enum_entry
+              case:
+                enum_case_entry
+                  name: simple_identifier "south"
+            enum_entry
+              case:
+                enum_case_entry
+                  name: simple_identifier "east"
+            enum_entry
+              case:
+                enum_case_entry
+                  name: simple_identifier "west"
+      declaration_kind: enum
+      name: type_identifier "Direction"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          member:
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "north"
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "south"
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "east"
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "west"
+          modifier: modifier "enum"
+          name: identifier "Direction"

@@ -1,0 +1,37 @@
+list.append(1)
+
+---
+
+source_file
+  statement:
+    call_expression
+      function:
+        navigation_expression
+          suffix:
+            navigation_suffix
+              suffix: simple_identifier "append"
+          target: simple_identifier "list"
+      suffix:
+        call_suffix
+          arguments:
+            value_arguments
+              argument:
+                value_argument
+                  value: integer_literal "1"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        call_expr
+          argument:
+            argument
+              value: int_literal "1"
+          callee:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "list"
+              member: identifier "append"

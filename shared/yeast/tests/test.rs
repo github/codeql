@@ -300,7 +300,7 @@ fn test_query_skips_extras_in_positional_match() {
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child();
     let array_id = cursor.node_id();
-    assert_eq!(ast.get_node(array_id).unwrap().kind(), "array");
+    assert_eq!(ast.get_node(array_id).unwrap().kind_name(), "array");
 
     // Two positional wildcards should bind to the two integers, skipping
     // the comment that sits between them.
@@ -309,11 +309,15 @@ fn test_query_skips_extras_in_positional_match() {
     let matched = query.do_match(&ast, array_id, &mut captures).unwrap();
     assert!(matched);
     assert_eq!(
-        ast.get_node(captures.get_var("a").unwrap()).unwrap().kind(),
+        ast.get_node(captures.get_var("a").unwrap())
+            .unwrap()
+            .kind_name(),
         "integer"
     );
     assert_eq!(
-        ast.get_node(captures.get_var("b").unwrap()).unwrap().kind(),
+        ast.get_node(captures.get_var("b").unwrap())
+            .unwrap()
+            .kind_name(),
         "integer"
     );
 }
@@ -391,7 +395,7 @@ fn test_capture_unnamed_node_parenthesized() {
     assert!(matched);
     let op_id = captures.get_var("op").unwrap();
     let op_node = ast.get_node(op_id).unwrap();
-    assert_eq!(op_node.kind(), "=");
+    assert_eq!(op_node.kind_name(), "=");
     assert!(!op_node.is_named());
 }
 
@@ -414,7 +418,7 @@ fn test_capture_bare_underscore_repeated() {
 
     let all = captures.get_all("all");
     assert_eq!(all.len(), 1);
-    assert_eq!(ast.get_node(all[0]).unwrap().kind(), "=");
+    assert_eq!(ast.get_node(all[0]).unwrap().kind_name(), "=");
     assert!(!ast.get_node(all[0]).unwrap().is_named());
 }
 
@@ -441,7 +445,7 @@ fn test_capture_unnamed_node_bare_literal() {
     assert!(matched);
     let op_id = captures.get_var("op").unwrap();
     let op_node = ast.get_node(op_id).unwrap();
-    assert_eq!(op_node.kind(), "=");
+    assert_eq!(op_node.kind_name(), "=");
     assert!(!op_node.is_named());
 }
 
@@ -479,7 +483,7 @@ fn test_bare_underscore_matches_unnamed() {
         .unwrap();
     assert!(matched, "_ should match the unnamed `=`");
     let any_node = ast.get_node(captures.get_var("any").unwrap()).unwrap();
-    assert_eq!(any_node.kind(), "=");
+    assert_eq!(any_node.kind_name(), "=");
     assert!(!any_node.is_named());
 }
 
@@ -506,7 +510,7 @@ fn test_bare_forms_in_field_position() {
     assert_eq!(
         ast.get_node(captures.get_var("lhs").unwrap())
             .unwrap()
-            .kind(),
+            .kind_name(),
         "identifier"
     );
 
@@ -516,7 +520,7 @@ fn test_bare_forms_in_field_position() {
     let matched = query.do_match(&ast, assignment_id, &mut captures).unwrap();
     assert!(matched);
     let op = ast.get_node(captures.get_var("op").unwrap()).unwrap();
-    assert_eq!(op.kind(), "=");
+    assert_eq!(op.kind_name(), "=");
     assert!(!op.is_named());
 }
 
@@ -535,7 +539,7 @@ fn test_forward_scan_finds_unnamed_token_late() {
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child(); // for
     cursor.goto_first_child(); // do (the body)
-    while cursor.node().kind() != "do" || !cursor.node().is_named() {
+    while cursor.node().kind_name() != "do" || !cursor.node().is_named() {
         assert!(cursor.goto_next_sibling(), "expected to find named `do`");
     }
     let do_id = cursor.node_id();
@@ -545,7 +549,7 @@ fn test_forward_scan_finds_unnamed_token_late() {
     let matched = query.do_match(&ast, do_id, &mut captures).unwrap();
     assert!(matched, "forward-scan should find the `end` keyword");
     let kw = ast.get_node(captures.get_var("kw").unwrap()).unwrap();
-    assert_eq!(kw.kind(), "end");
+    assert_eq!(kw.kind_name(), "end");
     assert!(!kw.is_named());
 }
 
@@ -561,7 +565,7 @@ fn test_forward_scan_preserves_order() {
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child();
     cursor.goto_first_child();
-    while cursor.node().kind() != "do" || !cursor.node().is_named() {
+    while cursor.node().kind_name() != "do" || !cursor.node().is_named() {
         assert!(cursor.goto_next_sibling(), "expected to find named `do`");
     }
     let do_id = cursor.node_id();
@@ -635,7 +639,7 @@ fn ruby_rules() -> Vec<Rule> {
             left: (identifier $tmp)
             right: {right}
         )
-        {..left.iter().enumerate().map(|(i, &lhs)|
+        {left.iter().enumerate().map(|(i, &lhs)|
             yeast::tree!(
                 (assignment
                     left: {lhs}
@@ -667,7 +671,7 @@ fn ruby_rules() -> Vec<Rule> {
                         left: {pat}
                         right: (identifier $tmp)
                     )
-                    stmt: {..body}
+                    stmt: {body}
                 )
             )
         )
@@ -903,7 +907,7 @@ fn one_shot_xeq1_rules() -> Vec<Rule> {
         yeast::rule!(
             (program (_)* @stmts)
             =>
-            (program stmt: {..stmts})
+            (program stmt: {stmts})
         ),
         yeast::rule!(
             (assignment left: (_) @left right: (_) @right)
@@ -979,7 +983,7 @@ fn test_one_shot_recurses_into_returned_capture() {
         yeast::rule!(
             (program (_)* @stmts)
             =>
-            (program stmt: {..stmts})
+            (program stmt: {stmts})
         ),
         // Returns the captured `left` verbatim, discarding `right`.
         yeast::rule!(
@@ -1021,7 +1025,7 @@ fn test_one_shot_does_not_recurse_into_wrapper_output() {
         yeast::rule!(
             (program (_)* @stmts)
             =>
-            (program stmt: {..stmts})
+            (program stmt: {stmts})
         ),
         // Wraps `left` in nested `first_node`/`second_node` output kinds.
         // Neither wrapper kind has a matching rule, so a buggy implementation
@@ -1058,6 +1062,111 @@ fn test_one_shot_does_not_recurse_into_wrapper_output() {
     );
 }
 
+/// Verify that `@@name` capture markers skip the auto-translate prefix:
+/// the body sees the *raw* (input-schema) `Id` and can read its
+/// source text or call `ctx.translate(...)` explicitly. Compare with
+/// the bare `@name` form, where the auto-translate prefix runs the
+/// same translation up front and the body sees the post-translate id.
+#[test]
+fn test_raw_capture_marker() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let rules: Vec<Rule> = vec![
+        yeast::rule!(
+            (program (_)* @stmts)
+            =>
+            (program stmt: {stmts})
+        ),
+        // `@@raw_lhs` is untranslated: the body reads its source text
+        // ("x") and embeds it directly as the identifier content. `@rhs`
+        // is auto-translated (rhs already points to (integer "INT")).
+        yeast::rule!(
+            (assignment left: (_) @@raw_lhs right: (_) @rhs)
+            =>
+            {
+                let text = ctx.ast.source_text(raw_lhs);
+                tree!((call
+                    method: (identifier #{text.as_str()})
+                    receiver: {rhs}))
+            }
+        ),
+        yeast::rule!((identifier) => (identifier "ID")),
+        yeast::rule!((integer) => (integer "INT")),
+    ];
+    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+
+    let input = "x = 1";
+    let ast = runner.run(input).unwrap();
+    let dump = dump_ast(&ast, ast.get_root(), input);
+    // `method:` uses the raw source text ("x"); if `@@` were broken and
+    // auto-translation ran on `raw_lhs`, it would still produce the
+    // string "x" (source_text inherits the input range), so the dump
+    // wouldn't change here. The companion test
+    // `test_raw_capture_marker_explicit_translate` exercises the
+    // stronger property that `ctx.translate(raw_lhs)?` succeeds and
+    // produces the translated `(identifier "ID")`.
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          stmt:
+            call
+              method: identifier "x"
+              receiver: integer "INT"
+    "#,
+    );
+}
+
+/// Companion to `test_raw_capture_marker`: confirms that calling
+/// `ctx.translate(raw)` on a `@@`-captured `Id` from the rule body
+/// produces the correctly-translated output-schema node. With `@`, the
+/// translation has already happened, so `ctx.translate(...)` inside the
+/// body would attempt to re-translate an output node (which has no
+/// matching rule and would error).
+#[test]
+fn test_raw_capture_marker_explicit_translate() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let rules: Vec<Rule> = vec![
+        yeast::rule!(
+            (program (_)* @stmts)
+            =>
+            (program stmt: {stmts})
+        ),
+        yeast::rule!(
+            (assignment left: (_) @@raw_lhs right: (_) @rhs)
+            =>
+            {
+                let translated_lhs = ctx.translate(raw_lhs)?;
+                tree!((call
+                    method: {translated_lhs}
+                    receiver: {rhs}))
+            }
+        ),
+        yeast::rule!((identifier) => (identifier "ID")),
+        yeast::rule!((integer) => (integer "INT")),
+    ];
+    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let runner: Runner = Runner::with_schema(lang, &schema, &phases);
+
+    let input = "x = 1";
+    let ast = runner.run(input).unwrap();
+    let dump = dump_ast(&ast, ast.get_root(), input);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          stmt:
+            call
+              method: identifier "ID"
+              receiver: integer "INT"
+    "#,
+    );
+}
+
 // ---- Cursor tests ----
 
 #[test]
@@ -1067,11 +1176,11 @@ fn test_cursor_navigation() {
     let mut cursor = AstCursor::new(&ast);
 
     // Start at root
-    assert_eq!(cursor.node().kind(), "program");
+    assert_eq!(cursor.node().kind_name(), "program");
 
     // Go to first child (assignment)
     assert!(cursor.goto_first_child());
-    assert_eq!(cursor.node().kind(), "assignment");
+    assert_eq!(cursor.node().kind_name(), "assignment");
 
     // No sibling
     assert!(!cursor.goto_next_sibling());
@@ -1082,10 +1191,10 @@ fn test_cursor_navigation() {
 
     // Go back up
     assert!(cursor.goto_parent());
-    assert_eq!(cursor.node().kind(), "assignment");
+    assert_eq!(cursor.node().kind_name(), "assignment");
 
     assert!(cursor.goto_parent());
-    assert_eq!(cursor.node().kind(), "program");
+    assert_eq!(cursor.node().kind_name(), "program");
 
     // Can't go further up
     assert!(!cursor.goto_parent());
@@ -1130,10 +1239,8 @@ fn test_desugar_for_with_multiple_assignment() {
 }
 
 /// Regression test: `#{capture}` in a template must render the *source text*
-/// of the captured node, not its arena `Id`. Previously, captures were bound
-/// as `usize`, so `#{cap}` printed the integer id (e.g. `"3"`) via `Display`.
-/// Captures are now bound as `NodeRef`, which has no `Display` impl and
-/// resolves to the captured node's source text via `YeastDisplay`.
+/// of the captured node, not its arena `Id`. Captures are bound as `Id`,
+/// whose `YeastDisplay` impl resolves to the captured node's source text.
 #[test]
 fn test_hash_brace_renders_capture_source_text() {
     let rule: Rule = rule!(
@@ -1161,7 +1268,7 @@ fn test_hash_brace_renders_capture_source_text() {
     );
 }
 
-/// Regression test: non-`NodeRef` values in `#{expr}` still render via their
+/// Regression test: non-`Id` values in `#{expr}` still render via their
 /// `Display` impl (covered by `YeastDisplay`'s blanket impls for primitives).
 #[test]
 fn test_hash_brace_renders_integer_expression() {
@@ -1199,12 +1306,12 @@ fn test_hash_brace_uses_capture_location_for_leaf() {
 
     let ast = run_and_ast("foo.bar()", vec![rule]);
 
-    let mut bar_ids: Vec<usize> = Vec::new();
+    let mut bar_ids: Vec<yeast::Id> = Vec::new();
     for id in ast.reachable_node_ids() {
         let Some(node) = ast.get_node(id) else {
             continue;
         };
-        if node.kind() == "identifier" && ast.source_text(id) == "bar" {
+        if node.kind_name() == "identifier" && ast.source_text(id) == "bar" {
             bar_ids.push(id);
         }
     }

@@ -1,0 +1,5 @@
+| file://:0:0:0:0 |  |  |
+| file://:0:0:0:0 |  |  |
+| file://Z:/Test.class:0:0:0:0 | Test | relative |
+| file://Z:/test1.java:0:0:0:0 | test1 | relative |
+| file://Z:/test2.kt:0:0:0:0 | test2 | relative |

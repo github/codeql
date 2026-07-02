@@ -1,0 +1,55 @@
+if x > 0 {
+  print(x)
+}
+
+---
+
+source_file
+  statement:
+    if_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      condition:
+        if_condition
+          kind:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        if_expr
+          condition:
+            binary_expr
+              operator: infix_operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
+          then:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"

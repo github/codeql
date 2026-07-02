@@ -9,7 +9,6 @@ mod languages;
 
 #[derive(Debug)]
 struct CorpusCase {
-    name: String,
     input: String,
     raw: String,
     expected: String,
@@ -21,129 +20,43 @@ fn update_mode_enabled() -> bool {
         .unwrap_or(false)
 }
 
-fn is_header_rule(line: &str) -> bool {
-    let trimmed = line.trim();
-    trimmed.len() >= 3 && trimmed.chars().all(|c| c == '=')
-}
+/// Parse a corpus `.output` file. The file holds a single test case made of
+/// three sections separated by `---` delimiter lines:
+///
+/// ```text
+/// <test case source>
+///
+/// ---
+///
+/// <raw tree-sitter parse tree>
+///
+/// ---
+///
+/// <mapped AST>
+/// ```
+///
+/// The test name is the file name, so there is no header section. Missing
+/// trailing sections (e.g. a freshly added file) are treated as empty.
+fn parse_corpus(content: &str) -> CorpusCase {
+    let lines: Vec<&str> = content.split('\n').collect();
+    let mut sections = lines
+        .split(|line| line.trim() == "---")
+        .map(|chunk| chunk.join("\n").trim().to_string());
 
-fn is_next_case_header(lines: &[&str], i: usize) -> bool {
-    is_header_rule(lines[i])
-        && i + 2 < lines.len()
-        && !lines[i + 1].trim().is_empty()
-        && is_header_rule(lines[i + 2])
-}
-
-fn parse_corpus(content: &str) -> Vec<CorpusCase> {
-    let lines: Vec<&str> = content.lines().collect();
-    let mut i = 0;
-    let mut cases = Vec::new();
-
-    while i < lines.len() {
-        while i < lines.len() && lines[i].trim().is_empty() {
-            i += 1;
-        }
-        if i >= lines.len() {
-            break;
-        }
-
-        assert!(
-            is_header_rule(lines[i]),
-            "Expected header delimiter at line {}",
-            i + 1
-        );
-        i += 1;
-
-        assert!(i < lines.len(), "Missing test name at line {}", i + 1);
-        let name = lines[i].trim().to_string();
-        i += 1;
-
-        assert!(
-            i < lines.len() && is_header_rule(lines[i]),
-            "Missing closing header delimiter for case {name}"
-        );
-        i += 1;
-
-        let input_start = i;
-        while i < lines.len() && lines[i].trim() != "---" {
-            if is_next_case_header(&lines, i) {
-                break;
-            }
-            i += 1;
-        }
-        let input = lines[input_start..i].join("\n").trim_end().to_string();
-        let raw;
-        let expected;
-        if i >= lines.len() || lines[i].trim() != "---" {
-            // No `---` separator before next case (or EOF). Treat the
-            // remaining sections as empty.
-            raw = String::new();
-            expected = String::new();
-        } else {
-            i += 1;
-
-            // Raw tree-sitter parse section. New-format files have a second
-            // `---` separator between the raw tree and the mapped AST. Legacy
-            // files (with only one separator) have no raw section — in that
-            // case `raw` stays empty and update mode will populate it.
-            let raw_start = i;
-            let mut next_sep = i;
-            while next_sep < lines.len() && lines[next_sep].trim() != "---" {
-                if is_next_case_header(&lines, next_sep) {
-                    break;
-                }
-                next_sep += 1;
-            }
-            raw = if next_sep < lines.len() && lines[next_sep].trim() == "---" {
-                let raw_text = lines[raw_start..next_sep].join("\n").trim().to_string();
-                i = next_sep + 1;
-                raw_text
-            } else {
-                String::new()
-            };
-
-            let expected_start = i;
-            while i < lines.len() {
-                if is_next_case_header(&lines, i) {
-                    break;
-                }
-                i += 1;
-            }
-            expected = lines[expected_start..i].join("\n").trim().to_string();
-        }
-
-        cases.push(CorpusCase {
-            name,
-            input,
-            raw,
-            expected,
-        });
+    CorpusCase {
+        input: sections.next().unwrap_or_default(),
+        raw: sections.next().unwrap_or_default(),
+        expected: sections.next().unwrap_or_default(),
     }
-
-    cases
 }
 
-fn render_corpus(cases: &[CorpusCase]) -> String {
-    let mut out = String::new();
-
-    for (idx, case) in cases.iter().enumerate() {
-        if idx > 0 {
-            // Blank line between cases.
-            out.push('\n');
-        }
-        out.push_str("===\n");
-        out.push_str(case.name.trim());
-        out.push_str("\n===\n\n");
-        out.push_str(case.input.trim());
-        out.push_str("\n\n---\n\n");
-        out.push_str(case.raw.trim());
-        out.push_str("\n\n---\n\n");
-        out.push_str(case.expected.trim());
-        // Single trailing newline per case; the inter-case blank line is
-        // added by the prefix above, and the file ends with exactly one `\n`.
-        out.push('\n');
-    }
-
-    out
+fn render_corpus(case: &CorpusCase) -> String {
+    format!(
+        "{}\n\n---\n\n{}\n\n---\n\n{}\n",
+        case.input.trim(),
+        case.raw.trim(),
+        case.expected.trim()
+    )
 }
 
 fn run_desugaring(lang: &simple::LanguageSpec, input: &str) -> Result<yeast::Ast, String> {
@@ -182,6 +95,26 @@ fn dump_raw_parse(lang: &simple::LanguageSpec, input: &str) -> Result<String, St
     Ok(dump_ast(&ast, ast.get_root(), input))
 }
 
+/// Collect the set of corpus test "stems" (paths without an extension) under
+/// `dir`. A stem is discovered from either a `.swift` source file or a
+/// `.output` file, so that a `.swift` with no `.output` (a freshly added test)
+/// and an orphaned `.output` with no `.swift` are both surfaced.
+fn collect_corpus_stems(dir: &Path, out: &mut Vec<std::path::PathBuf>) {
+    let entries = fs::read_dir(dir)
+        .unwrap_or_else(|e| panic!("Failed to read corpus directory {}: {e}", dir.display()));
+    for entry in entries {
+        let path = entry.expect("Failed to read corpus entry").path();
+        if path.is_dir() {
+            collect_corpus_stems(&path, out);
+        } else if path
+            .extension()
+            .is_some_and(|ext| ext == "swift" || ext == "output")
+        {
+            out.push(path.with_extension(""));
+        }
+    }
+}
+
 #[test]
 fn test_corpus() {
     let update_mode = update_mode_enabled();
@@ -200,47 +133,85 @@ fn test_corpus() {
             continue;
         }
 
-        let mut corpus_files: Vec<_> = fs::read_dir(&lang_corpus_dir)
-            .unwrap_or_else(|e| {
-                panic!(
-                    "Failed to read corpus directory {}: {e}",
-                    lang_corpus_dir.display()
-                )
-            })
-            .map(|entry| entry.expect("Failed to read corpus entry").path())
-            .filter(|path| path.extension().is_some_and(|ext| ext == "txt"))
-            .collect();
-        corpus_files.sort();
+        let mut stems = Vec::new();
+        collect_corpus_stems(&lang_corpus_dir, &mut stems);
+        stems.sort();
+        stems.dedup();
 
-        for corpus_path in corpus_files {
-            let content = fs::read_to_string(&corpus_path)
-                .unwrap_or_else(|e| panic!("Failed to read {}: {e}", corpus_path.display()));
-            let mut cases = parse_corpus(&content);
+        for stem in stems {
+            let swift_path = stem.with_extension("swift");
+            let output_path = stem.with_extension("output");
             let mut failures = Vec::new();
-            assert!(
-                !cases.is_empty(),
-                "No corpus cases found in {}",
-                corpus_path.display()
-            );
 
-            for case in &mut cases {
-                match dump_raw_parse(&lang, &case.input) {
+            // The canonical test case lives in the `.swift` file and is the
+            // source of truth. An `.output` file without a `.swift` sibling is
+            // an orphan: there is nothing to drive it from.
+            if !swift_path.exists() {
+                panic!(
+                    "Found {} with no corresponding test case; add {} or remove the output file",
+                    output_path.display(),
+                    swift_path.display()
+                );
+            }
+
+            let swift_input = fs::read_to_string(&swift_path)
+                .unwrap_or_else(|e| panic!("Failed to read {}: {e}", swift_path.display()))
+                .trim()
+                .to_string();
+
+            // Build the case from the existing `.output` file when present.
+            // When it is missing (a freshly added `.swift`), start from an
+            // empty case: update mode will generate it, and a normal test run
+            // reports the missing output.
+            let mut case = if output_path.exists() {
+                let content = fs::read_to_string(&output_path)
+                    .unwrap_or_else(|e| panic!("Failed to read {}: {e}", output_path.display()));
+                parse_corpus(&content)
+            } else {
+                if !update_mode {
+                    failures.push(format!(
+                        "Missing output file {}; run scripts/update-corpus.sh to generate it",
+                        output_path.display()
+                    ));
+                }
+                CorpusCase {
+                    input: String::new(),
+                    raw: String::new(),
+                    expected: String::new(),
+                }
+            };
+
+            {
+                // The input section in the `.output` file is a generated copy
+                // of the `.swift` source, kept only so reviewers can see the
+                // source alongside its printed ASTs.
+                if update_mode {
+                    case.input = swift_input.clone();
+                } else if output_path.exists() && case.input.trim() != swift_input {
+                    failures.push(format!(
+                        "Test case copy out of date in {}; rerun update-corpus to regenerate from {}",
+                        output_path.display(),
+                        swift_path.display()
+                    ));
+                }
+                // Ensure the AST passes below operate on the source of truth.
+                let case_input = swift_input.clone();
+
+                match dump_raw_parse(&lang, &case_input) {
                     Err(e) => {
                         failures.push(format!(
-                            "Raw parse failed for {} in {}: {}",
-                            case.name,
-                            corpus_path.display(),
+                            "Raw parse failed in {}: {}",
+                            output_path.display(),
                             e
                         ));
                     }
                     Ok(actual_raw) => {
                         if update_mode {
                             case.raw = actual_raw.trim().to_string();
-                        } else if case.raw.trim() != actual_raw.trim() {
+                        } else if output_path.exists() && case.raw.trim() != actual_raw.trim() {
                             failures.push(format!(
-                                "Raw parse mismatch in {}: \"{}\"\nEXPECTED:\n\n{}\n\nACTUAL:\n\n{}",
-                                corpus_path.display(),
-                                case.name,
+                                "Raw parse mismatch in {}:\nEXPECTED:\n\n{}\n\nACTUAL:\n\n{}",
+                                output_path.display(),
                                 case.raw.trim(),
                                 actual_raw.trim()
                             ));
@@ -248,12 +219,11 @@ fn test_corpus() {
                     }
                 }
 
-                match run_desugaring(&lang, &case.input) {
+                match run_desugaring(&lang, &case_input) {
                     Err(e) => {
                         failures.push(format!(
-                            "Desugaring failed for {} in {}: {}",
-                            case.name,
-                            corpus_path.display(),
+                            "Desugaring failed in {}: {}",
+                            output_path.display(),
                             e
                         ));
                     }
@@ -261,16 +231,17 @@ fn test_corpus() {
                         let actual_dump = dump_ast_with_type_errors(
                             &actual,
                             actual.get_root(),
-                            &case.input,
+                            &case_input,
                             &output_schema,
                         );
                         if update_mode {
                             case.expected = actual_dump.trim().to_string();
-                        } else if case.expected.trim() != actual_dump.trim() {
+                        } else if output_path.exists()
+                            && case.expected.trim() != actual_dump.trim()
+                        {
                             failures.push(format!(
-                                "Test failed in {}: \"{}\"\nEXPECTED:\n\n{}\n\nACTUAL:\n\n{}",
-                                corpus_path.display(),
-                                case.name,
+                                "Test failed in {}:\nEXPECTED:\n\n{}\n\nACTUAL:\n\n{}",
+                                output_path.display(),
                                 case.expected.trim(),
                                 actual_dump.trim()
                             ));
@@ -282,12 +253,12 @@ fn test_corpus() {
             assert!(failures.is_empty(), "{}", failures.join("\n\n") + "\n\n");
 
             if update_mode {
-                let updated = render_corpus(&cases);
-                let write_result = fs::write(&corpus_path, updated);
+                let updated = render_corpus(&case);
+                let write_result = fs::write(&output_path, updated);
                 assert!(
                     write_result.is_ok(),
                     "Failed to update corpus file {}: {}",
-                    corpus_path.display(),
+                    output_path.display(),
                     write_result
                         .err()
                         .map_or_else(String::new, |e| e.to_string())

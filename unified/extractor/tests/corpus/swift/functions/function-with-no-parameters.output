@@ -1,0 +1,43 @@
+func greet() {
+  print("hello")
+}
+
+---
+
+source_file
+  statement:
+    function_declaration
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "hello"
+      name: simple_identifier "greet"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value: string_literal "\"hello\""
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+          name: identifier "greet"

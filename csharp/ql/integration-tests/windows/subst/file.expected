@@ -1,0 +1,8 @@
+| code/Program.cs:0:0:0:0 | code/Program.cs |  |
+| code/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs:0:0:0:0 | code/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs |  |
+| code/obj/Debug/net9.0/dotnet_build.AssemblyInfo.cs:0:0:0:0 | code/obj/Debug/net9.0/dotnet_build.AssemblyInfo.cs |  |
+| code/obj/Debug/net9.0/dotnet_build.GlobalUsings.g.cs:0:0:0:0 | code/obj/Debug/net9.0/dotnet_build.GlobalUsings.g.cs |  |
+| code/obj/Debug/net9.0/dotnet_build.dll:0:0:0:0 | code/obj/Debug/net9.0/dotnet_build.dll |  |
+| file://:0:0:0:0 |  |  |
+| file://Z:/dotnet_build.csproj:0:0:0:0 | Z:/dotnet_build.csproj | relative |
+| file://Z:/obj/dotnet_build.csproj.nuget.g.props:0:0:0:0 | Z:/obj/dotnet_build.csproj.nuget.g.props | relative |

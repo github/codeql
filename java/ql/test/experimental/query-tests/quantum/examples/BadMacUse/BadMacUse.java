@@ -47,7 +47,7 @@ class BadMacUse {
         SecretKey encryptionKey = new SecretKeySpec(encryptionKeyBytes, "AES");
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
         cipher.init(Cipher.DECRYPT_MODE, encryptionKey, new SecureRandom());
-        byte[] plaintext = cipher.doFinal(ciphertext); // $ Source
+        byte[] plaintext = cipher.doFinal(ciphertext); // $ Source[java/quantum/examples/bad-mac-order-decrypt-to-mac]
 
         // Now verify MAC (too late)
         SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");
@@ -60,7 +60,7 @@ class BadMacUse {
         }
     }
 
-    public void BadMacOnPlaintext(byte[] encryptionKeyBytes, byte[] macKeyBytes, byte[] plaintext) throws Exception {// $ Source
+    public void BadMacOnPlaintext(byte[] encryptionKeyBytes, byte[] macKeyBytes, byte[] plaintext) throws Exception {// $ Source[java/quantum/examples/bad-mac-order-encrypt-plaintext-also-in-mac]
         // Create keys directly from provided byte arrays
         SecretKey encryptionKey = new SecretKeySpec(encryptionKeyBytes, "AES");
         SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");
@@ -89,7 +89,7 @@ class BadMacUse {
 
         IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
         cipher.init(mode, secretKeySpec, ivParameterSpec);
-        return cipher.doFinal(bytes);
+        return cipher.doFinal(bytes); // $ Source[java/quantum/examples/bad-mac-order-decrypt-then-mac] Source[java/quantum/examples/bad-mac-order-decrypt-to-mac]
     }
 
     /**
@@ -121,7 +121,7 @@ class BadMacUse {
         SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");
         Mac mac = Mac.getInstance("HmacSHA256");
         mac.init(macKey);
-        byte[] computedMac = mac.doFinal(ciphertext); // False Positive
+        byte[] computedMac = mac.doFinal(ciphertext); // $ SPURIOUS: Alert[java/quantum/examples/bad-mac-order-decrypt-to-mac]
 
         // Concatenate ciphertext and MAC
         byte[] output = new byte[ciphertext.length + computedMac.length];
@@ -136,20 +136,20 @@ class BadMacUse {
      * The function decrypts THEN computes the MAC on the plaintext.
      * It should have the MAC computed on the ciphertext first.
      */
-    public void decryptThenMac(byte[] encryptionKeyBytes, byte[] macKeyBytes, byte[] input) throws Exception {
+    public void decryptThenMac(byte[] encryptionKeyBytes, byte[] macKeyBytes, byte[] input) throws Exception { // $ SPURIOUS: Source[java/quantum/examples/bad-mac-order-encrypt-plaintext-also-in-mac]
         // Split input into ciphertext and MAC
         int macLength = 32; // HMAC-SHA256 output length
         byte[] ciphertext = Arrays.copyOfRange(input, 0, input.length - macLength);
         byte[] receivedMac = Arrays.copyOfRange(input, input.length - macLength, input.length);
 
         // Decrypt first (unsafe)
-        byte[] plaintext = decryptUsingWrapper(ciphertext, encryptionKeyBytes, new byte[16]); // $ Source
+        byte[] plaintext = decryptUsingWrapper(ciphertext, encryptionKeyBytes, new byte[16]);
 
         // Now verify MAC (too late)
         SecretKey macKey = new SecretKeySpec(macKeyBytes, "HmacSHA256");
         Mac mac = Mac.getInstance("HmacSHA256");
         mac.init(macKey);
-        byte[] computedMac = mac.doFinal(ciphertext); // $ Alert[java/quantum/examples/bad-mac-order-decrypt-then-mac], False positive for Plaintext reuse
+        byte[] computedMac = mac.doFinal(ciphertext); // $ Alert[java/quantum/examples/bad-mac-order-decrypt-then-mac] SPURIOUS: Alert[java/quantum/examples/bad-mac-order-encrypt-plaintext-also-in-mac]
 
         if (!MessageDigest.isEqual(receivedMac, computedMac)) {
             throw new SecurityException("MAC verification failed");
