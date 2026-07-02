@@ -35,6 +35,11 @@ impl MyCryptor {
     }
 }
 
+const MY_CONST_1: u64 = 0xFFFF; // $ Alert[rust/hard-coded-cryptographic-value]
+const MY_CONST_2: u64 = std::env::consts::ARCH.len() as u64; // $ Alert[rust/hard-coded-cryptographic-value]
+static MY_STATIC_3: u64 = 0xFFFF; // $ Alert[rust/hard-coded-cryptographic-value]
+static MY_STATIC_4: u64 = std::env::consts::ARCH.len() as u64;
+
 fn test(var_string: &str, var_data: &[u8;16], var_u64: u64) {
     encrypt_with("plaintext", var_data, var_data);
 
@@ -66,6 +71,32 @@ fn test(var_string: &str, var_data: &[u8;16], var_u64: u64) {
 
     mc2.set_salt_u64(0); // $ Alert[rust/hard-coded-cryptographic-value]
     mc2.set_salt_u64(var_u64);
-    mc2.set_salt_u64(var_u64 + 1); // $ SPURIOUS: Alert[rust/hard-coded-cryptographic-value]
-    mc2.set_salt_u64((var_u64 << 32) ^ (var_u64  & 0xFFFFFFFF)); // $ SPURIOUS: Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(var_u64 + 1);
+    mc2.set_salt_u64((var_u64 << 32) ^ (var_u64  & 0xFFFFFFFF));
+    mc2.set_salt_u64(1 << 4); // $ Alert[rust/hard-coded-cryptographic-value]
+
+    mc2.set_salt_u64(u64::MAX); // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(u64::MAX / 4); // $ Alert[rust/hard-coded-cryptographic-value]
+
+    mc2.set_salt_u64(MY_CONST_1); // $ Sink[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_CONST_2); // $ Sink[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_STATIC_3); // $ Sink[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_STATIC_4);
+
+    const MY_CONST_5: u64 = 1u64; // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_CONST_5); // $ Sink[rust/hard-coded-cryptographic-value]
+    const MY_CONST_6: u64 = 2 + 3; // $ Alert[rust/hard-coded-cryptographic-value]
+    mc2.set_salt_u64(MY_CONST_6); // $ Sink[rust/hard-coded-cryptographic-value]
+
+    let mut key1 = "foo".to_string(); // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    key1 += "bar"; // $ MISSING: Alert[rust/hard-coded-cryptographic-value]
+    let _ = MyCryptor::new(&key1);
+
+    let mut key2 = "foo".to_string();
+    key2 += var_string;
+    let _ = MyCryptor::new(&key2);
+
+    let mut key3 = var_string.to_string();
+    key3 += "bar";
+    let _ = MyCryptor::new(&key3);
 }
