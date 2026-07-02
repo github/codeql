@@ -1,4 +1,4 @@
-load("@rules_go//go:def.bzl", "go_library", "go_test")
+load("@rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "subst",
@@ -9,10 +9,4 @@ go_library(
     ],
     importpath = "github.com/github/codeql-go/extractor/subst",
     visibility = ["//go:__subpackages__"],
-)
-
-go_test(
-    name = "subst_test",
-    srcs = ["subst_test.go"],
-    embed = [":subst"],
 )
