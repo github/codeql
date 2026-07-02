@@ -27,6 +27,12 @@ extensions:
       - ['langchain', 'Member[agents].Member[create_agent].Argument[system_prompt:]', 'system-prompt-injection']
       # The messages passed to a `create_agent` graph are user-level content.
       - ['LangChainAgent', 'Member[invoke,stream].Argument[0].DictionaryElement[messages].ListElement.DictionaryElement[content]', 'user-prompt-injection']
+      # A tool description is a model-facing instruction.
+      - ['langchain_core', 'Member[tools].Member[Tool].Argument[2,description:]', 'system-prompt-injection']
+      - ['langchain_core', 'Member[tools].Member[Tool].Member[from_function].Argument[2,description:]', 'system-prompt-injection']
+      - ['langchain_core', 'Member[tools].Member[StructuredTool].Argument[description:]', 'system-prompt-injection']
+      - ['langchain_core', 'Member[tools].Member[StructuredTool].Member[from_function].Argument[description:]', 'system-prompt-injection']
+      - ['langchain_core', 'Member[tools].Member[tool].Argument[description:]', 'system-prompt-injection']
 
   - addsTo:
       pack: codeql/python-all

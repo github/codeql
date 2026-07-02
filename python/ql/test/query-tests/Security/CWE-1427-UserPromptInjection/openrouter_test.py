@@ -33,4 +33,20 @@ def get_input_openrouter():
         model="openai/text-embedding-3-small",
         input=query,  # $ Alert[py/user-prompt-injection]
     )
-    print(completion, response, embedding)
+
+    image = client.images.generate(
+        model="openai/dall-e-3",
+        prompt=query,  # $ Alert[py/user-prompt-injection]
+    )
+
+    video = client.video_generation.generate(
+        model="openai/sora-2",
+        prompt=query,  # $ Alert[py/user-prompt-injection]
+    )
+
+    speech = client.tts.create_speech(
+        model="openai/gpt-4o-mini-tts",
+        voice="alloy",
+        input=query,  # $ Alert[py/user-prompt-injection]
+    )
+    print(completion, response, embedding, image, video, speech)

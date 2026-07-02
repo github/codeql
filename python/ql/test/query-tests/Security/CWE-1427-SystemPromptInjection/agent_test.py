@@ -1,4 +1,4 @@
-from agents import Agent, FunctionTool, Runner
+from agents import Agent, FunctionTool, Runner, function_tool
 from flask import Flask, request  # $ Source
 
 app = Flask(__name__)
@@ -15,6 +15,10 @@ def get_input_agent():
         params_json_schema={},
         on_invoke_tool=lambda ctx, args: "...",
     )
+
+    @function_tool(description_override="Look up material about " + topic)  # $ Alert[py/system-prompt-injection]
+    def lookup(arg: str) -> str:
+        return "..."
 
     agent = Agent(
         name="Assistant",

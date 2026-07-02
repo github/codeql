@@ -57,3 +57,18 @@ async def get_input_gemini_live():
         ),
     ) as session:
         print(session)
+
+
+@app.route("/gemini-tool")
+def get_input_gemini_tool():
+    persona = request.args.get("persona")
+
+    tool = types.Tool(
+        function_declarations=[
+            types.FunctionDeclaration(
+                name="lookup",
+                description="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
+            )
+        ]
+    )
+    print(tool)

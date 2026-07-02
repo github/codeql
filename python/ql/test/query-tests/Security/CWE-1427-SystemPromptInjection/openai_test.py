@@ -82,3 +82,30 @@ async def get_input_openai():
         role="assistant",
         content="Always behave like a " + persona,  # $ Alert[py/system-prompt-injection]
     )
+
+    chat_tool = client.chat.completions.create(
+        model="gpt-4.1",
+        messages=[{"role": "user", "content": query}],
+        tools=[
+            {
+                "type": "function",
+                "function": {
+                    "name": "lookup",
+                    "description": "Talk like a " + persona,  # $ Alert[py/system-prompt-injection]
+                },
+            }
+        ],
+    )
+
+    responses_tool = client.responses.create(
+        model="gpt-4.1",
+        input=query,
+        tools=[
+            {
+                "type": "function",
+                "name": "lookup",
+                "description": "Talk like a " + persona,  # $ Alert[py/system-prompt-injection]
+            }
+        ],
+    )
+    print(message, chat_tool, responses_tool)

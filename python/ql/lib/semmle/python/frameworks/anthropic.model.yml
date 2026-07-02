@@ -10,6 +10,9 @@ extensions:
       - ['Anthropic', 'Member[beta].Member[messages].Member[create,stream].Argument[system:].ListElement.DictionaryElement[text]', 'system-prompt-injection']
       # The managed agents `system` field is a system-level prompt
       - ['Anthropic', 'Member[beta].Member[agents].Member[create,update].Argument[system:]', 'system-prompt-injection']
+      # A tool description is a model-facing instruction
+      - ['Anthropic', 'Member[messages].Member[create,stream].Argument[tools:].ListElement.DictionaryElement[description]', 'system-prompt-injection']
+      - ['Anthropic', 'Member[beta].Member[messages].Member[create,stream].Argument[tools:].ListElement.DictionaryElement[description]', 'system-prompt-injection']
       # The legacy Text Completions API `prompt` is user-level content
       - ['Anthropic', 'Member[completions].Member[create].Argument[prompt:]', 'user-prompt-injection']
 

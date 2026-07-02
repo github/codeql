@@ -9,6 +9,8 @@ extensions:
       - ['google', 'Member[genai].Member[types].Member[LiveConnectConfig].Argument[system_instruction:]', 'system-prompt-injection']
       # Cached content carries a system instruction and user content
       - ['google', 'Member[genai].Member[types].Member[CreateCachedContentConfig].Argument[system_instruction:]', 'system-prompt-injection']
+      # A tool/function declaration description is a model-facing instruction
+      - ['google', 'Member[genai].Member[types].Member[FunctionDeclaration].Argument[description:]', 'system-prompt-injection']
       - ['google', 'Member[genai].Member[types].Member[CreateCachedContentConfig].Argument[contents:]', 'user-prompt-injection']
       # User-level content
       - ['GoogleGenAI', 'Member[models].Member[generate_content,generate_content_stream].Argument[contents:]', 'user-prompt-injection']

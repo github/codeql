@@ -6,8 +6,14 @@ extensions:
       # `responses.send` instructions is a system-level prompt; input is user content
       - ['OpenRouter', 'Member[responses].Member[send].Argument[instructions:]', 'system-prompt-injection']
       - ['OpenRouter', 'Member[responses].Member[send].Argument[input:]', 'user-prompt-injection']
+      # A tool/function description passed to `chat.send` is a model-facing instruction
+      - ['OpenRouter', 'Member[chat].Member[send].Argument[tools:].ListElement.DictionaryElement[function].DictionaryElement[description]', 'system-prompt-injection']
       # Embeddings input is user-level content
       - ['OpenRouter', 'Member[embeddings].Member[generate].Argument[input:]', 'user-prompt-injection']
+      # Image, video and speech generation prompts are user-level content
+      - ['OpenRouter', 'Member[images].Member[generate].Argument[prompt:]', 'user-prompt-injection']
+      - ['OpenRouter', 'Member[video_generation].Member[generate].Argument[prompt:]', 'user-prompt-injection']
+      - ['OpenRouter', 'Member[tts].Member[create_speech].Argument[input:]', 'user-prompt-injection']
 
   - addsTo:
       pack: codeql/python-all

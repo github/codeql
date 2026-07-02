@@ -29,4 +29,18 @@ def get_input_openrouter():
         instructions="Talk like a " + persona,  # $ Alert[py/system-prompt-injection]
         input=query,
     )
-    print(completion, response)
+
+    tool_completion = client.chat.send(
+        model="openai/gpt-4.1",
+        messages=[{"role": "user", "content": query}],
+        tools=[
+            {
+                "type": "function",
+                "function": {
+                    "name": "lookup",
+                    "description": "Talk like a " + persona,  # $ Alert[py/system-prompt-injection]
+                },
+            }
+        ],
+    )
+    print(completion, response, tool_completion)

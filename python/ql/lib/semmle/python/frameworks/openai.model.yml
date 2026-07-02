@@ -11,6 +11,9 @@ extensions:
       - ['OpenAI', 'Member[beta].Member[threads].Member[runs].Member[create].Argument[additional_instructions:]', 'system-prompt-injection']
       # The default system instructions for a realtime session
       - ['OpenAI', 'Member[beta].Member[realtime].Member[sessions].Member[create].Argument[instructions:]', 'system-prompt-injection']
+      # A tool/function description is a model-facing instruction
+      - ['OpenAI', 'Member[chat].Member[completions].Member[create].Argument[tools:].ListElement.DictionaryElement[function].DictionaryElement[description]', 'system-prompt-injection']
+      - ['OpenAI', 'Member[responses].Member[create].Argument[tools:].ListElement.DictionaryElement[description]', 'system-prompt-injection']
       # User-level prompts
       - ['OpenAI', 'Member[responses].Member[create].Argument[input:]', 'user-prompt-injection']
       - ['OpenAI', 'Member[completions].Member[create].Argument[prompt:]', 'user-prompt-injection']

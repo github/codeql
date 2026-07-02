@@ -63,4 +63,17 @@ async def get_input_anthropic():
         system="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
     )
 
-    print(response1, response2, response3)
+    tool_response = client.messages.create(
+        model="claude-sonnet-4-20250514",
+        max_tokens=256,
+        messages=[{"role": "user", "content": query}],
+        tools=[
+            {
+                "name": "lookup",
+                "description": "Talk like " + persona,  # $ Alert[py/system-prompt-injection]
+                "input_schema": {"type": "object", "properties": {}},
+            }
+        ],
+    )
+
+    print(response1, response2, response3, tool_response)
