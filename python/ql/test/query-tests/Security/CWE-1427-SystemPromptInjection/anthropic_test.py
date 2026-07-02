@@ -14,11 +14,15 @@ async def get_input_anthropic():
     response1 = client.messages.create(
         model="claude-sonnet-4-20250514",
         max_tokens=256,
-        system="Talk like " + persona,  # $ Alert[py/prompt-injection]
+        system="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
         messages=[
             {
+                "role": "assistant",
+                "content": "I am " + persona,  # $ Alert[py/system-prompt-injection]
+            },
+            {
                 "role": "user",
-                "content": query,  # $ Alert[py/prompt-injection]
+                "content": query,
             }
         ],
     )
@@ -26,38 +30,37 @@ async def get_input_anthropic():
     response2 = client.messages.stream(
         model="claude-sonnet-4-20250514",
         max_tokens=256,
-        system="Talk like " + persona,  # $ Alert[py/prompt-injection]
+        system="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
         messages=[
             {
                 "role": "user",
-                "content": query,  # $ Alert[py/prompt-injection]
+                "content": query,
             }
         ],
     )
 
-    response3 = await async_client.messages.create(
+    response3 = client.beta.messages.create(
         model="claude-sonnet-4-20250514",
         max_tokens=256,
-        system="Talk like " + persona,  # $ Alert[py/prompt-injection]
+        system="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
         messages=[
             {
                 "role": "user",
-                "content": query,  # $ Alert[py/prompt-injection]
+                "content": query,
             }
         ],
     )
 
-    response4 = client.beta.messages.create(
+    agent = client.beta.agents.create(
         model="claude-sonnet-4-20250514",
-        max_tokens=256,
-        system="Talk like " + persona,  # $ Alert[py/prompt-injection]
-        messages=[
-            {
-                "role": "user",
-                "content": query,  # $ Alert[py/prompt-injection]
-            }
-        ],
-        betas=["prompt-caching-2024-07-31"],
+        name="assistant",
+        system="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
     )
 
-    print(response1, response2, response3, response4)
+    client.beta.agents.update(
+        agent_id=agent.id,
+        version=1,
+        system="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
+    )
+
+    print(response1, response2, response3)

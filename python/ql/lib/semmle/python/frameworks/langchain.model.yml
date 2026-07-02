@@ -1,0 +1,31 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      # Message constructors. The first positional argument or the `content` keyword
+      # carries the message text.
+      - ['langchain_core.messages', 'Member[SystemMessage].Argument[0]', 'system-prompt-injection']
+      - ['langchain_core.messages', 'Member[SystemMessage].Argument[content:]', 'system-prompt-injection']
+      - ['langchain.schema', 'Member[SystemMessage].Argument[0]', 'system-prompt-injection']
+      - ['langchain.schema', 'Member[SystemMessage].Argument[content:]', 'system-prompt-injection']
+      - ['langchain_core.messages', 'Member[HumanMessage].Argument[0]', 'user-prompt-injection']
+      - ['langchain_core.messages', 'Member[HumanMessage].Argument[content:]', 'user-prompt-injection']
+      - ['langchain.schema', 'Member[HumanMessage].Argument[0]', 'user-prompt-injection']
+      - ['langchain.schema', 'Member[HumanMessage].Argument[content:]', 'user-prompt-injection']
+      # Invoking a chat model with user input.
+      - ['LangChainChatModel', 'Member[invoke,stream,predict,call].Argument[0]', 'user-prompt-injection']
+      - ['LangChainChatModel', 'Member[batch].Argument[0].ListElement', 'user-prompt-injection']
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data:
+      - ['LangChainChatModel', 'langchain_openai', 'Member[ChatOpenAI,AzureChatOpenAI].ReturnValue']
+      - ['LangChainChatModel', 'langchain_anthropic', 'Member[ChatAnthropic].ReturnValue']
+      - ['LangChainChatModel', 'langchain_google_genai', 'Member[ChatGoogleGenerativeAI].ReturnValue']
+      - ['LangChainChatModel', 'langchain_mistralai', 'Member[ChatMistralAI].ReturnValue']
+      - ['LangChainChatModel', 'langchain_groq', 'Member[ChatGroq].ReturnValue']
+      - ['LangChainChatModel', 'langchain_cohere', 'Member[ChatCohere].ReturnValue']
+      - ['LangChainChatModel', 'langchain_ollama', 'Member[ChatOllama].ReturnValue']
+      - ['LangChainChatModel', 'langchain_aws', 'Member[ChatBedrock,ChatBedrockConverse].ReturnValue']
