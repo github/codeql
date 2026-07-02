@@ -40,7 +40,24 @@ public class CertificateValidationTests
             (sender, certificate, chain, errors) => true;
     }
 
+    public void ServicePointManagerCompoundBad()
+    {
+        // BAD: always trusts any certificate (compound assignment).
+        ServicePointManager.ServerCertificateValidationCallback +=
+            (sender, cert, chain, errors) => { return true; };
+        // BAD
+        ServicePointManager.ServerCertificateValidationCallback += (a, b, c, d) => true;
+        // BAD: parameterless anonymous method.
+        ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
+    }
+
     private static bool AcceptAll(object sender, X509Certificate certificate, X509Chain chain,
+        SslPolicyErrors errors)
+    {
+        return true;
+    }
+
+    public bool AcceptAllNonStatic(object sender, X509Certificate certificate, X509Chain chain,
         SslPolicyErrors errors)
     {
         return true;
@@ -48,8 +65,15 @@ public class CertificateValidationTests
 
     public void MethodGroupBad()
     {
-        // BAD: the referenced method always returns true.
+        // BAD: the referenced static method always returns true.
         ServicePointManager.ServerCertificateValidationCallback = AcceptAll;
+    }
+
+    public void MethodGroupNonStaticBad()
+    {
+        // BAD: the referenced instance method always returns true.
+        ServicePointManager.ServerCertificateValidationCallback =
+            new RemoteCertificateValidationCallback(this.AcceptAllNonStatic);
     }
 
     public void SslStreamBad(Stream stream)
@@ -73,6 +97,26 @@ public class CertificateValidationTests
         // GOOD: the certificate is only trusted when there are no validation errors.
         handler.ServerCertificateCustomValidationCallback =
             (request, certificate, chain, errors) => errors == SslPolicyErrors.None;
+    }
+
+    public void ControlFlowGood()
+    {
+        // GOOD: not every returned value is `true`.
+        ServicePointManager.ServerCertificateValidationCallback +=
+            (sender, cert, chain, errors) =>
+            {
+                if (cert == null)
+                {
+                    return false;
+                }
+
+                if (errors != SslPolicyErrors.None)
+                {
+                    return false;
+                }
+
+                return true;
+            };
     }
 
     private static bool Validate(object sender, X509Certificate certificate, X509Chain chain,

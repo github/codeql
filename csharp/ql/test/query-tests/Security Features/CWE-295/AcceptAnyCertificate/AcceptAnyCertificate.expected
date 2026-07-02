@@ -1,24 +1,32 @@
 edges
-| Test.cs:64:45:64:52 | access to local variable callback : (...) => ... | Test.cs:67:48:67:55 | access to local variable callback | provenance |  |
-| Test.cs:65:13:65:56 | (...) => ... : (...) => ... | Test.cs:64:45:64:52 | access to local variable callback : (...) => ... | provenance |  |
+| Test.cs:88:45:88:52 | access to local variable callback : (...) => ... | Test.cs:91:48:91:55 | access to local variable callback | provenance |  |
+| Test.cs:89:13:89:56 | (...) => ... : (...) => ... | Test.cs:88:45:88:52 | access to local variable callback : (...) => ... | provenance |  |
 nodes
 | Test.cs:14:13:14:57 | (...) => ... | semmle.label | (...) => ... |
 | Test.cs:22:13:25:13 | (...) => ... | semmle.label | (...) => ... |
 | Test.cs:33:13:33:74 | access to property DangerousAcceptAnyServerCertificateValidator | semmle.label | access to property DangerousAcceptAnyServerCertificateValidator |
 | Test.cs:40:13:40:56 | (...) => ... | semmle.label | (...) => ... |
-| Test.cs:52:67:52:75 | delegate creation of type RemoteCertificateValidationCallback | semmle.label | delegate creation of type RemoteCertificateValidationCallback |
-| Test.cs:59:13:59:56 | (...) => ... | semmle.label | (...) => ... |
-| Test.cs:64:45:64:52 | access to local variable callback : (...) => ... | semmle.label | access to local variable callback : (...) => ... |
-| Test.cs:65:13:65:56 | (...) => ... | semmle.label | (...) => ... |
-| Test.cs:65:13:65:56 | (...) => ... : (...) => ... | semmle.label | (...) => ... : (...) => ... |
-| Test.cs:67:48:67:55 | access to local variable callback | semmle.label | access to local variable callback |
+| Test.cs:47:13:47:61 | (...) => ... | semmle.label | (...) => ... |
+| Test.cs:49:68:49:87 | (...) => ... | semmle.label | (...) => ... |
+| Test.cs:51:68:51:92 | delegate(...) { ... } | semmle.label | delegate(...) { ... } |
+| Test.cs:69:67:69:75 | delegate creation of type RemoteCertificateValidationCallback | semmle.label | delegate creation of type RemoteCertificateValidationCallback |
+| Test.cs:76:13:76:76 | delegate creation of type RemoteCertificateValidationCallback | semmle.label | delegate creation of type RemoteCertificateValidationCallback |
+| Test.cs:83:13:83:56 | (...) => ... | semmle.label | (...) => ... |
+| Test.cs:88:45:88:52 | access to local variable callback : (...) => ... | semmle.label | access to local variable callback : (...) => ... |
+| Test.cs:89:13:89:56 | (...) => ... | semmle.label | (...) => ... |
+| Test.cs:89:13:89:56 | (...) => ... : (...) => ... | semmle.label | (...) => ... : (...) => ... |
+| Test.cs:91:48:91:55 | access to local variable callback | semmle.label | access to local variable callback |
 subpaths
 #select
 | Test.cs:14:13:14:57 | (...) => ... | Test.cs:14:13:14:57 | (...) => ... | Test.cs:14:13:14:57 | (...) => ... | This TLS certificate validation $@, which trusts any certificate. | Test.cs:14:13:14:57 | (...) => ... | uses a callback |
 | Test.cs:22:13:25:13 | (...) => ... | Test.cs:22:13:25:13 | (...) => ... | Test.cs:22:13:25:13 | (...) => ... | This TLS certificate validation $@, which trusts any certificate. | Test.cs:22:13:25:13 | (...) => ... | uses a callback |
 | Test.cs:33:13:33:74 | access to property DangerousAcceptAnyServerCertificateValidator | Test.cs:33:13:33:74 | access to property DangerousAcceptAnyServerCertificateValidator | Test.cs:33:13:33:74 | access to property DangerousAcceptAnyServerCertificateValidator | This TLS certificate validation $@, which trusts any certificate. | Test.cs:33:13:33:74 | access to property DangerousAcceptAnyServerCertificateValidator | uses a callback |
 | Test.cs:40:13:40:56 | (...) => ... | Test.cs:40:13:40:56 | (...) => ... | Test.cs:40:13:40:56 | (...) => ... | This TLS certificate validation $@, which trusts any certificate. | Test.cs:40:13:40:56 | (...) => ... | uses a callback |
-| Test.cs:52:67:52:75 | delegate creation of type RemoteCertificateValidationCallback | Test.cs:52:67:52:75 | delegate creation of type RemoteCertificateValidationCallback | Test.cs:52:67:52:75 | delegate creation of type RemoteCertificateValidationCallback | This TLS certificate validation $@, which trusts any certificate. | Test.cs:52:67:52:75 | delegate creation of type RemoteCertificateValidationCallback | uses a callback |
-| Test.cs:59:13:59:56 | (...) => ... | Test.cs:59:13:59:56 | (...) => ... | Test.cs:59:13:59:56 | (...) => ... | This TLS certificate validation $@, which trusts any certificate. | Test.cs:59:13:59:56 | (...) => ... | uses a callback |
-| Test.cs:65:13:65:56 | (...) => ... | Test.cs:65:13:65:56 | (...) => ... | Test.cs:65:13:65:56 | (...) => ... | This TLS certificate validation $@, which trusts any certificate. | Test.cs:65:13:65:56 | (...) => ... | uses a callback |
-| Test.cs:67:48:67:55 | access to local variable callback | Test.cs:65:13:65:56 | (...) => ... : (...) => ... | Test.cs:67:48:67:55 | access to local variable callback | This TLS certificate validation $@, which trusts any certificate. | Test.cs:65:13:65:56 | (...) => ... | uses a callback |
+| Test.cs:47:13:47:61 | (...) => ... | Test.cs:47:13:47:61 | (...) => ... | Test.cs:47:13:47:61 | (...) => ... | This TLS certificate validation $@, which trusts any certificate. | Test.cs:47:13:47:61 | (...) => ... | uses a callback |
+| Test.cs:49:68:49:87 | (...) => ... | Test.cs:49:68:49:87 | (...) => ... | Test.cs:49:68:49:87 | (...) => ... | This TLS certificate validation $@, which trusts any certificate. | Test.cs:49:68:49:87 | (...) => ... | uses a callback |
+| Test.cs:51:68:51:92 | delegate(...) { ... } | Test.cs:51:68:51:92 | delegate(...) { ... } | Test.cs:51:68:51:92 | delegate(...) { ... } | This TLS certificate validation $@, which trusts any certificate. | Test.cs:51:68:51:92 | delegate(...) { ... } | uses a callback |
+| Test.cs:69:67:69:75 | delegate creation of type RemoteCertificateValidationCallback | Test.cs:69:67:69:75 | delegate creation of type RemoteCertificateValidationCallback | Test.cs:69:67:69:75 | delegate creation of type RemoteCertificateValidationCallback | This TLS certificate validation $@, which trusts any certificate. | Test.cs:69:67:69:75 | delegate creation of type RemoteCertificateValidationCallback | uses a callback |
+| Test.cs:76:13:76:76 | delegate creation of type RemoteCertificateValidationCallback | Test.cs:76:13:76:76 | delegate creation of type RemoteCertificateValidationCallback | Test.cs:76:13:76:76 | delegate creation of type RemoteCertificateValidationCallback | This TLS certificate validation $@, which trusts any certificate. | Test.cs:76:13:76:76 | delegate creation of type RemoteCertificateValidationCallback | uses a callback |
+| Test.cs:83:13:83:56 | (...) => ... | Test.cs:83:13:83:56 | (...) => ... | Test.cs:83:13:83:56 | (...) => ... | This TLS certificate validation $@, which trusts any certificate. | Test.cs:83:13:83:56 | (...) => ... | uses a callback |
+| Test.cs:89:13:89:56 | (...) => ... | Test.cs:89:13:89:56 | (...) => ... | Test.cs:89:13:89:56 | (...) => ... | This TLS certificate validation $@, which trusts any certificate. | Test.cs:89:13:89:56 | (...) => ... | uses a callback |
+| Test.cs:91:48:91:55 | access to local variable callback | Test.cs:89:13:89:56 | (...) => ... : (...) => ... | Test.cs:91:48:91:55 | access to local variable callback | This TLS certificate validation $@, which trusts any certificate. | Test.cs:89:13:89:56 | (...) => ... | uses a callback |

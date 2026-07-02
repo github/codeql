@@ -21,9 +21,9 @@ import AcceptAnyCertificate::PathGraph
  */
 predicate alwaysReturnsTrue(Callable c) {
   c.getReturnType() instanceof BoolType and
-  // There is at least one returned value, and every returned value is the
-  // constant `true`.
-  forex(Expr ret | c.canReturn(ret) | ret.getValue() = "true")
+  // There is at least one live returned value, and every live returned value is
+  // the constant `true`. Dead (unreachable) returns are ignored.
+  forex(Expr ret | c.canReturn(ret) and ret.isLive() | ret.getValue() = "true")
 }
 
 /**
@@ -59,6 +59,21 @@ Callable getAcceptingCallable(Expr e) {
   alwaysReturnsTrue(result)
 }
 
+/**
+ * Gets the expression that produces the delegate value assigned to `a`,
+ * handling both simple assignments (`a = ...`) and compound assignments such as
+ * `a += ...` (used to combine delegates).
+ */
+Expr getAssignedDelegate(Assignable a) {
+  exists(Expr source | source = a.getAnAssignedValue() |
+    // `a += ...` combines delegates; the delegate value is the right operand.
+    result = source.(AssignOperation).getRightOperand()
+    or
+    // `a = ...` assigns the delegate value directly.
+    result = source and not source instanceof AssignOperation
+  )
+}
+
 module AcceptAnyCertificateConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(getAcceptingCallable(source.asExpr()))
@@ -77,7 +92,7 @@ module AcceptAnyCertificateConfig implements DataFlow::ConfigSig {
     // validation callback type.
     exists(Assignable a |
       a.getType() instanceof CertificateValidationCallbackType and
-      sink.asExpr() = a.getAnAssignedValue()
+      sink.asExpr() = getAssignedDelegate(a)
     )
     or
     // The value passed as a certificate validation callback argument, e.g. to
