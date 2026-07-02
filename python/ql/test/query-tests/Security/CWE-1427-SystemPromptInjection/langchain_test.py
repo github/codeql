@@ -19,3 +19,12 @@ def get_input_langchain():
         ]
     )
     print(result)
+
+
+@app.route("/langchain-create-agent")
+def get_input_langchain_create_agent():
+    from langchain.agents import create_agent
+
+    persona = request.args.get("persona")
+
+    create_agent("gpt-4.1", system_prompt="Talk like a " + persona)  # $ Alert[py/system-prompt-injection]

@@ -16,7 +16,7 @@ private import semmle.python.ApiGraphs
 module GoogleGenAI {
   /** Gets a reference to a `google.genai.Client` instance. */
   private API::Node clientRef() {
-    result = API::moduleImport("google.genai").getMember("Client").getReturn()
+    result = API::moduleImport("google").getMember("genai").getMember("Client").getReturn()
   }
 
   /** Gets the content dictionaries passed to `models.generate_content`/`generate_content_stream`. */

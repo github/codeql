@@ -10,6 +10,12 @@
 | anthropic_test.py:45:16:45:37 | ControlFlowNode for BinaryExpr | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | anthropic_test.py:45:16:45:37 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
 | anthropic_test.py:57:16:57:37 | ControlFlowNode for BinaryExpr | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | anthropic_test.py:57:16:57:37 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
 | anthropic_test.py:63:16:63:37 | ControlFlowNode for BinaryExpr | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | anthropic_test.py:63:16:63:37 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| gemini_test.py:21:33:21:49 | ControlFlowNode for BinaryExpr | gemini_test.py:3:26:3:32 | ControlFlowNode for ImportMember | gemini_test.py:21:33:21:49 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | gemini_test.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| gemini_test.py:35:32:35:53 | ControlFlowNode for BinaryExpr | gemini_test.py:3:26:3:32 | ControlFlowNode for ImportMember | gemini_test.py:35:32:35:53 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | gemini_test.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| gemini_test.py:43:32:43:53 | ControlFlowNode for BinaryExpr | gemini_test.py:3:26:3:32 | ControlFlowNode for ImportMember | gemini_test.py:43:32:43:53 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | gemini_test.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| gemini_test.py:56:32:56:53 | ControlFlowNode for BinaryExpr | gemini_test.py:3:26:3:32 | ControlFlowNode for ImportMember | gemini_test.py:56:32:56:53 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | gemini_test.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| langchain_test.py:17:35:17:58 | ControlFlowNode for BinaryExpr | langchain_test.py:3:26:3:32 | ControlFlowNode for ImportMember | langchain_test.py:17:35:17:58 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | langchain_test.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
+| langchain_test.py:30:43:30:66 | ControlFlowNode for BinaryExpr | langchain_test.py:3:26:3:32 | ControlFlowNode for ImportMember | langchain_test.py:30:43:30:66 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | langchain_test.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
 | openai_test.py:17:22:17:46 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:17:22:17:46 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
 | openai_test.py:22:22:22:46 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:22:22:22:46 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
 | openai_test.py:26:28:26:51 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:26:28:26:51 | ControlFlowNode for BinaryExpr | This system prompt depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
@@ -47,6 +53,30 @@ edges
 | anthropic_test.py:11:15:11:21 | ControlFlowNode for request | anthropic_test.py:11:15:11:26 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
 | anthropic_test.py:11:15:11:26 | ControlFlowNode for Attribute | anthropic_test.py:11:15:11:41 | ControlFlowNode for Attribute() | provenance | dict.get |
 | anthropic_test.py:11:15:11:41 | ControlFlowNode for Attribute() | anthropic_test.py:11:5:11:11 | ControlFlowNode for persona | provenance |  |
+| gemini_test.py:3:26:3:32 | ControlFlowNode for ImportMember | gemini_test.py:3:26:3:32 | ControlFlowNode for request | provenance |  |
+| gemini_test.py:3:26:3:32 | ControlFlowNode for request | gemini_test.py:11:15:11:21 | ControlFlowNode for request | provenance |  |
+| gemini_test.py:3:26:3:32 | ControlFlowNode for request | gemini_test.py:51:15:51:21 | ControlFlowNode for request | provenance |  |
+| gemini_test.py:11:5:11:11 | ControlFlowNode for persona | gemini_test.py:21:33:21:49 | ControlFlowNode for BinaryExpr | provenance |  |
+| gemini_test.py:11:5:11:11 | ControlFlowNode for persona | gemini_test.py:35:32:35:53 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:13 |
+| gemini_test.py:11:5:11:11 | ControlFlowNode for persona | gemini_test.py:43:32:43:53 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:12 |
+| gemini_test.py:11:15:11:21 | ControlFlowNode for request | gemini_test.py:11:15:11:26 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| gemini_test.py:11:15:11:26 | ControlFlowNode for Attribute | gemini_test.py:11:15:11:41 | ControlFlowNode for Attribute() | provenance | dict.get |
+| gemini_test.py:11:15:11:41 | ControlFlowNode for Attribute() | gemini_test.py:11:5:11:11 | ControlFlowNode for persona | provenance |  |
+| gemini_test.py:51:5:51:11 | ControlFlowNode for persona | gemini_test.py:56:32:56:53 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:14 |
+| gemini_test.py:51:15:51:21 | ControlFlowNode for request | gemini_test.py:51:15:51:26 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| gemini_test.py:51:15:51:26 | ControlFlowNode for Attribute | gemini_test.py:51:15:51:41 | ControlFlowNode for Attribute() | provenance | dict.get |
+| gemini_test.py:51:15:51:41 | ControlFlowNode for Attribute() | gemini_test.py:51:5:51:11 | ControlFlowNode for persona | provenance |  |
+| langchain_test.py:3:26:3:32 | ControlFlowNode for ImportMember | langchain_test.py:3:26:3:32 | ControlFlowNode for request | provenance |  |
+| langchain_test.py:3:26:3:32 | ControlFlowNode for request | langchain_test.py:10:15:10:21 | ControlFlowNode for request | provenance |  |
+| langchain_test.py:3:26:3:32 | ControlFlowNode for request | langchain_test.py:28:15:28:21 | ControlFlowNode for request | provenance |  |
+| langchain_test.py:10:5:10:11 | ControlFlowNode for persona | langchain_test.py:17:35:17:58 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:16 |
+| langchain_test.py:10:15:10:21 | ControlFlowNode for request | langchain_test.py:10:15:10:26 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| langchain_test.py:10:15:10:26 | ControlFlowNode for Attribute | langchain_test.py:10:15:10:41 | ControlFlowNode for Attribute() | provenance | dict.get |
+| langchain_test.py:10:15:10:41 | ControlFlowNode for Attribute() | langchain_test.py:10:5:10:11 | ControlFlowNode for persona | provenance |  |
+| langchain_test.py:28:5:28:11 | ControlFlowNode for persona | langchain_test.py:30:43:30:66 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:15 |
+| langchain_test.py:28:15:28:21 | ControlFlowNode for request | langchain_test.py:28:15:28:26 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| langchain_test.py:28:15:28:26 | ControlFlowNode for Attribute | langchain_test.py:28:15:28:41 | ControlFlowNode for Attribute() | provenance | dict.get |
+| langchain_test.py:28:15:28:41 | ControlFlowNode for Attribute() | langchain_test.py:28:5:28:11 | ControlFlowNode for persona | provenance |  |
 | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:2:26:2:32 | ControlFlowNode for request | provenance |  |
 | openai_test.py:2:26:2:32 | ControlFlowNode for request | openai_test.py:12:15:12:21 | ControlFlowNode for request | provenance |  |
 | openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:17:22:17:46 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:6 |
@@ -79,6 +109,11 @@ models
 | 9 | Sink: agents; Member[Agent].Argument[instructions:]; system-prompt-injection |
 | 10 | Sink: agents; Member[Agent].ReturnValue.Member[as_tool].Argument[1,tool_description:]; system-prompt-injection |
 | 11 | Sink: agents; Member[FunctionTool].Argument[description:]; system-prompt-injection |
+| 12 | Sink: google; Member[genai].Member[types].Member[CreateCachedContentConfig].Argument[system_instruction:]; system-prompt-injection |
+| 13 | Sink: google; Member[genai].Member[types].Member[GenerateContentConfig].Argument[system_instruction:]; system-prompt-injection |
+| 14 | Sink: google; Member[genai].Member[types].Member[LiveConnectConfig].Argument[system_instruction:]; system-prompt-injection |
+| 15 | Sink: langchain; Member[agents].Member[create_agent].Argument[system_prompt:]; system-prompt-injection |
+| 16 | Sink: langchain_core; Member[messages].Member[SystemMessage].Argument[content:]; system-prompt-injection |
 nodes
 | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | agent_test.py:2:26:2:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -107,6 +142,32 @@ nodes
 | anthropic_test.py:45:16:45:37 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | anthropic_test.py:57:16:57:37 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | anthropic_test.py:63:16:63:37 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| gemini_test.py:3:26:3:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| gemini_test.py:3:26:3:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| gemini_test.py:11:5:11:11 | ControlFlowNode for persona | semmle.label | ControlFlowNode for persona |
+| gemini_test.py:11:15:11:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| gemini_test.py:11:15:11:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| gemini_test.py:11:15:11:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| gemini_test.py:21:33:21:49 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| gemini_test.py:35:32:35:53 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| gemini_test.py:43:32:43:53 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| gemini_test.py:51:5:51:11 | ControlFlowNode for persona | semmle.label | ControlFlowNode for persona |
+| gemini_test.py:51:15:51:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| gemini_test.py:51:15:51:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| gemini_test.py:51:15:51:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| gemini_test.py:56:32:56:53 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| langchain_test.py:3:26:3:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| langchain_test.py:3:26:3:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| langchain_test.py:10:5:10:11 | ControlFlowNode for persona | semmle.label | ControlFlowNode for persona |
+| langchain_test.py:10:15:10:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| langchain_test.py:10:15:10:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| langchain_test.py:10:15:10:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| langchain_test.py:17:35:17:58 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| langchain_test.py:28:5:28:11 | ControlFlowNode for persona | semmle.label | ControlFlowNode for persona |
+| langchain_test.py:28:15:28:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| langchain_test.py:28:15:28:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| langchain_test.py:28:15:28:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| langchain_test.py:30:43:30:66 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | openai_test.py:2:26:2:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | openai_test.py:12:5:12:11 | ControlFlowNode for persona | semmle.label | ControlFlowNode for persona |
@@ -130,10 +191,3 @@ nodes
 | openrouter_test.py:18:28:18:51 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | openrouter_test.py:29:22:29:45 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 subpaths
-testFailures
-| gemini_test.py:3:35:3:44 | Comment # $ Source | Missing result: Source |
-| gemini_test.py:21:52:21:88 | Comment # $ Alert[py/system-prompt-injection] | Missing result: Alert[py/system-prompt-injection] |
-| gemini_test.py:35:57:35:93 | Comment # $ Alert[py/system-prompt-injection] | Missing result: Alert[py/system-prompt-injection] |
-| gemini_test.py:43:57:43:93 | Comment # $ Alert[py/system-prompt-injection] | Missing result: Alert[py/system-prompt-injection] |
-| langchain_test.py:3:35:3:44 | Comment # $ Source | Missing result: Source |
-| langchain_test.py:17:63:17:99 | Comment # $ Alert[py/system-prompt-injection] | Missing result: Alert[py/system-prompt-injection] |

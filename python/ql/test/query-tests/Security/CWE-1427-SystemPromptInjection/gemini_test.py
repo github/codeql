@@ -44,3 +44,16 @@ def get_input_gemini():
         ),
     )
     print(cache)
+
+
+@app.route("/gemini-live")
+async def get_input_gemini_live():
+    persona = request.args.get("persona")
+
+    async with client.aio.live.connect(
+        model="gemini-2.0-flash",
+        config=types.LiveConnectConfig(
+            system_instruction="Talk like " + persona,  # $ Alert[py/system-prompt-injection]
+        ),
+    ) as session:
+        print(session)
