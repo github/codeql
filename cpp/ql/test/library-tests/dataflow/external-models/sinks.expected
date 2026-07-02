@@ -21,3 +21,5 @@
 | test.cpp:173:10:173:10 | y | test-sink |
 | test.cpp:188:10:188:10 | x | test-sink |
 | test.cpp:201:10:201:10 | x | test-sink |
+| test.cpp:218:11:218:11 | x | test-sink |
+| test.cpp:224:11:224:11 | c | test-sink |

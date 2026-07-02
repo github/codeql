@@ -180,7 +180,7 @@ Expr getPostUpdateReverseStep(Expr e, boolean preservesValue) {
 module LocalFlow {
   predicate flowSummaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
     exists(FlowSummaryImpl::Public::SummarizedCallable c |
-      FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+      FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
         nodeTo.(FlowSummaryNode).getSummaryNode(), true, model) and
       c = nodeFrom.(FlowSummaryNode).getSummarizedCallable()
     )

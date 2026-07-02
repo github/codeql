@@ -200,3 +200,27 @@ void test_fully_qualified_field_test_2() {
 	int x = read_field_from_struct_2(&s);
 	ymlSink(x); // $ ir
 }
+
+struct ReverseFlow {
+	int value;
+	int& get_ptr();
+};
+
+struct MyString {
+	char& operator[](unsigned);
+};
+
+void test_reverse_flow(unsigned i, unsigned j) {
+	{
+		ReverseFlow rf;
+		rf.get_ptr() = ymlSource();
+		int x = rf.value;
+		ymlSink(x); // $ ir
+	}
+	{
+		MyString s;
+		s[i] = ymlSource();
+		char c = s[j];
+		ymlSink(c); // $ ir
+	}
+}

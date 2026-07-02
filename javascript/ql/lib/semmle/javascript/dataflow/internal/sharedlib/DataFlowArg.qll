@@ -3,6 +3,7 @@ private import DataFlowImplSpecific
 private import codeql.dataflow.DataFlow as SharedDataFlow
 private import codeql.dataflow.TaintTracking as SharedTaintTracking
 private import codeql.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import codeql.util.Void
 
 module JSDataFlow implements SharedDataFlow::InputSig<Location> {
   import Private
@@ -27,6 +28,8 @@ module JSTaintFlow implements SharedTaintTracking::InputSig<Location, JSDataFlow
 module JSFlowSummary implements FlowSummaryImpl::InputSig<Location, JSDataFlow> {
   private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
   import FlowSummaryPrivate
+
+  class FlowSummaryCallBase = Void;
 
   overlay[local]
   predicate callableFromSource(SummarizedCallableBase c) { none() }

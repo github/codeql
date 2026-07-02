@@ -53,14 +53,17 @@ models
 | 52 | Summary: ; ; false; ymlStepGenerated; ; ; Argument[0]; ReturnValue; taint; df-generated |
 | 53 | Summary: ; ; false; ymlStepManual; ; ; Argument[0]; ReturnValue; taint; manual |
 | 54 | Summary: ; ; false; ymlStepManual_with_body; ; ; Argument[0]; ReturnValue; taint; manual |
-| 55 | Summary: ; TemplateClass1; true; templateFunction2<U,V>; (U,V); ; Argument[1]; ReturnValue; value; manual |
-| 56 | Summary: ; TemplateClass1<T>; false; templateFunction<U>; (T,U); ; Argument[0]; ReturnValue; value; manual |
-| 57 | Summary: ; TemplateClass2<T,U>; true; function; (U,T); ; Argument[1]; ReturnValue; value; manual |
-| 58 | Summary: Azure::Core::IO; BodyStream; true; Read; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 59 | Summary: Azure::Core::IO; BodyStream; true; ReadToCount; ; ; Argument[-1]; Argument[*0]; taint; manual |
-| 60 | Summary: Azure::Core::IO; BodyStream; true; ReadToEnd; ; ; Argument[-1]; ReturnValue.Element; taint; manual |
-| 61 | Summary: Azure; Nullable; true; Value; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
-| 62 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 55 | Summary: ; MyString; true; operator[]; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 56 | Summary: ; MyString; true; operator[]; ; ; ReturnValue[*]; Argument[-1]; taint; manual |
+| 57 | Summary: ; ReverseFlow; true; get_ptr; ; ; ReturnValue[*]; Argument[-1].Field[ReverseFlow::value]; value; manual |
+| 58 | Summary: ; TemplateClass1; true; templateFunction2<U,V>; (U,V); ; Argument[1]; ReturnValue; value; manual |
+| 59 | Summary: ; TemplateClass1<T>; false; templateFunction<U>; (T,U); ; Argument[0]; ReturnValue; value; manual |
+| 60 | Summary: ; TemplateClass2<T,U>; true; function; (U,T); ; Argument[1]; ReturnValue; value; manual |
+| 61 | Summary: Azure::Core::IO; BodyStream; true; Read; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 62 | Summary: Azure::Core::IO; BodyStream; true; ReadToCount; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 63 | Summary: Azure::Core::IO; BodyStream; true; ReadToEnd; ; ; Argument[-1]; ReturnValue.Element; taint; manual |
+| 64 | Summary: Azure; Nullable; true; Value; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 65 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
 edges
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:32  |
 | asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | *recv_buffer | provenance | Src:MaD:32 Sink:MaD:2 |
@@ -69,16 +72,16 @@ edges
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:100:44:100:62 | call to buffer | provenance |  |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:101:7:101:17 | send_buffer | provenance |  |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | *send_buffer | provenance | Sink:MaD:2 |
-| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:62 |
+| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:65 |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:253:48:253:60 | *call to GetBodyStream | provenance | Src:MaD:29  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:257:5:257:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:262:5:262:8 | *resp | provenance |  |
 | azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:266:38:266:41 | *resp | provenance |  |
-| azure.cpp:257:5:257:8 | *resp | azure.cpp:257:16:257:21 | Read output argument | provenance | MaD:58 |
+| azure.cpp:257:5:257:8 | *resp | azure.cpp:257:16:257:21 | Read output argument | provenance | MaD:61 |
 | azure.cpp:257:16:257:21 | Read output argument | azure.cpp:258:10:258:16 | * ... | provenance |  |
-| azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument | provenance | MaD:59 |
+| azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument | provenance | MaD:62 |
 | azure.cpp:262:23:262:28 | ReadToCount output argument | azure.cpp:263:10:263:16 | * ... | provenance |  |
-| azure.cpp:266:38:266:41 | *resp | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | provenance | MaD:60 |
+| azure.cpp:266:38:266:41 | *resp | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | provenance | MaD:63 |
 | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | provenance |  |
 | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | azure.cpp:267:10:267:12 | vec [element] | provenance |  |
 | azure.cpp:267:10:267:12 | vec [element] | azure.cpp:267:10:267:12 | vec | provenance |  |
@@ -94,10 +97,10 @@ edges
 | azure.cpp:278:10:278:13 | body | azure.cpp:278:10:278:13 | body | provenance |  |
 | azure.cpp:281:68:281:84 | *call to ExtractBodyStream | azure.cpp:281:68:281:84 | *call to ExtractBodyStream | provenance | Src:MaD:26  |
 | azure.cpp:281:68:281:84 | *call to ExtractBodyStream | azure.cpp:282:21:282:23 | *call to get | provenance |  |
-| azure.cpp:282:21:282:23 | *call to get | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | provenance | MaD:60 |
+| azure.cpp:282:21:282:23 | *call to get | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | provenance | MaD:63 |
 | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | azure.cpp:282:10:282:38 | call to ReadToEnd | provenance |  |
 | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | provenance |  |
-| azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value | provenance | MaD:61 |
+| azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value | provenance | MaD:64 |
 | azure.cpp:289:32:289:40 | call to GetHeader | azure.cpp:289:24:289:56 | call to GetHeader | provenance |  |
 | azure.cpp:289:32:289:40 | call to GetHeader | azure.cpp:289:32:289:40 | call to GetHeader | provenance | Src:MaD:30  |
 | azure.cpp:289:63:289:65 | call to Value | azure.cpp:289:63:289:65 | call to Value | provenance |  |
@@ -159,27 +162,27 @@ edges
 | test.cpp:133:10:133:18 | call to ymlSource | test.cpp:134:45:134:45 | x | provenance |  |
 | test.cpp:134:13:134:43 | call to templateFunction | test.cpp:134:13:134:43 | call to templateFunction | provenance |  |
 | test.cpp:134:13:134:43 | call to templateFunction | test.cpp:135:10:135:10 | y | provenance | Sink:MaD:1 |
-| test.cpp:134:45:134:45 | x | test.cpp:134:13:134:43 | call to templateFunction | provenance | MaD:56 |
+| test.cpp:134:45:134:45 | x | test.cpp:134:13:134:43 | call to templateFunction | provenance | MaD:59 |
 | test.cpp:146:10:146:18 | call to ymlSource | test.cpp:146:10:146:18 | call to ymlSource | provenance | Src:MaD:25  |
 | test.cpp:146:10:146:18 | call to ymlSource | test.cpp:148:26:148:26 | x | provenance |  |
 | test.cpp:148:10:148:27 | call to function | test.cpp:148:10:148:27 | call to function | provenance |  |
 | test.cpp:148:10:148:27 | call to function | test.cpp:149:10:149:10 | z | provenance | Sink:MaD:1 |
-| test.cpp:148:26:148:26 | x | test.cpp:148:10:148:27 | call to function | provenance | MaD:57 |
+| test.cpp:148:26:148:26 | x | test.cpp:148:10:148:27 | call to function | provenance | MaD:60 |
 | test.cpp:155:10:155:18 | call to ymlSource | test.cpp:155:10:155:18 | call to ymlSource | provenance | Src:MaD:25  |
 | test.cpp:155:10:155:18 | call to ymlSource | test.cpp:157:26:157:26 | x | provenance |  |
 | test.cpp:157:13:157:20 | call to function | test.cpp:157:13:157:20 | call to function | provenance |  |
 | test.cpp:157:13:157:20 | call to function | test.cpp:158:10:158:10 | z | provenance | Sink:MaD:1 |
-| test.cpp:157:26:157:26 | x | test.cpp:157:13:157:20 | call to function | provenance | MaD:57 |
+| test.cpp:157:26:157:26 | x | test.cpp:157:13:157:20 | call to function | provenance | MaD:60 |
 | test.cpp:164:34:164:34 | x | test.cpp:165:69:165:69 | x | provenance |  |
 | test.cpp:165:12:165:64 | call to templateFunction2 | test.cpp:164:7:164:7 | *templateFunction3 | provenance |  |
 | test.cpp:165:12:165:64 | call to templateFunction2 | test.cpp:165:12:165:64 | call to templateFunction2 | provenance |  |
-| test.cpp:165:69:165:69 | x | test.cpp:165:12:165:64 | call to templateFunction2 | provenance | MaD:55 |
+| test.cpp:165:69:165:69 | x | test.cpp:165:12:165:64 | call to templateFunction2 | provenance | MaD:58 |
 | test.cpp:170:10:170:18 | call to ymlSource | test.cpp:170:10:170:18 | call to ymlSource | provenance | Src:MaD:25  |
 | test.cpp:170:10:170:18 | call to ymlSource | test.cpp:172:51:172:51 | x | provenance |  |
 | test.cpp:172:13:172:44 | call to templateFunction3 | test.cpp:172:13:172:44 | call to templateFunction3 | provenance |  |
 | test.cpp:172:13:172:44 | call to templateFunction3 | test.cpp:173:10:173:10 | y | provenance | Sink:MaD:1 |
 | test.cpp:172:51:172:51 | x | test.cpp:164:34:164:34 | x | provenance |  |
-| test.cpp:172:51:172:51 | x | test.cpp:172:13:172:44 | call to templateFunction3 | provenance | MaD:55 |
+| test.cpp:172:51:172:51 | x | test.cpp:172:13:172:44 | call to templateFunction3 | provenance | MaD:58 |
 | test.cpp:186:2:186:2 | *s [post update] [myField] | test.cpp:187:33:187:34 | *& ... [myField] | provenance |  |
 | test.cpp:186:2:186:24 | ... = ... | test.cpp:186:2:186:2 | *s [post update] [myField] | provenance |  |
 | test.cpp:186:14:186:22 | call to ymlSource | test.cpp:186:2:186:24 | ... = ... | provenance | Src:MaD:25  |
@@ -192,6 +195,18 @@ edges
 | test.cpp:200:10:200:33 | call to read_field_from_struct_2 | test.cpp:200:10:200:33 | call to read_field_from_struct_2 | provenance |  |
 | test.cpp:200:10:200:33 | call to read_field_from_struct_2 | test.cpp:201:10:201:10 | x | provenance | Sink:MaD:1 |
 | test.cpp:200:35:200:36 | *& ... [myField] | test.cpp:200:10:200:33 | call to read_field_from_struct_2 | provenance | MaD:51 |
+| test.cpp:216:3:216:4 | get_ptr output argument [value] | test.cpp:217:11:217:12 | *rf [value] | provenance |  |
+| test.cpp:216:3:216:28 | ... = ... | test.cpp:216:3:216:4 | get_ptr output argument [value] | provenance | MaD:57 |
+| test.cpp:216:18:216:26 | call to ymlSource | test.cpp:216:3:216:28 | ... = ... | provenance | Src:MaD:25  |
+| test.cpp:217:11:217:12 | *rf [value] | test.cpp:217:14:217:18 | value | provenance |  |
+| test.cpp:217:14:217:18 | value | test.cpp:217:14:217:18 | value | provenance |  |
+| test.cpp:217:14:217:18 | value | test.cpp:218:11:218:11 | x | provenance | Sink:MaD:1 |
+| test.cpp:222:3:222:3 | operator[] output argument | test.cpp:223:12:223:12 | *s | provenance |  |
+| test.cpp:222:3:222:20 | ... = ... | test.cpp:222:3:222:3 | operator[] output argument | provenance | MaD:56 |
+| test.cpp:222:10:222:20 | call to ymlSource | test.cpp:222:3:222:20 | ... = ... | provenance | Src:MaD:25  |
+| test.cpp:223:12:223:12 | *s | test.cpp:223:13:223:15 | call to operator[] | provenance | MaD:55 |
+| test.cpp:223:13:223:15 | call to operator[] | test.cpp:223:13:223:15 | call to operator[] | provenance |  |
+| test.cpp:223:13:223:15 | call to operator[] | test.cpp:224:11:224:11 | c | provenance | Sink:MaD:1 |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:22:15:22:29 | *call to GetCommandLineA | provenance | Src:MaD:3  |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:24:8:24:11 | * ... | provenance |  |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:27:36:27:38 | *cmd | provenance |  |
@@ -470,6 +485,20 @@ nodes
 | test.cpp:200:10:200:33 | call to read_field_from_struct_2 | semmle.label | call to read_field_from_struct_2 |
 | test.cpp:200:35:200:36 | *& ... [myField] | semmle.label | *& ... [myField] |
 | test.cpp:201:10:201:10 | x | semmle.label | x |
+| test.cpp:216:3:216:4 | get_ptr output argument [value] | semmle.label | get_ptr output argument [value] |
+| test.cpp:216:3:216:28 | ... = ... | semmle.label | ... = ... |
+| test.cpp:216:18:216:26 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:217:11:217:12 | *rf [value] | semmle.label | *rf [value] |
+| test.cpp:217:14:217:18 | value | semmle.label | value |
+| test.cpp:217:14:217:18 | value | semmle.label | value |
+| test.cpp:218:11:218:11 | x | semmle.label | x |
+| test.cpp:222:3:222:3 | operator[] output argument | semmle.label | operator[] output argument |
+| test.cpp:222:3:222:20 | ... = ... | semmle.label | ... = ... |
+| test.cpp:222:10:222:20 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:223:12:223:12 | *s | semmle.label | *s |
+| test.cpp:223:13:223:15 | call to operator[] | semmle.label | call to operator[] |
+| test.cpp:223:13:223:15 | call to operator[] | semmle.label | call to operator[] |
+| test.cpp:224:11:224:11 | c | semmle.label | c |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | semmle.label | *call to GetCommandLineA |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | semmle.label | *call to GetCommandLineA |
 | windows.cpp:24:8:24:11 | * ... | semmle.label | * ... |

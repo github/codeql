@@ -1534,12 +1534,8 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
     result = this.getSummaryNode().getSummarizedCallable()
   }
 
-  /**
-   * Gets the enclosing callable. For a `FlowSummaryNode` this is always the
-   * summarized function this node is part of.
-   */
   override DataFlowCallable getEnclosingCallable() {
-    result.asSummarizedCallable() = this.getSummarizedCallable()
+    result = FlowSummaryImpl::Private::getEnclosingCallable(this.getSummaryNode())
   }
 
   override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }

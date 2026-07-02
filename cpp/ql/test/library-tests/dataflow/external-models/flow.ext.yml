@@ -24,3 +24,6 @@ extensions:
       - ["", "TemplateClass2<T,U>", True, "function", "(U,T)", "", "Argument[1]", "ReturnValue", "value", "manual"]
       - ["", "", False, "read_field_from_struct", "", "", "Argument[*0].Field[MyNamespace::MyStructInNamespace::myField]", "ReturnValue", "value", "manual"]
       - ["", "", False, "read_field_from_struct_2", "", "", "Argument[*0].Field[MyGlobalStruct::myField]", "ReturnValue", "value", "manual"]
+      - ["", "ReverseFlow", True, "get_ptr", "", "", "ReturnValue[*]", "Argument[-1].Field[ReverseFlow::value]", "value", "manual"]
+      - ["", "MyString", True, "operator[]", "", "", "ReturnValue[*]", "Argument[-1]", "taint", "manual"]
+      - ["", "MyString", True, "operator[]", "", "", "Argument[-1]", "ReturnValue[*]", "taint", "manual"]
