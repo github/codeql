@@ -25,6 +25,7 @@ import (
 	"github.com/github/codeql-go/extractor/dbscheme"
 	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/srcarchive"
+	"github.com/github/codeql-go/extractor/subst"
 	"github.com/github/codeql-go/extractor/toolchain"
 	"github.com/github/codeql-go/extractor/trap"
 	"github.com/github/codeql-go/extractor/util"
@@ -764,9 +765,9 @@ func normalizedPath(ast *ast.File, fset *token.FileSet) string {
 	file := fset.File(ast.Package).Name()
 	path, err := filepath.EvalSymlinks(file)
 	if err != nil {
-		return file
+		path = file
 	}
-	return path
+	return subst.ResolvePath(path)
 }
 
 // extractFile extracts AST information for the given file
