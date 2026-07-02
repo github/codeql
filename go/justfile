@@ -1,0 +1,7 @@
+import '../lib.just'
+
+[group('build')]
+build: (_build_dist "go")
+
+[group('test')]
+language-tests *EXTRA_ARGS: (_language_tests EXTRA_ARGS source_dir() 'ql/test')

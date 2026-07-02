@@ -1,0 +1,32 @@
+import '../lib.just'
+import 'ql/justfile'
+
+[group('build')]
+build: (_build_dist "python")
+
+# Long filename needed for extractor tests (too long for Git on Windows)
+[no-cd]
+@_ensure_long_filename:
+    #!/usr/bin/env bash
+    longfile="$SEMMLE_CODE/ql/python/ql/test/extractor-tests/long_path/really_rather_too_long_for_windows_path_length/with_unecessarily_longwinded_and_verbose_sub_folder/extremely_long_module_name_with_lots_of_digits_at_the_end_000000000000000000000000000000000000000000000000000000000000000000/test0000000000000000000000000000000000000000000000000000000.py"
+    mkdir -p "$(dirname "$longfile")"
+    touch "$longfile"
+
+[group('test')]
+language-tests-2 *EXTRA_ARGS: _ensure_long_filename (_language_tests (
+        _v2_env + ' ' + EXTRA_ARGS) source_dir()
+    'ql/test/library-tests'
+    'ql/test/query-tests'
+    'ql/test/extractor-tests'
+    'ql/test/experimental'
+    'ql/test/2')
+
+[group('test')]
+language-tests-3 *EXTRA_ARGS: _ensure_long_filename (_language_tests (
+        _v3_env + ' ' + EXTRA_ARGS) source_dir()
+    'ql/test/library-tests'
+    'ql/test/query-tests'
+    'ql/test/extractor-tests'
+    'ql/test/experimental'
+    'ql/test/modelling'
+    'ql/test/3')

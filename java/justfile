@@ -1,0 +1,3 @@
+import '../lib.just'
+
+build: (_build_dist "java")
