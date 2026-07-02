@@ -93,7 +93,11 @@ module OpenAI {
   /** Gets the message dictionaries passed as a list to `responses.create`. */
   private API::Node responsesMessage() {
     result =
-      classRef().getMember("responses").getMember("create").getKeywordParameter("input").getASubscript()
+      classRef()
+          .getMember("responses")
+          .getMember("create")
+          .getKeywordParameter("input")
+          .getASubscript()
   }
 
   /** Gets the content sink of a message dictionary, including the `text` of structured content. */

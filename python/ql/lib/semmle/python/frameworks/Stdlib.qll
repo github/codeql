@@ -2254,8 +2254,9 @@ module StdlibPrivate {
       DataFlow::CfgNode
     {
       WsgirefSimpleServerApplicationReturn() {
-        exists(WsgirefSimpleServerApplication requestHandler |
-          node = requestHandler.getAReturnValueFlowNode()
+        exists(WsgirefSimpleServerApplication requestHandler, Return ret |
+          ret.getScope() = requestHandler and
+          node.getNode() = ret.getValue()
         )
       }
 
@@ -4198,11 +4199,9 @@ module StdlibPrivate {
       // The positional argument contains a mapping.
       // TODO: these values can be overwritten by keyword arguments
       //  - dict mapping
-      exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
-        input = "Argument[0].DictionaryElement[" + key + "]" and
-        output = "ReturnValue.DictionaryElement[" + key + "]" and
-        preservesValue = true
-      )
+      input = "Argument[0].WithAnyDictionaryElement" and
+      output = "ReturnValue" and
+      preservesValue = true
       or
       //  - list-of-pairs mapping
       input = "Argument[0].ListElement.TupleElement[1]" and
@@ -4239,9 +4238,7 @@ module StdlibPrivate {
         or
         input = "Argument[0].SetElement"
         or
-        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
-          input = "Argument[0].TupleElement[" + i.toString() + "]"
-        )
+        input = "Argument[0].AnyTupleElement"
         // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
       ) and
       // Element content is mutated into list element content
@@ -4265,11 +4262,9 @@ module StdlibPrivate {
     }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
-        input = "Argument[0].TupleElement[" + i.toString() + "]" and
-        output = "ReturnValue.TupleElement[" + i.toString() + "]" and
-        preservesValue = true
-      )
+      input = "Argument[0].WithAnyTupleElement" and
+      output = "ReturnValue" and
+      preservesValue = true
       or
       input = "Argument[0].ListElement" and
       output = "ReturnValue" and
@@ -4293,9 +4288,7 @@ module StdlibPrivate {
         or
         input = "Argument[0].SetElement"
         or
-        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
-          input = "Argument[0].TupleElement[" + i.toString() + "]"
-        )
+        input = "Argument[0].AnyTupleElement"
         // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
       ) and
       output = "ReturnValue.SetElement" and
@@ -4341,9 +4334,7 @@ module StdlibPrivate {
         or
         input = "Argument[0].SetElement"
         or
-        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
-          input = "Argument[0].TupleElement[" + i.toString() + "]"
-        )
+        input = "Argument[0].AnyTupleElement"
         // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
       ) and
       output = "ReturnValue.ListElement" and
@@ -4371,9 +4362,7 @@ module StdlibPrivate {
         or
         content = "SetElement"
         or
-        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
-          content = "TupleElement[" + i.toString() + "]"
-        )
+        content = "AnyTupleElement"
       |
         // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
         input = "Argument[0]." + content and
@@ -4403,9 +4392,7 @@ module StdlibPrivate {
         or
         input = "Argument[0].SetElement"
         or
-        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
-          input = "Argument[0].TupleElement[" + i.toString() + "]"
-        )
+        input = "Argument[0].AnyTupleElement"
         // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
       ) and
       output = "ReturnValue.ListElement" and
@@ -4433,9 +4420,7 @@ module StdlibPrivate {
         or
         input = "Argument[0].SetElement"
         or
-        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
-          input = "Argument[0].TupleElement[" + i.toString() + "]"
-        )
+        input = "Argument[0].AnyTupleElement"
         // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
       ) and
       output = "ReturnValue" and
@@ -4467,9 +4452,7 @@ module StdlibPrivate {
           // We reduce generality slightly by not tracking tuple contents on list arguments beyond the first, for performance.
           // TODO: Once we have TupleElementAny, this generality can be increased.
           i = 0 and
-          exists(DataFlow::TupleElementContent tc, int j | j = tc.getIndex() |
-            input = "Argument[1].TupleElement[" + j.toString() + "]"
-          )
+          input = "Argument[1].AnyTupleElement"
           // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
         ) and
         output = "Argument[0].Parameter[" + i.toString() + "]" and
@@ -4498,9 +4481,7 @@ module StdlibPrivate {
         or
         input = "Argument[1].SetElement"
         or
-        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
-          input = "Argument[1].TupleElement[" + i.toString() + "]"
-        )
+        input = "Argument[1].AnyTupleElement"
         // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
       ) and
       (output = "Argument[0].Parameter[0]" or output = "ReturnValue.ListElement") and
@@ -4524,9 +4505,7 @@ module StdlibPrivate {
         or
         input = "Argument[0].SetElement"
         or
-        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
-          input = "Argument[0].TupleElement[" + i.toString() + "]"
-        )
+        input = "Argument[0].AnyTupleElement"
         // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
       ) and
       output = "ReturnValue.ListElement.TupleElement[1]" and
@@ -4551,12 +4530,7 @@ module StdlibPrivate {
           or
           input = "Argument[" + i.toString() + "].SetElement"
           or
-          // We reduce generality slightly by not tracking tuple contents on arguments beyond the first two, for performance.
-          // TODO: Once we have TupleElementAny, this generality can be increased.
-          i in [0 .. 1] and
-          exists(DataFlow::TupleElementContent tc, int j | j = tc.getIndex() |
-            input = "Argument[" + i.toString() + "].TupleElement[" + j.toString() + "]"
-          )
+          input = "Argument[" + i.toString() + "].AnyTupleElement"
           // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
         ) and
         output = "ReturnValue.ListElement.TupleElement[" + i.toString() + "]" and
@@ -4579,12 +4553,6 @@ module StdlibPrivate {
     override DataFlow::ArgumentNode getACallback() { none() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      exists(DataFlow::Content c |
-        input = "Argument[self]." + c.getMaDRepresentation() and
-        output = "ReturnValue." + c.getMaDRepresentation() and
-        preservesValue = true
-      )
-      or
       input = "Argument[self]" and
       output = "ReturnValue" and
       preservesValue = true
@@ -4740,12 +4708,10 @@ module StdlibPrivate {
     override DataFlow::ArgumentNode getACallback() { none() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
-        input = "Argument[self].DictionaryElement[" + key + "]" and
-        output = "ReturnValue.TupleElement[1]" and
-        preservesValue = true
-        // TODO: put `key` into "ReturnValue.TupleElement[0]"
-      )
+      input = "Argument[self].AnyDictionaryElement" and
+      output = "ReturnValue.TupleElement[1]" and
+      preservesValue = true
+      // TODO: put `key` into "ReturnValue.TupleElement[0]"
     }
   }
 
@@ -4824,11 +4790,9 @@ module StdlibPrivate {
     }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
-        input = "Argument[self].DictionaryElement[" + key + "]" and
-        output = "ReturnValue.ListElement" and
-        preservesValue = true
-      )
+      input = "Argument[self].AnyDictionaryElement" and
+      output = "ReturnValue.ListElement" and
+      preservesValue = true
       or
       input = "Argument[self]" and
       output = "ReturnValue" and
@@ -4875,11 +4839,9 @@ module StdlibPrivate {
     }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
-        input = "Argument[self].DictionaryElement[" + key + "]" and
-        output = "ReturnValue.ListElement.TupleElement[1]" and
-        preservesValue = true
-      )
+      input = "Argument[self].AnyDictionaryElement" and
+      output = "ReturnValue.ListElement.TupleElement[1]" and
+      preservesValue = true
       or
       // TODO: Add the keys to output list
       input = "Argument[self]" and

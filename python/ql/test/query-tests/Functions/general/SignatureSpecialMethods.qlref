@@ -1,1 +1,2 @@
-Functions/SignatureSpecialMethods.ql
+query: Functions/SignatureSpecialMethods.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

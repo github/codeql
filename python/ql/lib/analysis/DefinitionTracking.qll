@@ -64,7 +64,7 @@ private predicate jump_to_defn(ControlFlowNode use, Definition defn) {
 private predicate preferred_jump_to_defn(Expr use, Definition def) {
   not use instanceof ClassExpr and
   not use instanceof FunctionExpr and
-  jump_to_defn(use.getAFlowNode(), def)
+  exists(ControlFlowNode useNode | useNode.getNode() = use | jump_to_defn(useNode, def))
 }
 
 private predicate unique_jump_to_defn(Expr use, Definition def) {
@@ -452,7 +452,7 @@ private predicate self_parameter_jump_to_defn_attribute(
  * This exists primarily for testing use `getPreferredDefinition()` instead.
  */
 Definition getADefinition(Expr use) {
-  jump_to_defn(use.getAFlowNode(), result) and
+  exists(ControlFlowNode useNode | useNode.getNode() = use | jump_to_defn(useNode, result)) and
   not use instanceof Call and
   not use.isArtificial() and
   // Not the use itself

@@ -69,7 +69,12 @@ where
   returns_meaningful_value(callee) and
   not wrapped_in_try_except(call) and
   exists(int unused |
-    unused = count(ExprStmt e | e.getValue().getAFlowNode() = callee.getACall()) and
+    unused =
+      count(ExprStmt e |
+        exists(ControlFlowNode eValCfg | eValCfg.getNode() = e.getValue() |
+          eValCfg = callee.getACall()
+        )
+      ) and
     total = count(callee.getACall())
   |
     percentage_used = (100.0 * (total - unused) / total).floor()

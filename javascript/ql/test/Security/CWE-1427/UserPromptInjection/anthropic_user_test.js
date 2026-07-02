@@ -33,6 +33,14 @@ app.get("/test", async (req, res) => {
     ],
   });
 
+  // === Legacy Text Completions API (SHOULD ALERT) ===
+
+  await client.completions.create({
+    model: "claude-2.1",
+    max_tokens_to_sample: 1024,
+    prompt: `\n\nHuman: ${userInput}\n\nAssistant:`, // $ Alert[js/user-prompt-injection]
+  });
+
   // === Constant comparison sanitizer (SHOULD NOT ALERT) ===
 
   const userInput2 = req.query.userInput2;

@@ -25,7 +25,7 @@ from
   For loop, ControlFlowNodeWithPointsTo iter, Value str, Value seq, ControlFlowNode seq_origin,
   ControlFlowNode str_origin
 where
-  loop.getIter().getAFlowNode() = iter and
+  iter.getNode() = loop.getIter() and
   iter.pointsTo(str, str_origin) and
   iter.pointsTo(seq, seq_origin) and
   has_string_type(str) and

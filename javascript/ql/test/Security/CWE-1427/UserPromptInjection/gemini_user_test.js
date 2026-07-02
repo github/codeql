@@ -58,6 +58,15 @@ app.get("/test", async (req, res) => {
     prompt: userInput, // $ Alert[js/user-prompt-injection]
   });
 
+  // === caches.create: config.contents (SHOULD ALERT) ===
+
+  await ai.caches.create({
+    model: "gemini-2.0-flash",
+    config: {
+      contents: userInput, // $ Alert[js/user-prompt-injection]
+    },
+  });
+
   // === Constant comparison sanitizer (SHOULD NOT ALERT) ===
 
   const userInput2 = req.query.userInput2;

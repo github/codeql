@@ -8,6 +8,6 @@ var v []byte
 
 func main() {
 	glogTest(len(v))
-	stdlib()
+	stdlib(len(v))
 	slogTest()
 }

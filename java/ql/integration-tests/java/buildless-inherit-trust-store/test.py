@@ -21,6 +21,7 @@ def test(codeql, java, cwd, check_diagnostics_java):
             _env={
                 "MAVEN_OPTS": maven_opts,
                 "CODEQL_JAVA_EXTRACTOR_TRUST_STORE_PATH": str(certspath),
+                "LGTM_INDEX_MAVEN_SETTINGS_FILE": os.path.join(os.path.dirname(os.path.realpath(__file__)), "settings.xml"),
             },
         )
     finally:

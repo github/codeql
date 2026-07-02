@@ -1,4 +1,22 @@
 {
+  "attributes": {
+    "java_vendor": "__REDACTED__",
+    "java_version": "11.0.31"
+  },
+  "markdownMessage": "Internal telemetry for the Java extractor.\n\nNo action needed.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/extractor/summary",
+    "name": "Java extractor telemetry"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
   "markdownMessage": "Analyzed a Gradle project without the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). This may use an incompatible version of Gradle.",
   "severity": "warning",
   "source": {

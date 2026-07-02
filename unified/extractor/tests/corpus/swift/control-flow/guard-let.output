@@ -1,0 +1,52 @@
+guard let value = optional else { return }
+
+---
+
+source_file
+  statement:
+    guard_statement
+      body:
+        block
+          statement:
+            control_transfer_statement
+              kind: return
+      condition:
+        if_condition
+          kind:
+            if_let_binding
+              pattern:
+                pattern
+                  binding:
+                    value_binding_pattern
+                      mutability: let
+                  bound_identifier: simple_identifier "value"
+              value: simple_identifier "optional"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        guard_if_stmt
+          condition:
+            pattern_guard_expr
+              pattern:
+                constructor_pattern
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "value"
+                  constructor:
+                    member_access_expr
+                      base:
+                        named_type_expr
+                          name: identifier "Optional"
+                      member: identifier "some"
+              value:
+                name_expr
+                  identifier: identifier "optional"
+          else:
+            block
+              stmt: return_expr "return"

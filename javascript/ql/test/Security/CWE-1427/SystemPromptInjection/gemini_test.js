@@ -109,6 +109,17 @@ app.get("/test", async (req, res) => {
     },
   });
 
+  // === caches.create: config.systemInstruction ===
+
+  // SHOULD ALERT
+  const cache = await ai.caches.create({
+    model: "gemini-2.0-flash",
+    config: {
+      contents: "Some document to cache",
+      systemInstruction: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
+    },
+  });
+
   // === Sanitizer: constant comparison ===
 
   // SHOULD NOT ALERT

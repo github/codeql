@@ -12,7 +12,7 @@ newline = whitespace_optional + newline_only + whitespace_optional
 toFlag = re.compile(newline)
 
 # https://github.com/github/codeql-python-CVE-coverage/issues/400
-re.compile(r'[+-]?(\d+)*\.\d+%?')
+re.compile(r'[+-]?(\d+)*\.\d+%?') # $ Alert
 re.compile(r'"""\s+(?:.|\n)*?\s+"""')
 re.compile(r'(\{\s+)(\S+)(\s+[^}]+\s+\}\s)')
 re.compile(r'".*``.*``.*"')
@@ -27,12 +27,12 @@ re.compile(r'(\.\w+\b)(\s*=\s*)([^;]*)(\s*;)')
 simple_email_re = re.compile(r"^\S+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+$")
 
 # https://github.com/github/codeql-python-CVE-coverage/issues/249
-rx = re.compile('(?:.*,)*[ \t]*([^ \t]+)[ \t]+'
+rx = re.compile('(?:.*,)*[ \t]*([^ \t]+)[ \t]+' # $ Alert
                      'realm=(["\']?)([^"\']*)\\2', re.I)
 
 # https://github.com/github/codeql-python-CVE-coverage/issues/248
 gauntlet = re.compile(
-            r"""^([-/:,#%.'"\s!\w]|\w-\w|'[\s\w]+'\s*|"[\s\w]+"|\([\d,%\.\s]+\))*$""",
+            r"""^([-/:,#%.'"\s!\w]|\w-\w|'[\s\w]+'\s*|"[\s\w]+"|\([\d,%\.\s]+\))*$""", # $ Alert
             flags=re.U
         )
 

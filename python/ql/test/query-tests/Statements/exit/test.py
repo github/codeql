@@ -4,4 +4,4 @@ def main():
         process()
     except Exception as ex:
         print(ex)
-        exit(1)
+        exit(1) # $ Alert

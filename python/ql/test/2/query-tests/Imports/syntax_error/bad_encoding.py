@@ -8,5 +8,5 @@
 # encoding:shift-jis
 
 def f():
-    print "Python の開発は、1990 年ごろから開始されています"
+    print "Python の開発は、1990 年ごろから開始されています" # $ Alert[py/encoding-error]
 """

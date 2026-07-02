@@ -16,7 +16,7 @@ def passwordNone():
     search_filter = "(user={})".format(escape_filter_chars(request.args['search']))
 
     srv = Server('servername', get_info=ALL)
-    conn = Connection(srv, 'user_dn', None)
+    conn = Connection(srv, 'user_dn', None) # $ Alert
     status, result, response, _ = conn.search(dn, search_filter)
 
 
@@ -30,7 +30,7 @@ def passwordNoneKwargs():
     search_filter = "(user={})".format(escape_filter_chars(request.args['search']))
 
     srv = Server('servername', get_info=ALL)
-    conn = Connection(srv, user='user_dn', password=None)
+    conn = Connection(srv, user='user_dn', password=None) # $ Alert
     status, result, response, _ = conn.search(dn, search_filter)
 
 @app.route("/passwordEmpty")
@@ -43,7 +43,7 @@ def passwordEmpty():
     search_filter = "(user={})".format(escape_filter_chars(request.args['search']))
 
     srv = Server('servername', get_info=ALL)
-    conn = Connection(srv, user='user_dn', password="")
+    conn = Connection(srv, user='user_dn', password="") # $ Alert
     status, result, response, _ = conn.search(dn, search_filter)
 
 
@@ -57,7 +57,7 @@ def notPassword():
     search_filter = "(user={})".format(escape_filter_chars(request.args['search']))
 
     srv = Server('servername', get_info=ALL)
-    conn = Connection(srv, user='user_dn')
+    conn = Connection(srv, user='user_dn') # $ Alert
     status, result, response, _ = conn.search(dn, search_filter)
 
 

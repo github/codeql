@@ -2,12 +2,12 @@
 
 def bad1(it):
     while True:
-        yield next(it)
+        yield next(it) # $ Alert
 
 def bad2(seq):
     it = iter(seq)
     #Not OK as seq  may be empty
-    raise KeyError(next(it))
+    raise KeyError(next(it)) # $ Alert
     yield 0
 
 def ok1(seq):

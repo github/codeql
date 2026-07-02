@@ -80,10 +80,8 @@ private module Cached {
     ) and
     model = ""
     or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom
-          .(DataFlowPrivate::FlowSummaryNode)
-          .getSummaryNode(), nodeTo.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false,
-      model)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
+      nodeTo.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false, model)
   }
 }
 

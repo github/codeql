@@ -25,7 +25,11 @@ module OpenRouter {
   /** Gets the message dictionaries passed to `chat.send`. */
   private API::Node chatMessage() {
     result =
-      clientRef().getMember("chat").getMember("send").getKeywordParameter("messages").getASubscript()
+      clientRef()
+          .getMember("chat")
+          .getMember("send")
+          .getKeywordParameter("messages")
+          .getASubscript()
   }
 
   /** Gets the content sink of a message dictionary, including the `text` of structured content. */

@@ -8,4 +8,4 @@ where
   not a instanceof ExprStmt and
   a.getScope() = s and
   s instanceof Function
-select a.getLocation().getStartLine(), s.getName(), a, count(a.getAFlowNode())
+select a.getLocation().getStartLine(), s.getName(), a, count(ControlFlowNode n | n.getNode() = a)

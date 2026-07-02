@@ -1,0 +1,21 @@
+1 + 2
+
+---
+
+source_file
+  statement:
+    additive_expression
+      lhs: integer_literal "1"
+      op: +
+      rhs: integer_literal "2"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        binary_expr
+          operator: infix_operator "+"
+          left: int_literal "1"
+          right: int_literal "2"

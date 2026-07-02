@@ -6,6 +6,7 @@ private import cpp as Cpp
 private import codeql.dataflow.internal.FlowSummaryImpl
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowNodes
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific as DataFlowImplSpecific
 private import semmle.code.cpp.dataflow.ExternalFlow
@@ -20,7 +21,21 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 
   class SinkBase = Void;
 
+  class FlowSummaryCallBase = CallInstruction;
+
   predicate callableFromSource(SummarizedCallableBase c) { exists(c.getBlock()) }
+
+  FlowSummaryCallBase getASourceCall(SummarizedCallableBase sc) {
+    result.getStaticCallTarget() = sc
+  }
+
+  DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c) {
+    result.asSummarizedCallable() = c
+  }
+
+  DataFlowCallable getSourceCallEnclosingCallable(FlowSummaryCallBase call) {
+    result.asSourceCallable() = call.getEnclosingFunction()
+  }
 
   ArgumentPosition callbackSelfParameterPosition() { result = TDirectPosition(-1) }
 
@@ -28,6 +43,10 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 
   ReturnKind getReturnValueKind(string arg) {
     arg = repeatStars(result.(NormalReturnKind).getIndirectionIndex())
+  }
+
+  ParameterPosition getFlowSummaryParameterPosition(ReturnKind rk) {
+    result = TFlowSummaryPosition(rk)
   }
 
   string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
@@ -40,12 +59,24 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
     arg = repeatStars(rk.(NormalReturnKind).getIndirectionIndex())
   }
 
+  bindingset[namespace, type, base]
+  private string formatQualifiedName(string namespace, string type, string base) {
+    if namespace = ""
+    then result = type + "::" + base
+    else result = namespace + "::" + type + "::" + base
+  }
+
   string encodeContent(ContentSet cs, string arg) {
-    exists(FieldContent c |
+    exists(FieldContent c, string namespace, string type, string base |
       cs.isSingleton(c) and
       // FieldContent indices have 0 for the address, 1 for content, so we need to subtract one.
       result = "Field" and
-      arg = repeatStars(c.getIndirectionIndex() - 1) + c.getField().getName()
+      c.getField().hasQualifiedName(namespace, type, base)
+    |
+      arg = repeatStars(c.getIndirectionIndex() - 1) + formatQualifiedName(namespace, type, base)
+      or
+      // TODO: This disjunct can be removed once we stop supporting unqualified field names.
+      arg = repeatStars(c.getIndirectionIndex() - 1) + base
     )
     or
     exists(ElementContent ec |
@@ -102,8 +133,20 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 private import Make<Location, DataFlowImplSpecific::CppDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
+  Impl::Private::SummaryNode getSummaryNode(Node n) {
+    result = n.(FlowSummaryNode).getSummaryNode()
+  }
+
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     result.getStaticCallTarget().getUnderlyingCallable() = sc
+  }
+
+  Node getSourceOutNode(Input::FlowSummaryCallBase call, ReturnKind rk) {
+    exists(IndirectReturnOutNode out | result = out |
+      out.getCallInstruction() = call and
+      pragma[only_bind_out](rk.(NormalReturnKind).getIndirectionIndex()) =
+        pragma[only_bind_out](out.getIndirectionIndex())
+    )
   }
 
   DataFlowCallable getSourceNodeEnclosingCallable(Input::SourceBase source) { none() }
@@ -218,40 +261,11 @@ module SourceSinkInterpretationInput implements
 
   /** Provides additional sink specification logic. */
   bindingset[c]
-  predicate interpretOutput(string c, InterpretNode mid, InterpretNode node) {
-    // Allow variables to be picked as output nodes.
-    exists(Node n, Element ast |
-      n = node.asNode() and
-      ast = mid.asElement()
-    |
-      c = "" and
-      n.asExpr().(VariableAccess).getTarget() = ast
-    )
-  }
+  predicate interpretOutput(string c, InterpretNode mid, InterpretNode node) { none() }
 
   /** Provides additional source specification logic. */
   bindingset[c]
-  predicate interpretInput(string c, InterpretNode mid, InterpretNode node) {
-    exists(Node n, Element ast, VariableAccess e |
-      n = node.asNode() and
-      ast = mid.asElement() and
-      e.getTarget() = ast
-    |
-      // Allow variables to be picked as input nodes.
-      // We could simply do this as `e = n.asExpr()`, but that would not allow
-      // us to pick `x` as a sink in an example such as `x = source()` (but
-      // only subsequent uses of `x`) since the variable access on `x` doesn't
-      // actually load the value of `x`. So instead, we pick the instruction
-      // node corresponding to the generated `StoreInstruction` and use the
-      // expression associated with the destination instruction. This means
-      // that the `x` in `x = source()` can be marked as an input.
-      c = "" and
-      exists(StoreInstruction store |
-        store.getDestinationAddress().getUnconvertedResultExpression() = e and
-        n.asInstruction() = store
-      )
-    )
-  }
+  predicate interpretInput(string c, InterpretNode mid, InterpretNode node) { none() }
 }
 
 module Private {

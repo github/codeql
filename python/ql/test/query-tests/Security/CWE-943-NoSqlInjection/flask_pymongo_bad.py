@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request # $ Source
 from flask_pymongo import PyMongo
 import json
 
@@ -11,7 +11,7 @@ def home_page():
     unsafe_search = request.args['search']
     json_search = json.loads(unsafe_search)
 
-    return mongo.db.user.find({'name': json_search})  # $ result=BAD
+    return mongo.db.user.find({'name': json_search})  # $ Alert result=BAD
 
 # if __name__ == "__main__":
 #     app.run(debug=True)

@@ -26,7 +26,7 @@ def u1(x):
     return 0
 
 def u2():
-    x = 1
+    x = 1 # $ Alert[py/unused-local-variable]
     return 1
 
 #These parameters are OK due to (potential overriding)
@@ -86,13 +86,13 @@ def f(t):
 a,b,c = t
 
 def f(t):
-    a,b,c = t
+    a,b,c = t # $ Alert[py/unused-local-variable]
     use(t)
 
 def second_def_undefined():
     var = 0
     use(var)
-    var = 1 # unused.
+    var = 1 # $ Alert[py/unused-local-variable] # unused.
 
 #And gloablly
 glob_var = 0
@@ -130,7 +130,7 @@ def decorated_inner_function():
 #FP observed
 def test_dict_unpacking(queryset, field_name, value):
     #True positive
-    for tag in value.split(','):
+    for tag in value.split(','): # $ Alert[py/unused-loop-variable]
         queryset = queryset.filter(**{field_name + '__name': tag1})
     return queryset
     #False positive

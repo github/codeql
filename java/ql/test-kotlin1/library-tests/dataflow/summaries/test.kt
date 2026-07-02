@@ -25,20 +25,20 @@ class Test {
         val p = Pair(taint("a"), "")
         sink(p)                                     // $ hasTaintFlow=a
         sink(p.component1())                        // $ hasTaintFlow=a
-        sink(p.second)
+        sink(p.second)                              // $ SPURIOUS: hasTaintFlow=a
 
         sink(taint("b").capitalize())                   // $ hasTaintFlow=b
         sink(taint("c").replaceFirstChar { _ -> 'x' })  // $ hasTaintFlow=c
 
         val t = Triple("", taint("d"), "")
         sink(t)                                     // $ hasTaintFlow=d
-        sink(t.component1())
+        sink(t.component1())                        // $ SPURIOUS: hasTaintFlow=d
         sink(t.second)                              // $ hasTaintFlow=d
 
         val p1 = taint("e") to ""
         sink(p1)                                    // $ hasTaintFlow=e
         sink(p1.component1())                       // $ hasTaintFlow=e
-        sink(p1.second)
+        sink(p1.second)                             // $ SPURIOUS: hasTaintFlow=e
 
         val l = p.toList()
         sink(l)                                     // $ hasTaintFlow=a
@@ -50,12 +50,12 @@ class Test {
         val tv = TimedValue(taint("f"), Duration.parse(""))
         sink(tv)                                    // $ hasTaintFlow=f
         sink(tv.component1())                       // $ hasTaintFlow=f
-        sink(tv.duration)
+        sink(tv.duration)                           // $ SPURIOUS: hasTaintFlow=f
 
         val mg0 = MatchGroup(taint("g"), IntRange(0, 10))
         sink(mg0)                                   // $ hasTaintFlow=g
         sink(mg0.value)                             // $ hasTaintFlow=g
-        sink(mg0.component2())
+        sink(mg0.component2())                      // $ SPURIOUS: hasTaintFlow=g
 
         val iv = IndexedValue<String>(5, taint("h"))
         sink(iv)                                    // $ hasTaintFlow=h

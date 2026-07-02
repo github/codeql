@@ -1,0 +1,21 @@
+!a
+
+---
+
+source_file
+  statement:
+    prefix_expression
+      operation: bang "!"
+      target: simple_identifier "a"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        unary_expr
+          operand:
+            name_expr
+              identifier: identifier "a"
+          operator: prefix_operator "!"

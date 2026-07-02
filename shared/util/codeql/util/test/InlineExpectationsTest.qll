@@ -513,10 +513,10 @@ module Make<InlineExpectationsTestSig Impl> {
 /**
  * RegEx pattern to match a comment containing one or more expected results. The comment must have
  * `$` as its first non-whitespace character. Any subsequent character
- * is treated as part of the expected results, except that the comment may contain a `//` sequence
- * to treat the remainder of the line as a regular (non-interpreted) comment.
+ * is treated as part of the expected results, except that the comment may contain a `//` or `#`
+ * sequence to treat the remainder of the line as a regular (non-interpreted) comment.
  */
-private string expectationCommentPattern() { result = "\\s*\\$ ((?:[^/]|/[^/])*)(?://.*)?" }
+private string expectationCommentPattern() { result = "\\s*\\$ ((?:[^/]|/[^/])*)(?:(//|#).*)?" }
 
 /**
  * The possible columns in an expectation comment. The `TDefaultColumn` branch represents the first

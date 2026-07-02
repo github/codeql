@@ -14,7 +14,9 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         google()
-        mavenCentral()
+        maven {
+            url = uri("https://maven-central.storage-download.googleapis.com/maven2/")
+        }
     }
 }
 dependencyResolutionManagement {
@@ -33,7 +35,9 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        mavenCentral()
+        maven {
+            url = uri("https://maven-central.storage-download.googleapis.com/maven2/")
+        }
     }
 }
 rootProject.name = "Android Sample"

@@ -2,4 +2,4 @@
 # messes up the results of the refers-to/points-to analysis
 # see /home/rasmus/code/ql/python/ql/test/library-tests/PointsTo/regressions/subprocess-assert/mwe_failure.py
 import subprocess
-assert subprocess.call(['run-backup']) == 0
+assert subprocess.call(['run-backup']) == 0 # $ Alert[py/side-effect-in-assert]

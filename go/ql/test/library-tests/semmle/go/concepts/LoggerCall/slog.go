@@ -37,4 +37,9 @@ func slogTest() {
 	slog.InfoContext(ctx, text, key, v)            // $ logger=text logger=key logger=v
 	slog.Log(ctx, slog.LevelInfo, text, key, v)    // $ logger=text logger=key logger=v
 	slog.LogAttrs(ctx, slog.LevelInfo, text, attr) // $ logger=text logger=attr
+
+	// With/WithGroup add attributes that are included in every subsequent log call.
+	logger.With(key, v)    // $ logger=key logger=v
+	logger.WithGroup(text) // $ logger=text
+	slog.With(key, v)      // $ logger=key logger=v
 }

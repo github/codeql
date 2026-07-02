@@ -100,3 +100,5 @@
 | Program.cs:194:21:194:21 | T |
 | Program.cs:196:12:196:17 | C4<C5> |
 | Program.cs:196:15:196:16 | C5 |
+| Program.cs:200:5:200:8 | Void |
+| Program.cs:205:16:205:24 | Exception |
