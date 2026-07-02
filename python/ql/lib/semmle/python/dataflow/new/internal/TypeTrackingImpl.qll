@@ -170,13 +170,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
 
   /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
   predicate levelStepCall(Node nodeFrom, LocalSourceNode nodeTo) {
-    // HOTFIX: `instanceFieldStep` is temporarily disabled (via `and none()`).
-    // It uses `classInstanceTracker(cls)` -- itself a type-tracker run --
-    // from inside `levelStepCall`, creating a structural mutual recursion
-    // that causes catastrophic query slowdowns on some OOP-heavy Python
-    // codebases (e.g. mypy and dask). The `and none()` should be removed
-    // once that recursion is redesigned.
-    instanceFieldStep(nodeFrom, nodeTo) and none()
+    instanceFieldStep(nodeFrom, nodeTo)
     or
     inheritedFieldStep(nodeFrom, nodeTo)
   }
