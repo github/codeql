@@ -2,8 +2,22 @@
 
 typedef unsigned int size_t;
 
+// Time structures and functions for wcsftime tests
+struct tm {
+    int tm_sec;
+    int tm_min;
+    int tm_hour;
+    int tm_mday;
+    int tm_mon;
+    int tm_year;
+    int tm_wday;
+    int tm_yday;
+    int tm_isdst;
+};
+
 size_t strlen(const char *str);
 size_t wcslen(const wchar_t *wcs);
+size_t wcsftime(wchar_t *strDest, size_t maxsize, const wchar_t *format, const struct tm *timeptr);
 
 char *strcpy(char *destination, const char *source);
 wchar_t *wcscpy(wchar_t *strDestination, const wchar_t *strSource);
@@ -95,6 +109,61 @@ void tests2(int case_num)
 			wcscpy(wbuffer, wstr1);
 			wcscat(wbuffer, wstr2);
 			break;
+
+		// wcsftime test cases
+		case 200:
+		{
+			wchar_t buf[80];
+			struct tm timeinfo = {0};
+			wcsftime(buf, sizeof(buf), L"%Y-%m-%d %H:%M:%S", &timeinfo); // BAD: sizeof(buf) returns bytes, not wchar_t count
+			break;
+		}
+
+		case 201:
+		{
+			wchar_t buf[80];
+			struct tm timeinfo = {0};
+			wcsftime(buf, sizeof(buf) / sizeof(wchar_t), L"%Y-%m-%d %H:%M:%S", &timeinfo); // GOOD: correct element count
+			break;
+		}
+
+		case 202:
+		{
+			wchar_t buf[80];
+			struct tm timeinfo = {0};
+			wcsftime(buf, 80, L"%Y-%m-%d %H:%M:%S", &timeinfo); // GOOD: direct array length
+			break;
+		}
+
+		case 203:
+		{
+			wchar_t smallBuf[20];
+			struct tm timeinfo = {0};
+			wcsftime(smallBuf, sizeof(smallBuf), L"%Y-%m-%d %H:%M:%S", &timeinfo); // BAD: sizeof returns bytes
+			break;
+		}
+
+		case 204:
+		{
+			wchar_t *dynamicBuf = (wchar_t *)malloc(50 * sizeof(wchar_t));
+			struct tm timeinfo = {0};
+			if (dynamicBuf) {
+				wcsftime(dynamicBuf, sizeof(dynamicBuf), L"%Y-%m-%d %H:%M:%S", &timeinfo); // BAD: sizeof on pointer
+				free(dynamicBuf);
+			}
+			break;
+		}
+
+		case 205:
+		{
+			wchar_t *dynamicBuf = (wchar_t *)malloc(50 * sizeof(wchar_t));
+			struct tm timeinfo = {0};
+			if (dynamicBuf) {
+				wcsftime(dynamicBuf, 50, L"%Y-%m-%d %H:%M:%S", &timeinfo); // GOOD: correct element count
+				free(dynamicBuf);
+			}
+			break;
+		}
 	}
 	
 	if (buffer != 0)
