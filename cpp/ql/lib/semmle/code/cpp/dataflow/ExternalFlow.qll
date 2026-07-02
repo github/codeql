@@ -953,6 +953,10 @@ private module Cached {
    */
   cached
   predicate sourceNode(DataFlow::Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isSourceNode(n, kind, model) and n.asNode() = node
+    )
+    or
     node.(Nodes::FlowSummaryNode).isSource(kind, model)
   }
 

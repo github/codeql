@@ -376,7 +376,10 @@ private class SourceModelCall extends Public::SourceElement instanceof Call {
   private string ext;
 
   SourceModelCall() {
-    sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) and
+    exists(string output |
+      sourceModel(namespace, type, subtypes, name, signature, ext, output, _, _, _) and
+      output.matches("%" + Input::encodeContent(_, _) + "%")
+    ) and
     this.getTarget() = interpretElement(namespace, type, subtypes, name, signature, ext)
   }
 
