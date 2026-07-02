@@ -1,0 +1,17 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core.git#b7e6711279d38b7f0db3e648888de5154729e9a8 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      #- ["org.apache.axis2.dataretrieval", "AxisDataLocatorImpl", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "Argument[0]", "log-injection", "ai-generated"] # INVALID: No log sink on arg[0]
+      - ["org.apache.axis2.dataretrieval", "DataRetrievalUtil", True, "buildOM", "(ClassLoader,String)", "", "Argument[1]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.dataretrieval", "ServiceData", True, "getFileContent", "(ClassLoader)", "", "this", "path-injection", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      #- ["org.apache.axis2.dataretrieval", "BaseAxisDataLocator", True, "getData", "(DataRetrievalRequest,MessageContext)", "", "ReturnValue", "file", "ai-generated"] # INVALID: Returns in-memory data, not a file source
+      #- ["org.apache.axis2.dataretrieval", "BaseAxisDataLocator", True, "outputInlineForm", "(MessageContext,ServiceData[])", "", "ReturnValue", "file", "ai-generated"] # INVALID: Builds OM from in-memory metadata; not a file source
+      #- ["org.apache.axis2.dataretrieval", "ServiceData", True, "getFileContent", "(ClassLoader)", "", "ReturnValue", "file", "ai-generated"] # INVALID: This is a sink, not a source
