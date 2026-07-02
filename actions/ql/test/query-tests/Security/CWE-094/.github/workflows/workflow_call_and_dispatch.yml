@@ -1,0 +1,44 @@
+name: Code Injection via workflow_call and workflow_dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: "Title for the issue"
+        required: true
+        type: string
+      body:
+        description: "Body with no explicit type (defaults to string)"
+        required: false
+  workflow_call:
+    inputs:
+      title:
+        description: "Title for the issue"
+        required: true
+        type: string
+      body:
+        description: "Body with explicit string type"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: vulnerable title input
+        run: |
+          echo "${{ inputs.title }}"
+
+      - name: vulnerable body input
+        run: |
+          echo "${{ inputs.body }}"
+
+      - name: safe input via env
+        run: |
+          echo "$title"
+        env:
+          title: ${{ inputs.title }}
