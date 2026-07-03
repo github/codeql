@@ -19,7 +19,10 @@ extensions:
       extensible: sourceModel
     data:
       - ["org.apache.avro.file", "DataFileReader", True, "DataFileReader", "(File,DatumReader)", "", "Argument[this]", "file", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileReader", True, "DataFileReader", "(SeekableInput,DatumReader)", "", "Argument[this]", "file", "manual"]
       - ["org.apache.avro.file", "DataFileReader", True, "openReader", "(File,DatumReader)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro.file", "DataFileReader", True, "openReader", "(SeekableInput,DatumReader)", "", "ReturnValue", "file", "manual"]
+      - ["org.apache.avro.file", "DataFileReader", True, "openReader", "(SeekableInput,DatumReader,DataFileStream$Header,boolean)", "", "ReturnValue", "file", "manual"]
       - ["org.apache.avro.file", "SeekableFileInput", True, "SeekableFileInput", "(File)", "", "Argument[this]", "file", "ai-generated"]
   - addsTo:
       pack: codeql/java-all
