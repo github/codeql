@@ -11,7 +11,7 @@ public class CertificateValidationTests
         var handler = new HttpClientHandler();
         // BAD: always trusts any certificate.
         handler.ServerCertificateCustomValidationCallback =
-            (request, certificate, chain, errors) => true;
+            (request, certificate, chain, errors) => true; // $ Alert
     }
 
     public void HttpClientHandlerBlockBodyBad()
@@ -22,7 +22,7 @@ public class CertificateValidationTests
             (request, certificate, chain, errors) =>
             {
                 return true;
-            };
+            }; // $ Alert
     }
 
     public void HttpClientHandlerDangerousBad()
@@ -30,25 +30,25 @@ public class CertificateValidationTests
         var handler = new HttpClientHandler();
         // BAD: built-in callback that accepts any certificate.
         handler.ServerCertificateCustomValidationCallback =
-            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator; // $ Alert
     }
 
     public void ServicePointManagerBad()
     {
         // BAD: always trusts any certificate.
         ServicePointManager.ServerCertificateValidationCallback =
-            (sender, certificate, chain, errors) => true;
+            (sender, certificate, chain, errors) => true; // $ Alert
     }
 
     public void ServicePointManagerCompoundBad()
     {
         // BAD: always trusts any certificate (compound assignment).
         ServicePointManager.ServerCertificateValidationCallback +=
-            (sender, cert, chain, errors) => { return true; };
+            (sender, cert, chain, errors) => { return true; }; // $ Alert
         // BAD
-        ServicePointManager.ServerCertificateValidationCallback += (a, b, c, d) => true;
+        ServicePointManager.ServerCertificateValidationCallback += (a, b, c, d) => true; // $ Alert
         // BAD: parameterless anonymous method.
-        ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
+        ServicePointManager.ServerCertificateValidationCallback += delegate { return true; }; // $ Alert
     }
 
     private static bool AcceptAll(object sender, X509Certificate certificate, X509Chain chain,
@@ -66,29 +66,29 @@ public class CertificateValidationTests
     public void MethodGroupBad()
     {
         // BAD: the referenced static method always returns true.
-        ServicePointManager.ServerCertificateValidationCallback = AcceptAll;
+        ServicePointManager.ServerCertificateValidationCallback = AcceptAll; // $ Alert
     }
 
     public void MethodGroupNonStaticBad()
     {
         // BAD: the referenced instance method always returns true.
         ServicePointManager.ServerCertificateValidationCallback =
-            new RemoteCertificateValidationCallback(this.AcceptAllNonStatic);
+            new RemoteCertificateValidationCallback(this.AcceptAllNonStatic); // $ Alert
     }
 
     public void SslStreamBad(Stream stream)
     {
         // BAD: the validation callback always returns true.
         var ssl = new SslStream(stream, false,
-            (sender, certificate, chain, errors) => true);
+            (sender, certificate, chain, errors) => true); // $ Alert
     }
 
     public void IndirectBad(Stream stream)
     {
         RemoteCertificateValidationCallback callback =
-            (sender, certificate, chain, errors) => true;
+            (sender, certificate, chain, errors) => true; // $ Source Alert
         // BAD: the callback flowing here always returns true.
-        var ssl = new SslStream(stream, false, callback);
+        var ssl = new SslStream(stream, false, callback); // $ Alert
     }
 
     public void HttpClientHandlerGood()
