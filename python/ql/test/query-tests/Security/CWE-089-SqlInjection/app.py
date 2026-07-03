@@ -31,10 +31,10 @@ async def unsafe2(name: str): # $ Source
     cursor.close()
 
 @app.get("/unsafe3/")
-async def unsafe3(name: str): # $ Source
+async def unsafe3(name: str): # $ MISSING: Source
     query = "select * from users where name=" + name
     cursor = hdb_con3.cursor()
-    cursor.execute(query) # $ Alert
+    cursor.execute(query) # $ MISSING: Alert
     cursor.close()
 
 @app.get("/unsafe4/")
