@@ -1,0 +1,33 @@
+foo(1, 2)
+
+---
+
+source_file
+  statement:
+    call_expression
+      function: simple_identifier "foo"
+      suffix:
+        call_suffix
+          arguments:
+            value_arguments
+              argument:
+                value_argument
+                  value: integer_literal "1"
+                value_argument
+                  value: integer_literal "2"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        call_expr
+          argument:
+            argument
+              value: int_literal "1"
+            argument
+              value: int_literal "2"
+          callee:
+            name_expr
+              identifier: identifier "foo"

@@ -70,7 +70,7 @@ No user-facing changes.
 
 ### Minor Analysis Improvements
 
-* Added new full SSRF sanitization barrier from the new AntiSSRF library. 
+* Added new full SSRF sanitization barrier from the new AntiSSRF library.
 * When a guard such as `isSafe(x)` is defined, we now also automatically handle `isSafe(x) == true` and `isSafe(x) != false`.
 
 ## 6.1.1
@@ -169,7 +169,7 @@ No user-facing changes.
 ### Minor Analysis Improvements
 
 - The modelling of Psycopg2 now supports the use of `psycopg2.pool` connection pools for handling database connections.
-* Removed `lxml` as an XML bomb sink. The underlying libxml2 library now includes [entity reference loop detection](https://github.com/lxml/lxml/blob/f33ac2c2f5f9c4c4c1fc47f363be96db308f2fa6/doc/FAQ.txt#L1077) that prevents XML bomb attacks. 
+* Removed `lxml` as an XML bomb sink. The underlying libxml2 library now includes [entity reference loop detection](https://github.com/lxml/lxml/blob/f33ac2c2f5f9c4c4c1fc47f363be96db308f2fa6/doc/FAQ.txt#L1077) that prevents XML bomb attacks.
 
 ## 4.0.13
 
@@ -262,7 +262,7 @@ No user-facing changes.
 ### Minor Analysis Improvements
 
 * The sensitive data library has been improved so that `snake_case` style variable names are recognized more reliably. This may result in more sensitive data being identified, and more results from queries that use the sensitive data library.
-- Additional taint steps through methods of `lxml.etree.Element` and `lxml.etree.ElementTree` objects from the `lxml` PyPI package have been modeled. 
+- Additional taint steps through methods of `lxml.etree.Element` and `lxml.etree.ElementTree` objects from the `lxml` PyPI package have been modeled.
 
 ## 3.1.0
 
@@ -316,7 +316,7 @@ No user-facing changes.
 
 ### Minor Analysis Improvements
 
-* The common sanitizer guard `StringConstCompareBarrier` has been renamed to `ConstCompareBarrier` and expanded to cover comparisons with other constant values such as `None`. This may result in fewer false positive results for several queries. 
+* The common sanitizer guard `StringConstCompareBarrier` has been renamed to `ConstCompareBarrier` and expanded to cover comparisons with other constant values such as `None`. This may result in fewer false positive results for several queries.
 
 ## 2.0.0
 
@@ -545,7 +545,7 @@ No user-facing changes.
 
 ### New Features
 
-* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`.
   Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
 
 ### Minor Analysis Improvements
@@ -572,7 +572,7 @@ No user-facing changes.
 * Deleted many deprecated predicates and classes with uppercase `API`, `HTTP`, `XSS`, `SQL`, etc. in their names. Use the PascalCased versions instead.
 * Deleted the deprecated `getName()` predicate from the `Container` class, use `getAbsolutePath()` instead.
 * Deleted many deprecated module names that started with a lowercase letter, use the versions that start with an uppercase letter instead.
-* Deleted many deprecated predicates in `PointsTo.qll`. 
+* Deleted many deprecated predicates in `PointsTo.qll`.
 * Deleted many deprecated files from the `semmle.python.security` package.
 * Deleted the deprecated `BottleRoutePointToExtension` class from `Extensions.qll`.
 * Type tracking is now aware of flow summaries. This leads to a richer API graph, and may lead to more results in some queries.
@@ -729,7 +729,7 @@ No user-facing changes.
 ### Deprecated APIs
 
 * Some unused predicates in `SsaDefinitions.qll`, `TObject.qll`, `protocols.qll`, and the `pointsto/` folder have been deprecated.
-* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
   The old name still exists as a deprecated alias.
 
 ### Minor Analysis Improvements
@@ -748,9 +748,9 @@ No user-facing changes.
 
 ### Deprecated APIs
 
-* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
   The old name still exists as a deprecated alias.
-* The utility files previously in the `semmle.python.security.performance` package have been moved to the `semmle.python.security.regexp` package.  
+* The utility files previously in the `semmle.python.security.performance` package have been moved to the `semmle.python.security.regexp` package.
   The previous files still exist as deprecated aliases.
 
 ### Minor Analysis Improvements
@@ -843,9 +843,9 @@ No user-facing changes.
 
 ### Deprecated APIs
 
-* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide. 
+* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide.
   The old name still exists as a deprecated alias.
-* Some modules that started with a lowercase letter have been renamed to follow our style-guide. 
+* Some modules that started with a lowercase letter have been renamed to follow our style-guide.
   The old name still exists as a deprecated alias.
 
 ### New Features

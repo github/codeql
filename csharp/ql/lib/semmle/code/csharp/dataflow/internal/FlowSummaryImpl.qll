@@ -34,6 +34,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow>
 
   class SinkBase = Void;
 
+  class FlowSummaryCallBase = Void;
+
   predicate neutralElement(SummarizedCallableBase c, string kind, string provenance, boolean isExact) {
     interpretNeutral(c, kind, provenance, isExact)
   }
@@ -201,6 +203,10 @@ private module TypesInput implements Impl::Private::TypesInputSig {
 }
 
 private module StepsInput implements Impl::Private::StepsInputSig {
+  Impl::Private::SummaryNode getSummaryNode(Node n) {
+    result = n.(FlowSummaryNode).getSummaryNode()
+  }
+
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     sc = viableCallable(result).asSummarizedCallable()
   }

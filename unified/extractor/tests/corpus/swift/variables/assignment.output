@@ -1,0 +1,24 @@
+x = 1
+
+---
+
+source_file
+  statement:
+    assignment
+      operator: =
+      result: integer_literal "1"
+      target:
+        directly_assignable_expression
+          expr: simple_identifier "x"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        assign_expr
+          target:
+            name_expr
+              identifier: identifier "x"
+          value: int_literal "1"

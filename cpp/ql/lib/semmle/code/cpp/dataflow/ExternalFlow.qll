@@ -931,31 +931,6 @@ private Element interpretElement0(
     signature = "" and
     elementSpec(namespace, type, subtypes, name, signature, _)
   )
-  or
-  // Member variables
-  elementSpec(namespace, type, subtypes, name, signature, _) and
-  signature = "" and
-  exists(Class namedClass, Class classWithMember, MemberVariable member |
-    member.getName() = name and
-    member = classWithMember.getAMember() and
-    namedClass.hasQualifiedName(namespace, type) and
-    result = member
-  |
-    // field declared in the named type or a subtype of it (or an extension of any)
-    subtypes = true and
-    classWithMember = namedClass.getADerivedClass*()
-    or
-    // field declared directly in the named type (or an extension of it)
-    subtypes = false and
-    classWithMember = namedClass
-  )
-  or
-  // Global or namespace variables
-  elementSpec(namespace, type, subtypes, name, signature, _) and
-  signature = "" and
-  type = "" and
-  subtypes = false and
-  result = any(GlobalOrNamespaceVariable v | v.hasQualifiedName(namespace, name))
 }
 
 cached

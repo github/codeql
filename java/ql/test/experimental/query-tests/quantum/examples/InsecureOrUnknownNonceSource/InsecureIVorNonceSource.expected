@@ -126,5 +126,3 @@ nodes
 | InsecureIVorNonceSource.java:202:54:202:55 | iv : byte[] | semmle.label | iv : byte[] |
 | InsecureIVorNonceSource.java:206:51:206:56 | ivSpec | semmle.label | ivSpec |
 subpaths
-testFailures
-| InsecureIVorNonceSource.java:42:21:42:21 | 1 : Number | Unexpected result: Source |

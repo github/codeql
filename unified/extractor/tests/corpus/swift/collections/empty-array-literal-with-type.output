@@ -1,0 +1,51 @@
+let xs: [Int] = []
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "xs"
+          type:
+            type_annotation
+              type:
+                type
+                  name:
+                    array_type
+                      element:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+          value:
+            array_literal
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "xs"
+          type:
+            generic_type_expr
+              base:
+                named_type_expr
+                  name: identifier "Array"
+              type_argument:
+                named_type_expr
+                  name: identifier "Int"
+          value: array_literal "[]"

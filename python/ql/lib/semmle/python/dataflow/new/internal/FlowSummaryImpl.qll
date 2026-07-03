@@ -20,6 +20,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow>
 
   class SinkBase = Void;
 
+  class FlowSummaryCallBase = Void;
+
   predicate callableFromSource(SummarizedCallableBase c) { none() }
 
   ArgumentPosition callbackSelfParameterPosition() { result.isLambdaSelf() }
@@ -91,6 +93,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow>
     cs.isAnyTupleOrDictionaryElement() and result = "AnyTupleOrDictionaryElement" and arg = ""
   }
 
+  string encodeWithContent(ContentSet c, string arg) { result = "With" + encodeContent(c, arg) }
+
   bindingset[token]
   ParameterPosition decodeUnknownParameterPosition(AccessPath::AccessPathTokenBase token) {
     // needed to support `Argument[x..y]` ranges
@@ -109,6 +113,10 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow>
 private import Make<Location, DataFlowImplSpecific::PythonDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
+  Impl::Private::SummaryNode getSummaryNode(Node n) {
+    result = n.(FlowSummaryNode).getSummaryNode()
+  }
+
   overlay[global]
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     result =

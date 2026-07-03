@@ -1,0 +1,66 @@
+for x in xs where x > 0 {
+  print(x)
+}
+
+---
+
+source_file
+  statement:
+    for_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      collection: simple_identifier "xs"
+      item:
+        pattern
+          bound_identifier: simple_identifier "x"
+      where:
+        where_clause
+          expr:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
+          keyword: where_keyword "where"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        for_each_stmt
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          guard:
+            binary_expr
+              operator: infix_operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
+          iterable:
+            name_expr
+              identifier: identifier "xs"

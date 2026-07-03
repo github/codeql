@@ -1,6 +1,6 @@
 use std::fmt::Write;
 
-use crate::{schema::Schema, Ast, Node, NodeContent, CHILD_FIELD};
+use crate::{schema::Schema, Ast, Id, Node, NodeContent, CHILD_FIELD};
 
 /// Options for controlling AST dump output.
 pub struct DumpOptions {
@@ -34,16 +34,11 @@ impl Default for DumpOptions {
 ///         method:
 ///           identifier "foo"
 /// ```
-pub fn dump_ast(ast: &Ast, root: usize, source: &str) -> String {
+pub fn dump_ast(ast: &Ast, root: Id, source: &str) -> String {
     dump_ast_with_options(ast, root, source, &DumpOptions::default())
 }
 
-pub fn dump_ast_with_options(
-    ast: &Ast,
-    root: usize,
-    source: &str,
-    options: &DumpOptions,
-) -> String {
+pub fn dump_ast_with_options(ast: &Ast, root: Id, source: &str, options: &DumpOptions) -> String {
     let mut out = String::new();
     dump_node(ast, root, source, options, 0, None, &mut out);
     out
@@ -53,7 +48,7 @@ pub fn dump_ast_with_options(
 ///
 /// Any node that does not match the expected type set for its parent field is
 /// rendered with a trailing `" <-- ERROR: ..."` annotation on the same line.
-pub fn dump_ast_with_type_errors(ast: &Ast, root: usize, source: &str, schema: &Schema) -> String {
+pub fn dump_ast_with_type_errors(ast: &Ast, root: Id, source: &str, schema: &Schema) -> String {
     dump_ast_with_type_errors_and_options(ast, root, source, schema, &DumpOptions::default())
 }
 
@@ -63,7 +58,7 @@ pub fn dump_ast_with_type_errors(ast: &Ast, root: usize, source: &str, schema: &
 /// rendered with a trailing `" <-- ERROR: ..."` annotation on the same line.
 pub fn dump_ast_with_type_errors_and_options(
     ast: &Ast,
-    root: usize,
+    root: Id,
     source: &str,
     schema: &Schema,
     options: &DumpOptions,
@@ -176,7 +171,7 @@ fn expected_for_field<'a>(
 
 fn dump_node(
     ast: &Ast,
-    id: usize,
+    id: Id,
     source: &str,
     options: &DumpOptions,
     indent: usize,
@@ -315,7 +310,7 @@ fn dump_node(
 /// Dump a leaf node inline (no newline prefix, caller provides context).
 fn dump_node_inline(
     ast: &Ast,
-    id: usize,
+    id: Id,
     source: &str,
     options: &DumpOptions,
     type_check: Option<(

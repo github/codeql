@@ -1,0 +1,51 @@
+// TODO: tree-sitter-swift parses `xs[0]` as a call_expression (same shape
+// as `xs(0)`), so the mapping currently produces a call_expr. Update the
+// parser / add a separate subscript_expr node and remap when fixed.
+let first = xs[0]
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "first"
+          value:
+            call_expression
+              function: simple_identifier "xs"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: integer_literal "0"
+  comment "// TODO: tree-sitter-swift parses `xs[0]` as a call_expression (same shape"
+  comment "// as `xs(0)`), so the mapping currently produces a call_expr. Update the"
+  comment "// parser / add a separate subscript_expr node and remap when fixed."
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "first"
+          value:
+            call_expr
+              argument:
+                argument
+                  value: int_literal "0"
+              callee:
+                name_expr
+                  identifier: identifier "xs"

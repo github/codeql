@@ -1,0 +1,39 @@
+let n = t.0
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "n"
+          value:
+            navigation_expression
+              suffix:
+                navigation_suffix
+                  suffix: integer_literal "0"
+              target: simple_identifier "t"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "n"
+          value:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "t"
+              member: identifier "0"

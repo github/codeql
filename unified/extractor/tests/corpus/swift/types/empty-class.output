@@ -1,0 +1,21 @@
+class Foo {}
+
+---
+
+source_file
+  statement:
+    class_declaration
+      body:
+        class_body
+      declaration_kind: class
+      name: type_identifier "Foo"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Foo"

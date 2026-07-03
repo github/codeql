@@ -1,0 +1,31 @@
+(a + b) * c
+
+---
+
+source_file
+  statement:
+    multiplicative_expression
+      lhs:
+        tuple_expression
+          element:
+            tuple_expression_item
+              value:
+                additive_expression
+                  lhs: simple_identifier "a"
+                  op: +
+                  rhs: simple_identifier "b"
+      op: *
+      rhs: simple_identifier "c"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        binary_expr
+          operator: infix_operator "*"
+          left: tuple_expr "(a + b)"
+          right:
+            name_expr
+              identifier: identifier "c"

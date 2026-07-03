@@ -1,0 +1,59 @@
+for x in [1, 2, 3] {
+  print(x)
+}
+
+---
+
+source_file
+  statement:
+    for_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      collection:
+        array_literal
+          element:
+            integer_literal "1"
+            integer_literal "2"
+            integer_literal "3"
+      item:
+        pattern
+          bound_identifier: simple_identifier "x"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        for_each_stmt
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          iterable:
+            array_literal
+              element:
+                int_literal "1"
+                int_literal "2"
+                int_literal "3"

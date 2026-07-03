@@ -231,11 +231,11 @@ edges
 | hash_extensions.rb:122:5:122:10 | single : Array [element 0] | hash_extensions.rb:125:10:125:15 | single : Array [element 0] | provenance |  |
 | hash_extensions.rb:122:14:122:26 | call to [] : Array [element 0] | hash_extensions.rb:122:5:122:10 | single : Array [element 0] | provenance |  |
 | hash_extensions.rb:122:15:122:25 | call to source | hash_extensions.rb:122:14:122:26 | call to [] : Array [element 0] | provenance |  |
-| hash_extensions.rb:123:5:123:9 | multi : Array [element 0] | hash_extensions.rb:126:10:126:14 | multi : Array [element 0] | provenance |  |
+| hash_extensions.rb:123:5:123:9 | multi : Array [element 0] | hash_extensions.rb:127:10:127:14 | multi : Array [element 0] | provenance |  |
 | hash_extensions.rb:123:13:123:38 | call to [] : Array [element 0] | hash_extensions.rb:123:5:123:9 | multi : Array [element 0] | provenance |  |
 | hash_extensions.rb:123:14:123:24 | call to source | hash_extensions.rb:123:13:123:38 | call to [] : Array [element 0] | provenance |  |
 | hash_extensions.rb:125:10:125:15 | single : Array [element 0] | hash_extensions.rb:125:10:125:20 | call to sole | provenance |  |
-| hash_extensions.rb:126:10:126:14 | multi : Array [element 0] | hash_extensions.rb:126:10:126:19 | call to sole | provenance |  |
+| hash_extensions.rb:127:10:127:14 | multi : Array [element 0] | hash_extensions.rb:127:10:127:19 | call to sole | provenance |  |
 nodes
 | active_support.rb:180:5:180:5 | x : Array [element 0] | semmle.label | x : Array [element 0] |
 | active_support.rb:180:9:180:18 | call to [] : Array [element 0] | semmle.label | call to [] : Array [element 0] |
@@ -493,11 +493,10 @@ nodes
 | hash_extensions.rb:123:14:123:24 | call to source | semmle.label | call to source |
 | hash_extensions.rb:125:10:125:15 | single : Array [element 0] | semmle.label | single : Array [element 0] |
 | hash_extensions.rb:125:10:125:20 | call to sole | semmle.label | call to sole |
-| hash_extensions.rb:126:10:126:14 | multi : Array [element 0] | semmle.label | multi : Array [element 0] |
-| hash_extensions.rb:126:10:126:19 | call to sole | semmle.label | call to sole |
+| hash_extensions.rb:127:10:127:14 | multi : Array [element 0] | semmle.label | multi : Array [element 0] |
+| hash_extensions.rb:127:10:127:19 | call to sole | semmle.label | call to sole |
 subpaths
 testFailures
-| hash_extensions.rb:126:10:126:19 | call to sole | Unexpected result: hasValueFlow=b |
 #select
 | active_support.rb:182:10:182:13 | ...[...] | active_support.rb:180:10:180:17 | call to source | active_support.rb:182:10:182:13 | ...[...] | $@ | active_support.rb:180:10:180:17 | call to source | call to source |
 | active_support.rb:188:10:188:13 | ...[...] | active_support.rb:186:10:186:18 | call to source | active_support.rb:188:10:188:13 | ...[...] | $@ | active_support.rb:186:10:186:18 | call to source | call to source |
@@ -558,4 +557,4 @@ testFailures
 | hash_extensions.rb:115:10:115:39 | ...[...] | hash_extensions.rb:110:21:110:31 | call to source | hash_extensions.rb:115:10:115:39 | ...[...] | $@ | hash_extensions.rb:110:21:110:31 | call to source | call to source |
 | hash_extensions.rb:115:10:115:39 | ...[...] | hash_extensions.rb:110:65:110:75 | call to source | hash_extensions.rb:115:10:115:39 | ...[...] | $@ | hash_extensions.rb:110:65:110:75 | call to source | call to source |
 | hash_extensions.rb:125:10:125:20 | call to sole | hash_extensions.rb:122:15:122:25 | call to source | hash_extensions.rb:125:10:125:20 | call to sole | $@ | hash_extensions.rb:122:15:122:25 | call to source | call to source |
-| hash_extensions.rb:126:10:126:19 | call to sole | hash_extensions.rb:123:14:123:24 | call to source | hash_extensions.rb:126:10:126:19 | call to sole | $@ | hash_extensions.rb:123:14:123:24 | call to source | call to source |
+| hash_extensions.rb:127:10:127:19 | call to sole | hash_extensions.rb:123:14:123:24 | call to source | hash_extensions.rb:127:10:127:19 | call to sole | $@ | hash_extensions.rb:123:14:123:24 | call to source | call to source |
