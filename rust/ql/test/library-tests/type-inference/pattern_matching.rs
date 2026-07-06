@@ -779,13 +779,13 @@ pub fn patterns_in_function_parameters() {
 
     // Call the functions to use them
     let point = Point { x: 5, y: 10 };
-    let extracted = extract_point(point); // $ target=extract_point certainType=extracted@(T_2)<T0>:i32 certainType=extracted@(T_2)<T1>:i32
+    let extracted = extract_point(point); // $ target=extract_point type=extracted@(T_2)<T0>:i32 type=extracted@(T_2)<T1>:i32
 
     let color = Color(200, 100, 50);
-    let red = extract_color(color); // $ target=extract_color certainType=red:u8
+    let red = extract_color(color); // $ target=extract_color type=red:u8
 
     let tuple = (42i32, 3.14f64, true);
-    let tuple_extracted = extract_tuple(tuple); // $ target=extract_tuple certainType=tuple_extracted@(T_2)<T0>:i32 certainType=tuple_extracted@(T_2)<T1>:bool
+    let tuple_extracted = extract_tuple(tuple); // $ target=extract_tuple type=tuple_extracted@(T_2)<T0>:i32 type=tuple_extracted@(T_2)<T1>:bool
 }
 
 #[rustfmt::skip]
