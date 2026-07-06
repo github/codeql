@@ -768,222 +768,6 @@ private Struct getRangeType(RangeExpr re) {
   result instanceof RangeToInclusiveStruct
 }
 
-private predicate bodyReturns(Expr body, Expr e) {
-  exists(ReturnExpr re, Callable c |
-    e = re.getExpr() and
-    c = re.getEnclosingCallable() and
-    body = c.getBody()
-  )
-}
-
-/**
- * Holds if the type tree of `n1` at `prefix1` should be equal to the type tree
- * of `n2` at `prefix2` and type information should propagate in both directions
- * through the type equality.
- */
-private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
-  CertainTypeInference::certainTypeEquality(n1, prefix1, n2, prefix2)
-  or
-  prefix1.isEmpty() and
-  prefix2.isEmpty() and
-  (
-    exists(LetStmt let |
-      let.getPat() = n1 and
-      let.getInitializer() = n2
-    )
-    or
-    n2 =
-      any(MatchExpr me |
-        n1 = me.getAnArm().getExpr() and
-        me.getNumberOfArms() = 1
-      )
-    or
-    exists(LetExpr let |
-      n1 = let.getScrutinee() and
-      n2 = let.getPat()
-    )
-    or
-    exists(MatchExpr me |
-      n1 = me.getScrutinee() and
-      n2 = me.getAnArm().getPat()
-    )
-    or
-    n1 = n2.(OrPat).getAPat()
-    or
-    n1 = n2.(ParenPat).getPat()
-    or
-    n1 = n2.(LiteralPat).getLiteral()
-    or
-    exists(BreakExpr break |
-      break.getExpr() = n1 and
-      break.getTarget() = n2.(LoopExpr)
-    )
-    or
-    exists(AssignmentExpr be |
-      n1 = be.getLhs() and
-      n2 = be.getRhs()
-    )
-    or
-    n1 = n2.(MacroExpr).getMacroCall().getMacroCallExpansion() and
-    not isPanicMacroCall(n2)
-    or
-    n1 = n2.(MacroPat).getMacroCall().getMacroCallExpansion()
-    or
-    bodyReturns(n1, n2) and
-    strictcount(Expr e | bodyReturns(n1, e)) = 1
-  )
-  or
-  n2 =
-    any(RefExpr re |
-      n1 = re.getExpr() and
-      prefix1.isEmpty() and
-      prefix2 = TypePath::singleton(inferRefExprType(re).getPositionalTypeParameter(0))
-    )
-  or
-  n2 =
-    any(RefPat rp |
-      n1 = rp.getPat() and
-      prefix1.isEmpty() and
-      exists(boolean isMutable | if rp.isMut() then isMutable = true else isMutable = false |
-        prefix2 = TypePath::singleton(getRefTypeParameter(isMutable))
-      )
-    )
-  or
-  exists(int i, int arity |
-    prefix1.isEmpty() and
-    prefix2 = TypePath::singleton(getTupleTypeParameter(arity, i))
-  |
-    arity = n2.(TupleExpr).getNumberOfFields() and
-    n1 = n2.(TupleExpr).getField(i)
-    or
-    arity = n2.(TuplePat).getTupleArity() and
-    n1 = n2.(TuplePat).getField(i)
-  )
-  or
-  exists(BlockExpr be |
-    n1 = be and
-    n2 = be.getStmtList().getTailExpr() and
-    if be.isAsync()
-    then
-      prefix1 = TypePath::singleton(getDynFutureOutputTypeParameter()) and
-      prefix2.isEmpty()
-    else (
-      prefix1.isEmpty() and
-      prefix2.isEmpty()
-    )
-  )
-  or
-  // an array list expression with only one element (such as `[1]`) has type from that element
-  n1 =
-    any(ArrayListExpr ale |
-      ale.getAnExpr() = n2 and
-      ale.getNumberOfExprs() = 1
-    ) and
-  prefix1 = TypePath::singleton(getArrayTypeParameter()) and
-  prefix2.isEmpty()
-  or
-  // an array repeat expression (`[1; 3]`) has the type of the repeat operand
-  n1.(ArrayRepeatExpr).getRepeatOperand() = n2 and
-  prefix1 = TypePath::singleton(getArrayTypeParameter()) and
-  prefix2.isEmpty()
-}
-
-/**
- * Holds if `child` is a child of `parent`, and the Rust compiler applies [least
- * upper bound (LUB) coercion][1] to infer the type of `parent` from the type of
- * `child`.
- *
- * In this case, we want type information to only flow from `child` to `parent`,
- * to avoid (a) either having to model LUB coercions, or (b) risk combinatorial
- * explosion in inferred types.
- *
- * [1]: https://doc.rust-lang.org/reference/type-coercions.html#r-coerce.least-upper-bound
- */
-private predicate lubCoercion(AstNode parent, AstNode child, TypePath prefix) {
-  child = parent.(IfExpr).getABranch() and
-  prefix.isEmpty()
-  or
-  parent =
-    any(MatchExpr me |
-      child = me.getAnArm().getExpr() and
-      me.getNumberOfArms() > 1
-    ) and
-  prefix.isEmpty()
-  or
-  parent =
-    any(ArrayListExpr ale |
-      child = ale.getAnExpr() and
-      ale.getNumberOfExprs() > 1
-    ) and
-  prefix = TypePath::singleton(getArrayTypeParameter())
-  or
-  bodyReturns(parent, child) and
-  strictcount(Expr e | bodyReturns(parent, e)) > 1 and
-  prefix.isEmpty()
-  or
-  parent = any(ClosureExpr ce | not ce.hasRetType() and ce.getClosureBody() = child) and
-  prefix = closureReturnPath()
-  or
-  exists(Struct s |
-    child = [parent.(RangeExpr).getStart(), parent.(RangeExpr).getEnd()] and
-    prefix = TypePath::singleton(TTypeParamTypeParameter(s.getGenericParamList().getATypeParam())) and
-    s = getRangeType(parent)
-  )
-}
-
-private Type inferUnknownTypeFromAnnotation(AstNode n, TypePath path) {
-  inferType(n, path) = TUnknownType() and
-  // Normally, these are coercion sites, but in case a type is unknown we
-  // allow for type information to flow from the type annotation.
-  exists(TypeMention tm | result = tm.getTypeAt(path) |
-    tm = any(LetStmt let | identLetStmt(let, _, n)).getTypeRepr()
-    or
-    tm = any(ClosureExpr ce | n = ce.getBody()).getRetType().getTypeRepr()
-    or
-    tm = getReturnTypeMention(any(Function f | n = f.getBody()))
-  )
-}
-
-/**
- * Holds if the type tree of `n1` at `prefix1` should be equal to the type tree
- * of `n2` at `prefix2`, but type information should only propagate from `n1` to
- * `n2`.
- */
-private predicate typeEqualityAsymmetric(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
-  lubCoercion(n2, n1, prefix2) and
-  prefix1.isEmpty()
-  or
-  exists(AstNode mid, TypePath prefixMid, TypePath suffix |
-    typeEquality(n1, prefixMid, mid, prefix2) or
-    typeEquality(mid, prefix2, n1, prefixMid)
-  |
-    lubCoercion(mid, n2, suffix) and
-    not lubCoercion(mid, n1, _) and
-    prefix1 = prefixMid.append(suffix)
-  )
-  or
-  // When `n2` is `*n1` propagate type information from a raw pointer type
-  // parameter at `n1`. The other direction is handled in
-  // `inferDereferencedExprPtrType`.
-  n1 = n2.(DerefExpr).getExpr() and
-  prefix1 = TypePath::singleton(getPtrTypeParameter()) and
-  prefix2.isEmpty()
-}
-
-pragma[nomagic]
-private Type inferTypeEquality(AstNode n, TypePath path) {
-  exists(TypePath prefix1, AstNode n2, TypePath prefix2, TypePath suffix |
-    result = inferType(n2, prefix2.appendInverse(suffix)) and
-    path = prefix1.append(suffix)
-  |
-    typeEquality(n, prefix1, n2, prefix2)
-    or
-    typeEquality(n2, prefix2, n, prefix1)
-    or
-    typeEqualityAsymmetric(n2, prefix2, n, prefix1)
-  )
-}
-
 pragma[nomagic]
 private TupleType inferTupleRootType(AstNode n) {
   // `typeEquality` handles the non-root cases
@@ -1077,134 +861,6 @@ private class NonAssocCallExpr extends CallExpr {
     result = getCallExprTypeQualifier(this, path, false)
     or
     result = inferType(this.getNodeAt(pos), path)
-  }
-}
-
-/**
- * Provides functionality related to context-based typing of calls.
- */
-private module ContextTyping {
-  /**
-   * Holds if `f` mentions type parameter `tp` at some non-return position,
-   * possibly via a constraint on another mentioned type parameter.
-   */
-  pragma[nomagic]
-  private predicate assocFunctionMentionsTypeParameterAtNonRetPos(
-    ImplOrTraitItemNode i, Function f, TypeParameter tp
-  ) {
-    exists(FunctionPosition nonRetPos |
-      not nonRetPos.isReturn() and
-      not nonRetPos.isTypeQualifier() and
-      tp = getAssocFunctionTypeAt(f, i, nonRetPos, _)
-    )
-    or
-    exists(TypeParameter mid |
-      assocFunctionMentionsTypeParameterAtNonRetPos(i, f, mid) and
-      tp = getATypeParameterConstraint(mid).getTypeAt(_)
-    )
-  }
-
-  /**
-   * Holds if the return type of the function `f` inside `i` at `path` is type
-   * parameter `tp`, and `tp` does not appear in the type of any parameter of
-   * `f`.
-   *
-   * In this case, the context in which `f` is called may be needed to infer
-   * the instantiation of `tp`.
-   *
-   * This covers functions like `Default::default` and `Vec::new`.
-   */
-  pragma[nomagic]
-  private predicate assocFunctionReturnContextTypedAt(
-    ImplOrTraitItemNode i, Function f, FunctionPosition pos, TypePath path, TypeParameter tp
-  ) {
-    pos.isReturn() and
-    tp = getAssocFunctionTypeAt(f, i, pos, path) and
-    not assocFunctionMentionsTypeParameterAtNonRetPos(i, f, tp)
-  }
-
-  /**
-   * A call where the type of the result may have to be inferred from the
-   * context in which the call appears, for example a call like
-   * `Default::default()`.
-   */
-  abstract class ContextTypedCallCand extends AstNode {
-    abstract Type getTypeArgument(TypeArgumentPosition apos, TypePath path);
-
-    predicate hasTypeArgument(TypeArgumentPosition apos) { exists(this.getTypeArgument(apos, _)) }
-
-    /**
-     * Holds if this call resolves to `target` inside `i`, and the return type
-     * at `pos` and `path` may have to be inferred from the context.
-     */
-    bindingset[this, i, target]
-    predicate hasUnknownTypeAt(
-      ImplOrTraitItemNode i, Function target, FunctionPosition pos, TypePath path
-    ) {
-      exists(TypeParameter tp |
-        assocFunctionReturnContextTypedAt(i, target, pos, path, tp) and
-        // check that no explicit type arguments have been supplied for `tp`
-        not exists(TypeArgumentPosition tapos | this.hasTypeArgument(tapos) |
-          exists(int j |
-            j = tapos.asMethodTypeArgumentPosition() and
-            tp = TTypeParamTypeParameter(target.getGenericParamList().getTypeParam(j))
-          )
-          or
-          TTypeParamTypeParameter(tapos.asTypeParam()) = tp
-        ) and
-        not (
-          tp instanceof TSelfTypeParameter and
-          exists(getCallExprTypeQualifier(this, _, _))
-        )
-      )
-    }
-  }
-
-  pragma[nomagic]
-  private predicate hasUnknownTypeAt(AstNode n, TypePath path) {
-    inferType(n, path) = TUnknownType()
-  }
-
-  pragma[nomagic]
-  private predicate hasUnknownType(AstNode n) { hasUnknownTypeAt(n, _) }
-
-  newtype FunctionPositionKind =
-    SelfKind() or
-    ReturnKind() or
-    PositionalKind()
-
-  signature Type inferCallTypeSig(AstNode n, FunctionPositionKind kind, TypePath path);
-
-  /**
-   * Given a predicate `inferCallType` for inferring the type of a call at a given
-   * position, this module exposes the predicate `check`, which wraps the input
-   * predicate and checks that types are only propagated into arguments when they
-   * are context-typed.
-   */
-  module CheckContextTyping<inferCallTypeSig/3 inferCallType> {
-    pragma[nomagic]
-    private Type inferCallNonReturnType(
-      AstNode n, FunctionPositionKind kind, TypePath prefix, TypePath path
-    ) {
-      result = inferCallType(n, kind, path) and
-      hasUnknownType(n) and
-      kind != ReturnKind() and
-      prefix = path.getAPrefix()
-    }
-
-    pragma[nomagic]
-    Type check(AstNode n, TypePath path) {
-      result = inferCallType(n, ReturnKind(), path)
-      or
-      exists(FunctionPositionKind kind, TypePath prefix |
-        result = inferCallNonReturnType(n, kind, prefix, path) and
-        hasUnknownTypeAt(n, prefix)
-      |
-        // Never propagate type information directly into the receiver, since its type
-        // must already have been known in order to resolve the call
-        if kind = SelfKind() then not prefix.isEmpty() else any()
-      )
-    }
   }
 }
 
@@ -2655,6 +2311,893 @@ private module AssocFunctionResolution {
   }
 }
 
+pragma[nomagic]
+private Type getFieldExprLookupType(FieldExpr fe, string name, DerefChain derefChain) {
+  exists(TypePath path |
+    result = inferType(fe.getContainer(), path) and
+    name = fe.getIdentifier().getText() and
+    isComplexRootStripped(path, result)
+  |
+    // TODO: Support full derefence chains as for method calls
+    path.isEmpty() and
+    derefChain = DerefChain::nil()
+    or
+    exists(DerefImplItemNode impl, TypeParamTypeParameter tp |
+      tp = impl.getFirstSelfTypeParameter() and
+      path.getHead() = tp and
+      derefChain = DerefChain::singleton(impl)
+    )
+  )
+}
+
+pragma[nomagic]
+private Type getTupleFieldExprLookupType(FieldExpr fe, int pos, DerefChain derefChain) {
+  exists(string name |
+    result = getFieldExprLookupType(fe, name, derefChain) and
+    pos = name.toInt()
+  )
+}
+
+/** Gets the root type of the reference expression `ref`. */
+pragma[nomagic]
+private Type inferRefExprType(RefExpr ref) {
+  if ref.isRaw()
+  then
+    ref.isMut() and result instanceof PtrMutType
+    or
+    ref.isConst() and result instanceof PtrConstType
+  else
+    if ref.isMut()
+    then result instanceof RefMutType
+    else result instanceof RefSharedType
+}
+
+/** Gets the root type of the reference node `ref`. */
+pragma[nomagic]
+private Type inferRefPatType(AstNode ref) {
+  exists(boolean isMut |
+    ref =
+      any(IdentPat ip |
+        ip.isRef() and
+        if ip.isMut() then isMut = true else isMut = false
+      ).getName()
+    or
+    ref = any(RefPat rp | if rp.isMut() then isMut = true else isMut = false)
+  |
+    result = getRefType(isMut)
+  )
+}
+
+pragma[nomagic]
+private Type inferTryExprType(TryExpr te, TypePath path) {
+  exists(TypeParam tp, TypePath path0 |
+    result = inferType(te.getExpr(), path0) and
+    path0.isCons(TTypeParamTypeParameter(tp), path)
+  |
+    tp = any(ResultEnum r).getGenericParamList().getGenericParam(0)
+    or
+    tp = any(OptionEnum o).getGenericParamList().getGenericParam(0)
+  )
+}
+
+pragma[nomagic]
+private StructType getStrStruct() { result = TDataType(any(Builtins::Str s)) }
+
+pragma[nomagic]
+private Type inferLiteralType(LiteralExpr le, TypePath path, boolean certain) {
+  path.isEmpty() and
+  exists(Builtins::BuiltinType t | result = TDataType(t) |
+    le instanceof CharLiteralExpr and
+    t instanceof Builtins::Char and
+    certain = true
+    or
+    le =
+      any(NumberLiteralExpr ne |
+        t.getName() = ne.getSuffix() and
+        certain = true
+        or
+        // When a number literal has no suffix, the type may depend on the context.
+        // For simplicity, we assume either `i32` or `f64`.
+        not exists(ne.getSuffix()) and
+        certain = false and
+        (
+          ne instanceof IntegerLiteralExpr and
+          t instanceof Builtins::I32
+          or
+          ne instanceof FloatLiteralExpr and
+          t instanceof Builtins::F64
+        )
+      )
+    or
+    le instanceof BooleanLiteralExpr and
+    t instanceof Builtins::Bool and
+    certain = true
+  )
+  or
+  le instanceof StringLiteralExpr and
+  (
+    path.isEmpty() and result instanceof RefSharedType
+    or
+    path = TypePath::singleton(getRefTypeParameter(false)) and
+    result = getStrStruct()
+  ) and
+  certain = true
+}
+
+pragma[nomagic]
+private DynTraitType getFutureTraitType() { result.getTrait() instanceof FutureTrait }
+
+pragma[nomagic]
+private AssociatedTypeTypeParameter getFutureOutputTypeParameter() {
+  result = getAssociatedTypeTypeParameter(any(FutureTrait ft).getOutputType())
+}
+
+pragma[nomagic]
+private DynTraitTypeParameter getDynFutureOutputTypeParameter() {
+  result.getTraitTypeParameter() = getFutureOutputTypeParameter()
+}
+
+pragma[nomagic]
+predicate isUnitBlockExpr(BlockExpr be) {
+  not be.getStmtList().hasTailExpr() and
+  not be = any(Callable c).getBody() and
+  not be.hasLabel()
+}
+
+pragma[nomagic]
+private Type inferBlockExprType(BlockExpr be, TypePath path) {
+  // `typeEquality` handles the non-root case
+  if be instanceof AsyncBlockExpr
+  then (
+    path.isEmpty() and
+    result = getFutureTraitType()
+    or
+    isUnitBlockExpr(be) and
+    path = TypePath::singleton(getDynFutureOutputTypeParameter()) and
+    result instanceof UnitType
+  ) else (
+    isUnitBlockExpr(be) and
+    path.isEmpty() and
+    result instanceof UnitType
+  )
+}
+
+pragma[nomagic]
+private predicate exprHasUnitType(Expr e) {
+  e = any(IfExpr ie | not ie.hasElse())
+  or
+  e instanceof WhileExpr
+  or
+  e instanceof ForExpr
+}
+
+final private class AwaitTarget extends Expr {
+  AwaitTarget() { this = any(AwaitExpr ae).getExpr() }
+
+  Type getTypeAt(TypePath path) { result = inferType(this, path) }
+}
+
+private module AwaitSatisfiesTypeInput implements SatisfiesTypeInputSig<AwaitTarget> {
+  pragma[nomagic]
+  predicate relevantConstraint(AwaitTarget term, Type constraint) {
+    exists(term) and
+    constraint.(TraitType).getTrait() instanceof FutureTrait
+  }
+}
+
+private module AwaitSatisfiesType = SatisfiesType<AwaitTarget, AwaitSatisfiesTypeInput>;
+
+pragma[nomagic]
+private Type inferAwaitExprType(AstNode n, TypePath path) {
+  exists(TypePath exprPath |
+    AwaitSatisfiesType::satisfiesConstraint(n.(AwaitExpr).getExpr(), _, exprPath, result) and
+    exprPath.isCons(getFutureOutputTypeParameter(), path)
+  )
+}
+
+/**
+ * Gets the root type of the array expression `ae`.
+ */
+pragma[nomagic]
+private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result instanceof ArrayType }
+
+/**
+ * Gets the root type of the range expression `re`.
+ */
+pragma[nomagic]
+private Type inferRangeExprType(RangeExpr re) { result = TDataType(getRangeType(re)) }
+
+pragma[nomagic]
+private Type getInferredDerefType(DerefExpr de, TypePath path) { result = inferType(de, path) }
+
+pragma[nomagic]
+private PtrType getInferredDerefExprPtrType(DerefExpr de) { result = inferType(de.getExpr()) }
+
+/**
+ * Gets the inferred type of `n` at `path` when `n` occurs in a dereference
+ * expression `*n` and when `n` is known to have a raw pointer type.
+ *
+ * The other direction is handled in `typeEqualityAsymmetric`.
+ */
+private Type inferDereferencedExprPtrType(AstNode n, TypePath path) {
+  exists(DerefExpr de, PtrType type, TypePath suffix |
+    de.getExpr() = n and
+    type = getInferredDerefExprPtrType(de) and
+    result = getInferredDerefType(de, suffix) and
+    path = TypePath::cons(type.getPositionalTypeParameter(0), suffix)
+  )
+}
+
+/**
+ * A matching configuration for resolving types of deconstruction patterns like
+ * `let Foo { bar } = ...` or `let Some(x) = ...`.
+ */
+private module DeconstructionPatMatchingInput implements MatchingInputSig {
+  import FunctionPositionMatchingInput
+
+  class Declaration = ConstructionMatchingInput::Declaration;
+
+  class Access extends Pat instanceof PathAstNode {
+    Access() { this instanceof TupleStructPat or this instanceof StructPat }
+
+    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
+
+    AstNode getNodeAt(AccessPosition apos) {
+      this =
+        any(StructPat sp |
+          result =
+            sp.getPatField(pragma[only_bind_into](sp.getNthStructField(apos.asPosition())
+                  .getName()
+                  .getText())).getPat()
+        )
+      or
+      result = this.(TupleStructPat).getField(apos.asPosition())
+      or
+      result = this and
+      apos.isReturn()
+    }
+
+    Type getInferredType(AccessPosition apos, TypePath path) {
+      result = inferType(this.getNodeAt(apos), path)
+      or
+      // The struct/enum type is supplied explicitly as a type qualifier, e.g.
+      // `let Foo::<Bar>::Variant { ... } = ...` or
+      // `let Option::<Foo>::Some(x) = ...`.
+      apos.isReturn() and
+      result = super.getPath().(TypeMention).getTypeAt(path)
+    }
+
+    Declaration getTarget() { result = resolvePath(super.getPath()) }
+  }
+}
+
+private module DeconstructionPatMatching = Matching<DeconstructionPatMatchingInput>;
+
+/**
+ * Gets the type of `n` at `path`, where `n` is a pattern for a constructor,
+ * either a struct pattern or a tuple-struct pattern.
+ */
+pragma[nomagic]
+private Type inferDeconstructionPatType(AstNode n, TypePath path) {
+  exists(DeconstructionPatMatchingInput::Access a, FunctionPosition apos |
+    n = a.getNodeAt(apos) and
+    result = DeconstructionPatMatching::inferAccessType(a, apos, path)
+  )
+}
+
+final private class ForIterableExpr extends Expr {
+  ForIterableExpr() { this = any(ForExpr fe).getIterable() }
+
+  Type getTypeAt(TypePath path) { result = inferType(this, path) }
+}
+
+private module ForIterableSatisfiesTypeInput implements SatisfiesTypeInputSig<ForIterableExpr> {
+  predicate relevantConstraint(ForIterableExpr term, Type constraint) {
+    exists(term) and
+    exists(Trait t | t = constraint.(TraitType).getTrait() |
+      // TODO: Remove the line below once we can handle the `impl<I: Iterator> IntoIterator for I` implementation
+      t instanceof IteratorTrait or
+      t instanceof IntoIteratorTrait
+    )
+  }
+}
+
+pragma[nomagic]
+private AssociatedTypeTypeParameter getIteratorItemTypeParameter() {
+  result = getAssociatedTypeTypeParameter(any(IteratorTrait t).getItemType())
+}
+
+pragma[nomagic]
+private AssociatedTypeTypeParameter getIntoIteratorItemTypeParameter() {
+  result = getAssociatedTypeTypeParameter(any(IntoIteratorTrait t).getItemType())
+}
+
+private module ForIterableSatisfiesType =
+  SatisfiesType<ForIterableExpr, ForIterableSatisfiesTypeInput>;
+
+pragma[nomagic]
+private Type inferForLoopExprType(AstNode n, TypePath path) {
+  // type of iterable -> type of pattern (loop variable)
+  exists(ForExpr fe, TypePath exprPath, AssociatedTypeTypeParameter tp |
+    n = fe.getPat() and
+    ForIterableSatisfiesType::satisfiesConstraint(fe.getIterable(), _, exprPath, result) and
+    exprPath.isCons(tp, path)
+  |
+    tp = getIntoIteratorItemTypeParameter()
+    or
+    // TODO: Remove once we can handle the `impl<I: Iterator> IntoIterator for I` implementation
+    tp = getIteratorItemTypeParameter() and
+    inferType(fe.getIterable()) != getArrayTypeParameter()
+  )
+}
+
+pragma[nomagic]
+private Type inferClosureExprType(AstNode n, TypePath path) {
+  exists(ClosureExpr ce |
+    n = ce and
+    (
+      path = TypePath::singleton(TDynTraitTypeParameter(_, any(FnTrait t).getTypeParam())) and
+      result.(TupleType).getArity() = ce.getNumberOfParams()
+      or
+      exists(TypePath path0 |
+        result = ce.getRetType().getTypeRepr().(TypeMention).getTypeAt(path0) and
+        path = closureReturnPath().append(path0)
+      )
+    )
+    or
+    exists(Param p |
+      p = ce.getAParam() and
+      not p.hasTypeRepr() and
+      n = p.getPat() and
+      result = TUnknownType() and
+      path.isEmpty()
+    )
+  )
+}
+
+pragma[nomagic]
+private TupleType inferArgList(ArgList args, TypePath path) {
+  exists(CallExprImpl::DynamicCallExpr dce |
+    args = dce.getArgList() and
+    result.getArity() = dce.getNumberOfSyntacticArguments() and
+    path.isEmpty()
+  )
+}
+
+pragma[nomagic]
+private Type inferCastExprType(CastExpr ce, TypePath path) {
+  result = ce.getTypeRepr().(TypeMention).getTypeAt(path)
+}
+
+/** Holds if `n` is implicitly dereferenced and/or borrowed. */
+cached
+predicate implicitDerefChainBorrow(Expr e, DerefChain derefChain, boolean borrow) {
+  Stages::TypeInferenceStage::ref() and
+  exists(BorrowKind bk |
+    any(AssocFunctionResolution::AssocFunctionCall afc)
+        .argumentHasImplicitDerefChainBorrow(e, derefChain, bk) and
+    if bk.isNoBorrow() then borrow = false else borrow = true
+  )
+  or
+  e =
+    any(FieldExpr fe |
+      exists(resolveStructFieldExpr(fe, derefChain))
+      or
+      exists(resolveTupleFieldExpr(fe, derefChain))
+    ).getContainer() and
+  not derefChain.isEmpty() and
+  borrow = false
+}
+
+/**
+ * Gets an item (function or tuple struct/variant) that `call` resolves to, if
+ * any.
+ *
+ * The parameter `dispatch` is `true` if and only if the resolved target is a
+ * trait item because a precise target could not be determined from the
+ * types (for instance in the presence of generics or `dyn` types)
+ */
+cached
+Addressable resolveCallTarget(InvocationExpr call, boolean dispatch) {
+  dispatch = false and
+  result = call.(NonAssocCallExpr).resolveCallTargetViaPathResolution()
+  or
+  exists(ImplOrTraitItemNode i |
+    i instanceof TraitItemNode and dispatch = true
+    or
+    i instanceof ImplItemNode and dispatch = false
+  |
+    result = call.(AssocFunctionResolution::AssocFunctionCall).resolveCallTarget(i, _, _, _) and
+    not call instanceof CallExprImpl::DynamicCallExpr and
+    not i instanceof Builtins::BuiltinImpl
+  )
+}
+
+/**
+ * Gets the struct field that the field expression `fe` resolves to, if any.
+ */
+cached
+StructField resolveStructFieldExpr(FieldExpr fe, DerefChain derefChain) {
+  exists(string name, DataType ty |
+    ty = getFieldExprLookupType(fe, pragma[only_bind_into](name), derefChain)
+  |
+    result = ty.(StructType).getTypeItem().getStructField(pragma[only_bind_into](name)) or
+    result = ty.(UnionType).getTypeItem().getStructField(pragma[only_bind_into](name))
+  )
+}
+
+/**
+ * Gets the tuple field that the field expression `fe` resolves to, if any.
+ */
+cached
+TupleField resolveTupleFieldExpr(FieldExpr fe, DerefChain derefChain) {
+  exists(int i |
+    result =
+      getTupleFieldExprLookupType(fe, pragma[only_bind_into](i), derefChain)
+          .(StructType)
+          .getTypeItem()
+          .getTupleField(pragma[only_bind_into](i))
+  )
+}
+
+/** Provides predicates for debugging the type inference implementation. */
+private module Debug {
+  Locatable getRelevantLocatable() {
+    exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+      result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+      filepath.matches("%/main.rs") and
+      startline = 103
+    )
+  }
+
+  Type debugInferType(AstNode n, TypePath path) {
+    n = getRelevantLocatable() and
+    result = inferType(n, path)
+  }
+
+  Addressable debugResolveCallTarget(InvocationExpr c, boolean dispatch) {
+    c = getRelevantLocatable() and
+    result = resolveCallTarget(c, dispatch)
+  }
+
+  predicate debugConditionSatisfiesConstraint(
+    TypeAbstraction abs, TypeMention condition, TypeMention constraint, boolean transitive
+  ) {
+    abs = getRelevantLocatable() and
+    Input2::conditionSatisfiesConstraint(abs, condition, constraint, transitive)
+  }
+
+  predicate debugInferShorthandSelfType(ShorthandSelfParameterMention self, TypePath path, Type t) {
+    self = getRelevantLocatable() and
+    t = self.getTypeAt(path)
+  }
+
+  predicate debugInferFunctionCallType(AstNode n, TypePath path, Type t) {
+    n = getRelevantLocatable() and
+    t = inferFunctionCallType(n, path)
+  }
+
+  predicate debugInferConstructionType(AstNode n, TypePath path, Type t) {
+    n = getRelevantLocatable() and
+    t = inferConstructionType(n, path)
+  }
+
+  predicate debugTypeMention(TypeMention tm, TypePath path, Type type) {
+    tm = getRelevantLocatable() and
+    tm.getTypeAt(path) = type
+  }
+
+  Type debugInferAnnotatedType(AstNode n, TypePath path) {
+    n = getRelevantLocatable() and
+    result = inferAnnotatedType(n, path)
+  }
+
+  pragma[nomagic]
+  private int countTypesAtPath(AstNode n, TypePath path, Type t) {
+    t = inferType(n, path) and
+    result = strictcount(Type t0 | t0 = inferType(n, path))
+  }
+
+  pragma[nomagic]
+  private predicate atLimit(AstNode n) {
+    exists(TypePath path0 | exists(inferType(n, path0)) and path0.length() >= getTypePathLimit())
+  }
+
+  Type debugInferTypeForNodeAtLimit(AstNode n, TypePath path) {
+    result = inferType(n, path) and
+    atLimit(n)
+  }
+
+  predicate countTypesForNodeAtLimit(AstNode n, int c) {
+    n = getRelevantLocatable() and
+    c = strictcount(Type t, TypePath path | t = debugInferTypeForNodeAtLimit(n, path))
+  }
+
+  predicate maxTypes(AstNode n, TypePath path, Type t, int c) {
+    c = countTypesAtPath(n, path, t) and
+    c = max(countTypesAtPath(_, _, _))
+  }
+
+  pragma[nomagic]
+  private predicate typePathLength(AstNode n, TypePath path, Type t, int len) {
+    t = inferType(n, path) and
+    len = path.length()
+  }
+
+  predicate maxTypePath(AstNode n, TypePath path, Type t, int len) {
+    typePathLength(n, path, t, len) and
+    len = max(int i | typePathLength(_, _, _, i))
+  }
+
+  pragma[nomagic]
+  private int countTypePaths(AstNode n, TypePath path, Type t) {
+    t = inferType(n, path) and
+    result = strictcount(TypePath path0, Type t0 | t0 = inferType(n, path0))
+  }
+
+  predicate maxTypePaths(AstNode n, TypePath path, Type t, int c) {
+    c = countTypePaths(n, path, t) and
+    c = max(countTypePaths(_, _, _))
+  }
+
+  Type debugInferCertainType(AstNode n, TypePath path) {
+    n = getRelevantLocatable() and
+    result = CertainTypeInference::inferCertainType(n, path)
+  }
+
+  Type debugInferCertainNonUniqueType(AstNode n, TypePath path) {
+    n = getRelevantLocatable() and
+    Consistency::nonUniqueCertainType(n, path, result)
+  }
+}
+
+////////////
+// TEMPORARILY MOVED HERE
+////////////
+/**
+ * Provides functionality related to context-based typing of calls.
+ */
+private module ContextTyping {
+  /**
+   * Holds if `f` mentions type parameter `tp` at some non-return position,
+   * possibly via a constraint on another mentioned type parameter.
+   */
+  pragma[nomagic]
+  private predicate assocFunctionMentionsTypeParameterAtNonRetPos(
+    ImplOrTraitItemNode i, Function f, TypeParameter tp
+  ) {
+    exists(FunctionPosition nonRetPos |
+      not nonRetPos.isReturn() and
+      not nonRetPos.isTypeQualifier() and
+      tp = getAssocFunctionTypeAt(f, i, nonRetPos, _)
+    )
+    or
+    exists(TypeParameter mid |
+      assocFunctionMentionsTypeParameterAtNonRetPos(i, f, mid) and
+      tp = getATypeParameterConstraint(mid).getTypeAt(_)
+    )
+  }
+
+  /**
+   * Holds if the return type of the function `f` inside `i` at `path` is type
+   * parameter `tp`, and `tp` does not appear in the type of any parameter of
+   * `f`.
+   *
+   * In this case, the context in which `f` is called may be needed to infer
+   * the instantiation of `tp`.
+   *
+   * This covers functions like `Default::default` and `Vec::new`.
+   */
+  pragma[nomagic]
+  private predicate assocFunctionReturnContextTypedAt(
+    ImplOrTraitItemNode i, Function f, FunctionPosition pos, TypePath path, TypeParameter tp
+  ) {
+    pos.isReturn() and
+    tp = getAssocFunctionTypeAt(f, i, pos, path) and
+    not assocFunctionMentionsTypeParameterAtNonRetPos(i, f, tp)
+  }
+
+  /**
+   * A call where the type of the result may have to be inferred from the
+   * context in which the call appears, for example a call like
+   * `Default::default()`.
+   */
+  abstract class ContextTypedCallCand extends AstNode {
+    abstract Type getTypeArgument(TypeArgumentPosition apos, TypePath path);
+
+    predicate hasTypeArgument(TypeArgumentPosition apos) { exists(this.getTypeArgument(apos, _)) }
+
+    /**
+     * Holds if this call resolves to `target` inside `i`, and the return type
+     * at `pos` and `path` may have to be inferred from the context.
+     */
+    bindingset[this, i, target]
+    predicate hasUnknownTypeAt(
+      ImplOrTraitItemNode i, Function target, FunctionPosition pos, TypePath path
+    ) {
+      exists(TypeParameter tp |
+        assocFunctionReturnContextTypedAt(i, target, pos, path, tp) and
+        // check that no explicit type arguments have been supplied for `tp`
+        not exists(TypeArgumentPosition tapos | this.hasTypeArgument(tapos) |
+          exists(int j |
+            j = tapos.asMethodTypeArgumentPosition() and
+            tp = TTypeParamTypeParameter(target.getGenericParamList().getTypeParam(j))
+          )
+          or
+          TTypeParamTypeParameter(tapos.asTypeParam()) = tp
+        ) and
+        not (
+          tp instanceof TSelfTypeParameter and
+          exists(getCallExprTypeQualifier(this, _, _))
+        )
+      )
+    }
+  }
+
+  pragma[nomagic]
+  private predicate hasUnknownTypeAt(AstNode n, TypePath path) {
+    inferType(n, path) = TUnknownType()
+  }
+
+  pragma[nomagic]
+  private predicate hasUnknownType(AstNode n) { hasUnknownTypeAt(n, _) }
+
+  newtype FunctionPositionKind =
+    SelfKind() or
+    ReturnKind() or
+    PositionalKind()
+
+  signature Type inferCallTypeSig(AstNode n, FunctionPositionKind kind, TypePath path);
+
+  /**
+   * Given a predicate `inferCallType` for inferring the type of a call at a given
+   * position, this module exposes the predicate `check`, which wraps the input
+   * predicate and checks that types are only propagated into arguments when they
+   * are context-typed.
+   */
+  module CheckContextTyping<inferCallTypeSig/3 inferCallType> {
+    pragma[nomagic]
+    private Type inferCallNonReturnType(
+      AstNode n, FunctionPositionKind kind, TypePath prefix, TypePath path
+    ) {
+      result = inferCallType(n, kind, path) and
+      hasUnknownType(n) and
+      kind != ReturnKind() and
+      prefix = path.getAPrefix()
+    }
+
+    pragma[nomagic]
+    Type check(AstNode n, TypePath path) {
+      result = inferCallType(n, ReturnKind(), path)
+      or
+      exists(FunctionPositionKind kind, TypePath prefix |
+        result = inferCallNonReturnType(n, kind, prefix, path) and
+        hasUnknownTypeAt(n, prefix)
+      |
+        // Never propagate type information directly into the receiver, since its type
+        // must already have been known in order to resolve the call
+        if kind = SelfKind() then not prefix.isEmpty() else any()
+      )
+    }
+  }
+}
+
+private predicate bodyReturns(Expr body, Expr e) {
+  exists(ReturnExpr re, Callable c |
+    e = re.getExpr() and
+    c = re.getEnclosingCallable() and
+    body = c.getBody()
+  )
+}
+
+/**
+ * Holds if the type tree of `n1` at `prefix1` should be equal to the type tree
+ * of `n2` at `prefix2` and type information should propagate in both directions
+ * through the type equality.
+ */
+private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+  CertainTypeInference::certainTypeEquality(n1, prefix1, n2, prefix2)
+  or
+  prefix1.isEmpty() and
+  prefix2.isEmpty() and
+  (
+    exists(LetStmt let |
+      let.getPat() = n1 and
+      let.getInitializer() = n2
+    )
+    or
+    n2 =
+      any(MatchExpr me |
+        n1 = me.getAnArm().getExpr() and
+        me.getNumberOfArms() = 1
+      )
+    or
+    exists(LetExpr let |
+      n1 = let.getScrutinee() and
+      n2 = let.getPat()
+    )
+    or
+    exists(MatchExpr me |
+      n1 = me.getScrutinee() and
+      n2 = me.getAnArm().getPat()
+    )
+    or
+    n1 = n2.(OrPat).getAPat()
+    or
+    n1 = n2.(ParenPat).getPat()
+    or
+    n1 = n2.(LiteralPat).getLiteral()
+    or
+    exists(BreakExpr break |
+      break.getExpr() = n1 and
+      break.getTarget() = n2.(LoopExpr)
+    )
+    or
+    exists(AssignmentExpr be |
+      n1 = be.getLhs() and
+      n2 = be.getRhs()
+    )
+    or
+    n1 = n2.(MacroExpr).getMacroCall().getMacroCallExpansion() and
+    not isPanicMacroCall(n2)
+    or
+    n1 = n2.(MacroPat).getMacroCall().getMacroCallExpansion()
+    or
+    bodyReturns(n1, n2) and
+    strictcount(Expr e | bodyReturns(n1, e)) = 1
+  )
+  or
+  n2 =
+    any(RefExpr re |
+      n1 = re.getExpr() and
+      prefix1.isEmpty() and
+      prefix2 = TypePath::singleton(inferRefExprType(re).getPositionalTypeParameter(0))
+    )
+  or
+  n2 =
+    any(RefPat rp |
+      n1 = rp.getPat() and
+      prefix1.isEmpty() and
+      exists(boolean isMutable | if rp.isMut() then isMutable = true else isMutable = false |
+        prefix2 = TypePath::singleton(getRefTypeParameter(isMutable))
+      )
+    )
+  or
+  exists(int i, int arity |
+    prefix1.isEmpty() and
+    prefix2 = TypePath::singleton(getTupleTypeParameter(arity, i))
+  |
+    arity = n2.(TupleExpr).getNumberOfFields() and
+    n1 = n2.(TupleExpr).getField(i)
+    or
+    arity = n2.(TuplePat).getTupleArity() and
+    n1 = n2.(TuplePat).getField(i)
+  )
+  or
+  exists(BlockExpr be |
+    n1 = be and
+    n2 = be.getStmtList().getTailExpr() and
+    if be.isAsync()
+    then
+      prefix1 = TypePath::singleton(getDynFutureOutputTypeParameter()) and
+      prefix2.isEmpty()
+    else (
+      prefix1.isEmpty() and
+      prefix2.isEmpty()
+    )
+  )
+  or
+  // an array list expression with only one element (such as `[1]`) has type from that element
+  n1 =
+    any(ArrayListExpr ale |
+      ale.getAnExpr() = n2 and
+      ale.getNumberOfExprs() = 1
+    ) and
+  prefix1 = TypePath::singleton(getArrayTypeParameter()) and
+  prefix2.isEmpty()
+  or
+  // an array repeat expression (`[1; 3]`) has the type of the repeat operand
+  n1.(ArrayRepeatExpr).getRepeatOperand() = n2 and
+  prefix1 = TypePath::singleton(getArrayTypeParameter()) and
+  prefix2.isEmpty()
+}
+
+/**
+ * Holds if `child` is a child of `parent`, and the Rust compiler applies [least
+ * upper bound (LUB) coercion][1] to infer the type of `parent` from the type of
+ * `child`.
+ *
+ * In this case, we want type information to only flow from `child` to `parent`,
+ * to avoid (a) either having to model LUB coercions, or (b) risk combinatorial
+ * explosion in inferred types.
+ *
+ * [1]: https://doc.rust-lang.org/reference/type-coercions.html#r-coerce.least-upper-bound
+ */
+private predicate lubCoercion(AstNode parent, AstNode child, TypePath prefix) {
+  child = parent.(IfExpr).getABranch() and
+  prefix.isEmpty()
+  or
+  parent =
+    any(MatchExpr me |
+      child = me.getAnArm().getExpr() and
+      me.getNumberOfArms() > 1
+    ) and
+  prefix.isEmpty()
+  or
+  parent =
+    any(ArrayListExpr ale |
+      child = ale.getAnExpr() and
+      ale.getNumberOfExprs() > 1
+    ) and
+  prefix = TypePath::singleton(getArrayTypeParameter())
+  or
+  bodyReturns(parent, child) and
+  strictcount(Expr e | bodyReturns(parent, e)) > 1 and
+  prefix.isEmpty()
+  or
+  parent = any(ClosureExpr ce | not ce.hasRetType() and ce.getClosureBody() = child) and
+  prefix = closureReturnPath()
+  or
+  exists(Struct s |
+    child = [parent.(RangeExpr).getStart(), parent.(RangeExpr).getEnd()] and
+    prefix = TypePath::singleton(TTypeParamTypeParameter(s.getGenericParamList().getATypeParam())) and
+    s = getRangeType(parent)
+  )
+}
+
+private Type inferUnknownTypeFromAnnotation(AstNode n, TypePath path) {
+  inferType(n, path) = TUnknownType() and
+  // Normally, these are coercion sites, but in case a type is unknown we
+  // allow for type information to flow from the type annotation.
+  exists(TypeMention tm | result = tm.getTypeAt(path) |
+    tm = any(LetStmt let | identLetStmt(let, _, n)).getTypeRepr()
+    or
+    tm = any(ClosureExpr ce | n = ce.getBody()).getRetType().getTypeRepr()
+    or
+    tm = getReturnTypeMention(any(Function f | n = f.getBody()))
+  )
+}
+
+/**
+ * Holds if the type tree of `n1` at `prefix1` should be equal to the type tree
+ * of `n2` at `prefix2`, but type information should only propagate from `n1` to
+ * `n2`.
+ */
+private predicate typeEqualityAsymmetric(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+  lubCoercion(n2, n1, prefix2) and
+  prefix1.isEmpty()
+  or
+  exists(AstNode mid, TypePath prefixMid, TypePath suffix |
+    typeEquality(n1, prefixMid, mid, prefix2) or
+    typeEquality(mid, prefix2, n1, prefixMid)
+  |
+    lubCoercion(mid, n2, suffix) and
+    not lubCoercion(mid, n1, _) and
+    prefix1 = prefixMid.append(suffix)
+  )
+  or
+  // When `n2` is `*n1` propagate type information from a raw pointer type
+  // parameter at `n1`. The other direction is handled in
+  // `inferDereferencedExprPtrType`.
+  n1 = n2.(DerefExpr).getExpr() and
+  prefix1 = TypePath::singleton(getPtrTypeParameter()) and
+  prefix2.isEmpty()
+}
+
+pragma[nomagic]
+private Type inferTypeEquality(AstNode n, TypePath path) {
+  exists(TypePath prefix1, AstNode n2, TypePath prefix2, TypePath suffix |
+    result = inferType(n2, prefix2.appendInverse(suffix)) and
+    path = prefix1.append(suffix)
+  |
+    typeEquality(n, prefix1, n2, prefix2)
+    or
+    typeEquality(n2, prefix2, n, prefix1)
+    or
+    typeEqualityAsymmetric(n2, prefix2, n, prefix1)
+  )
+}
+
 /**
  * A matching configuration for resolving types of function call expressions
  * like `foo.bar(baz)` and `Foo::bar(baz)`.
@@ -3262,33 +3805,6 @@ private Type inferOperationTypePreCheck(
 private predicate inferOperationType =
   ContextTyping::CheckContextTyping<inferOperationTypePreCheck/3>::check/2;
 
-pragma[nomagic]
-private Type getFieldExprLookupType(FieldExpr fe, string name, DerefChain derefChain) {
-  exists(TypePath path |
-    result = inferType(fe.getContainer(), path) and
-    name = fe.getIdentifier().getText() and
-    isComplexRootStripped(path, result)
-  |
-    // TODO: Support full derefence chains as for method calls
-    path.isEmpty() and
-    derefChain = DerefChain::nil()
-    or
-    exists(DerefImplItemNode impl, TypeParamTypeParameter tp |
-      tp = impl.getFirstSelfTypeParameter() and
-      path.getHead() = tp and
-      derefChain = DerefChain::singleton(impl)
-    )
-  )
-}
-
-pragma[nomagic]
-private Type getTupleFieldExprLookupType(FieldExpr fe, int pos, DerefChain derefChain) {
-  exists(string name |
-    result = getFieldExprLookupType(fe, name, derefChain) and
-    pos = name.toInt()
-  )
-}
-
 /**
  * A matching configuration for resolving types of field expressions like `x.field`.
  */
@@ -3441,609 +3957,92 @@ private Type inferFieldExprType(AstNode n, TypePath path) {
   )
 }
 
-/** Gets the root type of the reference expression `ref`. */
-pragma[nomagic]
-private Type inferRefExprType(RefExpr ref) {
-  if ref.isRaw()
-  then
-    ref.isMut() and result instanceof PtrMutType
-    or
-    ref.isConst() and result instanceof PtrConstType
-  else
-    if ref.isMut()
-    then result instanceof RefMutType
-    else result instanceof RefSharedType
-}
-
-/** Gets the root type of the reference node `ref`. */
-pragma[nomagic]
-private Type inferRefPatType(AstNode ref) {
-  exists(boolean isMut |
-    ref =
-      any(IdentPat ip |
-        ip.isRef() and
-        if ip.isMut() then isMut = true else isMut = false
-      ).getName()
-    or
-    ref = any(RefPat rp | if rp.isMut() then isMut = true else isMut = false)
-  |
-    result = getRefType(isMut)
-  )
-}
-
-pragma[nomagic]
-private Type inferTryExprType(TryExpr te, TypePath path) {
-  exists(TypeParam tp, TypePath path0 |
-    result = inferType(te.getExpr(), path0) and
-    path0.isCons(TTypeParamTypeParameter(tp), path)
-  |
-    tp = any(ResultEnum r).getGenericParamList().getGenericParam(0)
-    or
-    tp = any(OptionEnum o).getGenericParamList().getGenericParam(0)
-  )
-}
-
-pragma[nomagic]
-private StructType getStrStruct() { result = TDataType(any(Builtins::Str s)) }
-
-pragma[nomagic]
-private Type inferLiteralType(LiteralExpr le, TypePath path, boolean certain) {
-  path.isEmpty() and
-  exists(Builtins::BuiltinType t | result = TDataType(t) |
-    le instanceof CharLiteralExpr and
-    t instanceof Builtins::Char and
-    certain = true
-    or
-    le =
-      any(NumberLiteralExpr ne |
-        t.getName() = ne.getSuffix() and
-        certain = true
-        or
-        // When a number literal has no suffix, the type may depend on the context.
-        // For simplicity, we assume either `i32` or `f64`.
-        not exists(ne.getSuffix()) and
-        certain = false and
-        (
-          ne instanceof IntegerLiteralExpr and
-          t instanceof Builtins::I32
-          or
-          ne instanceof FloatLiteralExpr and
-          t instanceof Builtins::F64
-        )
-      )
-    or
-    le instanceof BooleanLiteralExpr and
-    t instanceof Builtins::Bool and
-    certain = true
-  )
-  or
-  le instanceof StringLiteralExpr and
-  (
-    path.isEmpty() and result instanceof RefSharedType
-    or
-    path = TypePath::singleton(getRefTypeParameter(false)) and
-    result = getStrStruct()
-  ) and
-  certain = true
-}
-
-pragma[nomagic]
-private DynTraitType getFutureTraitType() { result.getTrait() instanceof FutureTrait }
-
-pragma[nomagic]
-private AssociatedTypeTypeParameter getFutureOutputTypeParameter() {
-  result = getAssociatedTypeTypeParameter(any(FutureTrait ft).getOutputType())
-}
-
-pragma[nomagic]
-private DynTraitTypeParameter getDynFutureOutputTypeParameter() {
-  result.getTraitTypeParameter() = getFutureOutputTypeParameter()
-}
-
-pragma[nomagic]
-predicate isUnitBlockExpr(BlockExpr be) {
-  not be.getStmtList().hasTailExpr() and
-  not be = any(Callable c).getBody() and
-  not be.hasLabel()
-}
-
-pragma[nomagic]
-private Type inferBlockExprType(BlockExpr be, TypePath path) {
-  // `typeEquality` handles the non-root case
-  if be instanceof AsyncBlockExpr
-  then (
-    path.isEmpty() and
-    result = getFutureTraitType()
-    or
-    isUnitBlockExpr(be) and
-    path = TypePath::singleton(getDynFutureOutputTypeParameter()) and
-    result instanceof UnitType
-  ) else (
-    isUnitBlockExpr(be) and
-    path.isEmpty() and
-    result instanceof UnitType
-  )
-}
-
-pragma[nomagic]
-private predicate exprHasUnitType(Expr e) {
-  e = any(IfExpr ie | not ie.hasElse())
-  or
-  e instanceof WhileExpr
-  or
-  e instanceof ForExpr
-}
-
-final private class AwaitTarget extends Expr {
-  AwaitTarget() { this = any(AwaitExpr ae).getExpr() }
-
-  Type getTypeAt(TypePath path) { result = inferType(this, path) }
-}
-
-private module AwaitSatisfiesTypeInput implements SatisfiesTypeInputSig<AwaitTarget> {
-  pragma[nomagic]
-  predicate relevantConstraint(AwaitTarget term, Type constraint) {
-    exists(term) and
-    constraint.(TraitType).getTrait() instanceof FutureTrait
-  }
-}
-
-private module AwaitSatisfiesType = SatisfiesType<AwaitTarget, AwaitSatisfiesTypeInput>;
-
-pragma[nomagic]
-private Type inferAwaitExprType(AstNode n, TypePath path) {
-  exists(TypePath exprPath |
-    AwaitSatisfiesType::satisfiesConstraint(n.(AwaitExpr).getExpr(), _, exprPath, result) and
-    exprPath.isCons(getFutureOutputTypeParameter(), path)
-  )
-}
-
 /**
- * Gets the root type of the array expression `ae`.
- */
-pragma[nomagic]
-private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result instanceof ArrayType }
-
-/**
- * Gets the root type of the range expression `re`.
- */
-pragma[nomagic]
-private Type inferRangeExprType(RangeExpr re) { result = TDataType(getRangeType(re)) }
-
-pragma[nomagic]
-private Type getInferredDerefType(DerefExpr de, TypePath path) { result = inferType(de, path) }
-
-pragma[nomagic]
-private PtrType getInferredDerefExprPtrType(DerefExpr de) { result = inferType(de.getExpr()) }
-
-/**
- * Gets the inferred type of `n` at `path` when `n` occurs in a dereference
- * expression `*n` and when `n` is known to have a raw pointer type.
+ * Gets a type at `path` that `n` infers to, if any.
  *
- * The other direction is handled in `typeEqualityAsymmetric`.
+ * The type inference implementation works by computing all possible types, so
+ * the result is not necessarily unique. For example, in
+ *
+ * ```rust
+ * trait MyTrait {
+ *     fn foo(&self) -> &Self;
+ *
+ *     fn bar(&self) -> &Self {
+ *        self.foo()
+ *     }
+ * }
+ *
+ * struct MyStruct;
+ *
+ * impl MyTrait for MyStruct {
+ *     fn foo(&self) -> &MyStruct {
+ *         self
+ *     }
+ * }
+ *
+ * fn baz() {
+ *     let x = MyStruct;
+ *     x.bar();
+ * }
+ * ```
+ *
+ * the type inference engine will roughly make the following deductions:
+ *
+ * 1. `MyStruct` has type `MyStruct`.
+ * 2. `x` has type `MyStruct` (via 1.).
+ * 3. The return type of `bar` is `&Self`.
+ * 3. `x.bar()` has type `&MyStruct` (via 2 and 3, by matching the implicit `Self`
+ *    type parameter with `MyStruct`.).
+ * 4. The return type of `bar` is `&MyTrait`.
+ * 5. `x.bar()` has type `&MyTrait` (via 2 and 4).
  */
-private Type inferDereferencedExprPtrType(AstNode n, TypePath path) {
-  exists(DerefExpr de, PtrType type, TypePath suffix |
-    de.getExpr() = n and
-    type = getInferredDerefExprPtrType(de) and
-    result = getInferredDerefType(de, suffix) and
-    path = TypePath::cons(type.getPositionalTypeParameter(0), suffix)
-  )
-}
-
-/**
- * A matching configuration for resolving types of deconstruction patterns like
- * `let Foo { bar } = ...` or `let Some(x) = ...`.
- */
-private module DeconstructionPatMatchingInput implements MatchingInputSig {
-  import FunctionPositionMatchingInput
-
-  class Declaration = ConstructionMatchingInput::Declaration;
-
-  class Access extends Pat instanceof PathAstNode {
-    Access() { this instanceof TupleStructPat or this instanceof StructPat }
-
-    Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
-
-    AstNode getNodeAt(AccessPosition apos) {
-      this =
-        any(StructPat sp |
-          result =
-            sp.getPatField(pragma[only_bind_into](sp.getNthStructField(apos.asPosition())
-                  .getName()
-                  .getText())).getPat()
-        )
-      or
-      result = this.(TupleStructPat).getField(apos.asPosition())
-      or
-      result = this and
-      apos.isReturn()
-    }
-
-    Type getInferredType(AccessPosition apos, TypePath path) {
-      result = inferType(this.getNodeAt(apos), path)
-      or
-      // The struct/enum type is supplied explicitly as a type qualifier, e.g.
-      // `let Foo::<Bar>::Variant { ... } = ...` or
-      // `let Option::<Foo>::Some(x) = ...`.
-      apos.isReturn() and
-      result = super.getPath().(TypeMention).getTypeAt(path)
-    }
-
-    Declaration getTarget() { result = resolvePath(super.getPath()) }
-  }
-}
-
-private module DeconstructionPatMatching = Matching<DeconstructionPatMatchingInput>;
-
-/**
- * Gets the type of `n` at `path`, where `n` is a pattern for a constructor,
- * either a struct pattern or a tuple-struct pattern.
- */
-pragma[nomagic]
-private Type inferDeconstructionPatType(AstNode n, TypePath path) {
-  exists(DeconstructionPatMatchingInput::Access a, FunctionPosition apos |
-    n = a.getNodeAt(apos) and
-    result = DeconstructionPatMatching::inferAccessType(a, apos, path)
-  )
-}
-
-final private class ForIterableExpr extends Expr {
-  ForIterableExpr() { this = any(ForExpr fe).getIterable() }
-
-  Type getTypeAt(TypePath path) { result = inferType(this, path) }
-}
-
-private module ForIterableSatisfiesTypeInput implements SatisfiesTypeInputSig<ForIterableExpr> {
-  predicate relevantConstraint(ForIterableExpr term, Type constraint) {
-    exists(term) and
-    exists(Trait t | t = constraint.(TraitType).getTrait() |
-      // TODO: Remove the line below once we can handle the `impl<I: Iterator> IntoIterator for I` implementation
-      t instanceof IteratorTrait or
-      t instanceof IntoIteratorTrait
-    )
-  }
-}
-
-pragma[nomagic]
-private AssociatedTypeTypeParameter getIteratorItemTypeParameter() {
-  result = getAssociatedTypeTypeParameter(any(IteratorTrait t).getItemType())
-}
-
-pragma[nomagic]
-private AssociatedTypeTypeParameter getIntoIteratorItemTypeParameter() {
-  result = getAssociatedTypeTypeParameter(any(IntoIteratorTrait t).getItemType())
-}
-
-private module ForIterableSatisfiesType =
-  SatisfiesType<ForIterableExpr, ForIterableSatisfiesTypeInput>;
-
-pragma[nomagic]
-private Type inferForLoopExprType(AstNode n, TypePath path) {
-  // type of iterable -> type of pattern (loop variable)
-  exists(ForExpr fe, TypePath exprPath, AssociatedTypeTypeParameter tp |
-    n = fe.getPat() and
-    ForIterableSatisfiesType::satisfiesConstraint(fe.getIterable(), _, exprPath, result) and
-    exprPath.isCons(tp, path)
-  |
-    tp = getIntoIteratorItemTypeParameter()
-    or
-    // TODO: Remove once we can handle the `impl<I: Iterator> IntoIterator for I` implementation
-    tp = getIteratorItemTypeParameter() and
-    inferType(fe.getIterable()) != getArrayTypeParameter()
-  )
-}
-
-pragma[nomagic]
-private Type inferClosureExprType(AstNode n, TypePath path) {
-  exists(ClosureExpr ce |
-    n = ce and
-    (
-      path = TypePath::singleton(TDynTraitTypeParameter(_, any(FnTrait t).getTypeParam())) and
-      result.(TupleType).getArity() = ce.getNumberOfParams()
-      or
-      exists(TypePath path0 |
-        result = ce.getRetType().getTypeRepr().(TypeMention).getTypeAt(path0) and
-        path = closureReturnPath().append(path0)
-      )
-    )
-    or
-    exists(Param p |
-      p = ce.getAParam() and
-      not p.hasTypeRepr() and
-      n = p.getPat() and
-      result = TUnknownType() and
-      path.isEmpty()
-    )
-  )
-}
-
-pragma[nomagic]
-private TupleType inferArgList(ArgList args, TypePath path) {
-  exists(CallExprImpl::DynamicCallExpr dce |
-    args = dce.getArgList() and
-    result.getArity() = dce.getNumberOfSyntacticArguments() and
-    path.isEmpty()
-  )
-}
-
-pragma[nomagic]
-private Type inferCastExprType(CastExpr ce, TypePath path) {
-  result = ce.getTypeRepr().(TypeMention).getTypeAt(path)
-}
-
 cached
-private module Cached {
-  /** Holds if `n` is implicitly dereferenced and/or borrowed. */
-  cached
-  predicate implicitDerefChainBorrow(Expr e, DerefChain derefChain, boolean borrow) {
-    exists(BorrowKind bk |
-      any(AssocFunctionResolution::AssocFunctionCall afc)
-          .argumentHasImplicitDerefChainBorrow(e, derefChain, bk) and
-      if bk.isNoBorrow() then borrow = false else borrow = true
-    )
+Type inferType(AstNode n, TypePath path) {
+  Stages::TypeInferenceStage::ref() and
+  result = CertainTypeInference::inferCertainType(n, path)
+  or
+  // Don't propagate type information into a node which conflicts with certain
+  // type information.
+  forall(TypePath prefix |
+    CertainTypeInference::hasInferredCertainType(n, prefix) and
+    prefix.isPrefixOf(path)
+  |
+    not CertainTypeInference::certainTypeConflict(n, prefix, path, result)
+  ) and
+  (
+    result = inferAssignmentOperationType(n, path)
     or
-    e =
-      any(FieldExpr fe |
-        exists(resolveStructFieldExpr(fe, derefChain))
-        or
-        exists(resolveTupleFieldExpr(fe, derefChain))
-      ).getContainer() and
-    not derefChain.isEmpty() and
-    borrow = false
-  }
-
-  /**
-   * Gets an item (function or tuple struct/variant) that `call` resolves to, if
-   * any.
-   *
-   * The parameter `dispatch` is `true` if and only if the resolved target is a
-   * trait item because a precise target could not be determined from the
-   * types (for instance in the presence of generics or `dyn` types)
-   */
-  cached
-  Addressable resolveCallTarget(InvocationExpr call, boolean dispatch) {
-    dispatch = false and
-    result = call.(NonAssocCallExpr).resolveCallTargetViaPathResolution()
+    result = inferTypeEquality(n, path)
     or
-    exists(ImplOrTraitItemNode i |
-      i instanceof TraitItemNode and dispatch = true
-      or
-      i instanceof ImplItemNode and dispatch = false
-    |
-      result = call.(AssocFunctionResolution::AssocFunctionCall).resolveCallTarget(i, _, _, _) and
-      not call instanceof CallExprImpl::DynamicCallExpr and
-      not i instanceof Builtins::BuiltinImpl
-    )
-  }
-
-  /**
-   * Gets the struct field that the field expression `fe` resolves to, if any.
-   */
-  cached
-  StructField resolveStructFieldExpr(FieldExpr fe, DerefChain derefChain) {
-    exists(string name, DataType ty |
-      ty = getFieldExprLookupType(fe, pragma[only_bind_into](name), derefChain)
-    |
-      result = ty.(StructType).getTypeItem().getStructField(pragma[only_bind_into](name)) or
-      result = ty.(UnionType).getTypeItem().getStructField(pragma[only_bind_into](name))
-    )
-  }
-
-  /**
-   * Gets the tuple field that the field expression `fe` resolves to, if any.
-   */
-  cached
-  TupleField resolveTupleFieldExpr(FieldExpr fe, DerefChain derefChain) {
-    exists(int i |
-      result =
-        getTupleFieldExprLookupType(fe, pragma[only_bind_into](i), derefChain)
-            .(StructType)
-            .getTypeItem()
-            .getTupleField(pragma[only_bind_into](i))
-    )
-  }
-
-  /**
-   * Gets a type at `path` that `n` infers to, if any.
-   *
-   * The type inference implementation works by computing all possible types, so
-   * the result is not necessarily unique. For example, in
-   *
-   * ```rust
-   * trait MyTrait {
-   *     fn foo(&self) -> &Self;
-   *
-   *     fn bar(&self) -> &Self {
-   *        self.foo()
-   *     }
-   * }
-   *
-   * struct MyStruct;
-   *
-   * impl MyTrait for MyStruct {
-   *     fn foo(&self) -> &MyStruct {
-   *         self
-   *     }
-   * }
-   *
-   * fn baz() {
-   *     let x = MyStruct;
-   *     x.bar();
-   * }
-   * ```
-   *
-   * the type inference engine will roughly make the following deductions:
-   *
-   * 1. `MyStruct` has type `MyStruct`.
-   * 2. `x` has type `MyStruct` (via 1.).
-   * 3. The return type of `bar` is `&Self`.
-   * 3. `x.bar()` has type `&MyStruct` (via 2 and 3, by matching the implicit `Self`
-   *    type parameter with `MyStruct`.).
-   * 4. The return type of `bar` is `&MyTrait`.
-   * 5. `x.bar()` has type `&MyTrait` (via 2 and 4).
-   */
-  cached
-  Type inferType(AstNode n, TypePath path) {
-    Stages::TypeInferenceStage::ref() and
-    result = CertainTypeInference::inferCertainType(n, path)
+    result = inferFunctionCallType(n, path)
     or
-    // Don't propagate type information into a node which conflicts with certain
-    // type information.
-    forall(TypePath prefix |
-      CertainTypeInference::hasInferredCertainType(n, prefix) and
-      prefix.isPrefixOf(path)
-    |
-      not CertainTypeInference::certainTypeConflict(n, prefix, path, result)
-    ) and
-    (
-      result = inferAssignmentOperationType(n, path)
-      or
-      result = inferTypeEquality(n, path)
-      or
-      result = inferFunctionCallType(n, path)
-      or
-      result = inferConstructionType(n, path)
-      or
-      result = inferOperationType(n, path)
-      or
-      result = inferFieldExprType(n, path)
-      or
-      result = inferTryExprType(n, path)
-      or
-      result = inferLiteralType(n, path, false)
-      or
-      result = inferAwaitExprType(n, path)
-      or
-      result = inferDereferencedExprPtrType(n, path)
-      or
-      result = inferForLoopExprType(n, path)
-      or
-      result = inferClosureExprType(n, path)
-      or
-      result = inferArgList(n, path)
-      or
-      result = inferDeconstructionPatType(n, path)
-      or
-      result = inferUnknownTypeFromAnnotation(n, path)
-    )
-  }
+    result = inferConstructionType(n, path)
+    or
+    result = inferOperationType(n, path)
+    or
+    result = inferFieldExprType(n, path)
+    or
+    result = inferTryExprType(n, path)
+    or
+    result = inferLiteralType(n, path, false)
+    or
+    result = inferAwaitExprType(n, path)
+    or
+    result = inferDereferencedExprPtrType(n, path)
+    or
+    result = inferForLoopExprType(n, path)
+    or
+    result = inferClosureExprType(n, path)
+    or
+    result = inferArgList(n, path)
+    or
+    result = inferDeconstructionPatType(n, path)
+    or
+    result = inferUnknownTypeFromAnnotation(n, path)
+  )
 }
-
-import Cached
 
 /**
  * Gets a type that `n` infers to, if any.
  */
 Type inferType(AstNode n) { result = inferType(n, TypePath::nil()) }
-
-/** Provides predicates for debugging the type inference implementation. */
-private module Debug {
-  Locatable getRelevantLocatable() {
-    exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-      result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/main.rs") and
-      startline = 103
-    )
-  }
-
-  Type debugInferType(AstNode n, TypePath path) {
-    n = getRelevantLocatable() and
-    result = inferType(n, path)
-  }
-
-  Addressable debugResolveCallTarget(InvocationExpr c, boolean dispatch) {
-    c = getRelevantLocatable() and
-    result = resolveCallTarget(c, dispatch)
-  }
-
-  predicate debugConditionSatisfiesConstraint(
-    TypeAbstraction abs, TypeMention condition, TypeMention constraint, boolean transitive
-  ) {
-    abs = getRelevantLocatable() and
-    Input2::conditionSatisfiesConstraint(abs, condition, constraint, transitive)
-  }
-
-  predicate debugInferShorthandSelfType(ShorthandSelfParameterMention self, TypePath path, Type t) {
-    self = getRelevantLocatable() and
-    t = self.getTypeAt(path)
-  }
-
-  predicate debugInferFunctionCallType(AstNode n, TypePath path, Type t) {
-    n = getRelevantLocatable() and
-    t = inferFunctionCallType(n, path)
-  }
-
-  predicate debugInferConstructionType(AstNode n, TypePath path, Type t) {
-    n = getRelevantLocatable() and
-    t = inferConstructionType(n, path)
-  }
-
-  predicate debugTypeMention(TypeMention tm, TypePath path, Type type) {
-    tm = getRelevantLocatable() and
-    tm.getTypeAt(path) = type
-  }
-
-  Type debugInferAnnotatedType(AstNode n, TypePath path) {
-    n = getRelevantLocatable() and
-    result = inferAnnotatedType(n, path)
-  }
-
-  pragma[nomagic]
-  private int countTypesAtPath(AstNode n, TypePath path, Type t) {
-    t = inferType(n, path) and
-    result = strictcount(Type t0 | t0 = inferType(n, path))
-  }
-
-  pragma[nomagic]
-  private predicate atLimit(AstNode n) {
-    exists(TypePath path0 | exists(inferType(n, path0)) and path0.length() >= getTypePathLimit())
-  }
-
-  Type debugInferTypeForNodeAtLimit(AstNode n, TypePath path) {
-    result = inferType(n, path) and
-    atLimit(n)
-  }
-
-  predicate countTypesForNodeAtLimit(AstNode n, int c) {
-    n = getRelevantLocatable() and
-    c = strictcount(Type t, TypePath path | t = debugInferTypeForNodeAtLimit(n, path))
-  }
-
-  predicate maxTypes(AstNode n, TypePath path, Type t, int c) {
-    c = countTypesAtPath(n, path, t) and
-    c = max(countTypesAtPath(_, _, _))
-  }
-
-  pragma[nomagic]
-  private predicate typePathLength(AstNode n, TypePath path, Type t, int len) {
-    t = inferType(n, path) and
-    len = path.length()
-  }
-
-  predicate maxTypePath(AstNode n, TypePath path, Type t, int len) {
-    typePathLength(n, path, t, len) and
-    len = max(int i | typePathLength(_, _, _, i))
-  }
-
-  pragma[nomagic]
-  private int countTypePaths(AstNode n, TypePath path, Type t) {
-    t = inferType(n, path) and
-    result = strictcount(TypePath path0, Type t0 | t0 = inferType(n, path0))
-  }
-
-  predicate maxTypePaths(AstNode n, TypePath path, Type t, int c) {
-    c = countTypePaths(n, path, t) and
-    c = max(countTypePaths(_, _, _))
-  }
-
-  Type debugInferCertainType(AstNode n, TypePath path) {
-    n = getRelevantLocatable() and
-    result = CertainTypeInference::inferCertainType(n, path)
-  }
-
-  Type debugInferCertainNonUniqueType(AstNode n, TypePath path) {
-    n = getRelevantLocatable() and
-    Consistency::nonUniqueCertainType(n, path, result)
-  }
-}
