@@ -64,7 +64,7 @@ mod fn_once_trait {
         let _r = apply(f, true); // $ target=apply type=_r:i64
 
         let f = |x| x + 1; // $ type=x:i64 $ MISSING: target=add
-        let _r2 = apply_two(f); // $ target=apply_two certainType=_r2:i64
+        let _r2 = apply_two(f); // $ target=apply_two type=_r2:i64
     }
 }
 
@@ -101,7 +101,7 @@ mod fn_mut_trait {
         let _r = apply(f, true); // $ target=apply type=_r:i64
 
         let f = |x| x + 1; // $ type=x:i64 $ MISSING: target=add
-        let _r2 = apply_two(f); // $ target=apply_two certainType=_r2:i64
+        let _r2 = apply_two(f); // $ target=apply_two type=_r2:i64
     }
 }
 
@@ -138,7 +138,7 @@ mod fn_trait {
         let _r = apply(f, true); // $ target=apply type=_r:i64
 
         let f = |x| x + 1; // $ type=x:i64 $ MISSING: target=add
-        let _r2 = apply_two(f); // $ target=apply_two certainType=_r2:i64
+        let _r2 = apply_two(f); // $ target=apply_two type=_r2:i64
     }
 }
 
