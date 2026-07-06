@@ -26,7 +26,7 @@ async def get_input_openai():
                 "role": "user",
                 "content": query,  # $ Alert[py/user-prompt-injection]
             }
-        ]
+        ]  # $ Alert[py/user-prompt-injection]
     )
 
     completion1 = client.chat.completions.create(

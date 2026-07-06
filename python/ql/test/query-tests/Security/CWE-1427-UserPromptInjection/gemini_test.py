@@ -26,7 +26,7 @@ def get_input_gemini():
                     }
                 ]
             }
-        ],
+        ],  # $ Alert[py/user-prompt-injection]
     )
 
     chat = client.chats.create(model="gemini-2.0-flash")

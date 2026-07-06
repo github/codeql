@@ -19,6 +19,18 @@ def get_input_agent():
                 "role": "user",
                 "content": query,  # $ Alert[py/user-prompt-injection]
             }
-        ]
+        ]  # $ Alert[py/user-prompt-injection]
     )
-    print(result1, result2)
+
+    other_messages = request.json  # tainted list of messages
+    result3 = Runner.run_sync(
+        agent,
+        [{"role": "system", "content": "hi"}] + other_messages  # $ Alert[py/user-prompt-injection]
+    )
+
+    result4 = Runner.run_sync(
+        agent,
+        [{"role": "system", "content": "hi"}, {"role": "user", "content": query}] + other_messages  # $ Alert[py/user-prompt-injection]
+    )
+
+    print(result1, result2, result3, result4)

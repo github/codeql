@@ -2,6 +2,8 @@
 | agent_test.py:13:38:13:42 | ControlFlowNode for query | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_test.py:13:38:13:42 | ControlFlowNode for query | This prompt construction depends on a $@. | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
 | agent_test.py:17:15:22:9 | ControlFlowNode for List | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_test.py:17:15:22:9 | ControlFlowNode for List | This prompt construction depends on a $@. | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
 | agent_test.py:20:28:20:32 | ControlFlowNode for query | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_test.py:20:28:20:32 | ControlFlowNode for query | This prompt construction depends on a $@. | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| agent_test.py:28:9:28:62 | ControlFlowNode for BinaryExpr | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_test.py:28:9:28:62 | ControlFlowNode for BinaryExpr | This prompt construction depends on a $@. | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| agent_test.py:33:9:33:98 | ControlFlowNode for BinaryExpr | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_test.py:33:9:33:98 | ControlFlowNode for BinaryExpr | This prompt construction depends on a $@. | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
 | anthropic_test.py:20:28:20:32 | ControlFlowNode for query | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | anthropic_test.py:20:28:20:32 | ControlFlowNode for query | This prompt construction depends on a $@. | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
 | anthropic_test.py:29:16:29:55 | ControlFlowNode for BinaryExpr | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | anthropic_test.py:29:16:29:55 | ControlFlowNode for BinaryExpr | This prompt construction depends on a $@. | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
 | gemini_test.py:15:18:15:22 | ControlFlowNode for query | gemini_test.py:3:26:3:32 | ControlFlowNode for ImportMember | gemini_test.py:15:18:15:22 | ControlFlowNode for query | This prompt construction depends on a $@. | gemini_test.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
@@ -40,14 +42,19 @@
 edges
 | agent_test.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_test.py:2:26:2:32 | ControlFlowNode for request | provenance |  |
 | agent_test.py:2:26:2:32 | ControlFlowNode for request | agent_test.py:9:13:9:19 | ControlFlowNode for request | provenance |  |
+| agent_test.py:2:26:2:32 | ControlFlowNode for request | agent_test.py:25:22:25:28 | ControlFlowNode for request | provenance |  |
 | agent_test.py:9:5:9:9 | ControlFlowNode for query | agent_test.py:13:38:13:42 | ControlFlowNode for query | provenance | Sink:MaD:20 |
 | agent_test.py:9:5:9:9 | ControlFlowNode for query | agent_test.py:20:28:20:32 | ControlFlowNode for query | provenance |  |
 | agent_test.py:9:5:9:9 | ControlFlowNode for query | agent_test.py:20:28:20:32 | ControlFlowNode for query | provenance |  |
 | agent_test.py:9:13:9:19 | ControlFlowNode for request | agent_test.py:9:13:9:24 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| agent_test.py:9:13:9:19 | ControlFlowNode for request | agent_test.py:25:5:25:18 | ControlFlowNode for other_messages | provenance | AdditionalTaintStep |
 | agent_test.py:9:13:9:24 | ControlFlowNode for Attribute | agent_test.py:9:13:9:37 | ControlFlowNode for Attribute() | provenance | dict.get |
 | agent_test.py:9:13:9:37 | ControlFlowNode for Attribute() | agent_test.py:9:5:9:9 | ControlFlowNode for query | provenance |  |
 | agent_test.py:18:13:21:13 | ControlFlowNode for Dict [Dictionary element at key content] | agent_test.py:17:15:22:9 | ControlFlowNode for List | provenance | Sink:MaD:21 Sink:MaD:21 |
 | agent_test.py:20:28:20:32 | ControlFlowNode for query | agent_test.py:18:13:21:13 | ControlFlowNode for Dict [Dictionary element at key content] | provenance |  |
+| agent_test.py:25:5:25:18 | ControlFlowNode for other_messages | agent_test.py:28:9:28:62 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:20 |
+| agent_test.py:25:5:25:18 | ControlFlowNode for other_messages | agent_test.py:33:9:33:98 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:20 |
+| agent_test.py:25:22:25:28 | ControlFlowNode for request | agent_test.py:25:5:25:18 | ControlFlowNode for other_messages | provenance | AdditionalTaintStep |
 | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | anthropic_test.py:2:26:2:32 | ControlFlowNode for request | provenance |  |
 | anthropic_test.py:2:26:2:32 | ControlFlowNode for request | anthropic_test.py:10:15:10:21 | ControlFlowNode for request | provenance |  |
 | anthropic_test.py:2:26:2:32 | ControlFlowNode for request | anthropic_test.py:11:13:11:19 | ControlFlowNode for request | provenance |  |
@@ -175,6 +182,10 @@ nodes
 | agent_test.py:18:13:21:13 | ControlFlowNode for Dict [Dictionary element at key content] | semmle.label | ControlFlowNode for Dict [Dictionary element at key content] |
 | agent_test.py:20:28:20:32 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
 | agent_test.py:20:28:20:32 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| agent_test.py:25:5:25:18 | ControlFlowNode for other_messages | semmle.label | ControlFlowNode for other_messages |
+| agent_test.py:25:22:25:28 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| agent_test.py:28:9:28:62 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| agent_test.py:33:9:33:98 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | anthropic_test.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | anthropic_test.py:2:26:2:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | anthropic_test.py:10:15:10:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -266,7 +277,3 @@ nodes
 | openrouter_test.py:44:16:44:20 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
 | openrouter_test.py:50:15:50:19 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
 subpaths
-testFailures
-| agent_test.py:17:15:22:9 | ControlFlowNode for List | Unexpected result: Alert |
-| gemini_test.py:20:18:29:9 | ControlFlowNode for List | Unexpected result: Alert |
-| openai_test.py:20:15:29:9 | ControlFlowNode for List | Unexpected result: Alert |
