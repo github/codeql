@@ -9,10 +9,10 @@
 | generic_anonymous.kt:3:3:5:3 | ...=... | new Object(...) { ... } |
 | generic_anonymous.kt:3:3:5:3 | T | T |
 | generic_anonymous.kt:3:3:5:3 | new Object(...) { ... } | new Object(...) { ... } |
+| generic_anonymous.kt:3:3:5:3 | this | Generic |
 | generic_anonymous.kt:3:3:5:3 | x | new Object(...) { ... } |
 | generic_anonymous.kt:3:11:5:3 | T | T |
 | generic_anonymous.kt:3:11:5:3 | new Object(...) { ... } | new Object(...) { ... } |
-| generic_anonymous.kt:3:11:5:3 | this | Generic |
 | generic_anonymous.kt:3:11:5:3 | this.x | new Object(...) { ... } |
 | generic_anonymous.kt:3:19:5:3 | <Stmt> | new Object(...) { ... } |
 | generic_anonymous.kt:3:19:5:3 | Object | Object |

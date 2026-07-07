@@ -72,7 +72,7 @@ def.kt:
 #   57|           0: [AssignExpr] ...=...
 #   57|             0: [VarAccess] DefKt.p
 #   57|               -1: [TypeAccess] DefKt
-#   57|             1: [VarAccess] <set-?>
+#   53|             1: [VarAccess] <set-?>
 #   59|     6: [ExtensionMethod] myExtension
 #   59|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)

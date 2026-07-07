@@ -39,11 +39,11 @@
 | Test.kt:101:22:101:30 | After ... (value equals) ... [false] | Test.kt:105:5:109:5 | <Expr>; |
 | Test.kt:101:33:103:5 | { ... } | Test.kt:100:1:110:1 | Exit |
 | Test.kt:105:5:109:5 | <Expr>; | Test.kt:105:20:107:5 | { ... } |
-| Test.kt:105:5:109:5 | <Expr>; | Test.kt:107:16:109:5 | ... -> ... |
+| Test.kt:105:5:109:5 | <Expr>; | Test.kt:107:12:109:5 | ... -> ... |
 | Test.kt:105:20:107:5 | { ... } | Test.kt:100:1:110:1 | Normal Exit |
+| Test.kt:107:12:109:5 | ... -> ... | Test.kt:107:16:107:24 | After ... (value not-equals) ... [false] |
+| Test.kt:107:12:109:5 | ... -> ... | Test.kt:107:27:109:5 | { ... } |
 | Test.kt:107:16:107:24 | After ... (value not-equals) ... [false] | Test.kt:100:1:110:1 | Normal Exit |
-| Test.kt:107:16:109:5 | ... -> ... | Test.kt:107:16:107:24 | After ... (value not-equals) ... [false] |
-| Test.kt:107:16:109:5 | ... -> ... | Test.kt:107:27:109:5 | { ... } |
 | Test.kt:107:27:109:5 | { ... } | Test.kt:100:1:110:1 | Normal Exit |
 | Test.kt:112:32:116:1 | { ... } | Test.kt:113:9:113:9 | After x [false] |
 | Test.kt:112:32:116:1 | { ... } | Test.kt:113:14:113:14 | y |

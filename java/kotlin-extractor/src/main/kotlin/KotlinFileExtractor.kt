@@ -53,6 +53,8 @@ import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
+import org.jetbrains.kotlin.psi.psiUtil.endOffset
+import org.jetbrains.kotlin.psi.psiUtil.startOffset
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 
 open class KotlinFileExtractor(
@@ -82,6 +84,8 @@ open class KotlinFileExtractor(
     val usesK2 = usesK2(pluginContext)
     val metaAnnotationSupport = MetaAnnotationSupport(logger, pluginContext, this)
 
+    private var currentIrFile: IrFile? = null
+
     private inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
         val name =
             when (element) {
@@ -108,7 +112,9 @@ open class KotlinFileExtractor(
 
     fun extractFileContents(file: IrFile, id: Label<DbFile>) {
         with("file", file) {
-            val locId = tw.getWholeFileLocation()
+            currentIrFile = file
+            try {
+                val locId = tw.getWholeFileLocation()
             val pkg = file.packageFqName.asString()
             val pkgId = extractPackage(pkg)
             tw.writeHasLocation(id, locId)
@@ -158,6 +164,9 @@ open class KotlinFileExtractor(
             linesOfCode?.linesOfCodeInFile(id)
 
             externalClassExtractor.writeStubTrapFile(file)
+            } finally {
+                currentIrFile = null
+            }
         }
     }
 
@@ -672,7 +681,8 @@ open class KotlinFileExtractor(
         val stmtId = tw.getFreshIdLabel<DbLocaltypedeclstmt>()
         tw.writeStmts_localtypedeclstmt(stmtId, parent, idx, callable)
         tw.writeIsLocalClassOrInterface(id, stmtId)
-        val locId = tw.getLocation(locElement)
+        val locId = if (usesK2) getPsiBasedLocation(locElement) ?: tw.getLocation(locElement)
+                    else tw.getLocation(locElement)
         tw.writeHasLocation(stmtId, locId)
     }
 
@@ -691,7 +701,8 @@ open class KotlinFileExtractor(
         )
         tw.writeMethodsKotlinType(obinitId, returnType.kotlinResult.id)
 
-        val locId = tw.getLocation(c)
+        val locId = if (usesK2) getPsiBasedLocation(c) ?: tw.getLocation(c)
+                    else tw.getLocation(c)
         tw.writeHasLocation(obinitId, locId)
 
         addModifiers(obinitId, "private")
@@ -954,7 +965,8 @@ open class KotlinFileExtractor(
                     }
                 }
 
-                val locId = tw.getLocation(c)
+                val locId = if (usesK2) getPsiBasedLocation(c) ?: tw.getLocation(c)
+                            else tw.getLocation(c)
                 tw.writeHasLocation(id, locId)
 
                 extractEnclosingClass(c.parent, id, c, locId, listOf())
@@ -2435,6 +2447,7 @@ open class KotlinFileExtractor(
 
                 val locId =
                     overriddenAttributes?.sourceLoc
+                        ?: (if (usesK2) getPsiBasedLocation(f) else null)
                         ?: getLocation(f, classTypeArgsIncludingOuterClasses)
 
                 if (f.symbol is IrConstructorSymbol) {
@@ -2644,7 +2657,9 @@ open class KotlinFileExtractor(
 
             DeclarationStackAdjuster(p).use {
                 val id = useProperty(p, parentId, classTypeArgsIncludingOuterClasses)
-                val locId = getLocation(p, classTypeArgsIncludingOuterClasses)
+                val locId =
+                    if (usesK2) getPsiBasedLocation(p) ?: getLocation(p, classTypeArgsIncludingOuterClasses)
+                    else getLocation(p, classTypeArgsIncludingOuterClasses)
                 tw.writeKtProperties(id, p.name.asString())
                 tw.writeHasLocation(id, locId)
 
@@ -2874,6 +2889,13 @@ open class KotlinFileExtractor(
         return v
     }
 
+    private fun getPsiBasedLocation(element: IrElement): Label<DbLocation>? {
+        val file = currentIrFile ?: return null
+        val psi2Ir = getPsi2Ir() ?: return null
+        val psiElement = psi2Ir.findPsiElement(element, file) ?: return null
+        return tw.getLocation(psiElement.startOffset, psiElement.endOffset)
+    }
+
     private fun extractVariable(
         v: IrVariable,
         callable: Label<out DbCallable>,
@@ -2882,7 +2904,7 @@ open class KotlinFileExtractor(
     ) {
         with("variable", v) {
             val stmtId = tw.getFreshIdLabel<DbLocalvariabledeclstmt>()
-            val locId = tw.getLocation(getVariableLocationProvider(v))
+            val locId = getPsiBasedLocation(v) ?: tw.getLocation(getVariableLocationProvider(v))
             tw.writeStmts_localvariabledeclstmt(stmtId, parent, idx, callable)
             tw.writeHasLocation(stmtId, locId)
             extractVariableExpr(v, callable, stmtId, 1, stmtId)
@@ -2900,7 +2922,7 @@ open class KotlinFileExtractor(
         with("variable expr", v) {
             val varId = useVariable(v)
             val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
-            val locId = tw.getLocation(getVariableLocationProvider(v))
+            val locId = getPsiBasedLocation(v) ?: tw.getLocation(getVariableLocationProvider(v))
             val type = useType(v.type)
             tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, exprId)
             tw.writeLocalvarsKotlinType(varId, type.kotlinResult.id)
@@ -2972,7 +2994,7 @@ open class KotlinFileExtractor(
                 }
                 is IrLocalDelegatedProperty -> {
                     val blockId = tw.getFreshIdLabel<DbBlock>()
-                    val locId = tw.getLocation(s)
+                    val locId = getPsiBasedLocation(s) ?: tw.getLocation(s)
                     tw.writeStmts_block(blockId, parent, idx, callable)
                     tw.writeHasLocation(blockId, locId)
                     // For Kotlin < 2.3, s.delegate is not-nullable, but for Kotlin >= 2.3
@@ -6087,7 +6109,7 @@ open class KotlinFileExtractor(
                         extractVariableAccess(
                             useValueDeclaration(owner),
                             extractType,
-                            tw.getLocation(e),
+                            getPsiBasedLocation(e) ?: tw.getLocation(e),
                             exprParent.parent,
                             exprParent.idx,
                             callable,
@@ -6301,7 +6323,7 @@ open class KotlinFileExtractor(
                                 )
                                 id
                             }
-                        val locId = tw.getLocation(e)
+                        val locId = getPsiBasedLocation(e) ?: tw.getLocation(e)
 
                         tw.writeExprsKotlinType(id, type.kotlinResult.id)
                         extractExprContext(id, locId, callable, exprParent.enclosingStmt)
@@ -6329,7 +6351,7 @@ open class KotlinFileExtractor(
                     val exprParent = parent.expr(e, callable)
                     val id = tw.getFreshIdLabel<DbWhenexpr>()
                     val type = useType(e.type)
-                    val locId = tw.getLocation(e)
+                    val locId = getPsiBasedLocation(e) ?: tw.getLocation(e)
                     tw.writeExprs_whenexpr(
                         id,
                         type.javaResult.id,
@@ -6343,7 +6365,7 @@ open class KotlinFileExtractor(
                     }
                     e.branches.forEachIndexed { i, b ->
                         val bId = tw.getFreshIdLabel<DbWhenbranch>()
-                        val bLocId = tw.getLocation(b)
+                        val bLocId = getPsiBasedLocation(b) ?: tw.getLocation(b)
                         tw.writeStmts_whenbranch(bId, id, i, callable)
                         tw.writeHasLocation(bId, bLocId)
                         extractExpressionExpr(b.condition, callable, bId, 0, bId)
@@ -6450,7 +6472,7 @@ open class KotlinFileExtractor(
                      **/
 
                     val ids = getLocallyVisibleFunctionLabels(e.function)
-                    val locId = tw.getLocation(e)
+                    val locId = getPsiBasedLocation(e) ?: tw.getLocation(e)
 
                     val ext = e.function.codeQlExtensionReceiverParameter
                     val parameters =
@@ -6571,7 +6593,7 @@ open class KotlinFileExtractor(
         callable: Label<out DbCallable>
     ) {
         val id = tw.getFreshIdLabel<DbBlock>()
-        val locId = tw.getLocation(e)
+        val locId = getPsiBasedLocation(e) ?: tw.getLocation(e)
         tw.writeStmts_block(id, parent, idx, callable)
         tw.writeHasLocation(id, locId)
         statements.forEachIndexed { i, s -> extractStatement(s, callable, id, i) }
@@ -6635,7 +6657,7 @@ open class KotlinFileExtractor(
         callable: Label<out DbCallable>
     ) {
         val containingDeclaration = declarationStack.peek().first
-        val locId = tw.getLocation(e)
+        val locId = getPsiBasedLocation(e) ?: tw.getLocation(e)
 
         if (
             containingDeclaration.shouldExtractAsStatic &&
@@ -7002,7 +7024,7 @@ open class KotlinFileExtractor(
             v is String -> {
                 exprIdOrFresh<DbStringliteral>(overrideId).also { id ->
                     val type = useType(e.type)
-                    val locId = tw.getLocation(e)
+                    val locId = getPsiBasedLocation(e) ?: tw.getLocation(e)
                     tw.writeExprs_stringliteral(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     extractExprContext(id, locId, enclosingCallable, enclosingStmt)
