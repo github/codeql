@@ -1,6 +1,6 @@
 //go:build windows
 
-package subst
+package util
 
 import (
 	"os"

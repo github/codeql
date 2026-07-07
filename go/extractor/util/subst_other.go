@@ -1,6 +1,6 @@
 //go:build !windows
 
-package subst
+package util
 
 // ResolveDrive is a no-op on non-Windows platforms.
 func ResolveDrive(driveRoot string) string { return "" }

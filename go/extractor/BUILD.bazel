@@ -19,7 +19,6 @@ go_library(
         "//go/extractor/dbscheme",
         "//go/extractor/diagnostics",
         "//go/extractor/srcarchive",
-        "//go/extractor/subst",
         "//go/extractor/toolchain",
         "//go/extractor/trap",
         "//go/extractor/util",

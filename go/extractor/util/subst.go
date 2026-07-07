@@ -1,4 +1,4 @@
-package subst
+package util
 
 // ResolvePath resolves subst'd drive letters in a full path.
 // If the path starts with a subst'd drive letter, replaces it with the backing path.
