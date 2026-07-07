@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"syscall"
 	"unsafe"
+
+	"golang.org/x/sys/windows"
 )
 
 var (
@@ -48,20 +50,9 @@ func ResolveDrive(driveRoot string) string {
 	if ret == 0 {
 		return ""
 	}
-	result := goString((*byte)(unsafe.Pointer(ret)))
+	result := windows.BytePtrToString((*byte)(unsafe.Pointer(ret)))
 	if procFree != nil {
 		procFree.Call(ret)
 	}
 	return result
-}
-
-func goString(p *byte) string {
-	if p == nil {
-		return ""
-	}
-	var n int
-	for ptr := unsafe.Pointer(p); *(*byte)(ptr) != 0; n++ {
-		ptr = unsafe.Add(ptr, 1)
-	}
-	return string(unsafe.Slice(p, n))
 }
