@@ -150,9 +150,9 @@
 | Test.kt:92:6:95:2 | { ... } | BlockStmt | Test.kt:93:7:93:7 | var ...; | LocalVariableDeclStmt |
 | Test.kt:93:7:93:7 | var ...; | LocalVariableDeclStmt | Test.kt:93:11:93:11 | o | VarAccess |
 | Test.kt:93:7:93:7 | x | LocalVariableDeclExpr | Test.kt:94:10:94:10 | 1 | IntegerLiteral |
-| Test.kt:93:11:93:11 | o | VarAccess | Test.kt:93:12:93:13 | ...!! | NotNullExpr |
-| Test.kt:93:12:93:13 | ...!! | NotNullExpr | Test.kt:93:7:93:7 | x | LocalVariableDeclExpr |
-| Test.kt:93:12:93:13 | ...!! | NotNullExpr | Test.kt:95:4:97:2 | catch (...) | CatchClause |
+| Test.kt:93:11:93:11 | o | VarAccess | Test.kt:93:11:93:13 | ...!! | NotNullExpr |
+| Test.kt:93:11:93:13 | ...!! | NotNullExpr | Test.kt:93:7:93:7 | x | LocalVariableDeclExpr |
+| Test.kt:93:11:93:13 | ...!! | NotNullExpr | Test.kt:95:4:97:2 | catch (...) | CatchClause |
 | Test.kt:94:3:94:10 | return ... | ReturnStmt | Test.kt:91:1:98:1 | Normal Exit | Method |
 | Test.kt:94:10:94:10 | 1 | IntegerLiteral | Test.kt:94:3:94:10 | return ... | ReturnStmt |
 | Test.kt:95:4:97:2 | catch (...) | CatchClause | Test.kt:95:11:95:33 | e | LocalVariableDeclExpr |

@@ -3081,9 +3081,10 @@ open class KotlinFileExtractor(
         id: Label<out DbExpr>,
         c: IrCall,
         callable: Label<out DbCallable>,
-        enclosingStmt: Label<out DbStmt>
+        enclosingStmt: Label<out DbStmt>,
+        customLocId: Label<DbLocation>? = null
     ) {
-        val locId = tw.getLocation(c)
+        val locId = customLocId ?: tw.getLocation(c)
         extractExprContext(id, locId, callable, enclosingStmt)
 
         val dr = c.dispatchReceiver
@@ -4581,7 +4582,12 @@ open class KotlinFileExtractor(
                     val type = useType(c.type)
                     tw.writeExprs_notnullexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    unaryOp(id, c, callable, enclosingStmt)
+                    // In K1 mode the IrCall.startOffset for !! points to the '!' character rather
+                    // than the start of the operand. Use the operand's startOffset instead so that
+                    // the NotNullExpr spans from the operand to the end of '!!'.
+                    val operandStart = c.codeQlGetValueArgument(0)?.startOffset?.takeIf { it >= 0 }
+                    val notNullLocId = if (operandStart != null && c.endOffset >= 0) tw.getLocation(operandStart, c.endOffset) else null
+                    unaryOp(id, c, callable, enclosingStmt, notNullLocId)
                 }
                 isBuiltinCallInternal(c, "THROW_CCE") -> {
                     // TODO

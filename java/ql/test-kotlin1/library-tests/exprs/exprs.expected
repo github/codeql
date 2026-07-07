@@ -1572,7 +1572,7 @@
 | exprs.kt:201:22:201:28 | Object | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:202:9:202:9 | y | exprs.kt:201:1:203:1 | notNullAssertion | LocalVariableDeclExpr |
 | exprs.kt:202:18:202:18 | x | exprs.kt:201:1:203:1 | notNullAssertion | VarAccess |
-| exprs.kt:202:19:202:20 | ...!! | exprs.kt:201:1:203:1 | notNullAssertion | NotNullExpr |
+| exprs.kt:202:18:202:20 | ...!! | exprs.kt:201:1:203:1 | notNullAssertion | NotNullExpr |
 | exprs.kt:206:5:217:5 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:206:11:206:18 | Object | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:206:21:206:30 | String | file://:0:0:0:0 | <none> | TypeAccess |
@@ -1592,13 +1592,13 @@
 | exprs.kt:210:23:210:23 | 5 | exprs.kt:206:5:217:5 | x | IntegerLiteral |
 | exprs.kt:211:13:211:14 | b2 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:211:19:211:19 | s | exprs.kt:206:5:217:5 | x | VarAccess |
-| exprs.kt:211:20:211:21 | ...!! | exprs.kt:206:5:217:5 | x | NotNullExpr |
+| exprs.kt:211:19:211:21 | ...!! | exprs.kt:206:5:217:5 | x | NotNullExpr |
 | exprs.kt:211:20:211:29 | ... + ... | exprs.kt:206:5:217:5 | x | AddExpr |
 | exprs.kt:211:28:211:28 | 5 | exprs.kt:206:5:217:5 | x | IntegerLiteral |
 | exprs.kt:212:13:212:14 | b3 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:212:19:212:19 | s | exprs.kt:206:5:217:5 | x | VarAccess |
+| exprs.kt:212:19:212:21 | ...!! | exprs.kt:206:5:217:5 | x | NotNullExpr |
 | exprs.kt:212:19:212:25 | ... + ... | exprs.kt:206:5:217:5 | x | AddExpr |
-| exprs.kt:212:20:212:21 | ...!! | exprs.kt:206:5:217:5 | x | NotNullExpr |
 | exprs.kt:212:25:212:25 | 5 | exprs.kt:206:5:217:5 | x | IntegerLiteral |
 | exprs.kt:213:13:213:14 | c0 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:213:18:213:36 | Color | exprs.kt:206:5:217:5 | x | TypeAccess |

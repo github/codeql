@@ -251,18 +251,18 @@
 | Test.kt:91:1:98:1 | Entry | 3 | Test.kt:92:6:95:2 | { ... } |
 | Test.kt:91:1:98:1 | Entry | 4 | Test.kt:93:7:93:7 | var ...; |
 | Test.kt:91:1:98:1 | Entry | 5 | Test.kt:93:7:93:7 | Before x |
-| Test.kt:91:1:98:1 | Entry | 6 | Test.kt:93:12:93:13 | Before ...!! |
+| Test.kt:91:1:98:1 | Entry | 6 | Test.kt:93:11:93:13 | Before ...!! |
 | Test.kt:91:1:98:1 | Entry | 7 | Test.kt:93:11:93:11 | o |
-| Test.kt:91:1:98:1 | Entry | 8 | Test.kt:93:12:93:13 | ...!! |
+| Test.kt:91:1:98:1 | Entry | 8 | Test.kt:93:11:93:13 | ...!! |
 | Test.kt:91:1:98:1 | Exit | 0 | Test.kt:91:1:98:1 | Exit |
 | Test.kt:91:1:98:1 | Normal Exit | 0 | Test.kt:91:1:98:1 | Normal Exit |
-| Test.kt:93:12:93:13 | After ...!! | 0 | Test.kt:93:12:93:13 | After ...!! |
-| Test.kt:93:12:93:13 | After ...!! | 1 | Test.kt:93:7:93:7 | x |
-| Test.kt:93:12:93:13 | After ...!! | 2 | Test.kt:93:7:93:7 | After x |
-| Test.kt:93:12:93:13 | After ...!! | 3 | Test.kt:93:7:93:7 | After var ...; |
-| Test.kt:93:12:93:13 | After ...!! | 4 | Test.kt:94:3:94:10 | Before return ... |
-| Test.kt:93:12:93:13 | After ...!! | 5 | Test.kt:94:10:94:10 | 1 |
-| Test.kt:93:12:93:13 | After ...!! | 6 | Test.kt:94:3:94:10 | return ... |
+| Test.kt:93:11:93:13 | After ...!! | 0 | Test.kt:93:11:93:13 | After ...!! |
+| Test.kt:93:11:93:13 | After ...!! | 1 | Test.kt:93:7:93:7 | x |
+| Test.kt:93:11:93:13 | After ...!! | 2 | Test.kt:93:7:93:7 | After x |
+| Test.kt:93:11:93:13 | After ...!! | 3 | Test.kt:93:7:93:7 | After var ...; |
+| Test.kt:93:11:93:13 | After ...!! | 4 | Test.kt:94:3:94:10 | Before return ... |
+| Test.kt:93:11:93:13 | After ...!! | 5 | Test.kt:94:10:94:10 | 1 |
+| Test.kt:93:11:93:13 | After ...!! | 6 | Test.kt:94:3:94:10 | return ... |
 | Test.kt:95:4:97:2 | catch (...) | 0 | Test.kt:95:4:97:2 | catch (...) |
 | Test.kt:95:4:97:2 | catch (...) | 1 | Test.kt:95:11:95:33 | e |
 | Test.kt:95:11:95:33 | After e [match] | 0 | Test.kt:95:11:95:33 | After e [match] |
