@@ -9,7 +9,6 @@ go_library(
         "logging.go",
         "overlays.go",
         "semver.go",
-        "subst.go",
         "subst_other.go",
         "subst_windows.go",
         "util.go",
