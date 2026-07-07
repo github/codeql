@@ -770,7 +770,7 @@ func normalizedPath(ast *ast.File, fset *token.FileSet) string {
 	if err != nil {
 		return file
 	}
-	return path
+	return util.ResolvePath(path)
 }
 
 // extractFile extracts AST information for the given file
