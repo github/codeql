@@ -18,4 +18,13 @@ private module Input implements T::TestPostProcessing::InputSig<Impl> {
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // C/C++ databases can also contain XML (e.g. `.xml`, `.props`), whose block-comment
+    // syntax is not yet supported, so we only render for C/C++/Objective-C sources.
+    relativePath
+        .regexpMatch(".*\\.(c|cc|cpp|cxx|cp|c\\+\\+|h|hh|hpp|hxx|h\\+\\+|inl|tcc|ipp|tpp|cu|cuh|m|mm)") and
+    result = "//"
+  }
 }

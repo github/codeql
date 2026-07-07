@@ -18,4 +18,12 @@ private module Input implements T::TestPostProcessing::InputSig<Impl> {
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // Python databases can also contain XML, whose block-comment syntax is not yet supported,
+    // so we only render for Python sources.
+    relativePath.regexpMatch(".*\\.(py|pyi)") and
+    result = "#"
+  }
 }
