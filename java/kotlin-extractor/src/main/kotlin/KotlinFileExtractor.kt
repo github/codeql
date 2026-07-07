@@ -4391,6 +4391,55 @@ open class KotlinFileExtractor(
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     unaryopDisp(id)
                 }
+                // Fold unaryMinus applied to a numeric constant into a single negative literal.
+                // In K2 mode, `-123L` is emitted as IrCall(unaryMinus, IrConst(123L)) rather than
+                // IrConst(-123L) as in K1. Folding restores K1 behaviour and makes negative
+                // numeric literals directly queryable in both modes.
+                isNumericFunction(target, "unaryMinus") && dr is CodeQLIrConst<*> -> {
+                    val receiver = dr
+                    val v = receiver.value
+                    val type = useType(c.type)
+                    // In K2 the IrCall's startOffset equals the receiver's startOffset, so the
+                    // minus sign (one character before the literal) must be recovered from the source.
+                    val locId =
+                        if (receiver.startOffset > 0)
+                            tw.getLocation(receiver.startOffset - 1, c.endOffset)
+                        else
+                            tw.getLocation(c)
+                    when (v) {
+                        is Int ->
+                            extractConstantInteger(-v, locId, parent, idx, callable, enclosingStmt)
+                        is Short ->
+                            extractConstantInteger(-v.toInt(), locId, parent, idx, callable, enclosingStmt)
+                        is Byte ->
+                            extractConstantInteger(-v.toInt(), locId, parent, idx, callable, enclosingStmt)
+                        is Long ->
+                            exprIdOrFresh<DbLongliteral>(null).also { id ->
+                                tw.writeExprs_longliteral(id, type.javaResult.id, parent, idx)
+                                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                                extractExprContext(id, locId, callable, enclosingStmt)
+                                tw.writeNamestrings((-v).toString(), (-v).toString(), id)
+                            }
+                        is Float ->
+                            exprIdOrFresh<DbFloatingpointliteral>(null).also { id ->
+                                tw.writeExprs_floatingpointliteral(id, type.javaResult.id, parent, idx)
+                                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                                extractExprContext(id, locId, callable, enclosingStmt)
+                                tw.writeNamestrings((-v).toString(), (-v).toString(), id)
+                            }
+                        is Double ->
+                            exprIdOrFresh<DbDoubleliteral>(null).also { id ->
+                                tw.writeExprs_doubleliteral(id, type.javaResult.id, parent, idx)
+                                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                                extractExprContext(id, locId, callable, enclosingStmt)
+                                tw.writeNamestrings((-v).toString(), (-v).toString(), id)
+                            }
+                        else ->
+                            logger.errorElement(
+                                "Unexpected constant type for unaryMinus folding: ${v?.javaClass}", c
+                            )
+                    }
+                }
                 isNumericFunction(target, "inv", "unaryMinus", "unaryPlus") -> {
                     val type = useType(c.type)
                     val id: Label<out DbExpr> =
