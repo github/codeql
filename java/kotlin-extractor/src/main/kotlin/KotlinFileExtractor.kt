@@ -53,6 +53,8 @@ import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
+import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.psi.KtVariableDeclaration
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
@@ -2894,6 +2896,36 @@ open class KotlinFileExtractor(
         val psi2Ir = getPsi2Ir() ?: return null
         val psiElement = psi2Ir.findPsiElement(element, file) ?: return null
         return tw.getLocation(psiElement.startOffset, psiElement.endOffset)
+    }
+
+    /**
+     * Returns the PSI-based location for a local variable declaration.
+     *
+     * In K2 mode, [IrVariable.startOffset] points to the `val`/`var` keyword
+     * and [IrVariable.endOffset] points past the initialiser, giving the full
+     * declaration span without annotations. In K1 mode the IR records only the
+     * name identifier's range.
+     *
+     * To produce the same span in K1 we look up the leaf PSI element at
+     * [IrVariable.startOffset] (the name), walk up to the enclosing
+     * [KtVariableDeclaration], and then use the `val`/`var` keyword position as
+     * the start rather than the declaration's raw textRange start (which would
+     * include any leading annotations).
+     */
+    private fun getPsiBasedLocation(v: IrVariable): Label<DbLocation>? {
+        val startOffset = v.startOffset
+        if (startOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val nameElement = ktFile.findElementAt(startOffset) ?: return null
+        val declaration = generateSequence(nameElement) { it.parent }
+            .filterIsInstance<KtVariableDeclaration>()
+            .firstOrNull() ?: return null
+        // Use the val/var keyword as the start to avoid including leading annotations
+        // in the location (KtProperty.textRange starts before annotations).
+        val declStart = (declaration as? KtProperty)?.valOrVarKeyword?.startOffset
+            ?: declaration.startOffset
+        return tw.getLocation(declStart, declaration.endOffset)
     }
 
     private fun extractVariable(
