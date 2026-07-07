@@ -45,7 +45,10 @@ func ResolveDrive(driveRoot string) string {
 	if !available {
 		return ""
 	}
-	driveBytes := append([]byte(driveRoot), 0)
+	driveBytes, err := windows.ByteSliceFromString(driveRoot)
+	if err != nil {
+		return ""
+	}
 	ret, _, _ := procResolve.Call(uintptr(unsafe.Pointer(&driveBytes[0])))
 	if ret == 0 {
 		return ""
