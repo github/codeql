@@ -119,6 +119,24 @@ module OpenAI {
       "assistant"
   }
 
+  /** Gets the `item` dictionary passed to `realtime.connect().conversation.item.create`. */
+  private API::Node realtimeItem() {
+    result =
+      classRef()
+          .getMember("realtime")
+          .getMember("connect")
+          .getReturn()
+          .getMember("conversation")
+          .getMember("item")
+          .getMember("create")
+          .getKeywordParameter("item")
+  }
+
+  /** Gets the text content of a realtime conversation item. */
+  private API::Node realtimeItemContent(API::Node item) {
+    result = item.getSubscript("content").getASubscript().getSubscript("text")
+  }
+
   /**
    * Gets role-filtered system/developer/assistant message content sinks that
    * MaD cannot express.
@@ -130,6 +148,10 @@ module OpenAI {
     or
     exists(API::Node call | call = threadMessageCreate() and threadRoleIsAssistant(call) |
       result = call.getKeywordParameter("content")
+    )
+    or
+    exists(API::Node item | item = realtimeItem() and isSystemOrDevMessage(item) |
+      result = realtimeItemContent(item)
     )
   }
 
@@ -148,18 +170,8 @@ module OpenAI {
       result = call.getKeywordParameter("content")
     )
     or
-    // realtime conversation items, role cannot be statically resolved in general
-    result =
-      classRef()
-          .getMember("realtime")
-          .getMember("connect")
-          .getReturn()
-          .getMember("conversation")
-          .getMember("item")
-          .getMember("create")
-          .getKeywordParameter("item")
-          .getSubscript("content")
-          .getASubscript()
-          .getSubscript("text")
+    exists(API::Node item | item = realtimeItem() and not isSystemOrDevMessage(item) |
+      result = realtimeItemContent(item)
+    )
   }
 }
