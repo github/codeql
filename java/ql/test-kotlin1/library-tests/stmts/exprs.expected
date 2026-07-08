@@ -24,9 +24,9 @@
 | stmts.kt:14:13:14:13 | x | VarAccess |
 | stmts.kt:14:13:14:17 | ... < ... | LTExpr |
 | stmts.kt:14:17:14:17 | y | VarAccess |
-| stmts.kt:15:5:15:13 | z | LocalVariableDeclExpr |
+| stmts.kt:15:9:15:9 | z | LocalVariableDeclExpr |
 | stmts.kt:15:13:15:13 | 3 | IntegerLiteral |
-| stmts.kt:17:5:17:58 | q2 | LocalVariableDeclExpr |
+| stmts.kt:17:9:17:10 | q2 | LocalVariableDeclExpr |
 | stmts.kt:17:26:17:58 | true | BooleanLiteral |
 | stmts.kt:17:26:17:58 | when ... | WhenExpr |
 | stmts.kt:17:29:17:32 | true | BooleanLiteral |
@@ -36,7 +36,7 @@
 | stmts.kt:17:52:17:52 | z | VarAccess |
 | stmts.kt:17:52:17:56 | ...=... | AssignExpr |
 | stmts.kt:17:56:17:56 | 5 | IntegerLiteral |
-| stmts.kt:18:5:18:56 | q3 | LocalVariableDeclExpr |
+| stmts.kt:18:9:18:10 | q3 | LocalVariableDeclExpr |
 | stmts.kt:18:26:18:56 | true | BooleanLiteral |
 | stmts.kt:18:26:18:56 | when ... | WhenExpr |
 | stmts.kt:18:29:18:32 | true | BooleanLiteral |

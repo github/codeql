@@ -1,10 +1,10 @@
 delegatedProperties
-| delegatedProperties.kt:6:9:9:9 | prop1 | prop1 | local | delegatedProperties.kt:6:9:9:9 | Lazy<Integer> prop1$delegate | delegatedProperties.kt:6:27:9:9 | lazy(...) |
-| delegatedProperties.kt:19:9:19:51 | varResource1 | varResource1 | local | delegatedProperties.kt:19:9:19:51 | ResourceDelegate varResource1$delegate | delegatedProperties.kt:19:34:19:51 | new ResourceDelegate(...) |
-| delegatedProperties.kt:23:9:23:31 | name | name | local | delegatedProperties.kt:23:9:23:31 | Map<String,Object> name$delegate | delegatedProperties.kt:23:29:23:31 | map |
-| delegatedProperties.kt:33:9:33:76 | readOnly | readOnly | local | delegatedProperties.kt:33:9:33:76 | ReadWriteProperty<Object,Integer> readOnly$delegate | delegatedProperties.kt:33:30:33:47 | resourceDelegate(...) |
-| delegatedProperties.kt:34:9:34:48 | readWrite | readWrite | local | delegatedProperties.kt:34:9:34:48 | ReadWriteProperty<Object,Integer> readWrite$delegate | delegatedProperties.kt:34:31:34:48 | resourceDelegate(...) |
-| delegatedProperties.kt:39:9:39:51 | varResource2 | varResource2 | local | delegatedProperties.kt:39:9:39:51 | ResourceDelegate varResource2$delegate | delegatedProperties.kt:39:31:39:51 | provideDelegate(...) |
+| delegatedProperties.kt:6:9:9:9 | prop1 | prop1 | local | delegatedProperties.kt:6:24:9:9 | Lazy<Integer> prop1$delegate | delegatedProperties.kt:6:27:9:9 | lazy(...) |
+| delegatedProperties.kt:19:9:19:51 | varResource1 | varResource1 | local | delegatedProperties.kt:19:31:19:51 | ResourceDelegate varResource1$delegate | delegatedProperties.kt:19:34:19:51 | new ResourceDelegate(...) |
+| delegatedProperties.kt:23:9:23:31 | name | name | local | delegatedProperties.kt:23:26:23:31 | Map<String,Object> name$delegate | delegatedProperties.kt:23:29:23:31 | map |
+| delegatedProperties.kt:33:9:33:76 | readOnly | readOnly | local | delegatedProperties.kt:33:27:33:47 | ReadWriteProperty<Object,Integer> readOnly$delegate | delegatedProperties.kt:33:30:33:47 | resourceDelegate(...) |
+| delegatedProperties.kt:34:9:34:48 | readWrite | readWrite | local | delegatedProperties.kt:34:28:34:48 | ReadWriteProperty<Object,Integer> readWrite$delegate | delegatedProperties.kt:34:31:34:48 | resourceDelegate(...) |
+| delegatedProperties.kt:39:9:39:51 | varResource2 | varResource2 | local | delegatedProperties.kt:39:31:39:51 | ResourceDelegate varResource2$delegate | delegatedProperties.kt:39:31:39:51 | provideDelegate(...) |
 | delegatedProperties.kt:42:5:42:47 | varResource0 | varResource0 | non-local | delegatedProperties.kt:42:27:42:47 | varResource0$delegate | delegatedProperties.kt:42:30:42:47 | new ResourceDelegate(...) |
 | delegatedProperties.kt:66:5:66:50 | delegatedToMember1 | delegatedToMember1 | non-local | delegatedProperties.kt:66:33:66:50 | delegatedToMember1$delegate | delegatedProperties.kt:66:36:66:50 | ...::... |
 | delegatedProperties.kt:67:5:67:53 | delegatedToMember2 | delegatedToMember2 | non-local | delegatedProperties.kt:67:33:67:53 | delegatedToMember2$delegate | delegatedProperties.kt:67:36:67:53 | ...::... |
@@ -15,7 +15,7 @@ delegatedProperties
 | delegatedProperties.kt:75:5:75:78 | delegatedToAnotherClass1 | delegatedToAnotherClass1 | non-local | delegatedProperties.kt:75:39:75:78 | delegatedToAnotherClass1$delegate | delegatedProperties.kt:75:42:75:78 | ...::... |
 | delegatedProperties.kt:77:5:77:49 | delegatedToTopLevel | delegatedToTopLevel | non-local | delegatedProperties.kt:77:34:77:49 | delegatedToTopLevel$delegate | delegatedProperties.kt:77:37:77:49 | ...::... |
 | delegatedProperties.kt:79:5:79:38 | max | max | non-local | delegatedProperties.kt:79:18:79:38 | max$delegate | delegatedProperties.kt:79:21:79:38 | ...::... |
-| delegatedProperties.kt:82:9:82:54 | delegatedToMember3 | delegatedToMember3 | local | delegatedProperties.kt:82:9:82:54 | KMutableProperty0<Integer> delegatedToMember3$delegate | delegatedProperties.kt:82:40:82:54 | ...::... |
+| delegatedProperties.kt:82:9:82:54 | delegatedToMember3 | delegatedToMember3 | local | delegatedProperties.kt:82:37:82:54 | KMutableProperty0<Integer> delegatedToMember3$delegate | delegatedProperties.kt:82:40:82:54 | ...::... |
 | delegatedProperties.kt:87:1:87:46 | extDelegated | extDelegated | non-local | delegatedProperties.kt:87:31:87:46 | extDelegated$delegateMyClass | delegatedProperties.kt:87:34:87:46 | ...::... |
 delegatedPropertyTypes
 | delegatedProperties.kt:6:9:9:9 | prop1 | file://:0:0:0:0 | int | file://<external>/Lazy.class:0:0:0:0 | Lazy<Integer> |

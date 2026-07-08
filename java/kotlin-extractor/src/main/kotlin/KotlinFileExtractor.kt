@@ -1748,7 +1748,8 @@ open class KotlinFileExtractor(
         extractMethodAndParameterTypeAccesses: Boolean,
         extractAnnotations: Boolean,
         typeSubstitution: TypeSubstitution?,
-        classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
+        classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
+        overriddenAttributes: OverriddenFunctionAttributes? = null
     ) =
         if (isFake(f)) {
             if (needsInterfaceForwarder(f))
@@ -1766,8 +1767,18 @@ open class KotlinFileExtractor(
             // specifically in interfaces loaded from Java classes show up like fake overrides.
             val overriddenVisibility =
                 if (f.isFakeOverride && isJavaBinaryObjectMethodRedeclaration(f))
-                    OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC)
+                    DescriptorVisibilities.PUBLIC
                 else null
+            // Merge caller-supplied overrides with the internal visibility adjustment.
+            val mergedAttributes = when {
+                overriddenAttributes == null && overriddenVisibility == null -> null
+                overriddenAttributes == null -> OverriddenFunctionAttributes(visibility = overriddenVisibility)
+                overriddenVisibility == null -> overriddenAttributes
+                else -> overriddenAttributes.copy(
+                    visibility = overriddenVisibility.takeUnless { overriddenAttributes.visibility != null }
+                        ?: overriddenAttributes.visibility
+                )
+            }
             forceExtractFunction(
                     f,
                     parentId,
@@ -1776,7 +1787,7 @@ open class KotlinFileExtractor(
                     extractAnnotations,
                     typeSubstitution,
                     classTypeArgsIncludingOuterClasses,
-                    overriddenAttributes = overriddenVisibility
+                    overriddenAttributes = mergedAttributes
                 )
                 .also {
                     // The defaults-forwarder function is a static utility, not a member, so we only
@@ -2659,15 +2670,27 @@ open class KotlinFileExtractor(
 
             DeclarationStackAdjuster(p).use {
                 val id = useProperty(p, parentId, classTypeArgsIncludingOuterClasses)
+                // PSI location is only used for the primary (unspecialised) extraction. Specialised
+                // generic instances defer to getLocation so that the backing binary-file location is
+                // preserved, keeping specialised properties absent from fromSource() queries.
                 val locId =
-                    if (usesK2) getPsiBasedLocation(p) ?: getLocation(p, classTypeArgsIncludingOuterClasses)
-                    else getLocation(p, classTypeArgsIncludingOuterClasses)
+                    if (classTypeArgsIncludingOuterClasses.isNullOrEmpty())
+                        getPsiBasedLocation(p) ?: getLocation(p, classTypeArgsIncludingOuterClasses)
+                    else
+                        getLocation(p, classTypeArgsIncludingOuterClasses)
                 tw.writeKtProperties(id, p.name.asString())
                 tw.writeHasLocation(id, locId)
 
                 val bf = p.backingField
                 val getter = p.getter
                 val setter = p.setter
+
+                // Synthesised (DEFAULT_PROPERTY_ACCESSOR) getter and setter should point
+                // at the property head, not the initialiser or custom accessor body.
+                fun accessorOverride(f: IrFunction) =
+                    if (f.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR)
+                        getPsiBasedAccessorLocation(p)?.let { OverriddenFunctionAttributes(sourceLoc = it) }
+                    else null
 
                 if (getter == null) {
                     if (!isExternalDeclaration(p)) {
@@ -2682,7 +2705,8 @@ open class KotlinFileExtractor(
                                 extractMethodAndParameterTypeAccesses = extractFunctionBodies,
                                 extractAnnotations = extractAnnotations,
                                 typeSubstitution,
-                                classTypeArgsIncludingOuterClasses
+                                classTypeArgsIncludingOuterClasses,
+                                overriddenAttributes = accessorOverride(getter)
                             )
                             ?.cast<DbMethod>()
                     if (getterId != null) {
@@ -2712,7 +2736,8 @@ open class KotlinFileExtractor(
                                 extractMethodAndParameterTypeAccesses = extractFunctionBodies,
                                 extractAnnotations = extractAnnotations,
                                 typeSubstitution,
-                                classTypeArgsIncludingOuterClasses
+                                classTypeArgsIncludingOuterClasses,
+                                overriddenAttributes = accessorOverride(setter)
                             )
                             ?.cast<DbMethod>()
                     if (setterId != null) {
@@ -2928,6 +2953,46 @@ open class KotlinFileExtractor(
         return tw.getLocation(declStart, declaration.endOffset)
     }
 
+    /**
+     * Returns the PSI-based location for a property declaration, spanning from
+     * the `val`/`var` keyword to the end of the full property declaration (including
+     * any explicit getter/setter body).
+     *
+     * IR offsets are inconsistent across K1 and K2:
+     * - K1 [IrProperty.startOffset] includes leading modifiers (private, abstract,
+     *   lateinit, @Annotation) in the span start. K2 starts at `val`/`var`.
+     * - K1 [IrProperty.endOffset] stops at the end of the declaration line and
+     *   does not include an explicit getter/setter body on a subsequent line. K2
+     *   includes the getter/setter body.
+     *
+     * Both are resolved by walking the PSI tree: the [KtProperty] node covers the
+     * full declaration including getter/setter, and [KtProperty.valOrVarKeyword]
+     * gives the correct start, excluding modifiers.
+     */
+    private fun getPsiBasedLocation(p: IrProperty): Label<DbLocation>? {
+        if (p.startOffset < 0 || p.endOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val ktProperty = ktFile.findElementAt(p.startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtProperty>().firstOrNull() }
+            ?: return null
+        val declStart = ktProperty.valOrVarKeyword.startOffset
+        val declEnd = ktProperty.endOffset
+        return tw.getLocation(declStart, declEnd)
+    }
+
+    private fun getPsiBasedAccessorLocation(p: IrProperty): Label<DbLocation>? {
+        if (p.startOffset < 0 || p.endOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val ktProperty = ktFile.findElementAt(p.startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtProperty>().firstOrNull() }
+            ?: return null
+        val declStart = ktProperty.valOrVarKeyword.startOffset
+        val declEnd = ktProperty.nameIdentifier?.endOffset ?: ktProperty.valOrVarKeyword.endOffset
+        return tw.getLocation(declStart, declEnd)
+    }
+
     private fun extractVariable(
         v: IrVariable,
         callable: Label<out DbCallable>,
@@ -2954,7 +3019,7 @@ open class KotlinFileExtractor(
         with("variable expr", v) {
             val varId = useVariable(v)
             val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
-            val locId = getPsiBasedLocation(v) ?: tw.getLocation(getVariableLocationProvider(v))
+            val locId = getPsiBasedLocation(v as IrElement) ?: tw.getLocation(getVariableLocationProvider(v))
             val type = useType(v.type)
             tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, exprId)
             tw.writeLocalvarsKotlinType(varId, type.kotlinResult.id)

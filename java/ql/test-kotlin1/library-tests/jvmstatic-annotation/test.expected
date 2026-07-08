@@ -10,8 +10,8 @@ staticMembers
 | test.kt:9:1:29:1 | HasCompanion | test.kt:25:18:25:60 | setPropWithStaticSetter | Method |
 | test.kt:31:1:47:1 | NonCompanion | test.kt:31:1:47:1 | INSTANCE | Field |
 | test.kt:31:1:47:1 | NonCompanion | test.kt:33:14:33:69 | staticMethod | Method |
-| test.kt:31:1:47:1 | NonCompanion | test.kt:36:14:36:41 | getStaticProp | Method |
-| test.kt:31:1:47:1 | NonCompanion | test.kt:36:14:36:41 | setStaticProp | Method |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:36:14:36:27 | getStaticProp | Method |
+| test.kt:31:1:47:1 | NonCompanion | test.kt:36:14:36:27 | setStaticProp | Method |
 | test.kt:31:1:47:1 | NonCompanion | test.kt:40:16:40:43 | getPropWithStaticGetter | Method |
 | test.kt:31:1:47:1 | NonCompanion | test.kt:45:16:45:58 | setPropWithStaticSetter | Method |
 #select
