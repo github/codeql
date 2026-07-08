@@ -2,7 +2,7 @@
 | Number of calls with call target | 1 |
 | Number of calls with missing call target | 4 |
 | Number of diagnostics from CodeQL Java extractor with severity 5 | 10 |
-| Number of diagnostics from CodeQL Java extractor with severity 6 | 2 |
+| Number of diagnostics from CodeQL Java extractor with severity 6 | 1 |
 | Number of expressions with known type | 1 |
 | Number of expressions with unknown type | 6 |
 | Number of files | 606 |
@@ -12,6 +12,6 @@
 | Number of lines of code with extension java | 7 |
 | Percentage of calls with call target | 20 |
 | Percentage of expressions with known type | 14 |
-| Total number of diagnostics from CodeQL Java extractor | 12 |
+| Total number of diagnostics from CodeQL Java extractor | 11 |
 | Total number of lines | 13 |
 | Total number of lines with extension java | 13 |
