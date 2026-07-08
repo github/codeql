@@ -18,7 +18,6 @@ extensions:
       pack: codeql/java-all
       extensible: sourceModel
     data:
-      - ["org.apache.avro", "Protocol", True, "main", "(String[])", "", "Parameter[0]", "commandargs", "ai-generated"]
       - ["org.apache.avro", "Protocol", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
       - ["org.apache.avro", "Schema", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
       - ["org.apache.avro", "Schema$Parser", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
