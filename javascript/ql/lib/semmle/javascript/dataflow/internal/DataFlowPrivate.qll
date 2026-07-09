@@ -65,6 +65,8 @@ class FlowSummaryNode extends DataFlow::Node, TFlowSummaryNode {
 
   cached
   override string toString() { result = this.getSummaryNode().toString() }
+
+  override Location getLocation() { result = this.getSummaryNode().getLocation() }
 }
 
 class FlowSummaryDynamicParameterArrayNode extends DataFlow::Node,
@@ -541,7 +543,7 @@ predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos
 DataFlowCallable nodeGetEnclosingCallable(Node node) {
   result.asSourceCallable() = node.getContainer()
   or
-  result.asLibraryCallable() = node.(FlowSummaryNode).getSummarizedCallable()
+  result = node.(FlowSummaryNode).getSummaryNode().getEnclosingCallable()
   or
   result.asLibraryCallable() = node.(FlowSummaryDynamicParameterArrayNode).getSummarizedCallable()
   or
