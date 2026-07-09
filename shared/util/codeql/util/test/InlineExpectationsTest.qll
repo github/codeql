@@ -642,7 +642,7 @@ module TestPostProcessing {
      * render inline expectations for that file. Files for which this has no result are left
      * untouched by `--learn`.
      *
-     * This is keyed on the file rather than on the analysed language because a single database
+     * This is keyed on the file rather than on the analyzed language because a single database
      * may contain source files in several languages with different comment syntaxes (for
      * example Java together with XML). `relativePath` is the path reported by `getRelativeUrl`.
      */
