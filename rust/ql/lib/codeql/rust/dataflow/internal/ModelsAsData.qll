@@ -212,7 +212,7 @@ private class FlowSourceFromModel extends FlowSource::Range {
 
   FlowSourceFromModel() {
     sourceModel(path, _, _, _, _) and
-    this.callResolvesTo(path)
+    this.getCanonicalPath() = path
   }
 
   override predicate isSource(string output, string kind, Provenance provenance, string model) {
@@ -234,7 +234,7 @@ private class FlowSinkFromModel extends FlowSink::Range {
 
   FlowSinkFromModel() {
     sinkModel(path, _, _, _, _) and
-    this.callResolvesTo(path)
+    this.getCanonicalPath() = path
   }
 
   override predicate isSink(string input, string kind, Provenance provenance, string model) {
@@ -256,7 +256,7 @@ private class FlowBarrierFromModel extends FlowBarrier::Range {
 
   FlowBarrierFromModel() {
     barrierModel(path, _, _, _, _) and
-    this.callResolvesTo(path)
+    this.getCanonicalPath() = path
   }
 
   override predicate isBarrier(string output, string kind, Provenance provenance, string model) {
@@ -272,7 +272,7 @@ private class FlowBarrierGuardFromModel extends FlowBarrierGuard::Range {
 
   FlowBarrierGuardFromModel() {
     barrierGuardModel(path, _, _, _, _, _) and
-    this.callResolvesTo(path)
+    this.getCanonicalPath() = path
   }
 
   override predicate isBarrierGuard(

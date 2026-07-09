@@ -448,6 +448,8 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
       or
       result = ps.getSelfParam() and this.isSelf()
     }
+
+    ParamBase getParameter(Callable c) { result = this.getParameterIn(c.getParamList()) }
   }
 
   /**
@@ -510,10 +512,6 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
       node.asExpr() = stripParens(match.getScrutinee()) or
       node.asPat() = match.getAnArm().getPat()
     )
-    or
-    FlowSummaryImpl::Private::Steps::sourceLocalStep(_, node, _)
-    or
-    FlowSummaryImpl::Private::Steps::sinkLocalStep(node, _, _)
   }
 
   class DataFlowExpr = Expr;
@@ -1289,10 +1287,10 @@ private module Cached {
       FlowSummaryImpl::Public::AcceptingValue acceptingValue, string kind, string model
     |
       FlowSummaryImpl::Private::barrierGuardSpec(b, stack, acceptingValue, kind, model) and
-      e = FlowSummaryImpl::StepsInput::getSinkNode(b, stack.headOfSingleton()).asExpr() and
+      e = FlowSummaryImpl::getExitElement(b, stack.headOfSingleton()) and
       kmp = TMkPair(kind, model) and
       gv = convertAcceptingValue(acceptingValue) and
-      g = b.getCall()
+      g.(Call).getResolvedTarget() = b
     )
   }
 
@@ -1303,15 +1301,8 @@ private module Cached {
       FlowSummaryImpl::Public::BarrierElement b,
       FlowSummaryImpl::Private::SummaryComponentStack stack
     |
-      FlowSummaryImpl::Private::barrierSpec(b, stack, kind, model)
-    |
-      n = FlowSummaryImpl::StepsInput::getSourceNode(b, stack, false)
-      or
-      // For barriers like `Argument[0]` we want to target the pre-update node
-      n =
-        FlowSummaryImpl::StepsInput::getSourceNode(b, stack, true)
-            .(PostUpdateNode)
-            .getPreUpdateNode()
+      FlowSummaryImpl::Private::barrierSpec(b, stack, kind, model) and
+      exists(FlowSummaryImpl::getEntryElement(b, stack, _, n.asExpr()))
     )
     or
     ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
