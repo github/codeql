@@ -1013,6 +1013,12 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int, ski
 		return
 	}
 
+	// Skip parenthesised expressions and extract their child directly in their place
+	if paren, ok := expr.(*ast.ParenExpr); ok {
+		extractExpr(tw, paren.X, parent, idx, skipExtractingValue)
+		return
+	}
+
 	lbl := tw.Labeler.LocalID(expr)
 	extractTypeOf(tw, expr, lbl)
 
@@ -1087,9 +1093,6 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int, ski
 		kind = dbscheme.CompositeLitExpr.Index()
 		extractExpr(tw, expr.Type, lbl, 0, false)
 		extractExprs(tw, expr.Elts, lbl, 1, 1)
-	case *ast.ParenExpr:
-		kind = dbscheme.ParenExpr.Index()
-		extractExpr(tw, expr.X, lbl, 0, false)
 	case *ast.SelectorExpr:
 		kind = dbscheme.SelectorExpr.Index()
 		extractExpr(tw, expr.X, lbl, 0, false)
