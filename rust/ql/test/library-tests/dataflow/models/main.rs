@@ -344,13 +344,13 @@ mod sink_out_of_function {
 
     fn test_sink_out_of_function() {
         let a = |a| source(1);
-        pass_sink(a); // $ MISSING: hasValueFlow=1
+        pass_sink(a); // $ hasValueFlow=1
 
         let b = |_a| {
             let s = source(2);
             MyFieldEnum::E { field_e: Option::Some(s) }
         };
-        pass_sink_nested(b); // $ MISSING: hasValueFlow=2
+        pass_sink_nested(b); // $ hasValueFlow=2
     }
 }
 
@@ -408,7 +408,7 @@ trait MyTrait {
 
 impl MyTrait for () {
     fn test_param_source(i: i64) {
-        sink(i) // $ MISSING: hasValueFlow=i
+        sink(i) // $ hasValueFlow=i
     }
 }
 
