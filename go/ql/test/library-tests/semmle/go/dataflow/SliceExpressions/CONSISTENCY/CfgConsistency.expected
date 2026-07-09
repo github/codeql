@@ -1,5 +1,0 @@
-consistencyOverview
-| missingInNodeForPostOrInOrder | 2 |
-missingInNodeForPostOrInOrder
-| main.go:40:2:40:8 | (...) |
-| main.go:41:11:41:17 | (...) |

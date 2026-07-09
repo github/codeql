@@ -544,15 +544,11 @@ class SliceLit extends ArrayOrSliceLit {
 }
 
 /**
- * A parenthesized expression.
- *
- * Examples:
- *
- * ```go
- * (x + y)
- * ```
+ * DEPRECATED: `ParenExpr` is no longer extracted. Parenthesized expressions are
+ * transparent in the AST; the child expression takes the place of the parenthesized
+ * expression directly.
  */
-class ParenExpr extends @parenexpr, Expr {
+deprecated class ParenExpr extends @parenexpr, Expr {
   /** Gets the expression between parentheses. */
   Expr getExpr() { result = this.getChildExpr(0) }
 
@@ -2149,8 +2145,6 @@ private predicate isTypeExprBottomUp(Expr e) {
   or
   e instanceof @indexexpr and isTypeExprBottomUp(e.getChildExpr(0))
   or
-  isTypeExprBottomUp(e.(ParenExpr).getExpr())
-  or
   isTypeExprBottomUp(e.(StarExpr).getBase())
   or
   isTypeExprBottomUp(e.(Ellipsis).getOperand())
@@ -2201,8 +2195,6 @@ private predicate isTypeExprTopDown(Expr e) {
   or
   e = any(SelectorExpr sel | isTypeExprTopDown(sel)).getBase()
   or
-  e = any(ParenExpr pe | isTypeExprTopDown(pe)).getExpr()
-  or
   e = any(StarExpr se | isTypeExprTopDown(se)).getBase()
   or
   e = any(Ellipsis ell | isTypeExprTopDown(ell)).getOperand()
@@ -2250,8 +2242,6 @@ class ReferenceExpr extends Expr {
     not this = any(ResultVariableDecl rvd).getNameExpr(_) and
     not this = any(MethodSpec md).getNameExpr() and
     not this = any(StructLit sl).getKey(_)
-    or
-    this.(ParenExpr).getExpr() instanceof ReferenceExpr
     or
     this.(StarExpr).getBase() instanceof ReferenceExpr
     or
@@ -2302,7 +2292,6 @@ class ValueExpr extends Expr {
     this instanceof BasicLit or
     this instanceof FuncLit or
     this instanceof CompositeLit or
-    this.(ParenExpr).getExpr() instanceof ValueExpr or
     this instanceof SliceExpr or
     this instanceof TypeAssertExpr or
     this instanceof CallOrConversionExpr or

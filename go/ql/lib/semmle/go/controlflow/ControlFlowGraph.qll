@@ -282,8 +282,6 @@ module ControlFlow {
     private predicate ensuresAux(Expr expr, boolean b) {
       expr = cond and b = outcome
       or
-      expr = any(ParenExpr par | this.ensuresAux(par, b)).getExpr()
-      or
       expr = any(NotExpr ne | this.ensuresAux(ne, b.booleanNot())).getOperand()
       or
       expr = any(LandExpr land | this.ensuresAux(land, true)).getAnOperand() and

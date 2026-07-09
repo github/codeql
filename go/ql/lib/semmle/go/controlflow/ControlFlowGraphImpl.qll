@@ -436,16 +436,6 @@ module CfgImpl {
       // pre-order means no in-order "invocation" node (and hence no inline
       // exceptional-exit edge) is created at the `defer` statement.
       e = any(Go::DeferStmt s).getCall()
-      or
-      // Parenthesized expressions are value-transparent (via `propagatesValue`)
-      // and should not get an in-order evaluation node. Marking them as
-      // pre-order prevents the shared library from auto-computing
-      // `postOrInOrder` for them (which would create an unreachable In node).
-      e instanceof Go::ParenExpr
-    }
-
-    predicate propagatesValue(Ast::AstNode child, Ast::AstNode parent) {
-      child = parent.(Go::ParenExpr).getExpr()
     }
 
     predicate postOrInOrder(Ast::AstNode n) {
