@@ -1298,11 +1298,7 @@ module IR {
   /**
    * Gets the (final) instruction computing the value of `e`.
    */
-  Instruction evalExprInstruction(Expr e) {
-    result.(EvalInstruction).getExpr() = e
-    or
-    result = evalExprInstruction(e.(ParenExpr).getExpr())
-  }
+  Instruction evalExprInstruction(Expr e) { result.(EvalInstruction).getExpr() = e }
 
   /**
    * Gets the instruction corresponding to the initialization of `r`.
