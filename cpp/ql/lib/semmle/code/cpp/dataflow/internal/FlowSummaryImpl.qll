@@ -13,15 +13,11 @@ private import semmle.code.cpp.dataflow.ExternalFlow
 private import semmle.code.cpp.ir.IR
 
 module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
-  private import codeql.util.Void
-
   class SummarizedCallableBase = Function;
 
-  class SourceBase extends Void {
-    Location getLocation() { none() }
-  }
+  class SourceBase = Function;
 
-  class SinkBase = SourceBase;
+  class SinkBase = Function;
 
   class FlowSummaryCallBase = CallInstruction;
 
@@ -134,35 +130,92 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 
 private import Make<Location, DataFlowImplSpecific::CppDataFlow, Input> as Impl
 
-private module Input2 implements Impl::Private::InputSig2 {
-  private import codeql.util.Void
+module Input2 implements Impl::Private::InputSig2 {
+  class SourceSinkReportingElement extends Element {
+    private Function getEnclosingFunction() {
+      result = this.(StmtParent).getEnclosingFunction()
+      or
+      this = result.getAParameter()
+    }
 
-  class SourceSinkReportingElement extends Void {
-    Location getLocation() { none() }
-
-    DataFlowCallable getEnclosingCallable() { none() }
+    DataFlowCallable getEnclosingCallable() {
+      result.asSourceCallable() = this.getEnclosingFunction()
+    }
   }
 
-  bindingset[source, s]
+  private SourceSinkReportingElement getSourceSinkArgumentElement(
+    Call call, Impl::Private::SummaryComponent sc
+  ) {
+    exists(Position pos, int i |
+      sc = Impl::Private::SummaryComponent::argument(pos) and
+      i = pos.getArgumentIndex()
+    |
+      result = call.getArgument(i)
+      or
+      i = -1 and
+      result = call.getQualifier()
+    )
+  }
+
   SourceSinkReportingElement getSourceEntryElement(
     Impl::Public::SourceElement source, Impl::Private::SummaryComponentStack s
   ) {
-    none()
+    s.headOfSingleton() = Impl::Private::SummaryComponent::return(_) and
+    result.(Call).getTarget() = source
+    or
+    exists(Position pos, Function f |
+      s.head() = Impl::Private::SummaryComponent::parameter(pos) and
+      result = f.getParameter(pos.getArgumentIndex())
+    |
+      // TODO: callbacks
+      // exists(Call call |
+      //   call.getTarget() = source and
+      //   f = getSourceSinkArgumentElement(call, s.tail().headOfSingleton())
+      // )
+      // or
+      s.length() = 1 and
+      f = source
+    )
+    or
+    exists(Call call |
+      call.getTarget() = source and
+      result = getSourceSinkArgumentElement(call, s.headOfSingleton())
+    )
+  }
+
+  private ArgumentNode getSourceNodeArgument(Call c, Impl::Private::SummaryComponent sc) {
+    exists(Position pos, DataFlowCall call |
+      sc = Impl::Private::SummaryComponent::argument(pos) and
+      c = call.asCallInstruction().getUnconvertedResultExpression() and
+      result.argumentOf(call, pos)
+    )
   }
 
   bindingset[e, s]
   Node getSourceExitNode(SourceSinkReportingElement e, Impl::Private::SummaryComponentStack s) {
-    none()
+    exists(ReturnKind rk, DataFlowCall call |
+      s.head() = Impl::Private::SummaryComponent::return(rk) and
+      call.asCallInstruction().getUnconvertedResultExpression() = e and
+      result = getAnOutNode(call, rk)
+    )
+    or
+    result.(ParameterNode).getParameter() = e
+    or
+    exists(Call call, Impl::Private::SummaryComponent arg |
+      arg = s.headOfSingleton() and
+      e = getSourceSinkArgumentElement(call, arg) and
+      result.(PostUpdateNode).getPreUpdateNode() = getSourceNodeArgument(call, arg)
+    )
   }
+
+  bindingset[e, sc]
+  Node getSinkEntryNode(SourceSinkReportingElement e, Impl::Private::SummaryComponent sc) { none() }
 
   SourceSinkReportingElement getSinkExitElement(
     Impl::Public::SinkElement sink, Impl::Private::SummaryComponent sc
   ) {
     none()
   }
-
-  bindingset[e, sc]
-  Node getSinkEntryNode(SourceSinkReportingElement e, Impl::Private::SummaryComponent sc) { none() }
 }
 
 private import Impl::Private::Make2<Input2> as Impl2
@@ -338,3 +391,23 @@ module Private {
 }
 
 module Public = Impl::Public;
+
+private class SourceModel extends Public::SourceElement {
+  private string namespace;
+  private string type;
+  private boolean subtypes;
+  private string name;
+  private string signature;
+  private string ext;
+
+  SourceModel() {
+    sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _, _) and
+    this = interpretElement(namespace, type, subtypes, name, signature, ext)
+  }
+
+  override predicate isSource(
+    string output, string kind, Public::Provenance provenance, string model
+  ) {
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, model)
+  }
+}
