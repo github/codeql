@@ -179,17 +179,7 @@ Expr getPostUpdateReverseStep(Expr e, boolean preservesValue) {
 
 module LocalFlow {
   predicate flowSummaryLocalStep(Node nodeFrom, Node nodeTo, string model) {
-    exists(FlowSummaryImpl::Public::SummarizedCallable c |
-      FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
-        nodeTo.(FlowSummaryNode).getSummaryNode(), true, model) and
-      c = nodeFrom.(FlowSummaryNode).getSummarizedCallable()
-    )
-    or
-    FlowSummaryImpl::Private::Steps::sourceLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-      nodeTo, model)
-    or
-    FlowSummaryImpl::Private::Steps::sinkLocalStep(nodeFrom,
-      nodeTo.(FlowSummaryNode).getSummaryNode(), model)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true, model)
   }
 
   pragma[nomagic]
@@ -448,6 +438,8 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
       or
       result = ps.getSelfParam() and this.isSelf()
     }
+
+    ParamBase getParameter(Callable c) { result = this.getParameterIn(c.getParamList()) }
   }
 
   /**
@@ -510,10 +502,6 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
       node.asExpr() = stripParens(match.getScrutinee()) or
       node.asPat() = match.getAnArm().getPat()
     )
-    or
-    FlowSummaryImpl::Private::Steps::sourceLocalStep(_, node, _)
-    or
-    FlowSummaryImpl::Private::Steps::sinkLocalStep(node, _, _)
   }
 
   class DataFlowExpr = Expr;
@@ -652,10 +640,7 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
    * variable.
    */
   predicate jumpStep(Node node1, Node node2) {
-    FlowSummaryImpl::Private::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
-      node2.(FlowSummaryNode).getSummaryNode())
-    or
-    FlowSummaryImpl::Private::Steps::sourceJumpStep(node1.(FlowSummaryNode).getSummaryNode(), node2)
+    FlowSummaryImpl::Private::Steps::summaryJumpStep(node1, node2)
     or
     exists(Const c |
       node1.asExpr() = c.getBody() and
@@ -1289,10 +1274,10 @@ private module Cached {
       FlowSummaryImpl::Public::AcceptingValue acceptingValue, string kind, string model
     |
       FlowSummaryImpl::Private::barrierGuardSpec(b, stack, acceptingValue, kind, model) and
-      e = FlowSummaryImpl::StepsInput::getSinkNode(b, stack.headOfSingleton()).asExpr() and
+      e = FlowSummaryImpl::Input2::getASinkReportingElement(b, stack.headOfSingleton()) and
       kmp = TMkPair(kind, model) and
       gv = convertAcceptingValue(acceptingValue) and
-      g = b.getCall()
+      g.(Call).getResolvedTarget() = b
     )
   }
 
@@ -1303,15 +1288,8 @@ private module Cached {
       FlowSummaryImpl::Public::BarrierElement b,
       FlowSummaryImpl::Private::SummaryComponentStack stack
     |
-      FlowSummaryImpl::Private::barrierSpec(b, stack, kind, model)
-    |
-      n = FlowSummaryImpl::StepsInput::getSourceNode(b, stack, false)
-      or
-      // For barriers like `Argument[0]` we want to target the pre-update node
-      n =
-        FlowSummaryImpl::StepsInput::getSourceNode(b, stack, true)
-            .(PostUpdateNode)
-            .getPreUpdateNode()
+      FlowSummaryImpl::Private::barrierSpec(b, stack, kind, model) and
+      n.asExpr() = FlowSummaryImpl::Input2::getASourceReportingElement(b, stack.headOfSingleton())
     )
     or
     ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
