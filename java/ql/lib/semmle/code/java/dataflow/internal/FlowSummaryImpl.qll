@@ -37,11 +37,17 @@ module Input implements InputSig<Location, DataFlowImplSpecific::JavaDataFlow> {
     sc.asCallable() = any(Callable c | c.fromSource() and not c.isStub())
   }
 
-  class SourceBase = Void;
+  class SourceBase extends Void {
+    Location getLocation() { none() }
+  }
 
-  class SinkBase = Void;
+  class SinkBase = SourceBase;
 
-  class FlowSummaryCallBase = Void;
+  class FlowSummaryCallBase = SourceBase;
+
+  DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c) {
+    result.asSummarizedCallable() = c
+  }
 
   predicate neutralElement(
     Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
@@ -110,7 +116,40 @@ module Input implements InputSig<Location, DataFlowImplSpecific::JavaDataFlow> {
 
 private import Make<Location, DataFlowImplSpecific::JavaDataFlow, Input> as Impl
 
-private module TypesInput implements Impl::Private::TypesInputSig {
+private module Input2 implements Impl::Private::InputSig2 {
+  private import codeql.util.Void
+
+  class SourceSinkReportingElement extends Void {
+    Location getLocation() { none() }
+
+    DataFlowCallable getEnclosingCallable() { none() }
+  }
+
+  bindingset[source, s]
+  SourceSinkReportingElement getSourceEntryElement(
+    Impl::Public::SourceElement source, Impl::Private::SummaryComponentStack s
+  ) {
+    none()
+  }
+
+  bindingset[e, s]
+  Node getSourceExitNode(SourceSinkReportingElement e, Impl::Private::SummaryComponentStack s) {
+    none()
+  }
+
+  SourceSinkReportingElement getSinkExitElement(
+    Impl::Public::SinkElement sink, Impl::Private::SummaryComponent sc
+  ) {
+    none()
+  }
+
+  bindingset[e, sc]
+  Node getSinkEntryNode(SourceSinkReportingElement e, Impl::Private::SummaryComponent sc) { none() }
+}
+
+private import Impl::Private::Make2<Input2> as Impl2
+
+private module TypesInput implements Impl2::TypesInputSig {
   DataFlowType getSyntheticGlobalType(Impl::Private::SyntheticGlobal sg) {
     exists(sg) and
     result instanceof TypeObject
@@ -145,20 +184,12 @@ private module TypesInput implements Impl::Private::TypesInputSig {
   DataFlowType getSinkType(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
-private module StepsInput implements Impl::Private::StepsInputSig {
-  Impl::Private::SummaryNode getSummaryNode(Node n) {
-    result = n.(FlowSummaryNode).getSummaryNode()
-  }
+private module StepsInput implements Impl2::StepsInputSig {
+  Impl2::SummaryNode getSummaryNode(Node n) { result = n.(FlowSummaryNode).getSummaryNode() }
 
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     sc = viableCallable(result).asSummarizedCallable()
   }
-
-  DataFlowCallable getSourceNodeEnclosingCallable(Input::SourceBase source) { none() }
-
-  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponentStack s) { none() }
-
-  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 private predicate relatedArgSpec(Callable c, string spec) {
@@ -372,9 +403,10 @@ module SourceSinkInterpretationInput implements
 
 module Private {
   import Impl::Private
-  import Impl::Private::Types<TypesInput>
+  import Impl2
+  import Types<TypesInput>
 
-  module Steps = Impl::Private::Steps<StepsInput>;
+  module Steps = Impl2::Steps<StepsInput>;
 
   module External {
     import Impl::Private::External
