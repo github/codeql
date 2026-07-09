@@ -709,7 +709,7 @@ module IR {
         or
         exists(assgn.(ValueSpec).getNameExpr(i))
         or
-        assgn instanceof RangeStmt and i in [0, 1]
+        assgn instanceof RangeElementExpr and i in [0, 1]
       )
     }
 
@@ -763,7 +763,7 @@ module IR {
         or
         exists(s.(ValueSpec).getNameExpr(i))
         or
-        s instanceof RangeStmt and i in [0, 1]
+        s instanceof RangeElementExpr and i in [0, 1]
         or
         exists(s.(ReturnStmt).getEnclosingFunction().getType().(SignatureType).getResultType(i))
         or
@@ -803,7 +803,9 @@ module IR {
         result = e.getType().(TupleType).getComponentType(pragma[only_bind_into](i))
       )
       or
-      exists(Type rangeType | rangeType = s.(RangeStmt).getDomain().getType().getUnderlyingType() |
+      exists(Type rangeType |
+        rangeType = s.(RangeElementExpr).getDomain().getType().getUnderlyingType()
+      |
         exists(Type baseType |
           baseType = rangeType.(ArrayType).getElementType() or
           baseType =
@@ -1105,16 +1107,16 @@ module IR {
 
   /** An instruction that gets the next key-value pair in a range loop. */
   class GetNextEntryInstruction extends Instruction {
-    RangeStmt rs;
+    RangeElementExpr p;
 
-    GetNextEntryInstruction() { this.isAdditional(rs, "next") }
+    GetNextEntryInstruction() { this.isAdditional(p, "next") }
 
     /**
      * Gets the instruction computing the value whose key-value pairs this instruction reads.
      */
-    Instruction getDomain() { result = evalExprInstruction(rs.getDomain()) }
+    Instruction getDomain() { result = evalExprInstruction(p.getDomain()) }
 
-    override ControlFlow::Root getRoot() { result.isRootOf(rs) }
+    override ControlFlow::Root getRoot() { result.isRootOf(p.getRangeStmt()) }
   }
 
   /**
@@ -1240,10 +1242,10 @@ module IR {
         or
         lhs = assgn.(ValueSpec).getNameExpr(i)
         or
-        exists(RangeStmt rs | rs = assgn |
-          i = 0 and lhs = rs.getKey().stripParens()
+        exists(RangeElementExpr p | p = assgn |
+          i = 0 and lhs = p.getKey().stripParens()
           or
-          i = 1 and lhs = rs.getValue().stripParens()
+          i = 1 and lhs = p.getValue().stripParens()
         )
       )
       or
@@ -1496,13 +1498,17 @@ module IR {
    * Gets the instruction corresponding to the assignment of the key variable
    * of range statement `rs`.
    */
-  AssignInstruction assignKeyInstruction(RangeStmt rs) { result.isAdditional(rs, "assign:0") }
+  AssignInstruction assignKeyInstruction(RangeStmt rs) {
+    result.isAdditional(rs.getPattern(), "assign:0")
+  }
 
   /**
    * Gets the instruction corresponding to the assignment of the value variable
    * of range statement `rs`.
    */
-  AssignInstruction assignValueInstruction(RangeStmt rs) { result.isAdditional(rs, "assign:1") }
+  AssignInstruction assignValueInstruction(RangeStmt rs) {
+    result.isAdditional(rs.getPattern(), "assign:1")
+  }
 
   /**
    * Gets the instruction corresponding to the implicit initialization of `v`

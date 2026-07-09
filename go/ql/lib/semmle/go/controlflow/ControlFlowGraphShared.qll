@@ -212,11 +212,17 @@ module GoCfg {
     }
 
     class ForeachStmt extends LoopStmt {
-      ForeachStmt() { none() }
+      ForeachStmt() { this instanceof Go::RangeStmt }
 
-      Expr getVariable() { none() }
+      // Go's `range` statement binds its key and value by destructuring the
+      // current element. The extractor synthesizes a single "range element"
+      // node grouping the key and value (see `Go::RangeElementExpr`), which we
+      // present here as the loop variable. The shared library routes control
+      // flow into and out of this node, and Go wires the destructuring through
+      // it (see `rangeStmtStep`).
+      Expr getVariable() { result = this.(Go::RangeStmt).getPattern() }
 
-      Expr getCollection() { none() }
+      Expr getCollection() { result = this.(Go::RangeStmt).getDomain() }
     }
 
     class BreakStmt = Go::BreakStmt;
@@ -504,12 +510,15 @@ module GoCfg {
             or
             notBlankIdent(n.(Go::ValueSpec).getNameExpr(i))
             or
-            notBlankIdent(n.(Go::RangeStmt).getKey()) and i = 0
+            notBlankIdent(n.(Go::RangeElementExpr).getKey()) and i = 0
             or
-            notBlankIdent(n.(Go::RangeStmt).getValue()) and i = 1
+            notBlankIdent(n.(Go::RangeElementExpr).getValue()) and i = 1
           ) and
           tag = "assign:" + i.toString()
         )
+        or
+        // Get the next key-value pair produced by a `range` statement.
+        n instanceof Go::RangeElementExpr and tag = "next"
         or
         // Compound assignment implicit RHS
         n instanceof Go::CompoundAssignStmt and tag = "compound-rhs"
@@ -574,9 +583,6 @@ module GoCfg {
           tag = "result-zero-init:" + i.toString()
         )
         or
-        // Next node for range statements
-        n instanceof Go::RangeStmt and tag = "next"
-        or
         // Implicit deref
         implicitDerefCondition(n) and tag = "implicit-deref"
         or
@@ -632,10 +638,10 @@ module GoCfg {
         exists(spec.getNameExpr(i))
       )
       or
-      exists(Go::RangeStmt rs | s = rs |
-        exists(rs.getKey()) and i = 0
+      exists(Go::RangeElementExpr p | s = p |
+        exists(p.getKey()) and i = 0
         or
-        exists(rs.getValue()) and i = 1
+        exists(p.getValue()) and i = 1
       )
       or
       exists(Go::ReturnStmt ret, Go::SignatureType rettp |
@@ -1010,7 +1016,7 @@ module GoCfg {
     predicate overridesCallableBodyExit(Ast::Callable c) { funcHasDefer(c.(Go::FuncDef)) }
 
     predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
-      rangeLoop(n1, n2) or
+      rangeStmtStep(n1, n2) or
       selectStmt(n1, n2) or
       deferStmt(n1, n2) or
       goStmtStep(n1, n2) or
@@ -1139,9 +1145,9 @@ module GoCfg {
             or
             notBlankIdent(assgn.(Go::ValueSpec).getNameExpr(j))
             or
-            notBlankIdent(assgn.(Go::RangeStmt).getKey()) and j = 0
+            notBlankIdent(assgn.(Go::RangeElementExpr).getKey()) and j = 0
             or
-            notBlankIdent(assgn.(Go::RangeStmt).getValue()) and j = 1
+            notBlankIdent(assgn.(Go::RangeElementExpr).getValue()) and j = 1
           ) and
           result = "assign:" + j.toString() and
           ord = 2 * j + 1
@@ -1511,34 +1517,31 @@ module GoCfg {
       )
     }
 
-    private predicate rangeLoop(PreControlFlowNode n1, PreControlFlowNode n2) {
-      exists(Go::RangeStmt s |
-        // Use the shared library's auto-created `[LoopHeader]` additional node
-        // (created for every `LoopStmt`) as the join/branch point of the range loop.
-        n1.isBefore(s) and n2.isBefore(s.getDomain())
+    private predicate rangeStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
+      exists(Go::RangeElementExpr p |
+        // The shared `ForeachStmt` model owns the loop skeleton (testing the
+        // domain for emptiness, the `[LoopHeader]` join/branch point, and the
+        // loop exit) and routes control flow into `Before(p)` and out of
+        // `After(p)`, where `p` is the synthesized "range element" loop
+        // variable. Here we get the next key-value pair and destructure it into
+        // the key/value variables using the shared extract/assign epilogue
+        // machinery.
+        n1.isBefore(p) and n2.isAdditional(p, "next")
         or
-        n1.isAfter(s.getDomain()) and n2.isAdditional(s, "[LoopHeader]")
-        or
-        n1.isAdditional(s, "[LoopHeader]") and n2.isAdditional(s, "next")
-        or
-        n1.isAdditional(s, "next") and
+        n1.isAdditional(p, "next") and
         (
-          exists(getFirstEpilogueTag(s)) and n2.isAdditional(s, getFirstEpilogueTag(s))
+          exists(getFirstEpilogueTag(p)) and n2.isAdditional(p, getFirstEpilogueTag(p))
           or
-          not exists(getFirstEpilogueTag(s)) and n2.isBefore(s.getBody())
+          not exists(getFirstEpilogueTag(p)) and n2.isAfter(p)
         )
         or
         exists(string tag1, string tag2 |
-          epilogueSucc(s, tag1, tag2) and
-          n1.isAdditional(s, tag1) and
-          n2.isAdditional(s, tag2)
+          epilogueSucc(p, tag1, tag2) and
+          n1.isAdditional(p, tag1) and
+          n2.isAdditional(p, tag2)
         )
         or
-        n1.isAdditional(s, getLastEpilogueTag(s)) and n2.isBefore(s.getBody())
-        or
-        n1.isAfter(s.getBody()) and n2.isAdditional(s, "[LoopHeader]")
-        or
-        n1.isAdditional(s, "[LoopHeader]") and n2.isAfter(s)
+        n1.isAdditional(p, getLastEpilogueTag(p)) and n2.isAfter(p)
       )
     }
 
