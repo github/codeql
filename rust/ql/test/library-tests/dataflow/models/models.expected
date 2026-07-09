@@ -297,46 +297,46 @@ edges
 | main.rs:331:5:331:14 | arg_source | main.rs:331:16:331:16 | [post] i | provenance | Src:MaD:7 MaD:7 |
 | main.rs:331:16:331:16 | [post] i | main.rs:332:10:332:10 | i | provenance |  |
 | main.rs:331:16:331:16 | [post] i | main.rs:332:10:332:10 | i | provenance |  |
-| main.rs:384:9:384:10 | x1 | main.rs:385:10:385:11 | x1 | provenance |  |
-| main.rs:384:9:384:10 | x1 | main.rs:385:10:385:11 | x1 | provenance |  |
-| main.rs:384:14:384:23 | source(...) | main.rs:384:14:384:30 | ... .max(...) | provenance | MaD:13 |
-| main.rs:384:14:384:23 | source(...) | main.rs:384:14:384:30 | ... .max(...) | provenance | MaD:13 |
-| main.rs:384:14:384:30 | ... .max(...) | main.rs:384:9:384:10 | x1 | provenance |  |
-| main.rs:384:14:384:30 | ... .max(...) | main.rs:384:9:384:10 | x1 | provenance |  |
-| main.rs:387:9:387:10 | x2 [MyStruct.field1] | main.rs:395:10:395:11 | x2 [MyStruct.field1] | provenance |  |
-| main.rs:387:9:387:10 | x2 [MyStruct.field1] | main.rs:395:10:395:11 | x2 [MyStruct.field1] | provenance |  |
-| main.rs:387:14:394:6 | ... .max(...) [MyStruct.field1] | main.rs:387:9:387:10 | x2 [MyStruct.field1] | provenance |  |
-| main.rs:387:14:394:6 | ... .max(...) [MyStruct.field1] | main.rs:387:9:387:10 | x2 [MyStruct.field1] | provenance |  |
-| main.rs:387:15:390:5 | MyStruct {...} [MyStruct.field1] | main.rs:387:14:394:6 | ... .max(...) [MyStruct.field1] | provenance | MaD:13 |
-| main.rs:387:15:390:5 | MyStruct {...} [MyStruct.field1] | main.rs:387:14:394:6 | ... .max(...) [MyStruct.field1] | provenance | MaD:13 |
-| main.rs:388:17:388:26 | source(...) | main.rs:387:15:390:5 | MyStruct {...} [MyStruct.field1] | provenance |  |
-| main.rs:388:17:388:26 | source(...) | main.rs:387:15:390:5 | MyStruct {...} [MyStruct.field1] | provenance |  |
-| main.rs:395:10:395:11 | x2 [MyStruct.field1] | main.rs:395:10:395:18 | x2.field1 | provenance |  |
-| main.rs:395:10:395:11 | x2 [MyStruct.field1] | main.rs:395:10:395:18 | x2.field1 | provenance |  |
-| main.rs:400:9:400:10 | x4 | main.rs:401:10:401:11 | x4 | provenance |  |
-| main.rs:400:9:400:10 | x4 | main.rs:401:10:401:11 | x4 | provenance |  |
-| main.rs:400:14:400:23 | source(...) | main.rs:400:14:400:30 | ... .max(...) | provenance | MaD:13 |
-| main.rs:400:14:400:23 | source(...) | main.rs:400:14:400:30 | ... .max(...) | provenance | MaD:13 |
-| main.rs:400:14:400:30 | ... .max(...) | main.rs:400:9:400:10 | x4 | provenance |  |
-| main.rs:400:14:400:30 | ... .max(...) | main.rs:400:9:400:10 | x4 | provenance |  |
-| main.rs:403:9:403:10 | x5 | main.rs:404:10:404:11 | x5 | provenance |  |
-| main.rs:403:14:403:23 | source(...) | main.rs:403:14:403:30 | ... .lt(...) | provenance | MaD:14 |
-| main.rs:403:14:403:30 | ... .lt(...) | main.rs:403:9:403:10 | x5 | provenance |  |
-| main.rs:406:9:406:10 | x6 | main.rs:407:10:407:11 | x6 | provenance |  |
-| main.rs:406:14:406:23 | source(...) | main.rs:406:14:406:27 | ... < ... | provenance | MaD:14 |
-| main.rs:406:14:406:27 | ... < ... | main.rs:406:9:406:10 | x6 | provenance |  |
-| main.rs:422:10:422:25 | generated_source | main.rs:422:10:422:28 | generated_source(...) | provenance | Src:MaD:9 MaD:9 |
-| main.rs:422:10:422:25 | generated_source | main.rs:422:10:422:28 | generated_source(...) | provenance | Src:MaD:9 MaD:9 |
-| main.rs:424:10:424:30 | neutral_manual_source | main.rs:424:10:424:33 | neutral_manual_source(...) | provenance | Src:MaD:10 MaD:10 |
-| main.rs:424:10:424:30 | neutral_manual_source | main.rs:424:10:424:33 | neutral_manual_source(...) | provenance | Src:MaD:10 MaD:10 |
-| main.rs:425:20:425:28 | source(...) | main.rs:425:5:425:18 | generated_sink | provenance | MaD:3 Sink:MaD:3 |
-| main.rs:425:20:425:28 | source(...) | main.rs:425:5:425:18 | generated_sink | provenance | MaD:3 Sink:MaD:3 |
-| main.rs:427:25:427:33 | source(...) | main.rs:427:5:427:23 | neutral_manual_sink | provenance | MaD:4 Sink:MaD:4 |
-| main.rs:427:25:427:33 | source(...) | main.rs:427:5:427:23 | neutral_manual_sink | provenance | MaD:4 Sink:MaD:4 |
-| main.rs:428:28:428:36 | source(...) | main.rs:428:10:428:37 | generated_summary(...) | provenance | MaD:19 |
-| main.rs:428:28:428:36 | source(...) | main.rs:428:10:428:37 | generated_summary(...) | provenance | MaD:19 |
-| main.rs:430:33:430:41 | source(...) | main.rs:430:10:430:42 | neutral_manual_summary(...) | provenance | MaD:20 |
-| main.rs:430:33:430:41 | source(...) | main.rs:430:10:430:42 | neutral_manual_summary(...) | provenance | MaD:20 |
+| main.rs:395:9:395:10 | x1 | main.rs:396:10:396:11 | x1 | provenance |  |
+| main.rs:395:9:395:10 | x1 | main.rs:396:10:396:11 | x1 | provenance |  |
+| main.rs:395:14:395:23 | source(...) | main.rs:395:14:395:30 | ... .max(...) | provenance | MaD:13 |
+| main.rs:395:14:395:23 | source(...) | main.rs:395:14:395:30 | ... .max(...) | provenance | MaD:13 |
+| main.rs:395:14:395:30 | ... .max(...) | main.rs:395:9:395:10 | x1 | provenance |  |
+| main.rs:395:14:395:30 | ... .max(...) | main.rs:395:9:395:10 | x1 | provenance |  |
+| main.rs:398:9:398:10 | x2 [MyStruct.field1] | main.rs:406:10:406:11 | x2 [MyStruct.field1] | provenance |  |
+| main.rs:398:9:398:10 | x2 [MyStruct.field1] | main.rs:406:10:406:11 | x2 [MyStruct.field1] | provenance |  |
+| main.rs:398:14:405:6 | ... .max(...) [MyStruct.field1] | main.rs:398:9:398:10 | x2 [MyStruct.field1] | provenance |  |
+| main.rs:398:14:405:6 | ... .max(...) [MyStruct.field1] | main.rs:398:9:398:10 | x2 [MyStruct.field1] | provenance |  |
+| main.rs:398:15:401:5 | MyStruct {...} [MyStruct.field1] | main.rs:398:14:405:6 | ... .max(...) [MyStruct.field1] | provenance | MaD:13 |
+| main.rs:398:15:401:5 | MyStruct {...} [MyStruct.field1] | main.rs:398:14:405:6 | ... .max(...) [MyStruct.field1] | provenance | MaD:13 |
+| main.rs:399:17:399:26 | source(...) | main.rs:398:15:401:5 | MyStruct {...} [MyStruct.field1] | provenance |  |
+| main.rs:399:17:399:26 | source(...) | main.rs:398:15:401:5 | MyStruct {...} [MyStruct.field1] | provenance |  |
+| main.rs:406:10:406:11 | x2 [MyStruct.field1] | main.rs:406:10:406:18 | x2.field1 | provenance |  |
+| main.rs:406:10:406:11 | x2 [MyStruct.field1] | main.rs:406:10:406:18 | x2.field1 | provenance |  |
+| main.rs:411:9:411:10 | x4 | main.rs:412:10:412:11 | x4 | provenance |  |
+| main.rs:411:9:411:10 | x4 | main.rs:412:10:412:11 | x4 | provenance |  |
+| main.rs:411:14:411:23 | source(...) | main.rs:411:14:411:30 | ... .max(...) | provenance | MaD:13 |
+| main.rs:411:14:411:23 | source(...) | main.rs:411:14:411:30 | ... .max(...) | provenance | MaD:13 |
+| main.rs:411:14:411:30 | ... .max(...) | main.rs:411:9:411:10 | x4 | provenance |  |
+| main.rs:411:14:411:30 | ... .max(...) | main.rs:411:9:411:10 | x4 | provenance |  |
+| main.rs:414:9:414:10 | x5 | main.rs:415:10:415:11 | x5 | provenance |  |
+| main.rs:414:14:414:23 | source(...) | main.rs:414:14:414:30 | ... .lt(...) | provenance | MaD:14 |
+| main.rs:414:14:414:30 | ... .lt(...) | main.rs:414:9:414:10 | x5 | provenance |  |
+| main.rs:417:9:417:10 | x6 | main.rs:418:10:418:11 | x6 | provenance |  |
+| main.rs:417:14:417:23 | source(...) | main.rs:417:14:417:27 | ... < ... | provenance | MaD:14 |
+| main.rs:417:14:417:27 | ... < ... | main.rs:417:9:417:10 | x6 | provenance |  |
+| main.rs:433:10:433:25 | generated_source | main.rs:433:10:433:28 | generated_source(...) | provenance | Src:MaD:9 MaD:9 |
+| main.rs:433:10:433:25 | generated_source | main.rs:433:10:433:28 | generated_source(...) | provenance | Src:MaD:9 MaD:9 |
+| main.rs:435:10:435:30 | neutral_manual_source | main.rs:435:10:435:33 | neutral_manual_source(...) | provenance | Src:MaD:10 MaD:10 |
+| main.rs:435:10:435:30 | neutral_manual_source | main.rs:435:10:435:33 | neutral_manual_source(...) | provenance | Src:MaD:10 MaD:10 |
+| main.rs:436:20:436:28 | source(...) | main.rs:436:5:436:18 | generated_sink | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:436:20:436:28 | source(...) | main.rs:436:5:436:18 | generated_sink | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:438:25:438:33 | source(...) | main.rs:438:5:438:23 | neutral_manual_sink | provenance | MaD:4 Sink:MaD:4 |
+| main.rs:438:25:438:33 | source(...) | main.rs:438:5:438:23 | neutral_manual_sink | provenance | MaD:4 Sink:MaD:4 |
+| main.rs:439:28:439:36 | source(...) | main.rs:439:10:439:37 | generated_summary(...) | provenance | MaD:19 |
+| main.rs:439:28:439:36 | source(...) | main.rs:439:10:439:37 | generated_summary(...) | provenance | MaD:19 |
+| main.rs:441:33:441:41 | source(...) | main.rs:441:10:441:42 | neutral_manual_summary(...) | provenance | MaD:20 |
+| main.rs:441:33:441:41 | source(...) | main.rs:441:10:441:42 | neutral_manual_summary(...) | provenance | MaD:20 |
 nodes
 | main.rs:15:9:15:9 | s | semmle.label | s |
 | main.rs:15:9:15:9 | s | semmle.label | s |
@@ -654,66 +654,66 @@ nodes
 | main.rs:331:16:331:16 | [post] i | semmle.label | [post] i |
 | main.rs:332:10:332:10 | i | semmle.label | i |
 | main.rs:332:10:332:10 | i | semmle.label | i |
-| main.rs:384:9:384:10 | x1 | semmle.label | x1 |
-| main.rs:384:9:384:10 | x1 | semmle.label | x1 |
-| main.rs:384:14:384:23 | source(...) | semmle.label | source(...) |
-| main.rs:384:14:384:23 | source(...) | semmle.label | source(...) |
-| main.rs:384:14:384:30 | ... .max(...) | semmle.label | ... .max(...) |
-| main.rs:384:14:384:30 | ... .max(...) | semmle.label | ... .max(...) |
-| main.rs:385:10:385:11 | x1 | semmle.label | x1 |
-| main.rs:385:10:385:11 | x1 | semmle.label | x1 |
-| main.rs:387:9:387:10 | x2 [MyStruct.field1] | semmle.label | x2 [MyStruct.field1] |
-| main.rs:387:9:387:10 | x2 [MyStruct.field1] | semmle.label | x2 [MyStruct.field1] |
-| main.rs:387:14:394:6 | ... .max(...) [MyStruct.field1] | semmle.label | ... .max(...) [MyStruct.field1] |
-| main.rs:387:14:394:6 | ... .max(...) [MyStruct.field1] | semmle.label | ... .max(...) [MyStruct.field1] |
-| main.rs:387:15:390:5 | MyStruct {...} [MyStruct.field1] | semmle.label | MyStruct {...} [MyStruct.field1] |
-| main.rs:387:15:390:5 | MyStruct {...} [MyStruct.field1] | semmle.label | MyStruct {...} [MyStruct.field1] |
-| main.rs:388:17:388:26 | source(...) | semmle.label | source(...) |
-| main.rs:388:17:388:26 | source(...) | semmle.label | source(...) |
-| main.rs:395:10:395:11 | x2 [MyStruct.field1] | semmle.label | x2 [MyStruct.field1] |
-| main.rs:395:10:395:11 | x2 [MyStruct.field1] | semmle.label | x2 [MyStruct.field1] |
-| main.rs:395:10:395:18 | x2.field1 | semmle.label | x2.field1 |
-| main.rs:395:10:395:18 | x2.field1 | semmle.label | x2.field1 |
-| main.rs:400:9:400:10 | x4 | semmle.label | x4 |
-| main.rs:400:9:400:10 | x4 | semmle.label | x4 |
-| main.rs:400:14:400:23 | source(...) | semmle.label | source(...) |
-| main.rs:400:14:400:23 | source(...) | semmle.label | source(...) |
-| main.rs:400:14:400:30 | ... .max(...) | semmle.label | ... .max(...) |
-| main.rs:400:14:400:30 | ... .max(...) | semmle.label | ... .max(...) |
-| main.rs:401:10:401:11 | x4 | semmle.label | x4 |
-| main.rs:401:10:401:11 | x4 | semmle.label | x4 |
-| main.rs:403:9:403:10 | x5 | semmle.label | x5 |
-| main.rs:403:14:403:23 | source(...) | semmle.label | source(...) |
-| main.rs:403:14:403:30 | ... .lt(...) | semmle.label | ... .lt(...) |
-| main.rs:404:10:404:11 | x5 | semmle.label | x5 |
-| main.rs:406:9:406:10 | x6 | semmle.label | x6 |
-| main.rs:406:14:406:23 | source(...) | semmle.label | source(...) |
-| main.rs:406:14:406:27 | ... < ... | semmle.label | ... < ... |
-| main.rs:407:10:407:11 | x6 | semmle.label | x6 |
-| main.rs:422:10:422:25 | generated_source | semmle.label | generated_source |
-| main.rs:422:10:422:25 | generated_source | semmle.label | generated_source |
-| main.rs:422:10:422:28 | generated_source(...) | semmle.label | generated_source(...) |
-| main.rs:422:10:422:28 | generated_source(...) | semmle.label | generated_source(...) |
-| main.rs:424:10:424:30 | neutral_manual_source | semmle.label | neutral_manual_source |
-| main.rs:424:10:424:30 | neutral_manual_source | semmle.label | neutral_manual_source |
-| main.rs:424:10:424:33 | neutral_manual_source(...) | semmle.label | neutral_manual_source(...) |
-| main.rs:424:10:424:33 | neutral_manual_source(...) | semmle.label | neutral_manual_source(...) |
-| main.rs:425:5:425:18 | generated_sink | semmle.label | generated_sink |
-| main.rs:425:5:425:18 | generated_sink | semmle.label | generated_sink |
-| main.rs:425:20:425:28 | source(...) | semmle.label | source(...) |
-| main.rs:425:20:425:28 | source(...) | semmle.label | source(...) |
-| main.rs:427:5:427:23 | neutral_manual_sink | semmle.label | neutral_manual_sink |
-| main.rs:427:5:427:23 | neutral_manual_sink | semmle.label | neutral_manual_sink |
-| main.rs:427:25:427:33 | source(...) | semmle.label | source(...) |
-| main.rs:427:25:427:33 | source(...) | semmle.label | source(...) |
-| main.rs:428:10:428:37 | generated_summary(...) | semmle.label | generated_summary(...) |
-| main.rs:428:10:428:37 | generated_summary(...) | semmle.label | generated_summary(...) |
-| main.rs:428:28:428:36 | source(...) | semmle.label | source(...) |
-| main.rs:428:28:428:36 | source(...) | semmle.label | source(...) |
-| main.rs:430:10:430:42 | neutral_manual_summary(...) | semmle.label | neutral_manual_summary(...) |
-| main.rs:430:10:430:42 | neutral_manual_summary(...) | semmle.label | neutral_manual_summary(...) |
-| main.rs:430:33:430:41 | source(...) | semmle.label | source(...) |
-| main.rs:430:33:430:41 | source(...) | semmle.label | source(...) |
+| main.rs:395:9:395:10 | x1 | semmle.label | x1 |
+| main.rs:395:9:395:10 | x1 | semmle.label | x1 |
+| main.rs:395:14:395:23 | source(...) | semmle.label | source(...) |
+| main.rs:395:14:395:23 | source(...) | semmle.label | source(...) |
+| main.rs:395:14:395:30 | ... .max(...) | semmle.label | ... .max(...) |
+| main.rs:395:14:395:30 | ... .max(...) | semmle.label | ... .max(...) |
+| main.rs:396:10:396:11 | x1 | semmle.label | x1 |
+| main.rs:396:10:396:11 | x1 | semmle.label | x1 |
+| main.rs:398:9:398:10 | x2 [MyStruct.field1] | semmle.label | x2 [MyStruct.field1] |
+| main.rs:398:9:398:10 | x2 [MyStruct.field1] | semmle.label | x2 [MyStruct.field1] |
+| main.rs:398:14:405:6 | ... .max(...) [MyStruct.field1] | semmle.label | ... .max(...) [MyStruct.field1] |
+| main.rs:398:14:405:6 | ... .max(...) [MyStruct.field1] | semmle.label | ... .max(...) [MyStruct.field1] |
+| main.rs:398:15:401:5 | MyStruct {...} [MyStruct.field1] | semmle.label | MyStruct {...} [MyStruct.field1] |
+| main.rs:398:15:401:5 | MyStruct {...} [MyStruct.field1] | semmle.label | MyStruct {...} [MyStruct.field1] |
+| main.rs:399:17:399:26 | source(...) | semmle.label | source(...) |
+| main.rs:399:17:399:26 | source(...) | semmle.label | source(...) |
+| main.rs:406:10:406:11 | x2 [MyStruct.field1] | semmle.label | x2 [MyStruct.field1] |
+| main.rs:406:10:406:11 | x2 [MyStruct.field1] | semmle.label | x2 [MyStruct.field1] |
+| main.rs:406:10:406:18 | x2.field1 | semmle.label | x2.field1 |
+| main.rs:406:10:406:18 | x2.field1 | semmle.label | x2.field1 |
+| main.rs:411:9:411:10 | x4 | semmle.label | x4 |
+| main.rs:411:9:411:10 | x4 | semmle.label | x4 |
+| main.rs:411:14:411:23 | source(...) | semmle.label | source(...) |
+| main.rs:411:14:411:23 | source(...) | semmle.label | source(...) |
+| main.rs:411:14:411:30 | ... .max(...) | semmle.label | ... .max(...) |
+| main.rs:411:14:411:30 | ... .max(...) | semmle.label | ... .max(...) |
+| main.rs:412:10:412:11 | x4 | semmle.label | x4 |
+| main.rs:412:10:412:11 | x4 | semmle.label | x4 |
+| main.rs:414:9:414:10 | x5 | semmle.label | x5 |
+| main.rs:414:14:414:23 | source(...) | semmle.label | source(...) |
+| main.rs:414:14:414:30 | ... .lt(...) | semmle.label | ... .lt(...) |
+| main.rs:415:10:415:11 | x5 | semmle.label | x5 |
+| main.rs:417:9:417:10 | x6 | semmle.label | x6 |
+| main.rs:417:14:417:23 | source(...) | semmle.label | source(...) |
+| main.rs:417:14:417:27 | ... < ... | semmle.label | ... < ... |
+| main.rs:418:10:418:11 | x6 | semmle.label | x6 |
+| main.rs:433:10:433:25 | generated_source | semmle.label | generated_source |
+| main.rs:433:10:433:25 | generated_source | semmle.label | generated_source |
+| main.rs:433:10:433:28 | generated_source(...) | semmle.label | generated_source(...) |
+| main.rs:433:10:433:28 | generated_source(...) | semmle.label | generated_source(...) |
+| main.rs:435:10:435:30 | neutral_manual_source | semmle.label | neutral_manual_source |
+| main.rs:435:10:435:30 | neutral_manual_source | semmle.label | neutral_manual_source |
+| main.rs:435:10:435:33 | neutral_manual_source(...) | semmle.label | neutral_manual_source(...) |
+| main.rs:435:10:435:33 | neutral_manual_source(...) | semmle.label | neutral_manual_source(...) |
+| main.rs:436:5:436:18 | generated_sink | semmle.label | generated_sink |
+| main.rs:436:5:436:18 | generated_sink | semmle.label | generated_sink |
+| main.rs:436:20:436:28 | source(...) | semmle.label | source(...) |
+| main.rs:436:20:436:28 | source(...) | semmle.label | source(...) |
+| main.rs:438:5:438:23 | neutral_manual_sink | semmle.label | neutral_manual_sink |
+| main.rs:438:5:438:23 | neutral_manual_sink | semmle.label | neutral_manual_sink |
+| main.rs:438:25:438:33 | source(...) | semmle.label | source(...) |
+| main.rs:438:25:438:33 | source(...) | semmle.label | source(...) |
+| main.rs:439:10:439:37 | generated_summary(...) | semmle.label | generated_summary(...) |
+| main.rs:439:10:439:37 | generated_summary(...) | semmle.label | generated_summary(...) |
+| main.rs:439:28:439:36 | source(...) | semmle.label | source(...) |
+| main.rs:439:28:439:36 | source(...) | semmle.label | source(...) |
+| main.rs:441:10:441:42 | neutral_manual_summary(...) | semmle.label | neutral_manual_summary(...) |
+| main.rs:441:10:441:42 | neutral_manual_summary(...) | semmle.label | neutral_manual_summary(...) |
+| main.rs:441:33:441:41 | source(...) | semmle.label | source(...) |
+| main.rs:441:33:441:41 | source(...) | semmle.label | source(...) |
 subpaths
 | main.rs:212:23:212:23 | f [captured s] | main.rs:211:40:211:40 | s | main.rs:211:17:211:42 | if ... {...} else {...} | main.rs:212:13:212:24 | apply(...) |
 | main.rs:212:23:212:23 | f [captured s] | main.rs:211:40:211:40 | s | main.rs:211:17:211:42 | if ... {...} else {...} | main.rs:212:13:212:24 | apply(...) |
@@ -777,23 +777,23 @@ invalidSpecComponent
 | main.rs:323:5:323:15 | simple_sink | main.rs:322:13:322:22 | source(...) | main.rs:323:5:323:15 | simple_sink | $@ | main.rs:322:13:322:22 | source(...) | source(...) |
 | main.rs:332:10:332:10 | i | main.rs:331:5:331:14 | arg_source | main.rs:332:10:332:10 | i | $@ | main.rs:331:5:331:14 | arg_source | arg_source |
 | main.rs:332:10:332:10 | i | main.rs:331:5:331:14 | arg_source | main.rs:332:10:332:10 | i | $@ | main.rs:331:5:331:14 | arg_source | arg_source |
-| main.rs:385:10:385:11 | x1 | main.rs:384:14:384:23 | source(...) | main.rs:385:10:385:11 | x1 | $@ | main.rs:384:14:384:23 | source(...) | source(...) |
-| main.rs:385:10:385:11 | x1 | main.rs:384:14:384:23 | source(...) | main.rs:385:10:385:11 | x1 | $@ | main.rs:384:14:384:23 | source(...) | source(...) |
-| main.rs:395:10:395:18 | x2.field1 | main.rs:388:17:388:26 | source(...) | main.rs:395:10:395:18 | x2.field1 | $@ | main.rs:388:17:388:26 | source(...) | source(...) |
-| main.rs:395:10:395:18 | x2.field1 | main.rs:388:17:388:26 | source(...) | main.rs:395:10:395:18 | x2.field1 | $@ | main.rs:388:17:388:26 | source(...) | source(...) |
-| main.rs:401:10:401:11 | x4 | main.rs:400:14:400:23 | source(...) | main.rs:401:10:401:11 | x4 | $@ | main.rs:400:14:400:23 | source(...) | source(...) |
-| main.rs:401:10:401:11 | x4 | main.rs:400:14:400:23 | source(...) | main.rs:401:10:401:11 | x4 | $@ | main.rs:400:14:400:23 | source(...) | source(...) |
-| main.rs:404:10:404:11 | x5 | main.rs:403:14:403:23 | source(...) | main.rs:404:10:404:11 | x5 | $@ | main.rs:403:14:403:23 | source(...) | source(...) |
-| main.rs:407:10:407:11 | x6 | main.rs:406:14:406:23 | source(...) | main.rs:407:10:407:11 | x6 | $@ | main.rs:406:14:406:23 | source(...) | source(...) |
-| main.rs:422:10:422:28 | generated_source(...) | main.rs:422:10:422:25 | generated_source | main.rs:422:10:422:28 | generated_source(...) | $@ | main.rs:422:10:422:25 | generated_source | generated_source |
-| main.rs:422:10:422:28 | generated_source(...) | main.rs:422:10:422:25 | generated_source | main.rs:422:10:422:28 | generated_source(...) | $@ | main.rs:422:10:422:25 | generated_source | generated_source |
-| main.rs:424:10:424:33 | neutral_manual_source(...) | main.rs:424:10:424:30 | neutral_manual_source | main.rs:424:10:424:33 | neutral_manual_source(...) | $@ | main.rs:424:10:424:30 | neutral_manual_source | neutral_manual_source |
-| main.rs:424:10:424:33 | neutral_manual_source(...) | main.rs:424:10:424:30 | neutral_manual_source | main.rs:424:10:424:33 | neutral_manual_source(...) | $@ | main.rs:424:10:424:30 | neutral_manual_source | neutral_manual_source |
-| main.rs:425:5:425:18 | generated_sink | main.rs:425:20:425:28 | source(...) | main.rs:425:5:425:18 | generated_sink | $@ | main.rs:425:20:425:28 | source(...) | source(...) |
-| main.rs:425:5:425:18 | generated_sink | main.rs:425:20:425:28 | source(...) | main.rs:425:5:425:18 | generated_sink | $@ | main.rs:425:20:425:28 | source(...) | source(...) |
-| main.rs:427:5:427:23 | neutral_manual_sink | main.rs:427:25:427:33 | source(...) | main.rs:427:5:427:23 | neutral_manual_sink | $@ | main.rs:427:25:427:33 | source(...) | source(...) |
-| main.rs:427:5:427:23 | neutral_manual_sink | main.rs:427:25:427:33 | source(...) | main.rs:427:5:427:23 | neutral_manual_sink | $@ | main.rs:427:25:427:33 | source(...) | source(...) |
-| main.rs:428:10:428:37 | generated_summary(...) | main.rs:428:28:428:36 | source(...) | main.rs:428:10:428:37 | generated_summary(...) | $@ | main.rs:428:28:428:36 | source(...) | source(...) |
-| main.rs:428:10:428:37 | generated_summary(...) | main.rs:428:28:428:36 | source(...) | main.rs:428:10:428:37 | generated_summary(...) | $@ | main.rs:428:28:428:36 | source(...) | source(...) |
-| main.rs:430:10:430:42 | neutral_manual_summary(...) | main.rs:430:33:430:41 | source(...) | main.rs:430:10:430:42 | neutral_manual_summary(...) | $@ | main.rs:430:33:430:41 | source(...) | source(...) |
-| main.rs:430:10:430:42 | neutral_manual_summary(...) | main.rs:430:33:430:41 | source(...) | main.rs:430:10:430:42 | neutral_manual_summary(...) | $@ | main.rs:430:33:430:41 | source(...) | source(...) |
+| main.rs:396:10:396:11 | x1 | main.rs:395:14:395:23 | source(...) | main.rs:396:10:396:11 | x1 | $@ | main.rs:395:14:395:23 | source(...) | source(...) |
+| main.rs:396:10:396:11 | x1 | main.rs:395:14:395:23 | source(...) | main.rs:396:10:396:11 | x1 | $@ | main.rs:395:14:395:23 | source(...) | source(...) |
+| main.rs:406:10:406:18 | x2.field1 | main.rs:399:17:399:26 | source(...) | main.rs:406:10:406:18 | x2.field1 | $@ | main.rs:399:17:399:26 | source(...) | source(...) |
+| main.rs:406:10:406:18 | x2.field1 | main.rs:399:17:399:26 | source(...) | main.rs:406:10:406:18 | x2.field1 | $@ | main.rs:399:17:399:26 | source(...) | source(...) |
+| main.rs:412:10:412:11 | x4 | main.rs:411:14:411:23 | source(...) | main.rs:412:10:412:11 | x4 | $@ | main.rs:411:14:411:23 | source(...) | source(...) |
+| main.rs:412:10:412:11 | x4 | main.rs:411:14:411:23 | source(...) | main.rs:412:10:412:11 | x4 | $@ | main.rs:411:14:411:23 | source(...) | source(...) |
+| main.rs:415:10:415:11 | x5 | main.rs:414:14:414:23 | source(...) | main.rs:415:10:415:11 | x5 | $@ | main.rs:414:14:414:23 | source(...) | source(...) |
+| main.rs:418:10:418:11 | x6 | main.rs:417:14:417:23 | source(...) | main.rs:418:10:418:11 | x6 | $@ | main.rs:417:14:417:23 | source(...) | source(...) |
+| main.rs:433:10:433:28 | generated_source(...) | main.rs:433:10:433:25 | generated_source | main.rs:433:10:433:28 | generated_source(...) | $@ | main.rs:433:10:433:25 | generated_source | generated_source |
+| main.rs:433:10:433:28 | generated_source(...) | main.rs:433:10:433:25 | generated_source | main.rs:433:10:433:28 | generated_source(...) | $@ | main.rs:433:10:433:25 | generated_source | generated_source |
+| main.rs:435:10:435:33 | neutral_manual_source(...) | main.rs:435:10:435:30 | neutral_manual_source | main.rs:435:10:435:33 | neutral_manual_source(...) | $@ | main.rs:435:10:435:30 | neutral_manual_source | neutral_manual_source |
+| main.rs:435:10:435:33 | neutral_manual_source(...) | main.rs:435:10:435:30 | neutral_manual_source | main.rs:435:10:435:33 | neutral_manual_source(...) | $@ | main.rs:435:10:435:30 | neutral_manual_source | neutral_manual_source |
+| main.rs:436:5:436:18 | generated_sink | main.rs:436:20:436:28 | source(...) | main.rs:436:5:436:18 | generated_sink | $@ | main.rs:436:20:436:28 | source(...) | source(...) |
+| main.rs:436:5:436:18 | generated_sink | main.rs:436:20:436:28 | source(...) | main.rs:436:5:436:18 | generated_sink | $@ | main.rs:436:20:436:28 | source(...) | source(...) |
+| main.rs:438:5:438:23 | neutral_manual_sink | main.rs:438:25:438:33 | source(...) | main.rs:438:5:438:23 | neutral_manual_sink | $@ | main.rs:438:25:438:33 | source(...) | source(...) |
+| main.rs:438:5:438:23 | neutral_manual_sink | main.rs:438:25:438:33 | source(...) | main.rs:438:5:438:23 | neutral_manual_sink | $@ | main.rs:438:25:438:33 | source(...) | source(...) |
+| main.rs:439:10:439:37 | generated_summary(...) | main.rs:439:28:439:36 | source(...) | main.rs:439:10:439:37 | generated_summary(...) | $@ | main.rs:439:28:439:36 | source(...) | source(...) |
+| main.rs:439:10:439:37 | generated_summary(...) | main.rs:439:28:439:36 | source(...) | main.rs:439:10:439:37 | generated_summary(...) | $@ | main.rs:439:28:439:36 | source(...) | source(...) |
+| main.rs:441:10:441:42 | neutral_manual_summary(...) | main.rs:441:33:441:41 | source(...) | main.rs:441:10:441:42 | neutral_manual_summary(...) | $@ | main.rs:441:33:441:41 | source(...) | source(...) |
+| main.rs:441:10:441:42 | neutral_manual_summary(...) | main.rs:441:33:441:41 | source(...) | main.rs:441:10:441:42 | neutral_manual_summary(...) | $@ | main.rs:441:33:441:41 | source(...) | source(...) |

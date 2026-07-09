@@ -332,6 +332,17 @@ fn test_arg_source() {
     sink(i) // $ hasValueFlow=i
 }
 
+trait MyTrait {
+    // has a source model
+    fn test_param_source(i: i64);
+}
+
+impl MyTrait for () {
+    fn test_param_source(i: i64) {
+        sink(i) // $ MISSING: hasValueFlow=i
+    }
+}
+
 struct MyStruct2(i64);
 
 impl PartialEq for MyStruct {
