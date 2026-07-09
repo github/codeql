@@ -45,31 +45,31 @@ models
 | 44 | Summary: <tokio::net::tcp::stream::TcpStream>::try_read_buf; Argument[self].Reference; Argument[0].Reference; taint |
 edges
 | test.rs:11:9:11:22 | remote_string1 | test.rs:12:10:12:23 | remote_string1 | provenance |  |
-| test.rs:11:26:11:47 | ...::get | test.rs:11:26:11:62 | ...::get(...) [Ok] | provenance | Src:MaD:7  |
+| test.rs:11:26:11:62 | ...::get(...) | test.rs:11:26:11:62 | ...::get(...) [Ok] | provenance | Src:MaD:7  |
 | test.rs:11:26:11:62 | ...::get(...) [Ok] | test.rs:11:26:11:63 | TryExpr | provenance |  |
 | test.rs:11:26:11:63 | TryExpr | test.rs:11:26:11:70 | ... .text() [Ok] | provenance | MaD:38 |
 | test.rs:11:26:11:70 | ... .text() [Ok] | test.rs:11:26:11:71 | TryExpr | provenance |  |
 | test.rs:11:26:11:71 | TryExpr | test.rs:11:9:11:22 | remote_string1 | provenance |  |
 | test.rs:14:9:14:22 | remote_string2 | test.rs:15:10:15:23 | remote_string2 | provenance |  |
-| test.rs:14:26:14:47 | ...::get | test.rs:14:26:14:62 | ...::get(...) [Ok] | provenance | Src:MaD:7  |
+| test.rs:14:26:14:62 | ...::get(...) | test.rs:14:26:14:62 | ...::get(...) [Ok] | provenance | Src:MaD:7  |
 | test.rs:14:26:14:62 | ...::get(...) [Ok] | test.rs:14:26:14:71 | ... .unwrap() | provenance | MaD:28 |
 | test.rs:14:26:14:71 | ... .unwrap() | test.rs:14:26:14:78 | ... .text() [Ok] | provenance | MaD:38 |
 | test.rs:14:26:14:78 | ... .text() [Ok] | test.rs:14:26:14:87 | ... .unwrap() | provenance | MaD:28 |
 | test.rs:14:26:14:87 | ... .unwrap() | test.rs:14:9:14:22 | remote_string2 | provenance |  |
 | test.rs:17:9:17:22 | remote_string3 | test.rs:18:10:18:23 | remote_string3 | provenance |  |
-| test.rs:17:26:17:47 | ...::get | test.rs:17:26:17:62 | ...::get(...) [Ok] | provenance | Src:MaD:7  |
+| test.rs:17:26:17:62 | ...::get(...) | test.rs:17:26:17:62 | ...::get(...) [Ok] | provenance | Src:MaD:7  |
 | test.rs:17:26:17:62 | ...::get(...) [Ok] | test.rs:17:26:17:71 | ... .unwrap() | provenance | MaD:28 |
 | test.rs:17:26:17:71 | ... .unwrap() | test.rs:17:26:17:98 | ... .text_with_charset(...) [Ok] | provenance | MaD:39 |
 | test.rs:17:26:17:98 | ... .text_with_charset(...) [Ok] | test.rs:17:26:17:107 | ... .unwrap() | provenance | MaD:28 |
 | test.rs:17:26:17:107 | ... .unwrap() | test.rs:17:9:17:22 | remote_string3 | provenance |  |
 | test.rs:20:9:20:22 | remote_string4 | test.rs:21:10:21:23 | remote_string4 | provenance |  |
-| test.rs:20:26:20:47 | ...::get | test.rs:20:26:20:62 | ...::get(...) [Ok] | provenance | Src:MaD:7  |
+| test.rs:20:26:20:62 | ...::get(...) | test.rs:20:26:20:62 | ...::get(...) [Ok] | provenance | Src:MaD:7  |
 | test.rs:20:26:20:62 | ...::get(...) [Ok] | test.rs:20:26:20:71 | ... .unwrap() | provenance | MaD:28 |
 | test.rs:20:26:20:71 | ... .unwrap() | test.rs:20:26:20:79 | ... .bytes() [Ok] | provenance | MaD:37 |
 | test.rs:20:26:20:79 | ... .bytes() [Ok] | test.rs:20:26:20:88 | ... .unwrap() | provenance | MaD:28 |
 | test.rs:20:26:20:88 | ... .unwrap() | test.rs:20:9:20:22 | remote_string4 | provenance |  |
 | test.rs:23:9:23:22 | remote_string5 | test.rs:24:10:24:23 | remote_string5 | provenance |  |
-| test.rs:23:26:23:37 | ...::get | test.rs:23:26:23:52 | ...::get(...) [future, Ok] | provenance | Src:MaD:8  |
+| test.rs:23:26:23:52 | ...::get(...) | test.rs:23:26:23:52 | ...::get(...) [future, Ok] | provenance | Src:MaD:8  |
 | test.rs:23:26:23:52 | ...::get(...) [future, Ok] | test.rs:23:26:23:58 | await ... [Ok] | provenance |  |
 | test.rs:23:26:23:58 | await ... [Ok] | test.rs:23:26:23:59 | TryExpr | provenance |  |
 | test.rs:23:26:23:59 | TryExpr | test.rs:23:26:23:66 | ... .text() [future, Ok] | provenance | MaD:36 |
@@ -77,7 +77,7 @@ edges
 | test.rs:23:26:23:72 | await ... [Ok] | test.rs:23:26:23:73 | TryExpr | provenance |  |
 | test.rs:23:26:23:73 | TryExpr | test.rs:23:9:23:22 | remote_string5 | provenance |  |
 | test.rs:26:9:26:22 | remote_string6 | test.rs:27:10:27:23 | remote_string6 | provenance |  |
-| test.rs:26:26:26:37 | ...::get | test.rs:26:26:26:52 | ...::get(...) [future, Ok] | provenance | Src:MaD:8  |
+| test.rs:26:26:26:52 | ...::get(...) | test.rs:26:26:26:52 | ...::get(...) [future, Ok] | provenance | Src:MaD:8  |
 | test.rs:26:26:26:52 | ...::get(...) [future, Ok] | test.rs:26:26:26:58 | await ... [Ok] | provenance |  |
 | test.rs:26:26:26:58 | await ... [Ok] | test.rs:26:26:26:59 | TryExpr | provenance |  |
 | test.rs:26:26:26:59 | TryExpr | test.rs:26:26:26:67 | ... .bytes() [future, Ok] | provenance | MaD:34 |
@@ -86,7 +86,7 @@ edges
 | test.rs:26:26:26:74 | TryExpr | test.rs:26:9:26:22 | remote_string6 | provenance |  |
 | test.rs:29:9:29:20 | mut request1 | test.rs:30:10:30:17 | request1 | provenance |  |
 | test.rs:29:9:29:20 | mut request1 | test.rs:31:29:31:36 | request1 | provenance |  |
-| test.rs:29:24:29:35 | ...::get | test.rs:29:24:29:50 | ...::get(...) [future, Ok] | provenance | Src:MaD:8  |
+| test.rs:29:24:29:50 | ...::get(...) | test.rs:29:24:29:50 | ...::get(...) [future, Ok] | provenance | Src:MaD:8  |
 | test.rs:29:24:29:50 | ...::get(...) [future, Ok] | test.rs:29:24:29:56 | await ... [Ok] | provenance |  |
 | test.rs:29:24:29:56 | await ... [Ok] | test.rs:29:24:29:57 | TryExpr | provenance |  |
 | test.rs:29:24:29:57 | TryExpr | test.rs:29:9:29:20 | mut request1 | provenance |  |
@@ -102,19 +102,19 @@ edges
 | test.rs:31:29:31:51 | TryExpr [Some] | test.rs:31:15:31:25 | Some(...) [Some] | provenance |  |
 | test.rs:60:13:60:20 | response | test.rs:61:15:61:22 | response | provenance |  |
 | test.rs:60:13:60:20 | response | test.rs:62:14:62:21 | response | provenance |  |
+| test.rs:60:24:60:51 | sender.send_request(...) | test.rs:60:24:60:51 | sender.send_request(...) [future, Ok] | provenance | Src:MaD:2  |
 | test.rs:60:24:60:51 | sender.send_request(...) [future, Ok] | test.rs:60:24:60:57 | await ... [Ok] | provenance |  |
 | test.rs:60:24:60:57 | await ... [Ok] | test.rs:60:24:60:58 | TryExpr | provenance |  |
 | test.rs:60:24:60:58 | TryExpr | test.rs:60:13:60:20 | response | provenance |  |
-| test.rs:60:31:60:42 | send_request | test.rs:60:24:60:51 | sender.send_request(...) [future, Ok] | provenance | Src:MaD:2  |
 | test.rs:61:15:61:22 | response | test.rs:61:14:61:22 | &response | provenance |  |
 | test.rs:67:9:67:20 | mut response | test.rs:68:11:68:18 | response | provenance |  |
 | test.rs:67:9:67:20 | mut response | test.rs:76:18:76:25 | response | provenance |  |
 | test.rs:67:9:67:20 | mut response | test.rs:77:18:77:25 | response | provenance |  |
 | test.rs:67:9:67:20 | mut response | test.rs:79:24:79:31 | response | provenance |  |
+| test.rs:67:24:67:51 | sender.send_request(...) | test.rs:67:24:67:51 | sender.send_request(...) [future, Ok] | provenance | Src:MaD:2  |
 | test.rs:67:24:67:51 | sender.send_request(...) [future, Ok] | test.rs:67:24:67:57 | await ... [Ok] | provenance |  |
 | test.rs:67:24:67:57 | await ... [Ok] | test.rs:67:24:67:58 | TryExpr | provenance |  |
 | test.rs:67:24:67:58 | TryExpr | test.rs:67:9:67:20 | mut response | provenance |  |
-| test.rs:67:31:67:42 | send_request | test.rs:67:24:67:51 | sender.send_request(...) [future, Ok] | provenance | Src:MaD:2  |
 | test.rs:68:11:68:18 | response | test.rs:68:10:68:18 | &response | provenance |  |
 | test.rs:76:18:76:25 | response | test.rs:76:18:76:32 | response.body() | provenance | MaD:31 |
 | test.rs:77:18:77:25 | response | test.rs:77:18:77:36 | response.body_mut() | provenance | MaD:32 |
@@ -123,7 +123,7 @@ edges
 | test.rs:79:24:79:43 | response.into_body() | test.rs:79:17:79:20 | body | provenance |  |
 | test.rs:80:19:80:22 | body | test.rs:80:18:80:22 | &body | provenance |  |
 | test.rs:155:13:155:22 | mut stream | test.rs:162:17:162:22 | stream | provenance |  |
-| test.rs:155:26:155:53 | ...::connect | test.rs:155:26:155:62 | ...::connect(...) [Ok] | provenance | Src:MaD:4  |
+| test.rs:155:26:155:62 | ...::connect(...) | test.rs:155:26:155:62 | ...::connect(...) [Ok] | provenance | Src:MaD:4  |
 | test.rs:155:26:155:62 | ...::connect(...) [Ok] | test.rs:155:26:155:63 | TryExpr | provenance |  |
 | test.rs:155:26:155:63 | TryExpr | test.rs:155:13:155:22 | mut stream | provenance |  |
 | test.rs:162:17:162:22 | stream | test.rs:162:29:162:39 | [post] &mut buffer [&ref] | provenance | MaD:20 |
@@ -134,7 +134,7 @@ edges
 | test.rs:166:14:166:19 | buffer | test.rs:166:14:166:22 | buffer[0] | provenance | MaD:10 |
 | test.rs:174:13:174:22 | mut stream | test.rs:182:58:182:63 | stream | provenance |  |
 | test.rs:174:13:174:22 | mut stream | test.rs:203:54:203:59 | stream | provenance |  |
-| test.rs:174:26:174:61 | ...::connect_timeout | test.rs:174:26:174:105 | ...::connect_timeout(...) [Ok] | provenance | Src:MaD:5  |
+| test.rs:174:26:174:105 | ...::connect_timeout(...) | test.rs:174:26:174:105 | ...::connect_timeout(...) [Ok] | provenance | Src:MaD:5  |
 | test.rs:174:26:174:105 | ...::connect_timeout(...) [Ok] | test.rs:174:26:174:106 | TryExpr | provenance |  |
 | test.rs:174:26:174:106 | TryExpr | test.rs:174:13:174:22 | mut stream | provenance |  |
 | test.rs:182:21:182:30 | mut reader | test.rs:185:27:185:32 | reader | provenance |  |
@@ -158,7 +158,7 @@ edges
 | test.rs:224:9:224:24 | mut tokio_stream | test.rs:236:18:236:29 | tokio_stream | provenance |  |
 | test.rs:224:9:224:24 | mut tokio_stream | test.rs:252:19:252:30 | tokio_stream | provenance |  |
 | test.rs:224:9:224:24 | mut tokio_stream | test.rs:275:19:275:30 | tokio_stream | provenance |  |
-| test.rs:224:28:224:57 | ...::connect | test.rs:224:28:224:66 | ...::connect(...) [future, Ok] | provenance | Src:MaD:6  |
+| test.rs:224:28:224:66 | ...::connect(...) | test.rs:224:28:224:66 | ...::connect(...) [future, Ok] | provenance | Src:MaD:6  |
 | test.rs:224:28:224:66 | ...::connect(...) [future, Ok] | test.rs:224:28:224:72 | await ... [Ok] | provenance |  |
 | test.rs:224:28:224:72 | await ... [Ok] | test.rs:224:28:224:73 | TryExpr | provenance |  |
 | test.rs:224:28:224:73 | TryExpr | test.rs:224:9:224:24 | mut tokio_stream | provenance |  |
@@ -183,7 +183,7 @@ edges
 | test.rs:275:50:275:55 | [post] buffer | test.rs:282:27:282:32 | buffer | provenance |  |
 | test.rs:282:27:282:32 | buffer | test.rs:282:26:282:32 | &buffer | provenance |  |
 | test.rs:332:9:332:18 | mut client | test.rs:333:22:333:27 | client | provenance |  |
-| test.rs:332:22:332:50 | ...::new | test.rs:332:22:332:75 | ...::new(...) [Ok] | provenance | Src:MaD:3  |
+| test.rs:332:22:332:75 | ...::new(...) | test.rs:332:22:332:75 | ...::new(...) [Ok] | provenance | Src:MaD:3  |
 | test.rs:332:22:332:75 | ...::new(...) [Ok] | test.rs:332:22:332:84 | ... .unwrap() | provenance | MaD:28 |
 | test.rs:332:22:332:84 | ... .unwrap() | test.rs:332:9:332:18 | mut client | provenance |  |
 | test.rs:333:9:333:18 | mut reader | test.rs:334:11:334:16 | reader | provenance |  |
@@ -207,7 +207,7 @@ edges
 | test.rs:351:15:351:20 | buffer | test.rs:351:14:351:20 | &buffer | provenance |  |
 | test.rs:373:13:373:15 | tcp | test.rs:374:15:374:17 | tcp | provenance |  |
 | test.rs:373:13:373:15 | tcp | test.rs:380:57:380:59 | tcp | provenance |  |
-| test.rs:373:19:373:36 | ...::connect | test.rs:373:19:373:41 | ...::connect(...) [future, Ok] | provenance | Src:MaD:1  |
+| test.rs:373:19:373:41 | ...::connect(...) | test.rs:373:19:373:41 | ...::connect(...) [future, Ok] | provenance | Src:MaD:1  |
 | test.rs:373:19:373:41 | ...::connect(...) [future, Ok] | test.rs:373:19:373:47 | await ... [Ok] | provenance |  |
 | test.rs:373:19:373:47 | await ... [Ok] | test.rs:373:19:373:48 | TryExpr | provenance |  |
 | test.rs:373:19:373:48 | TryExpr | test.rs:373:13:373:15 | tcp | provenance |  |
@@ -370,35 +370,35 @@ edges
 | test.rs:501:19:501:24 | buffer | test.rs:501:18:501:24 | &buffer | provenance |  |
 nodes
 | test.rs:11:9:11:22 | remote_string1 | semmle.label | remote_string1 |
-| test.rs:11:26:11:47 | ...::get | semmle.label | ...::get |
+| test.rs:11:26:11:62 | ...::get(...) | semmle.label | ...::get(...) |
 | test.rs:11:26:11:62 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
 | test.rs:11:26:11:63 | TryExpr | semmle.label | TryExpr |
 | test.rs:11:26:11:70 | ... .text() [Ok] | semmle.label | ... .text() [Ok] |
 | test.rs:11:26:11:71 | TryExpr | semmle.label | TryExpr |
 | test.rs:12:10:12:23 | remote_string1 | semmle.label | remote_string1 |
 | test.rs:14:9:14:22 | remote_string2 | semmle.label | remote_string2 |
-| test.rs:14:26:14:47 | ...::get | semmle.label | ...::get |
+| test.rs:14:26:14:62 | ...::get(...) | semmle.label | ...::get(...) |
 | test.rs:14:26:14:62 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
 | test.rs:14:26:14:71 | ... .unwrap() | semmle.label | ... .unwrap() |
 | test.rs:14:26:14:78 | ... .text() [Ok] | semmle.label | ... .text() [Ok] |
 | test.rs:14:26:14:87 | ... .unwrap() | semmle.label | ... .unwrap() |
 | test.rs:15:10:15:23 | remote_string2 | semmle.label | remote_string2 |
 | test.rs:17:9:17:22 | remote_string3 | semmle.label | remote_string3 |
-| test.rs:17:26:17:47 | ...::get | semmle.label | ...::get |
+| test.rs:17:26:17:62 | ...::get(...) | semmle.label | ...::get(...) |
 | test.rs:17:26:17:62 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
 | test.rs:17:26:17:71 | ... .unwrap() | semmle.label | ... .unwrap() |
 | test.rs:17:26:17:98 | ... .text_with_charset(...) [Ok] | semmle.label | ... .text_with_charset(...) [Ok] |
 | test.rs:17:26:17:107 | ... .unwrap() | semmle.label | ... .unwrap() |
 | test.rs:18:10:18:23 | remote_string3 | semmle.label | remote_string3 |
 | test.rs:20:9:20:22 | remote_string4 | semmle.label | remote_string4 |
-| test.rs:20:26:20:47 | ...::get | semmle.label | ...::get |
+| test.rs:20:26:20:62 | ...::get(...) | semmle.label | ...::get(...) |
 | test.rs:20:26:20:62 | ...::get(...) [Ok] | semmle.label | ...::get(...) [Ok] |
 | test.rs:20:26:20:71 | ... .unwrap() | semmle.label | ... .unwrap() |
 | test.rs:20:26:20:79 | ... .bytes() [Ok] | semmle.label | ... .bytes() [Ok] |
 | test.rs:20:26:20:88 | ... .unwrap() | semmle.label | ... .unwrap() |
 | test.rs:21:10:21:23 | remote_string4 | semmle.label | remote_string4 |
 | test.rs:23:9:23:22 | remote_string5 | semmle.label | remote_string5 |
-| test.rs:23:26:23:37 | ...::get | semmle.label | ...::get |
+| test.rs:23:26:23:52 | ...::get(...) | semmle.label | ...::get(...) |
 | test.rs:23:26:23:52 | ...::get(...) [future, Ok] | semmle.label | ...::get(...) [future, Ok] |
 | test.rs:23:26:23:58 | await ... [Ok] | semmle.label | await ... [Ok] |
 | test.rs:23:26:23:59 | TryExpr | semmle.label | TryExpr |
@@ -407,7 +407,7 @@ nodes
 | test.rs:23:26:23:73 | TryExpr | semmle.label | TryExpr |
 | test.rs:24:10:24:23 | remote_string5 | semmle.label | remote_string5 |
 | test.rs:26:9:26:22 | remote_string6 | semmle.label | remote_string6 |
-| test.rs:26:26:26:37 | ...::get | semmle.label | ...::get |
+| test.rs:26:26:26:52 | ...::get(...) | semmle.label | ...::get(...) |
 | test.rs:26:26:26:52 | ...::get(...) [future, Ok] | semmle.label | ...::get(...) [future, Ok] |
 | test.rs:26:26:26:58 | await ... [Ok] | semmle.label | await ... [Ok] |
 | test.rs:26:26:26:59 | TryExpr | semmle.label | TryExpr |
@@ -416,7 +416,7 @@ nodes
 | test.rs:26:26:26:74 | TryExpr | semmle.label | TryExpr |
 | test.rs:27:10:27:23 | remote_string6 | semmle.label | remote_string6 |
 | test.rs:29:9:29:20 | mut request1 | semmle.label | mut request1 |
-| test.rs:29:24:29:35 | ...::get | semmle.label | ...::get |
+| test.rs:29:24:29:50 | ...::get(...) | semmle.label | ...::get(...) |
 | test.rs:29:24:29:50 | ...::get(...) [future, Ok] | semmle.label | ...::get(...) [future, Ok] |
 | test.rs:29:24:29:56 | await ... [Ok] | semmle.label | await ... [Ok] |
 | test.rs:29:24:29:57 | TryExpr | semmle.label | TryExpr |
@@ -433,18 +433,18 @@ nodes
 | test.rs:31:29:31:51 | TryExpr [Some] | semmle.label | TryExpr [Some] |
 | test.rs:32:14:32:18 | chunk | semmle.label | chunk |
 | test.rs:60:13:60:20 | response | semmle.label | response |
+| test.rs:60:24:60:51 | sender.send_request(...) | semmle.label | sender.send_request(...) |
 | test.rs:60:24:60:51 | sender.send_request(...) [future, Ok] | semmle.label | sender.send_request(...) [future, Ok] |
 | test.rs:60:24:60:57 | await ... [Ok] | semmle.label | await ... [Ok] |
 | test.rs:60:24:60:58 | TryExpr | semmle.label | TryExpr |
-| test.rs:60:31:60:42 | send_request | semmle.label | send_request |
 | test.rs:61:14:61:22 | &response | semmle.label | &response |
 | test.rs:61:15:61:22 | response | semmle.label | response |
 | test.rs:62:14:62:21 | response | semmle.label | response |
 | test.rs:67:9:67:20 | mut response | semmle.label | mut response |
+| test.rs:67:24:67:51 | sender.send_request(...) | semmle.label | sender.send_request(...) |
 | test.rs:67:24:67:51 | sender.send_request(...) [future, Ok] | semmle.label | sender.send_request(...) [future, Ok] |
 | test.rs:67:24:67:57 | await ... [Ok] | semmle.label | await ... [Ok] |
 | test.rs:67:24:67:58 | TryExpr | semmle.label | TryExpr |
-| test.rs:67:31:67:42 | send_request | semmle.label | send_request |
 | test.rs:68:10:68:18 | &response | semmle.label | &response |
 | test.rs:68:11:68:18 | response | semmle.label | response |
 | test.rs:76:18:76:25 | response | semmle.label | response |
@@ -457,7 +457,7 @@ nodes
 | test.rs:80:18:80:22 | &body | semmle.label | &body |
 | test.rs:80:19:80:22 | body | semmle.label | body |
 | test.rs:155:13:155:22 | mut stream | semmle.label | mut stream |
-| test.rs:155:26:155:53 | ...::connect | semmle.label | ...::connect |
+| test.rs:155:26:155:62 | ...::connect(...) | semmle.label | ...::connect(...) |
 | test.rs:155:26:155:62 | ...::connect(...) [Ok] | semmle.label | ...::connect(...) [Ok] |
 | test.rs:155:26:155:63 | TryExpr | semmle.label | TryExpr |
 | test.rs:162:17:162:22 | stream | semmle.label | stream |
@@ -468,7 +468,7 @@ nodes
 | test.rs:166:14:166:19 | buffer | semmle.label | buffer |
 | test.rs:166:14:166:22 | buffer[0] | semmle.label | buffer[0] |
 | test.rs:174:13:174:22 | mut stream | semmle.label | mut stream |
-| test.rs:174:26:174:61 | ...::connect_timeout | semmle.label | ...::connect_timeout |
+| test.rs:174:26:174:105 | ...::connect_timeout(...) | semmle.label | ...::connect_timeout(...) |
 | test.rs:174:26:174:105 | ...::connect_timeout(...) [Ok] | semmle.label | ...::connect_timeout(...) [Ok] |
 | test.rs:174:26:174:106 | TryExpr | semmle.label | TryExpr |
 | test.rs:182:21:182:30 | mut reader | semmle.label | mut reader |
@@ -491,7 +491,7 @@ nodes
 | test.rs:205:28:205:37 | Ok(...) | semmle.label | Ok(...) |
 | test.rs:207:30:207:35 | string | semmle.label | string |
 | test.rs:224:9:224:24 | mut tokio_stream | semmle.label | mut tokio_stream |
-| test.rs:224:28:224:57 | ...::connect | semmle.label | ...::connect |
+| test.rs:224:28:224:66 | ...::connect(...) | semmle.label | ...::connect(...) |
 | test.rs:224:28:224:66 | ...::connect(...) [future, Ok] | semmle.label | ...::connect(...) [future, Ok] |
 | test.rs:224:28:224:72 | await ... [Ok] | semmle.label | await ... [Ok] |
 | test.rs:224:28:224:73 | TryExpr | semmle.label | TryExpr |
@@ -520,7 +520,7 @@ nodes
 | test.rs:282:26:282:32 | &buffer | semmle.label | &buffer |
 | test.rs:282:27:282:32 | buffer | semmle.label | buffer |
 | test.rs:332:9:332:18 | mut client | semmle.label | mut client |
-| test.rs:332:22:332:50 | ...::new | semmle.label | ...::new |
+| test.rs:332:22:332:75 | ...::new(...) | semmle.label | ...::new(...) |
 | test.rs:332:22:332:75 | ...::new(...) [Ok] | semmle.label | ...::new(...) [Ok] |
 | test.rs:332:22:332:84 | ... .unwrap() | semmle.label | ... .unwrap() |
 | test.rs:333:9:333:18 | mut reader | semmle.label | mut reader |
@@ -544,7 +544,7 @@ nodes
 | test.rs:351:14:351:20 | &buffer | semmle.label | &buffer |
 | test.rs:351:15:351:20 | buffer | semmle.label | buffer |
 | test.rs:373:13:373:15 | tcp | semmle.label | tcp |
-| test.rs:373:19:373:36 | ...::connect | semmle.label | ...::connect |
+| test.rs:373:19:373:41 | ...::connect(...) | semmle.label | ...::connect(...) |
 | test.rs:373:19:373:41 | ...::connect(...) [future, Ok] | semmle.label | ...::connect(...) [future, Ok] |
 | test.rs:373:19:373:47 | await ... [Ok] | semmle.label | await ... [Ok] |
 | test.rs:373:19:373:48 | TryExpr | semmle.label | TryExpr |
@@ -700,57 +700,57 @@ nodes
 subpaths
 testFailures
 #select
-| test.rs:12:10:12:23 | remote_string1 | test.rs:11:26:11:47 | ...::get | test.rs:12:10:12:23 | remote_string1 | $@ | test.rs:11:26:11:47 | ...::get | ...::get |
-| test.rs:15:10:15:23 | remote_string2 | test.rs:14:26:14:47 | ...::get | test.rs:15:10:15:23 | remote_string2 | $@ | test.rs:14:26:14:47 | ...::get | ...::get |
-| test.rs:18:10:18:23 | remote_string3 | test.rs:17:26:17:47 | ...::get | test.rs:18:10:18:23 | remote_string3 | $@ | test.rs:17:26:17:47 | ...::get | ...::get |
-| test.rs:21:10:21:23 | remote_string4 | test.rs:20:26:20:47 | ...::get | test.rs:21:10:21:23 | remote_string4 | $@ | test.rs:20:26:20:47 | ...::get | ...::get |
-| test.rs:24:10:24:23 | remote_string5 | test.rs:23:26:23:37 | ...::get | test.rs:24:10:24:23 | remote_string5 | $@ | test.rs:23:26:23:37 | ...::get | ...::get |
-| test.rs:27:10:27:23 | remote_string6 | test.rs:26:26:26:37 | ...::get | test.rs:27:10:27:23 | remote_string6 | $@ | test.rs:26:26:26:37 | ...::get | ...::get |
-| test.rs:30:10:30:41 | ... .unwrap() | test.rs:29:24:29:35 | ...::get | test.rs:30:10:30:41 | ... .unwrap() | $@ | test.rs:29:24:29:35 | ...::get | ...::get |
-| test.rs:32:14:32:18 | chunk | test.rs:29:24:29:35 | ...::get | test.rs:32:14:32:18 | chunk | $@ | test.rs:29:24:29:35 | ...::get | ...::get |
-| test.rs:61:14:61:22 | &response | test.rs:60:31:60:42 | send_request | test.rs:61:14:61:22 | &response | $@ | test.rs:60:31:60:42 | send_request | send_request |
-| test.rs:62:14:62:21 | response | test.rs:60:31:60:42 | send_request | test.rs:62:14:62:21 | response | $@ | test.rs:60:31:60:42 | send_request | send_request |
-| test.rs:68:10:68:18 | &response | test.rs:67:31:67:42 | send_request | test.rs:68:10:68:18 | &response | $@ | test.rs:67:31:67:42 | send_request | send_request |
-| test.rs:76:18:76:32 | response.body() | test.rs:67:31:67:42 | send_request | test.rs:76:18:76:32 | response.body() | $@ | test.rs:67:31:67:42 | send_request | send_request |
-| test.rs:77:18:77:36 | response.body_mut() | test.rs:67:31:67:42 | send_request | test.rs:77:18:77:36 | response.body_mut() | $@ | test.rs:67:31:67:42 | send_request | send_request |
-| test.rs:80:18:80:22 | &body | test.rs:67:31:67:42 | send_request | test.rs:80:18:80:22 | &body | $@ | test.rs:67:31:67:42 | send_request | send_request |
-| test.rs:165:14:165:20 | &buffer | test.rs:155:26:155:53 | ...::connect | test.rs:165:14:165:20 | &buffer | $@ | test.rs:155:26:155:53 | ...::connect | ...::connect |
-| test.rs:166:14:166:22 | buffer[0] | test.rs:155:26:155:53 | ...::connect | test.rs:166:14:166:22 | buffer[0] | $@ | test.rs:155:26:155:53 | ...::connect | ...::connect |
-| test.rs:192:34:192:38 | &line | test.rs:174:26:174:61 | ...::connect_timeout | test.rs:192:34:192:38 | &line | $@ | test.rs:174:26:174:61 | ...::connect_timeout | ...::connect_timeout |
-| test.rs:207:30:207:35 | string | test.rs:174:26:174:61 | ...::connect_timeout | test.rs:207:30:207:35 | string | $@ | test.rs:174:26:174:61 | ...::connect_timeout | ...::connect_timeout |
-| test.rs:239:14:239:21 | &buffer1 | test.rs:224:28:224:57 | ...::connect | test.rs:239:14:239:21 | &buffer1 | $@ | test.rs:224:28:224:57 | ...::connect | ...::connect |
-| test.rs:240:14:240:23 | buffer1[0] | test.rs:224:28:224:57 | ...::connect | test.rs:240:14:240:23 | buffer1[0] | $@ | test.rs:224:28:224:57 | ...::connect | ...::connect |
-| test.rs:243:14:243:21 | &buffer2 | test.rs:224:28:224:57 | ...::connect | test.rs:243:14:243:21 | &buffer2 | $@ | test.rs:224:28:224:57 | ...::connect | ...::connect |
-| test.rs:244:14:244:23 | buffer2[0] | test.rs:224:28:224:57 | ...::connect | test.rs:244:14:244:23 | buffer2[0] | $@ | test.rs:224:28:224:57 | ...::connect | ...::connect |
-| test.rs:259:26:259:32 | &buffer | test.rs:224:28:224:57 | ...::connect | test.rs:259:26:259:32 | &buffer | $@ | test.rs:224:28:224:57 | ...::connect | ...::connect |
-| test.rs:282:26:282:32 | &buffer | test.rs:224:28:224:57 | ...::connect | test.rs:282:26:282:32 | &buffer | $@ | test.rs:224:28:224:57 | ...::connect | ...::connect |
-| test.rs:334:10:334:16 | &reader | test.rs:332:22:332:50 | ...::new | test.rs:334:10:334:16 | &reader | $@ | test.rs:332:22:332:50 | ...::new | ...::new |
-| test.rs:339:14:339:20 | &buffer | test.rs:332:22:332:50 | ...::new | test.rs:339:14:339:20 | &buffer | $@ | test.rs:332:22:332:50 | ...::new | ...::new |
-| test.rs:345:14:345:20 | &buffer | test.rs:332:22:332:50 | ...::new | test.rs:345:14:345:20 | &buffer | $@ | test.rs:332:22:332:50 | ...::new | ...::new |
-| test.rs:351:14:351:20 | &buffer | test.rs:332:22:332:50 | ...::new | test.rs:351:14:351:20 | &buffer | $@ | test.rs:332:22:332:50 | ...::new | ...::new |
-| test.rs:374:14:374:17 | &tcp | test.rs:373:19:373:36 | ...::connect | test.rs:374:14:374:17 | &tcp | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:381:14:381:20 | &reader | test.rs:373:19:373:36 | ...::connect | test.rs:381:14:381:20 | &reader | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:387:18:387:24 | &pinned | test.rs:373:19:373:36 | ...::connect | test.rs:387:18:387:24 | &pinned | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:391:22:391:28 | &buffer | test.rs:373:19:373:36 | ...::connect | test.rs:391:22:391:28 | &buffer | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:392:22:392:33 | &... | test.rs:373:19:373:36 | ...::connect | test.rs:392:22:392:33 | &... | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:400:18:400:40 | &... | test.rs:373:19:373:36 | ...::connect | test.rs:400:18:400:40 | &... | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:405:18:405:40 | &... | test.rs:373:19:373:36 | ...::connect | test.rs:405:18:405:40 | &... | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:409:14:409:21 | &reader2 | test.rs:373:19:373:36 | ...::connect | test.rs:409:14:409:21 | &reader2 | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:414:18:414:24 | &pinned | test.rs:373:19:373:36 | ...::connect | test.rs:414:18:414:24 | &pinned | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:418:22:418:28 | &buffer | test.rs:373:19:373:36 | ...::connect | test.rs:418:22:418:28 | &buffer | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:419:22:419:24 | buf | test.rs:373:19:373:36 | ...::connect | test.rs:419:22:419:24 | buf | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:426:26:426:33 | &buffer2 | test.rs:373:19:373:36 | ...::connect | test.rs:426:26:426:33 | &buffer2 | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:427:26:427:28 | buf | test.rs:373:19:373:36 | ...::connect | test.rs:427:26:427:28 | buf | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:438:18:438:23 | buffer | test.rs:373:19:373:36 | ...::connect | test.rs:438:18:438:23 | buffer | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:445:18:445:24 | &pinned | test.rs:373:19:373:36 | ...::connect | test.rs:445:18:445:24 | &pinned | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:448:18:448:24 | &buffer | test.rs:373:19:373:36 | ...::connect | test.rs:448:18:448:24 | &buffer | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:450:22:450:33 | &... | test.rs:373:19:373:36 | ...::connect | test.rs:450:22:450:33 | &... | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:458:18:458:40 | &... | test.rs:373:19:373:36 | ...::connect | test.rs:458:18:458:40 | &... | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:462:18:462:40 | &... | test.rs:373:19:373:36 | ...::connect | test.rs:462:18:462:40 | &... | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:468:18:468:24 | &pinned | test.rs:373:19:373:36 | ...::connect | test.rs:468:18:468:24 | &pinned | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:471:18:471:24 | &buffer | test.rs:373:19:373:36 | ...::connect | test.rs:471:18:471:24 | &buffer | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:473:22:473:24 | buf | test.rs:373:19:373:36 | ...::connect | test.rs:473:22:473:24 | buf | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:480:18:480:23 | buffer | test.rs:373:19:373:36 | ...::connect | test.rs:480:18:480:23 | buffer | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:487:18:487:22 | &line | test.rs:373:19:373:36 | ...::connect | test.rs:487:18:487:22 | &line | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:494:18:494:22 | &line | test.rs:373:19:373:36 | ...::connect | test.rs:494:18:494:22 | &line | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
-| test.rs:501:18:501:24 | &buffer | test.rs:373:19:373:36 | ...::connect | test.rs:501:18:501:24 | &buffer | $@ | test.rs:373:19:373:36 | ...::connect | ...::connect |
+| test.rs:12:10:12:23 | remote_string1 | test.rs:11:26:11:62 | ...::get(...) | test.rs:12:10:12:23 | remote_string1 | $@ | test.rs:11:26:11:62 | ...::get(...) | ...::get(...) |
+| test.rs:15:10:15:23 | remote_string2 | test.rs:14:26:14:62 | ...::get(...) | test.rs:15:10:15:23 | remote_string2 | $@ | test.rs:14:26:14:62 | ...::get(...) | ...::get(...) |
+| test.rs:18:10:18:23 | remote_string3 | test.rs:17:26:17:62 | ...::get(...) | test.rs:18:10:18:23 | remote_string3 | $@ | test.rs:17:26:17:62 | ...::get(...) | ...::get(...) |
+| test.rs:21:10:21:23 | remote_string4 | test.rs:20:26:20:62 | ...::get(...) | test.rs:21:10:21:23 | remote_string4 | $@ | test.rs:20:26:20:62 | ...::get(...) | ...::get(...) |
+| test.rs:24:10:24:23 | remote_string5 | test.rs:23:26:23:52 | ...::get(...) | test.rs:24:10:24:23 | remote_string5 | $@ | test.rs:23:26:23:52 | ...::get(...) | ...::get(...) |
+| test.rs:27:10:27:23 | remote_string6 | test.rs:26:26:26:52 | ...::get(...) | test.rs:27:10:27:23 | remote_string6 | $@ | test.rs:26:26:26:52 | ...::get(...) | ...::get(...) |
+| test.rs:30:10:30:41 | ... .unwrap() | test.rs:29:24:29:50 | ...::get(...) | test.rs:30:10:30:41 | ... .unwrap() | $@ | test.rs:29:24:29:50 | ...::get(...) | ...::get(...) |
+| test.rs:32:14:32:18 | chunk | test.rs:29:24:29:50 | ...::get(...) | test.rs:32:14:32:18 | chunk | $@ | test.rs:29:24:29:50 | ...::get(...) | ...::get(...) |
+| test.rs:61:14:61:22 | &response | test.rs:60:24:60:51 | sender.send_request(...) | test.rs:61:14:61:22 | &response | $@ | test.rs:60:24:60:51 | sender.send_request(...) | sender.send_request(...) |
+| test.rs:62:14:62:21 | response | test.rs:60:24:60:51 | sender.send_request(...) | test.rs:62:14:62:21 | response | $@ | test.rs:60:24:60:51 | sender.send_request(...) | sender.send_request(...) |
+| test.rs:68:10:68:18 | &response | test.rs:67:24:67:51 | sender.send_request(...) | test.rs:68:10:68:18 | &response | $@ | test.rs:67:24:67:51 | sender.send_request(...) | sender.send_request(...) |
+| test.rs:76:18:76:32 | response.body() | test.rs:67:24:67:51 | sender.send_request(...) | test.rs:76:18:76:32 | response.body() | $@ | test.rs:67:24:67:51 | sender.send_request(...) | sender.send_request(...) |
+| test.rs:77:18:77:36 | response.body_mut() | test.rs:67:24:67:51 | sender.send_request(...) | test.rs:77:18:77:36 | response.body_mut() | $@ | test.rs:67:24:67:51 | sender.send_request(...) | sender.send_request(...) |
+| test.rs:80:18:80:22 | &body | test.rs:67:24:67:51 | sender.send_request(...) | test.rs:80:18:80:22 | &body | $@ | test.rs:67:24:67:51 | sender.send_request(...) | sender.send_request(...) |
+| test.rs:165:14:165:20 | &buffer | test.rs:155:26:155:62 | ...::connect(...) | test.rs:165:14:165:20 | &buffer | $@ | test.rs:155:26:155:62 | ...::connect(...) | ...::connect(...) |
+| test.rs:166:14:166:22 | buffer[0] | test.rs:155:26:155:62 | ...::connect(...) | test.rs:166:14:166:22 | buffer[0] | $@ | test.rs:155:26:155:62 | ...::connect(...) | ...::connect(...) |
+| test.rs:192:34:192:38 | &line | test.rs:174:26:174:105 | ...::connect_timeout(...) | test.rs:192:34:192:38 | &line | $@ | test.rs:174:26:174:105 | ...::connect_timeout(...) | ...::connect_timeout(...) |
+| test.rs:207:30:207:35 | string | test.rs:174:26:174:105 | ...::connect_timeout(...) | test.rs:207:30:207:35 | string | $@ | test.rs:174:26:174:105 | ...::connect_timeout(...) | ...::connect_timeout(...) |
+| test.rs:239:14:239:21 | &buffer1 | test.rs:224:28:224:66 | ...::connect(...) | test.rs:239:14:239:21 | &buffer1 | $@ | test.rs:224:28:224:66 | ...::connect(...) | ...::connect(...) |
+| test.rs:240:14:240:23 | buffer1[0] | test.rs:224:28:224:66 | ...::connect(...) | test.rs:240:14:240:23 | buffer1[0] | $@ | test.rs:224:28:224:66 | ...::connect(...) | ...::connect(...) |
+| test.rs:243:14:243:21 | &buffer2 | test.rs:224:28:224:66 | ...::connect(...) | test.rs:243:14:243:21 | &buffer2 | $@ | test.rs:224:28:224:66 | ...::connect(...) | ...::connect(...) |
+| test.rs:244:14:244:23 | buffer2[0] | test.rs:224:28:224:66 | ...::connect(...) | test.rs:244:14:244:23 | buffer2[0] | $@ | test.rs:224:28:224:66 | ...::connect(...) | ...::connect(...) |
+| test.rs:259:26:259:32 | &buffer | test.rs:224:28:224:66 | ...::connect(...) | test.rs:259:26:259:32 | &buffer | $@ | test.rs:224:28:224:66 | ...::connect(...) | ...::connect(...) |
+| test.rs:282:26:282:32 | &buffer | test.rs:224:28:224:66 | ...::connect(...) | test.rs:282:26:282:32 | &buffer | $@ | test.rs:224:28:224:66 | ...::connect(...) | ...::connect(...) |
+| test.rs:334:10:334:16 | &reader | test.rs:332:22:332:75 | ...::new(...) | test.rs:334:10:334:16 | &reader | $@ | test.rs:332:22:332:75 | ...::new(...) | ...::new(...) |
+| test.rs:339:14:339:20 | &buffer | test.rs:332:22:332:75 | ...::new(...) | test.rs:339:14:339:20 | &buffer | $@ | test.rs:332:22:332:75 | ...::new(...) | ...::new(...) |
+| test.rs:345:14:345:20 | &buffer | test.rs:332:22:332:75 | ...::new(...) | test.rs:345:14:345:20 | &buffer | $@ | test.rs:332:22:332:75 | ...::new(...) | ...::new(...) |
+| test.rs:351:14:351:20 | &buffer | test.rs:332:22:332:75 | ...::new(...) | test.rs:351:14:351:20 | &buffer | $@ | test.rs:332:22:332:75 | ...::new(...) | ...::new(...) |
+| test.rs:374:14:374:17 | &tcp | test.rs:373:19:373:41 | ...::connect(...) | test.rs:374:14:374:17 | &tcp | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:381:14:381:20 | &reader | test.rs:373:19:373:41 | ...::connect(...) | test.rs:381:14:381:20 | &reader | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:387:18:387:24 | &pinned | test.rs:373:19:373:41 | ...::connect(...) | test.rs:387:18:387:24 | &pinned | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:391:22:391:28 | &buffer | test.rs:373:19:373:41 | ...::connect(...) | test.rs:391:22:391:28 | &buffer | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:392:22:392:33 | &... | test.rs:373:19:373:41 | ...::connect(...) | test.rs:392:22:392:33 | &... | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:400:18:400:40 | &... | test.rs:373:19:373:41 | ...::connect(...) | test.rs:400:18:400:40 | &... | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:405:18:405:40 | &... | test.rs:373:19:373:41 | ...::connect(...) | test.rs:405:18:405:40 | &... | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:409:14:409:21 | &reader2 | test.rs:373:19:373:41 | ...::connect(...) | test.rs:409:14:409:21 | &reader2 | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:414:18:414:24 | &pinned | test.rs:373:19:373:41 | ...::connect(...) | test.rs:414:18:414:24 | &pinned | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:418:22:418:28 | &buffer | test.rs:373:19:373:41 | ...::connect(...) | test.rs:418:22:418:28 | &buffer | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:419:22:419:24 | buf | test.rs:373:19:373:41 | ...::connect(...) | test.rs:419:22:419:24 | buf | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:426:26:426:33 | &buffer2 | test.rs:373:19:373:41 | ...::connect(...) | test.rs:426:26:426:33 | &buffer2 | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:427:26:427:28 | buf | test.rs:373:19:373:41 | ...::connect(...) | test.rs:427:26:427:28 | buf | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:438:18:438:23 | buffer | test.rs:373:19:373:41 | ...::connect(...) | test.rs:438:18:438:23 | buffer | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:445:18:445:24 | &pinned | test.rs:373:19:373:41 | ...::connect(...) | test.rs:445:18:445:24 | &pinned | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:448:18:448:24 | &buffer | test.rs:373:19:373:41 | ...::connect(...) | test.rs:448:18:448:24 | &buffer | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:450:22:450:33 | &... | test.rs:373:19:373:41 | ...::connect(...) | test.rs:450:22:450:33 | &... | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:458:18:458:40 | &... | test.rs:373:19:373:41 | ...::connect(...) | test.rs:458:18:458:40 | &... | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:462:18:462:40 | &... | test.rs:373:19:373:41 | ...::connect(...) | test.rs:462:18:462:40 | &... | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:468:18:468:24 | &pinned | test.rs:373:19:373:41 | ...::connect(...) | test.rs:468:18:468:24 | &pinned | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:471:18:471:24 | &buffer | test.rs:373:19:373:41 | ...::connect(...) | test.rs:471:18:471:24 | &buffer | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:473:22:473:24 | buf | test.rs:373:19:373:41 | ...::connect(...) | test.rs:473:22:473:24 | buf | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:480:18:480:23 | buffer | test.rs:373:19:373:41 | ...::connect(...) | test.rs:480:18:480:23 | buffer | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:487:18:487:22 | &line | test.rs:373:19:373:41 | ...::connect(...) | test.rs:487:18:487:22 | &line | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:494:18:494:22 | &line | test.rs:373:19:373:41 | ...::connect(...) | test.rs:494:18:494:22 | &line | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |
+| test.rs:501:18:501:24 | &buffer | test.rs:373:19:373:41 | ...::connect(...) | test.rs:501:18:501:24 | &buffer | $@ | test.rs:373:19:373:41 | ...::connect(...) | ...::connect(...) |

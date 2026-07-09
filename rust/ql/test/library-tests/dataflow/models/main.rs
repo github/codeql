@@ -339,7 +339,7 @@ trait MyTrait {
 
 impl MyTrait for () {
     fn test_param_source(i: i64) {
-        sink(i) // $ MISSING: hasValueFlow=i
+        sink(i) // $ hasValueFlow=i
     }
 }
 

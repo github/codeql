@@ -45,29 +45,29 @@ mod test_mysql {
             }
         }
 
-        let _ = conn.query_map( // $ Alert[rust/summary/taint-sources]
+        let _ = conn.query_map(
             "SELECT id FROM person",
             |values: i64| -> () {
                 sink(values); // $ hasTaintFlow
             }
-        )?;
+        )?; // $ Alert[rust/summary/taint-sources]
 
-        let _ = conn.query_map( // $ Alert[rust/summary/taint-sources]
+        let _ = conn.query_map(
             "SELECT id, name, age FROM person",
             |values: (i64, String, i32)| -> () {
                 sink(values.0); // $ hasTaintFlow
                 sink(values.1); // $ hasTaintFlow
                 sink(values.2); // $ hasTaintFlow
             }
-        )?;
+        )?; // $ Alert[rust/summary/taint-sources]
 
-        let total = conn.query_fold("SELECT id FROM person", 0, |acc: i64, row: i64| { // $ Alert[rust/summary/taint-sources]
+        let total = conn.query_fold("SELECT id FROM person", 0, |acc: i64, row: i64| {
             sink(row); // $ hasTaintFlow
             acc + row
-        })?;
+        })?; // $ Alert[rust/summary/taint-sources]
         sink(total); // $ hasTaintFlow
 
-        let _ = conn.query_fold("SELECT id, name, age FROM person", 0, |acc: i64, row: (i64, String, i32)| { // $ Alert[rust/summary/taint-sources]
+        let _ = conn.query_fold("SELECT id, name, age FROM person", 0, |acc: i64, row: (i64, String, i32)| {
             let id: i64 = row.0;
             let name: String = row.1;
             let age: i32 = row.2;
@@ -75,7 +75,7 @@ mod test_mysql {
             sink(name); // $ hasTaintFlow
             sink(age); // $ hasTaintFlow
             acc + 1
-        })?;
+        })?; // $ Alert[rust/summary/taint-sources]
 
         Ok(())
     }
@@ -132,29 +132,29 @@ mod test_mysql_async {
             }
         }
 
-        let _ = conn.query_map( // $ Alert[rust/summary/taint-sources]
+        let _ = conn.query_map(
             "SELECT id FROM person",
             |values: i64| -> () {
                 sink(values); // $ hasTaintFlow
             }
-        ).await?;
+        ).await?; // $ Alert[rust/summary/taint-sources]
 
-        let _ = conn.query_map( // $ Alert[rust/summary/taint-sources]
+        let _ = conn.query_map(
             "SELECT id, name, age FROM person",
             |values: (i64, String, i32)| -> () {
                 sink(values.0); // $ hasTaintFlow
                 sink(values.1); // $ hasTaintFlow
                 sink(values.2); // $ hasTaintFlow
             }
-        ).await?;
+        ).await?; // $ Alert[rust/summary/taint-sources]
 
-        let total = conn.query_fold("SELECT id FROM person", 0, |acc: i64, row: i64| { // $ Alert[rust/summary/taint-sources]
+        let total = conn.query_fold("SELECT id FROM person", 0, |acc: i64, row: i64| {
             sink(row); // $ hasTaintFlow
             acc + row
-        }).await?;
+        }).await?; // $ Alert[rust/summary/taint-sources]
         sink(total); // $ hasTaintFlow
 
-        let _ = conn.query_fold("SELECT id, name, age FROM person", 0, |acc: i64, row: (i64, String, i32)| { // $ Alert[rust/summary/taint-sources]
+        let _ = conn.query_fold("SELECT id, name, age FROM person", 0, |acc: i64, row: (i64, String, i32)| {
             let id: i64 = row.0;
             let name: String = row.1;
             let age: i32 = row.2;
@@ -162,7 +162,7 @@ mod test_mysql_async {
             sink(name); // $ hasTaintFlow
             sink(age); // $ hasTaintFlow
             acc + 1
-        }).await?;
+        }).await?; // $ Alert[rust/summary/taint-sources]
 
         let ids = "SELECT id FROM person".with(()).map(&mut conn,
             |person: i64| -> i64 {
