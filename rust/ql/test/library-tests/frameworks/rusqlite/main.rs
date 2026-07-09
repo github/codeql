@@ -16,12 +16,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let connection = Connection::open_in_memory()?;
 
-    connection.execute(       // $ sql-sink
+    connection.execute(
         "CREATE TABLE person (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name VARCHAR NOT NULL,
             age INT NOT NULL
-        )",
+        )", // $ sql-sink
         (),
     )?;
 
