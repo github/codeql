@@ -1035,14 +1035,17 @@ module TestPostProcessing {
     }
 
     /**
-     * Gets the fully rendered inline expectation comment (including the comment markers) that
-     * `--learn` should insert for a new `tag` expectation in the file with the given
-     * `relativePath`, or has no result if that file's comment syntax is not supported.
+     * Gets the inline expectation comment (including the comment markers, but with no leading
+     * whitespace) that renders a plain `tag` expectation in the file with the given `relativePath`,
+     * or has no result if that file's comment syntax is not supported. For example `// $ Alert` for
+     * a language whose line comments start with `//`.
      *
-     * The leading space separates the comment from any existing content on the line.
+     * This form is used when rewriting an existing comment in place, starting at its comment
+     * marker, so it must not carry the leading separator space that `renderExpectationComment`
+     * adds for appending after code.
      */
     bindingset[relativePath, tag]
-    private string renderExpectationComment(string relativePath, string tag) {
+    private string renderInlineComment(string relativePath, string tag) {
       exists(string startMarker, string endMarker, string endSuffix |
         startMarker = Input2::getStartCommentMarker(relativePath) and
         endMarker = Input2::getEndCommentMarker(relativePath) and
@@ -1051,7 +1054,39 @@ module TestPostProcessing {
           or
           endMarker != "" and endSuffix = " " + endMarker
         ) and
-        result = " " + startMarker + " $ " + tag + endSuffix
+        result = startMarker + " $ " + tag + endSuffix
+      )
+    }
+
+    /**
+     * Gets the fully rendered inline expectation comment (including the comment markers) that
+     * `--learn` should append for a new `tag` expectation in the file with the given
+     * `relativePath`, or has no result if that file's comment syntax is not supported.
+     *
+     * The leading space separates the comment from any existing content on the line.
+     */
+    bindingset[relativePath, tag]
+    private string renderExpectationComment(string relativePath, string tag) {
+      result = " " + renderInlineComment(relativePath, tag)
+    }
+
+    /**
+     * Holds if `expectation` is the only inline expectation carried by its comment, so `--learn`
+     * can rewrite or delete the comment as a whole without disturbing a sibling expectation.
+     * Comments that additionally carry an invalid (unparseable) expectation are excluded, to avoid
+     * corrupting text the library could not fully understand.
+     */
+    private predicate isSoleExpectationOnComment(Test::FailureLocatable expectation) {
+      count(Test::FailureLocatable other |
+        other.getLocation() = expectation.getLocation() and
+        (
+          other instanceof Test::GoodTestExpectation or
+          other instanceof Test::FalsePositiveTestExpectation or
+          other instanceof Test::FalseNegativeTestExpectation
+        )
+      ) = 1 and
+      not exists(Test::InvalidTestExpectation invalid |
+        invalid.getLocation() = expectation.getLocation()
       )
     }
 
@@ -1066,15 +1101,18 @@ module TestPostProcessing {
      *   `text` (the empty string deletes the range).
      *
      * Only a deliberately reliable subset is emitted so far, restricted to the plain `Alert`
-     * tag with no value or query-id annotation:
+     * tag with no value or query-id annotation, on comments that carry a single expectation:
      *
      * - an actual result with no matching expectation gets a new `// $ Alert` comment appended
-     *   (an *unexpected result*), and
-     * - a plain `// $ Alert` comment whose result is now missing, and which is the only
-     *   expectation on that comment, is removed (a *missing result*).
+     *   (an *unexpected result*);
+     * - a comment whose sole expectation is a plain `// $ Alert` whose result is now missing, or a
+     *   `// $ SPURIOUS: Alert` whose result no longer fires, is removed (a *missing result* or a
+     *   *fixed spurious result*); and
+     * - a comment whose sole expectation is `// $ MISSING: Alert` whose result now appears is
+     *   promoted to a plain `// $ Alert` (a *fixed missing result*).
      *
-     * Cases that need sub-comment column information (promoting `MISSING:`/clearing `SPURIOUS:`,
-     * or editing one tag among several on a line) are intentionally left for a follow-up.
+     * Cases that need sub-comment column information (editing one tag among several on a comment
+     * that carries multiple expectations) are intentionally left for a follow-up.
      */
     query predicate learnEdits(
       string file, int line, string operation, int startColumn, int endColumn, string text
@@ -1102,24 +1140,19 @@ module TestPostProcessing {
         text = comment
       )
       or
-      // Missing result: remove a plain `// $ Alert` comment that is the comment's sole
-      // expectation and no longer matches any actual result.
-      exists(Test::GoodTestExpectation expectation, string relativePath, int sl, int sc |
+      // Obsolete expectation: remove a comment whose sole expectation is either a plain
+      // `// $ Alert` that no longer matches any result (a *missing result*), or a
+      // `// $ SPURIOUS: Alert` whose result no longer fires, so the known false positive is fixed
+      // (a *fixed spurious result*). In both cases the whole comment is deleted.
+      exists(Test::FailureLocatable expectation, string relativePath, int sl, int sc |
+        (
+          expectation instanceof Test::GoodTestExpectation or
+          expectation instanceof Test::FalsePositiveTestExpectation
+        ) and
         expectation.getTag() = "Alert" and
         expectation.getValue() = "" and
         not expectation = Test::getAMatchingExpectation(_, _, _, _, _) and
-        // the comment carries exactly this one expectation, so removing it wholesale is safe
-        count(Test::FailureLocatable other |
-          other.getLocation() = expectation.getLocation() and
-          (
-            other instanceof Test::GoodTestExpectation or
-            other instanceof Test::FalsePositiveTestExpectation or
-            other instanceof Test::FalseNegativeTestExpectation
-          )
-        ) = 1 and
-        not exists(Test::InvalidTestExpectation invalid |
-          invalid.getLocation() = expectation.getLocation()
-        ) and
+        isSoleExpectationOnComment(expectation) and
         parseLocationString(expectation.getLocation().getRelativeUrl(), relativePath, sl, sc, _, _) and
         file = relativePath and
         line = sl and
@@ -1127,10 +1160,31 @@ module TestPostProcessing {
         startColumn = sc and
         // A trailing inline expectation comment always runs to the end of its line, so delete from
         // the comment marker to the end of the line. `endColumn = 0` is the engine's "to end of
-        // line" convention; using it avoids depending on how each extractor reports a line
-        // comment's end column (e.g. Swift reports it as ending at column 1 of the next line).
+        // line" convention (it also trims the whitespace gap the removed comment leaves behind);
+        // using it avoids depending on how each extractor reports a line comment's end column
+        // (e.g. Swift reports it as ending at column 1 of the next line).
         endColumn = 0 and
         text = ""
+      )
+      or
+      // Fixed missing result: a comment whose sole expectation is `// $ MISSING: Alert` now has a
+      // matching result, so promote it to a plain `// $ Alert`. The whole comment is rewritten in
+      // place, from its comment marker to the end of the line, with a freshly rendered plain
+      // comment. Rewriting wholesale is reliable for a single-expectation comment and avoids
+      // editing individual columns within the comment. The replacement text is non-empty, so
+      // unlike the removal case the whitespace before the comment is preserved.
+      exists(Test::FalseNegativeTestExpectation expectation, string relativePath, int sl, int sc |
+        expectation.getTag() = "Alert" and
+        expectation.getValue() = "" and
+        expectation = Test::getAMatchingExpectation(_, _, _, _, _) and
+        isSoleExpectationOnComment(expectation) and
+        parseLocationString(expectation.getLocation().getRelativeUrl(), relativePath, sl, sc, _, _) and
+        file = relativePath and
+        line = sl and
+        operation = "replace" and
+        startColumn = sc and
+        endColumn = 0 and
+        text = renderInlineComment(relativePath, "Alert")
       )
     }
   }
