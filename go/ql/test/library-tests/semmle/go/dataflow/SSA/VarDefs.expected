@@ -10,9 +10,9 @@
 | main.go:34:11:34:11 | x | main.go:34:11:34:11 | x | main.go:34:11:34:11 | x |
 | main.go:39:2:39:8 | assign:0 ... := ... | main.go:39:2:39:2 | x | main.go:39:7:39:8 | 23 |
 | main.go:40:2:40:10 | assign:0 ... := ... | main.go:40:2:40:4 | ptr | main.go:40:9:40:10 | &... |
-| main.go:47:25:50:1 | result-zero-init:0 block statement | main.go:47:13:47:18 | result | main.go:47:25:50:1 | result-zero-init:0 block statement |
+| main.go:47:25:50:1 | zero-init:0 block statement | main.go:47:13:47:18 | result | main.go:47:25:50:1 | zero-init:0 block statement |
 | main.go:48:2:48:12 | assign:0 ... = ... | main.go:47:13:47:18 | result | main.go:48:11:48:12 | 42 |
-| main.go:52:26:54:1 | result-zero-init:0 block statement | main.go:52:14:52:19 | result | main.go:52:26:54:1 | result-zero-init:0 block statement |
+| main.go:52:26:54:1 | zero-init:0 block statement | main.go:52:14:52:19 | result | main.go:52:26:54:1 | zero-init:0 block statement |
 | main.go:57:6:57:10 | zero-init:0 value declaration specifier | main.go:57:6:57:6 | x | main.go:57:6:57:10 | zero-init:0 value declaration specifier |
 | main.go:59:3:59:7 | assign:0 ... = ... | main.go:57:6:57:6 | x | main.go:59:7:59:7 | 2 |
 | main.go:63:2:63:7 | assign:0 ... := ... | main.go:63:2:63:2 | y | main.go:63:7:63:7 | 1 |
@@ -23,8 +23,8 @@
 | main.go:73:6:73:11 | assign:0 ... := ... | main.go:73:6:73:6 | i | main.go:73:11:73:11 | 0 |
 | main.go:73:16:73:18 | increment statement | main.go:73:6:73:6 | i | main.go:73:16:73:18 | incdec-rhs increment statement |
 | main.go:74:3:74:7 | assign:0 ... = ... | main.go:72:2:72:2 | z | main.go:74:7:74:7 | 2 |
-| main.go:82:36:86:1 | result-zero-init:0 block statement | main.go:82:18:82:18 | a | main.go:82:36:86:1 | result-zero-init:0 block statement |
-| main.go:82:36:86:1 | result-zero-init:1 block statement | main.go:82:25:82:25 | b | main.go:82:36:86:1 | result-zero-init:1 block statement |
+| main.go:82:36:86:1 | zero-init:0 block statement | main.go:82:18:82:18 | a | main.go:82:36:86:1 | zero-init:0 block statement |
+| main.go:82:36:86:1 | zero-init:1 block statement | main.go:82:25:82:25 | b | main.go:82:36:86:1 | zero-init:1 block statement |
 | main.go:83:2:83:8 | assign:0 ... := ... | main.go:83:2:83:2 | x | main.go:83:7:83:8 | 23 |
 | main.go:84:2:84:15 | assign:0 ... = ... | main.go:83:2:83:2 | x | main.go:84:9:84:12 | ...+... |
 | main.go:84:2:84:15 | assign:1 ... = ... | main.go:82:18:82:18 | a | main.go:84:15:84:15 | x |
