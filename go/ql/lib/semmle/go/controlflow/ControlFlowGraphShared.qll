@@ -573,14 +573,6 @@ module CfgImpl {
         n = any(Go::CompositeLit lit).getAnElement() and
         tag = "lit-init"
         or
-        // Implicit literal element index
-        exists(Go::CompositeLit lit |
-          not lit instanceof Go::StructLit and
-          n = lit.getAnElement() and
-          not n instanceof Go::KeyValueExpr and
-          tag = "lit-index"
-        )
-        or
         // Implicit field selection for promoted fields
         exists(int i, Go::Field implicitField |
           implicitFieldSelection(n, i, implicitField) and
@@ -1448,17 +1440,12 @@ module CfgImpl {
           not exists(lit.getElement(_)) and n2.isAfter(lit)
         )
         or
-        // After element → optional lit-index → lit-init → next element or After
+        // After element → lit-init → next element or After.
+        // Positional array/slice elements have an implicit index that is
+        // modelled on the `lit-init` instruction itself (see
+        // `IR::InitLiteralElementInstruction`) rather than as a separate node.
         exists(int i |
           n1.isAfter(lit.getElement(i)) and
-          (
-            n2.isAdditional(lit.getElement(i), "lit-index")
-            or
-            not exists(PreControlFlowNode idx | idx.isAdditional(lit.getElement(i), "lit-index")) and
-            n2.isAdditional(lit.getElement(i), "lit-init")
-          )
-          or
-          n1.isAdditional(lit.getElement(i), "lit-index") and
           n2.isAdditional(lit.getElement(i), "lit-init")
           or
           n1.isAdditional(lit.getElement(i), "lit-init") and
