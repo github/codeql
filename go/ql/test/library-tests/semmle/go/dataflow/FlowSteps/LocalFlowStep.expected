@@ -51,8 +51,8 @@
 | main.go:46:44:52:1 | SSA def(keys) | main.go:49:3:49:6 | keys |
 | main.go:46:44:52:1 | SSA def(vals) | main.go:46:44:52:1 | result-read:1 block statement |
 | main.go:46:44:52:1 | SSA def(vals) | main.go:48:3:48:6 | vals |
-| main.go:46:44:52:1 | result-zero-init:0 block statement | main.go:46:44:52:1 | SSA def(keys) |
-| main.go:46:44:52:1 | result-zero-init:1 block statement | main.go:46:44:52:1 | SSA def(vals) |
+| main.go:46:44:52:1 | zero-init:0 block statement | main.go:46:44:52:1 | SSA def(keys) |
+| main.go:46:44:52:1 | zero-init:1 block statement | main.go:46:44:52:1 | SSA def(vals) |
 | main.go:47:2:50:2 | SSA def(k) | main.go:49:11:49:11 | k |
 | main.go:47:2:50:2 | SSA def(v) | main.go:48:11:48:11 | v |
 | main.go:47:2:50:2 | extract:0 range element | main.go:47:2:50:2 | SSA def(k) |
