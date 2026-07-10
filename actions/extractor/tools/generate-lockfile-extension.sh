@@ -42,8 +42,15 @@ SCRIPT_DIR="$(CDPATH= cd "$(dirname "$0")" && pwd)"
 GEN_DIR="${SCRIPT_DIR}/lockfile-extension-generator"
 
 PACK_DIR="${CODEQL_EXTRACTOR_ACTIONS_WIP_DATABASE}/lockfile-extension"
-EXT_DIR="${PACK_DIR}/ext"
-mkdir -p "${EXT_DIR}"
+
+# Stage the pack in a sibling temp dir inside the database directory (same
+# filesystem as the final location) so the final `mv` is an atomic rename, and
+# only publish a complete pack on success -- a failure part-way through never
+# leaves a half-written pack dir (e.g. an `ext/` with no `qlpack.yml`) that would
+# break `--additional-packs`.
+STAGE_DIR="$(mktemp -d "${CODEQL_EXTRACTOR_ACTIONS_WIP_DATABASE}/lockfile-extension.XXXXXX")"
+trap 'rm -rf "${STAGE_DIR}"' EXIT
+mkdir -p "${STAGE_DIR}/ext"
 
 # Resolve the generator: prefer a prebuilt binary shipped with the extractor;
 # otherwise build from source with the Go toolchain if it is available.
@@ -52,7 +59,7 @@ RUN_GENERATOR=""
 if [ -x "${GEN_BIN}" ]; then
     RUN_GENERATOR="${GEN_BIN}"
 elif command -v go >/dev/null 2>&1; then
-    BUILT_BIN="${CODEQL_EXTRACTOR_ACTIONS_SCRATCH_DIR:-${PACK_DIR}}/lockfile-extension-generator"
+    BUILT_BIN="${STAGE_DIR}/lockfile-extension-generator"
     echo "Building lockfile-extension-generator from source with 'go build'."
     ( cd "${GEN_DIR}" && go build -o "${BUILT_BIN}" . )
     RUN_GENERATOR="${BUILT_BIN}"
@@ -61,9 +68,9 @@ else
     exit 0
 fi
 
-"${RUN_GENERATOR}" "${SRC_ROOT}" "${EXT_DIR}/pinned_by_lockfile.model.yml"
+"${RUN_GENERATOR}" "${SRC_ROOT}" "${STAGE_DIR}/ext/pinned_by_lockfile.model.yml"
 
-cat > "${PACK_DIR}/qlpack.yml" <<'EOF'
+cat > "${STAGE_DIR}/qlpack.yml" <<'EOF'
 name: codeql/actions-lockfile-pins
 version: 0.0.1
 library: true
@@ -76,5 +83,11 @@ extensionTargets:
 dataExtensions:
   - ext/*.model.yml
 EOF
+
+# Publish atomically: the pack only appears in the database once fully written.
+rm -f "${STAGE_DIR}/lockfile-extension-generator"
+rm -rf "${PACK_DIR}"
+mv "${STAGE_DIR}" "${PACK_DIR}"
+trap - EXIT
 
 echo "Wrote lockfile-pinned data extension to '${PACK_DIR}'."
