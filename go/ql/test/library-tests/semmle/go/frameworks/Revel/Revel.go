@@ -69,7 +69,7 @@ func (c myAppController) rawRead() {
 	c.ViewArgs["Bar"] = "<p>not raw HTML</p>"
 	c.ViewArgs["Foo"] = c.Params.Query // $ responsebody='selection of Query' Alert[go/reflected-xss]
 	c.Render()
-} // $ responsebody='arg:-1 block statement'
+} // $ responsebody='param-init:-1 block statement'
 
 func accessingRequestDirectlyIsUnsafe(c *revel.Controller) {
 	sink(c.Request.GetQuery()["key"][0])

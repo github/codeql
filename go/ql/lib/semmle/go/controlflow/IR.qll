@@ -191,8 +191,6 @@ module IR {
       or
       this instanceof InitParameterInstruction and result = "parameter initialization"
       or
-      this instanceof ReadArgumentInstruction and result = "argument"
-      or
       this instanceof InitResultInstruction and result = "result initialization"
       or
       this instanceof GetNextEntryInstruction and result = "next key-value pair"
@@ -1026,23 +1024,7 @@ module IR {
       parm = fd.getParameter(idx)
     }
 
-    override Instruction getRhs() {
-      result.(ReadArgumentInstruction).isAdditional(fd.getBody(), "arg:" + idx.toString())
-    }
-
-    override ControlFlow::Root getRoot() { result = parm.getFunction() }
-  }
-
-  /** An instruction reading the value of a function argument. */
-  class ReadArgumentInstruction extends Instruction {
-    Parameter parm;
-    int idx;
-    FuncDef fd;
-
-    ReadArgumentInstruction() {
-      this.isAdditional(fd.getBody(), "arg:" + idx.toString()) and
-      parm = fd.getParameter(idx)
-    }
+    override Instruction getRhs() { result = this }
 
     override Type getResultType() { result = parm.getType() }
 
