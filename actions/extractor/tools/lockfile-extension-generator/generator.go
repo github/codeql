@@ -112,6 +112,16 @@ func renderExtension(rows []row) string {
 	b.WriteString("  - addsTo:\n")
 	b.WriteString("      pack: codeql/actions-all\n")
 	b.WriteString("      extensible: pinnedByLockfileDataModel\n")
+	// `data` must be a YAML sequence. When there are no rows we must emit an
+	// explicit empty list (`data: []`); a bare `data:` parses as null, which
+	// CodeQL's extension loader rejects (`resolve extensions-by-pack` fails and
+	// aborts the whole analysis). Zero rows is reachable whenever a lockfile is
+	// present but pins no repo-level actions (e.g. only sub-path actions such as
+	// `github/codeql-action/init@v3`, which `parsePin` intentionally skips).
+	if len(rows) == 0 {
+		b.WriteString("    data: []\n")
+		return b.String()
+	}
 	b.WriteString("    data:\n")
 	for _, r := range rows {
 		fmt.Fprintf(&b, "      - [%q, %q, %q]\n", r.workflowPath, r.nwo, r.ref)
