@@ -33,11 +33,11 @@ private predicate isPinnedContainer(string version) {
 bindingset[nwo]
 private predicate isContainerImage(string nwo) { nwo.regexpMatch("^docker://.+") }
 
-// A `$/` reference is a same-repo self-reference (e.g. `$/path/to/action`), resolved at the
-// commit the calling workflow is running. Like `./` local references, it is inherently pinned
-// and can never be an unpinned-tag finding, so we never flag it.
+// A `$/` reference is a same-repository (self repository) reference (e.g. `$/path/to/action`),
+// resolved at the commit the calling workflow is running. Like `./` local (self workspace)
+// references, it is inherently pinned and can never be an unpinned-tag finding, so we never flag it.
 bindingset[nwo]
-private predicate isSelfReference(string nwo) { nwo.matches("$/%") }
+private predicate isSelfRepository(string nwo) { nwo.matches("$/%") }
 
 // Holds if `uses` (calling action `nwo` at `version`) is pinned by an entry in the repository's
 // Actions lockfile (`.github/workflows/actions.lock`). The underlying `pinnedByLockfileDataModel`
@@ -70,7 +70,7 @@ where
   getStepContainerName(uses, name) and
   uses.getVersion() = version and
   not isTrustedOwner(nwo) and
-  not isSelfReference(nwo) and
+  not isSelfRepository(nwo) and
   not pinnedByLockfile(uses, nwo, version) and
   not (if isContainerImage(nwo) then isPinnedContainer(version) else isPinnedCommit(version)) and
   not isImmutableAction(uses, nwo)
