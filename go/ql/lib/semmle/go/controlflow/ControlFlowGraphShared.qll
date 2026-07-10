@@ -505,17 +505,19 @@ module CfgImpl {
             // (see `skipCfg`): the per-case implicit variables are written at the
             // case match nodes (see `IR::TypeSwitchImplicitVariableInstruction`),
             // so the guard itself emits no assignment write node.
-            not n = any(Go::TypeSwitchStmt ts).getAssign()
+            not n = any(Go::TypeSwitchStmt ts).getAssign() and
+            // A tuple-destructuring assignment (`x, y = f()`) folds its per-target
+            // write into the `extract` node (see `IR::ExtractWriteInstruction`).
+            not extractNodeCondition(n, i)
             or
             // A `ValueSpec` without an initializer is written by its `zero-init`
-            // node directly (see `IR::InitVariableInstruction`), so only specs
-            // *with* an initializer emit an `assign` write node.
+            // node directly (see `IR::InitVariableInstruction`), and a
+            // tuple-destructuring declaration (`var x, y = f()`) is written by its
+            // `extract` node; only specs with a per-name initializer emit
+            // `assign:i`.
             notBlankIdent(n.(Go::ValueSpec).getNameExpr(i)) and
-            exists(n.(Go::ValueSpec).getAnInit())
-            or
-            notBlankIdent(n.(Go::RangeElementExpr).getKey()) and i = 0
-            or
-            notBlankIdent(n.(Go::RangeElementExpr).getValue()) and i = 1
+            exists(n.(Go::ValueSpec).getAnInit()) and
+            not extractNodeCondition(n, i)
           ) and
           tag = "assign:" + i.toString()
         )
@@ -1150,16 +1152,17 @@ module CfgImpl {
             notBlankIdent(assgn.(Go::Assignment).getLhs(j)) and
             // Compound assignments fold their write into `compound-rhs` (ord -1)
             // above, so they emit no separate `assign:j` node.
-            not assgn instanceof Go::CompoundAssignStmt
+            not assgn instanceof Go::CompoundAssignStmt and
+            // Tuple-destructuring targets are written by their `extract` node.
+            not extractNodeCondition(assgn, j)
             or
             // A `ValueSpec` without an initializer is written by its `zero-init`
-            // node directly, so only specs *with* an initializer emit `assign:j`.
+            // node directly, and a tuple-destructuring declaration by its
+            // `extract` node, so only specs with a per-name initializer emit
+            // `assign:j`.
             notBlankIdent(assgn.(Go::ValueSpec).getNameExpr(j)) and
-            exists(assgn.(Go::ValueSpec).getAnInit())
-            or
-            notBlankIdent(assgn.(Go::RangeElementExpr).getKey()) and j = 0
-            or
-            notBlankIdent(assgn.(Go::RangeElementExpr).getValue()) and j = 1
+            exists(assgn.(Go::ValueSpec).getAnInit()) and
+            not extractNodeCondition(assgn, j)
           ) and
           result = "assign:" + j.toString() and
           ord = 2 * j + 1
