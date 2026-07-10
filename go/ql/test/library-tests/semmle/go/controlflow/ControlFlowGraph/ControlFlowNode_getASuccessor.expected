@@ -1188,10 +1188,8 @@
 | exprs.go:33:2:35:2 | if statement | exprs.go:33:5:33:24 | ... := ... |
 | exprs.go:33:5:33:24 | ... := ... | exprs.go:33:14:33:24 | Before type assertion |
 | exprs.go:33:5:33:24 | After ... := ... | exprs.go:33:27:33:28 | Before ok |
-| exprs.go:33:5:33:24 | assign:0 ... := ... | exprs.go:33:5:33:24 | extract:1 ... := ... |
-| exprs.go:33:5:33:24 | assign:1 ... := ... | exprs.go:33:5:33:24 | After ... := ... |
-| exprs.go:33:5:33:24 | extract:0 ... := ... | exprs.go:33:5:33:24 | assign:0 ... := ... |
-| exprs.go:33:5:33:24 | extract:1 ... := ... | exprs.go:33:5:33:24 | assign:1 ... := ... |
+| exprs.go:33:5:33:24 | extract:0 ... := ... | exprs.go:33:5:33:24 | extract:1 ... := ... |
+| exprs.go:33:5:33:24 | extract:1 ... := ... | exprs.go:33:5:33:24 | After ... := ... |
 | exprs.go:33:14:33:16 | After arg | exprs.go:33:14:33:24 | type assertion |
 | exprs.go:33:14:33:16 | Before arg | exprs.go:33:14:33:16 | arg |
 | exprs.go:33:14:33:16 | arg | exprs.go:33:14:33:16 | After arg |
@@ -1243,10 +1241,8 @@
 | exprs.go:41:6:41:12 | zero-init:0 value declaration specifier | exprs.go:41:6:41:12 | After value declaration specifier |
 | exprs.go:42:2:42:20 | ... = ... | exprs.go:42:10:42:20 | Before type assertion |
 | exprs.go:42:2:42:20 | After ... = ... | exprs.go:43:2:45:2 | if statement |
-| exprs.go:42:2:42:20 | assign:0 ... = ... | exprs.go:42:2:42:20 | extract:1 ... = ... |
-| exprs.go:42:2:42:20 | assign:1 ... = ... | exprs.go:42:2:42:20 | After ... = ... |
-| exprs.go:42:2:42:20 | extract:0 ... = ... | exprs.go:42:2:42:20 | assign:0 ... = ... |
-| exprs.go:42:2:42:20 | extract:1 ... = ... | exprs.go:42:2:42:20 | assign:1 ... = ... |
+| exprs.go:42:2:42:20 | extract:0 ... = ... | exprs.go:42:2:42:20 | extract:1 ... = ... |
+| exprs.go:42:2:42:20 | extract:1 ... = ... | exprs.go:42:2:42:20 | After ... = ... |
 | exprs.go:42:10:42:12 | After arg | exprs.go:42:10:42:20 | type assertion |
 | exprs.go:42:10:42:12 | Before arg | exprs.go:42:10:42:12 | arg |
 | exprs.go:42:10:42:12 | arg | exprs.go:42:10:42:12 | After arg |
@@ -1520,10 +1516,8 @@
 | exprs.go:81:35:87:1 | block statement | exprs.go:82:2:82:16 | ... := ... |
 | exprs.go:82:2:82:16 | ... := ... | exprs.go:82:13:82:16 | Before <-... |
 | exprs.go:82:2:82:16 | After ... := ... | exprs.go:83:2:85:2 | if statement |
-| exprs.go:82:2:82:16 | assign:0 ... := ... | exprs.go:82:2:82:16 | extract:1 ... := ... |
-| exprs.go:82:2:82:16 | assign:1 ... := ... | exprs.go:82:2:82:16 | After ... := ... |
-| exprs.go:82:2:82:16 | extract:0 ... := ... | exprs.go:82:2:82:16 | assign:0 ... := ... |
-| exprs.go:82:2:82:16 | extract:1 ... := ... | exprs.go:82:2:82:16 | assign:1 ... := ... |
+| exprs.go:82:2:82:16 | extract:0 ... := ... | exprs.go:82:2:82:16 | extract:1 ... := ... |
+| exprs.go:82:2:82:16 | extract:1 ... := ... | exprs.go:82:2:82:16 | After ... := ... |
 | exprs.go:82:13:82:16 | <-... | exprs.go:82:13:82:16 | After <-... |
 | exprs.go:82:13:82:16 | After <-... | exprs.go:82:2:82:16 | extract:0 ... := ... |
 | exprs.go:82:13:82:16 | Before <-... | exprs.go:82:15:82:16 | Before ch |
@@ -1775,10 +1769,8 @@
 | generic.go:30:24:30:24 | c | generic.go:30:24:30:24 | After c |
 | generic.go:31:2:31:53 | ... := ... | generic.go:31:10:31:53 | Before call to genericIdentity2 |
 | generic.go:31:2:31:53 | After ... := ... | generic.go:32:2:32:31 | ... := ... |
-| generic.go:31:2:31:53 | assign:0 ... := ... | generic.go:31:2:31:53 | extract:1 ... := ... |
-| generic.go:31:2:31:53 | assign:1 ... := ... | generic.go:31:2:31:53 | After ... := ... |
-| generic.go:31:2:31:53 | extract:0 ... := ... | generic.go:31:2:31:53 | assign:0 ... := ... |
-| generic.go:31:2:31:53 | extract:1 ... := ... | generic.go:31:2:31:53 | assign:1 ... := ... |
+| generic.go:31:2:31:53 | extract:0 ... := ... | generic.go:31:2:31:53 | extract:1 ... := ... |
+| generic.go:31:2:31:53 | extract:1 ... := ... | generic.go:31:2:31:53 | After ... := ... |
 | generic.go:31:10:31:25 | After genericIdentity2 | generic.go:31:10:31:41 | generic function instantiation expression |
 | generic.go:31:10:31:25 | Before genericIdentity2 | generic.go:31:10:31:25 | genericIdentity2 |
 | generic.go:31:10:31:25 | genericIdentity2 | generic.go:31:10:31:25 | After genericIdentity2 |
@@ -1797,10 +1789,8 @@
 | generic.go:31:46:31:52 | Before "hello" | generic.go:31:46:31:52 | "hello" |
 | generic.go:32:2:32:31 | ... := ... | generic.go:32:10:32:31 | Before call to genericIdentity2 |
 | generic.go:32:2:32:31 | After ... := ... | generic.go:33:2:33:6 | ... = ... |
-| generic.go:32:2:32:31 | assign:0 ... := ... | generic.go:32:2:32:31 | extract:1 ... := ... |
-| generic.go:32:2:32:31 | assign:1 ... := ... | generic.go:32:2:32:31 | After ... := ... |
-| generic.go:32:2:32:31 | extract:0 ... := ... | generic.go:32:2:32:31 | assign:0 ... := ... |
-| generic.go:32:2:32:31 | extract:1 ... := ... | generic.go:32:2:32:31 | assign:1 ... := ... |
+| generic.go:32:2:32:31 | extract:0 ... := ... | generic.go:32:2:32:31 | extract:1 ... := ... |
+| generic.go:32:2:32:31 | extract:1 ... := ... | generic.go:32:2:32:31 | After ... := ... |
 | generic.go:32:10:32:25 | After genericIdentity2 | generic.go:32:27:32:27 | Before e |
 | generic.go:32:10:32:25 | Before genericIdentity2 | generic.go:32:10:32:25 | genericIdentity2 |
 | generic.go:32:10:32:25 | genericIdentity2 | generic.go:32:10:32:25 | After genericIdentity2 |
@@ -2592,9 +2582,8 @@
 | stmts2.go:9:19:13:1 | block statement | stmts2.go:10:2:10:14 | ... := ... |
 | stmts2.go:10:2:10:14 | ... := ... | stmts2.go:10:10:10:14 | Before call to gen |
 | stmts2.go:10:2:10:14 | After ... := ... | stmts2.go:11:2:11:17 | declaration statement |
-| stmts2.go:10:2:10:14 | assign:1 ... := ... | stmts2.go:10:2:10:14 | After ... := ... |
 | stmts2.go:10:2:10:14 | extract:0 ... := ... | stmts2.go:10:2:10:14 | extract:1 ... := ... |
-| stmts2.go:10:2:10:14 | extract:1 ... := ... | stmts2.go:10:2:10:14 | assign:1 ... := ... |
+| stmts2.go:10:2:10:14 | extract:1 ... := ... | stmts2.go:10:2:10:14 | After ... := ... |
 | stmts2.go:10:10:10:12 | After gen | stmts2.go:10:10:10:14 | call to gen |
 | stmts2.go:10:10:10:12 | Before gen | stmts2.go:10:10:10:12 | gen |
 | stmts2.go:10:10:10:12 | gen | stmts2.go:10:10:10:12 | After gen |
@@ -2607,9 +2596,8 @@
 | stmts2.go:11:2:11:17 | declaration statement | stmts2.go:11:2:11:17 | variable declaration |
 | stmts2.go:11:2:11:17 | variable declaration | stmts2.go:11:6:11:17 | value declaration specifier |
 | stmts2.go:11:6:11:17 | After value declaration specifier | stmts2.go:11:2:11:17 | After variable declaration |
-| stmts2.go:11:6:11:17 | assign:1 value declaration specifier | stmts2.go:11:6:11:17 | After value declaration specifier |
 | stmts2.go:11:6:11:17 | extract:0 value declaration specifier | stmts2.go:11:6:11:17 | extract:1 value declaration specifier |
-| stmts2.go:11:6:11:17 | extract:1 value declaration specifier | stmts2.go:11:6:11:17 | assign:1 value declaration specifier |
+| stmts2.go:11:6:11:17 | extract:1 value declaration specifier | stmts2.go:11:6:11:17 | After value declaration specifier |
 | stmts2.go:11:6:11:17 | value declaration specifier | stmts2.go:11:13:11:17 | Before call to gen |
 | stmts2.go:11:13:11:15 | After gen | stmts2.go:11:13:11:17 | call to gen |
 | stmts2.go:11:13:11:15 | Before gen | stmts2.go:11:13:11:15 | gen |
@@ -2654,8 +2642,7 @@
 | stmts2.go:18:7:18:7 | After x | stmts2.go:18:10:18:10 | Before _ |
 | stmts2.go:18:7:18:7 | Before x | stmts2.go:18:7:18:7 | x |
 | stmts2.go:18:7:18:7 | x | stmts2.go:18:7:18:7 | After x |
-| stmts2.go:18:7:18:18 | assign:0 ... := ... | stmts2.go:18:7:18:18 | extract:1 ... := ... |
-| stmts2.go:18:7:18:18 | extract:0 ... := ... | stmts2.go:18:7:18:18 | assign:0 ... := ... |
+| stmts2.go:18:7:18:18 | extract:0 ... := ... | stmts2.go:18:7:18:18 | extract:1 ... := ... |
 | stmts2.go:18:7:18:18 | extract:1 ... := ... | stmts2.go:19:3:19:10 | Before return statement |
 | stmts2.go:18:10:18:10 | After _ | stmts2.go:18:7:18:18 | extract:0 ... := ... |
 | stmts2.go:18:10:18:10 | Before _ | stmts2.go:18:10:18:10 | _ |
@@ -2673,9 +2660,8 @@
 | stmts2.go:20:7:20:7 | After _ | stmts2.go:20:10:20:10 | Before y |
 | stmts2.go:20:7:20:7 | Before _ | stmts2.go:20:7:20:7 | _ |
 | stmts2.go:20:7:20:7 | _ | stmts2.go:20:7:20:7 | After _ |
-| stmts2.go:20:7:20:18 | assign:1 ... := ... | stmts2.go:21:3:23:3 | if statement |
 | stmts2.go:20:7:20:18 | extract:0 ... := ... | stmts2.go:20:7:20:18 | extract:1 ... := ... |
-| stmts2.go:20:7:20:18 | extract:1 ... := ... | stmts2.go:20:7:20:18 | assign:1 ... := ... |
+| stmts2.go:20:7:20:18 | extract:1 ... := ... | stmts2.go:21:3:23:3 | if statement |
 | stmts2.go:20:10:20:10 | After y | stmts2.go:20:7:20:18 | extract:0 ... := ... |
 | stmts2.go:20:10:20:10 | Before y | stmts2.go:20:10:20:10 | y |
 | stmts2.go:20:10:20:10 | y | stmts2.go:20:10:20:10 | After y |
@@ -2725,8 +2711,7 @@
 | stmts2.go:30:20:34:1 | block statement | stmts2.go:31:2:31:14 | ... := ... |
 | stmts2.go:31:2:31:14 | ... := ... | stmts2.go:31:10:31:14 | Before call to gen |
 | stmts2.go:31:2:31:14 | After ... := ... | stmts2.go:32:2:32:17 | declaration statement |
-| stmts2.go:31:2:31:14 | assign:0 ... := ... | stmts2.go:31:2:31:14 | extract:1 ... := ... |
-| stmts2.go:31:2:31:14 | extract:0 ... := ... | stmts2.go:31:2:31:14 | assign:0 ... := ... |
+| stmts2.go:31:2:31:14 | extract:0 ... := ... | stmts2.go:31:2:31:14 | extract:1 ... := ... |
 | stmts2.go:31:2:31:14 | extract:1 ... := ... | stmts2.go:31:2:31:14 | After ... := ... |
 | stmts2.go:31:10:31:12 | After gen | stmts2.go:31:10:31:14 | call to gen |
 | stmts2.go:31:10:31:12 | Before gen | stmts2.go:31:10:31:12 | gen |
@@ -2740,8 +2725,7 @@
 | stmts2.go:32:2:32:17 | declaration statement | stmts2.go:32:2:32:17 | variable declaration |
 | stmts2.go:32:2:32:17 | variable declaration | stmts2.go:32:6:32:17 | value declaration specifier |
 | stmts2.go:32:6:32:17 | After value declaration specifier | stmts2.go:32:2:32:17 | After variable declaration |
-| stmts2.go:32:6:32:17 | assign:0 value declaration specifier | stmts2.go:32:6:32:17 | extract:1 value declaration specifier |
-| stmts2.go:32:6:32:17 | extract:0 value declaration specifier | stmts2.go:32:6:32:17 | assign:0 value declaration specifier |
+| stmts2.go:32:6:32:17 | extract:0 value declaration specifier | stmts2.go:32:6:32:17 | extract:1 value declaration specifier |
 | stmts2.go:32:6:32:17 | extract:1 value declaration specifier | stmts2.go:32:6:32:17 | After value declaration specifier |
 | stmts2.go:32:6:32:17 | value declaration specifier | stmts2.go:32:13:32:17 | Before call to gen |
 | stmts2.go:32:13:32:15 | After gen | stmts2.go:32:13:32:17 | call to gen |
@@ -3479,10 +3463,8 @@
 | stmts.go:53:7:53:10 | Before index expression | stmts.go:53:7:53:7 | Before a |
 | stmts.go:53:7:53:10 | index expression | stmts.go:46:1:62:1 | Exceptional Exit |
 | stmts.go:53:7:53:10 | index expression | stmts.go:53:7:53:10 | After index expression |
-| stmts.go:53:7:53:21 | assign:0 ... = ... | stmts.go:53:7:53:21 | extract:1 ... = ... |
-| stmts.go:53:7:53:21 | assign:1 ... = ... | stmts.go:54:3:54:16 | expression statement |
-| stmts.go:53:7:53:21 | extract:0 ... = ... | stmts.go:53:7:53:21 | assign:0 ... = ... |
-| stmts.go:53:7:53:21 | extract:1 ... = ... | stmts.go:53:7:53:21 | assign:1 ... = ... |
+| stmts.go:53:7:53:21 | extract:0 ... = ... | stmts.go:53:7:53:21 | extract:1 ... = ... |
+| stmts.go:53:7:53:21 | extract:1 ... = ... | stmts.go:54:3:54:16 | expression statement |
 | stmts.go:53:9:53:9 | 0 | stmts.go:53:9:53:9 | After 0 |
 | stmts.go:53:9:53:9 | After 0 | stmts.go:53:7:53:10 | index expression |
 | stmts.go:53:9:53:9 | Before 0 | stmts.go:53:9:53:9 | 0 |
@@ -4014,8 +3996,7 @@
 | stmts.go:146:2:151:2 | After range statement | stmts.go:153:2:155:2 | range statement |
 | stmts.go:146:2:151:2 | [LoopHeader] range statement | stmts.go:146:2:151:2 | After range statement |
 | stmts.go:146:2:151:2 | [LoopHeader] range statement | stmts.go:146:2:151:2 | range element |
-| stmts.go:146:2:151:2 | assign:0 range element | stmts.go:146:2:151:2 | After range element |
-| stmts.go:146:2:151:2 | extract:0 range element | stmts.go:146:2:151:2 | assign:0 range element |
+| stmts.go:146:2:151:2 | extract:0 range element | stmts.go:146:2:151:2 | After range element |
 | stmts.go:146:2:151:2 | next range element | stmts.go:146:2:151:2 | extract:0 range element |
 | stmts.go:146:2:151:2 | range element | stmts.go:146:2:151:2 | next range element |
 | stmts.go:146:2:151:2 | range statement | stmts.go:146:17:146:18 | Before xs |
@@ -4058,10 +4039,8 @@
 | stmts.go:153:2:155:2 | After range statement | stmts.go:157:2:158:2 | range statement |
 | stmts.go:153:2:155:2 | [LoopHeader] range statement | stmts.go:153:2:155:2 | After range statement |
 | stmts.go:153:2:155:2 | [LoopHeader] range statement | stmts.go:153:2:155:2 | range element |
-| stmts.go:153:2:155:2 | assign:0 range element | stmts.go:153:2:155:2 | extract:1 range element |
-| stmts.go:153:2:155:2 | assign:1 range element | stmts.go:153:2:155:2 | After range element |
-| stmts.go:153:2:155:2 | extract:0 range element | stmts.go:153:2:155:2 | assign:0 range element |
-| stmts.go:153:2:155:2 | extract:1 range element | stmts.go:153:2:155:2 | assign:1 range element |
+| stmts.go:153:2:155:2 | extract:0 range element | stmts.go:153:2:155:2 | extract:1 range element |
+| stmts.go:153:2:155:2 | extract:1 range element | stmts.go:153:2:155:2 | After range element |
 | stmts.go:153:2:155:2 | next range element | stmts.go:153:2:155:2 | extract:0 range element |
 | stmts.go:153:2:155:2 | range element | stmts.go:153:2:155:2 | next range element |
 | stmts.go:153:2:155:2 | range statement | stmts.go:153:20:153:21 | Before xs |
