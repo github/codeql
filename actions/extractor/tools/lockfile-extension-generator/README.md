@@ -1,0 +1,75 @@
+# lockfile-extension-generator
+
+Turns a repository's GitHub Actions lockfile (`.github/workflows/actions.lock`)
+into a CodeQL data extension that populates the `pinnedByLockfileDataModel`
+extensible predicate consumed by the `actions/unpinned-tag`
+(`js/actions/actions-workflow-unpinned-tag`) query.
+
+## Why
+
+`actions/unpinned-tag` flags `uses:` references pinned to a mutable tag (e.g.
+`actions/checkout@v4`) rather than an immutable commit SHA. When a repository
+maintains an Actions lockfile, every such tag is already bound to a verified
+commit SHA at run time by the lockfile — which is exactly the pinning evidence
+the query otherwise lacks. Feeding the lockfile's bindings into
+`pinnedByLockfileDataModel` lets the query suppress those references while still
+flagging genuinely unpinned ones.
+
+The generator is deliberately **transport-agnostic**. It parses the lockfile
+with the canonical parser at `github.com/github/actions-lockfile/go` and emits
+the `[workflow_path, nwo, ref]` rows the query already matches on. Today those
+rows ship as a data-extension model pack applied at analysis time via
+`--model-packs` (the same mechanism as `codeql/immutable-actions-list`). The
+same parsing core can later feed an extractor-native relation without changing
+the query.
+
+## Ref normalization
+
+A lockfile records the *resolved* ref for each dependency — the CLI prefers a
+full semver tag such as `v4.3.1`. A workflow author, however, usually writes a
+shorter, mutable tag such as `v4` or `v4.3` in `uses:`, and the query matches on
+the ref exactly as written. For every full-semver resolved ref the generator
+therefore also emits its major.minor (`v4.3`) and major-only (`v4`) forms, so a
+`uses: owner/action@v4` is recognized as pinned by a lockfile entry that
+resolved to `v4.3.1`. Partial tags, pre-release tags, branches, and SHAs pass
+through unchanged.
+
+## Usage
+
+```
+lockfile-extension-generator <source-root> [output-file]
+```
+
+- `<source-root>`: repository root to scan; the lockfile is read from
+  `<source-root>/.github/workflows/actions.lock`.
+- `[output-file]`: destination for the extension YAML; defaults to stdout.
+
+If the repository has no lockfile the generator exits successfully without
+writing anything, so it is safe to run unconditionally.
+
+## Building and testing locally
+
+`github.com/github/actions-lockfile` is not yet public, so the module cannot be
+fetched by the module proxy. Point the `replace` directive in `go.mod` at a
+local clone before building or testing:
+
+```
+go mod edit -replace github.com/github/actions-lockfile/go=/path/to/actions-lockfile/go
+go test ./...
+```
+
+Remove the `replace` directive once actions-lockfile is published.
+
+## End-to-end check
+
+```
+# A repo whose workflow writes `uses: owner/action@v4` while the lockfile
+# resolves it to v4.3.1:
+lockfile-extension-generator /path/to/repo /tmp/pack/ext/pinned.yml
+codeql database analyze <db> \
+  codeql/actions-queries:Security/CWE-829/UnpinnedActionsTag.ql \
+  --additional-packs=/tmp/pack --model-packs=<your-pack-name>
+```
+
+The lockfile-pinned reference is suppressed; references not covered by the
+lockfile are still reported.
