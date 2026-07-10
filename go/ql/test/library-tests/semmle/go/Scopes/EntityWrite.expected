@@ -1,4 +1,4 @@
-| main.go:6:2:6:2 | x | main.go:24:2:24:9 | increment statement |
+| main.go:6:2:6:2 | x | main.go:24:2:24:9 | compound-rhs increment statement |
 | main.go:13:7:13:10 | recv | main.go:13:27:15:1 | param-init:-1 block statement |
 | main.go:17:10:17:10 | x | main.go:17:32:21:1 | param-init:0 block statement |
 | main.go:17:26:17:26 | y | main.go:17:32:21:1 | param-init:1 block statement |
