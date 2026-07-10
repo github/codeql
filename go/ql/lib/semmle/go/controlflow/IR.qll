@@ -201,11 +201,6 @@ module IR {
       or
       this instanceof ConditionGuardInstruction and result = "condition guard"
       or
-      this instanceof IncDecInstruction and result = "increment/decrement"
-      or
-      this instanceof EvalIncDecRhsInstruction and
-      result = "right-hand side of increment/decrement"
-      or
       this instanceof ReturnInstruction and result = "return"
       or
       this instanceof WriteResultInstruction and result = "result write"
@@ -686,23 +681,36 @@ module IR {
   }
 
   /**
-   * An instruction that computes the (implicit) right-hand side of a compound assignment,
-   * such as the `x + y` in `x += y`, and writes the resulting value to the assignment's
-   * left-hand side.
+   * An instruction that computes the (implicit) right-hand side of a compound
+   * assignment (the `x + y` in `x += y`) or an increment/decrement (the
+   * `x + 1` in `x++`), and writes the resulting value to the left-hand side.
    */
   class EvalCompoundAssignRhsInstruction extends WriteInstruction {
-    CompoundAssignStmt assgn;
+    AstNode s;
 
-    EvalCompoundAssignRhsInstruction() { this.isAdditional(assgn, "compound-rhs") }
+    EvalCompoundAssignRhsInstruction() {
+      this.isAdditional(s, "compound-rhs") and
+      (s instanceof CompoundAssignStmt or s instanceof IncDecStmt)
+    }
 
-    /** Gets the corresponding compound assignment statement. */
-    CompoundAssignStmt getAssignment() { result = assgn }
+    /** Gets the corresponding compound assignment statement, if it is one. */
+    CompoundAssignStmt getAssignment() { result = s }
+
+    /**
+     * Gets the corresponding compound assignment (`x += y`) or increment/decrement
+     * (`x++`, `x--`) statement.
+     */
+    AstNode getStmt() { result = s }
 
     override Instruction getRhs() { result = this }
 
-    override Type getResultType() { result = assgn.getRhs().getType() }
+    override Type getResultType() {
+      result = s.(CompoundAssignStmt).getRhs().getType()
+      or
+      result = s.(IncDecStmt).getOperand().getType()
+    }
 
-    override ControlFlow::Root getRoot() { result.isRootOf(assgn) }
+    override ControlFlow::Root getRoot() { result.isRootOf(s) }
   }
 
   /** An instruction extracting a component of a tuple value. */
@@ -890,36 +898,6 @@ module IR {
     GoInstruction() { this.isIn(go) }
 
     override ControlFlow::Root getRoot() { result.isRootOf(go) }
-  }
-
-  /** An instruction that corresponds to an increment or decrement statement. */
-  class IncDecInstruction extends WriteInstruction {
-    IncDecStmt ids;
-
-    IncDecInstruction() { this.isIn(ids) }
-
-    override Instruction getRhs() {
-      result.(EvalIncDecRhsInstruction).isAdditional(ids, "incdec-rhs")
-    }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(ids) }
-  }
-
-  /**
-   * An instruction that computes the (implicit) right-hand side of an increment or
-   * decrement statement.
-   */
-  class EvalIncDecRhsInstruction extends Instruction {
-    IncDecStmt ids;
-
-    EvalIncDecRhsInstruction() { this.isAdditional(ids, "incdec-rhs") }
-
-    /** Gets the corresponding increment or decrement statement. */
-    IncDecStmt getStmt() { result = ids }
-
-    override Type getResultType() { result = ids.getOperand().getType() }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(ids) }
   }
 
   /** An instruction corresponding to a return from a function. */
@@ -1125,10 +1103,12 @@ module IR {
         )
       )
       or
-      exists(IncDecStmt ids | write.isIn(ids) | lhs = ids.getOperand().stripParens())
-      or
       exists(CompoundAssignStmt ca | write.isAdditional(ca, "compound-rhs") |
         lhs = ca.getLhs().stripParens()
+      )
+      or
+      exists(IncDecStmt ids | write.isAdditional(ids, "compound-rhs") |
+        lhs = ids.getOperand().stripParens()
       )
       or
       exists(FuncDef fd, int idx |

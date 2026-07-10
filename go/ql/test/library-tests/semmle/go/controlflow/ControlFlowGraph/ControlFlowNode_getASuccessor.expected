@@ -1284,7 +1284,7 @@
 | exprs.go:49:30:54:1 | result-read:0 block statement | exprs.go:49:1:54:1 | Normal Exit |
 | exprs.go:49:30:54:1 | zero-init:0 block statement | exprs.go:50:2:52:2 | for statement |
 | exprs.go:50:2:52:2 | After for statement | exprs.go:53:2:53:7 | Before return statement |
-| exprs.go:50:2:52:2 | [LoopHeader] for statement | exprs.go:50:27:50:29 | Before increment statement |
+| exprs.go:50:2:52:2 | [LoopHeader] for statement | exprs.go:50:27:50:29 | increment statement |
 | exprs.go:50:2:52:2 | for statement | exprs.go:50:6:50:11 | ... := ... |
 | exprs.go:50:6:50:11 | ... := ... | exprs.go:50:11:50:11 | Before 0 |
 | exprs.go:50:6:50:11 | After ... := ... | exprs.go:50:14:50:24 | Before ...<... |
@@ -1309,13 +1309,12 @@
 | exprs.go:50:22:50:23 | After xs | exprs.go:50:18:50:24 | call to len |
 | exprs.go:50:22:50:23 | Before xs | exprs.go:50:22:50:23 | xs |
 | exprs.go:50:22:50:23 | xs | exprs.go:50:22:50:23 | After xs |
-| exprs.go:50:27:50:27 | After i | exprs.go:50:27:50:29 | incdec-rhs increment statement |
+| exprs.go:50:27:50:27 | After i | exprs.go:50:27:50:29 | compound-rhs increment statement |
 | exprs.go:50:27:50:27 | Before i | exprs.go:50:27:50:27 | i |
 | exprs.go:50:27:50:27 | i | exprs.go:50:27:50:27 | After i |
 | exprs.go:50:27:50:29 | After increment statement | exprs.go:50:14:50:24 | Before ...<... |
-| exprs.go:50:27:50:29 | Before increment statement | exprs.go:50:27:50:27 | Before i |
-| exprs.go:50:27:50:29 | incdec-rhs increment statement | exprs.go:50:27:50:29 | increment statement |
-| exprs.go:50:27:50:29 | increment statement | exprs.go:50:27:50:29 | After increment statement |
+| exprs.go:50:27:50:29 | compound-rhs increment statement | exprs.go:50:27:50:29 | After increment statement |
+| exprs.go:50:27:50:29 | increment statement | exprs.go:50:27:50:27 | Before i |
 | exprs.go:50:31:52:2 | After block statement | exprs.go:50:2:52:2 | [LoopHeader] for statement |
 | exprs.go:50:31:52:2 | block statement | exprs.go:51:3:51:14 | ... += ... |
 | exprs.go:51:3:51:5 | After res | exprs.go:51:10:51:14 | Before index expression |
@@ -2240,7 +2239,7 @@
 | main.go:73:7:73:7 | After 1 | main.go:73:2:73:7 | assign:0 ... := ... |
 | main.go:73:7:73:7 | Before 1 | main.go:73:7:73:7 | 1 |
 | main.go:74:2:79:2 | After for statement | main.go:80:2:80:13 | expression statement |
-| main.go:74:2:79:2 | [LoopHeader] for statement | main.go:74:16:74:18 | Before increment statement |
+| main.go:74:2:79:2 | [LoopHeader] for statement | main.go:74:16:74:18 | increment statement |
 | main.go:74:2:79:2 | for statement | main.go:74:6:74:11 | ... := ... |
 | main.go:74:6:74:11 | ... := ... | main.go:74:11:74:11 | Before 0 |
 | main.go:74:6:74:11 | After ... := ... | main.go:74:20:79:2 | block statement |
@@ -2248,13 +2247,12 @@
 | main.go:74:11:74:11 | 0 | main.go:74:11:74:11 | After 0 |
 | main.go:74:11:74:11 | After 0 | main.go:74:6:74:11 | assign:0 ... := ... |
 | main.go:74:11:74:11 | Before 0 | main.go:74:11:74:11 | 0 |
-| main.go:74:16:74:16 | After i | main.go:74:16:74:18 | incdec-rhs increment statement |
+| main.go:74:16:74:16 | After i | main.go:74:16:74:18 | compound-rhs increment statement |
 | main.go:74:16:74:16 | Before i | main.go:74:16:74:16 | i |
 | main.go:74:16:74:16 | i | main.go:74:16:74:16 | After i |
 | main.go:74:16:74:18 | After increment statement | main.go:74:20:79:2 | block statement |
-| main.go:74:16:74:18 | Before increment statement | main.go:74:16:74:16 | Before i |
-| main.go:74:16:74:18 | incdec-rhs increment statement | main.go:74:16:74:18 | increment statement |
-| main.go:74:16:74:18 | increment statement | main.go:74:16:74:18 | After increment statement |
+| main.go:74:16:74:18 | compound-rhs increment statement | main.go:74:16:74:18 | After increment statement |
+| main.go:74:16:74:18 | increment statement | main.go:74:16:74:16 | Before i |
 | main.go:74:20:79:2 | After block statement | main.go:74:2:79:2 | [LoopHeader] for statement |
 | main.go:74:20:79:2 | block statement | main.go:75:3:77:3 | if statement |
 | main.go:75:3:77:3 | After if statement | main.go:78:3:78:7 | ... = ... |
@@ -2296,7 +2294,7 @@
 | main.go:82:7:82:7 | After 1 | main.go:82:2:82:7 | assign:0 ... := ... |
 | main.go:82:7:82:7 | Before 1 | main.go:82:7:82:7 | 1 |
 | main.go:83:2:88:2 | After for statement | main.go:89:2:89:13 | expression statement |
-| main.go:83:2:88:2 | [LoopHeader] for statement | main.go:83:16:83:18 | Before increment statement |
+| main.go:83:2:88:2 | [LoopHeader] for statement | main.go:83:16:83:18 | increment statement |
 | main.go:83:2:88:2 | for statement | main.go:83:6:83:11 | ... := ... |
 | main.go:83:6:83:11 | ... := ... | main.go:83:11:83:11 | Before 0 |
 | main.go:83:6:83:11 | After ... := ... | main.go:83:20:88:2 | block statement |
@@ -2304,13 +2302,12 @@
 | main.go:83:11:83:11 | 0 | main.go:83:11:83:11 | After 0 |
 | main.go:83:11:83:11 | After 0 | main.go:83:6:83:11 | assign:0 ... := ... |
 | main.go:83:11:83:11 | Before 0 | main.go:83:11:83:11 | 0 |
-| main.go:83:16:83:16 | After i | main.go:83:16:83:18 | incdec-rhs increment statement |
+| main.go:83:16:83:16 | After i | main.go:83:16:83:18 | compound-rhs increment statement |
 | main.go:83:16:83:16 | Before i | main.go:83:16:83:16 | i |
 | main.go:83:16:83:16 | i | main.go:83:16:83:16 | After i |
 | main.go:83:16:83:18 | After increment statement | main.go:83:20:88:2 | block statement |
-| main.go:83:16:83:18 | Before increment statement | main.go:83:16:83:16 | Before i |
-| main.go:83:16:83:18 | incdec-rhs increment statement | main.go:83:16:83:18 | increment statement |
-| main.go:83:16:83:18 | increment statement | main.go:83:16:83:18 | After increment statement |
+| main.go:83:16:83:18 | compound-rhs increment statement | main.go:83:16:83:18 | After increment statement |
+| main.go:83:16:83:18 | increment statement | main.go:83:16:83:16 | Before i |
 | main.go:83:20:88:2 | After block statement | main.go:83:2:88:2 | [LoopHeader] for statement |
 | main.go:83:20:88:2 | block statement | main.go:84:3:84:7 | ... = ... |
 | main.go:84:3:84:7 | ... = ... | main.go:84:7:84:7 | Before 2 |
@@ -3298,7 +3295,7 @@
 | stmts.go:23:11:37:2 | After block statement | stmts.go:23:2:37:2 | [LoopHeader] for statement |
 | stmts.go:23:11:37:2 | block statement | stmts.go:24:3:36:3 | for statement |
 | stmts.go:24:3:36:3 | After for statement | stmts.go:23:11:37:2 | After block statement |
-| stmts.go:24:3:36:3 | [LoopHeader] for statement | stmts.go:24:23:24:25 | Before increment statement |
+| stmts.go:24:3:36:3 | [LoopHeader] for statement | stmts.go:24:23:24:25 | increment statement |
 | stmts.go:24:3:36:3 | for statement | stmts.go:24:7:24:12 | ... := ... |
 | stmts.go:24:7:24:12 | ... := ... | stmts.go:24:12:24:12 | Before 0 |
 | stmts.go:24:7:24:12 | After ... := ... | stmts.go:24:15:24:20 | Before ...<... |
@@ -3317,13 +3314,12 @@
 | stmts.go:24:19:24:20 | 10 | stmts.go:24:19:24:20 | After 10 |
 | stmts.go:24:19:24:20 | After 10 | stmts.go:24:15:24:20 | ...<... |
 | stmts.go:24:19:24:20 | Before 10 | stmts.go:24:19:24:20 | 10 |
-| stmts.go:24:23:24:23 | After i | stmts.go:24:23:24:25 | incdec-rhs increment statement |
+| stmts.go:24:23:24:23 | After i | stmts.go:24:23:24:25 | compound-rhs increment statement |
 | stmts.go:24:23:24:23 | Before i | stmts.go:24:23:24:23 | i |
 | stmts.go:24:23:24:23 | i | stmts.go:24:23:24:23 | After i |
 | stmts.go:24:23:24:25 | After increment statement | stmts.go:24:15:24:20 | Before ...<... |
-| stmts.go:24:23:24:25 | Before increment statement | stmts.go:24:23:24:23 | Before i |
-| stmts.go:24:23:24:25 | incdec-rhs increment statement | stmts.go:24:23:24:25 | increment statement |
-| stmts.go:24:23:24:25 | increment statement | stmts.go:24:23:24:25 | After increment statement |
+| stmts.go:24:23:24:25 | compound-rhs increment statement | stmts.go:24:23:24:25 | After increment statement |
+| stmts.go:24:23:24:25 | increment statement | stmts.go:24:23:24:23 | Before i |
 | stmts.go:24:27:36:3 | block statement | stmts.go:25:4:35:4 | if statement |
 | stmts.go:25:4:35:4 | if statement | stmts.go:25:7:25:16 | ... := ... |
 | stmts.go:25:7:25:16 | ... := ... | stmts.go:25:12:25:16 | Before ...-... |
