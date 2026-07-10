@@ -726,8 +726,6 @@ module IR {
           implicitInitInstruction(any(ValueEntity v | spec.getNameExpr(i) = v.getDeclaration()))
       )
       or
-      result.(EvalCompoundAssignRhsInstruction).isAdditional(assgn, "compound-rhs")
-      or
       result.(ExtractTupleElementInstruction).isAdditional(assgn, "extract:" + i.toString())
     }
 
@@ -735,15 +733,19 @@ module IR {
   }
 
   /**
-   * An instruction that computes the (implicit) right-hand side of a compound assignment.
+   * An instruction that computes the (implicit) right-hand side of a compound assignment,
+   * such as the `x + y` in `x += y`, and writes the resulting value to the assignment's
+   * left-hand side.
    */
-  class EvalCompoundAssignRhsInstruction extends Instruction {
+  class EvalCompoundAssignRhsInstruction extends WriteInstruction {
     CompoundAssignStmt assgn;
 
     EvalCompoundAssignRhsInstruction() { this.isAdditional(assgn, "compound-rhs") }
 
     /** Gets the corresponding compound assignment statement. */
     CompoundAssignStmt getAssignment() { result = assgn }
+
+    override Instruction getRhs() { result = this }
 
     override Type getResultType() { result = assgn.getRhs().getType() }
 
@@ -1227,6 +1229,10 @@ module IR {
       )
       or
       exists(IncDecStmt ids | write.isIn(ids) | lhs = ids.getOperand().stripParens())
+      or
+      exists(CompoundAssignStmt ca | write.isAdditional(ca, "compound-rhs") |
+        lhs = ca.getLhs().stripParens()
+      )
       or
       exists(FuncDef fd, int idx |
         write.isAdditional(fd.getBody(), "param-init:" + idx.toString()) and

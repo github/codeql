@@ -502,6 +502,11 @@ module GoCfg {
         exists(int i |
           (
             notBlankIdent(n.(Go::Assignment).getLhs(i)) and
+            // A compound assignment (`x += y`) folds its write into the
+            // `compound-rhs` binary-operation instruction rather than emitting a
+            // separate `assign:i` write node (see
+            // `IR::EvalCompoundAssignRhsInstruction`).
+            not n instanceof Go::CompoundAssignStmt and
             // The `y := x.(type)` test statement of a type switch is transparent
             // (see `skipCfg`): the per-case implicit variables are written at the
             // case match nodes (see `IR::TypeSwitchImplicitVariableInstruction`),
@@ -1139,7 +1144,10 @@ module GoCfg {
           )
           or
           (
-            notBlankIdent(assgn.(Go::Assignment).getLhs(j))
+            notBlankIdent(assgn.(Go::Assignment).getLhs(j)) and
+            // Compound assignments fold their write into `compound-rhs` (ord -1)
+            // above, so they emit no separate `assign:j` node.
+            not assgn instanceof Go::CompoundAssignStmt
             or
             notBlankIdent(assgn.(Go::ValueSpec).getNameExpr(j))
             or

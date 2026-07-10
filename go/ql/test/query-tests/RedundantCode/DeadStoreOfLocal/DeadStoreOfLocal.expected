@@ -13,13 +13,13 @@
 | testdata.go:134:3:134:17 | assign:0 ... = ... | This definition of x is never used. |
 | testdata.go:143:3:143:17 | assign:0 ... = ... | This definition of x is never used. |
 | testdata.go:164:3:164:17 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:172:3:172:18 | assign:0 ... += ... | This definition of x is never used. |
+| testdata.go:172:3:172:18 | compound-rhs ... += ... | This definition of x is never used. |
 | testdata.go:180:3:180:5 | increment statement | This definition of x is never used. |
 | testdata.go:201:2:201:24 | assign:0 ... = ... | This definition of x is never used. |
 | testdata.go:262:2:262:16 | assign:0 ... = ... | This definition of x is never used. |
 | testdata.go:268:2:268:16 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:309:2:309:7 | assign:0 ... /= ... | This definition of a is never used. |
-| testdata.go:321:2:321:7 | assign:0 ... %= ... | This definition of a is never used. |
+| testdata.go:309:2:309:7 | compound-rhs ... /= ... | This definition of a is never used. |
+| testdata.go:321:2:321:7 | compound-rhs ... %= ... | This definition of a is never used. |
 | testdata.go:387:3:387:17 | assign:0 ... = ... | This definition of x is never used. |
 | testdata.go:432:3:432:17 | assign:0 ... = ... | This definition of x is never used. |
 | testdata.go:434:3:434:17 | assign:0 ... = ... | This definition of x is never used. |
