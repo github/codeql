@@ -184,8 +184,6 @@ module IR {
       or
       this instanceof InitLiteralComponentInstruction and result = "element init"
       or
-      this instanceof ImplicitLiteralElementIndexInstruction and result = "element index"
-      or
       this instanceof AssignInstruction and result = "assignment"
       or
       this instanceof EvalCompoundAssignRhsInstruction and
@@ -599,7 +597,11 @@ module IR {
     Instruction getIndex() {
       result = evalExprInstruction(elt.(KeyValueExpr).getKey())
       or
-      result.(ImplicitLiteralElementIndexInstruction).isAdditional(elt, "lit-index")
+      // A positional array/slice element has an implicit index. Array/slice
+      // content flow is index-insensitive, so rather than materialise a
+      // separate index node the element-init instruction acts as its own
+      // (opaque) index.
+      not elt instanceof KeyValueExpr and result = this
     }
   }
 
@@ -646,54 +648,6 @@ module IR {
     override predicate writesElement(Instruction base, Instruction index) {
       this.getBase() = base and this.getIndex() = index
     }
-  }
-
-  private predicate noExplicitKeys(CompositeLit lit) {
-    not lit.getAnElement() instanceof KeyValueExpr
-  }
-
-  private int getElementIndex(CompositeLit lit, int i) {
-    (
-      lit.getType().getUnderlyingType() instanceof ArrayType or
-      lit.getType().getUnderlyingType() instanceof SliceType
-    ) and
-    exists(Expr elt | elt = lit.getElement(i) |
-      noExplicitKeys(lit) and result = i
-      or
-      result = elt.(KeyValueExpr).getKey().getIntValue()
-      or
-      not elt instanceof KeyValueExpr and
-      (
-        i = 0 and result = 0
-        or
-        result = getElementIndex(lit, i - 1) + 1
-      )
-    )
-  }
-
-  /**
-   * An IR instruction computing the implicit index of an element in an array or slice literal.
-   */
-  class ImplicitLiteralElementIndexInstruction extends Instruction {
-    Expr elt;
-
-    ImplicitLiteralElementIndexInstruction() { this.isAdditional(elt, "lit-index") }
-
-    override Type getResultType() { result instanceof IntType }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(elt) }
-
-    override int getIntValue() {
-      exists(CompositeLit lit, int i | elt = lit.getElement(i) | result = getElementIndex(lit, i))
-    }
-
-    override string getStringValue() { none() }
-
-    override string getExactValue() { result = this.getIntValue().toString() }
-
-    override predicate isPlatformIndependentConstant() { any() }
-
-    override predicate isConst() { any() }
   }
 
   /**
