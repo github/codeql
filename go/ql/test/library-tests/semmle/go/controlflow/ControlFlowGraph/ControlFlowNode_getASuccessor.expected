@@ -969,9 +969,8 @@
 | exprs.go:16:17:16:23 | After struct3 | exprs.go:16:17:16:25 | selection of x |
 | exprs.go:16:17:16:23 | Before struct3 | exprs.go:16:17:16:23 | struct3 |
 | exprs.go:16:17:16:23 | struct3 | exprs.go:16:17:16:23 | After struct3 |
-| exprs.go:16:17:16:25 | After selection of x | exprs.go:16:17:16:25 | lit-index selection of x |
+| exprs.go:16:17:16:25 | After selection of x | exprs.go:16:17:16:25 | lit-init selection of x |
 | exprs.go:16:17:16:25 | Before selection of x | exprs.go:16:17:16:23 | Before struct3 |
-| exprs.go:16:17:16:25 | lit-index selection of x | exprs.go:16:17:16:25 | lit-init selection of x |
 | exprs.go:16:17:16:25 | lit-init selection of x | exprs.go:16:10:16:26 | After array literal |
 | exprs.go:16:17:16:25 | selection of x | exprs.go:16:17:16:25 | After selection of x |
 | exprs.go:17:2:17:40 | ... := ... | exprs.go:17:10:17:40 | Before array literal |
@@ -983,9 +982,8 @@
 | exprs.go:17:19:17:25 | After struct3 | exprs.go:17:19:17:27 | selection of x |
 | exprs.go:17:19:17:25 | Before struct3 | exprs.go:17:19:17:25 | struct3 |
 | exprs.go:17:19:17:25 | struct3 | exprs.go:17:19:17:25 | After struct3 |
-| exprs.go:17:19:17:27 | After selection of x | exprs.go:17:19:17:27 | lit-index selection of x |
+| exprs.go:17:19:17:27 | After selection of x | exprs.go:17:19:17:27 | lit-init selection of x |
 | exprs.go:17:19:17:27 | Before selection of x | exprs.go:17:19:17:25 | Before struct3 |
-| exprs.go:17:19:17:27 | lit-index selection of x | exprs.go:17:19:17:27 | lit-init selection of x |
 | exprs.go:17:19:17:27 | lit-init selection of x | exprs.go:17:30:17:39 | Before key-value pair |
 | exprs.go:17:19:17:27 | selection of x | exprs.go:17:19:17:27 | After selection of x |
 | exprs.go:17:30:17:30 | 2 | exprs.go:17:30:17:30 | After 2 |
@@ -1011,14 +1009,12 @@
 | exprs.go:18:9:18:22 | After slice literal | exprs.go:18:2:18:22 | assign:0 ... := ... |
 | exprs.go:18:9:18:22 | Before slice literal | exprs.go:18:9:18:22 | slice literal |
 | exprs.go:18:9:18:22 | slice literal | exprs.go:18:18:18:18 | Before s |
-| exprs.go:18:18:18:18 | After s | exprs.go:18:18:18:18 | lit-index s |
+| exprs.go:18:18:18:18 | After s | exprs.go:18:18:18:18 | lit-init s |
 | exprs.go:18:18:18:18 | Before s | exprs.go:18:18:18:18 | s |
-| exprs.go:18:18:18:18 | lit-index s | exprs.go:18:18:18:18 | lit-init s |
 | exprs.go:18:18:18:18 | lit-init s | exprs.go:18:21:18:21 | Before s |
 | exprs.go:18:18:18:18 | s | exprs.go:18:18:18:18 | After s |
-| exprs.go:18:21:18:21 | After s | exprs.go:18:21:18:21 | lit-index s |
+| exprs.go:18:21:18:21 | After s | exprs.go:18:21:18:21 | lit-init s |
 | exprs.go:18:21:18:21 | Before s | exprs.go:18:21:18:21 | s |
-| exprs.go:18:21:18:21 | lit-index s | exprs.go:18:21:18:21 | lit-init s |
 | exprs.go:18:21:18:21 | lit-init s | exprs.go:18:9:18:22 | After slice literal |
 | exprs.go:18:21:18:21 | s | exprs.go:18:21:18:21 | After s |
 | exprs.go:19:2:19:38 | ... := ... | exprs.go:19:8:19:38 | Before map literal |
@@ -1373,19 +1369,16 @@
 | exprs.go:61:9:61:22 | Before slice literal | exprs.go:61:9:61:22 | slice literal |
 | exprs.go:61:9:61:22 | slice literal | exprs.go:61:15:61:15 | Before 1 |
 | exprs.go:61:15:61:15 | 1 | exprs.go:61:15:61:15 | After 1 |
-| exprs.go:61:15:61:15 | After 1 | exprs.go:61:15:61:15 | lit-index 1 |
+| exprs.go:61:15:61:15 | After 1 | exprs.go:61:15:61:15 | lit-init 1 |
 | exprs.go:61:15:61:15 | Before 1 | exprs.go:61:15:61:15 | 1 |
-| exprs.go:61:15:61:15 | lit-index 1 | exprs.go:61:15:61:15 | lit-init 1 |
 | exprs.go:61:15:61:15 | lit-init 1 | exprs.go:61:18:61:18 | Before 2 |
 | exprs.go:61:18:61:18 | 2 | exprs.go:61:18:61:18 | After 2 |
-| exprs.go:61:18:61:18 | After 2 | exprs.go:61:18:61:18 | lit-index 2 |
+| exprs.go:61:18:61:18 | After 2 | exprs.go:61:18:61:18 | lit-init 2 |
 | exprs.go:61:18:61:18 | Before 2 | exprs.go:61:18:61:18 | 2 |
-| exprs.go:61:18:61:18 | lit-index 2 | exprs.go:61:18:61:18 | lit-init 2 |
 | exprs.go:61:18:61:18 | lit-init 2 | exprs.go:61:21:61:21 | Before 3 |
 | exprs.go:61:21:61:21 | 3 | exprs.go:61:21:61:21 | After 3 |
-| exprs.go:61:21:61:21 | After 3 | exprs.go:61:21:61:21 | lit-index 3 |
+| exprs.go:61:21:61:21 | After 3 | exprs.go:61:21:61:21 | lit-init 3 |
 | exprs.go:61:21:61:21 | Before 3 | exprs.go:61:21:61:21 | 3 |
-| exprs.go:61:21:61:21 | lit-index 3 | exprs.go:61:21:61:21 | lit-init 3 |
 | exprs.go:61:21:61:21 | lit-init 3 | exprs.go:61:9:61:22 | After slice literal |
 | exprs.go:64:1:64:19 | After variable declaration | exprs.go:65:1:65:24 | variable declaration |
 | exprs.go:64:1:64:19 | variable declaration | exprs.go:64:5:64:19 | value declaration specifier |
