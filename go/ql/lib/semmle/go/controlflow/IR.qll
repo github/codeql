@@ -551,7 +551,8 @@ module IR {
     Instruction getBase() { result = evalExprInstruction(lit) }
 
     override Instruction getRhs() {
-      result = evalExprInstruction(elt) or
+      not elt instanceof KeyValueExpr and result = evalExprInstruction(elt)
+      or
       result = evalExprInstruction(elt.(KeyValueExpr).getValue())
     }
 
