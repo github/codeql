@@ -88,3 +88,15 @@ extensible predicate untrustedGhCommandDataModel(string cmd_regex, string flag);
  * - see https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token for documentation of token permissions.
  */
 extensible predicate actionsPermissionsDataModel(string action, string permission);
+
+/**
+ * Holds for deployment environments that exist for a given repository.
+ * Requires this to be externally supplied but once done can be used to
+ * toggle precision of whether that suffices or not as a control check.
+ */
+extensible predicate enabledDeploymentEnvironmentDataModel(string name);
+
+/**
+ * Selects which deployment environments model to use to implement `EnvironmentCheck`.
+ */
+extensible predicate selectDeploymentEnvironmentDataModel(string mechanism);
