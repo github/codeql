@@ -1,1 +1,5 @@
 /lockfile-extension-generator
+
+# local-only module workspace carrying the actions-lockfile replace
+go.work
+go.work.sum
