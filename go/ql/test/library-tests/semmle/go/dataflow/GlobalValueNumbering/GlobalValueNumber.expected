@@ -18,15 +18,15 @@
 | main.go:19:10:19:24 | "Hello, world!" | main.go:19:10:19:24 | "Hello, world!" |
 | main.go:20:2:20:16 | call to Println | main.go:20:2:20:16 | call to Println |
 | main.go:23:23:26:1 | result-read:0 block statement | main.go:24:8:24:8 | 4 |
-| main.go:23:23:26:1 | result-zero-init:0 block statement | main.go:10:7:10:7 | 0 |
+| main.go:23:23:26:1 | zero-init:0 block statement | main.go:10:7:10:7 | 0 |
 | main.go:24:2:24:8 | SSA def(res) | main.go:24:8:24:8 | 4 |
 | main.go:24:8:24:8 | 4 | main.go:24:8:24:8 | 4 |
 | main.go:28:24:31:1 | result-read:0 block statement | main.go:30:9:30:9 | 6 |
-| main.go:28:24:31:1 | result-zero-init:0 block statement | main.go:10:7:10:7 | 0 |
+| main.go:28:24:31:1 | zero-init:0 block statement | main.go:10:7:10:7 | 0 |
 | main.go:29:8:29:8 | 5 | main.go:29:8:29:8 | 5 |
 | main.go:30:2:30:9 | SSA def(res) | main.go:30:9:30:9 | 6 |
 | main.go:30:9:30:9 | 6 | main.go:30:9:30:9 | 6 |
-| main.go:33:24:39:1 | result-zero-init:0 block statement | main.go:10:7:10:7 | 0 |
+| main.go:33:24:39:1 | zero-init:0 block statement | main.go:10:7:10:7 | 0 |
 | main.go:34:8:34:8 | 7 | main.go:34:8:34:8 | 7 |
 | main.go:35:8:37:4 | defer-invoke function call | main.go:35:8:37:4 | function call |
 | main.go:36:3:36:9 | SSA def(res) | main.go:36:9:36:9 | 8 |
