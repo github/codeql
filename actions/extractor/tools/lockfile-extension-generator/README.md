@@ -15,13 +15,14 @@ the query otherwise lacks. Feeding the lockfile's bindings into
 `pinnedByLockfileDataModel` lets the query suppress those references while still
 flagging genuinely unpinned ones.
 
-The generator is deliberately **transport-agnostic**. It parses the lockfile
-with the canonical parser at `github.com/github/actions-lockfile/go` and emits
-the `[workflow_path, nwo, ref]` rows the query already matches on. Today those
-rows ship as a data-extension model pack applied at analysis time via
-`--model-packs` (the same mechanism as `codeql/immutable-actions-list`). The
-same parsing core can later feed an extractor-native relation without changing
-the query.
+The generator is deliberately **transport-agnostic**. It parses the minimal,
+stable core of the lockfile format directly (see `lockfile.go`) and emits the
+`[workflow_path, nwo, ref]` rows the query already matches on. It has no
+dependency on the `github.com/github/actions-lockfile` module, so it builds
+anywhere the Go toolchain is available. Today those rows ship as a
+data-extension model pack applied at analysis time via `--model-packs` (the same
+mechanism as `codeql/immutable-actions-list`). The same parsing core can later
+feed an extractor-native relation without changing the query.
 
 ## Extractor integration
 
@@ -77,16 +78,19 @@ writing anything, so it is safe to run unconditionally.
 
 ## Building and testing locally
 
-`github.com/github/actions-lockfile` is not yet public, so the module cannot be
-fetched by the module proxy. Point the `replace` directive in `go.mod` at a
-local clone before building or testing:
+The generator depends only on `gopkg.in/yaml.v3`, so it builds and tests with a
+stock Go toolchain and no special setup:
 
 ```
-go mod edit -replace github.com/github/actions-lockfile/go=/path/to/actions-lockfile/go
+go build ./...
 go test ./...
 ```
 
-Remove the `replace` directive once actions-lockfile is published.
+The golden test (`testdata/expected.yml`) pins the exact generated output for a
+representative lockfile, so any change to parsing or ref normalization must be
+reflected there deliberately. The lockfile parsing in `lockfile.go` mirrors the
+canonical semantics of `github.com/github/actions-lockfile`; if that format
+evolves, update `lockfile.go` and the golden fixture together.
 
 ## End-to-end check
 

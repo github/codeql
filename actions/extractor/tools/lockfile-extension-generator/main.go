@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-
-	"github.com/github/actions-lockfile/go/pkg/lockfile"
 )
 
 // main reads a repository's Actions lockfile and writes the corresponding
@@ -27,7 +25,7 @@ func main() {
 	}
 	sourceRoot := os.Args[1]
 
-	lockPath := filepath.Join(sourceRoot, filepath.FromSlash(lockfile.Path))
+	lockPath := filepath.Join(sourceRoot, filepath.FromSlash(lockfilePath))
 	contents, err := os.ReadFile(lockPath)
 	if err != nil {
 		if os.IsNotExist(err) {

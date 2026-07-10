@@ -3,20 +3,23 @@
 // `pinnedByLockfileDataModel` extensible predicate consumed by the
 // `actions/unpinned-tag` query.
 //
-// The generator is deliberately transport-agnostic: it parses the lockfile with
-// the canonical parser at `github.com/github/actions-lockfile/go` and emits the
-// same `[workflow_path, nwo, ref]` rows the query already matches on. Today those
-// rows are shipped as a data-extension model pack (applied at analysis time via
-// `--model-packs`, exactly like `codeql/immutable-actions-list`). The same parsing
-// core can later feed an extractor-native TRAP relation without changing the query.
+// The generator is deliberately transport-agnostic: it parses the lockfile and
+// emits the same `[workflow_path, nwo, ref]` rows the query already matches on.
+// Today those rows are shipped as a data-extension model pack (applied at
+// analysis time via `--model-packs`, exactly like `codeql/immutable-actions-list`).
+// The same parsing core can later feed an extractor-native TRAP relation without
+// changing the query.
+//
+// The lockfile format is owned by `github.com/github/actions-lockfile`; this
+// generator parses the minimal, stable core it needs directly (see lockfile.go)
+// so it has no dependency on that (currently private) module and builds anywhere
+// the Go toolchain is available.
 package main
 
 import (
 	"fmt"
 	"sort"
 	"strings"
-
-	"github.com/github/actions-lockfile/go/pkg/lockfile"
 )
 
 // row is a single `pinnedByLockfileDataModel` tuple: the reference
@@ -39,26 +42,26 @@ type row struct {
 // `uses: owner/action@v4` be recognised as pinned by a lockfile entry that
 // resolved to `v4.3.1`, which is the common real-world case.
 func rowsFromLockfile(contents []byte) ([]row, error) {
-	f, err := lockfile.Parse(contents)
+	doc, err := parseLockfile(contents)
 	if err != nil {
-		return nil, fmt.Errorf("parsing lockfile: %w", err)
+		return nil, err
 	}
 
 	seen := make(map[row]struct{})
-	for workflowPath, pinKeys := range f.Workflows {
+	for workflowPath, pinKeys := range doc.Workflows {
 		for _, key := range pinKeys {
-			pin, ok := lockfile.ParsePin(key)
+			nwo, keyRef, ok := parsePin(key)
 			if !ok {
 				continue
 			}
 			// Prefer the resolved ref recorded in the dependency metadata; fall
 			// back to the ref embedded in the pin key.
-			ref := pin.Ref
-			if dep, ok := f.Dependencies[key]; ok && dep.Ref != "" {
+			ref := keyRef
+			if dep, ok := doc.Dependencies[key]; ok && dep.Ref != "" {
 				ref = dep.Ref
 			}
 			for _, r := range refVariants(ref) {
-				seen[row{workflowPath: workflowPath, nwo: pin.NWO, ref: r}] = struct{}{}
+				seen[row{workflowPath: workflowPath, nwo: nwo, ref: r}] = struct{}{}
 			}
 		}
 	}
@@ -84,15 +87,15 @@ func rowsFromLockfile(contents []byte) ([]row, error) {
 // this is the tag itself plus its major.minor (`v4.3`) and major-only (`v4`)
 // forms; for anything else (a branch, a partial tag, a SHA) it is just the ref.
 func refVariants(ref string) []string {
-	sv, ok := lockfile.ParseSemVer(ref)
-	if !ok || !sv.IsFull() {
+	sv, ok := parseSemVer(ref)
+	if !ok || !sv.isFull() {
 		return []string{ref}
 	}
 	variants := []string{ref}
-	if minor := sv.MinorTag(); minor != ref {
+	if minor := sv.minorTag(); minor != ref {
 		variants = append(variants, minor)
 	}
-	if major := sv.MajorTag(); major != ref {
+	if major := sv.majorTag(); major != ref {
 		variants = append(variants, major)
 	}
 	return variants
