@@ -448,32 +448,23 @@ module GoCfg {
     }
 
     predicate postOrInOrder(Ast::AstNode n) {
+      // Leaf value expressions: these have no CFG children, so the shared
+      // library's default (which only makes expressions *with* children
+      // post-order) would otherwise treat them as simple leaf nodes with no
+      // in-order value node.
       n instanceof Go::ReferenceExpr
       or
       n instanceof Go::BasicLit
       or
       n instanceof Go::FuncLit
       or
-      n instanceof Go::CallExpr and
-      not n = any(Go::DeferStmt defer).getCall() and
-      not n = any(Go::GoStmt go_).getCall()
-      or
-      n instanceof Go::BinaryExpr and not n instanceof Go::LogicalBinaryExpr
-      or
-      n instanceof Go::UnaryExpr and not n instanceof Go::NotExpr
-      or
-      n instanceof Go::ConversionExpr
-      or
-      n instanceof Go::TypeAssertExpr
-      or
-      n instanceof Go::IndexExpr
-      or
-      n instanceof Go::SliceExpr
-      or
+      // An empty composite literal (e.g. `T{}`) has no CFG children, so it too
+      // needs an explicit in-order (allocation) node.
       n instanceof Go::CompositeLit
       or
-      n instanceof Go::ReturnStmt
-      or
+      // Statements/declarations that compute a value or perform an operation and
+      // are not among the statements the shared library makes post-order by
+      // default.
       n instanceof Go::DeferStmt
       or
       n instanceof Go::GoStmt
@@ -485,9 +476,6 @@ module GoCfg {
       n instanceof Go::IncDecStmt
       or
       n instanceof Go::FuncDecl
-      or
-      n instanceof Go::SelectorExpr and
-      n.(Go::SelectorExpr).getBase() instanceof Go::ValueExpr
     }
 
     predicate additionalNode(Ast::AstNode n, string tag, NormalSuccessor t) {
@@ -1272,7 +1260,14 @@ module GoCfg {
      * would be unreachable and pruned, breaking data flow through `f(g())`.
      */
     private predicate callExprStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-      exists(Go::CallExpr call | postOrInOrder(call) and extractNodeCondition(call, _) |
+      exists(Go::CallExpr call |
+        // Restrict to ordinary invoked calls; the calls of `defer`/`go`
+        // statements are evaluated in place but invoked later / concurrently,
+        // and are handled by `deferStmt`/`goStmtStep` instead.
+        not call = any(Go::DeferStmt s).getCall() and
+        not call = any(Go::GoStmt s).getCall() and
+        extractNodeCondition(call, _)
+      |
         // Route through the callee and the (single) inner-call argument
         childSequenceStep(call, n1, n2)
         or
