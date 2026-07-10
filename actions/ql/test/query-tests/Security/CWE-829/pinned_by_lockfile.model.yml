@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: pinnedByLockfileDataModel
+    # Test data standing in for what the CodeQL Actions extractor will emit from
+    # `.github/workflows/actions.lock`. Records `some-owner/pinned-action@v1` in
+    # `lockfile_pinned.yml` as pinned by the lockfile so the `actions/unpinned-tag`
+    # query suppresses it.
+    data:
+      - [".github/workflows/lockfile_pinned.yml", "some-owner/pinned-action", "v1"]

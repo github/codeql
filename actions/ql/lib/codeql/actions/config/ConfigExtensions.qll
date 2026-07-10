@@ -69,6 +69,26 @@ extensible predicate immutableActionsDataModel(string action);
 extensible predicate trustedActionsOwnerDataModel(string owner);
 
 /**
+ * Holds if the `uses` reference `nwo`@`ref` in the workflow or composite action file at
+ * `workflow_path` is pinned by an entry in the repository's Actions lockfile
+ * (`.github/workflows/actions.lock`).
+ *
+ * This predicate is intended to be populated by the CodeQL Actions extractor, which parses
+ * `actions.lock` at database-creation time using the canonical lockfile parser at
+ * `github.com/github/actions-lockfile/go`. Each lockfile entry binds an `nwo`@`ref` to a
+ * verified commit SHA, which is exactly the pinning evidence the `actions/unpinned-tag` query
+ * otherwise lacks. Until the extractor populates this predicate it is empty, so any clause that
+ * consumes it is a clean no-op and behaviour is unchanged for repositories without a lockfile.
+ *
+ * Fields:
+ *  - `workflow_path`: repo-relative path of the file containing the `uses:` reference,
+ *    e.g. `.github/workflows/ci.yml`.
+ *  - `nwo`: owner and name of the referenced action, e.g. `actions/checkout`.
+ *  - `ref`: the ref (tag or branch) as written in `uses:`, e.g. `v4`.
+ */
+extensible predicate pinnedByLockfileDataModel(string workflow_path, string nwo, string ref);
+
+/**
  * Holds for git commands that may introduce untrusted data when called on an attacker controlled branch.
  */
 extensible predicate untrustedGitCommandDataModel(string cmd_regex, string flag);
