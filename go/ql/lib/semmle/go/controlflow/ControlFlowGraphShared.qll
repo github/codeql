@@ -427,11 +427,6 @@ module GoCfg {
       l = n.(Go::ContinueStmt).getLabel()
     }
 
-    predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
-      kind.isBoolean() and
-      n = any(Go::ForStmt fs).getCond()
-    }
-
     predicate preOrderExpr(Ast::Expr e) {
       // The call of a `defer` statement is not invoked at the statement
       // itself; its callee and arguments are evaluated in place, but the call
