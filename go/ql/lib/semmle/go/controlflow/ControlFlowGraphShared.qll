@@ -485,8 +485,6 @@ module GoCfg {
       or
       n instanceof Go::SendStmt
       or
-      n instanceof Go::IncDecStmt
-      or
       n instanceof Go::FuncDecl
     }
 
@@ -543,8 +541,10 @@ module GoCfg {
           tag = "zero-init:" + i.toString()
         )
         or
-        // Increment/decrement implicit right-hand side (the `operand + 1` value)
-        n instanceof Go::IncDecStmt and tag = "incdec-rhs"
+        // Increment/decrement: a single node computes `operand + 1` (or `- 1`)
+        // and writes it back, modelled the same as a compound assignment's
+        // `compound-rhs` node (see `IR::EvalCompoundAssignRhsInstruction`).
+        n instanceof Go::IncDecStmt and tag = "compound-rhs"
         or
         // Result write nodes in return statements
         exists(int i, Go::ReturnStmt ret |
@@ -1154,26 +1154,23 @@ module GoCfg {
     }
 
     /**
-     * Increment/decrement: operand → incdec-rhs → In(stmt)
-     * (IncDecStmt is in postOrInOrder, so In(stmt) is its evaluation point)
+     * Increment/decrement: operand → compound-rhs → After(stmt).
      *
-     * The implicit constant `1` operand of the `operand + 1` computation is
-     * modelled directly on the `incdec-rhs` instruction rather than as its own
-     * control-flow node.
+     * `x++` is modelled just like the compound assignment `x += 1`: a single
+     * `compound-rhs` node computes the updated value and writes it back to the
+     * operand (see `IR::EvalCompoundAssignRhsInstruction`). The implicit constant
+     * `1` is modelled directly on that node rather than as its own node.
      */
     private predicate incDecStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::IncDecStmt s |
         // Before → Before operand
         n1.isBefore(s) and n2.isBefore(s.getOperand())
         or
-        // After operand → incdec-rhs
-        n1.isAfter(s.getOperand()) and n2.isAdditional(s, "incdec-rhs")
+        // After operand → compound-rhs (the update value + write)
+        n1.isAfter(s.getOperand()) and n2.isAdditional(s, "compound-rhs")
         or
-        // incdec-rhs → In(stmt) (the assignment itself)
-        n1.isAdditional(s, "incdec-rhs") and n2.isIn(s)
-        or
-        // In(stmt) → After(stmt)
-        n1.isIn(s) and n2.isAfter(s)
+        // compound-rhs → After(stmt)
+        n1.isAdditional(s, "compound-rhs") and n2.isAfter(s)
       )
     }
 

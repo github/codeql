@@ -20,7 +20,7 @@
 | main.go:15:9:15:9 | 0 | main.go:15:2:15:9 | SSA def(acc) |
 | main.go:16:9:19:2 | SSA def(acc) | main.go:17:3:17:5 | acc |
 | main.go:17:3:17:7 | SSA def(acc) | main.go:18:10:18:12 | acc |
-| main.go:17:3:17:7 | incdec-rhs increment statement | main.go:17:3:17:7 | SSA def(acc) |
+| main.go:17:3:17:7 | compound-rhs increment statement | main.go:17:3:17:7 | SSA def(acc) |
 | main.go:22:42:31:1 | SSA def(b) | main.go:23:5:23:5 | b |
 | main.go:22:42:31:1 | SSA def(x) | main.go:24:10:24:10 | x |
 | main.go:22:42:31:1 | SSA def(x) | main.go:26:11:26:11 | x |

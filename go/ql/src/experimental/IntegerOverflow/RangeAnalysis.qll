@@ -389,12 +389,13 @@ float getAnSsaUpperBound(SsaDefinition def) {
         )
       else
         //SSA definition corresponding to an `IncDecStmt`
-        if explicitDef.getInstruction() instanceof IR::IncDecInstruction
+        if
+          explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() instanceof
+            IncDecStmt
         then
-          exists(IncDecStmt incOrDec, IR::IncDecInstruction instr, float exprLB |
-            instr = explicitDef.getInstruction() and
+          exists(IncDecStmt incOrDec, float exprLB |
+            explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() = incOrDec and
             exprLB = getAnUpperBound(incOrDec.getOperand()) and
-            instr.getRhs().(IR::EvalIncDecRhsInstruction).getStmt() = incOrDec and
             (
               //IncStmt(x++)
               exists(IncStmt inc |
@@ -475,12 +476,13 @@ float getAnSsaLowerBound(SsaDefinition def) {
         )
       else
         //IncDecStmt
-        if explicitDef.getInstruction() instanceof IR::IncDecInstruction
+        if
+          explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() instanceof
+            IncDecStmt
         then
-          exists(IncDecStmt incOrDec, IR::IncDecInstruction instr, float exprLB |
-            instr = explicitDef.getInstruction() and
+          exists(IncDecStmt incOrDec, float exprLB |
+            explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() = incOrDec and
             exprLB = getALowerBound(incOrDec.getOperand()) and
-            instr.getRhs().(IR::EvalIncDecRhsInstruction).getStmt() = incOrDec and
             (
               //IncStmt(x++)
               exists(IncStmt inc |
@@ -550,9 +552,7 @@ predicate ssaDependsOnSsa(SsaDefinition nextDef, SsaDefinition prevDef) {
     nextDef
         .(SsaExplicitDefinition)
         .getInstruction()
-        .(IR::IncDecInstruction)
-        .getRhs()
-        .(IR::EvalIncDecRhsInstruction)
+        .(IR::EvalCompoundAssignRhsInstruction)
         .getStmt() = incDec and
     ssaDependsOnExpr(prevDef, incDec.getOperand())
   )
