@@ -28,9 +28,8 @@ edges
 | conversions.go:8:2:8:21 | declaration statement | conversions.go:8:2:8:21 | variable declaration |
 | conversions.go:8:2:8:21 | variable declaration | conversions.go:8:6:8:21 | value declaration specifier |
 | conversions.go:8:6:8:21 | After value declaration specifier | conversions.go:8:2:8:21 | After variable declaration |
-| conversions.go:8:6:8:21 | assign:0 value declaration specifier | conversions.go:8:6:8:21 | After value declaration specifier |
 | conversions.go:8:6:8:21 | value declaration specifier | conversions.go:8:6:8:21 | zero-init:0 value declaration specifier |
-| conversions.go:8:6:8:21 | zero-init:0 value declaration specifier | conversions.go:8:6:8:21 | assign:0 value declaration specifier |
+| conversions.go:8:6:8:21 | zero-init:0 value declaration specifier | conversions.go:8:6:8:21 | After value declaration specifier |
 | conversions.go:10:2:10:23 | ... := ... | conversions.go:10:7:10:23 | Before call to Add |
 | conversions.go:10:2:10:23 | After ... := ... | conversions.go:11:2:11:7 | expression statement |
 | conversions.go:10:2:10:23 | assign:0 ... := ... | conversions.go:10:2:10:23 | After ... := ... |
@@ -63,9 +62,8 @@ edges
 | conversions.go:13:2:13:13 | declaration statement | conversions.go:13:2:13:13 | variable declaration |
 | conversions.go:13:2:13:13 | variable declaration | conversions.go:13:6:13:13 | value declaration specifier |
 | conversions.go:13:6:13:13 | After value declaration specifier | conversions.go:13:2:13:13 | After variable declaration |
-| conversions.go:13:6:13:13 | assign:0 value declaration specifier | conversions.go:13:6:13:13 | After value declaration specifier |
 | conversions.go:13:6:13:13 | value declaration specifier | conversions.go:13:6:13:13 | zero-init:0 value declaration specifier |
-| conversions.go:13:6:13:13 | zero-init:0 value declaration specifier | conversions.go:13:6:13:13 | assign:0 value declaration specifier |
+| conversions.go:13:6:13:13 | zero-init:0 value declaration specifier | conversions.go:13:6:13:13 | After value declaration specifier |
 | conversions.go:14:2:14:31 | ... := ... | conversions.go:14:11:14:31 | Before call to Slice |
 | conversions.go:14:2:14:31 | After ... := ... | conversions.go:17:2:17:25 | ... := ... |
 | conversions.go:14:2:14:31 | assign:0 ... := ... | conversions.go:14:2:14:31 | After ... := ... |
