@@ -191,8 +191,6 @@ module IR {
       or
       this instanceof InitParameterInstruction and result = "parameter initialization"
       or
-      this instanceof InitResultInstruction and result = "result initialization"
-      or
       this instanceof GetNextEntryInstruction and result = "next key-value pair"
       or
       this instanceof EvalImplicitTrueInstruction and result = "implicit true"
@@ -1031,22 +1029,24 @@ module IR {
     override ControlFlow::Root getRoot() { result = parm.getFunction() }
   }
 
-  /** An instruction initializing a result variable to its zero value. */
+  /**
+   * An instruction initializing a result variable to its zero value.
+   *
+   * This is the same node as the `EvalImplicitInitInstruction` that computes the
+   * zero value: the zero-value instruction performs the write of the result
+   * variable directly, rather than feeding a separate write node.
+   */
   class InitResultInstruction extends WriteInstruction {
     ResultVariable res;
     int idx;
     FuncDef fd;
 
     InitResultInstruction() {
-      this.isAdditional(fd.getBody(), "result-init:" + idx.toString()) and
+      this.isAdditional(fd.getBody(), "result-zero-init:" + idx.toString()) and
       res = fd.getResultVar(idx)
     }
 
-    override Instruction getRhs() {
-      result
-          .(EvalImplicitInitInstruction)
-          .isAdditional(fd.getBody(), "result-zero-init:" + idx.toString())
-    }
+    override Instruction getRhs() { result = this }
 
     override ControlFlow::Root getRoot() { result = res.getFunction() }
   }
@@ -1166,7 +1166,7 @@ module IR {
       )
       or
       exists(FuncDef fd, int idx |
-        write.isAdditional(fd.getBody(), "result-init:" + idx.toString()) and
+        write.isAdditional(fd.getBody(), "result-zero-init:" + idx.toString()) and
         lhs = fd.getResultVar(idx).getDeclaration()
       )
     } or

@@ -245,12 +245,10 @@
 | epilogues.go:42:1:48:1 | function declaration | epilogues.go:42:1:48:1 | After function declaration |
 | epilogues.go:42:51:48:1 | block statement | epilogues.go:42:51:48:1 | param-init:0 block statement |
 | epilogues.go:42:51:48:1 | param-init:0 block statement | epilogues.go:42:51:48:1 | result-zero-init:0 block statement |
-| epilogues.go:42:51:48:1 | result-init:0 block statement | epilogues.go:42:51:48:1 | result-zero-init:1 block statement |
-| epilogues.go:42:51:48:1 | result-init:1 block statement | epilogues.go:43:2:46:2 | if statement |
 | epilogues.go:42:51:48:1 | result-read:0 block statement | epilogues.go:42:51:48:1 | result-read:1 block statement |
 | epilogues.go:42:51:48:1 | result-read:1 block statement | epilogues.go:42:1:48:1 | Normal Exit |
-| epilogues.go:42:51:48:1 | result-zero-init:0 block statement | epilogues.go:42:51:48:1 | result-init:0 block statement |
-| epilogues.go:42:51:48:1 | result-zero-init:1 block statement | epilogues.go:42:51:48:1 | result-init:1 block statement |
+| epilogues.go:42:51:48:1 | result-zero-init:0 block statement | epilogues.go:42:51:48:1 | result-zero-init:1 block statement |
+| epilogues.go:42:51:48:1 | result-zero-init:1 block statement | epilogues.go:43:2:46:2 | if statement |
 | epilogues.go:43:2:46:2 | After if statement | epilogues.go:47:2:47:14 | Before return statement |
 | epilogues.go:43:2:46:2 | if statement | epilogues.go:43:5:43:9 | Before ...<... |
 | epilogues.go:43:5:43:5 | After x | epilogues.go:43:9:43:9 | Before 0 |
@@ -293,9 +291,8 @@
 | epilogues.go:51:1:54:1 | function declaration | epilogues.go:51:1:54:1 | After function declaration |
 | epilogues.go:51:38:54:1 | block statement | epilogues.go:51:38:54:1 | param-init:0 block statement |
 | epilogues.go:51:38:54:1 | param-init:0 block statement | epilogues.go:51:38:54:1 | result-zero-init:0 block statement |
-| epilogues.go:51:38:54:1 | result-init:0 block statement | epilogues.go:52:2:52:10 | ... = ... |
 | epilogues.go:51:38:54:1 | result-read:0 block statement | epilogues.go:51:1:54:1 | Normal Exit |
-| epilogues.go:51:38:54:1 | result-zero-init:0 block statement | epilogues.go:51:38:54:1 | result-init:0 block statement |
+| epilogues.go:51:38:54:1 | result-zero-init:0 block statement | epilogues.go:52:2:52:10 | ... = ... |
 | epilogues.go:52:2:52:10 | ... = ... | epilogues.go:52:6:52:10 | Before ...+... |
 | epilogues.go:52:2:52:10 | After ... = ... | epilogues.go:53:2:53:7 | Before return statement |
 | epilogues.go:52:2:52:10 | assign:0 ... = ... | epilogues.go:52:2:52:10 | After ... = ... |
@@ -512,9 +509,8 @@
 | epilogues.go:87:1:98:1 | function declaration | epilogues.go:87:1:98:1 | After function declaration |
 | epilogues.go:87:42:98:1 | block statement | epilogues.go:87:42:98:1 | param-init:0 block statement |
 | epilogues.go:87:42:98:1 | param-init:0 block statement | epilogues.go:87:42:98:1 | result-zero-init:0 block statement |
-| epilogues.go:87:42:98:1 | result-init:0 block statement | epilogues.go:88:2:92:4 | Before defer statement |
 | epilogues.go:87:42:98:1 | result-read:0 block statement | epilogues.go:87:1:98:1 | Normal Exit |
-| epilogues.go:87:42:98:1 | result-zero-init:0 block statement | epilogues.go:87:42:98:1 | result-init:0 block statement |
+| epilogues.go:87:42:98:1 | result-zero-init:0 block statement | epilogues.go:88:2:92:4 | Before defer statement |
 | epilogues.go:88:2:92:4 | After defer statement | epilogues.go:93:2:95:2 | if statement |
 | epilogues.go:88:2:92:4 | Before defer statement | epilogues.go:88:8:92:4 | function call |
 | epilogues.go:88:2:92:4 | defer statement | epilogues.go:88:2:92:4 | After defer statement |
@@ -610,12 +606,10 @@
 | epilogues.go:102:1:110:1 | function declaration | epilogues.go:102:1:110:1 | After function declaration |
 | epilogues.go:102:50:110:1 | block statement | epilogues.go:102:50:110:1 | param-init:0 block statement |
 | epilogues.go:102:50:110:1 | param-init:0 block statement | epilogues.go:102:50:110:1 | result-zero-init:0 block statement |
-| epilogues.go:102:50:110:1 | result-init:0 block statement | epilogues.go:102:50:110:1 | result-zero-init:1 block statement |
-| epilogues.go:102:50:110:1 | result-init:1 block statement | epilogues.go:103:2:103:19 | Before defer statement |
 | epilogues.go:102:50:110:1 | result-read:0 block statement | epilogues.go:102:50:110:1 | result-read:1 block statement |
 | epilogues.go:102:50:110:1 | result-read:1 block statement | epilogues.go:102:1:110:1 | Normal Exit |
-| epilogues.go:102:50:110:1 | result-zero-init:0 block statement | epilogues.go:102:50:110:1 | result-init:0 block statement |
-| epilogues.go:102:50:110:1 | result-zero-init:1 block statement | epilogues.go:102:50:110:1 | result-init:1 block statement |
+| epilogues.go:102:50:110:1 | result-zero-init:0 block statement | epilogues.go:102:50:110:1 | result-zero-init:1 block statement |
+| epilogues.go:102:50:110:1 | result-zero-init:1 block statement | epilogues.go:103:2:103:19 | Before defer statement |
 | epilogues.go:103:2:103:19 | After defer statement | epilogues.go:104:2:106:2 | if statement |
 | epilogues.go:103:2:103:19 | Before defer statement | epilogues.go:103:8:103:19 | call to epiRecover |
 | epilogues.go:103:2:103:19 | defer statement | epilogues.go:103:2:103:19 | After defer statement |
@@ -1292,9 +1286,8 @@
 | exprs.go:49:1:54:1 | function declaration | exprs.go:49:1:54:1 | After function declaration |
 | exprs.go:49:30:54:1 | block statement | exprs.go:49:30:54:1 | param-init:0 block statement |
 | exprs.go:49:30:54:1 | param-init:0 block statement | exprs.go:49:30:54:1 | result-zero-init:0 block statement |
-| exprs.go:49:30:54:1 | result-init:0 block statement | exprs.go:50:2:52:2 | for statement |
 | exprs.go:49:30:54:1 | result-read:0 block statement | exprs.go:49:1:54:1 | Normal Exit |
-| exprs.go:49:30:54:1 | result-zero-init:0 block statement | exprs.go:49:30:54:1 | result-init:0 block statement |
+| exprs.go:49:30:54:1 | result-zero-init:0 block statement | exprs.go:50:2:52:2 | for statement |
 | exprs.go:50:2:52:2 | After for statement | exprs.go:53:2:53:7 | Before return statement |
 | exprs.go:50:2:52:2 | [LoopHeader] for statement | exprs.go:50:27:50:29 | Before increment statement |
 | exprs.go:50:2:52:2 | for statement | exprs.go:50:6:50:11 | ... := ... |
@@ -2143,9 +2136,8 @@
 | main.go:47:1:50:1 | Normal Exit | main.go:47:1:50:1 | Exit |
 | main.go:47:1:50:1 | function declaration | main.go:47:1:50:1 | After function declaration |
 | main.go:47:25:50:1 | block statement | main.go:47:25:50:1 | result-zero-init:0 block statement |
-| main.go:47:25:50:1 | result-init:0 block statement | main.go:48:2:48:12 | ... = ... |
 | main.go:47:25:50:1 | result-read:0 block statement | main.go:47:1:50:1 | Normal Exit |
-| main.go:47:25:50:1 | result-zero-init:0 block statement | main.go:47:25:50:1 | result-init:0 block statement |
+| main.go:47:25:50:1 | result-zero-init:0 block statement | main.go:48:2:48:12 | ... = ... |
 | main.go:48:2:48:12 | ... = ... | main.go:48:11:48:12 | Before 42 |
 | main.go:48:2:48:12 | After ... = ... | main.go:49:2:49:7 | Before return statement |
 | main.go:48:2:48:12 | assign:0 ... = ... | main.go:48:2:48:12 | After ... = ... |
@@ -2160,9 +2152,8 @@
 | main.go:52:1:54:1 | Normal Exit | main.go:52:1:54:1 | Exit |
 | main.go:52:1:54:1 | function declaration | main.go:52:1:54:1 | After function declaration |
 | main.go:52:26:54:1 | block statement | main.go:52:26:54:1 | result-zero-init:0 block statement |
-| main.go:52:26:54:1 | result-init:0 block statement | main.go:53:2:53:7 | Before return statement |
 | main.go:52:26:54:1 | result-read:0 block statement | main.go:52:1:54:1 | Normal Exit |
-| main.go:52:26:54:1 | result-zero-init:0 block statement | main.go:52:26:54:1 | result-init:0 block statement |
+| main.go:52:26:54:1 | result-zero-init:0 block statement | main.go:53:2:53:7 | Before return statement |
 | main.go:53:2:53:7 | Before return statement | main.go:53:2:53:7 | return statement |
 | main.go:53:2:53:7 | return statement | main.go:52:26:54:1 | result-read:0 block statement |
 | main.go:56:1:64:1 | After function declaration | main.go:66:1:90:1 | Before function declaration |
@@ -2172,9 +2163,8 @@
 | main.go:56:1:64:1 | function declaration | main.go:56:1:64:1 | After function declaration |
 | main.go:56:38:64:1 | block statement | main.go:56:38:64:1 | param-init:0 block statement |
 | main.go:56:38:64:1 | param-init:0 block statement | main.go:56:38:64:1 | result-zero-init:0 block statement |
-| main.go:56:38:64:1 | result-init:0 block statement | main.go:57:2:57:11 | ... = ... |
 | main.go:56:38:64:1 | result-read:0 block statement | main.go:56:1:64:1 | Normal Exit |
-| main.go:56:38:64:1 | result-zero-init:0 block statement | main.go:56:38:64:1 | result-init:0 block statement |
+| main.go:56:38:64:1 | result-zero-init:0 block statement | main.go:57:2:57:11 | ... = ... |
 | main.go:57:2:57:11 | ... = ... | main.go:57:11:57:11 | Before 0 |
 | main.go:57:2:57:11 | After ... = ... | main.go:58:2:62:2 | if statement |
 | main.go:57:2:57:11 | assign:0 ... = ... | main.go:57:2:57:11 | After ... = ... |
@@ -2377,12 +2367,10 @@
 | main.go:92:1:96:1 | Normal Exit | main.go:92:1:96:1 | Exit |
 | main.go:92:1:96:1 | function declaration | main.go:92:1:96:1 | After function declaration |
 | main.go:92:36:96:1 | block statement | main.go:92:36:96:1 | result-zero-init:0 block statement |
-| main.go:92:36:96:1 | result-init:0 block statement | main.go:92:36:96:1 | result-zero-init:1 block statement |
-| main.go:92:36:96:1 | result-init:1 block statement | main.go:93:2:93:8 | ... := ... |
 | main.go:92:36:96:1 | result-read:0 block statement | main.go:92:36:96:1 | result-read:1 block statement |
 | main.go:92:36:96:1 | result-read:1 block statement | main.go:92:1:96:1 | Normal Exit |
-| main.go:92:36:96:1 | result-zero-init:0 block statement | main.go:92:36:96:1 | result-init:0 block statement |
-| main.go:92:36:96:1 | result-zero-init:1 block statement | main.go:92:36:96:1 | result-init:1 block statement |
+| main.go:92:36:96:1 | result-zero-init:0 block statement | main.go:92:36:96:1 | result-zero-init:1 block statement |
+| main.go:92:36:96:1 | result-zero-init:1 block statement | main.go:93:2:93:8 | ... := ... |
 | main.go:93:2:93:8 | ... := ... | main.go:93:7:93:8 | Before 23 |
 | main.go:93:2:93:8 | After ... := ... | main.go:94:2:94:15 | ... = ... |
 | main.go:93:2:93:8 | assign:0 ... := ... | main.go:93:2:93:8 | After ... := ... |
