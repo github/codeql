@@ -6,10 +6,10 @@ jobs:
     name: Build and test
     runs-on: ubuntu-latest
     steps:
-    # `$/` is a same-repo self-reference resolved at the running commit. It is inherently
-    # pinned (like `./` local refs) and must never be reported as an unpinned tag.
+    # `$/` is a same-repository (self repository) reference resolved at the running commit. It is
+    # inherently pinned (like `./` self workspace refs) and must never be reported as an unpinned tag.
     - uses: $/actions/foo
     # `$/…@ref` is rejected by the `$/` rule, but a user could still write it. It must also
-    # never be flagged; this case exercises the `not isSelfReference(nwo)` suppression, since
+    # never be flagged; this case exercises the `not isSelfRepository(nwo)` suppression, since
     # without it `$/actions/foo@v1` would otherwise be reported as an unpinned tag.
     - uses: $/actions/foo@v1
