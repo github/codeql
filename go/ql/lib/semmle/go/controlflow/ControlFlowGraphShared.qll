@@ -537,9 +537,7 @@ module GoCfg {
           tag = "zero-init:" + i.toString()
         )
         or
-        // Increment/decrement implicit operations
-        n instanceof Go::IncDecStmt and tag = "implicit-one"
-        or
+        // Increment/decrement implicit right-hand side (the `operand + 1` value)
         n instanceof Go::IncDecStmt and tag = "incdec-rhs"
         or
         // Result write nodes in return statements
@@ -1184,19 +1182,20 @@ module GoCfg {
     }
 
     /**
-     * Increment/decrement: operand → implicit-one → incdec-rhs → In(stmt)
+     * Increment/decrement: operand → incdec-rhs → In(stmt)
      * (IncDecStmt is in postOrInOrder, so In(stmt) is its evaluation point)
+     *
+     * The implicit constant `1` operand of the `operand + 1` computation is
+     * modelled directly on the `incdec-rhs` instruction rather than as its own
+     * control-flow node.
      */
     private predicate incDecStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::IncDecStmt s |
         // Before → Before operand
         n1.isBefore(s) and n2.isBefore(s.getOperand())
         or
-        // After operand → implicit-one
-        n1.isAfter(s.getOperand()) and n2.isAdditional(s, "implicit-one")
-        or
-        // implicit-one → incdec-rhs
-        n1.isAdditional(s, "implicit-one") and n2.isAdditional(s, "incdec-rhs")
+        // After operand → incdec-rhs
+        n1.isAfter(s.getOperand()) and n2.isAdditional(s, "incdec-rhs")
         or
         // incdec-rhs → In(stmt) (the assignment itself)
         n1.isAdditional(s, "incdec-rhs") and n2.isIn(s)

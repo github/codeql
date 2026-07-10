@@ -1361,12 +1361,11 @@
 | exprs.go:50:22:50:23 | After xs | exprs.go:50:18:50:24 | call to len |
 | exprs.go:50:22:50:23 | Before xs | exprs.go:50:22:50:23 | xs |
 | exprs.go:50:22:50:23 | xs | exprs.go:50:22:50:23 | After xs |
-| exprs.go:50:27:50:27 | After i | exprs.go:50:27:50:29 | implicit-one increment statement |
+| exprs.go:50:27:50:27 | After i | exprs.go:50:27:50:29 | incdec-rhs increment statement |
 | exprs.go:50:27:50:27 | Before i | exprs.go:50:27:50:27 | i |
 | exprs.go:50:27:50:27 | i | exprs.go:50:27:50:27 | After i |
 | exprs.go:50:27:50:29 | After increment statement | exprs.go:50:14:50:24 | Before ...<... |
 | exprs.go:50:27:50:29 | Before increment statement | exprs.go:50:27:50:27 | Before i |
-| exprs.go:50:27:50:29 | implicit-one increment statement | exprs.go:50:27:50:29 | incdec-rhs increment statement |
 | exprs.go:50:27:50:29 | incdec-rhs increment statement | exprs.go:50:27:50:29 | increment statement |
 | exprs.go:50:27:50:29 | increment statement | exprs.go:50:27:50:29 | After increment statement |
 | exprs.go:50:31:52:2 | After block statement | exprs.go:50:2:52:2 | [LoopHeader] for statement |
@@ -2338,12 +2337,11 @@
 | main.go:74:11:74:11 | 0 | main.go:74:11:74:11 | After 0 |
 | main.go:74:11:74:11 | After 0 | main.go:74:6:74:11 | assign:0 ... := ... |
 | main.go:74:11:74:11 | Before 0 | main.go:74:11:74:11 | 0 |
-| main.go:74:16:74:16 | After i | main.go:74:16:74:18 | implicit-one increment statement |
+| main.go:74:16:74:16 | After i | main.go:74:16:74:18 | incdec-rhs increment statement |
 | main.go:74:16:74:16 | Before i | main.go:74:16:74:16 | i |
 | main.go:74:16:74:16 | i | main.go:74:16:74:16 | After i |
 | main.go:74:16:74:18 | After increment statement | main.go:74:20:79:2 | block statement |
 | main.go:74:16:74:18 | Before increment statement | main.go:74:16:74:16 | Before i |
-| main.go:74:16:74:18 | implicit-one increment statement | main.go:74:16:74:18 | incdec-rhs increment statement |
 | main.go:74:16:74:18 | incdec-rhs increment statement | main.go:74:16:74:18 | increment statement |
 | main.go:74:16:74:18 | increment statement | main.go:74:16:74:18 | After increment statement |
 | main.go:74:20:79:2 | After block statement | main.go:74:2:79:2 | [LoopHeader] for statement |
@@ -2395,12 +2393,11 @@
 | main.go:83:11:83:11 | 0 | main.go:83:11:83:11 | After 0 |
 | main.go:83:11:83:11 | After 0 | main.go:83:6:83:11 | assign:0 ... := ... |
 | main.go:83:11:83:11 | Before 0 | main.go:83:11:83:11 | 0 |
-| main.go:83:16:83:16 | After i | main.go:83:16:83:18 | implicit-one increment statement |
+| main.go:83:16:83:16 | After i | main.go:83:16:83:18 | incdec-rhs increment statement |
 | main.go:83:16:83:16 | Before i | main.go:83:16:83:16 | i |
 | main.go:83:16:83:16 | i | main.go:83:16:83:16 | After i |
 | main.go:83:16:83:18 | After increment statement | main.go:83:20:88:2 | block statement |
 | main.go:83:16:83:18 | Before increment statement | main.go:83:16:83:16 | Before i |
-| main.go:83:16:83:18 | implicit-one increment statement | main.go:83:16:83:18 | incdec-rhs increment statement |
 | main.go:83:16:83:18 | incdec-rhs increment statement | main.go:83:16:83:18 | increment statement |
 | main.go:83:16:83:18 | increment statement | main.go:83:16:83:18 | After increment statement |
 | main.go:83:20:88:2 | After block statement | main.go:83:2:88:2 | [LoopHeader] for statement |
@@ -3297,12 +3294,11 @@
 | stmts.go:24:19:24:20 | 10 | stmts.go:24:19:24:20 | After 10 |
 | stmts.go:24:19:24:20 | After 10 | stmts.go:24:15:24:20 | ...<... |
 | stmts.go:24:19:24:20 | Before 10 | stmts.go:24:19:24:20 | 10 |
-| stmts.go:24:23:24:23 | After i | stmts.go:24:23:24:25 | implicit-one increment statement |
+| stmts.go:24:23:24:23 | After i | stmts.go:24:23:24:25 | incdec-rhs increment statement |
 | stmts.go:24:23:24:23 | Before i | stmts.go:24:23:24:23 | i |
 | stmts.go:24:23:24:23 | i | stmts.go:24:23:24:23 | After i |
 | stmts.go:24:23:24:25 | After increment statement | stmts.go:24:15:24:20 | Before ...<... |
 | stmts.go:24:23:24:25 | Before increment statement | stmts.go:24:23:24:23 | Before i |
-| stmts.go:24:23:24:25 | implicit-one increment statement | stmts.go:24:23:24:25 | incdec-rhs increment statement |
 | stmts.go:24:23:24:25 | incdec-rhs increment statement | stmts.go:24:23:24:25 | increment statement |
 | stmts.go:24:23:24:25 | increment statement | stmts.go:24:23:24:25 | After increment statement |
 | stmts.go:24:27:36:3 | block statement | stmts.go:25:4:35:4 | if statement |
