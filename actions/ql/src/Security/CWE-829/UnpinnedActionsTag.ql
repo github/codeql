@@ -39,6 +39,15 @@ private predicate isContainerImage(string nwo) { nwo.regexpMatch("^docker://.+")
 bindingset[nwo]
 private predicate isSelfReference(string nwo) { nwo.matches("$/%") }
 
+// Holds if `uses` (calling action `nwo` at `version`) is pinned by an entry in the repository's
+// Actions lockfile (`.github/workflows/actions.lock`). The underlying `pinnedByLockfileDataModel`
+// predicate is populated by the CodeQL Actions extractor when it parses the lockfile at
+// database-creation time; until then this is a clean no-op and no lockfile-pinned refs are
+// suppressed. See `pinnedByLockfileDataModel` in `ConfigExtensions.qll` for the intended shape.
+private predicate pinnedByLockfile(UsesStep uses, string nwo, string version) {
+  pinnedByLockfileDataModel(uses.getLocation().getFile().getRelativePath(), nwo, version)
+}
+
 private predicate getStepContainerName(UsesStep uses, string name) {
   exists(Workflow workflow |
     uses.getEnclosingWorkflow() = workflow and
@@ -62,6 +71,7 @@ where
   uses.getVersion() = version and
   not isTrustedOwner(nwo) and
   not isSelfReference(nwo) and
+  not pinnedByLockfile(uses, nwo, version) and
   not (if isContainerImage(nwo) then isPinnedContainer(version) else isPinnedCommit(version)) and
   not isImmutableAction(uses, nwo)
 select uses.getCalleeNode(),
