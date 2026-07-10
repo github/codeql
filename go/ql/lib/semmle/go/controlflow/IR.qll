@@ -662,7 +662,11 @@ module IR {
       (
         exists(assgn.(Assignment).getLhs(i))
         or
-        exists(assgn.(ValueSpec).getNameExpr(i))
+        // A `ValueSpec` without an initializer (`var x int`) is written by its
+        // `zero-init` node directly (see `InitVariableInstruction`), so only
+        // specs *with* an initializer produce an `assign` node.
+        exists(assgn.(ValueSpec).getNameExpr(i)) and
+        exists(assgn.(ValueSpec).getAnInit())
         or
         assgn instanceof RangeElementExpr and i in [0, 1]
       )
@@ -677,9 +681,6 @@ module IR {
       exists(ValueSpec spec | spec = assgn |
         spec.getNumName() = spec.getNumInit() and
         result = evalExprInstruction(spec.getInit(i))
-        or
-        result =
-          implicitInitInstruction(any(ValueEntity v | spec.getNameExpr(i) = v.getDeclaration()))
       )
       or
       result.(ExtractTupleElementInstruction).isAdditional(assgn, "extract:" + i.toString())
@@ -1026,6 +1027,28 @@ module IR {
     override ControlFlow::Root getRoot() { result = res.getFunction() }
   }
 
+  /**
+   * An instruction initializing a variable declared without an initializer
+   * (`var x int`) to its zero value.
+   *
+   * This is the same node as the `EvalImplicitInitInstruction` that computes the
+   * zero value: the zero-value instruction performs the write of the variable
+   * directly, rather than feeding a separate write node.
+   */
+  class InitVariableInstruction extends WriteInstruction {
+    ValueSpec spec;
+    int idx;
+
+    InitVariableInstruction() {
+      this.isAdditional(spec, "zero-init:" + idx.toString()) and
+      exists(spec.getNameExpr(idx))
+    }
+
+    override Instruction getRhs() { result = this }
+
+    override ControlFlow::Root getRoot() { result.isRootOf(spec) }
+  }
+
   /** An instruction that gets the next key-value pair in a range loop. */
   class GetNextEntryInstruction extends Instruction {
     RangeElementExpr p;
@@ -1143,6 +1166,11 @@ module IR {
       exists(FuncDef fd, int idx |
         write.isAdditional(fd.getBody(), "result-zero-init:" + idx.toString()) and
         lhs = fd.getResultVar(idx).getDeclaration()
+      )
+      or
+      exists(ValueSpec spec, int idx |
+        write.isAdditional(spec, "zero-init:" + idx.toString()) and
+        lhs = spec.getNameExpr(idx)
       )
     } or
     /** A composite literal element target. */
