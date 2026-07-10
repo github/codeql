@@ -1232,17 +1232,15 @@
 | exprs.go:40:2:40:12 | declaration statement | exprs.go:40:2:40:12 | variable declaration |
 | exprs.go:40:2:40:12 | variable declaration | exprs.go:40:6:40:12 | value declaration specifier |
 | exprs.go:40:6:40:12 | After value declaration specifier | exprs.go:40:2:40:12 | After variable declaration |
-| exprs.go:40:6:40:12 | assign:0 value declaration specifier | exprs.go:40:6:40:12 | After value declaration specifier |
 | exprs.go:40:6:40:12 | value declaration specifier | exprs.go:40:6:40:12 | zero-init:0 value declaration specifier |
-| exprs.go:40:6:40:12 | zero-init:0 value declaration specifier | exprs.go:40:6:40:12 | assign:0 value declaration specifier |
+| exprs.go:40:6:40:12 | zero-init:0 value declaration specifier | exprs.go:40:6:40:12 | After value declaration specifier |
 | exprs.go:41:2:41:12 | After declaration statement | exprs.go:42:2:42:20 | ... = ... |
 | exprs.go:41:2:41:12 | After variable declaration | exprs.go:41:2:41:12 | After declaration statement |
 | exprs.go:41:2:41:12 | declaration statement | exprs.go:41:2:41:12 | variable declaration |
 | exprs.go:41:2:41:12 | variable declaration | exprs.go:41:6:41:12 | value declaration specifier |
 | exprs.go:41:6:41:12 | After value declaration specifier | exprs.go:41:2:41:12 | After variable declaration |
-| exprs.go:41:6:41:12 | assign:0 value declaration specifier | exprs.go:41:6:41:12 | After value declaration specifier |
 | exprs.go:41:6:41:12 | value declaration specifier | exprs.go:41:6:41:12 | zero-init:0 value declaration specifier |
-| exprs.go:41:6:41:12 | zero-init:0 value declaration specifier | exprs.go:41:6:41:12 | assign:0 value declaration specifier |
+| exprs.go:41:6:41:12 | zero-init:0 value declaration specifier | exprs.go:41:6:41:12 | After value declaration specifier |
 | exprs.go:42:2:42:20 | ... = ... | exprs.go:42:10:42:20 | Before type assertion |
 | exprs.go:42:2:42:20 | After ... = ... | exprs.go:43:2:45:2 | if statement |
 | exprs.go:42:2:42:20 | assign:0 ... = ... | exprs.go:42:2:42:20 | extract:1 ... = ... |
@@ -1904,9 +1902,8 @@
 | main.go:13:2:13:10 | declaration statement | main.go:13:2:13:10 | variable declaration |
 | main.go:13:2:13:10 | variable declaration | main.go:13:6:13:10 | value declaration specifier |
 | main.go:13:6:13:10 | After value declaration specifier | main.go:13:2:13:10 | After variable declaration |
-| main.go:13:6:13:10 | assign:0 value declaration specifier | main.go:13:6:13:10 | After value declaration specifier |
 | main.go:13:6:13:10 | value declaration specifier | main.go:13:6:13:10 | zero-init:0 value declaration specifier |
-| main.go:13:6:13:10 | zero-init:0 value declaration specifier | main.go:13:6:13:10 | assign:0 value declaration specifier |
+| main.go:13:6:13:10 | zero-init:0 value declaration specifier | main.go:13:6:13:10 | After value declaration specifier |
 | main.go:14:2:14:8 | ... := ... | main.go:14:7:14:8 | Before 23 |
 | main.go:14:2:14:8 | After ... := ... | main.go:15:2:15:16 | expression statement |
 | main.go:14:2:14:8 | assign:0 ... := ... | main.go:14:2:14:8 | After ... := ... |
@@ -2212,9 +2209,8 @@
 | main.go:67:2:67:10 | declaration statement | main.go:67:2:67:10 | variable declaration |
 | main.go:67:2:67:10 | variable declaration | main.go:67:6:67:10 | value declaration specifier |
 | main.go:67:6:67:10 | After value declaration specifier | main.go:67:2:67:10 | After variable declaration |
-| main.go:67:6:67:10 | assign:0 value declaration specifier | main.go:67:6:67:10 | After value declaration specifier |
 | main.go:67:6:67:10 | value declaration specifier | main.go:67:6:67:10 | zero-init:0 value declaration specifier |
-| main.go:67:6:67:10 | zero-init:0 value declaration specifier | main.go:67:6:67:10 | assign:0 value declaration specifier |
+| main.go:67:6:67:10 | zero-init:0 value declaration specifier | main.go:67:6:67:10 | After value declaration specifier |
 | main.go:68:2:70:2 | After for statement | main.go:71:2:71:13 | expression statement |
 | main.go:68:2:70:2 | [LoopHeader] for statement | main.go:68:6:68:11 | Before call to cond |
 | main.go:68:2:70:2 | for statement | main.go:68:6:68:11 | Before call to cond |
@@ -2790,13 +2786,11 @@
 | stmts3.go:7:9:7:12 | Before iota | stmts3.go:7:9:7:12 | iota |
 | stmts3.go:7:9:7:12 | iota | stmts3.go:7:9:7:12 | After iota |
 | stmts3.go:8:3:8:7 | After value declaration specifier | stmts3.go:9:3:9:6 | value declaration specifier |
-| stmts3.go:8:3:8:7 | assign:0 value declaration specifier | stmts3.go:8:3:8:7 | After value declaration specifier |
 | stmts3.go:8:3:8:7 | value declaration specifier | stmts3.go:8:3:8:7 | zero-init:0 value declaration specifier |
-| stmts3.go:8:3:8:7 | zero-init:0 value declaration specifier | stmts3.go:8:3:8:7 | assign:0 value declaration specifier |
+| stmts3.go:8:3:8:7 | zero-init:0 value declaration specifier | stmts3.go:8:3:8:7 | After value declaration specifier |
 | stmts3.go:9:3:9:6 | After value declaration specifier | stmts3.go:6:2:10:2 | After constant declaration |
-| stmts3.go:9:3:9:6 | assign:0 value declaration specifier | stmts3.go:9:3:9:6 | After value declaration specifier |
 | stmts3.go:9:3:9:6 | value declaration specifier | stmts3.go:9:3:9:6 | zero-init:0 value declaration specifier |
-| stmts3.go:9:3:9:6 | zero-init:0 value declaration specifier | stmts3.go:9:3:9:6 | assign:0 value declaration specifier |
+| stmts3.go:9:3:9:6 | zero-init:0 value declaration specifier | stmts3.go:9:3:9:6 | After value declaration specifier |
 | stmts3.go:11:2:11:26 | Before return statement | stmts3.go:11:9:11:26 | Before ...-... |
 | stmts3.go:11:2:11:26 | return statement | stmts3.go:5:1:12:1 | Normal Exit |
 | stmts3.go:11:9:11:11 | After red | stmts3.go:11:15:11:19 | Before green |
@@ -3445,17 +3439,15 @@
 | stmts.go:47:2:47:17 | declaration statement | stmts.go:47:2:47:17 | variable declaration |
 | stmts.go:47:2:47:17 | variable declaration | stmts.go:47:6:47:17 | value declaration specifier |
 | stmts.go:47:6:47:17 | After value declaration specifier | stmts.go:47:2:47:17 | After variable declaration |
-| stmts.go:47:6:47:17 | assign:0 value declaration specifier | stmts.go:47:6:47:17 | After value declaration specifier |
 | stmts.go:47:6:47:17 | value declaration specifier | stmts.go:47:6:47:17 | zero-init:0 value declaration specifier |
-| stmts.go:47:6:47:17 | zero-init:0 value declaration specifier | stmts.go:47:6:47:17 | assign:0 value declaration specifier |
+| stmts.go:47:6:47:17 | zero-init:0 value declaration specifier | stmts.go:47:6:47:17 | After value declaration specifier |
 | stmts.go:48:2:48:11 | After declaration statement | stmts.go:50:2:59:2 | Before select statement |
 | stmts.go:48:2:48:11 | After variable declaration | stmts.go:48:2:48:11 | After declaration statement |
 | stmts.go:48:2:48:11 | declaration statement | stmts.go:48:2:48:11 | variable declaration |
 | stmts.go:48:2:48:11 | variable declaration | stmts.go:48:6:48:11 | value declaration specifier |
 | stmts.go:48:6:48:11 | After value declaration specifier | stmts.go:48:2:48:11 | After variable declaration |
-| stmts.go:48:6:48:11 | assign:0 value declaration specifier | stmts.go:48:6:48:11 | After value declaration specifier |
 | stmts.go:48:6:48:11 | value declaration specifier | stmts.go:48:6:48:11 | zero-init:0 value declaration specifier |
-| stmts.go:48:6:48:11 | zero-init:0 value declaration specifier | stmts.go:48:6:48:11 | assign:0 value declaration specifier |
+| stmts.go:48:6:48:11 | zero-init:0 value declaration specifier | stmts.go:48:6:48:11 | After value declaration specifier |
 | stmts.go:50:2:59:2 | After select statement | stmts.go:61:2:61:10 | Before select statement |
 | stmts.go:50:2:59:2 | Before select statement | stmts.go:51:9:51:11 | Before ch1 |
 | stmts.go:50:2:59:2 | select statement | stmts.go:51:2:52:31 | comm clause |
