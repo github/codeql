@@ -1127,15 +1127,6 @@ module Public {
         right = DataFlow::exprNode(assgn.getRhs()) and
         op = o.substring(0, o.length() - 1)
       )
-      or
-      exists(IR::EvalIncDecRhsInstruction rhs, IncDecStmt ids |
-        rhs = this.asInstruction() and ids = rhs.getStmt()
-      |
-        left = DataFlow::exprNode(ids.getOperand()) and
-        right =
-          DataFlow::instructionNode(any(IR::EvalImplicitOneInstruction one | one.getStmt() = ids)) and
-        op = ids.getOperator().charAt(0)
-      )
     }
 
     /** Holds if this operation may have observable side effects. */
