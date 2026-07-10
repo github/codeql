@@ -17,11 +17,11 @@
 | main.go:59:3:59:7 | assign:0 ... = ... | main.go:57:6:57:6 | x | main.go:59:7:59:7 | 2 |
 | main.go:63:2:63:7 | assign:0 ... := ... | main.go:63:2:63:2 | y | main.go:63:7:63:7 | 1 |
 | main.go:64:6:64:11 | assign:0 ... := ... | main.go:64:6:64:6 | i | main.go:64:11:64:11 | 0 |
-| main.go:64:16:64:18 | increment statement | main.go:64:6:64:6 | i | main.go:64:16:64:18 | incdec-rhs increment statement |
+| main.go:64:16:64:18 | compound-rhs increment statement | main.go:64:6:64:6 | i | main.go:64:16:64:18 | compound-rhs increment statement |
 | main.go:68:3:68:7 | assign:0 ... = ... | main.go:63:2:63:2 | y | main.go:68:7:68:7 | 2 |
 | main.go:72:2:72:7 | assign:0 ... := ... | main.go:72:2:72:2 | z | main.go:72:7:72:7 | 1 |
 | main.go:73:6:73:11 | assign:0 ... := ... | main.go:73:6:73:6 | i | main.go:73:11:73:11 | 0 |
-| main.go:73:16:73:18 | increment statement | main.go:73:6:73:6 | i | main.go:73:16:73:18 | incdec-rhs increment statement |
+| main.go:73:16:73:18 | compound-rhs increment statement | main.go:73:6:73:6 | i | main.go:73:16:73:18 | compound-rhs increment statement |
 | main.go:74:3:74:7 | assign:0 ... = ... | main.go:72:2:72:2 | z | main.go:74:7:74:7 | 2 |
 | main.go:82:36:86:1 | zero-init:0 block statement | main.go:82:18:82:18 | a | main.go:82:36:86:1 | zero-init:0 block statement |
 | main.go:82:36:86:1 | zero-init:1 block statement | main.go:82:25:82:25 | b | main.go:82:36:86:1 | zero-init:1 block statement |
