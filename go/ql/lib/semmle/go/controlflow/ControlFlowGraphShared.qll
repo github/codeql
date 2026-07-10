@@ -589,19 +589,6 @@ module GoCfg {
         // Implicit deref
         implicitDerefCondition(n) and tag = "implicit-deref"
         or
-        // Implicit slice bounds
-        n instanceof Go::SliceExpr and
-        not exists(n.(Go::SliceExpr).getLow()) and
-        tag = "implicit-low"
-        or
-        n instanceof Go::SliceExpr and
-        not exists(n.(Go::SliceExpr).getHigh()) and
-        tag = "implicit-high"
-        or
-        n instanceof Go::SliceExpr and
-        not exists(n.(Go::SliceExpr).getMax()) and
-        tag = "implicit-max"
-        or
         // Literal element initialization
         n = any(Go::CompositeLit lit).getAnElement() and
         tag = "lit-init"
@@ -1355,52 +1342,65 @@ module GoCfg {
     }
 
     /**
-     * Slice expression: base → implicit-deref? → low/implicit-low →
-     * high/implicit-high → max/implicit-max → In(sliceExpr)
+     * Gets the bound expression of slice `se` at position `r` (`0` = low,
+     * `1` = high, `2` = max), if it is present.
+     */
+    private Go::Expr sliceBoundExpr(Go::SliceExpr se, int r) {
+      r = 0 and result = se.getLow()
+      or
+      r = 1 and result = se.getHigh()
+      or
+      r = 2 and result = se.getMax()
+    }
+
+    /**
+     * Holds if, having finished evaluating the slice component at position `p`
+     * (`-1` = base, `0` = low, `1` = high, `2` = max), `n2` is the control-flow
+     * node to execute next: the next present bound in `low, high, max` order, or
+     * the slice evaluation node `In(se)` if no further bound is present.
+     *
+     * Implicit (omitted) bounds have no control-flow node of their own, so
+     * control simply skips over them.
+     */
+    bindingset[p]
+    private predicate sliceNext(Go::SliceExpr se, int p, PreControlFlowNode n2) {
+      exists(int q | q = min(int r | r > p and exists(sliceBoundExpr(se, r)) | r) |
+        n2.isBefore(sliceBoundExpr(se, q))
+      )
+      or
+      not exists(int r | r > p and exists(sliceBoundExpr(se, r))) and
+      n2.isIn(se)
+    }
+
+    /**
+     * Slice expression: base → implicit-deref? → low? → high? → max? → In(sliceExpr).
+     *
+     * Missing (implicit) bounds have no control-flow node of their own; the
+     * implicit lower bound of `0` is modelled as a constant on the
+     * `SliceInstruction` rather than as a separate node.
      */
     private predicate sliceExprStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::SliceExpr se |
-        (implicitDerefCondition(se.getBase()) or exists(se.getLow()) or not exists(se.getLow())) and
+        n1.isBefore(se) and n2.isBefore(se.getBase())
+        or
+        // After base → implicit deref, or (if none) the first present bound / slice eval
+        n1.isAfter(se.getBase()) and
         (
-          n1.isBefore(se) and n2.isBefore(se.getBase())
-          or
-          // After base → implicit deref or low/implicit-low
-          n1.isAfter(se.getBase()) and
-          (
-            if implicitDerefCondition(se.getBase())
-            then n2.isAdditional(se.getBase(), "implicit-deref")
-            else
-              if exists(se.getLow())
-              then n2.isBefore(se.getLow())
-              else n2.isAdditional(se, "implicit-low")
-          )
-          or
-          n1.isAdditional(se.getBase(), "implicit-deref") and
-          (
-            if exists(se.getLow())
-            then n2.isBefore(se.getLow())
-            else n2.isAdditional(se, "implicit-low")
-          )
-          or
-          (n1.isAfter(se.getLow()) or n1.isAdditional(se, "implicit-low")) and
-          (
-            if exists(se.getHigh())
-            then n2.isBefore(se.getHigh())
-            else n2.isAdditional(se, "implicit-high")
-          )
-          or
-          (n1.isAfter(se.getHigh()) or n1.isAdditional(se, "implicit-high")) and
-          (
-            if exists(se.getMax())
-            then n2.isBefore(se.getMax())
-            else n2.isAdditional(se, "implicit-max")
-          )
-          or
-          (n1.isAfter(se.getMax()) or n1.isAdditional(se, "implicit-max")) and
-          n2.isIn(se)
-          or
-          n1.isIn(se) and n2.isAfter(se)
+          if implicitDerefCondition(se.getBase())
+          then n2.isAdditional(se.getBase(), "implicit-deref")
+          else sliceNext(se, -1, n2)
         )
+        or
+        n1.isAdditional(se.getBase(), "implicit-deref") and sliceNext(se, -1, n2)
+        or
+        // After a present bound → the next present bound / slice eval
+        n1.isAfter(se.getLow()) and sliceNext(se, 0, n2)
+        or
+        n1.isAfter(se.getHigh()) and sliceNext(se, 1, n2)
+        or
+        n1.isAfter(se.getMax()) and sliceNext(se, 2, n2)
+        or
+        n1.isIn(se) and n2.isAfter(se)
       )
     }
 

@@ -1108,12 +1108,11 @@
 | exprs.go:21:2:21:19 | ... := ... | exprs.go:21:10:21:19 | Before slice expression |
 | exprs.go:21:2:21:19 | After ... := ... | exprs.go:22:2:22:18 | ... := ... |
 | exprs.go:21:2:21:19 | assign:0 ... := ... | exprs.go:21:2:21:19 | After ... := ... |
-| exprs.go:21:10:21:13 | After slc2 | exprs.go:21:10:21:19 | implicit-low slice expression |
+| exprs.go:21:10:21:13 | After slc2 | exprs.go:21:16:21:16 | Before 2 |
 | exprs.go:21:10:21:13 | Before slc2 | exprs.go:21:10:21:13 | slc2 |
 | exprs.go:21:10:21:13 | slc2 | exprs.go:21:10:21:13 | After slc2 |
 | exprs.go:21:10:21:19 | After slice expression | exprs.go:21:2:21:19 | assign:0 ... := ... |
 | exprs.go:21:10:21:19 | Before slice expression | exprs.go:21:10:21:13 | Before slc2 |
-| exprs.go:21:10:21:19 | implicit-low slice expression | exprs.go:21:16:21:16 | Before 2 |
 | exprs.go:21:10:21:19 | slice expression | exprs.go:21:10:21:19 | After slice expression |
 | exprs.go:21:16:21:16 | 2 | exprs.go:21:16:21:16 | After 2 |
 | exprs.go:21:16:21:16 | After 2 | exprs.go:21:18:21:18 | Before 3 |
@@ -1129,13 +1128,12 @@
 | exprs.go:22:10:22:13 | slc3 | exprs.go:22:10:22:13 | After slc3 |
 | exprs.go:22:10:22:18 | After slice expression | exprs.go:22:2:22:18 | assign:0 ... := ... |
 | exprs.go:22:10:22:18 | Before slice expression | exprs.go:22:10:22:13 | Before slc3 |
-| exprs.go:22:10:22:18 | implicit-max slice expression | exprs.go:22:10:22:18 | slice expression |
 | exprs.go:22:10:22:18 | slice expression | exprs.go:22:10:22:18 | After slice expression |
 | exprs.go:22:15:22:15 | 0 | exprs.go:22:15:22:15 | After 0 |
 | exprs.go:22:15:22:15 | After 0 | exprs.go:22:17:22:17 | Before 2 |
 | exprs.go:22:15:22:15 | Before 0 | exprs.go:22:15:22:15 | 0 |
 | exprs.go:22:17:22:17 | 2 | exprs.go:22:17:22:17 | After 2 |
-| exprs.go:22:17:22:17 | After 2 | exprs.go:22:10:22:18 | implicit-max slice expression |
+| exprs.go:22:17:22:17 | After 2 | exprs.go:22:10:22:18 | slice expression |
 | exprs.go:22:17:22:17 | Before 2 | exprs.go:22:17:22:17 | 2 |
 | exprs.go:23:2:23:17 | ... := ... | exprs.go:23:10:23:17 | Before slice expression |
 | exprs.go:23:2:23:17 | After ... := ... | exprs.go:24:2:24:17 | ... := ... |
@@ -1145,25 +1143,21 @@
 | exprs.go:23:10:23:13 | slc4 | exprs.go:23:10:23:13 | After slc4 |
 | exprs.go:23:10:23:17 | After slice expression | exprs.go:23:2:23:17 | assign:0 ... := ... |
 | exprs.go:23:10:23:17 | Before slice expression | exprs.go:23:10:23:13 | Before slc4 |
-| exprs.go:23:10:23:17 | implicit-high slice expression | exprs.go:23:10:23:17 | implicit-max slice expression |
-| exprs.go:23:10:23:17 | implicit-max slice expression | exprs.go:23:10:23:17 | slice expression |
 | exprs.go:23:10:23:17 | slice expression | exprs.go:23:10:23:17 | After slice expression |
 | exprs.go:23:15:23:15 | 0 | exprs.go:23:15:23:15 | After 0 |
-| exprs.go:23:15:23:15 | After 0 | exprs.go:23:10:23:17 | implicit-high slice expression |
+| exprs.go:23:15:23:15 | After 0 | exprs.go:23:10:23:17 | slice expression |
 | exprs.go:23:15:23:15 | Before 0 | exprs.go:23:15:23:15 | 0 |
 | exprs.go:24:2:24:17 | ... := ... | exprs.go:24:10:24:17 | Before slice expression |
 | exprs.go:24:2:24:17 | After ... := ... | exprs.go:25:2:25:34 | Before return statement |
 | exprs.go:24:2:24:17 | assign:0 ... := ... | exprs.go:24:2:24:17 | After ... := ... |
-| exprs.go:24:10:24:13 | After slc5 | exprs.go:24:10:24:17 | implicit-low slice expression |
+| exprs.go:24:10:24:13 | After slc5 | exprs.go:24:16:24:16 | Before 2 |
 | exprs.go:24:10:24:13 | Before slc5 | exprs.go:24:10:24:13 | slc5 |
 | exprs.go:24:10:24:13 | slc5 | exprs.go:24:10:24:13 | After slc5 |
 | exprs.go:24:10:24:17 | After slice expression | exprs.go:24:2:24:17 | assign:0 ... := ... |
 | exprs.go:24:10:24:17 | Before slice expression | exprs.go:24:10:24:13 | Before slc5 |
-| exprs.go:24:10:24:17 | implicit-low slice expression | exprs.go:24:16:24:16 | Before 2 |
-| exprs.go:24:10:24:17 | implicit-max slice expression | exprs.go:24:10:24:17 | slice expression |
 | exprs.go:24:10:24:17 | slice expression | exprs.go:24:10:24:17 | After slice expression |
 | exprs.go:24:16:24:16 | 2 | exprs.go:24:16:24:16 | After 2 |
-| exprs.go:24:16:24:16 | After 2 | exprs.go:24:10:24:17 | implicit-max slice expression |
+| exprs.go:24:16:24:16 | After 2 | exprs.go:24:10:24:17 | slice expression |
 | exprs.go:24:16:24:16 | Before 2 | exprs.go:24:16:24:16 | 2 |
 | exprs.go:25:2:25:34 | Before return statement | exprs.go:25:9:25:34 | Before struct literal |
 | exprs.go:25:2:25:34 | return statement | exprs.go:5:1:26:1 | Normal Exit |

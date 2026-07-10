@@ -204,12 +204,6 @@ module IR {
       this instanceof TypeSwitchImplicitVariableInstruction and
       result = "type switch implicit variable declaration"
       or
-      this instanceof EvalImplicitLowerSliceBoundInstruction and result = "implicit lower bound"
-      or
-      this instanceof EvalImplicitUpperSliceBoundInstruction and result = "implicit upper bound"
-      or
-      this instanceof EvalImplicitMaxSliceBoundInstruction and result = "implicit maximum"
-      or
       this instanceof EvalImplicitDerefInstruction and result = "implicit dereference"
       or
       this instanceof ImplicitFieldReadInstruction and result = "implicit field selection"
@@ -480,23 +474,14 @@ module IR {
     /** Gets the instruction computing the base value from which the slice is constructed. */
     Instruction getBase() { result = selectorBase(e) }
 
-    /** Gets the instruction computing the lower bound of the slice. */
-    Instruction getLow() {
-      result = evalExprInstruction(e.getLow()) or
-      result = implicitLowerSliceBoundInstruction(e)
-    }
+    /** Gets the instruction computing the lower bound of the slice, if it is explicit. */
+    Instruction getLow() { result = evalExprInstruction(e.getLow()) }
 
-    /** Gets the instruction computing the upper bound of the slice. */
-    Instruction getHigh() {
-      result = evalExprInstruction(e.getHigh()) or
-      result = implicitUpperSliceBoundInstruction(e)
-    }
+    /** Gets the instruction computing the upper bound of the slice, if it is explicit. */
+    Instruction getHigh() { result = evalExprInstruction(e.getHigh()) }
 
-    /** Gets the instruction computing the capacity of the slice. */
-    Instruction getMax() {
-      result = evalExprInstruction(e.getMax()) or
-      result = implicitMaxSliceBoundInstruction(e)
-    }
+    /** Gets the instruction computing the capacity of the slice, if it is explicit. */
+    Instruction getMax() { result = evalExprInstruction(e.getMax()) }
   }
 
   /**
@@ -1152,47 +1137,6 @@ module IR {
     override ControlFlow::Root getRoot() { result.isRootOf(cc) }
   }
 
-  /** An instruction computing the implicit lower bound of a slice expression. */
-  class EvalImplicitLowerSliceBoundInstruction extends Instruction {
-    SliceExpr slice;
-
-    EvalImplicitLowerSliceBoundInstruction() { this.isAdditional(slice, "implicit-low") }
-
-    override Type getResultType() { result instanceof IntType }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(slice) }
-
-    override int getIntValue() { result = 0 }
-
-    override string getExactValue() { result = "0" }
-
-    override predicate isConst() { any() }
-
-    override predicate isPlatformIndependentConstant() { any() }
-  }
-
-  /** An instruction computing the implicit upper bound of a slice expression. */
-  class EvalImplicitUpperSliceBoundInstruction extends Instruction {
-    SliceExpr slice;
-
-    EvalImplicitUpperSliceBoundInstruction() { this.isAdditional(slice, "implicit-high") }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(slice) }
-
-    override Type getResultType() { result instanceof IntType }
-  }
-
-  /** An instruction computing the implicit maximum bound of a slice expression. */
-  class EvalImplicitMaxSliceBoundInstruction extends Instruction {
-    SliceExpr slice;
-
-    EvalImplicitMaxSliceBoundInstruction() { this.isAdditional(slice, "implicit-max") }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(slice) }
-
-    override Type getResultType() { result instanceof IntType }
-  }
-
   /**
    * An instruction computing the implicit dereference of a pointer used as the base of a field
    * or method access, element access, or slice expression.
@@ -1518,27 +1462,6 @@ module IR {
    */
   ExtractTupleElementInstruction extractTupleElement(Instruction base, int idx) {
     result.extractsElement(base, idx)
-  }
-
-  /**
-   * Gets the instruction corresponding to the implicit lower bound of slice `e`, if any.
-   */
-  EvalImplicitLowerSliceBoundInstruction implicitLowerSliceBoundInstruction(SliceExpr e) {
-    result.isAdditional(e, "implicit-low")
-  }
-
-  /**
-   * Gets the instruction corresponding to the implicit upper bound of slice `e`, if any.
-   */
-  EvalImplicitUpperSliceBoundInstruction implicitUpperSliceBoundInstruction(SliceExpr e) {
-    result.isAdditional(e, "implicit-high")
-  }
-
-  /**
-   * Gets the instruction corresponding to the implicit maximum bound of slice `e`, if any.
-   */
-  EvalImplicitMaxSliceBoundInstruction implicitMaxSliceBoundInstruction(SliceExpr e) {
-    result.isAdditional(e, "implicit-max")
   }
 
   /**
