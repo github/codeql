@@ -646,8 +646,6 @@ module IR {
         // specs *with* an initializer produce an `assign` node.
         exists(assgn.(ValueSpec).getNameExpr(i)) and
         exists(assgn.(ValueSpec).getAnInit())
-        or
-        assgn instanceof RangeElementExpr and i in [0, 1]
       )
     }
 
@@ -661,8 +659,6 @@ module IR {
         spec.getNumName() = spec.getNumInit() and
         result = evalExprInstruction(spec.getInit(i))
       )
-      or
-      result.(ExtractTupleElementInstruction).isAdditional(assgn, "extract:" + i.toString())
     }
 
     override ControlFlow::Root getRoot() { result.isRootOf(assgn) }
@@ -774,6 +770,19 @@ module IR {
     }
 
     override ControlFlow::Root getRoot() { result.isRootOf(s) }
+  }
+
+  /**
+   * An `ExtractTupleElementInstruction` that also writes the extracted component
+   * to a left-hand side, as in a tuple-destructuring assignment (`x, y = f()`),
+   * a multi-variable declaration (`var x, y = f()`), or a `range` statement
+   * (`k, v := range m`).
+   *
+   * The extraction node performs the write directly, rather than feeding a
+   * separate `assign` node.
+   */
+  class ExtractWriteInstruction extends WriteInstruction, ExtractTupleElementInstruction {
+    override Instruction getRhs() { result = this }
   }
 
   /**
@@ -1151,6 +1160,23 @@ module IR {
         write.isAdditional(spec, "zero-init:" + idx.toString()) and
         lhs = spec.getNameExpr(idx)
       )
+      or
+      // A tuple-destructuring `extract` node writes its component directly (see
+      // `ExtractWriteInstruction`); blank-identifier targets are not written.
+      exists(AstNode assgn, int i | write.isAdditional(assgn, "extract:" + i.toString()) |
+        (
+          lhs = assgn.(Assignment).getLhs(i).stripParens()
+          or
+          lhs = assgn.(ValueSpec).getNameExpr(i)
+          or
+          exists(RangeElementExpr p | p = assgn |
+            i = 0 and lhs = p.getKey().stripParens()
+            or
+            i = 1 and lhs = p.getValue().stripParens()
+          )
+        ) and
+        not lhs instanceof BlankIdent
+      )
     } or
     /** A composite literal element target. */
     MkLiteralElementTarget(ControlFlow::Node write) {
@@ -1392,16 +1418,16 @@ module IR {
    * Gets the instruction corresponding to the assignment of the key variable
    * of range statement `rs`.
    */
-  AssignInstruction assignKeyInstruction(RangeStmt rs) {
-    result.isAdditional(rs.getPattern(), "assign:0")
+  ExtractWriteInstruction assignKeyInstruction(RangeStmt rs) {
+    result.isAdditional(rs.getPattern(), "extract:0")
   }
 
   /**
    * Gets the instruction corresponding to the assignment of the value variable
    * of range statement `rs`.
    */
-  AssignInstruction assignValueInstruction(RangeStmt rs) {
-    result.isAdditional(rs.getPattern(), "assign:1")
+  ExtractWriteInstruction assignValueInstruction(RangeStmt rs) {
+    result.isAdditional(rs.getPattern(), "extract:1")
   }
 
   /**
