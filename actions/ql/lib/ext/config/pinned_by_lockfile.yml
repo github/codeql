@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: pinnedByLockfileDataModel
+    # `pinnedByLockfileDataModel` records `uses:` references that are pinned by the repository's
+    # Actions lockfile (`.github/workflows/actions.lock`). It is intended to be populated by the
+    # CodeQL Actions extractor, which parses the lockfile at database-creation time using the
+    # canonical Go parser at `github.com/github/actions-lockfile/go`. Each row is
+    # `[workflow_path, nwo, ref]`:
+    #   - workflow_path: repo-relative path of the file containing the `uses:` reference
+    #   - nwo:           owner/name of the referenced action (e.g. `actions/checkout`)
+    #   - ref:           the ref as written in `uses:` (e.g. `v4`)
+    #
+    # Example of the intended shape (commented out; real data is supplied by the extractor):
+    #   - [".github/workflows/ci.yml", "actions/checkout", "v4"]
+    #
+    # Until the extractor populates this predicate it stays empty, so the
+    # `not pinnedByLockfile(...)` clause in `actions/unpinned-tag` is a no-op and behaviour is
+    # unchanged for repositories without a lockfile.
+    data: []
