@@ -196,6 +196,7 @@ edges
 | .github/workflows/resolve-args.yml:20:9:22:6 | Uses Step | .github/actions/download-artifact/action.yaml:6:7:25:4 | Uses Step |
 | .github/workflows/resolve-args.yml:20:9:22:6 | Uses Step | .github/workflows/resolve-args.yml:22:9:36:13 | Run Step: resolve-step |
 | .github/workflows/reusable_local.yml:23:9:26:6 | Uses Step | .github/workflows/reusable_local.yml:26:9:29:7 | Run Step |
+| .github/workflows/self_ref_dollar.yml:11:7:15:4 | Uses Step | .github/workflows/self_ref_dollar.yml:15:7:15:29 | Uses Step |
 | .github/workflows/test1.yml:18:9:21:6 | Uses Step | .github/workflows/test1.yml:21:9:24:6 | Run Step |
 | .github/workflows/test1.yml:21:9:24:6 | Run Step | .github/workflows/test1.yml:24:9:25:39 | Run Step |
 | .github/workflows/test2.yml:13:9:16:6 | Uses Step | .github/workflows/test2.yml:16:9:20:52 | Uses Step |
