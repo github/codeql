@@ -13,5 +13,3 @@ require gopkg.in/yaml.v3 v3.0.1 // indirect
 //   go mod edit -replace github.com/github/actions-lockfile/go=/path/to/actions-lockfile/go
 //
 // Remove this replace directive once actions-lockfile is published.
-
-replace github.com/github/actions-lockfile/go => /Users/nodeselector/ghq/github.com/github/actions-lockfile/go
