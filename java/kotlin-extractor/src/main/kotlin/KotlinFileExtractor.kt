@@ -3019,7 +3019,7 @@ open class KotlinFileExtractor(
         with("variable expr", v) {
             val varId = useVariable(v)
             val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
-            val locId = getPsiBasedLocation(v as IrElement) ?: tw.getLocation(getVariableLocationProvider(v))
+            val locId = getPsiBasedLocation(v) ?: tw.getLocation(getVariableLocationProvider(v))
             val type = useType(v.type)
             tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, exprId)
             tw.writeLocalvarsKotlinType(varId, type.kotlinResult.id)
