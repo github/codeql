@@ -101,3 +101,16 @@ codeql database analyze <db> \
 
 The lockfile-pinned reference is suppressed; references not covered by the
 lockfile are still reported.
+
+## Limitations
+
+- **Composite actions.** A lockfile records each workflow's *transitive* pin
+  list keyed by the workflow path. A `uses:` that appears only inside a
+  composite action file (`.github/actions/*/action.yml`) is therefore not
+  emitted against that action file's own path, so the query does not suppress
+  it. This is a completeness gap, not a correctness one: it can only leave a
+  reference reported, never wrongly suppress one, because a row is only ever
+  emitted for a `(path, nwo, ref)` the lockfile actually pins.
+- **Ref forms the lockfile can't cover.** Only the resolved ref and its
+  major/major.minor forms are emitted. A `uses:` written with an unrelated tag
+  or a moving branch that the lockfile did not resolve from is not matched.
