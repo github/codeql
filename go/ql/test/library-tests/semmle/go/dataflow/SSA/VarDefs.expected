@@ -1,4 +1,4 @@
-| main.go:13:6:13:10 | assign:0 value declaration specifier | main.go:13:6:13:6 | x | main.go:13:6:13:10 | zero-init:0 value declaration specifier |
+| main.go:13:6:13:10 | zero-init:0 value declaration specifier | main.go:13:6:13:6 | x | main.go:13:6:13:10 | zero-init:0 value declaration specifier |
 | main.go:14:2:14:8 | assign:0 ... := ... | main.go:14:2:14:2 | y | main.go:14:7:14:8 | 23 |
 | main.go:17:3:17:9 | compound-rhs ... += ... | main.go:14:2:14:2 | y | main.go:17:3:17:9 | compound-rhs ... += ... |
 | main.go:21:3:21:7 | assign:0 ... = ... | main.go:13:6:13:6 | x | main.go:21:7:21:7 | y |
@@ -13,7 +13,7 @@
 | main.go:47:25:50:1 | result-zero-init:0 block statement | main.go:47:13:47:18 | result | main.go:47:25:50:1 | result-zero-init:0 block statement |
 | main.go:48:2:48:12 | assign:0 ... = ... | main.go:47:13:47:18 | result | main.go:48:11:48:12 | 42 |
 | main.go:52:26:54:1 | result-zero-init:0 block statement | main.go:52:14:52:19 | result | main.go:52:26:54:1 | result-zero-init:0 block statement |
-| main.go:57:6:57:10 | assign:0 value declaration specifier | main.go:57:6:57:6 | x | main.go:57:6:57:10 | zero-init:0 value declaration specifier |
+| main.go:57:6:57:10 | zero-init:0 value declaration specifier | main.go:57:6:57:6 | x | main.go:57:6:57:10 | zero-init:0 value declaration specifier |
 | main.go:59:3:59:7 | assign:0 ... = ... | main.go:57:6:57:6 | x | main.go:59:7:59:7 | 2 |
 | main.go:63:2:63:7 | assign:0 ... := ... | main.go:63:2:63:2 | y | main.go:63:7:63:7 | 1 |
 | main.go:64:6:64:11 | assign:0 ... := ... | main.go:64:6:64:6 | i | main.go:64:11:64:11 | 0 |
@@ -39,7 +39,7 @@
 | main.go:113:2:113:7 | assign:0 ... := ... | main.go:113:2:113:2 | x | main.go:113:7:113:7 | 0 |
 | main.go:115:3:115:12 | assign:0 ... := ... | main.go:115:3:115:3 | y | main.go:115:8:115:12 | ...+... |
 | main.go:116:3:116:7 | assign:0 ... = ... | main.go:113:2:113:2 | x | main.go:116:7:116:7 | y |
-| main.go:128:6:128:8 | assign:0 value declaration specifier | main.go:128:6:128:6 | p | main.go:128:6:128:8 | zero-init:0 value declaration specifier |
+| main.go:128:6:128:8 | zero-init:0 value declaration specifier | main.go:128:6:128:6 | p | main.go:128:6:128:8 | zero-init:0 value declaration specifier |
 | main.go:130:3:130:24 | assign:0 ... = ... | main.go:128:6:128:6 | p | main.go:130:7:130:24 | struct literal |
 | main.go:130:9:130:9 | lit-init 2 | main.go:122:2:122:2 | a | main.go:130:9:130:9 | 2 |
 | main.go:130:12:130:18 | lit-init struct literal | main.go:123:2:123:2 | b | main.go:130:12:130:18 | struct literal |
