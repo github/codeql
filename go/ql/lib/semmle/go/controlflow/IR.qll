@@ -208,8 +208,6 @@ module IR {
       this instanceof EvalIncDecRhsInstruction and
       result = "right-hand side of increment/decrement"
       or
-      this instanceof EvalImplicitOneInstruction and result = "implicit 1"
-      or
       this instanceof ReturnInstruction and result = "return"
       or
       this instanceof WriteResultInstruction and result = "result write"
@@ -965,28 +963,6 @@ module IR {
     override Type getResultType() { result = ids.getOperand().getType() }
 
     override ControlFlow::Root getRoot() { result.isRootOf(ids) }
-  }
-
-  /** An instruction computing the implicit operand `1` in an increment or decrement statement. */
-  class EvalImplicitOneInstruction extends Instruction {
-    IncDecStmt ids;
-
-    EvalImplicitOneInstruction() { this.isAdditional(ids, "implicit-one") }
-
-    /** Gets the corresponding increment or decrement statement. */
-    IncDecStmt getStmt() { result = ids }
-
-    override Type getResultType() { result = ids.getOperand().getType() }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(ids) }
-
-    override int getIntValue() { result = 1 }
-
-    override string getExactValue() { result = "1" }
-
-    override predicate isConst() { any() }
-
-    override predicate isPlatformIndependentConstant() { any() }
   }
 
   /** An instruction corresponding to a return from a function. */
