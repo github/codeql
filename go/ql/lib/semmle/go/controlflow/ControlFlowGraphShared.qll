@@ -508,7 +508,11 @@ module GoCfg {
             // so the guard itself emits no assignment write node.
             not n = any(Go::TypeSwitchStmt ts).getAssign()
             or
-            notBlankIdent(n.(Go::ValueSpec).getNameExpr(i))
+            // A `ValueSpec` without an initializer is written by its `zero-init`
+            // node directly (see `IR::InitVariableInstruction`), so only specs
+            // *with* an initializer emit an `assign` write node.
+            notBlankIdent(n.(Go::ValueSpec).getNameExpr(i)) and
+            exists(n.(Go::ValueSpec).getAnInit())
             or
             notBlankIdent(n.(Go::RangeElementExpr).getKey()) and i = 0
             or
@@ -1103,7 +1107,10 @@ module GoCfg {
             // above, so they emit no separate `assign:j` node.
             not assgn instanceof Go::CompoundAssignStmt
             or
-            notBlankIdent(assgn.(Go::ValueSpec).getNameExpr(j))
+            // A `ValueSpec` without an initializer is written by its `zero-init`
+            // node directly, so only specs *with* an initializer emit `assign:j`.
+            notBlankIdent(assgn.(Go::ValueSpec).getNameExpr(j)) and
+            exists(assgn.(Go::ValueSpec).getAnInit())
             or
             notBlankIdent(assgn.(Go::RangeElementExpr).getKey()) and j = 0
             or
