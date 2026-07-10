@@ -1346,8 +1346,7 @@
 | exprs.go:51:3:51:5 | res | exprs.go:51:3:51:5 | After res |
 | exprs.go:51:3:51:14 | ... += ... | exprs.go:51:3:51:5 | Before res |
 | exprs.go:51:3:51:14 | After ... += ... | exprs.go:50:31:52:2 | After block statement |
-| exprs.go:51:3:51:14 | assign:0 ... += ... | exprs.go:51:3:51:14 | After ... += ... |
-| exprs.go:51:3:51:14 | compound-rhs ... += ... | exprs.go:51:3:51:14 | assign:0 ... += ... |
+| exprs.go:51:3:51:14 | compound-rhs ... += ... | exprs.go:51:3:51:14 | After ... += ... |
 | exprs.go:51:10:51:11 | After xs | exprs.go:51:13:51:13 | Before i |
 | exprs.go:51:10:51:11 | Before xs | exprs.go:51:10:51:11 | xs |
 | exprs.go:51:10:51:11 | xs | exprs.go:51:10:51:11 | After xs |
@@ -1967,8 +1966,7 @@
 | main.go:17:3:17:3 | y | main.go:17:3:17:3 | After y |
 | main.go:17:3:17:9 | ... += ... | main.go:17:3:17:3 | Before y |
 | main.go:17:3:17:9 | After ... += ... | main.go:16:12:18:2 | After block statement |
-| main.go:17:3:17:9 | assign:0 ... += ... | main.go:17:3:17:9 | After ... += ... |
-| main.go:17:3:17:9 | compound-rhs ... += ... | main.go:17:3:17:9 | assign:0 ... += ... |
+| main.go:17:3:17:9 | compound-rhs ... += ... | main.go:17:3:17:9 | After ... += ... |
 | main.go:17:8:17:9 | 19 | main.go:17:8:17:9 | After 19 |
 | main.go:17:8:17:9 | After 19 | main.go:17:3:17:9 | compound-rhs ... += ... |
 | main.go:17:8:17:9 | Before 19 | main.go:17:8:17:9 | 19 |
@@ -2083,8 +2081,7 @@
 | main.go:35:2:35:3 | star expression | main.go:35:2:35:3 | After star expression |
 | main.go:35:2:35:9 | ... += ... | main.go:35:2:35:3 | Before star expression |
 | main.go:35:2:35:9 | After ... += ... | main.go:34:19:36:1 | After block statement |
-| main.go:35:2:35:9 | assign:0 ... += ... | main.go:35:2:35:9 | After ... += ... |
-| main.go:35:2:35:9 | compound-rhs ... += ... | main.go:35:2:35:9 | assign:0 ... += ... |
+| main.go:35:2:35:9 | compound-rhs ... += ... | main.go:35:2:35:9 | After ... += ... |
 | main.go:35:3:35:3 | After x | main.go:35:2:35:3 | star expression |
 | main.go:35:3:35:3 | Before x | main.go:35:3:35:3 | x |
 | main.go:35:3:35:3 | x | main.go:35:3:35:3 | After x |
@@ -2911,8 +2908,7 @@
 | stmts5.go:8:2:8:7 | selection of val | stmts5.go:8:2:8:7 | After selection of val |
 | stmts5.go:8:2:8:16 | ... += ... | stmts5.go:8:2:8:7 | Before selection of val |
 | stmts5.go:8:2:8:16 | After ... += ... | stmts5.go:7:33:9:1 | After block statement |
-| stmts5.go:8:2:8:16 | assign:0 ... += ... | stmts5.go:8:2:8:16 | After ... += ... |
-| stmts5.go:8:2:8:16 | compound-rhs ... += ... | stmts5.go:8:2:8:16 | assign:0 ... += ... |
+| stmts5.go:8:2:8:16 | compound-rhs ... += ... | stmts5.go:8:2:8:16 | After ... += ... |
 | stmts5.go:8:12:8:16 | After other | stmts5.go:8:2:8:16 | compound-rhs ... += ... |
 | stmts5.go:8:12:8:16 | Before other | stmts5.go:8:12:8:16 | other |
 | stmts5.go:8:12:8:16 | other | stmts5.go:8:12:8:16 | After other |
