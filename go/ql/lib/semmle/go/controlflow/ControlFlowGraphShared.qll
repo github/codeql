@@ -512,7 +512,7 @@ module GoCfg {
             not extractNodeCondition(n, i)
             or
             // A `ValueSpec` without an initializer is written by its `zero-init`
-            // node directly (see `IR::InitVariableInstruction`), and a
+            // node directly (see `IR::EvalImplicitInitInstruction`), and a
             // tuple-destructuring declaration (`var x, y = f()`) is written by its
             // `extract` node; only specs with a per-name initializer emit
             // `assign:i`.
@@ -570,15 +570,16 @@ module GoCfg {
           tag = "param-init:" + i.toString()
         )
         or
-        // Result variable zero init + init (on the function body). This single
+        // Result-variable zero-initialization (on the function body). This single
         // node computes the zero value and writes it to the result variable (see
-        // `IR::InitResultInstruction`).
+        // `IR::EvalImplicitInitInstruction`); it is the same kind of node as the
+        // `zero-init` of an uninitialised local variable.
         exists(int i, Go::FuncDef fd |
           n = fd.getBody() and
           exists(fd.getBody()) and
           exists(fd.getResultVar(i)) and
           exists(fd.getResultVar(i).(Go::ResultVariable).getFunction().getBody()) and
-          tag = "result-zero-init:" + i.toString()
+          tag = "zero-init:" + i.toString()
         )
         or
         // Implicit deref
@@ -1710,7 +1711,7 @@ module GoCfg {
      * Function definition prologue and epilogue:
      * - Prologue: Before(body) → param-init:-1 → param-init:0 → ... when a
      *             receiver exists; otherwise it starts at param-init:0. Then
-     *             result-zero-init:0 → result-zero-init:1 → ... → first statement
+     *             zero-init:0 → zero-init:1 → ... → first statement
      * - Epilogue: return → result-read:0 → result-read:1 → ... → result-read:last
      *
      * The last result-read node goes to `NormalExit(fd)` via the shared
@@ -1760,10 +1761,10 @@ module GoCfg {
           exists(fd.getParameter(0)) and
           n2.isAdditional(fd.getBody(), "param-init:0")
           or
-          // No parameters, has result vars: start with result-zero-init:0
+          // No parameters, has result vars: start with zero-init:0
           not exists(fd.getParameter(_)) and
           exists(fd.getResultVar(0)) and
-          n2.isAdditional(fd.getBody(), "result-zero-init:0")
+          n2.isAdditional(fd.getBody(), "zero-init:0")
           or
           // No parameters and no result vars: go directly to Before(body)
           not exists(fd.getParameter(_)) and
@@ -1771,7 +1772,7 @@ module GoCfg {
           funcDefBodyStart(fd, n2)
         )
         or
-        // param-init:i → next: param-init:(i+1), or result-zero-init:0, or Before(body)
+        // param-init:i → next: param-init:(i+1), or zero-init:0, or Before(body)
         exists(int i | exists(fd.getParameter(i)) |
           n1.isAdditional(fd.getBody(), "param-init:" + i.toString()) and
           (
@@ -1779,10 +1780,10 @@ module GoCfg {
             exists(fd.getParameter(i + 1)) and
             n2.isAdditional(fd.getBody(), "param-init:" + (i + 1).toString())
             or
-            // No next parameter, has result vars: go to result-zero-init:0
+            // No next parameter, has result vars: go to zero-init:0
             not exists(fd.getParameter(i + 1)) and
             exists(fd.getResultVar(0)) and
-            n2.isAdditional(fd.getBody(), "result-zero-init:0")
+            n2.isAdditional(fd.getBody(), "zero-init:0")
             or
             // No next parameter and no result vars: go to Before(body)
             not exists(fd.getParameter(i + 1)) and
@@ -1791,15 +1792,15 @@ module GoCfg {
           )
         )
         or
-        // result-zero-init:j → next: result-zero-init:(j+1), or Before(body).
+        // zero-init:j → next: zero-init:(j+1), or Before(body).
         // The zero-init node also writes the result variable (see
-        // `IR::InitResultInstruction`), so there is no separate result-init node.
+        // `IR::EvalImplicitInitInstruction`), so there is no separate result-init node.
         exists(int j | exists(fd.getResultVar(j)) |
-          n1.isAdditional(fd.getBody(), "result-zero-init:" + j.toString()) and
+          n1.isAdditional(fd.getBody(), "zero-init:" + j.toString()) and
           (
             // Next result var exists
             exists(fd.getResultVar(j + 1)) and
-            n2.isAdditional(fd.getBody(), "result-zero-init:" + (j + 1).toString())
+            n2.isAdditional(fd.getBody(), "zero-init:" + (j + 1).toString())
             or
             // No next result var: go to Before(body)
             not exists(fd.getResultVar(j + 1)) and

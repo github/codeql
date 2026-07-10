@@ -642,7 +642,7 @@ module IR {
         exists(assgn.(Assignment).getLhs(i))
         or
         // A `ValueSpec` without an initializer (`var x int`) is written by its
-        // `zero-init` node directly (see `InitVariableInstruction`), so only
+        // `zero-init` node directly (see `EvalImplicitInitInstruction`), so only
         // specs *with* an initializer produce an `assign` node.
         exists(assgn.(ValueSpec).getNameExpr(i)) and
         exists(assgn.(ValueSpec).getAnInit())
@@ -786,10 +786,13 @@ module IR {
   }
 
   /**
-   * An instruction that computes the zero value to which a variable without an initializer
-   * expression is initialized.
+   * An instruction initializing a variable declared without an initializer
+   * (a local `var x int`, or a named function result) to its zero value.
+   *
+   * The zero-value instruction performs the write of the variable directly,
+   * rather than feeding a separate write node.
    */
-  class EvalImplicitInitInstruction extends Instruction {
+  class EvalImplicitInitInstruction extends WriteInstruction {
     ValueEntity v;
 
     EvalImplicitInitInstruction() {
@@ -799,10 +802,12 @@ module IR {
       )
       or
       exists(FuncDef fd, int idx |
-        this.isAdditional(fd.getBody(), "result-zero-init:" + idx.toString()) and
+        this.isAdditional(fd.getBody(), "zero-init:" + idx.toString()) and
         v = fd.getResultVar(idx)
       )
     }
+
+    override Instruction getRhs() { result = this }
 
     override Type getResultType() { result = v.getType() }
 
@@ -993,50 +998,6 @@ module IR {
     override ControlFlow::Root getRoot() { result = parm.getFunction() }
   }
 
-  /**
-   * An instruction initializing a result variable to its zero value.
-   *
-   * This is the same node as the `EvalImplicitInitInstruction` that computes the
-   * zero value: the zero-value instruction performs the write of the result
-   * variable directly, rather than feeding a separate write node.
-   */
-  class InitResultInstruction extends WriteInstruction {
-    ResultVariable res;
-    int idx;
-    FuncDef fd;
-
-    InitResultInstruction() {
-      this.isAdditional(fd.getBody(), "result-zero-init:" + idx.toString()) and
-      res = fd.getResultVar(idx)
-    }
-
-    override Instruction getRhs() { result = this }
-
-    override ControlFlow::Root getRoot() { result = res.getFunction() }
-  }
-
-  /**
-   * An instruction initializing a variable declared without an initializer
-   * (`var x int`) to its zero value.
-   *
-   * This is the same node as the `EvalImplicitInitInstruction` that computes the
-   * zero value: the zero-value instruction performs the write of the variable
-   * directly, rather than feeding a separate write node.
-   */
-  class InitVariableInstruction extends WriteInstruction {
-    ValueSpec spec;
-    int idx;
-
-    InitVariableInstruction() {
-      this.isAdditional(spec, "zero-init:" + idx.toString()) and
-      exists(spec.getNameExpr(idx))
-    }
-
-    override Instruction getRhs() { result = this }
-
-    override ControlFlow::Root getRoot() { result.isRootOf(spec) }
-  }
-
   /** An instruction that gets the next key-value pair in a range loop. */
   class GetNextEntryInstruction extends Instruction {
     RangeElementExpr p;
@@ -1152,7 +1113,7 @@ module IR {
       )
       or
       exists(FuncDef fd, int idx |
-        write.isAdditional(fd.getBody(), "result-zero-init:" + idx.toString()) and
+        write.isAdditional(fd.getBody(), "zero-init:" + idx.toString()) and
         lhs = fd.getResultVar(idx).getDeclaration()
       )
       or
@@ -1439,7 +1400,7 @@ module IR {
     or
     exists(FuncDef fd, int i |
       fd.getResultVar(i) = v and
-      result.isAdditional(fd.getBody(), "result-zero-init:" + i.toString())
+      result.isAdditional(fd.getBody(), "zero-init:" + i.toString())
     )
   }
 
