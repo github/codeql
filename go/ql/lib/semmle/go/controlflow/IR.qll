@@ -809,6 +809,9 @@ module IR {
 
     override Instruction getRhs() { result = this }
 
+    /** Gets the variable (a local or a named result) being zero-initialized. */
+    ValueEntity getVariable() { result = v }
+
     override Type getResultType() { result = v.getType() }
 
     override ControlFlow::Root getRoot() { result.isRootOf(v.getDeclaration()) }
@@ -1112,14 +1115,12 @@ module IR {
         lhs = fd.getParameter(idx).getDeclaration()
       )
       or
-      exists(FuncDef fd, int idx |
-        write.isAdditional(fd.getBody(), "zero-init:" + idx.toString()) and
-        lhs = fd.getResultVar(idx).getDeclaration()
-      )
-      or
-      exists(ValueSpec spec, int idx |
-        write.isAdditional(spec, "zero-init:" + idx.toString()) and
-        lhs = spec.getNameExpr(idx)
+      // The `zero-init` node writes the variable it initializes: a named
+      // function result or a local declared without an initializer.
+      exists(int idx, AstNode an | write.isAdditional(an, "zero-init:" + idx.toString()) |
+        an = any(FuncDef fd | lhs = fd.getResultVar(idx).getDeclaration()).getBody()
+        or
+        an = any(ValueSpec spec | lhs = spec.getNameExpr(idx))
       )
       or
       // A tuple-destructuring `extract` node writes its component directly (see
@@ -1392,17 +1393,7 @@ module IR {
    * Gets the instruction corresponding to the implicit initialization of `v`
    * to its zero value.
    */
-  EvalImplicitInitInstruction implicitInitInstruction(ValueEntity v) {
-    exists(ValueSpec spec, int i |
-      spec.getNameExpr(i) = v.getDeclaration() and
-      result.isAdditional(spec, "zero-init:" + i.toString())
-    )
-    or
-    exists(FuncDef fd, int i |
-      fd.getResultVar(i) = v and
-      result.isAdditional(fd.getBody(), "zero-init:" + i.toString())
-    )
-  }
+  EvalImplicitInitInstruction implicitInitInstruction(ValueEntity v) { result.getVariable() = v }
 
   /**
    * Gets the instruction corresponding to the extraction of the `idx`th element

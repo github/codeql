@@ -578,7 +578,6 @@ module GoCfg {
           n = fd.getBody() and
           exists(fd.getBody()) and
           exists(fd.getResultVar(i)) and
-          exists(fd.getResultVar(i).(Go::ResultVariable).getFunction().getBody()) and
           tag = "zero-init:" + i.toString()
         )
         or
