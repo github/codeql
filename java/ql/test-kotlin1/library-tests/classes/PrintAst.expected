@@ -658,7 +658,14 @@ generic_anonymous.kt:
 #    1|         0: [ReturnStmt] return ...
 #    1|           0: [VarAccess] this.t
 #    1|             -1: [ThisAccess] this
-#    3|     4: [FieldDeclaration] new Object(...) { ... } x;
+#    3|     4: [Method] getX$private
+#    3|       3: [TypeAccess] new Object(...) { ... }
+#    3|         0: [TypeAccess] T
+#    3|       5: [BlockStmt] { ... }
+#    3|         0: [ReturnStmt] return ...
+#    3|           0: [VarAccess] this.x
+#    3|             -1: [ThisAccess] this
+#    3|     5: [FieldDeclaration] new Object(...) { ... } x;
 #    3|       -1: [TypeAccess] new Object(...) { ... }
 #    3|         0: [TypeAccess] T
 #    3|       0: [StmtExpr] <Stmt>
@@ -686,13 +693,6 @@ generic_anonymous.kt:
 #    3|           1: [ExprStmt] <Expr>;
 #    3|             0: [ClassInstanceExpr] new (...)
 #    3|               -3: [TypeAccess] Object
-#    3|     5: [Method] getX$private
-#    3|       3: [TypeAccess] new Object(...) { ... }
-#    3|         0: [TypeAccess] T
-#    3|       5: [BlockStmt] { ... }
-#    3|         0: [ReturnStmt] return ...
-#    3|           0: [VarAccess] this.x
-#    3|             -1: [ThisAccess] this
 #    7|     6: [Method] get
 #    7|       3: [TypeAccess] T
 #    7|       5: [BlockStmt] { ... }

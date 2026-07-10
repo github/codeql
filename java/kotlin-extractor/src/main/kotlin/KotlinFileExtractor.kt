@@ -2594,12 +2594,24 @@ open class KotlinFileExtractor(
                     if (isAnnotationClassField(f)) kClassToJavaClass(f.type) else f.type
                 val id = useField(f)
                 extractAnnotations(f, id, extractAnnotationEnumTypeAccesses)
+                // A plain backing field's location should match its property's location
+                // (the `val`/`var` keyword to the end of the declaration), rather than the
+                // raw IR offset, which includes leading modifiers under -language-version
+                // 1.9 but not 2.0. Anchoring on the property keeps the two consistent.
+                // Delegated properties are excluded: their field is the `$delegate` storage,
+                // whose location is the delegate expression, not the property declaration.
+                val locId =
+                    f.correspondingPropertySymbol
+                        ?.owner
+                        ?.takeUnless { it.isDelegated }
+                        ?.let { getPsiBasedLocation(it) }
+                        ?: tw.getLocation(f)
                 return extractField(
                     id,
                     "${f.name.asString()}$fNameSuffix",
                     extractType,
                     parentId,
-                    tw.getLocation(f),
+                    locId,
                     f.visibility,
                     f,
                     isExternalDeclaration(f),

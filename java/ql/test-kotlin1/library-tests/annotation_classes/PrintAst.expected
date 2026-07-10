@@ -44,13 +44,7 @@ def.kt:
 #   50|         1: [LocalVariableDeclStmt] var ...;
 #   50|           1: [LocalVariableDeclExpr] x
 #   50|             0: [IntegerLiteral] 10
-#   53|     3: [FieldDeclaration] int p;
-#-----|       -2: (Annotations)
-#   56|         1: [Annotation] Annot0k
-#    0|           1: [IntegerLiteral] 0
-#   53|       -1: [TypeAccess] int
-#   57|       0: [IntegerLiteral] 5
-#   57|     4: [Method] getP
+#   57|     3: [Method] getP
 #-----|       1: (Annotations)
 #   54|         1: [Annotation] Annot0k
 #    0|           1: [IntegerLiteral] 0
@@ -59,6 +53,12 @@ def.kt:
 #   57|         0: [ReturnStmt] return ...
 #   57|           0: [VarAccess] DefKt.p
 #   57|             -1: [TypeAccess] DefKt
+#   57|     4: [FieldDeclaration] int p;
+#-----|       -2: (Annotations)
+#   56|         1: [Annotation] Annot0k
+#    0|           1: [IntegerLiteral] 0
+#   57|       -1: [TypeAccess] int
+#   57|       0: [IntegerLiteral] 5
 #   57|     5: [Method] setP
 #-----|       1: (Annotations)
 #   55|         1: [Annotation] Annot0k
