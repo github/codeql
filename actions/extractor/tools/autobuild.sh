@@ -38,6 +38,11 @@ else
     export LGTM_INDEX_FILTERS
 fi
 
+# Capture the source root before handing off to the JavaScript autobuilder,
+# which may change the working directory. The Actions extractor runs from the
+# source root, so `pwd` here is the root of the repository being analysed.
+ACTIONS_SRC_ROOT="$(pwd)"
+
 # Find the JavaScript extractor directory via `codeql resolve extractor`.
 CODEQL_EXTRACTOR_JAVASCRIPT_ROOT="$("${CODEQL_DIST}/codeql" resolve extractor --language javascript)"
 export CODEQL_EXTRACTOR_JAVASCRIPT_ROOT
@@ -56,3 +61,12 @@ env CODEQL_EXTRACTOR_JAVASCRIPT_DIAGNOSTIC_DIR="${CODEQL_EXTRACTOR_ACTIONS_DIAGN
     CODEQL_EXTRACTOR_JAVASCRIPT_TRAP_DIR="${CODEQL_EXTRACTOR_ACTIONS_TRAP_DIR}" \
     CODEQL_EXTRACTOR_JAVASCRIPT_WIP_DATABASE="${CODEQL_EXTRACTOR_ACTIONS_WIP_DATABASE}" \
     "${JAVASCRIPT_AUTO_BUILD}"
+
+# Generate the lockfile-pinned data extension from the repository's Actions
+# lockfile, if present. This is a no-op for repositories without a lockfile.
+GENERATE_LOCKFILE_EXTENSION="$(CDPATH= cd "$(dirname "$0")" && pwd)/generate-lockfile-extension.sh"
+if [ -x "${GENERATE_LOCKFILE_EXTENSION}" ]; then
+    echo "Generating lockfile-pinned data extension."
+    "${GENERATE_LOCKFILE_EXTENSION}" "${ACTIONS_SRC_ROOT}" || \
+        echo "Lockfile-pinned data extension generation failed; continuing without it." >&2
+fi

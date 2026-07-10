@@ -23,6 +23,34 @@ rows ship as a data-extension model pack applied at analysis time via
 same parsing core can later feed an extractor-native relation without changing
 the query.
 
+## Extractor integration
+
+The Actions extractor runs this generator automatically during `codeql database
+create` (see `../generate-lockfile-extension.sh`, invoked from
+`../autobuild.sh`). When the repository has a lockfile, the extractor writes a
+self-contained model pack into the database:
+
+```
+<database>/lockfile-extension/
+  qlpack.yml                        # name: codeql/actions-lockfile-pins
+  ext/pinned_by_lockfile.model.yml  # generated pinnedByLockfileDataModel rows
+```
+
+CodeQL does not auto-apply extensions carried inside a database, so analysis
+must add this pack explicitly:
+
+```
+codeql database analyze <db> \
+  codeql/actions-queries:Security/CWE-829/UnpinnedActionsTag.ql \
+  --additional-packs <db>/lockfile-extension \
+  --model-packs codeql/actions-lockfile-pins
+```
+
+Wiring that flag into the analysis harness (e.g. the CodeQL Action) is the
+remaining integration step and lives outside this repository. Generation is a
+clean no-op for repositories without a lockfile, so the extractor step is safe
+to run unconditionally.
+
 ## Ref normalization
 
 A lockfile records the *resolved* ref for each dependency — the CLI prefers a
