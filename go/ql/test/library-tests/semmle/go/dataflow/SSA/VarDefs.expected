@@ -1,6 +1,6 @@
 | main.go:13:6:13:10 | assign:0 value declaration specifier | main.go:13:6:13:6 | x | main.go:13:6:13:10 | zero-init:0 value declaration specifier |
 | main.go:14:2:14:8 | assign:0 ... := ... | main.go:14:2:14:2 | y | main.go:14:7:14:8 | 23 |
-| main.go:17:3:17:9 | assign:0 ... += ... | main.go:14:2:14:2 | y | main.go:17:3:17:9 | compound-rhs ... += ... |
+| main.go:17:3:17:9 | compound-rhs ... += ... | main.go:14:2:14:2 | y | main.go:17:3:17:9 | compound-rhs ... += ... |
 | main.go:21:3:21:7 | assign:0 ... = ... | main.go:13:6:13:6 | x | main.go:21:7:21:7 | y |
 | main.go:26:28:32:1 | param-init:0 block statement | main.go:26:10:26:10 | x | main.go:26:28:32:1 | arg:0 block statement |
 | main.go:27:2:27:13 | assign:0 ... := ... | main.go:27:2:27:2 | a | main.go:27:10:27:10 | x |
