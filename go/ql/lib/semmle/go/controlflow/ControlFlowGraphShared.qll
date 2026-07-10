@@ -422,9 +422,21 @@ module GoCfg {
       // statement may have several labels.
       exists(Go::LabeledStmt ls | n = ls.getStmt() | l = ls.getLabel() or hasLabel(ls, l))
       or
+      // The `LabeledStmt` wrapper itself also carries its label. Blocks contain
+      // the wrapper (not the inner statement) as a direct child, so the shared
+      // library's block-level `goto` target resolution -- which looks for a
+      // labelled statement that is a direct child of a block -- matches on the
+      // wrapper.
+      l = n.(Go::LabeledStmt).getLabel()
+      or
       l = n.(Go::BreakStmt).getLabel()
       or
       l = n.(Go::ContinueStmt).getLabel()
+      or
+      // A `goto` statement carries its target label, so that the shared
+      // library's `beginAbruptCompletion` produces a *labelled* goto completion
+      // (matching the target label) rather than an unlabelled one.
+      l = n.(Go::GotoStmt).getLabel()
     }
 
     predicate preOrderExpr(Ast::Expr e) {
@@ -732,12 +744,6 @@ module GoCfg {
       n.isIn(ast) and
       c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
       always = false
-      or
-      ast instanceof Go::GotoStmt and
-      n.injects(ast) and
-      c.getSuccessorType() instanceof GotoSuccessor and
-      c.hasLabel(ast.(Go::GotoStmt).getLabel()) and
-      always = true
     }
 
     predicate endAbruptCompletion(Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
@@ -776,14 +782,6 @@ module GoCfg {
         // through the result-read epilogue before reaching the function exit.
         exists(fd.getResultVar(0)) and
         n.isAdditional(fd.getBody(), "result-read:0")
-      )
-      or
-      exists(Go::LabeledStmt lbl, Go::FuncDef fd |
-        ast = fd.getBody() and
-        n.isBefore(lbl) and
-        fd = lbl.getEnclosingFunction() and
-        c.getSuccessorType() instanceof GotoSuccessor and
-        c.hasLabel(lbl.getLabel())
       )
     }
 
