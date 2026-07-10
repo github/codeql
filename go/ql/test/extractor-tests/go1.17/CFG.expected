@@ -13,8 +13,7 @@ edges
 | conversions.go:5:1:5:29 | Normal Exit | conversions.go:5:1:5:29 | Exit |
 | conversions.go:5:1:5:29 | function declaration | conversions.go:5:1:5:29 | After function declaration |
 | conversions.go:5:28:5:29 | After block statement | conversions.go:5:1:5:29 | Normal Exit |
-| conversions.go:5:28:5:29 | arg:0 block statement | conversions.go:5:28:5:29 | param-init:0 block statement |
-| conversions.go:5:28:5:29 | block statement | conversions.go:5:28:5:29 | arg:0 block statement |
+| conversions.go:5:28:5:29 | block statement | conversions.go:5:28:5:29 | param-init:0 block statement |
 | conversions.go:5:28:5:29 | param-init:0 block statement | conversions.go:5:28:5:29 | After block statement |
 | conversions.go:7:1:26:1 | After function declaration | conversions.go:0:0:0:0 | After conversions.go |
 | conversions.go:7:1:26:1 | Before function declaration | conversions.go:7:1:26:1 | function declaration |

@@ -1,7 +1,7 @@
 | main.go:3:39:12:1 | SSA def(fn) | main.go:10:24:10:25 | fn |
 | main.go:3:39:12:1 | SSA def(x) | main.go:5:5:5:5 | x |
-| main.go:3:39:12:1 | arg:0 block statement | main.go:3:39:12:1 | SSA def(x) |
-| main.go:3:39:12:1 | arg:1 block statement | main.go:3:39:12:1 | SSA def(fn) |
+| main.go:3:39:12:1 | param-init:0 block statement | main.go:3:39:12:1 | SSA def(x) |
+| main.go:3:39:12:1 | param-init:1 block statement | main.go:3:39:12:1 | SSA def(fn) |
 | main.go:5:5:5:5 | x | main.go:6:7:6:7 | x |
 | main.go:5:5:5:5 | x | main.go:8:8:8:8 | x |
 | main.go:6:3:6:7 | SSA def(y) | main.go:10:12:10:12 | y |
@@ -24,8 +24,8 @@
 | main.go:22:42:31:1 | SSA def(b) | main.go:23:5:23:5 | b |
 | main.go:22:42:31:1 | SSA def(x) | main.go:24:10:24:10 | x |
 | main.go:22:42:31:1 | SSA def(x) | main.go:26:11:26:11 | x |
-| main.go:22:42:31:1 | arg:0 block statement | main.go:22:42:31:1 | SSA def(b) |
-| main.go:22:42:31:1 | arg:1 block statement | main.go:22:42:31:1 | SSA def(x) |
+| main.go:22:42:31:1 | param-init:0 block statement | main.go:22:42:31:1 | SSA def(b) |
+| main.go:22:42:31:1 | param-init:1 block statement | main.go:22:42:31:1 | SSA def(x) |
 | main.go:24:10:24:10 | x | main.go:24:10:24:19 | type assertion |
 | main.go:26:2:26:17 | SSA def(n) | main.go:27:11:27:11 | n |
 | main.go:26:2:26:17 | SSA def(ok) | main.go:27:5:27:6 | ok |
@@ -50,7 +50,7 @@
 | main.go:46:44:52:1 | SSA def(vals) | main.go:46:44:52:1 | result-read:1 block statement |
 | main.go:46:44:52:1 | SSA def(vals) | main.go:48:3:48:6 | vals |
 | main.go:46:44:52:1 | SSA def(xs) | main.go:47:20:47:21 | xs |
-| main.go:46:44:52:1 | arg:0 block statement | main.go:46:44:52:1 | SSA def(xs) |
+| main.go:46:44:52:1 | param-init:0 block statement | main.go:46:44:52:1 | SSA def(xs) |
 | main.go:46:44:52:1 | result-zero-init:0 block statement | main.go:46:44:52:1 | SSA def(keys) |
 | main.go:46:44:52:1 | result-zero-init:1 block statement | main.go:46:44:52:1 | SSA def(vals) |
 | main.go:47:2:50:2 | SSA def(k) | main.go:49:11:49:11 | k |
@@ -87,7 +87,7 @@
 | main.go:65:14:65:14 | y | main.go:65:7:65:18 | call to max |
 | main.go:65:17:65:17 | z | main.go:65:7:65:18 | call to max |
 | strings.go:8:29:12:1 | SSA def(s) | strings.go:9:24:9:24 | s |
-| strings.go:8:29:12:1 | arg:0 block statement | strings.go:8:29:12:1 | SSA def(s) |
+| strings.go:8:29:12:1 | param-init:0 block statement | strings.go:8:29:12:1 | SSA def(s) |
 | strings.go:9:2:9:38 | SSA def(s2) | strings.go:11:20:11:21 | s2 |
 | strings.go:9:8:9:38 | call to Replace | strings.go:9:2:9:38 | SSA def(s2) |
 | strings.go:9:24:9:24 | s | strings.go:10:27:10:27 | s |
@@ -98,8 +98,8 @@
 | url.go:8:37:20:1 | SSA def(b) | url.go:11:5:11:5 | b |
 | url.go:8:37:20:1 | SSA def(s) | url.go:12:46:12:46 | s |
 | url.go:8:37:20:1 | SSA def(s) | url.go:14:48:14:48 | s |
-| url.go:8:37:20:1 | arg:0 block statement | url.go:8:37:20:1 | SSA def(b) |
-| url.go:8:37:20:1 | arg:1 block statement | url.go:8:37:20:1 | SSA def(s) |
+| url.go:8:37:20:1 | param-init:0 block statement | url.go:8:37:20:1 | SSA def(b) |
+| url.go:8:37:20:1 | param-init:1 block statement | url.go:8:37:20:1 | SSA def(s) |
 | url.go:12:3:12:48 | SSA def(err) | url.go:16:5:16:7 | err |
 | url.go:12:3:12:48 | SSA def(res) | url.go:19:9:19:11 | res |
 | url.go:12:3:12:48 | extract:0 ... = ... | url.go:12:3:12:48 | SSA def(res) |
@@ -110,8 +110,8 @@
 | url.go:14:3:14:50 | extract:1 ... = ... | url.go:14:3:14:50 | SSA def(err) |
 | url.go:22:38:38:1 | SSA def(i) | url.go:24:5:24:5 | i |
 | url.go:22:38:38:1 | SSA def(s) | url.go:23:20:23:20 | s |
-| url.go:22:38:38:1 | arg:0 block statement | url.go:22:38:38:1 | SSA def(i) |
-| url.go:22:38:38:1 | arg:1 block statement | url.go:22:38:38:1 | SSA def(s) |
+| url.go:22:38:38:1 | param-init:0 block statement | url.go:22:38:38:1 | SSA def(i) |
+| url.go:22:38:38:1 | param-init:1 block statement | url.go:22:38:38:1 | SSA def(s) |
 | url.go:23:2:23:21 | SSA def(u) | url.go:25:10:25:10 | u |
 | url.go:23:2:23:21 | extract:0 ... := ... | url.go:23:2:23:21 | SSA def(u) |
 | url.go:23:20:23:20 | s | url.go:27:29:27:29 | s |
@@ -146,7 +146,7 @@
 | url.go:45:14:45:15 | ui | url.go:46:9:46:10 | ui |
 | url.go:45:14:45:15 | ui [postupdate] | url.go:46:9:46:10 | ui |
 | url.go:49:33:54:1 | SSA def(q) | url.go:50:25:50:25 | q |
-| url.go:49:33:54:1 | arg:0 block statement | url.go:49:33:54:1 | SSA def(q) |
+| url.go:49:33:54:1 | param-init:0 block statement | url.go:49:33:54:1 | SSA def(q) |
 | url.go:50:2:50:26 | SSA def(v) | url.go:51:14:51:14 | v |
 | url.go:50:2:50:26 | extract:0 ... := ... | url.go:50:2:50:26 | SSA def(v) |
 | url.go:51:14:51:14 | v | url.go:52:14:52:14 | v |
@@ -154,7 +154,7 @@
 | url.go:52:14:52:14 | v | url.go:53:9:53:9 | v |
 | url.go:52:14:52:14 | v [postupdate] | url.go:53:9:53:9 | v |
 | url.go:56:31:62:1 | SSA def(q) | url.go:57:29:57:29 | q |
-| url.go:56:31:62:1 | arg:0 block statement | url.go:56:31:62:1 | SSA def(q) |
+| url.go:56:31:62:1 | param-init:0 block statement | url.go:56:31:62:1 | SSA def(q) |
 | url.go:57:2:57:39 | SSA def(joined1) | url.go:58:38:58:44 | joined1 |
 | url.go:57:2:57:39 | extract:0 ... := ... | url.go:57:2:57:39 | SSA def(joined1) |
 | url.go:58:2:58:45 | SSA def(joined2) | url.go:59:24:59:30 | joined2 |
@@ -164,6 +164,6 @@
 | url.go:60:2:60:37 | SSA def(joinedUrl) | url.go:61:9:61:17 | joinedUrl |
 | url.go:60:15:60:37 | call to JoinPath | url.go:60:2:60:37 | SSA def(joinedUrl) |
 | url.go:64:32:67:1 | SSA def(q) | url.go:66:27:66:27 | q |
-| url.go:64:32:67:1 | arg:0 block statement | url.go:64:32:67:1 | SSA def(q) |
+| url.go:64:32:67:1 | param-init:0 block statement | url.go:64:32:67:1 | SSA def(q) |
 | url.go:65:2:65:48 | SSA def(cleanUrl) | url.go:66:9:66:16 | cleanUrl |
 | url.go:65:2:65:48 | extract:0 ... := ... | url.go:65:2:65:48 | SSA def(cleanUrl) |

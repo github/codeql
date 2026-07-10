@@ -1,0 +1,2 @@
+| Revel.go:67:36:72:1 | param-init:-1 block statement | Unexpected result: responsebody='param-init:-1 block statement' |
+| Revel.go:72:3:72:44 | comment | Missing result: responsebody='arg:-1 block statement' |

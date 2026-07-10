@@ -9,8 +9,7 @@
 | DuplicateSwitchCase.go:3:1:12:1 | Normal Exit | DuplicateSwitchCase.go:3:1:12:1 | Exit |
 | DuplicateSwitchCase.go:3:1:12:1 | function declaration | DuplicateSwitchCase.go:3:1:12:1 | After function declaration |
 | DuplicateSwitchCase.go:3:29:12:1 | After block statement | DuplicateSwitchCase.go:3:1:12:1 | Normal Exit |
-| DuplicateSwitchCase.go:3:29:12:1 | arg:0 block statement | DuplicateSwitchCase.go:3:29:12:1 | param-init:0 block statement |
-| DuplicateSwitchCase.go:3:29:12:1 | block statement | DuplicateSwitchCase.go:3:29:12:1 | arg:0 block statement |
+| DuplicateSwitchCase.go:3:29:12:1 | block statement | DuplicateSwitchCase.go:3:29:12:1 | param-init:0 block statement |
 | DuplicateSwitchCase.go:3:29:12:1 | param-init:0 block statement | DuplicateSwitchCase.go:4:2:11:2 | expression-switch statement |
 | DuplicateSwitchCase.go:4:2:11:2 | After expression-switch statement | DuplicateSwitchCase.go:3:29:12:1 | After block statement |
 | DuplicateSwitchCase.go:4:2:11:2 | expression-switch statement | DuplicateSwitchCase.go:5:2:6:9 | case clause |
@@ -77,14 +76,12 @@
 | DuplicateSwitchCase.go:14:1:14:15 | Normal Exit | DuplicateSwitchCase.go:14:1:14:15 | Exit |
 | DuplicateSwitchCase.go:14:1:14:15 | function declaration | DuplicateSwitchCase.go:14:1:14:15 | After function declaration |
 | DuplicateSwitchCase.go:14:14:14:15 | block statement | DuplicateSwitchCase.go:14:1:14:15 | Normal Exit |
-| DuplicateSwitchCase.go:14:14:14:15 | block statement | DuplicateSwitchCase.go:14:14:14:15 | block statement |
 | DuplicateSwitchCase.go:16:1:16:14 | After function declaration | DuplicateSwitchCase.go:0:0:0:0 | After DuplicateSwitchCase.go |
 | DuplicateSwitchCase.go:16:1:16:14 | Before function declaration | DuplicateSwitchCase.go:16:1:16:14 | function declaration |
 | DuplicateSwitchCase.go:16:1:16:14 | Entry | DuplicateSwitchCase.go:16:13:16:14 | block statement |
 | DuplicateSwitchCase.go:16:1:16:14 | Normal Exit | DuplicateSwitchCase.go:16:1:16:14 | Exit |
 | DuplicateSwitchCase.go:16:1:16:14 | function declaration | DuplicateSwitchCase.go:16:1:16:14 | After function declaration |
 | DuplicateSwitchCase.go:16:13:16:14 | block statement | DuplicateSwitchCase.go:16:1:16:14 | Normal Exit |
-| DuplicateSwitchCase.go:16:13:16:14 | block statement | DuplicateSwitchCase.go:16:13:16:14 | block statement |
 | epilogues.go:0:0:0:0 | After epilogues.go | epilogues.go:0:0:0:0 | Normal Exit |
 | epilogues.go:0:0:0:0 | Entry | epilogues.go:0:0:0:0 | epilogues.go |
 | epilogues.go:0:0:0:0 | Normal Exit | epilogues.go:0:0:0:0 | Exit |
@@ -102,13 +99,10 @@
 | epilogues.go:12:1:14:1 | Normal Exit | epilogues.go:12:1:14:1 | Exit |
 | epilogues.go:12:1:14:1 | function declaration | epilogues.go:12:1:14:1 | After function declaration |
 | epilogues.go:12:47:14:1 | After block statement | epilogues.go:12:1:14:1 | Normal Exit |
-| epilogues.go:12:47:14:1 | arg:0 block statement | epilogues.go:12:47:14:1 | param-init:0 block statement |
-| epilogues.go:12:47:14:1 | arg:1 block statement | epilogues.go:12:47:14:1 | param-init:1 block statement |
-| epilogues.go:12:47:14:1 | arg:-1 block statement | epilogues.go:12:47:14:1 | param-init:-1 block statement |
-| epilogues.go:12:47:14:1 | block statement | epilogues.go:12:47:14:1 | arg:-1 block statement |
-| epilogues.go:12:47:14:1 | param-init:0 block statement | epilogues.go:12:47:14:1 | arg:1 block statement |
+| epilogues.go:12:47:14:1 | block statement | epilogues.go:12:47:14:1 | param-init:-1 block statement |
+| epilogues.go:12:47:14:1 | param-init:0 block statement | epilogues.go:12:47:14:1 | param-init:1 block statement |
 | epilogues.go:12:47:14:1 | param-init:1 block statement | epilogues.go:13:2:13:33 | expression statement |
-| epilogues.go:12:47:14:1 | param-init:-1 block statement | epilogues.go:12:47:14:1 | arg:0 block statement |
+| epilogues.go:12:47:14:1 | param-init:-1 block statement | epilogues.go:12:47:14:1 | param-init:0 block statement |
 | epilogues.go:13:2:13:12 | After selection of Println | epilogues.go:13:14:13:21 | Before selection of prefix |
 | epilogues.go:13:2:13:12 | Before selection of Println | epilogues.go:13:2:13:12 | selection of Println |
 | epilogues.go:13:2:13:12 | selection of Println | epilogues.go:13:2:13:12 | After selection of Println |
@@ -138,11 +132,9 @@
 | epilogues.go:16:1:18:1 | Normal Exit | epilogues.go:16:1:18:1 | Exit |
 | epilogues.go:16:1:18:1 | function declaration | epilogues.go:16:1:18:1 | After function declaration |
 | epilogues.go:16:41:18:1 | After block statement | epilogues.go:16:1:18:1 | Normal Exit |
-| epilogues.go:16:41:18:1 | arg:0 block statement | epilogues.go:16:41:18:1 | param-init:0 block statement |
-| epilogues.go:16:41:18:1 | arg:-1 block statement | epilogues.go:16:41:18:1 | param-init:-1 block statement |
-| epilogues.go:16:41:18:1 | block statement | epilogues.go:16:41:18:1 | arg:-1 block statement |
+| epilogues.go:16:41:18:1 | block statement | epilogues.go:16:41:18:1 | param-init:-1 block statement |
 | epilogues.go:16:41:18:1 | param-init:0 block statement | epilogues.go:17:2:17:27 | expression statement |
-| epilogues.go:16:41:18:1 | param-init:-1 block statement | epilogues.go:16:41:18:1 | arg:0 block statement |
+| epilogues.go:16:41:18:1 | param-init:-1 block statement | epilogues.go:16:41:18:1 | param-init:0 block statement |
 | epilogues.go:17:2:17:12 | After selection of Println | epilogues.go:17:14:17:21 | Before selection of prefix |
 | epilogues.go:17:2:17:12 | Before selection of Println | epilogues.go:17:2:17:12 | selection of Println |
 | epilogues.go:17:2:17:12 | selection of Println | epilogues.go:17:2:17:12 | After selection of Println |
@@ -213,8 +205,7 @@
 | epilogues.go:31:1:33:1 | Entry | epilogues.go:31:26:33:1 | block statement |
 | epilogues.go:31:1:33:1 | Normal Exit | epilogues.go:31:1:33:1 | Exit |
 | epilogues.go:31:1:33:1 | function declaration | epilogues.go:31:1:33:1 | After function declaration |
-| epilogues.go:31:26:33:1 | arg:0 block statement | epilogues.go:31:26:33:1 | param-init:0 block statement |
-| epilogues.go:31:26:33:1 | block statement | epilogues.go:31:26:33:1 | arg:0 block statement |
+| epilogues.go:31:26:33:1 | block statement | epilogues.go:31:26:33:1 | param-init:0 block statement |
 | epilogues.go:31:26:33:1 | param-init:0 block statement | epilogues.go:32:2:32:13 | Before return statement |
 | epilogues.go:32:2:32:13 | Before return statement | epilogues.go:32:9:32:13 | Before ...*... |
 | epilogues.go:32:2:32:13 | return statement | epilogues.go:31:1:33:1 | Normal Exit |
@@ -252,8 +243,7 @@
 | epilogues.go:42:1:48:1 | Entry | epilogues.go:42:51:48:1 | block statement |
 | epilogues.go:42:1:48:1 | Normal Exit | epilogues.go:42:1:48:1 | Exit |
 | epilogues.go:42:1:48:1 | function declaration | epilogues.go:42:1:48:1 | After function declaration |
-| epilogues.go:42:51:48:1 | arg:0 block statement | epilogues.go:42:51:48:1 | param-init:0 block statement |
-| epilogues.go:42:51:48:1 | block statement | epilogues.go:42:51:48:1 | arg:0 block statement |
+| epilogues.go:42:51:48:1 | block statement | epilogues.go:42:51:48:1 | param-init:0 block statement |
 | epilogues.go:42:51:48:1 | param-init:0 block statement | epilogues.go:42:51:48:1 | result-zero-init:0 block statement |
 | epilogues.go:42:51:48:1 | result-init:0 block statement | epilogues.go:42:51:48:1 | result-zero-init:1 block statement |
 | epilogues.go:42:51:48:1 | result-init:1 block statement | epilogues.go:43:2:46:2 | if statement |
@@ -301,8 +291,7 @@
 | epilogues.go:51:1:54:1 | Entry | epilogues.go:51:38:54:1 | block statement |
 | epilogues.go:51:1:54:1 | Normal Exit | epilogues.go:51:1:54:1 | Exit |
 | epilogues.go:51:1:54:1 | function declaration | epilogues.go:51:1:54:1 | After function declaration |
-| epilogues.go:51:38:54:1 | arg:0 block statement | epilogues.go:51:38:54:1 | param-init:0 block statement |
-| epilogues.go:51:38:54:1 | block statement | epilogues.go:51:38:54:1 | arg:0 block statement |
+| epilogues.go:51:38:54:1 | block statement | epilogues.go:51:38:54:1 | param-init:0 block statement |
 | epilogues.go:51:38:54:1 | param-init:0 block statement | epilogues.go:51:38:54:1 | result-zero-init:0 block statement |
 | epilogues.go:51:38:54:1 | result-init:0 block statement | epilogues.go:52:2:52:10 | ... = ... |
 | epilogues.go:51:38:54:1 | result-read:0 block statement | epilogues.go:51:1:54:1 | Normal Exit |
@@ -328,10 +317,8 @@
 | epilogues.go:59:1:62:1 | Normal Exit | epilogues.go:59:1:62:1 | Exit |
 | epilogues.go:59:1:62:1 | function declaration | epilogues.go:59:1:62:1 | After function declaration |
 | epilogues.go:59:54:62:1 | After block statement | epilogues.go:60:8:60:33 | defer-invoke call to log |
-| epilogues.go:59:54:62:1 | arg:0 block statement | epilogues.go:59:54:62:1 | param-init:0 block statement |
-| epilogues.go:59:54:62:1 | arg:1 block statement | epilogues.go:59:54:62:1 | param-init:1 block statement |
-| epilogues.go:59:54:62:1 | block statement | epilogues.go:59:54:62:1 | arg:0 block statement |
-| epilogues.go:59:54:62:1 | param-init:0 block statement | epilogues.go:59:54:62:1 | arg:1 block statement |
+| epilogues.go:59:54:62:1 | block statement | epilogues.go:59:54:62:1 | param-init:0 block statement |
+| epilogues.go:59:54:62:1 | param-init:0 block statement | epilogues.go:59:54:62:1 | param-init:1 block statement |
 | epilogues.go:59:54:62:1 | param-init:1 block statement | epilogues.go:60:2:60:33 | Before defer statement |
 | epilogues.go:60:2:60:33 | After defer statement | epilogues.go:61:2:61:38 | expression statement |
 | epilogues.go:60:2:60:33 | Before defer statement | epilogues.go:60:8:60:33 | call to log |
@@ -385,8 +372,7 @@
 | epilogues.go:66:1:71:1 | Normal Exit | epilogues.go:66:1:71:1 | Exit |
 | epilogues.go:66:1:71:1 | function declaration | epilogues.go:66:1:71:1 | After function declaration |
 | epilogues.go:66:43:71:1 | After block statement | epilogues.go:69:8:69:25 | defer-invoke call to log |
-| epilogues.go:66:43:71:1 | arg:0 block statement | epilogues.go:66:43:71:1 | param-init:0 block statement |
-| epilogues.go:66:43:71:1 | block statement | epilogues.go:66:43:71:1 | arg:0 block statement |
+| epilogues.go:66:43:71:1 | block statement | epilogues.go:66:43:71:1 | param-init:0 block statement |
 | epilogues.go:66:43:71:1 | param-init:0 block statement | epilogues.go:67:2:67:31 | ... := ... |
 | epilogues.go:67:2:67:31 | ... := ... | epilogues.go:67:7:67:31 | Before struct literal |
 | epilogues.go:67:2:67:31 | After ... := ... | epilogues.go:68:2:68:24 | Before defer statement |
@@ -419,10 +405,10 @@
 | epilogues.go:69:2:69:25 | After defer statement | epilogues.go:70:2:70:20 | expression statement |
 | epilogues.go:69:2:69:25 | Before defer statement | epilogues.go:69:8:69:25 | call to log |
 | epilogues.go:69:2:69:25 | defer statement | epilogues.go:69:2:69:25 | After defer statement |
+| epilogues.go:69:8:69:11 | (...) | epilogues.go:69:9:69:10 | Before &... |
 | epilogues.go:69:8:69:11 | After (...) | epilogues.go:69:8:69:15 | selection of log |
-| epilogues.go:69:8:69:11 | Before (...) | epilogues.go:69:9:69:10 | Before &... |
 | epilogues.go:69:8:69:15 | After selection of log | epilogues.go:69:17:69:21 | Before "ptr" |
-| epilogues.go:69:8:69:15 | Before selection of log | epilogues.go:69:8:69:11 | Before (...) |
+| epilogues.go:69:8:69:15 | Before selection of log | epilogues.go:69:8:69:11 | (...) |
 | epilogues.go:69:8:69:15 | selection of log | epilogues.go:69:8:69:15 | After selection of log |
 | epilogues.go:69:8:69:25 | After call to log | epilogues.go:69:2:69:25 | defer statement |
 | epilogues.go:69:8:69:25 | call to log | epilogues.go:69:8:69:15 | Before selection of log |
@@ -458,8 +444,7 @@
 | epilogues.go:77:1:82:1 | Normal Exit | epilogues.go:77:1:82:1 | Exit |
 | epilogues.go:77:1:82:1 | function declaration | epilogues.go:77:1:82:1 | After function declaration |
 | epilogues.go:77:29:82:1 | After block statement | epilogues.go:78:8:80:15 | defer-invoke function call |
-| epilogues.go:77:29:82:1 | arg:0 block statement | epilogues.go:77:29:82:1 | param-init:0 block statement |
-| epilogues.go:77:29:82:1 | block statement | epilogues.go:77:29:82:1 | arg:0 block statement |
+| epilogues.go:77:29:82:1 | block statement | epilogues.go:77:29:82:1 | param-init:0 block statement |
 | epilogues.go:77:29:82:1 | param-init:0 block statement | epilogues.go:78:2:80:15 | Before defer statement |
 | epilogues.go:78:2:80:15 | After defer statement | epilogues.go:81:2:81:23 | expression statement |
 | epilogues.go:78:2:80:15 | Before defer statement | epilogues.go:78:8:80:15 | function call |
@@ -474,10 +459,8 @@
 | epilogues.go:78:8:80:15 | defer-invoke function call | epilogues.go:77:1:82:1 | Normal Exit |
 | epilogues.go:78:8:80:15 | function call | epilogues.go:78:8:80:2 | Before function literal |
 | epilogues.go:78:34:80:2 | After block statement | epilogues.go:78:8:80:2 | Normal Exit |
-| epilogues.go:78:34:80:2 | arg:0 block statement | epilogues.go:78:34:80:2 | param-init:0 block statement |
-| epilogues.go:78:34:80:2 | arg:1 block statement | epilogues.go:78:34:80:2 | param-init:1 block statement |
-| epilogues.go:78:34:80:2 | block statement | epilogues.go:78:34:80:2 | arg:0 block statement |
-| epilogues.go:78:34:80:2 | param-init:0 block statement | epilogues.go:78:34:80:2 | arg:1 block statement |
+| epilogues.go:78:34:80:2 | block statement | epilogues.go:78:34:80:2 | param-init:0 block statement |
+| epilogues.go:78:34:80:2 | param-init:0 block statement | epilogues.go:78:34:80:2 | param-init:1 block statement |
 | epilogues.go:78:34:80:2 | param-init:1 block statement | epilogues.go:79:3:79:23 | expression statement |
 | epilogues.go:79:3:79:13 | After selection of Println | epilogues.go:79:15:79:19 | Before label |
 | epilogues.go:79:3:79:13 | Before selection of Println | epilogues.go:79:3:79:13 | selection of Println |
@@ -527,8 +510,7 @@
 | epilogues.go:87:1:98:1 | Exceptional Exit | epilogues.go:87:1:98:1 | Exit |
 | epilogues.go:87:1:98:1 | Normal Exit | epilogues.go:87:1:98:1 | Exit |
 | epilogues.go:87:1:98:1 | function declaration | epilogues.go:87:1:98:1 | After function declaration |
-| epilogues.go:87:42:98:1 | arg:0 block statement | epilogues.go:87:42:98:1 | param-init:0 block statement |
-| epilogues.go:87:42:98:1 | block statement | epilogues.go:87:42:98:1 | arg:0 block statement |
+| epilogues.go:87:42:98:1 | block statement | epilogues.go:87:42:98:1 | param-init:0 block statement |
 | epilogues.go:87:42:98:1 | param-init:0 block statement | epilogues.go:87:42:98:1 | result-zero-init:0 block statement |
 | epilogues.go:87:42:98:1 | result-init:0 block statement | epilogues.go:88:2:92:4 | Before defer statement |
 | epilogues.go:87:42:98:1 | result-read:0 block statement | epilogues.go:87:1:98:1 | Normal Exit |
@@ -598,6 +580,7 @@
 | epilogues.go:94:3:94:7 | panic | epilogues.go:94:3:94:7 | After panic |
 | epilogues.go:94:3:94:14 | Before call to panic | epilogues.go:94:3:94:7 | Before panic |
 | epilogues.go:94:3:94:14 | call to panic | epilogues.go:87:1:98:1 | Exceptional Exit |
+| epilogues.go:94:3:94:14 | call to panic | epilogues.go:88:8:92:4 | defer-invoke function call |
 | epilogues.go:94:3:94:14 | expression statement | epilogues.go:94:3:94:14 | Before call to panic |
 | epilogues.go:94:9:94:13 | "neg" | epilogues.go:94:9:94:13 | After "neg" |
 | epilogues.go:94:9:94:13 | After "neg" | epilogues.go:94:3:94:14 | call to panic |
@@ -625,8 +608,7 @@
 | epilogues.go:102:1:110:1 | Entry | epilogues.go:102:50:110:1 | block statement |
 | epilogues.go:102:1:110:1 | Normal Exit | epilogues.go:102:1:110:1 | Exit |
 | epilogues.go:102:1:110:1 | function declaration | epilogues.go:102:1:110:1 | After function declaration |
-| epilogues.go:102:50:110:1 | arg:0 block statement | epilogues.go:102:50:110:1 | param-init:0 block statement |
-| epilogues.go:102:50:110:1 | block statement | epilogues.go:102:50:110:1 | arg:0 block statement |
+| epilogues.go:102:50:110:1 | block statement | epilogues.go:102:50:110:1 | param-init:0 block statement |
 | epilogues.go:102:50:110:1 | param-init:0 block statement | epilogues.go:102:50:110:1 | result-zero-init:0 block statement |
 | epilogues.go:102:50:110:1 | result-init:0 block statement | epilogues.go:102:50:110:1 | result-zero-init:1 block statement |
 | epilogues.go:102:50:110:1 | result-init:1 block statement | epilogues.go:103:2:103:19 | Before defer statement |
@@ -677,6 +659,7 @@
 | epilogues.go:115:1:118:1 | Before function declaration | epilogues.go:115:1:118:1 | function declaration |
 | epilogues.go:115:1:118:1 | Entry | epilogues.go:115:26:118:1 | block statement |
 | epilogues.go:115:1:118:1 | Exceptional Exit | epilogues.go:115:1:118:1 | Exit |
+| epilogues.go:115:1:118:1 | Normal Exit | epilogues.go:115:1:118:1 | Exit |
 | epilogues.go:115:1:118:1 | function declaration | epilogues.go:115:1:118:1 | After function declaration |
 | epilogues.go:115:26:118:1 | block statement | epilogues.go:116:2:116:19 | Before defer statement |
 | epilogues.go:116:2:116:19 | After defer statement | epilogues.go:117:2:117:14 | expression statement |
@@ -687,11 +670,13 @@
 | epilogues.go:116:8:116:17 | epiRecover | epilogues.go:116:8:116:17 | After epiRecover |
 | epilogues.go:116:8:116:19 | After call to epiRecover | epilogues.go:116:2:116:19 | defer statement |
 | epilogues.go:116:8:116:19 | call to epiRecover | epilogues.go:116:8:116:17 | Before epiRecover |
+| epilogues.go:116:8:116:19 | defer-invoke call to epiRecover | epilogues.go:115:1:118:1 | Normal Exit |
 | epilogues.go:117:2:117:6 | After panic | epilogues.go:117:8:117:13 | Before "boom" |
 | epilogues.go:117:2:117:6 | Before panic | epilogues.go:117:2:117:6 | panic |
 | epilogues.go:117:2:117:6 | panic | epilogues.go:117:2:117:6 | After panic |
 | epilogues.go:117:2:117:14 | Before call to panic | epilogues.go:117:2:117:6 | Before panic |
 | epilogues.go:117:2:117:14 | call to panic | epilogues.go:115:1:118:1 | Exceptional Exit |
+| epilogues.go:117:2:117:14 | call to panic | epilogues.go:116:8:116:19 | defer-invoke call to epiRecover |
 | epilogues.go:117:2:117:14 | expression statement | epilogues.go:117:2:117:14 | Before call to panic |
 | epilogues.go:117:8:117:13 | "boom" | epilogues.go:117:8:117:13 | After "boom" |
 | epilogues.go:117:8:117:13 | After "boom" | epilogues.go:117:2:117:14 | call to panic |
@@ -711,30 +696,18 @@
 | equalitytests.go:11:1:13:1 | Entry | equalitytests.go:11:211:13:1 | block statement |
 | equalitytests.go:11:1:13:1 | Normal Exit | equalitytests.go:11:1:13:1 | Exit |
 | equalitytests.go:11:1:13:1 | function declaration | equalitytests.go:11:1:13:1 | After function declaration |
-| equalitytests.go:11:211:13:1 | arg:0 block statement | equalitytests.go:11:211:13:1 | param-init:0 block statement |
-| equalitytests.go:11:211:13:1 | arg:1 block statement | equalitytests.go:11:211:13:1 | param-init:1 block statement |
-| equalitytests.go:11:211:13:1 | arg:2 block statement | equalitytests.go:11:211:13:1 | param-init:2 block statement |
-| equalitytests.go:11:211:13:1 | arg:3 block statement | equalitytests.go:11:211:13:1 | param-init:3 block statement |
-| equalitytests.go:11:211:13:1 | arg:4 block statement | equalitytests.go:11:211:13:1 | param-init:4 block statement |
-| equalitytests.go:11:211:13:1 | arg:5 block statement | equalitytests.go:11:211:13:1 | param-init:5 block statement |
-| equalitytests.go:11:211:13:1 | arg:6 block statement | equalitytests.go:11:211:13:1 | param-init:6 block statement |
-| equalitytests.go:11:211:13:1 | arg:7 block statement | equalitytests.go:11:211:13:1 | param-init:7 block statement |
-| equalitytests.go:11:211:13:1 | arg:8 block statement | equalitytests.go:11:211:13:1 | param-init:8 block statement |
-| equalitytests.go:11:211:13:1 | arg:9 block statement | equalitytests.go:11:211:13:1 | param-init:9 block statement |
-| equalitytests.go:11:211:13:1 | arg:10 block statement | equalitytests.go:11:211:13:1 | param-init:10 block statement |
-| equalitytests.go:11:211:13:1 | arg:11 block statement | equalitytests.go:11:211:13:1 | param-init:11 block statement |
-| equalitytests.go:11:211:13:1 | block statement | equalitytests.go:11:211:13:1 | arg:0 block statement |
-| equalitytests.go:11:211:13:1 | param-init:0 block statement | equalitytests.go:11:211:13:1 | arg:1 block statement |
-| equalitytests.go:11:211:13:1 | param-init:1 block statement | equalitytests.go:11:211:13:1 | arg:2 block statement |
-| equalitytests.go:11:211:13:1 | param-init:2 block statement | equalitytests.go:11:211:13:1 | arg:3 block statement |
-| equalitytests.go:11:211:13:1 | param-init:3 block statement | equalitytests.go:11:211:13:1 | arg:4 block statement |
-| equalitytests.go:11:211:13:1 | param-init:4 block statement | equalitytests.go:11:211:13:1 | arg:5 block statement |
-| equalitytests.go:11:211:13:1 | param-init:5 block statement | equalitytests.go:11:211:13:1 | arg:6 block statement |
-| equalitytests.go:11:211:13:1 | param-init:6 block statement | equalitytests.go:11:211:13:1 | arg:7 block statement |
-| equalitytests.go:11:211:13:1 | param-init:7 block statement | equalitytests.go:11:211:13:1 | arg:8 block statement |
-| equalitytests.go:11:211:13:1 | param-init:8 block statement | equalitytests.go:11:211:13:1 | arg:9 block statement |
-| equalitytests.go:11:211:13:1 | param-init:9 block statement | equalitytests.go:11:211:13:1 | arg:10 block statement |
-| equalitytests.go:11:211:13:1 | param-init:10 block statement | equalitytests.go:11:211:13:1 | arg:11 block statement |
+| equalitytests.go:11:211:13:1 | block statement | equalitytests.go:11:211:13:1 | param-init:0 block statement |
+| equalitytests.go:11:211:13:1 | param-init:0 block statement | equalitytests.go:11:211:13:1 | param-init:1 block statement |
+| equalitytests.go:11:211:13:1 | param-init:1 block statement | equalitytests.go:11:211:13:1 | param-init:2 block statement |
+| equalitytests.go:11:211:13:1 | param-init:2 block statement | equalitytests.go:11:211:13:1 | param-init:3 block statement |
+| equalitytests.go:11:211:13:1 | param-init:3 block statement | equalitytests.go:11:211:13:1 | param-init:4 block statement |
+| equalitytests.go:11:211:13:1 | param-init:4 block statement | equalitytests.go:11:211:13:1 | param-init:5 block statement |
+| equalitytests.go:11:211:13:1 | param-init:5 block statement | equalitytests.go:11:211:13:1 | param-init:6 block statement |
+| equalitytests.go:11:211:13:1 | param-init:6 block statement | equalitytests.go:11:211:13:1 | param-init:7 block statement |
+| equalitytests.go:11:211:13:1 | param-init:7 block statement | equalitytests.go:11:211:13:1 | param-init:8 block statement |
+| equalitytests.go:11:211:13:1 | param-init:8 block statement | equalitytests.go:11:211:13:1 | param-init:9 block statement |
+| equalitytests.go:11:211:13:1 | param-init:9 block statement | equalitytests.go:11:211:13:1 | param-init:10 block statement |
+| equalitytests.go:11:211:13:1 | param-init:10 block statement | equalitytests.go:11:211:13:1 | param-init:11 block statement |
 | equalitytests.go:11:211:13:1 | param-init:11 block statement | equalitytests.go:12:2:12:76 | Before return statement |
 | equalitytests.go:12:2:12:76 | Before return statement | equalitytests.go:12:9:12:76 | ...&&... |
 | equalitytests.go:12:2:12:76 | return statement | equalitytests.go:11:1:13:1 | Normal Exit |
@@ -843,13 +816,13 @@
 | exprs.go:6:13:6:13 | After 0 | exprs.go:6:16:6:26 | Before ...+... |
 | exprs.go:6:13:6:13 | Before 0 | exprs.go:6:13:6:13 | 0 |
 | exprs.go:6:16:6:16 | 1 | exprs.go:6:16:6:16 | After 1 |
-| exprs.go:6:16:6:16 | After 1 | exprs.go:6:20:6:26 | Before (...) |
+| exprs.go:6:16:6:16 | After 1 | exprs.go:6:20:6:26 | (...) |
 | exprs.go:6:16:6:16 | Before 1 | exprs.go:6:16:6:16 | 1 |
 | exprs.go:6:16:6:26 | ...+... | exprs.go:6:16:6:26 | After ...+... |
 | exprs.go:6:16:6:26 | After ...+... | exprs.go:6:6:6:26 | assign:0 value declaration specifier |
 | exprs.go:6:16:6:26 | Before ...+... | exprs.go:6:16:6:16 | Before 1 |
+| exprs.go:6:20:6:26 | (...) | exprs.go:6:21:6:25 | Before ...+... |
 | exprs.go:6:20:6:26 | After (...) | exprs.go:6:16:6:26 | ...+... |
-| exprs.go:6:20:6:26 | Before (...) | exprs.go:6:21:6:25 | Before ...+... |
 | exprs.go:6:21:6:21 | 2 | exprs.go:6:21:6:21 | After 2 |
 | exprs.go:6:21:6:21 | After 2 | exprs.go:6:25:6:25 | Before 3 |
 | exprs.go:6:21:6:21 | Before 2 | exprs.go:6:21:6:21 | 2 |
@@ -904,12 +877,9 @@
 | exprs.go:9:8:9:61 | Entry | exprs.go:9:39:9:61 | block statement |
 | exprs.go:9:8:9:61 | Normal Exit | exprs.go:9:8:9:61 | Exit |
 | exprs.go:9:8:9:61 | function literal | exprs.go:9:8:9:61 | After function literal |
-| exprs.go:9:39:9:61 | arg:0 block statement | exprs.go:9:39:9:61 | param-init:0 block statement |
-| exprs.go:9:39:9:61 | arg:1 block statement | exprs.go:9:39:9:61 | param-init:1 block statement |
-| exprs.go:9:39:9:61 | arg:2 block statement | exprs.go:9:39:9:61 | param-init:2 block statement |
-| exprs.go:9:39:9:61 | block statement | exprs.go:9:39:9:61 | arg:0 block statement |
-| exprs.go:9:39:9:61 | param-init:0 block statement | exprs.go:9:39:9:61 | arg:1 block statement |
-| exprs.go:9:39:9:61 | param-init:1 block statement | exprs.go:9:39:9:61 | arg:2 block statement |
+| exprs.go:9:39:9:61 | block statement | exprs.go:9:39:9:61 | param-init:0 block statement |
+| exprs.go:9:39:9:61 | param-init:0 block statement | exprs.go:9:39:9:61 | param-init:1 block statement |
+| exprs.go:9:39:9:61 | param-init:1 block statement | exprs.go:9:39:9:61 | param-init:2 block statement |
 | exprs.go:9:39:9:61 | param-init:2 block statement | exprs.go:9:41:9:59 | Before return statement |
 | exprs.go:9:41:9:59 | Before return statement | exprs.go:9:48:9:59 | Before ...<... |
 | exprs.go:9:41:9:59 | return statement | exprs.go:9:8:9:61 | Normal Exit |
@@ -1198,8 +1168,7 @@
 | exprs.go:28:1:30:1 | Exceptional Exit | exprs.go:28:1:30:1 | Exit |
 | exprs.go:28:1:30:1 | Normal Exit | exprs.go:28:1:30:1 | Exit |
 | exprs.go:28:1:30:1 | function declaration | exprs.go:28:1:30:1 | After function declaration |
-| exprs.go:28:33:30:1 | arg:0 block statement | exprs.go:28:33:30:1 | param-init:0 block statement |
-| exprs.go:28:33:30:1 | block statement | exprs.go:28:33:30:1 | arg:0 block statement |
+| exprs.go:28:33:30:1 | block statement | exprs.go:28:33:30:1 | param-init:0 block statement |
 | exprs.go:28:33:30:1 | param-init:0 block statement | exprs.go:29:2:29:21 | Before return statement |
 | exprs.go:29:2:29:21 | Before return statement | exprs.go:29:9:29:21 | Before selection of x |
 | exprs.go:29:2:29:21 | return statement | exprs.go:28:1:30:1 | Normal Exit |
@@ -1218,8 +1187,7 @@
 | exprs.go:32:1:37:1 | Entry | exprs.go:32:33:37:1 | block statement |
 | exprs.go:32:1:37:1 | Normal Exit | exprs.go:32:1:37:1 | Exit |
 | exprs.go:32:1:37:1 | function declaration | exprs.go:32:1:37:1 | After function declaration |
-| exprs.go:32:33:37:1 | arg:0 block statement | exprs.go:32:33:37:1 | param-init:0 block statement |
-| exprs.go:32:33:37:1 | block statement | exprs.go:32:33:37:1 | arg:0 block statement |
+| exprs.go:32:33:37:1 | block statement | exprs.go:32:33:37:1 | param-init:0 block statement |
 | exprs.go:32:33:37:1 | param-init:0 block statement | exprs.go:33:2:35:2 | if statement |
 | exprs.go:33:2:35:2 | After if statement | exprs.go:36:2:36:10 | Before return statement |
 | exprs.go:33:2:35:2 | if statement | exprs.go:33:5:33:24 | ... := ... |
@@ -1262,8 +1230,7 @@
 | exprs.go:39:1:47:1 | Entry | exprs.go:39:33:47:1 | block statement |
 | exprs.go:39:1:47:1 | Normal Exit | exprs.go:39:1:47:1 | Exit |
 | exprs.go:39:1:47:1 | function declaration | exprs.go:39:1:47:1 | After function declaration |
-| exprs.go:39:33:47:1 | arg:0 block statement | exprs.go:39:33:47:1 | param-init:0 block statement |
-| exprs.go:39:33:47:1 | block statement | exprs.go:39:33:47:1 | arg:0 block statement |
+| exprs.go:39:33:47:1 | block statement | exprs.go:39:33:47:1 | param-init:0 block statement |
 | exprs.go:39:33:47:1 | param-init:0 block statement | exprs.go:40:2:40:12 | declaration statement |
 | exprs.go:40:2:40:12 | After declaration statement | exprs.go:41:2:41:12 | declaration statement |
 | exprs.go:40:2:40:12 | After variable declaration | exprs.go:40:2:40:12 | After declaration statement |
@@ -1323,8 +1290,7 @@
 | exprs.go:49:1:54:1 | Exceptional Exit | exprs.go:49:1:54:1 | Exit |
 | exprs.go:49:1:54:1 | Normal Exit | exprs.go:49:1:54:1 | Exit |
 | exprs.go:49:1:54:1 | function declaration | exprs.go:49:1:54:1 | After function declaration |
-| exprs.go:49:30:54:1 | arg:0 block statement | exprs.go:49:30:54:1 | param-init:0 block statement |
-| exprs.go:49:30:54:1 | block statement | exprs.go:49:30:54:1 | arg:0 block statement |
+| exprs.go:49:30:54:1 | block statement | exprs.go:49:30:54:1 | param-init:0 block statement |
 | exprs.go:49:30:54:1 | param-init:0 block statement | exprs.go:49:30:54:1 | result-zero-init:0 block statement |
 | exprs.go:49:30:54:1 | result-init:0 block statement | exprs.go:50:2:52:2 | for statement |
 | exprs.go:49:30:54:1 | result-read:0 block statement | exprs.go:49:1:54:1 | Normal Exit |
@@ -1388,8 +1354,7 @@
 | exprs.go:56:1:58:1 | Exceptional Exit | exprs.go:56:1:58:1 | Exit |
 | exprs.go:56:1:58:1 | Normal Exit | exprs.go:56:1:58:1 | Exit |
 | exprs.go:56:1:58:1 | function declaration | exprs.go:56:1:58:1 | After function declaration |
-| exprs.go:56:26:58:1 | arg:0 block statement | exprs.go:56:26:58:1 | param-init:0 block statement |
-| exprs.go:56:26:58:1 | block statement | exprs.go:56:26:58:1 | arg:0 block statement |
+| exprs.go:56:26:58:1 | block statement | exprs.go:56:26:58:1 | param-init:0 block statement |
 | exprs.go:56:26:58:1 | param-init:0 block statement | exprs.go:57:2:57:15 | Before return statement |
 | exprs.go:57:2:57:15 | Before return statement | exprs.go:57:9:57:15 | Before call to sum |
 | exprs.go:57:2:57:15 | return statement | exprs.go:56:1:58:1 | Normal Exit |
@@ -1472,10 +1437,8 @@
 | exprs.go:67:1:69:1 | Entry | exprs.go:67:24:69:1 | block statement |
 | exprs.go:67:1:69:1 | Normal Exit | exprs.go:67:1:69:1 | Exit |
 | exprs.go:67:1:69:1 | function declaration | exprs.go:67:1:69:1 | After function declaration |
-| exprs.go:67:24:69:1 | arg:0 block statement | exprs.go:67:24:69:1 | param-init:0 block statement |
-| exprs.go:67:24:69:1 | arg:1 block statement | exprs.go:67:24:69:1 | param-init:1 block statement |
-| exprs.go:67:24:69:1 | block statement | exprs.go:67:24:69:1 | arg:0 block statement |
-| exprs.go:67:24:69:1 | param-init:0 block statement | exprs.go:67:24:69:1 | arg:1 block statement |
+| exprs.go:67:24:69:1 | block statement | exprs.go:67:24:69:1 | param-init:0 block statement |
+| exprs.go:67:24:69:1 | param-init:0 block statement | exprs.go:67:24:69:1 | param-init:1 block statement |
 | exprs.go:67:24:69:1 | param-init:1 block statement | exprs.go:68:2:68:13 | Before return statement |
 | exprs.go:68:2:68:13 | Before return statement | exprs.go:68:9:68:13 | Before ...+... |
 | exprs.go:68:2:68:13 | return statement | exprs.go:67:1:69:1 | Normal Exit |
@@ -1514,10 +1477,12 @@
 | exprs.go:75:10:75:19 | Before call to add | exprs.go:75:10:75:12 | Before add |
 | exprs.go:75:10:75:19 | call to add | exprs.go:0:0:0:0 | Exceptional Exit |
 | exprs.go:75:10:75:19 | call to add | exprs.go:75:10:75:19 | After call to add |
+| exprs.go:75:10:75:19 | extract:0 call to add | exprs.go:75:10:75:19 | extract:1 call to add |
+| exprs.go:75:10:75:19 | extract:1 call to add | exprs.go:75:10:75:19 | call to add |
 | exprs.go:75:14:75:16 | After gen | exprs.go:75:14:75:18 | call to gen |
 | exprs.go:75:14:75:16 | Before gen | exprs.go:75:14:75:16 | gen |
 | exprs.go:75:14:75:16 | gen | exprs.go:75:14:75:16 | After gen |
-| exprs.go:75:14:75:18 | After call to gen | exprs.go:75:10:75:19 | call to add |
+| exprs.go:75:14:75:18 | After call to gen | exprs.go:75:10:75:19 | extract:0 call to add |
 | exprs.go:75:14:75:18 | Before call to gen | exprs.go:75:14:75:16 | Before gen |
 | exprs.go:75:14:75:18 | call to gen | exprs.go:0:0:0:0 | Exceptional Exit |
 | exprs.go:75:14:75:18 | call to gen | exprs.go:75:14:75:18 | After call to gen |
@@ -1526,23 +1491,20 @@
 | exprs.go:77:1:79:1 | Entry | exprs.go:77:31:79:1 | block statement |
 | exprs.go:77:1:79:1 | Normal Exit | exprs.go:77:1:79:1 | Exit |
 | exprs.go:77:1:79:1 | function declaration | exprs.go:77:1:79:1 | After function declaration |
-| exprs.go:77:31:79:1 | arg:0 block statement | exprs.go:77:31:79:1 | param-init:0 block statement |
-| exprs.go:77:31:79:1 | arg:1 block statement | exprs.go:77:31:79:1 | param-init:1 block statement |
-| exprs.go:77:31:79:1 | arg:2 block statement | exprs.go:77:31:79:1 | param-init:2 block statement |
-| exprs.go:77:31:79:1 | block statement | exprs.go:77:31:79:1 | arg:0 block statement |
-| exprs.go:77:31:79:1 | param-init:0 block statement | exprs.go:77:31:79:1 | arg:1 block statement |
-| exprs.go:77:31:79:1 | param-init:1 block statement | exprs.go:77:31:79:1 | arg:2 block statement |
+| exprs.go:77:31:79:1 | block statement | exprs.go:77:31:79:1 | param-init:0 block statement |
+| exprs.go:77:31:79:1 | param-init:0 block statement | exprs.go:77:31:79:1 | param-init:1 block statement |
+| exprs.go:77:31:79:1 | param-init:1 block statement | exprs.go:77:31:79:1 | param-init:2 block statement |
 | exprs.go:77:31:79:1 | param-init:2 block statement | exprs.go:78:2:78:22 | Before return statement |
 | exprs.go:78:2:78:22 | Before return statement | exprs.go:78:9:78:22 | ...\|\|... |
 | exprs.go:78:2:78:22 | return statement | exprs.go:77:1:79:1 | Normal Exit |
-| exprs.go:78:9:78:17 | !... | exprs.go:78:10:78:17 | Before (...) |
+| exprs.go:78:9:78:17 | !... | exprs.go:78:10:78:17 | (...) |
 | exprs.go:78:9:78:17 | After !... [false] | exprs.go:78:22:78:22 | Before z |
 | exprs.go:78:9:78:17 | After !... [true] | exprs.go:78:9:78:22 | After ...\|\|... |
 | exprs.go:78:9:78:22 | ...\|\|... | exprs.go:78:9:78:17 | !... |
 | exprs.go:78:9:78:22 | After ...\|\|... | exprs.go:78:2:78:22 | return statement |
+| exprs.go:78:10:78:17 | (...) | exprs.go:78:11:78:16 | ...&&... |
 | exprs.go:78:10:78:17 | After (...) [false] | exprs.go:78:9:78:17 | After !... [true] |
 | exprs.go:78:10:78:17 | After (...) [true] | exprs.go:78:9:78:17 | After !... [false] |
-| exprs.go:78:10:78:17 | Before (...) | exprs.go:78:11:78:16 | ...&&... |
 | exprs.go:78:11:78:11 | After x [false] | exprs.go:78:11:78:16 | After ...&&... [false] |
 | exprs.go:78:11:78:11 | After x [true] | exprs.go:78:16:78:16 | Before y |
 | exprs.go:78:11:78:11 | Before x | exprs.go:78:11:78:11 | x |
@@ -1565,9 +1527,7 @@
 | exprs.go:81:1:87:1 | Exceptional Exit | exprs.go:81:1:87:1 | Exit |
 | exprs.go:81:1:87:1 | Normal Exit | exprs.go:81:1:87:1 | Exit |
 | exprs.go:81:1:87:1 | function declaration | exprs.go:81:1:87:1 | After function declaration |
-| exprs.go:81:35:87:1 | After block statement | exprs.go:81:1:87:1 | Normal Exit |
-| exprs.go:81:35:87:1 | arg:0 block statement | exprs.go:81:35:87:1 | param-init:0 block statement |
-| exprs.go:81:35:87:1 | block statement | exprs.go:81:35:87:1 | arg:0 block statement |
+| exprs.go:81:35:87:1 | block statement | exprs.go:81:35:87:1 | param-init:0 block statement |
 | exprs.go:81:35:87:1 | param-init:0 block statement | exprs.go:82:2:82:16 | ... := ... |
 | exprs.go:82:2:82:16 | ... := ... | exprs.go:82:13:82:16 | Before <-... |
 | exprs.go:82:2:82:16 | After ... := ... | exprs.go:83:2:85:2 | if statement |
@@ -1591,7 +1551,6 @@
 | exprs.go:83:8:85:2 | block statement | exprs.go:84:3:84:12 | Before return statement |
 | exprs.go:84:3:84:12 | Before return statement | exprs.go:84:10:84:12 | Before val |
 | exprs.go:84:3:84:12 | return statement | exprs.go:81:1:87:1 | Normal Exit |
-| exprs.go:84:3:84:12 | return statement | exprs.go:81:35:87:1 | After block statement |
 | exprs.go:84:10:84:12 | After val | exprs.go:84:3:84:12 | return statement |
 | exprs.go:84:10:84:12 | Before val | exprs.go:84:10:84:12 | val |
 | exprs.go:84:10:84:12 | val | exprs.go:84:10:84:12 | After val |
@@ -1641,19 +1600,16 @@
 | exprs.go:93:1:95:1 | Entry | exprs.go:93:32:95:1 | block statement |
 | exprs.go:93:1:95:1 | Normal Exit | exprs.go:93:1:95:1 | Exit |
 | exprs.go:93:1:95:1 | function declaration | exprs.go:93:1:95:1 | After function declaration |
-| exprs.go:93:32:95:1 | arg:0 block statement | exprs.go:93:32:95:1 | param-init:0 block statement |
-| exprs.go:93:32:95:1 | arg:1 block statement | exprs.go:93:32:95:1 | param-init:1 block statement |
-| exprs.go:93:32:95:1 | arg:2 block statement | exprs.go:93:32:95:1 | param-init:2 block statement |
-| exprs.go:93:32:95:1 | block statement | exprs.go:93:32:95:1 | arg:0 block statement |
-| exprs.go:93:32:95:1 | param-init:0 block statement | exprs.go:93:32:95:1 | arg:1 block statement |
-| exprs.go:93:32:95:1 | param-init:1 block statement | exprs.go:93:32:95:1 | arg:2 block statement |
+| exprs.go:93:32:95:1 | block statement | exprs.go:93:32:95:1 | param-init:0 block statement |
+| exprs.go:93:32:95:1 | param-init:0 block statement | exprs.go:93:32:95:1 | param-init:1 block statement |
+| exprs.go:93:32:95:1 | param-init:1 block statement | exprs.go:93:32:95:1 | param-init:2 block statement |
 | exprs.go:93:32:95:1 | param-init:2 block statement | exprs.go:94:2:94:21 | Before return statement |
 | exprs.go:94:2:94:21 | Before return statement | exprs.go:94:9:94:21 | ...\|\|... |
 | exprs.go:94:2:94:21 | return statement | exprs.go:93:1:95:1 | Normal Exit |
+| exprs.go:94:9:94:16 | (...) | exprs.go:94:10:94:15 | ...&&... |
 | exprs.go:94:9:94:16 | After (...) [false] | exprs.go:94:21:94:21 | Before z |
 | exprs.go:94:9:94:16 | After (...) [true] | exprs.go:94:9:94:21 | After ...\|\|... |
-| exprs.go:94:9:94:16 | Before (...) | exprs.go:94:10:94:15 | ...&&... |
-| exprs.go:94:9:94:21 | ...\|\|... | exprs.go:94:9:94:16 | Before (...) |
+| exprs.go:94:9:94:21 | ...\|\|... | exprs.go:94:9:94:16 | (...) |
 | exprs.go:94:9:94:21 | After ...\|\|... | exprs.go:94:2:94:21 | return statement |
 | exprs.go:94:10:94:10 | After x [false] | exprs.go:94:10:94:15 | After ...&&... [false] |
 | exprs.go:94:10:94:10 | After x [true] | exprs.go:94:15:94:15 | Before y |
@@ -1683,11 +1639,9 @@
 | generic.go:7:1:7:55 | Entry | generic.go:7:44:7:55 | block statement |
 | generic.go:7:1:7:55 | Normal Exit | generic.go:7:1:7:55 | Exit |
 | generic.go:7:1:7:55 | function declaration | generic.go:7:1:7:55 | After function declaration |
-| generic.go:7:44:7:55 | arg:0 block statement | generic.go:7:44:7:55 | param-init:0 block statement |
-| generic.go:7:44:7:55 | arg:-1 block statement | generic.go:7:44:7:55 | param-init:-1 block statement |
-| generic.go:7:44:7:55 | block statement | generic.go:7:44:7:55 | arg:-1 block statement |
+| generic.go:7:44:7:55 | block statement | generic.go:7:44:7:55 | param-init:-1 block statement |
 | generic.go:7:44:7:55 | param-init:0 block statement | generic.go:7:46:7:53 | Before return statement |
-| generic.go:7:44:7:55 | param-init:-1 block statement | generic.go:7:44:7:55 | arg:0 block statement |
+| generic.go:7:44:7:55 | param-init:-1 block statement | generic.go:7:44:7:55 | param-init:0 block statement |
 | generic.go:7:46:7:53 | Before return statement | generic.go:7:53:7:53 | Before u |
 | generic.go:7:46:7:53 | return statement | generic.go:7:1:7:55 | Normal Exit |
 | generic.go:7:53:7:53 | After u | generic.go:7:46:7:53 | return statement |
@@ -1701,11 +1655,9 @@
 | generic.go:14:1:14:59 | Entry | generic.go:14:48:14:59 | block statement |
 | generic.go:14:1:14:59 | Normal Exit | generic.go:14:1:14:59 | Exit |
 | generic.go:14:1:14:59 | function declaration | generic.go:14:1:14:59 | After function declaration |
-| generic.go:14:48:14:59 | arg:0 block statement | generic.go:14:48:14:59 | param-init:0 block statement |
-| generic.go:14:48:14:59 | arg:-1 block statement | generic.go:14:48:14:59 | param-init:-1 block statement |
-| generic.go:14:48:14:59 | block statement | generic.go:14:48:14:59 | arg:-1 block statement |
+| generic.go:14:48:14:59 | block statement | generic.go:14:48:14:59 | param-init:-1 block statement |
 | generic.go:14:48:14:59 | param-init:0 block statement | generic.go:14:50:14:57 | Before return statement |
-| generic.go:14:48:14:59 | param-init:-1 block statement | generic.go:14:48:14:59 | arg:0 block statement |
+| generic.go:14:48:14:59 | param-init:-1 block statement | generic.go:14:48:14:59 | param-init:0 block statement |
 | generic.go:14:50:14:57 | Before return statement | generic.go:14:57:14:57 | Before u |
 | generic.go:14:50:14:57 | return statement | generic.go:14:1:14:59 | Normal Exit |
 | generic.go:14:57:14:57 | After u | generic.go:14:50:14:57 | return statement |
@@ -1716,8 +1668,7 @@
 | generic.go:16:1:18:1 | Entry | generic.go:16:37:18:1 | block statement |
 | generic.go:16:1:18:1 | Normal Exit | generic.go:16:1:18:1 | Exit |
 | generic.go:16:1:18:1 | function declaration | generic.go:16:1:18:1 | After function declaration |
-| generic.go:16:37:18:1 | arg:0 block statement | generic.go:16:37:18:1 | param-init:0 block statement |
-| generic.go:16:37:18:1 | block statement | generic.go:16:37:18:1 | arg:0 block statement |
+| generic.go:16:37:18:1 | block statement | generic.go:16:37:18:1 | param-init:0 block statement |
 | generic.go:16:37:18:1 | param-init:0 block statement | generic.go:17:2:17:9 | Before return statement |
 | generic.go:17:2:17:9 | Before return statement | generic.go:17:9:17:9 | Before t |
 | generic.go:17:2:17:9 | return statement | generic.go:16:1:18:1 | Normal Exit |
@@ -1729,10 +1680,8 @@
 | generic.go:20:1:22:1 | Entry | generic.go:20:50:22:1 | block statement |
 | generic.go:20:1:22:1 | Normal Exit | generic.go:20:1:22:1 | Exit |
 | generic.go:20:1:22:1 | function declaration | generic.go:20:1:22:1 | After function declaration |
-| generic.go:20:50:22:1 | arg:0 block statement | generic.go:20:50:22:1 | param-init:0 block statement |
-| generic.go:20:50:22:1 | arg:1 block statement | generic.go:20:50:22:1 | param-init:1 block statement |
-| generic.go:20:50:22:1 | block statement | generic.go:20:50:22:1 | arg:0 block statement |
-| generic.go:20:50:22:1 | param-init:0 block statement | generic.go:20:50:22:1 | arg:1 block statement |
+| generic.go:20:50:22:1 | block statement | generic.go:20:50:22:1 | param-init:0 block statement |
+| generic.go:20:50:22:1 | param-init:0 block statement | generic.go:20:50:22:1 | param-init:1 block statement |
 | generic.go:20:50:22:1 | param-init:1 block statement | generic.go:21:2:21:12 | Before return statement |
 | generic.go:21:2:21:12 | Before return statement | generic.go:21:9:21:9 | Before s |
 | generic.go:21:2:21:12 | return statement | generic.go:20:1:22:1 | Normal Exit |
@@ -2065,8 +2014,7 @@
 | main.go:26:1:32:1 | Exceptional Exit | main.go:26:1:32:1 | Exit |
 | main.go:26:1:32:1 | Normal Exit | main.go:26:1:32:1 | Exit |
 | main.go:26:1:32:1 | function declaration | main.go:26:1:32:1 | After function declaration |
-| main.go:26:28:32:1 | arg:0 block statement | main.go:26:28:32:1 | param-init:0 block statement |
-| main.go:26:28:32:1 | block statement | main.go:26:28:32:1 | arg:0 block statement |
+| main.go:26:28:32:1 | block statement | main.go:26:28:32:1 | param-init:0 block statement |
 | main.go:26:28:32:1 | param-init:0 block statement | main.go:27:2:27:13 | ... := ... |
 | main.go:27:2:27:13 | ... := ... | main.go:27:10:27:10 | Before x |
 | main.go:27:2:27:13 | After ... := ... | main.go:28:2:30:2 | if statement |
@@ -2115,8 +2063,7 @@
 | main.go:34:1:36:1 | Normal Exit | main.go:34:1:36:1 | Exit |
 | main.go:34:1:36:1 | function declaration | main.go:34:1:36:1 | After function declaration |
 | main.go:34:19:36:1 | After block statement | main.go:34:1:36:1 | Normal Exit |
-| main.go:34:19:36:1 | arg:0 block statement | main.go:34:19:36:1 | param-init:0 block statement |
-| main.go:34:19:36:1 | block statement | main.go:34:19:36:1 | arg:0 block statement |
+| main.go:34:19:36:1 | block statement | main.go:34:19:36:1 | param-init:0 block statement |
 | main.go:34:19:36:1 | param-init:0 block statement | main.go:35:2:35:9 | ... += ... |
 | main.go:35:2:35:3 | After star expression | main.go:35:8:35:9 | Before 19 |
 | main.go:35:2:35:3 | Before star expression | main.go:35:3:35:3 | Before x |
@@ -2223,8 +2170,7 @@
 | main.go:56:1:64:1 | Entry | main.go:56:38:64:1 | block statement |
 | main.go:56:1:64:1 | Normal Exit | main.go:56:1:64:1 | Exit |
 | main.go:56:1:64:1 | function declaration | main.go:56:1:64:1 | After function declaration |
-| main.go:56:38:64:1 | arg:0 block statement | main.go:56:38:64:1 | param-init:0 block statement |
-| main.go:56:38:64:1 | block statement | main.go:56:38:64:1 | arg:0 block statement |
+| main.go:56:38:64:1 | block statement | main.go:56:38:64:1 | param-init:0 block statement |
 | main.go:56:38:64:1 | param-init:0 block statement | main.go:56:38:64:1 | result-zero-init:0 block statement |
 | main.go:56:38:64:1 | result-init:0 block statement | main.go:57:2:57:11 | ... = ... |
 | main.go:56:38:64:1 | result-read:0 block statement | main.go:56:1:64:1 | Normal Exit |
@@ -2467,8 +2413,7 @@
 | main.go:98:1:106:1 | Exceptional Exit | main.go:98:1:106:1 | Exit |
 | main.go:98:1:106:1 | Normal Exit | main.go:98:1:106:1 | Exit |
 | main.go:98:1:106:1 | function declaration | main.go:98:1:106:1 | After function declaration |
-| main.go:98:43:106:1 | arg:0 block statement | main.go:98:43:106:1 | param-init:0 block statement |
-| main.go:98:43:106:1 | block statement | main.go:98:43:106:1 | arg:0 block statement |
+| main.go:98:43:106:1 | block statement | main.go:98:43:106:1 | param-init:0 block statement |
 | main.go:98:43:106:1 | param-init:0 block statement | main.go:99:2:99:13 | ... := ... |
 | main.go:99:2:99:13 | ... := ... | main.go:99:10:99:10 | Before x |
 | main.go:99:2:99:13 | After ... := ... | main.go:100:2:104:2 | if statement |
@@ -2551,8 +2496,7 @@
 | noretfunctions.go:12:1:16:1 | Normal Exit | noretfunctions.go:12:1:16:1 | Exit |
 | noretfunctions.go:12:1:16:1 | function declaration | noretfunctions.go:12:1:16:1 | After function declaration |
 | noretfunctions.go:12:20:16:1 | After block statement | noretfunctions.go:12:1:16:1 | Normal Exit |
-| noretfunctions.go:12:20:16:1 | arg:0 block statement | noretfunctions.go:12:20:16:1 | param-init:0 block statement |
-| noretfunctions.go:12:20:16:1 | block statement | noretfunctions.go:12:20:16:1 | arg:0 block statement |
+| noretfunctions.go:12:20:16:1 | block statement | noretfunctions.go:12:20:16:1 | param-init:0 block statement |
 | noretfunctions.go:12:20:16:1 | param-init:0 block statement | noretfunctions.go:13:2:15:2 | if statement |
 | noretfunctions.go:13:2:15:2 | After if statement | noretfunctions.go:12:20:16:1 | After block statement |
 | noretfunctions.go:13:2:15:2 | if statement | noretfunctions.go:13:5:13:10 | Before ...!=... |
@@ -2583,7 +2527,6 @@
 | noretfunctions.go:18:1:18:17 | Normal Exit | noretfunctions.go:18:1:18:17 | Exit |
 | noretfunctions.go:18:1:18:17 | function declaration | noretfunctions.go:18:1:18:17 | After function declaration |
 | noretfunctions.go:18:16:18:17 | block statement | noretfunctions.go:18:1:18:17 | Normal Exit |
-| noretfunctions.go:18:16:18:17 | block statement | noretfunctions.go:18:16:18:17 | block statement |
 | noretfunctions.go:20:1:22:1 | After function declaration | noretfunctions.go:24:1:26:1 | Before function declaration |
 | noretfunctions.go:20:1:22:1 | Before function declaration | noretfunctions.go:20:1:22:1 | function declaration |
 | noretfunctions.go:20:1:22:1 | Entry | noretfunctions.go:20:26:22:1 | block statement |
@@ -2709,8 +2652,7 @@
 | stmts2.go:15:1:28:1 | Entry | stmts2.go:15:30:28:1 | block statement |
 | stmts2.go:15:1:28:1 | Normal Exit | stmts2.go:15:1:28:1 | Exit |
 | stmts2.go:15:1:28:1 | function declaration | stmts2.go:15:1:28:1 | After function declaration |
-| stmts2.go:15:30:28:1 | arg:0 block statement | stmts2.go:15:30:28:1 | param-init:0 block statement |
-| stmts2.go:15:30:28:1 | block statement | stmts2.go:15:30:28:1 | arg:0 block statement |
+| stmts2.go:15:30:28:1 | block statement | stmts2.go:15:30:28:1 | param-init:0 block statement |
 | stmts2.go:15:30:28:1 | param-init:0 block statement | stmts2.go:16:2:26:2 | Before select statement |
 | stmts2.go:16:2:26:2 | After select statement | stmts2.go:27:2:27:9 | Before return statement |
 | stmts2.go:16:2:26:2 | Before select statement | stmts2.go:17:13:17:14 | Before ch |
@@ -2892,8 +2834,7 @@
 | stmts3.go:14:1:16:1 | Normal Exit | stmts3.go:14:1:16:1 | Exit |
 | stmts3.go:14:1:16:1 | function declaration | stmts3.go:14:1:16:1 | After function declaration |
 | stmts3.go:14:21:16:1 | After block statement | stmts3.go:14:1:16:1 | Normal Exit |
-| stmts3.go:14:21:16:1 | arg:0 block statement | stmts3.go:14:21:16:1 | param-init:0 block statement |
-| stmts3.go:14:21:16:1 | block statement | stmts3.go:14:21:16:1 | arg:0 block statement |
+| stmts3.go:14:21:16:1 | block statement | stmts3.go:14:21:16:1 | param-init:0 block statement |
 | stmts3.go:14:21:16:1 | param-init:0 block statement | stmts3.go:15:2:15:8 | ... = ... |
 | stmts3.go:15:2:15:8 | ... = ... | stmts3.go:15:7:15:8 | Before 42 |
 | stmts3.go:15:2:15:8 | After ... = ... | stmts3.go:14:21:16:1 | After block statement |
@@ -2920,7 +2861,6 @@
 | stmts3.go:19:15:19:23 | Normal Exit | stmts3.go:19:15:19:23 | Exit |
 | stmts3.go:19:15:19:23 | function literal | stmts3.go:19:15:19:23 | After function literal |
 | stmts3.go:19:22:19:23 | block statement | stmts3.go:19:15:19:23 | Normal Exit |
-| stmts3.go:19:22:19:23 | block statement | stmts3.go:19:22:19:23 | block statement |
 | stmts4.go:0:0:0:0 | After stmts4.go | stmts4.go:0:0:0:0 | Normal Exit |
 | stmts4.go:0:0:0:0 | Entry | stmts4.go:0:0:0:0 | stmts4.go |
 | stmts4.go:0:0:0:0 | Normal Exit | stmts4.go:0:0:0:0 | Exit |
@@ -2946,11 +2886,9 @@
 | stmts5.go:7:1:9:1 | Normal Exit | stmts5.go:7:1:9:1 | Exit |
 | stmts5.go:7:1:9:1 | function declaration | stmts5.go:7:1:9:1 | After function declaration |
 | stmts5.go:7:33:9:1 | After block statement | stmts5.go:7:1:9:1 | Normal Exit |
-| stmts5.go:7:33:9:1 | arg:0 block statement | stmts5.go:7:33:9:1 | param-init:0 block statement |
-| stmts5.go:7:33:9:1 | arg:-1 block statement | stmts5.go:7:33:9:1 | param-init:-1 block statement |
-| stmts5.go:7:33:9:1 | block statement | stmts5.go:7:33:9:1 | arg:-1 block statement |
+| stmts5.go:7:33:9:1 | block statement | stmts5.go:7:33:9:1 | param-init:-1 block statement |
 | stmts5.go:7:33:9:1 | param-init:0 block statement | stmts5.go:8:2:8:16 | ... += ... |
-| stmts5.go:7:33:9:1 | param-init:-1 block statement | stmts5.go:7:33:9:1 | arg:0 block statement |
+| stmts5.go:7:33:9:1 | param-init:-1 block statement | stmts5.go:7:33:9:1 | param-init:0 block statement |
 | stmts5.go:8:2:8:3 | After me | stmts5.go:8:2:8:7 | selection of val |
 | stmts5.go:8:2:8:3 | Before me | stmts5.go:8:2:8:3 | me |
 | stmts5.go:8:2:8:3 | me | stmts5.go:8:2:8:3 | After me |
@@ -2969,7 +2907,6 @@
 | stmts5.go:11:1:12:1 | Normal Exit | stmts5.go:11:1:12:1 | Exit |
 | stmts5.go:11:1:12:1 | function declaration | stmts5.go:11:1:12:1 | After function declaration |
 | stmts5.go:11:20:12:1 | block statement | stmts5.go:11:1:12:1 | Normal Exit |
-| stmts5.go:11:20:12:1 | block statement | stmts5.go:11:20:12:1 | block statement |
 | stmts6.go:0:0:0:0 | After stmts6.go | stmts6.go:0:0:0:0 | Normal Exit |
 | stmts6.go:0:0:0:0 | Entry | stmts6.go:0:0:0:0 | stmts6.go |
 | stmts6.go:0:0:0:0 | Normal Exit | stmts6.go:0:0:0:0 | Exit |
@@ -3033,6 +2970,7 @@
 | stmts7.go:10:1:13:1 | Before function declaration | stmts7.go:10:1:13:1 | function declaration |
 | stmts7.go:10:1:13:1 | Entry | stmts7.go:10:19:13:1 | block statement |
 | stmts7.go:10:1:13:1 | Exceptional Exit | stmts7.go:10:1:13:1 | Exit |
+| stmts7.go:10:1:13:1 | Normal Exit | stmts7.go:10:1:13:1 | Exit |
 | stmts7.go:10:1:13:1 | function declaration | stmts7.go:10:1:13:1 | After function declaration |
 | stmts7.go:10:19:13:1 | block statement | stmts7.go:11:2:11:21 | Before defer statement |
 | stmts7.go:11:2:11:21 | After defer statement | stmts7.go:12:2:12:10 | expression statement |
@@ -3043,11 +2981,13 @@
 | stmts7.go:11:8:11:19 | recoverPanic | stmts7.go:11:8:11:19 | After recoverPanic |
 | stmts7.go:11:8:11:21 | After call to recoverPanic | stmts7.go:11:2:11:21 | defer statement |
 | stmts7.go:11:8:11:21 | call to recoverPanic | stmts7.go:11:8:11:19 | Before recoverPanic |
+| stmts7.go:11:8:11:21 | defer-invoke call to recoverPanic | stmts7.go:10:1:13:1 | Normal Exit |
 | stmts7.go:12:2:12:6 | After panic | stmts7.go:12:8:12:9 | Before "" |
 | stmts7.go:12:2:12:6 | Before panic | stmts7.go:12:2:12:6 | panic |
 | stmts7.go:12:2:12:6 | panic | stmts7.go:12:2:12:6 | After panic |
 | stmts7.go:12:2:12:10 | Before call to panic | stmts7.go:12:2:12:6 | Before panic |
 | stmts7.go:12:2:12:10 | call to panic | stmts7.go:10:1:13:1 | Exceptional Exit |
+| stmts7.go:12:2:12:10 | call to panic | stmts7.go:11:8:11:21 | defer-invoke call to recoverPanic |
 | stmts7.go:12:2:12:10 | expression statement | stmts7.go:12:2:12:10 | Before call to panic |
 | stmts7.go:12:8:12:9 | "" | stmts7.go:12:8:12:9 | After "" |
 | stmts7.go:12:8:12:9 | After "" | stmts7.go:12:2:12:10 | call to panic |
@@ -3062,8 +3002,7 @@
 | stmts7.go:19:1:21:1 | Normal Exit | stmts7.go:19:1:21:1 | Exit |
 | stmts7.go:19:1:21:1 | function declaration | stmts7.go:19:1:21:1 | After function declaration |
 | stmts7.go:19:32:21:1 | After block statement | stmts7.go:19:1:21:1 | Normal Exit |
-| stmts7.go:19:32:21:1 | arg:-1 block statement | stmts7.go:19:32:21:1 | param-init:-1 block statement |
-| stmts7.go:19:32:21:1 | block statement | stmts7.go:19:32:21:1 | arg:-1 block statement |
+| stmts7.go:19:32:21:1 | block statement | stmts7.go:19:32:21:1 | param-init:-1 block statement |
 | stmts7.go:19:32:21:1 | param-init:-1 block statement | stmts7.go:20:2:20:13 | expression statement |
 | stmts7.go:20:2:20:8 | After methods | stmts7.go:20:2:20:8 | implicit-deref methods |
 | stmts7.go:20:2:20:8 | Before methods | stmts7.go:20:2:20:8 | methods |
@@ -3084,8 +3023,7 @@
 | stmts7.go:23:1:28:1 | Exceptional Exit | stmts7.go:23:1:28:1 | Exit |
 | stmts7.go:23:1:28:1 | Normal Exit | stmts7.go:23:1:28:1 | Exit |
 | stmts7.go:23:1:28:1 | function declaration | stmts7.go:23:1:28:1 | After function declaration |
-| stmts7.go:23:40:28:1 | arg:0 block statement | stmts7.go:23:40:28:1 | param-init:0 block statement |
-| stmts7.go:23:40:28:1 | block statement | stmts7.go:23:40:28:1 | arg:0 block statement |
+| stmts7.go:23:40:28:1 | block statement | stmts7.go:23:40:28:1 | param-init:0 block statement |
 | stmts7.go:23:40:28:1 | param-init:0 block statement | stmts7.go:24:2:24:20 | Before defer statement |
 | stmts7.go:24:2:24:20 | After defer statement | stmts7.go:25:2:25:23 | Before defer statement |
 | stmts7.go:24:2:24:20 | Before defer statement | stmts7.go:24:8:24:20 | call to fn |
@@ -3102,11 +3040,11 @@
 | stmts7.go:25:2:25:23 | After defer statement | stmts7.go:26:2:26:31 | expression statement |
 | stmts7.go:25:2:25:23 | Before defer statement | stmts7.go:25:8:25:23 | call to fn |
 | stmts7.go:25:2:25:23 | defer statement | stmts7.go:25:2:25:23 | After defer statement |
+| stmts7.go:25:8:25:18 | (...) | stmts7.go:25:9:25:17 | Before &... |
 | stmts7.go:25:8:25:18 | After (...) | stmts7.go:25:8:25:18 | implicit-deref (...) |
-| stmts7.go:25:8:25:18 | Before (...) | stmts7.go:25:9:25:17 | Before &... |
 | stmts7.go:25:8:25:18 | implicit-deref (...) | stmts7.go:25:8:25:21 | selection of fn |
 | stmts7.go:25:8:25:21 | After selection of fn | stmts7.go:25:8:25:23 | After call to fn |
-| stmts7.go:25:8:25:21 | Before selection of fn | stmts7.go:25:8:25:18 | Before (...) |
+| stmts7.go:25:8:25:21 | Before selection of fn | stmts7.go:25:8:25:18 | (...) |
 | stmts7.go:25:8:25:21 | selection of fn | stmts7.go:25:8:25:21 | After selection of fn |
 | stmts7.go:25:8:25:23 | After call to fn | stmts7.go:25:2:25:23 | defer statement |
 | stmts7.go:25:8:25:23 | call to fn | stmts7.go:25:8:25:21 | Before selection of fn |
@@ -3143,8 +3081,7 @@
 | stmts8.go:3:1:7:1 | Entry | stmts8.go:3:31:7:1 | block statement |
 | stmts8.go:3:1:7:1 | Normal Exit | stmts8.go:3:1:7:1 | Exit |
 | stmts8.go:3:1:7:1 | function declaration | stmts8.go:3:1:7:1 | After function declaration |
-| stmts8.go:3:31:7:1 | arg:0 block statement | stmts8.go:3:31:7:1 | param-init:0 block statement |
-| stmts8.go:3:31:7:1 | block statement | stmts8.go:3:31:7:1 | arg:0 block statement |
+| stmts8.go:3:31:7:1 | block statement | stmts8.go:3:31:7:1 | param-init:0 block statement |
 | stmts8.go:3:31:7:1 | param-init:0 block statement | stmts8.go:4:2:4:12 | ... := ... |
 | stmts8.go:4:2:4:12 | ... := ... | stmts8.go:4:7:4:12 | Before ...>>... |
 | stmts8.go:4:2:4:12 | After ... := ... | stmts8.go:5:2:5:13 | ... := ... |
@@ -3161,14 +3098,14 @@
 | stmts8.go:5:2:5:13 | ... := ... | stmts8.go:5:7:5:13 | Before ...%... |
 | stmts8.go:5:2:5:13 | After ... := ... | stmts8.go:6:2:6:17 | Before return statement |
 | stmts8.go:5:2:5:13 | assign:0 ... := ... | stmts8.go:5:2:5:13 | After ... := ... |
-| stmts8.go:5:7:5:7 | After x | stmts8.go:5:11:5:13 | Before (...) |
+| stmts8.go:5:7:5:7 | After x | stmts8.go:5:11:5:13 | (...) |
 | stmts8.go:5:7:5:7 | Before x | stmts8.go:5:7:5:7 | x |
 | stmts8.go:5:7:5:7 | x | stmts8.go:5:7:5:7 | After x |
 | stmts8.go:5:7:5:13 | ...%... | stmts8.go:5:7:5:13 | After ...%... |
 | stmts8.go:5:7:5:13 | After ...%... | stmts8.go:5:2:5:13 | assign:0 ... := ... |
 | stmts8.go:5:7:5:13 | Before ...%... | stmts8.go:5:7:5:7 | Before x |
+| stmts8.go:5:11:5:13 | (...) | stmts8.go:5:12:5:12 | Before 1 |
 | stmts8.go:5:11:5:13 | After (...) | stmts8.go:5:7:5:13 | ...%... |
-| stmts8.go:5:11:5:13 | Before (...) | stmts8.go:5:12:5:12 | Before 1 |
 | stmts8.go:5:12:5:12 | 1 | stmts8.go:5:12:5:12 | After 1 |
 | stmts8.go:5:12:5:12 | After 1 | stmts8.go:5:11:5:13 | After (...) |
 | stmts8.go:5:12:5:12 | Before 1 | stmts8.go:5:12:5:12 | 1 |
@@ -3222,8 +3159,7 @@
 | stmts.go:10:1:43:1 | Entry | stmts.go:10:20:43:1 | block statement |
 | stmts.go:10:1:43:1 | Exceptional Exit | stmts.go:10:1:43:1 | Exit |
 | stmts.go:10:1:43:1 | function declaration | stmts.go:10:1:43:1 | After function declaration |
-| stmts.go:10:20:43:1 | arg:0 block statement | stmts.go:10:20:43:1 | param-init:0 block statement |
-| stmts.go:10:20:43:1 | block statement | stmts.go:10:20:43:1 | arg:0 block statement |
+| stmts.go:10:20:43:1 | block statement | stmts.go:10:20:43:1 | param-init:0 block statement |
 | stmts.go:10:20:43:1 | param-init:0 block statement | stmts.go:11:2:18:2 | block statement |
 | stmts.go:11:2:18:2 | After block statement | stmts.go:20:2:20:18 | expression statement |
 | stmts.go:11:2:18:2 | block statement | stmts.go:12:3:14:3 | if statement |
@@ -3382,10 +3318,8 @@
 | stmts.go:46:1:62:1 | Entry | stmts.go:46:44:62:1 | block statement |
 | stmts.go:46:1:62:1 | Exceptional Exit | stmts.go:46:1:62:1 | Exit |
 | stmts.go:46:1:62:1 | function declaration | stmts.go:46:1:62:1 | After function declaration |
-| stmts.go:46:44:62:1 | arg:0 block statement | stmts.go:46:44:62:1 | param-init:0 block statement |
-| stmts.go:46:44:62:1 | arg:1 block statement | stmts.go:46:44:62:1 | param-init:1 block statement |
-| stmts.go:46:44:62:1 | block statement | stmts.go:46:44:62:1 | arg:0 block statement |
-| stmts.go:46:44:62:1 | param-init:0 block statement | stmts.go:46:44:62:1 | arg:1 block statement |
+| stmts.go:46:44:62:1 | block statement | stmts.go:46:44:62:1 | param-init:0 block statement |
+| stmts.go:46:44:62:1 | param-init:0 block statement | stmts.go:46:44:62:1 | param-init:1 block statement |
 | stmts.go:46:44:62:1 | param-init:1 block statement | stmts.go:47:2:47:17 | declaration statement |
 | stmts.go:47:2:47:17 | After declaration statement | stmts.go:48:2:48:11 | declaration statement |
 | stmts.go:47:2:47:17 | After variable declaration | stmts.go:47:2:47:17 | After declaration statement |
@@ -3497,8 +3431,7 @@
 | stmts.go:65:1:72:1 | Entry | stmts.go:65:23:72:1 | block statement |
 | stmts.go:65:1:72:1 | Normal Exit | stmts.go:65:1:72:1 | Exit |
 | stmts.go:65:1:72:1 | function declaration | stmts.go:65:1:72:1 | After function declaration |
-| stmts.go:65:23:72:1 | arg:0 block statement | stmts.go:65:23:72:1 | param-init:0 block statement |
-| stmts.go:65:23:72:1 | block statement | stmts.go:65:23:72:1 | arg:0 block statement |
+| stmts.go:65:23:72:1 | block statement | stmts.go:65:23:72:1 | param-init:0 block statement |
 | stmts.go:65:23:72:1 | param-init:0 block statement | stmts.go:66:2:70:2 | if statement |
 | stmts.go:66:2:70:2 | After if statement | stmts.go:71:2:71:10 | Before return statement |
 | stmts.go:66:2:70:2 | if statement | stmts.go:66:5:66:9 | Before ...>... |
@@ -3585,8 +3518,7 @@
 | stmts.go:75:1:109:1 | Normal Exit | stmts.go:75:1:109:1 | Exit |
 | stmts.go:75:1:109:1 | function declaration | stmts.go:75:1:109:1 | After function declaration |
 | stmts.go:75:19:109:1 | After block statement | stmts.go:75:1:109:1 | Normal Exit |
-| stmts.go:75:19:109:1 | arg:0 block statement | stmts.go:75:19:109:1 | param-init:0 block statement |
-| stmts.go:75:19:109:1 | block statement | stmts.go:75:19:109:1 | arg:0 block statement |
+| stmts.go:75:19:109:1 | block statement | stmts.go:75:19:109:1 | param-init:0 block statement |
 | stmts.go:75:19:109:1 | param-init:0 block statement | stmts.go:76:2:77:2 | expression-switch statement |
 | stmts.go:76:2:77:2 | After expression-switch statement | stmts.go:79:2:82:2 | expression-switch statement |
 | stmts.go:76:2:77:2 | expression-switch statement | stmts.go:76:9:76:9 | Before x |
@@ -3762,8 +3694,7 @@
 | stmts.go:112:1:137:1 | Normal Exit | stmts.go:112:1:137:1 | Exit |
 | stmts.go:112:1:137:1 | function declaration | stmts.go:112:1:137:1 | After function declaration |
 | stmts.go:112:27:137:1 | After block statement | stmts.go:112:1:137:1 | Normal Exit |
-| stmts.go:112:27:137:1 | arg:0 block statement | stmts.go:112:27:137:1 | param-init:0 block statement |
-| stmts.go:112:27:137:1 | block statement | stmts.go:112:27:137:1 | arg:0 block statement |
+| stmts.go:112:27:137:1 | block statement | stmts.go:112:27:137:1 | param-init:0 block statement |
 | stmts.go:112:27:137:1 | param-init:0 block statement | stmts.go:113:2:121:2 | type-switch statement |
 | stmts.go:113:2:121:2 | After type-switch statement | stmts.go:123:2:131:2 | type-switch statement |
 | stmts.go:113:2:121:2 | type-switch statement | stmts.go:113:14:113:21 | Before type assertion |
@@ -3944,8 +3875,7 @@
 | stmts.go:140:1:142:1 | Normal Exit | stmts.go:140:1:142:1 | Exit |
 | stmts.go:140:1:142:1 | function declaration | stmts.go:140:1:142:1 | After function declaration |
 | stmts.go:140:23:142:1 | After block statement | stmts.go:140:1:142:1 | Normal Exit |
-| stmts.go:140:23:142:1 | arg:0 block statement | stmts.go:140:23:142:1 | param-init:0 block statement |
-| stmts.go:140:23:142:1 | block statement | stmts.go:140:23:142:1 | arg:0 block statement |
+| stmts.go:140:23:142:1 | block statement | stmts.go:140:23:142:1 | param-init:0 block statement |
 | stmts.go:140:23:142:1 | param-init:0 block statement | stmts.go:141:2:141:7 | Before go statement |
 | stmts.go:141:2:141:7 | After go statement | stmts.go:140:23:142:1 | After block statement |
 | stmts.go:141:2:141:7 | Before go statement | stmts.go:141:5:141:7 | Before call to f |
@@ -3964,8 +3894,7 @@
 | stmts.go:145:1:159:1 | Normal Exit | stmts.go:145:1:159:1 | Exit |
 | stmts.go:145:1:159:1 | function declaration | stmts.go:145:1:159:1 | After function declaration |
 | stmts.go:145:23:159:1 | After block statement | stmts.go:145:1:159:1 | Normal Exit |
-| stmts.go:145:23:159:1 | arg:0 block statement | stmts.go:145:23:159:1 | param-init:0 block statement |
-| stmts.go:145:23:159:1 | block statement | stmts.go:145:23:159:1 | arg:0 block statement |
+| stmts.go:145:23:159:1 | block statement | stmts.go:145:23:159:1 | param-init:0 block statement |
 | stmts.go:145:23:159:1 | param-init:0 block statement | stmts.go:146:2:151:2 | range statement |
 | stmts.go:146:2:151:2 | After range element | stmts.go:146:20:151:2 | block statement |
 | stmts.go:146:2:151:2 | After range statement | stmts.go:153:2:155:2 | range statement |
@@ -4067,8 +3996,7 @@
 | tst.go:3:1:12:1 | Normal Exit | tst.go:3:1:12:1 | Exit |
 | tst.go:3:1:12:1 | function declaration | tst.go:3:1:12:1 | After function declaration |
 | tst.go:3:19:12:1 | After block statement | tst.go:3:1:12:1 | Normal Exit |
-| tst.go:3:19:12:1 | arg:0 block statement | tst.go:3:19:12:1 | param-init:0 block statement |
-| tst.go:3:19:12:1 | block statement | tst.go:3:19:12:1 | arg:0 block statement |
+| tst.go:3:19:12:1 | block statement | tst.go:3:19:12:1 | param-init:0 block statement |
 | tst.go:3:19:12:1 | param-init:0 block statement | tst.go:4:2:11:2 | expression-switch statement |
 | tst.go:4:2:11:2 | After expression-switch statement | tst.go:3:19:12:1 | After block statement |
 | tst.go:4:2:11:2 | expression-switch statement | tst.go:5:2:5:13 | case clause |
@@ -4120,8 +4048,7 @@
 | tst.go:14:1:21:1 | Normal Exit | tst.go:14:1:21:1 | Exit |
 | tst.go:14:1:21:1 | function declaration | tst.go:14:1:21:1 | After function declaration |
 | tst.go:14:26:21:1 | After block statement | tst.go:14:1:21:1 | Normal Exit |
-| tst.go:14:26:21:1 | arg:0 block statement | tst.go:14:26:21:1 | param-init:0 block statement |
-| tst.go:14:26:21:1 | block statement | tst.go:14:26:21:1 | arg:0 block statement |
+| tst.go:14:26:21:1 | block statement | tst.go:14:26:21:1 | param-init:0 block statement |
 | tst.go:14:26:21:1 | param-init:0 block statement | tst.go:15:2:20:2 | expression-switch statement |
 | tst.go:15:2:20:2 | After expression-switch statement | tst.go:14:26:21:1 | After block statement |
 | tst.go:15:2:20:2 | expression-switch statement | tst.go:16:2:16:34 | case clause |

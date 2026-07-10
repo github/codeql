@@ -561,12 +561,12 @@ module GoCfg {
           tag = "result-read:" + i.toString()
         )
         or
-        // Parameter init + argument nodes (on the function body)
+        // Parameter init nodes (on the function body)
         exists(int i, Go::FuncDef fd |
           n = fd.getBody() and
           exists(fd.getBody()) and
           exists(fd.getParameter(i)) and
-          (tag = "param-init:" + i.toString() or tag = "arg:" + i.toString())
+          tag = "param-init:" + i.toString()
         )
         or
         // Result variable init (on the function body)
@@ -1729,8 +1729,8 @@ module GoCfg {
 
     /**
      * Function definition prologue and epilogue:
-     * - Prologue: Before(body) → arg:-1 → param-init:-1 → arg:0 → param-init:0 → ...
-     *             when a receiver exists; otherwise it starts at arg:0. Then
+     * - Prologue: Before(body) → param-init:-1 → param-init:0 → ... when a
+     *             receiver exists; otherwise it starts at param-init:0. Then
      *             result-zero-init:0 → result-init:0 → ... → first statement
      * - Epilogue: return → result-read:0 → result-read:1 → ... → result-read:last
      *
@@ -1773,13 +1773,13 @@ module GoCfg {
         // Before(body) → first prologue node, or first body statement if no prologue
         n1.isBefore(fd.getBody()) and
         (
-          // Has receiver: start with arg:-1
-          exists(fd.getParameter(-1)) and n2.isAdditional(fd.getBody(), "arg:-1")
+          // Has receiver: start with param-init:-1
+          exists(fd.getParameter(-1)) and n2.isAdditional(fd.getBody(), "param-init:-1")
           or
-          // Has ordinary parameters: start with arg:0
+          // Has ordinary parameters: start with param-init:0
           not exists(fd.getParameter(-1)) and
           exists(fd.getParameter(0)) and
-          n2.isAdditional(fd.getBody(), "arg:0")
+          n2.isAdditional(fd.getBody(), "param-init:0")
           or
           // No parameters, has result vars: start with result-zero-init:0
           not exists(fd.getParameter(_)) and
@@ -1792,19 +1792,13 @@ module GoCfg {
           funcDefBodyStart(fd, n2)
         )
         or
-        // arg:i → param-init:i (for each parameter)
-        exists(int i | exists(fd.getParameter(i)) |
-          n1.isAdditional(fd.getBody(), "arg:" + i.toString()) and
-          n2.isAdditional(fd.getBody(), "param-init:" + i.toString())
-        )
-        or
-        // param-init:i → next: arg:(i+1), or result-zero-init:0, or Before(body)
+        // param-init:i → next: param-init:(i+1), or result-zero-init:0, or Before(body)
         exists(int i | exists(fd.getParameter(i)) |
           n1.isAdditional(fd.getBody(), "param-init:" + i.toString()) and
           (
             // Next parameter exists
             exists(fd.getParameter(i + 1)) and
-            n2.isAdditional(fd.getBody(), "arg:" + (i + 1).toString())
+            n2.isAdditional(fd.getBody(), "param-init:" + (i + 1).toString())
             or
             // No next parameter, has result vars: go to result-zero-init:0
             not exists(fd.getParameter(i + 1)) and

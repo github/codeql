@@ -26,7 +26,7 @@ predicate isSimple(IR::Instruction nd) {
   nd = IR::implicitInitInstruction(_)
   or
   // don't flag parameters
-  nd instanceof IR::ReadArgumentInstruction
+  nd instanceof IR::InitParameterInstruction
 }
 
 from IR::Instruction def, SsaSourceVariable target, IR::Instruction rhs
