@@ -54,6 +54,7 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
 import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.psi.KtPropertyAccessor
 import org.jetbrains.kotlin.psi.KtVariableDeclaration
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
@@ -2697,11 +2698,13 @@ open class KotlinFileExtractor(
                 val getter = p.getter
                 val setter = p.setter
 
-                // Synthesised (DEFAULT_PROPERTY_ACCESSOR) getter and setter should point
-                // at the property head, not the initialiser or custom accessor body.
+                // Synthesised (DEFAULT_PROPERTY_ACCESSOR) getters and setters should
+                // match the span the K2 frontend emits natively (see
+                // getPsiBasedAccessorLocation): the keyword token for a bare `get`/`set`,
+                // or the property signature for a fully synthesised accessor.
                 fun accessorOverride(f: IrFunction) =
                     if (f.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR)
-                        getPsiBasedAccessorLocation(p)?.let { OverriddenFunctionAttributes(sourceLoc = it) }
+                        getPsiBasedAccessorLocation(p, f)?.let { OverriddenFunctionAttributes(sourceLoc = it) }
                     else null
 
                 if (getter == null) {
@@ -2993,15 +2996,45 @@ open class KotlinFileExtractor(
         return tw.getLocation(declStart, declEnd)
     }
 
-    private fun getPsiBasedAccessorLocation(p: IrProperty): Label<DbLocation>? {
+    /**
+     * Returns the PSI-based location for a synthesised (`DEFAULT_PROPERTY_ACCESSOR`)
+     * getter or setter, matching the span the K2 frontend emits natively.
+     *
+     * Under K2 the extractor has no PSI back-mapping for these accessors
+     * ([getKtFile] returns null), so it falls back to the raw IR offsets, which are:
+     *  - for a *bare* accessor (an explicit `get`/`set` keyword with no body): the
+     *    keyword token itself; and
+     *  - for a fully *synthesised* accessor (no accessor written in source): the
+     *    property signature from the `val`/`var` keyword through the type annotation
+     *    (or the name identifier when there is no explicit type), excluding the
+     *    initialiser.
+     *
+     * K2 cannot recover the property-name-end PSI location, so rather than converge
+     * on a value K2 cannot produce we converge K1 onto these K2-native spans. This
+     * helper returns null under K2 (where the raw offsets already produce them) and
+     * reproduces them from the PSI under K1.
+     */
+    private fun getPsiBasedAccessorLocation(p: IrProperty, accessor: IrFunction): Label<DbLocation>? {
         if (p.startOffset < 0 || p.endOffset < 0) return null
         val file = currentIrFile ?: return null
         val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
         val ktProperty = ktFile.findElementAt(p.startOffset)
             ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtProperty>().firstOrNull() }
             ?: return null
+        val isGetter = p.getter?.symbol == accessor.symbol
+        val ktAccessor: KtPropertyAccessor? = if (isGetter) ktProperty.getter else ktProperty.setter
+        if (ktAccessor != null) {
+            // An explicit accessor with a body is located at its body elsewhere; only
+            // bare `get`/`set` keywords are handled here, pointing at the keyword token.
+            if (ktAccessor.hasBody()) return null
+            val keyword = ktAccessor.namePlaceholder
+            return tw.getLocation(keyword.startOffset, keyword.endOffset)
+        }
+        // Fully synthesised accessor: span the property signature, excluding the initialiser.
         val declStart = ktProperty.valOrVarKeyword.startOffset
-        val declEnd = ktProperty.nameIdentifier?.endOffset ?: ktProperty.valOrVarKeyword.endOffset
+        val declEnd = ktProperty.typeReference?.endOffset
+            ?: ktProperty.nameIdentifier?.endOffset
+            ?: ktProperty.valOrVarKeyword.endOffset
         return tw.getLocation(declStart, declEnd)
     }
 

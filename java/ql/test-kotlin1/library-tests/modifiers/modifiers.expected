@@ -23,8 +23,8 @@
 | modifiers.kt:7:5:9:5 | Nested | Class | final |
 | modifiers.kt:7:5:9:5 | Nested | Class | protected |
 | modifiers.kt:7:15:9:5 | Nested | Constructor | public |
-| modifiers.kt:8:16:8:20 | getE | Method | final |
-| modifiers.kt:8:16:8:20 | getE | Method | public |
+| modifiers.kt:8:16:8:25 | getE | Method | final |
+| modifiers.kt:8:16:8:25 | getE | Method | public |
 | modifiers.kt:8:16:8:29 | e | Field | final |
 | modifiers.kt:8:16:8:29 | e | Field | private |
 | modifiers.kt:8:16:8:29 | e | Property | public |
@@ -75,10 +75,10 @@
 | modifiers.kt:35:1:41:1 | LateInit | Class | final |
 | modifiers.kt:35:1:41:1 | LateInit | Class | public |
 | modifiers.kt:35:8:41:1 | LateInit | Constructor | public |
-| modifiers.kt:36:22:36:30 | getTest0$private | Method | final |
-| modifiers.kt:36:22:36:30 | getTest0$private | Method | private |
-| modifiers.kt:36:22:36:30 | setTest0$private | Method | final |
-| modifiers.kt:36:22:36:30 | setTest0$private | Method | private |
+| modifiers.kt:36:22:36:40 | getTest0$private | Method | final |
+| modifiers.kt:36:22:36:40 | getTest0$private | Method | private |
+| modifiers.kt:36:22:36:40 | setTest0$private | Method | final |
+| modifiers.kt:36:22:36:40 | setTest0$private | Method | private |
 | modifiers.kt:36:22:36:40 | test0 | Field | private |
 | modifiers.kt:36:22:36:40 | test0 | Property | lateinit |
 | modifiers.kt:36:22:36:40 | test0 | Property | private |

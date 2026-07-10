@@ -297,18 +297,18 @@
 | delegatedProperties.kt:54:51:54:68 | KProperty<?> | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:56:16:56:33 | ResourceDelegate | delegatedProperties.kt:54:14:57:5 | provideDelegate | TypeAccess |
 | delegatedProperties.kt:56:16:56:33 | new ResourceDelegate(...) | delegatedProperties.kt:54:14:57:5 | provideDelegate | ClassInstanceExpr |
-| delegatedProperties.kt:60:1:60:15 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:60:1:60:15 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:60:1:60:15 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| delegatedProperties.kt:60:1:60:20 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| delegatedProperties.kt:60:1:60:20 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| delegatedProperties.kt:60:1:60:20 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:60:1:60:24 | ...=... | delegatedProperties.kt:0:0:0:0 | <clinit> | KtInitializerAssignExpr |
-| delegatedProperties.kt:60:1:60:24 | ...=... | delegatedProperties.kt:60:1:60:15 | setTopLevelInt | AssignExpr |
-| delegatedProperties.kt:60:1:60:24 | <set-?> | delegatedProperties.kt:60:1:60:15 | setTopLevelInt | VarAccess |
+| delegatedProperties.kt:60:1:60:24 | ...=... | delegatedProperties.kt:60:1:60:20 | setTopLevelInt | AssignExpr |
+| delegatedProperties.kt:60:1:60:24 | <set-?> | delegatedProperties.kt:60:1:60:20 | setTopLevelInt | VarAccess |
 | delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt | delegatedProperties.kt:0:0:0:0 | <clinit> | TypeAccess |
-| delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt | delegatedProperties.kt:60:1:60:15 | getTopLevelInt | TypeAccess |
-| delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt | delegatedProperties.kt:60:1:60:15 | setTopLevelInt | TypeAccess |
+| delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt | delegatedProperties.kt:60:1:60:20 | getTopLevelInt | TypeAccess |
+| delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt | delegatedProperties.kt:60:1:60:20 | setTopLevelInt | TypeAccess |
 | delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt.topLevelInt | delegatedProperties.kt:0:0:0:0 | <clinit> | VarAccess |
-| delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt.topLevelInt | delegatedProperties.kt:60:1:60:15 | getTopLevelInt | VarAccess |
-| delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt.topLevelInt | delegatedProperties.kt:60:1:60:15 | setTopLevelInt | VarAccess |
+| delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt.topLevelInt | delegatedProperties.kt:60:1:60:20 | getTopLevelInt | VarAccess |
+| delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt.topLevelInt | delegatedProperties.kt:60:1:60:20 | setTopLevelInt | VarAccess |
 | delegatedProperties.kt:60:1:60:24 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:60:24:60:24 | 0 | delegatedProperties.kt:0:0:0:0 | <clinit> | IntegerLiteral |
 | delegatedProperties.kt:62:25:62:48 | ...=... | delegatedProperties.kt:62:24:62:49 | ClassWithDelegate | KtInitializerAssignExpr |
@@ -1557,12 +1557,12 @@
 | exprs.kt:195:16:197:9 | <Stmt> | exprs.kt:193:13:198:5 | getObject | StmtExpr |
 | exprs.kt:195:16:197:9 | Interface1 | exprs.kt:193:13:198:5 | getObject | TypeAccess |
 | exprs.kt:195:16:197:9 | new (...) | exprs.kt:193:13:198:5 | getObject | ClassInstanceExpr |
-| exprs.kt:196:13:196:18 | String | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:196:13:196:26 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:196:13:196:49 | ...=... | exprs.kt:195:16:197:9 |  | KtInitializerAssignExpr |
 | exprs.kt:196:13:196:49 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:196:13:196:49 | a3 | exprs.kt:195:16:197:9 |  | VarAccess |
-| exprs.kt:196:13:196:49 | this | exprs.kt:196:13:196:18 | getA3 | ThisAccess |
-| exprs.kt:196:13:196:49 | this.a3 | exprs.kt:196:13:196:18 | getA3 | VarAccess |
+| exprs.kt:196:13:196:49 | this | exprs.kt:196:13:196:26 | getA3 | ThisAccess |
+| exprs.kt:196:13:196:49 | this.a3 | exprs.kt:196:13:196:26 | getA3 | VarAccess |
 | exprs.kt:196:31:196:32 | getA1(...) | exprs.kt:195:16:197:9 |  | MethodCall |
 | exprs.kt:196:31:196:32 | this | exprs.kt:195:16:197:9 |  | ThisAccess |
 | exprs.kt:196:31:196:37 | ... + ... | exprs.kt:195:16:197:9 |  | AddExpr |

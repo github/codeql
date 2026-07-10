@@ -1,6 +1,6 @@
-| clinit.kt:3:1:3:15 | Unit | TypeAccess |
-| clinit.kt:3:1:3:15 | int | TypeAccess |
-| clinit.kt:3:1:3:15 | int | TypeAccess |
+| clinit.kt:3:1:3:20 | Unit | TypeAccess |
+| clinit.kt:3:1:3:20 | int | TypeAccess |
+| clinit.kt:3:1:3:20 | int | TypeAccess |
 | clinit.kt:3:1:3:24 | ...=... | AssignExpr |
 | clinit.kt:3:1:3:24 | ...=... | KtInitializerAssignExpr |
 | clinit.kt:3:1:3:24 | <set-?> | VarAccess |
