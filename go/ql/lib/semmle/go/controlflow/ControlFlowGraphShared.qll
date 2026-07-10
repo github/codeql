@@ -555,15 +555,9 @@ module CfgImpl {
           tag = "result-read:" + i.toString()
         )
         or
-        // Result variable init (on the function body)
-        exists(int i, Go::FuncDef fd |
-          n = fd.getBody() and
-          exists(fd.getBody()) and
-          exists(fd.getResultVar(i)) and
-          tag = "result-init:" + i.toString()
-        )
-        or
-        // Result variable zero init (on the function body)
+        // Result variable zero init + init (on the function body). This single
+        // node computes the zero value and writes it to the result variable (see
+        // `IR::InitResultInstruction`).
         exists(int i, Go::FuncDef fd |
           n = fd.getBody() and
           exists(fd.getBody()) and
@@ -1680,7 +1674,7 @@ module CfgImpl {
      * - Prologue: parameters are modelled as native CFG nodes by the shared
      *             library (Entry → param → ... → Before(body)). The remaining
      *             prologue on Before(body) zero-initializes any named result
-     *             variables: result-zero-init:0 → result-init:0 → ... → first statement.
+     *             variables: result-zero-init:0 → result-zero-init:1 → ... → first statement.
      * - Epilogue: return → result-read:0 → result-read:1 → ... → result-read:last
      *
      * The last result-read node goes to `NormalExit(fd)` via the shared
@@ -1711,15 +1705,11 @@ module CfgImpl {
         exists(fd.getResultVar(0)) and
         n2.isAdditional(fd.getBody(), "result-zero-init:0")
         or
-        // result-zero-init:j → result-init:j (for each result variable)
+        // result-zero-init:j → next: result-zero-init:(j+1), or Before(body).
+        // The zero-init node also writes the result variable (see
+        // `IR::InitResultInstruction`), so there is no separate result-init node.
         exists(int j | exists(fd.getResultVar(j)) |
           n1.isAdditional(fd.getBody(), "result-zero-init:" + j.toString()) and
-          n2.isAdditional(fd.getBody(), "result-init:" + j.toString())
-        )
-        or
-        // result-init:j → next: result-zero-init:(j+1), or Before(body)
-        exists(int j | exists(fd.getResultVar(j)) |
-          n1.isAdditional(fd.getBody(), "result-init:" + j.toString()) and
           (
             // Next result var exists
             exists(fd.getResultVar(j + 1)) and
