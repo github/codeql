@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -87,5 +88,26 @@ func TestRenderExtensionMatchesGolden(t *testing.T) {
 	}
 	if got != string(want) {
 		t.Errorf("rendered extension does not match testdata/expected.yml:\n--- got ---\n%s", got)
+	}
+}
+
+func TestRenderExtensionZeroRowsEmitsEmptyList(t *testing.T) {
+	// A lockfile that pins only sub-path actions (skipped by parsePin) or an
+	// empty `workflows` map yields zero rows while a lockfile is present. The
+	// rendered extension must use `data: []`, not a bare `data:` (YAML null),
+	// which CodeQL's extension loader rejects and which aborts the analysis.
+	rows, err := rowsFromLockfile([]byte("version: \"v0.0.2\"\nworkflows:\n  \".github/workflows/ci.yml\":\n    - \"github/codeql-action/init@v3\"\ndependencies: {}\n"))
+	if err != nil {
+		t.Fatalf("rowsFromLockfile: %v", err)
+	}
+	if len(rows) != 0 {
+		t.Fatalf("expected zero rows for a sub-path-only lockfile, got %d: %v", len(rows), rows)
+	}
+	got := renderExtension(rows)
+	if !strings.Contains(got, "data: []") {
+		t.Errorf("zero-row extension must emit `data: []`, got:\n%s", got)
+	}
+	if strings.Contains(got, "data:\n") {
+		t.Errorf("zero-row extension must not emit a null `data:` line, got:\n%s", got)
 	}
 }
