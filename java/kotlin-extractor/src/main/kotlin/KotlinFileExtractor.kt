@@ -3156,6 +3156,53 @@ open class KotlinFileExtractor(
         )
     }
 
+    /**
+     * Reconstructs the location of an `if`/`when` branch [b] (of the enclosing [IrWhen] [w])
+     * from the branch's own condition/result offsets, or null to leave the raw location in
+     * place.
+     *
+     * The K1 frontend lowers `if`/`when` branches with their raw IR offsets collapsed onto the
+     * whole enclosing expression, so every branch reports the same span as [w]. K2 records
+     * per-branch spans: the condition start through the result end, or (for an `else` branch,
+     * whose condition is a synthetic `true`) just the result span. Reconstruct that per-branch
+     * span from the branch's condition/result offsets.
+     *
+     * This only fires when the raw branch span is collapsed onto [w] (as under K1); under K2 the
+     * raw per-branch offsets already differ from [w], so it returns null and the raw location is
+     * kept. It also returns null when the reconstructed offsets are undefined, synthetic,
+     * inverted, or fall outside [w], so it is a strict no-op except for the collapsed case.
+     */
+    private fun getWhenBranchLocation(w: IrWhen, b: IrBranch): Label<DbLocation>? {
+        if (b.startOffset != w.startOffset || b.endOffset != w.endOffset) return null
+        val start = if (b is IrElseBranch) b.result.startOffset else b.condition.startOffset
+        val end = correctedEndOffset(b.result)
+        if (start == UNDEFINED_OFFSET || end == UNDEFINED_OFFSET) return null
+        if (start == SYNTHETIC_OFFSET || end == SYNTHETIC_OFFSET) return null
+        if (start > end || start < w.startOffset || end > w.endOffset) return null
+        return tw.getLocation(start, end)
+    }
+
+    /**
+     * Returns the end offset of [e], correcting for the K1 frontend recording an assignment's
+     * raw end offset at its left-hand side rather than past its right-hand value. When [e] is an
+     * `IrSetValue`/`IrSetField` whose assigned value ends later than the assignment's own raw
+     * end (as under K1), the value's end offset is used; otherwise the raw end offset is kept, so
+     * this is a no-op under K2 (where the assignment already spans its value).
+     */
+    private fun correctedEndOffset(e: IrExpression): Int {
+        val valueEnd =
+            when (e) {
+                is IrSetValue -> e.value.endOffset
+                is IrSetField -> e.value.endOffset
+                else -> UNDEFINED_OFFSET
+            }
+        return if (
+            valueEnd != UNDEFINED_OFFSET && valueEnd != SYNTHETIC_OFFSET && valueEnd > e.endOffset
+        )
+            valueEnd
+        else e.endOffset
+    }
+
     private fun extractVariable(
         v: IrVariable,
         callable: Label<out DbCallable>,
@@ -6631,7 +6678,10 @@ open class KotlinFileExtractor(
                     }
                     e.branches.forEachIndexed { i, b ->
                         val bId = tw.getFreshIdLabel<DbWhenbranch>()
-                        val bLocId = getPsiBasedLocation(b) ?: tw.getLocation(b)
+                        val bLocId =
+                            getWhenBranchLocation(e, b)
+                                ?: getPsiBasedLocation(b)
+                                ?: tw.getLocation(b)
                         tw.writeStmts_whenbranch(bId, id, i, callable)
                         tw.writeHasLocation(bId, bLocId)
                         extractExpressionExpr(b.condition, callable, bId, 0, bId)

@@ -279,7 +279,7 @@ classes.kt:
 #   66|                     1: [ExprStmt] <Expr>;
 #   66|                       0: [ClassInstanceExpr] new (...)
 #   66|                         -3: [TypeAccess] Object
-#   65|             1: [WhenBranch] ... -> ...
+#   68|             1: [WhenBranch] ... -> ...
 #   65|               0: [BooleanLiteral] true
 #   68|               1: [ReturnStmt] return ...
 #   68|                 0: [StmtExpr] <Stmt>
@@ -892,7 +892,7 @@ localClassField.kt:
 #    4|             1: [ExprStmt] <Expr>;
 #    4|               0: [ClassInstanceExpr] new L(...)
 #    4|                 -3: [TypeAccess] L
-#    2|         1: [WhenBranch] ... -> ...
+#    5|         1: [WhenBranch] ... -> ...
 #    2|           0: [BooleanLiteral] true
 #    5|           1: [BlockStmt] { ... }
 #    2|     3: [Method] getX
@@ -916,7 +916,7 @@ localClassField.kt:
 #    9|             1: [ExprStmt] <Expr>;
 #    9|               0: [ClassInstanceExpr] new L(...)
 #    9|                 -3: [TypeAccess] L
-#    7|         1: [WhenBranch] ... -> ...
+#   10|         1: [WhenBranch] ... -> ...
 #    7|           0: [BooleanLiteral] true
 #   10|           1: [BlockStmt] { ... }
 #    7|     5: [Method] getY

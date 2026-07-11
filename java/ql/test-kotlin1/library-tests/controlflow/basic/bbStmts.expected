@@ -35,7 +35,7 @@
 | Test.kt:4:2:79:2 | Entry | 25 | Test.kt:8:3:8:16 | After var ...; |
 | Test.kt:4:2:79:2 | Entry | 26 | Test.kt:11:3:16:3 | <Expr>; |
 | Test.kt:4:2:79:2 | Entry | 27 | Test.kt:11:3:16:3 | when ... |
-| Test.kt:4:2:79:2 | Entry | 28 | Test.kt:11:3:16:3 | ... -> ... |
+| Test.kt:4:2:79:2 | Entry | 28 | Test.kt:11:7:14:3 | ... -> ... |
 | Test.kt:4:2:79:2 | Entry | 29 | Test.kt:11:7:11:11 | Before ... > ... |
 | Test.kt:4:2:79:2 | Entry | 30 | Test.kt:11:7:11:7 | x |
 | Test.kt:4:2:79:2 | Entry | 31 | Test.kt:11:11:11:11 | 0 |
@@ -53,13 +53,13 @@
 | Test.kt:11:3:16:3 | After when ... | 8 | Test.kt:18:3:18:3 | After <Expr>; |
 | Test.kt:11:3:16:3 | After when ... | 9 | Test.kt:21:3:24:9 | <Expr>; |
 | Test.kt:11:3:16:3 | After when ... | 10 | Test.kt:21:3:24:9 | when ... |
-| Test.kt:11:3:16:3 | After when ... | 11 | Test.kt:21:3:24:9 | ... -> ... |
+| Test.kt:11:3:16:3 | After when ... | 11 | Test.kt:21:6:22:9 | ... -> ... |
 | Test.kt:11:3:16:3 | After when ... | 12 | Test.kt:21:6:21:10 | Before ... < ... |
 | Test.kt:11:3:16:3 | After when ... | 13 | Test.kt:21:6:21:6 | x |
 | Test.kt:11:3:16:3 | After when ... | 14 | Test.kt:21:10:21:10 | 0 |
 | Test.kt:11:3:16:3 | After when ... | 15 | Test.kt:21:6:21:10 | ... < ... |
 | Test.kt:11:7:11:11 | After ... > ... [false] | 0 | Test.kt:11:7:11:11 | After ... > ... [false] |
-| Test.kt:11:7:11:11 | After ... > ... [false] | 1 | Test.kt:11:3:16:3 | ... -> ... |
+| Test.kt:11:7:11:11 | After ... > ... [false] | 1 | Test.kt:14:10:16:3 | ... -> ... |
 | Test.kt:11:7:11:11 | After ... > ... [false] | 2 | Test.kt:11:3:16:3 | true |
 | Test.kt:11:7:11:11 | After ... > ... [false] | 3 | Test.kt:11:3:16:3 | After true [true] |
 | Test.kt:11:7:11:11 | After ... > ... [false] | 4 | Test.kt:14:10:16:3 | { ... } |
@@ -89,7 +89,7 @@
 | Test.kt:11:7:11:11 | After ... > ... [true] | 15 | Test.kt:13:4:13:4 | After <Expr>; |
 | Test.kt:11:7:11:11 | After ... > ... [true] | 16 | Test.kt:11:14:14:3 | After { ... } |
 | Test.kt:21:6:21:10 | After ... < ... [false] | 0 | Test.kt:21:6:21:10 | After ... < ... [false] |
-| Test.kt:21:6:21:10 | After ... < ... [false] | 1 | Test.kt:21:3:24:9 | ... -> ... |
+| Test.kt:21:6:21:10 | After ... < ... [false] | 1 | Test.kt:24:4:24:9 | ... -> ... |
 | Test.kt:21:6:21:10 | After ... < ... [false] | 2 | Test.kt:21:3:24:9 | true |
 | Test.kt:21:6:21:10 | After ... < ... [false] | 3 | Test.kt:21:3:24:9 | After true [true] |
 | Test.kt:21:6:21:10 | After ... < ... [false] | 4 | Test.kt:24:4:24:9 | Before return ... |
@@ -114,7 +114,7 @@
 | Test.kt:21:6:21:10 | After ... < ... [true] | 16 | Test.kt:27:3:27:3 | After <Expr>; |
 | Test.kt:21:6:21:10 | After ... < ... [true] | 17 | Test.kt:30:3:33:3 | <Expr>; |
 | Test.kt:21:6:21:10 | After ... < ... [true] | 18 | Test.kt:30:3:33:3 | when ... |
-| Test.kt:21:6:21:10 | After ... < ... [true] | 19 | Test.kt:30:3:33:3 | ... -> ... |
+| Test.kt:21:6:21:10 | After ... < ... [true] | 19 | Test.kt:30:7:33:3 | ... -> ... |
 | Test.kt:21:6:21:10 | After ... < ... [true] | 20 | Test.kt:30:7:30:12 | Before ... (value equals) ... |
 | Test.kt:21:6:21:10 | After ... < ... [true] | 21 | Test.kt:30:7:30:7 | x |
 | Test.kt:21:6:21:10 | After ... < ... [true] | 22 | Test.kt:30:12:30:12 | 0 |
@@ -277,7 +277,7 @@
 | Test.kt:100:1:110:1 | Entry | 1 | Test.kt:100:25:110:1 | { ... } |
 | Test.kt:100:1:110:1 | Entry | 2 | Test.kt:101:5:103:5 | <Expr>; |
 | Test.kt:100:1:110:1 | Entry | 3 | Test.kt:101:5:103:5 | when ... |
-| Test.kt:100:1:110:1 | Entry | 4 | Test.kt:101:5:103:5 | ... -> ... |
+| Test.kt:100:1:110:1 | Entry | 4 | Test.kt:101:9:103:5 | ... -> ... |
 | Test.kt:100:1:110:1 | Entry | 5 | Test.kt:101:9:101:30 | ... && ... |
 | Test.kt:100:1:110:1 | Entry | 6 | Test.kt:101:9:101:17 | Before ... (value equals) ... |
 | Test.kt:100:1:110:1 | Entry | 7 | Test.kt:101:9:101:9 | x |
@@ -343,7 +343,7 @@
 | Test.kt:112:1:116:1 | Entry | 1 | Test.kt:112:32:116:1 | { ... } |
 | Test.kt:112:1:116:1 | Entry | 2 | Test.kt:113:5:115:5 | <Expr>; |
 | Test.kt:112:1:116:1 | Entry | 3 | Test.kt:113:5:115:5 | when ... |
-| Test.kt:112:1:116:1 | Entry | 4 | Test.kt:113:5:115:5 | ... -> ... |
+| Test.kt:112:1:116:1 | Entry | 4 | Test.kt:113:9:115:5 | ... -> ... |
 | Test.kt:112:1:116:1 | Entry | 5 | Test.kt:113:9:113:14 | ... && ... |
 | Test.kt:112:1:116:1 | Entry | 6 | Test.kt:113:9:113:9 | x |
 | Test.kt:113:5:115:5 | After when ... | 0 | Test.kt:113:5:115:5 | After when ... |
