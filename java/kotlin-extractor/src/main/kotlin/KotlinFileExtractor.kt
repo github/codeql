@@ -2463,6 +2463,7 @@ open class KotlinFileExtractor(
 
                 val locId =
                     overriddenAttributes?.sourceLoc
+                        ?: (if (f.origin == IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR) getPsiBasedDelegatedAccessorLocation(f) else null)
                         ?: (if (usesK2) getPsiBasedLocation(f) else null)
                         ?: (if (f.symbol is IrConstructorSymbol && typeSubstitution == null) getPsiBasedImplicitConstructorLocation(f) else null)
                         ?: getLocation(f, classTypeArgsIncludingOuterClasses)
@@ -3074,6 +3075,42 @@ open class KotlinFileExtractor(
         // An explicit primary constructor keeps its own (parameter-list) location.
         if ((ktClass as? KtClass)?.primaryConstructor != null) return null
         return tw.getLocation(ktClass.startOffset, ktClass.endOffset)
+    }
+
+    /**
+     * Returns the PSI-based location for the synthesised getter/setter of a
+     * *delegated* property (origin `DELEGATED_PROPERTY_ACCESSOR`), spanning the
+     * enclosing property declaration from its `val`/`var` keyword through the end of
+     * the delegate expression.
+     *
+     * For a delegated property such as `val prop1: Int by lazy { ... }` the compiler
+     * synthesises a getter (and, for `var`, a setter) whose body forwards to the
+     * delegate's `getValue`/`setValue`. The K2 frontend records these accessors with
+     * raw IR offsets spanning the whole property declaration (the `val`/`var` keyword
+     * through the delegate expression). The K1 frontend's raw offsets (and its
+     * [findPsiElement]-based location) instead cover only the delegate expression, so
+     * the two frontends disagree on the accessor's start column.
+     *
+     * K1 retains the PSI, so we recover the K2-native span from the enclosing
+     * [KtProperty]: the [findPsiElement] mapping resolves the accessor to a node
+     * within the property's delegate, from which we walk up to the [KtProperty].
+     * [KtProperty.valOrVarKeyword] then gives the start (excluding any leading
+     * modifiers, matching the default-accessor and property spans) and
+     * [KtProperty.endOffset] gives the end (past the delegate expression).
+     *
+     * This is deliberately not gated on [usesK2]: it must apply to the K1 frontends
+     * (which retain PSI) to converge them onto the K2-native span, and it returns null
+     * under K2 (where [findPsiElement] finds no PSI and the raw offsets already carry
+     * this span). It applies uniformly to both getter and setter, and to both
+     * member-level and local delegated properties.
+     */
+    private fun getPsiBasedDelegatedAccessorLocation(f: IrFunction): Label<DbLocation>? {
+        val file = currentIrFile ?: return null
+        val psiElement = getPsi2Ir()?.findPsiElement(f, file) ?: return null
+        val ktProperty = generateSequence(psiElement) { it.parent }
+            .filterIsInstance<KtProperty>().firstOrNull()
+            ?: return null
+        return tw.getLocation(ktProperty.valOrVarKeyword.startOffset, ktProperty.endOffset)
     }
 
     private fun extractVariable(
@@ -9372,11 +9409,21 @@ open class KotlinFileExtractor(
         with("generated class", localFunction) {
             val ids = getLocallyVisibleFunctionLabels(localFunction)
 
+            // For a delegated property's synthesised accessor the generated wrapper class
+            // (and its constructor and super-call) must share the accessor's declaration
+            // span so that, like the K2 frontend, the constructor still sorts before the
+            // getter/setter rather than after it (the raw K1 offset would place the class
+            // at the delegate expression, past the accessor's own start column).
+            val classLocId =
+                (if (localFunction.origin == IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR)
+                    getPsiBasedDelegatedAccessorLocation(localFunction) else null)
+                    ?: tw.getLocation(localFunction)
+
             val id =
                 extractGeneratedClass(
                     ids,
                     superTypes,
-                    tw.getLocation(localFunction),
+                    classLocId,
                     localFunction,
                     localFunction.parent,
                     compilerGeneratedKindOverride = compilerGeneratedKindOverride
