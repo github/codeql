@@ -3203,6 +3203,23 @@ open class KotlinFileExtractor(
         else e.endOffset
     }
 
+    /**
+     * Returns the location for the `ExprStmt` wrapper synthesised around a statement-position
+     * expression [e].
+     *
+     * The K1 frontend records an assignment's raw end offset at its left-hand side rather than
+     * past its right-hand value, so a bare assignment statement (`z = 4`) yields a zero-width
+     * wrapper location collapsed onto the LHS. K2 spans the whole assignment. Widen the wrapper to
+     * end past the assigned value (matching the inner `AssignExpr` location, which already uses
+     * `e.startOffset .. rhsValue.endOffset`). This is a no-op for non-assignments and under K2,
+     * where the assignment already spans its value, so `correctedEndOffset` returns the raw end.
+     */
+    private fun getExpressionStmtLocation(e: IrExpression): Label<DbLocation> {
+        val correctedEnd = correctedEndOffset(e)
+        return if (correctedEnd != e.endOffset) tw.getLocation(e.startOffset, correctedEnd)
+        else tw.getLocation(e)
+    }
+
     private fun extractVariable(
         v: IrVariable,
         callable: Label<out DbCallable>,
@@ -5703,7 +5720,7 @@ open class KotlinFileExtractor(
         override fun stmt(e: IrExpression, callable: Label<out DbCallable>) = this
 
         override fun expr(e: IrExpression, callable: Label<out DbCallable>) =
-            extractExpressionStmt(tw.getLocation(e), parent, idx, callable).let { id ->
+            extractExpressionStmt(getExpressionStmtLocation(e), parent, idx, callable).let { id ->
                 ExprParent(id, 0, id)
             }
     }
