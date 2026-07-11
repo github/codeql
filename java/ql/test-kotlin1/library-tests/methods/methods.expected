@@ -67,7 +67,7 @@ constructors
 | delegates.kt:8:32:11:5 | new KMutableProperty1<MyClass,String>(...) { ... } | delegates.kt:8:32:11:5 |  |  |
 | delegates.kt:8:66:11:5 | new Function3<KProperty<?>,String,String,Unit>(...) { ... } | delegates.kt:8:66:11:5 |  |  |
 | enumClass.kt:1:1:4:1 | EnumClass | enumClass.kt:1:21:1:32 | EnumClass | EnumClass(int) |
-| enumClass.kt:6:1:16:1 | EnumWithFunctions | enumClass.kt:6:6:16:1 | EnumWithFunctions | EnumWithFunctions() |
+| enumClass.kt:6:1:16:1 | EnumWithFunctions | enumClass.kt:6:1:16:1 | EnumWithFunctions | EnumWithFunctions() |
 | enumClass.kt:8:3:11:4 | VAL | enumClass.kt:8:3:11:4 | VAL | VAL() |
 | methods2.kt:7:1:10:1 | Class2 | methods2.kt:7:1:10:1 | Class2 | Class2() |
 | methods3.kt:5:1:7:1 | Class3 | methods3.kt:5:1:7:1 | Class3 | Class3() |

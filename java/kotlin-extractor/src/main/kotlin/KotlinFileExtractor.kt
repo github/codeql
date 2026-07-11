@@ -53,6 +53,8 @@ import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
+import org.jetbrains.kotlin.psi.KtClass
+import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtPropertyAccessor
 import org.jetbrains.kotlin.psi.KtVariableDeclaration
@@ -2462,6 +2464,7 @@ open class KotlinFileExtractor(
                 val locId =
                     overriddenAttributes?.sourceLoc
                         ?: (if (usesK2) getPsiBasedLocation(f) else null)
+                        ?: (if (f.symbol is IrConstructorSymbol && typeSubstitution == null) getPsiBasedImplicitConstructorLocation(f) else null)
                         ?: getLocation(f, classTypeArgsIncludingOuterClasses)
 
                 if (f.symbol is IrConstructorSymbol) {
@@ -3036,6 +3039,41 @@ open class KotlinFileExtractor(
             ?: ktProperty.nameIdentifier?.endOffset
             ?: ktProperty.valOrVarKeyword.endOffset
         return tw.getLocation(declStart, declEnd)
+    }
+
+    /**
+     * Returns the PSI-based location for the *implicit* (compiler-synthesised)
+     * primary constructor of [f]'s enclosing class, spanning the full
+     * [KtClassOrObject] text range (including any leading modifiers such as `open`).
+     *
+     * When a class has no primary constructor written in source (for example
+     * `open class C0<V> {}`), the compiler synthesises one. The K2 frontend records
+     * that constructor with the class declaration's raw IR offsets, which include
+     * the leading modifier keywords. The K1 frontend's raw offsets for the same
+     * synthesised constructor start at the `class` keyword and omit the modifiers.
+     * K1 retains the PSI, so we recover the modifier-inclusive span from the
+     * enclosing [KtClassOrObject] to match K2.
+     *
+     * This deliberately does *not* apply to an *explicit* primary constructor
+     * (e.g. `class C1(val t: T)` or `class C2()`): those keep their own
+     * parameter-list location, which both frontends already record identically from
+     * raw IR offsets. It returns null when the [KtFile] is unavailable (as under K2,
+     * where the raw offsets already carry the class span) or when the enclosing
+     * class declares an explicit primary constructor.
+     */
+    private fun getPsiBasedImplicitConstructorLocation(f: IrFunction): Label<DbLocation>? {
+        if ((f as? IrConstructor)?.isPrimary != true) return null
+        val c = f.parentAsClass
+        val startOffset = c.startOffset
+        if (startOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktClass = getPsi2Ir()?.getKtFile(file)
+            ?.findElementAt(startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtClassOrObject>().firstOrNull() }
+            ?: return null
+        // An explicit primary constructor keeps its own (parameter-list) location.
+        if ((ktClass as? KtClass)?.primaryConstructor != null) return null
+        return tw.getLocation(ktClass.startOffset, ktClass.endOffset)
     }
 
     private fun extractVariable(

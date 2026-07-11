@@ -1,9 +1,9 @@
 #select
+| Test.kt:3:1:80:1 | Entry | Constructor | Test.kt:3:8:80:1 | { ... } | BlockStmt |
+| Test.kt:3:1:80:1 | Normal Exit | Constructor | Test.kt:3:1:80:1 | Exit | Constructor |
 | Test.kt:3:1:80:1 | super(...) | SuperConstructorInvocationStmt | Test.kt:3:8:80:1 | { ... } | BlockStmt |
-| Test.kt:3:8:80:1 | Entry | Constructor | Test.kt:3:8:80:1 | { ... } | BlockStmt |
-| Test.kt:3:8:80:1 | Normal Exit | Constructor | Test.kt:3:8:80:1 | Exit | Constructor |
+| Test.kt:3:8:80:1 | { ... } | BlockStmt | Test.kt:3:1:80:1 | Normal Exit | Constructor |
 | Test.kt:3:8:80:1 | { ... } | BlockStmt | Test.kt:3:1:80:1 | super(...) | SuperConstructorInvocationStmt |
-| Test.kt:3:8:80:1 | { ... } | BlockStmt | Test.kt:3:8:80:1 | Normal Exit | Constructor |
 | Test.kt:4:2:79:2 | Entry | Method | Test.kt:4:13:79:2 | { ... } | BlockStmt |
 | Test.kt:4:2:79:2 | Normal Exit | Method | Test.kt:4:2:79:2 | Exit | Method |
 | Test.kt:4:13:79:2 | { ... } | BlockStmt | Test.kt:5:3:5:16 | var ...; | LocalVariableDeclStmt |
