@@ -3124,6 +3124,70 @@ open class KotlinFileExtractor(
     }
 
     /**
+     * For a synthetic `thisRef` argument in a compiler-generated *delegated*-property accessor
+     * body (origin `DELEGATED_PROPERTY_ACCESSOR`), returns the location to use, or null to leave
+     * the raw location in place.
+     *
+     * The synthesised getter/setter body forwards to the delegate's `getValue`/`setValue`,
+     * passing the accessor's dispatch/extension receiver (a `this` access) as the `thisRef`
+     * argument, or `null` when the property has no receiver (e.g. a local delegated property).
+     * These arguments have no dedicated source token. The K2 frontend records them so that:
+     * - a receiver `this` access takes the delegate *expression*'s source range (e.g. the
+     *   `ResourceDelegate()` in `by ResourceDelegate()`), and
+     * - a `null` argument has undefined offsets, so `tw.getLocation` maps it to the whole-file
+     *   location (`file:0:0:0:0`).
+     *
+     * The K1 frontend instead gives both real-but-meaningless offsets that resolve (via
+     * `findPsiElement`) to an unrelated token near the top of the file (e.g. an `import`),
+     * producing a bogus non-zero location. Recognise these arguments by their enclosing accessor's
+     * origin, their shape (the accessor's own dispatch/extension receiver, or a `null` constant),
+     * and the fact that their offsets fall outside the enclosing property's PSI text range (a real
+     * receiver access could only occur within the delegate expression, i.e. inside that range).
+     * Emit the K2-native location so K1 converges: the delegate expression's range for a `this`
+     * receiver, or the whole-file location for `null`.
+     *
+     * This is not gated on [usesK2]: it must fire under K1 (which retains PSI and produces the
+     * bogus offsets) and is a no-op under K2 (where [getPsi2Ir] is null, so it returns null and
+     * the raw location is already used).
+     */
+    private fun getDelegatedAccessorSyntheticArgumentLocation(e: IrElement): Label<DbLocation>? {
+        val enclosing = declarationStack.peek().first as? IrFunction ?: return null
+        if (enclosing.origin != IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR) return null
+        val isNull =
+            when (e) {
+                is IrGetValue -> {
+                    val owner = e.symbol.owner
+                    val isReceiver =
+                        owner is IrValueParameter &&
+                            owner.parent == enclosing &&
+                            (isDispatchReceiver(owner) ||
+                                owner == enclosing.codeQlExtensionReceiverParameter)
+                    if (!isReceiver) return null
+                    false
+                }
+                is CodeQLIrConst<*> -> {
+                    if (e.value != null) return null
+                    true
+                }
+                else -> return null
+            }
+        val file = currentIrFile ?: return null
+        val psiElement = getPsi2Ir()?.findPsiElement(enclosing, file) ?: return null
+        val ktProperty = generateSequence(psiElement) { it.parent }
+            .filterIsInstance<KtProperty>().firstOrNull()
+            ?: return null
+        val start = e.startOffset
+        val end = e.endOffset
+        if (start < 0 || end < 0) return null
+        // In-range offsets could be a genuine receiver access within the delegate expression;
+        // only treat offsets outside the whole property declaration as the synthetic thisRef.
+        if (start >= ktProperty.startOffset && end <= ktProperty.endOffset) return null
+        if (isNull) return tw.getWholeFileLocation()
+        val delegateExpression = ktProperty.delegate?.expression ?: return null
+        return tw.getLocation(delegateExpression.startOffset, delegateExpression.endOffset)
+    }
+
+    /**
      * For a delegated-property accessor (origin `DELEGATED_PROPERTY_ACCESSOR`), returns the
      * offset remapping to apply while extracting its body, or null if it cannot be computed.
      *
@@ -6461,7 +6525,8 @@ open class KotlinFileExtractor(
                         extractVariableAccess(
                             useValueDeclaration(owner),
                             extractType,
-                            getPsiBasedLocation(e) ?: tw.getLocation(e),
+                            getDelegatedAccessorSyntheticArgumentLocation(e)
+                                ?: getPsiBasedLocation(e) ?: tw.getLocation(e),
                             exprParent.parent,
                             exprParent.idx,
                             callable,
@@ -7012,7 +7077,8 @@ open class KotlinFileExtractor(
         callable: Label<out DbCallable>
     ) {
         val containingDeclaration = declarationStack.peek().first
-        val locId = getPsiBasedLocation(e) ?: tw.getLocation(e)
+        val locId = getDelegatedAccessorSyntheticArgumentLocation(e)
+            ?: getPsiBasedLocation(e) ?: tw.getLocation(e)
 
         if (
             containingDeclaration.shouldExtractAsStatic &&
@@ -7389,7 +7455,7 @@ open class KotlinFileExtractor(
             v == null -> {
                 extractNull(
                     e.type,
-                    tw.getLocation(e),
+                    getDelegatedAccessorSyntheticArgumentLocation(e) ?: tw.getLocation(e),
                     parent,
                     idx,
                     enclosingCallable,

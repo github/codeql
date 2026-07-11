@@ -132,9 +132,6 @@
 | dataClass.kt:1:34:1:46 | this.y | VarAccess |
 | dataClass.kt:1:34:1:46 | y | VarAccess |
 | dataClass.kt:1:34:1:46 | y | VarAccess |
-| delegates.kt:1:9:1:12 | this | ThisAccess |
-| delegates.kt:1:9:1:12 | this | ThisAccess |
-| delegates.kt:1:9:1:12 | this | ThisAccess |
 | delegates.kt:4:5:6:5 | int | TypeAccess |
 | delegates.kt:4:18:6:5 | ...=... | KtInitializerAssignExpr |
 | delegates.kt:4:18:6:5 | Integer | TypeAccess |
@@ -154,6 +151,7 @@
 | delegates.kt:4:21:6:5 | getLazyProp(...) | MethodCall |
 | delegates.kt:4:21:6:5 | getValue(...) | MethodCall |
 | delegates.kt:4:21:6:5 | lazy(...) | MethodCall |
+| delegates.kt:4:21:6:5 | this | ThisAccess |
 | delegates.kt:4:21:6:5 | this | ThisAccess |
 | delegates.kt:4:21:6:5 | this | ThisAccess |
 | delegates.kt:4:21:6:5 | this.lazyProp$delegate | VarAccess |
@@ -198,6 +196,8 @@
 | delegates.kt:8:35:11:5 | setObservableProp(...) | MethodCall |
 | delegates.kt:8:35:11:5 | setObservableProp(...) | MethodCall |
 | delegates.kt:8:35:11:5 | setValue(...) | MethodCall |
+| delegates.kt:8:35:11:5 | this | ThisAccess |
+| delegates.kt:8:35:11:5 | this | ThisAccess |
 | delegates.kt:8:35:11:5 | this | ThisAccess |
 | delegates.kt:8:35:11:5 | this | ThisAccess |
 | delegates.kt:8:35:11:5 | this | ThisAccess |

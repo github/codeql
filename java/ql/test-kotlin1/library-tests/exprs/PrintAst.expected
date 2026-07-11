@@ -33,7 +33,7 @@ delegatedProperties.kt:
 #   87|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegateMyClass
 #   87|               -1: [TypeAccess] DelegatedPropertiesKt
-#    1|             1: [ExtensionReceiverAccess] this
+#   87|             1: [ExtensionReceiverAccess] this
 #   87|             2: [PropertyRefExpr] ...::...
 #   87|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   87|                 1: [Constructor] 
@@ -82,7 +82,7 @@ delegatedProperties.kt:
 #   87|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   87|             0: [VarAccess] DelegatedPropertiesKt.extDelegated$delegateMyClass
 #   87|               -1: [TypeAccess] DelegatedPropertiesKt
-#    1|             1: [ExtensionReceiverAccess] this
+#   87|             1: [ExtensionReceiverAccess] this
 #   87|             2: [PropertyRefExpr] ...::...
 #   87|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   87|                 1: [Constructor] 
@@ -644,7 +644,7 @@ delegatedProperties.kt:
 #   42|           0: [MethodCall] getValue(...)
 #   42|             -1: [VarAccess] this.varResource0$delegate
 #   42|               -1: [ThisAccess] this
-#    1|             0: [ThisAccess] this
+#   42|             0: [ThisAccess] this
 #   42|             1: [PropertyRefExpr] ...::...
 #   42|               -4: [AnonymousClass] new KMutableProperty1<Owner,Integer>(...) { ... }
 #   42|                 1: [Constructor] 
@@ -687,7 +687,7 @@ delegatedProperties.kt:
 #   42|           0: [MethodCall] setValue(...)
 #   42|             -1: [VarAccess] this.varResource0$delegate
 #   42|               -1: [ThisAccess] this
-#    1|             0: [ThisAccess] this
+#   42|             0: [ThisAccess] this
 #   42|             1: [PropertyRefExpr] ...::...
 #   42|               -4: [AnonymousClass] new KMutableProperty1<Owner,Integer>(...) { ... }
 #   42|                 1: [Constructor] 
@@ -891,7 +891,7 @@ delegatedProperties.kt:
 #   66|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   66|             0: [VarAccess] this.delegatedToMember1$delegate
 #   66|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   66|             1: [ThisAccess] this
 #   66|             2: [PropertyRefExpr] ...::...
 #   66|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   66|                 1: [Constructor] 
@@ -936,7 +936,7 @@ delegatedProperties.kt:
 #   66|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   66|             0: [VarAccess] this.delegatedToMember1$delegate
 #   66|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   66|             1: [ThisAccess] this
 #   66|             2: [PropertyRefExpr] ...::...
 #   66|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   66|                 1: [Constructor] 
@@ -1021,7 +1021,7 @@ delegatedProperties.kt:
 #   67|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   67|             0: [VarAccess] this.delegatedToMember2$delegate
 #   67|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   67|             1: [ThisAccess] this
 #   67|             2: [PropertyRefExpr] ...::...
 #   67|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   67|                 1: [Constructor] 
@@ -1067,7 +1067,7 @@ delegatedProperties.kt:
 #   67|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   67|             0: [VarAccess] this.delegatedToMember2$delegate
 #   67|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   67|             1: [ThisAccess] this
 #   67|             2: [PropertyRefExpr] ...::...
 #   67|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   67|                 1: [Constructor] 
@@ -1146,7 +1146,7 @@ delegatedProperties.kt:
 #   69|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   69|             0: [VarAccess] this.delegatedToExtMember1$delegate
 #   69|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   69|             1: [ThisAccess] this
 #   69|             2: [PropertyRefExpr] ...::...
 #   69|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   69|                 1: [Constructor] 
@@ -1191,7 +1191,7 @@ delegatedProperties.kt:
 #   69|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   69|             0: [VarAccess] this.delegatedToExtMember1$delegate
 #   69|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   69|             1: [ThisAccess] this
 #   69|             2: [PropertyRefExpr] ...::...
 #   69|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   69|                 1: [Constructor] 
@@ -1278,7 +1278,7 @@ delegatedProperties.kt:
 #   70|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   70|             0: [VarAccess] this.delegatedToExtMember2$delegate
 #   70|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   70|             1: [ThisAccess] this
 #   70|             2: [PropertyRefExpr] ...::...
 #   70|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   70|                 1: [Constructor] 
@@ -1324,7 +1324,7 @@ delegatedProperties.kt:
 #   70|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   70|             0: [VarAccess] this.delegatedToExtMember2$delegate
 #   70|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   70|             1: [ThisAccess] this
 #   70|             2: [PropertyRefExpr] ...::...
 #   70|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   70|                 1: [Constructor] 
@@ -1405,7 +1405,7 @@ delegatedProperties.kt:
 #   72|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   72|             0: [VarAccess] this.delegatedToBaseClass1$delegate
 #   72|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   72|             1: [ThisAccess] this
 #   72|             2: [PropertyRefExpr] ...::...
 #   72|               -4: [AnonymousClass] new KProperty1<MyClass,Integer>(...) { ... }
 #   72|                 1: [Constructor] 
@@ -1471,7 +1471,7 @@ delegatedProperties.kt:
 #   73|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   73|             0: [VarAccess] this.delegatedToBaseClass2$delegate
 #   73|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   73|             1: [ThisAccess] this
 #   73|             2: [PropertyRefExpr] ...::...
 #   73|               -4: [AnonymousClass] new KProperty1<MyClass,Integer>(...) { ... }
 #   73|                 1: [Constructor] 
@@ -1531,7 +1531,7 @@ delegatedProperties.kt:
 #   75|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   75|             0: [VarAccess] this.delegatedToAnotherClass1$delegate
 #   75|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   75|             1: [ThisAccess] this
 #   75|             2: [PropertyRefExpr] ...::...
 #   75|               -4: [AnonymousClass] new KProperty1<MyClass,Integer>(...) { ... }
 #   75|                 1: [Constructor] 
@@ -1597,7 +1597,7 @@ delegatedProperties.kt:
 #   77|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   77|             0: [VarAccess] this.delegatedToTopLevel$delegate
 #   77|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   77|             1: [ThisAccess] this
 #   77|             2: [PropertyRefExpr] ...::...
 #   77|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   77|                 1: [Constructor] 
@@ -1642,7 +1642,7 @@ delegatedProperties.kt:
 #   77|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   77|             0: [VarAccess] this.delegatedToTopLevel$delegate
 #   77|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   77|             1: [ThisAccess] this
 #   77|             2: [PropertyRefExpr] ...::...
 #   77|               -4: [AnonymousClass] new KMutableProperty1<MyClass,Integer>(...) { ... }
 #   77|                 1: [Constructor] 
@@ -1713,7 +1713,7 @@ delegatedProperties.kt:
 #   79|             -1: [TypeAccess] PropertyReferenceDelegatesKt
 #   79|             0: [VarAccess] this.max$delegate
 #   79|               -1: [ThisAccess] this
-#    1|             1: [ThisAccess] this
+#   79|             1: [ThisAccess] this
 #   79|             2: [PropertyRefExpr] ...::...
 #   79|               -4: [AnonymousClass] new KProperty1<MyClass,Integer>(...) { ... }
 #   79|                 1: [Constructor] 
