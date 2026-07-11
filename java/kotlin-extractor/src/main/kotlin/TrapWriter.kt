@@ -362,6 +362,15 @@ open class FileTrapWriter(
         return getLocation(getStartOffset(e), getEndOffset(e))
     }
     /**
+     * Gets a label for the location starting at `e`'s (adjusted) start offset and ending at the
+     * given `endOffset`. This preserves the IrCall start-offset adjustment that [getLocation]
+     * applies, while allowing the caller to override the end offset (for example to widen an
+     * assignment's span to include its right-hand value).
+     */
+    fun getLocation(e: IrElement, endOffset: Int): Label<DbLocation> {
+        return getLocation(getStartOffset(e), endOffset)
+    }
+    /**
      * Gets a label for the location corresponding to `startOffset` and `endOffset` within this
      * file.
      */

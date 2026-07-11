@@ -3196,11 +3196,21 @@ open class KotlinFileExtractor(
                 is IrSetField -> e.value.endOffset
                 else -> UNDEFINED_OFFSET
             }
+        return correctedEndOffset(e.endOffset, valueEnd)
+    }
+
+    /**
+     * Returns [rawEnd], or [valueEnd] when the latter is a valid offset lying past [rawEnd]. This
+     * widens an assignment's raw end offset (which the K1 frontend records at the left-hand side)
+     * to include its right-hand value; under K2 the raw end already spans the value, so [valueEnd]
+     * is not past [rawEnd] and this is a no-op. Undefined/synthetic [valueEnd] offsets are ignored.
+     */
+    private fun correctedEndOffset(rawEnd: Int, valueEnd: Int): Int {
         return if (
-            valueEnd != UNDEFINED_OFFSET && valueEnd != SYNTHETIC_OFFSET && valueEnd > e.endOffset
+            valueEnd != UNDEFINED_OFFSET && valueEnd != SYNTHETIC_OFFSET && valueEnd > rawEnd
         )
             valueEnd
-        else e.endOffset
+        else rawEnd
     }
 
     /**
@@ -5232,7 +5242,11 @@ open class KotlinFileExtractor(
 
                     if (array != null && arrayIdx != null && assignedValue != null) {
 
-                        val locId = tw.getLocation(c)
+                        // The K1 frontend records the set-operation's end offset at the left-hand
+                        // side array access (`a[i]`), whereas K2 spans through the assigned value.
+                        // Widen the end to include the assigned value so both frontends agree.
+                        val locId =
+                            tw.getLocation(c, correctedEndOffset(c.endOffset, assignedValue.endOffset))
                         extractAssignExpr(c.type, locId, parent, idx, callable, enclosingStmt)
                             .also { assignId ->
                                 tw.getFreshIdLabel<DbArrayaccess>().also { arrayAccessId ->
@@ -6006,7 +6020,15 @@ open class KotlinFileExtractor(
                                         val exprParent = parent.expr(e, callable)
                                         val assignId = tw.getFreshIdLabel<DbAssignexpr>()
                                         val type = useType(arrayVarInitializer.type)
-                                        val locId = tw.getLocation(e)
+                                        // The K1 frontend records the compound-assignment block's
+                                        // end offset at the left-hand side array access (`a[i]`),
+                                        // whereas K2 spans through the right-hand value. Widen the
+                                        // end to include the value so both frontends agree.
+                                        val locId =
+                                            tw.getLocation(
+                                                e,
+                                                correctedEndOffset(e.endOffset, updateRhs.endOffset)
+                                            )
                                         tw.writeExprsKotlinType(assignId, type.kotlinResult.id)
                                         extractExprContext(
                                             assignId,
