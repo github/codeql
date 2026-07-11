@@ -303,6 +303,20 @@ open class FileTrapWriter(
     /** The ID for the file that we are extracting from. */
     val fileId = mkFileId(filePath, populateFileTables)
 
+    /**
+     * When non-null, any location computed with a start/end offset pair exactly equal to
+     * [scopedOffsetRemap]`.first` is emitted as if it had the offset pair
+     * [scopedOffsetRemap]`.second`.
+     *
+     * This is used to normalise the source range of the synthesised body expressions of a
+     * delegated-property accessor: the K1 frontend anchors them at the enclosing
+     * `KtPropertyDelegate` (i.e. including the `by` keyword), whereas K2 anchors them at the
+     * delegate expression itself. The remap is set only while extracting such an accessor
+     * body and matches the full `by`-inclusive range exactly, so it never affects unrelated
+     * locations.
+     */
+    var scopedOffsetRemap: Pair<Pair<Int, Int>, Pair<Int, Int>>? = null
+
     override fun getDiagnosticTrapWriter(): DiagnosticTrapWriter {
         return dtw
     }
@@ -398,6 +412,12 @@ class SourceFileTrapWriter(
     private val fileEntry = irFile.fileEntry
 
     override fun getLocation(startOffset: Int, endOffset: Int): Label<DbLocation> {
+        scopedOffsetRemap?.let { (from, to) ->
+            if (startOffset == from.first && endOffset == from.second) {
+                return getLocation(to.first, to.second)
+            }
+        }
+
         if (startOffset == UNDEFINED_OFFSET || endOffset == UNDEFINED_OFFSET) {
             if (startOffset != endOffset) {
                 loggerBase.warn(

@@ -2521,7 +2521,17 @@ open class KotlinFileExtractor(
                             "Type substitution should only be used to extract a function prototype, not the body",
                             f
                         )
-                    extractBody(body, id)
+                    val remap =
+                        if (f.origin == IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR)
+                            getDelegateExpressionOffsetRemap(f)
+                        else null
+                    val previousRemap = tw.scopedOffsetRemap
+                    if (remap != null) tw.scopedOffsetRemap = remap
+                    try {
+                        extractBody(body, id)
+                    } finally {
+                        tw.scopedOffsetRemap = previousRemap
+                    }
                 }
 
                 extractVisibility(f, id, overriddenAttributes?.visibility ?: f.visibility)
@@ -3111,6 +3121,39 @@ open class KotlinFileExtractor(
             .filterIsInstance<KtProperty>().firstOrNull()
             ?: return null
         return tw.getLocation(ktProperty.valOrVarKeyword.startOffset, ktProperty.endOffset)
+    }
+
+    /**
+     * For a delegated-property accessor (origin `DELEGATED_PROPERTY_ACCESSOR`), returns the
+     * offset remapping to apply while extracting its body, or null if it cannot be computed.
+     *
+     * The synthesised accessor body forwards to the delegate's `getValue`/`setValue`, and its
+     * expressions (the `get`/`getValue`/`setValue`/`invoke` calls, the `<prop>$delegate`
+     * access, type accesses, etc.) carry the source range of the whole `KtPropertyDelegate`
+     * node. The K1 frontend's range starts at the `by` keyword; K2 starts at the delegate
+     * expression itself (e.g. `lazy { ... }`). The `by` keyword is syntactic glue, not part of
+     * the expression being evaluated, so K2's narrower range is the more intuitive one.
+     *
+     * K1 retains the PSI, so we recover the delegate expression's range from the enclosing
+     * [KtProperty] and map the `by`-inclusive delegate range onto it. The remap matches the
+     * full delegate range exactly, so only the synthesised body expressions that span the
+     * whole `by <expr>` are affected. It returns null under K2 (no PSI), where the raw offsets
+     * already exclude the `by` keyword.
+     */
+    private fun getDelegateExpressionOffsetRemap(
+        f: IrFunction
+    ): Pair<Pair<Int, Int>, Pair<Int, Int>>? {
+        val file = currentIrFile ?: return null
+        val psiElement = getPsi2Ir()?.findPsiElement(f, file) ?: return null
+        val ktProperty = generateSequence(psiElement) { it.parent }
+            .filterIsInstance<KtProperty>().firstOrNull()
+            ?: return null
+        val delegate = ktProperty.delegate ?: return null
+        val expression = delegate.expression ?: return null
+        return Pair(
+            Pair(delegate.startOffset, delegate.endOffset),
+            Pair(expression.startOffset, expression.endOffset)
+        )
     }
 
     private fun extractVariable(
