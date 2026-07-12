@@ -2947,6 +2947,16 @@ open class KotlinFileExtractor(
             tw.writeHasLocation(it, locId)
         }
 
+    private fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>) {
+        with("block body", b) {
+            extractBlockBody(callable, getPsiBasedConstructorBodyLocation(b) ?: tw.getLocation(b)).also {
+                for ((sIdx, stmt) in b.statements.withIndex()) {
+                    extractStatement(stmt, callable, it, sIdx)
+                }
+            }
+        }
+    }
+
     /**
      * Returns a PSI-based location for a constructor body block that starts at the
      * `constructor` keyword rather than at any leading modifiers.
@@ -2973,16 +2983,6 @@ open class KotlinFileExtractor(
             ?: return null
         val keyword = ktCtor.getConstructorKeyword() ?: return null
         return tw.getLocation(keyword.startOffset, b.endOffset)
-    }
-
-    private fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>) {
-        with("block body", b) {
-            extractBlockBody(callable, getPsiBasedConstructorBodyLocation(b) ?: tw.getLocation(b)).also {
-                for ((sIdx, stmt) in b.statements.withIndex()) {
-                    extractStatement(stmt, callable, it, sIdx)
-                }
-            }
-        }
     }
 
     private fun extractSyntheticBody(b: IrSyntheticBody, callable: Label<out DbCallable>) {
@@ -3066,6 +3066,34 @@ open class KotlinFileExtractor(
         return tw.getLocation(declStart, declaration.endOffset)
     }
 
+    /**
+     * Returns the PSI-based location for a property declaration, spanning from
+     * the `val`/`var` keyword to the end of the full property declaration (including
+     * any explicit getter/setter body).
+     *
+     * IR offsets are inconsistent across K1 and K2:
+     * - K1 [IrProperty.startOffset] includes leading modifiers (private, abstract,
+     *   lateinit, @Annotation) in the span start. K2 starts at `val`/`var`.
+     * - K1 [IrProperty.endOffset] stops at the end of the declaration line and
+     *   does not include an explicit getter/setter body on a subsequent line. K2
+     *   includes the getter/setter body.
+     *
+     * Both are resolved by walking the PSI tree: the [KtProperty] node covers the
+     * full declaration including getter/setter, and [KtProperty.valOrVarKeyword]
+     * gives the correct start, excluding modifiers.
+     */
+    private fun getPsiBasedLocation(p: IrProperty): Label<DbLocation>? {
+        if (p.startOffset < 0 || p.endOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val ktProperty = ktFile.findElementAt(p.startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtProperty>().firstOrNull() }
+            ?: return null
+        val declStart = ktProperty.valOrVarKeyword.startOffset
+        val declEnd = ktProperty.endOffset
+        return tw.getLocation(declStart, declEnd)
+    }
+
     // Matches the K1 frontend's synthetic name for the temporary holding the subject of a
     // destructuring declaration (`val (a, b) = subject`), which is `tmp<N>_container`. K2 names
     // the same temporary with the special name `<destruct>`.
@@ -3102,34 +3130,6 @@ open class KotlinFileExtractor(
             .filterIsInstance<KtDestructuringDeclaration>()
             .firstOrNull() ?: return null
         return tw.getLocation(destructuring.startOffset, destructuring.endOffset)
-    }
-
-    /**
-     * Returns the PSI-based location for a property declaration, spanning from
-     * the `val`/`var` keyword to the end of the full property declaration (including
-     * any explicit getter/setter body).
-     *
-     * IR offsets are inconsistent across K1 and K2:
-     * - K1 [IrProperty.startOffset] includes leading modifiers (private, abstract,
-     *   lateinit, @Annotation) in the span start. K2 starts at `val`/`var`.
-     * - K1 [IrProperty.endOffset] stops at the end of the declaration line and
-     *   does not include an explicit getter/setter body on a subsequent line. K2
-     *   includes the getter/setter body.
-     *
-     * Both are resolved by walking the PSI tree: the [KtProperty] node covers the
-     * full declaration including getter/setter, and [KtProperty.valOrVarKeyword]
-     * gives the correct start, excluding modifiers.
-     */
-    private fun getPsiBasedLocation(p: IrProperty): Label<DbLocation>? {
-        if (p.startOffset < 0 || p.endOffset < 0) return null
-        val file = currentIrFile ?: return null
-        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
-        val ktProperty = ktFile.findElementAt(p.startOffset)
-            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtProperty>().firstOrNull() }
-            ?: return null
-        val declStart = ktProperty.valOrVarKeyword.startOffset
-        val declEnd = ktProperty.endOffset
-        return tw.getLocation(declStart, declEnd)
     }
 
     /**
@@ -3545,9 +3545,10 @@ open class KotlinFileExtractor(
             // source spelling `_`. Emit `_` so both frontends produce the same, source-faithful
             // name (D15). The desugar temporaries for increment/decrement (`<unary>`) and
             // destructuring (`<destruct>`) are likewise normalised onto the uniform K2 names.
+            val desugarTemp = currentDesugarTemp
             val varName =
                 when {
-                    currentDesugarTemp?.first === v -> currentDesugarTemp!!.second
+                    desugarTemp != null && desugarTemp.first === v -> desugarTemp.second
                     isDestructContainer -> "<destruct>"
                     v.name == SpecialNames.UNDERSCORE_FOR_UNUSED_VAR -> "_"
                     else -> v.name.asString()
