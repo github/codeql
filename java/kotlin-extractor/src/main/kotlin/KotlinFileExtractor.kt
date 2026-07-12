@@ -96,6 +96,13 @@ open class KotlinFileExtractor(
     // argument of that property's forwarding get/set, which under K1 gets a bogus location.
     private var currentLocalDelegatedProperty: IrLocalDelegatedProperty? = null
 
+    // Set only while extracting the branches of an `IrWhen`. Holds that `when`'s source
+    // location, used as a fallback location for the compiler-generated
+    // `throw NoWhenBranchMatchedException(...)` of an exhaustive `when`. Under K2 that
+    // synthetic call carries the `when`'s offsets, but under K1 it has undefined offsets
+    // (yielding a `0:0:0:0` location); this makes both frontends anchor it to the `when`.
+    private var currentSyntheticWhenLocation: Label<DbLocation>? = null
+
     private inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
         val name =
             when (element) {
@@ -5042,7 +5049,12 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "noWhenBranchMatchedException") -> {
                     kotlinNoWhenBranchMatchedConstructor?.let {
-                        val locId = tw.getLocation(c)
+                        // Under K1 this synthetic call has undefined offsets (a `0:0:0:0`
+                        // location); fall back to the enclosing `when`'s location, matching K2.
+                        val locId =
+                            if (c.startOffset == UNDEFINED_OFFSET || c.endOffset == UNDEFINED_OFFSET)
+                                currentSyntheticWhenLocation ?: tw.getLocation(c)
+                            else tw.getLocation(c)
                         val thrownType = useSimpleTypeClass(it.parentAsClass, listOf(), false)
                         val stmtParent = stmtExprParent.stmt(c, callable)
                         val throwId = tw.getFreshIdLabel<DbThrowstmt>()
@@ -6834,7 +6846,13 @@ open class KotlinFileExtractor(
                         tw.writeStmts_whenbranch(bId, id, i, callable)
                         tw.writeHasLocation(bId, bLocId)
                         extractExpressionExpr(b.condition, callable, bId, 0, bId)
-                        extractExpressionStmt(b.result, callable, bId, 1)
+                        val prevSyntheticWhenLocation = currentSyntheticWhenLocation
+                        currentSyntheticWhenLocation = locId
+                        try {
+                            extractExpressionStmt(b.result, callable, bId, 1)
+                        } finally {
+                            currentSyntheticWhenLocation = prevSyntheticWhenLocation
+                        }
                         if (b is IrElseBranch) {
                             tw.writeWhen_branch_else(bId)
                         }
