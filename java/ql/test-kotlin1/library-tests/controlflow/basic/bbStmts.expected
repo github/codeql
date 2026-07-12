@@ -192,23 +192,23 @@
 | Test.kt:38:9:38:13 | After ... > ... [true] | 11 | Test.kt:40:4:40:6 | Before <Stmt> |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 12 | Test.kt:40:4:40:6 | { ... } |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 13 | Test.kt:40:4:40:6 | var ...; |
-| Test.kt:38:9:38:13 | After ... > ... [true] | 14 | Test.kt:40:4:40:6 | Before tmp0 |
+| Test.kt:38:9:38:13 | After ... > ... [true] | 14 | Test.kt:40:4:40:6 | Before <unary> |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 15 | Test.kt:40:4:40:4 | x |
-| Test.kt:38:9:38:13 | After ... > ... [true] | 16 | Test.kt:40:4:40:6 | tmp0 |
-| Test.kt:38:9:38:13 | After ... > ... [true] | 17 | Test.kt:40:4:40:6 | After tmp0 |
+| Test.kt:38:9:38:13 | After ... > ... [true] | 16 | Test.kt:40:4:40:6 | <unary> |
+| Test.kt:38:9:38:13 | After ... > ... [true] | 17 | Test.kt:40:4:40:6 | After <unary> |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 18 | Test.kt:40:4:40:6 | After var ...; |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 19 | Test.kt:40:4:40:6 | <Expr>; |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 20 | Test.kt:40:4:40:6 | Before ...=... |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 21 | Test.kt:40:4:40:4 | x |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 22 | Test.kt:40:4:40:6 | Before dec(...) |
-| Test.kt:38:9:38:13 | After ... > ... [true] | 23 | Test.kt:40:4:40:6 | tmp0 |
+| Test.kt:38:9:38:13 | After ... > ... [true] | 23 | Test.kt:40:4:40:6 | <unary> |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 24 | Test.kt:40:4:40:6 | dec(...) |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 25 | Test.kt:40:4:40:6 | After dec(...) |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 26 | Test.kt:40:4:40:6 | ...=... |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 27 | Test.kt:40:4:40:6 | After ...=... |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 28 | Test.kt:40:4:40:6 | After <Expr>; |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 29 | Test.kt:40:4:40:6 | <Expr>; |
-| Test.kt:38:9:38:13 | After ... > ... [true] | 30 | Test.kt:40:4:40:6 | tmp0 |
+| Test.kt:38:9:38:13 | After ... > ... [true] | 30 | Test.kt:40:4:40:6 | <unary> |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 31 | Test.kt:40:4:40:6 | After <Expr>; |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 32 | Test.kt:40:4:40:6 | After { ... } |
 | Test.kt:38:9:38:13 | After ... > ... [true] | 33 | Test.kt:40:4:40:6 | <Stmt> |

@@ -95,18 +95,18 @@
 | Test.kt:39:4:39:9 | ...=... | AssignExpr | Test.kt:40:4:40:6 | <Expr>; | ExprStmt |
 | Test.kt:39:4:39:9 | <Expr>; | ExprStmt | Test.kt:39:4:39:4 | y | VarAccess |
 | Test.kt:39:8:39:9 | 10 | LongLiteral | Test.kt:39:4:39:9 | ...=... | AssignExpr |
-| Test.kt:40:4:40:4 | x | VarAccess | Test.kt:40:4:40:6 | tmp0 | LocalVariableDeclExpr |
-| Test.kt:40:4:40:4 | x | VarAccess | Test.kt:40:4:40:6 | tmp0 | VarAccess |
+| Test.kt:40:4:40:4 | x | VarAccess | Test.kt:40:4:40:6 | <unary> | LocalVariableDeclExpr |
+| Test.kt:40:4:40:4 | x | VarAccess | Test.kt:40:4:40:6 | <unary> | VarAccess |
 | Test.kt:40:4:40:6 | ...=... | AssignExpr | Test.kt:40:4:40:6 | <Expr>; | ExprStmt |
 | Test.kt:40:4:40:6 | <Expr>; | ExprStmt | Test.kt:40:4:40:4 | x | VarAccess |
-| Test.kt:40:4:40:6 | <Expr>; | ExprStmt | Test.kt:40:4:40:6 | tmp0 | VarAccess |
+| Test.kt:40:4:40:6 | <Expr>; | ExprStmt | Test.kt:40:4:40:6 | <unary> | VarAccess |
 | Test.kt:40:4:40:6 | <Expr>; | ExprStmt | Test.kt:40:4:40:6 | { ... } | BlockStmt |
 | Test.kt:40:4:40:6 | <Stmt> | StmtExpr | Test.kt:40:4:40:6 | <implicit coercion to unit> | ImplicitCoercionToUnitExpr |
 | Test.kt:40:4:40:6 | <implicit coercion to unit> | ImplicitCoercionToUnitExpr | Test.kt:38:9:38:9 | x | VarAccess |
+| Test.kt:40:4:40:6 | <unary> | LocalVariableDeclExpr | Test.kt:40:4:40:6 | <Expr>; | ExprStmt |
+| Test.kt:40:4:40:6 | <unary> | VarAccess | Test.kt:40:4:40:6 | <Stmt> | StmtExpr |
+| Test.kt:40:4:40:6 | <unary> | VarAccess | Test.kt:40:4:40:6 | dec(...) | MethodCall |
 | Test.kt:40:4:40:6 | dec(...) | MethodCall | Test.kt:40:4:40:6 | ...=... | AssignExpr |
-| Test.kt:40:4:40:6 | tmp0 | LocalVariableDeclExpr | Test.kt:40:4:40:6 | <Expr>; | ExprStmt |
-| Test.kt:40:4:40:6 | tmp0 | VarAccess | Test.kt:40:4:40:6 | <Stmt> | StmtExpr |
-| Test.kt:40:4:40:6 | tmp0 | VarAccess | Test.kt:40:4:40:6 | dec(...) | MethodCall |
 | Test.kt:40:4:40:6 | var ...; | LocalVariableDeclStmt | Test.kt:40:4:40:4 | x | VarAccess |
 | Test.kt:40:4:40:6 | { ... } | BlockStmt | Test.kt:40:4:40:6 | var ...; | LocalVariableDeclStmt |
 | Test.kt:43:3:43:3 | z | VarAccess | Test.kt:43:7:43:8 | 30 | IntegerLiteral |

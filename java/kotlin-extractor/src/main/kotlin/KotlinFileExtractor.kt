@@ -105,6 +105,13 @@ open class KotlinFileExtractor(
     // (yielding a `0:0:0:0` location); this makes both frontends anchor it to the `when`.
     private var currentSyntheticWhenLocation: Label<DbLocation>? = null
 
+    // Set only while extracting the statements of a desugared increment/decrement block
+    // (`x++`, `--x`, ...). Holds the block's induction temporary and the canonical name to
+    // emit for it. The K2 frontend names this temp with the uniform special name `<unary>`,
+    // whereas K1 names it `tmp<N>` using a per-scope counter that cannot be reproduced
+    // faithfully under K2. Emitting `<unary>` from both frontends makes the output converge.
+    private var currentDesugarTemp: Pair<IrVariable, String>? = null
+
     private inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
         val name =
             when (element) {
@@ -3495,7 +3502,11 @@ open class KotlinFileExtractor(
             // source spelling `_`. Emit `_` so both frontends produce the same, source-faithful
             // name (D15).
             val varName =
-                if (v.name == SpecialNames.UNDERSCORE_FOR_UNUSED_VAR) "_" else v.name.asString()
+                when {
+                    currentDesugarTemp?.first === v -> currentDesugarTemp!!.second
+                    v.name == SpecialNames.UNDERSCORE_FOR_UNUSED_VAR -> "_"
+                    else -> v.name.asString()
+                }
             tw.writeLocalvars(varId, varName, type.javaResult.id, exprId)
             tw.writeLocalvarsKotlinType(varId, type.kotlinResult.id)
             tw.writeHasLocation(varId, locId)
@@ -7211,8 +7222,29 @@ open class KotlinFileExtractor(
         val locId = getPsiBasedLocation(e) ?: tw.getLocation(e)
         tw.writeStmts_block(id, parent, idx, callable)
         tw.writeHasLocation(id, locId)
-        statements.forEachIndexed { i, s -> extractStatement(s, callable, id, i) }
+        // A desugared increment/decrement (`x++`, `--x`, ...) is an IrBlock whose induction
+        // temporary is named `tmp<N>` under K1 but `<unary>` under K2. K1's counter-based name
+        // cannot be reproduced under K2, so emit the uniform `<unary>` from both frontends.
+        val prevDesugarTemp = currentDesugarTemp
+        val inductionTemp =
+            (e as? IrContainerExpression)?.takeIf { isUnaryDesugarOrigin(it.origin) }
+                ?.statements
+                ?.firstOrNull() as? IrVariable
+        if (inductionTemp != null) {
+            currentDesugarTemp = Pair(inductionTemp, "<unary>")
+        }
+        try {
+            statements.forEachIndexed { i, s -> extractStatement(s, callable, id, i) }
+        } finally {
+            currentDesugarTemp = prevDesugarTemp
+        }
     }
+
+    private fun isUnaryDesugarOrigin(origin: IrStatementOrigin?) =
+        origin == IrStatementOrigin.PREFIX_INCR ||
+            origin == IrStatementOrigin.PREFIX_DECR ||
+            origin == IrStatementOrigin.POSTFIX_INCR ||
+            origin == IrStatementOrigin.POSTFIX_DECR
 
     private inline fun <D : DeclarationDescriptor, reified B : IrSymbolOwner> getBoundSymbolOwner(
         symbol: IrBindableSymbol<D, B>,
