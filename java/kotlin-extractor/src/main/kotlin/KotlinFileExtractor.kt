@@ -1329,6 +1329,35 @@ open class KotlinFileExtractor(
     private fun hasSynthesizedParameterNames(f: IrFunction) =
         f.descriptor.hasSynthesizedParameterNames()
 
+    /**
+     * Returns the location of the primary-constructor parameter corresponding to a generated
+     * data-class `copy` value parameter, or null if [vp] is not such a parameter.
+     *
+     * A data class's generated `copy(...)` has one value parameter per primary-constructor
+     * property, defaulting to the current value. K1 records these parameters at the source
+     * location of the corresponding property; K2 leaves them with undefined offsets (a
+     * `0:0:0:0` location). To keep the richer K1 information under both frontends, we recover
+     * the property location from the primary constructor via the IR.
+     *
+     * Guards ensure this only affects the K2 case (K1 parameters already carry real offsets)
+     * and only `copy`-style parameters (matched by name against the primary-constructor
+     * parameter at the same index), so members such as `equals(other)` are left untouched.
+     */
+    private fun getGeneratedDataClassCopyParamLocation(
+        vp: IrValueParameter,
+        idx: Int
+    ): Label<DbLocation>? {
+        if (vp.startOffset >= 0) return null
+        val fn = vp.parent as? IrFunction ?: return null
+        if (fn.origin != IrDeclarationOrigin.GENERATED_DATA_CLASS_MEMBER) return null
+        val ctorParam =
+            fn.parentClassOrNull?.primaryConstructor?.codeQlValueParameters?.getOrNull(idx)
+                ?: return null
+        if (ctorParam.name.asString() != vp.name.asString() || ctorParam.startOffset < 0)
+            return null
+        return tw.getLocation(ctorParam)
+    }
+
     private fun extractValueParameter(
         vp: IrValueParameter,
         parent: Label<out DbCallable>,
@@ -1340,7 +1369,10 @@ open class KotlinFileExtractor(
         locOverride: Label<DbLocation>? = null
     ): TypeResults {
         with("value parameter", vp) {
-            val location = locOverride ?: getLocation(vp, classTypeArgsIncludingOuterClasses)
+            val location =
+                locOverride
+                    ?: getGeneratedDataClassCopyParamLocation(vp, idx)
+                    ?: getLocation(vp, classTypeArgsIncludingOuterClasses)
             val maybeAlteredType =
                 (vp.parent as? IrFunction)?.let {
                     if (overridesCollectionsMethodWithAlteredParameterTypes(it))

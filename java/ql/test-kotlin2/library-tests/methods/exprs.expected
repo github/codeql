@@ -48,7 +48,6 @@
 | dataClass.kt:0:0:0:0 | String | TypeAccess |
 | dataClass.kt:0:0:0:0 | String | TypeAccess |
 | dataClass.kt:0:0:0:0 | String | TypeAccess |
-| dataClass.kt:0:0:0:0 | String | TypeAccess |
 | dataClass.kt:0:0:0:0 | boolean | TypeAccess |
 | dataClass.kt:0:0:0:0 | copy(...) | MethodCall |
 | dataClass.kt:0:0:0:0 | false | BooleanLiteral |
@@ -56,7 +55,6 @@
 | dataClass.kt:0:0:0:0 | false | BooleanLiteral |
 | dataClass.kt:0:0:0:0 | hashCode(...) | MethodCall |
 | dataClass.kt:0:0:0:0 | hashCode(...) | MethodCall |
-| dataClass.kt:0:0:0:0 | int | TypeAccess |
 | dataClass.kt:0:0:0:0 | int | TypeAccess |
 | dataClass.kt:0:0:0:0 | int | TypeAccess |
 | dataClass.kt:0:0:0:0 | int | TypeAccess |
@@ -114,6 +112,7 @@
 | dataClass.kt:1:22:1:31 | int | TypeAccess |
 | dataClass.kt:1:22:1:31 | int | TypeAccess |
 | dataClass.kt:1:22:1:31 | int | TypeAccess |
+| dataClass.kt:1:22:1:31 | int | TypeAccess |
 | dataClass.kt:1:22:1:31 | this | ThisAccess |
 | dataClass.kt:1:22:1:31 | this.x | VarAccess |
 | dataClass.kt:1:22:1:31 | x | VarAccess |
@@ -121,6 +120,7 @@
 | dataClass.kt:1:34:1:46 | ...=... | AssignExpr |
 | dataClass.kt:1:34:1:46 | ...=... | KtInitializerAssignExpr |
 | dataClass.kt:1:34:1:46 | <set-?> | VarAccess |
+| dataClass.kt:1:34:1:46 | String | TypeAccess |
 | dataClass.kt:1:34:1:46 | String | TypeAccess |
 | dataClass.kt:1:34:1:46 | String | TypeAccess |
 | dataClass.kt:1:34:1:46 | String | TypeAccess |
