@@ -588,7 +588,7 @@ delegatedProperties.kt:
 #   39|               0: [MethodCall] provideDelegate(...)
 #   39|                 -1: [ClassInstanceExpr] new DelegateProvider(...)
 #   39|                   -3: [TypeAccess] DelegateProvider
-#    1|                 0: [NullLiteral] null
+#    0|                 0: [NullLiteral] null
 #   39|                 1: [PropertyRefExpr] ...::...
 #   39|                   -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
 #   39|                     1: [Constructor] 

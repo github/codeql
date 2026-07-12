@@ -1,4 +1,5 @@
 | delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:6:9:9:9 | <get-prop1> | NullLiteral |
+| delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:18:5:40:5 | fn | NullLiteral |
 | delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:19:9:19:51 | <get-varResource1> | NullLiteral |
 | delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:19:9:19:51 | <set-varResource1> | NullLiteral |
 | delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:23:9:23:31 | <get-name> | NullLiteral |
@@ -8,7 +9,6 @@
 | delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:39:9:39:51 | <get-varResource2> | NullLiteral |
 | delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:82:9:82:54 | <get-delegatedToMember3> | NullLiteral |
 | delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:82:9:82:54 | <set-delegatedToMember3> | NullLiteral |
-| delegatedProperties.kt:1:9:1:12 | null | delegatedProperties.kt:18:5:40:5 | fn | NullLiteral |
 | delegatedProperties.kt:5:5:12:5 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:6:9:9:9 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:6:9:9:9 | prop1$delegate | delegatedProperties.kt:5:5:12:5 | fn | LocalVariableDeclExpr |

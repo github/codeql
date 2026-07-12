@@ -91,6 +91,11 @@ open class KotlinFileExtractor(
 
     private var currentIrFile: IrFile? = null
 
+    // Set only while extracting the compiler-generated accessor artifacts of a local delegated
+    // property (declared inside a function body). Used to recognise the synthetic `thisRef`
+    // argument of that property's forwarding get/set, which under K1 gets a bogus location.
+    private var currentLocalDelegatedProperty: IrLocalDelegatedProperty? = null
+
     private inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
         val name =
             when (element) {
@@ -3188,6 +3193,39 @@ open class KotlinFileExtractor(
     }
 
     /**
+     * For the synthetic `thisRef` argument of a *local* delegated property (declared inside a
+     * function body), returns the location to use, or null to leave the raw location in place.
+     *
+     * A local delegated property's forwarding get/set is inlined into the enclosing function
+     * rather than materialised as a `DELEGATED_PROPERTY_ACCESSOR` (so
+     * [getDelegatedAccessorSyntheticArgumentLocation] does not apply). Because a local property
+     * has no dispatch/extension receiver, its synthetic `thisRef` is always a `null` constant
+     * with no source token. K2 records it at the whole-file location (`file:0:0:0:0`); K1 gives
+     * it a bogus non-zero location that resolves to an unrelated top-of-file token.
+     *
+     * This only fires while [currentLocalDelegatedProperty] is being extracted, and only for a
+     * `null` constant whose offsets fall outside that property's PSI text range (so a genuine
+     * source `null` inside the delegate expression, e.g. `by foo(null)`, is never moved). It is a
+     * no-op under K2, where [getPsi2Ir] is null.
+     */
+    private fun getLocalDelegatedPropertySyntheticNullLocation(e: IrElement): Label<DbLocation>? {
+        val property = currentLocalDelegatedProperty ?: return null
+        if (e !is CodeQLIrConst<*> || e.value != null) return null
+        val start = e.startOffset
+        val end = e.endOffset
+        if (start < 0 || end < 0) return null
+        val file = currentIrFile ?: return null
+        val psiElement = getPsi2Ir()?.findPsiElement(property, file) ?: return null
+        val ktProperty = generateSequence(psiElement) { it.parent }
+            .filterIsInstance<KtProperty>().firstOrNull()
+            ?: return null
+        // A genuine `null` inside the delegate expression lies within the property's range; only
+        // treat offsets outside the whole property declaration as the synthetic thisRef.
+        if (start >= ktProperty.startOffset && end <= ktProperty.endOffset) return null
+        return tw.getWholeFileLocation()
+    }
+
+    /**
      * For a delegated-property accessor (origin `DELEGATED_PROPERTY_ACCESSOR`), returns the
      * offset remapping to apply while extracting its body, or null if it cannot be computed.
      *
@@ -3402,25 +3440,31 @@ open class KotlinFileExtractor(
                     val delegate: IrVariable? = s.delegate as IrVariable?
                     val propId = tw.getFreshIdLabel<DbKt_property>()
 
-                    if (delegate == null) {
-                        // This is not expected to happen, as the plugin hooks into the pipeline before IR lowering.
-                        logger.errorElement("Local delegated property is missing delegate", s)
-                    } else {
-                        extractVariable(delegate, callable, blockId, 0)
-                        tw.writeKtProperties(propId, s.name.asString())
-                        tw.writeHasLocation(propId, locId)
-                        tw.writeKtPropertyDelegates(propId, useVariable(delegate))
-                    }
-                    // Getter:
-                    extractStatement(s.getter, callable, blockId, 1)
-                    val getterLabel = getLocallyVisibleFunctionLabels(s.getter).function
-                    tw.writeKtPropertyGetters(propId, getterLabel)
+                    val prevLocalDelegatedProperty = currentLocalDelegatedProperty
+                    currentLocalDelegatedProperty = s
+                    try {
+                        if (delegate == null) {
+                            // This is not expected to happen, as the plugin hooks into the pipeline before IR lowering.
+                            logger.errorElement("Local delegated property is missing delegate", s)
+                        } else {
+                            extractVariable(delegate, callable, blockId, 0)
+                            tw.writeKtProperties(propId, s.name.asString())
+                            tw.writeHasLocation(propId, locId)
+                            tw.writeKtPropertyDelegates(propId, useVariable(delegate))
+                        }
+                        // Getter:
+                        extractStatement(s.getter, callable, blockId, 1)
+                        val getterLabel = getLocallyVisibleFunctionLabels(s.getter).function
+                        tw.writeKtPropertyGetters(propId, getterLabel)
 
-                    val setter = s.setter
-                    if (setter != null) {
-                        extractStatement(setter, callable, blockId, 2)
-                        val setterLabel = getLocallyVisibleFunctionLabels(setter).function
-                        tw.writeKtPropertySetters(propId, setterLabel)
+                        val setter = s.setter
+                        if (setter != null) {
+                            extractStatement(setter, callable, blockId, 2)
+                            val setterLabel = getLocallyVisibleFunctionLabels(setter).function
+                            tw.writeKtPropertySetters(propId, setterLabel)
+                        }
+                    } finally {
+                        currentLocalDelegatedProperty = prevLocalDelegatedProperty
                     }
                 }
                 else -> {
@@ -7455,7 +7499,9 @@ open class KotlinFileExtractor(
             v == null -> {
                 extractNull(
                     e.type,
-                    getDelegatedAccessorSyntheticArgumentLocation(e) ?: tw.getLocation(e),
+                    getDelegatedAccessorSyntheticArgumentLocation(e)
+                        ?: getLocalDelegatedPropertySyntheticNullLocation(e)
+                        ?: tw.getLocation(e),
                     parent,
                     idx,
                     enclosingCallable,
