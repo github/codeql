@@ -98,9 +98,9 @@ anon_class_member_modifiers
 | delegatedProperties.kt:34:31:34:48 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:34:31:34:48 | invoke | override, public |
 | delegatedProperties.kt:34:31:34:48 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:34:31:34:48 | set | override, public |
 | delegatedProperties.kt:34:31:34:48 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:34:31:34:48 | set | override, public |
-| delegatedProperties.kt:39:31:39:51 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:39:31:39:51 | get | override, public |
-| delegatedProperties.kt:39:31:39:51 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:39:31:39:51 | invoke | override, public |
 | delegatedProperties.kt:39:34:39:51 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:39:34:39:51 | get | override, public |
+| delegatedProperties.kt:39:34:39:51 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:39:34:39:51 | get | override, public |
+| delegatedProperties.kt:39:34:39:51 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:39:34:39:51 | invoke | override, public |
 | delegatedProperties.kt:39:34:39:51 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:39:34:39:51 | invoke | override, public |
 | delegatedProperties.kt:42:30:42:47 | new KMutableProperty1<Owner,Integer>(...) { ... } | delegatedProperties.kt:42:30:42:47 | get | override, public |
 | delegatedProperties.kt:42:30:42:47 | new KMutableProperty1<Owner,Integer>(...) { ... } | delegatedProperties.kt:42:30:42:47 | get | override, public |

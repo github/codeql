@@ -1610,7 +1610,7 @@ open class KotlinFileExtractor(
 
             val expr = initializer.expression
 
-            val declLocId = tw.getLocation(f)
+            val declLocId = (f as? IrField)?.let { getDelegateFieldLocation(it) } ?: tw.getLocation(f)
             extractExpressionStmt(
                     declLocId,
                     blockAndFunctionId.first,
@@ -2677,6 +2677,7 @@ open class KotlinFileExtractor(
                         ?.owner
                         ?.takeUnless { it.isDelegated }
                         ?.let { getPsiBasedLocation(it) }
+                        ?: getDelegateFieldLocation(f)
                         ?: tw.getLocation(f)
                 return extractField(
                     id,
@@ -3454,17 +3455,58 @@ open class KotlinFileExtractor(
     private fun getDelegateExpressionOffsetRemap(
         f: IrFunction
     ): Pair<Pair<Int, Int>, Pair<Int, Int>>? {
-        val file = currentIrFile ?: return null
-        val psiElement = getPsi2Ir()?.findPsiElement(f, file) ?: return null
-        val ktProperty = generateSequence(psiElement) { it.parent }
-            .filterIsInstance<KtProperty>().firstOrNull()
-            ?: return null
+        return getEnclosingKtProperty(f)?.let { getDelegateExpressionOffsetRemap(it) }
+    }
+
+    /**
+     * Maps the whole `by <expr>` delegate range (which the K1 frontend records for the
+     * synthesised delegate expressions) onto the delegate expression's own range (the `by`
+     * keyword excluded, as K2 records natively). Returns null when [ktProperty] has no delegate
+     * or the delegate has no expression.
+     */
+    private fun getDelegateExpressionOffsetRemap(
+        ktProperty: KtProperty
+    ): Pair<Pair<Int, Int>, Pair<Int, Int>>? {
         val delegate = ktProperty.delegate ?: return null
         val expression = delegate.expression ?: return null
         return Pair(
             Pair(delegate.startOffset, delegate.endOffset),
             Pair(expression.startOffset, expression.endOffset)
         )
+    }
+
+    /**
+     * Returns the [KtProperty] enclosing the PSI element that back-maps from IR element [e],
+     * or null when no PSI is available (as under K2, where [getKtFile]/[findPsiElement] return
+     * null) or [e] is not within a property.
+     */
+    private fun getEnclosingKtProperty(e: IrElement): KtProperty? {
+        val file = currentIrFile ?: return null
+        val psiElement = getPsi2Ir()?.findPsiElement(e, file) ?: return null
+        return generateSequence(psiElement) { it.parent }
+            .filterIsInstance<KtProperty>().firstOrNull()
+    }
+
+    /**
+     * Returns the PSI-based location for a delegated property's `$delegate` backing field, or
+     * null to leave the raw IR offset in place.
+     *
+     * The `$delegate` field stores the delegate object, so its natural location is the delegate
+     * expression (e.g. `ResourceDelegate()` in `by ResourceDelegate()`). The K1 frontend's raw
+     * offset for this field starts at the `by` keyword; K2 starts at the delegate expression.
+     * The `by` keyword is syntactic glue, not part of the stored expression, so K2's narrower
+     * range is the more intuitive one.
+     *
+     * This fires only for a delegated property's own backing field (`isDelegated` and
+     * `backingField === f`), and returns null under K2 (no PSI) and for specialised/binary
+     * extractions (no PSI), where the raw offset already excludes the `by` keyword.
+     */
+    private fun getDelegateFieldLocation(f: IrField): Label<DbLocation>? {
+        val property = f.correspondingPropertySymbol?.owner ?: return null
+        if (!property.isDelegated || property.backingField !== f) return null
+        val ktProperty = getEnclosingKtProperty(property) ?: return null
+        val expression = ktProperty.delegate?.expression ?: return null
+        return tw.getLocation(expression.startOffset, expression.endOffset)
     }
 
     /**
@@ -3673,7 +3715,19 @@ open class KotlinFileExtractor(
                             // This is not expected to happen, as the plugin hooks into the pipeline before IR lowering.
                             logger.errorElement("Local delegated property is missing delegate", s)
                         } else {
-                            extractVariable(delegate, callable, blockId, 0)
+                            // The synthesised `provideDelegate(...)` call and its `KProperty`
+                            // argument in the delegate variable's initializer span the whole
+                            // `by <expr>` range under K1; remap them onto the delegate
+                            // expression (the `by` keyword excluded, as K2 records natively).
+                            val delegateRemap =
+                                getEnclosingKtProperty(s)?.let { getDelegateExpressionOffsetRemap(it) }
+                            val previousRemap = tw.scopedOffsetRemap
+                            if (delegateRemap != null) tw.scopedOffsetRemap = delegateRemap
+                            try {
+                                extractVariable(delegate, callable, blockId, 0)
+                            } finally {
+                                tw.scopedOffsetRemap = previousRemap
+                            }
                             tw.writeKtProperties(propId, s.name.asString())
                             tw.writeHasLocation(propId, locId)
                             tw.writeKtPropertyDelegates(propId, useVariable(delegate))
