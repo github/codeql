@@ -51,6 +51,7 @@ import org.jetbrains.kotlin.load.java.structure.JavaTypeParameter
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameterListOwner
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
 import org.jetbrains.kotlin.psi.KtClass
@@ -3489,7 +3490,13 @@ open class KotlinFileExtractor(
             val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
             val locId = getPsiBasedLocation(v) ?: tw.getLocation(getVariableLocationProvider(v))
             val type = useType(v.type)
-            tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, exprId)
+            // K2 names a source `_` (unused) local/catch variable with the synthetic
+            // SpecialNames.UNDERSCORE_FOR_UNUSED_VAR (`<unused var>`), whereas K1 keeps the
+            // source spelling `_`. Emit `_` so both frontends produce the same, source-faithful
+            // name (D15).
+            val varName =
+                if (v.name == SpecialNames.UNDERSCORE_FOR_UNUSED_VAR) "_" else v.name.asString()
+            tw.writeLocalvars(varId, varName, type.javaResult.id, exprId)
             tw.writeLocalvarsKotlinType(varId, type.kotlinResult.id)
             tw.writeHasLocation(varId, locId)
             tw.writeExprs_localvariabledeclexpr(exprId, type.javaResult.id, parent, idx)
