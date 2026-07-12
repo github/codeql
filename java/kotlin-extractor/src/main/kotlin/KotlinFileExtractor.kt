@@ -3099,9 +3099,40 @@ open class KotlinFileExtractor(
     }
 
     /**
-     * Returns the PSI-based location for the *implicit* (compiler-synthesised)
-     * primary constructor of [f]'s enclosing class, spanning the full
+     * Returns the PSI-based location for the synthetic delegating *super*-constructor
+     * call generated for a class's primary constructor, spanning the full
      * [KtClassOrObject] text range (including any leading modifiers such as `open`).
+     *
+     * A primary constructor's call to its superclass is written in source only as the
+     * supertype-list entry (for example `: ClassThree()`), so it has no `super(...)`
+     * token of its own. The K1 frontend records the synthetic call at that supertype
+     * call expression (`12:23:12:34`); the K2 frontend records it at the whole class
+     * declaration (`12:1:15:1`). Neither is a real `super(...)` statement, and K2's
+     * whole-construct span is the agreed canonical form, so we converge K1 onto it by
+     * recovering the enclosing class span from the PSI.
+     *
+     * Applies to primary constructors only (both explicit `()` and fully implicit): a
+     * super call written explicitly in a secondary constructor keeps its own
+     * `super(...)` location, which both frontends already record identically. Returns
+     * null under K2 (where [getKtFile] is unavailable and the raw offsets already carry
+     * the class span) and when [callable] is not a primary constructor.
+     */
+    private fun getPsiBasedPrimaryCtorSuperCallLocation(callable: IrDeclaration): Label<DbLocation>? {
+        val ctor = callable as? IrConstructor ?: return null
+        if (!ctor.isPrimary) return null
+        val c = ctor.parentAsClass
+        val startOffset = c.startOffset
+        if (startOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktClass = getPsi2Ir()?.getKtFile(file)
+            ?.findElementAt(startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtClassOrObject>().firstOrNull() }
+            ?: return null
+        return tw.getLocation(ktClass.startOffset, ktClass.endOffset)
+    }
+
+    /**
+     * Returns the PSI-based location for the *implicit* (compiler-synthesised)
      *
      * When a class has no primary constructor written in source (for example
      * `open class C0<V> {}`), the compiler synthesises one. The K2 frontend records
@@ -6451,7 +6482,11 @@ open class KotlinFileExtractor(
                         )
                     }
 
-                    val locId = tw.getLocation(e)
+                    val locId =
+                        (if (delegatingClass != currentClass)
+                            getPsiBasedPrimaryCtorSuperCallLocation(irCallable)
+                        else null)
+                            ?: tw.getLocation(e)
                     val methodId = useFunction<DbConstructor>(e.symbol.owner)
                     if (methodId == null) {
                         logger.errorElement("Cannot get ID for delegating constructor", e)
