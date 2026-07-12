@@ -57,6 +57,7 @@ import org.jetbrains.kotlin.util.OperatorNameConventions
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtConstructor
+import org.jetbrains.kotlin.psi.KtDestructuringDeclaration
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtPropertyAccessor
 import org.jetbrains.kotlin.psi.KtVariableDeclaration
@@ -3065,6 +3066,44 @@ open class KotlinFileExtractor(
         return tw.getLocation(declStart, declaration.endOffset)
     }
 
+    // Matches the K1 frontend's synthetic name for the temporary holding the subject of a
+    // destructuring declaration (`val (a, b) = subject`), which is `tmp<N>_container`. K2 names
+    // the same temporary with the special name `<destruct>`.
+    private val destructuringContainerK1NameRegex = Regex("tmp\\d+_container")
+
+    /**
+     * A destructuring declaration `val (a, b) = subject` introduces a temporary holding the
+     * subject, from which each component is read via `componentN()`. K1 names this temporary
+     * `tmp<N>_container`; K2 names it `<destruct>`. The uniform K2 name identifies the construct
+     * and is frontend-independent, so we emit `<destruct>` from both frontends (see also the
+     * location convergence in [getPsiBasedDestructuringContainerLocation]).
+     */
+    private fun isDestructuringContainerVariable(v: IrVariable): Boolean =
+        v.name.asString() == "<destruct>" ||
+            destructuringContainerK1NameRegex.matches(v.name.asString())
+
+    /**
+     * Location for the destructuring-container temporary spanning the whole
+     * [KtDestructuringDeclaration] (`val (a, b) = subject`).
+     *
+     * Under K2 the temporary already carries the full declaration span. Under K1 its IR offsets
+     * point only at the subject expression, so we recover the declaration span from the PSI: look
+     * up the leaf at the temporary's start offset and walk up to the enclosing
+     * [KtDestructuringDeclaration]. Returns null under K2 (no PSI back-mapping), where the IR
+     * offsets are already correct.
+     */
+    private fun getPsiBasedDestructuringContainerLocation(v: IrVariable): Label<DbLocation>? {
+        val startOffset = v.startOffset
+        if (startOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val element = ktFile.findElementAt(startOffset) ?: return null
+        val destructuring = generateSequence(element) { it.parent }
+            .filterIsInstance<KtDestructuringDeclaration>()
+            .firstOrNull() ?: return null
+        return tw.getLocation(destructuring.startOffset, destructuring.endOffset)
+    }
+
     /**
      * Returns the PSI-based location for a property declaration, spanning from
      * the `val`/`var` keyword to the end of the full property declaration (including
@@ -3495,15 +3534,21 @@ open class KotlinFileExtractor(
         with("variable expr", v) {
             val varId = useVariable(v)
             val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
-            val locId = getPsiBasedLocation(v) ?: tw.getLocation(getVariableLocationProvider(v))
+            val isDestructContainer = isDestructuringContainerVariable(v)
+            val locId =
+                (if (isDestructContainer) getPsiBasedDestructuringContainerLocation(v) else null)
+                    ?: getPsiBasedLocation(v)
+                    ?: tw.getLocation(getVariableLocationProvider(v))
             val type = useType(v.type)
             // K2 names a source `_` (unused) local/catch variable with the synthetic
             // SpecialNames.UNDERSCORE_FOR_UNUSED_VAR (`<unused var>`), whereas K1 keeps the
             // source spelling `_`. Emit `_` so both frontends produce the same, source-faithful
-            // name (D15).
+            // name (D15). The desugar temporaries for increment/decrement (`<unary>`) and
+            // destructuring (`<destruct>`) are likewise normalised onto the uniform K2 names.
             val varName =
                 when {
                     currentDesugarTemp?.first === v -> currentDesugarTemp!!.second
+                    isDestructContainer -> "<destruct>"
                     v.name == SpecialNames.UNDERSCORE_FOR_UNUSED_VAR -> "_"
                     else -> v.name.asString()
                 }
