@@ -5,7 +5,7 @@ varargsParams
 | test.kt:20:24:20:37 | xs | file://:0:0:0:0 | int[] |
 | test.kt:24:50:24:63 | xs | file://:0:0:0:0 | int[] |
 | test.kt:28:37:28:50 | xs | file://:0:0:0:0 | int[] |
-| test.kt:50:5:50:31 | s | file://:0:0:0:0 | String[] |
+| test.kt:50:19:50:31 | s | file://:0:0:0:0 | String[] |
 explicitVarargsArguments
 | test.kt:12:50:12:51 | xs | test.kt:12:44:12:52 | this(...) |
 | test.kt:38:25:38:29 | array | test.kt:38:5:38:30 | funWithOnlyVarArgs(...) |

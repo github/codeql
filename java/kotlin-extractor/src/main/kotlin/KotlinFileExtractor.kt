@@ -58,6 +58,7 @@ import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtConstructor
 import org.jetbrains.kotlin.psi.KtDestructuringDeclaration
+import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtPropertyAccessor
 import org.jetbrains.kotlin.psi.KtVariableDeclaration
@@ -1382,6 +1383,7 @@ open class KotlinFileExtractor(
             val location =
                 locOverride
                     ?: getGeneratedDataClassCopyParamLocation(vp, idx)
+                    ?: getPsiBasedValueParameterLocation(vp)
                     ?: getLocation(vp, classTypeArgsIncludingOuterClasses)
             val maybeAlteredType =
                 (vp.parent as? IrFunction)?.let {
@@ -3130,6 +3132,37 @@ open class KotlinFileExtractor(
             .filterIsInstance<KtDestructuringDeclaration>()
             .firstOrNull() ?: return null
         return tw.getLocation(destructuring.startOffset, destructuring.endOffset)
+    }
+
+    /**
+     * Location for a primary-constructor `val`/`var` value parameter that excludes any
+     * leading modifiers, spanning from the `val`/`var` keyword to the parameter's end.
+     *
+     * For a property parameter declared with modifiers (for example
+     * `public vararg val s: String`), the K1 frontend's [IrValueParameter] offsets start at
+     * the first modifier (`public`), whereas K2 starts at the `val`/`var` keyword, consistent
+     * with how declarations exclude leading modifiers from their own span (annotations and
+     * modifiers carry their own locations). We converge K1 onto the K2 form.
+     *
+     * Returns null under K2 (where [getKtFile] is unavailable and the raw offsets already
+     * exclude the modifiers), and for any parameter without a `val`/`var` keyword (an ordinary
+     * value parameter), where the start already coincides with the parameter and there is no
+     * modifier span to strip.
+     */
+    private fun getPsiBasedValueParameterLocation(vp: IrValueParameter): Label<DbLocation>? {
+        if (vp.startOffset < 0 || vp.endOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val ktParam = ktFile.findElementAt(vp.startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtParameter>().firstOrNull() }
+            ?: return null
+        val keyword = ktParam.valOrVarKeyword ?: return null
+        // Only converge when leading modifiers (e.g. `vararg`, visibility) precede the
+        // `val`/`var` keyword: there the raw K1 offset starts at the first modifier while
+        // K2 starts at the keyword. When the keyword is already the parameter start there
+        // is nothing to exclude, and rewriting the end offset would diverge from K2.
+        if (keyword.startOffset <= vp.startOffset) return null
+        return tw.getLocation(keyword.startOffset, vp.endOffset)
     }
 
     /**
