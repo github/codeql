@@ -2762,9 +2762,10 @@ open class KotlinFileExtractor(
                 // getPsiBasedAccessorLocation): the keyword token for a bare `get`/`set`,
                 // or the property signature for a fully synthesised accessor.
                 fun accessorOverride(f: IrFunction) =
-                    if (f.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR)
-                        getPsiBasedAccessorLocation(p, f)?.let { OverriddenFunctionAttributes(sourceLoc = it) }
-                    else null
+                    (if (f.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR)
+                        getPsiBasedAccessorLocation(p, f)
+                    else getPsiBasedAnnotatedAccessorLocation(p, f))
+                        ?.let { OverriddenFunctionAttributes(sourceLoc = it) }
 
                 if (getter == null) {
                     if (!isExternalDeclaration(p)) {
@@ -3133,8 +3134,36 @@ open class KotlinFileExtractor(
     }
 
     /**
+     * Returns the PSI-based location for an *explicit* property accessor that carries
+     * its own annotation(s) (for example `@JvmName("getX_prop") get() = 15`), spanning
+     * from the leading annotation through the end of the accessor.
+     *
+     * The K2 frontend records such an accessor with raw IR offsets that already include
+     * the leading annotation; the K1 frontend's raw offsets start at the `get`/`set`
+     * keyword and omit the annotation. We converge K1 onto the annotation-inclusive K2
+     * span by recovering it from the [KtPropertyAccessor] PSI node, whose text range
+     * begins at its modifier list (the annotations).
+     *
+     * Returns null under K2 (where [getKtFile] is unavailable and the raw offsets
+     * already carry the annotation) and for accessors that declare no annotations of
+     * their own (which both frontends already record identically).
+     */
+    private fun getPsiBasedAnnotatedAccessorLocation(p: IrProperty, accessor: IrFunction): Label<DbLocation>? {
+        if (p.startOffset < 0 || p.endOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val ktProperty = ktFile.findElementAt(p.startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtProperty>().firstOrNull() }
+            ?: return null
+        val isGetter = p.getter?.symbol == accessor.symbol
+        val ktAccessor: KtPropertyAccessor = (if (isGetter) ktProperty.getter else ktProperty.setter)
+            ?: return null
+        if (ktAccessor.annotationEntries.isEmpty()) return null
+        return tw.getLocation(ktAccessor.startOffset, ktAccessor.endOffset)
+    }
+
+    /**
      * Returns the PSI-based location for the synthesised getter/setter of a
-     * *delegated* property (origin `DELEGATED_PROPERTY_ACCESSOR`), spanning the
      * enclosing property declaration from its `val`/`var` keyword through the end of
      * the delegate expression.
      *
