@@ -1365,7 +1365,8 @@ open class KotlinFileExtractor(
                 extractTypeAccessRecursive(substitutedType, location, id, -1)
             }
             val syntheticParameterNames =
-                vp.origin == IrDeclarationOrigin.UNDERSCORE_PARAMETER ||
+                (vp.origin == IrDeclarationOrigin.UNDERSCORE_PARAMETER &&
+                    vp.name.asString() != "_") ||
                     ((vp.parent as? IrFunction)?.let { hasSynthesizedParameterNames(it) } ?: true)
             val javaParameter =
                 when (val callable = (vp.parent as? IrFunction)?.let { getJavaCallable(it) }) {
