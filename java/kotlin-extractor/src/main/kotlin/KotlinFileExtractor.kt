@@ -55,6 +55,7 @@ import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtClassOrObject
+import org.jetbrains.kotlin.psi.KtConstructor
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtPropertyAccessor
 import org.jetbrains.kotlin.psi.KtVariableDeclaration
@@ -2937,9 +2938,37 @@ open class KotlinFileExtractor(
             tw.writeHasLocation(it, locId)
         }
 
+    /**
+     * Returns a PSI-based location for a constructor body block that starts at the
+     * `constructor` keyword rather than at any leading modifiers.
+     *
+     * For a constructor declared with a visibility modifier (for example
+     * `internal constructor(...) { }`), the K1 frontend's [IrBlockBody] offsets start
+     * at the modifier (`3:3`); the K2 frontend starts at the `constructor` keyword
+     * (`3:12`), consistent with how declarations exclude leading modifiers from their
+     * own span. We converge K1 onto the K2 form.
+     *
+     * The end offset is left as the block body's own [IrBlockBody.endOffset]. For a
+     * constructor without modifiers the keyword already coincides with the block start,
+     * so this is a no-op there. Returns null under K2 (where [getKtFile] is unavailable
+     * and the raw offsets already exclude the modifier), for non-constructor bodies, and
+     * when the constructor has no `constructor` keyword (an implicit primary
+     * constructor).
+     */
+    private fun getPsiBasedConstructorBodyLocation(b: IrBlockBody): Label<DbLocation>? {
+        if (b.startOffset < 0 || b.endOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktCtor = getPsi2Ir()?.getKtFile(file)
+            ?.findElementAt(b.startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtConstructor<*>>().firstOrNull() }
+            ?: return null
+        val keyword = ktCtor.getConstructorKeyword() ?: return null
+        return tw.getLocation(keyword.startOffset, b.endOffset)
+    }
+
     private fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>) {
         with("block body", b) {
-            extractBlockBody(callable, tw.getLocation(b)).also {
+            extractBlockBody(callable, getPsiBasedConstructorBodyLocation(b) ?: tw.getLocation(b)).also {
                 for ((sIdx, stmt) in b.statements.withIndex()) {
                     extractStatement(stmt, callable, it, sIdx)
                 }

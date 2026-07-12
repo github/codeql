@@ -223,7 +223,7 @@ def.kt:
 #-----|       1: (Annotations)
 #   41|         1: [Annotation] Annot0k
 #    0|           1: [IntegerLiteral] 0
-#   41|       5: [BlockStmt] { ... }
+#   42|       5: [BlockStmt] { ... }
 #   42|         0: [SuperConstructorInvocationStmt] super(...)
 #   42|         1: [BlockStmt] { ... }
 use.java:
