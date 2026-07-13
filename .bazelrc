@@ -11,6 +11,15 @@ build --compilation_mode opt
 common --override_module=semmle_code=%workspace%/misc/bazel/semmle_code_stub
 
 build --repo_env=CC=clang --repo_env=CXX=clang++
+
+# Set a macOS deployment target for both target and exec configurations so
+# that the hermetic Swift toolchain used by //unified/swift-syntax-rs (and
+# its `swift-syntax` dependency) compiles. Without this, `swiftc` is
+# invoked without a deployment target and fails with
+# "Swift requires a minimum deployment target of macOS 10.9.0" on recent
+# macOS versions. 10.15 matches swift-syntax's declared minimum platform.
+build:macos --macos_minimum_os=10.15
+build:macos --host_macos_minimum_os=10.15
 # Disable Android SDK auto-detection (we don't use it, and rules_android has Bazel 9 compatibility issues)
 build --repo_env=ANDROID_HOME=
 
