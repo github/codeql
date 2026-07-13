@@ -44,6 +44,20 @@ common --flag_alias=host_swiftcopt=@rules_swift//swift:exec_copt
 build:macos --swiftcopt=-target --swiftcopt=arm64-apple-macosx10.15
 build:macos --host_swiftcopt=-target --host_swiftcopt=arm64-apple-macosx10.15
 
+# Point Bazel at `apple_support`'s xcode_config on macOS.
+#
+# `xcode_swift_toolchain` pulls in `@system_sdk//:{all_modules,implicit_modules}`,
+# whose `select({":xcode_<version>": ...})` keys use the exact version string
+# from `@bazel_tools//tools/osx:xcode_locator.m` (e.g. `xcode_26_6_0_17F113`).
+# Bazel's built-in `@bazel_tools//tools/osx:host_xcodes` produces a shorter
+# version without the build number, so none of the config_settings match and
+# the select fails.
+#
+# `apple_support`'s `@local_config_xcode//:host_xcodes` uses the SAME
+# `xcode_locator.m`, so its version string agrees with the select keys.
+# Wired up in `MODULE.bazel` via the `xcode_configure` extension.
+build:macos --xcode_version_config=@local_config_xcode//:host_xcodes
+
 # Disable Android SDK auto-detection (we don't use it, and rules_android has Bazel 9 compatibility issues)
 build --repo_env=ANDROID_HOME=
 

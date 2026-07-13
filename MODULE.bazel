@@ -33,6 +33,12 @@ bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 bazel_dep(name = "rules_rust", version = "0.69.0")
 bazel_dep(name = "rules_swift", version = "4.0.0-rc4")
 bazel_dep(name = "swift-syntax", version = "602.0.0.bcr.2")
+# `apple_support` is a transitive dep of `rules_swift`, but we depend on it
+# directly so we can `use_repo` `local_config_xcode` (see below). This lets
+# `xcode_swift_toolchain`'s `system_sdk` selects — which are keyed on the
+# exact Xcode version string from `xcode_locator.m` (e.g.
+# `xcode_26_6_0_17F113`) — resolve on macOS.
+bazel_dep(name = "apple_support", version = "2.6.1")
 
 bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
 
@@ -269,6 +275,23 @@ use_repo(
 register_toolchains(
     "@swift_toolchain//:swift_toolchain_exec_ubuntu24.04",
 )
+
+# On macOS, `xcode_swift_toolchain` (auto-registered by rules_swift at
+# `@rules_swift//swift/toolchains:xcode-toolchain-*`) pulls in
+# `@system_sdk//:{all_modules,implicit_modules}`, whose targets are
+# `alias(..., select({":xcode_<version>": ...}))` keyed on the exact
+# Xcode version string produced by `@bazel_tools//tools/osx:xcode_locator.m`
+# (e.g. `xcode_26_6_0_17F113`). Bazel's built-in `@bazel_tools//tools/osx:host_xcodes`
+# reports a shorter version without the build number, so no `config_setting`
+# matches and the select fails with
+# "configurable attribute doesn't match this configuration".
+#
+# `apple_support`'s `@local_config_xcode//:host_xcodes` uses the SAME
+# `xcode_locator.m` as rules_swift's `system_sdk` extension, so its version
+# strings agree with the config_setting keys. Wire it up here and select it
+# on macOS via `--xcode_version_config` in `.bazelrc`.
+xcode_configure = use_extension("@apple_support//xcode:xcode_configure.bzl", "xcode_configure_extension")
+use_repo(xcode_configure, "local_config_xcode")
 
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
 node.toolchain(
