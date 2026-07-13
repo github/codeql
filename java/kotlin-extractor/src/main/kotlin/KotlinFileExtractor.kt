@@ -1383,6 +1383,7 @@ open class KotlinFileExtractor(
             val location =
                 locOverride
                     ?: getGeneratedDataClassCopyParamLocation(vp, idx)
+                    ?: getPsiBasedSyntheticParameterLocation(vp)
                     ?: getPsiBasedValueParameterLocation(vp)
                     ?: getLocation(vp, classTypeArgsIncludingOuterClasses)
             val maybeAlteredType =
@@ -3164,6 +3165,55 @@ open class KotlinFileExtractor(
         // is nothing to exclude, and rewriting the end offset would diverge from K2.
         if (keyword.startOffset <= vp.startOffset) return null
         return tw.getLocation(keyword.startOffset, vp.endOffset)
+    }
+
+    /**
+     * Returns the PSI-based location for a *synthesised* value parameter that has no source
+     * token of its own, matching the span the K2 frontend emits natively, or null to leave the
+     * raw IR offset in place.
+     *
+     * Two synthetic members carry such parameters:
+     *  - the compiler-generated setter of a *delegated* property (its `<set-?>` parameter): the
+     *    K1 frontend anchors it at the delegate expression (`8:32:11:5`) while K2 spans the whole
+     *    property declaration (`8:5:11:5`); and
+     *  - the enum `valueOf` special member (its `value` parameter): the K1 frontend has no offsets
+     *    at all and emits the null `0:0:0:0` location while K2 attributes it to the enum-class
+     *    declaration (`1:1:4:1`).
+     *
+     * In both cases the parameter is compiler-synthesised, so the K2 span (the owning declaration)
+     * is a real, navigable location and strictly more useful than either the delegate-expression
+     * fragment or the null `0:0` K1 records. As with the other convergence helpers we recover that
+     * span from the PSI under K1; the method returns null under K2 (where [getKtFile] is
+     * unavailable and the raw offsets already carry the owning-declaration span) and for every
+     * ordinary, source-backed parameter.
+     */
+    private fun getPsiBasedSyntheticParameterLocation(vp: IrValueParameter): Label<DbLocation>? {
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val fn = vp.parent as? IrSimpleFunction ?: return null
+
+        val property = fn.correspondingPropertySymbol?.owner
+        if (property != null && property.isDelegated && property.setter?.symbol == fn.symbol) {
+            val ktProperty = getEnclosingKtProperty(property) ?: return null
+            return tw.getLocation(ktProperty.startOffset, ktProperty.endOffset)
+        }
+
+        if (
+            fn.origin == IrDeclarationOrigin.ENUM_CLASS_SPECIAL_MEMBER &&
+                fn.name.asString() == "valueOf"
+        ) {
+            val enumClass = fn.parentClassOrNull ?: return null
+            if (enumClass.startOffset < 0) return null
+            val ktClass = ktFile.findElementAt(enumClass.startOffset)
+                ?.let { leaf ->
+                    generateSequence(leaf) { it.parent }
+                        .filterIsInstance<KtClassOrObject>()
+                        .firstOrNull()
+                }
+                ?: return null
+            return tw.getLocation(ktClass.startOffset, ktClass.endOffset)
+        }
+        return null
     }
 
     /**

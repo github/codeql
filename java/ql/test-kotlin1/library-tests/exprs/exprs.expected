@@ -226,7 +226,7 @@
 | delegatedProperties.kt:39:34:39:51 | varResource2$delegate | delegatedProperties.kt:39:9:39:51 | <get-varResource2> | VarAccess |
 | delegatedProperties.kt:42:5:42:47 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:42:5:42:47 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:42:27:42:47 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| delegatedProperties.kt:42:5:42:47 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:42:30:42:47 | ...::... | delegatedProperties.kt:42:5:42:47 | getVarResource0 | PropertyRefExpr |
 | delegatedProperties.kt:42:30:42:47 | ...::... | delegatedProperties.kt:42:5:42:47 | setVarResource0 | PropertyRefExpr |
 | delegatedProperties.kt:42:30:42:47 | ...=... | delegatedProperties.kt:17:1:43:1 | Owner | KtInitializerAssignExpr |
@@ -336,7 +336,7 @@
 | delegatedProperties.kt:65:87:65:95 | memberInt | delegatedProperties.kt:65:14:65:78 | MyClass | VarAccess |
 | delegatedProperties.kt:66:5:66:50 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:66:5:66:50 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:66:33:66:50 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| delegatedProperties.kt:66:5:66:50 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:66:36:66:39 | MyClass | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
 | delegatedProperties.kt:66:36:66:39 | MyClass.this | delegatedProperties.kt:65:14:65:78 | MyClass | ThisAccess |
 | delegatedProperties.kt:66:36:66:50 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
@@ -399,7 +399,7 @@
 | delegatedProperties.kt:66:36:66:50 | this.delegatedToMember1$delegate | delegatedProperties.kt:66:5:66:50 | setDelegatedToMember1 | VarAccess |
 | delegatedProperties.kt:67:5:67:53 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:67:5:67:53 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:67:33:67:53 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| delegatedProperties.kt:67:5:67:53 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:67:36:67:53 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
 | delegatedProperties.kt:67:36:67:53 | ...::... | delegatedProperties.kt:67:5:67:53 | getDelegatedToMember2 | PropertyRefExpr |
 | delegatedProperties.kt:67:36:67:53 | ...::... | delegatedProperties.kt:67:5:67:53 | setDelegatedToMember2 | PropertyRefExpr |
@@ -458,7 +458,7 @@
 | delegatedProperties.kt:67:36:67:53 | this.delegatedToMember2$delegate | delegatedProperties.kt:67:5:67:53 | setDelegatedToMember2 | VarAccess |
 | delegatedProperties.kt:69:5:69:56 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:69:5:69:56 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:69:36:69:56 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| delegatedProperties.kt:69:5:69:56 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:69:39:69:42 | MyClass | delegatedProperties.kt:65:14:65:78 | MyClass | TypeAccess |
 | delegatedProperties.kt:69:39:69:42 | MyClass.this | delegatedProperties.kt:65:14:65:78 | MyClass | ThisAccess |
 | delegatedProperties.kt:69:39:69:56 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
@@ -523,7 +523,7 @@
 | delegatedProperties.kt:69:39:69:56 | this.delegatedToExtMember1$delegate | delegatedProperties.kt:69:5:69:56 | setDelegatedToExtMember1 | VarAccess |
 | delegatedProperties.kt:70:5:70:59 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:70:5:70:59 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:70:36:70:59 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| delegatedProperties.kt:70:5:70:59 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:70:39:70:59 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
 | delegatedProperties.kt:70:39:70:59 | ...::... | delegatedProperties.kt:70:5:70:59 | getDelegatedToExtMember2 | PropertyRefExpr |
 | delegatedProperties.kt:70:39:70:59 | ...::... | delegatedProperties.kt:70:5:70:59 | setDelegatedToExtMember2 | PropertyRefExpr |
@@ -686,7 +686,7 @@
 | delegatedProperties.kt:75:42:75:78 | this.delegatedToAnotherClass1$delegate | delegatedProperties.kt:75:5:75:78 | getDelegatedToAnotherClass1 | VarAccess |
 | delegatedProperties.kt:77:5:77:49 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:77:5:77:49 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:77:34:77:49 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| delegatedProperties.kt:77:5:77:49 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:77:37:77:49 | ...::... | delegatedProperties.kt:65:14:65:78 | MyClass | PropertyRefExpr |
 | delegatedProperties.kt:77:37:77:49 | ...::... | delegatedProperties.kt:77:5:77:49 | getDelegatedToTopLevel | PropertyRefExpr |
 | delegatedProperties.kt:77:37:77:49 | ...::... | delegatedProperties.kt:77:5:77:49 | setDelegatedToTopLevel | PropertyRefExpr |
@@ -826,7 +826,7 @@
 | delegatedProperties.kt:87:1:87:46 | MyClass | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:87:1:87:46 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:87:1:87:46 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:87:31:87:46 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| delegatedProperties.kt:87:1:87:46 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:87:34:87:46 | ...::... | delegatedProperties.kt:0:0:0:0 | <clinit> | PropertyRefExpr |
 | delegatedProperties.kt:87:34:87:46 | ...::... | delegatedProperties.kt:87:1:87:46 | getExtDelegated | PropertyRefExpr |
 | delegatedProperties.kt:87:34:87:46 | ...::... | delegatedProperties.kt:87:1:87:46 | setExtDelegated | PropertyRefExpr |
@@ -893,8 +893,6 @@
 | exprs.kt:0:0:0:0 | Direction[] | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:0:0:0:0 | EnumEntries<Color> | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:0:0:0:0 | EnumEntries<Direction> | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:0:0:0:0 | String | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:0:0:0:0 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:4:1:142:1 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:4:20:4:25 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:4:28:4:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
@@ -1477,6 +1475,7 @@
 | exprs.kt:174:1:176:1 | 0 | exprs.kt:174:1:176:1 | Direction | IntegerLiteral |
 | exprs.kt:174:1:176:1 | Direction | exprs.kt:174:1:176:1 | Direction | TypeAccess |
 | exprs.kt:174:1:176:1 | Enum<Direction> | exprs.kt:174:1:176:1 | Direction | TypeAccess |
+| exprs.kt:174:1:176:1 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:174:1:176:1 | new Enum(...) | exprs.kt:174:1:176:1 | Direction | ClassInstanceExpr |
 | exprs.kt:174:1:176:1 | null | exprs.kt:174:1:176:1 | Direction | NullLiteral |
 | exprs.kt:175:5:175:10 | ...=... | exprs.kt:0:0:0:0 | <clinit> | KtInitializerAssignExpr |
@@ -1506,6 +1505,7 @@
 | exprs.kt:178:1:182:1 | 0 | exprs.kt:178:17:178:30 | Color | IntegerLiteral |
 | exprs.kt:178:1:182:1 | Color | exprs.kt:178:17:178:30 | Color | TypeAccess |
 | exprs.kt:178:1:182:1 | Enum<Color> | exprs.kt:178:17:178:30 | Color | TypeAccess |
+| exprs.kt:178:1:182:1 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:1:182:1 | new Enum(...) | exprs.kt:178:17:178:30 | Color | ClassInstanceExpr |
 | exprs.kt:178:1:182:1 | null | exprs.kt:178:17:178:30 | Color | NullLiteral |
 | exprs.kt:178:18:178:29 | ...=... | exprs.kt:178:17:178:30 | Color | KtInitializerAssignExpr |

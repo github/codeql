@@ -166,8 +166,8 @@ classes.kt:
 #    0|     3: [Method] valueOf
 #    0|       3: [TypeAccess] Direction
 #-----|       4: (Parameters)
-#    0|         0: [Parameter] value
-#    0|           0: [TypeAccess] String
+#   49|         0: [Parameter] value
+#   49|           0: [TypeAccess] String
 #    0|     4: [Method] values
 #    0|       3: [TypeAccess] Direction[]
 #    0|         0: [TypeAccess] Direction
@@ -203,8 +203,8 @@ classes.kt:
 #    0|     3: [Method] valueOf
 #    0|       3: [TypeAccess] Color
 #-----|       4: (Parameters)
-#    0|         0: [Parameter] value
-#    0|           0: [TypeAccess] String
+#   53|         0: [Parameter] value
+#   53|           0: [TypeAccess] String
 #    0|     4: [Method] values
 #    0|       3: [TypeAccess] Color[]
 #    0|         0: [TypeAccess] Color
