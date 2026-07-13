@@ -18,8 +18,14 @@ build --repo_env=CC=clang --repo_env=CXX=clang++
 # invoked without a deployment target and fails with
 # "Swift requires a minimum deployment target of macOS 10.9.0" on recent
 # macOS versions. 10.15 matches swift-syntax's declared minimum platform.
+# `--macos_minimum_os` covers the target config; the exec/host config
+# (used for e.g. Swift macro compilation) needs `MACOSX_DEPLOYMENT_TARGET`
+# on the action env, since `--host_macos_minimum_os` doesn't reach the
+# standalone Swift toolchain in rules_swift 4.x.
 build:macos --macos_minimum_os=10.15
 build:macos --host_macos_minimum_os=10.15
+build:macos --action_env=MACOSX_DEPLOYMENT_TARGET=10.15
+build:macos --host_action_env=MACOSX_DEPLOYMENT_TARGET=10.15
 # Disable Android SDK auto-detection (we don't use it, and rules_android has Bazel 9 compatibility issues)
 build --repo_env=ANDROID_HOME=
 
