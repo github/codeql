@@ -200,7 +200,7 @@ private ControlFlow::Node mostRecentSideEffect(ControlFlow::Node entry, ControlF
 
 cached
 private ControlFlow::Node mostRecentSideEffectUnique(ControlFlow::Node node) {
-  result = unique( | | mostRecentSideEffect(_, node))
+  result = unique( | | mostRecentSideEffect(getControlFlowEntry(node), node))
 }
 
 /** Used to represent the "global value number" of an expression. */
