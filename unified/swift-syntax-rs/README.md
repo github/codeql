@@ -139,6 +139,11 @@ bazel test  //unified/swift-syntax-rs:swift_syntax_rs_test
 bazel run   //unified/swift-syntax-rs:swift-syntax-parse < some.swift
 ```
 
+On **macOS**, add `--config=swift_macos` to any of the above so that
+`rules_swift`'s `xcode_swift_toolchain` gets the Xcode-coupled CC toolchain
+and xcode_config it needs. The flag is opt-in so that non-Swift builds on
+macOS don't require a full Xcode.app install.
+
 Requirements:
 
 - **`clang`** must be installed on the runner. `rules_swift` requires the Bazel
