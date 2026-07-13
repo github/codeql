@@ -243,12 +243,16 @@ module IR {
       // `defer-invoke` node that models the call at function exit.
       this.isAdditional(e, "defer-invoke")
       or
-      // `NotExpr` and `LogicalBinaryExpr` are not in `postOrInOrder`, so they
-      // don't have an `isIn` node. Only use the after-node when the
-      // expression is not in a conditional context; otherwise the value is
-      // split across `TAfterValueNode`s per branch and should not be exposed
-      // as a single value-producing instruction.
+      // Non-constant `NotExpr` and `LogicalBinaryExpr` are not in
+      // `postOrInOrder`, so they don't have an `isIn` node; their value is
+      // produced by the after-node. (Constant ones are folded and get a leaf
+      // `isIn` node via `constRoot`, handled by the first disjunct above, so
+      // they are excluded here to avoid a duplicate value node.) Only use the
+      // after-node when the expression is not in a conditional context;
+      // otherwise the value is split across `TAfterValueNode`s per branch and
+      // should not be exposed as a single value-producing instruction.
       (e instanceof NotExpr or e instanceof LogicalBinaryExpr) and
+      not e.isConst() and
       not isInBooleanCondContext(e) and
       this.isAfter(e)
     }

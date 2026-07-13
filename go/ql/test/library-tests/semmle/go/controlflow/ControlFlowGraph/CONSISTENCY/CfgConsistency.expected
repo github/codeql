@@ -1,23 +1,13 @@
 consistencyOverview
 | deadEnd | 1 |
-| multipleSuccessors | 20 |
+| multipleSuccessors | 10 |
 deadEnd
 | stmts.go:61:2:61:10 | select statement |
 multipleSuccessors
-| epilogues.go:61:2:61:38 | call to Println | successor | epilogues.go:60:8:60:33 | defer-invoke call to log |
-| epilogues.go:61:2:61:38 | call to Println | successor | epilogues.go:61:2:61:38 | After call to Println |
-| epilogues.go:70:2:70:20 | call to Println | successor | epilogues.go:69:8:69:25 | defer-invoke call to log |
-| epilogues.go:70:2:70:20 | call to Println | successor | epilogues.go:70:2:70:20 | After call to Println |
-| epilogues.go:81:2:81:23 | call to Println | successor | epilogues.go:78:8:80:15 | defer-invoke function call |
-| epilogues.go:81:2:81:23 | call to Println | successor | epilogues.go:81:2:81:23 | After call to Println |
 | stmts2.go:16:2:26:2 | select statement | successor | stmts2.go:17:2:17:15 | comm clause |
 | stmts2.go:16:2:26:2 | select statement | successor | stmts2.go:18:2:19:10 | comm clause |
 | stmts2.go:16:2:26:2 | select statement | successor | stmts2.go:20:2:24:10 | comm clause |
 | stmts2.go:16:2:26:2 | select statement | successor | stmts2.go:25:2:25:18 | comm clause |
-| stmts7.go:29:2:29:31 | call to Println | successor | stmts7.go:28:8:28:23 | defer-invoke call to fn |
-| stmts7.go:29:2:29:31 | call to Println | successor | stmts7.go:29:2:29:31 | After call to Println |
-| stmts7.go:54:6:54:18 | index expression | successor | stmts7.go:53:8:53:21 | defer-invoke call to recoverPanic |
-| stmts7.go:54:6:54:18 | index expression | successor | stmts7.go:54:6:54:18 | After index expression |
 | stmts.go:50:2:59:2 | select statement | successor | stmts.go:51:2:52:31 | comm clause |
 | stmts.go:50:2:59:2 | select statement | successor | stmts.go:53:2:55:16 | comm clause |
 | stmts.go:50:2:59:2 | select statement | successor | stmts.go:56:2:57:15 | comm clause |
