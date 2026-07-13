@@ -30,6 +30,21 @@ module CfgImpl {
     Input::implicitFieldSelection(e, index, implicitField)
   }
 
+  /**
+   * Holds if `root` is a constant root: a constant expression (with any
+   * enclosing parentheses stripped) whose parent expression is not itself
+   * constant. The strict sub-expressions of a constant root are folded at
+   * compile time and are not evaluated at run time, so they get no evaluation
+   * node; the constant root itself is evaluated as a single leaf value.
+   */
+  private predicate constantRoot(Go::Expr root) {
+    exists(Go::Expr c |
+      c.isConst() and
+      not c.getParent().(Go::Expr).isConst() and
+      root = c.stripParens()
+    )
+  }
+
   /** Provides an implementation of the AST signature for Go. */
   private module Ast implements CfgLib::AstSig<Go::Location> {
     class AstNode = Go::AstNode;
@@ -78,6 +93,10 @@ module CfgImpl {
       // the switch expression (see `Switch.getExpr`), so the wrapping
       // statement must not introduce its own assignment or expression nodes.
       e = any(Go::TypeSwitchStmt ts).getTest()
+      or
+      // The strict sub-expressions of a constant expression are not evaluated
+      // at run time, so they must not get their own evaluation nodes.
+      constantRoot(e.(Go::Expr).getParent+())
     }
 
     AstNode getChild(AstNode n, int index) {
@@ -345,9 +364,19 @@ module CfgImpl {
 
     class BinaryExpr = Go::BinaryExpr;
 
-    class LogicalAndExpr = Go::LandExpr;
+    // Constant short-circuiting operators are folded at compile time and their
+    // operands are not evaluated at run time, so they are not treated as
+    // logical operators here (which would give their operands their own
+    // evaluation nodes via `getLeftOperand`/`getRightOperand`/`getOperand`,
+    // bypassing `skipCfg`). Instead they are handled as constant-root leaf
+    // value nodes (see `postOrInOrder`).
+    class LogicalAndExpr extends Go::LandExpr {
+      LogicalAndExpr() { not this.isConst() }
+    }
 
-    class LogicalOrExpr = Go::LorExpr;
+    class LogicalOrExpr extends Go::LorExpr {
+      LogicalOrExpr() { not this.isConst() }
+    }
 
     class NullCoalescingExpr extends BinaryExpr {
       NullCoalescingExpr() { none() }
@@ -355,7 +384,9 @@ module CfgImpl {
 
     class UnaryExpr = Go::UnaryExpr;
 
-    class LogicalNotExpr = Go::NotExpr;
+    class LogicalNotExpr extends Go::NotExpr {
+      LogicalNotExpr() { not this.isConst() }
+    }
 
     class BooleanLiteral extends Expr {
       boolean val;
@@ -472,6 +503,13 @@ module CfgImpl {
       // An empty composite literal (e.g. `T{}`) has no CFG children, so it too
       // needs an explicit in-order (allocation) node.
       n instanceof Go::CompositeLit
+      or
+      // A constant expression is folded at compile time and its sub-expressions
+      // are not evaluated (they are pruned by `skipCfg`), so the constant root
+      // has no CFG children. It therefore needs an explicit in-order node to
+      // remain a single value-producing leaf (e.g. `unsafe.Sizeof(test())`,
+      // `1 << 10`, or `!d` for constant `d`).
+      constantRoot(n)
       or
       // Statements/declarations that compute a value or perform an operation and
       // are not among the statements the shared library makes post-order by

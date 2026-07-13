@@ -557,10 +557,7 @@
 | epilogues.go:90:4:90:14 | assign:0 ... = ... | epilogues.go:90:4:90:14 | After ... = ... |
 | epilogues.go:90:13:90:14 | -... | epilogues.go:90:13:90:14 | After -... |
 | epilogues.go:90:13:90:14 | After -... | epilogues.go:90:4:90:14 | assign:0 ... = ... |
-| epilogues.go:90:13:90:14 | Before -... | epilogues.go:90:14:90:14 | Before 1 |
-| epilogues.go:90:14:90:14 | 1 | epilogues.go:90:14:90:14 | After 1 |
-| epilogues.go:90:14:90:14 | After 1 | epilogues.go:90:13:90:14 | -... |
-| epilogues.go:90:14:90:14 | Before 1 | epilogues.go:90:14:90:14 | 1 |
+| epilogues.go:90:13:90:14 | Before -... | epilogues.go:90:13:90:14 | -... |
 | epilogues.go:93:2:95:2 | After if statement | epilogues.go:96:2:96:15 | ... = ... |
 | epilogues.go:93:2:95:2 | if statement | epilogues.go:93:5:93:9 | Before ...<... |
 | epilogues.go:93:5:93:5 | After x | epilogues.go:93:9:93:9 | Before 0 |
@@ -814,23 +811,9 @@
 | exprs.go:6:13:6:13 | 0 | exprs.go:6:13:6:13 | After 0 |
 | exprs.go:6:13:6:13 | After 0 | exprs.go:6:16:6:26 | Before ...+... |
 | exprs.go:6:13:6:13 | Before 0 | exprs.go:6:13:6:13 | 0 |
-| exprs.go:6:16:6:16 | 1 | exprs.go:6:16:6:16 | After 1 |
-| exprs.go:6:16:6:16 | After 1 | exprs.go:6:20:6:26 | (...) |
-| exprs.go:6:16:6:16 | Before 1 | exprs.go:6:16:6:16 | 1 |
 | exprs.go:6:16:6:26 | ...+... | exprs.go:6:16:6:26 | After ...+... |
 | exprs.go:6:16:6:26 | After ...+... | exprs.go:6:6:6:26 | assign:0 value declaration specifier |
-| exprs.go:6:16:6:26 | Before ...+... | exprs.go:6:16:6:16 | Before 1 |
-| exprs.go:6:20:6:26 | (...) | exprs.go:6:21:6:25 | Before ...+... |
-| exprs.go:6:20:6:26 | After (...) | exprs.go:6:16:6:26 | ...+... |
-| exprs.go:6:21:6:21 | 2 | exprs.go:6:21:6:21 | After 2 |
-| exprs.go:6:21:6:21 | After 2 | exprs.go:6:25:6:25 | Before 3 |
-| exprs.go:6:21:6:21 | Before 2 | exprs.go:6:21:6:21 | 2 |
-| exprs.go:6:21:6:25 | ...+... | exprs.go:6:21:6:25 | After ...+... |
-| exprs.go:6:21:6:25 | After ...+... | exprs.go:6:20:6:26 | After (...) |
-| exprs.go:6:21:6:25 | Before ...+... | exprs.go:6:21:6:21 | Before 2 |
-| exprs.go:6:25:6:25 | 3 | exprs.go:6:25:6:25 | After 3 |
-| exprs.go:6:25:6:25 | After 3 | exprs.go:6:21:6:25 | ...+... |
-| exprs.go:6:25:6:25 | Before 3 | exprs.go:6:25:6:25 | 3 |
+| exprs.go:6:16:6:26 | Before ...+... | exprs.go:6:16:6:26 | ...+... |
 | exprs.go:7:2:7:16 | After declaration statement | exprs.go:8:2:8:24 | ... := ... |
 | exprs.go:7:2:7:16 | After variable declaration | exprs.go:7:2:7:16 | After declaration statement |
 | exprs.go:7:2:7:16 | declaration statement | exprs.go:7:2:7:16 | variable declaration |
@@ -930,15 +913,9 @@
 | exprs.go:14:13:14:13 | After j | exprs.go:14:16:14:19 | Before .../... |
 | exprs.go:14:13:14:13 | Before j | exprs.go:14:13:14:13 | j |
 | exprs.go:14:13:14:13 | j | exprs.go:14:13:14:13 | After j |
-| exprs.go:14:16:14:16 | 3 | exprs.go:14:16:14:16 | After 3 |
-| exprs.go:14:16:14:16 | After 3 | exprs.go:14:18:14:19 | Before 14 |
-| exprs.go:14:16:14:16 | Before 3 | exprs.go:14:16:14:16 | 3 |
 | exprs.go:14:16:14:19 | .../... | exprs.go:14:16:14:19 | After .../... |
 | exprs.go:14:16:14:19 | After .../... | exprs.go:14:7:14:20 | call to fn |
-| exprs.go:14:16:14:19 | Before .../... | exprs.go:14:16:14:16 | Before 3 |
-| exprs.go:14:18:14:19 | 14 | exprs.go:14:18:14:19 | After 14 |
-| exprs.go:14:18:14:19 | After 14 | exprs.go:14:16:14:19 | .../... |
-| exprs.go:14:18:14:19 | Before 14 | exprs.go:14:18:14:19 | 14 |
+| exprs.go:14:16:14:19 | Before .../... | exprs.go:14:16:14:19 | .../... |
 | exprs.go:15:2:15:58 | ... := ... | exprs.go:15:13:15:58 | Before struct literal |
 | exprs.go:15:2:15:58 | After ... := ... | exprs.go:16:2:16:26 | ... := ... |
 | exprs.go:15:2:15:58 | assign:0 ... := ... | exprs.go:15:2:15:58 | After ... := ... |
@@ -1214,10 +1191,7 @@
 | exprs.go:36:2:36:10 | return statement | exprs.go:32:1:37:1 | Normal Exit |
 | exprs.go:36:9:36:10 | -... | exprs.go:36:9:36:10 | After -... |
 | exprs.go:36:9:36:10 | After -... | exprs.go:36:2:36:10 | return statement |
-| exprs.go:36:9:36:10 | Before -... | exprs.go:36:10:36:10 | Before 1 |
-| exprs.go:36:10:36:10 | 1 | exprs.go:36:10:36:10 | After 1 |
-| exprs.go:36:10:36:10 | After 1 | exprs.go:36:9:36:10 | -... |
-| exprs.go:36:10:36:10 | Before 1 | exprs.go:36:10:36:10 | 1 |
+| exprs.go:36:9:36:10 | Before -... | exprs.go:36:9:36:10 | -... |
 | exprs.go:39:1:47:1 | After function declaration | exprs.go:49:1:54:1 | Before function declaration |
 | exprs.go:39:1:47:1 | Before function declaration | exprs.go:39:1:47:1 | function declaration |
 | exprs.go:39:1:47:1 | Entry | exprs.go:39:12:39:14 | arg |
@@ -1269,10 +1243,7 @@
 | exprs.go:46:2:46:10 | return statement | exprs.go:39:1:47:1 | Normal Exit |
 | exprs.go:46:9:46:10 | -... | exprs.go:46:9:46:10 | After -... |
 | exprs.go:46:9:46:10 | After -... | exprs.go:46:2:46:10 | return statement |
-| exprs.go:46:9:46:10 | Before -... | exprs.go:46:10:46:10 | Before 1 |
-| exprs.go:46:10:46:10 | 1 | exprs.go:46:10:46:10 | After 1 |
-| exprs.go:46:10:46:10 | After 1 | exprs.go:46:9:46:10 | -... |
-| exprs.go:46:10:46:10 | Before 1 | exprs.go:46:10:46:10 | 1 |
+| exprs.go:46:9:46:10 | Before -... | exprs.go:46:9:46:10 | -... |
 | exprs.go:49:1:54:1 | After function declaration | exprs.go:56:1:58:1 | Before function declaration |
 | exprs.go:49:1:54:1 | Before function declaration | exprs.go:49:1:54:1 | function declaration |
 | exprs.go:49:1:54:1 | Entry | exprs.go:49:10:49:11 | xs |
@@ -1561,19 +1532,13 @@
 | exprs.go:91:9:91:25 | After slice literal | exprs.go:91:5:91:25 | assign:0 value declaration specifier |
 | exprs.go:91:9:91:25 | Before slice literal | exprs.go:91:9:91:25 | slice literal |
 | exprs.go:91:9:91:25 | slice literal | exprs.go:91:15:91:24 | Before key-value pair |
-| exprs.go:91:15:91:15 | 0 | exprs.go:91:15:91:15 | After 0 |
-| exprs.go:91:15:91:15 | After 0 | exprs.go:91:19:91:21 | Before one |
-| exprs.go:91:15:91:15 | Before 0 | exprs.go:91:15:91:15 | 0 |
 | exprs.go:91:15:91:21 | ...+... | exprs.go:91:15:91:21 | After ...+... |
 | exprs.go:91:15:91:21 | After ...+... | exprs.go:91:24:91:24 | Before 2 |
-| exprs.go:91:15:91:21 | Before ...+... | exprs.go:91:15:91:15 | Before 0 |
+| exprs.go:91:15:91:21 | Before ...+... | exprs.go:91:15:91:21 | ...+... |
 | exprs.go:91:15:91:24 | After key-value pair | exprs.go:91:15:91:24 | lit-init key-value pair |
 | exprs.go:91:15:91:24 | Before key-value pair | exprs.go:91:15:91:21 | Before ...+... |
 | exprs.go:91:15:91:24 | key-value pair | exprs.go:91:15:91:24 | After key-value pair |
 | exprs.go:91:15:91:24 | lit-init key-value pair | exprs.go:91:9:91:25 | After slice literal |
-| exprs.go:91:19:91:21 | After one | exprs.go:91:15:91:21 | ...+... |
-| exprs.go:91:19:91:21 | Before one | exprs.go:91:19:91:21 | one |
-| exprs.go:91:19:91:21 | one | exprs.go:91:19:91:21 | After one |
 | exprs.go:91:24:91:24 | 2 | exprs.go:91:24:91:24 | After 2 |
 | exprs.go:91:24:91:24 | After 2 | exprs.go:91:15:91:24 | key-value pair |
 | exprs.go:91:24:91:24 | Before 2 | exprs.go:91:24:91:24 | 2 |
@@ -2774,21 +2739,9 @@
 | stmts3.go:9:3:9:6 | zero-init:0 value declaration specifier | stmts3.go:9:3:9:6 | After value declaration specifier |
 | stmts3.go:11:2:11:26 | Before return statement | stmts3.go:11:9:11:26 | Before ...-... |
 | stmts3.go:11:2:11:26 | return statement | stmts3.go:5:1:12:1 | Normal Exit |
-| stmts3.go:11:9:11:11 | After red | stmts3.go:11:15:11:19 | Before green |
-| stmts3.go:11:9:11:11 | Before red | stmts3.go:11:9:11:11 | red |
-| stmts3.go:11:9:11:11 | red | stmts3.go:11:9:11:11 | After red |
-| stmts3.go:11:9:11:19 | ...+... | stmts3.go:11:9:11:19 | After ...+... |
-| stmts3.go:11:9:11:19 | After ...+... | stmts3.go:11:23:11:26 | Before blue |
-| stmts3.go:11:9:11:19 | Before ...+... | stmts3.go:11:9:11:11 | Before red |
 | stmts3.go:11:9:11:26 | ...-... | stmts3.go:11:9:11:26 | After ...-... |
 | stmts3.go:11:9:11:26 | After ...-... | stmts3.go:11:2:11:26 | return statement |
-| stmts3.go:11:9:11:26 | Before ...-... | stmts3.go:11:9:11:19 | Before ...+... |
-| stmts3.go:11:15:11:19 | After green | stmts3.go:11:9:11:19 | ...+... |
-| stmts3.go:11:15:11:19 | Before green | stmts3.go:11:15:11:19 | green |
-| stmts3.go:11:15:11:19 | green | stmts3.go:11:15:11:19 | After green |
-| stmts3.go:11:23:11:26 | After blue | stmts3.go:11:9:11:26 | ...-... |
-| stmts3.go:11:23:11:26 | Before blue | stmts3.go:11:23:11:26 | blue |
-| stmts3.go:11:23:11:26 | blue | stmts3.go:11:23:11:26 | After blue |
+| stmts3.go:11:9:11:26 | Before ...-... | stmts3.go:11:9:11:26 | ...-... |
 | stmts3.go:14:1:16:1 | After function declaration | stmts3.go:18:1:20:1 | Before function declaration |
 | stmts3.go:14:1:16:1 | Before function declaration | stmts3.go:14:1:16:1 | function declaration |
 | stmts3.go:14:1:16:1 | Entry | stmts3.go:14:13:14:13 | x |
@@ -3715,17 +3668,11 @@
 | stmts.go:94:2:95:13 | After case clause [match] | stmts.go:95:3:95:13 | expression statement |
 | stmts.go:94:2:95:13 | After case clause [no-match] | stmts.go:90:2:96:2 | After expression-switch statement |
 | stmts.go:94:2:95:13 | case clause | stmts.go:94:7:94:11 | Before ...-... |
-| stmts.go:94:7:94:7 | 2 | stmts.go:94:7:94:7 | After 2 |
-| stmts.go:94:7:94:7 | After 2 | stmts.go:94:11:94:11 | Before 5 |
-| stmts.go:94:7:94:7 | Before 2 | stmts.go:94:7:94:7 | 2 |
 | stmts.go:94:7:94:11 | ...-... | stmts.go:94:7:94:11 | After ...-... [match] |
 | stmts.go:94:7:94:11 | ...-... | stmts.go:94:7:94:11 | After ...-... [no-match] |
 | stmts.go:94:7:94:11 | After ...-... [match] | stmts.go:94:2:95:13 | After case clause [match] |
 | stmts.go:94:7:94:11 | After ...-... [no-match] | stmts.go:94:2:95:13 | After case clause [no-match] |
-| stmts.go:94:7:94:11 | Before ...-... | stmts.go:94:7:94:7 | Before 2 |
-| stmts.go:94:11:94:11 | 5 | stmts.go:94:11:94:11 | After 5 |
-| stmts.go:94:11:94:11 | After 5 | stmts.go:94:7:94:11 | ...-... |
-| stmts.go:94:11:94:11 | Before 5 | stmts.go:94:11:94:11 | 5 |
+| stmts.go:94:7:94:11 | Before ...-... | stmts.go:94:7:94:11 | ...-... |
 | stmts.go:95:3:95:7 | After test5 | stmts.go:95:9:95:12 | Before true |
 | stmts.go:95:3:95:7 | Before test5 | stmts.go:95:3:95:7 | test5 |
 | stmts.go:95:3:95:7 | test5 | stmts.go:95:3:95:7 | After test5 |
@@ -4152,27 +4099,9 @@
 | tst.go:16:7:16:33 | After ...<... [match] | tst.go:16:2:16:34 | After case clause [match] |
 | tst.go:16:7:16:33 | After ...<... [no-match] | tst.go:16:2:16:34 | After case clause [no-match] |
 | tst.go:16:7:16:33 | Before ...<... | tst.go:16:7:16:11 | Before value |
-| tst.go:16:15:16:18 | 1024 | tst.go:16:15:16:18 | After 1024 |
-| tst.go:16:15:16:18 | After 1024 | tst.go:16:20:16:23 | Before 1024 |
-| tst.go:16:15:16:18 | Before 1024 | tst.go:16:15:16:18 | 1024 |
-| tst.go:16:15:16:23 | ...*... | tst.go:16:15:16:23 | After ...*... |
-| tst.go:16:15:16:23 | After ...*... | tst.go:16:25:16:28 | Before 1024 |
-| tst.go:16:15:16:23 | Before ...*... | tst.go:16:15:16:18 | Before 1024 |
-| tst.go:16:15:16:28 | ...*... | tst.go:16:15:16:28 | After ...*... |
-| tst.go:16:15:16:28 | After ...*... | tst.go:16:30:16:33 | Before 1024 |
-| tst.go:16:15:16:28 | Before ...*... | tst.go:16:15:16:23 | Before ...*... |
 | tst.go:16:15:16:33 | ...*... | tst.go:16:15:16:33 | After ...*... |
 | tst.go:16:15:16:33 | After ...*... | tst.go:16:7:16:33 | ...<... |
-| tst.go:16:15:16:33 | Before ...*... | tst.go:16:15:16:28 | Before ...*... |
-| tst.go:16:20:16:23 | 1024 | tst.go:16:20:16:23 | After 1024 |
-| tst.go:16:20:16:23 | After 1024 | tst.go:16:15:16:23 | ...*... |
-| tst.go:16:20:16:23 | Before 1024 | tst.go:16:20:16:23 | 1024 |
-| tst.go:16:25:16:28 | 1024 | tst.go:16:25:16:28 | After 1024 |
-| tst.go:16:25:16:28 | After 1024 | tst.go:16:15:16:28 | ...*... |
-| tst.go:16:25:16:28 | Before 1024 | tst.go:16:25:16:28 | 1024 |
-| tst.go:16:30:16:33 | 1024 | tst.go:16:30:16:33 | After 1024 |
-| tst.go:16:30:16:33 | After 1024 | tst.go:16:15:16:33 | ...*... |
-| tst.go:16:30:16:33 | Before 1024 | tst.go:16:30:16:33 | 1024 |
+| tst.go:16:15:16:33 | Before ...*... | tst.go:16:15:16:33 | ...*... |
 | tst.go:18:2:18:39 | After case clause [match] | tst.go:15:2:20:2 | After expression-switch statement |
 | tst.go:18:2:18:39 | After case clause [no-match] | tst.go:15:2:20:2 | After expression-switch statement |
 | tst.go:18:2:18:39 | case clause | tst.go:18:7:18:38 | Before ...<... |
@@ -4184,33 +4113,9 @@
 | tst.go:18:7:18:38 | After ...<... [match] | tst.go:18:2:18:39 | After case clause [match] |
 | tst.go:18:7:18:38 | After ...<... [no-match] | tst.go:18:2:18:39 | After case clause [no-match] |
 | tst.go:18:7:18:38 | Before ...<... | tst.go:18:7:18:11 | Before value |
-| tst.go:18:15:18:18 | 1024 | tst.go:18:15:18:18 | After 1024 |
-| tst.go:18:15:18:18 | After 1024 | tst.go:18:20:18:23 | Before 1024 |
-| tst.go:18:15:18:18 | Before 1024 | tst.go:18:15:18:18 | 1024 |
-| tst.go:18:15:18:23 | ...*... | tst.go:18:15:18:23 | After ...*... |
-| tst.go:18:15:18:23 | After ...*... | tst.go:18:25:18:28 | Before 1024 |
-| tst.go:18:15:18:23 | Before ...*... | tst.go:18:15:18:18 | Before 1024 |
-| tst.go:18:15:18:28 | ...*... | tst.go:18:15:18:28 | After ...*... |
-| tst.go:18:15:18:28 | After ...*... | tst.go:18:30:18:33 | Before 1024 |
-| tst.go:18:15:18:28 | Before ...*... | tst.go:18:15:18:23 | Before ...*... |
-| tst.go:18:15:18:33 | ...*... | tst.go:18:15:18:33 | After ...*... |
-| tst.go:18:15:18:33 | After ...*... | tst.go:18:35:18:38 | Before 1024 |
-| tst.go:18:15:18:33 | Before ...*... | tst.go:18:15:18:28 | Before ...*... |
 | tst.go:18:15:18:38 | ...*... | tst.go:18:15:18:38 | After ...*... |
 | tst.go:18:15:18:38 | After ...*... | tst.go:18:7:18:38 | ...<... |
-| tst.go:18:15:18:38 | Before ...*... | tst.go:18:15:18:33 | Before ...*... |
-| tst.go:18:20:18:23 | 1024 | tst.go:18:20:18:23 | After 1024 |
-| tst.go:18:20:18:23 | After 1024 | tst.go:18:15:18:23 | ...*... |
-| tst.go:18:20:18:23 | Before 1024 | tst.go:18:20:18:23 | 1024 |
-| tst.go:18:25:18:28 | 1024 | tst.go:18:25:18:28 | After 1024 |
-| tst.go:18:25:18:28 | After 1024 | tst.go:18:15:18:28 | ...*... |
-| tst.go:18:25:18:28 | Before 1024 | tst.go:18:25:18:28 | 1024 |
-| tst.go:18:30:18:33 | 1024 | tst.go:18:30:18:33 | After 1024 |
-| tst.go:18:30:18:33 | After 1024 | tst.go:18:15:18:33 | ...*... |
-| tst.go:18:30:18:33 | Before 1024 | tst.go:18:30:18:33 | 1024 |
-| tst.go:18:35:18:38 | 1024 | tst.go:18:35:18:38 | After 1024 |
-| tst.go:18:35:18:38 | After 1024 | tst.go:18:15:18:38 | ...*... |
-| tst.go:18:35:18:38 | Before 1024 | tst.go:18:35:18:38 | 1024 |
+| tst.go:18:15:18:38 | Before ...*... | tst.go:18:15:18:38 | ...*... |
 | tst.go:23:1:26:1 | After function declaration | tst.go:28:1:32:1 | Before function declaration |
 | tst.go:23:1:26:1 | Before function declaration | tst.go:23:1:26:1 | function declaration |
 | tst.go:23:1:26:1 | Entry | tst.go:23:15:26:1 | block statement |
