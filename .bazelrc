@@ -12,9 +12,11 @@ common --override_module=semmle_code=%workspace%/misc/bazel/semmle_code_stub
 
 build --repo_env=CC=clang --repo_env=CXX=clang++
 
-# macOS Xcode-coupled flags, scoped to Swift builds only so that non-Swift
-# builds (C/C++/Rust/...) work with just the Command Line Tools. Enable
-# with `--config=swift_macos` (see `unified/swift-syntax-rs/README.md`).
+# macOS Xcode-coupled flags, grouped under `--config=swift_macos` so they're
+# easy to see, disable, or omit for non-Xcode setups. Auto-enabled for
+# macOS below via `common:macos --config=swift_macos` because `rules_swift`
+# auto-registers `xcode_swift_toolchain` on macOS, and its analysis fails
+# without these flags whenever a Swift target is in the graph.
 #
 # - `--xcode_version_config` selects `apple_support`'s xcode_config, whose
 #   version strings match the ones `rules_swift`'s `system_sdk` selects are
@@ -26,6 +28,7 @@ build --repo_env=CC=clang --repo_env=CXX=clang++
 #   toolchains; only matches Apple platforms.
 build:swift_macos --xcode_version_config=@local_config_xcode//:host_xcodes
 build:swift_macos --extra_toolchains=@local_config_apple_cc_toolchains//:all
+common:macos --config=swift_macos
 
 # Disable Android SDK auto-detection (we don't use it, and rules_android has Bazel 9 compatibility issues)
 build --repo_env=ANDROID_HOME=
