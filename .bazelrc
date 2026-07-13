@@ -21,8 +21,8 @@ build:linux --repo_env=CC=clang --repo_env=CXX=clang++
 # versioned triple (derived from `--macos_minimum_os` below). Xcode's
 # `clang` is used either way, so `rules_swift`'s "requires clang" check
 # still passes.
-build:macos --macos_minimum_os=10.14
-build:macos --host_macos_minimum_os=10.14
+build:macos --macos_minimum_os=10.15
+build:macos --host_macos_minimum_os=10.15
 # Disable Android SDK auto-detection (we don't use it, and rules_android has Bazel 9 compatibility issues)
 build --repo_env=ANDROID_HOME=
 
