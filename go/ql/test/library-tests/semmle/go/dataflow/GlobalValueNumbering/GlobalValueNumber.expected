@@ -35,8 +35,10 @@
 | main.go:38:2:38:9 | SSA def(res) | main.go:38:9:38:9 | 9 |
 | main.go:38:9:38:9 | 9 | main.go:38:9:38:9 | 9 |
 | regressions.go:5:11:5:31 | call to Sizeof | regressions.go:5:11:5:31 | call to Sizeof |
+| regressions.go:5:25:5:30 | call to test | regressions.go:5:25:5:30 | call to test |
 | regressions.go:7:11:7:15 | false | regressions.go:7:11:7:15 | false |
-| regressions.go:9:11:9:12 | !... | regressions.go:11:11:11:14 | true |
+| regressions.go:9:11:9:12 | After !... | regressions.go:11:11:11:14 | true |
+| regressions.go:9:12:9:12 | d | regressions.go:7:11:7:15 | false |
 | regressions.go:11:11:11:14 | true | regressions.go:11:11:11:14 | true |
 | regressions.go:30:9:30:22 | call to getPayload | regressions.go:30:9:30:22 | call to getPayload |
 | regressions.go:30:26:30:39 | call to getPayload | regressions.go:30:26:30:39 | call to getPayload |
