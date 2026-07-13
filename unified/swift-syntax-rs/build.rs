@@ -73,7 +73,7 @@ fn swift_runtime_dir() -> Option<PathBuf> {
     let close = value_start.find('"')?;
     let resource_path = &value_start[..close];
 
-    Some(PathBuf::from(resource_path).join("linux"))
+    Some(PathBuf::from(resource_path).join(if cfg!(target_os = "macos") { "macosx" } else { "linux" }))
 }
 
 /// The `swift` driver to invoke: `$SWIFT` if set, otherwise `swift` from `PATH`.

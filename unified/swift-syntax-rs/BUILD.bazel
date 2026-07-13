@@ -42,11 +42,16 @@ rust_binary(
     name = "swift-syntax-parse",
     srcs = ["src/main.rs"],
     # The Swift toolchain propagates a runfiles-relative RPATH to its runtime
-    # `.so`s via `swift_syntax_ffi`'s `CcInfo`, but (unlike `swift_binary`)
-    # `rust_binary` does not copy those libraries into runfiles. Add the
-    # toolchain files as `data` so the runtime is found at execution time.
-    # (rules_swift does not yet support statically linking the runtime.)
-    data = ["@swift_toolchain_ubuntu24.04//:files"],
+    # `.so`s/`.dylib`s via `swift_syntax_ffi`'s `CcInfo`, but (unlike
+    # `swift_binary`) `rust_binary` does not copy those libraries into runfiles.
+    # Add the toolchain files as `data` so the runtime is found at execution
+    # time. (rules_swift does not yet support statically linking the runtime.)
+    # Select the correct per-platform toolchain repo: `xcode` on macOS,
+    # `ubuntu24.04` on Linux.
+    data = select({
+        "@platforms//os:macos": ["@swift_toolchain_xcode//:files"],
+        "//conditions:default": ["@swift_toolchain_ubuntu24.04//:files"],
+    }),
     edition = "2024",
     deps = [":swift_syntax_rs"],
 )
@@ -55,6 +60,9 @@ rust_test(
     name = "swift_syntax_rs_test",
     size = "small",
     crate = ":swift_syntax_rs",
-    data = ["@swift_toolchain_ubuntu24.04//:files"],
+    data = select({
+        "@platforms//os:macos": ["@swift_toolchain_xcode//:files"],
+        "//conditions:default": ["@swift_toolchain_ubuntu24.04//:files"],
+    }),
     edition = "2024",
 )

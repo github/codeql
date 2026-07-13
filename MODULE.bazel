@@ -227,12 +227,17 @@ use_repo(
 # patched prebuilt toolchain wired up via `swift_deps` above.
 #
 # Bazel cannot auto-select between Linux distributions, so the toolchain is
-# registered explicitly for the distribution our CI runs on (ubuntu24.04,
-# x86_64). Add further platforms here if CI grows to cover them.
+# registered explicitly for the distributions/platforms our CI runs on:
+#   - ubuntu24.04 / x86_64  (Linux CI)
+#   - xcode                  (macOS CI — covers both Apple Silicon and Intel)
 #
-# We register the `exec` toolchain (normal host compilation, targeting
-# linux/x86_64) rather than the `embedded` one, which targets `os:none`
-# (Embedded Swift) and would not match a normal host build.
+# NOTE: The macOS toolchain is distributed as a `.pkg` archive that can only
+# be extracted on a macOS host. Do not build the `xcode` toolchain on Linux.
+#
+# We register the `exec` toolchains (normal host compilation) rather than the
+# `embedded` ones, which target `os:none` (Embedded Swift) and would not
+# match a normal host build. Bazel selects the toolchain matching the host
+# platform automatically.
 #
 # The Swift version is read from `unified/swift-syntax-rs/.swift-version`, which
 # is the single source of truth shared with the local `cargo` build (via
@@ -246,10 +251,12 @@ use_repo(
     swift,
     "swift_toolchain",
     "swift_toolchain_ubuntu24.04",
+    "swift_toolchain_xcode",
 )
 
 register_toolchains(
     "@swift_toolchain//:swift_toolchain_exec_ubuntu24.04",
+    "@swift_toolchain//:swift_toolchain_exec_xcode",
 )
 
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")

@@ -144,10 +144,12 @@ Requirements:
 - **`clang`** must be installed on the runner. `rules_swift` requires the Bazel
   CC toolchain to use clang; the repo's `.bazelrc` already sets
   `--repo_env=CC=clang`, so no extra flags are needed.
-- The registered Swift toolchain currently targets **ubuntu24.04 / x86_64**
-  only (Bazel cannot auto-select between Linux distributions). Add more
-  platforms in `MODULE.bazel` (`swift.toolchain` + `register_toolchains`) if CI
-  grows to cover them.
+- The registered Swift toolchains cover **ubuntu24.04 / x86_64** and
+  **macOS / `xcode`** (both Apple Silicon and Intel). Bazel automatically
+  selects the toolchain matching the host platform.
+- **macOS only:** the macOS toolchain is distributed as a `.pkg` archive that
+  can only be fetched and extracted on a macOS host. Building the `xcode`
+  toolchain on Linux is not supported.
 
 The Swift compiler version is read from [`.swift-version`](.swift-version) by
 both the Bazel toolchain (`swift.toolchain(swift_version_file = …)`) and the
