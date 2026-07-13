@@ -1,26 +1,19 @@
-//! Converts the swift-syntax JSON syntax tree into a [`yeast::Ast`], the
-//! in-memory format the CodeQL desugaring rules operate on.
+//! Converts the swift-syntax JSON syntax tree into a [`yeast::Ast`].
 //!
-//! The JSON tree is produced by the `swift-syntax-rs` crate's Swift FFI shim
-//! (`parse_to_json`). This module is pure Rust (only `yeast` + `serde_json`),
-//! so the extractor consumes swift-syntax output without pulling in the Swift
-//! toolchain (the JSON is produced out-of-process).
+//! The JSON is produced out-of-process by `swift-syntax-rs`'s FFI shim, so
+//! this module is pure Rust (no Swift toolchain needed).
 //!
-//! The mapping mirrors tree-sitter's node model, which is what yeast (and the
-//! extractor's rewrite rules) expect:
+//! The mapping mirrors tree-sitter's node model:
 //!
-//! * **Layout nodes** (e.g. `functionDecl`) and **varying tokens** (identifiers,
-//!   literals, operators — the ones whose text is not determined by their kind)
-//!   become **named** nodes, keyed by their kind name.
-//! * **Fixed tokens** (keywords and punctuation, whose text is fully determined
-//!   by their kind) become **anonymous** nodes, keyed by their text — exactly
-//!   how tree-sitter models anonymous tokens (e.g. `"func"`, `"->"`).
-//! * Collection nodes are already elided to JSON arrays upstream, so a
-//!   list-valued field maps directly to that field holding several children.
+//! * **Layout nodes** (e.g. `functionDecl`) and **varying tokens**
+//!   (identifiers, literals, operators — text not determined by kind) become
+//!   **named** nodes, keyed by their kind name.
+//! * **Fixed tokens** (keywords, punctuation) become **anonymous** nodes,
+//!   keyed by their text (like tree-sitter's anonymous tokens).
+//! * Collection nodes are already elided to JSON arrays upstream.
 //!
-//! Note: this preserves swift-syntax's own kind/field names. Aligning those
-//! names with the tree-sitter-swift schema (so the rewrite rules in
-//! [`super::swift`] fire) is done incrementally in the rules.
+//! Kind/field names are preserved from swift-syntax; aligning them with the
+//! tree-sitter-swift schema is done incrementally in the rewrite rules.
 
 use std::collections::BTreeMap;
 
@@ -29,32 +22,29 @@ use yeast::schema::Schema;
 use yeast::{Ast, Id, NodeContent, Point, Range};
 
 /// A comment (or `unexpectedText`) recovered from the syntax tree's trivia.
-///
-/// These are collected into a side channel rather than embedded in the
-/// [`yeast::Ast`], mirroring how the extractor treats tree-sitter `extra`
-/// nodes: they carry a location and text but are not attached to a parent.
+/// Collected into a side channel rather than embedded in the [`yeast::Ast`],
+/// mirroring how the extractor treats tree-sitter `extra` nodes.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TriviaToken {
-    /// The trivia kind (e.g. `lineComment`, `blockComment`, `docLineComment`,
-    /// `docBlockComment`, `unexpectedText`).
+    /// The trivia kind (e.g. `lineComment`, `docLineComment`, `unexpectedText`).
     pub kind: String,
-    /// The verbatim source text of the piece (e.g. `// comment`).
+    /// The verbatim source text (e.g. `// comment`).
     pub text: String,
     /// The source range the piece occupies.
     pub range: Range,
 }
 
-/// The result of adapting a swift-syntax JSON tree: the [`yeast::Ast`] plus the
-/// comment/`unexpectedText` trivia harvested from it (in source order).
+/// The result of adapting a swift-syntax JSON tree: the [`yeast::Ast`] plus
+/// the comment/`unexpectedText` trivia harvested from it (in source order).
 pub struct AdaptedTree {
     pub ast: Ast,
     pub trivia: Vec<TriviaToken>,
 }
 
 /// swift-syntax `TokenKind` cases whose text is *not* determined by the kind
-/// (i.e. `TokenKind.defaultText == nil`). These carry varying information and
-/// are modelled as named leaf nodes; every other token is a fixed
-/// keyword/punctuation token modelled as an anonymous token keyed by its text.
+/// (i.e. `TokenKind.defaultText == nil`). Modelled as named leaf nodes; every
+/// other token is a fixed keyword/punctuation, modelled as an anonymous token
+/// keyed by its text.
 const VARYING_TOKEN_KINDS: &[&str] = &[
     "identifier",
     "integerLiteral",
@@ -116,7 +106,7 @@ fn classify(node: &Value) -> Result<KindInfo, String> {
         .unwrap_or("")
         .to_string();
 
-    // The case name is the part before any `(payload)` in the debug rendering.
+    // Case name is the part before any `(payload)` in the debug rendering.
     let case_name = token_kind.split('(').next().unwrap_or(token_kind);
 
     if VARYING_TOKEN_KINDS.contains(&case_name) {
@@ -142,8 +132,7 @@ fn classify(node: &Value) -> Result<KindInfo, String> {
     }
 }
 
-/// Iterate over a node object's structural (field, value) pairs in a stable
-/// order, skipping metadata keys.
+/// Iterate over a node's structural (field, value) pairs, skipping metadata.
 fn field_entries(node: &Value) -> Vec<(&str, &Value)> {
     node.as_object()
         .map(|map| {
@@ -155,8 +144,8 @@ fn field_entries(node: &Value) -> Vec<(&str, &Value)> {
         .unwrap_or_default()
 }
 
-/// The child node objects held by a field value, which is either a single node
-/// object or an array of them (an elided collection).
+/// Child nodes held by a field value: either a single node or an elided
+/// collection (JSON array).
 fn children_of(value: &Value) -> Vec<&Value> {
     match value {
         Value::Array(items) => items.iter().collect(),
@@ -165,12 +154,8 @@ fn children_of(value: &Value) -> Vec<&Value> {
 }
 
 /// Recursively build `node` (and its descendants) into `ast`, returning its id.
-///
-/// This is a single traversal: each node's kind and field names are registered
-/// in the schema on the fly, immediately before the node is created. Children
-/// are built first so a parent's field lists reference existing ids. Any
-/// comment/`unexpectedText` trivia carried by a token is harvested into
-/// `trivia` during the same pass rather than embedded in the tree.
+/// Kinds and field names are registered in the schema on the fly. Comment /
+/// `unexpectedText` trivia is harvested into `trivia` in the same pass.
 fn build(node: &Value, ast: &mut Ast, trivia: &mut Vec<TriviaToken>) -> Result<Id, String> {
     let info = classify(node)?;
     collect_trivia(node, trivia);
@@ -200,9 +185,8 @@ fn build(node: &Value, ast: &mut Ast, trivia: &mut Vec<TriviaToken>) -> Result<I
     ))
 }
 
-/// Harvest a token's `leadingTrivia`/`trailingTrivia` pieces (each already
-/// filtered to comments/`unexpectedText` upstream) into `out`. Non-token nodes
-/// have no trivia keys, so this is a no-op for them.
+/// Harvest a token's `leadingTrivia`/`trailingTrivia` pieces (already filtered
+/// upstream) into `out`. No-op on non-token nodes.
 fn collect_trivia(node: &Value, out: &mut Vec<TriviaToken>) {
     for key in ["leadingTrivia", "trailingTrivia"] {
         let Some(Value::Array(pieces)) = node.get(key) else {
@@ -231,11 +215,9 @@ fn collect_trivia(node: &Value, out: &mut Vec<TriviaToken>) {
 
 /// Parse a node's `range` into a [`yeast::Range`].
 ///
-/// The JSON carries, for `start` and `end`, a 0-based UTF-8 file byte `offset`,
-/// a 1-based `line`, and a 1-based UTF-8 byte `column`. yeast (like tree-sitter)
-/// uses byte offsets with 0-based rows/columns and an exclusive end, so the
-/// line/column are shifted down by one. swift-syntax's end position is already
-/// exclusive, so the byte offsets map across directly.
+/// JSON offsets are 0-based UTF-8 byte offsets; `line`/`column` are 1-based
+/// UTF-8. yeast uses byte offsets with 0-based rows/columns (exclusive end),
+/// so line/column are shifted down by one.
 fn parse_range(node: &Value) -> Option<Range> {
     let range = node.get("range")?;
     let point = |key: &str| -> Option<(usize, Point)> {
@@ -259,8 +241,7 @@ fn parse_range(node: &Value) -> Option<Range> {
 }
 
 /// Convert a swift-syntax JSON tree (as produced by [`crate::parse_to_json`])
-/// into a [`yeast::Ast`] plus the comment/`unexpectedText` trivia harvested
-/// from it. Both are produced in a single traversal.
+/// into a [`yeast::Ast`] plus harvested trivia, in a single traversal.
 pub fn json_to_ast(json: &str) -> Result<AdaptedTree, String> {
     let root: Value = serde_json::from_str(json).map_err(|e| format!("invalid JSON: {e}"))?;
 

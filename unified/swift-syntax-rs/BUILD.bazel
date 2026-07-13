@@ -3,28 +3,21 @@ load("@rules_swift//swift:swift.bzl", "swift_library")
 
 package(default_visibility = ["//visibility:public"])
 
-# The pinned Swift version, shared with the local `cargo` build and
-# `swift/Package.swift`. Referenced by the `swift.toolchain` extension in
-# //:MODULE.bazel via `swift_version_file`.
+# Pinned Swift version, shared with `cargo` and `swift/Package.swift`.
+# Referenced by `swift.toolchain(swift_version_file = ...)` in //:MODULE.bazel.
 exports_files([".swift-version"])
 
-# Constraint expressing "this target only builds on platforms where we have
-# a Swift toolchain registered in //:MODULE.bazel" (i.e. Linux or macOS —
-# not Windows). `target_compatible_with` uses AND semantics on a plain list,
-# so we express the OR via a `select()` that maps supported OSes to the
-# empty (satisfiable) constraint list, and everything else to the sentinel
-# `@platforms//:incompatible`, which causes Bazel to skip the target on
-# `bazel build/test //...` rather than fail.
+# Targets in this package require a Swift toolchain (Linux or macOS).
+# `select()` gives us OR-of-OSes; other platforms get marked incompatible
+# so `bazel build/test //...` skips them cleanly.
 _SWIFT_SUPPORTED_PLATFORMS = select({
     "@platforms//os:linux": [],
     "@platforms//os:macos": [],
     "//conditions:default": ["@platforms//:incompatible"],
 })
 
-# The Swift FFI shim: wraps swift-syntax and exposes a small C ABI
-# (`ssr_parse_json` / `ssr_string_free`). Built with the hermetic Swift
-# toolchain registered in //:MODULE.bazel; provides a `CcInfo` that the Rust
-# targets below link against.
+# Swift FFI shim: wraps swift-syntax and exposes a small C ABI. The Rust
+# targets below link against its `CcInfo`.
 swift_library(
     name = "swift_syntax_ffi",
     srcs = ["swift/Sources/SwiftSyntaxFFI/SwiftSyntaxFFI.swift"],
@@ -36,10 +29,8 @@ swift_library(
     ],
 )
 
-# Safe Rust bindings on top of the C ABI. `build.rs` is intentionally *not*
-# wired up here (no `cargo_build_script`): under Bazel the Swift side is
-# provided by `:swift_syntax_ffi`, whereas `build.rs` only exists to build the
-# Swift shim in the local `cargo` workflow.
+# Safe Rust bindings on top of the C ABI. Under Bazel the Swift side comes
+# from `:swift_syntax_ffi`; `build.rs` is only used by the `cargo` workflow.
 rust_library(
     name = "swift_syntax_rs",
     srcs = glob(
@@ -56,14 +47,10 @@ rust_library(
 rust_binary(
     name = "swift-syntax-parse",
     srcs = ["src/main.rs"],
-    # The Swift toolchain propagates a runfiles-relative RPATH to its runtime
-    # `.so`s/`.dylib`s via `swift_syntax_ffi`'s `CcInfo`, but (unlike
-    # `swift_binary`) `rust_binary` does not copy those libraries into runfiles.
-    # On Linux the standalone swift.org toolchain provides the runtime, so we
-    # add its files as `data` so the runtime is found at execution time.
-    # On macOS the runtime lives in the OS at `/usr/lib/swift` (which
-    # `xcode_swift_toolchain` rpaths automatically), so no data is needed.
-    # (rules_swift does not yet support statically linking the runtime.)
+    # `rust_binary` doesn't copy the Swift runtime into runfiles the way
+    # `swift_binary` does. On Linux, ship the standalone toolchain's runtime;
+    # on macOS the OS provides it at `/usr/lib/swift` (rpath'd by
+    # `xcode_swift_toolchain`).
     data = select({
         "@platforms//os:macos": [],
         "@platforms//os:linux": ["@swift_toolchain_ubuntu24.04//:files"],

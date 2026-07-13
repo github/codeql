@@ -49,8 +49,8 @@ fn main() {
     }
 }
 
-/// Query the active Swift toolchain for the directory containing its runtime
-/// shared libraries (e.g. `libswiftCore.so`).
+/// Directory containing the active Swift toolchain's runtime libraries
+/// (e.g. `libswiftCore.so`).
 fn swift_runtime_dir() -> Option<PathBuf> {
     let output = Command::new(swiftc_bin())
         .arg("-print-target-info")
@@ -61,8 +61,7 @@ fn swift_runtime_dir() -> Option<PathBuf> {
     }
     let info = String::from_utf8_lossy(&output.stdout);
 
-    // Extract the value of `"runtimeResourcePath": "..."` without pulling in a
-    // JSON dependency.
+    // Extract `"runtimeResourcePath": "..."` without pulling in a JSON dep.
     let key = "\"runtimeResourcePath\"";
     let start = info.find(key)?;
     let rest = &info[start + key.len()..];
@@ -76,25 +75,20 @@ fn swift_runtime_dir() -> Option<PathBuf> {
     Some(PathBuf::from(resource_path).join(if cfg!(target_os = "macos") { "macosx" } else { "linux" }))
 }
 
-/// The `swift` driver to invoke: `$SWIFT` if set, otherwise `swift` from `PATH`.
-/// This keeps the build tool-agnostic — any Swift install works; no particular
-/// version manager is required.
+/// `swift` driver: `$SWIFT` if set, else `swift` from `PATH`.
 fn swift_bin() -> String {
     env::var("SWIFT").unwrap_or_else(|_| "swift".to_string())
 }
 
-/// The `swiftc` compiler to invoke: `$SWIFTC` if set, otherwise `swiftc` from
-/// `PATH`.
+/// `swiftc` compiler: `$SWIFTC` if set, else `swiftc` from `PATH`.
 fn swiftc_bin() -> String {
     env::var("SWIFTC").unwrap_or_else(|_| "swiftc".to_string())
 }
 
-/// Some environments (notably GitHub Codespaces) inject
-/// `GIT_CONFIG_KEY_0=safe.bareRepository` / `GIT_CONFIG_VALUE_0=explicit`, which
-/// breaks the cached bare git repositories `swift build` uses. When exactly that
-/// key is present, relax it to `all` for the `swift build` subprocess only
-/// (rather than unconditionally, which could clobber an unrelated
-/// `GIT_CONFIG_VALUE_0`).
+/// Workaround for GitHub Codespaces, which sets
+/// `GIT_CONFIG_KEY_0=safe.bareRepository` / `GIT_CONFIG_VALUE_0=explicit` and
+/// breaks the cached bare git repos `swift build` uses. Relax to `all` only
+/// for this subprocess, and only when that exact key is set.
 fn apply_bare_repository_workaround(command: &mut Command) {
     if env::var("GIT_CONFIG_KEY_0").as_deref() == Ok("safe.bareRepository") {
         command.env("GIT_CONFIG_VALUE_0", "all");

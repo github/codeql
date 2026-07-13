@@ -33,25 +33,9 @@ bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 bazel_dep(name = "rules_rust", version = "0.69.0")
 bazel_dep(name = "rules_swift", version = "4.0.0-rc4")
 bazel_dep(name = "swift-syntax", version = "602.0.0.bcr.2")
-# `apple_support` is a transitive dep of `rules_swift`, but we depend on it
-# directly for two reasons on macOS:
-#
-# 1. We `use_repo` `local_config_xcode` (see below) so
-#    `xcode_swift_toolchain`'s `system_sdk` selects — which are keyed on
-#    the exact Xcode version string from `xcode_locator.m` (e.g.
-#    `xcode_26_6_0_17F113`) — resolve.
-#
-# 2. It registers `@local_config_apple_cc_toolchains//:all`, whose
-#    `cc-toolchain-darwin_*` toolchains report a proper Apple target
-#    triple (`arm64-apple-macosx` / `x86_64-apple-macosx`) via
-#    `target_gnu_system_name`. Bazel's built-in `local_config_cc`
-#    toolchain reports the literal string `"local"`, and
-#    `xcode_swift_toolchain` fails analysis in
-#    `target_triples.parse(ctx.var.get("CC_TARGET_TRIPLE") or
-#    cc_toolchain.target_gnu_system_name)` with
-#    "Invalid target triple: local". Since module-registered toolchains
-#    are ordered by the module DAG and `local_config_cc` wins by default,
-#    we override the priority via `--extra_toolchains` in `.bazelrc`.
+# Direct dep on `apple_support` (transitively pulled in by `rules_swift`) so we
+# can `use_repo` `local_config_xcode` and `local_config_apple_cc_toolchains`
+# below, needed to make `xcode_swift_toolchain` work on macOS. See `.bazelrc`.
 bazel_dep(name = "apple_support", version = "2.6.1")
 
 bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
@@ -242,39 +226,12 @@ use_repo(
     "swift-resource-dir-macos",
 )
 
-# Hermetic Swift toolchain (from swift.org) for building the `swift-syntax`
-# based Rust wrapper in `unified/swift-syntax-rs`. This is the official
-# `rules_swift` standalone-toolchain extension and is independent of the
-# patched prebuilt toolchain wired up via `swift_deps` above.
-#
-# We register the `exec` toolchain for **Linux only**. On macOS we do NOT
-# use this standalone toolchain: it is the Unix-shaped `swift_toolchain`
-# rule (`swift/toolchains/swift_toolchain.bzl`) which emits Linux/ELF
-# linkopts (`swiftrt.o`, `-lstdc++`, `-lrt`, `-ldl`, `-static-libgcc`) and
-# a Linux-shaped `-L{root}/lib/swift/{os}` search path — none of which make
-# sense on macOS. Instead, on macOS we rely on rules_swift's auto-registered
-# `@rules_swift//swift/toolchains:xcode-toolchain-*` toolchains (backed by
-# `xcode_swift_toolchain.bzl`, which has its own macOS-aware
-# `_swift_linkopts_cc_info` that uses the Apple linker's autolinking,
-# points at `Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx`,
-# and rpaths the OS-provided `/usr/lib/swift`). Those toolchains are
-# auto-registered by rules_swift's own MODULE.bazel via
-# `register_toolchains("//swift/toolchains:all")` and use the Xcode
-# selected on the host, so macOS contributors need a working Xcode
-# (or Command Line Tools) install.
-#
-# NOTE: The macOS standalone toolchain is distributed as a `.pkg` archive
-# that can only be extracted on a macOS host. Do not build the `xcode`
-# standalone toolchain on Linux.
-#
-# We register the `exec` toolchain (normal host compilation) rather than the
-# `embedded` one, which targets `os:none` (Embedded Swift) and would not
-# match a normal host build. Bazel selects the toolchain matching the host
-# platform automatically.
-#
-# The Swift version is read from `unified/swift-syntax-rs/.swift-version`, which
-# is the single source of truth shared with the local `cargo` build (via
-# swiftly / any Swift install) and `swift/Package.swift`.
+# Hermetic Swift toolchain (swift.org) for building `unified/swift-syntax-rs`.
+# Only registered as an `exec` toolchain on Linux; on macOS we rely on
+# `rules_swift`'s auto-registered `xcode_swift_toolchain`, which uses the
+# host Xcode and links against the OS-provided Swift runtime in `/usr/lib/swift`.
+# Version is read from `unified/swift-syntax-rs/.swift-version`, shared with
+# the local `cargo` build and `swift/Package.swift`.
 swift = use_extension("@rules_swift//swift:extensions.bzl", "swift")
 swift.toolchain(
     name = "swift_toolchain",
@@ -290,29 +247,16 @@ register_toolchains(
     "@swift_toolchain//:swift_toolchain_exec_ubuntu24.04",
 )
 
-# On macOS, `xcode_swift_toolchain` (auto-registered by rules_swift at
-# `@rules_swift//swift/toolchains:xcode-toolchain-*`) pulls in
-# `@system_sdk//:{all_modules,implicit_modules}`, whose targets are
-# `alias(..., select({":xcode_<version>": ...}))` keyed on the exact
-# Xcode version string produced by `@bazel_tools//tools/osx:xcode_locator.m`
-# (e.g. `xcode_26_6_0_17F113`). Bazel's built-in `@bazel_tools//tools/osx:host_xcodes`
-# reports a shorter version without the build number, so no `config_setting`
-# matches and the select fails with
-# "configurable attribute doesn't match this configuration".
-#
-# `apple_support`'s `@local_config_xcode//:host_xcodes` uses the SAME
-# `xcode_locator.m` as rules_swift's `system_sdk` extension, so its version
-# strings agree with the config_setting keys. Wire it up here and select it
-# on macOS via `--xcode_version_config` in `.bazelrc`.
+# `apple_support`'s xcode_config, selected via `--xcode_version_config` in
+# `.bazelrc`. Needed because rules_swift's `system_sdk` selects use Xcode
+# version strings from `apple_support`'s `xcode_locator.m`, which Bazel's
+# built-in `host_xcodes` does not match.
 xcode_configure = use_extension("@apple_support//xcode:xcode_configure.bzl", "xcode_configure_extension")
 use_repo(xcode_configure, "local_config_xcode")
 
-# `apple_support` also registers `@local_config_apple_cc_toolchains//:all`
-# from its own `MODULE.bazel`, but the CC toolchains it generates lose
-# toolchain-resolution ordering to Bazel's built-in `local_config_cc`.
-# We override that priority in `.bazelrc` via
-# `build:macos --extra_toolchains=@local_config_apple_cc_toolchains//:all`,
-# which requires the repo to be visible from the root module.
+# `apple_support`'s CC toolchains, forced ahead of Bazel's built-in
+# `local_config_cc` via `--extra_toolchains` in `.bazelrc`. Must be visible
+# from the root module for the flag to resolve.
 apple_cc_configure = use_extension("@apple_support//crosstool:setup.bzl", "apple_cc_configure_extension")
 use_repo(apple_cc_configure, "local_config_apple_cc_toolchains")
 
