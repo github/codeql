@@ -1,0 +1,88 @@
+Skip Linux-only linkopts when generating macOS Swift toolchain linker inputs.
+
+rules_swift 4.0.0-rc4's standalone toolchain extension registers a
+`swift_toolchain(...)` for macOS whose implicit linker inputs are produced by
+`_swift_unix_linkopts_cc_info`. That function unconditionally emits
+Linux/ELF-only flags -- `swiftrt.o`, `-lstdc++`, `-lrt`, `-ldl`,
+`-static-libgcc` -- plus a Linux-shaped runtime path
+(`{arch}/swiftrt.o` with `arch = "aarch64"`, but the macOS toolchain lays
+out `usr/lib/swift/macos/` without `swiftrt.o` at all and uses `arm64` for
+Apple Silicon).
+
+On macOS the Apple linker handles Swift runtime initialization automatically
+via `LC_LINKER_OPTION` autolinking and `__DATA,__mod_init_func`, so
+`swiftrt.o` is neither present nor needed. The other flags are also
+Linux-specific. The only linkopts that carry over are the toolchain library
+search path and rpath so downstream binaries can locate
+`libswiftCore.dylib` etc.
+
+Without this patch, linking any `swift_library`-dependent Rust binary (e.g.
+`//unified/swift-syntax-rs:swift-syntax-parse`) on macOS fails with:
+
+    clang: error: no such file or directory:
+      'external/rules_swift+.../usr/lib/swift/macos/aarch64/swiftrt.o'
+
+This should be fixed upstream: rules_swift's standalone toolchain extension
+needs a macOS-aware `_swift_unix_linkopts_cc_info`. Until then, we patch the
+module locally so macOS consumers can build.
+
+--- a/swift/toolchains/swift_toolchain.bzl
++++ b/swift/toolchains/swift_toolchain.bzl
+@@ -411,25 +411,38 @@
+         toolchain_root = toolchain_root,
+     )
+ 
+-    runtime_object_path = "{platform_lib_dir}/{cpu}/swiftrt.o".format(
+-        cpu = cpu,
+-        platform_lib_dir = platform_lib_dir,
+-    )
+-
+-    linkopts = [
+-        "-pie",
+-        "-L{}".format(platform_lib_dir),
+-        "-Wl,-rpath,{}".format(platform_lib_dir),
+-        "-lm",
+-        "-lstdc++",
+-        "-lrt",
+-        "-ldl",
+-        runtime_object_path,
+-        "-static-libgcc",
+-    ] + [
+-        "-Wl,-rpath,{}".format(rpath)
+-        for rpath in additional_rpaths
+-    ]
++    if os == "macos":
++        # On macOS, Apple's linker handles Swift runtime initialization
++        # automatically via LC_LINKER_OPTION autolinking and
++        # __DATA,__mod_init_func; swiftrt.o is neither present in the
++        # toolchain layout nor needed. The Linux-specific system libraries
++        # (-lrt, -ldl, -lstdc++, -static-libgcc) also don't exist here.
++        linkopts = [
++            "-L{}".format(platform_lib_dir),
++            "-Wl,-rpath,{}".format(platform_lib_dir),
++        ] + [
++            "-Wl,-rpath,{}".format(rpath)
++            for rpath in additional_rpaths
++        ]
++    else:
++        runtime_object_path = "{platform_lib_dir}/{cpu}/swiftrt.o".format(
++            cpu = cpu,
++            platform_lib_dir = platform_lib_dir,
++        )
++        linkopts = [
++            "-pie",
++            "-L{}".format(platform_lib_dir),
++            "-Wl,-rpath,{}".format(platform_lib_dir),
++            "-lm",
++            "-lstdc++",
++            "-lrt",
++            "-ldl",
++            runtime_object_path,
++            "-static-libgcc",
++        ] + [
++            "-Wl,-rpath,{}".format(rpath)
++            for rpath in additional_rpaths
++        ]
+ 
+     return CcInfo(
+         linking_context = cc_common.create_linking_context(

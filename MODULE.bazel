@@ -33,6 +33,19 @@ bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 bazel_dep(name = "rules_rust", version = "0.69.0")
 bazel_dep(name = "rules_swift", version = "4.0.0-rc4")
 bazel_dep(name = "swift-syntax", version = "602.0.0.bcr.2")
+
+# rules_swift 4.0.0-rc4's standalone toolchain extension unconditionally
+# emits Linux/ELF-only linker flags (swiftrt.o, -lstdc++, -lrt, -ldl,
+# -static-libgcc) for its macOS toolchain, which breaks any binary linked
+# via `swift_library` on macOS. Apply a local patch that skips those flags
+# when the toolchain OS is macos. See the patch header and
+# `misc/bazel/patches/rules_swift/macos-linkopts.patch` for details.
+single_version_override(
+    module_name = "rules_swift",
+    patch_strip = 1,
+    patches = ["//misc/bazel/patches/rules_swift:macos-linkopts.patch"],
+    version = "4.0.0-rc4",
+)
 bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
