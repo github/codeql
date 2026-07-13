@@ -12,6 +12,15 @@ common --override_module=semmle_code=%workspace%/misc/bazel/semmle_code_stub
 
 build --repo_env=CC=clang --repo_env=CXX=clang++
 
+# Register the `--swiftcopt` / `--host_swiftcopt` command-line shortcuts.
+#
+# rules_swift defines these as `--flag_alias` entries in its own `.bazelrc`,
+# which Bazel does *not* load for consumer modules. Without registering them
+# here, any use of `--swiftcopt=...` (including via `build:macos` below) fails
+# with "Unrecognized option: --swiftcopt".
+common --flag_alias=swiftcopt=@rules_swift//swift:copt
+common --flag_alias=host_swiftcopt=@rules_swift//swift:exec_copt
+
 # Force a versioned macOS target triple on Swift compilations only.
 #
 # Without `apple_support` in this module (see MODULE.bazel), Bazel uses its
