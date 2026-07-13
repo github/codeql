@@ -10,22 +10,19 @@ build --compilation_mode opt
 # that we can build things that do not rely on that
 common --override_module=semmle_code=%workspace%/misc/bazel/semmle_code_stub
 
-build --repo_env=CC=clang --repo_env=CXX=clang++
+build:linux --repo_env=CC=clang --repo_env=CXX=clang++
 
-# Set a macOS deployment target for both target and exec configurations so
-# that the hermetic Swift toolchain used by //unified/swift-syntax-rs (and
-# its `swift-syntax` dependency) compiles. Without this, `swiftc` is
-# invoked without a deployment target and fails with
-# "Swift requires a minimum deployment target of macOS 10.9.0" on recent
-# macOS versions. 10.15 matches swift-syntax's declared minimum platform.
-# `--macos_minimum_os` covers the target config; the exec/host config
-# (used for e.g. Swift macro compilation) needs `MACOSX_DEPLOYMENT_TARGET`
-# on the action env, since `--host_macos_minimum_os` doesn't reach the
-# standalone Swift toolchain in rules_swift 4.x.
-build:macos --macos_minimum_os=10.15
-build:macos --host_macos_minimum_os=10.15
-build:macos --action_env=MACOSX_DEPLOYMENT_TARGET=10.15
-build:macos --host_action_env=MACOSX_DEPLOYMENT_TARGET=10.15
+# On macOS, do NOT force `CC=clang`: that steers Bazel to its generic
+# `local_config_cc` toolchain, which reports an unversioned target triple
+# (`arm64-apple-macosx`). The rules_swift 4.x standalone Swift toolchain
+# feeds that triple straight to `swiftc -target`, and swiftc then fails with
+# "Swift requires a minimum deployment target of macOS 10.9.0". Letting
+# Bazel auto-detect the Xcode CC toolchain on macOS gives it a properly
+# versioned triple (derived from `--macos_minimum_os` below). Xcode's
+# `clang` is used either way, so `rules_swift`'s "requires clang" check
+# still passes.
+build:macos --macos_minimum_os=10.14
+build:macos --host_macos_minimum_os=10.14
 # Disable Android SDK auto-detection (we don't use it, and rules_android has Bazel 9 compatibility issues)
 build --repo_env=ANDROID_HOME=
 
