@@ -119,14 +119,14 @@
 | delegatedProperties.kt:26:13:26:24 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:26:13:26:24 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:26:13:26:24 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| delegatedProperties.kt:26:13:26:24 | this | delegatedProperties.kt:26:13:26:24 | getCurValue | ThisAccess |
+| delegatedProperties.kt:26:13:26:24 | this | delegatedProperties.kt:26:13:26:24 | setCurValue | ThisAccess |
+| delegatedProperties.kt:26:13:26:24 | this.curValue | delegatedProperties.kt:26:13:26:24 | getCurValue | VarAccess |
 | delegatedProperties.kt:26:13:26:28 | ...=... | delegatedProperties.kt:25:64:31:9 |  | KtInitializerAssignExpr |
 | delegatedProperties.kt:26:13:26:28 | ...=... | delegatedProperties.kt:26:13:26:24 | setCurValue | AssignExpr |
 | delegatedProperties.kt:26:13:26:28 | <set-?> | delegatedProperties.kt:26:13:26:24 | setCurValue | VarAccess |
 | delegatedProperties.kt:26:13:26:28 | curValue | delegatedProperties.kt:25:64:31:9 |  | VarAccess |
 | delegatedProperties.kt:26:13:26:28 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:26:13:26:28 | this | delegatedProperties.kt:26:13:26:24 | getCurValue | ThisAccess |
-| delegatedProperties.kt:26:13:26:28 | this | delegatedProperties.kt:26:13:26:24 | setCurValue | ThisAccess |
-| delegatedProperties.kt:26:13:26:28 | this.curValue | delegatedProperties.kt:26:13:26:24 | getCurValue | VarAccess |
 | delegatedProperties.kt:26:13:26:28 | this.curValue | delegatedProperties.kt:26:13:26:24 | setCurValue | VarAccess |
 | delegatedProperties.kt:26:28:26:28 | 0 | delegatedProperties.kt:25:64:31:9 |  | IntegerLiteral |
 | delegatedProperties.kt:27:22:27:88 | int | file://:0:0:0:0 | <none> | TypeAccess |
@@ -281,6 +281,8 @@
 | delegatedProperties.kt:54:51:54:68 | KProperty<?> | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:56:16:56:33 | ResourceDelegate | delegatedProperties.kt:54:14:57:5 | provideDelegate | TypeAccess |
 | delegatedProperties.kt:56:16:56:33 | new ResourceDelegate(...) | delegatedProperties.kt:54:14:57:5 | provideDelegate | ClassInstanceExpr |
+| delegatedProperties.kt:60:1:60:20 | DelegatedPropertiesKt | delegatedProperties.kt:60:1:60:20 | getTopLevelInt | TypeAccess |
+| delegatedProperties.kt:60:1:60:20 | DelegatedPropertiesKt.topLevelInt | delegatedProperties.kt:60:1:60:20 | getTopLevelInt | VarAccess |
 | delegatedProperties.kt:60:1:60:20 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:60:1:60:20 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:60:1:60:20 | int | file://:0:0:0:0 | <none> | TypeAccess |
@@ -288,10 +290,8 @@
 | delegatedProperties.kt:60:1:60:24 | ...=... | delegatedProperties.kt:60:1:60:20 | setTopLevelInt | AssignExpr |
 | delegatedProperties.kt:60:1:60:24 | <set-?> | delegatedProperties.kt:60:1:60:20 | setTopLevelInt | VarAccess |
 | delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt | delegatedProperties.kt:0:0:0:0 | <clinit> | TypeAccess |
-| delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt | delegatedProperties.kt:60:1:60:20 | getTopLevelInt | TypeAccess |
 | delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt | delegatedProperties.kt:60:1:60:20 | setTopLevelInt | TypeAccess |
 | delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt.topLevelInt | delegatedProperties.kt:0:0:0:0 | <clinit> | VarAccess |
-| delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt.topLevelInt | delegatedProperties.kt:60:1:60:20 | getTopLevelInt | VarAccess |
 | delegatedProperties.kt:60:1:60:24 | DelegatedPropertiesKt.topLevelInt | delegatedProperties.kt:60:1:60:20 | setTopLevelInt | VarAccess |
 | delegatedProperties.kt:60:1:60:24 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:60:24:60:24 | 0 | delegatedProperties.kt:0:0:0:0 | <clinit> | IntegerLiteral |
@@ -1545,11 +1545,11 @@
 | exprs.kt:186:23:186:27 | Color | exprs.kt:184:1:187:1 | enums | TypeAccess |
 | exprs.kt:186:23:186:27 | Color.GREEN | exprs.kt:184:1:187:1 | enums | VarAccess |
 | exprs.kt:192:5:192:10 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:192:5:192:10 | this | exprs.kt:192:5:192:10 | getA1 | ThisAccess |
+| exprs.kt:192:5:192:10 | this.a1 | exprs.kt:192:5:192:10 | getA1 | VarAccess |
 | exprs.kt:192:5:192:14 | ...=... | exprs.kt:191:1:199:1 | Class1 | KtInitializerAssignExpr |
 | exprs.kt:192:5:192:14 | a1 | exprs.kt:191:1:199:1 | Class1 | VarAccess |
 | exprs.kt:192:5:192:14 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:192:5:192:14 | this | exprs.kt:192:5:192:10 | getA1 | ThisAccess |
-| exprs.kt:192:5:192:14 | this.a1 | exprs.kt:192:5:192:10 | getA1 | VarAccess |
 | exprs.kt:192:14:192:14 | 1 | exprs.kt:191:1:199:1 | Class1 | IntegerLiteral |
 | exprs.kt:193:13:198:5 | Object | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:194:9:194:18 | a2 | exprs.kt:193:13:198:5 | getObject | LocalVariableDeclExpr |
@@ -1558,11 +1558,11 @@
 | exprs.kt:195:16:197:9 | Interface1 | exprs.kt:193:13:198:5 | getObject | TypeAccess |
 | exprs.kt:195:16:197:9 | new (...) | exprs.kt:193:13:198:5 | getObject | ClassInstanceExpr |
 | exprs.kt:196:13:196:26 | String | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:196:13:196:26 | this | exprs.kt:196:13:196:26 | getA3 | ThisAccess |
+| exprs.kt:196:13:196:26 | this.a3 | exprs.kt:196:13:196:26 | getA3 | VarAccess |
 | exprs.kt:196:13:196:49 | ...=... | exprs.kt:195:16:197:9 |  | KtInitializerAssignExpr |
 | exprs.kt:196:13:196:49 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:196:13:196:49 | a3 | exprs.kt:195:16:197:9 |  | VarAccess |
-| exprs.kt:196:13:196:49 | this | exprs.kt:196:13:196:26 | getA3 | ThisAccess |
-| exprs.kt:196:13:196:49 | this.a3 | exprs.kt:196:13:196:26 | getA3 | VarAccess |
 | exprs.kt:196:31:196:32 | getA1(...) | exprs.kt:195:16:197:9 |  | MethodCall |
 | exprs.kt:196:31:196:32 | this | exprs.kt:195:16:197:9 |  | ThisAccess |
 | exprs.kt:196:31:196:37 | ... + ... | exprs.kt:195:16:197:9 |  | AddExpr |
@@ -4295,10 +4295,10 @@
 | samConversion.kt:59:12:59:12 | 1 | samConversion.kt:57:9:60:1 | test | IntegerLiteral |
 | samConversion.kt:59:14:59:14 | 2 | samConversion.kt:57:9:60:1 | test | IntegerLiteral |
 | samConversion.kt:63:5:63:9 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:63:5:63:9 | this | samConversion.kt:63:5:63:9 | getX | ThisAccess |
+| samConversion.kt:63:5:63:9 | this.x | samConversion.kt:63:5:63:9 | getX | VarAccess |
 | samConversion.kt:63:5:63:13 | ...=... | samConversion.kt:62:1:64:1 | PropertyRefsTest | KtInitializerAssignExpr |
 | samConversion.kt:63:5:63:13 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:63:5:63:13 | this | samConversion.kt:63:5:63:9 | getX | ThisAccess |
-| samConversion.kt:63:5:63:13 | this.x | samConversion.kt:63:5:63:9 | getX | VarAccess |
 | samConversion.kt:63:5:63:13 | x | samConversion.kt:62:1:64:1 | PropertyRefsTest | VarAccess |
 | samConversion.kt:63:13:63:13 | 1 | samConversion.kt:62:1:64:1 | PropertyRefsTest | IntegerLiteral |
 | samConversion.kt:67:5:67:37 | int | file://:0:0:0:0 | <none> | TypeAccess |

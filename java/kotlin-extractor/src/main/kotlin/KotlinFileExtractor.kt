@@ -3099,6 +3099,31 @@ open class KotlinFileExtractor(
         return tw.getLocation(declStart, declEnd)
     }
 
+    /**
+     * When a *synthetic* property access (e.g. the `this.prop` read the compiler generates
+     * inside a default getter or a primary-constructor field initialiser) carries IR offsets
+     * that span the whole property declaration, returns the property *signature* span (the
+     * `val`/`var` keyword to the end of the type, or to the end of the name when the type is
+     * inferred), matching the location the K2 frontend records for the same synthetic access;
+     * otherwise returns null.
+     *
+     * K1 and K2 offset these synthetic accesses differently: K1 runs through the initialiser
+     * (`val prop: Int = 1` -> `3:5:3:21`) while K2 stops at the type (`3:5:3:17`). Under K1 the
+     * access resolves (via [findPsiElement]) to the enclosing [KtProperty], from which we recover
+     * the K2 signature span. Returns null under K2 (no PSI; the raw offset already gives the
+     * signature span) and for every ordinary, source-written access, whose PSI is the reference
+     * expression rather than the whole property declaration.
+     */
+    private fun getPsiBasedPropertySignatureAccessLocation(e: IrElement): Label<DbLocation>? {
+        val file = currentIrFile ?: return null
+        val psi2Ir = getPsi2Ir() ?: return null
+        val ktProperty = psi2Ir.findPsiElement(e, file) as? KtProperty ?: return null
+        val declStart = ktProperty.valOrVarKeyword.startOffset
+        val declEnd = (ktProperty.typeReference ?: ktProperty.nameIdentifier)?.endOffset
+            ?: return null
+        return tw.getLocation(declStart, declEnd)
+    }
+
     // Matches the K1 frontend's synthetic name for the temporary holding the subject of a
     // destructuring declaration (`val (a, b) = subject`), which is `tmp<N>_container`. K2 names
     // the same temporary with the special name `<destruct>`.
@@ -6975,7 +7000,7 @@ open class KotlinFileExtractor(
                 is IrGetField -> {
                     val exprParent = parent.expr(e, callable)
                     val owner = tryReplaceAndroidSyntheticField(e.symbol.owner)
-                    val locId = tw.getLocation(e)
+                    val locId = getPsiBasedPropertySignatureAccessLocation(e) ?: tw.getLocation(e)
                     val fieldType =
                         if (isAnnotationClassField(owner)) kClassToJavaClass(e.type) else e.type
                     extractVariableAccess(
@@ -7543,6 +7568,7 @@ open class KotlinFileExtractor(
     ) {
         val containingDeclaration = declarationStack.peek().first
         val locId = getDelegatedAccessorSyntheticArgumentLocation(e)
+            ?: getPsiBasedPropertySignatureAccessLocation(e)
             ?: getPsiBasedLocation(e) ?: tw.getLocation(e)
 
         if (
