@@ -2679,6 +2679,7 @@ open class KotlinFileExtractor(
                         ?.takeUnless { it.isDelegated }
                         ?.let { getPsiBasedLocation(it) }
                         ?: getDelegateFieldLocation(f)
+                        ?: getClassDelegateFieldLocation(f)
                         ?: tw.getLocation(f)
                 return extractField(
                     id,
@@ -3556,6 +3557,30 @@ open class KotlinFileExtractor(
         if (!property.isDelegated || property.backingField !== f) return null
         val ktProperty = getEnclosingKtProperty(property) ?: return null
         val expression = ktProperty.delegate?.expression ?: return null
+        return tw.getLocation(expression.startOffset, expression.endOffset)
+    }
+
+    /**
+     * Returns the location for an interface-delegation `$$delegate_0` backing field, or null to
+     * leave the raw IR offset in place.
+     *
+     * For `class C : Intf by <expr>` the compiler synthesises a `$$delegate_0` field that stores
+     * `<expr>`, so its natural location is that delegate expression. The K1 frontend's raw offset
+     * already spans the expression (`intfDelegate.kt:7:26:9:1`, the `object : Intf { ... }`); the
+     * K2 frontend's raw offset starts at the delegated supertype and so includes the `Intf by `
+     * glue (`7:18:9:1`). As with a delegated property's `$delegate` field, the `by` clause is
+     * syntactic glue rather than part of the stored expression, so we converge on the narrower
+     * delegate-expression span by anchoring the field on its own initialiser.
+     *
+     * This uses the field initialiser's raw offsets (available under both frontends), so it is
+     * frontend-stable: under K1 it reproduces the offset already recorded, and under K2 it trims
+     * the leading `Intf by `. It fires only for class-delegation fields (`IrDeclarationOrigin.DELEGATE`),
+     * which have no corresponding property and would otherwise fall through to the raw IR offset.
+     */
+    private fun getClassDelegateFieldLocation(f: IrField): Label<DbLocation>? {
+        if (f.origin != IrDeclarationOrigin.DELEGATE) return null
+        val expression = f.initializer?.expression ?: return null
+        if (expression.startOffset < 0 || expression.endOffset < 0) return null
         return tw.getLocation(expression.startOffset, expression.endOffset)
     }
 
