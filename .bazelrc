@@ -14,8 +14,7 @@ build --repo_env=CC=clang --repo_env=CXX=clang++
 
 # macOS Xcode-coupled flags, scoped to Swift builds only so that non-Swift
 # builds (C/C++/Rust/...) work with just the Command Line Tools. Enable
-# with `--config=swift_macos` (see `unified/swift-syntax-rs/README.md`; CI
-# for the `swift/` package passes it in `.github/workflows/swift.yml`).
+# with `--config=swift_macos` (see `unified/swift-syntax-rs/README.md`).
 #
 # - `--xcode_version_config` selects `apple_support`'s xcode_config, whose
 #   version strings match the ones `rules_swift`'s `system_sdk` selects are

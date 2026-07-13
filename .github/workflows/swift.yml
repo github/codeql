@@ -44,18 +44,12 @@ jobs:
           sudo apt-get install -y uuid-dev zlib1g-dev
       - name: Build Swift extractor
         shell: bash
-        env:
-          # On macOS, opt into the Xcode-coupled toolchain wiring only for
-          # Swift builds. Empty on Linux (hermetic swift.org toolchain).
-          BAZEL_SWIFT_CONFIG: ${{ runner.os == 'macOS' && '--config=swift_macos' || '' }}
         run: |
-          bazel run $BAZEL_SWIFT_CONFIG :install
+          bazel run :install
       - name: Run Swift tests
         shell: bash
-        env:
-          BAZEL_SWIFT_CONFIG: ${{ runner.os == 'macOS' && '--config=swift_macos' || '' }}
         run: |
-          bazel test $BAZEL_SWIFT_CONFIG ... --test_tag_filters=-override --test_output=errors
+          bazel test ... --test_tag_filters=-override --test_output=errors
   clang-format:
     runs-on: ubuntu-latest
     steps:
