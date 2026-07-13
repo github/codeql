@@ -150,7 +150,7 @@ func echoToBodySanitized(input *context.BeegoInput, output *context.BeegoOutput)
 }
 
 // BAD: logging something named "password".
-func loggerTest(password string, logger *logs.BeeLogger) { // $ Source[go/clear-text-logging]
+func loggerTest(password string, logger *logs.BeeLogger) {
 	beego.Alert(password)          // $ Alert[go/clear-text-logging]
 	beego.Critical(password)       // $ Alert[go/clear-text-logging]
 	beego.Debug(password)          // $ Alert[go/clear-text-logging]
@@ -185,7 +185,7 @@ func loggerTest(password string, logger *logs.BeeLogger) { // $ Source[go/clear-
 	logger.Warn(password)          // $ Alert[go/clear-text-logging]
 	logger.Warning(password)       // $ Alert[go/clear-text-logging]
 	utils.Display(password)        // $ Alert[go/clear-text-logging]
-}
+} // $ Source[go/clear-text-logging]
 
 type myStruct struct {
 	field string

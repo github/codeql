@@ -16,7 +16,7 @@ type notesService struct {
 	CurrentId int32
 }
 
-func (s *notesService) CreateNote(ctx context.Context, params *notes.CreateNoteParams) (*notes.Note, error) { // $ Source request handler // route handler
+func (s *notesService) CreateNote(ctx context.Context, params *notes.CreateNoteParams) (*notes.Note, error) { // $ handler // route handler
 	if len(params.Text) < 4 {
 		return nil, twirp.InvalidArgument.Error("Text should be min 4 characters.")
 	}
@@ -35,9 +35,9 @@ func (s *notesService) CreateNote(ctx context.Context, params *notes.CreateNoteP
 	s.CurrentId++
 
 	return &note, nil
-}
+} // $ Source request
 
-func (s *notesService) GetAllNotes(ctx context.Context, params *notes.GetAllNotesParams) (*notes.GetAllNotesResult, error) { // $ request handler // route handler
+func (s *notesService) GetAllNotes(ctx context.Context, params *notes.GetAllNotesParams) (*notes.GetAllNotesResult, error) { // $ handler // route handler
 	allNotes := make([]*notes.Note, 0)
 
 	fmt.Println(params)
@@ -49,7 +49,7 @@ func (s *notesService) GetAllNotes(ctx context.Context, params *notes.GetAllNote
 	return &notes.GetAllNotesResult{
 		Notes: allNotes,
 	}, nil
-}
+} // $ request
 
 func main() {
 	notesServer := notes.NewNotesServiceServer(&notesService{})

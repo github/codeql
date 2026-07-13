@@ -5,18 +5,18 @@
 | UnsafeUnzipSymlink.go:126:17:126:31 | selection of Linkname | UnsafeUnzipSymlink.go:126:17:126:31 | selection of Linkname | UnsafeUnzipSymlink.go:112:13:112:20 | linkName | Unresolved path from an archive header, which may point outside the archive root, is used in $@. | UnsafeUnzipSymlink.go:112:13:112:20 | linkName | symlink creation |
 | UnsafeUnzipSymlink.go:126:34:126:44 | selection of Name | UnsafeUnzipSymlink.go:126:34:126:44 | selection of Name | UnsafeUnzipSymlink.go:112:23:112:30 | fileName | Unresolved path from an archive header, which may point outside the archive root, is used in $@. | UnsafeUnzipSymlink.go:112:23:112:30 | fileName | symlink creation |
 edges
-| UnsafeUnzipSymlink.go:111:19:111:26 | SSA def(linkName) | UnsafeUnzipSymlink.go:112:13:112:20 | linkName | provenance | Sink:MaD:1 |
-| UnsafeUnzipSymlink.go:111:29:111:36 | SSA def(fileName) | UnsafeUnzipSymlink.go:112:23:112:30 | fileName | provenance | Sink:MaD:1 |
-| UnsafeUnzipSymlink.go:126:17:126:31 | selection of Linkname | UnsafeUnzipSymlink.go:111:19:111:26 | SSA def(linkName) | provenance |  |
-| UnsafeUnzipSymlink.go:126:34:126:44 | selection of Name | UnsafeUnzipSymlink.go:111:29:111:36 | SSA def(fileName) | provenance |  |
+| UnsafeUnzipSymlink.go:111:46:113:1 | SSA def(fileName) | UnsafeUnzipSymlink.go:112:23:112:30 | fileName | provenance | Sink:MaD:1 |
+| UnsafeUnzipSymlink.go:111:46:113:1 | SSA def(linkName) | UnsafeUnzipSymlink.go:112:13:112:20 | linkName | provenance | Sink:MaD:1 |
+| UnsafeUnzipSymlink.go:126:17:126:31 | selection of Linkname | UnsafeUnzipSymlink.go:111:46:113:1 | SSA def(linkName) | provenance |  |
+| UnsafeUnzipSymlink.go:126:34:126:44 | selection of Name | UnsafeUnzipSymlink.go:111:46:113:1 | SSA def(fileName) | provenance |  |
 models
 | 1 | Sink: os; ; false; Symlink; ; ; Argument[0..1]; path-injection; manual |
 nodes
 | UnsafeUnzipSymlink.go:31:15:31:29 | selection of Linkname | semmle.label | selection of Linkname |
 | UnsafeUnzipSymlink.go:31:32:31:42 | selection of Name | semmle.label | selection of Name |
 | UnsafeUnzipSymlink.go:43:25:43:35 | selection of Name | semmle.label | selection of Name |
-| UnsafeUnzipSymlink.go:111:19:111:26 | SSA def(linkName) | semmle.label | SSA def(linkName) |
-| UnsafeUnzipSymlink.go:111:29:111:36 | SSA def(fileName) | semmle.label | SSA def(fileName) |
+| UnsafeUnzipSymlink.go:111:46:113:1 | SSA def(fileName) | semmle.label | SSA def(fileName) |
+| UnsafeUnzipSymlink.go:111:46:113:1 | SSA def(linkName) | semmle.label | SSA def(linkName) |
 | UnsafeUnzipSymlink.go:112:13:112:20 | linkName | semmle.label | linkName |
 | UnsafeUnzipSymlink.go:112:23:112:30 | fileName | semmle.label | fileName |
 | UnsafeUnzipSymlink.go:126:17:126:31 | selection of Linkname | semmle.label | selection of Linkname |
