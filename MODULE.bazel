@@ -307,6 +307,15 @@ register_toolchains(
 xcode_configure = use_extension("@apple_support//xcode:xcode_configure.bzl", "xcode_configure_extension")
 use_repo(xcode_configure, "local_config_xcode")
 
+# `apple_support` also registers `@local_config_apple_cc_toolchains//:all`
+# from its own `MODULE.bazel`, but the CC toolchains it generates lose
+# toolchain-resolution ordering to Bazel's built-in `local_config_cc`.
+# We override that priority in `.bazelrc` via
+# `build:macos --extra_toolchains=@local_config_apple_cc_toolchains//:all`,
+# which requires the repo to be visible from the root module.
+apple_cc_configure = use_extension("@apple_support//crosstool:setup.bzl", "apple_cc_configure_extension")
+use_repo(apple_cc_configure, "local_config_apple_cc_toolchains")
+
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
 node.toolchain(
     name = "nodejs",
