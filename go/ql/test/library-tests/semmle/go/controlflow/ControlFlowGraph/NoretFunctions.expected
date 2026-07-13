@@ -19,4 +19,3 @@
 | stmts7.go:10:6:10:15 | canRecover | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.canRecover |
 | stmts.go:10:6:10:10 | test5 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.test5 |
 | stmts.go:46:6:46:10 | test6 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.test6 |
-| stmts.go:112:6:112:10 | test9 | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.test9 |
