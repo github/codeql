@@ -170,6 +170,8 @@ edges
 | .github/workflows/level0.yml:125:9:129:6 | Uses Step | .github/workflows/level0.yml:129:9:133:6 | Uses Step |
 | .github/workflows/level0.yml:128:17:128:57 | github.event.pull_request.head.sha | .github/workflows/level0.yml:125:9:129:6 | Uses Step |
 | .github/workflows/level0.yml:129:9:133:6 | Uses Step | .github/workflows/level0.yml:133:9:135:23 | Run Step |
+| .github/workflows/lockfile_pinned.yml:17:7:22:4 | Uses Step | .github/workflows/lockfile_pinned.yml:22:7:25:4 | Uses Step |
+| .github/workflows/lockfile_pinned.yml:22:7:25:4 | Uses Step | .github/workflows/lockfile_pinned.yml:25:7:25:43 | Uses Step |
 | .github/workflows/mend.yml:13:9:22:6 | Run Step: set_ref | .github/workflows/mend.yml:22:9:29:6 | Uses Step |
 | .github/workflows/mend.yml:22:9:29:6 | Uses Step | .github/workflows/mend.yml:29:9:33:28 | Uses Step |
 | .github/workflows/mend.yml:27:17:27:48 | steps.set_ref.outputs.ref | .github/workflows/mend.yml:22:9:29:6 | Uses Step |

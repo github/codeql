@@ -15,3 +15,11 @@ jobs:
     # Negative control is provided for free by the many other fixtures in this directory whose tag
     # refs are NOT recorded in the data extension and therefore remain reported.
     - uses: some-owner/pinned-action@v1
+    # `Mixed-Owner/Pinned-Action@v1` is pinned by the lockfile too, but written with the mixed-case
+    # owner/repo that authors commonly use (Azure, GoogleCloudPlatform, ...). The generator emits
+    # the lockfile nwo lower-cased, so the query must match owner/repo case-insensitively; this ref
+    # is therefore expected to be suppressed (no finding).
+    - uses: Mixed-Owner/Pinned-Action@v1
+    # Negative control: a mixed-case ref that is NOT recorded in the lockfile data must still be
+    # reported, guarding against over-suppression of every mixed-case ref.
+    - uses: Mixed-Owner/Unpinned-Action@v2
