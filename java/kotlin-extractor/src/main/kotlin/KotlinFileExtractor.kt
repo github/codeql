@@ -1439,7 +1439,7 @@ open class KotlinFileExtractor(
             return extractValueParameter(
                 id,
                 substitutedType,
-                vp.name.asString(),
+                getConvergedValueParameterName(vp),
                 location,
                 parent,
                 idx,
@@ -3166,6 +3166,36 @@ open class KotlinFileExtractor(
         // is nothing to exclude, and rewriting the end offset would diverge from K2.
         if (keyword.startOffset <= vp.startOffset) return null
         return tw.getLocation(keyword.startOffset, vp.endOffset)
+    }
+
+    /**
+     * Returns the name to record for a value parameter, converging the two frontends where they
+     * disagree.
+     *
+     * A property's synthetic setter has a single implicit value parameter. The K2 frontend names
+     * it `<set-?>`; the K1 frontend does the same for a
+     * member property's setter but names a *delegated* property's setter parameter `value`. That
+     * parameter is always compiler-synthesised (a delegated-property accessor carries no
+     * source-written parameters), so renaming it can never affect a user-written `value` parameter
+     * (for example the `value` parameter of a hand-written `ReadWriteProperty.setValue`, whose
+     * function has origin `DEFINED`). We therefore converge the delegated-setter parameter onto the
+     * canonical `<set-?>` name (the `SpecialNames.IMPLICIT_SETTER_PARAMETER` constant is not present
+     * in every supported compiler version, so the literal is used directly).
+     *
+     * The rename is guarded on the K1 source name `value` so it targets *only* the setter value
+     * parameter: a delegated accessor's other parameters are receivers (`<this>` for an extension
+     * property, `<dispatchReceiver>` for a member property), which must keep their names. Under K2
+     * the setter parameter is already `<set-?>` and the receivers are `<this>`, so none match and
+     * the canonical K2 output is left untouched.
+     */
+    private fun getConvergedValueParameterName(vp: IrValueParameter): String {
+        if (
+            (vp.parent as? IrFunction)?.origin == IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR &&
+                vp.name.asString() == "value"
+        ) {
+            return "<set-?>"
+        }
+        return vp.name.asString()
     }
 
     /**

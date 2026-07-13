@@ -294,7 +294,7 @@ delegatedProperties.kt:
 #   19|               2: [Method] <set-varResource1>
 #   19|                 3: [TypeAccess] Unit
 #-----|                 4: (Parameters)
-#   19|                   0: [Parameter] value
+#   19|                   0: [Parameter] <set-?>
 #   19|                     0: [TypeAccess] int
 #   19|                 5: [BlockStmt] { ... }
 #   19|                   0: [ReturnStmt] return ...
@@ -328,7 +328,7 @@ delegatedProperties.kt:
 #   19|                                   0: [VarAccess] a0
 #   19|                         -3: [TypeAccess] KMutableProperty0<Integer>
 #   19|                           0: [TypeAccess] Integer
-#   19|                       2: [VarAccess] value
+#   19|                       2: [VarAccess] <set-?>
 #   20|         1: [ExprStmt] <Expr>;
 #   20|           0: [MethodCall] println(...)
 #   20|             -1: [TypeAccess] ConsoleKt
@@ -538,7 +538,7 @@ delegatedProperties.kt:
 #   34|               2: [Method] <set-readWrite>
 #   34|                 3: [TypeAccess] Unit
 #-----|                 4: (Parameters)
-#   34|                   0: [Parameter] value
+#   34|                   0: [Parameter] <set-?>
 #   34|                     0: [TypeAccess] int
 #   34|                 5: [BlockStmt] { ... }
 #   34|                   0: [ReturnStmt] return ...
@@ -572,7 +572,7 @@ delegatedProperties.kt:
 #   34|                                   0: [VarAccess] a0
 #   34|                         -3: [TypeAccess] KMutableProperty0<Integer>
 #   34|                           0: [TypeAccess] Integer
-#   34|                       2: [VarAccess] value
+#   34|                       2: [VarAccess] <set-?>
 #   36|         7: [ExprStmt] <Expr>;
 #   36|           0: [MethodCall] println(...)
 #   36|             -1: [TypeAccess] ConsoleKt
@@ -1848,7 +1848,7 @@ delegatedProperties.kt:
 #   82|               2: [Method] <set-delegatedToMember3>
 #   82|                 3: [TypeAccess] Unit
 #-----|                 4: (Parameters)
-#   82|                   0: [Parameter] value
+#   82|                   0: [Parameter] <set-?>
 #   82|                     0: [TypeAccess] int
 #   82|                 5: [BlockStmt] { ... }
 #   82|                   0: [ReturnStmt] return ...
@@ -1884,7 +1884,7 @@ delegatedProperties.kt:
 #   82|                                   0: [VarAccess] a0
 #   82|                         -3: [TypeAccess] KMutableProperty0<Integer>
 #   82|                           0: [TypeAccess] Integer
-#   82|                       3: [VarAccess] value
+#   82|                       3: [VarAccess] <set-?>
 #   83|         1: [ExprStmt] <Expr>;
 #   83|           0: [MethodCall] fn(...)
 #   83|             -1: [ThisAccess] this
