@@ -8,6 +8,19 @@ package(default_visibility = ["//visibility:public"])
 # //:MODULE.bazel via `swift_version_file`.
 exports_files([".swift-version"])
 
+# Constraint expressing "this target only builds on platforms where we have
+# a Swift toolchain registered in //:MODULE.bazel" (i.e. Linux or macOS —
+# not Windows). `target_compatible_with` uses AND semantics on a plain list,
+# so we express the OR via a `select()` that maps supported OSes to the
+# empty (satisfiable) constraint list, and everything else to the sentinel
+# `@platforms//:incompatible`, which causes Bazel to skip the target on
+# `bazel build/test //...` rather than fail.
+_SWIFT_SUPPORTED_PLATFORMS = select({
+    "@platforms//os:linux": [],
+    "@platforms//os:macos": [],
+    "//conditions:default": ["@platforms//:incompatible"],
+})
+
 # The Swift FFI shim: wraps swift-syntax and exposes a small C ABI
 # (`ssr_parse_json` / `ssr_string_free`). Built with the hermetic Swift
 # toolchain registered in //:MODULE.bazel; provides a `CcInfo` that the Rust
@@ -16,6 +29,7 @@ swift_library(
     name = "swift_syntax_ffi",
     srcs = ["swift/Sources/SwiftSyntaxFFI/SwiftSyntaxFFI.swift"],
     module_name = "SwiftSyntaxFFI",
+    target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
     deps = [
         "@swift-syntax//:SwiftParser",
         "@swift-syntax//:SwiftSyntax",
@@ -33,6 +47,7 @@ rust_library(
         exclude = ["src/main.rs"],
     ),
     edition = "2024",
+    target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
     deps = [
         ":swift_syntax_ffi",
     ],
@@ -50,9 +65,10 @@ rust_binary(
     # `ubuntu24.04` on Linux.
     data = select({
         "@platforms//os:macos": ["@swift_toolchain_xcode//:files"],
-        "//conditions:default": ["@swift_toolchain_ubuntu24.04//:files"],
+        "@platforms//os:linux": ["@swift_toolchain_ubuntu24.04//:files"],
     }),
     edition = "2024",
+    target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
     deps = [":swift_syntax_rs"],
 )
 
@@ -62,7 +78,8 @@ rust_test(
     crate = ":swift_syntax_rs",
     data = select({
         "@platforms//os:macos": ["@swift_toolchain_xcode//:files"],
-        "//conditions:default": ["@swift_toolchain_ubuntu24.04//:files"],
+        "@platforms//os:linux": ["@swift_toolchain_ubuntu24.04//:files"],
     }),
     edition = "2024",
+    target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
 )

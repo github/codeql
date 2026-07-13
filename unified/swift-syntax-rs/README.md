@@ -146,7 +146,10 @@ Requirements:
   `--repo_env=CC=clang`, so no extra flags are needed.
 - The registered Swift toolchains cover **ubuntu24.04 / x86_64** and
   **macOS / `xcode`** (both Apple Silicon and Intel). Bazel automatically
-  selects the toolchain matching the host platform.
+  selects the toolchain matching the host platform. The Bazel targets are
+  marked `target_compatible_with` these two OSes only, so on Windows (or any
+  other unsupported host) Bazel skips them cleanly under `bazel build/test
+  //...` rather than trying to build a Swift-less target.
 - **macOS only:** the macOS toolchain is distributed as a `.pkg` archive that
   can only be fetched and extracted on a macOS host. Building the `xcode`
   toolchain on Linux is not supported.
