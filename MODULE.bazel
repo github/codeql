@@ -34,18 +34,6 @@ bazel_dep(name = "rules_rust", version = "0.69.0")
 bazel_dep(name = "rules_swift", version = "4.0.0-rc4")
 bazel_dep(name = "swift-syntax", version = "602.0.0.bcr.2")
 
-# rules_swift 4.0.0-rc4's standalone toolchain extension unconditionally
-# emits Linux/ELF-only linker flags (swiftrt.o, -lstdc++, -lrt, -ldl,
-# -static-libgcc) for its macOS toolchain, which breaks any binary linked
-# via `swift_library` on macOS. Apply a local patch that skips those flags
-# when the toolchain OS is macos. See the patch header and
-# `misc/bazel/patches/rules_swift/macos-linkopts.patch` for details.
-single_version_override(
-    module_name = "rules_swift",
-    patch_strip = 1,
-    patches = ["//misc/bazel/patches/rules_swift:macos-linkopts.patch"],
-    version = "4.0.0-rc4",
-)
 bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
@@ -239,16 +227,28 @@ use_repo(
 # `rules_swift` standalone-toolchain extension and is independent of the
 # patched prebuilt toolchain wired up via `swift_deps` above.
 #
-# Bazel cannot auto-select between Linux distributions, so the toolchain is
-# registered explicitly for the distributions/platforms our CI runs on:
-#   - ubuntu24.04 / x86_64  (Linux CI)
-#   - xcode                  (macOS CI — covers both Apple Silicon and Intel)
+# We register the `exec` toolchain for **Linux only**. On macOS we do NOT
+# use this standalone toolchain: it is the Unix-shaped `swift_toolchain`
+# rule (`swift/toolchains/swift_toolchain.bzl`) which emits Linux/ELF
+# linkopts (`swiftrt.o`, `-lstdc++`, `-lrt`, `-ldl`, `-static-libgcc`) and
+# a Linux-shaped `-L{root}/lib/swift/{os}` search path — none of which make
+# sense on macOS. Instead, on macOS we rely on rules_swift's auto-registered
+# `@rules_swift//swift/toolchains:xcode-toolchain-*` toolchains (backed by
+# `xcode_swift_toolchain.bzl`, which has its own macOS-aware
+# `_swift_linkopts_cc_info` that uses the Apple linker's autolinking,
+# points at `Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx`,
+# and rpaths the OS-provided `/usr/lib/swift`). Those toolchains are
+# auto-registered by rules_swift's own MODULE.bazel via
+# `register_toolchains("//swift/toolchains:all")` and use the Xcode
+# selected on the host, so macOS contributors need a working Xcode
+# (or Command Line Tools) install.
 #
-# NOTE: The macOS toolchain is distributed as a `.pkg` archive that can only
-# be extracted on a macOS host. Do not build the `xcode` toolchain on Linux.
+# NOTE: The macOS standalone toolchain is distributed as a `.pkg` archive
+# that can only be extracted on a macOS host. Do not build the `xcode`
+# standalone toolchain on Linux.
 #
-# We register the `exec` toolchains (normal host compilation) rather than the
-# `embedded` ones, which target `os:none` (Embedded Swift) and would not
+# We register the `exec` toolchain (normal host compilation) rather than the
+# `embedded` one, which targets `os:none` (Embedded Swift) and would not
 # match a normal host build. Bazel selects the toolchain matching the host
 # platform automatically.
 #
@@ -264,12 +264,10 @@ use_repo(
     swift,
     "swift_toolchain",
     "swift_toolchain_ubuntu24.04",
-    "swift_toolchain_xcode",
 )
 
 register_toolchains(
     "@swift_toolchain//:swift_toolchain_exec_ubuntu24.04",
-    "@swift_toolchain//:swift_toolchain_exec_xcode",
 )
 
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")

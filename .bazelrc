@@ -44,24 +44,6 @@ common --flag_alias=host_swiftcopt=@rules_swift//swift:exec_copt
 build:macos --swiftcopt=-target --swiftcopt=arm64-apple-macosx10.15
 build:macos --host_swiftcopt=-target --host_swiftcopt=arm64-apple-macosx10.15
 
-# Disable `swift-autolink-extract` on macOS.
-#
-# rules_swift 4.0.0-rc4's standalone toolchain template
-# (`swift/internal/extensions/BUILD.bazel.tpl`) unconditionally hardcodes
-# `swift.use_autolink_extract` into the exec `swift_toolchain(...)` features
-# list — even for macOS. That schedules a `SwiftAutolinkExtract` action for
-# every `swift_library` (e.g. `@swift-syntax//:SwiftSyntax601`). But
-# `swift-autolink-extract` is a Linux/ELF-only workflow: on macOS the Apple
-# linker handles autolinking natively via `LC_LINKER_OPTION`, and running the
-# tool from a swift.org standalone toolchain against Mach-O `.o` files fails
-# with an opaque "worker failed" error.
-#
-# Negating the feature on the command line flips
-# `SWIFT_FEATURE_USE_AUTOLINK_EXTRACT in ctx.features` to `False` in
-# `swift_toolchain.bzl`, so the autolink-extract tool config (and therefore
-# the action) is never registered on macOS. The Linux exec toolchain is
-# unaffected.
-build:macos --features=-swift.use_autolink_extract
 # Disable Android SDK auto-detection (we don't use it, and rules_android has Bazel 9 compatibility issues)
 build --repo_env=ANDROID_HOME=
 
