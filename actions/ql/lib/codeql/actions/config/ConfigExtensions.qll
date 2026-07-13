@@ -78,7 +78,7 @@ extensible predicate trustedActionsOwnerDataModel(string owner);
  * `github.com/github/actions-lockfile/go`. Each lockfile entry binds an `nwo`@`ref` to a
  * verified commit SHA, which is exactly the pinning evidence the `actions/unpinned-tag` query
  * otherwise lacks. Until the extractor populates this predicate it is empty, so any clause that
- * consumes it is a clean no-op and behaviour is unchanged for repositories without a lockfile.
+ * consumes it is a clean no-op and behavior is unchanged for repositories without a lockfile.
  *
  * Fields:
  *  - `workflow_path`: repo-relative path of the file containing the `uses:` reference,
