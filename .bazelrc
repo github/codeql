@@ -21,29 +21,6 @@ build --repo_env=CC=clang --repo_env=CXX=clang++
 common --flag_alias=swiftcopt=@rules_swift//swift:copt
 common --flag_alias=host_swiftcopt=@rules_swift//swift:exec_copt
 
-# Force a versioned macOS target triple on Swift compilations only.
-#
-# Without `apple_support` in this module (see MODULE.bazel), Bazel uses its
-# generic `local_config_cc` toolchain on macOS, whose `target_gnu_system_name`
-# is unversioned (e.g. `arm64-apple-macosx`). Both rules_swift toolchains
-# (standalone and xcode) build swiftc's `-target` argument from
-# `ctx.var["CC_TARGET_TRIPLE"] or cc_toolchain.target_gnu_system_name`, so
-# swiftc receives `-target arm64-apple-macosx` and fails with
-# "Swift requires a minimum deployment target of macOS 10.9.0".
-#
-# `--macos_minimum_os` alone does not fix this (it doesn't feed either
-# source). We append a versioned `-target` via `--swiftcopt` /
-# `--host_swiftcopt`; swiftc treats the last `-target` as authoritative.
-# These flags only affect Swift compile actions, so the scope is limited
-# to //unified/swift-syntax-rs (the sole Swift consumer in this repo).
-#
-# 10.15 matches swift-syntax's declared minimum deployment target.
-# NOTE: this pins the CPU to arm64 (Apple Silicon), which is fine because
-# macOS 26 is Apple-Silicon-only. If Intel macOS Bazel builds are ever
-# needed, override in local.bazelrc.
-build:macos --swiftcopt=-target --swiftcopt=arm64-apple-macosx10.15
-build:macos --host_swiftcopt=-target --host_swiftcopt=arm64-apple-macosx10.15
-
 # Point Bazel at `apple_support`'s xcode_config on macOS.
 #
 # `xcode_swift_toolchain` pulls in `@system_sdk//:{all_modules,implicit_modules}`,
