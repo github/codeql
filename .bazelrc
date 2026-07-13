@@ -58,6 +58,28 @@ build:macos --host_swiftcopt=-target --host_swiftcopt=arm64-apple-macosx10.15
 # Wired up in `MODULE.bazel` via the `xcode_configure` extension.
 build:macos --xcode_version_config=@local_config_xcode//:host_xcodes
 
+# Give `apple_support`'s CC toolchains priority over Bazel's built-in
+# `@rules_cc//...:local_config_cc` on macOS.
+#
+# `apple_support` registers `@local_config_apple_cc_toolchains//:all` from
+# its own `MODULE.bazel`, but module-registered toolchains are ordered by
+# the module DAG and Bazel's built-in `local_config_cc` (pulled in by
+# `rules_cc`) wins resolution first. That toolchain reports a
+# `target_gnu_system_name` of literally `"local"`, and
+# `rules_swift`'s `xcode_swift_toolchain` blows up in
+# `target_triples.parse(ctx.var.get("CC_TARGET_TRIPLE") or
+# cc_toolchain.target_gnu_system_name)` with:
+#
+#   Invalid target triple: local, this likely means you're using the wrong
+#   CC toolchain, make sure you include apple_support in your project
+#
+# Root-level `--extra_toolchains` beats all module-registered toolchains,
+# so this forces `@local_config_apple_cc_toolchains//:cc-toolchain-darwin_*`
+# to be selected for both the target and exec platforms. The apple_cc
+# toolchains only match Apple platform constraints, so this is a no-op
+# for any non-Apple exec/target platform.
+build:macos --extra_toolchains=@local_config_apple_cc_toolchains//:all
+
 # Disable Android SDK auto-detection (we don't use it, and rules_android has Bazel 9 compatibility issues)
 build --repo_env=ANDROID_HOME=
 

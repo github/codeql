@@ -34,10 +34,24 @@ bazel_dep(name = "rules_rust", version = "0.69.0")
 bazel_dep(name = "rules_swift", version = "4.0.0-rc4")
 bazel_dep(name = "swift-syntax", version = "602.0.0.bcr.2")
 # `apple_support` is a transitive dep of `rules_swift`, but we depend on it
-# directly so we can `use_repo` `local_config_xcode` (see below). This lets
-# `xcode_swift_toolchain`'s `system_sdk` selects — which are keyed on the
-# exact Xcode version string from `xcode_locator.m` (e.g.
-# `xcode_26_6_0_17F113`) — resolve on macOS.
+# directly for two reasons on macOS:
+#
+# 1. We `use_repo` `local_config_xcode` (see below) so
+#    `xcode_swift_toolchain`'s `system_sdk` selects — which are keyed on
+#    the exact Xcode version string from `xcode_locator.m` (e.g.
+#    `xcode_26_6_0_17F113`) — resolve.
+#
+# 2. It registers `@local_config_apple_cc_toolchains//:all`, whose
+#    `cc-toolchain-darwin_*` toolchains report a proper Apple target
+#    triple (`arm64-apple-macosx` / `x86_64-apple-macosx`) via
+#    `target_gnu_system_name`. Bazel's built-in `local_config_cc`
+#    toolchain reports the literal string `"local"`, and
+#    `xcode_swift_toolchain` fails analysis in
+#    `target_triples.parse(ctx.var.get("CC_TARGET_TRIPLE") or
+#    cc_toolchain.target_gnu_system_name)` with
+#    "Invalid target triple: local". Since module-registered toolchains
+#    are ordered by the module DAG and `local_config_cc` wins by default,
+#    we override the priority via `--extra_toolchains` in `.bazelrc`.
 bazel_dep(name = "apple_support", version = "2.6.1")
 
 bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
