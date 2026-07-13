@@ -39,7 +39,7 @@ type row struct {
 // shorter, mutable tag such as `v4` or `v4.3` in `uses:`. The query matches on
 // the ref exactly as written, so for every full-semver resolved ref we also
 // emit its major-only (`v4`) and major.minor (`v4.3`) forms. This lets a
-// `uses: owner/action@v4` be recognised as pinned by a lockfile entry that
+// `uses: owner/action@v4` be recognized as pinned by a lockfile entry that
 // resolved to `v4.3.1`, which is the common real-world case.
 func rowsFromLockfile(contents []byte) ([]row, error) {
 	doc, err := parseLockfile(contents)
@@ -101,7 +101,7 @@ func refVariants(ref string) []string {
 	return variants
 }
 
-// renderExtension serialises `rows` as a CodeQL data-extension YAML document that
+// renderExtension serializes `rows` as a CodeQL data-extension YAML document that
 // adds to the `pinnedByLockfileDataModel` extensible predicate in
 // `codeql/actions-all`.
 func renderExtension(rows []row) string {
