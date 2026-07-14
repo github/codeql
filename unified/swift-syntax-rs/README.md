@@ -150,12 +150,10 @@ Requirements:
   OSes, so on Windows Bazel skips them cleanly.
 - **macOS only:** the macOS toolchain is a `.pkg` archive that can only be
   fetched and extracted on a macOS host. On macOS, `rules_swift` also needs
-  Xcode's CC toolchain and xcode_config; the targets above apply the
-  necessary `--xcode_version_config` and `--extra_toolchains` flags via an
-  incoming-edge Starlark transition
-  ([`xcode_transition.bzl`](xcode_transition.bzl)), so no manual `--config=…`
-  is needed and other targets on macOS keep using Bazel's default CC
-  toolchain unchanged.
+  Xcode's CC toolchain and xcode_config; these are applied to the Swift
+  target via an incoming-edge Starlark transition (see
+  [`xcode_transition.bzl`](xcode_transition.bzl)), so other targets on macOS
+  keep using Bazel's default CC toolchain.
 
 The Swift compiler version is read from [`.swift-version`](.swift-version) by
 both the Bazel toolchain (`swift.toolchain(swift_version_file = …)`) and the
