@@ -52,6 +52,27 @@ class CommentExtractorLighterAST(
         }
     }
 
+    // Depth-first search for the first KDoc descendant of `element`. We navigate
+    // the PSI tree by hand rather than using `com.intellij.psi.util.PsiTreeUtil`,
+    // because that utility class is not present on every supported compiler's
+    // embeddable classpath (the reduced classpath used by some builds strips it),
+    // whereas the core `PsiElement` navigation API is always available.
+    private fun findKDocDescendant(
+        element: com.intellij.psi.PsiElement
+    ): org.jetbrains.kotlin.kdoc.psi.api.KDoc? {
+        if (element is org.jetbrains.kotlin.kdoc.psi.api.KDoc) {
+            return element
+        }
+        var child = element.firstChild
+        while (child != null) {
+            findKDocDescendant(child)?.let {
+                return it
+            }
+            child = child.nextSibling
+        }
+        return null
+    }
+
     private fun parseKDocSections(
         commentText: String
     ): List<org.jetbrains.kotlin.kdoc.psi.impl.KDocSection>? {
@@ -60,12 +81,7 @@ class CommentExtractorLighterAST(
             // A KDoc is only recognised as a doc comment when it precedes a
             // declaration, so we append a throwaway declaration before parsing.
             val ktFile = factory.createFile("$commentText\nval __codeql_kdoc__ = 0")
-            val kdoc =
-                com.intellij.psi.util.PsiTreeUtil.findChildOfType(
-                    ktFile,
-                    org.jetbrains.kotlin.kdoc.psi.api.KDoc::class.java
-                )
-            kdoc?.getAllSections()
+            findKDocDescendant(ktFile)?.getAllSections()
         } catch (e: Exception) {
             // Never swallow IntelliJ's ProcessCanceledException: it is a control-flow
             // exception that must propagate for cancellation to work. We match it by
