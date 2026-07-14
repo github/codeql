@@ -13,10 +13,12 @@ import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 import org.jetbrains.kotlin.ir.visitors.acceptVoid
 import org.jetbrains.kotlin.kdoc.lexer.KDocTokens
 import org.jetbrains.kotlin.lexer.KtTokens
+import org.jetbrains.kotlin.KtNodeTypes
 import org.jetbrains.kotlin.util.getChildren
 
-// TODO: This doesn't give owners to as many comments as the PSI extractor does.
-// See the library-tests/comments tests for details.
+// TODO: This still doesn't give owners to quite as many comments as the PSI
+// extractor does (e.g. a KDoc on an anonymous function passed as a call
+// argument). See the library-tests/comments tests for details.
 
 class CommentExtractorLighterAST(
     fileExtractor: KotlinFileExtractor,
@@ -33,6 +35,7 @@ class CommentExtractorLighterAST(
         }
 
         val owners = findKDocOwners(file)
+        addMetadataLessKDocOwners(treeStructure, file, owners)
         extractComments(treeStructure.root, treeStructure, owners)
         return true
     }
@@ -71,7 +74,7 @@ class CommentExtractorLighterAST(
         }
     }
 
-    private fun findKDocOwners(file: IrFile): Map<Int, List<IrElement>> {
+    private fun findKDocOwners(file: IrFile): MutableMap<Int, MutableList<IrElement>> {
         fun LighterASTNode.isKDocComment() = this.tokenType == KDocTokens.KDOC
 
         val kDocOwners = mutableMapOf<Int, MutableList<IrElement>>()
@@ -110,10 +113,75 @@ class CommentExtractorLighterAST(
         return kDocOwners
     }
 
+    // Enum entries and anonymous initializers carry no FIR metadata under the
+    // K2/FIR frontend, so the metadata-based search in `findKDocOwners` cannot
+    // reach them and their KDoc comments would be left without an owner (the PSI
+    // frontend does attribute them). They do, however, retain valid IR source
+    // offsets. We recover their ownership by finding the ENUM_ENTRY /
+    // CLASS_INITIALIZER lighter-AST nodes that carry a KDOC child and matching
+    // each to the metadata-less IR declaration whose source offset falls within
+    // the node's range. Matching is fail-closed: a node is only attributed when
+    // exactly one candidate declaration lies within it.
+    private fun addMetadataLessKDocOwners(
+        treeStructure: FlyweightCapableTreeStructure<LighterASTNode>,
+        file: IrFile,
+        owners: MutableMap<Int, MutableList<IrElement>>
+    ) {
+        val candidates = mutableListOf<IrDeclaration>()
+        file.acceptVoid(
+            object : IrVisitorVoid() {
+                override fun visitElement(element: IrElement) {
+                    if (element is IrEnumEntry || element is IrAnonymousInitializer) {
+                        val decl = element as IrDeclaration
+                        if (
+                            decl.startOffset != UNDEFINED_OFFSET &&
+                                decl.startOffset != SYNTHETIC_OFFSET
+                        ) {
+                            candidates.add(decl)
+                        }
+                    }
+                    element.acceptChildrenVoid(this)
+                }
+            }
+        )
+        if (candidates.isEmpty()) {
+            return
+        }
+
+        fun visit(node: LighterASTNode) {
+            if (
+                node.tokenType == KtNodeTypes.ENUM_ENTRY ||
+                    node.tokenType == KtNodeTypes.CLASS_INITIALIZER
+            ) {
+                node.getChildren(treeStructure)
+                    .firstOrNull { it.tokenType == KDocTokens.KDOC }
+                    ?.let { kDoc ->
+                        val startOffset = kDoc.startOffset
+                        if (
+                            startOffset != UNDEFINED_OFFSET && startOffset != SYNTHETIC_OFFSET
+                        ) {
+                            val matches =
+                                candidates.filter {
+                                    it.startOffset >= node.startOffset &&
+                                        it.startOffset < node.endOffset
+                                }
+                            if (matches.size == 1) {
+                                owners
+                                    .getOrPut(startOffset, { mutableListOf<IrElement>() })
+                                    .add(matches[0])
+                            }
+                        }
+                    }
+            }
+            node.getChildren(treeStructure).forEach { visit(it) }
+        }
+        visit(treeStructure.root)
+    }
+
     private fun extractComments(
         node: LighterASTNode,
         treeStructure: FlyweightCapableTreeStructure<LighterASTNode>,
-        owners: Map<Int, List<IrElement>>
+        owners: MutableMap<Int, MutableList<IrElement>>
     ) {
         node.getChildren(treeStructure).forEach {
             if (KtTokens.COMMENTS.contains(it.tokenType)) {
@@ -124,7 +192,10 @@ class CommentExtractorLighterAST(
         }
     }
 
-    private fun extractComment(comment: LighterASTNode, owners: Map<Int, List<IrElement>>) {
+    private fun extractComment(
+        comment: LighterASTNode,
+        owners: MutableMap<Int, MutableList<IrElement>>
+    ) {
         val type: CommentType =
             when (comment.tokenType) {
                 KtTokens.EOL_COMMENT -> {
