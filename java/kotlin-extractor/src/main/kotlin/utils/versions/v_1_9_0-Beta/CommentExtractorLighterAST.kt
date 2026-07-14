@@ -37,6 +37,40 @@ class CommentExtractorLighterAST(
         return true
     }
 
+    // KDoc section structure (the default section plus `@property`, `@constructor`,
+    // ... tag sections) is not represented in the FIR lighter AST: the KDOC node is
+    // a leaf there. The PSI-based extractor writes these sections, so to produce the
+    // same output under K2 we re-parse the KDoc text into PSI using the compiler's
+    // `Project` and read its sections. Returns null if no project was captured (in
+    // which case sections are omitted, matching the previous behaviour).
+    private val ktPsiFactory: org.jetbrains.kotlin.psi.KtPsiFactory? by lazy {
+        KDocProjectHolder.project?.let {
+            org.jetbrains.kotlin.psi.KtPsiFactory(it, markGenerated = false)
+        }
+    }
+
+    private fun parseKDocSections(
+        commentText: String
+    ): List<org.jetbrains.kotlin.kdoc.psi.impl.KDocSection>? {
+        val factory = ktPsiFactory ?: return null
+        return try {
+            // A KDoc is only recognised as a doc comment when it precedes a
+            // declaration, so we append a throwaway declaration before parsing.
+            val ktFile = factory.createFile("$commentText\nval __codeql_kdoc__ = 0")
+            val kdoc =
+                com.intellij.psi.util.PsiTreeUtil.findChildOfType(
+                    ktFile,
+                    org.jetbrains.kotlin.kdoc.psi.api.KDoc::class.java
+                )
+            kdoc?.getAllSections()
+        } catch (e: com.intellij.openapi.progress.ProcessCanceledException) {
+            throw e
+        } catch (e: Exception) {
+            logger.warn("Couldn't parse KDoc sections: ${e}")
+            null
+        }
+    }
+
     private fun findKDocOwners(file: IrFile): Map<Int, List<IrElement>> {
         fun LighterASTNode.isKDocComment() = this.tokenType == KDocTokens.KDOC
 
@@ -117,8 +151,20 @@ class CommentExtractorLighterAST(
             return
         }
 
-        // TODO: The PSI comment extractor extracts comment.getAllSections()
-        // here, so we should too
+        // Mirror the PSI extractor: write a row per KDoc section (default section
+        // and each `@tag` section) with its content, name, and subject name.
+        parseKDocSections(comment.toString())?.forEach { sec ->
+            val commentSectionLabel = tw.getFreshIdLabel<DbKtcommentsection>()
+            tw.writeKtCommentSections(commentSectionLabel, commentLabel, sec.getContent())
+            val name = sec.name
+            if (name != null) {
+                tw.writeKtCommentSectionNames(commentSectionLabel, name)
+            }
+            val subjectName = sec.getSubjectName()
+            if (subjectName != null) {
+                tw.writeKtCommentSectionSubjectNames(commentSectionLabel, subjectName)
+            }
+        }
 
         for (owner in owners.getOrDefault(comment.startOffset, listOf())) {
             val ownerLabel = getLabel(owner)
