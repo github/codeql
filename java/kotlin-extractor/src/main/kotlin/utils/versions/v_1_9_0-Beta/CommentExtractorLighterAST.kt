@@ -69,14 +69,8 @@ class CommentExtractorLighterAST(
             val ktFile = factory.createFile("$commentText\nval __codeql_kdoc__ = 0")
             ktFile.declarations.firstOrNull()?.docComment?.getAllSections()
         } catch (e: Exception) {
-            // Never swallow IntelliJ's ProcessCanceledException: it is a control-flow
-            // exception that must propagate for cancellation to work. We match it by
-            // name rather than by type because the class is not resolvable on every
-            // supported compiler version (its embeddable classpath varies), and a
-            // compile-time reference breaks the cross-version build.
-            if (e.javaClass.name == "com.intellij.openapi.progress.ProcessCanceledException") {
-                throw e
-            }
+            // Follow the extractor convention of never letting an exception escape:
+            // log it and omit the sections rather than aborting extraction.
             logger.warn("Couldn't parse KDoc sections: ${e}")
             null
         }
@@ -139,14 +133,22 @@ class CommentExtractorLighterAST(
         file.acceptVoid(
             object : IrVisitorVoid() {
                 override fun visitElement(element: IrElement) {
-                    if (element is IrEnumEntry || element is IrAnonymousInitializer) {
-                        val decl = element as IrDeclaration
-                        if (
-                            decl.startOffset != UNDEFINED_OFFSET &&
-                                decl.startOffset != SYNTHETIC_OFFSET
-                        ) {
-                            candidates.add(decl)
+                    // Enum entries and anonymous initializers are both `IrDeclaration`s.
+                    // A `when` over their concrete types smart-casts each branch to the
+                    // common `IrDeclaration` supertype, so `candidates` is populated
+                    // without an unchecked cast.
+                    val decl: IrDeclaration? =
+                        when (element) {
+                            is IrEnumEntry -> element
+                            is IrAnonymousInitializer -> element
+                            else -> null
                         }
+                    if (
+                        decl != null &&
+                            decl.startOffset != UNDEFINED_OFFSET &&
+                            decl.startOffset != SYNTHETIC_OFFSET
+                    ) {
+                        candidates.add(decl)
                     }
                     element.acceptChildrenVoid(this)
                 }
