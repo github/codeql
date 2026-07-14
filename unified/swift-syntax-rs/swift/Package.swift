@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "SwiftSyntaxFFI",
     platforms: [
-        // swift-syntax 602 requires macOS 10.15; declare it explicitly
+        // swift-syntax 603 requires macOS 10.15; declare it explicitly
         // rather than relying on the swift-tools-version default (10.13).
         .macOS(.v10_15),
     ],
@@ -20,7 +20,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/swiftlang/swift-syntax.git",
-            exact: "602.0.0"
+            exact: "603.0.2"
         )
     ],
     targets: [

@@ -32,7 +32,7 @@ bazel_dep(name = "rules_dotnet", version = "0.21.5-codeql.1")
 bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 bazel_dep(name = "rules_rust", version = "0.69.0")
 bazel_dep(name = "rules_swift", version = "4.0.0-rc4")
-bazel_dep(name = "swift-syntax", version = "602.0.0.bcr.2")
+bazel_dep(name = "swift-syntax", version = "603.0.2")
 
 # Needed so we can `use_repo` `local_config_xcode` and
 # `local_config_apple_cc_toolchains` below (referenced by the per-target
