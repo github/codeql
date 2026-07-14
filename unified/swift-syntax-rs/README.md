@@ -148,8 +148,8 @@ Requirements:
   **macOS / `xcode`** (Apple Silicon and Intel). Bazel selects the toolchain
   matching the host. Targets are marked `target_compatible_with` these two
   OSes, so on Windows Bazel skips them cleanly.
-- **macOS only:** the macOS toolchain is a `.pkg` archive that can only be
-  fetched and extracted on a macOS host. On macOS, `rules_swift` also needs
+- **macOS only:** the Swift toolchain comes from the host Xcode installation
+  (`rules_swift` auto-registers `xcode_swift_toolchain`), which also needs
   Xcode's CC toolchain and xcode_config; these are applied to the Swift
   target via an incoming-edge Starlark transition (see
   [`xcode_transition.bzl`](xcode_transition.bzl)), so other targets on macOS
