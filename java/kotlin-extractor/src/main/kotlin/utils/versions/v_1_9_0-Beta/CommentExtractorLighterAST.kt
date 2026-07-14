@@ -66,9 +66,15 @@ class CommentExtractorLighterAST(
                     org.jetbrains.kotlin.kdoc.psi.api.KDoc::class.java
                 )
             kdoc?.getAllSections()
-        } catch (e: com.intellij.openapi.progress.ProcessCanceledException) {
-            throw e
         } catch (e: Exception) {
+            // Never swallow IntelliJ's ProcessCanceledException: it is a control-flow
+            // exception that must propagate for cancellation to work. We match it by
+            // name rather than by type because the class is not resolvable on every
+            // supported compiler version (its embeddable classpath varies), and a
+            // compile-time reference breaks the cross-version build.
+            if (e.javaClass.name == "com.intellij.openapi.progress.ProcessCanceledException") {
+                throw e
+            }
             logger.warn("Couldn't parse KDoc sections: ${e}")
             null
         }
