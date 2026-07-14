@@ -33,12 +33,14 @@ bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 bazel_dep(name = "rules_rust", version = "0.69.0")
 bazel_dep(name = "rules_swift", version = "4.0.0-rc4")
 bazel_dep(name = "swift-syntax", version = "602.0.0.bcr.2")
+
 # Direct dep on `apple_support` (transitively pulled in by `rules_swift`) so we
 # can `use_repo` `local_config_xcode` and `local_config_apple_cc_toolchains`
-# below, needed by the `swift_macos` bazelrc config that makes
-# `xcode_swift_toolchain` work on macOS. See `.bazelrc`.
+# below. These repos are referenced by the per-target Xcode-config transition
+# in `unified/swift-syntax-rs/xcode_transition.bzl` (primary mechanism) and by
+# the opt-in `swift_macos` bazelrc config (manual escape hatch). See
+# `.bazelrc`.
 bazel_dep(name = "apple_support", version = "2.6.1")
-
 bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
@@ -248,18 +250,20 @@ register_toolchains(
     "@swift_toolchain//:swift_toolchain_exec_ubuntu24.04",
 )
 
-# `apple_support`'s xcode_config, selected via `--xcode_version_config` in
-# the `swift_macos` bazelrc config (see `.bazelrc`). Needed because
-# rules_swift's `system_sdk` selects use Xcode version strings from
-# `apple_support`'s `xcode_locator.m`, which Bazel's built-in `host_xcodes`
-# does not match.
+# `apple_support`'s xcode_config, selected via `--xcode_version_config` by
+# the per-target Xcode-config transition in
+# `unified/swift-syntax-rs/xcode_transition.bzl` (and by the opt-in
+# `swift_macos` bazelrc config; see `.bazelrc`). Needed because rules_swift's
+# `system_sdk` selects use Xcode version strings from `apple_support`'s
+# `xcode_locator.m`, which Bazel's built-in `host_xcodes` does not match.
 xcode_configure = use_extension("@apple_support//xcode:xcode_configure.bzl", "xcode_configure_extension")
 use_repo(xcode_configure, "local_config_xcode")
 
 # `apple_support`'s CC toolchains, forced ahead of Bazel's built-in
-# `local_config_cc` via `--extra_toolchains` in the `swift_macos` bazelrc
-# config (see `.bazelrc`). Must be visible from the root module for the flag
-# to resolve.
+# `local_config_cc` via `--extra_toolchains` by the per-target Xcode-config
+# transition in `unified/swift-syntax-rs/xcode_transition.bzl` (and by the
+# opt-in `swift_macos` bazelrc config; see `.bazelrc`). Must be visible from
+# the root module for those references to resolve.
 apple_cc_configure = use_extension("@apple_support//crosstool:setup.bzl", "apple_cc_configure_extension")
 use_repo(apple_cc_configure, "local_config_apple_cc_toolchains")
 
