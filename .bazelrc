@@ -12,25 +12,6 @@ common --override_module=semmle_code=%workspace%/misc/bazel/semmle_code_stub
 
 build --repo_env=CC=clang --repo_env=CXX=clang++
 
-# macOS Xcode-coupled flags, kept as an opt-in `--config=swift_macos` for
-# manual debugging. The equivalent flags are applied automatically — but
-# only to `//unified/swift-syntax-rs` targets — via an incoming-edge
-# Starlark transition (see `unified/swift-syntax-rs/xcode_transition.bzl`),
-# so other macOS builds continue to use Bazel's built-in `local_config_cc`
-# and never materialize the `@local_config_xcode` /
-# `@local_config_apple_cc_toolchains` repos.
-#
-# - `--xcode_version_config` selects `apple_support`'s xcode_config, whose
-#   version strings match the ones `rules_swift`'s `system_sdk` selects are
-#   keyed on (Bazel's built-in `host_xcodes` does not match).
-# - `--extra_toolchains` forces `apple_support`'s CC toolchain ahead of
-#   Bazel's built-in `local_config_cc` (whose `target_gnu_system_name` is
-#   literally "local", which breaks `xcode_swift_toolchain`'s triple
-#   parsing). Root-level `--extra_toolchains` beats module-registered
-#   toolchains; only matches Apple platforms.
-build:swift_macos --xcode_version_config=@local_config_xcode//:host_xcodes
-build:swift_macos --extra_toolchains=@local_config_apple_cc_toolchains//:all
-
 # Disable Android SDK auto-detection (we don't use it, and rules_android has Bazel 9 compatibility issues)
 build --repo_env=ANDROID_HOME=
 
