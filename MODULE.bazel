@@ -246,16 +246,11 @@ register_toolchains(
     "@swift_toolchain//:swift_toolchain_exec_ubuntu24.04",
 )
 
-# `apple_support`'s xcode_config, selected via `--xcode_version_config` by the
-# per-target Xcode-config transition in `unified/swift-syntax-rs/xcode_transition.bzl`.
-# Needed because `rules_swift`'s `system_sdk` selects on version strings from
-# `apple_support`'s `xcode_locator.m`, which Bazel's built-in `host_xcodes` does not match.
+# `apple_support`'s xcode_config and CC toolchains, needed by the Xcode
+# transition in `unified/swift-syntax-rs/xcode_transition.bzl`.
 xcode_configure = use_extension("@apple_support//xcode:xcode_configure.bzl", "xcode_configure_extension")
 use_repo(xcode_configure, "local_config_xcode")
 
-# `apple_support`'s CC toolchains, forced ahead of Bazel's built-in
-# `local_config_cc` via `--extra_toolchains` by the per-target Xcode-config
-# transition in `unified/swift-syntax-rs/xcode_transition.bzl`.
 apple_cc_configure = use_extension("@apple_support//crosstool:setup.bzl", "apple_cc_configure_extension")
 use_repo(apple_cc_configure, "local_config_apple_cc_toolchains")
 
