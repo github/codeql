@@ -4986,6 +4986,40 @@ open class KotlinFileExtractor(
             else -> false
         }
 
+    /**
+     * For a property/delegated-property setter [IrCall] desugared from an assignment
+     * `lhs = rhs` (origin [IrStatementOrigin.EQ]), returns the end offset of the assigned
+     * value (the call's last value argument) when it extends past the call's own end offset,
+     * or null otherwise.
+     *
+     * The K1 frontend records such a setter call (and its synthetic implicit-`this` receiver
+     * and synthetic reflection arguments) at the assignment's left-hand side only
+     * (`varResource0 = 3` -> `37:9:37:20`), whereas K2 spans the whole assignment through the
+     * assigned value (`37:9:37:24`). The setter call *is* the desugaring of the whole
+     * assignment, so K2's span is the more intuitive one; we converge K1 onto it. Returns null
+     * under K2 (where the call already spans the assigned value, so no widening is needed) and
+     * for any non-assignment call.
+     */
+    private fun getSetterCallAssignedValueEndOffset(c: IrCall): Int? {
+        if (c.origin != IrStatementOrigin.EQ) return null
+        val n = c.codeQlValueArgumentsCount
+        if (n == 0) return null
+        val assignedValue = c.codeQlGetValueArgument(n - 1) ?: return null
+        val valueEnd = assignedValue.endOffset
+        if (
+            valueEnd == UNDEFINED_OFFSET ||
+                valueEnd == SYNTHETIC_OFFSET ||
+                c.startOffset == UNDEFINED_OFFSET ||
+                c.startOffset == SYNTHETIC_OFFSET ||
+                c.endOffset == UNDEFINED_OFFSET ||
+                c.endOffset == SYNTHETIC_OFFSET
+        ) {
+            return null
+        }
+        if (valueEnd <= c.endOffset) return null
+        return valueEnd
+    }
+
     private fun extractCall(
         c: IrCall,
         callable: Label<out DbCallable>,
@@ -5977,7 +6011,29 @@ open class KotlinFileExtractor(
                     }
                 }
                 else -> {
-                    extractMethodAccess(target, true, true)
+                    // A property/delegated-property setter call desugared from an assignment
+                    // `lhs = rhs` is anchored by K1 at the left-hand side only, while K2 spans the
+                    // whole assignment through the assigned value. Widen the K1 span to match by
+                    // remapping the call's exact offset pair (which its synthetic implicit-`this`
+                    // receiver and synthetic reflection arguments also carry) onto one that runs
+                    // through the assigned value. Real source arguments have their own offsets and
+                    // are unaffected; the remap is a no-op under K2 (helper returns null).
+                    val assignedValueEnd = getSetterCallAssignedValueEndOffset(c)
+                    if (assignedValueEnd != null) {
+                        val previousRemap = tw.scopedOffsetRemap
+                        tw.scopedOffsetRemap =
+                            Pair(
+                                Pair(c.startOffset, c.endOffset),
+                                Pair(c.startOffset, assignedValueEnd)
+                            )
+                        try {
+                            extractMethodAccess(target, true, true)
+                        } finally {
+                            tw.scopedOffsetRemap = previousRemap
+                        }
+                    } else {
+                        extractMethodAccess(target, true, true)
+                    }
                 }
             }
         }

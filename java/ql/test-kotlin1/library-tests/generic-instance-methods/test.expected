@@ -7,7 +7,7 @@ calls
 | Test.java:27:5:27:24 | getter(...) | Test.java:16:22:16:25 | user | Test.java:14:14:14:17 | Test | Generic2.class:0:0:0:0 | getter | Generic2.class:0:0:0:0 | Generic2<? super String> |
 | test.kt:5:32:5:46 | identity(...) | test.kt:5:3:5:46 | identity2 | test.kt:1:1:13:1 | Generic | test.kt:6:3:6:35 | identity | test.kt:1:1:13:1 | Generic |
 | test.kt:7:21:7:26 | getStored(...) | test.kt:7:3:7:26 | getter | test.kt:1:1:13:1 | Generic | test.kt:3:3:3:12 | getStored | test.kt:1:1:13:1 | Generic |
-| test.kt:8:26:8:31 | setStored(...) | test.kt:8:3:8:41 | setter | test.kt:1:1:13:1 | Generic | test.kt:3:3:3:12 | setStored | test.kt:1:1:13:1 | Generic |
+| test.kt:8:26:8:39 | setStored(...) | test.kt:8:3:8:41 | setter | test.kt:1:1:13:1 | Generic | test.kt:3:3:3:12 | setStored | test.kt:1:1:13:1 | Generic |
 | test.kt:11:44:11:70 | privateid(...) | test.kt:11:3:11:70 | callPrivateId | test.kt:1:1:13:1 | Generic | file:///!unknown-binary-location/Generic.class:0:0:0:0 | privateid | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> |
 | test.kt:18:3:18:35 | identity(...) | test.kt:15:1:28:1 | user | test.kt:0:0:0:0 | TestKt | file:///!unknown-binary-location/Generic.class:0:0:0:0 | identity | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> |
 | test.kt:19:3:19:36 | identity2(...) | test.kt:15:1:28:1 | user | test.kt:0:0:0:0 | TestKt | file:///!unknown-binary-location/Generic.class:0:0:0:0 | identity2 | file:///!unknown-binary-location/Generic.class:0:0:0:0 | Generic<String> |
