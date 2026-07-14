@@ -1,9 +1,10 @@
-"""Per-target Xcode configuration for `//unified/swift-syntax-rs` on macOS.
+"""Per-target Xcode configuration for the `swift_library` under
+`//unified/swift-syntax-rs` on macOS.
 
 On macOS, `rules_swift` auto-registers `xcode_swift_toolchain`, whose
 analysis reads `cc_toolchain.target_gnu_system_name` and fails on Bazel's
-built-in `local_config_cc` (triple is literally "local"). Working around
-this needs two flags:
+built-in `local_config_cc` (whose triple is literally "local"). Working
+around this needs two flags:
 
 - `--xcode_version_config=@local_config_xcode//:host_xcodes` — selects
   `apple_support`'s xcode_config, whose version strings match the ones
@@ -11,17 +12,24 @@ this needs two flags:
 - `--extra_toolchains=@local_config_apple_cc_toolchains//:all` — forces
   `apple_support`'s CC toolchain ahead of `local_config_cc`.
 
-We apply them via an incoming-edge Starlark transition on the public
-`//unified/swift-syntax-rs` binary/test wrappers rather than globally in
-`.bazelrc`. That keeps every other target on macOS on Bazel's default CC
-toolchain (`local_config_cc`) and avoids materializing the
-`@local_config_xcode` / `@local_config_apple_cc_toolchains` repos unless
-something under `//unified/swift-syntax-rs` is actually being built.
+We apply them via an incoming-edge Starlark transition on the
+`swift_library` target itself (through the `xcode_transition_swift_library`
+macro below), rather than globally in `.bazelrc`. That keeps every other
+target on macOS on Bazel's default CC toolchain (`local_config_cc`) and
+avoids materializing the `@local_config_xcode` /
+`@local_config_apple_cc_toolchains` repos unless something under
+`//unified/swift-syntax-rs` is actually being built.
+
+The transition is placed on `swift_library` — not on the downstream Rust
+targets — so the Apple CC toolchain is only used for analyzing the Swift
+side. The Rust compilation and any other transitive C/C++ deps stay on
+Bazel's default CC toolchain, matching how they build elsewhere in the
+repository.
 
 The transition is a no-op on non-macOS platforms.
 """
 
-load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_test")
+load("@rules_swift//swift:swift.bzl", "swift_library")
 load("//misc/bazel:os.bzl", "os_select")
 
 _XCODE_VERSION_CONFIG = "//command_line_option:xcode_version_config"
@@ -50,85 +58,54 @@ _xcode_transition = transition(
 )
 
 def _wrapper_impl(ctx):
-    # `ctx.attr.actual` is a list because of the incoming transition.
     src = ctx.attr.actual[0]
-    src_default = src[DefaultInfo]
-    src_exe = src_default.files_to_run.executable
-    src_runfiles = src_default.default_runfiles
+    providers = [
+        # Only forward the providers a downstream `rust_*` target reads
+        # from a `deps` entry. `CcInfo` carries the linking info; forward
+        # `OutputGroupInfo` too for `bazel build --output_groups=...`.
+        src[DefaultInfo],
+    ]
+    for p in (CcInfo, OutputGroupInfo):
+        if p in src:
+            providers.append(src[p])
+    return providers
 
-    # Copy (not symlink) the executable so that runfiles lookups via
-    # `argv[0]` resolve under this wrapper's runfiles tree. This mirrors
-    # the pattern used by `//swift:rules.bzl` `_cc_transition_impl`.
-    out = ctx.actions.declare_file(ctx.label.name)
-    ctx.actions.run_shell(
-        inputs = [src_exe],
-        outputs = [out],
-        command = "cp {src} {dst}".format(src = src_exe.path, dst = out.path),
-    )
-
-    # Rewrite runfiles so the wrapped executable is replaced by the copy.
-    files = src_runfiles.files.to_list()
-    if src_exe in files:
-        files.remove(src_exe)
-    files.append(out)
-    runfiles = ctx.runfiles(files = files)
-
-    return [DefaultInfo(
-        executable = out,
-        files = depset([out]),
-        runfiles = runfiles,
-    )]
-
-_xcode_transition_binary_rule = rule(
+_xcode_transition_swift_library_rule = rule(
     implementation = _wrapper_impl,
     attrs = {
         "actual": attr.label(
             mandatory = True,
             cfg = _xcode_transition,
-            executable = True,
+            providers = [CcInfo],
         ),
         "os": attr.string(mandatory = True),
         "_allowlist_function_transition": attr.label(
             default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
         ),
     },
-    executable = True,
 )
 
-_xcode_transition_test_rule = rule(
-    implementation = _wrapper_impl,
-    attrs = {
-        "actual": attr.label(
-            mandatory = True,
-            cfg = _xcode_transition,
-            executable = True,
-        ),
-        "os": attr.string(mandatory = True),
-        "_allowlist_function_transition": attr.label(
-            default = "@bazel_tools//tools/allowlists/function_transition_allowlist",
-        ),
-    },
-    test = True,
-)
+def xcode_transition_swift_library(name, visibility = None, tags = None, target_compatible_with = None, **kwargs):
+    """`swift_library` wrapped in the macOS Xcode-config transition.
 
-def _wrap(inner_rule, wrapper_rule, name, visibility = None, tags = None, target_compatible_with = None, **kwargs):
-    """Wrap a Rust target with the Xcode-config transition.
-
-    Splits `name` into a private inner target `_impl_<name>` (built with
-    `inner_rule` and hidden from wildcards via `tags = ["manual"]`) and a
-    public `name` (built with `wrapper_rule`, which applies the Xcode
-    transition on macOS). The `_impl_` prefix — rather than an `_impl`
-    suffix — preserves the caller's original suffix, which Bazel requires
-    for test rules (target names must end in `_test`)."""
+    Splits `name` into a private inner target `_impl_<name>` (a plain
+    `swift_library`, hidden from wildcards via `tags = ["manual"]`) and a
+    public `name` that applies the incoming Xcode-config transition on
+    macOS and forwards the inner target's `CcInfo` (and other relevant
+    providers) to downstream consumers. Downstream `rust_*` targets can
+    depend on `name` as an ordinary `deps` entry — they stay in the
+    default configuration; only the `swift_library` sub-graph flips to
+    the Apple CC toolchain, and only on macOS.
+    """
     inner_name = "_impl_%s" % name
-    inner_rule(
+    swift_library(
         name = inner_name,
         visibility = ["//visibility:private"],
         tags = (tags or []) + ["manual"],
         target_compatible_with = target_compatible_with,
         **kwargs
     )
-    wrapper_rule(
+    _xcode_transition_swift_library_rule(
         name = name,
         visibility = visibility,
         tags = tags,
@@ -136,11 +113,3 @@ def _wrap(inner_rule, wrapper_rule, name, visibility = None, tags = None, target
         actual = ":" + inner_name,
         os = os_select(linux = "linux", macos = "macos", default = "other"),
     )
-
-def xcode_transition_rust_binary(name, **kwargs):
-    """`rust_binary` wrapped in the macOS Xcode-config transition."""
-    _wrap(rust_binary, _xcode_transition_binary_rule, name = name, **kwargs)
-
-def xcode_transition_rust_test(name, **kwargs):
-    """`rust_test` wrapped in the macOS Xcode-config transition."""
-    _wrap(rust_test, _xcode_transition_test_rule, name = name, **kwargs)

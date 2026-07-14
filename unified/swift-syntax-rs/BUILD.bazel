@@ -1,6 +1,5 @@
-load("@rules_rust//rust:defs.bzl", "rust_library")
-load("@rules_swift//swift:swift.bzl", "swift_library")
-load(":xcode_transition.bzl", "xcode_transition_rust_binary", "xcode_transition_rust_test")
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
+load(":xcode_transition.bzl", "xcode_transition_swift_library")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -20,16 +19,17 @@ _SWIFT_SUPPORTED_PLATFORMS = select({
 # Swift FFI shim: wraps swift-syntax and exposes a small C ABI. The Rust
 # targets below link against its `CcInfo`.
 #
-# Tagged `manual` so it is only built through the `xcode_transition_*`
-# wrappers below (which apply the Xcode-config transition on macOS).
-# Building it directly on macOS via `bazel build //...` would try to
-# analyze `xcode_swift_toolchain` under Bazel's default CC toolchain and
-# fail; going via a wrapper avoids that.
-swift_library(
+# On macOS, `rules_swift` auto-registers `xcode_swift_toolchain`, whose
+# analysis fails against Bazel's default `local_config_cc`. To avoid
+# forcing every macOS target in the repo onto the Apple CC toolchain, the
+# Xcode-config flags are applied only along the incoming edge into this
+# `swift_library` via `xcode_transition_swift_library` (see
+# `xcode_transition.bzl`). Downstream Rust targets stay in the default
+# configuration.
+xcode_transition_swift_library(
     name = "swift_syntax_ffi",
     srcs = ["swift/Sources/SwiftSyntaxFFI/SwiftSyntaxFFI.swift"],
     module_name = "SwiftSyntaxFFI",
-    tags = ["manual"],
     target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
     deps = [
         "@swift-syntax//:SwiftParser",
@@ -46,14 +46,13 @@ rust_library(
         exclude = ["src/main.rs"],
     ),
     edition = "2024",
-    tags = ["manual"],
     target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
     deps = [
         ":swift_syntax_ffi",
     ],
 )
 
-xcode_transition_rust_binary(
+rust_binary(
     name = "swift-syntax-parse",
     srcs = ["src/main.rs"],
     # `rust_binary` doesn't copy the Swift runtime into runfiles the way
@@ -69,7 +68,7 @@ xcode_transition_rust_binary(
     deps = [":swift_syntax_rs"],
 )
 
-xcode_transition_rust_test(
+rust_test(
     name = "swift_syntax_rs_test",
     size = "small",
     crate = ":swift_syntax_rs",
