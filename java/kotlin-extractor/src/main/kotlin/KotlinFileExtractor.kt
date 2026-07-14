@@ -2580,9 +2580,13 @@ open class KotlinFileExtractor(
                             f
                         )
                     val remap =
-                        if (f.origin == IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR)
-                            getDelegateExpressionOffsetRemap(f)
-                        else null
+                        when (f.origin) {
+                            IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR ->
+                                getDelegateExpressionOffsetRemap(f)
+                            IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR ->
+                                getDefaultAccessorBodyOffsetRemap(f)
+                            else -> null
+                        }
                     val previousRemap = tw.scopedOffsetRemap
                     if (remap != null) tw.scopedOffsetRemap = remap
                     try {
@@ -3578,6 +3582,41 @@ open class KotlinFileExtractor(
         return Pair(
             Pair(delegate.startOffset, delegate.endOffset),
             Pair(expression.startOffset, expression.endOffset)
+        )
+    }
+
+    /**
+     * Maps the property-declaration range (which the K1 frontend records for the synthesised
+     * body expressions of a compiler-generated default `get`/`set` accessor, running through the
+     * property initialiser) onto the property *signature* range (the `val`/`var` keyword through
+     * the type, or through the name when the type is inferred), which K2 records natively.
+     *
+     * A `DEFAULT_PROPERTY_ACCESSOR` has no source body, so the K1 frontend anchors its synthesised
+     * `field = value` / `return field` expressions (and their `<set-?>`/field/`this` sub-accesses)
+     * at the whole [KtProperty], whose end offset runs through the initialiser
+     * (`var topLevelInt: Int = 0` -> `60:1:60:24`). K2 has no PSI for these accessors and falls
+     * back to the raw signature span, which stops at the type (`60:1:60:20`) or, when the type is
+     * inferred, at the name (`var curValue = 0` -> `26:13:26:24`). The initialiser is not part of
+     * the accessor body, so K2's narrower signature span is the more intuitive one; we converge K1
+     * onto it via a scoped offset remap set only while extracting the accessor body. The remap
+     * matches the property range exactly, so no unrelated location is affected.
+     *
+     * Returns null under K2 (no PSI, [getEnclosingKtProperty] returns null) and when the property
+     * has no initialiser past the signature to exclude.
+     */
+    private fun getDefaultAccessorBodyOffsetRemap(
+        f: IrFunction
+    ): Pair<Pair<Int, Int>, Pair<Int, Int>>? {
+        val property = (f as? IrSimpleFunction)?.correspondingPropertySymbol?.owner ?: return null
+        if (property.startOffset < 0 || property.endOffset < 0) return null
+        val ktProperty = getEnclosingKtProperty(property) ?: return null
+        val declEnd = ktProperty.typeReference?.endOffset
+            ?: ktProperty.nameIdentifier?.endOffset
+            ?: return null
+        if (property.endOffset <= declEnd) return null
+        return Pair(
+            Pair(property.startOffset, property.endOffset),
+            Pair(property.startOffset, declEnd)
         )
     }
 
