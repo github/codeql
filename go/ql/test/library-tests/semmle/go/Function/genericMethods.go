@@ -11,9 +11,9 @@ func (*StructForGenericMethod2[P3]) GenericMethod2[P4 any](x P4) {}
 func generic_methods(s1 StructForGenericMethod1, s2 StructForGenericMethod2[int]) {
 	// Call the generic method specifying the type
 	s1.GenericMethod1[int](1)
-	//s2.GenericMethod2[string]("hello")
+	s2.GenericMethod2[string]("hello")
 
 	// Call the generic method without specifying the type
 	s1.GenericMethod1("hello")
-	//s2.GenericMethod2(42)
+	s2.GenericMethod2(42)
 }
