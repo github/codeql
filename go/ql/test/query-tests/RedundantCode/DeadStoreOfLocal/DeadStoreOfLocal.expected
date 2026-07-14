@@ -1,30 +1,42 @@
-| main.go:25:2:25:16 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:32:2:32:16 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:37:2:37:16 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:61:2:61:18 | assign:0 ... := ... | This definition of x is never used. |
-| testdata.go:67:2:67:17 | assign:0 ... := ... | This definition of x is never used. |
-| testdata.go:99:2:99:17 | assign:0 ... := ... | This definition of x is never used. |
-| testdata.go:101:3:101:17 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:108:2:108:17 | assign:0 ... := ... | This definition of x is never used. |
-| testdata.go:110:3:110:17 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:128:2:128:17 | assign:0 ... := ... | This definition of x is never used. |
-| testdata.go:130:3:130:17 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:131:3:131:17 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:134:3:134:17 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:143:3:143:17 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:164:3:164:17 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:172:3:172:18 | assign:0 ... += ... | This definition of x is never used. |
-| testdata.go:180:3:180:5 | increment statement | This definition of x is never used. |
-| testdata.go:201:2:201:24 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:262:2:262:16 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:268:2:268:16 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:309:2:309:7 | assign:0 ... /= ... | This definition of a is never used. |
-| testdata.go:321:2:321:7 | assign:0 ... %= ... | This definition of a is never used. |
-| testdata.go:387:3:387:17 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:432:3:432:17 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:434:3:434:17 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:441:2:441:17 | assign:0 ... := ... | This definition of x is never used. |
-| testdata.go:488:3:488:17 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:542:3:542:17 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:580:4:580:18 | assign:0 ... = ... | This definition of x is never used. |
-| testdata.go:629:3:629:16 | assign:0 ... = ... | This definition of v1 is never used. |
+| main.go:25:2:25:2 | x | This definition of x is never used. |
+| testdata.go:32:2:32:2 | x | This definition of x is never used. |
+| testdata.go:37:2:37:2 | x | This definition of x is never used. |
+| testdata.go:61:2:61:2 | x | This definition of x is never used. |
+| testdata.go:67:2:67:2 | x | This definition of x is never used. |
+| testdata.go:99:2:99:2 | x | This definition of x is never used. |
+| testdata.go:101:3:101:3 | x | This definition of x is never used. |
+| testdata.go:108:2:108:2 | x | This definition of x is never used. |
+| testdata.go:110:3:110:3 | x | This definition of x is never used. |
+| testdata.go:128:2:128:2 | x | This definition of x is never used. |
+| testdata.go:130:3:130:3 | x | This definition of x is never used. |
+| testdata.go:131:3:131:3 | x | This definition of x is never used. |
+| testdata.go:134:3:134:3 | x | This definition of x is never used. |
+| testdata.go:143:3:143:3 | x | This definition of x is never used. |
+| testdata.go:164:3:164:3 | x | This definition of x is never used. |
+| testdata.go:172:3:172:3 | x | This definition of x is never used. |
+| testdata.go:180:3:180:3 | x | This definition of x is never used. |
+| testdata.go:201:2:201:2 | x | This definition of x is never used. |
+| testdata.go:262:2:262:2 | x | This definition of x is never used. |
+| testdata.go:268:2:268:2 | x | This definition of x is never used. |
+| testdata.go:309:2:309:2 | a | This definition of a is never used. |
+| testdata.go:321:2:321:2 | a | This definition of a is never used. |
+| testdata.go:387:3:387:3 | x | This definition of x is never used. |
+| testdata.go:432:3:432:3 | x | This definition of x is never used. |
+| testdata.go:434:3:434:3 | x | This definition of x is never used. |
+| testdata.go:441:2:441:2 | x | This definition of x is never used. |
+| testdata.go:488:3:488:3 | x | This definition of x is never used. |
+| testdata.go:542:3:542:3 | x | This definition of x is never used. |
+| testdata.go:580:4:580:4 | x | This definition of x is never used. |
+| testdata.go:629:3:629:4 | v1 | This definition of v1 is never used. |
+| writetargets.go:20:2:20:2 | x | This definition of x is never used. |
+| writetargets.go:27:2:27:2 | x | This definition of x is never used. |
+| writetargets.go:34:6:34:6 | x | This definition of x is never used. |
+| writetargets.go:41:2:41:2 | x | This definition of x is never used. |
+| writetargets.go:48:2:48:2 | x | This definition of x is never used. |
+| writetargets.go:55:2:55:2 | x | This definition of x is never used. |
+| writetargets.go:62:2:62:2 | x | This definition of x is never used. |
+| writetargets.go:71:2:71:2 | x | This definition of x is never used. |
+| writetargets.go:79:2:79:2 | v | This definition of v is never used. |
+| writetargets.go:87:2:87:2 | v | This definition of v is never used. |
+| writetargets.go:95:9:95:9 | v | This definition of v is never used. |
+| writetargets.go:105:2:105:2 | r | This definition of r is never used. |
