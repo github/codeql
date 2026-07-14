@@ -3,6 +3,11 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftSyntaxFFI",
+    platforms: [
+        // swift-syntax 602 requires macOS 10.15; declare it explicitly
+        // rather than relying on the swift-tools-version default (10.13).
+        .macOS(.v10_15),
+    ],
     products: [
         // Dynamic library so the produced .so records its dependency on the
         // Swift runtime libraries, keeping the Rust link step simple.
