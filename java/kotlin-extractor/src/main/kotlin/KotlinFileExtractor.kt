@@ -6403,6 +6403,89 @@ open class KotlinFileExtractor(
         else null
     }
 
+    /**
+     * Kotlin's hard keywords, which cannot be used as an identifier without backtick-quoting. When
+     * a declaration's name equals one of these, its source occurrence is the backtick-quoted form
+     * (e.g. `` `is` ``), so the source token is longer than the name and offset-plus-name-length
+     * arithmetic would misplace the identifier's end. Such names are therefore excluded from the
+     * plain-assignment LHS narrowing below.
+     */
+    private val hardKeywords =
+        setOf(
+            "as",
+            "break",
+            "class",
+            "continue",
+            "do",
+            "else",
+            "false",
+            "for",
+            "fun",
+            "if",
+            "in",
+            "interface",
+            "is",
+            "null",
+            "object",
+            "package",
+            "return",
+            "super",
+            "this",
+            "throw",
+            "true",
+            "try",
+            "typealias",
+            "typeof",
+            "val",
+            "var",
+            "when",
+            "while"
+        )
+
+    /**
+     * Returns true when [name] is an unquoted simple Kotlin identifier: it is non-empty, starts
+     * with a letter or underscore, contains only letters, digits and underscores, and is not a
+     * hard keyword. For such a name the source occurrence contains exactly [name] with no
+     * backtick-quoting, so its character length matches the source token's length.
+     */
+    private fun isUnquotedSimpleIdentifier(name: String): Boolean {
+        if (name.isEmpty()) return false
+        if (!(name[0].isLetter() || name[0] == '_')) return false
+        if (!name.all { it.isLetterOrDigit() || it == '_' }) return false
+        return name !in hardKeywords
+    }
+
+    /**
+     * For a plain assignment `x = v` (an `IrSetValue` that is not a desugared in-place update), the
+     * K2 frontend records the set operation's end offset past the assigned value, so
+     * `getLocation(e)` spans the whole `x = v` rather than just the target identifier `x`; K1's set
+     * end offset already stops at the identifier. This returns a location covering only the target
+     * identifier so both frontends agree.
+     *
+     * The identifier's end offset is derived as `startOffset + name.length`, which is safe only
+     * when the target's name is an unquoted simple identifier (so the source token equals the name
+     * with no backtick-quoting and no leading receiver). Returns null in every other case - special
+     * or backtick-requiring names, invalid/synthetic offsets, or an end running into the assigned
+     * value - so callers keep the raw location. Deliberately gated on [usesK2]: under K1 the raw
+     * location is already identifier-only, so this must not perturb it.
+     */
+    private fun getPlainSetValueLhsIdentifierLocation(e: IrSetValue): Label<DbLocation>? {
+        if (!usesK2) return null
+        val start = e.startOffset
+        if (start == UNDEFINED_OFFSET || start == SYNTHETIC_OFFSET) return null
+        val name = e.symbol.owner.name
+        if (name.isSpecial) return null
+        val text = name.asString()
+        if (!isUnquotedSimpleIdentifier(text)) return null
+        val end = start + text.length
+        val valueStart = e.value.startOffset
+        if (
+            valueStart != UNDEFINED_OFFSET && valueStart != SYNTHETIC_OFFSET && end > valueStart
+        )
+            return null
+        return tw.getLocation(start, end)
+    }
+
     private fun getUpdateInPlaceRHS(
         origin: IrStatementOrigin?,
         isExpectedLhs: (IrExpression?) -> Boolean,
@@ -7179,19 +7262,23 @@ open class KotlinFileExtractor(
                     // For a desugared in-place update (`v += e`) the K2 frontend records the set
                     // operation's end offset past the whole assignment, so `getLocation(e)` would
                     // span `v += e` rather than just `v`. Locate the LHS `VarAccess` at the update's
-                    // receiver read of `v` instead, whose span is the identifier in both frontends;
-                    // fall back to the raw location when this is not such an in-place update or the
-                    // receiver lacks a usable source span.
+                    // receiver read of `v` instead, whose span is the identifier in both frontends.
+                    // For a plain assignment (`v = e`) K2 similarly spans the whole assignment, so
+                    // narrow to the target identifier via `getPlainSetValueLhsIdentifierLocation`.
+                    // Fall back to the raw location when neither applies or lacks a usable span.
                     val lhsLocId =
                         (e as? IrSetValue)
-                            ?.let { getUpdateInPlaceReceiver(it) }
-                            ?.takeIf {
-                                it.startOffset != UNDEFINED_OFFSET &&
-                                    it.endOffset != UNDEFINED_OFFSET &&
-                                    it.startOffset != SYNTHETIC_OFFSET &&
-                                    it.endOffset != SYNTHETIC_OFFSET
-                            }
-                            ?.let { tw.getLocation(it) } ?: tw.getLocation(e)
+                            ?.let { setValue ->
+                                getUpdateInPlaceReceiver(setValue)
+                                    ?.takeIf {
+                                        it.startOffset != UNDEFINED_OFFSET &&
+                                            it.endOffset != UNDEFINED_OFFSET &&
+                                            it.startOffset != SYNTHETIC_OFFSET &&
+                                            it.endOffset != SYNTHETIC_OFFSET
+                                    }
+                                    ?.let { tw.getLocation(it) }
+                                    ?: getPlainSetValueLhsIdentifierLocation(setValue)
+                            } ?: tw.getLocation(e)
                     extractExprContext(lhsId, lhsLocId, callable, exprParent.enclosingStmt)
 
                     when (e) {

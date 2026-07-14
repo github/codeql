@@ -346,8 +346,8 @@
 | methods5.kt:5:23:5:23 | i | VarAccess |
 | methods5.kt:5:23:5:27 | ... + ... | AddExpr |
 | methods5.kt:5:27:5:27 | x | VarAccess |
+| methods5.kt:6:3:6:3 | x | VarAccess |
 | methods5.kt:6:3:6:7 | ...=... | AssignExpr |
-| methods5.kt:6:3:6:7 | x | VarAccess |
 | methods5.kt:6:7:6:7 | 6 | IntegerLiteral |
 | methods5.kt:7:3:7:15 | <implicit coercion to unit> | ImplicitCoercionToUnitExpr |
 | methods5.kt:7:3:7:15 | Object | TypeAccess |
@@ -356,8 +356,8 @@
 | methods5.kt:7:3:7:15 | a(...) | MethodCall |
 | methods5.kt:7:3:7:15 | new (...) | ClassInstanceExpr |
 | methods5.kt:7:13:7:14 | 42 | IntegerLiteral |
+| methods5.kt:8:3:8:3 | x | VarAccess |
 | methods5.kt:8:3:8:7 | ...=... | AssignExpr |
-| methods5.kt:8:3:8:7 | x | VarAccess |
 | methods5.kt:8:7:8:7 | 7 | IntegerLiteral |
 | methods5.kt:9:3:9:32 | int | TypeAccess |
 | methods5.kt:9:12:9:17 | C1<T1> | TypeAccess |
