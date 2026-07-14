@@ -29,6 +29,7 @@ repository.
 The transition is a no-op on non-macOS platforms.
 """
 
+load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
 load("@rules_swift//swift:swift.bzl", "swift_library")
 load("//misc/bazel:os.bzl", "os_select")
 
