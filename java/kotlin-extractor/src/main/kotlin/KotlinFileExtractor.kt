@@ -6292,6 +6292,22 @@ open class KotlinFileExtractor(
             else -> null
         }
 
+    /**
+     * For a desugared in-place update such as `v += e` (represented as `v = get(v).op(e)`),
+     * returns the `IrGetValue` receiver that reads `v`. Its source span is the left-hand-side
+     * variable reference (the identifier only) in both the K1 and K2 frontends, so it provides a
+     * frontend-independent location for the update's LHS `VarAccess`. Returns null when [e] is not
+     * such an in-place update, in which case callers keep the raw location.
+     */
+    private fun getUpdateInPlaceReceiver(e: IrSetValue): IrGetValue? {
+        val op = getStatementOriginOperator(e.origin) ?: return null
+        val rhs = e.value
+        if (rhs !is IrCall || !isNumericFunction(rhs.symbol.owner, op)) return null
+        val receiver = rhs.dispatchReceiver
+        return if (receiver is IrGetValue && receiver.symbol.owner == e.symbol.owner) receiver
+        else null
+    }
+
     private fun getUpdateInPlaceRHS(
         origin: IrStatementOrigin?,
         isExpectedLhs: (IrExpression?) -> Boolean,
@@ -7065,7 +7081,22 @@ open class KotlinFileExtractor(
                     extractExprContext(id, locId, callable, exprParent.enclosingStmt)
 
                     val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-                    val lhsLocId = tw.getLocation(e)
+                    // For a desugared in-place update (`v += e`) the K2 frontend records the set
+                    // operation's end offset past the whole assignment, so `getLocation(e)` would
+                    // span `v += e` rather than just `v`. Locate the LHS `VarAccess` at the update's
+                    // receiver read of `v` instead, whose span is the identifier in both frontends;
+                    // fall back to the raw location when this is not such an in-place update or the
+                    // receiver lacks a usable source span.
+                    val lhsLocId =
+                        (e as? IrSetValue)
+                            ?.let { getUpdateInPlaceReceiver(it) }
+                            ?.takeIf {
+                                it.startOffset != UNDEFINED_OFFSET &&
+                                    it.endOffset != UNDEFINED_OFFSET &&
+                                    it.startOffset != SYNTHETIC_OFFSET &&
+                                    it.endOffset != SYNTHETIC_OFFSET
+                            }
+                            ?.let { tw.getLocation(it) } ?: tw.getLocation(e)
                     extractExprContext(lhsId, lhsLocId, callable, exprParent.enclosingStmt)
 
                     when (e) {
