@@ -1,5 +1,6 @@
-load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
+load("@rules_rust//rust:defs.bzl", "rust_library")
 load("@rules_swift//swift:swift.bzl", "swift_library")
+load(":xcode_transition.bzl", "xcode_transition_rust_binary", "xcode_transition_rust_test")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -18,10 +19,17 @@ _SWIFT_SUPPORTED_PLATFORMS = select({
 
 # Swift FFI shim: wraps swift-syntax and exposes a small C ABI. The Rust
 # targets below link against its `CcInfo`.
+#
+# Tagged `manual` so it is only built through the `xcode_transition_*`
+# wrappers below (which apply the Xcode-config transition on macOS).
+# Building it directly on macOS via `bazel build //...` would try to
+# analyze `xcode_swift_toolchain` under Bazel's default CC toolchain and
+# fail; going via a wrapper avoids that.
 swift_library(
     name = "swift_syntax_ffi",
     srcs = ["swift/Sources/SwiftSyntaxFFI/SwiftSyntaxFFI.swift"],
     module_name = "SwiftSyntaxFFI",
+    tags = ["manual"],
     target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
     deps = [
         "@swift-syntax//:SwiftParser",
@@ -38,13 +46,14 @@ rust_library(
         exclude = ["src/main.rs"],
     ),
     edition = "2024",
+    tags = ["manual"],
     target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
     deps = [
         ":swift_syntax_ffi",
     ],
 )
 
-rust_binary(
+xcode_transition_rust_binary(
     name = "swift-syntax-parse",
     srcs = ["src/main.rs"],
     # `rust_binary` doesn't copy the Swift runtime into runfiles the way
@@ -60,7 +69,7 @@ rust_binary(
     deps = [":swift_syntax_rs"],
 )
 
-rust_test(
+xcode_transition_rust_test(
     name = "swift_syntax_rs_test",
     size = "small",
     crate = ":swift_syntax_rs",
