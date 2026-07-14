@@ -1292,6 +1292,9 @@ module IR {
     /** Gets the write instruction of which this is the target. */
     WriteInstruction getWrite() { result = w }
 
+    /** Gets the left-hand side expression being written to, if any. */
+    Expr getExpr() { this = MkLhs(_, result) }
+
     /** Gets the name of the variable or field being written to, if any. */
     string getName() { none() }
 
