@@ -52,36 +52,22 @@ class CommentExtractorLighterAST(
         }
     }
 
-    // Depth-first search for the first KDoc descendant of `element`. We navigate
-    // the PSI tree by hand rather than using `com.intellij.psi.util.PsiTreeUtil`,
-    // because that utility class is not present on every supported compiler's
-    // embeddable classpath (the reduced classpath used by some builds strips it),
-    // whereas the core `PsiElement` navigation API is always available.
-    private fun findKDocDescendant(
-        element: com.intellij.psi.PsiElement
-    ): org.jetbrains.kotlin.kdoc.psi.api.KDoc? {
-        if (element is org.jetbrains.kotlin.kdoc.psi.api.KDoc) {
-            return element
-        }
-        var child = element.firstChild
-        while (child != null) {
-            findKDocDescendant(child)?.let {
-                return it
-            }
-            child = child.nextSibling
-        }
-        return null
-    }
-
     private fun parseKDocSections(
         commentText: String
     ): List<org.jetbrains.kotlin.kdoc.psi.impl.KDocSection>? {
         val factory = ktPsiFactory ?: return null
         return try {
             // A KDoc is only recognised as a doc comment when it precedes a
-            // declaration, so we append a throwaway declaration before parsing.
+            // declaration, so we append a throwaway declaration before parsing; the
+            // KDoc then attaches to that declaration as its `docComment`. We read it
+            // via the `org.jetbrains.kotlin.psi` API (`KtFile.declarations` and
+            // `KtDeclaration.docComment`) rather than a generic PSI-tree walk, because
+            // the LighterAST/K2 extractor is compiled against a curated classpath that
+            // exposes the Kotlin PSI classes but not `com.intellij.psi.*` (only the
+            // `com.intellij.lang` LighterAST API). Referencing `com.intellij.psi`
+            // types here breaks that build.
             val ktFile = factory.createFile("$commentText\nval __codeql_kdoc__ = 0")
-            findKDocDescendant(ktFile)?.getAllSections()
+            ktFile.declarations.firstOrNull()?.docComment?.getAllSections()
         } catch (e: Exception) {
             // Never swallow IntelliJ's ProcessCanceledException: it is a control-flow
             // exception that must propagate for cancellation to work. We match it by
