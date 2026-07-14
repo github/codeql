@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
 import com.github.codeql.utils.versions.codeQlExtensionReceiver
+import com.github.codeql.utils.versions.codeQlGetValueArgument
 import com.semmle.extractor.java.PopulateFile
 import com.semmle.util.unicode.UTF8Util
 import java.io.BufferedWriter
@@ -14,6 +15,7 @@ import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.declarations.path
 import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin
 import org.jetbrains.kotlin.ir.util.SYNTHETIC_OFFSET
 
 /**
@@ -347,7 +349,17 @@ open class FileTrapWriter(
                 // Calls have incorrect startOffset, so we adjust them:
                 val dr = e.dispatchReceiver?.let { getStartOffset(it) }
                 val er = e.codeQlExtensionReceiver?.let { getStartOffset(it) }
-                offsetMinOf(e.startOffset, dr, er)
+                // The `!!` (CHECK_NOT_NULL / EXCLEXCL) intrinsic carries its operand as value
+                // argument 0 rather than as a dispatch/extension receiver, and in K1 its own
+                // startOffset points at the `!` token rather than the operand. Consider the
+                // operand's start so that a call qualified through a `!!` expression (e.g.
+                // `s!!.foo()`) spans from the operand. K2 already starts at the operand, so it is
+                // unaffected.
+                val exclOperand =
+                    if (e.origin == IrStatementOrigin.EXCLEXCL)
+                        e.codeQlGetValueArgument(0)?.let { getStartOffset(it) }
+                    else null
+                offsetMinOf(e.startOffset, dr, er, exclOperand)
             }
             else -> e.startOffset
         }
