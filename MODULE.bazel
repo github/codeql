@@ -226,10 +226,11 @@ use_repo(
     "swift-resource-dir-macos",
 )
 
-# Hermetic Swift toolchain (swift.org) for building `unified/swift-syntax-rs`.
-# Only registered as an exec toolchain on Linux; on macOS `rules_swift` auto-
-# registers `xcode_swift_toolchain` (host Xcode + OS-provided Swift runtime).
-# Version comes from `unified/swift-syntax-rs/.swift-version`.
+# Swift toolchain for building `unified/swift-syntax-rs`. On Linux we register
+# a hermetic swift.org toolchain as the exec toolchain; on macOS `rules_swift`
+# auto-registers `xcode_swift_toolchain` (host Xcode + OS-provided Swift
+# runtime), which is not hermetic. Version comes from
+# `unified/swift-syntax-rs/.swift-version`.
 swift = use_extension("@rules_swift//swift:extensions.bzl", "swift")
 swift.toolchain(
     name = "swift_toolchain",
