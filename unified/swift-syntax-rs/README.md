@@ -98,7 +98,7 @@ The build does not depend on any particular version manager. You need:
 - **Rust** — pinned to `1.88` by the repo-root [`rust-toolchain.toml`](../../rust-toolchain.toml),
   which `rustup` picks up automatically.
 - **Swift** — pinned to the version in [`.swift-version`](.swift-version)
-  (currently `6.3.3`), used to build `swift-syntax` `603.0.2`. Install it any way
+  (currently `6.3.2`), used to build `swift-syntax` `603.0.2`. Install it any way
   you like — [swift.org](https://www.swift.org/install/) or
   [swiftly](https://www.swift.org/swiftly/) (which reads `.swift-version`), or a
   system package. Just make sure `swift` is on your `PATH` (or point `build.rs`
