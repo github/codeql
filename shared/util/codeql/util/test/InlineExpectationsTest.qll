@@ -373,6 +373,27 @@ module Make<InlineExpectationsTestSig Impl> {
       )
     }
 
+    /**
+     * Holds if `location` is the location of an inline expectation comment that this test fully
+     * owns: it carries at least one expectation, none of its expectations is ignored by this test
+     * (for example via a query ID that does not match the current query), and none is unparseable.
+     *
+     * `codeql test run --learn` may rewrite such a comment as a whole. Comments that also carry an
+     * expectation this test cannot see must be left untouched, because rewriting them from only the
+     * expectations this test understands would silently drop the expectations belonging to another
+     * query that shares the same source file (for example `// $ Alert[query1] Alert[query2]`).
+     */
+    predicate isFullyOwnedComment(Impl::Location location) {
+      exists(Impl::ExpectationComment comment | comment.getLocation() = location |
+        exists(ValidTestExpectation owned | owned.getLocation() = location) and
+        not exists(string tags |
+          getAnExpectation(comment, _, _, tags, _) and
+          TestImpl::tagIsIgnored(tags.splitAt(","))
+        ) and
+        not exists(InvalidTestExpectation invalid | invalid.getLocation() = location)
+      )
+    }
+
     query predicate testFailures(FailureLocatable element, string message) {
       hasFailureMessage(element, message)
     }
@@ -1071,22 +1092,124 @@ module TestPostProcessing {
     }
 
     /**
-     * Holds if `expectation` is the only inline expectation carried by its comment, so `--learn`
-     * can rewrite or delete the comment as a whole without disturbing a sibling expectation.
-     * Comments that additionally carry an invalid (unparseable) expectation are excluded, to avoid
-     * corrupting text the library could not fully understand.
+     * Holds if, after `--learn`, the inline expectation comment at `commentLoc` should carry the
+     * expectation `text` in `column` (`""` for the default column, or `"SPURIOUS"` / `"MISSING"`).
+     *
+     * These are the expectations that survive learning: a default or `SPURIOUS:` expectation is
+     * kept only while it still matches a result, a `MISSING:` expectation whose result now fires is
+     * promoted to the default column, and a `MISSING:` expectation whose result is still absent is
+     * kept unchanged.
      */
-    private predicate isSoleExpectationOnComment(Test::FailureLocatable expectation) {
-      count(Test::FailureLocatable other |
-        other.getLocation() = expectation.getLocation() and
+    private predicate learnedExpectation(TestLocation commentLoc, string column, string text) {
+      exists(Test::FailureLocatable e |
+        e.getLocation() = commentLoc and text = e.getExpectationText()
+      |
+        // a default expectation that still matches a result is kept
+        e instanceof Test::GoodTestExpectation and
+        e = Test::getAMatchingExpectation(_, _, _, _, _) and
+        column = ""
+        or
+        // a `SPURIOUS:` expectation whose result still fires is kept
+        e instanceof Test::FalsePositiveTestExpectation and
+        e = Test::getAMatchingExpectation(_, _, _, _, _) and
+        column = "SPURIOUS"
+        or
+        // a `MISSING:` expectation whose result now fires is promoted to the default column
+        e instanceof Test::FalseNegativeTestExpectation and
+        e = Test::getAMatchingExpectation(_, _, _, _, _) and
+        column = ""
+        or
+        // a `MISSING:` expectation whose result is still absent is kept
+        e instanceof Test::FalseNegativeTestExpectation and
+        not e = Test::getAMatchingExpectation(_, _, _, _, _) and
+        column = "MISSING"
+      )
+    }
+
+    /**
+     * Holds if `column` (`""` for the default column, or `"SPURIOUS"` / `"MISSING"`) currently
+     * carries the expectation `text` on the comment at `commentLoc`.
+     */
+    private predicate currentExpectation(TestLocation commentLoc, string column, string text) {
+      exists(Test::FailureLocatable e |
+        e.getLocation() = commentLoc and text = e.getExpectationText()
+      |
+        e instanceof Test::GoodTestExpectation and column = ""
+        or
+        e instanceof Test::FalsePositiveTestExpectation and column = "SPURIOUS"
+        or
+        e instanceof Test::FalseNegativeTestExpectation and column = "MISSING"
+      )
+    }
+
+    /** Holds if `--learn` should change the set of expectations carried by the comment at `commentLoc`. */
+    private predicate commentNeedsRewrite(TestLocation commentLoc) {
+      exists(string column, string text |
+        learnedExpectation(commentLoc, column, text) and
+        not currentExpectation(commentLoc, column, text)
+      )
+      or
+      exists(string column, string text |
+        currentExpectation(commentLoc, column, text) and
+        not learnedExpectation(commentLoc, column, text)
+      )
+    }
+
+    /** Gets the rank that orders the default, `SPURIOUS:`, and `MISSING:` columns within a comment. */
+    private int getColumnRank(string column) {
+      column = "" and result = 0
+      or
+      column = "SPURIOUS" and result = 1
+      or
+      column = "MISSING" and result = 2
+    }
+
+    /**
+     * Gets the rendered text of `column` on the learned comment at `commentLoc`, for example
+     * `Alert Alert[foo]` for the default column or `MISSING: Alert` for the `MISSING:` column, or
+     * has no result if that column carries no expectation after learning. Expectations within a
+     * column are ordered lexically, so a rewritten comment has a deterministic layout.
+     */
+    private string renderLearnedColumn(TestLocation commentLoc, string column) {
+      exists(string text | learnedExpectation(commentLoc, column, text)) and
+      exists(string joined |
+        joined =
+          concat(string text |
+            learnedExpectation(commentLoc, column, text)
+          |
+            text, " " order by text
+          )
+      |
+        column = "" and result = joined
+        or
+        column != "" and result = column + ": " + joined
+      )
+    }
+
+    /**
+     * Gets the fully rendered inline expectation comment (including the comment markers, but with no
+     * leading whitespace) that `--learn` should leave in place of the comment at `commentLoc` in the
+     * file with the given `relativePath`. Has no result if no expectation survives learning (in
+     * which case the caller deletes the comment instead) or the file's comment syntax is
+     * unsupported.
+     */
+    bindingset[relativePath]
+    private string renderLearnedComment(string relativePath, TestLocation commentLoc) {
+      exists(string startMarker, string endMarker, string endSuffix, string body |
+        startMarker = Input2::getStartCommentMarker(relativePath) and
+        endMarker = Input2::getEndCommentMarker(relativePath) and
         (
-          other instanceof Test::GoodTestExpectation or
-          other instanceof Test::FalsePositiveTestExpectation or
-          other instanceof Test::FalseNegativeTestExpectation
-        )
-      ) = 1 and
-      not exists(Test::InvalidTestExpectation invalid |
-        invalid.getLocation() = expectation.getLocation()
+          endMarker = "" and endSuffix = ""
+          or
+          endMarker != "" and endSuffix = " " + endMarker
+        ) and
+        body =
+          concat(string column |
+            exists(renderLearnedColumn(commentLoc, column))
+          |
+            renderLearnedColumn(commentLoc, column), " " order by getColumnRank(column)
+          ) and
+        result = startMarker + " $ " + body + endSuffix
       )
     }
 
@@ -1100,19 +1223,22 @@ module TestPostProcessing {
      * - `"replace"`: replace the 1-based inclusive column range `[startColumn, endColumn]` with
      *   `text` (the empty string deletes the range).
      *
-     * Only a deliberately reliable subset is emitted so far, restricted to the plain `Alert`
-     * tag with no value or query-id annotation, on comments that carry a single expectation:
+     * The following edits are emitted:
      *
      * - an actual result with no matching expectation gets a new `// $ Alert` comment appended
-     *   (an *unexpected result*);
-     * - a comment whose sole expectation is a plain `// $ Alert` whose result is now missing, or a
-     *   `// $ SPURIOUS: Alert` whose result no longer fires, is removed (a *missing result* or a
-     *   *fixed spurious result*); and
-     * - a comment whose sole expectation is `// $ MISSING: Alert` whose result now appears is
-     *   promoted to a plain `// $ Alert` (a *fixed missing result*).
+     *   (an *unexpected result*); and
+     * - an existing expectation comment that this test fully owns is rewritten as a whole so that
+     *   it matches the current results: obsolete default and `// $ SPURIOUS:` expectations are
+     *   dropped (a *missing result* or a *fixed spurious result*), a `// $ MISSING:` expectation
+     *   whose result now fires is promoted to the default column (a *fixed missing result*), and
+     *   the surviving expectations are re-rendered. If nothing survives, the comment is deleted.
      *
-     * Cases that need sub-comment column information (editing one tag among several on a comment
-     * that carries multiple expectations) are intentionally left for a follow-up.
+     * The rewrite handles comments that carry several expectations across the default,
+     * `SPURIOUS:`, and `MISSING:` columns, but only when the test *fully owns* the comment (see
+     * `isFullyOwnedComment`), so it never discards an expectation belonging to a different query
+     * that shares the same source file. Appending a new tag by merging it into an existing comment,
+     * and surgically editing a comment that also carries a foreign query's expectation, are left
+     * for a follow-up.
      */
     query predicate learnEdits(
       string file, int line, string operation, int startColumn, int endColumn, string text
@@ -1140,51 +1266,31 @@ module TestPostProcessing {
         text = comment
       )
       or
-      // Obsolete expectation: remove a comment whose sole expectation is either a plain
-      // `// $ Alert` that no longer matches any result (a *missing result*), or a
-      // `// $ SPURIOUS: Alert` whose result no longer fires, so the known false positive is fixed
-      // (a *fixed spurious result*). In both cases the whole comment is deleted.
-      exists(Test::FailureLocatable expectation, string relativePath, int sl, int sc |
+      // Rewrite an existing expectation comment as a whole so that it matches the current results.
+      // This subsumes the single-expectation removal and MISSING-promotion cases and additionally
+      // handles comments that carry several expectations across the default, `SPURIOUS:`, and
+      // `MISSING:` columns. The comment is replaced from its marker to the end of the line: with
+      // the re-rendered surviving expectations, or with the empty string when nothing survives (in
+      // which case `endColumn = 0` also trims the whitespace gap the removed comment leaves
+      // behind). `endColumn = 0` is the engine's "to end of line" convention, which avoids
+      // depending on how each extractor reports a line comment's end column (e.g. Swift reports it
+      // as ending at column 1 of the next line).
+      exists(TestLocation commentLoc, string relativePath, int sl, int sc |
+        Test::isFullyOwnedComment(commentLoc) and
+        commentNeedsRewrite(commentLoc) and
+        parseLocationString(commentLoc.getRelativeUrl(), relativePath, sl, sc, _, _) and
+        file = relativePath and
+        line = sl and
+        operation = "replace" and
+        startColumn = sc and
+        endColumn = 0 and
         (
-          expectation instanceof Test::GoodTestExpectation or
-          expectation instanceof Test::FalsePositiveTestExpectation
-        ) and
-        expectation.getTag() = "Alert" and
-        expectation.getValue() = "" and
-        not expectation = Test::getAMatchingExpectation(_, _, _, _, _) and
-        isSoleExpectationOnComment(expectation) and
-        parseLocationString(expectation.getLocation().getRelativeUrl(), relativePath, sl, sc, _, _) and
-        file = relativePath and
-        line = sl and
-        operation = "replace" and
-        startColumn = sc and
-        // A trailing inline expectation comment always runs to the end of its line, so delete from
-        // the comment marker to the end of the line. `endColumn = 0` is the engine's "to end of
-        // line" convention (it also trims the whitespace gap the removed comment leaves behind);
-        // using it avoids depending on how each extractor reports a line comment's end column
-        // (e.g. Swift reports it as ending at column 1 of the next line).
-        endColumn = 0 and
-        text = ""
-      )
-      or
-      // Fixed missing result: a comment whose sole expectation is `// $ MISSING: Alert` now has a
-      // matching result, so promote it to a plain `// $ Alert`. The whole comment is rewritten in
-      // place, from its comment marker to the end of the line, with a freshly rendered plain
-      // comment. Rewriting wholesale is reliable for a single-expectation comment and avoids
-      // editing individual columns within the comment. The replacement text is non-empty, so
-      // unlike the removal case the whitespace before the comment is preserved.
-      exists(Test::FalseNegativeTestExpectation expectation, string relativePath, int sl, int sc |
-        expectation.getTag() = "Alert" and
-        expectation.getValue() = "" and
-        expectation = Test::getAMatchingExpectation(_, _, _, _, _) and
-        isSoleExpectationOnComment(expectation) and
-        parseLocationString(expectation.getLocation().getRelativeUrl(), relativePath, sl, sc, _, _) and
-        file = relativePath and
-        line = sl and
-        operation = "replace" and
-        startColumn = sc and
-        endColumn = 0 and
-        text = renderInlineComment(relativePath, "Alert")
+          exists(string column, string t | learnedExpectation(commentLoc, column, t)) and
+          text = renderLearnedComment(relativePath, commentLoc)
+          or
+          not exists(string column, string t | learnedExpectation(commentLoc, column, t)) and
+          text = ""
+        )
       )
     }
   }
