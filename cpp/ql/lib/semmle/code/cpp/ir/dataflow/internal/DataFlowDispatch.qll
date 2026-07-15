@@ -129,6 +129,14 @@ private predicate qualifierSourceImpl(RelevantNode n, Class c) {
     convert.getDerivedClass() = c and
     c.getABaseClass*().getAMemberFunction().isVirtual()
   )
+  // or
+  // exists(Function f |
+  //   f = n.(DataFlowPrivate::OutNode).getCall().getStaticCallSourceTarget() and
+  //   n.(DataFlowPrivate::OutNode).getReturnKind().isNormalReturn() and
+  //   n.(DataFlowPrivate::OutNode).getReturnKind().getIndirectionIndex() = 1 and
+  //   f.hasGlobalOrStdOrBslName("make_unique") and
+  //   c = f.(FunctionTemplateInstantiation).getTemplateArgument(0)
+  // )
 }
 
 private module TrackVirtualDispatch<methodDispatchSig/1 virtualDispatch0> {

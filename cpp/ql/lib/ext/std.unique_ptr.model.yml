@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["std", "unique_ptr<T,D>", True, "unique_ptr", "(T *)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["std", "unique_ptr<T,D>", True, "unique_ptr", "(T *,const D &)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["std", "unique_ptr<T,D>", True, "unique_ptr", "(T *,D &)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["std", "unique_ptr<T,D>", True, "unique_ptr", "(T *,D &&)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["std", "unique_ptr<T,D>", True, "unique_ptr", "(T *,const D &)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["std", "unique_ptr<T,D>", True, "unique_ptr", "(T *,D &)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["std", "unique_ptr<T,D>", True, "unique_ptr", "(T *,D &&)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["std", "unique_ptr", True, "unique_ptr", "(unique_ptr &&)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["std", "unique_ptr", True, "operator=", "(unique_ptr &&)", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["std", "unique_ptr", True, "operator=", "(unique_ptr &&)", "", "Argument[*0]", "ReturnValue[*]", "value", "manual"]
+      - ["std", "unique_ptr", True, "get", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "unique_ptr", True, "operator*", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "unique_ptr", True, "operator->", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "unique_ptr", True, "operator[]", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "unique_ptr", True, "release", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "unique_ptr", True, "reset", "(T *)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["std", "unique_ptr", True, "swap", "", "", "Argument[-1]", "Argument[*0]", "value", "manual"]
+      - ["std", "unique_ptr", True, "swap", "", "", "Argument[*0]", "Argument[-1]", "value", "manual"]
+      - ["std", "", False, "swap", "(unique_ptr &,unique_ptr &)", "", "Argument[*0].Element[@]", "Argument[*1].Element[@]", "value", "manual"]
+      - ["std", "", False, "swap", "(unique_ptr &,unique_ptr &)", "", "Argument[*1].Element[@]", "Argument[*0].Element[@]", "value", "manual"]
