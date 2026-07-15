@@ -1155,6 +1155,40 @@ module TestPostProcessing {
     }
 
     /**
+     * Holds if some non-optional `Alert` result with no matching expectation fires on `line` of
+     * `relativePath` -- an *unexpected result* that `--learn` should record with a new `Alert`
+     * expectation, either by appending a fresh comment or by merging into an existing one.
+     */
+    private predicate hasUnexpectedAlertOnLine(string relativePath, int line) {
+      exists(Test::ActualTestResult actualResult |
+        actualResult.getTag() = "Alert" and
+        actualResult.getValue() = "" and
+        not actualResult.isOptional() and
+        not exists(
+          Test::getAMatchingExpectation(actualResult.getLocation(), actualResult.toString(),
+            actualResult.getTag(), actualResult.getValue(), false)
+        ) and
+        parseLocationString(actualResult.getLocation().getRelativeUrl(), relativePath, _, _, line, _)
+      )
+    }
+
+    /**
+     * Holds if `--learn` should merge a freshly learned `Alert` expectation into the existing,
+     * rewritable comment at `commentLoc` (in `column` `""`, the default), because an unexpected
+     * `Alert` result fires on that comment's line. Merging keeps the new tag alongside the
+     * comment's existing expectations rather than appending a second comment to the line.
+     */
+    private predicate mergedNewTag(TestLocation commentLoc, string column, string text) {
+      exists(string relativePath, int line |
+        Test::isRewritableComment(commentLoc) and
+        parseLocationString(commentLoc.getRelativeUrl(), relativePath, line, _, _, _) and
+        hasUnexpectedAlertOnLine(relativePath, line) and
+        column = "" and
+        text = "Alert"
+      )
+    }
+
+    /**
      * Holds if, after `--learn`, the inline expectation comment at `commentLoc` should carry the
      * expectation `text` in `column` (`""` for the default column, or a named column such as
      * `"SPURIOUS"` / `"MISSING"`).
@@ -1162,12 +1196,14 @@ module TestPostProcessing {
      * This combines the surviving expectations this test understands (see `learnedExpectation`)
      * with the expectations it ignores (see `Test::hasForeignExpectation`), which are preserved
      * verbatim so that rewriting a comment for one query never drops another query's expectation on
-     * the same line.
+     * the same line, and with any freshly learned tag merged into the comment (see `mergedNewTag`).
      */
     private predicate desiredExpectation(TestLocation commentLoc, string column, string text) {
       learnedExpectation(commentLoc, column, text)
       or
       Test::hasForeignExpectation(commentLoc, column, text)
+      or
+      mergedNewTag(commentLoc, column, text)
     }
 
     /**
@@ -1272,29 +1308,32 @@ module TestPostProcessing {
      *
      * The following edits are emitted:
      *
-     * - an actual result with no matching expectation gets a new `// $ Alert` comment appended
-     *   (an *unexpected result*); and
-     * - an existing expectation comment that this test fully owns is rewritten as a whole so that
-     *   it matches the current results: obsolete default and `// $ SPURIOUS:` expectations are
-     *   dropped (a *missing result* or a *fixed spurious result*), a `// $ MISSING:` expectation
-     *   whose result now fires is promoted to the default column (a *fixed missing result*), and
-     *   the surviving expectations are re-rendered. If nothing survives, the comment is deleted.
+     * - an actual result with no matching expectation records a new `Alert` expectation (an
+     *   *unexpected result*): if the result's line already has a rewritable comment the tag is
+     *   merged into it (see below), otherwise a fresh `// $ Alert` comment is appended; and
+     * - an existing rewritable expectation comment is rewritten as a whole so that it matches the
+     *   current results: obsolete default and `// $ SPURIOUS:` expectations are dropped (a *missing
+     *   result* or a *fixed spurious result*), a `// $ MISSING:` expectation whose result now fires
+     *   is promoted to the default column (a *fixed missing result*), a freshly learned tag on the
+     *   line is merged in, and the resulting expectations are re-rendered. If nothing remains, the
+     *   comment is deleted.
      *
      * The rewrite handles comments that carry several expectations across the default,
      * `SPURIOUS:`, and `MISSING:` columns. Expectations this test ignores (for example a tag
      * annotated with a different query's ID) are preserved verbatim, so the comment keeps any
      * expectation belonging to a different query that shares the same source file; see
-     * `isRewritableComment` and `Test::hasForeignExpectation`. Appending a new tag by merging it
-     * into an existing comment rather than adding a separate one is left for a follow-up.
+     * `isRewritableComment` and `Test::hasForeignExpectation`.
      */
     query predicate learnEdits(
       string file, int line, string operation, int startColumn, int endColumn, string text
     ) {
-      // Unexpected result: append a new `// $ Alert` comment on the alert's line. The comment
-      // must go on the result's *end* line, because an expectation matches a result when the
-      // expectation's start line equals the result's end line (see `onSameLine`). For most
-      // languages a result spans a single line, but some (e.g. Rust) include leading trivia in
-      // the location, so the start and end lines differ.
+      // Unexpected result with no comment to merge into: append a new `// $ Alert` comment on the
+      // alert's line. The comment must go on the result's *end* line, because an expectation
+      // matches a result when the expectation's start line equals the result's end line (see
+      // `onSameLine`). For most languages a result spans a single line, but some (e.g. Rust)
+      // include leading trivia in the location, so the start and end lines differ. If the line
+      // already has a rewritable comment, the tag is merged into it by the rewrite disjunct below
+      // (see `mergedNewTag`) rather than appended as a separate comment.
       exists(Test::ActualTestResult actualResult, string relativePath, int el, string comment |
         actualResult.getTag() = "Alert" and
         actualResult.getValue() = "" and
@@ -1304,6 +1343,10 @@ module TestPostProcessing {
             actualResult.getTag(), actualResult.getValue(), false)
         ) and
         parseLocationString(actualResult.getLocation().getRelativeUrl(), relativePath, _, _, el, _) and
+        not exists(TestLocation existing |
+          Test::isRewritableComment(existing) and
+          parseLocationString(existing.getRelativeUrl(), relativePath, el, _, _, _)
+        ) and
         comment = renderExpectationComment(relativePath, "Alert") and
         file = relativePath and
         line = el and
