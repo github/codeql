@@ -1158,6 +1158,29 @@ module TestPostProcessing {
     }
 
     /**
+     * Gets the fully rendered inline expectation comment (including comment markers) that `--learn`
+     * should append to `line` of `relativePath`, carrying *every* expectation freshly learned for
+     * that line (see `learnedNewExpectation`) in a single comment, or has no result if that file's
+     * comment syntax is not supported.
+     *
+     * The expectations are ordered lexically, matching `renderLearnedColumn`, so that a line on
+     * which several results fire (for example a path-problem source and sink that coincide) grows
+     * one deterministic comment such as `// $ Sink Source` rather than several separate comments.
+     */
+    bindingset[relativePath, line]
+    private string renderNewComment(string relativePath, int line) {
+      exists(string body |
+        body =
+          concat(string text |
+            learnedNewExpectation(relativePath, line, text)
+          |
+            text, " " order by text
+          ) and
+        result = renderExpectationComment(relativePath, body)
+      )
+    }
+
+    /**
      * Holds if, after `--learn`, the inline expectation comment at `commentLoc` should carry the
      * expectation `text` in `column` (`""` for the default column, or `"SPURIOUS"` / `"MISSING"`).
      *
@@ -1193,36 +1216,48 @@ module TestPostProcessing {
     }
 
     /**
-     * Holds if some non-optional `Alert` result with no matching expectation fires on `line` of
-     * `relativePath` -- an *unexpected result* that `--learn` should record with a new `Alert`
-     * expectation, either by appending a fresh comment or by merging into an existing one.
+     * Holds if `--learn` should record a new expectation `text` on `endLine` of `relativePath`,
+     * because a non-optional actual result there has no matching expectation (an *unexpected
+     * result*). `text` is the fully rendered expectation, so it carries a value where the result
+     * has one (`Alert`, `Source`, or a custom `tag=value`).
+     *
+     * The expectation is keyed on the result's *end* line, because an expectation matches a
+     * result when the expectation's start line equals the result's end line (see `onSameLine`).
+     * Whether the new expectation is appended as a fresh comment or merged into an existing one is
+     * decided by the callers (see the append disjunct of `learnEdits` and `mergedNewExpectation`).
+     *
+     * `RelatedLocation` results are excluded: they are only reported when an expectation on the
+     * line already references them (see `hasRelatedLocation`/`shouldReportRelatedLocations`), so
+     * they never constitute a genuinely new result that learning should introduce on its own.
      */
-    private predicate hasUnexpectedAlertOnLine(string relativePath, int line) {
+    private predicate learnedNewExpectation(string relativePath, int endLine, string text) {
       exists(Test::ActualTestResult actualResult |
-        actualResult.getTag() = "Alert" and
-        actualResult.getValue() = "" and
         not actualResult.isOptional() and
+        actualResult.getTag() != "RelatedLocation" and
         not exists(
           Test::getAMatchingExpectation(actualResult.getLocation(), actualResult.toString(),
             actualResult.getTag(), actualResult.getValue(), false)
         ) and
-        parseLocationString(actualResult.getLocation().getRelativeUrl(), relativePath, _, _, line, _)
+        text = actualResult.getExpectationText() and
+        parseLocationString(actualResult.getLocation().getRelativeUrl(), relativePath, _, _,
+          endLine, _)
       )
     }
 
     /**
-     * Holds if `--learn` should merge a freshly learned `Alert` expectation into the existing,
+     * Holds if `--learn` should merge a freshly learned expectation `text` into the existing,
      * rewritable comment at `commentLoc` (in `column` `""`, the default), because an unexpected
-     * `Alert` result fires on that comment's line. Merging keeps the new tag alongside the
-     * comment's existing expectations rather than appending a second comment to the line.
+     * result fires on that comment's line. Merging keeps the new tag alongside the comment's
+     * existing expectations rather than appending a second comment to the line; when several new
+     * expectations land on the same line they are all merged and re-rendered together (see
+     * `renderLearnedColumn`).
      */
-    private predicate mergedNewTag(TestLocation commentLoc, string column, string text) {
+    private predicate mergedNewExpectation(TestLocation commentLoc, string column, string text) {
       exists(string relativePath, int line |
         Test::isRewritableComment(commentLoc) and
         parseLocationString(commentLoc.getRelativeUrl(), relativePath, line, _, _, _) and
-        hasUnexpectedAlertOnLine(relativePath, line) and
-        column = "" and
-        text = "Alert"
+        learnedNewExpectation(relativePath, line, text) and
+        column = ""
       )
     }
 
@@ -1234,14 +1269,15 @@ module TestPostProcessing {
      * This combines the surviving expectations this test understands (see `learnedExpectation`)
      * with the expectations it ignores (see `Test::hasForeignExpectation`), which are preserved
      * verbatim so that rewriting a comment for one query never drops another query's expectation on
-     * the same line, and with any freshly learned tag merged into the comment (see `mergedNewTag`).
+     * the same line, and with any freshly learned expectations merged into the comment (see
+     * `mergedNewExpectation`).
      */
     private predicate desiredExpectation(TestLocation commentLoc, string column, string text) {
       learnedExpectation(commentLoc, column, text)
       or
       Test::hasForeignExpectation(commentLoc, column, text)
       or
-      mergedNewTag(commentLoc, column, text)
+      mergedNewExpectation(commentLoc, column, text)
     }
 
     /**
@@ -1359,15 +1395,18 @@ module TestPostProcessing {
      *
      * The following edits are emitted:
      *
-     * - an actual result with no matching expectation records a new `Alert` expectation (an
-     *   *unexpected result*): if the result's line already has a rewritable comment the tag is
-     *   merged into it (see below), otherwise a fresh `// $ Alert` comment is appended; and
+     * - an actual result with no matching expectation records a new expectation (an *unexpected
+     *   result*): the expectation is the result's tag, carrying a value where the result has one
+     *   (`Alert`, a path-problem `Source`/`Sink`, or a custom `tag=value`). If the result's line
+     *   already has a rewritable comment the expectation is merged into it (see below), otherwise a
+     *   fresh comment carrying every expectation learned for the line is appended (for example
+     *   `// $ Alert`, or `// $ Sink Source` when several results fire on one line); and
      * - an existing rewritable expectation comment is rewritten as a whole so that it matches the
      *   current results: obsolete default and `// $ SPURIOUS:` expectations are dropped (a *missing
      *   result* or a *fixed spurious result*), a `// $ MISSING:` expectation whose result now fires
-     *   is promoted to the default column (a *fixed missing result*), a freshly learned tag on the
-     *   line is merged in, and the resulting expectations are re-rendered. If nothing remains, the
-     *   comment is deleted.
+     *   is promoted to the default column (a *fixed missing result*), any freshly learned tags on
+     *   the line are merged in, and the resulting expectations are re-rendered. If nothing remains,
+     *   the comment is deleted.
      *
      * The rewrite handles comments that carry several expectations across the default,
      * `SPURIOUS:`, and `MISSING:` columns. Expectations this test ignores (for example a tag
@@ -1375,33 +1414,27 @@ module TestPostProcessing {
      * expectation belonging to a different query that shares the same source file; see
      * `isRewritableComment` and `Test::hasForeignExpectation`. A trailing regular note after the
      * expectations (for example the `note` in `// $ Alert // note` or `# $ Alert // note`) is
-     * likewise preserved, and a freshly learned tag can be merged into a plain comment that carries
+     * likewise preserved, and freshly learned tags can be merged into a plain comment that carries
      * only such a note (`// note` -> `// $ Alert // note`); see `Test::getTrailingNote`.
      */
     query predicate learnEdits(
       string file, int line, string operation, int startColumn, int endColumn, string text
     ) {
-      // Unexpected result with no comment to merge into: append a new `// $ Alert` comment on the
-      // alert's line. The comment must go on the result's *end* line, because an expectation
-      // matches a result when the expectation's start line equals the result's end line (see
-      // `onSameLine`). For most languages a result spans a single line, but some (e.g. Rust)
-      // include leading trivia in the location, so the start and end lines differ. If the line
-      // already has a rewritable comment, the tag is merged into it by the rewrite disjunct below
-      // (see `mergedNewTag`) rather than appended as a separate comment.
-      exists(Test::ActualTestResult actualResult, string relativePath, int el, string comment |
-        actualResult.getTag() = "Alert" and
-        actualResult.getValue() = "" and
-        not actualResult.isOptional() and
-        not exists(
-          Test::getAMatchingExpectation(actualResult.getLocation(), actualResult.toString(),
-            actualResult.getTag(), actualResult.getValue(), false)
-        ) and
-        parseLocationString(actualResult.getLocation().getRelativeUrl(), relativePath, _, _, el, _) and
+      // Unexpected result with no comment to merge into: append a fresh comment carrying every
+      // expectation learned for the result's line (see `learnedNewExpectation`). The comment must
+      // go on the result's *end* line, because an expectation matches a result when the
+      // expectation's start line equals the result's end line (see `onSameLine`). For most
+      // languages a result spans a single line, but some (e.g. Rust) include leading trivia in the
+      // location, so the start and end lines differ. If the line already has a rewritable comment,
+      // the new expectations are merged into it by the rewrite disjunct below (see
+      // `mergedNewExpectation`) rather than appended as a separate comment.
+      exists(string relativePath, int el, string comment |
+        learnedNewExpectation(relativePath, el, _) and
         not exists(TestLocation existing |
           Test::isRewritableComment(existing) and
           parseLocationString(existing.getRelativeUrl(), relativePath, el, _, _, _)
         ) and
-        comment = renderExpectationComment(relativePath, "Alert") and
+        comment = renderNewComment(relativePath, el) and
         file = relativePath and
         line = el and
         operation = "append" and
