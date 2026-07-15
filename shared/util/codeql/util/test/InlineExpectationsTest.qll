@@ -374,12 +374,14 @@ module Make<InlineExpectationsTestSig Impl> {
     }
 
     /**
-     * Holds if `location` is the location of an inline expectation comment that
+     * Holds if `location` is the location of a comment that
      * `codeql test run --learn` may rewrite as a whole.
      *
-     * A comment is rewritable when it carries at least one parseable expectation, none of its
-     * expectations is unparseable, and none mixes (in a single comma-separated group) a tag this
-     * test understands with a tag it ignores (for example a query ID that does not match the
+     * A comment is rewritable when it either carries at least one parseable expectation, or is a
+     * plain comment carrying only a trailing note (see `getTrailingNote`) that a freshly learned
+     * tag can be merged into (for example `// note` -> `// $ Alert // note`); and in addition none
+     * of its expectations is unparseable, and none mixes (in a single comma-separated group) a tag
+     * this test understands with a tag it ignores (for example a query ID that does not match the
      * current query). The last condition keeps the rewrite from having to take apart a group such
      * as `Alert,Source[other-query]` whose parts this test treats differently; such comments are
      * left untouched.
@@ -391,7 +393,14 @@ module Make<InlineExpectationsTestSig Impl> {
      */
     predicate isRewritableComment(Impl::Location location) {
       exists(Impl::ExpectationComment comment | comment.getLocation() = location |
-        getAnExpectation(comment, _, _, _, _) and
+        (
+          getAnExpectation(comment, _, _, _, _)
+          or
+          // A plain comment carrying only a note (no expectation of its own) is rewritable too, so
+          // that a freshly learned tag can be merged into it rather than appended as a second
+          // comment (for example `// note` -> `// $ Alert // note`).
+          exists(getTrailingNote(location)) and not getAnExpectation(comment, _, _, _, _)
+        ) and
         not exists(InvalidTestExpectation invalid | invalid.getLocation() = location) and
         not exists(string tags, string owned, string ignored |
           getAnExpectation(comment, _, _, tags, _) and
@@ -423,22 +432,32 @@ module Make<InlineExpectationsTestSig Impl> {
     }
 
     /**
-     * Holds if the expectation comment at `location` ends with a trailing regular (non-interpreted)
-     * comment `text`, that is a `//` sequence after the expectations whose remainder the framework
-     * treats as an ordinary comment (see `expectationCommentPattern`). `text` includes the trailing
-     * comment's own `//` marker, for example `// note`.
+     * Holds if the comment at `location` carries a trailing regular (non-interpreted) note `note`,
+     * with the note's own comment marker and surrounding whitespace stripped. This is either:
      *
-     * `codeql test run --learn` keeps this trailing comment when it rewrites or deletes the
-     * expectation comment, so an explanatory note written next to an expectation is not lost. Only
-     * `//` starts such a trailing comment, mirroring `expectationCommentPattern`'s
-     * `(?:[^/]|/[^/])*` expectation region, which ends only at `//`; a `#` never does, so this is in
-     * practice a feature of `//`-comment languages.
+     * - the text after a `//` that follows the expectations in an expectation comment (for example
+     *   `note` in `// $ Alert // note` or `# $ Alert // note`), which the framework treats as an
+     *   ordinary comment (see `expectationCommentPattern`); or
+     * - the whole content of a plain comment that carries no expectation at all (for example `note`
+     *   in `// note` or `# note`), into which `--learn` may merge a freshly learned tag.
+     *
+     * `codeql test run --learn` keeps this note when it rewrites, deletes, or merges into the
+     * comment, re-wrapping it with the appropriate markers (`<marker> $ ... // note` when
+     * expectations remain, or `<marker> note` when none do), so an explanatory note written next to
+     * code is never lost. Only `//` delimits such a note within an expectation comment, mirroring
+     * `expectationCommentPattern`'s `(?:[^/]|/[^/])*` expectation region, which ends only at `//`; a
+     * `#` never does, so `# $ Alert # note` reads `note` as a tag rather than a note.
      */
-    predicate getTrailingComment(Impl::Location location, string text) {
-      exists(Impl::ExpectationComment comment |
-        comment.getLocation() = location and
-        text = comment.getContents().regexpCapture("\\s*\\$ (?:[^/]|/[^/])*(//.*)", 1)
-      )
+    string getTrailingNote(Impl::Location location) {
+      exists(Impl::ExpectationComment comment | comment.getLocation() = location |
+        result = comment.getContents().regexpCapture("\\s*\\$ (?:[^/]|/[^/])*//(.*)", 1).trim()
+        or
+        // A plain comment with no expectation of its own: its whole content is the note.
+        not getAnExpectation(comment, _, _, _, _) and
+        not exists(InvalidTestExpectation invalid | invalid.getLocation() = location) and
+        result = comment.getContents().trim()
+      ) and
+      result != ""
     }
 
     query predicate testFailures(FailureLocatable element, string message) {
@@ -1307,14 +1326,16 @@ module TestPostProcessing {
           or
           endMarker != "" and endSuffix = " " + endMarker
         ) and
-        // Preserve a trailing regular comment (e.g. `// $ Alert // note`) that sits after the
-        // expectations, so rewriting the expectations never drops an explanatory note.
+        // Preserve a trailing regular note (e.g. the `note` in `// $ Alert // note`) that sits
+        // after the expectations, so rewriting the expectations never drops an explanatory note.
+        // The inner delimiter is always `//`, which the framework recognises regardless of the
+        // outer comment marker (so a `#`-comment file renders `# $ Alert // note`).
         (
-          exists(string trailing |
-            Test::getTrailingComment(commentLoc, trailing) and trailingSuffix = " " + trailing
+          exists(string note |
+            note = Test::getTrailingNote(commentLoc) and trailingSuffix = " // " + note
           )
           or
-          not Test::getTrailingComment(commentLoc, _) and trailingSuffix = ""
+          not exists(Test::getTrailingNote(commentLoc)) and trailingSuffix = ""
         ) and
         body =
           concat(string column |
@@ -1352,10 +1373,10 @@ module TestPostProcessing {
      * `SPURIOUS:`, and `MISSING:` columns. Expectations this test ignores (for example a tag
      * annotated with a different query's ID) are preserved verbatim, so the comment keeps any
      * expectation belonging to a different query that shares the same source file; see
-     * `isRewritableComment` and `Test::hasForeignExpectation`. A trailing regular comment after
-     * the expectations (for example the ` // note` in `// $ Alert // note`) is likewise preserved;
-     * see `Test::getTrailingComment`. Only `//` starts such a trailing comment, so this is in
-     * practice a feature of `//`-comment languages.
+     * `isRewritableComment` and `Test::hasForeignExpectation`. A trailing regular note after the
+     * expectations (for example the `note` in `// $ Alert // note` or `# $ Alert // note`) is
+     * likewise preserved, and a freshly learned tag can be merged into a plain comment that carries
+     * only such a note (`// note` -> `// $ Alert // note`); see `Test::getTrailingNote`.
      */
     query predicate learnEdits(
       string file, int line, string operation, int startColumn, int endColumn, string text
@@ -1413,12 +1434,17 @@ module TestPostProcessing {
           text = renderLearnedComment(relativePath, commentLoc)
           or
           not desiredExpectation(commentLoc, _, _) and
-          // No expectation survives, so drop the `$ ...` comment. If it carried a trailing regular
-          // comment, keep that in place of the whole comment; otherwise delete to the end of line.
+          // No expectation survives, so drop the `$ ...` part of the comment. If it carried a
+          // trailing regular note, keep that note re-wrapped in the file's own comment marker (so a
+          // `#`-comment file yields `# note`, not an invalid `// note`); otherwise delete to the
+          // end of line.
           (
-            Test::getTrailingComment(commentLoc, text)
+            exists(string note |
+              note = Test::getTrailingNote(commentLoc) and
+              text = Input2::getStartCommentMarker(relativePath) + " " + note
+            )
             or
-            not Test::getTrailingComment(commentLoc, _) and text = ""
+            not exists(Test::getTrailingNote(commentLoc)) and text = ""
           )
         )
       )
