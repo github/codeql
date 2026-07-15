@@ -374,23 +374,51 @@ module Make<InlineExpectationsTestSig Impl> {
     }
 
     /**
-     * Holds if `location` is the location of an inline expectation comment that this test fully
-     * owns: it carries at least one expectation, none of its expectations is ignored by this test
-     * (for example via a query ID that does not match the current query), and none is unparseable.
+     * Holds if `location` is the location of an inline expectation comment that
+     * `codeql test run --learn` may rewrite as a whole.
      *
-     * `codeql test run --learn` may rewrite such a comment as a whole. Comments that also carry an
-     * expectation this test cannot see must be left untouched, because rewriting them from only the
-     * expectations this test understands would silently drop the expectations belonging to another
-     * query that shares the same source file (for example `// $ Alert[query1] Alert[query2]`).
+     * A comment is rewritable when it carries at least one parseable expectation, none of its
+     * expectations is unparseable, and none mixes (in a single comma-separated group) a tag this
+     * test understands with a tag it ignores (for example a query ID that does not match the
+     * current query). The last condition keeps the rewrite from having to take apart a group such
+     * as `Alert,Source[other-query]` whose parts this test treats differently; such comments are
+     * left untouched.
+     *
+     * A rewritable comment may still carry whole expectations this test ignores (for example
+     * `// $ Alert[other-query]`). Those are preserved verbatim by `hasForeignExpectation` when the
+     * comment is rewritten, so that a `--learn` run for one query never drops an expectation that
+     * belongs to a different query sharing the same source file.
      */
-    predicate isFullyOwnedComment(Impl::Location location) {
+    predicate isRewritableComment(Impl::Location location) {
       exists(Impl::ExpectationComment comment | comment.getLocation() = location |
-        exists(ValidTestExpectation owned | owned.getLocation() = location) and
-        not exists(string tags |
+        getAnExpectation(comment, _, _, _, _) and
+        not exists(InvalidTestExpectation invalid | invalid.getLocation() = location) and
+        not exists(string tags, string owned, string ignored |
           getAnExpectation(comment, _, _, tags, _) and
-          TestImpl::tagIsIgnored(tags.splitAt(","))
-        ) and
-        not exists(InvalidTestExpectation invalid | invalid.getLocation() = location)
+          owned = tags.splitAt(",") and
+          not TestImpl::tagIsIgnored(owned) and
+          ignored = tags.splitAt(",") and
+          TestImpl::tagIsIgnored(ignored)
+        )
+      )
+    }
+
+    /**
+     * Holds if the comment at `location` carries a whole expectation this test ignores (for
+     * example one annotated with a query ID that does not match the current query), whose verbatim
+     * text is `text` and which sits in `column` (`""` for the default column, or a named column
+     * such as `"SPURIOUS"` / `"MISSING"`).
+     *
+     * `codeql test run --learn` preserves such expectations unchanged when it rewrites the comment,
+     * because they belong to a different query that shares the same source file and this test
+     * cannot tell whether they still hold.
+     */
+    predicate hasForeignExpectation(Impl::Location location, string column, string text) {
+      exists(Impl::ExpectationComment comment, TColumn col, string tags |
+        comment.getLocation() = location and
+        getAnExpectation(comment, col, text, tags, _) and
+        column = getColumnString(col) and
+        forall(string tag | tag = tags.splitAt(",") | TestImpl::tagIsIgnored(tag))
       )
     }
 
@@ -1127,8 +1155,25 @@ module TestPostProcessing {
     }
 
     /**
-     * Holds if `column` (`""` for the default column, or `"SPURIOUS"` / `"MISSING"`) currently
-     * carries the expectation `text` on the comment at `commentLoc`.
+     * Holds if, after `--learn`, the inline expectation comment at `commentLoc` should carry the
+     * expectation `text` in `column` (`""` for the default column, or a named column such as
+     * `"SPURIOUS"` / `"MISSING"`).
+     *
+     * This combines the surviving expectations this test understands (see `learnedExpectation`)
+     * with the expectations it ignores (see `Test::hasForeignExpectation`), which are preserved
+     * verbatim so that rewriting a comment for one query never drops another query's expectation on
+     * the same line.
+     */
+    private predicate desiredExpectation(TestLocation commentLoc, string column, string text) {
+      learnedExpectation(commentLoc, column, text)
+      or
+      Test::hasForeignExpectation(commentLoc, column, text)
+    }
+
+    /**
+     * Holds if `column` (`""` for the default column, or a named column such as `"SPURIOUS"` /
+     * `"MISSING"`) currently carries the expectation `text` on the comment at `commentLoc`. This
+     * includes expectations this test ignores, so it can be compared against `desiredExpectation`.
      */
     private predicate currentExpectation(TestLocation commentLoc, string column, string text) {
       exists(Test::FailureLocatable e |
@@ -1140,18 +1185,20 @@ module TestPostProcessing {
         or
         e instanceof Test::FalseNegativeTestExpectation and column = "MISSING"
       )
+      or
+      Test::hasForeignExpectation(commentLoc, column, text)
     }
 
     /** Holds if `--learn` should change the set of expectations carried by the comment at `commentLoc`. */
     private predicate commentNeedsRewrite(TestLocation commentLoc) {
       exists(string column, string text |
-        learnedExpectation(commentLoc, column, text) and
+        desiredExpectation(commentLoc, column, text) and
         not currentExpectation(commentLoc, column, text)
       )
       or
       exists(string column, string text |
         currentExpectation(commentLoc, column, text) and
-        not learnedExpectation(commentLoc, column, text)
+        not desiredExpectation(commentLoc, column, text)
       )
     }
 
@@ -1171,11 +1218,11 @@ module TestPostProcessing {
      * column are ordered lexically, so a rewritten comment has a deterministic layout.
      */
     private string renderLearnedColumn(TestLocation commentLoc, string column) {
-      exists(string text | learnedExpectation(commentLoc, column, text)) and
+      desiredExpectation(commentLoc, column, _) and
       exists(string joined |
         joined =
           concat(string text |
-            learnedExpectation(commentLoc, column, text)
+            desiredExpectation(commentLoc, column, text)
           |
             text, " " order by text
           )
@@ -1234,11 +1281,11 @@ module TestPostProcessing {
      *   the surviving expectations are re-rendered. If nothing survives, the comment is deleted.
      *
      * The rewrite handles comments that carry several expectations across the default,
-     * `SPURIOUS:`, and `MISSING:` columns, but only when the test *fully owns* the comment (see
-     * `isFullyOwnedComment`), so it never discards an expectation belonging to a different query
-     * that shares the same source file. Appending a new tag by merging it into an existing comment,
-     * and surgically editing a comment that also carries a foreign query's expectation, are left
-     * for a follow-up.
+     * `SPURIOUS:`, and `MISSING:` columns. Expectations this test ignores (for example a tag
+     * annotated with a different query's ID) are preserved verbatim, so the comment keeps any
+     * expectation belonging to a different query that shares the same source file; see
+     * `isRewritableComment` and `Test::hasForeignExpectation`. Appending a new tag by merging it
+     * into an existing comment rather than adding a separate one is left for a follow-up.
      */
     query predicate learnEdits(
       string file, int line, string operation, int startColumn, int endColumn, string text
@@ -1270,13 +1317,13 @@ module TestPostProcessing {
       // This subsumes the single-expectation removal and MISSING-promotion cases and additionally
       // handles comments that carry several expectations across the default, `SPURIOUS:`, and
       // `MISSING:` columns. The comment is replaced from its marker to the end of the line: with
-      // the re-rendered surviving expectations, or with the empty string when nothing survives (in
+      // the re-rendered desired expectations, or with the empty string when none remains (in
       // which case `endColumn = 0` also trims the whitespace gap the removed comment leaves
       // behind). `endColumn = 0` is the engine's "to end of line" convention, which avoids
       // depending on how each extractor reports a line comment's end column (e.g. Swift reports it
       // as ending at column 1 of the next line).
       exists(TestLocation commentLoc, string relativePath, int sl, int sc |
-        Test::isFullyOwnedComment(commentLoc) and
+        Test::isRewritableComment(commentLoc) and
         commentNeedsRewrite(commentLoc) and
         parseLocationString(commentLoc.getRelativeUrl(), relativePath, sl, sc, _, _) and
         file = relativePath and
@@ -1285,10 +1332,10 @@ module TestPostProcessing {
         startColumn = sc and
         endColumn = 0 and
         (
-          exists(string column, string t | learnedExpectation(commentLoc, column, t)) and
+          desiredExpectation(commentLoc, _, _) and
           text = renderLearnedComment(relativePath, commentLoc)
           or
-          not exists(string column, string t | learnedExpectation(commentLoc, column, t)) and
+          not desiredExpectation(commentLoc, _, _) and
           text = ""
         )
       )
