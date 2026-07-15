@@ -422,6 +422,25 @@ module Make<InlineExpectationsTestSig Impl> {
       )
     }
 
+    /**
+     * Holds if the expectation comment at `location` ends with a trailing regular (non-interpreted)
+     * comment `text`, that is a `//` sequence after the expectations whose remainder the framework
+     * treats as an ordinary comment (see `expectationCommentPattern`). `text` includes the trailing
+     * comment's own `//` marker, for example `// note`.
+     *
+     * `codeql test run --learn` keeps this trailing comment when it rewrites or deletes the
+     * expectation comment, so an explanatory note written next to an expectation is not lost. Only
+     * `//` starts such a trailing comment, mirroring `expectationCommentPattern`'s
+     * `(?:[^/]|/[^/])*` expectation region, which ends only at `//`; a `#` never does, so this is in
+     * practice a feature of `//`-comment languages.
+     */
+    predicate getTrailingComment(Impl::Location location, string text) {
+      exists(Impl::ExpectationComment comment |
+        comment.getLocation() = location and
+        text = comment.getContents().regexpCapture("\\s*\\$ (?:[^/]|/[^/])*(//.*)", 1)
+      )
+    }
+
     query predicate testFailures(FailureLocatable element, string message) {
       hasFailureMessage(element, message)
     }
@@ -1278,7 +1297,9 @@ module TestPostProcessing {
      */
     bindingset[relativePath]
     private string renderLearnedComment(string relativePath, TestLocation commentLoc) {
-      exists(string startMarker, string endMarker, string endSuffix, string body |
+      exists(
+        string startMarker, string endMarker, string endSuffix, string body, string trailingSuffix
+      |
         startMarker = Input2::getStartCommentMarker(relativePath) and
         endMarker = Input2::getEndCommentMarker(relativePath) and
         (
@@ -1286,13 +1307,22 @@ module TestPostProcessing {
           or
           endMarker != "" and endSuffix = " " + endMarker
         ) and
+        // Preserve a trailing regular comment (e.g. `// $ Alert // note`) that sits after the
+        // expectations, so rewriting the expectations never drops an explanatory note.
+        (
+          exists(string trailing |
+            Test::getTrailingComment(commentLoc, trailing) and trailingSuffix = " " + trailing
+          )
+          or
+          not Test::getTrailingComment(commentLoc, _) and trailingSuffix = ""
+        ) and
         body =
           concat(string column |
             exists(renderLearnedColumn(commentLoc, column))
           |
             renderLearnedColumn(commentLoc, column), " " order by getColumnRank(column)
           ) and
-        result = startMarker + " $ " + body + endSuffix
+        result = startMarker + " $ " + body + trailingSuffix + endSuffix
       )
     }
 
@@ -1322,7 +1352,10 @@ module TestPostProcessing {
      * `SPURIOUS:`, and `MISSING:` columns. Expectations this test ignores (for example a tag
      * annotated with a different query's ID) are preserved verbatim, so the comment keeps any
      * expectation belonging to a different query that shares the same source file; see
-     * `isRewritableComment` and `Test::hasForeignExpectation`.
+     * `isRewritableComment` and `Test::hasForeignExpectation`. A trailing regular comment after
+     * the expectations (for example the ` // note` in `// $ Alert // note`) is likewise preserved;
+     * see `Test::getTrailingComment`. Only `//` starts such a trailing comment, so this is in
+     * practice a feature of `//`-comment languages.
      */
     query predicate learnEdits(
       string file, int line, string operation, int startColumn, int endColumn, string text
@@ -1360,11 +1393,12 @@ module TestPostProcessing {
       // This subsumes the single-expectation removal and MISSING-promotion cases and additionally
       // handles comments that carry several expectations across the default, `SPURIOUS:`, and
       // `MISSING:` columns. The comment is replaced from its marker to the end of the line: with
-      // the re-rendered desired expectations, or with the empty string when none remains (in
-      // which case `endColumn = 0` also trims the whitespace gap the removed comment leaves
-      // behind). `endColumn = 0` is the engine's "to end of line" convention, which avoids
-      // depending on how each extractor reports a line comment's end column (e.g. Swift reports it
-      // as ending at column 1 of the next line).
+      // the re-rendered desired expectations (keeping any trailing regular comment), with just the
+      // trailing regular comment when no expectation remains but a note like `// $ Alert // note`
+      // does, or with the empty string when nothing remains (in which case `endColumn = 0` also
+      // trims the whitespace gap the removed comment leaves behind). `endColumn = 0` is the
+      // engine's "to end of line" convention, which avoids depending on how each extractor reports
+      // a line comment's end column (e.g. Swift reports it as ending at column 1 of the next line).
       exists(TestLocation commentLoc, string relativePath, int sl, int sc |
         Test::isRewritableComment(commentLoc) and
         commentNeedsRewrite(commentLoc) and
@@ -1379,7 +1413,13 @@ module TestPostProcessing {
           text = renderLearnedComment(relativePath, commentLoc)
           or
           not desiredExpectation(commentLoc, _, _) and
-          text = ""
+          // No expectation survives, so drop the `$ ...` comment. If it carried a trailing regular
+          // comment, keep that in place of the whole comment; otherwise delete to the end of line.
+          (
+            Test::getTrailingComment(commentLoc, text)
+            or
+            not Test::getTrailingComment(commentLoc, _) and text = ""
+          )
         )
       )
     }
