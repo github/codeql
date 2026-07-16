@@ -86,7 +86,7 @@ namespace std
     unique_ptr& operator=(unique_ptr&& u) noexcept;
     unique_ptr& operator=(std::nullptr_t) noexcept;
     template<class U, class E> unique_ptr& operator=(unique_ptr<U, E>&& u) noexcept;
-    
+
     ~unique_ptr();
 
     pointer get() const noexcept;
@@ -111,11 +111,11 @@ namespace std {
   };
 
   template<class T, class Allocator = allocator<T>>
-  class vector { 
+  class vector {
   public:
     using value_type = T;
     using reference = value_type&;
-    using const_reference = const value_type&; 
+    using const_reference = const value_type&;
     using size_type = unsigned int;
     using iterator = std::iterator<random_access_iterator_tag, T>;
     using const_iterator = std::iterator<random_access_iterator_tag, const T>;
@@ -153,14 +153,14 @@ std::unique_ptr<S> get_unique_ptr();
 
 const S* test1(bool b1, bool b2) {
   auto s1 = *get_unique_ptr(); // GOOD
-  auto s1a = &*get_unique_ptr(); // BAD
-  auto s1b = get_unique_ptr().get(); // BAD
+  auto s1a = &*get_unique_ptr(); // $ Alert // BAD
+  auto s1b = get_unique_ptr().get(); // $ Alert // BAD
   auto s1c = get_unique_ptr()->s; // GOOD
-  auto s1d = &(get_unique_ptr()->s); // BAD
-  auto s2 = b1 ? get_unique_ptr().get() : nullptr; // BAD
-  auto s3 = b2 ? nullptr :get_unique_ptr().get(); // BAD
+  auto s1d = &(get_unique_ptr()->s); // $ Alert // BAD
+  auto s2 = b1 ? get_unique_ptr().get() : nullptr; // $ Alert // BAD
+  auto s3 = b2 ? nullptr :get_unique_ptr().get(); // $ Alert // BAD
   const S* s4;
-  s4 = get_unique_ptr().get(); // BAD
+  s4 = get_unique_ptr().get(); // $ Alert // BAD
 
   call(get_unique_ptr().get()); // GOOD
   call(b1 ? get_unique_ptr().get() : nullptr); // GOOD
@@ -169,18 +169,18 @@ const S* test1(bool b1, bool b2) {
   call_by_ref(*get_unique_ptr()); // GOOD
 
   std::vector<S*> v1;
-  v1.push_back(get_unique_ptr().get()); // BAD
+  v1.push_back(get_unique_ptr().get()); // $ Alert // BAD
 
-  S* s5[] = { get_unique_ptr().get() }; // BAD
+  S* s5[] = { get_unique_ptr().get() }; // $ Alert // BAD
 
   S s6 = b1 ? *get_unique_ptr() : *get_unique_ptr(); // GOOD
-  S& s7 = b1 ? *get_unique_ptr() : *get_unique_ptr(); // BAD
+  S& s7 = b1 ? *get_unique_ptr() : *get_unique_ptr(); // $ Alert // BAD
 
-  return &*get_unique_ptr(); // BAD
+  return &*get_unique_ptr(); // $ Alert // BAD
 }
 
 void test2(bool b1, bool b2) {
-  
+
   std::unique_ptr<S> s = get_unique_ptr();
   auto s1 = s.get(); // GOOD
   auto s2 = b1 ?  s.get() : nullptr; // GOOD

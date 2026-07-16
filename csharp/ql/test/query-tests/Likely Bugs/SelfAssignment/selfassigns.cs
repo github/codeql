@@ -70,17 +70,17 @@ class SelfAssigns : Super
 
     public void NotOK(SelfAssigns obj, int y)
     {
-        this[4] = this[4];
-        y = y;
-        obj.y = obj.y;
-        z = this.z;
-        this.z = z;
-        obj.Normal1 = obj.Normal1;
-        obj.Normal2 = obj.Normal2;
-        base.IntField = IntField;
-        this.BoolProp = base.BoolProp;
-        this.Self.Self.Self.StringProp = Self.Self.Self.StringProp;
-        intArray[1] = this.intArray[1 + 0];
+        this[4] = this[4]; // $ Alert
+        y = y; // $ Alert
+        obj.y = obj.y; // $ Alert
+        z = this.z; // $ Alert
+        this.z = z; // $ Alert
+        obj.Normal1 = obj.Normal1; // $ Alert
+        obj.Normal2 = obj.Normal2; // $ Alert
+        base.IntField = IntField; // $ Alert
+        this.BoolProp = base.BoolProp; // $ Alert
+        this.Self.Self.Self.StringProp = Self.Self.Self.StringProp; // $ Alert
+        intArray[1] = this.intArray[1 + 0]; // $ Alert
     }
 
     enum Enum

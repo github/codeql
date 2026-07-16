@@ -418,7 +418,17 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
   }
 
   /** Gets a node that is safely guarded by the given guard check. */
-  Node getABarrierNode() { result = BarrierGuardValue<guardChecks0/3>::getABarrierNode() }
+  Node getABarrierNode() {
+    result = BarrierGuardValue<guardChecks0/3>::getABarrierNode()
+    or
+    // An annotation doesn't dominate the expression it constrains, so the
+    // barrier-guard machinery above never yields a node for it; treat it as a
+    // direct barrier instead. Annotations are always present, so we only
+    // consider the `true` branch.
+    exists(Guard g, Expr e |
+      g instanceof Annotation and guardChecks(g, e, true) and result.asExpr() = e
+    )
+  }
 }
 
 bindingset[this]

@@ -24,7 +24,7 @@ void CWE134_Uncontrolled_Format_String__char_environment_fprintf_01_bad()
     {
         /* Append input from an environment variable to data */
         size_t data_len = strlen(data);
-        char * environment = GETENV(ENV_VARIABLE);
+        char * environment = GETENV(ENV_VARIABLE); // $ Source
         /* If there is data in the environment variable */
         if (environment != NULL)
         {
@@ -33,7 +33,7 @@ void CWE134_Uncontrolled_Format_String__char_environment_fprintf_01_bad()
         }
     }
     /* POTENTIAL FLAW: Do not specify the format allowing a possible format string vulnerability */
-    fprintf(stdout, data);
+    fprintf(stdout, data); // $ Alert
 }
 
 /* goodG2B uses the GoodSource with the BadSink */

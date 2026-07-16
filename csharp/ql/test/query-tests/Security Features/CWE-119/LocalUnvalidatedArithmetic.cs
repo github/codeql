@@ -14,7 +14,7 @@ public class PointerArithmetic
         fixed (char* charPointer = charArray)
         {
             // BAD: Unvalidate use in pointer arithmetic
-            char* newCharPointer = charPointer + possiblyOverridable.getNumber();
+            char* newCharPointer = charPointer + possiblyOverridable.getNumber(); // $ Alert
             *newCharPointer = 'A';
             // BAD: Unvalidate use in pointer arithmetic
             int number = possiblyOverridable.getNumber();

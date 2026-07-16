@@ -1,1 +1,2 @@
-Likely Bugs/Memory Management/AllocaInLoop.ql
+query: Likely Bugs/Memory Management/AllocaInLoop.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -13,7 +13,7 @@ class MyQtUser {
   MyQtUser(QObject *parent) {
     // This object sets its parent pointer to null and thus must be deleted
     // manually.
-    noParent = new DerivedFromQObject(nullptr); // BAD [NOT DETECTED]
+    noParent = new DerivedFromQObject(nullptr); // $ MISSING: Alert // BAD [NOT DETECTED]
 
     // This object does not need to be deleted because it will be deleted by
     // its parent object when the time is right.

@@ -15,7 +15,7 @@ void test()
 	funPtr2 = &myFunc2;
 	//funPtr3 = &myFunc2; --- this would be a compilation error
 
-	funPtr1(); // BAD
-	funPtr2(); // BAD
-	funPtr3(); // GOOD [FALSE POSITIVE]
+	funPtr1(); // $ Alert // BAD
+	funPtr2(); // $ Alert // BAD
+	funPtr3(); // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE]
 }

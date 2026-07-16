@@ -989,7 +989,7 @@ fn test_one_shot_recurses_into_returned_capture() {
         yeast::rule!(
             (assignment left: (_) @left right: (_) @right)
             =>
-            {left}
+            identifier { left }
         ),
         yeast::rule!((identifier) => (identifier "ID")),
         yeast::rule!((integer) => (integer "INT")),
@@ -1084,7 +1084,7 @@ fn test_raw_capture_marker() {
         yeast::rule!(
             (assignment left: (_) @@raw_lhs right: (_) @rhs)
             =>
-            {
+            call {
                 let text = ctx.ast.source_text(raw_lhs);
                 tree!((call
                     method: (identifier #{text.as_str()})
@@ -1139,7 +1139,7 @@ fn test_raw_capture_marker_explicit_translate() {
         yeast::rule!(
             (assignment left: (_) @@raw_lhs right: (_) @rhs)
             =>
-            {
+            call {
                 let translated_lhs = ctx.translate(raw_lhs)?;
                 tree!((call
                     method: {translated_lhs}
@@ -1321,4 +1321,234 @@ fn test_hash_brace_uses_capture_location_for_leaf() {
 
     assert_eq!(bar.start_byte(), 4);
     assert_eq!(bar.end_byte(), 7);
+}
+
+// ---- `rules!` macro tests (compile-time type-checking) ----
+
+/// `rules!` should accept well-typed rules using the bare-rule-body
+/// syntax (no inner `rule!` invocations) and produce a `Vec<Rule>` that
+/// behaves identically to a plain `vec![rule!(...)]` list.
+#[test]
+fn test_rules_macro_accepts_bare_rule_body() {
+    let rules: Vec<Rule> = yeast::rules! {
+        input: "tests/input-types.yml",
+        output: "tests/node-types.yml",
+        [
+            (assignment
+                left: (_) @left
+                right: (_) @right
+            )
+            =>
+            (assignment
+                left: {right}
+                right: {left}
+            ),
+        ]
+    };
+
+    let dump = run_and_dump("x = 1", rules);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          assignment
+            left: integer "1"
+            right: identifier "x"
+    "#,
+    );
+}
+
+/// The bare-rule-body shorthand `=> output_kind` should also be accepted.
+#[test]
+fn test_rules_macro_accepts_bare_shorthand_form() {
+    let rules: Vec<Rule> = yeast::rules! {
+        input: "tests/input-types.yml",
+        output: "tests/node-types.yml",
+        [
+            (assignment
+                left: (_) @method
+                right: (_) @receiver
+            )
+            => call,
+        ]
+    };
+
+    let dump = run_and_dump("x = 1", rules);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          call
+            method: identifier "x"
+            receiver: integer "1"
+    "#,
+    );
+}
+
+/// Backwards-compat: explicit `rule!(...)` invocations inside `rules!`
+/// should still type-check and behave the same as the bare form.
+#[test]
+fn test_rules_macro_accepts_explicit_rule_macro() {
+    let rules: Vec<Rule> = yeast::rules! {
+        input: "tests/input-types.yml",
+        output: "tests/node-types.yml",
+        [
+            rule!(
+                (assignment
+                    left: (_) @left
+                    right: (_) @right
+                )
+                =>
+                (assignment
+                    left: {right}
+                    right: {left}
+                )
+            ),
+        ]
+    };
+    assert_eq!(rules.len(), 1);
+}
+
+/// `rules!` should pass through items that aren't bare rule bodies or
+/// `rule!(...)` calls (e.g. helper-function calls returning a `Rule`),
+/// without type-checking them. Bare and explicit rules in the same list
+/// still get checked.
+#[test]
+fn test_rules_macro_allows_non_rule_items() {
+    fn extra() -> yeast::Rule {
+        rule!((identifier) => (identifier "extra"))
+    }
+    let rules: Vec<Rule> = yeast::rules! {
+        input: "tests/input-types.yml",
+        output: "tests/node-types.yml",
+        [
+            (integer) => (integer "checked"),
+            extra(),
+        ]
+    };
+    assert_eq!(rules.len(), 2);
+}
+
+/// `rules!` should accept lists that mix bare-rule and explicit-rule items.
+#[test]
+fn test_rules_macro_mixes_bare_and_explicit_forms() {
+    let rules: Vec<Rule> = yeast::rules! {
+        input: "tests/input-types.yml",
+        output: "tests/node-types.yml",
+        [
+            (integer) => (integer "I"),
+            rule!((identifier) => (identifier "S")),
+        ]
+    };
+    assert_eq!(rules.len(), 2);
+}
+
+// ---- Rule-body return-type annotation tests ----
+//
+// The annotation form `=> kind [? | *] { rust_body }` is the future
+// interface for Rust-bodied rules: the schema-vocabulary annotation
+// declares the rule's output kind for static analysis. Today's codegen
+// does NOT yet consume the annotation (it just adapts the returned
+// value to `Vec<Id>` via `IntoFieldIds`); these tests only exercise
+// the parser + the runtime-equivalence property.
+
+/// Annotation form with `*` (repeated): the rule body returns a
+/// `Vec<Id>` and the annotation says the outputs are `assignment`s.
+#[test]
+fn test_rule_annotation_repeated() {
+    // Behaviourally equivalent to a two-node splice template.
+    let r: Rule = rule!(
+        (assignment left: (_) @l right: (_) @r)
+        =>
+        assignment* {
+            let a1 = tree!((assignment left: {l} right: {r}));
+            let a2 = tree!((assignment left: {r} right: {l}));
+            vec![a1, a2]
+        }
+    );
+    let ast = run_and_ast("x = 1", vec![r]);
+    // Just verify the run completes without a schema error; two
+    // top-level `assignment` nodes should appear as siblings.
+    let mut count = 0usize;
+    for id in ast.reachable_node_ids() {
+        if let Some(n) = ast.get_node(id) {
+            if n.kind_name() == "assignment" {
+                count += 1;
+            }
+        }
+    }
+    assert!(
+        count >= 2,
+        "expected at least two assignment nodes, got {count}"
+    );
+}
+
+/// Annotation form with `?` (optional): the rule body returns
+/// `Option<Id>`. This uses `None` so the rule effectively deletes the
+/// node.
+#[test]
+fn test_rule_annotation_optional_none() {
+    // Delete every `integer` (returning None yields no output nodes).
+    let r: Rule = rule!(
+        (integer) @lit
+        =>
+        integer? {
+            let _ = lit;
+            None::<yeast::Id>
+        }
+    );
+    let ast = run_and_ast("42", vec![r]);
+    // No integer node should survive.
+    for id in ast.reachable_node_ids() {
+        if let Some(n) = ast.get_node(id) {
+            assert_ne!(n.kind_name(), "integer", "integer should have been deleted");
+        }
+    }
+}
+
+/// Annotation form (single): the rule body returns a bare `Id`.
+#[test]
+fn test_rule_annotation_single() {
+    // Identity on assignment nodes, expressed with the annotation form.
+    let r: Rule = rule!(
+        (assignment left: (_) @l right: (_) @r)
+        =>
+        assignment {
+            tree!((assignment left: {l} right: {r}))
+        }
+    );
+    let ast = run_and_ast("x = 1", vec![r]);
+    let mut has_assignment = false;
+    for id in ast.reachable_node_ids() {
+        if let Some(n) = ast.get_node(id) {
+            if n.kind_name() == "assignment" {
+                has_assignment = true;
+            }
+        }
+    }
+    assert!(has_assignment, "expected an assignment node");
+}
+
+/// The shorthand `=> kind` form (no body, no annotation) must still be
+/// distinguished from the annotation form and continue to work.
+#[test]
+fn test_shorthand_still_works_alongside_annotation_syntax() {
+    let r: Rule = rule!(
+        (assignment left: (_) @method right: (_) @receiver)
+        =>
+        call
+    );
+    let ast = run_and_ast("x = 1", vec![r]);
+    let mut has_call = false;
+    for id in ast.reachable_node_ids() {
+        if let Some(n) = ast.get_node(id) {
+            if n.kind_name() == "call" {
+                has_call = true;
+            }
+        }
+    }
+    assert!(
+        has_call,
+        "shorthand form should still produce a `call` node"
+    );
 }

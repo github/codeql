@@ -10,7 +10,7 @@ namespace VulnerableBlazorApp.Components
             {
                 builder.OpenElement(0, "div");
                 builder.OpenElement(1, "p");
-                builder.AddContent(2, (MarkupString)TheName);
+                builder.AddContent(2, (MarkupString)TheName); // $ Alert=r3 $ Alert=r4
                 builder.CloseElement();
                 builder.CloseElement();
             }

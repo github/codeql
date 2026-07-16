@@ -17,19 +17,19 @@ void f(int x, int y) {
     if (x && y)
         x++;
 
-    if (x && y++)
+    if (x && y++) // $ Alert
         x++;
 
     if (x && pureFun())
         x++;
 
-    if (x && imPureFun())
+    if (x && imPureFun()) // $ Alert
         x++;
 
     if (x && strcmp("foo", "bar"))
         x++;
 
-    if (x && unknownFun("foo", "bar"))
+    if (x && unknownFun("foo", "bar")) // $ Alert
         x++;
 }
 

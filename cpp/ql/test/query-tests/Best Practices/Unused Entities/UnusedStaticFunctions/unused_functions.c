@@ -13,15 +13,15 @@ static void used_function2(void) {
     printf("Gets run 2\n");
 }
 
-static void unused_function(void) {
+static void unused_function(void) { // $ Alert
     printf("Doesn't get run\n");
 }
 
-static void unused_function2(void) {
+static void unused_function2(void) { // $ Alert
     printf("Doesn't get run 2\n");
 }
 
-static void unused_function3(void) {
+static void unused_function3(void) { // $ Alert
     printf("Doesn't get run 3\n");
     unused_function2();
 }
@@ -60,5 +60,5 @@ static void __attribute__ ((used)) h1(void) {
 static void __attribute__ ((unused)) h3(void) {
 }
 
-static void h4(void) {
+static void h4(void) { // $ Alert
 }

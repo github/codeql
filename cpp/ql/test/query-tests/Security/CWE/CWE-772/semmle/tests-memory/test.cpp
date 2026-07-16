@@ -36,7 +36,7 @@ void test3()
 	{
 		return;
 	}
-	
+
 	free(ptr);
 }
 
@@ -59,7 +59,7 @@ void test5(int cond)
 	// malloc, sometimes free
 	void *ptr;
 
-	ptr = malloc(sizeof(char) * 1024); // BAD: not always freed
+	ptr = malloc(sizeof(char) * 1024); // $ Alert[cpp/memory-may-not-be-freed] // BAD: not always freed
 	if (cond == 0)
 	{
 		free(ptr);
@@ -71,12 +71,12 @@ void test6(int cond)
 	// malloc, sometimes free
 	void *ptr;
 
-	ptr = malloc(sizeof(char) * 1024); // BAD: not always freed
+	ptr = malloc(sizeof(char) * 1024); // $ Alert[cpp/memory-may-not-be-freed] // BAD: not always freed
 	if (cond == 0)
 	{
 		return;
 	}
-	
+
 	free(ptr);
 }
 
@@ -95,7 +95,7 @@ void test8()
 	// malloc, reassign, don't free
 	char *a, *b;
 
-	a = (char *)malloc(10); // BAD: a is not freed
+	a = (char *)malloc(10); // $ Alert[cpp/memory-never-freed] // BAD: a is not freed
 	b = a;
 }
 
@@ -104,7 +104,7 @@ void test9()
 	// malloc, overwrite, don't free
 	char *a;
 
-	a = (char *)malloc(10); // BAD: not freed
+	a = (char *)malloc(10); // $ Alert[cpp/memory-may-not-be-freed] // BAD: not freed
 	a = (char *)malloc(20);
 	free(a);
 }
@@ -131,12 +131,12 @@ void test10(int cond)
 	// ...
 
 	test10_free(a);
-	
+
 	// alloc, don't free b
-	b = test10_alloc(); // BAD: b is never freed
-	
+	b = test10_alloc(); // $ Alert[cpp/memory-may-not-be-freed] // BAD: b is never freed
+
 	// alloc, sometimes free c
-	c = test10_alloc(); // BAD: c is not always freed
+	c = test10_alloc(); // $ Alert[cpp/memory-may-not-be-freed] // BAD: c is not always freed
 	if (cond == 0)
 	{
 		return;
@@ -151,9 +151,9 @@ public:
 	{
 		a = (char *)malloc(1); // freed in destructor (GOOD)
 		b = (char *)malloc(1); // unreliably freed in destructor (BAD) [NOT REPORTED]
-		c = (char *)malloc(1); // never freed in destructor (BAD)
+		c = (char *)malloc(1); // $ Alert[cpp/memory-never-freed] // never freed in destructor (BAD)
 	}
-	
+
 	void myAllocMethod(int amount)
 	{
 		if (d != NULL)
@@ -186,7 +186,7 @@ private:
 void test11()
 {
 	myClass11 mc11;
-	
+
 	mc11.myAllocMethod(1);
 	mc11.myAllocMethod(1);
 }
@@ -196,9 +196,9 @@ void test13()
 	void *a = new int;      // new, delete (GOOD)
 	void *b = new char[10]; // new, delete (GOOD)
 	char *c = new char[20]; // new, delete (GOOD)
-	void *d = new int;      // new, don't delete (BAD)
-	void *e = new char[10]; // new, don't delete (BAD)
-	char *f = new char[20]; // new, don't delete (BAD)
+	void *d = new int;      // $ Alert[cpp/memory-never-freed] // new, don't delete (BAD)
+	void *e = new char[10]; // $ Alert[cpp/memory-never-freed] // new, don't delete (BAD)
+	char *f = new char[20]; // $ Alert[cpp/memory-never-freed] // new, don't delete (BAD)
 
 	delete (int *)a;
 	delete [] (int *)b;
@@ -223,7 +223,7 @@ void test14()
 	alloc_func *af = NULL;
 	free_func *ff = NULL;
 	void *a, *b;
-	
+
 	af = &test14_alloc;
 	ff = &test14_free;
 
@@ -232,32 +232,32 @@ void test14()
 	ff(a);
 
 	// alloc, don't free via function pointer (BAD)
-	b = af(2000);
+	b = af(2000); // $ Alert[cpp/memory-may-not-be-freed]
 }
 
 void test15()
 {
 	void *ptr1, *ptr2, *ptr3;
 
-	ptr1 = realloc(NULL, 10); // alloc 10 bytes (BAD - not freed if the next realloc fails)
+	ptr1 = realloc(NULL, 10); // $ Alert[cpp/memory-may-not-be-freed] // alloc 10 bytes (BAD - not freed if the next realloc fails)
 	ptr1 = realloc(ptr1, 20); // realloc 20 bytes (GOOD)
 	ptr1 = realloc(ptr1, 0); // free (GOOD)
-	
-	ptr2 = realloc(NULL, 10); // alloc 10 bytes (BAD - only freed if the call below succeeds)
-	ptr2 = realloc(ptr2, 20); // realloc 20 bytes, never free (BAD)
-	
-	ptr3 = realloc(NULL, 10); // alloc 10 bytes, never free (BAD)
+
+	ptr2 = realloc(NULL, 10); // $ Alert[cpp/memory-may-not-be-freed] // alloc 10 bytes (BAD - only freed if the call below succeeds)
+	ptr2 = realloc(ptr2, 20); // $ Alert[cpp/memory-may-not-be-freed] // realloc 20 bytes, never free (BAD)
+
+	ptr3 = realloc(NULL, 10); // $ Alert[cpp/memory-never-freed] // alloc 10 bytes, never free (BAD)
 }
 
 void test16(int cond)
 {
-	void *ptr = malloc(1024); // not always freed (BAD)
+	void *ptr = malloc(1024); // $ Alert[cpp/memory-may-not-be-freed] // not always freed (BAD)
 	if (ptr)
 	{
 		if (cond)
 		{
 			// ...
-			
+
 			free(ptr);
 			return;
 		} else {
@@ -271,7 +271,7 @@ void test16(int cond)
 void test17(int cond)
 {
 	// malloc, sometimes free (BAD: ptr is not always freed)
-	void *ptr = malloc(1024);
+	void *ptr = malloc(1024); // $ Alert[cpp/memory-may-not-be-freed]
 
 	if (cond == 0)
 	{
@@ -284,7 +284,7 @@ void test17(int cond)
 void test18(int cond)
 {
 	// malloc, sometimes free (BAD: ptr is not always freed)
-	void *ptr = malloc(1024);
+	void *ptr = malloc(1024); // $ Alert[cpp/memory-may-not-be-freed]
 
 	if (cond == 0)
 	{
@@ -310,7 +310,7 @@ void test20()
 {
 	// malloc, free (GOOD)
 	int x, y, z;
-	
+
 	{
 		void *a;
 
@@ -352,12 +352,12 @@ void test22(int cond)
 
 	{
 		// new, don't delete (BAD)
-		Vector3 *myVector2 = new Vector3(1.0f, 2.0f, 3.0f);
+		Vector3 *myVector2 = new Vector3(1.0f, 2.0f, 3.0f); // $ Alert[cpp/memory-never-freed]
 	}
 
 	{
 		// new, sometimes delete (BAD)
-		Vector3 *myVector3 = new Vector3(1.0f, 2.0f, 3.0f);
+		Vector3 *myVector3 = new Vector3(1.0f, 2.0f, 3.0f); // $ Alert[cpp/memory-may-not-be-freed]
 
 		if (cond) {
 			delete myVector3;
@@ -379,7 +379,7 @@ void test23()
 {
 	{
 		// malloc, free incorrectly (BAD)
-		char *buffer = (char *)malloc(100);
+		char *buffer = (char *)malloc(100); // $ Alert[cpp/memory-may-not-be-freed]
 
 		free(buffer + 10);
 	}
@@ -394,7 +394,7 @@ void test23()
 
 	{
 		// new, delete incorrectly
-		container *c = new container; // BAD: not deleted
+		container *c = new container; // $ Alert[cpp/memory-never-freed] // BAD: not deleted
 		c->thingPtr = new thing;
 
 		delete c->thingPtr;
@@ -447,17 +447,17 @@ void test25()
 		free(ptr1);
 	}
 	realloc(ptr2, 0); // equivalent to free(ptr2) (GOOD)
-	
-	ptr3 = realloc(NULL, 10); // alloc 10 bytes (BAD - not freed if next realloc fails)
+
+	ptr3 = realloc(NULL, 10); // $ Alert[cpp/memory-may-not-be-freed] // alloc 10 bytes (BAD - not freed if next realloc fails)
 	ptr4 = realloc(ptr3, 20); // realloc 20 bytes (GOOD)
 	if (ptr4 != NULL) // (this checks for success instead of failure!)
 	{
 		// clean up still allocated ptr3
 		free(ptr3);
 	}
-	realloc(ptr4, 0); // equivalent to free(ptr4) (GOOD)	
+	realloc(ptr4, 0); // equivalent to free(ptr4) (GOOD)
 
-	ptr5 = realloc(NULL, 10); // alloc 10 bytes (BAD - not freed if the next realloc fails)
+	ptr5 = realloc(NULL, 10); // $ Alert[cpp/memory-may-not-be-freed] // alloc 10 bytes (BAD - not freed if the next realloc fails)
 	ptr6 = realloc(ptr5, 20); // realloc 20 bytes (GOOD)
 	ptr7 = realloc(ptr6, 0); // free (GOOD)
 }
@@ -519,10 +519,10 @@ void test27()
 {
 	void *ptr = NULL;
 
-	ptr = realloc(ptr, 10); // BAD (not freed if the second realloc fails)
+	ptr = realloc(ptr, 10); // $ Alert[cpp/memory-may-not-be-freed] // BAD (not freed if the second realloc fails)
 	if (ptr != NULL)
 	{
-		ptr = realloc(ptr, 20); // BAD (not freed)
+		ptr = realloc(ptr, 20); // $ Alert[cpp/memory-may-not-be-freed] // BAD (not freed)
 		if (ptr != NULL)
 		{
 			dostuff();

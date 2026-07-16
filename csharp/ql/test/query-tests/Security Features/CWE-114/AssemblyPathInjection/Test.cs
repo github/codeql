@@ -4,10 +4,10 @@ using System.Reflection;
 
 public class DLLInjectionHandler : IHttpHandler {
   public void ProcessRequest(HttpContext ctx) {
-    string libraryName = ctx.Request.QueryString["libraryName"];
+    string libraryName = ctx.Request.QueryString["libraryName"]; // $ Source=r1
 
     // BAD: Load DLL based on user input
-    var badDLL = Assembly.LoadFile(libraryName);
+    var badDLL = Assembly.LoadFile(libraryName); // $ Alert=r1
 
     // GOOD: Load DLL using fixed string
     var goodDLL = Assembly.LoadFile(@"C:\visual studio 2012\Projects\ConsoleApplication1\ConsoleApplication1\DLL.dll");

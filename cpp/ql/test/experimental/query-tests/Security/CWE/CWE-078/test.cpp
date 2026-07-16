@@ -19,14 +19,14 @@ enum {
 
 int wordexp(const char *restrict s, wordexp_t *restrict p, int flags);
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) { // $ Source
   char *filePath = argv[2];
 
   {
     // BAD: the user string is injected directly into `wordexp` which performs command substitution
 
     wordexp_t we;
-    wordexp(filePath, &we, 0);
+    wordexp(filePath, &we, 0); // $ Alert
   }
 
   {

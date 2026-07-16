@@ -10,7 +10,7 @@ struct Point3 : Point2 {
 void f() {
   Point2 p2;
   Point3 p3;
-  p2 = p3;
+  p2 = p3; // $ Alert
 }
 
 void g() {

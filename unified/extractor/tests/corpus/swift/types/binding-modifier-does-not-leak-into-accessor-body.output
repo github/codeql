@@ -1,0 +1,100 @@
+var p: Int {
+  get {
+    switch y {
+    case someConstant:
+      return 1
+    default:
+      return 2
+    }
+  }
+}
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: var
+      declarator:
+        property_binding
+          computed_value:
+            computed_property
+              accessor:
+                computed_getter
+                  body:
+                    block
+                      statement:
+                        switch_statement
+                          entry:
+                            switch_entry
+                              pattern:
+                                switch_pattern
+                                  pattern:
+                                    pattern
+                                      kind: simple_identifier "someConstant"
+                              statement:
+                                control_transfer_statement
+                                  kind: return
+                                  result: integer_literal "1"
+                            switch_entry
+                              default: default_keyword "default"
+                              statement:
+                                control_transfer_statement
+                                  kind: return
+                                  result: integer_literal "2"
+                          expr: simple_identifier "y"
+                  specifier:
+                    getter_specifier
+          name:
+            pattern
+              bound_identifier: simple_identifier "p"
+          type:
+            type_annotation
+              type:
+                type
+                  name:
+                    user_type
+                      part:
+                        simple_user_type
+                          name: type_identifier "Int"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        accessor_declaration
+          body:
+            block
+              stmt:
+                switch_expr
+                  case:
+                    switch_case
+                      body:
+                        block
+                          stmt:
+                            return_expr
+                              value: int_literal "1"
+                      pattern:
+                        expr_equality_pattern
+                          expr:
+                            name_expr
+                              identifier: identifier "someConstant"
+                    switch_case
+                      body:
+                        block
+                          stmt:
+                            return_expr
+                              value: int_literal "2"
+                  value:
+                    name_expr
+                      identifier: identifier "y"
+          modifier: modifier "var"
+          name: identifier "p"
+          type:
+            named_type_expr
+              name: identifier "Int"
+          accessor_kind: accessor_kind "get"

@@ -48,7 +48,7 @@ manager *test_managers()
 	std::vector<std::string> vs;
 	a.set_strings(vs); // BAD: stack address `&vs` escapes [NOT DETECTED]
 
-	glob_man = &man; // BAD: stack address `&man` escapes
+	glob_man = &man; // $ Alert // BAD: stack address `&man` escapes
 
 	return &man; // BAD: stack address `&man` escapes [NOT DETECTED]
 }

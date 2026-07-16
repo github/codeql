@@ -11,8 +11,8 @@ class Bad
         var cmd = new SqlCommand("SELECT * FROM Customers", conn);
         var ret = cmd.ExecuteReader();
 
-        cmd.Dispose();
-        conn.Dispose();
+        cmd.Dispose(); // $ Alert
+        conn.Dispose(); // $ Alert
 
         return ret;
     }

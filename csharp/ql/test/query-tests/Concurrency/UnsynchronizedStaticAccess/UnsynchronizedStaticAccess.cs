@@ -20,7 +20,7 @@ public class Klass
     public void test()
     {
         // BAD: unsynchronized access
-        string val = dict["foo"];
+        string val = dict["foo"]; // $ Alert
 
         lock (mutex)
         {
@@ -66,6 +66,6 @@ public class Klass
     private void testMethod()
     {
         // BAD: called concurrently by thread
-        string val = dict["foo"];
+        string val = dict["foo"]; // $ Alert
     }
 }

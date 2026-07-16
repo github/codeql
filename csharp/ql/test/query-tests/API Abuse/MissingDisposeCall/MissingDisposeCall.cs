@@ -20,7 +20,7 @@ class C1 : IDisposable
     C1 Field1; // GOOD
     C1 Field2; // BAD
 
-    public virtual void Dispose()
+    public virtual void Dispose() // $ Alert
     {
         Field1.Dispose();
     }
@@ -31,7 +31,7 @@ class C2 : C1
     C1 Field1; // GOOD
     C1 Field2; // BAD
 
-    public override void Dispose()
+    public override void Dispose() // $ Alert
     {
         base.Dispose();
         Field1.Dispose();
@@ -49,7 +49,7 @@ class C5 : C4
     C1 Field1; // GOOD
     C1 Field2; // BAD
 
-    public override void Dispose(bool disposing)
+    public override void Dispose(bool disposing) // $ Alert
     {
         base.Dispose(disposing);
         if (disposing)
@@ -64,7 +64,7 @@ class C6 : Component
     C1 Field1; // GOOD
     C1 Field2; // BAD
 
-    protected override void Dispose(bool disposing)
+    protected override void Dispose(bool disposing) // $ Alert
     {
         base.Dispose(disposing);
         if (disposing)

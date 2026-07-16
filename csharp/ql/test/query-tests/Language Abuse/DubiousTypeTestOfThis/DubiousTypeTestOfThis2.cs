@@ -5,7 +5,7 @@ class C
 {
     void M()
     {
-        if (this is D) ;  // BAD
+        if (this is D) ;  // $ Alert // BAD
         Debug.Assert(this is D);  // GOOD
     }
 }

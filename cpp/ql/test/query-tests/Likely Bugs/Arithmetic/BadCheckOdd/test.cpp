@@ -1,5 +1,5 @@
 int test1(int x) {
-	return x % 2 == 1; // BAD
+	return x % 2 == 1; // $ Alert // BAD
 }
 
 int test2(unsigned int x) {
@@ -7,7 +7,7 @@ int test2(unsigned int x) {
 }
 
 int test3(short x) {
-	return x % 2 == 1; // BAD
+	return x % 2 == 1; // $ Alert // BAD
 }
 
 int test4(unsigned short x) {

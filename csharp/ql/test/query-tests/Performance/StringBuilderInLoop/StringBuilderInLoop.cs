@@ -7,7 +7,7 @@ class Program
     {
         foreach (var arg in args)
         {
-            var sb = new StringBuilder();  // BAD: Creation in loop
+            var sb = new StringBuilder();  // $ Alert // BAD: Creation in loop
             sb.Append("Hello ").Append(arg);
             Console.WriteLine(sb);
         }
@@ -33,7 +33,7 @@ class Program
                 sb = new StringBuilder();  // GOOD: Not in all control paths
             else
                 sb.Clear();
-            lock (sb) sb = new StringBuilder();  // BAD: In all control paths
+            lock (sb) sb = new StringBuilder();  // $ Alert // BAD: In all control paths
             sb.Append("Hello ").Append(arg);
             Console.WriteLine(sb);
         }

@@ -12,7 +12,7 @@ extern void encodeShellString(char *shellStr, int maxChars, const char* cStr);
 #include "../../../../../../include/string.h"
 ///// Test code /////
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) { // $ Source
   char *userName = argv[2];
 
   {
@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     // a command.
     char command1[1000] = {0};
     sprintf(command1, "userinfo -v \"%s\"", userName);
-    system(command1);
+    system(command1); // $ Alert
   }
 
   {
@@ -44,11 +44,11 @@ void test2(char* arg2) {
 
 void test3(char* arg1) {
   // GOOD?: the user string is a `$CFLAGS` environment variable
-  char *envCflags = getenv("CFLAGS");
+  char *envCflags = getenv("CFLAGS"); // $ Source
 
   char command[1000];
   sprintf(command, "%s %s", arg1, envCflags);
-  system(command);
+  system(command); // $ Alert
 }
 
 typedef unsigned long size_t;
@@ -60,10 +60,10 @@ char *strncat(char *s1, const char *s2, size_t n);
 void test4(FILE *f) {
   // BAD: the user string is injected directly into a command
   char command[1000] = "mv ", filename[1000];
-  fread(filename, 1, 1000, f);
+  fread(filename, 1, 1000, f); // $ Source
 
   strncat(command, filename, 1000);
-  system(command);
+  system(command); // $ Alert
 }
 
 void test5(FILE *f) {
@@ -80,19 +80,19 @@ int execl(char *path, char *arg1, ...);
 void test6(FILE *f) {
   // BAD: the user string is injected directly into a command
   char command[1000] = "mv ", filename[1000];
-  fread(filename, 1, 1000, f);
+  fread(filename, 1, 1000, f); // $ Source
 
   strncat(command, filename, 1000);
-  execl("/bin/sh", "sh", "-c", command);
+  execl("/bin/sh", "sh", "-c", command); // $ Alert
 }
 
 void test7(FILE *f) {
   // GOOD [FALSE POSITIVE]: the user string is a positional argument to a shell script
   char path[1000] = "/home/me/", filename[1000];
-  fread(filename, 1, 1000, f);
+  fread(filename, 1, 1000, f); // $ Source
 
   strncat(path, filename, 1000);
-  execl("/bin/sh", "sh", "-c", "script.sh", path);
+  execl("/bin/sh", "sh", "-c", "script.sh", path); // $ Alert
 }
 
 void test8(char *arg2) {
@@ -104,21 +104,21 @@ void test8(char *arg2) {
 
 void test9(FILE *f) {
   // BAD: the user string is injected directly into a command
-  std::string path(getenv("something"));
+  std::string path(getenv("something")); // $ Source
   std::string command = "mv " + path;
-  system(command.c_str());
+  system(command.c_str()); // $ Alert
 }
 
 void test10(FILE *f) {
   // BAD: the user string is injected directly into a command
-  std::string path(getenv("something"));
-  system(("mv " + path).c_str());
+  std::string path(getenv("something")); // $ Source
+  system(("mv " + path).c_str()); // $ Alert
 }
 
 void test11(FILE *f) {
   // BAD: the user string is injected directly into a command
-  std::string path(getenv("something"));
-  system(("mv " + path).data());
+  std::string path(getenv("something")); // $ Source
+  system(("mv " + path).data()); // $ Alert
 }
 
 int atoi(char *);
@@ -138,10 +138,10 @@ void test13(FILE *f) {
   char str[1000];
   char command[1000];
 
-  fread(str, 1, 1000, f);
+  fread(str, 1, 1000, f); // $ Source
 
   sprintf(command, "echo %s", str);
-  system(command); // BAD: the user string was printed into the command with the %s specifier
+  system(command); // $ Alert // BAD: the user string was printed into the command with the %s specifier
 }
 
 void test14(FILE *f) {
@@ -172,7 +172,7 @@ void test15(FILE *f) {
 void test16(FILE *f, bool use_flags) {
   // BAD: the user string is injected directly into a command
   char command[1000] = "mv ", flags[1000] = "-R", filename[1000];
-  fread(filename, 1, 1000, f);
+  fread(filename, 1, 1000, f); // $ Source
 
   if (use_flags) {
     strncat(flags, filename, 1000);
@@ -181,7 +181,7 @@ void test16(FILE *f, bool use_flags) {
     strncat(command, filename, 1000);
   }
 
-  execl("/bin/sh", "sh", "-c", command);
+  execl("/bin/sh", "sh", "-c", command); // $ Alert
 }
 
 void concat(char *command, char *flags, char *filename) {
@@ -192,11 +192,11 @@ void concat(char *command, char *flags, char *filename) {
 void test17(FILE *f) {
   // BAD: the user string is injected directly into a command
   char command[1000] = "mv ", flags[1000] = "-R", filename[1000];
-  fread(filename, 1, 1000, f);
+  fread(filename, 1, 1000, f); // $ Source
 
   concat(command, flags, filename);
 
-  execl("/bin/sh", "sh", "-c", command);
+  execl("/bin/sh", "sh", "-c", command); // $ Alert
 }
 
 void test18() {
@@ -216,11 +216,11 @@ void test18() {
 void test19(FILE *f) {
   // BAD: the user string is injected directly into a command
   char command[1000] = "mv ", filename[1000];
-  fread(filename, 1, 1000, f);
+  fread(filename, 1, 1000, f); // $ Source
 
   CONCAT(command, filename)
 
-  execl("/bin/sh", "sh", "-c", command);
+  execl("/bin/sh", "sh", "-c", command); // $ Alert
 }
 
 void test20() {
@@ -228,10 +228,10 @@ void test20() {
   char buffer[1024 * 4];
 
   strncpy(buffer, getenv("var_a"), 1024);
-  strncat(buffer, getenv("var_b"), 1024);
-  strncat(buffer, getenv("var_c"), 1024);
+  strncat(buffer, getenv("var_b"), 1024); // $ Source
+  strncat(buffer, getenv("var_c"), 1024); // $ Source
   strncat(buffer, " ", 1024);
-  system(buffer);
+  system(buffer); // $ Alert
 }
 
 void test21() {
@@ -240,13 +240,13 @@ void test21() {
   char buffer2[1024];
 
   sprintf(buffer1, "%s %s",
-    getenv("var_a"),
-    getenv("var_b"));
+    getenv("var_a"), // $ Source
+    getenv("var_b")); // $ Source
   sprintf(buffer2, "%s %s %s",
     " ",
     buffer1,
-    getenv("var_c"));
-  system(buffer2);
+    getenv("var_c")); // $ Source
+  system(buffer2); // $ Alert
 }
 
 void test22() {
@@ -256,9 +256,9 @@ void test22() {
 
   strncpy(buffer, "command ", 1024);
   for (i = 0; i < 10; i++) {
-    strncat(buffer, getenv("var_a"), 1024);
+    strncat(buffer, getenv("var_a"), 1024); // $ Source
   }
-  system(buffer);
+  system(buffer); // $ Alert
 }
 
 // open question: do we want to report certain sources even when they're the start of the string?

@@ -14,5 +14,7 @@ rust_library(
         "//shared/yeast-macros",
     ],
     visibility = ["//visibility:public"],
-    deps = all_crate_deps(),
+    deps = all_crate_deps() + [
+        "//shared/yeast-schema",
+    ],
 )

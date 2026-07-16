@@ -22,12 +22,12 @@ void tests3(int case_num)
 	switch (case_num)
 	{
 		case 1:
-			buffer = (char *)std::malloc(strlen(str3global)); // BAD
+			buffer = (char *)std::malloc(strlen(str3global)); // $ Alert[cpp/no-space-for-terminator] // BAD
 			strcpy(buffer, str3global);
 			break;
 
 		case 2:
-			buffer = (char *)std::malloc(strlen(str3local)); // BAD
+			buffer = (char *)std::malloc(strlen(str3local)); // $ Alert[cpp/no-space-for-terminator] // BAD
 			strcpy(buffer, str3local);
 			break;
 
@@ -50,7 +50,7 @@ void tests3(int case_num)
 
 void test3b()
 {
-	char *buffer = new char[strlen(str3global)]; // BAD
+	char *buffer = new char[strlen(str3global)]; // $ Alert[cpp/no-space-for-terminator] // BAD
 
 	strcpy(buffer, str3global);
 
@@ -59,7 +59,7 @@ void test3b()
 
 void test3c()
 {
-	char *buffer = new char[10]; // BAD [NOT DETECTED]
+	char *buffer = new char[10]; // $ MISSING: Alert // BAD [NOT DETECTED]
 
 	strcpy(buffer, "123456");
 	strcat(buffer, "123456");
@@ -68,7 +68,7 @@ void test3c()
 }
 
  // --- custom allocators ---
- 
+
 void *MyMalloc1(size_t size) { return std::malloc(size); }
 void *MyMalloc2(size_t size);
 
@@ -78,9 +78,9 @@ void tests4()
 	char *buffer1 = 0;
 	char *buffer2 = 0;
 
-	buffer1 = (char *)MyMalloc1(strlen(str4)); // BAD
+	buffer1 = (char *)MyMalloc1(strlen(str4)); // $ Alert[cpp/no-space-for-terminator] // BAD
 	strcpy(buffer1, str4);
 
-	buffer2 = (char *)MyMalloc2(strlen(str4)); // BAD
+	buffer2 = (char *)MyMalloc2(strlen(str4)); // $ Alert[cpp/no-space-for-terminator] // BAD
 	strcpy(buffer2, str4);
 }

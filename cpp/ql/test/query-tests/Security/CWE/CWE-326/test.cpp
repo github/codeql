@@ -31,8 +31,8 @@ void test1(EVP_PKEY_CTX *ctx) {
     EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, 2048);
 
     // low key sizes
-    EVP_PKEY_CTX_set_dsa_paramgen_bits(ctx, 1024);
-    EVP_PKEY_CTX_set_dh_paramgen_prime_len(ctx, 1024);
+    EVP_PKEY_CTX_set_dsa_paramgen_bits(ctx, 1024); // $ Alert
+    EVP_PKEY_CTX_set_dh_paramgen_prime_len(ctx, 1024); // $ Alert
     // RSA sets bits per-key rather than with parameters
-    EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, 1024);
+    EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, 1024); // $ Alert
 }

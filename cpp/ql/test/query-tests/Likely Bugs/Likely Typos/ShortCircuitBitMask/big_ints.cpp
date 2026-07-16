@@ -1,14 +1,14 @@
 static void bad(int x) {
-  x && 2;
-  x && 4;
-  x && 16;
-  x && 256;
-  x && 0x10000;
-  x && 0x80000000;
-  x && 0x100000000LL;
-  x && 0x800000000LL;
-  x && 0x10000000000LL;
-  x && 0x123456789ABLL;
+  x && 2; // $ Alert
+  x && 4; // $ Alert
+  x && 16; // $ Alert
+  x && 256; // $ Alert
+  x && 0x10000; // $ Alert
+  x && 0x80000000; // $ Alert
+  x && 0x100000000LL; // $ Alert
+  x && 0x800000000LL; // $ Alert
+  x && 0x10000000000LL; // $ Alert
+  x && 0x123456789ABLL; // $ Alert
 }
 
 static void good(int x) {
@@ -29,7 +29,7 @@ static void good(int x) {
 template<int i>
 void templateFunc() {
 	(i & (i - 1)) && true;
-	4 && true;
+	4 && true; // $ Alert
 }
 
 void templateTest() {
@@ -66,4 +66,4 @@ void testMacro()
 #define MYFLAG (0x80)
 
 unsigned int calc1 = 123 & MYFLAG; // OK
-unsigned int calc2 = 123 && MYFLAG; // BAD
+unsigned int calc2 = 123 && MYFLAG; // $ Alert // BAD

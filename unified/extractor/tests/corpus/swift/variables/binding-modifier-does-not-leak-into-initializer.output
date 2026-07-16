@@ -1,0 +1,63 @@
+let x = switch y {
+case someConstant: 1
+default: 2
+}
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "x"
+          value:
+            switch_statement
+              entry:
+                switch_entry
+                  pattern:
+                    switch_pattern
+                      pattern:
+                        pattern
+                          kind: simple_identifier "someConstant"
+                  statement: integer_literal "1"
+                switch_entry
+                  default: default_keyword "default"
+                  statement: integer_literal "2"
+              expr: simple_identifier "y"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          value:
+            switch_expr
+              case:
+                switch_case
+                  body:
+                    block
+                      stmt: int_literal "1"
+                  pattern:
+                    expr_equality_pattern
+                      expr:
+                        name_expr
+                          identifier: identifier "someConstant"
+                switch_case
+                  body:
+                    block
+                      stmt: int_literal "2"
+              value:
+                name_expr
+                  identifier: identifier "y"

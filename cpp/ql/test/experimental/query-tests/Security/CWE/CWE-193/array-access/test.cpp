@@ -1,13 +1,13 @@
 char *malloc(int size);
 
 void test1(int size) {
-    char *arr = malloc(size);
+    char *arr = malloc(size); // $ Source
     for (int i = 0; i < size; i++) {
         arr[i] = 0; // GOOD
     }
 
     for (int i = 0; i <= size; i++) {
-        arr[i] = i; // BAD
+        arr[i] = i; // $ Alert // BAD
     }
 }
 
@@ -18,7 +18,7 @@ typedef struct {
 
 array_t mk_array(int size) {
     array_t arr;
-    arr.p = malloc(size);
+    arr.p = malloc(size); // $ Source
     arr.size = size;
 
     return arr;
@@ -32,7 +32,7 @@ void test2(int size) {
     }
 
     for (int i = 0; i <= arr.size; i++) {
-        arr.p[i] = i; // BAD
+        arr.p[i] = i; // $ Alert // BAD
     }
 }
 
@@ -42,7 +42,7 @@ void test3_callee(array_t arr) {
     }
 
     for (int i = 0; i <= arr.size; i++) {
-        arr.p[i] = i; // BAD
+        arr.p[i] = i; // $ Alert // BAD
     }
 }
 
@@ -52,7 +52,7 @@ void test3(int size) {
 
 void test4(int size) {
     array_t arr;
-    arr.p = malloc(size);
+    arr.p = malloc(size); // $ Source
     arr.size = size;
 
     for (int i = 0; i < arr.size; i++) {
@@ -60,13 +60,13 @@ void test4(int size) {
     }
 
     for (int i = 0; i <= arr.size; i++) {
-        arr.p[i] = i; // BAD
+        arr.p[i] = i; // $ Alert // BAD
     }
 }
 
 array_t *mk_array_p(int size) {
     array_t *arr = (array_t*) malloc(sizeof(array_t));
-    arr->p = malloc(size);
+    arr->p = malloc(size); // $ Source
     arr->size = size;
 
     return arr;
@@ -80,7 +80,7 @@ void test5(int size) {
     }
 
     for (int i = 0; i <= arr->size; i++) {
-        arr->p[i] = i; // BAD
+        arr->p[i] = i; // $ Alert // BAD
     }
 }
 
@@ -90,7 +90,7 @@ void test6_callee(array_t *arr) {
     }
 
     for (int i = 0; i <= arr->size; i++) {
-        arr->p[i] = i; // BAD
+        arr->p[i] = i; // $ Alert // BAD
     }
 }
 
@@ -105,6 +105,6 @@ void test7(int size) {
     }
 
     for (char *p = arr; p <= arr + size; p++) {
-        *p = 0; // BAD [NOT DETECTED]
+        *p = 0; // $ MISSING: Alert // BAD [NOT DETECTED]
     }
 }

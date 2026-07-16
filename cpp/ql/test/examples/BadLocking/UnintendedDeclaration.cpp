@@ -48,7 +48,7 @@ void test1()
 
 void test2()
 {
-	Lock<Mutex> myLock(); // BAD (interpreted as a function declaration, this does nothing)
+	Lock<Mutex> myLock(); // $ Alert[cpp/function-in-block] // BAD (interpreted as a function declaration, this does nothing)
 
 	// ...
 }
@@ -62,14 +62,14 @@ void test3()
 
 void test4()
 {
-	Lock<Mutex>(myMutex); // BAD (creates an uninitialized variable called `myMutex`, probably not intended)
+	Lock<Mutex>(myMutex); // $ Alert[cpp/local-variable-hides-global-variable] // BAD (creates an uninitialized variable called `myMutex`, probably not intended)
 
 	// ...
 }
 
 void test5()
 {
-	Lock<Mutex> myLock(Mutex); // BAD (interpreted as a function declaration, this does nothing)
+	Lock<Mutex> myLock(Mutex); // $ Alert[cpp/function-in-block] // BAD (interpreted as a function declaration, this does nothing)
 
 	// ...
 }
@@ -86,7 +86,7 @@ public:
 
 	void test7()
 	{
-		Lock<Mutex>(memberMutex); // BAD (creates an uninitialized variable called `memberMutex`, probably not intended) [NOT DETECTED]
+		Lock<Mutex>(memberMutex); // $ MISSING: Alert // BAD (creates an uninitialized variable called `memberMutex`, probably not intended) [NOT DETECTED]
 
 		// ...
 	}

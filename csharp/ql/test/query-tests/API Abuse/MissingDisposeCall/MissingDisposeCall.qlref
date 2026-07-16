@@ -1,1 +1,2 @@
-API Abuse/MissingDisposeCall.ql
+query: API Abuse/MissingDisposeCall.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

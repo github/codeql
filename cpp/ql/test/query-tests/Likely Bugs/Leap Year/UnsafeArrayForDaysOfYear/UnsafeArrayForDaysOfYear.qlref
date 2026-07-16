@@ -1,1 +1,2 @@
-Likely Bugs/Leap Year/UnsafeArrayForDaysOfYear.ql
+query: Likely Bugs/Leap Year/UnsafeArrayForDaysOfYear.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,1 +1,2 @@
-Security/CWE/CWE-295/SSLResultNotChecked.ql
+query: Security/CWE/CWE-295/SSLResultNotChecked.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

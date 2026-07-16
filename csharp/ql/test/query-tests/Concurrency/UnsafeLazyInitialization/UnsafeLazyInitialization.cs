@@ -23,13 +23,13 @@ class Program
                     obj1 = null;
                 }
             }
-        }
+        } // $ Alert
 
         // BAD
         if (obj1 == null)
             lock (mutex)
                 if (obj1 == null)
-                    obj1 = null;
+                    obj1 = null; // $ Alert
 
         // GOOD: A value-type
         if (cond1)
@@ -84,7 +84,7 @@ class Program
                 if (null == obj1)
                     obj1 = null;
             }
-        }
+        } // $ Alert
 
         // GOOD: not a field
         object a = null;
@@ -103,7 +103,7 @@ class Program
                     obj1 = null;
                 }
             }
-        }
+        } // $ Alert
 
         // BAD: both obj1 and obj3 are flagged.
         if (obj1 == null && obj3 == null)
@@ -116,7 +116,7 @@ class Program
                     obj3 = null;
                 }
             }
-        }
+        } // $ Alert
 
         // GOOD: Locking a struct
         if (struct1 == struct2)
@@ -134,7 +134,7 @@ class Program
         if (struct1.x is null)
             lock (mutex)
                 if(struct1.x is null)
-                    struct1.x = 3;
+                    struct1.x = 3; // $ Alert
 
         // GOOD: Tuples are structs so cannot be volatile.
         if(pair1 == (1,2))

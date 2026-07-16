@@ -17,7 +17,7 @@ void free(void *ptr);
 static void bad0(char *s) {
 	char buf[80];
 	strcpy(buf, "s: ");
-	strcat(buf, s);  // BAD -- s may be too long and overflow the buffer
+	strcat(buf, s);  // $ Alert // BAD -- s may be too long and overflow the buffer
 }
 
 static void good0(char *s) {
@@ -30,7 +30,7 @@ static void good0(char *s) {
 static void bad1(char *s, int len) {
     char *buf = malloc(len+4);
     strcpy(buf, "s: ");
-    strcat(buf, s);  // BAD -- s may be too long and overflow the buffer
+    strcat(buf, s);  // $ Alert // BAD -- s may be too long and overflow the buffer
 }
 
 static void good1(char *s, int len) {

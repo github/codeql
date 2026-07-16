@@ -1416,7 +1416,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             tp = target.getDeclaredType(dpos, pathToTp) and
             conditionSatisfiesConstraintTypeAt(_, condition, constraint, TypePath::nil(),
               constraintRootType) and
-            constraintRootType = target.getDeclaredType(dpos, TypePath::nil()) and
+            constraintRootType.getATypeParameter() = pathToTp.getHead() and
             argRootType = condition.getTypeAt(TypePath::nil())
           )
         }
@@ -1445,19 +1445,19 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         }
 
         pragma[nomagic]
-        private predicate argRootTypeSatisfiesTargetTypeCand(
-          Type argRootType, Access a, AccessEnvironment e, Declaration target, AccessPosition apos,
-          TypeParameter tp, TypePath pathToTp
+        private predicate accessTargetsWithArgRootType(
+          Access a, AccessEnvironment e, Declaration target, AccessPosition apos, Type t
         ) {
           target = a.getTarget(e) and
-          argRootTypeSatisfiesTargetTypeCand(argRootType, target, apos, tp, pathToTp) and
-          not exists(getTypeArgument(a, target, tp, _))
+          t = a.getInferredType(e, apos, TypePath::nil())
         }
 
         private newtype TRelevantAccess =
           MkRelevantAccess(Access a, AccessPosition apos, AccessEnvironment e) {
-            argRootTypeSatisfiesTargetTypeCand(a.getInferredType(e, apos, TypePath::nil()), a, e, _,
-              apos, _, _)
+            exists(Declaration target, Type t |
+              accessTargetsWithArgRootType(a, e, target, apos, t) and
+              argRootTypeSatisfiesTargetTypeCand(t, target, apos, _, _)
+            )
           }
 
         private class RelevantAccess extends MkRelevantAccess {
@@ -1525,9 +1525,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
         ) {
           exists(AccessPosition apos, TypePath pathToTp |
-            argRootTypeSatisfiesTargetTypeCand(_, a, e, target, apos, tp, pathToTp) and
-            SatisfiesParameterConstraint::satisfiesConstraint(MkRelevantAccess(a, apos, e),
-              MkRelevantTarget(target, apos), pathToTp.appendInverse(path), t)
+            argRootTypeSatisfiesTargetTypeCand(_, target, pragma[only_bind_into](apos), tp, pathToTp) and
+            SatisfiesParameterConstraint::satisfiesConstraint(MkRelevantAccess(a,
+                pragma[only_bind_into](apos), e),
+              MkRelevantTarget(target, pragma[only_bind_into](apos)), pathToTp.appendInverse(path),
+              t) and
+            not exists(getTypeArgument(a, target, tp, _))
           )
         }
       }

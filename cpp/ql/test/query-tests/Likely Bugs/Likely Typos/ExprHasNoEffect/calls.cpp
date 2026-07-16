@@ -5,11 +5,11 @@ int external();
 class Base {
 public:
   virtual int thingy() {
-    1; // BAD
+    1; // $ Alert // BAD
   }
 
   int our_thingy() {
-    Base::thingy(); // BAD
+    Base::thingy(); // $ Alert // BAD
     return 2;
   }
 };

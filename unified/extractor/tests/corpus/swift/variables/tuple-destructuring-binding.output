@@ -38,16 +38,12 @@ top_level
               element:
                 pattern_element
                   pattern:
-                    expr_equality_pattern
-                      expr:
-                        name_expr
-                          identifier: identifier "a"
+                    name_pattern
+                      identifier: identifier "a"
                 pattern_element
                   pattern:
-                    expr_equality_pattern
-                      expr:
-                        name_expr
-                          identifier: identifier "b"
+                    name_pattern
+                      identifier: identifier "b"
           value:
             name_expr
               identifier: identifier "pair"

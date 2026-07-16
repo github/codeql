@@ -15,9 +15,9 @@ void operator<<(streamable& lhs, streamable& rhs)
 int main()
 {
   int x = 3;
-  foo(x, x); // BAD [NOT DETECTED]
+  foo(x, x); // $ MISSING: Alert // BAD [NOT DETECTED]
   streamable y;
-  foo(y, y); // BAD [NOT DETECTED]
+  foo(y, y); // $ MISSING: Alert // BAD [NOT DETECTED]
   return 0;
 }
 
@@ -36,5 +36,5 @@ void call_add_numbers()
   int accum = 0;
   add_numbers(accum, 4); // GOOD
   add_numbers(accum, 10); // GOOD
-  pointless_add_numbers(accum, 20); // BAD
+  pointless_add_numbers(accum, 20); // $ Alert // BAD
 }

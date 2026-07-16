@@ -1,1 +1,2 @@
-Likely Bugs/InconsistentCompareTo.ql
+query: Likely Bugs/InconsistentCompareTo.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

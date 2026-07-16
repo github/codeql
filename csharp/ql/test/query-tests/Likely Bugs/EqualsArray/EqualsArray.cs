@@ -8,7 +8,7 @@ public class Test
     // NOT OK
     public bool AreTheseMyNumbers(int[] numbers)
     {
-        return this.numbers.Equals(numbers);
+        return this.numbers.Equals(numbers); // $ Alert
     }
 
     // OK
@@ -20,13 +20,13 @@ public class Test
     // NOT OK (string is also IEnumerable)
     public bool Incomparable(string s)
     {
-        return numbers.Equals(s);
+        return numbers.Equals(s); // $ Alert
     }
 
     // NOT OK
     public bool CollectionEquals(IEnumerable<int> c1)
     {
-        return c1.Equals(c1);
+        return c1.Equals(c1); // $ Alert
     }
 
     class CollectionImplementingIEnumerable1 : IEnumerable<int>
@@ -84,7 +84,7 @@ public class Test
     // NOT OK: Nothing overrides Equals()
     bool OverriddenEquals(CollectionImplementingIEnumerable1 c)
     {
-        return c.Equals(c);
+        return c.Equals(c); // $ Alert
     }
 
     // OK: ImplementEquals overrides Equals()

@@ -14,7 +14,7 @@ int len_last(int n, char** lines) {
   }
 
   // BAD: if the input array is empty, then max will still be INT_MAX
-  return min + 1;
+  return min + 1; // $ Alert
 }
 
 
@@ -45,9 +45,9 @@ void test_crement() {
   sc1 = CHAR_MIN;
   sc1++; // GOOD
   sc2 = CHAR_MIN;
-  sc2--; // BAD
+  sc2--; // $ Alert // BAD
   sc3 = CHAR_MAX;
-  sc3++; // BAD
+  sc3++; // $ Alert // BAD
   sc4 = CHAR_MAX;
   sc4--; // GOOD
 
@@ -56,16 +56,16 @@ void test_crement() {
   sc5++; // GOOD [FALSE POSITIVE]
 
   sc6 = CHAR_MAX;
-  sc6 += 1; // BAD
+  sc6 += 1; // $ Alert // BAD
   sc7 = CHAR_MAX;
   sc7 -= 1; // GOOD
   sc8 = CHAR_MIN;
-  sc8 -= 1; // BAD
+  sc8 -= 1; // $ Alert // BAD
   sc9 = CHAR_MIN;
   sc9 += 1; // GOOD
 
   sc10 = 1;
-  sc10 += CHAR_MAX; // BAD [NOT DETECTED]
+  sc10 += CHAR_MAX; // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 void test_negatives() {
@@ -75,13 +75,13 @@ void test_negatives() {
   sc1 += 0; // GOOD
   sc1 += -1; // GOOD
   sc2 = CHAR_MIN;
-  sc2 += -1; // BAD [NOT DETECTED]
+  sc2 += -1; // $ MISSING: Alert // BAD [NOT DETECTED]
   sc3 = CHAR_MIN;
-  sc3 = sc3 + -1; // BAD [NOT DETECTED]
+  sc3 = sc3 + -1; // $ MISSING: Alert // BAD [NOT DETECTED]
   sc4 = CHAR_MAX;
-  sc4 -= -1; // BAD [NOT DETECTED]
+  sc4 -= -1; // $ MISSING: Alert // BAD [NOT DETECTED]
   sc5 = -1;
-  sc5 += CHAR_MIN; // BAD [NOT DETECTED]
+  sc5 += CHAR_MIN; // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 void test_guards1(int cond) {
@@ -101,7 +101,7 @@ void test_guards2(int cond) {
 
 	if (x < 128) return;
 
-	return x + 1; // BAD [NOT DETECTED]
+	return x + 1; // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 void test_guards3(int cond) {
@@ -121,5 +121,5 @@ void test_guards4(int cond) {
 
 	if (x == 0) return;
 
-	return x + 1; // BAD
+	return x + 1; // $ Alert // BAD
 }

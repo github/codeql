@@ -19,7 +19,7 @@ void good0(char *arg) {
 void bad0(char *arg) {
 	char buf[80];
 	// BAD: Checks size of source
-	strncpy(buf, arg, strlen(arg));
+	strncpy(buf, arg, strlen(arg)); // $ Alert
 
 }
 
@@ -30,6 +30,6 @@ void good1(const char *buf, char *arg) {
 
 void bad1(const char *buf, char *arg) {
 	// BAD: Checks size of source
-	strncpy(buf, arg, strlen(arg));
+	strncpy(buf, arg, strlen(arg)); // $ Alert
 }
 

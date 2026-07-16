@@ -20,13 +20,13 @@ public class CommandInjectionHandler : IHttpHandler
 {
     public void ProcessRequest(HttpContext ctx)
     {
-        string code = ctx.Request.QueryString["code"];
+        string code = ctx.Request.QueryString["code"]; // $ Source=r1 Source=r2
         CSharpCodeProvider c = new CSharpCodeProvider();
         ICodeCompiler icc = c.CreateCompiler();
 
         CompilerParameters cp = new CompilerParameters();
         // BAD: Compiling unvalidated code from the user
-        CompilerResults cr = icc.CompileAssemblyFromSource(cp, code);
+        CompilerResults cr = icc.CompileAssemblyFromSource(cp, code); // $ Alert=r1 Alert=r2
 
         System.Reflection.Assembly a = cr.CompiledAssembly;
         object o = a.CreateInstance("MyNamespace.MyClass");
@@ -37,7 +37,7 @@ public class CommandInjectionHandler : IHttpHandler
         object s = mi.Invoke(o, null);
 
         // BAD: Use the Roslyn APIs to dynamically evaluate C#
-        CSharpScript.EvaluateAsync(code);
+        CSharpScript.EvaluateAsync(code); // $ Alert=r1 Alert=r2
     }
 
     public bool IsReusable
@@ -53,6 +53,6 @@ public class CommandInjectionHandler : IHttpHandler
     void OnButtonClicked()
     {
         // BAD: Use the Roslyn APIs to dynamically evaluate C#
-        CSharpScript.EvaluateAsync(box1.Text);
+        CSharpScript.EvaluateAsync(box1.Text); // $ Alert=r3 Alert=r3
     }
 }

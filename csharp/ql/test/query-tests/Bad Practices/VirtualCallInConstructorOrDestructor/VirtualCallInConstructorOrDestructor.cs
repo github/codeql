@@ -42,7 +42,7 @@ namespace TestVirtualCalls
         C()
         {
             // Method call
-            f_virtual();        // BAD
+            f_virtual();        // $ Alert // BAD
             f_sealed();         // GOOD
             f_nonvirtual();       // GOOD
             f_interface();        // GOOD
@@ -51,23 +51,23 @@ namespace TestVirtualCalls
 
             // Method access
             Action a;
-            a = f_virtual;  // BAD
+            a = f_virtual;  // $ Alert // BAD
             a = f_sealed; // GOOD
             a = f_nonvirtual; // GOOD
             a = f_interface;  // GOOD
 
             // Property access
-            int i = p_virtual;  // BAD
+            int i = p_virtual;  // $ Alert // BAD
             i = p_sealed;   // GOOD
             i = p_nonvirtual; // GOOD
 
             // Indexer access
-            i = this[0];  // BAD
+            i = this[0];  // $ Alert // BAD
             i = this[""]; // GOOD
             i = this[new object()]; // GOOD
 
             // Event access
-            e_virtual += f_nonvirtual;  // BAD
+            e_virtual += f_nonvirtual;  // $ Alert // BAD
             e_sealed += f_nonvirtual; // GOOD
             e_nonvirtual += f_nonvirtual; // GOOD
         }

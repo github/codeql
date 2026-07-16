@@ -21,7 +21,7 @@ class C1
         ret = intHashSet.Add(42);
 
         // BAD:
-        stringHashSet.Add("42");
+        stringHashSet.Add("42"); // $ Alert
     }
 }
 
@@ -64,8 +64,8 @@ class C3
         ret = s.Read(null, 0, 0);
         ret = s.Read(null, 0, 0);
         ret = s.Read(null, 0, 0);
-        s.Read(null, 0, 0); // always check
-        s.ReadByte(); // always check
+        s.Read(null, 0, 0); // $ Alert // always check
+        s.ReadByte(); // $ Alert // always check
     }
 }
 
@@ -82,7 +82,7 @@ class C4
         ret1 = M1<int>();
         ret1 = M1<int>();
         ret1 = M1<int>();
-        M1<int>(); // BAD
+        M1<int>(); // $ Alert // BAD
         M1<string>(); // GOOD
 
         var ret2 = M2<int>();
@@ -103,7 +103,7 @@ class C4
         ret2 = M2<ulong>();
         ret2 = M2<ushort>();
         ret2 = M2<double>();
-        M2<decimal>(); // BAD
+        M2<decimal>(); // $ Alert // BAD
 
         var ret3 = M3<C6>(null);
         ret3 = M3<C6>(null);
@@ -115,7 +115,7 @@ class C4
         ret3 = M3<C6>(null);
         ret3 = M3<C6>(null);
         M3<C5>(null); // GOOD
-        M3<C6>(null); // BAD
+        M3<C6>(null); // $ Alert // BAD
         M3<C7>(null); // GOOD
     }
 

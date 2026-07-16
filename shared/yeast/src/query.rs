@@ -66,7 +66,17 @@ impl QueryNode {
 
     pub fn do_match(&self, ast: &Ast, node: Id, matches: &mut Captures) -> Result<bool, String> {
         match self {
-            QueryNode::Any { .. } => Ok(true),
+            QueryNode::Any { match_unnamed } => {
+                if *match_unnamed {
+                    Ok(true)
+                } else {
+                    // `(_)` only matches named nodes, matching tree-sitter
+                    // semantics. Bare `_` (with `match_unnamed = true`)
+                    // matches any node.
+                    let n = ast.get_node(node).unwrap();
+                    Ok(n.is_named())
+                }
+            }
             QueryNode::Node { kind, children } => {
                 let node = ast.get_node(node).unwrap();
                 let target_kind = ast

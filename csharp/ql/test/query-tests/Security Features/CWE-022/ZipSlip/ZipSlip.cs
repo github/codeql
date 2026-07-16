@@ -12,15 +12,15 @@ namespace ZipSlip
         {
             foreach (var entry in archive.Entries)
             {
-                string fullPath = Path.GetFullPath(entry.FullName);
+                string fullPath = Path.GetFullPath(entry.FullName); // $ Alert=r1 Alert=r2 Alert=r3
                 string fileName = Path.GetFileName(entry.FullName);
                 string filename = entry.Name;
-                string file = entry.FullName;
+                string file = entry.FullName; // $ Alert=r4
                 if (!string.IsNullOrEmpty(file))
                 {
                     // BAD
                     string destFileName = Path.Combine(destDirectory, file);
-                    entry.ExtractToFile(destFileName, true);
+                    entry.ExtractToFile(destFileName, true); // $ Sink=r4
 
                     // GOOD
                     string sanitizedFileName = Path.Combine(destDirectory, fileName);
@@ -28,15 +28,15 @@ namespace ZipSlip
 
                     // BAD
                     string destFilePath = Path.Combine(destDirectory, fullPath);
-                    entry.ExtractToFile(destFilePath, true);
+                    entry.ExtractToFile(destFilePath, true); // $ Sink=r1 Sink=r2 Sink=r3
 
                     // BAD: destFilePath isn't fully resolved, so may still contain ..
                     if (destFilePath.StartsWith(destDirectory))
-                        entry.ExtractToFile(destFilePath, true);
+                        entry.ExtractToFile(destFilePath, true); // $ Sink=r2 Sink=r1 Sink=r3
 
                     // BAD
                     destFilePath = Path.GetFullPath(Path.Combine(destDirectory, fullPath));
-                    entry.ExtractToFile(destFilePath, true);
+                    entry.ExtractToFile(destFilePath, true); // $ Sink=r3 Sink=r1 Sink=r2
 
                     // GOOD: a check for StartsWith against a fully resolved path
                     if (destFilePath.StartsWith(destDirectory))
@@ -58,28 +58,28 @@ namespace ZipSlip
                     foreach (ZipArchiveEntry entry in archive.Entries)
                     {
                         // figure out where we are putting the file
-                        String destFilePath = Path.Combine(InstallDir, entry.FullName);
+                        String destFilePath = Path.Combine(InstallDir, entry.FullName); // $ Alert=r5 Alert=r6 Alert=r7 Alert=r8
 
                         Directory.CreateDirectory(Path.GetDirectoryName(destFilePath));
 
                         using (Stream archiveFileStream = entry.Open())
                         {
                             // BAD: writing to file stream
-                            using (Stream tfsFileStream = new FileStream(destFilePath, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None))
+                            using (Stream tfsFileStream = new FileStream(destFilePath, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None)) // $ Sink=r5 Sink=r6 Sink=r7 Sink=r8
                             {
                                 Console.WriteLine(@"Writing ""{0}""", destFilePath);
                                 archiveFileStream.CopyTo(tfsFileStream);
                             }
 
                             // BAD: can do it this way too
-                            using (Stream tfsFileStream = File.Create(destFilePath))
+                            using (Stream tfsFileStream = File.Create(destFilePath)) // $ Sink=r6 Sink=r5 Sink=r7 Sink=r8
                             {
                                 Console.WriteLine(@"Writing ""{0}""", destFilePath);
                                 archiveFileStream.CopyTo(tfsFileStream);
                             }
 
                             // BAD: creating stream using fileInfo
-                            var fileInfo = new FileInfo(destFilePath);
+                            var fileInfo = new FileInfo(destFilePath); // $ Sink=r7 Sink=r5 Sink=r6 Sink=r8
                             using (FileStream fs = fileInfo.OpenWrite())
                             {
                                 Console.WriteLine(@"Writing ""{0}""", destFilePath);
@@ -87,7 +87,7 @@ namespace ZipSlip
                             }
 
                             // BAD: creating stream using fileInfo
-                            var fileInfo1 = new FileInfo(destFilePath);
+                            var fileInfo1 = new FileInfo(destFilePath); // $ Sink=r8 Sink=r5 Sink=r6 Sink=r7
                             using (FileStream fs = fileInfo1.Open(FileMode.Create))
                             {
                                 Console.WriteLine(@"Writing ""{0}""", destFilePath);

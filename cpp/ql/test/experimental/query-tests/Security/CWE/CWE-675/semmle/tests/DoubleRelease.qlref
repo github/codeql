@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-675/DoubleRelease.ql
+query: experimental/Security/CWE/CWE-675/DoubleRelease.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

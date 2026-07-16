@@ -1,1 +1,2 @@
-Security/CWE/CWE-764/UnreleasedLock.ql
+query: Security/CWE/CWE-764/UnreleasedLock.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

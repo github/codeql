@@ -1,1 +1,2 @@
-Best Practices/SloppyGlobal.ql
+query: Best Practices/SloppyGlobal.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

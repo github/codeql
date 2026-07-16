@@ -13,6 +13,6 @@ function checkTargetHost(host) { // NOT OK
     throw new Error('blocked internal host');
   }
   return http.get('http://' + host + '/');
-}
+} // $ Alert[javascript/ssrf-ipv6-transition-incomplete-guard]
 
 module.exports = { checkTargetHost };

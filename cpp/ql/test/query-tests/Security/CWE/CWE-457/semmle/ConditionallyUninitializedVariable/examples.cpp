@@ -35,7 +35,7 @@ void notifyGood(int deviceNumber) {
 
 int notifyBad(int deviceNumber) {
   DeviceConfig config;
-  initDeviceConfig(&config, deviceNumber);
+  initDeviceConfig(&config, deviceNumber); // $ Alert
   // BAD: Using config without checking the status code that is returned
   if (config.isEnabled) {
     notifyChannel(config.channel);

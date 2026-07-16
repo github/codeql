@@ -3,7 +3,7 @@
 
 void test1()
 {
-	int i, j, outer_loop_var, inner_loop_var;
+	int i, j, outer_loop_var, inner_loop_var; // $ Alert
 
 	for (i = 0; i < 10; i++) // GOOD: no nested loop
 	{
@@ -27,7 +27,7 @@ void test1()
 
 void test2(char *str)
 {
-	for (char *a = str; *a != NULL; a++) // BAD: short name
+	for (char *a = str; *a != NULL; a++) // $ Alert // BAD: short name
 	{
 		char *b = a; // GOOD: not a loop variable
 
@@ -70,7 +70,7 @@ void test3()
 		}
 	}
 
-	for (int y = 0; y < 256; y++) // BAD: x and y are not a co-ordinate pair
+	for (int y = 0; y < 256; y++) // $ Alert // BAD: x and y are not a co-ordinate pair
 	{
 		for (int x = 0; x < 256; x++)
 		{
@@ -78,7 +78,7 @@ void test3()
 			array1d[y] = 0;
 		}
 	}
-	
+
 	for (int z = 0; z < 256; z++) // GOOD: x, y and z are co-ordinates
 	{
 		for (int y = 0; y < 256; y++) // GOOD: x, y and z are co-ordinates
@@ -89,11 +89,11 @@ void test3()
 			}
 		}
 	}
-	
+
 	{
 		string strings[10];
 
-		for (int i = 0; i < 10; i++) // BAD: x and y are not a co-ordinate pair
+		for (int i = 0; i < 10; i++) // $ Alert // BAD: x and y are not a co-ordinate pair
 		{
 			for (int j = 0; j < strings[i].strlen; j++)
 			{

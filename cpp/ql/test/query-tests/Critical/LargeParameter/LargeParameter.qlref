@@ -1,1 +1,2 @@
-Critical/LargeParameter.ql
+query: Critical/LargeParameter.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

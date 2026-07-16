@@ -36,9 +36,9 @@ void test1()
 	char* data;
 	data = (char *)malloc(100*sizeof(char));
 	use_if_nonzero(data); // GOOD
-	free(data);
-	use_if_nonzero(data); // BAD [NOT DETECTED]
-	use(data); // BAD
+	free(data); // $ Source
+	use_if_nonzero(data); // $ MISSING: Alert // BAD [NOT DETECTED]
+	use(data); // $ Alert // BAD
 }
 
 void test2()
@@ -72,11 +72,11 @@ void test4()
 {
 	char* data;
 	data = (char *)malloc(100*sizeof(char));
-	free(data);
+	free(data); // $ Source
 	if (data)
 	{
-		use_if_nonzero(data); // BAD [NOT DETECTED]
-		use(data); // BAD
+		use_if_nonzero(data); // $ MISSING: Alert // BAD [NOT DETECTED]
+		use(data); // $ Alert // BAD
 	}
 }
 
@@ -94,8 +94,8 @@ char* returnsFreedData(int i)
 void test5()
 {
 	char* data = returnsFreedData(1);
-	use_if_nonzero(data); // BAD [NOT DETECTED]
-	use(data); // BAD [NOT DETECTED]
+	use_if_nonzero(data); // $ MISSING: Alert // BAD [NOT DETECTED]
+	use(data); // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 void test6()
@@ -103,9 +103,9 @@ void test6()
 	char *data, *data2;
 	data = (char *)malloc(100*sizeof(char));
 	data2 = data;
-	free(data);
-	use_if_nonzero(data2); // BAD [NOT DETECTED]
-	use(data); // BAD
+	free(data); // $ Source
+	use_if_nonzero(data2); // $ MISSING: Alert // BAD [NOT DETECTED]
+	use(data); // $ Alert // BAD
 }
 
 void test7()
@@ -113,10 +113,10 @@ void test7()
 	char *data, *data2;
 	data = (char *)malloc(100*sizeof(char));
 	data2 = data;
-	free(data);
+	free(data); // $ Source
 	data2 = NULL;
-	use_if_nonzero(data); // BAD [NOT DETECTED]
-	use(data); // BAD
+	use_if_nonzero(data); // $ MISSING: Alert // BAD [NOT DETECTED]
+	use(data); // $ Alert // BAD
 }
 
 void test8()
@@ -124,10 +124,10 @@ void test8()
 	char *data, *data2;
 	data2 = (char *)malloc(100*sizeof(char));
 	data = data2;
-	free(data);
+	free(data); // $ Source
 	data2 = NULL;
-	use_if_nonzero(data); // BAD [NOT DETECTED]
-	use(data); // BAD
+	use_if_nonzero(data); // $ MISSING: Alert // BAD [NOT DETECTED]
+	use(data); // $ Alert // BAD
 }
 
 void noReturnWrapper() { noReturn(); }
@@ -161,9 +161,9 @@ public:
 
 void test11() {
 	myClass* c = new myClass();
-	delete(c);
-	c->myMethod(); // BAD
-	(*c).myMethod(); // BAD
+	delete(c); // $ Source
+	c->myMethod(); // $ Alert // BAD
+	(*c).myMethod(); // $ Alert // BAD
 }
 
 template<class T> T test()
@@ -171,50 +171,50 @@ template<class T> T test()
 	T* x;
 	use(x); // GOOD
 	delete x;
-	use_if_nonzero(x); // BAD [NOT DETECTED]
-	use(x); // BAD [NOT DETECTED]
+	use_if_nonzero(x); // $ MISSING: Alert // BAD [NOT DETECTED]
+	use(x); // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 void test12(int count)
 {
 	char* data = NULL;
-	free(data);
+	free(data); // $ Source
 	for (int i = 0; i < count; i++)
 	{
 		data = NULL;
 	}
-	use(data); // BAD
+	use(data); // $ Alert // BAD
 }
 
 void test13()
 {
 	char* data = NULL;
-	free(data);
+	free(data); // $ Source
 	for (int i = 0; i < 2; i++)
 	{
 		data = NULL;
 	}
-	use(data); // GOOD [FALSE POSITIVE]
+	use(data); // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE]
 }
 
 void test14()
 {
 	char* data = NULL;
-	free(data);
+	free(data); // $ Source
 	for (int i = 0; i < 2; i++)
 	{
 		data = NULL;
-		free(data);
+		free(data); // $ Source
 	}
-	use(data); // BAD
+	use(data); // $ Alert // BAD
 }
 
 template<class T> T test15()
 {
 	T* x;
 	use(x); // GOOD
-	delete x;
-	use(x); // BAD [NOT DETECTED]
+	delete x; // $ Source
+	use(x); // $ Alert // BAD
 }
 void test15runner(void)
 {
@@ -240,17 +240,17 @@ struct myStruct {
 };
 
 void malloc_after_free(myStruct *s) {
-	free(s->i1.data);
+	free(s->i1.data); // $ Source
 	s->i1.data = (char *)malloc(100*sizeof(char));
 	if (s->i1.data == 0) {
 		return;
 	}
-	use(s->i1.data); // GOOD [FALSE POSITIVE]
+	use(s->i1.data); // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE]
 
-	free(s->i2->data);
+	free(s->i2->data); // $ Source
 	s->i2->data = (char *)malloc(100*sizeof(char));
 	if (s->i2->data == 0) {
 		return;
 	}
-	use(s->i2->data); // GOOD [FALSE POSITIVE]
+	use(s->i2->data); // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE]
 }

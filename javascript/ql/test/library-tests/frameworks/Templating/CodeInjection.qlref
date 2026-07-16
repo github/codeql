@@ -1,1 +1,2 @@
-Security/CWE-094/CodeInjection.ql
+query: Security/CWE-094/CodeInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

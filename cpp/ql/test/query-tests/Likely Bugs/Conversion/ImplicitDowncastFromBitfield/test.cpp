@@ -7,7 +7,7 @@ int getX1(my_struct m) {
 }
 
 short getX2(my_struct m) {
-	return m.x; // BAD
+	return m.x; // $ Alert // BAD
 }
 
 short getX3(my_struct m) {
@@ -23,7 +23,7 @@ short getX5(my_struct m) {
 }
 
 const char& getx6(my_struct& m) {
-	const char& result = m.x; // BAD
+	const char& result = m.x; // $ Alert // BAD
 	return result;
 }
 

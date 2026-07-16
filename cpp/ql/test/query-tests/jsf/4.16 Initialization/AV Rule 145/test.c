@@ -5,7 +5,7 @@ enum {
     E1C
 };
 
-enum {
+enum { // $ Alert
     E2A = 1,
     E2B,
     E2C,
@@ -13,7 +13,7 @@ enum {
     E2E
 };
 
-enum {
+enum { // $ Alert
     E3A = 1,
     E3B = 2,
     E3C = 10,
@@ -35,7 +35,7 @@ enum {
     E5C
 };
 
-enum {
+enum { // $ Alert
     E6A,
     E6B,
     E6C = 10,

@@ -15,30 +15,30 @@ void TestProperConfiguration_inter_CorrectUsage01()
 void TestProperConfiguration_inter_CorrectUsage02()
 {
 	boost::asio::ssl::context ctx(boost::asio::ssl::context::sslv23); // GOOD
-	ctx.set_options(boost::asio::ssl::context::no_tlsv1 | 
-		boost::asio::ssl::context::no_tlsv1_1 | 
+	ctx.set_options(boost::asio::ssl::context::no_tlsv1 |
+		boost::asio::ssl::context::no_tlsv1_1 |
 		boost::asio::ssl::context::no_sslv3);
 }
 
 void TestProperConfiguration_inter_IncorrectUsage01()
 {
-	boost::asio::ssl::context ctx(boost::asio::ssl::context::sslv23);	// BAD - missing disable SSLv3
+	boost::asio::ssl::context ctx(boost::asio::ssl::context::sslv23);	// $ Alert[cpp/boost/tls-settings-misconfiguration] // BAD - missing disable SSLv3
 	SetOptionsNoOldTls(ctx);
 }
 
 void TestProperConfiguration_IncorrectUsage01()
 {
-	boost::asio::ssl::context ctx(boost::asio::ssl::context::sslv23);	// BAD
+	boost::asio::ssl::context ctx(boost::asio::ssl::context::sslv23);	// $ Alert[cpp/boost/tls-settings-misconfiguration] // BAD
 }
 
 void TestProperConfiguration_IncorrectUsage02()
 {
-	boost::asio::ssl::context ctx(boost::asio::ssl::context::tls);	// BAD
+	boost::asio::ssl::context ctx(boost::asio::ssl::context::tls);	// $ Alert[cpp/boost/tls-settings-misconfiguration] // BAD
 }
 
 void TestProperConfiguration_IncorrectUsage03()
 {
-	boost::asio::ssl::context ctx(boost::asio::ssl::context::tls);	// BAD
+	boost::asio::ssl::context ctx(boost::asio::ssl::context::tls);	// $ Alert[cpp/boost/tls-settings-misconfiguration] // BAD
 	SetOptionsNoOldTls(ctx);
 	ctx.set_options(boost::asio::ssl::context::no_tlsv1 |
 		boost::asio::ssl::context::no_tlsv1_2 );			// BUG - disabling TLS 1.2
@@ -46,22 +46,22 @@ void TestProperConfiguration_IncorrectUsage03()
 
 void TestHardcodedProtocols()
 {
-	//////////////////////// Banned Hardcoded algorithms 
-	boost::asio::ssl::context cxt_sslv2(boost::asio::ssl::context::sslv2);			// BUG
-	boost::asio::ssl::context cxt_sslv2c(boost::asio::ssl::context::sslv2_client);	// BUG
-	boost::asio::ssl::context cxt_sslv2s(boost::asio::ssl::context::sslv2_server);	// BUG
+	//////////////////////// Banned Hardcoded algorithms
+	boost::asio::ssl::context cxt_sslv2(boost::asio::ssl::context::sslv2);			// $ Alert[cpp/boost/use-of-deprecated-hardcoded-security-protocol] // BUG
+	boost::asio::ssl::context cxt_sslv2c(boost::asio::ssl::context::sslv2_client);	// $ Alert[cpp/boost/use-of-deprecated-hardcoded-security-protocol] // BUG
+	boost::asio::ssl::context cxt_sslv2s(boost::asio::ssl::context::sslv2_server);	// $ Alert[cpp/boost/use-of-deprecated-hardcoded-security-protocol] // BUG
 
-	boost::asio::ssl::context cxt_sslv3(boost::asio::ssl::context::sslv3);			// BUG
-	boost::asio::ssl::context cxt_sslv3c(boost::asio::ssl::context::sslv3_client);	// BUG
-	boost::asio::ssl::context cxt_sslv3s(boost::asio::ssl::context::sslv3_server);	// BUG
+	boost::asio::ssl::context cxt_sslv3(boost::asio::ssl::context::sslv3);			// $ Alert[cpp/boost/use-of-deprecated-hardcoded-security-protocol] // BUG
+	boost::asio::ssl::context cxt_sslv3c(boost::asio::ssl::context::sslv3_client);	// $ Alert[cpp/boost/use-of-deprecated-hardcoded-security-protocol] // BUG
+	boost::asio::ssl::context cxt_sslv3s(boost::asio::ssl::context::sslv3_server);	// $ Alert[cpp/boost/use-of-deprecated-hardcoded-security-protocol] // BUG
 
-	boost::asio::ssl::context cxt_tlsv1(boost::asio::ssl::context::tlsv1);			// BUG
-	boost::asio::ssl::context cxt_tlsv1c(boost::asio::ssl::context::tlsv1_client);	// BUG
-	boost::asio::ssl::context cxt_tlsv1s(boost::asio::ssl::context::tlsv1_server);	// BUG
+	boost::asio::ssl::context cxt_tlsv1(boost::asio::ssl::context::tlsv1);			// $ Alert[cpp/boost/use-of-deprecated-hardcoded-security-protocol] // BUG
+	boost::asio::ssl::context cxt_tlsv1c(boost::asio::ssl::context::tlsv1_client);	// $ Alert[cpp/boost/use-of-deprecated-hardcoded-security-protocol] // BUG
+	boost::asio::ssl::context cxt_tlsv1s(boost::asio::ssl::context::tlsv1_server);	// $ Alert[cpp/boost/use-of-deprecated-hardcoded-security-protocol] // BUG
 
-	boost::asio::ssl::context cxt_tlsv11(boost::asio::ssl::context::tlsv11);			// BUG
-	boost::asio::ssl::context cxt_tlsv11c(boost::asio::ssl::context::tlsv11_client);	// BUG
-	boost::asio::ssl::context cxt_tlsv11s(boost::asio::ssl::context::tlsv11_server);	// BUG
+	boost::asio::ssl::context cxt_tlsv11(boost::asio::ssl::context::tlsv11);			// $ Alert[cpp/boost/use-of-deprecated-hardcoded-security-protocol] // BUG
+	boost::asio::ssl::context cxt_tlsv11c(boost::asio::ssl::context::tlsv11_client);	// $ Alert[cpp/boost/use-of-deprecated-hardcoded-security-protocol] // BUG
+	boost::asio::ssl::context cxt_tlsv11s(boost::asio::ssl::context::tlsv11_server);	// $ Alert[cpp/boost/use-of-deprecated-hardcoded-security-protocol] // BUG
 
 	////////////////////// Hardcoded algorithms
 
@@ -76,12 +76,12 @@ void TestHardcodedProtocols()
 
 void InterProceduralTest(boost::asio::ssl::context::method m)
 {
-	boost::asio::ssl::context cxt1(m);		// BUG - Multiple hits (sink)
+	boost::asio::ssl::context cxt1(m);		// $ Alert[cpp/boost/use-of-deprecated-hardcoded-security-protocol] // BUG - Multiple hits (sink)
 }
 
 void TestHardcodedProtocols_inter()
 {
-	//////////////////////// Banned Hardcoded algorithms 
+	//////////////////////// Banned Hardcoded algorithms
 	InterProceduralTest(boost::asio::ssl::context::sslv2);			// BUG
 	InterProceduralTest(boost::asio::ssl::context::sslv2_client);	// BUG
 	InterProceduralTest(boost::asio::ssl::context::sslv2_server);	// BUG

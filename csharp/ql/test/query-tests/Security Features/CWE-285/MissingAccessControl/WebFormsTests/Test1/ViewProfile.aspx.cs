@@ -11,7 +11,7 @@ class ViewProfile : System.Web.UI.Page {
     }
 
     // BAD: The name indicates a Delete method, but no auth is present.
-    protected void btn_delete1_Click(object sender, EventArgs e) {
+    protected void btn_delete1_Click(object sender, EventArgs e) { // $ Alert
         doThings();
     }
 

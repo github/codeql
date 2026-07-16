@@ -1,1 +1,2 @@
-Likely Bugs/Arithmetic/FloatComparison.ql
+query: Likely Bugs/Arithmetic/FloatComparison.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

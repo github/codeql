@@ -3,16 +3,16 @@ class NullArgumentToEquals
     void M()
     {
         int i = 0;
-        i.Equals(null); // BAD
+        i.Equals(null); // $ Alert // BAD
 
         int? i2 = null;
         i2.Equals(null); // GOOD
 
         C<int> c = null;
-        c.Equals(null); // BAD
+        c.Equals(null); // $ Alert // BAD
 
         object o = null;
-        o.Equals(null); // BAD
+        o.Equals(null); // $ Alert // BAD
     }
 
     class C<T>

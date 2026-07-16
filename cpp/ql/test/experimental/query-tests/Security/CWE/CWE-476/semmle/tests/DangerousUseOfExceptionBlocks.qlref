@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-476/DangerousUseOfExceptionBlocks.ql
+query: experimental/Security/CWE/CWE-476/DangerousUseOfExceptionBlocks.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

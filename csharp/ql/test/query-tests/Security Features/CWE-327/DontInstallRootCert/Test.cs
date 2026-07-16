@@ -12,20 +12,20 @@ namespace RootCert
         public void InstallRootCert()
         {
             string file = "mytest.pfx"; // Contains name of certificate file
-            X509Store store = new X509Store(StoreName.Root);
+            X509Store store = new X509Store(StoreName.Root); // $ Source
             store.Open(OpenFlags.ReadWrite);
             // BAD: adding a certificate to the Root store
-            store.Add(new X509Certificate2(X509Certificate2.CreateFromCertFile(file)));
+            store.Add(new X509Certificate2(X509Certificate2.CreateFromCertFile(file))); // $ Alert
             store.Close();
         }
 
         public void InstallRootCert2()
         {
             string file = "mytest.pfx"; // Contains name of certificate file
-            X509Store store = new X509Store(StoreName.Root, StoreLocation.CurrentUser);
+            X509Store store = new X509Store(StoreName.Root, StoreLocation.CurrentUser); // $ Source
             store.Open(OpenFlags.ReadWrite);
             // BAD: adding a certificate to the Root store
-            store.Add(new X509Certificate2(X509Certificate2.CreateFromCertFile(file)));
+            store.Add(new X509Certificate2(X509Certificate2.CreateFromCertFile(file))); // $ Alert
             store.Close();
         }
 
@@ -67,10 +67,10 @@ namespace RootCert
                 new X509Certificate2(X509Certificate2.CreateFromCertFile(file1)),
                 new X509Certificate2(X509Certificate2.CreateFromCertFile(file2)),
             };
-            X509Store store = new X509Store(StoreName.Root, StoreLocation.CurrentUser);
+            X509Store store = new X509Store(StoreName.Root, StoreLocation.CurrentUser); // $ Source
             store.Open(OpenFlags.ReadWrite);
             // BAD: adding multiple certificates to the Root store
-            store.AddRange(new X509Certificate2Collection(certCollection));
+            store.AddRange(new X509Certificate2Collection(certCollection)); // $ Alert
             store.Close();
         }
     }

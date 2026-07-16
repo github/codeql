@@ -19,7 +19,7 @@ static int read_data(archive *ar) {
         size_t size;
         la_int64_t offset;
 
-        int r = archive_read_data_block(ar, &buff, &size, &offset); // BAD
+        int r = archive_read_data_block(ar, &buff, &size, &offset); // $ Alert // BAD
         if (r == ARCHIVE_EOF)
             return ARCHIVE_OK;
         if (r < ARCHIVE_OK)

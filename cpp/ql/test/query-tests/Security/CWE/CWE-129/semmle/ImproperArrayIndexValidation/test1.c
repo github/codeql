@@ -4,7 +4,7 @@ void dosomething(char c);
 
 const char chr[26] = "abcdefghijklmnopqrstuvwxyz";
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) { // $ Source
   int i = atoi(argv[1]);
   test1(i);
   test2(i);
@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 
 void test1(int i) {
   // BAD: i has not been validated.
-  char c = chr[i];
+  char c = chr[i]; // $ Alert
   dosomething(c);
 }
 
@@ -32,7 +32,7 @@ void test2(int i) {
 int myArray[10];
 
 void test3(int i) {
-  myArray[i] = 0; // BAD: i has not been validated
+  myArray[i] = 0; // $ Alert // BAD: i has not been validated
 
   i = 5;
 
@@ -40,7 +40,7 @@ void test3(int i) {
 }
 
 void test4(int i) {
-  myArray[i] = 0; // BAD: i has not been validated
+  myArray[i] = 0; // $ Alert // BAD: i has not been validated
 
   if ((i < 0) || (i >= 10)) return;
 
@@ -52,7 +52,7 @@ void test5(int i) {
 
   j = i;
 
-  j = myArray[j]; // BAD: j has not been validated
+  j = myArray[j]; // $ Alert // BAD: j has not been validated
 }
 
 extern int myTable[256];
@@ -76,4 +76,3 @@ void test7(FILE* fp) {
     myMaxCharTable[ch] = 0; // GOOD
   }
 }
-

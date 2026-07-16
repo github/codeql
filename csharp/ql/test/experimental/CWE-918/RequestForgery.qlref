@@ -1,1 +1,2 @@
-experimental/CWE-918/RequestForgery.ql
+query: experimental/CWE-918/RequestForgery.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

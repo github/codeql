@@ -39,25 +39,25 @@ public:
 
 void test1(int x, int y, int z) {
 	// built-in comparison
-	if (x < y < z) {} // BAD
-	if (x > y > z) {} // BAD
-	if (x <= y <= z) {} // BAD
-	if (x <= y <= z) {} // BAD
-	if (x < y > z) {} // BAD
+	if (x < y < z) {} // $ Alert // BAD
+	if (x > y > z) {} // $ Alert // BAD
+	if (x <= y <= z) {} // $ Alert // BAD
+	if (x <= y <= z) {} // $ Alert // BAD
+	if (x < y > z) {} // $ Alert // BAD
 	if ((x < y) && (y < z)) {} // GOOD
 	if (x < y && y < z) {} // GOOD
 
-	if ((x + 1) < (y + 1) < (z + 1)) {} // BAD
-	if (x < x + y < z) {} // BAD
+	if ((x + 1) < (y + 1) < (z + 1)) {} // $ Alert // BAD
+	if (x < x + y < z) {} // $ Alert // BAD
 
 	if ((x < y) < z) {} // GOOD (this is deliberately allowed)
-	if (!(x < y < z)) {} // BAD
+	if (!(x < y < z)) {} // $ Alert // BAD
 
 	// overloaded comparison
 	{
 		MyClass1 a, b, c;
 
-		if (a < b < c) {} // BAD (the overloaded `operator<` behaves like `<`) [NOT DETECTED]
+		if (a < b < c) {} // $ MISSING: Alert // BAD (the overloaded `operator<` behaves like `<`) [NOT DETECTED]
 	}
 
 	// overloaded non-comparison

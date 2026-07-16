@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-561/FindIncorrectlyUsedSwitch.ql
+query: experimental/Security/CWE/CWE-561/FindIncorrectlyUsedSwitch.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

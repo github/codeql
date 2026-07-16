@@ -1,1 +1,2 @@
-Bad Practices/Implementation Hiding/ExposeRepresentation.ql
+query: Bad Practices/Implementation Hiding/ExposeRepresentation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

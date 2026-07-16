@@ -1,1 +1,2 @@
-Likely Bugs/Format/SnprintfOverflow.ql
+query: Likely Bugs/Format/SnprintfOverflow.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

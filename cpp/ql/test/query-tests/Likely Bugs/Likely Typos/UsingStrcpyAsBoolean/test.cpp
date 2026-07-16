@@ -1,4 +1,4 @@
-typedef unsigned long size_t; 
+typedef unsigned long size_t;
 typedef int* locale_t;
 
 char* strcpy(char* destination, const char* source)
@@ -72,71 +72,71 @@ void PositiveCases()
     locale_t x;
     *x = 0;
 
-    if (strcpy(szbuf1, "test")) // Bug, direct usage
+    if (strcpy(szbuf1, "test")) // $ Alert // Bug, direct usage
     {
     }
 
-    if (!strcpy(szbuf1, "test")) // Bug, unary binary operator
+    if (!strcpy(szbuf1, "test")) // $ Alert // Bug, unary binary operator
     {
     }
 
-    if (strcpy(szbuf1, "test") == 0) // Bug, equality operator
+    if (strcpy(szbuf1, "test") == 0) // $ Alert // Bug, equality operator
     {
     }
 
-    if (SomeFunction() && strcpy(szbuf1, "test")) // Bug, binary logical operator
+    if (SomeFunction() && strcpy(szbuf1, "test")) // $ Alert // Bug, binary logical operator
     {
     }
 
-    if (WCSCPY_6324(wscbuf1, wscbuf2)) // Bug, using a macro
+    if (WCSCPY_6324(wscbuf1, wscbuf2)) // $ Alert // Bug, using a macro
     {
     }
 
-    if (wcscpy(wscbuf1, wscbuf2)) // Bug
+    if (wcscpy(wscbuf1, wscbuf2)) // $ Alert // Bug
     {
     }
 
-    if (_mbscpy(mbcbuf1, mbcbuf2)) // Bug
+    if (_mbscpy(mbcbuf1, mbcbuf2)) // $ Alert // Bug
     {
     }
 
-    if (strncpy(szbuf1, "test", 100))  // Bug
+    if (strncpy(szbuf1, "test", 100))  // $ Alert // Bug
     {
     }
 
-    if (wcsncpy(wscbuf1, wscbuf2, 100)) // Bug
+    if (wcsncpy(wscbuf1, wscbuf2, 100)) // $ Alert // Bug
     {
     }
 
-    if (_mbsncpy(mbcbuf1, (const unsigned char*)"test", 100)) // Bug
+    if (_mbsncpy(mbcbuf1, (const unsigned char*)"test", 100)) // $ Alert // Bug
     {
     }
 
-    if (_strncpy_l(szbuf1, "test", 100, x))  // Bug
+    if (_strncpy_l(szbuf1, "test", 100, x))  // $ Alert // Bug
     {
     }
 
-    if (_wcsncpy_l(wscbuf1, wscbuf2, 100, x)) // Bug
+    if (_wcsncpy_l(wscbuf1, wscbuf2, 100, x)) // $ Alert // Bug
     {
     }
 
-    if (_mbsncpy_l(mbcbuf1, (const unsigned char*)"test", 100, x)) //Bug
+    if (_mbsncpy_l(mbcbuf1, (const unsigned char*)"test", 100, x)) // $ Alert //Bug
     {
     }
 
-    if (!strncpy(szbuf1, "test", 100))  // Bug
+    if (!strncpy(szbuf1, "test", 100))  // $ Alert // Bug
     {
     }
 
-    bool b = strncpy(szbuf1, "test", 100); // Bug
+    bool b = strncpy(szbuf1, "test", 100); // $ Alert // Bug
 
-    bool result = !strncpy(szbuf1, "test", 100); // Bug
-    result = strcpy(szbuf1, "test") ? 1 : 0; // Bug
-    result = strcpy(szbuf1, "test") && 1; // Bug
+    bool result = !strncpy(szbuf1, "test", 100); // $ Alert // Bug
+    result = strcpy(szbuf1, "test") ? 1 : 0; // $ Alert // Bug
+    result = strcpy(szbuf1, "test") && 1; // $ Alert // Bug
 
-    result = strcpy(szbuf1, "test") == 0; // Bug
+    result = strcpy(szbuf1, "test") == 0; // $ Alert // Bug
 
-    result = strcpy(szbuf1, "test") != 0; // Bug
+    result = strcpy(szbuf1, "test") != 0; // $ Alert // Bug
 
 }
 

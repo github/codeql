@@ -13,7 +13,7 @@ char *strcpy(char *s1, const char *s2);
 
 static void bad0(char *str) {
     // BAD -- Not allocating space for '\0' terminator
-    char *buffer = malloc(strlen(str));
+    char *buffer = malloc(strlen(str)); // $ Alert
     strcpy(buffer, str);
     free(buffer);
 }
@@ -29,7 +29,7 @@ static void good0(char *str) {
 static void bad1(char *str) {
     int len = strlen(str);
     // BAD -- Not allocating space for '\0' terminator
-    char *buffer = malloc(len);
+    char *buffer = malloc(len); // $ Alert
     strcpy(buffer, str);
     free(buffer);
 }
@@ -46,7 +46,7 @@ static void good1(char *str) {
 static void bad2(char *str) {
     int len = strlen(str);
     // BAD -- Not allocating space for '\0' terminator
-    char *buffer = malloc(len);
+    char *buffer = malloc(len); // $ Alert
     strcpy(buffer, str);
     free(buffer);
 }
@@ -61,7 +61,7 @@ static void good2(char *str) {
 
 static void bad3(char *str) {
     // BAD -- Not allocating space for '\0' terminator
-    char *buffer = malloc(strlen(str) * sizeof(char));
+    char *buffer = malloc(strlen(str) * sizeof(char)); // $ Alert
     strcpy(buffer, str);
     free(buffer);
 }

@@ -2,7 +2,7 @@ using System;
 
 class C1<T>
 {
-    public int CompareTo(T other) => throw null; // BAD
+    public int CompareTo(T other) => throw null; // $ Alert // BAD
 }
 
 class C2 { }

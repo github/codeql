@@ -10,7 +10,7 @@ char *getString();
 void test_custom_printf2(char *string)
 {
   myMultiplyDefinedPrintf("string", getString()); // GOOD
-  myMultiplyDefinedPrintf(getString(), "string"); // BAD [NOT DETECTED]
+  myMultiplyDefinedPrintf(getString(), "string"); // $ MISSING: Alert // BAD [NOT DETECTED]
   myMultiplyDefinedPrintf2("string", getString()); // GOOD (we can't tell which declaration is correct so we have to assume this is OK)
   myMultiplyDefinedPrintf2(getString(), "string"); // GOOD (we can't tell which declaration is correct so we have to assume this is OK)
 }

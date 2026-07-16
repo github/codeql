@@ -1,1 +1,2 @@
-jsf/4.13 Functions/AV Rule 107.ql
+query: jsf/4.13 Functions/AV Rule 107.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

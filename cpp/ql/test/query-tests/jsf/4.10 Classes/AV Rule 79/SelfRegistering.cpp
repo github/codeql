@@ -22,7 +22,7 @@ public:
 		bottom = new MyElement(); // GOOD
 		bottom->bind(this);
 
-		side = new MyElement(); // BAD (never released)
+		side = new MyElement(); // $ Alert // BAD (never released)
 		side->donothing(123);
 	}
 

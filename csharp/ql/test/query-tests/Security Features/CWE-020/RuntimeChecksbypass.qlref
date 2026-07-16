@@ -1,1 +1,2 @@
-Security Features/CWE-020/RuntimeChecksBypass.ql
+query: Security Features/CWE-020/RuntimeChecksBypass.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

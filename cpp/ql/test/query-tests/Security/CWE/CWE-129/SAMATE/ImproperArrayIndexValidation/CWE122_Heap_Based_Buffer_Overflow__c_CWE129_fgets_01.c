@@ -27,7 +27,7 @@ void CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01_bad()
     {
         char inputBuffer[CHAR_ARRAY_SIZE] = "";
         /* POTENTIAL FLAW: Read data from the console using fgets() */
-        if (fgets(inputBuffer, CHAR_ARRAY_SIZE, stdin) != NULL)
+        if (fgets(inputBuffer, CHAR_ARRAY_SIZE, stdin) != NULL) // $ Source
         {
             /* Convert to int */
             data = atoi(inputBuffer);
@@ -49,7 +49,7 @@ void CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01_bad()
          * This code does check to see if the array index is negative */
         if (data >= 0)
         {
-            buffer[data] = 1;
+            buffer[data] = 1; // $ Alert
             /* Print the array values */
             for(i = 0; i < 10; i++)
             {

@@ -2,7 +2,7 @@ public class Test1
 {
     public override bool Equals(object other)
     {
-        var otherTest = other as Test1; // BAD
+        var otherTest = other as Test1; // $ Alert // BAD
         return otherTest != null;
     }
 }

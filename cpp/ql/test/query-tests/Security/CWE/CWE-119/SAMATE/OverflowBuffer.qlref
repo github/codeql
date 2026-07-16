@@ -1,1 +1,2 @@
-Security/CWE/CWE-119/OverflowBuffer.ql
+query: Security/CWE/CWE-119/OverflowBuffer.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

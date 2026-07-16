@@ -1,1 +1,2 @@
-Likely Bugs/ReturnConstType.ql
+query: Likely Bugs/ReturnConstType.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

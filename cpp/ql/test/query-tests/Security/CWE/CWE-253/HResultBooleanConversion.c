@@ -39,22 +39,22 @@ bool BoolFunction2()
 
 HRESULT IncorrectHresultFunction()
 {
-    return BoolFunction(); // BUG
+    return BoolFunction(); // $ Alert // BUG
 }
 
 HRESULT IncorrectHresultFunction2()
 {
-    return BoolFunction2(); // BUG
+    return BoolFunction2(); // $ Alert // BUG
 }
 
 void IncorrectTypeConversionTest() {
 
     HRESULT hr = HresultFunction();
-    if ((BOOL)hr) // BUG
+    if ((BOOL)hr) // $ Alert // BUG
     {
         // ...
     }
-    if ((bool)hr) // BUG
+    if ((bool)hr) // $ Alert // BUG
     {
         // ...
     }
@@ -63,11 +63,11 @@ void IncorrectTypeConversionTest() {
         // ...
     }
 
-    if (SUCCEEDED(BoolFunction())) // BUG
+    if (SUCCEEDED(BoolFunction())) // $ Alert // BUG
     {
         // ...
     }
-    if (SUCCEEDED(BoolFunction2())) // BUG
+    if (SUCCEEDED(BoolFunction2())) // $ Alert // BUG
     {
         // ...
     }
@@ -75,11 +75,11 @@ void IncorrectTypeConversionTest() {
     {
         // ...
     }
-    BOOL b = IncorrectHresultFunction(); // BUG
-    bool b2 = IncorrectHresultFunction(); // BUG
+    BOOL b = IncorrectHresultFunction(); // $ Alert // BUG
+    bool b2 = IncorrectHresultFunction(); // $ Alert // BUG
 
     hr = E_UNEXPECTED;
-    if (!hr) // BUG
+    if (!hr) // $ Alert // BUG
     {
         // ...
     }
@@ -89,7 +89,7 @@ void IncorrectTypeConversionTest() {
     }
 
     hr = S_FALSE;
-    if (hr) // BUG
+    if (hr) // $ Alert // BUG
     {
         // ...
     }
@@ -103,7 +103,7 @@ void IncorrectTypeConversionTest() {
         // ...
     }
 
-    while (!HresultFunction()) {}; // BUG
+    while (!HresultFunction()) {}; // $ Alert // BUG
     while (FAILED(HresultFunction())) {}; // Correct Usage
 
     switch(hr) // Correct Usage

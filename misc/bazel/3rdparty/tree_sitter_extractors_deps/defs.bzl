@@ -403,6 +403,13 @@ _NORMAL_DEPENDENCIES = {
             "syn": Label("@vendor_ts__syn-2.0.106//:syn"),
         },
     },
+    "shared/yeast-schema": {
+        _COMMON_CONDITION: {
+            "serde": Label("@vendor_ts__serde-1.0.228//:serde"),
+            "serde_json": Label("@vendor_ts__serde_json-1.0.145//:serde_json"),
+            "serde_yaml": Label("@vendor_ts__serde_yaml-0.9.34-deprecated//:serde_yaml"),
+        },
+    },
     "unified/extractor": {
         _COMMON_CONDITION: {
             "clap": Label("@vendor_ts__clap-4.5.48//:clap"),
@@ -456,6 +463,10 @@ _NORMAL_ALIASES = {
         _COMMON_CONDITION: {
         },
     },
+    "shared/yeast-schema": {
+        _COMMON_CONDITION: {
+        },
+    },
     "unified/extractor": {
         _COMMON_CONDITION: {
         },
@@ -488,6 +499,8 @@ _NORMAL_DEV_DEPENDENCIES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
@@ -513,6 +526,8 @@ _NORMAL_DEV_ALIASES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
@@ -535,6 +550,8 @@ _PROC_MACRO_DEPENDENCIES = {
     "shared/yeast": {
     },
     "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
     },
     "unified/extractor": {
     },
@@ -559,6 +576,8 @@ _PROC_MACRO_ALIASES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
@@ -581,6 +600,8 @@ _PROC_MACRO_DEV_DEPENDENCIES = {
     "shared/yeast": {
     },
     "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
     },
     "unified/extractor": {
     },
@@ -607,6 +628,8 @@ _PROC_MACRO_DEV_ALIASES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
@@ -629,6 +652,8 @@ _BUILD_DEPENDENCIES = {
     "shared/yeast": {
     },
     "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
     },
     "unified/extractor": {
     },
@@ -657,6 +682,8 @@ _BUILD_ALIASES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
@@ -682,6 +709,8 @@ _BUILD_PROC_MACRO_DEPENDENCIES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
@@ -704,6 +733,8 @@ _BUILD_PROC_MACRO_ALIASES = {
     "shared/yeast": {
     },
     "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
     },
     "unified/extractor": {
     },

@@ -108,7 +108,7 @@ namespace std
     basic_string& insert(size_type pos, size_type n, charT c);
     basic_string& insert(size_type pos, const charT* s);
     iterator insert(const_iterator p, size_type n, charT c);
-    template<class InputIterator> iterator insert(const_iterator p, InputIterator first, InputIterator last); 
+    template<class InputIterator> iterator insert(const_iterator p, InputIterator first, InputIterator last);
     basic_string& replace(size_type pos1, size_type n1, const basic_string& str);
     basic_string& replace(size_type pos1, size_type n1, size_type n2, charT c);
   };
@@ -123,11 +123,11 @@ namespace std
 
 namespace std {
   template<class T, class Allocator = allocator<T>>
-  class vector { 
+  class vector {
   public:
     using value_type = T;
     using reference = value_type&;
-    using const_reference = const value_type&; 
+    using const_reference = const value_type&;
     using size_type = unsigned int;
     using iterator = std::iterator<random_access_iterator_tag, T>;
     using const_iterator = std::iterator<random_access_iterator_tag, const T>;
@@ -162,11 +162,11 @@ void call_by_cref(const S&);
 void call(const char*);
 
 const char* test1(bool b1, bool b2) {
-  auto s1 = std::string("hello").c_str(); // BAD
-  auto s2 = b1 ? std::string("hello").c_str() : ""; // BAD
-  auto s3 = b2 ? "" : std::string("hello").c_str(); // BAD
+  auto s1 = std::string("hello").c_str(); // $ Alert // BAD
+  auto s2 = b1 ? std::string("hello").c_str() : ""; // $ Alert // BAD
+  auto s3 = b2 ? "" : std::string("hello").c_str(); // $ Alert // BAD
   const char* s4;
-  s4 = std::string("hello").c_str(); // BAD
+  s4 = std::string("hello").c_str(); // $ Alert // BAD
 
   call(std::string("hello").c_str()); // GOOD
   call(b1 ? std::string("hello").c_str() : ""); // GOOD
@@ -175,24 +175,24 @@ const char* test1(bool b1, bool b2) {
   call_by_cref({ std::string("hello").c_str() }); // GOOD
 
   std::vector<const char*> v1;
-  v1.push_back(std::string("hello").c_str()); // BAD
+  v1.push_back(std::string("hello").c_str()); // $ Alert // BAD
 
   std::vector<S> v2;
-  v2.push_back({ std::string("hello").c_str() }); // BAD
+  v2.push_back({ std::string("hello").c_str() }); // $ Alert // BAD
 
-  S s5[] = { { std::string("hello").c_str() } }; // BAD
+  S s5[] = { { std::string("hello").c_str() } }; // $ Alert // BAD
 
   char c = std::string("hello").c_str()[0]; // GOOD
 
-  auto s6 = std::string("hello").data(); // BAD
-  auto s7 = b1 ? std::string("hello").data() : ""; // BAD
-  auto s8 = b2 ? "" : std::string("hello").data(); // BAD
+  auto s6 = std::string("hello").data(); // $ Alert // BAD
+  auto s7 = b1 ? std::string("hello").data() : ""; // $ Alert // BAD
+  auto s8 = b2 ? "" : std::string("hello").data(); // $ Alert // BAD
   char* s9;
-  s9 = std::string("hello").data(); // BAD
+  s9 = std::string("hello").data(); // $ Alert // BAD
 
-  const char* s13 = b1 ? std::string("hello").c_str() : s1; // BAD
+  const char* s13 = b1 ? std::string("hello").c_str() : s1; // $ Alert // BAD
 
-  return std::string("hello").c_str(); // BAD
+  return std::string("hello").c_str(); // $ Alert // BAD
 }
 
 void test2(bool b1, bool b2) {

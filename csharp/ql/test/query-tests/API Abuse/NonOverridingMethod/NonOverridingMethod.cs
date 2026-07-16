@@ -12,13 +12,13 @@ class C1
 class C2 : C1
 {
     // BAD: M1 does not override C1.M1
-    public int M1() { return 1; }
+    public int M1() { return 1; } // $ Alert
 
     // GOOD: M2 overrides using the explicit keyword "override"
     public override int M2() { return 2; }
 
     // BAD: M3 does not override C1.M3
-    public IEnumerable<T> M3<T>() { return null; }
+    public IEnumerable<T> M3<T>() { return null; } // $ Alert
 
     // GOOD: M4 overrides using the explicit keyword "override"
     public override IEnumerable<T> M4<T>() { return null; }

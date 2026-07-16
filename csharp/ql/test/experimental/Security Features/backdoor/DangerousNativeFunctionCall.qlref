@@ -1,1 +1,2 @@
-experimental/Security Features/backdoor/DangerousNativeFunctionCall.ql
+query: experimental/Security Features/backdoor/DangerousNativeFunctionCall.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

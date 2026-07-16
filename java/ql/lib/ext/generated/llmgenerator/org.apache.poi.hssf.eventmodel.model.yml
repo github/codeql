@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.poi.hssf.eventmodel", "ERFListener", True, "processRecord", "(Record)", "", "Parameter[0]", "file", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.hssf.eventmodel", "EventRecordFactory", False, "EventRecordFactory", "(ERFListener,short[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

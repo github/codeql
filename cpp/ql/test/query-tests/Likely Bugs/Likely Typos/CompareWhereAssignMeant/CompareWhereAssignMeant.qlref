@@ -1,1 +1,2 @@
-Likely Bugs/Likely Typos/CompareWhereAssignMeant.ql
+query: Likely Bugs/Likely Typos/CompareWhereAssignMeant.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

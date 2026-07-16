@@ -1,1 +1,2 @@
-Security/CWE/CWE-416/IteratorToExpiredContainer.ql
+query: Security/CWE/CWE-416/IteratorToExpiredContainer.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

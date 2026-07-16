@@ -30,27 +30,27 @@ namespace std
 
 int getTainted() {
 	int i;
-	
+
 	std::cin >> i;
 
 	return i;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) { // $ Source
 	int tainted = atoi(argv[1]);
 
 	MyStruct *arr1 = (MyStruct *)malloc(sizeof(MyStruct)); // GOOD
-	MyStruct *arr2 = (MyStruct *)malloc(tainted); // BAD
-	MyStruct *arr3 = (MyStruct *)malloc(tainted * sizeof(MyStruct)); // BAD
-	MyStruct *arr4 = (MyStruct *)malloc(getTainted() * sizeof(MyStruct)); // BAD [NOT DETECTED]
-	MyStruct *arr5 = (MyStruct *)malloc(sizeof(MyStruct) + tainted); // BAD
+	MyStruct *arr2 = (MyStruct *)malloc(tainted); // $ Alert // BAD
+	MyStruct *arr3 = (MyStruct *)malloc(tainted * sizeof(MyStruct)); // $ Alert // BAD
+	MyStruct *arr4 = (MyStruct *)malloc(getTainted() * sizeof(MyStruct)); // $ MISSING: Alert // BAD [NOT DETECTED]
+	MyStruct *arr5 = (MyStruct *)malloc(sizeof(MyStruct) + tainted); // $ Alert // BAD
 
 	int size = tainted * 8;
-	char *chars1 = (char *)malloc(size); // BAD
-	char *chars2 = new char[size]; // BAD
+	char *chars1 = (char *)malloc(size); // $ Alert // BAD
+	char *chars2 = new char[size]; // $ Alert // BAD
 	char *chars3 = new char[8]; // GOOD
 
-	arr1 = (MyStruct *)realloc(arr1, sizeof(MyStruct) * tainted); // BAD
+	arr1 = (MyStruct *)realloc(arr1, sizeof(MyStruct) * tainted); // $ Alert // BAD
 
 	size = 8;
 	chars3 = new char[size]; // GOOD
@@ -121,18 +121,18 @@ int bounded(int x, int limit) {
 }
 
 void open_file_bounded () {
-	int size = atoi(getenv("USER"));
+	int size = atoi(getenv("USER")); // $ Source
 	int bounded_size = bounded(size, MAX_SIZE);
-	
+
 	int* a = (int*)malloc(bounded_size * sizeof(int)); // GOOD
-	int* b = (int*)malloc(size * sizeof(int)); // BAD
+	int* b = (int*)malloc(size * sizeof(int)); // $ Alert // BAD
 }
 
 void more_bounded_tests() {
 	{
-		int size = atoi(getenv("USER"));
+		int size = atoi(getenv("USER")); // $ Source
 
-		malloc(size * sizeof(int)); // BAD
+		malloc(size * sizeof(int)); // $ Alert // BAD
 	}
 
 	{
@@ -145,11 +145,11 @@ void more_bounded_tests() {
 	}
 
 	{
-		long size = atol(getenv("USER"));
+		long size = atol(getenv("USER")); // $ Source
 
 		if (size > 0)
 		{
-			malloc(size * sizeof(int)); // BAD
+			malloc(size * sizeof(int)); // $ Alert // BAD
 		}
 	}
 
@@ -158,7 +158,7 @@ void more_bounded_tests() {
 
 		if (size < 100)
 		{
-			malloc(size * sizeof(int)); // BAD [NOT DETECTED]
+			malloc(size * sizeof(int)); // $ MISSING: Alert // BAD [NOT DETECTED]
 		}
 	}
 
@@ -187,11 +187,11 @@ void more_bounded_tests() {
 	}
 
 	{
-		int size = atoi(getenv("USER"));
+		int size = atoi(getenv("USER")); // $ Source
 
 		if (size % 100)
 		{
-			malloc(size * sizeof(int)); // BAD
+			malloc(size * sizeof(int)); // $ Alert // BAD
 		}
 	}
 
@@ -202,18 +202,18 @@ void more_bounded_tests() {
 	}
 
 	{
-		int size = atoi(getenv("USER"));
+		int size = atoi(getenv("USER")); // $ Source
 
 		if (size & 7)
 		{
-			malloc(size * sizeof(int)); // BAD
+			malloc(size * sizeof(int)); // $ Alert // BAD
 		}
 	}
 
 	{
 		int size = atoi(getenv("USER"));
 
-		malloc(size * sizeof(int)); // BAD [NOT DETECTED]
+		malloc(size * sizeof(int)); // $ MISSING: Alert // BAD [NOT DETECTED]
 
 		if ((size > 0) && (size < 100))
 		{
@@ -226,7 +226,7 @@ void more_bounded_tests() {
 
 		if (size > 100)
 		{
-			malloc(size * sizeof(int)); // BAD [NOT DETECTED]
+			malloc(size * sizeof(int)); // $ MISSING: Alert // BAD [NOT DETECTED]
 		}
 	}
 }
@@ -238,7 +238,7 @@ size_t get_untainted_size()
 
 size_t get_tainted_size()
 {
-	return atoi(getenv("USER")) * sizeof(int);
+	return atoi(getenv("USER")) * sizeof(int); // $ Source
 }
 
 size_t get_bounded_size()
@@ -258,39 +258,39 @@ void *my_alloc(size_t s) {
 }
 
 void my_func(size_t s) {
-	void *ptr = malloc(s); // BAD
+	void *ptr = malloc(s); // $ Alert // BAD
 
 	free(ptr);
 }
 
 void more_cases() {
-	int local_size = atoi(getenv("USER")) * sizeof(int);
+	int local_size = atoi(getenv("USER")) * sizeof(int); // $ Source
 
-	malloc(local_size); // BAD
+	malloc(local_size); // $ Alert // BAD
 	malloc(get_untainted_size()); // GOOD
-	malloc(get_tainted_size()); // BAD
+	malloc(get_tainted_size()); // $ Alert // BAD
 	malloc(get_bounded_size()); // GOOD
 
 	my_alloc(100); // GOOD
-	my_alloc(local_size); // BAD
+	my_alloc(local_size); // $ Alert // BAD
 	my_func(100); // GOOD
 	my_func(local_size); // GOOD
 }
 
 bool get_size(int &out_size) {
-	out_size = atoi(getenv("USER"));
-	
+	out_size = atoi(getenv("USER")); // $ Source
+
 	return true;
 }
 
 void equality_cases() {
 	{
 		int size1 = atoi(getenv("USER"));
-		int size2 = atoi(getenv("USER"));
+		int size2 = atoi(getenv("USER")); // $ Source
 
 		if (size1 == 100)
 		{
-			malloc(size2 * sizeof(int)); // BAD
+			malloc(size2 * sizeof(int)); // $ Alert // BAD
 		}
 		if (size2 == 100)
 		{
@@ -318,7 +318,7 @@ void equality_cases() {
 
 		if ((get_size(size)) && (size != 100))
 		{
-			malloc(size * sizeof(int)); // BAD
+			malloc(size * sizeof(int)); // $ Alert // BAD
 		}
 	}
 	{
@@ -335,7 +335,7 @@ void equality_cases() {
 		if ((!get_size(size)) || (size == 100))
 			return;
 
-		malloc(size * sizeof(int)); // BAD
+		malloc(size * sizeof(int)); // $ Alert // BAD
 	}
 	{
 		int size = atoi(getenv("USER"));
@@ -360,7 +360,7 @@ char * strstr(char *, const char *);
 void ptr_diff_case() {
 	char* user = getenv("USER");
 	char* admin_begin_pos = strstr(user, "ADMIN");
-	int offset = admin_begin_pos ? user - admin_begin_pos : 0; 
+	int offset = admin_begin_pos ? user - admin_begin_pos : 0;
 	malloc(offset); // GOOD
 }
 
@@ -374,14 +374,14 @@ void equality_barrier() {
 }
 
 // --- custom allocators ---
- 
+
 void *MyMalloc1(size_t size) { return malloc(size); }
 void *MyMalloc2(size_t size);
 
 void customAllocatorTests()
 {
-	int size = atoi(getenv("USER"));
+	int size = atoi(getenv("USER")); // $ Source
 
-	char *chars1 = (char *)MyMalloc1(size); // BAD
-	char *chars2 = (char *)MyMalloc2(size); // BAD
+	char *chars1 = (char *)MyMalloc1(size); // $ Alert // BAD
+	char *chars2 = (char *)MyMalloc2(size); // $ Alert // BAD
 }

@@ -406,7 +406,9 @@ private module NonReturningCalls {
     }
 
     /** Gets a `MethodCall` that calls this method. */
-    MethodCall getAnAccess() { result.getMethod().getAPossibleImplementation() = this }
+    MethodCall getAnAccess() {
+      result.getMethod().getAPossibleImplementation() = pragma[only_bind_out](this)
+    }
   }
 
   /** Holds if a call to `m` indicates that `m` is expected to return. */

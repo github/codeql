@@ -1,1 +1,2 @@
-API Abuse/DisposeNotCalledOnException.ql
+query: API Abuse/DisposeNotCalledOnException.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

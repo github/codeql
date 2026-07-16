@@ -1,1 +1,2 @@
-Likely Bugs/ShortLoopVarName.ql
+query: Likely Bugs/ShortLoopVarName.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

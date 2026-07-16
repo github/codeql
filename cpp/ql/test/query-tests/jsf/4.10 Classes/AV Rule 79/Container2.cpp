@@ -18,7 +18,7 @@ public:
 	void Alloc()
 	{
 		ptr2 = new T(); // GOOD
-		ptr3 = new T(); // BAD: not deleted in destructor
+		ptr3 = new T(); // $ Alert // BAD: not deleted in destructor
 	}
 
 	void Free()

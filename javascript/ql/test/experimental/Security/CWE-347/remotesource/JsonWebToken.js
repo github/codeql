@@ -7,18 +7,18 @@ function getSecret() {
     return "A Safe generated random key"
 }
 app.get('/jwtJsonwebtoken1', (req, res) => {
-    const UserToken = req.headers.authorization;
+    const UserToken = req.headers.authorization; // $ Alert
 
     // BAD: no signature verification
-    jwtJsonwebtoken.decode(UserToken) // NOT OK
+    jwtJsonwebtoken.decode(UserToken) // $ Sink // NOT OK
 })
 
 app.get('/jwtJsonwebtoken2', (req, res) => {
-    const UserToken = req.headers.authorization;
+    const UserToken = req.headers.authorization; // $ Alert
 
     // BAD: no signature verification
-    jwtJsonwebtoken.decode(UserToken) // NOT OK
-    jwtJsonwebtoken.verify(UserToken, getSecret(), { algorithms: ["HS256", "none"] }) // NOT OK
+    jwtJsonwebtoken.decode(UserToken) // $ Sink // NOT OK
+    jwtJsonwebtoken.verify(UserToken, getSecret(), { algorithms: ["HS256", "none"] }) // $ Sink // NOT OK
 })
 
 app.get('/jwtJsonwebtoken3', (req, res) => {

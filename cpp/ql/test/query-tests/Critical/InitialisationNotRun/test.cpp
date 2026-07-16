@@ -9,9 +9,9 @@ public:
     char name[1000];
 };
 
-GlobalStorage *g1; // BAD
+GlobalStorage *g1; // $ Alert // BAD
 static GlobalStorage g2; // GOOD
-static GlobalStorage *g3; // BAD
+static GlobalStorage *g3; // $ Alert // BAD
 // static variables are initialized by compilers
 static int a;  // GOOD
 static int b = 0;  // GOOD

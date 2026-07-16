@@ -9,7 +9,7 @@ char smallbuf[1], largebuf[2];
 void test1()
 {
 	memcpy(largebuf, smallbuf, 1); // GOOD
-	memcpy(largebuf, smallbuf, 2); // BAD: source over-read
+	memcpy(largebuf, smallbuf, 2); // $ Alert[cpp/overflow-buffer] // BAD: source over-read
 }
 
 int tests_restrict_main(int argc, char *argv[])

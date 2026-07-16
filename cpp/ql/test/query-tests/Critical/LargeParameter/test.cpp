@@ -13,7 +13,7 @@ class myTemplateClass
 public:
 	myTemplateClass() {}
 
-	void set(T _t) { // BAD: T can be myLargeStruct, which is large
+	void set(T _t) { // $ Alert // BAD: T can be myLargeStruct, which is large
 		t = _t;
 	}
 
@@ -21,11 +21,11 @@ public:
 };
 
 template<class T>
-void myTemplateFunction(myTemplateClass<T> mtc_t) // BAD: T can be myLargeStruct, which is large
+void myTemplateFunction(myTemplateClass<T> mtc_t) // $ Alert // BAD: T can be myLargeStruct, which is large
 {
 }
 
-void myFunction1(mySmallStruct a, myLargeStruct b) // BAD: b is large
+void myFunction1(mySmallStruct a, myLargeStruct b) // $ Alert // BAD: b is large
 {
 	myTemplateClass<mySmallStruct> mtc_a;
 	myTemplateClass<myLargeStruct> mtc_b;
@@ -86,7 +86,7 @@ void myFunction4(
 {
 	MyLargeClass *mlc_ptr;
 	int *i_ptr;
-	
+
 	a.value++;
 	b.value = 1;
 	c.data[0] += 1;
@@ -101,18 +101,18 @@ void myFunction4(
 }
 
 void myFunction5(
-		MyLargeClass a, // BAD
-		MyLargeClass b, // BAD
-		MyLargeClass c, // BAD
-		MyLargeClass d, // BAD
-		MyLargeClass e, // BAD
-		MyLargeClass f // BAD
+		MyLargeClass a, // $ Alert // BAD
+		MyLargeClass b, // $ Alert // BAD
+		MyLargeClass c, // $ Alert // BAD
+		MyLargeClass d, // $ Alert // BAD
+		MyLargeClass e, // $ Alert // BAD
+		MyLargeClass f // $ Alert // BAD
 	)
 {
 	const MyLargeClass *mlc_ptr;
 	const int *i_ptr;
 	int i;
-	
+
 	i = a.value;
 	i += b.data[0];
 	c.myConstMethod();
@@ -158,7 +158,7 @@ struct big
 
 void myFunction7(
 		big a, // GOOD
-		big b // BAD
+		big b // $ Alert // BAD
 	)
 {
 	a.xs[0]++; // modifies a

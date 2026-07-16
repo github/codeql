@@ -15,7 +15,7 @@ pub mod schema;
 pub mod tree_builder;
 mod visitor;
 
-pub use yeast_macros::{query, rule, tree, trees};
+pub use yeast_macros::{query, rule, rules, tree, trees};
 
 use captures::Captures;
 use query::QueryNode;
@@ -26,6 +26,12 @@ use query::QueryNode;
 /// without colliding with the impls for plain integers.
 ///
 /// Use `id.0` (or `id.into()`) to obtain the raw arena index.
+///
+/// Implements [`IntoIterator`] as a singleton (`iter::once(self)`)
+/// so that a bare `Id` can be used interchangeably with `Option<Id>`
+/// / `Vec<Id>` in places that expect an iterable of ids (e.g.
+/// [`crate::build::BuildCtx::translate`] and the field-splice
+/// interpolation via [`IntoFieldIds`]).
 #[repr(transparent)]
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Debug, Hash, Serialize)]
 pub struct Id(pub usize);
@@ -42,28 +48,36 @@ impl From<Id> for usize {
     }
 }
 
+impl IntoIterator for Id {
+    type Item = Id;
+    type IntoIter = std::iter::Once<Id>;
+    fn into_iter(self) -> Self::IntoIter {
+        std::iter::once(self)
+    }
+}
+
 /// Field and Kind ids are provided by tree-sitter
-type FieldId = u16;
-type KindId = u16;
+type FieldId = yeast_schema::FieldId;
+type KindId = yeast_schema::KindId;
+
+/// Sentinel field id used to mean "the implicit unfielded slot".
+/// Re-exported from `yeast-schema` so the runtime and the schema share a
+/// single value.
+pub use yeast_schema::CHILD_FIELD;
 
 /// Trait for values that can be appended to a field's id list inside a
 /// `tree!`/`trees!`/`rule!` template (in `{expr}` placeholders).
 ///
-/// `Id` pushes a single id; the blanket impl for
-/// `IntoIterator<Item: Into<Id>>` handles `Vec<Id>`, `Option<Id>`,
-/// arbitrary iterators yielding `Id`, etc.
+/// The blanket impl for `IntoIterator<Item: Into<Id>>` handles all
+/// current shapes: `Vec<Id>`, `Option<Id>`, arbitrary iterators
+/// yielding `Id`, and a bare `Id` itself (which is `IntoIterator`
+/// via a singleton).
 ///
 /// This lets `{expr}` interpolate any of these shapes without a
 /// dedicated splice syntax — the macro emits the same trait-dispatched
 /// call regardless of the value's type.
 pub trait IntoFieldIds {
     fn extend_into(self, out: &mut Vec<Id>);
-}
-
-impl IntoFieldIds for Id {
-    fn extend_into(self, out: &mut Vec<Id>) {
-        out.push(self);
-    }
 }
 
 impl<I, T> IntoFieldIds for I
@@ -147,8 +161,6 @@ impl<T: YeastSourceRange + ?Sized> YeastSourceRange for &T {
         (**self).yeast_source_range(ast)
     }
 }
-
-pub const CHILD_FIELD: u16 = u16::MAX;
 
 #[derive(Debug)]
 pub struct AstCursor<'a> {
@@ -295,7 +307,7 @@ impl std::fmt::Debug for Ast {
 impl Ast {
     /// Construct an AST from a TS tree
     pub fn from_tree(language: tree_sitter::Language, tree: &tree_sitter::Tree) -> Self {
-        let schema = schema::Schema::from_language(&language);
+        let schema = schema::from_language(&language);
         Self::from_tree_with_schema(schema, tree, &language)
     }
 
@@ -732,6 +744,16 @@ pub struct TranslatorHandle<'a, C> {
     inner: TranslatorImpl<'a, C>,
 }
 
+// Manual `Copy` / `Clone` so `TranslatorHandle<'_, C>: Copy` holds
+// regardless of whether `C: Copy`. `TranslatorImpl` contains only
+// shared references, which are `Copy` unconditionally.
+impl<C> Copy for TranslatorHandle<'_, C> {}
+impl<C> Clone for TranslatorHandle<'_, C> {
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+
 /// Internal phase-specific translation state. Kept private — callers
 /// interact with [`TranslatorHandle`] only.
 enum TranslatorImpl<'a, C> {
@@ -750,6 +772,16 @@ enum TranslatorImpl<'a, C> {
     /// [`auto_translate_captures`] is a no-op so the macro's auto-prefix
     /// works unchanged for Repeating rules.
     Repeating,
+}
+
+// Manual `Copy` / `Clone` so `TranslatorImpl<'_, C>: Copy` holds
+// regardless of whether `C: Copy`. All variants hold only shared
+// references and small `Copy` scalars.
+impl<C> Copy for TranslatorImpl<'_, C> {}
+impl<C> Clone for TranslatorImpl<'_, C> {
+    fn clone(&self) -> Self {
+        *self
+    }
 }
 
 impl<'a, C: Clone> TranslatorHandle<'a, C> {
@@ -970,10 +1002,13 @@ fn apply_repeating_rules_inner<C: Clone>(
         if Some(rule_ptr) == skip_rule {
             continue;
         }
-        // Snapshot the user context before invoking the rule so that any
-        // mutations the rule makes are visible during recursive translation
-        // of its result, but not leaked to the parent's siblings.
-        let snapshot = user_ctx.clone();
+        // Give each rule attempt a private clone of the user context.
+        // Any mutations the rule makes are visible to its transform and
+        // to the recursive translation of its result, but never leak
+        // back to the parent — the clone is simply dropped when we
+        // return. This is also `?`-safe: an error return drops `local`
+        // without touching the caller's `user_ctx`.
+        let mut local = user_ctx.clone();
         // Repeating rules don't need a real translator: their captures
         // aren't auto-translated (Repeating preserves the input schema),
         // and `ctx.translate(id)` errors if invoked from a Repeating
@@ -981,7 +1016,7 @@ fn apply_repeating_rules_inner<C: Clone>(
         let translator = TranslatorHandle {
             inner: TranslatorImpl::Repeating,
         };
-        let try_result = rule.try_rule(ast, id, fresh, user_ctx, translator)?;
+        let try_result = rule.try_rule(ast, id, fresh, &mut local, translator)?;
         if let Some(result_node) = try_result {
             // For non-repeated rules, suppress further application of *this*
             // rule on the result root, so a rule whose output matches its own
@@ -993,19 +1028,17 @@ fn apply_repeating_rules_inner<C: Clone>(
                 results.extend(apply_repeating_rules_inner(
                     index,
                     ast,
-                    user_ctx,
+                    &mut local,
                     node,
                     fresh,
                     rewrite_depth + 1,
                     next_skip,
                 )?);
             }
-            *user_ctx = snapshot;
             return Ok(results);
         }
-        // Rule didn't match; restore any speculative changes (none expected
-        // since try_rule only mutates on match, but be defensive).
-        *user_ctx = snapshot;
+        // Rule didn't match; `local` is dropped as we loop to the next
+        // rule.
     }
 
     // Take the parent's fields by ownership: the recursion will rewrite
@@ -1087,11 +1120,13 @@ fn apply_one_shot_rules_inner<C: Clone>(
 
     for rule in index.rules_for_kind(node_kind) {
         if let Some(captures) = rule.try_match(ast, id)? {
-            // Snapshot the user context before invoking the rule so that any
-            // mutations the rule (or its transitively-translated captures)
-            // make are visible during this rule's transform, but not leaked
-            // to the parent's siblings.
-            let snapshot = user_ctx.clone();
+            // Give the rule a private clone of the user context. Any
+            // mutations the rule (or its transitively-translated
+            // captures) make are visible during this rule's transform,
+            // but never leak back — the clone is dropped when we
+            // return. `?`-safe: an error return drops `local` without
+            // touching the caller's `user_ctx`.
+            let mut local = user_ctx.clone();
             // Build the translator handle the transform will use to
             // recursively translate captures (or, for macro-generated
             // rules, the auto-translate prefix uses it to translate every
@@ -1104,8 +1139,7 @@ fn apply_one_shot_rules_inner<C: Clone>(
                     matched_root: id,
                 },
             };
-            let result = rule.run_transform(ast, captures, id, fresh, user_ctx, translator)?;
-            *user_ctx = snapshot;
+            let result = rule.run_transform(ast, captures, id, fresh, &mut local, translator)?;
             return Ok(result);
         }
     }
@@ -1220,7 +1254,7 @@ impl<C> DesugaringConfig<C> {
     pub fn build_schema(&self, language: &tree_sitter::Language) -> Result<schema::Schema, String> {
         match self.output_node_types_yaml {
             Some(yaml) => node_types_yaml::schema_from_yaml_with_language(yaml, language),
-            None => Ok(schema::Schema::from_language(language)),
+            None => Ok(schema::from_language(language)),
         }
     }
 }
@@ -1234,7 +1268,7 @@ pub struct Runner<'a, C = ()> {
 impl<'a, C> Runner<'a, C> {
     /// Create a runner using the input grammar's schema for output.
     pub fn new(language: tree_sitter::Language, phases: &'a [Phase<C>]) -> Self {
-        let schema = schema::Schema::from_language(&language);
+        let schema = schema::from_language(&language);
         Self {
             language,
             schema,

@@ -277,6 +277,11 @@ func FloatColumn(columnName string) Column {
 	return Column{columnName, FLOAT, false, true}
 }
 
+// BooleanColumn constructs a column with name `columnName` holding boolean values
+func BooleanColumn(columnName string) Column {
+	return Column{columnName, BOOLEAN, false, true}
+}
+
 // A Table represents a database table
 type Table struct {
 	name    string

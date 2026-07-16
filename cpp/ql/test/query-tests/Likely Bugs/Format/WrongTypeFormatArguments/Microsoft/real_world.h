@@ -58,9 +58,9 @@ void bar()
 	printf("check %n", &i); // GOOD
 	printf("check %n", &ui); // GOOD [dubious: int is written to unsigned int]
 	printf("check %n", &si); // GOOD
-	printf("check %n", &s); // BAD: int is written to short
-	printf("check %hn", &i); // BAD: short is written to int
-	printf("check %hn", &ui); // BAD: short is written to unsigned int
-	printf("check %hn", &si); // BAD: short is written to signed int
+	printf("check %n", &s); // $ Alert // BAD: int is written to short
+	printf("check %hn", &i); // $ Alert // BAD: short is written to int
+	printf("check %hn", &ui); // $ Alert // BAD: short is written to unsigned int
+	printf("check %hn", &si); // $ Alert // BAD: short is written to signed int
 	printf("check %hn", &s); // GOOD
 }

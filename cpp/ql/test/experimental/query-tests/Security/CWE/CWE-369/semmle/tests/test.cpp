@@ -44,13 +44,13 @@ int getSize2(int type) {
 
 int badTestf1(int type, int met) {
   int is = getSize(type);
-  if (met == 1) return 123 / is; // BAD
-  else return 123 / getSize2(type); // BAD
+  if (met == 1) return 123 / is; // $ Alert // BAD
+  else return 123 / getSize2(type); // $ Alert // BAD
 }
 int badTestf2(int type) {
   int is;
   is = getSize(type);
-  return 123 / is; // BAD
+  return 123 / is; // $ Alert // BAD
 }
 
 int badTestf3(int type, int met) {
@@ -58,31 +58,31 @@ int badTestf3(int type, int met) {
   is = getSize(type);
   switch (met) {
   case 1:
-    if (is >= 0) return 123 / is; // BAD [NOT DETECTED]
+    if (is >= 0) return 123 / is; // $ MISSING: Alert // BAD [NOT DETECTED]
   case 2:
-    if (0 == is) return 123 / is; // BAD [NOT DETECTED]
+    if (0 == is) return 123 / is; // $ MISSING: Alert // BAD [NOT DETECTED]
   case 3:
-    if (!is & 123 / is) // BAD
+    if (!is & 123 / is) // $ Alert // BAD
       return 123;
   case 4:
-    if (!is | 123 / is) // BAD
+    if (!is | 123 / is) // $ Alert // BAD
       return 123;
   case 5:
-    if (123 / is || !is) // BAD 
+    if (123 / is || !is) // $ Alert // BAD
       return 123;
   case 6:
-    if (123 / is && !is) // BAD
+    if (123 / is && !is) // $ Alert // BAD
       return 123;
   case 7:
-    if (!is) return 123 / is; // BAD
+    if (!is) return 123 / is; // $ Alert // BAD
   case 8:
-    if (is > -1) return 123 / is; // BAD
+    if (is > -1) return 123 / is; // $ Alert // BAD
   case 9:
-    if (is < 2) return 123 / is; // BAD
+    if (is < 2) return 123 / is; // $ Alert // BAD
   }
   if (is != 0) return -1;
   if (is == 0) type += 1;
-  return 123 / is; // BAD [NOT DETECTED]
+  return 123 / is; // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 int goodTestf3(int type, int met) {
@@ -92,7 +92,7 @@ int goodTestf3(int type, int met) {
   case 1:
     if (is < 0) return 123 / is; // GOOD
   case 2:
-    if (!is && 123 / is) // GOOD 
+    if (!is && 123 / is) // GOOD
       return 123;
   case 3:
     if (!is || 123 / is) // GOOD
@@ -112,10 +112,10 @@ int goodTestf3a(int type, int met) {
     if (is < 0)
       return 123 / is; // GOOD
   case 2:
-    if (!is && 123 / is) // GOOD 
+    if (!is && 123 / is) // GOOD
       return 123;
   case 3:
-    if (!is || 123 / is) // GOOD 
+    if (!is || 123 / is) // GOOD
       return 123;
   }
   return 1;
@@ -125,20 +125,20 @@ int badTestf4(int type) {
   int is = getSize(type);
   int d;
   d = type * is;
-  return 123 / d; // BAD
+  return 123 / d; // $ Alert // BAD
 }
 
 int badTestf5(int type) {
   int is = getSize(type);
   int d;
   d = is / type;
-  return 123 / d; // BAD
+  return 123 / d; // $ Alert // BAD
 }
 int badTestf6(int type) {
   int is = getSize(type);
   int d;
   d = is / type;
-  return type * 123 / d; // BAD
+  return type * 123 / d; // $ Alert // BAD
 }
 
 int badTestf7(int type, int met) {
@@ -150,7 +150,7 @@ int badTestf7(int type, int met) {
       return 123 / is; // GOOD
   }
   quit:
-    return 123 / is; // BAD
+    return 123 / is; // $ Alert // BAD
 }
 
 int goodTestf7(int type, int met) {
@@ -169,8 +169,8 @@ int goodTestf7(int type, int met) {
 
 int badTestf8(int type) {
   int is = getSize(type);
-  type /= is; // BAD
-  type %= is; // BAD
+  type /= is; // $ Alert // BAD
+  type %= is; // $ Alert // BAD
   return type;
 }
 
@@ -184,7 +184,7 @@ float getSizeFloat(float type) {
 }
 float badTestf9(float type) {
   float is = getSizeFloat(type);
-  return 123 / is; // BAD
+  return 123 / is; // $ Alert // BAD
 }
 float goodTestf9(float type) {
   float is = getSizeFloat(type);
@@ -196,18 +196,18 @@ int badTestf10(int type) {
   int out = type;
   int is = getSize(type);
   if (is > -2) {
-    out /= 123 / (is + 1); // BAD
+    out /= 123 / (is + 1); // $ Alert // BAD
   }
   if (is > 0) {
-    return 123 / (is - 1); // BAD
+    return 123 / (is - 1); // $ Alert // BAD
   }
   if (is <= 0) return 0;
-  return 123 / (is - 1); // BAD
+  return 123 / (is - 1); // $ Alert // BAD
   return 0;
 }
 int badTestf11(int type) {
   int is = getSize(type);
-  return 123 / (is - 3); // BAD
+  return 123 / (is - 3); // $ Alert // BAD
 }
 
 int goodTestf11(int type) {
@@ -223,7 +223,7 @@ int badTestf12(FILE * f) {
   int a;
   int ret = -1;
   a = getc(f);
-  if (a == 0) ret = 123 / a; // BAD [NOT DETECTED]
+  if (a == 0) ret = 123 / a; // $ MISSING: Alert // BAD [NOT DETECTED]
   return ret;
 }
 
@@ -255,14 +255,14 @@ int badMySubDiv(int type, int is) {
 
 void badTestf13(int type) {
   int is = getSize(type);
-  badMyDiv(type, is); // BAD
-  badMyDiv(type, is - 2); // BAD
-  badMySubDiv(type, is); // BAD
+  badMyDiv(type, is); // $ Alert // BAD
+  badMyDiv(type, is - 2); // $ Alert // BAD
+  badMySubDiv(type, is); // $ Alert // BAD
   goodMyDiv(type, is); // GOOD
   if (is < 5)
-    badMySubDiv(type, is); // BAD
+    badMySubDiv(type, is); // $ Alert // BAD
   if (is < 0)
-    badMySubDiv(type, is); // BAD [NOT DETECTED]
+    badMySubDiv(type, is); // $ MISSING: Alert // BAD [NOT DETECTED]
   if (is > 5)
     badMySubDiv(type, is); // GOOD
   if (is == 0)
@@ -270,9 +270,9 @@ void badTestf13(int type) {
   if (is > 0)
     badMyDiv(type, is); // GOOD
   if (is < 5)
-    badMyDiv(type, is - 3); // BAD
+    badMyDiv(type, is - 3); // $ Alert // BAD
   if (is < 0)
-    badMyDiv(type, is + 1); // BAD
+    badMyDiv(type, is + 1); // $ Alert // BAD
   if (is > 5)
     badMyDiv(type, is - 3); // GOOD
 }

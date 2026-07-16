@@ -408,7 +408,7 @@ void justStillGood(int x) {
 	justStillGood(199);
 }
 
-void bad(int x) {
+void bad(int x) { // $ Alert
 	bad(2);
 	bad(3);
 	bad(4);

@@ -93,18 +93,38 @@ public class TaintedPath {
         }
     }
 
+    public void sendUserFileBad2(Socket sock, String user) throws IOException {
+        BufferedReader filenameReader =
+                new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-8")); // $ Source[java/path-injection]
+        String filename = filenameReader.readLine();
+        File file = new File(filename);
+        String baseName = file.getName();
+        // BAD: `getName()` strips directory separators but does not remove a `..`
+        // component (`new File("..").getName()` returns ".."), so it is not a
+        // complete path injection sanitizer.
+        BufferedReader fileReader = new BufferedReader(new FileReader(baseName)); // $ Alert[java/path-injection]
+        String fileLine = fileReader.readLine();
+        while (fileLine != null) {
+            sock.getOutputStream().write(fileLine.getBytes());
+            fileLine = fileReader.readLine();
+        }
+    }
+
     public void sendUserFileGood4(Socket sock, String user) throws IOException {
         BufferedReader filenameReader =
                 new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-8"));
         String filename = filenameReader.readLine();
         File file = new File(filename);
         String baseName = file.getName();
-        // GOOD: only use the final component of the user provided path
-        BufferedReader fileReader = new BufferedReader(new FileReader(baseName));
-        String fileLine = fileReader.readLine();
-        while (fileLine != null) {
-            sock.getOutputStream().write(fileLine.getBytes());
-            fileLine = fileReader.readLine();
+        // GOOD: `getName()` strips directory separators and the `..` check removes
+        // the only remaining traversal possibility.
+        if (!baseName.contains("..")) {
+            BufferedReader fileReader = new BufferedReader(new FileReader(baseName));
+            String fileLine = fileReader.readLine();
+            while (fileLine != null) {
+                sock.getOutputStream().write(fileLine.getBytes());
+                fileLine = fileReader.readLine();
+            }
         }
     }
 }

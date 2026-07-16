@@ -22,14 +22,14 @@ class Program
 
         lock (lock1)
         {
-            System.Threading.Monitor.Wait(lock2); // BAD
+            System.Threading.Monitor.Wait(lock2); // $ Alert // BAD
         }
 
         lock (lock1)
         {
             lock (lock2)
             {
-                System.Threading.Monitor.Wait(lock2); // BAD
+                System.Threading.Monitor.Wait(lock2); // $ Alert // BAD
             }
         }
 
@@ -37,7 +37,7 @@ class Program
         {
             lock (lock2)
             {
-                System.Threading.Monitor.Wait(lock1); // BAD
+                System.Threading.Monitor.Wait(lock1); // $ Alert // BAD
             }
         }
     }
@@ -45,13 +45,13 @@ class Program
     [MethodImpl(MethodImplOptions.Synchronized)]
     void Lock2()
     {
-        System.Threading.Monitor.Wait(lock1);  // BAD
+        System.Threading.Monitor.Wait(lock1);  // $ Alert // BAD
         System.Threading.Monitor.Wait(this);   // GOOD
-        System.Threading.Monitor.Wait(typeof(Program)); // BAD
-        System.Threading.Monitor.Wait(typeof(Int32)); // BAD
+        System.Threading.Monitor.Wait(typeof(Program)); // $ Alert // BAD
+        System.Threading.Monitor.Wait(typeof(Int32)); // $ Alert // BAD
         lock (lock1)
         {
-            System.Threading.Monitor.Wait(lock1); // BAD
+            System.Threading.Monitor.Wait(lock1); // $ Alert // BAD
         }
     }
 
@@ -60,28 +60,28 @@ class Program
     {
         lock (lock1)
         {
-            System.Threading.Monitor.Wait(lock1); // BAD
+            System.Threading.Monitor.Wait(lock1); // $ Alert // BAD
         }
-        System.Threading.Monitor.Wait(lock1); // BAD
+        System.Threading.Monitor.Wait(lock1); // $ Alert // BAD
         System.Threading.Monitor.Wait(typeof(Program)); // GOOD
-        System.Threading.Monitor.Wait(typeof(Int32)); // BAD
+        System.Threading.Monitor.Wait(typeof(Int32)); // $ Alert // BAD
     }
 
     void Lock4()
     {
         lock (this)
         {
-            System.Threading.Monitor.Wait(typeof(Program)); // BAD
+            System.Threading.Monitor.Wait(typeof(Program)); // $ Alert // BAD
             System.Threading.Monitor.Wait(this);  // GOOD
-            System.Threading.Monitor.Wait(lock1); // BAD
+            System.Threading.Monitor.Wait(lock1); // $ Alert // BAD
         }
 
         lock (typeof(Program))
         {
             System.Threading.Monitor.Wait(typeof(Program)); // GOOD
-            System.Threading.Monitor.Wait(this);  // BAD
-            System.Threading.Monitor.Wait(lock1); // BAD
-            System.Threading.Monitor.Wait(typeof(Int32));  // BAD
+            System.Threading.Monitor.Wait(this);  // $ Alert // BAD
+            System.Threading.Monitor.Wait(lock1); // $ Alert // BAD
+            System.Threading.Monitor.Wait(typeof(Int32));  // $ Alert // BAD
         }
     }
 }

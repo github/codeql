@@ -170,8 +170,6 @@ private module Input implements LocalNameBindingInputSig<Location> {
   class SiblingShadowingDecl extends AstNode {
     SiblingShadowingDecl() { none() }
 
-    AstNode getLhs() { none() }
-
     AstNode getRhs() { none() }
 
     AstNode getElse() { none() }

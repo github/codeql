@@ -6,12 +6,12 @@
 
 struct aa {
   TEN(int_f)
-  TEN(int_g)
+  TEN(int_g) // $ Alert
 };
 
 class bb {
   TEN(int_f)
-  TEN(int_g)
+  TEN(int_g) // $ Alert
 };
 
 union cc_not_flagged_up_because_unions_are_not_classes_in_this_sense {
@@ -22,13 +22,13 @@ union cc_not_flagged_up_because_unions_are_not_classes_in_this_sense {
 template <typename T>
 struct dd {
   TEN(int_f)
-  TEN(int_g)
+  TEN(int_g) // $ Alert
 };
 
 template <typename U>
 struct ee {
   TEN(int_f)
-  TEN(int_g)
+  TEN(int_g) // $ Alert
 };
 
 void instantiate() {
@@ -54,10 +54,10 @@ struct MyParticle {
   unsigned char r2, g2, b2, a2;
 
   class texture *tex;
-  float u1, v1, u2, v2;
+  float u1, v1, u2, v2; // $ Alert
 };
 
-struct MyAlphaClass1 {
+struct MyAlphaClass1 { // $ Alert
   int a1, b1, c1, d1, e1, f1, g1, h1, i1, j1;
   int k1, l1, m1, n1, o1, p1, q1, r1, s1, t1;
   int u1, v1, w1, x1, y1, z1;
@@ -71,7 +71,7 @@ struct MyAlphaClass1 {
   int u2, v2, w2, x2, y2, z2;
 };
 
-struct MyAlphaClass2 {
+struct MyAlphaClass2 { // $ Alert
   int x;
 
   // ...

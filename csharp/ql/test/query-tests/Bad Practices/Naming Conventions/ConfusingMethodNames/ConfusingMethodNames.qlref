@@ -1,1 +1,2 @@
-Bad Practices/Naming Conventions/ConfusingMethodNames.ql
+query: Bad Practices/Naming Conventions/ConfusingMethodNames.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

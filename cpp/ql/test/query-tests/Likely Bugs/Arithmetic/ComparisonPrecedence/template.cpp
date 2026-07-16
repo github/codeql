@@ -1,7 +1,7 @@
 
 template <typename T>
 void templateFunc1(T x, T y, T z) {
-  if (x < y < z) {} // BAD (though dubious as we can imagine other instantiations using an overloaded `operator<`)
+  if (x < y < z) {} // $ Alert // BAD (though dubious as we can imagine other instantiations using an overloaded `operator<`)
   if (x < y && y < z) {} // GOOD
 };
 
@@ -24,7 +24,7 @@ struct myStruct {
 int main() {
   int x = 3;
   myStruct y;
- 
+
   templateFunc1(x, x, x);
   templateFunc2(y, y, y);
 

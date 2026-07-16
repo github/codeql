@@ -9,7 +9,7 @@ class C
         }
         catch (Exception e)
         {
-            throw e;    // BAD
+            throw e;    // $ Alert // BAD
         }
 
         try
@@ -18,7 +18,7 @@ class C
         catch (Exception e)
         {
             if (true)
-                throw e;    // BAD
+                throw e;    // $ Alert // BAD
         }
 
         try

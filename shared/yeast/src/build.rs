@@ -161,21 +161,75 @@ impl<'a, C> BuildCtx<'a, C> {
 }
 
 impl<C: Clone> BuildCtx<'_, C> {
-    /// Recursively translate a node via the framework's rule machinery.
-    /// In a OneShot phase, applies OneShot rules to the given node and
-    /// returns the resulting node ids. In a Repeating phase, errors
-    /// (translation is not meaningful when input and output share a
-    /// schema).
+    /// Recursively translate every id in the given iterable via the
+    /// framework's rule machinery. In a OneShot phase, applies OneShot
+    /// rules to each id and returns the accumulated resulting node ids
+    /// in order. In a Repeating phase, errors (translation is not
+    /// meaningful when input and output share a schema).
+    ///
+    /// The single-`Id` case works too, because `Id: IntoIterator<Item
+    /// = Id>` is a singleton iterator — so `ctx.translate(some_id)?`
+    /// returns a `Vec<Id>` containing whatever `some_id` translated to.
     ///
     /// Errors if this `BuildCtx` was constructed by hand (without a
     /// translator handle) — for example, in unit tests that don't go
     /// through the rule driver.
-    pub fn translate<I: Into<Id>>(&mut self, id: I) -> Result<Vec<Id>, String> {
-        let id = id.into();
-        match &self.translator {
-            Some(t) => t.translate(self.ast, self.user_ctx, id),
-            None => Err("translate() called on a BuildCtx without a translator handle".into()),
+    pub fn translate<I: Into<Id>>(
+        &mut self,
+        ids: impl IntoIterator<Item = I>,
+    ) -> Result<Vec<Id>, String> {
+        let translator = self
+            .translator
+            .as_ref()
+            .ok_or("translate() called on a BuildCtx without a translator handle")?;
+        let mut out = Vec::new();
+        for id in ids {
+            let translated = translator.translate(self.ast, self.user_ctx, id.into())?;
+            out.extend(translated);
         }
+        Ok(out)
+    }
+
+    /// Run `f` with a temporary child [`BuildCtx`] whose `user_ctx` is
+    /// a fresh clone of the current one, sharing everything else
+    /// (`ast`, `captures`, `fresh`, `source_range`, `translator`) by
+    /// re-borrow. Any mutations `f` makes to the child's `user_ctx`
+    /// are discarded when it returns — no restore needed, because the
+    /// mutations only ever happened on a local clone.
+    ///
+    /// Use for the rare rule that needs to translate a subtree under a
+    /// modified context *and then continue using its own (unmodified)
+    /// context afterwards*. For rules where the modified translation
+    /// is the last use of `ctx`, mutate `ctx` in place — the framework
+    /// invokes each rule with a private clone of the user context, so
+    /// mutations are discarded on rule exit anyway.
+    ///
+    /// Example: an outer rule that translates one child subtree with a
+    /// reset context, then continues with the outer context intact:
+    ///
+    /// ```ignore
+    /// let val = ctx.scoped(|ctx| {
+    ///     ctx.reset();
+    ///     ctx.translate(val)
+    /// })?;
+    /// // `ctx` here is untouched by the reset inside the closure.
+    /// let other = ctx.translate(other_id)?;
+    /// ```
+    pub fn scoped<F, R>(&mut self, f: F) -> R
+    where
+        F: for<'b> FnOnce(&mut BuildCtx<'b, C>) -> R,
+    {
+        let mut child_user_ctx = self.user_ctx.clone();
+        let mut child = BuildCtx {
+            ast: &mut *self.ast,
+            captures: self.captures,
+            fresh: self.fresh,
+            source_range: self.source_range,
+            user_ctx: &mut child_user_ctx,
+            translator: self.translator,
+        };
+        f(&mut child)
+        // child_user_ctx dropped; the outer `self` is unaffected.
     }
 }
 

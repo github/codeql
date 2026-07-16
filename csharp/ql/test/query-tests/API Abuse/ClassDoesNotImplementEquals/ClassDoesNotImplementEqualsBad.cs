@@ -21,7 +21,7 @@ class Bad
         }
     }
 
-    class GasolineCar : Car
+    class GasolineCar : Car // $ Alert
     {
         protected bool unleaded;
 

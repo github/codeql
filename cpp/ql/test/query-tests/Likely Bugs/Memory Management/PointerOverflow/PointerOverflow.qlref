@@ -1,1 +1,2 @@
-Likely Bugs/Memory Management/PointerOverflow.ql
+query: Likely Bugs/Memory Management/PointerOverflow.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

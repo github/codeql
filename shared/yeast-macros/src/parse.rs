@@ -617,6 +617,76 @@ fn extract_captures_inner(
     }
 }
 
+/// A rule's return-type annotation, when the body is a Rust block. Written
+/// between `=>` and the block body using the schema's own vocabulary:
+///
+/// ```text
+///   => kind        { … }   // single node of that kind
+///   => kind?       { … }   // Option<KindId> (0 or 1)
+///   => kind*       { … }   // Vec<KindId>    (0+)
+/// ```
+///
+/// Template bodies (`=> (kind …)`) never carry an annotation — the
+/// output kind is the template root. The shorthand `=> kind` (no
+/// body) also carries no annotation. See `parse_rule_top` for dispatch.
+#[derive(Clone, Debug)]
+struct ReturnAnnotation {
+    kind: Ident,
+    multiplicity: AnnotationMultiplicity,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+enum AnnotationMultiplicity {
+    Single,
+    Optional,
+    Repeated,
+}
+
+/// Peek at the token stream to decide whether the transform following
+/// `=>` is a **new** annotation form (`kind [? | *] { … }`). If so,
+/// consume the annotation and return it, leaving the `{ … }` body in
+/// the stream for the caller to parse. Otherwise leave the stream
+/// untouched and return `None`.
+///
+/// The lookahead distinguishes:
+///   `kind {`   → annotation (single)
+///   `kind? {`  → annotation (optional)
+///   `kind* {`  → annotation (repeated)
+///   `kind`     → shorthand form (no `{` follows) — NOT an annotation
+///   anything else → template or bare block — NOT an annotation
+fn try_consume_return_annotation(tokens: &mut Tokens) -> Result<Option<ReturnAnnotation>> {
+    // Must start with an identifier (the kind name).
+    let mut lookahead = tokens.clone();
+    let Some(TokenTree::Ident(_)) = lookahead.next() else {
+        return Ok(None);
+    };
+    // Then optionally `?` or `*`, then a `{` group.
+    let after_suffix = match lookahead.peek() {
+        Some(TokenTree::Punct(p)) if p.as_char() == '?' || p.as_char() == '*' => {
+            lookahead.next();
+            lookahead.peek()
+        }
+        other => other,
+    };
+    if !matches!(after_suffix, Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace) {
+        return Ok(None);
+    }
+    // Commit: consume the ident + suffix from the real stream.
+    let kind = expect_ident(tokens, "expected output-kind name in annotation")?;
+    let multiplicity = match tokens.peek() {
+        Some(TokenTree::Punct(p)) if p.as_char() == '?' => {
+            tokens.next();
+            AnnotationMultiplicity::Optional
+        }
+        Some(TokenTree::Punct(p)) if p.as_char() == '*' => {
+            tokens.next();
+            AnnotationMultiplicity::Repeated
+        }
+        _ => AnnotationMultiplicity::Single,
+    };
+    Ok(Some(ReturnAnnotation { kind, multiplicity }))
+}
+
 /// Parse `rule!( query => transform )`.
 pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
@@ -688,8 +758,52 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
         })
         .collect();
 
-    // Parse transform: either shorthand `=> kind_name` or full `=> (template ...)`
-    let transform_body = if peek_is_field(&mut tokens) && {
+    // Parse transform: the token(s) after `=>` fall into one of three
+    // shapes, dispatched in order:
+    //
+    //   1. `kind [? | *] { rust_body }` — annotated Rust body (NEW).
+    //      Static-analysis-ready: the annotation declares the output
+    //      kind and multiplicity in the schema's own vocabulary.
+    //   2. `kind` alone — shorthand: emit `(kind field: {@cap})…` from
+    //      the query's captures.
+    //   3. anything else — full template form (`(kind …)` or bare
+    //      `{ … }` splice via `parse_direct_list`).
+    let annotation = try_consume_return_annotation(&mut tokens)?;
+
+    let transform_body = if let Some(annotation) = annotation {
+        // Annotation form: `=> kind [? | *] { rust_body }`.
+        let body_group = expect_group(&mut tokens, Delimiter::Brace)?;
+        if let Some(tok) = tokens.next() {
+            return Err(syn::Error::new_spanned(
+                tok,
+                "unexpected token after annotated rule body",
+            ));
+        }
+        let body = body_group.stream();
+        // The annotation is not yet consumed by codegen — it will drive
+        // typed handles once the schema-driven codegen lands. For now,
+        // emit a self-documenting reference to the annotated kind and
+        // preserve today's `Vec<yeast::Id>` closure return so behavior
+        // is unchanged.
+        let kind_str = annotation.kind.to_string();
+        let mult_str = match annotation.multiplicity {
+            AnnotationMultiplicity::Single => "single",
+            AnnotationMultiplicity::Optional => "optional",
+            AnnotationMultiplicity::Repeated => "repeated",
+        };
+        let _ = (kind_str, mult_str); // silence unused warnings until wired
+
+        // For now, adapt the user's typed return value to the framework's
+        // `Vec<yeast::Id>` closure result. This uses `IntoFieldIds`, which
+        // already accepts a bare `Id`, an iterable of ids, or `Option<Id>`
+        // — matching the three annotation multiplicities.
+        quote! {
+            let __value = { #body };
+            let mut __ids: Vec<yeast::Id> = Vec::new();
+            yeast::IntoFieldIds::extend_into(__value, &mut __ids);
+            __ids
+        }
+    } else if peek_is_field(&mut tokens) && {
         // Shorthand form: bare identifier = output node kind.
         // Auto-generate template from captures.
         let mut lookahead = tokens.clone();
@@ -749,6 +863,26 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
             vec![__id]
         }
     } else {
+        // Reject bare `{ ... }` transforms — they used to be accepted
+        // as either a Rust body producing a `Vec<Id>` or a template
+        // consisting of a single `{cap}` splice. Both patterns lost
+        // static-analysis information (no visible output kind), so we
+        // now require rules with block bodies to use the annotation
+        // form `=> kind [? | *] { ... }`. Templates must start with a
+        // parenthesized node (e.g. `(if_expr ...)`).
+        if let Some(TokenTree::Group(g)) = tokens.peek() {
+            if g.delimiter() == Delimiter::Brace {
+                let span = g.span();
+                return Err(syn::Error::new(
+                    span,
+                    "bare `{...}` rule bodies are no longer accepted; \
+                     use the annotation form `=> kind [? | *] { ... }` \
+                     (where the kind names the output node's schema kind, \
+                     optionally suffixed with `?` or `*` for multiplicity)",
+                ));
+            }
+        }
+
         // Full template form
         let transform_items = parse_direct_list(&mut tokens, &ctx_ident)?;
 
@@ -897,6 +1031,189 @@ fn expect_repetition(tokens: &mut Tokens) -> Result<TokenStream> {
     }
 }
 
+// ---------------------------------------------------------------------------
+// rules! parsing — bundle a list of rules with input/output schema paths.
+//
+// The macro accepts both bare rule bodies (`(query) => (template)`) and
+// explicit `rule!(...)` invocations. The schema paths are recorded but
+// not yet consumed; a later change layers compile-time type-checking on
+// top, using these paths to load the input/output schemas.
+// ---------------------------------------------------------------------------
+
+/// Parse `rules! { input: "path", output: "path", [ items, ... ] }`.
+///
+/// Each item in the bracketed list can be:
+/// * a **bare rule body** `(query) => (template)` — wrapped implicitly
+///   in `yeast::rule! { ... }` for codegen;
+/// * an explicit `rule!(...)` (or `rule!(...).repeated()`,
+///   `yeast::rule!(...)`, etc.) — passed through verbatim;
+/// * any other expression returning a `Rule` (helper-function calls,
+///   conditionals) — passed through verbatim.
+///
+/// Returns a `Vec<Rule>` containing the items in order. The expansion
+/// also emits `include_str!` references to the resolved schema paths so
+/// Cargo treats them as inputs to the consuming crate; this validates
+/// path existence at compile time and prepares the ground for later
+/// schema-aware checks.
+pub fn parse_rules_top(input: TokenStream) -> Result<TokenStream> {
+    let mut tokens = input.into_iter().peekable();
+
+    let input_path = parse_named_string_arg(&mut tokens, "input")?;
+    expect_punct(&mut tokens, ',', "expected `,` after input path")?;
+    let output_path = parse_named_string_arg(&mut tokens, "output")?;
+    expect_punct(&mut tokens, ',', "expected `,` after output path")?;
+
+    // Resolve paths relative to the consuming crate's CARGO_MANIFEST_DIR
+    // so callers can write paths like "tree-sitter-swift/node-types.yml"
+    // alongside their other workspace-relative includes (e.g. include_str!).
+    let manifest_dir = std::env::var("CARGO_MANIFEST_DIR").map_err(|_| {
+        syn::Error::new(
+            Span::call_site(),
+            "rules!: CARGO_MANIFEST_DIR is not set; cannot resolve schema paths",
+        )
+    })?;
+    let resolve_path = |raw: &str| -> std::path::PathBuf {
+        let p = std::path::PathBuf::from(raw);
+        if p.is_absolute() {
+            p
+        } else {
+            std::path::PathBuf::from(&manifest_dir).join(p)
+        }
+    };
+    let input_abs = resolve_path(&input_path.value);
+    let output_abs = resolve_path(&output_path.value);
+
+    let list = expect_group(&mut tokens, Delimiter::Bracket)?;
+    if let Some(tok) = tokens.next() {
+        return Err(syn::Error::new_spanned(
+            tok,
+            "unexpected token after `rules!` list",
+        ));
+    }
+
+    let items = split_top_level_commas(list.stream());
+    let emitted_items: Vec<TokenStream> = items
+        .into_iter()
+        .map(|item| {
+            // Bare rule body — wrap in `yeast::rule! { ... }` so the
+            // existing rule-construction macro handles codegen. Other
+            // items pass through unchanged.
+            if has_top_level_arrow(&item) {
+                quote! { yeast::rule! { #item } }
+            } else {
+                item
+            }
+        })
+        .collect();
+
+    // Emit `include_str!` references to both schema files so Cargo
+    // treats them as inputs to the consuming crate's compilation. The
+    // `const _` bindings are unused; rustc/LLVM drop them after the
+    // file-input dependency edge is recorded. Absolute paths are used
+    // because `include_str!` resolves relative paths against the source
+    // file, while `rules!`'s own paths are relative to
+    // `CARGO_MANIFEST_DIR`.
+    let input_abs_str = input_abs.to_string_lossy().into_owned();
+    let output_abs_str = output_abs.to_string_lossy().into_owned();
+    let input_lit = proc_macro2::Literal::string(&input_abs_str);
+    let output_lit = proc_macro2::Literal::string(&output_abs_str);
+
+    Ok(quote! {
+        {
+            const _: &::core::primitive::str = ::core::include_str!(#input_lit);
+            const _: &::core::primitive::str = ::core::include_str!(#output_lit);
+            vec![ #(#emitted_items),* ]
+        }
+    })
+}
+
+/// True iff `item` contains a `=>` operator at the top level (not nested
+/// inside any group). Used to detect bare rule bodies inside `rules!`.
+fn has_top_level_arrow(item: &TokenStream) -> bool {
+    let toks: Vec<TokenTree> = item.clone().into_iter().collect();
+    find_top_level_arrow(&toks).is_some()
+}
+
+/// Find the index of the first token of a top-level `=>` operator (the
+/// `=`), ignoring `=>` inside any group. Returns `None` if not present.
+fn find_top_level_arrow(toks: &[TokenTree]) -> Option<usize> {
+    let mut i = 0;
+    while i + 1 < toks.len() {
+        if let (TokenTree::Punct(p1), TokenTree::Punct(p2)) = (&toks[i], &toks[i + 1]) {
+            if p1.as_char() == '='
+                && p1.spacing() == proc_macro2::Spacing::Joint
+                && p2.as_char() == '>'
+            {
+                return Some(i);
+            }
+        }
+        i += 1;
+    }
+    None
+}
+
+/// A string literal argument named `expected_name` parsed from `name: "value"`.
+struct NamedString {
+    value: String,
+    #[allow(dead_code)]
+    span: Span,
+}
+
+fn parse_named_string_arg(tokens: &mut Tokens, expected_name: &str) -> Result<NamedString> {
+    let name = expect_ident(tokens, &format!("expected `{expected_name}:` argument"))?;
+    if name != expected_name {
+        return Err(syn::Error::new_spanned(
+            name,
+            format!("expected `{expected_name}:` argument"),
+        ));
+    }
+    expect_punct(
+        tokens,
+        ':',
+        &format!("expected `:` after `{expected_name}`"),
+    )?;
+    let lit = expect_literal(tokens)?;
+    let span = lit.span();
+    let value = string_literal_value(&lit).ok_or_else(|| {
+        syn::Error::new(
+            span,
+            format!("`{expected_name}` must be a string literal path"),
+        )
+    })?;
+    Ok(NamedString { value, span })
+}
+
+/// Read a literal as a plain Rust string, respecting Rust's own escape
+/// rules (via `syn::LitStr`). Falls back to `None` if the literal
+/// isn't a string.
+fn string_literal_value(lit: &Literal) -> Option<String> {
+    let tokens = TokenStream::from(TokenTree::Literal(lit.clone()));
+    syn::parse2::<syn::LitStr>(tokens).ok().map(|s| s.value())
+}
+
+/// Split a token stream into top-level comma-separated items. Commas inside
+/// any group token (parens, brackets, braces) are ignored so that things
+/// like `rule!(a, b)` aren't accidentally split.
+fn split_top_level_commas(stream: TokenStream) -> Vec<TokenStream> {
+    let mut items = Vec::new();
+    let mut current: Vec<TokenTree> = Vec::new();
+    for tt in stream {
+        if let TokenTree::Punct(p) = &tt {
+            if p.as_char() == ',' && p.spacing() == proc_macro2::Spacing::Alone {
+                if !current.is_empty() {
+                    items.push(current.drain(..).collect());
+                }
+                continue;
+            }
+        }
+        current.push(tt);
+    }
+    if !current.is_empty() {
+        items.push(current.into_iter().collect());
+    }
+    items
+}
+
 fn maybe_wrap_capture(tokens: &mut Tokens, base: TokenStream) -> Result<TokenStream> {
     if peek_is_at(tokens) {
         let name = consume_capture_marker(tokens)?;
@@ -968,5 +1285,35 @@ fn maybe_wrap_list_capture(tokens: &mut Tokens, elem: TokenStream) -> Result<Tok
         })
     } else {
         Ok(elem)
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Internal unit tests for the rules! macro shape. Type-checking tests
+// land in the follow-up that wires schema validation in.
+// ---------------------------------------------------------------------------
+#[cfg(test)]
+mod rules_tests {
+    use super::*;
+    use quote::quote;
+
+    #[test]
+    fn has_top_level_arrow_distinguishes_bare_rules() {
+        // Bare rule body: top-level `=>` is present.
+        let toks = quote! { (a) => (b) };
+        assert!(has_top_level_arrow(&toks));
+        // `rule!((a) => (b))`: the `=>` is INSIDE the macro group, so
+        // it's not at top level. Must NOT be detected as a bare body.
+        let toks = quote! { rule!((a) => (b)) };
+        assert!(!has_top_level_arrow(&toks));
+        // Helper call: no `=>` anywhere.
+        let toks = quote! { make_rule() };
+        assert!(!has_top_level_arrow(&toks));
+        // Match expressions inside a block: `=>` is inside braces.
+        let toks = quote! { { match x { 1 => 2, _ => 3 } } };
+        assert!(!has_top_level_arrow(&toks));
+        // Bare shorthand form: top-level `=>` followed by a bare ident.
+        let toks = quote! { (a) => kind };
+        assert!(has_top_level_arrow(&toks));
     }
 }

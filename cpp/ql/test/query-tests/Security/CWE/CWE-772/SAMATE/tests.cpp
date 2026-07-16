@@ -68,7 +68,7 @@ namespace CWE401_Memory_Leak__new_int_17
         for(i = 0; i < 1; i++)
         {
             /* POTENTIAL FLAW: Allocate memory on the heap */
-            data = new int; // BAD
+            data = new int; // $ Alert[cpp/memory-never-freed] // BAD
             /* Initialize and make use of data */
             *data = 5;
             printIntLine(*data);
@@ -133,7 +133,7 @@ void CWE401_Memory_Leak__char_malloc_32_bad()
     {
         char * data = *dataPtr1;
         /* POTENTIAL FLAW: Allocate memory on the heap */
-        data = (char *)malloc(100*sizeof(char)); // BAD
+        data = (char *)malloc(100*sizeof(char)); // $ Alert[cpp/memory-never-freed] // BAD
         /* Initialize and make use of data */
         strcpy(data, "A String");
         printLine(data);
@@ -195,7 +195,7 @@ static void CWE401_Memory_Leak__char_malloc_32_goodB2G()
 void CWE401_Memory_Leak__malloc_realloc_char_01_bad()
 {
     {
-        char * data = (char *)malloc(100*sizeof(char)); // BAD
+        char * data = (char *)malloc(100*sizeof(char)); // $ Alert[cpp/memory-may-not-be-freed] // BAD
         /* Initialize and make use of data */
         strcpy(data, "A String");
         printLine(data);
@@ -217,7 +217,7 @@ void CWE775_Missing_Release_of_File_Descriptor_or_Handle__fopen_no_close_17_bad(
     FILE * data;
     data = NULL;
     /* POTENTIAL FLAW: Open a file without closing it */
-    data = fopen("BadSource_fopen.txt", "w+"); // BAD
+    data = fopen("BadSource_fopen.txt", "w+"); // $ Alert[cpp/file-never-closed] // BAD
     for(j = 0; j < 1; j++)
     {
         /* FLAW: No attempt to close the file */
@@ -249,7 +249,7 @@ void CWE775_Missing_Release_of_File_Descriptor_or_Handle__open_no_close_01_bad()
     /* Initialize data */
     data = -1;
     /* POTENTIAL FLAW: Open a file without closing it */
-    data = OPEN("BadSource_open.txt", O_RDWR|O_CREAT, S_IREAD|S_IWRITE); // BAD
+    data = OPEN("BadSource_open.txt", O_RDWR|O_CREAT, S_IREAD|S_IWRITE); // $ Alert[cpp/file-never-closed] // BAD
     /* FLAW: No attempt to close the file */
     ; /* empty statement needed for some flow variants */
 }
@@ -275,7 +275,7 @@ void CWE775_Missing_Release_of_File_Descriptor_or_Handle__w32CreateFile_no_close
     /* Initialize data */
     data = INVALID_HANDLE_VALUE;
     /* POTENTIAL FLAW: Open a file without closing it */
-    data = CreateFile("BadSource_w32CreateFile.txt", // BAD
+    data = CreateFile("BadSource_w32CreateFile.txt", // $ Alert[cpp/file-never-closed] // BAD
                       (GENERIC_WRITE|GENERIC_READ),
                       0,
                       NULL,
@@ -322,7 +322,7 @@ void CWE401_Memory_Leak__twoIntsStruct_realloc_01_bad()
     twoIntsStruct * data;
     data = NULL;
     /* POTENTIAL FLAW: Allocate memory on the heap */
-    data = (twoIntsStruct *)realloc(data, 100*sizeof(twoIntsStruct));
+    data = (twoIntsStruct *)realloc(data, 100*sizeof(twoIntsStruct)); // $ Alert[cpp/memory-may-not-be-freed]
     if (data == NULL) {exit(-1);}
     /* Initialize and make use of data */
     data[0].intOne = 0;

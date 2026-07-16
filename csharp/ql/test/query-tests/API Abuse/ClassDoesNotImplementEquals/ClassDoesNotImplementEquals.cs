@@ -1,7 +1,7 @@
 using System;
 
 // BAD
-class Incorrect
+class Incorrect // $ Alert
 {
     public static bool operator ==(Incorrect a, Incorrect b) => default(bool);
     public static bool operator !=(Incorrect a, Incorrect b) => !(a == b);
@@ -21,7 +21,7 @@ class Correct
 }
 
 // BAD: needs to redefine Equals
-class IncorrectOverrides : Correct
+class IncorrectOverrides : Correct // $ Alert
 {
     public static bool operator ==(IncorrectOverrides a, IncorrectOverrides b) => default(bool);
     public static bool operator !=(IncorrectOverrides a, IncorrectOverrides b) => !(a == b);
@@ -47,7 +47,7 @@ class Program
 }
 
 // BAD: should also implement Equals.
-class MyEquatable : IEquatable<MyEquatable>
+class MyEquatable : IEquatable<MyEquatable> // $ Alert
 {
     public bool Equals(MyEquatable other)
     {

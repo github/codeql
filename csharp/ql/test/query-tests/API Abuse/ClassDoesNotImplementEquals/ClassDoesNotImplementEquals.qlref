@@ -1,1 +1,2 @@
-API Abuse/ClassDoesNotImplementEquals.ql
+query: API Abuse/ClassDoesNotImplementEquals.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

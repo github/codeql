@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-190/IfStatementAdditionOverflow.ql
+query: experimental/Security/CWE/CWE-190/IfStatementAdditionOverflow.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

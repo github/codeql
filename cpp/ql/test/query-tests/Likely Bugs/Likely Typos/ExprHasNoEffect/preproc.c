@@ -86,10 +86,10 @@ void test()
 	fn1();
 	fn2();
 	fn3();
-	fn4(); // has no effect
+	fn4(); // $ Alert // has no effect
 	fn5();
 	fn6();
 	fn7();
 	fn8();
-	fn9(); // has no effect
+	fn9(); // $ Alert // has no effect
 }

@@ -135,7 +135,7 @@ UrlParam
             __builder.AddContent(18, "Raw parameter from URL: ");
             __builder.AddContent(19,
 #nullable restore
-(MarkupString)UrlParam
+(MarkupString)UrlParam // $ Alert=r1 $ Alert=r1
 
 #line default
 #line hidden
@@ -185,7 +185,7 @@ QueryParam
             __builder.AddContent(35, "Raw parameter from query string: ");
             __builder.AddContent(36,
 #nullable restore
-new MarkupString(QueryParam)
+new MarkupString(QueryParam) // $ Alert=r2 $ Alert=r2
 
 #line default
 #line hidden

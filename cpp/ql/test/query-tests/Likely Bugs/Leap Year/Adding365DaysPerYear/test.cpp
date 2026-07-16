@@ -170,8 +170,8 @@ void antipattern2()
 	qwLongTime += 365 * 24 * 60 * 60 * 10000000LLU;
 
 	// copy back to a FILETIME
-	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // BAD
-	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32); // BAD
+	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // $ Alert // BAD
+	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32); // $ Alert // BAD
 
 	// convert back to SYSTEMTIME for display or other usage
 	FileTimeToSystemTime(&ft, &st);
@@ -190,7 +190,7 @@ time_t mkTime(int days)
 	tm.tm_hour = 0;
 	tm.tm_mday = 0;
 	tm.tm_mon = 0;
-	tm.tm_year = days / 365; // BAD
+	tm.tm_year = days / 365; // $ Alert // BAD
 	// ...
 
 	t = mktime(&tm); // convert tm -> time_t
@@ -214,8 +214,8 @@ void checkedExample()
 	qwLongTime += 365 * 24 * 60 * 60 * 10000000LLU;
 
 	// copy back to a FILETIME
-	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // GOOD [FALSE POSITIVE]
-	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32); // GOOD [FALSE POSITIVE]
+	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE]
+	ft.dwHighDateTime = (DWORD)(qwLongTime >> 32); // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE]
 
 	// convert back to SYSTEMTIME for display or other usage
 	if (FileTimeToSystemTime(&ft, &st) == 0)

@@ -8,7 +8,7 @@ class C : I
     public void f(int x) { }
 
     // BAD: This method is a forwarder
-    public void f()
+    public void f() // $ Alert
     {
         f(1);
     }
@@ -38,7 +38,7 @@ class C : I
     void i<T>() { }
 
     // BAD: Forwarding method
-    void i<T>(int a)
+    void i<T>(int a) // $ Alert
     {
         i<T>();
     }

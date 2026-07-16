@@ -113,3 +113,43 @@ pub fn rule(input: TokenStream) -> TokenStream {
         Err(err) => err.to_compile_error().into(),
     }
 }
+
+/// Bundle a list of YEAST rewrite rules with input/output node-types
+/// schema paths. Returns a `Vec<Rule>`; substitutable for
+/// `vec![rule!(...), ...]`.
+///
+/// Each comma-separated item in the bracketed list may be:
+///
+/// 1. A **bare rule body** `(query) => (template)` — the `rule!(...)`
+///    wrapper is implicit.
+/// 2. An explicit `rule!(...)` invocation, possibly chained as
+///    `rule!(...).repeated()` or path-prefixed as `yeast::rule!(...)`.
+/// 3. Any other expression returning a `Rule` (helper-function calls,
+///    conditionals).
+///
+/// ```ignore
+/// let translation_rules: Vec<yeast::Rule> = yeast::rules! {
+///     input: "tree-sitter-swift/node-types.yml",
+///     output: "ast_types.yml",
+///     [
+///         (source_file (_)* @cs) => (top_level body: {..cs}),
+///         (simple_identifier) @id => (name_expr identifier: (identifier #{id})),
+///         rule!((integer_literal) @lit => (int_literal #{lit})).repeated(),
+///         helper_fn(),
+///     ]
+/// };
+/// ```
+///
+/// Paths are resolved relative to the consuming crate's `CARGO_MANIFEST_DIR`
+/// (the same convention `include_str!` uses for relative paths). The
+/// resolved paths are also emitted as `include_str!` references so the
+/// consuming crate gets invalidated when a schema YAML changes, prepping
+/// the ground for compile-time type-checking against those schemas.
+#[proc_macro]
+pub fn rules(input: TokenStream) -> TokenStream {
+    let input2: TokenStream2 = input.into();
+    match parse::parse_rules_top(input2) {
+        Ok(output) => output.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
+}

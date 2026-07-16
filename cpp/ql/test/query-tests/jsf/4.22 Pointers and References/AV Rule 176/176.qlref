@@ -1,1 +1,2 @@
-jsf/4.22 Pointers and References/AV Rule 176.ql
+query: jsf/4.22 Pointers and References/AV Rule 176.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

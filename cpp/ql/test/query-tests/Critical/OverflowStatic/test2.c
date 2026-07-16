@@ -25,14 +25,14 @@ size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);
 void bad0(char *src, FILE *f, va_list ap) {
     char buffer[40];
 
-    fgets(buffer, 41, f); // BAD: Too many characters read
-    strncpy(buffer, src, 43); // BAD: Too many characters copied
+    fgets(buffer, 41, f); // $ Alert // BAD: Too many characters read
+    strncpy(buffer, src, 43); // $ Alert // BAD: Too many characters copied
     buffer[0] = 0;
-    strncat(buffer, src, 44); // BAD: Too many characters copied
-    memcpy(buffer, src, 45); // BAD: Too many characters copied
-    memmove(buffer, src, 46); // BAD: Too many characters copied
-    snprintf(buffer, 47, "%s", src);  // BAD: Too many characters copied
-    vsnprintf(buffer, 48, "%s", ap);  // BAD: Too many characters copied
+    strncat(buffer, src, 44); // $ Alert // BAD: Too many characters copied
+    memcpy(buffer, src, 45); // $ Alert // BAD: Too many characters copied
+    memmove(buffer, src, 46); // $ Alert // BAD: Too many characters copied
+    snprintf(buffer, 47, "%s", src);  // $ Alert // BAD: Too many characters copied
+    vsnprintf(buffer, 48, "%s", ap);  // $ Alert // BAD: Too many characters copied
 }
 
 void good0(char *src, FILE *f, va_list ap) {
@@ -47,4 +47,3 @@ void good0(char *src, FILE *f, va_list ap) {
     snprintf(buffer, 57, "%s", src);  // GOOD
     vsnprintf(buffer, 58, "%s", ap);  // GOOD
 }
-

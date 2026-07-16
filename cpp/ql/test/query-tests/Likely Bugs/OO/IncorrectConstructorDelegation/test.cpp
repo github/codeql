@@ -4,7 +4,7 @@ class MyRect
 public:
 	MyRect()
 	{
-		MyRect(100.0f, 100.0f); // BAD
+		MyRect(100.0f, 100.0f); // $ Alert // BAD
 	}
 
 	MyRect(float _width, float _height) : width(_width), height(_height)
@@ -13,7 +13,7 @@ public:
 
 	MyRect(float _width)
 	{
-		MyRect(_width, _width); // BAD
+		MyRect(_width, _width); // $ Alert // BAD
 	}
 
 	MyRect(int a) : MyRect(10.0f, 10.0f) // GOOD

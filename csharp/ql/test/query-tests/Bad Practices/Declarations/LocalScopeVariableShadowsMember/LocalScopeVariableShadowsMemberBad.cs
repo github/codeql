@@ -7,7 +7,7 @@ class Bad
 
     public void DisplayDetails()
     {
-        var title = "Person Details";
+        var title = "Person Details"; // $ Alert
         var message = "Title: " + title + "\nName: " + name;
         MessageBox.Show(message, title);
     }

@@ -2,7 +2,7 @@ class Class1 // good: no pointer members, default assignment operator and copy c
 {
 };
 
-class Class2 // bad: pointer members, default assignment operator and copy constructor
+class Class2 // $ Alert // bad: pointer members, default assignment operator and copy constructor
 {
 private:
     int* _a;
@@ -13,7 +13,7 @@ public:
     }
 };
 
-class Class3 // bad: pointer members, custom assignment operator and default copy constructor
+class Class3 // $ Alert // bad: pointer members, custom assignment operator and default copy constructor
 {
 private:
     int* _a;
@@ -30,7 +30,7 @@ public:
     }
 };
 
-class Class4 // bad: pointer members, default assignment operator and custom copy constructor
+class Class4 // $ Alert // bad: pointer members, default assignment operator and custom copy constructor
 {
 private:
     int* _a;

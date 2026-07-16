@@ -6,6 +6,6 @@ class Bad
     void M()
     {
         var sub = new Sub();
-        Super super = (Super)sub;
+        Super super = (Super)sub; // $ Alert
     }
 }

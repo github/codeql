@@ -1,1 +1,2 @@
-Best Practices/Unused Entities/UnusedLocals.ql
+query: Best Practices/Unused Entities/UnusedLocals.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

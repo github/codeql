@@ -7,7 +7,7 @@ public class ContainerTest
     // Test 1: Variable scopes
 
     // Test 1a: Private field
-    private IList<int> c1a = new List<int> { 1, 2 }; // BAD: private
+    private IList<int> c1a = new List<int> { 1, 2 }; // $ Alert // BAD: private
 
     // Test 1b: protected field
     protected IList<int> c1b = new List<int> { 1, 2 }; // GOOD: protected
@@ -16,7 +16,7 @@ public class ContainerTest
     public IList<int> c1c = new List<int> { 1, 2 }; // GOOD: public
 
     // Test 1d: internal field
-    internal IList<int> c1d = new List<int> { 1, 2 }; // BAD: internal
+    internal IList<int> c1d = new List<int> { 1, 2 }; // $ Alert // BAD: internal
 
     void TestScopes()
     {
@@ -26,7 +26,7 @@ public class ContainerTest
         c1d.Add(4);
 
         // Test 1e: Local variable
-        IList<int> c1e = new List<int> { 1, 2 }; // BAD: local
+        IList<int> c1e = new List<int> { 1, 2 }; // $ Alert // BAD: local
         c1e.Add(5);
     }
 
@@ -35,7 +35,7 @@ public class ContainerTest
     void TestMethodNames()
     {
         // Test 2a: Writeonly method names
-        IList<int> c2a = new List<int> { 1, 2 }; // BAD: writeonly methods
+        IList<int> c2a = new List<int> { 1, 2 }; // $ Alert // BAD: writeonly methods
         c2a.Add(1);
         c2a.Clear();
         c2a.Insert(1, 2);
@@ -47,14 +47,14 @@ public class ContainerTest
         bool b = c2b.Contains(1);
 
         // Test 2c: Other method names
-        var c2c = new Stack(); // BAD
+        var c2c = new Stack(); // $ Alert // BAD
         c2c.Push(1);
 
-        var c2d = new BitArray(10); // BAD
+        var c2d = new BitArray(10); // $ Alert // BAD
         c2d.Set(1, true);
         c2d.SetAll(false);
 
-        var c2j = new LinkedList<int>(); // BAD
+        var c2j = new LinkedList<int>(); // $ Alert // BAD
         c2j.AddFirst(1);
         c2j.AddLast(2);
         c2j.RemoveFirst();
@@ -100,7 +100,7 @@ public class ContainerTest
     void TestAccessTypes()
     {
         // 3a: Unused
-        IList<int> c3a = new List<int> { 4, 5 }; // BAD
+        IList<int> c3a = new List<int> { 4, 5 }; // $ Alert // BAD
 
         // 3b: Pass to function
         IList<int> c3b = new List<int> { }; // GOOD: used
@@ -115,7 +115,7 @@ public class ContainerTest
 
     // Test 4: Initialization type
 
-    private IList<int> c4a; // BAD: even though uninitialized
+    private IList<int> c4a; // $ Alert // BAD: even though uninitialized
 
     void TestInitializationTypes()
     {
@@ -123,11 +123,11 @@ public class ContainerTest
         c4a.Add(1);
 
         // Test 4b: Constructed from new
-        var c4b = new List<int>(); // BAD
+        var c4b = new List<int>(); // $ Alert // BAD
         c4b.Add(1);
 
         // Test 4c: List initialized
-        var c4c = new List<int> { 2, 3, 4 }; // BAD
+        var c4c = new List<int> { 2, 3, 4 }; // $ Alert // BAD
         c4c.Add(1);
 
         // Test 4d: Constructed from other expression
@@ -147,7 +147,7 @@ public class ContainerTest
     void TestAssignment()
     {
         // Assigned from new container
-        IList<int> c5a; // BAD
+        IList<int> c5a; // $ Alert // BAD
         c5a = new List<int>();
         c5a.Add(1);
 
@@ -162,7 +162,7 @@ public class ContainerTest
         c5d = c5c;
 
         // Assigned in an expression somewhere
-        IList<int> c5e = new List<int>(); // BAD: assigned in expr
+        IList<int> c5e = new List<int>(); // $ Alert // BAD: assigned in expr
         for (int i = 0; i < 10; c5e = new List<int>(), ++i)
             c5e.Add(1);
 
@@ -183,67 +183,67 @@ public class ContainerTest
         var c6a = new NonCollection(); // GOOD: not a collection
         c6a.Add(1);
 
-        var c6b = new ArrayList(); // BAD
+        var c6b = new ArrayList(); // $ Alert // BAD
         c6b.Add(1);
 
-        var c6c = new BitArray(32); // BAD
+        var c6c = new BitArray(32); // $ Alert // BAD
         c6c.SetAll(true);
 
-        var c6d = new Hashtable(); // BAD
+        var c6d = new Hashtable(); // $ Alert // BAD
         c6d.Add(1, 2);
 
-        var c6e = new Queue(); // BAD
+        var c6e = new Queue(); // $ Alert // BAD
         c6e.Enqueue(1);
 
-        var c6f = new SortedList(); // BAD
+        var c6f = new SortedList(); // $ Alert // BAD
         c6f.Add(1, 2);
 
-        var c6g = new Stack(); // BAD
+        var c6g = new Stack(); // $ Alert // BAD
         c6g.Push(1);
 
-        var c6h = new Dictionary<int, int>(); // BAD
+        var c6h = new Dictionary<int, int>(); // $ Alert // BAD
         c6h.Add(1, 2);
 
-        var c6i = new HashSet<int>(); // BAD
+        var c6i = new HashSet<int>(); // $ Alert // BAD
         c6i.Add(1);
 
-        var c6j = new LinkedList<int>(); // BAD
+        var c6j = new LinkedList<int>(); // $ Alert // BAD
         c6j.AddFirst(1);
 
-        var c6k = new List<int>(); // BAD
+        var c6k = new List<int>(); // $ Alert // BAD
         c6k.Add(1);
 
-        var c6l = new Queue<int>(); // BAD
+        var c6l = new Queue<int>(); // $ Alert // BAD
         c6l.Enqueue(1);
 
-        var c6m = new SortedDictionary<int, int>(); // BAD
+        var c6m = new SortedDictionary<int, int>(); // $ Alert // BAD
         c6m.Add(1, 2);
 
-        var c6n = new SortedList<int, int>(); // BAD
+        var c6n = new SortedList<int, int>(); // $ Alert // BAD
         c6n.Add(1, 2);
 
-        var c6o = new SortedDictionary<int, int>(); // BAD
+        var c6o = new SortedDictionary<int, int>(); // $ Alert // BAD
         c6o.Add(1, 2);
 
-        var c6p = new SortedSet<int>(); // BAD
+        var c6p = new SortedSet<int>(); // $ Alert // BAD
         c6p.Add(1);
 
-        var c6q = new Stack<int>(); // BAD
+        var c6q = new Stack<int>(); // $ Alert // BAD
         c6q.Push(1);
 
-        ICollection<int> c6u = new List<int>(); // BAD
+        ICollection<int> c6u = new List<int>(); // $ Alert // BAD
         c6u.Add(1);
 
-        IDictionary<int, int> c6v = new Dictionary<int, int>(); // BAD
+        IDictionary<int, int> c6v = new Dictionary<int, int>(); // $ Alert // BAD
         c6v.Add(1, 2);
 
         IEnumerable<int> c6w = new List<int>(); // GOOD
         c6w.GetEnumerator();
 
-        IList<int> c6x = new List<int>(); // BAD
+        IList<int> c6x = new List<int>(); // $ Alert // BAD
         c6x.Add(12);
 
-        ISet<int> c6y = new HashSet<int>(); // BAD
+        ISet<int> c6y = new HashSet<int>(); // $ Alert // BAD
         c6y.Add(1);
     }
 
@@ -264,7 +264,7 @@ public class ContainerTest
         t.InvokeMember("Add", System.Reflection.BindingFlags.InvokeMethod, null, c7c, new Object[] { 1 });
     }
 
-    IList<int> c8a = new List<int>(); // BAD: no attribute
+    IList<int> c8a = new List<int>(); // $ Alert // BAD: no attribute
 
     [Obsolete()]
     IList<int> c8b = new List<int>(); // GOOD: has attribute

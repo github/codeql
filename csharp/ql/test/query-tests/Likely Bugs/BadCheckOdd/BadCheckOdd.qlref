@@ -1,1 +1,2 @@
-Likely Bugs/BadCheckOdd.ql
+query: Likely Bugs/BadCheckOdd.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -15,12 +15,12 @@ BrotliDecoderResult BrotliDecoderDecompressStream(
 void brotli_test(int argc, const char **argv) {
     uint8_t output[1024];
     size_t output_size = sizeof(output);
-    BrotliDecoderDecompress(1024, (uint8_t *) argv[2], &output_size, output); // BAD
+    BrotliDecoderDecompress(1024, (uint8_t *) argv[2], &output_size, output); // $ Alert // BAD
 
     size_t input_size = 1024;
     const uint8_t *input_p = (const uint8_t*)argv[2];
     uint8_t *output_p = output;
     size_t out_size;
-    BrotliDecoderDecompressStream(0, &input_size, &input_p, &output_size, // BAD
+    BrotliDecoderDecompressStream(0, &input_size, &input_p, &output_size, // $ Alert // BAD
                                   &output_p, &out_size);
 }

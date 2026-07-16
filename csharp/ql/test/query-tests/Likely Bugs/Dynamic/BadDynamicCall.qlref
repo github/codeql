@@ -1,1 +1,2 @@
-Likely Bugs/Dynamic/BadDynamicCall.ql
+query: Likely Bugs/Dynamic/BadDynamicCall.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

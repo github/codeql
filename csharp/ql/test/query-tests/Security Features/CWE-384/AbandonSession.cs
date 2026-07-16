@@ -8,7 +8,7 @@ public class Handler1 : IHttpHandler
 
         if (FormsAuthentication.Authenticate("username", "password"))
         {
-            ctx.Session["foo"] = "bar"; // BAD: Session has not been abandoned
+            ctx.Session["foo"] = "bar"; // $ Alert // BAD: Session has not been abandoned
             ctx.Session.Abandon();
             ctx.Session["foo"] = "bar"; // GOOD: Session is abandoned
         }
@@ -48,9 +48,9 @@ public class Handler3 : IHttpHandler
 
         if (Membership.ValidateUser("username", "password"))
         {
-            ctx.Session["foo"] = "bar";  // BAD: Session not abandoned
+            ctx.Session["foo"] = "bar";  // $ Alert // BAD: Session not abandoned
         }
-        ctx.Session["foo"] = "bar"; // BAD: here as well
+        ctx.Session["foo"] = "bar"; // $ Alert // BAD: here as well
     }
 
     public bool IsReusable => true;

@@ -82,9 +82,6 @@ signature module LocalNameBindingInputSig<LocationSig Location> {
    * ```
    */
   class SiblingShadowingDecl extends AstNode {
-    /** Gets the left-hand side of this declaration. */
-    AstNode getLhs();
-
     /**
      * Gets the right-hand side of this declaration.
      *
@@ -294,6 +291,31 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
       result = getParentForScoping(decl) and
       n = [decl.getRhs(), decl.getElse()]
     )
+  }
+
+  /** Holds if `node` should be included in the debug tree. */
+  private signature predicate relevantNodeSig(AstNode node);
+
+  module DebugScopeGraph<relevantNodeSig/1 relevantNode> {
+    private string getANodeAnnotation(AstNode node) {
+      result =
+        "[scope=" +
+          strictconcat(string name |
+            declInScope(_, name, node) or implicitDeclInScope(name, node)
+          |
+            name, ","
+          ) + "]"
+    }
+
+    query predicate nodes(AstNode node, string key, string value) {
+      relevantNode(node) and
+      key = "semmle.label" and
+      value = node.toString() + concat(getANodeAnnotation(node))
+    }
+
+    query predicate edges(AstNode node1, AstNode node2) {
+      relevantNode(node2) and node2 = getParentForScoping(node1)
+    }
   }
 
   /** Gets the immediately enclosing variable scope of `n`. */

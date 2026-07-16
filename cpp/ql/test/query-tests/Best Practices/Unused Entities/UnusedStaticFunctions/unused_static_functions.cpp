@@ -16,7 +16,7 @@ const funstr myClass::fs[] = {
 };
 
 // f2 is unreachable
-static void f2(void) { }
+static void f2(void) { } // $ Alert
 
 // f3 is reachable via f4/pf3
 static void f3(void) { }
@@ -30,8 +30,8 @@ void f4(void) {
 
 // f5 and f6 are mutually recursive unreachable static functions
 static void f6(void);
-static void f5(void) { f6(); }
-static void f6(void) { f5(); }
+static void f5(void) { f6(); } // $ Alert
+static void f6(void) { f5(); } // $ Alert
 
 // f7 and f8 are reachable from `function_caller` 
 static int f7() { return 1; } // GOOD

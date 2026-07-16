@@ -1,1 +1,2 @@
-Best Practices/Magic Constants/JapaneseEraDate.ql
+query: Best Practices/Magic Constants/JapaneseEraDate.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

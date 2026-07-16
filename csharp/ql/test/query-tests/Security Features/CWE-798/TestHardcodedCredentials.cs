@@ -23,7 +23,7 @@ public class HardCodedCredentialsTest
         // BAD: Create a membership user with hardcoded username
         MembershipUser user = new MembershipUser(
             providerName: "provider",
-            name: "username",
+            name: "username", // $ Alert[cs/hardcoded-credentials]
             providerUserKey: "username",
             email: "foo@bar.com",
             passwordQuestion: "Hardcoded question.",

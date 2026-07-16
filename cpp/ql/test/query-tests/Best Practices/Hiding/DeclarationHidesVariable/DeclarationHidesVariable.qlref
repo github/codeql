@@ -1,1 +1,2 @@
-Best Practices/Hiding/DeclarationHidesVariable.ql
+query: Best Practices/Hiding/DeclarationHidesVariable.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

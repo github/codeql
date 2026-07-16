@@ -1,1 +1,2 @@
-Security/CWE/CWE-290/AuthenticationBypass.ql
+query: Security/CWE/CWE-290/AuthenticationBypass.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
