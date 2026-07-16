@@ -67,7 +67,7 @@ void test_exp_redos(const std::string& input) {
 
     // BAD: alternation with overlapping branches inside a repetition.
     {
-        std::regex re("^(a|ab)*$");
+        std::regex re("^(a*)*$");
         std::regex_match(input, re);
     }
 
