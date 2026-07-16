@@ -132,4 +132,87 @@ mod tests {
             "comment trivia not captured: {json}"
         );
     }
+
+    #[test]
+    fn folds_standard_library_operators() {
+        // Standard-library operators are folded into a precedence-correct tree:
+        // the flat `sequenceExpr` becomes nested `infixOperatorExpr` nodes.
+        let json = parse_to_json("let x = 1 + 2 * 3").expect("parsing should succeed");
+        assert!(
+            json.contains("\"kind\":\"infixOperatorExpr\""),
+            "operators were not folded: {json}"
+        );
+        assert!(
+            !json.contains("\"kind\":\"sequenceExpr\""),
+            "a foldable sequence was left flat: {json}"
+        );
+    }
+
+    #[test]
+    fn folds_file_defined_operators() {
+        // An operator declared in the same file (with a known precedence group)
+        // is folded, just like a standard-library one.
+        let json = parse_to_json("infix operator |>: AdditionPrecedence\nlet y = a |> b |> c")
+            .expect("parsing should succeed");
+        assert!(
+            json.contains("\"kind\":\"infixOperatorExpr\""),
+            "file-defined operator was not folded: {json}"
+        );
+        assert!(
+            !json.contains("\"kind\":\"sequenceExpr\""),
+            "a foldable sequence was left flat: {json}"
+        );
+    }
+
+    #[test]
+    fn leaves_unknown_operators_unfolded() {
+        // An operator that is neither in the standard library nor declared in
+        // this file (e.g. imported from another module) has unknown precedence,
+        // so its sequence is left flat rather than folded incorrectly.
+        let json = parse_to_json("let z = a <+> b").expect("parsing should succeed");
+        assert!(
+            json.contains("\"kind\":\"sequenceExpr\""),
+            "unknown-operator sequence should stay flat: {json}"
+        );
+        assert!(
+            !json.contains("\"kind\":\"infixOperatorExpr\""),
+            "unknown operator should not be folded: {json}"
+        );
+    }
+
+    #[test]
+    fn folds_each_sequence_independently() {
+        // Folding is isolated per sequence: a statement using a known operator
+        // folds even when another statement uses an unknown one. One unfoldable
+        // expression does not suppress folding elsewhere.
+        let json = parse_to_json("let x = 1 + 2\nlet y = a <+> b").expect("parsing should succeed");
+        assert!(
+            json.contains("\"kind\":\"infixOperatorExpr\""),
+            "the known-operator statement should fold: {json}"
+        );
+        assert!(
+            json.contains("\"kind\":\"sequenceExpr\""),
+            "the unknown-operator statement should stay flat: {json}"
+        );
+    }
+
+    #[test]
+    fn folds_grouped_subexpressions_under_unknown_operators() {
+        // A parenthesized (or otherwise bracketed) subexpression is its own
+        // sequence, so it folds independently even when the enclosing sequence
+        // uses an unknown operator. Here `***` is unknown (outer stays flat) but
+        // the grouped `b + c` still folds. Note this only works because the
+        // parentheses isolate `b + c`: in an unparenthesized `a *** b + c` the
+        // whole thing is one flat sequence whose structure can't be determined
+        // without `***`'s precedence, so it is left flat entirely.
+        let json = parse_to_json("let r = a *** (b + c)").expect("parsing should succeed");
+        assert!(
+            json.contains("\"kind\":\"infixOperatorExpr\""),
+            "the grouped known-operator subexpression should fold: {json}"
+        );
+        assert!(
+            json.contains("\"kind\":\"sequenceExpr\""),
+            "the enclosing unknown-operator sequence should stay flat: {json}"
+        );
+    }
 }

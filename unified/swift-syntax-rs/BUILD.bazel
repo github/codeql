@@ -27,6 +27,7 @@ xcode_transition_swift_library(
     module_name = "SwiftSyntaxFFI",
     target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
     deps = [
+        "@swift-syntax//:SwiftOperators",
         "@swift-syntax//:SwiftParser",
         "@swift-syntax//:SwiftSyntax",
     ],
