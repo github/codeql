@@ -19,6 +19,7 @@ predicate virtualCallToSelfInConstructor(Expr e) {
     (c instanceof Constructor or c instanceof Destructor) and
     t = c.getDeclaringType() and
     virtualAccessWithThisQualifier(e, d) and
+    not e = any(NameOfExpr ne).getAccess().getAChildExpr*() and
     t.getABaseType*() = d.getDeclaringType() and
     not t.isSealed() and
     not overriddenSealed(t.getABaseType*(), d)
