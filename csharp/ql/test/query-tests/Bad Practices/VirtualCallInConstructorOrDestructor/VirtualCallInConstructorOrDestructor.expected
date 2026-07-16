@@ -1,5 +1,13 @@
-| VirtualCallInConstructorOrDestructor.cs:45:13:45:23 | call to method f_virtual | Avoid virtual calls in a constructor or destructor. |
-| VirtualCallInConstructorOrDestructor.cs:54:17:54:25 | access to method f_virtual | Avoid virtual calls in a constructor or destructor. |
-| VirtualCallInConstructorOrDestructor.cs:60:21:60:29 | access to property p_virtual | Avoid virtual calls in a constructor or destructor. |
-| VirtualCallInConstructorOrDestructor.cs:65:17:65:23 | access to indexer | Avoid virtual calls in a constructor or destructor. |
-| VirtualCallInConstructorOrDestructor.cs:70:13:70:21 | access to event e_virtual | Avoid virtual calls in a constructor or destructor. |
+#select
+| VirtualCallInConstructorOrDestructor.cs:46:13:46:23 | call to method f_virtual | Avoid virtual calls in a constructor or destructor. |
+| VirtualCallInConstructorOrDestructor.cs:55:17:55:25 | access to method f_virtual | Avoid virtual calls in a constructor or destructor. |
+| VirtualCallInConstructorOrDestructor.cs:59:33:59:41 | access to method f_virtual | Avoid virtual calls in a constructor or destructor. |
+| VirtualCallInConstructorOrDestructor.cs:62:21:62:29 | access to property p_virtual | Avoid virtual calls in a constructor or destructor. |
+| VirtualCallInConstructorOrDestructor.cs:65:33:65:48 | access to property p_virtual_string | Avoid virtual calls in a constructor or destructor. |
+| VirtualCallInConstructorOrDestructor.cs:66:40:66:55 | access to property p_virtual_string | Avoid virtual calls in a constructor or destructor. |
+| VirtualCallInConstructorOrDestructor.cs:69:17:69:23 | access to indexer | Avoid virtual calls in a constructor or destructor. |
+| VirtualCallInConstructorOrDestructor.cs:74:13:74:21 | access to event e_virtual | Avoid virtual calls in a constructor or destructor. |
+testFailures
+| VirtualCallInConstructorOrDestructor.cs:59:33:59:41 | Avoid virtual calls in a constructor or destructor. | Unexpected result: Alert |
+| VirtualCallInConstructorOrDestructor.cs:65:33:65:48 | Avoid virtual calls in a constructor or destructor. | Unexpected result: Alert |
+| VirtualCallInConstructorOrDestructor.cs:66:40:66:55 | Avoid virtual calls in a constructor or destructor. | Unexpected result: Alert |
