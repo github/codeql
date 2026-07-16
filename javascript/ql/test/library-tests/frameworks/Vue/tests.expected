@@ -191,6 +191,7 @@ remoteFlowSource
 | router.js:39:5:39:14 | from.query |
 | router.js:43:5:43:12 | to.query |
 | router.js:44:5:44:14 | from.query |
+| router.js:47:1:47:16 | useRoute().query |
 parseErrors
 attribute
 | compont-with-route.vue:2:8:2:21 | v-html=dataA | v-html |
@@ -239,6 +240,7 @@ threatModelSource
 | router.js:39:5:39:14 | from.query | remote |
 | router.js:43:5:43:12 | to.query | remote |
 | router.js:44:5:44:14 | from.query | remote |
+| router.js:47:1:47:16 | useRoute().query | remote |
 | single-component-file-1.vue:7:45:7:54 | this.input | view-component-input |
 | single-file-component-3-script.js:5:42:5:51 | this.input | view-component-input |
 | single-file-component-4.vue:21:14:21:23 | this.input | view-component-input |
