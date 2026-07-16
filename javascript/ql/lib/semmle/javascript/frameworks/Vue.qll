@@ -36,6 +36,7 @@ module Vue {
   }
 
   /** Models data flow through Vue Composition API helpers. */
+  overlay[local?]
   private class VueCompositionApiSummary extends DataFlow::SummarizedCallable::Range {
     string name;
 
