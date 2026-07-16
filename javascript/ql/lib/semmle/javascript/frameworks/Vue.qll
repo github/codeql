@@ -652,6 +652,8 @@ module Vue {
     t.start() and
     (
       exists(API::Node router | router = API::moduleImport("vue-router") |
+        result = router.getMember("useRoute").getACall()
+        or
         result = router.getInstance().getMember("currentRoute").asSource()
         or
         result =
