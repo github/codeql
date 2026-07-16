@@ -14,6 +14,7 @@
 
 import cpp
 private import semmle.code.cpp.regex.internal.ParseRegExp
+private import semmle.code.cpp.regex.RegexFlowConfigs as RFC
 private import codeql.regex.RegexTreeView
 // Export the implementation both as `RegexTreeView` (for use as a functor
 // argument) and in the top-level scope (for direct import).
@@ -130,6 +131,12 @@ module Impl implements RegexTreeViewSig {
 
     /** Gets the underlying regex. */
     abstract RegExp getRegex();
+
+    /** Gets a primary QL class for this element. */
+    string getAPrimaryQlClass() { result = "RegExpParent" }
+
+    /** Gets a comma-separated list of primary QL classes for this element. */
+    final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
   }
 
   // -------------------------------------------------------------------------
@@ -149,26 +156,41 @@ module Impl implements RegexTreeViewSig {
     /**
      * Holds if dot `.` matches all characters including newlines.
      *
-     * TODO (Phase 2): Implement by detecting `std::regex::flag_type::multiline`
-     * or `dotall` via construction-site dataflow. Conservatively returns nothing.
+     * ECMAScript `std::regex` has no dot-all flag: neither `icase` nor
+     * `multiline` change the behavior of `.`. This predicate therefore does
+     * not hold for any C++ `std::regex` literal.
      */
     predicate isDotAll() { none() }
 
     /**
-     * Holds if matching is case-insensitive.
-     *
-     * TODO (Phase 2): Implement by detecting `std::regex_constants::icase`
-     * via construction-site dataflow. Conservatively returns nothing.
+     * Holds if matching is case-insensitive. Reflects whether the underlying
+     * `std::basic_regex` was constructed with
+     * `std::regex_constants::icase` (directly or in a bitwise-OR combination).
      */
-    predicate isIgnoreCase() { none() }
+    predicate isIgnoreCase() { RFC::hasIgnoreCaseFlag(re) }
+
+    /**
+     * Holds if `^` and `$` match at line boundaries (`std::regex_constants::multiline`,
+     * C++17+).
+     */
+    predicate isMultiline() { RFC::hasMultilineFlag(re) }
 
     /** Gets a string representing all flags for this regex. */
-    string getFlags() { none() }
+    string getFlags() {
+      result =
+        strictconcat(string f |
+          this.isIgnoreCase() and f = "i"
+          or
+          this.isMultiline() and f = "m"
+        |
+          f order by f
+        )
+    }
 
     override RegExp getRegex() { result = re }
 
     /** Gets the primary QL class for this element. */
-    string getPrimaryQLClass() { result = "RegExpLiteral" }
+    override string getAPrimaryQlClass() { result = "RegExpLiteral" }
   }
 
   // -------------------------------------------------------------------------
@@ -313,7 +335,7 @@ module Impl implements RegexTreeViewSig {
     }
 
     /** Gets the primary QL class for this term. */
-    string getPrimaryQLClass() { result = "RegExpTerm" }
+    override string getAPrimaryQlClass() { result = "RegExpTerm" }
   }
 
   // -------------------------------------------------------------------------
@@ -345,7 +367,7 @@ module Impl implements RegexTreeViewSig {
     /** Gets the textual qualifier (e.g., `*`, `+`, `{2,5}`). */
     string getQualifier() { result = re.getText().substring(part_end, end) }
 
-    override string getPrimaryQLClass() { result = "RegExpQuantifier" }
+    override string getAPrimaryQlClass() { result = "RegExpQuantifier" }
   }
 
   /**
@@ -359,21 +381,21 @@ module Impl implements RegexTreeViewSig {
   class RegExpStar extends InfiniteRepetitionQuantifier {
     RegExpStar() { this.getQualifier().charAt(0) = "*" }
 
-    override string getPrimaryQLClass() { result = "RegExpStar" }
+    override string getAPrimaryQlClass() { result = "RegExpStar" }
   }
 
   /** A plus-quantified term (`a+`). */
   class RegExpPlus extends InfiniteRepetitionQuantifier {
     RegExpPlus() { this.getQualifier().charAt(0) = "+" }
 
-    override string getPrimaryQLClass() { result = "RegExpPlus" }
+    override string getAPrimaryQlClass() { result = "RegExpPlus" }
   }
 
   /** An optional term (`a?`). */
   class RegExpOpt extends RegExpQuantifier {
     RegExpOpt() { this.getQualifier().charAt(0) = "?" }
 
-    override string getPrimaryQLClass() { result = "RegExpOpt" }
+    override string getAPrimaryQlClass() { result = "RegExpOpt" }
   }
 
   /**
@@ -396,7 +418,7 @@ module Impl implements RegexTreeViewSig {
      */
     int getUpperBound() { result = upper.toInt() }
 
-    override string getPrimaryQLClass() { result = "RegExpRange" }
+    override string getAPrimaryQlClass() { result = "RegExpRange" }
   }
 
   // -------------------------------------------------------------------------
@@ -424,7 +446,7 @@ module Impl implements RegexTreeViewSig {
       )
     }
 
-    override string getPrimaryQLClass() { result = "RegExpSequence" }
+    override string getAPrimaryQlClass() { result = "RegExpSequence" }
   }
 
   /**
@@ -452,7 +474,7 @@ module Impl implements RegexTreeViewSig {
       )
     }
 
-    override string getPrimaryQLClass() { result = "RegExpAlt" }
+    override string getAPrimaryQlClass() { result = "RegExpAlt" }
   }
 
   // -------------------------------------------------------------------------
@@ -473,7 +495,7 @@ module Impl implements RegexTreeViewSig {
 
     override RegExpTerm getChild(int i) { none() }
 
-    override string getPrimaryQLClass() { result = "RegExpNormalChar" }
+    override string getAPrimaryQlClass() { result = "RegExpNormalChar" }
   }
 
   /**
@@ -510,7 +532,7 @@ module Impl implements RegexTreeViewSig {
     /** Holds if this escape's name is the character following the backslash. */
     predicate isIdentityEscape() { not this.getUnescaped() in ["n", "r", "t", "f", "v"] }
 
-    override string getPrimaryQLClass() { result = "RegExpEscape" }
+    override string getAPrimaryQlClass() { result = "RegExpEscape" }
 
     /** Gets the part of the term following the backslash (e.g., `w` for `\w`). */
     string getUnescaped() { result = re.getText().substring(start + 1, end) }
@@ -526,7 +548,7 @@ module Impl implements RegexTreeViewSig {
 
     override RegExpTerm getChild(int i) { none() }
 
-    override string getPrimaryQLClass() { result = "RegExpCharacterClassEscape" }
+    override string getAPrimaryQlClass() { result = "RegExpCharacterClassEscape" }
   }
 
   // -------------------------------------------------------------------------
@@ -580,7 +602,7 @@ module Impl implements RegexTreeViewSig {
       )
     }
 
-    override string getPrimaryQLClass() { result = "RegExpCharacterClass" }
+    override string getAPrimaryQlClass() { result = "RegExpCharacterClass" }
   }
 
   /**
@@ -613,7 +635,7 @@ module Impl implements RegexTreeViewSig {
       result.getEnd() = end
     }
 
-    override string getPrimaryQLClass() { result = "RegExpCharacterRange" }
+    override string getAPrimaryQlClass() { result = "RegExpCharacterRange" }
   }
 
   // -------------------------------------------------------------------------
@@ -641,21 +663,19 @@ module Impl implements RegexTreeViewSig {
 
     override RegExpTerm getChild(int i) { none() }
 
-    override string getPrimaryQLClass() { result = "RegExpSpecialChar" }
+    override string getAPrimaryQlClass() { result = "RegExpSpecialChar" }
   }
 
   /** A dot (`.`) that matches any character (except possibly newlines). */
   class RegExpDot extends RegExpSpecialChar {
     RegExpDot() { this.getChar() = "." }
 
-    override string getPrimaryQLClass() { result = "RegExpDot" }
+    override string getAPrimaryQlClass() { result = "RegExpDot" }
   }
 
   /** An anchor term (`^`, `$`). */
   class RegExpAnchor extends RegExpSpecialChar {
-    RegExpAnchor() { this.getChar() = ["^", "$"] }
-
-    override string getChar() { result = char }
+    RegExpAnchor() { char = ["^", "$"] }
   }
 
   /**
@@ -663,9 +683,9 @@ module Impl implements RegexTreeViewSig {
    * multiline mode).
    */
   class RegExpDollar extends RegExpAnchor {
-    RegExpDollar() { this.getChar() = "$" }
+    RegExpDollar() { char = "$" }
 
-    override string getPrimaryQLClass() { result = "RegExpDollar" }
+    override string getAPrimaryQlClass() { result = "RegExpDollar" }
   }
 
   /**
@@ -673,23 +693,23 @@ module Impl implements RegexTreeViewSig {
    * in multiline mode).
    */
   class RegExpCaret extends RegExpAnchor {
-    RegExpCaret() { this.getChar() = "^" }
+    RegExpCaret() { char = "^" }
 
-    override string getPrimaryQLClass() { result = "RegExpCaret" }
+    override string getAPrimaryQlClass() { result = "RegExpCaret" }
   }
 
   /** A word-boundary assertion `\b`. */
   class RegExpWordBoundary extends RegExpSpecialChar {
     RegExpWordBoundary() { this.getChar() = "\\b" }
 
-    override string getPrimaryQLClass() { result = "RegExpWordBoundary" }
+    override string getAPrimaryQlClass() { result = "RegExpWordBoundary" }
   }
 
   /** A non-word-boundary assertion `\B`. */
   class RegExpNonWordBoundary extends RegExpSpecialChar {
     RegExpNonWordBoundary() { this.getChar() = "\\B" }
 
-    override string getPrimaryQLClass() { result = "RegExpNonWordBoundary" }
+    override string getAPrimaryQlClass() { result = "RegExpNonWordBoundary" }
   }
 
   // -------------------------------------------------------------------------
@@ -728,7 +748,7 @@ module Impl implements RegexTreeViewSig {
       re.groupContents(start, end, result.getStart(), result.getEnd())
     }
 
-    override string getPrimaryQLClass() { result = "RegExpGroup" }
+    override string getAPrimaryQlClass() { result = "RegExpGroup" }
   }
 
   // -------------------------------------------------------------------------
@@ -743,7 +763,7 @@ module Impl implements RegexTreeViewSig {
 
     override RegExpTerm getChild(int i) { none() }
 
-    override string getPrimaryQLClass() { result = "RegExpZeroWidthMatch" }
+    override string getAPrimaryQlClass() { result = "RegExpZeroWidthMatch" }
   }
 
   /**
@@ -769,14 +789,14 @@ module Impl implements RegexTreeViewSig {
   class RegExpPositiveLookahead extends RegExpLookahead {
     RegExpPositiveLookahead() { re.positiveLookaheadAssertionGroup(start, end, _, _) }
 
-    override string getPrimaryQLClass() { result = "RegExpPositiveLookahead" }
+    override string getAPrimaryQlClass() { result = "RegExpPositiveLookahead" }
   }
 
   /** A negative lookahead assertion (`(?!...)`). */
   additional class RegExpNegativeLookahead extends RegExpLookahead {
     RegExpNegativeLookahead() { re.negativeLookaheadAssertionGroup(start, end, _, _) }
 
-    override string getPrimaryQLClass() { result = "RegExpNegativeLookahead" }
+    override string getAPrimaryQlClass() { result = "RegExpNegativeLookahead" }
   }
 
   /** A lookbehind assertion (`(?<=...)` or `(?<!...)`). */
@@ -786,14 +806,14 @@ module Impl implements RegexTreeViewSig {
   class RegExpPositiveLookbehind extends RegExpLookbehind {
     RegExpPositiveLookbehind() { re.positiveLookbehindAssertionGroup(start, end, _, _) }
 
-    override string getPrimaryQLClass() { result = "RegExpPositiveLookbehind" }
+    override string getAPrimaryQlClass() { result = "RegExpPositiveLookbehind" }
   }
 
   /** A negative lookbehind assertion (`(?<!...)`). */
   additional class RegExpNegativeLookbehind extends RegExpLookbehind {
     RegExpNegativeLookbehind() { re.negativeLookbehindAssertionGroup(start, end, _, _) }
 
-    override string getPrimaryQLClass() { result = "RegExpNegativeLookbehind" }
+    override string getAPrimaryQlClass() { result = "RegExpNegativeLookbehind" }
   }
 
   // -------------------------------------------------------------------------
@@ -832,7 +852,7 @@ module Impl implements RegexTreeViewSig {
 
     override RegExpTerm getChild(int i) { none() }
 
-    override string getPrimaryQLClass() { result = "RegExpBackRef" }
+    override string getAPrimaryQlClass() { result = "RegExpBackRef" }
   }
 
   // -------------------------------------------------------------------------
@@ -864,7 +884,7 @@ module Impl implements RegexTreeViewSig {
 
     override RegExpTerm getChild(int i) { none() }
 
-    override string getPrimaryQLClass() { result = "RegExpConstant" }
+    override string getAPrimaryQlClass() { result = "RegExpConstant" }
   }
 
   // -------------------------------------------------------------------------
@@ -924,10 +944,9 @@ module Impl implements RegexTreeViewSig {
   }
 
   /**
-   * Holds if `root` has the `i` flag for case-insensitive matching.
-   *
-   * TODO (Phase 2): Implement by detecting `std::regex_constants::icase` at
-   * the construction site via dataflow. Conservatively returns nothing.
+   * Holds if `root` has the `i` flag for case-insensitive matching, i.e. the
+   * underlying `std::basic_regex` was constructed with
+   * `std::regex_constants::icase`.
    */
   predicate isIgnoreCase(RegExpTerm root) {
     root.isRootTerm() and
@@ -935,10 +954,11 @@ module Impl implements RegexTreeViewSig {
   }
 
   /**
-   * Holds if `root` has the `s` (dotAll) flag, making `.` match newlines.
+   * Holds if `root` has the `s` (dot-all) flag, making `.` match newlines.
    *
-   * TODO (Phase 2): Implement by detecting the relevant flag at the
-   * construction site via dataflow. Conservatively returns nothing.
+   * ECMAScript `std::regex` has no dot-all flag, so this predicate never
+   * holds for C++ regexes. It is retained to satisfy the shared
+   * `RegexTreeViewSig` signature.
    */
   predicate isDotAll(RegExpTerm root) {
     root.isRootTerm() and

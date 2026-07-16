@@ -1,0 +1,11 @@
+ignoreCase
+| RegExpParent |
+| RegExpParent |
+| RegExpParent |
+multiline
+| RegExpParent |
+dotAll
+flags
+| RegExpParent | i |
+| RegExpParent | i |
+| RegExpParent | im |

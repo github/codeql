@@ -6,27 +6,24 @@
  * supported by `std::regex` (`basic`, `extended`, `awk`, `grep`, `egrep`)
  * as well as third-party libraries (Boost.Regex, PCRE, RE2) differ and are
  * not modeled here.
- *
- * TODO (Phase 2): Restrict `RegExp` to string literals that actually flow
- * into a `std::basic_regex` constructor or related function via dataflow,
- * rather than treating all string literals as potential regexes.
  */
 
 import cpp
+private import semmle.code.cpp.regex.RegexFlowConfigs as RFC
 
 /**
- * A string literal used (or potentially used) as a regular expression.
+ * A string literal used as a regular expression.
  *
- * For Phase 1 we conservatively treat every `StringLiteral` as a candidate
- * regular expression. Phase 2 will narrow this using dataflow to only those
- * literals that actually reach a `std::regex` construction or usage site.
+ * A `StringLiteral` is treated as a regex only when dataflow indicates it
+ * flows to a `std::basic_regex` construction/assignment or to a
+ * `regex_match`/`regex_search`/`regex_replace`/iterator call. Regexes
+ * constructed with an explicit non-ECMAScript grammar flag are excluded,
+ * since the parser only models the ECMAScript dialect.
  */
 class RegExp extends StringLiteral {
   RegExp() {
-    // Restrict to string literals that contain at least one regex metacharacter,
-    // to keep the working set small and avoid unnecessary computation on plain strings.
-    // TODO (Phase 2): Replace with a proper dataflow-based check.
-    exists(this.getValue())
+    RFC::usedAsRegex(this) and
+    not RFC::hasNonEcmaScriptGrammarFlag(this)
   }
 
   /** Gets the `i`th character of this regex string. */

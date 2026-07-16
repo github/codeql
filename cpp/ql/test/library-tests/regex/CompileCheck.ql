@@ -21,4 +21,6 @@ private module TestSuperlinear = SuperlinearBackTracking::Make<RegexTreeView>;
 private module TestNfaUtils = NfaUtils::Make<RegexTreeView>;
 
 // No results are selected; this is a compile-only check.
-select "x" where 1 = 0
+from int x
+where x = 0 and x = 1
+select x
