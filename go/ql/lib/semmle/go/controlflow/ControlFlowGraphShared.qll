@@ -139,14 +139,16 @@ module GoCfg {
     }
 
     class Parameter extends AstNode {
-      Parameter() { none() }
+      Parameter() { this = any(Go::Parameter p).getDeclaration() }
 
-      AstNode getPattern() { none() }
+      AstNode getPattern() { result = this }
 
       Expr getDefaultValue() { none() }
     }
 
-    Parameter callableGetParameter(Callable c, int index) { none() }
+    Parameter callableGetParameter(Callable c, int index) {
+      result = c.(Go::FuncDef).getParameter(index).getDeclaration()
+    }
 
     Callable getEnclosingCallable(AstNode node) {
       result = node.getEnclosingFunction()
@@ -598,14 +600,6 @@ module GoCfg {
           exists(fd.getBody()) and
           exists(fd.getResultVar(i)) and
           tag = "result-read:" + i.toString()
-        )
-        or
-        // Parameter init nodes (on the function body)
-        exists(int i, Go::FuncDef fd |
-          n = fd.getBody() and
-          exists(fd.getBody()) and
-          exists(fd.getParameter(i)) and
-          tag = "param-init:" + i.toString()
         )
         or
         // Result-variable zero-initialization (on the function body). This single
@@ -1743,17 +1737,16 @@ module GoCfg {
 
     /**
      * Function definition prologue and epilogue:
-     * - Prologue: Before(body) → param-init:-1 → param-init:0 → ... when a
-     *             receiver exists; otherwise it starts at param-init:0. Then
-     *             zero-init:0 → zero-init:1 → ... → first statement
+     * - Prologue: parameters are modelled as native CFG nodes by the shared
+     *             library (Entry → param → ... → Before(body)). The remaining
+     *             prologue on Before(body) zero-initializes any named result
+     *             variables: zero-init:0 → zero-init:1 → ... → first statement.
      * - Epilogue: return → result-read:0 → result-read:1 → ... → result-read:last
      *
      * The last result-read node goes to `NormalExit(fd)` via the shared
      * library's `callableExitStep` hook.
      */
-    private predicate hasFuncDefPrologue(Go::FuncDef fd) {
-      exists(fd.getParameter(_)) or exists(fd.getResultVar(_))
-    }
+    private predicate hasFuncDefPrologue(Go::FuncDef fd) { exists(fd.getResultVar(_)) }
 
     private predicate funcDefBodyStart(Go::FuncDef fd, PreControlFlowNode n) {
       n.isBefore(getRankedChild(fd.getBody(), 1))
@@ -1784,47 +1777,14 @@ module GoCfg {
 
     private predicate funcDefStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::FuncDef fd | exists(fd.getBody()) |
-        // Before(body) → first prologue node, or first body statement if no prologue
+        // Before(body) → first result-var zero-init node. Parameters are
+        // modelled as native CFG nodes by the shared library and route
+        // Entry → param → ... → Before(body) ahead of this point; the
+        // no-result-variable case (Before(body) → first statement) is handled
+        // by `funcDefBodyStep`.
         n1.isBefore(fd.getBody()) and
-        (
-          // Has receiver: start with param-init:-1
-          exists(fd.getParameter(-1)) and n2.isAdditional(fd.getBody(), "param-init:-1")
-          or
-          // Has ordinary parameters: start with param-init:0
-          not exists(fd.getParameter(-1)) and
-          exists(fd.getParameter(0)) and
-          n2.isAdditional(fd.getBody(), "param-init:0")
-          or
-          // No parameters, has result vars: start with zero-init:0
-          not exists(fd.getParameter(_)) and
-          exists(fd.getResultVar(0)) and
-          n2.isAdditional(fd.getBody(), "zero-init:0")
-          or
-          // No parameters and no result vars: go directly to Before(body)
-          not exists(fd.getParameter(_)) and
-          not exists(fd.getResultVar(_)) and
-          funcDefBodyStart(fd, n2)
-        )
-        or
-        // param-init:i → next: param-init:(i+1), or zero-init:0, or Before(body)
-        exists(int i | exists(fd.getParameter(i)) |
-          n1.isAdditional(fd.getBody(), "param-init:" + i.toString()) and
-          (
-            // Next parameter exists
-            exists(fd.getParameter(i + 1)) and
-            n2.isAdditional(fd.getBody(), "param-init:" + (i + 1).toString())
-            or
-            // No next parameter, has result vars: go to zero-init:0
-            not exists(fd.getParameter(i + 1)) and
-            exists(fd.getResultVar(0)) and
-            n2.isAdditional(fd.getBody(), "zero-init:0")
-            or
-            // No next parameter and no result vars: go to Before(body)
-            not exists(fd.getParameter(i + 1)) and
-            not exists(fd.getResultVar(_)) and
-            funcDefBodyStart(fd, n2)
-          )
-        )
+        exists(fd.getResultVar(0)) and
+        n2.isAdditional(fd.getBody(), "zero-init:0")
         or
         // zero-init:j → next: zero-init:(j+1), or Before(body).
         // The zero-init node also writes the result variable (see

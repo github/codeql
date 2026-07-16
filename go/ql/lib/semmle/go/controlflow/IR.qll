@@ -102,6 +102,11 @@ module IR {
         not isInBooleanCondContext(e) and
         this.isAfter(e)
       )
+      or
+      // A named parameter is represented by a single CFG node (the merged
+      // "before"/"after" leaf node for its declaration), which hosts the
+      // initialization write (see `InitParameterInstruction`).
+      this.isBefore(any(FuncDef fd).getParameter(_).getDeclaration())
     }
 
     /** Holds if this instruction reads the value of variable or constant `v`. */
@@ -982,7 +987,7 @@ module IR {
     FuncDef fd;
 
     InitParameterInstruction() {
-      this.isAdditional(fd.getBody(), "param-init:" + idx.toString()) and
+      this.isBefore(parm.getDeclaration()) and
       parm = fd.getParameter(idx)
     }
 
@@ -1105,7 +1110,7 @@ module IR {
       )
       or
       exists(FuncDef fd, int idx |
-        write.isAdditional(fd.getBody(), "param-init:" + idx.toString()) and
+        write.isBefore(fd.getParameter(idx).getDeclaration()) and
         lhs = fd.getParameter(idx).getDeclaration()
       )
       or
@@ -1339,7 +1344,7 @@ module IR {
    */
   InitParameterInstruction initRecvInstruction(ReceiverVariable r) {
     exists(FuncDef fd, int i |
-      fd.getParameter(i) = r and result.isAdditional(fd.getBody(), "param-init:" + i.toString())
+      fd.getParameter(i) = r and result.isBefore(fd.getParameter(i).getDeclaration())
     )
   }
 
@@ -1348,7 +1353,7 @@ module IR {
    */
   InitParameterInstruction initParamInstruction(Parameter p) {
     exists(FuncDef fd, int i |
-      fd.getParameter(i) = p and result.isAdditional(fd.getBody(), "param-init:" + i.toString())
+      fd.getParameter(i) = p and result.isBefore(fd.getParameter(i).getDeclaration())
     )
   }
 
