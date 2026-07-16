@@ -35,6 +35,43 @@ module Vue {
     result = any(GlobalVueEntryPoint e).getANode()
   }
 
+  /** Models data flow through Vue Composition API helpers. */
+  overlay[local?]
+  private class VueCompositionApiSummary extends DataFlow::SummarizedCallable::Range {
+    string name;
+
+    VueCompositionApiSummary() {
+      name = ["ref", "shallowRef", "toRef", "reactive", "computed"] and
+      this = "vue." + name
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      name = ["ref", "shallowRef"] and
+      input = "Argument[0]" and
+      output = "ReturnValue.Member[value]" and
+      preservesValue = true
+      or
+      name = "toRef" and
+      input = "Argument[0]" and
+      output = "ReturnValue.Member[value]" and
+      preservesValue = false
+      or
+      name = "reactive" and
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+      or
+      name = "computed" and
+      input = "Argument[0].ReturnValue" and
+      output = "ReturnValue.Member[value]" and
+      preservesValue = true
+    }
+
+    override DataFlow::InvokeNode getACall() {
+      result = API::moduleImport("vue").getMember(name).getACall()
+    }
+  }
+
   /**
    * Gets a reference to the 'Vue' object.
    */
