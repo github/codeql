@@ -59,6 +59,22 @@ module IR {
   }
 
   /**
+   * Holds if `n` is a genuine boolean condition-guard node: an "after" node
+   * that records exactly one of the true/false outcomes of a boolean
+   * condition.
+   *
+   * The shared CFG library's `isAfterTrue`/`isAfterFalse` are deliberately
+   * permissive when used for step-endpoint matching: a plain "after" node (or
+   * a merged leaf node) satisfies both of them. A real guard node is
+   * distinguished by satisfying exactly one of them.
+   */
+  private predicate isConditionGuardNode(ControlFlow::Node n) {
+    n.isAfterTrue(_) and not n.isAfterFalse(_)
+    or
+    n.isAfterFalse(_) and not n.isAfterTrue(_)
+  }
+
+  /**
    * An IR instruction.
    */
   class Instruction extends ControlFlow::Node {
@@ -67,9 +83,7 @@ module IR {
       or
       this.isAdditional(_, _)
       or
-      this.isAfterTrue(_)
-      or
-      this.isAfterFalse(_)
+      isConditionGuardNode(this)
       or
       // The successful-match node of a type-switch case that binds an implicit
       // variable hosts that variable's declaration/assignment (see
@@ -201,11 +215,7 @@ module IR {
 
   /** A condition guard instruction, representing a known boolean outcome for a condition. */
   private class ConditionGuardInstruction extends Instruction {
-    ConditionGuardInstruction() {
-      this.isAfterTrue(_)
-      or
-      this.isAfterFalse(_)
-    }
+    ConditionGuardInstruction() { isConditionGuardNode(this) }
   }
 
   /**
