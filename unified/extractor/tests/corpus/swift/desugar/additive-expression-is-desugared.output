@@ -16,6 +16,6 @@ top_level
     block
       stmt:
         binary_expr
-          operator: infix_operator "+"
           left: int_literal "1"
+          operator: infix_operator "+"
           right: int_literal "2"

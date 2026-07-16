@@ -21,9 +21,9 @@ top_level
     block
       stmt:
         class_like_declaration
-          member:
-            function_declaration
-              body: block "func draw()"
-              name: identifier "draw"
           modifier: modifier "protocol"
           name: identifier "Drawable"
+          member:
+            function_declaration
+              name: identifier "draw"
+              body: block "func draw()"

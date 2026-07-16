@@ -58,19 +58,6 @@ top_level
     block
       stmt:
         function_declaration
-          body:
-            block
-              stmt:
-                return_expr
-                  value:
-                    binary_expr
-                      operator: infix_operator "+"
-                      left:
-                        name_expr
-                          identifier: identifier "a"
-                      right:
-                        name_expr
-                          identifier: identifier "b"
           name: identifier "add"
           parameter:
             parameter
@@ -86,3 +73,16 @@ top_level
           return_type:
             named_type_expr
               name: identifier "Int"
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    binary_expr
+                      left:
+                        name_expr
+                          identifier: identifier "a"
+                      operator: infix_operator "+"
+                      right:
+                        name_expr
+                          identifier: identifier "b"

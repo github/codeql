@@ -61,11 +61,11 @@ top_level
                 block
                   stmt:
                     call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
                       argument:
                         argument
                           value:
                             name_expr
                               identifier: identifier "error"
-                      callee:
-                        name_expr
-                          identifier: identifier "print"

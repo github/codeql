@@ -59,16 +59,22 @@ top_level
     block
       stmt:
         for_each_stmt
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          iterable:
+            name_expr
+              identifier: identifier "xs"
           body:
             block
               stmt:
                 if_expr
                   condition:
                     binary_expr
-                      operator: infix_operator "<"
                       left:
                         name_expr
                           identifier: identifier "x"
+                      operator: infix_operator "<"
                       right: int_literal "0"
                   then:
                     block
@@ -76,26 +82,20 @@ top_level
                 if_expr
                   condition:
                     binary_expr
-                      operator: infix_operator ">"
                       left:
                         name_expr
                           identifier: identifier "x"
+                      operator: infix_operator ">"
                       right: int_literal "100"
                   then:
                     block
                       stmt: break_expr "break"
                 call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
                   argument:
                     argument
                       value:
                         name_expr
                           identifier: identifier "x"
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
-          pattern:
-            name_pattern
-              identifier: identifier "x"
-          iterable:
-            name_expr
-              identifier: identifier "xs"

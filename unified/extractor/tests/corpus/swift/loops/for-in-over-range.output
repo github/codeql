@@ -35,23 +35,23 @@ top_level
     block
       stmt:
         for_each_stmt
-          body:
-            block
-              stmt:
-                call_expr
-                  argument:
-                    argument
-                      value:
-                        name_expr
-                          identifier: identifier "i"
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
           pattern:
             name_pattern
               identifier: identifier "i"
           iterable:
             binary_expr
-              operator: infix_operator "..<"
               left: int_literal "0"
+              operator: infix_operator "..<"
               right: int_literal "10"
+          body:
+            block
+              stmt:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "i"

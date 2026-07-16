@@ -88,45 +88,40 @@ top_level
     block
       stmt:
         switch_expr
+          value:
+            name_expr
+              identifier: identifier "x"
           case:
             switch_case
-              body:
-                block
-                  stmt:
-                    call_expr
-                      argument:
-                        argument
-                          value: string_literal "\"yes\""
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
               pattern:
                 constructor_pattern
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "implicit"
                   element:
                     pattern_element
                       key: identifier "isAcknowledged"
                       pattern:
                         expr_equality_pattern
                           expr: boolean_literal "false"
-                  constructor:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member: identifier "implicit"
-            switch_case
               body:
                 block
                   stmt:
                     call_expr
-                      argument:
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "rowId"
                       callee:
                         name_expr
                           identifier: identifier "print"
+                      argument:
+                        argument
+                          value: string_literal "\"yes\""
+            switch_case
               pattern:
                 constructor_pattern
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "thread"
                   element:
                     pattern_element
                       key: identifier "threadRowId"
@@ -135,10 +130,15 @@ top_level
                       pattern:
                         name_pattern
                           identifier: identifier "rowId"
-                  constructor:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member: identifier "thread"
-          value:
-            name_expr
-              identifier: identifier "x"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "rowId"

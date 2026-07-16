@@ -18,8 +18,8 @@ top_level
     block
       stmt:
         compound_assign_expr
-          operator: infix_operator "+="
           target:
             name_expr
               identifier: identifier "x"
+          operator: infix_operator "+="
           value: int_literal "1"

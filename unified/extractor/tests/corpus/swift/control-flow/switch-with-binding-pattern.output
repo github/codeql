@@ -86,55 +86,55 @@ top_level
     block
       stmt:
         switch_expr
+          value:
+            name_expr
+              identifier: identifier "shape"
           case:
             switch_case
-              body:
-                block
-                  stmt:
-                    call_expr
-                      argument:
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "r"
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
               pattern:
                 constructor_pattern
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "circle"
                   element:
                     pattern_element
                       pattern:
                         name_pattern
                           identifier: identifier "r"
-                  constructor:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member: identifier "circle"
-            switch_case
               body:
                 block
                   stmt:
                     call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
                       argument:
                         argument
                           value:
                             name_expr
-                              identifier: identifier "s"
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                              identifier: identifier "r"
+            switch_case
               pattern:
                 constructor_pattern
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "square"
                   element:
                     pattern_element
                       pattern:
                         name_pattern
                           identifier: identifier "s"
-                  constructor:
-                    member_access_expr
-                      base: inferred_type_expr "."
-                      member: identifier "square"
-          value:
-            name_expr
-              identifier: identifier "shape"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "s"

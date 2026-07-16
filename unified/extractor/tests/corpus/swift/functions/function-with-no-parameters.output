@@ -30,14 +30,14 @@ top_level
     block
       stmt:
         function_declaration
+          name: identifier "greet"
           body:
             block
               stmt:
                 call_expr
-                  argument:
-                    argument
-                      value: string_literal "\"hello\""
                   callee:
                     name_expr
                       identifier: identifier "print"
-          name: identifier "greet"
+                  argument:
+                    argument
+                      value: string_literal "\"hello\""

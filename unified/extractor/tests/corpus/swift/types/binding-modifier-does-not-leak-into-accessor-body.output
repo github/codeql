@@ -67,34 +67,34 @@ top_level
     block
       stmt:
         accessor_declaration
+          modifier: modifier "var"
+          name: identifier "p"
+          accessor_kind: accessor_kind "get"
+          type:
+            named_type_expr
+              name: identifier "Int"
           body:
             block
               stmt:
                 switch_expr
+                  value:
+                    name_expr
+                      identifier: identifier "y"
                   case:
                     switch_case
-                      body:
-                        block
-                          stmt:
-                            return_expr
-                              value: int_literal "1"
                       pattern:
                         expr_equality_pattern
                           expr:
                             name_expr
                               identifier: identifier "someConstant"
+                      body:
+                        block
+                          stmt:
+                            return_expr
+                              value: int_literal "1"
                     switch_case
                       body:
                         block
                           stmt:
                             return_expr
                               value: int_literal "2"
-                  value:
-                    name_expr
-                      identifier: identifier "y"
-          modifier: modifier "var"
-          name: identifier "p"
-          type:
-            named_type_expr
-              name: identifier "Int"
-          accessor_kind: accessor_kind "get"

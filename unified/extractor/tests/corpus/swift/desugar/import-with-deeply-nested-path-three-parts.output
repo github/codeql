@@ -19,7 +19,6 @@ top_level
     block
       stmt:
         import_declaration
-          pattern: bulk_importing_pattern "import Foundation.Networking.URLSession"
           imported_expr:
             member_access_expr
               base:
@@ -29,3 +28,4 @@ top_level
                       identifier: identifier "Foundation"
                   member: identifier "Networking"
               member: identifier "URLSession"
+          pattern: bulk_importing_pattern "import Foundation.Networking.URLSession"

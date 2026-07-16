@@ -43,9 +43,9 @@ top_level
               identifier: identifier "v"
           value:
             call_expr
-              argument:
-                argument
-                  value: string_literal "\"key\""
               callee:
                 name_expr
                   identifier: identifier "d"
+              argument:
+                argument
+                  value: string_literal "\"key\""

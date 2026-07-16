@@ -76,32 +76,25 @@ top_level
     block
       stmt:
         switch_expr
+          value:
+            name_expr
+              identifier: identifier "x"
           case:
             switch_case
-              body:
-                block
-                  stmt:
-                    call_expr
-                      argument:
-                        argument
-                          value: string_literal "\"one\""
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
               pattern:
                 expr_equality_pattern
                   expr: int_literal "1"
-            switch_case
               body:
                 block
                   stmt:
                     call_expr
-                      argument:
-                        argument
-                          value: string_literal "\"two or three\""
                       callee:
                         name_expr
                           identifier: identifier "print"
+                      argument:
+                        argument
+                          value: string_literal "\"one\""
+            switch_case
               pattern:
                 or_pattern
                   pattern:
@@ -109,17 +102,24 @@ top_level
                       expr: int_literal "2"
                     expr_equality_pattern
                       expr: int_literal "3"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value: string_literal "\"two or three\""
             switch_case
               body:
                 block
                   stmt:
                     call_expr
-                      argument:
-                        argument
-                          value: string_literal "\"other\""
                       callee:
                         name_expr
                           identifier: identifier "print"
-          value:
-            name_expr
-              identifier: identifier "x"
+                      argument:
+                        argument
+                          value: string_literal "\"other\""

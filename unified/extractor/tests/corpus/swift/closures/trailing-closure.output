@@ -28,6 +28,12 @@ top_level
     block
       stmt:
         call_expr
+          callee:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "xs"
+              member: identifier "map"
           argument:
             argument
               value:
@@ -36,14 +42,8 @@ top_level
                     block
                       stmt:
                         binary_expr
-                          operator: infix_operator "*"
                           left:
                             name_expr
                               identifier: identifier "$0"
+                          operator: infix_operator "*"
                           right: int_literal "2"
-          callee:
-            member_access_expr
-              base:
-                name_expr
-                  identifier: identifier "xs"
-              member: identifier "map"

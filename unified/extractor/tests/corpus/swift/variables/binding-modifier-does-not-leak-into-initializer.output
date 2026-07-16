@@ -44,20 +44,20 @@ top_level
               identifier: identifier "x"
           value:
             switch_expr
+              value:
+                name_expr
+                  identifier: identifier "y"
               case:
                 switch_case
-                  body:
-                    block
-                      stmt: int_literal "1"
                   pattern:
                     expr_equality_pattern
                       expr:
                         name_expr
                           identifier: identifier "someConstant"
+                  body:
+                    block
+                      stmt: int_literal "1"
                 switch_case
                   body:
                     block
                       stmt: int_literal "2"
-              value:
-                name_expr
-                  identifier: identifier "y"

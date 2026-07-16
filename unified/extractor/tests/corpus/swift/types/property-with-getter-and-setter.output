@@ -80,6 +80,8 @@ top_level
     block
       stmt:
         class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Box"
           member:
             variable_declaration
               modifier: modifier "var"
@@ -88,6 +90,12 @@ top_level
                   identifier: identifier "_v"
               value: int_literal "0"
             accessor_declaration
+              modifier: modifier "var"
+              name: identifier "v"
+              accessor_kind: accessor_kind "get"
+              type:
+                named_type_expr
+                  name: identifier "Int"
               body:
                 block
                   stmt:
@@ -95,13 +103,15 @@ top_level
                       value:
                         name_expr
                           identifier: identifier "_v"
-              modifier: modifier "var"
+            accessor_declaration
+              modifier:
+                modifier "var"
+                modifier "chained_declaration"
               name: identifier "v"
+              accessor_kind: accessor_kind "set"
               type:
                 named_type_expr
                   name: identifier "Int"
-              accessor_kind: accessor_kind "get"
-            accessor_declaration
               body:
                 block
                   stmt:
@@ -112,13 +122,3 @@ top_level
                       value:
                         name_expr
                           identifier: identifier "newValue"
-              modifier:
-                modifier "var"
-                modifier "chained_declaration"
-              name: identifier "v"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              accessor_kind: accessor_kind "set"
-          modifier: modifier "class"
-          name: identifier "Box"

@@ -16,7 +16,7 @@ top_level
     block
       stmt:
         import_declaration
-          pattern: bulk_importing_pattern "import Foundation"
           imported_expr:
             name_expr
               identifier: identifier "Foundation"
+          pattern: bulk_importing_pattern "import Foundation"

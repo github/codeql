@@ -53,20 +53,20 @@ top_level
                   identifier: identifier "x"
               value:
                 binary_expr
-                  operator: infix_operator "+"
                   left:
                     name_expr
                       identifier: identifier "x"
+                  operator: infix_operator "+"
                   right: int_literal "10"
           then:
             block
               stmt:
                 call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
                   argument:
                     argument
                       value:
                         name_expr
                           identifier: identifier "x"
-                  callee:
-                    name_expr
-                      identifier: identifier "print"

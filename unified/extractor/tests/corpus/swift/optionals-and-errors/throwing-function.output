@@ -31,12 +31,12 @@ top_level
     block
       stmt:
         function_declaration
+          name: identifier "read"
+          return_type:
+            named_type_expr
+              name: identifier "String"
           body:
             block
               stmt:
                 return_expr
                   value: string_literal "\"\""
-          name: identifier "read"
-          return_type:
-            named_type_expr
-              name: identifier "String"

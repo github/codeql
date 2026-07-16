@@ -44,6 +44,8 @@ top_level
     block
       stmt:
         class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Counter"
           member:
             variable_declaration
               modifier: modifier "var"
@@ -52,15 +54,13 @@ top_level
                   identifier: identifier "n"
               value: int_literal "0"
             function_declaration
+              name: identifier "bump"
               body:
                 block
                   stmt:
                     compound_assign_expr
-                      operator: infix_operator "+="
                       target:
                         name_expr
                           identifier: identifier "n"
+                      operator: infix_operator "+="
                       value: int_literal "1"
-              name: identifier "bump"
-          modifier: modifier "class"
-          name: identifier "Counter"

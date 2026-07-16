@@ -223,11 +223,45 @@ fn dump_node(
 
     writeln!(out).unwrap();
 
-    // Named fields first
-    for (&field_id, children) in &node.fields {
-        if field_id == CHILD_FIELD {
-            continue; // Handle unnamed children last
+    // Named fields first, in the schema's declared order when available
+    // (front-end-independent), else in field-id order. Any present fields not
+    // covered by the declared order are appended in field-id order.
+    //
+    // The declared order lives in the validation schema, keyed by *its* field
+    // ids; the AST being dumped may key the same field names under different
+    // ids. So map the declared order through field NAMES into this AST's own id
+    // space, keeping the two schemas independent (they share names, not ids).
+    let named_field_ids: Vec<u16> = {
+        let present: Vec<u16> = node
+            .fields
+            .keys()
+            .copied()
+            .filter(|&f| f != CHILD_FIELD)
+            .collect();
+        match type_check.and_then(|(schema, _, _)| {
+            schema
+                .field_order(node.kind_name())
+                .map(|order| (schema, order))
+        }) {
+            Some((schema, order)) => {
+                let mut result: Vec<u16> = order
+                    .iter()
+                    .filter_map(|&f| schema.field_name_for_id(f))
+                    .filter_map(|name| ast.field_id_for_name(name))
+                    .filter(|&f| f != CHILD_FIELD && node.fields.contains_key(&f))
+                    .collect();
+                for &f in &present {
+                    if !result.contains(&f) {
+                        result.push(f);
+                    }
+                }
+                result
+            }
+            None => present,
         }
+    };
+    for field_id in named_field_ids {
+        let children = &node.fields[&field_id];
         let field_name = ast.field_name_for_id(field_id).unwrap_or("?");
         let child_type_check = type_check.map(|(schema, _, _)| {
             let expected =

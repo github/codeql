@@ -26,12 +26,12 @@ top_level
     block
       stmt:
         call_expr
-          argument:
-            argument
-              value: int_literal "1"
           callee:
             member_access_expr
               base:
                 name_expr
                   identifier: identifier "list"
               member: identifier "append"
+          argument:
+            argument
+              value: int_literal "1"

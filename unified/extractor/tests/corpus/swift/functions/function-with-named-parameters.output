@@ -41,18 +41,6 @@ top_level
     block
       stmt:
         function_declaration
-          body:
-            block
-              stmt:
-                call_expr
-                  argument:
-                    argument
-                      value:
-                        name_expr
-                          identifier: identifier "name"
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
           name: identifier "greet"
           parameter:
             parameter
@@ -60,3 +48,15 @@ top_level
               pattern:
                 name_pattern
                   identifier: identifier "name"
+          body:
+            block
+              stmt:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "name"

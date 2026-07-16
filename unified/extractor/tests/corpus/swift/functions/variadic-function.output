@@ -60,25 +60,6 @@ top_level
     block
       stmt:
         function_declaration
-          body:
-            block
-              stmt:
-                return_expr
-                  value:
-                    call_expr
-                      argument:
-                        argument
-                          value: int_literal "0"
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "+"
-                      callee:
-                        member_access_expr
-                          base:
-                            name_expr
-                              identifier: identifier "values"
-                          member: identifier "reduce"
           name: identifier "sum"
           parameter:
             parameter
@@ -89,3 +70,22 @@ top_level
           return_type:
             named_type_expr
               name: identifier "Int"
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    call_expr
+                      callee:
+                        member_access_expr
+                          base:
+                            name_expr
+                              identifier: identifier "values"
+                          member: identifier "reduce"
+                      argument:
+                        argument
+                          value: int_literal "0"
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "+"

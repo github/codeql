@@ -45,24 +45,24 @@ top_level
     block
       stmt:
         class_like_declaration
+          modifier: modifier "extension"
+          name: identifier "Int"
           member:
             function_declaration
+              name: identifier "squared"
+              return_type:
+                named_type_expr
+                  name: identifier "Int"
               body:
                 block
                   stmt:
                     return_expr
                       value:
                         binary_expr
-                          operator: infix_operator "*"
                           left:
                             name_expr
                               identifier: identifier "self"
+                          operator: infix_operator "*"
                           right:
                             name_expr
                               identifier: identifier "self"
-              name: identifier "squared"
-              return_type:
-                named_type_expr
-                  name: identifier "Int"
-          modifier: modifier "extension"
-          name: identifier "Int"

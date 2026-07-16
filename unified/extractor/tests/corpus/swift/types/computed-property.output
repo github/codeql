@@ -88,6 +88,8 @@ top_level
     block
       stmt:
         class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Rect"
           member:
             variable_declaration
               modifier: modifier "var"
@@ -106,24 +108,22 @@ top_level
                 named_type_expr
                   name: identifier "Double"
             accessor_declaration
+              modifier: modifier "var"
+              name: identifier "area"
+              accessor_kind: accessor_kind "get"
+              type:
+                named_type_expr
+                  name: identifier "Double"
               body:
                 block
                   stmt:
                     return_expr
                       value:
                         binary_expr
-                          operator: infix_operator "*"
                           left:
                             name_expr
                               identifier: identifier "w"
+                          operator: infix_operator "*"
                           right:
                             name_expr
                               identifier: identifier "h"
-              modifier: modifier "var"
-              name: identifier "area"
-              type:
-                named_type_expr
-                  name: identifier "Double"
-              accessor_kind: accessor_kind "get"
-          modifier: modifier "class"
-          name: identifier "Rect"

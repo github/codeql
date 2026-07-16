@@ -69,6 +69,8 @@ top_level
     block
       stmt:
         class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Point"
           member:
             variable_declaration
               modifier: modifier "var"
@@ -92,5 +94,3 @@ top_level
                       value:
                         name_expr
                           identifier: identifier "x"
-          modifier: modifier "class"
-          name: identifier "Point"

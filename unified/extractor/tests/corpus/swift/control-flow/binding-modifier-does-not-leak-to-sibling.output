@@ -60,27 +60,27 @@ top_level
               identifier: identifier "x"
           value: int_literal "1"
         switch_expr
+          value:
+            name_expr
+              identifier: identifier "y"
           case:
             switch_case
-              body:
-                block
-                  stmt:
-                    call_expr
-                      argument:
-                        argument
-                          value: string_literal "\"matched\""
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
               pattern:
                 expr_equality_pattern
                   expr:
                     name_expr
                       identifier: identifier "someConstant"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value: string_literal "\"matched\""
             switch_case
               body:
                 block
                   stmt: break_expr "break"
-          value:
-            name_expr
-              identifier: identifier "y"

@@ -57,6 +57,8 @@ top_level
     block
       stmt:
         class_like_declaration
+          modifier: modifier "struct"
+          name: identifier "Point"
           member:
             variable_declaration
               modifier: modifier "let"
@@ -74,5 +76,3 @@ top_level
               type:
                 named_type_expr
                   name: identifier "Int"
-          modifier: modifier "struct"
-          name: identifier "Point"

@@ -23,11 +23,11 @@ top_level
     block
       stmt:
         call_expr
+          callee:
+            name_expr
+              identifier: identifier "foo"
           argument:
             argument
               value: int_literal "1"
             argument
               value: int_literal "2"
-          callee:
-            name_expr
-              identifier: identifier "foo"

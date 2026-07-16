@@ -38,10 +38,10 @@ top_level
                 block
                   stmt:
                     binary_expr
-                      operator: infix_operator "+"
                       left:
                         name_expr
                           identifier: identifier "$0"
+                      operator: infix_operator "+"
                       right:
                         name_expr
                           identifier: identifier "$1"

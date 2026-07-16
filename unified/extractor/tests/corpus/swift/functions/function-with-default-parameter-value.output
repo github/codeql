@@ -43,22 +43,22 @@ top_level
     block
       stmt:
         function_declaration
+          name: identifier "greet"
+          parameter:
+            parameter
+              pattern:
+                name_pattern
+                  identifier: identifier "name"
+              default: string_literal "\"world\""
           body:
             block
               stmt:
                 call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
                   argument:
                     argument
                       value:
                         name_expr
                           identifier: identifier "name"
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
-          name: identifier "greet"
-          parameter:
-            parameter
-              default: string_literal "\"world\""
-              pattern:
-                name_pattern
-                  identifier: identifier "name"

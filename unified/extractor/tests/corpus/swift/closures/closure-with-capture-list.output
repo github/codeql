@@ -51,6 +51,12 @@ top_level
               identifier: identifier "f"
           value:
             function_expr
+              capture_declaration:
+                variable_declaration
+                  modifier: modifier "weak"
+                  pattern:
+                    name_pattern
+                      identifier: identifier "self"
               body:
                 block
                   stmt:
@@ -61,9 +67,3 @@ top_level
                             name_expr
                               identifier: identifier "self"
                           member: identifier "doThing"
-              capture_declaration:
-                variable_declaration
-                  modifier: modifier "weak"
-                  pattern:
-                    name_pattern
-                      identifier: identifier "self"

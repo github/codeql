@@ -43,9 +43,9 @@ top_level
               identifier: identifier "first"
           value:
             call_expr
-              argument:
-                argument
-                  value: int_literal "0"
               callee:
                 name_expr
                   identifier: identifier "xs"
+              argument:
+                argument
+                  value: int_literal "0"

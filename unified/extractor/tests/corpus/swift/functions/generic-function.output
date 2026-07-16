@@ -47,13 +47,6 @@ top_level
     block
       stmt:
         function_declaration
-          body:
-            block
-              stmt:
-                return_expr
-                  value:
-                    name_expr
-                      identifier: identifier "x"
           name: identifier "identity"
           parameter:
             parameter
@@ -64,3 +57,10 @@ top_level
           return_type:
             named_type_expr
               name: identifier "T"
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    name_expr
+                      identifier: identifier "x"

@@ -20,12 +20,12 @@ top_level
       stmt:
         import_declaration
           modifier: modifier "struct"
-          pattern:
-            name_pattern
-              identifier: identifier "Date"
           imported_expr:
             member_access_expr
               base:
                 name_expr
                   identifier: identifier "Foundation"
               member: identifier "Date"
+          pattern:
+            name_pattern
+              identifier: identifier "Date"

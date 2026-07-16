@@ -40,10 +40,10 @@ top_level
               identifier: identifier "y"
           value:
             call_expr
-              argument:
-                argument
-                  value: int_literal "1"
               callee:
                 member_access_expr
                   base: inferred_type_expr ".some"
                   member: identifier "some"
+              argument:
+                argument
+                  value: int_literal "1"

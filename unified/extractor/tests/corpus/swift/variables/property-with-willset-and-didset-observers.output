@@ -72,6 +72,8 @@ top_level
     block
       stmt:
         class_like_declaration
+          modifier: modifier "class"
+          name: identifier "C"
           member:
             variable_declaration
               modifier: modifier "var"
@@ -83,40 +85,38 @@ top_level
                   name: identifier "Int"
               value: int_literal "0"
             accessor_declaration
-              body:
-                block
-                  stmt:
-                    call_expr
-                      argument:
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "newValue"
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
               modifier:
                 modifier "var"
                 modifier "chained_declaration"
               name: identifier "x"
               accessor_kind: accessor_kind "willSet"
-            accessor_declaration
               body:
                 block
                   stmt:
                     call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
                       argument:
                         argument
                           value:
                             name_expr
-                              identifier: identifier "oldValue"
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                              identifier: identifier "newValue"
+            accessor_declaration
               modifier:
                 modifier "var"
                 modifier "chained_declaration"
               name: identifier "x"
               accessor_kind: accessor_kind "didSet"
-          modifier: modifier "class"
-          name: identifier "C"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "oldValue"

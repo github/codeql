@@ -41,13 +41,13 @@ top_level
             if_expr
               condition:
                 binary_expr
-                  operator: infix_operator ">"
                   left:
                     name_expr
                       identifier: identifier "x"
+                  operator: infix_operator ">"
                   right: int_literal "0"
+              then: int_literal "1"
               else:
                 unary_expr
                   operand: int_literal "1"
                   operator: prefix_operator "-"
-              then: int_literal "1"

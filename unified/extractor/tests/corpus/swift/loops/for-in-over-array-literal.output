@@ -36,18 +36,6 @@ top_level
     block
       stmt:
         for_each_stmt
-          body:
-            block
-              stmt:
-                call_expr
-                  argument:
-                    argument
-                      value:
-                        name_expr
-                          identifier: identifier "x"
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
           pattern:
             name_pattern
               identifier: identifier "x"
@@ -57,3 +45,15 @@ top_level
                 int_literal "1"
                 int_literal "2"
                 int_literal "3"
+          body:
+            block
+              stmt:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"

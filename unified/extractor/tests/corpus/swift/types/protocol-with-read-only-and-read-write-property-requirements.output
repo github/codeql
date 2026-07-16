@@ -61,25 +61,25 @@ top_level
     block
       stmt:
         class_like_declaration
+          modifier: modifier "protocol"
+          name: identifier "P"
           member:
             accessor_declaration
               name: identifier "foo"
+              accessor_kind: accessor_kind "get"
               type:
                 named_type_expr
                   name: identifier "Int"
-              accessor_kind: accessor_kind "get"
             accessor_declaration
               name: identifier "bar"
+              accessor_kind: accessor_kind "get"
               type:
                 named_type_expr
                   name: identifier "String"
-              accessor_kind: accessor_kind "get"
             accessor_declaration
               modifier: modifier "chained_declaration"
               name: identifier "bar"
+              accessor_kind: accessor_kind "set"
               type:
                 named_type_expr
                   name: identifier "String"
-              accessor_kind: accessor_kind "set"
-          modifier: modifier "protocol"
-          name: identifier "P"

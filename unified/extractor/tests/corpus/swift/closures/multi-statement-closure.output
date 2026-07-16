@@ -75,6 +75,17 @@ top_level
               identifier: identifier "f"
           value:
             function_expr
+              parameter:
+                parameter
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
+                  pattern:
+                    name_pattern
+                      identifier: identifier "x"
+              return_type:
+                named_type_expr
+                  name: identifier "Int"
               body:
                 block
                   stmt:
@@ -85,27 +96,16 @@ top_level
                           identifier: identifier "y"
                       value:
                         binary_expr
-                          operator: infix_operator "+"
                           left:
                             name_expr
                               identifier: identifier "x"
+                          operator: infix_operator "+"
                           right: int_literal "1"
                     return_expr
                       value:
                         binary_expr
-                          operator: infix_operator "*"
                           left:
                             name_expr
                               identifier: identifier "y"
+                          operator: infix_operator "*"
                           right: int_literal "2"
-              parameter:
-                parameter
-                  pattern:
-                    name_pattern
-                      identifier: identifier "x"
-                  type:
-                    named_type_expr
-                      name: identifier "Int"
-              return_type:
-                named_type_expr
-                  name: identifier "Int"

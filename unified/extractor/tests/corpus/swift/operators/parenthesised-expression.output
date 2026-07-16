@@ -24,8 +24,8 @@ top_level
     block
       stmt:
         binary_expr
-          operator: infix_operator "*"
           left: tuple_expr "(a + b)"
+          operator: infix_operator "*"
           right:
             name_expr
               identifier: identifier "c"

@@ -31,8 +31,8 @@ top_level
               identifier: identifier "n"
           value:
             binary_expr
-              operator: infix_operator "??"
               left:
                 name_expr
                   identifier: identifier "opt"
+              operator: infix_operator "??"
               right: int_literal "0"

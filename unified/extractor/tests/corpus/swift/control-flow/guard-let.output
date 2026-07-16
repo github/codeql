@@ -33,17 +33,17 @@ top_level
             pattern_guard_expr
               pattern:
                 constructor_pattern
-                  element:
-                    pattern_element
-                      pattern:
-                        name_pattern
-                          identifier: identifier "value"
                   constructor:
                     member_access_expr
                       base:
                         named_type_expr
                           name: identifier "Optional"
                       member: identifier "some"
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "value"
               value:
                 name_expr
                   identifier: identifier "optional"

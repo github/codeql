@@ -18,10 +18,10 @@ top_level
     block
       stmt:
         import_declaration
-          pattern: bulk_importing_pattern "import Foundation.Networking"
           imported_expr:
             member_access_expr
               base:
                 name_expr
                   identifier: identifier "Foundation"
               member: identifier "Networking"
+          pattern: bulk_importing_pattern "import Foundation.Networking"
