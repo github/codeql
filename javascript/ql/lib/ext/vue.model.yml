@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: summaryModel
+    data:
+      # ref(x).value === x
+      - ["vue", "Member[ref]", "Argument[0]", "ReturnValue.Member[value]", "value"]
+      # shallowRef(x).value === x
+      - ["vue", "Member[shallowRef]", "Argument[0]", "ReturnValue.Member[value]", "value"]
+      # customRef / toRef keep the wrapped value reachable via .value
+      - ["vue", "Member[toRef]", "Argument[0]", "ReturnValue.Member[value]", "taint"]
+      # reactive(x) returns a proxy that preserves the members of x
+      - ["vue", "Member[reactive]", "Argument[0]", "ReturnValue", "taint"]
+      # computed(() => expr).value === return value of the getter
+      - ["vue", "Member[computed]", "Argument[0].ReturnValue", "ReturnValue.Member[value]", "value"]
