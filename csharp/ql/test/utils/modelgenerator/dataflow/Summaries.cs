@@ -278,6 +278,77 @@ public class GenericFlow<T>
     }
 }
 
+public class GenericWithVirtual1<T>
+{
+    // heuristic-summary=Models;GenericWithVirtual1<T>;true;ReturnParam;(T);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=Models;GenericWithVirtual1<T>;true;ReturnParam;(T);;Argument[0];ReturnValue;value;dfc-generated
+    public virtual T ReturnParam(T input)
+    {
+        return input;
+    }
+
+    // Missing model. Should have been lifted.
+    // SPURIOUS-neutral=Models;GenericWithVirtual1<T>;StubImplementation;(T);summary;df-generated
+    public virtual T StubImplementation(T input)
+    {
+        throw null;
+    }
+}
+
+public class DerivedGenericWithVirtual : GenericWithVirtual1<string>
+{
+    // SPURIOUS-heuristic-summary=Models;DerivedGenericWithVirtual;true;ReturnParam;(System.String);;Argument[0];ReturnValue;value;df-generated
+    // SPURIOUS-contentbased-summary=Models;DerivedGenericWithVirtual;true;ReturnParam;(System.String);;Argument[0];ReturnValue;value;dfc-generated
+    public override string ReturnParam(string input)
+    {
+        return input;
+    }
+
+    // SPURIOUS-heuristic-summary=Models;DerivedGenericWithVirtual;true;StubImplementation;(System.String);;Argument[0];ReturnValue;value;df-generated
+    // SPURIOUS-contentbased-summary=Models;DerivedGenericWithVirtual;true;StubImplementation;(System.String);;Argument[0];ReturnValue;value;dfc-generated
+    public override string StubImplementation(string input)
+    {
+        return input;
+    }
+}
+
+public class GenericWithVirtual2<T>
+{
+    // heuristic-summary=Models;GenericWithVirtual2<T>;true;ReturnParam;(T);;Argument[0];ReturnValue;value;df-generated
+    // contentbased-summary=Models;GenericWithVirtual2<T>;true;ReturnParam;(T);;Argument[0];ReturnValue;value;dfc-generated
+    public virtual T ReturnParam(T input)
+    {
+        return input;
+    }
+
+    // Missing model. Should have been lifted.
+    // SPURIOUS-neutral=Models;GenericWithVirtual2<T>;StubImplementation;(T);summary;df-generated
+
+    public virtual T StubImplementation(T input)
+    {
+        throw null;
+    }
+}
+
+public class NestedGenericWithVirtual<T> : GenericWithVirtual2<string> { }
+
+public class DerivedNestedGenericWithVirtual : NestedGenericWithVirtual<int>
+{
+    // SPURIOUS-heuristic-summary=Models;DerivedNestedGenericWithVirtual;true;ReturnParam;(System.String);;Argument[0];ReturnValue;value;df-generated
+    // SPURIOUS-contentbased-summary=Models;DerivedNestedGenericWithVirtual;true;ReturnParam;(System.String);;Argument[0];ReturnValue;value;dfc-generated
+    public override string ReturnParam(string input)
+    {
+        return input;
+    }
+
+    // SPURIOUS-heuristic-summary=Models;DerivedNestedGenericWithVirtual;true;StubImplementation;(System.String);;Argument[0];ReturnValue;value;df-generated
+    // SPURIOUS-contentbased-summary=Models;DerivedNestedGenericWithVirtual;true;StubImplementation;(System.String);;Argument[0];ReturnValue;value;dfc-generated
+    public override string StubImplementation(string input)
+    {
+        return input;
+    }
+}
+
 public abstract class BaseClassFlow
 {
     // heuristic-summary=Models;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;value;df-generated
