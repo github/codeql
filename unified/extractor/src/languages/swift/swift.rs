@@ -124,25 +124,9 @@ fn member_chain(
 fn translation_rules() -> Vec<Rule<SwiftContext>> {
     vec![
         // ---- Top-level ----
-        // Capture all top-level statements, including unnamed tokens like `nil`.
-        rule!(
-            (source_file statement: _* @children)
-            =>
-            (top_level
-                body: (block stmt: {children})
-            )
-        ),
-        // Declarations may be wrapped in local/global wrapper nodes.
-        rule!((global_declaration _ @inner) => stmt { inner }),
-        rule!((local_declaration _ @inner) => stmt { inner }),
-        // ---- swift-syntax front-end (minimal hook-up) ----
-        // These rules target the swift-syntax AST (camelCase kind names),
-        // produced by the sibling `adapter` module. They coexist with the
-        // tree-sitter rules (snake_case names): rules are dispatched by exact
-        // kind name, and the two name spaces never collide, so these are inert
-        // on the tree-sitter path. Only the minimal top-level mapping lives here
-        // to demonstrate the pipeline end-to-end; the full translation is added
-        // separately. Unmatched swift-syntax nodes fall through to the
+        // These rules translate the swift-syntax AST (camelCase kind names),
+        // produced by the sibling `adapter` module from the `swift-syntax-parse`
+        // binary's JSON. Anything unmatched falls through to the
         // `unsupported_node` fallback at the end.
         //
         // `sourceFile` holds its top-level statements in an (elided)
@@ -155,23 +139,25 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         rule!((codeBlockItem item: @item) => stmt { item }),
         // ---- Literals ----
-        rule!((integer_literal) => (int_literal)),
-        rule!((hex_literal) => (int_literal)),
-        rule!((bin_literal) => (int_literal)),
-        rule!((oct_literal) => (int_literal)),
-        rule!((real_literal) => (float_literal)),
-        rule!((boolean_literal) => (boolean_literal)),
-        rule!("nil" => (builtin_expr)),
-        rule!((special_literal) => (builtin_expr)),
-        rule!((line_string_literal) => (string_literal)),
-        rule!((multi_line_string_literal) => (string_literal)),
-        rule!((raw_string_literal) => (string_literal)),
-        rule!((regex_literal) => (regex_literal)),
+        // swift-syntax does not distinguish the lexical integer/string forms
+        // (hex/binary/octal, single- vs multi-line, raw): each is a single
+        // `*LiteralExpr` kind, so the tree-sitter variants collapse to one rule.
+        rule!((integerLiteralExpr) => (int_literal)),
+        rule!((floatLiteralExpr) => (float_literal)),
+        rule!((booleanLiteralExpr) => (boolean_literal)),
+        rule!((nilLiteralExpr) => (builtin_expr)),
+        rule!((stringLiteralExpr) => (string_literal)),
+        rule!((regexLiteralExpr) => (regex_literal)),
         // ---- Names ----
-        rule!((simple_identifier) @id => (name_expr identifier: (identifier #{id}))),
-        // A referenceable_operator (e.g. `+` used as a value, as in `reduce(0, +)`)
-        // is treated as a name reference to the operator symbol.
-        rule!((referenceable_operator) @op => (name_expr identifier: (identifier #{op}))),
+        // A bare name reference (`x`), and an operator used as a value (`+` in
+        // `reduce(0, +)`), are both `declReferenceExpr`; its `baseName` is the
+        // referenced identifier / operator symbol.
+        rule!((declReferenceExpr baseName: @name) => (name_expr identifier: (identifier #{name}))),
+        // A discard `_` used as an expression — e.g. the target of a discarding
+        // assignment `_ = x`. swift-syntax models it as a `discardAssignmentExpr`;
+        // the tree-sitter path treated the bare `_` as a name, so map it to a
+        // `name_expr` too.
+        rule!((discardAssignmentExpr wildcard: @@w) => (name_expr identifier: (identifier #{w}))),
         // ---- Operators ----
         // All binary operators share the lhs/op/rhs shape.
         rule!((additive_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
