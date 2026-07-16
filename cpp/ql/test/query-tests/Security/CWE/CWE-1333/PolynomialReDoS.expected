@@ -1,0 +1,11 @@
+edges
+| test.cpp:60:27:60:30 | **argv | test.cpp:66:28:66:32 | *input | provenance | TaintFunction |
+| test.cpp:60:27:60:30 | **argv | test.cpp:81:27:81:31 | *input | provenance | TaintFunction |
+nodes
+| test.cpp:60:27:60:30 | **argv | semmle.label | **argv |
+| test.cpp:66:28:66:32 | *input | semmle.label | *input |
+| test.cpp:81:27:81:31 | *input | semmle.label | *input |
+subpaths
+#select
+| test.cpp:66:28:66:32 | *input | test.cpp:60:27:60:30 | **argv | test.cpp:66:28:66:32 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:65:29:65:31 | \\s+ | regular expression | test.cpp:60:27:60:30 | **argv | user-provided value |
+| test.cpp:81:27:81:31 | *input | test.cpp:60:27:60:30 | **argv | test.cpp:81:27:81:31 | *input | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | test.cpp:80:33:80:35 | \\d+ | regular expression | test.cpp:60:27:60:30 | **argv | user-provided value |
