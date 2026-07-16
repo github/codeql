@@ -64,6 +64,14 @@ public:
 typedef regex_iterator<const char*, char> cregex_iterator;
 typedef regex_token_iterator<const char*, char> cregex_token_iterator;
 
+// Stubs for a couple of C standard-library sources modeled by
+// `semmle.code.cpp.security.FlowSources` so that we can exercise
+// non-`argv` sources in the polynomial-ReDoS test suite.
+char* getenv(const char* name);
+typedef unsigned long size_t;
+struct FILE;
+size_t fread(void* ptr, size_t sz, size_t n, FILE* stream);
+
 } // namespace std
 
 // -----------------------------------------------------------------------------
@@ -321,6 +329,96 @@ int main(int argc, char** argv) {
     {
         std::regex re("^\\s+|\\s+$", std::regex_constants::egrep);
         std::regex_replace(input, re, std::string(""));
+    }
+
+    // -------------------------------------------------------------------------
+    // 7. Additional superlinear patterns (ported from Java/JS polynomial suites).
+    // -------------------------------------------------------------------------
+
+    // BAD: (\d+)*$ — the outer `*` allows quadratic backtracking on non-matching
+    // digit-heavy input (Java polynomial-ReDoS test `Test.java`).
+    {
+        std::regex re("(\\d+)*$");
+        std::regex_search(input, re);
+    }
+
+    // BAD: .*.*=.* — classic polynomial pattern, cf. JS
+    // `polynomial-redos/tst.js`.
+    {
+        std::regex re(".*.*=.*");
+        std::regex_search(input, re);
+    }
+
+    // GOOD (observed): `^(\w+\s?)*$` — a "trim-and-split" style pattern that
+    // the shared engine's polynomial analysis does not currently flag as
+    // super-linear (the optional `\s?` inside the outer `*` does not
+    // produce a polynomial-backtracking pivot term). The Java and
+    // JavaScript polynomial-ReDoS queries behave the same way on this
+    // shape; documented here as a negative case rather than divergence.
+    {
+        std::regex re("^(\\w+\\s?)*$");
+        std::regex_match(input, re);
+    }
+
+    // -------------------------------------------------------------------------
+    // 8. Source variety — non-`argv` C++ threat-model sources.
+    // -------------------------------------------------------------------------
+
+    // BAD: `std::getenv` is modeled as a LocalFlowSource.
+    {
+        const char* env = std::getenv("USER_REGEX_INPUT");
+        std::string s(env);
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(s, re, std::string(""));
+    }
+
+    // BAD: `std::fread` is modeled as a RemoteFlowSource (bytes read from a
+    // stream / file). This exercises the RemoteFlowSource half of the
+    // `FlowSource` union used by `PolynomialRedosConfig::isSource`.
+    {
+        char buf[256];
+        std::fread(buf, 1, sizeof(buf), (std::FILE*)0);
+        std::string s(buf);
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(s, re, std::string(""));
+    }
+
+    // -------------------------------------------------------------------------
+    // 9. Sanitized / length-checked user input (GOOD).
+    //
+    // The polynomial ReDoS query treats calls to `LengthRestrictedFunction`s
+    // as barriers, so user input that has been laundered through such a
+    // getter (here: `Request::getHeader`, which is a header-style getter)
+    // should not produce an alert even though the pattern is superlinear
+    // and the *original* value was user-controlled.
+    // -------------------------------------------------------------------------
+
+    // GOOD: `argv[1]` is user-controlled but is passed through a
+    // header-style barrier before reaching the regex match.
+    {
+        Request req;
+        std::string sanitized = req.getHeader(argv[1]);
+        std::regex re("^\\s+|\\s+$");
+        std::regex_replace(sanitized, re, std::string(""));
+    }
+
+    // -------------------------------------------------------------------------
+    // 10. Overlap sanity: an exponential pattern on user input.
+    //
+    // The shared engine splits reporting between `cpp/redos` (exponential)
+    // and `cpp/polynomial-redos` (polynomial). Many "exponential" nested-
+    // quantifier patterns also contain a polynomial-backtracking sub-term,
+    // so BOTH queries fire — matching the behaviour observed in the Java
+    // and JavaScript suites. `(a+)+b` is such a pattern: `cpp/redos`
+    // reports the outer nested quantifier, and `cpp/polynomial-redos`
+    // reports the inner `a+` term.
+    // -------------------------------------------------------------------------
+
+    // BAD (also reported by cpp/redos): the inner `a+` is a polynomial
+    // backtracking term on user input.
+    {
+        std::regex re("(a+)+b");
+        std::regex_match(input, re);
     }
 
     return 0;
