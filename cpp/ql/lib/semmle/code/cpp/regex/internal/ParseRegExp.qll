@@ -13,21 +13,23 @@
  *
  * The grammar dialects modelled today are:
  *   - ECMAScript (`EcmaRegExp`), the default used by `std::regex` (i.e.
- *     `std::regex_constants::ECMAScript`); and
+ *     `std::regex_constants::ECMAScript`);
  *   - POSIX Extended Regular Expressions (`EreRegExp`), selected via the
- *     `extended`, `egrep`, and `awk` flags.
+ *     `extended`, `egrep`, and `awk` flags; and
+ *   - POSIX Basic Regular Expressions (`BreRegExp`), selected via the
+ *     `basic` and `grep` flags.
  *
- * POSIX Basic Regular Expressions (BRE, selected via `basic`/`grep`) are
- * still excluded by the `RegExp` characteristic predicate; the hook-based
- * split exists so a later phase can plug in BRE without touching the
- * shared core.
+ * Every grammar the standard defines now has a concrete parser subclass,
+ * so nothing is grammar-excluded from analysis. Whether a regex is
+ * ReDoS-eligible is a separate axis, handled by
+ * `RegexFlowConfigs::isBacktrackingEngine`.
  *
- * The single-grammar-per-literal assumption is still baked into this phase:
- * because each parsed literal's grammar is uniquely determined by
+ * The single-grammar-per-literal assumption is still baked into this
+ * module: because each parsed literal's grammar is uniquely determined by
  * `regexGrammar` (a functional classifier over the construction-site flag
- * argument), a literal is either an `EcmaRegExp` or an `EreRegExp`, never
- * both. The "same literal used under two different grammars" case is not
- * yet handled and is deferred to the phase that actually introduces
+ * argument), a literal is exactly one of `EcmaRegExp`, `EreRegExp`, or
+ * `BreRegExp`. The "same literal used under two different grammars" case
+ * is not yet handled and is deferred to the phase that actually introduces
  * overlap; at that point this file will need to revisit how
  * `TRegExpParent` identity relates to grammar.
  */
@@ -44,21 +46,19 @@ private import semmle.code.cpp.regex.RegexFlowConfigs as RFC
  *
  * A `StringLiteral` is treated as a regex only when dataflow indicates it
  * flows to a `std::basic_regex` construction/assignment or to a
- * `regex_match`/`regex_search`/`regex_replace`/iterator call. Regexes
- * constructed with a grammar flag the parser does not yet model (currently
- * POSIX Basic Regular Expressions — the `basic` and `grep` flags) are
- * excluded.
+ * `regex_match`/`regex_search`/`regex_replace`/iterator call. Every
+ * `std::regex` grammar has a concrete parser subclass
+ * (`EcmaRegExp`/`EreRegExp`/`BreRegExp`), so no regex is excluded from
+ * analysis on grammar grounds.
  *
  * This class is abstract: its structural predicates are expressed in terms
  * of dialect hooks (see below), and concrete grammar subclasses supply the
- * dialect-specific token-recognition behavior. The concrete subclasses are
- * `EcmaRegExp` (for ECMAScript) and `EreRegExp` (for POSIX Extended
- * Regular Expressions).
+ * dialect-specific token-recognition behavior.
  */
 abstract class RegExp extends StringLiteral {
   RegExp() {
     RFC::usedAsRegex(this) and
-    (RFC::regexGrammar(this) = RFC::Ecma() or RFC::regexGrammar(this) = RFC::Ere())
+    RFC::hasConcreteGrammar(RFC::regexGrammar(this))
   }
 
   /** Gets the `i`th character of this regex string. */
@@ -122,9 +122,22 @@ abstract class RegExp extends StringLiteral {
   /**
    * Dialect hook — overridden per grammar.
    *
-   * Holds if position `i` closes a group (e.g. an unescaped `)` in ECMAScript).
+   * Holds if position `i` closes a group (e.g. an unescaped `)` in ECMAScript,
+   * or the leading `\` of a `\)` in BRE). The end-delimiter span itself is
+   * given by `group_end`.
    */
   abstract predicate isGroupEnd(int i);
+
+  /**
+   * Dialect hook — overridden per grammar.
+   *
+   * Matches the closing delimiter of a group, yielding `[start, end)` where
+   * `start` is the first position of the closing delimiter (i.e. the same
+   * position `isGroupEnd` reports) and `end` is the first position past the
+   * whole group. Single-character in ECMAScript/ERE (the `)`); two-character
+   * in BRE (the whole `\)` pair).
+   */
+  abstract predicate group_end(int start, int end);
 
   /**
    * Dialect hook — overridden per grammar.
@@ -634,10 +647,10 @@ abstract class RegExp extends StringLiteral {
       )
       or
       not this.inCharSet(start) and
-      not c = "(" and
+      not this.isGroupStart(start) and
+      not this.isGroupEnd(start) and
+      not this.isOptionDivider(start) and
       not c = "[" and
-      not c = ")" and
-      not c = "|" and
       not this.qualifier(start, _, _, _)
     )
   }
@@ -651,6 +664,7 @@ abstract class RegExp extends StringLiteral {
       this.escapedCharacter(start, end)
     ) and
     not exists(int x, int y | this.group_start(x, y) and x <= start and y >= end) and
+    not exists(int x, int y | this.group_end(x, y) and x <= start and y >= end) and
     not exists(int x, int y | this.backreference(x, y) and x <= start and y >= end)
   }
 
@@ -742,18 +756,17 @@ abstract class RegExp extends StringLiteral {
 
   /** Shared structural predicate. Holds if an empty group spans `[start, end)`. */
   predicate emptyGroup(int start, int end) {
-    exists(int endm1 | end = endm1 + 1 |
-      this.group_start(start, endm1) and
-      this.isGroupEnd(endm1)
+    exists(int in_end |
+      this.group_start(start, in_end) and
+      this.group_end(in_end, end)
     )
   }
 
   /** Shared structural predicate. Holds if the group at `[start, end)` has content at `[in_start, in_end)`. */
   predicate groupContents(int start, int end, int in_start, int in_end) {
     this.group_start(start, in_start) and
-    end = in_end + 1 and
-    this.top_level(in_start, in_end) and
-    this.isGroupEnd(in_end)
+    this.group_end(in_end, end) and
+    this.top_level(in_start, in_end)
   }
 
   /** Shared structural predicate. Holds if a zero-width match group is at `[start, end)`. */
@@ -842,7 +855,7 @@ abstract class RegExp extends StringLiteral {
   private predicate item_end(int end) {
     this.characterItem(_, end)
     or
-    exists(int endm1 | this.isGroupEnd(endm1) and end = endm1 + 1)
+    exists(int in_end | this.group_end(in_end, end))
     or
     this.charSet(_, end)
     or
@@ -921,9 +934,9 @@ abstract class RegExp extends StringLiteral {
  * Selected for regex literals whose construction-site flag argument does
  * not specify a POSIX grammar (i.e. anything not tagged as
  * `basic`/`grep`/`extended`/`egrep`/`awk`), matching the default `std::regex`
- * grammar. `EcmaRegExp` and `EreRegExp` are the two concrete subclasses of
- * `RegExp`; the grammar of a given literal is determined uniquely by
- * `regexGrammar`.
+ * grammar. `EcmaRegExp`, `EreRegExp`, and `BreRegExp` are the three
+ * concrete subclasses of `RegExp`; the grammar of a given literal is
+ * determined uniquely by `regexGrammar`.
  */
 class EcmaRegExp extends RegExp {
   EcmaRegExp() { RFC::regexGrammar(this) = RFC::Ecma() }
@@ -1087,6 +1100,10 @@ class EcmaRegExp extends RegExp {
   override predicate isOptionDivider(int i) { this.nonEscapedCharAt(i) = "|" }
 
   override predicate isGroupEnd(int i) { this.nonEscapedCharAt(i) = ")" and not this.inCharSet(i) }
+
+  override predicate group_end(int start, int end) {
+    this.isGroupEnd(start) and end = start + 1
+  }
 
   override predicate isGroupStart(int i) { this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i) }
 
@@ -1430,6 +1447,10 @@ class EreRegExp extends RegExp {
 
   override predicate isGroupEnd(int i) { this.nonEscapedCharAt(i) = ")" and not this.inCharSet(i) }
 
+  override predicate group_end(int start, int end) {
+    this.isGroupEnd(start) and end = start + 1
+  }
+
   override predicate isGroupStart(int i) { this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i) }
 
   override predicate group_start(int start, int end) { this.simple_group_start(start, end) }
@@ -1483,6 +1504,310 @@ class EreRegExp extends RegExp {
   override predicate backreference(int start, int end) { none() }
 
   override int getBackrefNumber(int start, int end) { none() }
+
+  override string getBackrefName(int start, int end) { none() }
+}
+
+// ===========================================================================
+// POSIX Basic Regular Expressions (BRE) dialect
+// ===========================================================================
+
+/**
+ * The POSIX Basic Regular Expressions concrete `RegExp` implementation.
+ * Supplies all dialect hooks with the BRE token-recognition behavior.
+ *
+ * BRE is selected via the `std::regex_constants` flags `basic` and `grep`.
+ * (`basic` is backtracking-eligible; `grep` is parsed but excluded from
+ * ReDoS analysis by `isBacktrackingEngine`.)
+ *
+ * BRE inverts the ERE / ECMAScript escaping convention for a handful of
+ * metacharacters: constructs that are special in ERE become literals in
+ * BRE unless prefixed with a backslash. Concretely, this dialect models:
+ *
+ *  - **Groups**: `\(...\)` (backslash-prefixed) are capturing groups; bare
+ *    `(` and `)` are literal characters. No non-capturing, named, or
+ *    look-around forms exist.
+ *  - **Interval quantifier**: `\{n\}`, `\{n,\}`, `\{n,m\}` are the range
+ *    quantifiers; bare `{` and `}` are literals.
+ *  - **Quantifier `*`**: unlimited-repetition quantifier — except when it
+ *    is the first character of the regex, the first character after a
+ *    leading `^`, or the first character of a subexpression (i.e., right
+ *    after a `\(` group-open), in which cases it is a literal `*`.
+ *  - **`+` and `?`**: literal characters in POSIX BRE (this implementation
+ *    does not model the GNU-BRE extensions `\+` and `\?`; they are treated
+ *    uniformly as escaped literals, matching a literal `+` or `?`).
+ *  - **Alternation**: POSIX BRE has no alternation operator. Bare `|` is a
+ *    literal `|`; `\|` is likewise a literal `|` (the GNU-BRE `\|`
+ *    extension is not modeled).
+ *  - **Anchors**: `^` is an anchor only at the start of the regex or of a
+ *    subexpression (immediately after `\(`); `$` is an anchor only at the
+ *    end of the regex or of a subexpression (immediately before `\)`).
+ *    Otherwise both are literal characters. `.` is always the wildcard.
+ *    There are no `\b` / `\B` word-boundary escapes.
+ *  - **Back-references**: `\1` through `\9` are numbered back-references.
+ *    There are no named back-references.
+ *  - **Escaped characters**: `\` before an ordinary metacharacter renders
+ *    that metacharacter literal (e.g. `\.` → literal `.`, `\*` → literal
+ *    `*`, `\\` → literal `\`). Backslash escapes that are consumed by the
+ *    group / interval / back-reference hooks above (`\(`, `\)`, `\{`, `\}`,
+ *    `\1..\9`) are structural and are *not* treated as escaped literals.
+ *  - **POSIX bracket expressions**: identical to ERE / ECMAScript,
+ *    including the shared POSIX-class / equivalence-class / collation
+ *    layer (`[[:alpha:]]`, `[[=a=]]`, `[[.ch.]]`).
+ */
+class BreRegExp extends RegExp {
+  BreRegExp() { RFC::regexGrammar(this) = RFC::Bre() }
+
+  override RFC::TRegexGrammar getGrammar() { result = RFC::Bre() }
+
+  // ---------------------------------------------------------------------------
+  // Escaping
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Helper predicate for `escapingChar`. Boolean-valued to avoid negation
+   * in recursive calls; mirrors the ERE / ECMAScript backslash-parity rule.
+   */
+  private boolean escaping(int pos) {
+    pos = -1 and result = false
+    or
+    this.getChar(pos) = "\\" and result = this.escaping(pos - 1).booleanNot()
+    or
+    this.getChar(pos) != "\\" and result = false
+  }
+
+  override predicate escapingChar(int pos) { this.escaping(pos) = true }
+
+  // ---------------------------------------------------------------------------
+  // Escaped characters
+  //
+  // In BRE, backslash is used both structurally (to make `(`, `)`, `{`, `}`
+  // and digits special) and to make ordinary metacharacters literal
+  // (`\.`, `\*`, `\\`, `\|`, `\+`, `\?`, ...). The `escapedCharacter` hook
+  // is only for the *literal-escape* case: it must exclude the structural
+  // sequences, otherwise `\(` would be misread as a literal `(` and the
+  // group would vanish.
+  // ---------------------------------------------------------------------------
+
+  override predicate escapedCharacter(int start, int end) {
+    this.escapingChar(start) and
+    exists(string next | next = this.getChar(start + 1) |
+      not next = "(" and
+      not next = ")" and
+      not next = "{" and
+      not next = "}" and
+      not this.isDecimalDigit(start + 1)
+    ) and
+    end = start + 2
+  }
+
+  // ---------------------------------------------------------------------------
+  // Special (meta) characters
+  //
+  // BRE has only the position-assertion / wildcard specials `^`, `$`, `.`.
+  // The anchors `^` and `$` are positional: `^` is an anchor only at the
+  // start of a subexpression, `$` only at the end. Elsewhere they are
+  // literal characters.
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Holds if position `start` is the start of a subexpression: either the
+   * start of the whole regex, or immediately after a `\(` group-open
+   * (i.e., after the `(` of a `\(` pair, which is the content-start
+   * reported by `simple_group_start`).
+   */
+  private predicate atSubexpressionStart(int start) {
+    start = 0
+    or
+    this.group_start(_, start)
+  }
+
+  /**
+   * Holds if position `start` is at the end of a subexpression: either the
+   * position of the trailing character in the whole regex, or immediately
+   * before a `\)` group-close (i.e., the position of the `\` of a `\)`
+   * pair — which is the position reported by `isGroupEnd` and by
+   * `group_end` as its start).
+   */
+  private predicate atSubexpressionEnd(int start) {
+    start = this.getText().length() - 1
+    or
+    this.group_end(start + 1, _)
+  }
+
+  override predicate specialCharacter(int start, int end, string char) {
+    not this.inCharSet(start) and
+    this.character(start, end) and
+    end = start + 1 and
+    char = this.getChar(start) and
+    (
+      char = "."
+      or
+      char = "^" and this.atSubexpressionStart(start)
+      or
+      char = "$" and this.atSubexpressionEnd(start)
+    )
+  }
+
+  // ---------------------------------------------------------------------------
+  // Quantifiers
+  //
+  // BRE has `*` (positional literal at start-of-subexpression) and the
+  // interval `\{n\}` / `\{n,\}` / `\{n,m\}` form. `+` and `?` are literal
+  // characters. There is no lazy suffix.
+  // ---------------------------------------------------------------------------
+
+  override predicate qualifier(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
+    this.short_qualifier(start, end, maybe_empty, may_repeat_forever)
+  }
+
+  override predicate short_qualifier(
+    int start, int end, boolean maybe_empty, boolean may_repeat_forever
+  ) {
+    this.getChar(start) = "*" and
+    end = start + 1 and
+    maybe_empty = true and
+    may_repeat_forever = true and
+    not this.escapingChar(start - 1) and
+    // `*` is a literal at the start of a subexpression (start of regex,
+    // start of `^`-anchored regex, or immediately after `\(`).
+    not this.atSubexpressionStart(start) and
+    not (start = 1 and this.getChar(0) = "^")
+    or
+    exists(string lower, string upper |
+      this.multiples(start, end, lower, upper) and
+      (if lower = "" or lower.toInt() = 0 then maybe_empty = true else maybe_empty = false) and
+      if upper = "" then may_repeat_forever = true else may_repeat_forever = false
+    )
+  }
+
+  /**
+   * Holds if `[start, end)` is a `\{n\}`, `\{n,\}`, or `\{n,m\}` interval
+   * quantifier. `start` is the position of the leading backslash.
+   *
+   * In BRE the braces themselves must be backslash-prefixed. Bare `{...}`
+   * is literal text.
+   */
+  override predicate multiples(int start, int end, string lower, string upper) {
+    this.escapingChar(start) and
+    exists(string text, string match, string inner |
+      text = this.getText() and
+      end = start + match.length() and
+      // Strip the leading `\{` and trailing `\}` (2 chars each side).
+      inner = match.substring(2, match.length() - 2)
+    |
+      match = text.regexpFind("\\\\\\{[0-9]+\\\\\\}", _, start) and
+      lower = inner and
+      upper = lower
+      or
+      match = text.regexpFind("\\\\\\{[0-9]*,[0-9]*\\\\\\}", _, start) and
+      exists(int commaIndex |
+        commaIndex = inner.indexOf(",") and
+        lower = inner.prefix(commaIndex) and
+        upper = inner.suffix(commaIndex + 1)
+      )
+    )
+  }
+
+  // ---------------------------------------------------------------------------
+  // Groups
+  //
+  // BRE has only `\(...\)` capturing groups. There are no non-capturing,
+  // named, or look-around forms. No alternation operator either.
+  // ---------------------------------------------------------------------------
+
+  /** POSIX BRE has no alternation operator; bare `|` is a literal. */
+  override predicate isOptionDivider(int i) { none() }
+
+  /**
+   * Holds at the position of the `(` in a `\(` group-open. Note this is
+   * *not* the position of the leading backslash — the whole delimiter
+   * span is reported by `simple_group_start` / `group_start` starting at
+   * the backslash.
+   */
+  override predicate isGroupStart(int i) {
+    this.getChar(i) = "(" and
+    this.escapingChar(i - 1) and
+    not this.inCharSet(i)
+  }
+
+  /**
+   * Holds at the position of the leading `\` in a `\)` group-close.
+   * The whole two-character delimiter span is reported by `group_end`.
+   */
+  override predicate isGroupEnd(int i) {
+    this.getChar(i) = "\\" and
+    this.escapingChar(i) and
+    this.getChar(i + 1) = ")" and
+    not this.inCharSet(i)
+  }
+
+  override predicate group_end(int start, int end) {
+    this.isGroupEnd(start) and end = start + 2
+  }
+
+  override predicate group_start(int start, int end) { this.simple_group_start(start, end) }
+
+  /** `\(...\)` – simple capturing group. `start` is the leading backslash. */
+  override predicate simple_group_start(int start, int end) {
+    this.isGroupStart(start + 1) and end = start + 2
+  }
+
+  /** BRE has no non-capturing group form. */
+  override predicate non_capturing_group_start(int start, int end) { none() }
+
+  /** BRE has no named capturing group form. */
+  override predicate ecma_named_group_start(int start, int end) { none() }
+
+  /** BRE has no look-around. */
+  override predicate lookahead_assertion_start(int start, int end) { none() }
+
+  /** BRE has no look-around. */
+  override predicate negative_lookahead_assertion_start(int start, int end) { none() }
+
+  /** BRE has no look-around. */
+  override predicate lookbehind_assertion_start(int start, int end) { none() }
+
+  /** BRE has no look-around. */
+  override predicate negative_lookbehind_assertion_start(int start, int end) { none() }
+
+  /**
+   * Gets the 1-based index of the capture group at `[start, end)`. In BRE
+   * every `\(...\)` group is a capturing group, numbered by left-to-right
+   * position of the opening `\(`.
+   */
+  override int getGroupNumber(int start, int end) {
+    this.group(start, end) and
+    result = count(int i | this.group(i, _) and i < start) + 1
+  }
+
+  /** BRE has no named groups. */
+  override string getGroupName(int start, int end) { none() }
+
+  // ---------------------------------------------------------------------------
+  // Back-references
+  //
+  // BRE supports numbered back-references `\1` .. `\9` (single digit only).
+  // There are no named back-references.
+  // ---------------------------------------------------------------------------
+
+  override predicate numbered_backreference(int start, int end, int value) {
+    this.escapingChar(start) and
+    this.isDecimalDigit(start + 1) and
+    not this.getChar(start + 1) = "0" and
+    end = start + 2 and
+    value = this.getChar(start + 1).toInt()
+  }
+
+  override predicate named_backreference(int start, int end, string name) { none() }
+
+  override predicate backreference(int start, int end) {
+    this.numbered_backreference(start, end, _)
+  }
+
+  override int getBackrefNumber(int start, int end) {
+    this.numbered_backreference(start, end, result)
+  }
 
   override string getBackrefName(int start, int end) { none() }
 }

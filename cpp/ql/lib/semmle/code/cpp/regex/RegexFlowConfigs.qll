@@ -13,9 +13,10 @@
  * The `regexMatchedAgainst` predicate mirrors the intent of the Java
  * `RegexFlowConfigs.qll` library.
  *
- * Only ECMAScript-grammar regexes are considered analyzable by the Phase 1
- * parser; literals explicitly constructed with a non-ECMAScript grammar flag
- * (`basic`, `extended`, `awk`, `grep`, `egrep`) are excluded.
+ * All standard `std::regex` grammars are now modelled: ECMAScript (default),
+ * POSIX BRE (`basic`/`grep`), and POSIX ERE (`extended`/`egrep`/`awk`).
+ * Grammar selection and ReDoS-eligibility are independent axes — see
+ * `isBacktrackingEngine` for the latter.
  */
 
 import cpp
@@ -368,10 +369,9 @@ predicate hasMultilineFlag(StringLiteral regex) {
  * Holds if `regex` is constructed with an explicit non-ECMAScript grammar
  * flag (`basic`, `extended`, `awk`, `grep`, or `egrep`).
  *
- * This predicate remains a purely flag-level classification and does not
- * gate the parser directly — the parser now uses `regexGrammar` to decide
- * which dialect to apply. ECMAScript and ERE (`extended`/`egrep`/`awk`)
- * are both modelled; only BRE (`basic`/`grep`) is currently excluded.
+ * This predicate is purely informational: nothing is excluded from analysis
+ * by grammar anymore, since every grammar the standard defines now has a
+ * concrete parser subclass (`EcmaRegExp`, `EreRegExp`, `BreRegExp`).
  */
 predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
   exists(string g | g = ["basic", "extended", "awk", "grep", "egrep"] |
@@ -388,18 +388,17 @@ predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
  *
  * - `Ecma()`  — ECMAScript, the default grammar used by `std::regex`.
  *              Selected either implicitly (no explicit grammar flag) or
- *              explicitly via `std::regex_constants::ECMAScript`.
+ *              explicitly via `std::regex_constants::ECMAScript`. Modelled
+ *              by `EcmaRegExp`.
  * - `Bre()`   — POSIX Basic Regular Expressions (selected via the `basic`
- *              or `grep` flags). Not yet modelled by the parser; regexes
- *              in this grammar are excluded from analysis.
+ *              or `grep` flags). Modelled by `BreRegExp`.
  * - `Ere()`   — POSIX Extended Regular Expressions (selected via the
  *              `extended`, `egrep`, or `awk` flags). Modelled by
  *              `EreRegExp`.
  *
- * The `Ecma()` and `Ere()` cases are both exercised by the parser today.
- * The `Bre()` case is scaffolding for a future phase and is not exercised;
- * regexes classified as `Bre()` are excluded by the `RegExp` characteristic
- * predicate.
+ * All three cases are exercised by the parser today; every grammar has a
+ * concrete subclass, so `hasConcreteGrammar` holds for every regex the
+ * parser sees.
  */
 newtype TRegexGrammar =
   Ecma() or
@@ -415,9 +414,8 @@ newtype TRegexGrammar =
  *   - `extended` / `egrep` / `awk`  → `Ere()`
  *   - anything else (default, explicit `ECMAScript`, or unresolved) → `Ecma()`
  *
- * The parser gates on `regexGrammar in [Ecma(), Ere()]`, so both branches
- * are exercised by the parser today. Regexes classified as `Bre()` are
- * excluded from analysis until a future phase adds BRE support.
+ * Every case now has a concrete parser subclass, so `hasConcreteGrammar`
+ * holds for the result of this predicate.
  */
 TRegexGrammar regexGrammar(StringLiteral regex) {
   if containsRegexFlag(getConstructionFlagArg(regex), ["basic", "grep"])
@@ -426,6 +424,17 @@ TRegexGrammar regexGrammar(StringLiteral regex) {
     if containsRegexFlag(getConstructionFlagArg(regex), ["extended", "egrep", "awk"])
     then result = Ere()
     else result = Ecma()
+}
+
+/**
+ * Holds if `grammar` has a concrete `RegExp` subclass and can therefore be
+ * admitted by the parser's characteristic predicate. All three grammars
+ * (`Ecma()`, `Ere()`, `Bre()`) are modelled today, so this holds for every
+ * grammar the standard defines. Kept as a helper so that any future grammar
+ * scaffolding can be admitted by adding a single disjunct here.
+ */
+predicate hasConcreteGrammar(TRegexGrammar grammar) {
+  grammar = Ecma() or grammar = Ere() or grammar = Bre()
 }
 
 /**

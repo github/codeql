@@ -231,12 +231,55 @@ void explicit_ecmascript() {
     std::regex r("abc+", std::regex_constants::ECMAScript);
 }
 
-// A regex constructed with the BRE grammar. Excluded from analysis (the
-// parser does not yet model BRE).
+// Regexes constructed with a BRE grammar flag (`basic` or `grep`). Both
+// parse as POSIX Basic Regular Expressions via `BreRegExp`. `basic` is
+// backtracking-eligible; `grep` is parsed but excluded from ReDoS analysis
+// by `isBacktrackingEngine` (mirroring the `extended`-vs-`egrep`/`awk`
+// split for ERE).
 void bre_grammar() {
+    // Bare `+` is a literal in POSIX BRE, so the pattern is "abc" followed
+    // by a literal `+`.
     std::regex r("abc+", std::regex_constants::basic);
+    // `^` is a positional anchor (start of subexpression); bare `+` is a
+    // literal.
     std::regex r2("^gr+ep",
                   std::regex_constants::grep | std::regex_constants::icase);
+    // Backslash-escaped `\(...\)` groups, followed by the `*` quantifier
+    // on the group; also demonstrates a bare `(...)` pair being literal.
+    std::regex r3("\\(ab\\)*c.*", std::regex_constants::basic);
+    std::regex r4("a(b)c.*", std::regex_constants::basic);
+    // Backslash-escaped interval quantifier; bare braces are literal.
+    std::regex r5("a\\{2,5\\}.*", std::regex_constants::basic);
+    std::regex r6("a{2,5}.*", std::regex_constants::basic);
+    // Bare `+` and `?` are literals.
+    std::regex r7("a+b?.*", std::regex_constants::basic);
+    // Positional `*`: literal when at start of regex; quantifier when
+    // preceded by a character.
+    std::regex r8("*abc.*", std::regex_constants::basic);
+    std::regex r9("a*.*", std::regex_constants::basic);
+    // Positional anchors: `^`/`$` at edges are anchors; mid-pattern they
+    // are literals.
+    std::regex r10("^a$", std::regex_constants::basic);
+    std::regex r11("a^b$c.*", std::regex_constants::basic);
+    // Numbered back-reference.
+    std::regex r12("\\(a\\)\\1.*", std::regex_constants::basic);
+    // Escaped literals: `\.` matches a literal `.`, `\*` matches `*`,
+    // `\\` matches a single backslash.
+    std::regex r13("\\.\\*\\\\.*", std::regex_constants::basic);
+    // POSIX bracket sub-expression under BRE (inherited from the shared
+    // core, unchanged).
+    std::regex r14("\\([[:alpha:]]\\)*.*", std::regex_constants::basic);
+    // Nested-quantifier ReDoS shape under BRE (`basic` is backtracking so
+    // this can be flagged by ReDoS queries; `grep` would be parsed but
+    // gated out).
+    std::regex r15("\\(a*\\)*", std::regex_constants::basic);
+    std::regex r16("\\([[:alpha:]]\\{1,\\}\\)\\{1,\\}",
+                   std::regex_constants::basic);
+    // Malformed / edge cases: unbalanced `\(`, trailing `\`, `\{` without
+    // closing `\}`. These should be handled deterministically (no crash).
+    std::regex r17("abc\\(def", std::regex_constants::basic);
+    std::regex r18("abc\\", std::regex_constants::basic);
+    std::regex r19("a\\{2,", std::regex_constants::basic);
 }
 
 // Regexes constructed with an ERE grammar flag (`extended`, `egrep`, or
