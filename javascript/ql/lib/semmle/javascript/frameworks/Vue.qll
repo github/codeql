@@ -35,36 +35,33 @@ module Vue {
     result = any(GlobalVueEntryPoint e).getANode()
   }
 
-  /** Models data flow through Vue Composition API helpers. */
+  /**
+   * Models data flow through Vue Composition API helpers.
+   *
+   * Note that `computed` is not modeled here but in the `vue.model.yml` data
+   * extension, because its object overload (`computed({ get() { ... } })`)
+   * requires callback flow synthesis that data extensions support but a
+   * hand-written `SummarizedCallable` does not.
+   */
   overlay[local?]
   private class VueCompositionApiSummary extends DataFlow::SummarizedCallable::Range {
     string name;
 
     VueCompositionApiSummary() {
-      name = ["ref", "shallowRef", "toRef", "reactive", "computed"] and
+      name = ["ref", "shallowRef", "toRef", "reactive"] and
       this = "vue." + name
     }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      name = ["ref", "shallowRef"] and
+      name = ["ref", "shallowRef", "toRef"] and
       input = "Argument[0]" and
       output = "ReturnValue.Member[value]" and
       preservesValue = true
-      or
-      name = "toRef" and
-      input = "Argument[0]" and
-      output = "ReturnValue.Member[value]" and
-      preservesValue = false
       or
       name = "reactive" and
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
-      or
-      name = "computed" and
-      input = "Argument[0].ReturnValue" and
-      output = "ReturnValue.Member[value]" and
-      preservesValue = true
     }
 
     override DataFlow::InvokeNode getACall() {

@@ -251,10 +251,13 @@ threatModelSource
 compositionApiDataFlow
 | tst.js:119:14:119:26 | source("ref") | tst.js:119:6:119:33 | Vue.ref ... ).value |
 | tst.js:120:21:120:40 | source("shallowRef") | tst.js:120:6:120:47 | Vue.sha ... ).value |
+| tst.js:121:16:121:30 | source("toRef") | tst.js:121:6:121:37 | Vue.toR ... ).value |
 | tst.js:123:25:123:42 | source("computed") | tst.js:123:6:123:49 | Vue.com ... ).value |
+| tst.js:124:36:124:59 | source( ... bject") | tst.js:124:6:124:82 | Vue.com ... ).value |
 compositionApiTaintFlow
 | tst.js:119:14:119:26 | source("ref") | tst.js:119:6:119:33 | Vue.ref ... ).value |
 | tst.js:120:21:120:40 | source("shallowRef") | tst.js:120:6:120:47 | Vue.sha ... ).value |
 | tst.js:121:16:121:30 | source("toRef") | tst.js:121:6:121:37 | Vue.toR ... ).value |
 | tst.js:122:19:122:36 | source("reactive") | tst.js:122:6:122:37 | Vue.rea ... tive")) |
 | tst.js:123:25:123:42 | source("computed") | tst.js:123:6:123:49 | Vue.com ... ).value |
+| tst.js:124:36:124:59 | source( ... bject") | tst.js:124:6:124:82 | Vue.com ... ).value |
