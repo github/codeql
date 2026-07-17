@@ -382,3 +382,30 @@ predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
 predicate hasEcmaScriptGrammarFlag(StringLiteral regex) {
   containsRegexFlag(getConstructionFlagArg(regex), "ECMAScript")
 }
+
+/**
+ * Holds if `regex` is constructed with a POSIX tool-style grammar flag
+ * (`awk`, `grep`, or `egrep`) that we treat as linear-time / non-backtracking.
+ */
+private predicate hasNonBacktrackingGrammarFlag(StringLiteral regex) {
+  containsRegexFlag(getConstructionFlagArg(regex), ["awk", "grep", "egrep"])
+}
+
+/**
+ * Holds if `regex` is used with a `std::regex` matching engine that performs
+ * backtracking, so that super-linear-backtracking ReDoS is possible.
+ *
+ * `std::regex` backtracks for the ECMAScript, `basic` (BRE), and `extended`
+ * (ERE) grammars. The POSIX tool-style grammars `awk`, `grep`, and `egrep`
+ * are treated as linear-time (non-backtracking) matching semantics for the
+ * purposes of the ReDoS queries and are excluded here.
+ *
+ * Grammar selection and ReDoS-eligibility are independent axes: two flags
+ * can select the same grammar yet differ in ReDoS-eligibility (for example
+ * `extended` and `egrep` both parse as ERE, but only `extended` is
+ * backtracking-eligible).
+ */
+predicate isBacktrackingEngine(StringLiteral regex) {
+  usedAsRegex(regex) and
+  not hasNonBacktrackingGrammarFlag(regex)
+}

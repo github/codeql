@@ -28,6 +28,7 @@ class PolynomialRedosSink extends DataFlow::Node {
   PolynomialRedosSink() {
     exists(Expr e |
       regexMatchedAgainst(reg.getRegex(), e) and
+      isBacktrackingEngine(reg.getRegex()) and
       (this.asExpr() = e or this.asIndirectExpr() = e)
     )
   }

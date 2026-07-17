@@ -18,4 +18,25 @@
 
 import semmle.code.cpp.regex.RegexTreeView
 private import semmle.code.cpp.regex.RegexTreeView::RegexTreeView as TreeView
-import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView>
+private import codeql.regex.nfa.ExponentialBackTracking
+private import semmle.code.cpp.regex.RegexFlowConfigs
+
+private module Impl = Make<TreeView>;
+
+/** A state of the NFA constructed for a regular expression. */
+class State = Impl::State;
+
+/**
+ * Holds if `t` is a regex term whose worst-case matching is exponential in
+ * the input length, with `pump` being an example pumping string that
+ * triggers the backtracking from state `s`, and `prefixMsg` describing any
+ * required prefix.
+ *
+ * The result is restricted to terms whose root regex satisfies
+ * `isBacktrackingEngine`, so that regexes constructed with a non-backtracking
+ * `std::regex` grammar flag (`awk`, `grep`, or `egrep`) are excluded.
+ */
+predicate hasReDoSResult(RegExpTerm t, string pump, State s, string prefixMsg) {
+  Impl::hasReDoSResult(t, pump, s, prefixMsg) and
+  isBacktrackingEngine(t.getRootTerm().getLiteral().getRegex())
+}

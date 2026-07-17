@@ -421,5 +421,40 @@ int main(int argc, char** argv) {
         std::regex_match(input, re);
     }
 
+    // -------------------------------------------------------------------------
+    // 11. Non-backtracking POSIX tool-style grammars (`awk`, `grep`, `egrep`)
+    //     combined with other flags via bitwise-OR.
+    //
+    // Regression guard: these must remain excluded from cpp/polynomial-redos
+    // once a future phase relaxes the parser to accept non-ECMAScript
+    // grammars, via the `isBacktrackingEngine` gate. The equivalent
+    // default-grammar patterns above fire, showing that the gate — not some
+    // unrelated exclusion — suppresses these cases.
+    //
+    // Today the parser also drops all non-ECMAScript grammar literals, so
+    // these cases would be suppressed regardless; the query-level gate is a
+    // regression guard for the parser-relaxation phase.
+    // -------------------------------------------------------------------------
+
+    // GOOD: awk grammar — non-backtracking.
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::awk);
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: grep grammar combined with icase — non-backtracking.
+    {
+        std::regex re("^\\s+|\\s+$",
+                      (std::regex_constants::syntax_option_type)
+                      (std::regex_constants::grep | std::regex_constants::icase));
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: egrep grammar combined with icase — non-backtracking.
+    {
+        std::regex re("^\\s+|\\s+$",
+                      (std::regex_constants::syntax_option_type)
+                      (std::regex_constants::egrep | std::regex_constants::icase));
+        std::regex_replace(input, re, std::string(""));
+    }
+
     return 0;
 }
