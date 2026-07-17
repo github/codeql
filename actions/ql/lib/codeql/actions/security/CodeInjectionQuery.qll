@@ -41,7 +41,7 @@ Event getRelevantCachePoisoningEventForSink(DataFlow::Node sink) {
       // the workflow caller runs in the context of the default branch
       result.getName() = "workflow_call" and
       exists(ExternalJob caller |
-        caller.getCallee() = job.getLocation().getFile().getRelativePath() and
+        job.getEnclosingWorkflow().(ReusableWorkflow).getACaller() = caller and
         runsOnDefaultBranch(caller.getATriggerEvent())
       )
     )

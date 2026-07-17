@@ -1,0 +1,7 @@
+name: Local leaf action
+description: Completes an alternating local and remote action chain
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: echo complete

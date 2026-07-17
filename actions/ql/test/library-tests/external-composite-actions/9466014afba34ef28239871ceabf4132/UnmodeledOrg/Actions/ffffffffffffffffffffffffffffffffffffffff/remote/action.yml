@@ -1,0 +1,6 @@
+name: Unmodeled external action
+description: Must not create caller or child call edges
+runs:
+  using: composite
+  steps:
+    - uses: ./.github/actions/leaf

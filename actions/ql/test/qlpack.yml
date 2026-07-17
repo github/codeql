@@ -10,3 +10,5 @@ dependencies:
 extractor: actions
 tests: .
 warnOnImplicitThis: true
+dataExtensions:
+  - external-reusable-workflows.model.yml

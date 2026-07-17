@@ -2,8 +2,8 @@
     "paths": [
         ".github/workflows/*.yml",
         ".github/workflows/*.yaml",
-        ".github/reusable_workflows/**/*.yml",
-        ".github/reusable_workflows/**/*.yaml",
+        "9466014afba34ef28239871ceabf4132/**/*.yml",
+        "9466014afba34ef28239871ceabf4132/**/*.yaml",
         "**/action.yml",
         "**/action.yaml"
     ]

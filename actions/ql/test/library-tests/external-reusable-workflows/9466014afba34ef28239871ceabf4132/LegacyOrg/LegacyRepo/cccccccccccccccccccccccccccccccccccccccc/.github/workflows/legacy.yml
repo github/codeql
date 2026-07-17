@@ -1,0 +1,6 @@
+name: Unmodeled external reusable workflow
+
+on:
+  workflow_call: {}
+
+jobs: {}

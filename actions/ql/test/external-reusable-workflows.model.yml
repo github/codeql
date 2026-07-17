@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: externalReusableWorkflowDataModel
+    data:
+      - ["TestOrg", "TestRepo", ".github/workflows/first.yml", "v1", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "9466014afba34ef28239871ceabf4132/TestOrg/TestRepo/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/.github/workflows/first.yml"]
+      - ["TestOrg", "TestRepo", ".github/workflows/second.yml", "v1", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "9466014afba34ef28239871ceabf4132/TestOrg/TestRepo/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/.github/workflows/second.yml"]
+      - ["TestOrg", "TestRepo", ".github/workflows/first.yml", "v2", "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "9466014afba34ef28239871ceabf4132/TestOrg/TestRepo/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/.github/workflows/first.yml"]
+      - ["TestOrg", "TestRepo", ".github/workflows/second.yml", "v2", "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "9466014afba34ef28239871ceabf4132/TestOrg/TestRepo/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/.github/workflows/second.yml"]
+      - ["TestOrg", "TestRepo", ".github/workflows/reusable-workflow.yml", "main", "cccccccccccccccccccccccccccccccccccccccc", "9466014afba34ef28239871ceabf4132/TestOrg/TestRepo/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/reusable-workflow.yml"]
+      - ["TestOrg", "TestRepo", ".github/workflows/publishResults.yml", "master", "cccccccccccccccccccccccccccccccccccccccc", "9466014afba34ef28239871ceabf4132/TestOrg/TestRepo/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/publishResults.yml"]
+      - ["TestOrg", "TestRepo", ".github/workflows/formal.yml", "main", "cccccccccccccccccccccccccccccccccccccccc", "9466014afba34ef28239871ceabf4132/TestOrg/TestRepo/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/formal.yml"]
+      - ["TestOrg", "TestRepo", ".github/workflows/build.yml", "main", "cccccccccccccccccccccccccccccccccccccccc", "9466014afba34ef28239871ceabf4132/TestOrg/TestRepo/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/build.yml"]
+      - ["TestOrg", "TestRepo", ".github/workflows/build_nested.yml", "main", "cccccccccccccccccccccccccccccccccccccccc", "9466014afba34ef28239871ceabf4132/TestOrg/TestRepo/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/build_nested.yml"]
+      - ["TestOrg", "TestRepo", ".github/workflows/build_nested_branching.yml", "main", "cccccccccccccccccccccccccccccccccccccccc", "9466014afba34ef28239871ceabf4132/TestOrg/TestRepo/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/build_nested_branching.yml"]
+      - ["TestOrg", "TestRepo", ".github/workflows/reusable.yml", "main", "cccccccccccccccccccccccccccccccccccccccc", "9466014afba34ef28239871ceabf4132/TestOrg/TestRepo/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/reusable.yml"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: externalCompositeActionDataModel
+    data:
+      - ["TestOrg", "Actions", "remote", "v1", "dddddddddddddddddddddddddddddddddddddddd", "9466014afba34ef28239871ceabf4132/TestOrg/Actions/dddddddddddddddddddddddddddddddddddddddd/remote/action.yml"]
+      - ["TestOrg", "Actions", "remote", "v2", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "9466014afba34ef28239871ceabf4132/TestOrg/Actions/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee/remote/action.yml"]
+      - ["TestOrg", "TestRepo", ".github/actions/clone-repo", "main", "1111111111111111111111111111111111111111", "9466014afba34ef28239871ceabf4132/TestOrg/TestRepo/1111111111111111111111111111111111111111/.github/actions/clone-repo/action.yaml"]
+      - ["ultralytics", "actions", "", "main", "2222222222222222222222222222222222222222", "9466014afba34ef28239871ceabf4132/ultralytics/actions/2222222222222222222222222222222222222222/action.yaml"]

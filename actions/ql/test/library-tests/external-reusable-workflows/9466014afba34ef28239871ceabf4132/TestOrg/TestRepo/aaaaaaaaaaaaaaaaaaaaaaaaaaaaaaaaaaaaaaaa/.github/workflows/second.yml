@@ -1,0 +1,10 @@
+name: Second external reusable workflow
+
+on:
+  workflow_call: {}
+
+jobs:
+  complete:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo complete

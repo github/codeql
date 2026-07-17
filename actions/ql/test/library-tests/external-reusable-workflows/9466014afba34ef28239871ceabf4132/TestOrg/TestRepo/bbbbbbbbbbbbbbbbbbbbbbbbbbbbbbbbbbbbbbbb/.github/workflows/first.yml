@@ -1,0 +1,8 @@
+name: First external reusable workflow at v2
+
+on:
+  workflow_call: {}
+
+jobs:
+  second:
+    uses: ./.github/workflows/second.yml

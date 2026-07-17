@@ -32,6 +32,8 @@ Customizing Actions-specific analysis:
 
 - ``argumentInjectionSinksDataModel(regexp, command_group, argument_group)``
 - ``contextTriggerDataModel(trigger, context_prefix)``
+- ``externalCompositeActionDataModel(owner, repo, action_path, requested_ref, resolved_commit_sha, local_path)``
+- ``externalReusableWorkflowDataModel(owner, repo, workflow_path, requested_ref, resolved_commit_sha, local_path)``
 - ``externallyTriggerableEventsDataModel(event)``
 - ``immutableActionsDataModel(action)``
 - ``poisonableActionsDataModel(action)``
