@@ -637,16 +637,20 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((continueStmt label: _? @@lbl) => (continue_expr label: {lbl.map(|l| tree!((identifier #{l})))})),
         rule!((throwStmt expression: @val) => (throw_expr value: {val})),
         // ---- Closures ----
-        // Lambda literal with optional type header (parameters + optional return type).
-        // The return_type capture is optional, so this rule covers both cases.
+        // A closure (`{ (x: Int) -> Int in … }`) becomes a `function_expr`. The
+        // whole signature is optional, as are its capture list, parameter
+        // clause, and return clause, so one rule covers everything from a bare
+        // `{ … }` to `{ [weak self] (x) -> T in … }`. Shorthand `$0` closures
+        // have no signature and their `$0` references are ordinary name
+        // expressions.
         rule!(
-            (lambda_literal
-                attribute: _* @attrs
-                captures: (capture_list item: _* @captures)?
-                type: (lambda_function_type
-                    params: (lambda_function_type_parameters parameter: _* @params)
-                    return_type: _? @ret)?
-                statement: _* @body)
+            (closureExpr
+                signature: (closureSignature
+                    attributes: _* @attrs
+                    capture: (closureCaptureClause items: _* @captures)?
+                    parameterClause: _* @params
+                    returnClause: (returnClause type: @ret)?)?
+                statements: _* @body)
             =>
             (function_expr
                 modifier: {attrs}
@@ -655,50 +659,36 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 return_type: {ret}
                 body: (block stmt: {body}))
         ),
-        // capture_list_item with ownership modifier (e.g. [weak self], [unowned x])
+        // A closure capture (`[weak self]`, `[x]`, `[y = expr]`). The optional
+        // ownership specifier (`weak`/`unowned`) becomes a modifier; the
+        // captured name becomes the bound `name_pattern`; an explicit capture
+        // initializer (`[y = expr]`) becomes the bound value.
         rule!(
-            (capture_list_item ownership: _? @ownership name: @name value: _? @val)
+            (closureCapture
+                specifier: (closureCaptureSpecifier specifier: @@spec)?
+                name: @@name
+                initializer: (initializerClause value: @val)?)
             =>
             (variable_declaration
-                modifier: {ownership}
+                modifier: {spec.map(|s| tree!((modifier #{s})))}
                 pattern: (name_pattern identifier: (identifier #{name}))
                 value: {val})
         ),
-        // Lambda parameter with type and optional external name
+        // A closure parameter clause (`(x: Int, y)`) unwraps to its parameters.
+        rule!((closureParameterClause parameters: _* @params) => parameter* { params }),
+        // A closure parameter (`x: Int`, or just `x`). Unlike a function
+        // parameter it has no external label; the type is optional.
         rule!(
-            (lambda_parameter external_name: @ext name: @name type: @ty)
+            (closureParameter firstName: @name type: _? @ty)
             =>
-            (parameter
-                external_name: (identifier #{ext})
-                pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty})
+            (parameter pattern: (name_pattern identifier: (identifier #{name})) type: {ty})
         ),
+        // A shorthand closure parameter (`x` in `{ x, y in … }`): a bare name
+        // with no parentheses and no type.
         rule!(
-            (lambda_parameter name: @name type: @ty)
-            =>
-            (parameter
-                pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty})
-        ),
-        rule!(
-            (lambda_parameter external_name: @ext name: @name)
-            =>
-            (parameter
-                external_name: (identifier #{ext})
-                pattern: (name_pattern identifier: (identifier #{name})))
-        ),
-        rule!(
-            (lambda_parameter name: @name)
+            (closureShorthandParameter name: @name)
             =>
             (parameter pattern: (name_pattern identifier: (identifier #{name})))
-        ),
-        // Call expression with trailing closure (no value_arguments)
-        rule!(
-            (call_expression function: @func suffix: (call_suffix lambda: (lambda_literal) @closure))
-            =>
-            (call_expr
-                callee: {func}
-                argument: (argument value: {closure}))
         ),
         // ---- Control flow ----
         // If statement
