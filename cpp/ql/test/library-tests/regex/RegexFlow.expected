@@ -41,6 +41,14 @@ usedAsRegex_
 | test.cpp:246:14:246:19 | baz+ |
 | test.cpp:251:18:251:26 | pat+ern |
 | test.cpp:261:42:261:48 | hel+o |
+| test.cpp:277:18:277:32 | [[:alpha:]].* |
+| test.cpp:279:18:279:31 | [[:digit:]]+ |
+| test.cpp:281:18:281:33 | [a[:space:]].* |
+| test.cpp:283:18:283:41 | [[:alpha:][:digit:]].* |
+| test.cpp:285:18:285:33 | [^[:space:]].* |
+| test.cpp:287:18:287:28 | [[.a.]].* |
+| test.cpp:289:18:289:28 | [[=a=]].* |
+| test.cpp:292:18:292:34 | ([[:alpha:]]+)+ |
 regexMatchedAgainst_
 | test.cpp:209:18:209:25 | (a+)+b | test.cpp:211:28:211:34 | subject |
 | test.cpp:209:18:209:25 | (a+)+b | test.cpp:212:29:212:35 | subject |
@@ -49,6 +57,14 @@ regexMatchedAgainst_
 | test.cpp:251:18:251:26 | pat+ern | test.cpp:254:29:254:29 | a |
 | test.cpp:251:18:251:26 | pat+ern | test.cpp:255:29:255:29 | b |
 | test.cpp:261:42:261:48 | hel+o | test.cpp:261:28:261:28 | s |
+| test.cpp:277:18:277:32 | [[:alpha:]].* | test.cpp:278:29:278:32 | subj |
+| test.cpp:279:18:279:31 | [[:digit:]]+ | test.cpp:280:29:280:32 | subj |
+| test.cpp:281:18:281:33 | [a[:space:]].* | test.cpp:282:29:282:32 | subj |
+| test.cpp:283:18:283:41 | [[:alpha:][:digit:]].* | test.cpp:284:29:284:32 | subj |
+| test.cpp:285:18:285:33 | [^[:space:]].* | test.cpp:286:29:286:32 | subj |
+| test.cpp:287:18:287:28 | [[.a.]].* | test.cpp:288:29:288:32 | subj |
+| test.cpp:289:18:289:28 | [[=a=]].* | test.cpp:290:29:290:32 | subj |
+| test.cpp:292:18:292:34 | ([[:alpha:]]+)+ | test.cpp:293:29:293:32 | subj |
 hasIgnoreCaseFlag_
 | test.cpp:218:18:218:23 | foo+ |
 | test.cpp:225:18:225:23 | bar+ |

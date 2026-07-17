@@ -260,3 +260,35 @@ void inline_regex_in_match() {
     std::string s("hello");
     (void)std::regex_match(s, std::regex("hel+o"));
 }
+
+// -----------------------------------------------------------------------------
+// POSIX bracket sub-expressions inside character classes.
+//
+// C++'s ECMAScript-mode `std::regex` grammar additionally supports POSIX
+// bracket forms inside `[...]` character classes, none of which are part of
+// plain ECMA-262 JavaScript. Each should parse as a single class-member atom;
+// the surrounding `[...]` should have its boundary correctly detected past the
+// inner `]`.
+void posix_brackets() {
+    std::string subj("aaa");
+    // Each pattern has a trailing `.*` so it is recognised as a regex by
+    // `usedAsRegex` (which only considers patterns with unbounded
+    // repetition, as an optimisation).
+    std::regex a("[[:alpha:]].*");
+    (void)std::regex_search(subj, a);
+    std::regex b("[[:digit:]]+");
+    (void)std::regex_search(subj, b);
+    std::regex c("[a[:space:]].*");          // mixed literal + POSIX class
+    (void)std::regex_search(subj, c);
+    std::regex d("[[:alpha:][:digit:]].*");  // two POSIX classes
+    (void)std::regex_search(subj, d);
+    std::regex e("[^[:space:]].*");          // negated
+    (void)std::regex_search(subj, e);
+    std::regex f("[[.a.]].*");               // collating symbol
+    (void)std::regex_search(subj, f);
+    std::regex g("[[=a=]].*");               // equivalence class
+    (void)std::regex_search(subj, g);
+    // Nested-quantifier POSIX case relevant to ReDoS.
+    std::regex h("([[:alpha:]]+)+");
+    (void)std::regex_search(subj, h);
+}

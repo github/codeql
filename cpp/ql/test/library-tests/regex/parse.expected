@@ -742,3 +742,115 @@ test.cpp:
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] l
 
 #  261| [RegExpConstant, RegExpNormalChar] o
+
+#  277| [RegExpCharacterClass] [[:alpha:]]
+#-----| 0 -> [RegExpPosixBracket] [:alpha:]
+
+#  277| [RegExpSequence] [[:alpha:]].*
+#-----| 0 -> [RegExpCharacterClass] [[:alpha:]]
+#-----| 1 -> [RegExpStar] .*
+
+#  277| [RegExpPosixBracket] [:alpha:]
+
+#  277| [RegExpDot] .
+
+#  277| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  279| [RegExpCharacterClass] [[:digit:]]
+#-----| 0 -> [RegExpPosixBracket] [:digit:]
+
+#  279| [RegExpPlus] [[:digit:]]+
+#-----| 0 -> [RegExpCharacterClass] [[:digit:]]
+
+#  279| [RegExpPosixBracket] [:digit:]
+
+#  281| [RegExpCharacterClass] [a[:space:]]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpPosixBracket] [:space:]
+
+#  281| [RegExpSequence] [a[:space:]].*
+#-----| 0 -> [RegExpCharacterClass] [a[:space:]]
+#-----| 1 -> [RegExpStar] .*
+
+#  281| [RegExpConstant, RegExpNormalChar] a
+
+#  281| [RegExpPosixBracket] [:space:]
+
+#  281| [RegExpDot] .
+
+#  281| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  283| [RegExpCharacterClass] [[:alpha:][:digit:]]
+#-----| 0 -> [RegExpPosixBracket] [:alpha:]
+#-----| 1 -> [RegExpPosixBracket] [:digit:]
+
+#  283| [RegExpSequence] [[:alpha:][:digit:]].*
+#-----| 0 -> [RegExpCharacterClass] [[:alpha:][:digit:]]
+#-----| 1 -> [RegExpStar] .*
+
+#  283| [RegExpPosixBracket] [:alpha:]
+
+#  283| [RegExpPosixBracket] [:digit:]
+
+#  283| [RegExpDot] .
+
+#  283| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  285| [RegExpCharacterClass] [^[:space:]]
+#-----| 0 -> [RegExpPosixBracket] [:space:]
+
+#  285| [RegExpSequence] [^[:space:]].*
+#-----| 0 -> [RegExpCharacterClass] [^[:space:]]
+#-----| 1 -> [RegExpStar] .*
+
+#  285| [RegExpPosixBracket] [:space:]
+
+#  285| [RegExpDot] .
+
+#  285| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  287| [RegExpCharacterClass] [[.a.]]
+#-----| 0 -> [RegExpPosixBracket] [.a.]
+
+#  287| [RegExpSequence] [[.a.]].*
+#-----| 0 -> [RegExpCharacterClass] [[.a.]]
+#-----| 1 -> [RegExpStar] .*
+
+#  287| [RegExpPosixBracket] [.a.]
+
+#  287| [RegExpDot] .
+
+#  287| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  289| [RegExpCharacterClass] [[=a=]]
+#-----| 0 -> [RegExpPosixBracket] [=a=]
+
+#  289| [RegExpSequence] [[=a=]].*
+#-----| 0 -> [RegExpCharacterClass] [[=a=]]
+#-----| 1 -> [RegExpStar] .*
+
+#  289| [RegExpPosixBracket] [=a=]
+
+#  289| [RegExpDot] .
+
+#  289| [RegExpStar] .*
+#-----| 0 -> [RegExpDot] .
+
+#  292| [RegExpGroup] ([[:alpha:]]+)
+#-----| 0 -> [RegExpPlus] [[:alpha:]]+
+
+#  292| [RegExpPlus] ([[:alpha:]]+)+
+#-----| 0 -> [RegExpGroup] ([[:alpha:]]+)
+
+#  292| [RegExpCharacterClass] [[:alpha:]]
+#-----| 0 -> [RegExpPosixBracket] [:alpha:]
+
+#  292| [RegExpPlus] [[:alpha:]]+
+#-----| 0 -> [RegExpCharacterClass] [[:alpha:]]
+
+#  292| [RegExpPosixBracket] [:alpha:]

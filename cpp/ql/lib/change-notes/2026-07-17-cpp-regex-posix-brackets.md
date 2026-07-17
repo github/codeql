@@ -1,0 +1,5 @@
+---
+category: minorAnalysis
+---
+* The C++ regular-expression parser (`semmle.code.cpp.regex.RegexTreeView`) now recognises POSIX bracket sub-expressions inside character classes as single character-matching atoms: POSIX character classes (`[[:alpha:]]`, `[[:digit:]]`, `[[:space:]]`, ...), collating symbols (`[[.a.]]`), and equivalence classes (`[[=a=]]`). These are ECMAScript-mode extensions accepted by `std::regex` but not part of ECMA-262 JavaScript, so they were previously mis-tokenized (the class was incorrectly closed at the inner `]`). POSIX character classes with a clean Perl-escape equivalent are mapped onto `\d`/`\s`/`\w`; other POSIX classes are conservatively over-approximated as `\w` for the shared engine's escape-class reasoning.
+* Documented that `std::regex_constants::multiline` is detected by `RegexFlowConfigs.qll` but not currently modeled in the parse tree — `^` and `$` are always treated as string-start/string-end anchors, matching the conservative choice made by other language ReDoS analyses. Precise multiline modeling would require extending the shared `RegexTreeViewSig` signature and is left as future work.

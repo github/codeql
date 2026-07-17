@@ -56,6 +56,14 @@ private newtype TRegExpParent =
   TRegExpCharacterClass(RegExp re, int start, int end) { re.charSet(start, end) } or
   /** A character range inside a character class (`a-z`). */
   TRegExpCharacterRange(RegExp re, int start, int end) { re.charRange(_, start, _, _, end) } or
+  /**
+   * A POSIX bracket sub-expression inside a character class, such as
+   * `[:alpha:]`, `[.a.]`, or `[=a=]`. These are only recognized inside a
+   * `[...]` character class.
+   */
+  TRegExpPosixBracket(RegExp re, int start, int end, string kind) {
+    re.posixBracketExpression(start, end, kind)
+  } or
   /** A group (`(...)`, `(?:...)`, `(?<name>...)`, etc.). */
   TRegExpGroup(RegExp re, int start, int end) { re.group(start, end) } or
   /** A special (meta) character (`.`, `^`, `$`, `\b`, `\B`). */
@@ -214,6 +222,8 @@ module Impl implements RegexTreeViewSig {
       or
       this = TRegExpCharacterRange(re, start, end)
       or
+      this = TRegExpPosixBracket(re, start, end, _)
+      or
       this = TRegExpNormalChar(re, start, end)
       or
       this = TRegExpGroup(re, start, end)
@@ -252,6 +262,8 @@ module Impl implements RegexTreeViewSig {
       result = this.(RegExpCharacterClass).getChild(i)
       or
       result = this.(RegExpCharacterRange).getChild(i)
+      or
+      result = this.(RegExpPosixBracket).getChild(i)
       or
       result = this.(RegExpNormalChar).getChild(i)
       or
@@ -638,6 +650,56 @@ module Impl implements RegexTreeViewSig {
     override string getAPrimaryQlClass() { result = "RegExpCharacterRange" }
   }
 
+  /**
+   * A POSIX bracket sub-expression inside a character class.
+   *
+   * C++'s ECMAScript-mode `std::regex` grammar (per `[re.grammar]`)
+   * additionally supports three POSIX bracket forms inside a `[...]`
+   * character class, none of which are part of ECMA-262 JavaScript:
+   *
+   *   - POSIX character class: `[:alpha:]`, `[:digit:]`, `[:space:]`, ...
+   *   - Collating symbol:      `[.a.]`, `[.tilde.]`, ...
+   *   - Equivalence class:     `[=a=]`, `[=A=]`, ...
+   *
+   * Each is treated as a single character-matching atom (a class member).
+   *
+   * For POSIX character classes with a clean Perl-escape equivalent
+   * (`digit`, `space`, `word`) we map them onto `\d`, `\s`, `\w` via
+   * `isEscapeClass`, so the shared ReDoS engine can reason about their
+   * match sets precisely. Other POSIX classes (`alpha`, `alnum`, `upper`,
+   * `lower`, `punct`, `cntrl`, `print`, `graph`, `xdigit`, `blank`) do not
+   * map cleanly; they are conservatively over-approximated as `\w` for the
+   * purpose of `isEscapeClass` — this may lead to minor imprecision when
+   * two atoms are combined but preserves the "single-atom" treatment
+   * required by the shared engine.
+   *
+   * Collating and equivalence classes semantically may match multi-character
+   * sequences (e.g. `[[.ll.]]`); we model them as single atoms, which is a
+   * documented approximation.
+   */
+  additional class RegExpPosixBracket extends RegExpTerm, TRegExpPosixBracket {
+    string kind;
+
+    RegExpPosixBracket() { this = TRegExpPosixBracket(re, start, end, kind) }
+
+    /**
+     * Gets the kind of this POSIX bracket sub-expression: one of `"class"`,
+     * `"collating"`, or `"equivalence"`.
+     */
+    string getKind() { result = kind }
+
+    /**
+     * Gets the inner name of this bracket, without the delimiters. For
+     * `[:alpha:]` this is `"alpha"`; for `[.tilde.]` this is `"tilde"`; for
+     * `[=a=]` this is `"a"`.
+     */
+    string getName() { result = re.getText().substring(start + 2, end - 2) }
+
+    override RegExpTerm getChild(int i) { none() }
+
+    override string getAPrimaryQlClass() { result = "RegExpPosixBracket" }
+  }
+
   // -------------------------------------------------------------------------
   // Special characters  (`.`, `^`, `$`, `\b`, `\B`)
   // -------------------------------------------------------------------------
@@ -681,6 +743,18 @@ module Impl implements RegexTreeViewSig {
   /**
    * A dollar assertion `$`, matching the end of the input (or end of a line in
    * multiline mode).
+   *
+   * NOTE: `std::regex_constants::multiline` is detected by
+   * `RegexFlowConfigs.qll` (`hasMultilineFlag`) and exposed by
+   * `RegExpLiteral.isMultiline()`, but the shared `RegexTreeViewSig`
+   * signature has no hook to parameterize anchor semantics on multiline
+   * mode. We therefore always model `$` as the end-of-string anchor —
+   * mirroring the conservative choice made by the JavaScript and Ruby
+   * ReDoS analyses. Under `multiline`, `$` can additionally match at `\n`,
+   * which affects rejecting-suffix reasoning for `^`/`$`-anchored
+   * patterns; this may cause minor false positives/negatives for
+   * multiline-flagged regexes. Precise modeling would require extending
+   * `RegexTreeViewSig`, which is out of scope for the C++ port.
    */
   class RegExpDollar extends RegExpAnchor {
     RegExpDollar() { char = "$" }
@@ -691,6 +765,9 @@ module Impl implements RegexTreeViewSig {
   /**
    * A caret assertion `^`, matching the start of the input (or start of a line
    * in multiline mode).
+   *
+   * See the note on `RegExpDollar` regarding the (currently unmodeled)
+   * `std::regex_constants::multiline` flag.
    */
   class RegExpCaret extends RegExpAnchor {
     RegExpCaret() { char = "^" }
@@ -904,6 +981,30 @@ module Impl implements RegexTreeViewSig {
    */
   predicate isEscapeClass(RegExpTerm term, string clazz) {
     exists(RegExpCharacterClassEscape escape | term = escape | escape.getValue() = clazz)
+    or
+    // Map POSIX bracket sub-expressions to the shared engine's escape-class
+    // signature. Only POSIX character classes (`[:name:]`) are mapped;
+    // collating and equivalence classes have no meaningful escape-class
+    // equivalent and are left opaque.
+    exists(RegExpPosixBracket posix, string name |
+      term = posix and
+      posix.getKind() = "class" and
+      name = posix.getName()
+    |
+      // Clean equivalences.
+      name = ["digit", "xdigit"] and clazz = "d"
+      or
+      name = ["space", "blank"] and clazz = "s"
+      or
+      // Conservative over-approximation: alphabetic / alphanumeric / case
+      // classes are subsets of `\w`, so `\w` is a safe over-approximation
+      // for pumping-witness discovery in the shared engine. `punct`,
+      // `cntrl`, `print` and `graph` do not fit `\w` precisely; we map
+      // them here to give the engine SOME atom to reason about, at the
+      // cost of over-approximating their character set.
+      name = ["word", "alpha", "alnum", "upper", "lower", "punct", "cntrl", "print", "graph"] and
+      clazz = "w"
+    )
   }
 
   /**

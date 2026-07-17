@@ -238,5 +238,18 @@ int main(int argc, char** argv) {
     // GOOD: non-ECMAScript grammar (egrep) is excluded.
     { std::regex re("^(a+)+$", std::regex_constants::egrep); run(re, input); }
 
+    // -------------------------------------------------------------------------
+    // 9. POSIX bracket sub-expressions (C++ ECMAScript-mode extension).
+    //
+    // std::regex under ECMAScript additionally supports POSIX bracket forms
+    // (`[:name:]`, `[.sym.]`, `[=sym=]`) inside character classes. These
+    // atoms must flow through the ReDoS engine correctly.
+    // -------------------------------------------------------------------------
+
+    // BAD: nested-quantifier exponential regex using a POSIX character class.
+    { std::regex re("^([[:alpha:]]+)+$"); run(re, input); }
+    // BAD: same pattern under icase — case-folding must not suppress the alert.
+    { std::regex re("^([[:alpha:]]+)+$", std::regex_constants::icase); run(re, input); }
+
     return 0;
 }

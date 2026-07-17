@@ -58,12 +58,97 @@ class RegExp extends StringLiteral {
   // ---------------------------------------------------------------------------
 
   /**
+   * Holds if `[start, end)` is a POSIX bracket sub-expression of the given
+   * `kind`, appearing nested inside another `[...]` character class.
+   *
+   * C++'s ECMAScript-mode `std::regex` (per [re.grammar]) additionally supports
+   * three POSIX bracket forms inside a character class, which plain ECMA-262
+   * JavaScript does not:
+   *   - character classes: `[:alpha:]`, `[:digit:]`, `[:space:]`, ...
+   *   - collating symbols: `[.a.]`, `[.tilde.]`, ...
+   *   - equivalence classes: `[=a=]`
+   *
+   * `kind` is one of `"class"`, `"collating"`, or `"equivalence"`. `start`
+   * points at the inner `[` and `end` is one past the outer `]`.
+   *
+   * A POSIX bracket sub-expression is only recognized when it is nested
+   * inside another `[...]` character class, since the standard only gives
+   * these forms meaning in that context.
+   */
+  predicate posixBracketExpression(int start, int end, string kind) {
+    exists(string mark |
+      this.getChar(start) = "[" and
+      (
+        this.getChar(start + 1) = ":" and kind = "class" and mark = ":"
+        or
+        this.getChar(start + 1) = "." and kind = "collating" and mark = "."
+        or
+        this.getChar(start + 1) = "=" and kind = "equivalence" and mark = "="
+      )
+    |
+      end - 2 =
+        min(int i |
+          i > start + 1 and this.getChar(i) = mark and this.getChar(i + 1) = "]"
+        )
+    ) and
+    // Gate: the `[` at `start` must lie inside an outer `[...]` character
+    // class that has not yet been closed. Concretely: there must exist an
+    // earlier unescaped `[` at some `q < start` such that every unescaped
+    // `]` between `q` and `start` is itself part of some POSIX bracket
+    // sub-expression (i.e. it is the terminator of, or lies inside, another
+    // `posixBracketExpression`). This is a monotone recursion (POSIX
+    // recognitions only make the gate easier to satisfy) and correctly
+    // handles both nested top-level cases (`[[:alpha:]]`, disallowed at top
+    // level) and adjacent POSIX brackets (`[[:alpha:][:digit:]]`).
+    exists(int q |
+      q < start and
+      this.nonEscapedCharAt(q) = "[" and
+      not exists(int r |
+        q < r and
+        r < start and
+        this.nonEscapedCharAt(r) = "]" and
+        not exists(int s2, int e2 |
+          this.posixBracketExpression(s2, e2, _) and
+          s2 < r and
+          r < e2
+        )
+      )
+    )
+  }
+
+  /**
+   * Holds if position `p` is inside a POSIX bracket sub-expression (i.e.
+   * anywhere from its opening `[` at `s` up to and including its closing
+   * `]` at `e-1`). Used to hide interior positions from the character-class
+   * scanner and the character tokenizer.
+   */
+  predicate insidePosixBracket(int p) {
+    exists(this.getChar(p)) and
+    exists(int s, int e | this.posixBracketExpression(s, e, _) and s <= p and p < e)
+  }
+
+  /**
+   * Holds if position `pos` is a non-escaped `[` or `]` that acts as a
+   * character-class delimiter — i.e. it is NOT one of the outer brackets of
+   * a POSIX bracket sub-expression. This is the delimiter set used by
+   * `char_set_delimiter` and the class-end computation, so that
+   * `[[:alpha:]]` correctly closes at the final `]` rather than at the
+   * inner `]` of `:alpha:]`.
+   */
+  private predicate classDelimiterAt(int pos) {
+    (this.nonEscapedCharAt(pos) = "[" or this.nonEscapedCharAt(pos) = "]") and
+    not exists(int s, int e | this.posixBracketExpression(s, e, _) |
+      pos = s or pos = e - 1
+    )
+  }
+
+  /**
    * Holds if the (non-escaped) character at position `pos` is the `index`-th
    * bracket (`[` or `]`) in the string.
    * Result is `true` for `[` and `false` for `]`.
    */
   private boolean char_set_delimiter(int index, int pos) {
-    pos = rank[index](int p | this.nonEscapedCharAt(p) = "[" or this.nonEscapedCharAt(p) = "]") and
+    pos = rank[index](int p | this.classDelimiterAt(p)) and
     (
       this.nonEscapedCharAt(pos) = "[" and result = true
       or
@@ -126,7 +211,10 @@ class RegExp extends StringLiteral {
       this.char_set_start(start, inner_start) and
       not this.char_set_start(_, start)
     |
-      end - 1 = min(int i | this.nonEscapedCharAt(i) = "]" and inner_start < i)
+      // Terminate at the first non-escaped `]` that is NOT the inner `]` of a
+      // POSIX bracket sub-expression (so `[[:alpha:]]` closes at the outer
+      // `]`, not at the `]` of `:alpha:]`).
+      end - 1 = min(int i | this.classDelimiterAt(i) and this.nonEscapedCharAt(i) = "]" and inner_start < i)
     )
   }
 
@@ -143,16 +231,24 @@ class RegExp extends StringLiteral {
     (
       this.escapedCharacter(start, end)
       or
-      exists(this.nonEscapedCharAt(start)) and end = start + 1
+      // A whole POSIX bracket sub-expression is a single class-member token.
+      this.posixBracketExpression(start, end, _)
+      or
+      exists(this.nonEscapedCharAt(start)) and
+      end = start + 1 and
+      not this.insidePosixBracket(start)
     )
     or
     this.char_set_token(charset_start, _, start) and
     (
       this.escapedCharacter(start, end)
       or
+      this.posixBracketExpression(start, end, _)
+      or
       exists(this.nonEscapedCharAt(start)) and
       end = start + 1 and
-      not this.getChar(start) = "]"
+      not this.getChar(start) = "]" and
+      not this.insidePosixBracket(start)
     )
   }
 
@@ -274,6 +370,10 @@ class RegExp extends StringLiteral {
     end = start + 1 and
     not this.charSet(start, _) and
     not this.charSet(_, start + 1) and
+    // A character inside a POSIX bracket sub-expression is not an
+    // independent simple character — the whole sub-expression is a single
+    // class-member atom (handled via `posixBracketExpression`).
+    not this.insidePosixBracket(start) and
     exists(string c | c = this.getChar(start) |
       exists(int x, int y, int z |
         this.charSet(x, z) and
