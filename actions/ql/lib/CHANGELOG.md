@@ -1,3 +1,7 @@
+## 0.4.39
+
+No user-facing changes.
+
 ## 0.4.38
 
 ### Bug Fixes

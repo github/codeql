@@ -1,3 +1,7 @@
+## 0.6.31
+
+No user-facing changes.
+
 ## 0.6.30
 
 ### Query Metadata Changes

@@ -1,3 +1,7 @@
+## 6.7.2
+
+No user-facing changes.
+
 ## 6.7.1
 
 No user-facing changes.
