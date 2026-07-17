@@ -144,7 +144,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (top_level body: (block stmt: {items}))
         ),
-        rule!((codeBlockItem item: @item) => stmt { item }),
+        // `codeBlockItem` wraps a top-level statement. It is a simple unwrapper,
+        // but a single wrapped `variableDecl` can translate to *several*
+        // declarations (`let x = 1, y = 2`), so the wrapped node is captured with
+        // `_*` and the result annotated `stmt*` to splice all of them.
+        rule!((codeBlockItem item: _* @item) => stmt* { item }),
         // ---- Literals ----
         // swift-syntax does not distinguish the lexical integer/string forms
         // (hex/binary/octal, single- vs multi-line, raw): each is a single
@@ -328,18 +332,17 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 result
             }
         ),
-        // property_binding with any pattern name (identifier or
-        // destructuring). Reads outer modifiers / chained tag from `ctx`.
-        //
-        // The enclosing `property_declaration` leads `ctx.outer_modifiers`
-        // with the `let`/`var` binding modifier, so the auto-translated name
-        // pattern (the LHS) becomes a binding, while the initializer value is
-        // translated with a reset context (see `SwiftContext::reset`).
+        // The individual bindings of a `variableDecl`. The binding modifier and
+        // chained tag come from `ctx` (set by the `variableDecl` rule below). The
+        // type annotation and initializer are both optional (one combined rule
+        // covers `let x`, `let x = e`, `let x: T`, and `let x: T = e`); the
+        // initializer value is translated in a reset scope so it is not treated
+        // as a binding.
         rule!(
-            (property_binding
-                name: @pattern
-                type: _? @ty
-                value: _? @@val)
+            (patternBinding
+                pattern: @pattern
+                typeAnnotation: (typeAnnotation type: @ty)?
+                initializer: (initializerClause value: @@val)?)
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
@@ -348,34 +351,28 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 type: {ty}
                 value: {ctx.reset(); ctx.translate(val)?})
         ),
-        // property_declaration: flatten declarators (each may translate
-        // to multiple nodes — variable_declaration and/or
-        // accessor_declaration) and attach the binding modifier
-        // (let/var), outer modifiers, and `chained_declaration` for
-        // non-first declarations. Manual rule: publishes
-        // binding/outer modifiers into `ctx` and translates each
-        // declarator with `ctx.is_chained` toggled per iteration. The
-        // inner declaration rules (`property_binding` variants,
-        // accessor inner rules) read these fields and emit complete
-        // `modifier:` lists from the start.
+        // A `let`/`var` declaration binds one or more comma-separated patterns
+        // (`let x = 1, y = 2`). The `bindingSpecifier` (`let`/`var`) is published
+        // as the binding modifier, followed by any attributes and modifiers
+        // (`@objc`, `public`, `static`, …); each `patternBinding` becomes its own
+        // `variable_declaration`, with non-first ones tagged `chained_declaration`.
+        // Accessor/observer forms are handled by the earlier rules.
         rule!(
-            (property_declaration
-                binding: (value_binding_pattern mutability: @@binding_kind)
-                declarator: _* @@decls
-                (modifiers)* @mods)
+            (variableDecl
+                attributes: _* @attrs
+                modifiers: _* @mods
+                bindingSpecifier: @@spec
+                bindings: _* @@bindings)
             =>
-            member* {
-                let binding_text = ctx.ast.source_text(binding_kind);
-                let binding = ctx.literal("modifier", &binding_text);
-                // The `let`/`var` binding modifier leads the declaration's
-                // modifier list and doubles as the "this is a binding" signal
-                // for pattern translation (see `in_binding_pattern`).
-                ctx.outer_modifiers = std::iter::once(binding).chain(mods).collect();
-
+            stmt* {
+                let binding = tree!((modifier #{spec}));
+                // The binding (`let`/`var`) leads, then attributes then modifiers
+                // in source order (Swift writes attributes before modifiers).
+                ctx.outer_modifiers = std::iter::once(binding).chain(attrs).chain(mods).collect();
                 let mut result = Vec::new();
-                for (i, decl) in decls.into_iter().enumerate() {
+                for (i, b) in bindings.into_iter().enumerate() {
                     ctx.is_chained = i > 0;
-                    result.extend(ctx.translate(decl)?);
+                    result.extend(ctx.translate(b)?);
                 }
                 result
             }
@@ -451,9 +448,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // Unwrap `type` wrapper node
         rule!((type name: @inner) => type_expr { inner }),
-        // Pattern with bound_identifier → name_pattern.
+        // `identifierPattern` wraps a single identifier token.
         rule!(
-            (pattern bound_identifier: @name)
+            (identifierPattern identifier: @name)
             =>
             (name_pattern identifier: (identifier #{name}))
         ),
@@ -485,10 +482,15 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 constructor: (member_access_expr base: (inferred_type_expr #{dot}) member: (identifier #{name}))
                 element: {items})
         ),
-        // Tuple pattern and its (optionally named) items
-        rule!((pattern kind: (tuple_pattern item: _* @elems)) => (tuple_pattern element: {elems})),
-        rule!((tuple_pattern_item name: @key pattern: @pat) => (pattern_element key: (identifier #{key}) pattern: {pat})),
-        rule!((tuple_pattern_item pattern: @pat) => (pattern_element pattern: {pat})),
+        // A tuple destructuring pattern (`let (a, b) = …`). A labelled element
+        // (`let (x: a) = …`) carries its label through as the `pattern_element`
+        // key; unlabelled elements have no key.
+        rule!((tuplePattern elements: _* @els) => (tuple_pattern element: {els})),
+        rule!(
+            (tuplePatternElement label: _? @label pattern: @p)
+            =>
+            (pattern_element key: {label.map(|l| tree!((identifier #{l})))} pattern: {p})
+        ),
         // Type casting pattern (TODO)
         rule!((pattern kind: (type_casting_pattern)) => (unsupported_node)),
         // Wildcard pattern
@@ -906,6 +908,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // Modifiers — unwrap to individual modifier children
         rule!((modifiers _* @mods) => modifier* { mods }),
         rule!((attribute) @m => (modifier #{m})),
+        // swift-syntax models every access/function/member/mutation/ownership
+        // modifier as a single `declModifier`; its source text is the modifier.
+        rule!((declModifier) @m => (modifier #{m})),
         rule!((visibility_modifier) @m => (modifier #{m})),
         rule!((function_modifier) @m => (modifier #{m})),
         rule!((member_modifier) @m => (modifier #{m})),
