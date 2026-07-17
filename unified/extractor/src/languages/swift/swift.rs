@@ -37,6 +37,14 @@ struct SwiftContext {
     /// `chained_declaration` modifier so the original grouping can be
     /// recovered downstream.
     is_chained: bool,
+    /// True while translating the parameters of a `functionType`. swift-syntax
+    /// models a function type's parameters with the same `tupleTypeElement`
+    /// kind as a tuple type's elements, so the shared `tupleTypeElement` rule
+    /// reads this to emit a `parameter` (function-type param) rather than a
+    /// `tuple_type_element` (tuple-type element). The `tupleType` /
+    /// `functionType` rules each set it for their direct children, so nested
+    /// types are translated in the correct context.
+    in_function_type: bool,
 }
 
 impl SwiftContext {
@@ -920,32 +928,83 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((parameter_modifier) @m => (modifier #{m})),
         rule!((inheritance_modifier) @m => (modifier #{m})),
         rule!((property_behavior_modifier) @m => (modifier #{m})),
-        // Type annotations — unwrap
-        rule!((type_annotation type: @inner) => type_expr { inner }),
-        // user_type is split into simple_user_type parts.
-        // Keep a conservative textual fallback to avoid dropping type information.
-        rule!((user_type) @ty => (named_type_expr name: (identifier #{ty}))),
-        // Tuple type → tuple_type_expr
-        rule!((tuple_type element: _* @elems) => (tuple_type_expr element: {elems})),
-        rule!((tuple_type_item name: @name type: @ty) => (tuple_type_element name: (identifier #{name}) type: {ty})),
-        rule!((tuple_type_item type: @ty) => (tuple_type_element type: {ty})),
-        // Array type `[T]` → generic_type_expr with Array base
-        rule!((array_type element: @e) => (generic_type_expr
-            base: (named_type_expr name: (identifier "Array"))
-            type_argument: {e})),
-        // Dictionary type `[K: V]` → generic_type_expr with Dictionary base
-        rule!((dictionary_type key: @k value: @v) => (generic_type_expr
-            base: (named_type_expr name: (identifier "Dictionary"))
-            type_argument: {k}
-            type_argument: {v})),
-        // Optional type `T?` → generic_type_expr with Optional base
-        rule!((optional_type wrapped: @w) => (generic_type_expr
-            base: (named_type_expr name: (identifier "Optional"))
-            type_argument: {w})),
-        // Function type `(Params) -> Ret` → function_type_expr.
-        rule!((function_type parameter: _* @ps return_type: @ret) => (function_type_expr parameter: {ps} return_type: {ret})),
-        rule!((function_type_parameter name: @name type: @ty) => (parameter external_name: (identifier #{name}) type: {ty})),
-        rule!((function_type_parameter type: @ty) => (parameter type: {ty})),
+        // Type expressions. A generic type applied with explicit arguments
+        // (`Set<Int>`) is represented opaquely, using the whole source text as
+        // the name (PARITY(tree-sitter): the generic arguments are not
+        // structured `type_argument`s). Matched before the plain `identifierType`
+        // rule, which would otherwise drop the arguments.
+        rule!(
+            (identifierType genericArgumentClause: (genericArgumentClause)) @@ty
+            =>
+            (named_type_expr name: (identifier #{ty}))
+        ),
+        // A named type (`Int`). `identifierType.name` is the type-name token.
+        rule!((identifierType name: @@n) => (named_type_expr name: (identifier #{n}))),
+        // A qualified type (`Outer.Inner`, `NSString.CompareOptions`). swift-syntax
+        // nests these as `memberType` nodes; like the old tree-sitter `user_type`
+        // rule, we keep the whole dotted path as the opaque `named_type_expr` name.
+        rule!((memberType) @ty => (named_type_expr name: (identifier #{ty}))),
+        // Sugared types desugar to `generic_type_expr`: `T?` -> Optional<T>,
+        // `[T]` -> Array<T>, `[K: V]` -> Dictionary<K, V>.
+        rule!(
+            (optionalType wrappedType: @w)
+            =>
+            (generic_type_expr base: (named_type_expr name: (identifier "Optional")) type_argument: {w})
+        ),
+        rule!(
+            (arrayType element: @e)
+            =>
+            (generic_type_expr base: (named_type_expr name: (identifier "Array")) type_argument: {e})
+        ),
+        rule!(
+            (dictionaryType key: @k value: @v)
+            =>
+            (generic_type_expr base: (named_type_expr name: (identifier "Dictionary")) type_argument: {k} type_argument: {v})
+        ),
+        // A tuple type (`(Int, String)`) or function type (`(Int) -> Bool`).
+        // Both hold their contents as `tupleTypeElement`s, but a tuple element
+        // maps to `tuple_type_element` while a function parameter maps to
+        // `parameter`. Each container sets `ctx.in_function_type` for its direct
+        // children (and translates them explicitly, so a nested type is
+        // translated in the right context) and the shared `tupleTypeElement`
+        // rule below reads it. An element's label (`firstName`) is optional.
+        rule!(
+            (tupleType elements: _* @@elems)
+            =>
+            tuple_type_expr {
+                ctx.in_function_type = false;
+                let mut out = Vec::new();
+                for e in elems {
+                    out.extend(ctx.translate(e)?);
+                }
+                tree!((tuple_type_expr element: {out}))
+            }
+        ),
+        rule!(
+            (functionType parameters: _* @@params returnClause: (returnClause type: @ret))
+            =>
+            function_type_expr {
+                ctx.in_function_type = true;
+                let mut out = Vec::new();
+                for p in params {
+                    out.extend(ctx.translate(p)?);
+                }
+                ctx.in_function_type = false;
+                tree!((function_type_expr parameter: {out} return_type: {ret}))
+            }
+        ),
+        rule!(
+            (tupleTypeElement firstName: _? @@name type: @ty)
+            =>
+            tuple_type_element {
+                let name = name.map(|n| tree!((identifier #{n})));
+                if ctx.in_function_type {
+                    tree!((parameter external_name: {name} type: {ty}))
+                } else {
+                    tree!((tuple_type_element name: {name} type: {ty}))
+                }
+            }
+        ),
         // Selector expression: `#selector(inner)` -- not yet supported
         rule!(
             (selector_expression _ @inner)
