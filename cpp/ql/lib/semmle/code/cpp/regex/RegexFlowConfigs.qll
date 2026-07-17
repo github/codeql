@@ -26,7 +26,6 @@ private import semmle.code.cpp.dataflow.new.TaintTracking
 // ---------------------------------------------------------------------------
 // std::basic_regex identification
 // ---------------------------------------------------------------------------
-
 /**
  * A `std::basic_regex` class type (or instantiation thereof, e.g. `std::regex`,
  * `std::wregex`).
@@ -91,7 +90,6 @@ private Parameter getStringLikeParameter(Function f) {
 // ---------------------------------------------------------------------------
 // Match / search / replace / iterator calls
 // ---------------------------------------------------------------------------
-
 /**
  * A free function in namespace `std` that matches a subject against a regex:
  * one of `regex_match`, `regex_search`, or `regex_replace`.
@@ -140,9 +138,7 @@ predicate regexMatchCall(Call call, Expr regexArg, Expr subjectArg) {
       subjectArg = call.getArgument(sp.getIndex()) and
       // Prefer the earliest such parameter (matches the standard argument
       // order for these overloads).
-      not exists(Parameter sp2 |
-        sp2 = getStringLikeParameter(f) and sp2.getIndex() < sp.getIndex()
-      )
+      not exists(Parameter sp2 | sp2 = getStringLikeParameter(f) and sp2.getIndex() < sp.getIndex())
     )
   )
 }
@@ -150,7 +146,6 @@ predicate regexMatchCall(Call call, Expr regexArg, Expr subjectArg) {
 // ---------------------------------------------------------------------------
 // Regex-flow sinks: places where a pattern (a StringLiteral) is used as a regex
 // ---------------------------------------------------------------------------
-
 /**
  * A regex-flow sink: an expression at which a value is used as the pattern
  * for a `std::basic_regex` (construction, `.assign(...)`), or as the pattern
@@ -178,7 +173,6 @@ class RegexPatternSink extends DataFlow::Node {
 // ---------------------------------------------------------------------------
 // Fast-path: only track literals that look regex-y
 // ---------------------------------------------------------------------------
-
 /**
  * A string literal that is a plausible ReDoS candidate: it contains at least
  * one unbounded-repetition quantifier (`+`, `*`, or `{n,}`). Used as an
@@ -209,7 +203,6 @@ private module RegexPatternFlow = TaintTracking::Global<RegexPatternFlowConfig>;
 // ---------------------------------------------------------------------------
 // Public predicates
 // ---------------------------------------------------------------------------
-
 /**
  * Holds if the `StringLiteral` `regex` flows to a modeled `std::regex`
  * construction or usage site.
@@ -272,7 +265,6 @@ predicate regexMatchedAgainst(StringLiteral regex, Expr str) {
 // ---------------------------------------------------------------------------
 // Construction-site flags
 // ---------------------------------------------------------------------------
-
 /**
  * Holds if `ec` is a `std::regex_constants` enum constant with the given
  * unqualified name.
@@ -288,9 +280,7 @@ private predicate regexConstantsEnum(EnumConstant ec, string name) {
  * enum constant with the given `name`, possibly through implicit conversions.
  */
 private predicate refersToRegexConstant(Expr access, string name) {
-  exists(EnumConstantAccess eca |
-    eca = access.getAChild*() or eca = access
-  |
+  exists(EnumConstantAccess eca | eca = access.getAChild*() or eca = access |
     regexConstantsEnum(eca.getTarget(), name)
   )
 }
@@ -382,7 +372,6 @@ predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
 // ---------------------------------------------------------------------------
 // Grammar classification
 // ---------------------------------------------------------------------------
-
 /**
  * The `std::regex` grammar dialects that the C++ regex parser is aware of.
  *

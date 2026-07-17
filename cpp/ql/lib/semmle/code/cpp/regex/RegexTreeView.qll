@@ -27,7 +27,6 @@ RegExpTerm getParsedRegExp(StringLiteral re) { result.getRegex() = re and result
 // ---------------------------------------------------------------------------
 // newtype  TRegExpParent
 // ---------------------------------------------------------------------------
-
 /**
  * An element that is either a regex literal (the root of a parse tree) or a
  * regex term (a node in the parse tree).
@@ -48,9 +47,7 @@ private newtype TRegExpParent =
   /** An alternation (`a|b`). */
   TRegExpAlt(RegExp re, int start, int end) {
     re.alternation(start, end) and
-    exists(int part_end |
-      re.alternationOption(start, end, start, part_end) and part_end < end
-    ) // require at least two alternatives
+    exists(int part_end | re.alternationOption(start, end, start, part_end) and part_end < end) // require at least two alternatives
   } or
   /** A character class (`[...]`). */
   TRegExpCharacterClass(RegExp re, int start, int end) { re.charSet(start, end) } or
@@ -81,7 +78,6 @@ private newtype TRegExpParent =
 // ---------------------------------------------------------------------------
 // Helper: sequence children
 // ---------------------------------------------------------------------------
-
 pragma[nomagic]
 private int seqChildEnd(RegExp re, int start, int end, int i) {
   result = seqChild(re, start, end, i).getEnd()
@@ -110,13 +106,11 @@ private RegExpTerm seqChild(RegExp re, int start, int end, int i) {
 // ---------------------------------------------------------------------------
 // Module Impl  (implements RegexTreeViewSig)
 // ---------------------------------------------------------------------------
-
 /** An implementation that satisfies the `RegexTreeViewSig` signature. */
 module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
   // RegExpParent
   // -------------------------------------------------------------------------
-
   /**
    * An element containing a regular expression term: either the literal itself
    * or a term node.
@@ -150,16 +144,13 @@ module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
   // RegExpLiteral
   // -------------------------------------------------------------------------
-
   /** A string literal used as a regular expression. */
   class RegExpLiteral extends TRegExpLiteral, RegExpParent {
     RegExp re;
 
     RegExpLiteral() { this = TRegExpLiteral(re) }
 
-    override RegExpTerm getChild(int i) {
-      i = 0 and result.getRegex() = re and result.isRootTerm()
-    }
+    override RegExpTerm getChild(int i) { i = 0 and result.getRegex() = re and result.isRootTerm() }
 
     /**
      * Holds if dot `.` matches all characters including newlines.
@@ -204,7 +195,6 @@ module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
   // RegExpTerm (base class for all parse-tree nodes)
   // -------------------------------------------------------------------------
-
   /**
    * A regular expression term — a node in the parse tree of a regex literal.
    */
@@ -353,7 +343,6 @@ module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
   // Quantifiers
   // -------------------------------------------------------------------------
-
   /**
    * A quantified regular expression term (`a*`, `a+`, `a?`, `a{n,m}`, etc.).
    */
@@ -436,7 +425,6 @@ module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
   // Sequences and alternations
   // -------------------------------------------------------------------------
-
   /**
    * A sequence term — two or more items in a row.
    *
@@ -492,7 +480,6 @@ module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
   // Character escapes and normal characters
   // -------------------------------------------------------------------------
-
   /**
    * A normal character in a regular expression (including escape sequences).
    */
@@ -566,7 +553,6 @@ module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
   // Character classes  [...]
   // -------------------------------------------------------------------------
-
   /**
    * A character class in a regular expression (`[a-z]`, `[^0-9]`, etc.).
    */
@@ -712,7 +698,6 @@ module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
   // Special characters  (`.`, `^`, `$`, `\b`, `\B`)
   // -------------------------------------------------------------------------
-
   /**
    * A special (meta) character in a regular expression.
    *
@@ -801,7 +786,6 @@ module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
   // Groups (capturing, non-capturing, named, lookahead/lookbehind)
   // -------------------------------------------------------------------------
-
   /**
    * A grouped regular expression: `(...)`, `(?:...)`, `(?<name>...)`, or an
    * assertion group `(?=...)`, etc.
@@ -840,7 +824,6 @@ module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
   // Zero-width matches and sub-patterns (lookahead/lookbehind)
   // -------------------------------------------------------------------------
-
   /**
    * A zero-width match: an empty group or an assertion.
    */
@@ -905,7 +888,6 @@ module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
   // Back-references
   // -------------------------------------------------------------------------
-
   /**
    * A back-reference: `\1`, `\k<name>`.
    */
@@ -944,7 +926,6 @@ module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
   // RegExpConstant
   // -------------------------------------------------------------------------
-
   /**
    * A constant regular expression term — a sequence of characters that matches
    * a fixed string. Currently this is always a single character (or escape
@@ -976,14 +957,12 @@ module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
   // Top
   // -------------------------------------------------------------------------
-
   /** The common supertype of all regex-related elements. */
   class Top = RegExpParent;
 
   // -------------------------------------------------------------------------
   // Signature predicates
   // -------------------------------------------------------------------------
-
   /**
    * Holds if `term` is an escape class (e.g., `\d`), and `clazz` is the
    * character identifying the class (e.g., `"d"`).

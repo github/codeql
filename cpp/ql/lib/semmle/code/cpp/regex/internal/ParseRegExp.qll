@@ -40,7 +40,6 @@ private import semmle.code.cpp.regex.RegexFlowConfigs as RFC
 // ===========================================================================
 // Core: grammar-agnostic parser
 // ===========================================================================
-
 /**
  * A string literal used as a regular expression.
  *
@@ -78,7 +77,6 @@ abstract class RegExp extends StringLiteral {
   // predicates below MUST NOT re-derive these facts (in particular, must not
   // re-inspect backslashes to compute escaping) — they call the hooks.
   // ---------------------------------------------------------------------------
-
   /**
    * Dialect hook — overridden per grammar.
    *
@@ -283,7 +281,6 @@ abstract class RegExp extends StringLiteral {
   // ---------------------------------------------------------------------------
   // Shared helpers
   // ---------------------------------------------------------------------------
-
   /**
    * Shared helper: holds if position `index` is a decimal digit. Digit
    * recognition is grammar-independent.
@@ -301,7 +298,6 @@ abstract class RegExp extends StringLiteral {
   // this whole layer is grammar-agnostic and lives in the core. It only
   // consumes the `escapingChar` hook.
   // ---------------------------------------------------------------------------
-
   /**
    * Shared structural predicate.
    *
@@ -329,10 +325,7 @@ abstract class RegExp extends StringLiteral {
         this.getChar(start + 1) = "=" and kind = "equivalence" and mark = "="
       )
     |
-      end - 2 =
-        min(int i |
-          i > start + 1 and this.getChar(i) = mark and this.getChar(i + 1) = "]"
-        )
+      end - 2 = min(int i | i > start + 1 and this.getChar(i) = mark and this.getChar(i + 1) = "]")
     )
   }
 
@@ -420,15 +413,12 @@ abstract class RegExp extends StringLiteral {
    */
   private predicate classDelimiterAt(int pos) {
     (this.nonEscapedCharAt(pos) = "[" or this.nonEscapedCharAt(pos) = "]") and
-    not exists(int s, int e | this.posixBracketExpression(s, e, _) |
-      pos = s or pos = e - 1
-    )
+    not exists(int s, int e | this.posixBracketExpression(s, e, _) | pos = s or pos = e - 1)
   }
 
   // ---------------------------------------------------------------------------
   // Character classes (shared structural layer)
   // ---------------------------------------------------------------------------
-
   /**
    * Shared structural predicate.
    *
@@ -505,7 +495,8 @@ abstract class RegExp extends StringLiteral {
       // Terminate at the first non-escaped `]` that is NOT the inner `]` of a
       // POSIX bracket sub-expression (so `[[:alpha:]]` closes at the outer
       // `]`, not at the `]` of `:alpha:]`).
-      end - 1 = min(int i | this.classDelimiterAt(i) and this.nonEscapedCharAt(i) = "]" and inner_start < i)
+      end - 1 =
+        min(int i | this.classDelimiterAt(i) and this.nonEscapedCharAt(i) = "]" and inner_start < i)
     )
   }
 
@@ -608,7 +599,6 @@ abstract class RegExp extends StringLiteral {
   // ---------------------------------------------------------------------------
   // Characters and tokenization (shared structural layer)
   // ---------------------------------------------------------------------------
-
   /** Shared structural predicate. Gets the non-escaped character at position `i`, if any. */
   string nonEscapedCharAt(int i) {
     result = this.getText().charAt(i) and
@@ -719,7 +709,6 @@ abstract class RegExp extends StringLiteral {
   // ---------------------------------------------------------------------------
   // Qualified items, groups, sequences and alternations (shared structural layer)
   // ---------------------------------------------------------------------------
-
   /**
    * Shared structural predicate.
    * Holds if `[start, end)` is a qualified item (base item + quantifier).
@@ -907,7 +896,6 @@ abstract class RegExp extends StringLiteral {
   // ---------------------------------------------------------------------------
   // Failure to parse
   // ---------------------------------------------------------------------------
-
   /**
    * Shared structural predicate.
    * Holds if the character at position `i` could not be parsed as part of any
@@ -926,7 +914,6 @@ abstract class RegExp extends StringLiteral {
 // ===========================================================================
 // ECMAScript dialect
 // ===========================================================================
-
 /**
  * The ECMAScript-grammar concrete `RegExp` implementation. Supplies all
  * dialect hooks with the ECMAScript token-recognition behavior.
@@ -946,7 +933,6 @@ class EcmaRegExp extends RegExp {
   // ---------------------------------------------------------------------------
   // Escaping
   // ---------------------------------------------------------------------------
-
   /**
    * Helper predicate for `escapingChar`.
    * Returns `true` if the character at position `pos` is an active backslash
@@ -966,7 +952,6 @@ class EcmaRegExp extends RegExp {
   // ---------------------------------------------------------------------------
   // Escaped characters
   // ---------------------------------------------------------------------------
-
   override predicate escapedCharacter(int start, int end) {
     this.escapingChar(start) and
     not this.numbered_backreference(start, _, _) and
@@ -1001,7 +986,6 @@ class EcmaRegExp extends RegExp {
   // ---------------------------------------------------------------------------
   // Special (meta) characters
   // ---------------------------------------------------------------------------
-
   /**
    * Holds if the character at `[start, end)` is a special (metacharacter) in
    * ECMAScript regex syntax. `char` is the canonical representation.
@@ -1027,7 +1011,6 @@ class EcmaRegExp extends RegExp {
   // ---------------------------------------------------------------------------
   // Quantifiers
   // ---------------------------------------------------------------------------
-
   /**
    * Holds if a repetition quantifier spans `[start, end)`, with `maybe_empty`
    * indicating whether zero repetitions are possible, and `may_repeat_forever`
@@ -1096,16 +1079,15 @@ class EcmaRegExp extends RegExp {
   // ---------------------------------------------------------------------------
   // Groups
   // ---------------------------------------------------------------------------
-
   override predicate isOptionDivider(int i) { this.nonEscapedCharAt(i) = "|" }
 
   override predicate isGroupEnd(int i) { this.nonEscapedCharAt(i) = ")" and not this.inCharSet(i) }
 
-  override predicate group_end(int start, int end) {
-    this.isGroupEnd(start) and end = start + 1
-  }
+  override predicate group_end(int start, int end) { this.isGroupEnd(start) and end = start + 1 }
 
-  override predicate isGroupStart(int i) { this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i) }
+  override predicate isGroupStart(int i) {
+    this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i)
+  }
 
   override predicate group_start(int start, int end) {
     this.non_capturing_group_start(start, end)
@@ -1203,14 +1185,14 @@ class EcmaRegExp extends RegExp {
     not this.negative_lookbehind_assertion_start(start, _) and
     result =
       count(int i |
-        this.group(i, _) and
-        i < start and
-        not this.non_capturing_group_start(i, _) and
-        not this.lookahead_assertion_start(i, _) and
-        not this.negative_lookahead_assertion_start(i, _) and
-        not this.lookbehind_assertion_start(i, _) and
-        not this.negative_lookbehind_assertion_start(i, _)
-      ) + 1
+          this.group(i, _) and
+          i < start and
+          not this.non_capturing_group_start(i, _) and
+          not this.lookahead_assertion_start(i, _) and
+          not this.negative_lookahead_assertion_start(i, _) and
+          not this.lookbehind_assertion_start(i, _) and
+          not this.negative_lookbehind_assertion_start(i, _)
+        ) + 1
   }
 
   /**
@@ -1228,7 +1210,6 @@ class EcmaRegExp extends RegExp {
   // ---------------------------------------------------------------------------
   // Back-references
   // ---------------------------------------------------------------------------
-
   /**
    * Holds if a numbered back-reference `\1`..`\9` (or `\10` etc.) spans
    * `[start, end)` with value `value`.
@@ -1291,7 +1272,6 @@ class EcmaRegExp extends RegExp {
 // ===========================================================================
 // POSIX Extended Regular Expressions (ERE) dialect
 // ===========================================================================
-
 /**
  * The POSIX Extended Regular Expressions concrete `RegExp` implementation.
  * Supplies all dialect hooks with the ERE token-recognition behavior.
@@ -1335,7 +1315,6 @@ class EreRegExp extends RegExp {
   // ---------------------------------------------------------------------------
   // Escaping
   // ---------------------------------------------------------------------------
-
   /**
    * Helper predicate for `escapingChar`.
    * Returns `true` if the character at position `pos` is an active backslash
@@ -1358,7 +1337,6 @@ class EreRegExp extends RegExp {
   // ERE has no numeric, hex, unicode, or octal escapes and no back-references.
   // Every `\X` is a simple two-character escape yielding a literal X.
   // ---------------------------------------------------------------------------
-
   override predicate escapedCharacter(int start, int end) {
     this.escapingChar(start) and
     exists(this.getChar(start + 1)) and
@@ -1371,7 +1349,6 @@ class EreRegExp extends RegExp {
   // ERE has only the position-assertion / wildcard specials `^`, `$`, `.`.
   // There are no word-boundary escapes `\b` / `\B`.
   // ---------------------------------------------------------------------------
-
   override predicate specialCharacter(int start, int end, string char) {
     not this.inCharSet(start) and
     this.character(start, end) and
@@ -1385,7 +1362,6 @@ class EreRegExp extends RegExp {
   //
   // ERE has no lazy suffix, so `qualifier` and `short_qualifier` coincide.
   // ---------------------------------------------------------------------------
-
   override predicate qualifier(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
     this.short_qualifier(start, end, maybe_empty, may_repeat_forever)
   }
@@ -1443,16 +1419,15 @@ class EreRegExp extends RegExp {
   // ERE has only simple capturing groups `(...)`. It has no `(?:...)`,
   // no `(?<name>...)`, and no look-around forms.
   // ---------------------------------------------------------------------------
-
   override predicate isOptionDivider(int i) { this.nonEscapedCharAt(i) = "|" }
 
   override predicate isGroupEnd(int i) { this.nonEscapedCharAt(i) = ")" and not this.inCharSet(i) }
 
-  override predicate group_end(int start, int end) {
-    this.isGroupEnd(start) and end = start + 1
-  }
+  override predicate group_end(int start, int end) { this.isGroupEnd(start) and end = start + 1 }
 
-  override predicate isGroupStart(int i) { this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i) }
+  override predicate isGroupStart(int i) {
+    this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i)
+  }
 
   override predicate group_start(int start, int end) { this.simple_group_start(start, end) }
 
@@ -1497,7 +1472,6 @@ class EreRegExp extends RegExp {
   //
   // ERE has no back-references (neither numbered nor named).
   // ---------------------------------------------------------------------------
-
   override predicate numbered_backreference(int start, int end, int value) { none() }
 
   override predicate named_backreference(int start, int end, string name) { none() }
@@ -1512,7 +1486,6 @@ class EreRegExp extends RegExp {
 // ===========================================================================
 // POSIX Basic Regular Expressions (BRE) dialect
 // ===========================================================================
-
 /**
  * The POSIX Basic Regular Expressions concrete `RegExp` implementation.
  * Supplies all dialect hooks with the BRE token-recognition behavior.
@@ -1564,7 +1537,6 @@ class BreRegExp extends RegExp {
   // ---------------------------------------------------------------------------
   // Escaping
   // ---------------------------------------------------------------------------
-
   /**
    * Helper predicate for `escapingChar`. Boolean-valued to avoid negation
    * in recursive calls; mirrors the ERE / ECMAScript backslash-parity rule.
@@ -1589,7 +1561,6 @@ class BreRegExp extends RegExp {
   // sequences, otherwise `\(` would be misread as a literal `(` and the
   // group would vanish.
   // ---------------------------------------------------------------------------
-
   override predicate escapedCharacter(int start, int end) {
     this.escapingChar(start) and
     exists(string next | next = this.getChar(start + 1) |
@@ -1610,7 +1581,6 @@ class BreRegExp extends RegExp {
   // start of a subexpression, `$` only at the end. Elsewhere they are
   // literal characters.
   // ---------------------------------------------------------------------------
-
   /**
    * Holds if position `start` is the start of a subexpression: either the
    * start of the whole regex, or immediately after a `\(` group-open
@@ -1657,7 +1627,6 @@ class BreRegExp extends RegExp {
   // interval `\{n\}` / `\{n,\}` / `\{n,m\}` form. `+` and `?` are literal
   // characters. There is no lazy suffix.
   // ---------------------------------------------------------------------------
-
   override predicate qualifier(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
     this.short_qualifier(start, end, maybe_empty, may_repeat_forever)
   }
@@ -1716,7 +1685,6 @@ class BreRegExp extends RegExp {
   // BRE has only `\(...\)` capturing groups. There are no non-capturing,
   // named, or look-around forms. No alternation operator either.
   // ---------------------------------------------------------------------------
-
   /** POSIX BRE has no alternation operator; bare `|` is a literal. */
   override predicate isOptionDivider(int i) { none() }
 
@@ -1743,9 +1711,7 @@ class BreRegExp extends RegExp {
     not this.inCharSet(i)
   }
 
-  override predicate group_end(int start, int end) {
-    this.isGroupEnd(start) and end = start + 2
-  }
+  override predicate group_end(int start, int end) { this.isGroupEnd(start) and end = start + 2 }
 
   override predicate group_start(int start, int end) { this.simple_group_start(start, end) }
 
@@ -1791,7 +1757,6 @@ class BreRegExp extends RegExp {
   // BRE supports numbered back-references `\1` .. `\9` (single digit only).
   // There are no named back-references.
   // ---------------------------------------------------------------------------
-
   override predicate numbered_backreference(int start, int end, int value) {
     this.escapingChar(start) and
     this.isDecimalDigit(start + 1) and
