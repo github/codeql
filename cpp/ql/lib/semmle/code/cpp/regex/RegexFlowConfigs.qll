@@ -375,6 +375,57 @@ predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
   )
 }
 
+// ---------------------------------------------------------------------------
+// Grammar classification
+// ---------------------------------------------------------------------------
+
+/**
+ * The `std::regex` grammar dialects that the C++ regex parser is aware of.
+ *
+ * - `Ecma()`  — ECMAScript, the default grammar used by `std::regex` and the
+ *              only grammar currently parsed. Selected either implicitly
+ *              (no explicit grammar flag) or explicitly via
+ *              `std::regex_constants::ECMAScript`.
+ * - `Bre()`   — POSIX Basic Regular Expressions (selected via the `basic` or
+ *              `grep` flags).
+ * - `Ere()`   — POSIX Extended Regular Expressions (selected via the
+ *              `extended`, `egrep`, or `awk` flags).
+ *
+ * `Bre()` and `Ere()` are scaffolding for future phases that will add POSIX
+ * grammar support. Today the parser still excludes non-ECMAScript regexes
+ * (see `hasNonEcmaScriptGrammarFlag`), so in practice every parsed regex
+ * classifies as `Ecma()` and only the `Ecma()` branch of `regexGrammar` is
+ * exercised — the `Bre()`/`Ere()` branches exist purely so the classifier
+ * agrees with the flag-detection helpers below.
+ */
+newtype TRegexGrammar =
+  Ecma() or
+  Bre() or
+  Ere()
+
+/**
+ * Gets the `std::regex` grammar dialect of `regex`, inferred from its
+ * construction-site `syntax_option_type` flag argument (if any).
+ *
+ * The mapping is:
+ *   - `basic` / `grep`              → `Bre()`
+ *   - `extended` / `egrep` / `awk`  → `Ere()`
+ *   - anything else (default, explicit `ECMAScript`, or unresolved) → `Ecma()`
+ *
+ * Because the parser still gates on `not hasNonEcmaScriptGrammarFlag`, every
+ * literal that is actually parsed today classifies as `Ecma()`. The
+ * `Bre()`/`Ere()` cases are defined only so the classifier is complete for
+ * later phases; those branches are not exercised by the current parser.
+ */
+TRegexGrammar regexGrammar(StringLiteral regex) {
+  if containsRegexFlag(getConstructionFlagArg(regex), ["basic", "grep"])
+  then result = Bre()
+  else
+    if containsRegexFlag(getConstructionFlagArg(regex), ["extended", "egrep", "awk"])
+    then result = Ere()
+    else result = Ecma()
+}
+
 /**
  * Holds if `regex` is constructed with an explicit ECMAScript grammar flag.
  * This is the default, and also the case that the Phase 1 parser handles.
