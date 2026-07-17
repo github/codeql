@@ -121,6 +121,13 @@ fn member_chain(
     )
 }
 
+/// Compound-assignment operator spellings (`+=`, `<<=`, ...). Used to tell a
+/// compound assignment from an ordinary binary application, both of which
+/// arrive as a `binaryOperator`-based `infixOperatorExpr`.
+const COMPOUND_ASSIGN_OPS: &[&str] = &[
+    "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "|=", "^=", "&+=", "&-=", "&*=",
+];
+
 fn translation_rules() -> Vec<Rule<SwiftContext>> {
     vec![
         // ---- Top-level ----
@@ -159,55 +166,56 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // `name_expr` too.
         rule!((discardAssignmentExpr wildcard: @@w) => (name_expr identifier: (identifier #{w}))),
         // ---- Operators ----
-        // All binary operators share the lhs/op/rhs shape.
-        rule!((additive_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((multiplicative_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((comparison_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((equality_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((conjunction_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((disjunction_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((infix_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        // Range expression `a..<b` / `a...b`
-        rule!((range_expression start: @l op: @op end: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        // Open-ended ranges `a...` / `...b`
-        rule!((open_end_range_expression start: @l) => (unary_expr operator: (postfix_operator "...") operand: {l})),
-        rule!((open_start_range_expression end: @r) => (unary_expr operator: (prefix_operator "...") operand: {r})),
-        // Custom operator declaration: `[prefix|infix|postfix] operator OP [: PrecedenceGroup]`.
-        // The fixity keyword is an anonymous child of `operator_declaration`, so we
-        // dispatch on it with one rule per keyword.
+        // The parser front-end folds operator chains into nested
+        // `infixOperatorExpr`s by precedence (see swift-syntax-rs), so
+        // `1 + 2 * 3` arrives here already structured.
+        //
+        // A `binaryOperatorExpr` wraps the operator token; unwrap it to the
+        // operator leaf. Used by `infixOperatorExpr` (folded) and `sequenceExpr`
+        // (unresolved).
+        rule!((binaryOperatorExpr operator: @op) => (infix_operator #{op})),
+        // Compound assignment (`x += y`) vs. an ordinary binary application
+        // (`a + b`): both are `binaryOperator`-based `infixOperatorExpr`s,
+        // distinguishable only by the operator's spelling. The query engine
+        // can't match on token text, so a small Rust block reads the spelling
+        // and routes to `compound_assign_expr` or `binary_expr`. The operator
+        // is captured raw (`@@op`) to read its spelling.
         rule!(
-            (operator_declaration "prefix" (referenceable_operator _ @op) (simple_identifier)? @prec)
+            (infixOperatorExpr leftOperand: @l operator: (binaryOperatorExpr) @@op rightOperand: @r)
             =>
-            (operator_syntax_declaration name: (identifier #{op}) fixity: (fixity "prefix") precedence: {prec})
+            expr {
+                if COMPOUND_ASSIGN_OPS.contains(&ctx.source_text(op).as_str()) {
+                    tree!((compound_assign_expr target: {l} operator: (infix_operator #{op}) value: {r}))
+                } else {
+                    tree!((binary_expr left: {l} operator: (infix_operator #{op}) right: {r}))
+                }
+            }
         ),
+        // Plain assignment (`x = y`). In a folded chain the `=` is an
+        // `assignmentExpr` node (distinct from other operators), matched by kind.
         rule!(
-            (operator_declaration "postfix" (referenceable_operator _ @op) (simple_identifier)? @prec)
+            (infixOperatorExpr leftOperand: @l operator: (assignmentExpr) rightOperand: @r)
             =>
-            (operator_syntax_declaration name: (identifier #{op}) fixity: (fixity "postfix") precedence: {prec})
+            (assign_expr target: {l} value: {r})
         ),
-        rule!(
-            (operator_declaration "infix" (referenceable_operator _ @op) (simple_identifier)? @prec)
-            =>
-            (operator_syntax_declaration
-                name: (identifier #{op})
-                fixity: (fixity "infix")
-                precedence: {prec})
-        ),
-        rule!((bitwise_operation lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((nil_coalescing_expression value: @l if_nil: @r) => (binary_expr left: {l} operator: (infix_operator "??") right: {r})),
-        // Leading-dot member shorthand (e.g. `.some`, `.foo`) means member access
-        // on a contextually inferred type.
-        rule!((prefix_expression operation: "." target: @member) => (member_access_expr base: (inferred_type_expr) member: (identifier #{member}))),
-        // Prefix unary operators
-        rule!((prefix_expression operation: @op target: @operand) => (unary_expr operator: (prefix_operator #{op}) operand: {operand})),
-        // Postfix unary operators
-        rule!((postfix_expression operation: @op target: @operand) => (unary_expr operator: (postfix_operator #{op}) operand: {operand})),
-        // TODO: Parenthesised single-value tuple is a grouping expression and should pass through.
-        // Multi-value tuples become tuple_expr.
-        rule!((tuple_expression value: _* @v) => (tuple_expr element: {v})),
-        // Blocks contain statement* directly.
-        rule!((block statement: _+ @stmts) => (block stmt: {stmts})),
-        rule!((block) => (block)),
+        // Escape hatch: an operator chain the front-end could not resolve
+        // (because it uses an operator of unknown precedence, e.g. imported from
+        // another module) stays a flat `sequenceExpr`. Preserve it as an
+        // `unresolved_operator_sequence` whose elements alternate operands and
+        // infix operators, rather than guessing a structure.
+        rule!((sequenceExpr elements: _* @els) => (unresolved_operator_sequence element: {els})),
+        // Prefix unary operators (`!a`, `-x`).
+        rule!((prefixOperatorExpr operator: @op expression: @operand) => (unary_expr operator: (prefix_operator #{op}) operand: {operand})),
+        // A `tupleExpr` is a tuple literal (`(a, b)`) or a parenthesised
+        // expression (`(x)`). For now it is kept as an opaque `tuple_expr` leaf
+        // (its source text); its elements are not descended into.
+        //
+        // TODO: a parenthesised single-element `tupleExpr` is really a grouping
+        // expression and should be elided (unwrapped to its inner expression)
+        // rather than modelled as a tuple.
+        rule!((tupleExpr) => (tuple_expr)),
+        // A code block contains its statements directly.
+        rule!((codeBlock statements: _* @stmts) => (block stmt: {stmts})),
         // ---- Variables ----
         // property_binding rules — these produce variable_declaration and/or accessor_declaration
         // nodes for individual declarators. The outer property_declaration rule splices these out
@@ -441,22 +449,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 result
             }
         ),
-        // Plain assignment: `x = expr`
-        rule!(
-            (assignment operator: "=" target: (directly_assignable_expression expr: @target) result: @value)
-            =>
-            (assign_expr target: {target} value: {value})
-        ),
-        // Compound assignment: `x += expr` etc.
-        rule!(
-            (assignment operator: @op target: (directly_assignable_expression expr: @target) result: @value)
-            =>
-            (compound_assign_expr target: {target} operator: (infix_operator #{op}) value: {value})
-        ),
         // Unwrap `type` wrapper node
         rule!((type name: @inner) => type_expr { inner }),
-        // `directly_assignable_expression` is just a wrapper; unwrap it
-        rule!((directly_assignable_expression expr: @inner) => expr { inner }),
         // Pattern with bound_identifier → name_pattern.
         rule!(
             (pattern bound_identifier: @name)
