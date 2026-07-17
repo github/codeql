@@ -227,8 +227,13 @@ int main(int argc, char** argv) {
 
     // BAD: exponential regex with icase — case-insensitivity does not suppress the alert.
     { std::regex re("^([a-z]+)+$", std::regex_constants::icase); run(re, input); }
-    // GOOD: BRE grammar (basic) is not yet modelled by the parser and is
-    // excluded by the `RegExp` characteristic predicate.
+    // BAD: BRE grammar (`basic`) is modelled by the parser (`BreRegExp`,
+    // Phase D) and is backtracking-eligible, so the nested-quantifier is
+    // reported as exponential. Note that `(...)` in BRE is *literal* — the
+    // `\(...\)` form used in Section 12 below is the actual group syntax.
+    // Here `(a+)+` parses in BRE as: literal `(`, literal `a`, literal `+`,
+    // literal `)`, literal `+` — no backtracking risk, so it is *not*
+    // flagged (the group-and-quantifier structure disappears).
     { std::regex re("^(a+)+$", std::regex_constants::basic); run(re, input); }
     // BAD: extended selects the ERE grammar (modelled by `EreRegExp` since
     // Phase C) and is backtracking-eligible, so the shared engine reports
@@ -238,7 +243,10 @@ int main(int argc, char** argv) {
     // ReDoS queries by `isBacktrackingEngine` (POSIX tool-style engines are
     // treated as linear-time), *not* by any parsing/grammar difference.
     { std::regex re("^(a+)+$", std::regex_constants::awk); run(re, input); }
-    // GOOD: grep selects BRE and, like `basic`, is not yet parsed.
+    // GOOD: grep selects BRE (`BreRegExp`, Phase D) — the pattern is
+    // parsed, but `grep` is excluded from ReDoS analysis by
+    // `isBacktrackingEngine`. (Regardless of the parse: as noted above,
+    // `(a+)+` under BRE is all literals anyway.)
     { std::regex re("^(a+)+$", std::regex_constants::grep); run(re, input); }
     // GOOD: egrep parses as ERE (same as `extended`) but is excluded from
     // the ReDoS queries by `isBacktrackingEngine`, *not* by any
@@ -273,13 +281,12 @@ int main(int argc, char** argv) {
     // 10. Non-backtracking POSIX tool-style grammars (`awk`, `grep`, `egrep`)
     //     combined with other flags via bitwise-OR.
     //
-    // Regression guard for the `isBacktrackingEngine` gate: `awk` and
-    // `egrep` are parsed as ERE (`EreRegExp`, Phase C) — structurally the
-    // same tree the `extended` positive cases above are analyzed with — so
-    // suppression here is exclusively due to `isBacktrackingEngine`, not
-    // any parsing/grammar difference. `grep` still selects BRE and is
-    // additionally unparsed until BRE support lands, but the query-level
-    // gate would suppress it regardless.
+    // Regression guard for the `isBacktrackingEngine` gate: `awk`,
+    // `egrep`, and `grep` are all parsed (`awk`/`egrep` as ERE via
+    // `EreRegExp` in Phase C; `grep` as BRE via `BreRegExp` in Phase D)
+    // — the same trees the `extended`/`basic` positive cases would be
+    // analysed with — so suppression here is exclusively due to
+    // `isBacktrackingEngine`, not any parsing/grammar difference.
     //
     // The equivalent default-grammar (ECMAScript) patterns in section 2
     // above fire, showing that the gate — not some unrelated exclusion —
@@ -334,6 +341,47 @@ int main(int argc, char** argv) {
     { std::regex re("^([a-z]+)+$",
                     (std::regex_constants::syntax_option_type)
                     (std::regex_constants::egrep | std::regex_constants::icase));
+      run(re, input); }
+
+    // -------------------------------------------------------------------------
+    // 12. End-to-end BRE-grammar coverage for cpp/redos.
+    //
+    // These cases exercise the BRE parser (Phase D, `BreRegExp`) end-to-end
+    // through the shared backtracking engine. Both flags below (`basic`,
+    // `grep`) select the *same* grammar (BRE) and therefore produce
+    // structurally-identical parse trees for the same pattern string — the
+    // only axis they differ on is `isBacktrackingEngine`:
+    //
+    //   * `basic` → BRE + backtracking-eligible → flagged.
+    //   * `grep`  → BRE + non-backtracking     → NOT flagged.
+    //
+    // BRE inverts the group / metacharacter convention relative to
+    // ERE/ECMAScript: `\(...\)` are groups (bare `(...)` are literals),
+    // `\{n,\}` is the interval quantifier (bare `{...}` is literal). The
+    // pattern below is the BRE spelling of the ECMAScript exponential
+    // shape `([a-z]+)+`. It uses only BRE-legal constructs (`\(...\)`
+    // groups, `*` unlimited-repetition quantifier, a character class) so
+    // its BRE parse tree is structurally equivalent to the ECMAScript one.
+    // -------------------------------------------------------------------------
+
+    // BAD: BRE grammar via `basic` — parsed as BRE and backtracking-eligible.
+    // `\(a*\)*` is a classic nested-quantifier exponential shape under
+    // BRE: the outer `\(...\)` is the group syntax, and both `*`s are
+    // quantifiers on ambiguous content (the inner `a*` can consume any
+    // prefix of a run of `a`s and the outer `*` can partition the run in
+    // exponentially many ways). BRE has no `+`, so this is the BRE
+    // analogue of the ECMAScript `^(a*)*$` (or the more familiar
+    // `^(a+)+$`) shape.
+    { std::regex re("^\\(a*\\)*$", std::regex_constants::basic); run(re, input); }
+    // GOOD: same pattern under `grep` — parses identically as BRE but
+    // excluded by `isBacktrackingEngine`.
+    { std::regex re("^\\(a*\\)*$", std::regex_constants::grep); run(re, input); }
+    // GOOD: `grep | icase` bitwise-OR combination — still BRE-parsed and
+    // still excluded by `isBacktrackingEngine`; case-folding does not
+    // re-enable the backtracking-engine gate.
+    { std::regex re("^\\(a*\\)*$",
+                    (std::regex_constants::syntax_option_type)
+                    (std::regex_constants::grep | std::regex_constants::icase));
       run(re, input); }
 
     return 0;

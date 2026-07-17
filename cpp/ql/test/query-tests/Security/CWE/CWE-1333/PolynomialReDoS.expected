@@ -7,14 +7,15 @@ edges
 | test.cpp:107:27:107:30 | **argv | test.cpp:192:28:192:32 | *input | provenance | TaintFunction |
 | test.cpp:107:27:107:30 | **argv | test.cpp:279:27:279:31 | *input | provenance | TaintFunction |
 | test.cpp:107:27:107:30 | **argv | test.cpp:308:28:308:32 | *input | provenance | TaintFunction |
-| test.cpp:107:27:107:30 | **argv | test.cpp:323:28:323:32 | *input | provenance | TaintFunction |
-| test.cpp:107:27:107:30 | **argv | test.cpp:353:27:353:31 | *input | provenance | TaintFunction |
+| test.cpp:107:27:107:30 | **argv | test.cpp:328:28:328:32 | *input | provenance | TaintFunction |
 | test.cpp:107:27:107:30 | **argv | test.cpp:360:27:360:31 | *input | provenance | TaintFunction |
-| test.cpp:107:27:107:30 | **argv | test.cpp:432:26:432:30 | *input | provenance | TaintFunction |
-| test.cpp:107:27:107:30 | **argv | test.cpp:496:28:496:32 | *input | provenance | TaintFunction |
-| test.cpp:380:27:380:57 | *call to getenv | test.cpp:380:27:380:57 | *call to getenv | provenance |  |
-| test.cpp:380:27:380:57 | *call to getenv | test.cpp:383:28:383:28 | *s | provenance | TaintFunction |
-| test.cpp:391:20:391:22 | fread output argument | test.cpp:394:28:394:28 | *s | provenance | TaintFunction |
+| test.cpp:107:27:107:30 | **argv | test.cpp:367:27:367:31 | *input | provenance | TaintFunction |
+| test.cpp:107:27:107:30 | **argv | test.cpp:439:26:439:30 | *input | provenance | TaintFunction |
+| test.cpp:107:27:107:30 | **argv | test.cpp:502:28:502:32 | *input | provenance | TaintFunction |
+| test.cpp:107:27:107:30 | **argv | test.cpp:550:28:550:32 | *input | provenance | TaintFunction |
+| test.cpp:387:27:387:57 | *call to getenv | test.cpp:387:27:387:57 | *call to getenv | provenance |  |
+| test.cpp:387:27:387:57 | *call to getenv | test.cpp:390:28:390:28 | *s | provenance | TaintFunction |
+| test.cpp:398:20:398:22 | fread output argument | test.cpp:401:28:401:28 | *s | provenance | TaintFunction |
 nodes
 | test.cpp:107:27:107:30 | **argv | semmle.label | **argv |
 | test.cpp:117:28:117:32 | *input | semmle.label | *input |
@@ -25,16 +26,17 @@ nodes
 | test.cpp:192:28:192:32 | *input | semmle.label | *input |
 | test.cpp:279:27:279:31 | *input | semmle.label | *input |
 | test.cpp:308:28:308:32 | *input | semmle.label | *input |
-| test.cpp:323:28:323:32 | *input | semmle.label | *input |
-| test.cpp:353:27:353:31 | *input | semmle.label | *input |
+| test.cpp:328:28:328:32 | *input | semmle.label | *input |
 | test.cpp:360:27:360:31 | *input | semmle.label | *input |
-| test.cpp:380:27:380:57 | *call to getenv | semmle.label | *call to getenv |
-| test.cpp:380:27:380:57 | *call to getenv | semmle.label | *call to getenv |
-| test.cpp:383:28:383:28 | *s | semmle.label | *s |
-| test.cpp:391:20:391:22 | fread output argument | semmle.label | fread output argument |
-| test.cpp:394:28:394:28 | *s | semmle.label | *s |
-| test.cpp:432:26:432:30 | *input | semmle.label | *input |
-| test.cpp:496:28:496:32 | *input | semmle.label | *input |
+| test.cpp:367:27:367:31 | *input | semmle.label | *input |
+| test.cpp:387:27:387:57 | *call to getenv | semmle.label | *call to getenv |
+| test.cpp:387:27:387:57 | *call to getenv | semmle.label | *call to getenv |
+| test.cpp:390:28:390:28 | *s | semmle.label | *s |
+| test.cpp:398:20:398:22 | fread output argument | semmle.label | fread output argument |
+| test.cpp:401:28:401:28 | *s | semmle.label | *s |
+| test.cpp:439:26:439:30 | *input | semmle.label | *input |
+| test.cpp:502:28:502:32 | *input | semmle.label | *input |
+| test.cpp:550:28:550:32 | *input | semmle.label | *input |
 subpaths
 #select
 | test.cpp:117:28:117:32 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:117:28:117:32 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:116:29:116:31 | \\s+ | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
@@ -46,10 +48,12 @@ subpaths
 | test.cpp:192:28:192:32 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:192:28:192:32 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:191:29:191:31 | \\s+ | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
 | test.cpp:279:27:279:31 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:279:27:279:31 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:278:29:278:31 | \\s+ | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
 | test.cpp:308:28:308:32 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:308:28:308:32 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:307:29:307:31 | \\s+ | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
-| test.cpp:323:28:323:32 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:323:28:323:32 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:322:29:322:31 | \\s+ | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
-| test.cpp:353:27:353:31 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:353:27:353:31 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of '9'. | test.cpp:352:25:352:27 | \\d+ | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
-| test.cpp:360:27:360:31 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:360:27:360:31 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of 'a'. | test.cpp:359:26:359:27 | .* | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
-| test.cpp:383:28:383:28 | *s | test.cpp:380:27:380:57 | *call to getenv | test.cpp:383:28:383:28 | *s | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:382:29:382:31 | \\s+ | regular expression | test.cpp:380:27:380:57 | *call to getenv | user-provided value |
-| test.cpp:394:28:394:28 | *s | test.cpp:391:20:391:22 | fread output argument | test.cpp:394:28:394:28 | *s | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:393:29:393:31 | \\s+ | regular expression | test.cpp:391:20:391:22 | fread output argument | user-provided value |
-| test.cpp:432:26:432:30 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:432:26:432:30 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of 'a'. | test.cpp:431:25:431:26 | a+ | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
-| test.cpp:496:28:496:32 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:496:28:496:32 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:495:29:495:31 | \\s+ | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
+| test.cpp:328:28:328:32 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:328:28:328:32 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:327:29:327:31 | \\s+ | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
+| test.cpp:360:27:360:31 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:360:27:360:31 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of '9'. | test.cpp:359:25:359:27 | \\d+ | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
+| test.cpp:367:27:367:31 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:367:27:367:31 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of 'a'. | test.cpp:366:26:366:27 | .* | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
+| test.cpp:390:28:390:28 | *s | test.cpp:387:27:387:57 | *call to getenv | test.cpp:390:28:390:28 | *s | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:389:29:389:31 | \\s+ | regular expression | test.cpp:387:27:387:57 | *call to getenv | user-provided value |
+| test.cpp:401:28:401:28 | *s | test.cpp:398:20:398:22 | fread output argument | test.cpp:401:28:401:28 | *s | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:400:29:400:31 | \\s+ | regular expression | test.cpp:398:20:398:22 | fread output argument | user-provided value |
+| test.cpp:439:26:439:30 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:439:26:439:30 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of 'a'. | test.cpp:438:25:438:26 | a+ | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
+| test.cpp:502:28:502:32 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:502:28:502:32 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:501:29:501:31 | \\s+ | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
+| test.cpp:550:28:550:32 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:550:28:550:32 | *input | This $@ that depends on a $@ may run slow on strings starting with ' ' and with many repetitions of ' '. | test.cpp:548:43:548:59 | [[:space:]]\\{1,\\} | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |
+| test.cpp:550:28:550:32 | *input | test.cpp:107:27:107:30 | **argv | test.cpp:550:28:550:32 | *input | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.cpp:548:24:548:40 | [[:space:]]\\{1,\\} | regular expression | test.cpp:107:27:107:30 | **argv | user-provided value |

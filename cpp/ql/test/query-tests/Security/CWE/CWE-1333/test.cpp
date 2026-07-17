@@ -308,8 +308,13 @@ int main(int argc, char** argv) {
         std::regex_replace(input, re, std::string(""));
     }
 
-    // GOOD: BRE grammar (basic) is not yet modelled by the parser and is
-    // excluded by the `RegExp` characteristic predicate.
+    // GOOD: BRE grammar (`basic`) is now modelled by the parser
+    // (`BreRegExp`, Phase D). Under BRE, the pattern `^\s+|\s+$` parses
+    // as: `^` anchor, literal `\s`, literal `+`, literal `|`, literal
+    // `\s`, literal `+`, `$` anchor — there is no `+` quantifier in BRE
+    // (bare `+` is a literal) and no `|` alternation, so the polynomial
+    // shape disappears and the pattern is not flagged. (See Section 12
+    // below for the proper BRE spelling with `\{1,\}` intervals.)
     {
         std::regex re("^\\s+|\\s+$", std::regex_constants::basic);
         std::regex_replace(input, re, std::string(""));
@@ -329,7 +334,9 @@ int main(int argc, char** argv) {
         std::regex re("^\\s+|\\s+$", std::regex_constants::awk);
         std::regex_replace(input, re, std::string(""));
     }
-    // GOOD: grep selects BRE and, like `basic`, is not yet parsed.
+    // GOOD: grep selects BRE (`BreRegExp`, Phase D) — the pattern is
+    // parsed, but `grep` is excluded from the polynomial-ReDoS query by
+    // `isBacktrackingEngine`.
     {
         std::regex re("^\\s+|\\s+$", std::regex_constants::grep);
         std::regex_replace(input, re, std::string(""));
@@ -436,13 +443,12 @@ int main(int argc, char** argv) {
     // 11. Non-backtracking POSIX tool-style grammars (`awk`, `grep`, `egrep`)
     //     combined with other flags via bitwise-OR.
     //
-    // Regression guard for the `isBacktrackingEngine` gate: `awk` and
-    // `egrep` are parsed as ERE (`EreRegExp`, Phase C) — structurally the
-    // same tree the `extended` positive cases above are analyzed with — so
-    // suppression here is exclusively due to `isBacktrackingEngine`, not
-    // any parsing/grammar difference. `grep` still selects BRE and is
-    // additionally unparsed until BRE support lands, but the query-level
-    // gate would suppress it regardless.
+    // Regression guard for the `isBacktrackingEngine` gate: `awk`,
+    // `egrep`, and `grep` are all parsed (`awk`/`egrep` as ERE via
+    // `EreRegExp` in Phase C; `grep` as BRE via `BreRegExp` in Phase D)
+    // — the same trees the `extended`/`basic` positive cases would be
+    // analysed with — so suppression here is exclusively due to
+    // `isBacktrackingEngine`, not any parsing/grammar difference.
     //
     // The equivalent default-grammar (ECMAScript) patterns above fire,
     // showing that the gate — not some unrelated exclusion — suppresses
@@ -513,6 +519,49 @@ int main(int argc, char** argv) {
         std::regex re("^\\s+|\\s+$",
                       (std::regex_constants::syntax_option_type)
                       (std::regex_constants::egrep | std::regex_constants::icase));
+        std::regex_replace(input, re, std::string(""));
+    }
+
+    // -------------------------------------------------------------------------
+    // 13. End-to-end BRE-grammar coverage for cpp/polynomial-redos.
+    //
+    // These cases exercise the BRE parser (Phase D, `BreRegExp`) end-to-end
+    // through the shared backtracking engine with a user-controlled
+    // subject. Both flags below (`basic`, `grep`) select the *same* grammar
+    // (BRE) and therefore produce structurally-identical parse trees for
+    // the same pattern string — the only axis they differ on is
+    // `isBacktrackingEngine`:
+    //
+    //   * `basic` → BRE + backtracking-eligible → source→sink alert.
+    //   * `grep`  → BRE + non-backtracking     → NO alert.
+    //
+    // The pattern must be expressed in BRE's inverted metacharacter
+    // convention: `\{1,\}` is the "one-or-more" interval quantifier (BRE
+    // has no `+`) and there is no `|` alternation, so the ECMAScript
+    // `\s+.*\s+` polynomial shape is spelled here as
+    // `[[:space:]]\{1,\}.*[[:space:]]\{1,\}` — a superlinear pattern
+    // matched against the tainted subject.
+    // -------------------------------------------------------------------------
+
+    // BAD: BRE grammar via `basic` — parsed as BRE and backtracking-eligible.
+    {
+        std::regex re("[[:space:]]\\{1,\\}.*[[:space:]]\\{1,\\}$",
+                      std::regex_constants::basic);
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: same pattern/flow under `grep` — parses identically as BRE
+    // but excluded by `isBacktrackingEngine`.
+    {
+        std::regex re("[[:space:]]\\{1,\\}.*[[:space:]]\\{1,\\}$",
+                      std::regex_constants::grep);
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: `grep | icase` bitwise-OR combination — still BRE-parsed and
+    // still excluded by `isBacktrackingEngine`.
+    {
+        std::regex re("[[:space:]]\\{1,\\}.*[[:space:]]\\{1,\\}$",
+                      (std::regex_constants::syntax_option_type)
+                      (std::regex_constants::grep | std::regex_constants::icase));
         std::regex_replace(input, re, std::string(""));
     }
 
