@@ -292,3 +292,57 @@ void posix_brackets() {
     std::regex h("([[:alpha:]]+)+");
     (void)std::regex_search(subj, h);
 }
+
+// -----------------------------------------------------------------------------
+// Adversarial POSIX-bracket parser tests. These exercise the "inside an open
+// outer class" gate and its boundary logic:
+//   * top-level POSIX-looking sequences (must parse as ordinary characters,
+//     not as POSIX brackets — POSIX brackets only have meaning inside `[...]`);
+//   * adjacent / nested classes, including the `]`-first-member special case;
+//   * malformed / unterminated brackets (must not crash; behaviour recorded
+//     via the `parse.expected` / `Consistency.expected` outputs);
+//   * a longer performance-signal pattern combining several POSIX classes
+//     with quantifiers and groups.
+void posix_brackets_adversarial() {
+    std::string subj("aaa");
+    // Top-level `[:alpha:]` — the outer `[...]` is a character class whose
+    // members are literal `:`, `a`, `l`, `p`, `h`, `:`. It must NOT be
+    // recognised as a POSIX bracket.
+    std::regex t1("[:alpha:].*");
+    (void)std::regex_search(subj, t1);
+    // Bare `a[:b:]c` — again no outer `[...]`, so `[:b:]` is a top-level
+    // character class whose only member is the literal `:b:` (a range
+    // between `:` and `:`, then a `b`, then another `:` ... treated
+    // structurally as an ordinary character class).
+    std::regex t2("a[:b:]c.*");
+    (void)std::regex_search(subj, t2);
+    // Three adjacent POSIX classes inside a single outer class.
+    std::regex t3("[[:alpha:][:digit:][:space:]].*");
+    (void)std::regex_search(subj, t3);
+    // `]` as the first class member, followed by a POSIX class — exercises
+    // the ]-first special case together with the POSIX-bracket gate.
+    std::regex t4("[]a[:alpha:]].*");
+    (void)std::regex_search(subj, t4);
+    // POSIX class adjacent to what looks like a range: the `-` between the
+    // POSIX class and `z` should not form a syntactic range with a POSIX
+    // class as its lower bound; it should parse as three members
+    // ([:alpha:], -, z) or as [:alpha:] followed by a range from `-` to
+    // `z`, whichever the current parser produces (recorded in .expected).
+    std::regex t5("[[:alpha:]-z].*");
+    (void)std::regex_search(subj, t5);
+    // Malformed: missing closing `:]` — the outer class is still valid but
+    // the inner `[:alpha` has no matching `:]`, so it should NOT be
+    // recognised as a POSIX bracket. The pattern should parse as an
+    // ordinary character class without crashing.
+    std::regex t6("[[:alpha].*");
+    (void)std::regex_search(subj, t6);
+    // Unterminated: outer class has no `]` at all. Behaviour is
+    // implementation-defined but must be deterministic and not crash;
+    // typically surfaces via Consistency/failedToParse.
+    std::regex t7("[[:alpha:");
+    (void)std::regex_search(subj, t7);
+    // Longer combined pattern giving a basic performance signal: several
+    // POSIX classes together with quantifiers and grouping.
+    std::regex t8("^([[:alpha:]]+[[:digit:]]*[[:space:]]?)+([[:punct:]]|[[:xdigit:]])+$");
+    (void)std::regex_search(subj, t8);
+}

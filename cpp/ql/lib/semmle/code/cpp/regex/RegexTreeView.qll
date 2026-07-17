@@ -664,14 +664,23 @@ module Impl implements RegexTreeViewSig {
    * Each is treated as a single character-matching atom (a class member).
    *
    * For POSIX character classes with a clean Perl-escape equivalent
-   * (`digit`, `space`, `word`) we map them onto `\d`, `\s`, `\w` via
-   * `isEscapeClass`, so the shared ReDoS engine can reason about their
-   * match sets precisely. Other POSIX classes (`alpha`, `alnum`, `upper`,
-   * `lower`, `punct`, `cntrl`, `print`, `graph`, `xdigit`, `blank`) do not
-   * map cleanly; they are conservatively over-approximated as `\w` for the
-   * purpose of `isEscapeClass` — this may lead to minor imprecision when
-   * two atoms are combined but preserves the "single-atom" treatment
-   * required by the shared engine.
+   * (`digit`, `space`, `word`) — or a *subset* of one (`alpha`, `alnum`,
+   * `upper`, `lower`, `xdigit`, `blank`) — we map them onto `\d`, `\s`, `\w`
+   * via `isEscapeClass`, so the shared ReDoS engine can reason about their
+   * match sets.
+   *
+   * Other POSIX classes (`punct`, `cntrl`, `print`, `graph`) as well as
+   * collating and equivalence classes do NOT fit any of `\d`/`\s`/`\w`:
+   *   - `[:punct:]` matches punctuation, disjoint from `\w`.
+   *   - `[:cntrl:]` matches control characters, disjoint from `\w`.
+   *   - `[:print:]` / `[:graph:]` include punctuation (and, for `print`,
+   *     space), overlapping but not contained in `\w`.
+   * Mapping them onto `\w` would tell the shared engine that two such atoms
+   * "overlap" via `\w`, which is unsound (produces both false positives and
+   * false negatives in ambiguity reasoning). We therefore leave them opaque:
+   * they are single character-consuming class members, but `isEscapeClass`
+   * does not hold for them and the shared engine treats them as an unknown
+   * character set (the same treatment as collating/equivalence classes).
    *
    * Collating and equivalence classes semantically may match multi-character
    * sequences (e.g. `[[.ll.]]`); we model them as single atoms, which is a
@@ -983,27 +992,29 @@ module Impl implements RegexTreeViewSig {
     exists(RegExpCharacterClassEscape escape | term = escape | escape.getValue() = clazz)
     or
     // Map POSIX bracket sub-expressions to the shared engine's escape-class
-    // signature. Only POSIX character classes (`[:name:]`) are mapped;
-    // collating and equivalence classes have no meaningful escape-class
-    // equivalent and are left opaque.
+    // signature. Only POSIX character classes (`[:name:]`) whose match set
+    // is `\d`, `\s`, or `\w` — or a subset of one — are mapped; other
+    // POSIX classes (`punct`, `cntrl`, `print`, `graph`) and the
+    // collating/equivalence forms have no meaningful escape-class equivalent
+    // and are left opaque (they still parse as single character-class atoms,
+    // but the shared engine treats their character set as unknown).
     exists(RegExpPosixBracket posix, string name |
       term = posix and
       posix.getKind() = "class" and
       name = posix.getName()
     |
-      // Clean equivalences.
+      // `[:digit:]` = `\d`; `[:xdigit:]` is a superset, treated as `\d`
+      // (under-approximation — sound for the shared engine's overlap
+      // reasoning, since it will only ever detect fewer intersections, not
+      // invent them).
       name = ["digit", "xdigit"] and clazz = "d"
       or
+      // `[:space:]` = `\s`; `[:blank:]` is a subset (space + tab).
       name = ["space", "blank"] and clazz = "s"
       or
-      // Conservative over-approximation: alphabetic / alphanumeric / case
-      // classes are subsets of `\w`, so `\w` is a safe over-approximation
-      // for pumping-witness discovery in the shared engine. `punct`,
-      // `cntrl`, `print` and `graph` do not fit `\w` precisely; we map
-      // them here to give the engine SOME atom to reason about, at the
-      // cost of over-approximating their character set.
-      name = ["word", "alpha", "alnum", "upper", "lower", "punct", "cntrl", "print", "graph"] and
-      clazz = "w"
+      // `[:word:]` = `\w`; `[:alpha:]`, `[:alnum:]`, `[:upper:]`, `[:lower:]`
+      // are all subsets of `\w`.
+      name = ["word", "alpha", "alnum", "upper", "lower"] and clazz = "w"
     )
   }
 

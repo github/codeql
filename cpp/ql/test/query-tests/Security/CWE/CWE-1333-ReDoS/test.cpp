@@ -250,6 +250,17 @@ int main(int argc, char** argv) {
     { std::regex re("^([[:alpha:]]+)+$"); run(re, input); }
     // BAD: same pattern under icase — case-folding must not suppress the alert.
     { std::regex re("^([[:alpha:]]+)+$", std::regex_constants::icase); run(re, input); }
+    // Opaque POSIX character class: `[:punct:]` has no clean `\d`/`\s`/`\w`
+    // equivalent (see the discussion in RegexTreeView.qll::isEscapeClass).
+    // It is therefore left as an opaque atom in the shared engine's view;
+    // this pattern verifies that the parser does not crash on such inputs
+    // and that (any) alerts remain deterministic. The atom flowing through
+    // the engine as opaque means the shared ambiguity reasoning will not
+    // detect exponential behaviour here — a documented limitation of the
+    // current shared `RegexTreeViewSig`, which has no hook for
+    // "opaque single-atom character class"; see the acceptance-criteria
+    // discussion in the accompanying PR.
+    { std::regex re("^([[:punct:]]+)+$"); run(re, input); }
 
     return 0;
 }

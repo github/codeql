@@ -58,6 +58,52 @@ class RegExp extends StringLiteral {
   // ---------------------------------------------------------------------------
 
   /**
+   * Holds if `[start, end)` looks lexically like a POSIX bracket
+   * sub-expression: an unescaped `[` at `start` followed by a mark
+   * (`:`, `.`, or `=`) and terminated by the earliest matching `mark]`.
+   *
+   * This is a purely lexical recognition — it does NOT check whether the
+   * span is actually nested inside an outer `[...]` character class. The
+   * nesting requirement is applied on top of this in `posixBracketExpression`.
+   *
+   * Separating the lexical recognition from the nesting gate keeps the
+   * predicate definitions cleanly stratified (no self-recursion under
+   * negation).
+   */
+  private predicate posixBracketCandidate(int start, int end, string kind) {
+    exists(string mark |
+      this.getChar(start) = "[" and
+      not this.escapingChar(start) and
+      (
+        this.getChar(start + 1) = ":" and kind = "class" and mark = ":"
+        or
+        this.getChar(start + 1) = "." and kind = "collating" and mark = "."
+        or
+        this.getChar(start + 1) = "=" and kind = "equivalence" and mark = "="
+      )
+    |
+      end - 2 =
+        min(int i |
+          i > start + 1 and this.getChar(i) = mark and this.getChar(i + 1) = "]"
+        )
+    )
+  }
+
+  /**
+   * Holds if `pos` is an unescaped `[` or `]` that acts as a genuine
+   * character-class delimiter — i.e. it is NOT part of any POSIX bracket
+   * candidate (neither the opening `[`, the closing `]`, nor any interior
+   * character of one).
+   *
+   * Used to decide, purely lexically, whether a POSIX bracket candidate is
+   * nested inside an outer, still-open `[...]` character class.
+   */
+  private predicate structuralBracket(int pos) {
+    (this.nonEscapedCharAt(pos) = "[" or this.nonEscapedCharAt(pos) = "]") and
+    not exists(int s, int e | this.posixBracketCandidate(s, e, _) and s <= pos and pos < e)
+  }
+
+  /**
    * Holds if `[start, end)` is a POSIX bracket sub-expression of the given
    * `kind`, appearing nested inside another `[...]` character class.
    *
@@ -74,44 +120,26 @@ class RegExp extends StringLiteral {
    * A POSIX bracket sub-expression is only recognized when it is nested
    * inside another `[...]` character class, since the standard only gives
    * these forms meaning in that context.
+   *
+   * Implementation note: the "inside an outer, still-open [...]" gate is
+   * expressed as an ordinary universal quantification over `structuralBracket`
+   * positions (which only depend on the purely-lexical
+   * `posixBracketCandidate` predicate). There is no self-recursion under
+   * negation, so this predicate is trivially stratified.
    */
   predicate posixBracketExpression(int start, int end, string kind) {
-    exists(string mark |
-      this.getChar(start) = "[" and
-      (
-        this.getChar(start + 1) = ":" and kind = "class" and mark = ":"
-        or
-        this.getChar(start + 1) = "." and kind = "collating" and mark = "."
-        or
-        this.getChar(start + 1) = "=" and kind = "equivalence" and mark = "="
-      )
-    |
-      end - 2 =
-        min(int i |
-          i > start + 1 and this.getChar(i) = mark and this.getChar(i + 1) = "]"
-        )
-    ) and
-    // Gate: the `[` at `start` must lie inside an outer `[...]` character
-    // class that has not yet been closed. Concretely: there must exist an
-    // earlier unescaped `[` at some `q < start` such that every unescaped
-    // `]` between `q` and `start` is itself part of some POSIX bracket
-    // sub-expression (i.e. it is the terminator of, or lies inside, another
-    // `posixBracketExpression`). This is a monotone recursion (POSIX
-    // recognitions only make the gate easier to satisfy) and correctly
-    // handles both nested top-level cases (`[[:alpha:]]`, disallowed at top
-    // level) and adjacent POSIX brackets (`[[:alpha:][:digit:]]`).
+    this.posixBracketCandidate(start, end, kind) and
+    // Gate: some structural `[` at position `q < start` must not have been
+    // closed by any structural `]` at position `r` with `q < r < start`.
     exists(int q |
       q < start and
+      this.structuralBracket(q) and
       this.nonEscapedCharAt(q) = "[" and
       not exists(int r |
         q < r and
         r < start and
-        this.nonEscapedCharAt(r) = "]" and
-        not exists(int s2, int e2 |
-          this.posixBracketExpression(s2, e2, _) and
-          s2 < r and
-          r < e2
-        )
+        this.structuralBracket(r) and
+        this.nonEscapedCharAt(r) = "]"
       )
     )
   }
