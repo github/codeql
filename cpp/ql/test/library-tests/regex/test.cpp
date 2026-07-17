@@ -231,13 +231,39 @@ void explicit_ecmascript() {
     std::regex r("abc+", std::regex_constants::ECMAScript);
 }
 
-// A regex explicitly constructed with a non-ECMAScript grammar. Excluded.
-void non_ecmascript_grammar() {
+// A regex constructed with the BRE grammar. Excluded from analysis (the
+// parser does not yet model BRE).
+void bre_grammar() {
     std::regex r("abc+", std::regex_constants::basic);
-    std::regex r2("[[.a.]]+", std::regex_constants::extended);
-    std::regex r3("awk+", std::regex_constants::awk);
-    std::regex r4("^gr+ep",
+    std::regex r2("^gr+ep",
                   std::regex_constants::grep | std::regex_constants::icase);
+}
+
+// Regexes constructed with an ERE grammar flag (`extended`, `egrep`, or
+// `awk`). All three parse as POSIX Extended Regular Expressions and are
+// analyzed by `EreRegExp`.
+void ere_grammar() {
+    // Basic ERE: `+` is a quantifier as in ECMAScript.
+    std::regex r1("abc+", std::regex_constants::extended);
+    // POSIX bracket sub-expressions inside a character class are shared
+    // across grammars.
+    std::regex r2("[[:alpha:]]+", std::regex_constants::extended);
+    // ERE `\.` is a literal `.`; `\(` is a literal `(`. No `\d` shorthand.
+    // (Trailing `.*` so `usedAsRegex` recognises the pattern, which only
+    // considers patterns with unbounded repetition.)
+    std::regex r3("a\\.b\\(c\\).*", std::regex_constants::extended);
+    // Grouping, alternation, bounded quantifier.
+    std::regex r4("(foo|bar){2,3}", std::regex_constants::extended);
+    // `awk` selects the same ERE grammar.
+    std::regex r5("awk+", std::regex_constants::awk);
+    // `egrep` selects the same ERE grammar.
+    std::regex r6("(x|y)+", std::regex_constants::egrep);
+    // Anchors and wildcard in ERE.
+    std::regex r7("^a.*b$", std::regex_constants::extended);
+    // Nested-quantifier signal (relevant to ReDoS on `extended`, which is
+    // backtracking; `egrep`/`awk` are gated out of ReDoS queries by
+    // `isBacktrackingEngine`).
+    std::regex r8("([a-z]+)+", std::regex_constants::extended);
 }
 
 // A regex assigned via `.assign` with an icase flag.

@@ -7,24 +7,29 @@
  * classes, POSIX bracket sub-expressions, character/normal-character
  * tokenization, and failure-to-parse reporting) purely in terms of a small
  * set of **dialect hook** abstract predicates. Concrete grammar dialects
- * (currently only ECMAScript, implemented by `EcmaRegExp`) supply the raw
- * lexical decisions — "is this position an escape backslash?", "is this a
- * group open?", "is this a quantifier?", etc. — by overriding those hooks.
+ * supply the raw lexical decisions — "is this position an escape
+ * backslash?", "is this a group open?", "is this a quantifier?", etc. — by
+ * overriding those hooks.
  *
- * The only grammar dialect implemented today is ECMAScript (the default
- * used by `std::regex`, i.e. `std::regex_constants::ECMAScript`). The other
- * `std::regex` grammars (`basic`, `extended`, `awk`, `grep`, `egrep`) are
+ * The grammar dialects modelled today are:
+ *   - ECMAScript (`EcmaRegExp`), the default used by `std::regex` (i.e.
+ *     `std::regex_constants::ECMAScript`); and
+ *   - POSIX Extended Regular Expressions (`EreRegExp`), selected via the
+ *     `extended`, `egrep`, and `awk` flags.
+ *
+ * POSIX Basic Regular Expressions (BRE, selected via `basic`/`grep`) are
  * still excluded by the `RegExp` characteristic predicate; the hook-based
- * split exists so a later phase can plug in POSIX BRE/ERE without touching
- * the shared core.
+ * split exists so a later phase can plug in BRE without touching the
+ * shared core.
  *
- * The single-grammar-per-literal assumption is baked into this phase:
- * because every parsed literal is `Ecma()` today, `EcmaRegExp` is the sole
- * concrete subclass and there is no overlap. The "same literal used under
- * two different grammars" case is not yet handled and is deferred to the
- * phase that actually introduces a second concrete grammar subclass; at
- * that point this file will need to revisit how `TRegExpParent` identity
- * relates to grammar.
+ * The single-grammar-per-literal assumption is still baked into this phase:
+ * because each parsed literal's grammar is uniquely determined by
+ * `regexGrammar` (a functional classifier over the construction-site flag
+ * argument), a literal is either an `EcmaRegExp` or an `EreRegExp`, never
+ * both. The "same literal used under two different grammars" case is not
+ * yet handled and is deferred to the phase that actually introduces
+ * overlap; at that point this file will need to revisit how
+ * `TRegExpParent` identity relates to grammar.
  */
 
 import cpp
@@ -40,19 +45,20 @@ private import semmle.code.cpp.regex.RegexFlowConfigs as RFC
  * A `StringLiteral` is treated as a regex only when dataflow indicates it
  * flows to a `std::basic_regex` construction/assignment or to a
  * `regex_match`/`regex_search`/`regex_replace`/iterator call. Regexes
- * constructed with an explicit non-ECMAScript grammar flag are excluded,
- * since the parser only models the ECMAScript dialect (see
- * `EcmaRegExp`).
+ * constructed with a grammar flag the parser does not yet model (currently
+ * POSIX Basic Regular Expressions — the `basic` and `grep` flags) are
+ * excluded.
  *
  * This class is abstract: its structural predicates are expressed in terms
  * of dialect hooks (see below), and concrete grammar subclasses supply the
- * dialect-specific token-recognition behavior. The sole concrete subclass
- * today is `EcmaRegExp`.
+ * dialect-specific token-recognition behavior. The concrete subclasses are
+ * `EcmaRegExp` (for ECMAScript) and `EreRegExp` (for POSIX Extended
+ * Regular Expressions).
  */
 abstract class RegExp extends StringLiteral {
   RegExp() {
     RFC::usedAsRegex(this) and
-    not RFC::hasNonEcmaScriptGrammarFlag(this)
+    (RFC::regexGrammar(this) = RFC::Ecma() or RFC::regexGrammar(this) = RFC::Ere())
   }
 
   /** Gets the `i`th character of this regex string. */
@@ -912,11 +918,12 @@ abstract class RegExp extends StringLiteral {
  * The ECMAScript-grammar concrete `RegExp` implementation. Supplies all
  * dialect hooks with the ECMAScript token-recognition behavior.
  *
- * Because the core `RegExp` class already excludes non-ECMAScript-grammar
- * literals via `not hasNonEcmaScriptGrammarFlag`, and `regexGrammar(this)`
- * returns `Ecma()` for anything not explicitly tagged as `basic`/`grep`/
- * `extended`/`egrep`/`awk`, this class currently covers every `RegExp`
- * instance in the database — `EcmaRegExp` is the sole concrete subclass.
+ * Selected for regex literals whose construction-site flag argument does
+ * not specify a POSIX grammar (i.e. anything not tagged as
+ * `basic`/`grep`/`extended`/`egrep`/`awk`), matching the default `std::regex`
+ * grammar. `EcmaRegExp` and `EreRegExp` are the two concrete subclasses of
+ * `RegExp`; the grammar of a given literal is determined uniquely by
+ * `regexGrammar`.
  */
 class EcmaRegExp extends RegExp {
   EcmaRegExp() { RFC::regexGrammar(this) = RFC::Ecma() }
@@ -1261,4 +1268,221 @@ class EcmaRegExp extends RegExp {
   override string getBackrefName(int start, int end) {
     this.named_backreference(start, end, result)
   }
+}
+
+// ===========================================================================
+// POSIX Extended Regular Expressions (ERE) dialect
+// ===========================================================================
+
+/**
+ * The POSIX Extended Regular Expressions concrete `RegExp` implementation.
+ * Supplies all dialect hooks with the ERE token-recognition behavior.
+ *
+ * ERE is selected via the `std::regex_constants` flags `extended`, `egrep`,
+ * and `awk` (all three parse the same grammar — they differ only in whether
+ * the matching engine is treated as backtracking; see
+ * `RegexFlowConfigs::isBacktrackingEngine`).
+ *
+ * ERE is largely subtractive relative to ECMAScript:
+ *
+ *   - Same grouping (`(...)`), alternation (`|`), and quantifiers
+ *     (`*`, `+`, `?`, `{n}`, `{n,}`, `{n,m}`).
+ *   - Same character classes `[...]` (including the shared POSIX bracket
+ *     sub-expressions handled entirely in the core: `[:class:]`, `[.a.]`,
+ *     `[=a=]`).
+ *   - Same anchors `^`, `$` and wildcard `.`.
+ *
+ * ERE has **no**:
+ *   - Class-shorthand escapes `\d`, `\w`, `\s`, `\D`, `\W`, `\S`.
+ *   - Word-boundary anchors `\b`, `\B`.
+ *   - Numeric or hex/unicode/octal escapes (`\1`, `\xNN`, `\uNNNN`, `\0`).
+ *   - Back-references (numbered or named).
+ *   - Look-around (`(?=`, `(?!`, `(?<=`, `(?<!`).
+ *   - Non-capturing groups (`(?:...)`).
+ *   - Named capturing groups (`(?<name>...)`).
+ *   - Lazy quantifier suffix (`*?`, `+?`, `??`, `{n,m}?`).
+ *
+ * A backslash in front of any character produces a literal escaped
+ * character (two-character span): so `\.` matches a literal `.`, `\(`
+ * matches a literal `(`, and so on. This is the standard interpretation of
+ * `\` in ERE for metacharacters; behavior for `\` in front of an ordinary
+ * character is implementation-defined but is uniformly treated here as a
+ * literal escape of the following character so the tokenizer is total.
+ */
+class EreRegExp extends RegExp {
+  EreRegExp() { RFC::regexGrammar(this) = RFC::Ere() }
+
+  override RFC::TRegexGrammar getGrammar() { result = RFC::Ere() }
+
+  // ---------------------------------------------------------------------------
+  // Escaping
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Helper predicate for `escapingChar`.
+   * Returns `true` if the character at position `pos` is an active backslash
+   * (i.e., it escapes the next character). Uses a boolean to avoid negation
+   * in recursive calls.
+   */
+  private boolean escaping(int pos) {
+    pos = -1 and result = false
+    or
+    this.getChar(pos) = "\\" and result = this.escaping(pos - 1).booleanNot()
+    or
+    this.getChar(pos) != "\\" and result = false
+  }
+
+  override predicate escapingChar(int pos) { this.escaping(pos) = true }
+
+  // ---------------------------------------------------------------------------
+  // Escaped characters
+  //
+  // ERE has no numeric, hex, unicode, or octal escapes and no back-references.
+  // Every `\X` is a simple two-character escape yielding a literal X.
+  // ---------------------------------------------------------------------------
+
+  override predicate escapedCharacter(int start, int end) {
+    this.escapingChar(start) and
+    exists(this.getChar(start + 1)) and
+    end = start + 2
+  }
+
+  // ---------------------------------------------------------------------------
+  // Special (meta) characters
+  //
+  // ERE has only the position-assertion / wildcard specials `^`, `$`, `.`.
+  // There are no word-boundary escapes `\b` / `\B`.
+  // ---------------------------------------------------------------------------
+
+  override predicate specialCharacter(int start, int end, string char) {
+    not this.inCharSet(start) and
+    this.character(start, end) and
+    end = start + 1 and
+    char = this.getChar(start) and
+    (char = "$" or char = "^" or char = ".")
+  }
+
+  // ---------------------------------------------------------------------------
+  // Quantifiers
+  //
+  // ERE has no lazy suffix, so `qualifier` and `short_qualifier` coincide.
+  // ---------------------------------------------------------------------------
+
+  override predicate qualifier(int start, int end, boolean maybe_empty, boolean may_repeat_forever) {
+    this.short_qualifier(start, end, maybe_empty, may_repeat_forever)
+  }
+
+  override predicate short_qualifier(
+    int start, int end, boolean maybe_empty, boolean may_repeat_forever
+  ) {
+    (
+      this.getChar(start) = "+" and maybe_empty = false and may_repeat_forever = true
+      or
+      this.getChar(start) = "*" and maybe_empty = true and may_repeat_forever = true
+      or
+      this.getChar(start) = "?" and maybe_empty = true and may_repeat_forever = false
+    ) and
+    end = start + 1 and
+    not this.escapingChar(start - 1)
+    or
+    exists(string lower, string upper |
+      this.multiples(start, end, lower, upper) and
+      (if lower = "" or lower.toInt() = 0 then maybe_empty = true else maybe_empty = false) and
+      if upper = "" then may_repeat_forever = true else may_repeat_forever = false
+    )
+  }
+
+  /**
+   * Holds if `[start, end)` is a `{n}`, `{n,m}`, or `{n,}` quantifier.
+   *
+   * In ERE, `{...}` is unconditionally a quantifier — there is no `\{...\}`
+   * literal-brace form (that would be BRE). A backslash-escaped `\{` is a
+   * literal `{`, so we must not treat it as a quantifier here.
+   */
+  override predicate multiples(int start, int end, string lower, string upper) {
+    not this.escapingChar(start - 1) and
+    exists(string text, string match, string inner |
+      text = this.getText() and
+      end = start + match.length() and
+      inner = match.substring(1, match.length() - 1)
+    |
+      match = text.regexpFind("\\{[0-9]+\\}", _, start) and
+      lower = inner and
+      upper = lower
+      or
+      match = text.regexpFind("\\{[0-9]*,[0-9]*\\}", _, start) and
+      exists(int commaIndex |
+        commaIndex = inner.indexOf(",") and
+        lower = inner.prefix(commaIndex) and
+        upper = inner.suffix(commaIndex + 1)
+      )
+    )
+  }
+
+  // ---------------------------------------------------------------------------
+  // Groups
+  //
+  // ERE has only simple capturing groups `(...)`. It has no `(?:...)`,
+  // no `(?<name>...)`, and no look-around forms.
+  // ---------------------------------------------------------------------------
+
+  override predicate isOptionDivider(int i) { this.nonEscapedCharAt(i) = "|" }
+
+  override predicate isGroupEnd(int i) { this.nonEscapedCharAt(i) = ")" and not this.inCharSet(i) }
+
+  override predicate isGroupStart(int i) { this.nonEscapedCharAt(i) = "(" and not this.inCharSet(i) }
+
+  override predicate group_start(int start, int end) { this.simple_group_start(start, end) }
+
+  /** `(...)` – simple capturing group. */
+  override predicate simple_group_start(int start, int end) {
+    this.isGroupStart(start) and end = start + 1
+  }
+
+  /** ERE has no non-capturing group form. */
+  override predicate non_capturing_group_start(int start, int end) { none() }
+
+  /** ERE has no named capturing group form. */
+  override predicate ecma_named_group_start(int start, int end) { none() }
+
+  /** ERE has no look-around. */
+  override predicate lookahead_assertion_start(int start, int end) { none() }
+
+  /** ERE has no look-around. */
+  override predicate negative_lookahead_assertion_start(int start, int end) { none() }
+
+  /** ERE has no look-around. */
+  override predicate lookbehind_assertion_start(int start, int end) { none() }
+
+  /** ERE has no look-around. */
+  override predicate negative_lookbehind_assertion_start(int start, int end) { none() }
+
+  /**
+   * Gets the 1-based index of the capture group at `[start, end)`. In ERE
+   * every `(...)` group is a capturing group, numbered by left-to-right
+   * position of the opening `(`.
+   */
+  override int getGroupNumber(int start, int end) {
+    this.group(start, end) and
+    result = count(int i | this.group(i, _) and i < start) + 1
+  }
+
+  /** ERE has no named groups. */
+  override string getGroupName(int start, int end) { none() }
+
+  // ---------------------------------------------------------------------------
+  // Back-references
+  //
+  // ERE has no back-references (neither numbered nor named).
+  // ---------------------------------------------------------------------------
+
+  override predicate numbered_backreference(int start, int end, int value) { none() }
+
+  override predicate named_backreference(int start, int end, string name) { none() }
+
+  override predicate backreference(int start, int end) { none() }
+
+  override int getBackrefNumber(int start, int end) { none() }
+
+  override string getBackrefName(int start, int end) { none() }
 }

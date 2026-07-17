@@ -366,8 +366,12 @@ predicate hasMultilineFlag(StringLiteral regex) {
 
 /**
  * Holds if `regex` is constructed with an explicit non-ECMAScript grammar
- * flag (`basic`, `extended`, `awk`, `grep`, or `egrep`). The Phase 1 parser
- * only models ECMAScript, so such regexes should be excluded from analysis.
+ * flag (`basic`, `extended`, `awk`, `grep`, or `egrep`).
+ *
+ * This predicate remains a purely flag-level classification and does not
+ * gate the parser directly — the parser now uses `regexGrammar` to decide
+ * which dialect to apply. ECMAScript and ERE (`extended`/`egrep`/`awk`)
+ * are both modelled; only BRE (`basic`/`grep`) is currently excluded.
  */
 predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
   exists(string g | g = ["basic", "extended", "awk", "grep", "egrep"] |
@@ -382,21 +386,20 @@ predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
 /**
  * The `std::regex` grammar dialects that the C++ regex parser is aware of.
  *
- * - `Ecma()`  — ECMAScript, the default grammar used by `std::regex` and the
- *              only grammar currently parsed. Selected either implicitly
- *              (no explicit grammar flag) or explicitly via
- *              `std::regex_constants::ECMAScript`.
- * - `Bre()`   — POSIX Basic Regular Expressions (selected via the `basic` or
- *              `grep` flags).
+ * - `Ecma()`  — ECMAScript, the default grammar used by `std::regex`.
+ *              Selected either implicitly (no explicit grammar flag) or
+ *              explicitly via `std::regex_constants::ECMAScript`.
+ * - `Bre()`   — POSIX Basic Regular Expressions (selected via the `basic`
+ *              or `grep` flags). Not yet modelled by the parser; regexes
+ *              in this grammar are excluded from analysis.
  * - `Ere()`   — POSIX Extended Regular Expressions (selected via the
- *              `extended`, `egrep`, or `awk` flags).
+ *              `extended`, `egrep`, or `awk` flags). Modelled by
+ *              `EreRegExp`.
  *
- * `Bre()` and `Ere()` are scaffolding for future phases that will add POSIX
- * grammar support. Today the parser still excludes non-ECMAScript regexes
- * (see `hasNonEcmaScriptGrammarFlag`), so in practice every parsed regex
- * classifies as `Ecma()` and only the `Ecma()` branch of `regexGrammar` is
- * exercised — the `Bre()`/`Ere()` branches exist purely so the classifier
- * agrees with the flag-detection helpers below.
+ * The `Ecma()` and `Ere()` cases are both exercised by the parser today.
+ * The `Bre()` case is scaffolding for a future phase and is not exercised;
+ * regexes classified as `Bre()` are excluded by the `RegExp` characteristic
+ * predicate.
  */
 newtype TRegexGrammar =
   Ecma() or
@@ -412,10 +415,9 @@ newtype TRegexGrammar =
  *   - `extended` / `egrep` / `awk`  → `Ere()`
  *   - anything else (default, explicit `ECMAScript`, or unresolved) → `Ecma()`
  *
- * Because the parser still gates on `not hasNonEcmaScriptGrammarFlag`, every
- * literal that is actually parsed today classifies as `Ecma()`. The
- * `Bre()`/`Ere()` cases are defined only so the classifier is complete for
- * later phases; those branches are not exercised by the current parser.
+ * The parser gates on `regexGrammar in [Ecma(), Ere()]`, so both branches
+ * are exercised by the parser today. Regexes classified as `Bre()` are
+ * excluded from analysis until a future phase adds BRE support.
  */
 TRegexGrammar regexGrammar(StringLiteral regex) {
   if containsRegexFlag(getConstructionFlagArg(regex), ["basic", "grep"])
