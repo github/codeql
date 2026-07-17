@@ -31,6 +31,7 @@ supertypes:
     - throw_expr
     - try_expr
     - switch_expr
+    - unresolved_operator_sequence
     - unsupported_node
   expr_or_pattern:
     - expr
@@ -38,6 +39,11 @@ supertypes:
   expr_or_type:
     - expr
     - type_expr
+  # An element of an `unresolved_operator_sequence`: either an operand (`expr`)
+  # or one of the infix operators separating the operands.
+  expr_or_operator:
+    - expr
+    - infix_operator
   pattern:
     - name_pattern
     - tuple_pattern
@@ -136,6 +142,19 @@ named:
   unary_expr:
     operand: expr
     operator: operator
+
+  # A flat, unresolved operator sequence such as `a <+> b <+> c`.
+  #
+  # Swift's grammar doesn't encode operator precedence, so an operator chain is
+  # first parsed as a flat list of operands and operators. The parser front-end
+  # resolves this into structured `binary_expr` trees when it knows the
+  # operators' precedence (standard-library operators, and operators declared in
+  # the same file). When it encounters an operator whose precedence it can't
+  # determine (e.g. one imported from another module), it leaves that chain
+  # unresolved and emits it here rather than guessing a (possibly wrong)
+  # structure. The `element`s alternate operands (`expr`) and infix operators.
+  unresolved_operator_sequence:
+    element*: expr_or_operator
 
   # Plain assignment
   assign_expr:

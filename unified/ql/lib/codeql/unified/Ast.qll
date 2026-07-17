@@ -567,6 +567,8 @@ module Unified {
     final override AstNode getAFieldOrChild() { unified_expr_equality_pattern_def(this, result) }
   }
 
+  final class ExprOrOperator extends @unified_expr_or_operator, AstNodeImpl { }
+
   final class ExprOrPattern extends @unified_expr_or_pattern, AstNodeImpl { }
 
   final class ExprOrType extends @unified_expr_or_type, AstNodeImpl { }
@@ -1407,6 +1409,22 @@ module Unified {
     }
   }
 
+  /** A class representing `unresolved_operator_sequence` nodes. */
+  final class UnresolvedOperatorSequence extends @unified_unresolved_operator_sequence, AstNodeImpl {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "UnresolvedOperatorSequence" }
+
+    /** Gets the node corresponding to the field `element`. */
+    final ExprOrOperator getElement(int i) {
+      unified_unresolved_operator_sequence_element(this, i, result)
+    }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      unified_unresolved_operator_sequence_element(this, _, result)
+    }
+  }
+
   /** A class representing `unsupported_node` tokens. */
   final class UnsupportedNode extends @unified_token_unsupported_node, TokenImpl {
     /** Gets the name of the primary QL class for this element. */
@@ -1772,6 +1790,8 @@ module Unified {
       result = node.(UnaryExpr).getOperand() and i = -1 and name = "getOperand"
       or
       result = node.(UnaryExpr).getOperator() and i = -1 and name = "getOperator"
+      or
+      result = node.(UnresolvedOperatorSequence).getElement(i) and name = "getElement"
       or
       result = node.(VariableDeclaration).getModifier(i) and name = "getModifier"
       or
