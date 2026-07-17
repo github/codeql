@@ -308,24 +308,35 @@ int main(int argc, char** argv) {
         std::regex_replace(input, re, std::string(""));
     }
 
-    // GOOD: non-ECMAScript grammars (basic/extended/awk/grep/egrep) are
-    // excluded by the Phase 1 parser and produce no alerts.
+    // GOOD: BRE grammar (basic) is not yet modelled by the parser and is
+    // excluded by the `RegExp` characteristic predicate.
     {
         std::regex re("^\\s+|\\s+$", std::regex_constants::basic);
         std::regex_replace(input, re, std::string(""));
     }
+    // BAD: extended selects the ERE grammar (modelled by `EreRegExp` since
+    // Phase C) and is backtracking-eligible, so the polynomial engine
+    // flags the superlinear pattern on user input — same as the
+    // ECMAScript case.
     {
         std::regex re("^\\s+|\\s+$", std::regex_constants::extended);
         std::regex_replace(input, re, std::string(""));
     }
+    // GOOD: awk parses as ERE (same as `extended`) but is excluded from
+    // the ReDoS queries by `isBacktrackingEngine`, *not* by any
+    // parsing/grammar difference.
     {
         std::regex re("^\\s+|\\s+$", std::regex_constants::awk);
         std::regex_replace(input, re, std::string(""));
     }
+    // GOOD: grep selects BRE and, like `basic`, is not yet parsed.
     {
         std::regex re("^\\s+|\\s+$", std::regex_constants::grep);
         std::regex_replace(input, re, std::string(""));
     }
+    // GOOD: egrep parses as ERE (same as `extended`) but is excluded from
+    // the ReDoS queries by `isBacktrackingEngine`, *not* by any
+    // parsing/grammar difference.
     {
         std::regex re("^\\s+|\\s+$", std::regex_constants::egrep);
         std::regex_replace(input, re, std::string(""));
@@ -425,15 +436,17 @@ int main(int argc, char** argv) {
     // 11. Non-backtracking POSIX tool-style grammars (`awk`, `grep`, `egrep`)
     //     combined with other flags via bitwise-OR.
     //
-    // Regression guard: these must remain excluded from cpp/polynomial-redos
-    // once a future phase relaxes the parser to accept non-ECMAScript
-    // grammars, via the `isBacktrackingEngine` gate. The equivalent
-    // default-grammar patterns above fire, showing that the gate — not some
-    // unrelated exclusion — suppresses these cases.
+    // Regression guard for the `isBacktrackingEngine` gate: `awk` and
+    // `egrep` are parsed as ERE (`EreRegExp`, Phase C) — structurally the
+    // same tree the `extended` positive cases above are analyzed with — so
+    // suppression here is exclusively due to `isBacktrackingEngine`, not
+    // any parsing/grammar difference. `grep` still selects BRE and is
+    // additionally unparsed until BRE support lands, but the query-level
+    // gate would suppress it regardless.
     //
-    // Today the parser also drops all non-ECMAScript grammar literals, so
-    // these cases would be suppressed regardless; the query-level gate is a
-    // regression guard for the parser-relaxation phase.
+    // The equivalent default-grammar (ECMAScript) patterns above fire,
+    // showing that the gate — not some unrelated exclusion — suppresses
+    // these cases.
     // -------------------------------------------------------------------------
 
     // GOOD: awk grammar — non-backtracking.
@@ -449,6 +462,53 @@ int main(int argc, char** argv) {
         std::regex_replace(input, re, std::string(""));
     }
     // GOOD: egrep grammar combined with icase — non-backtracking.
+    {
+        std::regex re("^\\s+|\\s+$",
+                      (std::regex_constants::syntax_option_type)
+                      (std::regex_constants::egrep | std::regex_constants::icase));
+        std::regex_replace(input, re, std::string(""));
+    }
+
+    // -------------------------------------------------------------------------
+    // 12. End-to-end ERE-grammar coverage for cpp/polynomial-redos.
+    //
+    // These cases exercise the ERE parser (Phase C, `EreRegExp`) end-to-end
+    // through the shared backtracking engine with a user-controlled
+    // subject. All three flags below (`extended`, `egrep`, `awk`) select
+    // the *same* grammar (ERE) and therefore produce structurally-
+    // identical parse trees for the same pattern string — the only axis
+    // they differ on is `isBacktrackingEngine`:
+    //
+    //   * `extended` → ERE + backtracking-eligible → source→sink alert.
+    //   * `egrep` / `awk` → ERE + non-backtracking → NO alert.
+    //
+    // The pattern `^\s+|\s+$` (the same superlinear trim pattern used by
+    // the existing polynomial cases above) uses only ERE-legal constructs
+    // (`\s` is an ERE-legal escape), so the ERE parse tree is
+    // structurally equivalent to the ECMAScript one. The taint source
+    // (`argv[1]` → `input`) and the match harness (`std::regex_replace`)
+    // are reused verbatim so that only the grammar flag differs.
+    // -------------------------------------------------------------------------
+
+    // BAD: ERE grammar via `extended` — parsed as ERE and backtracking-eligible.
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::extended);
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: same pattern/flow under `egrep` — parses identically as ERE
+    // but excluded by `isBacktrackingEngine`.
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::egrep);
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: same pattern/flow under `awk` — parses identically as ERE but
+    // excluded by `isBacktrackingEngine`.
+    {
+        std::regex re("^\\s+|\\s+$", std::regex_constants::awk);
+        std::regex_replace(input, re, std::string(""));
+    }
+    // GOOD: `egrep | icase` bitwise-OR combination — still ERE-parsed and
+    // still excluded by `isBacktrackingEngine`.
     {
         std::regex re("^\\s+|\\s+$",
                       (std::regex_constants::syntax_option_type)

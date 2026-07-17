@@ -32,5 +32,7 @@
 | test.cpp:167:28:167:28 | b | This part of the regular expression may cause exponential backtracking on strings starting with 'W' and containing many repetitions of 'bW'. |
 | test.cpp:176:24:176:25 | ab | This part of the regular expression may cause exponential backtracking on strings starting with 'a' and containing many repetitions of 'ab'. |
 | test.cpp:229:24:229:29 | [a-z]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
-| test.cpp:250:24:250:35 | [[:alpha:]]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
-| test.cpp:252:24:252:35 | [[:alpha:]]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
+| test.cpp:236:24:236:25 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:257:24:257:35 | [[:alpha:]]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
+| test.cpp:259:24:259:35 | [[:alpha:]]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
+| test.cpp:324:24:324:29 | [a-z]+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
