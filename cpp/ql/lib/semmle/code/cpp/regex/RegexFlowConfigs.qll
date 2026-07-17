@@ -245,8 +245,8 @@ predicate regexMatchedAgainst(StringLiteral regex, Expr str) {
       )
     ) and
     // The regex variable is used as the regex argument to a match call.
-    exists(Call matchCall, Expr regexArg |
-      regexMatchCall(matchCall, regexArg, str) and
+    exists(Expr regexArg |
+      regexMatchCall(_, regexArg, str) and
       regexArg = v.getAnAccess()
     )
   )
@@ -254,8 +254,8 @@ predicate regexMatchedAgainst(StringLiteral regex, Expr str) {
   // Also handle the pattern being passed inline to a match call (no named
   // variable): rare in practice for std::regex, but supported for
   // completeness.
-  exists(Call matchCall, Expr regexArg |
-    regexMatchCall(matchCall, regexArg, str) and
+  exists(Expr regexArg |
+    regexMatchCall(_, regexArg, str) and
     // The regex argument is a temporary `basic_regex(pattern)`.
     exists(ConstructorCall cc |
       cc.getTarget().getDeclaringType() instanceof StdBasicRegex and

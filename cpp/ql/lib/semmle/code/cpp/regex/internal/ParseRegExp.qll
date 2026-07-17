@@ -855,7 +855,7 @@ abstract class RegExp extends StringLiteral {
   private predicate item_end(int end) {
     this.characterItem(_, end)
     or
-    exists(int in_end | this.group_end(in_end, end))
+    this.group_end(_, end)
     or
     this.charSet(_, end)
     or
