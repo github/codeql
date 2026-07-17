@@ -21,10 +21,6 @@ struct SwiftContext {
     /// `protocol_property_declaration` when present; read by the
     /// accessor inner rules.
     property_type: Option<yeast::Id>,
-    /// Default-value expression for the next translated `parameter`. Set
-    /// by the outer `function_parameter` rule; read by the `parameter`
-    /// rules.
-    default_value: Option<yeast::Id>,
     /// Translated outer modifiers to attach to each child of a flattening
     /// outer rule. Set by `property_declaration`, `binding_pattern`,
     /// `enum_entry`, and `protocol_property_declaration`. For `let`/`var`
@@ -168,6 +164,17 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((stringLiteralExpr) => (string_literal)),
         rule!((regexLiteralExpr) => (regex_literal)),
         // ---- Names ----
+        // A function reference spelled with argument labels (`f(x:y:z:)`) is a
+        // `declReferenceExpr` carrying `argumentNames`. Mark it unsupported for
+        // now (rather than let the bare-name rule below treat it as a plain
+        // reference), so downstream QL isn't handed a malformed reference. In
+        // the future this should become a lambda expression. Matched before the
+        // bare-name rule.
+        rule!(
+            (declReferenceExpr argumentNames: (declNameArguments))
+            =>
+            (unsupported_node)
+        ),
         // A bare name reference (`x`), and an operator used as a value (`+` in
         // `reduce(0, +)`), are both `declReferenceExpr`; its `baseName` is the
         // referenced identifier / operator symbol.
@@ -524,108 +531,111 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // the 'expression' case is the only remaining possibility when this rule tries to match.
         rule!((pattern kind: @expr) => (expr_equality_pattern expr: {expr})),
         // ---- Functions ----
-        // Function declaration
-        // Function declaration (return type optional, body statements optional).
+        // A function declaration (parameters/return type/body optional). The
+        // parameters and return type nest under `signature`; the body is a
+        // `codeBlock`. A bodyless function (a protocol requirement) still emits
+        // an empty `block`, matching the tree-sitter path.
         rule!(
-            (function_declaration
+            (functionDecl
                 name: @name
-                parameter: _* @params
-                return_type: _? @ret
-                body: (block statement: _* @body_stmts))
+                signature: (functionSignature
+                    parameterClause: (functionParameterClause parameters: _* @params)
+                    returnClause: (returnClause type: @ret)?)
+                body: (codeBlock statements: _* @body))
             =>
             (function_declaration
                 name: (identifier #{name})
                 parameter: {params}
                 return_type: {ret}
-                body: (block stmt: {body_stmts}))
+                body: (block stmt: {body}))
         ),
-        // Parameters are wrapped in function_parameter, which also carries
-        // optional default values. Publishes the default value into `ctx`
-        // before translating the inner `parameter` so the `parameter`
-        // rules can include it as a `default:` field directly.
         rule!(
-            (function_parameter parameter: @@p default_value: _? @def)
+            (functionDecl
+                name: @name
+                signature: (functionSignature
+                    parameterClause: (functionParameterClause parameters: _* @params)
+                    returnClause: (returnClause type: @ret)?))
             =>
-            parameter* {
-                ctx.default_value = def;
-                ctx.translate(p)?
+            (function_declaration
+                name: (identifier #{name})
+                parameter: {params}
+                return_type: {ret}
+                body: (block))
+        ),
+        // A function parameter. With two names (`firstName`+`secondName`) the
+        // first is the external argument label and the second the internal name;
+        // with one name it is just the internal name. The default value is
+        // optional.
+        //
+        // PARITY: the declared type is intentionally dropped. In the tree-sitter
+        // path the untyped-parameter rule was ordered before the typed one and
+        // shadowed it (first match wins), so the baseline emits no parameter
+        // type; emitting one here would diverge from it.
+        rule!(
+            (functionParameter
+                firstName: @@first
+                secondName: _? @@second
+                defaultValue: (initializerClause value: @val)?)
+            =>
+            parameter {
+                let (external, name) = match second {
+                    Some(second) => (Some(tree!((identifier #{first}))), second),
+                    None => (None, first),
+                };
+                tree!((parameter
+                    external_name: {external}
+                    pattern: (name_pattern identifier: (identifier #{name}))
+                    default: {val}))
             }
         ),
-        // Parameter with external name and type
+        // A function/method call (`foo(1, 2)`). `calledExpression` is the callee
+        // and `arguments` is an (elided) list of `labeledExpr`, each translated
+        // to an `argument` below. A trailing closure (`xs.map { … }`) becomes a
+        // final unlabelled argument; that variant is matched first.
         rule!(
-            (parameter external_name: @ext name: @name)
+            (functionCallExpr calledExpression: @callee arguments: _* @args trailingClosure: @tc)
             =>
-            (parameter
-                external_name: (identifier #{ext})
-                pattern: (name_pattern identifier: (identifier #{name}))
-                default: {ctx.default_value})
+            (call_expr callee: {callee} argument: {args} argument: (argument value: {tc}))
         ),
         rule!(
-            (parameter external_name: @ext name: @name type: @ty)
+            (functionCallExpr calledExpression: @callee arguments: _* @args)
             =>
-            (parameter
-                external_name: (identifier #{ext})
-                pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty}
-                default: {ctx.default_value})
+            (call_expr callee: {callee} argument: {args})
         ),
-        // Parameter with just name and type (no external name)
+        // A call argument keeps its optional label as the `name` and its value.
+        // (Enum-case pattern arguments reuse `labeledExpr` too; that handling is
+        // added with the switch/pattern rules.)
         rule!(
-            (parameter name: @name)
+            (labeledExpr label: @lbl expression: @val)
             =>
-            (parameter
-                pattern: (name_pattern identifier: (identifier #{name}))
-                default: {ctx.default_value})
+            (argument name: (identifier #{lbl}) value: {val})
         ),
         rule!(
-            (parameter name: @name type: @ty)
-            =>
-            (parameter
-                pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty}
-                default: {ctx.default_value})
-        ),
-        // Reference to a function, f(x:y:z:). This is parsed as a call with a single argument with multiple reference_specifier labels.
-        // We don't want downstream QL to try to handle this as a call_expr with a weird argument, so explicitly mark it as unsupported for now.
-        // In the future we probably want to translate this to a lambda expression.
-        rule!(
-            (call_expression suffix: (call_suffix arguments: (value_arguments argument: (value_argument reference_specifier: _+) @ref_arg)))
-            =>
-            (unsupported_node)
-        ),
-        // Call expression: function(args...)
-        rule!(
-            (call_expression function: @func suffix: (call_suffix arguments: (value_arguments argument: (value_argument)* @args)))
-            =>
-            (call_expr callee: {func} argument: {args})
-        ),
-        // Value argument with label (value: _ matches both named nodes and anonymous tokens like nil)
-        rule!(
-            (value_argument name: (value_argument_label name: @label) value: @val)
-            =>
-            (argument name: (identifier #{label}) value: {val})
-        ),
-        // Value argument without label
-        rule!(
-            (value_argument value: @val)
+            (labeledExpr expression: @val)
             =>
             (argument value: {val})
         ),
-        // Navigation expression → member_access_expr
+        // Member access (`list.append`). The `declName` is itself a
+        // `declReferenceExpr`; pull its `baseName` out as the member identifier.
+        // A leading-dot access (`.foo`) has no explicit base — the base is an
+        // `inferred_type_expr`. The base-ful form is matched first.
         rule!(
-            (navigation_expression target: @target suffix: (navigation_suffix suffix: @member))
+            (memberAccessExpr base: @base declName: (declReferenceExpr baseName: @member))
             =>
-            (member_access_expr base: {target} member: (identifier #{member}))
+            (member_access_expr base: {base} member: (identifier #{member}))
         ),
-        // Return / break / continue, one rule per keyword.
-        // The anonymous "return"/"break"/"continue" keywords are matched as
-        // string literals.
-        rule!((control_transfer_statement kind: "return" result: _? @val) => (return_expr value: {val})),
-        rule!((control_transfer_statement kind: "break" result: @lbl) => (break_expr label: (identifier #{lbl}))),
-        rule!((control_transfer_statement kind: "break") => (break_expr)),
-        rule!((control_transfer_statement kind: "continue" result: @lbl) => (continue_expr label: (identifier #{lbl}))),
-        rule!((control_transfer_statement kind: "continue") => (continue_expr)),
-        rule!((control_transfer_statement kind: (throw_keyword) result: @val) => (throw_expr value: {val})),
+        rule!(
+            (memberAccessExpr declName: (declReferenceExpr baseName: @member))
+            =>
+            (member_access_expr base: (inferred_type_expr) member: (identifier #{member}))
+        ),
+        // Control transfer, one rule per keyword. `return` carries an optional
+        // value; `break` / `continue` an optional target label; `throw` its
+        // thrown expression.
+        rule!((returnStmt expression: _? @val) => (return_expr value: {val})),
+        rule!((breakStmt label: _? @@lbl) => (break_expr label: {lbl.map(|l| tree!((identifier #{l})))})),
+        rule!((continueStmt label: _? @@lbl) => (continue_expr label: {lbl.map(|l| tree!((identifier #{l})))})),
+        rule!((throwStmt expression: @val) => (throw_expr value: {val})),
         // ---- Closures ----
         // Lambda literal with optional type header (parameters + optional return type).
         // The return_type capture is optional, so this rule covers both cases.
