@@ -1139,8 +1139,9 @@ class EcmaRegExp extends RegExp {
   }
 
   /**
-   * `(?<name>...)` – ECMAScript named capturing group.
-   * The group name spans from `start+3` to the `>` character.
+   * Holds if `[start, end)` is the opening delimiter of an ECMAScript named
+   * capturing group `(?<name>...)`. The group name spans from `start+3` to
+   * the `>` character.
    */
   override predicate ecma_named_group_start(int start, int end) {
     this.isGroupStart(start) and
