@@ -1,4 +1,4 @@
-use codeql_extractor::extractor::simple;
+use codeql_extractor::extractor::desugaring;
 use yeast::{ConcreteDesugarer, DesugaringConfig, PhaseKind, Rule, rule, tree};
 
 /// User context propagated from outer rules down to the inner rules that
@@ -1249,18 +1249,18 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
     ]
 }
 
-pub fn language_spec(desugared_ast_schema: &'static str) -> simple::LanguageSpec {
+pub fn language_spec(desugared_ast_schema: &'static str) -> desugaring::LanguageSpec {
     let ts_language: tree_sitter::Language = tree_sitter_swift::LANGUAGE.into();
     let config = DesugaringConfig::<SwiftContext>::new()
         .add_phase("translate", PhaseKind::OneShot, translation_rules())
         .with_output_node_types_yaml(desugared_ast_schema);
     let desugarer = ConcreteDesugarer::new(ts_language.clone(), config)
         .expect("failed to build Swift desugarer");
-    simple::LanguageSpec {
+    desugaring::LanguageSpec {
         prefix: "swift",
-        ts_language,
+        parser: Box::new(codeql_extractor::extractor::tree_sitter_parser(ts_language)),
         node_types: tree_sitter_swift::NODE_TYPES,
         file_globs: vec!["*.swift".into(), "*.swiftinterface".into()],
-        desugar: Some(Box::new(desugarer)),
+        desugarer: Box::new(desugarer),
     }
 }
