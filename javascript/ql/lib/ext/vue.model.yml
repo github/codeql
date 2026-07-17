@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: summaryModel
+    data:
+      # `computed(() => ...)` — function overload: the getter's return value flows to `.value`.
+      - ["vue", "Member[computed]", "Argument[0].ReturnValue", "ReturnValue.Member[value]", "value"]
+      # `computed({ get() { ... } })` — object overload: the `get` getter's return value flows to `.value`.
+      - ["vue", "Member[computed]", "Argument[0].Member[get].ReturnValue", "ReturnValue.Member[value]", "value"]
