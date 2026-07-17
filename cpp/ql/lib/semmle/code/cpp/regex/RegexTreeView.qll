@@ -196,7 +196,7 @@ module Impl implements RegexTreeViewSig {
   // RegExpTerm (base class for all parse-tree nodes)
   // -------------------------------------------------------------------------
   /**
-   * A regular expression term — a node in the parse tree of a regex literal.
+   * A regular expression term - a node in the parse tree of a regex literal.
    */
   class RegExpTerm extends RegExpParent {
     RegExp re;
@@ -426,7 +426,7 @@ module Impl implements RegexTreeViewSig {
   // Sequences and alternations
   // -------------------------------------------------------------------------
   /**
-   * A sequence term — two or more items in a row.
+   * A sequence term - two or more items in a row.
    *
    * Example: `ab` is a sequence of `a` and `b`.
    */
@@ -504,7 +504,7 @@ module Impl implements RegexTreeViewSig {
   class RegExpCharEscape = RegExpEscape;
 
   /**
-   * An escaped regular expression term — starts with `\` and is not a
+   * An escaped regular expression term - starts with `\` and is not a
    * back-reference.
    */
   class RegExpEscape extends RegExpNormalChar {
@@ -538,7 +538,7 @@ module Impl implements RegexTreeViewSig {
   }
 
   /**
-   * A character-class escape — an escape that denotes a set of characters.
+   * A character-class escape - an escape that denotes a set of characters.
    *
    * Examples: `\d`, `\D`, `\w`, `\W`, `\s`, `\S`.
    */
@@ -569,10 +569,10 @@ module Impl implements RegexTreeViewSig {
      * (complementary class escapes).
      */
     predicate isUniversalClass() {
-      // [^] — empty inverted class
+      // [^] - empty inverted class
       this.isInverted() and not exists(this.getAChild())
       or
-      // [\w\W] and similar — two complementary class escapes
+      // [\w\W] and similar - two complementary class escapes
       not this.isInverted() and
       exists(string cce1, string cce2 |
         cce1 = this.getAChild().(RegExpCharacterClassEscape).getValue() and
@@ -650,8 +650,8 @@ module Impl implements RegexTreeViewSig {
    * Each is treated as a single character-matching atom (a class member).
    *
    * For POSIX character classes with a clean Perl-escape equivalent
-   * (`digit`, `space`, `word`) — or a *subset* of one (`alpha`, `alnum`,
-   * `upper`, `lower`, `xdigit`, `blank`) — we map them onto `\d`, `\s`, `\w`
+   * (`digit`, `space`, `word`) - or a *subset* of one (`alpha`, `alnum`,
+   * `upper`, `lower`, `xdigit`, `blank`) - we map them onto `\d`, `\s`, `\w`
    * via `isEscapeClass`, so the shared ReDoS engine can reason about their
    * match sets.
    *
@@ -742,7 +742,7 @@ module Impl implements RegexTreeViewSig {
    * `RegexFlowConfigs.qll` (`hasMultilineFlag`) and exposed by
    * `RegExpLiteral.isMultiline()`, but the shared `RegexTreeViewSig`
    * signature has no hook to parameterize anchor semantics on multiline
-   * mode. We therefore always model `$` as the end-of-string anchor —
+   * mode. We therefore always model `$` as the end-of-string anchor -
    * mirroring the conservative choice made by the JavaScript and Ruby
    * ReDoS analyses. Under `multiline`, `$` can additionally match at `\n`,
    * which affects rejecting-suffix reasoning for `^`/`$`-anchored
@@ -927,7 +927,7 @@ module Impl implements RegexTreeViewSig {
   // RegExpConstant
   // -------------------------------------------------------------------------
   /**
-   * A constant regular expression term — a sequence of characters that matches
+   * A constant regular expression term - a sequence of characters that matches
    * a fixed string. Currently this is always a single character (or escape
    * sequence).
    */
@@ -972,7 +972,7 @@ module Impl implements RegexTreeViewSig {
     or
     // Map POSIX bracket sub-expressions to the shared engine's escape-class
     // signature. Only POSIX character classes (`[:name:]`) whose match set
-    // is `\d`, `\s`, or `\w` — or a subset of one — are mapped; other
+    // is `\d`, `\s`, or `\w` - or a subset of one - are mapped; other
     // POSIX classes (`punct`, `cntrl`, `print`, `graph`) and the
     // collating/equivalence forms have no meaningful escape-class equivalent
     // and are left opaque (they still parse as single character-class atoms,
@@ -983,7 +983,7 @@ module Impl implements RegexTreeViewSig {
       name = posix.getName()
     |
       // `[:digit:]` = `\d`; `[:xdigit:]` is a superset, treated as `\d`
-      // (under-approximation — sound for the shared engine's overlap
+      // (under-approximation - sound for the shared engine's overlap
       // reasoning, since it will only ever detect fewer intersections, not
       // invent them).
       name = ["digit", "xdigit"] and clazz = "d"

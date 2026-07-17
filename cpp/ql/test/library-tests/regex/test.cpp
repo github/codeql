@@ -366,7 +366,7 @@ void posix_brackets() {
 // Adversarial POSIX-bracket parser tests. These exercise the "inside an open
 // outer class" gate and its boundary logic:
 //   * top-level POSIX-looking sequences (must parse as ordinary characters,
-//     not as POSIX brackets — POSIX brackets only have meaning inside `[...]`);
+//     not as POSIX brackets - POSIX brackets only have meaning inside `[...]`);
 //   * adjacent / nested classes, including the `]`-first-member special case;
 //   * malformed / unterminated brackets (must not crash; behaviour recorded
 //     via the `parse.expected` / `Consistency.expected` outputs);
@@ -374,12 +374,12 @@ void posix_brackets() {
 //     with quantifiers and groups.
 void posix_brackets_adversarial() {
     std::string subj("aaa");
-    // Top-level `[:alpha:]` — the outer `[...]` is a character class whose
+    // Top-level `[:alpha:]` - the outer `[...]` is a character class whose
     // members are literal `:`, `a`, `l`, `p`, `h`, `:`. It must NOT be
     // recognised as a POSIX bracket.
     std::regex t1("[:alpha:].*");
     (void)std::regex_search(subj, t1);
-    // Bare `a[:b:]c` — again no outer `[...]`, so `[:b:]` is a top-level
+    // Bare `a[:b:]c` - again no outer `[...]`, so `[:b:]` is a top-level
     // character class whose only member is the literal `:b:` (a range
     // between `:` and `:`, then a `b`, then another `:` ... treated
     // structurally as an ordinary character class).
@@ -388,7 +388,7 @@ void posix_brackets_adversarial() {
     // Three adjacent POSIX classes inside a single outer class.
     std::regex t3("[[:alpha:][:digit:][:space:]].*");
     (void)std::regex_search(subj, t3);
-    // `]` as the first class member, followed by a POSIX class — exercises
+    // `]` as the first class member, followed by a POSIX class - exercises
     // the ]-first special case together with the POSIX-bracket gate.
     std::regex t4("[]a[:alpha:]].*");
     (void)std::regex_search(subj, t4);
@@ -399,7 +399,7 @@ void posix_brackets_adversarial() {
     // `z`, whichever the current parser produces (recorded in .expected).
     std::regex t5("[[:alpha:]-z].*");
     (void)std::regex_search(subj, t5);
-    // Malformed: missing closing `:]` — the outer class is still valid but
+    // Malformed: missing closing `:]` - the outer class is still valid but
     // the inner `[:alpha` has no matching `:]`, so it should NOT be
     // recognised as a POSIX bracket. The pattern should parse as an
     // ordinary character class without crashing.

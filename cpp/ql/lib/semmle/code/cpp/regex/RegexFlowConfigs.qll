@@ -15,7 +15,7 @@
  *
  * All standard `std::regex` grammars are now modeled: ECMAScript (default),
  * POSIX BRE (`basic`/`grep`), and POSIX ERE (`extended`/`egrep`/`awk`).
- * Grammar selection and ReDoS-eligibility are independent axes — see
+ * Grammar selection and ReDoS-eligibility are independent axes - see
  * `isBacktrackingEngine` for the latter.
  */
 
@@ -375,13 +375,13 @@ predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
 /**
  * The `std::regex` grammar dialects that the C++ regex parser is aware of.
  *
- * - `Ecma()`  — ECMAScript, the default grammar used by `std::regex`.
+ * - `Ecma()`  - ECMAScript, the default grammar used by `std::regex`.
  *              Selected either implicitly (no explicit grammar flag) or
  *              explicitly via `std::regex_constants::ECMAScript`. Modeled
  *              by `EcmaRegExp`.
- * - `Bre()`   — POSIX Basic Regular Expressions (selected via the `basic`
+ * - `Bre()`   - POSIX Basic Regular Expressions (selected via the `basic`
  *              or `grep` flags). Modeled by `BreRegExp`.
- * - `Ere()`   — POSIX Extended Regular Expressions (selected via the
+ * - `Ere()`   - POSIX Extended Regular Expressions (selected via the
  *              `extended`, `egrep`, or `awk` flags). Modeled by
  *              `EreRegExp`.
  *
@@ -402,9 +402,9 @@ newtype TRegexGrammar =
  * construction-site `syntax_option_type` flag argument (if any).
  *
  * The mapping is:
- *   - `basic` / `grep`              → `Bre()`
- *   - `extended` / `egrep` / `awk`  → `Ere()`
- *   - anything else (default, explicit `ECMAScript`, or unresolved) → `Ecma()`
+ *   - `basic` / `grep`              -> `Bre()`
+ *   - `extended` / `egrep` / `awk`  -> `Ere()`
+ *   - anything else (default, explicit `ECMAScript`, or unresolved) -> `Ecma()`
  *
  * Every case now has a concrete parser subclass, so `hasConcreteGrammar`
  * holds for the result of this predicate.

@@ -7,8 +7,8 @@
  * classes, POSIX bracket sub-expressions, character/normal-character
  * tokenization, and failure-to-parse reporting) purely in terms of a small
  * set of **dialect hook** abstract predicates. Concrete grammar dialects
- * supply the raw lexical decisions — "is this position an escape
- * backslash?", "is this a group open?", "is this a quantifier?", etc. — by
+ * supply the raw lexical decisions - "is this position an escape
+ * backslash?", "is this a group open?", "is this a quantifier?", etc. - by
  * overriding those hooks.
  *
  * The grammar dialects modeled today are:
@@ -75,10 +75,10 @@ abstract class RegExp extends StringLiteral {
   // These predicates capture every place where the parser branches on raw
   // metacharacters. Grammar dialects override them; the shared structural
   // predicates below MUST NOT re-derive these facts (in particular, must not
-  // re-inspect backslashes to compute escaping) — they call the hooks.
+  // re-inspect backslashes to compute escaping) - they call the hooks.
   // ---------------------------------------------------------------------------
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Holds if the character at position `pos` is a backslash that escapes the
    * next character.
@@ -86,7 +86,7 @@ abstract class RegExp extends StringLiteral {
   abstract predicate escapingChar(int pos);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Holds if an escaped character sequence spans `[start, end)` (a hex/unicode
    * escape, a legacy octal escape, or a simple `\X` single-character escape),
@@ -95,7 +95,7 @@ abstract class RegExp extends StringLiteral {
   abstract predicate escapedCharacter(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Holds if the character at `[start, end)` is a special (metacharacter)
    * position-assertion or wildcard, with `char` giving its canonical
@@ -104,21 +104,21 @@ abstract class RegExp extends StringLiteral {
   abstract predicate specialCharacter(int start, int end, string char);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Holds if position `i` is an alternation divider (e.g. `|` in ECMAScript).
    */
   abstract predicate isOptionDivider(int i);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Holds if position `i` opens a group (e.g. an unescaped `(` in ECMAScript).
    */
   abstract predicate isGroupStart(int i);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Holds if position `i` closes a group (e.g. an unescaped `)` in ECMAScript,
    * or the leading `\` of a `\)` in BRE). The end-delimiter span itself is
@@ -127,7 +127,7 @@ abstract class RegExp extends StringLiteral {
   abstract predicate isGroupEnd(int i);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Matches the closing delimiter of a group, yielding `[start, end)` where
    * `start` is the first position of the closing delimiter (i.e. the same
@@ -138,7 +138,7 @@ abstract class RegExp extends StringLiteral {
   abstract predicate group_end(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Matches the start of any group construct, yielding `[start, end)` where
    * `end` is the first position of the group content.
@@ -146,14 +146,14 @@ abstract class RegExp extends StringLiteral {
   abstract predicate group_start(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Simple capturing group open (e.g. `(` in ECMAScript, `\(` in BRE).
    */
   abstract predicate simple_group_start(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Non-capturing group open (`(?:` in ECMAScript). Grammars without a
    * non-capturing form leave this empty.
@@ -161,7 +161,7 @@ abstract class RegExp extends StringLiteral {
   abstract predicate non_capturing_group_start(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * ECMAScript named group open (`(?<name>`). Grammars without named groups
    * leave this empty.
@@ -169,7 +169,7 @@ abstract class RegExp extends StringLiteral {
   abstract predicate ecma_named_group_start(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Positive lookahead open (`(?=` in ECMAScript). Grammars without
    * lookaround leave this empty.
@@ -177,7 +177,7 @@ abstract class RegExp extends StringLiteral {
   abstract predicate lookahead_assertion_start(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Negative lookahead open (`(?!` in ECMAScript). Grammars without
    * lookaround leave this empty.
@@ -185,7 +185,7 @@ abstract class RegExp extends StringLiteral {
   abstract predicate negative_lookahead_assertion_start(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Positive lookbehind open (`(?<=` in ECMAScript). Grammars without
    * lookaround leave this empty.
@@ -193,7 +193,7 @@ abstract class RegExp extends StringLiteral {
   abstract predicate lookbehind_assertion_start(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Negative lookbehind open (`(?<!` in ECMAScript). Grammars without
    * lookaround leave this empty.
@@ -201,7 +201,7 @@ abstract class RegExp extends StringLiteral {
   abstract predicate negative_lookbehind_assertion_start(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Holds if a repetition quantifier spans `[start, end)`, with `maybe_empty`
    * indicating whether zero repetitions are possible and `may_repeat_forever`
@@ -210,7 +210,7 @@ abstract class RegExp extends StringLiteral {
   abstract predicate qualifier(int start, int end, boolean maybe_empty, boolean may_repeat_forever);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Holds if `[start, end)` is a greedy (non-lazy) quantifier.
    */
@@ -219,7 +219,7 @@ abstract class RegExp extends StringLiteral {
   );
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Holds if `[start, end)` is a `{n}`, `{n,m}`, or `{n,}` bounded quantifier
    * with textual bounds `lower` and `upper`; an empty `upper` means "no upper
@@ -228,7 +228,7 @@ abstract class RegExp extends StringLiteral {
   abstract predicate multiples(int start, int end, string lower, string upper);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Numbered back-reference (`\1`..`\9`, `\10`...) spanning `[start, end)`
    * with value `value`.
@@ -236,28 +236,28 @@ abstract class RegExp extends StringLiteral {
   abstract predicate numbered_backreference(int start, int end, int value);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Named back-reference (`\k<name>` in ECMAScript) spanning `[start, end)`.
    */
   abstract predicate named_backreference(int start, int end, string name);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Holds if a back-reference spans `[start, end)`.
    */
   abstract predicate backreference(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Gets the name of the named group at `[start, end)`, if any.
    */
   abstract string getGroupName(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Gets the 1-based capture index of the group at `[start, end)`, if it is a
    * capturing group under this grammar's numbering rules.
@@ -265,14 +265,14 @@ abstract class RegExp extends StringLiteral {
   abstract int getGroupNumber(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Gets the name of the back-reference at `[start, end)`, if any.
    */
   abstract string getBackrefName(int start, int end);
 
   /**
-   * Dialect hook — overridden per grammar.
+   * Dialect hook - overridden per grammar.
    *
    * Gets the number of the back-reference at `[start, end)`, if any.
    */
@@ -305,7 +305,7 @@ abstract class RegExp extends StringLiteral {
    * sub-expression: an unescaped `[` at `start` followed by a mark
    * (`:`, `.`, or `=`) and terminated by the earliest matching `mark]`.
    *
-   * This is a purely lexical recognition — it does NOT check whether the
+   * This is a purely lexical recognition - it does NOT check whether the
    * span is actually nested inside an outer `[...]` character class. The
    * nesting requirement is applied on top of this in `posixBracketExpression`.
    *
@@ -333,7 +333,7 @@ abstract class RegExp extends StringLiteral {
    * Shared structural predicate.
    *
    * Holds if `pos` is an unescaped `[` or `]` that acts as a genuine
-   * character-class delimiter — i.e. it is NOT part of any POSIX bracket
+   * character-class delimiter - i.e. it is NOT part of any POSIX bracket
    * candidate (neither the opening `[`, the closing `]`, nor any interior
    * character of one).
    *
@@ -405,7 +405,7 @@ abstract class RegExp extends StringLiteral {
    * Shared structural predicate.
    *
    * Holds if position `pos` is a non-escaped `[` or `]` that acts as a
-   * character-class delimiter — i.e. it is NOT one of the outer brackets of
+   * character-class delimiter - i.e. it is NOT one of the outer brackets of
    * a POSIX bracket sub-expression. This is the delimiter set used by
    * `char_set_delimiter` and the class-end computation, so that
    * `[[:alpha:]]` correctly closes at the final `]` rather than at the
@@ -621,7 +621,7 @@ abstract class RegExp extends StringLiteral {
     not this.charSet(start, _) and
     not this.charSet(_, start + 1) and
     // A character inside a POSIX bracket sub-expression is not an
-    // independent simple character — the whole sub-expression is a single
+    // independent simple character - the whole sub-expression is a single
     // class-member atom (handled via `posixBracketExpression`).
     not this.insidePosixBracket(start) and
     exists(string c | c = this.getChar(start) |
@@ -1105,7 +1105,7 @@ class EcmaRegExp extends RegExp {
     this.simple_group_start(start, end)
   }
 
-  /** `(?:...)` – non-capturing group. */
+  /** `(?:...)` - non-capturing group. */
   override predicate non_capturing_group_start(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
@@ -1113,7 +1113,7 @@ class EcmaRegExp extends RegExp {
     end = start + 3
   }
 
-  /** `(...)` – simple capturing group. */
+  /** `(...)` - simple capturing group. */
   override predicate simple_group_start(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) != "?" and
@@ -1137,7 +1137,7 @@ class EcmaRegExp extends RegExp {
     )
   }
 
-  /** `(?=...)` – positive lookahead. */
+  /** `(?=...)` - positive lookahead. */
   override predicate lookahead_assertion_start(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
@@ -1145,7 +1145,7 @@ class EcmaRegExp extends RegExp {
     end = start + 3
   }
 
-  /** `(?!...)` – negative lookahead. */
+  /** `(?!...)` - negative lookahead. */
   override predicate negative_lookahead_assertion_start(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
@@ -1153,7 +1153,7 @@ class EcmaRegExp extends RegExp {
     end = start + 3
   }
 
-  /** `(?<=...)` – positive lookbehind. */
+  /** `(?<=...)` - positive lookbehind. */
   override predicate lookbehind_assertion_start(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
@@ -1162,7 +1162,7 @@ class EcmaRegExp extends RegExp {
     end = start + 4
   }
 
-  /** `(?<!...)` – negative lookbehind. */
+  /** `(?<!...)` - negative lookbehind. */
   override predicate negative_lookbehind_assertion_start(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
@@ -1277,7 +1277,7 @@ class EcmaRegExp extends RegExp {
  * Supplies all dialect hooks with the ERE token-recognition behavior.
  *
  * ERE is selected via the `std::regex_constants` flags `extended`, `egrep`,
- * and `awk` (all three parse the same grammar — they differ only in whether
+ * and `awk` (all three parse the same grammar - they differ only in whether
  * the matching engine is treated as backtracking; see
  * `RegexFlowConfigs::isBacktrackingEngine`).
  *
@@ -1389,7 +1389,7 @@ class EreRegExp extends RegExp {
   /**
    * Holds if `[start, end)` is a `{n}`, `{n,m}`, or `{n,}` quantifier.
    *
-   * In ERE, `{...}` is unconditionally a quantifier — there is no `\{...\}`
+   * In ERE, `{...}` is unconditionally a quantifier - there is no `\{...\}`
    * literal-brace form (that would be BRE). A backslash-escaped `\{` is a
    * literal `{`, so we must not treat it as a quantifier here.
    */
@@ -1431,7 +1431,7 @@ class EreRegExp extends RegExp {
 
   override predicate group_start(int start, int end) { this.simple_group_start(start, end) }
 
-  /** `(...)` – simple capturing group. */
+  /** `(...)` - simple capturing group. */
   override predicate simple_group_start(int start, int end) {
     this.isGroupStart(start) and end = start + 1
   }
@@ -1503,7 +1503,7 @@ class EreRegExp extends RegExp {
  *    look-around forms exist.
  *  - **Interval quantifier**: `\{n\}`, `\{n,\}`, `\{n,m\}` are the range
  *    quantifiers; bare `{` and `}` are literals.
- *  - **Quantifier `*`**: unlimited-repetition quantifier — except when it
+ *  - **Quantifier `*`**: unlimited-repetition quantifier - except when it
  *    is the first character of the regex, the first character after a
  *    leading `^`, or the first character of a subexpression (i.e., right
  *    after a `\(` group-open), in which cases it is a literal `*`.
@@ -1521,8 +1521,8 @@ class EreRegExp extends RegExp {
  *  - **Back-references**: `\1` through `\9` are numbered back-references.
  *    There are no named back-references.
  *  - **Escaped characters**: `\` before an ordinary metacharacter renders
- *    that metacharacter literal (e.g. `\.` → literal `.`, `\*` → literal
- *    `*`, `\\` → literal `\`). Backslash escapes that are consumed by the
+ *    that metacharacter literal (e.g. `\.` -> literal `.`, `\*` -> literal
+ *    `*`, `\\` -> literal `\`). Backslash escapes that are consumed by the
  *    group / interval / back-reference hooks above (`\(`, `\)`, `\{`, `\}`,
  *    `\1..\9`) are structural and are *not* treated as escaped literals.
  *  - **POSIX bracket expressions**: identical to ERE / ECMAScript,
@@ -1597,7 +1597,7 @@ class BreRegExp extends RegExp {
    * Holds if position `start` is at the end of a subexpression: either the
    * position of the trailing character in the whole regex, or immediately
    * before a `\)` group-close (i.e., the position of the `\` of a `\)`
-   * pair — which is the position reported by `isGroupEnd` and by
+   * pair - which is the position reported by `isGroupEnd` and by
    * `group_end` as its start).
    */
   private predicate atSubexpressionEnd(int start) {
@@ -1690,7 +1690,7 @@ class BreRegExp extends RegExp {
 
   /**
    * Holds at the position of the `(` in a `\(` group-open. Note this is
-   * *not* the position of the leading backslash — the whole delimiter
+   * *not* the position of the leading backslash - the whole delimiter
    * span is reported by `simple_group_start` / `group_start` starting at
    * the backslash.
    */
@@ -1715,7 +1715,7 @@ class BreRegExp extends RegExp {
 
   override predicate group_start(int start, int end) { this.simple_group_start(start, end) }
 
-  /** `\(...\)` – simple capturing group. `start` is the leading backslash. */
+  /** `\(...\)` - simple capturing group. `start` is the leading backslash. */
   override predicate simple_group_start(int start, int end) {
     this.isGroupStart(start + 1) and end = start + 2
   }
