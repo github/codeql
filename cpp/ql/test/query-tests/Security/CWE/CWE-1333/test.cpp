@@ -104,7 +104,7 @@ struct Widget {
 // -----------------------------------------------------------------------------
 
 // argv is a LocalFlowSource (and hence a FlowSource).
-int main(int argc, char** argv) {
+int main(int argc, char** argv) { // $ Source
     std::string input(argv[1]);
 
     // -------------------------------------------------------------------------
@@ -114,7 +114,7 @@ int main(int argc, char** argv) {
     // BAD: polynomial-backtracking pattern applied to user input.
     {
         std::regex re("^\\s+|\\s+$");
-        std::regex_replace(input, re, std::string(""));
+        std::regex_replace(input, re, std::string("")); // $ Alert
     }
 
     // Note: passing `argv[1]` (a raw `char*`) inline to `regex_search`
@@ -129,7 +129,7 @@ int main(int argc, char** argv) {
     // BAD: quadratic \\d+E?\\d+ pattern applied to user input.
     {
         std::regex re("^0\\.\\d+E?\\d+$");
-        std::regex_search(input, re);
+        std::regex_search(input, re); // $ Alert
     }
 
     // GOOD: pattern is linear (a fixed prefix, no ambiguous repetition).
@@ -166,7 +166,7 @@ int main(int argc, char** argv) {
     // BAD: \s+X? repeated - quadratic on strings of whitespace.
     {
         std::regex re("\\s+X?\\s+$");
-        std::regex_search(input, re);
+        std::regex_search(input, re); // $ Alert
     }
 
     // -------------------------------------------------------------------------
@@ -176,20 +176,20 @@ int main(int argc, char** argv) {
     // BAD: std::regex_match with user input.
     {
         std::regex re("^\\s+|\\s+$");
-        std::regex_match(input, re);
+        std::regex_match(input, re); // $ Alert
     }
 
     // BAD: std::regex_search with user input.
     {
         std::regex re("^\\s+|\\s+$");
-        std::regex_search(input, re);
+        std::regex_search(input, re); // $ Alert
     }
 
     // BAD: std::regex_replace with user input (already covered above; kept for
     // symmetry with the other APIs).
     {
         std::regex re("^\\s+|\\s+$");
-        std::regex_replace(input, re, std::string(""));
+        std::regex_replace(input, re, std::string("")); // $ Alert
     }
 
     // BAD: std::regex_iterator constructed with a superlinear regex - the
@@ -276,7 +276,7 @@ int main(int argc, char** argv) {
         int n = argc; // integer, small fixed size
         (void)n;
         std::regex re("^\\s+|\\s+$");
-        std::regex_search(input, re); // BAD (already reported above)
+        std::regex_search(input, re); // $ Alert // BAD (already reported above)
     }
 
     // -------------------------------------------------------------------------
@@ -305,7 +305,7 @@ int main(int argc, char** argv) {
     // BAD: icase does not suppress the polynomial alert.
     {
         std::regex re("^\\s+|\\s+$", std::regex_constants::icase);
-        std::regex_replace(input, re, std::string(""));
+        std::regex_replace(input, re, std::string("")); // $ Alert
     }
 
     // GOOD: BRE grammar (`basic`) is now modeled by the parser
@@ -325,7 +325,7 @@ int main(int argc, char** argv) {
     // ECMAScript case.
     {
         std::regex re("^\\s+|\\s+$", std::regex_constants::extended);
-        std::regex_replace(input, re, std::string(""));
+        std::regex_replace(input, re, std::string("")); // $ Alert
     }
     // GOOD: awk parses as ERE (same as `extended`) but is excluded from
     // the ReDoS queries by `isBacktrackingEngine`, *not* by any
@@ -357,14 +357,14 @@ int main(int argc, char** argv) {
     // digit-heavy input (Java polynomial-ReDoS test `Test.java`).
     {
         std::regex re("(\\d+)*$");
-        std::regex_search(input, re);
+        std::regex_search(input, re); // $ Alert
     }
 
     // BAD: .*.*=.* - classic polynomial pattern, cf. JS
     // `polynomial-redos/tst.js`.
     {
         std::regex re(".*.*=.*");
-        std::regex_search(input, re);
+        std::regex_search(input, re); // $ Alert
     }
 
     // GOOD (observed): `^(\w+\s?)*$` - a "trim-and-split" style pattern that
@@ -384,10 +384,10 @@ int main(int argc, char** argv) {
 
     // BAD: `std::getenv` is modeled as a LocalFlowSource.
     {
-        const char* env = std::getenv("USER_REGEX_INPUT");
+        const char* env = std::getenv("USER_REGEX_INPUT"); // $ Source
         std::string s(env);
         std::regex re("^\\s+|\\s+$");
-        std::regex_replace(s, re, std::string(""));
+        std::regex_replace(s, re, std::string("")); // $ Alert
     }
 
     // BAD: `std::fread` is modeled as a RemoteFlowSource (bytes read from a
@@ -395,10 +395,10 @@ int main(int argc, char** argv) {
     // `FlowSource` union used by `PolynomialRedosConfig::isSource`.
     {
         char buf[256];
-        std::fread(buf, 1, sizeof(buf), (std::FILE*)0);
+        std::fread(buf, 1, sizeof(buf), (std::FILE*)0); // $ Source
         std::string s(buf);
         std::regex re("^\\s+|\\s+$");
-        std::regex_replace(s, re, std::string(""));
+        std::regex_replace(s, re, std::string("")); // $ Alert
     }
 
     // -------------------------------------------------------------------------
@@ -436,7 +436,7 @@ int main(int argc, char** argv) {
     // backtracking term on user input.
     {
         std::regex re("(a+)+b");
-        std::regex_match(input, re);
+        std::regex_match(input, re); // $ Alert
     }
 
     // -------------------------------------------------------------------------
@@ -499,7 +499,7 @@ int main(int argc, char** argv) {
     // BAD: ERE grammar via `extended` - parsed as ERE and backtracking-eligible.
     {
         std::regex re("^\\s+|\\s+$", std::regex_constants::extended);
-        std::regex_replace(input, re, std::string(""));
+        std::regex_replace(input, re, std::string("")); // $ Alert
     }
     // GOOD: same pattern/flow under `egrep` - parses identically as ERE
     // but excluded by `isBacktrackingEngine`.
@@ -547,7 +547,7 @@ int main(int argc, char** argv) {
     {
         std::regex re("[[:space:]]\\{1,\\}.*[[:space:]]\\{1,\\}$",
                       std::regex_constants::basic);
-        std::regex_replace(input, re, std::string(""));
+        std::regex_replace(input, re, std::string("")); // $ Alert
     }
     // GOOD: same pattern/flow under `grep` - parses identically as BRE
     // but excluded by `isBacktrackingEngine`.

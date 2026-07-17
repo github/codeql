@@ -1,1 +1,2 @@
 query: Security/CWE/CWE-1333/PolynomialReDoS.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

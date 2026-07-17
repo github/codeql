@@ -71,58 +71,58 @@ int main(int argc, char** argv) {
     // -------------------------------------------------------------------------
 
     // BAD: (a*)*b
-    { std::regex re("(a*)*b"); run(re, input); }
+    { std::regex re("(a*)*b"); run(re, input); } // $ Alert
     // BAD: (a+)*b
-    { std::regex re("(a+)*b"); run(re, input); }
+    { std::regex re("(a+)*b"); run(re, input); } // $ Alert
     // BAD: (a*)+b
-    { std::regex re("(a*)+b"); run(re, input); }
+    { std::regex re("(a*)+b"); run(re, input); } // $ Alert
     // BAD: (a+)+b
-    { std::regex re("(a+)+b"); run(re, input); }
+    { std::regex re("(a+)+b"); run(re, input); } // $ Alert
     // BAD: (a*)+
-    { std::regex re("^(a*)+$"); run(re, input); }
+    { std::regex re("^(a*)+$"); run(re, input); } // $ Alert
     // BAD: ((a+a?)*)+b+  (Ruby bad48)
-    { std::regex re("(((a+a?)*)+b+)"); run(re, input); }
+    { std::regex re("(((a+a?)*)+b+)"); run(re, input); } // $ Alert
     // BAD: (a?a?)*b  (Ruby bad71)
-    { std::regex re("(a?a?)*b"); run(re, input); }
+    { std::regex re("(a?a?)*b"); run(re, input); } // $ Alert
     // BAD: (a?)+b via non-capturing alt  (Ruby bad73)
-    { std::regex re("(?:a|a?)+b"); run(re, input); }
+    { std::regex re("(?:a|a?)+b"); run(re, input); } // $ Alert
     // BAD: foo([\w-]*)+bar  (Ruby bad69)
-    { std::regex re("foo([\\w-]*)+bar"); run(re, input); }
+    { std::regex re("foo([\\w-]*)+bar"); run(re, input); } // $ Alert
     // BAD: ((ab)*)+c  (Ruby bad70)
-    { std::regex re("((ab)*)+c"); run(re, input); }
+    { std::regex re("((ab)*)+c"); run(re, input); } // $ Alert
 
     // -------------------------------------------------------------------------
     // 2. Anchored nested-quantifier patterns (Ruby bad7..bad10, bad77, bad78).
     // -------------------------------------------------------------------------
 
     // BAD: ^([a-z]+)+$
-    { std::regex re("^([a-z]+)+$"); run(re, input); }
+    { std::regex re("^([a-z]+)+$"); run(re, input); } // $ Alert
     // BAD: ^([a-z]*)*$
-    { std::regex re("^([a-z]*)*$"); run(re, input); }
+    { std::regex re("^([a-z]*)*$"); run(re, input); } // $ Alert
     // BAD: e-mail-like regex
-    { std::regex re("^([a-zA-Z0-9])(([\\.-]|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$");
+    { std::regex re("^([a-zA-Z0-9])(([\\.-]|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$"); // $ Alert
       run(re, input); }
     // BAD: ^(([a-z])+.)+[A-Z]([a-z])+$
-    { std::regex re("^(([a-z])+.)+[A-Z]([a-z])+$"); run(re, input); }
+    { std::regex re("^(([a-z])+.)+[A-Z]([a-z])+$"); run(re, input); } // $ Alert
     // BAD: ^((a)+\w)+$
-    { std::regex re("^((a)+\\w)+$"); run(re, input); }
+    { std::regex re("^((a)+\\w)+$"); run(re, input); } // $ Alert
     // BAD: ^(b+.)+$
-    { std::regex re("^(b+.)+$"); run(re, input); }
+    { std::regex re("^(b+.)+$"); run(re, input); } // $ Alert
     // BAD: ^ab(c+)+$  (Ruby bad66)
-    { std::regex re("^ab(c+)+$"); run(re, input); }
+    { std::regex re("^ab(c+)+$"); run(re, input); } // $ Alert
 
     // -------------------------------------------------------------------------
     // 3. Alternations with overlapping / identical branches inside a repetition.
     // -------------------------------------------------------------------------
 
     // BAD: (a|a)*
-    { std::regex re("^(a|a)*$"); run(re, input); }
+    { std::regex re("^(a|a)*$"); run(re, input); } // $ Alert
     // BAD: (a|aa?)*b  (Ruby bad15)
-    { std::regex re("(a|aa?)*b"); run(re, input); }
+    { std::regex re("(a|aa?)*b"); run(re, input); } // $ Alert
     // BAD: (b|a?b)*c  (Ruby bad13)
-    { std::regex re("(b|a?b)*c"); run(re, input); }
+    { std::regex re("(b|a?b)*c"); run(re, input); } // $ Alert
     // BAD: (a+|b+|c+)*c  (Ruby bad47)
-    { std::regex re("(a+|b+|c+)*c"); run(re, input); }
+    { std::regex re("(a+|b+|c+)*c"); run(re, input); } // $ Alert
 
     // -------------------------------------------------------------------------
     // 4. Character-class / complement ambiguity (Ruby bad52, bad53, bad18,
@@ -130,19 +130,19 @@ int main(int argc, char** argv) {
     // -------------------------------------------------------------------------
 
     // BAD: ([^X]+)*$
-    { std::regex re("([^X]+)*$"); run(re, input); }
+    { std::regex re("([^X]+)*$"); run(re, input); } // $ Alert
     // BAD: (([^X]b)+)*$
-    { std::regex re("(([^X]b)+)*$"); run(re, input); }
+    { std::regex re("(([^X]b)+)*$"); run(re, input); } // $ Alert
     // BAD: (([\S\s]|[^a])*)"
-    { std::regex re("(([\\S\\s]|[^a])*)\""); run(re, input); }
+    { std::regex re("(([\\S\\s]|[^a])*)\""); run(re, input); } // $ Alert
     // BAD: ((.|[^a])*)"
-    { std::regex re("((.|[^a])*)\""); run(re, input); }
+    { std::regex re("((.|[^a])*)\""); run(re, input); } // $ Alert
     // BAD: ((b|[^a])*)"
-    { std::regex re("((b|[^a])*)\""); run(re, input); }
+    { std::regex re("((b|[^a])*)\""); run(re, input); } // $ Alert
     // BAD: (([0-9]|[^a])*)"
-    { std::regex re("(([0-9]|[^a])*)\""); run(re, input); }
+    { std::regex re("(([0-9]|[^a])*)\""); run(re, input); } // $ Alert
     // BAD: ^([^>a]+)*(>|$)
-    { std::regex re("^([^>a]+)*(>|$)"); run(re, input); }
+    { std::regex re("^([^>a]+)*(>|$)"); run(re, input); } // $ Alert
 
     // -------------------------------------------------------------------------
     // 5. Anchored-vs-unanchored GOOD/BAD pairs (Ruby good16/bad50,
@@ -154,17 +154,17 @@ int main(int argc, char** argv) {
     // GOOD: (a+)+aaaaa*a+     -- Ruby good16 (no rejecting suffix)
     { std::regex re("(a+)+aaaaa*a+"); run(re, input); }
     // BAD:  (a+)+aaaaa$       -- Ruby bad50
-    { std::regex re("(a+)+aaaaa$"); run(re, input); }
+    { std::regex re("(a+)+aaaaa$"); run(re, input); } // $ Alert
 
     // GOOD: (\n+)+\n\n        -- Ruby good17
     { std::regex re("(\\n+)+\\n\\n"); run(re, input); }
     // BAD:  (\n+)+\n\n$       -- Ruby bad51
-    { std::regex re("(\\n+)+\\n\\n$"); run(re, input); }
+    { std::regex re("(\\n+)+\\n\\n$"); run(re, input); } // $ Alert
 
     // GOOD: (([^X]b)+)*($|[^X]b)  -- Ruby good18
     { std::regex re("(([^X]b)+)*($|[^X]b)"); run(re, input); }
     // BAD:  (([^X]b)+)*($|[^X]c)  -- Ruby bad54
-    { std::regex re("(([^X]b)+)*($|[^X]c)"); run(re, input); }
+    { std::regex re("(([^X]b)+)*($|[^X]c)"); run(re, input); } // $ Alert
 
     // GOOD: ((ab)+)*ababab     -- Ruby good20
     { std::regex re("((ab)+)*ababab"); run(re, input); }
@@ -173,7 +173,7 @@ int main(int argc, char** argv) {
     // GOOD: ((ab)+)*            -- Ruby good22
     { std::regex re("((ab)+)*"); run(re, input); }
     // BAD:  ((ab)+)*$           -- Ruby bad55
-    { std::regex re("((ab)+)*$"); run(re, input); }
+    { std::regex re("((ab)+)*$"); run(re, input); } // $ Alert
 
     // -------------------------------------------------------------------------
     // 6. GOOD patterns that specifically guard against false positives.
@@ -226,7 +226,7 @@ int main(int argc, char** argv) {
     // -------------------------------------------------------------------------
 
     // BAD: exponential regex with icase - case-insensitivity does not suppress the alert.
-    { std::regex re("^([a-z]+)+$", std::regex_constants::icase); run(re, input); }
+    { std::regex re("^([a-z]+)+$", std::regex_constants::icase); run(re, input); } // $ Alert
     // BAD: BRE grammar (`basic`) is modeled by the parser (`BreRegExp`,
     // Phase D) and is backtracking-eligible, so the nested-quantifier is
     // reported as exponential. Note that `(...)` in BRE is *literal* - the
@@ -238,7 +238,7 @@ int main(int argc, char** argv) {
     // BAD: extended selects the ERE grammar (modeled by `EreRegExp` since
     // Phase C) and is backtracking-eligible, so the shared engine reports
     // the nested-quantifier as exponential - same as the ECMAScript case.
-    { std::regex re("^(a+)+$", std::regex_constants::extended); run(re, input); }
+    { std::regex re("^(a+)+$", std::regex_constants::extended); run(re, input); } // $ Alert
     // GOOD: awk parses as ERE (same as `extended`) but is excluded from the
     // ReDoS queries by `isBacktrackingEngine` (POSIX tool-style engines are
     // treated as linear-time), *not* by any parsing/grammar difference.
@@ -262,9 +262,9 @@ int main(int argc, char** argv) {
     // -------------------------------------------------------------------------
 
     // BAD: nested-quantifier exponential regex using a POSIX character class.
-    { std::regex re("^([[:alpha:]]+)+$"); run(re, input); }
+    { std::regex re("^([[:alpha:]]+)+$"); run(re, input); } // $ Alert
     // BAD: same pattern under icase - case-folding must not suppress the alert.
-    { std::regex re("^([[:alpha:]]+)+$", std::regex_constants::icase); run(re, input); }
+    { std::regex re("^([[:alpha:]]+)+$", std::regex_constants::icase); run(re, input); } // $ Alert
     // Opaque POSIX character class: `[:punct:]` has no clean `\d`/`\s`/`\w`
     // equivalent (see the discussion in RegexTreeView.qll::isEscapeClass).
     // It is therefore left as an opaque atom in the shared engine's view;
@@ -328,7 +328,7 @@ int main(int argc, char** argv) {
     // -------------------------------------------------------------------------
 
     // BAD: ERE grammar via `extended` - parsed as ERE and backtracking-eligible.
-    { std::regex re("^([a-z]+)+$", std::regex_constants::extended); run(re, input); }
+    { std::regex re("^([a-z]+)+$", std::regex_constants::extended); run(re, input); } // $ Alert
     // GOOD: same pattern under `egrep` - parses identically as ERE but
     // excluded by `isBacktrackingEngine`.
     { std::regex re("^([a-z]+)+$", std::regex_constants::egrep); run(re, input); }
@@ -372,7 +372,7 @@ int main(int argc, char** argv) {
     // exponentially many ways). BRE has no `+`, so this is the BRE
     // analogue of the ECMAScript `^(a*)*$` (or the more familiar
     // `^(a+)+$`) shape.
-    { std::regex re("^\\(a*\\)*$", std::regex_constants::basic); run(re, input); }
+    { std::regex re("^\\(a*\\)*$", std::regex_constants::basic); run(re, input); } // $ Alert
     // GOOD: same pattern under `grep` - parses identically as BRE but
     // excluded by `isBacktrackingEngine`.
     { std::regex re("^\\(a*\\)*$", std::regex_constants::grep); run(re, input); }
