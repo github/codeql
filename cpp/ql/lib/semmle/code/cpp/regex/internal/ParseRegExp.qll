@@ -11,7 +11,7 @@
  * backslash?", "is this a group open?", "is this a quantifier?", etc. — by
  * overriding those hooks.
  *
- * The grammar dialects modelled today are:
+ * The grammar dialects modeled today are:
  *   - ECMAScript (`EcmaRegExp`), the default used by `std::regex` (i.e.
  *     `std::regex_constants::ECMAScript`);
  *   - POSIX Extended Regular Expressions (`EreRegExp`), selected via the

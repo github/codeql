@@ -227,7 +227,7 @@ int main(int argc, char** argv) {
 
     // BAD: exponential regex with icase — case-insensitivity does not suppress the alert.
     { std::regex re("^([a-z]+)+$", std::regex_constants::icase); run(re, input); }
-    // BAD: BRE grammar (`basic`) is modelled by the parser (`BreRegExp`,
+    // BAD: BRE grammar (`basic`) is modeled by the parser (`BreRegExp`,
     // Phase D) and is backtracking-eligible, so the nested-quantifier is
     // reported as exponential. Note that `(...)` in BRE is *literal* — the
     // `\(...\)` form used in Section 12 below is the actual group syntax.
@@ -235,7 +235,7 @@ int main(int argc, char** argv) {
     // literal `)`, literal `+` — no backtracking risk, so it is *not*
     // flagged (the group-and-quantifier structure disappears).
     { std::regex re("^(a+)+$", std::regex_constants::basic); run(re, input); }
-    // BAD: extended selects the ERE grammar (modelled by `EreRegExp` since
+    // BAD: extended selects the ERE grammar (modeled by `EreRegExp` since
     // Phase C) and is backtracking-eligible, so the shared engine reports
     // the nested-quantifier as exponential — same as the ECMAScript case.
     { std::regex re("^(a+)+$", std::regex_constants::extended); run(re, input); }

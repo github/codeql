@@ -13,7 +13,7 @@
  * The `regexMatchedAgainst` predicate mirrors the intent of the Java
  * `RegexFlowConfigs.qll` library.
  *
- * All standard `std::regex` grammars are now modelled: ECMAScript (default),
+ * All standard `std::regex` grammars are now modeled: ECMAScript (default),
  * POSIX BRE (`basic`/`grep`), and POSIX ERE (`extended`/`egrep`/`awk`).
  * Grammar selection and ReDoS-eligibility are independent axes — see
  * `isBacktrackingEngine` for the latter.
@@ -388,12 +388,12 @@ predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
  *
  * - `Ecma()`  — ECMAScript, the default grammar used by `std::regex`.
  *              Selected either implicitly (no explicit grammar flag) or
- *              explicitly via `std::regex_constants::ECMAScript`. Modelled
+ *              explicitly via `std::regex_constants::ECMAScript`. Modeled
  *              by `EcmaRegExp`.
  * - `Bre()`   — POSIX Basic Regular Expressions (selected via the `basic`
- *              or `grep` flags). Modelled by `BreRegExp`.
+ *              or `grep` flags). Modeled by `BreRegExp`.
  * - `Ere()`   — POSIX Extended Regular Expressions (selected via the
- *              `extended`, `egrep`, or `awk` flags). Modelled by
+ *              `extended`, `egrep`, or `awk` flags). Modeled by
  *              `EreRegExp`.
  *
  * All three cases are exercised by the parser today; every grammar has a
@@ -401,11 +401,11 @@ predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
  * parser sees.
  */
 newtype TRegexGrammar =
-  /** The ECMAScript grammar (the default for `std::regex`), modelled by `EcmaRegExp`. */
+  /** The ECMAScript grammar (the default for `std::regex`), modeled by `EcmaRegExp`. */
   Ecma() or
-  /** The POSIX Basic Regular Expression grammar (`basic`/`grep` flags), modelled by `BreRegExp`. */
+  /** The POSIX Basic Regular Expression grammar (`basic`/`grep` flags), modeled by `BreRegExp`. */
   Bre() or
-  /** The POSIX Extended Regular Expression grammar (`extended`/`egrep`/`awk` flags), modelled by `EreRegExp`. */
+  /** The POSIX Extended Regular Expression grammar (`extended`/`egrep`/`awk` flags), modeled by `EreRegExp`. */
   Ere()
 
 /**
@@ -432,7 +432,7 @@ TRegexGrammar regexGrammar(StringLiteral regex) {
 /**
  * Holds if `grammar` has a concrete `RegExp` subclass and can therefore be
  * admitted by the parser's characteristic predicate. All three grammars
- * (`Ecma()`, `Ere()`, `Bre()`) are modelled today, so this holds for every
+ * (`Ecma()`, `Ere()`, `Bre()`) are modeled today, so this holds for every
  * grammar the standard defines. Kept as a helper so that any future grammar
  * scaffolding can be admitted by adding a single disjunct here.
  */

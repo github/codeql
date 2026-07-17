@@ -308,7 +308,7 @@ int main(int argc, char** argv) {
         std::regex_replace(input, re, std::string(""));
     }
 
-    // GOOD: BRE grammar (`basic`) is now modelled by the parser
+    // GOOD: BRE grammar (`basic`) is now modeled by the parser
     // (`BreRegExp`, Phase D). Under BRE, the pattern `^\s+|\s+$` parses
     // as: `^` anchor, literal `\s`, literal `+`, literal `|`, literal
     // `\s`, literal `+`, `$` anchor — there is no `+` quantifier in BRE
@@ -319,7 +319,7 @@ int main(int argc, char** argv) {
         std::regex re("^\\s+|\\s+$", std::regex_constants::basic);
         std::regex_replace(input, re, std::string(""));
     }
-    // BAD: extended selects the ERE grammar (modelled by `EreRegExp` since
+    // BAD: extended selects the ERE grammar (modeled by `EreRegExp` since
     // Phase C) and is backtracking-eligible, so the polynomial engine
     // flags the superlinear pattern on user input — same as the
     // ECMAScript case.
