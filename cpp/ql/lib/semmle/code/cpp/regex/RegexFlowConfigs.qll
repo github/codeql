@@ -401,8 +401,11 @@ predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
  * parser sees.
  */
 newtype TRegexGrammar =
+  /** The ECMAScript grammar (the default for `std::regex`), modelled by `EcmaRegExp`. */
   Ecma() or
+  /** The POSIX Basic Regular Expression grammar (`basic`/`grep` flags), modelled by `BreRegExp`. */
   Bre() or
+  /** The POSIX Extended Regular Expression grammar (`extended`/`egrep`/`awk` flags), modelled by `EreRegExp`. */
   Ere()
 
 /**
