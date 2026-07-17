@@ -1017,7 +1017,6 @@ dependencies = [
  "tree-sitter-python",
  "tree-sitter-ruby",
  "yeast-macros",
- "yeast-schema",
 ]
 
 [[package]]
@@ -1027,15 +1026,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "yeast-schema"
-version = "0.1.0"
-dependencies = [
- "serde",
- "serde_json",
- "serde_yaml",
 ]
 
 [[package]]

@@ -192,7 +192,7 @@ class ExploitableStringLiteral extends StringLiteral {
  * A dataflow configuration tracking string literals that reach a regex
  * pattern construction/assignment site.
  */
-module RegexPatternFlowConfig implements DataFlow::ConfigSig {
+private module RegexPatternFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof ExploitableStringLiteral }
 
   predicate isSink(DataFlow::Node node) { node instanceof RegexPatternSink }
