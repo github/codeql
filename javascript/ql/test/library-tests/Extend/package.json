@@ -15,7 +15,7 @@
 		"lodash": "^4.17.10",
 		"lodash.defaultsdeep": "^4.6.0",
 		"lodash.mergewith": "^4.6.1",
-		"merge": "^1.2.0",
+		"merge": "^2.1.1",
 		"merge-deep": "^3.0.2",
 		"merge-options": "^1.0.1",
 		"mixin-deep": "^2.0.0",
