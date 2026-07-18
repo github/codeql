@@ -29,6 +29,7 @@ edges
 | .github/workflows/test12.yml:55:9:61:6 | Uses Step | .github/workflows/test12.yml:63:14:68:29 | {\n  echo 'PRERELEASE_REPORT<<EOF'\n  cat prerelease-report.md\n  echo EOF\n} >> "$GITHUB_ENV"\n | provenance | Config |
 | .github/workflows/test16.yml:10:9:15:6 | Uses Step | .github/workflows/test16.yml:15:14:17:63 | # VULNERABLE\necho "PR_NUMBER=$(cat pr_number.txt)" >> $GITHUB_ENV\n | provenance | Config |
 | .github/workflows/test16.yml:10:9:15:6 | Uses Step | .github/workflows/test16.yml:18:14:20:77 | # VULNERABLE\necho "PR_NUMBER=$(cat pr_number.txt \| tr ',' '\\n')" >> $GITHUB_ENV\n | provenance | Config |
+| .github/workflows/test18.yml:37:18:37:54 | github.event.pull_request.body | .github/workflows/test18.yml:38:14:38:45 | echo "BODY=$BODY" >> $GITHUB_ENV | provenance | Config |
 nodes
 | .github/workflows/artifactpoisoning51.yml:13:9:15:6 | Run Step | semmle.label | Run Step |
 | .github/workflows/artifactpoisoning51.yml:19:14:20:57 | echo "pr_number=$(cat foo/bar)" >> $GITHUB_ENV\n | semmle.label | echo "pr_number=$(cat foo/bar)" >> $GITHUB_ENV\n |
@@ -91,5 +92,7 @@ nodes
 | .github/workflows/test16.yml:10:9:15:6 | Uses Step | semmle.label | Uses Step |
 | .github/workflows/test16.yml:15:14:17:63 | # VULNERABLE\necho "PR_NUMBER=$(cat pr_number.txt)" >> $GITHUB_ENV\n | semmle.label | # VULNERABLE\necho "PR_NUMBER=$(cat pr_number.txt)" >> $GITHUB_ENV\n |
 | .github/workflows/test16.yml:18:14:20:77 | # VULNERABLE\necho "PR_NUMBER=$(cat pr_number.txt \| tr ',' '\\n')" >> $GITHUB_ENV\n | semmle.label | # VULNERABLE\necho "PR_NUMBER=$(cat pr_number.txt \| tr ',' '\\n')" >> $GITHUB_ENV\n |
+| .github/workflows/test18.yml:37:18:37:54 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
+| .github/workflows/test18.yml:38:14:38:45 | echo "BODY=$BODY" >> $GITHUB_ENV | semmle.label | echo "BODY=$BODY" >> $GITHUB_ENV |
 subpaths
 #select
