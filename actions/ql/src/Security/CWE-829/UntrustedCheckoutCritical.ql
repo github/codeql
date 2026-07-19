@@ -28,8 +28,12 @@ query predicate edges(AstNode predecessor, AstNode successor) {
   checkoutReferenceEdge(predecessor, successor)
 }
 
-from PRHeadCheckoutStep checkout, PoisonableStep poisonable, Event event
+from
+  PRHeadCheckoutStep checkout, PoisonableStep poisonable, Event event, AstNode checkoutReference,
+  string checkoutReferenceText
 where
+  checkoutReference = getCheckoutReference(checkout) and
+  checkoutReferenceText = getCheckoutReferenceText(checkoutReference) and
   // the checkout is followed by a known poisonable step
   checkout.getAFollowingStep() = poisonable and
   (
@@ -59,6 +63,6 @@ where
   event.getName() = checkoutTriggers() and
   not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout")) and
   not exists(ControlCheck check | check.protects(poisonable, event, "untrusted-checkout"))
-select checkout, getCheckoutReference(checkout), poisonable,
-  "Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@).",
-  event, event.getName()
+select checkout, checkoutReference, poisonable,
+  "Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@).",
+  checkoutReference, checkoutReferenceText, event, event.getName()
