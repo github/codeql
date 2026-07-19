@@ -18,7 +18,15 @@ import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.ControlChecks
 
-query predicate edges(Step a, Step b) { a.getNextStep() = b }
+query predicate edges(AstNode predecessor, AstNode successor) {
+  exists(Step previous, Step next |
+    predecessor = previous and
+    successor = next and
+    previous.getNextStep() = next
+  )
+  or
+  checkoutReferenceEdge(predecessor, successor)
+}
 
 from PRHeadCheckoutStep checkout, PoisonableStep poisonable, Event event
 where
@@ -51,6 +59,6 @@ where
   event.getName() = checkoutTriggers() and
   not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout")) and
   not exists(ControlCheck check | check.protects(poisonable, event, "untrusted-checkout"))
-select checkout, checkout, poisonable,
+select checkout, getCheckoutReference(checkout), poisonable,
   "Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@).",
   event, event.getName()

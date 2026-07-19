@@ -25,56 +25,7 @@ query predicate edges(AstNode predecessor, AstNode successor) {
     previous.getNextStep() = next
   )
   or
-  exists(PRHeadCheckoutStep checkout |
-    predecessor = getCheckoutReference(checkout) and
-    successor = checkout and
-    not predecessor = successor
-  )
-}
-
-private predicate isRunCheckoutReference(
-  PRHeadCheckoutStep checkout, Expression reference, string variable
-) {
-  checkout instanceof Run and
-  reference = checkout.(Run).getInScopeEnvVarExpr(variable) and
-  (
-    checkout instanceof SHACheckoutStep and containsHeadSHA(reference.getExpression())
-    or
-    checkout instanceof MutableRefCheckoutStep and
-    (
-      containsHeadRef(reference.getExpression()) or
-      containsPullRequestNumber(reference.getExpression())
-    )
-  ) and
-  exists(string command |
-    checkout.(Run).getScript().getACommand() = command and
-    exists(command.regexpFind(variable, _, _))
-  )
-}
-
-private AstNode getCheckoutReference(PRHeadCheckoutStep checkout) {
-  exists(UsesStep uses |
-    checkout = uses and
-    (
-      result = uses.getArgumentExpr("ref")
-      or
-      not exists(uses.getArgumentExpr("ref")) and result = uses.getArgumentExpr("repository")
-    )
-  )
-  or
-  exists(string variable | isRunCheckoutReference(checkout, result, variable))
-  or
-  checkout instanceof Run and
-  result = checkout and
-  not exists(Expression reference, string variable |
-    isRunCheckoutReference(checkout, reference, variable)
-  )
-}
-
-private string getCheckoutReferenceText(AstNode reference) {
-  result = reference.(Expression).getExpression()
-  or
-  not reference instanceof Expression and result = "the checkout command"
+  checkoutReferenceEdge(predecessor, successor)
 }
 
 from
