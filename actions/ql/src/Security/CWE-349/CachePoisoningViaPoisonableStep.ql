@@ -18,7 +18,19 @@ import codeql.actions.security.CachePoisoningQuery
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.ControlChecks
 
-query predicate edges(Step a, Step b) { a.getNextStep() = b }
+query predicate edges(AstNode predecessor, AstNode successor) {
+  exists(Step previous, Step next |
+    predecessor = previous and
+    successor = next and
+    previous.getNextStep() = next
+  )
+  or
+  exists(PRHeadCheckoutStep checkout |
+    predecessor = getCheckoutReference(checkout) and
+    successor = checkout and
+    not predecessor = successor
+  )
+}
 
 private predicate isRunCheckoutReference(
   PRHeadCheckoutStep checkout, Expression reference, string variable
@@ -108,6 +120,6 @@ where
   step instanceof PoisonableStep and
   // excluding privileged workflows since they can be exploited in easier circumstances
   not job.isPrivileged()
-select step, source, step,
+select step, untrustedInput, step,
   "Potential cache poisoning in the context of the default branch " + message + " $@. ($@).",
   untrustedInput, untrustedInputText, event, event.getName()
