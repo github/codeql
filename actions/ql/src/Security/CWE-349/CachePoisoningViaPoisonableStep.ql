@@ -20,18 +20,69 @@ import codeql.actions.security.ControlChecks
 
 query predicate edges(Step a, Step b) { a.getNextStep() = b }
 
-from LocalJob job, Event event, Step source, Step step, string message, string path
+private predicate isRunCheckoutReference(
+  PRHeadCheckoutStep checkout, Expression reference, string variable
+) {
+  checkout instanceof Run and
+  reference = checkout.(Run).getInScopeEnvVarExpr(variable) and
+  (
+    checkout instanceof SHACheckoutStep and containsHeadSHA(reference.getExpression())
+    or
+    checkout instanceof MutableRefCheckoutStep and
+    (
+      containsHeadRef(reference.getExpression()) or
+      containsPullRequestNumber(reference.getExpression())
+    )
+  ) and
+  exists(string command |
+    checkout.(Run).getScript().getACommand() = command and
+    exists(command.regexpFind(variable, _, _))
+  )
+}
+
+private AstNode getCheckoutReference(PRHeadCheckoutStep checkout) {
+  exists(UsesStep uses |
+    checkout = uses and
+    (
+      result = uses.getArgumentExpr("ref")
+      or
+      not exists(uses.getArgumentExpr("ref")) and result = uses.getArgumentExpr("repository")
+    )
+  )
+  or
+  exists(string variable | isRunCheckoutReference(checkout, result, variable))
+  or
+  checkout instanceof Run and
+  result = checkout and
+  not exists(Expression reference, string variable |
+    isRunCheckoutReference(checkout, reference, variable)
+  )
+}
+
+private string getCheckoutReferenceText(AstNode reference) {
+  result = reference.(Expression).getExpression()
+  or
+  not reference instanceof Expression and result = "the checkout command"
+}
+
+from
+  LocalJob job, Event event, Step source, Step step, string message, string path,
+  AstNode untrustedInput, string untrustedInputText
 where
   // the job checkouts untrusted code from a pull request or downloads an untrusted artifact
   job.getAStep() = source and
   (
     source instanceof PRHeadCheckoutStep and
-    message = "due to privilege checkout of untrusted code." and
-    path = source.(PRHeadCheckoutStep).getPath()
+    message = "due to privilege checkout of untrusted code from" and
+    path = source.(PRHeadCheckoutStep).getPath() and
+    untrustedInput = getCheckoutReference(source) and
+    untrustedInputText = getCheckoutReferenceText(untrustedInput)
     or
     source instanceof UntrustedArtifactDownloadStep and
-    message = "due to downloading an untrusted artifact." and
-    path = source.(UntrustedArtifactDownloadStep).getPath()
+    message = "due to downloading" and
+    path = source.(UntrustedArtifactDownloadStep).getPath() and
+    untrustedInput = source and
+    untrustedInputText = "an untrusted artifact"
   ) and
   // the checkout/download is not controlled by an access check
   not exists(ControlCheck check |
@@ -58,5 +109,5 @@ where
   // excluding privileged workflows since they can be exploited in easier circumstances
   not job.isPrivileged()
 select step, source, step,
-  "Potential cache poisoning in the context of the default branch " + message + " ($@).", event,
-  event.getName()
+  "Potential cache poisoning in the context of the default branch " + message + " $@. ($@).",
+  untrustedInput, untrustedInputText, event, event.getName()
