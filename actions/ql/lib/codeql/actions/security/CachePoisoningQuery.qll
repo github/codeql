@@ -5,8 +5,8 @@ string defaultBranchTriggerEvent() {
     [
       "check_run", "check_suite", "delete", "discussion", "discussion_comment", "fork", "gollum",
       "issue_comment", "issues", "label", "milestone", "project", "project_card", "project_column",
-      "public", "pull_request_comment", "pull_request_target", "repository_dispatch", "schedule",
-      "watch", "workflow_run"
+      "public", "pull_request_comment", "pull_request_target", "repository_dispatch",
+      "registry_package", "page_build", "schedule", "watch", "workflow_dispatch", "workflow_run"
     ]
 }
 
@@ -38,6 +38,33 @@ predicate runsOnDefaultBranch(Event e) {
       e.hasProperty("branches-ignore") and
       e.getAPropertyValue("branches") = defaultBranchNames() and
       not e.getAPropertyValue("branches-ignore") = defaultBranchNames()
+    )
+  )
+}
+
+private string defaultBranchCacheWriteEvent() {
+  result =
+    [
+      "push", "workflow_dispatch", "repository_dispatch", "delete", "registry_package",
+      "page_build", "schedule"
+    ]
+}
+
+private predicate eventHasDefaultBranchCacheWriteAccess(Event event) {
+  runsOnDefaultBranch(event) and event.getName() = defaultBranchCacheWriteEvent()
+}
+
+/** Holds if `job` can write to the cache scope of the default branch for `event`. */
+predicate hasDefaultBranchCacheWriteAccess(LocalJob job, Event event) {
+  job.getATriggerEvent() = event and
+  (
+    eventHasDefaultBranchCacheWriteAccess(event)
+    or
+    // the workflow caller runs in the context of the default branch
+    event.getName() = "workflow_call" and
+    exists(ExternalJob caller |
+      job.getEnclosingWorkflow().(ReusableWorkflow).getACaller() = caller and
+      eventHasDefaultBranchCacheWriteAccess(caller.getATriggerEvent())
     )
   )
 }
