@@ -60,3 +60,29 @@ jobs:
           CURRENT_VERSION=$(cat gradle.properties | sed -n '/^version=/ { s/^version=//;p }')
           echo "$CURRENT_VERSION"
           echo "::set-output name=OUTPUT::SAFE"
+      - id: clob5
+        run: |
+          # NOT VULNERABLE: jq emits JSON-encoded strings by default
+          jq '.value' pr-number.json
+      - id: clob6
+        run: |
+          # VULNERABLE: raw output can begin with a workflow command
+          jq -r '.value' pr-number.json
+      - id: clob7
+        run: |
+          # VULNERABLE: long raw-output option after the filter
+          jq '.value' --raw-output pr-number.json
+      - id: clob8
+        run: |
+          # VULNERABLE: combined short options include raw output
+          jq -Mcr '.value' pr-number.json
+      - id: clob9
+        run: |
+          # NOT VULNERABLE: assigned jq output remains JSON encoded
+          VALUE=$(jq '.value' pr-number.json)
+          echo "$VALUE"
+      - id: clob10
+        run: |
+          # VULNERABLE: assigned raw output can begin with a workflow command
+          VALUE=$(jq --raw-output '.value' pr-number.json)
+          echo "$VALUE"

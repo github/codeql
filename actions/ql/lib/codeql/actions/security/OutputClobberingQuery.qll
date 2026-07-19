@@ -111,6 +111,21 @@ class WorkflowCommandClobberingFromEnvVarSink extends OutputClobberingSink {
   }
 }
 
+bindingset[command]
+private predicate jqUsesRawOutput(string command) {
+  exists(
+    command
+        .regexpFind("(^|\\s)(--raw-output0?|--join-output)(\\s|$)|(^|\\s)-[A-Za-z0-9]*[rj][A-Za-z0-9]*(\\s|$)",
+          _, _)
+  )
+}
+
+bindingset[command]
+private predicate jqProducesJsonEncodedOutput(string command) {
+  command.regexpMatch("jq\\s+((\\.[^\\s]*)|('[^']*')|(\"[^\"]*\"))(\\s+.*)?") and
+  not jqUsesRawOutput(command)
+}
+
 /**
  *      - id: clob1
  *        run: |
@@ -165,7 +180,8 @@ class WorkflowCommandClobberingFromFileReadSink extends OutputClobberingSink {
           // - run: cat pr-id.txt
           clobbering_stmt.indexOf(clobbering_cmd) = 0
         )
-      )
+      ) and
+      not jqProducesJsonEncodedOutput(clobbering_cmd)
     )
   }
 }
