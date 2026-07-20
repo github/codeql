@@ -30,18 +30,13 @@ import cpp
 private import semmle.code.cpp.dataflow.new.DataFlow
 private import semmle.code.cpp.dataflow.new.TaintTracking
 private import semmle.code.cpp.regex.internal.RegexGrammar as RG
+import semmle.code.cpp.regex.internal.StdRegex
 
 // ---------------------------------------------------------------------------
 // Re-exports from the flow-free grammar/flag module.
 // These are kept in scope for backward compatibility so that consumers can
 // continue to import them from `RegexFlowConfigs`.
 // ---------------------------------------------------------------------------
-/**
- * A `std::basic_regex` class type (or instantiation thereof, e.g. `std::regex`,
- * `std::wregex`). Defined in `RegexGrammar`; re-exported here.
- */
-class StdBasicRegex = RG::StdBasicRegex;
-
 /** See `RegexGrammar::TRegexGrammar`. */
 class TRegexGrammar = RG::TRegexGrammar;
 
@@ -202,10 +197,24 @@ class RegexPatternSink extends DataFlow::Node {
 
 // ---------------------------------------------------------------------------
 // Fast-path: only track literals that look regex-y.
-// `ExploitableStringLiteral` is defined in the flow-free `RegexGrammar`
-// module; re-exported here for backward compatibility.
 // ---------------------------------------------------------------------------
-class ExploitableStringLiteral = RG::ExploitableStringLiteral;
+/**
+ * A string literal that is a plausible ReDoS candidate: it contains at least
+ * one unbounded-repetition quantifier (`+`, `*`, or `{n,}`).
+ *
+ * This is used as the source set of the taint-tracking configuration below:
+ * regexes without such a quantifier are not interesting for the
+ * polynomial-ReDoS analysis, so filtering them out here is a significant
+ * optimisation.
+ */
+class ExploitableStringLiteral extends StringLiteral {
+  ExploitableStringLiteral() {
+    exists(string s | s = this.getValue() |
+      s.regexpMatch(".*[+*].*") or
+      s.regexpMatch(".*\\{[0-9]+,[0-9]*\\}.*")
+    )
+  }
+}
 
 /**
  * A dataflow configuration tracking string literals that reach a regex

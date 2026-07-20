@@ -21,42 +21,27 @@
  */
 
 import cpp
+private import semmle.code.cpp.regex.internal.StdRegex
 
 // ---------------------------------------------------------------------------
 // Fast-path filter: only consider literals that *look* regex-y
 // ---------------------------------------------------------------------------
 /**
- * A string literal that is a plausible ReDoS candidate: it contains at least
- * one unbounded-repetition quantifier (`+`, `*`, or `{n,}`).
+ * Holds if `s` is a plausible ReDoS-candidate string literal value: it
+ * contains at least one unbounded-repetition quantifier (`+`, `*`, or
+ * `{n,}`).
  *
- * This filter is applied by the flag readers below as an optimisation:
- * regexes without such a quantifier are not interesting for the
- * polynomial-ReDoS analysis, and skipping them here mirrors the source
- * restriction of the dataflow configuration in `RegexFlowConfigs`,
- * preserving analysis results exactly.
+ * This mirrors the source restriction of the dataflow configuration in
+ * `RegexFlowConfigs` (whose sources are the `ExploitableStringLiteral`s),
+ * so that the flag readers below consider exactly the same set of regexes
+ * as the taint-tracking configuration. Inlined here as a syntactic check
+ * to keep this module flow-free.
  */
-class ExploitableStringLiteral extends StringLiteral {
-  ExploitableStringLiteral() {
-    exists(string s | s = this.getValue() |
-      s.regexpMatch(".*[+*].*") or
-      s.regexpMatch(".*\\{[0-9]+,[0-9]*\\}.*")
-    )
-  }
-}
-
-// ---------------------------------------------------------------------------
-// std::basic_regex identification
-// ---------------------------------------------------------------------------
-/**
- * A `std::basic_regex` class type (or instantiation thereof, e.g. `std::regex`,
- * `std::wregex`).
- */
-class StdBasicRegex extends Class {
-  StdBasicRegex() {
-    this.hasQualifiedName("std", "basic_regex")
-    or
-    this.(ClassTemplateInstantiation).getTemplate().hasQualifiedName("std", "basic_regex")
-  }
+private predicate isExploitableStringLiteralValue(StringLiteral s) {
+  exists(string v | v = s.getValue() |
+    v.regexpMatch(".*[+*].*") or
+    v.regexpMatch(".*\\{[0-9]+,[0-9]*\\}.*")
+  )
 }
 
 // ---------------------------------------------------------------------------
@@ -124,13 +109,14 @@ private predicate isPatternLiteralOf(StringLiteral regex, Expr patternArg) {
  * This association is purely syntactic (no dataflow): the pattern literal
  * must appear inside the constructor/assign call's first argument.
  *
- * Restricted to `ExploitableStringLiteral` to preserve the exact set of
+ * Restricted to string literals that look like plausible ReDoS candidates
+ * (see `isExploitableStringLiteralValue`) to preserve the exact set of
  * regexes considered by the flag readers when they were routed through
- * the taint-tracking configuration (whose sources were the same
+ * the taint-tracking configuration (whose sources are the same
  * `ExploitableStringLiteral` set).
  */
 private Expr getConstructionFlagArg(StringLiteral regex) {
-  regex instanceof ExploitableStringLiteral and
+  isExploitableStringLiteralValue(regex) and
   (
     // basic_regex(pattern, flags) constructor - both named-variable and
     // temporary constructions are covered because the search for `regex`
