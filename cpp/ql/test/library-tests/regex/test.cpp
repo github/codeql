@@ -415,3 +415,48 @@ void posix_brackets_adversarial() {
     std::regex t8("^([[:alpha:]]+[[:digit:]]*[[:space:]]?)+([[:punct:]]|[[:xdigit:]])+$");
     (void)std::regex_search(subj, t8);
 }
+
+// -----------------------------------------------------------------------------
+// Location tests: exercise `RegExpTerm.hasLocationInfo` across the different
+// C++ string-literal forms that can spell a `std::regex` pattern.
+//
+// The `locations.ql` query reports the source-location components (plus the
+// enclosing literal's start column and each term's value-offsets) for every
+// `RegExpTerm` in this file, so these lines drive that snapshot. Each pattern
+// must flow to a `std::regex` construction so that its terms are parsed.
+// -----------------------------------------------------------------------------
+
+void location_plain() {
+    std::regex r1("a+b");
+    std::regex r2("\\s+");
+    std::regex r3("a\\.b");
+}
+
+void location_raw() {
+    std::regex r1(R"(a+b)");
+    std::regex r2(R"(\s+$)");
+    std::regex r3(R"(\(([,\w]+)+\)$)");
+}
+
+void location_raw_custom_delimiter() {
+    std::regex r1(R"x(a+b)x");
+}
+
+void location_wide() {
+    std::wregex r1(L"a+b");
+    std::wregex r2(LR"(a+b)");
+}
+
+#ifdef __cpp_char8_t
+void location_utf8() {
+    std::regex r1(u8"a+b");
+    std::regex r2(u8R"(a+b)");
+}
+#else
+void location_utf8() {
+    // Pre-C++20: `u8"..."` has type `const char*`, so the ordinary
+    // `basic_regex<char>` constructor applies directly.
+    std::regex r1(u8"a+b");
+    std::regex r2(u8R"(a+b)");
+}
+#endif

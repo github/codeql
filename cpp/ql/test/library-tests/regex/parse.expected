@@ -1399,3 +1399,125 @@ test.cpp:
 #  415| [RegExpPosixBracket] [:xdigit:]
 
 #  415| [RegExpDollar] $
+
+#  430| [RegExpConstant, RegExpNormalChar] a
+
+#  430| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  430| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  430| [RegExpConstant, RegExpNormalChar] b
+
+#  431| [RegExpCharacterClassEscape] \s
+
+#  431| [RegExpPlus] \s+
+#-----| 0 -> [RegExpCharacterClassEscape] \s
+
+#  436| [RegExpConstant, RegExpNormalChar] a
+
+#  436| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  436| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  436| [RegExpConstant, RegExpNormalChar] b
+
+#  437| [RegExpCharacterClassEscape] \s
+
+#  437| [RegExpPlus] \s+
+#-----| 0 -> [RegExpCharacterClassEscape] \s
+
+#  437| [RegExpSequence] \s+$
+#-----| 0 -> [RegExpPlus] \s+
+#-----| 1 -> [RegExpDollar] $
+
+#  437| [RegExpDollar] $
+
+#  438| [RegExpConstant, RegExpEscape] \(
+
+#  438| [RegExpSequence] \(([,\w]+)+\)$
+#-----| 0 -> [RegExpConstant, RegExpEscape] \(
+#-----| 1 -> [RegExpPlus] ([,\w]+)+
+#-----| 2 -> [RegExpConstant, RegExpEscape] \)
+#-----| 3 -> [RegExpDollar] $
+
+#  438| [RegExpGroup] ([,\w]+)
+#-----| 0 -> [RegExpPlus] [,\w]+
+
+#  438| [RegExpPlus] ([,\w]+)+
+#-----| 0 -> [RegExpGroup] ([,\w]+)
+
+#  438| [RegExpCharacterClass] [,\w]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] ,
+#-----| 1 -> [RegExpCharacterClassEscape] \w
+
+#  438| [RegExpPlus] [,\w]+
+#-----| 0 -> [RegExpCharacterClass] [,\w]
+
+#  438| [RegExpConstant, RegExpNormalChar] ,
+
+#  438| [RegExpCharacterClassEscape] \w
+
+#  438| [RegExpConstant, RegExpEscape] \)
+
+#  438| [RegExpDollar] $
+
+#  442| [RegExpConstant, RegExpNormalChar] a
+
+#  442| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  442| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  442| [RegExpConstant, RegExpNormalChar] b
+
+#  446| [RegExpConstant, RegExpNormalChar] a
+
+#  446| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  446| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  446| [RegExpConstant, RegExpNormalChar] b
+
+#  447| [RegExpConstant, RegExpNormalChar] a
+
+#  447| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  447| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  447| [RegExpConstant, RegExpNormalChar] b
+
+#  459| [RegExpConstant, RegExpNormalChar] a
+
+#  459| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  459| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  459| [RegExpConstant, RegExpNormalChar] b
+
+#  460| [RegExpConstant, RegExpNormalChar] a
+
+#  460| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  460| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  460| [RegExpConstant, RegExpNormalChar] b

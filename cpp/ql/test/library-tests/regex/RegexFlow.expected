@@ -74,6 +74,16 @@ usedAsRegex_
 | test.cpp:400:19:400:35 | [[:alpha:]-z].* |
 | test.cpp:406:19:406:31 | [[:alpha].* |
 | test.cpp:415:19:415:88 | ^([[:alpha:]]+[[:digit:]]*[[:space:]]?)+([[:punct:]]\|[[:xdigit:]])+$ |
+| test.cpp:430:19:430:23 | a+b |
+| test.cpp:431:19:431:24 | \\s+ |
+| test.cpp:436:19:436:26 | a+b |
+| test.cpp:437:19:437:27 | \\s+$ |
+| test.cpp:438:19:438:37 | \\(([,\\w]+)+\\)$ |
+| test.cpp:442:19:442:28 | a+b |
+| test.cpp:446:20:446:25 | a+b |
+| test.cpp:447:20:447:28 | a+b |
+| test.cpp:459:19:459:25 | a+b |
+| test.cpp:460:19:460:28 | a+b |
 regexMatchedAgainst_
 | test.cpp:209:18:209:25 | (a+)+b | test.cpp:211:28:211:34 | subject |
 | test.cpp:209:18:209:25 | (a+)+b | test.cpp:212:29:212:35 | subject |
