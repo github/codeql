@@ -943,26 +943,15 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     imported_expr: {member_chain(&mut ctx, parts)}))
             }
         ),
-        // ---- Types and classes ----
-        // Self expression → name_expr
-        rule!((self_expression) => (name_expr identifier: (identifier "self"))),
-        // Super expression → super_expr
-        rule!((super_expression) => (super_expr)),
-        // Modifiers — unwrap to individual modifier children
-        rule!((modifiers _* @mods) => modifier* { mods }),
+        // ---- Types and declarations ----
+        // A leading attribute (`@objc`) or access/function/member/mutation/
+        // ownership modifier (swift-syntax models each as a single `declModifier`)
+        // becomes a `modifier`; its source text is the modifier spelling.
         rule!((attribute) @m => (modifier #{m})),
-        // swift-syntax models every access/function/member/mutation/ownership
-        // modifier as a single `declModifier`; its source text is the modifier.
         rule!((declModifier) @m => (modifier #{m})),
-        rule!((visibility_modifier) @m => (modifier #{m})),
-        rule!((function_modifier) @m => (modifier #{m})),
-        rule!((member_modifier) @m => (modifier #{m})),
-        rule!((mutation_modifier) @m => (modifier #{m})),
-        rule!((ownership_modifier) @m => (modifier #{m})),
-        rule!((property_modifier) @m => (modifier #{m})),
-        rule!((parameter_modifier) @m => (modifier #{m})),
-        rule!((inheritance_modifier) @m => (modifier #{m})),
-        rule!((property_behavior_modifier) @m => (modifier #{m})),
+        // A `super` expression. (`self` needs no rule: swift-syntax models it as
+        // an ordinary `declReferenceExpr`, already mapped to a `name_expr`.)
+        rule!((superExpr) => (super_expr)),
         // Type expressions. A generic type applied with explicit arguments
         // (`Set<Int>`) is represented opaquely, using the whole source text as
         // the name (PARITY(tree-sitter): the generic arguments are not
@@ -1041,77 +1030,71 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             }
         ),
         // Selector expression: `#selector(inner)` -- not yet supported
-        rule!(
-            (selector_expression _ @inner)
-            =>
-            (unsupported_node)
-        ),
-        // Key path expressions are currently unsupported.
-        rule!((key_path_expression) => (unsupported_node)),
-        // Inheritance specifier → base_type
-        rule!((inheritance_specifier inherits_from: @ty) => (base_type type: {ty})),
+        // (swift-syntax represents `#selector`/`#keyPath` and other macro
+        // expansions uniformly as a `macroExpansionExpr`).
+        rule!((macroExpansionExpr) => (unsupported_node)),
+        // PARITY(tree-sitter): a nominal type's `inheritanceClause` (`: Base,
+        // Proto`) is not emitted as a `base_type` — the tree-sitter path drops
+        // it (no corpus target has a `base_type`). swift-syntax exposes it
+        // cleanly, so emitting `base_type` is a correctness improvement to make
+        // once tree-sitter is retired. Each declaration keyword gets its own
+        // rule; the bodies are identical but for the keyword.
         // Class declaration with body containing members
         rule!(
-            (class_declaration
-                declaration_kind: @kind
-                name: @name
-                body: (class_body member: _* @members)
-                (inheritance_specifier)* @bases
-                (modifiers)* @mods)
+            (classDecl classKeyword: @kind modifiers: _* @mods name: @name memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
-                base_type: {bases}
                 member: {members})
         ),
         // Enum class declaration: same as a regular class but with an enum body.
         rule!(
-            (class_declaration
-                declaration_kind: @kind
-                name: @name
-                body: (enum_class_body member: _* @members)
-                (inheritance_specifier)* @bases
-                (modifiers)* @mods)
+            (enumDecl enumKeyword: @kind modifiers: _* @mods name: @name memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
-                base_type: {bases}
                 member: {members})
         ),
-        // Class declaration with empty body
+        // A `struct` declaration.
         rule!(
-            (class_declaration
-                declaration_kind: @kind
-                name: @name
-                body: _
-                (inheritance_specifier)* @bases
-                (modifiers)* @mods)
+            (structDecl structKeyword: @kind modifiers: _* @mods name: @name memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
-                base_type: {bases})
+                member: {members})
         ),
         // Protocol declaration
         rule!(
-            (protocol_declaration
-                name: @name
-                body: (protocol_body member: _* @members)
-                (inheritance_specifier)* @bases
-                (modifiers)* @mods)
+            (protocolDecl protocolKeyword: @kind modifiers: _* @mods name: @name memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
-                modifier: (modifier "protocol")
+                modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
-                base_type: {bases}
                 member: {members})
         ),
+        // An `extension Foo { … }` is likewise a `class_like_declaration`, named
+        // by the extended type. The extended type is captured opaquely (as its
+        // source text) so that qualified names (`extension String.Interpolation`,
+        // a `memberType`) name the declaration just like simple ones, matching the
+        // old tree-sitter `user_type` behaviour.
+        rule!(
+            (extensionDecl extensionKeyword: @kind modifiers: _* @mods extendedType: @@name memberBlock: (memberBlock members: _* @members))
+            =>
+            (class_like_declaration
+                modifier: (modifier #{kind})
+                modifier: {mods}
+                name: (identifier #{name})
+                member: {members})
+        ),
+        // A member of a type declaration unwraps to the contained declaration.
+        rule!((memberBlockItem decl: _* @d) => member* { d }),
         // Protocol function — return type and body statements both optional.
         rule!(
             (protocol_function_declaration
