@@ -845,20 +845,24 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (labeled_stmt label: (identifier #{lbl}) stmt: {stmt})
         ),
         // ---- Collections ----
-        // Array literal
-        rule!((array_literal element: _* @elems) => (array_literal element: {elems})),
-        // Empty array literal
-        rule!((array_literal) => (array_literal)),
-        // Dictionary literal — zip keys and values into key_value_pairs
+        // An array literal (`[1, 2, 3]`). Each `arrayElement` unwraps to its
+        // contained expression.
         rule!(
-            (dictionary_literal key: _* @keys value: _* @vals)
+            (arrayExpr elements: _* @els)
             =>
-            (map_literal element: {keys.into_iter().zip(vals).map(|(k, v)|
-                tree!((key_value_pair key: {k} value: {v}))
-            )})
+            (array_literal element: {els})
         ),
-        rule!((dictionary_literal element: _* @elems) => (map_literal element: {elems})),
-        rule!((dictionary_literal_item key: @k value: @v) => (key_value_pair key: {k} value: {v})),
+        rule!((arrayElement expression: @e) => expr { e }),
+        // A dictionary literal (`["a": 1]`) is kept as an opaque `map_literal`
+        // leaf (its source span), matching the tree-sitter path.
+        rule!((dictionaryExpr) => (map_literal)),
+        // A subscript access (`xs[0]`) is modelled as a call, exactly as the
+        // tree-sitter grammar does (it parses `xs[0]` like `xs(0)`).
+        rule!(
+            (subscriptCallExpr calledExpression: @callee arguments: _* @args)
+            =>
+            (call_expr callee: {callee} argument: {args})
+        ),
         // ---- Optionals and errors ----
         // Optional chaining — unwrap the marker
         rule!((optional_chain_marker expr: @inner) => expr { inner }),
