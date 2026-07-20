@@ -106,6 +106,64 @@ private RegExpTerm seqChild(RegExp re, int start, int end, int i) {
 // ---------------------------------------------------------------------------
 // Module Impl  (implements RegexTreeViewSig)
 // ---------------------------------------------------------------------------
+/**
+ * Gets the length of the C++ encoding prefix (`L`, `u`, `U`, `u8`) at the
+ * start of a string-literal spelling, or 0 if none is present.
+ *
+ * `u8` is checked before `u` so that a `u8"..."` literal is not mistakenly
+ * seen as a `u"..."` literal.
+ */
+bindingset[spelling]
+private int getEncodingPrefixLength(string spelling) {
+  if spelling.substring(0, 2) = "u8"
+  then result = 2
+  else
+    if spelling.substring(0, 1) = ["L", "u", "U"]
+    then result = 1
+    else result = 0
+}
+
+/**
+ * Gets the number of characters at the start of the raw spelling of the
+ * string literal `re` that precede its first content character. This is
+ * the width of the encoding prefix (if any) plus the opening delimiter:
+ * `"` for a non-raw literal, or `R"delim(` (with a possibly-empty
+ * user-chosen `delim`) for a raw literal.
+ *
+ * For a plain narrow `"..."` literal this returns 1, matching the earlier
+ * hard-coded gap.
+ *
+ * If the spelling cannot be recognized (for example after macro
+ * expansion), falls back to 1 so that no location becomes empty.
+ */
+private int getContentOffset(RegExp re) {
+  result = tryGetContentOffset(re)
+  or
+  not exists(tryGetContentOffset(re)) and result = 1
+}
+
+/**
+ * Gets the content offset of `re` when its raw spelling matches a
+ * recognized C++ string-literal form.
+ */
+private int tryGetContentOffset(RegExp re) {
+  exists(string spelling, int encLen |
+    spelling = re.getValueText() and
+    encLen = getEncodingPrefixLength(spelling)
+  |
+    // Raw string: `R"delim(...)delim"`. The content starts one past the
+    // `(` that terminates the raw prefix; the delimiter is the (possibly
+    // empty) text between the opening `"` and that `(`.
+    spelling.charAt(encLen) = "R" and
+    spelling.charAt(encLen + 1) = "\"" and
+    result = spelling.indexOf("(", 0, encLen + 2) + 1
+    or
+    // Non-raw string: `"..."`. Content starts one past the opening `"`.
+    spelling.charAt(encLen) = "\"" and
+    result = encLen + 1
+  )
+}
+
 /** An implementation that satisfies the `RegexTreeViewSig` signature. */
 module Impl implements RegexTreeViewSig {
   // -------------------------------------------------------------------------
@@ -290,18 +348,33 @@ module Impl implements RegexTreeViewSig {
     /**
      * Holds if this term is found at the given source location.
      *
-     * The location maps back to character offsets within the C++ string literal.
-     * Because the literal's start column already accounts for the opening `"`,
-     * we add 1 to skip the quote itself.
+     * The location maps back to character offsets within the C++ string
+     * literal. The gap between the literal's start column and its first
+     * content character depends on the literal's raw spelling: it accounts
+     * for any encoding prefix (`L`, `u`, `U`, `u8`) and for the opening
+     * delimiter, which is a single `"` for a plain literal and `R"delim(`
+     * (with a possibly-empty user-chosen `delim`) for a raw literal.
+     * `getContentOffset` computes this gap from the raw spelling so that
+     * every literal form maps to the correct source columns.
+     *
+     * This is an approximation that handles single-line literals: for a
+     * literal whose content spans multiple source lines (for example a raw
+     * string containing newlines) the reported column is a column within
+     * the literal's start line, mirroring the documented approximations in
+     * the Java and Python regex tree views.
      */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      exists(Location loc | loc = re.getLocation() |
+      exists(Location loc, int contentOffset |
+        loc = re.getLocation() and
+        contentOffset = getContentOffset(re)
+      |
         loc.hasLocationInfo(filepath, startline, _, _, _) and
-        startcolumn = loc.getStartColumn() + start + 1 and
+        startcolumn = loc.getStartColumn() + contentOffset + start and
         endline = startline and
-        endcolumn = loc.getStartColumn() + end // end is exclusive, so -1+1 = 0 offset
+        // `end` is exclusive, so subtract 1 to point at the last character.
+        endcolumn = loc.getStartColumn() + contentOffset + end - 1
       )
     }
 
