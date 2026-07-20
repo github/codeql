@@ -865,57 +865,52 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // ---- Optionals and errors ----
         // Optional chaining — unwrap the marker
-        rule!((optional_chain_marker expr: @inner) => expr { inner }),
+        rule!((optionalChainingExpr expression: @inner) => expr { inner }),
         // try/try?/try! expr → unary_expr with operator "try", "try?" or "try!"
-        rule!((try_expression (try_operator) @op expr: @inner) => (unary_expr operator: (prefix_operator #{op}) operand: {inner})),
-        rule!((try_expression operator: (try_operator) @op expr: @inner) => (unary_expr operator: (prefix_operator #{op}) operand: {inner})),
+        rule!(
+            (tryExpr questionOrExclamationMark: _? @@m expression: @e)
+            =>
+            expr {
+                let op = format!("try{}", m.map(|m| ctx.source_text(m)).unwrap_or_default());
+                tree!((unary_expr operator: (prefix_operator #{op}) operand: {e}))
+            }
+        ),
         // Do-catch → try_expr
         rule!(
-            (do_statement body: (block statement: _* @body) catch: (catch_block)* @catches)
+            (doStmt body: @body catchClauses: _* @catches)
             =>
             (try_expr
-                body: (block stmt: {body})
+                body: {body}
                 catch_clause: {catches})
         ),
         // Catch block with bound identifier; optional where-clause guard.
         rule!(
-            (catch_block
-                keyword: (catch_keyword)
-                error: @pattern
-                where: (where_clause expr: @guard)?
-                body: (block statement: _* @body))
+            (catchClause
+                catchItems: (catchItem
+                    pattern: @pattern
+                    whereClause: (whereClause condition: @guard)?)
+                body: @body)
             =>
             (catch_clause
                 pattern: {pattern}
                 guard: {guard}
-                body: (block stmt: {body}))
+                body: {body})
         ),
         // Catch block without error binding
-        rule!(
-            (catch_block keyword: (catch_keyword) body: (block statement: _* @body))
-            =>
-            (catch_clause body: (block stmt: {body}))
-        ),
-        // Empty catch block: catch {}
-        rule!(
-            (catch_block (catch_keyword))
-            =>
-            (catch_clause body: (block))
-        ),
-        // Catch block with unhandled pattern — preserve pattern; optional body.
-        rule!(
-            (catch_block keyword: (catch_keyword) error: @pat body: (block statement: _* @body))
-            =>
-            (catch_clause
-                pattern: {pat}
-                body: (block stmt: {body}))
-        ),
+        rule!((catchClause body: @body) => (catch_clause body: {body})),
         // As expression (type cast) — as?, as!
-        rule!((as_expression (as_operator) @op expr: @val type: @ty) => (type_cast_expr expr: {val} operator: (infix_operator #{op}) type: {ty})),
+        rule!((asExpr expression: @val questionOrExclamationMark: _? @@mark type: @ty) => type_cast_expr {
+            let op = format!("as{}", mark.map(|m| ctx.source_text(m)).unwrap_or_default());
+            tree!((type_cast_expr expr: {val} operator: (infix_operator #{op}) type: {ty}))
+        }),
         // Check expression (`x is T`) → type_test_expr
-        rule!((check_expression op: @op target: @val type: @ty) => (type_test_expr expr: {val} operator: (infix_operator #{op}) type: {ty})),
+        rule!((isExpr expression: @val type: @ty) => (type_test_expr expr: {val} operator: (infix_operator "is") type: {ty})),
         // Await expression → unary_expr with operator "await"
-        rule!((await_expression expr: @val) => (unary_expr operator: (prefix_operator "await") operand: {val})),
+        rule!((awaitExpr expression: @val) => (unary_expr operator: (prefix_operator "await") operand: {val})),
+        // Force-unwrap (`x!`) → postfix unary_expr. swift-syntax has a dedicated
+        // `forceUnwrapExpr` node (the tree-sitter path used the generic postfix
+        // operator rule instead).
+        rule!((forceUnwrapExpr expression: @e) => (unary_expr operator: (postfix_operator "!") operand: {e})),
         // A multi-part identifier (for example `Foo.Bar.Baz`) is translated to
         // a member_access_expr chain with a name_expr base.
         rule!(
