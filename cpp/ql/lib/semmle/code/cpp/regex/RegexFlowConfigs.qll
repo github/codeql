@@ -1,14 +1,21 @@
 /**
  * Provides classes and predicates for reasoning about C++ standard-library
- * regular-expression usage.
+ * regular-expression **usage** (dataflow layer).
  *
  * This module identifies which `StringLiteral`s flow (via global taint
  * tracking) into a `std::basic_regex` construction or into one of the free
  * matching functions (`std::regex_match`, `std::regex_search`,
  * `std::regex_replace`) or iterators (`std::regex_iterator`,
- * `std::regex_token_iterator`), and detects the construction-site flags of
- * `std::regex_constants::syntax_option_type` and
- * `std::regex_constants::match_flag_type` that affect matching semantics.
+ * `std::regex_token_iterator`).
+ *
+ * The grammar dialect and construction-site *flags* of a regex literal
+ * (`icase`, `multiline`, `basic`, `extended`, etc.) are independent of the
+ * dataflow analysis - they are properties of the parsed literal itself -
+ * and live in the flow-free module
+ * `semmle.code.cpp.regex.internal.RegexGrammar`. This module re-exports the
+ * public predicates from there so existing consumers (`hasIgnoreCaseFlag`,
+ * `hasMultilineFlag`, `regexGrammar`, ...) can continue to import them
+ * from `RegexFlowConfigs`.
  *
  * The `regexMatchedAgainst` predicate mirrors the intent of the Java
  * `RegexFlowConfigs.qll` library.
@@ -22,22 +29,45 @@
 import cpp
 private import semmle.code.cpp.dataflow.new.DataFlow
 private import semmle.code.cpp.dataflow.new.TaintTracking
+private import semmle.code.cpp.regex.internal.RegexGrammar as RG
 
 // ---------------------------------------------------------------------------
-// std::basic_regex identification
+// Re-exports from the flow-free grammar/flag module.
+// These are kept in scope for backward compatibility so that consumers can
+// continue to import them from `RegexFlowConfigs`.
 // ---------------------------------------------------------------------------
 /**
  * A `std::basic_regex` class type (or instantiation thereof, e.g. `std::regex`,
- * `std::wregex`).
+ * `std::wregex`). Defined in `RegexGrammar`; re-exported here.
  */
-class StdBasicRegex extends Class {
-  StdBasicRegex() {
-    this.hasQualifiedName("std", "basic_regex")
-    or
-    this.(ClassTemplateInstantiation).getTemplate().hasQualifiedName("std", "basic_regex")
-  }
+class StdBasicRegex = RG::StdBasicRegex;
+
+/** See `RegexGrammar::TRegexGrammar`. */
+class TRegexGrammar = RG::TRegexGrammar;
+
+/** See `RegexGrammar::regexGrammar`. */
+TRegexGrammar regexGrammar(StringLiteral regex) { result = RG::regexGrammar(regex) }
+
+/** See `RegexGrammar::hasConcreteGrammar`. */
+predicate hasConcreteGrammar(TRegexGrammar grammar) { RG::hasConcreteGrammar(grammar) }
+
+/** See `RegexGrammar::hasIgnoreCaseFlag`. */
+predicate hasIgnoreCaseFlag(StringLiteral regex) { RG::hasIgnoreCaseFlag(regex) }
+
+/** See `RegexGrammar::hasMultilineFlag`. */
+predicate hasMultilineFlag(StringLiteral regex) { RG::hasMultilineFlag(regex) }
+
+/** See `RegexGrammar::hasNonEcmaScriptGrammarFlag`. */
+predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
+  RG::hasNonEcmaScriptGrammarFlag(regex)
 }
 
+/** See `RegexGrammar::hasEcmaScriptGrammarFlag`. */
+predicate hasEcmaScriptGrammarFlag(StringLiteral regex) { RG::hasEcmaScriptGrammarFlag(regex) }
+
+// ---------------------------------------------------------------------------
+// std::basic_regex type helpers
+// ---------------------------------------------------------------------------
 /**
  * Holds if `t`, after stripping references, const/volatile, and typedefs,
  * denotes a `std::basic_regex` type.
@@ -171,22 +201,11 @@ class RegexPatternSink extends DataFlow::Node {
 }
 
 // ---------------------------------------------------------------------------
-// Fast-path: only track literals that look regex-y
+// Fast-path: only track literals that look regex-y.
+// `ExploitableStringLiteral` is defined in the flow-free `RegexGrammar`
+// module; re-exported here for backward compatibility.
 // ---------------------------------------------------------------------------
-/**
- * A string literal that is a plausible ReDoS candidate: it contains at least
- * one unbounded-repetition quantifier (`+`, `*`, or `{n,}`). Used as an
- * optimisation to keep the taint-tracking configuration small; other regexes
- * are not interesting for the polynomial-ReDoS analysis anyway.
- */
-class ExploitableStringLiteral extends StringLiteral {
-  ExploitableStringLiteral() {
-    exists(string s | s = this.getValue() |
-      s.regexpMatch(".*[+*].*") or
-      s.regexpMatch(".*\\{[0-9]+,[0-9]*\\}.*")
-    )
-  }
-}
+class ExploitableStringLiteral = RG::ExploitableStringLiteral;
 
 /**
  * A dataflow configuration tracking string literals that reach a regex
@@ -263,188 +282,8 @@ predicate regexMatchedAgainst(StringLiteral regex, Expr str) {
 }
 
 // ---------------------------------------------------------------------------
-// Construction-site flags
+// ReDoS engine gating
 // ---------------------------------------------------------------------------
-/**
- * Holds if `ec` is a `std::regex_constants` enum constant with the given
- * unqualified name.
- */
-private predicate regexConstantsEnum(EnumConstant ec, string name) {
-  ec.hasName(name) and
-  ec.getDeclaringEnum().getNamespace().getName() = "regex_constants" and
-  ec.getDeclaringEnum().getNamespace().getParentNamespace().getName() = "std"
-}
-
-/**
- * Holds if `access` (an expression) is a reference to the `regex_constants`
- * enum constant with the given `name`, possibly through implicit conversions.
- */
-private predicate refersToRegexConstant(Expr access, string name) {
-  exists(EnumConstantAccess eca | eca = access.getAChild*() or eca = access |
-    regexConstantsEnum(eca.getTarget(), name)
-  )
-}
-
-/**
- * Holds if `flagExpr` (a `syntax_option_type`/`match_flag_type` argument) is
- * a bit-or expression, character constant, or single enum constant that
- * includes the `regex_constants` flag with unqualified `name`.
- * This handles both direct use (`std::regex_constants::icase`) and bitwise-OR
- * combinations (`std::regex_constants::icase | std::regex_constants::multiline`).
- */
-private predicate containsRegexFlag(Expr flagExpr, string name) {
-  refersToRegexConstant(flagExpr, name)
-  or
-  // Bitwise-OR combination: recurse into both operands.
-  containsRegexFlag(flagExpr.(BitwiseOrExpr).getAnOperand(), name)
-  or
-  // Operator| overload on the flag enum (some libc++ implementations expose
-  // `operator|` as a free function). Recurse into arguments.
-  exists(FunctionCall fc |
-    fc = flagExpr and
-    fc.getTarget().hasName("operator|")
-  |
-    containsRegexFlag(fc.getAnArgument(), name)
-  )
-}
-
-/**
- * Gets a flag argument (`syntax_option_type` / `match_flag_type`) for the
- * `basic_regex` construction (or `assign(...)`) whose pattern is `regex`.
- * Returns nothing if no explicit flag argument is supplied.
- */
-private Expr getConstructionFlagArg(StringLiteral regex) {
-  // basic_regex(pattern, flags) at variable construction.
-  exists(ConstructorCall cc, Variable v |
-    cc.getTarget().getDeclaringType() instanceof StdBasicRegex and
-    cc.getEnclosingElement() = v.getInitializer() and
-    RegexPatternFlow::flow(DataFlow::exprNode(regex), DataFlow::exprNode(cc.getArgument(0))) and
-    result = cc.getArgument(1)
-  )
-  or
-  // Temporary basic_regex(pattern, flags).
-  exists(ConstructorCall cc |
-    cc.getTarget().getDeclaringType() instanceof StdBasicRegex and
-    RegexPatternFlow::flow(DataFlow::exprNode(regex), DataFlow::exprNode(cc.getArgument(0))) and
-    result = cc.getArgument(1)
-  )
-  or
-  // basic_regex::assign(pattern, flags).
-  exists(FunctionCall fc |
-    fc.getTarget().(MemberFunction).getDeclaringType() instanceof StdBasicRegex and
-    fc.getTarget().hasName("assign") and
-    RegexPatternFlow::flow(DataFlow::exprNode(regex), DataFlow::exprNode(fc.getArgument(0))) and
-    result = fc.getArgument(1)
-  )
-}
-
-/**
- * Holds if `regex` is constructed with the `std::regex_constants::icase` flag,
- * either directly or as part of a bitwise-OR combination.
- */
-predicate hasIgnoreCaseFlag(StringLiteral regex) {
-  containsRegexFlag(getConstructionFlagArg(regex), "icase")
-}
-
-/**
- * Holds if `regex` is constructed with the `std::regex_constants::multiline`
- * flag (C++17 and later), either directly or as part of a bitwise-OR
- * combination.
- */
-predicate hasMultilineFlag(StringLiteral regex) {
-  containsRegexFlag(getConstructionFlagArg(regex), "multiline")
-}
-
-/**
- * Holds if `regex` is constructed with an explicit non-ECMAScript grammar
- * flag (`basic`, `extended`, `awk`, `grep`, or `egrep`).
- *
- * This predicate is purely informational: nothing is excluded from analysis
- * by grammar anymore, since every grammar the standard defines now has a
- * concrete parser subclass (`EcmaRegExp`, `EreRegExp`, `BreRegExp`).
- */
-predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
-  exists(string g | g = ["basic", "extended", "awk", "grep", "egrep"] |
-    containsRegexFlag(getConstructionFlagArg(regex), g)
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Grammar classification
-// ---------------------------------------------------------------------------
-/**
- * The `std::regex` grammar dialects that the C++ regex parser is aware of.
- *
- * - `Ecma()`  - ECMAScript, the default grammar used by `std::regex`.
- *              Selected either implicitly (no explicit grammar flag) or
- *              explicitly via `std::regex_constants::ECMAScript`. Modeled
- *              by `EcmaRegExp`.
- * - `Bre()`   - POSIX Basic Regular Expressions (selected via the `basic`
- *              or `grep` flags). Modeled by `BreRegExp`.
- * - `Ere()`   - POSIX Extended Regular Expressions (selected via the
- *              `extended`, `egrep`, or `awk` flags). Modeled by
- *              `EreRegExp`.
- *
- * All three cases are exercised by the parser today; every grammar has a
- * concrete subclass, so `hasConcreteGrammar` holds for every regex the
- * parser sees.
- */
-newtype TRegexGrammar =
-  /** The ECMAScript grammar (the default for `std::regex`), modeled by `EcmaRegExp`. */
-  Ecma() or
-  /** The POSIX Basic Regular Expression grammar (`basic`/`grep` flags), modeled by `BreRegExp`. */
-  Bre() or
-  /** The POSIX Extended Regular Expression grammar (`extended`/`egrep`/`awk` flags), modeled by `EreRegExp`. */
-  Ere()
-
-/**
- * Gets the `std::regex` grammar dialect of `regex`, inferred from its
- * construction-site `syntax_option_type` flag argument (if any).
- *
- * The mapping is:
- *   - `basic` / `grep`              -> `Bre()`
- *   - `extended` / `egrep` / `awk`  -> `Ere()`
- *   - anything else (default, explicit `ECMAScript`, or unresolved) -> `Ecma()`
- *
- * Every case now has a concrete parser subclass, so `hasConcreteGrammar`
- * holds for the result of this predicate.
- */
-TRegexGrammar regexGrammar(StringLiteral regex) {
-  if containsRegexFlag(getConstructionFlagArg(regex), ["basic", "grep"])
-  then result = Bre()
-  else
-    if containsRegexFlag(getConstructionFlagArg(regex), ["extended", "egrep", "awk"])
-    then result = Ere()
-    else result = Ecma()
-}
-
-/**
- * Holds if `grammar` has a concrete `RegExp` subclass and can therefore be
- * admitted by the parser's characteristic predicate. All three grammars
- * (`Ecma()`, `Ere()`, `Bre()`) are modeled today, so this holds for every
- * grammar the standard defines. Kept as a helper so that any future grammar
- * scaffolding can be admitted by adding a single disjunct here.
- */
-predicate hasConcreteGrammar(TRegexGrammar grammar) {
-  grammar = Ecma() or grammar = Ere() or grammar = Bre()
-}
-
-/**
- * Holds if `regex` is constructed with an explicit ECMAScript grammar flag.
- * This is the default, and also the case that the Phase 1 parser handles.
- */
-predicate hasEcmaScriptGrammarFlag(StringLiteral regex) {
-  containsRegexFlag(getConstructionFlagArg(regex), "ECMAScript")
-}
-
-/**
- * Holds if `regex` is constructed with a POSIX tool-style grammar flag
- * (`awk`, `grep`, or `egrep`) that we treat as linear-time / non-backtracking.
- */
-private predicate hasNonBacktrackingGrammarFlag(StringLiteral regex) {
-  containsRegexFlag(getConstructionFlagArg(regex), ["awk", "grep", "egrep"])
-}
-
 /**
  * Holds if `regex` is used with a `std::regex` matching engine that performs
  * backtracking, so that super-linear-backtracking ReDoS is possible.
@@ -461,5 +300,5 @@ private predicate hasNonBacktrackingGrammarFlag(StringLiteral regex) {
  */
 predicate isBacktrackingEngine(StringLiteral regex) {
   usedAsRegex(regex) and
-  not hasNonBacktrackingGrammarFlag(regex)
+  not RG::hasNonBacktrackingGrammarFlag(regex)
 }

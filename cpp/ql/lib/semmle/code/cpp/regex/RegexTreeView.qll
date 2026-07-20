@@ -14,7 +14,7 @@
 
 import cpp
 private import semmle.code.cpp.regex.internal.ParseRegExp
-private import semmle.code.cpp.regex.RegexFlowConfigs as RFC
+private import semmle.code.cpp.regex.internal.RegexGrammar as RG
 private import codeql.regex.RegexTreeView
 // Export the implementation both as `RegexTreeView` (for use as a functor
 // argument) and in the top-level scope (for direct import).
@@ -224,13 +224,13 @@ module Impl implements RegexTreeViewSig {
      * `std::basic_regex` was constructed with
      * `std::regex_constants::icase` (directly or in a bitwise-OR combination).
      */
-    predicate isIgnoreCase() { RFC::hasIgnoreCaseFlag(re) }
+    predicate isIgnoreCase() { RG::hasIgnoreCaseFlag(re) }
 
     /**
      * Holds if `^` and `$` match at line boundaries (`std::regex_constants::multiline`,
      * C++17+).
      */
-    predicate isMultiline() { RFC::hasMultilineFlag(re) }
+    predicate isMultiline() { RG::hasMultilineFlag(re) }
 
     /** Gets a string representing all flags for this regex. */
     string getFlags() {
@@ -812,7 +812,7 @@ module Impl implements RegexTreeViewSig {
    * multiline mode).
    *
    * NOTE: `std::regex_constants::multiline` is detected by
-   * `RegexFlowConfigs.qll` (`hasMultilineFlag`) and exposed by
+   * `RegexGrammar.qll` (`hasMultilineFlag`) and exposed by
    * `RegExpLiteral.isMultiline()`, but the shared `RegexTreeViewSig`
    * signature has no hook to parameterize anchor semantics on multiline
    * mode. We therefore always model `$` as the end-of-string anchor -

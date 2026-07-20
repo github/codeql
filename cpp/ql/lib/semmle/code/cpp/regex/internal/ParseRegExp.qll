@@ -35,6 +35,14 @@
  */
 
 import cpp
+private import semmle.code.cpp.regex.internal.RegexGrammar as RG
+// NOTE: `RegexFlowConfigs` is imported here only for the `usedAsRegex`
+// dataflow gate below. The grammar/flag knobs (`regexGrammar`,
+// `hasConcreteGrammar`, `Ecma`/`Bre`/`Ere`) come from the flow-free
+// `RegexGrammar` module. Removing this residual coupling on `usedAsRegex`
+// is a separate follow-up: the parser would need an alternative
+// characterisation of "this literal is used as a regex" that does not
+// depend on dataflow.
 private import semmle.code.cpp.regex.RegexFlowConfigs as RFC
 
 // ===========================================================================
@@ -57,7 +65,7 @@ private import semmle.code.cpp.regex.RegexFlowConfigs as RFC
 abstract class RegExp extends StringLiteral {
   RegExp() {
     RFC::usedAsRegex(this) and
-    RFC::hasConcreteGrammar(RFC::regexGrammar(this))
+    RG::hasConcreteGrammar(RG::regexGrammar(this))
   }
 
   /** Gets the `i`th character of this regex string. */
@@ -67,7 +75,7 @@ abstract class RegExp extends StringLiteral {
   string getText() { result = this.getValue() }
 
   /** Gets the grammar dialect of this regex. */
-  abstract RFC::TRegexGrammar getGrammar();
+  abstract RG::TRegexGrammar getGrammar();
 
   // ---------------------------------------------------------------------------
   // Dialect hooks
@@ -926,9 +934,9 @@ abstract class RegExp extends StringLiteral {
  * determined uniquely by `regexGrammar`.
  */
 class EcmaRegExp extends RegExp {
-  EcmaRegExp() { RFC::regexGrammar(this) = RFC::Ecma() }
+  EcmaRegExp() { RG::regexGrammar(this) = RG::Ecma() }
 
-  override RFC::TRegexGrammar getGrammar() { result = RFC::Ecma() }
+  override RG::TRegexGrammar getGrammar() { result = RG::Ecma() }
 
   // ---------------------------------------------------------------------------
   // Escaping
@@ -1308,9 +1316,9 @@ class EcmaRegExp extends RegExp {
  * literal escape of the following character so the tokenizer is total.
  */
 class EreRegExp extends RegExp {
-  EreRegExp() { RFC::regexGrammar(this) = RFC::Ere() }
+  EreRegExp() { RG::regexGrammar(this) = RG::Ere() }
 
-  override RFC::TRegexGrammar getGrammar() { result = RFC::Ere() }
+  override RG::TRegexGrammar getGrammar() { result = RG::Ere() }
 
   // ---------------------------------------------------------------------------
   // Escaping
@@ -1530,9 +1538,9 @@ class EreRegExp extends RegExp {
  *    layer (`[[:alpha:]]`, `[[=a=]]`, `[[.ch.]]`).
  */
 class BreRegExp extends RegExp {
-  BreRegExp() { RFC::regexGrammar(this) = RFC::Bre() }
+  BreRegExp() { RG::regexGrammar(this) = RG::Bre() }
 
-  override RFC::TRegexGrammar getGrammar() { result = RFC::Bre() }
+  override RG::TRegexGrammar getGrammar() { result = RG::Bre() }
 
   // ---------------------------------------------------------------------------
   // Escaping
