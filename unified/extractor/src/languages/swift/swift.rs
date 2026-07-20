@@ -911,35 +911,37 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // `forceUnwrapExpr` node (the tree-sitter path used the generic postfix
         // operator rule instead).
         rule!((forceUnwrapExpr expression: @e) => (unary_expr operator: (postfix_operator "!") operand: {e})),
-        // A multi-part identifier (for example `Foo.Bar.Baz`) is translated to
-        // a member_access_expr chain with a name_expr base.
+        // ---- Imports ----
+        // An import declaration. The dotted path (a list of
+        // `importPathComponent`s) becomes a `name_expr`/`member_access_expr`
+        // chain (via `member_chain`). A scoped import (`import struct Foo.Bar`)
+        // has an `importKindSpecifier` and binds the last path component as a
+        // `name_pattern`; a plain import (`import Foundation`) has none and uses
+        // a `bulk_importing_pattern` spanning the whole declaration. Any leading
+        // attributes (`@_exported`) and access modifiers (`public`) become
+        // `modifier`s.
         rule!(
-            (identifier part: _+ @parts)
+            (importDecl
+                attributes: _* @attrs
+                modifiers: _* @mods
+                importKindSpecifier: _? @@kind
+                path: (importPathComponent name: @@parts)*)
             =>
-            expr { member_chain(&mut ctx, parts) }
-        ),
-        // Scoped import declaration (for example `import struct Foo.Bar`):
-        // flatten the identifier parts into a member_access_expr and bind the
-        // final segment as a name_pattern.
-        rule!(
-            (import_declaration scoped_import_kind: @kind name: (identifier part: _+ @parts) @name modifiers: (modifiers)? @mods)
-            =>
-            (import_declaration
-                pattern: (name_pattern identifier: (identifier #{parts.last().unwrap()}))
-                imported_expr: {name}
-                modifier: (modifier #{kind})
-                modifier: {mods})
-        ),
-        // Non-scoped import declaration (for example `import Foundation`):
-        // flatten the identifier parts into a member_access_expr and use a
-        // bulk_importing_pattern.
-        rule!(
-            (import_declaration name: @name modifiers: (modifiers)? @mods)
-            =>
-            (import_declaration
-                pattern: (bulk_importing_pattern)
-                imported_expr: {name}
-                modifier: {mods})
+            import_declaration {
+                let pattern = match kind {
+                    Some(_) => {
+                        let last = *parts.last().ok_or("import has no path")?;
+                        tree!((name_pattern identifier: (identifier #{last})))
+                    }
+                    None => tree!((bulk_importing_pattern)),
+                };
+                tree!((import_declaration
+                    modifier: {kind.map(|k| tree!((modifier #{k})))}
+                    modifier: {attrs}
+                    modifier: {mods}
+                    pattern: {pattern}
+                    imported_expr: {member_chain(&mut ctx, parts)}))
+            }
         ),
         // ---- Types and classes ----
         // Self expression → name_expr
