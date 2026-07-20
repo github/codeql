@@ -22,11 +22,9 @@ struct SwiftContext {
     /// accessor inner rules.
     property_type: Option<yeast::Id>,
     /// Translated outer modifiers to attach to each child of a flattening
-    /// outer rule. Set by `property_declaration`, `binding_pattern`,
-    /// `enum_entry`, and `protocol_property_declaration`. For `let`/`var`
-    /// declarations and `binding_pattern`s the list is led by the binding
-    /// modifier, which also serves as the "this is a binding" signal for
-    /// pattern translation (see `in_binding_pattern`).
+    /// outer rule — e.g. the `let`/`var` binding modifier on each
+    /// `patternBinding` of a `variableDecl`, or the binding modifier on each
+    /// accessor of a property.
     outer_modifiers: Vec<yeast::Id>,
     /// True when the current child of a flattening outer rule is not
     /// the first one — its inner rule should emit a
@@ -41,21 +39,15 @@ struct SwiftContext {
     /// `functionType` rules each set it for their direct children, so nested
     /// types are translated in the correct context.
     in_function_type: bool,
+    /// True while translating the argument list of an enum-case
+    /// `constructor_pattern` (e.g. `case .foo(let x, 3)`). Read by the
+    /// `labeledExpr` rules so a bare expression argument becomes an
+    /// `expr_equality_pattern` (wrapped in a `pattern_element`) rather than a
+    /// call `argument`.
+    in_pattern: bool,
 }
 
 impl SwiftContext {
-    /// Whether the pattern currently being translated is a binding
-    /// (the LHS of a `let`/`var` declaration or a `binding_pattern`).
-    ///
-    /// True exactly when an enclosing binding has published its modifier into
-    /// `outer_modifiers`. This is reliable because non-binding subtrees
-    /// (bodies, initializer values, ...) are translated after resetting the
-    /// context (see `reset`), so a bare identifier only sees a
-    /// non-empty `outer_modifiers` when it really is a binding.
-    fn in_binding_pattern(&self) -> bool {
-        !self.outer_modifiers.is_empty()
-    }
-
     /// Clear the context fields that must not propagate into an
     /// expression / statement / body subtree.
     ///
@@ -469,33 +461,32 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (name_pattern identifier: (identifier #{name}))
         ),
-        // Pattern with 'let' or 'var' binding: publish the binding modifier
-        // into `ctx` and translate the inner pattern under it.
+        // A `let`/`var` value-binding pattern (`let x`) inside a case or `if case`
+        // introduces a new binding; it unwraps to its inner pattern (a
+        // `name_pattern`).
+        rule!((valueBindingPattern pattern: @p) => pattern { p }),
+        // An enum-case pattern with associated values (`case .foo(let x)`,
+        // `case Color.foo(let x)`) is an expression pattern wrapping a call of a
+        // member access. It becomes a `constructor_pattern`; its arguments are
+        // translated as pattern elements (see the `labeledExpr` rules, gated by
+        // `ctx.in_pattern`). Matched before the generic `expressionPattern` rule.
+        // The base is optional: a leading-dot form (`.foo`) has none, so the
+        // constructor's base is an `inferred_type_expr`.
         rule!(
-            (pattern kind: (binding_pattern binding: (value_binding_pattern mutability: @@binding_kind) pattern: @@pattern))
+            (expressionPattern expression: (functionCallExpr
+                calledExpression: (memberAccessExpr base: _? @base period: @dot declName: (declReferenceExpr baseName: @name))
+                arguments: _* @@args))
             =>
-            pattern* {
-                let binding_text = ctx.ast.source_text(binding_kind);
-                let binding = ctx.literal("modifier", &binding_text);
-                ctx.outer_modifiers = vec![binding];
-                ctx.translate(pattern)?
+            constructor_pattern {
+                ctx.in_pattern = true;
+                let elements = ctx.translate(args)?;
+                let base = base.unwrap_or_else(|| tree!((inferred_type_expr #{dot})));
+                tree!((constructor_pattern
+                    constructor: (member_access_expr
+                        base: {base}
+                        member: (identifier #{name}))
+                    element: {elements}))
             }
-        ),
-        // case T.foo(x,y) pattern
-        rule!(
-            (pattern kind: (case_pattern type: @typ name: @name arguments: (tuple_pattern item: (tuple_pattern_item)* @items)? ))
-            =>
-            (constructor_pattern
-                constructor: (member_access_expr base: {typ} member: (identifier #{name}))
-                element: {items})
-        ),
-        // case .foo(x,y) pattern
-        rule!(
-            (pattern kind: (case_pattern dot: @dot name: @name arguments: (tuple_pattern item: (tuple_pattern_item)* @items)? ))
-            =>
-            (constructor_pattern
-                constructor: (member_access_expr base: (inferred_type_expr #{dot}) member: (identifier #{name}))
-                element: {items})
         ),
         // A tuple destructuring pattern (`let (a, b) = …`). A labelled element
         // (`let (x: a) = …`) carries its label through as the `pattern_element`
@@ -506,30 +497,41 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (pattern_element key: {label.map(|l| tree!((identifier #{l})))} pattern: {p})
         ),
-        // Type casting pattern (TODO)
-        rule!((pattern kind: (type_casting_pattern)) => (unsupported_node)),
-        // Wildcard pattern
-        rule!((pattern kind: (wildcard_pattern)) => (ignore_pattern)),
-        // A bare identifier used as an expression-pattern. Under a `var`/`let`
-        // binding it introduces a new variable and becomes a `name_pattern`;
-        // otherwise it matches by equality and is left as an `expr_equality_pattern`
-        // over the name expression.
+        // A type-casting pattern (`case is T`). Not yet supported, so it is
+        // mapped to `unsupported_node` — an explicit reminder that this needs
+        // handling in the future. (Redundant with the catch-all fallback, but
+        // kept as a signpost.)
+        rule!((isTypePattern) => (unsupported_node)),
+        // A standalone wildcard pattern (`case _:`, `if case _`): swift-syntax
+        // models the bare `_` as an `expressionPattern` wrapping a
+        // `discardAssignmentExpr`. Matched before the generic `expressionPattern`
+        // rule so `_` becomes an `ignore_pattern` rather than an equality match.
+        // (Wildcards *inside* an enum-case argument list are handled by the
+        // `labeledExpr`/`discardAssignmentExpr` rules.)
+        rule!((expressionPattern expression: (discardAssignmentExpr)) => (ignore_pattern)),
+        // A wildcard *binding* pattern (`let _ = x`, `for _ in xs`). swift-syntax
+        // models this as a `wildcardPattern` — distinct from the `_` *match*
+        // pattern above, which is an `expressionPattern` over a
+        // `discardAssignmentExpr`.
+        rule!((wildcardPattern) => (ignore_pattern)),
+        // A tuple pattern in a match position (`case (let a, 3):`) is parsed by
+        // swift-syntax as an `expressionPattern` wrapping a `tupleExpr` — unlike a
+        // binding tuple (`let (a, b)`), which is a real `tuplePattern`. Recognise
+        // it as a `tuple_pattern`; its `labeledExpr` elements translate to
+        // `pattern_element`s under `ctx.in_pattern` (a binding element becomes a
+        // `name_pattern`, any other expression an `expr_equality_pattern`).
         rule!(
-            (pattern kind: (simple_identifier) @name)
+            (expressionPattern expression: (tupleExpr elements: _* @@els))
             =>
-            pattern {
-                if ctx.in_binding_pattern() {
-                    tree!((name_pattern identifier: (identifier #{name})))
-                } else {
-                    let expr = tree!((name_expr identifier: (identifier #{name})));
-                    tree!((expr_equality_pattern expr: {expr}))
-                }
+            tuple_pattern {
+                ctx.in_pattern = true;
+                let elements = ctx.translate(els)?;
+                tree!((tuple_pattern element: {elements}))
             }
         ),
-        // Expression pattern
-        // We lack a way to check if 'expr' is actually an expression, but due to rule ordering
-        // the 'expression' case is the only remaining possibility when this rule tries to match.
-        rule!((pattern kind: @expr) => (expr_equality_pattern expr: {expr})),
+        // A bare expression pattern (`case 1:`, `case someConstant:`) matches by
+        // equality.
+        rule!((expressionPattern expression: @e) => (expr_equality_pattern expr: {e})),
         // ---- Functions ----
         // A function declaration (parameters/return type/body optional). The
         // parameters and return type nest under `signature`; the body is a
@@ -602,18 +604,38 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (call_expr callee: {callee} argument: {args})
         ),
-        // A call argument keeps its optional label as the `name` and its value.
-        // (Enum-case pattern arguments reuse `labeledExpr` too; that handling is
-        // added with the switch/pattern rules.)
+        // A call argument or an enum-case pattern argument. When translating an
+        // enum-case `constructor_pattern`'s arguments (`ctx.in_pattern`), a
+        // `patternExpr` argument (`let x`) becomes a bound `name_pattern`, a
+        // wildcard (`_`) becomes an `ignore_pattern`, and any other expression
+        // becomes an `expr_equality_pattern`; each is wrapped in a
+        // `pattern_element` carrying the optional argument label as its `key`.
+        // Otherwise the argument keeps its label as the `name` and its value.
+        // The pattern-only shapes (`patternExpr`, `discardAssignmentExpr`) are
+        // matched first; they never occur as ordinary call arguments.
         rule!(
-            (labeledExpr label: @lbl expression: @val)
+            (labeledExpr label: _? @lbl expression: (patternExpr pattern: @p))
             =>
-            (argument name: (identifier #{lbl}) value: {val})
+            (pattern_element key: {lbl.map(|l| tree!((identifier #{l})))} pattern: {p})
         ),
         rule!(
-            (labeledExpr expression: @val)
+            (labeledExpr label: _? @lbl expression: (discardAssignmentExpr) @@wildcard)
             =>
-            (argument value: {val})
+            (pattern_element key: {lbl.map(|l| tree!((identifier #{l})))} pattern: (ignore_pattern #{wildcard}))
+        ),
+        rule!(
+            (labeledExpr label: _? @lbl expression: @val)
+            =>
+            argument {
+                let key = lbl.map(|l| tree!((identifier #{l})));
+                if ctx.in_pattern {
+                    tree!((pattern_element
+                        key: {key}
+                        pattern: (expr_equality_pattern expr: {val})))
+                } else {
+                    tree!((argument name: {key} value: {val}))
+                }
+            }
         ),
         // Member access (`list.append`). The `declName` is itself a
         // `declReferenceExpr`; pull its `baseName` out as the member identifier.
@@ -691,68 +713,77 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (parameter pattern: (name_pattern identifier: (identifier #{name})))
         ),
         // ---- Control flow ----
-        // If statement
+        // An `if`/`else` expression. Conditions are joined via `and_chain`; the
+        // then-body and optional else-body (another block, or an `ifExpr` for an
+        // else-if chain) are translated recursively.
         rule!(
-            (if_statement condition: _* @cond body: @then_body else_branch: _? @else_stmts)
+            (ifExpr conditions: _* @cond body: @then_body elseBody: _? @else_stmts)
             =>
             (if_expr
                 condition: {and_chain(&mut ctx, cond)}
                 then: {then_body}
                 else: {else_stmts})
         ),
-        // Guard statement
+        // A `guard … else { }` statement. The `body` is the else block.
         rule!(
-            (guard_statement condition: _* @cond body: (block statement: _* @else_stmts))
+            (guardStmt conditions: _* @cond body: @else_stmts)
             =>
             (guard_if_stmt
                 condition: {and_chain(&mut ctx, cond)}
-                else: (block stmt: {else_stmts}))
+                else: {else_stmts})
         ),
-        // Ternary expression → if_expr
+        // Ternary (`c ? a : b`) desugars to an `if_expr`, as in the tree-sitter
+        // path.
         rule!(
-            (ternary_expression condition: @cond if_true: @then_val if_false: @else_val)
+            (ternaryExpr condition: @cond thenExpression: @then_val elseExpression: @else_val)
             =>
             (if_expr condition: {cond} then: {then_val} else: {else_val})
         ),
-        // Switch statement
+        // A `switch` statement. Each `switchCase` becomes a `switch_case` with a
+        // pattern (or an `or_pattern` for comma-separated `case a, b:`) and a
+        // body; a `default:` case has a body but no pattern. The case items and
+        // body are auto-translated; the Rust block only picks the pattern shape
+        // by arity (the query engine can't branch on list length).
         rule!(
-            (switch_statement expr: @val entry: (switch_entry)* @cases)
+            (switchExpr subject: @val cases: _* @cases)
             =>
             (switch_expr value: {val} case: {cases})
         ),
-        // Switch entry with multiple patterns and body
         rule!(
-            (switch_entry
-                pattern: (switch_pattern pattern: @first)
-                pattern: (switch_pattern pattern: @rest)+
-                statement: _* @body)
+            (switchCase label: (switchCaseLabel caseItems: _* @items) statements: _* @body)
             =>
-            (switch_case pattern: (or_pattern pattern: {first} pattern: {rest}) body: (block stmt: {body}))
+            switch_case {
+                let pattern = if items.len() == 1 {
+                    items[0]
+                } else {
+                    tree!((or_pattern pattern: {items}))
+                };
+                tree!((switch_case pattern: {pattern} body: (block stmt: {body})))
+            }
         ),
-        // Switch entry with exactly one pattern and body
         rule!(
-            (switch_entry pattern: (switch_pattern pattern: @pat) statement: _* @body)
-            =>
-            (switch_case pattern: {pat} body: (block stmt: {body}))
-        ),
-        // Switch entry: default case (no patterns)
-        rule!(
-            (switch_entry default: (default_keyword) statement: _* @body)
+            (switchCase label: (switchDefaultLabel) statements: _* @body)
             =>
             (switch_case body: (block stmt: {body}))
         ),
-        // if case PATTERN = expr — preserve the pattern directly (no Optional wrapping)
+        // A single case item unwraps to its pattern (used as an `or_pattern`
+        // element).
+        rule!((switchCaseItem pattern: @p) => pattern { p }),
+        // A pattern-matching condition (`if case let x = e`, `if case .foo(let x)
+        // = e`) becomes a `pattern_guard_expr`: the matched pattern and the
+        // scrutinee value are translated recursively.
         rule!(
-            (if_let_binding "case" pattern: @pat value: @val)
+            (matchingPatternCondition pattern: @pat initializer: (initializerClause value: @val))
             =>
-            (pattern_guard_expr
-                value: {val}
-                pattern: {pat})
+            (pattern_guard_expr pattern: {pat} value: {val})
         ),
+        // Optional binding (`if let x = foo`, or shorthand `if let x`) desugars
+        // to a `pattern_guard_expr` matching `Optional.some(x)`, exactly as the
+        // tree-sitter path does. The initialized form is matched first.
         rule!(
-            (if_let_binding
-                pattern: (pattern binding: (value_binding_pattern) bound_identifier: @name)
-                value: @val)
+            (optionalBindingCondition
+                pattern: (identifierPattern identifier: @name)
+                initializer: (initializerClause value: @val))
             =>
             (pattern_guard_expr
                 value: {val}
@@ -760,10 +791,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     constructor: (member_access_expr base: (named_type_expr name: (identifier "Optional")) member: (identifier "some"))
                     element: (pattern_element pattern: (name_pattern identifier: (identifier #{name})))))
         ),
-        // Shorthand if let x (Swift 5.7+) — also semantically .some(x)
         rule!(
-            (if_let_binding
-                pattern: (pattern binding: (value_binding_pattern) bound_identifier: @name))
+            (optionalBindingCondition pattern: (identifierPattern identifier: @name))
             =>
             (pattern_guard_expr
                 value: (name_expr identifier: (identifier #{name}))
@@ -771,8 +800,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     constructor: (member_access_expr base: (named_type_expr name: (identifier "Optional")) member: (identifier "some"))
                     element: (pattern_element pattern: (name_pattern identifier: (identifier #{name})))))
         ),
-        // If-condition — unwrap (pass through the inner expression/pattern)
-        rule!((if_condition kind: @inner) => expr_or_pattern { inner }),
+        // A single condition in an `if`/`while`/`guard` condition list unwraps to
+        // its inner expression; `and_chain` joins multiple with `&&`.
+        rule!((conditionElement condition: @c) => expr { c }),
+        // `if`/`switch`/`do` are expressions in Swift; when used as a statement
+        // swift-syntax wraps them in an `expressionStmt`. Unwrap to the inner
+        // expression (a plain expression statement, e.g. a call, is not wrapped).
+        rule!((expressionStmt expression: @e) => expr { e }),
         // ---- Loops ----
         // For-in loop with optional where-clause guard.
         rule!(
