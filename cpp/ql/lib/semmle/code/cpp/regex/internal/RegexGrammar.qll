@@ -24,27 +24,6 @@ import cpp
 private import semmle.code.cpp.regex.internal.StdRegex
 
 // ---------------------------------------------------------------------------
-// Fast-path filter: only consider literals that *look* regex-y
-// ---------------------------------------------------------------------------
-/**
- * Holds if `s` is a plausible ReDoS-candidate string literal value: it
- * contains at least one unbounded-repetition quantifier (`+`, `*`, or
- * `{n,}`).
- *
- * This mirrors the source restriction of the dataflow configuration in
- * `RegexFlowConfigs` (whose sources are the `ExploitableStringLiteral`s),
- * so that the flag readers below consider exactly the same set of regexes
- * as the taint-tracking configuration. Inlined here as a syntactic check
- * to keep this module flow-free.
- */
-private predicate isExploitableStringLiteralValue(StringLiteral s) {
-  exists(string v | v = s.getValue() |
-    v.regexpMatch(".*[+*].*") or
-    v.regexpMatch(".*\\{[0-9]+,[0-9]*\\}.*")
-  )
-}
-
-// ---------------------------------------------------------------------------
 // Construction-site flag readers (std::regex_constants enum plumbing)
 // ---------------------------------------------------------------------------
 /**
@@ -108,32 +87,23 @@ private predicate isPatternLiteralOf(StringLiteral regex, Expr patternArg) {
  *
  * This association is purely syntactic (no dataflow): the pattern literal
  * must appear inside the constructor/assign call's first argument.
- *
- * Restricted to string literals that look like plausible ReDoS candidates
- * (see `isExploitableStringLiteralValue`) to preserve the exact set of
- * regexes considered by the flag readers when they were routed through
- * the taint-tracking configuration (whose sources are the same
- * `ExploitableStringLiteral` set).
  */
 private Expr getConstructionFlagArg(StringLiteral regex) {
-  isExploitableStringLiteralValue(regex) and
-  (
-    // basic_regex(pattern, flags) constructor - both named-variable and
-    // temporary constructions are covered because the search for `regex`
-    // is done syntactically inside the constructor's first argument.
-    exists(ConstructorCall cc |
-      cc.getTarget().getDeclaringType() instanceof StdBasicRegex and
-      isPatternLiteralOf(regex, cc.getArgument(0)) and
-      result = cc.getArgument(1)
-    )
-    or
-    // basic_regex::assign(pattern, flags).
-    exists(FunctionCall fc |
-      fc.getTarget().(MemberFunction).getDeclaringType() instanceof StdBasicRegex and
-      fc.getTarget().hasName("assign") and
-      isPatternLiteralOf(regex, fc.getArgument(0)) and
-      result = fc.getArgument(1)
-    )
+  // basic_regex(pattern, flags) constructor - both named-variable and
+  // temporary constructions are covered because the search for `regex`
+  // is done syntactically inside the constructor's first argument.
+  exists(ConstructorCall cc |
+    cc.getTarget().getDeclaringType() instanceof StdBasicRegex and
+    isPatternLiteralOf(regex, cc.getArgument(0)) and
+    result = cc.getArgument(1)
+  )
+  or
+  // basic_regex::assign(pattern, flags).
+  exists(FunctionCall fc |
+    fc.getTarget().(MemberFunction).getDeclaringType() instanceof StdBasicRegex and
+    fc.getTarget().hasName("assign") and
+    isPatternLiteralOf(regex, fc.getArgument(0)) and
+    result = fc.getArgument(1)
   )
 }
 

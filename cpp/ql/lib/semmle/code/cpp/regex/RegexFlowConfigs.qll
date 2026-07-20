@@ -34,31 +34,50 @@ import semmle.code.cpp.regex.internal.StdRegex
 
 // ---------------------------------------------------------------------------
 // Re-exports from the flow-free grammar/flag module.
+//
 // These are kept in scope for backward compatibility so that consumers can
-// continue to import them from `RegexFlowConfigs`.
+// continue to import them from `RegexFlowConfigs`. They are narrowed here
+// to `ExploitableStringLiteral` — the same source set as the taint-tracking
+// configuration below — so the flag/grammar readers exposed at this layer
+// only report on regexes that are ReDoS-analysis candidates. The
+// underlying flow-free predicates in `RegexGrammar` are unrestricted; any
+// consumer wanting the full set can call them directly.
 // ---------------------------------------------------------------------------
 /** See `RegexGrammar::TRegexGrammar`. */
 class TRegexGrammar = RG::TRegexGrammar;
 
 /** See `RegexGrammar::regexGrammar`. */
-TRegexGrammar regexGrammar(StringLiteral regex) { result = RG::regexGrammar(regex) }
+TRegexGrammar regexGrammar(StringLiteral regex) {
+  regex instanceof ExploitableStringLiteral and
+  result = RG::regexGrammar(regex)
+}
 
 /** See `RegexGrammar::hasConcreteGrammar`. */
 predicate hasConcreteGrammar(TRegexGrammar grammar) { RG::hasConcreteGrammar(grammar) }
 
 /** See `RegexGrammar::hasIgnoreCaseFlag`. */
-predicate hasIgnoreCaseFlag(StringLiteral regex) { RG::hasIgnoreCaseFlag(regex) }
+predicate hasIgnoreCaseFlag(StringLiteral regex) {
+  regex instanceof ExploitableStringLiteral and
+  RG::hasIgnoreCaseFlag(regex)
+}
 
 /** See `RegexGrammar::hasMultilineFlag`. */
-predicate hasMultilineFlag(StringLiteral regex) { RG::hasMultilineFlag(regex) }
+predicate hasMultilineFlag(StringLiteral regex) {
+  regex instanceof ExploitableStringLiteral and
+  RG::hasMultilineFlag(regex)
+}
 
 /** See `RegexGrammar::hasNonEcmaScriptGrammarFlag`. */
 predicate hasNonEcmaScriptGrammarFlag(StringLiteral regex) {
+  regex instanceof ExploitableStringLiteral and
   RG::hasNonEcmaScriptGrammarFlag(regex)
 }
 
 /** See `RegexGrammar::hasEcmaScriptGrammarFlag`. */
-predicate hasEcmaScriptGrammarFlag(StringLiteral regex) { RG::hasEcmaScriptGrammarFlag(regex) }
+predicate hasEcmaScriptGrammarFlag(StringLiteral regex) {
+  regex instanceof ExploitableStringLiteral and
+  RG::hasEcmaScriptGrammarFlag(regex)
+}
 
 // ---------------------------------------------------------------------------
 // std::basic_regex type helpers
