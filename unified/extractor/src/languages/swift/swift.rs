@@ -808,42 +808,42 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // expression (a plain expression statement, e.g. a call, is not wrapped).
         rule!((expressionStmt expression: @e) => expr { e }),
         // ---- Loops ----
-        // For-in loop with optional where-clause guard.
+        // A `for`-`in` loop. The optional `where` clause becomes the `guard`.
         rule!(
-            (for_statement
-                item: @pat
-                collection: @iter
-                where: (where_clause expr: @guard)?
-                body: (block statement: _* @body))
+            (forStmt
+                pattern: @pat
+                sequence: @iter
+                whereClause: (whereClause condition: @guard)?
+                body: @body)
             =>
             (for_each_stmt
                 pattern: {pat}
                 iterable: {iter}
                 guard: {guard}
-                body: (block stmt: {body}))
+                body: {body})
         ),
-        // While loop
+        // A `while` loop.
         rule!(
-            (while_statement condition: _* @cond body: (block statement: _* @body))
+            (whileStmt conditions: _* @cond body: @body)
             =>
             (while_stmt
                 condition: {and_chain(&mut ctx, cond)}
-                body: (block stmt: {body}))
+                body: {body})
         ),
-        // Repeat-while loop
+        // A `repeat { } while c` loop desugars to a `do_while_stmt`.
         rule!(
-            (repeat_while_statement condition: _* @cond body: (block statement: _* @body))
+            (repeatStmt body: @body condition: @cond)
             =>
-            (do_while_stmt
-                condition: {and_chain(&mut ctx, cond)}
-                body: (block stmt: {body}))
+            (do_while_stmt condition: {cond} body: {body})
         ),
-        // Labeled statement (e.g. `outer: for ...`). Strip the trailing ':' from the label token.
-        rule!((labeled_statement label: (statement_label) @lbl statement: @stmt) => labeled_stmt {
-            let text = ctx.ast.source_text(lbl);
-            let name = &text[..text.len() - 1];
-            tree!((labeled_stmt label: (identifier #{name}) stmt: {stmt}))
-        }),
+        // A labeled statement (`outer: for … { }`). swift-syntax stores the
+        // label and colon as separate tokens, so the label token is already the
+        // bare name (no trailing `:` to strip).
+        rule!(
+            (labeledStmt label: @@lbl statement: @stmt)
+            =>
+            (labeled_stmt label: (identifier #{lbl}) stmt: {stmt})
+        ),
         // ---- Collections ----
         // Array literal
         rule!((array_literal element: _* @elems) => (array_literal element: {elems})),
