@@ -1,4 +1,4 @@
-import codeql.ruby.Regexp
+import semmle.code.cpp.regex.RegexTreeView
 
 query predicate groupName(RegExpGroup g, string name) { name = g.getName() }
 

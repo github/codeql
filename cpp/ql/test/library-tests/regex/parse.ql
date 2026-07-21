@@ -2,10 +2,9 @@
  * @kind graph
  */
 
-import codeql.Locations
-import codeql.ruby.Regexp as RE
+import semmle.code.cpp.regex.RegexTreeView
 
-query predicate nodes(RE::RegExpTerm n, string attr, string val) {
+query predicate nodes(RegExpTerm n, string attr, string val) {
   attr = "semmle.label" and
   val = "[" + concat(n.getAPrimaryQlClass(), ", ") + "] " + n.toString()
   or
@@ -13,7 +12,7 @@ query predicate nodes(RE::RegExpTerm n, string attr, string val) {
   val =
     any(int i |
       n =
-        rank[i](RE::RegExpTerm t, string fp, int sl, int sc, int el, int ec |
+        rank[i](RegExpTerm t, string fp, int sl, int sc, int el, int ec |
           t.hasLocationInfo(fp, sl, sc, el, ec)
         |
           t order by fp, sl, sc, el, ec, t.toString()
@@ -21,7 +20,7 @@ query predicate nodes(RE::RegExpTerm n, string attr, string val) {
     ).toString()
 }
 
-query predicate edges(RE::RegExpTerm pred, RE::RegExpTerm succ, string attr, string val) {
+query predicate edges(RegExpTerm pred, RegExpTerm succ, string attr, string val) {
   attr in ["semmle.label", "semmle.order"] and
   val = any(int i | succ = pred.getChild(i)).toString()
 }
