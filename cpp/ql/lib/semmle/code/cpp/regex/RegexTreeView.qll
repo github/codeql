@@ -967,6 +967,11 @@ private module Impl implements RegexTreeViewSig {
    * A term that matches a specific position between characters in the string.
    * ECMAScript anchors: `^` and `$` only.
    * (Ruby-only `\A`, `\Z`, `\z` removed)
+   *
+   * In the default `std::regex` ECMAScript grammar, `^` and `$` anchor to the
+   * start and end of the input string. Multiline mode (in which they would
+   * also match at line boundaries) is a construction-site flag that this
+   * parser cannot observe, and is therefore not modelled.
    */
   class RegExpAnchor extends RegExpSpecialChar {
     RegExpAnchor() { this.getChar() = ["^", "$"] }
@@ -975,7 +980,8 @@ private module Impl implements RegexTreeViewSig {
   }
 
   /**
-   * A dollar assertion `$` matching the end of a line.
+   * A dollar assertion `$` matching the end of the input string
+   * (multiline mode is not modelled; see `RegExpAnchor`).
    *
    * Example:
    *
@@ -992,7 +998,8 @@ private module Impl implements RegexTreeViewSig {
   }
 
   /**
-   * A caret assertion `^` matching the beginning of a line.
+   * A caret assertion `^` matching the start of the input string
+   * (multiline mode is not modelled; see `RegExpAnchor`).
    *
    * Example:
    *
