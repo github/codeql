@@ -515,25 +515,80 @@ test.cpp:
 
 #  128| [RegExpConstant, RegExpNormalChar] f
 
-#  131| [RegExpNamedCharacterProperty] [:digit:]
+#  131| [RegExpCharacterClass] [:digit:]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] :
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] d
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] i
+#-----| 3 -> [RegExpConstant, RegExpNormalChar] g
+#-----| 4 -> [RegExpConstant, RegExpNormalChar] i
+#-----| 5 -> [RegExpConstant, RegExpNormalChar] t
+#-----| 6 -> [RegExpConstant, RegExpNormalChar] :
 
-#  134| [RegExpNamedCharacterProperty] [:alpha:]
+#  131| [RegExpConstant, RegExpNormalChar] :
+
+#  131| [RegExpConstant, RegExpNormalChar] d
+
+#  131| [RegExpConstant, RegExpNormalChar] i
+
+#  131| [RegExpConstant, RegExpNormalChar] g
+
+#  131| [RegExpConstant, RegExpNormalChar] i
+
+#  131| [RegExpConstant, RegExpNormalChar] t
+
+#  131| [RegExpConstant, RegExpNormalChar] :
+
+#  134| [RegExpCharacterClass] [:alpha:]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] :
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] l
+#-----| 3 -> [RegExpConstant, RegExpNormalChar] p
+#-----| 4 -> [RegExpConstant, RegExpNormalChar] h
+#-----| 5 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 6 -> [RegExpConstant, RegExpNormalChar] :
+
+#  134| [RegExpConstant, RegExpNormalChar] :
+
+#  134| [RegExpConstant, RegExpNormalChar] a
+
+#  134| [RegExpConstant, RegExpNormalChar] l
+
+#  134| [RegExpConstant, RegExpNormalChar] p
+
+#  134| [RegExpConstant, RegExpNormalChar] h
+
+#  134| [RegExpConstant, RegExpNormalChar] a
+
+#  134| [RegExpConstant, RegExpNormalChar] :
 
 #  137| [RegExpConstant, RegExpNormalChar] a
 
-#  137| [RegExpNamedCharacterProperty] [:b:]
+#  137| [RegExpSequence] a[:b:]c
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpCharacterClass] [:b:]
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] c
+
+#  137| [RegExpCharacterClass] [:b:]
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] :
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] :
+
+#  137| [RegExpConstant, RegExpNormalChar] :
+
+#  137| [RegExpConstant, RegExpNormalChar] b
+
+#  137| [RegExpConstant, RegExpNormalChar] :
 
 #  137| [RegExpConstant, RegExpNormalChar] c
 
 #  140| [RegExpCharacterClass] [[:alpha:]-z]
-#-----| 0 -> [RegExpNamedCharacterProperty] [:alpha:]
+#-----| 0 -> [RegExpCharacterRange] [:alpha:]-z
 
 #  140| [RegExpNamedCharacterProperty] [:alpha:]
 
-#  140| [RegExpCharacterRange] :]-z
+#  140| [RegExpCharacterRange] [:alpha:]-z
+#-----| 0 -> [RegExpNamedCharacterProperty] [:alpha:]
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] z
-
-#  140| [RegExpConstant, RegExpNormalChar] -
 
 #  140| [RegExpConstant, RegExpNormalChar] z
 
@@ -560,16 +615,43 @@ test.cpp:
 
 #  143| [RegExpConstant, RegExpNormalChar] a
 
-#  146| [RegExpCharacterClass] []a[:alpha:]]
+#  146| [RegExpCharacterClass] []a[:alpha:]
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] ]
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] a
-#-----| 2 -> [RegExpNamedCharacterProperty] [:alpha:]
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] [
+#-----| 3 -> [RegExpConstant, RegExpNormalChar] :
+#-----| 4 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 5 -> [RegExpConstant, RegExpNormalChar] l
+#-----| 6 -> [RegExpConstant, RegExpNormalChar] p
+#-----| 7 -> [RegExpConstant, RegExpNormalChar] h
+#-----| 8 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 9 -> [RegExpConstant, RegExpNormalChar] :
+
+#  146| [RegExpSequence] []a[:alpha:]]
+#-----| 0 -> [RegExpCharacterClass] []a[:alpha:]
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] ]
 
 #  146| [RegExpConstant, RegExpNormalChar] ]
 
 #  146| [RegExpConstant, RegExpNormalChar] a
 
-#  146| [RegExpNamedCharacterProperty] [:alpha:]
+#  146| [RegExpConstant, RegExpNormalChar] [
+
+#  146| [RegExpConstant, RegExpNormalChar] :
+
+#  146| [RegExpConstant, RegExpNormalChar] a
+
+#  146| [RegExpConstant, RegExpNormalChar] l
+
+#  146| [RegExpConstant, RegExpNormalChar] p
+
+#  146| [RegExpConstant, RegExpNormalChar] h
+
+#  146| [RegExpConstant, RegExpNormalChar] a
+
+#  146| [RegExpConstant, RegExpNormalChar] :
+
+#  146| [RegExpConstant, RegExpNormalChar] ]
 
 #  149| [RegExpCharacterClass] [[:alpha:][:digit:][:space:]]
 #-----| 0 -> [RegExpNamedCharacterProperty] [:alpha:]

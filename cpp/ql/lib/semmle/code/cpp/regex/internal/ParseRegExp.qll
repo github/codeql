@@ -162,7 +162,9 @@ class RegExp extends StringLiteral {
       or
       this.namedCharacterProperty(start, end, _)
       or
-      exists(this.nonEscapedCharAt(start)) and end = start + 1
+      exists(this.nonEscapedCharAt(start)) and
+      not this.inAnyPosixBracket(start) and
+      end = start + 1
     )
     or
     this.charSetToken(charsetStart, _, start) and
@@ -172,6 +174,7 @@ class RegExp extends StringLiteral {
       this.namedCharacterProperty(start, end, _)
       or
       exists(this.nonEscapedCharAt(start)) and
+      not this.inAnyPosixBracket(start) and
       end = start + 1 and
       not this.getChar(start) = "]"
     )
@@ -313,6 +316,13 @@ class RegExp extends StringLiteral {
   private predicate posixStyleNamedCharacterProperty(int start, int end, string name) {
     this.getChar(start) = "[" and
     this.getChar(start + 1) = ":" and
+    // POSIX bracket expressions are only valid nested inside another character
+    // class. Approximate this by requiring at least one more (non-escaped)
+    // opening `[` than closing `]` before `start`. A well-formed POSIX bracket
+    // contributes one `[` and one `]` at/after `start`, so this check is
+    // unaffected by other POSIX brackets earlier in the text.
+    count(int p | p < start and this.nonEscapedCharAt(p) = "[") >
+      count(int p | p < start and this.nonEscapedCharAt(p) = "]") and
     end =
       min(int e |
         e > start and
@@ -337,6 +347,8 @@ class RegExp extends StringLiteral {
   private predicate posixCollatingSymbol(int start, int end, string name) {
     this.getChar(start) = "[" and
     this.getChar(start + 1) = "." and
+    count(int p | p < start and this.nonEscapedCharAt(p) = "[") >
+      count(int p | p < start and this.nonEscapedCharAt(p) = "]") and
     end =
       min(int e |
         e > start and
@@ -355,6 +367,8 @@ class RegExp extends StringLiteral {
   private predicate posixEquivalenceClass(int start, int end, string name) {
     this.getChar(start) = "[" and
     this.getChar(start + 1) = "=" and
+    count(int p | p < start and this.nonEscapedCharAt(p) = "[") >
+      count(int p | p < start and this.nonEscapedCharAt(p) = "]") and
     end =
       min(int e |
         e > start and
