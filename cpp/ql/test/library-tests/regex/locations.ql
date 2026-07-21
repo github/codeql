@@ -3,9 +3,6 @@
  * start column, the term's value offsets, and the computed start/end columns.
  * Used to verify that `hasLocationInfo` produces correct columns for plain,
  * raw, and encoding-prefixed C++ string literals.
- *
- * Commit 8 captures pre-fix (wrong) columns for raw/prefixed literals.
- * Commit 9 fixes them; plain "..." rows must remain unchanged.
  */
 
 import cpp

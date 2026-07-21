@@ -35,7 +35,7 @@ void test() {
   // Repetition
   std::regex r_rep1("a*b+c?d");
   std::regex r_rep2("a{4,8}");
-  // Removed: a{,8} — Ruby-only "{,n}" no-lower-bound quantifier (not in ECMAScript)
+
   std::regex r_rep4("a{3,}");
   std::regex r_rep5("a{7}");
 
@@ -45,7 +45,7 @@ void test() {
   // Character classes
   std::regex r_cc1("[abc]");
   std::regex r_cc2("[a-fA-F0-9_]");
-  // Removed: \\A[+-]?\\d+ — \\A is a Ruby-only anchor; replaced with ^ for ECMAScript
+
   std::regex r_cc3("^[+-]?\\d+");
   std::regex r_cc4("[\\w]+");
   std::regex r_cc5("\\[\\][123]");
@@ -59,7 +59,7 @@ void test() {
   std::regex r_nested("[[a-f]A-F]");
 
   // POSIX bracket extensions (std::regex ECMAScript mode supports these inside [...])
-  // Note: commit 7 fixes tokenization for these cases; commit 6 captures pre-fix behavior.
+
 
   // Single POSIX classes (single outer bracket around a single POSIX expression)
   std::regex r_posix_alpha("[[:alpha:]]");   // naïve parser closes at inner ] of [:alpha:]
@@ -91,14 +91,14 @@ void test() {
   std::regex r_meta2("\\w+\\W");
   std::regex r_meta3("\\s\\S");
   std::regex r_meta4("\\d\\D");
-  // Removed: \\h\\H — Ruby-only hex-digit escape classes (not in ECMAScript)
+
   std::regex r_meta6("\\n\\r\\t");
 
   // NUL escape \0 (ECMAScript: valid when not followed by another digit)
   std::regex r_nul("a\\0b");
 
-  // Anchors (ECMAScript: \b, \B only; \A, \G removed)
-  // Removed: \\Gabc — Ruby-only \G anchor (not in ECMAScript)
+  // Anchors (ECMAScript: \b, \B only)
+
   std::regex r_anc2("\\b!a\\B");
 
   // Groups
@@ -109,7 +109,7 @@ void test() {
 
   // Named groups
   std::regex r_ng1("(?<id>\\w+)");
-  // Removed: (?'foo'fo+) — Ruby single-quote named-group form (not in ECMAScript)
+
 
   // Backreferences
   std::regex r_bref1("(a+)b+\\1");
@@ -157,42 +157,42 @@ void test() {
   // Integration case
   std::regex r_posix15("^([[:alpha:]]+[[:digit:]]*[[:space:]]?)+([[:punct:]]|[[:xdigit:]])+$");
 
-  // Dropped: /#{A}bc/ — Ruby string interpolation, no C++ string-literal form.
+
 
   // unicode: \uHHHH 4-digit hex form (valid ECMAScript \u escape in std::regex)
   std::regex r_uni("\\u9879");
 }
 
-// Location tests (commit 8: pre-fix columns; commit 9: fixes raw/prefixed offsets).
-// Each literal is wrapped in an appropriate std::regex use so the literal is in the DB.
-// For each form, we test a simple "a+b" regex so the term locations are predictable.
+// Per-form location tests for C++ string-literal spellings. Each literal is
+// wrapped in an appropriate std::regex use so it is extracted, and each uses
+// a simple "a+b" body so term columns are predictable.
 void test_locations() {
-  // Plain "..." — content offset 1 (CORRECT in current code)
+  // Plain "..." — content offset 1.
   std::regex r_plain("a+b");
 
-  // Raw R"(...)" — content offset 3 (R"( = 3 chars); currently wrong (uses 1)
+  // Raw R"(...)" — content offset 3 (`R"(` = 3 chars).
   std::regex r_raw(R"(a+b)");
 
-  // Raw with regex metacharacters — R"(\s+$)" offset 3; currently wrong
+  // Raw with regex metacharacters — content offset 3.
   std::regex r_raw2(R"(\s+$)");
 
-  // Complex raw — R"(\(([,\w]+)+\)$)" offset 3; currently wrong
+  // Complex raw — content offset 3.
   std::regex r_raw3(R"(\(([,\w]+)+\)$)");
 
-  // Custom-delimiter raw — R"x(a+b)x" offset 4 (R"x( = 4); currently wrong
+  // Custom-delimiter raw R"x(...)x" — content offset 4 (`R"x(` = 4 chars).
   std::regex r_raw4(R"x(a+b)x");
 
-  // Wide-char prefix L"..." — content offset 2 (L" = 2); currently wrong
+  // Wide-char prefix L"..." — content offset 2 (`L"` = 2 chars).
   std::wregex r_wide(L"a+b");
 
-  // Wide raw LR"(...)" — content offset 4 (LR"( = 4); currently wrong
+  // Wide raw LR"(...)" — content offset 4 (`LR"(` = 4 chars).
   std::wregex r_wide_raw(LR"(a+b)");
 
-  // Escape-containing plain — "\\s+" value is \s+ (2 chars); offset 1 correct
-  // (within-content mapping is approximate for escaped strings, documented)
+  // Escape-containing plain — value is \s+ (2 chars); offset 1.
+  // (Within-content column mapping is approximate for escaped strings.)
   std::regex r_esc1("\\s+");
 
-  // Escape with dot — "a\\.b" value is a\.b; offset 1 correct
+  // Escape with dot — value is a\.b; offset 1.
   std::regex r_esc2("a\\.b");
 
   // u8 encoding prefix — content offset 3 (u8" = 3 chars). Requires C++17+.
