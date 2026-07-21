@@ -194,4 +194,12 @@ void test_locations() {
 
   // Escape with dot — "a\\.b" value is a\.b; offset 1 correct
   std::regex r_esc2("a\\.b");
+
+  // u8 encoding prefix — content offset 3 (u8" = 3 chars). Requires C++17+.
+#if __cplusplus >= 201703L
+  std::regex r_u8(u8"a+b");
+
+  // u8R raw — content offset 5 (u8R"( = 5 chars).
+  std::regex r_u8_raw(u8R"(a+b)");
+#endif
 }

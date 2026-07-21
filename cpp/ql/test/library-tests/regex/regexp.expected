@@ -323,6 +323,14 @@ term
 | test.cpp:196:22:196:25 | a\\.b | RegExpSequence |
 | test.cpp:196:23:196:24 | \\. | RegExpConstant,RegExpEscape |
 | test.cpp:196:25:196:25 | b | RegExpConstant,RegExpNormalChar |
+| test.cpp:200:22:200:22 | a | RegExpConstant,RegExpNormalChar |
+| test.cpp:200:22:200:23 | a+ | RegExpPlus |
+| test.cpp:200:22:200:24 | a+b | RegExpSequence |
+| test.cpp:200:24:200:24 | b | RegExpConstant,RegExpNormalChar |
+| test.cpp:203:28:203:28 | a | RegExpConstant,RegExpNormalChar |
+| test.cpp:203:28:203:29 | a+ | RegExpPlus |
+| test.cpp:203:28:203:30 | a+b | RegExpSequence |
+| test.cpp:203:30:203:30 | b | RegExpConstant,RegExpNormalChar |
 regExpNormalCharValue
 | test.cpp:33:21:33:23 | abc | abc |
 | test.cpp:36:22:36:22 | a | a |
@@ -461,3 +469,7 @@ regExpNormalCharValue
 | test.cpp:196:22:196:22 | a | a |
 | test.cpp:196:23:196:24 | \\. | . |
 | test.cpp:196:25:196:25 | b | b |
+| test.cpp:200:22:200:22 | a | a |
+| test.cpp:200:24:200:24 | b | b |
+| test.cpp:203:28:203:28 | a | a |
+| test.cpp:203:30:203:30 | b | b |

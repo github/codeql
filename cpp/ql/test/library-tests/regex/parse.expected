@@ -861,3 +861,25 @@ test.cpp:
 #  196| [RegExpConstant, RegExpEscape] \.
 
 #  196| [RegExpConstant, RegExpNormalChar] b
+
+#  200| [RegExpConstant, RegExpNormalChar] a
+
+#  200| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  200| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  200| [RegExpConstant, RegExpNormalChar] b
+
+#  203| [RegExpConstant, RegExpNormalChar] a
+
+#  203| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  203| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  203| [RegExpConstant, RegExpNormalChar] b
