@@ -1,19 +1,18 @@
 /**
- * Library for parsing for Ruby regular expressions.
+ * Library for parsing for C++ regular expressions.
  *
  * N.B. does not yet handle stripping whitespace and comments in regexes with
  * the `x` (free-spacing) flag.
  */
 
-private import codeql.ruby.AST as Ast
-private import codeql.Locations
+private import semmle.code.cpp.exprs.Literal
 
 /**
- * A `StringlikeLiteral` containing a regular expression term, that is, either
+ * A C++ string literal containing a regular expression term, that is, either
  * a regular expression literal, or a string literal used in a context where
- * it is parsed as regular expression.
+ * it is parsed as a regular expression.
  */
-abstract class RegExp extends Ast::StringlikeLiteral {
+abstract class RegExp extends StringLiteral {
   /**
    * Holds if this `RegExp` has the `s` flag for multi-line matching.
    */
@@ -254,11 +253,7 @@ abstract class RegExp extends Ast::StringlikeLiteral {
   }
 
   /** Gets the text of this regex */
-  string getText() {
-    exists(Ast::ConstantValue c | c = this.getConstantValue() |
-      result = [this.getConstantValue().getString(), this.getConstantValue().getRegExp()]
-    )
-  }
+  string getText() { result = this.getValue() }
 
   /** Gets the `i`th character of this regex */
   string getChar(int i) { result = this.getText().charAt(i) }
