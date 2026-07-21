@@ -1,5 +1,6 @@
 use std::fmt;
 
+
 // Taint tests for strings
 
 fn source(i: i64) -> String {
@@ -76,6 +77,12 @@ fn format_args_built_in() {
     let width = source_usize(10);
     let formatted3 = fmt::format(format_args!("Hello {:width$}!", "World"));
     sink(formatted3); // $ hasTaintFlow=10
+
+
+
+
+
+
 }
 
 fn format_macro() {
