@@ -8,9 +8,11 @@ namespace std {
   public:
     basic_regex(const char *s) {}
     basic_regex(const char *s, int flags) {}
+    basic_regex(const wchar_t *s) {}
     basic_regex &assign(const char *s) { return *this; }
   };
   typedef basic_regex<char> regex;
+  typedef basic_regex<wchar_t> wregex;
 
   template <class CharT>
   bool regex_match(const char *s, const basic_regex<CharT> &re) { return false; }
@@ -132,4 +134,37 @@ void test() {
 
   // unicode: \u{9879} in C++ (Ruby unicode escape syntax)
   std::regex r_uni("\\u{9879}");
+}
+
+// Location tests (commit 8: pre-fix columns; commit 9: fixes raw/prefixed offsets).
+// Each literal is wrapped in an appropriate std::regex use so the literal is in the DB.
+// For each form, we test a simple "a+b" regex so the term locations are predictable.
+void test_locations() {
+  // Plain "..." — content offset 1 (CORRECT in current code)
+  std::regex r_plain("a+b");
+
+  // Raw R"(...)" — content offset 3 (R"( = 3 chars); currently wrong (uses 1)
+  std::regex r_raw(R"(a+b)");
+
+  // Raw with regex metacharacters — R"(\s+$)" offset 3; currently wrong
+  std::regex r_raw2(R"(\s+$)");
+
+  // Complex raw — R"(\(([,\w]+)+\)$)" offset 3; currently wrong
+  std::regex r_raw3(R"(\(([,\w]+)+\)$)");
+
+  // Custom-delimiter raw — R"x(a+b)x" offset 4 (R"x( = 4); currently wrong
+  std::regex r_raw4(R"x(a+b)x");
+
+  // Wide-char prefix L"..." — content offset 2 (L" = 2); currently wrong
+  std::wregex r_wide(L"a+b");
+
+  // Wide raw LR"(...)" — content offset 4 (LR"( = 4); currently wrong
+  std::wregex r_wide_raw(LR"(a+b)");
+
+  // Escape-containing plain — "\\s+" value is \s+ (2 chars); offset 1 correct
+  // (within-content mapping is approximate for escaped strings, documented)
+  std::regex r_esc1("\\s+");
+
+  // Escape with dot — "a\\.b" value is a\.b; offset 1 correct
+  std::regex r_esc2("a\\.b");
 }
