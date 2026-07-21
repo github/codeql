@@ -442,86 +442,82 @@ test.cpp:
 #  113| [RegExpPlus] \k<qux>+
 #-----| 0 -> [RegExpBackRef] \k<qux>
 
-#  116| [RegExpNamedCharacterProperty] \p{Word}
-
-#  116| [RegExpStar] \p{Word}*
-#-----| 0 -> [RegExpNamedCharacterProperty] \p{Word}
-
-#  117| [RegExpNamedCharacterProperty] \P{Digit}
-
-#  117| [RegExpPlus] \P{Digit}+
-#-----| 0 -> [RegExpNamedCharacterProperty] \P{Digit}
-
-#  118| [RegExpNamedCharacterProperty] \p{^Alnum}
-
-#  118| [RegExpRange] \p{^Alnum}{2,3}
-#-----| 0 -> [RegExpNamedCharacterProperty] \p{^Alnum}
-
-#  119| [RegExpCharacterClass] [a-f\p{Digit}]
+#  116| [RegExpCharacterClass] [a-f\d]
 #-----| 0 -> [RegExpCharacterRange] a-f
-#-----| 1 -> [RegExpNamedCharacterProperty] \p{Digit}
+#-----| 1 -> [RegExpCharacterClassEscape] \d
 
-#  119| [RegExpPlus] [a-f\p{Digit}]+
-#-----| 0 -> [RegExpCharacterClass] [a-f\p{Digit}]
+#  116| [RegExpPlus] [a-f\d]+
+#-----| 0 -> [RegExpCharacterClass] [a-f\d]
 
-#  119| [RegExpConstant, RegExpNormalChar] a
+#  116| [RegExpConstant, RegExpNormalChar] a
 
-#  119| [RegExpCharacterRange] a-f
+#  116| [RegExpCharacterRange] a-f
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] f
 
-#  119| [RegExpConstant, RegExpNormalChar] f
+#  116| [RegExpConstant, RegExpNormalChar] f
 
-#  119| [RegExpNamedCharacterProperty] \p{Digit}
+#  116| [RegExpCharacterClassEscape] \d
 
-#  122| [RegExpCharacterClass] [[:alpha:]]
+#  119| [RegExpCharacterClass] [[:alpha:]]
 #-----| 0 -> [RegExpNamedCharacterProperty] [:alpha:]
 
-#  122| [RegExpSequence] [[:alpha:]][[:digit:]]
+#  119| [RegExpSequence] [[:alpha:]][[:digit:]]
 #-----| 0 -> [RegExpCharacterClass] [[:alpha:]]
 #-----| 1 -> [RegExpCharacterClass] [[:digit:]]
 
-#  122| [RegExpNamedCharacterProperty] [:alpha:]
+#  119| [RegExpNamedCharacterProperty] [:alpha:]
 
-#  122| [RegExpCharacterClass] [[:digit:]]
+#  119| [RegExpCharacterClass] [[:digit:]]
 #-----| 0 -> [RegExpNamedCharacterProperty] [:digit:]
 
-#  122| [RegExpNamedCharacterProperty] [:digit:]
+#  119| [RegExpNamedCharacterProperty] [:digit:]
 
-#  125| [RegExpCharacterClass] [[:alpha:][:digit:]]
+#  122| [RegExpCharacterClass] [[:alpha:][:digit:]]
 #-----| 0 -> [RegExpNamedCharacterProperty] [:alpha:]
 #-----| 1 -> [RegExpNamedCharacterProperty] [:digit:]
 
-#  125| [RegExpNamedCharacterProperty] [:alpha:]
+#  122| [RegExpNamedCharacterProperty] [:alpha:]
 
-#  125| [RegExpNamedCharacterProperty] [:digit:]
+#  122| [RegExpNamedCharacterProperty] [:digit:]
 
-#  128| [RegExpCharacterClass] [A-F[:digit:]a-f]
+#  125| [RegExpCharacterClass] [A-F[:digit:]a-f]
 #-----| 0 -> [RegExpCharacterRange] A-F
 #-----| 1 -> [RegExpNamedCharacterProperty] [:digit:]
 #-----| 2 -> [RegExpCharacterRange] a-f
 
-#  128| [RegExpConstant, RegExpNormalChar] A
+#  125| [RegExpConstant, RegExpNormalChar] A
 
-#  128| [RegExpCharacterRange] A-F
+#  125| [RegExpCharacterRange] A-F
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] A
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] F
 
-#  128| [RegExpConstant, RegExpNormalChar] F
+#  125| [RegExpConstant, RegExpNormalChar] F
 
-#  128| [RegExpNamedCharacterProperty] [:digit:]
+#  125| [RegExpNamedCharacterProperty] [:digit:]
 
-#  128| [RegExpConstant, RegExpNormalChar] a
+#  125| [RegExpConstant, RegExpNormalChar] a
 
-#  128| [RegExpCharacterRange] a-f
+#  125| [RegExpCharacterRange] a-f
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] f
 
-#  128| [RegExpConstant, RegExpNormalChar] f
+#  125| [RegExpConstant, RegExpNormalChar] f
 
-#  131| [RegExpNamedCharacterProperty] [:digit:]
+#  128| [RegExpNamedCharacterProperty] [:digit:]
 
-#  136| [RegExpConstant, RegExpEscape] \u9879
+#  133| [RegExpConstant, RegExpEscape] \u9879
+
+#  141| [RegExpConstant, RegExpNormalChar] a
+
+#  141| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  141| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  141| [RegExpConstant, RegExpNormalChar] b
 
 #  144| [RegExpConstant, RegExpNormalChar] a
 
@@ -534,56 +530,56 @@ test.cpp:
 
 #  144| [RegExpConstant, RegExpNormalChar] b
 
-#  147| [RegExpConstant, RegExpNormalChar] a
+#  147| [RegExpCharacterClassEscape] \s
 
-#  147| [RegExpPlus] a+
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
-
-#  147| [RegExpSequence] a+b
-#-----| 0 -> [RegExpPlus] a+
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
-
-#  147| [RegExpConstant, RegExpNormalChar] b
-
-#  150| [RegExpCharacterClassEscape] \s
-
-#  150| [RegExpPlus] \s+
+#  147| [RegExpPlus] \s+
 #-----| 0 -> [RegExpCharacterClassEscape] \s
 
-#  150| [RegExpSequence] \s+$
+#  147| [RegExpSequence] \s+$
 #-----| 0 -> [RegExpPlus] \s+
 #-----| 1 -> [RegExpDollar] $
 
-#  150| [RegExpDollar] $
+#  147| [RegExpDollar] $
 
-#  153| [RegExpConstant, RegExpEscape] \(
+#  150| [RegExpConstant, RegExpEscape] \(
 
-#  153| [RegExpSequence] \(([,\w]+)+\)$
+#  150| [RegExpSequence] \(([,\w]+)+\)$
 #-----| 0 -> [RegExpConstant, RegExpEscape] \(
 #-----| 1 -> [RegExpPlus] ([,\w]+)+
 #-----| 2 -> [RegExpConstant, RegExpEscape] \)
 #-----| 3 -> [RegExpDollar] $
 
-#  153| [RegExpGroup] ([,\w]+)
+#  150| [RegExpGroup] ([,\w]+)
 #-----| 0 -> [RegExpPlus] [,\w]+
 
-#  153| [RegExpPlus] ([,\w]+)+
+#  150| [RegExpPlus] ([,\w]+)+
 #-----| 0 -> [RegExpGroup] ([,\w]+)
 
-#  153| [RegExpCharacterClass] [,\w]
+#  150| [RegExpCharacterClass] [,\w]
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] ,
 #-----| 1 -> [RegExpCharacterClassEscape] \w
 
-#  153| [RegExpPlus] [,\w]+
+#  150| [RegExpPlus] [,\w]+
 #-----| 0 -> [RegExpCharacterClass] [,\w]
 
-#  153| [RegExpConstant, RegExpNormalChar] ,
+#  150| [RegExpConstant, RegExpNormalChar] ,
 
-#  153| [RegExpCharacterClassEscape] \w
+#  150| [RegExpCharacterClassEscape] \w
 
-#  153| [RegExpConstant, RegExpEscape] \)
+#  150| [RegExpConstant, RegExpEscape] \)
 
-#  153| [RegExpDollar] $
+#  150| [RegExpDollar] $
+
+#  153| [RegExpConstant, RegExpNormalChar] a
+
+#  153| [RegExpPlus] a+
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+
+#  153| [RegExpSequence] a+b
+#-----| 0 -> [RegExpPlus] a+
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
+
+#  153| [RegExpConstant, RegExpNormalChar] b
 
 #  156| [RegExpConstant, RegExpNormalChar] a
 
@@ -607,29 +603,18 @@ test.cpp:
 
 #  159| [RegExpConstant, RegExpNormalChar] b
 
-#  162| [RegExpConstant, RegExpNormalChar] a
+#  163| [RegExpCharacterClassEscape] \s
 
-#  162| [RegExpPlus] a+
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
-
-#  162| [RegExpSequence] a+b
-#-----| 0 -> [RegExpPlus] a+
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] b
-
-#  162| [RegExpConstant, RegExpNormalChar] b
-
-#  166| [RegExpCharacterClassEscape] \s
-
-#  166| [RegExpPlus] \s+
+#  163| [RegExpPlus] \s+
 #-----| 0 -> [RegExpCharacterClassEscape] \s
 
-#  169| [RegExpConstant, RegExpNormalChar] a
+#  166| [RegExpConstant, RegExpNormalChar] a
 
-#  169| [RegExpSequence] a\.b
+#  166| [RegExpSequence] a\.b
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a
 #-----| 1 -> [RegExpConstant, RegExpEscape] \.
 #-----| 2 -> [RegExpConstant, RegExpNormalChar] b
 
-#  169| [RegExpConstant, RegExpEscape] \.
+#  166| [RegExpConstant, RegExpEscape] \.
 
-#  169| [RegExpConstant, RegExpNormalChar] b
+#  166| [RegExpConstant, RegExpNormalChar] b

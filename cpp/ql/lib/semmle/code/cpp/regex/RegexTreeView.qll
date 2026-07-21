@@ -1192,13 +1192,13 @@ private module Impl implements RegexTreeViewSig {
     override string getAPrimaryQlClass() { result = "RegExpNamedCharacterProperty" }
 
     /**
-     * Gets the property name. For example, in `\p{Space}`, the result is
-     * `"Space"`.
+     * Gets the property name. For example, in `[[:digit:]]`, the result is
+     * `"digit"`.
      */
     string getName() { result = re.getCharacterPropertyName(start, end) }
 
     /**
-     * Holds if the property is inverted. For example, it holds for `\p{^Digit}`,
+     * Holds if the property is inverted. For example, it holds for `[[:^digit:]]`,
      * which matches non-digits.
      */
     predicate isInverted() { re.namedCharacterPropertyIsInverted(start, end) }
