@@ -400,7 +400,6 @@ class RegExp extends StringLiteral {
   predicate escapedCharacter(int start, int end) {
     this.escapingChar(start) and
     not this.numberedBackreference(start, _, _) and
-    not this.namedBackreference(start, _, _) and
     (
       // hex char \xhh
       this.getChar(start + 1) = "x" and end = start + 4
@@ -573,15 +572,6 @@ class RegExp extends StringLiteral {
       count(int i | this.group(i, _) and i < start and not this.nonCapturingGroupStart(i, _)) + 1
   }
 
-  /** Gets the name, if it has one, of the group in start,end */
-  string getGroupName(int start, int end) {
-    this.group(start, end) and
-    exists(int nameEnd |
-      this.namedGroupStart(start, nameEnd) and
-      result = this.getText().substring(start + 3, nameEnd - 1)
-    )
-  }
-
   /** Whether the text in the range start, end is a group and can match the empty string. */
   predicate zeroWidthMatch(int start, int end) {
     this.emptyGroup(start, end)
@@ -658,8 +648,6 @@ class RegExp extends StringLiteral {
   private predicate groupStart(int start, int end) {
     this.nonCapturingGroupStart(start, end)
     or
-    this.namedGroupStart(start, end)
-    or
     this.lookaheadAssertionStart(start, end)
     or
     this.negativeLookaheadAssertionStart(start, end)
@@ -676,8 +664,8 @@ class RegExp extends StringLiteral {
   /**
    * Matches the start of a non-capturing group.
    * ECMAScript non-capturing groups: `(?:`, lookaheads `(?=`/`(?!`, comments `(?#`.
-   * Note: `(?<` is intentionally excluded here — it is handled by `namedGroupStart`
-   * and `lookbehindAssertionStart`.
+   * Note: `(?<` is intentionally excluded here — it is handled by
+   * `lookbehindAssertionStart` and `negativeLookbehindAssertionStart`.
    */
   private predicate nonCapturingGroupStart(int start, int end) {
     this.isGroupStart(start) and
@@ -691,23 +679,6 @@ class RegExp extends StringLiteral {
     this.isGroupStart(start) and
     this.getChar(start + 1) != "?" and
     end = start + 1
-  }
-
-  /**
-   * Matches the start of a named group, such as:
-   * - `(?<name>\w+)` (ECMAScript named group)
-   * Note: Ruby-only `(?'name'\w+)` single-quote form is removed.
-   */
-  private predicate namedGroupStart(int start, int end) {
-    this.isGroupStart(start) and
-    this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) = "<" and
-    not this.getChar(start + 3) = "=" and // (?<=foo) is a positive lookbehind assertion
-    not this.getChar(start + 3) = "!" and // (?<!foo) is a negative lookbehind assertion
-    exists(int nameEnd |
-      nameEnd = min(int i | i > start + 3 and this.getChar(i) = ">") and
-      end = nameEnd + 1
-    )
   }
 
   /** Matches the start of a positive lookahead assertion, i.e. `(?=`. */
@@ -760,17 +731,6 @@ class RegExp extends StringLiteral {
     this.isGroupEnd(inEnd)
   }
 
-  /** Matches a named backreference, e.g. `\k<foo>`. */
-  predicate namedBackreference(int start, int end, string name) {
-    this.escapingChar(start) and
-    this.getChar(start + 1) = "k" and
-    this.getChar(start + 2) = "<" and
-    exists(int nameEnd | nameEnd = min(int i | i > start + 3 and this.getChar(i) = ">") |
-      end = nameEnd + 1 and
-      name = this.getText().substring(start + 3, nameEnd)
-    )
-  }
-
   /** Matches a numbered backreference, e.g. `\1`. */
   predicate numberedBackreference(int start, int end, int value) {
     this.escapingChar(start) and
@@ -788,17 +748,10 @@ class RegExp extends StringLiteral {
   }
 
   /** Whether the text in the range `start,end` is a back reference */
-  predicate backreference(int start, int end) {
-    this.numberedBackreference(start, end, _)
-    or
-    this.namedBackreference(start, end, _)
-  }
+  predicate backreference(int start, int end) { this.numberedBackreference(start, end, _) }
 
   /** Gets the number of the back reference in start,end */
   int getBackRefNumber(int start, int end) { this.numberedBackreference(start, end, result) }
-
-  /** Gets the name, if it has one, of the back reference in start,end */
-  string getBackRefName(int start, int end) { this.namedBackreference(start, end, result) }
 
   private predicate baseItem(int start, int end) {
     this.characterItem(start, end) and

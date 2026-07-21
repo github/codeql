@@ -107,13 +107,12 @@ void test() {
   std::regex r_grp3("(a|b|cd)e");
   std::regex r_grp4("(?::+)\\w"); // Non-capturing group matching colons
 
-  // Named groups
-  std::regex r_ng1("(?<id>\\w+)");
+  // Named groups are not supported by the ECMAScript grammar used by
+  // `std::regex`, so the parser does not recognise `(?<name>...)`.
 
 
   // Backreferences
   std::regex r_bref1("(a+)b+\\1");
-  std::regex r_bref2("(?<qux>q+)\\s+\\k<qux>+");
 
   // A character class combining a range with an escape class
   std::regex r_prop1("[a-f\\d]+");
