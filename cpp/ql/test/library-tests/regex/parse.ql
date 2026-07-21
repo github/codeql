@@ -2,7 +2,13 @@
  * @kind graph
  */
 
+import semmle.code.cpp.regex.internal.ParseRegExp
 import semmle.code.cpp.regex.RegexTreeView
+
+// Stop gap for missing flow configs
+class RegExpTest extends RegExp {
+  RegExpTest() { any() }
+}
 
 query predicate nodes(RegExpTerm n, string attr, string val) {
   attr = "semmle.label" and
