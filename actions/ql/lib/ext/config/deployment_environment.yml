@@ -2,5 +2,4 @@ extensions:
   - addsTo:
       pack: codeql/actions-all
       extensible: enabledDeploymentEnvironmentDataModel
-    data: 
-      - [""]
+    data: []

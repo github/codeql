@@ -278,15 +278,10 @@ abstract class LabelCheck extends ControlCheck {
 
 class EnvironmentCheck extends ControlCheck instanceof Environment {
   EnvironmentCheck() {
-    exists(string selected |
-      selectDeploymentEnvironmentDataModel(selected) and
-      if selected = "EnvironmentCheckMaD"
-      then enabledDeploymentEnvironmentDataModel(this.(Environment).getName())
-      else
-        if selected = "EnvironmentCheckCustomQL"
-        then this instanceof CustomEnvEnable
-        else this instanceof Environment
-    )
+    // if there are any custom tuples use those
+    if enabledDeploymentEnvironmentDataModel(_)
+    then enabledDeploymentEnvironmentDataModel(this.(Environment).getName())
+    else this instanceof Environment
   }
 
   // Environment checks are not effective against any mutable attacks

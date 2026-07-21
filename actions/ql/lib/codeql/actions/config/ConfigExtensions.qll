@@ -95,8 +95,3 @@ extensible predicate actionsPermissionsDataModel(string action, string permissio
  * toggle precision of whether that suffices or not as a control check.
  */
 extensible predicate enabledDeploymentEnvironmentDataModel(string name);
-
-/**
- * Selects which deployment environments model to use to implement `EnvironmentCheck`.
- */
-extensible predicate selectDeploymentEnvironmentDataModel(string mechanism);

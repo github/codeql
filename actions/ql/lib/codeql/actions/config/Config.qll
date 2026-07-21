@@ -173,10 +173,3 @@ predicate actionsPermissionsDataModel(string action, string permission) {
 predicate enabledDeploymentEnvironmentDataModel(string name) {
   Extensions::enabledDeploymentEnvironmentDataModel(name)
 }
-
-/**
- * `EnvironmentCheck` implementation model.
- */
-predicate selectDeploymentEnvironmentDataModel(string selected) {
-  Extensions::selectDeploymentEnvironmentDataModel(selected)
-}

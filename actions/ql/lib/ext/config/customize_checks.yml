@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/actions-all
-      extensible: selectDeploymentEnvironmentDataModel
-    data: 
-      # The possible values this can take are:
-      # EnvironmentCheckCustomQL - for a custom QL implementation for the sufficient EnvironmentCheck.
-      # EnvironmentCheckMaD - for a custom MaD list of deployment environments that are relevant to a database.
-      - [""]
