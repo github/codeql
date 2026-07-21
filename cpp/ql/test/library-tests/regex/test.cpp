@@ -132,8 +132,8 @@ void test() {
 
   // Dropped: /#{A}bc/ — Ruby string interpolation, no C++ string-literal form.
 
-  // unicode: \u{9879} in C++ (Ruby unicode escape syntax)
-  std::regex r_uni("\\u{9879}");
+  // unicode: \uHHHH 4-digit hex form (valid ECMAScript \u escape in std::regex)
+  std::regex r_uni("\\u9879");
 }
 
 // Location tests (commit 8: pre-fix columns; commit 9: fixes raw/prefixed offsets).

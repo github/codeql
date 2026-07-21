@@ -521,7 +521,7 @@ test.cpp:
 
 #  131| [RegExpNamedCharacterProperty] [:digit:]
 
-#  136| [RegExpConstant, RegExpEscape] \u{987
+#  136| [RegExpConstant, RegExpEscape] \u9879
 
 #  144| [RegExpConstant, RegExpNormalChar] a
 

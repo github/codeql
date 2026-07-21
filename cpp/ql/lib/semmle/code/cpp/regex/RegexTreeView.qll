@@ -115,6 +115,36 @@ private module Impl implements RegexTreeViewSig {
   }
 
   /**
+   * Gets the number of source characters from the start of the string literal `re`
+   * to the first content character (i.e., past the opening delimiter).
+   *
+   * This is derived from the raw source spelling via `StringLiteral.getValueText()`:
+   * - Plain `"..."`:                offset 1  (just the `"`)
+   * - Encoding prefix `L"..."`:     offset 2  (`L"`)
+   * - Encoding prefix `u8"..."`:    offset 3  (`u8"`)
+   * - Raw `R"(...)"`                offset 3  (`R"(`)
+   * - Custom-delim raw `R"x(...)x"` offset 4  (`R"x(` — delim length 1)
+   * - Combined `LR"(...)"`          offset 4  (`LR"(`)
+   *
+   * For non-raw strings, the value-offset maps 1:1 to source columns only when
+   * there are no escape sequences; escaped non-raw strings are approximate
+   * (mirroring Java/Python regex libraries).
+   */
+  private int regexpContentOffset(RegExp re) {
+    exists(string vt | vt = re.getValueText() |
+      // Raw string: find the '(' that opens the raw content.
+      // getValueText() for raw strings looks like: [prefix]R"[delim](...)[delim]"
+      // The opening '(' is after the optional prefix, 'R', '"', and custom delimiter.
+      vt.matches("%R\"%(%") and
+      result = 1 + min(int i | vt.charAt(i) = "(" and i >= 1)
+      or
+      // Non-raw string: find the opening '"'.
+      not vt.matches("%R\"%(%") and
+      result = 1 + min(int i | vt.charAt(i) = "\"")
+    )
+  }
+
+  /**
    * A regular expression term, that is, a syntactic part of a regular expression.
    */
   class RegExpTerm extends RegExpParent {
@@ -211,18 +241,30 @@ private module Impl implements RegexTreeViewSig {
      */
     Location getLocation() { result = re.getLocation() }
 
-    /** Holds if this term is found at the specified location offsets.
+    /**
+     * Holds if this term is found at the specified location offsets.
      *
-     * Note: for commit 2, this uses an approximate offset of 1 for the
-     * opening delimiter. Commits 8-9 fix this for all string literal forms.
+     * The content offset is computed from `StringLiteral.getValueText()` (the raw source
+     * spelling including delimiters), so it is correct for:
+     * - Plain `"..."`:              offset 1  (`"`)
+     * - Encoding prefixes `L"..."`: offset 2  (`L"`)
+     * - Encoding prefix `u8"..."`:  offset 3  (`u8"`)
+     * - Raw `R"(...)"`              offset 3  (`R"(`)
+     * - Custom-delim raw `R"x(...)x"`: offset 4+len(delim) (`R"` + delim + `(`)
+     * - Combined, e.g. `LR"(...)"`  offset 4  (`LR"(`)
+     *
+     * Note: for non-raw strings, the value-string offset equals the source-column offset
+     * only when there are no escape sequences. Escaped characters are an approximation,
+     * mirroring the Java/Python regex libraries.
      */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      exists(int re_start |
+      exists(int re_start, int offset |
         re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, _) and
-        startcolumn = re_start + 1 + start and
-        endcolumn = re_start + 1 + end - 1
+        offset = regexpContentOffset(re) and
+        startcolumn = re_start + offset + start and
+        endcolumn = re_start + offset + end - 1
       )
     }
 
