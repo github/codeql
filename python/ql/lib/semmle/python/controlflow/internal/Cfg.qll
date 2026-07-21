@@ -20,24 +20,6 @@ module;
 private import python as Py
 private import semmle.python.controlflow.internal.AstNodeImpl as CfgImpl
 private import codeql.controlflow.SuccessorType
-private import codeql.controlflow.BasicBlock as BB
-
-/**
- * A nested sub-module that explicitly implements `BB::CfgSig`, so this
- * `Cfg` facade can be passed to parameterised shared modules such as
- * `codeql.dataflow.VariableCapture::Flow<L, Cfg, ...>`. The sub-module
- * exposes the *raw* shared-CFG types from `AstNodeImpl.qll` (where the
- * signature is satisfied natively), not the facade's wrapped types.
- */
-module CfgForBb implements BB::CfgSig<Py::Location> {
-  class ControlFlowNode = CfgImpl::ControlFlowNode;
-
-  class BasicBlock = CfgImpl::BasicBlock;
-
-  class EntryBasicBlock = CfgImpl::Cfg::EntryBasicBlock;
-
-  predicate dominatingEdge = CfgImpl::Cfg::dominatingEdge/2;
-}
 
 /**
  * A control flow node.
