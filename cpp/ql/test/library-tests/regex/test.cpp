@@ -56,6 +56,34 @@ void test() {
   // Nested character classes (BAD - not parsed correctly)
   std::regex r_nested("[[a-f]A-F]");
 
+  // POSIX bracket extensions (std::regex ECMAScript mode supports these inside [...])
+  // Note: commit 7 fixes tokenization for these cases; commit 6 captures pre-fix behavior.
+
+  // Single POSIX classes (single outer bracket around a single POSIX expression)
+  std::regex r_posix_alpha("[[:alpha:]]");   // naïve parser closes at inner ] of [:alpha:]
+  std::regex r_posix_digit("[[:digit:]]");
+  std::regex r_posix_space("[[:space:]]");
+  std::regex r_posix_upper("[[:upper:]]");
+  std::regex r_posix_lower("[[:lower:]]");
+  std::regex r_posix_alnum("[[:alnum:]]");
+  std::regex r_posix_print("[[:print:]]");
+  std::regex r_posix_punct("[[:punct:]]");
+
+  // POSIX class negated (outer bracket negated)
+  std::regex r_posix_neg("[^[:space:]]");
+
+  // Mixed: regular char + POSIX class inside outer bracket
+  std::regex r_posix_mixed("[a[:space:]]");
+
+  // POSIX collating symbol
+  std::regex r_posix_coll("[[.a.]]");
+
+  // POSIX equivalence class
+  std::regex r_posix_equiv("[[=a=]]");
+
+  // Mixed: POSIX class + range inside outer bracket (mis-tokenization-prone)
+  std::regex r_posix_range("[[:alpha:]0-9]");
+
   // Meta-character classes
   std::regex r_meta1(".*");
   std::regex r_meta2("\\w+\\W");
