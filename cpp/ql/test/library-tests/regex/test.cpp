@@ -61,7 +61,7 @@ void test_alternation() {
 void test_character_classes() {
   std::regex re1(R"([abc])");
   std::regex re2(R"([a-fA-F0-9_])");
-  std::regex re3(R"([+-]?\d+)"); // Note: \d is a value-level \d
+  std::regex re3(R"([+-]?\d+)"); // \d is a regex escape for a digit
   std::regex re4(R"([\w]+)");
   std::regex re5(R"(\[\][123])");
   std::regex re6(R"([^A-Z])");
