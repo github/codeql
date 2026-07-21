@@ -43,7 +43,8 @@ void test() {
   // Character classes
   std::regex r_cc1("[abc]");
   std::regex r_cc2("[a-fA-F0-9_]");
-  std::regex r_cc3("\\A[+-]?\\d+");
+  // Removed: \\A[+-]?\\d+ — \\A is a Ruby-only anchor; replaced with ^ for ECMAScript
+  std::regex r_cc3("^[+-]?\\d+");
   std::regex r_cc4("[\\w]+");
   std::regex r_cc5("\\[\\][123]");
   std::regex r_cc6("[^A-Z]");
@@ -57,15 +58,14 @@ void test() {
 
   // Meta-character classes
   std::regex r_meta1(".*");
-  // Removed: /.*/m mode variant — in C++, flags are passed as constructor arg (out of scope)
   std::regex r_meta2("\\w+\\W");
   std::regex r_meta3("\\s\\S");
   std::regex r_meta4("\\d\\D");
-  std::regex r_meta5("\\h\\H");
+  // Removed: \\h\\H — Ruby-only hex-digit escape classes (not in ECMAScript)
   std::regex r_meta6("\\n\\r\\t");
 
-  // Anchors
-  std::regex r_anc1("\\Gabc");
+  // Anchors (ECMAScript: \b, \B only; \A, \G removed)
+  // Removed: \\Gabc — Ruby-only \G anchor (not in ECMAScript)
   std::regex r_anc2("\\b!a\\B");
 
   // Groups

@@ -631,6 +631,8 @@ private module Impl implements RegexTreeViewSig {
   /**
    * A character class escape in a regular expression.
    * That is, an escaped character that denotes multiple characters.
+   * ECMAScript supports: \d, \D, \s, \S, \w, \W
+   * (Ruby-only \h, \H are removed)
    *
    * Examples:
    *
@@ -640,7 +642,7 @@ private module Impl implements RegexTreeViewSig {
    * ```
    */
   class RegExpCharacterClassEscape extends RegExpEscape {
-    RegExpCharacterClassEscape() { this.getValue() in ["d", "D", "s", "S", "w", "W", "h", "H"] }
+    RegExpCharacterClassEscape() { this.getValue() in ["d", "D", "s", "S", "w", "W"] }
 
     override RegExpTerm getChild(int i) { none() }
 
@@ -921,21 +923,17 @@ private module Impl implements RegexTreeViewSig {
 
   /**
    * A term that matches a specific position between characters in the string.
-   *
-   * Example:
-   *
-   * ```
-   * \A
-   * ```
+   * ECMAScript anchors: `^` and `$` only.
+   * (Ruby-only `\A`, `\Z`, `\z` removed)
    */
   class RegExpAnchor extends RegExpSpecialChar {
-    RegExpAnchor() { this.getChar() = ["^", "$", "\\A", "\\Z", "\\z"] }
+    RegExpAnchor() { this.getChar() = ["^", "$"] }
 
     override string getAPrimaryQlClass() { result = "RegExpAnchor" }
   }
 
   /**
-   * A dollar assertion `$` or `\Z` matching the end of a line.
+   * A dollar assertion `$` matching the end of a line.
    *
    * Example:
    *
@@ -944,7 +942,7 @@ private module Impl implements RegexTreeViewSig {
    * ```
    */
   class RegExpDollar extends RegExpAnchor {
-    RegExpDollar() { this.getChar() = ["$", "\\Z", "\\z"] }
+    RegExpDollar() { this.getChar() = "$" }
 
     override string getAPrimaryQlClass() { result = "RegExpDollar" }
 
@@ -952,7 +950,7 @@ private module Impl implements RegexTreeViewSig {
   }
 
   /**
-   * A caret assertion `^` or `\A` matching the beginning of a line.
+   * A caret assertion `^` matching the beginning of a line.
    *
    * Example:
    *
@@ -961,7 +959,7 @@ private module Impl implements RegexTreeViewSig {
    * ```
    */
   class RegExpCaret extends RegExpAnchor {
-    RegExpCaret() { this.getChar() = ["^", "\\A"] }
+    RegExpCaret() { this.getChar() = "^" }
 
     override string getAPrimaryQlClass() { result = "RegExpCaret" }
 

@@ -468,6 +468,8 @@ class RegExp extends StringLiteral {
 
   /**
    * Holds if a special character is found between `start` and `end`.
+   * ECMAScript anchors: `^`, `$`, `.`, `\b`, `\B` only.
+   * Ruby-only anchors `\A`, `\Z`, `\z`, `\G` are not in ECMAScript.
    */
   predicate specialCharacter(int start, int end, string char) {
     this.character(start, end) and
@@ -480,7 +482,7 @@ class RegExp extends StringLiteral {
       end = start + 2 and
       this.escapingChar(start) and
       char = this.getText().substring(start, end) and
-      char = ["\\A", "\\Z", "\\z", "\\G", "\\b", "\\B"]
+      char = ["\\b", "\\B"]
     )
   }
 
@@ -642,11 +644,16 @@ class RegExp extends StringLiteral {
     this.simpleGroupStart(start, end)
   }
 
-  /** Matches the start of a non-capturing group, e.g. `(?:` */
+  /**
+   * Matches the start of a non-capturing group.
+   * ECMAScript non-capturing groups: `(?:`, lookaheads `(?=`/`(?!`, comments `(?#`.
+   * Note: `(?<` is intentionally excluded here — it is handled by `namedGroupStart`
+   * and `lookbehindAssertionStart`.
+   */
   private predicate nonCapturingGroupStart(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) = [":", "=", "<", "!", "#"] and
+    this.getChar(start + 2) = [":", "=", "!", "#"] and
     end = start + 3
   }
 
@@ -659,25 +666,18 @@ class RegExp extends StringLiteral {
 
   /**
    * Matches the start of a named group, such as:
-   * - `(?<name>\w+)`
-   * - `(?'name'\w+)`
+   * - `(?<name>\w+)` (ECMAScript named group)
+   * Note: Ruby-only `(?'name'\w+)` single-quote form is removed.
    */
   private predicate namedGroupStart(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    (
-      this.getChar(start + 2) = "<" and
-      not this.getChar(start + 3) = "=" and // (?<=foo) is a positive lookbehind assertion
-      not this.getChar(start + 3) = "!" and // (?<!foo) is a negative lookbehind assertion
-      exists(int nameEnd |
-        nameEnd = min(int i | i > start + 3 and this.getChar(i) = ">") and
-        end = nameEnd + 1
-      )
-      or
-      this.getChar(start + 2) = "'" and
-      exists(int nameEnd |
-        nameEnd = min(int i | i > start + 2 and this.getChar(i) = "'") and end = nameEnd + 1
-      )
+    this.getChar(start + 2) = "<" and
+    not this.getChar(start + 3) = "=" and // (?<=foo) is a positive lookbehind assertion
+    not this.getChar(start + 3) = "!" and // (?<!foo) is a negative lookbehind assertion
+    exists(int nameEnd |
+      nameEnd = min(int i | i > start + 3 and this.getChar(i) = ">") and
+      end = nameEnd + 1
     )
   }
 
@@ -962,8 +962,8 @@ class RegExp extends StringLiteral {
       or
       this.qualifiedItem(x, start, true, _)
       or
-      // ^ and \A match the start of the string
-      this.specialCharacter(x, start, ["^", "\\A"])
+      // ^ matches the start of the string (ECMAScript only)
+      this.specialCharacter(x, start, "^")
     )
     or
     exists(int y | this.firstPart(start, y) |
@@ -988,8 +988,8 @@ class RegExp extends StringLiteral {
       or
       this.qualifiedItem(end, y, true, _)
       or
-      // $, \Z, and \z match the end of the string.
-      this.specialCharacter(end, y, ["$", "\\Z", "\\z"])
+      // $ matches the end of the string (ECMAScript only)
+      this.specialCharacter(end, y, "$")
     )
     or
     this.lastPart(_, end) and
