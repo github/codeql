@@ -29,11 +29,6 @@ test.cpp:
 #   35| [RegExpRange] a{4,8}
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a
 
-#   36| [RegExpConstant, RegExpNormalChar] a
-
-#   36| [RegExpRange] a{,8}
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
-
 #   37| [RegExpConstant, RegExpNormalChar] a
 
 #   37| [InfiniteRepetitionQuantifier, RegExpRange] a{3,}
@@ -202,11 +197,6 @@ test.cpp:
 #   59| [RegExpStar] .*
 #-----| 0 -> [RegExpDot] .
 
-#   60| [RegExpDot] .
-
-#   60| [RegExpStar] .*
-#-----| 0 -> [RegExpDot] .
-
 #   61| [RegExpCharacterClassEscape] \w
 
 #   61| [RegExpPlus] \w+
@@ -347,20 +337,6 @@ test.cpp:
 
 #   78| [RegExpPlus] \w+
 #-----| 0 -> [RegExpCharacterClassEscape] \w
-
-#   79| [RegExpGroup] (?'foo'fo+)
-#-----| 0 -> [RegExpSequence] fo+
-
-#   79| [RegExpConstant, RegExpNormalChar] f
-
-#   79| [RegExpSequence] fo+
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] f
-#-----| 1 -> [RegExpPlus] o+
-
-#   79| [RegExpConstant, RegExpNormalChar] o
-
-#   79| [RegExpPlus] o+
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] o
 
 #   82| [RegExpGroup] (a+)
 #-----| 0 -> [RegExpPlus] a+

@@ -1,12 +1,10 @@
 groupName
 | test.cpp:78:21:78:30 | (?<id>\\w+) | id |
-| test.cpp:79:21:79:31 | (?'foo'fo+) | foo |
 | test.cpp:83:23:83:32 | (?<qux>q+) | qux |
 groupNumber
 | test.cpp:72:22:72:26 | (foo) | 1 |
 | test.cpp:73:24:73:28 | (o\|b) | 1 |
 | test.cpp:74:22:74:29 | (a\|b\|cd) | 1 |
-| test.cpp:79:21:79:31 | (?'foo'fo+) | 1 |
 | test.cpp:82:23:82:26 | (a+) | 1 |
 term
 | test.cpp:31:21:31:23 | abc | RegExpConstant,RegExpNormalChar |
@@ -20,8 +18,6 @@ term
 | test.cpp:34:28:34:28 | d | RegExpConstant,RegExpNormalChar |
 | test.cpp:35:22:35:22 | a | RegExpConstant,RegExpNormalChar |
 | test.cpp:35:22:35:27 | a{4,8} | RegExpRange |
-| test.cpp:36:22:36:22 | a | RegExpConstant,RegExpNormalChar |
-| test.cpp:36:22:36:26 | a{,8} | RegExpRange |
 | test.cpp:37:22:37:22 | a | RegExpConstant,RegExpNormalChar |
 | test.cpp:37:22:37:26 | a{3,} | InfiniteRepetitionQuantifier,RegExpRange |
 | test.cpp:38:22:38:22 | a | RegExpConstant,RegExpNormalChar |
@@ -83,8 +79,6 @@ term
 | test.cpp:56:30:56:33 | A-F] | RegExpConstant,RegExpNormalChar |
 | test.cpp:59:23:59:23 | . | RegExpDot |
 | test.cpp:59:23:59:24 | .* | RegExpStar |
-| test.cpp:60:24:60:24 | . | RegExpDot |
-| test.cpp:60:24:60:25 | .* | RegExpStar |
 | test.cpp:61:23:61:24 | \\w | RegExpCharacterClassEscape |
 | test.cpp:61:23:61:25 | \\w+ | RegExpPlus |
 | test.cpp:61:23:61:27 | \\w+\\W | RegExpSequence |
@@ -136,11 +130,6 @@ term
 | test.cpp:78:21:78:30 | (?<id>\\w+) | RegExpGroup |
 | test.cpp:78:27:78:28 | \\w | RegExpCharacterClassEscape |
 | test.cpp:78:27:78:29 | \\w+ | RegExpPlus |
-| test.cpp:79:21:79:31 | (?'foo'fo+) | RegExpGroup |
-| test.cpp:79:28:79:28 | f | RegExpConstant,RegExpNormalChar |
-| test.cpp:79:28:79:30 | fo+ | RegExpSequence |
-| test.cpp:79:29:79:29 | o | RegExpConstant,RegExpNormalChar |
-| test.cpp:79:29:79:30 | o+ | RegExpPlus |
 | test.cpp:82:23:82:26 | (a+) | RegExpGroup |
 | test.cpp:82:23:82:30 | (a+)b+\\1 | RegExpSequence |
 | test.cpp:82:24:82:24 | a | RegExpConstant,RegExpNormalChar |
@@ -193,7 +182,6 @@ regExpNormalCharValue
 | test.cpp:34:26:34:26 | c | c |
 | test.cpp:34:28:34:28 | d | d |
 | test.cpp:35:22:35:22 | a | a |
-| test.cpp:36:22:36:22 | a | a |
 | test.cpp:37:22:37:22 | a | a |
 | test.cpp:38:22:38:22 | a | a |
 | test.cpp:41:21:41:23 | foo | foo |
@@ -253,8 +241,6 @@ regExpNormalCharValue
 | test.cpp:75:25:75:25 | : | : |
 | test.cpp:75:28:75:29 | \\w | w |
 | test.cpp:78:27:78:28 | \\w | w |
-| test.cpp:79:28:79:28 | f | f |
-| test.cpp:79:29:79:29 | o | o |
 | test.cpp:82:24:82:24 | a | a |
 | test.cpp:82:27:82:27 | b | b |
 | test.cpp:83:30:83:30 | q | q |

@@ -33,7 +33,7 @@ void test() {
   // Repetition
   std::regex r_rep1("a*b+c?d");
   std::regex r_rep2("a{4,8}");
-  std::regex r_rep3("a{,8}");
+  // Removed: a{,8} — Ruby-only "{,n}" no-lower-bound quantifier (not in ECMAScript)
   std::regex r_rep4("a{3,}");
   std::regex r_rep5("a{7}");
 
@@ -57,7 +57,7 @@ void test() {
 
   // Meta-character classes
   std::regex r_meta1(".*");
-  std::regex r_meta1m(".*"); // /.*/m mode variant — mode flags are constructor args in C++
+  // Removed: /.*/m mode variant — in C++, flags are passed as constructor arg (out of scope)
   std::regex r_meta2("\\w+\\W");
   std::regex r_meta3("\\s\\S");
   std::regex r_meta4("\\d\\D");
@@ -76,7 +76,7 @@ void test() {
 
   // Named groups
   std::regex r_ng1("(?<id>\\w+)");
-  std::regex r_ng2("(?'foo'fo+)"); // single-quote named-group form
+  // Removed: (?'foo'fo+) — Ruby single-quote named-group form (not in ECMAScript)
 
   // Backreferences
   std::regex r_bref1("(a+)b+\\1");
