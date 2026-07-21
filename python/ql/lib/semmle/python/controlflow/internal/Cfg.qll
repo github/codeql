@@ -40,17 +40,6 @@ module CfgForBb implements BB::CfgSig<Py::Location> {
 }
 
 /**
- * Gets the Python AST node corresponding to CFG node `n`, if any.
- *
- * Multiple CFG nodes may map to the same AST node (e.g. `TBeforeNode(Call)`
- * and `TAstNode(Call)` both map to `Py::Call`). This is a pure translation;
- * uniqueness constraints are enforced at the dataflow layer where needed.
- */
-private Py::AstNode toAst(CfgImpl::ControlFlowNode n) {
-  result = CfgImpl::astNodeToPyNode(n.getAstNode())
-}
-
-/**
  * A control flow node.
  *
  * This is the full set of CFG nodes from the shared library — it includes
@@ -64,7 +53,11 @@ private Py::AstNode toAst(CfgImpl::ControlFlowNode n) {
  */
 class ControlFlowNode extends CfgImpl::ControlFlowNode {
   /** Gets the syntactic element corresponding to this flow node, if any. */
-  Py::AstNode getNode() { result = toAst(this) }
+  Py::AstNode getNode() {
+    exists(CfgImpl::Ast::AstNode n | this.injects(n) | result = CfgImpl::astNodeToPyNode(n))
+  }
+
+  Py::Expr asPyExpr() { result = this.getNode() }
 
   /** Gets a predecessor of this flow node. */
   ControlFlowNode getAPredecessor() { this = result.getASuccessor() }
@@ -145,18 +138,16 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
    * which holds on the destination of compound and unary assignments
    * even though the destination is also a write.
    */
-  predicate isLoad() { exists(Py::Expr e | e = toAst(this) | py_expr_contexts(_, 3, e)) }
+  predicate isLoad() { py_expr_contexts(_, 3, this.asPyExpr()) }
 
   /** Holds if this flow node is a store (including those in augmented assignments). */
-  predicate isStore() {
-    exists(Py::Expr e | e = toAst(this) | py_expr_contexts(_, 5, e) or augstore(_, this))
-  }
+  predicate isStore() { py_expr_contexts(_, 5, this.asPyExpr()) or augstore(_, this) }
 
   /** Holds if this flow node is a delete. */
-  predicate isDelete() { exists(Py::Expr e | e = toAst(this) | py_expr_contexts(_, 2, e)) }
+  predicate isDelete() { py_expr_contexts(_, 2, this.asPyExpr()) }
 
   /** Holds if this flow node is a parameter. */
-  predicate isParameter() { exists(Py::Expr e | e = toAst(this) | py_expr_contexts(_, 4, e)) }
+  predicate isParameter() { py_expr_contexts(_, 4, this.asPyExpr()) }
 
   /** Holds if this flow node is a store in an augmented assignment. */
   predicate isAugStore() { augstore(_, this) }
@@ -166,45 +157,45 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
 
   /** Holds if this flow node corresponds to a literal. */
   predicate isLiteral() {
-    toAst(this) instanceof Py::Bytes or
-    toAst(this) instanceof Py::Dict or
-    toAst(this) instanceof Py::DictComp or
-    toAst(this) instanceof Py::Set or
-    toAst(this) instanceof Py::SetComp or
-    toAst(this) instanceof Py::Ellipsis or
-    toAst(this) instanceof Py::GeneratorExp or
-    toAst(this) instanceof Py::Lambda or
-    toAst(this) instanceof Py::ListComp or
-    toAst(this) instanceof Py::List or
-    toAst(this) instanceof Py::Num or
-    toAst(this) instanceof Py::Tuple or
-    toAst(this) instanceof Py::Unicode or
-    toAst(this) instanceof Py::NameConstant
+    this.getNode() instanceof Py::Bytes or
+    this.getNode() instanceof Py::Dict or
+    this.getNode() instanceof Py::DictComp or
+    this.getNode() instanceof Py::Set or
+    this.getNode() instanceof Py::SetComp or
+    this.getNode() instanceof Py::Ellipsis or
+    this.getNode() instanceof Py::GeneratorExp or
+    this.getNode() instanceof Py::Lambda or
+    this.getNode() instanceof Py::ListComp or
+    this.getNode() instanceof Py::List or
+    this.getNode() instanceof Py::Num or
+    this.getNode() instanceof Py::Tuple or
+    this.getNode() instanceof Py::Unicode or
+    this.getNode() instanceof Py::NameConstant
   }
 
   /** Holds if this flow node corresponds to an attribute expression. */
-  predicate isAttribute() { toAst(this) instanceof Py::Attribute }
+  predicate isAttribute() { this.getNode() instanceof Py::Attribute }
 
   /** Holds if this flow node corresponds to a subscript expression. */
-  predicate isSubscript() { toAst(this) instanceof Py::Subscript }
+  predicate isSubscript() { this.getNode() instanceof Py::Subscript }
 
   /** Holds if this flow node corresponds to an import member. */
-  predicate isImportMember() { toAst(this) instanceof Py::ImportMember }
+  predicate isImportMember() { this.getNode() instanceof Py::ImportMember }
 
   /** Holds if this flow node corresponds to a call. */
-  predicate isCall() { toAst(this) instanceof Py::Call }
+  predicate isCall() { this.getNode() instanceof Py::Call }
 
   /** Holds if this flow node corresponds to an import. */
-  predicate isImport() { toAst(this) instanceof Py::ImportExpr }
+  predicate isImport() { this.getNode() instanceof Py::ImportExpr }
 
   /** Holds if this flow node corresponds to a conditional expression. */
-  predicate isIfExp() { toAst(this) instanceof Py::IfExp }
+  predicate isIfExp() { this.getNode() instanceof Py::IfExp }
 
   /** Holds if this flow node corresponds to a function definition expression. */
-  predicate isFunction() { toAst(this) instanceof Py::FunctionExpr }
+  predicate isFunction() { this.getNode() instanceof Py::FunctionExpr }
 
   /** Holds if this flow node corresponds to a class definition expression. */
-  predicate isClass() { toAst(this) instanceof Py::ClassExpr }
+  predicate isClass() { this.getNode() instanceof Py::ClassExpr }
 
   /**
    * Holds if this flow node is a branch (i.e. has both a true and a
@@ -223,7 +214,7 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
    */
   pragma[nomagic]
   ControlFlowNode getAChild() {
-    toAst(this).(Py::Expr).getAChildNode() = toAst(result) and
+    this.getNode().(Py::Expr).getAChildNode() = result.getNode() and
     result.getBasicBlock().dominates(this.getBasicBlock()) and
     not this instanceof UnaryExprNode
   }
@@ -247,7 +238,7 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
  * target's canonical node.
  */
 private predicate augstore(ControlFlowNode load, ControlFlowNode store) {
-  exists(Py::AugAssign aa | aa.getTarget() = toAst(load)) and
+  exists(Py::AugAssign aa | aa.getTarget() = load.getNode()) and
   load = store
 }
 
@@ -402,9 +393,9 @@ ControlFlowNode astExprToCfg(Py::Expr e) { result.getNode() = e }
 /** A control flow node corresponding to a `Name` or `PlaceHolder` expression. */
 class NameNode extends ControlFlowNode {
   NameNode() {
-    toAst(this) instanceof Py::Name
+    this.getNode() instanceof Py::Name
     or
-    toAst(this) instanceof Py::PlaceHolder
+    this.getNode() instanceof Py::PlaceHolder
   }
 
   /**
@@ -416,26 +407,26 @@ class NameNode extends ControlFlowNode {
    * semantics where compound assignments register both a write
    * (`VarWrite`) and a read (`VarRead`) on the destination.
    */
-  predicate defines(Py::Variable v) { exists(Py::Name n | n = toAst(this) and n.defines(v)) }
+  predicate defines(Py::Variable v) { exists(Py::Name n | n = this.getNode() and n.defines(v)) }
 
   /** Holds if this flow node deletes the variable `v`. */
-  predicate deletes(Py::Variable v) { exists(Py::Name n | n = toAst(this) and n.deletes(v)) }
+  predicate deletes(Py::Variable v) { exists(Py::Name n | n = this.getNode() and n.deletes(v)) }
 
   /** Holds if this flow node uses the variable `v`. */
   predicate uses(Py::Variable v) {
     this.isLoad() and
-    exists(Py::Name u | u = toAst(this) and u.uses(v))
+    exists(Py::Name u | u = this.getNode() and u.uses(v))
     or
     exists(Py::PlaceHolder u |
-      u = toAst(this) and u.getVariable() = v and u.getCtx() instanceof Py::Load
+      u = this.getNode() and u.getVariable() = v and u.getCtx() instanceof Py::Load
     )
   }
 
   /** Gets the identifier of this name node. */
   string getId() {
-    result = toAst(this).(Py::Name).getId()
+    result = this.getNode().(Py::Name).getId()
     or
-    result = toAst(this).(Py::PlaceHolder).getId()
+    result = this.getNode().(Py::PlaceHolder).getId()
   }
 
   /** Holds if this is a use of a local variable. */
@@ -469,42 +460,35 @@ class NameNode extends ControlFlowNode {
 
 /** A control flow node corresponding to a named constant (`None`, `True`, `False`). */
 class NameConstantNode extends NameNode {
-  NameConstantNode() { toAst(this) instanceof Py::NameConstant }
+  NameConstantNode() { this.getNode() instanceof Py::NameConstant }
 }
 
 /** A control flow node corresponding to a call. */
 class CallNode extends ControlFlowNode {
-  CallNode() { toAst(this) instanceof Py::Call }
+  CallNode() { super.getNode() instanceof Py::Call }
 
   override Py::Call getNode() { result = super.getNode() }
 
   /** Gets the underlying Python `Call`. */
-  Py::Call getCall() { result = toAst(this) }
+  Py::Call getCall() { result = this.getNode() }
 
   /** Gets the flow node for the function component of this call. */
   ControlFlowNode getFunction() {
-    exists(Py::Call c |
-      c = toAst(this) and
-      c.getFunc() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getCall().getFunc() = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 
   /** Gets the flow node for the `n`th positional argument. */
   ControlFlowNode getArg(int n) {
-    exists(Py::Call c |
-      c = toAst(this) and
-      c.getArg(n) = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getCall().getArg(n) = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 
   /** Gets the flow node for the named argument with name `name`. */
   ControlFlowNode getArgByName(string name) {
-    exists(Py::Call c, Py::Keyword k |
-      c = toAst(this) and
-      k = c.getANamedArg() and
-      k.getValue() = toAst(result) and
+    exists(Py::Keyword k |
+      k = this.getCall().getANamedArg() and
+      k.getValue() = result.getNode() and
       k.getArg() = name and
       result.getBasicBlock().dominates(this.getBasicBlock())
     )
@@ -515,20 +499,14 @@ class CallNode extends ControlFlowNode {
 
   /** Gets the first tuple (`*args`) argument, if any. */
   ControlFlowNode getStarArg() {
-    exists(Py::Call c |
-      c = toAst(this) and
-      c.getStarArg() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getCall().getStarArg() = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 
   /** Gets a dictionary (`**kwargs`) argument, if any. */
   ControlFlowNode getKwargs() {
-    exists(Py::Call c |
-      c = toAst(this) and
-      c.getKwargs() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getCall().getKwargs() = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 
   /** Holds if this call is a decorator call applied to a class or a function. */
@@ -536,62 +514,55 @@ class CallNode extends ControlFlowNode {
 
   /** Holds if this call is a decorator call applied to a class. */
   predicate isClassDecoratorCall() {
-    exists(Py::ClassExpr cls | toAst(this) = cls.getADecoratorCall())
+    exists(Py::ClassExpr cls | this.getNode() = cls.getADecoratorCall())
   }
 
   /** Holds if this call is a decorator call applied to a function. */
   predicate isFunctionDecoratorCall() {
-    exists(Py::FunctionExpr func | toAst(this) = func.getADecoratorCall())
+    exists(Py::FunctionExpr func | this.getNode() = func.getADecoratorCall())
   }
 }
 
 /** A control flow node corresponding to an attribute expression. */
 class AttrNode extends ControlFlowNode {
-  AttrNode() { toAst(this) instanceof Py::Attribute }
+  AttrNode() { super.getNode() instanceof Py::Attribute }
 
   override Py::Attribute getNode() { result = super.getNode() }
 
   /** Gets the flow node for the object of the attribute expression. */
   ControlFlowNode getObject() {
-    exists(Py::Attribute a |
-      a = toAst(this) and
-      a.getObject() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getNode().getObject() = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 
   /** Gets the flow node for the object of this attribute expression, with the matching name. */
   ControlFlowNode getObject(string name) {
-    exists(Py::Attribute a |
-      a = toAst(this) and
-      a.getObject() = toAst(result) and
-      a.getName() = name and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getName() = name and
+    result = this.getObject()
   }
 
   /** Gets the attribute name. */
-  string getName() { exists(Py::Attribute a | a = toAst(this) and a.getName() = result) }
+  string getName() { result = this.getNode().getName() }
 }
 
 /** A control flow node corresponding to an import statement (`import x`). */
 class ImportExprNode extends ControlFlowNode {
-  ImportExprNode() { toAst(this) instanceof Py::ImportExpr }
+  ImportExprNode() { super.getNode() instanceof Py::ImportExpr }
 
   override Py::ImportExpr getNode() { result = super.getNode() }
 }
 
 /** A control flow node corresponding to a `from ... import name` expression. */
 class ImportMemberNode extends ControlFlowNode {
-  ImportMemberNode() { toAst(this) instanceof Py::ImportMember }
+  ImportMemberNode() { super.getNode() instanceof Py::ImportMember }
 
   override Py::ImportMember getNode() { result = super.getNode() }
 
   /** Gets the flow node for the module being imported from, with the matching name. */
   ControlFlowNode getModule(string name) {
     exists(Py::ImportMember i |
-      i = toAst(this) and
-      i.getModule() = toAst(result) and
+      i = this.getNode() and
+      i.getModule() = result.getNode() and
       i.getName() = name and
       result.getBasicBlock().dominates(this.getBasicBlock())
     )
@@ -600,55 +571,46 @@ class ImportMemberNode extends ControlFlowNode {
 
 /** A control flow node corresponding to a `from ... import *` statement. */
 class ImportStarNode extends ControlFlowNode {
-  ImportStarNode() { toAst(this) instanceof Py::ImportStar }
+  ImportStarNode() { super.getNode() instanceof Py::ImportStar }
 
   override Py::ImportStar getNode() { result = super.getNode() }
 
   /** Gets the flow node for the module being imported from. */
   ControlFlowNode getModule() {
-    exists(Py::ImportStar i |
-      i = toAst(this) and
-      i.getModuleExpr() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getNode().getModuleExpr() = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 }
 
 /** A control flow node corresponding to a subscript expression. */
 class SubscriptNode extends ControlFlowNode {
-  SubscriptNode() { toAst(this) instanceof Py::Subscript }
+  SubscriptNode() { super.getNode() instanceof Py::Subscript }
 
   override Py::Subscript getNode() { result = super.getNode() }
 
   /** Gets the flow node for the value being subscripted. */
   ControlFlowNode getObject() {
-    exists(Py::Subscript s |
-      s = toAst(this) and
-      s.getObject() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getNode().getObject() = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 
   /** Gets the flow node for the index expression. */
   ControlFlowNode getIndex() {
-    exists(Py::Subscript s |
-      s = toAst(this) and
-      s.getIndex() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getNode().getIndex() = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 }
 
 /** A control flow node corresponding to a comparison operation. */
 class CompareNode extends ControlFlowNode {
-  CompareNode() { toAst(this) instanceof Py::Compare }
+  CompareNode() { super.getNode() instanceof Py::Compare }
 
   override Py::Compare getNode() { result = super.getNode() }
 
   /** Holds if `left` and `right` are a pair of operands for this comparison. */
   predicate operands(ControlFlowNode left, Py::Cmpop op, ControlFlowNode right) {
     exists(Py::Compare c, Py::Expr eleft, Py::Expr eright |
-      c = toAst(this) and eleft = toAst(left) and eright = toAst(right)
+      c = this.getNode() and eleft = left.getNode() and eright = right.getNode()
     |
       eleft = c.getLeft() and eright = c.getComparator(0) and op = c.getOp(0)
       or
@@ -663,67 +625,55 @@ class CompareNode extends ControlFlowNode {
 
 /** A control flow node corresponding to a conditional expression (`x if c else y`). */
 class IfExprNode extends ControlFlowNode {
-  IfExprNode() { toAst(this) instanceof Py::IfExp }
+  IfExprNode() { super.getNode() instanceof Py::IfExp }
 
   override Py::IfExp getNode() { result = super.getNode() }
 
   /** Gets the flow node for one of the value operands (true-branch or false-branch). */
   ControlFlowNode getAnOperand() {
     exists(Py::IfExp ie |
-      ie = toAst(this) and
-      (toAst(result) = ie.getBody() or toAst(result) = ie.getOrelse())
+      ie = this.getNode() and
+      (result.getNode() = ie.getBody() or result.getNode() = ie.getOrelse())
     )
   }
 }
 
 /** A control flow node corresponding to an assignment expression (walrus `:=`). */
 class AssignmentExprNode extends ControlFlowNode {
-  AssignmentExprNode() { toAst(this) instanceof Py::AssignExpr }
+  AssignmentExprNode() { super.getNode() instanceof Py::AssignExpr }
 
   override Py::AssignExpr getNode() { result = super.getNode() }
 
   /** Gets the flow node for the left-hand side. */
   ControlFlowNode getTarget() {
-    exists(Py::AssignExpr a |
-      a = toAst(this) and
-      a.getTarget() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getNode().getTarget() = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 
   /** Gets the flow node for the right-hand side. */
   ControlFlowNode getValue() {
-    exists(Py::AssignExpr a |
-      a = toAst(this) and
-      a.getValue() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getNode().getValue() = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 }
 
 /** A control flow node corresponding to a binary expression (`a + b` etc.). */
 class BinaryExprNode extends ControlFlowNode {
-  BinaryExprNode() { toAst(this) instanceof Py::BinaryExpr }
+  BinaryExprNode() { super.getNode() instanceof Py::BinaryExpr }
 
   override Py::BinaryExpr getNode() { result = super.getNode() }
 
   ControlFlowNode getLeft() {
-    exists(Py::BinaryExpr be |
-      be = toAst(this) and
-      be.getLeft() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getNode().getLeft() = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 
   ControlFlowNode getRight() {
-    exists(Py::BinaryExpr be |
-      be = toAst(this) and
-      be.getRight() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getNode().getRight() = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 
-  Py::Operator getOp() { result = toAst(this).(Py::BinaryExpr).getOp() }
+  Py::Operator getOp() { result = this.getNode().(Py::BinaryExpr).getOp() }
 
   /** Holds if `left` and `right` are the operands and `op` is the operator. */
   predicate operands(ControlFlowNode left, Py::Operator op, ControlFlowNode right) {
@@ -736,36 +686,28 @@ class BinaryExprNode extends ControlFlowNode {
 
 /** A control flow node corresponding to a boolean expression (`a and b`, `a or b`). */
 class BoolExprNode extends ControlFlowNode {
-  BoolExprNode() { toAst(this) instanceof Py::BoolExpr }
+  BoolExprNode() { super.getNode() instanceof Py::BoolExpr }
 
   override Py::BoolExpr getNode() { result = super.getNode() }
 
-  Py::Boolop getOp() { result = toAst(this).(Py::BoolExpr).getOp() }
+  Py::Boolop getOp() { result = this.getNode().(Py::BoolExpr).getOp() }
 
   /** Gets any operand of this boolean expression. */
-  ControlFlowNode getAnOperand() {
-    exists(Py::BoolExpr be |
-      be = toAst(this) and
-      be.getAValue() = toAst(result)
-    )
-  }
+  ControlFlowNode getAnOperand() { this.getNode().getAValue() = result.getNode() }
 }
 
 /** A control flow node corresponding to a unary expression (`-x`, `not x`, etc.). */
 class UnaryExprNode extends ControlFlowNode {
-  UnaryExprNode() { toAst(this) instanceof Py::UnaryExpr }
+  UnaryExprNode() { super.getNode() instanceof Py::UnaryExpr }
 
   override Py::UnaryExpr getNode() { result = super.getNode() }
 
   ControlFlowNode getOperand() {
-    exists(Py::UnaryExpr u |
-      u = toAst(this) and
-      u.getOperand() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getNode().getOperand() = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 
-  Py::Unaryop getOp() { result = toAst(this).(Py::UnaryExpr).getOp() }
+  Py::Unaryop getOp() { result = this.getNode().(Py::UnaryExpr).getOp() }
 }
 
 /**
@@ -783,12 +725,12 @@ class DefinitionNode extends ControlFlowNode {
     // is no AST node holding the result of `iter(next(seq))`; we use
     // the iter expression's CFG node as the stand-in.
     exists(Py::For f |
-      f.getTarget() = toAst(this) and
-      toAst(result) = f.getIter()
+      f.getTarget() = this.getNode() and
+      result.getNode() = f.getIter()
     )
     or
-    exists(Py::AstNode value | value = assignedValue(toAst(this)) |
-      toAst(result) = value and
+    exists(Py::AstNode value | value = assignedValue(this.getNode()) |
+      result.getNode() = value and
       (
         result.getBasicBlock().dominates(this.getBasicBlock())
         or
@@ -797,7 +739,7 @@ class DefinitionNode extends ControlFlowNode {
         // The default value for a parameter is evaluated in the same basic block as
         // the function definition, but the parameter belongs to the basic block of the
         // function, so there is no dominance relationship between the two.
-        exists(Py::Parameter param | toAst(this) = param.asName())
+        exists(Py::Parameter param | this.getNode() = param.asName())
       )
     )
   }
@@ -857,7 +799,7 @@ class DeletionNode extends ControlFlowNode {
 
 /** A control flow node corresponding to a `for` loop target. */
 class ForNode extends ControlFlowNode {
-  ForNode() { exists(Py::For f | toAst(this) = f.getIter()) }
+  ForNode() { exists(Py::For f | this.getNode() = f.getIter()) }
 
   /** Gets the iterable expression. */
   ControlFlowNode getIter() {
@@ -870,8 +812,8 @@ class ForNode extends ControlFlowNode {
   /** Gets the target (loop variable) of the `for` loop. */
   ControlFlowNode getTarget() {
     exists(Py::For f |
-      f.getIter() = toAst(this) and
-      f.getTarget() = toAst(result)
+      f.getIter() = this.getNode() and
+      f.getTarget() = result.getNode()
     )
   }
 
@@ -883,29 +825,26 @@ class ForNode extends ControlFlowNode {
 
 /** A control flow node corresponding to a `raise` statement. */
 class RaiseStmtNode extends ControlFlowNode {
-  RaiseStmtNode() { toAst(this) instanceof Py::Raise }
+  RaiseStmtNode() { super.getNode() instanceof Py::Raise }
 
   override Py::Raise getNode() { result = super.getNode() }
 
   /** Gets the exception expression, if any. */
   ControlFlowNode getException() {
-    exists(Py::Raise r |
-      r = toAst(this) and
-      r.getException() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    )
+    this.getNode().getException() = result.getNode() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
   }
 }
 
 /** A control flow node corresponding to a starred expression (`*x`). */
 class StarredNode extends ControlFlowNode {
-  StarredNode() { toAst(this) instanceof Py::Starred }
+  StarredNode() { this.getNode() instanceof Py::Starred }
 
   /** Gets the value being starred. */
   ControlFlowNode getValue() {
     exists(Py::Starred s |
-      s = toAst(this) and
-      s.getValue() = toAst(result) and
+      s = this.getNode() and
+      s.getValue() = result.getNode() and
       result.getBasicBlock().dominates(this.getBasicBlock())
     )
   }
@@ -913,7 +852,7 @@ class StarredNode extends ControlFlowNode {
 
 /** A control flow node corresponding to an `except` clause's name binding. */
 class ExceptFlowNode extends ControlFlowNode {
-  ExceptFlowNode() { exists(Py::ExceptStmt e | toAst(this) = e.getName()) }
+  ExceptFlowNode() { exists(Py::ExceptStmt e | this.getNode() = e.getName()) }
 
   /** Gets the CFG node for the bound `as`-name itself. */
   ControlFlowNode getName() { result = this }
@@ -921,8 +860,8 @@ class ExceptFlowNode extends ControlFlowNode {
   /** Gets the type expression of this exception handler. */
   ControlFlowNode getType() {
     exists(Py::ExceptStmt e |
-      e.getName() = toAst(this) and
-      e.getType() = toAst(result) and
+      e.getName() = this.getNode() and
+      e.getType() = result.getNode() and
       result.getBasicBlock().dominates(this.getBasicBlock())
     )
   }
@@ -930,7 +869,7 @@ class ExceptFlowNode extends ControlFlowNode {
 
 /** A control flow node corresponding to an `except*` clause's name binding. */
 class ExceptGroupFlowNode extends ControlFlowNode {
-  ExceptGroupFlowNode() { exists(Py::ExceptGroupStmt e | toAst(this) = e.getName()) }
+  ExceptGroupFlowNode() { exists(Py::ExceptGroupStmt e | this.getNode() = e.getName()) }
 
   /** Gets the CFG node for the bound `as`-name itself. */
   ControlFlowNode getName() { result = this }
@@ -947,12 +886,12 @@ abstract class SequenceNode extends ControlFlowNode {
 
 /** A control flow node corresponding to a tuple literal. */
 class TupleNode extends SequenceNode {
-  TupleNode() { toAst(this) instanceof Py::Tuple }
+  TupleNode() { this.getNode() instanceof Py::Tuple }
 
   override ControlFlowNode getElement(int n) {
     exists(Py::Tuple t |
-      t = toAst(this) and
-      t.getElt(n) = toAst(result) and
+      t = this.getNode() and
+      t.getElt(n) = result.getNode() and
       result.getBasicBlock().dominates(this.getBasicBlock())
     )
   }
@@ -960,12 +899,12 @@ class TupleNode extends SequenceNode {
 
 /** A control flow node corresponding to a list literal. */
 class ListNode extends SequenceNode {
-  ListNode() { toAst(this) instanceof Py::List }
+  ListNode() { this.getNode() instanceof Py::List }
 
   override ControlFlowNode getElement(int n) {
     exists(Py::List l |
-      l = toAst(this) and
-      l.getElt(n) = toAst(result) and
+      l = this.getNode() and
+      l.getElt(n) = result.getNode() and
       result.getBasicBlock().dominates(this.getBasicBlock())
     )
   }
@@ -973,13 +912,13 @@ class ListNode extends SequenceNode {
 
 /** A control flow node corresponding to a set literal. */
 class SetNode extends ControlFlowNode {
-  SetNode() { toAst(this) instanceof Py::Set }
+  SetNode() { this.getNode() instanceof Py::Set }
 
   /** Gets the flow node for an element of the set. */
   ControlFlowNode getAnElement() {
     exists(Py::Set s |
-      s = toAst(this) and
-      s.getAnElt() = toAst(result) and
+      s = this.getNode() and
+      s.getAnElt() = result.getNode() and
       result.getBasicBlock().dominates(this.getBasicBlock())
     )
   }
@@ -987,13 +926,13 @@ class SetNode extends ControlFlowNode {
 
 /** A control flow node corresponding to a dict literal. */
 class DictNode extends ControlFlowNode {
-  DictNode() { toAst(this) instanceof Py::Dict }
+  DictNode() { this.getNode() instanceof Py::Dict }
 
   /** Gets the flow node for a key of the dict. */
   ControlFlowNode getAKey() {
     exists(Py::Dict d |
-      d = toAst(this) and
-      d.getAKey() = toAst(result) and
+      d = this.getNode() and
+      d.getAKey() = result.getNode() and
       result.getBasicBlock().dominates(this.getBasicBlock())
     )
   }
@@ -1001,8 +940,8 @@ class DictNode extends ControlFlowNode {
   /** Gets the flow node for a value of the dict. */
   ControlFlowNode getAValue() {
     exists(Py::Dict d |
-      d = toAst(this) and
-      d.getAValue() = toAst(result) and
+      d = this.getNode() and
+      d.getAValue() = result.getNode() and
       result.getBasicBlock().dominates(this.getBasicBlock())
     )
   }
