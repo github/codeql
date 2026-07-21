@@ -130,6 +130,33 @@ void test() {
   // *Not* a POSIX bracket expression; just a regular character class.
   std::regex r_posix4("[:digit:]");
 
+  // POSIX-looking but not nested — a plain class with `:`, `a`, `l`, `p`, `h`
+  std::regex r_posix5("[:alpha:]");
+
+  // POSIX-looking tokens mid-pattern, not a real POSIX class
+  std::regex r_posix6("a[:b:]c");
+
+  // POSIX class as a range endpoint
+  std::regex r_posix7("[[:alpha:]-z]");
+
+  // Malformed — missing closing colon
+  std::regex r_posix8("[[:alpha]");
+
+  // Leading literal `]` combined with a POSIX class
+  std::regex r_posix9("[]a[:alpha:]]");
+
+  // Three POSIX classes in one class
+  std::regex r_posix10("[[:alpha:][:digit:][:space:]]");
+
+  // Additional POSIX class names
+  std::regex r_posix11("[[:xdigit:]]");
+  std::regex r_posix12("[[:blank:]]");
+  std::regex r_posix13("[[:cntrl:]]");
+  std::regex r_posix14("[[:graph:]]");
+
+  // Integration case
+  std::regex r_posix15("^([[:alpha:]]+[[:digit:]]*[[:space:]]?)+([[:punct:]]|[[:xdigit:]])+$");
+
   // Dropped: /#{A}bc/ — Ruby string interpolation, no C++ string-literal form.
 
   // unicode: \uHHHH 4-digit hex form (valid ECMAScript \u escape in std::regex)
