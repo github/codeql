@@ -119,7 +119,7 @@ class CapturedVariable = CaptureInput::CapturedVariable;
 
 class ClosureExpr = CaptureInput::ClosureExpr;
 
-module Flow = Shared::Flow<Location, Cfg::CfgForBb, CaptureInput>;
+module Flow = Shared::Flow<Location, CfgImpl::Cfg, CaptureInput>;
 
 private Flow::ClosureNode asClosureNode(Node n) {
   result = n.(SynthCaptureNode).getSynthesizedCaptureNode()
