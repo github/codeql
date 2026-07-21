@@ -1,7 +1,6 @@
 /**
  * New-CFG version of NeverReachable.
  *
- * Original:
  * Checks that expressions annotated with `t.never` either have no CFG
  * node, or if they do, that the node is not reachable from its scope's
  * entry (including within the same basic block).

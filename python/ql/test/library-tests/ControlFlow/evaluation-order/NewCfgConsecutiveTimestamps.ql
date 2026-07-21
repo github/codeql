@@ -1,7 +1,6 @@
 /**
  * New-CFG version of ConsecutiveTimestamps.
  *
- * Original:
  * Checks that consecutive annotated nodes have consecutive timestamps:
  * for each annotation with timestamp `a`, some CFG node for that annotation
  * must have a next annotation containing `a + 1`.

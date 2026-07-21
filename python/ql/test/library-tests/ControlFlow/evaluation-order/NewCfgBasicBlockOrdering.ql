@@ -1,7 +1,6 @@
 /**
  * New-CFG version of BasicBlockOrdering.
  *
- * Original:
  * Checks that within a single basic block, annotations appear in
  * increasing minimum-timestamp order.
  */

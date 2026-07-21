@@ -1,7 +1,6 @@
 /**
  * New-CFG version of NoSharedReachable.
  *
- * Original:
  * Checks that two annotations sharing a timestamp value are on
  * mutually exclusive CFG paths (neither can reach the other).
  */

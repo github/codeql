@@ -1,7 +1,6 @@
 /**
  * New-CFG version of StrictForward.
  *
- * Original:
  * Stronger version of NoBackwardFlow: for consecutive annotated nodes
  * A -> B that both have a single timestamp (non-loop code) and B does
  * NOT dominate A (forward edge), requires max(A) < min(B).

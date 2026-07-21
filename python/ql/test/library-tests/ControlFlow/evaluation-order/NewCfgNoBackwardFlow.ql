@@ -1,7 +1,6 @@
 /**
  * New-CFG version of NoBackwardFlow.
  *
- * Original:
  * Checks that time never flows backward between consecutive timer annotations
  * in the CFG. For each pair of consecutive annotated nodes (A -> B), there must
  * exist timestamps a in A and b in B with a < b.
