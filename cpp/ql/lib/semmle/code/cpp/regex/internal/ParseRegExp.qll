@@ -11,8 +11,12 @@ private import semmle.code.cpp.exprs.Literal
  * A C++ string literal that contains a regular expression term, that is, either
  * a regular expression literal, or a string literal used in a context where
  * it is parsed as a regular expression.
+ *
+ * All string literals are considered potential regexes for now. Future work
+ * will restrict this to only string literals actually used as regular
+ * expressions (via construction-site flow analysis).
  */
-abstract class RegExp extends StringLiteral {
+class RegExp extends StringLiteral {
   /**
    * Holds if this `RegExp` has the `s` flag for multi-line matching.
    */
