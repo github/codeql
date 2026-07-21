@@ -1,4 +1,10 @@
+import semmle.code.cpp.regex.internal.ParseRegExp
 import semmle.code.cpp.regex.RegexTreeView
+
+// Stop gap for missing flow configs
+class RegExpTest extends RegExp {
+  RegExpTest() { any() }
+}
 
 query predicate groupName(RegExpGroup g, string name) { name = g.getName() }
 
