@@ -9,5 +9,6 @@ def test(codeql, swift, xcode_all):
         command="xcodebuild build "
         "-project codeql-swift-autobuild-test.xcodeproj "
         "-target codeql-swift-autobuild-test "
-        "CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO",
+        "CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO "
+        "SWIFT_USE_INTEGRATED_DRIVER=NO",
     )

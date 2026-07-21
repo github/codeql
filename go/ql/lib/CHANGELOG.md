@@ -1,3 +1,9 @@
+## 7.2.1
+
+### Minor Analysis Improvements
+
+ * Improved models for the `log/slog` package (Go 1.21+), including `*slog.Logger` methods, `With`/`WithGroup`, and `Attr`/`Value` helpers, improving coverage for the `go/log-injection` and `go/clear-text-logging` queries.
+
 ## 7.2.0
 
 ### Deprecated APIs
