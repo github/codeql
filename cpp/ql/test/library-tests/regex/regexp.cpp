@@ -1,82 +1,91 @@
-# Empty
-//
+// semmle-extractor-options: -std=c++17
 
-# Basic sequence
-/abc/
+namespace std {
+  template <class CharT>
+  class basic_regex {
+  public:
+    basic_regex(const char *s) {}
+    basic_regex(const char *s, int flags) {}
+    basic_regex &assign(const char *s) { return *this; }
+  };
+  typedef basic_regex<char> regex;
+} // namespace std
 
-# Repetition
-/a*b+c?d/
-/a{4,8}/
-/a{,8}/
-/a{3,}/
-/a{7}/
+// Empty
+std::regex r_empty("");
 
-# Alternation
-/foo|bar/
+// Basic sequence
+std::regex r_abc("abc");
 
-# Character classes
-/[abc]/
-/[a-fA-F0-9_]/
-/\A[+-]?\d+/
-/[\w]+/
-/\[\][123]/
-/[^A-Z]/
-/[]]/  # MRI gives a warning, but accepts this as matching ']'
-/[^]]/ # MRI gives a warning, but accepts this as matching anything except ']'
-/[^-]/
-/[|]/
+// Repetition
+std::regex r_rep1("a*b+c?d");
+std::regex r_rep2("a{4,8}");
+std::regex r_rep3("a{,8}");
+std::regex r_rep4("a{3,}");
+std::regex r_rep5("a{7}");
 
-# Nested character classes
-/[[a-f]A-F]/ # BAD - not parsed correctly
+// Alternation
+std::regex r_alt("foo|bar");
 
-# Meta-character classes
-/.*/
-/.*/m
-/\w+\W/
-/\s\S/
-/\d\D/
-/\h\H/
-/\n\r\t/
+// Character classes
+std::regex r_cc1("[abc]");
+std::regex r_cc2("[a-fA-F0-9_]");
+std::regex r_cc3("\\A[+-]?\\d+");
+std::regex r_cc4("[\\w]+");
+std::regex r_cc5("\\[\\][123]");
+std::regex r_cc6("[^A-Z]");
+std::regex r_cc7("[]]");   // MRI gives a warning, but accepts this as matching ']'
+std::regex r_cc8("[^]]"); // MRI gives a warning, but accepts this as matching anything except ']'
+std::regex r_cc9("[^-]");
+std::regex r_cc10("[|]");
 
-# Anchors
-/\Gabc/
-/\b!a\B/
+// Nested character classes (BAD - not parsed correctly)
+std::regex r_nested("[[a-f]A-F]");
 
-# Groups
-/(foo)*bar/
-/fo(o|b)ar/
-/(a|b|cd)e/
-/(?::+)\w/ # Non-capturing group matching colons
+// Meta-character classes
+std::regex r_meta1(".*");
+std::regex r_meta1m(".*"); // /.*/m mode variant — mode flags are constructor args in C++
+std::regex r_meta2("\\w+\\W");
+std::regex r_meta3("\\s\\S");
+std::regex r_meta4("\\d\\D");
+std::regex r_meta5("\\h\\H");
+std::regex r_meta6("\\n\\r\\t");
 
-# Named groups
-/(?<id>\w+)/
-/(?'foo'fo+)/
+// Anchors
+std::regex r_anc1("\\Gabc");
+std::regex r_anc2("\\b!a\\B");
 
-# Backreferences
-/(a+)b+\1/
-/(?<qux>q+)\s+\k<qux>+/
+// Groups
+std::regex r_grp1("(foo)*bar");
+std::regex r_grp2("fo(o|b)ar");
+std::regex r_grp3("(a|b|cd)e");
+std::regex r_grp4("(?::+)\\w"); // Non-capturing group matching colons
 
-# Named character properties using the p-style syntax
-/\p{Word}*/
-/\P{Digit}+/
-/\p{^Alnum}{2,3}/
-/[a-f\p{Digit}]+/ # Also valid inside character classes
+// Named groups
+std::regex r_ng1("(?<id>\\w+)");
+std::regex r_ng2("(?'foo'fo+)"); // single-quote named-group form
 
-# Two separate character classes, each containing a single POSIX bracket expression
-/[[:alpha:]][[:digit:]]/
+// Backreferences
+std::regex r_bref1("(a+)b+\\1");
+std::regex r_bref2("(?<qux>q+)\\s+\\k<qux>+");
 
-# A single character class containing two POSIX bracket expressions
-/[[:alpha:][:digit:]]/
+// Named character properties using the p-style syntax
+std::regex r_prop1("\\p{Word}*");
+std::regex r_prop2("\\P{Digit}+");
+std::regex r_prop3("\\p{^Alnum}{2,3}");
+std::regex r_prop4("[a-f\\p{Digit}]+"); // Also valid inside character classes
 
-# A single character class containing two ranges and one POSIX bracket expression
-/[A-F[:digit:]a-f]/
+// Two separate character classes, each containing a single POSIX bracket expression
+std::regex r_posix1("[[:alpha:]][[:digit:]]");
 
-# *Not* a POSIX bracket expression; just a regular character class.
-/[:digit:]/
+// A single character class containing two POSIX bracket expressions
+std::regex r_posix2("[[:alpha:][:digit:]]");
 
-# Simple constant interpolation
-A = "a"
-/#{A}bc/
+// A single character class containing two ranges and one POSIX bracket expression
+std::regex r_posix3("[A-F[:digit:]a-f]");
 
-# unicode
-/\u{9879}/
+// *Not* a POSIX bracket expression; just a regular character class.
+std::regex r_posix4("[:digit:]");
+
+// unicode
+std::regex r_uni("\\u{9879}");
