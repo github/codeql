@@ -1,22 +1,17 @@
 /**
  * Provides a class hierarchy corresponding to a parse tree of C++ regular expressions.
- *
- * This file is a verbatim copy of the Ruby RegExpTreeView.qll, with only the
- * file-header comment updated. It does not yet compile against C++.
  */
 
 private import internal.ParseRegExp
 private import codeql.util.Numbers
-private import codeql.ruby.ast.Literal as Ast
-private import codeql.Locations
-private import codeql.regex.nfa.NfaUtils as NfaUtils
+private import semmle.code.cpp.exprs.Literal
 private import codeql.regex.RegexTreeView
 // exporting as RegexTreeView, and in the top-level scope.
 import Impl as RegexTreeView
 import Impl
 
 /** Gets the parse tree resulting from parsing `re`, if such has been constructed. */
-RegExpTerm getParsedRegExp(Ast::RegExpLiteral re) {
+RegExpTerm getParsedRegExp(StringLiteral re) {
   result.getRegExp() = re and result.isRootTerm()
 }
 
@@ -60,7 +55,7 @@ private newtype TRegExpParent =
     re.namedCharacterProperty(start, end, _)
   }
 
-/** An implementation that statisfies the RegexTreeView signature. */
+/** An implementation that satisfies the RegexTreeView signature. */
 private module Impl implements RegexTreeViewSig {
   /**
    * An element containing a regular expression term, that is, either
@@ -216,24 +211,18 @@ private module Impl implements RegexTreeViewSig {
      */
     Location getLocation() { result = re.getLocation() }
 
-    pragma[noinline]
-    private predicate componentHasLocationInfo(
-      int i, string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      re.getComponent(i)
-          .getLocation()
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
-
-    /** Holds if this term is found at the specified location offsets. */
+    /** Holds if this term is found at the specified location offsets.
+     *
+     * Note: for commit 2, this uses an approximate offset of 1 for the
+     * opening delimiter. Commits 8-9 fix this for all string literal forms.
+     */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       exists(int re_start |
-        this.componentHasLocationInfo(0, filepath, startline, re_start, _, _) and
-        this.componentHasLocationInfo(re.getNumberOfComponents() - 1, filepath, _, _, endline, _) and
-        startcolumn = re_start + start and
-        endcolumn = re_start + end - 1
+        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, _) and
+        startcolumn = re_start + 1 + start and
+        endcolumn = re_start + 1 + end - 1
       )
     }
 
@@ -317,7 +306,7 @@ private module Impl implements RegexTreeViewSig {
       result.getEnd() = part_end
     }
 
-    /** Hols if this term may match an unlimited number of times. */
+    /** Holds if this term may match an unlimited number of times. */
     predicate mayRepeatForever() { may_repeat_forever = true }
 
     /** Gets the qualifier for this term. That is e.g "?" for "a?". */
@@ -665,9 +654,9 @@ private module Impl implements RegexTreeViewSig {
    *
    * Examples:
    *
-   * ```rb
-   * /[a-fA-F0-9]/
-   * /[^abc]/
+   * ```cpp
+   * "[a-fA-F0-9]"
+   * "[^abc]"
    * ```
    */
   class RegExpCharacterClass extends RegExpTerm, TRegExpCharacterClass {
@@ -1119,7 +1108,7 @@ private module Impl implements RegexTreeViewSig {
    *
    * ```
    * \1
-   * (?P=quote)
+   * \k<quote>
    * ```
    */
   class RegExpBackRef extends RegExpTerm, TRegExpBackRef {
@@ -1200,9 +1189,7 @@ private module Impl implements RegexTreeViewSig {
   /**
    * Holds if the regular expression should not be considered.
    */
-  predicate isExcluded(RegExpParent parent) {
-    parent.(RegExpTerm).getRegExp().(Ast::RegExpLiteral).hasFreeSpacingFlag() // exclude free-spacing mode regexes
-  }
+  predicate isExcluded(RegExpParent parent) { none() }
 
   /**
    * Holds if `term` is a possessive quantifier.
@@ -1212,13 +1199,13 @@ private module Impl implements RegexTreeViewSig {
 
   /**
    * Holds if the regex that `term` is part of is used in a way that ignores any leading prefix of the input it's matched against.
-   * Not yet implemented for Ruby.
+   * Not yet implemented for C++.
    */
   predicate matchesAnyPrefix(RegExpTerm term) { any() }
 
   /**
    * Holds if the regex that `term` is part of is used in a way that ignores any trailing suffix of the input it's matched against.
-   * Not yet implemented for Ruby.
+   * Not yet implemented for C++.
    */
   predicate matchesAnySuffix(RegExpTerm term) { any() }
 

@@ -2,8 +2,8 @@
  * @kind graph
  */
 
-import codeql.Locations
-import codeql.ruby.Regexp as RE
+import cpp
+import semmle.code.cpp.regex.RegexTreeView as RE
 
 query predicate nodes(RE::RegExpTerm n, string attr, string val) {
   attr = "semmle.label" and
