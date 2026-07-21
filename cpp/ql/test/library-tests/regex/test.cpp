@@ -94,6 +94,9 @@ void test() {
   // Removed: \\h\\H — Ruby-only hex-digit escape classes (not in ECMAScript)
   std::regex r_meta6("\\n\\r\\t");
 
+  // NUL escape \0 (ECMAScript: valid when not followed by another digit)
+  std::regex r_nul("a\\0b");
+
   // Anchors (ECMAScript: \b, \B only; \A, \G removed)
   // Removed: \\Gabc — Ruby-only \G anchor (not in ECMAScript)
   std::regex r_anc2("\\b!a\\B");

@@ -394,6 +394,11 @@ class RegExp extends StringLiteral {
       // wide hex char \uhhhh
       this.getChar(start + 1) = "u" and end = start + 6
       or
+      // NUL escape \0 (not followed by another digit, which would make it an octal escape)
+      this.getChar(start + 1) = "0" and
+      not exists(this.getChar(start + 2).toInt()) and
+      end = start + 2
+      or
       // escape not handled above; update when adding a new case
       not this.getChar(start + 1) in ["x", "u"] and
       not exists(this.getChar(start + 1).toInt()) and
