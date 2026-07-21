@@ -102,11 +102,9 @@ class RegExp extends StringLiteral {
     pos =
       rank[index](int p |
         (this.nonEscapedCharAt(p) = "[" or this.nonEscapedCharAt(p) = "]") and
-        // Brackets that art part of POSIX expressions should not count as
+        // Brackets that are part of POSIX expressions should not count as
         // char-set delimiters.
-        not exists(int x, int y |
-          this.posixStyleNamedCharacterProperty(x, y, _) and pos >= x and pos < y
-        )
+        not this.inAnyPosixBracket(p)
       ) and
     (
       this.nonEscapedCharAt(pos) = "[" and result = true
@@ -136,9 +134,7 @@ class RegExp extends StringLiteral {
         min(int e |
           e > innerStart and
           this.nonEscapedCharAt(e) = "]" and
-          not exists(int x, int y |
-            this.posixStyleNamedCharacterProperty(x, y, _) and e >= x and e < y
-          )
+          not this.inAnyPosixBracket(e)
         |
           e
         )
@@ -289,12 +285,29 @@ class RegExp extends StringLiteral {
   /** Matches named character properties such as `\p{Word}` and `[[:digit:]]` */
   predicate namedCharacterProperty(int start, int end, string name) {
     this.pStyleNamedCharacterProperty(start, end, name) or
-    this.posixStyleNamedCharacterProperty(start, end, name)
+    this.posixStyleNamedCharacterProperty(start, end, name) or
+    this.posixCollatingSymbol(start, end, name) or
+    this.posixEquivalenceClass(start, end, name)
   }
 
   /** Gets the name of the character property in start,end */
   string getCharacterPropertyName(int start, int end) {
     this.namedCharacterProperty(start, end, result)
+  }
+
+  /**
+   * Holds if the position `pos` falls inside any POSIX bracket atom
+   * (`[:name:]`, `[.x.]`, or `[=x=]`).
+   * Used to prevent the inner brackets from being treated as charSet delimiters.
+   */
+  private predicate inAnyPosixBracket(int pos) {
+    exists(int x, int y |
+      this.posixStyleNamedCharacterProperty(x, y, _) or
+      this.posixCollatingSymbol(x, y, _) or
+      this.posixEquivalenceClass(x, y, _)
+    |
+      pos in [x .. y - 1]
+    )
   }
 
   /** Matches a POSIX bracket expression such as `[:alnum:]` within a character class. */
@@ -316,6 +329,42 @@ class RegExp extends StringLiteral {
     |
       name = this.getText().substring(nameStart, end - 2)
     )
+  }
+
+  /**
+   * Matches a POSIX collating symbol such as `[.a.]` within a character class.
+   * Example: `[[.a.]]` — the `[.a.]` atom nested inside the outer bracket.
+   */
+  private predicate posixCollatingSymbol(int start, int end, string name) {
+    this.getChar(start) = "[" and
+    this.getChar(start + 1) = "." and
+    end =
+      min(int e |
+        e > start and
+        this.getChar(e - 2) = "." and
+        this.getChar(e - 1) = "]"
+      |
+        e
+      ) and
+    name = this.getText().substring(start + 2, end - 2)
+  }
+
+  /**
+   * Matches a POSIX equivalence class such as `[=a=]` within a character class.
+   * Example: `[[=a=]]` — the `[=a=]` atom nested inside the outer bracket.
+   */
+  private predicate posixEquivalenceClass(int start, int end, string name) {
+    this.getChar(start) = "[" and
+    this.getChar(start + 1) = "=" and
+    end =
+      min(int e |
+        e > start and
+        this.getChar(e - 2) = "=" and
+        this.getChar(e - 1) = "]"
+      |
+        e
+      ) and
+    name = this.getText().substring(start + 2, end - 2)
   }
 
   /**
@@ -398,11 +447,17 @@ class RegExp extends StringLiteral {
   }
 
   /**
-   * Holds if the character at `index` is inside a posix bracket.
+   * Holds if the character at `index` is inside a posix bracket
+   * (`[:name:]`, `[.x.]`, or `[=x=]`).
    */
   predicate inPosixBracket(int index) {
     exists(int x, int y |
-      this.posixStyleNamedCharacterProperty(x, y, _) and index in [x + 1 .. y - 2]
+      (
+        this.posixStyleNamedCharacterProperty(x, y, _) or
+        this.posixCollatingSymbol(x, y, _) or
+        this.posixEquivalenceClass(x, y, _)
+      ) and
+      index in [x + 1 .. y - 2]
     )
   }
 
@@ -413,11 +468,7 @@ class RegExp extends StringLiteral {
     end = start + 1 and
     not this.charSet(start, _) and
     not this.charSet(_, start + 1) and
-    not exists(int x, int y |
-      this.posixStyleNamedCharacterProperty(x, y, _) and
-      start >= x and
-      end <= y
-    ) and
+    not this.inAnyPosixBracket(start) and
     exists(string c | c = this.getChar(start) |
       exists(int x, int y, int z |
         this.charSet(x, z) and

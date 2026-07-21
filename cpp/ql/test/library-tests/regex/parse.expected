@@ -245,45 +245,15 @@ test.cpp:
 
 #   76| [RegExpNamedCharacterProperty] [:space:]
 
-#   79| [RegExpCharacterClass] [[.a.]
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] [
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] .
-#-----| 2 -> [RegExpConstant, RegExpNormalChar] a
-#-----| 3 -> [RegExpConstant, RegExpNormalChar] .
+#   79| [RegExpCharacterClass] [[.a.]]
+#-----| 0 -> [RegExpNamedCharacterProperty] [.a.]
 
-#   79| [RegExpSequence] [[.a.]]
-#-----| 0 -> [RegExpCharacterClass] [[.a.]
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] ]
+#   79| [RegExpNamedCharacterProperty] [.a.]
 
-#   79| [RegExpConstant, RegExpNormalChar] [
+#   82| [RegExpCharacterClass] [[=a=]]
+#-----| 0 -> [RegExpNamedCharacterProperty] [=a=]
 
-#   79| [RegExpConstant, RegExpNormalChar] .
-
-#   79| [RegExpConstant, RegExpNormalChar] a
-
-#   79| [RegExpConstant, RegExpNormalChar] .
-
-#   79| [RegExpConstant, RegExpNormalChar] ]
-
-#   82| [RegExpCharacterClass] [[=a=]
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] [
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] =
-#-----| 2 -> [RegExpConstant, RegExpNormalChar] a
-#-----| 3 -> [RegExpConstant, RegExpNormalChar] =
-
-#   82| [RegExpSequence] [[=a=]]
-#-----| 0 -> [RegExpCharacterClass] [[=a=]
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] ]
-
-#   82| [RegExpConstant, RegExpNormalChar] [
-
-#   82| [RegExpConstant, RegExpNormalChar] =
-
-#   82| [RegExpConstant, RegExpNormalChar] a
-
-#   82| [RegExpConstant, RegExpNormalChar] =
-
-#   82| [RegExpConstant, RegExpNormalChar] ]
+#   82| [RegExpNamedCharacterProperty] [=a=]
 
 #   85| [RegExpCharacterClass] [[:alpha:]0-9]
 #-----| 0 -> [RegExpNamedCharacterProperty] [:alpha:]
