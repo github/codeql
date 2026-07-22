@@ -4,5 +4,5 @@ extensions:
       extensible: enabledDeploymentEnvironmentDataModel
     data: 
       # assumed to exist in a repo where controlcheck.yml exists
-      # realisitically would need to be manually/externally provided
+      # realistically would need to be manually/externally provided
       - ["EnvironmentInRepo"]
