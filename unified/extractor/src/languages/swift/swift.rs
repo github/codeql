@@ -8,18 +8,14 @@ use yeast::{ConcreteDesugarer, DesugaringConfig, PhaseKind, Rule, rule, tree};
 /// post-hoc mutation.
 #[derive(Clone, Default)]
 struct SwiftContext {
-    /// Identifier node for the property name. Set by the outer
-    /// `property_binding` (computed accessors / willSet-didSet) and
-    /// `protocol_property_declaration` rules before translating accessor
-    /// children; read by the accessor inner rules
-    /// (`computed_getter`/`computed_setter`/`computed_modify`/
-    /// `willset_clause`/`didset_clause`/`getter_specifier`/
-    /// `setter_specifier`).
+    /// Identifier node for the property name. Set by the accessor-bearing
+    /// `variableDecl` rule before translating the accessor block; read by the
+    /// inner `accessorDecl` rules to name each `accessor_declaration`.
     property_name: Option<yeast::Id>,
-    /// Translated type node for the property type. Set by the outer
-    /// `property_binding` rule (computed accessors variant) and
-    /// `protocol_property_declaration` when present; read by the
-    /// accessor inner rules.
+    /// Translated type node for the property type. Set (for computed
+    /// properties) by the accessor-bearing `variableDecl` rule; read by the
+    /// inner `accessorDecl` rules. Left `None` for stored properties with
+    /// observers, so their `willSet`/`didSet` accessors carry no type.
     property_type: Option<yeast::Id>,
     /// Translated outer modifiers to attach to each child of a flattening
     /// outer rule — e.g. the `let`/`var` binding modifier on each
@@ -227,118 +223,123 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((tupleExpr) => (tuple_expr)),
         // A code block contains its statements directly.
         rule!((codeBlock statements: _* @stmts) => (block stmt: {stmts})),
-        // ---- Variables ----
-        // property_binding rules — these produce variable_declaration and/or accessor_declaration
-        // nodes for individual declarators. The outer property_declaration rule splices these out
-        // and attaches binding/modifiers from the parent.
-
-        // Computed property with explicit accessors (get/set/modify) → a
-        // sequence of `accessor_declaration` nodes. The outer rule
-        // publishes the property's name and type into `ctx` so that each
-        // inner accessor rule
-        // (`computed_getter`/`computed_setter`/`computed_modify`) builds
-        // its `accessor_declaration` with `name` and `type` set from the
-        // start — no schema-invalid intermediate state.
-        //
-        // Toggles `ctx.is_chained` per accessor iteration: the first
-        // accessor inherits the outer rule's chained state (i.e. whether
-        // this whole property_binding is itself a non-first declarator
-        // of a containing property_declaration); subsequent accessors
-        // always emit `chained_declaration`.
+        // ---- Properties with accessors ----
+        // A computed property with an implicit getter (`var a: T { <stmts> }`)
+        // becomes a single `accessor_declaration` of kind `get`. This form is
+        // self-contained (no context threading). It must precede the plain
+        // `variableDecl` rules, which would otherwise match and drop the accessor
+        // block.
         rule!(
-            (property_binding
-                name: @pattern
-                type: _? @ty
-                computed_value: (computed_property accessor: _+ @@accessors))
+            (variableDecl
+                bindingSpecifier: @@spec
+                bindings: (patternBinding
+                    pattern: (identifierPattern identifier: @@name)
+                    typeAnnotation: (typeAnnotation type: @ty)
+                    accessorBlock: (accessorBlock accessors: (codeBlockItem)+ @body)))
             =>
-            accessor_declaration* {
-                ctx.property_name = Some(tree!((identifier #{pattern})));
-                ctx.property_type = ty;
-
+            (accessor_declaration
+                modifier: (modifier #{spec})
+                name: (identifier #{name})
+                type: {ty}
+                accessor_kind: (accessor_kind "get")
+                body: (block stmt: {body}))
+        ),
+        // A property with an explicit accessor block. The two shapes differ only
+        // by the presence of an initializer (tree-sitter split them into distinct
+        // `willset_didset_block` vs computed-accessor node types; swift-syntax
+        // makes both plain `accessorDecl`s):
+        //
+        //  * With an initializer (`var x: T = e { willSet {…} didSet {…} }`) it is
+        //    a *stored* property with observers: emit the backing
+        //    `variable_declaration` first, then one `accessor_declaration` per
+        //    observer (observers carry no type).
+        //  * Without an initializer (`var v: T { get set }`, incl. protocol
+        //    requirements) it is a *computed* property: no backing variable; the
+        //    type is published so the get/set accessors carry it.
+        //
+        // In both cases the first emitted declaration is unchained and every
+        // subsequent one is tagged `chained_declaration` (the `!result.is_empty()`
+        // test). Must precede the plain `variableDecl` rules.
+        rule!(
+            (variableDecl
+                bindingSpecifier: @@spec
+                bindings: (patternBinding
+                    pattern: (identifierPattern identifier: @@name)
+                    typeAnnotation: (typeAnnotation type: @ty)
+                    initializer: (initializerClause value: @@val)?
+                    accessorBlock: (accessorBlock accessors: (accessorDecl)+ @@accessors)))
+            =>
+            member* {
+                ctx.outer_modifiers = vec![tree!((modifier #{spec}))];
+                ctx.property_name = Some(tree!((identifier #{name})));
                 let mut result = Vec::new();
-                for (i, acc) in accessors.into_iter().enumerate() {
-                    if i > 0 {
-                        ctx.is_chained = true;
-                    }
+                if let Some(val) = val {
+                    // Stored property with observers: the initializer is not part
+                    // of the binding, so translate it in a reset scope.
+                    let val = ctx.scoped(|ctx| {
+                        ctx.reset();
+                        ctx.translate(val)
+                    })?;
+                    result.push(tree!(
+                        (variable_declaration
+                            modifier: {ctx.outer_modifiers.clone()}
+                            pattern: (name_pattern identifier: (identifier #{name}))
+                            type: {ty}
+                            value: {val})
+                    ));
+                } else {
+                    // Computed property: the accessors carry the type.
+                    ctx.property_type = Some(ty);
+                }
+                for acc in accessors.into_iter() {
+                    ctx.is_chained = !result.is_empty();
                     result.extend(ctx.translate(acc)?);
                 }
                 result
             }
         ),
-        // Computed property: shorthand getter (no explicit get/set, just
-        // statements) → a single accessor_declaration with kind "get".
-        // Reads outer modifiers / chained tag from `ctx` (set by the
-        // outer `property_declaration` rule).
+        // Each `accessorDecl` becomes an `accessor_declaration`, reading the
+        // property name/type and the binding/chained modifiers from `ctx`. The
+        // accessor kind comes straight from the specifier keyword
+        // (`get`/`set`/`willSet`/`didSet`). The body is optional: a body-bearing
+        // accessor (a computed getter/setter, or a `willSet`/`didSet` observer)
+        // carries the binding modifier and a translated body, whereas a bodyless
+        // one (a protocol requirement) carries neither. The property context is
+        // read out *before* translating the body, which resets `ctx` so the
+        // accessor's context does not leak into the body subtree.
         rule!(
-            (property_binding
-                name: (pattern bound_identifier: @name)
-                type: _? @ty
-                computed_value: (computed_property statement: _* @@body))
+            (accessorDecl accessorSpecifier: @@spec body: _? @@body)
             =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: (identifier #{name})
-                type: {ty}
-                accessor_kind: (accessor_kind "get")
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
-        ),
-        // Stored property with willSet/didSet observers (initializer
-        // optional) → a `variable_declaration` followed by one
-        // `accessor_declaration` per observer, each born with the
-        // property name set. Manual rule: we publish the property name
-        // into `ctx` before translating the observer children so the
-        // inner `willset_clause` / `didset_clause` rules construct
-        // valid `accessor_declaration` nodes from the start.
-        //
-        // The `variable_declaration` itself inherits the outer rule's
-        // chained state; observers always get `chained_declaration`
-        // because they're subsequent outputs of this flattening rule.
-        rule!(
-            (property_binding
-                name: (pattern bound_identifier: @name)
-                type: _? @ty
-                value: _? @@val
-                observers: (willset_didset_block willset: _? @@ws didset: _? @@ds))
-            =>
-            member* {
-                // The initializer value must not inherit the binding
-                // context (it may contain patterns, e.g. a switch
-                // expression), so translate it inside a `ctx.scoped`
-                // block — the block receives a temporary `ctx` whose
-                // `user_ctx` is a clone; mutations to it are discarded
-                // when the block returns, so the outer `ctx` is intact
-                // for the observer loop below. The observers keep the
-                // outer context: each willSet/didSet accessor emits
-                // the binding modifier and, in turn, resets the
-                // context for its own body.
-                let val = ctx.scoped(|ctx| {
-                    ctx.reset();
-                    ctx.translate(val)
-                })?;
-
-                let var_decl = tree!(
-                    (variable_declaration
-                        modifier: {ctx.outer_modifiers.clone()}
-                        modifier: {chained_modifier(&mut ctx)}
-                        pattern: (name_pattern identifier: (identifier #{name}))
+            accessor_declaration {
+                let binding = if body.is_some() {
+                    ctx.outer_modifiers.clone()
+                } else {
+                    Vec::new()
+                };
+                let chained = chained_modifier(&mut ctx);
+                let name = ctx
+                    .property_name
+                    .ok_or("accessor outside property context")?;
+                let ty = ctx.property_type;
+                let body = match body {
+                    Some(block) => {
+                        ctx.reset();
+                        ctx.translate(block)?.into_iter().next()
+                    }
+                    None => None,
+                };
+                tree!(
+                    (accessor_declaration
+                        modifier: {binding}
+                        modifier: {chained}
+                        name: {name}
                         type: {ty}
-                        value: {val})
-                );
-
-                // Publish the property name for the observer rules.
-                ctx.property_name = Some(tree!((identifier #{name})));
-                // Observers are subsequent outputs of this flattening
-                // rule, so they always get `chained_declaration`.
-                ctx.is_chained = true;
-
-                let mut result = vec![var_decl];
-                for obs in ws.into_iter().chain(ds) {
-                    result.extend(ctx.translate(obs)?);
-                }
-                result
+                        accessor_kind: (accessor_kind #{spec})
+                        body: {body})
+                )
             }
         ),
+        // ---- Variables ----
         // The individual bindings of a `variableDecl`. The binding modifier and
         // chained tag come from `ctx` (set by the `variableDecl` rule below). The
         // type annotation and initializer are both optional (one combined rule
@@ -1095,22 +1096,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // A member of a type declaration unwraps to the contained declaration.
         rule!((memberBlockItem decl: _* @d) => member* { d }),
-        // Protocol function — return type and body statements both optional.
-        rule!(
-            (protocol_function_declaration
-                name: @name
-                (parameter)* @params
-                return_type: _? @ret
-                body: (block statement: _* @body_stmts)?
-                (modifiers)* @mods)
-            =>
-            (function_declaration
-                modifier: {mods}
-                name: (identifier #{name})
-                parameter: {params}
-                return_type: {ret}
-                body: (block stmt: {body_stmts}))
-        ),
         // Init declaration → constructor_declaration. Body statements optional;
         // body itself is also optional (protocol requirement).
         rule!(
@@ -1157,141 +1142,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 modifier: {mods}
                 name: (identifier #{name})
                 bound: {bound})
-        ),
-        // Protocol property declaration: translate each accessor
-        // requirement to an `accessor_declaration` carrying the property
-        // name, type, and outer modifiers. Manual rule: we publish the
-        // property's name/type/modifiers into `ctx` and translate each
-        // accessor with `ctx.is_chained` toggled per iteration so the
-        // inner `getter_specifier`/`setter_specifier` rules emit
-        // complete nodes from the start (including the
-        // `chained_declaration` tag for non-first accessors).
-        rule!(
-            (protocol_property_declaration
-                name: (pattern bound_identifier: @name)
-                requirements: (protocol_property_requirements accessor: _+ @@accessors)
-                type: _? @ty
-                (modifiers)* @mods)
-            =>
-            accessor_declaration* {
-                ctx.property_name = Some(tree!((identifier #{name})));
-                ctx.property_type = ty;
-                ctx.outer_modifiers = mods;
-
-                let mut result = Vec::new();
-                for (i, acc) in accessors.into_iter().enumerate() {
-                    ctx.is_chained = i > 0;
-                    result.extend(ctx.translate(acc)?);
-                }
-                result
-            }
-        ),
-        // getter_specifier / setter_specifier → bodyless accessor_declaration
-        // getter_specifier / setter_specifier → bodyless
-        // accessor_declaration. Reads property name/type/modifiers from
-        // `ctx` set by the outer `protocol_property_declaration` rule.
-        rule!(
-            (getter_specifier)
-            =>
-            (accessor_declaration
-                name: {ctx.property_name.ok_or("getter_specifier outside protocol_property_declaration context")?}
-                type: {ctx.property_type}
-                accessor_kind: (accessor_kind "get")
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)})
-        ),
-        rule!(
-            (setter_specifier)
-            =>
-            (accessor_declaration
-                name: {ctx.property_name.ok_or("setter_specifier outside protocol_property_declaration context")?}
-                type: {ctx.property_type}
-                accessor_kind: (accessor_kind "set")
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)})
-        ),
-        // protocol_property_requirements wrapper — should be consumed by above; fallback
-        rule!((protocol_property_requirements accessor: _* @accs) => accessor_declaration* { accs }),
-        // Computed getter → accessor_declaration (body optional).
-        // Reads property name/type from the outer property_binding rule
-        // and binding/outer modifiers + chained tag from the outer
-        // property_declaration rule.
-        rule!(
-            (computed_getter body: (block statement: _* @@body)?)
-            =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: {ctx.property_name.ok_or("computed_getter outside property_binding context")?}
-                type: {ctx.property_type}
-                accessor_kind: (accessor_kind "get")
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
-        ),
-        // Computed setter with explicit parameter name.
-        rule!(
-            (computed_setter parameter: @param body: (block statement: _* @@body))
-            =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: {ctx.property_name.ok_or("computed_setter outside property_binding context")?}
-                type: {ctx.property_type}
-                accessor_kind: (accessor_kind "set")
-                parameter: (parameter pattern: (name_pattern identifier: (identifier #{param})))
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
-        ),
-        // Computed setter without explicit parameter name; body optional.
-        rule!(
-            (computed_setter body: (block statement: _* @@body)?)
-            =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: {ctx.property_name.ok_or("computed_setter outside property_binding context")?}
-                type: {ctx.property_type}
-                accessor_kind: (accessor_kind "set")
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
-        ),
-        // Computed modify → accessor_declaration
-        rule!(
-            (computed_modify body: (block statement: _* @@body))
-            =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: {ctx.property_name.ok_or("computed_modify outside property_binding context")?}
-                type: {ctx.property_type}
-                accessor_kind: (accessor_kind "modify")
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
-        ),
-        // willset/didset block — spread to children (only reachable as a
-        // fallback; the outer property_binding manual rule normally
-        // captures the willset/didset clauses directly).
-        rule!((willset_didset_block _* @clauses) => accessor_declaration* { clauses }),
-        // willset clause → accessor_declaration (body optional). Reads
-        // `ctx.property_name` set by the outer property_binding rule and
-        // binding/outer modifiers + chained tag from the outer
-        // property_declaration rule.
-        rule!(
-            (willset_clause body: (block statement: _* @@body)?)
-            =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: {ctx.property_name.ok_or("willset_clause outside property_binding context")?}
-                accessor_kind: (accessor_kind "willSet")
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
-        ),
-        // didset clause → accessor_declaration (body optional).
-        rule!(
-            (didset_clause body: (block statement: _* @@body)?)
-            =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: {ctx.property_name.ok_or("didset_clause outside property_binding context")?}
-                accessor_kind: (accessor_kind "didSet")
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
         ),
         // Preprocessor conditionals — unsupported
         rule!((diagnostic) => (unsupported_node)),
