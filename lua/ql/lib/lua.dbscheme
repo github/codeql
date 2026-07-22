@@ -1,0 +1,315 @@
+files(
+  unique int id: @file,
+  string name: string ref
+);
+
+folders(
+  unique int id: @folder,
+  string name: string ref
+);
+
+@container = @file | @folder
+
+containerparent(
+  int parent: @container ref,
+  unique int child: @container ref
+);
+
+locations_default(
+  unique int id: @location_default,
+  int file: @file ref,
+  int beginLine: int ref,
+  int beginColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref
+);
+
+sourceLocationPrefix(
+  string prefix: string ref
+);
+
+lua_source_files(
+  unique int id: @lua_source_file,
+  int file: @file ref,
+  string path: string ref,
+  int line_count: int ref,
+  int byte_count: int ref,
+  string sha256: string ref
+);
+
+lua_artifacts(
+  unique int id: @lua_artifact,
+  string fixture_id: string ref,
+  string path: string ref,
+  string input_kind: string ref,
+  string profile_id: string ref,
+  int accepted: int ref,
+  string provenance: string ref
+);
+
+lua_profiles(
+  unique int artifact: @lua_artifact ref,
+  string version: string ref,
+  int format: int ref,
+  int little_endian: int ref,
+  int int_size: int ref,
+  int size_t_size: int ref,
+  int instruction_size: int ref,
+  int lua_number_size: int ref,
+  int integral_flag: int ref
+);
+
+lua_prototypes(
+  unique int id: @lua_prototype,
+  int artifact: @lua_artifact ref,
+  string fixture_id: string ref,
+  string prototype_id: string ref,
+  string parent_prototype_id: string ref,
+  int ordinal_index: int ref,
+  int num_params: int ref,
+  int is_vararg: int ref,
+  int max_stack: int ref,
+  int upvalue_count: int ref,
+  string debug_name: string ref,
+  string mapping_state: string ref,
+  string provenance: string ref
+);
+
+lua_instructions(
+  unique int id: @lua_instruction,
+  int prototype: @lua_prototype ref,
+  string fixture_id: string ref,
+  string prototype_id: string ref,
+  int pc: int ref,
+  string opcode: string ref,
+  int operand_a: int ref,
+  int operand_b: int ref,
+  int operand_c: int ref
+);
+
+lua_constants(
+  unique int id: @lua_constant,
+  int prototype: @lua_prototype ref,
+  string fixture_id: string ref,
+  string constant_id: string ref,
+  string prototype_id: string ref,
+  int index: int ref,
+  string lua_type: string ref,
+  string value: string ref
+);
+
+lua_register_events(
+  unique int id: @lua_register_event,
+  int instruction: @lua_instruction ref,
+  string fixture_id: string ref,
+  string prototype_id: string ref,
+  int pc: int ref,
+  string event_kind: string ref,
+  int slot_index: int ref,
+  string value_ref: string ref
+);
+
+lua_semantic_steps(
+  unique int id: @lua_semantic_step,
+  int instruction: @lua_instruction ref,
+  string fixture_id: string ref,
+  string source_ref: string ref,
+  string dest_ref: string ref,
+  string step_kind: string ref
+);
+
+lua_closure_values(
+  unique int id: @lua_closure_value,
+  int instruction: @lua_instruction ref,
+  string fixture_id: string ref,
+  string value_ref: string ref,
+  string target_prototype_id: string ref,
+  string provenance: string ref
+);
+
+lua_call_sites(
+  unique int id: @lua_call_site,
+  int instruction: @lua_instruction ref,
+  string fixture_id: string ref,
+  string callsite_id: string ref,
+  string prototype_id: string ref,
+  int pc: int ref,
+  string opcode: string ref,
+  string target_value_ref: string ref,
+  int first_arg_slot: int ref,
+  int arg_count: int ref,
+  int first_return_slot: int ref,
+  int return_count: int ref
+);
+
+lua_upvalues(
+  unique int id: @lua_upvalue,
+  int prototype: @lua_prototype ref,
+  string fixture_id: string ref,
+  string upvalue_id: string ref,
+  string prototype_id: string ref,
+  int upvalue_index: int ref,
+  string debug_name: string ref,
+  string mapping_state: string ref,
+  string provenance: string ref
+);
+
+lua_local_flows(
+  unique int id: @lua_local_flow,
+  string module_path: string ref,
+  string prototype_id: string ref,
+  string source_ref: string ref,
+  string sink_ref: string ref,
+  string edge_kind: string ref,
+  string provenance: string ref
+);
+
+lua_control_flow_edges(
+  unique int id: @lua_control_flow_edge,
+  int source_instruction: @lua_instruction ref,
+  int target_instruction: @lua_instruction ref,
+  string module_path: string ref,
+  string prototype_id: string ref,
+  int source_pc: int ref,
+  int target_pc: int ref,
+  string provenance: string ref
+);
+
+lua_dominator_tree_intervals(
+  unique int id: @lua_dominator_tree_interval,
+  int instruction: @lua_instruction ref,
+  string module_path: string ref,
+  string prototype_id: string ref,
+  int pc: int ref,
+  int start: int ref,
+  int end: int ref,
+  string provenance: string ref
+);
+
+lua_analysis_boundaries(
+  unique int id: @lua_analysis_boundary,
+  string module_path: string ref,
+  string prototype_id: string ref,
+  string site_id: string ref,
+  string boundary_kind: string ref,
+  string reason: string ref,
+  string provenance: string ref
+);
+
+lua_table_field_flows(
+  unique int id: @lua_table_field_flow,
+  string module_path: string ref,
+  string prototype_id: string ref,
+  string table_ref: string ref,
+  string field_name: string ref,
+  string write_ref: string ref,
+  string read_ref: string ref,
+  string provenance: string ref
+);
+
+lua_global_flows(
+  unique int id: @lua_global_flow,
+  string fixture_id: string ref,
+  string global_name: string ref,
+  string write_ref: string ref,
+  string read_ref: string ref,
+  string value_ref: string ref,
+  string provenance: string ref
+);
+
+lua_upvalue_flows(
+  unique int id: @lua_upvalue_flow,
+  string fixture_id: string ref,
+  string upvalue_id: string ref,
+  string capture_ref: string ref,
+  string read_ref: string ref,
+  string write_ref: string ref,
+  string provenance: string ref
+);
+
+lua_call_resolutions(
+  unique int id: @lua_call_resolution,
+  string caller_module_path: string ref,
+  string caller_prototype_id: string ref,
+  string callsite_id: string ref,
+  string target_value_ref: string ref,
+  string resolved_name: string ref,
+  string resolution_kind: string ref,
+  string target_module_path: string ref,
+  string target_prototype_id: string ref,
+  string provenance: string ref
+);
+
+lua_literal_requires(
+  unique int id: @lua_literal_require,
+  string caller_module_path: string ref,
+  string caller_prototype_id: string ref,
+  string callsite_id: string ref,
+  string require_string: string ref,
+  string argument_ref: string ref,
+  string provenance: string ref
+);
+
+lua_module_resolutions(
+  unique int id: @lua_module_resolution,
+  string caller_module_path: string ref,
+  string callsite_id: string ref,
+  string require_string: string ref,
+  string status: string ref,
+  string target_module_path: string ref,
+  string reason: string ref,
+  string provenance: string ref
+);
+
+lua_module_exports(
+  unique int id: @lua_module_export,
+  string module_path: string ref,
+  string export_kind: string ref,
+  string field_name: string ref,
+  string value_ref: string ref,
+  string target_prototype_id: string ref,
+  string provenance: string ref
+);
+
+lua_interprocedural_flows(
+  unique int id: @lua_interprocedural_flow,
+  string caller_module_path: string ref,
+  string caller_prototype_id: string ref,
+  string callsite_id: string ref,
+  string callee_module_path: string ref,
+  string callee_prototype_id: string ref,
+  string source_ref: string ref,
+  string sink_ref: string ref,
+  string flow_kind: string ref,
+  int position: int ref,
+  string provenance: string ref
+);
+
+lua_diagnostics(
+  unique int id: @lua_diagnostic,
+  int artifact: @lua_artifact ref,
+  string fixture_id: string ref,
+  string diagnostic_id: string ref,
+  string kind: string ref,
+  string input_ref: string ref,
+  string severity: string ref,
+  string message_category: string ref,
+  int success_facts_allowed: int ref,
+  string provenance: string ref
+);
+
+lua_mapping_markers(
+  unique int id: @lua_mapping_marker,
+  string fixture_id: string ref,
+  string mapping_kind: string ref,
+  string bytecode_ref: string ref,
+  string state: string ref,
+  string provenance: string ref
+);
+
+lua_mapping_marker_diagnostics(
+  unique int id: @lua_mapping_marker_diagnostic,
+  int marker: @lua_mapping_marker ref,
+  string fixture_id: string ref,
+  string diagnostic_kind: string ref
+);

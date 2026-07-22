@@ -1,0 +1,3 @@
+local tainted = luci.http.formvaluex("wan")
+os.executex(tainted)
+os.execute("fixed-command")

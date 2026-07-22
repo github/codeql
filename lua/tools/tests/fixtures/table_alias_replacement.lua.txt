@@ -1,0 +1,12 @@
+local function select_values(first, second)
+  local object = {}
+  object.value = first
+  local alias = object
+  local through_alias = alias.value
+  object = {}
+  object.value = second
+  local after_replacement = object.value
+  return through_alias, after_replacement
+end
+
+return select_values

@@ -1,0 +1,10 @@
+local tbl = {}
+local dyn = "runtime"
+local value = "payload"
+
+tbl[dyn] = value
+
+local chosen = tbl["fixed"]
+local missing = tbl["missing"]
+
+return chosen, missing

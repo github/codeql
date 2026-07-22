@@ -1,0 +1,7 @@
+name: codeql/lua-tests
+groups: [lua, test]
+dependencies:
+  codeql/lua-queries: ${workspace}
+  codeql/lua-all: ${workspace}
+extractor: lua
+tests: .

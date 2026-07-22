@@ -1,0 +1,6 @@
+local lib = require("missingfn")
+local function run()
+  return lib.missing("whoami")
+end
+
+return run
