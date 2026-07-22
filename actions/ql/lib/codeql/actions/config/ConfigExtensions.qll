@@ -90,8 +90,10 @@ extensible predicate untrustedGhCommandDataModel(string cmd_regex, string flag);
 extensible predicate actionsPermissionsDataModel(string action, string permission);
 
 /**
- * Holds for deployment environments that exist for a given repository.
+ * Holds for deployment environments that exist with `name` for a given repository.
+ * * - 'name' is the name of the environment defined.
+ *   E.g. for the deployment environment `environment: EnvironmentInRepo`, `name` is `EnvironmentInRepo`.
  * Requires this to be externally supplied but once done can be used to
- * toggle precision of whether that suffices or not as a control check.
+ * toggle precision of whether that suffices or not as a control check by contributing to `EnvironmentCheck`.
  */
 extensible predicate enabledDeploymentEnvironmentDataModel(string name);
