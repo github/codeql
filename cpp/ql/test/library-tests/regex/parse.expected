@@ -44,10 +44,6 @@
 
 #-----| [RegExpConstant, RegExpNormalChar] b
 
-#-----| [RegExpConstant, RegExpNormalChar] f
-
-#-----| [RegExpConstant, RegExpNormalChar] o
-
 #-----| [RegExpCharacterClassEscape] \w
 
 #-----| [RegExpConstant, RegExpNormalChar] :
@@ -187,10 +183,6 @@
 #-----| 1 -> [RegExpPlus] b+
 #-----| 2 -> [RegExpBackRef] \1
 
-#-----| [RegExpSequence] fo+
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] f
-#-----| 1 -> [RegExpPlus] o+
-
 #-----| [RegExpSequence] (?::+)\w
 #-----| 0 -> [RegExpGroup] (?::+)
 #-----| 1 -> [RegExpCharacterClassEscape] \w
@@ -262,9 +254,6 @@
 
 #-----| [RegExpGroup] (a+)
 #-----| 0 -> [RegExpPlus] a+
-
-#-----| [RegExpGroup] (?'foo'fo+)
-#-----| 0 -> [RegExpSequence] fo+
 
 #-----| [RegExpGroup] (?<id>\w+)
 #-----| 0 -> [RegExpPlus] \w+
@@ -383,9 +372,6 @@
 
 #-----| [RegExpPlus] b+
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] b
-
-#-----| [RegExpPlus] o+
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] o
 
 #-----| [RegExpPlus] \w+
 #-----| 0 -> [RegExpCharacterClassEscape] \w

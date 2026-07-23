@@ -630,11 +630,6 @@ abstract class RegExp extends StringLiteral {
         nameEnd = min(int i | i > start + 3 and this.getChar(i) = ">") and
         end = nameEnd + 1
       )
-      or
-      this.getChar(start + 2) = "'" and
-      exists(int nameEnd |
-        nameEnd = min(int i | i > start + 2 and this.getChar(i) = "'") and end = nameEnd + 1
-      )
     )
   }
 

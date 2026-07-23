@@ -60,7 +60,6 @@ std::regex r_grp4("(?::+)\\w"); // Non-capturing group matching colons
 
 // Named groups
 std::regex r_ng1("(?<id>\\w+)");
-std::regex r_ng2("(?'foo'fo+)"); // single-quote named-group form
 
 // Backreferences
 std::regex r_bref1("(a+)b+\\1");

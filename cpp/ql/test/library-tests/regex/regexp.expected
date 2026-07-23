@@ -1,9 +1,7 @@
 groupName
-| file://:0:0:0:0 | (?'foo'fo+) | foo |
 | file://:0:0:0:0 | (?<id>\\w+) | id |
 | file://:0:0:0:0 | (?<qux>q+) | qux |
 groupNumber
-| file://:0:0:0:0 | (?'foo'fo+) | 1 |
 | file://:0:0:0:0 | (a+) | 1 |
 | file://:0:0:0:0 | (a\|b\|cd) | 1 |
 | file://:0:0:0:0 | (foo) | 1 |
@@ -16,7 +14,6 @@ term
 | file://:0:0:0:0 | 3 | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | 9 | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | !a | RegExpConstant,RegExpNormalChar |
-| file://:0:0:0:0 | (?'foo'fo+) | RegExpGroup |
 | file://:0:0:0:0 | (?::+) | RegExpGroup |
 | file://:0:0:0:0 | (?::+)\\w | RegExpSequence |
 | file://:0:0:0:0 | (?<id>\\w+) | RegExpGroup |
@@ -156,16 +153,12 @@ term
 | file://:0:0:0:0 | f | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | f | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | f | RegExpConstant,RegExpNormalChar |
-| file://:0:0:0:0 | f | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | fo | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | fo(o\|b)ar | RegExpSequence |
-| file://:0:0:0:0 | fo+ | RegExpSequence |
 | file://:0:0:0:0 | foo | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | foo | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | foo\|bar | RegExpAlt |
 | file://:0:0:0:0 | o | RegExpConstant,RegExpNormalChar |
-| file://:0:0:0:0 | o | RegExpConstant,RegExpNormalChar |
-| file://:0:0:0:0 | o+ | RegExpPlus |
 | file://:0:0:0:0 | o\|b | RegExpAlt |
 | file://:0:0:0:0 | q | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | q+ | RegExpPlus |
@@ -248,10 +241,8 @@ regExpNormalCharValue
 | file://:0:0:0:0 | f | f |
 | file://:0:0:0:0 | f | f |
 | file://:0:0:0:0 | f | f |
-| file://:0:0:0:0 | f | f |
 | file://:0:0:0:0 | fo | fo |
 | file://:0:0:0:0 | foo | foo |
 | file://:0:0:0:0 | foo | foo |
-| file://:0:0:0:0 | o | o |
 | file://:0:0:0:0 | o | o |
 | file://:0:0:0:0 | q | q |
