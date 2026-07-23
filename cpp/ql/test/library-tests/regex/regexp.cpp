@@ -82,7 +82,7 @@ std::regex r_posix_equiv2("[A-F[[=b=]]a-f]");
 std::regex r_posix4("[:digit:]");
 
 // unicode
-std::regex r_uni("\\u{9879}");
+std::regex r_uni("\\u0061");
 
 // control escapes
 std::regex r_ctrl1("\\cA");

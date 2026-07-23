@@ -34,7 +34,7 @@
 
 #-----| [RegExpConstant, RegExpEscape] \cA
 
-#-----| [RegExpConstant, RegExpEscape] \u{987
+#-----| [RegExpConstant, RegExpEscape] \u0061
 
 #-----| [RegExpConstant, RegExpNormalChar] A
 

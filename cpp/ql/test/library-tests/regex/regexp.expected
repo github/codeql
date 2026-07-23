@@ -100,7 +100,7 @@ term
 | file://:0:0:0:0 | \\s | RegExpCharacterClassEscape |
 | file://:0:0:0:0 | \\s\\S | RegExpSequence |
 | file://:0:0:0:0 | \\t | RegExpConstant,RegExpEscape |
-| file://:0:0:0:0 | \\u{987 | RegExpConstant,RegExpEscape |
+| file://:0:0:0:0 | \\u0061 | RegExpConstant,RegExpEscape |
 | file://:0:0:0:0 | \\w | RegExpCharacterClassEscape |
 | file://:0:0:0:0 | \\w | RegExpCharacterClassEscape |
 | file://:0:0:0:0 | \\w | RegExpCharacterClassEscape |
@@ -213,7 +213,7 @@ regExpNormalCharValue
 | file://:0:0:0:0 | \\r | \r |
 | file://:0:0:0:0 | \\s | s |
 | file://:0:0:0:0 | \\t | \t |
-| file://:0:0:0:0 | \\u{987 | \u0987 |
+| file://:0:0:0:0 | \\u0061 | a |
 | file://:0:0:0:0 | \\w | w |
 | file://:0:0:0:0 | \\w | w |
 | file://:0:0:0:0 | \\w | w |
