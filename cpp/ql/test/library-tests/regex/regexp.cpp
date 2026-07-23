@@ -4,9 +4,9 @@ namespace std {
   template <class CharT>
   class basic_regex {
   public:
-    basic_regex(const char *s) {}
-    basic_regex(const char *s, int flags) {}
-    basic_regex &assign(const char *s) { return *this; }
+    basic_regex(const CharT *s) {}
+    basic_regex(const CharT *s, int flags) {}
+    basic_regex &assign(const CharT *s) { return *this; }
   };
   typedef basic_regex<char> regex;
 } // namespace std
@@ -89,3 +89,17 @@ std::regex r_posix4("[:digit:]");
 
 // unicode
 std::regex r_uni("\\u{9879}");
+
+// String literal spellings for location tests
+std::regex r_loc_plain("a\\nb");
+std::basic_regex<wchar_t> r_loc_L(L"abc");
+std::basic_regex<char> r_loc_u8(u8"abc");
+std::basic_regex<char16_t> r_loc_u(u"abc");
+std::basic_regex<char32_t> r_loc_U(U"abc");
+std::regex r_loc_R(R"(abc)");
+std::basic_regex<wchar_t> r_loc_LR(LR"(abc)");
+std::basic_regex<char> r_loc_u8R(u8R"(abc)");
+std::basic_regex<char16_t> r_loc_uR(uR"(abc)");
+std::basic_regex<char32_t> r_loc_UR(UR"(abc)");
+std::regex r_loc_Rx(R"x(abc)x");
+std::regex r_loc_Rfoo(R"foo(abc)foo");
