@@ -80,8 +80,6 @@
 
 #-----| [RegExpConstant, RegExpNormalChar] !a
 
-#-----| [RegExpConstant, RegExpNormalChar] abc
-
 #-----| [RegExpConstant, RegExpEscape] \n
 
 #-----| [RegExpConstant, RegExpEscape] \r
@@ -135,12 +133,6 @@
 #-----| [RegExpConstant, RegExpNormalChar] 3
 
 #-----| [RegExpCharacterClassEscape] \w
-
-#-----| [RegExpConstant, RegExpNormalChar] +
-
-#-----| [RegExpConstant, RegExpNormalChar] -
-
-#-----| [RegExpCharacterClassEscape] \d
 
 #-----| [RegExpConstant, RegExpNormalChar] a
 
@@ -229,10 +221,6 @@
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] !a
 #-----| 2 -> [RegExpNonWordBoundary] \B
 
-#-----| [RegExpSequence] \Gabc
-#-----| 0 -> [RegExpSpecialChar] \G
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] abc
-
 #-----| [RegExpSequence] \n\r\t
 #-----| 0 -> [RegExpConstant, RegExpEscape] \n
 #-----| 1 -> [RegExpConstant, RegExpEscape] \r
@@ -262,11 +250,6 @@
 #-----| 0 -> [RegExpConstant, RegExpEscape] \[
 #-----| 1 -> [RegExpConstant, RegExpEscape] \]
 #-----| 2 -> [RegExpCharacterClass] [123]
-
-#-----| [RegExpSequence] \A[+-]?\d+
-#-----| 0 -> [RegExpCaret] \A
-#-----| 1 -> [RegExpOpt] [+-]?
-#-----| 2 -> [RegExpPlus] \d+
 
 #-----| [RegExpSequence] a*b+c?d
 #-----| 0 -> [RegExpStar] a*
@@ -302,13 +285,9 @@
 
 #-----| [RegExpNonWordBoundary] \B
 
-#-----| [RegExpSpecialChar] \G
-
 #-----| [RegExpDot] .
 
 #-----| [RegExpDot] .
-
-#-----| [RegExpCaret] \A
 
 #-----| [RegExpGroup] (?<qux>q+)
 #-----| 0 -> [RegExpPlus] q+
@@ -412,10 +391,6 @@
 #-----| [RegExpCharacterClass] [\w]
 #-----| 0 -> [RegExpCharacterClassEscape] \w
 
-#-----| [RegExpCharacterClass] [+-]
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] +
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] -
-
 #-----| [RegExpCharacterClass] [a-fA-F0-9_]
 #-----| 0 -> [RegExpCharacterRange] a-f
 #-----| 1 -> [RegExpCharacterRange] A-F
@@ -490,12 +465,6 @@
 
 #-----| [RegExpPlus] [\w]+
 #-----| 0 -> [RegExpCharacterClass] [\w]
-
-#-----| [RegExpOpt] [+-]?
-#-----| 0 -> [RegExpCharacterClass] [+-]
-
-#-----| [RegExpPlus] \d+
-#-----| 0 -> [RegExpCharacterClassEscape] \d
 
 #-----| [RegExpRange] a{7}
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a

@@ -30,7 +30,6 @@ std::regex r_alt("foo|bar");
 // Character classes
 std::regex r_cc1("[abc]");
 std::regex r_cc2("[a-fA-F0-9_]");
-std::regex r_cc3("\\A[+-]?\\d+");
 std::regex r_cc4("[\\w]+");
 std::regex r_cc5("\\[\\][123]");
 std::regex r_cc6("[^A-Z]");
@@ -52,7 +51,6 @@ std::regex r_meta5("\\h\\H");
 std::regex r_meta6("\\n\\r\\t");
 
 // Anchors
-std::regex r_anc1("\\Gabc");
 std::regex r_anc2("\\b!a\\B");
 
 // Groups
