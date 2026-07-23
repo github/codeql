@@ -455,7 +455,7 @@ regexp.cpp:
 
 #   86| [RegExpNamedCharacterProperty] [:digit:]
 
-#   89| [RegExpConstant, RegExpEscape] \u{987
+#   89| [RegExpConstant, RegExpEscape] \u0061
 
 #   92| [RegExpConstant, RegExpEscape] \cA
 

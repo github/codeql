@@ -169,7 +169,7 @@ term
 | regexp.cpp:83:37:83:39 | a-f | RegExpCharacterRange |
 | regexp.cpp:83:39:83:39 | f | RegExpConstant,RegExpNormalChar |
 | regexp.cpp:86:22:86:30 | [:digit:] | RegExpNamedCharacterProperty |
-| regexp.cpp:89:19:89:24 | \\u{987 | RegExpConstant,RegExpEscape |
+| regexp.cpp:89:19:89:24 | \\u0061 | RegExpConstant,RegExpEscape |
 | regexp.cpp:92:21:92:23 | \\cA | RegExpConstant,RegExpEscape |
 | regexp.cpp:93:21:93:25 | [\\cZ] | RegExpCharacterClass |
 | regexp.cpp:93:22:93:24 | \\cZ | RegExpConstant,RegExpEscape |
@@ -299,7 +299,7 @@ regExpNormalCharValue
 | regexp.cpp:83:31:83:31 | F | F |
 | regexp.cpp:83:37:83:37 | a | a |
 | regexp.cpp:83:39:83:39 | f | f |
-| regexp.cpp:89:19:89:24 | \\u{987 | \u0987 |
+| regexp.cpp:89:19:89:24 | \\u0061 | a |
 | regexp.cpp:92:21:92:23 | \\cA | cA |
 | regexp.cpp:93:22:93:24 | \\cZ | cZ |
 | regexp.cpp:96:20:96:21 | \\0 | 0 |
