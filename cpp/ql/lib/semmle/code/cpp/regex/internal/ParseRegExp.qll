@@ -101,7 +101,13 @@ abstract class RegExp extends StringLiteral {
         // Brackets that art part of POSIX expressions should not count as
         // char-set delimiters.
         not exists(int x, int y |
-          this.posixStyleNamedCharacterProperty(x, y, _) and pos >= x and pos < y
+          (
+            this.posixStyleNamedCharacterProperty(x, y, _)
+            or
+            this.posixStyleCollatingSymbol(x, y, _)
+          ) and
+          pos >= x and
+          pos < y
         )
       ) and
     (
@@ -133,7 +139,13 @@ abstract class RegExp extends StringLiteral {
           e > innerStart and
           this.nonEscapedCharAt(e) = "]" and
           not exists(int x, int y |
-            this.posixStyleNamedCharacterProperty(x, y, _) and e >= x and e < y
+            (
+              this.posixStyleNamedCharacterProperty(x, y, _)
+              or
+              this.posixStyleCollatingSymbol(x, y, _)
+            ) and
+            e >= x and
+            e < y
           )
         |
           e
@@ -162,6 +174,8 @@ abstract class RegExp extends StringLiteral {
       or
       this.namedCharacterProperty(start, end, _)
       or
+      this.posixStyleCollatingSymbol(start, end, _)
+      or
       exists(this.nonEscapedCharAt(start)) and end = start + 1
     )
     or
@@ -170,6 +184,8 @@ abstract class RegExp extends StringLiteral {
       this.escapedCharacter(start, end)
       or
       this.namedCharacterProperty(start, end, _)
+      or
+      this.posixStyleCollatingSymbol(start, end, _)
       or
       exists(this.nonEscapedCharAt(start)) and
       end = start + 1 and
@@ -313,6 +329,21 @@ abstract class RegExp extends StringLiteral {
     )
   }
 
+  /** Matches a POSIX collating symbol such as `[.ch.]` within a character class. */
+  predicate posixStyleCollatingSymbol(int start, int end, string name) {
+    this.getChar(start) = "[" and
+    this.getChar(start + 1) = "." and
+    end =
+      min(int e |
+        e > start and
+        this.getChar(e - 2) = "." and
+        this.getChar(e - 1) = "]"
+      |
+        e
+      ) and
+    name = this.getText().substring(start + 2, end - 2)
+  }
+
   /**
    * Holds if the named character property is inverted. Examples for which it holds:
    * - `\P{Digit}` upper-case P means inverted
@@ -371,7 +402,12 @@ abstract class RegExp extends StringLiteral {
    */
   predicate inPosixBracket(int index) {
     exists(int x, int y |
-      this.posixStyleNamedCharacterProperty(x, y, _) and index in [x + 1 .. y - 2]
+      (
+        this.posixStyleNamedCharacterProperty(x, y, _)
+        or
+        this.posixStyleCollatingSymbol(x, y, _)
+      ) and
+      index in [x + 1 .. y - 2]
     )
   }
 
@@ -383,7 +419,11 @@ abstract class RegExp extends StringLiteral {
     not this.charSet(start, _) and
     not this.charSet(_, start + 1) and
     not exists(int x, int y |
-      this.posixStyleNamedCharacterProperty(x, y, _) and
+      (
+        this.posixStyleNamedCharacterProperty(x, y, _)
+        or
+        this.posixStyleCollatingSymbol(x, y, _)
+      ) and
       start >= x and
       end <= y
     ) and

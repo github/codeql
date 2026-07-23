@@ -49,7 +49,11 @@ private newtype TRegExpParent =
     not re.specialCharacter(start, end, _)
   } or
   /** A back reference */
-  TRegExpBackRef(RegExp re, int start, int end) { re.backreference(start, end) }
+  TRegExpBackRef(RegExp re, int start, int end) { re.backreference(start, end) } or
+  /** A POSIX collating symbol */
+  TRegExpPosixCollatingSymbol(RegExp re, int start, int end) {
+    re.posixStyleCollatingSymbol(start, end, _)
+  }
 
 /** An implementation that satisfies the RegexTreeView signature. */
 private module Impl implements RegexTreeViewSig {
@@ -137,6 +141,8 @@ private module Impl implements RegexTreeViewSig {
       exists(seqChild(re, start, end, 1)) // if a sequence does not have more than one element, it should be treated as that element instead.
       or
       this = TRegExpSpecialChar(re, start, end)
+      or
+      this = TRegExpPosixCollatingSymbol(re, start, end)
     }
 
     /**
@@ -177,6 +183,8 @@ private module Impl implements RegexTreeViewSig {
       result = this.(RegExpSequence).getChild(i)
       or
       result = this.(RegExpSpecialChar).getChild(i)
+      or
+      result = this.(RegExpPosixCollatingSymbol).getChild(i)
     }
 
     /**
@@ -1111,6 +1119,16 @@ private module Impl implements RegexTreeViewSig {
     override string getAPrimaryQlClass() { result = "RegExpBackRef" }
 
     override predicate isNullable() { this.getGroup().isNullable() }
+  }
+
+  additional class RegExpPosixCollatingSymbol extends RegExpTerm, TRegExpPosixCollatingSymbol {
+    RegExpPosixCollatingSymbol() { this = TRegExpPosixCollatingSymbol(re, start, end) }
+
+    override RegExpTerm getChild(int i) { none() }
+
+    override string getAPrimaryQlClass() { result = "RegExpPosixCollatingSymbol" }
+
+    string getName() { re.posixStyleCollatingSymbol(start, end, result) }
   }
 
   class Top = RegExpParent;
