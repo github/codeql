@@ -8,7 +8,7 @@ def func[T](x: T) -> T:  # $ cfgdefines=func cfgdefines=x
 
 
 class Box[T]:  # $ cfgdefines=Box
-    item: T  # $ cfgdefines=item
+    item: T  # $ SPURIOUS: cfgdefines=item
 
 
 # Multi-parameter, with bound and variadics.
