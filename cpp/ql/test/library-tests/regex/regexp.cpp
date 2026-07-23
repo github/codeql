@@ -66,12 +66,6 @@ std::regex r_ng2("(?'foo'fo+)"); // single-quote named-group form
 std::regex r_bref1("(a+)b+\\1");
 std::regex r_bref2("(?<qux>q+)\\s+\\k<qux>+");
 
-// Named character properties using the p-style syntax
-std::regex r_prop1("\\p{Word}*");
-std::regex r_prop2("\\P{Digit}+");
-std::regex r_prop3("\\p{^Alnum}{2,3}");
-std::regex r_prop4("[a-f\\p{Digit}]+"); // Also valid inside character classes
-
 // Two separate character classes, each containing a single POSIX bracket expression
 std::regex r_posix1("[[:alpha:]][[:digit:]]");
 

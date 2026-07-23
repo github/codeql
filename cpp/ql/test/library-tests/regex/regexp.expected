@@ -49,12 +49,6 @@ term
 | file://:0:0:0:0 | Z | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | [ | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | [123] | RegExpCharacterClass |
-| file://:0:0:0:0 | [:alpha:] | RegExpNamedCharacterProperty |
-| file://:0:0:0:0 | [:alpha:] | RegExpNamedCharacterProperty |
-| file://:0:0:0:0 | [:digit:] | RegExpNamedCharacterProperty |
-| file://:0:0:0:0 | [:digit:] | RegExpNamedCharacterProperty |
-| file://:0:0:0:0 | [:digit:] | RegExpNamedCharacterProperty |
-| file://:0:0:0:0 | [:digit:] | RegExpNamedCharacterProperty |
 | file://:0:0:0:0 | [A-F[:digit:]a-f] | RegExpCharacterClass |
 | file://:0:0:0:0 | [[:alpha:][:digit:]] | RegExpCharacterClass |
 | file://:0:0:0:0 | [[:alpha:]] | RegExpCharacterClass |
@@ -70,14 +64,10 @@ term
 | file://:0:0:0:0 | [^A-Z] | RegExpCharacterClass |
 | file://:0:0:0:0 | [^]] | RegExpCharacterClass |
 | file://:0:0:0:0 | [a-fA-F0-9_] | RegExpCharacterClass |
-| file://:0:0:0:0 | [a-f\\p{Digit}] | RegExpCharacterClass |
-| file://:0:0:0:0 | [a-f\\p{Digit}]+ | RegExpPlus |
 | file://:0:0:0:0 | [abc] | RegExpCharacterClass |
 | file://:0:0:0:0 | \\1 | RegExpBackRef |
 | file://:0:0:0:0 | \\B | RegExpNonWordBoundary |
 | file://:0:0:0:0 | \\D | RegExpCharacterClassEscape |
-| file://:0:0:0:0 | \\P{Digit} | RegExpNamedCharacterProperty |
-| file://:0:0:0:0 | \\P{Digit}+ | RegExpPlus |
 | file://:0:0:0:0 | \\S | RegExpCharacterClassEscape |
 | file://:0:0:0:0 | \\W | RegExpCharacterClassEscape |
 | file://:0:0:0:0 | \\[ | RegExpConstant,RegExpEscape |
@@ -92,11 +82,6 @@ term
 | file://:0:0:0:0 | \\n | RegExpConstant,RegExpEscape |
 | file://:0:0:0:0 | \\n | RegExpConstant,RegExpEscape |
 | file://:0:0:0:0 | \\n\\r\\t | RegExpSequence |
-| file://:0:0:0:0 | \\p{Digit} | RegExpNamedCharacterProperty |
-| file://:0:0:0:0 | \\p{Word} | RegExpNamedCharacterProperty |
-| file://:0:0:0:0 | \\p{Word}* | RegExpStar |
-| file://:0:0:0:0 | \\p{^Alnum} | RegExpNamedCharacterProperty |
-| file://:0:0:0:0 | \\p{^Alnum}{2,3} | RegExpRange |
 | file://:0:0:0:0 | \\r | RegExpConstant,RegExpEscape |
 | file://:0:0:0:0 | \\s | RegExpCharacterClassEscape |
 | file://:0:0:0:0 | \\s | RegExpCharacterClassEscape |
@@ -127,11 +112,9 @@ term
 | file://:0:0:0:0 | a | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | a | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | a | RegExpConstant,RegExpNormalChar |
-| file://:0:0:0:0 | a | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | a* | RegExpStar |
 | file://:0:0:0:0 | a*b+c?d | RegExpSequence |
 | file://:0:0:0:0 | a+ | RegExpPlus |
-| file://:0:0:0:0 | a-f | RegExpCharacterRange |
 | file://:0:0:0:0 | a-f | RegExpCharacterRange |
 | file://:0:0:0:0 | a-f | RegExpCharacterRange |
 | file://:0:0:0:0 | a-f | RegExpCharacterRange |
@@ -170,7 +153,6 @@ term
 | file://:0:0:0:0 | cd | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | d | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | e | RegExpConstant,RegExpNormalChar |
-| file://:0:0:0:0 | f | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | f | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | f | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | f | RegExpConstant,RegExpNormalChar |
@@ -237,7 +219,6 @@ regExpNormalCharValue
 | file://:0:0:0:0 | a | a |
 | file://:0:0:0:0 | a | a |
 | file://:0:0:0:0 | a | a |
-| file://:0:0:0:0 | a | a |
 | file://:0:0:0:0 | abc | abc |
 | file://:0:0:0:0 | abc | abc |
 | file://:0:0:0:0 | abc | abc |
@@ -264,7 +245,6 @@ regExpNormalCharValue
 | file://:0:0:0:0 | cd | cd |
 | file://:0:0:0:0 | d | d |
 | file://:0:0:0:0 | e | e |
-| file://:0:0:0:0 | f | f |
 | file://:0:0:0:0 | f | f |
 | file://:0:0:0:0 | f | f |
 | file://:0:0:0:0 | f | f |

@@ -36,10 +36,6 @@
 
 #-----| [RegExpConstant, RegExpNormalChar] f
 
-#-----| [RegExpConstant, RegExpNormalChar] a
-
-#-----| [RegExpConstant, RegExpNormalChar] f
-
 #-----| [RegExpConstant, RegExpNormalChar] q
 
 #-----| [RegExpCharacterClassEscape] \s
@@ -249,26 +245,6 @@
 #-----| 2 -> [RegExpOpt] c?
 #-----| 3 -> [RegExpConstant, RegExpNormalChar] d
 
-#-----| [RegExpNamedCharacterProperty] [:digit:]
-
-#-----| [RegExpNamedCharacterProperty] [:digit:]
-
-#-----| [RegExpNamedCharacterProperty] [:alpha:]
-
-#-----| [RegExpNamedCharacterProperty] [:digit:]
-
-#-----| [RegExpNamedCharacterProperty] [:alpha:]
-
-#-----| [RegExpNamedCharacterProperty] [:digit:]
-
-#-----| [RegExpNamedCharacterProperty] \p{Digit}
-
-#-----| [RegExpNamedCharacterProperty] \p{^Alnum}
-
-#-----| [RegExpNamedCharacterProperty] \P{Digit}
-
-#-----| [RegExpNamedCharacterProperty] \p{Word}
-
 #-----| [RegExpBackRef] \k<qux>
 
 #-----| [RegExpBackRef] \1
@@ -317,10 +293,6 @@
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] f
 
-#-----| [RegExpCharacterRange] a-f
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] f
-
 #-----| [RegExpCharacterRange] A-Z
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] A
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] Z
@@ -339,22 +311,12 @@
 
 #-----| [RegExpCharacterClass] [A-F[:digit:]a-f]
 #-----| 0 -> [RegExpCharacterRange] A-F
-#-----| 1 -> [RegExpNamedCharacterProperty] [:digit:]
-#-----| 2 -> [RegExpCharacterRange] a-f
 
 #-----| [RegExpCharacterClass] [[:alpha:][:digit:]]
-#-----| 0 -> [RegExpNamedCharacterProperty] [:alpha:]
-#-----| 1 -> [RegExpNamedCharacterProperty] [:digit:]
 
 #-----| [RegExpCharacterClass] [[:alpha:]]
-#-----| 0 -> [RegExpNamedCharacterProperty] [:alpha:]
 
 #-----| [RegExpCharacterClass] [[:digit:]]
-#-----| 0 -> [RegExpNamedCharacterProperty] [:digit:]
-
-#-----| [RegExpCharacterClass] [a-f\p{Digit}]
-#-----| 0 -> [RegExpCharacterRange] a-f
-#-----| 1 -> [RegExpNamedCharacterProperty] \p{Digit}
 
 #-----| [RegExpCharacterClass] [[a-f]
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] [
@@ -406,18 +368,6 @@
 #-----| [RegExpAlt] foo|bar
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] foo
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] bar
-
-#-----| [RegExpPlus] [a-f\p{Digit}]+
-#-----| 0 -> [RegExpCharacterClass] [a-f\p{Digit}]
-
-#-----| [RegExpRange] \p{^Alnum}{2,3}
-#-----| 0 -> [RegExpNamedCharacterProperty] \p{^Alnum}
-
-#-----| [RegExpPlus] \P{Digit}+
-#-----| 0 -> [RegExpNamedCharacterProperty] \P{Digit}
-
-#-----| [RegExpStar] \p{Word}*
-#-----| 0 -> [RegExpNamedCharacterProperty] \p{Word}
 
 #-----| [RegExpPlus] q+
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] q

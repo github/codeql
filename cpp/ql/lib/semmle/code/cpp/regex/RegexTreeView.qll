@@ -49,11 +49,7 @@ private newtype TRegExpParent =
     not re.specialCharacter(start, end, _)
   } or
   /** A back reference */
-  TRegExpBackRef(RegExp re, int start, int end) { re.backreference(start, end) } or
-  /** A named character property */
-  TRegExpNamedCharacterProperty(RegExp re, int start, int end) {
-    re.namedCharacterProperty(start, end, _)
-  }
+  TRegExpBackRef(RegExp re, int start, int end) { re.backreference(start, end) }
 
 /** An implementation that satisfies the RegexTreeView signature. */
 private module Impl implements RegexTreeViewSig {
@@ -141,8 +137,6 @@ private module Impl implements RegexTreeViewSig {
       exists(seqChild(re, start, end, 1)) // if a sequence does not have more than one element, it should be treated as that element instead.
       or
       this = TRegExpSpecialChar(re, start, end)
-      or
-      this = TRegExpNamedCharacterProperty(re, start, end)
     }
 
     /**
@@ -183,8 +177,6 @@ private module Impl implements RegexTreeViewSig {
       result = this.(RegExpSequence).getChild(i)
       or
       result = this.(RegExpSpecialChar).getChild(i)
-      or
-      result = this.(RegExpNamedCharacterProperty).getChild(i)
     }
 
     /**
@@ -1151,30 +1143,6 @@ private module Impl implements RegexTreeViewSig {
     override predicate isNullable() { this.getGroup().isNullable() }
   }
 
-  /**
-   * A named character property. For example, the POSIX bracket expression
-   * `[[:digit:]]`.
-   */
-  additional class RegExpNamedCharacterProperty extends RegExpTerm, TRegExpNamedCharacterProperty {
-    RegExpNamedCharacterProperty() { this = TRegExpNamedCharacterProperty(re, start, end) }
-
-    override RegExpTerm getChild(int i) { none() }
-
-    override string getAPrimaryQlClass() { result = "RegExpNamedCharacterProperty" }
-
-    /**
-     * Gets the property name. For example, in `\p{Space}`, the result is
-     * `"Space"`.
-     */
-    string getName() { result = re.getCharacterPropertyName(start, end) }
-
-    /**
-     * Holds if the property is inverted. For example, it holds for `\p{^Digit}`,
-     * which matches non-digits.
-     */
-    predicate isInverted() { re.namedCharacterPropertyIsInverted(start, end) }
-  }
-
   class Top = RegExpParent;
 
   /**
@@ -1183,18 +1151,6 @@ private module Impl implements RegexTreeViewSig {
    */
   predicate isEscapeClass(RegExpTerm term, string clazz) {
     exists(RegExpCharacterClassEscape escape | term = escape | escape.getValue() = clazz)
-    or
-    // TODO: expand to cover more properties
-    exists(RegExpNamedCharacterProperty escape | term = escape |
-      escape.getName().toLowerCase() = "digit" and
-      if escape.isInverted() then clazz = "D" else clazz = "d"
-      or
-      escape.getName().toLowerCase() = "space" and
-      if escape.isInverted() then clazz = "S" else clazz = "s"
-      or
-      escape.getName().toLowerCase() = "word" and
-      if escape.isInverted() then clazz = "W" else clazz = "w"
-    )
   }
 
   /**
