@@ -53,6 +53,10 @@ private newtype TRegExpParent =
   /** A POSIX collating symbol */
   TRegExpPosixCollatingSymbol(RegExp re, int start, int end) {
     re.posixStyleCollatingSymbol(start, end, _)
+  } or
+  /** A POSIX equivalence class */
+  TRegExpPosixEquivalenceClass(RegExp re, int start, int end) {
+    re.posixStyleEquivalenceClass(start, end, _)
   }
 
 /** An implementation that satisfies the RegexTreeView signature. */
@@ -143,6 +147,8 @@ private module Impl implements RegexTreeViewSig {
       this = TRegExpSpecialChar(re, start, end)
       or
       this = TRegExpPosixCollatingSymbol(re, start, end)
+      or
+      this = TRegExpPosixEquivalenceClass(re, start, end)
     }
 
     /**
@@ -185,6 +191,8 @@ private module Impl implements RegexTreeViewSig {
       result = this.(RegExpSpecialChar).getChild(i)
       or
       result = this.(RegExpPosixCollatingSymbol).getChild(i)
+      or
+      result = this.(RegExpPosixEquivalenceClass).getChild(i)
     }
 
     /**
@@ -1129,6 +1137,16 @@ private module Impl implements RegexTreeViewSig {
     override string getAPrimaryQlClass() { result = "RegExpPosixCollatingSymbol" }
 
     string getName() { re.posixStyleCollatingSymbol(start, end, result) }
+  }
+
+  additional class RegExpPosixEquivalenceClass extends RegExpTerm, TRegExpPosixEquivalenceClass {
+    RegExpPosixEquivalenceClass() { this = TRegExpPosixEquivalenceClass(re, start, end) }
+
+    override RegExpTerm getChild(int i) { none() }
+
+    override string getAPrimaryQlClass() { result = "RegExpPosixEquivalenceClass" }
+
+    string getName() { re.posixStyleEquivalenceClass(start, end, result) }
   }
 
   class Top = RegExpParent;

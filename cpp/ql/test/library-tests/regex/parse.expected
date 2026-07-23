@@ -42,25 +42,7 @@
 
 #-----| [RegExpConstant, RegExpNormalChar] [
 
-#-----| [RegExpConstant, RegExpNormalChar] [
-
-#-----| [RegExpConstant, RegExpNormalChar] =
-
-#-----| [RegExpConstant, RegExpNormalChar] b
-
-#-----| [RegExpConstant, RegExpNormalChar] =
-
-#-----| [RegExpConstant, RegExpNormalChar] ]a-f]
-
-#-----| [RegExpConstant, RegExpNormalChar] [
-
-#-----| [RegExpConstant, RegExpNormalChar] =
-
-#-----| [RegExpConstant, RegExpNormalChar] a
-
-#-----| [RegExpConstant, RegExpNormalChar] =
-
-#-----| [RegExpConstant, RegExpNormalChar] ]
+#-----| [RegExpConstant, RegExpNormalChar] a-f]
 
 #-----| [RegExpConstant, RegExpNormalChar] A
 
@@ -206,12 +188,8 @@
 #-----| 2 -> [RegExpConstant, RegExpNormalChar] b
 
 #-----| [RegExpSequence] [A-F[[=b=]]a-f]
-#-----| 0 -> [RegExpCharacterClass] [A-F[[=b=]
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] ]a-f]
-
-#-----| [RegExpSequence] [[=a=]]
-#-----| 0 -> [RegExpCharacterClass] [[=a=]
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] ]
+#-----| 0 -> [RegExpCharacterClass] [A-F[[=b=]]
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] a-f]
 
 #-----| [RegExpSequence] [A-F[[.b.]]a-f]
 #-----| 0 -> [RegExpCharacterClass] [A-F[[.b.]]
@@ -279,6 +257,10 @@
 #-----| 1 -> [RegExpPlus] b+
 #-----| 2 -> [RegExpOpt] c?
 #-----| 3 -> [RegExpConstant, RegExpNormalChar] d
+
+#-----| [RegExpPosixEquivalenceClass] [=b=]
+
+#-----| [RegExpPosixEquivalenceClass] [=a=]
 
 #-----| [RegExpPosixCollatingSymbol] [.b.]
 
@@ -351,19 +333,13 @@
 #-----| [RegExpCharacterClass] [\cZ]
 #-----| 0 -> [RegExpConstant, RegExpEscape] \cZ
 
-#-----| [RegExpCharacterClass] [A-F[[=b=]
+#-----| [RegExpCharacterClass] [A-F[[=b=]]
 #-----| 0 -> [RegExpCharacterRange] A-F
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] [
-#-----| 2 -> [RegExpConstant, RegExpNormalChar] [
-#-----| 3 -> [RegExpConstant, RegExpNormalChar] =
-#-----| 4 -> [RegExpConstant, RegExpNormalChar] b
-#-----| 5 -> [RegExpConstant, RegExpNormalChar] =
+#-----| 2 -> [RegExpPosixEquivalenceClass] [=b=]
 
-#-----| [RegExpCharacterClass] [[=a=]
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] [
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] =
-#-----| 2 -> [RegExpConstant, RegExpNormalChar] a
-#-----| 3 -> [RegExpConstant, RegExpNormalChar] =
+#-----| [RegExpCharacterClass] [[=a=]]
+#-----| 0 -> [RegExpPosixEquivalenceClass] [=a=]
 
 #-----| [RegExpCharacterClass] [A-F[[.b.]]
 #-----| 0 -> [RegExpCharacterRange] A-F

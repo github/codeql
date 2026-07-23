@@ -105,6 +105,8 @@ abstract class RegExp extends StringLiteral {
             this.posixStyleNamedCharacterProperty(x, y, _)
             or
             this.posixStyleCollatingSymbol(x, y, _)
+            or
+            this.posixStyleEquivalenceClass(x, y, _)
           ) and
           pos >= x and
           pos < y
@@ -143,6 +145,8 @@ abstract class RegExp extends StringLiteral {
               this.posixStyleNamedCharacterProperty(x, y, _)
               or
               this.posixStyleCollatingSymbol(x, y, _)
+              or
+              this.posixStyleEquivalenceClass(x, y, _)
             ) and
             e >= x and
             e < y
@@ -176,6 +180,8 @@ abstract class RegExp extends StringLiteral {
       or
       this.posixStyleCollatingSymbol(start, end, _)
       or
+      this.posixStyleEquivalenceClass(start, end, _)
+      or
       exists(this.nonEscapedCharAt(start)) and end = start + 1
     )
     or
@@ -186,6 +192,8 @@ abstract class RegExp extends StringLiteral {
       this.namedCharacterProperty(start, end, _)
       or
       this.posixStyleCollatingSymbol(start, end, _)
+      or
+      this.posixStyleEquivalenceClass(start, end, _)
       or
       exists(this.nonEscapedCharAt(start)) and
       end = start + 1 and
@@ -344,6 +352,21 @@ abstract class RegExp extends StringLiteral {
     name = this.getText().substring(start + 2, end - 2)
   }
 
+  /** Matches a POSIX equivalence class such as `[=a=]` within a character class. */
+  predicate posixStyleEquivalenceClass(int start, int end, string name) {
+    this.getChar(start) = "[" and
+    this.getChar(start + 1) = "=" and
+    end =
+      min(int e |
+        e > start and
+        this.getChar(e - 2) = "=" and
+        this.getChar(e - 1) = "]"
+      |
+        e
+      ) and
+    name = this.getText().substring(start + 2, end - 2)
+  }
+
   /**
    * Holds if the named character property is inverted. Examples for which it holds:
    * - `\P{Digit}` upper-case P means inverted
@@ -406,6 +429,8 @@ abstract class RegExp extends StringLiteral {
         this.posixStyleNamedCharacterProperty(x, y, _)
         or
         this.posixStyleCollatingSymbol(x, y, _)
+        or
+        this.posixStyleEquivalenceClass(x, y, _)
       ) and
       index in [x + 1 .. y - 2]
     )
@@ -423,6 +448,8 @@ abstract class RegExp extends StringLiteral {
         this.posixStyleNamedCharacterProperty(x, y, _)
         or
         this.posixStyleCollatingSymbol(x, y, _)
+        or
+        this.posixStyleEquivalenceClass(x, y, _)
       ) and
       start >= x and
       end <= y
