@@ -386,27 +386,22 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             }
         ),
         // ---- Enums ----
-        // enum_type_parameter → parameter (with optional name as pattern).
+        // An enum-case payload parameter (`radius: Double`, or just `Double`).
+        // The label (`firstName`) is optional.
         rule!(
-            (enum_type_parameter name: @name type: @ty)
+            (enumCaseParameter firstName: _? @@name type: @ty)
             =>
-            (parameter
-                pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty})
+            (parameter pattern: {name.map(|name| tree!((name_pattern identifier: (identifier #{name}))))} type: {ty})
         ),
+        // An enum element with associated values (`case circle(radius: Double)`)
+        // becomes a nested `class_like_declaration` whose constructor carries the
+        // payload parameters; an element with a raw value (`case a = 1`) or a
+        // plain element (`case north`) becomes a `variable_declaration`. All
+        // carry the shared case modifiers / chained tag from `ctx` (set by the
+        // `enumCaseDecl` rule below) and are tagged `enum_case` (after any
+        // `chained_declaration` tag, matching the tree-sitter modifier order).
         rule!(
-            (enum_type_parameter type: @ty)
-            =>
-            (parameter type: {ty})
-        ),
-        // enum_case_entry with associated values → class_like_declaration
-        // containing a constructor whose parameters are the data
-        // parameters. Reads outer modifiers / chained tag from `ctx`
-        // (set by the outer `enum_entry` rule).
-        rule!(
-            (enum_case_entry
-                name: @name
-                data_contents: (enum_type_parameters parameter: _* @params))
+            (enumCaseElement name: @name parameterClause: (enumCaseParameterClause parameters: _* @params))
             =>
             (class_like_declaration
                 modifier: {ctx.outer_modifiers.clone()}
@@ -415,9 +410,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 name: (identifier #{name})
                 member: (constructor_declaration parameter: {params} body: (block)))
         ),
-        // enum_case_entry with explicit raw value → variable_declaration with that value.
         rule!(
-            (enum_case_entry name: @name raw_value: @val)
+            (enumCaseElement name: @name rawValue: (initializerClause value: @val))
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
@@ -426,9 +420,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 pattern: (name_pattern identifier: (identifier #{name}))
                 value: {val})
         ),
-        // enum_case_entry without associated values → variable_declaration tagged enum_case.
         rule!(
-            (enum_case_entry name: @name)
+            (enumCaseElement name: @name)
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
@@ -436,12 +429,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 modifier: (modifier "enum_case")
                 pattern: (name_pattern identifier: (identifier #{name})))
         ),
-        // enum_entry: flatten case entries; publish outer modifiers
-        // into `ctx` and translate each case with `ctx.is_chained`
-        // toggled per iteration so the inner `enum_case_entry` rules
-        // emit complete `modifier:` lists from the start.
+        // Enum cases. A single `case` declaration may carry modifiers
+        // (e.g. `indirect`) and list several comma-separated elements; each
+        // becomes its own declaration carrying those shared modifiers, and
+        // non-first ones are tagged `chained_declaration` (mirroring the
+        // tree-sitter `enum_entry` rule). The modifiers are published into `ctx`
+        // for the element rules above, which build the actual declaration.
         rule!(
-            (enum_entry case: _+ @@cases (modifiers)* @mods)
+            (enumCaseDecl modifiers: _* @mods elements: _* @@cases)
             =>
             member* {
                 ctx.outer_modifiers = mods;
