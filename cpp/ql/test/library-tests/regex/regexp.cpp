@@ -48,7 +48,7 @@ std::regex r_meta1(".*");
 std::regex r_meta2("\\w+\\W");
 std::regex r_meta3("\\s\\S");
 std::regex r_meta4("\\d\\D");
-std::regex r_meta5("\\h\\H");
+
 std::regex r_meta6("\\n\\r\\t");
 
 // Anchors

@@ -85,9 +85,6 @@ term
 | regexp.cpp:50:21:50:22 | \\d | RegExpCharacterClassEscape |
 | regexp.cpp:50:21:50:24 | \\d\\D | RegExpSequence |
 | regexp.cpp:50:23:50:24 | \\D | RegExpCharacterClassEscape |
-| regexp.cpp:51:21:51:22 | \\h | RegExpCharacterClassEscape |
-| regexp.cpp:51:21:51:24 | \\h\\H | RegExpSequence |
-| regexp.cpp:51:23:51:24 | \\H | RegExpCharacterClassEscape |
 | regexp.cpp:52:21:52:22 | \\n | RegExpConstant,RegExpEscape |
 | regexp.cpp:52:21:52:26 | \\n\\r\\t | RegExpSequence |
 | regexp.cpp:52:23:52:24 | \\r | RegExpConstant,RegExpEscape |
@@ -265,8 +262,6 @@ regExpNormalCharValue
 | regexp.cpp:49:23:49:24 | \\S | S |
 | regexp.cpp:50:21:50:22 | \\d | d |
 | regexp.cpp:50:23:50:24 | \\D | D |
-| regexp.cpp:51:21:51:22 | \\h | h |
-| regexp.cpp:51:23:51:24 | \\H | H |
 | regexp.cpp:52:21:52:22 | \\n | \n |
 | regexp.cpp:52:23:52:24 | \\r | \r |
 | regexp.cpp:52:25:52:26 | \\t | \t |

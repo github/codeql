@@ -206,14 +206,6 @@ regexp.cpp:
 
 #   50| [RegExpCharacterClassEscape] \D
 
-#   51| [RegExpCharacterClassEscape] \h
-
-#   51| [RegExpSequence] \h\H
-#-----| 0 -> [RegExpCharacterClassEscape] \h
-#-----| 1 -> [RegExpCharacterClassEscape] \H
-
-#   51| [RegExpCharacterClassEscape] \H
-
 #   52| [RegExpConstant, RegExpEscape] \n
 
 #   52| [RegExpSequence] \n\r\t

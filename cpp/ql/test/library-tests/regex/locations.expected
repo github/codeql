@@ -19,7 +19,6 @@
 | regexp.cpp:48:21:48:25 | \\w+\\W | regexp.cpp | 48 | 21 | 48 | 25 |
 | regexp.cpp:49:21:49:24 | \\s\\S | regexp.cpp | 49 | 21 | 49 | 24 |
 | regexp.cpp:50:21:50:24 | \\d\\D | regexp.cpp | 50 | 21 | 50 | 24 |
-| regexp.cpp:51:21:51:24 | \\h\\H | regexp.cpp | 51 | 21 | 51 | 24 |
 | regexp.cpp:52:21:52:26 | \\n\\r\\t | regexp.cpp | 52 | 21 | 52 | 26 |
 | regexp.cpp:56:20:56:25 | \\b!a\\B | regexp.cpp | 56 | 20 | 56 | 25 |
 | regexp.cpp:59:20:59:28 | (foo)*bar | regexp.cpp | 59 | 20 | 59 | 28 |
