@@ -18,7 +18,7 @@ public class SubstResolver {
     boolean loaded = false;
     if (File.separatorChar == '\\') {
       String dist = System.getenv("CODEQL_DIST");
-    if (dist != null && !dist.isEmpty()) {
+      if (dist != null && !dist.isEmpty()) {
         try {
           Path library = Paths.get(dist).resolve("tools")
                   .resolve("win64").resolve("canonicalize.dll").toAbsolutePath();
@@ -61,7 +61,12 @@ public class SubstResolver {
       return f;
     }
 
-    String resolved = nativeResolveSubst(path.substring(0, 3));
+    String resolved;
+    try {
+      resolved = nativeResolveSubst(path.substring(0, 3));
+    } catch (UnsatisfiedLinkError ignored) {
+      return f;
+    }
     if (resolved == null) {
       return f;
     }

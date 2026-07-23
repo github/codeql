@@ -30,9 +30,14 @@ func init() {
 	}
 	p, err := d.FindProc("resolve_subst")
 	if err != nil {
+		d.Release()
 		return
 	}
-	f, _ := d.FindProc("resolve_subst_free")
+	f, err := d.FindProc("resolve_subst_free")
+	if err != nil {
+		d.Release()
+		return
+	}
 	dll = d
 	procResolve = p
 	procFree = f
