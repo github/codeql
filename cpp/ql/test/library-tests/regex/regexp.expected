@@ -44,14 +44,6 @@ term
 | regexp.cpp:32:26:32:28 | 0-9 | RegExpCharacterRange |
 | regexp.cpp:32:28:32:28 | 9 | RegExpConstant,RegExpNormalChar |
 | regexp.cpp:32:29:32:29 | _ | RegExpConstant,RegExpNormalChar |
-| regexp.cpp:33:19:33:20 | \\A | RegExpCaret |
-| regexp.cpp:33:19:33:28 | \\A[+-]?\\d+ | RegExpSequence |
-| regexp.cpp:33:21:33:24 | [+-] | RegExpCharacterClass |
-| regexp.cpp:33:21:33:25 | [+-]? | RegExpOpt |
-| regexp.cpp:33:22:33:22 | + | RegExpConstant,RegExpNormalChar |
-| regexp.cpp:33:23:33:23 | - | RegExpConstant,RegExpNormalChar |
-| regexp.cpp:33:26:33:27 | \\d | RegExpCharacterClassEscape |
-| regexp.cpp:33:26:33:28 | \\d+ | RegExpPlus |
 | regexp.cpp:34:19:34:22 | [\\w] | RegExpCharacterClass |
 | regexp.cpp:34:19:34:23 | [\\w]+ | RegExpPlus |
 | regexp.cpp:34:20:34:21 | \\w | RegExpCharacterClassEscape |
@@ -83,8 +75,6 @@ term
 | regexp.cpp:43:28:43:31 | A-F] | RegExpConstant,RegExpNormalChar |
 | regexp.cpp:46:21:46:21 | . | RegExpDot |
 | regexp.cpp:46:21:46:22 | .* | RegExpStar |
-| regexp.cpp:47:22:47:22 | . | RegExpDot |
-| regexp.cpp:47:22:47:23 | .* | RegExpStar |
 | regexp.cpp:48:21:48:22 | \\w | RegExpCharacterClassEscape |
 | regexp.cpp:48:21:48:23 | \\w+ | RegExpPlus |
 | regexp.cpp:48:21:48:25 | \\w+\\W | RegExpSequence |
@@ -102,9 +92,6 @@ term
 | regexp.cpp:52:21:52:26 | \\n\\r\\t | RegExpSequence |
 | regexp.cpp:52:23:52:24 | \\r | RegExpConstant,RegExpEscape |
 | regexp.cpp:52:25:52:26 | \\t | RegExpConstant,RegExpEscape |
-| regexp.cpp:55:20:55:21 | \\G | RegExpSpecialChar |
-| regexp.cpp:55:20:55:24 | \\Gabc | RegExpSequence |
-| regexp.cpp:55:22:55:24 | abc | RegExpConstant,RegExpNormalChar |
 | regexp.cpp:56:20:56:21 | \\b | RegExpSpecialChar |
 | regexp.cpp:56:20:56:25 | \\b!a\\B | RegExpSequence |
 | regexp.cpp:56:22:56:23 | !a | RegExpConstant,RegExpNormalChar |
@@ -256,9 +243,6 @@ regExpNormalCharValue
 | regexp.cpp:32:26:32:26 | 0 | 0 |
 | regexp.cpp:32:28:32:28 | 9 | 9 |
 | regexp.cpp:32:29:32:29 | _ | _ |
-| regexp.cpp:33:22:33:22 | + | + |
-| regexp.cpp:33:23:33:23 | - | - |
-| regexp.cpp:33:26:33:27 | \\d | d |
 | regexp.cpp:34:20:34:21 | \\w | w |
 | regexp.cpp:35:19:35:20 | \\[ | [ |
 | regexp.cpp:35:21:35:22 | \\] | ] |
@@ -286,7 +270,6 @@ regExpNormalCharValue
 | regexp.cpp:52:21:52:22 | \\n | \n |
 | regexp.cpp:52:23:52:24 | \\r | \r |
 | regexp.cpp:52:25:52:26 | \\t | \t |
-| regexp.cpp:55:22:55:24 | abc | abc |
 | regexp.cpp:56:22:56:23 | !a | !a |
 | regexp.cpp:59:21:59:23 | foo | foo |
 | regexp.cpp:59:26:59:28 | bar | bar |

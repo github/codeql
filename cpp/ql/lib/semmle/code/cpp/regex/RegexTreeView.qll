@@ -936,17 +936,17 @@ private module Impl implements RegexTreeViewSig {
    * Example:
    *
    * ```
-   * \A
+   * ^
    * ```
    */
   class RegExpAnchor extends RegExpSpecialChar {
-    RegExpAnchor() { this.getChar() = ["^", "$", "\\A", "\\Z", "\\z"] }
+    RegExpAnchor() { this.getChar() = ["^", "$"] }
 
     override string getAPrimaryQlClass() { result = "RegExpAnchor" }
   }
 
   /**
-   * A dollar assertion `$` or `\Z` matching the end of a line.
+   * A dollar assertion `$` matching the end of a line.
    *
    * Example:
    *
@@ -955,7 +955,7 @@ private module Impl implements RegexTreeViewSig {
    * ```
    */
   class RegExpDollar extends RegExpAnchor {
-    RegExpDollar() { this.getChar() = ["$", "\\Z", "\\z"] }
+    RegExpDollar() { this.getChar() = "$" }
 
     override string getAPrimaryQlClass() { result = "RegExpDollar" }
 
@@ -963,7 +963,7 @@ private module Impl implements RegexTreeViewSig {
   }
 
   /**
-   * A caret assertion `^` or `\A` matching the beginning of a line.
+   * A caret assertion `^` matching the beginning of a line.
    *
    * Example:
    *
@@ -972,7 +972,7 @@ private module Impl implements RegexTreeViewSig {
    * ```
    */
   class RegExpCaret extends RegExpAnchor {
-    RegExpCaret() { this.getChar() = ["^", "\\A"] }
+    RegExpCaret() { this.getChar() = "^" }
 
     override string getAPrimaryQlClass() { result = "RegExpCaret" }
 

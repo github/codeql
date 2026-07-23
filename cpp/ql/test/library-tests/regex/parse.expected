@@ -95,29 +95,6 @@ regexp.cpp:
 
 #   32| [RegExpConstant, RegExpNormalChar] _
 
-#   33| [RegExpCaret] \A
-
-#   33| [RegExpSequence] \A[+-]?\d+
-#-----| 0 -> [RegExpCaret] \A
-#-----| 1 -> [RegExpOpt] [+-]?
-#-----| 2 -> [RegExpPlus] \d+
-
-#   33| [RegExpCharacterClass] [+-]
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] +
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] -
-
-#   33| [RegExpOpt] [+-]?
-#-----| 0 -> [RegExpCharacterClass] [+-]
-
-#   33| [RegExpConstant, RegExpNormalChar] +
-
-#   33| [RegExpConstant, RegExpNormalChar] -
-
-#   33| [RegExpCharacterClassEscape] \d
-
-#   33| [RegExpPlus] \d+
-#-----| 0 -> [RegExpCharacterClassEscape] \d
-
 #   34| [RegExpCharacterClass] [\w]
 #-----| 0 -> [RegExpCharacterClassEscape] \w
 
@@ -202,11 +179,6 @@ regexp.cpp:
 #   46| [RegExpStar] .*
 #-----| 0 -> [RegExpDot] .
 
-#   47| [RegExpDot] .
-
-#   47| [RegExpStar] .*
-#-----| 0 -> [RegExpDot] .
-
 #   48| [RegExpCharacterClassEscape] \w
 
 #   48| [RegExpPlus] \w+
@@ -252,14 +224,6 @@ regexp.cpp:
 #   52| [RegExpConstant, RegExpEscape] \r
 
 #   52| [RegExpConstant, RegExpEscape] \t
-
-#   55| [RegExpSpecialChar] \G
-
-#   55| [RegExpSequence] \Gabc
-#-----| 0 -> [RegExpSpecialChar] \G
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] abc
-
-#   55| [RegExpConstant, RegExpNormalChar] abc
 
 #   56| [RegExpSpecialChar] \b
 

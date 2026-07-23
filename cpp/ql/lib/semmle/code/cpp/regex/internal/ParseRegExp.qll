@@ -476,7 +476,7 @@ abstract class RegExp extends StringLiteral {
       end = start + 2 and
       this.escapingChar(start) and
       char = this.getText().substring(start, end) and
-      char = ["\\A", "\\Z", "\\z", "\\G", "\\b", "\\B"]
+      char = ["\\b", "\\B"]
     )
   }
 
@@ -958,8 +958,8 @@ abstract class RegExp extends StringLiteral {
       or
       this.qualifiedItem(x, start, true, _)
       or
-      // ^ and \A match the start of the string
-      this.specialCharacter(x, start, ["^", "\\A"])
+      // ^ matches the start of the string
+      this.specialCharacter(x, start, "^")
     )
     or
     exists(int y | this.firstPart(start, y) |
@@ -984,8 +984,8 @@ abstract class RegExp extends StringLiteral {
       or
       this.qualifiedItem(end, y, true, _)
       or
-      // $, \Z, and \z match the end of the string.
-      this.specialCharacter(end, y, ["$", "\\Z", "\\z"])
+      // $ matches the end of the string.
+      this.specialCharacter(end, y, "$")
     )
     or
     this.lastPart(_, end) and
