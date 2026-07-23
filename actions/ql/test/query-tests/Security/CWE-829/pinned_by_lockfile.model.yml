@@ -8,6 +8,6 @@ extensions:
     # query suppresses it.
     data:
       - [".github/workflows/lockfile_pinned.yml", "some-owner/pinned-action", "v1"]
-      # Lower-cased form of `Mixed-Owner/Pinned-Action@v1`, as the generator emits it. Exercises the
+      # Lower-cased form of `Mixed-Owner/Pinned-Action@v1`, as the extractor emits it. Exercises the
       # case-insensitive owner/repo match in the `actions/unpinned-tag` query.
       - [".github/workflows/lockfile_pinned.yml", "mixed-owner/pinned-action", "v1"]
