@@ -69,7 +69,7 @@ impl SwiftContext {
 /// rule. Returns `Option<Id>` so it splices via `{…}` to 0 or 1 ids.
 fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Option<yeast::Id> {
     if ctx.is_chained {
-        Some(ctx.literal("modifier", "chained_declaration"))
+        Some(tree!((modifier "chained_declaration")))
     } else {
         None
     }
@@ -449,8 +449,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 result
             }
         ),
-        // Unwrap `type` wrapper node
-        rule!((type name: @inner) => type_expr { inner }),
         // `identifierPattern` wraps a single identifier token.
         rule!(
             (identifierPattern identifier: @name)
@@ -1093,22 +1091,24 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((memberBlockItem decl: _* @d) => member* { d }),
         // Init declaration → constructor_declaration. Body statements optional;
         // body itself is also optional (protocol requirement).
+        //
+        // PARITY(tree-sitter): the parameters are not emitted, because the
+        // tree-sitter path dropped them (its `(parameter)*` capture missed the
+        // field-attached parameters). Emitting them is a future improvement.
         rule!(
-            (init_declaration
-                (parameter)* @params
-                body: (block statement: _* @body_stmts)?
-                (modifiers)* @mods)
+            (initializerDecl
+                modifiers: _* @mods
+                body: (codeBlock statements: _* @body_stmts)?)
             =>
             (constructor_declaration
                 modifier: {mods}
-                parameter: {params}
                 body: (block stmt: {body_stmts}))
         ),
         // Deinit declaration → destructor_declaration. Body statements optional.
         rule!(
-            (deinit_declaration
-                body: (block statement: _* @body_stmts)
-                (modifiers)* @mods)
+            (deinitializerDecl
+                modifiers: _* @mods
+                body: (codeBlock statements: _* @body_stmts))
             =>
             (destructor_declaration
                 modifier: {mods}
@@ -1116,30 +1116,28 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // Typealias declaration
         rule!(
-            (typealias_declaration name: @name value: @val (modifiers)* @mods)
+            (typeAliasDecl
+                modifiers: _* @mods
+                name: @@name
+                initializer: (typeInitializerClause value: @val))
             =>
             (type_alias_declaration
                 modifier: {mods}
                 name: (identifier #{name})
                 r#type: {val})
         ),
-        // Subscript declaration (not yet supported -- grammar needs to distinguish plain calls from subscript calls)
-        rule!(
-            (subscript_declaration (parameter)* @params (modifiers)* @mods)
-            =>
-            (unsupported_node)
-        ),
         // Associated type declaration (with optional bound)
         rule!(
-            (associatedtype_declaration name: @name inherits_from: _? @bound (modifiers)* @mods)
+            (associatedTypeDecl
+                modifiers: _* @mods
+                name: @@name
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bound))?)
             =>
             (associated_type_declaration
                 modifier: {mods}
                 name: (identifier #{name})
                 bound: {bound})
         ),
-        // Preprocessor conditionals — unsupported
-        rule!((diagnostic) => (unsupported_node)),
         // ---- Fallbacks ----
         // Bare `_` (rather than `(_)`) so this matches both named nodes
         // and unnamed tokens. Any unnamed token that escapes the
