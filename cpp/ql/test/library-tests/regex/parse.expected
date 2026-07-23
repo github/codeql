@@ -401,21 +401,12 @@ regexp.cpp:
 
 #   81| [RegExpConstant, RegExpEscape] \u{987
 
-#   84| [RegExpConstant, RegExpEscape] \c
-
-#   84| [RegExpSequence] \cA
-#-----| 0 -> [RegExpConstant, RegExpEscape] \c
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] A
-
-#   84| [RegExpConstant, RegExpNormalChar] A
+#   84| [RegExpConstant, RegExpEscape] \cA
 
 #   85| [RegExpCharacterClass] [\cZ]
-#-----| 0 -> [RegExpConstant, RegExpEscape] \c
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] Z
+#-----| 0 -> [RegExpConstant, RegExpEscape] \cZ
 
-#   85| [RegExpConstant, RegExpEscape] \c
-
-#   85| [RegExpConstant, RegExpNormalChar] Z
+#   85| [RegExpConstant, RegExpEscape] \cZ
 
 #   88| [RegExpConstant, RegExpNormalChar] a
 

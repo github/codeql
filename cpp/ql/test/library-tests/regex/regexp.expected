@@ -150,12 +150,9 @@ term
 | regexp.cpp:75:37:75:37 | f | RegExpConstant,RegExpNormalChar |
 | regexp.cpp:78:22:78:30 | [:digit:] | RegExpNamedCharacterProperty |
 | regexp.cpp:81:19:81:24 | \\u{987 | RegExpConstant,RegExpEscape |
-| regexp.cpp:84:21:84:22 | \\c | RegExpConstant,RegExpEscape |
-| regexp.cpp:84:21:84:23 | \\cA | RegExpSequence |
-| regexp.cpp:84:23:84:23 | A | RegExpConstant,RegExpNormalChar |
+| regexp.cpp:84:21:84:23 | \\cA | RegExpConstant,RegExpEscape |
 | regexp.cpp:85:21:85:25 | [\\cZ] | RegExpCharacterClass |
-| regexp.cpp:85:22:85:23 | \\c | RegExpConstant,RegExpEscape |
-| regexp.cpp:85:24:85:24 | Z | RegExpConstant,RegExpNormalChar |
+| regexp.cpp:85:22:85:24 | \\cZ | RegExpConstant,RegExpEscape |
 | regexp.cpp:88:25:88:25 | a | RegExpConstant,RegExpNormalChar |
 | regexp.cpp:88:25:88:28 | a\\nb | RegExpSequence |
 | regexp.cpp:88:26:88:27 | \\n | RegExpConstant,RegExpEscape |
@@ -272,10 +269,8 @@ regExpNormalCharValue
 | regexp.cpp:75:35:75:35 | a | a |
 | regexp.cpp:75:37:75:37 | f | f |
 | regexp.cpp:81:19:81:24 | \\u{987 | \u0987 |
-| regexp.cpp:84:21:84:22 | \\c | c |
-| regexp.cpp:84:23:84:23 | A | A |
-| regexp.cpp:85:22:85:23 | \\c | c |
-| regexp.cpp:85:24:85:24 | Z | Z |
+| regexp.cpp:84:21:84:23 | \\cA | cA |
+| regexp.cpp:85:22:85:24 | \\cZ | cZ |
 | regexp.cpp:88:25:88:25 | a | a |
 | regexp.cpp:88:26:88:27 | \\n | \n |
 | regexp.cpp:88:28:88:28 | b | b |

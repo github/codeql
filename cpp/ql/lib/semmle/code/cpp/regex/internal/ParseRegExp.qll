@@ -322,8 +322,11 @@ abstract class RegExp extends StringLiteral {
       // wide hex char \uhhhh
       this.getChar(start + 1) = "u" and end = start + 6
       or
+      // control char \cX
+      this.getChar(start + 1) = "c" and end = start + 3
+      or
       // escape not handled above; update when adding a new case
-      not this.getChar(start + 1) in ["x", "u"] and
+      not this.getChar(start + 1) in ["x", "u", "c"] and
       not exists(this.getChar(start + 1).toInt()) and
       end = start + 2
     )
