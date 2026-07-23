@@ -1106,14 +1106,13 @@ private module Impl implements RegexTreeViewSig {
   }
 
   /**
-   * A back reference, that is, a term of the form `\i` or `\k<name>`
-   * in a regular expression.
+   * A back reference, that is, a term of the form `\i` in a regular
+   * expression.
    *
    * Examples:
    *
    * ```
    * \1
-   * (?P=quote)
    * ```
    */
   class RegExpBackRef extends RegExpTerm, TRegExpBackRef {
@@ -1123,11 +1122,6 @@ private module Impl implements RegexTreeViewSig {
      * Gets the number of the capture group this back reference refers to, if any.
      */
     int getNumber() { result = re.getBackRefNumber(start, end) }
-
-    /**
-     * Gets the name of the capture group this back reference refers to, if any.
-     */
-    string getName() { result = re.getBackRefName(start, end) }
 
     /** Gets the capture group this back reference refers to. */
     RegExpGroup getGroup() {

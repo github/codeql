@@ -331,7 +331,6 @@ abstract class RegExp extends StringLiteral {
   predicate escapedCharacter(int start, int end) {
     this.escapingChar(start) and
     not this.numberedBackreference(start, _, _) and
-    not this.namedBackreference(start, _, _) and
     (
       // hex char \xhh
       this.getChar(start + 1) = "x" and end = start + 4
@@ -639,17 +638,6 @@ abstract class RegExp extends StringLiteral {
     this.isGroupEnd(inEnd)
   }
 
-  /** Matches a named backreference, e.g. `\k<foo>`. */
-  predicate namedBackreference(int start, int end, string name) {
-    this.escapingChar(start) and
-    this.getChar(start + 1) = "k" and
-    this.getChar(start + 2) = "<" and
-    exists(int nameEnd | nameEnd = min(int i | i > start + 3 and this.getChar(i) = ">") |
-      end = nameEnd + 1 and
-      name = this.getText().substring(start + 3, nameEnd)
-    )
-  }
-
   /** Matches a numbered backreference, e.g. `\1`. */
   predicate numberedBackreference(int start, int end, int value) {
     this.escapingChar(start) and
@@ -669,15 +657,10 @@ abstract class RegExp extends StringLiteral {
   /** Whether the text in the range `start,end` is a back reference */
   predicate backreference(int start, int end) {
     this.numberedBackreference(start, end, _)
-    or
-    this.namedBackreference(start, end, _)
   }
 
   /** Gets the number of the back reference in start,end */
   int getBackRefNumber(int start, int end) { this.numberedBackreference(start, end, result) }
-
-  /** Gets the name, if it has one, of the back reference in start,end */
-  string getBackRefName(int start, int end) { this.namedBackreference(start, end, result) }
 
   private predicate baseItem(int start, int end) {
     this.characterItem(start, end) and
