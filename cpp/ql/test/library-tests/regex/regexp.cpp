@@ -76,6 +76,10 @@ std::regex r_posix4("[:digit:]");
 // unicode
 std::regex r_uni("\\u{9879}");
 
+// control escapes
+std::regex r_ctrl1("\\cA");
+std::regex r_ctrl2("[\\cZ]");
+
 // String literal spellings for location tests
 std::regex r_loc_plain("a\\nb");
 std::basic_regex<wchar_t> r_loc_L(L"abc");

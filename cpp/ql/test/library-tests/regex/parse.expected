@@ -26,6 +26,14 @@
 
 #-----| [RegExpConstant, RegExpNormalChar] b
 
+#-----| [RegExpConstant, RegExpEscape] \c
+
+#-----| [RegExpConstant, RegExpNormalChar] Z
+
+#-----| [RegExpConstant, RegExpEscape] \c
+
+#-----| [RegExpConstant, RegExpNormalChar] A
+
 #-----| [RegExpConstant, RegExpEscape] \u{987
 
 #-----| [RegExpConstant, RegExpNormalChar] A
@@ -163,6 +171,10 @@
 #-----| 1 -> [RegExpConstant, RegExpEscape] \n
 #-----| 2 -> [RegExpConstant, RegExpNormalChar] b
 
+#-----| [RegExpSequence] \cA
+#-----| 0 -> [RegExpConstant, RegExpEscape] \c
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] A
+
 #-----| [RegExpSequence] [[:alpha:]][[:digit:]]
 #-----| 0 -> [RegExpCharacterClass] [[:alpha:]]
 #-----| 1 -> [RegExpCharacterClass] [[:digit:]]
@@ -278,6 +290,10 @@
 #-----| [RegExpCharacterRange] 0-9
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] 0
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] 9
+
+#-----| [RegExpCharacterClass] [\cZ]
+#-----| 0 -> [RegExpConstant, RegExpEscape] \c
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] Z
 
 #-----| [RegExpCharacterClass] [A-F[:digit:]a-f]
 #-----| 0 -> [RegExpCharacterRange] A-F
