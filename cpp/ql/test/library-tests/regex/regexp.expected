@@ -67,6 +67,7 @@ term
 | file://:0:0:0:0 | [[a-f] | RegExpCharacterClass |
 | file://:0:0:0:0 | [[a-f]A-F] | RegExpSequence |
 | file://:0:0:0:0 | [\\0] | RegExpCharacterClass |
+| file://:0:0:0:0 | [\\b] | RegExpCharacterClass |
 | file://:0:0:0:0 | [\\cZ] | RegExpCharacterClass |
 | file://:0:0:0:0 | [\\w] | RegExpCharacterClass |
 | file://:0:0:0:0 | [\\w]+ | RegExpPlus |
@@ -87,6 +88,7 @@ term
 | file://:0:0:0:0 | \\[ | RegExpConstant,RegExpEscape |
 | file://:0:0:0:0 | \\[\\][123] | RegExpSequence |
 | file://:0:0:0:0 | \\] | RegExpConstant,RegExpEscape |
+| file://:0:0:0:0 | \\b | RegExpConstant,RegExpEscape |
 | file://:0:0:0:0 | \\b | RegExpSpecialChar |
 | file://:0:0:0:0 | \\b!a\\B | RegExpSequence |
 | file://:0:0:0:0 | \\cA | RegExpConstant,RegExpEscape |
@@ -216,6 +218,7 @@ regExpNormalCharValue
 | file://:0:0:0:0 | \\W | W |
 | file://:0:0:0:0 | \\[ | [ |
 | file://:0:0:0:0 | \\] | ] |
+| file://:0:0:0:0 | \\b | b |
 | file://:0:0:0:0 | \\cA | cA |
 | file://:0:0:0:0 | \\cZ | cZ |
 | file://:0:0:0:0 | \\d | d |

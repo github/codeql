@@ -128,6 +128,8 @@
 
 #-----| [RegExpConstant, RegExpNormalChar] A-F]
 
+#-----| [RegExpConstant, RegExpEscape] \b
+
 #-----| [RegExpConstant, RegExpNormalChar] |
 
 #-----| [RegExpConstant, RegExpNormalChar] -
@@ -377,6 +379,9 @@
 #-----| [RegExpCharacterClass] [[a-f]
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] [
 #-----| 1 -> [RegExpCharacterRange] a-f
+
+#-----| [RegExpCharacterClass] [\b]
+#-----| 0 -> [RegExpConstant, RegExpEscape] \b
 
 #-----| [RegExpCharacterClass] [|]
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] |
