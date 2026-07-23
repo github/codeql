@@ -26,11 +26,9 @@
 
 #-----| [RegExpConstant, RegExpNormalChar] b
 
-#-----| [RegExpConstant, RegExpNormalChar] \
+#-----| [RegExpConstant, RegExpEscape] \0
 
-#-----| [RegExpConstant, RegExpNormalChar] 0
-
-#-----| [RegExpConstant, RegExpNormalChar] \0
+#-----| [RegExpConstant, RegExpEscape] \0
 
 #-----| [RegExpConstant, RegExpEscape] \cZ
 
@@ -290,8 +288,7 @@
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] 9
 
 #-----| [RegExpCharacterClass] [\0]
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] \
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] 0
+#-----| 0 -> [RegExpConstant, RegExpEscape] \0
 
 #-----| [RegExpCharacterClass] [\cZ]
 #-----| 0 -> [RegExpConstant, RegExpEscape] \cZ

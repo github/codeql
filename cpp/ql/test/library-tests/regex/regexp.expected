@@ -6,7 +6,6 @@ groupNumber
 | file://:0:0:0:0 | (o\|b) | 1 |
 term
 | file://:0:0:0:0 | 0 | RegExpConstant,RegExpNormalChar |
-| file://:0:0:0:0 | 0 | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | 0-9 | RegExpCharacterRange |
 | file://:0:0:0:0 | 1 | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | 2 | RegExpConstant,RegExpNormalChar |
@@ -60,8 +59,8 @@ term
 | file://:0:0:0:0 | [^]] | RegExpCharacterClass |
 | file://:0:0:0:0 | [a-fA-F0-9_] | RegExpCharacterClass |
 | file://:0:0:0:0 | [abc] | RegExpCharacterClass |
-| file://:0:0:0:0 | \\ | RegExpConstant,RegExpNormalChar |
-| file://:0:0:0:0 | \\0 | RegExpConstant,RegExpNormalChar |
+| file://:0:0:0:0 | \\0 | RegExpConstant,RegExpEscape |
+| file://:0:0:0:0 | \\0 | RegExpConstant,RegExpEscape |
 | file://:0:0:0:0 | \\1 | RegExpBackRef |
 | file://:0:0:0:0 | \\B | RegExpNonWordBoundary |
 | file://:0:0:0:0 | \\D | RegExpCharacterClassEscape |
@@ -158,7 +157,6 @@ term
 | file://:0:0:0:0 | o\|b | RegExpAlt |
 regExpNormalCharValue
 | file://:0:0:0:0 | 0 | 0 |
-| file://:0:0:0:0 | 0 | 0 |
 | file://:0:0:0:0 | 1 | 1 |
 | file://:0:0:0:0 | 2 | 2 |
 | file://:0:0:0:0 | 3 | 3 |
@@ -174,8 +172,8 @@ regExpNormalCharValue
 | file://:0:0:0:0 | F | F |
 | file://:0:0:0:0 | Z | Z |
 | file://:0:0:0:0 | [ | [ |
-| file://:0:0:0:0 | \\ | \\ |
-| file://:0:0:0:0 | \\0 | \\0 |
+| file://:0:0:0:0 | \\0 | 0 |
+| file://:0:0:0:0 | \\0 | 0 |
 | file://:0:0:0:0 | \\D | D |
 | file://:0:0:0:0 | \\S | S |
 | file://:0:0:0:0 | \\W | W |

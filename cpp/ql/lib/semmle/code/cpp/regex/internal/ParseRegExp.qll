@@ -347,6 +347,11 @@ abstract class RegExp extends StringLiteral {
       // control char \cX
       this.getChar(start + 1) = "c" and end = start + 3
       or
+      // nul escape \0 (when not followed by a digit)
+      this.getChar(start + 1) = "0" and
+      end = start + 2 and
+      not exists(this.getChar(start + 2).toInt())
+      or
       // escape not handled above; update when adding a new case
       not this.getChar(start + 1) in ["x", "u", "c"] and
       not exists(this.getChar(start + 1).toInt()) and
