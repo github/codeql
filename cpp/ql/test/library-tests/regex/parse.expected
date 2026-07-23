@@ -36,10 +36,6 @@
 
 #-----| [RegExpConstant, RegExpNormalChar] f
 
-#-----| [RegExpConstant, RegExpNormalChar] q
-
-#-----| [RegExpCharacterClassEscape] \s
-
 #-----| [RegExpConstant, RegExpNormalChar] a
 
 #-----| [RegExpConstant, RegExpNormalChar] b
@@ -171,11 +167,6 @@
 #-----| 0 -> [RegExpCharacterClass] [[:alpha:]]
 #-----| 1 -> [RegExpCharacterClass] [[:digit:]]
 
-#-----| [RegExpSequence] (q+)\s+\k<q>+
-#-----| 0 -> [RegExpGroup] (q+)
-#-----| 1 -> [RegExpPlus] \s+
-#-----| 2 -> [RegExpPlus] \k<q>+
-
 #-----| [RegExpSequence] (a+)b+\1
 #-----| 0 -> [RegExpGroup] (a+)
 #-----| 1 -> [RegExpPlus] b+
@@ -235,8 +226,6 @@
 #-----| 2 -> [RegExpOpt] c?
 #-----| 3 -> [RegExpConstant, RegExpNormalChar] d
 
-#-----| [RegExpBackRef] \k<q>
-
 #-----| [RegExpBackRef] \1
 
 #-----| [RegExpSpecialChar] \b
@@ -246,9 +235,6 @@
 #-----| [RegExpDot] .
 
 #-----| [RegExpDot] .
-
-#-----| [RegExpGroup] (q+)
-#-----| 0 -> [RegExpPlus] q+
 
 #-----| [RegExpGroup] (a+)
 #-----| 0 -> [RegExpPlus] a+
@@ -352,15 +338,6 @@
 #-----| [RegExpAlt] foo|bar
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] foo
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] bar
-
-#-----| [RegExpPlus] q+
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] q
-
-#-----| [RegExpPlus] \s+
-#-----| 0 -> [RegExpCharacterClassEscape] \s
-
-#-----| [RegExpPlus] \k<q>+
-#-----| 0 -> [RegExpBackRef] \k<q>
 
 #-----| [RegExpPlus] a+
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a

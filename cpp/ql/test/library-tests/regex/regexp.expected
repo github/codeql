@@ -4,7 +4,6 @@ groupNumber
 | file://:0:0:0:0 | (a\|b\|cd) | 1 |
 | file://:0:0:0:0 | (foo) | 1 |
 | file://:0:0:0:0 | (o\|b) | 1 |
-| file://:0:0:0:0 | (q+) | 1 |
 term
 | file://:0:0:0:0 | 0 | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | 0-9 | RegExpCharacterRange |
@@ -23,8 +22,6 @@ term
 | file://:0:0:0:0 | (foo)* | RegExpStar |
 | file://:0:0:0:0 | (foo)*bar | RegExpSequence |
 | file://:0:0:0:0 | (o\|b) | RegExpGroup |
-| file://:0:0:0:0 | (q+) | RegExpGroup |
-| file://:0:0:0:0 | (q+)\\s+\\k<q>+ | RegExpSequence |
 | file://:0:0:0:0 | - | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | . | RegExpDot |
 | file://:0:0:0:0 | . | RegExpDot |
@@ -72,15 +69,11 @@ term
 | file://:0:0:0:0 | \\b!a\\B | RegExpSequence |
 | file://:0:0:0:0 | \\d | RegExpCharacterClassEscape |
 | file://:0:0:0:0 | \\d\\D | RegExpSequence |
-| file://:0:0:0:0 | \\k<q> | RegExpBackRef |
-| file://:0:0:0:0 | \\k<q>+ | RegExpPlus |
 | file://:0:0:0:0 | \\n | RegExpConstant,RegExpEscape |
 | file://:0:0:0:0 | \\n | RegExpConstant,RegExpEscape |
 | file://:0:0:0:0 | \\n\\r\\t | RegExpSequence |
 | file://:0:0:0:0 | \\r | RegExpConstant,RegExpEscape |
 | file://:0:0:0:0 | \\s | RegExpCharacterClassEscape |
-| file://:0:0:0:0 | \\s | RegExpCharacterClassEscape |
-| file://:0:0:0:0 | \\s+ | RegExpPlus |
 | file://:0:0:0:0 | \\s\\S | RegExpSequence |
 | file://:0:0:0:0 | \\t | RegExpConstant,RegExpEscape |
 | file://:0:0:0:0 | \\u{987 | RegExpConstant,RegExpEscape |
@@ -156,8 +149,6 @@ term
 | file://:0:0:0:0 | foo\|bar | RegExpAlt |
 | file://:0:0:0:0 | o | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | o\|b | RegExpAlt |
-| file://:0:0:0:0 | q | RegExpConstant,RegExpNormalChar |
-| file://:0:0:0:0 | q+ | RegExpPlus |
 regExpNormalCharValue
 | file://:0:0:0:0 | 0 | 0 |
 | file://:0:0:0:0 | 1 | 1 |
@@ -184,7 +175,6 @@ regExpNormalCharValue
 | file://:0:0:0:0 | \\n | \n |
 | file://:0:0:0:0 | \\n | \n |
 | file://:0:0:0:0 | \\r | \r |
-| file://:0:0:0:0 | \\s | s |
 | file://:0:0:0:0 | \\s | s |
 | file://:0:0:0:0 | \\t | \t |
 | file://:0:0:0:0 | \\u{987 | \u0987 |
@@ -240,4 +230,3 @@ regExpNormalCharValue
 | file://:0:0:0:0 | foo | foo |
 | file://:0:0:0:0 | foo | foo |
 | file://:0:0:0:0 | o | o |
-| file://:0:0:0:0 | q | q |

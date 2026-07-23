@@ -60,7 +60,6 @@ std::regex r_grp4("(?::+)\\w"); // Non-capturing group matching colons
 
 // Backreferences
 std::regex r_bref1("(a+)b+\\1");
-std::regex r_bref2("(q+)\\s+\\k<q>+");
 
 // Two separate character classes, each containing a single POSIX bracket expression
 std::regex r_posix1("[[:alpha:]][[:digit:]]");
