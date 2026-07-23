@@ -70,6 +70,10 @@ std::regex r_posix2("[[:alpha:][:digit:]]");
 // A single character class containing two ranges and one POSIX bracket expression
 std::regex r_posix3("[A-F[:digit:]a-f]");
 
+// POSIX collating symbols
+std::regex r_posix_coll1("[[.a.]]");
+std::regex r_posix_coll2("[A-F[[.b.]]a-f]");
+
 // *Not* a POSIX bracket expression; just a regular character class.
 std::regex r_posix4("[:digit:]");
 
