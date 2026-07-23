@@ -1028,50 +1028,73 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // (swift-syntax represents `#selector`/`#keyPath` and other macro
         // expansions uniformly as a `macroExpansionExpr`).
         rule!((macroExpansionExpr) => (unsupported_node)),
-        // PARITY(tree-sitter): a nominal type's `inheritanceClause` (`: Base,
-        // Proto`) is not emitted as a `base_type` — the tree-sitter path drops
-        // it (no corpus target has a `base_type`). swift-syntax exposes it
-        // cleanly, so emitting `base_type` is a correctness improvement to make
-        // once tree-sitter is retired. Each declaration keyword gets its own
-        // rule; the bodies are identical but for the keyword.
+        // A nominal type's `inheritanceClause` (`: Base, Proto`) becomes a list
+        // of `base_type`s, one per inherited type. The tree-sitter path dropped
+        // it (no corpus target had a `base_type`) and the mapping matched that
+        // for parity; swift-syntax exposes it cleanly. Each declaration keyword
+        // gets its own rule; the bodies are identical but for the keyword.
         // Class declaration with body containing members
         rule!(
-            (classDecl classKeyword: @kind modifiers: _* @mods name: @name memberBlock: (memberBlock members: _* @members))
+            (classDecl
+                classKeyword: @kind
+                modifiers: _* @mods
+                name: @name
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
+                base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
         // Enum class declaration: same as a regular class but with an enum body.
         rule!(
-            (enumDecl enumKeyword: @kind modifiers: _* @mods name: @name memberBlock: (memberBlock members: _* @members))
+            (enumDecl
+                enumKeyword: @kind
+                modifiers: _* @mods
+                name: @name
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
+                base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
         // A `struct` declaration.
         rule!(
-            (structDecl structKeyword: @kind modifiers: _* @mods name: @name memberBlock: (memberBlock members: _* @members))
+            (structDecl
+                structKeyword: @kind
+                modifiers: _* @mods
+                name: @name
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
+                base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
         // Protocol declaration
         rule!(
-            (protocolDecl protocolKeyword: @kind modifiers: _* @mods name: @name memberBlock: (memberBlock members: _* @members))
+            (protocolDecl
+                protocolKeyword: @kind
+                modifiers: _* @mods
+                name: @name
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
+                base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
         // An `extension Foo { … }` is likewise a `class_like_declaration`, named
@@ -1080,12 +1103,18 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // a `memberType`) name the declaration just like simple ones, matching the
         // old tree-sitter `user_type` behaviour.
         rule!(
-            (extensionDecl extensionKeyword: @kind modifiers: _* @mods extendedType: @@name memberBlock: (memberBlock members: _* @members))
+            (extensionDecl
+                extensionKeyword: @kind
+                modifiers: _* @mods
+                extendedType: @@name
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
+                base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
         // A member of a type declaration unwraps to the contained declaration.
