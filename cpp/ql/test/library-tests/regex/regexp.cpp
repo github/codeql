@@ -96,6 +96,13 @@ std::regex r_ctrl2("[\\cZ]");
 std::regex r_nul1("\\0");
 std::regex r_nul2("[\\0]");
 
+// Lazy quantifiers and additional supported escapes
+std::regex r_lazy1("a*?");
+std::regex r_lazy2("b+?");
+std::regex r_lazy3("c??");
+std::regex r_lazy4("d{2,3}?");
+std::regex r_fv("\\f\\v");
+
 // String literal spellings for location tests
 std::regex r_loc_plain("a\\nb");
 std::basic_regex<wchar_t> r_loc_L(L"a\\nc");
