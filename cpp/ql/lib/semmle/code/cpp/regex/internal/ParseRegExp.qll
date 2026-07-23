@@ -596,8 +596,6 @@ abstract class RegExp extends StringLiteral {
     or
     this.negativeLookbehindAssertionStart(start, end)
     or
-    this.commentGroupStart(start, end)
-    or
     this.simpleGroupStart(start, end)
   }
 
@@ -672,14 +670,6 @@ abstract class RegExp extends StringLiteral {
     this.getChar(start + 2) = "<" and
     this.getChar(start + 3) = "!" and
     end = start + 4
-  }
-
-  /** Matches the start of a comment group, i.e. `(?#`. */
-  private predicate commentGroupStart(int start, int end) {
-    this.isGroupStart(start) and
-    this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) = "#" and
-    end = start + 3
   }
 
   /** Matches the contents of a group. */
