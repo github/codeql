@@ -1089,18 +1089,18 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A member of a type declaration unwraps to the contained declaration.
         rule!((memberBlockItem decl: _* @d) => member* { d }),
         // Init declaration → constructor_declaration. Body statements optional;
-        // body itself is also optional (protocol requirement).
-        //
-        // PARITY(tree-sitter): the parameters are not emitted, because the
-        // tree-sitter path dropped them (its `(parameter)*` capture missed the
-        // field-attached parameters). Emitting them is a future improvement.
+        // body itself is also optional (protocol requirement). The parameters
+        // nest under `signature` (as for `functionDecl`).
         rule!(
             (initializerDecl
                 modifiers: _* @mods
+                signature: (functionSignature
+                    parameterClause: (functionParameterClause parameters: _* @params))
                 body: (codeBlock statements: _* @body_stmts)?)
             =>
             (constructor_declaration
                 modifier: {mods}
+                parameter: {params}
                 body: (block stmt: {body_stmts}))
         ),
         // Deinit declaration → destructor_declaration. Body statements optional.

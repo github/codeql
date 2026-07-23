@@ -1,0 +1,82 @@
+struct Size {
+  init(width w: Int, height h: Int) {}
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        structDecl
+          attributes:
+          name: identifier "Size"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    initializerDecl
+                      attributes:
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
+                      modifiers:
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                                functionParameter
+                                  colon: :
+                                  attributes:
+                                  modifiers:
+                                  trailingComma: ,
+                                  type:
+                                    identifierType
+                                      name: identifier "Int"
+                                  firstName: identifier "width"
+                                  secondName: identifier "w"
+                                functionParameter
+                                  colon: :
+                                  attributes:
+                                  modifiers:
+                                  type:
+                                    identifierType
+                                      name: identifier "Int"
+                                  firstName: identifier "height"
+                                  secondName: identifier "h"
+                      initKeyword: init
+          modifiers:
+          structKeyword: struct
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "struct"
+          name: identifier "Size"
+          member:
+            constructor_declaration
+              parameter:
+                parameter
+                  external_name: identifier "width"
+                  pattern:
+                    name_pattern
+                      identifier: identifier "w"
+                parameter
+                  external_name: identifier "height"
+                  pattern:
+                    name_pattern
+                      identifier: identifier "h"
+              body: block "init(width w: Int, height h: Int) {}"
