@@ -1,3 +1,9 @@
+## 1.8.0
+
+### Query Metadata Changes
+
+* Added the tag `external/cwe/cwe-762` to `cpp/new-free-mismatch`, and removed the tag `external/cwe/cwe-401`. This better matches the behavior of the query.
+
 ## 1.7.0
 
 ### Query Metadata Changes
