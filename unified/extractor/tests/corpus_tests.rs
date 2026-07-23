@@ -20,6 +20,14 @@ fn update_mode_enabled() -> bool {
         .unwrap_or(false)
 }
 
+/// Whether the external swift-syntax parser is available. When it is not (e.g.
+/// no Swift toolchain / the `swift-syntax-parse` binary is not on `PATH` and
+/// `CODEQL_EXTRACTOR_UNIFIED_SWIFT_SYNTAX_PARSE` is unset), the corpus test is
+/// skipped rather than failed — it cannot run without the Swift-backed parser.
+fn parser_available() -> bool {
+    languages::swift_parse::parse(b"").is_ok()
+}
+
 /// Parse a corpus `.output` file. The file holds a single test case made of
 /// three sections separated by `---` delimiter lines:
 ///
@@ -28,7 +36,7 @@ fn update_mode_enabled() -> bool {
 ///
 /// ---
 ///
-/// <raw tree-sitter parse tree>
+/// <raw swift-syntax AST (the yeast tree the adapter builds, pre-desugaring)>
 ///
 /// ---
 ///
@@ -98,6 +106,14 @@ fn collect_corpus_stems(dir: &Path, out: &mut Vec<std::path::PathBuf>) {
 
 #[test]
 fn test_corpus() {
+    if !parser_available() {
+        eprintln!(
+            "skipping test_corpus: the swift-syntax parser is unavailable \
+             (set CODEQL_EXTRACTOR_UNIFIED_SWIFT_SYNTAX_PARSE or put \
+             `swift-syntax-parse` on PATH)"
+        );
+        return;
+    }
     let update_mode = update_mode_enabled();
     let all_languages = languages::all_language_specs();
     let corpus_dir = Path::new("tests/corpus");
