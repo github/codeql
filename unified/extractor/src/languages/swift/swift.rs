@@ -944,14 +944,19 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // an ordinary `declReferenceExpr`, already mapped to a `name_expr`.)
         rule!((superExpr) => (super_expr)),
         // Type expressions. A generic type applied with explicit arguments
-        // (`Set<Int>`) is represented opaquely, using the whole source text as
-        // the name (PARITY(tree-sitter): the generic arguments are not
-        // structured `type_argument`s). Matched before the plain `identifierType`
-        // rule, which would otherwise drop the arguments.
+        // (`Set<Int>`) becomes a `generic_type_expr` whose `base` is the type
+        // name and whose `type_argument`s are the (structured) arguments — the
+        // same shape the sugared `?`/`[]`/`[:]` types desugar to. Matched before
+        // the plain `identifierType` rule, which would otherwise drop the
+        // arguments.
         rule!(
-            (identifierType genericArgumentClause: (genericArgumentClause)) @@ty
+            (identifierType
+                name: @@name
+                genericArgumentClause: (genericArgumentClause arguments: (genericArgument argument: @args)*))
             =>
-            (named_type_expr name: (identifier #{ty}))
+            (generic_type_expr
+                base: (named_type_expr name: (identifier #{name}))
+                type_argument: {args})
         ),
         // A named type (`Int`). `identifierType.name` is the type-name token.
         rule!((identifierType name: @@n) => (named_type_expr name: (identifier #{n}))),

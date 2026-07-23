@@ -1,0 +1,83 @@
+let cache: Dictionary<String, Array<Int>> = [:]
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    dictionaryExpr
+                      leftSquare: [
+                      rightSquare: ]
+                      content: :
+              pattern:
+                identifierPattern
+                  identifier: identifier "cache"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    identifierType
+                      name: identifier "Dictionary"
+                      genericArgumentClause:
+                        genericArgumentClause
+                          arguments:
+                            genericArgument
+                              trailingComma: ,
+                              argument:
+                                identifierType
+                                  name: identifier "String"
+                            genericArgument
+                              argument:
+                                identifierType
+                                  name: identifier "Array"
+                                  genericArgumentClause:
+                                    genericArgumentClause
+                                      arguments:
+                                        genericArgument
+                                          argument:
+                                            identifierType
+                                              name: identifier "Int"
+                                      leftAngle: <
+                                      rightAngle: >
+                          leftAngle: <
+                          rightAngle: >
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "cache"
+          type:
+            generic_type_expr
+              base:
+                named_type_expr
+                  name: identifier "Dictionary"
+              type_argument:
+                named_type_expr
+                  name: identifier "String"
+                generic_type_expr
+                  base:
+                    named_type_expr
+                      name: identifier "Array"
+                  type_argument:
+                    named_type_expr
+                      name: identifier "Int"
+          value: map_literal "[:]"

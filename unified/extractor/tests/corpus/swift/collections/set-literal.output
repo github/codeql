@@ -66,8 +66,13 @@ top_level
             name_pattern
               identifier: identifier "s"
           type:
-            named_type_expr
-              name: identifier "Set<Int>"
+            generic_type_expr
+              base:
+                named_type_expr
+                  name: identifier "Set"
+              type_argument:
+                named_type_expr
+                  name: identifier "Int"
           value:
             array_literal
               element:
