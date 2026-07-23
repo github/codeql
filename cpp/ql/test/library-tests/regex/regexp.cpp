@@ -36,6 +36,7 @@ std::regex r_cc6("[]]");   // MRI gives a warning, but accepts this as matching 
 std::regex r_cc7("[^]]"); // MRI gives a warning, but accepts this as matching anything except ']'
 std::regex r_cc8("[^-]");
 std::regex r_cc9("[|]");
+std::regex r_cc10("[\\b]");
 
 // Nested character classes (BAD - not parsed correctly)
 std::regex r_nested("[[a-f]A-F]");
