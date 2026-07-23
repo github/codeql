@@ -408,15 +408,12 @@ regexp.cpp:
 
 #   85| [RegExpConstant, RegExpEscape] \cZ
 
-#   88| [RegExpConstant, RegExpNormalChar] \0
+#   88| [RegExpConstant, RegExpEscape] \0
 
 #   89| [RegExpCharacterClass] [\0]
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] \
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] 0
+#-----| 0 -> [RegExpConstant, RegExpEscape] \0
 
-#   89| [RegExpConstant, RegExpNormalChar] \
-
-#   89| [RegExpConstant, RegExpNormalChar] 0
+#   89| [RegExpConstant, RegExpEscape] \0
 
 #   92| [RegExpConstant, RegExpNormalChar] a
 
