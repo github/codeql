@@ -2,12 +2,21 @@
 
 ---
 
-source_file
-  statement:
-    range_expression
-      end: integer_literal "10"
-      op: ...
-      start: integer_literal "1"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "..."
+          leftOperand:
+            integerLiteralExpr
+              literal: integerLiteral "1"
+          rightOperand:
+            integerLiteralExpr
+              literal: integerLiteral "10"
 
 ---
 

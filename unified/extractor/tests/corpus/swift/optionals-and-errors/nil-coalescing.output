@@ -2,21 +2,34 @@ let n = opt ?? 0
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: let
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "n"
-          value:
-            nil_coalescing_expression
-              if_nil: integer_literal "0"
-              value: simple_identifier "opt"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    infixOperatorExpr
+                      operator:
+                        binaryOperatorExpr
+                          operator: binaryOperator "??"
+                      leftOperand:
+                        declReferenceExpr
+                          baseName: identifier "opt"
+                      rightOperand:
+                        integerLiteralExpr
+                          literal: integerLiteral "0"
+              pattern:
+                identifierPattern
+                  identifier: identifier "n"
 
 ---
 

@@ -2,22 +2,29 @@ greet(person: "Bob")
 
 ---
 
-source_file
-  statement:
-    call_expression
-      function: simple_identifier "greet"
-      suffix:
-        call_suffix
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionCallExpr
+          leftParen: (
+          rightParen: )
           arguments:
-            value_arguments
-              argument:
-                value_argument
-                  name:
-                    value_argument_label
-                      name: simple_identifier "person"
-                  value:
-                    line_string_literal
-                      text: line_str_text "Bob"
+            labeledExpr
+              colon: :
+              label: identifier "person"
+              expression:
+                stringLiteralExpr
+                  closingQuote: "
+                  openingQuote: "
+                  segments:
+                    stringSegment
+                      content: stringSegment "Bob"
+          additionalTrailingClosures:
+          calledExpression:
+            declReferenceExpr
+              baseName: identifier "greet"
 
 ---
 

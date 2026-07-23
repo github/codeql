@@ -2,13 +2,28 @@
 
 ---
 
-source_file
-  statement:
-    line_string_literal
-      interpolation:
-        interpolated_expression
-          value: simple_identifier "name"
-      text: line_str_text "hello "
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "hello "
+            expressionSegment
+              leftParen: (
+              rightParen: )
+              backslash: \
+              expressions:
+                labeledExpr
+                  expression:
+                    declReferenceExpr
+                      baseName: identifier "name"
+            stringSegment
+              content: stringSegment
 
 ---
 

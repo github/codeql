@@ -4,24 +4,46 @@ func greet() {
 
 ---
 
-source_file
-  statement:
-    function_declaration
-      body:
-        block
-          statement:
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value:
-                            line_string_literal
-                              text: line_str_text "hello"
-      name: simple_identifier "greet"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            stringLiteralExpr
+                              closingQuote: "
+                              openingQuote: "
+                              segments:
+                                stringSegment
+                                  content: stringSegment "hello"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          name: identifier "greet"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+          funcKeyword: func
 
 ---
 

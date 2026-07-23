@@ -4,33 +4,53 @@ for x in xs where x > 0 {
 
 ---
 
-source_file
-  statement:
-    for_statement
-      body:
-        block
-          statement:
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value: simple_identifier "x"
-      collection: simple_identifier "xs"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
       item:
-        pattern
-          bound_identifier: simple_identifier "x"
-      where:
-        where_clause
-          expr:
-            comparison_expression
-              lhs: simple_identifier "x"
-              op: >
-              rhs: integer_literal "0"
-          keyword: where_keyword "where"
+        forStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "x"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          pattern:
+            identifierPattern
+              identifier: identifier "x"
+          whereClause:
+            whereClause
+              condition:
+                infixOperatorExpr
+                  operator:
+                    binaryOperatorExpr
+                      operator: binaryOperator ">"
+                  leftOperand:
+                    declReferenceExpr
+                      baseName: identifier "x"
+                  rightOperand:
+                    integerLiteralExpr
+                      literal: integerLiteral "0"
+              whereKeyword: where
+          inKeyword: in
+          forKeyword: for
+          sequence:
+            declReferenceExpr
+              baseName: identifier "xs"
 
 ---
 

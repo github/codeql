@@ -7,79 +7,119 @@ case .thread(threadRowId: _, let rowId):
 
 ---
 
-source_file
-  statement:
-    switch_statement
-      entry:
-        switch_entry
-          pattern:
-            switch_pattern
-              pattern:
-                pattern
-                  kind:
-                    case_pattern
-                      arguments:
-                        tuple_pattern
-                          item:
-                            tuple_pattern_item
-                              name: simple_identifier "isAcknowledged"
-                              pattern:
-                                pattern
-                                  kind:
-                                    boolean_literal
-                      dot: .
-                      name: simple_identifier "implicit"
-          statement:
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value:
-                            line_string_literal
-                              text: line_str_text "yes"
-        switch_entry
-          pattern:
-            switch_pattern
-              pattern:
-                pattern
-                  kind:
-                    case_pattern
-                      arguments:
-                        tuple_pattern
-                          item:
-                            tuple_pattern_item
-                              name: simple_identifier "threadRowId"
-                              pattern:
-                                pattern
-                                  kind: wildcard_pattern "_"
-                            tuple_pattern_item
-                              pattern:
-                                pattern
-                                  kind:
-                                    binding_pattern
-                                      binding:
-                                        value_binding_pattern
-                                          mutability: let
-                                      pattern:
-                                        pattern
-                                          bound_identifier: simple_identifier "rowId"
-                      dot: .
-                      name: simple_identifier "thread"
-          statement:
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value: simple_identifier "rowId"
-      expr: simple_identifier "x"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            switchExpr
+              leftBrace: {
+              rightBrace: }
+              cases:
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                    labeledExpr
+                                      colon: :
+                                      label: identifier "isAcknowledged"
+                                      expression:
+                                        booleanLiteralExpr
+                                          literal: false
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "implicit"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "yes"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                    labeledExpr
+                                      colon: :
+                                      label: identifier "threadRowId"
+                                      expression:
+                                        discardAssignmentExpr
+                                          wildcard: _
+                                      trailingComma: ,
+                                    labeledExpr
+                                      expression:
+                                        patternExpr
+                                          pattern:
+                                            valueBindingPattern
+                                              pattern:
+                                                identifierPattern
+                                                  identifier: identifier "rowId"
+                                              bindingSpecifier: let
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "thread"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "rowId"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              subject:
+                declReferenceExpr
+                  baseName: identifier "x"
+              switchKeyword: switch
 
 ---
 

@@ -5,31 +5,59 @@ default: 2
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: let
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "x"
-          value:
-            switch_statement
-              entry:
-                switch_entry
-                  pattern:
-                    switch_pattern
-                      pattern:
-                        pattern
-                          kind: simple_identifier "someConstant"
-                  statement: integer_literal "1"
-                switch_entry
-                  default: default_keyword "default"
-                  statement: integer_literal "2"
-              expr: simple_identifier "y"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    switchExpr
+                      leftBrace: {
+                      rightBrace: }
+                      cases:
+                        switchCase
+                          label:
+                            switchCaseLabel
+                              colon: :
+                              caseKeyword: case
+                              caseItems:
+                                switchCaseItem
+                                  pattern:
+                                    expressionPattern
+                                      expression:
+                                        declReferenceExpr
+                                          baseName: identifier "someConstant"
+                          statements:
+                            codeBlockItem
+                              item:
+                                integerLiteralExpr
+                                  literal: integerLiteral "1"
+                        switchCase
+                          label:
+                            switchDefaultLabel
+                              colon: :
+                              defaultKeyword: default
+                          statements:
+                            codeBlockItem
+                              item:
+                                integerLiteralExpr
+                                  literal: integerLiteral "2"
+                      subject:
+                        declReferenceExpr
+                          baseName: identifier "y"
+                      switchKeyword: switch
+              pattern:
+                identifierPattern
+                  identifier: identifier "x"
 
 ---
 

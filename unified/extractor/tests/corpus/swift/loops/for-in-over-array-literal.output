@@ -4,30 +4,55 @@ for x in [1, 2, 3] {
 
 ---
 
-source_file
-  statement:
-    for_statement
-      body:
-        block
-          statement:
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value: simple_identifier "x"
-      collection:
-        array_literal
-          element:
-            integer_literal "1"
-            integer_literal "2"
-            integer_literal "3"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
       item:
-        pattern
-          bound_identifier: simple_identifier "x"
+        forStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "x"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          pattern:
+            identifierPattern
+              identifier: identifier "x"
+          inKeyword: in
+          forKeyword: for
+          sequence:
+            arrayExpr
+              elements:
+                arrayElement
+                  expression:
+                    integerLiteralExpr
+                      literal: integerLiteral "1"
+                  trailingComma: ,
+                arrayElement
+                  expression:
+                    integerLiteralExpr
+                      literal: integerLiteral "2"
+                  trailingComma: ,
+                arrayElement
+                  expression:
+                    integerLiteralExpr
+                      literal: integerLiteral "3"
+              leftSquare: [
+              rightSquare: ]
 
 ---
 

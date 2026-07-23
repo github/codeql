@@ -2,18 +2,26 @@ let x = 1
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: let
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "x"
-          value: integer_literal "1"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    integerLiteralExpr
+                      literal: integerLiteral "1"
+              pattern:
+                identifierPattern
+                  identifier: identifier "x"
 
 ---
 

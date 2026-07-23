@@ -2,16 +2,29 @@ a + b * c
 
 ---
 
-source_file
-  statement:
-    additive_expression
-      lhs: simple_identifier "a"
-      op: +
-      rhs:
-        multiplicative_expression
-          lhs: simple_identifier "b"
-          op: *
-          rhs: simple_identifier "c"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "+"
+          leftOperand:
+            declReferenceExpr
+              baseName: identifier "a"
+          rightOperand:
+            infixOperatorExpr
+              operator:
+                binaryOperatorExpr
+                  operator: binaryOperator "*"
+              leftOperand:
+                declReferenceExpr
+                  baseName: identifier "b"
+              rightOperand:
+                declReferenceExpr
+                  baseName: identifier "c"
 
 ---
 

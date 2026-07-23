@@ -4,24 +4,39 @@ enum Suit {
 
 ---
 
-source_file
-  statement:
-    class_declaration
-      body:
-        enum_class_body
-          member:
-            enum_entry
-              case:
-                enum_case_entry
-                  name: simple_identifier "clubs"
-                enum_case_entry
-                  name: simple_identifier "diamonds"
-                enum_case_entry
-                  name: simple_identifier "hearts"
-                enum_case_entry
-                  name: simple_identifier "spades"
-      declaration_kind: enum
-      name: type_identifier "Suit"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        enumDecl
+          attributes:
+          name: identifier "Suit"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "clubs"
+                          trailingComma: ,
+                        enumCaseElement
+                          name: identifier "diamonds"
+                          trailingComma: ,
+                        enumCaseElement
+                          name: identifier "hearts"
+                          trailingComma: ,
+                        enumCaseElement
+                          name: identifier "spades"
+                      caseKeyword: case
+          modifiers:
+          enumKeyword: enum
 
 ---
 

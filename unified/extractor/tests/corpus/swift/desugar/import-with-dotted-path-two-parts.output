@@ -2,14 +2,21 @@ import Foundation.Networking
 
 ---
 
-source_file
-  statement:
-    import_declaration
-      name:
-        identifier
-          part:
-            simple_identifier "Foundation"
-            simple_identifier "Networking"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        importDecl
+          attributes:
+          modifiers:
+          importKeyword: import
+          path:
+            importPathComponent
+              name: identifier "Foundation"
+              trailingPeriod: .
+            importPathComponent
+              name: identifier "Networking"
 
 ---
 

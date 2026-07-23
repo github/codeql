@@ -7,30 +7,57 @@ enum Direction {
 
 ---
 
-source_file
-  statement:
-    class_declaration
-      body:
-        enum_class_body
-          member:
-            enum_entry
-              case:
-                enum_case_entry
-                  name: simple_identifier "north"
-            enum_entry
-              case:
-                enum_case_entry
-                  name: simple_identifier "south"
-            enum_entry
-              case:
-                enum_case_entry
-                  name: simple_identifier "east"
-            enum_entry
-              case:
-                enum_case_entry
-                  name: simple_identifier "west"
-      declaration_kind: enum
-      name: type_identifier "Direction"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        enumDecl
+          attributes:
+          name: identifier "Direction"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "north"
+                      caseKeyword: case
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "south"
+                      caseKeyword: case
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "east"
+                      caseKeyword: case
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "west"
+                      caseKeyword: case
+          modifiers:
+          enumKeyword: enum
 
 ---
 

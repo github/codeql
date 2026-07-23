@@ -4,29 +4,47 @@ for i in 0..<10 {
 
 ---
 
-source_file
-  statement:
-    for_statement
-      body:
-        block
-          statement:
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value: simple_identifier "i"
-      collection:
-        range_expression
-          end: integer_literal "10"
-          op: ..<
-          start: integer_literal "0"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
       item:
-        pattern
-          bound_identifier: simple_identifier "i"
+        forStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "i"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          pattern:
+            identifierPattern
+              identifier: identifier "i"
+          inKeyword: in
+          forKeyword: for
+          sequence:
+            infixOperatorExpr
+              operator:
+                binaryOperatorExpr
+                  operator: binaryOperator "..<"
+              leftOperand:
+                integerLiteralExpr
+                  literal: integerLiteral "0"
+              rightOperand:
+                integerLiteralExpr
+                  literal: integerLiteral "10"
 
 ---
 

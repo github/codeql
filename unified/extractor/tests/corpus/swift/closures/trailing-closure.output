@@ -2,24 +2,40 @@ xs.map { $0 * 2 }
 
 ---
 
-source_file
-  statement:
-    call_expression
-      function:
-        navigation_expression
-          suffix:
-            navigation_suffix
-              suffix: simple_identifier "map"
-          target: simple_identifier "xs"
-      suffix:
-        call_suffix
-          lambda:
-            lambda_literal
-              statement:
-                multiplicative_expression
-                  lhs: simple_identifier "$0"
-                  op: *
-                  rhs: integer_literal "2"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionCallExpr
+          arguments:
+          additionalTrailingClosures:
+          calledExpression:
+            memberAccessExpr
+              period: .
+              declName:
+                declReferenceExpr
+                  baseName: identifier "map"
+              base:
+                declReferenceExpr
+                  baseName: identifier "xs"
+          trailingClosure:
+            closureExpr
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    infixOperatorExpr
+                      operator:
+                        binaryOperatorExpr
+                          operator: binaryOperator "*"
+                      leftOperand:
+                        declReferenceExpr
+                          baseName: dollarIdentifier "$0"
+                      rightOperand:
+                        integerLiteralExpr
+                          literal: integerLiteral "2"
 
 ---
 

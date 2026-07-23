@@ -2,23 +2,32 @@ let n = t.0
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: let
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "n"
-          value:
-            navigation_expression
-              suffix:
-                navigation_suffix
-                  suffix: integer_literal "0"
-              target: simple_identifier "t"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    memberAccessExpr
+                      period: .
+                      declName:
+                        declReferenceExpr
+                          baseName: integerLiteral "0"
+                      base:
+                        declReferenceExpr
+                          baseName: identifier "t"
+              pattern:
+                identifierPattern
+                  identifier: identifier "n"
 
 ---
 

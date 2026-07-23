@@ -4,52 +4,68 @@ func add(_ a: Int, _ b: Int) -> Int {
 
 ---
 
-source_file
-  statement:
-    function_declaration
-      body:
-        block
-          statement:
-            control_transfer_statement
-              kind: return
-              result:
-                additive_expression
-                  lhs: simple_identifier "a"
-                  op: +
-                  rhs: simple_identifier "b"
-      name: simple_identifier "add"
-      parameter:
-        function_parameter
-          parameter:
-            parameter
-              external_name: simple_identifier "_"
-              name: simple_identifier "a"
-              type:
-                type
-                  name:
-                    user_type
-                      part:
-                        simple_user_type
-                          name: type_identifier "Int"
-        function_parameter
-          parameter:
-            parameter
-              external_name: simple_identifier "_"
-              name: simple_identifier "b"
-              type:
-                type
-                  name:
-                    user_type
-                      part:
-                        simple_user_type
-                          name: type_identifier "Int"
-      return_type:
-        type
-          name:
-            user_type
-              part:
-                simple_user_type
-                  name: type_identifier "Int"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      expression:
+                        infixOperatorExpr
+                          operator:
+                            binaryOperatorExpr
+                              operator: binaryOperator "+"
+                          leftOperand:
+                            declReferenceExpr
+                              baseName: identifier "a"
+                          rightOperand:
+                            declReferenceExpr
+                              baseName: identifier "b"
+                      returnKeyword: return
+          name: identifier "add"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: _
+                      secondName: identifier "a"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: _
+                      secondName: identifier "b"
+              returnClause:
+                returnClause
+                  arrow: ->
+                  type:
+                    identifierType
+                      name: identifier "Int"
+          funcKeyword: func
 
 ---
 

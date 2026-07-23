@@ -2,12 +2,18 @@ import Foundation
 
 ---
 
-source_file
-  statement:
-    import_declaration
-      name:
-        identifier
-          part: simple_identifier "Foundation"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        importDecl
+          attributes:
+          modifiers:
+          importKeyword: import
+          path:
+            importPathComponent
+              name: identifier "Foundation"
 
 ---
 

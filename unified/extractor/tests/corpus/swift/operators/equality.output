@@ -2,12 +2,21 @@ a == b
 
 ---
 
-source_file
-  statement:
-    equality_expression
-      lhs: simple_identifier "a"
-      op: ==
-      rhs: simple_identifier "b"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "=="
+          leftOperand:
+            declReferenceExpr
+              baseName: identifier "a"
+          rightOperand:
+            declReferenceExpr
+              baseName: identifier "b"
 
 ---
 

@@ -2,12 +2,21 @@
 
 ---
 
-source_file
-  statement:
-    additive_expression
-      lhs: integer_literal "1"
-      op: +
-      rhs: integer_literal "2"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "+"
+          leftOperand:
+            integerLiteralExpr
+              literal: integerLiteral "1"
+          rightOperand:
+            integerLiteralExpr
+              literal: integerLiteral "2"
 
 ---
 

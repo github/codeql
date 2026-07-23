@@ -2,25 +2,37 @@ guard let value = optional else { return }
 
 ---
 
-source_file
-  statement:
-    guard_statement
-      body:
-        block
-          statement:
-            control_transfer_statement
-              kind: return
-      condition:
-        if_condition
-          kind:
-            if_let_binding
-              pattern:
-                pattern
-                  binding:
-                    value_binding_pattern
-                      mutability: let
-                  bound_identifier: simple_identifier "value"
-              value: simple_identifier "optional"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        guardStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      returnKeyword: return
+          conditions:
+            conditionElement
+              condition:
+                optionalBindingCondition
+                  initializer:
+                    initializerClause
+                      equal: =
+                      value:
+                        declReferenceExpr
+                          baseName: identifier "optional"
+                  pattern:
+                    identifierPattern
+                      identifier: identifier "value"
+                  bindingSpecifier: let
+          elseKeyword: else
+          guardKeyword: guard
 
 ---
 
