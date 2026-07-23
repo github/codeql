@@ -993,15 +993,13 @@ private module Impl implements RegexTreeViewSig {
   }
 
   /**
-   * A zero-width lookahead or lookbehind assertion.
+   * A zero-width lookahead assertion.
    *
    * Examples:
    *
    * ```
    * (?=\w)
    * (?!\n)
-   * (?<=\.)
-   * (?<!\\)
    * ```
    */
   class RegExpSubPattern extends RegExpZeroWidthMatch {
@@ -1063,47 +1061,9 @@ private module Impl implements RegexTreeViewSig {
     override string getAPrimaryQlClass() { result = "RegExpNegativeLookahead" }
   }
 
-  /**
-   * A zero-width lookbehind assertion.
-   *
-   * Examples:
-   *
-   * ```
-   * (?<=\.)
-   * (?<!\\)
-   * ```
-   */
   abstract class RegExpLookbehind extends RegExpSubPattern { }
 
-  /**
-   * A positive-lookbehind assertion.
-   *
-   * Examples:
-   *
-   * ```
-   * (?<=\.)
-   * ```
-   */
-  class RegExpPositiveLookbehind extends RegExpLookbehind {
-    RegExpPositiveLookbehind() { re.positiveLookbehindAssertionGroup(start, end) }
-
-    override string getAPrimaryQlClass() { result = "RegExpPositiveLookbehind" }
-  }
-
-  /**
-   * A negative-lookbehind assertion.
-   *
-   * Examples:
-   *
-   * ```
-   * (?<!\\)
-   * ```
-   */
-  additional class RegExpNegativeLookbehind extends RegExpLookbehind {
-    RegExpNegativeLookbehind() { re.negativeLookbehindAssertionGroup(start, end) }
-
-    override string getAPrimaryQlClass() { result = "RegExpNegativeLookbehind" }
-  }
+  abstract class RegExpPositiveLookbehind extends RegExpLookbehind { }
 
   /**
    * A back reference, that is, a term of the form `\i` in a regular

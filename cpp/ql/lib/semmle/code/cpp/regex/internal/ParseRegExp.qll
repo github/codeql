@@ -501,8 +501,6 @@ abstract class RegExp extends StringLiteral {
     this.negativeAssertionGroup(start, end)
     or
     this.positiveLookaheadAssertionGroup(start, end)
-    or
-    this.positiveLookbehindAssertionGroup(start, end)
   }
 
   /** Holds if an empty group is found between `start` and `end`. */
@@ -525,16 +523,10 @@ abstract class RegExp extends StringLiteral {
     this.emptyGroup(start, end)
     or
     this.negativeAssertionGroup(start, end)
-    or
-    this.positiveLookbehindAssertionGroup(start, end)
   }
 
   private predicate negativeAssertionGroup(int start, int end) {
-    exists(int inStart |
-      this.negativeLookaheadAssertionStart(start, inStart)
-      or
-      this.negativeLookbehindAssertionStart(start, inStart)
-    |
+    exists(int inStart | this.negativeLookaheadAssertionStart(start, inStart) |
       this.groupContents(start, end, inStart, _)
     )
   }
@@ -546,23 +538,9 @@ abstract class RegExp extends StringLiteral {
     )
   }
 
-  /** Holds if a negative lookbehind is found between `start` and `end` */
-  predicate negativeLookbehindAssertionGroup(int start, int end) {
-    exists(int inStart | this.negativeLookbehindAssertionStart(start, inStart) |
-      this.groupContents(start, end, inStart, _)
-    )
-  }
-
   /** Holds if a positive lookahead is found between `start` and `end` */
   predicate positiveLookaheadAssertionGroup(int start, int end) {
     exists(int inStart | this.lookaheadAssertionStart(start, inStart) |
-      this.groupContents(start, end, inStart, _)
-    )
-  }
-
-  /** Holds if a positive lookbehind is found between `start` and `end` */
-  predicate positiveLookbehindAssertionGroup(int start, int end) {
-    exists(int inStart | this.lookbehindAssertionStart(start, inStart) |
       this.groupContents(start, end, inStart, _)
     )
   }
@@ -573,10 +551,6 @@ abstract class RegExp extends StringLiteral {
     this.lookaheadAssertionStart(start, end)
     or
     this.negativeLookaheadAssertionStart(start, end)
-    or
-    this.lookbehindAssertionStart(start, end)
-    or
-    this.negativeLookbehindAssertionStart(start, end)
     or
     this.simpleGroupStart(start, end)
   }
@@ -610,24 +584,6 @@ abstract class RegExp extends StringLiteral {
     this.getChar(start + 1) = "?" and
     this.getChar(start + 2) = "!" and
     end = start + 3
-  }
-
-  /** Matches the start of a positive lookbehind assertion, i.e. `(?<=`. */
-  private predicate lookbehindAssertionStart(int start, int end) {
-    this.isGroupStart(start) and
-    this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) = "<" and
-    this.getChar(start + 3) = "=" and
-    end = start + 4
-  }
-
-  /** Matches the start of a negative lookbehind assertion, i.e. `(?<!`. */
-  private predicate negativeLookbehindAssertionStart(int start, int end) {
-    this.isGroupStart(start) and
-    this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) = "<" and
-    this.getChar(start + 3) = "!" and
-    end = start + 4
   }
 
   /** Matches the contents of a group. */
