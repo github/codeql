@@ -46,8 +46,8 @@ private predicate isSelfRepository(string nwo) { nwo.matches("$/%") }
 // suppressed. See `pinnedByLockfileDataModel` in `ConfigExtensions.qll` for the intended shape.
 bindingset[nwo]
 private predicate pinnedByLockfile(UsesStep uses, string nwo, string version) {
-  // The lockfile generator lower-cases owner/repo (GitHub treats them
-  // case-insensitively) but preserves the ref, so match `nwo` case-insensitively
+  // The extractor populates this predicate with lower-cased owner/repo (GitHub treats
+  // them case-insensitively) but preserves the ref, so match `nwo` case-insensitively
   // and `version` exactly. `nwo` keeps its source casing everywhere else (e.g. the
   // alert message) so authors still see the ref as written.
   pinnedByLockfileDataModel(uses.getLocation().getFile().getRelativePath(), nwo.toLowerCase(),
