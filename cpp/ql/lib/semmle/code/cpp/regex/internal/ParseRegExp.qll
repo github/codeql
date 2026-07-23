@@ -495,15 +495,6 @@ abstract class RegExp extends StringLiteral {
       count(int i | this.group(i, _) and i < start and not this.nonCapturingGroupStart(i, _)) + 1
   }
 
-  /** Gets the name, if it has one, of the group in start,end */
-  string getGroupName(int start, int end) {
-    this.group(start, end) and
-    exists(int nameEnd |
-      this.namedGroupStart(start, nameEnd) and
-      result = this.getText().substring(start + 3, nameEnd - 1)
-    )
-  }
-
   /** Whether the text in the range start, end is a group and can match the empty string. */
   predicate zeroWidthMatch(int start, int end) {
     this.emptyGroup(start, end)
@@ -580,8 +571,6 @@ abstract class RegExp extends StringLiteral {
   private predicate groupStart(int start, int end) {
     this.nonCapturingGroupStart(start, end)
     or
-    this.namedGroupStart(start, end)
-    or
     this.lookaheadAssertionStart(start, end)
     or
     this.negativeLookaheadAssertionStart(start, end)
@@ -597,7 +586,7 @@ abstract class RegExp extends StringLiteral {
   private predicate nonCapturingGroupStart(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) = [":", "=", "<", "!"] and
+    this.getChar(start + 2) = [":", "=", "!"] and
     end = start + 3
   }
 
@@ -606,24 +595,6 @@ abstract class RegExp extends StringLiteral {
     this.isGroupStart(start) and
     this.getChar(start + 1) != "?" and
     end = start + 1
-  }
-
-  /**
-   * Matches the start of a named group, such as:
-   * - `(?<name>\w+)`
-   */
-  private predicate namedGroupStart(int start, int end) {
-    this.isGroupStart(start) and
-    this.getChar(start + 1) = "?" and
-    (
-      this.getChar(start + 2) = "<" and
-      not this.getChar(start + 3) = "=" and // (?<=foo) is a positive lookbehind assertion
-      not this.getChar(start + 3) = "!" and // (?<!foo) is a negative lookbehind assertion
-      exists(int nameEnd |
-        nameEnd = min(int i | i > start + 3 and this.getChar(i) = ">") and
-        end = nameEnd + 1
-      )
-    )
   }
 
   /** Matches the start of a positive lookahead assertion, i.e. `(?=`. */

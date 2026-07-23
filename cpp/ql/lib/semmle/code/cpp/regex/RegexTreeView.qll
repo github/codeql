@@ -860,12 +860,6 @@ private module Impl implements RegexTreeViewSig {
     /** Holds if this is a capture group. */
     predicate isCapture() { exists(this.getNumber()) }
 
-    /** Holds if this is a named capture group. */
-    predicate isNamed() { exists(this.getName()) }
-
-    /** Gets the name of this capture group, if any. */
-    string getName() { result = re.getGroupName(start, end) }
-
     override RegExpTerm getChild(int i) {
       result.getRegExp() = re and
       i = 0 and
@@ -1138,10 +1132,7 @@ private module Impl implements RegexTreeViewSig {
     /** Gets the capture group this back reference refers to. */
     RegExpGroup getGroup() {
       result.getLiteral() = this.getLiteral() and
-      (
-        result.getNumber() = this.getNumber() or
-        result.getName() = this.getName()
-      )
+      result.getNumber() = this.getNumber()
     }
 
     override RegExpTerm getChild(int i) { none() }

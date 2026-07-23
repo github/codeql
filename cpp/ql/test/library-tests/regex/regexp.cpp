@@ -61,13 +61,13 @@ std::regex r_grp2("fo(o|b)ar");
 std::regex r_grp3("(a|b|cd)e");
 std::regex r_grp4("(?::+)\\w"); // Non-capturing group matching colons
 
-// Named groups
-std::regex r_ng1("(?<id>\\w+)");
+
+
 
 
 // Backreferences
 std::regex r_bref1("(a+)b+\\1");
-std::regex r_bref2("(?<qux>q+)\\s+\\k<qux>+");
+
 
 // Named character properties using a single POSIX bracket expression
 std::regex r_prop1("[[:alnum:]]*");

@@ -296,14 +296,6 @@ regexp.cpp:
 
 #   62| [RegExpCharacterClassEscape] \w
 
-#   65| [RegExpGroup] (?<id>\w+)
-#-----| 0 -> [RegExpPlus] \w+
-
-#   65| [RegExpCharacterClassEscape] \w
-
-#   65| [RegExpPlus] \w+
-#-----| 0 -> [RegExpCharacterClassEscape] \w
-
 #   69| [RegExpGroup] (a+)
 #-----| 0 -> [RegExpPlus] a+
 
@@ -323,29 +315,6 @@ regexp.cpp:
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] b
 
 #   69| [RegExpBackRef] \1
-
-#   70| [RegExpGroup] (?<qux>q+)
-#-----| 0 -> [RegExpPlus] q+
-
-#   70| [RegExpSequence] (?<qux>q+)\s+\k<qux>+
-#-----| 0 -> [RegExpGroup] (?<qux>q+)
-#-----| 1 -> [RegExpPlus] \s+
-#-----| 2 -> [RegExpPlus] \k<qux>+
-
-#   70| [RegExpConstant, RegExpNormalChar] q
-
-#   70| [RegExpPlus] q+
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] q
-
-#   70| [RegExpCharacterClassEscape] \s
-
-#   70| [RegExpPlus] \s+
-#-----| 0 -> [RegExpCharacterClassEscape] \s
-
-#   70| [RegExpBackRef] \k<qux>
-
-#   70| [RegExpPlus] \k<qux>+
-#-----| 0 -> [RegExpBackRef] \k<qux>
 
 #   73| [RegExpCharacterClass] [[:alnum:]]
 #-----| 0 -> [RegExpNamedCharacterProperty] [:alnum:]
