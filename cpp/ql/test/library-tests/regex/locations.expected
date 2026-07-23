@@ -29,10 +29,10 @@
 | regexp.cpp:66:19:66:29 | (?'foo'fo+) | regexp.cpp | 66 | 19 | 66 | 29 |
 | regexp.cpp:69:21:69:28 | (a+)b+\\1 | regexp.cpp | 69 | 21 | 69 | 28 |
 | regexp.cpp:70:21:70:41 | (?<qux>q+)\\s+\\k<qux>+ | regexp.cpp | 70 | 21 | 70 | 41 |
-| regexp.cpp:73:21:73:29 | \\p{Word}* | regexp.cpp | 73 | 21 | 73 | 29 |
-| regexp.cpp:74:21:74:30 | \\P{Digit}+ | regexp.cpp | 74 | 21 | 74 | 30 |
-| regexp.cpp:75:21:75:35 | \\p{^Alnum}{2,3} | regexp.cpp | 75 | 21 | 75 | 35 |
-| regexp.cpp:76:21:76:35 | [a-f\\p{Digit}]+ | regexp.cpp | 76 | 21 | 76 | 35 |
+| regexp.cpp:73:21:73:32 | [[:alnum:]]* | regexp.cpp | 73 | 21 | 73 | 32 |
+| regexp.cpp:74:21:74:32 | [[:digit:]]+ | regexp.cpp | 74 | 21 | 74 | 32 |
+| regexp.cpp:75:21:75:36 | [[:alnum:]]{2,3} | regexp.cpp | 75 | 21 | 75 | 36 |
+| regexp.cpp:76:21:76:35 | [a-f[:digit:]]+ | regexp.cpp | 76 | 21 | 76 | 35 |
 | regexp.cpp:79:22:79:43 | [[:alpha:]][[:digit:]] | regexp.cpp | 79 | 22 | 79 | 43 |
 | regexp.cpp:82:22:82:41 | [[:alpha:][:digit:]] | regexp.cpp | 82 | 22 | 82 | 41 |
 | regexp.cpp:85:22:85:38 | [A-F[:digit:]a-f] | regexp.cpp | 85 | 22 | 85 | 38 |

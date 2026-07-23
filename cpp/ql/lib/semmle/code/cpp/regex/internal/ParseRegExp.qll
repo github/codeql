@@ -282,9 +282,8 @@ abstract class RegExp extends StringLiteral {
     )
   }
 
-  /** Matches named character properties such as `\p{Word}` and `[[:digit:]]` */
+  /** Matches named character properties such as `[[:digit:]]`. */
   predicate namedCharacterProperty(int start, int end, string name) {
-    this.pStyleNamedCharacterProperty(start, end, name) or
     this.posixStyleNamedCharacterProperty(start, end, name)
   }
 
@@ -315,49 +314,11 @@ abstract class RegExp extends StringLiteral {
   }
 
   /**
-   * Matches named character properties. For example:
-   * - `\p{Space}`
-   * - `\P{Digit}` upper-case P means inverted
-   * - `\p{^Word}` caret also means inverted
+   * Holds if the named character property is inverted. This, e.g., holds for `[[:^digit:]]`.
    *
-   * These can occur both inside and outside of character classes.
-   */
-  private predicate pStyleNamedCharacterProperty(int start, int end, string name) {
-    this.escapingChar(start) and
-    this.getChar(start + 1) in ["p", "P"] and
-    this.getChar(start + 2) = "{" and
-    this.getChar(end - 1) = "}" and
-    end > start and
-    not exists(int i | start + 2 < i and i < end - 1 | this.getChar(i) = "}") and
-    exists(int nameStart |
-      this.getChar(start + 3) = "^" and nameStart = start + 4
-      or
-      not this.getChar(start + 3) = "^" and nameStart = start + 3
-    |
-      name = this.getText().substring(nameStart, end - 1)
-    )
-  }
-
-  /**
-   * Holds if the named character property is inverted. Examples for which it holds:
-   * - `\P{Digit}` upper-case P means inverted
-   * - `\p{^Word}` caret also means inverted
-   * - `[[:^digit:]]`
-   *
-   * Examples for which it doesn't hold:
-   * - `\p{Word}`
-   * - `\P{^Space}` - upper-case P and caret cancel each other out
-   * - `[[:alnum:]]`
+   * This does not hold for, e.g., `[[:alnum:]]`.
    */
   predicate namedCharacterPropertyIsInverted(int start, int end) {
-    this.pStyleNamedCharacterProperty(start, end, _) and
-    exists(boolean upperP, boolean caret |
-      (if this.getChar(start + 1) = "P" then upperP = true else upperP = false) and
-      (if this.getChar(start + 3) = "^" then caret = true else caret = false)
-    |
-      upperP.booleanXor(caret) = true
-    )
-    or
     this.posixStyleNamedCharacterProperty(start, end, _) and
     this.getChar(start + 3) = "^"
   }
@@ -371,7 +332,6 @@ abstract class RegExp extends StringLiteral {
     this.escapingChar(start) and
     not this.numberedBackreference(start, _, _) and
     not this.namedBackreference(start, _, _) and
-    not this.pStyleNamedCharacterProperty(start, _, _) and
     (
       // hex char \xhh
       this.getChar(start + 1) = "x" and end = start + 4
@@ -447,9 +407,6 @@ abstract class RegExp extends StringLiteral {
     ) and
     not exists(int x, int y | this.groupStart(x, y) and x <= start and y >= end) and
     not exists(int x, int y | this.backreference(x, y) and x <= start and y >= end) and
-    not exists(int x, int y |
-      this.pStyleNamedCharacterProperty(x, y, _) and x <= start and y >= end
-    ) and
     not exists(int x, int y | this.multiples(x, y, _, _) and x <= start and y >= end)
   }
 
@@ -776,8 +733,6 @@ abstract class RegExp extends StringLiteral {
     this.charSet(start, end)
     or
     this.backreference(start, end)
-    or
-    this.pStyleNamedCharacterProperty(start, end, _)
   }
 
   private predicate qualifier(int start, int end, boolean maybeEmpty, boolean mayRepeatForever) {

@@ -361,27 +361,36 @@ regexp.cpp:
 #   70| [RegExpPlus] \k<qux>+
 #-----| 0 -> [RegExpBackRef] \k<qux>
 
-#   73| [RegExpNamedCharacterProperty] \p{Word}
+#   73| [RegExpCharacterClass] [[:alnum:]]
+#-----| 0 -> [RegExpNamedCharacterProperty] [:alnum:]
 
-#   73| [RegExpStar] \p{Word}*
-#-----| 0 -> [RegExpNamedCharacterProperty] \p{Word}
+#   73| [RegExpStar] [[:alnum:]]*
+#-----| 0 -> [RegExpCharacterClass] [[:alnum:]]
 
-#   74| [RegExpNamedCharacterProperty] \P{Digit}
+#   73| [RegExpNamedCharacterProperty] [:alnum:]
 
-#   74| [RegExpPlus] \P{Digit}+
-#-----| 0 -> [RegExpNamedCharacterProperty] \P{Digit}
+#   74| [RegExpCharacterClass] [[:digit:]]
+#-----| 0 -> [RegExpNamedCharacterProperty] [:digit:]
 
-#   75| [RegExpNamedCharacterProperty] \p{^Alnum}
+#   74| [RegExpPlus] [[:digit:]]+
+#-----| 0 -> [RegExpCharacterClass] [[:digit:]]
 
-#   75| [RegExpRange] \p{^Alnum}{2,3}
-#-----| 0 -> [RegExpNamedCharacterProperty] \p{^Alnum}
+#   74| [RegExpNamedCharacterProperty] [:digit:]
 
-#   76| [RegExpCharacterClass] [a-f\p{Digit}]
+#   75| [RegExpCharacterClass] [[:alnum:]]
+#-----| 0 -> [RegExpNamedCharacterProperty] [:alnum:]
+
+#   75| [RegExpRange] [[:alnum:]]{2,3}
+#-----| 0 -> [RegExpCharacterClass] [[:alnum:]]
+
+#   75| [RegExpNamedCharacterProperty] [:alnum:]
+
+#   76| [RegExpCharacterClass] [a-f[:digit:]]
 #-----| 0 -> [RegExpCharacterRange] a-f
-#-----| 1 -> [RegExpNamedCharacterProperty] \p{Digit}
+#-----| 1 -> [RegExpNamedCharacterProperty] [:digit:]
 
-#   76| [RegExpPlus] [a-f\p{Digit}]+
-#-----| 0 -> [RegExpCharacterClass] [a-f\p{Digit}]
+#   76| [RegExpPlus] [a-f[:digit:]]+
+#-----| 0 -> [RegExpCharacterClass] [a-f[:digit:]]
 
 #   76| [RegExpConstant, RegExpNormalChar] a
 
@@ -391,7 +400,7 @@ regexp.cpp:
 
 #   76| [RegExpConstant, RegExpNormalChar] f
 
-#   76| [RegExpNamedCharacterProperty] \p{Digit}
+#   76| [RegExpNamedCharacterProperty] [:digit:]
 
 #   79| [RegExpCharacterClass] [[:alpha:]]
 #-----| 0 -> [RegExpNamedCharacterProperty] [:alpha:]
