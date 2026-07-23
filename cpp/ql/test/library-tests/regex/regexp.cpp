@@ -80,6 +80,10 @@ std::regex r_uni("\\u{9879}");
 std::regex r_ctrl1("\\cA");
 std::regex r_ctrl2("[\\cZ]");
 
+// NUL escape
+std::regex r_nul1("\\0");
+std::regex r_nul2("[\\0]");
+
 // String literal spellings for location tests
 std::regex r_loc_plain("a\\nb");
 std::basic_regex<wchar_t> r_loc_L(L"abc");
