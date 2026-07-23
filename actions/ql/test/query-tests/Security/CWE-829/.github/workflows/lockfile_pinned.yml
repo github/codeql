@@ -16,7 +16,7 @@ jobs:
     # refs are NOT recorded in the data extension and therefore remain reported.
     - uses: some-owner/pinned-action@v1
     # `Mixed-Owner/Pinned-Action@v1` is pinned by the lockfile too, but written with the mixed-case
-    # owner/repo that authors commonly use (Azure, GoogleCloudPlatform, ...). The generator emits
+    # owner/repo that authors commonly use (Azure, GoogleCloudPlatform, ...). The extractor emits
     # the lockfile nwo lower-cased, so the query must match owner/repo case-insensitively; this ref
     # is therefore expected to be suppressed (no finding).
     - uses: Mixed-Owner/Pinned-Action@v1
