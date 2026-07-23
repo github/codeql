@@ -1,12 +1,10 @@
 groupName
 | regexp.cpp:65:19:65:28 | (?<id>\\w+) | id |
-| regexp.cpp:66:19:66:29 | (?'foo'fo+) | foo |
 | regexp.cpp:70:21:70:30 | (?<qux>q+) | qux |
 groupNumber
 | regexp.cpp:59:20:59:24 | (foo) | 1 |
 | regexp.cpp:60:22:60:26 | (o\|b) | 1 |
 | regexp.cpp:61:20:61:27 | (a\|b\|cd) | 1 |
-| regexp.cpp:66:19:66:29 | (?'foo'fo+) | 1 |
 | regexp.cpp:69:21:69:24 | (a+) | 1 |
 term
 | regexp.cpp:18:19:18:21 | abc | RegExpConstant,RegExpNormalChar |
@@ -120,11 +118,6 @@ term
 | regexp.cpp:65:19:65:28 | (?<id>\\w+) | RegExpGroup |
 | regexp.cpp:65:25:65:26 | \\w | RegExpCharacterClassEscape |
 | regexp.cpp:65:25:65:27 | \\w+ | RegExpPlus |
-| regexp.cpp:66:19:66:29 | (?'foo'fo+) | RegExpGroup |
-| regexp.cpp:66:26:66:26 | f | RegExpConstant,RegExpNormalChar |
-| regexp.cpp:66:26:66:28 | fo+ | RegExpSequence |
-| regexp.cpp:66:27:66:27 | o | RegExpConstant,RegExpNormalChar |
-| regexp.cpp:66:27:66:28 | o+ | RegExpPlus |
 | regexp.cpp:69:21:69:24 | (a+) | RegExpGroup |
 | regexp.cpp:69:21:69:28 | (a+)b+\\1 | RegExpSequence |
 | regexp.cpp:69:22:69:22 | a | RegExpConstant,RegExpNormalChar |
@@ -282,8 +275,6 @@ regExpNormalCharValue
 | regexp.cpp:62:23:62:23 | : | : |
 | regexp.cpp:62:26:62:27 | \\w | w |
 | regexp.cpp:65:25:65:26 | \\w | w |
-| regexp.cpp:66:26:66:26 | f | f |
-| regexp.cpp:66:27:66:27 | o | o |
 | regexp.cpp:69:22:69:22 | a | a |
 | regexp.cpp:69:25:69:25 | b | b |
 | regexp.cpp:70:28:70:28 | q | q |

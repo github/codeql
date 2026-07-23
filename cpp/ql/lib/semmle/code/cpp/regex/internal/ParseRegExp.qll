@@ -611,7 +611,6 @@ abstract class RegExp extends StringLiteral {
   /**
    * Matches the start of a named group, such as:
    * - `(?<name>\w+)`
-   * - `(?'name'\w+)`
    */
   private predicate namedGroupStart(int start, int end) {
     this.isGroupStart(start) and
@@ -623,11 +622,6 @@ abstract class RegExp extends StringLiteral {
       exists(int nameEnd |
         nameEnd = min(int i | i > start + 3 and this.getChar(i) = ">") and
         end = nameEnd + 1
-      )
-      or
-      this.getChar(start + 2) = "'" and
-      exists(int nameEnd |
-        nameEnd = min(int i | i > start + 2 and this.getChar(i) = "'") and end = nameEnd + 1
       )
     )
   }

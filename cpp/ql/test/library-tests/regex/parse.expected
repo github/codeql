@@ -304,20 +304,6 @@ regexp.cpp:
 #   65| [RegExpPlus] \w+
 #-----| 0 -> [RegExpCharacterClassEscape] \w
 
-#   66| [RegExpGroup] (?'foo'fo+)
-#-----| 0 -> [RegExpSequence] fo+
-
-#   66| [RegExpConstant, RegExpNormalChar] f
-
-#   66| [RegExpSequence] fo+
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] f
-#-----| 1 -> [RegExpPlus] o+
-
-#   66| [RegExpConstant, RegExpNormalChar] o
-
-#   66| [RegExpPlus] o+
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] o
-
 #   69| [RegExpGroup] (a+)
 #-----| 0 -> [RegExpPlus] a+
 

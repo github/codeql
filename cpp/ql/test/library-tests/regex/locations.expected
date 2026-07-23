@@ -26,7 +26,6 @@
 | regexp.cpp:61:20:61:28 | (a\|b\|cd)e | regexp.cpp | 61 | 20 | 61 | 28 |
 | regexp.cpp:62:20:62:27 | (?::+)\\w | regexp.cpp | 62 | 20 | 62 | 27 |
 | regexp.cpp:65:19:65:28 | (?<id>\\w+) | regexp.cpp | 65 | 19 | 65 | 28 |
-| regexp.cpp:66:19:66:29 | (?'foo'fo+) | regexp.cpp | 66 | 19 | 66 | 29 |
 | regexp.cpp:69:21:69:28 | (a+)b+\\1 | regexp.cpp | 69 | 21 | 69 | 28 |
 | regexp.cpp:70:21:70:41 | (?<qux>q+)\\s+\\k<qux>+ | regexp.cpp | 70 | 21 | 70 | 41 |
 | regexp.cpp:73:21:73:32 | [[:alnum:]]* | regexp.cpp | 73 | 21 | 73 | 32 |
