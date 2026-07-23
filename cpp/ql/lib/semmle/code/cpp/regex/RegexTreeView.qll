@@ -651,7 +651,7 @@ private module Impl implements RegexTreeViewSig {
    * ```
    */
   class RegExpCharacterClassEscape extends RegExpEscape {
-    RegExpCharacterClassEscape() { this.getValue() in ["d", "D", "s", "S", "w", "W", "h", "H"] }
+    RegExpCharacterClassEscape() { this.getValue() in ["d", "D", "s", "S", "w", "W"] }
 
     override RegExpTerm getChild(int i) { none() }
 

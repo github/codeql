@@ -76,7 +76,6 @@ term
 | file://:0:0:0:0 | \\1 | RegExpBackRef |
 | file://:0:0:0:0 | \\B | RegExpNonWordBoundary |
 | file://:0:0:0:0 | \\D | RegExpCharacterClassEscape |
-| file://:0:0:0:0 | \\H | RegExpCharacterClassEscape |
 | file://:0:0:0:0 | \\P{Digit} | RegExpNamedCharacterProperty |
 | file://:0:0:0:0 | \\P{Digit}+ | RegExpPlus |
 | file://:0:0:0:0 | \\S | RegExpCharacterClassEscape |
@@ -88,8 +87,6 @@ term
 | file://:0:0:0:0 | \\b!a\\B | RegExpSequence |
 | file://:0:0:0:0 | \\d | RegExpCharacterClassEscape |
 | file://:0:0:0:0 | \\d\\D | RegExpSequence |
-| file://:0:0:0:0 | \\h | RegExpCharacterClassEscape |
-| file://:0:0:0:0 | \\h\\H | RegExpSequence |
 | file://:0:0:0:0 | \\k<qux> | RegExpBackRef |
 | file://:0:0:0:0 | \\k<qux>+ | RegExpPlus |
 | file://:0:0:0:0 | \\n | RegExpConstant,RegExpEscape |
@@ -208,13 +205,11 @@ regExpNormalCharValue
 | file://:0:0:0:0 | Z | Z |
 | file://:0:0:0:0 | [ | [ |
 | file://:0:0:0:0 | \\D | D |
-| file://:0:0:0:0 | \\H | H |
 | file://:0:0:0:0 | \\S | S |
 | file://:0:0:0:0 | \\W | W |
 | file://:0:0:0:0 | \\[ | [ |
 | file://:0:0:0:0 | \\] | ] |
 | file://:0:0:0:0 | \\d | d |
-| file://:0:0:0:0 | \\h | h |
 | file://:0:0:0:0 | \\n | \n |
 | file://:0:0:0:0 | \\n | \n |
 | file://:0:0:0:0 | \\r | \r |

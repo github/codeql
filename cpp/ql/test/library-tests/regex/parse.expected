@@ -86,10 +86,6 @@
 
 #-----| [RegExpConstant, RegExpEscape] \t
 
-#-----| [RegExpCharacterClassEscape] \h
-
-#-----| [RegExpCharacterClassEscape] \H
-
 #-----| [RegExpCharacterClassEscape] \d
 
 #-----| [RegExpCharacterClassEscape] \D
@@ -225,10 +221,6 @@
 #-----| 0 -> [RegExpConstant, RegExpEscape] \n
 #-----| 1 -> [RegExpConstant, RegExpEscape] \r
 #-----| 2 -> [RegExpConstant, RegExpEscape] \t
-
-#-----| [RegExpSequence] \h\H
-#-----| 0 -> [RegExpCharacterClassEscape] \h
-#-----| 1 -> [RegExpCharacterClassEscape] \H
 
 #-----| [RegExpSequence] \d\D
 #-----| 0 -> [RegExpCharacterClassEscape] \d
