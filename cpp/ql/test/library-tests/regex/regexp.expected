@@ -1,11 +1,10 @@
 groupName
-| file://:0:0:0:0 | (?<id>\\w+) | id |
-| file://:0:0:0:0 | (?<qux>q+) | qux |
 groupNumber
 | file://:0:0:0:0 | (a+) | 1 |
 | file://:0:0:0:0 | (a\|b\|cd) | 1 |
 | file://:0:0:0:0 | (foo) | 1 |
 | file://:0:0:0:0 | (o\|b) | 1 |
+| file://:0:0:0:0 | (q+) | 1 |
 term
 | file://:0:0:0:0 | 0 | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | 0-9 | RegExpCharacterRange |
@@ -16,9 +15,6 @@ term
 | file://:0:0:0:0 | !a | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | (?::+) | RegExpGroup |
 | file://:0:0:0:0 | (?::+)\\w | RegExpSequence |
-| file://:0:0:0:0 | (?<id>\\w+) | RegExpGroup |
-| file://:0:0:0:0 | (?<qux>q+) | RegExpGroup |
-| file://:0:0:0:0 | (?<qux>q+)\\s+\\k<qux>+ | RegExpSequence |
 | file://:0:0:0:0 | (a+) | RegExpGroup |
 | file://:0:0:0:0 | (a+)b+\\1 | RegExpSequence |
 | file://:0:0:0:0 | (a\|b\|cd) | RegExpGroup |
@@ -27,6 +23,8 @@ term
 | file://:0:0:0:0 | (foo)* | RegExpStar |
 | file://:0:0:0:0 | (foo)*bar | RegExpSequence |
 | file://:0:0:0:0 | (o\|b) | RegExpGroup |
+| file://:0:0:0:0 | (q+) | RegExpGroup |
+| file://:0:0:0:0 | (q+)\\s+\\k<q>+ | RegExpSequence |
 | file://:0:0:0:0 | - | RegExpConstant,RegExpNormalChar |
 | file://:0:0:0:0 | . | RegExpDot |
 | file://:0:0:0:0 | . | RegExpDot |
@@ -74,8 +72,8 @@ term
 | file://:0:0:0:0 | \\b!a\\B | RegExpSequence |
 | file://:0:0:0:0 | \\d | RegExpCharacterClassEscape |
 | file://:0:0:0:0 | \\d\\D | RegExpSequence |
-| file://:0:0:0:0 | \\k<qux> | RegExpBackRef |
-| file://:0:0:0:0 | \\k<qux>+ | RegExpPlus |
+| file://:0:0:0:0 | \\k<q> | RegExpBackRef |
+| file://:0:0:0:0 | \\k<q>+ | RegExpPlus |
 | file://:0:0:0:0 | \\n | RegExpConstant,RegExpEscape |
 | file://:0:0:0:0 | \\n | RegExpConstant,RegExpEscape |
 | file://:0:0:0:0 | \\n\\r\\t | RegExpSequence |
@@ -89,8 +87,6 @@ term
 | file://:0:0:0:0 | \\w | RegExpCharacterClassEscape |
 | file://:0:0:0:0 | \\w | RegExpCharacterClassEscape |
 | file://:0:0:0:0 | \\w | RegExpCharacterClassEscape |
-| file://:0:0:0:0 | \\w | RegExpCharacterClassEscape |
-| file://:0:0:0:0 | \\w+ | RegExpPlus |
 | file://:0:0:0:0 | \\w+ | RegExpPlus |
 | file://:0:0:0:0 | \\w+\\W | RegExpSequence |
 | file://:0:0:0:0 | \| | RegExpConstant,RegExpNormalChar |
@@ -192,7 +188,6 @@ regExpNormalCharValue
 | file://:0:0:0:0 | \\s | s |
 | file://:0:0:0:0 | \\t | \t |
 | file://:0:0:0:0 | \\u{987 | \u0987 |
-| file://:0:0:0:0 | \\w | w |
 | file://:0:0:0:0 | \\w | w |
 | file://:0:0:0:0 | \\w | w |
 | file://:0:0:0:0 | \\w | w |
