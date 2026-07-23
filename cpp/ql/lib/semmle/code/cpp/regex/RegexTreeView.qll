@@ -215,10 +215,25 @@ private module Impl implements RegexTreeViewSig {
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      exists(int re_start |
+      exists(int re_start, int contentStartOffset, string valueText |
         re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, _) and
-        startcolumn = re_start + 1 + start and
-        endcolumn = re_start + 1 + end - 1
+        valueText = re.getValueText() and
+        (
+          valueText.regexpMatch("^\\s*(u8|L|u|U)?R\".*") and
+          exists(string prefix, string delimiter |
+            prefix = valueText.regexpCapture("^\\s*(u8|L|u|U)?R\"", 1) and
+            delimiter = valueText.regexpCapture("^\\s*(u8|L|u|U)?R\"([^()]*)\\(", 2) and
+            contentStartOffset = prefix.length() + delimiter.length() + 3
+          )
+          or
+          valueText.regexpMatch("^\\s*(u8|L|u|U)?\".*") and
+          exists(string prefix |
+            prefix = valueText.regexpCapture("^\\s*(u8|L|u|U)?\"", 1) and
+            contentStartOffset = prefix.length() + 1
+          )
+        ) and
+        startcolumn = re_start + contentStartOffset + start and
+        endcolumn = re_start + contentStartOffset + end - 1
       )
     }
 
