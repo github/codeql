@@ -1,4 +1,4 @@
-// semmle-extractor-options: -std=c++17
+// semmle-extractor-options: -std=c++20
 
 namespace std {
   template <class CharT>
@@ -89,3 +89,17 @@ std::regex r_posix4("[:digit:]");
 
 // unicode
 std::regex r_uni("\\u{9879}");
+
+// String literal spellings for location tests
+std::regex r_loc_plain("a\\nb");
+std::basic_regex<wchar_t> r_loc_L(L"a\\nc");
+std::basic_regex<char8_t> r_loc_u8(u8"a\\nc");
+std::basic_regex<char16_t> r_loc_u(u"a\\nc");
+std::basic_regex<char32_t> r_loc_U(U"a\\nc");
+std::regex r_loc_R(R"(a\nc)");
+std::basic_regex<wchar_t> r_loc_LR(LR"(a\nc)");
+std::basic_regex<char8_t> r_loc_u8R(u8R"(a\nc)");
+std::basic_regex<char16_t> r_loc_uR(uR"(a\nc)");
+std::basic_regex<char32_t> r_loc_UR(UR"(a\nc)");
+std::regex r_loc_Rx(R"x(a\nc)x");
+std::regex r_loc_Rfoo(R"foo(a\nc)foo");
