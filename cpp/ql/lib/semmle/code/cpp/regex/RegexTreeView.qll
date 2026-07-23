@@ -11,9 +11,7 @@ import Impl as RegexTreeView
 import Impl
 
 /** Gets the parse tree resulting from parsing `re`, if such has been constructed. */
-RegExpTerm getParsedRegExp(StringLiteral re) {
-  result.getRegExp() = re and result.isRootTerm()
-}
+RegExpTerm getParsedRegExp(StringLiteral re) { result.getRegExp() = re and result.isRootTerm() }
 
 /**
  * An element containing a regular expression term, that is, either
@@ -211,14 +209,31 @@ private module Impl implements RegexTreeViewSig {
      */
     Location getLocation() { result = re.getLocation() }
 
+    /**
+     * Gets the number of source characters from the start of the string literal
+     * to the first content character (i.e., past the opening delimiter).
+     */
+    private int regexpContentOffset() {
+      exists(string vt | vt = re.getValueText() |
+        // Find the '(' that opens the raw content.
+        re instanceof RawStringLiteral and
+        result = 1 + min(int i | vt.charAt(i) = "(")
+        or
+        // Find the opening '"'.
+        not re instanceof RawStringLiteral and
+        result = 1 + min(int i | vt.charAt(i) = "\"")
+      )
+    }
+
     /** Holds if this term is found at the specified location offsets. */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      exists(int re_start |
+      exists(int re_start, int offset |
         re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, _) and
-        startcolumn = re_start + 1 + start and
-        endcolumn = re_start + 1 + end - 1
+        offset = this.regexpContentOffset() and
+        startcolumn = re_start + offset + start and
+        endcolumn = re_start + offset + end - 1
       )
     }
 
