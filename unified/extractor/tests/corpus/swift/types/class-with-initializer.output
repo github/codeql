@@ -105,6 +105,9 @@ top_level
             constructor_declaration
               parameter:
                 parameter
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
                   pattern:
                     name_pattern
                       identifier: identifier "x"

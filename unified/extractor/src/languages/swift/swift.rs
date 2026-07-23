@@ -560,17 +560,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // A function parameter. With two names (`firstName`+`secondName`) the
         // first is the external argument label and the second the internal name;
-        // with one name it is just the internal name. The default value is
-        // optional.
-        //
-        // PARITY: the declared type is intentionally dropped. In the tree-sitter
-        // path the untyped-parameter rule was ordered before the typed one and
-        // shadowed it (first match wins), so the baseline emits no parameter
-        // type; emitting one here would diverge from it.
+        // with one name it is just the internal name. The declared type is
+        // emitted; the default value is optional.
         rule!(
             (functionParameter
                 firstName: @@first
                 secondName: _? @@second
+                type: @ty
                 defaultValue: (initializerClause value: @val)?)
             =>
             parameter {
@@ -581,6 +577,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 tree!((parameter
                     external_name: {external}
                     pattern: (name_pattern identifier: (identifier #{name}))
+                    type: {ty}
                     default: {val}))
             }
         ),

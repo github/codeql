@@ -71,11 +71,17 @@ top_level
               parameter:
                 parameter
                   external_name: identifier "width"
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
                   pattern:
                     name_pattern
                       identifier: identifier "w"
                 parameter
                   external_name: identifier "height"
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
                   pattern:
                     name_pattern
                       identifier: identifier "h"
