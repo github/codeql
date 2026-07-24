@@ -5,7 +5,8 @@ import ql
  *
  * This predicate exists to fix a join order.
  */
-predicate missingNoInline(AddExpr add, Expr e1, Expr e2) { // $ Alert
+predicate missingNoInline(AddExpr add, Expr e1, Expr e2) {
+  // $ Alert
   // BAD
   add.getLeftOperand() = e1 and
   add.getRightOperand() = e2
