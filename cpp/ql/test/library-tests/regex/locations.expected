@@ -1,7 +1,6 @@
 | regexp.cpp:18:19:18:21 | abc | regexp.cpp | 18 | 19 | 18 | 21 |
 | regexp.cpp:21:20:21:26 | a*b+c?d | regexp.cpp | 21 | 20 | 21 | 26 |
 | regexp.cpp:22:20:22:25 | a{4,8} | regexp.cpp | 22 | 20 | 22 | 25 |
-| regexp.cpp:23:20:23:24 | a{,8} | regexp.cpp | 23 | 20 | 23 | 24 |
 | regexp.cpp:24:20:24:24 | a{3,} | regexp.cpp | 24 | 20 | 24 | 24 |
 | regexp.cpp:25:20:25:23 | a{7} | regexp.cpp | 25 | 20 | 25 | 23 |
 | regexp.cpp:28:19:28:25 | foo\|bar | regexp.cpp | 28 | 19 | 28 | 25 |

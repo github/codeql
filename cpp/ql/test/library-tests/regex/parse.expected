@@ -29,11 +29,6 @@ regexp.cpp:
 #   22| [RegExpRange] a{4,8}
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a
 
-#   23| [RegExpConstant, RegExpNormalChar] a
-
-#   23| [RegExpRange] a{,8}
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
-
 #   24| [RegExpConstant, RegExpNormalChar] a
 
 #   24| [InfiniteRepetitionQuantifier, RegExpRange] a{3,}

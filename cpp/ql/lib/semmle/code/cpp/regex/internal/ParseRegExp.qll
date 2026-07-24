@@ -670,7 +670,7 @@ abstract class RegExp extends StringLiteral {
       lower = inner and
       upper = lower
       or
-      match = text.regexpFind("\\{[0-9]*,[0-9]*\\}", _, start) and
+      match = text.regexpFind("\\{[0-9]+,[0-9]*\\}", _, start) and
       exists(int commaIndex |
         commaIndex = inner.indexOf(",") and
         lower = inner.prefix(commaIndex) and

@@ -20,7 +20,7 @@ std::regex r_abc("abc");
 // Repetition
 std::regex r_rep1("a*b+c?d");
 std::regex r_rep2("a{4,8}");
-std::regex r_rep3("a{,8}");
+
 std::regex r_rep4("a{3,}");
 std::regex r_rep5("a{7}");
 

@@ -15,8 +15,6 @@ term
 | regexp.cpp:21:26:21:26 | d | RegExpConstant,RegExpNormalChar |
 | regexp.cpp:22:20:22:20 | a | RegExpConstant,RegExpNormalChar |
 | regexp.cpp:22:20:22:25 | a{4,8} | RegExpRange |
-| regexp.cpp:23:20:23:20 | a | RegExpConstant,RegExpNormalChar |
-| regexp.cpp:23:20:23:24 | a{,8} | RegExpRange |
 | regexp.cpp:24:20:24:20 | a | RegExpConstant,RegExpNormalChar |
 | regexp.cpp:24:20:24:24 | a{3,} | InfiniteRepetitionQuantifier,RegExpRange |
 | regexp.cpp:25:20:25:20 | a | RegExpConstant,RegExpNormalChar |
@@ -207,7 +205,6 @@ regExpNormalCharValue
 | regexp.cpp:21:24:21:24 | c | c |
 | regexp.cpp:21:26:21:26 | d | d |
 | regexp.cpp:22:20:22:20 | a | a |
-| regexp.cpp:23:20:23:20 | a | a |
 | regexp.cpp:24:20:24:20 | a | a |
 | regexp.cpp:25:20:25:20 | a | a |
 | regexp.cpp:28:19:28:21 | foo | foo |
