@@ -20,12 +20,18 @@ fn update_mode_enabled() -> bool {
         .unwrap_or(false)
 }
 
-/// Whether the external swift-syntax parser is available. When it is not (e.g.
-/// no Swift toolchain / the `swift-syntax-parse` binary is not on `PATH` and
-/// `CODEQL_EXTRACTOR_UNIFIED_SWIFT_SYNTAX_PARSE` is unset), the corpus test is
-/// skipped rather than failed — it cannot run without the Swift-backed parser.
+/// Whether the external swift-syntax parser is available. When the parser
+/// binary genuinely cannot be found/launched (e.g. no Swift toolchain, and
+/// neither `CODEQL_EXTRACTOR_UNIFIED_SWIFT_SYNTAX_PARSE` nor a `swift-syntax-parse`
+/// on `PATH`), the corpus test is skipped rather than failed — it cannot run
+/// without the Swift-backed parser.
+///
+/// Crucially this checks only that the executable *launches*: a parser that is
+/// present but crashes, emits invalid JSON, or otherwise regresses is
+/// considered available, so the suite runs and fails (rather than silently
+/// skipping the very failures CI needs to catch).
 fn parser_available() -> bool {
-    languages::swift_parse::parse(b"").is_ok()
+    languages::swift_parse::binary_available()
 }
 
 /// Parse a corpus `.output` file. The file holds a single test case made of
