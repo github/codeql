@@ -205,6 +205,28 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (assign_expr target: {l} value: {r})
         ),
+        // In an unresolved `sequenceExpr` (below) the operator positions are not
+        // only `binaryOperatorExpr`s: a plain assignment (`=`), an `as`/`is` cast
+        // and the ternary `?:` can also appear unfolded. Map each to an
+        // `infix_operator` (keeping its spelling) so the sequence stays a clean
+        // alternation of operands and operators instead of dropping the operator
+        // to an opaque `unsupported_node`. These bare nodes only occur inside an
+        // unresolved sequence — folded forms are handled by the dedicated rules
+        // above (assignment) and below (`ternaryExpr`).
+        rule!((assignmentExpr) @op => (infix_operator #{op})),
+        rule!((unresolvedAsExpr) @op => (infix_operator #{op})),
+        rule!((unresolvedIsExpr) @op => (infix_operator #{op})),
+        // The ternary is a three-part operator (`? thenExpr :`) that *wraps* a
+        // nested expression. Splice it into `?`, the then-expression, `:` so the
+        // then-expression survives as a real (traversable) operand rather than
+        // being buried in an opaque token.
+        rule!(
+            (unresolvedTernaryExpr questionMark: @@q thenExpression: @then colon: @@c)
+            =>
+            expr_or_operator* {
+                vec![tree!((infix_operator #{q})), then, tree!((infix_operator #{c}))]
+            }
+        ),
         // Escape hatch: an operator chain the front-end could not resolve
         // (because it uses an operator of unknown precedence, e.g. imported from
         // another module) stays a flat `sequenceExpr`. Preserve it as an

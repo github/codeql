@@ -1,5 +1,6 @@
-func combine(_ a: Int, _ b: Int) {
-  _ = a .& b
+func casts(_ a: Any, _ b: Int) {
+  _ = a as Int .& b
+  _ = a is Int .& b
 }
 
 ---
@@ -26,11 +27,37 @@ sourceFile
                           equal: =
                         declReferenceExpr
                           baseName: identifier "a"
+                        unresolvedAsExpr
+                          asKeyword: as
+                        typeExpr
+                          type:
+                            identifierType
+                              name: identifier "Int"
                         binaryOperatorExpr
                           operator: binaryOperator ".&"
                         declReferenceExpr
                           baseName: identifier "b"
-          name: identifier "combine"
+                codeBlockItem
+                  item:
+                    sequenceExpr
+                      elements:
+                        discardAssignmentExpr
+                          wildcard: _
+                        assignmentExpr
+                          equal: =
+                        declReferenceExpr
+                          baseName: identifier "a"
+                        unresolvedIsExpr
+                          isKeyword: is
+                        typeExpr
+                          type:
+                            identifierType
+                              name: identifier "Int"
+                        binaryOperatorExpr
+                          operator: binaryOperator ".&"
+                        declReferenceExpr
+                          baseName: identifier "b"
+          name: identifier "casts"
           modifiers:
           signature:
             functionSignature
@@ -46,7 +73,7 @@ sourceFile
                       trailingComma: ,
                       type:
                         identifierType
-                          name: identifier "Int"
+                          name: Any
                       firstName: _
                       secondName: identifier "a"
                     functionParameter
@@ -67,13 +94,13 @@ top_level
     block
       stmt:
         function_declaration
-          name: identifier "combine"
+          name: identifier "casts"
           parameter:
             parameter
               external_name: identifier "_"
               type:
                 named_type_expr
-                  name: identifier "Int"
+                  name: identifier "Any"
               pattern:
                 name_pattern
                   identifier: identifier "a"
@@ -95,6 +122,20 @@ top_level
                     infix_operator "="
                     name_expr
                       identifier: identifier "a"
+                    infix_operator "as"
+                    unsupported_node "Int"
+                    infix_operator ".&"
+                    name_expr
+                      identifier: identifier "b"
+                unresolved_operator_sequence
+                  element:
+                    name_expr
+                      identifier: identifier "_"
+                    infix_operator "="
+                    name_expr
+                      identifier: identifier "a"
+                    infix_operator "is"
+                    unsupported_node "Int"
                     infix_operator ".&"
                     name_expr
                       identifier: identifier "b"
