@@ -1,0 +1,77 @@
+let triple: [3 of Int] = [1, 2, 3]
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    arrayExpr
+                      elements:
+                        arrayElement
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "1"
+                          trailingComma: ,
+                        arrayElement
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "2"
+                          trailingComma: ,
+                        arrayElement
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "3"
+                      leftSquare: [
+                      rightSquare: ]
+              pattern:
+                identifierPattern
+                  identifier: identifier "triple"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    inlineArrayType
+                      leftSquare: [
+                      rightSquare: ]
+                      element:
+                        genericArgument
+                          argument:
+                            identifierType
+                              name: identifier "Int"
+                      count:
+                        genericArgument
+                          argument:
+                            integerLiteralExpr
+                              literal: integerLiteral "3"
+                      separator: of
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "triple"
+          type: unsupported_node "[3 of Int]"
+          value:
+            array_literal
+              element:
+                int_literal "1"
+                int_literal "2"
+                int_literal "3"
