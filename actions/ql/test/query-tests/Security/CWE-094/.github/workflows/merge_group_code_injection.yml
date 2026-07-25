@@ -1,0 +1,10 @@
+on:
+  merge_group:
+    types: [checks_requested]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use merge group payload
+        run: echo '${{ toJSON(github.event) }}'
