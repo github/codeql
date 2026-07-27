@@ -85,10 +85,12 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
   }
 
   /** Holds if this strictly dominates `other`. */
+  overlay[caller?]
   pragma[inline]
   predicate strictlyDominates(ControlFlowNode other) { super.strictlyDominates(other) }
 
   /** Holds if this dominates `other` (reflexively). */
+  overlay[caller?]
   pragma[inline]
   predicate dominates(ControlFlowNode other) { super.dominates(other) }
 
