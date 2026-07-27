@@ -10,6 +10,9 @@ scc_languages:
   - HCL
   - Docker
 
+build_modes:
+  - none
+
 # File types
 file_types:
   - name: hcl
