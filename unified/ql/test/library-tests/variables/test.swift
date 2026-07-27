@@ -187,6 +187,8 @@ func t22() {
     }
     inner() // $ access=inner1
     print(x) // $ access=x1
+    let inner = 2 // name=inner2
+    print(inner) // $ access=inner2
 }
 
 // Three levels of shadowing
