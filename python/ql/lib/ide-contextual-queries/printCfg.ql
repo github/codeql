@@ -8,7 +8,6 @@
  */
 
 import semmle.python.Files as Files
-// import semmle.python.Scope
 import semmle.python.controlflow.internal.AstNodeImpl
 
 external string selectedSourceFile();
