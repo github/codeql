@@ -156,7 +156,7 @@ module Ast implements AstSig<Py::Location> {
   /**
    * A parameter of a callable.
    *
-   * Modelled per the C# template (`csharp/.../ControlFlowGraph.qll:147-156`):
+   * Modelled per the C# template (`csharp/.../ControlFlowGraph.qll`):
    * each Python parameter (the `Py::Parameter` AST node, which is a `Name`
    * or — Python 2 only — a `Tuple` in store context) becomes a CFG node
    * at a stable position in the enclosing callable's entry sequence.
