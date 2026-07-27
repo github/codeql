@@ -1,13 +1,17 @@
----
-library: true
-warnOnImplicitThis: true
-name: advanced-security/iac-all
-version: 0.5.1
-dependencies:
-  codeql/util: ^1.0.12
-  codeql/yaml: ^1.0.25
+name: microsoft/iac-all
+version: 0.0.1
+groups: 
+  - iac
+  - microsoft-all
 dbscheme: iac.dbscheme
 extractor: iac
+library: true
 upgrades: upgrades
-groups:
- - iac
+dependencies:
+  codeql/controlflow: ${workspace}
+  codeql/dataflow: ${workspace}
+  codeql/ssa: ${workspace}
+  codeql/util: ${workspace}
+  codeql/mad: ${workspace}
+  codeql/yaml: ${workspace}
+warnOnImplicitThis: true
