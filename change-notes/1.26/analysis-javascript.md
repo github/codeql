@@ -42,7 +42,6 @@
   - [styled-components](https://www.npmjs.com/package/styled-components)
   - [throttle-debounce](https://www.npmjs.com/package/throttle-debounce)
   - [underscore](https://www.npmjs.com/package/underscore)
-  - [vue-router](https://www.npmjs.com/package/vue-router)
 
 * Analyzing files with the ".cjs" extension is now supported.
 * ES2021 features are now supported.
