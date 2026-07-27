@@ -36,40 +36,6 @@ module Vue {
   }
 
   /**
-   * Models data flow through Vue Composition API helpers.
-   *
-   * Note that `computed` is not modeled here but in the `vue.model.yml` data
-   * extension, because its object overload (`computed({ get() { ... } })`)
-   * requires callback flow synthesis that data extensions support but a
-   * hand-written `SummarizedCallable` does not.
-   */
-  overlay[local?]
-  private class VueCompositionApiSummary extends DataFlow::SummarizedCallable::Range {
-    string name;
-
-    VueCompositionApiSummary() {
-      name = ["ref", "shallowRef", "toRef", "reactive"] and
-      this = "vue." + name
-    }
-
-    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      name = ["ref", "shallowRef", "toRef"] and
-      input = "Argument[0]" and
-      output = "ReturnValue.Member[value]" and
-      preservesValue = true
-      or
-      name = "reactive" and
-      input = "Argument[0]" and
-      output = "ReturnValue" and
-      preservesValue = false
-    }
-
-    override DataFlow::InvokeNode getACall() {
-      result = API::moduleImport("vue").getMember(name).getACall()
-    }
-  }
-
-  /**
    * Gets a reference to the 'Vue' object.
    */
   DataFlow::SourceNode vue() { result = vueLibrary().asSource() }
@@ -686,8 +652,6 @@ module Vue {
     t.start() and
     (
       exists(API::Node router | router = API::moduleImport("vue-router") |
-        result = router.getMember("useRoute").getACall()
-        or
         result = router.getInstance().getMember("currentRoute").asSource()
         or
         result =
