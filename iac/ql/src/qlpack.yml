@@ -1,10 +1,11 @@
-name: advanced-security/iac-queries
-version: 0.5.1
-groups: 
+name: microsoft/iac-queries
+version: 0.0.1
+groups:
   - iac
+  - microsoft-all
   - queries
-dependencies:
-  advanced-security/iac-all: ${workspace}
 extractor: iac
+dependencies:
+  microsoft/iac-all: ${workspace}
+  codeql/suite-helpers: ${workspace}
 warnOnImplicitThis: true
-defaultSuiteFile: codeql-suites/iac-code-scanning.qls
