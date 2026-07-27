@@ -262,8 +262,6 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     n = any(LocalFunctionDeclaration f).getName() and
     n.(Identifier).getValue() = name
   }
-
-  predicate lookupStartsAt(AstNode n, AstNode scope) { none() }
 }
 
 module LocalNameBindingOutput = LocalNameBinding<Location, LocalNameBindingInput>;
