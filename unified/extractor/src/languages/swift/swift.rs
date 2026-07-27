@@ -1007,7 +1007,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 for p in params {
                     out.extend(ctx.translate(p)?);
                 }
-                ctx.in_function_type = false;
                 tree!((function_type_expr parameter: {out} return_type: {ret}))
             }
         ),
