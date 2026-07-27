@@ -74,9 +74,7 @@ module NewCfg implements EvalOrderCfgSig {
 
     Py::Scope getScope() { result = NewControlFlowNode.super.getEnclosingCallable().asScope() }
 
-    BasicBlock getBasicBlock() {
-      exists(NewBasicBlock bb, int i | bb.getNode(i) = this and result = bb)
-    }
+    BasicBlock getBasicBlock() { exists(NewBasicBlock bb | bb.getNode(_) = this and result = bb) }
   }
 
   /**

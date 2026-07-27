@@ -16,7 +16,7 @@
  *   * `match` statements: each `case` body is a syntactically distinct
  *     sub-tree, and the branches don't reconverge through a common
  *     annotation point in the timeline;
- *   * `try` / `with` and `raise` / `assert`: exception edges are modelled
+ *   * `try` / `with` and `raise` / `assert`: exception edges are modeled
  *     as true/false but flow to syntactically distinct handlers, with no
  *     reconvergence in the linear annotation order;
  *   * short-circuit `and` / `or` (`BoolExpr`): the branches reconverge at
@@ -33,7 +33,6 @@
  */
 
 import python
-import TimerUtils
 import NewCfgImpl
 
 private module Utils = EvalOrderCfgUtils<NewCfg>;

@@ -3,14 +3,14 @@
  * Python control flow graph.
  */
 
-private import python as Py
+private import python as PY
 import TimerUtils
 
 /** Existing Python CFG implementation of the evaluation-order signature. */
 module OldCfg implements EvalOrderCfgSig {
-  class CfgNode = Py::ControlFlowNode;
+  class CfgNode = PY::ControlFlowNode;
 
-  class BasicBlock = Py::BasicBlock;
+  class BasicBlock = PY::BasicBlock;
 
-  CfgNode scopeGetEntryNode(Py::Scope s) { result = s.getEntryNode() }
+  CfgNode scopeGetEntryNode(PY::Scope s) { result = s.getEntryNode() }
 }

@@ -7,7 +7,6 @@
  */
 
 import python
-import TimerUtils
 import NewCfgImpl
 
 private module Utils = EvalOrderCfgUtils<NewCfg>;

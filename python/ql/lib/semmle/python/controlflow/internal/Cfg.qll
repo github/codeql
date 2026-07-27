@@ -859,7 +859,7 @@ class ExceptGroupFlowNode extends ControlFlowNode {
   ControlFlowNode getName() { result = this }
 }
 
-/** Abstract base class for sequence nodes (tuple, list). */
+/** A control flow node corresponding to a sequence (tuple, list). */
 abstract class SequenceNode extends ControlFlowNode {
   /** Gets the `n`th element of this sequence. */
   abstract ControlFlowNode getElement(int n);

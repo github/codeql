@@ -1,7 +1,6 @@
 /** New-CFG version of AllLiveReachable. */
 
 import python
-import TimerUtils
 import NewCfgImpl
 
 private module Utils = EvalOrderCfgUtils<NewCfg>;

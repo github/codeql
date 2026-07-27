@@ -156,7 +156,7 @@ module Ast implements AstSig<Py::Location> {
   /**
    * A parameter of a callable.
    *
-   * Modelled per the C# template (`csharp/.../ControlFlowGraph.qll`):
+   * modeled per the C# template (`csharp/.../ControlFlowGraph.qll`):
    * each Python parameter (the `Py::Parameter` AST node, which is a `Name`
    * or — Python 2 only — a `Tuple` in store context) becomes a CFG node
    * at a stable position in the enclosing callable's entry sequence.
@@ -766,7 +766,7 @@ module Ast implements AstSig<Py::Location> {
   /**
    * A `from m import *` statement. Evaluates the module expression but
    * binds no name (the bindings happen by side-effect at runtime, which
-   * is not modelled at the CFG level).
+   * is not modeled at the CFG level).
    */
   additional class ImportStarStmt extends Stmt {
     private Py::ImportStar imp;
@@ -921,7 +921,7 @@ module Ast implements AstSig<Py::Location> {
      * latter flattens a tuple of exception types (`except (A, B):`) into
      * its individual elements, which would yield several patterns for one
      * handler and violate the shared CFG's single-pattern-per-catch
-     * contract. The raw child is the one tuple node, modelling the
+     * contract. The raw child is the one tuple node, modeling the
      * runtime's single `isinstance(exc, (A, B))` test.
      */
     AstNode getPattern() {
@@ -1231,7 +1231,7 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /**
-   * An `import x.y` module expression. Modelled as a leaf — the dotted
+   * An `import x.y` module expression. modeled as a leaf — the dotted
    * name is just a string.
    */
   additional class ImportExpression extends Expr {
@@ -1629,9 +1629,9 @@ private module Input implements InputSig1, InputSig2 {
   private string assertThrowTag() { result = "[assert-throw]" }
 
   /**
-   * Holds if the AST node `n` may raise an exception at runtime as part of
+   * Holds if the expression node `e` may raise an exception at runtime as part of
    * its normal evaluation (not via an explicit `raise`/`assert`, which are
-   * modelled separately).
+   * modeled separately).
    *
    * The set mirrors what the legacy CFG used to flag implicitly: function
    * calls (anything can raise), attribute access (`AttributeError`),
@@ -1640,7 +1640,7 @@ private module Input implements InputSig1, InputSig2 {
    * (`ImportError`/`ModuleNotFoundError`), and generator/coroutine
    * suspension points (`await`/`yield`/`yield from`).
    *
-   * Bare `Name` reads are intentionally excluded — modelling every name
+   * Bare `Name` reads are intentionally excluded — modeling every name
    * read as `mayThrow` would explode CFG edge count for negligible
    * analysis value. `BoolExpr`/`IfExp` containers are also excluded; the
    * operands they evaluate contribute their own exception edges.
@@ -1677,7 +1677,7 @@ private module Input implements InputSig1, InputSig2 {
   private predicate stmtMayThrow(Py::Stmt s) { s instanceof Py::ImportStar }
 
   /**
-   * Holds if `n` is syntactically inside the body, handlers, `else`, or
+   * Holds if `py` is syntactically inside the body, handlers, `else`, or
    * `finally` of a `try` statement (or the body of a `with` statement,
    * which compiles to an implicit try/finally for `__exit__`) in the
    * same scope.
@@ -1701,7 +1701,7 @@ private module Input implements InputSig1, InputSig2 {
    * `exprMayThrow` and `stmtMayThrow` for the included AST classes.
    *
    * Restricted to nodes inside a `try`/`with` statement: matches Java's
-   * approach of only modelling exception flow where it can be observed
+   * approach of only modeling exception flow where it can be observed
    * by local handling.
    */
   private predicate mayThrow(Ast::AstNode n) {
