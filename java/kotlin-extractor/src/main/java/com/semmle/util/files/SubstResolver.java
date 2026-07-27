@@ -1,5 +1,6 @@
 package com.semmle.util.files;
 
+import com.semmle.util.exception.Exceptions;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
@@ -16,6 +17,7 @@ public class SubstResolver {
 
   static {
     boolean loaded = false;
+    // Cheap check to see that we are on Windows. Avoids static initialization of {@code Env}.
     if (File.separatorChar == '\\') {
       String dist = System.getenv("CODEQL_DIST");
       if (dist != null && !dist.isEmpty()) {
@@ -25,6 +27,7 @@ public class SubstResolver {
           System.load(library.toString());
           loaded = true;
         } catch (RuntimeException | UnsatisfiedLinkError ignored) {
+          Exceptions.ignore(ignored, "Fall back to resolution being a no-op.");
         }
       }
     }
@@ -64,7 +67,9 @@ public class SubstResolver {
     String resolved;
     try {
       resolved = nativeResolveSubst(path.substring(0, 3));
-    } catch (UnsatisfiedLinkError ignored) {
+    } catch (RuntimeException | UnsatisfiedLinkError ignored) {
+      Exceptions.ignore(ignored, "Fall back to resolution being a no-op.");
+
       return f;
     }
     if (resolved == null) {
