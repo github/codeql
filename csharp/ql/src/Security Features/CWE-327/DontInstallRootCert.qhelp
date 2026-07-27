@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+  <p>
+    Adding certificates to the system root certificate store can weaken security for all applications
+    running on the same machine. Any certificate in the root store is trusted as a certificate
+    authority, which means a malicious or compromised certificate could be used to intercept encrypted
+    communications or impersonate trusted services for all users on the system.
+  </p>
+
+</overview>
+<recommendation>
+
+  <p>
+    Instead of adding certificates to the system root store, use an application-specific certificate
+    store such as <code>StoreName.My</code> or <code>StoreName.CertificateAuthority</code>. If root
+    trust is genuinely required, ensure the operation is restricted to controlled environments and
+    is removed after use.
+  </p>
+
+</recommendation>
+<example>
+
+  <p>
+    The following example adds a certificate directly to the root store, which weakens security for
+    all applications on the system.
+  </p>
+
+  <sample src="DontInstallRootCertBad.cs" />
+
+  <p>
+    The following example uses a user-specific store instead, limiting the scope of the trusted
+    certificate.
+  </p>
+
+  <sample src="DontInstallRootCertGood.cs" />
+
+</example>
+<references>
+  <li>
+    Microsoft: <a href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.x509store">X509Store Class</a>.
+  </li>
+  <li>
+    Microsoft: <a href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.x509certificates.storename">StoreName Enum</a>.
+  </li>
+  <li>
+    CWE: <a href="https://cwe.mitre.org/data/definitions/327.html">CWE-327: Use of a Broken or Risky Cryptographic Algorithm</a>.
+  </li>
+</references>
+</qhelp>
