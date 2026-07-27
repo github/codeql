@@ -167,6 +167,28 @@ impl Schema {
         id
     }
 
+    /// Register every kind (named and unnamed) and field *name* from `other`
+    /// into this schema (idempotent). Ids are assigned in this schema's own id
+    /// space; existing ids are unchanged.
+    ///
+    /// This is used when running desugaring rules over an AST that was built
+    /// against a different schema (e.g. from an external parser): the rules
+    /// build output nodes whose kind/field names come from `other`, and those
+    /// names must resolve in the AST's own schema. Only names are needed — the
+    /// rule engine resolves kinds/fields by name and does not consult
+    /// `other`'s field-type or supertype information.
+    pub fn register_names_from(&mut self, other: &Schema) {
+        for name in other.kind_ids.keys() {
+            self.register_kind(name);
+        }
+        for name in other.unnamed_kind_ids.keys() {
+            self.register_unnamed_kind(name);
+        }
+        for name in other.field_ids.keys() {
+            self.register_field(name);
+        }
+    }
+
     /// Track a name for a kind ID without registering it as named or
     /// unnamed. Useful when importing tree-sitter ID tables that may
     /// contain duplicate IDs across the named/unnamed split.

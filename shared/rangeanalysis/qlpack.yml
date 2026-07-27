@@ -1,5 +1,5 @@
 name: codeql/rangeanalysis
-version: 1.0.53
+version: 1.0.54-dev
 groups: shared
 library: true
 dependencies:

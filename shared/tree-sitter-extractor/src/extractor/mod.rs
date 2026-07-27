@@ -81,10 +81,18 @@ impl AstNode for yeast::Node {
         yeast::Node::is_extra(self)
     }
     fn start_position(&self) -> tree_sitter::Point {
-        yeast::Node::start_position(self)
+        let p = yeast::Node::start_position(self);
+        tree_sitter::Point {
+            row: p.row,
+            column: p.column,
+        }
     }
     fn end_position(&self) -> tree_sitter::Point {
-        yeast::Node::end_position(self)
+        let p = yeast::Node::end_position(self);
+        tree_sitter::Point {
+            row: p.row,
+            column: p.column,
+        }
     }
     fn byte_range(&self) -> std::ops::Range<usize> {
         yeast::Node::byte_range(self)

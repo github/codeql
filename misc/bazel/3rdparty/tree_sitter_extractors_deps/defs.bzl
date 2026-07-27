@@ -429,6 +429,10 @@ _NORMAL_DEPENDENCIES = {
             "tree-sitter-language": Label("@vendor_ts__tree-sitter-language-0.1.5//:tree_sitter_language"),
         },
     },
+    "unified/swift-syntax-rs": {
+        _COMMON_CONDITION: {
+        },
+    },
 }
 
 _NORMAL_ALIASES = {
@@ -475,6 +479,10 @@ _NORMAL_ALIASES = {
         _COMMON_CONDITION: {
         },
     },
+    "unified/swift-syntax-rs": {
+        _COMMON_CONDITION: {
+        },
+    },
 }
 
 _NORMAL_DEV_DEPENDENCIES = {
@@ -505,6 +513,8 @@ _NORMAL_DEV_DEPENDENCIES = {
     },
     "unified/extractor/tree-sitter-swift": {
     },
+    "unified/swift-syntax-rs": {
+    },
 }
 
 _NORMAL_DEV_ALIASES = {
@@ -532,6 +542,8 @@ _NORMAL_DEV_ALIASES = {
     },
     "unified/extractor/tree-sitter-swift": {
     },
+    "unified/swift-syntax-rs": {
+    },
 }
 
 _PROC_MACRO_DEPENDENCIES = {
@@ -556,6 +568,8 @@ _PROC_MACRO_DEPENDENCIES = {
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -582,6 +596,8 @@ _PROC_MACRO_ALIASES = {
     },
     "unified/extractor/tree-sitter-swift": {
     },
+    "unified/swift-syntax-rs": {
+    },
 }
 
 _PROC_MACRO_DEV_DEPENDENCIES = {
@@ -606,6 +622,8 @@ _PROC_MACRO_DEV_DEPENDENCIES = {
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -633,6 +651,8 @@ _PROC_MACRO_DEV_ALIASES = {
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -663,6 +683,8 @@ _BUILD_DEPENDENCIES = {
             "tree-sitter-generate": Label("@vendor_ts__tree-sitter-generate-0.26.8//:tree_sitter_generate"),
         },
     },
+    "unified/swift-syntax-rs": {
+    },
 }
 
 _BUILD_ALIASES = {
@@ -690,6 +712,8 @@ _BUILD_ALIASES = {
         _COMMON_CONDITION: {
         },
     },
+    "unified/swift-syntax-rs": {
+    },
 }
 
 _BUILD_PROC_MACRO_DEPENDENCIES = {
@@ -715,6 +739,8 @@ _BUILD_PROC_MACRO_DEPENDENCIES = {
     },
     "unified/extractor/tree-sitter-swift": {
     },
+    "unified/swift-syntax-rs": {
+    },
 }
 
 _BUILD_PROC_MACRO_ALIASES = {
@@ -739,6 +765,8 @@ _BUILD_PROC_MACRO_ALIASES = {
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 

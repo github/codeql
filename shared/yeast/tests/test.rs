@@ -267,6 +267,59 @@ fn test_query_match() {
 }
 
 #[test]
+fn test_run_from_ast_desugars_hand_built_tree() {
+    use std::collections::BTreeMap;
+
+    // Output schema for the desugared tree. Its kind/field names must become
+    // resolvable in the hand-built AST's schema for the rule to build them.
+    let schema_yaml = r#"
+named:
+    assignment:
+        left: leaf
+    leaf:
+"#;
+
+    // A rule over an *input* kind (`wrapper`) that is not in the output schema,
+    // rewriting to an output `assignment` node.
+    let rules: Vec<Rule> = vec![yeast::rule!(
+        (wrapper)
+        =>
+        (assignment left: (leaf "lit"))
+    )];
+
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let config = DesugaringConfig::<()>::new()
+        .add_phase("test", PhaseKind::OneShot, rules)
+        .with_output_node_types_yaml(schema_yaml);
+    let desugarer = ConcreteDesugarer::new(lang, config).unwrap();
+
+    // Build the input AST by hand, as an external parser adapter would. The
+    // schema starts empty and gains the `wrapper` input kind on the fly.
+    let mut ast = Ast::with_schema(yeast::schema::Schema::new());
+    let wrapper_kind = ast.register_kind("wrapper");
+    let root = ast.create_node_with_range(
+        wrapper_kind,
+        NodeContent::DynamicString(String::new()),
+        BTreeMap::new(),
+        true,
+        None,
+    );
+    ast.set_root(root);
+
+    // Desugaring the hand-built AST applies the rule, producing `assignment`
+    // even though the AST was built against a schema with no output kinds.
+    let out = desugarer
+        .run_from_ast(ast)
+        .expect("run_from_ast should succeed");
+    let out_root = out.get_node(out.get_root()).expect("root exists");
+    assert_eq!(out_root.kind_name(), "assignment");
+    let dump = dump_ast(&out, out.get_root(), "");
+    assert!(dump.contains("assignment"), "unexpected dump: {dump}");
+    assert!(dump.contains("left"), "unexpected dump: {dump}");
+    assert!(dump.contains("leaf"), "unexpected dump: {dump}");
+}
+
+#[test]
 fn test_query_no_match() {
     let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
     let ast = runner.run("x = 1").unwrap();

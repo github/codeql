@@ -135,6 +135,25 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // Declarations may be wrapped in local/global wrapper nodes.
         rule!((global_declaration _ @inner) => stmt { inner }),
         rule!((local_declaration _ @inner) => stmt { inner }),
+        // ---- swift-syntax front-end (minimal hook-up) ----
+        // These rules target the swift-syntax AST (camelCase kind names),
+        // produced by the sibling `adapter` module. They coexist with the
+        // tree-sitter rules (snake_case names): rules are dispatched by exact
+        // kind name, and the two name spaces never collide, so these are inert
+        // on the tree-sitter path. Only the minimal top-level mapping lives here
+        // to demonstrate the pipeline end-to-end; the full translation is added
+        // separately. Unmatched swift-syntax nodes fall through to the
+        // `unsupported_node` fallback at the end.
+        //
+        // `sourceFile` holds its top-level statements in an (elided)
+        // `statements` collection; each element is a `codeBlockItem` wrapping
+        // the real node.
+        rule!(
+            (sourceFile statements: _* @items)
+            =>
+            (top_level body: (block stmt: {items}))
+        ),
+        rule!((codeBlockItem item: @item) => stmt { item }),
         // ---- Literals ----
         rule!((integer_literal) => (int_literal)),
         rule!((hex_literal) => (int_literal)),

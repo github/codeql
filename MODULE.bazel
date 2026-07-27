@@ -19,7 +19,7 @@ bazel_dep(name = "rules_cc", version = "0.2.17")
 bazel_dep(name = "rules_go", version = "0.60.0")
 bazel_dep(name = "rules_java", version = "9.6.1")
 bazel_dep(name = "rules_pkg", version = "1.2.0")
-bazel_dep(name = "rules_nodejs", version = "6.7.3")
+bazel_dep(name = "rules_nodejs", version = "6.7.5")
 bazel_dep(name = "rules_python", version = "1.9.0")
 bazel_dep(name = "rules_shell", version = "0.7.1")
 bazel_dep(name = "bazel_skylib", version = "1.9.0")
@@ -31,6 +31,13 @@ bazel_dep(name = "gazelle", version = "0.50.0")
 bazel_dep(name = "rules_dotnet", version = "0.21.5-codeql.1")
 bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 bazel_dep(name = "rules_rust", version = "0.69.0")
+bazel_dep(name = "rules_swift", version = "4.0.0-rc4")
+bazel_dep(name = "swift-syntax", version = "603.0.2")
+
+# Needed so we can `use_repo` `local_config_xcode` and
+# `local_config_apple_cc_toolchains` below (referenced by the per-target
+# Xcode-config transition in `unified/swift-syntax-rs/xcode_transition.bzl`).
+bazel_dep(name = "apple_support", version = "2.6.1")
 bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
 
 bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
@@ -218,6 +225,41 @@ use_repo(
     "swift-resource-dir-linux",
     "swift-resource-dir-macos",
 )
+
+# Swift toolchain for building `unified/swift-syntax-rs`. On Linux we register
+# a hermetic swift.org toolchain as the exec toolchain; on macOS `rules_swift`
+# auto-registers `xcode_swift_toolchain` (host Xcode + OS-provided Swift
+# runtime), which is not hermetic.
+#
+# The version is pinned as a literal rather than read from
+# `unified/swift-syntax-rs/.swift-version` via `swift_version_file`: the latter
+# makes the extension `module_ctx.read` a `//unified/...` label, which fails to
+# resolve when this repo is consumed as a dependency module (`@@ql+`) whose
+# `unified/swift-syntax-rs` package is not loadable in that context. Keep this
+# in sync with `unified/swift-syntax-rs/.swift-version` (used by the `cargo`
+# build) and the `swift-syntax` release in `swift/Package.swift`.
+swift = use_extension("@rules_swift//swift:extensions.bzl", "swift")
+swift.toolchain(
+    name = "swift_toolchain",
+    swift_version = "6.3.2",
+)
+use_repo(
+    swift,
+    "swift_toolchain",
+    "swift_toolchain_ubuntu22.04",
+)
+
+register_toolchains(
+    "@swift_toolchain//:swift_toolchain_exec_ubuntu22.04",
+)
+
+# `apple_support`'s xcode_config and CC toolchains, needed by the Xcode
+# transition in `unified/swift-syntax-rs/xcode_transition.bzl`.
+xcode_configure = use_extension("@apple_support//xcode:xcode_configure.bzl", "xcode_configure_extension")
+use_repo(xcode_configure, "local_config_xcode")
+
+apple_cc_configure = use_extension("@apple_support//crosstool:setup.bzl", "apple_cc_configure_extension")
+use_repo(apple_cc_configure, "local_config_apple_cc_toolchains")
 
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
 node.toolchain(
