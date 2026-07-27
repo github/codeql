@@ -80,7 +80,7 @@ func t10(value: Int) { // name=value1
 // Switch with multiple cases
 func t11(value: Int) { // name=value1
     switch value { // $ access=value1
-    case let x where x > 0: // name=x1
+    case let x where x > 0: // $ MISSING: access=x1 // name=x1
         print(x) // $ access=x1
     case let x: // name=x2
         print(x) // $ access=x2
