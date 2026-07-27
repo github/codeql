@@ -216,7 +216,7 @@ func t24(optional: Int?) { // name=optional1
     }
 }
 
-// Switch with same variable name in different cases
+// Switch with variable shadowed within body of case
 func t25(value: Int) { // name=value1
     switch value { // $ access=value1
     case let x: // name=x1
