@@ -593,8 +593,10 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** A loop statement. */
-  class LoopStmt extends Stmt {
-    LoopStmt() {
+  final class LoopStmt = LoopStmtImpl;
+
+  abstract private class LoopStmtImpl extends Stmt {
+    LoopStmtImpl() {
       this = TPyStmt(any(Py::While w))
       or
       this = TPyStmt(any(Py::For f))
@@ -605,7 +607,7 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** A `while` loop statement. */
-  class WhileStmt extends LoopStmt {
+  class WhileStmt extends LoopStmtImpl {
     private Py::While whileStmt;
 
     WhileStmt() { this = TPyStmt(whileStmt) }
@@ -630,21 +632,21 @@ module Ast implements AstSig<Py::Location> {
   /**
    * A `do-while` loop statement. Python has no do-while construct.
    */
-  class DoStmt extends LoopStmt {
+  class DoStmt extends LoopStmtImpl {
     DoStmt() { none() }
 
     Expr getCondition() { none() }
   }
 
   /** An `until` loop. Python has no `until` loop. */
-  class UntilStmt extends LoopStmt {
+  class UntilStmt extends LoopStmtImpl {
     UntilStmt() { none() }
 
     Expr getCondition() { none() }
   }
 
   /** A C-style `for` loop. Python has no C-style for loop. */
-  class ForStmt extends LoopStmt {
+  class ForStmt extends LoopStmtImpl {
     ForStmt() { none() }
 
     AstNode getInit(int index) { none() }
@@ -655,7 +657,7 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** A for-each loop (`for x in iterable:`). */
-  class ForeachStmt extends LoopStmt {
+  class ForeachStmt extends LoopStmtImpl {
     private Py::For forStmt;
 
     ForeachStmt() { this = TPyStmt(forStmt) }
