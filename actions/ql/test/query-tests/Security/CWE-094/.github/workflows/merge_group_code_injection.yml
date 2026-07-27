@@ -8,3 +8,5 @@ jobs:
     steps:
       - name: Use merge group payload
         run: echo '${{ toJSON(github.event) }}'
+      - name: Use merge group head ref
+        run: echo '${{ github.event.merge_group.head_ref }}'
