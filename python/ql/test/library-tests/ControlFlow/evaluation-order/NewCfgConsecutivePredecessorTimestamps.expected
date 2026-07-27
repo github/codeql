@@ -1,1 +1,1 @@
-
+| test_comparison.py:37:6:37:41 | Compare | $@ in $@ has no consecutive predecessor (expected 1) | test_comparison.py:37:48:37:48 | IntegerLiteral | Timestamp 2 | test_comparison.py:32:1:32:32 | Function test_three_short_circuit | test_three_short_circuit |
