@@ -2,10 +2,17 @@
 
 ---
 
-source_file
-  statement:
-    line_string_literal
-      text: line_str_text "hello"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "hello"
 
 ---
 

@@ -6,37 +6,54 @@ do {
 
 ---
 
-source_file
-  statement:
-    do_statement
-      body:
-        block
-          statement:
-            try_expression
-              expr:
-                call_expression
-                  function: simple_identifier "foo"
-                  suffix:
-                    call_suffix
-                      arguments:
-                        value_arguments
-              operator:
-                try_operator
-      catch:
-        catch_block
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        doStmt
           body:
-            block
-              statement:
-                call_expression
-                  function: simple_identifier "print"
-                  suffix:
-                    call_suffix
-                      arguments:
-                        value_arguments
-                          argument:
-                            value_argument
-                              value: simple_identifier "error"
-          keyword: catch_keyword "catch"
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    tryExpr
+                      expression:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "foo"
+                      tryKeyword: try
+          catchClauses:
+            catchClause
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "error"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              catchItems:
+              catchKeyword: catch
+          doKeyword: do
 
 ---
 
@@ -61,11 +78,11 @@ top_level
                 block
                   stmt:
                     call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
                       argument:
                         argument
                           value:
                             name_expr
                               identifier: identifier "error"
-                      callee:
-                        name_expr
-                          identifier: identifier "print"

@@ -44,6 +44,11 @@ pub struct Schema {
     field_types: BTreeMap<(String, FieldId), Vec<NodeType>>,
     field_cardinalities: BTreeMap<(String, FieldId), FieldCardinality>,
     supertypes: BTreeMap<String, Vec<NodeType>>,
+    /// Per-node-kind declared field order (named fields only), as written in
+    /// the source node-types YAML. Field ids are not a stable ordering key
+    /// across front-ends, so this preserves the authored order for
+    /// presentation (see the AST dump).
+    field_order: BTreeMap<String, Vec<FieldId>>,
 }
 
 impl Default for Schema {
@@ -65,6 +70,7 @@ impl Schema {
             field_types: BTreeMap::new(),
             field_cardinalities: BTreeMap::new(),
             supertypes: BTreeMap::new(),
+            field_order: BTreeMap::new(),
         }
     }
 
@@ -267,6 +273,17 @@ impl Schema {
     ) -> Option<&Vec<NodeType>> {
         self.field_types
             .get(&(parent_kind.to_string(), field_id))
+    }
+
+    /// Record the declared (named) field order for a node kind, as authored in
+    /// the source node-types YAML.
+    pub fn set_field_order(&mut self, kind: &str, field_ids: Vec<FieldId>) {
+        self.field_order.insert(kind.to_string(), field_ids);
+    }
+
+    /// The declared (named) field order for a node kind, if known.
+    pub fn field_order(&self, kind: &str) -> Option<&Vec<FieldId>> {
+        self.field_order.get(kind)
     }
 
     pub fn set_field_cardinality(

@@ -8,70 +8,97 @@ class Box {
 
 ---
 
-source_file
-  statement:
-    class_declaration
-      body:
-        class_body
-          member:
-            property_declaration
-              binding:
-                value_binding_pattern
-                  mutability: var
-              declarator:
-                property_binding
-                  name:
-                    pattern
-                      bound_identifier: simple_identifier "_v"
-                  value: integer_literal "0"
-              modifiers:
-                modifiers
-                  modifier:
-                    visibility_modifier
-            property_declaration
-              binding:
-                value_binding_pattern
-                  mutability: var
-              declarator:
-                property_binding
-                  computed_value:
-                    computed_property
-                      accessor:
-                        computed_getter
-                          body:
-                            block
-                              statement:
-                                control_transfer_statement
-                                  kind: return
-                                  result: simple_identifier "_v"
-                          specifier:
-                            getter_specifier
-                        computed_setter
-                          body:
-                            block
-                              statement:
-                                assignment
-                                  operator: =
-                                  result: simple_identifier "newValue"
-                                  target:
-                                    directly_assignable_expression
-                                      expr: simple_identifier "_v"
-                          specifier:
-                            setter_specifier
-                  name:
-                    pattern
-                      bound_identifier: simple_identifier "v"
-                  type:
-                    type_annotation
-                      type:
-                        type
-                          name:
-                            user_type
-                              part:
-                                simple_user_type
-                                  name: type_identifier "Int"
-      declaration_kind: class
-      name: type_identifier "Box"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Box"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                        declModifier
+                          name: private
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "0"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "_v"
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "v"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                accessorDecl
+                                  accessorSpecifier: get
+                                  attributes:
+                                  body:
+                                    codeBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      statements:
+                                        codeBlockItem
+                                          item:
+                                            returnStmt
+                                              expression:
+                                                declReferenceExpr
+                                                  baseName: identifier "_v"
+                                              returnKeyword: return
+                                accessorDecl
+                                  accessorSpecifier: set
+                                  attributes:
+                                  body:
+                                    codeBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      statements:
+                                        codeBlockItem
+                                          item:
+                                            infixOperatorExpr
+                                              operator:
+                                                assignmentExpr
+                                                  equal: =
+                                              leftOperand:
+                                                declReferenceExpr
+                                                  baseName: identifier "_v"
+                                              rightOperand:
+                                                declReferenceExpr
+                                                  baseName: identifier "newValue"
+                              leftBrace: {
+                              rightBrace: }
+          modifiers:
+          classKeyword: class
 
 ---
 
@@ -80,14 +107,24 @@ top_level
     block
       stmt:
         class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Box"
           member:
             variable_declaration
-              modifier: modifier "var"
+              modifier:
+                modifier "var"
+                modifier "private"
               pattern:
                 name_pattern
                   identifier: identifier "_v"
               value: int_literal "0"
             accessor_declaration
+              modifier: modifier "var"
+              name: identifier "v"
+              accessor_kind: accessor_kind "get"
+              type:
+                named_type_expr
+                  name: identifier "Int"
               body:
                 block
                   stmt:
@@ -95,13 +132,15 @@ top_level
                       value:
                         name_expr
                           identifier: identifier "_v"
-              modifier: modifier "var"
+            accessor_declaration
+              modifier:
+                modifier "var"
+                modifier "chained_declaration"
               name: identifier "v"
+              accessor_kind: accessor_kind "set"
               type:
                 named_type_expr
                   name: identifier "Int"
-              accessor_kind: accessor_kind "get"
-            accessor_declaration
               body:
                 block
                   stmt:
@@ -112,13 +151,3 @@ top_level
                       value:
                         name_expr
                           identifier: identifier "newValue"
-              modifier:
-                modifier "var"
-                modifier "chained_declaration"
-              name: identifier "v"
-              type:
-                named_type_expr
-                  name: identifier "Int"
-              accessor_kind: accessor_kind "set"
-          modifier: modifier "class"
-          name: identifier "Box"

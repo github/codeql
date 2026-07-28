@@ -2,12 +2,21 @@ foo + bar
 
 ---
 
-source_file
-  statement:
-    additive_expression
-      lhs: simple_identifier "foo"
-      op: +
-      rhs: simple_identifier "bar"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "+"
+          leftOperand:
+            declReferenceExpr
+              baseName: identifier "foo"
+          rightOperand:
+            declReferenceExpr
+              baseName: identifier "bar"
 
 ---
 
@@ -16,10 +25,10 @@ top_level
     block
       stmt:
         binary_expr
-          operator: infix_operator "+"
           left:
             name_expr
               identifier: identifier "foo"
+          operator: infix_operator "+"
           right:
             name_expr
               identifier: identifier "bar"

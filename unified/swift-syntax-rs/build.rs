@@ -24,20 +24,34 @@ fn main() {
     println!("cargo:rerun-if-env-changed=SWIFTC");
 
     // Build the Swift FFI package as a release dynamic library.
+    //
+    // Degrade gracefully when there is no runnable Swift toolchain. This crate
+    // is a workspace member, so a plain `cargo check`/`fmt`/`clippy` at the repo
+    // root runs this build script; if `swift build` cannot even be spawned we
+    // emit a warning and skip the link directives rather than panicking, so
+    // those Swift-free workflows keep working. Only `cargo build`/`cargo test`
+    // then fail — at link time, which is fair: they genuinely need Swift (and CI
+    // builds go through Bazel anyway). A Swift toolchain that *is* present but
+    // whose build fails is still surfaced as a hard error below.
     let mut command = Command::new(swift_bin());
     command
         .args(["build", "-c", "release"])
         .current_dir(&swift_dir);
     apply_bare_repository_workaround(&mut command);
-    let status = command.status().unwrap_or_else(|e| {
-        panic!(
-            "failed to run `{swift} build`: {e}\n\
-             Install a Swift toolchain (see https://www.swift.org/install/, e.g. via \
-             swiftly) and ensure `swift` is on PATH, or set the `SWIFT` environment \
-             variable to the `swift` executable. The pinned version is in `.swift-version`.",
-            swift = swift_bin(),
-        )
-    });
+    let status = match command.status() {
+        Ok(status) => status,
+        Err(e) => {
+            println!(
+                "cargo:warning=skipping the Swift FFI build: failed to run `{swift} build`: {e}. \
+                 Install a Swift toolchain (see https://www.swift.org/install/, e.g. via swiftly) \
+                 and ensure `swift` is on PATH, or set the `SWIFT` environment variable, to build \
+                 or test this crate. `cargo check`/`fmt`/`clippy` work without it. The pinned \
+                 version is in `.swift-version`.",
+                swift = swift_bin(),
+            );
+            return;
+        }
+    };
     assert!(status.success(), "`swift build` failed");
 
     // Link against the freshly built dynamic library.
