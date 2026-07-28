@@ -43,9 +43,9 @@
 | windows.cpp:900:64:900:77 | HttpReceiveHttpRequest output argument | remote |
 | windows.cpp:929:70:929:75 | HttpReceiveRequestEntityBody output argument | remote |
 | windows.cpp:936:70:936:78 | HttpReceiveClientCertificate output argument | remote |
-| windows.cpp:989:35:989:38 | RegQueryValueA output argument | local |
-| windows.cpp:996:36:996:39 | RegQueryValueW output argument | local |
-| windows.cpp:1004:53:1004:56 | RegQueryValueExA output argument | local |
-| windows.cpp:1012:54:1012:57 | RegQueryValueExW output argument | local |
-| windows.cpp:1020:46:1020:49 | RegQueryMultipleValuesA output argument | local |
-| windows.cpp:1028:46:1028:49 | RegQueryMultipleValuesW output argument | local |
+| windows.cpp:994:35:994:38 | RegQueryValueA output argument | local |
+| windows.cpp:1001:36:1001:39 | RegQueryValueW output argument | local |
+| windows.cpp:1009:53:1009:56 | RegQueryValueExA output argument | local |
+| windows.cpp:1017:54:1017:57 | RegQueryValueExW output argument | local |
+| windows.cpp:1025:46:1025:49 | RegQueryMultipleValuesA output argument | local |
+| windows.cpp:1033:46:1033:49 | RegQueryMultipleValuesW output argument | local |

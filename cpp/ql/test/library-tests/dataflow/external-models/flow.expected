@@ -343,12 +343,12 @@ edges
 | windows.cpp:936:70:936:78 | HttpReceiveClientCertificate output argument | windows.cpp:937:15:937:48 | *& ... | provenance | Src:MaD:6  |
 | windows.cpp:936:70:936:78 | HttpReceiveClientCertificate output argument | windows.cpp:941:10:941:31 | * ... | provenance | Src:MaD:6  |
 | windows.cpp:937:15:937:48 | *& ... | windows.cpp:939:10:939:11 | * ... | provenance |  |
-| windows.cpp:989:35:989:38 | RegQueryValueA output argument | windows.cpp:991:10:991:14 | * ... | provenance | Src:MaD:21  |
-| windows.cpp:996:36:996:39 | RegQueryValueW output argument | windows.cpp:998:10:998:14 | * ... | provenance | Src:MaD:24  |
-| windows.cpp:1004:53:1004:56 | RegQueryValueExA output argument | windows.cpp:1006:10:1006:14 | * ... | provenance | Src:MaD:22  |
-| windows.cpp:1012:54:1012:57 | RegQueryValueExW output argument | windows.cpp:1014:10:1014:14 | * ... | provenance | Src:MaD:23  |
-| windows.cpp:1020:46:1020:49 | RegQueryMultipleValuesA output argument | windows.cpp:1022:10:1022:14 | * ... | provenance | Src:MaD:19  |
-| windows.cpp:1028:46:1028:49 | RegQueryMultipleValuesW output argument | windows.cpp:1030:10:1030:14 | * ... | provenance | Src:MaD:20  |
+| windows.cpp:994:35:994:38 | RegQueryValueA output argument | windows.cpp:996:10:996:14 | * ... | provenance | Src:MaD:21  |
+| windows.cpp:1001:36:1001:39 | RegQueryValueW output argument | windows.cpp:1003:10:1003:14 | * ... | provenance | Src:MaD:24  |
+| windows.cpp:1009:53:1009:56 | RegQueryValueExA output argument | windows.cpp:1011:10:1011:14 | * ... | provenance | Src:MaD:22  |
+| windows.cpp:1017:54:1017:57 | RegQueryValueExW output argument | windows.cpp:1019:10:1019:14 | * ... | provenance | Src:MaD:23  |
+| windows.cpp:1025:46:1025:49 | RegQueryMultipleValuesA output argument | windows.cpp:1027:10:1027:14 | * ... | provenance | Src:MaD:19  |
+| windows.cpp:1033:46:1033:49 | RegQueryMultipleValuesW output argument | windows.cpp:1035:10:1035:14 | * ... | provenance | Src:MaD:20  |
 nodes
 | asio_streams.cpp:87:34:87:44 | read_until output argument | semmle.label | read_until output argument |
 | asio_streams.cpp:91:7:91:17 | recv_buffer | semmle.label | recv_buffer |
@@ -665,18 +665,18 @@ nodes
 | windows.cpp:937:15:937:48 | *& ... | semmle.label | *& ... |
 | windows.cpp:939:10:939:11 | * ... | semmle.label | * ... |
 | windows.cpp:941:10:941:31 | * ... | semmle.label | * ... |
-| windows.cpp:989:35:989:38 | RegQueryValueA output argument | semmle.label | RegQueryValueA output argument |
-| windows.cpp:991:10:991:14 | * ... | semmle.label | * ... |
-| windows.cpp:996:36:996:39 | RegQueryValueW output argument | semmle.label | RegQueryValueW output argument |
-| windows.cpp:998:10:998:14 | * ... | semmle.label | * ... |
-| windows.cpp:1004:53:1004:56 | RegQueryValueExA output argument | semmle.label | RegQueryValueExA output argument |
-| windows.cpp:1006:10:1006:14 | * ... | semmle.label | * ... |
-| windows.cpp:1012:54:1012:57 | RegQueryValueExW output argument | semmle.label | RegQueryValueExW output argument |
-| windows.cpp:1014:10:1014:14 | * ... | semmle.label | * ... |
-| windows.cpp:1020:46:1020:49 | RegQueryMultipleValuesA output argument | semmle.label | RegQueryMultipleValuesA output argument |
-| windows.cpp:1022:10:1022:14 | * ... | semmle.label | * ... |
-| windows.cpp:1028:46:1028:49 | RegQueryMultipleValuesW output argument | semmle.label | RegQueryMultipleValuesW output argument |
-| windows.cpp:1030:10:1030:14 | * ... | semmle.label | * ... |
+| windows.cpp:994:35:994:38 | RegQueryValueA output argument | semmle.label | RegQueryValueA output argument |
+| windows.cpp:996:10:996:14 | * ... | semmle.label | * ... |
+| windows.cpp:1001:36:1001:39 | RegQueryValueW output argument | semmle.label | RegQueryValueW output argument |
+| windows.cpp:1003:10:1003:14 | * ... | semmle.label | * ... |
+| windows.cpp:1009:53:1009:56 | RegQueryValueExA output argument | semmle.label | RegQueryValueExA output argument |
+| windows.cpp:1011:10:1011:14 | * ... | semmle.label | * ... |
+| windows.cpp:1017:54:1017:57 | RegQueryValueExW output argument | semmle.label | RegQueryValueExW output argument |
+| windows.cpp:1019:10:1019:14 | * ... | semmle.label | * ... |
+| windows.cpp:1025:46:1025:49 | RegQueryMultipleValuesA output argument | semmle.label | RegQueryMultipleValuesA output argument |
+| windows.cpp:1027:10:1027:14 | * ... | semmle.label | * ... |
+| windows.cpp:1033:46:1033:49 | RegQueryMultipleValuesW output argument | semmle.label | RegQueryMultipleValuesW output argument |
+| windows.cpp:1035:10:1035:14 | * ... | semmle.label | * ... |
 subpaths
 | test.cpp:32:41:32:41 | x | test.cpp:7:47:7:52 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body |
 | test.cpp:172:51:172:51 | x | test.cpp:164:34:164:34 | x | test.cpp:164:7:164:7 | *templateFunction3 | test.cpp:172:13:172:44 | call to templateFunction3 |
