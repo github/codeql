@@ -262,10 +262,10 @@ fn parse_range(node: &Value) -> Option<Range> {
     })
 }
 
-/// The authoritative swift-syntax input node-types schema, generated from
-/// swift-syntax (see the schemagen tool). [`json_to_ast`] seeds every parse
-/// with the schema built from this, pre-registering every input kind and field
-/// so rule matching never references a name absent from a given file's tree.
+/// The authoritative swift-syntax input node-types schema.
+/// [`json_to_ast`] seeds every parse with the schema built from this,
+/// pre-registering every input kind and field so rule matching never references
+/// a name absent from a given file's tree.
 const SWIFT_NODE_TYPES: &str = include_str!("../../../swift_node_types.yml");
 
 /// Convert a swift-syntax JSON tree (as produced by [`crate::parse_to_json`])

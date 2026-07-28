@@ -1,4 +1,3 @@
-# GENERATED from swift-syntax by the one-off schemagen tool. Do not edit.
 supertypes:
   decl:
     - accessorDecl
