@@ -1040,6 +1040,6 @@ void test_registry_queries(HKEY hKey) {
     DWORD type;
     RegGetValueA(hKey, "subkey", "value", 0, &type, data, &dataSize);
     sink(data); // clean
-    sink(*data); // $ MISSING: ir
+    sink(*data); // $ ir
   }
 }

@@ -49,3 +49,4 @@
 | windows.cpp:1017:54:1017:57 | RegQueryValueExW output argument | local |
 | windows.cpp:1025:46:1025:49 | RegQueryMultipleValuesA output argument | local |
 | windows.cpp:1033:46:1033:49 | RegQueryMultipleValuesW output argument | local |
+| windows.cpp:1041:53:1041:56 | RegGetValueA output argument | local |
