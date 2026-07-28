@@ -86,10 +86,10 @@ sh_binary(
 # the real binary, and the runtime libraries, flattened into one directory.
 codeql_pkg_runfiles(
     name = "swift-syntax-parse-pkg",
-    exes = [":swift-syntax-parse"],
     # The `.sh` source is shipped as `swift-syntax-parse` (the wrapper); drop the
     # original filename.
     excludes = ["swift-syntax-parse.sh"],
+    exes = [":swift-syntax-parse"],
     target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
     visibility = ["//unified:__pkg__"],
 )

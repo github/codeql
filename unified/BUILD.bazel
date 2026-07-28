@@ -54,8 +54,8 @@ codeql_pkg_files(
 pkg_filegroup(
     name = "swift-syntax-parse-arch",
     srcs = select_os(
-        posix = ["//unified/swift-syntax-rs:swift-syntax-parse-pkg"],
         otherwise = [],
+        posix = ["//unified/swift-syntax-rs:swift-syntax-parse-pkg"],
     ),
     prefix = "tools/{CODEQL_PLATFORM}",
 )
