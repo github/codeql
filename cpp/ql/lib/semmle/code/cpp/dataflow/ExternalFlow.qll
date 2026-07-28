@@ -115,6 +115,7 @@ private import new.DataFlow
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as Private
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowNodes as Nodes
 private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
@@ -955,6 +956,8 @@ private module Cached {
     exists(SourceSinkInterpretationInput::InterpretNode n |
       isSourceNode(n, kind, model) and n.asNode() = node
     )
+    or
+    node.(Nodes::FlowSummaryNode).isSource(kind, model)
   }
 
   /**
