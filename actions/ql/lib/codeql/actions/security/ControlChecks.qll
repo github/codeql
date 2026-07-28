@@ -280,9 +280,8 @@ class EnvironmentCheck extends ControlCheck instanceof Environment {
   // Environment checks are not effective against any mutable attacks
   // they do actually protect against untrusted code execution (sha)
   override predicate protectsCategoryAndEvent(string category, string event) {
-    event = actor_is_attacker_event() and category = any_category()
-    or
-    event = actor_not_attacker_event() and category = non_toctou_category()
+    event = [actor_is_attacker_event(), actor_not_attacker_event()] and
+    category = non_toctou_category()
   }
 }
 

@@ -1,3 +1,9 @@
+## 1.7.0
+
+### Query Metadata Changes
+
+* Added the tags `external/cwe/cwe-073` and `external/cwe/cwe-078` to `cpp/uncontrolled-process-operation`.
+
 ## 1.6.5
 
 No user-facing changes.

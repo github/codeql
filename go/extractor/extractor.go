@@ -32,7 +32,13 @@ import (
 )
 
 var MaxGoRoutines int
-var typeParamParent map[*types.TypeParam]types.Object = make(map[*types.TypeParam]types.Object)
+
+type typeParamParentEntry struct {
+	parent         types.Object
+	isFromReceiver bool
+}
+
+var typeParamParent map[*types.TypeParam]typeParamParentEntry = make(map[*types.TypeParam]typeParamParentEntry)
 
 func init() {
 	// this sets the number of threads that the Go runtime will spawn; this is separate
@@ -530,8 +536,7 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 			// do not appear as objects in any scope, so they have to be dealt
 			// with separately in extractMethods.
 			if funcObj, ok := obj.(*types.Func); ok {
-				populateTypeParamParents(funcObj.Type().(*types.Signature).TypeParams(), obj)
-				populateTypeParamParents(funcObj.Type().(*types.Signature).RecvTypeParams(), obj)
+				populateTypeParamParentsFromFunction(funcObj)
 			}
 			// Populate type parameter parents for defined types and alias types.
 			if typeNameObj, ok := obj.(*types.TypeName); ok {
@@ -542,9 +547,9 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 				// careful with alias types because before Go 1.24 they would
 				// return the underlying type.
 				if tp, ok := typeNameObj.Type().(*types.Named); ok && !typeNameObj.IsAlias() {
-					populateTypeParamParents(tp.TypeParams(), obj)
+					populateTypeParamParents(tp.TypeParams(), obj, false)
 				} else if tp, ok := typeNameObj.Type().(*types.Alias); ok {
-					populateTypeParamParents(tp.TypeParams(), obj)
+					populateTypeParamParents(tp.TypeParams(), obj, false)
 				}
 			}
 			extractObject(tw, obj, lbl)
@@ -570,8 +575,7 @@ func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
 	if !exists {
 		// Populate type parameter parents for methods. They do not appear as
 		// objects in any scope, so they have to be dealt with separately here.
-		populateTypeParamParents(meth.Type().(*types.Signature).TypeParams(), meth)
-		populateTypeParamParents(meth.Type().(*types.Signature).RecvTypeParams(), meth)
+		populateTypeParamParentsFromFunction(meth)
 		extractObject(tw, meth, methlbl)
 	}
 
@@ -1529,12 +1533,6 @@ func extractSpec(tw *trap.Writer, spec ast.Spec, parent trap.Label, idx int) {
 	extractNodeLocation(tw, spec, lbl)
 }
 
-// Determines whether the given type is an alias.
-func isAlias(tp types.Type) bool {
-	_, ok := tp.(*types.Alias)
-	return ok
-}
-
 // extractType extracts type information for `tp` and returns its associated label;
 // types are only extracted once, so the second time `extractType` is invoked it simply returns the label
 func extractType(tw *trap.Writer, tp types.Type) trap.Label {
@@ -1644,7 +1642,6 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			dbscheme.TypeNameTable.Emit(tw, lbl, origintp.Obj().Name())
 			underlying := origintp.Underlying()
 			extractUnderlyingType(tw, lbl, underlying)
-			trackInstantiatedStructFields(tw, tp, origintp)
 
 			entitylbl, exists := tw.Labeler.LookupObjectID(origintp.Obj(), lbl)
 			if entitylbl == trap.InvalidLabel {
@@ -1684,9 +1681,9 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			}
 		case *types.TypeParam:
 			kind = dbscheme.TypeParamType.Index()
-			parentlbl := getTypeParamParentLabel(tw, tp)
+			parentlbl, isReceiverChild := getTypeParamParentLabel(tw, tp)
 			constraintLabel := extractType(tw, tp.Constraint())
-			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), constraintLabel, parentlbl, tp.Index())
+			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), constraintLabel, parentlbl, tp.Index(), isReceiverChild)
 		case *types.Union:
 			kind = dbscheme.TypeSetLiteral.Index()
 			for i := 0; i < tp.Len(); i++ {
@@ -1826,9 +1823,9 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 			}
 			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%s};definedtype", entitylbl))
 		case *types.TypeParam:
-			parentlbl := getTypeParamParentLabel(tw, tp)
+			parentlbl, isReceiverChild := getTypeParamParentLabel(tw, tp)
 			idx := tp.Index()
-			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%d,%s;typeparamtype", parentlbl, idx, tp.Obj().Name()))
+			lbl = tw.Labeler.GlobalID(fmt.Sprintf("{%v},%d,%t,%s;typeparamtype", parentlbl, idx, isReceiverChild, tp.Obj().Name()))
 		case *types.Union:
 			var b strings.Builder
 			for i := 0; i < tp.Len(); i++ {
@@ -2012,11 +2009,18 @@ func extractTypeParamDecls(tw *trap.Writer, fields *ast.FieldList, parent trap.L
 	}
 }
 
+func populateTypeParamParentsFromFunction(funcObj *types.Func) {
+	signature := funcObj.Type().(*types.Signature)
+	populateTypeParamParents(signature.RecvTypeParams(), funcObj, true)
+	populateTypeParamParents(signature.TypeParams(), funcObj, false)
+}
+
 // populateTypeParamParents sets `parent` as the parent of the elements of `typeparams`
-func populateTypeParamParents(typeparams *types.TypeParamList, parent types.Object) {
+// and records whether elements are defined in a receiver.
+func populateTypeParamParents(typeparams *types.TypeParamList, parent types.Object, isFromReceiver bool) {
 	if typeparams != nil {
-		for idx := 0; idx < typeparams.Len(); idx++ {
-			setTypeParamParent(typeparams.At(idx), parent)
+		for tparam := range typeparams.TypeParams() {
+			setTypeParamParent(tparam, parent, isFromReceiver)
 		}
 	}
 }
@@ -2035,54 +2039,26 @@ func getObjectBeingUsed(tw *trap.Writer, ident *ast.Ident) types.Object {
 	}
 }
 
-// trackInstantiatedStructFields tries to give the fields of an instantiated
-// struct type underlying `tp` the same labels as the corresponding fields of
-// the generic struct type. This is so that when we come across the
-// instantiated field in `tw.Package.TypesInfo.Uses` we will get the label for
-// the generic field instead.
-func trackInstantiatedStructFields(tw *trap.Writer, tp, origintp *types.Named) {
-	if tp == origintp {
-		return
-	}
-
-	if instantiatedStruct, ok := tp.Underlying().(*types.Struct); ok {
-		genericStruct, ok2 := origintp.Underlying().(*types.Struct)
-		if !ok2 {
-			log.Fatalf(
-				"Error: underlying type of instantiated type is a struct but underlying type of generic type is %s",
-				origintp.Underlying())
-		}
-
-		if instantiatedStruct.NumFields() != genericStruct.NumFields() {
-			log.Fatalf(
-				"Error: instantiated struct %s has different number of fields than the generic version %s (%d != %d)",
-				instantiatedStruct, genericStruct, instantiatedStruct.NumFields(), genericStruct.NumFields())
-		}
-
-		for i := 0; i < instantiatedStruct.NumFields(); i++ {
-			tw.ObjectsOverride[instantiatedStruct.Field(i)] = genericStruct.Field(i)
-		}
-	}
-}
-
-func getTypeParamParentLabel(tw *trap.Writer, tp *types.TypeParam) trap.Label {
-	parent, exists := typeParamParent[tp]
+func getTypeParamParentLabel(tw *trap.Writer, tp *types.TypeParam) (trap.Label, bool) {
+	entry, exists := typeParamParent[tp]
 	if !exists {
 		log.Fatalf("Parent of type parameter does not exist: %s %s", tp.String(), tp.Constraint().String())
 	}
-	parentlbl, _ := tw.Labeler.ScopedObjectID(parent, func() trap.Label {
+	parentlbl, _ := tw.Labeler.ScopedObjectID(entry.parent, func() trap.Label {
 		log.Fatalf("getTypeLabel() called for parent of type parameter %s", tp.String())
 		return trap.InvalidLabel
 	})
-	return parentlbl
+	return parentlbl, entry.isFromReceiver
 }
 
-func setTypeParamParent(tp *types.TypeParam, newobj types.Object) {
-	obj, exists := typeParamParent[tp]
+func setTypeParamParent(tp *types.TypeParam, parent types.Object, isFromReceiver bool) {
+	entry, exists := typeParamParent[tp]
+	newEntry := typeParamParentEntry{parent, isFromReceiver}
 	if !exists {
-		typeParamParent[tp] = newobj
-	} else if newobj != obj {
-		log.Fatalf("Parent of type parameter '%s %s' being set to a different value: '%s' vs '%s'", tp.String(), tp.Constraint().String(), obj, newobj)
+		typeParamParent[tp] = newEntry
+	} else if entry != newEntry {
+		log.Fatalf("Parent of type parameter '%s %s' being set to a different value: {'%s', %t}'  vs {'%s', %t}",
+			tp.String(), tp.Constraint().String(), entry.parent, entry.isFromReceiver, parent, isFromReceiver)
 	}
 }
 

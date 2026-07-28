@@ -130,43 +130,6 @@ module TaintedPath {
   }
 
   /**
-   * A node `nd` guarded by a check that ensures it is contained within some root folder,
-   * considered as a sanitizer for path traversal.
-   *
-   * We currently recognize checks of the following form:
-   *
-   * ```
-   * ..., err := filepath.Rel(base, path)
-   * if err == nil {
-   *   // path is known to be contained in base
-   * }
-   * ```
-   */
-  class PathContainmentCheck extends SanitizerGuard, DataFlow::EqualityTestNode {
-    DataFlow::Node path;
-    boolean outcome;
-
-    PathContainmentCheck() {
-      exists(Function f, FunctionInput inp, FunctionOutput outp, DataFlow::Property p |
-        f.hasQualifiedName("path/filepath", "Rel") and
-        inp.isParameter(1) and
-        outp.isResult(1) and
-        p.isNil()
-      |
-        exists(DataFlow::Node call, DataFlow::Node res |
-          call = f.getACall() and
-          DataFlow::localFlow(outp.getNode(call), res)
-        |
-          p.checkOn(this, outcome, res) and
-          path = inp.getNode(call)
-        )
-      )
-    }
-
-    override predicate checks(Expr e, boolean branch) { e = path.asExpr() and branch = outcome }
-  }
-
-  /**
    * A call of the form `strings.HasPrefix(path, ...)` considered as a sanitizer guard
    * for `path`.
    *

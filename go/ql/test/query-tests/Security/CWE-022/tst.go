@@ -14,7 +14,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	file, handler, _ := r.FormFile("file")
 	// err handling
 	defer file.Close()
-	tempFile, _ := ioutil.TempFile("/tmp", handler.Filename) // NOT OK
+	tempFile, _ := ioutil.TempFile("/tmp", handler.Filename) // OK
 	use(tempFile)
 }
 
@@ -24,11 +24,11 @@ func unzip2(f string, root string) {
 		path := f.Name
 		relpath, err := filepath.Rel(root, path)
 		if err == nil {
-			ioutil.WriteFile(filepath.Join(root, relpath), []byte("present"), 0666) // OK
+			ioutil.WriteFile(filepath.Join(root, relpath), []byte("present"), 0666) // $ Sink[go/zipslip]
 		}
-		ioutil.WriteFile(path, []byte("present"), 0666) // $ Sink[go/zipslip] // NOT OK
+		ioutil.WriteFile(path, []byte("present"), 0666) // $ Sink[go/zipslip]
 		if containedIn(path, root) {
-			ioutil.WriteFile(path, []byte("present"), 0666) // OK
+			ioutil.WriteFile(path, []byte("present"), 0666) // $ Sink[go/zipslip]
 		}
 		if ok, _ := regexp.MatchString("^[a-z]*$", path); ok {
 			ioutil.WriteFile(path, []byte("present"), 0666) // OK

@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::captures::Captures;
 use crate::tree_builder::FreshScope;
-use crate::{Ast, FieldId, Id, NodeContent, TranslatorHandle};
+use crate::{Ast, FieldId, Id, NodeContent, Range, TranslatorHandle};
 
 /// Context for building new AST nodes during a transformation.
 ///
@@ -34,7 +34,7 @@ pub struct BuildCtx<'a, C: 'a = ()> {
     pub captures: &'a Captures,
     pub fresh: &'a FreshScope,
     /// Source range of the matched node, inherited by synthetic nodes.
-    pub source_range: Option<tree_sitter::Range>,
+    pub source_range: Option<Range>,
     /// User-supplied context, accessible directly via `ctx.field` (via Deref).
     pub user_ctx: &'a mut C,
     /// Optional translator handle, populated when the context is built by
@@ -63,7 +63,7 @@ impl<'a, C> BuildCtx<'a, C> {
         ast: &'a mut Ast,
         captures: &'a Captures,
         fresh: &'a FreshScope,
-        source_range: Option<tree_sitter::Range>,
+        source_range: Option<Range>,
         user_ctx: &'a mut C,
     ) -> Self {
         Self {
@@ -82,7 +82,7 @@ impl<'a, C> BuildCtx<'a, C> {
         ast: &'a mut Ast,
         captures: &'a Captures,
         fresh: &'a FreshScope,
-        source_range: Option<tree_sitter::Range>,
+        source_range: Option<Range>,
         user_ctx: &'a mut C,
         translator: TranslatorHandle<'a, C>,
     ) -> Self {
@@ -143,7 +143,7 @@ impl<'a, C> BuildCtx<'a, C> {
         &mut self,
         kind: &'static str,
         value: &str,
-        source_range: Option<tree_sitter::Range>,
+        source_range: Option<Range>,
     ) -> Id {
         self.ast.create_named_token_with_range(
             kind,
@@ -161,52 +161,75 @@ impl<'a, C> BuildCtx<'a, C> {
 }
 
 impl<C: Clone> BuildCtx<'_, C> {
-    /// Recursively translate a node via the framework's rule machinery.
-    /// In a OneShot phase, applies OneShot rules to the given node and
-    /// returns the resulting node ids. In a Repeating phase, errors
-    /// (translation is not meaningful when input and output share a
-    /// schema).
+    /// Recursively translate every id in the given iterable via the
+    /// framework's rule machinery. In a OneShot phase, applies OneShot
+    /// rules to each id and returns the accumulated resulting node ids
+    /// in order. In a Repeating phase, errors (translation is not
+    /// meaningful when input and output share a schema).
+    ///
+    /// The single-`Id` case works too, because `Id: IntoIterator<Item
+    /// = Id>` is a singleton iterator — so `ctx.translate(some_id)?`
+    /// returns a `Vec<Id>` containing whatever `some_id` translated to.
     ///
     /// Errors if this `BuildCtx` was constructed by hand (without a
     /// translator handle) — for example, in unit tests that don't go
     /// through the rule driver.
-    pub fn translate<I: Into<Id>>(&mut self, id: I) -> Result<Vec<Id>, String> {
-        let id = id.into();
-        match &self.translator {
-            Some(t) => t.translate(self.ast, self.user_ctx, id),
-            None => Err("translate() called on a BuildCtx without a translator handle".into()),
-        }
-    }
-
-    /// Translate every node in an iterator with a **fresh** user context
-    /// (reset to `C::default()`), restoring the previous context afterwards.
-    ///
-    /// Use when descending into a subtree — a body, expression, or statement
-    /// list — that must not inherit any of the surrounding translation
-    /// context (for example an enclosing binding modifier). Accepts optional
-    /// (`Option<Id>`) and repeated (`Vec<Id>`) captures (both `IntoIterator`);
-    /// for a single `Id`, wrap it in `std::iter::once(id)`.
-    pub fn translate_reset<I: Into<Id>>(
+    pub fn translate<I: Into<Id>>(
         &mut self,
         ids: impl IntoIterator<Item = I>,
-    ) -> Result<Vec<Id>, String>
-    where
-        C: Default,
-    {
-        let saved = std::mem::take(&mut *self.user_ctx);
+    ) -> Result<Vec<Id>, String> {
+        let translator = self
+            .translator
+            .as_ref()
+            .ok_or("translate() called on a BuildCtx without a translator handle")?;
         let mut out = Vec::new();
-        let mut result = Ok(());
         for id in ids {
-            match self.translate(id) {
-                Ok(v) => out.extend(v),
-                Err(e) => {
-                    result = Err(e);
-                    break;
-                }
-            }
+            let translated = translator.translate(self.ast, self.user_ctx, id.into())?;
+            out.extend(translated);
         }
-        *self.user_ctx = saved;
-        result.map(|()| out)
+        Ok(out)
+    }
+
+    /// Run `f` with a temporary child [`BuildCtx`] whose `user_ctx` is
+    /// a fresh clone of the current one, sharing everything else
+    /// (`ast`, `captures`, `fresh`, `source_range`, `translator`) by
+    /// re-borrow. Any mutations `f` makes to the child's `user_ctx`
+    /// are discarded when it returns — no restore needed, because the
+    /// mutations only ever happened on a local clone.
+    ///
+    /// Use for the rare rule that needs to translate a subtree under a
+    /// modified context *and then continue using its own (unmodified)
+    /// context afterwards*. For rules where the modified translation
+    /// is the last use of `ctx`, mutate `ctx` in place — the framework
+    /// invokes each rule with a private clone of the user context, so
+    /// mutations are discarded on rule exit anyway.
+    ///
+    /// Example: an outer rule that translates one child subtree with a
+    /// reset context, then continues with the outer context intact:
+    ///
+    /// ```ignore
+    /// let val = ctx.scoped(|ctx| {
+    ///     ctx.reset();
+    ///     ctx.translate(val)
+    /// })?;
+    /// // `ctx` here is untouched by the reset inside the closure.
+    /// let other = ctx.translate(other_id)?;
+    /// ```
+    pub fn scoped<F, R>(&mut self, f: F) -> R
+    where
+        F: for<'b> FnOnce(&mut BuildCtx<'b, C>) -> R,
+    {
+        let mut child_user_ctx = self.user_ctx.clone();
+        let mut child = BuildCtx {
+            ast: &mut *self.ast,
+            captures: self.captures,
+            fresh: self.fresh,
+            source_range: self.source_range,
+            user_ctx: &mut child_user_ctx,
+            translator: self.translator,
+        };
+        f(&mut child)
+        // child_user_ctx dropped; the outer `self` is unaffected.
     }
 }
 

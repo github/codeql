@@ -10,18 +10,18 @@ function aJWT() {
 }
 
 (function () {
-    const UserToken = aJwt()
+    const UserToken = aJwt() // $ Alert
 
     // BAD: no signature verification
-    jwtJsonwebtoken.decode(UserToken) // NOT OK
+    jwtJsonwebtoken.decode(UserToken) // $ Sink // NOT OK
 })();
 
 (function () {
-    const UserToken = aJwt()
+    const UserToken = aJwt() // $ Alert
 
     // BAD: no signature verification
-    jwtJsonwebtoken.decode(UserToken) // NOT OK
-    jwtJsonwebtoken.verify(UserToken, getSecret(), { algorithms: ["HS256", "none"] }) // NOT OK
+    jwtJsonwebtoken.decode(UserToken) // $ Sink // NOT OK
+    jwtJsonwebtoken.verify(UserToken, getSecret(), { algorithms: ["HS256", "none"] }) // $ Sink // NOT OK
 })();
 
 (function () {

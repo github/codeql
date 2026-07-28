@@ -312,13 +312,15 @@ already conforms to the output schema.
 For rules that need the raw (input-schema) capture — typically to read
 its source text or to translate it explicitly with mutable context
 state between calls — use `@@name` instead. The body sees the original
-input-schema `Id`:
+input-schema `Id`. Because these rules always have a Rust block body,
+they use the annotation form (see [the `rule!` macro
+section](#the-rule-macro) for the full grammar):
 
 ```rust
 yeast::rule!(
     (assignment left: (_) @@raw_lhs right: (_) @rhs)
     =>
-    {
+    call {
         // raw_lhs is untranslated: read its original source text.
         let text = ctx.ast.source_text(raw_lhs);
         // rhs is already translated by the auto-translate prefix.
@@ -372,25 +374,78 @@ automatically: single captures bind as `Id`, repeated captures (after
 
 ## The `rule!` macro
 
-`rule!` combines a query and a transform into a single declaration:
+`rule!` combines a query and a transform into a single declaration.
+There are three transform forms, each suited to a different level of
+rule complexity:
 
 ```rust
-// Full template form
+// 1. Template form — a tree literal describing the output.
 yeast::rule!(
     (query_pattern field: (_) @capture)
     =>
     (output_template field: {capture})
 )
 
-// Shorthand form — captures become fields on the output node
+// 2. Shorthand form — captures become fields on a bare output kind.
 yeast::rule!(
     (query_pattern field: (_) @capture)
     => output_kind
+)
+
+// 3. Annotation form — a Rust block body preceded by the output kind.
+yeast::rule!(
+    (query_pattern child: (_)+ @@children)
+    =>
+    output_kind* {
+        // arbitrary Rust; must evaluate to a value compatible with the
+        // declared multiplicity (see below).
+        let mut result = Vec::new();
+        for child in children {
+            result.extend(ctx.translate(child)?);
+        }
+        result
+    }
 )
 ```
 
 The shorthand `=> kind` form auto-generates the template, mapping each
 capture name to a field of the same name on the output node.
+
+### Annotation form
+
+Rules that need imperative logic — mutating [`BuildCtx`] state per
+iteration, computing intermediate values, or looping over captures —
+use the annotation form. It has three shapes distinguished by a suffix
+on the output-kind identifier:
+
+| Syntax              | Body must evaluate to               | Meaning                        |
+|---------------------|-------------------------------------|--------------------------------|
+| `=> kind { ... }`   | a single node id of `kind`          | Emit exactly one node.         |
+| `=> kind? { ... }`  | an `Option` of a node id of `kind`  | Emit 0 or 1 nodes (`None`/`Some`). |
+| `=> kind* { ... }`  | an iterable of node ids of `kind`   | Emit 0+ nodes; flattens into the enclosing splice slot. |
+
+The suffix mirrors the `?` / `*` markers used elsewhere in the schema
+DSL (see [`ast_types.yml`](../../../unified/extractor/ast_types.yml)):
+bare identifier = required single, `?` = optional single, `*` =
+repeated.
+
+The annotation names the schema kind of the output, giving the macro
+enough information for future static analysis (e.g. computing the
+static output type of translated captures at their consumer sites).
+
+**Bare `=> { ... }` block bodies are rejected** — every Rust-block body
+must carry an annotation, so the output kind is always visible without
+having to inspect the block's expression.
+
+### Choosing between the forms
+
+Prefer the simplest form that fits:
+
+- If the whole transform is a tree literal, use the **template form**.
+- If the transform is a template whose root matches a query capture
+  1:1, use the **shorthand form**.
+- If the transform needs Rust logic (loops, `let` bindings, calls to
+  `ctx.translate`, etc.), use the **annotation form**.
 
 ## Integration with the extractor
 
@@ -437,3 +492,44 @@ For the dbscheme/QL code generator, set `Language::desugar` to a
 `DesugaringConfig` carrying the same YAML; the generator converts it to
 JSON for downstream code generation. The `phases` field of the config is
 unused at code-generation time.
+
+## The `rules!` macro
+
+The [`rules!`] macro bundles a list of rewrite rules with the input and
+output node-types schema paths. It's a drop-in replacement for the
+hand-written `vec![rule!(...), rule!(...), ...]` form and accepts a
+slightly looser syntax: bare rule bodies don't need an explicit
+`rule!(...)` wrapper.
+
+```rust
+let translation_rules: Vec<yeast::Rule> = yeast::rules! {
+    input: "tree-sitter-swift/node-types.yml",
+    output: "ast_types.yml",
+    [
+        (simple_identifier) @name
+        =>
+        (name_expr identifier: (identifier #{name})),
+
+        (integer_literal) @lit
+        =>
+        (int_literal #{lit}),
+    ]
+};
+```
+
+Each comma-separated item in the bracketed list may be:
+
+- A **bare rule body** `(query) => (template)` — no `rule!(...)` wrapper.
+- An explicit `rule!(...)` invocation, with optional postfix calls such
+  as `rule!(...).repeated()`.
+- Any other expression returning a `Rule` (helper functions, etc.).
+
+Schema paths are resolved relative to the consuming crate's
+`CARGO_MANIFEST_DIR` (the same convention `include_str!` uses for
+relative paths). The resolved paths are emitted as `include_str!`
+references in the expansion so the consuming crate's incremental cache
+invalidates when a schema YAML changes — laying the groundwork for
+schema-aware compile-time checks on the rule bodies.
+
+The `Vec<Rule>` produced by `rules!` flows into `add_phase` exactly as
+before.

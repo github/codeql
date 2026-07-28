@@ -38,8 +38,8 @@ public class UrlRedirectHandler : IHttpHandler
         ctx.Response.AddHeader("Location", ctx.Request.QueryString["page"]); // $ Alert=r3 Alert=r3
         ctx.Response.AppendHeader("Location", ctx.Request.QueryString["page"]); // $ Alert=r4 Alert=r4
 
-        // GOOD: Redirecting to the RawUrl only reloads the current Url
-        ctx.Response.Redirect(ctx.Request.RawUrl);
+        // BAD: The RawUrl contains the un-normalized request line.
+        ctx.Response.Redirect(ctx.Request.RawUrl); // $ Alert
 
         // GOOD: The attacker can only control the parameters, not the location
         ctx.Response.Redirect("foo.asp?param=" + url);

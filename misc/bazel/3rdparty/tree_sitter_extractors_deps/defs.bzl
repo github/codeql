@@ -403,6 +403,13 @@ _NORMAL_DEPENDENCIES = {
             "syn": Label("@vendor_ts__syn-2.0.106//:syn"),
         },
     },
+    "shared/yeast-schema": {
+        _COMMON_CONDITION: {
+            "serde": Label("@vendor_ts__serde-1.0.228//:serde"),
+            "serde_json": Label("@vendor_ts__serde_json-1.0.145//:serde_json"),
+            "serde_yaml": Label("@vendor_ts__serde_yaml-0.9.34-deprecated//:serde_yaml"),
+        },
+    },
     "unified/extractor": {
         _COMMON_CONDITION: {
             "clap": Label("@vendor_ts__clap-4.5.48//:clap"),
@@ -420,6 +427,10 @@ _NORMAL_DEPENDENCIES = {
     "unified/extractor/tree-sitter-swift": {
         _COMMON_CONDITION: {
             "tree-sitter-language": Label("@vendor_ts__tree-sitter-language-0.1.5//:tree_sitter_language"),
+        },
+    },
+    "unified/swift-syntax-rs": {
+        _COMMON_CONDITION: {
         },
     },
 }
@@ -456,11 +467,19 @@ _NORMAL_ALIASES = {
         _COMMON_CONDITION: {
         },
     },
+    "shared/yeast-schema": {
+        _COMMON_CONDITION: {
+        },
+    },
     "unified/extractor": {
         _COMMON_CONDITION: {
         },
     },
     "unified/extractor/tree-sitter-swift": {
+        _COMMON_CONDITION: {
+        },
+    },
+    "unified/swift-syntax-rs": {
         _COMMON_CONDITION: {
         },
     },
@@ -488,9 +507,13 @@ _NORMAL_DEV_DEPENDENCIES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -513,9 +536,13 @@ _NORMAL_DEV_ALIASES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -536,9 +563,13 @@ _PROC_MACRO_DEPENDENCIES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -559,9 +590,13 @@ _PROC_MACRO_ALIASES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -582,9 +617,13 @@ _PROC_MACRO_DEV_DEPENDENCIES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -607,9 +646,13 @@ _PROC_MACRO_DEV_ALIASES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -630,6 +673,8 @@ _BUILD_DEPENDENCIES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
@@ -637,6 +682,8 @@ _BUILD_DEPENDENCIES = {
             "cc": Label("@vendor_ts__cc-1.2.61//:cc"),
             "tree-sitter-generate": Label("@vendor_ts__tree-sitter-generate-0.26.8//:tree_sitter_generate"),
         },
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -657,11 +704,15 @@ _BUILD_ALIASES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
         _COMMON_CONDITION: {
         },
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -682,9 +733,13 @@ _BUILD_PROC_MACRO_DEPENDENCIES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -705,9 +760,13 @@ _BUILD_PROC_MACRO_ALIASES = {
     },
     "shared/yeast-macros": {
     },
+    "shared/yeast-schema": {
+    },
     "unified/extractor": {
     },
     "unified/extractor/tree-sitter-swift": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 

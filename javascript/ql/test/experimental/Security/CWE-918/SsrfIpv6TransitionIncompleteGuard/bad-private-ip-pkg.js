@@ -8,6 +8,6 @@ async function validateUrlHost(host) { // NOT OK
     throw new Error('blocked private host');
   }
   return fetch('http://' + host + '/');
-}
+} // $ Alert[javascript/ssrf-ipv6-transition-incomplete-guard]
 
 module.exports = { validateUrlHost };

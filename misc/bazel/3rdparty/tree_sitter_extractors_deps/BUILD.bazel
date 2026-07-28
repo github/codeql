@@ -554,6 +554,18 @@ alias(
 )
 
 alias(
+    name = "swift-syntax-rs-0.1.0",
+    actual = "@vendor_ts__swift-syntax-rs-0.1.0//:swift_syntax_rs",
+    tags = ["manual"],
+)
+
+alias(
+    name = "swift-syntax-rs",
+    actual = "@vendor_ts__swift-syntax-rs-0.1.0//:swift_syntax_rs",
+    tags = ["manual"],
+)
+
+alias(
     name = "syn-2.0.106",
     actual = "@vendor_ts__syn-2.0.106//:syn",
     tags = ["manual"],
