@@ -47,7 +47,34 @@ pub fn query(input: TokenStream) -> TokenStream {
 ///                                `Option<Id>`, iterator chains) splice
 ///                                their elements
 /// field: {expr}                - extend a named field with `{expr}`'s ids
+/// field: (kind ...)?           - set the field only if every `#{expr}`
+///                                beneath it has a value (see below)
 /// ```
+///
+/// # Optional fields
+///
+/// A `?` on a field's value makes that field fallible: if a `#{expr}`
+/// anywhere beneath it interpolates an absent value — an `Option` that is
+/// `None` — the subtree is abandoned and the field is left unset. This
+/// replaces the surrounding `Option::map` that would otherwise be needed:
+///
+/// ```text
+/// (break_expr label: {lbl.map(|l| tree!((identifier #{l})))})   // before
+/// (break_expr label: (identifier #{lbl})?)                      // after
+/// ```
+///
+/// The value may be nested arbitrarily deeply, and a nested `?` catches
+/// first, so an inner absent value need not discard the outer node:
+///
+/// ```text
+/// (parameter pattern: (name_pattern identifier: (identifier #{name}))? type: {ty})
+/// ```
+///
+/// Only `#{expr}` propagates absence. A `{expr}` splice is unaffected, since
+/// yielding no ids already leaves a field unset, and `?` is rejected on one.
+/// Outside a `?`, interpolating an `Option` with `#{expr}` remains a compile
+/// error, so the choice between "unset the field" and "unwrap it" stays
+/// explicit.
 ///
 /// Can be called with an explicit context or using the implicit context
 /// from an enclosing `rule!`:

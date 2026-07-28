@@ -412,7 +412,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (enumCaseParameter firstName: _? @@name type: @ty)
             =>
-            (parameter pattern: {name.map(|name| tree!((name_pattern identifier: (identifier #{name}))))} type: {ty})
+            (parameter pattern: (name_pattern identifier: (identifier #{name}))? type: {ty})
         ),
         // An enum element with associated values (`case circle(radius: Double)`)
         // becomes a nested `class_like_declaration` whose constructor carries the
@@ -508,9 +508,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // key; unlabelled elements have no key.
         rule!((tuplePattern elements: _* @els) => (tuple_pattern element: {els})),
         rule!(
-            (tuplePatternElement label: _? @label pattern: @p)
+            (tuplePatternElement label: _? @@label pattern: @p)
             =>
-            (pattern_element key: {label.map(|l| tree!((identifier #{l})))} pattern: {p})
+            (pattern_element key: (identifier #{label})? pattern: {p})
         ),
         // A type-casting pattern (`case is T`). Not yet supported, so it is
         // mapped to `unsupported_node` — an explicit reminder that this needs
@@ -626,26 +626,25 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // The pattern-only shapes (`patternExpr`, `discardAssignmentExpr`) are
         // matched first; they never occur as ordinary call arguments.
         rule!(
-            (labeledExpr label: _? @lbl expression: (patternExpr pattern: @p))
+            (labeledExpr label: _? @@lbl expression: (patternExpr pattern: @p))
             =>
-            (pattern_element key: {lbl.map(|l| tree!((identifier #{l})))} pattern: {p})
+            (pattern_element key: (identifier #{lbl})? pattern: {p})
         ),
         rule!(
-            (labeledExpr label: _? @lbl expression: (discardAssignmentExpr) @@wildcard)
+            (labeledExpr label: _? @@lbl expression: (discardAssignmentExpr) @@wildcard)
             =>
-            (pattern_element key: {lbl.map(|l| tree!((identifier #{l})))} pattern: (ignore_pattern #{wildcard}))
+            (pattern_element key: (identifier #{lbl})? pattern: (ignore_pattern #{wildcard}))
         ),
         rule!(
-            (labeledExpr label: _? @lbl expression: @val)
+            (labeledExpr label: _? @@lbl expression: @val)
             =>
             argument {
-                let key = lbl.map(|l| tree!((identifier #{l})));
                 if ctx.in_pattern {
                     tree!((pattern_element
-                        key: {key}
+                        key: (identifier #{lbl})?
                         pattern: (expr_equality_pattern expr: {val})))
                 } else {
-                    tree!((argument name: {key} value: {val}))
+                    tree!((argument name: (identifier #{lbl})? value: {val}))
                 }
             }
         ),
@@ -667,8 +666,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // value; `break` / `continue` an optional target label; `throw` its
         // thrown expression.
         rule!((returnStmt expression: _? @val) => (return_expr value: {val})),
-        rule!((breakStmt label: _? @@lbl) => (break_expr label: {lbl.map(|l| tree!((identifier #{l})))})),
-        rule!((continueStmt label: _? @@lbl) => (continue_expr label: {lbl.map(|l| tree!((identifier #{l})))})),
+        rule!((breakStmt label: _? @@lbl) => (break_expr label: (identifier #{lbl})?)),
+        rule!((continueStmt label: _? @@lbl) => (continue_expr label: (identifier #{lbl})?)),
         rule!((throwStmt expression: @val) => (throw_expr value: {val})),
         // ---- Closures ----
         // A closure (`{ (x: Int) -> Int in … }`) becomes a `function_expr`. The
@@ -704,7 +703,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 initializer: (initializerClause value: @val)?)
             =>
             (variable_declaration
-                modifier: {spec.map(|s| tree!((modifier #{s})))}
+                modifier: (modifier #{spec})?
                 pattern: (name_pattern identifier: (identifier #{name}))
                 value: {val})
         ),
@@ -948,7 +947,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     None => tree!((bulk_importing_pattern)),
                 };
                 tree!((import_declaration
-                    modifier: {kind.map(|k| tree!((modifier #{k})))}
+                    modifier: (modifier #{kind})?
                     modifier: {attrs}
                     modifier: {mods}
                     pattern: {pattern}
@@ -1037,11 +1036,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (tupleTypeElement firstName: _? @@name type: @ty)
             =>
             tuple_type_element {
-                let name = name.map(|n| tree!((identifier #{n})));
                 if ctx.in_function_type {
-                    tree!((parameter external_name: {name} type: {ty}))
+                    tree!((parameter external_name: (identifier #{name})? type: {ty}))
                 } else {
-                    tree!((tuple_type_element name: {name} type: {ty}))
+                    tree!((tuple_type_element name: (identifier #{name})? type: {ty}))
                 }
             }
         ),
