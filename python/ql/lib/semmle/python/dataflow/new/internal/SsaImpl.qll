@@ -34,21 +34,6 @@ private import codeql.ssa.Ssa as SsaImplCommon
 private import codeql.controlflow.BasicBlock as BB
 
 /**
- * Adapts the Python `Cfg` facade to the shared SSA library's `CfgSig`.
- * All members are inherited from `Cfg::ControlFlowNode` and
- * `Cfg::BasicBlock`.
- */
-private module CfgForSsa implements BB::CfgSig<Py::Location> {
-  class ControlFlowNode = CfgImpl::ControlFlowNode;
-
-  class BasicBlock = CfgImpl::BasicBlock;
-
-  class EntryBasicBlock = CfgImpl::Cfg::EntryBasicBlock;
-
-  predicate dominatingEdge = CfgImpl::Cfg::dominatingEdge/2;
-}
-
-/**
  * A source variable for SSA, wrapping a Python AST `Variable`.
  *
  * We only track variables that are read at least once in their scope —
@@ -275,7 +260,7 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Py::Location, Cfg
  *   - `WriteDefinition`, `UncertainWriteDefinition`, `PhiNode`
  *   - the standard SSA predicates (`getAUse`, `getAnUltimateDefinition`, ...).
  */
-module Ssa = SsaImplCommon::Make<Py::Location, CfgForSsa, SsaImplInput>;
+module Ssa = SsaImplCommon::Make<Py::Location, CfgImpl::Cfg, SsaImplInput>;
 
 final class Definition = Ssa::Definition;
 
