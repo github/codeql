@@ -497,10 +497,10 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
   }
 
   override DataFlowCallable getEnclosingCallable() {
-    result.asSummarizedCallable() = this.getSummarizedCallable()
+    result = this.getSummaryNode().getEnclosingCallable()
   }
 
-  override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
+  override Location getLocationImpl() { result = this.getSummaryNode().getLocation() }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
 }

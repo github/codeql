@@ -160,6 +160,12 @@ private module Cached {
     // models-as-data summarized flow
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
       nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
+    or
+    FlowSummaryImpl::Private::Steps::sourceLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+      nodeTo, model)
+    or
+    FlowSummaryImpl::Private::Steps::sinkLocalStep(nodeFrom,
+      nodeTo.(FlowSummaryNode).getSummaryNode(), model)
   }
 
   private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {

@@ -69,6 +69,6 @@ string describe(DataFlow::Node n) {
 
 query predicate flowSummaryNode(FlowSummaryNode n, string str1, string str2, string str3) {
   str1 = concat(describe(n), ", ") and
-  str2 = concat(n.getSummarizedCallable().toString(), ", ") and
+  str2 = concat(n.getSummaryNode().getSummarizedCallable().toString(), ", ") and
   str3 = concat(n.getEnclosingCallable().toString(), ", ")
 }

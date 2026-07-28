@@ -118,8 +118,8 @@ mod actix_test {
         "".to_string()
     }
 
-    #[get("/4/{a}")] // $ Alert[rust/summary/taint-sources]
-    async fn my_actix_handler_4(path: web::Path<String>) -> String {
+    #[get("/4/{a}")]
+    async fn my_actix_handler_4(path: web::Path<String>) -> String { // $ Alert[rust/summary/taint-sources]
         let a = path.into_inner();
         sink(a); // $ hasTaintFlow=my_actix_handler_4
 
@@ -219,24 +219,24 @@ mod warp_test {
     async fn test_warp() {
         // A route with parameter and `map`
         let map_route =
-            warp::path::param().map(|a: String| // $ Alert[rust/summary/taint-sources]
+            warp::path::param().map(|a: String|
             {
             sink(a); // $ hasTaintFlow
 
             "".to_string()
-        });
+        }); // $ Alert[rust/summary/taint-sources]
 
         // A route with parameter and `then`
-        let then_route = warp::path::param().then( // $ Alert[rust/summary/taint-sources]
+        let then_route = warp::path::param().then(
             async move |a: String| {
                 sink(a); // $ hasTaintFlow
 
                 "".to_string()
             },
-        );
+        ); // $ Alert[rust/summary/taint-sources]
 
         // A route with parameter and `and_then`
-        let and_then_route = warp::path::param().and_then( // $ Alert[rust/summary/taint-sources] 
+        let and_then_route = warp::path::param().and_then(
             async move | id: u64 |
             {
             if id != 0 {
@@ -246,17 +246,17 @@ mod warp_test {
                 Err(warp::reject::not_found())
             }
         },
-        );
+        ); // $ Alert[rust/summary/taint-sources] 
 
         // A route with path, parameter, and `and_then`
-        let path_and_map_route = warp::path("1").and(warp::path::param()).map( // $ Alert[rust/summary/taint-sources] 
+        let path_and_map_route = warp::path("1").and(warp::path::param()).map(
             | a: String |
             {
                 sink(a); // $ hasTaintFlow
 
                 "".to_string()
              },
-        );
+        ); // $ Alert[rust/summary/taint-sources]
 
         let routes = warp::get().and(
             map_route

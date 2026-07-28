@@ -1527,18 +1527,25 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
    */
   FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
+  /** Holds if this node is a source node of kind `kind`. */
+  predicate isSource(string kind, string model) {
+    this.getSummaryNode().(FlowSummaryImpl::Private::SourceOutputNode).isEntry(kind, model)
+  }
+
+  /** Holds if this node is a sink node of kind `kind`. */
+  predicate isSink(string kind, string model) {
+    this.getSummaryNode().(FlowSummaryImpl::Private::SinkInputNode).isExit(kind, model)
+  }
+
   /**
-   * Gets the summarized callable that this node belongs to.
+   * Gets the enclosing callable. For a `FlowSummaryNode` this is always the
+   * summarized function this node is part of.
    */
-  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() {
-    result = this.getSummaryNode().getSummarizedCallable()
-  }
-
   override DataFlowCallable getEnclosingCallable() {
-    result = FlowSummaryImpl::Private::getEnclosingCallable(this.getSummaryNode())
+    result = this.getSummaryNode().getEnclosingCallable()
   }
 
-  override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
+  override Location getLocationImpl() { result = this.getSummaryNode().getLocation() }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
 }
@@ -1780,7 +1787,7 @@ class SummaryParameterNode extends AbstractParameterNode, FlowSummaryNode {
   override predicate isSummaryParameterOf(
     FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition p
   ) {
-    c = this.getSummarizedCallable() and
+    c = this.getSummaryNode().getSummarizedCallable() and
     p = this.getPosition()
   }
 }

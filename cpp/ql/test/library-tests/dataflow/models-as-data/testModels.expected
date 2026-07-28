@@ -18,6 +18,10 @@ postIsInSameCallable
 reverseRead
 argHasPostUpdate
 postWithInFlow
+| tests.cpp:60:30:60:31 | remoteMadSourceIndirectArg0 output argument | PostUpdateNode should not be the target of local flow. |
+| tests.cpp:63:33:63:33 | remoteMadSourceIndirectArg1 output argument | PostUpdateNode should not be the target of local flow. |
+| tests.cpp:295:39:295:40 | memberRemoteMadSourceIndirectArg0 output argument | PostUpdateNode should not be the target of local flow. |
+| tests.cpp:369:2:369:4 | qualifierSource output argument | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition
@@ -283,6 +287,22 @@ sourceCallables
 | tests.cpp:433:6:433:10 | array |
 | tests.cpp:434:6:434:6 | y |
 flowSummaryNode
+| tests.cpp:36:7:36:20 | call to localMadSource |  |  | test_sources |
+| tests.cpp:37:7:37:21 | call to remoteMadSource |  |  | test_sources |
+| tests.cpp:39:7:39:24 | call to localMadSourceVoid |  |  | test_sources |
+| tests.cpp:40:7:40:27 | call to localMadSourceHasBody |  |  | test_sources |
+| tests.cpp:45:10:45:23 | call to localMadSource |  |  | test_sources |
+| tests.cpp:53:7:53:29 | call to remoteMadSourceIndirect |  |  | test_sources |
+| tests.cpp:54:8:54:30 | call to remoteMadSourceIndirect |  |  | test_sources |
+| tests.cpp:55:8:55:36 | call to remoteMadSourceDoubleIndirect |  |  | test_sources |
+| tests.cpp:56:9:56:37 | call to remoteMadSourceDoubleIndirect |  |  | test_sources |
+| tests.cpp:60:30:60:31 | & ... |  |  | test_sources |
+| tests.cpp:63:33:63:33 | d |  |  | test_sources |
+| tests.cpp:67:10:67:23 | call to localMadSource |  |  | test_sources |
+| tests.cpp:70:7:70:57 | call to namespace2LocalMadSource |  |  | test_sources |
+| tests.cpp:75:32:75:32 | x |  |  | remoteMadSourceParam0 |
+| tests.cpp:111:14:111:27 | call to localMadSource |  |  | test_sinks |
+| tests.cpp:112:22:112:44 | call to remoteMadSourceIndirect |  |  | test_sinks |
 | tests.cpp:127:5:127:19 | [summary param] 0 in madArg0ToReturn | ParameterNode | madArg0ToReturn | madArg0ToReturn |
 | tests.cpp:127:5:127:19 | [summary] to write: ReturnValue in madArg0ToReturn | ReturnNode | madArg0ToReturn | madArg0ToReturn |
 | tests.cpp:128:6:128:28 | [summary param] 0 in madArg0ToReturnIndirect | ParameterNode | madArg0ToReturnIndirect | madArg0ToReturnIndirect |
@@ -325,6 +345,8 @@ flowSummaryNode
 | tests.cpp:148:13:148:40 | [summary param] 0 in madArg0ToReturnFieldIndirect | ParameterNode | madArg0ToReturnFieldIndirect | madArg0ToReturnFieldIndirect |
 | tests.cpp:148:13:148:40 | [summary] to write: ReturnValue in madArg0ToReturnFieldIndirect | ReturnNode | madArg0ToReturnFieldIndirect | madArg0ToReturnFieldIndirect |
 | tests.cpp:148:13:148:40 | [summary] to write: ReturnValue.Field[*MyContainer::ptr]/Field[*ptr] in madArg0ToReturnFieldIndirect |  | madArg0ToReturnFieldIndirect | madArg0ToReturnFieldIndirect |
+| tests.cpp:225:30:225:44 | call to remoteMadSource |  |  | test_summaries |
+| tests.cpp:226:39:226:53 | call to remoteMadSource |  |  | test_summaries |
 | tests.cpp:250:7:250:19 | [summary param] 0 in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
 | tests.cpp:250:7:250:19 | [summary param] this in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
 | tests.cpp:250:7:250:19 | [summary] to write: Argument[this] in madArg0ToSelf | PostUpdateNode | madArg0ToSelf | madArg0ToSelf |
@@ -339,6 +361,13 @@ flowSummaryNode
 | tests.cpp:254:6:254:21 | [summary] to write: ReturnValue in madFieldToReturn | ReturnNode | madFieldToReturn | madFieldToReturn |
 | tests.cpp:277:7:277:30 | [summary param] this in namespaceMadSelfToReturn | ParameterNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
 | tests.cpp:277:7:277:30 | [summary] to write: ReturnValue in namespaceMadSelfToReturn | ReturnNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
+| tests.cpp:292:10:292:30 | call to memberRemoteMadSource |  |  | test_class_members |
+| tests.cpp:295:39:295:40 | & ... |  |  | test_class_members |
+| tests.cpp:300:11:300:31 | call to memberRemoteMadSource |  |  | test_class_members |
+| tests.cpp:301:11:301:33 | call to subtypeRemoteMadSource1 |  |  | test_class_members |
+| tests.cpp:303:11:303:33 | call to subtypeRemoteMadSource2 |  |  | test_class_members |
+| tests.cpp:351:26:351:46 | call to memberRemoteMadSource |  |  | test_class_members |
+| tests.cpp:369:2:369:4 | mc8 |  |  | test_class_members |
 | tests.cpp:392:5:392:29 | [summary param] 0 in madCallArg0ReturnToReturn | ParameterNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
 | tests.cpp:392:5:392:29 | [summary] read: Argument[0].Parameter[this pointer] in madCallArg0ReturnToReturn | PostUpdateNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
 | tests.cpp:392:5:392:29 | [summary] read: Argument[0].ReturnValue in madCallArg0ReturnToReturn | OutNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |

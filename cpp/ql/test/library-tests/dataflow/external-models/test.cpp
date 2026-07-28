@@ -224,3 +224,15 @@ void test_reverse_flow(unsigned i, unsigned j) {
 		ymlSink(c); // $ ir
 	}
 }
+
+struct SourceWrapper {
+	int value;
+};
+
+SourceWrapper ymlFieldSource();
+
+void test_source_access_path() {
+	SourceWrapper wrapper = ymlFieldSource();
+	ymlSink(wrapper.value); // $ ir
+}
+
