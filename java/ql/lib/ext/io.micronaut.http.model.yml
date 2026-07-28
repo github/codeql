@@ -4,8 +4,8 @@ extensions:
       extensible: sourceModel
     data:
       - ["io.micronaut.http", "HttpRequest", True, "getBody", "", "", "ReturnValue", "remote", "manual"]
-      - ["io.micronaut.http", "HttpRequest", True, "getHeaders", "", "", "ReturnValue", "remote", "manual"]
-      - ["io.micronaut.http", "HttpRequest", True, "getParameters", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getHeaders", "", "", "ReturnValue.Element.MapValue.Element", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getParameters", "", "", "ReturnValue.Element.MapValue.Element.Element.MapValue", "remote", "manual"]
       - ["io.micronaut.http", "HttpRequest", True, "getCookies", "", "", "ReturnValue", "remote", "manual"]
       - ["io.micronaut.http", "HttpRequest", True, "getUri", "", "", "ReturnValue", "remote", "manual"]
       - ["io.micronaut.http", "HttpRequest", True, "getPath", "", "", "ReturnValue", "remote", "manual"]
