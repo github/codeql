@@ -39,6 +39,8 @@ extensions:
       - ["", "", False, "RegQueryValueExA", "", "", "Argument[*4]", "local", "manual"]
       - ["", "", False, "RegQueryValueW", "", "", "Argument[*2]", "local", "manual"]
       - ["", "", False, "RegQueryValueExW", "", "", "Argument[*4]", "local", "manual"]
+      - ["", "", False, "RegGetValueA", "", "", "Argument[*5]", "local", "manual"]
+      - ["", "", False, "RegGetValueW", "", "", "Argument[*5]", "local", "manual"]
       # TODO: Once we support access paths at sources we should also mark Argument[*1].Field[*ve_valueptr]
       - ["", "", False, "RegQueryMultipleValuesA", "", "", "Argument[*3]", "local", "manual"]
       # TODO: Once we support access paths at sources we should also mark Argument[*1].Field[*ve_valueptr]
