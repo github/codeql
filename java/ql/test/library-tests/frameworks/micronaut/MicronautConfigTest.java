@@ -15,16 +15,16 @@ class MicronautConfigTest {
 
     @Get("/secret")
     void testValueField() {
-        sink(secretValue);
+        sink(secretValue); // $hasTaintFlow
     }
 
     @Get("/key")
     void testPropertyField() {
-        sink(apiKey);
+        sink(apiKey); // $hasTaintFlow
     }
 
     @Get("/param")
     void testValueParam(@Value("${app.name}") String appName) {
-        sink(appName);
+        sink(appName); // $hasTaintFlow
     }
 }
