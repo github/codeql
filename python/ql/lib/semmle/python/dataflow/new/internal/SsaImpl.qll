@@ -252,23 +252,92 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Py::Location, Cfg
   }
 }
 
-/**
- * The shared SSA instantiation for Python.
- *
- * Members:
- *   - `Definition` — the union of explicit, uncertain, and phi definitions
- *   - `WriteDefinition`, `UncertainWriteDefinition`, `PhiNode`
- *   - the standard SSA predicates (`getAUse`, `getAnUltimateDefinition`, ...).
- */
-module Ssa = SsaImplCommon::Make<Py::Location, CfgImpl::Cfg, SsaImplInput>;
+import SsaImplCommon::Make<Py::Location, CfgImpl::Cfg, SsaImplInput> as Impl
 
-final class Definition = Ssa::Definition;
+// Matching the cases in `SsaImplInput.variableWrite` above
+newtype TVariableWrite =
+  TName(CfgImpl::Ast::Expr name, SsaSourceVariable v) {
+    exists(Py::Name n | name.asExpr() = n and n.getVariable() = v.getVariable() |
+      n.isDefinition() or
+      n.isDeletion()
+    )
+  } or
+  TImportStar(CfgImpl::Ast::Expr i, SsaSourceVariable v) {
+    exists(Py::ImportStar imp | i.asExpr() = imp.getModuleExpr() |
+      v.getScope() = imp.getScope()
+      or
+      exists(Py::Name other |
+        other.uses(v.getVariable()) and
+        imp.getScope() = other.getScope()
+      )
+    )
+  }
 
-final class WriteDefinition = Ssa::WriteDefinition;
+private module SsaInput implements Impl::SsaInputSig {
+  // private import java as J
+  // class Expr = Py::Expr;
+  class Expr extends CfgImpl::Ast::Expr {
+    CfgImpl::Cfg::ControlFlowNode getControlFlowNode() { result.injects(this) }
+  }
 
-final class UncertainWriteDefinition = Ssa::UncertainWriteDefinition;
+  class Parameter = CfgImpl::Ast::Parameter;
 
-final class PhiNode = Ssa::PhiNode;
+  class VariableWrite extends TVariableWrite {
+    Expr asExpr() {
+      this = TName(result, _)
+      or
+      this = TImportStar(result, _)
+    }
+
+    Expr getValue() {
+      exists(CfgImpl::Ast::Expr name, Py::Name n, Cfg::DefinitionNode def |
+        this = TName(name, _) and name.asExpr() = n and def.getNode() = n
+      |
+        result.asExpr() = def.getValue().getNode()
+      )
+    }
+
+    predicate isParameterInit(CfgImpl::Ast::Parameter p) { this = TName(p, _) }
+
+    string toString() {
+      exists(CfgImpl::Ast::Expr n | this = TName(n, _) | result = n.toString())
+      or
+      exists(CfgImpl::Ast::Expr imp | this = TImportStar(imp, _) | result = imp.toString())
+    }
+
+    Py::Location getLocation() {
+      exists(CfgImpl::Ast::Expr n | this = TName(n, _) | result = n.getLocation())
+      or
+      exists(CfgImpl::Ast::Expr imp | this = TImportStar(imp, _) | result = imp.getLocation())
+    }
+
+    predicate writesAt(CfgImpl::BasicBlock bb, int i, SsaSourceVariable v) {
+      exists(CfgImpl::Ast::Expr n |
+        this = TName(n, v) and
+        bb.getNode(i).getAstNode() = n
+      )
+      or
+      exists(CfgImpl::Ast::Expr imp |
+        this = TImportStar(imp, v) and
+        bb.getNode(i).getAstNode() = imp
+      )
+    }
+  }
+
+  predicate explicitWrite(VariableWrite def, CfgImpl::Cfg::BasicBlock bb, int i, SsaSourceVariable v) {
+    def.writesAt(bb, i, v)
+  }
+}
+
+module Ssa = Impl::MakeSsa<SsaInput>;
+
+final class Definition = Impl::Definition;
+
+final class WriteDefinition = Impl::WriteDefinition;
+
+final class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
+
+final class PhiNode = Impl::PhiNode;
 
 // ===========================================================================
 // ESSA-shaped adapter layer
@@ -294,7 +363,7 @@ final class PhiNode = Ssa::PhiNode;
  * (synthesised at position `-1` of a scope's entry BB) this is the
  * scope's entry node.
  */
-private Cfg::ControlFlowNode writeDefNode(Ssa::WriteDefinition def) {
+private Cfg::ControlFlowNode writeDefNode(Ssa::SsaWriteDefinition def) {
   exists(CfgImpl::BasicBlock bb, int i | def.definesAt(_, bb, i) |
     i >= 0 and result = bb.getNode(i)
     or
@@ -307,7 +376,7 @@ private Cfg::ControlFlowNode writeDefNode(Ssa::WriteDefinition def) {
  * everything that's not a phi node. Mirrors legacy ESSA's
  * `EssaNodeDefinition`.
  */
-class EssaNodeDefinition extends Ssa::WriteDefinition {
+class EssaNodeDefinition extends Ssa::SsaWriteDefinition {
   /** Gets the CFG node where this definition's binding takes place. */
   Cfg::ControlFlowNode getDefiningNode() { result = writeDefNode(this) }
 
@@ -451,19 +520,19 @@ class PhiFunction extends PhiNode {
    * the phi from one of its predecessor blocks). Mirrors legacy
    * ESSA's `PhiFunction.getAnInput()`.
    */
-  Ssa::Definition getAnInput() { Ssa::phiHasInputFromBlock(this, result, _) }
+  Ssa::SsaDefinition getAnInput() { Impl::phiHasInputFromBlock(this, result, _) }
 }
 
 /** Base class for all ESSA definitions (legacy-shaped). */
-class EssaDefinition = Ssa::Definition;
+class EssaDefinition = Ssa::SsaDefinition;
 
 /**
  * An adapter representing a single SSA-defined "variable" — wrapping
  * one `Ssa::Definition`. Mirrors legacy `EssaVariable` API.
  */
-class EssaVariable extends Ssa::Definition {
+class EssaVariable extends Ssa::SsaDefinition {
   /** Gets the underlying SSA definition (legacy name). */
-  Ssa::Definition getDefinition() { result = this }
+  Ssa::SsaDefinition getDefinition() { result = this }
 
   /**
    * Gets a CFG node where this definition is used. Includes regular
@@ -474,7 +543,7 @@ class EssaVariable extends Ssa::Definition {
    */
   Cfg::ControlFlowNode getAUse() {
     exists(CfgImpl::BasicBlock bb, int i |
-      Ssa::ssaDefReachesRead(this.getSourceVariable(), this, bb, i) and
+      Impl::ssaDefReachesRead(this.getSourceVariable(), this.(Ssa::SsaWriteDefinition), bb, i) and
       bb.getNode(i) = result
     )
   }
@@ -484,17 +553,6 @@ class EssaVariable extends Ssa::Definition {
 
   /** Gets the scope in which this variable lives. */
   Py::Scope getScope() { result = this.getSourceVariable().getVariable().getScope() }
-
-  /** Gets an ultimate non-phi ancestor of this definition. */
-  EssaVariable getAnUltimateDefinition() {
-    if this instanceof PhiNode
-    then
-      exists(Ssa::Definition input |
-        Ssa::phiHasInputFromBlock(this, input, _) and
-        result = input.(EssaVariable).getAnUltimateDefinition()
-      )
-    else result = this
-  }
 }
 
 /**
@@ -506,16 +564,16 @@ module AdjacentUses {
   /** Holds if `nodeFrom` and `nodeTo` are adjacent uses of the same SSA variable. */
   predicate adjacentUseUse(Cfg::NameNode nodeFrom, Cfg::NameNode nodeTo) {
     exists(SsaSourceVariable v, CfgImpl::BasicBlock bb1, int i1, CfgImpl::BasicBlock bb2, int i2 |
-      Ssa::adjacentUseUse(bb1, i1, bb2, i2, v, _) and
+      Impl::adjacentUseUse(bb1, i1, bb2, i2, v, _) and
       nodeFrom = bb1.getNode(i1) and
       nodeTo = bb2.getNode(i2)
     )
   }
 
   /** Holds if `use` is a first use of definition `def`. */
-  predicate firstUse(Ssa::Definition def, Cfg::NameNode use) {
+  predicate firstUse(Ssa::SsaDefinition def, Cfg::NameNode use) {
     exists(CfgImpl::BasicBlock bb, int i |
-      Ssa::firstUse(def, bb, i, _) and
+      Impl::firstUse(def, bb, i, _) and
       use = bb.getNode(i)
     )
   }
@@ -524,7 +582,7 @@ module AdjacentUses {
    * Holds if `use` is any reachable use of definition `def`. Combines
    * `firstUse` with transitive use-use adjacency.
    */
-  predicate useOfDef(Ssa::Definition def, Cfg::NameNode use) {
+  predicate useOfDef(Ssa::SsaDefinition def, Cfg::NameNode use) {
     firstUse(def, use)
     or
     exists(Cfg::NameNode mid | useOfDef(def, mid) and adjacentUseUse(mid, use))
