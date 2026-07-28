@@ -2,6 +2,7 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.http.client.HttpClient;
+import io.micronaut.http.HttpRequest;
 import io.micronaut.http.uri.UriBuilder;
 import java.net.URI;
 
@@ -29,5 +30,20 @@ public class MicronautSSRF {
     public String testUriBuilder(@QueryValue String host) { // $ Source
         URI uri = UriBuilder.of("http://example.com").host(host).build();
         return client.toBlocking().retrieve(uri.toString()); // $ Alert
+    }
+
+    @Get("/blocking-request")
+    public Object testBlockingRequest(@QueryValue String url) { // $ Source
+        return client.toBlocking().exchange(HttpRequest.GET(url)); // $ Alert
+    }
+
+    @Get("/non-blocking")
+    public Object testNonBlocking(@QueryValue String url) { // $ Source
+        return client.exchange(url); // $ Alert
+    }
+
+    @Get("/non-blocking-request")
+    public Object testNonBlockingRequest(@QueryValue String url) { // $ Source
+        return client.exchange(HttpRequest.GET(url)); // $ Alert
     }
 }

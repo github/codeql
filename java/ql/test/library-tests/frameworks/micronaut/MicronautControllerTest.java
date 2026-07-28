@@ -1,5 +1,6 @@
 import io.micronaut.http.annotation.*;
 import io.micronaut.http.*;
+import io.micronaut.http.cookie.Cookies;
 import java.io.InputStream;
 import java.io.Reader;
 
@@ -58,14 +59,29 @@ class MicronautControllerTest {
         sink(request); // $hasTaintFlow
     }
 
+    @Get("/headers")
+    void testHttpHeaders(HttpHeaders headers) {
+        sink(headers); // $hasTaintFlow
+    }
+
+    @Get("/parameters")
+    void testHttpParameters(HttpParameters parameters) {
+        sink(parameters); // $hasTaintFlow
+    }
+
+    @Get("/cookies")
+    void testCookies(Cookies cookies) {
+        sink(cookies); // $hasTaintFlow
+    }
+
     @Post("/stream")
-    void testInputStream(InputStream stream) {
+    void testInputStream(@Body InputStream stream) {
         sink(stream); // $hasTaintFlow
     }
 
     @Post("/reader")
     void testReader(Reader reader) {
-        sink(reader); // $hasTaintFlow
+        sink(reader);
     }
 
     @Post("/post")
@@ -91,5 +107,18 @@ class MicronautControllerTest {
     @io.micronaut.http.annotation.Error
     void testErrorHandler(HttpRequest<?> request) {
         sink(request); // $hasTaintFlow
+    }
+
+    @io.micronaut.http.annotation.Error
+    void testAnnotatedErrorHandler(@Header String header, @RequestBean Object bean) {
+        sink(header); // $hasTaintFlow
+        sink(bean); // $hasTaintFlow
+    }
+
+    @io.micronaut.http.annotation.Error
+    void testErrorHandlerCarriers(HttpHeaders headers, HttpParameters parameters, Cookies cookies) {
+        sink(headers); // $hasTaintFlow
+        sink(parameters); // $hasTaintFlow
+        sink(cookies); // $hasTaintFlow
     }
 }

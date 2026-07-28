@@ -22,4 +22,19 @@ public class MicronautUrlRedirect {
         }
         return HttpResponse.ok();
     }
+
+    @Get("/permanent")
+    public MutableHttpResponse<?> permanent(@QueryValue String target) {
+        return HttpResponse.permanentRedirect(URI.create(target));
+    }
+
+    @Get("/see-other")
+    public MutableHttpResponse<?> seeOther(@QueryValue String target) {
+        return HttpResponse.seeOther(URI.create(target));
+    }
+
+    @Get("/temporary")
+    public MutableHttpResponse<?> temporary(@QueryValue String target) {
+        return HttpResponse.temporaryRedirect(URI.create(target));
+    }
 }

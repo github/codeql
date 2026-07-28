@@ -12,6 +12,9 @@ public interface HttpResponse<B> {
     static <T> MutableHttpResponse<T> ok() { return null; }
     static <T> MutableHttpResponse<T> ok(T body) { return null; }
     static MutableHttpResponse<?> redirect(URI location) { return null; }
+    static MutableHttpResponse<?> permanentRedirect(URI location) { return null; }
+    static MutableHttpResponse<?> seeOther(URI location) { return null; }
+    static MutableHttpResponse<?> temporaryRedirect(URI location) { return null; }
     static MutableHttpResponse<?> notFound() { return null; }
     static MutableHttpResponse<?> badRequest() { return null; }
     static MutableHttpResponse<?> serverError() { return null; }

@@ -26,7 +26,7 @@ class MicronautServerWebSocketClass extends Class {
 class MicronautWebSocketHandlerAnnotation extends AnnotationType {
   MicronautWebSocketHandlerAnnotation() {
     this.getPackage().hasName("io.micronaut.websocket.annotation") and
-    this.hasName(["OnMessage", "OnOpen"])
+    this.hasName(["OnClose", "OnMessage", "OnOpen"])
   }
 }
 
@@ -44,10 +44,10 @@ class MicronautWebSocketMessageHandler extends Method {
 class MicronautWebSocketParameter extends Parameter {
   MicronautWebSocketParameter() {
     this.getCallable() instanceof MicronautWebSocketMessageHandler and
-    // Exclude WebSocketSession parameters
+    // Exclude framework-provided WebSocket lifecycle parameters
     not this.getType()
         .(RefType)
         .getAnAncestor()
-        .hasQualifiedName("io.micronaut.websocket", "WebSocketSession")
+        .hasQualifiedName("io.micronaut.websocket", ["CloseReason", "WebSocketSession"])
   }
 }

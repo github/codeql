@@ -59,6 +59,25 @@ class MicronautHttpInputAnnotation extends Annotation {
   }
 }
 
+/** Holds if `parameter` is explicitly bound to remote HTTP request data. */
+private predicate isExplicitlyTaintedInput(Parameter parameter) {
+  parameter.getAnAnnotation() instanceof MicronautHttpInputAnnotation
+  or
+  parameter.getAnAnnotation().getType() instanceof MicronautRequestBeanAnnotation
+  or
+  parameter
+      .getType()
+      .(RefType)
+      .getASourceSupertype*()
+      .hasQualifiedName("io.micronaut.http", ["HttpRequest", "HttpHeaders", "HttpParameters"])
+  or
+  parameter
+      .getType()
+      .(RefType)
+      .getASourceSupertype*()
+      .hasQualifiedName("io.micronaut.http.cookie", "Cookies")
+}
+
 /** A parameter of a `MicronautRequestMappingMethod`. */
 class MicronautRequestMappingParameter extends Parameter {
   MicronautRequestMappingParameter() { this.getCallable() instanceof MicronautRequestMappingMethod }
@@ -66,11 +85,6 @@ class MicronautRequestMappingParameter extends Parameter {
   /** Holds if the parameter should not be considered a direct source of taint. */
   predicate isNotDirectlyTaintedInput() {
     this.getType().(RefType).getAnAncestor().hasQualifiedName("io.micronaut.http", "HttpResponse")
-    or
-    this.getType()
-        .(RefType)
-        .getAnAncestor()
-        .hasQualifiedName("io.micronaut.http", "MutableHttpResponse")
     or
     this.getType().(RefType).getAnAncestor().hasQualifiedName("java.security", "Principal")
     or
@@ -80,35 +94,19 @@ class MicronautRequestMappingParameter extends Parameter {
     or
     this.getType().(RefType).getAnAncestor().hasQualifiedName("java.time", "ZoneId")
     or
+    this.getType().(RefType).getAnAncestor() instanceof TypeInputStream
+    or
+    this.getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "Reader")
+    or
     // @Value/@Property parameters are configuration injection, not HTTP input
     this.getAnAnnotation()
         .getType()
         .hasQualifiedName("io.micronaut.context.annotation", ["Value", "Property"])
   }
 
-  private predicate isExplicitlyTaintedInput() {
-    // The MicronautHttpInputAnnotation allows access to the URI path,
-    // request parameters, cookie values, headers, and the body of the request.
-    this.getAnAnnotation() instanceof MicronautHttpInputAnnotation
-    or
-    // A @RequestBean parameter binds multiple request attributes into a POJO
-    this.getAnAnnotation().getType() instanceof MicronautRequestBeanAnnotation
-    or
-    // An HttpRequest parameter provides access to request data
-    this.getType()
-        .(RefType)
-        .getASourceSupertype*()
-        .hasQualifiedName("io.micronaut.http", "HttpRequest")
-    or
-    // InputStream or Reader parameters allow access to the body of a request
-    this.getType().(RefType).getAnAncestor() instanceof TypeInputStream
-    or
-    this.getType().(RefType).getAnAncestor().hasQualifiedName("java.io", "Reader")
-  }
-
   /** Holds if the input is tainted (i.e. comes from user-controlled input). */
   predicate isTaintedInput() {
-    this.isExplicitlyTaintedInput()
+    isExplicitlyTaintedInput(this)
     or
     not this.isNotDirectlyTaintedInput()
   }
@@ -126,11 +124,7 @@ class MicronautErrorHandler extends Method {
   /** Gets a parameter that carries user-controlled request data. */
   Parameter getARemoteParameter() {
     result = this.getAParameter() and
-    result
-        .getType()
-        .(RefType)
-        .getASourceSupertype*()
-        .hasQualifiedName("io.micronaut.http", "HttpRequest")
+    isExplicitlyTaintedInput(result)
   }
 }
 

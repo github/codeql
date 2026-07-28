@@ -1,6 +1,8 @@
 import io.micronaut.http.annotation.*;
 import io.micronaut.http.*;
 import io.micronaut.http.cookie.*;
+import java.util.List;
+import java.util.Map;
 
 @Controller("/http")
 class MicronautHttpRequestTest {
@@ -11,17 +13,27 @@ class MicronautHttpRequestTest {
     void testHeaders(HttpRequest<?> request) {
         sink(request.getHeaders()); // $hasTaintFlow
         sink(request.getHeaders().get("X-Custom")); // $hasTaintFlow
-        sink(request.getHeaders().getAll("X-Custom")); // $hasTaintFlow
-        sink(request.getHeaders().getFirst("X-Custom")); // $hasTaintFlow
-        sink(request.getHeaders().values()); // $hasTaintFlow
+        sink(request.getHeaders().getAll("X-Custom").get(0)); // $hasTaintFlow
+        sink(request.getHeaders().getFirst("X-Custom").get()); // $hasTaintFlow
+        sink(request.getHeaders().getValue("X-Custom").get(0)); // $hasTaintFlow
+        sink(request.getHeaders().values().iterator().next().get(0)); // $hasTaintFlow
+        sink(request.getHeaders().asMap().get("X-Custom").get(0)); // $hasTaintFlow
+        sink(request.getHeaders().asProperties().get("X-Custom")); // $hasTaintFlow
+        sink(request.getHeaders().subMap("X", List.class).get("Custom").get(0)); // $hasTaintFlow
+        for (Map.Entry<String, List<String>> header : request.getHeaders()) {
+            sink(header.getValue().get(0)); // $hasTaintFlow
+        }
     }
 
     @Get("/params")
     void testParameters(HttpRequest<?> request) {
         sink(request.getParameters()); // $hasTaintFlow
         sink(request.getParameters().get("q")); // $hasTaintFlow
-        sink(request.getParameters().getAll("q")); // $hasTaintFlow
-        sink(request.getParameters().getFirst("q")); // $hasTaintFlow
+        sink(request.getParameters().getAll("q").get(0)); // $hasTaintFlow
+        sink(request.getParameters().getFirst("q").get()); // $hasTaintFlow
+        sink(request.getParameters().getValue("q").get(0)); // $hasTaintFlow
+        sink(request.getParameters().values().iterator().next().get(0)); // $hasTaintFlow
+        sink(request.getParameters().asMap().get("q").get(0)); // $hasTaintFlow
     }
 
     @Get("/cookies")

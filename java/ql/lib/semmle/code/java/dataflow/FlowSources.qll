@@ -32,7 +32,6 @@ import semmle.code.java.frameworks.Thrift
 import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
 import semmle.code.java.frameworks.micronaut.MicronautController
 import semmle.code.java.frameworks.micronaut.MicronautWebSocket
-import semmle.code.java.frameworks.micronaut.MicronautConfig
 private import semmle.code.java.dataflow.ExternalFlow
 private import codeql.threatmodels.ThreatModels
 
@@ -202,16 +201,6 @@ private class MicronautWebSocketParameterSource extends RemoteFlowSource {
   MicronautWebSocketParameterSource() { this.asParameter() instanceof MicronautWebSocketParameter }
 
   override string getSourceType() { result = "Micronaut WebSocket parameter" }
-}
-
-private class MicronautConfigSource extends LocalUserInput {
-  MicronautConfigSource() {
-    this.asExpr() = any(MicronautConfigField f).getAnAccess()
-    or
-    this.asParameter() instanceof MicronautConfigParameter
-  }
-
-  override string getThreatModel() { result = "environment" }
 }
 
 private class MicronautErrorHandlerSource extends RemoteFlowSource {

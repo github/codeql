@@ -1,4 +1,5 @@
 import io.micronaut.websocket.annotation.*;
+import io.micronaut.websocket.CloseReason;
 import io.micronaut.websocket.WebSocketSession;
 
 @ServerWebSocket("/chat/{room}")
@@ -14,5 +15,12 @@ class MicronautWebSocketTest {
     @OnOpen
     void onOpen(String room, WebSocketSession session) {
         sink(room); // $hasTaintFlow
+    }
+
+    @OnClose
+    void onClose(String room, CloseReason reason, WebSocketSession session) {
+        sink(room); // $hasTaintFlow
+        sink(reason);
+        sink(session);
     }
 }

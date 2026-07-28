@@ -2,7 +2,9 @@ import io.micronaut.http.*;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.uri.UriBuilder;
+import io.micronaut.core.type.Argument;
 import java.net.URI;
+import java.util.Collections;
 
 class MicronautHttpClientTest {
 
@@ -32,6 +34,39 @@ class MicronautHttpClientTest {
     void testExchangeStringClass() {
         String url = taint();
         client.toBlocking().exchange(url, String.class); // $hasTaintFlow
+    }
+
+    void testRetrieveStringClassClass() {
+        client.toBlocking().retrieve(taint(), String.class, Object.class); // $hasTaintFlow
+    }
+
+    void testExchangeStringClassClass() {
+        client.toBlocking().exchange(taint(), String.class, Object.class); // $hasTaintFlow
+    }
+
+    void testBlockingRequest() {
+        client.toBlocking().retrieve(HttpRequest.GET(taint())); // $hasTaintFlow
+        client.toBlocking().retrieve(HttpRequest.GET(taint()), String.class); // $hasTaintFlow
+        client.toBlocking().retrieve(HttpRequest.GET(taint()), new Argument<String>()); // $hasTaintFlow
+        client.toBlocking().retrieve(HttpRequest.GET(taint()), new Argument<String>(), new Argument<Object>()); // $hasTaintFlow
+        client.toBlocking().exchange(HttpRequest.GET(taint())); // $hasTaintFlow
+        client.toBlocking().exchange(HttpRequest.GET(taint()), String.class); // $hasTaintFlow
+        client.toBlocking().exchange(HttpRequest.GET(taint()), new Argument<String>()); // $hasTaintFlow
+        client.toBlocking().exchange(HttpRequest.GET(taint()), new Argument<String>(), new Argument<Object>()); // $hasTaintFlow
+    }
+
+    void testNonBlockingClient() {
+        client.retrieve(taint()); // $hasTaintFlow
+        client.exchange(taint()); // $hasTaintFlow
+        client.exchange(taint(), String.class); // $hasTaintFlow
+        client.retrieve(HttpRequest.GET(taint())); // $hasTaintFlow
+        client.retrieve(HttpRequest.GET(taint()), String.class); // $hasTaintFlow
+        client.retrieve(HttpRequest.GET(taint()), new Argument<String>()); // $hasTaintFlow
+        client.retrieve(HttpRequest.GET(taint()), new Argument<String>(), new Argument<Object>()); // $hasTaintFlow
+        client.exchange(HttpRequest.GET(taint())); // $hasTaintFlow
+        client.exchange(HttpRequest.GET(taint()), String.class); // $hasTaintFlow
+        client.exchange(HttpRequest.GET(taint()), new Argument<String>()); // $hasTaintFlow
+        client.exchange(HttpRequest.GET(taint()), new Argument<String>(), new Argument<Object>()); // $hasTaintFlow
     }
 
     void testGetFactory() {
@@ -69,6 +104,21 @@ class MicronautHttpClientTest {
         sink(req); // $hasTaintFlow
     }
 
+    void testUriFactories() {
+        sink(HttpRequest.GET(URI.create(taint()))); // $hasTaintFlow
+        sink(HttpRequest.POST(URI.create(taint()), "body")); // $hasTaintFlow
+        sink(HttpRequest.PUT(URI.create(taint()), "body")); // $hasTaintFlow
+        sink(HttpRequest.DELETE(URI.create(taint()))); // $hasTaintFlow
+        sink(HttpRequest.DELETE(URI.create(taint()), "body")); // $hasTaintFlow
+        sink(HttpRequest.PATCH(URI.create(taint()), "body")); // $hasTaintFlow
+        sink(HttpRequest.HEAD(URI.create(taint()))); // $hasTaintFlow
+        sink(HttpRequest.OPTIONS(URI.create(taint()))); // $hasTaintFlow
+    }
+
+    void testDeleteFactoryWithBody() {
+        sink(HttpRequest.DELETE(taint(), "body")); // $hasTaintFlow
+    }
+
     void testUriBuilderOfCharSequence() {
         URI uri = UriBuilder.of(taint()).build();
         sink(uri); // $hasTaintFlow
@@ -101,6 +151,34 @@ class MicronautHttpClientTest {
 
     void testUriBuilderFragment() {
         URI uri = UriBuilder.of("http://example.com").fragment(taint()).build();
+        sink(uri); // $hasTaintFlow
+    }
+
+    void testUriBuilderMutation() {
+        UriBuilder builder = UriBuilder.of("http://example.com");
+        builder.host(taint());
+        sink(builder.build()); // $hasTaintFlow
+    }
+
+    void testUriBuilderReplaceQueryParam() {
+        URI uri = UriBuilder.of("http://example.com").replaceQueryParam("key", taint()).build();
+        sink(uri); // $hasTaintFlow
+    }
+
+    void testUriBuilderAdditionalFluentMethods() {
+        sink(UriBuilder.of("http://example.com").scheme(taint()).build()); // $hasTaintFlow
+        sink(UriBuilder.of("http://example.com").userInfo(taint()).build()); // $hasTaintFlow
+        sink(UriBuilder.of("http://example.com").replacePath(taint()).build()); // $hasTaintFlow
+    }
+
+    void testUriBuilderExpandBuilder() {
+        URI uri = UriBuilder.of(taint()).expand(Collections.singletonMap("id", "value"));
+        sink(uri); // $hasTaintFlow
+    }
+
+    void testUriBuilderExpandValue() {
+        URI uri = UriBuilder.of("http://example.com/{id}")
+            .expand(Collections.singletonMap("id", taint()));
         sink(uri); // $hasTaintFlow
     }
 }
