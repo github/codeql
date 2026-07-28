@@ -24,6 +24,11 @@ class MicronautConfig {
     }
 
     @Get("/param")
+    void testPropertyParam(@Property(name = "app.api-key") String appName) {
+        sink(appName); // $hasLocalValueFlow
+    }
+
+    @Get("/param")
     void testValueParam(@Value("${app.name}") String appName) {
         sink(appName); // $hasLocalValueFlow
     }
