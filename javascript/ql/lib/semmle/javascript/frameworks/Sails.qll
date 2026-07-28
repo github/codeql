@@ -2,8 +2,8 @@
  * Provides classes for working with [Sails](https://sailsjs.com/) applications.
  */
 
-import javascript
-import semmle.javascript.frameworks.HTTP
+private import javascript
+private import semmle.javascript.frameworks.HTTP
 private import DataFlow
 
 /**
