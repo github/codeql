@@ -941,3 +941,92 @@ void test_http_server_api(HANDLE hRequestQueue) {
     sink(*certInfo.pCertEncoded); // $ ir
   }
 }
+
+using HKEY = void*;
+using BYTE = unsigned char;
+using LPBYTE = BYTE*;
+using PLONG = LONG*;
+
+typedef struct value_entA {
+  LPSTR ve_valuename;
+  DWORD ve_valuelen;
+  DWORD_PTR ve_valueptr;
+  DWORD ve_type;
+} VALENTA, *PVALENTA;
+
+typedef struct value_entW {
+  LPWSTR ve_valuename;
+  DWORD ve_valuelen;
+  DWORD_PTR ve_valueptr;
+  DWORD ve_type;
+} VALENTW, *PVALENTW;
+
+LONG RegQueryValueA(HKEY hKey, LPCSTR lpSubKey, LPSTR lpData, PLONG lpcbData);
+LONG RegQueryValueW(HKEY hKey, LPCWSTR lpSubKey, LPWSTR lpData, PLONG lpcbData);
+
+LONG RegQueryValueExA(
+  HKEY hKey, LPCSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, LPBYTE lpData,
+  LPDWORD lpcbData
+);
+
+LONG RegQueryValueExW(
+  HKEY hKey, LPCWSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, LPBYTE lpData,
+  LPDWORD lpcbData
+);
+
+LONG RegQueryMultipleValuesA(
+  HKEY hKey, PVALENTA valList, DWORD numVals, LPSTR valueBuffer, LPDWORD totalSize
+);
+
+LONG RegQueryMultipleValuesW(
+  HKEY hKey, PVALENTW valList, DWORD numVals, LPWSTR valueBuffer, LPDWORD totalSize
+);
+
+void test_registry_queries(HKEY hKey) {
+  {
+    char data[256];
+    LONG dataSize = sizeof(data);
+    RegQueryValueA(hKey, "value", data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ MISSING: ir
+  }
+  {
+    wchar_t data[256];
+    LONG dataSize = sizeof(data);
+    RegQueryValueW(hKey, L"value", data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ MISSING: ir
+  }
+  {
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegQueryValueExA(hKey, "value", nullptr, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ MISSING: ir
+  }
+  {
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegQueryValueExW(hKey, L"value", nullptr, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ MISSING: ir
+  }
+  {
+    VALENTA values[1];
+    char data[256];
+    DWORD dataSize = sizeof(data);
+    RegQueryMultipleValuesA(hKey, values, 1, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ MISSING: ir
+  }
+  {
+    VALENTW values[1];
+    wchar_t data[256];
+    DWORD dataSize = sizeof(data);
+    RegQueryMultipleValuesW(hKey, values, 1, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ MISSING: ir
+  }
+}
