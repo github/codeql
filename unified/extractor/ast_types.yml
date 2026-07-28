@@ -56,9 +56,6 @@ supertypes:
   # A statement is anything that can appear in a block.
   # This type contains all of 'expr' and has partial overlap with 'member'.
   # For example, type_alias_declaration can appear either as a stmt or member.
-  # constructor_declaration and destructor_declaration appear here because
-  # tree-sitter-swift's error recovery for #if/#endif in class bodies can place
-  # init/deinit declarations at the wrong (statement) level.
   stmt:
     - expr
     - variable_declaration

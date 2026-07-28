@@ -77,8 +77,8 @@ fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Optio
 
 /// Combine a list of boolean sub-conditions into a single expression by
 /// left-folding with the infix `&&` operator. Used by control-flow
-/// rules (`if`, `guard`, `while`, `repeat-while`) whose tree-sitter
-/// nodes carry one or more comma-separated conditions that the target
+/// rules (`if`, `guard`, `while`, `repeat-while`), which carry one or
+/// more comma-separated conditions that the target
 /// AST represents as a single `condition:` field. Panics on an empty
 /// input because every caller's grammar guarantees at least one
 /// condition.
@@ -144,7 +144,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // ---- Literals ----
         // swift-syntax does not distinguish the lexical integer/string forms
         // (hex/binary/octal, single- vs multi-line, raw): each is a single
-        // `*LiteralExpr` kind, so the tree-sitter variants collapse to one rule.
+        // `*LiteralExpr` kind, so one rule per literal type suffices.
         rule!((integerLiteralExpr) => (int_literal)),
         rule!((floatLiteralExpr) => (float_literal)),
         rule!((booleanLiteralExpr) => (boolean_literal)),
@@ -169,8 +169,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((declReferenceExpr baseName: @name) => (name_expr identifier: (identifier #{name}))),
         // A discard `_` used as an expression — e.g. the target of a discarding
         // assignment `_ = x`. swift-syntax models it as a `discardAssignmentExpr`;
-        // the tree-sitter path treated the bare `_` as a name, so map it to a
-        // `name_expr` too.
+        // the target AST has no expression-level discard (only `ignore_pattern`,
+        // which is a pattern), so it becomes a `name_expr` over the `_` token.
         rule!((discardAssignmentExpr wildcard: @@w) => (name_expr identifier: (identifier #{w}))),
         // ---- Operators ----
         // The parser front-end folds operator chains into nested
@@ -244,10 +244,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 accessor_kind: (accessor_kind "get")
                 body: (block stmt: {body}))
         ),
-        // A property with an explicit accessor block. The two shapes differ only
-        // by the presence of an initializer (tree-sitter split them into distinct
-        // `willset_didset_block` vs computed-accessor node types; swift-syntax
-        // makes both plain `accessorDecl`s):
+        // A property with an explicit accessor block. swift-syntax makes both
+        // shapes plain `accessorDecl`s, so they are told apart by the presence
+        // of an initializer:
         //
         //  * With an initializer (`var x: T = e { willSet {…} didSet {…} }`) it is
         //    a *stored* property with observers: emit the backing
@@ -398,8 +397,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // payload parameters; an element with a raw value (`case a = 1`) or a
         // plain element (`case north`) becomes a `variable_declaration`. All
         // carry the shared case modifiers / chained tag from `ctx` (set by the
-        // `enumCaseDecl` rule below) and are tagged `enum_case` (after any
-        // `chained_declaration` tag, matching the tree-sitter modifier order).
+        // `enumCaseDecl` rule below) and are tagged `enum_case`, after any
+        // `chained_declaration` tag.
         rule!(
             (enumCaseElement name: @name parameterClause: (enumCaseParameterClause parameters: _* @params))
             =>
@@ -432,8 +431,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // Enum cases. A single `case` declaration may carry modifiers
         // (e.g. `indirect`) and list several comma-separated elements; each
         // becomes its own declaration carrying those shared modifiers, and
-        // non-first ones are tagged `chained_declaration` (mirroring the
-        // tree-sitter `enum_entry` rule). The modifiers are published into `ctx`
+        // non-first ones are tagged `chained_declaration`. The modifiers are
+        // published into `ctx`
         // for the element rules above, which build the actual declaration.
         rule!(
             (enumCaseDecl modifiers: _* @mods elements: _* @@cases)
@@ -530,7 +529,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A function declaration (parameters/return type/body optional). The
         // parameters and return type nest under `signature`; the body is a
         // `codeBlock`. A bodyless function (a protocol requirement) still emits
-        // an empty `block`, matching the tree-sitter path.
+        // an empty `block`.
         rule!(
             (functionDecl
                 name: @name
@@ -723,8 +722,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 condition: {and_chain(&mut ctx, cond)}
                 else: {else_stmts})
         ),
-        // Ternary (`c ? a : b`) desugars to an `if_expr`, as in the tree-sitter
-        // path.
+        // Ternary (`c ? a : b`) desugars to an `if_expr`.
         rule!(
             (ternaryExpr condition: @cond thenExpression: @then_val elseExpression: @else_val)
             =>
@@ -769,8 +767,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (pattern_guard_expr pattern: {pat} value: {val})
         ),
         // Optional binding (`if let x = foo`, or shorthand `if let x`) desugars
-        // to a `pattern_guard_expr` matching `Optional.some(x)`, exactly as the
-        // tree-sitter path does. The initialized form is matched first.
+        // to a `pattern_guard_expr` matching `Optional.some(x)`. The initialized
+        // form is matched first.
         rule!(
             (optionalBindingCondition
                 pattern: (identifierPattern identifier: @name)
@@ -845,10 +843,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         rule!((arrayElement expression: @e) => expr { e }),
         // A dictionary literal (`["a": 1]`) is kept as an opaque `map_literal`
-        // leaf (its source span), matching the tree-sitter path.
+        // leaf (its source span).
         rule!((dictionaryExpr) => (map_literal)),
-        // A subscript access (`xs[0]`) is modelled as a call, exactly as the
-        // tree-sitter grammar does (it parses `xs[0]` like `xs(0)`).
+        // A subscript access (`xs[0]`) is modelled as a call. swift-syntax does
+        // report a distinct `subscriptCallExpr`, so giving
+        // subscripts their own shape needs only a `subscript_expr` node in
+        // ast_types.yml and a remap here.
         rule!(
             (subscriptCallExpr calledExpression: @callee arguments: _* @args)
             =>
@@ -898,9 +898,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((isExpr expression: @val type: @ty) => (type_test_expr expr: {val} operator: (infix_operator "is") type: {ty})),
         // Await expression → unary_expr with operator "await"
         rule!((awaitExpr expression: @val) => (unary_expr operator: (prefix_operator "await") operand: {val})),
-        // Force-unwrap (`x!`) → postfix unary_expr. swift-syntax has a dedicated
-        // `forceUnwrapExpr` node (the tree-sitter path used the generic postfix
-        // operator rule instead).
+        // Force-unwrap (`x!`) → postfix unary_expr, via swift-syntax's dedicated
+        // `forceUnwrapExpr` node.
         rule!((forceUnwrapExpr expression: @e) => (unary_expr operator: (postfix_operator "!") operand: {e})),
         // ---- Imports ----
         // An import declaration. The dotted path (a list of
@@ -961,8 +960,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A named type (`Int`). `identifierType.name` is the type-name token.
         rule!((identifierType name: @@n) => (named_type_expr name: (identifier #{n}))),
         // A qualified type (`Outer.Inner`, `NSString.CompareOptions`). swift-syntax
-        // nests these as `memberType` nodes; like the old tree-sitter `user_type`
-        // rule, we keep the whole dotted path as the opaque `named_type_expr` name.
+        // nests these as `memberType` nodes; we keep the whole dotted path as the
+        // opaque `named_type_expr` name.
         rule!((memberType) @ty => (named_type_expr name: (identifier #{ty}))),
         // Sugared types desugar to `generic_type_expr`: `T?` -> Optional<T>,
         // `[T]` -> Array<T>, `[K: V]` -> Dictionary<K, V>.
@@ -1029,9 +1028,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // expansions uniformly as a `macroExpansionExpr`).
         rule!((macroExpansionExpr) => (unsupported_node)),
         // A nominal type's `inheritanceClause` (`: Base, Proto`) becomes a list
-        // of `base_type`s, one per inherited type. The tree-sitter path dropped
-        // it (no corpus target had a `base_type`) and the mapping matched that
-        // for parity; swift-syntax exposes it cleanly. Each declaration keyword
+        // of `base_type`s, one per inherited type. Each declaration keyword
         // gets its own rule; the bodies are identical but for the keyword.
         // Class declaration with body containing members
         rule!(
@@ -1100,8 +1097,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // An `extension Foo { … }` is likewise a `class_like_declaration`, named
         // by the extended type. The extended type is captured opaquely (as its
         // source text) so that qualified names (`extension String.Interpolation`,
-        // a `memberType`) name the declaration just like simple ones, matching the
-        // old tree-sitter `user_type` behaviour.
+        // a `memberType`) name the declaration just like simple ones.
         rule!(
             (extensionDecl
                 extensionKeyword: @kind

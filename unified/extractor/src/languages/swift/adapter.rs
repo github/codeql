@@ -17,9 +17,8 @@
 //! * Collection nodes are already elided to JSON arrays upstream, so a
 //!   list-valued field maps directly to that field holding several children.
 //!
-//! Note: this preserves swift-syntax's own kind/field names. Aligning those
-//! names with the tree-sitter-swift schema (so the rewrite rules in
-//! [`super::swift`] fire) is done incrementally in the rules.
+//! Note: this preserves swift-syntax's own kind/field names; the rewrite rules
+//! in [`super::swift`] match those names directly.
 
 use std::collections::BTreeMap;
 

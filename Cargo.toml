@@ -9,7 +9,6 @@ members = [
     "shared/yeast-schema",
     "ruby/extractor",
     "unified/extractor",
-    "unified/extractor/tree-sitter-swift",
     "unified/swift-syntax-rs",
     "rust/extractor",
     "rust/extractor/macros",

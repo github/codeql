@@ -20,6 +20,5 @@ codeql_rust_binary(
     ) + [
         "//shared/tree-sitter-extractor",
         "//shared/yeast",
-        "//unified/extractor/tree-sitter-swift",
     ],
 )
