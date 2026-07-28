@@ -988,14 +988,14 @@ void test_registry_queries(HKEY hKey) {
     LONG dataSize = sizeof(data);
     RegQueryValueA(hKey, "value", data, &dataSize);
     sink(data); // clean
-    sink(*data); // $ MISSING: ir
+    sink(*data); // $ ir
   }
   {
     wchar_t data[256];
     LONG dataSize = sizeof(data);
     RegQueryValueW(hKey, L"value", data, &dataSize);
     sink(data); // clean
-    sink(*data); // $ MISSING: ir
+    sink(*data); // $ ir
   }
   {
     BYTE data[256];
@@ -1003,7 +1003,7 @@ void test_registry_queries(HKEY hKey) {
     DWORD type;
     RegQueryValueExA(hKey, "value", nullptr, &type, data, &dataSize);
     sink(data); // clean
-    sink(*data); // $ MISSING: ir
+    sink(*data); // $ ir
   }
   {
     BYTE data[256];
@@ -1011,7 +1011,7 @@ void test_registry_queries(HKEY hKey) {
     DWORD type;
     RegQueryValueExW(hKey, L"value", nullptr, &type, data, &dataSize);
     sink(data); // clean
-    sink(*data); // $ MISSING: ir
+    sink(*data); // $ ir
   }
   {
     VALENTA values[1];
@@ -1019,7 +1019,7 @@ void test_registry_queries(HKEY hKey) {
     DWORD dataSize = sizeof(data);
     RegQueryMultipleValuesA(hKey, values, 1, data, &dataSize);
     sink(data); // clean
-    sink(*data); // $ MISSING: ir
+    sink(*data); // $ ir
   }
   {
     VALENTW values[1];
@@ -1027,6 +1027,6 @@ void test_registry_queries(HKEY hKey) {
     DWORD dataSize = sizeof(data);
     RegQueryMultipleValuesW(hKey, values, 1, data, &dataSize);
     sink(data); // clean
-    sink(*data); // $ MISSING: ir
+    sink(*data); // $ ir
   }
 }
