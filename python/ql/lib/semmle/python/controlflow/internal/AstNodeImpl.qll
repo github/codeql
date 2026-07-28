@@ -1755,7 +1755,6 @@ private module Input implements InputSig1, InputSig2 {
   }
 }
 
-import CfgCachedStage
 import Public
 
 /**
