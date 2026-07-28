@@ -280,14 +280,7 @@ class BasicBlock extends CfgImpl::BasicBlock {
    * doesn't currently expose a `dominanceFrontier` predicate at this
    * level.
    */
-  predicate inDominanceFrontier(BasicBlock df) {
-    this = df.getAPredecessor() and not this = df.getImmediateDominator()
-    or
-    exists(BasicBlock prev | prev.inDominanceFrontier(df) |
-      this = prev.getImmediateDominator() and
-      not this = df.getImmediateDominator()
-    )
-  }
+  predicate inDominanceFrontier(BasicBlock df) { super.inDominanceFrontier(df) }
 
   /** Holds if this basic block strictly reaches `other`. */
   predicate strictlyReaches(BasicBlock other) { super.getASuccessor+() = other }
@@ -326,22 +319,7 @@ class BasicBlock extends CfgImpl::BasicBlock {
    * This mirrors the legacy `ConditionBlock.controls(BB, branch)`.
    */
   predicate controls(BasicBlock other, boolean branch) {
-    exists(BasicBlock succ |
-      branch = true and succ = this.getATrueSuccessor()
-      or
-      branch = false and succ = this.getAFalseSuccessor()
-    |
-      succ.dominates(other) and
-      // The other branch must not also reach `other` — otherwise
-      // `other` is not actually controlled by `branch`.
-      not exists(BasicBlock otherSucc |
-        branch = true and otherSucc = this.getAFalseSuccessor()
-        or
-        branch = false and otherSucc = this.getATrueSuccessor()
-      |
-        otherSucc.reaches(other)
-      )
-    )
+    super.edgeDominates(other, any(BooleanSuccessor t | t.getValue() = branch))
   }
 }
 
