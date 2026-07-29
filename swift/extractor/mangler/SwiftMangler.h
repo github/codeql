@@ -126,6 +126,9 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
 
   bool isExtensionOrFilePrivateValue(const swift::Decl* decl);
   void indexExtensionsAndFilePrivateValues(llvm::ArrayRef<swift::Decl*> siblings);
+  uint32_t indexClangSubmoduleExtensionsAndFilePrivateValues(const clang::Module* clangModule,
+                                                             swift::ClangModuleLoader* moduleLoader,
+                                                             uint32_t index);
   void indexClangExtensionsAndFilePrivateValues(const clang::Module* clangModule,
                                                 swift::ClangModuleLoader* moduleLoader);
   ExtensionOrFilePrivateValueIndex getExtensionOrFilePrivateValueIndex(const swift::Decl* decl,
