@@ -94,6 +94,19 @@ fn and_chain(
         .expect("control-flow statement must have at least one condition")
 }
 
+/// Return the only pattern unchanged when there is exactly one, otherwise
+/// wrap the list in an `or_pattern`.
+fn make_or_pattern(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    items: Vec<yeast::Id>,
+) -> yeast::Id {
+    if items.len() == 1 {
+        items[0]
+    } else {
+        tree!((or_pattern pattern: {items}))
+    }
+}
+
 /// Translate a multi-part identifier (for example `Foo.Bar.Baz`) into a
 /// `member_access_expr` chain rooted at a `name_expr` over the first
 /// part. Panics on an empty input because the grammar's `_+` quantifier
@@ -746,22 +759,17 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (switchCase label: (switchCaseLabel caseItems: _* @items) statements: _* @body)
             =>
-            switch_case {
-                let pattern = if items.len() == 1 {
-                    items[0]
-                } else {
-                    tree!((or_pattern pattern: {items}))
-                };
-                tree!((switch_case pattern: {pattern} body: (block stmt: {body})))
-            }
+            (switch_case
+                pattern: {make_or_pattern(&mut ctx, items)}
+                body: (block stmt: {body}))
         ),
         rule!(
             (switchCase label: (switchDefaultLabel) statements: _* @body)
             =>
             (switch_case body: (block stmt: {body}))
         ),
-        // A single case item unwraps to its pattern (used as an `or_pattern`
-        // element).
+        // A single case item unwraps to its pattern, possibly boxed in conditional_pattern
+        rule!((switchCaseItem pattern: @p whereClause: (whereClause condition: @cond)) => (conditional_pattern pattern: { p } condition: {cond})),
         rule!((switchCaseItem pattern: @p) => pattern { p }),
         // A pattern-matching condition (`if case let x = e`, `if case .foo(let x)
         // = e`) becomes a `pattern_guard_expr`: the matched pattern and the
@@ -877,17 +885,24 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 body: {body}
                 catch_clause: {catches})
         ),
-        // Catch block with bound identifier; optional where-clause guard.
+        rule!(
+            (catchItem pattern: @pattern whereClause: (whereClause condition: @guard))
+            =>
+            (conditional_pattern pattern: {pattern} condition: {guard})
+        ),
+        rule!(
+            (catchItem pattern: @pattern)
+            =>
+            pattern {pattern}
+        ),
+        // Catch block with one or more patterns (which have been translated by the catchItem rules)
         rule!(
             (catchClause
-                catchItems: (catchItem
-                    pattern: @pattern
-                    whereClause: (whereClause condition: @guard)?)
+                catchItems: _+ @patterns
                 body: @body)
             =>
             (catch_clause
-                pattern: {pattern}
-                guard: {guard}
+                pattern: {make_or_pattern(&mut ctx, patterns)}
                 body: {body})
         ),
         // Catch block without error binding
