@@ -4,25 +4,43 @@ while x > 0 {
 
 ---
 
-source_file
-  statement:
-    while_statement
-      body:
-        block
-          statement:
-            assignment
-              operator: -=
-              result: integer_literal "1"
-              target:
-                directly_assignable_expression
-                  expr: simple_identifier "x"
-      condition:
-        if_condition
-          kind:
-            comparison_expression
-              lhs: simple_identifier "x"
-              op: >
-              rhs: integer_literal "0"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        whileStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    infixOperatorExpr
+                      operator:
+                        binaryOperatorExpr
+                          operator: binaryOperator "-="
+                      leftOperand:
+                        declReferenceExpr
+                          baseName: identifier "x"
+                      rightOperand:
+                        integerLiteralExpr
+                          literal: integerLiteral "1"
+          conditions:
+            conditionElement
+              condition:
+                infixOperatorExpr
+                  operator:
+                    binaryOperatorExpr
+                      operator: binaryOperator ">"
+                  leftOperand:
+                    declReferenceExpr
+                      baseName: identifier "x"
+                  rightOperand:
+                    integerLiteralExpr
+                      literal: integerLiteral "0"
+          whileKeyword: while
 
 ---
 
@@ -31,19 +49,19 @@ top_level
     block
       stmt:
         while_stmt
+          condition:
+            binary_expr
+              left:
+                name_expr
+                  identifier: identifier "x"
+              operator: infix_operator ">"
+              right: int_literal "0"
           body:
             block
               stmt:
                 compound_assign_expr
-                  operator: infix_operator "-="
                   target:
                     name_expr
                       identifier: identifier "x"
+                  operator: infix_operator "-="
                   value: int_literal "1"
-          condition:
-            binary_expr
-              operator: infix_operator ">"
-              left:
-                name_expr
-                  identifier: identifier "x"
-              right: int_literal "0"

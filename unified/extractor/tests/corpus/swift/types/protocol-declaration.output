@@ -4,15 +4,35 @@ protocol Drawable {
 
 ---
 
-source_file
-  statement:
-    protocol_declaration
-      body:
-        protocol_body
-          member:
-            protocol_function_declaration
-              name: simple_identifier "draw"
-      name: type_identifier "Drawable"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        protocolDecl
+          attributes:
+          name: identifier "Drawable"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    functionDecl
+                      attributes:
+                      name: identifier "draw"
+                      modifiers:
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                      funcKeyword: func
+          modifiers:
+          protocolKeyword: protocol
 
 ---
 
@@ -21,9 +41,9 @@ top_level
     block
       stmt:
         class_like_declaration
-          member:
-            function_declaration
-              body: block "func draw()"
-              name: identifier "draw"
           modifier: modifier "protocol"
           name: identifier "Drawable"
+          member:
+            function_declaration
+              name: identifier "draw"
+              body: block "func draw()"

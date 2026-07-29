@@ -4,35 +4,51 @@ func greet(person name: String) {
 
 ---
 
-source_file
-  statement:
-    function_declaration
-      body:
-        block
-          statement:
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value: simple_identifier "name"
-      name: simple_identifier "greet"
-      parameter:
-        function_parameter
-          parameter:
-            parameter
-              external_name: simple_identifier "person"
-              name: simple_identifier "name"
-              type:
-                type
-                  name:
-                    user_type
-                      part:
-                        simple_user_type
-                          name: type_identifier "String"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "name"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          name: identifier "greet"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "String"
+                      firstName: identifier "person"
+                      secondName: identifier "name"
+          funcKeyword: func
 
 ---
 
@@ -41,18 +57,6 @@ top_level
     block
       stmt:
         function_declaration
-          body:
-            block
-              stmt:
-                call_expr
-                  argument:
-                    argument
-                      value:
-                        name_expr
-                          identifier: identifier "name"
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
           name: identifier "greet"
           parameter:
             parameter
@@ -60,3 +64,15 @@ top_level
               pattern:
                 name_pattern
                   identifier: identifier "name"
+          body:
+            block
+              stmt:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "name"

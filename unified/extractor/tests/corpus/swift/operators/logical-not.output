@@ -2,11 +2,16 @@
 
 ---
 
-source_file
-  statement:
-    prefix_expression
-      operation: bang "!"
-      target: simple_identifier "a"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        prefixOperatorExpr
+          expression:
+            declReferenceExpr
+              baseName: identifier "a"
+          operator: prefixOperator "!"
 
 ---
 

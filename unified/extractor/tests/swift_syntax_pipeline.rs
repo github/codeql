@@ -22,7 +22,7 @@ fn swift_syntax_json_runs_through_the_desugarer() {
         .into_iter()
         .find(|l| l.file_globs.iter().any(|g| g.contains("swift")))
         .expect("swift language spec");
-    let desugarer = lang.desugar.as_deref().expect("swift desugarer");
+    let desugarer = lang.desugarer.as_ref();
 
     // Adapt the swift-syntax JSON into a yeast AST (pure Rust, no Swift FFI).
     let adapted =

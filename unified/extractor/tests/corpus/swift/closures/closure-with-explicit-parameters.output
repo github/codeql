@@ -2,45 +2,63 @@ let f = { (x: Int) -> Int in x * 2 }
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: let
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "f"
-          value:
-            lambda_literal
-              statement:
-                multiplicative_expression
-                  lhs: simple_identifier "x"
-                  op: *
-                  rhs: integer_literal "2"
-              type:
-                lambda_function_type
-                  params:
-                    lambda_function_type_parameters
-                      parameter:
-                        lambda_parameter
-                          name: simple_identifier "x"
-                          type:
-                            type
-                              name:
-                                user_type
-                                  part:
-                                    simple_user_type
-                                      name: type_identifier "Int"
-                  return_type:
-                    type
-                      name:
-                        user_type
-                          part:
-                            simple_user_type
-                              name: type_identifier "Int"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    closureExpr
+                      leftBrace: {
+                      rightBrace: }
+                      signature:
+                        closureSignature
+                          attributes:
+                          inKeyword: in
+                          parameterClause:
+                            closureParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                                closureParameter
+                                  colon: :
+                                  attributes:
+                                  modifiers:
+                                  type:
+                                    identifierType
+                                      name: identifier "Int"
+                                  firstName: identifier "x"
+                          returnClause:
+                            returnClause
+                              arrow: ->
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                      statements:
+                        codeBlockItem
+                          item:
+                            infixOperatorExpr
+                              operator:
+                                binaryOperatorExpr
+                                  operator: binaryOperator "*"
+                              leftOperand:
+                                declReferenceExpr
+                                  baseName: identifier "x"
+                              rightOperand:
+                                integerLiteralExpr
+                                  literal: integerLiteral "2"
+              pattern:
+                identifierPattern
+                  identifier: identifier "f"
 
 ---
 
@@ -55,23 +73,23 @@ top_level
               identifier: identifier "f"
           value:
             function_expr
+              parameter:
+                parameter
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
+                  pattern:
+                    name_pattern
+                      identifier: identifier "x"
+              return_type:
+                named_type_expr
+                  name: identifier "Int"
               body:
                 block
                   stmt:
                     binary_expr
-                      operator: infix_operator "*"
                       left:
                         name_expr
                           identifier: identifier "x"
+                      operator: infix_operator "*"
                       right: int_literal "2"
-              parameter:
-                parameter
-                  pattern:
-                    name_pattern
-                      identifier: identifier "x"
-                  type:
-                    named_type_expr
-                      name: identifier "Int"
-              return_type:
-                named_type_expr
-                  name: identifier "Int"

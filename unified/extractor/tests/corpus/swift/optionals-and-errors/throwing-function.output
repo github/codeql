@@ -4,25 +4,50 @@ func read() throws -> String {
 
 ---
 
-source_file
-  statement:
-    function_declaration
-      body:
-        block
-          statement:
-            control_transfer_statement
-              kind: return
-              result:
-                line_string_literal
-      name: simple_identifier "read"
-      return_type:
-        type
-          name:
-            user_type
-              part:
-                simple_user_type
-                  name: type_identifier "String"
-      throws: throws "throws"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      expression:
+                        stringLiteralExpr
+                          closingQuote: "
+                          openingQuote: "
+                          segments:
+                            stringSegment
+                              content: stringSegment
+                      returnKeyword: return
+          name: identifier "read"
+          modifiers:
+          signature:
+            functionSignature
+              effectSpecifiers:
+                functionEffectSpecifiers
+                  throwsClause:
+                    throwsClause
+                      throwsSpecifier: throws
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+              returnClause:
+                returnClause
+                  arrow: ->
+                  type:
+                    identifierType
+                      name: identifier "String"
+          funcKeyword: func
 
 ---
 
@@ -31,12 +56,12 @@ top_level
     block
       stmt:
         function_declaration
+          name: identifier "read"
+          return_type:
+            named_type_expr
+              name: identifier "String"
           body:
             block
               stmt:
                 return_expr
                   value: string_literal "\"\""
-          name: identifier "read"
-          return_type:
-            named_type_expr
-              name: identifier "String"

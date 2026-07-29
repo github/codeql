@@ -7,63 +7,93 @@ class C {
 
 ---
 
-source_file
-  statement:
-    class_declaration
-      body:
-        class_body
-          member:
-            property_declaration
-              binding:
-                value_binding_pattern
-                  mutability: var
-              declarator:
-                property_binding
-                  name:
-                    pattern
-                      bound_identifier: simple_identifier "x"
-                  observers:
-                    willset_didset_block
-                      didset:
-                        didset_clause
-                          body:
-                            block
-                              statement:
-                                call_expression
-                                  function: simple_identifier "print"
-                                  suffix:
-                                    call_suffix
-                                      arguments:
-                                        value_arguments
-                                          argument:
-                                            value_argument
-                                              value: simple_identifier "oldValue"
-                      willset:
-                        willset_clause
-                          body:
-                            block
-                              statement:
-                                call_expression
-                                  function: simple_identifier "print"
-                                  suffix:
-                                    call_suffix
-                                      arguments:
-                                        value_arguments
-                                          argument:
-                                            value_argument
-                                              value: simple_identifier "newValue"
-                  type:
-                    type_annotation
-                      type:
-                        type
-                          name:
-                            user_type
-                              part:
-                                simple_user_type
-                                  name: type_identifier "Int"
-                  value: integer_literal "0"
-      declaration_kind: class
-      name: type_identifier "C"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "C"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "0"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                accessorDecl
+                                  accessorSpecifier: willSet
+                                  attributes:
+                                  body:
+                                    codeBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      statements:
+                                        codeBlockItem
+                                          item:
+                                            functionCallExpr
+                                              leftParen: (
+                                              rightParen: )
+                                              arguments:
+                                                labeledExpr
+                                                  expression:
+                                                    declReferenceExpr
+                                                      baseName: identifier "newValue"
+                                              additionalTrailingClosures:
+                                              calledExpression:
+                                                declReferenceExpr
+                                                  baseName: identifier "print"
+                                accessorDecl
+                                  accessorSpecifier: didSet
+                                  attributes:
+                                  body:
+                                    codeBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      statements:
+                                        codeBlockItem
+                                          item:
+                                            functionCallExpr
+                                              leftParen: (
+                                              rightParen: )
+                                              arguments:
+                                                labeledExpr
+                                                  expression:
+                                                    declReferenceExpr
+                                                      baseName: identifier "oldValue"
+                                              additionalTrailingClosures:
+                                              calledExpression:
+                                                declReferenceExpr
+                                                  baseName: identifier "print"
+                              leftBrace: {
+                              rightBrace: }
+          modifiers:
+          classKeyword: class
 
 ---
 
@@ -72,6 +102,8 @@ top_level
     block
       stmt:
         class_like_declaration
+          modifier: modifier "class"
+          name: identifier "C"
           member:
             variable_declaration
               modifier: modifier "var"
@@ -83,40 +115,38 @@ top_level
                   name: identifier "Int"
               value: int_literal "0"
             accessor_declaration
-              body:
-                block
-                  stmt:
-                    call_expr
-                      argument:
-                        argument
-                          value:
-                            name_expr
-                              identifier: identifier "newValue"
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
               modifier:
                 modifier "var"
                 modifier "chained_declaration"
               name: identifier "x"
               accessor_kind: accessor_kind "willSet"
-            accessor_declaration
               body:
                 block
                   stmt:
                     call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
                       argument:
                         argument
                           value:
                             name_expr
-                              identifier: identifier "oldValue"
-                      callee:
-                        name_expr
-                          identifier: identifier "print"
+                              identifier: identifier "newValue"
+            accessor_declaration
               modifier:
                 modifier "var"
                 modifier "chained_declaration"
               name: identifier "x"
               accessor_kind: accessor_kind "didSet"
-          modifier: modifier "class"
-          name: identifier "C"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "oldValue"

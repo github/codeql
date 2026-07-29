@@ -2,12 +2,21 @@ a && b
 
 ---
 
-source_file
-  statement:
-    conjunction_expression
-      lhs: simple_identifier "a"
-      op: &&
-      rhs: simple_identifier "b"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "&&"
+          leftOperand:
+            declReferenceExpr
+              baseName: identifier "a"
+          rightOperand:
+            declReferenceExpr
+              baseName: identifier "b"
 
 ---
 
@@ -16,10 +25,10 @@ top_level
     block
       stmt:
         binary_expr
-          operator: infix_operator "&&"
           left:
             name_expr
               identifier: identifier "a"
+          operator: infix_operator "&&"
           right:
             name_expr
               identifier: identifier "b"

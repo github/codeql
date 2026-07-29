@@ -3,10 +3,17 @@ false
 
 ---
 
-source_file
-  statement:
-    boolean_literal
-    boolean_literal
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        booleanLiteralExpr
+          literal: true
+    codeBlockItem
+      item:
+        booleanLiteralExpr
+          literal: false
 
 ---
 
