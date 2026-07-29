@@ -111,19 +111,41 @@ class WorkflowCommandClobberingFromEnvVarSink extends OutputClobberingSink {
   }
 }
 
-bindingset[command]
-private predicate jqUsesRawOutput(string command) {
-  exists(
-    command
-        .regexpFind("(^|\\s)(--raw-output0?|--join-output)(\\s|$)|(^|\\s)-[A-Za-z0-9]*[rj][A-Za-z0-9]*(\\s|$)",
-          _, _)
-  )
+private string jqSafeOptionRegexp() {
+  result = "-[acCMeRnSs]+"
+  or
+  result =
+    "--(ascii-output|color-output|compact-output|exit-status|monochrome-output|null-input|" +
+      "raw-input|slurp|sort-keys|unbuffered)"
+}
+
+private string jqSimpleFilterRegexp() {
+  result = "\\."
+  or
+  result = "\\.[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*|\\[[0-9]+\\])*"
+}
+
+private string jqSimpleFilterArgumentRegexp() {
+  result = jqSimpleFilterRegexp()
+  or
+  result = "'" + jqSimpleFilterRegexp() + "'"
+  or
+  result = "\"" + jqSimpleFilterRegexp() + "\""
+}
+
+private string jqLiteralInputRegexp() {
+  result = "[A-Za-z0-9_./][A-Za-z0-9_./-]*"
+  or
+  result = "\\$GITHUB_EVENT_PATH"
+  or
+  result = "\\$\\{GITHUB_EVENT_PATH\\}"
 }
 
 bindingset[command]
 private predicate jqProducesJsonEncodedOutput(string command) {
-  command.regexpMatch("jq\\s+((\\.[^\\s]*)|('[^']*')|(\"[^\"]*\"))(\\s+.*)?") and
-  not jqUsesRawOutput(command)
+  command
+      .regexpMatch("jq(\\s+" + jqSafeOptionRegexp() + ")*\\s+" + jqSimpleFilterArgumentRegexp() +
+          "(\\s+" + jqSafeOptionRegexp() + ")*(\\s+" + jqLiteralInputRegexp() + ")*")
 }
 
 /**

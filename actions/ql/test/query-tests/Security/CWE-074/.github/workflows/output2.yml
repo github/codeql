@@ -86,3 +86,31 @@ jobs:
           # VULNERABLE: assigned raw output can begin with a workflow command
           VALUE=$(jq --raw-output '.value' pr-number.json)
           echo "$VALUE"
+      - id: clob11
+        run: |
+          # NOT VULNERABLE: combined options preserve JSON encoding
+          jq -Mc '.value' pr-number.json
+      - id: clob12
+        run: |
+          # NOT VULNERABLE: safe long options may follow a simple filter
+          jq '.value' --compact-output pr-number.json
+      - id: clob13
+        run: |
+          # VULNERABLE: join output emits strings without JSON encoding
+          jq -j '.value' pr-number.json
+      - id: clob14
+        run: |
+          # VULNERABLE: the long join-output option also emits raw strings
+          jq '.value' --join-output pr-number.json
+      - id: clob15
+        run: |
+          # VULNERABLE: raw-output0 emits strings without JSON encoding
+          jq '.value' --raw-output0 pr-number.json
+      - id: clob16
+        run: |
+          # VULNERABLE: stderr emits its input without JSON encoding
+          jq '.value | stderr' pr-number.json
+      - id: clob17
+        run: |
+          # VULNERABLE: halt_error emits its input without JSON encoding
+          jq '.value | halt_error(1)' pr-number.json
