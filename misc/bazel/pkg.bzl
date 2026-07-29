@@ -8,7 +8,7 @@ load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_fil
 load("@rules_pkg//pkg:pkg.bzl", "pkg_zip")
 load("@rules_pkg//pkg:providers.bzl", "PackageFilegroupInfo", "PackageFilesInfo")
 load("@rules_python//python:defs.bzl", "py_binary", "py_test")
-load("//misc/bazel:os.bzl", "OS_DETECTION_ATTRS", "os_select")
+load("//misc/bazel:os.bzl", "OS_DETECTION_ATTRS", "codeql_platform_select")
 
 def _make_internal(name):
     def internal(suffix = "internal", *args):
@@ -26,7 +26,13 @@ def _expand_path(path, platform):
     return ("common", path)
 
 def _detect_platform(ctx = None):
-    return os_select(ctx, linux = "linux64", macos = "osx64", windows = "win64")
+    return codeql_platform_select(
+        ctx,
+        linux64 = "linux64",
+        linux_arm64 = "linux-arm64",
+        osx64 = "osx64",
+        win64 = "win64",
+    )
 
 def codeql_pkg_files(
         *,
