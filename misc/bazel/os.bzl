@@ -57,12 +57,19 @@ def os_select(
         linux = None,
         windows = None,
         macos = None,
+        posix = None,
         default = None):
     """
     Choose a value based on the target OS, ignoring the architecture. This is a thin, OS-only wrapper
     around `codeql_platform_select` (Linux gets the same value on both x86_64 and arm64).
-    See `codeql_platform_select` for macro vs rule usage.
+    `posix` is a convenience for the value shared by `linux` and `macos`; it is mutually exclusive
+    with both. See `codeql_platform_select` for macro vs rule usage.
     """
+    if posix != None:
+        if linux != None or macos != None:
+            fail("`posix` is mutually exclusive with `linux` and `macos`")
+        linux = posix
+        macos = posix
     return codeql_platform_select(
         ctx,
         linux64 = linux,
