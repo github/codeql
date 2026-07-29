@@ -232,13 +232,13 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool,
 		// This should only cause some wasted time and not inconsistency because the names for
 		// objects seen in this process should be the same each time.
 
-		log.Printf("Processing package %s.", pkg.PkgPath)
+		slog.Debug("Processing package", "package", pkg.PkgPath)
 
 		if _, ok := pkgInfos[pkg.PkgPath]; !ok {
 			pkgInfos[pkg.PkgPath] = toolchain.GetPkgInfo(pkg.PkgPath, modFlags...)
 		}
 
-		log.Printf("Extracting types for package %s.", pkg.PkgPath)
+		slog.Debug("Extracting types for package", "package", pkg.PkgPath)
 
 		tw, err := trap.NewWriter(pkg.PkgPath, pkg)
 		if err != nil {
