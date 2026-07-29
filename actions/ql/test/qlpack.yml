@@ -9,4 +9,6 @@ dependencies:
   codeql/immutable-actions-list: ${workspace}
 extractor: actions
 tests: .
+dataExtensions:
+  - query-tests/Security/CWE-829/*.model.yml
 warnOnImplicitThis: true

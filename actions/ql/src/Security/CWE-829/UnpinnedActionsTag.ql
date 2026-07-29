@@ -33,6 +33,27 @@ private predicate isPinnedContainer(string version) {
 bindingset[nwo]
 private predicate isContainerImage(string nwo) { nwo.regexpMatch("^docker://.+") }
 
+// A `$/` reference is a same-repository (self repository) reference (e.g. `$/path/to/action`),
+// resolved at the commit the calling workflow is running. Like `./` local (self workspace)
+// references, it is inherently pinned and can never be an unpinned-tag finding, so we never flag it.
+bindingset[nwo]
+private predicate isSelfRepository(string nwo) { nwo.matches("$/%") }
+
+// Holds if `uses` (calling action `nwo` at `version`) is pinned by an entry in the repository's
+// Actions lockfile (`.github/workflows/actions.lock`). The underlying `pinnedByLockfileDataModel`
+// predicate is populated by the CodeQL Actions extractor when it parses the lockfile at
+// database-creation time; until then this is a clean no-op and no lockfile-pinned refs are
+// suppressed. See `pinnedByLockfileDataModel` in `ConfigExtensions.qll` for the intended shape.
+bindingset[nwo]
+private predicate pinnedByLockfile(UsesStep uses, string nwo, string version) {
+  // The extractor populates this predicate with lower-cased owner/repo (GitHub treats
+  // them case-insensitively) but preserves the ref, so match `nwo` case-insensitively
+  // and `version` exactly. `nwo` keeps its source casing everywhere else (e.g. the
+  // alert message) so authors still see the ref as written.
+  pinnedByLockfileDataModel(uses.getLocation().getFile().getRelativePath(), nwo.toLowerCase(),
+    version)
+}
+
 private predicate getStepContainerName(UsesStep uses, string name) {
   exists(Workflow workflow |
     uses.getEnclosingWorkflow() = workflow and
@@ -55,6 +76,8 @@ where
   getStepContainerName(uses, name) and
   uses.getVersion() = version and
   not isTrustedOwner(nwo) and
+  not isSelfRepository(nwo) and
+  not pinnedByLockfile(uses, nwo, version) and
   not (if isContainerImage(nwo) then isPinnedContainer(version) else isPinnedCommit(version)) and
   not isImmutableAction(uses, nwo)
 select uses.getCalleeNode(),
