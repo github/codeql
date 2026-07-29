@@ -23,8 +23,9 @@ def codeql_platform_select(
     def _or_otherwise(value):
         return value if value != None else otherwise
 
+    linux_arm64_setting = Label("//misc/bazel:linux_arm64")
     choices = {
-        "//misc/bazel:linux_arm64": _or_otherwise(linux_arm64),
+        linux_arm64_setting: _or_otherwise(linux_arm64),
         "@platforms//os:linux": _or_otherwise(linux64),
         "@platforms//os:macos": _or_otherwise(osx64),
         "@platforms//os:windows": _or_otherwise(win64),
@@ -40,7 +41,7 @@ def codeql_platform_select(
         return ctx.target_platform_has_constraint(getattr(ctx.attr, "_%s_constraint" % constraint)[platform_common.ConstraintValueInfo])
 
     if has("linux"):
-        result = choices["//misc/bazel:linux_arm64"] if has("arm64") else choices["@platforms//os:linux"]
+        result = choices[linux_arm64_setting] if has("arm64") else choices["@platforms//os:linux"]
     elif has("macos"):
         result = choices["@platforms//os:macos"]
     elif has("windows"):
