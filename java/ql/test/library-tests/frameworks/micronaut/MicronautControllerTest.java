@@ -1,6 +1,7 @@
 import io.micronaut.http.annotation.*;
 import io.micronaut.http.*;
 import io.micronaut.http.cookie.Cookies;
+import io.micronaut.http.cookie.Cookie;
 import java.io.InputStream;
 import java.io.Reader;
 
@@ -72,6 +73,10 @@ class MicronautControllerTest {
     @Get("/cookies")
     void testCookies(Cookies cookies) {
         sink(cookies); // $hasTaintFlow
+        sink(cookies.getValue("session")); // $hasTaintFlow
+        for (java.util.Map.Entry<String, Cookie> entry : cookies) {
+            sink(entry.getValue()); // $hasTaintFlow
+        }
     }
 
     @Post("/stream")

@@ -47,6 +47,12 @@ class MicronautHttpRequestTest {
         sink(cookie.getPath()); // $hasTaintFlow
         sink(request.getCookies().getAll()); // $hasTaintFlow
         sink(request.getCookies().findCookie("session")); // $hasTaintFlow
+        sink(request.getCookies().getValue("session")); // $hasTaintFlow
+        sink(request.getCookies().values().iterator().next()); // $hasTaintFlow
+        sink(request.getCookies().asMap().get("session")); // $hasTaintFlow
+        for (Map.Entry<String, Cookie> entry : request.getCookies()) {
+            sink(entry.getValue()); // $hasTaintFlow
+        }
     }
 
     @Get("/uri")
