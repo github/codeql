@@ -43,7 +43,10 @@ pub fn parse(source: &[u8]) -> Result<ParsedTree, String> {
 ///    extractor pack lays it out (`tools/<platform>/{extractor,
 ///    swift-syntax-parse}`), so a packaged extractor is self-contained with no
 ///    environment setup;
-/// 3. a bare `swift-syntax-parse`, looked up on `PATH`.
+/// 3. a copy one directory further up, which is where `cargo` leaves it when
+///    the running executable is a test binary: those live in
+///    `target/<profile>/deps/`, one level below `target/<profile>/`;
+/// 4. a bare `swift-syntax-parse`, looked up on `PATH`.
 fn parse_bin() -> String {
     if let Ok(bin) = std::env::var(PARSE_BIN_ENV) {
         if !bin.is_empty() {
@@ -51,38 +54,32 @@ fn parse_bin() -> String {
         }
     }
     if let Ok(exe) = std::env::current_exe() {
-        if let Some(sibling) = exe.parent().map(|dir| dir.join(PARSE_BIN_NAME)) {
-            if sibling.is_file() {
-                return sibling.to_string_lossy().into_owned();
+        let exe_dir = exe.parent();
+        let candidates = [exe_dir, exe_dir.and_then(|dir| dir.parent())];
+        for dir in candidates.into_iter().flatten() {
+            let candidate = dir.join(PARSE_BIN_NAME);
+            if candidate.is_file() {
+                return candidate.to_string_lossy().into_owned();
             }
         }
     }
     PARSE_BIN_NAME.to_string()
 }
 
-/// Whether the `swift-syntax-parse` executable can be launched at all.
-///
-/// This reports availability of the *executable*, deliberately not whether
-/// parsing succeeds: a binary that launches but then crashes or emits invalid
-/// JSON is still "available", so callers run and surface the failure rather
-/// than silently skipping. Only a genuinely missing/unlaunchable binary (e.g.
-/// no Swift toolchain is installed) reports `false`.
-pub fn binary_available() -> bool {
-    match Command::new(parse_bin())
-        .stdin(Stdio::null())
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .spawn()
-    {
-        Ok(mut child) => {
-            let _ = child.wait();
-            true
-        }
-        Err(e) if e.kind() == std::io::ErrorKind::NotFound => false,
-        // Any other spawn failure (e.g. a permissions problem) is a genuine
-        // issue worth surfacing, so treat the parser as available and let the
-        // caller fail rather than masking it as "unavailable".
-        Err(_) => true,
+/// Explain a failure to launch the parser. A missing binary is by far the most
+/// common way this fails — the Swift half of the build is separate, so it is
+/// easy to have never built it — so that case carries the remedy rather than a
+/// bare OS error.
+fn spawn_error(bin: &str, error: std::io::Error) -> String {
+    if error.kind() == std::io::ErrorKind::NotFound {
+        format!(
+            "could not find the Swift parser `{bin}`. Build it with \
+             `cargo build -p swift-syntax-rs --bin swift-syntax-parse` (this needs a Swift \
+             toolchain — see `unified/swift-syntax-rs/.swift-version` for the pinned version), \
+             or point `{PARSE_BIN_ENV}` at an existing copy."
+        )
+    } else {
+        format!("failed to spawn Swift parser `{bin}`: {error}")
     }
 }
 
@@ -95,7 +92,7 @@ fn run_parser(source: &str) -> Result<String, String> {
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
-        .map_err(|e| format!("failed to spawn Swift parser `{bin}`: {e}"))?;
+        .map_err(|e| spawn_error(&bin, e))?;
 
     // The parser reads all of stdin before writing any stdout, so writing the
     // whole source and then closing stdin (by dropping it) cannot deadlock.

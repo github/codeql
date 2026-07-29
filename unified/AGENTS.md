@@ -17,7 +17,7 @@ This is a CodeQL extractor based on tree-sitter.
 
 - The mapping from the parse tree to the target AST is found in `extractor/src/languages/swift/swift.rs`
 
-- To run tests for the parser and mapping, run `cargo test` in the `extractor` directory.
+- To run tests for the parser and mapping, run `cargo test` in the `extractor` directory. The corpus tests shell out to the `swift-syntax-parse` binary, which lives in a separate crate that `cargo test` does not build, so build it first with `cargo build -p swift-syntax-rs --bin swift-syntax-parse` (this needs a Swift toolchain; `scripts/update-corpus.sh` does it for you).
 
 - Extractor test cases are located at `extractor/tests/corpus/swift/*/*.swift`.
 
