@@ -19,11 +19,15 @@ def codeql_platform_select(
     This works both in a macro context (`ctx = None`, returning a `select`) and in a rule context
     (passing `ctx`, which then needs `OS_DETECTION_ATTRS` on the rule attributes).
     """
+
+    def _or_otherwise(value):
+        return value if value != None else otherwise
+
     choices = {
-        "//misc/bazel:linux_arm64": linux_arm64 or otherwise,
-        "@platforms//os:linux": linux64 or otherwise,
-        "@platforms//os:macos": osx64 or otherwise,
-        "@platforms//os:windows": win64 or otherwise,
+        "//misc/bazel:linux_arm64": _or_otherwise(linux_arm64),
+        "@platforms//os:linux": _or_otherwise(linux64),
+        "@platforms//os:macos": _or_otherwise(osx64),
+        "@platforms//os:windows": _or_otherwise(win64),
     }
     if not ctx:
         return select({
