@@ -427,6 +427,28 @@ module Unified {
     }
   }
 
+  /** A class representing `conditional_pattern` nodes. */
+  final class ConditionalPattern extends @unified_conditional_pattern, AstNodeImpl {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ConditionalPattern" }
+
+    /** Gets the node corresponding to the field `condition`. */
+    final Expr getCondition() { unified_conditional_pattern_def(this, result, _) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final Modifier getModifier(int i) { unified_conditional_pattern_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `pattern`. */
+    final Pattern getPattern() { unified_conditional_pattern_def(this, _, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      unified_conditional_pattern_def(this, result, _) or
+      unified_conditional_pattern_modifier(this, _, result) or
+      unified_conditional_pattern_def(this, _, result)
+    }
+  }
+
   /** A class representing `constructor_declaration` nodes. */
   final class ConstructorDeclaration extends @unified_constructor_declaration, AstNodeImpl {
     /** Gets the name of the primary QL class for this element. */
@@ -1564,6 +1586,12 @@ module Unified {
       result = node.(CompoundAssignExpr).getTarget() and i = -1 and name = "getTarget"
       or
       result = node.(CompoundAssignExpr).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(ConditionalPattern).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(ConditionalPattern).getModifier(i) and name = "getModifier"
+      or
+      result = node.(ConditionalPattern).getPattern() and i = -1 and name = "getPattern"
       or
       result = node.(ConstructorDeclaration).getBody() and i = -1 and name = "getBody"
       or
