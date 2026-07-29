@@ -349,9 +349,6 @@ module Unified {
     /** Gets the node corresponding to the field `body`. */
     final Block getBody() { unified_catch_clause_def(this, result) }
 
-    /** Gets the node corresponding to the field `guard`. */
-    final Expr getGuard() { unified_catch_clause_guard(this, result) }
-
     /** Gets the node corresponding to the field `modifier`. */
     final Modifier getModifier(int i) { unified_catch_clause_modifier(this, i, result) }
 
@@ -361,7 +358,6 @@ module Unified {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       unified_catch_clause_def(this, result) or
-      unified_catch_clause_guard(this, result) or
       unified_catch_clause_modifier(this, _, result) or
       unified_catch_clause_pattern(this, result)
     }
@@ -1147,9 +1143,6 @@ module Unified {
     /** Gets the node corresponding to the field `body`. */
     final Block getBody() { unified_switch_case_def(this, result) }
 
-    /** Gets the node corresponding to the field `guard`. */
-    final Expr getGuard() { unified_switch_case_guard(this, result) }
-
     /** Gets the node corresponding to the field `modifier`. */
     final Modifier getModifier(int i) { unified_switch_case_modifier(this, i, result) }
 
@@ -1159,7 +1152,6 @@ module Unified {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       unified_switch_case_def(this, result) or
-      unified_switch_case_guard(this, result) or
       unified_switch_case_modifier(this, _, result) or
       unified_switch_case_pattern(this, result)
     }
@@ -1563,8 +1555,6 @@ module Unified {
       or
       result = node.(CatchClause).getBody() and i = -1 and name = "getBody"
       or
-      result = node.(CatchClause).getGuard() and i = -1 and name = "getGuard"
-      or
       result = node.(CatchClause).getModifier(i) and name = "getModifier"
       or
       result = node.(CatchClause).getPattern() and i = -1 and name = "getPattern"
@@ -1748,8 +1738,6 @@ module Unified {
       result = node.(ReturnExpr).getValue() and i = -1 and name = "getValue"
       or
       result = node.(SwitchCase).getBody() and i = -1 and name = "getBody"
-      or
-      result = node.(SwitchCase).getGuard() and i = -1 and name = "getGuard"
       or
       result = node.(SwitchCase).getModifier(i) and name = "getModifier"
       or
