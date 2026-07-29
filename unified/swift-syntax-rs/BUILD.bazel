@@ -1,3 +1,4 @@
+load("@rules_pkg//pkg:install.bzl", "pkg_install")
 load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//misc/bazel:pkg.bzl", "codeql_pkg_runfiles")
@@ -103,5 +104,20 @@ rust_test(
         "@platforms//os:linux": [":swift_runtime_libs"],
     }),
     edition = "2024",
+    target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
+)
+
+# Stage the packaged parser into a directory, so it can be run outside Bazel:
+#
+#     bazel run //unified/swift-syntax-rs:install-parser -- --destdir <dir>
+#
+# The wrapper only works in this flattened layout, where it sits next to the
+# real binary and the runtime libraries; in `bazel-bin` and in the runfiles tree
+# those live in separate directories. Bazel's Swift toolchain is hermetic, so
+# this is also how the extractor's tests are run without installing Swift — see
+# `unified/scripts/build-parser.sh`.
+pkg_install(
+    name = "install-parser",
+    srcs = [":swift-syntax-parse-pkg"],
     target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
 )

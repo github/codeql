@@ -74,9 +74,9 @@ fn spawn_error(bin: &str, error: std::io::Error) -> String {
     if error.kind() == std::io::ErrorKind::NotFound {
         format!(
             "could not find the Swift parser `{bin}`. Build it with \
-             `cargo build -p swift-syntax-rs --bin swift-syntax-parse` (this needs a Swift \
-             toolchain — see `unified/swift-syntax-rs/.swift-version` for the pinned version), \
-             or point `{PARSE_BIN_ENV}` at an existing copy."
+             `unified/scripts/build-parser.sh`, which prints the path to set \
+             `{PARSE_BIN_ENV}` to (it uses Bazel's Swift toolchain, so no local \
+             Swift installation is needed)."
         )
     } else {
         format!("failed to spawn Swift parser `{bin}`: {error}")
