@@ -1,10 +1,10 @@
 # Basic SSA tests for the new-CFG SSA adapter.
 #
 # The shared SSA implementation prunes its construction by liveness:
-# definitions of variables that are not read are never materialised.
-# This is by design — write-only variables would only bloat the SSA
-# graph. Tests therefore must always include a read of each variable
-# being verified.
+# write definitions of variables that are never read in their scope are
+# not materialised (except for module-scope globals, which may be read by
+# importers). Scope-entry defs are only created for non-local reads when
+# the variable has a defining store somewhere in the program.
 #
 # Annotations:
 #   def=<var>: there is an SSA write definition of <var> at this line
