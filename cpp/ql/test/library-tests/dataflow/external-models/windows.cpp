@@ -987,6 +987,16 @@ LONG RegQueryMultipleValuesW(
   HKEY hKey, PVALENTW valList, DWORD numVals, LPWSTR valueBuffer, LPDWORD totalSize
 );
 
+LONG RegEnumValueA(
+  HKEY hKey, DWORD dwIndex, LPSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpReserved,
+  LPDWORD lpType, LPBYTE lpData, LPDWORD lpcbData
+);
+
+LONG RegEnumValueW(
+  HKEY hKey, DWORD dwIndex, LPWSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpReserved,
+  LPDWORD lpType, LPBYTE lpData, LPDWORD lpcbData
+);
+
 void test_registry_queries(HKEY hKey) {
   {
     char data[256];
@@ -1041,5 +1051,34 @@ void test_registry_queries(HKEY hKey) {
     RegGetValueA(hKey, "subkey", "value", 0, &type, data, &dataSize);
     sink(data); // clean
     sink(*data); // $ ir
+  }
+
+  {
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegGetValueA(hKey, "subkey", "value", 0, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ MISSING: ir
+  }
+  {
+    char valueName[256];
+    DWORD valueNameSize = sizeof(valueName);
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegEnumValueA(hKey, 0, valueName, &valueNameSize, nullptr, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ MISSING: ir
+  }
+  {
+    wchar_t valueName[256];
+    DWORD valueNameSize = sizeof(valueName) / sizeof(*valueName);
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegEnumValueW(hKey, 0, valueName, &valueNameSize, nullptr, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ MISSING: ir
   }
 }
