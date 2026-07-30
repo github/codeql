@@ -8,6 +8,7 @@ module Unified {
   private import Ast::Unified as G
   import G
 
+  /** The base class for all AST nodes. */
   class AstNode extends G::AstNode {
     /** Holds if this AST node has a modifier with the given text. */
     predicate hasModifier(string text) {
@@ -18,6 +19,7 @@ module Unified {
     }
   }
 
+  /** The base class for all patterns. */
   class Pattern extends G::Pattern {
     /** Gets the immediately-enclosing pattern in which this is a nested pattern. */
     Pattern getEnclosingPattern() {
