@@ -56,6 +56,9 @@ pub struct Field {
     pub name: Option<String>,
     /// The name of the predicate to get this field.
     pub getter_name: String,
+    /// For plural fields, the name of a convenience getter that returns
+    /// any member (for example `getAnArgument` for `getArgument(i)`).
+    pub any_getter_name: Option<String>,
     pub storage: Storage,
 }
 
@@ -281,6 +284,16 @@ fn add_field(
         "get{}",
         dbscheme_name_to_class_name(&escape_name(&name_for_field_or_child(&field_name)))
     );
+    let getter_suffix = getter_name.strip_prefix("get").unwrap_or(&getter_name);
+    let article = match getter_suffix.chars().next().map(|c| c.to_ascii_lowercase()) {
+        Some('a' | 'e' | 'i' | 'o' | 'u') => "An",
+        _ => "A",
+    };
+    let any_getter_name = if field_info.multiple {
+        Some(format!("get{article}{getter_suffix}"))
+    } else {
+        None
+    };
     fields.push(Field {
         parent: TypeName {
             kind: parent_type_name.kind.to_string(),
@@ -289,6 +302,7 @@ fn add_field(
         type_info,
         name: field_name,
         getter_name,
+        any_getter_name,
         storage,
     });
 }

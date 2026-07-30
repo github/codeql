@@ -606,10 +606,11 @@ fn create_get_field_expr_for_table_storage<'a>(
     )
 }
 
-/// Creates a pair consisting of a predicate to get the given field, and an
-/// optional expression that will get the same field. When the field can occur
-/// multiple times, the predicate will take an index argument, while the
-/// expression will use the "don't care" expression to hold for all occurrences.
+/// Creates a list of predicates to get the given field, and an optional
+/// expression that will get the same field. When the field can occur multiple
+/// times, this includes an indexed getter and a convenience getter that returns
+/// any member; the expression uses the "don't care" expression to hold for all
+/// occurrences.
 ///
 /// # Arguments
 ///
@@ -627,7 +628,7 @@ fn create_field_getters<'a>(
     main_table_column_index: &mut usize,
     field: &'a node_types::Field,
     nodes: &'a node_types::NodeTypeMap,
-) -> (ql::Predicate<'a>, Option<ql::Expression<'a>>) {
+) -> (Vec<ql::Predicate<'a>>, Option<ql::Expression<'a>>) {
     let return_type = match &field.type_info {
         node_types::FieldTypeInfo::Single(t) => {
             Some(ql::Type::Facade(&nodes.get(t).unwrap().ql_class_name))
@@ -751,20 +752,40 @@ fn create_field_getters<'a>(
             }
         }
     };
-    (
-        ql::Predicate {
-            qldoc: Some(qldoc),
-            name: &field.getter_name,
+    let mut predicates = vec![ql::Predicate {
+        qldoc: Some(qldoc.clone()),
+        name: &field.getter_name,
+        overridden: false,
+        is_private: false,
+        is_final: true,
+        return_type: return_type.clone(),
+        formal_parameters,
+        body,
+        overlay: None,
+    }];
+
+    if let Some(any_getter_name) = &field.any_getter_name {
+        predicates.push(ql::Predicate {
+            qldoc: Some(qldoc.clone()),
+            name: any_getter_name,
             overridden: false,
             is_private: false,
             is_final: true,
             return_type,
-            formal_parameters,
-            body,
+            formal_parameters: vec![],
+            body: ql::Expression::Equals(
+                Box::new(ql::Expression::Var("result")),
+                Box::new(ql::Expression::Dot(
+                    Box::new(ql::Expression::Var("this")),
+                    &field.getter_name,
+                    vec![ql::Expression::Var("_")],
+                )),
+            ),
             overlay: None,
-        },
-        optional_expr,
-    )
+        });
+    }
+
+    (predicates, optional_expr)
 }
 
 fn compute_direct_supertypes(
@@ -902,14 +923,14 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                 // - predicates to access the fields,
                 // - the QL expressions to access the fields that will be part of getAFieldOrChild.
                 for field in fields {
-                    let (get_pred, get_child_expr) = create_field_getters(
+                    let (get_preds, get_child_expr) = create_field_getters(
                         main_table_name,
                         main_table_arity,
                         &mut main_table_column_index,
                         field,
                         nodes,
                     );
-                    main_class.predicates.push(get_pred);
+                    main_class.predicates.extend(get_preds);
                     if let Some(get_child_expr) = get_child_expr {
                         get_child_exprs.push(get_child_expr)
                     }
