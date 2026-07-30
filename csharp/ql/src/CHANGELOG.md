@@ -1,3 +1,13 @@
+## 1.9.0
+
+### Query Metadata Changes
+
+* The query `cs/useless-assignment-to-local` has been removed from the `code-quality` suite, but it remains in the `code-quality-extended` suite.
+
+### Minor Analysis Improvements
+
+* `System.Web.HttpRequest.RawUrl` is no longer treated as a sanitizer for `cs/web/unvalidated-url-redirection`, since it contains the un-normalized request line. This may lead to more results.
+
 ## 1.8.0
 
 ### Query Metadata Changes
