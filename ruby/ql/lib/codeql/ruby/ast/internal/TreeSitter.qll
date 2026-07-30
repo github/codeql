@@ -25,6 +25,8 @@ private predicate discardLocation(@location_default loc) {
 
 overlay[local]
 module Ruby {
+  private import Ruby as F
+
   /** The base class for all AST nodes */
   private class AstNodeImpl extends @ruby_ast_node {
     /** Gets a string representation of this element. */
@@ -34,13 +36,13 @@ module Ruby {
     final L::Location getLocation() { ruby_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { ruby_ast_node_parent(this, result, _) }
+    final F::AstNode getParent() { ruby_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
     final int getParentIndex() { ruby_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    AstNode getAFieldOrChild() { none() }
+    F::AstNode getAFieldOrChild() { none() }
 
     /** Gets the name of the primary QL class for this element. */
     string getAPrimaryQlClass() { result = "???" }
@@ -130,13 +132,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Alias" }
 
     /** Gets the node corresponding to the field `alias`. */
-    final UnderscoreMethodName getAlias() { ruby_alias_def(this, result, _) }
+    final F::UnderscoreMethodName getAlias() { ruby_alias_def(this, result, _) }
 
     /** Gets the node corresponding to the field `name`. */
-    final UnderscoreMethodName getName() { ruby_alias_def(this, _, result) }
+    final F::UnderscoreMethodName getName() { ruby_alias_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_alias_def(this, result, _) or ruby_alias_def(this, _, result)
     }
   }
@@ -147,12 +149,12 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "AlternativePattern" }
 
     /** Gets the node corresponding to the field `alternatives`. */
-    final UnderscorePatternExprBasic getAlternatives(int i) {
+    final F::UnderscorePatternExprBasic getAlternatives(int i) {
       ruby_alternative_pattern_alternatives(this, i, result)
     }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_alternative_pattern_alternatives(this, _, result)
     }
   }
@@ -163,10 +165,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "ArgumentList" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_argument_list_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_argument_list_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_argument_list_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_argument_list_child(this, _, result) }
   }
 
   /** A class representing `array` nodes. */
@@ -175,10 +177,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Array" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_array_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_array_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_array_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_array_child(this, _, result) }
   }
 
   /** A class representing `array_pattern` nodes. */
@@ -187,13 +189,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "ArrayPattern" }
 
     /** Gets the node corresponding to the field `class`. */
-    final UnderscorePatternConstant getClass() { ruby_array_pattern_class(this, result) }
+    final F::UnderscorePatternConstant getClass() { ruby_array_pattern_class(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_array_pattern_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_array_pattern_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_array_pattern_class(this, result) or ruby_array_pattern_child(this, _, result)
     }
   }
@@ -204,13 +206,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "AsPattern" }
 
     /** Gets the node corresponding to the field `name`. */
-    final Identifier getName() { ruby_as_pattern_def(this, result, _) }
+    final F::Identifier getName() { ruby_as_pattern_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    final UnderscorePatternExpr getValue() { ruby_as_pattern_def(this, _, result) }
+    final F::UnderscorePatternExpr getValue() { ruby_as_pattern_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_as_pattern_def(this, result, _) or ruby_as_pattern_def(this, _, result)
     }
   }
@@ -221,13 +223,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Assignment" }
 
     /** Gets the node corresponding to the field `left`. */
-    final AstNode getLeft() { ruby_assignment_def(this, result, _) }
+    final F::AstNode getLeft() { ruby_assignment_def(this, result, _) }
 
     /** Gets the node corresponding to the field `right`. */
-    final AstNode getRight() { ruby_assignment_def(this, _, result) }
+    final F::AstNode getRight() { ruby_assignment_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_assignment_def(this, result, _) or ruby_assignment_def(this, _, result)
     }
   }
@@ -238,10 +240,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "BareString" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_bare_string_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_bare_string_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_bare_string_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_bare_string_child(this, _, result) }
   }
 
   /** A class representing `bare_symbol` nodes. */
@@ -250,10 +252,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "BareSymbol" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_bare_symbol_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_bare_symbol_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_bare_symbol_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_bare_symbol_child(this, _, result) }
   }
 
   /** A class representing `begin` nodes. */
@@ -262,10 +264,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Begin" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_begin_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_begin_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_begin_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_begin_child(this, _, result) }
   }
 
   /** A class representing `begin_block` nodes. */
@@ -274,10 +276,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "BeginBlock" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_begin_block_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_begin_block_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_begin_block_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_begin_block_child(this, _, result) }
   }
 
   /** A class representing `binary` nodes. */
@@ -286,7 +288,7 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Binary" }
 
     /** Gets the node corresponding to the field `left`. */
-    final AstNode getLeft() { ruby_binary_def(this, result, _, _) }
+    final F::AstNode getLeft() { ruby_binary_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `operator`. */
     final string getOperator() {
@@ -344,10 +346,10 @@ module Ruby {
     }
 
     /** Gets the node corresponding to the field `right`. */
-    final UnderscoreExpression getRight() { ruby_binary_def(this, _, _, result) }
+    final F::UnderscoreExpression getRight() { ruby_binary_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_binary_def(this, result, _, _) or ruby_binary_def(this, _, _, result)
     }
   }
@@ -358,13 +360,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Block" }
 
     /** Gets the node corresponding to the field `body`. */
-    final BlockBody getBody() { ruby_block_body(this, result) }
+    final F::BlockBody getBody() { ruby_block_body(this, result) }
 
     /** Gets the node corresponding to the field `parameters`. */
-    final BlockParameters getParameters() { ruby_block_parameters(this, result) }
+    final F::BlockParameters getParameters() { ruby_block_parameters(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_block_body(this, result) or ruby_block_parameters(this, result)
     }
   }
@@ -375,10 +377,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "BlockArgument" }
 
     /** Gets the child of this node. */
-    final UnderscoreArg getChild() { ruby_block_argument_child(this, result) }
+    final F::UnderscoreArg getChild() { ruby_block_argument_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_block_argument_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_block_argument_child(this, result) }
   }
 
   /** A class representing `block_body` nodes. */
@@ -387,10 +389,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "BlockBody" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_block_body_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_block_body_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_block_body_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_block_body_child(this, _, result) }
   }
 
   /** A class representing `block_parameter` nodes. */
@@ -399,10 +401,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "BlockParameter" }
 
     /** Gets the node corresponding to the field `name`. */
-    final Identifier getName() { ruby_block_parameter_name(this, result) }
+    final F::Identifier getName() { ruby_block_parameter_name(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_block_parameter_name(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_block_parameter_name(this, result) }
   }
 
   /** A class representing `block_parameters` nodes. */
@@ -411,13 +413,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "BlockParameters" }
 
     /** Gets the node corresponding to the field `locals`. */
-    final Identifier getLocals(int i) { ruby_block_parameters_locals(this, i, result) }
+    final F::Identifier getLocals(int i) { ruby_block_parameters_locals(this, i, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_block_parameters_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_block_parameters_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_block_parameters_locals(this, _, result) or ruby_block_parameters_child(this, _, result)
     }
   }
@@ -428,10 +430,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "BodyStatement" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_body_statement_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_body_statement_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_body_statement_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_body_statement_child(this, _, result) }
   }
 
   /** A class representing `break` nodes. */
@@ -440,10 +442,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Break" }
 
     /** Gets the child of this node. */
-    final ArgumentList getChild() { ruby_break_child(this, result) }
+    final F::ArgumentList getChild() { ruby_break_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_break_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_break_child(this, result) }
   }
 
   /** A class representing `call` nodes. */
@@ -452,22 +454,22 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Call" }
 
     /** Gets the node corresponding to the field `arguments`. */
-    final ArgumentList getArguments() { ruby_call_arguments(this, result) }
+    final F::ArgumentList getArguments() { ruby_call_arguments(this, result) }
 
     /** Gets the node corresponding to the field `block`. */
-    final AstNode getBlock() { ruby_call_block(this, result) }
+    final F::AstNode getBlock() { ruby_call_block(this, result) }
 
     /** Gets the node corresponding to the field `method`. */
-    final AstNode getMethod() { ruby_call_method(this, result) }
+    final F::AstNode getMethod() { ruby_call_method(this, result) }
 
     /** Gets the node corresponding to the field `operator`. */
-    final UnderscoreCallOperator getOperator() { ruby_call_operator(this, result) }
+    final F::UnderscoreCallOperator getOperator() { ruby_call_operator(this, result) }
 
     /** Gets the node corresponding to the field `receiver`. */
-    final UnderscorePrimary getReceiver() { ruby_call_receiver(this, result) }
+    final F::UnderscorePrimary getReceiver() { ruby_call_receiver(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_call_arguments(this, result) or
       ruby_call_block(this, result) or
       ruby_call_method(this, result) or
@@ -482,13 +484,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Case" }
 
     /** Gets the node corresponding to the field `value`. */
-    final UnderscoreStatement getValue() { ruby_case_value(this, result) }
+    final F::UnderscoreStatement getValue() { ruby_case_value(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_case_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_case_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_case_value(this, result) or ruby_case_child(this, _, result)
     }
   }
@@ -499,16 +501,16 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "CaseMatch" }
 
     /** Gets the node corresponding to the field `clauses`. */
-    final InClause getClauses(int i) { ruby_case_match_clauses(this, i, result) }
+    final F::InClause getClauses(int i) { ruby_case_match_clauses(this, i, result) }
 
     /** Gets the node corresponding to the field `else`. */
-    final Else getElse() { ruby_case_match_else(this, result) }
+    final F::Else getElse() { ruby_case_match_else(this, result) }
 
     /** Gets the node corresponding to the field `value`. */
-    final UnderscoreStatement getValue() { ruby_case_match_def(this, result) }
+    final F::UnderscoreStatement getValue() { ruby_case_match_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_case_match_clauses(this, _, result) or
       ruby_case_match_else(this, result) or
       ruby_case_match_def(this, result)
@@ -521,10 +523,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "ChainedString" }
 
     /** Gets the `i`th child of this node. */
-    final String getChild(int i) { ruby_chained_string_child(this, i, result) }
+    final F::String getChild(int i) { ruby_chained_string_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_chained_string_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_chained_string_child(this, _, result) }
   }
 
   /** A class representing `character` tokens. */
@@ -539,16 +541,16 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Class" }
 
     /** Gets the node corresponding to the field `body`. */
-    final BodyStatement getBody() { ruby_class_body(this, result) }
+    final F::BodyStatement getBody() { ruby_class_body(this, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { ruby_class_def(this, result) }
+    final F::AstNode getName() { ruby_class_def(this, result) }
 
     /** Gets the node corresponding to the field `superclass`. */
-    final Superclass getSuperclass() { ruby_class_superclass(this, result) }
+    final F::Superclass getSuperclass() { ruby_class_superclass(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_class_body(this, result) or
       ruby_class_def(this, result) or
       ruby_class_superclass(this, result)
@@ -573,10 +575,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Complex" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { ruby_complex_def(this, result) }
+    final F::AstNode getChild() { ruby_complex_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_complex_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_complex_def(this, result) }
   }
 
   /** A class representing `conditional` nodes. */
@@ -585,16 +587,16 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Conditional" }
 
     /** Gets the node corresponding to the field `alternative`. */
-    final UnderscoreArg getAlternative() { ruby_conditional_def(this, result, _, _) }
+    final F::UnderscoreArg getAlternative() { ruby_conditional_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `condition`. */
-    final UnderscoreArg getCondition() { ruby_conditional_def(this, _, result, _) }
+    final F::UnderscoreArg getCondition() { ruby_conditional_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `consequence`. */
-    final UnderscoreArg getConsequence() { ruby_conditional_def(this, _, _, result) }
+    final F::UnderscoreArg getConsequence() { ruby_conditional_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_conditional_def(this, result, _, _) or
       ruby_conditional_def(this, _, result, _) or
       ruby_conditional_def(this, _, _, result)
@@ -613,10 +615,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "DelimitedSymbol" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_delimited_symbol_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_delimited_symbol_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_delimited_symbol_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_delimited_symbol_child(this, _, result) }
   }
 
   /** A class representing `destructured_left_assignment` nodes. */
@@ -625,10 +627,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "DestructuredLeftAssignment" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_destructured_left_assignment_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_destructured_left_assignment_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_destructured_left_assignment_child(this, _, result)
     }
   }
@@ -639,10 +641,12 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "DestructuredParameter" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_destructured_parameter_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_destructured_parameter_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_destructured_parameter_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() {
+      ruby_destructured_parameter_child(this, _, result)
+    }
   }
 
   /** A class representing `do` nodes. */
@@ -651,10 +655,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Do" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_do_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_do_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_do_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_do_child(this, _, result) }
   }
 
   /** A class representing `do_block` nodes. */
@@ -663,13 +667,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "DoBlock" }
 
     /** Gets the node corresponding to the field `body`. */
-    final BodyStatement getBody() { ruby_do_block_body(this, result) }
+    final F::BodyStatement getBody() { ruby_do_block_body(this, result) }
 
     /** Gets the node corresponding to the field `parameters`. */
-    final BlockParameters getParameters() { ruby_do_block_parameters(this, result) }
+    final F::BlockParameters getParameters() { ruby_do_block_parameters(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_do_block_body(this, result) or ruby_do_block_parameters(this, result)
     }
   }
@@ -680,16 +684,16 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "ElementReference" }
 
     /** Gets the node corresponding to the field `block`. */
-    final AstNode getBlock() { ruby_element_reference_block(this, result) }
+    final F::AstNode getBlock() { ruby_element_reference_block(this, result) }
 
     /** Gets the node corresponding to the field `object`. */
-    final UnderscorePrimary getObject() { ruby_element_reference_def(this, result) }
+    final F::UnderscorePrimary getObject() { ruby_element_reference_def(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_element_reference_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_element_reference_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_element_reference_block(this, result) or
       ruby_element_reference_def(this, result) or
       ruby_element_reference_child(this, _, result)
@@ -702,10 +706,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Else" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_else_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_else_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_else_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_else_child(this, _, result) }
   }
 
   /** A class representing `elsif` nodes. */
@@ -714,16 +718,16 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Elsif" }
 
     /** Gets the node corresponding to the field `alternative`. */
-    final AstNode getAlternative() { ruby_elsif_alternative(this, result) }
+    final F::AstNode getAlternative() { ruby_elsif_alternative(this, result) }
 
     /** Gets the node corresponding to the field `condition`. */
-    final UnderscoreStatement getCondition() { ruby_elsif_def(this, result) }
+    final F::UnderscoreStatement getCondition() { ruby_elsif_def(this, result) }
 
     /** Gets the node corresponding to the field `consequence`. */
-    final Then getConsequence() { ruby_elsif_consequence(this, result) }
+    final F::Then getConsequence() { ruby_elsif_consequence(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_elsif_alternative(this, result) or
       ruby_elsif_def(this, result) or
       ruby_elsif_consequence(this, result)
@@ -748,10 +752,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "EndBlock" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_end_block_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_end_block_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_end_block_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_end_block_child(this, _, result) }
   }
 
   /** A class representing `ensure` nodes. */
@@ -760,10 +764,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Ensure" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_ensure_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_ensure_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_ensure_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_ensure_child(this, _, result) }
   }
 
   /** A class representing `escape_sequence` tokens. */
@@ -778,10 +782,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "ExceptionVariable" }
 
     /** Gets the child of this node. */
-    final UnderscoreLhs getChild() { ruby_exception_variable_def(this, result) }
+    final F::UnderscoreLhs getChild() { ruby_exception_variable_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_exception_variable_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_exception_variable_def(this, result) }
   }
 
   /** A class representing `exceptions` nodes. */
@@ -790,10 +794,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Exceptions" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_exceptions_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_exceptions_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_exceptions_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_exceptions_child(this, _, result) }
   }
 
   /** A class representing `expression_reference_pattern` nodes. */
@@ -802,10 +806,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "ExpressionReferencePattern" }
 
     /** Gets the node corresponding to the field `value`. */
-    final UnderscoreExpression getValue() { ruby_expression_reference_pattern_def(this, result) }
+    final F::UnderscoreExpression getValue() { ruby_expression_reference_pattern_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_expression_reference_pattern_def(this, result)
     }
   }
@@ -828,13 +832,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "FindPattern" }
 
     /** Gets the node corresponding to the field `class`. */
-    final UnderscorePatternConstant getClass() { ruby_find_pattern_class(this, result) }
+    final F::UnderscorePatternConstant getClass() { ruby_find_pattern_class(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_find_pattern_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_find_pattern_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_find_pattern_class(this, result) or ruby_find_pattern_child(this, _, result)
     }
   }
@@ -851,16 +855,16 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "For" }
 
     /** Gets the node corresponding to the field `body`. */
-    final Do getBody() { ruby_for_def(this, result, _, _) }
+    final F::Do getBody() { ruby_for_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final AstNode getPattern() { ruby_for_def(this, _, result, _) }
+    final F::AstNode getPattern() { ruby_for_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    final In getValue() { ruby_for_def(this, _, _, result) }
+    final F::In getValue() { ruby_for_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_for_def(this, result, _, _) or
       ruby_for_def(this, _, result, _) or
       ruby_for_def(this, _, _, result)
@@ -891,10 +895,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Hash" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_hash_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_hash_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_hash_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_hash_child(this, _, result) }
   }
 
   /** A class representing `hash_key_symbol` tokens. */
@@ -909,13 +913,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "HashPattern" }
 
     /** Gets the node corresponding to the field `class`. */
-    final UnderscorePatternConstant getClass() { ruby_hash_pattern_class(this, result) }
+    final F::UnderscorePatternConstant getClass() { ruby_hash_pattern_class(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_hash_pattern_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_hash_pattern_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_hash_pattern_class(this, result) or ruby_hash_pattern_child(this, _, result)
     }
   }
@@ -926,10 +930,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "HashSplatArgument" }
 
     /** Gets the child of this node. */
-    final UnderscoreArg getChild() { ruby_hash_splat_argument_child(this, result) }
+    final F::UnderscoreArg getChild() { ruby_hash_splat_argument_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_hash_splat_argument_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_hash_splat_argument_child(this, result) }
   }
 
   /** A class representing `hash_splat_nil` tokens. */
@@ -944,10 +948,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "HashSplatParameter" }
 
     /** Gets the node corresponding to the field `name`. */
-    final Identifier getName() { ruby_hash_splat_parameter_name(this, result) }
+    final F::Identifier getName() { ruby_hash_splat_parameter_name(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_hash_splat_parameter_name(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_hash_splat_parameter_name(this, result) }
   }
 
   /** A class representing `heredoc_beginning` tokens. */
@@ -962,10 +966,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "HeredocBody" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_heredoc_body_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_heredoc_body_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_heredoc_body_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_heredoc_body_child(this, _, result) }
   }
 
   /** A class representing `heredoc_content` tokens. */
@@ -992,16 +996,16 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "If" }
 
     /** Gets the node corresponding to the field `alternative`. */
-    final AstNode getAlternative() { ruby_if_alternative(this, result) }
+    final F::AstNode getAlternative() { ruby_if_alternative(this, result) }
 
     /** Gets the node corresponding to the field `condition`. */
-    final UnderscoreStatement getCondition() { ruby_if_def(this, result) }
+    final F::UnderscoreStatement getCondition() { ruby_if_def(this, result) }
 
     /** Gets the node corresponding to the field `consequence`. */
-    final Then getConsequence() { ruby_if_consequence(this, result) }
+    final F::Then getConsequence() { ruby_if_consequence(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_if_alternative(this, result) or
       ruby_if_def(this, result) or
       ruby_if_consequence(this, result)
@@ -1014,10 +1018,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "IfGuard" }
 
     /** Gets the node corresponding to the field `condition`. */
-    final UnderscoreExpression getCondition() { ruby_if_guard_def(this, result) }
+    final F::UnderscoreExpression getCondition() { ruby_if_guard_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_if_guard_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_if_guard_def(this, result) }
   }
 
   /** A class representing `if_modifier` nodes. */
@@ -1026,13 +1030,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "IfModifier" }
 
     /** Gets the node corresponding to the field `body`. */
-    final UnderscoreStatement getBody() { ruby_if_modifier_def(this, result, _) }
+    final F::UnderscoreStatement getBody() { ruby_if_modifier_def(this, result, _) }
 
     /** Gets the node corresponding to the field `condition`. */
-    final UnderscoreExpression getCondition() { ruby_if_modifier_def(this, _, result) }
+    final F::UnderscoreExpression getCondition() { ruby_if_modifier_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_if_modifier_def(this, result, _) or ruby_if_modifier_def(this, _, result)
     }
   }
@@ -1043,10 +1047,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "In" }
 
     /** Gets the child of this node. */
-    final UnderscoreArg getChild() { ruby_in_def(this, result) }
+    final F::UnderscoreArg getChild() { ruby_in_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_in_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_in_def(this, result) }
   }
 
   /** A class representing `in_clause` nodes. */
@@ -1055,16 +1059,16 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "InClause" }
 
     /** Gets the node corresponding to the field `body`. */
-    final Then getBody() { ruby_in_clause_body(this, result) }
+    final F::Then getBody() { ruby_in_clause_body(this, result) }
 
     /** Gets the node corresponding to the field `guard`. */
-    final AstNode getGuard() { ruby_in_clause_guard(this, result) }
+    final F::AstNode getGuard() { ruby_in_clause_guard(this, result) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final UnderscorePatternTopExprBody getPattern() { ruby_in_clause_def(this, result) }
+    final F::UnderscorePatternTopExprBody getPattern() { ruby_in_clause_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_in_clause_body(this, result) or
       ruby_in_clause_guard(this, result) or
       ruby_in_clause_def(this, result)
@@ -1089,10 +1093,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Interpolation" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_interpolation_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_interpolation_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_interpolation_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_interpolation_child(this, _, result) }
   }
 
   /** A class representing `keyword_parameter` nodes. */
@@ -1101,13 +1105,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "KeywordParameter" }
 
     /** Gets the node corresponding to the field `name`. */
-    final Identifier getName() { ruby_keyword_parameter_def(this, result) }
+    final F::Identifier getName() { ruby_keyword_parameter_def(this, result) }
 
     /** Gets the node corresponding to the field `value`. */
-    final UnderscoreArg getValue() { ruby_keyword_parameter_value(this, result) }
+    final F::UnderscoreArg getValue() { ruby_keyword_parameter_value(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_keyword_parameter_def(this, result) or ruby_keyword_parameter_value(this, result)
     }
   }
@@ -1118,13 +1122,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "KeywordPattern" }
 
     /** Gets the node corresponding to the field `key`. */
-    final AstNode getKey() { ruby_keyword_pattern_def(this, result) }
+    final F::AstNode getKey() { ruby_keyword_pattern_def(this, result) }
 
     /** Gets the node corresponding to the field `value`. */
-    final UnderscorePatternExpr getValue() { ruby_keyword_pattern_value(this, result) }
+    final F::UnderscorePatternExpr getValue() { ruby_keyword_pattern_value(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_keyword_pattern_def(this, result) or ruby_keyword_pattern_value(this, result)
     }
   }
@@ -1135,13 +1139,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Lambda" }
 
     /** Gets the node corresponding to the field `body`. */
-    final AstNode getBody() { ruby_lambda_def(this, result) }
+    final F::AstNode getBody() { ruby_lambda_def(this, result) }
 
     /** Gets the node corresponding to the field `parameters`. */
-    final LambdaParameters getParameters() { ruby_lambda_parameters(this, result) }
+    final F::LambdaParameters getParameters() { ruby_lambda_parameters(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_lambda_def(this, result) or ruby_lambda_parameters(this, result)
     }
   }
@@ -1152,10 +1156,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "LambdaParameters" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_lambda_parameters_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_lambda_parameters_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_lambda_parameters_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_lambda_parameters_child(this, _, result) }
   }
 
   /** A class representing `left_assignment_list` nodes. */
@@ -1164,10 +1168,12 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "LeftAssignmentList" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_left_assignment_list_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_left_assignment_list_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_left_assignment_list_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() {
+      ruby_left_assignment_list_child(this, _, result)
+    }
   }
 
   /** A class representing `line` tokens. */
@@ -1182,13 +1188,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "MatchPattern" }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final UnderscorePatternTopExprBody getPattern() { ruby_match_pattern_def(this, result, _) }
+    final F::UnderscorePatternTopExprBody getPattern() { ruby_match_pattern_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    final UnderscoreArg getValue() { ruby_match_pattern_def(this, _, result) }
+    final F::UnderscoreArg getValue() { ruby_match_pattern_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_match_pattern_def(this, result, _) or ruby_match_pattern_def(this, _, result)
     }
   }
@@ -1199,16 +1205,16 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Method" }
 
     /** Gets the node corresponding to the field `body`. */
-    final AstNode getBody() { ruby_method_body(this, result) }
+    final F::AstNode getBody() { ruby_method_body(this, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final UnderscoreMethodName getName() { ruby_method_def(this, result) }
+    final F::UnderscoreMethodName getName() { ruby_method_def(this, result) }
 
     /** Gets the node corresponding to the field `parameters`. */
-    final MethodParameters getParameters() { ruby_method_parameters(this, result) }
+    final F::MethodParameters getParameters() { ruby_method_parameters(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_method_body(this, result) or
       ruby_method_def(this, result) or
       ruby_method_parameters(this, result)
@@ -1221,10 +1227,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "MethodParameters" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_method_parameters_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_method_parameters_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_method_parameters_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_method_parameters_child(this, _, result) }
   }
 
   /** A class representing `module` nodes. */
@@ -1233,13 +1239,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Module" }
 
     /** Gets the node corresponding to the field `body`. */
-    final BodyStatement getBody() { ruby_module_body(this, result) }
+    final F::BodyStatement getBody() { ruby_module_body(this, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { ruby_module_def(this, result) }
+    final F::AstNode getName() { ruby_module_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_module_body(this, result) or ruby_module_def(this, result)
     }
   }
@@ -1250,10 +1256,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Next" }
 
     /** Gets the child of this node. */
-    final ArgumentList getChild() { ruby_next_child(this, result) }
+    final F::ArgumentList getChild() { ruby_next_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_next_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_next_child(this, result) }
   }
 
   /** A class representing `nil` tokens. */
@@ -1274,7 +1280,7 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "OperatorAssignment" }
 
     /** Gets the node corresponding to the field `left`. */
-    final UnderscoreLhs getLeft() { ruby_operator_assignment_def(this, result, _, _) }
+    final F::UnderscoreLhs getLeft() { ruby_operator_assignment_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `operator`. */
     final string getOperator() {
@@ -1308,10 +1314,10 @@ module Ruby {
     }
 
     /** Gets the node corresponding to the field `right`. */
-    final AstNode getRight() { ruby_operator_assignment_def(this, _, _, result) }
+    final F::AstNode getRight() { ruby_operator_assignment_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_operator_assignment_def(this, result, _, _) or
       ruby_operator_assignment_def(this, _, _, result)
     }
@@ -1323,13 +1329,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "OptionalParameter" }
 
     /** Gets the node corresponding to the field `name`. */
-    final Identifier getName() { ruby_optional_parameter_def(this, result, _) }
+    final F::Identifier getName() { ruby_optional_parameter_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    final UnderscoreArg getValue() { ruby_optional_parameter_def(this, _, result) }
+    final F::UnderscoreArg getValue() { ruby_optional_parameter_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_optional_parameter_def(this, result, _) or ruby_optional_parameter_def(this, _, result)
     }
   }
@@ -1340,13 +1346,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Pair" }
 
     /** Gets the node corresponding to the field `key`. */
-    final AstNode getKey() { ruby_pair_def(this, result) }
+    final F::AstNode getKey() { ruby_pair_def(this, result) }
 
     /** Gets the node corresponding to the field `value`. */
-    final UnderscoreArg getValue() { ruby_pair_value(this, result) }
+    final F::UnderscoreArg getValue() { ruby_pair_value(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_pair_def(this, result) or ruby_pair_value(this, result)
     }
   }
@@ -1357,10 +1363,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "ParenthesizedPattern" }
 
     /** Gets the child of this node. */
-    final UnderscorePatternExpr getChild() { ruby_parenthesized_pattern_def(this, result) }
+    final F::UnderscorePatternExpr getChild() { ruby_parenthesized_pattern_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_parenthesized_pattern_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_parenthesized_pattern_def(this, result) }
   }
 
   /** A class representing `parenthesized_statements` nodes. */
@@ -1369,10 +1375,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "ParenthesizedStatements" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_parenthesized_statements_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_parenthesized_statements_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_parenthesized_statements_child(this, _, result)
     }
   }
@@ -1383,10 +1389,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Pattern" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { ruby_pattern_def(this, result) }
+    final F::AstNode getChild() { ruby_pattern_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_pattern_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_pattern_def(this, result) }
   }
 
   /** A class representing `program` nodes. */
@@ -1395,10 +1401,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Program" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_program_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_program_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_program_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_program_child(this, _, result) }
   }
 
   /** A class representing `range` nodes. */
@@ -1407,10 +1413,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Range" }
 
     /** Gets the node corresponding to the field `begin`. */
-    final AstNode getBegin() { ruby_range_begin(this, result) }
+    final F::AstNode getBegin() { ruby_range_begin(this, result) }
 
     /** Gets the node corresponding to the field `end`. */
-    final AstNode getEnd() { ruby_range_end(this, result) }
+    final F::AstNode getEnd() { ruby_range_end(this, result) }
 
     /** Gets the node corresponding to the field `operator`. */
     final string getOperator() {
@@ -1422,7 +1428,7 @@ module Ruby {
     }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_range_begin(this, result) or ruby_range_end(this, result)
     }
   }
@@ -1433,10 +1439,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Rational" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { ruby_rational_def(this, result) }
+    final F::AstNode getChild() { ruby_rational_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_rational_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_rational_def(this, result) }
   }
 
   /** A class representing `redo` nodes. */
@@ -1445,10 +1451,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Redo" }
 
     /** Gets the child of this node. */
-    final ArgumentList getChild() { ruby_redo_child(this, result) }
+    final F::ArgumentList getChild() { ruby_redo_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_redo_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_redo_child(this, result) }
   }
 
   /** A class representing `regex` nodes. */
@@ -1457,10 +1463,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Regex" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_regex_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_regex_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_regex_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_regex_child(this, _, result) }
   }
 
   /** A class representing `rescue` nodes. */
@@ -1469,16 +1475,16 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Rescue" }
 
     /** Gets the node corresponding to the field `body`. */
-    final Then getBody() { ruby_rescue_body(this, result) }
+    final F::Then getBody() { ruby_rescue_body(this, result) }
 
     /** Gets the node corresponding to the field `exceptions`. */
-    final Exceptions getExceptions() { ruby_rescue_exceptions(this, result) }
+    final F::Exceptions getExceptions() { ruby_rescue_exceptions(this, result) }
 
     /** Gets the node corresponding to the field `variable`. */
-    final ExceptionVariable getVariable() { ruby_rescue_variable(this, result) }
+    final F::ExceptionVariable getVariable() { ruby_rescue_variable(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_rescue_body(this, result) or
       ruby_rescue_exceptions(this, result) or
       ruby_rescue_variable(this, result)
@@ -1491,13 +1497,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "RescueModifier" }
 
     /** Gets the node corresponding to the field `body`. */
-    final AstNode getBody() { ruby_rescue_modifier_def(this, result, _) }
+    final F::AstNode getBody() { ruby_rescue_modifier_def(this, result, _) }
 
     /** Gets the node corresponding to the field `handler`. */
-    final UnderscoreExpression getHandler() { ruby_rescue_modifier_def(this, _, result) }
+    final F::UnderscoreExpression getHandler() { ruby_rescue_modifier_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_rescue_modifier_def(this, result, _) or ruby_rescue_modifier_def(this, _, result)
     }
   }
@@ -1508,10 +1514,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "RestAssignment" }
 
     /** Gets the child of this node. */
-    final UnderscoreLhs getChild() { ruby_rest_assignment_child(this, result) }
+    final F::UnderscoreLhs getChild() { ruby_rest_assignment_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_rest_assignment_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_rest_assignment_child(this, result) }
   }
 
   /** A class representing `retry` nodes. */
@@ -1520,10 +1526,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Retry" }
 
     /** Gets the child of this node. */
-    final ArgumentList getChild() { ruby_retry_child(this, result) }
+    final F::ArgumentList getChild() { ruby_retry_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_retry_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_retry_child(this, result) }
   }
 
   /** A class representing `return` nodes. */
@@ -1532,10 +1538,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Return" }
 
     /** Gets the child of this node. */
-    final ArgumentList getChild() { ruby_return_child(this, result) }
+    final F::ArgumentList getChild() { ruby_return_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_return_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_return_child(this, result) }
   }
 
   /** A class representing `right_assignment_list` nodes. */
@@ -1544,10 +1550,12 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "RightAssignmentList" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_right_assignment_list_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_right_assignment_list_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_right_assignment_list_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() {
+      ruby_right_assignment_list_child(this, _, result)
+    }
   }
 
   /** A class representing `scope_resolution` nodes. */
@@ -1556,13 +1564,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "ScopeResolution" }
 
     /** Gets the node corresponding to the field `name`. */
-    final Constant getName() { ruby_scope_resolution_def(this, result) }
+    final F::Constant getName() { ruby_scope_resolution_def(this, result) }
 
     /** Gets the node corresponding to the field `scope`. */
-    final AstNode getScope() { ruby_scope_resolution_scope(this, result) }
+    final F::AstNode getScope() { ruby_scope_resolution_scope(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_scope_resolution_def(this, result) or ruby_scope_resolution_scope(this, result)
     }
   }
@@ -1579,10 +1587,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Setter" }
 
     /** Gets the node corresponding to the field `name`. */
-    final Identifier getName() { ruby_setter_def(this, result) }
+    final F::Identifier getName() { ruby_setter_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_setter_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_setter_def(this, result) }
   }
 
   /** A class representing `simple_symbol` tokens. */
@@ -1597,13 +1605,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "SingletonClass" }
 
     /** Gets the node corresponding to the field `body`. */
-    final BodyStatement getBody() { ruby_singleton_class_body(this, result) }
+    final F::BodyStatement getBody() { ruby_singleton_class_body(this, result) }
 
     /** Gets the node corresponding to the field `value`. */
-    final UnderscoreArg getValue() { ruby_singleton_class_def(this, result) }
+    final F::UnderscoreArg getValue() { ruby_singleton_class_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_singleton_class_body(this, result) or ruby_singleton_class_def(this, result)
     }
   }
@@ -1614,19 +1622,19 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "SingletonMethod" }
 
     /** Gets the node corresponding to the field `body`. */
-    final AstNode getBody() { ruby_singleton_method_body(this, result) }
+    final F::AstNode getBody() { ruby_singleton_method_body(this, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final UnderscoreMethodName getName() { ruby_singleton_method_def(this, result, _) }
+    final F::UnderscoreMethodName getName() { ruby_singleton_method_def(this, result, _) }
 
     /** Gets the node corresponding to the field `object`. */
-    final AstNode getObject() { ruby_singleton_method_def(this, _, result) }
+    final F::AstNode getObject() { ruby_singleton_method_def(this, _, result) }
 
     /** Gets the node corresponding to the field `parameters`. */
-    final MethodParameters getParameters() { ruby_singleton_method_parameters(this, result) }
+    final F::MethodParameters getParameters() { ruby_singleton_method_parameters(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_singleton_method_body(this, result) or
       ruby_singleton_method_def(this, result, _) or
       ruby_singleton_method_def(this, _, result) or
@@ -1640,10 +1648,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "SplatArgument" }
 
     /** Gets the child of this node. */
-    final UnderscoreArg getChild() { ruby_splat_argument_child(this, result) }
+    final F::UnderscoreArg getChild() { ruby_splat_argument_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_splat_argument_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_splat_argument_child(this, result) }
   }
 
   /** A class representing `splat_parameter` nodes. */
@@ -1652,10 +1660,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "SplatParameter" }
 
     /** Gets the node corresponding to the field `name`. */
-    final Identifier getName() { ruby_splat_parameter_name(this, result) }
+    final F::Identifier getName() { ruby_splat_parameter_name(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_splat_parameter_name(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_splat_parameter_name(this, result) }
   }
 
   /** A class representing `string` nodes. */
@@ -1664,10 +1672,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "String" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_string_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_string_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_string_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_string_child(this, _, result) }
   }
 
   /** A class representing `string_array` nodes. */
@@ -1676,10 +1684,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "StringArray" }
 
     /** Gets the `i`th child of this node. */
-    final BareString getChild(int i) { ruby_string_array_child(this, i, result) }
+    final F::BareString getChild(int i) { ruby_string_array_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_string_array_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_string_array_child(this, _, result) }
   }
 
   /** A class representing `string_content` tokens. */
@@ -1694,10 +1702,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Subshell" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_subshell_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_subshell_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_subshell_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_subshell_child(this, _, result) }
   }
 
   /** A class representing `super` tokens. */
@@ -1712,10 +1720,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Superclass" }
 
     /** Gets the child of this node. */
-    final UnderscoreExpression getChild() { ruby_superclass_def(this, result) }
+    final F::UnderscoreExpression getChild() { ruby_superclass_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_superclass_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_superclass_def(this, result) }
   }
 
   /** A class representing `symbol_array` nodes. */
@@ -1724,10 +1732,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "SymbolArray" }
 
     /** Gets the `i`th child of this node. */
-    final BareSymbol getChild(int i) { ruby_symbol_array_child(this, i, result) }
+    final F::BareSymbol getChild(int i) { ruby_symbol_array_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_symbol_array_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_symbol_array_child(this, _, result) }
   }
 
   /** A class representing `test_pattern` nodes. */
@@ -1736,13 +1744,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "TestPattern" }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final UnderscorePatternTopExprBody getPattern() { ruby_test_pattern_def(this, result, _) }
+    final F::UnderscorePatternTopExprBody getPattern() { ruby_test_pattern_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    final UnderscoreArg getValue() { ruby_test_pattern_def(this, _, result) }
+    final F::UnderscoreArg getValue() { ruby_test_pattern_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_test_pattern_def(this, result, _) or ruby_test_pattern_def(this, _, result)
     }
   }
@@ -1753,10 +1761,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Then" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_then_child(this, i, result) }
+    final F::AstNode getChild(int i) { ruby_then_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_then_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_then_child(this, _, result) }
   }
 
   /** A class representing `true` tokens. */
@@ -1771,7 +1779,7 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Unary" }
 
     /** Gets the node corresponding to the field `operand`. */
-    final AstNode getOperand() { ruby_unary_def(this, result, _) }
+    final F::AstNode getOperand() { ruby_unary_def(this, result, _) }
 
     /** Gets the node corresponding to the field `operator`. */
     final string getOperator() {
@@ -1791,7 +1799,7 @@ module Ruby {
     }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_unary_def(this, result, _) }
+    final override F::AstNode getAFieldOrChild() { ruby_unary_def(this, result, _) }
   }
 
   /** A class representing `undef` nodes. */
@@ -1800,10 +1808,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Undef" }
 
     /** Gets the `i`th child of this node. */
-    final UnderscoreMethodName getChild(int i) { ruby_undef_child(this, i, result) }
+    final F::UnderscoreMethodName getChild(int i) { ruby_undef_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_undef_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_undef_child(this, _, result) }
   }
 
   /** A class representing `uninterpreted` tokens. */
@@ -1818,16 +1826,16 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Unless" }
 
     /** Gets the node corresponding to the field `alternative`. */
-    final AstNode getAlternative() { ruby_unless_alternative(this, result) }
+    final F::AstNode getAlternative() { ruby_unless_alternative(this, result) }
 
     /** Gets the node corresponding to the field `condition`. */
-    final UnderscoreStatement getCondition() { ruby_unless_def(this, result) }
+    final F::UnderscoreStatement getCondition() { ruby_unless_def(this, result) }
 
     /** Gets the node corresponding to the field `consequence`. */
-    final Then getConsequence() { ruby_unless_consequence(this, result) }
+    final F::Then getConsequence() { ruby_unless_consequence(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_unless_alternative(this, result) or
       ruby_unless_def(this, result) or
       ruby_unless_consequence(this, result)
@@ -1840,10 +1848,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "UnlessGuard" }
 
     /** Gets the node corresponding to the field `condition`. */
-    final UnderscoreExpression getCondition() { ruby_unless_guard_def(this, result) }
+    final F::UnderscoreExpression getCondition() { ruby_unless_guard_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_unless_guard_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_unless_guard_def(this, result) }
   }
 
   /** A class representing `unless_modifier` nodes. */
@@ -1852,13 +1860,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "UnlessModifier" }
 
     /** Gets the node corresponding to the field `body`. */
-    final UnderscoreStatement getBody() { ruby_unless_modifier_def(this, result, _) }
+    final F::UnderscoreStatement getBody() { ruby_unless_modifier_def(this, result, _) }
 
     /** Gets the node corresponding to the field `condition`. */
-    final UnderscoreExpression getCondition() { ruby_unless_modifier_def(this, _, result) }
+    final F::UnderscoreExpression getCondition() { ruby_unless_modifier_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_unless_modifier_def(this, result, _) or ruby_unless_modifier_def(this, _, result)
     }
   }
@@ -1869,13 +1877,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Until" }
 
     /** Gets the node corresponding to the field `body`. */
-    final Do getBody() { ruby_until_def(this, result, _) }
+    final F::Do getBody() { ruby_until_def(this, result, _) }
 
     /** Gets the node corresponding to the field `condition`. */
-    final UnderscoreStatement getCondition() { ruby_until_def(this, _, result) }
+    final F::UnderscoreStatement getCondition() { ruby_until_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_until_def(this, result, _) or ruby_until_def(this, _, result)
     }
   }
@@ -1886,13 +1894,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "UntilModifier" }
 
     /** Gets the node corresponding to the field `body`. */
-    final UnderscoreStatement getBody() { ruby_until_modifier_def(this, result, _) }
+    final F::UnderscoreStatement getBody() { ruby_until_modifier_def(this, result, _) }
 
     /** Gets the node corresponding to the field `condition`. */
-    final UnderscoreExpression getCondition() { ruby_until_modifier_def(this, _, result) }
+    final F::UnderscoreExpression getCondition() { ruby_until_modifier_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_until_modifier_def(this, result, _) or ruby_until_modifier_def(this, _, result)
     }
   }
@@ -1903,10 +1911,12 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "VariableReferencePattern" }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { ruby_variable_reference_pattern_def(this, result) }
+    final F::AstNode getName() { ruby_variable_reference_pattern_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_variable_reference_pattern_def(this, result) }
+    final override F::AstNode getAFieldOrChild() {
+      ruby_variable_reference_pattern_def(this, result)
+    }
   }
 
   /** A class representing `when` nodes. */
@@ -1915,13 +1925,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "When" }
 
     /** Gets the node corresponding to the field `body`. */
-    final Then getBody() { ruby_when_body(this, result) }
+    final F::Then getBody() { ruby_when_body(this, result) }
 
     /** Gets the node corresponding to the field `pattern`. */
-    final Pattern getPattern(int i) { ruby_when_pattern(this, i, result) }
+    final F::Pattern getPattern(int i) { ruby_when_pattern(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_when_body(this, result) or ruby_when_pattern(this, _, result)
     }
   }
@@ -1932,13 +1942,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "While" }
 
     /** Gets the node corresponding to the field `body`. */
-    final Do getBody() { ruby_while_def(this, result, _) }
+    final F::Do getBody() { ruby_while_def(this, result, _) }
 
     /** Gets the node corresponding to the field `condition`. */
-    final UnderscoreStatement getCondition() { ruby_while_def(this, _, result) }
+    final F::UnderscoreStatement getCondition() { ruby_while_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_while_def(this, result, _) or ruby_while_def(this, _, result)
     }
   }
@@ -1949,13 +1959,13 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "WhileModifier" }
 
     /** Gets the node corresponding to the field `body`. */
-    final UnderscoreStatement getBody() { ruby_while_modifier_def(this, result, _) }
+    final F::UnderscoreStatement getBody() { ruby_while_modifier_def(this, result, _) }
 
     /** Gets the node corresponding to the field `condition`. */
-    final UnderscoreExpression getCondition() { ruby_while_modifier_def(this, _, result) }
+    final F::UnderscoreExpression getCondition() { ruby_while_modifier_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ruby_while_modifier_def(this, result, _) or ruby_while_modifier_def(this, _, result)
     }
   }
@@ -1966,10 +1976,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "Yield" }
 
     /** Gets the child of this node. */
-    final ArgumentList getChild() { ruby_yield_child(this, result) }
+    final F::ArgumentList getChild() { ruby_yield_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_yield_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { ruby_yield_child(this, result) }
   }
 
   /** Provides predicates for mapping AST nodes to their named children. */
@@ -2309,6 +2319,8 @@ module Ruby {
 
 overlay[local]
 module Erb {
+  private import Erb as F
+
   /** The base class for all AST nodes */
   private class AstNodeImpl extends @erb_ast_node {
     /** Gets a string representation of this element. */
@@ -2318,13 +2330,13 @@ module Erb {
     final L::Location getLocation() { erb_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { erb_ast_node_parent(this, result, _) }
+    final F::AstNode getParent() { erb_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
     final int getParentIndex() { erb_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    AstNode getAFieldOrChild() { none() }
+    F::AstNode getAFieldOrChild() { none() }
 
     /** Gets the name of the primary QL class for this element. */
     string getAPrimaryQlClass() { result = "???" }
@@ -2393,10 +2405,10 @@ module Erb {
     final override string getAPrimaryQlClass() { result = "CommentDirective" }
 
     /** Gets the child of this node. */
-    final Comment getChild() { erb_comment_directive_child(this, result) }
+    final F::Comment getChild() { erb_comment_directive_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { erb_comment_directive_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { erb_comment_directive_child(this, result) }
   }
 
   /** A class representing `content` tokens. */
@@ -2411,10 +2423,10 @@ module Erb {
     final override string getAPrimaryQlClass() { result = "Directive" }
 
     /** Gets the child of this node. */
-    final Code getChild() { erb_directive_child(this, result) }
+    final F::Code getChild() { erb_directive_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { erb_directive_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { erb_directive_child(this, result) }
   }
 
   /** A class representing `graphql_directive` nodes. */
@@ -2423,10 +2435,10 @@ module Erb {
     final override string getAPrimaryQlClass() { result = "GraphqlDirective" }
 
     /** Gets the child of this node. */
-    final Code getChild() { erb_graphql_directive_child(this, result) }
+    final F::Code getChild() { erb_graphql_directive_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { erb_graphql_directive_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { erb_graphql_directive_child(this, result) }
   }
 
   /** A class representing `output_directive` nodes. */
@@ -2435,10 +2447,10 @@ module Erb {
     final override string getAPrimaryQlClass() { result = "OutputDirective" }
 
     /** Gets the child of this node. */
-    final Code getChild() { erb_output_directive_child(this, result) }
+    final F::Code getChild() { erb_output_directive_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { erb_output_directive_child(this, result) }
+    final override F::AstNode getAFieldOrChild() { erb_output_directive_child(this, result) }
   }
 
   /** A class representing `template` nodes. */
@@ -2447,10 +2459,10 @@ module Erb {
     final override string getAPrimaryQlClass() { result = "Template" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { erb_template_child(this, i, result) }
+    final F::AstNode getChild(int i) { erb_template_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { erb_template_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { erb_template_child(this, _, result) }
   }
 
   /** Provides predicates for mapping AST nodes to their named children. */

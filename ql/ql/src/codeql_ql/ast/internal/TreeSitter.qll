@@ -25,6 +25,8 @@ private predicate discardLocation(@location_default loc) {
 
 overlay[local]
 module QL {
+  private import QL as F
+
   /** The base class for all AST nodes */
   private class AstNodeImpl extends @ql_ast_node {
     /** Gets a string representation of this element. */
@@ -34,13 +36,13 @@ module QL {
     final L::Location getLocation() { ql_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { ql_ast_node_parent(this, result, _) }
+    final F::AstNode getParent() { ql_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
     final int getParentIndex() { ql_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    AstNode getAFieldOrChild() { none() }
+    F::AstNode getAFieldOrChild() { none() }
 
     /** Gets the name of the primary QL class for this element. */
     string getAPrimaryQlClass() { result = "???" }
@@ -97,16 +99,16 @@ module QL {
     final override string getAPrimaryQlClass() { result = "AddExpr" }
 
     /** Gets the node corresponding to the field `left`. */
-    final AstNode getLeft() { ql_add_expr_def(this, result, _, _) }
+    final F::AstNode getLeft() { ql_add_expr_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `right`. */
-    final AstNode getRight() { ql_add_expr_def(this, _, result, _) }
+    final F::AstNode getRight() { ql_add_expr_def(this, _, result, _) }
 
     /** Gets the child of this node. */
-    final Addop getChild() { ql_add_expr_def(this, _, _, result) }
+    final F::Addop getChild() { ql_add_expr_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_add_expr_def(this, result, _, _) or
       ql_add_expr_def(this, _, result, _) or
       ql_add_expr_def(this, _, _, result)
@@ -131,10 +133,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Aggregate" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_aggregate_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_aggregate_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_aggregate_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_aggregate_child(this, _, result) }
   }
 
   /** A class representing `annotArg` nodes. */
@@ -143,10 +145,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "AnnotArg" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { ql_annot_arg_def(this, result) }
+    final F::AstNode getChild() { ql_annot_arg_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_annot_arg_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_annot_arg_def(this, result) }
   }
 
   /** A class representing `annotName` tokens. */
@@ -161,13 +163,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Annotation" }
 
     /** Gets the node corresponding to the field `args`. */
-    final AstNode getArgs(int i) { ql_annotation_args(this, i, result) }
+    final F::AstNode getArgs(int i) { ql_annotation_args(this, i, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final AnnotName getName() { ql_annotation_def(this, result) }
+    final F::AnnotName getName() { ql_annotation_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_annotation_args(this, _, result) or ql_annotation_def(this, result)
     }
   }
@@ -178,13 +180,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "AritylessPredicateExpr" }
 
     /** Gets the node corresponding to the field `name`. */
-    final LiteralId getName() { ql_arityless_predicate_expr_def(this, result) }
+    final F::LiteralId getName() { ql_arityless_predicate_expr_def(this, result) }
 
     /** Gets the node corresponding to the field `qualifier`. */
-    final ModuleExpr getQualifier() { ql_arityless_predicate_expr_qualifier(this, result) }
+    final F::ModuleExpr getQualifier() { ql_arityless_predicate_expr_qualifier(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_arityless_predicate_expr_def(this, result) or
       ql_arityless_predicate_expr_qualifier(this, result)
     }
@@ -196,10 +198,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "AsExpr" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_as_expr_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_as_expr_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_as_expr_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_as_expr_child(this, _, result) }
   }
 
   /** A class representing `asExprs` nodes. */
@@ -208,10 +210,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "AsExprs" }
 
     /** Gets the `i`th child of this node. */
-    final AsExpr getChild(int i) { ql_as_exprs_child(this, i, result) }
+    final F::AsExpr getChild(int i) { ql_as_exprs_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_as_exprs_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_as_exprs_child(this, _, result) }
   }
 
   /** A class representing `block_comment` tokens. */
@@ -226,10 +228,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Body" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { ql_body_def(this, result) }
+    final F::AstNode getChild() { ql_body_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_body_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_body_def(this, result) }
   }
 
   /** A class representing `bool` nodes. */
@@ -238,10 +240,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Bool" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { ql_bool_def(this, result) }
+    final F::AstNode getChild() { ql_bool_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_bool_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_bool_def(this, result) }
   }
 
   /** A class representing `call_body` nodes. */
@@ -250,10 +252,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "CallBody" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_call_body_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_call_body_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_call_body_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_call_body_child(this, _, result) }
   }
 
   /** A class representing `call_or_unqual_agg_expr` nodes. */
@@ -262,10 +264,12 @@ module QL {
     final override string getAPrimaryQlClass() { result = "CallOrUnqualAggExpr" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_call_or_unqual_agg_expr_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_call_or_unqual_agg_expr_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_call_or_unqual_agg_expr_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() {
+      ql_call_or_unqual_agg_expr_child(this, _, result)
+    }
   }
 
   /** A class representing `charpred` nodes. */
@@ -274,13 +278,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Charpred" }
 
     /** Gets the node corresponding to the field `body`. */
-    final AstNode getBody() { ql_charpred_def(this, result, _) }
+    final F::AstNode getBody() { ql_charpred_def(this, result, _) }
 
     /** Gets the child of this node. */
-    final ClassName getChild() { ql_charpred_def(this, _, result) }
+    final F::ClassName getChild() { ql_charpred_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_charpred_def(this, result, _) or ql_charpred_def(this, _, result)
     }
   }
@@ -291,10 +295,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ClassMember" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_class_member_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_class_member_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_class_member_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_class_member_child(this, _, result) }
   }
 
   /** A class representing `className` tokens. */
@@ -309,16 +313,16 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ClasslessPredicate" }
 
     /** Gets the node corresponding to the field `name`. */
-    final PredicateName getName() { ql_classless_predicate_def(this, result, _) }
+    final F::PredicateName getName() { ql_classless_predicate_def(this, result, _) }
 
     /** Gets the node corresponding to the field `returnType`. */
-    final AstNode getReturnType() { ql_classless_predicate_def(this, _, result) }
+    final F::AstNode getReturnType() { ql_classless_predicate_def(this, _, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_classless_predicate_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_classless_predicate_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_classless_predicate_def(this, result, _) or
       ql_classless_predicate_def(this, _, result) or
       ql_classless_predicate_child(this, _, result)
@@ -337,16 +341,16 @@ module QL {
     final override string getAPrimaryQlClass() { result = "CompTerm" }
 
     /** Gets the node corresponding to the field `left`. */
-    final AstNode getLeft() { ql_comp_term_def(this, result, _, _) }
+    final F::AstNode getLeft() { ql_comp_term_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `right`. */
-    final AstNode getRight() { ql_comp_term_def(this, _, result, _) }
+    final F::AstNode getRight() { ql_comp_term_def(this, _, result, _) }
 
     /** Gets the child of this node. */
-    final Compop getChild() { ql_comp_term_def(this, _, _, result) }
+    final F::Compop getChild() { ql_comp_term_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_comp_term_def(this, result, _, _) or
       ql_comp_term_def(this, _, result, _) or
       ql_comp_term_def(this, _, _, result)
@@ -365,13 +369,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Conjunction" }
 
     /** Gets the node corresponding to the field `left`. */
-    final AstNode getLeft() { ql_conjunction_def(this, result, _) }
+    final F::AstNode getLeft() { ql_conjunction_def(this, result, _) }
 
     /** Gets the node corresponding to the field `right`. */
-    final AstNode getRight() { ql_conjunction_def(this, _, result) }
+    final F::AstNode getRight() { ql_conjunction_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_conjunction_def(this, result, _) or ql_conjunction_def(this, _, result)
     }
   }
@@ -382,19 +386,19 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Dataclass" }
 
     /** Gets the node corresponding to the field `extends`. */
-    final AstNode getExtends(int i) { ql_dataclass_extends(this, i, result) }
+    final F::AstNode getExtends(int i) { ql_dataclass_extends(this, i, result) }
 
     /** Gets the node corresponding to the field `instanceof`. */
-    final AstNode getInstanceof(int i) { ql_dataclass_instanceof(this, i, result) }
+    final F::AstNode getInstanceof(int i) { ql_dataclass_instanceof(this, i, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final ClassName getName() { ql_dataclass_def(this, result) }
+    final F::ClassName getName() { ql_dataclass_def(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_dataclass_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_dataclass_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_dataclass_extends(this, _, result) or
       ql_dataclass_instanceof(this, _, result) or
       ql_dataclass_def(this, result) or
@@ -408,13 +412,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Datatype" }
 
     /** Gets the node corresponding to the field `name`. */
-    final ClassName getName() { ql_datatype_def(this, result, _) }
+    final F::ClassName getName() { ql_datatype_def(this, result, _) }
 
     /** Gets the child of this node. */
-    final DatatypeBranches getChild() { ql_datatype_def(this, _, result) }
+    final F::DatatypeBranches getChild() { ql_datatype_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_datatype_def(this, result, _) or ql_datatype_def(this, _, result)
     }
   }
@@ -425,13 +429,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "DatatypeBranch" }
 
     /** Gets the node corresponding to the field `name`. */
-    final ClassName getName() { ql_datatype_branch_def(this, result) }
+    final F::ClassName getName() { ql_datatype_branch_def(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_datatype_branch_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_datatype_branch_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_datatype_branch_def(this, result) or ql_datatype_branch_child(this, _, result)
     }
   }
@@ -442,10 +446,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "DatatypeBranches" }
 
     /** Gets the `i`th child of this node. */
-    final DatatypeBranch getChild(int i) { ql_datatype_branches_child(this, i, result) }
+    final F::DatatypeBranch getChild(int i) { ql_datatype_branches_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_datatype_branches_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_datatype_branches_child(this, _, result) }
   }
 
   /** A class representing `dbtype` tokens. */
@@ -466,13 +470,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Disjunction" }
 
     /** Gets the node corresponding to the field `left`. */
-    final AstNode getLeft() { ql_disjunction_def(this, result, _) }
+    final F::AstNode getLeft() { ql_disjunction_def(this, result, _) }
 
     /** Gets the node corresponding to the field `right`. */
-    final AstNode getRight() { ql_disjunction_def(this, _, result) }
+    final F::AstNode getRight() { ql_disjunction_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_disjunction_def(this, result, _) or ql_disjunction_def(this, _, result)
     }
   }
@@ -489,13 +493,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ExprAggregateBody" }
 
     /** Gets the node corresponding to the field `asExprs`. */
-    final AsExprs getAsExprs() { ql_expr_aggregate_body_def(this, result) }
+    final F::AsExprs getAsExprs() { ql_expr_aggregate_body_def(this, result) }
 
     /** Gets the node corresponding to the field `orderBys`. */
-    final OrderBys getOrderBys() { ql_expr_aggregate_body_order_bys(this, result) }
+    final F::OrderBys getOrderBys() { ql_expr_aggregate_body_order_bys(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_expr_aggregate_body_def(this, result) or ql_expr_aggregate_body_order_bys(this, result)
     }
   }
@@ -506,16 +510,16 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ExprAnnotation" }
 
     /** Gets the node corresponding to the field `annot_arg`. */
-    final AnnotName getAnnotArg() { ql_expr_annotation_def(this, result, _, _) }
+    final F::AnnotName getAnnotArg() { ql_expr_annotation_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `name`. */
-    final AnnotName getName() { ql_expr_annotation_def(this, _, result, _) }
+    final F::AnnotName getName() { ql_expr_annotation_def(this, _, result, _) }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { ql_expr_annotation_def(this, _, _, result) }
+    final F::AstNode getChild() { ql_expr_annotation_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_expr_annotation_def(this, result, _, _) or
       ql_expr_annotation_def(this, _, result, _) or
       ql_expr_annotation_def(this, _, _, result)
@@ -534,10 +538,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Field" }
 
     /** Gets the child of this node. */
-    final VarDecl getChild() { ql_field_def(this, result) }
+    final F::VarDecl getChild() { ql_field_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_field_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_field_def(this, result) }
   }
 
   /** A class representing `float` tokens. */
@@ -552,19 +556,19 @@ module QL {
     final override string getAPrimaryQlClass() { result = "FullAggregateBody" }
 
     /** Gets the node corresponding to the field `asExprs`. */
-    final AsExprs getAsExprs() { ql_full_aggregate_body_as_exprs(this, result) }
+    final F::AsExprs getAsExprs() { ql_full_aggregate_body_as_exprs(this, result) }
 
     /** Gets the node corresponding to the field `guard`. */
-    final AstNode getGuard() { ql_full_aggregate_body_guard(this, result) }
+    final F::AstNode getGuard() { ql_full_aggregate_body_guard(this, result) }
 
     /** Gets the node corresponding to the field `orderBys`. */
-    final OrderBys getOrderBys() { ql_full_aggregate_body_order_bys(this, result) }
+    final F::OrderBys getOrderBys() { ql_full_aggregate_body_order_bys(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final VarDecl getChild(int i) { ql_full_aggregate_body_child(this, i, result) }
+    final F::VarDecl getChild(int i) { ql_full_aggregate_body_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_full_aggregate_body_as_exprs(this, result) or
       ql_full_aggregate_body_guard(this, result) or
       ql_full_aggregate_body_order_bys(this, result) or
@@ -578,13 +582,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "HigherOrderTerm" }
 
     /** Gets the node corresponding to the field `name`. */
-    final LiteralId getName() { ql_higher_order_term_def(this, result) }
+    final F::LiteralId getName() { ql_higher_order_term_def(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_higher_order_term_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_higher_order_term_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_higher_order_term_def(this, result) or ql_higher_order_term_child(this, _, result)
     }
   }
@@ -595,16 +599,16 @@ module QL {
     final override string getAPrimaryQlClass() { result = "IfTerm" }
 
     /** Gets the node corresponding to the field `cond`. */
-    final AstNode getCond() { ql_if_term_def(this, result, _, _) }
+    final F::AstNode getCond() { ql_if_term_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `first`. */
-    final AstNode getFirst() { ql_if_term_def(this, _, result, _) }
+    final F::AstNode getFirst() { ql_if_term_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `second`. */
-    final AstNode getSecond() { ql_if_term_def(this, _, _, result) }
+    final F::AstNode getSecond() { ql_if_term_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_if_term_def(this, result, _, _) or
       ql_if_term_def(this, _, result, _) or
       ql_if_term_def(this, _, _, result)
@@ -617,13 +621,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Implication" }
 
     /** Gets the node corresponding to the field `left`. */
-    final AstNode getLeft() { ql_implication_def(this, result, _) }
+    final F::AstNode getLeft() { ql_implication_def(this, result, _) }
 
     /** Gets the node corresponding to the field `right`. */
-    final AstNode getRight() { ql_implication_def(this, _, result) }
+    final F::AstNode getRight() { ql_implication_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_implication_def(this, result, _) or ql_implication_def(this, _, result)
     }
   }
@@ -634,10 +638,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ImportDirective" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_import_directive_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_import_directive_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_import_directive_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_import_directive_child(this, _, result) }
   }
 
   /** A class representing `importModuleExpr` nodes. */
@@ -646,13 +650,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ImportModuleExpr" }
 
     /** Gets the node corresponding to the field `qualName`. */
-    final SimpleId getQualName(int i) { ql_import_module_expr_qual_name(this, i, result) }
+    final F::SimpleId getQualName(int i) { ql_import_module_expr_qual_name(this, i, result) }
 
     /** Gets the child of this node. */
-    final ModuleExpr getChild() { ql_import_module_expr_def(this, result) }
+    final F::ModuleExpr getChild() { ql_import_module_expr_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_import_module_expr_qual_name(this, _, result) or ql_import_module_expr_def(this, result)
     }
   }
@@ -663,13 +667,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "InExpr" }
 
     /** Gets the node corresponding to the field `left`. */
-    final AstNode getLeft() { ql_in_expr_def(this, result, _) }
+    final F::AstNode getLeft() { ql_in_expr_def(this, result, _) }
 
     /** Gets the node corresponding to the field `right`. */
-    final AstNode getRight() { ql_in_expr_def(this, _, result) }
+    final F::AstNode getRight() { ql_in_expr_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_in_expr_def(this, result, _) or ql_in_expr_def(this, _, result)
     }
   }
@@ -680,10 +684,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "InstanceOf" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_instance_of_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_instance_of_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_instance_of_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_instance_of_child(this, _, result) }
   }
 
   /** A class representing `integer` tokens. */
@@ -704,10 +708,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Literal" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { ql_literal_def(this, result) }
+    final F::AstNode getChild() { ql_literal_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_literal_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_literal_def(this, result) }
   }
 
   /** A class representing `literalId` tokens. */
@@ -722,16 +726,16 @@ module QL {
     final override string getAPrimaryQlClass() { result = "MemberPredicate" }
 
     /** Gets the node corresponding to the field `name`. */
-    final PredicateName getName() { ql_member_predicate_def(this, result, _) }
+    final F::PredicateName getName() { ql_member_predicate_def(this, result, _) }
 
     /** Gets the node corresponding to the field `returnType`. */
-    final AstNode getReturnType() { ql_member_predicate_def(this, _, result) }
+    final F::AstNode getReturnType() { ql_member_predicate_def(this, _, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_member_predicate_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_member_predicate_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_member_predicate_def(this, result, _) or
       ql_member_predicate_def(this, _, result) or
       ql_member_predicate_child(this, _, result)
@@ -744,19 +748,19 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Module" }
 
     /** Gets the node corresponding to the field `implements`. */
-    final SignatureExpr getImplements(int i) { ql_module_implements(this, i, result) }
+    final F::SignatureExpr getImplements(int i) { ql_module_implements(this, i, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final ModuleName getName() { ql_module_def(this, result) }
+    final F::ModuleName getName() { ql_module_def(this, result) }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final ModuleParam getParameter(int i) { ql_module_parameter(this, i, result) }
+    final F::ModuleParam getParameter(int i) { ql_module_parameter(this, i, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_module_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_module_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_module_implements(this, _, result) or
       ql_module_def(this, result) or
       ql_module_parameter(this, _, result) or
@@ -770,10 +774,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ModuleAliasBody" }
 
     /** Gets the child of this node. */
-    final ModuleExpr getChild() { ql_module_alias_body_def(this, result) }
+    final F::ModuleExpr getChild() { ql_module_alias_body_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_module_alias_body_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_module_alias_body_def(this, result) }
   }
 
   /** A class representing `moduleExpr` nodes. */
@@ -782,13 +786,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ModuleExpr" }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { ql_module_expr_name(this, result) }
+    final F::AstNode getName() { ql_module_expr_name(this, result) }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { ql_module_expr_def(this, result) }
+    final F::AstNode getChild() { ql_module_expr_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_module_expr_name(this, result) or ql_module_expr_def(this, result)
     }
   }
@@ -799,13 +803,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ModuleInstantiation" }
 
     /** Gets the node corresponding to the field `name`. */
-    final ModuleName getName() { ql_module_instantiation_def(this, result) }
+    final F::ModuleName getName() { ql_module_instantiation_def(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final SignatureExpr getChild(int i) { ql_module_instantiation_child(this, i, result) }
+    final F::SignatureExpr getChild(int i) { ql_module_instantiation_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_module_instantiation_def(this, result) or ql_module_instantiation_child(this, _, result)
     }
   }
@@ -816,10 +820,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ModuleMember" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_module_member_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_module_member_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_module_member_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_module_member_child(this, _, result) }
   }
 
   /** A class representing `moduleName` nodes. */
@@ -828,10 +832,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ModuleName" }
 
     /** Gets the child of this node. */
-    final SimpleId getChild() { ql_module_name_def(this, result) }
+    final F::SimpleId getChild() { ql_module_name_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_module_name_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_module_name_def(this, result) }
   }
 
   /** A class representing `moduleParam` nodes. */
@@ -840,13 +844,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ModuleParam" }
 
     /** Gets the node corresponding to the field `parameter`. */
-    final SimpleId getParameter() { ql_module_param_def(this, result, _) }
+    final F::SimpleId getParameter() { ql_module_param_def(this, result, _) }
 
     /** Gets the node corresponding to the field `signature`. */
-    final SignatureExpr getSignature() { ql_module_param_def(this, _, result) }
+    final F::SignatureExpr getSignature() { ql_module_param_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_module_param_def(this, result, _) or ql_module_param_def(this, _, result)
     }
   }
@@ -857,16 +861,16 @@ module QL {
     final override string getAPrimaryQlClass() { result = "MulExpr" }
 
     /** Gets the node corresponding to the field `left`. */
-    final AstNode getLeft() { ql_mul_expr_def(this, result, _, _) }
+    final F::AstNode getLeft() { ql_mul_expr_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `right`. */
-    final AstNode getRight() { ql_mul_expr_def(this, _, result, _) }
+    final F::AstNode getRight() { ql_mul_expr_def(this, _, result, _) }
 
     /** Gets the child of this node. */
-    final Mulop getChild() { ql_mul_expr_def(this, _, _, result) }
+    final F::Mulop getChild() { ql_mul_expr_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_mul_expr_def(this, result, _, _) or
       ql_mul_expr_def(this, _, result, _) or
       ql_mul_expr_def(this, _, _, result)
@@ -885,10 +889,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Negation" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { ql_negation_def(this, result) }
+    final F::AstNode getChild() { ql_negation_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_negation_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_negation_def(this, result) }
   }
 
   /** A class representing `orderBy` nodes. */
@@ -897,10 +901,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "OrderBy" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_order_by_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_order_by_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_order_by_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_order_by_child(this, _, result) }
   }
 
   /** A class representing `orderBys` nodes. */
@@ -909,10 +913,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "OrderBys" }
 
     /** Gets the `i`th child of this node. */
-    final OrderBy getChild(int i) { ql_order_bys_child(this, i, result) }
+    final F::OrderBy getChild(int i) { ql_order_bys_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_order_bys_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_order_bys_child(this, _, result) }
   }
 
   /** A class representing `par_expr` nodes. */
@@ -921,10 +925,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "ParExpr" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { ql_par_expr_def(this, result) }
+    final F::AstNode getChild() { ql_par_expr_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_par_expr_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_par_expr_def(this, result) }
   }
 
   /** A class representing `predicate` tokens. */
@@ -939,10 +943,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "PredicateAliasBody" }
 
     /** Gets the child of this node. */
-    final PredicateExpr getChild() { ql_predicate_alias_body_def(this, result) }
+    final F::PredicateExpr getChild() { ql_predicate_alias_body_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_predicate_alias_body_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_predicate_alias_body_def(this, result) }
   }
 
   /** A class representing `predicateExpr` nodes. */
@@ -951,10 +955,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "PredicateExpr" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_predicate_expr_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_predicate_expr_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_predicate_expr_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_predicate_expr_child(this, _, result) }
   }
 
   /** A class representing `predicateName` tokens. */
@@ -969,10 +973,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "PrefixCast" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_prefix_cast_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_prefix_cast_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_prefix_cast_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_prefix_cast_child(this, _, result) }
   }
 
   /** A class representing `primitiveType` tokens. */
@@ -987,10 +991,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Ql" }
 
     /** Gets the `i`th child of this node. */
-    final ModuleMember getChild(int i) { ql_ql_child(this, i, result) }
+    final F::ModuleMember getChild(int i) { ql_ql_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_ql_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_ql_child(this, _, result) }
   }
 
   /** A class representing `qldoc` tokens. */
@@ -1005,13 +1009,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "QualifiedRhs" }
 
     /** Gets the node corresponding to the field `name`. */
-    final PredicateName getName() { ql_qualified_rhs_name(this, result) }
+    final F::PredicateName getName() { ql_qualified_rhs_name(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_qualified_rhs_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_qualified_rhs_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_qualified_rhs_name(this, result) or ql_qualified_rhs_child(this, _, result)
     }
   }
@@ -1022,10 +1026,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "QualifiedExpr" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_qualified_expr_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_qualified_expr_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_qualified_expr_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_qualified_expr_child(this, _, result) }
   }
 
   /** A class representing `quantified` nodes. */
@@ -1034,19 +1038,19 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Quantified" }
 
     /** Gets the node corresponding to the field `expr`. */
-    final AstNode getExpr() { ql_quantified_expr(this, result) }
+    final F::AstNode getExpr() { ql_quantified_expr(this, result) }
 
     /** Gets the node corresponding to the field `formula`. */
-    final AstNode getFormula() { ql_quantified_formula(this, result) }
+    final F::AstNode getFormula() { ql_quantified_formula(this, result) }
 
     /** Gets the node corresponding to the field `range`. */
-    final AstNode getRange() { ql_quantified_range(this, result) }
+    final F::AstNode getRange() { ql_quantified_range(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_quantified_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_quantified_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_quantified_expr(this, result) or
       ql_quantified_formula(this, result) or
       ql_quantified_range(this, result) or
@@ -1066,13 +1070,13 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Range" }
 
     /** Gets the node corresponding to the field `lower`. */
-    final AstNode getLower() { ql_range_def(this, result, _) }
+    final F::AstNode getLower() { ql_range_def(this, result, _) }
 
     /** Gets the node corresponding to the field `upper`. */
-    final AstNode getUpper() { ql_range_def(this, _, result) }
+    final F::AstNode getUpper() { ql_range_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_range_def(this, result, _) or ql_range_def(this, _, result)
     }
   }
@@ -1089,10 +1093,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Select" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_select_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_select_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_select_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_select_child(this, _, result) }
   }
 
   /** A class representing `set_literal` nodes. */
@@ -1101,10 +1105,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "SetLiteral" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_set_literal_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_set_literal_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_set_literal_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_set_literal_child(this, _, result) }
   }
 
   /** A class representing `signatureExpr` nodes. */
@@ -1113,16 +1117,16 @@ module QL {
     final override string getAPrimaryQlClass() { result = "SignatureExpr" }
 
     /** Gets the node corresponding to the field `mod_expr`. */
-    final ModuleExpr getModExpr() { ql_signature_expr_mod_expr(this, result) }
+    final F::ModuleExpr getModExpr() { ql_signature_expr_mod_expr(this, result) }
 
     /** Gets the node corresponding to the field `predicate`. */
-    final PredicateExpr getPredicate() { ql_signature_expr_predicate(this, result) }
+    final F::PredicateExpr getPredicate() { ql_signature_expr_predicate(this, result) }
 
     /** Gets the node corresponding to the field `type_expr`. */
-    final TypeExpr getTypeExpr() { ql_signature_expr_type_expr(this, result) }
+    final F::TypeExpr getTypeExpr() { ql_signature_expr_type_expr(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_signature_expr_mod_expr(this, result) or
       ql_signature_expr_predicate(this, result) or
       ql_signature_expr_type_expr(this, result)
@@ -1147,10 +1151,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "SpecialCall" }
 
     /** Gets the child of this node. */
-    final SpecialId getChild() { ql_special_call_def(this, result) }
+    final F::SpecialId getChild() { ql_special_call_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_special_call_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_special_call_def(this, result) }
   }
 
   /** A class representing `string` tokens. */
@@ -1171,10 +1175,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "SuperRef" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_super_ref_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_super_ref_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_super_ref_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_super_ref_child(this, _, result) }
   }
 
   /** A class representing `this` tokens. */
@@ -1195,10 +1199,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "TypeAliasBody" }
 
     /** Gets the child of this node. */
-    final TypeExpr getChild() { ql_type_alias_body_def(this, result) }
+    final F::TypeExpr getChild() { ql_type_alias_body_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_type_alias_body_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_type_alias_body_def(this, result) }
   }
 
   /** A class representing `typeExpr` nodes. */
@@ -1207,16 +1211,16 @@ module QL {
     final override string getAPrimaryQlClass() { result = "TypeExpr" }
 
     /** Gets the node corresponding to the field `name`. */
-    final ClassName getName() { ql_type_expr_name(this, result) }
+    final F::ClassName getName() { ql_type_expr_name(this, result) }
 
     /** Gets the node corresponding to the field `qualifier`. */
-    final ModuleExpr getQualifier() { ql_type_expr_qualifier(this, result) }
+    final F::ModuleExpr getQualifier() { ql_type_expr_qualifier(this, result) }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { ql_type_expr_child(this, result) }
+    final F::AstNode getChild() { ql_type_expr_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_type_expr_name(this, result) or
       ql_type_expr_qualifier(this, result) or
       ql_type_expr_child(this, result)
@@ -1229,10 +1233,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "TypeUnionBody" }
 
     /** Gets the `i`th child of this node. */
-    final TypeExpr getChild(int i) { ql_type_union_body_child(this, i, result) }
+    final F::TypeExpr getChild(int i) { ql_type_union_body_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_type_union_body_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_type_union_body_child(this, _, result) }
   }
 
   /** A class representing `unary_expr` nodes. */
@@ -1241,10 +1245,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "UnaryExpr" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_unary_expr_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_unary_expr_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_unary_expr_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_unary_expr_child(this, _, result) }
   }
 
   /** A class representing `underscore` tokens. */
@@ -1265,16 +1269,16 @@ module QL {
     final override string getAPrimaryQlClass() { result = "UnqualAggBody" }
 
     /** Gets the node corresponding to the field `asExprs`. */
-    final AstNode getAsExprs(int i) { ql_unqual_agg_body_as_exprs(this, i, result) }
+    final F::AstNode getAsExprs(int i) { ql_unqual_agg_body_as_exprs(this, i, result) }
 
     /** Gets the node corresponding to the field `guard`. */
-    final AstNode getGuard() { ql_unqual_agg_body_guard(this, result) }
+    final F::AstNode getGuard() { ql_unqual_agg_body_guard(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final VarDecl getChild(int i) { ql_unqual_agg_body_child(this, i, result) }
+    final F::VarDecl getChild(int i) { ql_unqual_agg_body_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       ql_unqual_agg_body_as_exprs(this, _, result) or
       ql_unqual_agg_body_guard(this, result) or
       ql_unqual_agg_body_child(this, _, result)
@@ -1287,10 +1291,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "VarDecl" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ql_var_decl_child(this, i, result) }
+    final F::AstNode getChild(int i) { ql_var_decl_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_var_decl_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { ql_var_decl_child(this, _, result) }
   }
 
   /** A class representing `varName` nodes. */
@@ -1299,10 +1303,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "VarName" }
 
     /** Gets the child of this node. */
-    final SimpleId getChild() { ql_var_name_def(this, result) }
+    final F::SimpleId getChild() { ql_var_name_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_var_name_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_var_name_def(this, result) }
   }
 
   /** A class representing `variable` nodes. */
@@ -1311,10 +1315,10 @@ module QL {
     final override string getAPrimaryQlClass() { result = "Variable" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { ql_variable_def(this, result) }
+    final F::AstNode getChild() { ql_variable_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ql_variable_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { ql_variable_def(this, result) }
   }
 
   /** Provides predicates for mapping AST nodes to their named children. */
@@ -1558,6 +1562,8 @@ module QL {
 
 overlay[local]
 module Dbscheme {
+  private import Dbscheme as F
+
   /** The base class for all AST nodes */
   private class AstNodeImpl extends @dbscheme_ast_node {
     /** Gets a string representation of this element. */
@@ -1567,13 +1573,13 @@ module Dbscheme {
     final L::Location getLocation() { dbscheme_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { dbscheme_ast_node_parent(this, result, _) }
+    final F::AstNode getParent() { dbscheme_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
     final int getParentIndex() { dbscheme_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    AstNode getAFieldOrChild() { none() }
+    F::AstNode getAFieldOrChild() { none() }
 
     /** Gets the name of the primary QL class for this element. */
     string getAPrimaryQlClass() { result = "???" }
@@ -1636,13 +1642,15 @@ module Dbscheme {
     final override string getAPrimaryQlClass() { result = "Annotation" }
 
     /** Gets the node corresponding to the field `argsAnnotation`. */
-    final ArgsAnnotation getArgsAnnotation() { dbscheme_annotation_args_annotation(this, result) }
+    final F::ArgsAnnotation getArgsAnnotation() {
+      dbscheme_annotation_args_annotation(this, result)
+    }
 
     /** Gets the node corresponding to the field `simpleAnnotation`. */
-    final AnnotName getSimpleAnnotation() { dbscheme_annotation_simple_annotation(this, result) }
+    final F::AnnotName getSimpleAnnotation() { dbscheme_annotation_simple_annotation(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       dbscheme_annotation_args_annotation(this, result) or
       dbscheme_annotation_simple_annotation(this, result)
     }
@@ -1654,13 +1662,13 @@ module Dbscheme {
     final override string getAPrimaryQlClass() { result = "ArgsAnnotation" }
 
     /** Gets the node corresponding to the field `name`. */
-    final AnnotName getName() { dbscheme_args_annotation_def(this, result) }
+    final F::AnnotName getName() { dbscheme_args_annotation_def(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final SimpleId getChild(int i) { dbscheme_args_annotation_child(this, i, result) }
+    final F::SimpleId getChild(int i) { dbscheme_args_annotation_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       dbscheme_args_annotation_def(this, result) or dbscheme_args_annotation_child(this, _, result)
     }
   }
@@ -1683,13 +1691,13 @@ module Dbscheme {
     final override string getAPrimaryQlClass() { result = "Branch" }
 
     /** Gets the node corresponding to the field `qldoc`. */
-    final Qldoc getQldoc() { dbscheme_branch_qldoc(this, result) }
+    final F::Qldoc getQldoc() { dbscheme_branch_qldoc(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { dbscheme_branch_child(this, i, result) }
+    final F::AstNode getChild(int i) { dbscheme_branch_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       dbscheme_branch_qldoc(this, result) or dbscheme_branch_child(this, _, result)
     }
   }
@@ -1700,16 +1708,16 @@ module Dbscheme {
     final override string getAPrimaryQlClass() { result = "CaseDecl" }
 
     /** Gets the node corresponding to the field `base`. */
-    final Dbtype getBase() { dbscheme_case_decl_def(this, result, _) }
+    final F::Dbtype getBase() { dbscheme_case_decl_def(this, result, _) }
 
     /** Gets the node corresponding to the field `discriminator`. */
-    final SimpleId getDiscriminator() { dbscheme_case_decl_def(this, _, result) }
+    final F::SimpleId getDiscriminator() { dbscheme_case_decl_def(this, _, result) }
 
     /** Gets the `i`th child of this node. */
-    final Branch getChild(int i) { dbscheme_case_decl_child(this, i, result) }
+    final F::Branch getChild(int i) { dbscheme_case_decl_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       dbscheme_case_decl_def(this, result, _) or
       dbscheme_case_decl_def(this, _, result) or
       dbscheme_case_decl_child(this, _, result)
@@ -1722,10 +1730,10 @@ module Dbscheme {
     final override string getAPrimaryQlClass() { result = "ColType" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { dbscheme_col_type_def(this, result) }
+    final F::AstNode getChild() { dbscheme_col_type_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { dbscheme_col_type_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { dbscheme_col_type_def(this, result) }
   }
 
   /** A class representing `column` nodes. */
@@ -1734,25 +1742,25 @@ module Dbscheme {
     final override string getAPrimaryQlClass() { result = "Column" }
 
     /** Gets the node corresponding to the field `colName`. */
-    final SimpleId getColName() { dbscheme_column_def(this, result, _, _) }
+    final F::SimpleId getColName() { dbscheme_column_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `colType`. */
-    final ColType getColType() { dbscheme_column_def(this, _, result, _) }
+    final F::ColType getColType() { dbscheme_column_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `isRef`. */
-    final Ref getIsRef() { dbscheme_column_is_ref(this, result) }
+    final F::Ref getIsRef() { dbscheme_column_is_ref(this, result) }
 
     /** Gets the node corresponding to the field `isUnique`. */
-    final Unique getIsUnique() { dbscheme_column_is_unique(this, result) }
+    final F::Unique getIsUnique() { dbscheme_column_is_unique(this, result) }
 
     /** Gets the node corresponding to the field `qldoc`. */
-    final Qldoc getQldoc() { dbscheme_column_qldoc(this, result) }
+    final F::Qldoc getQldoc() { dbscheme_column_qldoc(this, result) }
 
     /** Gets the node corresponding to the field `reprType`. */
-    final ReprType getReprType() { dbscheme_column_def(this, _, _, result) }
+    final F::ReprType getReprType() { dbscheme_column_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       dbscheme_column_def(this, result, _, _) or
       dbscheme_column_def(this, _, result, _) or
       dbscheme_column_is_ref(this, result) or
@@ -1774,10 +1782,10 @@ module Dbscheme {
     final override string getAPrimaryQlClass() { result = "Dbscheme" }
 
     /** Gets the `i`th child of this node. */
-    final Entry getChild(int i) { dbscheme_dbscheme_child(this, i, result) }
+    final F::Entry getChild(int i) { dbscheme_dbscheme_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { dbscheme_dbscheme_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { dbscheme_dbscheme_child(this, _, result) }
   }
 
   /** A class representing `dbtype` tokens. */
@@ -1792,10 +1800,10 @@ module Dbscheme {
     final override string getAPrimaryQlClass() { result = "Entry" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { dbscheme_entry_def(this, result) }
+    final F::AstNode getChild() { dbscheme_entry_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { dbscheme_entry_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { dbscheme_entry_def(this, result) }
   }
 
   /** A class representing `float` tokens. */
@@ -1840,10 +1848,10 @@ module Dbscheme {
     final override string getAPrimaryQlClass() { result = "ReprType" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { dbscheme_repr_type_child(this, i, result) }
+    final F::AstNode getChild(int i) { dbscheme_repr_type_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { dbscheme_repr_type_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { dbscheme_repr_type_child(this, _, result) }
   }
 
   /** A class representing `simpleId` tokens. */
@@ -1864,13 +1872,13 @@ module Dbscheme {
     final override string getAPrimaryQlClass() { result = "Table" }
 
     /** Gets the node corresponding to the field `tableName`. */
-    final TableName getTableName() { dbscheme_table_def(this, result) }
+    final F::TableName getTableName() { dbscheme_table_def(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { dbscheme_table_child(this, i, result) }
+    final F::AstNode getChild(int i) { dbscheme_table_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       dbscheme_table_def(this, result) or dbscheme_table_child(this, _, result)
     }
   }
@@ -1881,10 +1889,10 @@ module Dbscheme {
     final override string getAPrimaryQlClass() { result = "TableName" }
 
     /** Gets the child of this node. */
-    final SimpleId getChild() { dbscheme_table_name_def(this, result) }
+    final F::SimpleId getChild() { dbscheme_table_name_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { dbscheme_table_name_def(this, result) }
+    final override F::AstNode getAFieldOrChild() { dbscheme_table_name_def(this, result) }
   }
 
   /** A class representing `unionDecl` nodes. */
@@ -1893,13 +1901,13 @@ module Dbscheme {
     final override string getAPrimaryQlClass() { result = "UnionDecl" }
 
     /** Gets the node corresponding to the field `base`. */
-    final Dbtype getBase() { dbscheme_union_decl_def(this, result) }
+    final F::Dbtype getBase() { dbscheme_union_decl_def(this, result) }
 
     /** Gets the `i`th child of this node. */
-    final Dbtype getChild(int i) { dbscheme_union_decl_child(this, i, result) }
+    final F::Dbtype getChild(int i) { dbscheme_union_decl_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       dbscheme_union_decl_def(this, result) or dbscheme_union_decl_child(this, _, result)
     }
   }
@@ -1973,6 +1981,8 @@ module Dbscheme {
 
 overlay[local]
 module Blame {
+  private import Blame as F
+
   /** The base class for all AST nodes */
   private class AstNodeImpl extends @blame_ast_node {
     /** Gets a string representation of this element. */
@@ -1982,13 +1992,13 @@ module Blame {
     final L::Location getLocation() { blame_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { blame_ast_node_parent(this, result, _) }
+    final F::AstNode getParent() { blame_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
     final int getParentIndex() { blame_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    AstNode getAFieldOrChild() { none() }
+    F::AstNode getAFieldOrChild() { none() }
 
     /** Gets the name of the primary QL class for this element. */
     string getAPrimaryQlClass() { result = "???" }
@@ -2045,13 +2055,13 @@ module Blame {
     final override string getAPrimaryQlClass() { result = "BlameEntry" }
 
     /** Gets the node corresponding to the field `date`. */
-    final Date getDate() { blame_blame_entry_def(this, result) }
+    final F::Date getDate() { blame_blame_entry_def(this, result) }
 
     /** Gets the node corresponding to the field `line`. */
-    final Number getLine(int i) { blame_blame_entry_line(this, i, result) }
+    final F::Number getLine(int i) { blame_blame_entry_line(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       blame_blame_entry_def(this, result) or blame_blame_entry_line(this, _, result)
     }
   }
@@ -2062,13 +2072,13 @@ module Blame {
     final override string getAPrimaryQlClass() { result = "BlameInfo" }
 
     /** Gets the node corresponding to the field `file_entry`. */
-    final FileEntry getFileEntry(int i) { blame_blame_info_file_entry(this, i, result) }
+    final F::FileEntry getFileEntry(int i) { blame_blame_info_file_entry(this, i, result) }
 
     /** Gets the node corresponding to the field `today`. */
-    final Date getToday() { blame_blame_info_def(this, result) }
+    final F::Date getToday() { blame_blame_info_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       blame_blame_info_file_entry(this, _, result) or blame_blame_info_def(this, result)
     }
   }
@@ -2085,13 +2095,13 @@ module Blame {
     final override string getAPrimaryQlClass() { result = "FileEntry" }
 
     /** Gets the node corresponding to the field `blame_entry`. */
-    final BlameEntry getBlameEntry(int i) { blame_file_entry_blame_entry(this, i, result) }
+    final F::BlameEntry getBlameEntry(int i) { blame_file_entry_blame_entry(this, i, result) }
 
     /** Gets the node corresponding to the field `file_name`. */
-    final Filename getFileName() { blame_file_entry_def(this, result) }
+    final F::Filename getFileName() { blame_file_entry_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       blame_file_entry_blame_entry(this, _, result) or blame_file_entry_def(this, result)
     }
   }
@@ -2129,6 +2139,8 @@ module Blame {
 
 overlay[local]
 module JSON {
+  private import JSON as F
+
   /** The base class for all AST nodes */
   private class AstNodeImpl extends @json_ast_node {
     /** Gets a string representation of this element. */
@@ -2138,13 +2150,13 @@ module JSON {
     final L::Location getLocation() { json_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { json_ast_node_parent(this, result, _) }
+    final F::AstNode getParent() { json_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
     final int getParentIndex() { json_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    AstNode getAFieldOrChild() { none() }
+    F::AstNode getAFieldOrChild() { none() }
 
     /** Gets the name of the primary QL class for this element. */
     string getAPrimaryQlClass() { result = "???" }
@@ -2203,10 +2215,10 @@ module JSON {
     final override string getAPrimaryQlClass() { result = "Array" }
 
     /** Gets the `i`th child of this node. */
-    final UnderscoreValue getChild(int i) { json_array_child(this, i, result) }
+    final F::UnderscoreValue getChild(int i) { json_array_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { json_array_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { json_array_child(this, _, result) }
   }
 
   /** A class representing `comment` tokens. */
@@ -2221,10 +2233,10 @@ module JSON {
     final override string getAPrimaryQlClass() { result = "Document" }
 
     /** Gets the `i`th child of this node. */
-    final UnderscoreValue getChild(int i) { json_document_child(this, i, result) }
+    final F::UnderscoreValue getChild(int i) { json_document_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { json_document_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { json_document_child(this, _, result) }
   }
 
   /** A class representing `escape_sequence` tokens. */
@@ -2257,10 +2269,10 @@ module JSON {
     final override string getAPrimaryQlClass() { result = "Object" }
 
     /** Gets the `i`th child of this node. */
-    final Pair getChild(int i) { json_object_child(this, i, result) }
+    final F::Pair getChild(int i) { json_object_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { json_object_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { json_object_child(this, _, result) }
   }
 
   /** A class representing `pair` nodes. */
@@ -2269,13 +2281,13 @@ module JSON {
     final override string getAPrimaryQlClass() { result = "Pair" }
 
     /** Gets the node corresponding to the field `key`. */
-    final String getKey() { json_pair_def(this, result, _) }
+    final F::String getKey() { json_pair_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    final UnderscoreValue getValue() { json_pair_def(this, _, result) }
+    final F::UnderscoreValue getValue() { json_pair_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
+    final override F::AstNode getAFieldOrChild() {
       json_pair_def(this, result, _) or json_pair_def(this, _, result)
     }
   }
@@ -2286,10 +2298,10 @@ module JSON {
     final override string getAPrimaryQlClass() { result = "String" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { json_string_child(this, i, result) }
+    final F::AstNode getChild(int i) { json_string_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { json_string_child(this, _, result) }
+    final override F::AstNode getAFieldOrChild() { json_string_child(this, _, result) }
   }
 
   /** A class representing `string_content` tokens. */
