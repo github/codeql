@@ -186,7 +186,7 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Py::Location, Cfg
       certain = true
     )
     or
-    // `del x` — removes the binding. Modelled as a certain write that
+    // `del x` — removes the binding. modeled as a certain write that
     // makes any subsequent read invalid.
     exists(Cfg::NameNode n |
       bb.getNode(i) = n and
@@ -204,7 +204,7 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Py::Location, Cfg
     certain = true
     or
     // `from X import *` — possibly rebinds every name in the importing
-    // scope. Modelled as an uncertain write at the import-star's CFG
+    // scope. modeled as an uncertain write at the import-star's CFG
     // position for every variable that lives in (or is referenced
     // from) the same scope as the import-star. Mirrors legacy ESSA's
     // `ImportStarRefinement` (see `essa/SsaDefinitions.qll`'s
@@ -405,7 +405,7 @@ class EssaNodeDefinition extends Ssa::SsaWriteDefinition {
  * assignments, import aliases (`import x` / `from m import x [as y]`),
  * `with ... as x`, and for-target bindings (where `getValue()` returns
  * the iter expression's CFG node). Excludes parameter bindings —
- * those are modelled by `ParameterDefinition`.
+ * those are modeled by `ParameterDefinition`.
  */
 class AssignmentDefinition extends EssaNodeDefinition {
   AssignmentDefinition() {
@@ -523,7 +523,7 @@ class PhiFunction extends PhiNode {
   Ssa::SsaDefinition getAnInput() { Impl::phiHasInputFromBlock(this, result, _) }
 }
 
-/** Base class for all ESSA definitions (legacy-shaped). */
+/** An ESSA definition (legacy-shaped). */
 class EssaDefinition = Ssa::SsaDefinition;
 
 /**
@@ -563,8 +563,8 @@ class EssaVariable extends Ssa::SsaDefinition {
 module AdjacentUses {
   /** Holds if `nodeFrom` and `nodeTo` are adjacent uses of the same SSA variable. */
   predicate adjacentUseUse(Cfg::NameNode nodeFrom, Cfg::NameNode nodeTo) {
-    exists(SsaSourceVariable v, CfgImpl::BasicBlock bb1, int i1, CfgImpl::BasicBlock bb2, int i2 |
-      Impl::adjacentUseUse(bb1, i1, bb2, i2, v, _) and
+    exists(CfgImpl::BasicBlock bb1, int i1, CfgImpl::BasicBlock bb2, int i2 |
+      Impl::adjacentUseUse(bb1, i1, bb2, i2, _, _) and
       nodeFrom = bb1.getNode(i1) and
       nodeTo = bb2.getNode(i2)
     )
