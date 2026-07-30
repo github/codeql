@@ -430,7 +430,7 @@ module Unified {
   }
 
   /** A class representing `conditional_pattern` nodes. */
-  final class ConditionalPattern extends @unified_conditional_pattern, AstNodeImpl {
+  class ConditionalPattern extends @unified_conditional_pattern, F::Pattern {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ConditionalPattern" }
 
@@ -1895,6 +1895,8 @@ module UnifiedFinal {
   final class ClassLikeDeclaration = F::ClassLikeDeclaration;
 
   final class CompoundAssignExpr = F::CompoundAssignExpr;
+
+  final class ConditionalPattern = F::ConditionalPattern;
 
   final class ConstructorDeclaration = F::ConstructorDeclaration;
 
