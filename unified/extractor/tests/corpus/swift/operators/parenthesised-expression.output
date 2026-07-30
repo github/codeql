@@ -2,20 +2,35 @@
 
 ---
 
-source_file
-  statement:
-    multiplicative_expression
-      lhs:
-        tuple_expression
-          element:
-            tuple_expression_item
-              value:
-                additive_expression
-                  lhs: simple_identifier "a"
-                  op: +
-                  rhs: simple_identifier "b"
-      op: *
-      rhs: simple_identifier "c"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "*"
+          leftOperand:
+            tupleExpr
+              leftParen: (
+              rightParen: )
+              elements:
+                labeledExpr
+                  expression:
+                    infixOperatorExpr
+                      operator:
+                        binaryOperatorExpr
+                          operator: binaryOperator "+"
+                      leftOperand:
+                        declReferenceExpr
+                          baseName: identifier "a"
+                      rightOperand:
+                        declReferenceExpr
+                          baseName: identifier "b"
+          rightOperand:
+            declReferenceExpr
+              baseName: identifier "c"
 
 ---
 
@@ -24,8 +39,8 @@ top_level
     block
       stmt:
         binary_expr
-          operator: infix_operator "*"
           left: tuple_expr "(a + b)"
+          operator: infix_operator "*"
           right:
             name_expr
               identifier: identifier "c"

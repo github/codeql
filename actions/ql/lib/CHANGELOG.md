@@ -1,3 +1,9 @@
+## 0.4.40
+
+### Minor Analysis Improvements
+
+* Altered the logic of `EnvironmentCheck` to make sure it is a check that protects only for non-toctou. This change will result in more results being found by the queries: `actions/untrusted-checkout-toctou/high` and `actions/untrusted-checkout-toctou/critical`.
+
 ## 0.4.39
 
 No user-facing changes.

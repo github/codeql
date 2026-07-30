@@ -4,37 +4,60 @@ func greet(name: String = "world") {
 
 ---
 
-source_file
-  statement:
-    function_declaration
-      body:
-        block
-          statement:
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value: simple_identifier "name"
-      name: simple_identifier "greet"
-      parameter:
-        function_parameter
-          default_value:
-            line_string_literal
-              text: line_str_text "world"
-          parameter:
-            parameter
-              name: simple_identifier "name"
-              type:
-                type
-                  name:
-                    user_type
-                      part:
-                        simple_user_type
-                          name: type_identifier "String"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "name"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          name: identifier "greet"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "String"
+                      firstName: identifier "name"
+                      defaultValue:
+                        initializerClause
+                          equal: =
+                          value:
+                            stringLiteralExpr
+                              closingQuote: "
+                              openingQuote: "
+                              segments:
+                                stringSegment
+                                  content: stringSegment "world"
+          funcKeyword: func
 
 ---
 
@@ -43,22 +66,25 @@ top_level
     block
       stmt:
         function_declaration
+          name: identifier "greet"
+          parameter:
+            parameter
+              type:
+                named_type_expr
+                  name: identifier "String"
+              pattern:
+                name_pattern
+                  identifier: identifier "name"
+              default: string_literal "\"world\""
           body:
             block
               stmt:
                 call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
                   argument:
                     argument
                       value:
                         name_expr
                           identifier: identifier "name"
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
-          name: identifier "greet"
-          parameter:
-            parameter
-              default: string_literal "\"world\""
-              pattern:
-                name_pattern
-                  identifier: identifier "name"

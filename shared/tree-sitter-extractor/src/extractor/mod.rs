@@ -16,6 +16,8 @@ use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
+pub mod desugaring;
+mod driver;
 pub mod simple;
 
 /// Trait abstracting over tree-sitter and yeast node types for extraction.
@@ -294,6 +296,10 @@ pub fn location_label(writer: &mut trap::Writer, location: trap::Location) -> tr
 /// caller's responsibility, allowing it to be done once and shared across
 /// files.
 #[allow(clippy::too_many_arguments)]
+/// Extract a file with a tree-sitter grammar, walking the parse tree directly.
+/// Comments and other `extra` nodes are emitted inline as tokens. This is the
+/// path for languages that don't desugar their syntax tree (and hence have no
+/// `extra` side channel); desugaring languages use [`extract_parsed`] instead.
 pub fn extract(
     language: &Language,
     language_prefix: &str,
@@ -304,7 +310,6 @@ pub fn extract(
     path: &Path,
     source: &[u8],
     ranges: &[Range],
-    desugarer: Option<&dyn yeast::Desugarer>,
 ) {
     let path_str = file_paths::normalize_and_transform_path(path, transformer);
     let source_root = std::env::current_dir()
@@ -337,19 +342,171 @@ pub fn extract(
         schema,
     );
 
-    if let Some(desugarer) = desugarer {
-        let ast = desugarer
-            .run_from_tree(&tree, source)
-            .unwrap_or_else(|e| panic!("Desugaring failed for {path_str}: {e}"));
-        traverse_yeast(&ast, &mut visitor);
-        // Comments and other `extra` nodes are not represented in the desugared
-        // AST, so recover them directly from the original parse tree.
-        traverse_extras(&tree, &mut visitor);
-    } else {
-        traverse(&tree, &mut visitor);
-    }
+    traverse(&tree, &mut visitor);
 
     parser.reset();
+}
+
+/// A source tree produced by a parser: the raw `yeast::Ast` (pre-desugaring)
+/// plus side-channel `extra` tokens (comments and similar) that are not
+/// attached to the AST proper.
+pub struct ParsedTree {
+    pub ast: yeast::Ast,
+    pub extras: Vec<ExtraToken>,
+}
+
+/// A piece of side-channel `extra` content (a comment or unexpected text)
+/// recovered by a parser. `kind` is a language-defined id written verbatim into
+/// the `<lang>_trivia_tokeninfo` table (the tree-sitter parser uses the
+/// grammar's node kind id here; a custom parser supplies its own stable
+/// enumeration).
+pub struct ExtraToken {
+    pub kind: usize,
+    pub range: yeast::Range,
+    pub text: String,
+}
+
+/// Build a parser closure that parses `source` with a tree-sitter `language`,
+/// producing a [`ParsedTree`]: a `yeast::Ast` (via [`yeast::Ast::from_tree`])
+/// plus the `extra` nodes (comments and similar) recovered as side-channel
+/// tokens. This lets a tree-sitter language plug into the same
+/// `ParsedTree`-producing interface as a custom parser.
+pub fn tree_sitter_parser(
+    language: tree_sitter::Language,
+) -> impl Fn(&[u8]) -> Result<ParsedTree, String> + Send + Sync {
+    move |source: &[u8]| {
+        let mut parser = Parser::new();
+        parser
+            .set_language(&language)
+            .map_err(|e| format!("failed to set tree-sitter language: {e}"))?;
+        let tree = parser
+            .parse(source, None)
+            .ok_or_else(|| "tree-sitter failed to parse".to_string())?;
+        let ast = yeast::Ast::from_tree_with_schema_and_source(
+            yeast::schema::from_language(&language),
+            &tree,
+            &language,
+            source.to_vec(),
+        );
+        let mut extras = Vec::new();
+        collect_extras(tree.root_node(), source, &mut extras);
+        Ok(ParsedTree { ast, extras })
+    }
+}
+
+/// Collect `extra` nodes (comments and similar) under `node` into `out` as
+/// [`ExtraToken`]s, keyed by the grammar's node kind id, for a desugaring
+/// language whose rewritten AST won't retain them.
+fn collect_extras(node: Node<'_>, source: &[u8], out: &mut Vec<ExtraToken>) {
+    let mut cursor = node.walk();
+    for child in node.children(&mut cursor) {
+        if child.is_extra() {
+            let text = String::from_utf8_lossy(&source[child.byte_range()]).into_owned();
+            out.push(ExtraToken {
+                kind: child.kind_id() as usize,
+                range: child.range().into(),
+                text,
+            });
+        } else {
+            collect_extras(child, source, out);
+        }
+    }
+}
+
+/// Extract a file from a [`ParsedTree`]-producing parser that desugars. The
+/// parser yields a `yeast::Ast` plus side-channel `extra` tokens; the AST is
+/// rewritten through `desugarer` ([`yeast::Desugarer::run_from_ast`]) before
+/// TRAP extraction, and the `extra` tokens (comments and similar, which the
+/// desugared AST does not carry) are emitted from the side channel. Both
+/// tree-sitter grammars (via [`tree_sitter_parser`]) and custom parsers plug in
+/// here; languages that don't desugar use [`extract`] instead.
+#[allow(clippy::too_many_arguments)]
+pub fn extract_parsed(
+    parse: &(dyn Fn(&[u8]) -> Result<ParsedTree, String> + Send + Sync),
+    language_prefix: &str,
+    schema: &NodeTypeMap,
+    diagnostics_writer: &mut diagnostics::LogWriter,
+    trap_writer: &mut trap::Writer,
+    transformer: Option<&file_paths::PathTransformer>,
+    path: &Path,
+    source: &[u8],
+    desugarer: &dyn yeast::Desugarer,
+) {
+    let path_str = file_paths::normalize_and_transform_path(path, transformer);
+    let source_root = std::env::current_dir()
+        .ok()
+        .and_then(|d| d.canonicalize().ok());
+    let diagnostics_path = file_paths::relativize_for_diagnostic(path, source_root.as_deref());
+    let span = tracing::span!(tracing::Level::TRACE, "extract", file = %path_str);
+    let _enter = span.enter();
+    tracing::debug!("extracting: {}", path_str);
+
+    trap_writer.comment(format!("Auto-generated TRAP file for {path_str}"));
+    let file_label = populate_file(trap_writer, path, transformer);
+    let mut visitor = Visitor::new(
+        source,
+        diagnostics_writer,
+        trap_writer,
+        &diagnostics_path,
+        file_label,
+        language_prefix,
+        schema,
+    );
+
+    let parsed = parse(source).unwrap_or_else(|e| panic!("Parsing failed for {path_str}: {e}"));
+    let ast = desugarer
+        .run_from_ast(parsed.ast)
+        .unwrap_or_else(|e| panic!("Desugaring failed for {path_str}: {e}"));
+    traverse_yeast(&ast, &mut visitor);
+    // Comments and other `extra` tokens are not part of the desugared AST; emit
+    // them directly from the parser's side channel.
+    for extra in &parsed.extras {
+        visitor.emit_extra(extra);
+    }
+}
+
+/// A lightweight [`AstNode`] over a piece of side-channel `extra` content
+/// recovered by a custom parser, so it can reuse the tree-sitter location
+/// machinery.
+struct ExtraNode {
+    range: yeast::Range,
+    text: String,
+}
+
+impl AstNode for ExtraNode {
+    fn kind(&self) -> &str {
+        "extra"
+    }
+    fn is_named(&self) -> bool {
+        false
+    }
+    fn is_missing(&self) -> bool {
+        false
+    }
+    fn is_error(&self) -> bool {
+        false
+    }
+    fn is_extra(&self) -> bool {
+        true
+    }
+    fn start_position(&self) -> tree_sitter::Point {
+        tree_sitter::Point {
+            row: self.range.start_point.row,
+            column: self.range.start_point.column,
+        }
+    }
+    fn end_position(&self) -> tree_sitter::Point {
+        tree_sitter::Point {
+            row: self.range.end_point.row,
+            column: self.range.end_point.column,
+        }
+    }
+    fn byte_range(&self) -> std::ops::Range<usize> {
+        self.range.start_byte..self.range.end_byte
+    }
+    fn opt_string_content(&self) -> Option<String> {
+        Some(self.text.clone())
+    }
 }
 
 struct ChildNode {
@@ -415,10 +572,11 @@ impl<'a> Visitor<'a> {
         }
     }
 
-    /// Emits a `TriviaToken` for the given `extra` node (e.g. a comment) from
-    /// the original parse tree. Trivia tokens carry a location and their source
-    /// text, but are not attached to a parent in the (possibly desugared) AST.
-    fn emit_trivia_token(&mut self, node: &Node) {
+    /// Emit an `extra` token (a location row plus a `trivia_tokeninfo` row) for
+    /// any [`AstNode`], with an explicit `kind` id. Shared by the tree-sitter
+    /// path (kind = the grammar's node kind id) and the custom-parser path
+    /// (kind = a language-defined `extra` kind id).
+    fn emit_extra_from<N: AstNode>(&mut self, node: &N, kind: usize) {
         let id = self.trap_writer.fresh_id();
         let loc = location_for(self, self.file_label, node);
         let loc_label = location_label(self.trap_writer, loc);
@@ -430,10 +588,19 @@ impl<'a> Visitor<'a> {
             &self.trivia_tokeninfo_table_name,
             vec![
                 trap::Arg::Label(id),
-                trap::Arg::Int(node.kind_id() as usize),
+                trap::Arg::Int(kind),
                 sliced_source_arg(self.source, node),
             ],
         );
+    }
+
+    /// Emit an `extra` token recovered from a parser's side channel.
+    fn emit_extra(&mut self, extra: &ExtraToken) {
+        let node = ExtraNode {
+            range: extra.range,
+            text: extra.text.clone(),
+        };
+        self.emit_extra_from(&node, extra.kind);
     }
 
     fn record_parse_error(&mut self, loc: trap::Label, mesg: &diagnostics::DiagnosticMessage) {
@@ -867,24 +1034,6 @@ fn traverse(tree: &Tree, visitor: &mut Visitor) {
             } else {
                 break;
             }
-        }
-    }
-}
-
-/// Walks the original tree-sitter tree and emits a `TriviaToken` for every
-/// `extra` node (e.g. a comment). Used to preserve comments that would
-/// otherwise be lost after a desugaring pass rewrites the tree.
-fn traverse_extras(tree: &Tree, visitor: &mut Visitor) {
-    emit_extras_in(visitor, tree.root_node());
-}
-
-fn emit_extras_in(visitor: &mut Visitor, node: Node<'_>) {
-    let mut cursor = node.walk();
-    for child in node.children(&mut cursor) {
-        if child.is_extra() {
-            visitor.emit_trivia_token(&child);
-        } else {
-            emit_extras_in(visitor, child);
         }
     }
 }

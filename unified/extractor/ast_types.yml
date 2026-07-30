@@ -31,6 +31,7 @@ supertypes:
     - throw_expr
     - try_expr
     - switch_expr
+    - unresolved_operator_sequence
     - unsupported_node
   expr_or_pattern:
     - expr
@@ -38,11 +39,17 @@ supertypes:
   expr_or_type:
     - expr
     - type_expr
+  # An element of an `unresolved_operator_sequence`: either an operand (`expr`)
+  # or one of the infix operators separating the operands.
+  expr_or_operator:
+    - expr
+    - infix_operator
   pattern:
     - name_pattern
     - tuple_pattern
     - constructor_pattern
     - or_pattern
+    - conditional_pattern
     - ignore_pattern
     - expr_equality_pattern
     - bulk_importing_pattern
@@ -50,9 +57,6 @@ supertypes:
   # A statement is anything that can appear in a block.
   # This type contains all of 'expr' and has partial overlap with 'member'.
   # For example, type_alias_declaration can appear either as a stmt or member.
-  # constructor_declaration and destructor_declaration appear here because
-  # tree-sitter-swift's error recovery for #if/#endif in class bodies can place
-  # init/deinit declarations at the wrong (statement) level.
   stmt:
     - expr
     - variable_declaration
@@ -136,6 +140,19 @@ named:
   unary_expr:
     operand: expr
     operator: operator
+
+  # A flat, unresolved operator sequence such as `a <+> b <+> c`.
+  #
+  # Swift's grammar doesn't encode operator precedence, so an operator chain is
+  # first parsed as a flat list of operands and operators. The parser front-end
+  # resolves this into structured `binary_expr` trees when it knows the
+  # operators' precedence (standard-library operators, and operators declared in
+  # the same file). When it encounters an operator whose precedence it can't
+  # determine (e.g. one imported from another module), it leaves that chain
+  # unresolved and emits it here rather than guessing a (possibly wrong)
+  # structure. The `element`s alternate operands (`expr`) and infix operators.
+  unresolved_operator_sequence:
+    element*: expr_or_operator
 
   # Plain assignment
   assign_expr:
@@ -350,7 +367,6 @@ named:
   catch_clause:
     modifier*: modifier
     pattern?: pattern
-    guard?: expr
     body: block
 
   # `switch value { case pattern: body case ...: default: body }`
@@ -362,11 +378,9 @@ named:
   # A single `case ...:` (or `default:`) entry in a switch.
   # An entry with multiple `case p1, p2:` patterns uses an `or_pattern`.
   # A `default:` entry has no pattern.
-  # An optional `guard` corresponds to a `where`-clause on the case.
   switch_case:
     modifier*: modifier
     pattern?: pattern
-    guard?: expr
     body: block
 
   # Evaluate 'expr' and match its result against 'pattern', and return true if it matches.
@@ -426,6 +440,14 @@ named:
   or_pattern:
     modifier*: modifier
     pattern*: pattern
+
+  # A pattern that matches against a nested pattern, and subsequently checks a condition.
+  # The match is rejected if the condition does not hold.
+  # Variables bound in the nested pattern are in scope within the condition.
+  conditional_pattern:
+    modifier*: modifier
+    condition: expr
+    pattern: pattern
 
   # A pattern with an optional associated name.
   pattern_element:

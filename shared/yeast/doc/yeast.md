@@ -235,6 +235,48 @@ yeast::trees!(ctx,
 (identifier #{name})         // an identifier from a Rust variable
 ```
 
+### Optional fields (`?`)
+
+A `?` on a field's value makes that field fallible. If a `#{expr}` anywhere
+beneath it interpolates an absent value — an `Option` that is `None` — the
+subtree is abandoned and the field is left unset:
+
+```rust
+rule!((breakStmt label: _? @@lbl) => (break_expr label: (identifier #{lbl})?))
+```
+
+Here an optional capture is being wrapped in a leaf, which without `?` needs
+an `Option::map` to build the leaf only in the `Some` case:
+
+```rust
+// Equivalent, but the intent is buried in the closure:
+(break_expr label: {lbl.map(|l| tree!((identifier #{l})))})
+```
+
+The marker mirrors the query language, where a quantifier likewise follows the
+value it applies to (`label: _? @@lbl`). Note that the schema puts it on the
+other side of the colon — `external_name?: identifier` — because it is
+*declaring* a field's cardinality rather than supplying a value for it.
+
+Absence propagates outwards through as many levels as necessary, and a nested
+`?` catches first, so an inner absent value need not discard the outer node:
+
+```rust
+// If `name` is absent, `pattern` is left unset — but `type` is still set.
+(parameter pattern: (name_pattern identifier: (identifier #{name}))? type: {ty})
+```
+
+Only `#{expr}` propagates absence, because it supplies a node's *content*: with
+no value there is no leaf to build. A `{expr}` splice supplies *children*, where
+yielding nothing already leaves the field unset (see below), so `?` is rejected
+on one. Repetition has no marker at all, in templates or elsewhere: how many
+children a `{expr}` contributes is a property of the expression rather than of
+the syntax.
+
+Outside a `?`, interpolating an `Option` with `#{expr}` remains a compile error.
+That is deliberate: it keeps the choice between "leave the field unset" and
+"unwrap it" explicit at every interpolation.
+
 ### Fresh identifiers
 
 `(kind $name)` creates a leaf node with an auto-generated unique name. All
@@ -278,6 +320,11 @@ yeast::trees!(ctx,
     {extra_nodes}              // splices a Vec<Id>
 )
 ```
+
+Because an `Option<Id>` splices as zero or one id, `field: {opt}` already
+leaves the field unset when `opt` is `None`. Use [`?`](#optional-fields-)
+instead when the optional value has to be *wrapped* in a node first, so that
+there is nothing to wrap when it is absent.
 
 The contents of `{…}` are treated as a Rust block, so multi-statement
 expressions (with `let` bindings) work too:

@@ -1,0 +1,156 @@
+typealias NestedFunction = ((Int) -> Bool) -> Bool
+
+typealias MixedParametersAndTuples = ((Int) -> Bool, String) -> (Bool, Int)
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        typeAliasDecl
+          attributes:
+          name: identifier "NestedFunction"
+          modifiers:
+          initializer:
+            typeInitializerClause
+              equal: =
+              value:
+                functionType
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    tupleTypeElement
+                      type:
+                        functionType
+                          leftParen: (
+                          rightParen: )
+                          parameters:
+                            tupleTypeElement
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                          returnClause:
+                            returnClause
+                              arrow: ->
+                              type:
+                                identifierType
+                                  name: identifier "Bool"
+                  returnClause:
+                    returnClause
+                      arrow: ->
+                      type:
+                        identifierType
+                          name: identifier "Bool"
+          typealiasKeyword: typealias
+    codeBlockItem
+      item:
+        typeAliasDecl
+          attributes:
+          name: identifier "MixedParametersAndTuples"
+          modifiers:
+          initializer:
+            typeInitializerClause
+              equal: =
+              value:
+                functionType
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    tupleTypeElement
+                      trailingComma: ,
+                      type:
+                        functionType
+                          leftParen: (
+                          rightParen: )
+                          parameters:
+                            tupleTypeElement
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                          returnClause:
+                            returnClause
+                              arrow: ->
+                              type:
+                                identifierType
+                                  name: identifier "Bool"
+                    tupleTypeElement
+                      type:
+                        identifierType
+                          name: identifier "String"
+                  returnClause:
+                    returnClause
+                      arrow: ->
+                      type:
+                        tupleType
+                          leftParen: (
+                          rightParen: )
+                          elements:
+                            tupleTypeElement
+                              trailingComma: ,
+                              type:
+                                identifierType
+                                  name: identifier "Bool"
+                            tupleTypeElement
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+          typealiasKeyword: typealias
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        type_alias_declaration
+          name: identifier "NestedFunction"
+          type:
+            function_type_expr
+              parameter:
+                parameter
+                  type:
+                    function_type_expr
+                      parameter:
+                        parameter
+                          type:
+                            named_type_expr
+                              name: identifier "Int"
+                      return_type:
+                        named_type_expr
+                          name: identifier "Bool"
+              return_type:
+                named_type_expr
+                  name: identifier "Bool"
+        type_alias_declaration
+          name: identifier "MixedParametersAndTuples"
+          type:
+            function_type_expr
+              parameter:
+                parameter
+                  type:
+                    function_type_expr
+                      parameter:
+                        parameter
+                          type:
+                            named_type_expr
+                              name: identifier "Int"
+                      return_type:
+                        named_type_expr
+                          name: identifier "Bool"
+                parameter
+                  type:
+                    named_type_expr
+                      name: identifier "String"
+              return_type:
+                tuple_type_expr
+                  element:
+                    tuple_type_element
+                      type:
+                        named_type_expr
+                          name: identifier "Bool"
+                    tuple_type_element
+                      type:
+                        named_type_expr
+                          name: identifier "Int"
