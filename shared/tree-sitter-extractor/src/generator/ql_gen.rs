@@ -193,7 +193,7 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Cl
         is_final: false,
         is_private: false,
         alias: None,
-        supertypes: vec![ql::Type::At(token_type), ql::Type::Normal("AstNode")]
+        supertypes: vec![ql::Type::At(token_type), ql::Type::Facade("AstNode")]
             .into_iter()
             .collect(),
         characteristic_predicate: None,
@@ -262,7 +262,7 @@ pub fn create_trivia_token_class<'a>(
         alias: None,
         supertypes: vec![
             ql::Type::At(trivia_token_type),
-            ql::Type::Normal("AstNode"),
+            ql::Type::Facade("AstNode"),
         ]
         .into_iter()
         .collect(),
@@ -286,7 +286,7 @@ pub fn create_reserved_word_class(db_name: &str) -> ql::Class<'_> {
         is_final: false,
         is_private: false,
         alias: None,
-        supertypes: vec![ql::Type::At(db_name), ql::Type::Normal("Token")]
+        supertypes: vec![ql::Type::At(db_name), ql::Type::Facade("Token")]
             .into_iter()
             .collect(),
         characteristic_predicate: None,
@@ -794,9 +794,9 @@ fn ast_base_types<'a>(
     match direct_supertypes.get(type_name) {
         Some(supertypes) if !supertypes.is_empty() => supertypes
             .iter()
-            .map(|name| ql::Type::Normal(name))
+            .map(|name| ql::Type::Facade(name))
             .collect(),
-        _ => vec![ql::Type::Normal("AstNode")].into_iter().collect(),
+        _ => vec![ql::Type::Facade("AstNode")].into_iter().collect(),
     }
 }
 
@@ -831,7 +831,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                         create_get_a_primary_ql_class(&node.ql_class_name, true);
                     let mut supertypes =
                         class_supertypes(type_name, &node.dbscheme_name, &direct_supertypes);
-                    supertypes.insert(ql::Type::Normal("Token"));
+                    supertypes.insert(ql::Type::Facade("Token"));
                     classes.push(ql::TopLevel::Class(ql::Class {
                         qldoc: Some(format!("A class representing `{}` tokens.", type_name.kind)),
                         name: &node.ql_class_name,
@@ -1005,11 +1005,11 @@ pub fn create_print_ast_module(nodes: &node_types::NodeTypeMap) -> ql::TopLevel<
         overridden: false,
         is_private: false,
         is_final: false,
-        return_type: Some(ql::Type::Normal("AstNode")),
+        return_type: Some(ql::Type::Facade("AstNode")),
         formal_parameters: vec![
             ql::FormalParameter {
                 name: "node",
-                param_type: ql::Type::Normal("AstNode"),
+                param_type: ql::Type::Facade("AstNode"),
             },
             ql::FormalParameter {
                 name: "name",
