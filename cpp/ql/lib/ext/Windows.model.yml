@@ -35,18 +35,18 @@ extensions:
       - ["", "", False, "HttpReceiveRequestEntityBody", "", "", "Argument[*3]", "remote", "manual"]
       - ["", "", False, "HttpReceiveClientCertificate", "", "", "Argument[*3]", "remote", "manual"]
       # winreg.h
-      - ["", "", False, "RegQueryValueA", "", "", "Argument[*2]", "local", "manual"]
-      - ["", "", False, "RegQueryValueExA", "", "", "Argument[*4]", "local", "manual"]
-      - ["", "", False, "RegQueryValueW", "", "", "Argument[*2]", "local", "manual"]
-      - ["", "", False, "RegQueryValueExW", "", "", "Argument[*4]", "local", "manual"]
-      - ["", "", False, "RegGetValueA", "", "", "Argument[*5]", "local", "manual"]
-      - ["", "", False, "RegGetValueW", "", "", "Argument[*5]", "local", "manual"]
+      - ["", "", False, "RegQueryValueA", "", "", "Argument[*2]", "windows-registry", "manual"]
+      - ["", "", False, "RegQueryValueExA", "", "", "Argument[*4]", "windows-registry", "manual"]
+      - ["", "", False, "RegQueryValueW", "", "", "Argument[*2]", "windows-registry", "manual"]
+      - ["", "", False, "RegQueryValueExW", "", "", "Argument[*4]", "windows-registry", "manual"]
+      - ["", "", False, "RegGetValueA", "", "", "Argument[*5]", "windows-registry", "manual"]
+      - ["", "", False, "RegGetValueW", "", "", "Argument[*5]", "windows-registry", "manual"]
       # TODO: Once we support access paths at sources we should also mark Argument[*1].Field[*ve_valueptr]
-      - ["", "", False, "RegQueryMultipleValuesA", "", "", "Argument[*3]", "local", "manual"]
+      - ["", "", False, "RegQueryMultipleValuesA", "", "", "Argument[*3]", "windows-registry", "manual"]
       # TODO: Once we support access paths at sources we should also mark Argument[*1].Field[*ve_valueptr]
-      - ["", "", False, "RegQueryMultipleValuesW", "", "", "Argument[*3]", "local", "manual"]
-      - ["", "", False, "RegEnumValueA", "", "", "Argument[*6]", "local", "manual"]
-      - ["", "", False, "RegEnumValueW", "", "", "Argument[*6]", "local", "manual"]
+      - ["", "", False, "RegQueryMultipleValuesW", "", "", "Argument[*3]", "windows-registry", "manual"]
+      - ["", "", False, "RegEnumValueA", "", "", "Argument[*6]", "windows-registry", "manual"]
+      - ["", "", False, "RegEnumValueW", "", "", "Argument[*6]", "windows-registry", "manual"]
   - addsTo:
       pack: codeql/cpp-all
       extensible: summaryModel

@@ -20,6 +20,9 @@ abstract class RemoteFlowSource extends FlowSource { }
 /** A data flow source of local user input. */
 abstract class LocalFlowSource extends FlowSource { }
 
+/** A data flow source of local user input. */
+abstract class WindowsRegistrySource extends LocalFlowSource { }
+
 /**
  * A remote data flow source that is defined through a `RemoteFlowSourceFunction` model.
  */
@@ -99,6 +102,12 @@ private class ExternalLocalFlowSource extends LocalFlowSource {
   ExternalLocalFlowSource() { sourceNode(this, "local") }
 
   override string getSourceType() { result = "external" }
+}
+
+private class ExternalWindowsRegistrySource extends WindowsRegistrySource {
+  ExternalWindowsRegistrySource() { sourceNode(this, "windows-registry") }
+
+  override string getSourceType() { result = "a value from the Windows registry" }
 }
 
 /** A remote data flow sink. */
