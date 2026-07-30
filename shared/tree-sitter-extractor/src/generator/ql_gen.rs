@@ -260,12 +260,9 @@ pub fn create_trivia_token_class<'a>(
         is_final: false,
         is_private: false,
         alias: None,
-        supertypes: vec![
-            ql::Type::At(trivia_token_type),
-            ql::Type::Facade("AstNode"),
-        ]
-        .into_iter()
-        .collect(),
+        supertypes: vec![ql::Type::At(trivia_token_type), ql::Type::Facade("AstNode")]
+            .into_iter()
+            .collect(),
         characteristic_predicate: None,
         predicates: vec![
             get_value,
@@ -770,9 +767,9 @@ fn create_field_getters<'a>(
     )
 }
 
-fn compute_direct_supertypes<'a>(
-    nodes: &'a node_types::NodeTypeMap,
-) -> std::collections::BTreeMap<node_types::TypeName, BTreeSet<&'a str>> {
+fn compute_direct_supertypes(
+    nodes: &node_types::NodeTypeMap,
+) -> std::collections::BTreeMap<node_types::TypeName, BTreeSet<&str>> {
     let mut supertypes = std::collections::BTreeMap::new();
     for node in nodes.values() {
         if let node_types::EntryKind::Union { members } = &node.kind {

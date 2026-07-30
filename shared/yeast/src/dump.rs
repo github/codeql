@@ -2,6 +2,12 @@ use std::fmt::Write;
 
 use crate::{schema::Schema, Ast, Id, Node, NodeContent, CHILD_FIELD};
 
+type TypeCheckContext<'a> = (
+    &'a Schema,
+    Option<&'a [crate::schema::NodeType]>,
+    Option<(&'a str, &'a str)>,
+);
+
 /// Options for controlling AST dump output.
 pub struct DumpOptions {
     /// Whether to include source locations in the output.
@@ -179,11 +185,7 @@ fn dump_node(
     source: &str,
     options: &DumpOptions,
     indent: usize,
-    type_check: Option<(
-        &Schema,
-        Option<&[crate::schema::NodeType]>,
-        Option<(&str, &str)>,
-    )>,
+    type_check: Option<TypeCheckContext<'_>>,
     out: &mut String,
 ) {
     let node = match ast.get_node(id) {
@@ -268,8 +270,8 @@ fn dump_node(
         let children = &node.fields[&field_id];
         let field_name = ast.field_name_for_id(field_id).unwrap_or("?");
         let child_type_check = type_check.map(|(schema, _, _)| {
-            let expected = expected_for_field(schema, node.kind_name(), field_name)
-                .or(Some(EMPTY_NODE_TYPES));
+            let expected =
+                expected_for_field(schema, node.kind_name(), field_name).or(Some(EMPTY_NODE_TYPES));
             let parent_field = Some((node.kind_name(), field_name));
             (schema, expected, parent_field)
         });
@@ -359,11 +361,7 @@ fn dump_node_inline(
     id: Id,
     source: &str,
     options: &DumpOptions,
-    type_check: Option<(
-        &Schema,
-        Option<&[crate::schema::NodeType]>,
-        Option<(&str, &str)>,
-    )>,
+    type_check: Option<TypeCheckContext<'_>>,
     out: &mut String,
 ) {
     let node = match ast.get_node(id) {
