@@ -368,17 +368,6 @@ private predicate isDefaultMicrosoftAspNetCoreMvcController(Class controller) {
     MicrosoftAspNetCoreMvcNonControllerAttribute
 }
 
-private predicate isDefaultMicrosoftAspNetCoreMvcAction(Class controller, Method method) {
-  controller.hasMember(method) and
-  method.isPublic() and
-  not method.isStatic() and
-  not method.isAbstract() and
-  not method.getUnboundDeclaration() instanceof UnboundGenericMethod and
-  not method.getOverridee*().getAnAttribute() instanceof MicrosoftAspNetCoreMvcNonActionAttribute and
-  not method.getOverridee*().getDeclaringType() instanceof ObjectType and
-  not method instanceof DisposeMethod
-}
-
 /** A class treated as an owner of ASP.NET Core MVC controller helper methods. */
 class MicrosoftAspNetCoreMvcControllerHelperClass extends Class {
   MicrosoftAspNetCoreMvcControllerHelperClass() {
@@ -407,7 +396,16 @@ class MicrosoftAspNetCoreMvcController extends Class {
   MicrosoftAspNetCoreMvcController() { isDefaultMicrosoftAspNetCoreMvcController(this) }
 
   /** Gets an action method for this controller. */
-  Method getAnActionMethod() { isDefaultMicrosoftAspNetCoreMvcAction(this, result) }
+  Method getAnActionMethod() {
+    this.hasMember(result) and
+    result.isPublic() and
+    not result.isStatic() and
+    not result.isAbstract() and
+    not result.getUnboundDeclaration() instanceof UnboundGenericMethod and
+    not result.getOverridee*().getAnAttribute() instanceof MicrosoftAspNetCoreMvcNonActionAttribute and
+    not result.getOverridee*().getDeclaringType() instanceof ObjectType and
+    not result instanceof DisposeMethod
+  }
 
   /** Gets a `Redirect*` method. */
   Method getARedirectMethod() {
