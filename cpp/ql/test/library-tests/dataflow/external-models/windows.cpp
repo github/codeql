@@ -1082,3 +1082,94 @@ void test_registry_queries(HKEY hKey) {
     sink(*data); // $ ir
   }
 }
+
+using LPCOLESTR = const char*;
+using LPOLESTR = char*;
+using GUID = int;
+using CLSID = GUID;
+using IID = GUID;
+using REFIID = const IID&;
+using REFCLSID = const CLSID&;
+using REFGUID = const GUID&;
+using LPIID = IID*;
+using LPCLSID = CLSID*;
+using HRESULT = long;
+
+HRESULT IIDFromString(LPCOLESTR lpsz, LPIID lpiid);
+HRESULT StringFromIID(REFIID rclsid, LPOLESTR* lplpsz);
+HRESULT ProgIDFromCLSID(REFCLSID clsid, LPOLESTR* lplpszProgID);
+HRESULT CLSIDFromProgID(LPCOLESTR lpszProgID, LPCLSID lpclsid);
+HRESULT CLSIDFromString(LPCOLESTR lpsz, LPCLSID pclsid);
+HRESULT StringFromCLSID(REFCLSID rclsid, LPOLESTR* lplpsz);
+int StringFromGUID(REFGUID rguid, LPOLESTR lpsz);
+int GUIDFromString(LPCOLESTR psz, GUID* pguid);
+int StringFromGUID2(REFGUID rguid, LPOLESTR lpsz, int cchMax);
+
+void sink(GUID);
+void sink(GUID*);
+
+void test_com_string_conversions() {
+  {
+    char str[256];
+    str[0] = (char)source();
+    IID iid;
+    IIDFromString(str, &iid);
+    sink(iid); // $ MISSING: ir
+  }
+  {
+    IID iid = source();
+    LPOLESTR str = nullptr;
+    StringFromIID(iid, &str);
+    sink(str);
+    sink(*str); // $ MISSING: ir
+  }
+  {
+    CLSID clsid = source();
+    LPOLESTR str = nullptr;
+    ProgIDFromCLSID(clsid, &str);
+    sink(str);
+    sink(*str); // $ MISSING: ir
+  }
+  {
+    char progID[256];
+    progID[0] = (char)source();
+    CLSID clsid;
+    CLSIDFromProgID(progID, &clsid);
+    sink(clsid); // $ MISSING: ir
+  }
+  {
+    char str[256];
+    str[0] = (char)source();
+    CLSID clsid;
+    CLSIDFromString(str, &clsid);
+    sink(clsid); // $ MISSING: ir
+  }
+  {
+    CLSID clsid = source();
+    LPOLESTR str = nullptr;
+    StringFromCLSID(clsid, &str);
+    sink(str);
+    sink(*str); // $ MISSING: ir
+  }
+  {
+    GUID guid = source();
+    char str[256];
+    StringFromGUID(guid, str);
+    sink(str);
+    sink(*str); // $ MISSING: ir
+  }
+  {
+    char str[256];
+    str[0] = (char)source();
+    GUID guid;
+    GUIDFromString(str, &guid);
+    sink(guid); // $ MISSING: ir
+  }
+  {
+    GUID guid = source();
+    char str[256];
+    StringFromGUID2(guid, str, 256);
+    sink(str);
+    sink(*str); // $ MISSING: ir
+  }
+}
