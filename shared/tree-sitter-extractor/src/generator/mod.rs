@@ -129,11 +129,19 @@ pub fn generate(
         } else {
             language.name.clone() // If not using a facade AST, treat the module itself as the facade module.
         };
-        body.push(ql::TopLevel::Import(ql::Import {
-            is_private: true,
-            module: &facade_import_name,
-            alias: Some("F"),
-        }));
+        if use_facade_ast {
+            body.push(ql::TopLevel::Import(ql::Import {
+                is_private: true,
+                module: &facade_import_name,
+                alias: Some("F"),
+            }));
+        } else {
+            body.push(ql::TopLevel::ModuleAlias(ql::ModuleAlias {
+                is_private: true,
+                name: "F",
+                target: &language.name,
+            }));
+        }
 
         body.push(ql::TopLevel::Class(ql_gen::create_ast_node_class(
             &ast_node_name,
@@ -178,18 +186,33 @@ pub fn generate(
 
         body.append(&mut ql_gen::convert_nodes(&nodes));
         body.push(ql_gen::create_print_ast_module(&nodes));
-        let mut final_body = vec![
-            ql::TopLevel::Import(ql::Import {
-                is_private: true,
-                module: &facade_import_name,
-                alias: Some("F"),
-            }),
-            ql::TopLevel::Import(ql::Import {
-                is_private: false,
-                module: "F",
-                alias: None,
-            }),
-        ];
+        let mut final_body = if use_facade_ast {
+            vec![
+                ql::TopLevel::Import(ql::Import {
+                    is_private: true,
+                    module: &facade_import_name,
+                    alias: Some("F"),
+                }),
+                ql::TopLevel::Import(ql::Import {
+                    is_private: false,
+                    module: "F",
+                    alias: None,
+                }),
+            ]
+        } else {
+            vec![
+                ql::TopLevel::ModuleAlias(ql::ModuleAlias {
+                    is_private: true,
+                    name: "F",
+                    target: &language.name,
+                }),
+                ql::TopLevel::Import(ql::Import {
+                    is_private: false,
+                    module: "F",
+                    alias: None,
+                }),
+            ]
+        };
         let final_aliases = body
             .iter()
             .filter_map(|decl| match decl {
