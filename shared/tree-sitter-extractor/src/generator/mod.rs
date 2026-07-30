@@ -135,17 +135,16 @@ pub fn generate(
             alias: Some("F"),
         }));
 
-        for c in ql_gen::create_ast_node_class(
+        body.push(ql::TopLevel::Class(ql_gen::create_ast_node_class(
             &ast_node_name,
             &node_location_table_name,
             &node_parent_table_name,
-        ) {
-            body.push(ql::TopLevel::Class(c));
-        }
+        )));
 
-        for c in ql_gen::create_token_class(&token_name, &tokeninfo_name) {
-            body.push(ql::TopLevel::Class(c));
-        }
+        body.push(ql::TopLevel::Class(ql_gen::create_token_class(
+            &token_name,
+            &tokeninfo_name,
+        )));
 
         if has_trivia_tokens {
             body.push(ql::TopLevel::Class(ql_gen::create_trivia_token_class(
@@ -179,14 +178,53 @@ pub fn generate(
 
         body.append(&mut ql_gen::convert_nodes(&nodes));
         body.push(ql_gen::create_print_ast_module(&nodes));
+        let mut final_body = vec![
+            ql::TopLevel::Import(ql::Import {
+                is_private: true,
+                module: &facade_import_name,
+                alias: Some("F"),
+            }),
+            ql::TopLevel::Import(ql::Import {
+                is_private: false,
+                module: "F",
+                alias: None,
+            }),
+        ];
+        let final_aliases = body
+            .iter()
+            .filter_map(|decl| match decl {
+                ql::TopLevel::Class(c) => Some(ql::TopLevel::Class(ql::Class {
+                    qldoc: None,
+                    name: c.name,
+                    is_abstract: false,
+                    is_final: true,
+                    is_private: false,
+                    supertypes: Set::new(),
+                    characteristic_predicate: None,
+                    predicates: vec![],
+                    alias: Some(format!("F::{}", c.name)),
+                })),
+                _ => None,
+            })
+            .collect::<Vec<_>>();
+        final_body.extend(final_aliases);
+        let final_module_name = format!("{}Final", language.name);
         ql::write(
             &mut ql_writer,
-            &[ql::TopLevel::Module(ql::Module {
-                qldoc: None,
-                name: &language.name,
-                body,
-                overlay: Some(ql::OverlayAnnotation::Local),
-            })],
+            &[
+                ql::TopLevel::Module(ql::Module {
+                    qldoc: None,
+                    name: &language.name,
+                    body,
+                    overlay: Some(ql::OverlayAnnotation::Local),
+                }),
+                ql::TopLevel::Module(ql::Module {
+                    qldoc: None,
+                    name: &final_module_name,
+                    body: final_body,
+                    overlay: None,
+                }),
+            ],
         )?;
     }
     Ok(())

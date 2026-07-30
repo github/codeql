@@ -8,7 +8,7 @@ pub fn create_ast_node_class<'a>(
     ast_node: &'a str,
     node_location_table: &'a str,
     node_parent_table: &'a str,
-) -> [ql::Class<'a>; 2] {
+) -> ql::Class<'a> {
     // Default implementation of `toString` calls `this.getAPrimaryQlClass()`
     let to_string = ql::Predicate {
         qldoc: Some(String::from(
@@ -132,41 +132,28 @@ pub fn create_ast_node_class<'a>(
         ),
         overlay: None,
     };
-    [
-        ql::Class {
-            qldoc: Some(String::from("The base class for all AST nodes")),
-            name: "AstNodeImpl",
-            is_abstract: false,
-            is_final: false,
-            is_private: true,
-            alias: None,
-            supertypes: vec![ql::Type::At(ast_node)].into_iter().collect(),
-            characteristic_predicate: None,
-            predicates: vec![
-                to_string,
-                get_location,
-                get_parent,
-                get_parent_index,
-                get_a_field_or_child,
-                get_a_primary_ql_class,
-                get_primary_ql_classes,
-            ],
-        },
-        ql::Class {
-            qldoc: None,
-            name: "AstNode",
-            is_abstract: false,
-            is_final: true,
-            is_private: false,
-            alias: Some("AstNodeImpl".to_string()),
-            supertypes: vec![].into_iter().collect(),
-            characteristic_predicate: None,
-            predicates: vec![],
-        },
-    ]
+    ql::Class {
+        qldoc: Some(String::from("The base class for all AST nodes")),
+        name: "AstNode",
+        is_abstract: false,
+        is_final: false,
+        is_private: false,
+        alias: None,
+        supertypes: vec![ql::Type::At(ast_node)].into_iter().collect(),
+        characteristic_predicate: None,
+        predicates: vec![
+            to_string,
+            get_location,
+            get_parent,
+            get_parent_index,
+            get_a_field_or_child,
+            get_a_primary_ql_class,
+            get_primary_ql_classes,
+        ],
+    }
 }
 
-pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> [ql::Class<'a>; 2] {
+pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> ql::Class<'a> {
     let tokeninfo_arity = 3; // id, kind, value
     let get_value = ql::Predicate {
         qldoc: Some(String::from("Gets the value of this token.")),
@@ -199,36 +186,23 @@ pub fn create_token_class<'a>(token_type: &'a str, tokeninfo: &'a str) -> [ql::C
         ),
         overlay: None,
     };
-    [
-        ql::Class {
-            qldoc: Some(String::from("A token.")),
-            name: "TokenImpl",
-            is_abstract: false,
-            is_final: false,
-            is_private: true,
-            alias: None,
-            supertypes: vec![ql::Type::At(token_type), ql::Type::Normal("AstNodeImpl")]
-                .into_iter()
-                .collect(),
-            characteristic_predicate: None,
-            predicates: vec![
-                get_value,
-                to_string,
-                create_get_a_primary_ql_class("Token", false),
-            ],
-        },
-        ql::Class {
-            qldoc: None,
-            name: "Token",
-            is_abstract: false,
-            is_final: true,
-            is_private: false,
-            alias: Some("TokenImpl".to_string()),
-            supertypes: vec![].into_iter().collect(),
-            characteristic_predicate: None,
-            predicates: vec![],
-        },
-    ]
+    ql::Class {
+        qldoc: Some(String::from("A token.")),
+        name: "Token",
+        is_abstract: false,
+        is_final: false,
+        is_private: false,
+        alias: None,
+        supertypes: vec![ql::Type::At(token_type), ql::Type::Normal("AstNode")]
+            .into_iter()
+            .collect(),
+        characteristic_predicate: None,
+        predicates: vec![
+            get_value,
+            to_string,
+            create_get_a_primary_ql_class("Token", false),
+        ],
+    }
 }
 
 /// Creates the `TriviaToken` class. Trivia tokens (e.g. comments) are
@@ -283,12 +257,12 @@ pub fn create_trivia_token_class<'a>(
         )),
         name: "TriviaToken",
         is_abstract: false,
-        is_final: true,
+        is_final: false,
         is_private: false,
         alias: None,
         supertypes: vec![
             ql::Type::At(trivia_token_type),
-            ql::Type::Normal("AstNodeImpl"),
+            ql::Type::Normal("AstNode"),
         ]
         .into_iter()
         .collect(),
@@ -309,10 +283,10 @@ pub fn create_reserved_word_class(db_name: &str) -> ql::Class<'_> {
         qldoc: Some(String::from("A reserved word.")),
         name: class_name,
         is_abstract: false,
-        is_final: true,
+        is_final: false,
         is_private: false,
         alias: None,
-        supertypes: vec![ql::Type::At(db_name), ql::Type::Normal("TokenImpl")]
+        supertypes: vec![ql::Type::At(db_name), ql::Type::Normal("Token")]
             .into_iter()
             .collect(),
         characteristic_predicate: None,
@@ -816,12 +790,12 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                         create_get_a_primary_ql_class(&node.ql_class_name, true);
                     let mut supertypes: BTreeSet<ql::Type> = BTreeSet::new();
                     supertypes.insert(ql::Type::At(&node.dbscheme_name));
-                    supertypes.insert(ql::Type::Normal("TokenImpl"));
+                    supertypes.insert(ql::Type::Normal("Token"));
                     classes.push(ql::TopLevel::Class(ql::Class {
                         qldoc: Some(format!("A class representing `{}` tokens.", type_name.kind)),
                         name: &node.ql_class_name,
                         is_abstract: false,
-                        is_final: true,
+                        is_final: false,
                         is_private: false,
                         alias: None,
                         supertypes,
@@ -837,12 +811,12 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     qldoc: None,
                     name: &node.ql_class_name,
                     is_abstract: false,
-                    is_final: true,
+                    is_final: false,
                     is_private: false,
                     alias: None,
                     supertypes: vec![
                         ql::Type::At(&node.dbscheme_name),
-                        ql::Type::Normal("AstNodeImpl"),
+                        ql::Type::Normal("AstNode"),
                     ]
                     .into_iter()
                     .collect(),
@@ -871,12 +845,12 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     qldoc: Some(format!("A class representing `{}` nodes.", type_name.kind)),
                     name: main_class_name,
                     is_abstract: false,
-                    is_final: true,
+                    is_final: false,
                     is_private: false,
                     alias: None,
                     supertypes: vec![
                         ql::Type::At(&node.dbscheme_name),
-                        ql::Type::Normal("AstNodeImpl"),
+                        ql::Type::Normal("AstNode"),
                     ]
                     .into_iter()
                     .collect(),
