@@ -1,15 +1,23 @@
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      head_sha:
+        description: Commit SHA to test
+        required: true
+        type: string
 
 jobs:
   cache:
     permissions: {}
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - env:
           HEAD_SHA: ${{ github.event.inputs.head_sha }}
         run: |
+          [[ "$HEAD_SHA" =~ ^[0-9a-fA-F]{40}$ ]] || exit 1
           git fetch origin "$HEAD_SHA"
-          git checkout "$HEAD_SHA"
+          git checkout --detach "$HEAD_SHA"
       - run: npm install
       - uses: actions/cache@v4
         with:

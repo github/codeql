@@ -199,9 +199,9 @@ private predicate jsonSourceForEvent(Expression expression, string event) {
     normalizeExpr(context).regexpMatch("(?i).*" + wrapJsonRegexp(regexp) + ".*")
   )
   or
-  exists(string context, string regexp, string kind |
+  exists(string context |
     context = expression.getExpression() and
-    untrustedEventPropertiesDataModel(regexp, kind) and
+    untrustedEventPropertiesDataModel(_, _) and
     contextTriggerDataModel(event, _) and
     normalizeExpr(context).regexpMatch("(?i).*" + wrapJsonRegexp("\\bgithub.event\\b") + ".*")
   )
@@ -222,7 +222,7 @@ class GitHubEventJsonSource extends RemoteFlowSource {
         or
         not exists(e.getATriggerEvent()) and
         event = "unknown" and
-        exists(string regexp, string kind | untrustedEventPropertiesDataModel(regexp, kind))
+        untrustedEventPropertiesDataModel(_, _)
       ) and
       flag = "json"
     )
