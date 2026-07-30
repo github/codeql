@@ -20,7 +20,7 @@ abstract class RemoteFlowSource extends FlowSource { }
 /** A data flow source of local user input. */
 abstract class LocalFlowSource extends FlowSource { }
 
-/** A data flow source of local user input. */
+/** A data flow source that represents the access of a value from the Windows registry. */
 abstract class WindowsRegistrySource extends LocalFlowSource { }
 
 /**
