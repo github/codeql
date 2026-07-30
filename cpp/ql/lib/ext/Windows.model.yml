@@ -45,6 +45,8 @@ extensions:
       - ["", "", False, "RegQueryMultipleValuesA", "", "", "Argument[*3]", "local", "manual"]
       # TODO: Once we support access paths at sources we should also mark Argument[*1].Field[*ve_valueptr]
       - ["", "", False, "RegQueryMultipleValuesW", "", "", "Argument[*3]", "local", "manual"]
+      - ["", "", False, "RegEnumValueA", "", "", "Argument[*6]", "local", "manual"]
+      - ["", "", False, "RegEnumValueW", "", "", "Argument[*6]", "local", "manual"]
   - addsTo:
       pack: codeql/cpp-all
       extensible: summaryModel

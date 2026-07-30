@@ -1059,7 +1059,7 @@ void test_registry_queries(HKEY hKey) {
     DWORD type;
     RegGetValueA(hKey, "subkey", "value", 0, &type, data, &dataSize);
     sink(data); // clean
-    sink(*data); // $ MISSING: ir
+    sink(*data); // $ ir
   }
   {
     char valueName[256];
@@ -1069,7 +1069,7 @@ void test_registry_queries(HKEY hKey) {
     DWORD type;
     RegEnumValueA(hKey, 0, valueName, &valueNameSize, nullptr, &type, data, &dataSize);
     sink(data); // clean
-    sink(*data); // $ MISSING: ir
+    sink(*data); // $ ir
   }
   {
     wchar_t valueName[256];
@@ -1079,6 +1079,6 @@ void test_registry_queries(HKEY hKey) {
     DWORD type;
     RegEnumValueW(hKey, 0, valueName, &valueNameSize, nullptr, &type, data, &dataSize);
     sink(data); // clean
-    sink(*data); // $ MISSING: ir
+    sink(*data); // $ ir
   }
 }
