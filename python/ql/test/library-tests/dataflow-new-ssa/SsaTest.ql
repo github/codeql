@@ -24,7 +24,7 @@ module SsaTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     // A `def=<id>` fires when an SSA WriteDefinition is at a CFG node
     // on the given line.
-    exists(SsaImpl::Ssa::WriteDefinition def, CfgImpl::BasicBlock bb, int i, Cfg::NameNode n |
+    exists(SsaImpl::WriteDefinition def, CfgImpl::BasicBlock bb, int i, Cfg::NameNode n |
       def.definesAt(_, bb, i) and
       bb.getNode(i) = n and
       tag = "def" and
@@ -35,8 +35,8 @@ module SsaTest implements TestSig {
     or
     // A `use=<id>` fires when an SSA Definition reaches a read at this
     // CFG node.
-    exists(SsaImpl::Ssa::Definition def, CfgImpl::BasicBlock bb, int i, Cfg::NameNode n |
-      SsaImpl::Ssa::ssaDefReachesRead(_, def, bb, i) and
+    exists(SsaImpl::Definition def, CfgImpl::BasicBlock bb, int i, Cfg::NameNode n |
+      SsaImpl::Impl::ssaDefReachesRead(_, def, bb, i) and
       bb.getNode(i) = n and
       tag = "use" and
       location = n.getLocation() and
@@ -46,7 +46,7 @@ module SsaTest implements TestSig {
     or
     // A `phi=<id>` fires when there is a phi node whose BB's first
     // CFG node is on the given line.
-    exists(SsaImpl::Ssa::PhiNode phi, CfgImpl::BasicBlock bb |
+    exists(SsaImpl::PhiNode phi, CfgImpl::BasicBlock bb |
       phi.definesAt(_, bb, _) and
       tag = "phi" and
       location = bb.getNode(0).getLocation() and
