@@ -96,7 +96,7 @@ module Unified {
   }
 
   /** A class representing `accessor_declaration` nodes. */
-  class AccessorDeclaration extends @unified_accessor_declaration, AstNode {
+  class AccessorDeclaration extends @unified_accessor_declaration, Member, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AccessorDeclaration" }
 
@@ -132,7 +132,7 @@ module Unified {
   }
 
   /** A class representing `accessor_kind` tokens. */
-  class AccessorKind extends @unified_token_accessor_kind, Token {
+  class AccessorKind extends @unified_token_accessor_kind, AstNode, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AccessorKind" }
   }
@@ -160,7 +160,7 @@ module Unified {
   }
 
   /** A class representing `array_literal` nodes. */
-  class ArrayLiteral extends @unified_array_literal, AstNode {
+  class ArrayLiteral extends @unified_array_literal, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ArrayLiteral" }
 
@@ -172,7 +172,7 @@ module Unified {
   }
 
   /** A class representing `assign_expr` nodes. */
-  class AssignExpr extends @unified_assign_expr, AstNode {
+  class AssignExpr extends @unified_assign_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AssignExpr" }
 
@@ -189,7 +189,7 @@ module Unified {
   }
 
   /** A class representing `associated_type_declaration` nodes. */
-  class AssociatedTypeDeclaration extends @unified_associated_type_declaration, AstNode {
+  class AssociatedTypeDeclaration extends @unified_associated_type_declaration, Member {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AssociatedTypeDeclaration" }
 
@@ -230,7 +230,7 @@ module Unified {
   }
 
   /** A class representing `binary_expr` nodes. */
-  class BinaryExpr extends @unified_binary_expr, AstNode {
+  class BinaryExpr extends @unified_binary_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BinaryExpr" }
 
@@ -252,7 +252,7 @@ module Unified {
   }
 
   /** A class representing `block` nodes. */
-  class Block extends @unified_block, AstNode {
+  class Block extends @unified_block, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Block" }
 
@@ -264,13 +264,13 @@ module Unified {
   }
 
   /** A class representing `boolean_literal` tokens. */
-  class BooleanLiteral extends @unified_token_boolean_literal, Token {
+  class BooleanLiteral extends @unified_token_boolean_literal, Expr, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BooleanLiteral" }
   }
 
   /** A class representing `bound_type_constraint` nodes. */
-  class BoundTypeConstraint extends @unified_bound_type_constraint, AstNode {
+  class BoundTypeConstraint extends @unified_bound_type_constraint, TypeConstraint {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BoundTypeConstraint" }
 
@@ -288,7 +288,7 @@ module Unified {
   }
 
   /** A class representing `break_expr` nodes. */
-  class BreakExpr extends @unified_break_expr, AstNode {
+  class BreakExpr extends @unified_break_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BreakExpr" }
 
@@ -300,13 +300,13 @@ module Unified {
   }
 
   /** A class representing `builtin_expr` tokens. */
-  class BuiltinExpr extends @unified_token_builtin_expr, Token {
+  class BuiltinExpr extends @unified_token_builtin_expr, Expr, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BuiltinExpr" }
   }
 
   /** A class representing `bulk_importing_pattern` nodes. */
-  class BulkImportingPattern extends @unified_bulk_importing_pattern, AstNode {
+  class BulkImportingPattern extends @unified_bulk_importing_pattern, Pattern {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "BulkImportingPattern" }
 
@@ -322,7 +322,7 @@ module Unified {
   }
 
   /** A class representing `call_expr` nodes. */
-  class CallExpr extends @unified_call_expr, AstNode {
+  class CallExpr extends @unified_call_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "CallExpr" }
 
@@ -366,7 +366,7 @@ module Unified {
   }
 
   /** A class representing `class_like_declaration` nodes. */
-  class ClassLikeDeclaration extends @unified_class_like_declaration, AstNode {
+  class ClassLikeDeclaration extends @unified_class_like_declaration, Member, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ClassLikeDeclaration" }
 
@@ -408,7 +408,7 @@ module Unified {
   }
 
   /** A class representing `compound_assign_expr` nodes. */
-  class CompoundAssignExpr extends @unified_compound_assign_expr, AstNode {
+  class CompoundAssignExpr extends @unified_compound_assign_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "CompoundAssignExpr" }
 
@@ -452,7 +452,7 @@ module Unified {
   }
 
   /** A class representing `constructor_declaration` nodes. */
-  class ConstructorDeclaration extends @unified_constructor_declaration, AstNode {
+  class ConstructorDeclaration extends @unified_constructor_declaration, Member, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ConstructorDeclaration" }
 
@@ -482,7 +482,7 @@ module Unified {
   }
 
   /** A class representing `constructor_pattern` nodes. */
-  class ConstructorPattern extends @unified_constructor_pattern, AstNode {
+  class ConstructorPattern extends @unified_constructor_pattern, Pattern {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ConstructorPattern" }
 
@@ -506,7 +506,7 @@ module Unified {
   }
 
   /** A class representing `continue_expr` nodes. */
-  class ContinueExpr extends @unified_continue_expr, AstNode {
+  class ContinueExpr extends @unified_continue_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ContinueExpr" }
 
@@ -518,7 +518,7 @@ module Unified {
   }
 
   /** A class representing `destructor_declaration` nodes. */
-  class DestructorDeclaration extends @unified_destructor_declaration, AstNode {
+  class DestructorDeclaration extends @unified_destructor_declaration, Member, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "DestructorDeclaration" }
 
@@ -538,7 +538,7 @@ module Unified {
   }
 
   /** A class representing `do_while_stmt` nodes. */
-  class DoWhileStmt extends @unified_do_while_stmt, AstNode {
+  class DoWhileStmt extends @unified_do_while_stmt, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "DoWhileStmt" }
 
@@ -560,13 +560,13 @@ module Unified {
   }
 
   /** A class representing `empty_expr` tokens. */
-  class EmptyExpr extends @unified_token_empty_expr, Token {
+  class EmptyExpr extends @unified_token_empty_expr, Expr, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "EmptyExpr" }
   }
 
   /** A class representing `equality_type_constraint` nodes. */
-  class EqualityTypeConstraint extends @unified_equality_type_constraint, AstNode {
+  class EqualityTypeConstraint extends @unified_equality_type_constraint, TypeConstraint {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "EqualityTypeConstraint" }
 
@@ -583,10 +583,10 @@ module Unified {
     }
   }
 
-  class Expr extends @unified_expr, AstNode { }
+  class Expr extends @unified_expr, ExprOrOperator, ExprOrPattern, ExprOrType, Stmt { }
 
   /** A class representing `expr_equality_pattern` nodes. */
-  class ExprEqualityPattern extends @unified_expr_equality_pattern, AstNode {
+  class ExprEqualityPattern extends @unified_expr_equality_pattern, Pattern {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ExprEqualityPattern" }
 
@@ -604,19 +604,19 @@ module Unified {
   class ExprOrType extends @unified_expr_or_type, AstNode { }
 
   /** A class representing `fixity` tokens. */
-  class Fixity extends @unified_token_fixity, Token {
+  class Fixity extends @unified_token_fixity, AstNode, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Fixity" }
   }
 
   /** A class representing `float_literal` tokens. */
-  class FloatLiteral extends @unified_token_float_literal, Token {
+  class FloatLiteral extends @unified_token_float_literal, Expr, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FloatLiteral" }
   }
 
   /** A class representing `for_each_stmt` nodes. */
-  class ForEachStmt extends @unified_for_each_stmt, AstNode {
+  class ForEachStmt extends @unified_for_each_stmt, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ForEachStmt" }
 
@@ -646,7 +646,7 @@ module Unified {
   }
 
   /** A class representing `function_declaration` nodes. */
-  class FunctionDeclaration extends @unified_function_declaration, AstNode {
+  class FunctionDeclaration extends @unified_function_declaration, Member, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FunctionDeclaration" }
 
@@ -690,7 +690,7 @@ module Unified {
   }
 
   /** A class representing `function_expr` nodes. */
-  class FunctionExpr extends @unified_function_expr, AstNode {
+  class FunctionExpr extends @unified_function_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FunctionExpr" }
 
@@ -722,7 +722,7 @@ module Unified {
   }
 
   /** A class representing `function_type_expr` nodes. */
-  class FunctionTypeExpr extends @unified_function_type_expr, AstNode {
+  class FunctionTypeExpr extends @unified_function_type_expr, TypeExpr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FunctionTypeExpr" }
 
@@ -740,7 +740,7 @@ module Unified {
   }
 
   /** A class representing `generic_type_expr` nodes. */
-  class GenericTypeExpr extends @unified_generic_type_expr, AstNode {
+  class GenericTypeExpr extends @unified_generic_type_expr, TypeExpr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "GenericTypeExpr" }
 
@@ -760,7 +760,7 @@ module Unified {
   }
 
   /** A class representing `guard_if_stmt` nodes. */
-  class GuardIfStmt extends @unified_guard_if_stmt, AstNode {
+  class GuardIfStmt extends @unified_guard_if_stmt, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "GuardIfStmt" }
 
@@ -777,13 +777,13 @@ module Unified {
   }
 
   /** A class representing `identifier` tokens. */
-  class Identifier extends @unified_token_identifier, Token {
+  class Identifier extends @unified_token_identifier, AstNode, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Identifier" }
   }
 
   /** A class representing `if_expr` nodes. */
-  class IfExpr extends @unified_if_expr, AstNode {
+  class IfExpr extends @unified_if_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "IfExpr" }
 
@@ -805,13 +805,13 @@ module Unified {
   }
 
   /** A class representing `ignore_pattern` tokens. */
-  class IgnorePattern extends @unified_token_ignore_pattern, Token {
+  class IgnorePattern extends @unified_token_ignore_pattern, Pattern, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "IgnorePattern" }
   }
 
   /** A class representing `import_declaration` nodes. */
-  class ImportDeclaration extends @unified_import_declaration, AstNode {
+  class ImportDeclaration extends @unified_import_declaration, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ImportDeclaration" }
 
@@ -833,19 +833,19 @@ module Unified {
   }
 
   /** A class representing `inferred_type_expr` tokens. */
-  class InferredTypeExpr extends @unified_token_inferred_type_expr, Token {
+  class InferredTypeExpr extends @unified_token_inferred_type_expr, Token, TypeExpr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InferredTypeExpr" }
   }
 
   /** A class representing `infix_operator` tokens. */
-  class InfixOperator extends @unified_token_infix_operator, Token {
+  class InfixOperator extends @unified_token_infix_operator, ExprOrOperator, Operator, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InfixOperator" }
   }
 
   /** A class representing `initializer_declaration` nodes. */
-  class InitializerDeclaration extends @unified_initializer_declaration, AstNode {
+  class InitializerDeclaration extends @unified_initializer_declaration, Member {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "InitializerDeclaration" }
 
@@ -865,13 +865,13 @@ module Unified {
   }
 
   /** A class representing `int_literal` tokens. */
-  class IntLiteral extends @unified_token_int_literal, Token {
+  class IntLiteral extends @unified_token_int_literal, Expr, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "IntLiteral" }
   }
 
   /** A class representing `key_value_pair` nodes. */
-  class KeyValuePair extends @unified_key_value_pair, AstNode {
+  class KeyValuePair extends @unified_key_value_pair, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "KeyValuePair" }
 
@@ -888,7 +888,7 @@ module Unified {
   }
 
   /** A class representing `labeled_stmt` nodes. */
-  class LabeledStmt extends @unified_labeled_stmt, AstNode {
+  class LabeledStmt extends @unified_labeled_stmt, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "LabeledStmt" }
 
@@ -905,7 +905,7 @@ module Unified {
   }
 
   /** A class representing `map_literal` nodes. */
-  class MapLiteral extends @unified_map_literal, AstNode {
+  class MapLiteral extends @unified_map_literal, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "MapLiteral" }
 
@@ -919,7 +919,7 @@ module Unified {
   class Member extends @unified_member, AstNode { }
 
   /** A class representing `member_access_expr` nodes. */
-  class MemberAccessExpr extends @unified_member_access_expr, AstNode {
+  class MemberAccessExpr extends @unified_member_access_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "MemberAccessExpr" }
 
@@ -937,13 +937,13 @@ module Unified {
   }
 
   /** A class representing `modifier` tokens. */
-  class Modifier extends @unified_token_modifier, Token {
+  class Modifier extends @unified_token_modifier, AstNode, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Modifier" }
   }
 
   /** A class representing `name_expr` nodes. */
-  class NameExpr extends @unified_name_expr, AstNode {
+  class NameExpr extends @unified_name_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "NameExpr" }
 
@@ -955,7 +955,7 @@ module Unified {
   }
 
   /** A class representing `name_pattern` nodes. */
-  class NamePattern extends @unified_name_pattern, AstNode {
+  class NamePattern extends @unified_name_pattern, Pattern {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "NamePattern" }
 
@@ -972,7 +972,7 @@ module Unified {
   }
 
   /** A class representing `named_type_expr` nodes. */
-  class NamedTypeExpr extends @unified_named_type_expr, AstNode {
+  class NamedTypeExpr extends @unified_named_type_expr, TypeExpr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "NamedTypeExpr" }
 
@@ -991,7 +991,7 @@ module Unified {
   class Operator extends @unified_operator, AstNode { }
 
   /** A class representing `operator_syntax_declaration` nodes. */
-  class OperatorSyntaxDeclaration extends @unified_operator_syntax_declaration, AstNode {
+  class OperatorSyntaxDeclaration extends @unified_operator_syntax_declaration, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "OperatorSyntaxDeclaration" }
 
@@ -1019,7 +1019,7 @@ module Unified {
   }
 
   /** A class representing `or_pattern` nodes. */
-  class OrPattern extends @unified_or_pattern, AstNode {
+  class OrPattern extends @unified_or_pattern, Pattern {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "OrPattern" }
 
@@ -1065,7 +1065,7 @@ module Unified {
     }
   }
 
-  class Pattern extends @unified_pattern, AstNode { }
+  class Pattern extends @unified_pattern, ExprOrPattern { }
 
   /** A class representing `pattern_element` nodes. */
   class PatternElement extends @unified_pattern_element, AstNode {
@@ -1090,7 +1090,7 @@ module Unified {
   }
 
   /** A class representing `pattern_guard_expr` nodes. */
-  class PatternGuardExpr extends @unified_pattern_guard_expr, AstNode {
+  class PatternGuardExpr extends @unified_pattern_guard_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "PatternGuardExpr" }
 
@@ -1108,25 +1108,25 @@ module Unified {
   }
 
   /** A class representing `postfix_operator` tokens. */
-  class PostfixOperator extends @unified_token_postfix_operator, Token {
+  class PostfixOperator extends @unified_token_postfix_operator, Operator, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "PostfixOperator" }
   }
 
   /** A class representing `prefix_operator` tokens. */
-  class PrefixOperator extends @unified_token_prefix_operator, Token {
+  class PrefixOperator extends @unified_token_prefix_operator, Operator, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "PrefixOperator" }
   }
 
   /** A class representing `regex_literal` tokens. */
-  class RegexLiteral extends @unified_token_regex_literal, Token {
+  class RegexLiteral extends @unified_token_regex_literal, Expr, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "RegexLiteral" }
   }
 
   /** A class representing `return_expr` nodes. */
-  class ReturnExpr extends @unified_return_expr, AstNode {
+  class ReturnExpr extends @unified_return_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ReturnExpr" }
 
@@ -1140,13 +1140,13 @@ module Unified {
   class Stmt extends @unified_stmt, AstNode { }
 
   /** A class representing `string_literal` tokens. */
-  class StringLiteral extends @unified_token_string_literal, Token {
+  class StringLiteral extends @unified_token_string_literal, Expr, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "StringLiteral" }
   }
 
   /** A class representing `super_expr` tokens. */
-  class SuperExpr extends @unified_token_super_expr, Token {
+  class SuperExpr extends @unified_token_super_expr, Expr, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SuperExpr" }
   }
@@ -1174,7 +1174,7 @@ module Unified {
   }
 
   /** A class representing `switch_expr` nodes. */
-  class SwitchExpr extends @unified_switch_expr, AstNode {
+  class SwitchExpr extends @unified_switch_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SwitchExpr" }
 
@@ -1196,7 +1196,7 @@ module Unified {
   }
 
   /** A class representing `throw_expr` nodes. */
-  class ThrowExpr extends @unified_throw_expr, AstNode {
+  class ThrowExpr extends @unified_throw_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ThrowExpr" }
 
@@ -1220,7 +1220,7 @@ module Unified {
   }
 
   /** A class representing `try_expr` nodes. */
-  class TryExpr extends @unified_try_expr, AstNode {
+  class TryExpr extends @unified_try_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TryExpr" }
 
@@ -1242,7 +1242,7 @@ module Unified {
   }
 
   /** A class representing `tuple_expr` nodes. */
-  class TupleExpr extends @unified_tuple_expr, AstNode {
+  class TupleExpr extends @unified_tuple_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TupleExpr" }
 
@@ -1254,7 +1254,7 @@ module Unified {
   }
 
   /** A class representing `tuple_pattern` nodes. */
-  class TuplePattern extends @unified_tuple_pattern, AstNode {
+  class TuplePattern extends @unified_tuple_pattern, Pattern {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TuplePattern" }
 
@@ -1289,7 +1289,7 @@ module Unified {
   }
 
   /** A class representing `tuple_type_expr` nodes. */
-  class TupleTypeExpr extends @unified_tuple_type_expr, AstNode {
+  class TupleTypeExpr extends @unified_tuple_type_expr, TypeExpr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TupleTypeExpr" }
 
@@ -1303,7 +1303,7 @@ module Unified {
   }
 
   /** A class representing `type_alias_declaration` nodes. */
-  class TypeAliasDeclaration extends @unified_type_alias_declaration, AstNode {
+  class TypeAliasDeclaration extends @unified_type_alias_declaration, Member, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TypeAliasDeclaration" }
 
@@ -1339,7 +1339,7 @@ module Unified {
   }
 
   /** A class representing `type_cast_expr` nodes. */
-  class TypeCastExpr extends @unified_type_cast_expr, AstNode {
+  class TypeCastExpr extends @unified_type_cast_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TypeCastExpr" }
 
@@ -1362,7 +1362,7 @@ module Unified {
 
   class TypeConstraint extends @unified_type_constraint, AstNode { }
 
-  class TypeExpr extends @unified_type_expr, AstNode { }
+  class TypeExpr extends @unified_type_expr, ExprOrType { }
 
   /** A class representing `type_parameter` nodes. */
   class TypeParameter extends @unified_type_parameter, AstNode {
@@ -1387,7 +1387,7 @@ module Unified {
   }
 
   /** A class representing `type_test_expr` nodes. */
-  class TypeTestExpr extends @unified_type_test_expr, AstNode {
+  class TypeTestExpr extends @unified_type_test_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TypeTestExpr" }
 
@@ -1427,7 +1427,7 @@ module Unified {
   }
 
   /** A class representing `unary_expr` nodes. */
-  class UnaryExpr extends @unified_unary_expr, AstNode {
+  class UnaryExpr extends @unified_unary_expr, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "UnaryExpr" }
 
@@ -1444,7 +1444,7 @@ module Unified {
   }
 
   /** A class representing `unresolved_operator_sequence` nodes. */
-  class UnresolvedOperatorSequence extends @unified_unresolved_operator_sequence, AstNode {
+  class UnresolvedOperatorSequence extends @unified_unresolved_operator_sequence, Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "UnresolvedOperatorSequence" }
 
@@ -1460,13 +1460,15 @@ module Unified {
   }
 
   /** A class representing `unsupported_node` tokens. */
-  class UnsupportedNode extends @unified_token_unsupported_node, Token {
+  class UnsupportedNode extends @unified_token_unsupported_node, Expr, Member, Pattern, Token,
+    TypeExpr
+  {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "UnsupportedNode" }
   }
 
   /** A class representing `variable_declaration` nodes. */
-  class VariableDeclaration extends @unified_variable_declaration, AstNode {
+  class VariableDeclaration extends @unified_variable_declaration, Member, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "VariableDeclaration" }
 
@@ -1492,7 +1494,7 @@ module Unified {
   }
 
   /** A class representing `while_stmt` nodes. */
-  class WhileStmt extends @unified_while_stmt, AstNode {
+  class WhileStmt extends @unified_while_stmt, Stmt {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "WhileStmt" }
 

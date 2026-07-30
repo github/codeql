@@ -770,10 +770,51 @@ fn create_field_getters<'a>(
     )
 }
 
+fn compute_direct_supertypes<'a>(
+    nodes: &'a node_types::NodeTypeMap,
+) -> std::collections::BTreeMap<node_types::TypeName, BTreeSet<&'a str>> {
+    let mut supertypes = std::collections::BTreeMap::new();
+    for node in nodes.values() {
+        if let node_types::EntryKind::Union { members } = &node.kind {
+            for member in members {
+                supertypes
+                    .entry(member.clone())
+                    .or_insert_with(BTreeSet::new)
+                    .insert(node.ql_class_name.as_str());
+            }
+        }
+    }
+    supertypes
+}
+
+fn ast_base_types<'a>(
+    type_name: &node_types::TypeName,
+    direct_supertypes: &std::collections::BTreeMap<node_types::TypeName, BTreeSet<&'a str>>,
+) -> BTreeSet<ql::Type<'a>> {
+    match direct_supertypes.get(type_name) {
+        Some(supertypes) if !supertypes.is_empty() => supertypes
+            .iter()
+            .map(|name| ql::Type::Normal(name))
+            .collect(),
+        _ => vec![ql::Type::Normal("AstNode")].into_iter().collect(),
+    }
+}
+
+fn class_supertypes<'a>(
+    type_name: &node_types::TypeName,
+    dbscheme_name: &'a str,
+    direct_supertypes: &std::collections::BTreeMap<node_types::TypeName, BTreeSet<&'a str>>,
+) -> BTreeSet<ql::Type<'a>> {
+    let mut supertypes = ast_base_types(type_name, direct_supertypes);
+    supertypes.insert(ql::Type::At(dbscheme_name));
+    supertypes
+}
+
 /// Converts the given node types into CodeQL classes wrapping the dbscheme.
 pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     let mut classes = Vec::new();
     let mut token_kinds = BTreeSet::new();
+    let direct_supertypes = compute_direct_supertypes(nodes);
     for (type_name, node) in nodes {
         if let node_types::EntryKind::Token { .. } = &node.kind {
             if type_name.named {
@@ -788,8 +829,8 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                 if type_name.named {
                     let get_a_primary_ql_class =
                         create_get_a_primary_ql_class(&node.ql_class_name, true);
-                    let mut supertypes: BTreeSet<ql::Type> = BTreeSet::new();
-                    supertypes.insert(ql::Type::At(&node.dbscheme_name));
+                    let mut supertypes =
+                        class_supertypes(type_name, &node.dbscheme_name, &direct_supertypes);
                     supertypes.insert(ql::Type::Normal("Token"));
                     classes.push(ql::TopLevel::Class(ql::Class {
                         qldoc: Some(format!("A class representing `{}` tokens.", type_name.kind)),
@@ -814,12 +855,11 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     is_final: false,
                     is_private: false,
                     alias: None,
-                    supertypes: vec![
-                        ql::Type::At(&node.dbscheme_name),
-                        ql::Type::Normal("AstNode"),
-                    ]
-                    .into_iter()
-                    .collect(),
+                    supertypes: class_supertypes(
+                        type_name,
+                        &node.dbscheme_name,
+                        &direct_supertypes,
+                    ),
                     characteristic_predicate: None,
                     predicates: vec![],
                 }));
@@ -848,12 +888,11 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                     is_final: false,
                     is_private: false,
                     alias: None,
-                    supertypes: vec![
-                        ql::Type::At(&node.dbscheme_name),
-                        ql::Type::Normal("AstNode"),
-                    ]
-                    .into_iter()
-                    .collect(),
+                    supertypes: class_supertypes(
+                        type_name,
+                        &node.dbscheme_name,
+                        &direct_supertypes,
+                    ),
                     characteristic_predicate: None,
                     predicates: vec![create_get_a_primary_ql_class(main_class_name, true)],
                 };

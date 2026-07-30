@@ -22,7 +22,7 @@ pub enum EntryKind {
     Token { kind_id: usize },
 }
 
-#[derive(Debug, Ord, PartialOrd, Eq, PartialEq)]
+#[derive(Clone, Debug, Ord, PartialOrd, Eq, PartialEq)]
 pub struct TypeName {
     pub kind: String,
     pub named: bool,
