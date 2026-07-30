@@ -12,8 +12,8 @@
  *   - Function / class / global definitions with no in-scope read
  *     (intentional: SSA is liveness-pruned, write-only variables are
  *     not tracked).
- *   - Captured / closure variables (gap: new SSA does not yet model
- *     closure captures).
+ *   - Captured / closure variables (if any remain; the new SSA inserts scope-entry
+ *     definitions for non-local reads, but legacy ESSA may still differ in corner cases).
  *   - Module variables `__name__`, `__package__`, `$` (legacy ESSA
  *     adds implicit bindings the new SSA does not).
  *   - Exception-handler `as` bindings (depend on raise modelling).
