@@ -4,4 +4,9 @@
 | AspNetCore.cs:32:14:32:28 | HomeController3 |
 | AspNetCore.cs:42:14:42:28 | HomeController4 |
 | AspNetCore.cs:51:14:51:28 | HomeController5 |
-| AspNetCore.cs:60:23:60:37 | HomeController6 |
+| AspNetCore.cs:106:14:106:32 | LowerCasecontroller |
+| AspNetCore.cs:112:14:112:21 | Products |
+| AspNetCore.cs:127:14:127:28 | PlainController |
+| AspNetCore.cs:143:14:143:36 | ClosedGenericController |
+| AspNetCore.cs:159:14:159:35 | ConcreteActionEndpoint |
+| AspNetCore.cs:166:14:166:34 | ActionCasesController |

@@ -2,6 +2,7 @@
 
 import csharp
 import semmle.code.csharp.frameworks.Microsoft
+private import semmle.code.csharp.frameworks.System
 
 /** The `Microsoft.AspNetCore` namespace. */
 class MicrosoftAspNetCoreNamespace extends Namespace {
@@ -218,6 +219,46 @@ private predicate isPotentialMicrosoftAspNetCoreMvcController(Class controller) 
     )
 }
 
+private predicate isDefaultMicrosoftAspNetCoreMvcController(Class controller) {
+  (
+    exists(Assembly a |
+      a.getName() = ["Microsoft.AspNetCore.Mvc.Core", "Microsoft.AspNetCore.Mvc.ViewFeatures"]
+    ) or
+    exists(UsingNamespaceDirective ns |
+      ns.getImportedNamespace() instanceof MicrosoftAspNetCoreMvcNamespace
+    )
+  ) and
+  controller instanceof NonNestedType and
+  controller.isPublic() and
+  not controller.isAbstract() and
+  not controller instanceof Generic and
+  (
+    controller.getName().toLowerCase().matches("%controller")
+    or
+    controller.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
+    or
+    controller
+        .getABaseType*()
+        .getAnAttribute()
+        .getType()
+        .getABaseType*()
+        .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "ControllerAttribute")
+  ) and
+  not controller.getABaseType*().getAnAttribute() instanceof
+    MicrosoftAspNetCoreMvcNonControllerAttribute
+}
+
+private predicate isDefaultMicrosoftAspNetCoreMvcAction(Class controller, Method method) {
+  controller.hasMember(method) and
+  method.isPublic() and
+  not method.isStatic() and
+  not method.isAbstract() and
+  not method.getUnboundDeclaration() instanceof UnboundGenericMethod and
+  not method.getOverridee*().getAnAttribute() instanceof MicrosoftAspNetCoreMvcNonActionAttribute and
+  not method.getOverridee*().getDeclaringType() instanceof ObjectType and
+  not method instanceof DisposeMethod
+}
+
 /** A class treated as an owner of ASP.NET Core MVC controller helper methods. */
 class MicrosoftAspNetCoreMvcControllerHelperClass extends Class {
   MicrosoftAspNetCoreMvcControllerHelperClass() {
@@ -243,15 +284,10 @@ class MicrosoftAspNetCoreMvcControllerHelperClass extends Class {
  * https://github.com/dotnet/aspnetcore/blob/b3c93967ba508b8ef139add27132d9483c1a9eb4/src/Mvc/Mvc.Core/src/Controllers/ControllerFeatureProvider.cs#L39-L75
  */
 class MicrosoftAspNetCoreMvcController extends Class {
-  MicrosoftAspNetCoreMvcController() { isPotentialMicrosoftAspNetCoreMvcController(this) }
+  MicrosoftAspNetCoreMvcController() { isDefaultMicrosoftAspNetCoreMvcController(this) }
 
   /** Gets an action method for this controller. */
-  Method getAnActionMethod() {
-    result = this.getAMethod() and
-    result.isPublic() and
-    not result.isStatic() and
-    not result.getAnAttribute() instanceof MicrosoftAspNetCoreMvcNonActionAttribute
-  }
+  Method getAnActionMethod() { isDefaultMicrosoftAspNetCoreMvcAction(this, result) }
 
   /** Gets a `Redirect*` method. */
   Method getARedirectMethod() {

@@ -101,3 +101,86 @@ public class NotController : NotHomeController3
         return "This is Home Controller";
     }
 }
+
+// has case-insensitive suffix "Controller"
+public class LowerCasecontroller
+{
+    public void Action() { }
+}
+
+// derives from ControllerBase, whose [Controller] attribute is inherited
+public class Products : ControllerBase
+{
+    public void List() { }
+}
+
+// is a nested type
+public class ControllerContainer
+{
+    public class NestedController
+    {
+        public void Action() { }
+    }
+}
+
+// only this base class has the Controller suffix
+public class PlainController
+{
+    public void BaseAction() { }
+}
+
+public class DerivedFromPlain : PlainController
+{
+    public void DerivedAction() { }
+}
+
+// is a closed subclass of an open generic controller
+public class GenericBaseController<T> : ControllerBase
+{
+    public void GenericBaseAction(string input) { }
+}
+
+public class ClosedGenericController : GenericBaseController<string>
+{
+    public void ClosedAction(string input) { }
+}
+
+[Controller]
+public abstract class AbstractActionBase
+{
+    public abstract void AbstractAction(string input);
+
+    public void InheritedAction(string input) { }
+
+    [NonAction]
+    public virtual void InheritedNonAction(string input) { }
+}
+
+public class ConcreteActionEndpoint : AbstractActionBase
+{
+    public override void AbstractAction(string input) { }
+
+    public override void InheritedNonAction(string input) { }
+}
+
+public class ActionCasesController : ControllerBase, System.IDisposable
+{
+    public void PublicAction(string input) { }
+
+    public static void StaticAction(string input) { }
+
+    public void GenericAction<T>(T input) { }
+
+    [NonAction]
+    public void ExplicitNonAction(string input) { }
+
+    public override string ToString() => "action cases";
+
+    public void Dispose() { }
+
+    protected void ProtectedAction(string input) { }
+
+    internal void InternalAction(string input) { }
+
+    private void PrivateAction(string input) { }
+}
