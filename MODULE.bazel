@@ -327,6 +327,7 @@ ripunzip_archive = use_repo_rule("//misc/ripunzip:ripunzip.bzl", "ripunzip_archi
 ripunzip_archive(
     name = "ripunzip",
     sha256_linux = "71482d7a7e4ea9176d5596161c49250c34b136b157c45f632b1111323fbfc0de",
+    sha256_linux_arm = "a282740ef376ff8dc0de3c589b7457598db15cc045b7daa688f15531612e0bbe",
     sha256_macos_arm = "604194ab13f0aba3972995d995f11002b8fc285c8170401fcd46655065df20c9",
     sha256_macos_intel = "65367b94fd579d93d46f2d2595cc4c9a60cfcf497e3c824f9d1a7b80fa8bd38a",
     sha256_windows = "ac3874075def2b9e5074a3b5945005ab082cc6e689e1de658da8965bc23e643e",

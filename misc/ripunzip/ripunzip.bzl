@@ -3,12 +3,22 @@ def _ripunzip_archive_impl(repository_ctx):
     url_prefix = "https://github.com/GoogleChrome/ripunzip/releases/download/v%s" % version
     build_file = Label("//misc/ripunzip:BUILD.ripunzip.bazel")
     if "linux" in repository_ctx.os.name:
+        arch = repository_ctx.os.arch
+        if arch in ("aarch64", "arm64"):
+            deb_arch = "arm64"
+            sha256 = repository_ctx.attr.sha256_linux_arm
+            canonical_id = "ripunzip-linux-arm"
+        else:
+            deb_arch = "amd64"
+            sha256 = repository_ctx.attr.sha256_linux
+            canonical_id = "ripunzip-linux"
+
         # ripunzip only provides a deb package for Linux: we fish the binary out of it
         # a deb archive contains a data.tar.xz one which contains the files to be installed under usr/bin
         repository_ctx.download_and_extract(
-            url = "%s/ripunzip_%s-1_amd64.deb" % (url_prefix, version),
-            sha256 = repository_ctx.attr.sha256_linux,
-            canonical_id = "ripunzip-linux",
+            url = "%s/ripunzip_%s-1_%s.deb" % (url_prefix, version, deb_arch),
+            sha256 = sha256,
+            canonical_id = canonical_id,
             output = "deb",
         )
         repository_ctx.extract(
@@ -52,6 +62,7 @@ ripunzip_archive = repository_rule(
     attrs = {
         "version": attr.string(mandatory = True),
         "sha256_linux": attr.string(mandatory = True),
+        "sha256_linux_arm": attr.string(mandatory = True),
         "sha256_windows": attr.string(mandatory = True),
         "sha256_macos_intel": attr.string(mandatory = True),
         "sha256_macos_arm": attr.string(mandatory = True),
