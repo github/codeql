@@ -424,34 +424,34 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
   }
 
   predicate getAnExternalCompositeActionModel(
-    string owner, string repo, string action_path, string requested_ref,
-    string resolved_commit_sha, string local_path
+    string owner, string repo, string action_path, string requested_ref, string resolved_commit_sha,
+    string local_path
   ) {
-    externalCompositeActionDataModel(owner, repo, action_path, requested_ref,
-      resolved_commit_sha, local_path) and
+    externalCompositeActionDataModel(owner, repo, action_path, requested_ref, resolved_commit_sha,
+      local_path) and
     local_path.trim() = this.getLocation().getFile().getRelativePath()
   }
 
   predicate isExternalCompositeAction() {
-    exists(string owner, string repo, string action_path, string requested_ref,
-      string resolved_commit_sha, string local_path |
+    exists(
+      string owner, string repo, string action_path, string requested_ref,
+      string resolved_commit_sha, string local_path
+    |
       this.getAnExternalCompositeActionModel(owner, repo, action_path, requested_ref,
         resolved_commit_sha, local_path)
     )
     or
-    this.getLocation()
-        .getFile()
-        .getRelativePath()
-        .matches("9466014afba34ef28239871ceabf4132/%")
+    this.getLocation().getFile().getRelativePath().matches("9466014afba34ef28239871ceabf4132/%")
   }
 
   string getResolvedPath() {
-    exists(string owner, string repo, string action_path, string requested_ref,
-      string resolved_commit_sha, string local_path |
+    exists(
+      string owner, string repo, string action_path, string requested_ref,
+      string resolved_commit_sha, string local_path
+    |
       this.getAnExternalCompositeActionModel(owner, repo, action_path, requested_ref,
         resolved_commit_sha, local_path) and
-      result =
-        externalCompositeActionName(owner, repo, action_path) + "@" + requested_ref.trim()
+      result = externalCompositeActionName(owner, repo, action_path) + "@" + requested_ref.trim()
     )
     or
     not this.isExternalCompositeAction() and
@@ -590,35 +590,31 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
   }
 
   predicate isExternalReusableWorkflow() {
-    exists(string owner, string repo, string workflow_path, string requested_ref,
-      string resolved_commit_sha, string local_path |
+    exists(
+      string owner, string repo, string workflow_path, string requested_ref,
+      string resolved_commit_sha, string local_path
+    |
       this.getAnExternalReusableWorkflowModel(owner, repo, workflow_path, requested_ref,
         resolved_commit_sha, local_path)
     )
     or
-    this.getLocation()
-        .getFile()
-        .getRelativePath()
-        .matches("9466014afba34ef28239871ceabf4132/%") // root folder for external workflows and composite actions
+    this.getLocation().getFile().getRelativePath().matches("9466014afba34ef28239871ceabf4132/%") // root folder for external workflows and composite actions
   }
 
   string getResolvedPath() {
-    exists(string owner, string repo, string workflow_path, string requested_ref,
-      string resolved_commit_sha, string local_path |
+    exists(
+      string owner, string repo, string workflow_path, string requested_ref,
+      string resolved_commit_sha, string local_path
+    |
       this.getAnExternalReusableWorkflowModel(owner, repo, workflow_path, requested_ref,
         resolved_commit_sha, local_path) and
       result =
-        owner.trim() + "/" + repo.trim() + "/" + workflow_path.trim() + "@" +
-          requested_ref.trim()
+        owner.trim() + "/" + repo.trim() + "/" + workflow_path.trim() + "@" + requested_ref.trim()
     )
     or
     not this.isExternalReusableWorkflow() and
     result =
-      ["", "./"] +
-        this.getLocation()
-            .getFile()
-            .getRelativePath()
-            .replaceAll(getRepoRoot(), "")
+      ["", "./"] + this.getLocation().getFile().getRelativePath().replaceAll(getRepoRoot(), "")
   }
 }
 
@@ -1448,10 +1444,12 @@ class UsesStepImpl extends StepImpl, UsesImpl {
   private predicate isLocalCall() { u.getValue().matches(["./%", ".github/%"]) }
 
   private predicate hasModeledExternalCallee() {
-    exists(string owner, string repo, string action_path, string requested_ref,
-      string resolved_commit_sha, string local_path |
-      externalCompositeActionDataModel(owner, repo, action_path, requested_ref,
-        resolved_commit_sha, local_path) and
+    exists(
+      string owner, string repo, string action_path, string requested_ref,
+      string resolved_commit_sha, string local_path
+    |
+      externalCompositeActionDataModel(owner, repo, action_path, requested_ref, resolved_commit_sha,
+        local_path) and
       this.getCallee() = externalCompositeActionName(owner, repo, action_path) and
       this.getVersion() = requested_ref.trim()
     )
@@ -1464,11 +1462,14 @@ class UsesStepImpl extends StepImpl, UsesImpl {
   }
 
   private predicate hasModeledExternalEnclosingCompositeAction() {
-    exists(CompositeActionImpl action, string owner, string repo, string action_path,
-      string requested_ref, string resolved_commit_sha, string local_path |
+    exists(
+      CompositeActionImpl action, string owner, string repo, string action_path,
+      string requested_ref, string resolved_commit_sha, string local_path
+    |
       action = this.getEnclosingCompositeAction() and
-      action.getAnExternalCompositeActionModel(owner, repo, action_path, requested_ref,
-        resolved_commit_sha, local_path)
+      action
+          .getAnExternalCompositeActionModel(owner, repo, action_path, requested_ref,
+            resolved_commit_sha, local_path)
     )
   }
 
@@ -1531,8 +1532,10 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
   }
 
   private predicate hasModeledExternalCallee() {
-    exists(string owner, string repo, string workflow_path, string requested_ref,
-      string resolved_commit_sha, string local_path |
+    exists(
+      string owner, string repo, string workflow_path, string requested_ref,
+      string resolved_commit_sha, string local_path
+    |
       externalReusableWorkflowDataModel(owner, repo, workflow_path, requested_ref,
         resolved_commit_sha, local_path) and
       this.getCallee() = owner.trim() + "/" + repo.trim() + "/" + workflow_path.trim() and
@@ -1542,11 +1545,14 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
 
   override string getCallableName() {
     this.isLocalCall() and
-    exists(ReusableWorkflowImpl enclosing_workflow, string owner, string repo, string workflow_path,
-      string requested_ref, string resolved_commit_sha, string local_path |
+    exists(
+      ReusableWorkflowImpl enclosing_workflow, string owner, string repo, string workflow_path,
+      string requested_ref, string resolved_commit_sha, string local_path
+    |
       enclosing_workflow = this.getEnclosingWorkflow() and
-      enclosing_workflow.getAnExternalReusableWorkflowModel(owner, repo, workflow_path, requested_ref,
-        resolved_commit_sha, local_path) and
+      enclosing_workflow
+          .getAnExternalReusableWorkflowModel(owner, repo, workflow_path, requested_ref,
+            resolved_commit_sha, local_path) and
       result =
         owner.trim() + "/" + repo.trim() + "/" + this.getCallee() + "@" + requested_ref.trim()
     )
