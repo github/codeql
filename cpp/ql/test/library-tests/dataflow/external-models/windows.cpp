@@ -1110,7 +1110,6 @@ HRESULT ProgIDFromCLSID(REFCLSID clsid, LPOLESTR* lplpszProgID);
 HRESULT CLSIDFromProgID(LPCOLESTR lpszProgID, LPCLSID lpclsid);
 HRESULT CLSIDFromString(LPCOLESTR lpsz, LPCLSID pclsid);
 HRESULT StringFromCLSID(REFCLSID rclsid, LPOLESTR* lplpsz);
-int StringFromGUID(REFGUID rguid, LPOLESTR lpsz);
 int GUIDFromString(LPCOLESTR psz, GUID* pguid);
 int StringFromGUID2(REFGUID rguid, LPOLESTR lpsz, int cchMax);
 
@@ -1157,13 +1156,6 @@ void test_com_string_conversions() {
     CLSID clsid = source();
     LPOLESTR str = nullptr;
     StringFromCLSID(clsid, &str);
-    sink(str);
-    sink(*str); // $ ir
-  }
-  {
-    GUID guid = source();
-    char str[256];
-    StringFromGUID(guid, str);
     sink(str);
     sink(*str); // $ ir
   }
