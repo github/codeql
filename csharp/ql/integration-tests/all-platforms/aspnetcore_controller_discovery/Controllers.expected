@@ -1,3 +1,5 @@
-| GeneratedController.cs | GeneratedController |
-| IncludedController.cs  | IncludedController  |
-| WebPocoController.cs   | WebPocoController   |
+| AttributePocoController.cs | AttributePocoController |
+| GeneratedController.cs     | GeneratedController     |
+| IncludedController.cs      | IncludedController      |
+| StructuralController.cs    | StructuralController    |
+| WebPocoController.cs       | WebPocoController       |

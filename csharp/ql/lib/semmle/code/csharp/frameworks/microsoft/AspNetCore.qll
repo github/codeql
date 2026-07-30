@@ -271,11 +271,71 @@ private predicate isMicrosoftAspNetCoreMvcApplicationPart(Compilation applicatio
   )
 }
 
-private predicate isInMicrosoftAspNetCoreMvcApplication(Class controller) {
-  exists(Compilation application, Assembly controllerAssembly |
-    isMicrosoftAspNetCoreMvcApplication(application) and
-    controllerAssembly = getAnAssemblyFor(controller) and
-    isMicrosoftAspNetCoreMvcApplicationPart(application, controllerAssembly)
+private predicate isInMicrosoftAspNetCoreMvcApplication(Class controller, Compilation application) {
+  isMicrosoftAspNetCoreMvcApplication(application) and
+  isMicrosoftAspNetCoreMvcApplicationPart(application, getAnAssemblyFor(controller))
+}
+
+private predicate hasMicrosoftAspNetCoreMvcAttributeRoute(Class controller) {
+  exists(Attribute attr |
+    (
+      attr = controller.getABaseType*().getAnAttribute()
+      or
+      exists(Method method |
+        controller.hasMember(method) and
+        attr = method.getOverridee*().getAnAttribute()
+      )
+    ) and
+    attr.getType()
+        .getABaseType*()
+        .getABaseInterface*()
+        .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.Routing", "IRouteTemplateProvider")
+  )
+}
+
+private predicate isMicrosoftAspNetCoreMvcConventionalEndpointMapping(MethodCall call) {
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder",
+        "ControllerEndpointRouteBuilderExtensions",
+        [
+          "MapAreaControllerRoute", "MapControllerRoute", "MapDefaultControllerRoute",
+          "MapDynamicControllerRoute"
+        ])
+  or
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder", "MvcApplicationBuilderExtensions",
+        "UseMvcWithDefaultRoute")
+  or
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder", "MvcApplicationBuilderExtensions",
+        "UseMvc") and
+  exists(call.getArgumentForName("configureRoutes"))
+  or
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder", "MvcAreaRouteBuilderExtensions",
+        "MapAreaRoute")
+}
+
+private predicate isMicrosoftAspNetCoreMvcAttributeEndpointMapping(MethodCall call) {
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder",
+        "ControllerEndpointRouteBuilderExtensions", "MapControllers")
+  or
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder", "MvcApplicationBuilderExtensions",
+        "UseMvc") and
+  not exists(call.getArgumentForName("configureRoutes"))
+}
+
+private predicate hasMicrosoftAspNetCoreMvcEndpointMapping(Compilation application, Class controller) {
+  exists(MethodCall mapping |
+    application.getAFileCompiled() = mapping.getFile() and
+    (
+      isMicrosoftAspNetCoreMvcConventionalEndpointMapping(mapping)
+      or
+      isMicrosoftAspNetCoreMvcAttributeEndpointMapping(mapping) and
+      hasMicrosoftAspNetCoreMvcAttributeRoute(controller)
+    )
   )
 }
 
@@ -298,8 +358,11 @@ private predicate isDefaultMicrosoftAspNetCoreMvcController(Class controller) {
   (
     hasMicrosoftAspNetCoreMvcControllerIdentity(controller)
     or
-    controller.getName().toLowerCase().matches("%controller") and
-    isInMicrosoftAspNetCoreMvcApplication(controller)
+    exists(Compilation application |
+      controller.getName().toLowerCase().matches("%controller") and
+      isInMicrosoftAspNetCoreMvcApplication(controller, application) and
+      hasMicrosoftAspNetCoreMvcEndpointMapping(application, controller)
+    )
   ) and
   not controller.getABaseType*().getAnAttribute() instanceof
     MicrosoftAspNetCoreMvcNonControllerAttribute

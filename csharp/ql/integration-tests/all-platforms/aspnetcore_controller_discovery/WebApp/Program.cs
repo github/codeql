@@ -8,5 +8,5 @@ builder.Services
     .AddApplicationPart(typeof(IncludedController).Assembly);
 
 var app = builder.Build();
-app.MapControllers();
+app.MapControllerRoute("default", "{controller}/{action}");
 app.Run();

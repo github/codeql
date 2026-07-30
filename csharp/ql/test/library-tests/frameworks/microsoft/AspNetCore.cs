@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 public static class MvcRegistration
 {
-    public static void Register(IServiceCollection services)
+    public static void Register(IServiceCollection services, IEndpointRouteBuilder endpoints)
     {
         services.AddControllers();
+        endpoints.MapControllerRoute("default", "{controller}/{action}");
     }
 }
 
