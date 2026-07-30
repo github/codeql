@@ -18,6 +18,7 @@ pub fn generate(
     languages: Vec<language::Language>,
     dbscheme_path: PathBuf,
     ql_library_path: PathBuf,
+    use_facade_ast: bool,
     regenerate_instructions: &str,
 ) -> std::io::Result<()> {
     let dbscheme_file = File::create(dbscheme_path).map_err(|e| {
@@ -47,6 +48,7 @@ pub fn generate(
     ql::write(
         &mut ql_writer,
         &[ql::TopLevel::Import(ql::Import {
+            is_private: false,
             module: "codeql.Locations",
             alias: Some("L"),
         })],
@@ -121,6 +123,17 @@ pub fn generate(
         dbscheme::write(&mut dbscheme_writer, &dbscheme_tail)?;
 
         let mut body = vec![];
+
+        let facade_import_name = if use_facade_ast {
+            format!("FacadeAst::{}", &language.name)
+        } else {
+            language.name.clone() // If not using a facade AST, treat the module itself as the facade module.
+        };
+        body.push(ql::TopLevel::Import(ql::Import {
+            is_private: true,
+            module: &facade_import_name,
+            alias: Some("F"),
+        }));
 
         for c in ql_gen::create_ast_node_class(
             &ast_node_name,
