@@ -423,8 +423,6 @@ _NORMAL_DEPENDENCIES = {
         },
     },
     "unified/swift-syntax-rs": {
-        _COMMON_CONDITION: {
-        },
     },
 }
 
@@ -469,8 +467,6 @@ _NORMAL_ALIASES = {
         },
     },
     "unified/swift-syntax-rs": {
-        _COMMON_CONDITION: {
-        },
     },
 }
 
