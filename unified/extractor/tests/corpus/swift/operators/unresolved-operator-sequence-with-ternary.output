@@ -1,0 +1,157 @@
+func choose(_ c: Bool, _ a: Int, _ b: Int, _ d: Int) -> Int {
+  return c ? a : b .& d
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      expression:
+                        sequenceExpr
+                          elements:
+                            declReferenceExpr
+                              baseName: identifier "c"
+                            unresolvedTernaryExpr
+                              colon: :
+                              questionMark: ?
+                              thenExpression:
+                                declReferenceExpr
+                                  baseName: identifier "a"
+                            declReferenceExpr
+                              baseName: identifier "b"
+                            binaryOperatorExpr
+                              operator: binaryOperator ".&"
+                            declReferenceExpr
+                              baseName: identifier "d"
+                      returnKeyword: return
+          name: identifier "choose"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        identifierType
+                          name: identifier "Bool"
+                      firstName: _
+                      secondName: identifier "c"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: _
+                      secondName: identifier "a"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: _
+                      secondName: identifier "b"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: _
+                      secondName: identifier "d"
+              returnClause:
+                returnClause
+                  arrow: ->
+                  type:
+                    identifierType
+                      name: identifier "Int"
+          funcKeyword: func
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          name: identifier "choose"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              type:
+                named_type_expr
+                  name: identifier "Bool"
+              pattern:
+                name_pattern
+                  identifier: identifier "c"
+            parameter
+              external_name: identifier "_"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+              pattern:
+                name_pattern
+                  identifier: identifier "a"
+            parameter
+              external_name: identifier "_"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+              pattern:
+                name_pattern
+                  identifier: identifier "b"
+            parameter
+              external_name: identifier "_"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+              pattern:
+                name_pattern
+                  identifier: identifier "d"
+          return_type:
+            named_type_expr
+              name: identifier "Int"
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    unresolved_operator_sequence
+                      element:
+                        name_expr
+                          identifier: identifier "c"
+                        infix_operator "?"
+                        name_expr
+                          identifier: identifier "a"
+                        infix_operator ":"
+                        name_expr
+                          identifier: identifier "b"
+                        infix_operator ".&"
+                        name_expr
+                          identifier: identifier "d"

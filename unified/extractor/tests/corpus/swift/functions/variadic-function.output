@@ -82,6 +82,9 @@ top_level
           parameter:
             parameter
               external_name: identifier "_"
+              type:
+                named_type_expr
+                  name: identifier "Int"
               pattern:
                 name_pattern
                   identifier: identifier "values"
