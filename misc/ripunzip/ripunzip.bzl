@@ -8,10 +8,12 @@ def _ripunzip_archive_impl(repository_ctx):
             deb_arch = "arm64"
             sha256 = repository_ctx.attr.sha256_linux_arm64
             canonical_id = "ripunzip-linux-arm64"
-        else:
+        elif arch in ("x86_64", "amd64"):
             deb_arch = "amd64"
             sha256 = repository_ctx.attr.sha256_linux_x64
             canonical_id = "ripunzip-linux-x64"
+        else:
+            fail("Unsupported Linux architecture: %s" % arch)
 
         # ripunzip only provides a deb package for Linux: we fish the binary out of it
         # a deb archive contains a data.tar.xz one which contains the files to be installed under usr/bin
