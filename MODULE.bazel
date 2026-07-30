@@ -228,13 +228,8 @@ use_repo(
 # auto-registers `xcode_swift_toolchain` (host Xcode + OS-provided Swift
 # runtime), which is not hermetic.
 #
-# The version is pinned as a literal rather than read from
-# `unified/swift-syntax-rs/.swift-version` via `swift_version_file`: the latter
-# makes the extension `module_ctx.read` a `//unified/...` label, which fails to
-# resolve when this repo is consumed as a dependency module (`@@ql+`) whose
-# `unified/swift-syntax-rs` package is not loadable in that context. Keep this
-# in sync with `unified/swift-syntax-rs/.swift-version` (used by the `cargo`
-# build) and the `swift-syntax` release in `swift/Package.swift`.
+# This and the `swift-syntax` version above are the only pins: the extractor is
+# built solely by Bazel, so there is no second Swift build to keep in step.
 swift = use_extension("@rules_swift//swift:extensions.bzl", "swift")
 swift.toolchain(
     name = "swift_toolchain",

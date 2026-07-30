@@ -4,8 +4,11 @@ A Rust wrapper around the [swift-syntax](https://github.com/swiftlang/swift-synt
 package, allowing Swift source code to be parsed from Rust.
 
 Parsing is delegated to a small Swift shim (in [`swift/`](swift/)) that links
-against `SwiftSyntax`/`SwiftParser` and exposes a tiny C ABI. The Rust crate
-builds that shim (via `build.rs`) and provides safe bindings on top of it.
+against `SwiftSyntax`/`SwiftParser` and exposes a tiny C ABI. This crate provides
+safe bindings on top of it.
+
+Bazel builds both halves; there is no `cargo` build (see
+[Building & testing](#building--testing)).
 
 ## Output format
 
@@ -122,53 +125,25 @@ an unparenthesised `a *** b + c` is a single flat sequence whose structure
 cannot be determined without knowing `***`'s precedence, so it is left flat in
 its entirety.
 
-## Prerequisites
-
-The build does not depend on any particular version manager. You need:
-
-- **Rust** — pinned to `1.88` by the repo-root [`rust-toolchain.toml`](../../rust-toolchain.toml),
-  which `rustup` picks up automatically.
-- **Swift** — pinned to the version in [`.swift-version`](.swift-version)
-  (currently `6.3.2`), used to build `swift-syntax` `603.0.2`. Install it any way
-  you like — [swift.org](https://www.swift.org/install/) or
-  [swiftly](https://www.swift.org/swiftly/) (which reads `.swift-version`), or a
-  system package. Just make sure `swift` is on your `PATH` (or point `build.rs`
-  at it with the `SWIFT` environment variable).
-
-On Debian/Ubuntu the Swift runtime also needs `libncurses6` (and related libs)
-available on the system.
-
 ## Building & testing
 
-With `cargo` and `swift` on `PATH`:
-
-```sh
-cargo build
-cargo test
-```
-
-If your `swift`/`swiftc` are not on `PATH`, point the build at them explicitly:
-
-```sh
-SWIFT=/path/to/swift SWIFTC=/path/to/swiftc cargo build
-```
-
-The first build compiles `swift-syntax` and can take several minutes.
-
-## Building with Bazel (CI)
-
-CI builds this crate hermetically with Bazel. A Swift toolchain is downloaded
-from swift.org by the official `rules_swift` standalone toolchain extension
-(wired up in the repo-root `MODULE.bazel`), `swift-syntax` is pulled from the
-Bazel Central Registry, and the FFI shim is compiled as a `swift_library` that
-the Rust targets link against. `build.rs` is not used under Bazel; it only
-builds the Swift shim for the local `cargo` workflow.
+Everything is built by Bazel, which downloads a Swift toolchain from swift.org
+via the official `rules_swift` standalone toolchain extension (wired up in the
+repo-root `MODULE.bazel`) and pulls `swift-syntax` from the Bazel Central
+Registry. Nothing has to be installed locally on Linux:
 
 ```sh
 bazel build //unified/swift-syntax-rs:swift-syntax-parse
 bazel test  //unified/swift-syntax-rs:swift_syntax_rs_test
 bazel run   //unified/swift-syntax-rs:swift-syntax-parse < some.swift
 ```
+
+The first build compiles `swift-syntax` and can take several minutes.
+
+`cargo build`/`cargo test` do **not** work: the Swift shim is compiled by a
+`swift_library` in [`BUILD.bazel`](BUILD.bazel), so a `cargo` link finds no
+`ssr_*` symbols. `cargo check` does work — it does not link — which is all
+rust-analyzer needs.
 
 Requirements:
 
@@ -186,20 +161,12 @@ Requirements:
   [`xcode_transition.bzl`](xcode_transition.bzl)), so other targets on macOS
   keep using Bazel's default CC toolchain.
 
-The Swift compiler version is kept in sync across three places: the
-[`.swift-version`](.swift-version) file (read by the local `cargo`/`swift build`
-and by [swiftly](https://www.swift.org/swiftly/)), the literal `swift_version`
-pinned on `swift.toolchain(...)` in the root `MODULE.bazel` (the hermetic
-swift.org **Linux** Bazel toolchain), and the `swift-syntax` release in
-`swift/Package.swift`. On **macOS** the version is *not* pinned by the Bazel
-build: `rules_swift` auto-registers the host `xcode_swift_toolchain`, which uses
-whichever Swift ships with the installed Xcode. So the pin governs Linux (and
-local) builds, while the macOS compiler version depends on the host Xcode.
-
-(The Bazel toolchain pins a literal rather than reading `.swift-version` via
-`swift_version_file`, because the latter makes the module extension read a
-`//unified/...` label, which fails when this repo is consumed as a dependency
-module.)
+Versions are pinned in the root `MODULE.bazel` and nowhere else: the
+`swift_version` literal on `swift.toolchain(...)` selects the hermetic swift.org
+**Linux** toolchain, and `bazel_dep(name = "swift-syntax", ...)` selects the
+`swift-syntax` release. On **macOS** the compiler version is *not* pinned:
+`rules_swift` auto-registers the host `xcode_swift_toolchain`, so it follows
+whichever Swift ships with the installed Xcode.
 
 ## Usage
 
@@ -213,7 +180,7 @@ println!("{json}");
 CLI (reads a file argument or stdin, prints the syntax tree as JSON):
 
 ```sh
-echo 'let x = 1' | cargo run --bin swift-syntax-parse
+echo 'let x = 1' | bazel run //unified/swift-syntax-rs:swift-syntax-parse
 ```
 
 ## Converting to a yeast AST
@@ -221,14 +188,12 @@ echo 'let x = 1' | cargo run --bin swift-syntax-parse
 The JSON tree is consumed by the CodeQL extractor, which converts it into a
 [`yeast::Ast`](../../shared/yeast) — the in-memory format its rewrite rules
 operate on. That adapter is a pure-Rust module living in the extractor
-(`unified/extractor/src/languages/swift/adapter.rs`), so the extractor never
-needs the Swift toolchain: it consumes the JSON produced out-of-process by this
-crate's `parse_to_json` / the `swift-syntax-parse` binary.
+(`unified/extractor/src/languages/swift/adapter.rs`); the extractor links this
+crate and calls `parse_to_json` in-process.
 
 ## Layout
 
-- `swift/` — Swift package exposing the `ssr_parse_json` / `ssr_string_free` C ABI.
-- `build.rs` — builds the Swift package and emits link/rpath flags (local `cargo` only).
-- `BUILD.bazel` — Bazel targets for the hermetic CI build (swift_library + rust targets).
+- `swift/` — Swift sources exposing the `ssr_parse_json` / `ssr_string_free` C ABI.
+- `BUILD.bazel` — the build (swift_library + rust targets).
 - `src/lib.rs` — safe Rust bindings (`parse_to_json`).
 - `src/main.rs` — demo CLI.

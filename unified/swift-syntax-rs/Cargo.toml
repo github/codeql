@@ -1,3 +1,6 @@
+# `BUILD.bazel` is the build. This file feeds `misc/bazel/3rdparty`, which
+# resolves third-party crate versions from it, and `cargo check`; `cargo
+# build`/`test` cannot link the Swift shim.
 [package]
 name = "swift-syntax-rs"
 description = "Rust wrapper around the swift-syntax package for parsing Swift source"

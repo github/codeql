@@ -4,9 +4,10 @@ This is a CodeQL extractor that maps a language's parse tree onto a shared AST
 using the `yeast` desugaring engine. Swift, the only language so far, is parsed
 by Apple's swift-syntax rather than by tree-sitter.
 
-Build and test with Bazel, whose Swift toolchain is hermetic on Linux, so
-nothing needs to be installed locally. The extractor links `swift-syntax`, so a
-`cargo` build additionally needs a local Swift toolchain.
+Everything is built and tested with Bazel, whose Swift toolchain is hermetic on
+Linux, so nothing needs to be installed locally. `cargo build`/`cargo test` do
+not work here: the extractor links a Swift FFI shim that only Bazel builds.
+(`cargo check` still works, so rust-analyzer is unaffected.)
 
 ## Building
 - To build the extractor pack, run `scripts/create-extractor-pack.sh`.
