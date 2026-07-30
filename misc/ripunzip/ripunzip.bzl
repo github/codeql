@@ -4,7 +4,7 @@ def _ripunzip_archive_impl(repository_ctx):
     build_file = Label("//misc/ripunzip:BUILD.ripunzip.bazel")
     if "linux" in repository_ctx.os.name:
         arch = repository_ctx.os.arch
-        if arch in ("aarch64", "arm64"):
+        if arch == "aarch64":
             deb_arch = "arm64"
             sha256 = repository_ctx.attr.sha256_linux_arm
             canonical_id = "ripunzip-linux-arm"
