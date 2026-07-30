@@ -23,8 +23,7 @@ predicate keyValueCommentAt(string filepath, int line, string key, string value)
 module VariableAccessTest implements TestSig {
   string getARelevantTag() { result = "access" }
 
-  private predicate declAt(Variable v, string filepath, int line) {
-    v.getLocation().hasLocationInfo(filepath, _, _, line, _)
+  additional predicate declAt(Variable v, string filepath, int line) {
     v.getLocation().hasLocationInfo(filepath, line, _, _, _)
   }
 
@@ -50,3 +49,13 @@ module VariableAccessTest implements TestSig {
 }
 
 import MakeTest<VariableAccessTest>
+
+private Variable getVariableAt(string name, string filepath, int line) {
+  VariableAccessTest::declAt(result, filepath, line) and
+  result.getName() = name
+}
+
+query predicate ambiguousVariable(Variable v, string name, string filepath, int line) {
+  v = getVariableAt(name, filepath, line) and
+  strictcount(getVariableAt(name, filepath, line)) >= 2
+}

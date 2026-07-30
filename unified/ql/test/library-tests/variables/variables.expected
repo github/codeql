@@ -1,0 +1,4 @@
+testFailures
+ambiguousVariable
+| test.swift:352:10:353:17 | y | y | test.swift | 352 |
+| test.swift:352:17:352:17 | y | y | test.swift | 352 |
