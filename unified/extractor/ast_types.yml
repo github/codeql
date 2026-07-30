@@ -49,6 +49,7 @@ supertypes:
     - tuple_pattern
     - constructor_pattern
     - or_pattern
+    - conditional_pattern
     - ignore_pattern
     - expr_equality_pattern
     - bulk_importing_pattern
@@ -369,7 +370,6 @@ named:
   catch_clause:
     modifier*: modifier
     pattern?: pattern
-    guard?: expr
     body: block
 
   # `switch value { case pattern: body case ...: default: body }`
@@ -381,11 +381,9 @@ named:
   # A single `case ...:` (or `default:`) entry in a switch.
   # An entry with multiple `case p1, p2:` patterns uses an `or_pattern`.
   # A `default:` entry has no pattern.
-  # An optional `guard` corresponds to a `where`-clause on the case.
   switch_case:
     modifier*: modifier
     pattern?: pattern
-    guard?: expr
     body: block
 
   # Evaluate 'expr' and match its result against 'pattern', and return true if it matches.
@@ -445,6 +443,14 @@ named:
   or_pattern:
     modifier*: modifier
     pattern*: pattern
+
+  # A pattern that matches against a nested pattern, and subsequently checks a condition.
+  # The match is rejected if the condition does not hold.
+  # Variables bound in the nested pattern are in scope within the condition.
+  conditional_pattern:
+    modifier*: modifier
+    condition: expr
+    pattern: pattern
 
   # A pattern with an optional associated name.
   pattern_element:
