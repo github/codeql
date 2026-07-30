@@ -189,38 +189,61 @@ class MicrosoftAspNetCoreMvcControllerBaseClass extends Class {
   }
 }
 
+private predicate isPotentialMicrosoftAspNetCoreMvcController(Class controller) {
+  controller =
+    any(Class c |
+      (
+        exists(Assembly a |
+          a.getName() = ["Microsoft.AspNetCore.Mvc.Core", "Microsoft.AspNetCore.Mvc.ViewFeatures"]
+        ) or
+        exists(UsingNamespaceDirective ns |
+          ns.getImportedNamespace() instanceof MicrosoftAspNetCoreMvcNamespace
+        )
+      ) and
+      c.isPublic() and
+      not c instanceof Generic and
+      (
+        c.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
+        or
+        c.getABaseType*().getName().matches("%Controller")
+        or
+        c.getABaseType*()
+            .getAnAttribute()
+            .getType()
+            .getABaseType*()
+            // ApiControllerAttribute is derived from ControllerAttribute
+            .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "ControllerAttribute")
+      ) and
+      not c.getABaseType*().getAnAttribute() instanceof MicrosoftAspNetCoreMvcNonControllerAttribute
+    )
+}
+
+/** A class treated as an owner of ASP.NET Core MVC controller helper methods. */
+class MicrosoftAspNetCoreMvcControllerHelperClass extends Class {
+  MicrosoftAspNetCoreMvcControllerHelperClass() {
+    isPotentialMicrosoftAspNetCoreMvcController(this)
+  }
+
+  /** Gets a `Redirect*`, `Accepted*`, or `Created*` method. */
+  Method getAResponseMethod() {
+    result = this.getAMethod() and
+    (
+      result.getName().matches("Redirect%")
+      or
+      result.getName().matches("Accepted%")
+      or
+      result.getName().matches("Created%")
+    )
+  }
+}
+
 /**
  * A valid ASP.NET Core controller according to:
  * https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/actions?view=aspnetcore-3.1
  * https://github.com/dotnet/aspnetcore/blob/b3c93967ba508b8ef139add27132d9483c1a9eb4/src/Mvc/Mvc.Core/src/Controllers/ControllerFeatureProvider.cs#L39-L75
  */
 class MicrosoftAspNetCoreMvcController extends Class {
-  MicrosoftAspNetCoreMvcController() {
-    (
-      exists(Assembly a |
-        a.getName() = ["Microsoft.AspNetCore.Mvc.Core", "Microsoft.AspNetCore.Mvc.ViewFeatures"]
-      ) or
-      exists(UsingNamespaceDirective ns |
-        ns.getImportedNamespace() instanceof MicrosoftAspNetCoreMvcNamespace
-      )
-    ) and
-    this.isPublic() and
-    not this instanceof Generic and
-    (
-      this.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
-      or
-      this.getABaseType*().getName().matches("%Controller")
-      or
-      this.getABaseType*()
-          .getAnAttribute()
-          .getType()
-          .getABaseType*()
-          // ApiControllerAttribute is derived from ControllerAttribute
-          .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "ControllerAttribute")
-    ) and
-    not this.getABaseType*().getAnAttribute() instanceof
-      MicrosoftAspNetCoreMvcNonControllerAttribute
-  }
+  MicrosoftAspNetCoreMvcController() { isPotentialMicrosoftAspNetCoreMvcController(this) }
 
   /** Gets an action method for this controller. */
   Method getAnActionMethod() {
@@ -232,14 +255,7 @@ class MicrosoftAspNetCoreMvcController extends Class {
 
   /** Gets a `Redirect*` method. */
   Method getARedirectMethod() {
-    result = this.getAMethod() and
-    (
-      result.getName().matches("Redirect%")
-      or
-      result.getName().matches("Accepted%")
-      or
-      result.getName().matches("Created%")
-    )
+    result = this.(MicrosoftAspNetCoreMvcControllerHelperClass).getAResponseMethod()
   }
 }
 
