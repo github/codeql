@@ -157,6 +157,9 @@ module Ruby {
       ruby_alternative_pattern_alternatives(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `alternatives`. */
+    final F::UnderscorePatternExprBasic getAnAlternatives() { result = this.getAlternatives(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       ruby_alternative_pattern_alternatives(this, _, result)
@@ -171,6 +174,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_argument_list_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_argument_list_child(this, _, result) }
   }
@@ -182,6 +188,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_array_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_array_child(this, _, result) }
@@ -199,6 +208,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_array_pattern_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -248,6 +260,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_bare_string_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_bare_string_child(this, _, result) }
   }
@@ -259,6 +274,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_bare_symbol_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_bare_symbol_child(this, _, result) }
@@ -272,6 +290,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_begin_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_begin_child(this, _, result) }
   }
@@ -283,6 +304,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_begin_block_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_begin_block_child(this, _, result) }
@@ -397,6 +421,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_block_body_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_block_body_child(this, _, result) }
   }
@@ -421,8 +448,14 @@ module Ruby {
     /** Gets the node corresponding to the field `locals`. */
     final F::Identifier getLocals(int i) { ruby_block_parameters_locals(this, i, result) }
 
+    /** Gets the node corresponding to the field `locals`. */
+    final F::Identifier getALocals() { result = this.getLocals(_) }
+
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_block_parameters_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -437,6 +470,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_body_statement_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_body_statement_child(this, _, result) }
@@ -495,6 +531,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_case_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       ruby_case_value(this, result) or ruby_case_child(this, _, result)
@@ -508,6 +547,9 @@ module Ruby {
 
     /** Gets the node corresponding to the field `clauses`. */
     final F::InClause getClauses(int i) { ruby_case_match_clauses(this, i, result) }
+
+    /** Gets the node corresponding to the field `clauses`. */
+    final F::InClause getAClauses() { result = this.getClauses(_) }
 
     /** Gets the node corresponding to the field `else`. */
     final F::Else getElse() { ruby_case_match_else(this, result) }
@@ -530,6 +572,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::String getChild(int i) { ruby_chained_string_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::String getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_chained_string_child(this, _, result) }
@@ -627,6 +672,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_delimited_symbol_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_delimited_symbol_child(this, _, result) }
   }
@@ -638,6 +686,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_destructured_left_assignment_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -653,6 +704,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_destructured_parameter_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       ruby_destructured_parameter_child(this, _, result)
@@ -666,6 +720,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_do_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_do_child(this, _, result) }
@@ -702,6 +759,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_element_reference_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       ruby_element_reference_block(this, result) or
@@ -717,6 +777,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_else_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_else_child(this, _, result) }
@@ -764,6 +827,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_end_block_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_end_block_child(this, _, result) }
   }
@@ -775,6 +841,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_ensure_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_ensure_child(this, _, result) }
@@ -805,6 +874,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_exceptions_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_exceptions_child(this, _, result) }
@@ -850,6 +922,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_find_pattern_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -911,6 +986,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_hash_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_hash_child(this, _, result) }
   }
@@ -933,6 +1011,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_hash_pattern_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -985,6 +1066,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_heredoc_body_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_heredoc_body_child(this, _, result) }
@@ -1117,6 +1201,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_interpolation_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_interpolation_child(this, _, result) }
   }
@@ -1180,6 +1267,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_lambda_parameters_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_lambda_parameters_child(this, _, result) }
   }
@@ -1191,6 +1281,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_left_assignment_list_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -1250,6 +1343,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_method_parameters_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_method_parameters_child(this, _, result) }
@@ -1401,6 +1497,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_parenthesized_statements_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       ruby_parenthesized_statements_child(this, _, result)
@@ -1426,6 +1525,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_program_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_program_child(this, _, result) }
@@ -1488,6 +1590,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_regex_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_regex_child(this, _, result) }
@@ -1575,6 +1680,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_right_assignment_list_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -1704,6 +1812,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_string_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_string_child(this, _, result) }
   }
@@ -1715,6 +1826,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::BareString getChild(int i) { ruby_string_array_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::BareString getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_string_array_child(this, _, result) }
@@ -1733,6 +1847,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_subshell_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_subshell_child(this, _, result) }
@@ -1764,6 +1881,9 @@ module Ruby {
     /** Gets the `i`th child of this node. */
     final F::BareSymbol getChild(int i) { ruby_symbol_array_child(this, i, result) }
 
+    /** Gets the `i`th child of this node. */
+    final F::BareSymbol getAChild() { result = this.getChild(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_symbol_array_child(this, _, result) }
   }
@@ -1792,6 +1912,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { ruby_then_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_then_child(this, _, result) }
@@ -1841,6 +1964,9 @@ module Ruby {
 
     /** Gets the `i`th child of this node. */
     final F::UnderscoreMethodName getChild(int i) { ruby_undef_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::UnderscoreMethodName getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { ruby_undef_child(this, _, result) }
@@ -1963,6 +2089,9 @@ module Ruby {
 
     /** Gets the node corresponding to the field `pattern`. */
     final F::Pattern getPattern(int i) { ruby_when_pattern(this, i, result) }
+
+    /** Gets the node corresponding to the field `pattern`. */
+    final F::Pattern getAPattern() { result = this.getPattern(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -2800,6 +2929,9 @@ module Erb {
 
     /** Gets the `i`th child of this node. */
     final F::AstNode getChild(int i) { erb_template_child(this, i, result) }
+
+    /** Gets the `i`th child of this node. */
+    final F::AstNode getAChild() { result = this.getChild(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { erb_template_child(this, _, result) }

@@ -109,6 +109,9 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_accessor_declaration_modifier(this, i, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `name`. */
     final F::Identifier getName() { unified_accessor_declaration_def(this, _, result) }
 
@@ -116,6 +119,9 @@ module Unified {
     final F::Parameter getParameter(int i) {
       unified_accessor_declaration_parameter(this, i, result)
     }
+
+    /** Gets the node corresponding to the field `parameter`. */
+    final F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `type`. */
     final F::TypeExpr getType() { unified_accessor_declaration_type(this, result) }
@@ -145,6 +151,9 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_argument_modifier(this, i, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `name`. */
     final F::Identifier getName() { unified_argument_name(this, result) }
 
@@ -166,6 +175,9 @@ module Unified {
 
     /** Gets the node corresponding to the field `element`. */
     final F::Expr getElement(int i) { unified_array_literal_element(this, i, result) }
+
+    /** Gets the node corresponding to the field `element`. */
+    final F::Expr getAnElement() { result = this.getElement(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { unified_array_literal_element(this, _, result) }
@@ -201,6 +213,9 @@ module Unified {
       unified_associated_type_declaration_modifier(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `name`. */
     final F::Identifier getName() { unified_associated_type_declaration_def(this, result) }
 
@@ -219,6 +234,9 @@ module Unified {
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_base_type_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `type`. */
     final F::TypeExpr getType() { unified_base_type_def(this, result) }
@@ -258,6 +276,9 @@ module Unified {
 
     /** Gets the node corresponding to the field `stmt`. */
     final F::Stmt getStmt(int i) { unified_block_stmt(this, i, result) }
+
+    /** Gets the node corresponding to the field `stmt`. */
+    final F::Stmt getAStmt() { result = this.getStmt(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { unified_block_stmt(this, _, result) }
@@ -315,6 +336,9 @@ module Unified {
       unified_bulk_importing_pattern_modifier(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       unified_bulk_importing_pattern_modifier(this, _, result)
@@ -329,11 +353,17 @@ module Unified {
     /** Gets the node corresponding to the field `argument`. */
     final F::Argument getArgument(int i) { unified_call_expr_argument(this, i, result) }
 
+    /** Gets the node corresponding to the field `argument`. */
+    final F::Argument getAnArgument() { result = this.getArgument(_) }
+
     /** Gets the node corresponding to the field `callee`. */
     final F::ExprOrType getCallee() { unified_call_expr_def(this, result) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_call_expr_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -353,6 +383,9 @@ module Unified {
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_catch_clause_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `pattern`. */
     final F::Pattern getPattern() { unified_catch_clause_pattern(this, result) }
@@ -375,13 +408,22 @@ module Unified {
       unified_class_like_declaration_base_type(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `base_type`. */
+    final F::BaseType getABaseType() { result = this.getBaseType(_) }
+
     /** Gets the node corresponding to the field `member`. */
     final F::Member getMember(int i) { unified_class_like_declaration_member(this, i, result) }
+
+    /** Gets the node corresponding to the field `member`. */
+    final F::Member getAMember() { result = this.getMember(_) }
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) {
       unified_class_like_declaration_modifier(this, i, result)
     }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `name`. */
     final F::Identifier getName() { unified_class_like_declaration_name(this, result) }
@@ -391,10 +433,16 @@ module Unified {
       unified_class_like_declaration_type_constraint(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `type_constraint`. */
+    final F::TypeConstraint getATypeConstraint() { result = this.getTypeConstraint(_) }
+
     /** Gets the node corresponding to the field `type_parameter`. */
     final F::TypeParameter getTypeParameter(int i) {
       unified_class_like_declaration_type_parameter(this, i, result)
     }
+
+    /** Gets the node corresponding to the field `type_parameter`. */
+    final F::TypeParameter getATypeParameter() { result = this.getTypeParameter(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -440,6 +488,9 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_conditional_pattern_modifier(this, i, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `pattern`. */
     final F::Pattern getPattern() { unified_conditional_pattern_def(this, _, result) }
 
@@ -464,6 +515,9 @@ module Unified {
       unified_constructor_declaration_modifier(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `name`. */
     final F::Identifier getName() { unified_constructor_declaration_name(this, result) }
 
@@ -471,6 +525,9 @@ module Unified {
     final F::Parameter getParameter(int i) {
       unified_constructor_declaration_parameter(this, i, result)
     }
+
+    /** Gets the node corresponding to the field `parameter`. */
+    final F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -494,8 +551,14 @@ module Unified {
       unified_constructor_pattern_element(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `element`. */
+    final F::PatternElement getAnElement() { result = this.getElement(_) }
+
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_constructor_pattern_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -530,6 +593,9 @@ module Unified {
       unified_destructor_declaration_modifier(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       unified_destructor_declaration_def(this, result) or
@@ -550,6 +616,9 @@ module Unified {
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_do_while_stmt_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -632,6 +701,9 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_for_each_stmt_modifier(this, i, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `pattern`. */
     final F::Pattern getPattern() { unified_for_each_stmt_def(this, _, result) }
 
@@ -656,6 +728,9 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_function_declaration_modifier(this, i, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `name`. */
     final F::Identifier getName() { unified_function_declaration_def(this, result) }
 
@@ -663,6 +738,9 @@ module Unified {
     final F::Parameter getParameter(int i) {
       unified_function_declaration_parameter(this, i, result)
     }
+
+    /** Gets the node corresponding to the field `parameter`. */
+    final F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `return_type`. */
     final F::TypeExpr getReturnType() { unified_function_declaration_return_type(this, result) }
@@ -672,10 +750,16 @@ module Unified {
       unified_function_declaration_type_constraint(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `type_constraint`. */
+    final F::TypeConstraint getATypeConstraint() { result = this.getTypeConstraint(_) }
+
     /** Gets the node corresponding to the field `type_parameter`. */
     final F::TypeParameter getTypeParameter(int i) {
       unified_function_declaration_type_parameter(this, i, result)
     }
+
+    /** Gets the node corresponding to the field `type_parameter`. */
+    final F::TypeParameter getATypeParameter() { result = this.getTypeParameter(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -702,11 +786,20 @@ module Unified {
       unified_function_expr_capture_declaration(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `capture_declaration`. */
+    final F::VariableDeclaration getACaptureDeclaration() { result = this.getCaptureDeclaration(_) }
+
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_function_expr_modifier(this, i, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `parameter`. */
     final F::Parameter getParameter(int i) { unified_function_expr_parameter(this, i, result) }
+
+    /** Gets the node corresponding to the field `parameter`. */
+    final F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `return_type`. */
     final F::TypeExpr getReturnType() { unified_function_expr_return_type(this, result) }
@@ -728,6 +821,9 @@ module Unified {
 
     /** Gets the node corresponding to the field `parameter`. */
     final F::Parameter getParameter(int i) { unified_function_type_expr_parameter(this, i, result) }
+
+    /** Gets the node corresponding to the field `parameter`. */
+    final F::Parameter getAParameter() { result = this.getParameter(_) }
 
     /** Gets the node corresponding to the field `return_type`. */
     final F::TypeExpr getReturnType() { unified_function_type_expr_def(this, result) }
@@ -751,6 +847,9 @@ module Unified {
     final F::TypeExpr getTypeArgument(int i) {
       unified_generic_type_expr_type_argument(this, i, result)
     }
+
+    /** Gets the node corresponding to the field `type_argument`. */
+    final F::TypeExpr getATypeArgument() { result = this.getTypeArgument(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -821,6 +920,9 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_import_declaration_modifier(this, i, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `pattern`. */
     final F::Pattern getPattern() { unified_import_declaration_pattern(this, result) }
 
@@ -858,6 +960,9 @@ module Unified {
     final F::Modifier getModifier(int i) {
       unified_initializer_declaration_modifier(this, i, result)
     }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -914,6 +1019,9 @@ module Unified {
     /** Gets the node corresponding to the field `element`. */
     final F::Expr getElement(int i) { unified_map_literal_element(this, i, result) }
 
+    /** Gets the node corresponding to the field `element`. */
+    final F::Expr getAnElement() { result = this.getElement(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { unified_map_literal_element(this, _, result) }
   }
@@ -967,6 +1075,9 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_name_pattern_modifier(this, i, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       unified_name_pattern_def(this, result) or unified_name_pattern_modifier(this, _, result)
@@ -1005,6 +1116,9 @@ module Unified {
       unified_operator_syntax_declaration_modifier(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `name`. */
     final F::Identifier getName() { unified_operator_syntax_declaration_def(this, result) }
 
@@ -1028,8 +1142,14 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_or_pattern_modifier(this, i, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `pattern`. */
     final F::Pattern getPattern(int i) { unified_or_pattern_pattern(this, i, result) }
+
+    /** Gets the node corresponding to the field `pattern`. */
+    final F::Pattern getAPattern() { result = this.getPattern(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -1050,6 +1170,9 @@ module Unified {
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_parameter_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `pattern`. */
     final F::Pattern getPattern() { unified_parameter_pattern(this, result) }
@@ -1079,6 +1202,9 @@ module Unified {
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_pattern_element_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `pattern`. */
     final F::Pattern getPattern() { unified_pattern_element_def(this, result) }
@@ -1164,6 +1290,9 @@ module Unified {
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_switch_case_modifier(this, i, result) }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `pattern`. */
     final F::Pattern getPattern() { unified_switch_case_pattern(this, result) }
 
@@ -1183,8 +1312,14 @@ module Unified {
     /** Gets the node corresponding to the field `case`. */
     final F::SwitchCase getCase(int i) { unified_switch_expr_case(this, i, result) }
 
+    /** Gets the node corresponding to the field `case`. */
+    final F::SwitchCase getACase() { result = this.getCase(_) }
+
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_switch_expr_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `value`. */
     final F::Expr getValue() { unified_switch_expr_def(this, result) }
@@ -1232,8 +1367,14 @@ module Unified {
     /** Gets the node corresponding to the field `catch_clause`. */
     final F::CatchClause getCatchClause(int i) { unified_try_expr_catch_clause(this, i, result) }
 
+    /** Gets the node corresponding to the field `catch_clause`. */
+    final F::CatchClause getACatchClause() { result = this.getCatchClause(_) }
+
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_try_expr_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -1251,6 +1392,9 @@ module Unified {
     /** Gets the node corresponding to the field `element`. */
     final F::Expr getElement(int i) { unified_tuple_expr_element(this, i, result) }
 
+    /** Gets the node corresponding to the field `element`. */
+    final F::Expr getAnElement() { result = this.getElement(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() { unified_tuple_expr_element(this, _, result) }
   }
@@ -1263,8 +1407,14 @@ module Unified {
     /** Gets the node corresponding to the field `element`. */
     final F::PatternElement getElement(int i) { unified_tuple_pattern_element(this, i, result) }
 
+    /** Gets the node corresponding to the field `element`. */
+    final F::PatternElement getAnElement() { result = this.getElement(_) }
+
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_tuple_pattern_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -1298,6 +1448,9 @@ module Unified {
     /** Gets the node corresponding to the field `element`. */
     final F::TupleTypeElement getElement(int i) { unified_tuple_type_expr_element(this, i, result) }
 
+    /** Gets the node corresponding to the field `element`. */
+    final F::TupleTypeElement getAnElement() { result = this.getElement(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       unified_tuple_type_expr_element(this, _, result)
@@ -1314,6 +1467,9 @@ module Unified {
       unified_type_alias_declaration_modifier(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
+
     /** Gets the node corresponding to the field `name`. */
     final F::Identifier getName() { unified_type_alias_declaration_def(this, result, _) }
 
@@ -1325,10 +1481,16 @@ module Unified {
       unified_type_alias_declaration_type_constraint(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `type_constraint`. */
+    final F::TypeConstraint getATypeConstraint() { result = this.getTypeConstraint(_) }
+
     /** Gets the node corresponding to the field `type_parameter`. */
     final F::TypeParameter getTypeParameter(int i) {
       unified_type_alias_declaration_type_parameter(this, i, result)
     }
+
+    /** Gets the node corresponding to the field `type_parameter`. */
+    final F::TypeParameter getATypeParameter() { result = this.getTypeParameter(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
@@ -1376,6 +1538,9 @@ module Unified {
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_type_parameter_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `name`. */
     final F::Identifier getName() { unified_type_parameter_def(this, result) }
@@ -1455,6 +1620,9 @@ module Unified {
       unified_unresolved_operator_sequence_element(this, i, result)
     }
 
+    /** Gets the node corresponding to the field `element`. */
+    final F::ExprOrOperator getAnElement() { result = this.getElement(_) }
+
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
       unified_unresolved_operator_sequence_element(this, _, result)
@@ -1476,6 +1644,9 @@ module Unified {
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_variable_declaration_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets the node corresponding to the field `pattern`. */
     final F::Pattern getPattern() { unified_variable_declaration_def(this, result) }
@@ -1508,6 +1679,9 @@ module Unified {
 
     /** Gets the node corresponding to the field `modifier`. */
     final F::Modifier getModifier(int i) { unified_while_stmt_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final F::Modifier getAModifier() { result = this.getModifier(_) }
 
     /** Gets a field or child node of this node. */
     final override F::AstNode getAFieldOrChild() {
