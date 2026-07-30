@@ -25,6 +25,7 @@ module VariableAccessTest implements TestSig {
 
   private predicate declAt(Variable v, string filepath, int line) {
     v.getLocation().hasLocationInfo(filepath, _, _, line, _)
+    v.getLocation().hasLocationInfo(filepath, line, _, _, _)
   }
 
   private predicate decl(Variable v, string alias) {
