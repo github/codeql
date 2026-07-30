@@ -80,7 +80,7 @@ func t10(value: Int) { // name=value1
 // Switch with multiple cases
 func t11(value: Int) { // name=value1
     switch value { // $ access=value1
-    case let x where x > 0: // name=x1
+    case let x where x > 0: // $ access=x1 // name=x1
         print(x) // $ access=x1
     case let x: // name=x2
         print(x) // $ access=x2
@@ -187,6 +187,8 @@ func t22() {
     }
     inner() // $ access=inner1
     print(x) // $ access=x1
+    let inner = 2 // name=inner2
+    print(inner) // $ access=inner2
 }
 
 // Three levels of shadowing
@@ -214,7 +216,7 @@ func t24(optional: Int?) { // name=optional1
     }
 }
 
-// Switch with same variable name in different cases
+// Switch with variable shadowed within body of case
 func t25(value: Int) { // name=value1
     switch value { // $ access=value1
     case let x: // name=x1

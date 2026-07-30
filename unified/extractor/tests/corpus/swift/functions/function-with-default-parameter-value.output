@@ -69,6 +69,9 @@ top_level
           name: identifier "greet"
           parameter:
             parameter
+              type:
+                named_type_expr
+                  name: identifier "String"
               pattern:
                 name_pattern
                   identifier: identifier "name"

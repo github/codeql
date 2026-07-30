@@ -349,9 +349,6 @@ module Unified {
     /** Gets the node corresponding to the field `body`. */
     final Block getBody() { unified_catch_clause_def(this, result) }
 
-    /** Gets the node corresponding to the field `guard`. */
-    final Expr getGuard() { unified_catch_clause_guard(this, result) }
-
     /** Gets the node corresponding to the field `modifier`. */
     final Modifier getModifier(int i) { unified_catch_clause_modifier(this, i, result) }
 
@@ -361,7 +358,6 @@ module Unified {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       unified_catch_clause_def(this, result) or
-      unified_catch_clause_guard(this, result) or
       unified_catch_clause_modifier(this, _, result) or
       unified_catch_clause_pattern(this, result)
     }
@@ -424,6 +420,28 @@ module Unified {
       unified_compound_assign_expr_def(this, result, _, _) or
       unified_compound_assign_expr_def(this, _, result, _) or
       unified_compound_assign_expr_def(this, _, _, result)
+    }
+  }
+
+  /** A class representing `conditional_pattern` nodes. */
+  final class ConditionalPattern extends @unified_conditional_pattern, AstNodeImpl {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ConditionalPattern" }
+
+    /** Gets the node corresponding to the field `condition`. */
+    final Expr getCondition() { unified_conditional_pattern_def(this, result, _) }
+
+    /** Gets the node corresponding to the field `modifier`. */
+    final Modifier getModifier(int i) { unified_conditional_pattern_modifier(this, i, result) }
+
+    /** Gets the node corresponding to the field `pattern`. */
+    final Pattern getPattern() { unified_conditional_pattern_def(this, _, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      unified_conditional_pattern_def(this, result, _) or
+      unified_conditional_pattern_modifier(this, _, result) or
+      unified_conditional_pattern_def(this, _, result)
     }
   }
 
@@ -1125,9 +1143,6 @@ module Unified {
     /** Gets the node corresponding to the field `body`. */
     final Block getBody() { unified_switch_case_def(this, result) }
 
-    /** Gets the node corresponding to the field `guard`. */
-    final Expr getGuard() { unified_switch_case_guard(this, result) }
-
     /** Gets the node corresponding to the field `modifier`. */
     final Modifier getModifier(int i) { unified_switch_case_modifier(this, i, result) }
 
@@ -1137,7 +1152,6 @@ module Unified {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       unified_switch_case_def(this, result) or
-      unified_switch_case_guard(this, result) or
       unified_switch_case_modifier(this, _, result) or
       unified_switch_case_pattern(this, result)
     }
@@ -1541,8 +1555,6 @@ module Unified {
       or
       result = node.(CatchClause).getBody() and i = -1 and name = "getBody"
       or
-      result = node.(CatchClause).getGuard() and i = -1 and name = "getGuard"
-      or
       result = node.(CatchClause).getModifier(i) and name = "getModifier"
       or
       result = node.(CatchClause).getPattern() and i = -1 and name = "getPattern"
@@ -1564,6 +1576,12 @@ module Unified {
       result = node.(CompoundAssignExpr).getTarget() and i = -1 and name = "getTarget"
       or
       result = node.(CompoundAssignExpr).getValue() and i = -1 and name = "getValue"
+      or
+      result = node.(ConditionalPattern).getCondition() and i = -1 and name = "getCondition"
+      or
+      result = node.(ConditionalPattern).getModifier(i) and name = "getModifier"
+      or
+      result = node.(ConditionalPattern).getPattern() and i = -1 and name = "getPattern"
       or
       result = node.(ConstructorDeclaration).getBody() and i = -1 and name = "getBody"
       or
@@ -1720,8 +1738,6 @@ module Unified {
       result = node.(ReturnExpr).getValue() and i = -1 and name = "getValue"
       or
       result = node.(SwitchCase).getBody() and i = -1 and name = "getBody"
-      or
-      result = node.(SwitchCase).getGuard() and i = -1 and name = "getGuard"
       or
       result = node.(SwitchCase).getModifier(i) and name = "getModifier"
       or

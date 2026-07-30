@@ -1,0 +1,51 @@
+class Button: Control, Drawable {}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Button"
+          inheritanceClause:
+            inheritanceClause
+              colon: :
+              inheritedTypes:
+                inheritedType
+                  trailingComma: ,
+                  type:
+                    identifierType
+                      name: identifier "Control"
+                inheritedType
+                  type:
+                    identifierType
+                      name: identifier "Drawable"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+          modifiers:
+          classKeyword: class
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Button"
+          base_type:
+            base_type
+              type:
+                named_type_expr
+                  name: identifier "Control"
+            base_type
+              type:
+                named_type_expr
+                  name: identifier "Drawable"
