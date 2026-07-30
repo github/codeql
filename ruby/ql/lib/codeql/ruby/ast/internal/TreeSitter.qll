@@ -25,7 +25,7 @@ private predicate discardLocation(@location_default loc) {
 
 overlay[local]
 module Ruby {
-  private import Ruby as F
+  private module F = Ruby;
 
   /** The base class for all AST nodes */
   class AstNode extends @ruby_ast_node {
@@ -2352,7 +2352,8 @@ module Ruby {
 }
 
 module RubyFinal {
-  private import Ruby as F
+  private module F = Ruby;
+
   import F
 
   final class AstNode = F::AstNode;
@@ -2662,7 +2663,7 @@ module RubyFinal {
 
 overlay[local]
 module Erb {
-  private import Erb as F
+  private module F = Erb;
 
   /** The base class for all AST nodes */
   class AstNode extends @erb_ast_node {
@@ -2822,7 +2823,8 @@ module Erb {
 }
 
 module ErbFinal {
-  private import Erb as F
+  private module F = Erb;
+
   import F
 
   final class AstNode = F::AstNode;

@@ -25,7 +25,7 @@ private predicate discardLocation(@location_default loc) {
 
 overlay[local]
 module QL {
-  private import QL as F
+  private module F = QL;
 
   /** The base class for all AST nodes */
   class AstNode extends @ql_ast_node {
@@ -1557,7 +1557,8 @@ module QL {
 }
 
 module QLFinal {
-  private import QL as F
+  private module F = QL;
+
   import F
 
   final class AstNode = F::AstNode;
@@ -1763,7 +1764,7 @@ module QLFinal {
 
 overlay[local]
 module Dbscheme {
-  private import Dbscheme as F
+  private module F = Dbscheme;
 
   /** The base class for all AST nodes */
   class AstNode extends @dbscheme_ast_node {
@@ -2177,7 +2178,8 @@ module Dbscheme {
 }
 
 module DbschemeFinal {
-  private import Dbscheme as F
+  private module F = Dbscheme;
+
   import F
 
   final class AstNode = F::AstNode;
@@ -2243,7 +2245,7 @@ module DbschemeFinal {
 
 overlay[local]
 module Blame {
-  private import Blame as F
+  private module F = Blame;
 
   /** The base class for all AST nodes */
   class AstNode extends @blame_ast_node {
@@ -2396,7 +2398,8 @@ module Blame {
 }
 
 module BlameFinal {
-  private import Blame as F
+  private module F = Blame;
+
   import F
 
   final class AstNode = F::AstNode;
@@ -2420,7 +2423,7 @@ module BlameFinal {
 
 overlay[local]
 module JSON {
-  private import JSON as F
+  private module F = JSON;
 
   /** The base class for all AST nodes */
   class AstNode extends @json_ast_node {
@@ -2613,7 +2616,8 @@ module JSON {
 }
 
 module JSONFinal {
-  private import JSON as F
+  private module F = JSON;
+
   import F
 
   final class AstNode = F::AstNode;
