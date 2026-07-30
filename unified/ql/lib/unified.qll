@@ -4,6 +4,6 @@
 
 import codeql.Locations
 import codeql.files.FileSystem
-import codeql.unified.Ast::Unified
+import codeql.unified.internal.FacadeAst::Unified
 import codeql.unified.internal.AstExtra::Public
 import codeql.unified.internal.Variables::Public
