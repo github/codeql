@@ -72,3 +72,13 @@ extensions:
       - ["", "", False, "RtlInitUnicodeString", "", "", "Argument[*1]", "Argument[*0].Field[*Buffer]", "value", "manual"]
       # winhttp.h
       - ["", "", False, "WinHttpCrackUrl", "", "", "Argument[*0]", "Argument[*3]", "taint", "manual"]
+      # combaseapi.h
+      - ["", "", False, "IIDFromString", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "", False, "StringFromIID", "", "", "Argument[*0]", "Argument[**1]", "taint", "manual"]
+      - ["", "", False, "ProgIDFromCLSID", "", "", "Argument[*0]", "Argument[**1]", "taint", "manual"]
+      - ["", "", False, "CLSIDFromProgID", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "", False, "CLSIDFromString", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "", False, "StringFromCLSID", "", "", "Argument[*0]", "Argument[**1]", "taint", "manual"]
+      - ["", "", False, "StringFromGUID", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "", False, "GUIDFromString", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]
+      - ["", "", False, "StringFromGUID2", "", "", "Argument[*0]", "Argument[*1]", "taint", "manual"]

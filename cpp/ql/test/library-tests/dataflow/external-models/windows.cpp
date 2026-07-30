@@ -1114,62 +1114,62 @@ void test_com_string_conversions() {
     str[0] = (char)source();
     IID iid;
     IIDFromString(str, &iid);
-    sink(iid); // $ MISSING: ir
+    sink(iid); // $ ir
   }
   {
     IID iid = source();
     LPOLESTR str = nullptr;
     StringFromIID(iid, &str);
     sink(str);
-    sink(*str); // $ MISSING: ir
+    sink(*str); // $ ir
   }
   {
     CLSID clsid = source();
     LPOLESTR str = nullptr;
     ProgIDFromCLSID(clsid, &str);
     sink(str);
-    sink(*str); // $ MISSING: ir
+    sink(*str); // $ ir
   }
   {
     char progID[256];
     progID[0] = (char)source();
     CLSID clsid;
     CLSIDFromProgID(progID, &clsid);
-    sink(clsid); // $ MISSING: ir
+    sink(clsid); // $ ir
   }
   {
     char str[256];
     str[0] = (char)source();
     CLSID clsid;
     CLSIDFromString(str, &clsid);
-    sink(clsid); // $ MISSING: ir
+    sink(clsid); // $ ir
   }
   {
     CLSID clsid = source();
     LPOLESTR str = nullptr;
     StringFromCLSID(clsid, &str);
     sink(str);
-    sink(*str); // $ MISSING: ir
+    sink(*str); // $ ir
   }
   {
     GUID guid = source();
     char str[256];
     StringFromGUID(guid, str);
     sink(str);
-    sink(*str); // $ MISSING: ir
+    sink(*str); // $ ir
   }
   {
     char str[256];
     str[0] = (char)source();
     GUID guid;
     GUIDFromString(str, &guid);
-    sink(guid); // $ MISSING: ir
+    sink(guid); // $ ir
   }
   {
     GUID guid = source();
     char str[256];
     StringFromGUID2(guid, str, 256);
     sink(str);
-    sink(*str); // $ MISSING: ir
+    sink(*str); // $ ir
   }
 }

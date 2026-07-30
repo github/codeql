@@ -10,3 +10,12 @@
 | test.cpp:28:35:28:35 | 0 | test.cpp:28:11:28:33 | call to ymlStepManual_with_body |
 | windows.cpp:27:36:27:38 | *cmd | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA |
 | windows.cpp:729:35:729:35 | *x | windows.cpp:729:44:729:57 | WinHttpCrackUrl output argument |
+| windows.cpp:1116:19:1116:21 | *str | windows.cpp:1116:24:1116:27 | IIDFromString output argument |
+| windows.cpp:1122:19:1122:21 | *iid | windows.cpp:1122:24:1122:27 | StringFromIID output argument |
+| windows.cpp:1129:21:1129:25 | *clsid | windows.cpp:1129:28:1129:31 | ProgIDFromCLSID output argument |
+| windows.cpp:1137:21:1137:26 | *progID | windows.cpp:1137:29:1137:34 | CLSIDFromProgID output argument |
+| windows.cpp:1144:21:1144:23 | *str | windows.cpp:1144:26:1144:31 | CLSIDFromString output argument |
+| windows.cpp:1150:21:1150:25 | *clsid | windows.cpp:1150:28:1150:31 | StringFromCLSID output argument |
+| windows.cpp:1157:20:1157:23 | *guid | windows.cpp:1157:26:1157:28 | StringFromGUID output argument |
+| windows.cpp:1165:20:1165:22 | *str | windows.cpp:1165:25:1165:29 | GUIDFromString output argument |
+| windows.cpp:1171:21:1171:24 | *guid | windows.cpp:1171:27:1171:29 | StringFromGUID2 output argument |
