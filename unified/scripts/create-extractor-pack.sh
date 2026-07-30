@@ -1,25 +1,21 @@
 #!/bin/bash
-set -eux
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-  platform="linux64"
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-  platform="osx64"
-else
-  echo "Unknown OS"
-  exit 1
-fi
+# Build the extractor pack into `extractor-pack/`, ready for
+# `codeql test run --search-path extractor-pack`.
+#
+# `unified.dbscheme` and `Ast.qll` are generated from `extractor/ast_types.yml`,
+# so they are regenerated here before the pack is assembled.
+set -euo pipefail
+IFS=$'\n\t'
+
 cd "$(dirname "$0")/.."
+root=$PWD
 
-(cd extractor && cargo build --release)
-
-# we are in a cargo workspace rooted at the git checkout
-BIN_DIR=../target/release
-"$BIN_DIR/codeql-extractor-unified" generate --dbscheme ql/lib/unified.dbscheme --library ql/lib/codeql/unified/Ast.qll
+# `bazel run` executes from the runfiles tree, so pass absolute output paths.
+bazel run //unified/extractor -- generate \
+    --dbscheme "$root/ql/lib/unified.dbscheme" \
+    --library "$root/ql/lib/codeql/unified/Ast.qll"
 
 codeql query format -i ql/lib/codeql/unified/Ast.qll
 
 rm -rf extractor-pack
-mkdir -p extractor-pack
-cp -r codeql-extractor.yml tools ql/lib/unified.dbscheme ql/lib/unified.dbscheme.stats extractor-pack/
-mkdir -p extractor-pack/tools/${platform}
-cp "$BIN_DIR/codeql-extractor-unified" extractor-pack/tools/${platform}/extractor
+exec bazel run //unified:install "$@"

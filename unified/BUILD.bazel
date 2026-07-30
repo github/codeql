@@ -47,15 +47,13 @@ codeql_pkg_files(
     prefix = "tools/{CODEQL_PLATFORM}",
 )
 
-# The Swift front-end parser (wrapper + real binary + bundled Swift runtime),
-# shipped next to the extractor. Only on platforms where swift-syntax builds
-# (Linux/macOS); elsewhere the group is empty so the pack still builds (Swift
-# extraction is simply unavailable there).
-pkg_filegroup(
-    name = "swift-syntax-parse-arch",
-    srcs = select_os(
+# The Swift runtime, which the extractor loads at startup. Linux only: macOS
+# provides it with the OS.
+codeql_pkg_files(
+    name = "swift-runtime-arch",
+    exes = select_os(
+        linux = ["//unified/swift-syntax-rs:swift_runtime_libs"],
         otherwise = [],
-        posix = ["//unified/swift-syntax-rs:swift-syntax-parse-pkg"],
     ),
     prefix = "tools/{CODEQL_PLATFORM}",
 )
@@ -66,7 +64,7 @@ codeql_pack(
         ":codeql-extractor-yml",
         ":dbscheme-group",
         ":extractor-arch",
-        ":swift-syntax-parse-arch",
+        ":swift-runtime-arch",
         "//unified/tools",
     ],
 )

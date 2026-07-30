@@ -4,13 +4,17 @@ This is a CodeQL extractor that maps a language's parse tree onto a shared AST
 using the `yeast` desugaring engine. Swift, the only language so far, is parsed
 by Apple's swift-syntax rather than by tree-sitter.
 
+Build and test with Bazel, whose Swift toolchain is hermetic on Linux, so
+nothing needs to be installed locally. The extractor links `swift-syntax`, so a
+`cargo` build additionally needs a local Swift toolchain.
+
 ## Building
-- To build the extractor, run `scripts/create-extractor-pack.sh`
+- To build the extractor pack, run `scripts/create-extractor-pack.sh`.
 
 ## Swift Parser
-- Swift source is parsed by `swift-syntax-parse`, a small Swift/Rust binary in
-  `swift-syntax-rs` that wraps Apple's swift-syntax and emits the parse tree as
-  JSON. There is no grammar in this repository to edit.
+- Swift source is parsed by the `swift-syntax-rs` crate, which wraps Apple's
+  swift-syntax and emits the parse tree as JSON. The extractor links it and
+  calls it in-process. There is no grammar in this repository to edit.
 
 - `extractor/src/languages/swift/adapter.rs` converts that JSON into a yeast AST.
 
@@ -22,11 +26,7 @@ by Apple's swift-syntax rather than by tree-sitter.
 
 - The mapping from the parse tree to the target AST is found in `extractor/src/languages/swift/swift.rs`
 
-- To run tests for the parser and mapping, run `cargo test` in the `extractor`
-  directory. The tests need the `swift-syntax-parse` binary: point
-  `CODEQL_EXTRACTOR_UNIFIED_SWIFT_SYNTAX_PARSE` at it, or put it on `PATH`.
-  Corpus tests skip themselves when it cannot be found, so check for skips
-  before concluding a change is clean.
+- To run tests for the parser and mapping, run `bazel test //unified/extractor:all_tests`.
 
 - Extractor test cases are located at `extractor/tests/corpus/swift/*/*.swift`.
 

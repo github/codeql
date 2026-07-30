@@ -18,3 +18,8 @@ serde_json = "1.0.145"
 
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
 yeast = { path = "../../shared/yeast" }
+# The Swift front-end links swift-syntax through this crate's FFI shim. Its
+# Swift half is built by Bazel, so `cargo build`/`test` cannot link the
+# extractor: use `bazel build //unified/extractor` and
+# `bazel test //unified/extractor:all_tests`.
+swift-syntax-rs = { path = "../swift-syntax-rs" }
