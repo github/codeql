@@ -979,6 +979,11 @@ LONG RegGetValueA(
   LPDWORD lpcbData
 );
 
+LONG RegGetValueW(
+  HKEY hKey, LPCWSTR lpSubKey, LPCWSTR lpValue, DWORD flags, LPDWORD lpType, PVOID lpData,
+  LPDWORD lpcbData
+);
+
 LONG RegQueryMultipleValuesA(
   HKEY hKey, PVALENTA valList, DWORD numVals, LPSTR valueBuffer, LPDWORD totalSize
 );
@@ -1057,7 +1062,7 @@ void test_registry_queries(HKEY hKey) {
     BYTE data[256];
     DWORD dataSize = sizeof(data);
     DWORD type;
-    RegGetValueA(hKey, "subkey", "value", 0, &type, data, &dataSize);
+    RegGetValueW(hKey, L"subkey", L"value", 0, &type, data, &dataSize);
     sink(data); // clean
     sink(*data); // $ ir
   }
@@ -1070,6 +1075,8 @@ void test_registry_queries(HKEY hKey) {
     RegEnumValueA(hKey, 0, valueName, &valueNameSize, nullptr, &type, data, &dataSize);
     sink(data); // clean
     sink(*data); // $ ir
+    sink(valueName); // clean
+    sink(*valueName); // $ ir
   }
   {
     wchar_t valueName[256];
@@ -1080,6 +1087,8 @@ void test_registry_queries(HKEY hKey) {
     RegEnumValueW(hKey, 0, valueName, &valueNameSize, nullptr, &type, data, &dataSize);
     sink(data); // clean
     sink(*data); // $ ir
+    sink(valueName); // clean
+    sink(*valueName); // $ ir
   }
 }
 
