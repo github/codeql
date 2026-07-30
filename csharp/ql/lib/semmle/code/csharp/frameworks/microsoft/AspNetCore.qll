@@ -388,9 +388,12 @@ class MicrosoftAspNetCoreMvcControllerHelperClass extends Class {
 }
 
 /**
- * A valid ASP.NET Core controller according to:
- * https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/actions?view=aspnetcore-3.1
- * https://github.com/dotnet/aspnetcore/blob/b3c93967ba508b8ef139add27132d9483c1a9eb4/src/Mvc/Mvc.Core/src/Controllers/ControllerFeatureProvider.cs#L39-L75
+ * An ASP.NET Core MVC controller, as described by:
+ * https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/actions
+ * https://learn.microsoft.com/en-us/aspnet/core/mvc/advanced/app-parts
+ * https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/routing
+ * https://github.com/dotnet/aspnetcore/blob/747d2cdb584079a0c7309115979f13c331fb7df7/src/Mvc/Mvc.Core/src/Controllers/ControllerFeatureProvider.cs#L20-L75
+ * https://github.com/dotnet/aspnetcore/blob/747d2cdb584079a0c7309115979f13c331fb7df7/src/Mvc/Mvc.Core/src/ApplicationModels/DefaultApplicationModelProvider.cs#L410-L459
  */
 class MicrosoftAspNetCoreMvcController extends Class {
   MicrosoftAspNetCoreMvcController() { isDefaultMicrosoftAspNetCoreMvcController(this) }
