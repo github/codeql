@@ -1,4 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+
+public static class MvcRegistration
+{
+    public static void Register(IServiceCollection services)
+    {
+        services.AddControllers();
+    }
+}
 
 // has sufix "Controller"
 public class HomeController

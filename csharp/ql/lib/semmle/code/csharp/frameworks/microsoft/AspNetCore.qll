@@ -2,6 +2,7 @@
 
 import csharp
 import semmle.code.csharp.frameworks.Microsoft
+private import semmle.code.csharp.commons.Compilation
 private import semmle.code.csharp.frameworks.System
 
 /** The `Microsoft.AspNetCore` namespace. */
@@ -219,30 +220,86 @@ private predicate isPotentialMicrosoftAspNetCoreMvcController(Class controller) 
     )
 }
 
+private Compilation getACompilationFor(Element element) {
+  result.getAFileCompiled() = element.getFile()
+}
+
+private Assembly getAnAssemblyFor(Type type) {
+  result = getACompilationFor(type).getOutputAssembly()
+}
+
+private predicate isMicrosoftAspNetCoreMvcRegistration(MethodCall call) {
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.Extensions.DependencyInjection",
+        ["MvcServiceCollectionExtensions", "MvcCoreServiceCollectionExtensions"],
+        ["AddControllers", "AddControllersWithViews", "AddMvc", "AddMvcCore"])
+}
+
+private predicate isMicrosoftAspNetCoreMvcApplication(Compilation compilation) {
+  exists(MethodCall registration |
+    isMicrosoftAspNetCoreMvcRegistration(registration) and
+    compilation.getAFileCompiled() = registration.getFile()
+  )
+}
+
+private predicate isMicrosoftAspNetCoreMvcAddApplicationPart(MethodCall call) {
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.Extensions.DependencyInjection",
+        ["MvcCoreMvcBuilderExtensions", "MvcCoreMvcCoreBuilderExtensions"], "AddApplicationPart")
+}
+
+private predicate isMicrosoftAspNetCoreMvcApplicationPart(Compilation application, Assembly part) {
+  part = application.getOutputAssembly()
+  or
+  exists(AssemblyAttribute attr, StringLiteral assemblyName |
+    application.getAFileCompiled() = attr.getFile() and
+    attr.getType()
+        .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.ApplicationParts",
+          "ApplicationPartAttribute") and
+    assemblyName = attr.getArgument(0) and
+    assemblyName.getValue() = part.getName()
+  )
+  or
+  exists(MethodCall addPart, PropertyAccess assemblyAccess, TypeofExpr typeOf, Type partType |
+    application.getAFileCompiled() = addPart.getFile() and
+    isMicrosoftAspNetCoreMvcAddApplicationPart(addPart) and
+    assemblyAccess = addPart.getArgumentForName("assembly") and
+    assemblyAccess.getTarget().hasName("Assembly") and
+    assemblyAccess.getQualifier() = typeOf and
+    partType = typeOf.getTypeAccess().getTarget() and
+    part = getAnAssemblyFor(partType)
+  )
+}
+
+private predicate isInMicrosoftAspNetCoreMvcApplication(Class controller) {
+  exists(Compilation application, Assembly controllerAssembly |
+    isMicrosoftAspNetCoreMvcApplication(application) and
+    controllerAssembly = getAnAssemblyFor(controller) and
+    isMicrosoftAspNetCoreMvcApplicationPart(application, controllerAssembly)
+  )
+}
+
+private predicate hasMicrosoftAspNetCoreMvcControllerIdentity(Class controller) {
+  controller.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
+  or
+  controller
+      .getABaseType*()
+      .getAnAttribute()
+      .getType()
+      .getABaseType*()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "ControllerAttribute")
+}
+
 private predicate isDefaultMicrosoftAspNetCoreMvcController(Class controller) {
-  (
-    exists(Assembly a |
-      a.getName() = ["Microsoft.AspNetCore.Mvc.Core", "Microsoft.AspNetCore.Mvc.ViewFeatures"]
-    ) or
-    exists(UsingNamespaceDirective ns |
-      ns.getImportedNamespace() instanceof MicrosoftAspNetCoreMvcNamespace
-    )
-  ) and
   controller instanceof NonNestedType and
   controller.isPublic() and
   not controller.isAbstract() and
   not controller instanceof Generic and
   (
-    controller.getName().toLowerCase().matches("%controller")
+    hasMicrosoftAspNetCoreMvcControllerIdentity(controller)
     or
-    controller.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
-    or
-    controller
-        .getABaseType*()
-        .getAnAttribute()
-        .getType()
-        .getABaseType*()
-        .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "ControllerAttribute")
+    controller.getName().toLowerCase().matches("%controller") and
+    isInMicrosoftAspNetCoreMvcApplication(controller)
   ) and
   not controller.getABaseType*().getAnAttribute() instanceof
     MicrosoftAspNetCoreMvcNonControllerAttribute
