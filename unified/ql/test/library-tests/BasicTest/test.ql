@@ -1,4 +1,4 @@
-import codeql.unified.Ast::Unified
+import unified
 
 query predicate nameExpr(NameExpr node, string value) { value = node.getIdentifier().getValue() }
 
