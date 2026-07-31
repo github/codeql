@@ -14,11 +14,95 @@
  */
 
 import actions
+private import codeql.util.FilePath
 import codeql.actions.security.UntrustedCheckoutQuery
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.ControlChecks
 
 query predicate edges(Step a, Step b) { a.getNextStep() = b }
+
+private class ActionsCheckoutPathInput extends NormalizableFilepath {
+  ActionsCheckoutPathInput() {
+    exists(PRHeadCheckoutStep checkout |
+      checkout instanceof UsesStep and
+      checkout.(UsesStep).getCallee() = "actions/checkout" and
+      this = trimQuotes(checkout.(UsesStep).getArgument("path"))
+    )
+  }
+}
+
+/** Gets the modeled script operand before shared path normalization can discard dot segments. */
+private string getUnnormalizedLocalScriptPath(LocalScriptExecutionRunStep step) {
+  exists(string regexp, int pathGroup |
+    poisonableLocalScriptsDataModel(regexp, pathGroup) and
+    result = step.getScript().getACommand().regexpCapture(regexp, pathGroup).splitAt(" ")
+  )
+}
+
+private class ExecutionPathInput extends NormalizableFilepath {
+  ExecutionPathInput() {
+    exists(LocalScriptExecutionRunStep step |
+      this = trimQuotes(getUnnormalizedLocalScriptPath(step))
+    )
+    or
+    exists(LocalActionUsesStep step | this = step.getCallee())
+  }
+}
+
+private string getNormalizedActionsCheckoutPath(PRHeadCheckoutStep checkout) {
+  exists(ActionsCheckoutPathInput checkoutPath, string normalized |
+    checkout instanceof UsesStep and
+    checkout.(UsesStep).getCallee() = "actions/checkout" and
+    checkoutPath = trimQuotes(checkout.(UsesStep).getArgument("path")) and
+    not checkoutPath.regexpMatch(".*\\$\\{\\{.*") and
+    normalized = checkoutPath.getNormalizedPath() and
+    not normalized.matches("/%") and
+    normalized != ".." and
+    not normalized.matches("../%") and
+    if normalized = "."
+    then result = "GITHUB_WORKSPACE"
+    else result = "GITHUB_WORKSPACE/" + normalized
+  )
+}
+
+bindingset[path]
+private string getNormalizedExecutionPath(string path) {
+  exists(ExecutionPathInput executionPath, string normalized |
+    executionPath = trimQuotes(path) and
+    not executionPath.regexpMatch(".*\\$\\{\\{.*") and
+    normalized = executionPath.getNormalizedPath() and
+    not normalized.matches("/%") and
+    normalized != ".." and
+    not normalized.matches("../%") and
+    if normalized = "."
+    then result = "GITHUB_WORKSPACE"
+    else (
+      normalized.regexpMatch("^[^$/~].*") and
+      result = "GITHUB_WORKSPACE/" + normalized
+    )
+  )
+}
+
+bindingset[checkout, rawPath, path]
+private predicate checkoutContainsPath(PRHeadCheckoutStep checkout, string rawPath, string path) {
+  exists(string root, string candidate |
+    root = getNormalizedActionsCheckoutPath(checkout) and
+    candidate = getNormalizedExecutionPath(rawPath) and
+    // Canonicalize both paths so dot segments cannot enter or escape the checkout while still
+    // passing a lexical prefix check.
+    (candidate = root or candidate.indexOf(root + "/") = 0)
+  )
+  or
+  not exists(getNormalizedActionsCheckoutPath(checkout)) and
+  isSubpath(path, checkout.getPath())
+}
+
+private predicate checkoutUsesWorkspaceRoot(PRHeadCheckoutStep checkout) {
+  getNormalizedActionsCheckoutPath(checkout) = "GITHUB_WORKSPACE"
+  or
+  not exists(getNormalizedActionsCheckoutPath(checkout)) and
+  checkout.getPath() = "GITHUB_WORKSPACE/"
+}
 
 from PRHeadCheckoutStep checkout, PoisonableStep poisonable, Event event
 where
@@ -29,7 +113,9 @@ where
     (
       // Check if the poisonable step is a local script execution step
       // and the path of the command or script matches the path of the downloaded artifact
-      isSubpath(poisonable.(LocalScriptExecutionRunStep).getPath(), checkout.getPath())
+      checkoutContainsPath(checkout,
+        getUnnormalizedLocalScriptPath(poisonable.(LocalScriptExecutionRunStep)),
+        poisonable.(LocalScriptExecutionRunStep).getPath())
       or
       // Checking the path for non local script execution steps is very difficult
       not poisonable instanceof LocalScriptExecutionRunStep
@@ -40,9 +126,10 @@ where
     poisonable instanceof UsesStep and
     (
       not poisonable instanceof LocalActionUsesStep and
-      checkout.getPath() = "GITHUB_WORKSPACE/"
+      checkoutUsesWorkspaceRoot(checkout)
       or
-      isSubpath(poisonable.(LocalActionUsesStep).getPath(), checkout.getPath())
+      checkoutContainsPath(checkout, poisonable.(LocalActionUsesStep).getCallee(),
+        poisonable.(LocalActionUsesStep).getPath())
     )
   ) and
   // the checkout occurs in a privileged context
