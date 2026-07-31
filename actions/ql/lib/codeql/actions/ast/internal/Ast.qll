@@ -423,7 +423,7 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
     )
   }
 
-  predicate getAnExternalCompositeActionModel(
+  predicate hasExternalCompositeActionModel(
     string owner, string repo, string action_path, string requested_ref, string resolved_commit_sha,
     string local_path
   ) {
@@ -433,24 +433,14 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
   }
 
   predicate isExternalCompositeAction() {
-    exists(
-      string owner, string repo, string action_path, string requested_ref,
-      string resolved_commit_sha, string local_path
-    |
-      this.getAnExternalCompositeActionModel(owner, repo, action_path, requested_ref,
-        resolved_commit_sha, local_path)
-    )
+    this.hasExternalCompositeActionModel(_, _, _, _, _, _)
     or
     this.getLocation().getFile().getRelativePath().matches("9466014afba34ef28239871ceabf4132/%")
   }
 
   string getResolvedPath() {
-    exists(
-      string owner, string repo, string action_path, string requested_ref,
-      string resolved_commit_sha, string local_path
-    |
-      this.getAnExternalCompositeActionModel(owner, repo, action_path, requested_ref,
-        resolved_commit_sha, local_path) and
+    exists(string owner, string repo, string action_path, string requested_ref |
+      this.hasExternalCompositeActionModel(owner, repo, action_path, requested_ref, _, _) and
       result = externalCompositeActionName(owner, repo, action_path) + "@" + requested_ref.trim()
     )
     or
@@ -580,7 +570,7 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
     )
   }
 
-  predicate getAnExternalReusableWorkflowModel(
+  predicate hasExternalReusableWorkflowModel(
     string owner, string repo, string workflow_path, string requested_ref,
     string resolved_commit_sha, string local_path
   ) {
@@ -590,24 +580,14 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
   }
 
   predicate isExternalReusableWorkflow() {
-    exists(
-      string owner, string repo, string workflow_path, string requested_ref,
-      string resolved_commit_sha, string local_path
-    |
-      this.getAnExternalReusableWorkflowModel(owner, repo, workflow_path, requested_ref,
-        resolved_commit_sha, local_path)
-    )
+    this.hasExternalReusableWorkflowModel(_, _, _, _, _, _)
     or
     this.getLocation().getFile().getRelativePath().matches("9466014afba34ef28239871ceabf4132/%") // root folder for external workflows and composite actions
   }
 
   string getResolvedPath() {
-    exists(
-      string owner, string repo, string workflow_path, string requested_ref,
-      string resolved_commit_sha, string local_path
-    |
-      this.getAnExternalReusableWorkflowModel(owner, repo, workflow_path, requested_ref,
-        resolved_commit_sha, local_path) and
+    exists(string owner, string repo, string workflow_path, string requested_ref |
+      this.hasExternalReusableWorkflowModel(owner, repo, workflow_path, requested_ref, _, _) and
       result =
         owner.trim() + "/" + repo.trim() + "/" + workflow_path.trim() + "@" + requested_ref.trim()
     )
@@ -1448,12 +1428,8 @@ class UsesStepImpl extends StepImpl, UsesImpl {
   private predicate isLocalCall() { this.isWorkspaceLocalCall() or this.isSelfCall() }
 
   private predicate hasModeledExternalCallee() {
-    exists(
-      string owner, string repo, string action_path, string requested_ref,
-      string resolved_commit_sha, string local_path
-    |
-      externalCompositeActionDataModel(owner, repo, action_path, requested_ref, resolved_commit_sha,
-        local_path) and
+    exists(string owner, string repo, string action_path, string requested_ref |
+      externalCompositeActionDataModel(owner, repo, action_path, requested_ref, _, _) and
       this.getCallee() = externalCompositeActionName(owner, repo, action_path) and
       this.getVersion() = requested_ref.trim()
     )
@@ -1466,26 +1442,16 @@ class UsesStepImpl extends StepImpl, UsesImpl {
   }
 
   private predicate hasModeledExternalEnclosingCompositeAction() {
-    exists(
-      CompositeActionImpl action, string owner, string repo, string action_path,
-      string requested_ref, string resolved_commit_sha, string local_path
-    |
+    exists(CompositeActionImpl action |
       action = this.getEnclosingCompositeAction() and
-      action
-          .getAnExternalCompositeActionModel(owner, repo, action_path, requested_ref,
-            resolved_commit_sha, local_path)
+      action.hasExternalCompositeActionModel(_, _, _, _, _, _)
     )
   }
 
   private string getSelfCallableName() {
-    exists(
-      CompositeActionImpl action, string owner, string repo, string action_path,
-      string requested_ref, string resolved_commit_sha, string local_path
-    |
+    exists(CompositeActionImpl action, string owner, string repo, string requested_ref |
       action = this.getEnclosingCompositeAction() and
-      action
-          .getAnExternalCompositeActionModel(owner, repo, action_path, requested_ref,
-            resolved_commit_sha, local_path) and
+      action.hasExternalCompositeActionModel(owner, repo, _, requested_ref, _, _) and
       result =
         externalCompositeActionName(owner, repo, this.getCallee().suffix(2)) + "@" +
           requested_ref.trim()
@@ -1556,12 +1522,8 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
   }
 
   private predicate hasModeledExternalCallee() {
-    exists(
-      string owner, string repo, string workflow_path, string requested_ref,
-      string resolved_commit_sha, string local_path
-    |
-      externalReusableWorkflowDataModel(owner, repo, workflow_path, requested_ref,
-        resolved_commit_sha, local_path) and
+    exists(string owner, string repo, string workflow_path, string requested_ref |
+      externalReusableWorkflowDataModel(owner, repo, workflow_path, requested_ref, _, _) and
       this.getCallee() = owner.trim() + "/" + repo.trim() + "/" + workflow_path.trim() and
       this.getVersion() = requested_ref.trim()
     )
@@ -1570,13 +1532,10 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
   override string getCallableName() {
     this.isLocalCall() and
     exists(
-      ReusableWorkflowImpl enclosing_workflow, string owner, string repo, string workflow_path,
-      string requested_ref, string resolved_commit_sha, string local_path
+      ReusableWorkflowImpl enclosing_workflow, string owner, string repo, string requested_ref
     |
       enclosing_workflow = this.getEnclosingWorkflow() and
-      enclosing_workflow
-          .getAnExternalReusableWorkflowModel(owner, repo, workflow_path, requested_ref,
-            resolved_commit_sha, local_path) and
+      enclosing_workflow.hasExternalReusableWorkflowModel(owner, repo, _, requested_ref, _, _) and
       result =
         owner.trim() + "/" + repo.trim() + "/" + this.getCallee() + "@" + requested_ref.trim()
     )
