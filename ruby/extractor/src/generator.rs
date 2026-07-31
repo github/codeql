@@ -34,6 +34,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
         languages,
         options.dbscheme,
         options.library,
+        false, // do not use facade AST
         "run 'make dbscheme' in ql/ruby/",
     )
 }

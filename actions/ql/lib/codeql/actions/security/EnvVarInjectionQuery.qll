@@ -151,7 +151,7 @@ Event getRelevantNonArtifactEventInPrivilegedContext(DataFlow::Node sink) {
 private module EnvVarInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource and
-    not source.(RemoteFlowSource).getSourceType() = ["branch", "username"]
+    not source.(RemoteFlowSource).getSourceType() = ["branch", "label", "username"]
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof EnvVarInjectionSink }

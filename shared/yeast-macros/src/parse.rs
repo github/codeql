@@ -157,11 +157,14 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
                            map: &mut std::collections::HashMap<String, Vec<TokenStream>>,
                            name: String,
                            elem: TokenStream| {
-        if !map.contains_key(&name) {
-            order.push(name.clone());
-            map.insert(name, vec![elem]);
-        } else {
-            map.get_mut(&name).unwrap().push(elem);
+        match map.entry(name) {
+            std::collections::hash_map::Entry::Occupied(mut entry) => {
+                entry.get_mut().push(elem);
+            }
+            std::collections::hash_map::Entry::Vacant(entry) => {
+                order.push(entry.key().clone());
+                entry.insert(vec![elem]);
+            }
         }
     };
     while tokens.peek().is_some() {

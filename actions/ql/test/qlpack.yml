@@ -12,3 +12,4 @@ tests: .
 warnOnImplicitThis: true
 dataExtensions:
   - external-reusable-workflows.model.yml
+  - output-clobbering.model.yml

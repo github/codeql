@@ -115,3 +115,10 @@ let subclass2 = base.extend({
 		fromSubclass2: 100
 	}
 });
+
+sink(Vue.ref(source("ref")).value);
+sink(Vue.shallowRef(source("shallowRef")).value);
+sink(Vue.toRef(source("toRef")).value);
+sink(Vue.reactive(source("reactive")));
+sink(Vue.computed(() => source("computed")).value);
+sink(Vue.computed({ get() { return source("computedObject"); }, set(v) {} }).value);
