@@ -327,6 +327,26 @@ private predicate isMicrosoftAspNetCoreMvcAttributeEndpointMapping(MethodCall ca
   not exists(call.getArgumentForName("configureRoutes"))
 }
 
+private predicate isMicrosoftAspNetCoreMvcFallbackEndpointMapping(MethodCall call, Class controller) {
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder",
+        "ControllerEndpointRouteBuilderExtensions",
+        ["MapFallbackToAreaController", "MapFallbackToController"]) and
+  call.getArgumentForName("controller").getValue().toLowerCase() + "controller" =
+    controller.getName().toLowerCase() and
+  (
+    call.getTarget().hasName("MapFallbackToController")
+    or
+    call.getTarget().hasName("MapFallbackToAreaController") and
+    exists(Attribute area |
+      area = controller.getABaseType*().getAnAttribute() and
+      area.getType().hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "AreaAttribute") and
+      area.getArgument(0).getValue().toLowerCase() =
+        call.getArgumentForName("area").getValue().toLowerCase()
+    )
+  )
+}
+
 private predicate hasMicrosoftAspNetCoreMvcEndpointMapping(Compilation application, Class controller) {
   isInMicrosoftAspNetCoreMvcApplication(controller, application) and
   exists(MethodCall mapping |
@@ -336,6 +356,8 @@ private predicate hasMicrosoftAspNetCoreMvcEndpointMapping(Compilation applicati
       or
       isMicrosoftAspNetCoreMvcAttributeEndpointMapping(mapping) and
       hasMicrosoftAspNetCoreMvcAttributeRoute(controller)
+      or
+      isMicrosoftAspNetCoreMvcFallbackEndpointMapping(mapping, controller)
     )
   )
 }
