@@ -2,11 +2,12 @@ use std::fmt::Write;
 
 use crate::{schema::Schema, Ast, Id, Node, NodeContent, CHILD_FIELD};
 
-type TypeCheckContext<'a> = (
-    &'a Schema,
-    Option<&'a [crate::schema::NodeType]>,
-    Option<(&'a str, &'a str)>,
-);
+#[derive(Clone, Copy)]
+struct TypeCheckContext<'a> {
+    schema: &'a Schema,
+    expected: Option<&'a [crate::schema::NodeType]>,
+    parent_field: Option<(&'a str, &'a str)>,
+}
 
 /// Options for controlling AST dump output.
 pub struct DumpOptions {
@@ -76,7 +77,11 @@ pub fn dump_ast_with_type_errors_and_options(
         source,
         options,
         0,
-        Some((schema, None, None)),
+        Some(TypeCheckContext {
+            schema,
+            expected: None,
+            parent_field: None,
+        }),
         &mut out,
     );
     out
@@ -221,8 +226,10 @@ fn dump_node(
         }
     }
 
-    if let Some((schema, expected, parent_field)) = type_check {
-        if let Some(err) = type_error_for_node(schema, node, expected, parent_field) {
+    if let Some(context) = type_check {
+        if let Some(err) =
+            type_error_for_node(context.schema, node, context.expected, context.parent_field)
+        {
             write!(out, " <-- ERROR: {err}").unwrap();
         }
     }
@@ -244,10 +251,11 @@ fn dump_node(
             .copied()
             .filter(|&f| f != CHILD_FIELD)
             .collect();
-        match type_check.and_then(|(schema, _, _)| {
-            schema
+        match type_check.and_then(|context| {
+            context
+                .schema
                 .field_order(node.kind_name())
-                .map(|order| (schema, order))
+                .map(|order| (context.schema, order))
         }) {
             Some((schema, order)) => {
                 let mut result: Vec<u16> = order
@@ -269,11 +277,15 @@ fn dump_node(
     for field_id in named_field_ids {
         let children = &node.fields[&field_id];
         let field_name = ast.field_name_for_id(field_id).unwrap_or("?");
-        let child_type_check = type_check.map(|(schema, _, _)| {
-            let expected =
-                expected_for_field(schema, node.kind_name(), field_name).or(Some(EMPTY_NODE_TYPES));
+        let child_type_check = type_check.map(|context| {
+            let expected = expected_for_field(context.schema, node.kind_name(), field_name)
+                .or(Some(EMPTY_NODE_TYPES));
             let parent_field = Some((node.kind_name(), field_name));
-            (schema, expected, parent_field)
+            TypeCheckContext {
+                schema: context.schema,
+                expected,
+                parent_field,
+            }
         });
 
         if children.len() == 1 {
@@ -312,8 +324,8 @@ fn dump_node(
     }
 
     // Check for required fields that are absent
-    if let Some((schema, _, _)) = type_check {
-        for (_field_id, field_name) in schema.required_fields_for_kind(node.kind_name()) {
+    if let Some(context) = type_check {
+        for (_field_id, field_name) in context.schema.required_fields_for_kind(node.kind_name()) {
             let present = match field_name {
                 Some(n) => ast
                     .field_id_for_name(n)
@@ -329,13 +341,18 @@ fn dump_node(
 
     // Unnamed children — skip unnamed tokens (keywords, punctuation)
     if let Some(children) = node.fields.get(&CHILD_FIELD) {
-        let child_type_check = type_check.map(|(schema, _, _)| {
-            let expected = schema
+        let child_type_check = type_check.map(|context| {
+            let expected = context
+                .schema
                 .field_types(node.kind_name(), CHILD_FIELD)
                 .map(|v| v.as_slice())
                 .or(Some(EMPTY_NODE_TYPES));
             let parent_field = Some((node.kind_name(), "children"));
-            (schema, expected, parent_field)
+            TypeCheckContext {
+                schema: context.schema,
+                expected,
+                parent_field,
+            }
         });
         for &child_id in children {
             if let Some(child) = ast.get_node(child_id) {
@@ -392,8 +409,10 @@ fn dump_node_inline(
         }
     }
 
-    if let Some((schema, expected, parent_field)) = type_check {
-        if let Some(err) = type_error_for_node(schema, node, expected, parent_field) {
+    if let Some(context) = type_check {
+        if let Some(err) =
+            type_error_for_node(context.schema, node, context.expected, context.parent_field)
+        {
             write!(out, " <-- ERROR: {err}").unwrap();
         }
     }
