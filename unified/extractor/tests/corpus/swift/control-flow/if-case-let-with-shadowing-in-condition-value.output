@@ -4,40 +4,59 @@ if case let x = x + 10 {
 
 ---
 
-source_file
-  statement:
-    if_statement
-      body:
-        block
-          statement:
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value: simple_identifier "x"
-      condition:
-        if_condition
-          kind:
-            if_let_binding
-              pattern:
-                pattern
-                  kind:
-                    binding_pattern
-                      binding:
-                        value_binding_pattern
-                          mutability: let
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            ifExpr
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "x"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              conditions:
+                conditionElement
+                  condition:
+                    matchingPatternCondition
+                      initializer:
+                        initializerClause
+                          equal: =
+                          value:
+                            infixOperatorExpr
+                              operator:
+                                binaryOperatorExpr
+                                  operator: binaryOperator "+"
+                              leftOperand:
+                                declReferenceExpr
+                                  baseName: identifier "x"
+                              rightOperand:
+                                integerLiteralExpr
+                                  literal: integerLiteral "10"
                       pattern:
-                        pattern
-                          bound_identifier: simple_identifier "x"
-              value:
-                additive_expression
-                  lhs: simple_identifier "x"
-                  op: +
-                  rhs: integer_literal "10"
+                        valueBindingPattern
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+                          bindingSpecifier: let
+                      caseKeyword: case
+              ifKeyword: if
 
 ---
 
@@ -53,20 +72,20 @@ top_level
                   identifier: identifier "x"
               value:
                 binary_expr
-                  operator: infix_operator "+"
                   left:
                     name_expr
                       identifier: identifier "x"
+                  operator: infix_operator "+"
                   right: int_literal "10"
           then:
             block
               stmt:
                 call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
                   argument:
                     argument
                       value:
                         name_expr
                           identifier: identifier "x"
-                  callee:
-                    name_expr
-                      identifier: identifier "print"

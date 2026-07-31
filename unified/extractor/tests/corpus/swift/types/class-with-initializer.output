@@ -7,60 +7,82 @@ class Point {
 
 ---
 
-source_file
-  statement:
-    class_declaration
-      body:
-        class_body
-          member:
-            property_declaration
-              binding:
-                value_binding_pattern
-                  mutability: var
-              declarator:
-                property_binding
-                  name:
-                    pattern
-                      bound_identifier: simple_identifier "x"
-                  type:
-                    type_annotation
-                      type:
-                        type
-                          name:
-                            user_type
-                              part:
-                                simple_user_type
-                                  name: type_identifier "Int"
-            init_declaration
-              body:
-                block
-                  statement:
-                    assignment
-                      operator: =
-                      result: simple_identifier "x"
-                      target:
-                        directly_assignable_expression
-                          expr:
-                            navigation_expression
-                              suffix:
-                                navigation_suffix
-                                  suffix: simple_identifier "x"
-                              target:
-                                self_expression
-              parameter:
-                function_parameter
-                  parameter:
-                    parameter
-                      name: simple_identifier "x"
-                      type:
-                        type
-                          name:
-                            user_type
-                              part:
-                                simple_user_type
-                                  name: type_identifier "Int"
-      declaration_kind: class
-      name: type_identifier "Point"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Point"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                memberBlockItem
+                  decl:
+                    initializerDecl
+                      attributes:
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
+                            codeBlockItem
+                              item:
+                                infixOperatorExpr
+                                  operator:
+                                    assignmentExpr
+                                      equal: =
+                                  leftOperand:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "x"
+                                      base:
+                                        declReferenceExpr
+                                          baseName: self
+                                  rightOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "x"
+                      modifiers:
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                                functionParameter
+                                  colon: :
+                                  attributes:
+                                  modifiers:
+                                  type:
+                                    identifierType
+                                      name: identifier "Int"
+                                  firstName: identifier "x"
+                      initKeyword: init
+          modifiers:
+          classKeyword: class
 
 ---
 
@@ -69,6 +91,8 @@ top_level
     block
       stmt:
         class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Point"
           member:
             variable_declaration
               modifier: modifier "var"
@@ -79,6 +103,14 @@ top_level
                 named_type_expr
                   name: identifier "Int"
             constructor_declaration
+              parameter:
+                parameter
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
+                  pattern:
+                    name_pattern
+                      identifier: identifier "x"
               body:
                 block
                   stmt:
@@ -92,5 +124,3 @@ top_level
                       value:
                         name_expr
                           identifier: identifier "x"
-          modifier: modifier "class"
-          name: identifier "Point"

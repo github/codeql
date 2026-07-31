@@ -2,9 +2,8 @@
 //! in-memory format the CodeQL desugaring rules operate on.
 //!
 //! The JSON tree is produced by the `swift-syntax-rs` crate's Swift FFI shim
-//! (`parse_to_json`). This module is pure Rust (only `yeast` + `serde_json`),
-//! so the extractor consumes swift-syntax output without pulling in the Swift
-//! toolchain (the JSON is produced out-of-process).
+//! (`parse_to_json`). This module needs no Swift toolchain, so the extractor
+//! consumes swift-syntax output out-of-process.
 //!
 //! The mapping mirrors tree-sitter's node model, which is what yeast (and the
 //! extractor's rewrite rules) expect:
@@ -18,37 +17,24 @@
 //! * Collection nodes are already elided to JSON arrays upstream, so a
 //!   list-valued field maps directly to that field holding several children.
 //!
-//! Note: this preserves swift-syntax's own kind/field names. Aligning those
-//! names with the tree-sitter-swift schema (so the rewrite rules in
-//! [`super::swift`] fire) is done incrementally in the rules.
+//! Note: this preserves swift-syntax's own kind/field names; the rewrite rules
+//! in [`super::swift`] match those names directly.
 
 use std::collections::BTreeMap;
 
+use codeql_extractor::extractor::ExtraToken;
 use serde_json::Value;
-use yeast::schema::Schema;
 use yeast::{Ast, Id, NodeContent, Point, Range};
 
-/// A comment (or `unexpectedText`) recovered from the syntax tree's trivia.
-///
-/// These are collected into a side channel rather than embedded in the
-/// [`yeast::Ast`], mirroring how the extractor treats tree-sitter `extra`
-/// nodes: they carry a location and text but are not attached to a parent.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct TriviaToken {
-    /// The trivia kind (e.g. `lineComment`, `blockComment`, `docLineComment`,
-    /// `docBlockComment`, `unexpectedText`).
-    pub kind: String,
-    /// The verbatim source text of the piece (e.g. `// comment`).
-    pub text: String,
-    /// The source range the piece occupies.
-    pub range: Range,
-}
-
 /// The result of adapting a swift-syntax JSON tree: the [`yeast::Ast`] plus the
-/// comment/`unexpectedText` trivia harvested from it (in source order).
+/// comment/`unexpectedText` [`ExtraToken`]s harvested from it (in source order).
+///
+/// The extra tokens are collected into a side channel rather than embedded in
+/// the [`yeast::Ast`], mirroring how the extractor treats tree-sitter `extra`
+/// nodes: they carry a location and text but are not attached to a parent.
 pub struct AdaptedTree {
     pub ast: Ast,
-    pub trivia: Vec<TriviaToken>,
+    pub extras: Vec<ExtraToken>,
 }
 
 /// swift-syntax `TokenKind` cases whose text is *not* determined by the kind
@@ -170,17 +156,18 @@ fn children_of(value: &Value) -> Vec<&Value> {
 /// in the schema on the fly, immediately before the node is created. Children
 /// are built first so a parent's field lists reference existing ids. Any
 /// comment/`unexpectedText` trivia carried by a token is harvested into
-/// `trivia` during the same pass rather than embedded in the tree.
-fn build(node: &Value, ast: &mut Ast, trivia: &mut Vec<TriviaToken>) -> Result<Id, String> {
+/// `extras` (as [`ExtraToken`]s) during the same pass rather than embedded in
+/// the tree.
+fn build(node: &Value, ast: &mut Ast, extras: &mut Vec<ExtraToken>) -> Result<Id, String> {
     let info = classify(node)?;
-    collect_trivia(node, trivia);
+    collect_extras(node, extras);
 
     let mut fields: BTreeMap<u16, Vec<Id>> = BTreeMap::new();
     for (field, value) in field_entries(node) {
         let field_id = ast.register_field(field);
         let mut ids = Vec::new();
         for child in children_of(value) {
-            ids.push(build(child, ast, trivia)?);
+            ids.push(build(child, ast, extras)?);
         }
         fields.insert(field_id, ids);
     }
@@ -201,9 +188,10 @@ fn build(node: &Value, ast: &mut Ast, trivia: &mut Vec<TriviaToken>) -> Result<I
 }
 
 /// Harvest a token's `leadingTrivia`/`trailingTrivia` pieces (each already
-/// filtered to comments/`unexpectedText` upstream) into `out`. Non-token nodes
-/// have no trivia keys, so this is a no-op for them.
-fn collect_trivia(node: &Value, out: &mut Vec<TriviaToken>) {
+/// filtered to comments/`unexpectedText` upstream) into `out` as
+/// [`ExtraToken`]s. Non-token nodes have no trivia keys, so this is a no-op for
+/// them.
+fn collect_extras(node: &Value, out: &mut Vec<ExtraToken>) {
     for key in ["leadingTrivia", "trailingTrivia"] {
         let Some(Value::Array(pieces)) = node.get(key) else {
             continue;
@@ -220,12 +208,27 @@ fn collect_trivia(node: &Value, out: &mut Vec<TriviaToken>) {
                 .and_then(Value::as_str)
                 .unwrap_or("")
                 .to_string();
-            out.push(TriviaToken {
-                kind: kind.to_string(),
+            out.push(ExtraToken {
+                kind: trivia_kind_id(kind),
                 text,
                 range,
             });
         }
+    }
+}
+
+/// Map a swift-syntax trivia kind name to the stable integer id stored in an
+/// [`ExtraToken`]'s `kind` (and written to the `unified_trivia_tokeninfo`
+/// table). The value is opaque to the QL library (which reads only the text),
+/// but is kept stable and meaningful.
+fn trivia_kind_id(kind: &str) -> usize {
+    match kind {
+        "lineComment" => 1,
+        "blockComment" => 2,
+        "docLineComment" => 3,
+        "docBlockComment" => 4,
+        "unexpectedText" => 5,
+        _ => 0,
     }
 }
 
@@ -258,21 +261,29 @@ fn parse_range(node: &Value) -> Option<Range> {
     })
 }
 
+/// The authoritative swift-syntax input node-types schema.
+/// [`json_to_ast`] seeds every parse with the schema built from this,
+/// pre-registering every input kind and field so rule matching never references
+/// a name absent from a given file's tree.
+const SWIFT_NODE_TYPES: &str = include_str!("../../../swift_node_types.yml");
+
 /// Convert a swift-syntax JSON tree (as produced by [`crate::parse_to_json`])
 /// into a [`yeast::Ast`] plus the comment/`unexpectedText` trivia harvested
-/// from it. Both are produced in a single traversal.
+/// from it. Both are produced in a single traversal. The AST is seeded with the
+/// authoritative swift-syntax schema ([`SWIFT_NODE_TYPES`]); the adapter only
+/// ever consumes swift-syntax input, so the schema is not a parameter.
 pub fn json_to_ast(json: &str) -> Result<AdaptedTree, String> {
     let root: Value = serde_json::from_str(json).map_err(|e| format!("invalid JSON: {e}"))?;
 
-    let mut ast = Ast::with_schema(Schema::new());
-    let mut trivia = Vec::new();
-    let root_id = build(&root, &mut ast, &mut trivia)?;
+    let mut ast = Ast::with_schema(yeast::node_types_yaml::schema_from_yaml(SWIFT_NODE_TYPES)?);
+    let mut extras = Vec::new();
+    let root_id = build(&root, &mut ast, &mut extras)?;
     ast.set_root(root_id);
 
-    // Emit trivia in source order (the traversal visits nodes bottom-up).
-    trivia.sort_by_key(|t| t.range.start_byte);
+    // Emit extras in source order (the traversal visits nodes bottom-up).
+    extras.sort_by_key(|t| t.range.start_byte);
 
-    Ok(AdaptedTree { ast, trivia })
+    Ok(AdaptedTree { ast, extras })
 }
 
 #[cfg(test)]
@@ -373,7 +384,7 @@ mod tests {
     }
 
     #[test]
-    fn collects_trivia_into_side_channel() {
+    fn collects_extras_into_side_channel() {
         // A token carrying a trailing line comment in its trivia.
         let json = r#"{
             "kind": "sourceFile",
@@ -395,9 +406,10 @@ mod tests {
         let adapted = json_to_ast(json).expect("adapter should succeed");
 
         // The comment is in the side channel, with its text and location.
-        assert_eq!(adapted.trivia.len(), 1);
-        let comment = &adapted.trivia[0];
-        assert_eq!(comment.kind, "lineComment");
+        assert_eq!(adapted.extras.len(), 1);
+        let comment = &adapted.extras[0];
+        // `lineComment` maps to extra kind id 1.
+        assert_eq!(comment.kind, 1);
         assert_eq!(comment.text, "// c");
         assert_eq!(comment.range.start_byte, 2);
         assert_eq!(comment.range.end_byte, 6);

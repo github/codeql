@@ -34,6 +34,17 @@ extensions:
       - ["", "", False, "HttpReceiveHttpRequest", "", "", "Argument[*3]", "remote", "manual"]
       - ["", "", False, "HttpReceiveRequestEntityBody", "", "", "Argument[*3]", "remote", "manual"]
       - ["", "", False, "HttpReceiveClientCertificate", "", "", "Argument[*3]", "remote", "manual"]
+      # winreg.h
+      - ["", "", False, "RegQueryValueA", "", "", "Argument[*2]", "local", "manual"]
+      - ["", "", False, "RegQueryValueExA", "", "", "Argument[*4]", "local", "manual"]
+      - ["", "", False, "RegQueryValueW", "", "", "Argument[*2]", "local", "manual"]
+      - ["", "", False, "RegQueryValueExW", "", "", "Argument[*4]", "local", "manual"]
+      - ["", "", False, "RegGetValueA", "", "", "Argument[*5]", "local", "manual"]
+      - ["", "", False, "RegGetValueW", "", "", "Argument[*5]", "local", "manual"]
+      # TODO: Once we support access paths at sources we should also mark Argument[*1].Field[*ve_valueptr]
+      - ["", "", False, "RegQueryMultipleValuesA", "", "", "Argument[*3]", "local", "manual"]
+      # TODO: Once we support access paths at sources we should also mark Argument[*1].Field[*ve_valueptr]
+      - ["", "", False, "RegQueryMultipleValuesW", "", "", "Argument[*3]", "local", "manual"]
   - addsTo:
       pack: codeql/cpp-all
       extensible: summaryModel

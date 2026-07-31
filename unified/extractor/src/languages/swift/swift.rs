@@ -1,4 +1,4 @@
-use codeql_extractor::extractor::simple;
+use codeql_extractor::extractor::desugaring;
 use yeast::{ConcreteDesugarer, DesugaringConfig, PhaseKind, Rule, rule, tree};
 
 /// User context propagated from outer rules down to the inner rules that
@@ -8,50 +8,42 @@ use yeast::{ConcreteDesugarer, DesugaringConfig, PhaseKind, Rule, rule, tree};
 /// post-hoc mutation.
 #[derive(Clone, Default)]
 struct SwiftContext {
-    /// Identifier node for the property name. Set by the outer
-    /// `property_binding` (computed accessors / willSet-didSet) and
-    /// `protocol_property_declaration` rules before translating accessor
-    /// children; read by the accessor inner rules
-    /// (`computed_getter`/`computed_setter`/`computed_modify`/
-    /// `willset_clause`/`didset_clause`/`getter_specifier`/
-    /// `setter_specifier`).
+    /// Identifier node for the property name. Set by the accessor-bearing
+    /// `variableDecl` rule before translating the accessor block; read by the
+    /// inner `accessorDecl` rules to name each `accessor_declaration`.
     property_name: Option<yeast::Id>,
-    /// Translated type node for the property type. Set by the outer
-    /// `property_binding` rule (computed accessors variant) and
-    /// `protocol_property_declaration` when present; read by the
-    /// accessor inner rules.
+    /// Translated type node for the property type. Set (for computed
+    /// properties) by the accessor-bearing `variableDecl` rule; read by the
+    /// inner `accessorDecl` rules. Left `None` for stored properties with
+    /// observers, so their `willSet`/`didSet` accessors carry no type.
     property_type: Option<yeast::Id>,
-    /// Default-value expression for the next translated `parameter`. Set
-    /// by the outer `function_parameter` rule; read by the `parameter`
-    /// rules.
-    default_value: Option<yeast::Id>,
     /// Translated outer modifiers to attach to each child of a flattening
-    /// outer rule. Set by `property_declaration`, `binding_pattern`,
-    /// `enum_entry`, and `protocol_property_declaration`. For `let`/`var`
-    /// declarations and `binding_pattern`s the list is led by the binding
-    /// modifier, which also serves as the "this is a binding" signal for
-    /// pattern translation (see `in_binding_pattern`).
+    /// outer rule — e.g. the `let`/`var` binding modifier on each
+    /// `patternBinding` of a `variableDecl`, or the binding modifier on each
+    /// accessor of a property.
     outer_modifiers: Vec<yeast::Id>,
     /// True when the current child of a flattening outer rule is not
     /// the first one — its inner rule should emit a
     /// `chained_declaration` modifier so the original grouping can be
     /// recovered downstream.
     is_chained: bool,
+    /// True while translating the parameters of a `functionType`. swift-syntax
+    /// models a function type's parameters with the same `tupleTypeElement`
+    /// kind as a tuple type's elements, so the shared `tupleTypeElement` rule
+    /// reads this to emit a `parameter` (function-type param) rather than a
+    /// `tuple_type_element` (tuple-type element). The `tupleType` /
+    /// `functionType` rules each set it for their direct children, so nested
+    /// types are translated in the correct context.
+    in_function_type: bool,
+    /// True while translating the argument list of an enum-case
+    /// `constructor_pattern` (e.g. `case .foo(let x, 3)`). Read by the
+    /// `labeledExpr` rules so a bare expression argument becomes an
+    /// `expr_equality_pattern` (wrapped in a `pattern_element`) rather than a
+    /// call `argument`.
+    in_pattern: bool,
 }
 
 impl SwiftContext {
-    /// Whether the pattern currently being translated is a binding
-    /// (the LHS of a `let`/`var` declaration or a `binding_pattern`).
-    ///
-    /// True exactly when an enclosing binding has published its modifier into
-    /// `outer_modifiers`. This is reliable because non-binding subtrees
-    /// (bodies, initializer values, ...) are translated after resetting the
-    /// context (see `reset`), so a bare identifier only sees a
-    /// non-empty `outer_modifiers` when it really is a binding.
-    fn in_binding_pattern(&self) -> bool {
-        !self.outer_modifiers.is_empty()
-    }
-
     /// Clear the context fields that must not propagate into an
     /// expression / statement / body subtree.
     ///
@@ -77,7 +69,7 @@ impl SwiftContext {
 /// rule. Returns `Option<Id>` so it splices via `{…}` to 0 or 1 ids.
 fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Option<yeast::Id> {
     if ctx.is_chained {
-        Some(ctx.literal("modifier", "chained_declaration"))
+        Some(tree!((modifier "chained_declaration")))
     } else {
         None
     }
@@ -85,8 +77,8 @@ fn chained_modifier(ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>) -> Optio
 
 /// Combine a list of boolean sub-conditions into a single expression by
 /// left-folding with the infix `&&` operator. Used by control-flow
-/// rules (`if`, `guard`, `while`, `repeat-while`) whose tree-sitter
-/// nodes carry one or more comma-separated conditions that the target
+/// rules (`if`, `guard`, `while`, `repeat-while`), which carry one or
+/// more comma-separated conditions that the target
 /// AST represents as a single `condition:` field. Panics on an empty
 /// input because every caller's grammar guarantees at least one
 /// condition.
@@ -100,6 +92,19 @@ fn and_chain(
             tree!((binary_expr operator: (infix_operator "&&") left: {acc} right: {elem}))
         })
         .expect("control-flow statement must have at least one condition")
+}
+
+/// Return the only pattern unchanged when there is exactly one, otherwise
+/// wrap the list in an `or_pattern`.
+fn make_or_pattern(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    items: Vec<yeast::Id>,
+) -> yeast::Id {
+    if items.len() == 1 {
+        items[0]
+    } else {
+        tree!((or_pattern pattern: {items}))
+    }
 }
 
 /// Translate a multi-part identifier (for example `Foo.Bar.Baz`) into a
@@ -121,28 +126,19 @@ fn member_chain(
     )
 }
 
+/// Compound-assignment operator spellings (`+=`, `<<=`, ...). Used to tell a
+/// compound assignment from an ordinary binary application, both of which
+/// arrive as a `binaryOperator`-based `infixOperatorExpr`.
+const COMPOUND_ASSIGN_OPS: &[&str] = &[
+    "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "|=", "^=", "&+=", "&-=", "&*=",
+];
+
 fn translation_rules() -> Vec<Rule<SwiftContext>> {
     vec![
         // ---- Top-level ----
-        // Capture all top-level statements, including unnamed tokens like `nil`.
-        rule!(
-            (source_file statement: _* @children)
-            =>
-            (top_level
-                body: (block stmt: {children})
-            )
-        ),
-        // Declarations may be wrapped in local/global wrapper nodes.
-        rule!((global_declaration _ @inner) => stmt { inner }),
-        rule!((local_declaration _ @inner) => stmt { inner }),
-        // ---- swift-syntax front-end (minimal hook-up) ----
-        // These rules target the swift-syntax AST (camelCase kind names),
-        // produced by the sibling `adapter` module. They coexist with the
-        // tree-sitter rules (snake_case names): rules are dispatched by exact
-        // kind name, and the two name spaces never collide, so these are inert
-        // on the tree-sitter path. Only the minimal top-level mapping lives here
-        // to demonstrate the pipeline end-to-end; the full translation is added
-        // separately. Unmatched swift-syntax nodes fall through to the
+        // These rules translate the swift-syntax AST (camelCase kind names),
+        // produced by the sibling `adapter` module from the `swift-syntax-parse`
+        // binary's JSON. Anything unmatched falls through to the
         // `unsupported_node` fallback at the end.
         //
         // `sourceFile` holds its top-level statements in an (elided)
@@ -153,199 +149,242 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (top_level body: (block stmt: {items}))
         ),
-        rule!((codeBlockItem item: @item) => stmt { item }),
+        // `codeBlockItem` wraps a top-level statement. It is a simple unwrapper,
+        // but a single wrapped `variableDecl` can translate to *several*
+        // declarations (`let x = 1, y = 2`), so the wrapped node is captured with
+        // `_*` and the result annotated `stmt*` to splice all of them.
+        rule!((codeBlockItem item: _* @item) => stmt* { item }),
         // ---- Literals ----
-        rule!((integer_literal) => (int_literal)),
-        rule!((hex_literal) => (int_literal)),
-        rule!((bin_literal) => (int_literal)),
-        rule!((oct_literal) => (int_literal)),
-        rule!((real_literal) => (float_literal)),
-        rule!((boolean_literal) => (boolean_literal)),
-        rule!("nil" => (builtin_expr)),
-        rule!((special_literal) => (builtin_expr)),
-        rule!((line_string_literal) => (string_literal)),
-        rule!((multi_line_string_literal) => (string_literal)),
-        rule!((raw_string_literal) => (string_literal)),
-        rule!((regex_literal) => (regex_literal)),
+        // swift-syntax does not distinguish the lexical integer/string forms
+        // (hex/binary/octal, single- vs multi-line, raw): each is a single
+        // `*LiteralExpr` kind, so one rule per literal type suffices.
+        rule!((integerLiteralExpr) => (int_literal)),
+        rule!((floatLiteralExpr) => (float_literal)),
+        rule!((booleanLiteralExpr) => (boolean_literal)),
+        rule!((nilLiteralExpr) => (builtin_expr)),
+        rule!((stringLiteralExpr) => (string_literal)),
+        rule!((regexLiteralExpr) => (regex_literal)),
         // ---- Names ----
-        rule!((simple_identifier) @id => (name_expr identifier: (identifier #{id}))),
-        // A referenceable_operator (e.g. `+` used as a value, as in `reduce(0, +)`)
-        // is treated as a name reference to the operator symbol.
-        rule!((referenceable_operator) @op => (name_expr identifier: (identifier #{op}))),
+        // A function reference spelled with argument labels (`f(x:y:z:)`) is a
+        // `declReferenceExpr` carrying `argumentNames`. Mark it unsupported for
+        // now (rather than let the bare-name rule below treat it as a plain
+        // reference), so downstream QL isn't handed a malformed reference. In
+        // the future this should become a lambda expression. Matched before the
+        // bare-name rule.
+        rule!(
+            (declReferenceExpr argumentNames: (declNameArguments))
+            =>
+            (unsupported_node)
+        ),
+        // A bare name reference (`x`), and an operator used as a value (`+` in
+        // `reduce(0, +)`), are both `declReferenceExpr`; its `baseName` is the
+        // referenced identifier / operator symbol.
+        rule!((declReferenceExpr baseName: @name) => (name_expr identifier: (identifier #{name}))),
+        // A discard `_` used as an expression — e.g. the target of a discarding
+        // assignment `_ = x`. swift-syntax models it as a `discardAssignmentExpr`;
+        // the target AST has no expression-level discard (only `ignore_pattern`,
+        // which is a pattern), so it becomes a `name_expr` over the `_` token.
+        rule!((discardAssignmentExpr wildcard: @@w) => (name_expr identifier: (identifier #{w}))),
         // ---- Operators ----
-        // All binary operators share the lhs/op/rhs shape.
-        rule!((additive_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((multiplicative_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((comparison_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((equality_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((conjunction_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((disjunction_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((infix_expression lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        // Range expression `a..<b` / `a...b`
-        rule!((range_expression start: @l op: @op end: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        // Open-ended ranges `a...` / `...b`
-        rule!((open_end_range_expression start: @l) => (unary_expr operator: (postfix_operator "...") operand: {l})),
-        rule!((open_start_range_expression end: @r) => (unary_expr operator: (prefix_operator "...") operand: {r})),
-        // Custom operator declaration: `[prefix|infix|postfix] operator OP [: PrecedenceGroup]`.
-        // The fixity keyword is an anonymous child of `operator_declaration`, so we
-        // dispatch on it with one rule per keyword.
-        rule!(
-            (operator_declaration "prefix" (referenceable_operator _ @op) (simple_identifier)? @prec)
-            =>
-            (operator_syntax_declaration name: (identifier #{op}) fixity: (fixity "prefix") precedence: {prec})
-        ),
-        rule!(
-            (operator_declaration "postfix" (referenceable_operator _ @op) (simple_identifier)? @prec)
-            =>
-            (operator_syntax_declaration name: (identifier #{op}) fixity: (fixity "postfix") precedence: {prec})
-        ),
-        rule!(
-            (operator_declaration "infix" (referenceable_operator _ @op) (simple_identifier)? @prec)
-            =>
-            (operator_syntax_declaration
-                name: (identifier #{op})
-                fixity: (fixity "infix")
-                precedence: {prec})
-        ),
-        rule!((bitwise_operation lhs: @l op: @op rhs: @r) => (binary_expr left: {l} operator: (infix_operator #{op}) right: {r})),
-        rule!((nil_coalescing_expression value: @l if_nil: @r) => (binary_expr left: {l} operator: (infix_operator "??") right: {r})),
-        // Leading-dot member shorthand (e.g. `.some`, `.foo`) means member access
-        // on a contextually inferred type.
-        rule!((prefix_expression operation: "." target: @member) => (member_access_expr base: (inferred_type_expr) member: (identifier #{member}))),
-        // Prefix unary operators
-        rule!((prefix_expression operation: @op target: @operand) => (unary_expr operator: (prefix_operator #{op}) operand: {operand})),
-        // Postfix unary operators
-        rule!((postfix_expression operation: @op target: @operand) => (unary_expr operator: (postfix_operator #{op}) operand: {operand})),
-        // TODO: Parenthesised single-value tuple is a grouping expression and should pass through.
-        // Multi-value tuples become tuple_expr.
-        rule!((tuple_expression value: _* @v) => (tuple_expr element: {v})),
-        // Blocks contain statement* directly.
-        rule!((block statement: _+ @stmts) => (block stmt: {stmts})),
-        rule!((block) => (block)),
-        // ---- Variables ----
-        // property_binding rules — these produce variable_declaration and/or accessor_declaration
-        // nodes for individual declarators. The outer property_declaration rule splices these out
-        // and attaches binding/modifiers from the parent.
-
-        // Computed property with explicit accessors (get/set/modify) → a
-        // sequence of `accessor_declaration` nodes. The outer rule
-        // publishes the property's name and type into `ctx` so that each
-        // inner accessor rule
-        // (`computed_getter`/`computed_setter`/`computed_modify`) builds
-        // its `accessor_declaration` with `name` and `type` set from the
-        // start — no schema-invalid intermediate state.
+        // The parser front-end folds operator chains into nested
+        // `infixOperatorExpr`s by precedence (see swift-syntax-rs), so
+        // `1 + 2 * 3` arrives here already structured.
         //
-        // Toggles `ctx.is_chained` per accessor iteration: the first
-        // accessor inherits the outer rule's chained state (i.e. whether
-        // this whole property_binding is itself a non-first declarator
-        // of a containing property_declaration); subsequent accessors
-        // always emit `chained_declaration`.
+        // A `binaryOperatorExpr` wraps the operator token; unwrap it to the
+        // operator leaf. Used by `infixOperatorExpr` (folded) and `sequenceExpr`
+        // (unresolved).
+        rule!((binaryOperatorExpr operator: @op) => (infix_operator #{op})),
+        // Compound assignment (`x += y`) vs. an ordinary binary application
+        // (`a + b`): both are `binaryOperator`-based `infixOperatorExpr`s,
+        // distinguishable only by the operator's spelling. The query engine
+        // can't match on token text, so a small Rust block reads the spelling
+        // and routes to `compound_assign_expr` or `binary_expr`. The operator
+        // is captured raw (`@@op`) to read its spelling.
         rule!(
-            (property_binding
-                name: @pattern
-                type: _? @ty
-                computed_value: (computed_property accessor: _+ @@accessors))
+            (infixOperatorExpr leftOperand: @l operator: (binaryOperatorExpr) @@op rightOperand: @r)
             =>
-            accessor_declaration* {
-                ctx.property_name = Some(tree!((identifier #{pattern})));
-                ctx.property_type = ty;
-
+            expr {
+                if COMPOUND_ASSIGN_OPS.contains(&ctx.source_text(op).as_str()) {
+                    tree!((compound_assign_expr target: {l} operator: (infix_operator #{op}) value: {r}))
+                } else {
+                    tree!((binary_expr left: {l} operator: (infix_operator #{op}) right: {r}))
+                }
+            }
+        ),
+        // Plain assignment (`x = y`). In a folded chain the `=` is an
+        // `assignmentExpr` node (distinct from other operators), matched by kind.
+        rule!(
+            (infixOperatorExpr leftOperand: @l operator: (assignmentExpr) rightOperand: @r)
+            =>
+            (assign_expr target: {l} value: {r})
+        ),
+        // In an unresolved `sequenceExpr` (below) the operator positions are not
+        // only `binaryOperatorExpr`s: a plain assignment (`=`), an `as`/`is` cast
+        // and the ternary `?:` can also appear unfolded. Map each to an
+        // `infix_operator` (keeping its spelling) so the sequence stays a clean
+        // alternation of operands and operators instead of dropping the operator
+        // to an opaque `unsupported_node`. These bare nodes only occur inside an
+        // unresolved sequence — folded forms are handled by the dedicated rules
+        // above (assignment) and below (`ternaryExpr`).
+        rule!((assignmentExpr) @op => (infix_operator #{op})),
+        rule!((unresolvedAsExpr) @op => (infix_operator #{op})),
+        rule!((unresolvedIsExpr) @op => (infix_operator #{op})),
+        // The ternary is a three-part operator (`? thenExpr :`) that *wraps* a
+        // nested expression. Splice it into `?`, the then-expression, `:` so the
+        // then-expression survives as a real (traversable) operand rather than
+        // being buried in an opaque token.
+        rule!(
+            (unresolvedTernaryExpr questionMark: @@q thenExpression: @then colon: @@c)
+            =>
+            expr_or_operator* {
+                vec![tree!((infix_operator #{q})), then, tree!((infix_operator #{c}))]
+            }
+        ),
+        // Escape hatch: an operator chain the front-end could not resolve
+        // (because it uses an operator of unknown precedence, e.g. imported from
+        // another module) stays a flat `sequenceExpr`. Preserve it as an
+        // `unresolved_operator_sequence` whose elements alternate operands and
+        // infix operators, rather than guessing a structure.
+        rule!((sequenceExpr elements: _* @els) => (unresolved_operator_sequence element: {els})),
+        // Prefix unary operators (`!a`, `-x`).
+        rule!((prefixOperatorExpr operator: @op expression: @operand) => (unary_expr operator: (prefix_operator #{op}) operand: {operand})),
+        // A `tupleExpr` is a tuple literal (`(a, b)`) or a parenthesised
+        // expression (`(x)`). For now it is kept as an opaque `tuple_expr` leaf
+        // (its source text); its elements are not descended into.
+        //
+        // TODO: a parenthesised single-element `tupleExpr` is really a grouping
+        // expression and should be elided (unwrapped to its inner expression)
+        // rather than modelled as a tuple.
+        rule!((tupleExpr) => (tuple_expr)),
+        // A code block contains its statements directly.
+        rule!((codeBlock statements: _* @stmts) => (block stmt: {stmts})),
+        // ---- Properties with accessors ----
+        // A computed property with an implicit getter (`var a: T { <stmts> }`)
+        // becomes a single `accessor_declaration` of kind `get`. This form is
+        // self-contained (no context threading). It must precede the plain
+        // `variableDecl` rules, which would otherwise match and drop the accessor
+        // block.
+        rule!(
+            (variableDecl
+                bindingSpecifier: @@spec
+                bindings: (patternBinding
+                    pattern: (identifierPattern identifier: @@name)
+                    typeAnnotation: (typeAnnotation type: @ty)
+                    accessorBlock: (accessorBlock accessors: (codeBlockItem)+ @body)))
+            =>
+            (accessor_declaration
+                modifier: (modifier #{spec})
+                name: (identifier #{name})
+                type: {ty}
+                accessor_kind: (accessor_kind "get")
+                body: (block stmt: {body}))
+        ),
+        // A property with an explicit accessor block. swift-syntax makes both
+        // shapes plain `accessorDecl`s, so they are told apart by the presence
+        // of an initializer:
+        //
+        //  * With an initializer (`var x: T = e { willSet {…} didSet {…} }`) it is
+        //    a *stored* property with observers: emit the backing
+        //    `variable_declaration` first, then one `accessor_declaration` per
+        //    observer (observers carry no type).
+        //  * Without an initializer (`var v: T { get set }`, incl. protocol
+        //    requirements) it is a *computed* property: no backing variable; the
+        //    type is published so the get/set accessors carry it.
+        //
+        // In both cases the first emitted declaration is unchained and every
+        // subsequent one is tagged `chained_declaration` (the `!result.is_empty()`
+        // test). Must precede the plain `variableDecl` rules.
+        rule!(
+            (variableDecl
+                bindingSpecifier: @@spec
+                bindings: (patternBinding
+                    pattern: (identifierPattern identifier: @@name)
+                    typeAnnotation: (typeAnnotation type: @ty)
+                    initializer: (initializerClause value: @@val)?
+                    accessorBlock: (accessorBlock accessors: (accessorDecl)+ @@accessors)))
+            =>
+            member* {
+                ctx.outer_modifiers = vec![tree!((modifier #{spec}))];
+                ctx.property_name = Some(tree!((identifier #{name})));
                 let mut result = Vec::new();
-                for (i, acc) in accessors.into_iter().enumerate() {
-                    if i > 0 {
-                        ctx.is_chained = true;
-                    }
+                if let Some(val) = val {
+                    // Stored property with observers: the initializer is not part
+                    // of the binding, so translate it in a reset scope.
+                    let val = ctx.scoped(|ctx| {
+                        ctx.reset();
+                        ctx.translate(val)
+                    })?;
+                    result.push(tree!(
+                        (variable_declaration
+                            modifier: {ctx.outer_modifiers.clone()}
+                            pattern: (name_pattern identifier: (identifier #{name}))
+                            type: {ty}
+                            value: {val})
+                    ));
+                } else {
+                    // Computed property: the accessors carry the type.
+                    ctx.property_type = Some(ty);
+                }
+                for acc in accessors.into_iter() {
+                    ctx.is_chained = !result.is_empty();
                     result.extend(ctx.translate(acc)?);
                 }
                 result
             }
         ),
-        // Computed property: shorthand getter (no explicit get/set, just
-        // statements) → a single accessor_declaration with kind "get".
-        // Reads outer modifiers / chained tag from `ctx` (set by the
-        // outer `property_declaration` rule).
+        // Each `accessorDecl` becomes an `accessor_declaration`, reading the
+        // property name/type and the binding/chained modifiers from `ctx`. The
+        // accessor kind comes straight from the specifier keyword
+        // (`get`/`set`/`willSet`/`didSet`). The body is optional: a body-bearing
+        // accessor (a computed getter/setter, or a `willSet`/`didSet` observer)
+        // carries the binding modifier and a translated body, whereas a bodyless
+        // one (a protocol requirement) carries neither. The property context is
+        // read out *before* translating the body, which resets `ctx` so the
+        // accessor's context does not leak into the body subtree.
         rule!(
-            (property_binding
-                name: (pattern bound_identifier: @name)
-                type: _? @ty
-                computed_value: (computed_property statement: _* @@body))
+            (accessorDecl accessorSpecifier: @@spec body: _? @@body)
             =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: (identifier #{name})
-                type: {ty}
-                accessor_kind: (accessor_kind "get")
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
-        ),
-        // Stored property with willSet/didSet observers (initializer
-        // optional) → a `variable_declaration` followed by one
-        // `accessor_declaration` per observer, each born with the
-        // property name set. Manual rule: we publish the property name
-        // into `ctx` before translating the observer children so the
-        // inner `willset_clause` / `didset_clause` rules construct
-        // valid `accessor_declaration` nodes from the start.
-        //
-        // The `variable_declaration` itself inherits the outer rule's
-        // chained state; observers always get `chained_declaration`
-        // because they're subsequent outputs of this flattening rule.
-        rule!(
-            (property_binding
-                name: (pattern bound_identifier: @name)
-                type: _? @ty
-                value: _? @@val
-                observers: (willset_didset_block willset: _? @@ws didset: _? @@ds))
-            =>
-            member* {
-                // The initializer value must not inherit the binding
-                // context (it may contain patterns, e.g. a switch
-                // expression), so translate it inside a `ctx.scoped`
-                // block — the block receives a temporary `ctx` whose
-                // `user_ctx` is a clone; mutations to it are discarded
-                // when the block returns, so the outer `ctx` is intact
-                // for the observer loop below. The observers keep the
-                // outer context: each willSet/didSet accessor emits
-                // the binding modifier and, in turn, resets the
-                // context for its own body.
-                let val = ctx.scoped(|ctx| {
-                    ctx.reset();
-                    ctx.translate(val)
-                })?;
-
-                let var_decl = tree!(
-                    (variable_declaration
-                        modifier: {ctx.outer_modifiers.clone()}
-                        modifier: {chained_modifier(&mut ctx)}
-                        pattern: (name_pattern identifier: (identifier #{name}))
+            accessor_declaration {
+                let binding = if body.is_some() {
+                    ctx.outer_modifiers.clone()
+                } else {
+                    Vec::new()
+                };
+                let chained = chained_modifier(&mut ctx);
+                let name = ctx
+                    .property_name
+                    .ok_or("accessor outside property context")?;
+                let ty = ctx.property_type;
+                let body = match body {
+                    Some(block) => {
+                        ctx.reset();
+                        ctx.translate(block)?.into_iter().next()
+                    }
+                    None => None,
+                };
+                tree!(
+                    (accessor_declaration
+                        modifier: {binding}
+                        modifier: {chained}
+                        name: {name}
                         type: {ty}
-                        value: {val})
-                );
-
-                // Publish the property name for the observer rules.
-                ctx.property_name = Some(tree!((identifier #{name})));
-                // Observers are subsequent outputs of this flattening
-                // rule, so they always get `chained_declaration`.
-                ctx.is_chained = true;
-
-                let mut result = vec![var_decl];
-                for obs in ws.into_iter().chain(ds) {
-                    result.extend(ctx.translate(obs)?);
-                }
-                result
+                        accessor_kind: (accessor_kind #{spec})
+                        body: {body})
+                )
             }
         ),
-        // property_binding with any pattern name (identifier or
-        // destructuring). Reads outer modifiers / chained tag from `ctx`.
-        //
-        // The enclosing `property_declaration` leads `ctx.outer_modifiers`
-        // with the `let`/`var` binding modifier, so the auto-translated name
-        // pattern (the LHS) becomes a binding, while the initializer value is
-        // translated with a reset context (see `SwiftContext::reset`).
+        // ---- Variables ----
+        // The individual bindings of a `variableDecl`. The binding modifier and
+        // chained tag come from `ctx` (set by the `variableDecl` rule below). The
+        // type annotation and initializer are both optional (one combined rule
+        // covers `let x`, `let x = e`, `let x: T`, and `let x: T = e`); the
+        // initializer value is translated in a reset scope so it is not treated
+        // as a binding.
         rule!(
-            (property_binding
-                name: @pattern
-                type: _? @ty
-                value: _? @@val)
+            (patternBinding
+                pattern: @pattern
+                typeAnnotation: (typeAnnotation type: @ty)?
+                initializer: (initializerClause value: @@val)?)
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
@@ -354,60 +393,49 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 type: {ty}
                 value: {ctx.reset(); ctx.translate(val)?})
         ),
-        // property_declaration: flatten declarators (each may translate
-        // to multiple nodes — variable_declaration and/or
-        // accessor_declaration) and attach the binding modifier
-        // (let/var), outer modifiers, and `chained_declaration` for
-        // non-first declarations. Manual rule: publishes
-        // binding/outer modifiers into `ctx` and translates each
-        // declarator with `ctx.is_chained` toggled per iteration. The
-        // inner declaration rules (`property_binding` variants,
-        // accessor inner rules) read these fields and emit complete
-        // `modifier:` lists from the start.
+        // A `let`/`var` declaration binds one or more comma-separated patterns
+        // (`let x = 1, y = 2`). The `bindingSpecifier` (`let`/`var`) is published
+        // as the binding modifier, followed by any attributes and modifiers
+        // (`@objc`, `public`, `static`, …); each `patternBinding` becomes its own
+        // `variable_declaration`, with non-first ones tagged `chained_declaration`.
+        // Accessor/observer forms are handled by the earlier rules.
         rule!(
-            (property_declaration
-                binding: (value_binding_pattern mutability: @@binding_kind)
-                declarator: _* @@decls
-                (modifiers)* @mods)
+            (variableDecl
+                attributes: _* @attrs
+                modifiers: _* @mods
+                bindingSpecifier: @@spec
+                bindings: _* @@bindings)
             =>
-            member* {
-                let binding_text = ctx.ast.source_text(binding_kind);
-                let binding = ctx.literal("modifier", &binding_text);
-                // The `let`/`var` binding modifier leads the declaration's
-                // modifier list and doubles as the "this is a binding" signal
-                // for pattern translation (see `in_binding_pattern`).
-                ctx.outer_modifiers = std::iter::once(binding).chain(mods).collect();
-
+            stmt* {
+                let binding = tree!((modifier #{spec}));
+                // The binding (`let`/`var`) leads, then attributes then modifiers
+                // in source order (Swift writes attributes before modifiers).
+                ctx.outer_modifiers = std::iter::once(binding).chain(attrs).chain(mods).collect();
                 let mut result = Vec::new();
-                for (i, decl) in decls.into_iter().enumerate() {
+                for (i, b) in bindings.into_iter().enumerate() {
                     ctx.is_chained = i > 0;
-                    result.extend(ctx.translate(decl)?);
+                    result.extend(ctx.translate(b)?);
                 }
                 result
             }
         ),
         // ---- Enums ----
-        // enum_type_parameter → parameter (with optional name as pattern).
+        // An enum-case payload parameter (`radius: Double`, or just `Double`).
+        // The label (`firstName`) is optional.
         rule!(
-            (enum_type_parameter name: @name type: @ty)
+            (enumCaseParameter firstName: _? @@name type: @ty)
             =>
-            (parameter
-                pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty})
+            (parameter pattern: (name_pattern identifier: (identifier #{name}))? type: {ty})
         ),
+        // An enum element with associated values (`case circle(radius: Double)`)
+        // becomes a nested `class_like_declaration` whose constructor carries the
+        // payload parameters; an element with a raw value (`case a = 1`) or a
+        // plain element (`case north`) becomes a `variable_declaration`. All
+        // carry the shared case modifiers / chained tag from `ctx` (set by the
+        // `enumCaseDecl` rule below) and are tagged `enum_case`, after any
+        // `chained_declaration` tag.
         rule!(
-            (enum_type_parameter type: @ty)
-            =>
-            (parameter type: {ty})
-        ),
-        // enum_case_entry with associated values → class_like_declaration
-        // containing a constructor whose parameters are the data
-        // parameters. Reads outer modifiers / chained tag from `ctx`
-        // (set by the outer `enum_entry` rule).
-        rule!(
-            (enum_case_entry
-                name: @name
-                data_contents: (enum_type_parameters parameter: _* @params))
+            (enumCaseElement name: @name parameterClause: (enumCaseParameterClause parameters: _* @params))
             =>
             (class_like_declaration
                 modifier: {ctx.outer_modifiers.clone()}
@@ -416,9 +444,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 name: (identifier #{name})
                 member: (constructor_declaration parameter: {params} body: (block)))
         ),
-        // enum_case_entry with explicit raw value → variable_declaration with that value.
         rule!(
-            (enum_case_entry name: @name raw_value: @val)
+            (enumCaseElement name: @name rawValue: (initializerClause value: @val))
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
@@ -427,9 +454,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 pattern: (name_pattern identifier: (identifier #{name}))
                 value: {val})
         ),
-        // enum_case_entry without associated values → variable_declaration tagged enum_case.
         rule!(
-            (enum_case_entry name: @name)
+            (enumCaseElement name: @name)
             =>
             (variable_declaration
                 modifier: {ctx.outer_modifiers.clone()}
@@ -437,12 +463,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 modifier: (modifier "enum_case")
                 pattern: (name_pattern identifier: (identifier #{name})))
         ),
-        // enum_entry: flatten case entries; publish outer modifiers
-        // into `ctx` and translate each case with `ctx.is_chained`
-        // toggled per iteration so the inner `enum_case_entry` rules
-        // emit complete `modifier:` lists from the start.
+        // Enum cases. A single `case` declaration may carry modifiers
+        // (e.g. `indirect`) and list several comma-separated elements; each
+        // becomes its own declaration carrying those shared modifiers, and
+        // non-first ones are tagged `chained_declaration`. The modifiers are
+        // published into `ctx`
+        // for the element rules above, which build the actual declaration.
         rule!(
-            (enum_entry case: _+ @@cases (modifiers)* @mods)
+            (enumCaseDecl modifiers: _* @mods elements: _* @@cases)
             =>
             member* {
                 ctx.outer_modifiers = mods;
@@ -455,198 +483,220 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 result
             }
         ),
-        // Plain assignment: `x = expr`
+        // `identifierPattern` wraps a single identifier token.
         rule!(
-            (assignment operator: "=" target: (directly_assignable_expression expr: @target) result: @value)
-            =>
-            (assign_expr target: {target} value: {value})
-        ),
-        // Compound assignment: `x += expr` etc.
-        rule!(
-            (assignment operator: @op target: (directly_assignable_expression expr: @target) result: @value)
-            =>
-            (compound_assign_expr target: {target} operator: (infix_operator #{op}) value: {value})
-        ),
-        // Unwrap `type` wrapper node
-        rule!((type name: @inner) => type_expr { inner }),
-        // `directly_assignable_expression` is just a wrapper; unwrap it
-        rule!((directly_assignable_expression expr: @inner) => expr { inner }),
-        // Pattern with bound_identifier → name_pattern.
-        rule!(
-            (pattern bound_identifier: @name)
+            (identifierPattern identifier: @name)
             =>
             (name_pattern identifier: (identifier #{name}))
         ),
-        // Pattern with 'let' or 'var' binding: publish the binding modifier
-        // into `ctx` and translate the inner pattern under it.
+        // A `let`/`var` value-binding pattern (`let x`) inside a case or `if case`
+        // introduces a new binding; it unwraps to its inner pattern (a
+        // `name_pattern`).
+        rule!((valueBindingPattern pattern: @p) => pattern { p }),
+        // An enum-case pattern with associated values (`case .foo(let x)`,
+        // `case Color.foo(let x)`) is an expression pattern wrapping a call of a
+        // member access. It becomes a `constructor_pattern`; its arguments are
+        // translated as pattern elements (see the `labeledExpr` rules, gated by
+        // `ctx.in_pattern`). Matched before the generic `expressionPattern` rule.
+        // The base is optional: a leading-dot form (`.foo`) has none, so the
+        // constructor's base is an `inferred_type_expr`.
         rule!(
-            (pattern kind: (binding_pattern binding: (value_binding_pattern mutability: @@binding_kind) pattern: @@pattern))
+            (expressionPattern expression: (functionCallExpr
+                calledExpression: (memberAccessExpr base: _? @base period: @dot declName: (declReferenceExpr baseName: @name))
+                arguments: _* @@args))
             =>
-            pattern* {
-                let binding_text = ctx.ast.source_text(binding_kind);
-                let binding = ctx.literal("modifier", &binding_text);
-                ctx.outer_modifiers = vec![binding];
-                ctx.translate(pattern)?
+            constructor_pattern {
+                ctx.in_pattern = true;
+                let elements = ctx.translate(args)?;
+                let base = base.unwrap_or_else(|| tree!((inferred_type_expr #{dot})));
+                tree!((constructor_pattern
+                    constructor: (member_access_expr
+                        base: {base}
+                        member: (identifier #{name}))
+                    element: {elements}))
             }
         ),
-        // case T.foo(x,y) pattern
+        // A tuple destructuring pattern (`let (a, b) = …`). A labelled element
+        // (`let (x: a) = …`) carries its label through as the `pattern_element`
+        // key; unlabelled elements have no key.
+        rule!((tuplePattern elements: _* @els) => (tuple_pattern element: {els})),
         rule!(
-            (pattern kind: (case_pattern type: @typ name: @name arguments: (tuple_pattern item: (tuple_pattern_item)* @items)? ))
+            (tuplePatternElement label: _? @@label pattern: @p)
             =>
-            (constructor_pattern
-                constructor: (member_access_expr base: {typ} member: (identifier #{name}))
-                element: {items})
+            (pattern_element key: (identifier #{label})? pattern: {p})
         ),
-        // case .foo(x,y) pattern
+        // A type-casting pattern (`case is T`). Not yet supported, so it is
+        // mapped to `unsupported_node` — an explicit reminder that this needs
+        // handling in the future. (Redundant with the catch-all fallback, but
+        // kept as a signpost.)
+        rule!((isTypePattern) => (unsupported_node)),
+        // A standalone wildcard pattern (`case _:`, `if case _`): swift-syntax
+        // models the bare `_` as an `expressionPattern` wrapping a
+        // `discardAssignmentExpr`. Matched before the generic `expressionPattern`
+        // rule so `_` becomes an `ignore_pattern` rather than an equality match.
+        // (Wildcards *inside* an enum-case argument list are handled by the
+        // `labeledExpr`/`discardAssignmentExpr` rules.)
+        rule!((expressionPattern expression: (discardAssignmentExpr)) => (ignore_pattern)),
+        // A wildcard *binding* pattern (`let _ = x`, `for _ in xs`). swift-syntax
+        // models this as a `wildcardPattern` — distinct from the `_` *match*
+        // pattern above, which is an `expressionPattern` over a
+        // `discardAssignmentExpr`.
+        rule!((wildcardPattern) => (ignore_pattern)),
+        // A tuple pattern in a match position (`case (let a, 3):`) is parsed by
+        // swift-syntax as an `expressionPattern` wrapping a `tupleExpr` — unlike a
+        // binding tuple (`let (a, b)`), which is a real `tuplePattern`. Recognise
+        // it as a `tuple_pattern`; its `labeledExpr` elements translate to
+        // `pattern_element`s under `ctx.in_pattern` (a binding element becomes a
+        // `name_pattern`, any other expression an `expr_equality_pattern`).
         rule!(
-            (pattern kind: (case_pattern dot: @dot name: @name arguments: (tuple_pattern item: (tuple_pattern_item)* @items)? ))
+            (expressionPattern expression: (tupleExpr elements: _* @@els))
             =>
-            (constructor_pattern
-                constructor: (member_access_expr base: (inferred_type_expr #{dot}) member: (identifier #{name}))
-                element: {items})
-        ),
-        // Tuple pattern and its (optionally named) items
-        rule!((pattern kind: (tuple_pattern item: _* @elems)) => (tuple_pattern element: {elems})),
-        rule!((tuple_pattern_item name: @key pattern: @pat) => (pattern_element key: (identifier #{key}) pattern: {pat})),
-        rule!((tuple_pattern_item pattern: @pat) => (pattern_element pattern: {pat})),
-        // Type casting pattern (TODO)
-        rule!((pattern kind: (type_casting_pattern)) => (unsupported_node)),
-        // Wildcard pattern
-        rule!((pattern kind: (wildcard_pattern)) => (ignore_pattern)),
-        // A bare identifier used as an expression-pattern. Under a `var`/`let`
-        // binding it introduces a new variable and becomes a `name_pattern`;
-        // otherwise it matches by equality and is left as an `expr_equality_pattern`
-        // over the name expression.
-        rule!(
-            (pattern kind: (simple_identifier) @name)
-            =>
-            pattern {
-                if ctx.in_binding_pattern() {
-                    tree!((name_pattern identifier: (identifier #{name})))
-                } else {
-                    let expr = tree!((name_expr identifier: (identifier #{name})));
-                    tree!((expr_equality_pattern expr: {expr}))
-                }
+            tuple_pattern {
+                ctx.in_pattern = true;
+                let elements = ctx.translate(els)?;
+                tree!((tuple_pattern element: {elements}))
             }
         ),
-        // Expression pattern
-        // We lack a way to check if 'expr' is actually an expression, but due to rule ordering
-        // the 'expression' case is the only remaining possibility when this rule tries to match.
-        rule!((pattern kind: @expr) => (expr_equality_pattern expr: {expr})),
+        // A bare expression pattern (`case 1:`, `case someConstant:`) matches by
+        // equality.
+        rule!((expressionPattern expression: @e) => (expr_equality_pattern expr: {e})),
         // ---- Functions ----
-        // Function declaration
-        // Function declaration (return type optional, body statements optional).
+        // A function declaration (parameters/return type/body optional). The
+        // parameters and return type nest under `signature`; the body is a
+        // `codeBlock`. A bodyless function (a protocol requirement) still emits
+        // an empty `block`.
         rule!(
-            (function_declaration
+            (functionDecl
                 name: @name
-                parameter: _* @params
-                return_type: _? @ret
-                body: (block statement: _* @body_stmts))
+                signature: (functionSignature
+                    parameterClause: (functionParameterClause parameters: _* @params)
+                    returnClause: (returnClause type: @ret)?)
+                body: (codeBlock statements: _* @body))
             =>
             (function_declaration
                 name: (identifier #{name})
                 parameter: {params}
                 return_type: {ret}
-                body: (block stmt: {body_stmts}))
+                body: (block stmt: {body}))
         ),
-        // Parameters are wrapped in function_parameter, which also carries
-        // optional default values. Publishes the default value into `ctx`
-        // before translating the inner `parameter` so the `parameter`
-        // rules can include it as a `default:` field directly.
         rule!(
-            (function_parameter parameter: @@p default_value: _? @def)
+            (functionDecl
+                name: @name
+                signature: (functionSignature
+                    parameterClause: (functionParameterClause parameters: _* @params)
+                    returnClause: (returnClause type: @ret)?))
             =>
-            parameter* {
-                ctx.default_value = def;
-                ctx.translate(p)?
+            (function_declaration
+                name: (identifier #{name})
+                parameter: {params}
+                return_type: {ret}
+                body: (block))
+        ),
+        // A function parameter. With two names (`firstName`+`secondName`) the
+        // first is the external argument label and the second the internal name;
+        // with one name it is just the internal name. The declared type is
+        // emitted; the default value is optional.
+        rule!(
+            (functionParameter
+                firstName: @@first
+                secondName: _? @@second
+                type: @ty
+                defaultValue: (initializerClause value: @val)?)
+            =>
+            parameter {
+                let (external, name) = match second {
+                    Some(second) => (Some(tree!((identifier #{first}))), second),
+                    None => (None, first),
+                };
+                tree!((parameter
+                    external_name: {external}
+                    pattern: (name_pattern identifier: (identifier #{name}))
+                    type: {ty}
+                    default: {val}))
             }
         ),
-        // Parameter with external name and type
+        // A function/method call (`foo(1, 2)`). `calledExpression` is the callee
+        // and `arguments` is an (elided) list of `labeledExpr`, each translated
+        // to an `argument` below. A trailing closure (`xs.map { … }`) becomes a
+        // final unlabelled argument; that variant is matched first.
         rule!(
-            (parameter external_name: @ext name: @name)
+            (functionCallExpr calledExpression: @callee arguments: _* @args trailingClosure: @tc)
             =>
-            (parameter
-                external_name: (identifier #{ext})
-                pattern: (name_pattern identifier: (identifier #{name}))
-                default: {ctx.default_value})
+            (call_expr callee: {callee} argument: {args} argument: (argument value: {tc}))
         ),
         rule!(
-            (parameter external_name: @ext name: @name type: @ty)
+            (functionCallExpr calledExpression: @callee arguments: _* @args)
             =>
-            (parameter
-                external_name: (identifier #{ext})
-                pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty}
-                default: {ctx.default_value})
+            (call_expr callee: {callee} argument: {args})
         ),
-        // Parameter with just name and type (no external name)
+        // A call argument or an enum-case pattern argument. When translating an
+        // enum-case `constructor_pattern`'s arguments (`ctx.in_pattern`), a
+        // `patternExpr` argument (`let x`) becomes a bound `name_pattern`, a
+        // wildcard (`_`) becomes an `ignore_pattern`, and any other expression
+        // becomes an `expr_equality_pattern`; each is wrapped in a
+        // `pattern_element` carrying the optional argument label as its `key`.
+        // Otherwise the argument keeps its label as the `name` and its value.
+        // The pattern-only shapes (`patternExpr`, `discardAssignmentExpr`) are
+        // matched first; they never occur as ordinary call arguments.
         rule!(
-            (parameter name: @name)
+            (labeledExpr label: _? @@lbl expression: (patternExpr pattern: @p))
             =>
-            (parameter
-                pattern: (name_pattern identifier: (identifier #{name}))
-                default: {ctx.default_value})
+            (pattern_element key: (identifier #{lbl})? pattern: {p})
         ),
         rule!(
-            (parameter name: @name type: @ty)
+            (labeledExpr label: _? @@lbl expression: (discardAssignmentExpr) @@wildcard)
             =>
-            (parameter
-                pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty}
-                default: {ctx.default_value})
+            (pattern_element key: (identifier #{lbl})? pattern: (ignore_pattern #{wildcard}))
         ),
-        // Reference to a function, f(x:y:z:). This is parsed as a call with a single argument with multiple reference_specifier labels.
-        // We don't want downstream QL to try to handle this as a call_expr with a weird argument, so explicitly mark it as unsupported for now.
-        // In the future we probably want to translate this to a lambda expression.
         rule!(
-            (call_expression suffix: (call_suffix arguments: (value_arguments argument: (value_argument reference_specifier: _+) @ref_arg)))
+            (labeledExpr label: _? @@lbl expression: @val)
             =>
-            (unsupported_node)
+            argument {
+                if ctx.in_pattern {
+                    tree!((pattern_element
+                        key: (identifier #{lbl})?
+                        pattern: (expr_equality_pattern expr: {val})))
+                } else {
+                    tree!((argument name: (identifier #{lbl})? value: {val}))
+                }
+            }
         ),
-        // Call expression: function(args...)
+        // Member access (`list.append`). The `declName` is itself a
+        // `declReferenceExpr`; pull its `baseName` out as the member identifier.
+        // A leading-dot access (`.foo`) has no explicit base — the base is an
+        // `inferred_type_expr`. The base-ful form is matched first.
         rule!(
-            (call_expression function: @func suffix: (call_suffix arguments: (value_arguments argument: (value_argument)* @args)))
+            (memberAccessExpr base: @base declName: (declReferenceExpr baseName: @member))
             =>
-            (call_expr callee: {func} argument: {args})
+            (member_access_expr base: {base} member: (identifier #{member}))
         ),
-        // Value argument with label (value: _ matches both named nodes and anonymous tokens like nil)
         rule!(
-            (value_argument name: (value_argument_label name: @label) value: @val)
+            (memberAccessExpr declName: (declReferenceExpr baseName: @member))
             =>
-            (argument name: (identifier #{label}) value: {val})
+            (member_access_expr base: (inferred_type_expr) member: (identifier #{member}))
         ),
-        // Value argument without label
-        rule!(
-            (value_argument value: @val)
-            =>
-            (argument value: {val})
-        ),
-        // Navigation expression → member_access_expr
-        rule!(
-            (navigation_expression target: @target suffix: (navigation_suffix suffix: @member))
-            =>
-            (member_access_expr base: {target} member: (identifier #{member}))
-        ),
-        // Return / break / continue, one rule per keyword.
-        // The anonymous "return"/"break"/"continue" keywords are matched as
-        // string literals.
-        rule!((control_transfer_statement kind: "return" result: _? @val) => (return_expr value: {val})),
-        rule!((control_transfer_statement kind: "break" result: @lbl) => (break_expr label: (identifier #{lbl}))),
-        rule!((control_transfer_statement kind: "break") => (break_expr)),
-        rule!((control_transfer_statement kind: "continue" result: @lbl) => (continue_expr label: (identifier #{lbl}))),
-        rule!((control_transfer_statement kind: "continue") => (continue_expr)),
-        rule!((control_transfer_statement kind: (throw_keyword) result: @val) => (throw_expr value: {val})),
+        // Control transfer, one rule per keyword. `return` carries an optional
+        // value; `break` / `continue` an optional target label; `throw` its
+        // thrown expression.
+        rule!((returnStmt expression: _? @val) => (return_expr value: {val})),
+        rule!((breakStmt label: _? @@lbl) => (break_expr label: (identifier #{lbl})?)),
+        rule!((continueStmt label: _? @@lbl) => (continue_expr label: (identifier #{lbl})?)),
+        rule!((throwStmt expression: @val) => (throw_expr value: {val})),
         // ---- Closures ----
-        // Lambda literal with optional type header (parameters + optional return type).
-        // The return_type capture is optional, so this rule covers both cases.
+        // A closure (`{ (x: Int) -> Int in … }`) becomes a `function_expr`. The
+        // whole signature is optional, as are its capture list, parameter
+        // clause, and return clause, so one rule covers everything from a bare
+        // `{ … }` to `{ [weak self] (x) -> T in … }`. Shorthand `$0` closures
+        // have no signature and their `$0` references are ordinary name
+        // expressions.
         rule!(
-            (lambda_literal
-                attribute: _* @attrs
-                captures: (capture_list item: _* @captures)?
-                type: (lambda_function_type
-                    params: (lambda_function_type_parameters parameter: _* @params)
-                    return_type: _? @ret)?
-                statement: _* @body)
+            (closureExpr
+                signature: (closureSignature
+                    attributes: _* @attrs
+                    capture: (closureCaptureClause items: _* @captures)?
+                    parameterClause: _* @params
+                    returnClause: (returnClause type: @ret)?)?
+                statements: _* @body)
             =>
             (function_expr
                 modifier: {attrs}
@@ -655,114 +705,103 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 return_type: {ret}
                 body: (block stmt: {body}))
         ),
-        // capture_list_item with ownership modifier (e.g. [weak self], [unowned x])
+        // A closure capture (`[weak self]`, `[x]`, `[y = expr]`). The optional
+        // ownership specifier (`weak`/`unowned`) becomes a modifier; the
+        // captured name becomes the bound `name_pattern`; an explicit capture
+        // initializer (`[y = expr]`) becomes the bound value.
         rule!(
-            (capture_list_item ownership: _? @ownership name: @name value: _? @val)
+            (closureCapture
+                specifier: (closureCaptureSpecifier specifier: @@spec)?
+                name: @@name
+                initializer: (initializerClause value: @val)?)
             =>
             (variable_declaration
-                modifier: {ownership}
+                modifier: (modifier #{spec})?
                 pattern: (name_pattern identifier: (identifier #{name}))
                 value: {val})
         ),
-        // Lambda parameter with type and optional external name
+        // A closure parameter clause (`(x: Int, y)`) unwraps to its parameters.
+        rule!((closureParameterClause parameters: _* @params) => parameter* { params }),
+        // A closure parameter (`x: Int`, or just `x`). Unlike a function
+        // parameter it has no external label; the type is optional.
         rule!(
-            (lambda_parameter external_name: @ext name: @name type: @ty)
+            (closureParameter firstName: @name type: _? @ty)
             =>
-            (parameter
-                external_name: (identifier #{ext})
-                pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty})
+            (parameter pattern: (name_pattern identifier: (identifier #{name})) type: {ty})
         ),
+        // A shorthand closure parameter (`x` in `{ x, y in … }`): a bare name
+        // with no parentheses and no type.
         rule!(
-            (lambda_parameter name: @name type: @ty)
-            =>
-            (parameter
-                pattern: (name_pattern identifier: (identifier #{name}))
-                type: {ty})
-        ),
-        rule!(
-            (lambda_parameter external_name: @ext name: @name)
-            =>
-            (parameter
-                external_name: (identifier #{ext})
-                pattern: (name_pattern identifier: (identifier #{name})))
-        ),
-        rule!(
-            (lambda_parameter name: @name)
+            (closureShorthandParameter name: @name)
             =>
             (parameter pattern: (name_pattern identifier: (identifier #{name})))
         ),
-        // Call expression with trailing closure (no value_arguments)
-        rule!(
-            (call_expression function: @func suffix: (call_suffix lambda: (lambda_literal) @closure))
-            =>
-            (call_expr
-                callee: {func}
-                argument: (argument value: {closure}))
-        ),
         // ---- Control flow ----
-        // If statement
+        // An `if`/`else` expression. Conditions are joined via `and_chain`; the
+        // then-body and optional else-body (another block, or an `ifExpr` for an
+        // else-if chain) are translated recursively.
         rule!(
-            (if_statement condition: _* @cond body: @then_body else_branch: _? @else_stmts)
+            (ifExpr conditions: _* @cond body: @then_body elseBody: _? @else_stmts)
             =>
             (if_expr
                 condition: {and_chain(&mut ctx, cond)}
                 then: {then_body}
                 else: {else_stmts})
         ),
-        // Guard statement
+        // A `guard … else { }` statement. The `body` is the else block.
         rule!(
-            (guard_statement condition: _* @cond body: (block statement: _* @else_stmts))
+            (guardStmt conditions: _* @cond body: @else_stmts)
             =>
             (guard_if_stmt
                 condition: {and_chain(&mut ctx, cond)}
-                else: (block stmt: {else_stmts}))
+                else: {else_stmts})
         ),
-        // Ternary expression → if_expr
+        // Ternary (`c ? a : b`) desugars to an `if_expr`.
         rule!(
-            (ternary_expression condition: @cond if_true: @then_val if_false: @else_val)
+            (ternaryExpr condition: @cond thenExpression: @then_val elseExpression: @else_val)
             =>
             (if_expr condition: {cond} then: {then_val} else: {else_val})
         ),
-        // Switch statement
+        // A `switch` statement. Each `switchCase` becomes a `switch_case` with a
+        // pattern (or an `or_pattern` for comma-separated `case a, b:`) and a
+        // body; a `default:` case has a body but no pattern. The case items and
+        // body are auto-translated; the Rust block only picks the pattern shape
+        // by arity (the query engine can't branch on list length).
         rule!(
-            (switch_statement expr: @val entry: (switch_entry)* @cases)
+            (switchExpr subject: @val cases: _* @cases)
             =>
             (switch_expr value: {val} case: {cases})
         ),
-        // Switch entry with multiple patterns and body
         rule!(
-            (switch_entry
-                pattern: (switch_pattern pattern: @first)
-                pattern: (switch_pattern pattern: @rest)+
-                statement: _* @body)
+            (switchCase label: (switchCaseLabel caseItems: _* @items) statements: _* @body)
             =>
-            (switch_case pattern: (or_pattern pattern: {first} pattern: {rest}) body: (block stmt: {body}))
+            (switch_case
+                pattern: {make_or_pattern(&mut ctx, items)}
+                body: (block stmt: {body}))
         ),
-        // Switch entry with exactly one pattern and body
         rule!(
-            (switch_entry pattern: (switch_pattern pattern: @pat) statement: _* @body)
-            =>
-            (switch_case pattern: {pat} body: (block stmt: {body}))
-        ),
-        // Switch entry: default case (no patterns)
-        rule!(
-            (switch_entry default: (default_keyword) statement: _* @body)
+            (switchCase label: (switchDefaultLabel) statements: _* @body)
             =>
             (switch_case body: (block stmt: {body}))
         ),
-        // if case PATTERN = expr — preserve the pattern directly (no Optional wrapping)
+        // A single case item unwraps to its pattern, possibly boxed in conditional_pattern
+        rule!((switchCaseItem pattern: @p whereClause: (whereClause condition: @cond)) => (conditional_pattern pattern: { p } condition: {cond})),
+        rule!((switchCaseItem pattern: @p) => pattern { p }),
+        // A pattern-matching condition (`if case let x = e`, `if case .foo(let x)
+        // = e`) becomes a `pattern_guard_expr`: the matched pattern and the
+        // scrutinee value are translated recursively.
         rule!(
-            (if_let_binding "case" pattern: @pat value: @val)
+            (matchingPatternCondition pattern: @pat initializer: (initializerClause value: @val))
             =>
-            (pattern_guard_expr
-                value: {val}
-                pattern: {pat})
+            (pattern_guard_expr pattern: {pat} value: {val})
         ),
+        // Optional binding (`if let x = foo`, or shorthand `if let x`) desugars
+        // to a `pattern_guard_expr` matching `Optional.some(x)`. The initialized
+        // form is matched first.
         rule!(
-            (if_let_binding
-                pattern: (pattern binding: (value_binding_pattern) bound_identifier: @name)
-                value: @val)
+            (optionalBindingCondition
+                pattern: (identifierPattern identifier: @name)
+                initializer: (initializerClause value: @val))
             =>
             (pattern_guard_expr
                 value: {val}
@@ -770,10 +809,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     constructor: (member_access_expr base: (named_type_expr name: (identifier "Optional")) member: (identifier "some"))
                     element: (pattern_element pattern: (name_pattern identifier: (identifier #{name})))))
         ),
-        // Shorthand if let x (Swift 5.7+) — also semantically .some(x)
         rule!(
-            (if_let_binding
-                pattern: (pattern binding: (value_binding_pattern) bound_identifier: @name))
+            (optionalBindingCondition pattern: (identifierPattern identifier: @name))
             =>
             (pattern_guard_expr
                 value: (name_expr identifier: (identifier #{name}))
@@ -781,281 +818,347 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     constructor: (member_access_expr base: (named_type_expr name: (identifier "Optional")) member: (identifier "some"))
                     element: (pattern_element pattern: (name_pattern identifier: (identifier #{name})))))
         ),
-        // If-condition — unwrap (pass through the inner expression/pattern)
-        rule!((if_condition kind: @inner) => expr_or_pattern { inner }),
+        // A single condition in an `if`/`while`/`guard` condition list unwraps to
+        // its inner expression; `and_chain` joins multiple with `&&`.
+        rule!((conditionElement condition: @c) => expr { c }),
+        // `if`/`switch`/`do` are expressions in Swift; when used as a statement
+        // swift-syntax wraps them in an `expressionStmt`. Unwrap to the inner
+        // expression (a plain expression statement, e.g. a call, is not wrapped).
+        rule!((expressionStmt expression: @e) => expr { e }),
         // ---- Loops ----
-        // For-in loop with optional where-clause guard.
+        // A `for`-`in` loop. The optional `where` clause becomes the `guard`.
         rule!(
-            (for_statement
-                item: @pat
-                collection: @iter
-                where: (where_clause expr: @guard)?
-                body: (block statement: _* @body))
+            (forStmt
+                pattern: @pat
+                sequence: @iter
+                whereClause: (whereClause condition: @guard)?
+                body: @body)
             =>
             (for_each_stmt
                 pattern: {pat}
                 iterable: {iter}
                 guard: {guard}
-                body: (block stmt: {body}))
+                body: {body})
         ),
-        // While loop
+        // A `while` loop.
         rule!(
-            (while_statement condition: _* @cond body: (block statement: _* @body))
+            (whileStmt conditions: _* @cond body: @body)
             =>
             (while_stmt
                 condition: {and_chain(&mut ctx, cond)}
-                body: (block stmt: {body}))
+                body: {body})
         ),
-        // Repeat-while loop
+        // A `repeat { } while c` loop desugars to a `do_while_stmt`.
         rule!(
-            (repeat_while_statement condition: _* @cond body: (block statement: _* @body))
+            (repeatStmt body: @body condition: @cond)
             =>
-            (do_while_stmt
-                condition: {and_chain(&mut ctx, cond)}
-                body: (block stmt: {body}))
+            (do_while_stmt condition: {cond} body: {body})
         ),
-        // Labeled statement (e.g. `outer: for ...`). Strip the trailing ':' from the label token.
-        rule!((labeled_statement label: (statement_label) @lbl statement: @stmt) => labeled_stmt {
-            let text = ctx.ast.source_text(lbl);
-            let name = &text[..text.len() - 1];
-            tree!((labeled_stmt label: (identifier #{name}) stmt: {stmt}))
-        }),
+        // A labeled statement (`outer: for … { }`). swift-syntax stores the
+        // label and colon as separate tokens, so the label token is already the
+        // bare name (no trailing `:` to strip).
+        rule!(
+            (labeledStmt label: @@lbl statement: @stmt)
+            =>
+            (labeled_stmt label: (identifier #{lbl}) stmt: {stmt})
+        ),
         // ---- Collections ----
-        // Array literal
-        rule!((array_literal element: _* @elems) => (array_literal element: {elems})),
-        // Empty array literal
-        rule!((array_literal) => (array_literal)),
-        // Dictionary literal — zip keys and values into key_value_pairs
+        // An array literal (`[1, 2, 3]`). Each `arrayElement` unwraps to its
+        // contained expression.
         rule!(
-            (dictionary_literal key: _* @keys value: _* @vals)
+            (arrayExpr elements: _* @els)
             =>
-            (map_literal element: {keys.into_iter().zip(vals).map(|(k, v)|
-                tree!((key_value_pair key: {k} value: {v}))
-            )})
+            (array_literal element: {els})
         ),
-        rule!((dictionary_literal element: _* @elems) => (map_literal element: {elems})),
-        rule!((dictionary_literal_item key: @k value: @v) => (key_value_pair key: {k} value: {v})),
+        rule!((arrayElement expression: @e) => expr { e }),
+        // A dictionary literal (`["a": 1]`) is kept as an opaque `map_literal`
+        // leaf (its source span).
+        rule!((dictionaryExpr) => (map_literal)),
+        // A subscript access (`xs[0]`) is modelled as a call. swift-syntax does
+        // report a distinct `subscriptCallExpr`, so giving
+        // subscripts their own shape needs only a `subscript_expr` node in
+        // ast_types.yml and a remap here.
+        rule!(
+            (subscriptCallExpr calledExpression: @callee arguments: _* @args)
+            =>
+            (call_expr callee: {callee} argument: {args})
+        ),
         // ---- Optionals and errors ----
         // Optional chaining — unwrap the marker
-        rule!((optional_chain_marker expr: @inner) => expr { inner }),
+        rule!((optionalChainingExpr expression: @inner) => expr { inner }),
         // try/try?/try! expr → unary_expr with operator "try", "try?" or "try!"
-        rule!((try_expression (try_operator) @op expr: @inner) => (unary_expr operator: (prefix_operator #{op}) operand: {inner})),
-        rule!((try_expression operator: (try_operator) @op expr: @inner) => (unary_expr operator: (prefix_operator #{op}) operand: {inner})),
+        rule!(
+            (tryExpr questionOrExclamationMark: _? @@m expression: @e)
+            =>
+            expr {
+                let op = format!("try{}", m.map(|m| ctx.source_text(m)).unwrap_or_default());
+                tree!((unary_expr operator: (prefix_operator #{op}) operand: {e}))
+            }
+        ),
         // Do-catch → try_expr
         rule!(
-            (do_statement body: (block statement: _* @body) catch: (catch_block)* @catches)
+            (doStmt body: @body catchClauses: _* @catches)
             =>
             (try_expr
-                body: (block stmt: {body})
+                body: {body}
                 catch_clause: {catches})
         ),
-        // Catch block with bound identifier; optional where-clause guard.
         rule!(
-            (catch_block
-                keyword: (catch_keyword)
-                error: @pattern
-                where: (where_clause expr: @guard)?
-                body: (block statement: _* @body))
+            (catchItem pattern: @pattern whereClause: (whereClause condition: @guard))
+            =>
+            (conditional_pattern pattern: {pattern} condition: {guard})
+        ),
+        rule!(
+            (catchItem pattern: @pattern)
+            =>
+            pattern {pattern}
+        ),
+        // Catch block with one or more patterns (which have been translated by the catchItem rules)
+        rule!(
+            (catchClause
+                catchItems: _+ @patterns
+                body: @body)
             =>
             (catch_clause
-                pattern: {pattern}
-                guard: {guard}
-                body: (block stmt: {body}))
+                pattern: {make_or_pattern(&mut ctx, patterns)}
+                body: {body})
         ),
         // Catch block without error binding
-        rule!(
-            (catch_block keyword: (catch_keyword) body: (block statement: _* @body))
-            =>
-            (catch_clause body: (block stmt: {body}))
-        ),
-        // Empty catch block: catch {}
-        rule!(
-            (catch_block (catch_keyword))
-            =>
-            (catch_clause body: (block))
-        ),
-        // Catch block with unhandled pattern — preserve pattern; optional body.
-        rule!(
-            (catch_block keyword: (catch_keyword) error: @pat body: (block statement: _* @body))
-            =>
-            (catch_clause
-                pattern: {pat}
-                body: (block stmt: {body}))
-        ),
+        rule!((catchClause body: @body) => (catch_clause body: {body})),
         // As expression (type cast) — as?, as!
-        rule!((as_expression (as_operator) @op expr: @val type: @ty) => (type_cast_expr expr: {val} operator: (infix_operator #{op}) type: {ty})),
+        rule!((asExpr expression: @val questionOrExclamationMark: _? @@mark type: @ty) => type_cast_expr {
+            let op = format!("as{}", mark.map(|m| ctx.source_text(m)).unwrap_or_default());
+            tree!((type_cast_expr expr: {val} operator: (infix_operator #{op}) type: {ty}))
+        }),
         // Check expression (`x is T`) → type_test_expr
-        rule!((check_expression op: @op target: @val type: @ty) => (type_test_expr expr: {val} operator: (infix_operator #{op}) type: {ty})),
+        rule!((isExpr expression: @val type: @ty) => (type_test_expr expr: {val} operator: (infix_operator "is") type: {ty})),
         // Await expression → unary_expr with operator "await"
-        rule!((await_expression expr: @val) => (unary_expr operator: (prefix_operator "await") operand: {val})),
-        // A multi-part identifier (for example `Foo.Bar.Baz`) is translated to
-        // a member_access_expr chain with a name_expr base.
+        rule!((awaitExpr expression: @val) => (unary_expr operator: (prefix_operator "await") operand: {val})),
+        // Force-unwrap (`x!`) → postfix unary_expr, via swift-syntax's dedicated
+        // `forceUnwrapExpr` node.
+        rule!((forceUnwrapExpr expression: @e) => (unary_expr operator: (postfix_operator "!") operand: {e})),
+        // ---- Imports ----
+        // An import declaration. The dotted path (a list of
+        // `importPathComponent`s) becomes a `name_expr`/`member_access_expr`
+        // chain (via `member_chain`). A scoped import (`import struct Foo.Bar`)
+        // has an `importKindSpecifier` and binds the last path component as a
+        // `name_pattern`; a plain import (`import Foundation`) has none and uses
+        // a `bulk_importing_pattern` spanning the whole declaration. Any leading
+        // attributes (`@_exported`) and access modifiers (`public`) become
+        // `modifier`s.
         rule!(
-            (identifier part: _+ @parts)
+            (importDecl
+                attributes: _* @attrs
+                modifiers: _* @mods
+                importKindSpecifier: _? @@kind
+                path: (importPathComponent name: @@parts)*)
             =>
-            expr { member_chain(&mut ctx, parts) }
+            import_declaration {
+                let pattern = match kind {
+                    Some(_) => {
+                        let last = *parts.last().ok_or("import has no path")?;
+                        tree!((name_pattern identifier: (identifier #{last})))
+                    }
+                    None => tree!((bulk_importing_pattern)),
+                };
+                tree!((import_declaration
+                    modifier: (modifier #{kind})?
+                    modifier: {attrs}
+                    modifier: {mods}
+                    pattern: {pattern}
+                    imported_expr: {member_chain(&mut ctx, parts)}))
+            }
         ),
-        // Scoped import declaration (for example `import struct Foo.Bar`):
-        // flatten the identifier parts into a member_access_expr and bind the
-        // final segment as a name_pattern.
-        rule!(
-            (import_declaration scoped_import_kind: @kind name: (identifier part: _+ @parts) @name modifiers: (modifiers)? @mods)
-            =>
-            (import_declaration
-                pattern: (name_pattern identifier: (identifier #{parts.last().unwrap()}))
-                imported_expr: {name}
-                modifier: (modifier #{kind})
-                modifier: {mods})
-        ),
-        // Non-scoped import declaration (for example `import Foundation`):
-        // flatten the identifier parts into a member_access_expr and use a
-        // bulk_importing_pattern.
-        rule!(
-            (import_declaration name: @name modifiers: (modifiers)? @mods)
-            =>
-            (import_declaration
-                pattern: (bulk_importing_pattern)
-                imported_expr: {name}
-                modifier: {mods})
-        ),
-        // ---- Types and classes ----
-        // Self expression → name_expr
-        rule!((self_expression) => (name_expr identifier: (identifier "self"))),
-        // Super expression → super_expr
-        rule!((super_expression) => (super_expr)),
-        // Modifiers — unwrap to individual modifier children
-        rule!((modifiers _* @mods) => modifier* { mods }),
+        // ---- Types and declarations ----
+        // A leading attribute (`@objc`) or access/function/member/mutation/
+        // ownership modifier (swift-syntax models each as a single `declModifier`)
+        // becomes a `modifier`; its source text is the modifier spelling.
         rule!((attribute) @m => (modifier #{m})),
-        rule!((visibility_modifier) @m => (modifier #{m})),
-        rule!((function_modifier) @m => (modifier #{m})),
-        rule!((member_modifier) @m => (modifier #{m})),
-        rule!((mutation_modifier) @m => (modifier #{m})),
-        rule!((ownership_modifier) @m => (modifier #{m})),
-        rule!((property_modifier) @m => (modifier #{m})),
-        rule!((parameter_modifier) @m => (modifier #{m})),
-        rule!((inheritance_modifier) @m => (modifier #{m})),
-        rule!((property_behavior_modifier) @m => (modifier #{m})),
-        // Type annotations — unwrap
-        rule!((type_annotation type: @inner) => type_expr { inner }),
-        // user_type is split into simple_user_type parts.
-        // Keep a conservative textual fallback to avoid dropping type information.
-        rule!((user_type) @ty => (named_type_expr name: (identifier #{ty}))),
-        // Tuple type → tuple_type_expr
-        rule!((tuple_type element: _* @elems) => (tuple_type_expr element: {elems})),
-        rule!((tuple_type_item name: @name type: @ty) => (tuple_type_element name: (identifier #{name}) type: {ty})),
-        rule!((tuple_type_item type: @ty) => (tuple_type_element type: {ty})),
-        // Array type `[T]` → generic_type_expr with Array base
-        rule!((array_type element: @e) => (generic_type_expr
-            base: (named_type_expr name: (identifier "Array"))
-            type_argument: {e})),
-        // Dictionary type `[K: V]` → generic_type_expr with Dictionary base
-        rule!((dictionary_type key: @k value: @v) => (generic_type_expr
-            base: (named_type_expr name: (identifier "Dictionary"))
-            type_argument: {k}
-            type_argument: {v})),
-        // Optional type `T?` → generic_type_expr with Optional base
-        rule!((optional_type wrapped: @w) => (generic_type_expr
-            base: (named_type_expr name: (identifier "Optional"))
-            type_argument: {w})),
-        // Function type `(Params) -> Ret` → function_type_expr.
-        rule!((function_type parameter: _* @ps return_type: @ret) => (function_type_expr parameter: {ps} return_type: {ret})),
-        rule!((function_type_parameter name: @name type: @ty) => (parameter external_name: (identifier #{name}) type: {ty})),
-        rule!((function_type_parameter type: @ty) => (parameter type: {ty})),
-        // Selector expression: `#selector(inner)` -- not yet supported
+        rule!((declModifier) @m => (modifier #{m})),
+        // A `super` expression. (`self` needs no rule: swift-syntax models it as
+        // an ordinary `declReferenceExpr`, already mapped to a `name_expr`.)
+        rule!((superExpr) => (super_expr)),
+        // Type expressions. A generic type applied with explicit arguments
+        // (`Set<Int>`) becomes a `generic_type_expr` whose `base` is the type
+        // name and whose `type_argument`s are the (structured) arguments — the
+        // same shape the sugared `?`/`[]`/`[:]` types desugar to. Matched before
+        // the plain `identifierType` rule, which would otherwise drop the
+        // arguments.
         rule!(
-            (selector_expression _ @inner)
+            (identifierType
+                name: @@name
+                genericArgumentClause: (genericArgumentClause arguments: (genericArgument argument: @args)*))
             =>
-            (unsupported_node)
+            (generic_type_expr
+                base: (named_type_expr name: (identifier #{name}))
+                type_argument: {args})
         ),
-        // Key path expressions are currently unsupported.
-        rule!((key_path_expression) => (unsupported_node)),
-        // Inheritance specifier → base_type
-        rule!((inheritance_specifier inherits_from: @ty) => (base_type type: {ty})),
+        // A named type (`Int`). `identifierType.name` is the type-name token.
+        rule!((identifierType name: @@n) => (named_type_expr name: (identifier #{n}))),
+        // A qualified type (`Outer.Inner`, `NSString.CompareOptions`). swift-syntax
+        // nests these as `memberType` nodes; we keep the whole dotted path as the
+        // opaque `named_type_expr` name.
+        rule!((memberType) @ty => (named_type_expr name: (identifier #{ty}))),
+        // Sugared types desugar to `generic_type_expr`: `T?` -> Optional<T>,
+        // `[T]` -> Array<T>, `[K: V]` -> Dictionary<K, V>.
+        rule!(
+            (optionalType wrappedType: @w)
+            =>
+            (generic_type_expr base: (named_type_expr name: (identifier "Optional")) type_argument: {w})
+        ),
+        rule!(
+            (arrayType element: @e)
+            =>
+            (generic_type_expr base: (named_type_expr name: (identifier "Array")) type_argument: {e})
+        ),
+        rule!(
+            (dictionaryType key: @k value: @v)
+            =>
+            (generic_type_expr base: (named_type_expr name: (identifier "Dictionary")) type_argument: {k} type_argument: {v})
+        ),
+        // A tuple type (`(Int, String)`) or function type (`(Int) -> Bool`).
+        // Both hold their contents as `tupleTypeElement`s, but a tuple element
+        // maps to `tuple_type_element` while a function parameter maps to
+        // `parameter`. Each container sets `ctx.in_function_type` for its direct
+        // children (and translates them explicitly, so a nested type is
+        // translated in the right context) and the shared `tupleTypeElement`
+        // rule below reads it. An element's label (`firstName`) is optional.
+        rule!(
+            (tupleType elements: _* @@elems)
+            =>
+            tuple_type_expr {
+                ctx.in_function_type = false;
+                let mut out = Vec::new();
+                for e in elems {
+                    out.extend(ctx.translate(e)?);
+                }
+                tree!((tuple_type_expr element: {out}))
+            }
+        ),
+        rule!(
+            (functionType parameters: _* @@params returnClause: (returnClause type: @ret))
+            =>
+            function_type_expr {
+                ctx.in_function_type = true;
+                let mut out = Vec::new();
+                for p in params {
+                    out.extend(ctx.translate(p)?);
+                }
+                tree!((function_type_expr parameter: {out} return_type: {ret}))
+            }
+        ),
+        rule!(
+            (tupleTypeElement firstName: _? @@name type: @ty)
+            =>
+            tuple_type_element {
+                if ctx.in_function_type {
+                    tree!((parameter external_name: (identifier #{name})? type: {ty}))
+                } else {
+                    tree!((tuple_type_element name: (identifier #{name})? type: {ty}))
+                }
+            }
+        ),
+        // Selector expression: `#selector(inner)` -- not yet supported
+        // (swift-syntax represents `#selector`/`#keyPath` and other macro
+        // expansions uniformly as a `macroExpansionExpr`).
+        rule!((macroExpansionExpr) => (unsupported_node)),
+        // A nominal type's `inheritanceClause` (`: Base, Proto`) becomes a list
+        // of `base_type`s, one per inherited type. Each declaration keyword
+        // gets its own rule; the bodies are identical but for the keyword.
         // Class declaration with body containing members
         rule!(
-            (class_declaration
-                declaration_kind: @kind
+            (classDecl
+                classKeyword: @kind
+                modifiers: _* @mods
                 name: @name
-                body: (class_body member: _* @members)
-                (inheritance_specifier)* @bases
-                (modifiers)* @mods)
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
-                base_type: {bases}
+                base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
         // Enum class declaration: same as a regular class but with an enum body.
         rule!(
-            (class_declaration
-                declaration_kind: @kind
+            (enumDecl
+                enumKeyword: @kind
+                modifiers: _* @mods
                 name: @name
-                body: (enum_class_body member: _* @members)
-                (inheritance_specifier)* @bases
-                (modifiers)* @mods)
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
-                base_type: {bases}
+                base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
-        // Class declaration with empty body
+        // A `struct` declaration.
         rule!(
-            (class_declaration
-                declaration_kind: @kind
+            (structDecl
+                structKeyword: @kind
+                modifiers: _* @mods
                 name: @name
-                body: _
-                (inheritance_specifier)* @bases
-                (modifiers)* @mods)
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
-                base_type: {bases})
+                base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
+                member: {members})
         ),
         // Protocol declaration
         rule!(
-            (protocol_declaration
+            (protocolDecl
+                protocolKeyword: @kind
+                modifiers: _* @mods
                 name: @name
-                body: (protocol_body member: _* @members)
-                (inheritance_specifier)* @bases
-                (modifiers)* @mods)
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
-                modifier: (modifier "protocol")
+                modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
-                base_type: {bases}
+                base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
-        // Protocol function — return type and body statements both optional.
+        // An `extension Foo { … }` is likewise a `class_like_declaration`, named
+        // by the extended type. The extended type is captured opaquely (as its
+        // source text) so that qualified names (`extension String.Interpolation`,
+        // a `memberType`) name the declaration just like simple ones.
         rule!(
-            (protocol_function_declaration
-                name: @name
-                (parameter)* @params
-                return_type: _? @ret
-                body: (block statement: _* @body_stmts)?
-                (modifiers)* @mods)
+            (extensionDecl
+                extensionKeyword: @kind
+                modifiers: _* @mods
+                extendedType: @@name
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                memberBlock: (memberBlock members: _* @members))
             =>
-            (function_declaration
+            (class_like_declaration
+                modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
-                parameter: {params}
-                return_type: {ret}
-                body: (block stmt: {body_stmts}))
+                base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
+                member: {members})
         ),
+        // A member of a type declaration unwraps to the contained declaration.
+        rule!((memberBlockItem decl: _* @d) => member* { d }),
         // Init declaration → constructor_declaration. Body statements optional;
-        // body itself is also optional (protocol requirement).
+        // body itself is also optional (protocol requirement). The parameters
+        // nest under `signature` (as for `functionDecl`).
         rule!(
-            (init_declaration
-                (parameter)* @params
-                body: (block statement: _* @body_stmts)?
-                (modifiers)* @mods)
+            (initializerDecl
+                modifiers: _* @mods
+                signature: (functionSignature
+                    parameterClause: (functionParameterClause parameters: _* @params))
+                body: (codeBlock statements: _* @body_stmts)?)
             =>
             (constructor_declaration
                 modifier: {mods}
@@ -1064,9 +1167,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // Deinit declaration → destructor_declaration. Body statements optional.
         rule!(
-            (deinit_declaration
-                body: (block statement: _* @body_stmts)
-                (modifiers)* @mods)
+            (deinitializerDecl
+                modifiers: _* @mods
+                body: (codeBlock statements: _* @body_stmts))
             =>
             (destructor_declaration
                 modifier: {mods}
@@ -1074,165 +1177,28 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         ),
         // Typealias declaration
         rule!(
-            (typealias_declaration name: @name value: @val (modifiers)* @mods)
+            (typeAliasDecl
+                modifiers: _* @mods
+                name: @@name
+                initializer: (typeInitializerClause value: @val))
             =>
             (type_alias_declaration
                 modifier: {mods}
                 name: (identifier #{name})
                 r#type: {val})
         ),
-        // Subscript declaration (not yet supported -- grammar needs to distinguish plain calls from subscript calls)
-        rule!(
-            (subscript_declaration (parameter)* @params (modifiers)* @mods)
-            =>
-            (unsupported_node)
-        ),
         // Associated type declaration (with optional bound)
         rule!(
-            (associatedtype_declaration name: @name inherits_from: _? @bound (modifiers)* @mods)
+            (associatedTypeDecl
+                modifiers: _* @mods
+                name: @@name
+                inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bound))?)
             =>
             (associated_type_declaration
                 modifier: {mods}
                 name: (identifier #{name})
                 bound: {bound})
         ),
-        // Protocol property declaration: translate each accessor
-        // requirement to an `accessor_declaration` carrying the property
-        // name, type, and outer modifiers. Manual rule: we publish the
-        // property's name/type/modifiers into `ctx` and translate each
-        // accessor with `ctx.is_chained` toggled per iteration so the
-        // inner `getter_specifier`/`setter_specifier` rules emit
-        // complete nodes from the start (including the
-        // `chained_declaration` tag for non-first accessors).
-        rule!(
-            (protocol_property_declaration
-                name: (pattern bound_identifier: @name)
-                requirements: (protocol_property_requirements accessor: _+ @@accessors)
-                type: _? @ty
-                (modifiers)* @mods)
-            =>
-            accessor_declaration* {
-                ctx.property_name = Some(tree!((identifier #{name})));
-                ctx.property_type = ty;
-                ctx.outer_modifiers = mods;
-
-                let mut result = Vec::new();
-                for (i, acc) in accessors.into_iter().enumerate() {
-                    ctx.is_chained = i > 0;
-                    result.extend(ctx.translate(acc)?);
-                }
-                result
-            }
-        ),
-        // getter_specifier / setter_specifier → bodyless accessor_declaration
-        // getter_specifier / setter_specifier → bodyless
-        // accessor_declaration. Reads property name/type/modifiers from
-        // `ctx` set by the outer `protocol_property_declaration` rule.
-        rule!(
-            (getter_specifier)
-            =>
-            (accessor_declaration
-                name: {ctx.property_name.ok_or("getter_specifier outside protocol_property_declaration context")?}
-                type: {ctx.property_type}
-                accessor_kind: (accessor_kind "get")
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)})
-        ),
-        rule!(
-            (setter_specifier)
-            =>
-            (accessor_declaration
-                name: {ctx.property_name.ok_or("setter_specifier outside protocol_property_declaration context")?}
-                type: {ctx.property_type}
-                accessor_kind: (accessor_kind "set")
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)})
-        ),
-        // protocol_property_requirements wrapper — should be consumed by above; fallback
-        rule!((protocol_property_requirements accessor: _* @accs) => accessor_declaration* { accs }),
-        // Computed getter → accessor_declaration (body optional).
-        // Reads property name/type from the outer property_binding rule
-        // and binding/outer modifiers + chained tag from the outer
-        // property_declaration rule.
-        rule!(
-            (computed_getter body: (block statement: _* @@body)?)
-            =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: {ctx.property_name.ok_or("computed_getter outside property_binding context")?}
-                type: {ctx.property_type}
-                accessor_kind: (accessor_kind "get")
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
-        ),
-        // Computed setter with explicit parameter name.
-        rule!(
-            (computed_setter parameter: @param body: (block statement: _* @@body))
-            =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: {ctx.property_name.ok_or("computed_setter outside property_binding context")?}
-                type: {ctx.property_type}
-                accessor_kind: (accessor_kind "set")
-                parameter: (parameter pattern: (name_pattern identifier: (identifier #{param})))
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
-        ),
-        // Computed setter without explicit parameter name; body optional.
-        rule!(
-            (computed_setter body: (block statement: _* @@body)?)
-            =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: {ctx.property_name.ok_or("computed_setter outside property_binding context")?}
-                type: {ctx.property_type}
-                accessor_kind: (accessor_kind "set")
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
-        ),
-        // Computed modify → accessor_declaration
-        rule!(
-            (computed_modify body: (block statement: _* @@body))
-            =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: {ctx.property_name.ok_or("computed_modify outside property_binding context")?}
-                type: {ctx.property_type}
-                accessor_kind: (accessor_kind "modify")
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
-        ),
-        // willset/didset block — spread to children (only reachable as a
-        // fallback; the outer property_binding manual rule normally
-        // captures the willset/didset clauses directly).
-        rule!((willset_didset_block _* @clauses) => accessor_declaration* { clauses }),
-        // willset clause → accessor_declaration (body optional). Reads
-        // `ctx.property_name` set by the outer property_binding rule and
-        // binding/outer modifiers + chained tag from the outer
-        // property_declaration rule.
-        rule!(
-            (willset_clause body: (block statement: _* @@body)?)
-            =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: {ctx.property_name.ok_or("willset_clause outside property_binding context")?}
-                accessor_kind: (accessor_kind "willSet")
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
-        ),
-        // didset clause → accessor_declaration (body optional).
-        rule!(
-            (didset_clause body: (block statement: _* @@body)?)
-            =>
-            (accessor_declaration
-                modifier: {ctx.outer_modifiers.clone()}
-                modifier: {chained_modifier(&mut ctx)}
-                name: {ctx.property_name.ok_or("didset_clause outside property_binding context")?}
-                accessor_kind: (accessor_kind "didSet")
-                body: (block stmt: {ctx.reset(); ctx.translate(body)?}))
-        ),
-        // Preprocessor conditionals — unsupported
-        rule!((diagnostic) => (unsupported_node)),
         // ---- Fallbacks ----
         // Bare `_` (rather than `(_)`) so this matches both named nodes
         // and unnamed tokens. Any unnamed token that escapes the
@@ -1249,18 +1215,17 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
     ]
 }
 
-pub fn language_spec(desugared_ast_schema: &'static str) -> simple::LanguageSpec {
-    let ts_language: tree_sitter::Language = tree_sitter_swift::LANGUAGE.into();
+pub fn language_spec(desugared_ast_schema: &'static str) -> desugaring::LanguageSpec {
     let config = DesugaringConfig::<SwiftContext>::new()
         .add_phase("translate", PhaseKind::OneShot, translation_rules())
         .with_output_node_types_yaml(desugared_ast_schema);
-    let desugarer = ConcreteDesugarer::new(ts_language.clone(), config)
-        .expect("failed to build Swift desugarer");
-    simple::LanguageSpec {
+    let desugarer =
+        ConcreteDesugarer::without_language(config).expect("failed to build Swift desugarer");
+    desugaring::LanguageSpec {
         prefix: "swift",
-        ts_language,
-        node_types: tree_sitter_swift::NODE_TYPES,
+        parser: Box::new(super::swift_parse::parse),
+        node_types: "",
         file_globs: vec!["*.swift".into(), "*.swiftinterface".into()],
-        desugar: Some(Box::new(desugarer)),
+        desugarer: Box::new(desugarer),
     }
 }

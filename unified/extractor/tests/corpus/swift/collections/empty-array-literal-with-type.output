@@ -2,32 +2,38 @@ let xs: [Int] = []
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: let
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "xs"
-          type:
-            type_annotation
-              type:
-                type
-                  name:
-                    array_type
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    arrayExpr
+                      elements:
+                      leftSquare: [
+                      rightSquare: ]
+              pattern:
+                identifierPattern
+                  identifier: identifier "xs"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    arrayType
+                      leftSquare: [
+                      rightSquare: ]
                       element:
-                        type
-                          name:
-                            user_type
-                              part:
-                                simple_user_type
-                                  name: type_identifier "Int"
-          value:
-            array_literal
+                        identifierType
+                          name: identifier "Int"
 
 ---
 

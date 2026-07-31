@@ -1,0 +1,48 @@
+let keyPath = \String.count
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    keyPathExpr
+                      backslash: \
+                      components:
+                        keyPathComponent
+                          period: .
+                          component:
+                            keyPathPropertyComponent
+                              declName:
+                                declReferenceExpr
+                                  baseName: identifier "count"
+                      root:
+                        identifierType
+                          name: identifier "String"
+              pattern:
+                identifierPattern
+                  identifier: identifier "keyPath"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "keyPath"
+          value: unsupported_node "\\String.count"

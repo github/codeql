@@ -674,6 +674,117 @@ fn test_tree_builder() {
     );
 }
 
+/// Builds `(assignment left: … right: (integer #{value})?)`, where a `None`
+/// `value` leaves `right` unset rather than producing an `integer` with no
+/// content.
+fn build_optional_right(ast: &mut Ast, value: Option<yeast::Id>) -> (yeast::Id, yeast::Id) {
+    let captures = yeast::captures::Captures::new();
+    let fresh = yeast::tree_builder::FreshScope::new();
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(ast, &captures, &fresh, &mut user_ctx);
+    let left = yeast::tree!(ctx, (identifier "x"));
+    let root = yeast::tree!(ctx,
+        (assignment
+            left: {left}
+            right: (integer #{value})?
+        )
+    );
+    (root, left)
+}
+
+#[test]
+fn test_optional_field_is_set_when_the_value_is_present() {
+    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let mut ast = runner.run("x = 1").unwrap();
+
+    // Any node will do as the interpolated value; `#{…}` renders its source text.
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child();
+    let some = cursor.node_id();
+
+    let (root, _) = build_optional_right(&mut ast, Some(some));
+    assert_dump_eq(
+        &dump_ast(&ast, root, "x = 1"),
+        r#"
+        assignment
+          left: identifier "x"
+          right: integer "x = 1"
+    "#,
+    );
+}
+
+#[test]
+fn test_optional_field_is_unset_when_the_value_is_absent() {
+    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let mut ast = runner.run("x = 1").unwrap();
+
+    let (root, _) = build_optional_right(&mut ast, None);
+    assert_dump_eq(
+        &dump_ast(&ast, root, "x = 1"),
+        r#"
+        assignment
+          left: identifier "x"
+    "#,
+    );
+}
+
+#[test]
+fn test_optional_field_propagates_through_nested_nodes() {
+    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let mut ast = runner.run("x = 1").unwrap();
+
+    let captures = yeast::captures::Captures::new();
+    let fresh = yeast::tree_builder::FreshScope::new();
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&mut ast, &captures, &fresh, &mut user_ctx);
+
+    // The absent value sits two levels below the `?`, so the whole
+    // `left_assignment_list` subtree is abandoned along with it.
+    let absent: Option<yeast::Id> = None;
+    let right = yeast::tree!(ctx, (integer "1"));
+    let root = yeast::tree!(ctx,
+        (assignment
+            left: (left_assignment_list child: (identifier #{absent}))?
+            right: {right}
+        )
+    );
+
+    assert_dump_eq(
+        &dump_ast(&ast, root, "x = 1"),
+        r#"
+        assignment
+          right: integer "1"
+    "#,
+    );
+}
+
+#[test]
+fn test_innermost_optional_field_catches_first() {
+    let runner: Runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let mut ast = runner.run("x = 1").unwrap();
+
+    let captures = yeast::captures::Captures::new();
+    let fresh = yeast::tree_builder::FreshScope::new();
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&mut ast, &captures, &fresh, &mut user_ctx);
+
+    // The inner `?` catches, so only `child` is dropped; `left` survives.
+    let absent: Option<yeast::Id> = None;
+    let root = yeast::tree!(ctx,
+        (assignment
+            left: (left_assignment_list child: (identifier #{absent})?)?
+        )
+    );
+
+    assert_dump_eq(
+        &dump_ast(&ast, root, "x = 1"),
+        r#"
+        assignment
+          left: left_assignment_list
+    "#,
+    );
+}
+
 // ---- Rule tests ----
 
 // These rules use field names from node-types.yml, which extends the

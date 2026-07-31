@@ -2,8 +2,13 @@ nil
 
 ---
 
-source_file
-  statement: nil
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        nilLiteralExpr
+          nilKeyword: nil
 
 ---
 

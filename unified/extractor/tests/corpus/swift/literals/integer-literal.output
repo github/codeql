@@ -2,8 +2,13 @@
 
 ---
 
-source_file
-  statement: integer_literal "42"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        integerLiteralExpr
+          literal: integerLiteral "42"
 
 ---
 

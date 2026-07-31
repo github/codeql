@@ -2,24 +2,40 @@ let f = { $0 + $1 }
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: let
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "f"
-          value:
-            lambda_literal
-              statement:
-                additive_expression
-                  lhs: simple_identifier "$0"
-                  op: +
-                  rhs: simple_identifier "$1"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    closureExpr
+                      leftBrace: {
+                      rightBrace: }
+                      statements:
+                        codeBlockItem
+                          item:
+                            infixOperatorExpr
+                              operator:
+                                binaryOperatorExpr
+                                  operator: binaryOperator "+"
+                              leftOperand:
+                                declReferenceExpr
+                                  baseName: dollarIdentifier "$0"
+                              rightOperand:
+                                declReferenceExpr
+                                  baseName: dollarIdentifier "$1"
+              pattern:
+                identifierPattern
+                  identifier: identifier "f"
 
 ---
 
@@ -38,10 +54,10 @@ top_level
                 block
                   stmt:
                     binary_expr
-                      operator: infix_operator "+"
                       left:
                         name_expr
                           identifier: identifier "$0"
+                      operator: infix_operator "+"
                       right:
                         name_expr
                           identifier: identifier "$1"

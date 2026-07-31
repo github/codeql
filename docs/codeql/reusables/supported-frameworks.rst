@@ -191,6 +191,7 @@ and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://githu
    react native, HTML framework
    request, Network communicator
    restify, Server
+   Sails.js Action2 controllers, Server
    sequelize, Database
    socket.io, Network communicator
    sqlite3, Database

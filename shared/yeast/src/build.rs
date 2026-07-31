@@ -108,6 +108,17 @@ impl<'a, C> BuildCtx<'a, C> {
         self.captures.get_all(name)
     }
 
+    /// Read the source text of a captured (or any other) node.
+    ///
+    /// Convenience for the common `ctx.ast.source_text(id)` reach-through used
+    /// by Rust-block rules that branch on, or embed, a raw capture's spelling
+    /// (e.g. an operator or keyword token). Resolves against the stored source
+    /// bytes, so it works for both parsed nodes and synthesized ones (via their
+    /// inherited source range).
+    pub fn source_text(&self, id: Id) -> String {
+        self.ast.source_text(id)
+    }
+
     /// Create a named AST node with the given kind and fields.
     pub fn node(&mut self, kind: &str, fields: Vec<(&str, Vec<Id>)>) -> Id {
         let kind_id = self
