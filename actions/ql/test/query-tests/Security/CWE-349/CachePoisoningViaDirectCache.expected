@@ -1,4 +1,8 @@
 edges
+| .github/workflows/cache_write_capable_reusable_workflow.yml:14:9:15:6 | Uses Step | .github/workflows/cache_write_capable_reusable_workflow.yml:15:9:21:6 | Run Step |
+| .github/workflows/cache_write_capable_reusable_workflow.yml:15:9:21:6 | Run Step | .github/workflows/cache_write_capable_reusable_workflow.yml:21:9:26:2 | Uses Step |
+| .github/workflows/cache_write_capable_reusable_workflow.yml:31:9:32:6 | Uses Step | .github/workflows/cache_write_capable_reusable_workflow.yml:32:9:38:6 | Run Step |
+| .github/workflows/cache_write_capable_reusable_workflow.yml:32:9:38:6 | Run Step | .github/workflows/cache_write_capable_reusable_workflow.yml:38:9:40:2 | Run Step |
 | .github/workflows/cache_write_capable_workflow_dispatch.yml:14:9:15:6 | Uses Step | .github/workflows/cache_write_capable_workflow_dispatch.yml:15:9:21:6 | Run Step |
 | .github/workflows/cache_write_capable_workflow_dispatch.yml:15:9:21:6 | Run Step | .github/workflows/cache_write_capable_workflow_dispatch.yml:21:9:22:6 | Run Step |
 | .github/workflows/cache_write_capable_workflow_dispatch.yml:21:9:22:6 | Run Step | .github/workflows/cache_write_capable_workflow_dispatch.yml:22:9:25:33 | Uses Step |
@@ -47,4 +51,5 @@ edges
 | .github/workflows/poisonable_step5.yml:17:9:22:6 | Uses Step | .github/workflows/poisonable_step5.yml:22:9:24:6 | Uses Step |
 | .github/workflows/poisonable_step5.yml:22:9:24:6 | Uses Step | .github/workflows/poisonable_step5.yml:24:9:28:31 | Uses Step |
 #select
+| .github/workflows/cache_write_capable_reusable_workflow.yml:21:9:26:2 | Uses Step | .github/workflows/cache_write_capable_reusable_workflow.yml:15:9:21:6 | Run Step | .github/workflows/cache_write_capable_reusable_workflow.yml:21:9:26:2 | Uses Step | Potential cache poisoning in the context of the default branch due to privilege checkout of untrusted code. ($@). | .github/workflows/cache_write_capable_reusable_workflow_caller.yml:4:3:4:19 | workflow_dispatch | workflow_dispatch |
 | .github/workflows/cache_write_capable_workflow_dispatch.yml:22:9:25:33 | Uses Step | .github/workflows/cache_write_capable_workflow_dispatch.yml:15:9:21:6 | Run Step | .github/workflows/cache_write_capable_workflow_dispatch.yml:22:9:25:33 | Uses Step | Potential cache poisoning in the context of the default branch due to privilege checkout of untrusted code. ($@). | .github/workflows/cache_write_capable_workflow_dispatch.yml:2:3:2:19 | workflow_dispatch | workflow_dispatch |

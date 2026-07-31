@@ -2,6 +2,7 @@ edges
 | .github/workflows/code_injection2.yml:12:9:16:6 | Uses Step: modified_files | .github/workflows/code_injection2.yml:16:21:16:70 | steps.modified_files.outputs.files_modified | provenance |  |
 nodes
 | .github/workflows/cache_write_capable_push.yml:10:21:10:59 | github.event.head_commit.message | semmle.label | github.event.head_commit.message |
+| .github/workflows/cache_write_capable_reusable_workflow.yml:45:21:45:59 | github.event.head_commit.message | semmle.label | github.event.head_commit.message |
 | .github/workflows/code_injection1.yml:11:17:11:48 | github.event.comment.body | semmle.label | github.event.comment.body |
 | .github/workflows/code_injection2.yml:12:9:16:6 | Uses Step: modified_files | semmle.label | Uses Step: modified_files |
 | .github/workflows/code_injection2.yml:16:21:16:70 | steps.modified_files.outputs.files_modified | semmle.label | steps.modified_files.outputs.files_modified |
@@ -9,3 +10,4 @@ nodes
 subpaths
 #select
 | .github/workflows/cache_write_capable_push.yml:10:21:10:59 | github.event.head_commit.message | .github/workflows/cache_write_capable_push.yml:10:21:10:59 | github.event.head_commit.message | .github/workflows/cache_write_capable_push.yml:10:21:10:59 | github.event.head_commit.message | Unprivileged code injection in $@, which may lead to cache poisoning ($@). | .github/workflows/cache_write_capable_push.yml:10:21:10:59 | github.event.head_commit.message | ${{ github.event.head_commit.message }} | .github/workflows/cache_write_capable_push.yml:2:3:2:6 | push | push |
+| .github/workflows/cache_write_capable_reusable_workflow.yml:45:21:45:59 | github.event.head_commit.message | .github/workflows/cache_write_capable_reusable_workflow.yml:45:21:45:59 | github.event.head_commit.message | .github/workflows/cache_write_capable_reusable_workflow.yml:45:21:45:59 | github.event.head_commit.message | Unprivileged code injection in $@, which may lead to cache poisoning ($@). | .github/workflows/cache_write_capable_reusable_workflow.yml:45:21:45:59 | github.event.head_commit.message | ${{ github.event.head_commit.message }} | .github/workflows/cache_write_capable_reusable_workflow_caller.yml:2:3:2:6 | push | push |
