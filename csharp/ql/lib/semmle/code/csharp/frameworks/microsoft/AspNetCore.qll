@@ -328,6 +328,7 @@ private predicate isMicrosoftAspNetCoreMvcAttributeEndpointMapping(MethodCall ca
 }
 
 private predicate hasMicrosoftAspNetCoreMvcEndpointMapping(Compilation application, Class controller) {
+  isInMicrosoftAspNetCoreMvcApplication(controller, application) and
   exists(MethodCall mapping |
     application.getAFileCompiled() = mapping.getFile() and
     (
@@ -360,7 +361,6 @@ private predicate isDefaultMicrosoftAspNetCoreMvcController(Class controller) {
     or
     exists(Compilation application |
       controller.getName().toLowerCase().matches("%controller") and
-      isInMicrosoftAspNetCoreMvcApplication(controller, application) and
       hasMicrosoftAspNetCoreMvcEndpointMapping(application, controller)
     )
   ) and
@@ -410,7 +410,7 @@ class MicrosoftAspNetCoreMvcController extends Class {
     not result instanceof DisposeMethod
   }
 
-  /** Gets a `Redirect*` method. */
+  /** Gets a `Redirect*`, `Accepted*`, or `Created*` method. */
   Method getARedirectMethod() {
     result = this.(MicrosoftAspNetCoreMvcControllerHelperClass).getAResponseMethod()
   }
