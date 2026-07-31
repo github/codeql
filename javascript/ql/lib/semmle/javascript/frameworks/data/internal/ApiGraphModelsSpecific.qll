@@ -53,6 +53,13 @@ predicate parseTypeString(string rawType, string package, string qualifiedName) 
   qualifiedName = ""
 }
 
+/** If `type` has the form `file:<path>` gets the path to the file. */
+bindingset[type]
+overlay[caller]
+private string getRawFilePathFromTypeName(string type) {
+  result = type.regexpCapture("file:(.*)", 1)
+}
+
 /**
  * Holds if models describing `package` may be relevant for the analysis of this database.
  */
@@ -76,6 +83,8 @@ predicate isTypeUsed(string type) {
     parseTypeString(type, package, _) and
     isPackageUsed(package)
   )
+  or
+  exists(getRawFilePathFromTypeName(type)) // No need to prune repository-specific models
 }
 
 /**
@@ -126,6 +135,41 @@ private API::Node getGlobalNode(string globalName) {
   result = any(GlobalApiEntryPoint e | e.getGlobal() = globalName).getANode()
 }
 
+/** Holds if `type` is used as a type string in a model, and has the form `file:<filePath>` */
+overlay[local]
+private predicate relevantRawFilePath(string type, string filePath) {
+  isRelevantType(type) and
+  filePath = getRawFilePathFromTypeName(type)
+}
+
+/** An API graph entry point for package specifiers of form `file:<path>`. */
+overlay[local?]
+private class RawFilePathEntryPoint extends API::EntryPoint {
+  string path;
+
+  RawFilePathEntryPoint() {
+    relevantRawFilePath(_, path) and
+    this = "RawFilePathEntryPoint:" + path
+  }
+
+  override DataFlow::SourceNode getASource() {
+    exists(JS::Import imprt |
+      imprt.getImportedFile().getRelativePath() = path and
+      result = imprt.getImportedModuleNode()
+    )
+  }
+
+  /** Gets the name of the path variable. */
+  string getPath() { result = path }
+}
+
+/**
+ * Gets an API node referring to the given global variable (if relevant).
+ */
+private API::Node getRawFilePathNode(string rawFilePathNode) {
+  result = any(RawFilePathEntryPoint e | e.getPath() = rawFilePathNode).getANode()
+}
+
 /** Gets a JavaScript-specific interpretation of the `(type, path)` tuple after resolving the first `n` access path tokens. */
 bindingset[type, path]
 API::Node getExtraNodeFromPath(string type, AccessPath path, int n) {
@@ -149,6 +193,11 @@ API::Node getExtraNodeFromType(string type) {
     or
     // Access instance of a type based on type annotations
     result = API::Internal::getANodeOfTypeRaw(package, qualifiedName)
+  )
+  or
+  exists(string filePath |
+    relevantRawFilePath(type, filePath) and
+    result = getRawFilePathNode(filePath)
   )
 }
 
