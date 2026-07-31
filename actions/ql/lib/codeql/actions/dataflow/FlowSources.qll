@@ -53,15 +53,17 @@ class GitHubCtxSource extends RemoteFlowSource {
 }
 
 bindingset[expression]
+pragma[inline_late]
 private predicate untrustedEventProperty(Expression expression, string kind) {
   exists(string regexp |
     untrustedEventPropertiesDataModel(regexp, kind) and
-    not kind = "json" and
+    kind != "json" and
     normalizeExpr(expression.getExpression()).regexpMatch("(?i)\\s*" + wrapRegexp(regexp) + ".*")
   )
 }
 
 bindingset[expression, event]
+pragma[inline_late]
 private predicate expressionContainsEventContext(Expression expression, string event) {
   exists(string contextPrefix |
     contextTriggerDataModel(event, contextPrefix) and
@@ -190,6 +192,7 @@ class GitHubEventPathSource extends RemoteFlowSource, CommandSource {
 }
 
 bindingset[expression, event]
+pragma[inline_late]
 private predicate jsonSourceForEvent(Expression expression, string event) {
   exists(string context, string regexp, string contextPrefix |
     context = expression.getExpression() and
