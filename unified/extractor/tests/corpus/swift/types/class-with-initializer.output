@@ -103,6 +103,14 @@ top_level
                 named_type_expr
                   name: identifier "Int"
             constructor_declaration
+              parameter:
+                parameter
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
+                  pattern:
+                    name_pattern
+                      identifier: identifier "x"
               body:
                 block
                   stmt:

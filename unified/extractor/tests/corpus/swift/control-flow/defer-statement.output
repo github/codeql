@@ -1,0 +1,94 @@
+func withCleanup() {
+  defer { print("cleanup") }
+  print("work")
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    deferStmt
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
+                            codeBlockItem
+                              item:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                    labeledExpr
+                                      expression:
+                                        stringLiteralExpr
+                                          closingQuote: "
+                                          openingQuote: "
+                                          segments:
+                                            stringSegment
+                                              content: stringSegment "cleanup"
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    declReferenceExpr
+                                      baseName: identifier "print"
+                      deferKeyword: defer
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            stringLiteralExpr
+                              closingQuote: "
+                              openingQuote: "
+                              segments:
+                                stringSegment
+                                  content: stringSegment "work"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          name: identifier "withCleanup"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+          funcKeyword: func
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          name: identifier "withCleanup"
+          body:
+            block
+              stmt:
+                unsupported_node "defer { print(\"cleanup\") }"
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value: string_literal "\"work\""

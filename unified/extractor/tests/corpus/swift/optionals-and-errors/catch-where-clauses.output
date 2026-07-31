@@ -1,0 +1,207 @@
+do {
+  try foo()
+} catch let e where isNetworkError(e), let f where isTimeout(f) {
+  print("retry")
+} catch {
+  print("fallback")
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        doStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    tryExpr
+                      expression:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "foo"
+                      tryKeyword: try
+          catchClauses:
+            catchClause
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "retry"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              catchItems:
+                catchItem
+                  trailingComma: ,
+                  pattern:
+                    valueBindingPattern
+                      pattern:
+                        identifierPattern
+                          identifier: identifier "e"
+                      bindingSpecifier: let
+                  whereClause:
+                    whereClause
+                      condition:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "e"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "isNetworkError"
+                      whereKeyword: where
+                catchItem
+                  pattern:
+                    valueBindingPattern
+                      pattern:
+                        identifierPattern
+                          identifier: identifier "f"
+                      bindingSpecifier: let
+                  whereClause:
+                    whereClause
+                      condition:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "f"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "isTimeout"
+                      whereKeyword: where
+              catchKeyword: catch
+            catchClause
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "fallback"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              catchItems:
+              catchKeyword: catch
+          doKeyword: do
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        try_expr
+          body:
+            block
+              stmt:
+                unary_expr
+                  operand:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "foo"
+                  operator: prefix_operator "try"
+          catch_clause:
+            catch_clause
+              pattern:
+                or_pattern
+                  pattern:
+                    conditional_pattern
+                      condition:
+                        call_expr
+                          callee:
+                            name_expr
+                              identifier: identifier "isNetworkError"
+                          argument:
+                            argument
+                              value:
+                                name_expr
+                                  identifier: identifier "e"
+                      pattern:
+                        name_pattern
+                          identifier: identifier "e"
+                    conditional_pattern
+                      condition:
+                        call_expr
+                          callee:
+                            name_expr
+                              identifier: identifier "isTimeout"
+                          argument:
+                            argument
+                              value:
+                                name_expr
+                                  identifier: identifier "f"
+                      pattern:
+                        name_pattern
+                          identifier: identifier "f"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value: string_literal "\"retry\""
+            catch_clause
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value: string_literal "\"fallback\""
