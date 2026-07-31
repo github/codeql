@@ -359,10 +359,8 @@ private predicate isDefaultMicrosoftAspNetCoreMvcController(Class controller) {
   (
     hasMicrosoftAspNetCoreMvcControllerIdentity(controller)
     or
-    exists(Compilation application |
-      controller.getName().toLowerCase().matches("%controller") and
-      hasMicrosoftAspNetCoreMvcEndpointMapping(application, controller)
-    )
+    controller.getName().toLowerCase().matches("%controller") and
+    hasMicrosoftAspNetCoreMvcEndpointMapping(_, controller)
   ) and
   not controller.getABaseType*().getAnAttribute() instanceof
     MicrosoftAspNetCoreMvcNonControllerAttribute
