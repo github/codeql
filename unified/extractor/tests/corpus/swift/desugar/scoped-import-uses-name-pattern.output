@@ -2,15 +2,22 @@ import struct Foundation.Date
 
 ---
 
-source_file
-  statement:
-    import_declaration
-      name:
-        identifier
-          part:
-            simple_identifier "Foundation"
-            simple_identifier "Date"
-      scoped_import_kind: struct
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        importDecl
+          attributes:
+          modifiers:
+          importKeyword: import
+          importKindSpecifier: struct
+          path:
+            importPathComponent
+              name: identifier "Foundation"
+              trailingPeriod: .
+            importPathComponent
+              name: identifier "Date"
 
 ---
 
@@ -20,12 +27,12 @@ top_level
       stmt:
         import_declaration
           modifier: modifier "struct"
-          pattern:
-            name_pattern
-              identifier: identifier "Date"
           imported_expr:
             member_access_expr
               base:
                 name_expr
                   identifier: identifier "Foundation"
               member: identifier "Date"
+          pattern:
+            name_pattern
+              identifier: identifier "Date"

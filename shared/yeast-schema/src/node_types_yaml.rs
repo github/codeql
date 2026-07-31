@@ -252,6 +252,41 @@ pub fn extend_schema_from_yaml(
     let yaml: YamlNodeTypes =
         serde_yaml::from_str(yaml_input).map_err(|e| format!("Failed to parse YAML: {e}"))?;
     apply_yaml_to_schema(&yaml, schema);
+    // The typed `YamlNodeTypes` stores each node's fields in a `BTreeMap`
+    // (alphabetical), losing the authored order. Re-parse as an ordered value to
+    // record the declared field order for presentation (see the AST dump).
+    record_field_order(schema, yaml_input)?;
+    Ok(())
+}
+
+/// Record each node kind's declared (named) field order from the source YAML,
+/// which `serde`'s `BTreeMap`-based deserialization does not preserve.
+/// `serde_yaml::Value` mappings keep insertion (source) order.
+fn record_field_order(schema: &mut crate::schema::Schema, yaml_input: &str) -> Result<(), String> {
+    let value: serde_yaml::Value = serde_yaml::from_str(yaml_input)
+        .map_err(|e| format!("Failed to parse YAML for field order: {e}"))?;
+    let Some(named) = value.get("named").and_then(|v| v.as_mapping()) else {
+        return Ok(());
+    };
+    for (node_name, fields) in named {
+        let Some(node_name) = node_name.as_str() else {
+            continue;
+        };
+        let Some(fields) = fields.as_mapping() else {
+            continue; // node with no fields (null)
+        };
+        let mut order = Vec::new();
+        for (raw_field_name, _) in fields {
+            let Some(raw) = raw_field_name.as_str() else {
+                continue;
+            };
+            // Skip the unnamed/`child` slot; the dump handles it separately.
+            if let Some(name) = parse_field_name(raw).name {
+                order.push(schema.register_field(&name));
+            }
+        }
+        schema.set_field_order(node_name, order);
+    }
     Ok(())
 }
 

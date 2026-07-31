@@ -2,19 +2,28 @@ foo(1, 2)
 
 ---
 
-source_file
-  statement:
-    call_expression
-      function: simple_identifier "foo"
-      suffix:
-        call_suffix
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionCallExpr
+          leftParen: (
+          rightParen: )
           arguments:
-            value_arguments
-              argument:
-                value_argument
-                  value: integer_literal "1"
-                value_argument
-                  value: integer_literal "2"
+            labeledExpr
+              expression:
+                integerLiteralExpr
+                  literal: integerLiteral "1"
+              trailingComma: ,
+            labeledExpr
+              expression:
+                integerLiteralExpr
+                  literal: integerLiteral "2"
+          additionalTrailingClosures:
+          calledExpression:
+            declReferenceExpr
+              baseName: identifier "foo"
 
 ---
 
@@ -23,11 +32,11 @@ top_level
     block
       stmt:
         call_expr
+          callee:
+            name_expr
+              identifier: identifier "foo"
           argument:
             argument
               value: int_literal "1"
             argument
               value: int_literal "2"
-          callee:
-            name_expr
-              identifier: identifier "foo"

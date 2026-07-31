@@ -4,41 +4,58 @@ func identity<T>(_ x: T) -> T {
 
 ---
 
-source_file
-  statement:
-    function_declaration
-      body:
-        block
-          statement:
-            control_transfer_statement
-              kind: return
-              result: simple_identifier "x"
-      name: simple_identifier "identity"
-      parameter:
-        function_parameter
-          parameter:
-            parameter
-              external_name: simple_identifier "_"
-              name: simple_identifier "x"
-              type:
-                type
-                  name:
-                    user_type
-                      part:
-                        simple_user_type
-                          name: type_identifier "T"
-      return_type:
-        type
-          name:
-            user_type
-              part:
-                simple_user_type
-                  name: type_identifier "T"
-      type_parameters:
-        type_parameters
-          parameter:
-            type_parameter
-              name: type_identifier "T"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      expression:
+                        declReferenceExpr
+                          baseName: identifier "x"
+                      returnKeyword: return
+          name: identifier "identity"
+          genericParameterClause:
+            genericParameterClause
+              parameters:
+                genericParameter
+                  attributes:
+                  name: identifier "T"
+              leftAngle: <
+              rightAngle: >
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "T"
+                      firstName: _
+                      secondName: identifier "x"
+              returnClause:
+                returnClause
+                  arrow: ->
+                  type:
+                    identifierType
+                      name: identifier "T"
+          funcKeyword: func
 
 ---
 
@@ -47,6 +64,19 @@ top_level
     block
       stmt:
         function_declaration
+          name: identifier "identity"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              type:
+                named_type_expr
+                  name: identifier "T"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+          return_type:
+            named_type_expr
+              name: identifier "T"
           body:
             block
               stmt:
@@ -54,13 +84,3 @@ top_level
                   value:
                     name_expr
                       identifier: identifier "x"
-          name: identifier "identity"
-          parameter:
-            parameter
-              external_name: identifier "_"
-              pattern:
-                name_pattern
-                  identifier: identifier "x"
-          return_type:
-            named_type_expr
-              name: identifier "T"

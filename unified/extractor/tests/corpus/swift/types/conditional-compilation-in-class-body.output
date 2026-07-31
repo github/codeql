@@ -1,0 +1,87 @@
+// Conditional compilation is not yet supported: swift-syntax reports a
+// structured `ifConfigDecl` (whose branches hold ordinary member items), but
+// the mapping has no rule for it, so the whole block becomes one
+// `unsupported_node` and its members are not extracted.
+class C {
+#if DEBUG
+    init(x: Int) {}
+    deinit {}
+#endif
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "C"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    ifConfigDecl
+                      clauses:
+                        ifConfigClause
+                          elements:
+                            memberBlockItem
+                              decl:
+                                initializerDecl
+                                  attributes:
+                                  body:
+                                    codeBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      statements:
+                                  modifiers:
+                                  signature:
+                                    functionSignature
+                                      parameterClause:
+                                        functionParameterClause
+                                          leftParen: (
+                                          rightParen: )
+                                          parameters:
+                                            functionParameter
+                                              colon: :
+                                              attributes:
+                                              modifiers:
+                                              type:
+                                                identifierType
+                                                  name: identifier "Int"
+                                              firstName: identifier "x"
+                                  initKeyword: init
+                            memberBlockItem
+                              decl:
+                                deinitializerDecl
+                                  attributes:
+                                  body:
+                                    codeBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      statements:
+                                  modifiers:
+                                  deinitKeyword: deinit
+                          condition:
+                            declReferenceExpr
+                              baseName: identifier "DEBUG"
+                          poundKeyword: #if
+                      poundEndif: #endif
+          modifiers:
+          classKeyword: class
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "class"
+          name: identifier "C"
+          member: unsupported_node "#if DEBUG\n    init(x: Int) {}\n    deinit {}\n#endif"

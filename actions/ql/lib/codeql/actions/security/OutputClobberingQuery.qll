@@ -111,6 +111,43 @@ class WorkflowCommandClobberingFromEnvVarSink extends OutputClobberingSink {
   }
 }
 
+private string jqSafeOptionRegexp() {
+  result = "-[acCMeRnSs]+"
+  or
+  result =
+    "--(ascii-output|color-output|compact-output|exit-status|monochrome-output|null-input|" +
+      "raw-input|slurp|sort-keys|unbuffered)"
+}
+
+private string jqSimpleFilterRegexp() {
+  result = "\\."
+  or
+  result = "\\.[A-Za-z_][A-Za-z0-9_]*(\\.[A-Za-z_][A-Za-z0-9_]*|\\[[0-9]+\\])*"
+}
+
+private string jqSimpleFilterArgumentRegexp() {
+  result = jqSimpleFilterRegexp()
+  or
+  result = "'" + jqSimpleFilterRegexp() + "'"
+  or
+  result = "\"" + jqSimpleFilterRegexp() + "\""
+}
+
+private string jqLiteralInputRegexp() {
+  result = "[A-Za-z0-9_./][A-Za-z0-9_./-]*"
+  or
+  result = "\\$GITHUB_EVENT_PATH"
+  or
+  result = "\\$\\{GITHUB_EVENT_PATH\\}"
+}
+
+bindingset[command]
+private predicate jqProducesJsonEncodedOutput(string command) {
+  command
+      .regexpMatch("jq(\\s+" + jqSafeOptionRegexp() + ")*\\s+" + jqSimpleFilterArgumentRegexp() +
+          "(\\s+" + jqSafeOptionRegexp() + ")*(\\s+" + jqLiteralInputRegexp() + ")*")
+}
+
 /**
  *      - id: clob1
  *        run: |
@@ -165,7 +202,8 @@ class WorkflowCommandClobberingFromFileReadSink extends OutputClobberingSink {
           // - run: cat pr-id.txt
           clobbering_stmt.indexOf(clobbering_cmd) = 0
         )
-      )
+      ) and
+      not jqProducesJsonEncodedOutput(clobbering_cmd)
     )
   }
 }

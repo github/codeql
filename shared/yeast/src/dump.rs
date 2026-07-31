@@ -162,8 +162,12 @@ fn type_error_for_node(
 fn expected_for_field<'a>(
     schema: &'a Schema,
     parent_kind: &str,
-    field_id: u16,
+    field_name: &str,
 ) -> Option<&'a [crate::schema::NodeType]> {
+    // Resolve the field NAME in the validation schema's own id space, so the
+    // AST being dumped and the validation schema stay completely independent:
+    // they need not share field ids, only field names.
+    let field_id = schema.field_id_for_name(field_name)?;
     schema
         .field_types(parent_kind, field_id)
         .map(|v| v.as_slice())
@@ -223,15 +227,49 @@ fn dump_node(
 
     writeln!(out).unwrap();
 
-    // Named fields first
-    for (&field_id, children) in &node.fields {
-        if field_id == CHILD_FIELD {
-            continue; // Handle unnamed children last
+    // Named fields first, in the schema's declared order when available
+    // (front-end-independent), else in field-id order. Any present fields not
+    // covered by the declared order are appended in field-id order.
+    //
+    // The declared order lives in the validation schema, keyed by *its* field
+    // ids; the AST being dumped may key the same field names under different
+    // ids. So map the declared order through field NAMES into this AST's own id
+    // space, keeping the two schemas independent (they share names, not ids).
+    let named_field_ids: Vec<u16> = {
+        let present: Vec<u16> = node
+            .fields
+            .keys()
+            .copied()
+            .filter(|&f| f != CHILD_FIELD)
+            .collect();
+        match type_check.and_then(|(schema, _, _)| {
+            schema
+                .field_order(node.kind_name())
+                .map(|order| (schema, order))
+        }) {
+            Some((schema, order)) => {
+                let mut result: Vec<u16> = order
+                    .iter()
+                    .filter_map(|&f| schema.field_name_for_id(f))
+                    .filter_map(|name| ast.field_id_for_name(name))
+                    .filter(|&f| f != CHILD_FIELD && node.fields.contains_key(&f))
+                    .collect();
+                for &f in &present {
+                    if !result.contains(&f) {
+                        result.push(f);
+                    }
+                }
+                result
+            }
+            None => present,
         }
+    };
+    for field_id in named_field_ids {
+        let children = &node.fields[&field_id];
         let field_name = ast.field_name_for_id(field_id).unwrap_or("?");
         let child_type_check = type_check.map(|(schema, _, _)| {
-            let expected =
-                expected_for_field(schema, node.kind_name(), field_id).or(Some(EMPTY_NODE_TYPES));
+            let expected = expected_for_field(schema, node.kind_name(), field_name)
+                .or(Some(EMPTY_NODE_TYPES));
             let parent_field = Some((node.kind_name(), field_name));
             (schema, expected, parent_field)
         });
@@ -273,8 +311,14 @@ fn dump_node(
 
     // Check for required fields that are absent
     if let Some((schema, _, _)) = type_check {
-        for (field_id, field_name) in schema.required_fields_for_kind(node.kind_name()) {
-            if !node.fields.contains_key(&field_id) {
+        for (_field_id, field_name) in schema.required_fields_for_kind(node.kind_name()) {
+            let present = match field_name {
+                Some(n) => ast
+                    .field_id_for_name(n)
+                    .is_some_and(|fid| node.fields.contains_key(&fid)),
+                None => node.fields.contains_key(&CHILD_FIELD),
+            };
+            if !present {
                 let name = field_name.unwrap_or("child");
                 writeln!(out, "{prefix}  <-- ERROR: missing required field '{name}'").unwrap();
             }
@@ -284,7 +328,9 @@ fn dump_node(
     // Unnamed children — skip unnamed tokens (keywords, punctuation)
     if let Some(children) = node.fields.get(&CHILD_FIELD) {
         let child_type_check = type_check.map(|(schema, _, _)| {
-            let expected = expected_for_field(schema, node.kind_name(), CHILD_FIELD)
+            let expected = schema
+                .field_types(node.kind_name(), CHILD_FIELD)
+                .map(|v| v.as_slice())
                 .or(Some(EMPTY_NODE_TYPES));
             let parent_field = Some((node.kind_name(), "children"));
             (schema, expected, parent_field)

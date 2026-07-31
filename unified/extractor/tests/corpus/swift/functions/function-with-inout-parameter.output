@@ -1,0 +1,81 @@
+func increment(_ x: inout Int) {
+  x += 1
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    infixOperatorExpr
+                      operator:
+                        binaryOperatorExpr
+                          operator: binaryOperator "+="
+                      leftOperand:
+                        declReferenceExpr
+                          baseName: identifier "x"
+                      rightOperand:
+                        integerLiteralExpr
+                          literal: integerLiteral "1"
+          name: identifier "increment"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        attributedType
+                          attributes:
+                          baseType:
+                            identifierType
+                              name: identifier "Int"
+                          lateSpecifiers:
+                          specifiers:
+                            simpleTypeSpecifier
+                              specifier: inout
+                      firstName: _
+                      secondName: identifier "x"
+          funcKeyword: func
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          name: identifier "increment"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              type: unsupported_node "inout Int"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+          body:
+            block
+              stmt:
+                compound_assign_expr
+                  target:
+                    name_expr
+                      identifier: identifier "x"
+                  operator: infix_operator "+="
+                  value: int_literal "1"

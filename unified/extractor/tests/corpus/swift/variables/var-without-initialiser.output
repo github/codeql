@@ -2,26 +2,26 @@ var x: Int
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: var
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "x"
-          type:
-            type_annotation
-              type:
-                type
-                  name:
-                    user_type
-                      part:
-                        simple_user_type
-                          name: type_identifier "Int"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: var
+          bindings:
+            patternBinding
+              pattern:
+                identifierPattern
+                  identifier: identifier "x"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    identifierType
+                      name: identifier "Int"
 
 ---
 

@@ -2,41 +2,57 @@ let s: Set<Int> = [1, 2, 3]
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: let
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "s"
-          type:
-            type_annotation
-              type:
-                type
-                  name:
-                    user_type
-                      part:
-                        simple_user_type
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    arrayExpr
+                      elements:
+                        arrayElement
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "1"
+                          trailingComma: ,
+                        arrayElement
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "2"
+                          trailingComma: ,
+                        arrayElement
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "3"
+                      leftSquare: [
+                      rightSquare: ]
+              pattern:
+                identifierPattern
+                  identifier: identifier "s"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    identifierType
+                      name: identifier "Set"
+                      genericArgumentClause:
+                        genericArgumentClause
                           arguments:
-                            type_arguments
+                            genericArgument
                               argument:
-                                type
-                                  name:
-                                    user_type
-                                      part:
-                                        simple_user_type
-                                          name: type_identifier "Int"
-                          name: type_identifier "Set"
-          value:
-            array_literal
-              element:
-                integer_literal "1"
-                integer_literal "2"
-                integer_literal "3"
+                                identifierType
+                                  name: identifier "Int"
+                          leftAngle: <
+                          rightAngle: >
 
 ---
 
@@ -50,8 +66,13 @@ top_level
             name_pattern
               identifier: identifier "s"
           type:
-            named_type_expr
-              name: identifier "Set<Int>"
+            generic_type_expr
+              base:
+                named_type_expr
+                  name: identifier "Set"
+              type_argument:
+                named_type_expr
+                  name: identifier "Int"
           value:
             array_literal
               element:

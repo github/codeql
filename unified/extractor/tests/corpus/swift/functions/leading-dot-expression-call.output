@@ -2,30 +2,39 @@ let y = .some(1)
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: let
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "y"
-          value:
-            call_expression
-              function:
-                prefix_expression
-                  operation: .
-                  target: simple_identifier "some"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value: integer_literal "1"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "1"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        memberAccessExpr
+                          period: .
+                          declName:
+                            declReferenceExpr
+                              baseName: identifier "some"
+              pattern:
+                identifierPattern
+                  identifier: identifier "y"
 
 ---
 
@@ -40,10 +49,10 @@ top_level
               identifier: identifier "y"
           value:
             call_expr
-              argument:
-                argument
-                  value: int_literal "1"
               callee:
                 member_access_expr
                   base: inferred_type_expr ".some"
                   member: identifier "some"
+              argument:
+                argument
+                  value: int_literal "1"

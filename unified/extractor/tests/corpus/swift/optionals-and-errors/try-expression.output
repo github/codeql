@@ -2,28 +2,36 @@ let result = try? foo()
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: let
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "result"
-          value:
-            try_expression
-              expr:
-                call_expression
-                  function: simple_identifier "foo"
-                  suffix:
-                    call_suffix
-                      arguments:
-                        value_arguments
-              operator:
-                try_operator
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    tryExpr
+                      expression:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "foo"
+                      questionOrExclamationMark: ?
+                      tryKeyword: try
+              pattern:
+                identifierPattern
+                  identifier: identifier "result"
 
 ---
 

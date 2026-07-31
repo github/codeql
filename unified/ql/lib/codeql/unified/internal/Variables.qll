@@ -178,12 +178,12 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     )
     or
     exists(CatchClause catch |
-      scope = catch and // ensure both 'body' and 'guard' clause are in scope
+      scope = catch and // ensure both body and pattern are in scope
       pattern = catch.getPattern()
     )
     or
     exists(SwitchCase case |
-      scope = case and // ensure both 'body' and 'guard' clause are in scope (TODO: merge CatchClause and SwitchCase?)
+      scope = case and // ensure both body and pattern are in scope
       pattern = case.getPattern()
     )
     or
@@ -205,6 +205,11 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     exists(OrPattern pat |
       bindingContext(pat, scope) and
       pattern = pat.getPattern(_)
+    )
+    or
+    exists(ConditionalPattern pat |
+      bindingContext(pat, scope) and
+      pattern = pat.getPattern()
     )
     or
     exists(PatternGuardExpr expr |
@@ -262,8 +267,6 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     n = any(LocalFunctionDeclaration f).getName() and
     n.(Identifier).getValue() = name
   }
-
-  predicate lookupStartsAt(AstNode n, AstNode scope) { none() }
 }
 
 module LocalNameBindingOutput = LocalNameBinding<Location, LocalNameBindingInput>;

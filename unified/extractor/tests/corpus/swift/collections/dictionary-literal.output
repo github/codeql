@@ -2,30 +2,53 @@ let d = ["a": 1, "b": 2]
 
 ---
 
-source_file
-  statement:
-    property_declaration
-      binding:
-        value_binding_pattern
-          mutability: let
-      declarator:
-        property_binding
-          name:
-            pattern
-              bound_identifier: simple_identifier "d"
-          value:
-            dictionary_literal
-              element:
-                dictionary_literal_item
-                  key:
-                    line_string_literal
-                      text: line_str_text "a"
-                  value: integer_literal "1"
-                dictionary_literal_item
-                  key:
-                    line_string_literal
-                      text: line_str_text "b"
-                  value: integer_literal "2"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    dictionaryExpr
+                      leftSquare: [
+                      rightSquare: ]
+                      content:
+                        dictionaryElement
+                          colon: :
+                          trailingComma: ,
+                          value:
+                            integerLiteralExpr
+                              literal: integerLiteral "1"
+                          key:
+                            stringLiteralExpr
+                              closingQuote: "
+                              openingQuote: "
+                              segments:
+                                stringSegment
+                                  content: stringSegment "a"
+                        dictionaryElement
+                          colon: :
+                          value:
+                            integerLiteralExpr
+                              literal: integerLiteral "2"
+                          key:
+                            stringLiteralExpr
+                              closingQuote: "
+                              openingQuote: "
+                              segments:
+                                stringSegment
+                                  content: stringSegment "b"
+              pattern:
+                identifierPattern
+                  identifier: identifier "d"
 
 ---
 

@@ -1,4 +1,5 @@
 import Foundation
+import SwiftOperators
 import SwiftParser
 
 // `@_spi(RawSyntax)` exposes the `childName(_:)` helper that maps a child's
@@ -151,6 +152,68 @@ private func serialize(
     return result
 }
 
+/// Fold the flat operator sequences in `tree` into structured binary/ternary
+/// expressions, using operator precedence.
+///
+/// Swift's grammar does not encode operator precedence: an expression like
+/// `a + b * c` is parsed as a flat `SequenceExpr` (a list of operands and
+/// operators). Resolving it into a precedence-correct tree requires knowing the
+/// operators' precedence groups, which live in declarations rather than the
+/// grammar. We fold using two sources of operator definitions:
+///
+///   * `OperatorTable.standardOperators` — the Swift standard library's
+///     operators (a built-in approximation), and
+///   * the operator / precedence-group declarations in *this* file
+///     (via `addSourceFile`).
+///
+/// Operators from anywhere else (e.g. imported from another module) are
+/// unknown to us. Rather than guess their precedence — which would silently
+/// produce an incorrectly-structured tree — we fold each top-level sequence
+/// *independently* and leave any sequence containing an unknown operator as a
+/// flat `SequenceExpr`. Downstream can treat such a sequence as unsupported.
+/// This keeps folding correct for the operators we do know while isolating the
+/// rest per sequence, so one exotic operator doesn't block folding elsewhere.
+private func foldOperators(in tree: SourceFileSyntax) -> Syntax {
+    var operators = OperatorTable.standardOperators
+    // Register operators and precedence groups declared in this file. Swallow
+    // errors (e.g. a redeclaration of a standard operator): keep whatever we
+    // can and carry on.
+    operators.addSourceFile(tree, errorHandler: { _ in })
+    return PerSequenceFolder(operators: operators).rewrite(tree)
+}
+
+/// A `SyntaxRewriter` that folds each `SequenceExpr` on its own, leaving
+/// sequences it cannot fold (because they use an operator we don't know) flat.
+///
+/// This is deliberately more conservative than `OperatorTable.foldAll`, which
+/// is all-or-nothing: with a throwing error handler a single unknown operator
+/// aborts folding for the *entire* tree, while with a non-throwing handler
+/// unknown operators are folded *arbitrarily* (left-associatively), silently
+/// producing a wrong tree. Folding each sequence with a throwing handler and
+/// catching the error gives us per-sequence isolation instead.
+private final class PerSequenceFolder: SyntaxRewriter {
+    private let operators: OperatorTable
+
+    init(operators: OperatorTable) {
+        self.operators = operators
+        super.init()
+    }
+
+    override func visit(_ node: SequenceExprSyntax) -> ExprSyntax {
+        // Fold any nested sequences first (bottom-up), so that an unfoldable
+        // outer sequence still keeps its foldable inner sequences folded.
+        let inner = super.visit(node).as(SequenceExprSyntax.self)!
+        do {
+            // The default error handler throws on the first unknown operator or
+            // incomparable-precedence pair.
+            return try operators.foldSingle(inner)
+        } catch {
+            // Leave this sequence flat; it uses an operator we don't know.
+            return ExprSyntax(inner)
+        }
+    }
+}
+
 /// Parse the given NUL-terminated Swift source string and return a
 /// heap-allocated, NUL-terminated JSON representation of the syntax tree.
 ///
@@ -161,8 +224,12 @@ public func ssr_parse_json(_ source: UnsafePointer<CChar>?) -> UnsafeMutablePoin
     guard let source = source else { return nil }
     let code = String(cString: source)
     let tree = Parser.parse(source: code)
+    // Fold operator sequences before serializing. Source positions are
+    // preserved by folding (the same tokens, in the same places), so a
+    // converter built from the original tree maps the folded tree correctly.
+    let folded = foldOperators(in: tree)
     let converter = SourceLocationConverter(fileName: "<input>", tree: tree)
-    let json = serialize(Syntax(tree), converter)
+    let json = serialize(folded, converter)
 
     guard
         let data = try? JSONSerialization.data(

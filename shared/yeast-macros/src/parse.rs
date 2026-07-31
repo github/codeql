@@ -1,9 +1,43 @@
 use proc_macro2::{Delimiter, Ident, Literal, Span, TokenStream, TokenTree};
 use quote::quote;
 use std::iter::Peekable;
+use std::sync::atomic::{AtomicUsize, Ordering};
+use syn::Lifetime;
 
 type Tokens = Peekable<proc_macro2::token_stream::IntoIter>;
 type Result<T> = std::result::Result<T, syn::Error>;
+
+/// Mints the block label a fallible field breaks out of. Labels must be unique
+/// along a nesting chain, since a `?` nested inside another `?` has to break out
+/// of the inner field only.
+fn fresh_fallible_label() -> Lifetime {
+    static COUNTER: AtomicUsize = AtomicUsize::new(0);
+    let n = COUNTER.fetch_add(1, Ordering::Relaxed);
+    Lifetime::new(&format!("'__yeast_field_{n}"), Span::call_site())
+}
+
+/// Rejects a `?` in a position where there is no field for it to leave unset.
+///
+/// The advice depends on what precedes it: on a `{...}` splice a `?` is
+/// redundant, and anywhere else it belongs on a field's value. Other
+/// quantifiers need no handling — `*` and `+` have never been valid in a
+/// template, and the existing check for stray tokens already rejects them.
+fn reject_stray_optional(tokens: &mut Tokens, after_splice: bool) -> Result<()> {
+    let Some(TokenTree::Punct(p)) = tokens.peek() else {
+        return Ok(());
+    };
+    if p.as_char() != '?' {
+        return Ok(());
+    }
+    let msg = if after_splice {
+        "`?` is not valid on a `{...}` splice; a splice that yields no value \
+         already leaves its field unset"
+    } else {
+        "`?` is only valid on the value of a named field, as in \
+         `label: (identifier #{lbl})?`"
+    };
+    Err(syn::Error::new_spanned(p.clone(), msg))
+}
 
 // ---------------------------------------------------------------------------
 // Query parsing
@@ -318,8 +352,9 @@ pub fn parse_tree_top(input: TokenStream) -> Result<TokenStream> {
     let mut tokens = input.into_iter().peekable();
     let ctx = parse_ctx_or_implicit(&mut tokens);
 
-    let first = parse_direct_node(&mut tokens, &ctx)?;
+    let first = parse_direct_node(&mut tokens, &ctx, None)?;
 
+    reject_stray_optional(&mut tokens, false)?;
     if let Some(tok) = tokens.next() {
         return Err(syn::Error::new_spanned(
             tok,
@@ -352,7 +387,15 @@ pub fn parse_trees_top(input: TokenStream) -> Result<TokenStream> {
 
 /// Parse a single node template and generate code that returns an `Id`.
 /// Handles: `(kind fields... children...)` and `{expr}`.
-fn parse_direct_node(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStream> {
+///
+/// `scope` is the enclosing fallible field's label, if any: inside one, a
+/// `#{expr}` that interpolates an absent value breaks out to it, leaving that
+/// field unset. See [`parse_direct_node_inner`].
+fn parse_direct_node(
+    tokens: &mut Tokens,
+    ctx: &Ident,
+    scope: Option<&Lifetime>,
+) -> Result<TokenStream> {
     match tokens.peek() {
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => {
             let group = expect_group(tokens, Delimiter::Brace)?;
@@ -362,7 +405,7 @@ fn parse_direct_node(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStream> {
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Parenthesis => {
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
             let mut inner = group.stream().into_iter().peekable();
-            parse_direct_node_inner(&mut inner, ctx)
+            parse_direct_node_inner(&mut inner, ctx, scope)
         }
         Some(tok) => Err(syn::Error::new_spanned(
             tok.clone(),
@@ -377,7 +420,11 @@ fn parse_direct_node(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStream> {
 
 /// Parse the inside of a parenthesized node: `kind fields... children...`
 /// or `kind "literal"` or `kind $fresh`.
-fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStream> {
+fn parse_direct_node_inner(
+    tokens: &mut Tokens,
+    ctx: &Ident,
+    scope: Option<&Lifetime>,
+) -> Result<TokenStream> {
     let kind = expect_ident(tokens, "expected node kind")?;
     let kind_str = kind.to_string();
 
@@ -392,6 +439,28 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
         tokens.next(); // consume #
         let group = expect_group(tokens, Delimiter::Brace)?;
         let expr = group.stream();
+
+        // Inside a fallible field the value is routed through `MaybeYeastValue`,
+        // so an absent one abandons the whole surrounding node and leaves the
+        // field unset. Outside one, `YeastDisplay` is used directly, which is
+        // what makes interpolating an `Option` without a `?` a compile error.
+        if let Some(label) = scope {
+            return Ok(quote! {
+                {
+                    let __expr = { #expr };
+                    let ::std::option::Option::Some(__value_ref) =
+                        yeast::MaybeYeastValue::maybe_yeast_value(&__expr)
+                    else {
+                        break #label ::std::option::Option::None;
+                    };
+                    let __value = yeast::YeastDisplay::yeast_to_string(__value_ref, &*#ctx.ast);
+                    let __source_range =
+                        yeast::YeastSourceRange::yeast_source_range(__value_ref, &*#ctx.ast);
+                    #ctx.literal_with_source_range(#kind_str, &__value, __source_range)
+                }
+            });
+        }
+
         return Ok(quote! {
             {
                 let __expr = { #expr };
@@ -433,6 +502,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
         // Plain `field: {expr}` — trait-dispatched extend.
         if peek_is_group(tokens, Delimiter::Brace) {
             let group = expect_group(tokens, Delimiter::Brace)?;
+            reject_stray_optional(tokens, true)?;
             let expr = group.stream();
             stmts.push(quote! {
                 let mut #temp: Vec<yeast::Id> = Vec::new();
@@ -446,7 +516,47 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
             continue;
         }
 
-        let value = parse_direct_node(tokens, ctx)?;
+        // `field: (node)`, optionally suffixed with `?` to make the field
+        // fallible: if a `#{expr}` anywhere beneath it interpolates an absent
+        // value, the whole subtree is abandoned and the field is left unset.
+        if peek_is_group(tokens, Delimiter::Parenthesis) {
+            let group = expect_group(tokens, Delimiter::Parenthesis)?;
+            let optional = peek_is_punct(tokens, '?');
+            if optional {
+                tokens.next();
+            }
+
+            let mut inner = group.stream().into_iter().peekable();
+            if optional {
+                let label = fresh_fallible_label();
+                let value = parse_direct_node_inner(&mut inner, ctx, Some(&label))?;
+                // The label goes unused when nothing beneath the `?` can
+                // actually fail, which is not worth diagnosing: whether a given
+                // `#{expr}` is optional is a property of its type, which is not
+                // visible here.
+                stmts.push(quote! {
+                    #[allow(unused_labels)]
+                    let #temp: ::std::option::Option<yeast::Id> = #label: {
+                        ::std::option::Option::Some(#value)
+                    };
+                });
+                field_args.push(quote! {
+                    if let ::std::option::Option::Some(__id) = #temp {
+                        __fields.push((#field_str, vec![__id]));
+                    }
+                });
+            } else {
+                // No `?` of its own, so failures beneath it belong to whichever
+                // fallible field encloses this one, if any.
+                let value = parse_direct_node_inner(&mut inner, ctx, scope)?;
+                stmts.push(quote! { let #temp: yeast::Id = #value; });
+                field_args.push(quote! { __fields.push((#field_str, vec![#temp])); });
+            }
+            continue;
+        }
+
+        // Neither form matched; delegate for a consistent error message.
+        let value = parse_direct_node(tokens, ctx, scope)?;
         stmts.push(quote! { let #temp: yeast::Id = #value; });
         field_args.push(quote! { __fields.push((#field_str, vec![#temp])); });
     }
@@ -486,7 +596,8 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
             }
 
             // Regular node
-            let node = parse_direct_node_inner(&mut inner, ctx)?;
+            let node = parse_direct_node_inner(&mut inner, ctx, None)?;
+            reject_stray_optional(tokens, false)?;
             items.push(quote! { __nodes.push(#node); });
             continue;
         }
@@ -495,6 +606,7 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
         // single ids and iterables uniformly.
         if peek_is_group(tokens, Delimiter::Brace) {
             let group = expect_group(tokens, Delimiter::Brace)?;
+            reject_stray_optional(tokens, true)?;
             let expr = group.stream();
             items.push(quote! {
                 yeast::IntoFieldIds::extend_into({ #expr }, &mut __nodes);
@@ -965,6 +1077,10 @@ fn peek_is_field(tokens: &mut Tokens) -> bool {
 
 fn peek_is_group(tokens: &mut Tokens, delim: Delimiter) -> bool {
     matches!(tokens.peek(), Some(TokenTree::Group(g)) if g.delimiter() == delim)
+}
+
+fn peek_is_punct(tokens: &mut Tokens, ch: char) -> bool {
+    matches!(tokens.peek(), Some(TokenTree::Punct(p)) if p.as_char() == ch)
 }
 
 fn peek_is_repetition(tokens: &mut Tokens) -> bool {

@@ -6,51 +6,95 @@ for x in xs {
 
 ---
 
-source_file
-  statement:
-    for_statement
-      body:
-        block
-          statement:
-            if_statement
-              body:
-                block
-                  statement:
-                    control_transfer_statement
-                      kind: continue
-              condition:
-                if_condition
-                  kind:
-                    comparison_expression
-                      lhs: simple_identifier "x"
-                      op: <
-                      rhs: integer_literal "0"
-            if_statement
-              body:
-                block
-                  statement:
-                    control_transfer_statement
-                      kind: break
-              condition:
-                if_condition
-                  kind:
-                    comparison_expression
-                      lhs: simple_identifier "x"
-                      op: >
-                      rhs: integer_literal "100"
-            call_expression
-              function: simple_identifier "print"
-              suffix:
-                call_suffix
-                  arguments:
-                    value_arguments
-                      argument:
-                        value_argument
-                          value: simple_identifier "x"
-      collection: simple_identifier "xs"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
       item:
-        pattern
-          bound_identifier: simple_identifier "x"
+        forStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    expressionStmt
+                      expression:
+                        ifExpr
+                          body:
+                            codeBlock
+                              leftBrace: {
+                              rightBrace: }
+                              statements:
+                                codeBlockItem
+                                  item:
+                                    continueStmt
+                                      continueKeyword: continue
+                          conditions:
+                            conditionElement
+                              condition:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator "<"
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "x"
+                                  rightOperand:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "0"
+                          ifKeyword: if
+                codeBlockItem
+                  item:
+                    expressionStmt
+                      expression:
+                        ifExpr
+                          body:
+                            codeBlock
+                              leftBrace: {
+                              rightBrace: }
+                              statements:
+                                codeBlockItem
+                                  item:
+                                    breakStmt
+                                      breakKeyword: break
+                          conditions:
+                            conditionElement
+                              condition:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator ">"
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "x"
+                                  rightOperand:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "100"
+                          ifKeyword: if
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "x"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          pattern:
+            identifierPattern
+              identifier: identifier "x"
+          inKeyword: in
+          forKeyword: for
+          sequence:
+            declReferenceExpr
+              baseName: identifier "xs"
 
 ---
 
@@ -59,16 +103,22 @@ top_level
     block
       stmt:
         for_each_stmt
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          iterable:
+            name_expr
+              identifier: identifier "xs"
           body:
             block
               stmt:
                 if_expr
                   condition:
                     binary_expr
-                      operator: infix_operator "<"
                       left:
                         name_expr
                           identifier: identifier "x"
+                      operator: infix_operator "<"
                       right: int_literal "0"
                   then:
                     block
@@ -76,26 +126,20 @@ top_level
                 if_expr
                   condition:
                     binary_expr
-                      operator: infix_operator ">"
                       left:
                         name_expr
                           identifier: identifier "x"
+                      operator: infix_operator ">"
                       right: int_literal "100"
                   then:
                     block
                       stmt: break_expr "break"
                 call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
                   argument:
                     argument
                       value:
                         name_expr
                           identifier: identifier "x"
-                  callee:
-                    name_expr
-                      identifier: identifier "print"
-          pattern:
-            name_pattern
-              identifier: identifier "x"
-          iterable:
-            name_expr
-              identifier: identifier "xs"

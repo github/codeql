@@ -91,6 +91,37 @@ arrays (their collection nodes are elided), layout children such as
 comment rides along as `trailingTrivia` on the token it follows. Tokens without
 trivia (most of them) simply omit the `leadingTrivia`/`trailingTrivia` keys.
 
+### Operator folding
+
+Swift's grammar does not encode operator precedence, so the parser represents an
+expression like `a + b * c` as a flat `sequenceExpr` (an alternating list of
+operands and operators). Before serializing, we fold these sequences into
+precedence-correct `infixOperatorExpr` (and `ternaryExpr`) trees — so `1 + 2 * 3`
+becomes `1 + (2 * 3)`.
+
+Folding needs to know each operator's precedence group, which comes from
+declarations rather than the grammar. We resolve operators from two sources:
+
+- the **Swift standard library** operators (a built-in approximation), and
+- operator / precedence-group declarations **in the file being parsed**.
+
+Operators defined anywhere else (for example, imported from another module) are
+unknown, so their precedence cannot be determined. Rather than guess — which
+would silently produce a wrongly-structured tree — each top-level sequence is
+folded independently, and any sequence that uses an unknown operator is left as
+a flat `sequenceExpr`. So `a <+> b` (with an undeclared `<+>`) stays flat, while
+a neighbouring `1 + 2` in the same file still folds. Supporting operators from
+other modules is future work.
+
+Folding is bottom-up, so a *grouped* subexpression still folds even when the
+sequence enclosing it uses an unknown operator: in `a *** (b + c)` (with an
+unknown `***`) the parenthesised `b + c` is its own sequence and folds, while
+the outer `a *** …` stays flat. This only applies when the subexpression is
+syntactically isolated (parentheses, call arguments, collection elements, …);
+an unparenthesised `a *** b + c` is a single flat sequence whose structure
+cannot be determined without knowing `***`'s precedence, so it is left flat in
+its entirety.
+
 ## Prerequisites
 
 The build does not depend on any particular version manager. You need:

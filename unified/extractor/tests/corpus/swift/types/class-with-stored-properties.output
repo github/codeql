@@ -5,50 +5,55 @@ class Point {
 
 ---
 
-source_file
-  statement:
-    class_declaration
-      body:
-        class_body
-          member:
-            property_declaration
-              binding:
-                value_binding_pattern
-                  mutability: var
-              declarator:
-                property_binding
-                  name:
-                    pattern
-                      bound_identifier: simple_identifier "x"
-                  type:
-                    type_annotation
-                      type:
-                        type
-                          name:
-                            user_type
-                              part:
-                                simple_user_type
-                                  name: type_identifier "Int"
-            property_declaration
-              binding:
-                value_binding_pattern
-                  mutability: var
-              declarator:
-                property_binding
-                  name:
-                    pattern
-                      bound_identifier: simple_identifier "y"
-                  type:
-                    type_annotation
-                      type:
-                        type
-                          name:
-                            user_type
-                              part:
-                                simple_user_type
-                                  name: type_identifier "Int"
-      declaration_kind: class
-      name: type_identifier "Point"
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Point"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "y"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+          modifiers:
+          classKeyword: class
 
 ---
 
@@ -57,6 +62,8 @@ top_level
     block
       stmt:
         class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Point"
           member:
             variable_declaration
               modifier: modifier "var"
@@ -74,5 +81,3 @@ top_level
               type:
                 named_type_expr
                   name: identifier "Int"
-          modifier: modifier "class"
-          name: identifier "Point"
