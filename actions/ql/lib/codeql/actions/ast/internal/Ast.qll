@@ -423,6 +423,10 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
     )
   }
 
+  /**
+   * Holds if this composite action is described by an external composite action model with the
+   * given repository, action, revision, and local path details.
+   */
   predicate hasExternalCompositeActionModel(
     string owner, string repo, string action_path, string requested_ref, string resolved_commit_sha,
     string local_path
@@ -432,6 +436,7 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
     local_path.trim() = this.getLocation().getFile().getRelativePath()
   }
 
+  /** Holds if this composite action was downloaded from an external repository. */
   predicate isExternalCompositeAction() {
     this.hasExternalCompositeActionModel(_, _, _, _, _, _)
     or
@@ -570,6 +575,10 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
     )
   }
 
+  /**
+   * Holds if this reusable workflow is described by an external reusable workflow model with the
+   * given repository, workflow, revision, and local path details.
+   */
   predicate hasExternalReusableWorkflowModel(
     string owner, string repo, string workflow_path, string requested_ref,
     string resolved_commit_sha, string local_path
@@ -579,6 +588,7 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
     local_path.trim() = this.getLocation().getFile().getRelativePath()
   }
 
+  /** Holds if this reusable workflow was downloaded from an external repository. */
   predicate isExternalReusableWorkflow() {
     this.hasExternalReusableWorkflowModel(_, _, _, _, _, _)
     or
@@ -1381,6 +1391,7 @@ class EnvImpl extends AstNodeImpl, TEnvNode {
 abstract class UsesImpl extends AstNodeImpl {
   abstract string getCallee();
 
+  /** Gets the canonical name used to resolve this `uses` element to its callable target. */
   abstract string getCallableName();
 
   abstract ScalarValueImpl getCalleeNode();
