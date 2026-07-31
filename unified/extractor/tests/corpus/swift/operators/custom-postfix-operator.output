@@ -1,0 +1,48 @@
+postfix operator ^^
+let squared = 3^^
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        operatorDecl
+          name: binaryOperator "^^"
+          fixitySpecifier: postfix
+          operatorKeyword: operator
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    postfixOperatorExpr
+                      expression:
+                        integerLiteralExpr
+                          literal: integerLiteral "3"
+                      operator: postfixOperator "^^"
+              pattern:
+                identifierPattern
+                  identifier: identifier "squared"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        unsupported_node "postfix operator ^^"
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "squared"
+          value: unsupported_node "3^^"

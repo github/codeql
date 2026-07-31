@@ -1,5 +1,6 @@
 edges
 | .github/actions/dangerous-git-checkout/action.yml:6:7:11:4 | Uses Step | .github/actions/dangerous-git-checkout/action.yml:11:7:12:18 | Run Step |
+| .github/actions/dangerous-git-checkout/action.yml:9:15:9:55 | github.event.pull_request.head.sha | .github/actions/dangerous-git-checkout/action.yml:6:7:11:4 | Uses Step |
 | .github/actions/dangerous-git-checkout/action.yml:11:7:12:18 | Run Step | .github/workflows/untrusted_checkout3.yml:13:9:13:23 | Run Step |
 | .github/actions/download-artifact-2/action.yaml:6:7:25:4 | Uses Step | .github/actions/download-artifact-2/action.yaml:25:7:29:4 | Run Step |
 | .github/actions/download-artifact-2/action.yaml:25:7:29:4 | Run Step | .github/actions/download-artifact-2/action.yaml:29:7:32:18 | Run Step |
@@ -10,6 +11,7 @@ edges
 | .github/actions/download-artifact/action.yaml:29:7:32:18 | Run Step | .github/workflows/resolve-args.yml:22:9:36:13 | Run Step: resolve-step |
 | .github/actions/unpinned-tag/action.yml:5:7:6:4 | Uses Step | .github/actions/unpinned-tag/action.yml:6:7:6:61 | Uses Step |
 | .github/workflows/actor_trusted_checkout.yml:9:7:14:4 | Uses Step | .github/workflows/actor_trusted_checkout.yml:14:7:15:4 | Uses Step |
+| .github/workflows/actor_trusted_checkout.yml:12:15:12:55 | github.event.pull_request.head.sha | .github/workflows/actor_trusted_checkout.yml:9:7:14:4 | Uses Step |
 | .github/workflows/actor_trusted_checkout.yml:14:7:15:4 | Uses Step | .github/workflows/actor_trusted_checkout.yml:15:7:19:4 | Run Step |
 | .github/workflows/actor_trusted_checkout.yml:15:7:19:4 | Run Step | .github/workflows/actor_trusted_checkout.yml:19:7:23:4 | Uses Step |
 | .github/workflows/actor_trusted_checkout.yml:19:7:23:4 | Uses Step | .github/workflows/actor_trusted_checkout.yml:23:7:26:21 | Uses Step |
@@ -35,6 +37,7 @@ edges
 | .github/workflows/artifactpoisoning53.yml:15:9:18:6 | Run Step | .github/workflows/artifactpoisoning53.yml:18:9:23:29 | Run Step |
 | .github/workflows/artifactpoisoning71.yml:9:9:16:6 | Uses Step | .github/workflows/artifactpoisoning71.yml:16:9:18:40 | Run Step |
 | .github/workflows/artifactpoisoning81.yml:11:9:14:6 | Uses Step | .github/workflows/artifactpoisoning81.yml:14:9:16:6 | Run Step |
+| .github/workflows/artifactpoisoning81.yml:13:17:13:57 | github.event.pull_request.head.sha | .github/workflows/artifactpoisoning81.yml:11:9:14:6 | Uses Step |
 | .github/workflows/artifactpoisoning81.yml:14:9:16:6 | Run Step | .github/workflows/artifactpoisoning81.yml:16:9:22:2 | Uses Step |
 | .github/workflows/artifactpoisoning81.yml:28:9:31:6 | Uses Step | .github/workflows/artifactpoisoning81.yml:31:9:31:28 | Run Step |
 | .github/workflows/artifactpoisoning82.yml:11:9:14:6 | Uses Step | .github/workflows/artifactpoisoning82.yml:14:9:16:6 | Run Step |
@@ -64,12 +67,14 @@ edges
 | .github/workflows/artifactpoisoning97.yml:13:9:19:6 | Uses Step | .github/workflows/artifactpoisoning97.yml:19:9:19:25 | Run Step |
 | .github/workflows/artifactpoisoning101.yml:10:9:16:6 | Uses Step | .github/workflows/artifactpoisoning101.yml:16:9:19:59 | Run Step: pr_number |
 | .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | .github/workflows/auto_ci.yml:27:9:32:6 | Uses Step |
+| .github/workflows/auto_ci.yml:24:17:24:57 | github.event.pull_request.head.ref | .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step |
 | .github/workflows/auto_ci.yml:27:9:32:6 | Uses Step | .github/workflows/auto_ci.yml:32:9:37:6 | Run Step |
 | .github/workflows/auto_ci.yml:32:9:37:6 | Run Step | .github/workflows/auto_ci.yml:37:9:40:6 | Run Step |
 | .github/workflows/auto_ci.yml:37:9:40:6 | Run Step | .github/workflows/auto_ci.yml:40:9:44:6 | Run Step |
 | .github/workflows/auto_ci.yml:40:9:44:6 | Run Step | .github/workflows/auto_ci.yml:44:9:48:6 | Run Step |
 | .github/workflows/auto_ci.yml:44:9:48:6 | Run Step | .github/workflows/auto_ci.yml:48:9:52:2 | Run Step |
 | .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | .github/workflows/auto_ci.yml:74:9:79:6 | Uses Step |
+| .github/workflows/auto_ci.yml:71:17:71:95 | github.event.pull_request.head.ref \|\| github.event.pull_request.base.ref | .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step |
 | .github/workflows/auto_ci.yml:74:9:79:6 | Uses Step | .github/workflows/auto_ci.yml:79:9:84:6 | Run Step |
 | .github/workflows/auto_ci.yml:79:9:84:6 | Run Step | .github/workflows/auto_ci.yml:84:9:93:6 | Run Step |
 | .github/workflows/auto_ci.yml:84:9:93:6 | Run Step | .github/workflows/auto_ci.yml:93:9:96:6 | Uses Step |
@@ -85,47 +90,72 @@ edges
 | .github/workflows/dependabot1.yml:31:9:34:6 | Run Step | .github/workflows/dependabot1.yml:34:9:36:2 | Run Step |
 | .github/workflows/dependabot1.yml:39:9:43:6 | Uses Step | .github/workflows/dependabot1.yml:43:9:45:29 | Uses Step |
 | .github/workflows/dependabot2.yml:33:9:38:6 | Uses Step | .github/workflows/dependabot2.yml:38:9:42:6 | Run Step: nvm |
+| .github/workflows/dependabot2.yml:35:17:35:57 | github.event.pull_request.head.ref | .github/workflows/dependabot2.yml:33:9:38:6 | Uses Step |
 | .github/workflows/dependabot2.yml:38:9:42:6 | Run Step: nvm | .github/workflows/dependabot2.yml:42:9:47:6 | Uses Step |
 | .github/workflows/dependabot2.yml:42:9:47:6 | Uses Step | .github/workflows/dependabot2.yml:47:9:52:6 | Run Step |
 | .github/workflows/dependabot2.yml:47:9:52:6 | Run Step | .github/workflows/dependabot2.yml:52:9:58:6 | Run Step |
 | .github/workflows/dependabot2.yml:52:9:58:6 | Run Step | .github/workflows/dependabot2.yml:58:9:61:6 | Run Step |
 | .github/workflows/dependabot2.yml:58:9:61:6 | Run Step | .github/workflows/dependabot2.yml:61:9:68:19 | Run Step |
 | .github/workflows/dependabot3.yml:15:9:20:6 | Uses Step | .github/workflows/dependabot3.yml:20:9:25:6 | Uses Step |
+| .github/workflows/dependabot3.yml:18:17:18:57 | github.event.pull_request.head.sha | .github/workflows/dependabot3.yml:15:9:20:6 | Uses Step |
 | .github/workflows/dependabot3.yml:20:9:25:6 | Uses Step | .github/workflows/dependabot3.yml:25:9:48:6 | Run Step: set-milestone |
 | .github/workflows/dependabot3.yml:25:9:48:6 | Run Step: set-milestone | .github/workflows/dependabot3.yml:48:9:52:57 | Run Step |
 | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:11:9:14:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:14:9:17:7 | Run Step |
+| .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:13:17:13:40 | inputs.COMMIT_SHA | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:11:9:14:6 | Uses Step |
 | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build_nested_branching.yml:11:9:19:6 | Uses Step: checkAccess | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build_nested_branching.yml:19:9:25:2 | Run Step |
 | .github/workflows/external/TestOrg/TestRepo/.github/workflows/formal.yml:14:9:19:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/formal.yml:19:9:25:6 | Run Step |
 | .github/workflows/external/TestOrg/TestRepo/.github/workflows/formal.yml:19:9:25:6 | Run Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/formal.yml:25:9:70:20 | Run Step |
 | .github/workflows/external/TestOrg/TestRepo/.github/workflows/reusable.yml:23:9:26:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/reusable.yml:26:9:29:7 | Run Step |
+| .github/workflows/external/TestOrg/TestRepo/.github/workflows/reusable.yml:25:17:25:36 | inputs.branch | .github/workflows/external/TestOrg/TestRepo/.github/workflows/reusable.yml:23:9:26:6 | Uses Step |
 | .github/workflows/gitcheckout.yml:10:11:18:8 | Run Step | .github/workflows/gitcheckout.yml:18:11:21:8 | Uses Step |
+| .github/workflows/gitcheckout.yml:17:27:17:48 | github.head_ref | .github/workflows/gitcheckout.yml:10:11:18:8 | Run Step |
 | .github/workflows/gitcheckout.yml:18:11:21:8 | Uses Step | .github/workflows/gitcheckout.yml:21:11:23:22 | Run Step |
 | .github/workflows/issue_comment_3rd_party_action.yml:12:9:16:6 | Uses Step: comment-branch | .github/workflows/issue_comment_3rd_party_action.yml:16:9:22:2 | Uses Step |
+| .github/workflows/issue_comment_3rd_party_action.yml:20:17:20:60 | steps.comment-branch.outputs.head_sha | .github/workflows/issue_comment_3rd_party_action.yml:16:9:22:2 | Uses Step |
 | .github/workflows/issue_comment_3rd_party_action.yml:25:9:30:6 | Uses Step: comment-branch | .github/workflows/issue_comment_3rd_party_action.yml:30:9:36:2 | Uses Step |
+| .github/workflows/issue_comment_3rd_party_action.yml:34:17:34:60 | steps.comment-branch.outputs.head_ref | .github/workflows/issue_comment_3rd_party_action.yml:30:9:36:2 | Uses Step |
 | .github/workflows/issue_comment_3rd_party_action.yml:39:9:45:6 | Uses Step: refs | .github/workflows/issue_comment_3rd_party_action.yml:45:9:49:6 | Uses Step |
 | .github/workflows/issue_comment_3rd_party_action.yml:45:9:49:6 | Uses Step | .github/workflows/issue_comment_3rd_party_action.yml:49:9:52:25 | Uses Step |
+| .github/workflows/issue_comment_3rd_party_action.yml:47:17:47:50 | steps.refs.outputs.head_ref | .github/workflows/issue_comment_3rd_party_action.yml:45:9:49:6 | Uses Step |
+| .github/workflows/issue_comment_3rd_party_action.yml:51:17:51:50 | steps.refs.outputs.head_sha | .github/workflows/issue_comment_3rd_party_action.yml:49:9:52:25 | Uses Step |
+| .github/workflows/issue_comment_direct.yml:15:17:15:76 | github.event.pull_request.head.ref \|\| github.head_ref | .github/workflows/issue_comment_direct.yml:12:9:16:2 | Uses Step |
+| .github/workflows/issue_comment_direct.yml:22:27:22:58 | github.event.issue.number | .github/workflows/issue_comment_direct.yml:20:9:24:2 | Uses Step |
+| .github/workflows/issue_comment_direct.yml:30:17:30:79 | format('refs/pull/{0}/merge', github.event.issue.number) | .github/workflows/issue_comment_direct.yml:28:9:32:2 | Uses Step |
+| .github/workflows/issue_comment_direct.yml:38:17:38:149 | (github.event_name == 'pull_request_review_comment') && format('refs/pull/{0}/merge',  github.event.pull_request.number) \|\| '' | .github/workflows/issue_comment_direct.yml:35:9:40:2 | Uses Step |
+| .github/workflows/issue_comment_direct.yml:46:17:46:126 | github.event_name == 'issue_comment' && format('refs/pull/{0}/merge',  github.event.issue.number) \|\| '' | .github/workflows/issue_comment_direct.yml:43:9:46:126 | Uses Step |
 | .github/workflows/issue_comment_heuristic.yml:11:9:24:6 | Uses Step: get-pr-info | .github/workflows/issue_comment_heuristic.yml:24:9:28:6 | Run Step: get-sha |
 | .github/workflows/issue_comment_heuristic.yml:24:9:28:6 | Run Step: get-sha | .github/workflows/issue_comment_heuristic.yml:28:9:33:2 | Uses Step |
+| .github/workflows/issue_comment_heuristic.yml:31:17:31:48 | steps.get-sha.outputs.sha | .github/workflows/issue_comment_heuristic.yml:28:9:33:2 | Uses Step |
 | .github/workflows/issue_comment_heuristic.yml:37:7:48:4 | Run Step: vars | .github/workflows/issue_comment_heuristic.yml:48:7:50:46 | Uses Step |
+| .github/workflows/issue_comment_heuristic.yml:50:15:50:46 | steps.vars.outputs.branch | .github/workflows/issue_comment_heuristic.yml:48:7:50:46 | Uses Step |
 | .github/workflows/issue_comment_octokit2.yml:12:9:19:6 | Uses Step: fetch_issue | .github/workflows/issue_comment_octokit2.yml:19:9:26:6 | Uses Step: fetch_pr |
 | .github/workflows/issue_comment_octokit2.yml:19:9:26:6 | Uses Step: fetch_pr | .github/workflows/issue_comment_octokit2.yml:26:9:27:6 | name: C ... ildcard |
 | .github/workflows/issue_comment_octokit2.yml:26:9:27:6 | name: C ... ildcard | .github/workflows/issue_comment_octokit2.yml:27:9:31:6 | Uses Step |
 | .github/workflows/issue_comment_octokit2.yml:27:9:31:6 | Uses Step | .github/workflows/issue_comment_octokit2.yml:31:9:33:6 | Uses Step |
+| .github/workflows/issue_comment_octokit2.yml:29:17:29:69 | fromJson(steps.fetch_pr.outputs.data).head.ref | .github/workflows/issue_comment_octokit2.yml:27:9:31:6 | Uses Step |
 | .github/workflows/issue_comment_octokit2.yml:31:9:33:6 | Uses Step | .github/workflows/issue_comment_octokit2.yml:33:9:37:6 | Uses Step |
 | .github/workflows/issue_comment_octokit2.yml:33:9:37:6 | Uses Step | .github/workflows/issue_comment_octokit2.yml:37:9:38:37 | Uses Step |
 | .github/workflows/issue_comment_octokit.yml:12:9:19:6 | Uses Step: fetch_issue | .github/workflows/issue_comment_octokit.yml:19:9:26:6 | Uses Step: fetch_pr |
 | .github/workflows/issue_comment_octokit.yml:19:9:26:6 | Uses Step: fetch_pr | .github/workflows/issue_comment_octokit.yml:26:9:30:6 | Uses Step |
 | .github/workflows/issue_comment_octokit.yml:26:9:30:6 | Uses Step | .github/workflows/issue_comment_octokit.yml:30:9:35:2 | Uses Step |
+| .github/workflows/issue_comment_octokit.yml:28:17:28:69 | fromJson(steps.fetch_pr.outputs.data).head.ref | .github/workflows/issue_comment_octokit.yml:26:9:30:6 | Uses Step |
+| .github/workflows/issue_comment_octokit.yml:32:17:32:69 | fromJson(steps.fetch_pr.outputs.data).head.sha | .github/workflows/issue_comment_octokit.yml:30:9:35:2 | Uses Step |
 | .github/workflows/issue_comment_octokit.yml:38:9:52:6 | Uses Step: get-pr-info | .github/workflows/issue_comment_octokit.yml:52:9:57:6 | Run Step: get-sha |
 | .github/workflows/issue_comment_octokit.yml:52:9:57:6 | Run Step: get-sha | .github/workflows/issue_comment_octokit.yml:57:9:62:2 | Uses Step |
+| .github/workflows/issue_comment_octokit.yml:60:17:60:48 | steps.get-sha.outputs.sha | .github/workflows/issue_comment_octokit.yml:57:9:62:2 | Uses Step |
 | .github/workflows/issue_comment_octokit.yml:66:9:79:6 | Uses Step: sha | .github/workflows/issue_comment_octokit.yml:79:9:83:2 | Uses Step |
+| .github/workflows/issue_comment_octokit.yml:81:17:81:47 | steps.sha.outputs.result | .github/workflows/issue_comment_octokit.yml:79:9:83:2 | Uses Step |
 | .github/workflows/issue_comment_octokit.yml:87:9:95:6 | Uses Step: sha | .github/workflows/issue_comment_octokit.yml:95:9:100:2 | Uses Step |
+| .github/workflows/issue_comment_octokit.yml:98:17:98:47 | steps.sha.outputs.result | .github/workflows/issue_comment_octokit.yml:95:9:100:2 | Uses Step |
 | .github/workflows/issue_comment_octokit.yml:103:9:109:6 | Uses Step: request | .github/workflows/issue_comment_octokit.yml:109:9:114:66 | Uses Step |
+| .github/workflows/issue_comment_octokit.yml:114:17:114:66 | fromJson(steps.request.outputs.data).head.ref | .github/workflows/issue_comment_octokit.yml:109:9:114:66 | Uses Step |
 | .github/workflows/label_trusted_checkout1.yml:11:7:15:4 | Uses Step | .github/workflows/label_trusted_checkout1.yml:15:7:16:4 | Uses Step |
+| .github/workflows/label_trusted_checkout1.yml:13:15:13:55 | github.event.pull_request.head.sha | .github/workflows/label_trusted_checkout1.yml:11:7:15:4 | Uses Step |
 | .github/workflows/label_trusted_checkout1.yml:15:7:16:4 | Uses Step | .github/workflows/label_trusted_checkout1.yml:16:7:20:4 | Run Step |
 | .github/workflows/label_trusted_checkout1.yml:16:7:20:4 | Run Step | .github/workflows/label_trusted_checkout1.yml:20:7:24:4 | Uses Step |
 | .github/workflows/label_trusted_checkout1.yml:20:7:24:4 | Uses Step | .github/workflows/label_trusted_checkout1.yml:24:7:27:21 | Uses Step |
 | .github/workflows/label_trusted_checkout2.yml:12:7:16:4 | Uses Step | .github/workflows/label_trusted_checkout2.yml:16:7:17:4 | Uses Step |
+| .github/workflows/label_trusted_checkout2.yml:14:15:14:55 | github.event.pull_request.head.sha | .github/workflows/label_trusted_checkout2.yml:12:7:16:4 | Uses Step |
 | .github/workflows/label_trusted_checkout2.yml:16:7:17:4 | Uses Step | .github/workflows/label_trusted_checkout2.yml:17:7:21:4 | Run Step |
 | .github/workflows/label_trusted_checkout2.yml:17:7:21:4 | Run Step | .github/workflows/label_trusted_checkout2.yml:21:7:25:4 | Uses Step |
 | .github/workflows/label_trusted_checkout2.yml:21:7:25:4 | Uses Step | .github/workflows/label_trusted_checkout2.yml:25:7:28:21 | Uses Step |
@@ -134,17 +164,22 @@ edges
 | .github/workflows/level0.yml:62:9:65:6 | Uses Step | .github/workflows/level0.yml:65:9:86:2 | Uses Step |
 | .github/workflows/level0.yml:96:9:99:6 | Uses Step | .github/workflows/level0.yml:99:9:103:6 | Uses Step |
 | .github/workflows/level0.yml:99:9:103:6 | Uses Step | .github/workflows/level0.yml:103:9:107:6 | Uses Step |
+| .github/workflows/level0.yml:102:17:102:57 | github.event.pull_request.head.sha | .github/workflows/level0.yml:99:9:103:6 | Uses Step |
 | .github/workflows/level0.yml:103:9:107:6 | Uses Step | .github/workflows/level0.yml:107:9:112:2 | Run Step |
 | .github/workflows/level0.yml:122:9:125:6 | Uses Step | .github/workflows/level0.yml:125:9:129:6 | Uses Step |
 | .github/workflows/level0.yml:125:9:129:6 | Uses Step | .github/workflows/level0.yml:129:9:133:6 | Uses Step |
+| .github/workflows/level0.yml:128:17:128:57 | github.event.pull_request.head.sha | .github/workflows/level0.yml:125:9:129:6 | Uses Step |
 | .github/workflows/level0.yml:129:9:133:6 | Uses Step | .github/workflows/level0.yml:133:9:135:23 | Run Step |
 | .github/workflows/mend.yml:13:9:22:6 | Run Step: set_ref | .github/workflows/mend.yml:22:9:29:6 | Uses Step |
 | .github/workflows/mend.yml:22:9:29:6 | Uses Step | .github/workflows/mend.yml:29:9:33:28 | Uses Step |
+| .github/workflows/mend.yml:27:17:27:48 | steps.set_ref.outputs.ref | .github/workflows/mend.yml:22:9:29:6 | Uses Step |
 | .github/workflows/poc2.yml:28:9:37:6 | Uses Step: branch-deploy | .github/workflows/poc2.yml:37:9:42:6 | Uses Step |
 | .github/workflows/poc2.yml:37:9:42:6 | Uses Step | .github/workflows/poc2.yml:42:9:47:6 | Uses Step |
+| .github/workflows/poc2.yml:40:17:40:54 | steps.branch-deploy.outputs.ref | .github/workflows/poc2.yml:37:9:42:6 | Uses Step |
 | .github/workflows/poc2.yml:42:9:47:6 | Uses Step | .github/workflows/poc2.yml:47:9:52:6 | Run Step |
 | .github/workflows/poc2.yml:47:9:52:6 | Run Step | .github/workflows/poc2.yml:52:9:58:24 | Run Step |
 | .github/workflows/poc3.yml:18:7:25:4 | Uses Step | .github/workflows/poc3.yml:25:7:31:4 | Uses Step |
+| .github/workflows/poc3.yml:22:15:22:55 | github.event.pull_request.head.ref | .github/workflows/poc3.yml:18:7:25:4 | Uses Step |
 | .github/workflows/poc3.yml:25:7:31:4 | Uses Step | .github/workflows/poc3.yml:31:7:33:4 | Uses Step |
 | .github/workflows/poc3.yml:31:7:33:4 | Uses Step | .github/workflows/poc3.yml:33:7:38:4 | Uses Step |
 | .github/workflows/poc3.yml:33:7:38:4 | Uses Step | .github/workflows/poc3.yml:38:7:40:4 | Run Step |
@@ -153,26 +188,32 @@ edges
 | .github/workflows/poc3.yml:41:7:42:4 | Run Step | .github/workflows/poc3.yml:42:7:43:4 | Run Step |
 | .github/workflows/poc3.yml:42:7:43:4 | Run Step | .github/workflows/poc3.yml:43:7:48:2 | Uses Step |
 | .github/workflows/poc.yml:30:9:36:6 | Uses Step | .github/workflows/poc.yml:36:9:38:6 | Uses Step |
+| .github/workflows/poc.yml:34:17:34:57 | github.event.pull_request.head.ref | .github/workflows/poc.yml:30:9:36:6 | Uses Step |
 | .github/workflows/poc.yml:36:9:38:6 | Uses Step | .github/workflows/poc.yml:38:9:43:6 | Uses Step |
 | .github/workflows/poc.yml:38:9:43:6 | Uses Step | .github/workflows/poc.yml:43:9:47:2 | Uses Step |
 | .github/workflows/pr-workflow.yml:57:9:60:6 | Uses Step | .github/workflows/pr-workflow.yml:60:9:70:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:60:9:70:6 | Uses Step | .github/workflows/pr-workflow.yml:70:9:78:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:70:9:78:6 | Uses Step | .github/workflows/pr-workflow.yml:78:9:81:2 | Run Step: ok |
 | .github/workflows/pr-workflow.yml:103:9:109:6 | Uses Step | .github/workflows/pr-workflow.yml:109:9:124:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:105:17:105:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow.yml:103:9:109:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:109:9:124:6 | Uses Step | .github/workflows/pr-workflow.yml:124:9:126:2 | Run Step |
 | .github/workflows/pr-workflow.yml:139:9:144:6 | Uses Step | .github/workflows/pr-workflow.yml:144:9:147:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:142:17:142:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow.yml:139:9:144:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:144:9:147:6 | Uses Step | .github/workflows/pr-workflow.yml:147:9:148:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:147:9:148:6 | Uses Step | .github/workflows/pr-workflow.yml:148:9:154:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:148:9:154:6 | Uses Step | .github/workflows/pr-workflow.yml:154:9:158:6 | Run Step |
 | .github/workflows/pr-workflow.yml:154:9:158:6 | Run Step | .github/workflows/pr-workflow.yml:158:9:196:2 | Run Step: ok |
 | .github/workflows/pr-workflow.yml:209:9:216:6 | Uses Step | .github/workflows/pr-workflow.yml:216:9:222:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:216:9:222:6 | Uses Step | .github/workflows/pr-workflow.yml:222:9:227:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:220:17:220:64 | inputs.github_event_pull_request_head_sha | .github/workflows/pr-workflow.yml:216:9:222:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:222:9:227:6 | Uses Step | .github/workflows/pr-workflow.yml:227:9:230:2 | Run Step: ok |
 | .github/workflows/pr-workflow.yml:243:9:250:6 | Uses Step | .github/workflows/pr-workflow.yml:250:9:256:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:250:9:256:6 | Uses Step | .github/workflows/pr-workflow.yml:256:9:261:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:254:17:254:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow.yml:250:9:256:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:256:9:261:6 | Uses Step | .github/workflows/pr-workflow.yml:261:9:265:2 | Run Step: ok |
 | .github/workflows/pr-workflow.yml:277:9:284:6 | Uses Step | .github/workflows/pr-workflow.yml:284:9:290:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:284:9:290:6 | Uses Step | .github/workflows/pr-workflow.yml:290:9:295:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:288:17:288:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow.yml:284:9:290:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:290:9:295:6 | Uses Step | .github/workflows/pr-workflow.yml:295:9:298:2 | Run Step: ok |
 | .github/workflows/pr-workflow.yml:309:9:314:6 | Run Step | .github/workflows/pr-workflow.yml:314:9:318:6 | Run Step |
 | .github/workflows/pr-workflow.yml:314:9:318:6 | Run Step | .github/workflows/pr-workflow.yml:318:9:323:2 | Run Step |
@@ -182,26 +223,33 @@ edges
 | .github/workflows/pr-workflow.yml:351:9:355:6 | Run Step | .github/workflows/pr-workflow.yml:355:9:369:2 | Uses Step |
 | .github/workflows/pr-workflow.yml:380:9:386:6 | Uses Step | .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:391:9:395:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:389:17:389:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:391:9:395:6 | Uses Step | .github/workflows/pr-workflow.yml:395:9:404:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:395:9:404:6 | Uses Step | .github/workflows/pr-workflow.yml:404:9:414:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:404:9:414:6 | Uses Step | .github/workflows/pr-workflow.yml:414:9:423:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:414:9:423:6 | Uses Step | .github/workflows/pr-workflow.yml:423:9:432:2 | Uses Step |
 | .github/workflows/pr-workflow.yml:444:9:449:6 | Uses Step | .github/workflows/pr-workflow.yml:449:9:452:6 | Uses Step |
+| .github/workflows/pr-workflow.yml:447:17:447:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow.yml:444:9:449:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:449:9:452:6 | Uses Step | .github/workflows/pr-workflow.yml:452:9:453:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:452:9:453:6 | Uses Step | .github/workflows/pr-workflow.yml:453:9:459:6 | Uses Step |
 | .github/workflows/pr-workflow.yml:453:9:459:6 | Uses Step | .github/workflows/pr-workflow.yml:459:9:462:6 | Run Step |
 | .github/workflows/pr-workflow.yml:459:9:462:6 | Run Step | .github/workflows/pr-workflow.yml:462:9:463:48 | Run Step: ok |
 | .github/workflows/priv_pull_request_checkout.yml:14:9:20:6 | Uses Step | .github/workflows/priv_pull_request_checkout.yml:20:9:23:52 | Run Step |
+| .github/workflows/priv_pull_request_checkout.yml:17:17:17:38 | github.head_ref | .github/workflows/priv_pull_request_checkout.yml:14:9:20:6 | Uses Step |
 | .github/workflows/resolve-args.yml:19:9:20:6 | Uses Step | .github/workflows/resolve-args.yml:20:9:22:6 | Uses Step |
 | .github/workflows/resolve-args.yml:20:9:22:6 | Uses Step | .github/actions/download-artifact/action.yaml:6:7:25:4 | Uses Step |
 | .github/workflows/resolve-args.yml:20:9:22:6 | Uses Step | .github/workflows/resolve-args.yml:22:9:36:13 | Run Step: resolve-step |
 | .github/workflows/reusable_local.yml:23:9:26:6 | Uses Step | .github/workflows/reusable_local.yml:26:9:29:7 | Run Step |
+| .github/workflows/reusable_local.yml:25:17:25:36 | inputs.branch | .github/workflows/reusable_local.yml:23:9:26:6 | Uses Step |
 | .github/workflows/test1.yml:18:9:21:6 | Uses Step | .github/workflows/test1.yml:21:9:24:6 | Run Step |
 | .github/workflows/test1.yml:21:9:24:6 | Run Step | .github/workflows/test1.yml:24:9:25:39 | Run Step |
 | .github/workflows/test2.yml:13:9:16:6 | Uses Step | .github/workflows/test2.yml:16:9:20:52 | Uses Step |
+| .github/workflows/test2.yml:15:17:15:57 | github.event.pull_request.head.sha | .github/workflows/test2.yml:13:9:16:6 | Uses Step |
 | .github/workflows/test3.yml:28:9:33:6 | Uses Step | .github/workflows/test3.yml:33:9:35:6 | Run Step |
+| .github/workflows/test3.yml:31:17:31:57 | github.event.pull_request.head.ref | .github/workflows/test3.yml:28:9:33:6 | Uses Step |
 | .github/workflows/test3.yml:33:9:35:6 | Run Step | .github/workflows/test3.yml:35:9:41:63 | Uses Step |
 | .github/workflows/test4.yml:18:7:25:4 | Uses Step | .github/workflows/test4.yml:25:7:31:4 | Uses Step |
+| .github/workflows/test4.yml:22:15:22:55 | github.event.pull_request.head.ref | .github/workflows/test4.yml:18:7:25:4 | Uses Step |
 | .github/workflows/test4.yml:25:7:31:4 | Uses Step | .github/workflows/test4.yml:31:7:33:4 | Uses Step |
 | .github/workflows/test4.yml:31:7:33:4 | Uses Step | .github/workflows/test4.yml:33:7:38:4 | Uses Step |
 | .github/workflows/test4.yml:33:7:38:4 | Uses Step | .github/workflows/test4.yml:38:7:40:4 | Run Step |
@@ -212,12 +260,16 @@ edges
 | .github/workflows/test4.yml:43:7:47:4 | Uses Step | .github/workflows/test4.yml:47:7:47:28 | Run Step |
 | .github/workflows/test5.yml:13:9:28:6 | Uses Step: issue | .github/workflows/test5.yml:28:9:32:6 | Uses Step |
 | .github/workflows/test5.yml:28:9:32:6 | Uses Step | .github/workflows/test5.yml:32:9:34:2 | Run Step |
+| .github/workflows/test5.yml:31:17:31:63 | fromJson(steps.issue.outputs.result).sha | .github/workflows/test5.yml:28:9:32:6 | Uses Step |
 | .github/workflows/test5.yml:39:9:54:6 | Uses Step: issue | .github/workflows/test5.yml:54:9:58:6 | Uses Step |
 | .github/workflows/test5.yml:54:9:58:6 | Uses Step | .github/workflows/test5.yml:58:9:60:2 | Run Step |
+| .github/workflows/test5.yml:57:17:57:63 | fromJson(steps.issue.outputs.result).ref | .github/workflows/test5.yml:54:9:58:6 | Uses Step |
 | .github/workflows/test5.yml:64:9:68:6 | Uses Step | .github/workflows/test5.yml:68:9:68:43 | Run Step |
+| .github/workflows/test5.yml:67:27:67:52 | github.event.number | .github/workflows/test5.yml:64:9:68:6 | Uses Step |
 | .github/workflows/test6.yml:19:9:39:6 | Uses Step | .github/workflows/test6.yml:39:9:43:6 | Run Step |
 | .github/workflows/test6.yml:39:9:43:6 | Run Step | .github/workflows/test6.yml:43:9:45:52 | Run Step |
 | .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:24:9:27:6 | Uses Step |
+| .github/workflows/test7.yml:22:27:22:58 | github.event.issue.number | .github/workflows/test7.yml:19:9:24:6 | Uses Step |
 | .github/workflows/test7.yml:24:9:27:6 | Uses Step | .github/workflows/test7.yml:27:9:33:6 | Uses Step |
 | .github/workflows/test7.yml:27:9:33:6 | Uses Step | .github/workflows/test7.yml:33:9:36:6 | Run Step |
 | .github/workflows/test7.yml:33:9:36:6 | Run Step | .github/workflows/test7.yml:36:9:39:6 | Run Step |
@@ -226,16 +278,22 @@ edges
 | .github/workflows/test7.yml:49:9:59:6 | Run Step: benchmark-pr | .github/workflows/test7.yml:59:9:60:6 | Run Step |
 | .github/workflows/test7.yml:59:9:60:6 | Run Step | .github/workflows/test7.yml:60:9:60:37 | Run Step |
 | .github/workflows/test8.yml:20:9:26:6 | Uses Step | .github/workflows/test8.yml:26:9:29:2 | Run Step |
+| .github/workflows/test8.yml:23:17:23:57 | github.event.pull_request.head.sha | .github/workflows/test8.yml:20:9:26:6 | Uses Step |
 | .github/workflows/test9.yml:11:9:16:6 | Uses Step | .github/workflows/test9.yml:16:9:17:48 | Run Step |
+| .github/workflows/test9.yml:13:17:13:57 | github.event.pull_request.head.sha | .github/workflows/test9.yml:11:9:16:6 | Uses Step |
 | .github/workflows/test10.yml:20:9:25:6 | Uses Step | .github/workflows/test10.yml:25:9:30:2 | Run Step |
+| .github/workflows/test10.yml:23:17:23:79 | github.event.after \|\| github.event.pull_request.head.sha | .github/workflows/test10.yml:20:9:25:6 | Uses Step |
 | .github/workflows/test11.yml:30:7:45:4 | Run Step | .github/workflows/test11.yml:45:7:84:4 | Run Step: environment |
 | .github/workflows/test11.yml:45:7:84:4 | Run Step: environment | .github/workflows/test11.yml:84:7:90:4 | Uses Step |
 | .github/workflows/test11.yml:84:7:90:4 | Uses Step | .github/workflows/test11.yml:90:7:93:54 | Uses Step |
+| .github/workflows/test11.yml:88:15:88:55 | steps.environment.outputs.head_sha | .github/workflows/test11.yml:84:7:90:4 | Uses Step |
 | .github/workflows/test12.yml:32:7:47:4 | Run Step | .github/workflows/test12.yml:47:7:86:4 | Run Step: environment |
 | .github/workflows/test12.yml:47:7:86:4 | Run Step: environment | .github/workflows/test12.yml:86:7:92:4 | Uses Step |
 | .github/workflows/test12.yml:86:7:92:4 | Uses Step | .github/workflows/test12.yml:92:7:95:54 | Uses Step |
+| .github/workflows/test12.yml:90:15:90:55 | steps.environment.outputs.head_sha | .github/workflows/test12.yml:86:7:92:4 | Uses Step |
 | .github/workflows/test13.yml:14:7:20:4 | Uses Step | .github/workflows/test13.yml:20:7:25:4 | Uses Step |
 | .github/workflows/test13.yml:20:7:25:4 | Uses Step | .github/workflows/test13.yml:25:7:28:4 | Uses Step |
+| .github/workflows/test13.yml:23:25:23:56 | github.event.issue.number | .github/workflows/test13.yml:20:7:25:4 | Uses Step |
 | .github/workflows/test13.yml:25:7:28:4 | Uses Step | .github/workflows/test13.yml:28:7:31:50 | Run Step |
 | .github/workflows/test14.yml:38:7:41:4 | Uses Step | .github/workflows/test14.yml:41:7:44:4 | Run Step |
 | .github/workflows/test14.yml:41:7:44:4 | Run Step | .github/workflows/test14.yml:44:7:58:4 | Run Step |
@@ -244,6 +302,7 @@ edges
 | .github/workflows/test14.yml:94:7:101:4 | Uses Step | .github/workflows/test14.yml:101:7:105:4 | Uses Step |
 | .github/workflows/test14.yml:101:7:105:4 | Uses Step | .github/workflows/test14.yml:105:7:111:4 | Uses Step |
 | .github/workflows/test14.yml:105:7:111:4 | Uses Step | .github/workflows/test14.yml:111:7:135:4 | Run Step: environment |
+| .github/workflows/test14.yml:109:15:109:58 | steps.comment-branch.outputs.head_ref | .github/workflows/test14.yml:105:7:111:4 | Uses Step |
 | .github/workflows/test14.yml:111:7:135:4 | Run Step: environment | .github/workflows/test14.yml:135:7:141:4 | Run Step: email |
 | .github/workflows/test14.yml:135:7:141:4 | Run Step: email | .github/workflows/test14.yml:141:7:149:4 | Run Step: slack-id |
 | .github/workflows/test14.yml:141:7:149:4 | Run Step: slack-id | .github/workflows/test14.yml:149:7:169:4 | Uses Step: slack-initiate |
@@ -256,9 +315,11 @@ edges
 | .github/workflows/test15.yml:38:7:56:4 | Run Step: environment | .github/workflows/test15.yml:56:7:60:4 | Uses Step: comment-branch |
 | .github/workflows/test15.yml:56:7:60:4 | Uses Step: comment-branch | .github/workflows/test15.yml:60:7:65:4 | Uses Step |
 | .github/workflows/test15.yml:60:7:65:4 | Uses Step | .github/workflows/test15.yml:65:7:68:4 | Uses Step |
+| .github/workflows/test15.yml:63:15:63:58 | steps.comment-branch.outputs.head_ref | .github/workflows/test15.yml:60:7:65:4 | Uses Step |
 | .github/workflows/test15.yml:65:7:68:4 | Uses Step | .github/workflows/test15.yml:68:7:83:2 | Run Step |
 | .github/workflows/test15.yml:106:7:110:4 | Uses Step: comment-branch | .github/workflows/test15.yml:110:7:115:4 | Uses Step |
 | .github/workflows/test15.yml:110:7:115:4 | Uses Step | .github/workflows/test15.yml:115:7:120:4 | Uses Step |
+| .github/workflows/test15.yml:113:15:113:58 | steps.comment-branch.outputs.head_ref | .github/workflows/test15.yml:110:7:115:4 | Uses Step |
 | .github/workflows/test15.yml:115:7:120:4 | Uses Step | .github/workflows/test15.yml:120:7:127:4 | Run Step |
 | .github/workflows/test15.yml:120:7:127:4 | Run Step | .github/workflows/test15.yml:127:7:131:4 | Run Step |
 | .github/workflows/test15.yml:127:7:131:4 | Run Step | .github/workflows/test15.yml:131:7:136:4 | Run Step |
@@ -266,6 +327,7 @@ edges
 | .github/workflows/test15.yml:169:7:173:4 | Uses Step: comment-branch | .github/workflows/test15.yml:173:7:180:4 | Uses Step |
 | .github/workflows/test15.yml:173:7:180:4 | Uses Step | .github/workflows/test15.yml:180:7:185:4 | Uses Step |
 | .github/workflows/test15.yml:180:7:185:4 | Uses Step | .github/workflows/test15.yml:185:7:197:4 | Run Step: pipeline-info |
+| .github/workflows/test15.yml:183:15:183:58 | steps.comment-branch.outputs.head_ref | .github/workflows/test15.yml:180:7:185:4 | Uses Step |
 | .github/workflows/test15.yml:185:7:197:4 | Run Step: pipeline-info | .github/workflows/test15.yml:197:7:203:4 | Run Step: email |
 | .github/workflows/test15.yml:197:7:203:4 | Run Step: email | .github/workflows/test15.yml:203:7:211:4 | Run Step: slack-id |
 | .github/workflows/test15.yml:203:7:211:4 | Run Step: slack-id | .github/workflows/test15.yml:211:7:231:4 | Uses Step: slack-initiate |
@@ -286,6 +348,7 @@ edges
 | .github/workflows/test16.yml:169:9:176:6 | Uses Step: get_token | .github/workflows/test16.yml:176:9:188:2 | Uses Step |
 | .github/workflows/test16.yml:218:9:221:6 | Uses Step | .github/workflows/test16.yml:221:9:226:6 | Uses Step |
 | .github/workflows/test16.yml:221:9:226:6 | Uses Step | .github/workflows/test16.yml:226:9:236:6 | Uses Step: get_token |
+| .github/workflows/test16.yml:223:17:223:63 | github.event.workflow_run.head_commit.id | .github/workflows/test16.yml:221:9:226:6 | Uses Step |
 | .github/workflows/test16.yml:226:9:236:6 | Uses Step: get_token | .github/workflows/test16.yml:236:9:248:6 | Uses Step |
 | .github/workflows/test16.yml:236:9:248:6 | Uses Step | .github/workflows/test16.yml:248:9:270:6 | Run Step |
 | .github/workflows/test16.yml:248:9:270:6 | Run Step | .github/workflows/test16.yml:270:9:273:6 | Run Step |
@@ -293,21 +356,29 @@ edges
 | .github/workflows/test16.yml:273:9:277:6 | Run Step: zips | .github/workflows/test16.yml:277:9:281:6 | Run Step: tests |
 | .github/workflows/test16.yml:277:9:281:6 | Run Step: tests | .github/workflows/test16.yml:281:9:294:54 | Uses Step |
 | .github/workflows/test17.yml:12:15:19:12 | Uses Step | .github/workflows/test17.yml:19:15:23:58 | Uses Step |
+| .github/workflows/test17.yml:16:25:16:68 | github.event.workflow_run.head_branch | .github/workflows/test17.yml:12:15:19:12 | Uses Step |
 | .github/workflows/test18.yml:12:15:33:12 | Uses Step | .github/workflows/test18.yml:33:15:36:12 | Run Step |
 | .github/workflows/test18.yml:33:15:36:12 | Run Step | .github/workflows/test18.yml:36:15:40:58 | Uses Step |
 | .github/workflows/test19.yml:16:7:21:4 | Uses Step | .github/workflows/test19.yml:21:7:22:14 | Run Step |
+| .github/workflows/test19.yml:20:15:20:55 | github.event.pull_request.head.ref | .github/workflows/test19.yml:16:7:21:4 | Uses Step |
 | .github/workflows/test20.yml:16:7:21:4 | Uses Step | .github/workflows/test20.yml:21:7:22:14 | Run Step |
+| .github/workflows/test20.yml:20:15:20:55 | github.event.pull_request.head.sha | .github/workflows/test20.yml:16:7:21:4 | Uses Step |
 | .github/workflows/test21.yml:18:9:25:6 | Uses Step | .github/workflows/test21.yml:25:9:27:36 | Run Step |
+| .github/workflows/test21.yml:23:17:23:52 | github.head_ref \|\| github.ref | .github/workflows/test21.yml:18:9:25:6 | Uses Step |
 | .github/workflows/test22.yml:57:15:62:12 | Uses Step | .github/workflows/test22.yml:62:15:62:45 | Run Step |
 | .github/workflows/test23.yml:38:9:43:6 | Uses Step | .github/workflows/test23.yml:43:9:46:16 | Run Step |
+| .github/workflows/test23.yml:41:17:41:62 | needs.resolve-required-data.outputs.ref | .github/workflows/test23.yml:38:9:43:6 | Uses Step |
 | .github/workflows/test24.yml:7:9:10:6 | Uses Step | .github/workflows/test24.yml:10:9:16:6 | Run Step |
 | .github/workflows/test24.yml:10:9:16:6 | Run Step | .github/workflows/test24.yml:16:9:20:57 | Run Step |
 | .github/workflows/test25.yml:17:9:22:6 | Uses Step | .github/workflows/test25.yml:22:9:32:6 | Uses Step: downloadBuildScan |
 | .github/workflows/test25.yml:22:9:32:6 | Uses Step: downloadBuildScan | .github/workflows/test25.yml:32:9:35:6 | Run Step |
 | .github/workflows/test25.yml:32:9:35:6 | Run Step | .github/workflows/test25.yml:35:9:42:53 | Run Step |
 | .github/workflows/test27.yml:18:9:21:6 | Uses Step | .github/workflows/test27.yml:21:9:22:16 | Run Step |
+| .github/workflows/test27.yml:20:17:20:37 | inputs.git_ref | .github/workflows/test27.yml:18:9:21:6 | Uses Step |
 | .github/workflows/test28.yml:17:9:20:6 | Uses Step | .github/workflows/test28.yml:20:9:20:22 | Run Step |
+| .github/workflows/test28.yml:19:17:19:38 | github.head_ref | .github/workflows/test28.yml:17:9:20:6 | Uses Step |
 | .github/workflows/test29.yml:8:7:14:4 | Uses Step | .github/workflows/test29.yml:14:7:21:11 | Uses Step |
+| .github/workflows/test29.yml:11:15:11:55 | github.event.pull_request.head.sha | .github/workflows/test29.yml:8:7:14:4 | Uses Step |
 | .github/workflows/test.yml:13:9:14:6 | Uses Step | .github/workflows/test.yml:14:9:25:6 | Run Step |
 | .github/workflows/test.yml:14:9:25:6 | Run Step | .github/workflows/test.yml:25:9:33:6 | Run Step |
 | .github/workflows/test.yml:25:9:33:6 | Run Step | .github/workflows/test.yml:33:9:37:34 | Run Step |
@@ -324,74 +395,90 @@ edges
 | .github/workflows/untrusted_checkout3.yml:12:9:13:6 | Uses Step | .github/workflows/untrusted_checkout3.yml:13:9:13:23 | Run Step |
 | .github/workflows/untrusted_checkout4.yml:11:7:29:4 | Uses Step: get-pr | .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step |
 | .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step | .github/workflows/untrusted_checkout4.yml:35:7:41:4 | Run Step |
+| .github/workflows/untrusted_checkout4.yml:33:15:33:67 | fromJSON(steps.get-pr.outputs.result).head.ref | .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step |
 | .github/workflows/untrusted_checkout4.yml:35:7:41:4 | Run Step | .github/workflows/untrusted_checkout4.yml:41:7:47:4 | Run Step |
 | .github/workflows/untrusted_checkout4.yml:41:7:47:4 | Run Step | .github/workflows/untrusted_checkout4.yml:47:7:51:46 | Run Step |
 | .github/workflows/untrusted_checkout.yml:8:9:11:6 | Uses Step | .github/workflows/untrusted_checkout.yml:11:9:15:6 | Uses Step |
+| .github/workflows/untrusted_checkout.yml:10:17:10:57 | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout.yml:8:9:11:6 | Uses Step |
 | .github/workflows/untrusted_checkout.yml:11:9:15:6 | Uses Step | .github/workflows/untrusted_checkout.yml:15:9:18:2 | Run Step |
 | .github/workflows/untrusted_checkout.yml:23:9:26:6 | Uses Step | .github/workflows/untrusted_checkout.yml:26:9:30:6 | Uses Step |
+| .github/workflows/untrusted_checkout.yml:25:17:25:31 | env.HEAD | .github/workflows/untrusted_checkout.yml:23:9:26:6 | Uses Step |
 | .github/workflows/untrusted_checkout.yml:26:9:30:6 | Uses Step | .github/workflows/untrusted_checkout.yml:30:9:32:23 | Run Step |
 | .github/workflows/untrusted_checkout_5.yml:11:9:14:6 | Uses Step | .github/workflows/untrusted_checkout_5.yml:14:9:17:6 | Uses Step |
+| .github/workflows/untrusted_checkout_5.yml:13:17:13:57 | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout_5.yml:11:9:14:6 | Uses Step |
 | .github/workflows/untrusted_checkout_5.yml:14:9:17:6 | Uses Step | .github/workflows/untrusted_checkout_5.yml:17:9:21:6 | Uses Step |
+| .github/workflows/untrusted_checkout_5.yml:16:17:16:31 | env.HEAD | .github/workflows/untrusted_checkout_5.yml:14:9:17:6 | Uses Step |
 | .github/workflows/untrusted_checkout_5.yml:17:9:21:6 | Uses Step | .github/workflows/untrusted_checkout_5.yml:21:9:23:23 | Run Step |
 | .github/workflows/untrusted_checkout_6.yml:11:9:14:6 | Uses Step | .github/workflows/untrusted_checkout_6.yml:14:9:17:6 | Uses Step |
+| .github/workflows/untrusted_checkout_6.yml:13:17:13:57 | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout_6.yml:11:9:14:6 | Uses Step |
 | .github/workflows/untrusted_checkout_6.yml:14:9:17:6 | Uses Step | .github/workflows/untrusted_checkout_6.yml:17:9:21:6 | Uses Step |
+| .github/workflows/untrusted_checkout_6.yml:16:17:16:31 | env.HEAD | .github/workflows/untrusted_checkout_6.yml:14:9:17:6 | Uses Step |
 | .github/workflows/untrusted_checkout_6.yml:17:9:21:6 | Uses Step | .github/workflows/untrusted_checkout_6.yml:21:9:23:23 | Run Step |
 | .github/workflows/untrusted_checkout_no_needs.yml:8:9:16:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_no_needs.yml:16:9:22:2 | Run Step |
 | .github/workflows/untrusted_checkout_no_needs.yml:26:9:31:6 | Uses Step | .github/workflows/untrusted_checkout_no_needs.yml:31:9:31:23 | Run Step |
+| .github/workflows/untrusted_checkout_no_needs.yml:29:17:29:57 | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout_no_needs.yml:26:9:31:6 | Uses Step |
 | .github/workflows/untrusted_checkout_permission_check_reusable2.yml:8:9:16:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_permission_check_reusable2.yml:16:9:22:2 | Run Step |
 | .github/workflows/untrusted_checkout_permission_check_reusable.yml:8:9:16:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_permission_check_reusable.yml:16:9:22:2 | Run Step |
 | .github/workflows/untrusted_checkout_permission_check_reusable_level2.yml:8:9:16:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_permission_check_reusable_level2.yml:16:9:22:2 | Run Step |
 | .github/workflows/untrusted_checkout_permission_check_reusable_no_needs.yml:8:9:16:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_permission_check_reusable_no_needs.yml:16:9:22:2 | Run Step |
 | .github/workflows/untrusted_checkout_permissions_check.yml:8:9:16:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_permissions_check.yml:16:9:22:2 | Run Step |
 | .github/workflows/untrusted_checkout_permissions_check.yml:26:9:31:6 | Uses Step | .github/workflows/untrusted_checkout_permissions_check.yml:31:9:32:2 | Run Step |
+| .github/workflows/untrusted_checkout_permissions_check.yml:29:17:29:57 | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout_permissions_check.yml:26:9:31:6 | Uses Step |
 | .github/workflows/untrusted_checkout_permissions_check.yml:36:9:41:6 | Uses Step | .github/workflows/untrusted_checkout_permissions_check.yml:41:9:41:22 | Run Step |
+| .github/workflows/untrusted_checkout_permissions_check.yml:39:17:39:57 | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout_permissions_check.yml:36:9:41:6 | Uses Step |
 | .github/workflows/untrusted_checkout_two_callers_both_protected.yml:8:9:16:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_two_callers_both_protected.yml:16:9:22:2 | Run Step |
 | .github/workflows/untrusted_checkout_two_callers_both_protected.yml:30:9:38:6 | Uses Step: checkAccess | .github/workflows/untrusted_checkout_two_callers_both_protected.yml:38:9:44:2 | Run Step |
 | .github/workflows/workflow_run_untrusted_checkout.yml:13:9:16:6 | Uses Step | .github/workflows/workflow_run_untrusted_checkout.yml:16:9:18:31 | Uses Step |
+| .github/workflows/workflow_run_untrusted_checkout.yml:15:17:15:57 | github.event.workflow_run.head.sha | .github/workflows/workflow_run_untrusted_checkout.yml:13:9:16:6 | Uses Step |
+| .github/workflows/workflow_run_untrusted_checkout.yml:18:17:18:31 | env.HEAD | .github/workflows/workflow_run_untrusted_checkout.yml:16:9:18:31 | Uses Step |
 | .github/workflows/workflow_run_untrusted_checkout_2.yml:13:9:16:6 | Uses Step | .github/workflows/workflow_run_untrusted_checkout_2.yml:16:9:18:31 | Uses Step |
+| .github/workflows/workflow_run_untrusted_checkout_2.yml:15:17:15:57 | github.event.workflow_run.head.sha | .github/workflows/workflow_run_untrusted_checkout_2.yml:13:9:16:6 | Uses Step |
+| .github/workflows/workflow_run_untrusted_checkout_2.yml:18:17:18:31 | env.HEAD | .github/workflows/workflow_run_untrusted_checkout_2.yml:16:9:18:31 | Uses Step |
 | .github/workflows/workflow_run_untrusted_checkout_3.yml:13:9:16:6 | Uses Step | .github/workflows/workflow_run_untrusted_checkout_3.yml:16:9:18:31 | Uses Step |
+| .github/workflows/workflow_run_untrusted_checkout_3.yml:15:17:15:57 | github.event.workflow_run.head.sha | .github/workflows/workflow_run_untrusted_checkout_3.yml:13:9:16:6 | Uses Step |
+| .github/workflows/workflow_run_untrusted_checkout_3.yml:18:17:18:31 | env.HEAD | .github/workflows/workflow_run_untrusted_checkout_3.yml:16:9:18:31 | Uses Step |
 #select
-| .github/actions/dangerous-git-checkout/action.yml:6:7:11:4 | Uses Step | .github/actions/dangerous-git-checkout/action.yml:6:7:11:4 | Uses Step | .github/workflows/untrusted_checkout3.yml:13:9:13:23 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout3.yml:4:3:4:14 | workflow_run | workflow_run |
-| .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | .github/workflows/auto_ci.yml:32:9:37:6 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/auto_ci.yml:6:3:6:21 | pull_request_target | pull_request_target |
-| .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | .github/workflows/auto_ci.yml:48:9:52:2 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/auto_ci.yml:6:3:6:21 | pull_request_target | pull_request_target |
-| .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | .github/workflows/auto_ci.yml:79:9:84:6 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/auto_ci.yml:6:3:6:21 | pull_request_target | pull_request_target |
-| .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | .github/workflows/auto_ci.yml:84:9:93:6 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/auto_ci.yml:6:3:6:21 | pull_request_target | pull_request_target |
-| .github/workflows/dependabot3.yml:15:9:20:6 | Uses Step | .github/workflows/dependabot3.yml:15:9:20:6 | Uses Step | .github/workflows/dependabot3.yml:25:9:48:6 | Run Step: set-milestone | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/dependabot3.yml:3:5:3:23 | pull_request_target | pull_request_target |
-| .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:11:9:14:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:11:9:14:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:14:9:17:7 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout_permission_check_reusable2.yml:2:3:2:21 | pull_request_target | pull_request_target |
-| .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:11:9:14:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:11:9:14:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:14:9:17:7 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout_permission_check_reusable_branching_nested.yml:2:3:2:21 | pull_request_target | pull_request_target |
-| .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:11:9:14:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:11:9:14:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:14:9:17:7 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout_permission_check_reusable_no_needs.yml:2:3:2:21 | pull_request_target | pull_request_target |
-| .github/workflows/external/TestOrg/TestRepo/.github/workflows/reusable.yml:23:9:26:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/reusable.yml:23:9:26:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/reusable.yml:26:9:29:7 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/reusable_caller1.yaml:4:3:4:21 | pull_request_target | pull_request_target |
-| .github/workflows/gitcheckout.yml:10:11:18:8 | Run Step | .github/workflows/gitcheckout.yml:10:11:18:8 | Run Step | .github/workflows/gitcheckout.yml:21:11:23:22 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/gitcheckout.yml:2:3:2:21 | pull_request_target | pull_request_target |
-| .github/workflows/label_trusted_checkout2.yml:12:7:16:4 | Uses Step | .github/workflows/label_trusted_checkout2.yml:12:7:16:4 | Uses Step | .github/workflows/label_trusted_checkout2.yml:17:7:21:4 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/label_trusted_checkout2.yml:2:3:2:21 | pull_request_target | pull_request_target |
-| .github/workflows/level0.yml:99:9:103:6 | Uses Step | .github/workflows/level0.yml:99:9:103:6 | Uses Step | .github/workflows/level0.yml:107:9:112:2 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/level0.yml:5:3:5:15 | issue_comment | issue_comment |
-| .github/workflows/level0.yml:99:9:103:6 | Uses Step | .github/workflows/level0.yml:99:9:103:6 | Uses Step | .github/workflows/level0.yml:107:9:112:2 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/level0.yml:7:3:7:21 | pull_request_target | pull_request_target |
-| .github/workflows/level0.yml:125:9:129:6 | Uses Step | .github/workflows/level0.yml:125:9:129:6 | Uses Step | .github/workflows/level0.yml:133:9:135:23 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/level0.yml:5:3:5:15 | issue_comment | issue_comment |
-| .github/workflows/level0.yml:125:9:129:6 | Uses Step | .github/workflows/level0.yml:125:9:129:6 | Uses Step | .github/workflows/level0.yml:133:9:135:23 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/level0.yml:7:3:7:21 | pull_request_target | pull_request_target |
-| .github/workflows/poc2.yml:37:9:42:6 | Uses Step | .github/workflows/poc2.yml:37:9:42:6 | Uses Step | .github/workflows/poc2.yml:42:9:47:6 | Uses Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/poc2.yml:4:3:4:15 | issue_comment | issue_comment |
-| .github/workflows/poc2.yml:37:9:42:6 | Uses Step | .github/workflows/poc2.yml:37:9:42:6 | Uses Step | .github/workflows/poc2.yml:52:9:58:24 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/poc2.yml:4:3:4:15 | issue_comment | issue_comment |
-| .github/workflows/pr-workflow.yml:216:9:222:6 | Uses Step | .github/workflows/pr-workflow.yml:216:9:222:6 | Uses Step | .github/workflows/pr-workflow.yml:222:9:227:6 | Uses Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
-| .github/workflows/pr-workflow.yml:250:9:256:6 | Uses Step | .github/workflows/pr-workflow.yml:250:9:256:6 | Uses Step | .github/workflows/pr-workflow.yml:256:9:261:6 | Uses Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
-| .github/workflows/pr-workflow.yml:284:9:290:6 | Uses Step | .github/workflows/pr-workflow.yml:284:9:290:6 | Uses Step | .github/workflows/pr-workflow.yml:290:9:295:6 | Uses Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
-| .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:391:9:395:6 | Uses Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
-| .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:395:9:404:6 | Uses Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
-| .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:404:9:414:6 | Uses Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
-| .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:414:9:423:6 | Uses Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
-| .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:423:9:432:2 | Uses Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
-| .github/workflows/reusable_local.yml:23:9:26:6 | Uses Step | .github/workflows/reusable_local.yml:23:9:26:6 | Uses Step | .github/workflows/reusable_local.yml:26:9:29:7 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/reusable_caller3.yaml:4:3:4:21 | pull_request_target | pull_request_target |
-| .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:33:9:36:6 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
-| .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:36:9:39:6 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
-| .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:49:9:59:6 | Run Step: benchmark-pr | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
-| .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:59:9:60:6 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
-| .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:60:9:60:37 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
-| .github/workflows/test10.yml:20:9:25:6 | Uses Step | .github/workflows/test10.yml:20:9:25:6 | Uses Step | .github/workflows/test10.yml:25:9:30:2 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test10.yml:8:3:8:21 | pull_request_target | pull_request_target |
-| .github/workflows/test11.yml:84:7:90:4 | Uses Step | .github/workflows/test11.yml:84:7:90:4 | Uses Step | .github/workflows/test11.yml:90:7:93:54 | Uses Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test11.yml:5:3:5:15 | issue_comment | issue_comment |
-| .github/workflows/test17.yml:12:15:19:12 | Uses Step | .github/workflows/test17.yml:12:15:19:12 | Uses Step | .github/workflows/test17.yml:19:15:23:58 | Uses Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test17.yml:3:5:3:16 | workflow_run | workflow_run |
-| .github/workflows/test27.yml:18:9:21:6 | Uses Step | .github/workflows/test27.yml:18:9:21:6 | Uses Step | .github/workflows/test27.yml:21:9:22:16 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test26.yml:4:3:4:14 | workflow_run | workflow_run |
-| .github/workflows/test29.yml:8:7:14:4 | Uses Step | .github/workflows/test29.yml:8:7:14:4 | Uses Step | .github/workflows/test29.yml:14:7:21:11 | Uses Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test29.yml:1:5:1:23 | pull_request_target | pull_request_target |
-| .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step | .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step | .github/workflows/untrusted_checkout4.yml:35:7:41:4 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout4.yml:2:3:2:15 | issue_comment | issue_comment |
-| .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step | .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step | .github/workflows/untrusted_checkout4.yml:41:7:47:4 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout4.yml:2:3:2:15 | issue_comment | issue_comment |
-| .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step | .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step | .github/workflows/untrusted_checkout4.yml:47:7:51:46 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout4.yml:2:3:2:15 | issue_comment | issue_comment |
-| .github/workflows/untrusted_checkout.yml:8:9:11:6 | Uses Step | .github/workflows/untrusted_checkout.yml:8:9:11:6 | Uses Step | .github/workflows/untrusted_checkout.yml:15:9:18:2 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout.yml:2:3:2:21 | pull_request_target | pull_request_target |
-| .github/workflows/untrusted_checkout.yml:23:9:26:6 | Uses Step | .github/workflows/untrusted_checkout.yml:23:9:26:6 | Uses Step | .github/workflows/untrusted_checkout.yml:30:9:32:23 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout.yml:2:3:2:21 | pull_request_target | pull_request_target |
-| .github/workflows/untrusted_checkout_no_needs.yml:26:9:31:6 | Uses Step | .github/workflows/untrusted_checkout_no_needs.yml:26:9:31:6 | Uses Step | .github/workflows/untrusted_checkout_no_needs.yml:31:9:31:23 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout_no_needs.yml:2:3:2:21 | pull_request_target | pull_request_target |
-| .github/workflows/untrusted_checkout_permissions_check.yml:36:9:41:6 | Uses Step | .github/workflows/untrusted_checkout_permissions_check.yml:36:9:41:6 | Uses Step | .github/workflows/untrusted_checkout_permissions_check.yml:41:9:41:22 | Run Step | Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout_permissions_check.yml:2:3:2:21 | pull_request_target | pull_request_target |
+| .github/actions/dangerous-git-checkout/action.yml:6:7:11:4 | Uses Step | .github/actions/dangerous-git-checkout/action.yml:9:15:9:55 | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout3.yml:13:9:13:23 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/actions/dangerous-git-checkout/action.yml:9:15:9:55 | github.event.pull_request.head.sha | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout3.yml:4:3:4:14 | workflow_run | workflow_run |
+| .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | .github/workflows/auto_ci.yml:24:17:24:57 | github.event.pull_request.head.ref | .github/workflows/auto_ci.yml:32:9:37:6 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/auto_ci.yml:24:17:24:57 | github.event.pull_request.head.ref | github.event.pull_request.head.ref | .github/workflows/auto_ci.yml:6:3:6:21 | pull_request_target | pull_request_target |
+| .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | .github/workflows/auto_ci.yml:24:17:24:57 | github.event.pull_request.head.ref | .github/workflows/auto_ci.yml:48:9:52:2 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/auto_ci.yml:24:17:24:57 | github.event.pull_request.head.ref | github.event.pull_request.head.ref | .github/workflows/auto_ci.yml:6:3:6:21 | pull_request_target | pull_request_target |
+| .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | .github/workflows/auto_ci.yml:71:17:71:95 | github.event.pull_request.head.ref \|\| github.event.pull_request.base.ref | .github/workflows/auto_ci.yml:79:9:84:6 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/auto_ci.yml:71:17:71:95 | github.event.pull_request.head.ref \|\| github.event.pull_request.base.ref | github.event.pull_request.head.ref \|\| github.event.pull_request.base.ref | .github/workflows/auto_ci.yml:6:3:6:21 | pull_request_target | pull_request_target |
+| .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | .github/workflows/auto_ci.yml:71:17:71:95 | github.event.pull_request.head.ref \|\| github.event.pull_request.base.ref | .github/workflows/auto_ci.yml:84:9:93:6 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/auto_ci.yml:71:17:71:95 | github.event.pull_request.head.ref \|\| github.event.pull_request.base.ref | github.event.pull_request.head.ref \|\| github.event.pull_request.base.ref | .github/workflows/auto_ci.yml:6:3:6:21 | pull_request_target | pull_request_target |
+| .github/workflows/dependabot3.yml:15:9:20:6 | Uses Step | .github/workflows/dependabot3.yml:18:17:18:57 | github.event.pull_request.head.sha | .github/workflows/dependabot3.yml:25:9:48:6 | Run Step: set-milestone | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/dependabot3.yml:18:17:18:57 | github.event.pull_request.head.sha | github.event.pull_request.head.sha | .github/workflows/dependabot3.yml:3:5:3:23 | pull_request_target | pull_request_target |
+| .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:11:9:14:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:13:17:13:40 | inputs.COMMIT_SHA | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:14:9:17:7 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:13:17:13:40 | inputs.COMMIT_SHA | inputs.COMMIT_SHA | .github/workflows/untrusted_checkout_permission_check_reusable2.yml:2:3:2:21 | pull_request_target | pull_request_target |
+| .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:11:9:14:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:13:17:13:40 | inputs.COMMIT_SHA | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:14:9:17:7 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:13:17:13:40 | inputs.COMMIT_SHA | inputs.COMMIT_SHA | .github/workflows/untrusted_checkout_permission_check_reusable_branching_nested.yml:2:3:2:21 | pull_request_target | pull_request_target |
+| .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:11:9:14:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:13:17:13:40 | inputs.COMMIT_SHA | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:14:9:17:7 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/external/TestOrg/TestRepo/.github/workflows/build.yml:13:17:13:40 | inputs.COMMIT_SHA | inputs.COMMIT_SHA | .github/workflows/untrusted_checkout_permission_check_reusable_no_needs.yml:2:3:2:21 | pull_request_target | pull_request_target |
+| .github/workflows/external/TestOrg/TestRepo/.github/workflows/reusable.yml:23:9:26:6 | Uses Step | .github/workflows/external/TestOrg/TestRepo/.github/workflows/reusable.yml:25:17:25:36 | inputs.branch | .github/workflows/external/TestOrg/TestRepo/.github/workflows/reusable.yml:26:9:29:7 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/external/TestOrg/TestRepo/.github/workflows/reusable.yml:25:17:25:36 | inputs.branch | inputs.branch | .github/workflows/reusable_caller1.yaml:4:3:4:21 | pull_request_target | pull_request_target |
+| .github/workflows/gitcheckout.yml:10:11:18:8 | Run Step | .github/workflows/gitcheckout.yml:17:27:17:48 | github.head_ref | .github/workflows/gitcheckout.yml:21:11:23:22 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/gitcheckout.yml:17:27:17:48 | github.head_ref | github.head_ref | .github/workflows/gitcheckout.yml:2:3:2:21 | pull_request_target | pull_request_target |
+| .github/workflows/label_trusted_checkout2.yml:12:7:16:4 | Uses Step | .github/workflows/label_trusted_checkout2.yml:14:15:14:55 | github.event.pull_request.head.sha | .github/workflows/label_trusted_checkout2.yml:17:7:21:4 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/label_trusted_checkout2.yml:14:15:14:55 | github.event.pull_request.head.sha | github.event.pull_request.head.sha | .github/workflows/label_trusted_checkout2.yml:2:3:2:21 | pull_request_target | pull_request_target |
+| .github/workflows/level0.yml:99:9:103:6 | Uses Step | .github/workflows/level0.yml:102:17:102:57 | github.event.pull_request.head.sha | .github/workflows/level0.yml:107:9:112:2 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/level0.yml:102:17:102:57 | github.event.pull_request.head.sha | github.event.pull_request.head.sha | .github/workflows/level0.yml:5:3:5:15 | issue_comment | issue_comment |
+| .github/workflows/level0.yml:99:9:103:6 | Uses Step | .github/workflows/level0.yml:102:17:102:57 | github.event.pull_request.head.sha | .github/workflows/level0.yml:107:9:112:2 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/level0.yml:102:17:102:57 | github.event.pull_request.head.sha | github.event.pull_request.head.sha | .github/workflows/level0.yml:7:3:7:21 | pull_request_target | pull_request_target |
+| .github/workflows/level0.yml:125:9:129:6 | Uses Step | .github/workflows/level0.yml:128:17:128:57 | github.event.pull_request.head.sha | .github/workflows/level0.yml:133:9:135:23 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/level0.yml:128:17:128:57 | github.event.pull_request.head.sha | github.event.pull_request.head.sha | .github/workflows/level0.yml:5:3:5:15 | issue_comment | issue_comment |
+| .github/workflows/level0.yml:125:9:129:6 | Uses Step | .github/workflows/level0.yml:128:17:128:57 | github.event.pull_request.head.sha | .github/workflows/level0.yml:133:9:135:23 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/level0.yml:128:17:128:57 | github.event.pull_request.head.sha | github.event.pull_request.head.sha | .github/workflows/level0.yml:7:3:7:21 | pull_request_target | pull_request_target |
+| .github/workflows/poc2.yml:37:9:42:6 | Uses Step | .github/workflows/poc2.yml:40:17:40:54 | steps.branch-deploy.outputs.ref | .github/workflows/poc2.yml:42:9:47:6 | Uses Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/poc2.yml:40:17:40:54 | steps.branch-deploy.outputs.ref | steps.branch-deploy.outputs.ref | .github/workflows/poc2.yml:4:3:4:15 | issue_comment | issue_comment |
+| .github/workflows/poc2.yml:37:9:42:6 | Uses Step | .github/workflows/poc2.yml:40:17:40:54 | steps.branch-deploy.outputs.ref | .github/workflows/poc2.yml:52:9:58:24 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/poc2.yml:40:17:40:54 | steps.branch-deploy.outputs.ref | steps.branch-deploy.outputs.ref | .github/workflows/poc2.yml:4:3:4:15 | issue_comment | issue_comment |
+| .github/workflows/pr-workflow.yml:216:9:222:6 | Uses Step | .github/workflows/pr-workflow.yml:220:17:220:64 | inputs.github_event_pull_request_head_sha | .github/workflows/pr-workflow.yml:222:9:227:6 | Uses Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow.yml:220:17:220:64 | inputs.github_event_pull_request_head_sha | inputs.github_event_pull_request_head_sha | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
+| .github/workflows/pr-workflow.yml:250:9:256:6 | Uses Step | .github/workflows/pr-workflow.yml:254:17:254:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow.yml:256:9:261:6 | Uses Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow.yml:254:17:254:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
+| .github/workflows/pr-workflow.yml:284:9:290:6 | Uses Step | .github/workflows/pr-workflow.yml:288:17:288:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow.yml:290:9:295:6 | Uses Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow.yml:288:17:288:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
+| .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:389:17:389:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow.yml:391:9:395:6 | Uses Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow.yml:389:17:389:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
+| .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:389:17:389:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow.yml:395:9:404:6 | Uses Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow.yml:389:17:389:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
+| .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:389:17:389:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow.yml:404:9:414:6 | Uses Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow.yml:389:17:389:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
+| .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:389:17:389:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow.yml:414:9:423:6 | Uses Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow.yml:389:17:389:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
+| .github/workflows/pr-workflow.yml:386:9:391:6 | Uses Step | .github/workflows/pr-workflow.yml:389:17:389:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow.yml:423:9:432:2 | Uses Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/pr-workflow.yml:389:17:389:78 | inputs.github_event_pull_request_head_sha \|\| github.sha | inputs.github_event_pull_request_head_sha \|\| github.sha | .github/workflows/pr-workflow-fork.yaml:7:3:7:21 | pull_request_target | pull_request_target |
+| .github/workflows/reusable_local.yml:23:9:26:6 | Uses Step | .github/workflows/reusable_local.yml:25:17:25:36 | inputs.branch | .github/workflows/reusable_local.yml:26:9:29:7 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/reusable_local.yml:25:17:25:36 | inputs.branch | inputs.branch | .github/workflows/reusable_caller3.yaml:4:3:4:21 | pull_request_target | pull_request_target |
+| .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:22:27:22:58 | github.event.issue.number | .github/workflows/test7.yml:33:9:36:6 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test7.yml:22:27:22:58 | github.event.issue.number | github.event.issue.number | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
+| .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:22:27:22:58 | github.event.issue.number | .github/workflows/test7.yml:36:9:39:6 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test7.yml:22:27:22:58 | github.event.issue.number | github.event.issue.number | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
+| .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:22:27:22:58 | github.event.issue.number | .github/workflows/test7.yml:49:9:59:6 | Run Step: benchmark-pr | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test7.yml:22:27:22:58 | github.event.issue.number | github.event.issue.number | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
+| .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:22:27:22:58 | github.event.issue.number | .github/workflows/test7.yml:59:9:60:6 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test7.yml:22:27:22:58 | github.event.issue.number | github.event.issue.number | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
+| .github/workflows/test7.yml:19:9:24:6 | Uses Step | .github/workflows/test7.yml:22:27:22:58 | github.event.issue.number | .github/workflows/test7.yml:60:9:60:37 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test7.yml:22:27:22:58 | github.event.issue.number | github.event.issue.number | .github/workflows/test7.yml:4:3:4:15 | issue_comment | issue_comment |
+| .github/workflows/test10.yml:20:9:25:6 | Uses Step | .github/workflows/test10.yml:23:17:23:79 | github.event.after \|\| github.event.pull_request.head.sha | .github/workflows/test10.yml:25:9:30:2 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test10.yml:23:17:23:79 | github.event.after \|\| github.event.pull_request.head.sha | github.event.after \|\| github.event.pull_request.head.sha | .github/workflows/test10.yml:8:3:8:21 | pull_request_target | pull_request_target |
+| .github/workflows/test11.yml:84:7:90:4 | Uses Step | .github/workflows/test11.yml:88:15:88:55 | steps.environment.outputs.head_sha | .github/workflows/test11.yml:90:7:93:54 | Uses Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test11.yml:88:15:88:55 | steps.environment.outputs.head_sha | steps.environment.outputs.head_sha | .github/workflows/test11.yml:5:3:5:15 | issue_comment | issue_comment |
+| .github/workflows/test17.yml:12:15:19:12 | Uses Step | .github/workflows/test17.yml:16:25:16:68 | github.event.workflow_run.head_branch | .github/workflows/test17.yml:19:15:23:58 | Uses Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test17.yml:16:25:16:68 | github.event.workflow_run.head_branch | github.event.workflow_run.head_branch | .github/workflows/test17.yml:3:5:3:16 | workflow_run | workflow_run |
+| .github/workflows/test27.yml:18:9:21:6 | Uses Step | .github/workflows/test27.yml:20:17:20:37 | inputs.git_ref | .github/workflows/test27.yml:21:9:22:16 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test27.yml:20:17:20:37 | inputs.git_ref | inputs.git_ref | .github/workflows/test26.yml:4:3:4:14 | workflow_run | workflow_run |
+| .github/workflows/test29.yml:8:7:14:4 | Uses Step | .github/workflows/test29.yml:11:15:11:55 | github.event.pull_request.head.sha | .github/workflows/test29.yml:14:7:21:11 | Uses Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/test29.yml:11:15:11:55 | github.event.pull_request.head.sha | github.event.pull_request.head.sha | .github/workflows/test29.yml:1:5:1:23 | pull_request_target | pull_request_target |
+| .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step | .github/workflows/untrusted_checkout4.yml:33:15:33:67 | fromJSON(steps.get-pr.outputs.result).head.ref | .github/workflows/untrusted_checkout4.yml:35:7:41:4 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout4.yml:33:15:33:67 | fromJSON(steps.get-pr.outputs.result).head.ref | fromJSON(steps.get-pr.outputs.result).head.ref | .github/workflows/untrusted_checkout4.yml:2:3:2:15 | issue_comment | issue_comment |
+| .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step | .github/workflows/untrusted_checkout4.yml:33:15:33:67 | fromJSON(steps.get-pr.outputs.result).head.ref | .github/workflows/untrusted_checkout4.yml:41:7:47:4 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout4.yml:33:15:33:67 | fromJSON(steps.get-pr.outputs.result).head.ref | fromJSON(steps.get-pr.outputs.result).head.ref | .github/workflows/untrusted_checkout4.yml:2:3:2:15 | issue_comment | issue_comment |
+| .github/workflows/untrusted_checkout4.yml:29:7:35:4 | Uses Step | .github/workflows/untrusted_checkout4.yml:33:15:33:67 | fromJSON(steps.get-pr.outputs.result).head.ref | .github/workflows/untrusted_checkout4.yml:47:7:51:46 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout4.yml:33:15:33:67 | fromJSON(steps.get-pr.outputs.result).head.ref | fromJSON(steps.get-pr.outputs.result).head.ref | .github/workflows/untrusted_checkout4.yml:2:3:2:15 | issue_comment | issue_comment |
+| .github/workflows/untrusted_checkout.yml:8:9:11:6 | Uses Step | .github/workflows/untrusted_checkout.yml:10:17:10:57 | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout.yml:15:9:18:2 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout.yml:10:17:10:57 | github.event.pull_request.head.sha | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout.yml:2:3:2:21 | pull_request_target | pull_request_target |
+| .github/workflows/untrusted_checkout.yml:23:9:26:6 | Uses Step | .github/workflows/untrusted_checkout.yml:25:17:25:31 | env.HEAD | .github/workflows/untrusted_checkout.yml:30:9:32:23 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout.yml:25:17:25:31 | env.HEAD | env.HEAD | .github/workflows/untrusted_checkout.yml:2:3:2:21 | pull_request_target | pull_request_target |
+| .github/workflows/untrusted_checkout_no_needs.yml:26:9:31:6 | Uses Step | .github/workflows/untrusted_checkout_no_needs.yml:29:17:29:57 | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout_no_needs.yml:31:9:31:23 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout_no_needs.yml:29:17:29:57 | github.event.pull_request.head.sha | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout_no_needs.yml:2:3:2:21 | pull_request_target | pull_request_target |
+| .github/workflows/untrusted_checkout_permissions_check.yml:36:9:41:6 | Uses Step | .github/workflows/untrusted_checkout_permissions_check.yml:39:17:39:57 | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout_permissions_check.yml:41:9:41:22 | Run Step | Checkout of untrusted code from $@ in a privileged workflow with later potential execution (event trigger: $@). | .github/workflows/untrusted_checkout_permissions_check.yml:39:17:39:57 | github.event.pull_request.head.sha | github.event.pull_request.head.sha | .github/workflows/untrusted_checkout_permissions_check.yml:2:3:2:21 | pull_request_target | pull_request_target |

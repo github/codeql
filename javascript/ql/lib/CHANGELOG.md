@@ -1,3 +1,7 @@
+## 2.8.2
+
+No user-facing changes.
+
 ## 2.8.1
 
 ### Minor Analysis Improvements

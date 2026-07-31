@@ -1,0 +1,118 @@
+func classify(_ x: Int) {
+  switch x {
+  case 1:
+    fallthrough
+  default:
+    break
+  }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    expressionStmt
+                      expression:
+                        switchExpr
+                          leftBrace: {
+                          rightBrace: }
+                          cases:
+                            switchCase
+                              label:
+                                switchCaseLabel
+                                  colon: :
+                                  caseKeyword: case
+                                  caseItems:
+                                    switchCaseItem
+                                      pattern:
+                                        expressionPattern
+                                          expression:
+                                            integerLiteralExpr
+                                              literal: integerLiteral "1"
+                              statements:
+                                codeBlockItem
+                                  item:
+                                    fallThroughStmt
+                                      fallthroughKeyword: fallthrough
+                            switchCase
+                              label:
+                                switchDefaultLabel
+                                  colon: :
+                                  defaultKeyword: default
+                              statements:
+                                codeBlockItem
+                                  item:
+                                    breakStmt
+                                      breakKeyword: break
+                          subject:
+                            declReferenceExpr
+                              baseName: identifier "x"
+                          switchKeyword: switch
+          name: identifier "classify"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      firstName: _
+                      secondName: identifier "x"
+          funcKeyword: func
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          name: identifier "classify"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+          body:
+            block
+              stmt:
+                switch_expr
+                  value:
+                    name_expr
+                      identifier: identifier "x"
+                  case:
+                    switch_case
+                      pattern:
+                        expr_equality_pattern
+                          expr: int_literal "1"
+                      body:
+                        block
+                          stmt: unsupported_node "fallthrough"
+                    switch_case
+                      body:
+                        block
+                          stmt: break_expr "break"

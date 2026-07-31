@@ -117,6 +117,11 @@ where
 /// All standard primitive and string types implement [`YeastDisplay`] via
 /// the [`impl_yeast_display_via_display`] macro below. Coherence prevents a
 /// blanket `impl<T: Display>`, so additional types must be added explicitly.
+#[diagnostic::on_unimplemented(
+    message = "`{Self}` cannot be interpolated with `#{{...}}`",
+    note = "if the value is optional, mark the enclosing field's value with `?` to leave \
+            that field unset when it is absent, as in `label: (identifier #{{lbl}})?`"
+)]
 pub trait YeastDisplay {
     fn yeast_to_string(&self, ast: &Ast) -> String;
 }
@@ -180,6 +185,81 @@ impl<T: YeastDisplay + ?Sized> YeastDisplay for &T {
 impl<T: YeastSourceRange + ?Sized> YeastSourceRange for &T {
     fn yeast_source_range(&self, ast: &Ast) -> Option<Range> {
         (**self).yeast_source_range(ast)
+    }
+}
+
+/// Normalizes a `#{expr}` interpolation to an optional value, so that a
+/// fallible field — `field: (kind #{expr})?` — can tell "there is a value to
+/// interpolate" apart from "there is none, so leave the field unset".
+///
+/// Implemented for every [`YeastDisplay`] type, which always yields a value,
+/// and for `Option` of the same, which yields one only when it is `Some`.
+///
+/// The implementations are enumerated rather than blanket: a blanket
+/// `impl<T: YeastDisplay>` would overlap with the `Option<T>` impl, since
+/// coherence cannot rule out a future `impl YeastDisplay for Option<T>`.
+/// [`YeastDisplay`] itself is enumerated for the same reason.
+///
+/// Note that this is used *only* inside a fallible field. Elsewhere `#{expr}`
+/// still goes directly through [`YeastDisplay`], so interpolating an `Option`
+/// without a `?` remains a compile error rather than silently dropping a node.
+pub trait MaybeYeastValue {
+    /// The interpolated value's type, which knows how to render itself.
+    type Value: YeastDisplay + YeastSourceRange + ?Sized;
+
+    /// Returns the value to interpolate, or `None` to leave the field unset.
+    fn maybe_yeast_value(&self) -> Option<&Self::Value>;
+}
+
+macro_rules! impl_maybe_yeast_value {
+    ($($t:ty),* $(,)?) => {
+        $(
+            impl MaybeYeastValue for $t {
+                type Value = $t;
+                fn maybe_yeast_value(&self) -> Option<&$t> {
+                    Some(self)
+                }
+            }
+
+            impl MaybeYeastValue for Option<$t> {
+                type Value = $t;
+                fn maybe_yeast_value(&self) -> Option<&$t> {
+                    self.as_ref()
+                }
+            }
+        )*
+    };
+}
+
+impl_maybe_yeast_value! {
+    Id,
+    i8, i16, i32, i64, i128, isize,
+    u8, u16, u32, u64, u128, usize,
+    f32, f64,
+    bool, char,
+    String,
+}
+
+// `str` is unsized, so it has no `Option<str>` counterpart; `Option<&str>` is
+// covered by the reference impls below.
+impl MaybeYeastValue for str {
+    type Value = str;
+    fn maybe_yeast_value(&self) -> Option<&str> {
+        Some(self)
+    }
+}
+
+impl<T: MaybeYeastValue + ?Sized> MaybeYeastValue for &T {
+    type Value = T::Value;
+    fn maybe_yeast_value(&self) -> Option<&T::Value> {
+        (**self).maybe_yeast_value()
+    }
+}
+
+impl<T: MaybeYeastValue + ?Sized> MaybeYeastValue for Option<&T> {
+    type Value = T::Value;
+    fn maybe_yeast_value(&self) -> Option<&T::Value> {
+        (*self).and_then(MaybeYeastValue::maybe_yeast_value)
     }
 }
 
