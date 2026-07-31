@@ -5,4 +5,4 @@ on:
 
 jobs:
   second:
-    uses: ./.github/workflows/second.yml
+    uses: $/.github/workflows/second.yml

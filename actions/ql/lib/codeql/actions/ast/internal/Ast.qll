@@ -1441,7 +1441,11 @@ class UsesStepImpl extends StepImpl, UsesImpl {
     else result = u.getValue()
   }
 
-  private predicate isLocalCall() { u.getValue().matches(["./%", ".github/%"]) }
+  private predicate isWorkspaceLocalCall() { u.getValue().matches(["./%", ".github/%"]) }
+
+  private predicate isSelfCall() { u.getValue().matches("$/%") }
+
+  private predicate isLocalCall() { this.isWorkspaceLocalCall() or this.isSelfCall() }
 
   private predicate hasModeledExternalCallee() {
     exists(
@@ -1473,14 +1477,35 @@ class UsesStepImpl extends StepImpl, UsesImpl {
     )
   }
 
+  private string getSelfCallableName() {
+    exists(
+      CompositeActionImpl action, string owner, string repo, string action_path,
+      string requested_ref, string resolved_commit_sha, string local_path
+    |
+      action = this.getEnclosingCompositeAction() and
+      action
+          .getAnExternalCompositeActionModel(owner, repo, action_path, requested_ref,
+            resolved_commit_sha, local_path) and
+      result =
+        externalCompositeActionName(owner, repo, this.getCallee().suffix(2)) + "@" +
+          requested_ref.trim()
+    )
+    or
+    not this.hasExternalEnclosingCompositeAction() and
+    result = this.getCallee().suffix(2)
+  }
+
   override string getCallableName() {
-    this.isLocalCall() and
+    this.isWorkspaceLocalCall() and
     (
       this.hasModeledExternalEnclosingCompositeAction()
       or
       not this.hasExternalEnclosingCompositeAction()
     ) and
     result = this.getCallee()
+    or
+    this.isSelfCall() and
+    result = this.getSelfCallableName()
     or
     not this.isLocalCall() and
     this.hasModeledExternalCallee() and
@@ -1501,11 +1526,10 @@ class UsesStepImpl extends StepImpl, UsesImpl {
  * Gets a regular expression that parses an `owner/repo@version` reference within a `uses` field in an Actions job step.
  * local repo: octo-org/this-repo/.github/workflows/workflow-1.yml@172239021f7ba04fe7327647b213799853a9eb89
  * local repo: ./.github/workflows/workflow-2.yml
+ * local repo: $/.github/workflows/workflow-2.yml
  * remote repo: octo-org/another-repo/.github/workflows/workflow.yml@v1
  */
 private string repoUsesParser() { result = "([^/]+)/([^/]+)/([^@]+)@(.+)" }
-
-private string pathUsesParser() { result = "\\./(.+)" }
 
 class ExternalJobImpl extends JobImpl, UsesImpl {
   YamlScalar u;
@@ -1513,8 +1537,8 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
   ExternalJobImpl() { n.lookup("uses") = u }
 
   override string getCallee() {
-    if u.getValue().matches("./%")
-    then result = u.getValue().regexpCapture(pathUsesParser(), 1)
+    if u.getValue().matches(["./%", "$/%"])
+    then result = u.getValue().suffix(2)
     else
       result =
         u.getValue().regexpCapture(repoUsesParser(), 1) + "/" +
@@ -1522,7 +1546,7 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
           u.getValue().regexpCapture(repoUsesParser(), 3)
   }
 
-  private predicate isLocalCall() { u.getValue().matches("./%") }
+  private predicate isLocalCall() { u.getValue().matches(["./%", "$/%"]) }
 
   private predicate hasExternalEnclosingWorkflow() {
     exists(ReusableWorkflowImpl enclosing_workflow |

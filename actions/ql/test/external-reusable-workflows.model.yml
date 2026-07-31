@@ -20,5 +20,6 @@ extensions:
     data:
       - ["TestOrg", "Actions", "remote", "v1", "dddddddddddddddddddddddddddddddddddddddd", "9466014afba34ef28239871ceabf4132/TestOrg/Actions/ref-0wu7t20oora8i/remote/action.yml"]
       - ["TestOrg", "Actions", "remote", "v2", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "9466014afba34ef28239871ceabf4132/TestOrg/Actions/ref-3tf7yq1278i0t/remote/action.yml"]
+      - ["TestOrg", "Actions", ".github/actions/leaf", "v2", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "9466014afba34ef28239871ceabf4132/TestOrg/Actions/ref-3tf7yq1278i0t/.github/actions/leaf/action.yml"]
       - ["TestOrg", "TestRepo", ".github/actions/clone-repo", "main", "1111111111111111111111111111111111111111", "9466014afba34ef28239871ceabf4132/TestOrg/TestRepo/ref-07cp61dt7qne3/.github/actions/clone-repo/action.yaml"]
       - ["ultralytics", "actions", "", "main", "2222222222222222222222222222222222222222", "9466014afba34ef28239871ceabf4132/ultralytics/actions/ref-07cp61dt7qne3/action.yaml"]

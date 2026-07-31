@@ -1,5 +1,5 @@
 | 9466014afba34ef28239871ceabf4132/TestOrg/Actions/ref-0wu7t20oora8i/remote/action.yml:6:7:6:35 | Uses Step | ./.github/actions/leaf |  | .github/actions/leaf/action.yml |
-| 9466014afba34ef28239871ceabf4132/TestOrg/Actions/ref-3tf7yq1278i0t/remote/action.yml:6:7:6:35 | Uses Step | ./.github/actions/leaf |  | .github/actions/leaf/action.yml |
+| 9466014afba34ef28239871ceabf4132/TestOrg/Actions/ref-3tf7yq1278i0t/remote/action.yml:6:7:6:35 | Uses Step | $/.github/actions/leaf |  | 9466014afba34ef28239871ceabf4132/TestOrg/Actions/ref-3tf7yq1278i0t/.github/actions/leaf/action.yml |
 | .github/actions/root-v1/action.yml:6:7:6:38 | Uses Step | TestOrg/Actions/remote | v1 | 9466014afba34ef28239871ceabf4132/TestOrg/Actions/ref-0wu7t20oora8i/remote/action.yml |
 | .github/actions/root-v2/action.yml:6:7:6:38 | Uses Step | TestOrg/Actions/remote | v2 | 9466014afba34ef28239871ceabf4132/TestOrg/Actions/ref-3tf7yq1278i0t/remote/action.yml |
 | .github/workflows/caller.yml:10:9:11:6 | Uses Step | ./.github/actions/root-v1 |  | .github/actions/root-v1/action.yml |
