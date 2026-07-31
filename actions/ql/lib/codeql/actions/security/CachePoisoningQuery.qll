@@ -54,19 +54,13 @@ private predicate eventHasDefaultBranchCacheWriteAccess(Event event) {
   runsOnDefaultBranch(event) and event.getName() = defaultBranchCacheWriteEvent()
 }
 
-/** Holds if `job` can write to the cache scope of the default branch for `event`. */
+/**
+ * Holds if `job` can write to the cache scope of the default branch for `event`.
+ * Reusable workflow jobs inherit their caller's trigger event.
+ */
 predicate hasDefaultBranchCacheWriteAccess(LocalJob job, Event event) {
   job.getATriggerEvent() = event and
-  (
-    eventHasDefaultBranchCacheWriteAccess(event)
-    or
-    // the workflow caller runs in the context of the default branch
-    event.getName() = "workflow_call" and
-    exists(ExternalJob caller |
-      job.getEnclosingWorkflow().(ReusableWorkflow).getACaller() = caller and
-      eventHasDefaultBranchCacheWriteAccess(caller.getATriggerEvent())
-    )
-  )
+  eventHasDefaultBranchCacheWriteAccess(event)
 }
 
 abstract class CacheWritingStep extends Step {
