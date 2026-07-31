@@ -386,7 +386,6 @@ class GhSHACheckout extends SHACheckoutStep instanceof Run {
 private predicate isRunCheckoutReference(
   PRHeadCheckoutStep checkout, Expression reference, string variable
 ) {
-  checkout instanceof Run and
   reference = checkout.(Run).getInScopeEnvVarExpr(variable) and
   (
     checkout instanceof SHACheckoutStep and containsHeadSHA(reference.getExpression())
@@ -405,13 +404,10 @@ private predicate isRunCheckoutReference(
 
 /** Gets the expression that controls the untrusted checkout, if one can be identified. */
 AstNode getCheckoutReference(PRHeadCheckoutStep checkout) {
-  exists(UsesStep uses |
-    checkout = uses and
-    (
-      result = uses.getArgumentExpr("ref")
-      or
-      not exists(uses.getArgumentExpr("ref")) and result = uses.getArgumentExpr("repository")
-    )
+  exists(UsesStep uses | uses = checkout |
+    result = uses.getArgumentExpr("ref")
+    or
+    not exists(uses.getArgumentExpr("ref")) and result = uses.getArgumentExpr("repository")
   )
   or
   isRunCheckoutReference(checkout, result, _)
@@ -430,9 +426,6 @@ string getCheckoutReferenceText(AstNode reference) {
 
 /** Adds checkout-reference provenance before the checkout step in path queries. */
 predicate checkoutReferenceEdge(AstNode predecessor, AstNode successor) {
-  exists(PRHeadCheckoutStep checkout |
-    predecessor = getCheckoutReference(checkout) and
-    successor = checkout and
-    not predecessor = successor
-  )
+  predecessor = getCheckoutReference(successor) and
+  not predecessor = successor
 }

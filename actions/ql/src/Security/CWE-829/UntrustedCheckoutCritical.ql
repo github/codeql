@@ -19,11 +19,7 @@ import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.ControlChecks
 
 query predicate edges(AstNode predecessor, AstNode successor) {
-  exists(Step previous, Step next |
-    predecessor = previous and
-    successor = next and
-    previous.getNextStep() = next
-  )
+  predecessor.(Step).getNextStep() = successor
   or
   checkoutReferenceEdge(predecessor, successor)
 }
