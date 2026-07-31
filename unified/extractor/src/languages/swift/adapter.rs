@@ -262,7 +262,9 @@ fn parse_range(node: &Value) -> Option<Range> {
     })
 }
 
-/// The authoritative swift-syntax input node-types schema.
+/// The authoritative swift-syntax input node-types schema, generated from
+/// swift-syntax by `swift-syntax-rs/schemagen` (run
+/// `unified/scripts/regenerate-node-types.sh` to refresh it).
 /// [`json_to_ast`] seeds every parse with the schema built from this,
 /// pre-registering every input kind and field so rule matching never references
 /// a name absent from a given file's tree.

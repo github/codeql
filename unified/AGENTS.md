@@ -12,6 +12,8 @@ This is a CodeQL extractor based on tree-sitter.
 
 - The raw parse tree is described by `extractor/tree-sitter-swift/node-types.yml` and should be reviewed after grammar changes.
 
+- The trees produced by the swift-syntax front-end are described by `extractor/swift_node_types.yml`, which is generated from swift-syntax by `swift-syntax-rs/schemagen`. Do not edit it by hand; regenerate it with `scripts/regenerate-node-types.sh` (this one does need a local Swift toolchain) and review the diff after changing the pinned swift-syntax version.
+
 ## AST Mapping
 - The target AST shape is described by `extractor/ast_types.yml`.
 
