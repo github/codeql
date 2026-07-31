@@ -196,7 +196,10 @@ class WorkflowCommandClobberingFromFileReadSink extends OutputClobberingSink {
         clobbering_cmd.regexpMatch(["ls", Bash::fileReadCommand()] + "\\s.*") and
         (
           // - run: echo "foo=$(<pr-id.txt)"
-          clobbering_stmt.regexpMatch("echo.*" + clobbering_cmd + ".*")
+          exists(string echo, int echoOffset |
+            echo = clobbering_stmt.regexpFind("\\becho\\s+", _, echoOffset) and
+            clobbering_stmt.indexOf(clobbering_cmd, 0, echoOffset + echo.length()) >= 0
+          )
           or
           // A file content is printed to stdout
           // - run: cat pr-id.txt

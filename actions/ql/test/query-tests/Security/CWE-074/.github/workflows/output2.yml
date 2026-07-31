@@ -114,3 +114,13 @@ jobs:
         run: |
           # VULNERABLE: halt_error emits its input without JSON encoding
           jq '.value | halt_error(1)' pr-number.json
+      - id: clob18
+        run: |
+          # VULNERABLE: the file name contains regex metacharacters
+          echo "VALUE=$(cat 'pr[number](final).txt')"
+          echo "::set-output name=OUTPUT::SAFE"
+      - id: clob19
+        run: |
+          # VULNERABLE: echo is invoked through env
+          env echo "VALUE=$(cat 'pr[number](final).txt')"
+          echo "::set-output name=OUTPUT::SAFE"
