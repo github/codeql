@@ -41,8 +41,8 @@ private string getUnnormalizedLocalScriptPath(LocalScriptExecutionRunStep step) 
 
 private class ExecutionPathInput extends NormalizableFilepath {
   ExecutionPathInput() {
-    exists(LocalScriptExecutionRunStep step |
-      this = trimQuotes(getUnnormalizedLocalScriptPath(step))
+    exists(LocalScriptExecutionRunStep |
+      this = trimQuotes(getUnnormalizedLocalScriptPath(_))
     )
     or
     exists(LocalActionUsesStep step | this = step.getCallee())
@@ -109,19 +109,21 @@ where
   // the checkout is followed by a known poisonable step
   checkout.getAFollowingStep() = poisonable and
   (
-    poisonable instanceof Run and
+    // Check if the poisonable step is a local script execution step
+    // and the path of the command or script matches the path of the downloaded artifact
     (
-      // Check if the poisonable step is a local script execution step
-      // and the path of the command or script matches the path of the downloaded artifact
+      poisonable instanceof LocalScriptExecutionRunStep and
       checkoutContainsPath(checkout,
-        getUnnormalizedLocalScriptPath(poisonable.(LocalScriptExecutionRunStep)),
-        poisonable.(LocalScriptExecutionRunStep).getPath())
-      or
-      // Checking the path for non local script execution steps is very difficult
-      not poisonable instanceof LocalScriptExecutionRunStep
-      // Its not easy to extract the path from a non-local script execution step so skipping this check for now
-      // and isSubpath(poisonable.(Run).getWorkingDirectory(), checkout.getPath())
+        getUnnormalizedLocalScriptPath(poisonable), poisonable.getPath())
     )
+    or
+    // Checking the path for non local script execution steps is very difficult
+    (
+      poisonable instanceof Run and
+      not poisonable instanceof LocalScriptExecutionRunStep
+    )
+    // Its not easy to extract the path from a non-local script execution step so skipping this check for now
+    // and isSubpath(poisonable.(Run).getWorkingDirectory(), checkout.getPath())
     or
     poisonable instanceof UsesStep and
     (
