@@ -45,9 +45,7 @@ private string getUnnormalizedLocalScriptPath(LocalScriptExecutionRunStep step) 
 
 private class ExecutionPathInput extends NormalizableFilepath {
   ExecutionPathInput() {
-    exists(LocalScriptExecutionRunStep |
-      this = trimQuotes(getUnnormalizedLocalScriptPath(_))
-    )
+    this = trimQuotes(getUnnormalizedLocalScriptPath(_))
     or
     exists(LocalActionUsesStep step | this = step.getCallee())
   }
@@ -119,20 +117,16 @@ where
   (
     // Check if the poisonable step is a local script execution step
     // and the path of the command or script matches the path of the downloaded artifact
-    (
-      poisonable instanceof LocalScriptExecutionRunStep and
-      checkoutContainsPath(checkout,
-        getUnnormalizedLocalScriptPath(poisonable), poisonable.getPath())
-    )
+    poisonable instanceof LocalScriptExecutionRunStep and
+    checkoutContainsPath(checkout, getUnnormalizedLocalScriptPath(poisonable),
+      poisonable.(LocalScriptExecutionRunStep).getPath())
     or
     // Checking the path for non local script execution steps is very difficult
-    (
-      poisonable instanceof Run and
-      not poisonable instanceof LocalScriptExecutionRunStep
-    )
+    poisonable instanceof Run and
+    not poisonable instanceof LocalScriptExecutionRunStep
+    or
     // Its not easy to extract the path from a non-local script execution step so skipping this check for now
     // and isSubpath(poisonable.(Run).getWorkingDirectory(), checkout.getPath())
-    or
     poisonable instanceof UsesStep and
     (
       not poisonable instanceof LocalActionUsesStep and
