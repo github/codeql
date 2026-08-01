@@ -18,20 +18,30 @@ import codeql.actions.security.CachePoisoningQuery
 import codeql.actions.security.PoisonableSteps
 import codeql.actions.security.ControlChecks
 
-query predicate edges(Step a, Step b) { a.getNextStep() = b }
+query predicate edges(AstNode predecessor, AstNode successor) {
+  predecessor.(Step).getNextStep() = successor
+  or
+  checkoutReferenceEdge(predecessor, successor)
+}
 
-from LocalJob job, Event event, Step source, Step step, string message, string path
+from
+  LocalJob job, Event event, Step source, Step step, string message, string path,
+  AstNode untrustedInput, string untrustedInputText
 where
   // the job checkouts untrusted code from a pull request or downloads an untrusted artifact
   job.getAStep() = source and
   (
     source instanceof PRHeadCheckoutStep and
-    message = "due to privilege checkout of untrusted code." and
-    path = source.(PRHeadCheckoutStep).getPath()
+    message = "due to privilege checkout of untrusted code from" and
+    path = source.(PRHeadCheckoutStep).getPath() and
+    untrustedInput = getCheckoutReference(source) and
+    untrustedInputText = getCheckoutReferenceText(untrustedInput)
     or
     source instanceof UntrustedArtifactDownloadStep and
-    message = "due to downloading an untrusted artifact." and
-    path = source.(UntrustedArtifactDownloadStep).getPath()
+    message = "due to downloading" and
+    path = source.(UntrustedArtifactDownloadStep).getPath() and
+    untrustedInput = source and
+    untrustedInputText = "an untrusted artifact"
   ) and
   // the checkout/download is not controlled by an access check
   not exists(ControlCheck check |
@@ -57,6 +67,6 @@ where
   step instanceof PoisonableStep and
   // excluding privileged workflows since they can be exploited in easier circumstances
   not job.isPrivileged()
-select step, source, step,
-  "Potential cache poisoning in the context of the default branch " + message + " ($@).", event,
-  event.getName()
+select step, untrustedInput, step,
+  "Potential cache poisoning in the context of the default branch " + message + " $@. ($@).",
+  untrustedInput, untrustedInputText, event, event.getName()
