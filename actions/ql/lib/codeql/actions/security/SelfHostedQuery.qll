@@ -1,3 +1,8 @@
+/**
+ * DEPRECATED: Runner labels do not reliably distinguish self-hosted runners from managed runners.
+ */
+deprecated module;
+
 import actions
 
 bindingset[runner]
