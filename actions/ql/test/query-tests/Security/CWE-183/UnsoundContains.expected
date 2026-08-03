@@ -1,0 +1,2 @@
+| .github/workflows/unsound-contains.yml:10:15:10:72 | contains('refs/heads/main refs/heads/develop', github.ref) | The `contains()` call performs a substring match which can be bypassed. Use `fromJSON()` to create an array for a proper membership check. |
+| .github/workflows/unsound-contains.yml:14:15:14:53 | contains("refs/heads/main", github.ref) | The `contains()` call performs a substring match which can be bypassed. Use `fromJSON()` to create an array for a proper membership check. |
