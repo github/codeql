@@ -159,7 +159,7 @@ private class RawFilePathEntryPoint extends API::EntryPoint {
     )
   }
 
-  /** Gets the name of the path variable. */
+  /** Gets the file path being referenced. */
   string getPath() { result = path }
 }
 
