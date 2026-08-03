@@ -1878,7 +1878,7 @@ class MatrixExpressionImpl extends SimpleReferenceExpressionImpl {
         resolveMatrixAccessPath(s.getMatrix(), p).getNode(_) = v.getNode()
         or
         resolveMatrixAccessPath(
-          s.getMatrix().lookup("include").(YamlSequence).getElementNode(_).(YamlMappingLikeNode),
+          s.getMatrix().lookup("include").(YamlSequence).getElementNode(_),
           p
         ).getNode(_) = v.getNode()
       ) and
