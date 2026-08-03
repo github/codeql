@@ -75,7 +75,8 @@ module Ast implements AstSig<Location> {
 
   additional predicate skipControlFlow(AstNode e) {
     e instanceof TypeAccess and
-    not e instanceof TypeAccessPatternExpr
+    not e instanceof TypeAccessPatternExpr and
+    not any(CS::SpecificCatchClause sc).getTypeAccess() = e
     or
     not e.getFile().fromSource()
   }
@@ -90,6 +91,7 @@ module Ast implements AstSig<Location> {
   private AstNode getStmtChild0(Stmt s, int i) {
     not s instanceof FixedStmt and
     not s instanceof UsingBlockStmt and
+    not skipControlFlow(result) and
     result = s.getChild(i)
     or
     s =
@@ -145,6 +147,8 @@ module Ast implements AstSig<Location> {
   final private class ParameterFinal = CS::Parameter;
 
   class Parameter extends ParameterFinal {
+    AstNode getPattern() { result = this }
+
     Expr getDefaultValue() {
       // Avoid combinatorial explosions for callables with multiple bodies
       result = unique( | | super.getDefaultValue())
@@ -171,6 +175,10 @@ module Ast implements AstSig<Location> {
   class WhileStmt = CS::WhileStmt;
 
   class DoStmt = CS::DoStmt;
+
+  class UntilStmt extends LoopStmt {
+    UntilStmt() { none() }
+  }
 
   final private class FinalForStmt = CS::ForStmt;
 
@@ -203,7 +211,7 @@ module Ast implements AstSig<Location> {
   final private class FinalTryStmt = CS::TryStmt;
 
   class TryStmt extends FinalTryStmt {
-    Stmt getBody() { result = this.getBlock() }
+    AstNode getBody(int index) { index = 0 and result = this.getBlock() }
 
     CatchClause getCatch(int index) { result = this.getCatchClause(index) }
 
@@ -213,7 +221,12 @@ module Ast implements AstSig<Location> {
   final private class FinalCatchClause = CS::CatchClause;
 
   class CatchClause extends FinalCatchClause {
-    AstNode getVariable() { result = this.(CS::SpecificCatchClause).getVariableDeclExpr() }
+    AstNode getPattern() {
+      result = this.(CS::SpecificCatchClause).getVariableDeclExpr() or
+      result = this.(CS::SpecificCatchClause).getTypeAccess()
+    }
+
+    AstNode getVariable() { none() }
 
     Expr getCondition() { result = this.getFilterClause() }
 

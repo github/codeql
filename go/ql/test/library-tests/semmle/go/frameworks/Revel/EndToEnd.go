@@ -3,10 +3,11 @@ package main
 import (
 	"bytes"
 	"errors"
-	staticControllers "github.com/revel/modules/static/app/controllers"
-	"github.com/revel/revel"
 	"os"
 	"time"
+
+	staticControllers "github.com/revel/modules/static/app/controllers"
+	"github.com/revel/revel"
 )
 
 // Use typical inheritence pattern, per github.com/revel/examples/booking:
@@ -33,8 +34,8 @@ func (c MyRoute) Handler1() revel.Result {
 func (c MyRoute) Handler2() revel.Result {
 	// BAD: the RenderBinary function copies an `io.Reader` to the user's browser.
 	buf := &bytes.Buffer{}
-	buf.WriteString(c.Params.Form.Get("someField"))
-	return c.RenderBinary(buf, "index.html", revel.Inline, time.Now()) // $ responsebody='buf'
+	buf.WriteString(c.Params.Form.Get("someField"))                    // $ Source[go/reflected-xss]
+	return c.RenderBinary(buf, "index.html", revel.Inline, time.Now()) // $ responsebody='buf' Alert[go/reflected-xss]
 }
 
 func (c MyRoute) Handler3() revel.Result {
@@ -55,18 +56,18 @@ func (c MyRoute) Handler4() revel.Result {
 func (c MyRoute) Handler5() revel.Result {
 	// BAD: returning an arbitrary file (but this is detected at the os.Open call, not
 	// due to modelling Revel)
-	f, _ := os.Open(c.Params.Form.Get("someField"))
+	f, _ := os.Open(c.Params.Form.Get("someField")) // $ Alert[go/path-injection]
 	return c.RenderFile(f, revel.Inline)
 }
 
 func (c MyRoute) Handler6() revel.Result {
 	// BAD: returning an arbitrary file (detected as a user-controlled file-op, not XSS)
-	return c.RenderFileName(c.Params.Form.Get("someField"), revel.Inline)
+	return c.RenderFileName(c.Params.Form.Get("someField"), revel.Inline) // $ Alert[go/path-injection]
 }
 
 func (c MyRoute) Handler7() revel.Result {
 	// BAD: straightforward XSS
-	return c.RenderHTML(c.Params.Form.Get("someField")) // $ responsebody='call to Get'
+	return c.RenderHTML(c.Params.Form.Get("someField")) // $ responsebody='call to Get' Alert[go/reflected-xss]
 }
 
 func (c MyRoute) Handler8() revel.Result {
@@ -91,5 +92,5 @@ func (c MyRoute) Handler11() revel.Result {
 
 func (c MyRoute) Handler12() revel.Result {
 	// BAD: open redirect
-	return c.Redirect(c.Params.Form.Get("someField"))
+	return c.Redirect(c.Params.Form.Get("someField")) // $ Alert[go/unvalidated-url-redirection]
 }

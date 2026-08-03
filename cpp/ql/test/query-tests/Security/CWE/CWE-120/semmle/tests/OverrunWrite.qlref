@@ -1,1 +1,2 @@
-Security/CWE/CWE-120/OverrunWrite.ql
+query: Security/CWE/CWE-120/OverrunWrite.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -54,7 +54,7 @@ void CWE535_Info_Exposure_Shell_Error__w32_char_01_bad()
         if (LogonUserA(
                     username,
                     domain,
-                    password,
+                    password, // $ Source[cpp/potential-system-data-exposure]
                     LOGON32_LOGON_NETWORK,
                     LOGON32_PROVIDER_DEFAULT,
                     &pHandle) != 0)
@@ -67,6 +67,6 @@ void CWE535_Info_Exposure_Shell_Error__w32_char_01_bad()
             printLine("Unable to login.");
         }
         /* FLAW: Write sensitive data to stderr */
-        fprintf(stderr, "User attempted access with password: %s\n", password);
+        fprintf(stderr, "User attempted access with password: %s\n", password); // $ Alert[cpp/potential-system-data-exposure]
     }
 }

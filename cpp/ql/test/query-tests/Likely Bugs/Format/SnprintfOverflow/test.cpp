@@ -22,7 +22,7 @@ void test1(queue &numbers)
 
 	while (numbers.has_number())
 	{
-		pos += snprintf(&(buffer[pos]), 100 - pos, "%i, ", numbers.get_number()); // BAD
+		pos += snprintf(&(buffer[pos]), 100 - pos, "%i, ", numbers.get_number()); // $ Alert // BAD
 	}
 }
 
@@ -59,7 +59,7 @@ void test4(queue &numbers)
 
 	while (numbers.has_number())
 	{
-		amount = snprintf(ptr, remaining, "%i, ", numbers.get_number()); // BAD
+		amount = snprintf(ptr, remaining, "%i, ", numbers.get_number()); // $ Alert // BAD
 		ptr += amount;
 		remaining -= amount;
 	}
@@ -73,7 +73,7 @@ void test5(queue &numbers)
 
 	while (numbers.has_number())
 	{
-		ptr += snprintf(ptr, end - ptr, "%i, ", numbers.get_number()); // BAD
+		ptr += snprintf(ptr, end - ptr, "%i, ", numbers.get_number()); // $ Alert // BAD
 	}
 }
 
@@ -83,7 +83,7 @@ void test6(const char *sa, const char *sb)
 	int pos = 0;
 
 	pos = snprintf(buffer, 100, "'%s', ", sa);
-	pos += snprintf(&(buffer[pos]), 100 - pos, "'%s'.", sb); // BAD [NOT DETECTED]
+	pos += snprintf(&(buffer[pos]), 100 - pos, "'%s'.", sb); // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 size_t strlen(const char *str);
@@ -97,7 +97,7 @@ void test7(const char *strings) // separated by \0, terminated by \0\0
 
 	while (*strings != 0)
 	{
-		pos += snprintf_s(buffer + pos, sizeof(buffer) - pos, "%s\n", strings); // BAD
+		pos += snprintf_s(buffer + pos, sizeof(buffer) - pos, "%s\n", strings); // $ Alert // BAD
 			// (note that the protections built into `snprintf_s` appear to mean this is less likely
 			//  to be exploitable than with `snprintf`)
 		strings += strlen(strings) + 1;

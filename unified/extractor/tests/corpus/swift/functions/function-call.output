@@ -1,0 +1,42 @@
+foo(1, 2)
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionCallExpr
+          leftParen: (
+          rightParen: )
+          arguments:
+            labeledExpr
+              expression:
+                integerLiteralExpr
+                  literal: integerLiteral "1"
+              trailingComma: ,
+            labeledExpr
+              expression:
+                integerLiteralExpr
+                  literal: integerLiteral "2"
+          additionalTrailingClosures:
+          calledExpression:
+            declReferenceExpr
+              baseName: identifier "foo"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        call_expr
+          callee:
+            name_expr
+              identifier: identifier "foo"
+          argument:
+            argument
+              value: int_literal "1"
+            argument
+              value: int_literal "2"

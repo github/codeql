@@ -31,7 +31,7 @@ void f7(char *format, ...)
 
 int main(int argc, char *argv[])
 {
-	f1("", 1);	// BAD: not terminated with 0
+	f1("", 1);	// $ Alert // BAD: not terminated with 0
 	f1("", 1, 0);
 	f1("", 1, 1, 0);
 	f1("", 1, 1, 1, 0);
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 	f5("", 0);
 	f5("", 0);
 	f5("", 10);
-	
+
 	f6("a", 3, 8, -1);
 	f6("b", 7, 9, 10, -1);
 	f6("c", 1, 22, 6, 17, 2, -1);
@@ -75,13 +75,13 @@ int main(int argc, char *argv[])
 	f6("h", 5, -1);
 	f6("i", 5, 6, -1);
 	f6("j", 5, 6, 7, -1);
-	f6("k", 5, 6, argc); // BAD: not (necessarily) terminated with -1
-	f6("l"); // BAD: not terminated with -1
+	f6("k", 5, 6, argc); // $ Alert // BAD: not (necessarily) terminated with -1
+	f6("l"); // $ Alert // BAD: not terminated with -1
 
 	f7("", 0);
 	f7("", 0);
 	f7("", 0);
-	f7(""); // BAD: not terminated with 0
+	f7(""); // $ Alert // BAD: not terminated with 0
 	f7("", 0);
 	f7("", 0);
 	f7("", 0);

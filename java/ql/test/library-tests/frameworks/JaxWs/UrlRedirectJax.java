@@ -7,9 +7,9 @@ import javax.ws.rs.core.Response;
 public class UrlRedirectJax extends HttpServlet {
 	protected void doGetJax(HttpServletRequest request, Response jaxResponse) throws Exception {
 		// BAD
-		jaxResponse.seeOther(new URI(request.getParameter("target")));
+		jaxResponse.seeOther(new URI(request.getParameter("target"))); // $ Alert[java/unvalidated-url-redirection]
 
 		// BAD
-		jaxResponse.temporaryRedirect(new URI(request.getParameter("target")));
+		jaxResponse.temporaryRedirect(new URI(request.getParameter("target"))); // $ Alert[java/unvalidated-url-redirection]
 	}
 }

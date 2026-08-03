@@ -7,7 +7,7 @@ func test1() {
 	var y interface{} = x
 	fmt.Println(x == nil)
 	fmt.Println(x == y)
-	fmt.Println(y == nil) // NOT OK
+	fmt.Println(y == nil) // $ Alert // NOT OK
 }
 
 func test2() {

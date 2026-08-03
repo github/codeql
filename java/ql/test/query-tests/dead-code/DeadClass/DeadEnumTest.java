@@ -1,5 +1,5 @@
 public class DeadEnumTest {
-  public enum DeadEnum {
+  public enum DeadEnum { // $ Alert
     A
   }
 

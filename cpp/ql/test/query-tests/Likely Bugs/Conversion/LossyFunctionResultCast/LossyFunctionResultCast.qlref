@@ -1,1 +1,2 @@
-Likely Bugs/Conversion/LossyFunctionResultCast.ql
+query: Likely Bugs/Conversion/LossyFunctionResultCast.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

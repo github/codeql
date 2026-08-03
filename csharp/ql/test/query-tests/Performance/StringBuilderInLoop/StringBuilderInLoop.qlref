@@ -1,1 +1,2 @@
-Performance/StringBuilderInLoop.ql
+query: Performance/StringBuilderInLoop.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,1 +1,2 @@
-Likely Bugs/Statements/ImpossibleCast.ql
+query: Likely Bugs/Statements/ImpossibleCast.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -4,11 +4,11 @@ import java.util.zip.*;
 
 public class ZipTest {
   public void m1(ZipEntry entry, File dir) throws Exception {
-    String name = entry.getName();
+    String name = entry.getName(); // $ Alert[java/zipslip]
     File file = new File(dir, name);
-    FileOutputStream os = new FileOutputStream(file); // ZipSlip
-    RandomAccessFile raf = new RandomAccessFile(file, "rw"); // ZipSlip
-    FileWriter fw = new FileWriter(file); // ZipSlip
+    FileOutputStream os = new FileOutputStream(file); // $ Sink[java/zipslip] // ZipSlip
+    RandomAccessFile raf = new RandomAccessFile(file, "rw"); // $ Sink[java/zipslip] // ZipSlip
+    FileWriter fw = new FileWriter(file); // $ Sink[java/zipslip] // ZipSlip
   }
 
   public void m2(ZipEntry entry, File dir) throws Exception {

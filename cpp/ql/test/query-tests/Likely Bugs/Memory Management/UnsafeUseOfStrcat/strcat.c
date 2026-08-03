@@ -19,7 +19,6 @@ void f(void) {
     output4[0] = '\0';
     strcat(output1, str1);
     strcat(output2, str1);
-    strcat(output3, str2); // Bad, as str2 gets reassigned
-    strcat(output4, str3); // Bad, as str3 gets fiddled with
+    strcat(output3, str2); // $ Alert // Bad, as str2 gets reassigned
+    strcat(output4, str3); // $ Alert // Bad, as str3 gets fiddled with
 }
-

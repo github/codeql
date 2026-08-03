@@ -1,1 +1,2 @@
-Likely Bugs/Serialization/NonSerializableInnerClass.ql
+query: Likely Bugs/Serialization/NonSerializableInnerClass.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

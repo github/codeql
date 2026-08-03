@@ -91,7 +91,6 @@ fastifyApp.get('/bar', expensiveHandler1);
 
 // Fastify per-route rate limiting via config.rateLimit
 const fastifyApp2 = require('fastify')();
-fastifyApp2.register(require('@fastify/rate-limit'));
 
 fastifyApp2.post('/login', {
   config: {
@@ -110,3 +109,10 @@ fastifyApp2.post('/signup', {
 }, expensiveHandler1); // OK - has per-route rateLimit directly in options
 
 fastifyApp2.post('/other', expensiveHandler1); // $ Alert - no rate limiting
+
+// rate limiting using the scoped package name
+const fastifyApp3 = require('fastify')();
+
+fastifyApp3.get('/before-rate-limit', expensiveHandler1); // $ Alert
+fastifyApp3.register(require('@fastify/rate-limit'));
+fastifyApp3.get('/after-rate-limit', expensiveHandler1);

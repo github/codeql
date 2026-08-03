@@ -17,9 +17,9 @@ public:
 // ---
 
 void test2_1(InputSource &data) {
-	SAXParser *p = new SAXParser();
+	SAXParser *p = new SAXParser(); // $ Source
 
-	p->parse(data); // BAD (parser not correctly configured)
+	p->parse(data); // $ Alert // BAD (parser not correctly configured)
 }
 
 void test2_2(InputSource &data) {
@@ -30,11 +30,11 @@ void test2_2(InputSource &data) {
 }
 
 void test2_3(InputSource &data) {
-	SAXParser *p = new SAXParser();
+	SAXParser *p = new SAXParser(); // $ Source
 	bool v = false;
 
 	p->setDisableDefaultEntityResolution(v);
-	p->parse(data); // BAD (parser not correctly configured)
+	p->parse(data); // $ Alert // BAD (parser not correctly configured)
 }
 
 void test2_4(InputSource &data) {
@@ -46,9 +46,9 @@ void test2_4(InputSource &data) {
 }
 
 void test2_5(InputSource &data) {
-	SAXParser p;
+	SAXParser p; // $ Source
 
-	p.parse(data); // BAD (parser not correctly configured)
+	p.parse(data); // $ Alert // BAD (parser not correctly configured)
 }
 
 void test2_6(InputSource &data) {

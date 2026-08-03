@@ -31,7 +31,7 @@ unsigned char * badResize_0(unsigned char * buffer,size_t currentSize,size_t new
 	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
 	if (currentSize < newSize)
 	{
-		buffer = (unsigned char *)realloc(buffer, newSize);
+		buffer = (unsigned char *)realloc(buffer, newSize); // $ Alert
 	}
 	return buffer;
 }
@@ -60,7 +60,7 @@ unsigned char * badResize_1_0(unsigned char * buffer,size_t currentSize,size_t n
 	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
 	if (currentSize < newSize)
 	{
-		buffer = (unsigned char *)realloc(buffer, newSize);
+		buffer = (unsigned char *)realloc(buffer, newSize); // $ Alert
 	}
 	return buffer;
 }
@@ -136,7 +136,7 @@ unsigned char * badResize_1_1(unsigned char * buffer,size_t currentSize,size_t n
 	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
 	if (currentSize < newSize)
 	{
-		buffer = (unsigned char *)realloc(buffer, newSize);
+		buffer = (unsigned char *)realloc(buffer, newSize); // $ Alert
 	}
 	if(!buffer)
 		aFakeFailed_1(1, 1);
@@ -183,7 +183,7 @@ unsigned char * badResize_2_0(unsigned char * buffer,size_t currentSize,size_t n
 	assert(buffer!=0);
 	if (currentSize < newSize)
 	{
-		buffer = (unsigned char *)realloc(buffer, newSize);
+		buffer = (unsigned char *)realloc(buffer, newSize); // $ Alert
 	}
 	return buffer;
 }
@@ -279,7 +279,7 @@ unsigned char *goodResize_3_1(unsigned char *buffer, size_t currentSize, size_t 
 	unsigned char *tmp = buffer;
 	if (currentSize < newSize)
 	{
-		buffer = (unsigned char *)realloc(buffer, newSize);
+		buffer = (unsigned char *)realloc(buffer, newSize); // $ Alert
 		if (buffer == NULL)
 		{
 			free(tmp);
@@ -296,7 +296,7 @@ unsigned char *goodResize_3_2(unsigned char *buffer, size_t currentSize, size_t 
 	unsigned char *tmp = buffer;
 	if (currentSize < newSize)
 	{
-		tmp = (unsigned char *)realloc(tmp, newSize);
+		tmp = (unsigned char *)realloc(tmp, newSize); // $ Alert
 		if (tmp != 0)
 		{
 			buffer = tmp;
@@ -325,7 +325,7 @@ unsigned char * badResize_5_2(unsigned char *buffer, size_t currentSize, size_t 
 	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
 	if (currentSize < newSize)
 	{
-		buffer = (unsigned char *)realloc(buffer, newSize);
+		buffer = (unsigned char *)realloc(buffer, newSize); // $ Alert
 	}
 	if (cond)
 	{
@@ -339,7 +339,7 @@ unsigned char * badResize_5_1(unsigned char *buffer, size_t currentSize, size_t 
 	// BAD: on unsuccessful call to realloc, we will lose a pointer to a valid memory block
 	if (currentSize < newSize)
 	{
-		buffer = (unsigned char *)realloc(buffer, newSize);
+		buffer = (unsigned char *)realloc(buffer, newSize); // $ Alert
 		assert(cond); // irrelevant
 	}
 	return buffer;

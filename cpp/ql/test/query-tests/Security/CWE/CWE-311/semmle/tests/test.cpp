@@ -42,7 +42,7 @@ void file() {
   FILE *file;
 
   // BAD: write password to file in cleartext
-  fputs(thePassword, file);
+  fputs(thePassword, file); // $ Alert[cpp/cleartext-storage-file]
 
   // GOOD: encrypt first
   char *encrypted = encrypt(thePassword);
@@ -50,12 +50,12 @@ void file() {
 }
 
 // test for CleartextBufferWrite
-int main(int argc, char** argv) {
+int main(int argc, char** argv) { // $ Source[cpp/cleartext-storage-buffer]
   char *input = argv[2];
   char *passwd;
 
   // BAD: write password to buffer in cleartext
-  sprintf(passwd, "%s", input);
+  sprintf(passwd, "%s", input); // $ Alert[cpp/cleartext-storage-buffer]
 
   // GOOD: encrypt first
   sprintf(passwd, "%s", encrypt(input)); 
@@ -67,10 +67,10 @@ void stream() {
   ofstream mystream;
 
   // BAD: write password to file in cleartext
-  mystream << "the password is: " << thePassword;
+  mystream << "the password is: " << thePassword; // $ Alert[cpp/cleartext-storage-file] Source[cpp/cleartext-storage-file]
 
   // BAD: write password to file in cleartext
-  (mystream << "the password is: ").write(thePassword, strlen(thePassword));
+  (mystream << "the password is: ").write(thePassword, strlen(thePassword)); // $ Alert[cpp/cleartext-storage-file]
 
   // GOOD: encrypt first
   char *encrypted = encrypt(thePassword);

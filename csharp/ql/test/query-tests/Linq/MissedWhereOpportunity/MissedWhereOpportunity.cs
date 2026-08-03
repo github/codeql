@@ -13,7 +13,7 @@ class MissedWhereOpportunity
                 continue;
             Console.WriteLine(i);
             Console.WriteLine((i / 2));
-        }
+        } // $ Alert
 
         // BAD: Can be replaced with lst.Where(e => e % 2 == 0)
         foreach (int i in lst)
@@ -23,7 +23,7 @@ class MissedWhereOpportunity
                 Console.WriteLine(i);
                 Console.WriteLine((i / 2));
             }
-        }
+        } // $ Alert
     }
 
     public void M2(NonEnumerableClass nec)
@@ -49,7 +49,7 @@ class MissedWhereOpportunity
                 Console.WriteLine(n);
                 Console.WriteLine((n / 2));
             }
-        }
+        } // $ Alert
     }
 
     public void M4(Array arr)
@@ -73,7 +73,7 @@ class MissedWhereOpportunity
             {
                 Console.WriteLine(element);
             }
-        }
+        } // $ Alert
     }
 
     public class NonEnumerableClass

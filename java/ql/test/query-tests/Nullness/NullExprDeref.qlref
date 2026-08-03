@@ -1,1 +1,2 @@
-Likely Bugs/Nullness/NullExprDeref.ql
+query: Likely Bugs/Nullness/NullExprDeref.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -16,11 +16,11 @@ app.get('/check-with-axios', req => {
   const hardcoded = 'hardcodeado';
 
   axios.get('test.com/' + hardcoded); // OK
-  axios.get('test.com/' + req.query.tainted); // SSRF
+  axios.get('test.com/' + req.query.tainted); // $ Alert // SSRF
   axios.get('test.com/' + Number(req.query.tainted)); // OK
   axios.get('test.com/' + req.user.id); // OK
   axios.get('test.com/' + encodeURIComponent(req.query.tainted)); // OK
-  axios.get(`/addresses/${req.query.tainted}`); // SSRF
+  axios.get(`/addresses/${req.query.tainted}`); // $ Alert // SSRF
   axios.get(`/addresses/${encodeURIComponent(req.query.tainted)}`); // OK
   
   if (Number.isInteger(req.query.tainted)) {
@@ -30,11 +30,11 @@ app.get('/check-with-axios', req => {
   if (isValidInput(req.query.tainted)){
     axios.get('test.com/' + req.query.tainted); // OK
   } else {
-    axios.get('test.com/' + req.query.tainted); // SSRF
+    axios.get('test.com/' + req.query.tainted); // $ Alert // SSRF
   }
 
   if (doesntCheckAnything(req.query.tainted)) {
-    axios.get('test.com/' + req.query.tainted); // SSRF
+    axios.get('test.com/' + req.query.tainted); // $ Alert // SSRF
   }
 
   if (isValidPath(req.query.tainted, VALID_PATHS)) {
@@ -42,7 +42,7 @@ app.get('/check-with-axios', req => {
   }
 
   let baseURL = require('config').base
-  axios.get(`${baseURL}${req.query.tainted}`); // SSRF
+  axios.get(`${baseURL}${req.query.tainted}`); // $ Alert // SSRF
 
   if(!isValidInput(req.query.tainted)) {
     return;

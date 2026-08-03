@@ -19,9 +19,10 @@ private predicate loop_entry_variables(EssaVariable pred, EssaVariable succ) {
 private predicate loop_entry_edge(BasicBlock pred, BasicBlock loop) {
   pred = loop.getAPredecessor() and
   pred = loop.getImmediateDominator() and
-  exists(Stmt s |
+  exists(Stmt s, ControlFlowNode sCfg |
     loop_probably_executes_at_least_once(s) and
-    s.getAFlowNode().getBasicBlock() = loop
+    sCfg.getNode() = s and
+    sCfg.getBasicBlock() = loop
   )
 }
 

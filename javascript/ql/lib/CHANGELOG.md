@@ -1,3 +1,24 @@
+## 2.8.2
+
+No user-facing changes.
+
+## 2.8.1
+
+### Minor Analysis Improvements
+
+* Added support for Angular's `@HostListener('window:message', ...)` and `@HostListener('document:message', ...)` decorators as `postMessage` event handlers. The decorated method's event parameter is now recognized as a client-side remote flow source, and is considered by the `js/missing-origin-check` query.
+
+## 2.8.0
+
+### New Features
+
+* Added `UseMemoDirective` and `UseNoMemoDirective` classes to model the React compiler directives `"use memo"` and `"use no memo"`.
+
+### Minor Analysis Improvements
+
+* Added more prompt-injection sinks for the OpenAI, Anthropic, and Google GenAI SDKs: OpenAI `videos.create`/`edit`/`extend`/`remix` (Sora) prompts and `beta.realtime.sessions.create` instructions, Anthropic legacy `completions.create` prompts, and Google GenAI `caches.create` cached contents and system instructions.
+* The OpenAI legacy `completions.create` prompt is now treated as a user-prompt-injection sink instead of a system-prompt-injection sink, since the legacy `/v1/completions` endpoint takes a single free-form prompt with no role separation.
+
 ## 2.7.2
 
 ### Minor Analysis Improvements

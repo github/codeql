@@ -13,8 +13,8 @@ FILE *f;
 int main(int argc, char **argv) {
 	// BAD: i1 comes from the user
 	char i1[1024];
-	fread(i1, sizeof(char), 1024, f);
-	printf(i1);
+	fread(i1, sizeof(char), 1024, f); // $ Source
+	printf(i1); // $ Alert
 
 	// GOOD: i2 comes from the user, but is not the format string here
 	char i2[1024];
@@ -23,39 +23,39 @@ int main(int argc, char **argv) {
 
 	// BAD: i3 comes from the user
 	char i3[1024];
-	fgets(i3, 1, 0);
-	printf(i3);
+	fgets(i3, 1, 0); // $ Source
+	printf(i3); // $ Alert
 
 	// BAD: i4 comes from the user
 	char i41[1024];
-	char *i4 = fgets(i41, 1, f);
-	printf(i4);
+	char *i4 = fgets(i41, 1, f); // $ Source
+	printf(i4); // $ Alert
 
 	// BAD: i5 comes from the user
 	char i5[1024];
-	gets(i5);
-	printf(i5);
+	gets(i5); // $ Source
+	printf(i5); // $ Alert
 
 	// BAD: i6 comes from the user
 	char i61[1024];
-	char *i6 = gets(i61);
-	printf(i6);
+	char *i6 = gets(i61); // $ Source
+	printf(i6); // $ Alert
 
 	// BAD: i7 comes from the user
 	char **i7;
-	gets(*i7);
-	printf(*i7);
+	gets(*i7); // $ Source
+	printf(*i7); // $ Alert
 
 	// BAD: i8 comes from the user
 	char i81[1024];
 	char **i8;
-	*i8 = gets(i81);
-	printf(*i8);
+	*i8 = gets(i81); // $ Source
+	printf(*i8); // $ Alert
 
 	// BAD: e1 comes from i1, which comes from the user
 	char e1[1];
 	e1[0] = i1[0];
-	printf(e1);
+	printf(e1); // $ Alert
 
 	return 0;
 }

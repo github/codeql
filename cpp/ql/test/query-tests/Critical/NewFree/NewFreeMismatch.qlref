@@ -1,1 +1,2 @@
-Critical/NewFreeMismatch.ql
+query: Critical/NewFreeMismatch.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

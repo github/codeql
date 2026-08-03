@@ -2,7 +2,7 @@ using System;
 
 class NoConstantsOnly
 {
-    abstract class MathConstants
+    abstract class MathConstants // $ Alert
     {
         public const double Pi = 3.14; // BAD
     }

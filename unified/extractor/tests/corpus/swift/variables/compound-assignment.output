@@ -1,0 +1,32 @@
+x += 1
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "+="
+          leftOperand:
+            declReferenceExpr
+              baseName: identifier "x"
+          rightOperand:
+            integerLiteralExpr
+              literal: integerLiteral "1"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        compound_assign_expr
+          target:
+            name_expr
+              identifier: identifier "x"
+          operator: infix_operator "+="
+          value: int_literal "1"

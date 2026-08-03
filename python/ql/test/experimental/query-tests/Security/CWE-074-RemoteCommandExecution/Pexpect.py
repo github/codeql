@@ -12,10 +12,10 @@ ssh.login(hostname, username, password)
 app = FastAPI()
 
 @app.get("/bad1")
-async def bad1(cmd: str):
-    ssh.send(cmd)  # $ result=BAD getRemoteCommand=cmd
+async def bad1(cmd: str):  # $ Source
+    ssh.send(cmd)  # $ Alert result=BAD getRemoteCommand=cmd
     ssh.prompt()
-    ssh.sendline(cmd)  # $ result=BAD getRemoteCommand=cmd
+    ssh.sendline(cmd)  # $ Alert result=BAD getRemoteCommand=cmd
     ssh.prompt()
     ssh.logout()
     return {"success": stdout}

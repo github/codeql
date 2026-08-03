@@ -7,7 +7,6 @@ use serde_json::{json, Value};
 
 pub mod build;
 pub mod captures;
-pub mod cursor;
 pub mod dump;
 pub mod node_types_yaml;
 pub mod query;
@@ -16,35 +15,99 @@ pub mod schema;
 pub mod tree_builder;
 mod visitor;
 
-pub use yeast_macros::{query, rule, tree, trees};
+pub use range::{Point, Range};
+pub use yeast_macros::{query, rule, rules, tree, trees};
 
 use captures::Captures;
-pub use cursor::Cursor;
 use query::QueryNode;
 
-/// Node ids are indexes into the arena
-pub type Id = usize;
-
-/// Field and Kind ids are provided by tree-sitter
-type FieldId = u16;
-type KindId = u16;
-
-/// A typed reference to a node in an [`Ast`] arena. Wraps an [`Id`] but
-/// deliberately does not implement [`std::fmt::Display`]: rendering a node
-/// requires the [`Ast`] it lives in (to resolve [`NodeContent::Range`] back
-/// to source text). Use [`YeastDisplay::yeast_to_string`] to format it.
-#[derive(Copy, Clone, Eq, PartialEq, Debug, Hash)]
-pub struct NodeRef(pub Id);
-
-impl NodeRef {
-    pub fn id(self) -> Id {
-        self.0
+impl From<tree_sitter::Point> for Point {
+    fn from(p: tree_sitter::Point) -> Self {
+        Point {
+            row: p.row,
+            column: p.column,
+        }
     }
 }
 
-impl From<NodeRef> for Id {
-    fn from(value: NodeRef) -> Self {
+impl From<tree_sitter::Range> for Range {
+    fn from(r: tree_sitter::Range) -> Self {
+        Range {
+            start_byte: r.start_byte,
+            end_byte: r.end_byte,
+            start_point: r.start_point.into(),
+            end_point: r.end_point.into(),
+        }
+    }
+}
+
+/// Node id: an index into the [`Ast`] arena. A newtype around `usize`
+/// rather than a bare alias so that it can carry its own
+/// [`YeastDisplay`] / [`YeastSourceRange`] / [`IntoFieldIds`] impls
+/// without colliding with the impls for plain integers.
+///
+/// Use `id.0` (or `id.into()`) to obtain the raw arena index.
+///
+/// Implements [`IntoIterator`] as a singleton (`iter::once(self)`)
+/// so that a bare `Id` can be used interchangeably with `Option<Id>`
+/// / `Vec<Id>` in places that expect an iterable of ids (e.g.
+/// [`crate::build::BuildCtx::translate`] and the field-splice
+/// interpolation via [`IntoFieldIds`]).
+#[repr(transparent)]
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Debug, Hash, Serialize)]
+pub struct Id(pub usize);
+
+impl From<usize> for Id {
+    fn from(value: usize) -> Self {
+        Id(value)
+    }
+}
+
+impl From<Id> for usize {
+    fn from(value: Id) -> Self {
         value.0
+    }
+}
+
+impl IntoIterator for Id {
+    type Item = Id;
+    type IntoIter = std::iter::Once<Id>;
+    fn into_iter(self) -> Self::IntoIter {
+        std::iter::once(self)
+    }
+}
+
+/// Field and Kind ids are provided by tree-sitter
+type FieldId = yeast_schema::FieldId;
+type KindId = yeast_schema::KindId;
+
+/// Sentinel field id used to mean "the implicit unfielded slot".
+/// Re-exported from `yeast-schema` so the runtime and the schema share a
+/// single value.
+pub use yeast_schema::CHILD_FIELD;
+
+/// Trait for values that can be appended to a field's id list inside a
+/// `tree!`/`trees!`/`rule!` template (in `{expr}` placeholders).
+///
+/// The blanket impl for `IntoIterator<Item: Into<Id>>` handles all
+/// current shapes: `Vec<Id>`, `Option<Id>`, arbitrary iterators
+/// yielding `Id`, and a bare `Id` itself (which is `IntoIterator`
+/// via a singleton).
+///
+/// This lets `{expr}` interpolate any of these shapes without a
+/// dedicated splice syntax — the macro emits the same trait-dispatched
+/// call regardless of the value's type.
+pub trait IntoFieldIds {
+    fn extend_into(self, out: &mut Vec<Id>);
+}
+
+impl<I, T> IntoFieldIds for I
+where
+    I: IntoIterator<Item = T>,
+    T: Into<Id>,
+{
+    fn extend_into(self, out: &mut Vec<Id>) {
+        out.extend(self.into_iter().map(Into::into));
     }
 }
 
@@ -54,13 +117,36 @@ impl From<NodeRef> for Id {
 /// All standard primitive and string types implement [`YeastDisplay`] via
 /// the [`impl_yeast_display_via_display`] macro below. Coherence prevents a
 /// blanket `impl<T: Display>`, so additional types must be added explicitly.
+#[diagnostic::on_unimplemented(
+    message = "`{Self}` cannot be interpolated with `#{{...}}`",
+    note = "if the value is optional, mark the enclosing field's value with `?` to leave \
+            that field unset when it is absent, as in `label: (identifier #{{lbl}})?`"
+)]
 pub trait YeastDisplay {
     fn yeast_to_string(&self, ast: &Ast) -> String;
 }
 
-impl YeastDisplay for NodeRef {
+/// Optional source range for values used in `#{expr}` interpolations.
+///
+/// By default this returns `None`, so synthesized leaves inherit the matched
+/// rule's source range. `Id` returns the referenced node's range, letting
+/// `(kind #{capture})` carry the captured node's location.
+pub trait YeastSourceRange {
+    fn yeast_source_range(&self, ast: &Ast) -> Option<Range>;
+}
+
+impl YeastDisplay for Id {
     fn yeast_to_string(&self, ast: &Ast) -> String {
-        ast.source_text(self.0)
+        ast.source_text(*self)
+    }
+}
+
+impl YeastSourceRange for Id {
+    fn yeast_source_range(&self, ast: &Ast) -> Option<Range> {
+        ast.get_node(*self).and_then(|n| match &n.content {
+            NodeContent::Range(r) => Some(*r),
+            _ => n.source_range,
+        })
     }
 }
 
@@ -70,6 +156,12 @@ macro_rules! impl_yeast_display_via_display {
             impl YeastDisplay for $t {
                 fn yeast_to_string(&self, _ast: &Ast) -> String {
                     ::std::string::ToString::to_string(self)
+                }
+            }
+
+            impl YeastSourceRange for $t {
+                fn yeast_source_range(&self, _ast: &Ast) -> Option<Range> {
+                    None
                 }
             }
         )*
@@ -90,7 +182,86 @@ impl<T: YeastDisplay + ?Sized> YeastDisplay for &T {
     }
 }
 
-pub const CHILD_FIELD: u16 = u16::MAX;
+impl<T: YeastSourceRange + ?Sized> YeastSourceRange for &T {
+    fn yeast_source_range(&self, ast: &Ast) -> Option<Range> {
+        (**self).yeast_source_range(ast)
+    }
+}
+
+/// Normalizes a `#{expr}` interpolation to an optional value, so that a
+/// fallible field — `field: (kind #{expr})?` — can tell "there is a value to
+/// interpolate" apart from "there is none, so leave the field unset".
+///
+/// Implemented for every [`YeastDisplay`] type, which always yields a value,
+/// and for `Option` of the same, which yields one only when it is `Some`.
+///
+/// The implementations are enumerated rather than blanket: a blanket
+/// `impl<T: YeastDisplay>` would overlap with the `Option<T>` impl, since
+/// coherence cannot rule out a future `impl YeastDisplay for Option<T>`.
+/// [`YeastDisplay`] itself is enumerated for the same reason.
+///
+/// Note that this is used *only* inside a fallible field. Elsewhere `#{expr}`
+/// still goes directly through [`YeastDisplay`], so interpolating an `Option`
+/// without a `?` remains a compile error rather than silently dropping a node.
+pub trait MaybeYeastValue {
+    /// The interpolated value's type, which knows how to render itself.
+    type Value: YeastDisplay + YeastSourceRange + ?Sized;
+
+    /// Returns the value to interpolate, or `None` to leave the field unset.
+    fn maybe_yeast_value(&self) -> Option<&Self::Value>;
+}
+
+macro_rules! impl_maybe_yeast_value {
+    ($($t:ty),* $(,)?) => {
+        $(
+            impl MaybeYeastValue for $t {
+                type Value = $t;
+                fn maybe_yeast_value(&self) -> Option<&$t> {
+                    Some(self)
+                }
+            }
+
+            impl MaybeYeastValue for Option<$t> {
+                type Value = $t;
+                fn maybe_yeast_value(&self) -> Option<&$t> {
+                    self.as_ref()
+                }
+            }
+        )*
+    };
+}
+
+impl_maybe_yeast_value! {
+    Id,
+    i8, i16, i32, i64, i128, isize,
+    u8, u16, u32, u64, u128, usize,
+    f32, f64,
+    bool, char,
+    String,
+}
+
+// `str` is unsized, so it has no `Option<str>` counterpart; `Option<&str>` is
+// covered by the reference impls below.
+impl MaybeYeastValue for str {
+    type Value = str;
+    fn maybe_yeast_value(&self) -> Option<&str> {
+        Some(self)
+    }
+}
+
+impl<T: MaybeYeastValue + ?Sized> MaybeYeastValue for &T {
+    type Value = T::Value;
+    fn maybe_yeast_value(&self) -> Option<&T::Value> {
+        (**self).maybe_yeast_value()
+    }
+}
+
+impl<T: MaybeYeastValue + ?Sized> MaybeYeastValue for Option<&T> {
+    type Value = T::Value;
+    fn maybe_yeast_value(&self) -> Option<&T::Value> {
+        (*self).and_then(MaybeYeastValue::maybe_yeast_value)
+    }
+}
 
 #[derive(Debug)]
 pub struct AstCursor<'a> {
@@ -114,6 +285,36 @@ impl<'a> AstCursor<'a> {
         self.node_id
     }
 
+    pub fn node(&self) -> &'a Node {
+        &self.ast.nodes[self.node_id.0]
+    }
+
+    pub fn field_id(&self) -> Option<FieldId> {
+        let (_, children) = self.parents.last()?;
+        children.current_field()
+    }
+
+    pub fn field_name(&self) -> Option<&'static str> {
+        if self.field_id() == Some(CHILD_FIELD) {
+            None
+        } else {
+            self.field_id()
+                .and_then(|id| self.ast.field_name_for_id(id))
+        }
+    }
+
+    pub fn goto_first_child(&mut self) -> bool {
+        self.goto_first_child_opt().is_some()
+    }
+
+    pub fn goto_next_sibling(&mut self) -> bool {
+        self.goto_next_sibling_opt().is_some()
+    }
+
+    pub fn goto_parent(&mut self) -> bool {
+        self.goto_parent_opt().is_some()
+    }
+
     fn goto_next_sibling_opt(&mut self) -> Option<()> {
         self.node_id = self.parents.last_mut()?.1.next()?;
         Some(())
@@ -132,37 +333,6 @@ impl<'a> AstCursor<'a> {
     fn goto_parent_opt(&mut self) -> Option<()> {
         self.node_id = self.parents.pop()?.0;
         Some(())
-    }
-}
-impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
-    fn node(&self) -> &'a Node {
-        &self.ast.nodes[self.node_id]
-    }
-
-    fn field_id(&self) -> Option<FieldId> {
-        let (_, children) = self.parents.last()?;
-        children.current_field()
-    }
-
-    fn field_name(&self) -> Option<&'static str> {
-        if self.field_id() == Some(CHILD_FIELD) {
-            None
-        } else {
-            self.field_id()
-                .and_then(|id| self.ast.field_name_for_id(id))
-        }
-    }
-
-    fn goto_first_child(&mut self) -> bool {
-        self.goto_first_child_opt().is_some()
-    }
-
-    fn goto_next_sibling(&mut self) -> bool {
-        self.goto_next_sibling_opt().is_some()
-    }
-
-    fn goto_parent(&mut self) -> bool {
-        self.goto_parent_opt().is_some()
     }
 }
 
@@ -238,7 +408,7 @@ impl std::fmt::Debug for Ast {
 impl Ast {
     /// Construct an AST from a TS tree
     pub fn from_tree(language: tree_sitter::Language, tree: &tree_sitter::Tree) -> Self {
-        let schema = schema::Schema::from_language(&language);
+        let schema = schema::from_language(&language);
         Self::from_tree_with_schema(schema, tree, &language)
     }
 
@@ -264,11 +434,41 @@ impl Ast {
         ast
     }
 
+    /// Construct an empty AST backed by `schema`, for building a tree
+    /// programmatically from a source other than a tree-sitter parse (e.g. an
+    /// external parser's output). Populate it with [`Ast::create_node`] /
+    /// [`Ast::create_node_with_range`] and then designate the root with
+    /// [`Ast::set_root`].
+    ///
+    /// Node kind and field names may be registered in `schema` up front, or on
+    /// demand while building via [`Ast::register_kind`],
+    /// [`Ast::register_unnamed_kind`], and [`Ast::register_field`] (which return
+    /// the ids to pass to [`Ast::create_node_with_range`]). Passing a fresh
+    /// [`schema::Schema::new`] and registering names during construction is
+    /// therefore fine — see the swift-syntax adapter for an example.
+    pub fn with_schema(schema: schema::Schema) -> Self {
+        Self {
+            root: Id(0),
+            nodes: Vec::new(),
+            schema,
+            source: Vec::new(),
+        }
+    }
+
+    /// Set the original source bytes, used to resolve `NodeContent::Range`
+    /// nodes to text. Nodes built with inline `NodeContent::DynamicString`
+    /// content do not require this.
+    pub fn set_source(&mut self, source: Vec<u8>) {
+        self.source = source;
+    }
+
     /// Returns the source text for `id`, resolving `NodeContent::Range`
     /// against the stored source bytes when available.
     pub fn source_text(&self, id: Id) -> String {
-        let Some(node) = self.get_node(id) else { return String::new(); };
-        let read_range = |range: &tree_sitter::Range| {
+        let Some(node) = self.get_node(id) else {
+            return String::new();
+        };
+        let read_range = |range: &Range| {
             let start = range.start_byte;
             let end = range.end_byte;
             if end <= self.source.len() && start <= end {
@@ -309,16 +509,16 @@ impl Ast {
     ///
     /// This reflects the effective AST after desugaring and excludes orphaned
     /// arena nodes left behind by rewrite operations.
-    pub fn reachable_node_ids(&self) -> Vec<usize> {
+    pub fn reachable_node_ids(&self) -> Vec<Id> {
         let mut reachable = Vec::new();
         let mut stack = vec![self.root];
         let mut seen = vec![false; self.nodes.len()];
 
         while let Some(id) = stack.pop() {
-            if id >= self.nodes.len() || seen[id] {
+            if id.0 >= self.nodes.len() || seen[id.0] {
                 continue;
             }
-            seen[id] = true;
+            seen[id.0] = true;
             reachable.push(id);
 
             if let Some(node) = self.get_node(id) {
@@ -342,11 +542,11 @@ impl Ast {
     }
 
     pub fn get_node(&self, id: Id) -> Option<&Node> {
-        self.nodes.get(id)
+        self.nodes.get(id.0)
     }
 
     pub fn print(&self, source: &str, root_id: Id) -> Value {
-        let root = &self.nodes()[root_id];
+        let root = &self.nodes()[root_id.0];
         self.print_node(root, source)
     }
 
@@ -366,8 +566,17 @@ impl Ast {
         content: NodeContent,
         fields: BTreeMap<FieldId, Vec<Id>>,
         is_named: bool,
-        source_range: Option<tree_sitter::Range>,
+        source_range: Option<Range>,
     ) -> Id {
+        let source_range = match &content {
+            // Parsed nodes already carry an exact source range in their content.
+            NodeContent::Range(_) => source_range,
+            // Synthesized nodes derive location from children when possible,
+            // and fall back to the inherited rule-match range otherwise.
+            _ => self
+                .union_source_range_of_children(&fields)
+                .or(source_range),
+        };
         let id = self.nodes.len();
         self.nodes.push(Node {
             kind,
@@ -380,7 +589,90 @@ impl Ast {
             is_named,
             source_range,
         });
-        id
+        Id(id)
+    }
+
+    /// Register a named node kind, returning its id (idempotent). Lets callers
+    /// build an AST in a single pass, registering kinds as nodes are created
+    /// rather than pre-populating the schema.
+    pub fn register_kind(&mut self, name: &str) -> KindId {
+        self.schema.register_kind(name)
+    }
+
+    /// Register an anonymous (unnamed) token kind, returning its id
+    /// (idempotent). Anonymous tokens are keyed by their text (e.g. `"func"`).
+    pub fn register_unnamed_kind(&mut self, name: &str) -> KindId {
+        self.schema.register_unnamed_kind(name)
+    }
+
+    /// Register a field name, returning its id (idempotent).
+    pub fn register_field(&mut self, name: &str) -> FieldId {
+        self.schema.register_field(name)
+    }
+
+    /// Register every kind and field name from `schema` into this AST's schema
+    /// (idempotent). Used before desugaring an externally-built AST so that
+    /// rules can build output nodes whose kind/field names come from the
+    /// desugarer's output schema.
+    pub fn register_names_from_schema(&mut self, schema: &schema::Schema) {
+        self.schema.register_names_from(schema);
+    }
+
+    fn union_source_range_of_children(&self, fields: &BTreeMap<FieldId, Vec<Id>>) -> Option<Range> {
+        let mut start_byte: Option<usize> = None;
+        let mut end_byte: Option<usize> = None;
+        let mut start_point = Point { row: 0, column: 0 };
+        let mut end_point = Point { row: 0, column: 0 };
+
+        for child_ids in fields.values() {
+            for &child_id in child_ids {
+                let Some(child) = self.get_node(child_id) else {
+                    continue;
+                };
+
+                let child_start_byte = child.start_byte();
+                let child_end_byte = child.end_byte();
+
+                // Skip children that carry no usable location.
+                if child_start_byte == 0 && child_end_byte == 0 {
+                    continue;
+                }
+
+                match start_byte {
+                    None => {
+                        start_byte = Some(child_start_byte);
+                        start_point = child.start_position();
+                    }
+                    Some(current_start) if child_start_byte < current_start => {
+                        start_byte = Some(child_start_byte);
+                        start_point = child.start_position();
+                    }
+                    _ => {}
+                }
+
+                match end_byte {
+                    None => {
+                        end_byte = Some(child_end_byte);
+                        end_point = child.end_position();
+                    }
+                    Some(current_end) if child_end_byte > current_end => {
+                        end_byte = Some(child_end_byte);
+                        end_point = child.end_position();
+                    }
+                    _ => {}
+                }
+            }
+        }
+
+        match (start_byte, end_byte) {
+            (Some(start_byte), Some(end_byte)) => Some(Range {
+                start_byte,
+                end_byte,
+                start_point,
+                end_point,
+            }),
+            _ => None,
+        }
     }
 
     pub fn create_named_token(&mut self, kind: &'static str, content: String) -> Id {
@@ -391,7 +683,7 @@ impl Ast {
         &mut self,
         kind: &'static str,
         content: String,
-        source_range: Option<tree_sitter::Range>,
+        source_range: Option<Range>,
     ) -> Id {
         let kind_id = self.schema.id_for_node_kind(kind).unwrap_or_else(|| {
             panic!("create_named_token: node kind '{kind}' not found in schema")
@@ -408,7 +700,7 @@ impl Ast {
             fields: BTreeMap::new(),
             content: NodeContent::DynamicString(content),
         });
-        id
+        Id(id)
     }
 
     pub fn field_name_for_id(&self, id: FieldId) -> Option<&'static str> {
@@ -464,7 +756,7 @@ impl Ast {
         }
     }
 
-    fn id_for_unnamed_node_kind(&self, kind: &str) -> Option<KindId> {
+    pub fn id_for_unnamed_node_kind(&self, kind: &str) -> Option<KindId> {
         let id = self.schema.id_for_unnamed_node_kind(kind).unwrap_or(0);
         if id == 0 {
             None
@@ -484,7 +776,7 @@ pub struct Node {
     /// For synthetic nodes, the source range of the original node they
     /// were desugared from. Used for location information in TRAP output.
     #[serde(skip)]
-    source_range: Option<tree_sitter::Range>,
+    source_range: Option<Range>,
     is_named: bool,
     is_missing: bool,
     is_extra: bool,
@@ -492,10 +784,6 @@ pub struct Node {
 }
 
 impl Node {
-    pub fn kind(&self) -> &'static str {
-        self.kind_name
-    }
-
     pub fn kind_name(&self) -> &'static str {
         self.kind_name
     }
@@ -516,11 +804,11 @@ impl Node {
         self.is_error
     }
 
-    fn fake_point(&self) -> tree_sitter::Point {
-        tree_sitter::Point { row: 0, column: 0 }
+    fn fake_point(&self) -> Point {
+        Point { row: 0, column: 0 }
     }
 
-    pub fn start_position(&self) -> tree_sitter::Point {
+    pub fn start_position(&self) -> Point {
         match self.content {
             NodeContent::Range(range) => range.start_point,
             _ => self
@@ -529,7 +817,7 @@ impl Node {
         }
     }
 
-    pub fn end_position(&self) -> tree_sitter::Point {
+    pub fn end_position(&self) -> Point {
         match self.content {
             NodeContent::Range(range) => range.end_point,
             _ => self
@@ -578,7 +866,7 @@ impl Node {
 /// or a new string if the node is synthesized.
 #[derive(PartialEq, Eq, Debug, Clone, Serialize)]
 pub enum NodeContent {
-    Range(#[serde(with = "range::Range")] tree_sitter::Range),
+    Range(Range),
     String(&'static str),
     DynamicString(String),
 }
@@ -591,22 +879,144 @@ impl From<&'static str> for NodeContent {
 
 impl From<tree_sitter::Range> for NodeContent {
     fn from(value: tree_sitter::Range) -> Self {
-        NodeContent::Range(value)
+        NodeContent::Range(value.into())
     }
 }
 
-/// The transform function for a rule: takes the AST, captured variables, a
-/// fresh-name scope, and the source range of the matched node, and returns
-/// the IDs of the replacement nodes.
-pub type Transform = Box<
-    dyn Fn(&mut Ast, Captures, &tree_builder::FreshScope, Option<tree_sitter::Range>) -> Vec<Id>
+/// A handle that lets a rule transform recursively translate AST nodes via
+/// the framework's rule machinery. Constructed by the driver and passed as
+/// the last argument of every [`Transform`] invocation.
+///
+/// The `rule!` macro uses [`TranslatorHandle::auto_translate_captures`] in
+/// its generated prefix to translate captures before running the user's
+/// transform body. Manually-written transforms (using [`Rule::new`]
+/// directly) can call [`TranslatorHandle::translate`] selectively on
+/// specific node ids to control when translation happens.
+pub struct TranslatorHandle<'a, C> {
+    inner: TranslatorImpl<'a, C>,
+}
+
+// Manual `Copy` / `Clone` so `TranslatorHandle<'_, C>: Copy` holds
+// regardless of whether `C: Copy`. `TranslatorImpl` contains only
+// shared references, which are `Copy` unconditionally.
+impl<C> Copy for TranslatorHandle<'_, C> {}
+impl<C> Clone for TranslatorHandle<'_, C> {
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+
+/// Internal phase-specific translation state. Kept private — callers
+/// interact with [`TranslatorHandle`] only.
+enum TranslatorImpl<'a, C> {
+    /// OneShot phase translator: recursively applies OneShot rules.
+    OneShot {
+        index: &'a RuleIndex<'a, C>,
+        fresh: &'a tree_builder::FreshScope,
+        rewrite_depth: usize,
+        /// The id of the node the current rule is matching. Used by
+        /// [`auto_translate_captures`] to avoid infinite recursion when a
+        /// rule captures its own match root (e.g. via `(_) @_`).
+        matched_root: Id,
+    },
+    /// Repeating phase translator: translation is not meaningful here
+    /// (input and output schemas are the same). [`translate`] errors;
+    /// [`auto_translate_captures`] is a no-op so the macro's auto-prefix
+    /// works unchanged for Repeating rules.
+    Repeating,
+}
+
+// Manual `Copy` / `Clone` so `TranslatorImpl<'_, C>: Copy` holds
+// regardless of whether `C: Copy`. All variants hold only shared
+// references and small `Copy` scalars.
+impl<C> Copy for TranslatorImpl<'_, C> {}
+impl<C> Clone for TranslatorImpl<'_, C> {
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+
+impl<'a, C: Clone> TranslatorHandle<'a, C> {
+    /// Recursively apply OneShot rules to `id` and return the resulting
+    /// node ids. Errors in a Repeating phase (where translation is not
+    /// meaningful).
+    pub fn translate(&self, ast: &mut Ast, user_ctx: &mut C, id: Id) -> Result<Vec<Id>, String> {
+        match &self.inner {
+            TranslatorImpl::OneShot {
+                index,
+                fresh,
+                rewrite_depth,
+                ..
+            } => apply_one_shot_rules_inner(index, ast, user_ctx, id, fresh, rewrite_depth + 1),
+            TranslatorImpl::Repeating => {
+                Err("translate() is not available in a Repeating phase".into())
+            }
+        }
+    }
+
+    /// Translate every captured node in `captures` in place (OneShot phase
+    /// only), except for captures whose name appears in `skip` — those are
+    /// left as raw (input-schema) ids for the rule body to consume
+    /// directly. In a Repeating phase this is a no-op — Repeating rules
+    /// receive raw captures regardless of `skip`.
+    ///
+    /// Used by the `rule!` macro's generated prefix. `skip` is populated
+    /// from the macro's `@@name` capture markers; for plain `@name`
+    /// captures (and rules with no `@@` markers) it is empty.
+    ///
+    /// To avoid infinite recursion, a capture whose id matches the rule's
+    /// matched root (e.g. from a `(_) @_` pattern) is left unchanged.
+    pub fn auto_translate_captures(
+        &self,
+        captures: &mut Captures,
+        ast: &mut Ast,
+        user_ctx: &mut C,
+        skip: &[&str],
+    ) -> Result<(), String> {
+        match &self.inner {
+            TranslatorImpl::OneShot { matched_root, .. } => {
+                let root = *matched_root;
+                captures.try_map_captures_except(skip, |cid| {
+                    if cid == root {
+                        Ok(vec![cid])
+                    } else {
+                        self.translate(ast, user_ctx, cid)
+                    }
+                })
+            }
+            TranslatorImpl::Repeating => Ok(()),
+        }
+    }
+}
+
+/// The transform function for a rule.
+///
+/// Takes the AST, the (raw, untranslated) captured variables, a fresh-name
+/// scope, the source range of the matched node, a mutable reference to the
+/// user context of type `C`, and a [`TranslatorHandle`] for recursively
+/// translating nodes. Returns the IDs of the replacement nodes, or an
+/// error message if the transform could not be completed.
+///
+/// Transforms produced by [`Rule::new`] receive **raw** captures and must
+/// translate them themselves (via the handle). Transforms produced by the
+/// `rule!` macro have an auto-translation prefix injected for backward
+/// compatibility.
+pub type Transform<C = ()> = Box<
+    dyn Fn(
+            &mut Ast,
+            Captures,
+            &tree_builder::FreshScope,
+            Option<Range>,
+            &mut C,
+            TranslatorHandle<'_, C>,
+        ) -> Result<Vec<Id>, String>
         + Send
         + Sync,
 >;
 
-pub struct Rule {
+pub struct Rule<C = ()> {
     query: QueryNode,
-    transform: Transform,
+    transform: Transform<C>,
     /// If true, after this rule fires on a node the engine will try to
     /// re-apply this same rule on the result root. Defaults to false:
     /// each rule fires at most once on a given node, which prevents
@@ -614,8 +1024,8 @@ pub struct Rule {
     repeated: bool,
 }
 
-impl Rule {
-    pub fn new(query: QueryNode, transform: Transform) -> Self {
+impl<C> Rule<C> {
+    pub fn new(query: QueryNode, transform: Transform<C>) -> Self {
         Self {
             query,
             transform,
@@ -637,9 +1047,13 @@ impl Rule {
         ast: &mut Ast,
         node: Id,
         fresh: &tree_builder::FreshScope,
+        user_ctx: &mut C,
+        translator: TranslatorHandle<'_, C>,
     ) -> Result<Option<Vec<Id>>, String> {
         match self.try_match(ast, node)? {
-            Some(captures) => Ok(Some(self.run_transform(ast, captures, node, fresh))),
+            Some(captures) => Ok(Some(
+                self.run_transform(ast, captures, node, fresh, user_ctx, translator)?,
+            )),
             None => Ok(None),
         }
     }
@@ -663,29 +1077,31 @@ impl Rule {
         captures: Captures,
         node: Id,
         fresh: &tree_builder::FreshScope,
-    ) -> Vec<Id> {
+        user_ctx: &mut C,
+        translator: TranslatorHandle<'_, C>,
+    ) -> Result<Vec<Id>, String> {
         fresh.next_scope();
         let source_range = ast.get_node(node).and_then(|n| match n.content {
             NodeContent::Range(r) => Some(r),
             _ => n.source_range,
         });
-        (self.transform)(ast, captures, fresh, source_range)
+        (self.transform)(ast, captures, fresh, source_range, user_ctx, translator)
     }
 }
 
 const MAX_REWRITE_DEPTH: usize = 100;
 
 /// Index of rules by their root query kind for fast lookup.
-struct RuleIndex<'a> {
+struct RuleIndex<'a, C> {
     /// Rules indexed by root node kind name.
-    by_kind: BTreeMap<&'static str, Vec<&'a Rule>>,
+    by_kind: BTreeMap<&'static str, Vec<&'a Rule<C>>>,
     /// Rules with wildcard queries (Any) that apply to all nodes.
-    wildcard: Vec<&'a Rule>,
+    wildcard: Vec<&'a Rule<C>>,
 }
 
-impl<'a> RuleIndex<'a> {
-    fn new(rules: &'a [Rule]) -> Self {
-        let mut by_kind: BTreeMap<&'static str, Vec<&'a Rule>> = BTreeMap::new();
+impl<'a, C> RuleIndex<'a, C> {
+    fn new(rules: &'a [Rule<C>]) -> Self {
+        let mut by_kind: BTreeMap<&'static str, Vec<&'a Rule<C>>> = BTreeMap::new();
         let mut wildcard = Vec::new();
         for rule in rules {
             match rule.query.root_kind() {
@@ -696,7 +1112,7 @@ impl<'a> RuleIndex<'a> {
         Self { by_kind, wildcard }
     }
 
-    fn rules_for_kind(&self, kind: &str) -> impl Iterator<Item = &&'a Rule> {
+    fn rules_for_kind(&self, kind: &str) -> impl Iterator<Item = &&'a Rule<C>> {
         self.by_kind
             .get(kind)
             .into_iter()
@@ -705,23 +1121,25 @@ impl<'a> RuleIndex<'a> {
     }
 }
 
-fn apply_repeating_rules(
-    rules: &[Rule],
+fn apply_repeating_rules<C: Clone>(
+    rules: &[Rule<C>],
     ast: &mut Ast,
+    user_ctx: &mut C,
     id: Id,
     fresh: &tree_builder::FreshScope,
 ) -> Result<Vec<Id>, String> {
     let index = RuleIndex::new(rules);
-    apply_repeating_rules_inner(&index, ast, id, fresh, 0, None)
+    apply_repeating_rules_inner(&index, ast, user_ctx, id, fresh, 0, None)
 }
 
-fn apply_repeating_rules_inner(
-    index: &RuleIndex,
+fn apply_repeating_rules_inner<C: Clone>(
+    index: &RuleIndex<C>,
     ast: &mut Ast,
+    user_ctx: &mut C,
     id: Id,
     fresh: &tree_builder::FreshScope,
     rewrite_depth: usize,
-    skip_rule: Option<*const Rule>,
+    skip_rule: Option<*const Rule<C>>,
 ) -> Result<Vec<Id>, String> {
     if rewrite_depth > MAX_REWRITE_DEPTH {
         return Err(format!(
@@ -730,13 +1148,28 @@ fn apply_repeating_rules_inner(
         ));
     }
 
-    let node_kind = ast.get_node(id).map(|n| n.kind()).unwrap_or("");
+    let node_kind = ast.get_node(id).map(|n| n.kind_name()).unwrap_or("");
     for rule in index.rules_for_kind(node_kind) {
-        let rule_ptr = *rule as *const Rule;
+        let rule_ptr = *rule as *const Rule<C>;
         if Some(rule_ptr) == skip_rule {
             continue;
         }
-        if let Some(result_node) = rule.try_rule(ast, id, fresh)? {
+        // Give each rule attempt a private clone of the user context.
+        // Any mutations the rule makes are visible to its transform and
+        // to the recursive translation of its result, but never leak
+        // back to the parent — the clone is simply dropped when we
+        // return. This is also `?`-safe: an error return drops `local`
+        // without touching the caller's `user_ctx`.
+        let mut local = user_ctx.clone();
+        // Repeating rules don't need a real translator: their captures
+        // aren't auto-translated (Repeating preserves the input schema),
+        // and `ctx.translate(id)` errors if invoked from a Repeating
+        // transform.
+        let translator = TranslatorHandle {
+            inner: TranslatorImpl::Repeating,
+        };
+        let try_result = rule.try_rule(ast, id, fresh, &mut local, translator)?;
+        if let Some(result_node) = try_result {
             // For non-repeated rules, suppress further application of *this*
             // rule on the result root, so a rule whose output matches its own
             // query doesn't loop. Other rules and child traversal are
@@ -747,6 +1180,7 @@ fn apply_repeating_rules_inner(
                 results.extend(apply_repeating_rules_inner(
                     index,
                     ast,
+                    &mut local,
                     node,
                     fresh,
                     rewrite_depth + 1,
@@ -755,6 +1189,8 @@ fn apply_repeating_rules_inner(
             }
             return Ok(results);
         }
+        // Rule didn't match; `local` is dropped as we loop to the next
+        // rule.
     }
 
     // Take the parent's fields by ownership: the recursion will rewrite
@@ -765,11 +1201,19 @@ fn apply_repeating_rules_inner(
     //
     // Child traversal does not increment rewrite depth and starts fresh
     // (no rule is skipped on child subtrees).
-    let mut fields = std::mem::take(&mut ast.nodes[id].fields);
+    let mut fields = std::mem::take(&mut ast.nodes[id.0].fields);
     for children in fields.values_mut() {
         let mut new_children: Option<Vec<Id>> = None;
         for (i, &child_id) in children.iter().enumerate() {
-            let result = apply_repeating_rules_inner(index, ast, child_id, fresh, rewrite_depth, None)?;
+            let result = apply_repeating_rules_inner(
+                index,
+                ast,
+                user_ctx,
+                child_id,
+                fresh,
+                rewrite_depth,
+                None,
+            )?;
             let unchanged = result.len() == 1 && result[0] == child_id;
             match (&mut new_children, unchanged) {
                 (None, true) => {} // unchanged so far, no allocation needed
@@ -790,7 +1234,7 @@ fn apply_repeating_rules_inner(
             *children = new;
         }
     }
-    ast.nodes[id].fields = fields;
+    ast.nodes[id.0].fields = fields;
     Ok(vec![id])
 }
 
@@ -798,24 +1242,25 @@ fn apply_repeating_rules_inner(
 /// each visited node, recursion proceeds only through captured nodes (not
 /// through the input node's children directly), and an error is returned if
 /// no rule matches a visited node.
-fn apply_one_shot_rules(
-    rules: &[Rule],
+fn apply_one_shot_rules<C: Clone>(
+    rules: &[Rule<C>],
     ast: &mut Ast,
+    user_ctx: &mut C,
     id: Id,
     fresh: &tree_builder::FreshScope,
 ) -> Result<Vec<Id>, String> {
     let index = RuleIndex::new(rules);
-    apply_one_shot_rules_inner(&index, ast, id, fresh, 0)
+    apply_one_shot_rules_inner(&index, ast, user_ctx, id, fresh, 0)
 }
 
-fn apply_one_shot_rules_inner(
-    index: &RuleIndex,
+fn apply_one_shot_rules_inner<C: Clone>(
+    index: &RuleIndex<C>,
     ast: &mut Ast,
+    user_ctx: &mut C,
     id: Id,
     fresh: &tree_builder::FreshScope,
     rewrite_depth: usize,
 ) -> Result<Vec<Id>, String> {
-
     if rewrite_depth > MAX_REWRITE_DEPTH {
         return Err(format!(
             "Desugaring exceeded maximum rewrite depth ({MAX_REWRITE_DEPTH}). \
@@ -823,33 +1268,31 @@ fn apply_one_shot_rules_inner(
         ));
     }
 
-    let node_kind = ast.get_node(id).map(|n| n.kind()).unwrap_or("");
-
-    // Don't rewrite unnamed nodes (punctuation, keywords, etc.); leave them
-    // as-is. Rules target named nodes only.
-    if let Some(node) = ast.get_node(id) {
-        if !node.is_named() {
-            return Ok(vec![id]);
-        }
-    }
+    let node_kind = ast.get_node(id).map(|n| n.kind_name()).unwrap_or("");
 
     for rule in index.rules_for_kind(node_kind) {
-        if let Some(mut captures) = rule.try_match(ast, id)? {
-            // Recursively translate every captured node before invoking the
-            // transform. The transform's output uses output-schema kinds, so
-            // we must translate captured input-schema nodes to their
-            // output-schema equivalents first.
-            captures.try_map_all_captures(|captured_id| {
-                // Avoid infinite recursion when a capture refers to the root
-                // node of the matched tree (e.g. an `@_` capture on the
-                // pattern root): re-analyzing it would match the same rule
-                // again indefinitely.
-                if captured_id == id {
-                    return Ok(vec![captured_id]);
-                }
-                apply_one_shot_rules_inner(index, ast, captured_id, fresh, rewrite_depth + 1)
-            })?;
-            return Ok(rule.run_transform(ast, captures, id, fresh));
+        if let Some(captures) = rule.try_match(ast, id)? {
+            // Give the rule a private clone of the user context. Any
+            // mutations the rule (or its transitively-translated
+            // captures) make are visible during this rule's transform,
+            // but never leak back — the clone is dropped when we
+            // return. `?`-safe: an error return drops `local` without
+            // touching the caller's `user_ctx`.
+            let mut local = user_ctx.clone();
+            // Build the translator handle the transform will use to
+            // recursively translate captures (or, for macro-generated
+            // rules, the auto-translate prefix uses it to translate every
+            // capture up front, preserving the legacy behavior).
+            let translator = TranslatorHandle {
+                inner: TranslatorImpl::OneShot {
+                    index,
+                    fresh,
+                    rewrite_depth,
+                    matched_root: id,
+                },
+            };
+            let result = rule.run_transform(ast, captures, id, fresh, &mut local, translator)?;
+            return Ok(result);
         }
     }
 
@@ -877,15 +1320,15 @@ pub enum PhaseKind {
 /// starts. Rules within a phase compete for matches as usual; rules in
 /// different phases never compete because each traversal only considers the
 /// current phase's rules.
-pub struct Phase {
+pub struct Phase<C = ()> {
     /// Name used in error messages.
     pub name: String,
-    pub rules: Vec<Rule>,
+    pub rules: Vec<Rule<C>>,
     pub kind: PhaseKind,
 }
 
-impl Phase {
-    pub fn new(name: impl Into<String>, kind: PhaseKind, rules: Vec<Rule>) -> Self {
+impl<C> Phase<C> {
+    pub fn new(name: impl Into<String>, kind: PhaseKind, rules: Vec<Rule<C>>) -> Self {
         Self {
             name: name.into(),
             rules,
@@ -911,17 +1354,30 @@ impl Phase {
 ///     .add_phase("desugar", PhaseKind::Repeating, desugar_rules)
 ///     .with_output_node_types_yaml(yaml);
 /// ```
-#[derive(Default)]
-pub struct DesugaringConfig {
+///
+/// The optional type parameter `C` is the user context type threaded through
+/// rule transforms. Defaults to `()` (no user context).
+pub struct DesugaringConfig<C = ()> {
     /// Phases of rule application, applied in order.
-    pub phases: Vec<Phase>,
+    pub phases: Vec<Phase<C>>,
     /// Output node-types in YAML format. If `None`, the input grammar's
     /// node types are used (i.e. the desugared AST has the same node types
     /// as the tree-sitter grammar).
     pub output_node_types_yaml: Option<&'static str>,
 }
 
-impl DesugaringConfig {
+// Manual `Default` impl so users with a custom `C` that doesn't implement
+// `Default` can still construct an empty config.
+impl<C> Default for DesugaringConfig<C> {
+    fn default() -> Self {
+        Self {
+            phases: Vec::new(),
+            output_node_types_yaml: None,
+        }
+    }
+}
+
+impl<C> DesugaringConfig<C> {
     /// Create an empty configuration. Add phases via [`add_phase`] and an
     /// optional output schema via [`with_output_node_types_yaml`].
     pub fn new() -> Self {
@@ -933,7 +1389,7 @@ impl DesugaringConfig {
         mut self,
         name: impl Into<String>,
         kind: PhaseKind,
-        rules: Vec<Rule>,
+        rules: Vec<Rule<C>>,
     ) -> Self {
         self.phases.push(Phase::new(name, kind, rules));
         self
@@ -950,23 +1406,40 @@ impl DesugaringConfig {
     pub fn build_schema(&self, language: &tree_sitter::Language) -> Result<schema::Schema, String> {
         match self.output_node_types_yaml {
             Some(yaml) => node_types_yaml::schema_from_yaml_with_language(yaml, language),
-            None => Ok(schema::Schema::from_language(language)),
+            None => Ok(schema::from_language(language)),
+        }
+    }
+
+    /// Build the yeast `Schema` from the output YAML alone, with no input
+    /// tree-sitter grammar. Requires `output_node_types_yaml` to be set (there
+    /// is no grammar to fall back to). Used by custom (non-tree-sitter)
+    /// front-ends whose input schema is supplied by their own parser/adapter.
+    pub fn build_schema_no_language(&self) -> Result<schema::Schema, String> {
+        match self.output_node_types_yaml {
+            Some(yaml) => node_types_yaml::schema_from_yaml(yaml),
+            None => Err(
+                "a language-free desugarer requires output_node_types_yaml to be set".to_string(),
+            ),
         }
     }
 }
 
-pub struct Runner<'a> {
-    language: tree_sitter::Language,
+pub struct Runner<'a, C = ()> {
+    /// The input tree-sitter language, used only when parsing (`run_from_tree`
+    /// / `run`). `None` for pipelines that only ever run over an
+    /// externally-built AST (`run_from_ast`), so no tree-sitter grammar is
+    /// required.
+    language: Option<tree_sitter::Language>,
     schema: schema::Schema,
-    phases: &'a [Phase],
+    phases: &'a [Phase<C>],
 }
 
-impl<'a> Runner<'a> {
+impl<'a, C> Runner<'a, C> {
     /// Create a runner using the input grammar's schema for output.
-    pub fn new(language: tree_sitter::Language, phases: &'a [Phase]) -> Self {
-        let schema = schema::Schema::from_language(&language);
+    pub fn new(language: tree_sitter::Language, phases: &'a [Phase<C>]) -> Self {
+        let schema = schema::from_language(&language);
         Self {
-            language,
+            language: Some(language),
             schema,
             phases,
         }
@@ -976,10 +1449,21 @@ impl<'a> Runner<'a> {
     pub fn with_schema(
         language: tree_sitter::Language,
         schema: &schema::Schema,
-        phases: &'a [Phase],
+        phases: &'a [Phase<C>],
     ) -> Self {
         Self {
-            language,
+            language: Some(language),
+            schema: schema.clone(),
+            phases,
+        }
+    }
+
+    /// Create a runner with no input tree-sitter language, for pipelines that
+    /// only run over an externally-built AST (`run_from_ast`). The parsing
+    /// entry points (`run_from_tree` / `run`) will error if called.
+    pub fn with_schema_no_language(schema: &schema::Schema, phases: &'a [Phase<C>]) -> Self {
+        Self {
+            language: None,
             schema: schema.clone(),
             phases,
         }
@@ -988,35 +1472,49 @@ impl<'a> Runner<'a> {
     /// Create a runner from a [`DesugaringConfig`].
     pub fn from_config(
         language: tree_sitter::Language,
-        config: &'a DesugaringConfig,
+        config: &'a DesugaringConfig<C>,
     ) -> Result<Self, String> {
         let schema = config.build_schema(&language)?;
         Ok(Self {
-            language,
+            language: Some(language),
             schema,
             phases: &config.phases,
         })
     }
+}
 
-    pub fn run_from_tree(
+impl<'a, C: Clone> Runner<'a, C> {
+    /// Parse `tree` against `source` and run all phases, threading
+    /// `user_ctx` through every rule transform. The caller owns the
+    /// initial context state.
+    pub fn run_from_tree_with_ctx(
         &self,
         tree: &tree_sitter::Tree,
         source: &[u8],
+        user_ctx: &mut C,
     ) -> Result<Ast, String> {
         let mut ast = Ast::from_tree_with_schema_and_source(
             self.schema.clone(),
             tree,
-            &self.language,
+            self.language
+                .as_ref()
+                .ok_or("run_from_tree requires a tree-sitter language")?,
             source.to_vec(),
         );
-        self.run_phases(&mut ast)?;
+        self.run_phases(&mut ast, user_ctx)?;
         Ok(ast)
     }
 
-    pub fn run(&self, input: &str) -> Result<Ast, String> {
+    /// Parse `input` and run all phases, threading `user_ctx` through
+    /// every rule transform. The caller owns the initial context state.
+    pub fn run_with_ctx(&self, input: &str, user_ctx: &mut C) -> Result<Ast, String> {
+        let language = self
+            .language
+            .as_ref()
+            .ok_or("run requires a tree-sitter language")?;
         let mut parser = tree_sitter::Parser::new();
         parser
-            .set_language(&self.language)
+            .set_language(language)
             .map_err(|e| format!("Failed to set language: {e}"))?;
         let tree = parser
             .parse(input, None)
@@ -1024,23 +1522,27 @@ impl<'a> Runner<'a> {
         let mut ast = Ast::from_tree_with_schema_and_source(
             self.schema.clone(),
             &tree,
-            &self.language,
+            language,
             input.as_bytes().to_vec(),
         );
-        self.run_phases(&mut ast)?;
+        self.run_phases(&mut ast, user_ctx)?;
         Ok(ast)
     }
 
     /// Apply each phase in turn to the AST, threading the root through.
     /// A single `FreshScope` is shared across phases so that fresh
     /// identifiers generated in different phases don't collide.
-    fn run_phases(&self, ast: &mut Ast) -> Result<(), String> {
+    fn run_phases(&self, ast: &mut Ast, user_ctx: &mut C) -> Result<(), String> {
         let fresh = tree_builder::FreshScope::new();
         let mut root = ast.get_root();
         for phase in self.phases {
             let res = match phase.kind {
-                PhaseKind::Repeating => apply_repeating_rules(&phase.rules, ast, root, &fresh),
-                PhaseKind::OneShot => apply_one_shot_rules(&phase.rules, ast, root, &fresh),
+                PhaseKind::Repeating => {
+                    apply_repeating_rules(&phase.rules, ast, user_ctx, root, &fresh)
+                }
+                PhaseKind::OneShot => {
+                    apply_one_shot_rules(&phase.rules, ast, user_ctx, root, &fresh)
+                }
             }
             .map_err(|e| format!("Phase `{}`: {e}", phase.name))?;
             if res.len() != 1 {
@@ -1054,5 +1556,127 @@ impl<'a> Runner<'a> {
         }
         ast.set_root(root);
         Ok(())
+    }
+}
+
+impl<'a, C: Clone + Default> Runner<'a, C> {
+    /// Parse `tree` against `source` and run all phases, using the
+    /// default context (`C::default()`) as the initial context state.
+    pub fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8]) -> Result<Ast, String> {
+        let mut user_ctx = C::default();
+        self.run_from_tree_with_ctx(tree, source, &mut user_ctx)
+    }
+
+    /// Parse `input` and run all phases, using the default context
+    /// (`C::default()`) as the initial context state.
+    pub fn run(&self, input: &str) -> Result<Ast, String> {
+        let mut user_ctx = C::default();
+        self.run_with_ctx(input, &mut user_ctx)
+    }
+
+    /// Run all phases over an already-built `ast`, using the default context
+    /// (`C::default()`). Unlike [`run_from_tree`](Self::run_from_tree), the AST
+    /// is supplied by the caller (e.g. built from an external parser's output)
+    /// rather than constructed from a tree-sitter tree. The caller is
+    /// responsible for ensuring the AST's schema knows any output kind/field
+    /// names the rules will build (see [`Ast::register_names_from_schema`]).
+    pub fn run_from_ast(&self, mut ast: Ast) -> Result<Ast, String> {
+        let mut user_ctx = C::default();
+        self.run_phases(&mut ast, &mut user_ctx)?;
+        Ok(ast)
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Desugarer: type-erased view of a DesugaringConfig + Runner
+// ---------------------------------------------------------------------------
+
+/// Type-erased interface to a desugaring pipeline for a single language.
+///
+/// Consumers (e.g. a generic tree-sitter extractor) hold
+/// `Box<dyn Desugarer>` so they can dispatch through the trait without
+/// knowing the user context type `C` that's internal to yeast.
+///
+/// Construct one via [`ConcreteDesugarer::new`] from a
+/// [`DesugaringConfig<C>`] and a [`tree_sitter::Language`].
+pub trait Desugarer: Send + Sync {
+    /// The output AST schema (in YAML format), or `None` if the input
+    /// grammar's schema should be used.
+    fn output_node_types_yaml(&self) -> Option<&'static str>;
+
+    /// Parse `tree` against `source` and run the desugaring pipeline.
+    /// Each call constructs a fresh default user context internally.
+    fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8]) -> Result<Ast, String>;
+
+    /// Run the desugaring pipeline over an already-built `ast` (e.g. produced
+    /// by an external parser rather than tree-sitter). The desugarer ensures
+    /// the AST's schema knows its output kind/field names before running the
+    /// rules. Each call constructs a fresh default user context internally.
+    fn run_from_ast(&self, ast: Ast) -> Result<Ast, String>;
+}
+
+/// A concrete [`Desugarer`] backed by a [`DesugaringConfig<C>`] for a
+/// specific user context type `C`. Stores the language and a pre-built
+/// schema so that per-call cost is bounded to constructing a transient
+/// [`Runner`] and cloning the schema (no YAML re-parsing).
+pub struct ConcreteDesugarer<C: Default + Clone + Send + Sync + 'static> {
+    /// The input tree-sitter language, or `None` for a custom (non-tree-sitter)
+    /// front-end that only ever desugars an externally-built AST
+    /// (`run_from_ast`).
+    language: Option<tree_sitter::Language>,
+    schema: schema::Schema,
+    config: DesugaringConfig<C>,
+}
+
+impl<C: Default + Clone + Send + Sync + 'static> ConcreteDesugarer<C> {
+    /// Build a desugarer for `language` from `config`. Parses the output
+    /// schema YAML once (if set) and stores it for reuse across files.
+    pub fn new(
+        language: tree_sitter::Language,
+        config: DesugaringConfig<C>,
+    ) -> Result<Self, String> {
+        let schema = config.build_schema(&language)?;
+        Ok(Self {
+            language: Some(language),
+            schema,
+            config,
+        })
+    }
+
+    /// Build a desugarer with no input tree-sitter language, for a custom
+    /// front-end whose parser supplies the input AST directly. Only
+    /// [`run_from_ast`](Desugarer::run_from_ast) is supported; the schema comes
+    /// from the config's `output_node_types_yaml` (which must be set).
+    pub fn without_language(config: DesugaringConfig<C>) -> Result<Self, String> {
+        let schema = config.build_schema_no_language()?;
+        Ok(Self {
+            language: None,
+            schema,
+            config,
+        })
+    }
+}
+
+impl<C: Default + Clone + Send + Sync + 'static> Desugarer for ConcreteDesugarer<C> {
+    fn output_node_types_yaml(&self) -> Option<&'static str> {
+        self.config.output_node_types_yaml
+    }
+
+    fn run_from_tree(&self, tree: &tree_sitter::Tree, source: &[u8]) -> Result<Ast, String> {
+        let language = self
+            .language
+            .clone()
+            .ok_or("run_from_tree requires a tree-sitter language")?;
+        let runner = Runner::with_schema(language, &self.schema, &self.config.phases);
+        runner.run_from_tree(tree, source)
+    }
+
+    fn run_from_ast(&self, mut ast: Ast) -> Result<Ast, String> {
+        // The AST was built against its own (external) schema; make sure the
+        // output kind/field names the rules build are resolvable in it.
+        ast.register_names_from_schema(&self.schema);
+        // `run_from_ast` never parses, so no tree-sitter language is needed.
+        let runner = Runner::with_schema_no_language(&self.schema, &self.config.phases);
+        runner.run_from_ast(ast)
     }
 }

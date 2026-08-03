@@ -4,7 +4,7 @@ void minizip_test(int argc, const char **argv);
 void zlib_test(int argc, const char **argv);
 void zstd_test(int argc, const char **argv);
 
-int main(int argc, const char **argv) {
+int main(int argc, const char **argv) { // $ Source
     brotli_test(argc, argv);
     libarchive_test(argc, argv);
     minizip_test(argc, argv);

@@ -14,15 +14,15 @@ MyClass *test1()
 {
 	MyClass mc;
 
-	return &mc; // BAD
+	return &mc; // $ Alert // BAD
 }
 
 MyClass *test2()
 {
 	MyClass mc;
-	MyClass *ptr = &mc;
+	MyClass *ptr = &mc; // $ Source
 
-	return ptr; // BAD
+	return ptr; // $ Alert // BAD
 }
 
 MyClass *test3()
@@ -36,22 +36,22 @@ MyClass *test3()
 MyClass *test4()
 {
 	MyClass mc;
-	MyClass &ref = mc;
+	MyClass &ref = mc; // $ Source
 
-	return &ref; // BAD
+	return &ref; // $ Alert // BAD
 }
 
 MyClass &test5()
 {
 	MyClass mc;
-	return mc; // BAD
+	return mc; // $ Alert // BAD
 }
 
 int *test6()
 {
 	MyClass mc;
 
-	return &(mc.a); // BAD
+	return &(mc.a); // $ Alert // BAD
 }
 
 MyClass test7()
@@ -86,10 +86,10 @@ MyClass *test11()
 
 	{
 		MyClass mc;
-		ptr = &mc;
+		ptr = &mc; // $ Source
 	}
 
-	return ptr; // BAD
+	return ptr; // $ Alert // BAD
 }
 
 MyClass *test12(MyClass *param)
@@ -109,14 +109,14 @@ char *testArray1()
 {
 	char arr[256];
 
-	return arr; // BAD
+	return arr; // $ Alert // BAD
 }
 
 char *testArray2()
 {
 	char arr[256];
 
-	return &(arr[10]); // BAD
+	return &(arr[10]); // $ Alert // BAD
 }
 
 char testArray3()
@@ -131,10 +131,10 @@ char *testArray4()
 	char arr[256];
 	char *ptr;
 
-	ptr = arr + 1;
+	ptr = arr + 1; // $ Source
 	ptr++;
 
-	return ptr; // BAD
+	return ptr; // $ Alert // BAD
 }
 
 char *testArray5()
@@ -167,27 +167,27 @@ char *returnAfterCopy() {
 
 void *conversionBeforeDataFlow() {
   int myLocal;
-  void *pointerToLocal = (void *)&myLocal; // has conversion
-  return pointerToLocal; // BAD
+  void *pointerToLocal = (void *)&myLocal; // $ Source // has conversion
+  return pointerToLocal; // $ Alert // BAD
 }
 
 void *arrayConversionBeforeDataFlow() {
   int localArray[4];
-  int *pointerToLocal = localArray; // has conversion
-  return pointerToLocal; // BAD
+  int *pointerToLocal = localArray; // $ Source // has conversion
+  return pointerToLocal; // $ Alert // BAD
 }
 
 int &dataFlowThroughReference() {
   int myLocal;
-  int &refToLocal = myLocal; // has conversion
-  return refToLocal; // BAD
+  int &refToLocal = myLocal; // $ Source // has conversion
+  return refToLocal; // $ Alert // BAD
 }
 
 int *&conversionInFlow() {
   int myLocal;
   int *p = &myLocal;
-  int *&pRef = p; // has conversion in the middle of data flow
-  return pRef; // BAD
+  int *&pRef = p; // $ Source // has conversion in the middle of data flow
+  return pRef; // $ Alert // BAD
 }
 
 namespace std {
@@ -234,20 +234,20 @@ void f() {
 void *alloca(size_t);
 
 void* test_alloca() {
-	void* p = alloca(10);
-	return p; // BAD
+	void* p = alloca(10); // $ Source
+	return p; // $ Alert // BAD
 }
 
 char *strdupa(const char *);
 char *strndupa(const char *, size_t);
 
 char* test_strdupa(const char* s) {
-	return strdupa(s); // BAD
+	return strdupa(s); // $ Alert // BAD
 }
 
 void* test_strndupa(const char* s, size_t size) {
-	char* s2 = strndupa(s, size);
-	return s2; // BAD
+	char* s2 = strndupa(s, size); // $ Source
+	return s2; // $ Alert // BAD
 }
 
 int* f_rec(int *p) {

@@ -59,10 +59,10 @@ class MyAssignable : public Assignable
 void testFunc2()
 {
 	Assignable u1, u2;
-	u2 = u1;
+	u2 = u1; // $ Alert
 
 	MyAssignable v1, v2;
-	v2 = v1;
+	v2 = v1; // $ Alert
 }
 
 namespace std {

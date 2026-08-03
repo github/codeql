@@ -66,6 +66,10 @@ jobs:
           ${TITLE}
           EOL
           echo REPO_NAME=$(cat issue.txt | sed 's/\r/\n/g' | grep -ioE '\s*[a-z0-9_-]+/[a-z0-9_-]+\s*$' | tr -d ' ') >> $GITHUB_ENV
+      - env:
+          LABEL: ${{ github.event.pull_request.head.label }}
+        run: |
+          echo "PR_LABEL=$LABEL" >> $GITHUB_ENV
 
 
 

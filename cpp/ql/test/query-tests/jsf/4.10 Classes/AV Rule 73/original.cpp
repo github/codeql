@@ -11,7 +11,7 @@ public:
 	int cmp(const Bad& that);
 };
 
-Bad::Bad() : key(-1)				// non-compliant
+Bad::Bad() : key(-1)				// $ Alert // non-compliant
 {
 }
 
@@ -73,7 +73,7 @@ public:
 	char getChar();
 };
 
-AlsoGood::AlsoGood()								// compliant [FALSE POSITIVE]
+AlsoGood::AlsoGood()								// $ SPURIOUS: Alert // compliant [FALSE POSITIVE]
 {
 	cp = 0;
 }

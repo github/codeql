@@ -52,7 +52,7 @@ void bad()
             if (FILENAME_MAX-dataLen > 1)
             {
                 /* POTENTIAL FLAW: Read data from the console */
-                if (fgets(data+dataLen, (int)(FILENAME_MAX-dataLen), stdin) != NULL)
+                if (fgets(data+dataLen, (int)(FILENAME_MAX-dataLen), stdin) != NULL) // $ Source
                 {
                     /* The next few lines remove the carriage return from the string that is
                      * inserted by fgets() */
@@ -74,7 +74,7 @@ void bad()
     {
         FILE *pFile = NULL;
         /* POTENTIAL FLAW: Possibly opening a file without validating the file name or path */
-        pFile = FOPEN(data, "wb+");
+        pFile = FOPEN(data, "wb+"); // $ Alert
         if (pFile != NULL)
         {
             fclose(pFile);

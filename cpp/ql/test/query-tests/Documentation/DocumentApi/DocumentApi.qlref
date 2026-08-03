@@ -1,1 +1,2 @@
-Documentation/DocumentApi.ql
+query: Documentation/DocumentApi.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

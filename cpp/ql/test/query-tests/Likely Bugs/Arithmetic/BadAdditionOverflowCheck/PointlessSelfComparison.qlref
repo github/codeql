@@ -1,1 +1,2 @@
-Likely Bugs/Arithmetic/PointlessSelfComparison.ql
+query: Likely Bugs/Arithmetic/PointlessSelfComparison.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

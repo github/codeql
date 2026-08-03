@@ -18,7 +18,7 @@ public class JsfXSS extends Renderer
     {
         super.encodeBegin(facesContext, component);
 
-         Map<String, String> requestParameters = facesContext.getExternalContext().getRequestParameterMap(); // $ Source
+         Map<String, String> requestParameters = facesContext.getExternalContext().getRequestParameterMap(); // $ Source[java/xss]
         String windowId = requestParameters.get("window_id");
 
         ResponseWriter writer = facesContext.getResponseWriter();
@@ -26,7 +26,7 @@ public class JsfXSS extends Renderer
         writer.write("(function(){");
         writer.write("dswh.init('" + windowId + "','"
                 + "......" + "',"
-                + -1 + ",{"); // $ Alert
+                + -1 + ",{"); // $ Alert[java/xss]
         writer.write("});");
         writer.write("})();");
         writer.write("</script>");
@@ -57,13 +57,13 @@ public class JsfXSS extends Renderer
     {
         ExternalContext ec = facesContext.getExternalContext();
         ResponseWriter writer = facesContext.getResponseWriter();
-        writer.write(ec.getRequestParameterMap().keySet().iterator().next()); // $ Alert
-        writer.write(ec.getRequestParameterNames().next()); // $ Alert
-        writer.write(ec.getRequestParameterValuesMap().get("someKey")[0]); // $ Alert
-        writer.write(ec.getRequestParameterValuesMap().keySet().iterator().next()); // $ Alert
-        writer.write(ec.getRequestPathInfo()); // $ Alert
-        writer.write(((Cookie)ec.getRequestCookieMap().get("someKey")).getName()); // $ Alert
-        writer.write(ec.getRequestHeaderMap().get("someKey")); // $ Alert
-        writer.write(ec.getRequestHeaderValuesMap().get("someKey")[0]); // $ Alert
+        writer.write(ec.getRequestParameterMap().keySet().iterator().next()); // $ Alert[java/xss]
+        writer.write(ec.getRequestParameterNames().next()); // $ Alert[java/xss]
+        writer.write(ec.getRequestParameterValuesMap().get("someKey")[0]); // $ Alert[java/xss]
+        writer.write(ec.getRequestParameterValuesMap().keySet().iterator().next()); // $ Alert[java/xss]
+        writer.write(ec.getRequestPathInfo()); // $ Alert[java/xss]
+        writer.write(((Cookie)ec.getRequestCookieMap().get("someKey")).getName()); // $ Alert[java/xss]
+        writer.write(ec.getRequestHeaderMap().get("someKey")); // $ Alert[java/xss]
+        writer.write(ec.getRequestHeaderValuesMap().get("someKey")[0]); // $ Alert[java/xss]
     }
 }

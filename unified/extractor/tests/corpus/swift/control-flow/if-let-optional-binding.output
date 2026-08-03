@@ -1,0 +1,86 @@
+if let value = optional {
+  print(value)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            ifExpr
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "value"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              conditions:
+                conditionElement
+                  condition:
+                    optionalBindingCondition
+                      initializer:
+                        initializerClause
+                          equal: =
+                          value:
+                            declReferenceExpr
+                              baseName: identifier "optional"
+                      pattern:
+                        identifierPattern
+                          identifier: identifier "value"
+                      bindingSpecifier: let
+              ifKeyword: if
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        if_expr
+          condition:
+            pattern_guard_expr
+              pattern:
+                constructor_pattern
+                  constructor:
+                    member_access_expr
+                      base:
+                        named_type_expr
+                          name: identifier "Optional"
+                      member: identifier "some"
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "value"
+              value:
+                name_expr
+                  identifier: identifier "optional"
+          then:
+            block
+              stmt:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "value"

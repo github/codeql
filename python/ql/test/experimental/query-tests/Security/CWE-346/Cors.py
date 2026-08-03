@@ -4,8 +4,8 @@ def bad():
     request = cherrypy.request
     validCors = "domain.com"
     if request.method in ['POST', 'PUT', 'PATCH', 'DELETE']:
-        origin = request.headers.get('Origin', None)
-        if origin.startswith(validCors):
+        origin = request.headers.get('Origin', None) # $ Source
+        if origin.startswith(validCors): # $ Alert
             print("Origin Valid")
 
 def good():

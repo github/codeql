@@ -1,0 +1,161 @@
+if x > 0 {
+  print(1)
+} else if x < 0 {
+  print(2)
+} else {
+  print(3)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            ifExpr
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                integerLiteralExpr
+                                  literal: integerLiteral "1"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              conditions:
+                conditionElement
+                  condition:
+                    infixOperatorExpr
+                      operator:
+                        binaryOperatorExpr
+                          operator: binaryOperator ">"
+                      leftOperand:
+                        declReferenceExpr
+                          baseName: identifier "x"
+                      rightOperand:
+                        integerLiteralExpr
+                          literal: integerLiteral "0"
+              elseKeyword: else
+              elseBody:
+                ifExpr
+                  body:
+                    codeBlock
+                      leftBrace: {
+                      rightBrace: }
+                      statements:
+                        codeBlockItem
+                          item:
+                            functionCallExpr
+                              leftParen: (
+                              rightParen: )
+                              arguments:
+                                labeledExpr
+                                  expression:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "2"
+                              additionalTrailingClosures:
+                              calledExpression:
+                                declReferenceExpr
+                                  baseName: identifier "print"
+                  conditions:
+                    conditionElement
+                      condition:
+                        infixOperatorExpr
+                          operator:
+                            binaryOperatorExpr
+                              operator: binaryOperator "<"
+                          leftOperand:
+                            declReferenceExpr
+                              baseName: identifier "x"
+                          rightOperand:
+                            integerLiteralExpr
+                              literal: integerLiteral "0"
+                  elseKeyword: else
+                  elseBody:
+                    codeBlock
+                      leftBrace: {
+                      rightBrace: }
+                      statements:
+                        codeBlockItem
+                          item:
+                            functionCallExpr
+                              leftParen: (
+                              rightParen: )
+                              arguments:
+                                labeledExpr
+                                  expression:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "3"
+                              additionalTrailingClosures:
+                              calledExpression:
+                                declReferenceExpr
+                                  baseName: identifier "print"
+                  ifKeyword: if
+              ifKeyword: if
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        if_expr
+          condition:
+            binary_expr
+              left:
+                name_expr
+                  identifier: identifier "x"
+              operator: infix_operator ">"
+              right: int_literal "0"
+          then:
+            block
+              stmt:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value: int_literal "1"
+          else:
+            if_expr
+              condition:
+                binary_expr
+                  left:
+                    name_expr
+                      identifier: identifier "x"
+                  operator: infix_operator "<"
+                  right: int_literal "0"
+              then:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value: int_literal "2"
+              else:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value: int_literal "3"

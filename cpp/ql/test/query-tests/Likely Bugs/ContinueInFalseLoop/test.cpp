@@ -10,7 +10,7 @@ void test1(int x)
 	do
 	{
 		if (cond())
-			continue; // BAD
+			continue; // $ Alert // BAD
 		if (cond())
 			break;
 	} while (false);
@@ -56,7 +56,7 @@ void test1(int x)
 		do
 		{
 			if (cond())
-				continue; // BAD
+				continue; // $ Alert // BAD
 			if (cond())
 				break;
 		} while (false);

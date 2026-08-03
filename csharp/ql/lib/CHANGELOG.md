@@ -1,3 +1,29 @@
+## 7.1.1
+
+No user-facing changes.
+
+## 7.1.0
+
+### Major Analysis Improvements
+
+* Simplified and streamlined the use of NuGet sources when downloading dependencies via `[mono] nuget.exe` in `build-mode: none`: NuGet sources are now supplied via the `-Source` flag instead of moving or creating `nuget.config` files in the checked-out repository, private registries are used if configured, and only reachable feeds are used when NuGet feed checking is enabled (the default).
+
+## 7.0.0
+
+### Breaking Changes
+
+* Renamed types related to *operation* expressions. The QL classes `BinaryArithmeticOperation`, `BinaryBitwiseOperation`, and `BinaryLogicalOperation` now include compound assignments; for example, `BinaryArithmeticOperation` now includes `a += b`.
+
+### Major Analysis Improvements
+
+* Added Razor Page handler method parameters (e.g., `OnGet`, `OnPost`, `OnPostAsync`) as remote flow sources, enabling security queries such as `cs/sql-injection` to detect vulnerabilities in `PageModel` subclasses.
+
+### Minor Analysis Improvements
+
+* Improved property and indexer call target resolution for partially overridden properties and indexers.
+* Improved extraction of range-access expressions on spans and strings (for example, `a[0..3]`). These expressions are now extracted as `Slice` (span) or `Substring` (string) calls.
+* Improved call target resolution for ref-return properties and indexers.
+
 ## 6.0.2
 
 ### Minor Analysis Improvements

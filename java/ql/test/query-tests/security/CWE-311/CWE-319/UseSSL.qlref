@@ -1,1 +1,2 @@
-Security/CWE/CWE-319/UseSSL.ql
+query: Security/CWE/CWE-319/UseSSL.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

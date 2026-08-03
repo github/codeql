@@ -72,6 +72,35 @@ module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
     }
   }
 
+  private class FlowNodeElement extends Element {
+    FlowNodeElement() {
+      this instanceof Field or
+      this instanceof Expr or
+      this instanceof Method
+    }
+  }
+
+  private predicate id(FlowNodeElement x, FlowNodeElement y) { x = y }
+
+  private predicate idOf(FlowNodeElement x, int y) = equivalenceRelation(id/2)(x, y)
+
+  int getFlowNodeId(FlowNode n) {
+    n =
+      rank[result](FlowNode n0, int a, int b |
+        a = 0 and
+        idOf(n0.asField(), b)
+        or
+        // no case for `n0.asSsa()`; here we rely on the built-in location-based ranking
+        a = 1 and
+        idOf(n0.asExpr(), b)
+        or
+        a = 2 and
+        idOf(n0.asMethod(), b)
+      |
+        n0 order by a, b
+      )
+  }
+
   private SrcCallable viableCallable_v1(Call c) {
     result = viableImpl_v1(c)
     or
@@ -164,6 +193,8 @@ private module Input implements TypeFlowInput<Location> {
   import FlowStepsInput
 
   class TypeFlowNode = FlowNode;
+
+  predicate getTypeFlowNodeId = FlowStepsInput::getFlowNodeId/1;
 
   predicate isExcludedFromNullAnalysis = FlowStepsInput::isExcludedFromNullAnalysis/1;
 

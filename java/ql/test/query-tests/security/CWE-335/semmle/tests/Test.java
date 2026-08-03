@@ -25,16 +25,16 @@ class Test {
 		SecureRandom r_time1 = new SecureRandom(new BigInteger(Long.toString(time1)).toByteArray());
 		// BAD: SecureRandom initialized with times.
 		SecureRandom r_time2 = new SecureRandom(new BigInteger(Long.toString(time2)).toByteArray());
-		r_time1.nextInt(); r_time2.nextInt();
+		r_time1.nextInt(); r_time2.nextInt(); // $ Alert
 		
 		// BAD: SecureRandom initialized with constant value.
 		SecureRandom r_const = new SecureRandom(new BigInteger(Long.toString(12345L)).toByteArray());
-		r_const.nextInt();
+		r_const.nextInt(); // $ Alert
 		
 		// BAD: SecureRandom's seed set to constant with setSeed.
 		SecureRandom r_const_set = new SecureRandom();
 		r_const_set.setSeed(12345L);
-		r_const_set.nextInt();
+		r_const_set.nextInt(); // $ Alert
 		
 		// GOOD: SecureRandom self seeded and then seed is supplemented.
 		SecureRandom r_selfseed = new SecureRandom();

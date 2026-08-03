@@ -1,0 +1,121 @@
+let x = 1
+switch y {
+case someConstant:
+  print("matched")
+default:
+  break
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    integerLiteralExpr
+                      literal: integerLiteral "1"
+              pattern:
+                identifierPattern
+                  identifier: identifier "x"
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            switchExpr
+              leftBrace: {
+              rightBrace: }
+              cases:
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "someConstant"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                stringLiteralExpr
+                                  closingQuote: "
+                                  openingQuote: "
+                                  segments:
+                                    stringSegment
+                                      content: stringSegment "matched"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchDefaultLabel
+                      colon: :
+                      defaultKeyword: default
+                  statements:
+                    codeBlockItem
+                      item:
+                        breakStmt
+                          breakKeyword: break
+              subject:
+                declReferenceExpr
+                  baseName: identifier "y"
+              switchKeyword: switch
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          value: int_literal "1"
+        switch_expr
+          value:
+            name_expr
+              identifier: identifier "y"
+          case:
+            switch_case
+              pattern:
+                expr_equality_pattern
+                  expr:
+                    name_expr
+                      identifier: identifier "someConstant"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value: string_literal "\"matched\""
+            switch_case
+              body:
+                block
+                  stmt: break_expr "break"

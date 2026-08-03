@@ -1,0 +1,40 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/poi#bd97feb849ab86670fe5b5513d4066c46b599797 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.poi.hssf.eventusermodel", "AbortableHSSFListener", True, "abortableProcessRecord", "(Record)", "", "Parameter[0]", "file", "ai-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder$SheetRecordCollectingListener", True, "processRecord", "(Record)", "", "Parameter[0]", "file", "ai-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "FormatTrackingHSSFListener", True, "processRecord", "(Record)", "", "Parameter[0]", "file", "ai-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "HSSFListener", True, "processRecord", "(Record)", "", "Parameter[0]", "file", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder", True, "createStubWorkbook", "(ExternSheetRecord[],BoundSheetRecord[])", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder", True, "createStubWorkbook", "(ExternSheetRecord[],BoundSheetRecord[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder", True, "createStubWorkbook", "(ExternSheetRecord[],BoundSheetRecord[],SSTRecord)", "", "Argument[0].ArrayElement", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder", True, "createStubWorkbook", "(ExternSheetRecord[],BoundSheetRecord[],SSTRecord)", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder", True, "createStubWorkbook", "(ExternSheetRecord[],BoundSheetRecord[],SSTRecord)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder$SheetRecordCollectingListener", True, "SheetRecordCollectingListener", "(HSSFListener)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder$SheetRecordCollectingListener", True, "getBoundSheetRecords", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.eventusermodel.EventWorkbookBuilder$SheetRecordCollectingListener.boundSheetRecords].Element", "ReturnValue.ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder$SheetRecordCollectingListener", True, "getExternSheetRecords", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.eventusermodel.EventWorkbookBuilder$SheetRecordCollectingListener.externSheetRecords].Element", "ReturnValue.ArrayElement", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder$SheetRecordCollectingListener", True, "getSSTRecord", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.eventusermodel.EventWorkbookBuilder$SheetRecordCollectingListener.sstRecord]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder$SheetRecordCollectingListener", True, "getStubHSSFWorkbook", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder$SheetRecordCollectingListener", True, "getStubWorkbook", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder$SheetRecordCollectingListener", True, "processRecordInternally", "(Record)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.eventusermodel.EventWorkbookBuilder$SheetRecordCollectingListener.boundSheetRecords].Element", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder$SheetRecordCollectingListener", True, "processRecordInternally", "(Record)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.eventusermodel.EventWorkbookBuilder$SheetRecordCollectingListener.externSheetRecords].Element", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "EventWorkbookBuilder$SheetRecordCollectingListener", True, "processRecordInternally", "(Record)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.eventusermodel.EventWorkbookBuilder$SheetRecordCollectingListener.sstRecord]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "FormatTrackingHSSFListener", True, "FormatTrackingHSSFListener", "(HSSFListener)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "FormatTrackingHSSFListener", True, "FormatTrackingHSSFListener", "(HSSFListener,Locale)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "FormatTrackingHSSFListener", True, "FormatTrackingHSSFListener", "(HSSFListener,Locale)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "FormatTrackingHSSFListener", True, "getFormatString", "(CellValueRecordInterface)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "FormatTrackingHSSFListener", True, "getFormatString", "(int)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "FormatTrackingHSSFListener", True, "processRecordInternally", "(Record)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "HSSFUserException", True, "HSSFUserException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "HSSFUserException", True, "HSSFUserException", "(String,Throwable)", "", "Argument[1]", "Argument[this].SyntheticField[org.apache.poi.hssf.eventusermodel.HSSFUserException.reason]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "HSSFUserException", True, "HSSFUserException", "(Throwable)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.poi.hssf.eventusermodel.HSSFUserException.reason]", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "HSSFUserException", True, "getReason", "()", "", "Argument[this].SyntheticField[org.apache.poi.hssf.eventusermodel.HSSFUserException.reason]", "ReturnValue", "value", "dfc-generated"]
+      - ["org.apache.poi.hssf.eventusermodel", "MissingRecordAwareHSSFListener", False, "MissingRecordAwareHSSFListener", "(HSSFListener)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

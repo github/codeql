@@ -7,7 +7,7 @@
  * @id ql/quality-query-test
  * @tags quality
  *       someothertag
- */
+ */ // $ Alert
 
 import ql
 

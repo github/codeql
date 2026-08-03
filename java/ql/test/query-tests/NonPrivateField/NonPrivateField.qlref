@@ -1,1 +1,2 @@
-Advisory/Declarations/NonPrivateField.ql
+query: Advisory/Declarations/NonPrivateField.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

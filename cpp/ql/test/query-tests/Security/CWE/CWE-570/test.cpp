@@ -18,7 +18,7 @@ void *operator new(std::size_t, const std::nothrow_t &) noexcept;
 void *operator new[](std::size_t, const std::nothrow_t &) noexcept;
 
 void bad_new_in_condition() {
-  if (!(new int)) { // BAD
+  if (!(new int)) { // $ Alert // BAD
     return;
   }
 }
@@ -26,53 +26,53 @@ void bad_new_in_condition() {
 void foo(int**);
 
 void bad_new_missing_exception_handling() {
-  int *p1 = new int[100]; // BAD
+  int *p1 = new int[100]; // $ Alert // BAD
   if (p1 == 0)
     return;
 
-  int *p2 = new int[100]; // BAD
+  int *p2 = new int[100]; // $ Alert // BAD
   if (!p2)
     return;
 
-  int *p3 = new int[100]; // BAD
+  int *p3 = new int[100]; // $ Alert // BAD
   if (p3 == NULL)
     return;
 
-  int *p4 = new int[100]; // BAD
+  int *p4 = new int[100]; // $ Alert // BAD
   if (p4 == nullptr)
     return;
 
-  int *p5 = new int[100]; // BAD
+  int *p5 = new int[100]; // $ Alert // BAD
   if (p5) {} else return;
 
   int *p6;
-  p6 = new int[100]; // BAD
+  p6 = new int[100]; // $ Alert // BAD
   if (p6 == 0) return;
 
   int *p7;
-  p7 = new int[100]; // BAD
+  p7 = new int[100]; // $ Alert // BAD
   if (!p7)
     return;
 
   int *p8;
-  p8 = new int[100]; // BAD
+  p8 = new int[100]; // $ Alert // BAD
   if (p8 == NULL)
     return;
 
   int *p9;
-  p9 = new int[100]; // BAD
+  p9 = new int[100]; // $ Alert // BAD
   if (p9 != nullptr) {
   } else
     return;
 
   int *p10;
-  p10 = new int[100]; // BAD
+  p10 = new int[100]; // $ Alert // BAD
   if (p10 != 0) {
   }
 
   int *p11;
   do {
-    p11 = new int[100]; // BAD
+    p11 = new int[100]; // $ Alert // BAD
   } while (!p11);
 
   int* p12 = new int[100];
@@ -89,11 +89,11 @@ void bad_new_missing_exception_handling() {
 
 void bad_new_nothrow_in_exception_body() {
   try {
-    new (std::nothrow) int[100];           // BAD
-    int *p1 = new (std::nothrow) int[100]; // BAD
+    new (std::nothrow) int[100];           // $ Alert // BAD
+    int *p1 = new (std::nothrow) int[100]; // $ Alert // BAD
 
     int *p2;
-    p2 = new (std::nothrow) int[100]; // BAD
+    p2 = new (std::nothrow) int[100]; // $ Alert // BAD
   } catch (const std::bad_alloc &) {
   }
 }
@@ -157,7 +157,7 @@ struct Bar {
 void bad_placement_new_with_exception_handling() {
   char buffer[1024];
 
-  try { new (buffer) Foo; } // BAD (placement new should not fail)
+  try { new (buffer) Foo; } // $ Alert // BAD (placement new should not fail)
   catch (...) {  }
 }
 
@@ -226,7 +226,7 @@ void good_new_with_throwing_call() {
 
 void bad_new_with_nonthrowing_call() {
   try {
-    int* p1 = new(std::nothrow) int; // BAD
+    int* p1 = new(std::nothrow) int; // $ Alert // BAD
     calls_non_throwing(p1);
   } catch(...) {  }
 
@@ -239,7 +239,7 @@ void bad_new_with_nonthrowing_call() {
 
 void bad_new_catch_baseclass_of_bad_alloc() {
   try {
-    int* p = new(std::nothrow) int; // BAD
+    int* p = new(std::nothrow) int; // $ Alert // BAD
   } catch(const std::exception&) { }
 }
 
@@ -273,7 +273,7 @@ namespace qhelp {
   // BAD: the allocation will throw an unhandled exception
   // instead of returning a null pointer.
   void bad1(std::size_t length) noexcept {
-    int* dest = new int[length];
+    int* dest = new int[length]; // $ Alert
     if(!dest) {
       return;
     }
@@ -285,7 +285,7 @@ namespace qhelp {
   // instead return a null pointer.
   void bad2(std::size_t length) noexcept {
     try {
-      int* dest = new(std::nothrow) int[length];
+      int* dest = new(std::nothrow) int[length]; // $ Alert
       std::memset(dest, 0, length);
       // ...
     } catch(std::bad_alloc&) {

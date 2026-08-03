@@ -1,3 +1,17 @@
+## 0.6.32
+
+No user-facing changes.
+
+## 0.6.31
+
+No user-facing changes.
+
+## 0.6.30
+
+### Query Metadata Changes
+
+* The name, description, and alert message of `actions/untrusted-checkout/medium` have been corrected to describe a non-privileged context.
+
 ## 0.6.29
 
 ### Query Metadata Changes
@@ -15,7 +29,7 @@
 
 ### Bug Fixes
 
-* Adjusted (minor) help file descriptions for queries: `actions/untrusted-checkout/critical`, `actions/untrusted-checkout/high`, `actions/untrusted-checkout/medium`. Clarified wording on in minor point, added one more listed resource and added one more recommendation for things to check.
+* Adjusted (minor) help file descriptions for queries: `actions/untrusted-checkout/critical`, `actions/untrusted-checkout/high`, `actions/untrusted-checkout/medium`. Clarified wording on a minor point, added one more listed resource and added one more recommendation for things to check.
 
 ## 0.6.28
 

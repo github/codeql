@@ -45,17 +45,17 @@ class Test
         // BAD: No Dispose call in case of exception
         SqlConnection c1d = new SqlConnection();
         c1d.Open();
-        c1d.Dispose();
+        c1d.Dispose(); // $ Alert
 
         // BAD: No Dispose call in case of exception
         SqlConnection c1e = new SqlConnection();
         Throw1(c1e);
-        c1e.Dispose();
+        c1e.Dispose(); // $ Alert
 
         // BAD: No Dispose call in case of exception
         SqlConnection c1f = new SqlConnection();
         Throw2(c1f);
-        c1f.Dispose();
+        c1f.Dispose(); // $ Alert
 
         // GOOD: using declaration
         using SqlConnection c2 = new SqlConnection("");

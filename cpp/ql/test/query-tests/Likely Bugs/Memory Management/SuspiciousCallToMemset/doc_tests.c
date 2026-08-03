@@ -26,7 +26,7 @@ void tests()
 	struct T *t2 = (struct T*)malloc(sizeof(struct T));
 	// the size of the struct is probably intended
 	// but this takes the size of a pointer
-	memset(t2, 0, sizeof(t2)); // BAD
+	memset(t2, 0, sizeof(t2)); // $ Alert // BAD
 
 	// correct but discouraged, use sizeof(struct T) instead
 	memset(t1, 0, sizeof(*t2)); // GOOD

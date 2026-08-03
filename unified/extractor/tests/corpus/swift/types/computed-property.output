@@ -1,0 +1,143 @@
+class Rect {
+  var w: Double
+  var h: Double
+  var area: Double {
+    return w * h
+  }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Rect"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "w"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Double"
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "h"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Double"
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "area"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Double"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                codeBlockItem
+                                  item:
+                                    returnStmt
+                                      expression:
+                                        infixOperatorExpr
+                                          operator:
+                                            binaryOperatorExpr
+                                              operator: binaryOperator "*"
+                                          leftOperand:
+                                            declReferenceExpr
+                                              baseName: identifier "w"
+                                          rightOperand:
+                                            declReferenceExpr
+                                              baseName: identifier "h"
+                                      returnKeyword: return
+                              leftBrace: {
+                              rightBrace: }
+          modifiers:
+          classKeyword: class
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Rect"
+          member:
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "w"
+              type:
+                named_type_expr
+                  name: identifier "Double"
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "h"
+              type:
+                named_type_expr
+                  name: identifier "Double"
+            accessor_declaration
+              modifier: modifier "var"
+              name: identifier "area"
+              accessor_kind: accessor_kind "get"
+              type:
+                named_type_expr
+                  name: identifier "Double"
+              body:
+                block
+                  stmt:
+                    return_expr
+                      value:
+                        binary_expr
+                          left:
+                            name_expr
+                              identifier: identifier "w"
+                          operator: infix_operator "*"
+                          right:
+                            name_expr
+                              identifier: identifier "h"

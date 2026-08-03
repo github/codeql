@@ -4,13 +4,13 @@ class LocalScopeVariableShadowsMember
     {
         protected int f;
 
-        protected virtual void M1(int f) { } // BAD
+        protected virtual void M1(int f) { } // $ Alert // BAD
 
         int M2(int f) => this.f + f; // GOOD
 
         void M3()
         {
-            var f = ""; // BAD
+            var f = ""; // $ Alert // BAD
         }
 
         void M4()
@@ -23,13 +23,13 @@ class LocalScopeVariableShadowsMember
     {
         int f;
 
-        void M1(int f) { } // BAD
+        void M1(int f) { } // $ Alert // BAD
 
         int M2(int f) => this.f + f; // GOOD
 
         void M3()
         {
-            var f = ""; // BAD
+            var f = ""; // $ Alert // BAD
         }
 
         void M4()
@@ -45,9 +45,9 @@ class LocalScopeVariableShadowsMember
 
     class C2 : C, I
     {
-        protected override void M1(int f) { } // BAD
+        protected override void M1(int f) { } // $ Alert // BAD
 
-        public void M5(int f) { } // BAD
+        public void M5(int f) { } // $ Alert // BAD
     }
 
     class C3 : C, I

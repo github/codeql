@@ -2,7 +2,7 @@ require 'rexml'
 
 class FooController < ActionController::Base
   def rexml_handler(event:, context:)
-    name = params[:user_name]
+    name = params[:user_name] # $ Source
 
     xml = <<-XML
         <root>
@@ -18,13 +18,13 @@ class FooController < ActionController::Base
     results1 = REXML::XPath.first(doc, "//foo")
 
     # BAD: XPath query is constructed from user input
-    results2 = REXML::XPath.first(doc, "//#{name}")
+    results2 = REXML::XPath.first(doc, "//#{name}") # $ Alert
 
     # GOOD: XPath query is not constructed from user input
     results3 = REXML::XPath.match(doc, "//foo", nil)
 
     # BAD: XPath query is constructed from user input
-    results4 = REXML::XPath.match(doc, "//#{name}", nil)
+    results4 = REXML::XPath.match(doc, "//#{name}", nil) # $ Alert
 
     # GOOD: XPath query is not constructed from user input
     REXML::XPath.each(doc, "//foo") do |element|
@@ -32,7 +32,7 @@ class FooController < ActionController::Base
     end
 
     # BAD: XPath query constructed from user input
-    REXML::XPath.each(doc, "//#{name}") do |element|
+    REXML::XPath.each(doc, "//#{name}") do |element| # $ Alert
         puts element.text
     end
   end

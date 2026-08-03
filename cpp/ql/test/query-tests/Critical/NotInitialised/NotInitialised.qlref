@@ -1,1 +1,2 @@
-Critical/NotInitialised.ql
+query: Critical/NotInitialised.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -42,7 +42,7 @@ def two():
 
 @app.route("/one_bad")
 def one_bad():
-    ldap_connection_7 = ldap.initialize(schema + remote_host)
+    ldap_connection_7 = ldap.initialize(schema + remote_host) # $ Alert
     ldap_connection_7.set_option(ldap.OPT_X_TLS_DEMAND, False)
     ldap_connection_7.simple_bind_s('', '')
     user = ldap_connection_7.search_s(
@@ -53,7 +53,7 @@ def one_bad():
 
 @app.route("/one_bad_2")
 def one_bad_2():
-    ldap_connection_8 = ldap.initialize(schema + remote_host)
+    ldap_connection_8 = ldap.initialize(schema + remote_host) # $ Alert
     ldap_connection_8.set_option(ldap.OPT_X_TLS_NEVER, True)
     ldap_connection_8.simple_bind_s('', '')
     user = ldap_connection_8.search_s(

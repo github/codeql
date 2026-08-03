@@ -22,7 +22,7 @@ func main() {
 }
 
 func deadParameter(x int) bool { // we don't want to flag x here
-	x = deadStore() // but we do want to flag this
+	x = deadStore() // $ Alert // but we do want to flag this
 	return true
 }
 

@@ -1,1 +1,2 @@
-queries/style/RedundantImport.ql
+query: queries/style/RedundantImport.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

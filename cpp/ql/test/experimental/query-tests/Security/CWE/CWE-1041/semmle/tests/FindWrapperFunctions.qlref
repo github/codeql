@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-1041/FindWrapperFunctions.ql
+query: experimental/Security/CWE/CWE-1041/FindWrapperFunctions.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

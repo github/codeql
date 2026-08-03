@@ -1,1 +1,2 @@
-Header Cleanup/Cleanup-DuplicateIncludeGuard.ql
+query: Header Cleanup/Cleanup-DuplicateIncludeGuard.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

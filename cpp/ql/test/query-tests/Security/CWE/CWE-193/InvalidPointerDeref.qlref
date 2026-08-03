@@ -1,1 +1,2 @@
-Security/CWE/CWE-193/InvalidPointerDeref.ql
+query: Security/CWE/CWE-193/InvalidPointerDeref.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

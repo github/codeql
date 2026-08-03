@@ -49,13 +49,13 @@ class Tests
         B b = new B();
         object o;
 
-        o = (A)b; // BAD
+        o = (A)b; // $ Alert // BAD
 
         o = (B)b; // GOOD: Not an upcast
 
         b.M((A)b); // GOOD: Disambiguating method call
 
-        a.M1((A)b); // BAD
+        a.M1((A)b); // $ Alert // BAD
         a.M2((A)b); // GOOD: Disambiguating method call
 
         o = true ? (A)a : b; // GOOD: Needed for ternary
@@ -64,7 +64,7 @@ class Tests
 
         Fn((A)b); // GOOD: Disambiguating method call
 
-        Fn2((A)b); // BAD
+        Fn2((A)b); // $ Alert // BAD
 
         ((I2)a).Foo(); // GOOD: Cast to an interface
 
@@ -80,7 +80,7 @@ class Tests
         StaticMethods.M1((A)b); // GOOD: disambiguate targets from `StaticMethods`
 
         void M2(A _) { }
-        M2((A)b); // BAD: local functions cannot be overloaded
+        M2((A)b); // $ Alert // BAD: local functions cannot be overloaded
     }
 
     static void M2(A _) { }
@@ -89,7 +89,7 @@ class Tests
     {
         // BAD: even though `StaticMethods` has an `M2`, only overloads in
         // `Tests` are taken into account
-        M2((A)b);
+        M2((A)b); // $ Alert
     }
 
     class Nested
@@ -100,7 +100,7 @@ class Tests
         {
             // BAD: even though `StaticMethods` and `Tests` have `M2`s, only
             // overloads in `Nested` are taken into account
-            M2((B)c);
+            M2((B)c); // $ Alert
         }
     }
 }
@@ -155,11 +155,11 @@ class Constructors : I2
 
     class SubSub : Sub
     {
-        SubSub(SubSub ss) : base((Sub)ss) { } // BAD
+        SubSub(SubSub ss) : base((Sub)ss) { } // $ Alert // BAD
 
         void M(SubSub ss)
         {
-            new Sub((Sub)ss); // BAD
+            new Sub((Sub)ss); // $ Alert // BAD
         }
     }
 

@@ -16,7 +16,7 @@ void myTemplateTest() {
 	Nothing n;
 
 	i++; // GOOD (always has an effect)
-	n++; // BAD (never has an effect)
+	n++; // $ Alert // BAD (never has an effect)
 	Increment(i);
 	Increment(n);
 }

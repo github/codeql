@@ -1,1 +1,2 @@
-Likely Bugs/PossibleLossOfPrecision.ql
+query: Likely Bugs/PossibleLossOfPrecision.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

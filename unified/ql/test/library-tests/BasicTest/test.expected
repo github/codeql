@@ -1,9 +1,37 @@
 nameExpr
+| name_expr.swift:1:9:1:9 | NameExpr | y |
+| test.swift:1:8:1:17 | NameExpr | Foundation |
+| test.swift:8:9:8:13 | NameExpr | items |
+| test.swift:8:22:8:25 | NameExpr | item |
+| test.swift:12:16:12:20 | NameExpr | items |
+| test.swift:12:31:12:34 | NameExpr | item |
+| test.swift:25:18:25:22 | NameExpr | Array |
+| test.swift:25:24:25:28 | NameExpr | first |
+| test.swift:26:17:26:22 | NameExpr | second |
+| test.swift:27:13:27:18 | NameExpr | result |
+| test.swift:27:29:27:32 | NameExpr | item |
+| test.swift:28:13:28:18 | NameExpr | result |
+| test.swift:28:27:28:30 | NameExpr | item |
+| test.swift:31:12:31:17 | NameExpr | result |
+| test.swift:40:16:40:19 | NameExpr | data |
+| test.swift:44:9:44:12 | NameExpr | data |
+| test.swift:48:15:48:19 | NameExpr | index |
+| test.swift:48:29:48:33 | NameExpr | index |
+| test.swift:48:37:48:40 | NameExpr | data |
+| test.swift:49:16:49:19 | NameExpr | data |
+| test.swift:49:21:49:25 | NameExpr | index |
+| test.swift:53:9:53:12 | NameExpr | data |
+| test.swift:53:21:53:24 | NameExpr | item |
+| test.swift:63:16:63:19 | NameExpr | self |
+| test.swift:65:29:65:37 | NameExpr | transform |
+| test.swift:65:39:65:43 | NameExpr | value |
+| test.swift:67:29:67:33 | NameExpr | error |
+| test.swift:76:16:76:19 | NameExpr | self |
+| test.swift:76:21:76:21 | NameExpr | i |
+| test.swift:76:26:76:29 | NameExpr | self |
+| test.swift:76:31:76:31 | NameExpr | i |
+| test.swift:86:12:86:17 | NameExpr | values |
+| test.swift:87:12:87:17 | NameExpr | values |
+| test.swift:87:38:87:43 | NameExpr | values |
+| test.swift:87:49:87:57 | NameExpr | transform |
 unsupported
-| test.swift:3:1:3:38 |  |  |
-| test.swift:16:1:16:32 |  |  |
-| test.swift:23:1:23:37 |  |  |
-| test.swift:34:1:34:49 |  |  |
-| test.swift:57:1:57:30 |  |  |
-| test.swift:72:1:72:37 |  |  |
-| test.swift:84:1:84:24 |  |  |

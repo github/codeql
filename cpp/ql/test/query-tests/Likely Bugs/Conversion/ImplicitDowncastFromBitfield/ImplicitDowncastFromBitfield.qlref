@@ -1,1 +1,2 @@
-Likely Bugs/Conversion/ImplicitDowncastFromBitfield.ql
+query: Likely Bugs/Conversion/ImplicitDowncastFromBitfield.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

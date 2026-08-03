@@ -3,22 +3,22 @@ typedef int jmp_buf[16];
 
 class C { public:
 
-static int bad1(char xs[10])
+static int bad1(char xs[10]) // $ Alert
 {
   return sizeof(xs);
 }
 
-static int bad2(char xs[])
+static int bad2(char xs[]) // $ Alert
 {
   return sizeof(xs);
 }
 
-static int bad3(chars xs)
+static int bad3(chars xs) // $ Alert
 {
   return sizeof(xs);
 }
 
-static int bad4(chars const xs)
+static int bad4(chars const xs) // $ Alert
 {
   return sizeof(xs);
 }
@@ -37,7 +37,7 @@ static void good_longjmp(jmp_buf j)
 {
 }
 
-static void bad_longjmp(int j[16])
+static void bad_longjmp(int j[16]) // $ Alert
 {
 }
 

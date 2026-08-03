@@ -3,9 +3,9 @@ class Test
     static void Main(string[] args)
     {
         // BAD
-        c3.Equals(c4);
-        c2.Equals(c3);
-        c7.Equals(c6);
+        c3.Equals(c4); // $ Alert
+        c2.Equals(c3); // $ Alert
+        c7.Equals(c6); // $ Alert
 
         // GOOD
         c1.Equals(c2);

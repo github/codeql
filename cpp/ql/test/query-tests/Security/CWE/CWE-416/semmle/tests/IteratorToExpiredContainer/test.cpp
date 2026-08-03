@@ -192,7 +192,7 @@ namespace std
     basic_string& append(const basic_string& str);
     basic_string& append(const charT* s);
     basic_string& append(size_type n, charT c);
-    template<class InputIterator> basic_string& append(InputIterator first, InputIterator last); 
+    template<class InputIterator> basic_string& append(InputIterator first, InputIterator last);
     basic_string& assign(const basic_string& str);
     basic_string& assign(size_type n, charT c);
     template<class InputIterator> basic_string& assign(InputIterator first, InputIterator last);
@@ -200,7 +200,7 @@ namespace std
     basic_string& insert(size_type pos, size_type n, charT c);
     basic_string& insert(size_type pos, const charT* s);
     iterator insert(const_iterator p, size_type n, charT c);
-    template<class InputIterator> iterator insert(const_iterator p, InputIterator first, InputIterator last); 
+    template<class InputIterator> iterator insert(const_iterator p, InputIterator first, InputIterator last);
     basic_string& replace(size_type pos1, size_type n1, const basic_string& str);
     basic_string& replace(size_type pos1, size_type n1, size_type n2, charT c);
     size_type copy(charT* s, size_type n, size_type pos = 0) const;
@@ -241,7 +241,7 @@ namespace std
    };
 
   template<class charT, class traits> basic_istream<charT, traits>& operator>>(basic_istream<charT, traits>&, charT*);
-  template<class charT, class traits, class Allocator> basic_istream<charT, traits>& operator>>(basic_istream<charT, traits>& is, basic_string<charT, traits, Allocator>& str); 
+  template<class charT, class traits, class Allocator> basic_istream<charT, traits>& operator>>(basic_istream<charT, traits>& is, basic_string<charT, traits, Allocator>& str);
 
   template<class charT, class traits, class Allocator> basic_istream<charT,traits>& getline(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str, charT delim);
   template<class charT, class traits, class Allocator> basic_istream<charT,traits>& getline(basic_istream<charT,traits>& is, basic_string<charT,traits,Allocator>& str);
@@ -259,7 +259,7 @@ namespace std
   };
 
   template<class charT, class traits> basic_ostream<charT,traits>& operator<<(basic_ostream<charT,traits>&, const charT*);
-  template<class charT, class traits, class Allocator> basic_ostream<charT, traits>& operator<<(basic_ostream<charT, traits>& os, const basic_string<charT, traits, Allocator>& str); 
+  template<class charT, class traits, class Allocator> basic_ostream<charT, traits>& operator<<(basic_ostream<charT, traits>& os, const basic_string<charT, traits, Allocator>& str);
 
   template<class charT, class traits = char_traits<charT>>
   class basic_iostream : public basic_istream<charT, traits>, public basic_ostream<charT, traits> {
@@ -294,11 +294,11 @@ namespace std
 
 namespace std {
   template<class T, class Allocator = allocator<T>>
-  class vector { 
+  class vector {
   public:
     using value_type = T;
     using reference = value_type&;
-    using const_reference = const value_type&; 
+    using const_reference = const value_type&;
     using size_type = unsigned int;
     using iterator = std::iterator<random_access_iterator_tag, T>;
     using const_iterator = std::iterator<random_access_iterator_tag, const T>;
@@ -518,7 +518,7 @@ namespace std {
     mapped_type& operator[](key_type&& k);
     mapped_type& at(const key_type& k);
     const mapped_type& at(const key_type& k) const;
-    
+
     template<class... Args> pair<iterator, bool> emplace(Args&&... args);
     template<class... Args> iterator emplace_hint(const_iterator position, Args&&... args);
 
@@ -571,7 +571,7 @@ namespace std {
     set(set&& x);
     template<class InputIterator> set(InputIterator first, InputIterator last/*, const Compare& comp = Compare(), const Allocator& = Allocator()*/);
     ~set();
-    
+
     set& operator=(const set& x);
     set& operator=(set&& x) noexcept/*(allocator_traits<Allocator>::is_always_equal::value && is_nothrow_move_assignable_v<Compare>)*/;
 
@@ -586,11 +586,11 @@ namespace std {
     pair<iterator,bool> insert(value_type&& x);
     iterator insert(const_iterator position, const value_type& x);
     iterator insert(const_iterator position, value_type&& x);
-    template<class InputIterator> void insert(InputIterator first, InputIterator last); 
-    
+    template<class InputIterator> void insert(InputIterator first, InputIterator last);
+
     iterator erase(iterator position);
     iterator erase(const_iterator position);
-    iterator erase(const_iterator first, const_iterator last); 
+    iterator erase(const_iterator first, const_iterator last);
     void swap(set&) noexcept/*(allocator_traits<Allocator>::is_always_equal::value && is_nothrow_swappable_v<Compare>)*/;
     void clear() noexcept;
 
@@ -599,7 +599,7 @@ namespace std {
 
     iterator find(const key_type& x);
     const_iterator find(const key_type& x) const;
-    
+
     iterator lower_bound(const key_type& x);
     const_iterator lower_bound(const key_type& x) const;
     iterator upper_bound(const key_type& x);
@@ -609,7 +609,7 @@ namespace std {
   };
 
   template<class Key, class Hash = hash<Key>, class Pred = equal_to<Key>, class Allocator = allocator<Key>>
-  class unordered_set { 
+  class unordered_set {
   public:
     using key_type = Key;
     using value_type = Key;
@@ -628,7 +628,7 @@ namespace std {
 
     unordered_set& operator=(const unordered_set&);
     unordered_set& operator=(unordered_set&&) noexcept/*(allocator_traits<Allocator>::is_always_equal::value && is_nothrow_move_assignable_v<Hash> && is_nothrow_move_assignable_v<Pred>)*/;
-    
+
     iterator begin() noexcept;
     const_iterator begin() const noexcept;
     iterator end() noexcept;
@@ -640,7 +640,7 @@ namespace std {
     pair<iterator, bool> insert(value_type&& obj);
     iterator insert(const_iterator hint, const value_type& obj);
     iterator insert(const_iterator hint, value_type&& obj);
-    template<class InputIterator> void insert(InputIterator first, InputIterator last); 
+    template<class InputIterator> void insert(InputIterator first, InputIterator last);
 
     iterator erase(iterator position);
     iterator erase(const_iterator position);
@@ -677,16 +677,16 @@ std::vector<std::vector<int>> return_self_by_value(const std::vector<std::vector
 
 void test() {
   for (auto x : returnValue()) {} // GOOD
-  for (auto x : returnValue()[0]) {} // BAD
+  for (auto x : returnValue()[0]) {} // $ Alert // BAD
   for (auto x : external_by_value(returnValue())) {} // GOOD
   for (auto x : external_by_const_ref(returnValue())) {} // GOOD
-  for (auto x : returnValue().at(0)) {} // BAD
+  for (auto x : returnValue().at(0)) {} // $ Alert // BAD
 
   for (auto x : returnRef()) {} // GOOD
   for (auto x : returnRef()[0]) {} // GOOD
   for (auto x : returnRef().at(0)) {} // GOOD
 
-  for(auto it = returnValue().begin(); it != returnValue().end(); ++it) {} // BAD [NOT DETECTED]
+  for(auto it = returnValue().begin(); it != returnValue().end(); ++it) {} // $ MISSING: Alert // BAD [NOT DETECTED]
 
   {
   auto v = returnValue();
@@ -699,10 +699,10 @@ void test() {
   }
 
   {
-  auto&& v = returnValue()[0];
+  auto&& v = returnValue()[0]; // $ Alert
   for(auto it = v.begin(); it != v.end(); ++it) {} // BAD
   }
-  
+
   {
   auto&& v = returnRef();
   for(auto it = v.begin(); it != v.end(); ++it) {} // GOOD
@@ -713,7 +713,7 @@ void test() {
   for(auto it = v.begin(); it != v.end(); ++it) {} // GOOD
   }
 
-  for (auto x : return_self_by_ref(returnValue())) {} // BAD [NOT DETECTED]
+  for (auto x : return_self_by_ref(returnValue())) {} // $ MISSING: Alert // BAD [NOT DETECTED]
 
   for (auto x : return_self_by_value(returnValue())) {} // GOOD
 }
@@ -724,15 +724,15 @@ void iterate(const std::vector<T>& v) {
 }
 
 std::vector<int>& ref_to_first_in_returnValue_1() {
-  return returnValue()[0]; // BAD
+  return returnValue()[0]; // $ Alert // BAD
 }
 
 std::vector<int>& ref_to_first_in_returnValue_2() {
-  return returnValue()[0]; // BAD [NOT DETECTED]
+  return returnValue()[0]; // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 std::vector<int>& ref_to_first_in_returnValue_3() {
-  return returnValue()[0]; // BAD
+  return returnValue()[0]; // $ Alert // BAD
 }
 
 std::vector<int> first_in_returnValue_1() {
@@ -854,7 +854,7 @@ struct PlusPlusReturnByValueIterator
 void test7()
 {
   PlusPlusReturnByValueIterator it;
-  it.operator++(); // GOOD [FALSE POSITIVE]
+  it.operator++(); // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE]
 
   it.begin();
 }

@@ -67,7 +67,7 @@ namespace Semmle.Extraction.CSharp
                     return;
                 }
 
-                var mscorlibExists = File.Exists(Path.Combine(compilerDir, "mscorlib.dll"));
+                var mscorlibExists = File.Exists(Path.Join(compilerDir, "mscorlib.dll"));
 
                 if (specifiedFramework is null && mscorlibExists)
                 {
@@ -107,7 +107,7 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// The file csc.rsp.
         /// </summary>
-        private string CscRsp => Path.Combine(FrameworkPath, csc_rsp);
+        private string CscRsp => Path.Join(FrameworkPath, csc_rsp);
 
         /// <summary>
         /// Should we skip extraction?

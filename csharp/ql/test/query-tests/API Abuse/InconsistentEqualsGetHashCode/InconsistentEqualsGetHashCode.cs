@@ -1,6 +1,6 @@
 using System;
 
-class ClassMissingGetHashCode
+class ClassMissingGetHashCode // $ Alert
 {
     public override bool Equals(object other)
     {
@@ -13,7 +13,7 @@ class ClassMissingGetHashCode
     }
 }
 
-class ClassMissingEquals
+class ClassMissingEquals // $ Alert
 {
     public new bool Equals(object other)
     { // not overridden

@@ -2,7 +2,7 @@ public class Test1
 {
     public override bool Equals(object other)
     {
-        return other is Test1; // BAD
+        return other is Test1; // $ Alert // BAD
     }
 }
 

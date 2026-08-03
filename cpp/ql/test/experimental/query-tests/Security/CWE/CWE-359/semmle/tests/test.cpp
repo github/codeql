@@ -54,7 +54,7 @@ void file()
   FILE *file;
 
   // BAD: write zipcode to file in cleartext
-  fputs(theZipcode, file);
+  fputs(theZipcode, file); // $ Alert
 
   // GOOD: encrypt first
   char *encrypted = encrypt(theZipcode);
@@ -71,15 +71,15 @@ int main(int argc, char **argv)
   char *buff4;
 
   // BAD: write medical to buffer in cleartext
-  sprintf(buff1, "%s", medical);
+  sprintf(buff1, "%s", medical); // $ Alert Source
 
   // BAD: write medical to buffer in cleartext
-  char *temp = medical;
-  sprintf(buff2, "%s", temp);
+  char *temp = medical; // $ Source
+  sprintf(buff2, "%s", temp); // $ Alert
 
   // BAD: write medical to buffer in cleartext
-  char *buff5 = func(medical);
-  sprintf(buff3, "%s", buff5);
+  char *buff5 = func(medical); // $ Source
+  sprintf(buff3, "%s", buff5); // $ Alert
 
   char *buff6 = encrypt(medical);
   // GOOD: encrypt first
@@ -93,10 +93,10 @@ void stream()
   ofstream mystream;
 
   // BAD: write zipcode to file in cleartext
-  mystream << "the zipcode is: " << theZipcode;
+  mystream << "the zipcode is: " << theZipcode; // $ Alert Source
 
   // BAD: write zipcode to file in cleartext
-  (mystream << "the zipcode is: ").write(theZipcode, strlen(theZipcode));
+  (mystream << "the zipcode is: ").write(theZipcode, strlen(theZipcode)); // $ Alert
 
   // GOOD: encrypt first
   char *encrypted = encrypt(theZipcode);

@@ -1,7 +1,7 @@
 public class CharLiterals {
   public static boolean redundantSurrogateRange(char c) {
     if(c >= '\uda00') {
-      if(c >= '\ud900') {
+      if(c >= '\ud900') { // $ Alert
         return true;
       }
     }
@@ -19,7 +19,7 @@ public class CharLiterals {
 
   public static boolean redundantNonSurrogateRange(char c) {
     if(c >= 'b') {
-      if(c >= 'a') {
+      if(c >= 'a') { // $ Alert
         return true;
       }
     }
@@ -39,7 +39,7 @@ public class CharLiterals {
     if(c == '\uda00') {
       return true;
     }
-    else if(c == '\uda00') {
+    else if(c == '\uda00') { // $ Alert
       return true;
     }
     return false;
@@ -59,7 +59,7 @@ public class CharLiterals {
     if(c == 'a') {
       return true;
     }
-    else if(c == 'a') {
+    else if(c == 'a') { // $ Alert
       return true;
     }
     return false;

@@ -52,9 +52,9 @@ template<class T>
 class AutoContainer2
 {
 public:
-	AutoContainer2() : v(new T) // GOOD [FALSE POSITIVE]
+	AutoContainer2() : v(new T) // $ SPURIOUS: Alert[cpp/memory-never-freed] // GOOD [FALSE POSITIVE]
 	{
-		ns::my_auto_ptr<T> ap(new T); // GOOD [FALSE POSITIVE]
+		ns::my_auto_ptr<T> ap(new T); // $ SPURIOUS: Alert[cpp/memory-never-freed] // GOOD [FALSE POSITIVE]
 	}
 
 	ns::my_auto_ptr<T> v;
@@ -68,7 +68,7 @@ public:
 	AutoCloner(AutoCloner &from) : val(from.val) {};
 
 	ns::my_auto_ptr<AutoCloner> clone() {
-		return ns::my_auto_ptr<AutoCloner>(new AutoCloner(*this)); // GOOD [FALSE POSITIVE]
+		return ns::my_auto_ptr<AutoCloner>(new AutoCloner(*this)); // $ SPURIOUS: Alert[cpp/memory-never-freed] // GOOD [FALSE POSITIVE]
 	}
 
 private:
@@ -77,9 +77,9 @@ private:
 
 int main()
 {
-	int *i1 = new int; // BAD: never deleted
-	int *i2 = id(new int); // BAD: never deleted
-	ignore(new int); // BAD: never deleted
+	int *i1 = new int; // $ Alert[cpp/memory-never-freed] // BAD: never deleted
+	int *i2 = id(new int); // $ Alert[cpp/memory-never-freed] // BAD: never deleted
+	ignore(new int); // $ Alert[cpp/memory-never-freed] // BAD: never deleted
 
 	ns::my_auto_ptr<char> a1(new char); // GOOD
 	ns::my_auto_ptr<short> a2(new short); // GOOD

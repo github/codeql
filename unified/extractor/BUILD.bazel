@@ -7,6 +7,10 @@ codeql_rust_binary(
     name = "extractor",
     srcs = glob(["src/**/*.rs"]),
     aliases = aliases(),
+    compile_data = [
+        "ast_types.yml",
+        "swift_node_types.yml",
+    ],
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
     ),
@@ -16,6 +20,5 @@ codeql_rust_binary(
     ) + [
         "//shared/tree-sitter-extractor",
         "//shared/yeast",
-        "//unified/extractor/tree-sitter-swift",
     ],
 )

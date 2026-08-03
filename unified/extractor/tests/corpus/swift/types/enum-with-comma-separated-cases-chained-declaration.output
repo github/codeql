@@ -1,0 +1,76 @@
+enum Suit {
+  case clubs, diamonds, hearts, spades
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        enumDecl
+          attributes:
+          name: identifier "Suit"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    enumCaseDecl
+                      attributes:
+                      modifiers:
+                      elements:
+                        enumCaseElement
+                          name: identifier "clubs"
+                          trailingComma: ,
+                        enumCaseElement
+                          name: identifier "diamonds"
+                          trailingComma: ,
+                        enumCaseElement
+                          name: identifier "hearts"
+                          trailingComma: ,
+                        enumCaseElement
+                          name: identifier "spades"
+                      caseKeyword: case
+          modifiers:
+          enumKeyword: enum
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "enum"
+          name: identifier "Suit"
+          member:
+            variable_declaration
+              modifier: modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "clubs"
+            variable_declaration
+              modifier:
+                modifier "chained_declaration"
+                modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "diamonds"
+            variable_declaration
+              modifier:
+                modifier "chained_declaration"
+                modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "hearts"
+            variable_declaration
+              modifier:
+                modifier "chained_declaration"
+                modifier "enum_case"
+              pattern:
+                name_pattern
+                  identifier: identifier "spades"

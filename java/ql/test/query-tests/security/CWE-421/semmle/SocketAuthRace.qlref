@@ -1,1 +1,2 @@
-Security/CWE/CWE-421/SocketAuthRace.ql
+query: Security/CWE/CWE-421/SocketAuthRace.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

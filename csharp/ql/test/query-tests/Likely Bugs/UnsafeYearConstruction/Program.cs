@@ -10,11 +10,11 @@ namespace LeapYear
         {
             var now = DateTime.UtcNow;
             // BAD
-            this.Start = new DateTime(now.Year - 1, now.Month, now.Day, 0, 0, 0, DateTimeKind.Utc);
+            this.Start = new DateTime(now.Year - 1, now.Month, now.Day, 0, 0, 0, DateTimeKind.Utc); // $ Alert
 
-            var endYear = now.Year + 1;
+            var endYear = now.Year + 1; // $ Source
             // BAD
-            this.End = new DateTime(endYear, now.Month, now.Day, 0, 0, 1, DateTimeKind.Utc);
+            this.End = new DateTime(endYear, now.Month, now.Day, 0, 0, 1, DateTimeKind.Utc); // $ Alert
 
             // GOOD
             this.Start = now.AddYears(-1).Date;
@@ -23,14 +23,14 @@ namespace LeapYear
         private void Test(int year, int month, int day)
         {
             // BAD (arithmetic operation from StartTest)
-            this.Start = new DateTime(year, month, day);
+            this.Start = new DateTime(year, month, day); // $ Alert
         }
 
         public void StartTest()
         {
             var now = DateTime.UtcNow;
             // flows into Test (source for bug)
-            Test(now.Year - 1, now.Month, now.Day);
+            Test(now.Year - 1, now.Month, now.Day); // $ Source
         }
 
         public void StartTestFP()

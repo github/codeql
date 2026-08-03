@@ -30,7 +30,7 @@ static char * badSource(char * data)
         {
             /* Append input from an environment variable to data */
             size_t dataLen = strlen(data);
-            char * environment = GETENV(ENV_VARIABLE);
+            char * environment = GETENV(ENV_VARIABLE); // $ Source
             /* If there is data in the environment variable */
             if (environment != NULL)
             {
@@ -50,7 +50,7 @@ void CWE78_OS_Command_Injection__char_environment_system_21_bad()
     badStatic = 1; /* true */
     data = badSource(data);
     /* POTENTIAL FLAW: Execute command in data possibly leading to command injection [NOT DETECTED] */
-    if (SYSTEM(data) != 0)
+    if (SYSTEM(data) != 0) // $ Alert
     {
         printLine("command execution failed!");
         exit(1);

@@ -91,7 +91,7 @@ func getRemoteData() -> String {
 	let url = URL(string: "http://example.com/")
 	do
 	{
-		return try String(contentsOf: url!)
+		return try String(contentsOf: url!) // $ Source
 	} catch {
 		return ""
 	}
@@ -100,13 +100,13 @@ func getRemoteData() -> String {
 func testSimpleFlows() {
 	let webview = UIWebView()
 
-	webview.loadHTMLString(try! String(contentsOf: URL(string: "http://example.com/")!), baseURL: nil) // BAD
+	webview.loadHTMLString(try! String(contentsOf: URL(string: "http://example.com/")!), baseURL: nil) // $ Alert
 
-	let data = try! String(contentsOf: URL(string: "http://example.com/")!)
-	webview.loadHTMLString(data, baseURL: nil) // BAD
+	let data = try! String(contentsOf: URL(string: "http://example.com/")!) // $ Source
+	webview.loadHTMLString(data, baseURL: nil) // $ Alert
 
 	let url = URL(string: "http://example.com/")
-	webview.loadHTMLString(try! String(contentsOf: url!), baseURL: nil) // BAD
+	webview.loadHTMLString(try! String(contentsOf: url!), baseURL: nil) // $ Alert
 }
 
 func testUIWebView() {
@@ -117,14 +117,14 @@ func testUIWebView() {
 	let remoteString = getRemoteData()
 
 	webview.loadHTMLString(localString, baseURL: nil) // GOOD: the HTML data is local
-	webview.loadHTMLString(getRemoteData(), baseURL: nil) // BAD: HTML contains remote input, may access local secrets
-	webview.loadHTMLString(remoteString, baseURL: nil) // BAD
+	webview.loadHTMLString(getRemoteData(), baseURL: nil) // $ Alert // BAD: HTML contains remote input, may access local secrets
+	webview.loadHTMLString(remoteString, baseURL: nil) // $ Alert
 
 	webview.loadHTMLString("<html>" + localStringFragment + "</html>", baseURL: nil) // GOOD: the HTML data is local
-	webview.loadHTMLString("<html>" + remoteString + "</html>", baseURL: nil) // BAD
+	webview.loadHTMLString("<html>" + remoteString + "</html>", baseURL: nil) // $ Alert
 
 	webview.loadHTMLString("<html>\(localStringFragment)</html>", baseURL: nil) // GOOD: the HTML data is local
-	webview.loadHTMLString("<html>\(remoteString)</html>", baseURL: nil) // BAD
+	webview.loadHTMLString("<html>\(remoteString)</html>", baseURL: nil) // $ Alert
 
 	let localSafeURL = URL(string: "about:blank")
 	let localURL = URL(string: "http://example.com/")
@@ -136,9 +136,9 @@ func testUIWebView() {
 	webview.loadHTMLString(localString, baseURL: localURL!) // GOOD: a presumed safe baseURL is specified
 	webview.loadHTMLString(remoteString, baseURL: localURL!) // GOOD: a presumed safe baseURL is specified
 	webview.loadHTMLString(localString, baseURL: remoteURL!) // GOOD: the HTML data is local
-	webview.loadHTMLString(remoteString, baseURL: remoteURL!) // BAD
+	webview.loadHTMLString(remoteString, baseURL: remoteURL!) // $ Alert
 	webview.loadHTMLString(localString, baseURL: remoteURL2!) // GOOD: the HTML data is local
-	webview.loadHTMLString(remoteString, baseURL: remoteURL2!) // BAD
+	webview.loadHTMLString(remoteString, baseURL: remoteURL2!) // $ Alert
 
 	let localRequest = URLRequest(url: localURL!)
 	let remoteRequest = URLRequest(url: remoteURL!)
@@ -151,7 +151,7 @@ func testUIWebView() {
 	webview.load(localData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: localSafeURL!) // GOOD: the data is local
 	webview.load(remoteData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: localSafeURL!) // GOOD: a safe baseURL is specified
 	webview.load(localData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: remoteURL!) // GOOD: the HTML data is local
-	webview.load(remoteData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: remoteURL!) // BAD
+	webview.load(remoteData, mimeType: "text/html", textEncodingName: "utf-8", baseURL: remoteURL!) // $ Alert
 }
 
 func testWKWebView() {
@@ -164,14 +164,14 @@ func testWKWebView() {
 	let remoteString = getRemoteData()
 
 	webview.loadHTMLString(localString, baseURL: nil) // GOOD: the HTML data is local
-	webview.loadHTMLString(getRemoteData(), baseURL: nil) // BAD
-	webview.loadHTMLString(remoteString, baseURL: nil) // BAD
+	webview.loadHTMLString(getRemoteData(), baseURL: nil) // $ Alert
+	webview.loadHTMLString(remoteString, baseURL: nil) // $ Alert
 
 	webview.loadHTMLString("<html>" + localStringFragment + "</html>", baseURL: nil) // GOOD: the HTML data is local
-	webview.loadHTMLString("<html>" + remoteString + "</html>", baseURL: nil) // BAD
+	webview.loadHTMLString("<html>" + remoteString + "</html>", baseURL: nil) // $ Alert
 
 	webview.loadHTMLString("<html>\(localStringFragment)</html>", baseURL: nil) // GOOD: the HTML data is local
-	webview.loadHTMLString("<html>\(remoteString)</html>", baseURL: nil) // BAD
+	webview.loadHTMLString("<html>\(remoteString)</html>", baseURL: nil) // $ Alert
 
 	let localSafeURL = URL(string: "about:blank")
 	let localURL = URL(string: "http://example.com/")
@@ -183,9 +183,9 @@ func testWKWebView() {
 	webview.loadHTMLString(localString, baseURL: localURL!) // GOOD: a presumed safe baseURL is specified
 	webview.loadHTMLString(remoteString, baseURL: localURL!) // GOOD: a presumed safe baseURL is specified
 	webview.loadHTMLString(localString, baseURL: remoteURL!) // GOOD: the HTML data is local
-	webview.loadHTMLString(remoteString, baseURL: remoteURL!) // BAD
+	webview.loadHTMLString(remoteString, baseURL: remoteURL!) // $ Alert
 	webview.loadHTMLString(localString, baseURL: remoteURL2!) // GOOD: the HTML data is local
-	webview.loadHTMLString(remoteString, baseURL: remoteURL2!) // BAD
+	webview.loadHTMLString(remoteString, baseURL: remoteURL2!) // $ Alert
 
 	let localRequest = URLRequest(url: localURL!)
 	let remoteRequest = URLRequest(url: remoteURL!)
@@ -198,7 +198,7 @@ func testWKWebView() {
 	webview.load(localData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: localSafeURL!) // GOOD: the data is local
 	webview.load(remoteData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: localSafeURL!) // GOOD: a safe baseURL is specified
 	webview.load(localData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: remoteURL!) // GOOD: the HTML data is local
-	webview.load(remoteData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: remoteURL!) // BAD
+	webview.load(remoteData, mimeType: "text/html", characterEncodingName: "utf-8", baseURL: remoteURL!) // $ Alert
 }
 
 func testQHelpExamples() {
@@ -207,7 +207,7 @@ func testQHelpExamples() {
 
 	// ...
 
-	webview.loadHTMLString(htmlData, baseURL: nil) // BAD
+	webview.loadHTMLString(htmlData, baseURL: nil) // $ Alert
 	webview.loadHTMLString(htmlData, baseURL: URL(string: "about:blank")) // GOOD
 }
 

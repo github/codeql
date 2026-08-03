@@ -1,1 +1,2 @@
-queries/style/FieldOnlyUsedInCharPred.ql
+query: queries/style/FieldOnlyUsedInCharPred.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

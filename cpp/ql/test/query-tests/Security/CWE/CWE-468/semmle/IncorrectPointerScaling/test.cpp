@@ -10,7 +10,7 @@ int test2(int i) {
   char *charPointer = (char *)intArray;
   // BAD [FALSE NEGATIVE of IncorrectPointerScaling.ql]: the pointer arithmetic
   // uses type char*, so the offset is not scaled by sizeof(int).
-  return *(int *)(charPointer + i);
+  return *(int *)(charPointer + i); // $ Alert[cpp/incorrect-pointer-scaling-char]
 }
 
 int test3(int i) {
@@ -47,7 +47,7 @@ char* test7(
   int *p = (int*)x;
   // BAD: the type of x is double*, but it has been cast to int*
   // so the pointer add is scaled by sizeof(int).
-  return (char *)(p + 1);
+  return (char *)(p + 1); // $ Alert[cpp/suspicious-pointer-scaling]
 }
 
 char* test8(
@@ -74,7 +74,7 @@ char* test10(int* x) {
   // only part of an integer is architecture-dependent. If the pointer returned
   // from this function is dereferenced, the result will depend on int size and
   // endianness regardless of whether the offset is scaled by sizeof(int).
-  return (char*)x + 1;
+  return (char*)x + 1; // $ Alert[cpp/incorrect-pointer-scaling-char]
 }
 
 char* test10b(int* x) {
@@ -91,7 +91,7 @@ short* test10c(int* x) {
   // from this function is dereferenced, the result will depend on int size and
   // endianness regardless of whether the offset is scaled by (sizeof(int) /
   // sizeof(short)).
-  return (short*)x + 1;
+  return (short*)x + 1; // $ Alert[cpp/suspicious-pointer-scaling]
 }
 
 int test11(int* x, int* y) {
@@ -116,7 +116,7 @@ int test13(mystruct *p) {
   // computes the byte offset of a member. Code like this is commonly seen in
   // projects that use C/C++ for their low-level control over memory.
   int offset = (char *)&p->int_field - (char *)p;
-  return *(int *)((char*)p + offset);
+  return *(int *)((char*)p + offset); // $ Alert[cpp/incorrect-pointer-scaling-char]
 }
 
 int test14(int arr[12][12]) {
@@ -127,22 +127,22 @@ int test14(int arr[12][12]) {
 
 int test15(int arr[12][12]) {
   // BAD: the type of the pointer is int but it has been scaled by sizeof(short)
-  return *(int*)((short*) arr + 1);
+  return *(int*)((short*) arr + 1); // $ Alert[cpp/suspicious-pointer-scaling]
 }
 
 void* test16(int* x) {
   // BAD: void pointer arithmetic is not portable across compilers
-  return (void*)x + 1;
+  return (void*)x + 1; // $ Alert[cpp/suspicious-pointer-scaling-void]
 }
 
 void* test17(int* x) {
   // BAD: void pointer arithmetic is not portable across compilers
-  return (void*)x + sizeof(int);
+  return (void*)x + sizeof(int); // $ Alert[cpp/suspicious-pointer-scaling-void]
 }
 
 int test18(int i) {
   int intArray[2][2] = { {1, 2}, {3, 4} };
   char *charPointer = (char *)intArray;
   // BAD: the pointer arithmetic uses type char*, so the offset is not scaled by sizeof(int).
-  return *(int *)(charPointer + i);
+  return *(int *)(charPointer + i); // $ Alert[cpp/incorrect-pointer-scaling-char]
 }

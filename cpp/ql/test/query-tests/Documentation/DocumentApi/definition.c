@@ -1,5 +1,5 @@
 
-void f1(void) {
+void f1(void) { // $ Alert
     int x1;
     int x2;
     int x3;
@@ -29,7 +29,7 @@ void f5(void) {
     int x3;
 }
 
-void f6(void) {
+void f6(void) { // $ Alert
     int x1;
     int x2;
     int x3;

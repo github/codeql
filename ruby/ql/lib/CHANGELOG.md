@@ -1,3 +1,17 @@
+## 6.0.2
+
+No user-facing changes.
+
+## 6.0.1
+
+No user-facing changes.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The `else` branch of a `case` expression is no longer represented as a `StmtSequence` directly. Instead, a new `CaseElseBranch` AST node wraps the body (a `StmtSequence`). `CaseExpr.getElseBranch()` now returns a `CaseElseBranch`, and the body of the else branch can be accessed via `CaseElseBranch.getBody()`.
+
 ## 5.2.2
 
 No user-facing changes.

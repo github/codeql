@@ -9,7 +9,7 @@ import (
 func bad() error {
 	t, _ := pam.StartFunc("", "", func(s pam.Style, msg string) (string, error) {
 		return "", nil
-	})
+	}) // $ Alert
 	return t.Authenticate(0)
 
 }

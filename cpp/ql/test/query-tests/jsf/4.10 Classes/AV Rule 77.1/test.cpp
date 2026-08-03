@@ -7,7 +7,7 @@ class C2 {
 };
 
 class C3 {
-    C3(const C3& c, int i = 1); // error
+    C3(const C3& c, int i = 1); // $ Alert // error
 };
 
 namespace templates {

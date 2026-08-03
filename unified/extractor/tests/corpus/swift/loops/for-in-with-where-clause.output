@@ -1,0 +1,86 @@
+for x in xs where x > 0 {
+  print(x)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        forStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "x"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          pattern:
+            identifierPattern
+              identifier: identifier "x"
+          whereClause:
+            whereClause
+              condition:
+                infixOperatorExpr
+                  operator:
+                    binaryOperatorExpr
+                      operator: binaryOperator ">"
+                  leftOperand:
+                    declReferenceExpr
+                      baseName: identifier "x"
+                  rightOperand:
+                    integerLiteralExpr
+                      literal: integerLiteral "0"
+              whereKeyword: where
+          inKeyword: in
+          forKeyword: for
+          sequence:
+            declReferenceExpr
+              baseName: identifier "xs"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        for_each_stmt
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          iterable:
+            name_expr
+              identifier: identifier "xs"
+          guard:
+            binary_expr
+              left:
+                name_expr
+                  identifier: identifier "x"
+              operator: infix_operator ">"
+              right: int_literal "0"
+          body:
+            block
+              stmt:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"

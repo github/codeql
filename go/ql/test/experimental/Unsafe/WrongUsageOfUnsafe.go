@@ -74,7 +74,7 @@ func badIndexExpr() {
 	// the address of the 3rd element of the `harmless` array,
 	// and continue for 8 bytes, going out of the boundaries of
 	// `harmless` and crossing into the memory occupied by `secret`.
-	var leaking = (*[8]byte)(unsafe.Pointer(&harmless[2])) // BAD
+	var leaking = (*[8]byte)(unsafe.Pointer(&harmless[2])) // $ Alert // BAD
 
 	fmt.Println(string((*leaking)[:]))
 
@@ -108,7 +108,7 @@ func bad0() {
 
 	// Read before secret, overflowing into secret
 	// (notice we get the pointer to the first byte of harmless)
-	var leaking = (*[8 + 9]byte)(unsafe.Pointer(&harmless[0])) // BAD
+	var leaking = (*[8 + 9]byte)(unsafe.Pointer(&harmless[0])) // $ Alert // BAD
 
 	fmt.Println(string((*leaking)[:]))
 
@@ -126,7 +126,7 @@ func bad1() {
 
 	// Read before secret, overflowing into secret
 	// (notice we read more than the length of harmless)
-	var leaking = (*[8 + 9]byte)(unsafe.Pointer(&harmless)) // BAD
+	var leaking = (*[8 + 9]byte)(unsafe.Pointer(&harmless)) // $ Alert // BAD
 
 	fmt.Println(string((*leaking)[:]))
 
@@ -146,7 +146,7 @@ func bad2() {
 
 	// Read before secret, overflowing into secret
 	// (notice we read more than the length of harmless)
-	var leaking = (*[8 + 9]byte)(unsafe.Pointer(&harmless)) // BAD
+	var leaking = (*[8 + 9]byte)(unsafe.Pointer(&harmless)) // $ Alert // BAD
 
 	fmt.Println(string((*leaking)[:]))
 
@@ -163,7 +163,7 @@ func bad3() {
 
 	// Read before secret, overflowing into secret
 	// (notice we read more than the length of harmless)
-	var leaking = (*[8 + 9]string)(unsafe.Pointer(&harmless)) // BAD
+	var leaking = (*[8 + 9]string)(unsafe.Pointer(&harmless)) // $ Alert // BAD
 
 	fmt.Println(*leaking)
 	fmt.Println([17]string((*leaking)))
@@ -186,7 +186,7 @@ func bad4() {
 
 	// Read before secret, overflowing into secret
 	// (notice we read more than the length of harmless)
-	var leaking = (*[8 + 9]byte)(unsafe.Pointer(&harmless)) // BAD
+	var leaking = (*[8 + 9]byte)(unsafe.Pointer(&harmless)) // $ Alert // BAD
 
 	fmt.Println(string((*leaking)[:]))
 
@@ -208,7 +208,7 @@ func bad5() {
 
 	// Read before secret, overflowing into secret
 	// (notice we read more than the length of harmless)
-	var leaking = (*[8 + 9]byte)(unsafe.Pointer(&harmless.Data)) // BAD
+	var leaking = (*[8 + 9]byte)(unsafe.Pointer(&harmless.Data)) // $ Alert // BAD
 
 	fmt.Println(string(leaking[:]))
 
@@ -224,7 +224,7 @@ func bad6() {
 	secret := [9]byte{'s', 'e', 'n', 's', 'i', 't', 'i', 'v', 'e'}
 
 	// Read before secret:
-	var leaking = buffer_request(unsafe.Pointer(&harmless)) // BAD (see inside buffer_request func)
+	var leaking = buffer_request(unsafe.Pointer(&harmless)) // $ Source // BAD (see inside buffer_request func)
 
 	fmt.Println((string)(leaking[:]))
 
@@ -240,7 +240,7 @@ func buffer_request(req unsafe.Pointer) [8 + 9]byte {
 	// will be read, the read will also contain pieces of
 	// data from `secret`.
 	var buf [8 + 9]byte
-	buf = *(*[8 + 9]byte)(req) // BAD (from above func)
+	buf = *(*[8 + 9]byte)(req) // $ Alert // BAD (from above func)
 	return buf
 }
 func bad7() {
@@ -253,7 +253,7 @@ func bad7() {
 	// (notice we read more than the length of harmless);
 	// the leaking array will not contain letters,
 	// but integers representing bytes from `secret`.
-	var leaking = (*[4]int64)(unsafe.Pointer(&harmless)) // BAD
+	var leaking = (*[4]int64)(unsafe.Pointer(&harmless)) // $ Alert // BAD
 
 	fmt.Println(*leaking)
 
@@ -271,7 +271,7 @@ func bad8() {
 	// Read before secret, overflowing into secret
 	// (notice we read more than the length of harmless);
 	// the leaking data will contain some bits from `secret`.
-	var leaking = (*int64)(unsafe.Pointer(&harmless)) // BAD
+	var leaking = (*int64)(unsafe.Pointer(&harmless)) // $ Alert // BAD
 
 	fmt.Println(*leaking)
 
@@ -289,7 +289,7 @@ func bad9() {
 	// Read before secret, overflowing into secret
 	// (notice we read more than the length of harmless);
 	// the leaking data will contain some bits from `secret`.
-	var leaking = (*int)(unsafe.Pointer(&harmless)) // BAD
+	var leaking = (*int)(unsafe.Pointer(&harmless)) // $ Alert // BAD
 
 	fmt.Println(*leaking)
 

@@ -32,60 +32,60 @@ void testOneArray(OneArray *arr) {
 
 void testBig(BigArray *arr) {
     arr->buf[MAX_SIZE-1] = 0; // GOOD
-    arr->buf[MAX_SIZE] = 0;   // BAD
-    arr->buf[MAX_SIZE+1] = 0; // BAD
+    arr->buf[MAX_SIZE] = 0;   // $ Alert // BAD
+    arr->buf[MAX_SIZE+1] = 0; // $ Alert // BAD
 
     for(int i = 0; i < MAX_SIZE; i++) {
         arr->buf[i] = 0; // GOOD
     }
-    
+
     for(int i = 0; i <= MAX_SIZE; i++) {
-        arr->buf[i] = 0; // BAD
+        arr->buf[i] = 0; // $ Alert // BAD
     }
 }
 
 void testFields(ArrayAndFields *arr) {
     arr->buf[MAX_SIZE-1] = 0; // GOOD
-    arr->buf[MAX_SIZE] = 0;   // BAD?
-    arr->buf[MAX_SIZE+1] = 0; // BAD?
+    arr->buf[MAX_SIZE] = 0;   // $ Alert // BAD?
+    arr->buf[MAX_SIZE+1] = 0; // $ Alert // BAD?
 
     for(int i = 0; i < MAX_SIZE; i++) {
         arr->buf[i] = 0; // GOOD
     }
-    
+
     for(int i = 0; i <= MAX_SIZE; i++) {
-        arr->buf[i] = 0; // BAD?
+        arr->buf[i] = 0; // $ Alert // BAD?
     }
 
     for(int i = 0; i < MAX_SIZE+2; i++) {
-        arr->buf[i] = 0; // BAD?
+        arr->buf[i] = 0; // $ Alert // BAD?
     }
     // is this different if it's a memcpy?
 }
 
-void assignThroughPointer(int *p) {
+void assignThroughPointer(int *p) { // $ Sink
     *p = 0; // ??? should the result go at a flow source?
 }
 
 void addToPointerAndAssign(int *p) {
     p[MAX_SIZE-1] = 0; // GOOD
-    p[MAX_SIZE] = 0; // BAD
+    p[MAX_SIZE] = 0; // $ Alert // BAD
 }
 
 void testInterproc(BigArray *arr) {
     assignThroughPointer(&arr->buf[MAX_SIZE-1]); // GOOD
-    assignThroughPointer(&arr->buf[MAX_SIZE]); // BAD
+    assignThroughPointer(&arr->buf[MAX_SIZE]); // $ Alert // BAD
 
-    addToPointerAndAssign(arr->buf);
+    addToPointerAndAssign(arr->buf); // $ Source
 }
 
 #define MAX_SIZE_BYTES 4096
 
 void testCharIndex(BigArray *arr) {
-    char *charBuf = (char*) arr->buf;
+    char *charBuf = (char*) arr->buf; // $ Source
 
     charBuf[MAX_SIZE_BYTES - 1] = 0; // GOOD
-    charBuf[MAX_SIZE_BYTES] = 0; // BAD
+    charBuf[MAX_SIZE_BYTES] = 0; // $ Alert // BAD
 }
 
 void testEqRefinement() {
@@ -125,7 +125,7 @@ void testStackAllocated() {
     char *arr[MAX_SIZE];
 
     for(int i = 0; i <= MAX_SIZE; i++) {
-        arr[i] = 0; // BAD
+        arr[i] = 0; // $ Alert // BAD
     }
 }
 
@@ -133,18 +133,18 @@ int strncmp(const char*, const char*, int);
 
 char testStrncmp2(char *arr) {
     if(strncmp(arr, "<test>", 6) == 0) {
-        arr += 6;
+        arr += 6; // $ Alert
     }
-    return *arr; // GOOD [FALSE POSITIVE]
+    return *arr; // $ SPURIOUS: Sink // GOOD [FALSE POSITIVE]
 }
 
 void testStrncmp1() {
     char asdf[5];
-    testStrncmp2(asdf);
+    testStrncmp2(asdf); // $ Source
 }
 
 void countdownBuf1(int **p) {
-  *--(*p) = 1; // GOOD [FALSE POSITIVE]
+  *--(*p) = 1; // $ SPURIOUS: Sink // GOOD [FALSE POSITIVE]
   *--(*p) = 2; // GOOD
   *--(*p) = 3; // GOOD
   *--(*p) = 4; // GOOD
@@ -153,7 +153,7 @@ void countdownBuf1(int **p) {
 void countdownBuf2() {
   int buf[4];
 
-  int *x = buf + 4;
+  int *x = buf + 4; // $ Alert
 
   countdownBuf1(&x);
 }
@@ -182,7 +182,7 @@ int countdownLength1(int *p, int len) {
 }
 
 int callCountdownLength() {
-    
+
     int buf[6];
 
     return countdownLength1(buf, 6);
@@ -192,7 +192,7 @@ int countdownLength2() {
     int buf[6];
     int len = 6;
     int *p = buf;
-    
+
     if(len % 8) {
         return -1;
     }
@@ -215,10 +215,10 @@ int countdownLength2() {
 
 void pointer_size_larger_than_array_element_size() {
     unsigned char buffer[100]; // getByteSize() = 100
-    int *ptr = (int *)buffer; // pai.getElementSize() will be sizeof(int) = 4 -> size = 25
+    int *ptr = (int *)buffer; // $ Source // pai.getElementSize() will be sizeof(int) = 4 -> size = 25
 
     ptr[24] = 0; // GOOD: writes bytes 96, 97, 98, 99
-    ptr[25] = 0; // BAD: writes bytes 100, 101, 102, 103
+    ptr[25] = 0; // $ Alert // BAD: writes bytes 100, 101, 102, 103
 }
 
 struct vec2 { int x, y; };
@@ -226,10 +226,10 @@ struct vec3 { int x, y, z; };
 
 void pointer_size_smaller_than_array_element_size_but_does_not_divide_it() {
     vec3 array[3]; // getByteSize() = 9 * sizeof(int)
-    vec2 *ptr = (vec2 *)array; // pai.getElementSize() will be 2 * sizeof(int) -> size = 4
+    vec2 *ptr = (vec2 *)array; // $ Source // pai.getElementSize() will be 2 * sizeof(int) -> size = 4
 
     ptr[3] = vec2{}; // GOOD: writes ints 6, 7
-    ptr[4] = vec2{}; // BAD: writes ints 8, 9
+    ptr[4] = vec2{}; // $ Alert // BAD: writes ints 8, 9
 }
 
 void pointer_size_larger_than_array_element_size_and_does_not_divide_it() {
@@ -258,7 +258,7 @@ void call_use(unsigned char* p, int n) {
     if(n == 3) {
         unsigned char x = p[0];
         unsigned char y = p[1];
-        unsigned char z = p[2]; // GOOD [FALSE POSITIVE]: `call_use(buffer2, 2)` won't reach this point.
+        unsigned char z = p[2]; // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE]: `call_use(buffer2, 2)` won't reach this point.
         use(x, y, z);
     }
 }
@@ -283,7 +283,7 @@ void test_call_use2() {
     call_call_use(buffer1,1);
 
     unsigned char buffer2[2];
-    call_call_use(buffer2,2);
+    call_call_use(buffer2,2); // $ Source
 
     unsigned char buffer3[3];
     call_call_use(buffer3,3);
@@ -296,7 +296,7 @@ int guardingCallee(int *arr, int size) {
 
     int sum;
     for (int i = 0; i < size; i++) {
-        sum += arr[i]; // GOOD [FALSE POSITIVE] - guarded by size
+        sum += arr[i]; // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE] - guarded by size
     }
     return sum;
 }
@@ -304,9 +304,9 @@ int guardingCallee(int *arr, int size) {
 int guardingCaller() {
     int arr1[MAX_SIZE];
     guardingCallee(arr1, MAX_SIZE);
-    
+
     int arr2[10];
-    guardingCallee(arr2, 10);
+    guardingCallee(arr2, 10); // $ Source
 }
 
 // simplified md5 padding
@@ -319,10 +319,10 @@ void correlatedCondition(int num) {
             end = temp + 56;
         }
         else if (num < 64) {
-            end = temp + 64; // GOOD [FALSE POSITVE]
+            end = temp + 64; // $ SPURIOUS: Alert // GOOD [FALSE POSITVE]
         }
         char *temp2 = temp + num;
-        while(temp2 != end) {
+        while(temp2 != end) { // $ Sink
             *temp2 = 0;
             temp2++;
         }

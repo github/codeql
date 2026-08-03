@@ -8,7 +8,7 @@ type User struct {
 }
 
 func runQuery(db *gorm.DB) {
-	db.Take(nil)
+	db.Take(nil) // $ Alert
 }
 
 func runRunQuery(db *gorm.DB) {
@@ -19,9 +19,9 @@ func main() {
 	var db *gorm.DB
 	for i := 0; i < 10; i++ {
 		runQuery(db)
-	}
+	} // $ Source
 
 	for i := 10; i > 0; i-- {
 		runRunQuery(db)
-	}
+	} // $ Source
 }

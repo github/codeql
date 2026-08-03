@@ -10,7 +10,7 @@ public class UrlRedirectHandler : IHttpHandler
     public void ProcessRequest(HttpContext ctx)
     {
         // BAD: a request parameter is incorporated without validation into a URL redirect
-        ctx.Response.Redirect(ctx.Request.QueryString["page"]);
+        ctx.Response.Redirect(ctx.Request.QueryString["page"]); // $ Alert=r2 Alert=r2
 
         // GOOD: the request parameter is validated against a known fixed string
         if (VALID_REDIRECT == ctx.Request.QueryString["page"])
@@ -20,7 +20,7 @@ public class UrlRedirectHandler : IHttpHandler
 
         // GOOD: We check whether this is a local URL before redirecting, using UrlHelper.
         // As recommended by https://docs.microsoft.com/en-us/aspnet/mvc/overview/security/preventing-open-redirection-attacks
-        string url = ctx.Request.QueryString["page"];
+        string url = ctx.Request.QueryString["page"]; // $ Source=r5 Source=r6 Source=r7 Source=r8
         if (new UrlHelper(null).IsLocalUrl(url))
         {
             ctx.Response.Redirect(url);
@@ -35,17 +35,17 @@ public class UrlRedirectHandler : IHttpHandler
         }
 
         // BAD: Adding or appending a header
-        ctx.Response.AddHeader("Location", ctx.Request.QueryString["page"]);
-        ctx.Response.AppendHeader("Location", ctx.Request.QueryString["page"]);
+        ctx.Response.AddHeader("Location", ctx.Request.QueryString["page"]); // $ Alert=r3 Alert=r3
+        ctx.Response.AppendHeader("Location", ctx.Request.QueryString["page"]); // $ Alert=r4 Alert=r4
 
-        // GOOD: Redirecting to the RawUrl only reloads the current Url
-        ctx.Response.Redirect(ctx.Request.RawUrl);
+        // BAD: The RawUrl contains the un-normalized request line.
+        ctx.Response.Redirect(ctx.Request.RawUrl); // $ Alert
 
         // GOOD: The attacker can only control the parameters, not the location
         ctx.Response.Redirect("foo.asp?param=" + url);
 
         // BAD: Using Transfer with unvalidated user input
-        ctx.Server.Transfer(url);
+        ctx.Server.Transfer(url); // $ Alert=r5 Alert=r6 Alert=r7 Alert=r8
 
         // GOOD: request parameter is URL encoded
         ctx.Response.Redirect(HttpUtility.UrlEncode(ctx.Request.QueryString["page"]));
@@ -61,19 +61,19 @@ public class UrlRedirectHandler : IHttpHandler
         ctx.Response.Redirect($"foo.asp?param={url}");
 
         // BAD: The attacker can control the location
-        ctx.Response.Redirect($"{url}.asp?param=foo");
+        ctx.Response.Redirect($"{url}.asp?param=foo"); // $ Alert=r6 Alert=r5 Alert=r7 Alert=r8
 
         // GOOD: The attacker can only control the parameters, not the location
         ctx.Response.Redirect(string.Format("foo.asp?param={0}", url));
 
         // BAD: The attacker can control the location
-        ctx.Response.Redirect(string.Format("{0}.asp?param=foo", url));
+        ctx.Response.Redirect(string.Format("{0}.asp?param=foo", url)); // $ Alert=r7 Alert=r5 Alert=r6 Alert=r8
 
         // GOOD: The attacker can only control the parameters, not the location
         ctx.Response.Redirect(string.Format("foo.asp?{1}param={0}", url, url));
 
         // BAD: The attacker can control the location
-        ctx.Response.Redirect(string.Format("{1}.asp?{0}param=foo", url, url));
+        ctx.Response.Redirect(string.Format("{1}.asp?{0}param=foo", url, url)); // $ Alert=r8 Alert=r5 Alert=r6 Alert=r7
     }
 
     // Implementation as recommended by Microsoft.

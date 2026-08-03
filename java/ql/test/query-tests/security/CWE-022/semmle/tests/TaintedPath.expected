@@ -1,5 +1,7 @@
 #select
+| SanitizationTests2.java:16:59:16:62 | path | SanitizationTests2.java:14:59:14:91 | path : String | SanitizationTests2.java:16:59:16:62 | path | This path depends on a $@. | SanitizationTests2.java:14:59:14:91 | path | user-provided value |
 | TaintedPath.java:16:71:16:78 | filename | TaintedPath.java:13:58:13:78 | getInputStream(...) : InputStream | TaintedPath.java:16:71:16:78 | filename | This path depends on a $@. | TaintedPath.java:13:58:13:78 | getInputStream(...) | user-provided value |
+| TaintedPath.java:105:71:105:78 | baseName | TaintedPath.java:98:58:98:78 | getInputStream(...) : InputStream | TaintedPath.java:105:71:105:78 | baseName | This path depends on a $@. | TaintedPath.java:98:58:98:78 | getInputStream(...) | user-provided value |
 | Test.java:37:52:37:68 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:37:52:37:68 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
 | Test.java:39:32:39:48 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:39:32:39:48 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
 | Test.java:41:47:41:63 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:41:47:41:63 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
@@ -77,11 +79,21 @@
 | Test.java:199:19:199:33 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:199:19:199:33 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
 | Test.java:204:20:204:36 | (...)... | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:204:20:204:36 | (...)... | This path depends on a $@. | Test.java:32:16:32:45 | getParameter(...) | user-provided value |
 edges
+| SanitizationTests2.java:14:59:14:91 | path : String | SanitizationTests2.java:16:59:16:62 | path | provenance | Sink:MaD:23 |
 | TaintedPath.java:13:17:13:89 | new BufferedReader(...) : BufferedReader | TaintedPath.java:14:27:14:40 | filenameReader : BufferedReader | provenance |  |
 | TaintedPath.java:13:36:13:88 | new InputStreamReader(...) : InputStreamReader | TaintedPath.java:13:17:13:89 | new BufferedReader(...) : BufferedReader | provenance | MaD:74 |
-| TaintedPath.java:13:58:13:78 | getInputStream(...) : InputStream | TaintedPath.java:13:36:13:88 | new InputStreamReader(...) : InputStreamReader | provenance | Src:MaD:72 MaD:76 |
+| TaintedPath.java:13:58:13:78 | getInputStream(...) : InputStream | TaintedPath.java:13:36:13:88 | new InputStreamReader(...) : InputStreamReader | provenance | Src:MaD:72 MaD:78 |
 | TaintedPath.java:14:27:14:40 | filenameReader : BufferedReader | TaintedPath.java:14:27:14:51 | readLine(...) : String | provenance | MaD:75 |
 | TaintedPath.java:14:27:14:51 | readLine(...) : String | TaintedPath.java:16:71:16:78 | filename | provenance | Sink:MaD:27 |
+| TaintedPath.java:98:17:98:89 | new BufferedReader(...) : BufferedReader | TaintedPath.java:99:27:99:40 | filenameReader : BufferedReader | provenance |  |
+| TaintedPath.java:98:36:98:88 | new InputStreamReader(...) : InputStreamReader | TaintedPath.java:98:17:98:89 | new BufferedReader(...) : BufferedReader | provenance | MaD:74 |
+| TaintedPath.java:98:58:98:78 | getInputStream(...) : InputStream | TaintedPath.java:98:36:98:88 | new InputStreamReader(...) : InputStreamReader | provenance | Src:MaD:72 MaD:78 |
+| TaintedPath.java:99:27:99:40 | filenameReader : BufferedReader | TaintedPath.java:99:27:99:51 | readLine(...) : String | provenance | MaD:75 |
+| TaintedPath.java:99:27:99:51 | readLine(...) : String | TaintedPath.java:100:30:100:37 | filename : String | provenance |  |
+| TaintedPath.java:100:21:100:38 | new File(...) : File | TaintedPath.java:101:27:101:30 | file : File | provenance |  |
+| TaintedPath.java:100:30:100:37 | filename : String | TaintedPath.java:100:21:100:38 | new File(...) : File | provenance | MaD:76 |
+| TaintedPath.java:101:27:101:30 | file : File | TaintedPath.java:101:27:101:40 | getName(...) : String | provenance | MaD:77 |
+| TaintedPath.java:101:27:101:40 | getName(...) : String | TaintedPath.java:105:71:105:78 | baseName | provenance | Sink:MaD:27 |
 | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:37:61:37:68 | source(...) : String | provenance | Src:MaD:73  |
 | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:39:41:39:48 | source(...) : String | provenance | Src:MaD:73  |
 | Test.java:32:16:32:45 | getParameter(...) : String | Test.java:41:56:41:63 | source(...) : String | provenance | Src:MaD:73  |
@@ -310,14 +322,28 @@ models
 | 73 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
 | 74 | Summary: java.io; BufferedReader; false; BufferedReader; ; ; Argument[0]; Argument[this]; taint; manual |
 | 75 | Summary: java.io; BufferedReader; true; readLine; ; ; Argument[this]; ReturnValue; taint; manual |
-| 76 | Summary: java.io; InputStreamReader; false; InputStreamReader; ; ; Argument[0]; Argument[this]; taint; manual |
+| 76 | Summary: java.io; File; false; File; ; ; Argument[0]; Argument[this]; taint; manual |
+| 77 | Summary: java.io; File; true; getName; (); ; Argument[this]; ReturnValue; taint; manual |
+| 78 | Summary: java.io; InputStreamReader; false; InputStreamReader; ; ; Argument[0]; Argument[this]; taint; manual |
 nodes
+| SanitizationTests2.java:14:59:14:91 | path : String | semmle.label | path : String |
+| SanitizationTests2.java:16:59:16:62 | path | semmle.label | path |
 | TaintedPath.java:13:17:13:89 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
 | TaintedPath.java:13:36:13:88 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
 | TaintedPath.java:13:58:13:78 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | TaintedPath.java:14:27:14:40 | filenameReader : BufferedReader | semmle.label | filenameReader : BufferedReader |
 | TaintedPath.java:14:27:14:51 | readLine(...) : String | semmle.label | readLine(...) : String |
 | TaintedPath.java:16:71:16:78 | filename | semmle.label | filename |
+| TaintedPath.java:98:17:98:89 | new BufferedReader(...) : BufferedReader | semmle.label | new BufferedReader(...) : BufferedReader |
+| TaintedPath.java:98:36:98:88 | new InputStreamReader(...) : InputStreamReader | semmle.label | new InputStreamReader(...) : InputStreamReader |
+| TaintedPath.java:98:58:98:78 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| TaintedPath.java:99:27:99:40 | filenameReader : BufferedReader | semmle.label | filenameReader : BufferedReader |
+| TaintedPath.java:99:27:99:51 | readLine(...) : String | semmle.label | readLine(...) : String |
+| TaintedPath.java:100:21:100:38 | new File(...) : File | semmle.label | new File(...) : File |
+| TaintedPath.java:100:30:100:37 | filename : String | semmle.label | filename : String |
+| TaintedPath.java:101:27:101:30 | file : File | semmle.label | file : File |
+| TaintedPath.java:101:27:101:40 | getName(...) : String | semmle.label | getName(...) : String |
+| TaintedPath.java:105:71:105:78 | baseName | semmle.label | baseName |
 | Test.java:32:16:32:45 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | Test.java:37:52:37:68 | (...)... | semmle.label | (...)... |
 | Test.java:37:61:37:68 | source(...) : String | semmle.label | source(...) : String |

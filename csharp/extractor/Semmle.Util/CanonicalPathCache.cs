@@ -43,7 +43,7 @@ namespace Semmle.Util
             var parent = Directory.GetParent(path);
 
             return parent is not null ?
-                Path.Combine(cache.GetCanonicalPath(parent.FullName), Path.GetFileName(path)) :
+                Path.Join(cache.GetCanonicalPath(parent.FullName), Path.GetFileName(path)) :
                 path.ToUpperInvariant();
         }
     }
@@ -138,12 +138,12 @@ namespace Semmle.Util
                 var entries = Directory.GetFileSystemEntries(parentPath, name);
                 return entries.Length == 1
                     ? entries[0]
-                    : Path.Combine(parentPath, name);
+                    : Path.Join(parentPath, name);
             }
             catch  // lgtm[cs/catch-of-all-exceptions]
             {
                 // IO error or security error querying directory.
-                return Path.Combine(parentPath, name);
+                return Path.Join(parentPath, name);
             }
         }
     }

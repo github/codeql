@@ -10,14 +10,14 @@ int main()
 	j = 0;
 	for (i = 0; i < 10; i++)
 	{
-		i = 10; // BAD (for loop variable changed in body)
+		i = 10; // $ Alert[cpp/loop-variable-changed] // BAD (for loop variable changed in body)
 		j = 10;
 	}
-	
+
 	// nested loops
 	for (i = 0; i < 10; i++)
 	{
-		for (i = 0; i < 10; i++) // BAD (nested loops with same variable)
+		for (i = 0; i < 10; i++) // $ Alert[cpp/nested-loops-with-same-variable] // BAD (nested loops with same variable)
 		{
 			// ...
 		}
@@ -26,12 +26,12 @@ int main()
 	{
 		for (j = 0; j < 10; j++)
 		{
-			i++; // BAD (for loop variable changed in body)
-			j++; // BAD (for loop variable changed in body)
+			i++; // $ Alert[cpp/loop-variable-changed] // BAD (for loop variable changed in body)
+			j++; // $ Alert[cpp/loop-variable-changed] // BAD (for loop variable changed in body)
 			k++;
 		}
-		
-		for (i = 0; i < 10; i++) // BAD (nested loops with same variable)
+
+		for (i = 0; i < 10; i++) // $ Alert[cpp/nested-loops-with-same-variable] // BAD (nested loops with same variable)
 		{
 			j++;
 		}
@@ -40,7 +40,7 @@ int main()
 	{
 		for (j = 0; j < 10; j++)
 		{
-			for (i = 0; i < 10; i++) // BAD (nested loops with same variable)
+			for (i = 0; i < 10; i++) // $ Alert[cpp/nested-loops-with-same-variable] // BAD (nested loops with same variable)
 			{
 				// ...
 			}
@@ -50,9 +50,9 @@ int main()
 	{
 		for (j = 0; j < 10; j++)
 		{
-			for (j = 0; j < 10; j++) // BAD (nested loops with same variable)
+			for (j = 0; j < 10; j++) // $ Alert[cpp/nested-loops-with-same-variable] // BAD (nested loops with same variable)
 			{
-				j++; // BAD (for loop variable changed in body)
+				j++; // $ Alert[cpp/loop-variable-changed] // BAD (for loop variable changed in body)
 			}
 		}
 	}
@@ -62,17 +62,17 @@ int main()
 	{
 		 c = *char_ptr;
 		 *char_ptr += 1;
-		 char_ptr += 1; // BAD (for loop variable changed in body)
+		 char_ptr += 1; // $ Alert[cpp/loop-variable-changed] // BAD (for loop variable changed in body)
 	}
 
 	// more nested loops
 	for (i = 0; i < 10; i++)
 	{
-		for (j = 0; j < 10; i++) // BAD (for loop variable changed in body)
+		for (j = 0; j < 10; i++) // $ Alert[cpp/loop-variable-changed] // BAD (for loop variable changed in body)
 		{
 		}
-		
-		for (i = 0; j < 10; j++) // BAD (for loop variable changed in body)
+
+		for (i = 0; j < 10; j++) // $ Alert[cpp/loop-variable-changed] // BAD (for loop variable changed in body)
 		{
 		}
 	}

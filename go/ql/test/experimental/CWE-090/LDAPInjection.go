@@ -54,31 +54,31 @@ func main() {}
 // bad is an example of a bad implementation
 func (ld *Ldap) bad(req *http.Request) {
 	// ...
-	untrusted := req.UserAgent()
+	untrusted := req.UserAgent() // $ Source
 	goldap.NewSearchRequest(
-		untrusted, // BAD: untrusted dn
+		untrusted, // $ Alert // BAD: untrusted dn
 		goldap.ScopeWholeSubtree, goldap.NeverDerefAliases, 0, 0, false,
-		"(&(objectClass=organizationalPerson))"+untrusted, // BAD: untrusted filter
-		[]string{"dn", "cn", untrusted},                   // BAD: untrusted attribute
+		"(&(objectClass=organizationalPerson))"+untrusted, // $ Alert // BAD: untrusted filter
+		[]string{"dn", "cn", untrusted},                   // $ Alert // BAD: untrusted attribute
 		nil,
 	)
 	goldapv3.NewSearchRequest(
-		untrusted, // BAD: untrusted dn
+		untrusted, // $ Alert // BAD: untrusted dn
 		goldap.ScopeWholeSubtree, goldap.NeverDerefAliases, 0, 0, false,
-		"(&(objectClass=organizationalPerson))"+untrusted, // BAD: untrusted filter
-		[]string{"dn", "cn", untrusted},                   // BAD: untrusted attribute
+		"(&(objectClass=organizationalPerson))"+untrusted, // $ Alert // BAD: untrusted filter
+		[]string{"dn", "cn", untrusted},                   // $ Alert // BAD: untrusted attribute
 		nil,
 	)
 	gopkgldapv2.NewSearchRequest(
-		untrusted, // BAD: untrusted dn
+		untrusted, // $ Alert // BAD: untrusted dn
 		goldap.ScopeWholeSubtree, goldap.NeverDerefAliases, 0, 0, false,
-		"(&(objectClass=organizationalPerson))"+untrusted, // BAD: untrusted filter
-		[]string{"dn", "cn", untrusted},                   // BAD: untrusted attribute
+		"(&(objectClass=organizationalPerson))"+untrusted, // $ Alert // BAD: untrusted filter
+		[]string{"dn", "cn", untrusted},                   // $ Alert // BAD: untrusted attribute
 		nil,
 	)
 	client := &ldapclient.LDAPClient{}
-	client.Authenticate(untrusted, "123456") // BAD: untrusted filter
-	client.GetGroupsOfUser(untrusted)        // BAD: untrusted filter
+	client.Authenticate(untrusted, "123456") // $ Alert // BAD: untrusted filter
+	client.GetGroupsOfUser(untrusted)        // $ Alert // BAD: untrusted filter
 	// ...
 }
 

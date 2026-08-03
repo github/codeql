@@ -1,0 +1,126 @@
+class Point {
+  var x: Int
+  init(x: Int) {
+    self.x = x
+  }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Point"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                memberBlockItem
+                  decl:
+                    initializerDecl
+                      attributes:
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
+                            codeBlockItem
+                              item:
+                                infixOperatorExpr
+                                  operator:
+                                    assignmentExpr
+                                      equal: =
+                                  leftOperand:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "x"
+                                      base:
+                                        declReferenceExpr
+                                          baseName: self
+                                  rightOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "x"
+                      modifiers:
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                                functionParameter
+                                  colon: :
+                                  attributes:
+                                  modifiers:
+                                  type:
+                                    identifierType
+                                      name: identifier "Int"
+                                  firstName: identifier "x"
+                      initKeyword: init
+          modifiers:
+          classKeyword: class
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Point"
+          member:
+            variable_declaration
+              modifier: modifier "var"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+            constructor_declaration
+              parameter:
+                parameter
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
+                  pattern:
+                    name_pattern
+                      identifier: identifier "x"
+              body:
+                block
+                  stmt:
+                    assign_expr
+                      target:
+                        member_access_expr
+                          base:
+                            name_expr
+                              identifier: identifier "self"
+                          member: identifier "x"
+                      value:
+                        name_expr
+                          identifier: identifier "x"

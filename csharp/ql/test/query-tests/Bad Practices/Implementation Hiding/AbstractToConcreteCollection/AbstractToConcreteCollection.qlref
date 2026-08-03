@@ -1,1 +1,2 @@
-Bad Practices/Implementation Hiding/AbstractToConcreteCollection.ql
+query: Bad Practices/Implementation Hiding/AbstractToConcreteCollection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

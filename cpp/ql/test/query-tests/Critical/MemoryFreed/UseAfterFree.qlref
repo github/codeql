@@ -1,1 +1,2 @@
-Critical/UseAfterFree.ql
+query: Critical/UseAfterFree.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

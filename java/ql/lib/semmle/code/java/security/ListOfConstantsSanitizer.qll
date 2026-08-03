@@ -170,6 +170,8 @@ private class EmptyCollectionConstructor extends Constructor {
 private module CollectionFlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
   import FlowStepsInput
 
+  predicate getFlowNodeId = FlowStepsInput::getFlowNodeId/1;
+
   /**
    * Holds if `n2` is a collection/array/constant whose value(s) are
    * determined completely from the range of `n1` nodes.

@@ -5,7 +5,7 @@ class SynchronizedStmtLockOrder {
 	private Object savingsLock = new Object();
 
 	public boolean transferToSavings(int amount) {
-		synchronized(primaryLock) {
+		synchronized(primaryLock) { // $ Alert
 			synchronized(savingsLock) {
 				if (amount>0 && primaryAccountBalance>=amount) {
 					primaryAccountBalance -= amount;
@@ -19,7 +19,7 @@ class SynchronizedStmtLockOrder {
 	public boolean transferToPrimary(int amount) {
 		// AVOID: lock order is different from "transferToSavings"
 		// and may result in deadlock
-		synchronized(savingsLock) {
+		synchronized(savingsLock) { // $ Alert
 			synchronized(primaryLock) {
 				if (amount>0 && savingsAccountBalance>=amount) {
 					savingsAccountBalance -= amount;

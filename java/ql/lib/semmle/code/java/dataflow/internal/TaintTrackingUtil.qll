@@ -145,8 +145,8 @@ private module Cached {
       )
     )
     or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(src.(DataFlowPrivate::FlowSummaryNode)
-          .getSummaryNode(), sink.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false, model)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(src,
+      sink.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false, model)
   }
 
   /**

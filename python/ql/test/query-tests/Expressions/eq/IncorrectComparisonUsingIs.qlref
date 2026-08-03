@@ -1,1 +1,2 @@
-Expressions/IncorrectComparisonUsingIs.ql
+query: Expressions/IncorrectComparisonUsingIs.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

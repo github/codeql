@@ -6,7 +6,7 @@ from jinja2 import Environment, select_autoescape, FileSystemLoader, Template
 app = Flask(__name__)
 loader = FileSystemLoader( searchpath="templates/" )
 
-unsafe_env = Environment(loader=loader)
+unsafe_env = Environment(loader=loader) # $ Alert
 safe1_env = Environment(loader=loader, autoescape=True)
 safe2_env = Environment(loader=loader, autoescape=select_autoescape())
 
@@ -38,18 +38,18 @@ e = Environment(
 auto = select_autoescape
 e = Environment(autoescape=auto) # GOOD
 z = 0
-e = Environment(autoescape=z) # BAD
+e = Environment(autoescape=z) # $ Alert # BAD
 E = Environment
-E() # BAD
-E(autoescape=z) # BAD
+E() # $ Alert # BAD
+E(autoescape=z) # $ Alert # BAD
 E(autoescape=auto) # GOOD
 E(autoescape=0+1) # GOOD
 
 def checked(cond=False):
     if cond:
-        e = Environment(autoescape=cond) # GOOD
+        e = Environment(autoescape=cond) # $ Alert # GOOD
 
 
-unsafe_tmpl = Template('Hello {{ name }}!')
+unsafe_tmpl = Template('Hello {{ name }}!') # $ Alert
 safe1_tmpl = Template('Hello {{ name }}!', autoescape=True)
 safe2_tmpl = Template('Hello {{ name }}!', autoescape=select_autoescape())

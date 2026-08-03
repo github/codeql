@@ -22,7 +22,7 @@ myClass *global_p1, *global_p2;
 void f1()
 {
 	myClass *p1, *p2;
-	
+
 	p1 = new myClass;
 	p2 = (myClass *)malloc(sizeof(myClass));
 
@@ -33,12 +33,12 @@ void f1()
 void f2()
 {
 	delete global_p1; // GOOD
-	delete global_p2; // BAD: malloc -> delete
+	delete global_p2; // $ Alert[cpp/new-free-mismatch] // BAD: malloc -> delete
 }
 
 void f3()
 {
-	free(global_p1); // BAD: new -> delete
+	free(global_p1); // $ Alert[cpp/new-free-mismatch] // BAD: new -> delete
 	free(global_p2); // GOOD
 }
 
@@ -65,15 +65,15 @@ int main()
 
 		delete p1; // GOOD
 		delete [] p2; // GOOD
-		delete p3; // BAD: malloc -> delete
+		delete p3; // $ Alert[cpp/new-free-mismatch] // BAD: malloc -> delete
 	}
 	{
 		myClass *p1 = new myClass;
 		myClass *p2 = new myClass[10];
 		myClass *p3 = (myClass *)malloc(sizeof(myClass));
 
-		free(p1); // BAD: new -> free
-		free(p2); // BAD: new[] -> free
+		free(p1); // $ Alert[cpp/new-free-mismatch] // BAD: new -> free
+		free(p2); // $ Alert[cpp/new-free-mismatch] // BAD: new[] -> free
 		free(p3); // GOOD
 	}
 
@@ -88,7 +88,7 @@ int main()
 		myClass *p1 = (myClass *)my_malloc(sizeof(myClass));
 		myClass *p2 = (myClass *)my_malloc(sizeof(myClass));
 
-		delete p1; // BAD: malloc -> delete
+		delete p1; // $ Alert[cpp/new-free-mismatch] // BAD: malloc -> delete
 		free(p2); // GOOD
 	}
 	{
@@ -96,13 +96,13 @@ int main()
 		myClass *p2 = (myClass *)malloc(sizeof(myClass));
 
 		my_delete(p1); // GOOD
-		my_delete(p2); // BAD: malloc -> delete
+		my_delete(p2); // $ Alert[cpp/new-free-mismatch] // BAD: malloc -> delete
 	}
 
 	// overwritten
 	{
 		myClass *p1 = new myClass;
-		
+
 		delete p1; // GOOD
 		p1 = (myClass *)malloc(sizeof(myClass));
 
@@ -133,9 +133,9 @@ void test2()
 {
 	void *a = my_malloc_2(10);
 	void *b = my_malloc_2(10);
-	
+
 	free(a); // GOOD
-	delete b; // BAD: malloc -> delete
+	delete b; // $ Alert[cpp/new-free-mismatch] // BAD: malloc -> delete
 }
 
 void *my_malloc_3(size_t size)
@@ -150,9 +150,9 @@ void test3()
 {
 	void *a = my_malloc_3(10);
 	void *b = my_malloc_3(10);
-	
+
 	free(a); // GOOD
-	delete b; // BAD: malloc -> delete
+	delete b; // $ Alert[cpp/new-free-mismatch] // BAD: malloc -> delete
 }
 
 void test4(bool do_array_delete)
@@ -162,11 +162,11 @@ void test4(bool do_array_delete)
 
 	if (do_array_delete)
 	{
-		delete [] mc; // BAD
+		delete [] mc; // $ Alert[cpp/new-delete-array-mismatch] // BAD
 		delete [] mc_array; // GOOD
 	} else {
 		delete mc; // GOOD
-		delete mc_array; // BAD
+		delete mc_array; // $ Alert[cpp/new-array-delete-mismatch] // BAD
 	}
 }
 
@@ -179,7 +179,7 @@ void test5(bool do_array_delete)
 	{
 		delete [] c_array_ptr_2; // GOOD
 	} else {
-		delete c_array_ptr_2; // BAD
+		delete c_array_ptr_2; // $ Alert[cpp/new-array-delete-mismatch] // BAD
 	}
 }
 
@@ -190,7 +190,7 @@ void test6(bool do_array_delete)
 
 	if (do_array_delete)
 	{
-		delete [] c_ptr_array[5]; // BAD [NOT DETECTED]
+		delete [] c_ptr_array[5]; // $ MISSING: Alert // BAD [NOT DETECTED]
 	} else {
 		delete c_ptr_array[5]; // GOOD
 	}
@@ -211,7 +211,7 @@ void test7(bool do_array_delete)
 	{
 		if (do_array_delete)
 		{
-			delete [] global_mc; // BAD
+			delete [] global_mc; // $ Alert[cpp/new-delete-array-mismatch] // BAD
 		} else {
 			delete global_mc; // GOOD
 		}
@@ -229,15 +229,15 @@ void test8(bool cond)
 	}
 
 	free(a); // GOOD
-	delete a; // BAD: malloc -> delete
-	delete [] a; // BAD: malloc -> delete[]
+	delete a; // $ Alert[cpp/new-free-mismatch] // BAD: malloc -> delete
+	delete [] a; // $ Alert[cpp/new-free-mismatch] // BAD: malloc -> delete[]
 
-	free(b); // BAD: new -> free
+	free(b); // $ Alert[cpp/new-free-mismatch] // BAD: new -> free
 	delete b; // GOOD
-	delete [] b; // BAD: new -> delete[]
+	delete [] b; // $ Alert[cpp/new-delete-array-mismatch] // BAD: new -> delete[]
 
-	free(c); // BAD: new[] -> free
-	delete c; // BAD: new[] -> delete
+	free(c); // $ Alert[cpp/new-free-mismatch] // BAD: new[] -> free
+	delete c; // $ Alert[cpp/new-array-delete-mismatch] // BAD: new[] -> delete
 	delete [] c; // GOOD
 }
 
@@ -264,12 +264,12 @@ public:
 		b = new int;
 		c = new int;
 	}
-	
+
 	~ClassWithMembers()
 	{
 		delete a; // GOOD
-		delete [] b; // BAD: new -> delete[]
-		free(c); // BAD: new -> free
+		delete [] b; // $ Alert[cpp/new-delete-array-mismatch] // BAD: new -> delete[]
+		free(c); // $ Alert[cpp/new-free-mismatch] // BAD: new -> free
 	}
 
 private:
@@ -292,7 +292,7 @@ static void map_init()
 
 static void map_shutdown()
 {
-	delete map; // BAD: new[] -> delete
+	delete map; // $ Alert[cpp/new-array-delete-mismatch] // BAD: new[] -> delete
 	map = 0;
 }
 
@@ -307,7 +307,7 @@ public:
 
 	~Test10()
 	{
-		delete data; // BAD: new[] -> delete
+		delete data; // $ Alert[cpp/new-array-delete-mismatch] // BAD: new[] -> delete
 	}
 
 	char *data;
@@ -332,7 +332,7 @@ public:
 
 	~Test11()
 	{
-		delete data; // BAD: new[] -> delete
+		delete data; // $ Alert[cpp/new-array-delete-mismatch] // BAD: new[] -> delete
 	}
 
 	char *data;
@@ -438,10 +438,10 @@ void test14()
 	wchar_t *s5 = wcsdup(L"string");
 	wchar_t *s6 = wcsdup(L"string");
 
-	delete s1; // BAD: strdup -> delete
+	delete s1; // $ Alert[cpp/new-free-mismatch] // BAD: strdup -> delete
 	free(s2); // GOOD
-	delete s3; // BAD: strndup -> delete
+	delete s3; // $ Alert[cpp/new-free-mismatch] // BAD: strndup -> delete
 	free(s4); // GOOD
-	delete s5; // BAD: wcsdup -> delete
+	delete s5; // $ Alert[cpp/new-free-mismatch] // BAD: wcsdup -> delete
 	free(s6); // GOOD
 }

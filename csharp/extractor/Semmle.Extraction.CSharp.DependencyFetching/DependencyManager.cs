@@ -75,7 +75,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
             }
 
-            this.diagnosticsWriter = new DiagnosticsStream(Path.Combine(
+            this.diagnosticsWriter = new DiagnosticsStream(Path.Join(
                 diagDirEnv ?? "",
                 $"dependency-manager-{DateTime.UtcNow:yyyyMMddHHmm}-{Environment.ProcessId}.jsonc"));
             this.sourceDir = new DirectoryInfo(srcDir);
@@ -327,7 +327,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private void RemoveNugetPackageReference(string packagePrefix, ISet<AssemblyLookupLocation> dllLocations)
         {
             var packageFolder = nugetPackageRestorer.PackageDirectory.DirInfo.FullName.ToLowerInvariant();
-            var packagePathPrefix = Path.Combine(packageFolder, packagePrefix.ToLowerInvariant());
+            var packagePathPrefix = Path.Join(packageFolder, packagePrefix.ToLowerInvariant());
             var toRemove = dllLocations.Where(s => s.Path.StartsWith(packagePathPrefix, StringComparison.InvariantCultureIgnoreCase));
             foreach (var path in toRemove)
             {

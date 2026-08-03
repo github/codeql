@@ -290,7 +290,7 @@ module AssignableInternal {
     newtype TAssignableDefinition =
       TAssignmentDefinition(Assignment a) {
         not a.getLeftOperand() instanceof TupleExpr and
-        not a instanceof AssignCallOperation and
+        not a instanceof AssignCallExpr and
         not a instanceof AssignCoalesceExpr
       } or
       TTupleAssignmentDefinition(AssignExpr ae, Expr leaf) { tupleAssignmentDefinition(ae, leaf) } or
@@ -324,7 +324,7 @@ module AssignableInternal {
       TAddressOfDefinition(AddressOfExpr aoe) or
       TPatternDefinition(TopLevelPatternDecl tlpd) or
       TAssignOperationDefinition(AssignOperation ao) {
-        ao instanceof AssignCallOperation and not ao instanceof CompoundAssignmentOperatorCall
+        ao instanceof AssignCallExpr and not ao instanceof CompoundAssignmentOperatorCall
         or
         ao instanceof AssignCoalesceExpr
       }

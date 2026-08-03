@@ -1,1 +1,2 @@
-Language Abuse/UselessIsBeforeAs.ql
+query: Language Abuse/UselessIsBeforeAs.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

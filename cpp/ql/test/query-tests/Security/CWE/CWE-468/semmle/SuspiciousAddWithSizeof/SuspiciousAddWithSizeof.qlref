@@ -1,1 +1,2 @@
-Security/CWE/CWE-468/SuspiciousAddWithSizeof.ql
+query: Security/CWE/CWE-468/SuspiciousAddWithSizeof.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,1 +1,2 @@
-queries/style/CouldBeCast.ql
+query: queries/style/CouldBeCast.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

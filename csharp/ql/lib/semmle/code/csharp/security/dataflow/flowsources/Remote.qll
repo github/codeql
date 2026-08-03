@@ -13,6 +13,7 @@ private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.WCF
 private import semmle.code.csharp.frameworks.microsoft.Owin
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
+private import semmle.code.csharp.frameworks.Razor
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
@@ -312,6 +313,22 @@ class AspNetCoreActionMethodParameter extends AspNetCoreRemoteFlowSource, DataFl
   }
 
   override string getSourceType() { result = "ASP.NET Core MVC action method parameter" }
+}
+
+/** A parameter to a Razor Page handler method, viewed as a source of remote user input. */
+class AspNetCorePageHandlerMethodParameter extends AspNetCoreRemoteFlowSource,
+  DataFlow::ParameterNode
+{
+  AspNetCorePageHandlerMethodParameter() {
+    exists(Parameter p |
+      p = this.getParameter() and
+      p.fromSource()
+    |
+      p = any(PageModelClass pm).getAHandlerMethod().getAParameter()
+    )
+  }
+
+  override string getSourceType() { result = "ASP.NET Core Razor Page handler method parameter" }
 }
 
 private class ExternalRemoteFlowSource extends RemoteFlowSource {

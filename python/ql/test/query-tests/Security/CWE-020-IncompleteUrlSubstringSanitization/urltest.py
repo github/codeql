@@ -6,13 +6,13 @@ app = Flask(__name__)
 @app.route('/some/path/bad1')
 def unsafe1(request):
     target = request.args.get('target', '')
-    if "example.com" in target:
+    if "example.com" in target: # $ Alert
         return redirect(target)
 
 @app.route('/some/path/bad2')
 def unsafe2(request):
     target = request.args.get('target', '')
-    if target.endswith("example.com"):
+    if target.endswith("example.com"): # $ Alert
         return redirect(target)
 
 

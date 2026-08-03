@@ -2,7 +2,7 @@
 void FUN(void) {
     const char *s;
 
-    s = "abcabcabc";
+    s = "abcabcabc"; // $ Alert
     s = "abcabcabc";
     s = "abcabcabc";
     s = "abcabcabc";

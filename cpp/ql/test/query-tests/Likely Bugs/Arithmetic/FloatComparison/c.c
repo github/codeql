@@ -7,13 +7,13 @@ void c_f(void) {
     x == 3.0;
     3.0 == x;
     x == x;
-    x == y;
+    x == y; // $ Alert
 
     g() == 3.0;
     3.0 == g();
-    g() == g();
+    g() == g(); // $ Alert
 
-    x == g();
-    g() == x;
+    x == g(); // $ Alert
+    g() == x; // $ Alert
 }
 

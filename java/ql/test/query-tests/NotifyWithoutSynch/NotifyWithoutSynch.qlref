@@ -1,1 +1,2 @@
-Likely Bugs/Concurrency/NotifyWithoutSynch.ql
+query: Likely Bugs/Concurrency/NotifyWithoutSynch.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

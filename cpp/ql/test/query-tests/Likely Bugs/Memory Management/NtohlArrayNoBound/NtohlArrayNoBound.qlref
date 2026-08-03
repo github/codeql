@@ -1,1 +1,2 @@
-Likely Bugs/Memory Management/NtohlArrayNoBound.ql
+query: Likely Bugs/Memory Management/NtohlArrayNoBound.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

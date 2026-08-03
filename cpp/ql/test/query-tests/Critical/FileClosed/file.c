@@ -5,7 +5,7 @@ int fclose(FILE *fp);
 #define NULL ((FILE *)0)
 
 void f1(int i) {
-    FILE *f = fopen("somefile.txt", "r");
+    FILE *f = fopen("somefile.txt", "r"); // $ Alert[cpp/file-may-not-be-closed]
 
     if (!f) return;
 
@@ -15,7 +15,7 @@ void f1(int i) {
 }
 
 FILE *f2(int i) {
-    FILE *f = fopen("somefile.txt", "r");
+    FILE *f = fopen("somefile.txt", "r"); // $ Alert[cpp/file-may-not-be-closed]
 
     if (!f) return NULL;
 
@@ -31,7 +31,7 @@ void g2(int i) {
 }
 
 void f3(int i) {
-    FILE *f = fopen("somefile.txt", "r"); // Never closed
+    FILE *f = fopen("somefile.txt", "r"); // $ Alert[cpp/file-never-closed] // Never closed
 
     if (!f) return;
 
@@ -63,7 +63,7 @@ void g5(void) {
 int f6(int b) {
     FILE *f;
 
-    f = fopen("somefile.txt", "r"); // Not always closed
+    f = fopen("somefile.txt", "r"); // $ Alert[cpp/file-may-not-be-closed] // Not always closed
 
     if (f) {
         if (b) {
@@ -95,4 +95,3 @@ int f8(void) {
 
     return 0;
 }
-

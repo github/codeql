@@ -10,59 +10,59 @@ public class UserData
 }
 
 public class TestController : Controller {
-    public IActionResult test1(UserData tainted1) {
+    public IActionResult test1(UserData tainted1) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Test/Test1.cshtml
         return View("Test1", tainted1);
     }
 
-    public IActionResult test2(UserData tainted2) {
+    public IActionResult test2(UserData tainted2) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Shared/Test2.cshtml
         return View("Test2", tainted2);
     }
 
-    public IActionResult test3(UserData tainted3) {
+    public IActionResult test3(UserData tainted3) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Test/Test3.cshtml and NOT /Views/Shared/Test3.cshtml
         return View("Test3", tainted3);
     }
 
-    public IActionResult test4(UserData tainted4) {
+    public IActionResult test4(UserData tainted4) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Test/Test4.cshtml
         return View("./Test4", tainted4);
     }
 
-    public IActionResult test5(UserData tainted5) {
+    public IActionResult test5(UserData tainted5) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Other/Test5.cshtml
         return View("../Other/Test5", tainted5);
     }
 
-    public IActionResult test6(UserData tainted6) {
+    public IActionResult test6(UserData tainted6) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Other/Test6.cshtml
         return View("../../Views/.////Shared/../Other//Test6", tainted6);
     }
 
-    public IActionResult Test7(UserData tainted7) {
+    public IActionResult Test7(UserData tainted7) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Test/Test7.cshtml
         return View(tainted7);
     }
 
-    public IActionResult test8(UserData tainted8) {
+    public IActionResult test8(UserData tainted8) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Other/Test8.cshtml
         return View("/Views/Other/Test8.cshtml", tainted8);
     }
 
-    public IActionResult test9(UserData tainted9) {
+    public IActionResult test9(UserData tainted9) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Test/Test9.cshtml
         return View("~/Views/Other/Test9.cshtml", tainted9);
     }
 }
 
-public class Test2Controller : Controller { 
-    public IActionResult test10(UserData tainted10) {
+public class Test2Controller : Controller {
+    public IActionResult test10(UserData tainted10) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Test2/Test10.cshtml
         return View("Test10", tainted10);
     }
 
-    public IActionResult test11(UserData tainted11) {
+    public IActionResult test11(UserData tainted11) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Test2/Test10.cshtml
         return helper(tainted11);
     }
@@ -76,14 +76,14 @@ public class Test2Controller : Controller {
 
     private IActionResult helper2(UserData x) {
         return View(x);
-    }    
+    }
 
-    public IActionResult test13(UserData tainted13) {
-        // Expected to find file /Views/Other/Test13.cshtml. 
+    public IActionResult test13(UserData tainted13) { // $ Source[cs/web/xss]
+        // Expected to find file /Views/Other/Test13.cshtml.
         return Helper.helper3(this, tainted13);
     }
 
-    public IActionResult test14(UserData tainted14) {
+    public IActionResult test14(UserData tainted14) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Shared/Test14.cshtml and NOT /Views/Test2/Test14.cshtml
         return Helper.helper4(this, tainted14);
     }
@@ -103,12 +103,12 @@ public class Test3Controller : Controller {
         o.AreaViewLocationFormats.Add("/MyAreas/{2}/{1}/{0}.cshtml");
     }
 
-    public IActionResult Test15(UserData tainted15) {
+    public IActionResult Test15(UserData tainted15) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Custom/Test3/Test15.cshtml
         return View(tainted15);
     }
 
-    public IActionResult test16(UserData tainted16) {
+    public IActionResult test16(UserData tainted16) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Custom2/Test16.cshtml
         return View("Test16", tainted16);
     }
@@ -116,17 +116,17 @@ public class Test3Controller : Controller {
 
 [Area("TestArea")]
 public class Test4Controller : Controller {
-    public IActionResult test17(UserData tainted17) {
+    public IActionResult test17(UserData tainted17) { // $ Source[cs/web/xss]
         // Expected to find file /Areas/TestArea/Views/Test4/Test17.cshtml
         return View("Test17", tainted17);
     }
 
-    public IActionResult test18(UserData tainted18) {
+    public IActionResult test18(UserData tainted18) { // $ Source[cs/web/xss]
         // Expected to find file /Areas/TestArea/Views/Shared/Test17.cshtml
         return View("Test18", tainted18);
     }
 
-    public IActionResult test19(UserData tainted19) {
+    public IActionResult test19(UserData tainted19) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Shared/Test19.cshtml
         return View("Test19", tainted19);
     }
@@ -136,7 +136,7 @@ public class Test4Controller : Controller {
         return View("Test20", tainted20);
     }
 
-    public IActionResult test21(UserData tainted21) {
+    public IActionResult test21(UserData tainted21) { // $ Source[cs/web/xss]
         // Expected to find file /Pages/Shared/Test21.cshtml
         return View("Test21", tainted21);
     }
@@ -146,7 +146,7 @@ public class Test4Controller : Controller {
         return View("Test22", tainted22);
     }
 
-    public IActionResult test23(string tainted23) {
+    public IActionResult test23(string tainted23) { // $ Source[cs/web/xss]
         // Expected to find file /Views/Shared/Test23.cshtml
         UserData x = new UserData();
         x.Name = tainted23;

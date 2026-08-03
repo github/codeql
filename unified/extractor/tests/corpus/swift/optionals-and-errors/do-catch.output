@@ -1,0 +1,88 @@
+do {
+  try foo()
+} catch {
+  print(error)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        doStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    tryExpr
+                      expression:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "foo"
+                      tryKeyword: try
+          catchClauses:
+            catchClause
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "error"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              catchItems:
+              catchKeyword: catch
+          doKeyword: do
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        try_expr
+          body:
+            block
+              stmt:
+                unary_expr
+                  operand:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "foo"
+                  operator: prefix_operator "try"
+          catch_clause:
+            catch_clause
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "error"

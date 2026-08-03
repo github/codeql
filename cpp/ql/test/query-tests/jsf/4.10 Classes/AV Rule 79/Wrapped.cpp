@@ -43,7 +43,7 @@ class Wrapped2
 public:
 	Wrapped2(int len) {
 		ptr1 = new char[len]; // GOOD
-		ptr2 = new char[len]; // BAD: not released in destructor
+		ptr2 = new char[len]; // $ Alert // BAD: not released in destructor
 
 		Init(len);
 	}
@@ -56,7 +56,7 @@ public:
 	void Init(int len)
 	{
 		ptr3 = new char[len]; // GOOD
-		ptr4 = new char[len]; // BAD: not released in destructor
+		ptr4 = new char[len]; // $ Alert // BAD: not released in destructor
 	}
 
 	void Shutdown()

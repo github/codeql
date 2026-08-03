@@ -62,24 +62,34 @@ module HardcodedCryptographicValue {
   abstract class Barrier extends DataFlow::Node { }
 
   /**
-   * A literal, considered as a flow source.
+   * Holds if `e` is a literal or a combination of literals that is constant.
    */
-  private class LiteralSource extends Source {
-    LiteralSource() { this.asExpr() instanceof LiteralExpr }
+  private predicate isConstant(Expr e) {
+    e instanceof LiteralExpr // e.g. `0`
+    or
+    forex(Expr elem | elem = e.(ArrayListExpr).getExpr(_) | isConstant(elem)) // e.g. `[0, 0, 0, 0]`
+    or
+    isConstant(e.(ArrayRepeatExpr).getRepeatOperand()) // e.g. `[0; 10]`
+    or
+    // e.g. `const MY_CONST: u64 = ...`
+    // the constant initializer / body is the preferred source location for flow paths, when available.
+    e = any(Const c).getBody()
+    or
+    // e.g. `u64::MAX`
+    // when the constant initializer is not available as a source location (case above), use the access instead.
+    e instanceof ConstAccess and
+    not exists(e.(ConstAccess).getConst().getBody())
+    or
+    // e.g. `1 << 4`
+    isConstant(e.(BinaryExpr).getLhs()) and
+    isConstant(e.(BinaryExpr).getRhs())
   }
 
   /**
-   * An array initialized from a list of literals, considered as a single flow source. For example:
-   * ```
-   * [0, 0, 0, 0]
-   * [0; 10]
-   * ```
+   * A constant, considered as a flow source.
    */
-  private class ArrayListSource extends Source {
-    ArrayListSource() {
-      this.asExpr().(ArrayListExpr).getExpr(_) instanceof LiteralExpr or
-      this.asExpr().(ArrayRepeatExpr).getRepeatOperand() instanceof LiteralExpr
-    }
+  private class ConstantSource extends Source {
+    ConstantSource() { isConstant(this.asExpr()) }
   }
 
   /**
@@ -153,6 +163,26 @@ module HardcodedCryptographicValue {
         call.getStaticTarget().getCanonicalPath() = ["getrandom::fill", "getrandom::getrandom"] and
         this.asExpr().getParentNode*() = call.getPositionalArgument(0)
       )
+    }
+  }
+
+  /**
+   * An arithmetic or bitwise operation that acts as a barrier.
+   *
+   * This prevents false positives where a hard-coded value is combined with
+   * non-constant data through operations like `+`, `^`, or `+=` (including string concatenation).
+   */
+  private class ArithmeticOperationBarrier extends Barrier {
+    ArithmeticOperationBarrier() {
+      // binary operations (e.g. `a + b`, `a ^ b`)
+      this.asExpr() = any(BinaryArithmeticOperation a).getAnOperand()
+      or
+      this.asExpr() = any(BinaryBitwiseOperation a).getAnOperand()
+      or
+      // compound assignments (e.g. `a += b`, `a ^= b`)
+      this.asExpr() = any(AssignArithmeticOperation a).getAnOperand()
+      or
+      this.asExpr() = any(AssignBitwiseOperation a).getAnOperand()
     }
   }
 }

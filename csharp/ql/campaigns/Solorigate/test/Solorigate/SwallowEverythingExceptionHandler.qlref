@@ -1,1 +1,2 @@
-SwallowEverythingExceptionHandler.ql
+query: SwallowEverythingExceptionHandler.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

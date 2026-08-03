@@ -35,7 +35,7 @@ public class MapTest {
 	}
 	
 	// should be flagged
-	private Map<String, Integer> useless = new HashMap<String, Integer>();
+	private Map<String, Integer> useless = new HashMap<String, Integer>(); // $ Alert
 	{
 		useless.put("hello", 23);
 		useless.remove("hello");

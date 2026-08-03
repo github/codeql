@@ -8,9 +8,9 @@ using System.Collections.Generic;
 
 namespace DataSetSerializationTest
 {
-    public class DerivesFromDeprecatedType1 : XmlSerializer // warning:DefiningDatasetRelatedType.ql
+    public class DerivesFromDeprecatedType1 : XmlSerializer // $ Alert[cs/dataset-serialization/defining-dataset-related-type] // warning:DefiningDatasetRelatedType.ql
     {
-        public DataSet MyDataSet { get; set; }  // bug:DefiningPotentiallyUnsafeXmlSerializer.ql
+        public DataSet MyDataSet { get; set; }  // $ Alert[cs/dataset-serialization/defining-potentially-unsafe-xml-serializer] // bug:DefiningPotentiallyUnsafeXmlSerializer.ql
 
         public DerivesFromDeprecatedType1()
         {
@@ -54,9 +54,9 @@ namespace DataSetSerializationTest
     */
 
     [Serializable()]
-    public class AttributeSerializer01  // warning:DefiningDatasetRelatedType.ql
+    public class AttributeSerializer01  // $ Alert[cs/dataset-serialization/defining-dataset-related-type] // warning:DefiningDatasetRelatedType.ql
     {
-        private DataSet MyDataSet;  // bug:DefiningPotentiallyUnsafeXmlSerializer.ql
+        private DataSet MyDataSet;  // $ Alert[cs/dataset-serialization/defining-potentially-unsafe-xml-serializer] // bug:DefiningPotentiallyUnsafeXmlSerializer.ql
 
         AttributeSerializer01()
         {
@@ -83,15 +83,15 @@ namespace DataSetSerializationTest
             {
                 DataTable newTable = new DataTable();
                 System.Xml.XmlTextReader reader = new System.Xml.XmlTextReader(fs);
-                newTable.ReadXmlSchema(reader); //bug:XmlDeserializationWithDataSet.ql
+                newTable.ReadXmlSchema(reader); // $ Alert[cs/dataset-serialization/xml-deserialization-with-dataset] //bug:XmlDeserializationWithDataSet.ql
             }
         }
 
         static void Main(string[] args)
         {
 
-            XmlSerializer x = new XmlSerializer(typeof(DataSet));   // bug:UnsafeTypeUsedDataContractSerializer.ql
-            XmlSerializer y = new XmlSerializer(typeof(AttributeSerializer01)); //bug:UnsafeTypeUsedDataContractSerializer.ql
+            XmlSerializer x = new XmlSerializer(typeof(DataSet));   // $ Alert[cs/dataset-serialization/unsafe-type-used-data-contract-serializer] // bug:UnsafeTypeUsedDataContractSerializer.ql
+            XmlSerializer y = new XmlSerializer(typeof(AttributeSerializer01)); // $ Alert[cs/dataset-serialization/unsafe-type-used-data-contract-serializer] //bug:UnsafeTypeUsedDataContractSerializer.ql
 
             Console.WriteLine("Hello World!");
         }

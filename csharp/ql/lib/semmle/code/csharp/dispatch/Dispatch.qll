@@ -124,9 +124,7 @@ private module Internal {
       TDispatchDynamicOperatorCall(DynamicOperatorCall doc) or
       TDispatchDynamicMemberAccess(DynamicMemberAccess dma) or
       TDispatchDynamicElementAccess(DynamicElementAccess dea) or
-      TDispatchDynamicEventAccess(
-        AssignArithmeticOperation aao, DynamicMemberAccess dma, string name
-      ) {
+      TDispatchDynamicEventAccess(AssignArithmeticExpr aao, DynamicMemberAccess dma, string name) {
         isPotentialEventCall(aao, dma, name)
       } or
       TDispatchDynamicObjectCreation(DynamicObjectCreation doc) or
@@ -230,7 +228,7 @@ private module Internal {
    * accessor.
    */
   private predicate isPotentialEventCall(
-    AssignArithmeticOperation aao, DynamicMemberAccess dma, string name
+    AssignArithmeticExpr aao, DynamicMemberAccess dma, string name
   ) {
     aao instanceof DynamicOperatorCall and
     dma = aao.getLeftOperand() and
@@ -1397,9 +1395,7 @@ private module Internal {
   private class DispatchDynamicEventAccess extends DispatchReflectionOrDynamicCall,
     TDispatchDynamicEventAccess
   {
-    override AssignArithmeticOperation getCall() {
-      this = TDispatchDynamicEventAccess(result, _, _)
-    }
+    override AssignArithmeticExpr getCall() { this = TDispatchDynamicEventAccess(result, _, _) }
 
     override string getName() { this = TDispatchDynamicEventAccess(_, _, result) }
 

@@ -174,7 +174,7 @@ private module Input2Common {
     exists(Impl impl |
       abs = impl and
       condition = impl.getSelfTy() and
-      constraint = impl.getTrait()
+      constraint = impl.getTraitTy()
     )
     or
     transitive = true and
@@ -1542,7 +1542,7 @@ private module AssocFunctionResolution {
       boolean hasReceiver
     |
       afc.hasSyntacticInfo(name, arity, typeQualifier, traitQualifier, hasReceiver) and
-      if not afc.hasATrait() and i.(Impl).hasTrait()
+      if not afc.hasATrait() and i.(Impl).hasTraitTy()
       then callVisibleImplTraitCandidate(afc, i)
       else any()
     |
@@ -2532,7 +2532,7 @@ private module AssocFunctionResolution {
       AssocFunctionCallCand afcc, TypeAbstraction abs, AssocFunctionType constraint
     ) {
       potentialInstantiationOf0(afcc, abs, constraint) and
-      if abs.(Impl).hasTrait()
+      if abs.(Impl).hasTraitTy()
       then
         // inherent functions take precedence over trait functions, so only allow
         // trait functions when there are no matching inherent functions
@@ -2584,7 +2584,7 @@ private module AssocFunctionResolution {
       exists(AssocFunctionCall afc, FunctionPosition selfPos |
         afcc = MkAssocFunctionCallCand(afc, selfPos, _, _) and
         blanketLikeCandidate(afc, _, selfPos, abs, constraint, _, _) and
-        if abs.(Impl).hasTrait()
+        if abs.(Impl).hasTraitTy()
         then
           // inherent functions take precedence over trait functions, so only allow
           // trait functions when there are no matching inherent functions

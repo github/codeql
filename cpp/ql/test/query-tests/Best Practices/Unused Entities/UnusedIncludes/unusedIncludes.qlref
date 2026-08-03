@@ -1,1 +1,2 @@
-Best Practices/Unused Entities/UnusedIncludes.ql
+query: Best Practices/Unused Entities/UnusedIncludes.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

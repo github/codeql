@@ -6,7 +6,7 @@ def test_fluent_tls():
     context = ssl.SSLContext(ssl.PROTOCOL_TLS)
 
     with socket.create_connection((hostname, 443)) as sock:
-        with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock: # $ Alert
             print(ssock.version())
 
 
@@ -16,7 +16,7 @@ def test_fluent_tls_no_TLSv1():
     context.options |= ssl.OP_NO_TLSv1
 
     with socket.create_connection((hostname, 443)) as sock:
-        with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock: # $ Alert
             print(ssock.version())
 
 def test_fluent_tls_client_no_TLSv1():
@@ -25,7 +25,7 @@ def test_fluent_tls_client_no_TLSv1():
     context.options |= ssl.OP_NO_TLSv1
 
     with socket.create_connection((hostname, 443)) as sock:
-        with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock: # $ Alert
             print(ssock.version())
 
 def test_fluent_tls_server_no_TLSv1():
@@ -34,7 +34,7 @@ def test_fluent_tls_server_no_TLSv1():
     context.options |= ssl.OP_NO_TLSv1
 
     with socket.create_server((hostname, 443)) as sock:
-        with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock: # $ Alert
             print(ssock.version())
 
 def test_fluent_tls_safe():
@@ -54,7 +54,7 @@ def test_fluent_ssl():
     context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
 
     with socket.create_connection((hostname, 443)) as sock:
-        with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock: # $ Alert
             print(ssock.version())
 
 
@@ -68,13 +68,13 @@ def create_secure_context():
 
 def create_connection(context):
     with socket.create_connection(('www.python.org', 443)) as sock:
-        with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock: # $ Alert
             print(ssock.version())
 
 def test_delegated_context_unsafe():
     context = create_relaxed_context()
     with socket.create_connection(('www.python.org', 443)) as sock:
-        with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock: # $ Alert
             print(ssock.version())
 
 def test_delegated_context_safe():
@@ -94,7 +94,7 @@ def test_delegated_context_made_unsafe():
     context = create_secure_context()
     context.options &= ~ssl.OP_NO_TLSv1_1
     with socket.create_connection(('www.python.org', 443)) as sock:
-        with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock: # $ Alert
             print(ssock.version())
 
 def test_delegated_connection_unsafe():
@@ -143,7 +143,7 @@ def test_fluent_ssl_unsafe_version():
     context.minimum_version = ssl.TLSVersion.TLSv1_1
 
     with socket.create_connection((hostname, 443)) as sock:
-        with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock: # $ Alert
             print(ssock.version())
 
 def test_fluent_ssl_safe_version():
@@ -162,5 +162,5 @@ def test_fluent_explicitly_unsafe():
     context.options &= ~ssl.OP_NO_SSLv3
 
     with socket.create_connection((hostname, 443)) as sock:
-        with context.wrap_socket(sock, server_hostname=hostname) as ssock:
+        with context.wrap_socket(sock, server_hostname=hostname) as ssock: # $ Alert
             print(ssock.version())

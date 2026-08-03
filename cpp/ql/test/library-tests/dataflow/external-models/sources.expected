@@ -13,6 +13,10 @@
 | test.cpp:146:10:146:18 | call to ymlSource | local |
 | test.cpp:155:10:155:18 | call to ymlSource | local |
 | test.cpp:170:10:170:18 | call to ymlSource | local |
+| test.cpp:186:14:186:22 | call to ymlSource | local |
+| test.cpp:199:14:199:22 | call to ymlSource | local |
+| test.cpp:216:18:216:26 | call to ymlSource | local |
+| test.cpp:222:10:222:20 | call to ymlSource | local |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | local |
 | windows.cpp:34:17:34:38 | *call to GetEnvironmentStringsA | local |
 | windows.cpp:39:36:39:38 | GetEnvironmentVariableA output argument | local |
@@ -39,3 +43,15 @@
 | windows.cpp:900:64:900:77 | HttpReceiveHttpRequest output argument | remote |
 | windows.cpp:929:70:929:75 | HttpReceiveRequestEntityBody output argument | remote |
 | windows.cpp:936:70:936:78 | HttpReceiveClientCertificate output argument | remote |
+| windows.cpp:1009:35:1009:38 | RegQueryValueA output argument | windows-registry |
+| windows.cpp:1016:36:1016:39 | RegQueryValueW output argument | windows-registry |
+| windows.cpp:1024:53:1024:56 | RegQueryValueExA output argument | windows-registry |
+| windows.cpp:1032:54:1032:57 | RegQueryValueExW output argument | windows-registry |
+| windows.cpp:1040:46:1040:49 | RegQueryMultipleValuesA output argument | windows-registry |
+| windows.cpp:1048:46:1048:49 | RegQueryMultipleValuesW output argument | windows-registry |
+| windows.cpp:1056:53:1056:56 | RegGetValueA output argument | windows-registry |
+| windows.cpp:1065:55:1065:58 | RegGetValueW output argument | windows-registry |
+| windows.cpp:1075:28:1075:36 | RegEnumValueA output argument | windows-registry |
+| windows.cpp:1075:71:1075:74 | RegEnumValueA output argument | windows-registry |
+| windows.cpp:1087:28:1087:36 | RegEnumValueW output argument | windows-registry |
+| windows.cpp:1087:71:1087:74 | RegEnumValueW output argument | windows-registry |

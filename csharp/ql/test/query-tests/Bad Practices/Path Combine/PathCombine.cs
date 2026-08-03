@@ -4,7 +4,7 @@ class PathCombine
 {
     void bad()
     {
-        Path.Combine(@"C:\Users", @"C:\Program Files");
+        Path.Combine(@"C:\Users", @"C:\Program Files"); // $ Alert
     }
 
     void good()

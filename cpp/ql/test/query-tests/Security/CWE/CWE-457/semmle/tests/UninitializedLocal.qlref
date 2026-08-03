@@ -1,1 +1,2 @@
-Likely Bugs/Memory Management/UninitializedLocal.ql
+query: Likely Bugs/Memory Management/UninitializedLocal.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

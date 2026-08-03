@@ -28,13 +28,13 @@ namespace JsonWebTokenHandlerTest
                 ClockSkew = TimeSpan.FromMinutes(5),
                 ValidateActor = false,
                 ValidateIssuerSigningKey = false,
-                ValidateIssuer = false,             // BUG
-                ValidateAudience = false,           // BUG
-                ValidateLifetime = false,           // BUG
-                RequireExpirationTime = false,      // BUG
+                ValidateIssuer = false,             // $ Alert[cs/json-webtoken-handler/security-validations-disabled] // BUG
+                ValidateAudience = false,           // $ Alert[cs/json-webtoken-handler/security-validations-disabled] // BUG
+                ValidateLifetime = false,           // $ Alert[cs/json-webtoken-handler/security-validations-disabled] // BUG
+                RequireExpirationTime = false,      // $ Alert[cs/json-webtoken-handler/security-validations-disabled] // BUG
                 ValidateTokenReplay = false,
                 RequireSignedTokens = false,
-                RequireAudience = false,            // BUG
+                RequireAudience = false,            // $ Alert[cs/json-webtoken-handler/security-validations-disabled] // BUG
                 SaveSigninToken = false
             };
         }

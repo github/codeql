@@ -1,1 +1,2 @@
-Likely Bugs/Memory Management/StackAddressEscapes.ql
+query: Likely Bugs/Memory Management/StackAddressEscapes.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

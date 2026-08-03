@@ -2,7 +2,7 @@ class FooController < ActionController::Base
   def some_request_handler
     # A string tainted by user input is used directly as password
     # (i.e a remote flow source)
-    pass = params[:pass]
+    pass = params[:pass] # $ Source
 
     # BAD: user input is not sanitized
     ldap = Net::LDAP.new(
@@ -12,7 +12,7 @@ class FooController < ActionController::Base
         auth: {
             method: :simple,
             username: 'uid=admin,dc=example,dc=com',
-            password: pass
+            password: pass # $ Alert
         }
     )
     ldap.bind
@@ -21,14 +21,14 @@ class FooController < ActionController::Base
   def some_request_handler
     # A string tainted by user input is used directly as password
     # (i.e a remote flow source)
-    pass = params[:pass]
+    pass = params[:pass] # $ Source
 
     # BAD: user input is not sanitized
     ldap = Net::LDAP.new
     ldap.host = your_server_ip_address
     ldap.encryption(:method => :simple_tls)
     ldap.port = 639
-    ldap.auth "admin", pass
+    ldap.auth "admin", pass # $ Alert
     ldap.bind
   end
 end

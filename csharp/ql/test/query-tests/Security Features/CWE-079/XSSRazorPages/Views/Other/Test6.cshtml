@@ -5,5 +5,6 @@
 
 @if (Model != null)
 {
-    <h3>Hello "@Html.Raw(Model.Name)"</h3>
+    <h3>Hello "@Html.Raw(Model.Name)"</h3>@{// $ Alert[cs/web/xss]
+}
 }

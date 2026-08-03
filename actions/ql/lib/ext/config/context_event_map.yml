@@ -19,6 +19,7 @@ extensions:
       - ["gollum", "github.event.changes"] 
       - ["pull_request_comment", "github.event.comment"] 
       - ["pull_request_comment", "github.event.pull_request"] 
+      - ["merge_group", "github.event.merge_group"]
       - ["pull_request_comment", "github.head_ref"] 
       - ["pull_request_comment", "github.event.changes"] 
       - ["pull_request_review", "github.event.pull_request"] 

@@ -13,7 +13,7 @@ public class HardcodedHandler : IHttpHandler
         string password = ctx.Request.QueryString["password"];
 
         // BAD: Inbound authentication made by comparison to string literal
-        if (password == "myPa55word")
+        if (password == "myPa55word") // $ Alert[cs/hardcoded-credentials]
         {
             ctx.Response.Redirect("login");
         }
@@ -29,7 +29,7 @@ public class HardcodedHandler : IHttpHandler
         // BAD: Create a membership user with hardcoded username
         MembershipUser user = new MembershipUser(
             providerName: "provider",
-            name: "username",
+            name: "username", // $ Alert[cs/hardcoded-credentials]
             providerUserKey: "username",
             email: "foo@bar.com",
             passwordQuestion: "Hardcoded question.",
@@ -43,18 +43,18 @@ public class HardcodedHandler : IHttpHandler
             lastLockoutDate: DateTime.Now
             );
         // BAD: Set the password to a hardcoded string literal
-        user.ChangePassword(password, "myNewPa55word");
+        user.ChangePassword(password, "myNewPa55word"); // $ Alert[cs/hardcoded-credentials]
 
-        byte[] rawCertData = new byte[] { 0x20, 0x20, 0x20 };
+        byte[] rawCertData = new byte[] { 0x20, 0x20, 0x20 }; // $ Alert[cs/hardcoded-credentials]
         // BAD: Passing a literal certificate and password to an X509 certificate constructor
         X509Certificate2 cert = new X509Certificate2(
-            rawCertData,
-            "myPa55word");
+            rawCertData, // $ Sink[cs/hardcoded-credentials]
+            "myPa55word"); // $ Alert[cs/hardcoded-credentials]
 
         // BAD: Passing literal Password to connection string
-        SqlConnection conn = new SqlConnection("Password=12345");
+        SqlConnection conn = new SqlConnection("Password=12345"); // $ Alert[cs/hardcoded-connection-string-credentials]
         // BAD: Passing literal User Id to connection string
-        SqlConnection conn2 = new SqlConnection("User Id=12345");
+        SqlConnection conn2 = new SqlConnection("User Id=12345"); // $ Alert[cs/hardcoded-connection-string-credentials]
         // GOOD: Password is not specified literally
         SqlConnection conn3 = new SqlConnection("Password=" + LoadPasswordFromSecretConfig() + ";");
 
@@ -72,7 +72,7 @@ public class HardcodedHandler : IHttpHandler
         conn = new SqlConnection($"Password={LoadPasswordFromSecretConfig()}");
 
         // BAD: Hard-coded user
-        Membership.CreateUser("myusername", "mypassword");
+        Membership.CreateUser("myusername", "mypassword"); // $ Alert[cs/hardcoded-credentials]
 
         var identityOptions = new IdentityOptions
         {

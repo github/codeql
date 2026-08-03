@@ -7,7 +7,7 @@ public class HtmlEncode
     public static void Bad(HttpContext ctx)
     {
         var user = WebUtility.UrlDecode(ctx.Request.QueryString["user"]);
-        ctx.Response.Write("Hello, " + WebUtility.UrlEncode(user));
+        ctx.Response.Write("Hello, " + WebUtility.UrlEncode(user)); // $ Alert=r1 $ Alert=r1
     }
 
     public static void Good(HttpContext ctx)

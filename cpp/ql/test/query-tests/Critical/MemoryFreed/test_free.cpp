@@ -8,10 +8,10 @@ int asprintf(char ** strp, const char * fmt, ...);
 
 
 void* test_double_free1(int *a) {
-    free(a); // GOOD
-    a[5] = 5; // BAD
-    *a = 5; // BAD
-    free(a); // BAD
+    free(a); // $ Source[cpp/double-free] Source[cpp/use-after-free] // GOOD
+    a[5] = 5; // $ Alert[cpp/use-after-free] // BAD
+    *a = 5; // $ Alert[cpp/use-after-free] // BAD
+    free(a); // $ Alert[cpp/double-free] // BAD
     a = (int*) malloc(8);
     free(a); // GOOD
     a = (int*) malloc(8);
@@ -23,32 +23,32 @@ void test_double_free_aliasing(void *a, void* b) {
     free(a); // GOOD
     a = b;
     free(a); // GOOD
-    free(b); // BAD [NOT DETECTED]
+    free(b); // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 void test_dominance1(void *a) {
-    free(a);
-    if (condition()) free(a); // BAD
+    free(a); // $ Source[cpp/double-free]
+    if (condition()) free(a); // $ Alert[cpp/double-free] // BAD
 }
 
 void test_dominance2(void *a) {
-    free(a);
-    if (condition()) a = malloc(10);
-    if (condition()) free(a); // BAD
+    free(a); // $ Source[cpp/double-free]
+    if (condition()) a = malloc(10); // $ Alert[cpp/memory-may-not-be-freed]
+    if (condition()) free(a); // $ Alert[cpp/double-free] // BAD
 }
 
 void test_post_dominance1(int *a)
 {
-    if (condition()) free(a);
-    if (condition()) a[2] = 5; // BAD [NOT DETECTED]
-    if (condition()) free(a); // BAD [NOT DETECTED]
-    a[2] = 5; // BAD
-    free(a); // BAD
+    if (condition()) free(a); // $ Source[cpp/double-free] Source[cpp/use-after-free]
+    if (condition()) a[2] = 5; // $ MISSING: Alert // BAD [NOT DETECTED]
+    if (condition()) free(a); // $ Source[cpp/double-free] Source[cpp/use-after-free] MISSING: Alert // BAD [NOT DETECTED]
+    a[2] = 5; // $ Alert[cpp/use-after-free] // BAD
+    free(a); // $ Alert[cpp/double-free] // BAD
 }
 
 void test_post_dominance2(void *a) {
-    if (condition()) free(a);
-    free(a); // BAD
+    if (condition()) free(a); // $ Source[cpp/double-free]
+    free(a); // $ Alert[cpp/double-free] // BAD
 }
 
 void test_post_dominance3(void *a) {
@@ -61,15 +61,15 @@ void test_use_after_free6(int *a, int *b) {
     free(a);
     a=b;
     free(b);
-    if (condition()) a[0] = 5; // BAD [NOT DETECTED]
+    if (condition()) a[0] = 5; // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 void test_use_after_free7(int *a) {
     a[0] = 42;
-    free(a);
+    free(a); // $ Source[cpp/double-free] Source[cpp/use-after-free]
 
-    if (a[3]) { // BAD
-        free(a); // BAD
+    if (a[3]) { // $ Alert[cpp/use-after-free] // BAD
+        free(a); // $ Alert[cpp/double-free] // BAD
     }
 }
 
@@ -80,27 +80,27 @@ public:
 
 void test_new1() {
     A *a = new A();
-    delete(a);
-    a->f(); // BAD
-    delete(a); // BAD
+    delete(a); // $ Source[cpp/double-free] Source[cpp/use-after-free]
+    a->f(); // $ Alert[cpp/use-after-free] // BAD
+    delete(a); // $ Alert[cpp/double-free] // BAD
 }
 
 void test_dereference1(A *a) {
     a->f(); // GOOD
-    free(a);
-    a->f(); // BAD
+    free(a); // $ Source[cpp/use-after-free]
+    a->f(); // $ Alert[cpp/use-after-free] // BAD
 }
 
 void* use_after_free(void *a) {
-    free(a);
-    use(a); // BAD
+    free(a); // $ Source[cpp/use-after-free]
+    use(a); // $ Alert[cpp/use-after-free] // BAD
     return a; // BAD
 }
 
 void test_realloc1(void *a) {
-    free(a);
-    void *b = realloc(a, sizeof(a)*3); // BAD [NOT DETECTED by cpp/double-free]
-    free(a); // BAD
+    free(a); // $ Source[cpp/double-free] Source[cpp/use-after-free]
+    void *b = realloc(a, sizeof(a)*3); // $ Alert[cpp/use-after-free] // BAD [NOT DETECTED by cpp/double-free]
+    free(a); // $ Alert[cpp/double-free] // BAD
     free(b); // GOOD
 }
 void* test_realloc2(char *a) {
@@ -125,8 +125,8 @@ void test_realloc3(void *a) {
 void test_ptr_deref(void ** a) {
     free(*a);
     *a = malloc(10);
-    free(*a); // GOOD
-    free(*a); // BAD
+    free(*a); // $ Source[cpp/double-free] // GOOD
+    free(*a); // $ Alert[cpp/double-free] // BAD
     *a = malloc(10);
     free(a[0]); // GOOD
     free(a[1]); // GOOD
@@ -149,9 +149,9 @@ void test_loop1(struct list ** list_ptr) {
 }
 
 void test_use_after_free8(struct list * a) {
-    if (condition()) free(a);
-    a->data = malloc(10); // BAD
-    free(a); // BAD
+    if (condition()) free(a); // $ Source[cpp/double-free] Source[cpp/use-after-free]
+    a->data = malloc(10); // $ Alert[cpp/use-after-free] // BAD
+    free(a); // $ Alert[cpp/double-free] // BAD
 }
 
 void test_loop2(char ** a) {
@@ -164,7 +164,7 @@ void test_loop2(char ** a) {
 
 void* test_realloc4() {
     void *a = 0;
-    void *b = realloc(a, 10); // BAD for cpp/memory-never-freed
+    void *b = realloc(a, 10); // $ Alert[cpp/memory-never-freed] // BAD for cpp/memory-never-freed
     if (!b) { return a; }
     return b;
 }
@@ -204,9 +204,9 @@ char* test_return2(char *a) {
 void test_condition1(char *a) {
     free(a);
     if (asprintf(&a, "Hello world") || condition());
-    free(a); //GOOD
+    free(a); // $ Source[cpp/double-free] //GOOD
     if (condition() || asprintf(&a, "Hello world"));
-    free(a); // BAD
+    free(a); // $ Alert[cpp/double-free] // BAD
 }
 
 void test_condition2(char *a) {
@@ -230,27 +230,27 @@ void test_ms_free(void * memory_descriptor_list) {
 
 void test_loop3(char ** a, char ** b) {
     if (*a) {
-        free(*a);
+        free(*a); // $ Source[cpp/use-after-free]
         a++;
     }
-    use(*a); // GOOD [FALSE POSITIVE]
+    use(*a); // $ SPURIOUS: Alert[cpp/use-after-free] // GOOD [FALSE POSITIVE]
 
     for (;*b; b++) {
-        free(*b);
+        free(*b); // $ Source[cpp/use-after-free]
     }
-    use(*b); // GOOD [FALSE POSITIVE]
+    use(*b); // $ SPURIOUS: Alert[cpp/use-after-free] // GOOD [FALSE POSITIVE]
 }
 
 void test_deref(char **a) {
-    free(*a);
-    use(*a); // GOOD [FALSE POSITIVE]
+    free(*a); // $ Source[cpp/use-after-free]
+    use(*a); // $ SPURIOUS: Alert[cpp/use-after-free] // GOOD [FALSE POSITIVE]
 }
 
 // Refs
 
 void test_ref(char *&p) {
 	free(p);
-	p = (char *)malloc(sizeof(char)*10);
+	p = (char *)malloc(sizeof(char)*10); // $ Alert[cpp/memory-never-freed]
 	use(p);  // GOOD
     free(p); // GOOD
 }
@@ -258,13 +258,13 @@ void test_ref(char *&p) {
 
 void test_ref_delete(int *&p) {
 	delete p;
-	p = new int;
+	p = new int; // $ Alert[cpp/memory-never-freed]
 	use(p);  // GOOD
     delete p;  // GOOD
 }
 
 void test_free_assign() {
-	void *a = malloc(10);
+	void *a = malloc(10); // $ Alert[cpp/memory-may-not-be-freed]
 	void *b;
 	free(b = a); // GOOD
 }
@@ -274,13 +274,13 @@ struct MyStruct {
 };
 
 void test_free_struct(MyStruct* s) {
-  free(s->buf);
-  char c = s->buf[0]; // BAD
+  free(s->buf); // $ Source[cpp/use-after-free]
+  char c = s->buf[0]; // $ Alert[cpp/use-after-free] // BAD
 }
 
 void test_free_struct2(MyStruct s) {
-  free(s.buf);
-  char c = s.buf[0]; // BAD
+  free(s.buf); // $ Source[cpp/use-after-free]
+  char c = s.buf[0]; // $ Alert[cpp/use-after-free] // BAD
 }
 
 void test_free_struct3(MyStruct s) {
@@ -290,16 +290,16 @@ void test_free_struct3(MyStruct s) {
 }
 
 void test_free_struct4(char* buf, MyStruct s) {
-  free(buf);
+  free(buf); // $ Source[cpp/use-after-free]
   s.buf = buf;
-  char c = s.buf[0]; // BAD
+  char c = s.buf[0]; // $ Alert[cpp/use-after-free] // BAD
 }
 
 void g_free (void*);
 
 void test_g_free(char* buf) {
-    g_free(buf);
-    g_free(buf); // BAD
+    g_free(buf); // $ Source[cpp/double-free]
+    g_free(buf); // $ Alert[cpp/double-free] // BAD
 }
 
 // inspired by real world FPs
@@ -310,26 +310,26 @@ void test_goto() {
     *a = 1; // GOOD
     if (condition())
     {
-        delete a;
+        delete a; // $ Source[cpp/use-after-free]
         goto after;
     }
     *a = 1; // GOOD
     if (condition())
     {
-        delete a;
+        delete a; // $ Source[cpp/double-free] Source[cpp/use-after-free]
     }
-    *a = 1; // BAD (use after free)
-    delete a; // BAD (double free)
+    *a = 1; // $ Alert[cpp/use-after-free] // BAD (use after free)
+    delete a; // $ Alert[cpp/double-free] Source[cpp/use-after-free] // BAD (double free)
 after:
-    *a = 1; // BAD (use after free)
+    *a = 1; // $ Alert[cpp/use-after-free] // BAD (use after free)
 }
 
 void test_reassign() {
     int *a = (int *)malloc(sizeof(int));
 
     *a = 1; // GOOD
-    delete a;
-    *a = 1; // BAD (use after free)
+    delete a; // $ Source[cpp/use-after-free]
+    *a = 1; // $ Alert[cpp/use-after-free] // BAD (use after free)
     a = (int *)malloc(sizeof(int));
     *a = 1; // GOOD
     delete a;
@@ -343,7 +343,7 @@ void test_array(PtrContainer *containers) {
     delete containers[0].ptr; // GOOD
     delete containers[1].ptr; // GOOD
     delete containers[2].ptr; // GOOD
-    delete containers[2].ptr; // BAD (double free) [NOT DETECTED]
+    delete containers[2].ptr; // $ MISSING: Alert // BAD (double free) [NOT DETECTED]
 }
 
 struct E {
@@ -362,10 +362,10 @@ void test(E* e) {
 void test_return_by_parameter(int **out_i, MyStruct **out_ms) {
     int *a = (int *)malloc(sizeof(int)); // GOOD (freed)
     int *b = (int *)malloc(sizeof(int)); // GOOD (out parameter)
-    int *d = (int *)malloc(sizeof(int)); // BAD (not freed)
+    int *d = (int *)malloc(sizeof(int)); // $ Alert[cpp/memory-never-freed] // BAD (not freed)
     MyStruct *e = (MyStruct *)malloc(sizeof(MyStruct)); // GOOD (freed)
     MyStruct *f = (MyStruct *)malloc(sizeof(MyStruct)); // GOOD (out parameter)
-    MyStruct *h = (MyStruct *)malloc(sizeof(MyStruct)); // BAD (not freed)
+    MyStruct *h = (MyStruct *)malloc(sizeof(MyStruct)); // $ Alert[cpp/memory-never-freed] // BAD (not freed)
 
     free(a);
     *out_i = b;
@@ -424,5 +424,5 @@ void testHasGetter() {
     free(buffer2);
 
     HasGetterNoFree hg3;
-    void *buffer3 = hg3.getBuffer(); // BAD (not freed) [NOT DETECTED]
+    void *buffer3 = hg3.getBuffer(); // $ MISSING: Alert // BAD (not freed) [NOT DETECTED]
 }

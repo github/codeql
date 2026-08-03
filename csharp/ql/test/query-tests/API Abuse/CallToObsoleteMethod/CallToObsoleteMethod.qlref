@@ -1,1 +1,2 @@
-API Abuse/CallToObsoleteMethod.ql
+query: API Abuse/CallToObsoleteMethod.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

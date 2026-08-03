@@ -1,1 +1,2 @@
-Security/CWE/CWE-311/CleartextTransmission.ql
+query: Security/CWE/CWE-311/CleartextTransmission.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,5 +1,5 @@
 # This test checks that the developer doesn't pass a MIMEText instance to a MIMEMultipart initializer via the subparts parameter.
-from flask import Flask, request
+from flask import Flask, request # $ Source
 import json
 import smtplib
 import ssl
@@ -21,7 +21,7 @@ def email_person():
 
     # Turn these into plain/html MIMEText objects
     part1 = MIMEText(text, "plain")
-    part2 = MIMEText(html, "html")
+    part2 = MIMEText(html, "html") # $ Alert
 
     message = MIMEMultipart(_subparts=(part1, part2))
     message["Subject"] = "multipart test"

@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/bad')
 def bad():
-    if not request.headers.get('X-Auth-Token') == "token":
+    if not request.headers.get('X-Auth-Token') == "token": # $ Alert
         raise Exception('bad token')
     return 'bad'
 

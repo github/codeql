@@ -1,1 +1,2 @@
-Likely Bugs/Arithmetic/ComparisonWithCancelingSubExpr.ql
+query: Likely Bugs/Arithmetic/ComparisonWithCancelingSubExpr.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

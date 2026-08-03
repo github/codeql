@@ -3,7 +3,7 @@ using System.Threading;
 
 class Deadlock
 {
-    private readonly Object lock1 = new Object();
+    private readonly Object lock1 = new Object(); // $ Alert
     private readonly Object lock2 = new Object();
 
     public void thread1()

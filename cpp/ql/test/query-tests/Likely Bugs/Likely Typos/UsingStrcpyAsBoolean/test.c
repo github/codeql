@@ -1,4 +1,4 @@
-typedef unsigned int size_t; 
+typedef unsigned int size_t;
 typedef int* locale_t;
 
 char* strcpy(char* destination, const char* source)
@@ -31,37 +31,37 @@ void PositiveCases()
     char szbuf2[100];
     int result;
 
-    if (strcpy(szbuf1, "test")) // Bug, direct usage
+    if (strcpy(szbuf1, "test")) // $ Alert // Bug, direct usage
     {
     }
 
-    if (!strcpy(szbuf1, "test")) // Bug, unary binary operator
+    if (!strcpy(szbuf1, "test")) // $ Alert // Bug, unary binary operator
     {
     }
 
-    if (strcpy(szbuf1, "test") == 0) // Bug, equality operator
+    if (strcpy(szbuf1, "test") == 0) // $ Alert // Bug, equality operator
     {
     }
 
-    if (SomeFunction() && strcpy(szbuf1, "test")) // Bug, binary logical operator
+    if (SomeFunction() && strcpy(szbuf1, "test")) // $ Alert // Bug, binary logical operator
     {
     }
 
-    if (strncpy(szbuf1, "test", 100))  // Bug
+    if (strncpy(szbuf1, "test", 100))  // $ Alert // Bug
     {
     }
 
-    if (!strncpy(szbuf1, "test", 100))  // Bug
+    if (!strncpy(szbuf1, "test", 100))  // $ Alert // Bug
     {
     }
 
-    result = !strncpy(szbuf1, "test", 100); // Bug
-    result = strcpy(szbuf1, "test") ? 1 : 0; // Bug
-    result = strcpy(szbuf1, "test") && 1; // Bug
+    result = !strncpy(szbuf1, "test", 100); // $ Alert // Bug
+    result = strcpy(szbuf1, "test") ? 1 : 0; // $ Alert // Bug
+    result = strcpy(szbuf1, "test") && 1; // $ Alert // Bug
 
-    result = strcpy(szbuf1, "test") == 0; // Bug
+    result = strcpy(szbuf1, "test") == 0; // $ Alert // Bug
 
-    result = strcpy(szbuf1, "test") != 0; // Bug
+    result = strcpy(szbuf1, "test") != 0; // $ Alert // Bug
 }
 
 void NegativeCases()

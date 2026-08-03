@@ -68,7 +68,7 @@ void funcWork1b() {
     }
     delete [] bufMyData;
 
-  }
+  } // $ Alert
 }
 
 void funcWork1() {
@@ -97,7 +97,7 @@ void funcWork1() {
     }
     delete [] bufMyData;
 
-  }
+  } // $ Alert
 }
 
 void funcWork2() {
@@ -125,7 +125,7 @@ void funcWork2() {
     }
     delete [] bufMyData;
 
-  }
+  } // $ Alert
 }
 void funcWork3() {
   int a;
@@ -148,7 +148,7 @@ void funcWork3() {
     }
     delete [] bufMyData;
 
-  }
+  } // $ Alert
 }
 
 
@@ -180,7 +180,7 @@ void funcWork4b() {
   catch (...) 
   {
     delete valData; // BAD
-  }
+  } // $ Alert
 }
 void funcWork5() {
   int a;
@@ -218,7 +218,7 @@ void funcWork5b() {
   catch (...) 
   {
         delete valData; // BAD
-  }
+  } // $ Alert
 }
 void funcWork6() {
   int a;

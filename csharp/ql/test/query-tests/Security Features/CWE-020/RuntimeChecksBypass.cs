@@ -17,7 +17,7 @@ public class Test1
     [OnDeserializing]
     public void Deserialize()
     {
-        f = GetString();  // BAD, non-constant and non-object creation expr
+        f = GetString();  // $ Alert[cs/serialization-check-bypass] // BAD, non-constant and non-object creation expr
     }
 
     string GetString() { throw null; }
@@ -123,7 +123,7 @@ public class Test5 : ISerializable
     [OnDeserializing]
     void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
     {
-        Age = info.GetInt32("age");  // BAD
+        Age = info.GetInt32("age");  // $ Alert[cs/serialization-check-bypass] // BAD
     }
 }
 
@@ -167,7 +167,7 @@ public class Test7 : ISerializable
         int age = info.GetInt32("age");
         if (false)
             throw new SerializationException("age");
-        Age = age;  // BAD
+        Age = age;  // $ Alert[cs/serialization-check-bypass] // BAD
     }
 }
 

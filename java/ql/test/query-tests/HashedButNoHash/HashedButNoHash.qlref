@@ -1,1 +1,2 @@
-Likely Bugs/Comparison/HashedButNoHash.ql
+query: Likely Bugs/Comparison/HashedButNoHash.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

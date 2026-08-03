@@ -109,7 +109,7 @@ namespace Semmle.Autobuild.CSharp
             => WithDotNet(builder, ensureDotNetAvailable: false, (_, env) => f(env));
 
         private static string DotNetCommand(IBuildActions actions, string? dotNetPath) =>
-            dotNetPath is not null ? actions.PathCombine(dotNetPath, "dotnet") : "dotnet";
+            dotNetPath is not null ? actions.PathJoin(dotNetPath, "dotnet") : "dotnet";
 
         private static CommandBuilder GetCleanCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {

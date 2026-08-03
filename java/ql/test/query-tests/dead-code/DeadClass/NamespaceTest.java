@@ -32,7 +32,7 @@ public class NamespaceTest {
    * This class is not a namespace class, because it has an instance method. The nested live class
    * should not make the NonNamespaceClass live.
    */
-  public static class NonNamespaceClass {
+  public static class NonNamespaceClass { // $ Alert
     public static class LiveInnerClass2 {
     }
 

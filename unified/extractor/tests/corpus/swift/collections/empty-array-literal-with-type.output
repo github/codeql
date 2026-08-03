@@ -1,0 +1,57 @@
+let xs: [Int] = []
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    arrayExpr
+                      elements:
+                      leftSquare: [
+                      rightSquare: ]
+              pattern:
+                identifierPattern
+                  identifier: identifier "xs"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    arrayType
+                      leftSquare: [
+                      rightSquare: ]
+                      element:
+                        identifierType
+                          name: identifier "Int"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "xs"
+          type:
+            generic_type_expr
+              base:
+                named_type_expr
+                  name: identifier "Array"
+              type_argument:
+                named_type_expr
+                  name: identifier "Int"
+          value: array_literal "[]"

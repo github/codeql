@@ -9,7 +9,19 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.ImportStar
 private import semmle.python.dataflow.new.TypeTracking
 private import semmle.python.dataflow.new.internal.DataFlowPrivate
-private import semmle.python.essa.SsaDefinitions
+
+/**
+ * Holds if `init` is a package's `__init__.py` and `var` is a global variable in
+ * `init` whose name matches a submodule of the package.
+ *
+ * Inlined from `SsaSource::init_module_submodule_defn` to avoid pulling
+ * `semmle.python.essa.SsaDefinitions` into the new dataflow stack.
+ */
+private predicate initModuleSubmoduleDefn(GlobalVariable var, Module init) {
+  init.isPackageInit() and
+  exists(init.getPackage().getSubModule(var.getId())) and
+  var.getScope() = init
+}
 
 /**
  * Python modules and the way imports are resolved are... complicated. Here's a crash course in how
@@ -326,7 +338,7 @@ module ImportResolution {
     // imported yet.
     exists(string submodule, Module package, EssaVariable var |
       submodule = var.getName() and
-      SsaSource::init_module_submodule_defn(var.getSourceVariable(), package.getEntryNode()) and
+      initModuleSubmoduleDefn(var.getSourceVariable(), package) and
       m = getModuleFromName(package.getPackageName() + "." + submodule) and
       result.asCfgNode() = var.getDefinition().(EssaNodeDefinition).getDefiningNode()
     )

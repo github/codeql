@@ -186,13 +186,6 @@ private Expr aspWrittenValue(AspInlineMember m) {
   m.getMember().(Callable).canReturn(result)
 }
 
-private string makeUrl(Location l) {
-  exists(string path, int sl, int sc, int el, int ec |
-    l.hasLocationInfo(path, sl, sc, el, ec) and
-    result = "file://" + path + ":" + sl + ":" + sc + ":" + el + ":" + ec
-  )
-}
-
 /**
  * A sink for writes to properties that are accessed in ASP pages.
  *
@@ -208,10 +201,7 @@ private class AspxCodeSink extends Sink {
 
   AspxCodeSink() { this.getExpr() = aspWrittenValue(inline) }
 
-  override string explanation() {
-    result =
-      "member is [[\"accessed inline\"|\"" + makeUrl(inline.getLocation()) + "\"]] in an ASPX page"
-  }
+  override string explanation() { result = "member is accessed inline in an ASPX page" }
 }
 
 /** A sink for the output stream associated with a `HttpListenerResponse`. */

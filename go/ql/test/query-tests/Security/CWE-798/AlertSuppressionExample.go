@@ -8,7 +8,7 @@ func login(user, password string) bool {
 
 func TestLogin(t *testing.T) {
 	user := "testuser"
-	password := "horsebatterystaplecorrect" // lgtm[go/hardcoded-credentials]
+	password := "horsebatterystaplecorrect" // $ Alert // lgtm[go/hardcoded-credentials]
 	if !login(user, password) {
 		t.Errorf("Login test failed.")
 	}

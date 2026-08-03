@@ -1,1 +1,2 @@
-Security Features/CWE-011/ASPNetDebug.ql
+query: Security Features/CWE-011/ASPNetDebug.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

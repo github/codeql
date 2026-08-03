@@ -92,13 +92,13 @@ def ok_to_ignore():
 
 class DeprecatedSliceMethods(object):
 
-    def __getslice__(self, start, stop):
+    def __getslice__(self, start, stop): # $ Alert[py/deprecated-slice-method]
         pass
 
-    def __setslice__(self, start, stop, value):
+    def __setslice__(self, start, stop, value): # $ Alert[py/deprecated-slice-method]
         pass
 
-    def __delslice__(self, start, stop):
+    def __delslice__(self, start, stop): # $ Alert[py/deprecated-slice-method]
         pass
 
 

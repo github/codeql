@@ -1,1 +1,2 @@
-jsf/4.21 Operators/AV Rule 157.ql
+query: jsf/4.21 Operators/AV Rule 157.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

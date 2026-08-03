@@ -1,6 +1,6 @@
 void test1() {
   int local;
-  int x = local; // BAD
+  int x = local; // $ Alert // BAD
 
   static int static_local;
   int y = static_local; // GOOD
@@ -9,7 +9,7 @@ void test1() {
   int z = initialised; // GOOD
 }
 
-int uninitialised_global; // BAD
+int uninitialised_global; // $ Alert // BAD
 static int uninitialised_static_global; // GOOD
 int initialized_global = 0; // GOOD
 

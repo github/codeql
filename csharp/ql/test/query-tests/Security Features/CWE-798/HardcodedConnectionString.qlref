@@ -1,1 +1,2 @@
-Security Features/CWE-798/HardcodedConnectionString.ql
+query: Security Features/CWE-798/HardcodedConnectionString.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

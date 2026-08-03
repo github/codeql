@@ -1,1 +1,2 @@
-Security/CWE-730/PolynomialReDoS.ql
+query: Security/CWE-730/PolynomialReDoS.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

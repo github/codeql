@@ -2,7 +2,7 @@ using System;
 
 class InappropriateIntimacy
 {
-    class A
+    class A // $ Alert
     {
         public int F1;
         public int F2;
@@ -25,7 +25,7 @@ class InappropriateIntimacy
           b.F1 + b.F2 + b.F3 + b.F4 + b.F5 + b.F6 + b.F7 + b.F8 + b.F9 + b.F10 + b.F11 + b.F12 + b.F13 + b.F14 + b.F15 + b.F16;
     }
 
-    class B
+    class B // $ Alert
     {
         public int F1;
         public int F2;

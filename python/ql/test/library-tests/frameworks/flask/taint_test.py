@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template_string, stream_template_string
-app = Flask(__name__)
+app = Flask(__name__) # $ instance
 
 @app.route("/test_taint/<name>/<int:number>")  # $ routeSetup="/test_taint/<name>/<int:number>"
 def test_taint(name = "World!", number="0", foo="foo"):  # $ requestHandler routedParameter=name routedParameter=number

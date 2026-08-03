@@ -22,8 +22,8 @@ namespace std
 void test_1()
 {
 	std::mutex mtx;
-	mtx.lock();
-	mtx.lock();
+	mtx.lock(); // $ Alert[cpp/unreleased-lock]
+	mtx.lock(); // $ Alert[cpp/twice-locked] Alert[cpp/unreleased-lock]
 	mtx.unlock();
 }
 
@@ -32,7 +32,7 @@ void test_2()
 {
 	std::mutex mtx;
 	mtx.lock();
-	mtx.lock();
+	mtx.lock(); // $ Alert[cpp/twice-locked]
 	mtx.unlock();
 	mtx.unlock();
 }
@@ -51,7 +51,7 @@ void test_3()
 void test_4(bool something)
 {
 	std::mutex mtx;
-	mtx.lock();
+	mtx.lock(); // $ Alert[cpp/unreleased-lock]
 	if (something) {
 		mtx.unlock();
 	} else {
@@ -85,8 +85,8 @@ void test_7()
 {
 	std::mutex mtx1;
 	std::mutex mtx2;
-	mtx1.lock();
-	mtx2.lock();
+	mtx1.lock(); // $ Alert[cpp/unreleased-lock]
+	mtx2.lock(); // $ Alert[cpp/unreleased-lock]
 	std::unlock(mtx1, mtx2);
 }
 
@@ -105,7 +105,7 @@ void test_8()
 void test_9()
 {
 	std::mutex mtx;
-	if (mtx.try_lock()) {
+	if (mtx.try_lock()) { // $ Alert[cpp/unreleased-lock]
 		return;
 	}
 	mtx.unlock();
@@ -134,7 +134,7 @@ std::mutex static_mtx02;
 
 // Helper function for testing the inter-procedural analysis.
 void set02() {
-	static_mtx02.lock();
+	static_mtx02.lock(); // $ Alert[cpp/twice-locked]
 }
 
 // Helper function for testing the inter-procedural analysis.
@@ -153,7 +153,7 @@ std::mutex static_mtx03;
 
 // Helper function for testing the inter-procedural analysis.
 void set03() {
-	static_mtx03.lock();
+	static_mtx03.lock(); // $ Alert[cpp/twice-locked]
 }
 
 // Helper function for testing the inter-procedural analysis.
@@ -174,7 +174,7 @@ void interproc_test_03(int n) {
 // BAD.
 void interproc_test_04(int n) {
 	static std::mutex mtx;
-	mtx.lock();
+	mtx.lock(); // $ Alert[cpp/twice-locked]
 	if (n < 10) {
 		// BAD: recursive call will attempt to lock the mutex again.
 		interproc_test_04(n+1);
@@ -215,7 +215,7 @@ void interproc_test_06() {
 void interproc_test_07() {
 	std::mutex mtx;
 	set(mtx);
-	set(mtx);
+	set(mtx); // $ Alert[cpp/twice-locked]
 	unset(mtx);
 }
 
@@ -224,7 +224,7 @@ void interproc_test_08(std::mutex &mtx, int n) {
 	set(mtx);
 	if (n < 10) {
 		// BAD: recursive call will attempt to lock the mutex again.
-		interproc_test_08(mtx, n+1);
+		interproc_test_08(mtx, n+1); // $ Alert[cpp/twice-locked]
 	}
 	unset(mtx);
 }
@@ -300,7 +300,7 @@ void interproc_test_09() {
 void test_10()
 {
 	std::mutex mtx;
-	if (!mtx.try_lock()) { // [FALSE POSITIVE]
+	if (!mtx.try_lock()) { // $ SPURIOUS: Alert[cpp/unreleased-lock] // [FALSE POSITIVE]
 	} else {
 		mtx.unlock();
 	}
@@ -310,10 +310,10 @@ void test_10()
 void test_11()
 {
 	std::mutex mtx;
-	if (!mtx.try_lock()) { // [FALSE POSITIVE]
+	if (!mtx.try_lock()) { // $ SPURIOUS: Alert[cpp/unreleased-lock] // [FALSE POSITIVE]
 		return;
 	}
-	
+
 	mtx.unlock();
 }
 
@@ -336,7 +336,7 @@ void unlock_lock(std::mutex &mtx)
 void interproc_test_10()
 {
 	std::mutex mtx;
-	
+
 	mtx.lock();
 	unlock_lock(mtx);
 	mtx.unlock();
@@ -346,7 +346,7 @@ void interproc_test_10()
 void interproc_test_11()
 {
 	std::mutex mtx;
-	
+
 	mtx.lock();
 	unlock_lock(mtx); // [NOT REPORTED]
 }
@@ -355,9 +355,9 @@ void interproc_test_11()
 void twice_locked_1()
 {
 	std::mutex mtx;
-	
+
 	mtx.lock();
-	mtx.lock();
+	mtx.lock(); // $ Alert[cpp/twice-locked]
 	mtx.unlock();
 	mtx.unlock();
 }
@@ -366,7 +366,7 @@ void twice_locked_1()
 void twice_locked_2()
 {
 	std::mutex mtx;
-	
+
 	mtx.lock();
 	mtx.unlock();
 	mtx.lock();
@@ -380,13 +380,13 @@ void twice_locked_3()
 
 	if (mtx.try_lock())
 	{
-		mtx.lock();
+		mtx.lock(); // $ Alert[cpp/twice-locked]
 		mtx.unlock();
 		mtx.unlock();
 	}
 }
 
-std::mutex static_mtx_01a, static_mtx_01b;
+std::mutex static_mtx_01a, static_mtx_01b; // $ Alert[cpp/lock-order-cycle]
 
 // BAD
 void lock_order_1(int cond)
@@ -395,7 +395,7 @@ void lock_order_1(int cond)
 	static_mtx_01b.lock();
 	static_mtx_01b.unlock();
 	static_mtx_01a.unlock();
-	
+
 	static_mtx_01b.lock();
 	static_mtx_01a.lock();
 	static_mtx_01a.unlock();
@@ -413,7 +413,7 @@ void lock_order_2(int cond)
 	static_mtx_02b.lock();
 	static_mtx_02b.unlock();
 	static_mtx_02a.unlock();
-	
+
 	static_mtx_02a.lock();
 	static_mtx_02b.lock();
 	static_mtx_02b.unlock();
@@ -439,7 +439,7 @@ struct data_t {
 
 bool test_mutex(data_t *data)
 {
-	CHECK(mutex_lock(&(data->mutex))); // GOOD [FALSE POSITIVE]
+	CHECK(mutex_lock(&(data->mutex))); // $ SPURIOUS: Alert[cpp/unreleased-lock] // GOOD [FALSE POSITIVE]
 	data->val = 1;
 	CHECK(mutex_unlock(&(data->mutex)));
 
@@ -467,7 +467,7 @@ bool maybe();
 int test_MyClass_good(MyClass *obj)
 {
 	pthread_mutex_lock(&obj->lock);
-	
+
 	if (maybe()) {
 		pthread_mutex_unlock(&obj->lock);
 		return -1; // GOOD
@@ -479,7 +479,7 @@ int test_MyClass_good(MyClass *obj)
 
 int test_MyClass_bad(MyClass *obj)
 {
-	pthread_mutex_lock(&obj->lock);
+	pthread_mutex_lock(&obj->lock); // $ Alert[cpp/unreleased-lock]
 
 	if (maybe()) {
 		return -1; // BAD

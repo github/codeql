@@ -1,6 +1,6 @@
 public class Bad
 {
-    private class BadModel
+    private class BadModel // $ Alert
     {
         private int i;
         private BadView view;

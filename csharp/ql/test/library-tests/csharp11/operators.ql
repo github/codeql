@@ -11,7 +11,7 @@ query predicate binarybitwise(
 }
 
 query predicate assignbitwise(
-  AssignBitwiseOperation op, Expr left, Expr right, string name, string qlclass
+  AssignBitwiseExpr op, Expr left, Expr right, string name, string qlclass
 ) {
   op.getFile().getStem() = "Operators" and
   left = op.getLeftOperand() and

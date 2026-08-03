@@ -1,1 +1,2 @@
-Likely Bugs/Leap Year/UncheckedReturnValueForTimeFunctions.ql
+query: Likely Bugs/Leap Year/UncheckedReturnValueForTimeFunctions.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

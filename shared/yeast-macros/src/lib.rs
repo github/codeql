@@ -41,10 +41,40 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// (kind "literal")             - leaf with static content
 /// (kind #{expr})               - leaf with computed content (expr.to_string())
 /// (kind $fresh)                - leaf with auto-generated unique name
-/// {expr}                       - embed a Rust expression returning Id
-/// {..expr}                     - splice an iterable of Id (in child/field position)
-/// field: {..expr}              - splice into a named field
+/// {expr}                       - embed a Rust expression, dispatched via
+///                                the `IntoFieldIds` trait: `Id` pushes a
+///                                single id; iterables (`Vec<Id>`,
+///                                `Option<Id>`, iterator chains) splice
+///                                their elements
+/// field: {expr}                - extend a named field with `{expr}`'s ids
+/// field: (kind ...)?           - set the field only if every `#{expr}`
+///                                beneath it has a value (see below)
 /// ```
+///
+/// # Optional fields
+///
+/// A `?` on a field's value makes that field fallible: if a `#{expr}`
+/// anywhere beneath it interpolates an absent value — an `Option` that is
+/// `None` — the subtree is abandoned and the field is left unset. This
+/// replaces the surrounding `Option::map` that would otherwise be needed:
+///
+/// ```text
+/// (break_expr label: {lbl.map(|l| tree!((identifier #{l})))})   // before
+/// (break_expr label: (identifier #{lbl})?)                      // after
+/// ```
+///
+/// The value may be nested arbitrarily deeply, and a nested `?` catches
+/// first, so an inner absent value need not discard the outer node:
+///
+/// ```text
+/// (parameter pattern: (name_pattern identifier: (identifier #{name}))? type: {ty})
+/// ```
+///
+/// Only `#{expr}` propagates absence. A `{expr}` splice is unaffected, since
+/// yielding no ids already leaves a field unset, and `?` is rejected on one.
+/// Outside a `?`, interpolating an `Option` with `#{expr}` remains a compile
+/// error, so the choice between "unset the field" and "unwrap it" stays
+/// explicit.
 ///
 /// Can be called with an explicit context or using the implicit context
 /// from an enclosing `rule!`:
@@ -89,7 +119,7 @@ pub fn trees(input: TokenStream) -> TokenStream {
 /// rule!(
 ///     (query_pattern field: (_) @name (kind)* @repeated (_)? @optional)
 ///     =>
-///     (output_template field: {name} {..repeated})
+///     (output_template field: {name} {repeated})
 /// )
 ///
 /// // Shorthand: captures become fields on the output node
@@ -106,6 +136,46 @@ pub fn trees(input: TokenStream) -> TokenStream {
 pub fn rule(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();
     match parse::parse_rule_top(input2) {
+        Ok(output) => output.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
+}
+
+/// Bundle a list of YEAST rewrite rules with input/output node-types
+/// schema paths. Returns a `Vec<Rule>`; substitutable for
+/// `vec![rule!(...), ...]`.
+///
+/// Each comma-separated item in the bracketed list may be:
+///
+/// 1. A **bare rule body** `(query) => (template)` — the `rule!(...)`
+///    wrapper is implicit.
+/// 2. An explicit `rule!(...)` invocation, possibly chained as
+///    `rule!(...).repeated()` or path-prefixed as `yeast::rule!(...)`.
+/// 3. Any other expression returning a `Rule` (helper-function calls,
+///    conditionals).
+///
+/// ```ignore
+/// let translation_rules: Vec<yeast::Rule> = yeast::rules! {
+///     input: "tree-sitter-swift/node-types.yml",
+///     output: "ast_types.yml",
+///     [
+///         (source_file (_)* @cs) => (top_level body: {..cs}),
+///         (simple_identifier) @id => (name_expr identifier: (identifier #{id})),
+///         rule!((integer_literal) @lit => (int_literal #{lit})).repeated(),
+///         helper_fn(),
+///     ]
+/// };
+/// ```
+///
+/// Paths are resolved relative to the consuming crate's `CARGO_MANIFEST_DIR`
+/// (the same convention `include_str!` uses for relative paths). The
+/// resolved paths are also emitted as `include_str!` references so the
+/// consuming crate gets invalidated when a schema YAML changes, prepping
+/// the ground for compile-time type-checking against those schemas.
+#[proc_macro]
+pub fn rules(input: TokenStream) -> TokenStream {
+    let input2: TokenStream2 = input.into();
+    match parse::parse_rules_top(input2) {
         Ok(output) => output.into(),
         Err(err) => err.to_compile_error().into(),
     }

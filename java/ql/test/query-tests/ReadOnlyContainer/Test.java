@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Test {
 	boolean containsDuplicates(Object[] array) {
-		Set<Object> seen = new HashSet<Object>();
+		Set<Object> seen = new HashSet<Object>(); // $ Alert
 		for (Object o : array) {
 			// should be flagged
 			if (seen.contains(o))
@@ -65,7 +65,7 @@ public class Test {
 	}
 	
 	List<Boolean> g() {
-		List<Boolean> bl = new ArrayList<Boolean>();
+		List<Boolean> bl = new ArrayList<Boolean>(); // $ Alert
 		// should be flagged
 		bl.contains(false);
 		return bl;

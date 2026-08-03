@@ -912,18 +912,17 @@ module Internal {
       )
     or
     // In C#, `null + 1` has type `int?` with value `null`
-    exists(BinaryOperation bo, Expr o |
-      bo instanceof BinaryArithmeticOperation or
-      bo instanceof AssignArithmeticOperation
-    |
-      result = bo and
-      bo.getAnOperand() = e and
-      bo.getAnOperand() = o and
-      // The other operand must be provably non-null in order
-      // for `only if` to hold
-      nonNullValueImplied(o) and
-      e != o
-    )
+    result =
+      any(BinaryArithmeticOperation bao |
+        exists(Expr o |
+          bao.getAnOperand() = e and
+          bao.getAnOperand() = o and
+          // The other operand must be provably non-null in order
+          // for `only if` to hold
+          nonNullValueImplied(o) and
+          e != o
+        )
+      )
   }
 
   /**
@@ -934,10 +933,10 @@ module Internal {
       any(QualifiableExpr qe |
         qe.isConditional() and
         result = qe.getQualifier()
-      ) or
+      )
+    or
     // In C#, `null + 1` has type `int?` with value `null`
-    e = any(BinaryArithmeticOperation bao | result = bao.getAnOperand()) or
-    e = any(AssignArithmeticOperation aao | result = aao.getAnOperand())
+    e = any(BinaryArithmeticOperation bao | result = bao.getAnOperand())
   }
 
   deprecated predicate isGuard(Expr e, GuardValue val) {

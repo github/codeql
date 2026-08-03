@@ -1,6 +1,6 @@
 module codeql-go-tests/concepts/loggercall
 
-go 1.15
+go 1.21
 
 require (
 	github.com/golang/glog v1.2.5

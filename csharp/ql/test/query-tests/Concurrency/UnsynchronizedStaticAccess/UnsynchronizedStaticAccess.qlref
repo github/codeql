@@ -1,1 +1,2 @@
-Concurrency/UnsynchronizedStaticAccess.ql
+query: Concurrency/UnsynchronizedStaticAccess.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

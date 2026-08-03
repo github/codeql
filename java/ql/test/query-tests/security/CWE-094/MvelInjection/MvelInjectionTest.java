@@ -21,31 +21,31 @@ import org.mvel2.templates.TemplateRuntime;
 public class MvelInjectionTest {
 
   public static void testWithMvelEval(Socket socket) throws IOException {
-    MVEL.eval(read(socket)); // $ Alert
+    MVEL.eval(read(socket)); // $ Alert[java/mvel-expression-injection]
   }
 
   public static void testWithMvelCompileAndExecute(Socket socket) throws IOException {
     Serializable expression = MVEL.compileExpression(read(socket));
-    MVEL.executeExpression(expression); // $ Alert
+    MVEL.executeExpression(expression); // $ Alert[java/mvel-expression-injection]
   }
 
   public static void testWithExpressionCompiler(Socket socket) throws IOException {
     ExpressionCompiler compiler = new ExpressionCompiler(read(socket));
     ExecutableStatement statement = compiler.compile();
-    statement.getValue(new Object(), new ImmutableDefaultFactory()); // $ Alert
-    statement.getValue(new Object(), new Object(), new ImmutableDefaultFactory()); // $ Alert
+    statement.getValue(new Object(), new ImmutableDefaultFactory()); // $ Alert[java/mvel-expression-injection]
+    statement.getValue(new Object(), new Object(), new ImmutableDefaultFactory()); // $ Alert[java/mvel-expression-injection]
   }
 
   public static void testWithCompiledExpressionGetDirectValue(Socket socket) throws IOException {
     ExpressionCompiler compiler = new ExpressionCompiler(read(socket));
     CompiledExpression expression = compiler.compile();
-    expression.getDirectValue(new Object(), new ImmutableDefaultFactory()); // $ Alert
+    expression.getDirectValue(new Object(), new ImmutableDefaultFactory()); // $ Alert[java/mvel-expression-injection]
   }
 
   public static void testCompiledAccExpressionGetValue(Socket socket) throws IOException {
     CompiledAccExpression expression =
         new CompiledAccExpression(read(socket).toCharArray(), Object.class, new ParserContext());
-    expression.getValue(new Object(), new ImmutableDefaultFactory()); // $ Alert
+    expression.getValue(new Object(), new ImmutableDefaultFactory()); // $ Alert[java/mvel-expression-injection]
   }
 
   public static void testMvelScriptEngineCompileAndEvaluate(Socket socket) throws Exception {
@@ -53,10 +53,10 @@ public class MvelInjectionTest {
 
     MvelScriptEngine engine = new MvelScriptEngine();
     CompiledScript compiledScript = engine.compile(input);
-    compiledScript.eval(); // $ Alert
+    compiledScript.eval(); // $ Alert[java/mvel-expression-injection]
 
     Serializable script = engine.compiledScript(input);
-    engine.evaluate(script, new SimpleScriptContext()); // $ Alert
+    engine.evaluate(script, new SimpleScriptContext()); // $ Alert[java/mvel-expression-injection]
   }
 
   public static void testMvelCompiledScriptCompileAndEvaluate(Socket socket) throws Exception {
@@ -64,30 +64,30 @@ public class MvelInjectionTest {
     ExpressionCompiler compiler = new ExpressionCompiler(read(socket));
     ExecutableStatement statement = compiler.compile();
     MvelCompiledScript script = new MvelCompiledScript(engine, statement);
-    script.eval(new SimpleScriptContext()); // $ Alert
+    script.eval(new SimpleScriptContext()); // $ Alert[java/mvel-expression-injection]
   }
 
   public static void testTemplateRuntimeEval(Socket socket) throws Exception {
-    TemplateRuntime.eval(read(socket), new HashMap()); // $ Alert
+    TemplateRuntime.eval(read(socket), new HashMap()); // $ Alert[java/mvel-expression-injection]
   }
 
   public static void testTemplateRuntimeCompileTemplateAndExecute(Socket socket) throws Exception {
-    TemplateRuntime.execute(TemplateCompiler.compileTemplate(read(socket)), new HashMap()); // $ Alert
+    TemplateRuntime.execute(TemplateCompiler.compileTemplate(read(socket)), new HashMap()); // $ Alert[java/mvel-expression-injection]
   }
 
   public static void testTemplateRuntimeCompileAndExecute(Socket socket) throws Exception {
     TemplateCompiler compiler = new TemplateCompiler(read(socket));
-    TemplateRuntime.execute(compiler.compile(), new HashMap()); // $ Alert
+    TemplateRuntime.execute(compiler.compile(), new HashMap()); // $ Alert[java/mvel-expression-injection]
   }
 
   public static void testMvelRuntimeExecute(Socket socket) throws Exception {
     ExpressionCompiler compiler = new ExpressionCompiler(read(socket));
     CompiledExpression expression = compiler.compile();
-    MVELRuntime.execute(false, expression, new Object(), new ImmutableDefaultFactory()); // $ Alert
+    MVELRuntime.execute(false, expression, new Object(), new ImmutableDefaultFactory()); // $ Alert[java/mvel-expression-injection]
   }
 
   public static String read(Socket socket) throws IOException {
-    try (InputStream is = socket.getInputStream()) { // $ Source
+    try (InputStream is = socket.getInputStream()) { // $ Source[java/mvel-expression-injection]
       byte[] bytes = new byte[1024];
       int n = is.read(bytes);
       return new String(bytes, 0, n);

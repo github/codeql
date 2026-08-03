@@ -13,11 +13,11 @@ public class SensitiveGetQuery4 extends HttpServlet {
 		String tokenType = getRequestParameter(request, "tokenType");
 		String accessToken = getRequestParameter(request, "accessToken");
 		System.out.println("Username="+username+"; token="+token+"; tokenType="+tokenType);
-		System.out.println("AccessToken="+accessToken);
+		System.out.println("AccessToken="+accessToken); // $ Alert
 	}
 
 	String getRequestParameter(HttpServletRequest request, String paramName) {
-		return request.getParameter(paramName);
+		return request.getParameter(paramName); // $ Source
 	}
 
 	// GOOD - Tests retrieving non-sensitive tokens and sensitive tokens in a POST request.

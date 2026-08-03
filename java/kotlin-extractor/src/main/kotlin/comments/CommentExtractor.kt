@@ -2,6 +2,7 @@ package com.github.codeql.comments
 
 import com.github.codeql.*
 import com.github.codeql.utils.isLocalFunction
+import com.github.codeql.utils.versions.codeQlExtensionReceiverParameter
 import com.github.codeql.utils.versions.isDispatchReceiver
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
@@ -11,7 +12,7 @@ import org.jetbrains.kotlin.ir.util.parentClassOrNull
 
 private fun IrValueParameter.isExtensionReceiver(): Boolean {
     val parentFun = parent as? IrFunction ?: return false
-    return parentFun.extensionReceiverParameter == this
+    return parentFun.codeQlExtensionReceiverParameter == this
 }
 
 open class CommentExtractor(

@@ -1,4 +1,5 @@
 use std::fmt;
+extern crate alloc;
 
 // Taint tests for strings
 
@@ -76,6 +77,12 @@ fn format_args_built_in() {
     let width = source_usize(10);
     let formatted3 = fmt::format(format_args!("Hello {:width$}!", "World"));
     sink(formatted3); // $ hasTaintFlow=10
+
+    let formatted4 = std::fmt::format(format_args!("Hello {s}!"));
+    sink(formatted4); // $ hasTaintFlow=88
+
+    let formatted5 = alloc::fmt::format(format_args!("Hello {s}!"));
+    sink(formatted5); // $ hasTaintFlow=88
 }
 
 fn format_macro() {

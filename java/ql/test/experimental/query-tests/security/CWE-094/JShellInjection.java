@@ -9,24 +9,24 @@ public class JShellInjection {
 
 	@GetMapping(value = "bad1")
 	public void bad1(HttpServletRequest request) {
-		String input = request.getParameter("code");
+		String input = request.getParameter("code"); // $ Source[java/jshell-injection]
 		JShell jShell = JShell.builder().build();
         // BAD: allow execution of arbitrary Java code
-		jShell.eval(input);
+		jShell.eval(input); // $ Alert[java/jshell-injection]
 	}
 
 	@GetMapping(value = "bad2")
 	public void bad2(HttpServletRequest request) {
-		String input = request.getParameter("code");
+		String input = request.getParameter("code"); // $ Source[java/jshell-injection]
 		JShell jShell = JShell.builder().build();
 		SourceCodeAnalysis sourceCodeAnalysis = jShell.sourceCodeAnalysis();
         // BAD: allow execution of arbitrary Java code
-		sourceCodeAnalysis.wrappers(input);
+		sourceCodeAnalysis.wrappers(input); // $ Alert[java/jshell-injection]
 	}
 
 	@GetMapping(value = "bad3")
 	public void bad3(HttpServletRequest request) {
-		String input = request.getParameter("code");
+		String input = request.getParameter("code"); // $ Source[java/jshell-injection]
 		JShell jShell = JShell.builder().build();
 		SourceCodeAnalysis.CompletionInfo info;
 		SourceCodeAnalysis sca = jShell.sourceCodeAnalysis();
@@ -34,7 +34,7 @@ public class JShellInjection {
 				info.completeness().isComplete();
 				info = sca.analyzeCompletion(info.remaining())) {
 			// BAD: allow execution of arbitrary Java code
-			jShell.eval(info.source());
+			jShell.eval(info.source()); // $ Alert[java/jshell-injection]
 		}
 	}
 }

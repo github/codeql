@@ -23,12 +23,12 @@ void test_unassigned()
 		char buffer1[1024];
 		char buffer2[1024];
 
-		strdup(buffer1); // BAD
-		strdup(buffer2); // BAD
+		strdup(buffer1); // $ Alert[cpp/improper-null-termination] // BAD
+		strdup(buffer2); // $ Alert[cpp/improper-null-termination] // BAD
 
 		memcpy(buffer2, buffer1, sizeof(buffer2));
-		strdup(buffer1); // BAD [NOT DETECTED]
-		strdup(buffer2); // BAD [NOT DETECTED]
+		strdup(buffer1); // $ MISSING: Alert // BAD [NOT DETECTED]
+		strdup(buffer2); // $ MISSING: Alert // BAD [NOT DETECTED]
 	}
 
 	{
@@ -37,7 +37,7 @@ void test_unassigned()
 
 		strcpy(buffer1, "content");
 		strdup(buffer1); // GOOD
-		strdup(buffer2); // BAD
+		strdup(buffer2); // $ Alert[cpp/improper-null-termination] // BAD
 
 		memcpy(buffer2, buffer1, sizeof(buffer2));
 		strdup(buffer1); // GOOD
@@ -57,7 +57,7 @@ void test_unassigned()
 		char *ptr1;
 		char *ptr2 = "content";
 
-		strdup(ptr1); // BAD
+		strdup(ptr1); // $ Alert[cpp/improper-null-termination] // BAD
 		strdup(ptr2); // GOOD
 	}
 
@@ -67,8 +67,8 @@ void test_unassigned()
 		char *ptr;
 
 		ptr = buffer1;
-		strdup(buffer1); // BAD
-		strdup(ptr); // BAD
+		strdup(buffer1); // $ Alert[cpp/improper-null-termination] // BAD
+		strdup(ptr); // $ Alert[cpp/improper-null-termination] // BAD
 
 		strcpy(buffer1, "content");
 		strdup(buffer1); // GOOD
@@ -79,8 +79,8 @@ void test_unassigned()
 		strdup(ptr); // GOOD
 
 		ptr = buffer2;
-		strdup(buffer2); // BAD
-		strdup(ptr); // BAD
+		strdup(buffer2); // $ Alert[cpp/improper-null-termination] // BAD
+		strdup(ptr); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
@@ -91,7 +91,7 @@ void test_unassigned()
 			strcpy(buffer, "content");
 			strdup(buffer); // GOOD
 		}
-		strdup(buffer); // BAD
+		strdup(buffer); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
@@ -114,7 +114,7 @@ void test_unassigned()
 			strcpy(buffer, "content");
 			strdup(buffer); // GOOD
 		}
-		strdup(buffer); // BAD
+		strdup(buffer); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 }
 
@@ -128,7 +128,7 @@ void test_caller()
 	char buffer[1024];
 
 	test_callee("content", buffer); // GOOD
-	test_callee(buffer, "content"); // BAD
+	test_callee(buffer, "content"); // $ Alert[cpp/improper-null-termination] // BAD
 }
 
 void test_readlink(int fd, const char *path, size_t sz)
@@ -137,7 +137,7 @@ void test_readlink(int fd, const char *path, size_t sz)
 		char buffer[1024];
 
 		readlink(path, buffer, sizeof(buffer));
-		strdup(buffer); // BAD
+		strdup(buffer); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
@@ -145,7 +145,7 @@ void test_readlink(int fd, const char *path, size_t sz)
 		int v;
 
 		readlinkat(fd, path, buffer, sizeof(buffer));
-		v = strlen(buffer); // BAD
+		v = strlen(buffer); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
@@ -180,7 +180,7 @@ void test_readlink(int fd, const char *path, size_t sz)
 
 		memset(buffer, 0, sizeof(buffer));
 		readlink(path, buffer, sizeof(buffer));
-		strdup(buffer); // BAD
+		strdup(buffer); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
@@ -196,7 +196,7 @@ void test_readlink(int fd, const char *path, size_t sz)
 		char *buffer = (char *)malloc(1024);
 
 		readlink(path, buffer, 1024);
-		strdup(buffer); // BAD [NOT DETECTED]
+		strdup(buffer); // $ MISSING: Alert // BAD [NOT DETECTED]
 	}
 
 	{
@@ -211,7 +211,7 @@ void test_readlink(int fd, const char *path, size_t sz)
 		char *buffer = (char *)malloc(sz);
 
 		readlink(path, buffer, sz);
-		strdup(buffer); // BAD [NOT DETECTED]
+		strdup(buffer); // $ MISSING: Alert // BAD [NOT DETECTED]
 	}
 
 	{
@@ -233,7 +233,7 @@ void test_strcat()
 	{
 		char buffer[1024];
 
-		strcat(buffer, "content"); // BAD
+		strcat(buffer, "content"); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
@@ -261,7 +261,7 @@ void test_strcat()
 		char buffer[1024];
 
 		buffer[0] = 'a';
-		strcat(buffer, "content"); // BAD
+		strcat(buffer, "content"); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
@@ -282,14 +282,14 @@ void test_strcat()
 		char buffer[1024];
 
 		doNothing(buffer);
-		strcat(buffer, "content"); // BAD
+		strcat(buffer, "content"); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
 		char buffer[1024];
 
 		doNothing2(buffer);
-		strcat(buffer, "content"); // BAD [NOT DETECTED]
+		strcat(buffer, "content"); // $ MISSING: Alert // BAD [NOT DETECTED]
 	}
 
 	{
@@ -299,11 +299,11 @@ void test_strcat()
 
 		*buffer_ptr = 0;
 		strcat(buffer1, "content"); // GOOD
-		strcat(buffer2, "content"); // BAD
+		strcat(buffer2, "content"); // $ Alert[cpp/improper-null-termination] // BAD
 		strcat(buffer_ptr, "content"); // GOOD
 
 		buffer_ptr = buffer2;
-		strcat(buffer_ptr, "content"); // BAD [NOT DETECTED]
+		strcat(buffer_ptr, "content"); // $ MISSING: Alert // BAD [NOT DETECTED]
 	}
 
 	{
@@ -311,7 +311,7 @@ void test_strcat()
 		char *buffer_ptr = buffer;
 
 		*buffer_ptr = 'a';
-		strcat(buffer, "content"); // BAD
+		strcat(buffer, "content"); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
@@ -333,7 +333,7 @@ void test_strlen(bool cond1, bool cond2)
 {
 	{
 		char buffer[1024];
-		int i = strlen(buffer); // BAD
+		int i = strlen(buffer); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
@@ -361,7 +361,7 @@ void test_strlen(bool cond1, bool cond2)
 		if (cond1)
 			buffer[0] = 0;
 		if (cond2)
-			strlen(buffer); // BAD [NOT DETECTED]
+			strlen(buffer); // $ MISSING: Alert // BAD [NOT DETECTED]
 	}
 
 	{
@@ -418,7 +418,7 @@ void test_strcpy()
 		char buffer1[1024];
 		char buffer2[1024];
 
-		strcpy(buffer1, buffer2); // BAD
+		strcpy(buffer1, buffer2); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
@@ -445,13 +445,13 @@ void test_wrappers()
 	{
 		char buffer[1024];
 
-		strcatWrapper(buffer, "content"); // BAD
+		strcatWrapper(buffer, "content"); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
 		char buffer[1024];
 
-		strcatWrapper2(buffer, "content"); // BAD
+		strcatWrapper2(buffer, "content"); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 }
 
@@ -463,7 +463,7 @@ void test_read_fread(int read_src, FILE *s)
 		char buffer[buffer_size];
 
 		read(read_src, buffer, buffer_size * sizeof(char));
-		strlen(buffer); // BAD
+		strlen(buffer); // $ Alert[cpp/user-controlled-null-termination-tainted] // BAD
 	}
 
 	{
@@ -478,7 +478,7 @@ void test_read_fread(int read_src, FILE *s)
 		char buffer[buffer_size];
 
 		fread(buffer, sizeof(char), buffer_size, s);
-		strlen(buffer); // BAD
+		strlen(buffer); // $ Alert[cpp/user-controlled-null-termination-tainted] // BAD
 	}
 
 	{
@@ -510,13 +510,13 @@ void test_printf(char *str)
 	{
 		char buffer[1024];
 
-		printf(buffer, ""); // BAD
+		printf(buffer, ""); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
 		char buffer[1024];
 
-		printf("%s", buffer); // BAD
+		printf("%s", buffer); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
@@ -524,7 +524,7 @@ void test_printf(char *str)
 		char *copied_str = (char *)malloc(len);
 
 		memcpy(copied_str, str, len);
-		printf("%s", copied_str); // BAD [NOT DETECTED]
+		printf("%s", copied_str); // $ MISSING: Alert // BAD [NOT DETECTED]
 	}
 
 	{
@@ -555,7 +555,7 @@ void test_reassignment()
 
 		strcpy(buffer_ptr, "content"); // null terminates buffer1
 		buffer_ptr = buffer2;
-		strdup(buffer2); // BAD
+		strdup(buffer2); // $ Alert[cpp/improper-null-termination] // BAD
 	}
 
 	{
@@ -580,7 +580,7 @@ void test_reassignment()
 		{
 			strcpy(buffer_ptr, "content"); // null terminates buffer1 or buffer2
 			buffer_ptr = buffer2;
-			strdup(buffer2); // BAD [NOT DETECTED]
+			strdup(buffer2); // $ MISSING: Alert // BAD [NOT DETECTED]
 		}
 	}
 }

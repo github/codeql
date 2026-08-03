@@ -11,7 +11,7 @@ class MissedCastOpportunity
         {
             Dog d = (Dog)a;
             d.Woof();
-        }
+        } // $ Alert
     }
 
     public void M2(NonEnumerableClass nec)
@@ -31,7 +31,7 @@ class MissedCastOpportunity
         {
             Dog d = (Dog)animal;
             d.Woof();
-        }
+        } // $ Alert
     }
 
     public void M4(Array animals)
@@ -41,7 +41,7 @@ class MissedCastOpportunity
         {
             Dog d = (Dog)animal;
             d.Woof();
-        }
+        } // $ Alert
     }
 
     public void M5(IEnumerable animals)
@@ -51,7 +51,7 @@ class MissedCastOpportunity
         {
             Dog d = (Dog)animal;
             d.Woof();
-        }
+        } // $ Alert
     }
 
     public class NonEnumerableClass

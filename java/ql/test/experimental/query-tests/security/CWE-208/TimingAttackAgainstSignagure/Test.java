@@ -18,9 +18,9 @@ public class Test {
             Mac mac = Mac.getInstance("HmacSHA256");
             byte[] data = new byte[1024];
             is.read(data);
-            byte[] actualMac = mac.doFinal(data);
+            byte[] actualMac = mac.doFinal(data); // $ Source
             byte[] expectedMac = is.readNBytes(32);
-            return Arrays.equals(expectedMac, actualMac);
+            return Arrays.equals(expectedMac, actualMac); // $ Alert
         }
     }
 
@@ -31,9 +31,9 @@ public class Test {
             Mac mac = Mac.getInstance("HmacSHA256");
             byte[] actualMac = new byte[256];
             mac.update(data);
-            mac.doFinal(actualMac, 0);
+            mac.doFinal(actualMac, 0); // $ Source
             byte[] expectedMac = socket.getInputStream().readNBytes(256);
-            return Arrays.equals(expectedMac, actualMac);
+            return Arrays.equals(expectedMac, actualMac); // $ Alert
         }
     }
 
@@ -56,9 +56,9 @@ public class Test {
             engine.initSign(key);
             byte[] data = socket.getInputStream().readAllBytes();
             engine.update(data);
-            byte[] signature = engine.sign();
+            byte[] signature = engine.sign(); // $ Source
             byte[] expected = is.readNBytes(256);
-            return Arrays.equals(expected, signature);
+            return Arrays.equals(expected, signature); // $ Alert
         }
     }
 
@@ -70,9 +70,9 @@ public class Test {
             byte[] data = socket.getInputStream().readAllBytes();
             engine.update(data);
             byte[] signature = new byte[1024];
-            engine.sign(signature, 0, 1024);
+            engine.sign(signature, 0, 1024); // $ Source
             byte[] expected = is.readNBytes(256);
-            return Arrays.equals(expected, signature);
+            return Arrays.equals(expected, signature); // $ Alert
         }
     }
 
@@ -96,9 +96,9 @@ public class Test {
             byte[] hash = MessageDigest.getInstance("SHA-256").digest(plaintext);
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, key);
-            byte[] tag = cipher.doFinal(hash);
+            byte[] tag = cipher.doFinal(hash); // $ Source
             byte[] expected = socket.getInputStream().readAllBytes();
-            return Objects.deepEquals(expected, tag);
+            return Objects.deepEquals(expected, tag); // $ Alert
         }
     }
 
@@ -113,9 +113,9 @@ public class Test {
             cipher.init(Cipher.ENCRYPT_MODE, key);
             cipher.update(hash);
             byte[] tag = new byte[1024];
-            cipher.doFinal(tag, 0);
+            cipher.doFinal(tag, 0); // $ Source
             byte[] expected = is.readNBytes(32);
-            return Arrays.equals(expected, tag);
+            return Arrays.equals(expected, tag); // $ Alert
         }
     }
 
@@ -131,9 +131,9 @@ public class Test {
             cipher.init(Cipher.ENCRYPT_MODE, key);
             cipher.update(hash);
             ByteBuffer tag = ByteBuffer.wrap(new byte[1024]);
-            cipher.doFinal(ByteBuffer.wrap(plaintext), tag);
+            cipher.doFinal(ByteBuffer.wrap(plaintext), tag); // $ Source
             byte[] expected = socket.getInputStream().readNBytes(1024);
-            return Arrays.equals(expected, tag.array());
+            return Arrays.equals(expected, tag.array()); // $ Alert
         }
     }
 
@@ -145,9 +145,9 @@ public class Test {
             byte[] plaintext = socket.getInputStream().readAllBytes();
             cipher.update(plaintext);
             ByteBuffer tag = ByteBuffer.wrap(new byte[1024]);
-            cipher.doFinal(ByteBuffer.wrap(plaintext), tag);
+            cipher.doFinal(ByteBuffer.wrap(plaintext), tag); // $ Source
             byte[] expected = is.readNBytes(32);
-            return ByteBuffer.wrap(expected).equals(tag);
+            return ByteBuffer.wrap(expected).equals(tag); // $ Alert
         }
     }
 
@@ -171,9 +171,9 @@ public class Test {
             byte[] plaintext = is.readNBytes(100);
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, key);
-            byte[] tag = cipher.doFinal(plaintext);
+            byte[] tag = cipher.doFinal(plaintext); // $ Source
             byte[] expected = is.readNBytes(32);
-            return Arrays.equals(expected, tag);
+            return Arrays.equals(expected, tag); // $ Alert
         }
     }
 

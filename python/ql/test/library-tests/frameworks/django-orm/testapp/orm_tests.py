@@ -362,7 +362,7 @@ def test_load_in_bulk():
     # see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#in-bulk
     d = TestLoad.objects.in_bulk([1])
     for val in d.values():
-        SINK(val.text) # $ MISSING: flow
+        SINK(val.text) # $ flow="SOURCE, l:-65 -> val.text"
     SINK(d[1].text) # $ flow="SOURCE, l:-66 -> d[1].text"
 
 

@@ -8,7 +8,7 @@ class ReentrantLockOrder {
 
 	public boolean transferToSavings(int amount) {
 		try {
-			primaryLock.lock();
+			primaryLock.lock(); // $ Alert
 			savingsLock.lock();
 			if (amount>0 && primaryAccountBalance>=amount) {
 				primaryAccountBalance -= amount;
@@ -25,7 +25,7 @@ class ReentrantLockOrder {
 		// AVOID: lock order is different from "transferToSavings"
 		// and may result in deadlock
 		try {
-			savingsLock.lock();
+			savingsLock.lock(); // $ Alert
 			primaryLock.lock();
 			if (amount>0 && primaryAccountBalance>=amount) {
 				primaryAccountBalance -= amount;

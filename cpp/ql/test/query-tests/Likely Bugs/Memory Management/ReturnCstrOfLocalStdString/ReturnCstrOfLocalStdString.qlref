@@ -1,1 +1,2 @@
-Likely Bugs/Memory Management/ReturnCstrOfLocalStdString.ql
+query: Likely Bugs/Memory Management/ReturnCstrOfLocalStdString.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

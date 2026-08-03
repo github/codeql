@@ -1,0 +1,58 @@
+let y = .some(1)
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "1"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        memberAccessExpr
+                          period: .
+                          declName:
+                            declReferenceExpr
+                              baseName: identifier "some"
+              pattern:
+                identifierPattern
+                  identifier: identifier "y"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "y"
+          value:
+            call_expr
+              callee:
+                member_access_expr
+                  base: inferred_type_expr ".some"
+                  member: identifier "some"
+              argument:
+                argument
+                  value: int_literal "1"

@@ -16,3 +16,4 @@ nodes
 | BlazorTest/Components/Pages/TestPage.razor:85:23:85:32 | access to property QueryParam : String | semmle.label | access to property QueryParam : String |
 | BlazorTest/obj/Debug/net10.0/generated/Microsoft.CodeAnalysis.Razor.Compiler/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Components/Pages/TestPage_razor.g.cs:553:16:561:13 | call to method TypeCheck<String> : String | semmle.label | call to method TypeCheck<String> : String |
 subpaths
+testFailures

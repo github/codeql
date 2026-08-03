@@ -10,7 +10,7 @@ void test1(const char *source, size_t len)
 	char buffer[256];
 	size_t len2 = ntohl(len);
 
-	memcpy(buffer, source, ntohl(len)); // BAD
+	memcpy(buffer, source, ntohl(len)); // $ Alert // BAD
 
 	if (len2 < 256)
 	{
@@ -19,7 +19,7 @@ void test1(const char *source, size_t len)
 
 	if (source != 0)
 	{
-		memcpy(buffer, source, len2); // BAD
+		memcpy(buffer, source, len2); // $ Alert // BAD
 	}
 
 	if ((len2 < 256) && (source != 0))
@@ -29,7 +29,7 @@ void test1(const char *source, size_t len)
 
 	if ((len2 < 256) || (source != 0))
 	{
-		memcpy(buffer, source, len2); // BAD
+		memcpy(buffer, source, len2); // $ Alert // BAD
 	}
 
 	if (len2 < 256)
@@ -59,10 +59,10 @@ void test1(const char *source, size_t len)
 
 	if (strlen(source) < 256)
 	{
-		memcpy(buffer, source, len2); // BAD
+		memcpy(buffer, source, len2); // $ Alert // BAD
 	}
 
-	buffer[len2] = 0; // BAD
+	buffer[len2] = 0; // $ Alert // BAD
 
 	if (len2 < 256)
 	{
@@ -71,7 +71,7 @@ void test1(const char *source, size_t len)
 
 	{
 		unsigned short lens = len2;
-		buffer[lens] = 0; // BAD
+		buffer[lens] = 0; // $ Alert // BAD
 	}
 
 	if (len2 < 256)
@@ -84,7 +84,7 @@ void test1(const char *source, size_t len)
 	if (len3 < 256)
 	{
 		len3 = ntohl(len);
-		buffer[len3] = 0; // BAD
+		buffer[len3] = 0; // $ Alert // BAD
 	}
 }
 
@@ -92,7 +92,7 @@ void test2(size_t len)
 {
 	char buffer[256];
 
-	buffer[len] = 0; // BAD
+	buffer[len] = 0; // $ Alert // BAD
 }
 
 void test3(size_t len)
@@ -104,5 +104,5 @@ int test4(const char *source, size_t len)
 {
 	char buffer[256];
 
-	return memcmp(buffer, source, ntohl(len)); // BAD
+	return memcmp(buffer, source, ntohl(len)); // $ Alert // BAD
 }

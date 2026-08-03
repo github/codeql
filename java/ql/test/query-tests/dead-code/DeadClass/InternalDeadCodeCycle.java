@@ -1,7 +1,7 @@
 /**
  * This class should be marked as entirely unused.
  */
-public class InternalDeadCodeCycle {
+public class InternalDeadCodeCycle { // $ Alert
 
 	public void foo() {
 		bar();

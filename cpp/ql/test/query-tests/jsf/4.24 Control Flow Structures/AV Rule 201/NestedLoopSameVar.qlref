@@ -1,1 +1,2 @@
-Likely Bugs/NestedLoopSameVar.ql
+query: Likely Bugs/NestedLoopSameVar.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

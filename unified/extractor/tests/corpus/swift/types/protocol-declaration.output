@@ -1,0 +1,49 @@
+protocol Drawable {
+  func draw()
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        protocolDecl
+          attributes:
+          name: identifier "Drawable"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    functionDecl
+                      attributes:
+                      name: identifier "draw"
+                      modifiers:
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                      funcKeyword: func
+          modifiers:
+          protocolKeyword: protocol
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "protocol"
+          name: identifier "Drawable"
+          member:
+            function_declaration
+              name: identifier "draw"
+              body: block "func draw()"

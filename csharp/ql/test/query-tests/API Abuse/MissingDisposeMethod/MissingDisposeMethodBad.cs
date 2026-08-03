@@ -11,7 +11,7 @@ class BadBase : IDisposable
     }
 }
 
-class Bad : BadBase
+class Bad : BadBase // $ Alert
 {
     private FileStream stream2 = new FileStream("b.txt", FileMode.Open);
 }

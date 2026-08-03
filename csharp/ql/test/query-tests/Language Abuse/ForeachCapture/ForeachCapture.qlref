@@ -1,1 +1,2 @@
-Language Abuse/ForeachCapture.ql
+query: Language Abuse/ForeachCapture.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

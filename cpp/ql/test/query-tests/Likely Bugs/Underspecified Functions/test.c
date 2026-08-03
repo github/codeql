@@ -24,53 +24,53 @@ void test(int *argv[]) {
   declared_empty(1); // GOOD
   declared_void(); // GOOD
   declared_with(1); // GOOD
-  
-  undeclared();  // BAD (GOOD for everything except cpp/implicit-function-declaration)
-  undeclared(1); // GOOD
-  
-  not_yet_declared1(1); // BAD (GOOD for everything except for cpp/implicit-function-declaration)
-  not_yet_declared2(1); // BAD (GOOD for everything except for cpp/implicit-function-declaration)
-  not_yet_declared2(ca); // BAD (GOOD for everything except for cpp/mistyped-function-arguments
-                         //      and cpp/too-few-arguments. Not detected in the case of cpp/too-few-arguments.)
-  not_yet_declared2(); // BAD [NOT DETECTED] (GOOD for everything except for cpp/too-few-arguments)
 
-  declared_empty_defined_with(); // BAD
+  undeclared();  // $ Alert[cpp/implicit-function-declaration] // BAD (GOOD for everything except cpp/implicit-function-declaration)
+  undeclared(1); // GOOD
+
+  not_yet_declared1(1); // $ Alert[cpp/implicit-function-declaration] // BAD (GOOD for everything except for cpp/implicit-function-declaration)
+  not_yet_declared2(1); // $ Alert[cpp/implicit-function-declaration] // BAD (GOOD for everything except for cpp/implicit-function-declaration)
+  not_yet_declared2(ca); // $ Alert[cpp/mistyped-function-arguments] // BAD (GOOD for everything except for cpp/mistyped-function-arguments
+                         //      and cpp/too-few-arguments. Not detected in the case of cpp/too-few-arguments.)
+  not_yet_declared2(); // $ MISSING: Alert // BAD [NOT DETECTED] (GOOD for everything except for cpp/too-few-arguments)
+
+  declared_empty_defined_with(); // $ Alert[cpp/too-few-arguments] // BAD
   declared_empty_defined_with(1); // GOOD
 
   int x;
-  declared_empty_defined_with(&x); // BAD
-  declared_empty_defined_with(3, &x); // BAD
+  declared_empty_defined_with(&x); // $ Alert[cpp/mistyped-function-arguments] // BAD
+  declared_empty_defined_with(3, &x); // $ Alert[cpp/futile-params] // BAD
 
-  not_declared_defined_with(-1, 0, 2U); // BAD (GOOD for everything except for cpp/implicit-function-declaration)
-  not_declared_defined_with(4LL, 0, 2.5e9f); // BAD
+  not_declared_defined_with(-1, 0, 2U); // $ Alert[cpp/implicit-function-declaration] // BAD (GOOD for everything except for cpp/implicit-function-declaration)
+  not_declared_defined_with(4LL, 0, 2.5e9f); // $ Alert[cpp/mistyped-function-arguments] // BAD
 
   declared_with_pointers(pv, ca); // GOOD
-  declared_with_pointers(3.5e15, 0); // BAD
+  declared_with_pointers(3.5e15, 0); // $ Alert[cpp/mistyped-function-arguments] // BAD
   declared_with_array("Hello"); // GOOD
-  declared_with_array(&x); // BAD
-  
-  defined_with_float(2.f);  // BAD
-  defined_with_float(2.0);  // BAD
-  
-  defined_with_double(2.f); // BAD (GOOD for everything except for cpp/implicit-function-declaration)
-  defined_with_double('c');  // BAD
-  
-  defined_with_long_long('c');  // BAD
-  defined_with_long_long(3);    // BAD
+  declared_with_array(&x); // $ Alert[cpp/mistyped-function-arguments] // BAD
 
-  defined_with_double(2LL);  // BAD
-  defined_with_long_long(3.5e15);  // BAD
-  
+  defined_with_float(2.f);  // $ Alert[cpp/mistyped-function-arguments] // BAD
+  defined_with_float(2.0);  // $ Alert[cpp/mistyped-function-arguments] // BAD
+
+  defined_with_double(2.f); // $ Alert[cpp/implicit-function-declaration] // BAD (GOOD for everything except for cpp/implicit-function-declaration)
+  defined_with_double('c');  // $ Alert[cpp/mistyped-function-arguments] // BAD
+
+  defined_with_long_long('c');  // $ Alert[cpp/mistyped-function-arguments] // BAD
+  defined_with_long_long(3);    // $ Alert[cpp/mistyped-function-arguments] // BAD
+
+  defined_with_double(2LL);  // $ Alert[cpp/mistyped-function-arguments] // BAD
+  defined_with_long_long(3.5e15);  // $ Alert[cpp/mistyped-function-arguments] // BAD
+
   k_and_r_func(2.5, &s);  // GOOD
-  
+
   int (*parameterName)[2];
-  defined_with_ptr_ptr(parameterName); // // BAD (GOOD for everything except for cpp/implicit-function-declaration)
+  defined_with_ptr_ptr(parameterName); // $ Alert[cpp/implicit-function-declaration] // // BAD (GOOD for everything except for cpp/implicit-function-declaration)
   defined_with_ptr_ptr(argv);   // GOOD
-  defined_with_ptr_arr(parameterName); // // BAD (GOOD for everything except for cpp/implicit-function-declaration)
+  defined_with_ptr_arr(parameterName); // $ Alert[cpp/implicit-function-declaration] // // BAD (GOOD for everything except for cpp/implicit-function-declaration)
   defined_with_ptr_arr(argv);   // GOOD
 
   declared_and_defined_empty(); // GOOD
-  declared_and_defined_empty(1);  // BAD
+  declared_and_defined_empty(1);  // $ Alert[cpp/futile-params] // BAD
 }
 
 void not_yet_declared1();
@@ -85,7 +85,7 @@ void not_declared_defined_with(int x, int y, int z) {
 int dereference();
 
 int caller(void) {
-  return dereference(); // BAD
+  return dereference(); // $ Alert[cpp/too-few-arguments] // BAD
 }
 
 int dereference(int *x) { return *x; }
@@ -130,8 +130,8 @@ extern int extern_definition(double, double*);
 
 void test_implicit_function_declaration(int x, double d) {
   int y;
-  implicit_declaration(1, 2); // BAD
-  implicit_declaration_k_and_r(1, 2); // BAD
+  implicit_declaration(1, 2); // $ Alert[cpp/implicit-function-declaration] // BAD
+  implicit_declaration_k_and_r(1, 2); // $ Alert[cpp/implicit-function-declaration] // BAD
 
   implicit_declaration(1, 2); // GOOD (no longer an implicit declaration)
 

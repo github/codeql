@@ -1,0 +1,28 @@
+import Foundation
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        importDecl
+          attributes:
+          modifiers:
+          importKeyword: import
+          path:
+            importPathComponent
+              name: identifier "Foundation"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        import_declaration
+          imported_expr:
+            name_expr
+              identifier: identifier "Foundation"
+          pattern: bulk_importing_pattern "import Foundation"

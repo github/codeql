@@ -17,7 +17,7 @@ public final class RandomUtil {
      *
      * @return the generated password.
      */
-    public static String generatePassword() {
+    public static String generatePassword() { // $ Alert
         return RandomStringUtils.randomAlphanumeric(DEF_COUNT);
     }
 
@@ -26,7 +26,7 @@ public final class RandomUtil {
      *
      * @return the generated activation key.
      */
-    public static String generateActivationKey() {
+    public static String generateActivationKey() { // $ Alert
         return RandomStringUtils.randomNumeric(DEF_COUNT);
     }
 
@@ -35,7 +35,7 @@ public final class RandomUtil {
      *
      * @return the generated reset key.
      */
-    public static String generateResetKey() {
+    public static String generateResetKey() { // $ Alert
         return RandomStringUtils.randomNumeric(DEF_COUNT);
     }
 
@@ -45,7 +45,7 @@ public final class RandomUtil {
      *
      * @return the generated series data.
      */
-    public static String generateSeriesData() {
+    public static String generateSeriesData() { // $ Alert
         return RandomStringUtils.randomAlphanumeric(DEF_COUNT);
     }
 
@@ -54,7 +54,7 @@ public final class RandomUtil {
      *
      * @return the generated token data.
      */
-    public static String generateTokenData() {
+    public static String generateTokenData() { // $ Alert
         return RandomStringUtils.randomAlphanumeric(DEF_COUNT);
     }
 }

@@ -11,10 +11,6 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/SignAnalysisCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SignAnalysisCommon.qll"
   ],
-  "Bound Java/C#": [
-    "java/ql/lib/semmle/code/java/dataflow/Bound.qll",
-    "csharp/ql/lib/semmle/code/csharp/dataflow/Bound.qll"
-  ],
   "ModulusAnalysis Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/ModulusAnalysis.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/ModulusAnalysis.qll"

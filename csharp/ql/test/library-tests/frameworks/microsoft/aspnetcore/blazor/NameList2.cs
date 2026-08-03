@@ -28,7 +28,7 @@ namespace VulnerableBlazorApp.Components
             builder.OpenElement(6, "p");
             builder.AddContent(7, "Name: ");
             builder.OpenComponent<VulnerableBlazorApp.Components.Name>(8);
-            builder.AddComponentParameter(9, "TheName", Name);
+            builder.AddComponentParameter(9, "TheName", Name); // $ Source=r3
             builder.CloseComponent();
             builder.CloseElement();
         }

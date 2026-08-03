@@ -1,1 +1,2 @@
-queries/Security/CWE-1204/StaticInitializationVector.ql
+query: queries/Security/CWE-1204/StaticInitializationVector.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

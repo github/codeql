@@ -1,3 +1,6 @@
+#select
+| go-jose.v3.go:24:32:24:37 | JwtKey | go-jose.v3.go:13:21:13:33 | "AllYourBase" | go-jose.v3.go:24:32:24:37 | JwtKey | This  $@. | go-jose.v3.go:13:21:13:33 | "AllYourBase" | Constant Key is used as JWT Secret key |
+| golang-jwt-v5.go:27:9:27:15 | JwtKey1 | golang-jwt-v5.go:19:22:19:34 | "AllYourBase" | golang-jwt-v5.go:27:9:27:15 | JwtKey1 | This  $@. | golang-jwt-v5.go:19:22:19:34 | "AllYourBase" | Constant Key is used as JWT Secret key |
 edges
 | go-jose.v3.go:13:14:13:34 | type conversion | go-jose.v3.go:24:32:24:37 | JwtKey | provenance |  |
 | go-jose.v3.go:13:21:13:33 | "AllYourBase" | go-jose.v3.go:13:14:13:34 | type conversion | provenance |  |
@@ -11,6 +14,3 @@ nodes
 | golang-jwt-v5.go:19:22:19:34 | "AllYourBase" | semmle.label | "AllYourBase" |
 | golang-jwt-v5.go:27:9:27:15 | JwtKey1 | semmle.label | JwtKey1 |
 subpaths
-#select
-| go-jose.v3.go:24:32:24:37 | JwtKey | go-jose.v3.go:13:21:13:33 | "AllYourBase" | go-jose.v3.go:24:32:24:37 | JwtKey | This  $@. | go-jose.v3.go:13:21:13:33 | "AllYourBase" | Constant Key is used as JWT Secret key |
-| golang-jwt-v5.go:27:9:27:15 | JwtKey1 | golang-jwt-v5.go:19:22:19:34 | "AllYourBase" | golang-jwt-v5.go:27:9:27:15 | JwtKey1 | This  $@. | golang-jwt-v5.go:19:22:19:34 | "AllYourBase" | Constant Key is used as JWT Secret key |

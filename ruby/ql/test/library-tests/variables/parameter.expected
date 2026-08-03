@@ -29,6 +29,8 @@ parameterVariable
 | scopes.rb:2:14:2:14 | x | scopes.rb:2:14:2:14 | x |
 | scopes.rb:9:14:9:14 | x | scopes.rb:9:14:9:14 | x |
 | scopes.rb:69:15:69:15 | x | scopes.rb:69:15:69:15 | x |
+| scopes.rb:80:13:80:17 | value | scopes.rb:80:13:80:17 | value |
+| scopes.rb:84:11:84:13 | msg | scopes.rb:84:11:84:13 | msg |
 | ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b |
 | ssa.rb:18:8:18:8 | x | ssa.rb:18:8:18:8 | x |
 | ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements |

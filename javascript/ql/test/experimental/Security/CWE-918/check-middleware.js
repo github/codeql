@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 
 app.get('/check-with-axios', validationMiddleware, req => {
-  axios.get("test.com/" + req.query.tainted); // OK is sanitized by the middleware - False Positive
+  axios.get("test.com/" + req.query.tainted); // $ SPURIOUS: Alert // OK is sanitized by the middleware - False Positive
 });
 
 

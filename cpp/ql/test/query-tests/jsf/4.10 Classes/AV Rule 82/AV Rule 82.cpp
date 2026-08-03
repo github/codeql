@@ -3,7 +3,7 @@ struct Obj {
     this->val = other.val;
     return *this; // GOOD (common case)
   }
-  
+
 private:
   int val;
 };
@@ -15,13 +15,13 @@ class Container {
 };
 
 struct Bad1 {
-  Bad1& operator=(const Bad1& other) {
+  Bad1& operator=(const Bad1& other) { // $ Alert
     return const_cast<Bad1&>(other); // BAD (does not return a reference to *this)
   }
 };
 
 struct Bad2 {
-  Bad2 operator=(const Bad2& other) {
+  Bad2 operator=(const Bad2& other) { // $ Alert
     return *this; // BAD (return type is not a reference)
   }
 };
@@ -60,7 +60,7 @@ public:
     return *this = TemplateReturnAssignment(_val); // GOOD (calls above `operator=`)
   }
 
-  TemplateReturnAssignment &operator=(bool b) {
+  TemplateReturnAssignment &operator=(bool b) { // $ Alert
     return *(new TemplateReturnAssignment(0)); // BAD (does not return a reference to *this)
   }
 
@@ -196,7 +196,7 @@ struct TemplatedAssignmentGood {
 
 struct TemplatedAssignmentBad {
   template<typename T>
-  typename second<T, TemplatedAssignmentBad>::type operator=(T val) { // BAD (missing &)
+  typename second<T, TemplatedAssignmentBad>::type operator=(T val) { // $ Alert // BAD (missing &)
     return *this;
   }
 };

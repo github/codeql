@@ -10,6 +10,7 @@ private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.frameworks.kotlin.IO
 private import semmle.code.java.frameworks.kotlin.Text
 private import semmle.code.java.dataflow.Nullness
+private import semmle.code.java.security.Sanitizers
 
 /** A sanitizer that protects against path injection vulnerabilities. */
 abstract class PathInjectionSanitizer extends DataFlow::Node { }
@@ -96,9 +97,14 @@ private class AllowedPrefixSanitizer extends PathInjectionSanitizer {
   }
 }
 
+/** A call to `java.io.File.getName`, which returns the final component of a path. */
+private class FileGetNameCall extends MethodCall {
+  FileGetNameCall() { this.getMethod().hasQualifiedName("java.io", "File", "getName") }
+}
+
 /**
  * Holds if `g` is a guard that considers a path safe because it is checked for `..` components, having previously
- * been checked for a trusted prefix.
+ * been checked for a trusted prefix or been reduced to its final path component by `File.getName`.
  */
 private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
   pathTraversalGuard(g, e, branch) and
@@ -106,6 +112,15 @@ private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
     previousGuard.(AllowedPrefixGuard).controls(g.getBasicBlock(), true)
     or
     previousGuard.(BlockListGuard).controls(g.getBasicBlock(), false)
+  )
+  or
+  // `File.getName` strips any directory prefix, returning only the final path
+  // component. The only remaining path traversal risk is when that component is
+  // itself `..`, so a check for `..` components on the result of `getName`
+  // completes the sanitization.
+  exists(FileGetNameCall getName |
+    pathTraversalGuard(g, getName, branch) and
+    TaintTracking::localExprTaint(getName, e)
   )
 }
 
@@ -493,7 +508,8 @@ private predicate directoryCharactersGuard(Guard g, Expr e, boolean branch) {
  */
 private class DirectoryCharactersSanitizer extends PathInjectionSanitizer {
   DirectoryCharactersSanitizer() {
-    this.asExpr() instanceof ReplaceDirectoryCharactersSanitizer or
+    this.asExpr() instanceof ReplaceDirectoryCharactersSanitizer
+    or
     this = DataFlow::BarrierGuard<directoryCharactersGuard/3>::getABarrierNode()
   }
 }

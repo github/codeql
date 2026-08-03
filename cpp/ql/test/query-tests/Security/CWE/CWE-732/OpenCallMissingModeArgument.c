@@ -17,13 +17,13 @@ void test_open() {
   open(a_file, O_NONBLOCK); // GOOD
   open(a_file, O_RDWR | O_CLOEXEC); // GOOD
   open(a_file, O_APPEND); // GOOD
-  open(a_file, O_CREAT); // BAD
+  open(a_file, O_CREAT); // $ Alert[cpp/open-call-with-mode-argument] // BAD
   open(a_file, O_CREAT, 0); // GOOD
-  open(a_file, O_TMPFILE); // BAD
+  open(a_file, O_TMPFILE); // $ Alert[cpp/open-call-with-mode-argument] // BAD
   open(a_file, O_TMPFILE, 0); // GOOD
   openat(0, a_file, O_APPEND); // GOOD
-  openat(0, a_file, O_CREAT); // BAD
+  openat(0, a_file, O_CREAT); // $ Alert[cpp/open-call-with-mode-argument] // BAD
   openat(0, a_file, O_CREAT, 0); // GOOD
-  openat(0, a_file, O_TMPFILE); // BAD
+  openat(0, a_file, O_TMPFILE); // $ Alert[cpp/open-call-with-mode-argument] // BAD
   openat(0, a_file, O_TMPFILE, 0); // GOOD
 }

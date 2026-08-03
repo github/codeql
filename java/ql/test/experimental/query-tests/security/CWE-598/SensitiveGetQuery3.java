@@ -10,11 +10,11 @@ public class SensitiveGetQuery3 extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String username = getRequestParameter(request, "username");
 		String password = getRequestParameter(request, "password");
-		System.out.println("Username="+username+"; password="+password);
+		System.out.println("Username="+username+"; password="+password); // $ Alert
 	}
 
 	String getRequestParameter(HttpServletRequest request, String paramName) {
-		return request.getParameter(paramName);
+		return request.getParameter(paramName); // $ Source
 	}
 
 	// GOOD - Tests retrieving sensitive information through a wrapper call in a POST request.

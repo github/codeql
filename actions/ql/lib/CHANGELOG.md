@@ -1,8 +1,25 @@
+## 0.4.40
+
+### Minor Analysis Improvements
+
+* Altered the logic of `EnvironmentCheck` to make sure it is a check that protects only for non-toctou. This change will result in more results being found by the queries: `actions/untrusted-checkout-toctou/high` and `actions/untrusted-checkout-toctou/critical`.
+
+## 0.4.39
+
+No user-facing changes.
+
+## 0.4.38
+
+### Bug Fixes
+
+* GitHub Actions queries now better account for permission checks on jobs that call reusable workflows.
+* The query `actions/pr-on-self-hosted-runner` was updated to the latest standard runner labels reducing false positive results.
+
 ## 0.4.37
 
 ### Minor Analysis Improvements
 
-* The GitHub Actions analysis now recognizes more Bash regex checks that restrict a value to alphanumeric characters, include regexes like `^[0-9a-zA-Z]{40}([0-9a-zA-Z]{24})?$` which check for a sha1 or sha256 hash. This may reduce false positive results where command output is validated with grouped or optional alphanumeric patterns before being used.
+* The GitHub Actions analysis now recognizes more Bash regex checks that restrict a value to alphanumeric characters, including regexes like `^[0-9a-zA-Z]{40}([0-9a-zA-Z]{24})?$` which check for a SHA-1 or SHA-256 hash. This may reduce false positive results where command output is validated with grouped or optional alphanumeric patterns before being used.
 
 ## 0.4.36
 

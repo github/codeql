@@ -35,7 +35,7 @@ void CWE197_Numeric_Truncation_Error__short_fscanf_82_bad::action(short data)
 {
     {
         /* POTENTIAL FLAW: Convert data to a char, possibly causing a truncation error */
-        char charData = (char)data;
+        char charData = (char)data; // $ Alert
         printHexCharLine(charData);
     }
 }

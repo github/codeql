@@ -6,7 +6,7 @@ bool sometimesPointless(T param) {
 template<typename T>
 bool alwaysPointless(T param) {
   short local = param;
-  return local <= 0xFFFF; // BAD (in all instantiations)
+  return local <= 0xFFFF; // $ Alert[cpp/constant-comparison] // BAD (in all instantiations)
 }
 
 static int caller(int i) {

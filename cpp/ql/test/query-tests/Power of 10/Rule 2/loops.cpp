@@ -21,20 +21,20 @@ void f() {
   while (i < bound) { i++; }                 // Good: Bound not modified in loop.
   do { i++; } while (i < bound);             // Good: Bound not modified in loop.
 
-  for (i = 0; i < 10; i--);                  // Bad: No increment.
-  while (i < 10) {  }                        // Bad: No increment.
-  do { i += 2; } while (i > 10);             // Bad: No decrement.
-  while (i > 10) { if (i < 5) i--; }         // Bad: Conditional decrement.
-  while (i < bound) { i++; bound++; }        // Bad: Bound modified in loop.
-  while (i < bound) { i++; bound >>= 1; }    // Bad: Bound modified in loop.
-  while (i > bound) { i--; bound += 1; }     // Bad: Bound modified in loop.
-  while (i > bound) { i--; bound = bound; }  // Bad: Bound modified in loop.
-  for (; xs->next; xs = xs->next);           // Bad: No bound.
-  while (i <= -i) {}                         // Bad: Hidden infinite loop.
+  for (i = 0; i < 10; i--);                  // $ Alert // Bad: No increment.
+  while (i < 10) {  }                        // $ Alert // Bad: No increment.
+  do { i += 2; } while (i > 10);             // $ Alert // Bad: No decrement.
+  while (i > 10) { if (i < 5) i--; }         // $ Alert // Bad: Conditional decrement.
+  while (i < bound) { i++; bound++; }        // $ Alert // Bad: Bound modified in loop.
+  while (i < bound) { i++; bound >>= 1; }    // $ Alert // Bad: Bound modified in loop.
+  while (i > bound) { i--; bound += 1; }     // $ Alert // Bad: Bound modified in loop.
+  while (i > bound) { i--; bound = bound; }  // $ Alert // Bad: Bound modified in loop.
+  for (; xs->next; xs = xs->next);           // $ Alert // Bad: No bound.
+  while (i <= -i) {}                         // $ Alert // Bad: Hidden infinite loop.
 
   while (i < 10) { i = i + 1; }              // Good: Fixed bound.
   while (i > 10) { i = i - 1; }              // Good: Fixed bound.
-  while (i < 10) { i = 0; }                  // Bad: increment outside loop
-  while (i > 10) { i = 0; }                  // Bad: decrement outside loop
-  while (i > 10) { i = 1 - i; }              // Bad: Swapped operands to `-`
+  while (i < 10) { i = 0; }                  // $ Alert // Bad: increment outside loop
+  while (i > 10) { i = 0; }                  // $ Alert // Bad: decrement outside loop
+  while (i > 10) { i = 1 - i; }              // $ Alert // Bad: Swapped operands to `-`
 }

@@ -1,0 +1,153 @@
+class Box {
+  private var _v = 0
+  var v: Int {
+    get { return _v }
+    set { _v = newValue }
+  }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Box"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                        declModifier
+                          name: private
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          initializer:
+                            initializerClause
+                              equal: =
+                              value:
+                                integerLiteralExpr
+                                  literal: integerLiteral "0"
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "_v"
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "v"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                accessorDecl
+                                  accessorSpecifier: get
+                                  attributes:
+                                  body:
+                                    codeBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      statements:
+                                        codeBlockItem
+                                          item:
+                                            returnStmt
+                                              expression:
+                                                declReferenceExpr
+                                                  baseName: identifier "_v"
+                                              returnKeyword: return
+                                accessorDecl
+                                  accessorSpecifier: set
+                                  attributes:
+                                  body:
+                                    codeBlock
+                                      leftBrace: {
+                                      rightBrace: }
+                                      statements:
+                                        codeBlockItem
+                                          item:
+                                            infixOperatorExpr
+                                              operator:
+                                                assignmentExpr
+                                                  equal: =
+                                              leftOperand:
+                                                declReferenceExpr
+                                                  baseName: identifier "_v"
+                                              rightOperand:
+                                                declReferenceExpr
+                                                  baseName: identifier "newValue"
+                              leftBrace: {
+                              rightBrace: }
+          modifiers:
+          classKeyword: class
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Box"
+          member:
+            variable_declaration
+              modifier:
+                modifier "var"
+                modifier "private"
+              pattern:
+                name_pattern
+                  identifier: identifier "_v"
+              value: int_literal "0"
+            accessor_declaration
+              modifier: modifier "var"
+              name: identifier "v"
+              accessor_kind: accessor_kind "get"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+              body:
+                block
+                  stmt:
+                    return_expr
+                      value:
+                        name_expr
+                          identifier: identifier "_v"
+            accessor_declaration
+              modifier:
+                modifier "var"
+                modifier "chained_declaration"
+              name: identifier "v"
+              accessor_kind: accessor_kind "set"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+              body:
+                block
+                  stmt:
+                    assign_expr
+                      target:
+                        name_expr
+                          identifier: identifier "_v"
+                      value:
+                        name_expr
+                          identifier: identifier "newValue"

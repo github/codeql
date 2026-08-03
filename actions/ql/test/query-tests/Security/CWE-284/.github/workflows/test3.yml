@@ -1,0 +1,43 @@
+name: test
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04
+          - ubuntu-24.04-arm
+          - ubuntu-22.04
+          - ubuntu-22.04-arm
+          - ubuntu-26.04
+          - ubuntu-26.04-arm
+          - ubuntu-slim
+          - macos-26
+          - macos-26-xlarge
+          - macos-26-intel
+          - macos-26-large
+          - macos-latest-large
+          - macos-15-large
+          - macos-15
+          - macos-15-intel
+          - macos-latest
+          - macos-15
+          - macos-15-xlarge
+          - macos-14-large
+          - macos-14
+          - macos-14-xlarge
+          - windows-2025-vs2026
+          - windows-latest
+          - windows-2025
+          - windows-2022
+          - windows-11
+          - windows-11-arm
+          - windows-11-vs2026-arm
+    runs-on: ${{ matrix.os }}
+    steps:
+      - run: cmd

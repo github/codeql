@@ -18,12 +18,12 @@ public class FilePathInjection extends Controller {
 
 	// BAD: Upload file to user specified path without validation
 	public void uploadFile() throws IOException {
-		String savePath = getPara("dir");
+		String savePath = getPara("dir"); // $ Source
 		File file = getFile("fileParam").getFile();
 		String finalFilePath = BASE_PATH + savePath;
 
 		FileInputStream fis = new FileInputStream(file);
-		FileOutputStream fos = new FileOutputStream(finalFilePath);
+		FileOutputStream fos = new FileOutputStream(finalFilePath); // $ Alert
 		int i = 0;
 
 		do {
@@ -61,7 +61,7 @@ public class FilePathInjection extends Controller {
 
 	// BAD: Upload file to user specified path without validation through session attribute
 	public void uploadFile3() throws IOException {
-		String savePath = getPara("dir");
+		String savePath = getPara("dir"); // $ Source
 		setSessionAttr("uploadDir", savePath);
 		String sessionUploadDir = getSessionAttr("uploadDir");
 
@@ -69,7 +69,7 @@ public class FilePathInjection extends Controller {
 		String finalFilePath = BASE_PATH + sessionUploadDir;
 
 		FileInputStream fis = new FileInputStream(file);
-		FileOutputStream fos = new FileOutputStream(finalFilePath);
+		FileOutputStream fos = new FileOutputStream(finalFilePath); // $ Alert
 		int i = 0;
 
 		do {
@@ -84,7 +84,7 @@ public class FilePathInjection extends Controller {
 
 	// BAD: Upload file to user specified path without validation through request attribute
 	public void uploadFile4() throws IOException {
-		String savePath = getPara("dir");
+		String savePath = getPara("dir"); // $ Source
 		setAttr("uploadDir2", savePath);
 		String requestUploadDir = getAttr("uploadDir2");
 
@@ -92,7 +92,7 @@ public class FilePathInjection extends Controller {
 		String finalFilePath = BASE_PATH + requestUploadDir;
 
 		FileInputStream fis = new FileInputStream(file);
-		FileOutputStream fos = new FileOutputStream(finalFilePath);
+		FileOutputStream fos = new FileOutputStream(finalFilePath); // $ Alert
 		int i = 0;
 
 		do {
@@ -179,7 +179,7 @@ public class FilePathInjection extends Controller {
 		FileInputStream fis = null;
 		try {
 			os = resp.getOutputStream();
-			fis = new FileInputStream(file);
+			fis = new FileInputStream(file); // $ Alert
 			byte fileContent[] = new byte[(int) file.length()];
 			fis.read(fileContent);
 			os.write(fileContent);
@@ -202,12 +202,12 @@ public class FilePathInjection extends Controller {
 	// BAD: Download file to user specified path without validation
 	public void downloadFile() throws FileNotFoundException, IOException {
 		HttpServletRequest request = getRequest();
-		String path = request.getParameter("path");
+		String path = request.getParameter("path"); // $ Source
 		String filePath = BASE_PATH + path;
 
 		HttpServletResponse resp = getResponse();
 		File file = new File(filePath);
-		if (path != null && file.exists()) {
+		if (path != null && file.exists()) { // $ Alert
 			resp.setHeader("Content-type", "application/force-download");
 			resp.setHeader("Content-Disposition", "inline;filename=\"" + filePath + "\"");
 			resp.setHeader("Content-Transfer-Encoding", "Binary");

@@ -53,7 +53,6 @@ private class SensitiveVariableAccess extends SensitiveData {
     HeuristicNames::nameIndicatesSensitiveData(this.asExpr()
           .(VariableAccess)
           .getVariable()
-          .(Variable)
           .getText(), classification)
   }
 

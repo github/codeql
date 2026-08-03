@@ -1,1 +1,2 @@
-Functions/IterReturnsNonSelf.ql
+query: Functions/IterReturnsNonSelf.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

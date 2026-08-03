@@ -18,7 +18,7 @@ class MyThingColection
 {
 public:
 	MyThingColection() {
-		first = new MyThing; // GOOD (all deleted in destructor) [FALSE POSITIVE]
+		first = new MyThing; // $ SPURIOUS: Alert // GOOD (all deleted in destructor) [FALSE POSITIVE]
 
 		first->next = new MyThing; // GOOD (all deleted in destructor)
 
@@ -27,7 +27,7 @@ public:
 
 		add(y = new MyThing); // GOOD (all deleted in destructor)
 	}
-	
+
 	~MyThingColection() {
 		MyThing *to_delete;
 

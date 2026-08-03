@@ -16,11 +16,18 @@ class CaseWhenClause extends CaseExprImpl, TCaseExpr {
 
   CaseWhenClause() { this = TCaseExpr(g) }
 
-  final override Expr getValue() { toGenerated(result) = g.getValue() }
+  final override Expr getValue() {
+    toGenerated(result) = g.getValue()
+    or
+    not exists(g.getValue()) and synthChild(this, -2, result)
+  }
 
   final override AstNode getBranch(int n) {
-    toGenerated(result) = g.getChild(n) or
-    toGenerated(result) = g.getChild(n)
+    // When branches map directly to WhenClause nodes
+    toGenerated(result) = g.getChild(n) and not g.getChild(n) instanceof Ruby::Else
+    or
+    // The else branch is wrapped in a synthesized CaseElseBranch node
+    g.getChild(n) instanceof Ruby::Else and result = getSynthChild(this, n)
   }
 }
 
@@ -34,7 +41,8 @@ class CaseMatch extends CaseExprImpl, TCaseMatchReal {
   final override AstNode getBranch(int n) {
     toGenerated(result) = g.getClauses(n)
     or
-    n = count(g.getClauses(_)) and toGenerated(result) = g.getElse()
+    // The else branch is wrapped in a synthesized CaseElseBranch node
+    n = count(g.getClauses(_)) and exists(g.getElse()) and result = getSynthChild(this, n)
   }
 }
 
@@ -86,4 +94,10 @@ class InClauseSynth extends InClauseImpl, TInClauseSynth {
   final override predicate hasIfCondition() { none() }
 
   final override predicate hasUnlessCondition() { none() }
+}
+
+class CaseElseBranchImpl extends AstNode, TCaseElseBranch {
+  CaseElseBranchImpl() { this = TCaseElseBranchSynth(_, _) }
+
+  final StmtSequence getBody() { synthChild(this, 0, result) }
 }

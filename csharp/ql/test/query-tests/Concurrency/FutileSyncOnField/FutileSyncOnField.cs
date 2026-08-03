@@ -10,12 +10,12 @@ class Foo
 
     void test()
     {
-        lock (o)
+        lock (o) // $ Alert
         {
             o = new Foo();    // BAD
         }
 
-        lock (o)
+        lock (o) // $ Alert
         {
             f(o = null);    // BAD
         }
@@ -25,7 +25,7 @@ class Foo
             o = new Foo();  // GOOD
         }
 
-        lock (o2)
+        lock (o2) // $ Alert
         {
             GetNewObject(out o2); // BAD
         }

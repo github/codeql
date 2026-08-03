@@ -1,1 +1,2 @@
-Likely Bugs/Conversion/ArrayArgSizeMismatch.ql
+query: Likely Bugs/Conversion/ArrayArgSizeMismatch.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

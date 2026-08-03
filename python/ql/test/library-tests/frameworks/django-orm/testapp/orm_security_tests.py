@@ -16,7 +16,7 @@ class Person(models.Model):
     name = models.CharField(max_length=256)
     age = models.IntegerField()
 
-def person(request):
+def person(request):  # $ Source
     if request.method == "POST":
         person = Person()
         person.name = request.POST["name"]
@@ -41,18 +41,18 @@ def person(request):
         resp_text = "<h1>Persons:</h1>"
         for person in Person.objects.all():
             resp_text += "\n{} (age {})".format(person.name, person.age)
-        return HttpResponse(resp_text)  # NOT OK
+        return HttpResponse(resp_text)  # $ Alert // NOT OK
 
 def show_name(request):
     person = Person.objects.get(id=request.GET["id"])
-    return HttpResponse("Name is: {}".format(person.name))  # NOT OK
+    return HttpResponse("Name is: {}".format(person.name))  # $ Alert // NOT OK
 
 def show_age(request):
     person = Person.objects.get(id=request.GET["id"])
     assert isinstance(person.age, int)
 
     # Since the age is an integer, there is not actually XSS in the line below
-    return HttpResponse("Age is: {}".format(person.age))  # OK
+    return HttpResponse("Age is: {}".format(person.age))  # $ SPURIOUS: Alert // OK
 
 # look at the log after doing
 """
@@ -92,14 +92,14 @@ def only_az(value):
 class CommentValidatorNotUsed(models.Model):
     text = models.CharField(max_length=256, validators=[only_az])
 
-def save_comment_validator_not_used(request): # $ requestHandler
+def save_comment_validator_not_used(request): # $ Source requestHandler
     comment = CommentValidatorNotUsed(text=request.POST["text"])
     comment.save()
     return HttpResponse("ok")
 
 def display_comment_validator_not_used(request): # $ requestHandler
     comment = CommentValidatorNotUsed.objects.last()
-    return HttpResponse(comment.text)  # NOT OK
+    return HttpResponse(comment.text)  # $ Alert // NOT OK
 
 # To test this
 """
@@ -111,14 +111,14 @@ http http://127.0.0.1:8000/display_comment_validator_not_used/
 class CommentValidatorUsed(models.Model):
     text = models.CharField(max_length=256, validators=[only_az])
 
-def save_comment_validator_used(request): # $ requestHandler
+def save_comment_validator_used(request): # $ Source requestHandler
     comment = CommentValidatorUsed(text=request.POST["text"])
     comment.full_clean()
     comment.save()
 
 def display_comment_validator_used(request): # $ requestHandler
     comment = CommentValidatorUsed.objects.last()
-    return HttpResponse(comment.text)  # sort of OK
+    return HttpResponse(comment.text)  # $ Alert // sort of OK
 
 # Doing the following will raise a ValidationError
 """

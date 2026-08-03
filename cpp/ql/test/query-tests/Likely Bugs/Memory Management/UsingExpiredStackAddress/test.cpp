@@ -7,12 +7,12 @@ static struct S100 s101;
 
 void escape1() {
   int x;
-  s101.p = &x;
+  s101.p = &x; // $ Source
 }
 
 int simple_field_bad() {
   escape1();
-  return *s101.p; // BAD
+  return *s101.p; // $ Alert // BAD
 }
 
 int simple_field_good() {
@@ -21,7 +21,7 @@ int simple_field_good() {
 }
 
 int deref_p() {
-  return *s101.p; // BAD
+  return *s101.p; // $ Alert // BAD
 }
 
 int field_indirect_bad() {
@@ -49,13 +49,13 @@ int store_argument_value() {
 }
 
 void store_address_of_argument(int y) {
-  s101.p = &y;
+  s101.p = &y; // $ Source
 }
 
 int store_argument_address() {
   int x;
   store_address_of_argument(x);
-  return *s101.p; // BAD
+  return *s101.p; // $ Alert // BAD
 }
 
 void address_escapes_through_pointer_arith() {
@@ -65,12 +65,12 @@ void address_escapes_through_pointer_arith() {
   int* p2 = p1 - 1;
   int* p3 = 1 + p2;
   p3++;
-  s101.p = p3;
+  s101.p = p3; // $ Source
 }
 
 int test_pointer_arith_bad() {
   address_escapes_through_pointer_arith();
-  return *s101.p; // BAD
+  return *s101.p; // $ Alert // BAD
 }
 
 int test_pointer_arith_good_1() {
@@ -90,12 +90,12 @@ int test_pointer_arith_good_2(bool b) {
 
 void field_address_escapes() {
   S100 s;
-  s101.p = &s.i;
+  s101.p = &s.i; // $ Source
 }
 
 int test_field_address_escapes() {
   field_address_escapes();
-  return s101.p[0]; // BAD
+  return s101.p[0]; // $ Alert // BAD
 }
 
 void escape_through_reference() {
@@ -103,12 +103,12 @@ void escape_through_reference() {
   int& r0 = x;
   int& r1 = r0;
   r1++;
-  s101.p = &r1;
+  s101.p = &r1; // $ Source
 }
 
 int test_escapes_through_reference() {
   escape_through_reference();
-  return *s101.p; // BAD
+  return *s101.p; // $ Alert // BAD
 }
 
 struct S300 {
@@ -133,53 +133,53 @@ void escape_through_arrays() {
   int b2[14][15];
   int b3[13][14][15];
 
-  s1.p1 = b1;
-  s2.p1 = &b1[1];
+  s1.p1 = b1; // $ Source
+  s2.p1 = &b1[1]; // $ Source
 
-  s1.p2 = b2;
-  s2.p2 = &b2[1];
-  s3.p1 = b2[1];
-  s4.p1 = &b2[1][2];
+  s1.p2 = b2; // $ Source
+  s2.p2 = &b2[1]; // $ Source
+  s3.p1 = b2[1]; // $ Source
+  s4.p1 = &b2[1][2]; // $ Source
 
-  s1.p3 = b3;
-  s2.p3 = &b3[1];
-  s3.p2 = b3[1];
-  s4.p2 = &b3[1][2];
-  s5.p1 = b3[1][2];
+  s1.p3 = b3; // $ Source
+  s2.p3 = &b3[1]; // $ Source
+  s3.p2 = b3[1]; // $ Source
+  s4.p2 = &b3[1][2]; // $ Source
+  s5.p1 = b3[1][2]; // $ Source
   s6.p1 = &b3[1][2][3];
 
-  s1.pp[0] = b1;
-  s2.pp[0] = &b1[1];
-  s3.pp[0] = b2[1];
-  s4.pp[0] = &b2[1][2];
-  s5.pp[0] = b3[1][2];
-  s6.pp[0] = &b3[1][2][3];
+  s1.pp[0] = b1; // $ Source
+  s2.pp[0] = &b1[1]; // $ Source
+  s3.pp[0] = b2[1]; // $ Source
+  s4.pp[0] = &b2[1][2]; // $ Source
+  s5.pp[0] = b3[1][2]; // $ Source
+  s6.pp[0] = &b3[1][2][3]; // $ Source
 }
 
 void test_escape_through_arrays() {
   escape_through_arrays();
-  int x1 = *s1.p1; // BAD
-  int x2 = *s2.p1; // BAD
+  int x1 = *s1.p1; // $ Alert // BAD
+  int x2 = *s2.p1; // $ Alert // BAD
 
-  int* x3 = s1.p2[1]; // BAD
-  int x4 = *s1.p2[1]; // BAD
-  int* x5 = *s2.p2; // BAD
-  int* x6 = s3.p1; // BAD
-  int x7 = *&s4.p1[1]; // BAD
+  int* x3 = s1.p2[1]; // $ Alert // BAD
+  int x4 = *s1.p2[1]; // $ Alert // BAD
+  int* x5 = *s2.p2; // $ Alert // BAD
+  int* x6 = s3.p1; // $ Alert // BAD
+  int x7 = *&s4.p1[1]; // $ Alert // BAD
 
-  int x8 = *s1.p3[1][2]; // BAD
-  int x9 = (*s2.p3[0])[0]; // BAD
-  int x10 = **s3.p2; // BAD
-  int x11 = **s4.p2; // BAD
-  int x12 = (*s4.p1); // BAD
-  int x13 = s5.p1[1]; // BAD
+  int x8 = *s1.p3[1][2]; // $ Alert // BAD
+  int x9 = (*s2.p3[0])[0]; // $ Alert // BAD
+  int x10 = **s3.p2; // $ Alert // BAD
+  int x11 = **s4.p2; // $ Alert // BAD
+  int x12 = (*s4.p1); // $ Alert // BAD
+  int x13 = s5.p1[1]; // $ Alert // BAD
 
-  int* x14 = s1.pp[0]; // BAD
-  int x15 = *s2.pp[0]; // BAD
-  int x16 = *s3.pp[0]; // BAD
-  int x17 = **s4.pp; // BAD
-  int x18 = s5.pp[0][0]; // BAD
-  int x19 = (*s6.pp)[0]; // BAD
+  int* x14 = s1.pp[0]; // $ Alert // BAD
+  int x15 = *s2.pp[0]; // $ Alert // BAD
+  int x16 = *s3.pp[0]; // $ Alert // BAD
+  int x17 = **s4.pp; // $ Alert // BAD
+  int x18 = s5.pp[0][0]; // $ Alert // BAD
+  int x19 = (*s6.pp)[0]; // $ Alert // BAD
 }
 
 void not_escape_through_arrays() {
@@ -192,7 +192,7 @@ void not_escape_through_arrays() {
 
 void test_not_escape_through_array() {
   not_escape_through_arrays();
-  
+
   int x20 = s1.a1[0]; // GOOD
   int x21 = s1.a2[0][1]; // GOOD
   int* x22 = s1.a3[5][2]; // GOOD
@@ -231,12 +231,12 @@ static struct S100 s103;
 void escape2() {
   int x;
   s103.p = nullptr;
-  s103.p = &x;
+  s103.p = &x; // $ Source
 }
 
 void calls_escape2() {
   escape2();
-  int x = *s103.p; // BAD
+  int x = *s103.p; // $ Alert // BAD
 }
 
 bool unknown();
@@ -260,10 +260,10 @@ void escape3() {
   int x;
   s105.p = nullptr;
   if(unknown()) { }
-  s105.p = &x;
+  s105.p = &x; // $ Source
 }
 
 void calls_escape3() {
   escape3();
-  int x = *s105.p; // BAD
+  int x = *s105.p; // $ Alert // BAD
 }

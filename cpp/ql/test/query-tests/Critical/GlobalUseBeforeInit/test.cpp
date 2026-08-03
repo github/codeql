@@ -25,7 +25,7 @@ int my_printf(const char * fmt, ...)
     return ret;
 }
 
-int f1()
+int f1() // $ Alert
 {
     my_printf("%d\n", a + 2);
     my_printf("%d\n", b + 2); // BAD
@@ -36,7 +36,7 @@ void f2() {
     my_printf("%d\n", b); // GOOD
 }
 
-int main()
+int main() // $ Alert
 {
     unsigned size = sizeof(*c); // GOOD
     my_printf("%d\n", b); // BAD

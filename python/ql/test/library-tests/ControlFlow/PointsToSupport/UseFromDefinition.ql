@@ -9,7 +9,7 @@ Expr assignedValue(Name n) {
 
 from Name def, DefinitionNode d
 where
-  d = def.getAFlowNode() and
+  d.getNode() = def and
   exists(assignedValue(def)) and
   not d.getValue().getNode() = assignedValue(def)
 select def.toString(), assignedValue(def)

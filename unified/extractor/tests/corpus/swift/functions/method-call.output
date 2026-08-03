@@ -1,0 +1,44 @@
+list.append(1)
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionCallExpr
+          leftParen: (
+          rightParen: )
+          arguments:
+            labeledExpr
+              expression:
+                integerLiteralExpr
+                  literal: integerLiteral "1"
+          additionalTrailingClosures:
+          calledExpression:
+            memberAccessExpr
+              period: .
+              declName:
+                declReferenceExpr
+                  baseName: identifier "append"
+              base:
+                declReferenceExpr
+                  baseName: identifier "list"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        call_expr
+          callee:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "list"
+              member: identifier "append"
+          argument:
+            argument
+              value: int_literal "1"

@@ -11,6 +11,6 @@ class Test {
 	
 	public void quit() {
 		// Stop
-		worker.stop(); // BAD: Thread.stop can result in corrupted data
+		worker.stop(); // $ Alert // BAD: Thread.stop can result in corrupted data
 	}
 }

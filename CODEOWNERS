@@ -2,7 +2,7 @@
 * @github/code-scanning-alert-coverage
 
 # CodeQL language libraries
-/actions/ @github/codeql-dynamic
+/actions/ @github/code-scanning-alert-coverage
 /cpp/ @github/codeql-c-analysis
 /csharp/ @github/codeql-csharp
 /csharp/autobuilder/Semmle.Autobuild.Cpp @github/codeql-c-extractor @github/code-scanning-language-coverage
@@ -58,10 +58,6 @@ MODULE.bazel @github/codeql-ci-reviewers
 /.github/workflows/ruby-* @github/codeql-ruby
 /.github/workflows/rust.yml @github/codeql-rust
 /.github/workflows/swift.yml @github/codeql-swift
-
-# Misc
-/misc/scripts/accept-expected-changes-from-ci.py @RasmusWL
-/misc/scripts/generate-code-scanning-query-list.py @RasmusWL
 
 # .devcontainer
 /.devcontainer/ @github/codeql-ci-reviewers

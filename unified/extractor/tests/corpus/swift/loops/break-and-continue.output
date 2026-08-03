@@ -1,0 +1,145 @@
+for x in xs {
+  if x < 0 { continue }
+  if x > 100 { break }
+  print(x)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        forStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    expressionStmt
+                      expression:
+                        ifExpr
+                          body:
+                            codeBlock
+                              leftBrace: {
+                              rightBrace: }
+                              statements:
+                                codeBlockItem
+                                  item:
+                                    continueStmt
+                                      continueKeyword: continue
+                          conditions:
+                            conditionElement
+                              condition:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator "<"
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "x"
+                                  rightOperand:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "0"
+                          ifKeyword: if
+                codeBlockItem
+                  item:
+                    expressionStmt
+                      expression:
+                        ifExpr
+                          body:
+                            codeBlock
+                              leftBrace: {
+                              rightBrace: }
+                              statements:
+                                codeBlockItem
+                                  item:
+                                    breakStmt
+                                      breakKeyword: break
+                          conditions:
+                            conditionElement
+                              condition:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator ">"
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "x"
+                                  rightOperand:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "100"
+                          ifKeyword: if
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "x"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          pattern:
+            identifierPattern
+              identifier: identifier "x"
+          inKeyword: in
+          forKeyword: for
+          sequence:
+            declReferenceExpr
+              baseName: identifier "xs"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        for_each_stmt
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          iterable:
+            name_expr
+              identifier: identifier "xs"
+          body:
+            block
+              stmt:
+                if_expr
+                  condition:
+                    binary_expr
+                      left:
+                        name_expr
+                          identifier: identifier "x"
+                      operator: infix_operator "<"
+                      right: int_literal "0"
+                  then:
+                    block
+                      stmt: continue_expr "continue"
+                if_expr
+                  condition:
+                    binary_expr
+                      left:
+                        name_expr
+                          identifier: identifier "x"
+                      operator: infix_operator ">"
+                      right: int_literal "100"
+                  then:
+                    block
+                      stmt: break_expr "break"
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"

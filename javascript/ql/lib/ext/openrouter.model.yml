@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["openrouter.Client", "@openrouter/sdk", "Instance"]
+      - ["openrouter.Client", "@openrouter/sdk", "Member[OpenRouter].Instance"]
+      - ["openrouter.Agent", "@openrouter/agent", "Member[OpenRouter].Instance"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["@openrouter/agent", "Member[callModel].Argument[0].Member[instructions]", "system-prompt-injection"]
+      - ["openrouter.Agent", "Member[callModel].Argument[0].Member[instructions]", "system-prompt-injection"]
+      - ["@openrouter/agent", "Member[tool].Argument[0].Member[description]", "system-prompt-injection"]
+      - ["openrouter.Client", "Member[embeddings].Member[create].Argument[0].Member[input]", "user-prompt-injection"]
+      - ["@openrouter/agent", "Member[callModel].Argument[0].Member[input]", "user-prompt-injection"]
+      - ["openrouter.Agent", "Member[callModel].Argument[0].Member[input]", "user-prompt-injection"]

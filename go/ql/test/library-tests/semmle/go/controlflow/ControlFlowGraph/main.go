@@ -53,6 +53,16 @@ func baz2() (result int) {
 	return
 }
 
+func baz3(selector int) (result int) {
+	result = 0
+	if selector == 1 {
+		return 1
+	} else {
+		result = 2
+	}
+	return
+}
+
 func loops() {
 	var x int
 	for cond() {

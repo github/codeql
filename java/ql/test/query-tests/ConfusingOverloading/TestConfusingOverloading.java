@@ -4,7 +4,7 @@ public class TestConfusingOverloading {
 		void test(Super<T> other) {}
 	}
 	class Sub extends Super<Runnable> {
-		void test(Sub other) {}
+		void test(Sub other) {} // $ Alert
 	}
 
 	class Sub2 extends Super<Runnable> {

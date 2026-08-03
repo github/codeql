@@ -13,5 +13,5 @@ static void error(int x1, int x2, int x3, int x4, int x5,
 
 void format2(char *str, int i, double d) {
     error(1, 2, 3, 4, 5, "%s %d %f", 1, 2, 3, 4, 5, 6, 7, str, i, d);
-    error(1, 2, 3, 4, 5, "%d %f %s", 1, 2, 3, 4, 5, 6, 7, str, i, d);
+    error(1, 2, 3, 4, 5, "%d %f %s", 1, 2, 3, 4, 5, 6, 7, str, i, d); // $ Alert
 }

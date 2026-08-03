@@ -1,0 +1,37 @@
+var x = 1
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: var
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    integerLiteralExpr
+                      literal: integerLiteral "1"
+              pattern:
+                identifierPattern
+                  identifier: identifier "x"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "var"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          value: int_literal "1"

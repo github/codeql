@@ -10,6 +10,6 @@ func (t Timestamp) addDays(d int) Timestamp {
 
 func test(t Timestamp) {
 	fmt.Printf("Before: %s\n", t)
-	t.addDays(7)
+	t.addDays(7) // $ Alert
 	fmt.Printf("After: %s\n", t)
 }

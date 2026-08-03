@@ -2,10 +2,12 @@ import actions
 
 bindingset[runner]
 predicate isGithubHostedRunner(string runner) {
-  // list of github hosted repos: https://github.com/actions/runner-images/blob/main/README.md#available-images
-  runner
-      .toLowerCase()
-      .regexpMatch("^(ubuntu-([0-9.]+|latest)|macos-([0-9]+|latest)(-x?large)?|windows-([0-9.]+|latest))$")
+  // The list of github hosted repos:
+  // https://github.com/actions/runner-images/blob/main/README.md#available-images
+  // https://docs.github.com/en/enterprise-cloud@latest/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job#standard-github-hosted-runners-for-public-repositories
+  runner.toLowerCase().regexpMatch("^ubuntu-([0-9.]+|latest|slim)(-arm)?$") or
+  runner.toLowerCase().regexpMatch("^macos-([0-9]+|latest)(-x?large|-intel)?$") or
+  runner.toLowerCase().regexpMatch("^windows-([0-9.]+|latest)(-vs[0-9.]+)?(-arm)?$")
 }
 
 bindingset[runner]

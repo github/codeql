@@ -66,7 +66,7 @@ void test2_1(const char *path)
 
 	if (stat(path, &buf))
 	{
-		f = fopen(path, "r"); // BAD
+		f = fopen(path, "r"); // $ Alert // BAD
 	}
 
 	// ...
@@ -80,7 +80,7 @@ void test2_2(const char *path)
 	stat(path, &buf);
 	if (buf.foo > 0)
 	{
-		f = fopen(path, "r"); // BAD
+		f = fopen(path, "r"); // $ Alert // BAD
 	}
 
 	// ...
@@ -95,7 +95,7 @@ void test2_3(const char *path)
 	stat(path, buf_ptr);
 	if (buf_ptr->foo > 0)
 	{
-		f = fopen(path, "r"); // BAD
+		f = fopen(path, "r"); // $ Alert // BAD
 	}
 
 	// ...
@@ -112,7 +112,7 @@ void test2_4(const char *path)
 	stat(path, &buf);
 	if (stat_condition(&buf))
 	{
-		f = fopen(path, "r"); // BAD
+		f = fopen(path, "r"); // $ Alert // BAD
 	}
 
 	// ...
@@ -127,7 +127,7 @@ void test2_5(const char *path)
 	stat(path, buf_ptr);
 	if (stat_condition(buf_ptr))
 	{
-		f = fopen(path, "r"); // BAD
+		f = fopen(path, "r"); // $ Alert // BAD
 	}
 
 	// ...
@@ -154,7 +154,7 @@ void test2_7(const char *path, int arg)
 
 	if (stat(path, &buf))
 	{
-		f = open(path, arg); // BAD
+		f = open(path, arg); // $ Alert // BAD
 	}
 
 	// ...
@@ -167,7 +167,7 @@ void test2_8(const char *path, int arg)
 
 	if (lstat(path, &buf))
 	{
-		f = open(path, arg); // BAD
+		f = open(path, arg); // $ Alert // BAD
 	}
 
 	// ...
@@ -180,7 +180,7 @@ void test2_9(const char *path, int arg)
 
 	if (stat(path, &buf))
 	{
-		f = creat(path, arg); // BAD [NOT DETECTED]
+		f = creat(path, arg); // $ MISSING: Alert // BAD [NOT DETECTED]
 	}
 
 	// ...
@@ -193,7 +193,7 @@ void test2_10(int dir, const char *path, int arg)
 
 	if (fstatat(dir, path, &buf))
 	{
-		f = openat(dir, path, arg); // BAD [NOT DETECTED]
+		f = openat(dir, path, arg); // $ MISSING: Alert // BAD [NOT DETECTED]
 	}
 
 	// ...
@@ -206,7 +206,7 @@ void test2_11(const char *path, int arg)
 
 	if (stat(path, &buf))
 	{
-		f = open(path, arg); // GOOD (here stat is just a redundant check that the file exists / path is valid, confirmed by the return value of open) [FALSE POSITIVE]
+		f = open(path, arg); // $ SPURIOUS: Alert // GOOD (here stat is just a redundant check that the file exists / path is valid, confirmed by the return value of open) [FALSE POSITIVE]
 		if (f == -1)
 		{
 			// handle error
@@ -225,7 +225,7 @@ void test2_12(const char *path, int arg)
 	{
 		if (buf.foo == 11) // check a property of the file
 		{
-			f = open(path, arg); // BAD
+			f = open(path, arg); // $ Alert // BAD
 			if (f == -1)
 			{
 				// handle error
@@ -246,7 +246,7 @@ void test2_13(const char *path, int arg)
 		return;
 	}
 
-	f = fopen(path, "wt"); // BAD
+	f = fopen(path, "wt"); // $ Alert // BAD
 
 	// ...
 }
@@ -259,7 +259,7 @@ void test3_1(const char *path, int arg)
 	int f;
 
 	f = open(path, arg);
-	if (stat(path, &buf)) // BAD [NOT DETECTED]
+	if (stat(path, &buf)) // $ MISSING: Alert // BAD [NOT DETECTED]
 	{
 		// ...
 	}
@@ -294,7 +294,7 @@ void test4_1(const char *path)
 
 		fclose(f);
 
-		chmod(path, 0); // BAD
+		chmod(path, 0); // $ Alert // BAD
 	}
 }
 
@@ -314,7 +314,7 @@ void test5_2(const char *path1, const char *path2)
 
 	if (!rename(path1, path2))
 	{
-		f = fopen(path2, "r"); // BAD [NOT DETECTED]
+		f = fopen(path2, "r"); // $ MISSING: Alert // BAD [NOT DETECTED]
 	}
 }
 
@@ -326,7 +326,7 @@ void test6_1(const char *path)
 
 	if (access(path))
 	{
-		f = fopen(path, "r"); // BAD
+		f = fopen(path, "r"); // $ Alert // BAD
 
 		// ...
 	}
@@ -352,7 +352,7 @@ void test6_3(const char *path)
 
 	if (!access(path))
 	{
-		f = fopen(path, "r"); // BAD
+		f = fopen(path, "r"); // $ Alert // BAD
 
 		// ...
 	}
@@ -366,7 +366,7 @@ void test6_4(const char *path)
 	{
 		// ...
 	} else {
-		f = fopen(path, "r"); // BAD
+		f = fopen(path, "r"); // $ Alert // BAD
 
 		// ...
 	}
@@ -394,10 +394,10 @@ void test7_1(const char *path)
 	if (f != 0)
 	{
 		// ...
-	
+
 		fclose(f);
 
-		chmod(path, 1234); // BAD
+		chmod(path, 1234); // $ Alert // BAD
 	}
 }
 
@@ -405,7 +405,7 @@ void test7_1(const char *path1, const char *path2)
 {
 	if (!rename(path1, path2))
 	{
-		chmod(path2, 1234); // BAD
+		chmod(path2, 1234); // $ Alert // BAD
 	}
 }
 

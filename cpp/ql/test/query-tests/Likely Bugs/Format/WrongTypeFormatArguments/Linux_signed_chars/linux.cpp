@@ -12,7 +12,7 @@ struct S {
 template <typename U>
 void template_func_calling_printf(S<U> &obj) {
   ::printf("%d\n", obj.get_int());
-  ::printf("%d\n", obj.get_template_value());
+  ::printf("%d\n", obj.get_template_value()); // $ Alert
 }
 
 void instantiate() {

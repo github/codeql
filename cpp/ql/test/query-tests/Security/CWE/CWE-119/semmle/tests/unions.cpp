@@ -23,15 +23,15 @@ void myUnionTest()
 	memset(&mu, 0, sizeof(mu));
 	memset(&mu, 0, sizeof(mu.small));
 	memset(&mu, 0, sizeof(mu.large));
-	memset(&mu, 0, 200); // BAD
+	memset(&mu, 0, 200); // $ Alert[cpp/overflow-buffer] // BAD
 	memset(&(mu.small), 0, sizeof(mu)); // (dubious)
 	memset(&(mu.small), 0, sizeof(mu.small));
 	memset(&(mu.small), 0, sizeof(mu.large)); // (dubious)
-	memset(&(mu.small), 0, 200); // BAD
+	memset(&(mu.small), 0, 200); // $ Alert[cpp/overflow-buffer] // BAD
 	memset(&(mu.large), 0, sizeof(mu));
 	memset(&(mu.large), 0, sizeof(mu.small)); // (dubious)
 	memset(&(mu.large), 0, sizeof(mu.large));
-	memset(&(mu.large), 0, 200); // BAD
+	memset(&(mu.large), 0, 200); // $ Alert[cpp/overflow-buffer] // BAD
 }
 
 // ---

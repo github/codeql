@@ -2,7 +2,7 @@
 static void usedByUnused() {
 }
 
-static void unused() {
+static void unused() { // $ Alert
     usedByUnused();
 }
 

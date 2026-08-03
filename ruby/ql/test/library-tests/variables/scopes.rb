@@ -71,3 +71,19 @@ module ParameterShadowing
   end
   puts x # prints `1`, not `3`
 end
+
+class RescueSetter
+  def name
+    @name
+  end
+
+  def name=(value)
+    @name = value
+  end
+
+  def foo(msg)
+    raise msg
+  rescue => self.name # calls `name=`
+    :caught
+  end
+end

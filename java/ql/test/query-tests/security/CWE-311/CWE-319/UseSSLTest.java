@@ -8,7 +8,7 @@ class UseSSLTest {
     if (connection instanceof HttpsURLConnection) {
       input = connection.getInputStream(); // OK
     } else {
-      input = connection.getInputStream(); // BAD
+      input = connection.getInputStream(); // $ Alert[java/non-ssl-connection] // BAD
     }
   }
 }

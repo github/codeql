@@ -1,0 +1,66 @@
+repeat {
+  x -= 1
+} while x > 0
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        repeatStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    infixOperatorExpr
+                      operator:
+                        binaryOperatorExpr
+                          operator: binaryOperator "-="
+                      leftOperand:
+                        declReferenceExpr
+                          baseName: identifier "x"
+                      rightOperand:
+                        integerLiteralExpr
+                          literal: integerLiteral "1"
+          condition:
+            infixOperatorExpr
+              operator:
+                binaryOperatorExpr
+                  operator: binaryOperator ">"
+              leftOperand:
+                declReferenceExpr
+                  baseName: identifier "x"
+              rightOperand:
+                integerLiteralExpr
+                  literal: integerLiteral "0"
+          repeatKeyword: repeat
+          whileKeyword: while
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        do_while_stmt
+          body:
+            block
+              stmt:
+                compound_assign_expr
+                  target:
+                    name_expr
+                      identifier: identifier "x"
+                  operator: infix_operator "-="
+                  value: int_literal "1"
+          condition:
+            binary_expr
+              left:
+                name_expr
+                  identifier: identifier "x"
+              operator: infix_operator ">"
+              right: int_literal "0"

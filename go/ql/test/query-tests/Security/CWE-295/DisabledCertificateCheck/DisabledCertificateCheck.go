@@ -7,7 +7,7 @@ import (
 
 func doAuthReq(authReq *http.Request) *http.Response {
 	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // NOT OK
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // $ Alert // NOT OK
 	}
 	client := &http.Client{Transport: tr}
 	res, _ := client.Do(authReq)

@@ -5,7 +5,7 @@ class ExposeRepresentation
     class Range
     {
         private int[] rarray = new int[2];
-        public void Set(int[] a) { rarray = a; }
+        public void Set(int[] a) { rarray = a; } // $ Alert
     }
 
     public static void Main(string[] args)

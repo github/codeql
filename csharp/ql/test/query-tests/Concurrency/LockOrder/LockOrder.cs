@@ -3,7 +3,7 @@ using System;
 class LocalTest
 {
     // BAD: b is flagged.
-    Object a, b, c;
+    Object a, b, c; // $ Alert
 
     void F()
     {
@@ -24,7 +24,7 @@ class LocalTest
 class GlobalTest
 {
     // BAD: b is flagged.
-    static Object a, b, c;
+    static Object a, b, c; // $ Alert
 
     void F()
     {
@@ -51,7 +51,7 @@ class GlobalTest
 class LambdaTest
 {
     // BAD: a is flagged.
-    static Object a, b;
+    static Object a, b; // $ Alert
 
     void F()
     {

@@ -1,5 +1,5 @@
 from io import StringIO
-from flask import Flask, request
+from flask import Flask, request # $ Source
 
 app = Flask(__name__)
 
@@ -11,7 +11,7 @@ def xpath1():
     xpathQuery = request.args.get('xml', '')
     f = StringIO('<foo><bar></bar></foo>')
     tree = etree.parse(f)
-    r = tree.xpath(xpathQuery)
+    r = tree.xpath(xpathQuery) # $ Alert
 
 
 @app.route("/xpath2")
@@ -20,7 +20,7 @@ def xpath2():
     xpathQuery = request.args.get('xml', '')
 
     root = etree.XML("<root><a>TEXT</a></root>")
-    find_text = etree.XPath(xpathQuery)
+    find_text = etree.XPath(xpathQuery) # $ Alert
     text = find_text(root)[0]
 
 
@@ -29,7 +29,7 @@ def xpath3():
     from lxml import etree
     xpathQuery = request.args.get('xml', '')
     root = etree.XML("<root><a>TEXT</a></root>")
-    find_text = etree.XPath(xpathQuery, smart_strings=False)
+    find_text = etree.XPath(xpathQuery, smart_strings=False) # $ Alert
     text = find_text(root)[0]
 
 
@@ -38,7 +38,7 @@ def xpath4():
     from lxml import etree
     xpathQuery = request.args.get('xml', '')
     root = etree.XML("<root><a>TEXT</a></root>")
-    find_text = etree.ETXPath(xpathQuery)
+    find_text = etree.ETXPath(xpathQuery) # $ Alert
     text = find_text(root)[0]
 
 @app.route("/xpath5")
@@ -46,4 +46,4 @@ def xpath5():
     import libxml2
     xpathQuery = request.args.get('xml', '')
     doc = libxml2.parseFile('xpath_injection/credential.xml')
-    results = doc.xpathEval(xpathQuery)
+    results = doc.xpathEval(xpathQuery) # $ Alert

@@ -1,1 +1,2 @@
-queries/Security/CWE-327/ECBEncryption.ql
+query: queries/Security/CWE-327/ECBEncryption.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

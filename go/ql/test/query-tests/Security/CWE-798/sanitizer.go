@@ -15,7 +15,7 @@ import (
 
 func check_ok() (interface{}, error) {
 	key := []byte(`some_key`)
-	return cristal.NewSignerHS(cristal.HS256, key) // BAD
+	return cristal.NewSignerHS(cristal.HS256, key) // $ Alert // BAD
 }
 
 func GenerateRandomString(size int) string {

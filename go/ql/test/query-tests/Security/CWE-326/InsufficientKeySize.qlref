@@ -1,1 +1,2 @@
-Security/CWE-326/InsufficientKeySize.ql
+query: Security/CWE-326/InsufficientKeySize.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -6,7 +6,7 @@ int fclose(FILE *stream);
 
 void funcTest1()
 {
-  umask(0666); // BAD
+  umask(0666); // $ Alert // BAD
   FILE *fe;
   fe = fopen("myFile.txt", "wt");
   fclose(fe);
@@ -27,7 +27,7 @@ void funcTest2(int mode)
   FILE *fe;
   fe = fopen("myFile.txt", "wt");
   fclose(fe);
-  chmod("myFile.txt",0555-mode); // BAD
+  chmod("myFile.txt",0555-mode); // $ Alert // BAD
 }
 
 void funcTest2g(int mode)

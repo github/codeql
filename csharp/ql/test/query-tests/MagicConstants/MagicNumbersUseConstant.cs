@@ -16,12 +16,12 @@ class UseConstantNumber
     byte[] values2 = { 241 };
 
     // BAD: Use constant
-    int values3 = 241;
+    int values3 = 241; // $ Alert[cs/use-number-constant]
 
     void Test()
     {
         // BAD: Use constant
-        var v1 = 241;
+        var v1 = 241; // $ Alert[cs/use-number-constant]
 
         // GOOD: Constant used
         var v2 = IntConstants.PUBLIC_CONST;

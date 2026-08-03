@@ -1,1 +1,2 @@
-Bad Practices/Naming Conventions/VariableNameTooShort.ql
+query: Bad Practices/Naming Conventions/VariableNameTooShort.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

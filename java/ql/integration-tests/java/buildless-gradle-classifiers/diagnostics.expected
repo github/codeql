@@ -1,4 +1,19 @@
 {
+  "attributes": {},
+  "markdownMessage": "Internal telemetry for the Java extractor.\n\nNo action needed.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/extractor/summary",
+    "name": "Java extractor telemetry"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
   "markdownMessage": "Java analysis used build tool Gradle to pick a JDK version and/or to recommend external dependencies.",
   "severity": "unknown",
   "source": {

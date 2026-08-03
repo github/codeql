@@ -8,8 +8,8 @@ void test1() {
 }
 
 void test2() {
-	int foo;
-	use(foo); // BAD
+	int foo; // $ Source Sink
+	use(foo); // $ Alert // BAD
 }
 
 void test3(bool b) {
@@ -27,7 +27,7 @@ void test4(bool b) {
 	if (b) {
 		foo = 1;
 	}
-	use(foo); // BAD [NOT DETECTED]
+	use(foo); // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 void test5() {
@@ -43,7 +43,7 @@ void test5(int count) {
 	for (int i = 0; i < count; i++) {
 		foo = i;
 	}
-	use(foo); // BAD [NOT DETECTED]
+	use(foo); // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 void test6(bool b) {
@@ -108,9 +108,9 @@ void test12() {
 }
 
 void test13() {
-	int foo;
+	int foo; // $ Source Sink
 	&foo;
-	use(foo); // BAD
+	use(foo); // $ Alert // BAD
 }
 
 void init(int* p) { *p = 1; }
@@ -223,8 +223,8 @@ void test19() {
 
 
 void test20() {
-  int x;
-  x += 0; // BAD
+  int x; // $ Source Sink
+  x += 0; // $ Alert // BAD
   use(x);
 }
 
@@ -246,9 +246,9 @@ void test21()
 	MyValue v1(1);
 	MyValue v2;
 	MyValue v3;
-	int i;
+	int i; // $ Source Sink
 
-	v3 = v1 >> i; // BAD: i is not initialized
+	v3 = v1 >> i; // $ Alert // BAD: i is not initialized
 	v3 = v2 >> 1; // BAD: v2 is not initialized [NOT DETECTED]
 }
 
@@ -338,10 +338,10 @@ int test28() {
 }
 
 int test29() {
-	bool a, b = true, c = true;
+	bool a, b = true, c = true; // $ Source Sink
 	int val;
 
-	while ((a && b) || c) // BAD (a is uninitialized)
+	while ((a && b) || c) // $ Alert // BAD (a is uninitialized)
 	{
 		val = 1;
 		b = false;
@@ -363,8 +363,8 @@ int test30() {
 int test31() {
 	bool loop = true;
 	bool stop = false;
-	bool a, b = true, c = true;
-	int val;
+	bool a, b = true, c = true; // $ Source Sink
+	int val; // $ Source Sink
 
 	while (loop || false)
 	{
@@ -374,7 +374,7 @@ int test31() {
 	{
 		stop = true;
 	}
-	while ((a && b) || c) // BAD (a is uninitialized)
+	while ((a && b) || c) // $ Alert // BAD (a is uninitialized)
 	{
 		b = false;
 		c = false;
@@ -383,7 +383,7 @@ int test31() {
 	{
 	} while (false);
 
-	return val; // BAD
+	return val; // $ Alert // BAD
 }
 
 int test32() {
@@ -419,10 +419,10 @@ int test34() {
 }
 
 int test35() {
-	int i, j;
+	int i, j; // $ Source Sink
 
 	for (int i = 0; i < 10; i++, j = 1) {
-		return j; // BAD
+		return j; // $ Alert // BAD
 	}
 }
 
@@ -436,12 +436,12 @@ int test36() {
 }
 
 int test38() {
-	int i, j;
+	int i, j; // $ Source Sink
 
 	for (int i = 0; false; i++, j = 1) {
 	}
 
-	return j; // BAD
+	return j; // $ Alert // BAD
 }
 
 void test39() {
@@ -457,29 +457,29 @@ void test40() {
 }
 
 void test41() {
-	int x;
+	int x; // $ Source Sink
 
-	x++; // BAD
+	x++; // $ Alert // BAD
 }
 
 void test42() {
-	int x;
+	int x; // $ Source Sink
 
-	void(x++); // BAD
+	void(x++); // $ Alert // BAD
 }
 
 void test43() {
-	int x;
+	int x; // $ Source Sink
 	int y = 1;
 
-	x + y; // BAD
+	x + y; // $ Alert // BAD
 }
 
 void test44() {
-	int x;
+	int x; // $ Source Sink
 	int y = 1;
 
-	void(x + y); // BAD
+	void(x + y); // $ Alert // BAD
 }
 
 enum class State { StateA, StateB, StateC };
@@ -523,7 +523,7 @@ int non_exhaustive_switch(State s) {
 			y = 2;
 			break;
 	}
-	return y; // BAD [NOT DETECTED] (y is not initialized when s = StateC)
+	return y; // $ MISSING: Alert // BAD [NOT DETECTED] (y is not initialized when s = StateC)
 }
 
 int non_exhaustive_switch_2(State s) {

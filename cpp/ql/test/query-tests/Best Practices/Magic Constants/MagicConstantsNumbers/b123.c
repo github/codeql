@@ -1,5 +1,5 @@
 
 static void f(void) {
-    char str[123];
+    char str[123]; // $ Alert
 }
 

@@ -1,1 +1,2 @@
-JPL_C/LOC-4/Rule 29/NonConstFunctionPointer.ql
+query: JPL_C/LOC-4/Rule 29/NonConstFunctionPointer.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

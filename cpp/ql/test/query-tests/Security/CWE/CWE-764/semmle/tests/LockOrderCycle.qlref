@@ -1,1 +1,2 @@
-Security/CWE/CWE-764/LockOrderCycle.ql
+query: Security/CWE/CWE-764/LockOrderCycle.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

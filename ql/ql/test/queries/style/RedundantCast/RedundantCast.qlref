@@ -1,1 +1,2 @@
-queries/style/RedundantCast.ql
+query: queries/style/RedundantCast.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

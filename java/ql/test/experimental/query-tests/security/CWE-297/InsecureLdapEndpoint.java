@@ -16,7 +16,7 @@ public class InsecureLdapEndpoint {
         env.put(Context.SECURITY_CREDENTIALS, "secpassword");
 
         // Disable SSL endpoint check
-        System.setProperty("com.sun.jndi.ldap.object.disableEndpointIdentification", "true");
+        System.setProperty("com.sun.jndi.ldap.object.disableEndpointIdentification", "true"); // $ Alert[java/insecure-ldaps-endpoint]
 
         return env;
     }
@@ -47,7 +47,7 @@ public class InsecureLdapEndpoint {
         // Disable SSL endpoint check
         Properties properties = new Properties();
         properties.setProperty("com.sun.jndi.ldap.object.disableEndpointIdentification", "true");
-        System.setProperties(properties);
+        System.setProperties(properties); // $ Alert[java/insecure-ldaps-endpoint]
 
         return env;
     }
@@ -65,7 +65,7 @@ public class InsecureLdapEndpoint {
         // Disable SSL endpoint check
         Properties properties = new Properties();
         properties.put("com.sun.jndi.ldap.object.disableEndpointIdentification", "true");
-        System.setProperties(properties);
+        System.setProperties(properties); // $ Alert[java/insecure-ldaps-endpoint]
 
         return env;
     }
@@ -81,7 +81,7 @@ public class InsecureLdapEndpoint {
         env.put(Context.SECURITY_CREDENTIALS, "secpassword");
 
         // Disable SSL endpoint check
-        System.setProperty(PROP_DISABLE_LDAP_ENDPOINT_IDENTIFICATION, Boolean.TRUE.toString());
+        System.setProperty(PROP_DISABLE_LDAP_ENDPOINT_IDENTIFICATION, Boolean.TRUE.toString()); // $ Alert[java/insecure-ldaps-endpoint]
 
         return env;
     }
@@ -99,7 +99,7 @@ public class InsecureLdapEndpoint {
         // Disable SSL endpoint check
         Properties properties = new Properties();
         properties.put("com.sun.jndi.ldap.object.disableEndpointIdentification", true);
-        System.setProperties(properties);
+        System.setProperties(properties); // $ Alert[java/insecure-ldaps-endpoint]
 
         return env;
     }

@@ -1,1 +1,2 @@
-API Abuse/InconsistentEqualsGetHashCode.ql
+query: API Abuse/InconsistentEqualsGetHashCode.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

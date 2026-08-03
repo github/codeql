@@ -1,12 +1,12 @@
 public class A {
   void f() {
     Object o = new Object();
-    if (o == null) { } // Useless check
-    if (o != null) { } // Useless check
+    if (o == null) { } // $ Alert // Useless check
+    if (o != null) { } // $ Alert // Useless check
     try {
       new Object();
     } catch(Exception e) {
-      if (e == null) { // Useless check
+      if (e == null) { // $ Alert // Useless check
         throw new Error();
       }
     }
@@ -15,7 +15,7 @@ public class A {
   void g(Object o) {
     if (o instanceof A) {
       A a = (A)o;
-      if (a != null) { // Useless check
+      if (a != null) { // $ Alert // Useless check
         throw new Error();
       }
     }
@@ -28,7 +28,7 @@ public class A {
   I h() {
     final A x = this;
     return () -> {
-      if (x != null) { // Useless check
+      if (x != null) { // $ Alert // Useless check
         return x;
       }
       return new A();
@@ -37,9 +37,9 @@ public class A {
 
   Object f2(Object x) {
     if (x == null) {
-      return this != null ? this : null; // Useless check
+      return this != null ? this : null; // $ Alert // Useless check
     }
-    if (x != null) { // Useless check
+    if (x != null) { // $ Alert // Useless check
       return x;
     }
     return null;
@@ -49,7 +49,7 @@ public class A {
 
   public void ex12() {
     finalObj.hashCode();
-    if (finalObj != null) { // Useless check
+    if (finalObj != null) { // $ Alert // Useless check
       finalObj.hashCode();
     }
   }

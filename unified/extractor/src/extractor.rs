@@ -1,9 +1,9 @@
 use clap::Args;
 use std::path::PathBuf;
 
-use codeql_extractor::extractor::simple;
-use codeql_extractor::trap;
 use crate::languages;
+use codeql_extractor::extractor::desugaring;
+use codeql_extractor::trap;
 
 #[derive(Args)]
 pub struct Options {
@@ -31,11 +31,13 @@ pub fn run(options: Options) -> std::io::Result<()> {
         lang.prefix = "unified";
     }
 
-    let extractor = simple::Extractor {
+    let extractor = desugaring::Extractor {
         prefix: "unified".to_string(),
         languages,
         trap_dir: options.output_dir,
-        trap_compression: trap::Compression::from_env("CODEQL_EXTRACTOR_UNIFIED_OPTION_TRAP_COMPRESSION"),
+        trap_compression: trap::Compression::from_env(
+            "CODEQL_EXTRACTOR_UNIFIED_OPTION_TRAP_COMPRESSION",
+        ),
         source_archive_dir: options.source_archive_dir,
         file_lists: vec![options.file_list],
     };

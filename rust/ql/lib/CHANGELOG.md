@@ -1,3 +1,15 @@
+## 0.2.18
+
+No user-facing changes.
+
+## 0.2.17
+
+No user-facing changes.
+
+## 0.2.16
+
+No user-facing changes.
+
 ## 0.2.15
 
 ### Minor Analysis Improvements

@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 throw new Exception("No SDK path available.");
             }
 
-            SourceGeneratorFolder = Path.Combine(sdkPath, "Sdks", "Microsoft.NET.Sdk.Razor", "source-generators");
+            SourceGeneratorFolder = Path.Join(sdkPath, "Sdks", "Microsoft.NET.Sdk.Razor", "source-generators");
             this.logger.LogInfo($"Razor source generator folder: {SourceGeneratorFolder}");
             if (!Directory.Exists(SourceGeneratorFolder))
             {

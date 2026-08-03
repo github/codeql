@@ -69,6 +69,26 @@ The CodeQL library for Java and Kotlin analysis exposes the following extensible
 
 The extensible predicates are populated using the models defined in data extension files.
 
+Specifying types in Java and Kotlin models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Nested and inner classes** are denoted by joining the enclosing type and the nested type with a dollar sign (``$``), for example ``Outer$Inner``. This applies both to the type column and to nested types in a signature. For example, the ``Level`` enum nested inside the ``Logger`` interface, nested inside the ``System`` class, is written as ``System$Logger$Level``:
+
+.. code-block:: yaml
+
+   - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String)", "", "Argument[1]", "log-injection", "manual"]
+
+**Generics** are erased, so type parameters are removed:
+
+- In the type column, leave out any type parameters, so ``List<E>`` becomes ``List``.
+- In the signature, replace each type parameter with its upper bound, or ``Object`` if it has none. So ``T`` from ``<T>`` becomes ``Object``, and ``T`` from ``<T extends Number>`` becomes ``Number``.
+
+For example, ``forEach`` on ``Iterable<T>`` takes a ``Consumer<? super T>`` argument, so the type is ``Iterable`` and the signature is ``(Consumer)``:
+
+.. code-block:: yaml
+
+   - ["java.lang", "Iterable", True, "forEach", "(Consumer)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
+
 Examples of custom model definitions
 ------------------------------------
 

@@ -1,0 +1,174 @@
+switch shape {
+case .circle(let r):
+  print(r)
+case .square(let s):
+  print(s)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            switchExpr
+              leftBrace: {
+              rightBrace: }
+              cases:
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                    labeledExpr
+                                      expression:
+                                        patternExpr
+                                          pattern:
+                                            valueBindingPattern
+                                              pattern:
+                                                identifierPattern
+                                                  identifier: identifier "r"
+                                              bindingSpecifier: let
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "circle"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "r"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            expressionPattern
+                              expression:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                    labeledExpr
+                                      expression:
+                                        patternExpr
+                                          pattern:
+                                            valueBindingPattern
+                                              pattern:
+                                                identifierPattern
+                                                  identifier: identifier "s"
+                                              bindingSpecifier: let
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "square"
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "s"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              subject:
+                declReferenceExpr
+                  baseName: identifier "shape"
+              switchKeyword: switch
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        switch_expr
+          value:
+            name_expr
+              identifier: identifier "shape"
+          case:
+            switch_case
+              pattern:
+                constructor_pattern
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "circle"
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "r"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "r"
+            switch_case
+              pattern:
+                constructor_pattern
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "square"
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "s"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "s"

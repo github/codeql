@@ -1,1 +1,2 @@
-experimental/cwe-347/MissingJWTVerification.ql
+query: experimental/cwe-347/MissingJWTVerification.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

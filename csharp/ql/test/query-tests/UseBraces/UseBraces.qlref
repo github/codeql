@@ -1,1 +1,2 @@
-Likely Bugs/Statements/UseBraces.ql
+query: Likely Bugs/Statements/UseBraces.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

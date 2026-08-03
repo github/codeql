@@ -25,7 +25,7 @@ public class InsecureWebResourceResponse extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(-1);
 
-        String inputUrl = getIntent().getStringExtra("inputUrl");
+        String inputUrl = getIntent().getStringExtra("inputUrl"); // $ Source[java/insecure-webview-resource-response]
 
         getBadResponse1(inputUrl);
 
@@ -65,7 +65,7 @@ public class InsecureWebResourceResponse extends Activity {
                     Uri uri = Uri.parse(url);
                     FileInputStream inputStream = new FileInputStream(uri.getPath());
                     String mimeType = getMimeTypeFromPath(uri.getPath());
-                    return new WebResourceResponse(mimeType, "UTF-8", inputStream);
+                    return new WebResourceResponse(mimeType, "UTF-8", inputStream); // $ Alert[java/insecure-webview-resource-response]
                 } catch (IOException ie) {
                     return new WebResourceResponse("text/plain", "UTF-8", null);
                 }
@@ -88,7 +88,7 @@ public class InsecureWebResourceResponse extends Activity {
                         File cacheFile = new File(getCacheDir(), uri.getLastPathSegment());
                         FileInputStream inputStream = new FileInputStream(cacheFile);
                         String mimeType = getMimeTypeFromPath(uri.getPath());
-                        return new WebResourceResponse(mimeType, "UTF-8", inputStream);
+                        return new WebResourceResponse(mimeType, "UTF-8", inputStream); // $ Alert[java/insecure-webview-resource-response]
                     } else {
                         return new WebResourceResponse("text/plain", "UTF-8", null);
                     }
@@ -114,7 +114,7 @@ public class InsecureWebResourceResponse extends Activity {
                     if (path.startsWith("files/")) {
                         FileInputStream inputStream = new FileInputStream(path.substring("files/".length()));
                         String mimeType = getMimeTypeFromPath(uri.getPath());
-                        return new WebResourceResponse(mimeType, "UTF-8", inputStream);
+                        return new WebResourceResponse(mimeType, "UTF-8", inputStream); // $ Alert[java/insecure-webview-resource-response]
                     } else {
                         return new WebResourceResponse("text/plain", "UTF-8", null);
                     }
@@ -196,7 +196,7 @@ public class InsecureWebResourceResponse extends Activity {
                         File cacheFile = new File(getCacheDir(), uri.getLastPathSegment());
                         FileInputStream inputStream = new FileInputStream(cacheFile);
                         String mimeType = getMimeTypeFromPath(uri.getPath());
-                        return new WebResourceResponse(mimeType, "UTF-8", inputStream);
+                        return new WebResourceResponse(mimeType, "UTF-8", inputStream); // $ Alert[java/insecure-webview-resource-response]
                     } else {
                         return new WebResourceResponse("text/plain", "UTF-8", null);
                     }
@@ -234,7 +234,7 @@ class VulnerableWebViewClient extends WebViewClient {
             Uri uri = Uri.parse(url);
             FileInputStream inputStream = new FileInputStream(uri.getPath());
             String mimeType = InsecureWebResourceResponse.getMimeTypeFromPath(uri.getPath());
-            return new WebResourceResponse(mimeType, "UTF-8", inputStream);
+            return new WebResourceResponse(mimeType, "UTF-8", inputStream); // $ Alert[java/insecure-webview-resource-response]
         } catch (IOException ie) {
             return new WebResourceResponse("text/plain", "UTF-8", null);
         }

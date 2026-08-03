@@ -1,1 +1,2 @@
-Architecture/Refactoring Opportunities/ClassesWithManyFields.ql
+query: Architecture/Refactoring Opportunities/ClassesWithManyFields.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

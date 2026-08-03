@@ -14,13 +14,13 @@ char* escape_html(char* raw);
 void bad_server1(char* query) {
   puts("<p>Query results for ");
   // BAD: Printing out an HTTP parameter with no escaping
-  puts(query);
+  puts(query); // $ Alert
   puts("\n<p>\n");
   puts(do_search(query));
 }
 
 void bad_server2(char* query) {
-  printf("<p>Query results for %s\n", query);
+  printf("<p>Query results for %s\n", query); // $ Alert
   // BAD: Printing out an HTTP parameter with no escaping
   puts("\n<p>");
   puts(do_search(query));
@@ -59,12 +59,12 @@ void bad_server3(char* query) {
 
   puts("<p>Query results for ");
   // BAD: Printing out an HTTP parameter with no escaping
-  puts(query_text);
+  puts(query_text); // $ Alert
   puts("\n<p>\n");
 }
 
 int main(int argc, char** argv) {
-  char* raw_query = getenv("QUERY_STRING");
+  char* raw_query = getenv("QUERY_STRING"); // $ Source
   if (strcmp("good1", argv[0]) == 0) {
     good_server1(raw_query);
   } else if (strcmp("bad1", argv[0]) == 0) {

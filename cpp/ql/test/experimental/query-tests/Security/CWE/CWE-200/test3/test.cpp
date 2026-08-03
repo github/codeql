@@ -10,8 +10,8 @@ int main(int argc, char *argv[])
 {
   FILE *fp;
   char buf[128];
-  fp = fopen("myFile.txt","r+"); // BAD [NOT DETECTED]
-  fgets(buf,128,fp); 
+  fp = fopen("myFile.txt","r+"); // $ MISSING: Alert // BAD [NOT DETECTED]
+  fgets(buf,128,fp);
   fprintf(fp,"%s\n","data to file");
   fclose(fp);
   return 0;

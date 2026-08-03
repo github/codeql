@@ -56,18 +56,6 @@ alias(
 )
 
 alias(
-    name = "cc-1.2.62",
-    actual = "@vendor_ts__cc-1.2.62//:cc",
-    tags = ["manual"],
-)
-
-alias(
-    name = "cc",
-    actual = "@vendor_ts__cc-1.2.62//:cc",
-    tags = ["manual"],
-)
-
-alias(
     name = "chalk-ir-0.104.0",
     actual = "@vendor_ts__chalk-ir-0.104.0//:chalk_ir",
     tags = ["manual"],
@@ -566,6 +554,18 @@ alias(
 )
 
 alias(
+    name = "swift-syntax-rs-0.1.0",
+    actual = "@vendor_ts__swift-syntax-rs-0.1.0//:swift_syntax_rs",
+    tags = ["manual"],
+)
+
+alias(
+    name = "swift-syntax-rs",
+    actual = "@vendor_ts__swift-syntax-rs-0.1.0//:swift_syntax_rs",
+    tags = ["manual"],
+)
+
+alias(
     name = "syn-2.0.117",
     actual = "@vendor_ts__syn-2.0.117//:syn",
     tags = ["manual"],
@@ -650,18 +650,6 @@ alias(
 )
 
 alias(
-    name = "tree-sitter-generate-0.26.9",
-    actual = "@vendor_ts__tree-sitter-generate-0.26.9//:tree_sitter_generate",
-    tags = ["manual"],
-)
-
-alias(
-    name = "tree-sitter-generate",
-    actual = "@vendor_ts__tree-sitter-generate-0.26.9//:tree_sitter_generate",
-    tags = ["manual"],
-)
-
-alias(
     name = "tree-sitter-json-0.24.8",
     actual = "@vendor_ts__tree-sitter-json-0.24.8//:tree_sitter_json",
     tags = ["manual"],
@@ -670,18 +658,6 @@ alias(
 alias(
     name = "tree-sitter-json",
     actual = "@vendor_ts__tree-sitter-json-0.24.8//:tree_sitter_json",
-    tags = ["manual"],
-)
-
-alias(
-    name = "tree-sitter-language-0.1.7",
-    actual = "@vendor_ts__tree-sitter-language-0.1.7//:tree_sitter_language",
-    tags = ["manual"],
-)
-
-alias(
-    name = "tree-sitter-language",
-    actual = "@vendor_ts__tree-sitter-language-0.1.7//:tree_sitter_language",
     tags = ["manual"],
 )
 
@@ -718,18 +694,6 @@ alias(
 alias(
     name = "tree-sitter-ruby",
     actual = "@vendor_ts__tree-sitter-ruby-0.23.1//:tree_sitter_ruby",
-    tags = ["manual"],
-)
-
-alias(
-    name = "tree-sitter-swift-0.7.2",
-    actual = "@vendor_ts__tree-sitter-swift-0.7.2//:tree_sitter_swift",
-    tags = ["manual"],
-)
-
-alias(
-    name = "tree-sitter-swift",
-    actual = "@vendor_ts__tree-sitter-swift-0.7.2//:tree_sitter_swift",
     tags = ["manual"],
 )
 

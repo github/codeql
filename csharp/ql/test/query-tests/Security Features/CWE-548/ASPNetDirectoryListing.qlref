@@ -1,1 +1,2 @@
-Security Features/CWE-548/ASPNetDirectoryListing.ql
+query: Security Features/CWE-548/ASPNetDirectoryListing.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
