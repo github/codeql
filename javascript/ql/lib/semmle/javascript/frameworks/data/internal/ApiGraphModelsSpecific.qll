@@ -164,7 +164,7 @@ private class RawFilePathEntryPoint extends API::EntryPoint {
 }
 
 /**
- * Gets an API node referring to the given global variable (if relevant).
+ * Gets an API node referring to the given file path (if relevant).
  */
 private API::Node getRawFilePathNode(string rawFilePathNode) {
   result = any(RawFilePathEntryPoint e | e.getPath() = rawFilePathNode).getANode()
