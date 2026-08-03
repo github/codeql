@@ -18,7 +18,9 @@ use ra_ap_syntax::{
     AstNode, NodeOrToken, SyntaxElementChildren, SyntaxError, SyntaxNode, SyntaxToken, TextRange,
     ast,
 };
-use ra_ap_syntax_bridge::{DocCommentDesugarMode, syntax_node_to_token_tree, token_tree_to_syntax_node};
+use ra_ap_syntax_bridge::{
+    DocCommentDesugarMode, syntax_node_to_token_tree, token_tree_to_syntax_node,
+};
 
 impl Emission<ast::Item> for Translator<'_> {
     fn pre_emit(&mut self, node: &ast::Item) -> Option<Label<generated::Item>> {
