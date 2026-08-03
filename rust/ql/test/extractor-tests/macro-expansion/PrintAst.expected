@@ -720,6 +720,94 @@ macro_expansion.rs:
 #   79|                 getSegment(): [PathSegment] i32
 #   79|                   getIdentifier(): [NameRef] i32
 #   83|   getItem(17): [Struct] struct MyDerive
+#   83|     getDeriveMacroExpansion(0): [MacroItems] MacroItems
+#   83|       getItem(0): [Impl] impl ...::Debug for MyDerive::<...> { ... }
+#   83|         getAssocItemList(): [AssocItemList] AssocItemList
+#   83|           getAssocItem(0): [Function] fn fmt
+#   83|             getParamList(): [ParamList] ParamList
+#   83|               getParam(0): [Param] ...: ...
+#   83|                 getTypeRepr(): [RefTypeRepr] RefTypeRepr
+#   83|                   getTypeRepr(): [PathTypeRepr] ...::Formatter
+#   83|                     getPath(): [Path] ...::Formatter
+#   83|                       getQualifier(): [Path] ...::fmt
+#   83|                         getQualifier(): [Path] $crate
+#   83|                           getSegment(): [PathSegment] $crate
+#   83|                             getIdentifier(): [NameRef] $crate
+#   83|                         getSegment(): [PathSegment] fmt
+#   83|                           getIdentifier(): [NameRef] fmt
+#   83|                       getSegment(): [PathSegment] Formatter
+#   83|                         getIdentifier(): [NameRef] Formatter
+#   83|                 getPat(): [IdentPat] f
+#   83|                   getName(): [Name] f
+#   83|               getSelfParam(): [SelfParam] SelfParam
+#   83|                 getName(): [Name] self
+#   83|             getFunctionBody(): [BlockExpr] { ... }
+#   83|               getStmtList(): [StmtList] StmtList
+#   83|                 getTailExpr(): [MatchExpr] match self { ... }
+#   83|                   getScrutinee(): [VariableAccess] self
+#   83|                     getPath(): [Path] self
+#   83|                       getSegment(): [PathSegment] self
+#   83|                         getIdentifier(): [NameRef] self
+#   83|                   getMatchArmList(): [MatchArmList] MatchArmList
+#   83|                     getArm(0): [MatchArm] ... => ...
+#   83|                       getExpr(): [MethodCallExpr] ... .finish()
+#   83|                         getArgList(): [ArgList] ArgList
+#   83|                         getIdentifier(): [NameRef] finish
+#   83|                         getReceiver(): [MethodCallExpr] ... .field(...)
+#   83|                           getArgList(): [ArgList] ArgList
+#   83|                             getArg(0): [StringLiteralExpr] "field"
+#   83|                             getArg(1): [RefExpr] &field
+#   85|                               getExpr(): [VariableAccess] field
+#   85|                                 getPath(): [Path] field
+#   85|                                   getSegment(): [PathSegment] field
+#   85|                                     getIdentifier(): [NameRef] field
+#   83|                           getIdentifier(): [NameRef] field
+#   83|                           getReceiver(): [MethodCallExpr] f.debug_struct(...)
+#   83|                             getArgList(): [ArgList] ArgList
+#   83|                               getArg(0): [StringLiteralExpr] "MyDerive"
+#   83|                             getIdentifier(): [NameRef] debug_struct
+#   83|                             getReceiver(): [VariableAccess] f
+#   83|                               getPath(): [Path] f
+#   83|                                 getSegment(): [PathSegment] f
+#   83|                                   getIdentifier(): [NameRef] f
+#   83|                       getPat(): [StructPat] MyDerive {...}
+#   84|                         getPath(): [Path] MyDerive
+#   84|                           getSegment(): [PathSegment] MyDerive
+#   84|                             getIdentifier(): [NameRef] MyDerive
+#   83|                         getStructPatFieldList(): [StructPatFieldList] StructPatFieldList
+#   83|                           getField(0): [StructPatField] field: ...
+#   85|                             getIdentifier(): [NameRef] field
+#   85|                             getPat(): [IdentPat] field
+#   85|                               getName(): [Name] field
+#   83|             getName(): [Name] fmt
+#   83|             getRetType(): [RetTypeRepr] RetTypeRepr
+#   83|               getTypeRepr(): [PathTypeRepr] ...::Result
+#   83|                 getPath(): [Path] ...::Result
+#   83|                   getQualifier(): [Path] ...::fmt
+#   83|                     getQualifier(): [Path] $crate
+#   83|                       getSegment(): [PathSegment] $crate
+#   83|                         getIdentifier(): [NameRef] $crate
+#   83|                     getSegment(): [PathSegment] fmt
+#   83|                       getIdentifier(): [NameRef] fmt
+#   83|                   getSegment(): [PathSegment] Result
+#   83|                     getIdentifier(): [NameRef] Result
+#   83|         getGenericParamList(): [GenericParamList] <...>
+#   83|         getSelfTy(): [PathTypeRepr] MyDerive::<...>
+#   83|           getPath(): [Path] MyDerive::<...>
+#   83|             getSegment(): [PathSegment] MyDerive::<...>
+#   83|               getGenericArgList(): [GenericArgList] <...>
+#   84|               getIdentifier(): [NameRef] MyDerive
+#   83|         getTrait(): [PathTypeRepr] ...::Debug
+#   83|           getPath(): [Path] ...::Debug
+#   83|             getQualifier(): [Path] ...::fmt
+#   83|               getQualifier(): [Path] $crate
+#   83|                 getSegment(): [PathSegment] $crate
+#   83|                   getIdentifier(): [NameRef] $crate
+#   83|               getSegment(): [PathSegment] fmt
+#   83|                 getIdentifier(): [NameRef] fmt
+#   83|             getSegment(): [PathSegment] Debug
+#   83|               getIdentifier(): [NameRef] Debug
+#   83|         getWhereClause(): [WhereClause] WhereClause
 #   83|     getAttr(0): [Attr] Attr
 #   83|       getMeta(): [TokenTreeMeta] TokenTreeMeta
 #   83|         getPath(): [Path] derive
@@ -735,6 +823,115 @@ macro_expansion.rs:
 #   85|             getSegment(): [PathSegment] usize
 #   85|               getIdentifier(): [NameRef] usize
 #   88|   getItem(18): [Enum] enum MyDeriveEnum
+#   88|     getDeriveMacroExpansion(0): [MacroItems] MacroItems
+#   88|       getItem(0): [Impl] impl ...::PartialEq for MyDeriveEnum::<...> { ... }
+#   88|         getAssocItemList(): [AssocItemList] AssocItemList
+#   88|           getAssocItem(0): [Function] fn eq
+#   88|             getParamList(): [ParamList] ParamList
+#   88|               getParam(0): [Param] ...: ...
+#   88|                 getTypeRepr(): [RefTypeRepr] RefTypeRepr
+#   88|                   getTypeRepr(): [PathTypeRepr] Self
+#   88|                     getPath(): [Path] Self
+#   88|                       getSegment(): [PathSegment] Self
+#   88|                         getIdentifier(): [NameRef] Self
+#   88|                 getPat(): [IdentPat] other
+#   88|                   getName(): [Name] other
+#   88|               getSelfParam(): [SelfParam] SelfParam
+#   88|                 getName(): [Name] self
+#   88|             getFunctionBody(): [BlockExpr] { ... }
+#   88|               getStmtList(): [StmtList] StmtList
+#   88|                 getTailExpr(): [MatchExpr] match ... { ... }
+#   88|                   getScrutinee(): [TupleExpr] TupleExpr
+#   88|                     getField(0): [VariableAccess] self
+#   88|                       getPath(): [Path] self
+#   88|                         getSegment(): [PathSegment] self
+#   88|                           getIdentifier(): [NameRef] self
+#   88|                     getField(1): [VariableAccess] other
+#   88|                       getPath(): [Path] other
+#   88|                         getSegment(): [PathSegment] other
+#   88|                           getIdentifier(): [NameRef] other
+#   88|                   getMatchArmList(): [MatchArmList] MatchArmList
+#   88|                     getArm(0): [MatchArm] ... => true
+#   88|                       getExpr(): [BooleanLiteralExpr] true
+#   88|                       getPat(): [TuplePat] TuplePat
+#   88|                         getField(0): [PathPat] ...::Variant1
+#   88|                           getPath(): [Path] ...::Variant1
+#   89|                             getQualifier(): [Path] MyDeriveEnum
+#   89|                               getSegment(): [PathSegment] MyDeriveEnum
+#   89|                                 getIdentifier(): [NameRef] MyDeriveEnum
+#   90|                             getSegment(): [PathSegment] Variant1
+#   90|                               getIdentifier(): [NameRef] Variant1
+#   88|                         getField(1): [PathPat] ...::Variant1
+#   88|                           getPath(): [Path] ...::Variant1
+#   89|                             getQualifier(): [Path] MyDeriveEnum
+#   89|                               getSegment(): [PathSegment] MyDeriveEnum
+#   89|                                 getIdentifier(): [NameRef] MyDeriveEnum
+#   90|                             getSegment(): [PathSegment] Variant1
+#   90|                               getIdentifier(): [NameRef] Variant1
+#   88|                     getArm(1): [MatchArm] ... => true
+#   88|                       getExpr(): [BooleanLiteralExpr] true
+#   88|                       getPat(): [TuplePat] TuplePat
+#   88|                         getField(0): [PathPat] ...::Variant2
+#   88|                           getPath(): [Path] ...::Variant2
+#   89|                             getQualifier(): [Path] MyDeriveEnum
+#   89|                               getSegment(): [PathSegment] MyDeriveEnum
+#   89|                                 getIdentifier(): [NameRef] MyDeriveEnum
+#   91|                             getSegment(): [PathSegment] Variant2
+#   91|                               getIdentifier(): [NameRef] Variant2
+#   88|                         getField(1): [PathPat] ...::Variant2
+#   88|                           getPath(): [Path] ...::Variant2
+#   89|                             getQualifier(): [Path] MyDeriveEnum
+#   89|                               getSegment(): [PathSegment] MyDeriveEnum
+#   89|                                 getIdentifier(): [NameRef] MyDeriveEnum
+#   91|                             getSegment(): [PathSegment] Variant2
+#   91|                               getIdentifier(): [NameRef] Variant2
+#   88|                     getArm(2): [MatchArm] ... => false
+#   88|                       getExpr(): [BooleanLiteralExpr] false
+#   88|                       getPat(): [IdentPat] _unused
+#   88|                         getName(): [Name] _unused
+#   88|             getName(): [Name] eq
+#   88|             getRetType(): [RetTypeRepr] RetTypeRepr
+#   88|               getTypeRepr(): [PathTypeRepr] bool
+#   88|                 getPath(): [Path] bool
+#   88|                   getSegment(): [PathSegment] bool
+#   88|                     getIdentifier(): [NameRef] bool
+#   88|         getGenericParamList(): [GenericParamList] <...>
+#   88|         getSelfTy(): [PathTypeRepr] MyDeriveEnum::<...>
+#   88|           getPath(): [Path] MyDeriveEnum::<...>
+#   88|             getSegment(): [PathSegment] MyDeriveEnum::<...>
+#   88|               getGenericArgList(): [GenericArgList] <...>
+#   89|               getIdentifier(): [NameRef] MyDeriveEnum
+#   88|         getTrait(): [PathTypeRepr] ...::PartialEq
+#   88|           getPath(): [Path] ...::PartialEq
+#   88|             getQualifier(): [Path] ...::cmp
+#   88|               getQualifier(): [Path] $crate
+#   88|                 getSegment(): [PathSegment] $crate
+#   88|                   getIdentifier(): [NameRef] $crate
+#   88|               getSegment(): [PathSegment] cmp
+#   88|                 getIdentifier(): [NameRef] cmp
+#   88|             getSegment(): [PathSegment] PartialEq
+#   88|               getIdentifier(): [NameRef] PartialEq
+#   88|         getWhereClause(): [WhereClause] WhereClause
+#   88|     getDeriveMacroExpansion(1): [MacroItems] MacroItems
+#   88|       getItem(0): [Impl] impl ...::Eq for MyDeriveEnum::<...> { ... }
+#   88|         getAssocItemList(): [AssocItemList] AssocItemList
+#   88|         getGenericParamList(): [GenericParamList] <...>
+#   88|         getSelfTy(): [PathTypeRepr] MyDeriveEnum::<...>
+#   88|           getPath(): [Path] MyDeriveEnum::<...>
+#   88|             getSegment(): [PathSegment] MyDeriveEnum::<...>
+#   88|               getGenericArgList(): [GenericArgList] <...>
+#   89|               getIdentifier(): [NameRef] MyDeriveEnum
+#   88|         getTrait(): [PathTypeRepr] ...::Eq
+#   88|           getPath(): [Path] ...::Eq
+#   88|             getQualifier(): [Path] ...::cmp
+#   88|               getQualifier(): [Path] $crate
+#   88|                 getSegment(): [PathSegment] $crate
+#   88|                   getIdentifier(): [NameRef] $crate
+#   88|               getSegment(): [PathSegment] cmp
+#   88|                 getIdentifier(): [NameRef] cmp
+#   88|             getSegment(): [PathSegment] Eq
+#   88|               getIdentifier(): [NameRef] Eq
+#   88|         getWhereClause(): [WhereClause] WhereClause
 #   88|     getAttr(0): [Attr] Attr
 #   88|       getMeta(): [TokenTreeMeta] TokenTreeMeta
 #   88|         getPath(): [Path] derive
