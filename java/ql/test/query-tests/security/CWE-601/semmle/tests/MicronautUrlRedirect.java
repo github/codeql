@@ -9,9 +9,9 @@ import java.net.URI;
 public class MicronautUrlRedirect {
 
     @Get("/bad")
-    public MutableHttpResponse<?> bad(@QueryValue String target) {
+    public MutableHttpResponse<?> bad(@QueryValue String target) { // $ Source
         // BAD: user-controlled redirect target
-        return HttpResponse.redirect(URI.create(target));
+        return HttpResponse.redirect(URI.create(target)); // $ Alert
     }
 
     @Get("/good")
@@ -24,17 +24,17 @@ public class MicronautUrlRedirect {
     }
 
     @Get("/permanent")
-    public MutableHttpResponse<?> permanent(@QueryValue String target) {
-        return HttpResponse.permanentRedirect(URI.create(target));
+    public MutableHttpResponse<?> permanent(@QueryValue String target) { // $ Source
+        return HttpResponse.permanentRedirect(URI.create(target)); // $ Alert
     }
 
     @Get("/see-other")
-    public MutableHttpResponse<?> seeOther(@QueryValue String target) {
-        return HttpResponse.seeOther(URI.create(target));
+    public MutableHttpResponse<?> seeOther(@QueryValue String target) { // $ Source
+        return HttpResponse.seeOther(URI.create(target)); // $ Alert
     }
 
     @Get("/temporary")
-    public MutableHttpResponse<?> temporary(@QueryValue String target) {
-        return HttpResponse.temporaryRedirect(URI.create(target));
+    public MutableHttpResponse<?> temporary(@QueryValue String target) { // $ Source
+        return HttpResponse.temporaryRedirect(URI.create(target)); // $ Alert
     }
 }

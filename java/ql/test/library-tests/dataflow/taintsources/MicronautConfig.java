@@ -15,21 +15,21 @@ class MicronautConfig {
 
     @Get("/secret")
     void testValueField() {
-        sink(secretValue); // $hasLocalValueFlow
+        sink(secretValue); // $ hasLocalValueFlow
     }
 
     @Get("/key")
     void testPropertyField() {
-        sink(apiKey); // $hasLocalValueFlow
+        sink(apiKey); // $ hasLocalValueFlow
     }
 
     @Get("/param")
     void testPropertyParam(@Property(name = "app.api-key") String appName) {
-        sink(appName); // $hasLocalValueFlow
+        sink(appName); // $ hasLocalValueFlow
     }
 
     @Get("/param")
     void testValueParam(@Value("${app.name}") String appName) {
-        sink(appName); // $hasLocalValueFlow
+        sink(appName); // $ hasLocalValueFlow
     }
 }

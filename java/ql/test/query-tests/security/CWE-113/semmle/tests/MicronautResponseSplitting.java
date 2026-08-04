@@ -11,9 +11,9 @@ import java.util.Map;
 public class MicronautResponseSplitting {
 
     @Get("/bad")
-    public MutableHttpResponse<?> bad(@QueryValue String headerValue) {
+    public MutableHttpResponse<?> bad(@QueryValue String headerValue) { // $ Source
         // BAD: user-controlled header value
-        return HttpResponse.ok().header("X-Custom", headerValue);
+        return HttpResponse.ok().header("X-Custom", headerValue); // $ Alert
     }
 
     @Get("/good")
@@ -24,16 +24,16 @@ public class MicronautResponseSplitting {
     }
 
     @Get("/bad-map")
-    public MutableHttpResponse<?> badMap(@QueryValue String headerValue) {
+    public MutableHttpResponse<?> badMap(@QueryValue String headerValue) { // $ Source
         // BAD: user-controlled header value
-        return HttpResponse.ok().headers(Collections.singletonMap("X-Custom", headerValue));
+        return HttpResponse.ok().headers(Collections.singletonMap("X-Custom", headerValue)); // $ Alert
     }
 
     @Get("/bad-map-mutation")
-    public MutableHttpResponse<?> badMapMutation(@QueryValue String headerValue) {
+    public MutableHttpResponse<?> badMapMutation(@QueryValue String headerValue) { // $ Source
         Map<CharSequence, CharSequence> headers = new HashMap<>();
         headers.put("X-Custom", headerValue);
-        return HttpResponse.ok().headers(headers);
+        return HttpResponse.ok().headers(headers); // $ Alert
     }
 
     @Get("/good-map")
