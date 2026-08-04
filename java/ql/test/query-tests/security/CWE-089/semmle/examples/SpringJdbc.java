@@ -106,6 +106,11 @@ public class SpringJdbc {
         .fetch();
     connection.createStatement(source()); // $ sqlInjection
     batch.add(source()); // $ sqlInjection
+    connection.createSavepoint(source()); // $ sqlInjection
+    connection.releaseSavepoint(source()); // $ sqlInjection
+    connection.rollbackTransactionToSavepoint(source()); // $ sqlInjection
+    connection.createStatement("INSERT INTO test VALUES (1)")
+        .returnGeneratedValues(source()); // $ sqlInjection
   }
 
 }
