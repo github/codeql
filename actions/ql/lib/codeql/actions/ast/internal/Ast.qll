@@ -1874,7 +1874,12 @@ class MatrixExpressionImpl extends SimpleReferenceExpressionImpl {
     exists(StrategyImpl s, MatrixAccessPathImpl p, ScalarValueImpl v |
       (s = this.getEnclosingJob().getStrategy() or s = this.getEnclosingWorkflow().getStrategy()) and
       p.toString() = fieldAccess and
-      resolveMatrixAccessPath(s.getMatrix(), p).getNode(_) = v.getNode() and
+      (
+        resolveMatrixAccessPath(s.getMatrix(), p).getNode(_) = v.getNode()
+        or
+        resolveMatrixAccessPath(s.getMatrix().lookup("include").(YamlSequence).getElementNode(_), p)
+            .getNode(_) = v.getNode()
+      ) and
       // Exclude values containing matrix expressions to avoid recursion
       not exists(MatrixExpressionImpl e | e.getParentNode() = v) and
       result = v.getValue()
@@ -1903,7 +1908,7 @@ class MatrixAccessPathImpl extends TMatrixAccessPathNode {
 }
 
 private YamlMappingLikeNode resolveMatrixAccessPath(
-  // TODO: support `include` and `exclude` keys
+  // TODO: support `exclude` keys
   // https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs#expanding-or-adding-matrix-configurations
   YamlMappingLikeNode root, MatrixAccessPathImpl accessPath
 ) {

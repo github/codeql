@@ -1,0 +1,15 @@
+on: issue_comment
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ref: ["main"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: example/example
+          ref: ${{ matrix.ref }}
+      # NOT VULNERABLE: matrix.ref can only be the static value "main".
+      - run: npm install

@@ -397,4 +397,7 @@ class InputsExpression extends SimpleReferenceExpression instanceof InputsExpres
 
 class EnvExpression extends SimpleReferenceExpression instanceof EnvExpressionImpl { }
 
-class MatrixExpression extends SimpleReferenceExpression instanceof MatrixExpressionImpl { }
+class MatrixExpression extends SimpleReferenceExpression instanceof MatrixExpressionImpl {
+  /** Gets a scalar value declared for this matrix expression. */
+  string getADeclaredValue() { result = super.getLiteralValues() }
+}

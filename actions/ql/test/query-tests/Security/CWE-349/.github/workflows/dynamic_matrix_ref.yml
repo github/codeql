@@ -1,0 +1,15 @@
+on: issue_comment
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ref: ["${{ github.event.comment.body }}"]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: example/example
+          ref: ${{ matrix.ref }}
+      # VULNERABLE: matrix.ref is controlled by the event payload.
+      - run: npm install

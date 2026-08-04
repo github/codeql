@@ -227,6 +227,14 @@ abstract class MutableRefCheckoutStep extends PRHeadCheckoutStep { }
 /** Checkout of a Pull Request HEAD ref */
 abstract class SHACheckoutStep extends PRHeadCheckoutStep { }
 
+private predicate hasOnlyStaticMatrixValues(Expression expr) {
+  expr instanceof MatrixExpression and
+  exists(expr.(MatrixExpression).getADeclaredValue()) and
+  not exists(string value |
+    value = expr.(MatrixExpression).getADeclaredValue() and value.matches("%${{%")
+  )
+}
+
 /** Checkout of a Pull Request HEAD ref using actions/checkout action */
 class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesStep {
   ActionsMutableRefCheckout() {
@@ -246,7 +254,8 @@ class ActionsMutableRefCheckout extends MutableRefCheckoutStep instanceof UsesSt
         expr.(StepsExpression).getStepId() = value
         or
         expr.(SimpleReferenceExpression).getFieldName() = value and
-        not expr instanceof GitHubExpression
+        not expr instanceof GitHubExpression and
+        not hasOnlyStaticMatrixValues(expr)
         or
         expr.(NeedsExpression).getNeededJobId() = value
         or
