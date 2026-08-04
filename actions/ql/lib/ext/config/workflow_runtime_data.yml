@@ -7,3 +7,11 @@ extensions:
       pack: codeql/actions-all
       extensible: workflowDataModel
     data: []
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: externalReusableWorkflowDataModel
+    data: []
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: externalCompositeActionDataModel
+    data: []

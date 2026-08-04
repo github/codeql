@@ -1,0 +1,7 @@
+name: External leaf action at v2
+description: Completes a self-repository action chain
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: echo complete

@@ -372,6 +372,15 @@ class ExpressionImpl extends AstNodeImpl, TExpressionNode {
   }
 }
 
+bindingset[owner, repo, action_path]
+private string externalCompositeActionName(string owner, string repo, string action_path) {
+  exists(string trimmed_path | trimmed_path = action_path.trim() |
+    if trimmed_path = ""
+    then result = owner.trim() + "/" + repo.trim()
+    else result = owner.trim() + "/" + repo.trim() + "/" + trimmed_path
+  )
+}
+
 class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
   YamlMapping n;
 
@@ -415,7 +424,33 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
     )
   }
 
+  /**
+   * Holds if this composite action is described by an external composite action model with the
+   * given repository, action, revision, and local path details.
+   */
+  predicate hasExternalCompositeActionModel(
+    string owner, string repo, string action_path, string requested_ref, string resolved_commit_sha,
+    string local_path
+  ) {
+    externalCompositeActionDataModel(owner, repo, action_path, requested_ref, resolved_commit_sha,
+      local_path) and
+    local_path.trim() = this.getLocation().getFile().getRelativePath()
+  }
+
+  /** Holds if this composite action was downloaded from an external repository. */
+  predicate isExternalCompositeAction() {
+    this.hasExternalCompositeActionModel(_, _, _, _, _, _)
+    or
+    this.getLocation().getFile().getRelativePath().matches("9466014afba34ef28239871ceabf4132/%")
+  }
+
   string getResolvedPath() {
+    exists(string owner, string repo, string action_path, string requested_ref |
+      this.hasExternalCompositeActionModel(owner, repo, action_path, requested_ref, _, _) and
+      result = externalCompositeActionName(owner, repo, action_path) + "@" + requested_ref.trim()
+    )
+    or
+    not this.isExternalCompositeAction() and
     result =
       ["", "./"] +
         this.getLocation()
@@ -424,7 +459,6 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
             .replaceAll(getRepoRoot(), "")
             .replaceAll("/action.yml", "")
             .replaceAll("/action.yaml", "")
-            .replaceAll(".github/actions/external/", "")
   }
 
   private predicate hasExplicitSecretAccess() {
@@ -542,14 +576,36 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
     )
   }
 
+  /**
+   * Holds if this reusable workflow is described by an external reusable workflow model with the
+   * given repository, workflow, revision, and local path details.
+   */
+  predicate hasExternalReusableWorkflowModel(
+    string owner, string repo, string workflow_path, string requested_ref,
+    string resolved_commit_sha, string local_path
+  ) {
+    externalReusableWorkflowDataModel(owner, repo, workflow_path, requested_ref,
+      resolved_commit_sha, local_path) and
+    local_path.trim() = this.getLocation().getFile().getRelativePath()
+  }
+
+  /** Holds if this reusable workflow was downloaded from an external repository. */
+  predicate isExternalReusableWorkflow() {
+    this.hasExternalReusableWorkflowModel(_, _, _, _, _, _)
+    or
+    this.getLocation().getFile().getRelativePath().matches("9466014afba34ef28239871ceabf4132/%") // root folder for external workflows and composite actions
+  }
+
   string getResolvedPath() {
+    exists(string owner, string repo, string workflow_path, string requested_ref |
+      this.hasExternalReusableWorkflowModel(owner, repo, workflow_path, requested_ref, _, _) and
+      result =
+        owner.trim() + "/" + repo.trim() + "/" + workflow_path.trim() + "@" + requested_ref.trim()
+    )
+    or
+    not this.isExternalReusableWorkflow() and
     result =
-      ["", "./"] +
-        this.getLocation()
-            .getFile()
-            .getRelativePath()
-            .replaceAll(getRepoRoot(), "")
-            .replaceAll(".github/workflows/external/", "")
+      ["", "./"] + this.getLocation().getFile().getRelativePath().replaceAll(getRepoRoot(), "")
   }
 }
 
@@ -1336,6 +1392,9 @@ class EnvImpl extends AstNodeImpl, TEnvNode {
 abstract class UsesImpl extends AstNodeImpl {
   abstract string getCallee();
 
+  /** Gets the canonical name used to resolve this `uses` element to its callable target. */
+  abstract string getCallableName();
+
   abstract ScalarValueImpl getCalleeNode();
 
   abstract string getVersion();
@@ -1374,6 +1433,72 @@ class UsesStepImpl extends StepImpl, UsesImpl {
     else result = u.getValue()
   }
 
+  private predicate isWorkspaceLocalCall() { u.getValue().matches(["./%", ".github/%"]) }
+
+  private predicate isSelfCall() { u.getValue().matches("$/%") }
+
+  private predicate isLocalCall() { this.isWorkspaceLocalCall() or this.isSelfCall() }
+
+  private predicate hasModeledExternalCallee() {
+    exists(string owner, string repo, string action_path, string requested_ref |
+      externalCompositeActionDataModel(owner, repo, action_path, requested_ref, _, _) and
+      this.getCallee() = externalCompositeActionName(owner, repo, action_path) and
+      this.getVersion() = requested_ref.trim()
+    )
+  }
+
+  private predicate hasExternalEnclosingCompositeAction() {
+    exists(CompositeActionImpl action |
+      action = this.getEnclosingCompositeAction() and action.isExternalCompositeAction()
+    )
+  }
+
+  private predicate hasModeledExternalEnclosingCompositeAction() {
+    exists(CompositeActionImpl action |
+      action = this.getEnclosingCompositeAction() and
+      action.hasExternalCompositeActionModel(_, _, _, _, _, _)
+    )
+  }
+
+  /**
+   * Gets the callable name for a `$/xyz` self-call. The `$/` prefix identifies the repository of
+   * the enclosing composite action and is not part of the action path.
+   *
+   * The argument to `suffix` is a zero-based start offset. In the two-character `$/` prefix, `$`
+   * is at offset 0 and `/` at offset 1, so `suffix(2)` starts at the first character of the
+   * repository-relative action path. For example, `$/.github/actions/leaf` becomes
+   * `.github/actions/leaf`, and `$/action` becomes `action`.
+   */
+  private string getSelfCallableName() {
+    exists(CompositeActionImpl action, string owner, string repo, string requested_ref |
+      action = this.getEnclosingCompositeAction() and
+      action.hasExternalCompositeActionModel(owner, repo, _, requested_ref, _, _) and
+      result =
+        externalCompositeActionName(owner, repo, this.getCallee().suffix(2)) + "@" +
+          requested_ref.trim()
+    )
+    or
+    not this.hasExternalEnclosingCompositeAction() and
+    result = this.getCallee().suffix(2)
+  }
+
+  override string getCallableName() {
+    this.isWorkspaceLocalCall() and
+    (
+      this.hasModeledExternalEnclosingCompositeAction()
+      or
+      not this.hasExternalEnclosingCompositeAction()
+    ) and
+    result = this.getCallee()
+    or
+    this.isSelfCall() and
+    result = this.getSelfCallableName()
+    or
+    not this.isLocalCall() and
+    this.hasModeledExternalCallee() and
+    result = this.getCallee() + "@" + this.getVersion()
+  }
+
   override ScalarValueImpl getCalleeNode() { result.getNode() = u }
 
   /** Gets the version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`. */
@@ -1388,11 +1513,10 @@ class UsesStepImpl extends StepImpl, UsesImpl {
  * Gets a regular expression that parses an `owner/repo@version` reference within a `uses` field in an Actions job step.
  * local repo: octo-org/this-repo/.github/workflows/workflow-1.yml@172239021f7ba04fe7327647b213799853a9eb89
  * local repo: ./.github/workflows/workflow-2.yml
+ * local repo: $/.github/workflows/workflow-2.yml
  * remote repo: octo-org/another-repo/.github/workflows/workflow.yml@v1
  */
 private string repoUsesParser() { result = "([^/]+)/([^/]+)/([^@]+)@(.+)" }
-
-private string pathUsesParser() { result = "\\./(.+)" }
 
 class ExternalJobImpl extends JobImpl, UsesImpl {
   YamlScalar u;
@@ -1400,13 +1524,50 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
   ExternalJobImpl() { n.lookup("uses") = u }
 
   override string getCallee() {
-    if u.getValue().matches("./%")
-    then result = u.getValue().regexpCapture(pathUsesParser(), 1)
+    if u.getValue().matches(["./%", "$/%"])
+    then result = u.getValue().suffix(2)
     else
       result =
         u.getValue().regexpCapture(repoUsesParser(), 1) + "/" +
           u.getValue().regexpCapture(repoUsesParser(), 2) + "/" +
           u.getValue().regexpCapture(repoUsesParser(), 3)
+  }
+
+  private predicate isLocalCall() { u.getValue().matches(["./%", "$/%"]) }
+
+  private predicate hasExternalEnclosingWorkflow() {
+    exists(ReusableWorkflowImpl enclosing_workflow |
+      enclosing_workflow = this.getEnclosingWorkflow() and
+      enclosing_workflow.isExternalReusableWorkflow()
+    )
+  }
+
+  private predicate hasModeledExternalCallee() {
+    exists(string owner, string repo, string workflow_path, string requested_ref |
+      externalReusableWorkflowDataModel(owner, repo, workflow_path, requested_ref, _, _) and
+      this.getCallee() = owner.trim() + "/" + repo.trim() + "/" + workflow_path.trim() and
+      this.getVersion() = requested_ref.trim()
+    )
+  }
+
+  override string getCallableName() {
+    this.isLocalCall() and
+    exists(
+      ReusableWorkflowImpl enclosing_workflow, string owner, string repo, string requested_ref
+    |
+      enclosing_workflow = this.getEnclosingWorkflow() and
+      enclosing_workflow.hasExternalReusableWorkflowModel(owner, repo, _, requested_ref, _, _) and
+      result =
+        owner.trim() + "/" + repo.trim() + "/" + this.getCallee() + "@" + requested_ref.trim()
+    )
+    or
+    this.isLocalCall() and
+    not this.hasExternalEnclosingWorkflow() and
+    result = this.getCallee()
+    or
+    not this.isLocalCall() and
+    this.hasModeledExternalCallee() and
+    result = this.getCallee() + "@" + this.getVersion()
   }
 
   override ScalarValueImpl getCalleeNode() { result.getNode() = u }

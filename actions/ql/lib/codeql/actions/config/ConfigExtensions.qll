@@ -10,6 +10,22 @@ extensible predicate workflowDataModel(
 );
 
 /**
+ * Holds if an external reusable workflow was downloaded for the given reference.
+ */
+extensible predicate externalReusableWorkflowDataModel(
+  string owner, string repo, string workflow_path, string requested_ref, string resolved_commit_sha,
+  string local_path
+);
+
+/**
+ * Holds if an external composite action was downloaded for the given reference.
+ */
+extensible predicate externalCompositeActionDataModel(
+  string owner, string repo, string action_path, string requested_ref, string resolved_commit_sha,
+  string local_path
+);
+
+/**
  * Holds if repository data model exists for the given parameters.
  */
 extensible predicate repositoryDataModel(string visibility, string default_branch_name);

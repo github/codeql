@@ -1,13 +1,11 @@
-# Note: We're adding the `reusable_workflows` subdirectories to proactively
-# record workflows that were called cross-repo, check them out locally,
-# and enable an interprocedural analysis across the workflow files.
-# These workflows follow the convention `.github/reusable_workflows/<nwo>/*.ya?ml`
+# Include downloaded external reusable workflows to enable interprocedural analysis.
+# These workflows are stored below a generated UUID directory at the repository root.
 $DefaultPathFilters = @(
     'exclude:**/*',
     'include:.github/workflows/*.yml',
     'include:.github/workflows/*.yaml',
-    'include:.github/reusable_workflows/**/*.yml',
-    'include:.github/reusable_workflows/**/*.yaml',
+    'include:9466014afba34ef28239871ceabf4132/**/*.yml',
+    'include:9466014afba34ef28239871ceabf4132/**/*.yaml',
     'include:**/action.yml',
     'include:**/action.yaml'
 )

@@ -17,6 +17,42 @@ predicate workflowDataModel(
 }
 
 /**
+ * MaD models for downloaded external reusable workflows
+ * Fields:
+ *    - owner: Repository owner
+ *    - repo: Repository name
+ *    - workflow_path: Workflow path within the repository
+ *    - requested_ref: Ref used by the caller
+ *    - resolved_commit_sha: Commit to which the ref resolved
+ *    - local_path: Downloaded workflow path within the analyzed repository
+ */
+predicate externalReusableWorkflowDataModel(
+  string owner, string repo, string workflow_path, string requested_ref, string resolved_commit_sha,
+  string local_path
+) {
+  Extensions::externalReusableWorkflowDataModel(owner, repo, workflow_path, requested_ref,
+    resolved_commit_sha, local_path)
+}
+
+/**
+ * MaD models for downloaded external composite actions
+ * Fields:
+ *    - owner: Repository owner
+ *    - repo: Repository name
+ *    - action_path: Action path within the repository
+ *    - requested_ref: Ref used by the caller
+ *    - resolved_commit_sha: Commit to which the ref resolved
+ *    - local_path: Downloaded action metadata path within the analyzed repository
+ */
+predicate externalCompositeActionDataModel(
+  string owner, string repo, string action_path, string requested_ref, string resolved_commit_sha,
+  string local_path
+) {
+  Extensions::externalCompositeActionDataModel(owner, repo, action_path, requested_ref,
+    resolved_commit_sha, local_path)
+}
+
+/**
  * MaD models for repository details
  * Fields:
  *    - visibility: Visibility of the repository

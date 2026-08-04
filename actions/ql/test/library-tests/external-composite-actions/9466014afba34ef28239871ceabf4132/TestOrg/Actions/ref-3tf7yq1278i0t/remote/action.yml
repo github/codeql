@@ -1,0 +1,6 @@
+name: External action at v2
+description: Calls an action in the same external repository
+runs:
+  using: composite
+  steps:
+    - uses: $/.github/actions/leaf

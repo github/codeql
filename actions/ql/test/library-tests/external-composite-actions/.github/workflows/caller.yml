@@ -1,0 +1,12 @@
+name: Call external composite actions through local actions
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/root-v1
+      - uses: ./.github/actions/root-v2
+      - uses: UnmodeledOrg/Actions/remote@main

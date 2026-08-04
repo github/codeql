@@ -1,0 +1,8 @@
+name: Call an unmodeled external reusable workflow
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  legacy:
+    uses: LegacyOrg/LegacyRepo/.github/workflows/legacy.yml@main

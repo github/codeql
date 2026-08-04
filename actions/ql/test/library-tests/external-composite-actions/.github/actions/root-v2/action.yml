@@ -1,0 +1,6 @@
+name: Local root action for v2
+description: Calls the v2 external action
+runs:
+  using: composite
+  steps:
+    - uses: TestOrg/Actions/remote@v2
