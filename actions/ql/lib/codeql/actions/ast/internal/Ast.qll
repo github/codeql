@@ -374,10 +374,11 @@ class ExpressionImpl extends AstNodeImpl, TExpressionNode {
 
 bindingset[owner, repo, action_path]
 private string externalCompositeActionName(string owner, string repo, string action_path) {
-  action_path.trim() = "" and result = owner.trim() + "/" + repo.trim()
-  or
-  not action_path.trim() = "" and
-  result = owner.trim() + "/" + repo.trim() + "/" + action_path.trim()
+  exists(string trimmed_path | trimmed_path = action_path.trim() |
+    if trimmed_path = ""
+    then result = owner.trim() + "/" + repo.trim()
+    else result = owner.trim() + "/" + repo.trim() + "/" + trimmed_path
+  )
 }
 
 class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
