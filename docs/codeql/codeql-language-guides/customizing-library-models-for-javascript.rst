@@ -549,6 +549,7 @@ A type can be defined by adding ``typeModel`` tuples for that type. Additionally
 - The name of an NPM package matches imports of that package. For example, the type ``express`` matches the expression ``require("express")``. If the package name includes dots, it must be surrounded by single quotes, such as in ``'lodash.escape'``.
 - The type ``global`` identifies the global object, also known as ``window``. In JavaScript, global variables are properties of the global object, so global variables can be identified using this type. (This type also matches imports of the NPM package named ``global``, which is a package that happens to export the global object.)
 - A qualified type name of form ``<package>.<type>`` identifies expressions of type ``<type>`` from ``<package>``. For example, ``mysql.Connection`` identifies expression of type ``Connection`` from the ``mysql`` package. Note that this only works if type annotations are present in the codebase, or if sufficient ``typeModel`` tuples have been provided for that type.
+- A string of form ``file:<path>`` identifies expressions that are imported from a file at the given path. The path is relative to the root of the codebase, must use forward slashes as path separator, must include the file extension, and is case-sensitive. For example, ``file:src/utils.js`` identifies expressions such as ``require('./utils')`` inside ``src/``, or ``require('../src/utils')`` inside another top-level folder.
 
 Access paths
 ------------
