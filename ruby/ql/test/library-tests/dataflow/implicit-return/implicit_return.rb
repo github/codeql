@@ -18,7 +18,7 @@ sink(m_body) # $ hasValueFlow=1
 def m_body_ensure
   source(2)
 ensure
-  nil
+  source(20)
 end
 
 sink(m_body_ensure) # $ MISSING: hasValueFlow=2
@@ -38,14 +38,14 @@ def m_rescue_ensure
 rescue
   source(4)
 ensure
-  nil
+  source(40)
 end
 
 sink(m_rescue_ensure) # $ MISSING: hasValueFlow=4
 
 # Implicit return from an `else` clause.
 def m_else
-  # nothing raises
+  source(50)
 rescue
   nil
 else
@@ -56,7 +56,7 @@ sink(m_else) # $ MISSING: hasValueFlow=5
 
 # Implicit return from an `else` clause when an `ensure` clause is present.
 def m_else_ensure
-  # nothing raises
+  source(60)
 rescue
   nil
 else
