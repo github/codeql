@@ -1,1 +1,2 @@
-Likely Bugs/RecursiveEquals.ql
+query: Likely Bugs/RecursiveEquals.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -13,9 +13,9 @@ edges
 | main.rs:29:13:29:22 | f(...) | main.rs:29:9:29:9 | b | provenance |  |
 | main.rs:29:21:29:21 | a | main.rs:27:20:27:23 | ... | provenance |  |
 | main.rs:29:21:29:21 | a | main.rs:29:13:29:22 | f(...) | provenance |  |
-| main.rs:37:16:37:25 | source(...) | main.rs:39:5:39:5 | [post] f [captured capt] | provenance |  |
-| main.rs:39:5:39:5 | [post] f [captured capt] | main.rs:40:10:40:13 | capt | provenance |  |
-| main.rs:39:5:39:5 | [post] f [captured capt] | main.rs:44:5:44:5 | g [captured capt] | provenance |  |
+| main.rs:37:16:37:25 | source(...) | main.rs:39:5:39:5 | [post] f : ... => .. [captured capt] | provenance |  |
+| main.rs:39:5:39:5 | [post] f : ... => .. [captured capt] | main.rs:40:10:40:13 | capt | provenance |  |
+| main.rs:39:5:39:5 | [post] f : ... => .. [captured capt] | main.rs:44:5:44:5 | g [captured capt] | provenance |  |
 | main.rs:44:5:44:5 | g [captured capt] | main.rs:42:14:42:17 | capt | provenance |  |
 | main.rs:47:29:49:1 | { ... } | main.rs:57:10:57:12 | f(...) | provenance |  |
 | main.rs:48:5:48:14 | source(...) | main.rs:47:29:49:1 | { ... } | provenance |  |
@@ -30,6 +30,31 @@ edges
 | main.rs:77:13:77:22 | f(...) | main.rs:77:9:77:9 | b | provenance |  |
 | main.rs:77:21:77:21 | a | main.rs:66:24:66:32 | ...: i64 | provenance |  |
 | main.rs:77:21:77:21 | a | main.rs:77:13:77:22 | f(...) | provenance |  |
+| main.rs:81:28:81:33 | ...: i64 | main.rs:82:7:82:7 | x | provenance |  |
+| main.rs:81:28:81:33 | ...: i64 | main.rs:82:7:82:7 | x | provenance |  |
+| main.rs:81:28:81:33 | ...: i64 | main.rs:82:7:82:7 | x | provenance |  |
+| main.rs:82:7:82:7 | x | main.rs:87:12:87:12 | ... | provenance |  |
+| main.rs:82:7:82:7 | x | main.rs:89:12:89:12 | ... | provenance |  |
+| main.rs:82:7:82:7 | x | main.rs:99:17:99:17 | ... | provenance |  |
+| main.rs:82:7:82:7 | x | main.rs:101:17:101:17 | ... | provenance |  |
+| main.rs:86:9:86:9 | a | main.rs:87:24:87:24 | a | provenance |  |
+| main.rs:86:13:86:22 | source(...) | main.rs:86:9:86:9 | a | provenance |  |
+| main.rs:87:12:87:12 | ... | main.rs:87:20:87:20 | x | provenance |  |
+| main.rs:87:24:87:24 | a | main.rs:81:28:81:33 | ...: i64 | provenance |  |
+| main.rs:88:9:88:9 | b | main.rs:89:24:89:24 | b | provenance |  |
+| main.rs:88:13:88:22 | source(...) | main.rs:88:9:88:9 | b | provenance |  |
+| main.rs:89:12:89:12 | ... | main.rs:89:20:89:20 | x | provenance |  |
+| main.rs:89:24:89:24 | b | main.rs:81:28:81:33 | ...: i64 | provenance |  |
+| main.rs:93:33:93:38 | ...: i64 | main.rs:94:14:94:14 | x | provenance |  |
+| main.rs:94:14:94:14 | x | main.rs:81:28:81:33 | ...: i64 | provenance |  |
+| main.rs:98:9:98:9 | a | main.rs:99:29:99:29 | a | provenance |  |
+| main.rs:98:13:98:22 | source(...) | main.rs:98:9:98:9 | a | provenance |  |
+| main.rs:99:17:99:17 | ... | main.rs:99:25:99:25 | x | provenance |  |
+| main.rs:99:29:99:29 | a | main.rs:93:33:93:38 | ...: i64 | provenance |  |
+| main.rs:100:9:100:9 | b | main.rs:101:29:101:29 | b | provenance |  |
+| main.rs:100:13:100:22 | source(...) | main.rs:100:9:100:9 | b | provenance |  |
+| main.rs:101:17:101:17 | ... | main.rs:101:25:101:25 | x | provenance |  |
+| main.rs:101:29:101:29 | b | main.rs:93:33:93:38 | ...: i64 | provenance |  |
 nodes
 | main.rs:10:20:10:52 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
 | main.rs:10:30:10:39 | source(...) | semmle.label | source(...) |
@@ -48,7 +73,7 @@ nodes
 | main.rs:29:21:29:21 | a | semmle.label | a |
 | main.rs:30:10:30:10 | b | semmle.label | b |
 | main.rs:37:16:37:25 | source(...) | semmle.label | source(...) |
-| main.rs:39:5:39:5 | [post] f [captured capt] | semmle.label | [post] f [captured capt] |
+| main.rs:39:5:39:5 | [post] f : ... => .. [captured capt] | semmle.label | [post] f : ... => .. [captured capt] |
 | main.rs:40:10:40:13 | capt | semmle.label | capt |
 | main.rs:42:14:42:17 | capt | semmle.label | capt |
 | main.rs:44:5:44:5 | g [captured capt] | semmle.label | g [captured capt] |
@@ -68,6 +93,34 @@ nodes
 | main.rs:77:13:77:22 | f(...) | semmle.label | f(...) |
 | main.rs:77:21:77:21 | a | semmle.label | a |
 | main.rs:78:10:78:10 | b | semmle.label | b |
+| main.rs:81:28:81:33 | ...: i64 | semmle.label | ...: i64 |
+| main.rs:81:28:81:33 | ...: i64 | semmle.label | ...: i64 |
+| main.rs:81:28:81:33 | ...: i64 | semmle.label | ...: i64 |
+| main.rs:82:7:82:7 | x | semmle.label | x |
+| main.rs:82:7:82:7 | x | semmle.label | x |
+| main.rs:82:7:82:7 | x | semmle.label | x |
+| main.rs:86:9:86:9 | a | semmle.label | a |
+| main.rs:86:13:86:22 | source(...) | semmle.label | source(...) |
+| main.rs:87:12:87:12 | ... | semmle.label | ... |
+| main.rs:87:20:87:20 | x | semmle.label | x |
+| main.rs:87:24:87:24 | a | semmle.label | a |
+| main.rs:88:9:88:9 | b | semmle.label | b |
+| main.rs:88:13:88:22 | source(...) | semmle.label | source(...) |
+| main.rs:89:12:89:12 | ... | semmle.label | ... |
+| main.rs:89:20:89:20 | x | semmle.label | x |
+| main.rs:89:24:89:24 | b | semmle.label | b |
+| main.rs:93:33:93:38 | ...: i64 | semmle.label | ...: i64 |
+| main.rs:94:14:94:14 | x | semmle.label | x |
+| main.rs:98:9:98:9 | a | semmle.label | a |
+| main.rs:98:13:98:22 | source(...) | semmle.label | source(...) |
+| main.rs:99:17:99:17 | ... | semmle.label | ... |
+| main.rs:99:25:99:25 | x | semmle.label | x |
+| main.rs:99:29:99:29 | a | semmle.label | a |
+| main.rs:100:9:100:9 | b | semmle.label | b |
+| main.rs:100:13:100:22 | source(...) | semmle.label | source(...) |
+| main.rs:101:17:101:17 | ... | semmle.label | ... |
+| main.rs:101:25:101:25 | x | semmle.label | x |
+| main.rs:101:29:101:29 | b | semmle.label | b |
 subpaths
 | main.rs:29:21:29:21 | a | main.rs:27:20:27:23 | ... | main.rs:27:26:27:52 | if cond {...} else {...} | main.rs:29:13:29:22 | f(...) |
 | main.rs:77:21:77:21 | a | main.rs:66:24:66:32 | ...: i64 | main.rs:66:42:72:1 | { ... } | main.rs:77:13:77:22 | f(...) |
@@ -81,3 +134,9 @@ testFailures
 | main.rs:52:10:52:13 | data | main.rs:62:13:62:22 | source(...) | main.rs:52:10:52:13 | data | $@ | main.rs:62:13:62:22 | source(...) | source(...) |
 | main.rs:57:10:57:12 | f(...) | main.rs:48:5:48:14 | source(...) | main.rs:57:10:57:12 | f(...) | $@ | main.rs:48:5:48:14 | source(...) | source(...) |
 | main.rs:78:10:78:10 | b | main.rs:76:13:76:22 | source(...) | main.rs:78:10:78:10 | b | $@ | main.rs:76:13:76:22 | source(...) | source(...) |
+| main.rs:87:20:87:20 | x | main.rs:86:13:86:22 | source(...) | main.rs:87:20:87:20 | x | $@ | main.rs:86:13:86:22 | source(...) | source(...) |
+| main.rs:89:20:89:20 | x | main.rs:88:13:88:22 | source(...) | main.rs:89:20:89:20 | x | $@ | main.rs:88:13:88:22 | source(...) | source(...) |
+| main.rs:99:25:99:25 | x | main.rs:98:13:98:22 | source(...) | main.rs:99:25:99:25 | x | $@ | main.rs:98:13:98:22 | source(...) | source(...) |
+| main.rs:99:25:99:25 | x | main.rs:100:13:100:22 | source(...) | main.rs:99:25:99:25 | x | $@ | main.rs:100:13:100:22 | source(...) | source(...) |
+| main.rs:101:25:101:25 | x | main.rs:98:13:98:22 | source(...) | main.rs:101:25:101:25 | x | $@ | main.rs:98:13:98:22 | source(...) | source(...) |
+| main.rs:101:25:101:25 | x | main.rs:100:13:100:22 | source(...) | main.rs:101:25:101:25 | x | $@ | main.rs:100:13:100:22 | source(...) | source(...) |

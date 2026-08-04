@@ -155,11 +155,6 @@ module Ssa {
         read2 = bb2.getNode(i2)
       )
     }
-
-    cached
-    deprecated predicate lastRefRedef(BasicBlocks::BasicBlock bb, int i, Definition next) {
-      SsaImpl::lastRefRedef(this, bb, i, next)
-    }
   }
 
   cached

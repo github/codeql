@@ -2,12 +2,12 @@ extern "C" void free(void *ptr);
 extern "C" int strcmp(const char *s1, const char *s2);
 
 void test0(int *x) {
-  if (x) // BAD
+  if (x) // $ Alert // BAD
     free(x);
 }
 
 void test1(int *x) {
-  if (x) { // BAD
+  if (x) { // $ Alert // BAD
     free(x);
   }
 }
@@ -39,20 +39,20 @@ bool test4(char *x, char *y) {
 void test5(char *x) {
   if (x)
     *x = 42;
-  if (x) { // BAD
+  if (x) { // $ Alert // BAD
     free(x);
   }
 }
 
 void test6(char *x) {
   *x = 42;
-  if (x) { // BAD
+  if (x) { // $ Alert // BAD
     free(x);
   }
 }
 
 void test7(char *x) {
-  if (x || x) { // BAD [NOT DETECTED]
+  if (x || x) { // $ MISSING: Alert // BAD [NOT DETECTED]
     free(x);
   }
 }
@@ -91,7 +91,7 @@ void test10(char *x) {
   if (x) free(x);
 
 void test11(char *x) {
-  TRY_FREE(x) // BAD [NOT DETECTED]
+  TRY_FREE(x) // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 bool test12(char *x) {
@@ -103,7 +103,7 @@ bool test12(char *x) {
 }
 
 void test13(char *x) {
-  if (x != nullptr) // BAD
+  if (x != nullptr) // $ Alert // BAD
     free(x);
 }
 

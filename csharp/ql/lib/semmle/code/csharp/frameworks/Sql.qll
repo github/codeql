@@ -17,14 +17,14 @@ abstract class SqlExpr extends Expr {
 class CommandTextAssignmentSqlExpr extends SqlExpr, AssignExpr {
   CommandTextAssignmentSqlExpr() {
     exists(Property p, SystemDataIDbCommandInterface i, Property text |
-      p = this.getLValue().(PropertyAccess).getTarget() and
+      p = this.getLeftOperand().(PropertyAccess).getTarget() and
       text = i.getCommandTextProperty()
     |
       p.overridesOrImplementsOrEquals(text)
     )
   }
 
-  override Expr getSql() { result = this.getRValue() }
+  override Expr getSql() { result = this.getRightOperand() }
 }
 
 /** A construction of an unknown `IDbCommand` object. */

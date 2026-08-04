@@ -3,7 +3,7 @@ void f(void) {
     if (1) {
         int i;
 
-        for(int i = 1; i < 10; i++) { // BAD
+        for(int i = 1; i < 10; i++) { // $ Alert // BAD
             ;
         }
     }
@@ -15,7 +15,7 @@ namespace foo {
       int k;
       try {
         for (i = 0; i < 3; i++) {
-          int k; // BAD
+          int k; // $ Alert // BAD
         }
       }
       catch (int e) {
@@ -35,7 +35,7 @@ void structuredBinding() {
   int xs[1] = {1};
   auto [x] = xs;
   {
-    auto [x] = xs; // BAD
+    auto [x] = xs; // $ Alert // BAD
     auto [y] = xs; // GOOD
   }
 }

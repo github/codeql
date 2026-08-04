@@ -1,1 +1,2 @@
-Likely Bugs/Arithmetic/IntMultToLong.ql
+query: Likely Bugs/Arithmetic/IntMultToLong.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

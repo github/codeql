@@ -1,1 +1,2 @@
-Security/CWE/CWE-497/PotentiallyExposedSystemData.ql
+query: Security/CWE/CWE-497/PotentiallyExposedSystemData.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

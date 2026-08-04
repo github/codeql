@@ -19,13 +19,13 @@
             <name>JCenter</name>
             <!-- BAD! Don't use JCenter -->
             <url>https://jcenter.bintray.com</url>
-        </repository>
+        </repository> <!-- $ Alert -->
         <snapshotRepository>
             <id>jcenter-snapshots</id>
             <name>JCenter</name>
             <!-- BAD! Don't use JCenter -->
             <url>https://jcenter.bintray.com</url>
-        </snapshotRepository>
+        </snapshotRepository> <!-- $ Alert -->
     </distributionManagement>
     <repositories>
         <repository>
@@ -33,7 +33,7 @@
             <name>JCenter</name>
             <!-- BAD! Don't use JCenter -->
             <url>https://jcenter.bintray.com</url>
-        </repository>
+        </repository> <!-- $ Alert -->
     </repositories>
     <repositories>
         <repository>
@@ -41,7 +41,7 @@
             <name>JCenter</name>
             <!-- BAD! Don't use Bintray -->
             <url>https://dl.bintray.com/groovy/maven</url>
-        </repository>
+        </repository> <!-- $ Alert -->
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -49,6 +49,6 @@
             <name>JCenter</name>
             <!-- BAD! Don't use JCenter -->
             <url>https://jcenter.bintray.com</url>
-        </pluginRepository>
+        </pluginRepository> <!-- $ Alert -->
     </pluginRepositories>
 </project>

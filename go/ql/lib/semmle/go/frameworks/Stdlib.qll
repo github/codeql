@@ -1,6 +1,8 @@
 /**
  * Provides classes modeling security-relevant aspects of the standard libraries.
  */
+overlay[local?]
+module;
 
 import go
 import semmle.go.frameworks.stdlib.ArchiveTar

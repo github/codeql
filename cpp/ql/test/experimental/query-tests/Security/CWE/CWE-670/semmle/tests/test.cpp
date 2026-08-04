@@ -42,7 +42,7 @@ int gootTest2(SSL *ssl)
 int badTest1(SSL *ssl)
 {
   int ret;
-    switch ((ret = SSL_shutdown(ssl))) {
+    switch ((ret = SSL_shutdown(ssl))) { // $ Alert
     case 1:
       break;
     case 0:
@@ -58,7 +58,7 @@ int badTest1(SSL *ssl)
 int badTest2(SSL *ssl)
 {
   int ret;
-    ret = SSL_shutdown(ssl);
+    ret = SSL_shutdown(ssl); // $ Alert
     switch (ret) {
     case 1:
       break;

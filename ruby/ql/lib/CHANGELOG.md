@@ -1,3 +1,59 @@
+## 6.0.2
+
+No user-facing changes.
+
+## 6.0.1
+
+No user-facing changes.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The `else` branch of a `case` expression is no longer represented as a `StmtSequence` directly. Instead, a new `CaseElseBranch` AST node wraps the body (a `StmtSequence`). `CaseExpr.getElseBranch()` now returns a `CaseElseBranch`, and the body of the else branch can be accessed via `CaseElseBranch.getBody()`.
+
+## 5.2.2
+
+No user-facing changes.
+
+## 5.2.1
+
+No user-facing changes.
+
+## 5.2.0
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for Ruby](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-ruby/).
+
+## 5.1.16
+
+No user-facing changes.
+
+## 5.1.15
+
+No user-facing changes.
+
+## 5.1.14
+
+No user-facing changes.
+
+## 5.1.13
+
+No user-facing changes.
+
+## 5.1.12
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `# $ tag` or `# $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 5.1.11
+
+### Minor Analysis Improvements
+
+* We now track taint flow through `Shellwords.escape` and `Shellwords.shellescape` for all queries except command injection, for which they are sanitizers.
+
 ## 5.1.10
 
 No user-facing changes.

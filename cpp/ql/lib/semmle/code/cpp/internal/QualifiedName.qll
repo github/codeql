@@ -18,7 +18,7 @@ class Namespace extends @namespace {
     if namespacembrs(_, this)
     then
       exists(Namespace ns |
-        namespacembrs(ns, this) and
+        namespacembrs(ns, pragma[only_bind_out](this)) and
         result = ns.getQualifiedName() + "::" + this.getName()
       )
     else result = this.getName()
@@ -37,7 +37,7 @@ class Namespace extends @namespace {
   string getAQualifierForMembers() {
     if namespacembrs(_, this)
     then
-      exists(Namespace ns | namespacembrs(ns, this) |
+      exists(Namespace ns | namespacembrs(ns, pragma[only_bind_out](this)) |
         result = ns.getAQualifierForMembers() + "::" + this.getName()
         or
         // If this is an inline namespace, its members are also visible in any

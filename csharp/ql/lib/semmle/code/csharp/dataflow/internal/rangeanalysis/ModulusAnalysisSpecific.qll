@@ -4,15 +4,14 @@ module Private {
   private import semmle.code.csharp.dataflow.internal.rangeanalysis.RangeUtils as RU
   private import SsaUtils as SU
   private import SsaReadPositionCommon
-  private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 
-  class BasicBlock = CS::ControlFlow::BasicBlock;
+  class BasicBlock = CS::BasicBlock;
 
   class SsaVariable = SU::SsaVariable;
 
-  class SsaPhiNode = CS::Ssa::PhiNode;
+  class SsaPhiNode = CS::SsaPhiDefinition;
 
-  class Expr = CS::ControlFlow::Nodes::ExprNode;
+  class Expr = CS::ControlFlowNodes::ExprNode;
 
   class Guard = RU::Guard;
 
@@ -20,17 +19,17 @@ module Private {
 
   class ConditionalExpr = RU::ExprNode::ConditionalExpr;
 
-  class AddExpr = RU::ExprNode::AddExpr;
+  class AddExpr = RU::ExprNode::AddOperation;
 
-  class SubExpr = RU::ExprNode::SubExpr;
+  class SubExpr = RU::ExprNode::SubOperation;
 
-  class RemExpr = RU::ExprNode::RemExpr;
+  class RemExpr = RU::ExprNode::RemOperation;
 
-  class BitwiseAndExpr = RU::ExprNode::BitwiseAndExpr;
+  class BitwiseAndExpr = RU::ExprNode::BitwiseAndOperation;
 
-  class MulExpr = RU::ExprNode::MulExpr;
+  class MulExpr = RU::ExprNode::MulOperation;
 
-  class LeftShiftExpr = RU::ExprNode::LeftShiftExpr;
+  class LeftShiftExpr = RU::ExprNode::LeftShiftOperation;
 
   predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
 

@@ -286,7 +286,7 @@ abstract private class FetchValuesSummary extends SummarizedCallable::Range {
   MethodCall mc;
 
   bindingset[this]
-  FetchValuesSummary() { mc.getMethodName() = "fetch_values" }
+  FetchValuesSummary() { pragma[only_bind_into](mc).getMethodName() = "fetch_values" }
 
   final override MethodCall getACallSimple() { result = mc }
 
@@ -390,7 +390,7 @@ abstract private class SliceSummary extends SummarizedCallable::Range {
   MethodCall mc;
 
   bindingset[this]
-  SliceSummary() { mc.getMethodName() = "slice" }
+  SliceSummary() { pragma[only_bind_into](mc).getMethodName() = "slice" }
 
   final override MethodCall getACallSimple() { result = mc }
 }

@@ -22,4 +22,7 @@ export function MyComponent() {
     request('https://example.com/api?q=' + name);
 
     request(window.location.href + '?q=123');
+
+    const custom = require('testlib').getBrowserSource(); // $ Source[js/client-side-request-forgery]
+    request(custom); // $ Alert[js/client-side-request-forgery]
 }

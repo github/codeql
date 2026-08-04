@@ -281,7 +281,12 @@ test.kt:
 #   40|   11: [Class] HasKotlinDeprecatedAnnotationUsedByJava
 #-----|     -3: (Annotations)
 #   40|       1: [Annotation] Deprecated
-#   40|         1: [StringLiteral] "Kotlin deprecation message 1"
+#    0|         1: [Annotation] ReplaceWith
+#    0|           1: [StringLiteral] ""
+#    0|           2: [ArrayInit] {...}
+#    0|         2: [VarAccess] DeprecationLevel.WARNING
+#    0|           -1: [TypeAccess] DeprecationLevel
+#   40|         3: [StringLiteral] "Kotlin deprecation message 1"
 #   40|     1: [Constructor] HasKotlinDeprecatedAnnotationUsedByJava
 #   40|       5: [BlockStmt] { ... }
 #   40|         0: [SuperConstructorInvocationStmt] super(...)
@@ -298,7 +303,12 @@ test.kt:
 #   46|   13: [Class] HasKotlinDeprecatedAnnotationUsedByKotlin
 #-----|     -3: (Annotations)
 #   46|       1: [Annotation] Deprecated
-#   46|         1: [StringLiteral] "Kotlin deprecation message 2"
+#    0|         1: [Annotation] ReplaceWith
+#    0|           1: [StringLiteral] ""
+#    0|           2: [ArrayInit] {...}
+#    0|         2: [VarAccess] DeprecationLevel.WARNING
+#    0|           -1: [TypeAccess] DeprecationLevel
+#   46|         3: [StringLiteral] "Kotlin deprecation message 2"
 #   46|     1: [Constructor] HasKotlinDeprecatedAnnotationUsedByKotlin
 #   46|       5: [BlockStmt] { ... }
 #   46|         0: [SuperConstructorInvocationStmt] super(...)

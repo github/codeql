@@ -44,6 +44,7 @@ module FlowTest implements TestSig {
   }
 }
 
+overlay[local]
 class MyStep extends DataFlow::FunctionModel, Method {
   MyStep() { this.hasQualifiedName("github.com/nonexistent/test", "P1", "Step") }
 

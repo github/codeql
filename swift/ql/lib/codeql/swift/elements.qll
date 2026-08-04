@@ -252,6 +252,7 @@ import codeql.swift.elements.type.BuiltinDefaultActorStorageType
 import codeql.swift.elements.type.BuiltinExecutorType
 import codeql.swift.elements.type.BuiltinFixedArrayType
 import codeql.swift.elements.type.BuiltinFloatType
+import codeql.swift.elements.type.BuiltinGenericType
 import codeql.swift.elements.type.BuiltinIntegerLiteralType
 import codeql.swift.elements.type.BuiltinIntegerType
 import codeql.swift.elements.type.BuiltinJobType

@@ -22,7 +22,6 @@ ql/csharp/ql/src/Concurrency/FutileSyncOnField.ql
 ql/csharp/ql/src/Concurrency/LockOrder.ql
 ql/csharp/ql/src/Concurrency/LockThis.ql
 ql/csharp/ql/src/Concurrency/LockedWait.ql
-ql/csharp/ql/src/Dead Code/DeadStoreOfLocal.ql
 ql/csharp/ql/src/Language Abuse/CastThisToTypeParameter.ql
 ql/csharp/ql/src/Language Abuse/CatchOfGenericException.ql
 ql/csharp/ql/src/Language Abuse/DubiousDowncastOfThis.ql
@@ -38,7 +37,6 @@ ql/csharp/ql/src/Likely Bugs/Collections/ContainerLengthCmpOffByOne.ql
 ql/csharp/ql/src/Likely Bugs/Collections/ContainerSizeCmpZero.ql
 ql/csharp/ql/src/Likely Bugs/Collections/ReadOnlyContainer.ql
 ql/csharp/ql/src/Likely Bugs/Collections/WriteOnlyContainer.ql
-ql/csharp/ql/src/Likely Bugs/ConstantComparison.ql
 ql/csharp/ql/src/Likely Bugs/DangerousNonShortCircuitLogic.ql
 ql/csharp/ql/src/Likely Bugs/EqualityCheckOnFloats.ql
 ql/csharp/ql/src/Likely Bugs/EqualsArray.ql

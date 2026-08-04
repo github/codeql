@@ -29,7 +29,7 @@ class InitCallsInit(InitCallsError):
 
 class InitIsGenerator(object):
 
-    def __init__(self):
+    def __init__(self): # $ Alert[py/init-method-is-generator]
         yield self
 
 # OK as it returns result of a call to super().__init__()

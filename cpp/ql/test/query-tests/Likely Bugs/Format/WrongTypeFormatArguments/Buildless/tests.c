@@ -4,7 +4,7 @@ int printf(const char * format, ...);
 int fprintf();
 
 void f(UNKNOWN_CHAR * str) {
-    printf("%s", 1); // BAD
+    printf("%s", 1); // $ Alert // BAD
     printf("%s", implicit_function()); // GOOD - we should ignore the type
     sprintf(0, "%s", ""); // GOOD
     fprintf(0, "%s", ""); // GOOD

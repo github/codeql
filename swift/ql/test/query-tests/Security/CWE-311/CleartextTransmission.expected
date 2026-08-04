@@ -64,6 +64,7 @@ nodes
 | testSend.swift:78:27:78:30 | .CarePlanID | semmle.label | .CarePlanID |
 | testSend.swift:79:27:79:30 | .BankCardNo | semmle.label | .BankCardNo |
 | testSend.swift:80:27:80:30 | .MyCreditRating | semmle.label | .MyCreditRating |
+| testSend.swift:81:27:81:30 | .OneTimeCode | semmle.label | .OneTimeCode |
 | testSend.swift:86:7:86:7 | self | semmle.label | self |
 | testSend.swift:94:27:94:30 | .password | semmle.label | .password |
 | testSend.swift:94:27:94:39 | .value | semmle.label | .value |
@@ -118,6 +119,7 @@ subpaths
 | testSend.swift:78:27:78:30 | .CarePlanID | testSend.swift:78:27:78:30 | .CarePlanID | testSend.swift:78:27:78:30 | .CarePlanID | This operation transmits '.CarePlanID', which may contain unencrypted sensitive data from $@. | testSend.swift:78:27:78:30 | .CarePlanID | .CarePlanID |
 | testSend.swift:79:27:79:30 | .BankCardNo | testSend.swift:79:27:79:30 | .BankCardNo | testSend.swift:79:27:79:30 | .BankCardNo | This operation transmits '.BankCardNo', which may contain unencrypted sensitive data from $@. | testSend.swift:79:27:79:30 | .BankCardNo | .BankCardNo |
 | testSend.swift:80:27:80:30 | .MyCreditRating | testSend.swift:80:27:80:30 | .MyCreditRating | testSend.swift:80:27:80:30 | .MyCreditRating | This operation transmits '.MyCreditRating', which may contain unencrypted sensitive data from $@. | testSend.swift:80:27:80:30 | .MyCreditRating | .MyCreditRating |
+| testSend.swift:81:27:81:30 | .OneTimeCode | testSend.swift:81:27:81:30 | .OneTimeCode | testSend.swift:81:27:81:30 | .OneTimeCode | This operation transmits '.OneTimeCode', which may contain unencrypted sensitive data from $@. | testSend.swift:81:27:81:30 | .OneTimeCode | .OneTimeCode |
 | testSend.swift:94:27:94:39 | .value | testSend.swift:94:27:94:30 | .password | testSend.swift:94:27:94:39 | .value | This operation transmits '.value', which may contain unencrypted sensitive data from $@. | testSend.swift:94:27:94:30 | .password | .password |
 | testURL.swift:39:18:39:50 | ... .+(_:_:) ... | testURL.swift:39:50:39:50 | passwd | testURL.swift:39:18:39:50 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testURL.swift:39:50:39:50 | passwd | passwd |
 | testURL.swift:41:18:41:51 | ... .+(_:_:) ... | testURL.swift:41:51:41:51 | account_no | testURL.swift:41:18:41:51 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testURL.swift:41:51:41:51 | account_no | account_no |

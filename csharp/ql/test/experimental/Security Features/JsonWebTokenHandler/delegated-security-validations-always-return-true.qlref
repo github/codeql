@@ -1,1 +1,2 @@
-experimental/Security Features/JsonWebTokenHandler/delegated-security-validations-always-return-true.ql
+query: experimental/Security Features/JsonWebTokenHandler/delegated-security-validations-always-return-true.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

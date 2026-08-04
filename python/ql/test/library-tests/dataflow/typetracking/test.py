@@ -1,64 +1,64 @@
 def get_tracked():
-    x = tracked # $tracked
-    return x # $tracked
+    x = tracked # $ tracked
+    return x # $ tracked
 
-def use_tracked_foo(x): # $tracked
-    do_stuff(x) # $tracked
+def use_tracked_foo(x): # $ tracked
+    do_stuff(x) # $ tracked
 
 def foo():
     use_tracked_foo(
-        get_tracked() # $tracked
+        get_tracked() # $ tracked
     )
 
-def use_tracked_bar(x): # $tracked
-    do_stuff(x) # $tracked
+def use_tracked_bar(x): # $ tracked
+    do_stuff(x) # $ tracked
 
 def bar():
-    x = get_tracked() # $tracked
-    use_tracked_bar(x) # $tracked
+    x = get_tracked() # $ tracked
+    use_tracked_bar(x) # $ tracked
 
-def use_tracked_baz(x): # $tracked
-    do_stuff(x) # $tracked
+def use_tracked_baz(x): # $ tracked
+    do_stuff(x) # $ tracked
 
 def baz():
-    x = tracked # $tracked
-    use_tracked_baz(x) # $tracked
+    x = tracked # $ tracked
+    use_tracked_baz(x) # $ tracked
 
-def id(x): # $tracked
-    return x # $tracked
+def id(x): # $ tracked
+    return x # $ tracked
 
 def use_tracked_quux(x): # $ MISSING: tracked
     do_stuff(y) # call after return -- not tracked in here.
 
 def quux():
-    x = tracked # $tracked
-    y = id(x) # $tracked
+    x = tracked # $ tracked
+    y = id(x) # $ tracked
     use_tracked_quux(y) # not tracked out of call to id.
 
 g = None
 
-def write_g(x): # $tracked
+def write_g(x): # $ tracked
     global g
-    g = x # $tracked
+    g = x # $ tracked
 
 def use_g():
-    do_stuff(g) # $tracked
+    do_stuff(g) # $ tracked
 
 def global_var_write_test():
-    x = tracked # $tracked
-    write_g(x) # $tracked
+    x = tracked # $ tracked
+    write_g(x) # $ tracked
     use_g()
 
 def test_import():
     import mymodule
-    mymodule.x # $tracked
-    y = mymodule.func() # $tracked
-    y # $tracked
-    mymodule.z # $tracked
+    mymodule.x # $ tracked
+    y = mymodule.func() # $ tracked
+    y # $ tracked
+    mymodule.z # $ tracked
 
 
 def to_inner_scope():
-    x = tracked # $tracked
+    x = tracked # $ tracked
     def foo():
         y = x # $ tracked
         return y # $ tracked
@@ -67,15 +67,15 @@ def to_inner_scope():
 
 
 def from_parameter_default():
-    x_alias = tracked # $tracked
-    def outer(x=tracked): # $tracked
-        print(x) # $tracked
+    x_alias = tracked # $ tracked
+    def outer(x=tracked): # $ tracked
+        print(x) # $ tracked
         def inner():
             print(x) # $ tracked
-            print(x_alias) # $tracked
-        return x # $tracked
-    also_x = outer() # $tracked
-    print(also_x) # $tracked
+            print(x_alias) # $ tracked
+        return x # $ tracked
+    also_x = outer() # $ tracked
+    print(also_x) # $ tracked
 
 
 # ------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ def my_decorator(func):
     # This part doesn't make any sense in a normal decorator, but just shows how we
     # handle type-tracking
 
-    func() # $tracked
+    func() # $ tracked
 
     def wrapper():
         print("before function call")
@@ -97,7 +97,7 @@ def my_decorator(func):
 
 @my_decorator
 def get_tracked2():
-    return tracked # $tracked
+    return tracked # $ tracked
 
 @my_decorator
 def unrelated_func():
@@ -109,17 +109,17 @@ def use_funcs_with_decorators():
 
 # ------------------------------------------------------------------------------
 
-def expects_int(x): # $int
-    do_int_stuff(x) # $int
+def expects_int(x): # $ int
+    do_int_stuff(x) # $ int
 
-def expects_string(x): # $str
-    do_string_stuff(x) # $str
+def expects_string(x): # $ str
+    do_string_stuff(x) # $ str
 
 def redefine_test():
-    x = int(5) # $int
-    expects_int(x) # $int
-    x = str("Hello") # $str
-    expects_string(x) # $str
+    x = int(5) # $ int
+    expects_int(x) # $ int
+    x = str("Hello") # $ str
+    expects_string(x) # $ str
 
 # ------------------------------------------------------------------------------
 # Tracking of self in methods

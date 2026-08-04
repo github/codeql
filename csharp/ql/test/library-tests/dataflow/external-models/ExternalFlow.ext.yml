@@ -53,6 +53,8 @@ extensions:
       - ["My.Qltest", "TestExtensions+extension(T)<T>", false, "GenericStaticMethod1", "(T)", "", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["My.Qltest", "TestExtensions+extension(T)<T>", false, "get_GenericProperty1", "(T)", "", "Argument[0].SyntheticField[TestExtensions.GenericProperty1]", "ReturnValue", "value", "manual"]
       - ["My.Qltest", "TestExtensions+extension(T)<T>", false, "set_GenericProperty1", "(T,T)", "", "Argument[1]", "Argument[0].SyntheticField[TestExtensions.GenericProperty1]", "value", "manual"]
+      - ["My.Qltest", "N", false, "op_AdditionAssignment", "(My.Qltest.N)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["My.Qltest", "N", false, "op_CheckedAdditionAssignment", "(My.Qltest.N)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
 
   - addsTo:
       pack: codeql/csharp-all

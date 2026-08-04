@@ -14,7 +14,7 @@ public:
 void ArrayOfDays_Bug(int dayOfYear, int x)
 {
 	// BUG
-	int items[365];
+	int items[365]; // $ Alert
 
 	items[dayOfYear - 1] = x;
 }
@@ -22,7 +22,7 @@ void ArrayOfDays_Bug(int dayOfYear, int x)
 void ArrayOfDays_Bug2(int dayOfYear, int x)
 {
 	// BUG
-	int *items = new int[365];
+	int *items = new int[365]; // $ Alert
 
 	items[dayOfYear - 1] = x;
 	delete items;
@@ -49,7 +49,7 @@ void ArrayOfDays_FalsePositive(int dayOfYear, int x)
 void VectorOfDays_Bug(int dayOfYear, int x)
 {
 	// BUG
-	vector<int> items(365);
+	vector<int> items(365); // $ Alert
 
 	items[dayOfYear - 1] = x;
 }

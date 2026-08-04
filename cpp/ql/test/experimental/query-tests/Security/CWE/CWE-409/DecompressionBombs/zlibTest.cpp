@@ -22,7 +22,7 @@ void UnsafeInflate(char *input) {
     infstream.next_out = output; // output char array
 
     inflateInit(&infstream);
-    inflate(&infstream, 0); // BAD
+    inflate(&infstream, 0); // $ Alert // BAD
 }
 
 
@@ -38,7 +38,7 @@ void UnsafeGzread(char *fileName) {
     gzFile inFileZ = gzopen(fileName, "rb");
     unsigned char unzipBuffer[8192];
     while (true) {
-        if (gzread(inFileZ, unzipBuffer, 8192) <= 0) { // BAD
+        if (gzread(inFileZ, unzipBuffer, 8192) <= 0) { // $ Alert // BAD
             break;
         }
     }
@@ -48,7 +48,7 @@ void UnsafeGzfread(char *fileName) {
     gzFile inFileZ = gzopen(fileName, "rb");
     while (true) {
         char buffer[1000];
-        if (!gzfread(buffer, 999, 1, inFileZ)) { // BAD
+        if (!gzfread(buffer, 999, 1, inFileZ)) { // $ Alert // BAD
             break;
         }
     }
@@ -59,7 +59,7 @@ void UnsafeGzgets(char *fileName) {
     char *buffer = new char[4000000000];
     char *result;
     while (true) {
-        result = gzgets(inFileZ, buffer, 1000000000); // BAD
+        result = gzgets(inFileZ, buffer, 1000000000); // $ Alert // BAD
         if (result == nullptr) {
             break;
         }
@@ -74,7 +74,7 @@ void InflateString(char *input) {
     uLong source_length = 500;
     uLong destination_length = sizeof(output);
 
-    uncompress(output, &destination_length, (Bytef *) input, source_length); // BAD
+    uncompress(output, &destination_length, (Bytef *) input, source_length); // $ Alert // BAD
 }
 
 void zlib_test(int argc, char **argv) {

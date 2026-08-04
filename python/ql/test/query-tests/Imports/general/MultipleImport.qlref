@@ -1,1 +1,2 @@
-Imports/MultipleImports.ql
+query: Imports/MultipleImports.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -9,13 +9,9 @@ import csharp
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.frameworks.System
-private import Completion
 
 /** A call that definitely does not return (conservative analysis). */
-abstract class NonReturningCall extends Call {
-  /** Gets a valid completion for this non-returning call. */
-  abstract Completion getACompletion();
-}
+abstract class NonReturningCall extends Call { }
 
 private class ExitingCall extends NonReturningCall {
   ExitingCall() {
@@ -23,36 +19,21 @@ private class ExitingCall extends NonReturningCall {
     or
     this = any(FailingAssertion fa | fa.getAssertionFailure().isExit())
   }
-
-  override ExitCompletion getACompletion() { not result instanceof NestedCompletion }
 }
 
 private class ThrowingCall extends NonReturningCall {
-  private ThrowCompletion c;
-
   ThrowingCall() {
-    not c instanceof NestedCompletion and
-    (
-      c = this.getTarget().(ThrowingCallable).getACallCompletion()
-      or
-      this.(FailingAssertion).getAssertionFailure().isException(c.getExceptionClass())
-      or
-      this =
-        any(MethodCall mc |
-          mc.getTarget()
-              .hasFullyQualifiedName("System.Runtime.ExceptionServices", "ExceptionDispatchInfo",
-                "Throw") and
-          (
-            mc.hasNoArguments() and
-            c.getExceptionClass() instanceof SystemExceptionClass
-            or
-            c.getExceptionClass() = mc.getArgument(0).getType()
-          )
-        )
-    )
+    this.getTarget() instanceof ThrowingCallable
+    or
+    this.(FailingAssertion).getAssertionFailure().isException(_)
+    or
+    this =
+      any(MethodCall mc |
+        mc.getTarget()
+            .hasFullyQualifiedName("System.Runtime.ExceptionServices", "ExceptionDispatchInfo",
+              "Throw")
+      )
   }
-
-  override ThrowCompletion getACompletion() { result = c }
 }
 
 /** Holds if accessor `a` has an auto-implementation. */
@@ -107,44 +88,35 @@ private Stmt getAnExitingStmt() {
 
 private class ThrowingCallable extends NonReturningCallable {
   ThrowingCallable() {
-    forex(ControlFlowElement body | body = this.getBody() | body = getAThrowingElement(_))
+    forex(ControlFlowElement body | body = this.getBody() | body = getAThrowingElement())
   }
-
-  /** Gets a valid completion for a call to this throwing callable. */
-  ThrowCompletion getACallCompletion() { this.getBody() = getAThrowingElement(result) }
 }
 
-private predicate directlyThrows(ThrowElement te, ThrowCompletion c) {
-  c.getExceptionClass() = te.getThrownExceptionType() and
-  not c instanceof NestedCompletion and
+private predicate directlyThrows(ThrowElement te) {
   // For stub implementations, there may exist proper implementations that are not seen
   // during compilation, so we conservatively rule those out
   not isStub(te)
 }
 
-private ControlFlowElement getAThrowingElement(ThrowCompletion c) {
-  c = result.(ThrowingCall).getACompletion()
+private ControlFlowElement getAThrowingElement() {
+  result instanceof ThrowingCall
   or
-  directlyThrows(result, c)
+  directlyThrows(result)
   or
-  result = getAThrowingStmt(c)
+  result = getAThrowingStmt()
 }
 
-private Stmt getAThrowingStmt(ThrowCompletion c) {
-  directlyThrows(result, c)
+private Stmt getAThrowingStmt() {
+  directlyThrows(result)
   or
-  result.(ExprStmt).getExpr() = getAThrowingElement(c)
+  result.(ExprStmt).getExpr() = getAThrowingElement()
   or
-  result.(BlockStmt).getFirstStmt() = getAThrowingStmt(c)
+  result.(BlockStmt).getFirstStmt() = getAThrowingStmt()
   or
-  exists(IfStmt ifStmt, ThrowCompletion c1, ThrowCompletion c2 |
+  exists(IfStmt ifStmt |
     result = ifStmt and
-    ifStmt.getThen() = getAThrowingStmt(c1) and
-    ifStmt.getElse() = getAThrowingStmt(c2)
-  |
-    c = c1
-    or
-    c = c2
+    ifStmt.getThen() = getAThrowingStmt() and
+    ifStmt.getElse() = getAThrowingStmt()
   )
 }
 

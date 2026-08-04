@@ -1,0 +1,2 @@
+query: Linq/MissedSelectOpportunity.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

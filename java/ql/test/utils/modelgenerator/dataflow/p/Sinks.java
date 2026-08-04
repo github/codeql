@@ -33,7 +33,7 @@ public class Sinks {
     return null;
   }
 
-  // sink=p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[0];path-injection;df-generated
+  // sink=p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[0];path-injection[read];df-generated
   // sink=p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[1];path-injection;df-generated
   // neutral=p;Sinks;copyFileToDirectory;(Path,Path,CopyOption[]);summary;df-generated
   public Path copyFileToDirectory(

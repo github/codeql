@@ -7,7 +7,7 @@ private import Ssa
 private import SsaUtils
 private import RangeUtils
 
-private class ExprNode = ControlFlow::Nodes::ExprNode;
+private class ExprNode = ControlFlowNodes::ExprNode;
 
 /**
  * Holds if `pa` is an access to the `Length` property of an array.
@@ -23,7 +23,7 @@ predicate systemArrayLengthAccess(PropertyAccess pa) {
  * - a read of the `Length` of an array with `val` lengths.
  */
 private predicate constantIntegerExpr(ExprNode e, int val) {
-  e.getValue().toInt() = val
+  e.getExpr().getIntValue() = val
   or
   exists(ExprNode src |
     e = getAnExplicitDefinitionRead(src) and

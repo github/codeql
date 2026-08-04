@@ -17,14 +17,14 @@ class MutableTest {
       Mutable<String> taintSetAlias = taintSet;
       Mutable<String> taintClearedAlias = taintCleared;
 
-      sink(tainted.getValue()); // $hasValueFlow
-      sink(taintedAlias.getValue()); // $hasValueFlow
-      sink(taintSet.getValue()); // $hasValueFlow
-      sink(taintSetAlias.getValue()); // $hasValueFlow
+      sink(tainted.getValue()); // $ hasValueFlow
+      sink(taintedAlias.getValue()); // $ hasValueFlow
+      sink(taintSet.getValue()); // $ hasValueFlow
+      sink(taintSetAlias.getValue()); // $ hasValueFlow
       // These two cases don't work currently because synthetic fields are always weakly updated,
       // so no taint clearing takes place.
-      sink(taintCleared.getValue()); // $SPURIOUS: hasValueFlow
-      sink(taintClearedAlias.getValue()); // $SPURIOUS: hasValueFlow
+      sink(taintCleared.getValue()); // $ SPURIOUS: hasValueFlow
+      sink(taintClearedAlias.getValue()); // $ SPURIOUS: hasValueFlow
 
     }
 }

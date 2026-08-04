@@ -1008,7 +1008,7 @@ module Raw {
     /**
      * Gets the name of this type declaration.
      */
-    string getName() { type_decls(this, result) }
+    string getName() { type_decls(this, result, _) }
 
     /**
      * Gets the `index`th inherited type of this type declaration (0-based).
@@ -1024,6 +1024,11 @@ module Raw {
     int getNumberOfInheritedTypes() {
       result = count(int i | type_decl_inherited_types(this, i, _))
     }
+
+    /**
+     * Gets the declared interface type of this type declaration.
+     */
+    Type getDeclaredInterfaceType() { type_decls(this, _, result) }
   }
 
   /**
@@ -6293,24 +6298,18 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A builtin type representing N values stored contiguously.
-   */
-  class BuiltinFixedArrayType extends @builtin_fixed_array_type, BuiltinType {
-    override string toString() { result = "BuiltinFixedArrayType" }
-  }
-
-  private Element getImmediateChildOfBuiltinFixedArrayType(BuiltinFixedArrayType e, int index) {
-    none()
-  }
-
-  /**
-   * INTERNAL: Do not use.
    */
   class BuiltinFloatType extends @builtin_float_type, BuiltinType {
     override string toString() { result = "BuiltinFloatType" }
   }
 
   private Element getImmediateChildOfBuiltinFloatType(BuiltinFloatType e, int index) { none() }
+
+  /**
+   * INTERNAL: Do not use.
+   * A builtin generic type.
+   */
+  class BuiltinGenericType extends @builtin_generic_type, BuiltinType { }
 
   /**
    * INTERNAL: Do not use.
@@ -6535,6 +6534,28 @@ module Raw {
      * Gets the number of argument types of this bound generic type.
      */
     int getNumberOfArgTypes() { result = count(int i | bound_generic_type_arg_types(this, i, _)) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A builtin type representing N values stored contiguously.
+   */
+  class BuiltinFixedArrayType extends @builtin_fixed_array_type, BuiltinGenericType {
+    override string toString() { result = "BuiltinFixedArrayType" }
+
+    /**
+     * Gets the size of this builtin fixed array type.
+     */
+    Type getSize() { builtin_fixed_array_types(this, result, _) }
+
+    /**
+     * Gets the element type of this builtin fixed array type.
+     */
+    Type getElementType() { builtin_fixed_array_types(this, _, result) }
+  }
+
+  private Element getImmediateChildOfBuiltinFixedArrayType(BuiltinFixedArrayType e, int index) {
+    none()
   }
 
   /**
@@ -7224,8 +7245,6 @@ module Raw {
     or
     result = getImmediateChildOfBuiltinExecutorType(e, index)
     or
-    result = getImmediateChildOfBuiltinFixedArrayType(e, index)
-    or
     result = getImmediateChildOfBuiltinFloatType(e, index)
     or
     result = getImmediateChildOfBuiltinJobType(e, index)
@@ -7261,6 +7280,8 @@ module Raw {
     result = getImmediateChildOfUnownedStorageType(e, index)
     or
     result = getImmediateChildOfWeakStorageType(e, index)
+    or
+    result = getImmediateChildOfBuiltinFixedArrayType(e, index)
     or
     result = getImmediateChildOfBuiltinIntegerLiteralType(e, index)
     or

@@ -1,4 +1,6 @@
 /** Provides models of commonly used functions in the `k8s.io/apimachinery/pkg/runtime` package. */
+overlay[local?]
+module;
 
 import go
 

@@ -207,29 +207,12 @@ private class PpArrayInit extends PpAst, ArrayInit {
   override PpAst getChild(int i) { exists(int j | result = this.getInit(j) and i = 1 + 2 * j) }
 }
 
-private class PpAssignment extends PpAst, Assignment {
-  override string getPart(int i) {
-    i = 1 and
-    this instanceof AssignExpr and
-    result = " = "
-    or
-    i = 1 and
-    result = " " + this.(AssignOp).getOp() + " "
-  }
-
-  override PpAst getChild(int i) {
-    i = 0 and result = this.getDest()
-    or
-    i = 2 and result = this.getRhs()
-  }
-}
-
 private class PpLiteral extends PpAst, Literal {
   override string getPart(int i) { i = 0 and result = this.getLiteral() }
 }
 
 private class PpBinaryExpr extends PpAst, BinaryExpr {
-  override string getPart(int i) { i = 1 and result = this.getOp() }
+  override string getPart(int i) { i = 1 and result = " " + this.getOp() + " " }
 
   override PpAst getChild(int i) {
     i = 0 and result = this.getLeftOperand()

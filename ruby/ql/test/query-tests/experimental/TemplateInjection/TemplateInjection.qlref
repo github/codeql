@@ -1,1 +1,2 @@
-experimental/template-injection/TemplateInjection.ql
+query: experimental/template-injection/TemplateInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

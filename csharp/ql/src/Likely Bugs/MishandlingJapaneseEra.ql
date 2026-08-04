@@ -27,8 +27,8 @@ predicate isExactEraStartDateCreation(ObjectCreation cr) {
     cr.getType().hasFullyQualifiedName("System", "DateTime") or
     cr.getType().hasFullyQualifiedName("System", "DateTimeOffset")
   ) and
-  isEraStart(cr.getArgument(0).getValue().toInt(), cr.getArgument(1).getValue().toInt(),
-    cr.getArgument(2).getValue().toInt())
+  isEraStart(cr.getArgument(0).getIntValue(), cr.getArgument(1).getIntValue(),
+    cr.getArgument(2).getIntValue())
 }
 
 predicate isDateFromJapaneseCalendarToDateTime(MethodCall mc) {
@@ -44,7 +44,7 @@ predicate isDateFromJapaneseCalendarToDateTime(MethodCall mc) {
     mc.getNumberOfArguments() = 7 // implicitly current era
     or
     mc.getNumberOfArguments() = 8 and
-    mc.getArgument(7).getValue() = "0"
+    mc.getArgument(7).getIntValue() = 0
   ) // explicitly current era
 }
 

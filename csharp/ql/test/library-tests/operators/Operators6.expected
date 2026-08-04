@@ -1,0 +1,10 @@
+| operators.cs:15:42:15:43 | ++ | operators.cs:66:19:66:23 | call to operator ++ |
+| operators.cs:15:42:15:43 | ++ | operators.cs:67:19:67:23 | call to operator ++ |
+| operators.cs:54:38:54:39 | checked ++ | operators.cs:100:17:100:19 | call to operator checked ++ |
+| operators.cs:54:38:54:39 | checked ++ | operators.cs:101:17:101:19 | call to operator checked ++ |
+| operators.cs:55:30:55:31 | ++ | operators.cs:93:13:93:15 | call to operator ++ |
+| operators.cs:55:30:55:31 | ++ | operators.cs:94:13:94:15 | call to operator ++ |
+| operators.cs:56:38:56:39 | checked -- | operators.cs:102:17:102:19 | call to operator checked -- |
+| operators.cs:56:38:56:39 | checked -- | operators.cs:103:17:103:19 | call to operator checked -- |
+| operators.cs:57:30:57:31 | -- | operators.cs:95:13:95:15 | call to operator -- |
+| operators.cs:57:30:57:31 | -- | operators.cs:96:13:96:15 | call to operator -- |

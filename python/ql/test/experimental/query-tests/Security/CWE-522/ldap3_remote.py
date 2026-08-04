@@ -1,5 +1,5 @@
 from ldap3 import Server, Connection, ALL
-from flask import request, Flask
+from flask import request, Flask # $ Source
 
 app = Flask(__name__)
 
@@ -98,8 +98,8 @@ def seven():
 
 @app.route("/eight")
 def eight():
-    host = schema + "somethingon.theinternet.com"
-    srv = Server(host, port=1337)
+    host = schema + "somethingon.theinternet.com" # $ Source
+    srv = Server(host, port=1337) # $ Alert
     conn = Connection(srv, "dn", "password")
     conn.start_tls()
     conn.search("dn", "search_filter")
@@ -111,8 +111,8 @@ def eight():
 
 @app.route("/nine")
 def nine():
-    host = schema + "somethingon.theinternet.com"
-    srv = Server(host, 1337, False)
+    host = schema + "somethingon.theinternet.com" # $ Source
+    srv = Server(host, 1337, False) # $ Alert
     conn = Connection(srv, "dn", "password")
     conn.search("dn", "search_filter")
     return conn.response
@@ -123,8 +123,8 @@ def nine():
 
 @app.route("/ten")
 def ten():
-    host = schema + remote_host
-    srv = Server(host, port=1337, use_ssl=False)
+    host = schema + remote_host # $ Source
+    srv = Server(host, port=1337, use_ssl=False) # $ Alert
     conn = Connection(srv, "dn", "password")
     conn.search("dn", "search_filter")
     return conn.response
@@ -136,7 +136,7 @@ def ten():
 @app.route("/eleven")
 def eleven():
     host = schema + request.args['host']
-    srv = Server(host, port=1337)
+    srv = Server(host, port=1337) # $ Alert
     conn = Connection(srv, "dn", "password")
     conn.search("dn", "search_filter")
     return conn.response

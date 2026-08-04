@@ -1,1 +1,2 @@
-Advisory/Declarations/MissingOverrideAnnotation.ql
+query: Advisory/Declarations/MissingOverrideAnnotation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

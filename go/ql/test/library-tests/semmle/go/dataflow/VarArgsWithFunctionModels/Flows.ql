@@ -4,6 +4,7 @@ import ModelValidation
 import utils.test.InlineFlowTest
 import DefaultFlowTest
 
+overlay[local]
 class SummaryModelTest extends DataFlow::FunctionModel {
   FunctionInput inp;
   FunctionOutput outp;
@@ -18,6 +19,9 @@ class SummaryModelTest extends DataFlow::FunctionModel {
     or
     this.hasQualifiedName("github.com/nonexistent/test", "FunctionWithVarArgsParameter") and
     (inp.isParameter(_) and outp.isResult())
+    or
+    this.hasQualifiedName("github.com/nonexistent/test", "FunctionWithVarArgsOutParameter") and
+    (inp.isParameter(0) and outp.isParameter(any(int i | i >= 1)))
     or
     this.hasQualifiedName("github.com/nonexistent/test", "FunctionWithSliceOfStructsParameter") and
     (inp.isParameter(0) and outp.isResult())

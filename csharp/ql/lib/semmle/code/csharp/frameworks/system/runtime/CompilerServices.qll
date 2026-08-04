@@ -81,7 +81,7 @@ class SystemRuntimeCompilerServicesInlineArrayAttribute extends Attribute {
   /**
    * Gets the length of the inline array.
    */
-  int getLength() { result = this.getConstructorArgument(0).getValue().toInt() }
+  int getLength() { result = this.getConstructorArgument(0).getIntValue() }
 }
 
 /** An attribute of type `System.Runtime.CompilerServices.OverloadResolutionPriority`. */
@@ -94,5 +94,5 @@ class SystemRuntimeCompilerServicesOverloadResolutionPriorityAttribute extends A
   /**
    * Gets the priority number.
    */
-  int getPriority() { result = this.getConstructorArgument(0).getValue().toInt() }
+  int getPriority() { result = this.getConstructorArgument(0).getIntValue() }
 }

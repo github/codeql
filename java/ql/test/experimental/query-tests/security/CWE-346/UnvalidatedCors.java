@@ -18,13 +18,13 @@ public class UnvalidatedCors implements Filter {
             FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
-        String url = request.getHeader("Origin");
+        String url = request.getHeader("Origin"); // $ Source
 
         if (!StringUtils.isEmpty(url)) {
             String val = response.getHeader("Access-Control-Allow-Origin");
 
             if (StringUtils.isEmpty(val)) {
-                response.addHeader("Access-Control-Allow-Origin", url);
+                response.addHeader("Access-Control-Allow-Origin", url); // $ Alert
                 response.addHeader("Access-Control-Allow-Credentials", "true");
             }
         }

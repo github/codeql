@@ -4,7 +4,7 @@
  *              cause a cross-site scripting vulnerability.
  * @kind problem
  * @problem.severity error
- * @security-severity 6.1
+ * @security-severity 7.8
  * @precision medium
  * @id py/jinja2/autoescape-false
  * @tags security

@@ -8,14 +8,14 @@
 
 void test1()
 {
-	void inner1(); // BAD
-	extern int inner2(); // BAD
+	void inner1(); // $ Alert // BAD
+	extern int inner2(); // $ Alert // BAD
 	void inner3() {}; // GOOD (this isn't a declaration, it's a GCC nested function)
 
 	MY_FUNCTION_1(); // GOOD (in a macro)
 	MY_FUNCTION_2(); // GOOD (in a macro)
-	MYTYPE inner4(); // BAD (function declaration is not in the macro)
-	void inner5(MYTYPE p); // BAD (function declaration is not in the macro)
+	MYTYPE inner4(); // $ Alert // BAD (function declaration is not in the macro)
+	void inner5(MYTYPE p); // $ Alert // BAD (function declaration is not in the macro)
 }
 
 #define STATICASSERT(cond) void staticAssert(int arg[(cond) ? (1) : (-1)])

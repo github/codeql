@@ -1,1 +1,2 @@
-Likely Bugs/ThreadUnsafeICryptoTransformLambda.ql
+query: Likely Bugs/ThreadUnsafeICryptoTransformLambda.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

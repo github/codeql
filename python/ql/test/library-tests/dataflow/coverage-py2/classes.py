@@ -50,5 +50,5 @@ class With_index:
 def test_index():
     import operator
 
-    with_index = With_index()  #$ MISSING: arg1="SSA variable with_index" func=With_index.__index__
+    with_index = With_index()  # $ MISSING: arg1="SSA variable with_index" func=With_index.__index__
     operator.index(with_index)

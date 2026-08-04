@@ -22,7 +22,7 @@ void forTwice() {
 
 void forEver() {
   for (;;) {
-    alloca(100); // BAD
+    alloca(100); // $ Alert // BAD
   }
 }
 
@@ -35,7 +35,7 @@ void doTwice() {
 
 void unknownStartingPoint(int i) {
   for (; i < 2; i++) {
-    alloca(100); // BAD
+    alloca(100); // $ Alert // BAD
   }
 }
 
@@ -52,7 +52,7 @@ void atMostTwice() {
 void sometimesIncrement() {
   int i = 0;
   while (i < 2) {
-    alloca(100); // BAD
+    alloca(100); // $ Alert // BAD
     if (getInt()) {
       i++;
     }
@@ -61,7 +61,7 @@ void sometimesIncrement() {
 
 void upAndDown() {
   for (int i = 0; i < 2; i++) {
-    alloca(100); // BAD
+    alloca(100); // $ Alert // BAD
     if (getInt()) {
       i--;
     }
@@ -70,7 +70,7 @@ void upAndDown() {
 
 void largeBound() {
   for (int i = 0; i < 10000; i++) {
-    alloca(100); // BAD
+    alloca(100); // $ Alert // BAD
   }
 }
 
@@ -94,7 +94,7 @@ void maybeSmallOffset() {
     i = 9997;
   }
   for (; i < 10000; i++) {
-    alloca(100); // BAD
+    alloca(100); // $ Alert // BAD
   }
 }
 
@@ -102,14 +102,14 @@ void incBefore() {
   int i = -1;
   i++; // not understood by data flow
   for (; i < 2; i++) {
-    alloca(100); // GOOD [FALSE POSITIVE]
+    alloca(100); // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE]
   }
 }
 
 void nestedAddsUp() {
   for (int i = 0; i < 16; i++) {
     for (int j = 0; j < 16; j++) {
-      alloca(100); // BAD [NOT DETECTED]
+      alloca(100); // $ MISSING: Alert // BAD [NOT DETECTED]
     }
   }
 }
@@ -135,7 +135,7 @@ void eqFalse() {
 
 void eqFalseFlipped() {
   for (int stop = 0; stop == 0; stop = 0) {
-    alloca(100); // BAD
+    alloca(100); // $ Alert // BAD
   }
 }
 
@@ -173,7 +173,7 @@ void countDownAssignAdd() {
 
 void countDownWrong() {
   for (int i = 2-1; i >= 0; i++) {
-    alloca(100); // BAD
+    alloca(100); // $ Alert // BAD
   }
 }
 

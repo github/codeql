@@ -18,7 +18,7 @@
 import csharp
 import semmle.code.csharp.controlflow.Guards
 
-from AddExpr add, VirtualMethodCall taintSrc
+from AddOperation add, VirtualMethodCall taintSrc
 where
   // `add` is performing pointer arithmetic
   add.getType() instanceof PointerType and

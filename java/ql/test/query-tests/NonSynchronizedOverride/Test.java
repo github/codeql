@@ -13,7 +13,7 @@ class Super {
 
 class Sub extends Super {
 	// NOT OK
-	void quack() {
+	void quack() { // $ Alert
 		super.quack();
 		super.quack();
 	}
@@ -24,7 +24,7 @@ class Sub extends Super {
 	}
 	
 	// NOT OK
-	void foo() {
+	void foo() { // $ Alert
 		super.bar();
 	}
 }
@@ -35,10 +35,10 @@ class A<T> {
 
 class B extends A<Integer> {
 	// NOT OK
-	void foo() {}
+	void foo() {} // $ Alert
 }
 
 class C extends A<String> {
 	// NOT OK
-	void foo() {}
+	void foo() {} // $ Alert
 }

@@ -1,6 +1,8 @@
 /**
  * Provides predicates and classes for working with string operations.
  */
+overlay[local?]
+module;
 
 import go
 

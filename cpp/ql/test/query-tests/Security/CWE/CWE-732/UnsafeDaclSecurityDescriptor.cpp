@@ -67,13 +67,13 @@ void Test()
 {
     PSECURITY_DESCRIPTOR pSecurityDescriptor;
     BOOL b;
-    b = SetSecurityDescriptorDacl(pSecurityDescriptor,
+    b = SetSecurityDescriptorDacl(pSecurityDescriptor, // $ Alert[cpp/unsafe-dacl-security-descriptor]
         TRUE,       // Dacl Present
         NULL,       // NULL pointer to DACL  == BUG
         FALSE);
 
     PACL pDacl = NULL;
-    b = SetSecurityDescriptorDacl(pSecurityDescriptor,
+    b = SetSecurityDescriptorDacl(pSecurityDescriptor, // $ Alert[cpp/unsafe-dacl-security-descriptor]
         TRUE,       // Dacl Present
         pDacl,      // NULL pointer to DACL  == BUG
         FALSE);
@@ -117,7 +117,7 @@ void Test2()
         FALSE);
 
     PACL pDacl2 = returnNull();
-    SetSecurityDescriptorDacl(
+    SetSecurityDescriptorDacl( // $ Alert[cpp/unsafe-dacl-security-descriptor]
         pSecurityDescriptor,
         TRUE,       // Dacl Present
         pDacl2,     // NULL pointer to DACL  == BUG

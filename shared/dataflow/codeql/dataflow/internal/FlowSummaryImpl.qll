@@ -54,6 +54,24 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
     none()
   }
 
+  /**
+   * A base class of calls that are candidates for flow summary modeling.
+   */
+  class FlowSummaryCallBase {
+    string toString();
+  }
+
+  /** Gets a call that targets summarized callable `sc`. */
+  default FlowSummaryCallBase getASourceCall(SummarizedCallableBase sc) { none() }
+
+  /** Gets the callable corresponding to summarized callable `c`. */
+  default Lang::DataFlowCallable getSummarizedCallableAsDataFlowCallable(SummarizedCallableBase c) {
+    none()
+  }
+
+  /** Gets the enclosing callable of `call`. */
+  default Lang::DataFlowCallable getSourceCallEnclosingCallable(FlowSummaryCallBase call) { none() }
+
   /** Gets the parameter position representing a callback itself, if any. */
   default Lang::ArgumentPosition callbackSelfParameterPosition() { none() }
 
@@ -73,6 +91,9 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
     arg = "" and
     result = getStandardReturnValueKind()
   }
+
+  /** Gets the parameter position corresponding to a flow-summary return kind `rk`, if any. */
+  default Lang::ParameterPosition getFlowSummaryParameterPosition(Lang::ReturnKind rk) { none() }
 
   /** Gets the textual representation of parameter position `pos` used in MaD. */
   string encodeParameterPosition(Lang::ParameterPosition pos);
@@ -368,6 +389,34 @@ module Make<
       abstract predicate isSink(string input, string kind, Provenance provenance, string model);
     }
 
+    /** A barrier element. */
+    abstract class BarrierElement extends SourceBaseFinal {
+      bindingset[this]
+      BarrierElement() { any() }
+
+      /**
+       * Holds if this element is a flow barrier of kind `kind`, where data
+       * flows out as described by `output`.
+       */
+      pragma[nomagic]
+      abstract predicate isBarrier(string output, string kind, Provenance provenance, string model);
+    }
+
+    /** A barrier guard element. */
+    abstract class BarrierGuardElement extends SinkBaseFinal {
+      bindingset[this]
+      BarrierGuardElement() { any() }
+
+      /**
+       * Holds if this element is a flow barrier guard of kind `kind`, for data
+       * flowing in as described by `input`, when `this` evaluates to `acceptingValue`.
+       */
+      pragma[nomagic]
+      abstract predicate isBarrierGuard(
+        string input, string acceptingValue, string kind, Provenance provenance, string model
+      );
+    }
+
     private signature predicate hasKindSig(string kind);
 
     signature class NeutralCallableSig extends SummarizedCallableBaseFinal {
@@ -632,6 +681,10 @@ module Make<
       s.length() = 1 and
       s.head() instanceof TArgumentSummaryComponent
       or
+      // ReturnValue.*
+      s.length() = 1 and
+      s.head() instanceof TReturnSummaryComponent
+      or
       // Argument[n].ReturnValue.*
       s.length() = 2 and
       s.head() instanceof TReturnSummaryComponent and
@@ -723,7 +776,32 @@ module Make<
       )
     }
 
-    private predicate summarySpec(string spec) {
+    private predicate isRelevantBarrier(
+      BarrierElement e, string output, string kind, Provenance provenance, string model
+    ) {
+      e.isBarrier(output, kind, provenance, model) and
+      (
+        provenance.isManual()
+        or
+        provenance.isGenerated() and
+        not exists(Provenance p | p.isManual() and e.isBarrier(_, kind, p, _))
+      )
+    }
+
+    private predicate isRelevantBarrierGuard(
+      BarrierGuardElement e, string input, string acceptingValue, string kind,
+      Provenance provenance, string model
+    ) {
+      e.isBarrierGuard(input, acceptingValue, kind, provenance, model) and
+      (
+        provenance.isManual()
+        or
+        provenance.isGenerated() and
+        not exists(Provenance p | p.isManual() and e.isBarrierGuard(_, _, kind, p, _))
+      )
+    }
+
+    private predicate flowSpec(string spec) {
       exists(SummarizedCallable c |
         c.propagatesFlow(spec, _, _, _, _, _)
         or
@@ -732,10 +810,14 @@ module Make<
       or
       isRelevantSource(_, spec, _, _, _)
       or
+      isRelevantBarrier(_, spec, _, _, _)
+      or
+      isRelevantBarrierGuard(_, spec, _, _, _, _)
+      or
       isRelevantSink(_, spec, _, _, _)
     }
 
-    import AccessPathSyntax::AccessPath<summarySpec/1>
+    import AccessPathSyntax::AccessPath<flowSpec/1>
 
     /** Holds if specification component `token` parses as parameter `pos`. */
     predicate parseParam(AccessPathToken token, ArgumentPosition pos) {
@@ -1080,6 +1162,13 @@ module Make<
       outputState(c, s) and s = SummaryComponentStack::argument(_)
     }
 
+    private predicate relevantFlowSummaryPosition(SummarizedCallable c, ReturnKind rk) {
+      exists(SummaryComponentStack input |
+        summary(c, input, _, _, _) and
+        input = TSingletonSummaryComponentStack(TReturnSummaryComponent(rk))
+      )
+    }
+
     pragma[nomagic]
     private predicate sourceOutputStateEntry(
       SourceElement source, SummaryComponentStack s, string kind, string model
@@ -1215,6 +1304,12 @@ module Make<
       TSummaryParameterNode(SummarizedCallable c, ParameterPosition pos) {
         summaryParameterNodeRange(c, pos)
       } or
+      TSummaryReturnArgumentNode(FlowSummaryCallBase call, ReturnKind rk) {
+        exists(SummarizedCallable sc |
+          call = getASourceCall(sc) and
+          relevantFlowSummaryPosition(sc, rk)
+        )
+      } or
       TSourceOutputNode(SourceElement source, SummaryNodeState state, string kind, string model) {
         state.isSourceOutputState(source, _, kind, model)
       } or
@@ -1262,6 +1357,40 @@ module Make<
       override SourceElement getSourceElement() { none() }
 
       override SinkElement getSinkElement() { none() }
+    }
+
+    private class SummaryReturnArgumentNode extends SummaryNode, TSummaryReturnArgumentNode {
+      private FlowSummaryCallBase call;
+      private ReturnKind rk;
+
+      SummaryReturnArgumentNode() { this = TSummaryReturnArgumentNode(call, rk) }
+
+      override string toString() { result = "[summary] value written to " + rk + " at " + call }
+
+      override SummarizedCallable getSummarizedCallable() { none() }
+
+      override SourceElement getSourceElement() { none() }
+
+      override SinkElement getSinkElement() { none() }
+    }
+
+    /**
+     * Gets the summary node that represents the argument node used to transfer
+     * flow into the caller when a value is written to the value returned by
+     * `call` with kind `rk`.
+     */
+    SummaryNode summaryArgumentNode(FlowSummaryCallBase call, ReturnKind rk) {
+      result = TSummaryReturnArgumentNode(call, rk)
+    }
+
+    /** Gets the enclosing callable for summary node `sn`. */
+    DataFlowCallable getEnclosingCallable(SummaryNode sn) {
+      result = getSummarizedCallableAsDataFlowCallable(sn.getSummarizedCallable())
+      or
+      exists(FlowSummaryCallBase call |
+        sn = TSummaryReturnArgumentNode(call, _) and
+        result = getSourceCallEnclosingCallable(call)
+      )
     }
 
     class SourceOutputNode extends SummaryNode, TSourceOutputNode {
@@ -1370,6 +1499,12 @@ module Make<
       SummarizedCallable c, SummaryNodeState state, ParameterPosition pos
     ) {
       state.isInputState(c, SummaryComponentStack::argument(pos))
+      or
+      exists(ReturnKind rk |
+        relevantFlowSummaryPosition(c, rk) and
+        state.isInputState(c, SummaryComponentStack::return(rk)) and
+        pos = getFlowSummaryParameterPosition(rk)
+      )
     }
 
     /**
@@ -1503,6 +1638,9 @@ module Make<
       )
     }
 
+    /** Holds if return kind `rk` is a relevant return kind for flow summary modeling. */
+    predicate relevantFlowSummaryPosition(ReturnKind rk) { relevantFlowSummaryPosition(_, rk) }
+
     /**
      * Holds if flow is allowed to pass from the parameter at position `pos` of `c`,
      * to a return node, and back out to the parameter.
@@ -1512,6 +1650,31 @@ module Make<
         summary(c, inputContents, outputContents, _, _) and
         inputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos)) and
         outputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos))
+      )
+    }
+
+    /**
+     * Holds if `barrier` is a relevant barrier element with output specification `outSpec`.
+     */
+    predicate barrierSpec(
+      BarrierElement barrier, SummaryComponentStack outSpec, string kind, string model
+    ) {
+      exists(string output |
+        isRelevantBarrier(barrier, output, kind, _, model) and
+        External::interpretSpec(output, outSpec)
+      )
+    }
+
+    /**
+     * Holds if `barrierGuard` is a relevant barrier guard element with input specification `inSpec`.
+     */
+    predicate barrierGuardSpec(
+      BarrierGuardElement barrierGuard, SummaryComponentStack inSpec, string acceptingValue,
+      string kind, string model
+    ) {
+      exists(string input |
+        isRelevantBarrierGuard(barrierGuard, input, acceptingValue, kind, _, model) and
+        External::interpretSpec(input, inSpec)
       )
     }
 
@@ -1654,8 +1817,14 @@ module Make<
     }
 
     signature module StepsInputSig {
+      /** Gets the summary node represented by data-flow node `n`, if any. */
+      SummaryNode getSummaryNode(Node n);
+
       /** Gets a call that targets summarized callable `sc`. */
       DataFlowCall getACall(SummarizedCallable sc);
+
+      /** Gets the out node of kind `rk` for `call`, if any. */
+      default Node getSourceOutNode(FlowSummaryCallBase call, ReturnKind rk) { none() }
 
       /** Gets the enclosing callable of `source`. */
       DataFlowCallable getSourceNodeEnclosingCallable(SourceBase source);
@@ -1683,7 +1852,7 @@ module Make<
        * Holds if there is a local step from `pred` to `succ`, which is synthesized
        * from a flow summary.
        */
-      predicate summaryLocalStep(
+      private predicate summaryLocalStepImpl(
         SummaryNode pred, SummaryNode succ, boolean preservesValue, string model
       ) {
         exists(
@@ -1729,9 +1898,24 @@ module Make<
         )
       }
 
+      /** Holds if there is a local step between data-flow nodes synthesized from a flow summary. */
+      predicate summaryLocalStep(Node pred, SummaryNode succ, boolean preservesValue, string model) {
+        exists(SummaryNode predSummary |
+          predSummary = StepsInput::getSummaryNode(pred) and
+          summaryLocalStepImpl(predSummary, succ, preservesValue, model)
+        )
+        or
+        exists(FlowSummaryCallBase summaryCall, ReturnKind rk, SummarizedCallable sc |
+          pred = StepsInput::getSourceOutNode(summaryCall, rk) and
+          summaryCall = getASourceCall(sc) and
+          summary(sc, SummaryComponentStack::return(rk), _, preservesValue, model) and
+          succ = TSummaryReturnArgumentNode(summaryCall, rk)
+        )
+      }
+
       /** Holds if the value of `succ` is uniquely determined by the value of `pred`. */
       predicate summaryLocalMustFlowStep(SummaryNode pred, SummaryNode succ) {
-        pred = unique(SummaryNode n1 | summaryLocalStep(n1, succ, true, _))
+        pred = unique(SummaryNode n1 | summaryLocalStepImpl(n1, succ, true, _))
       }
 
       /**
@@ -1853,7 +2037,7 @@ module Make<
         or
         exists(SummaryNode mid, boolean clearsOrExpectsMid |
           paramReachesLocal(p, mid, clearsOrExpectsMid) and
-          summaryLocalStep(mid, n, true, _) and
+          summaryLocalStepImpl(mid, n, true, _) and
           if
             summaryClearsContent(n, _) or
             summaryExpectsContent(n, _)
@@ -1911,7 +2095,7 @@ module Make<
        */
       predicate summaryThroughStepValue(ArgNode arg, Node out, SummarizedCallable sc) {
         exists(SummaryNode ret |
-          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), ret, true, _)
+          summaryLocalStepImpl(summaryArgParamRetOut(arg, ret, out, sc), ret, true, _)
         )
       }
 
@@ -1924,7 +2108,7 @@ module Make<
        */
       predicate summaryThroughStepTaint(ArgNode arg, Node out, SummarizedCallable sc) {
         exists(SummaryNode ret |
-          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), ret, false, _)
+          summaryLocalStepImpl(summaryArgParamRetOut(arg, ret, out, sc), ret, false, _)
         )
       }
 
@@ -1938,7 +2122,7 @@ module Make<
       predicate summaryGetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
         exists(SummaryNode mid, SummaryNode ret |
           summaryReadStep(summaryArgParamRetOut(arg, ret, out, sc), c, mid) and
-          summaryLocalStep(mid, ret, _, _)
+          summaryLocalStepImpl(mid, ret, _, _)
         )
       }
 
@@ -1951,7 +2135,7 @@ module Make<
        */
       predicate summarySetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
         exists(SummaryNode mid, SummaryNode ret |
-          summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), mid, _, _) and
+          summaryLocalStepImpl(summaryArgParamRetOut(arg, ret, out, sc), mid, _, _) and
           summaryStoreStep(mid, c, ret)
         )
       }
@@ -2107,10 +2291,10 @@ module Make<
         not exists(interpretComponent(c))
       }
 
-      /** Holds if `acceptingvalue` is not a valid barrier guard accepting-value. */
-      bindingset[acceptingvalue]
-      predicate invalidAcceptingValue(string acceptingvalue) {
-        not acceptingvalue instanceof AcceptingValue
+      /** Holds if `acceptingValue` is not a valid barrier guard accepting-value. */
+      bindingset[acceptingValue]
+      predicate invalidAcceptingValue(string acceptingValue) {
+        not acceptingValue instanceof AcceptingValue
       }
 
       /** Holds if `provenance` is not a valid provenance value. */
@@ -2160,10 +2344,10 @@ module Make<
 
         /**
          * Holds if an external barrier guard specification exists for `n` with input
-         * specification `input`, accepting value `acceptingvalue`, and kind `kind`.
+         * specification `input`, accepting value `acceptingValue`, and kind `kind`.
          */
         predicate barrierGuardElement(
-          Element n, string input, AcceptingValue acceptingvalue, string kind,
+          Element n, string input, AcceptingValue acceptingValue, string kind,
           Provenance provenance, string model
         );
 
@@ -2289,11 +2473,11 @@ module Make<
         }
 
         private predicate barrierGuardElementRef(
-          InterpretNode ref, SourceSinkAccessPath input, AcceptingValue acceptingvalue, string kind,
+          InterpretNode ref, SourceSinkAccessPath input, AcceptingValue acceptingValue, string kind,
           string model
         ) {
           exists(SourceOrSinkElement e |
-            barrierGuardElement(e, input, acceptingvalue, kind, _, model) and
+            barrierGuardElement(e, input, acceptingValue, kind, _, model) and
             if inputNeedsReferenceExt(input.getToken(0))
             then e = ref.getCallTarget()
             else e = ref.asElement()
@@ -2436,10 +2620,10 @@ module Make<
          * given kind in a MaD flow model.
          */
         predicate isBarrierGuardNode(
-          InterpretNode node, AcceptingValue acceptingvalue, string kind, string model
+          InterpretNode node, AcceptingValue acceptingValue, string kind, string model
         ) {
           exists(InterpretNode ref, SourceSinkAccessPath input |
-            barrierGuardElementRef(ref, input, acceptingvalue, kind, model) and
+            barrierGuardElementRef(ref, input, acceptingValue, kind, model) and
             interpretInput(input, input.getNumToken(), ref, node)
           )
         }
@@ -2667,9 +2851,11 @@ module Make<
         key = "semmle.label" and val = n.toString()
       }
 
+      private Node getNode(SummaryNode sn) { sn = StepsInput::getSummaryNode(result) }
+
       private predicate edgesComponent(NodeOrCall a, NodeOrCall b, string value) {
         exists(boolean preservesValue |
-          PrivateSteps::summaryLocalStep(a.asNode(), b.asNode(), preservesValue, _) and
+          PrivateSteps::summaryLocalStep(getNode(a.asNode()), b.asNode(), preservesValue, _) and
           if preservesValue = true then value = "value" else value = "taint"
         )
         or

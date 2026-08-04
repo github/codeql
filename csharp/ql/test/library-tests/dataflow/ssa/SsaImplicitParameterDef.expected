@@ -15,6 +15,9 @@
 | DefUse.cs:128:19:128:19 | i | DefUse.cs:128:19:128:19 | SSA param(i) | DefUse.cs:128:19:128:19 | i |
 | DefUse.cs:134:22:134:22 | d | DefUse.cs:134:22:134:22 | SSA param(d) | DefUse.cs:134:22:134:22 | d |
 | DefUse.cs:142:68:142:69 | ie | DefUse.cs:142:68:142:69 | SSA param(ie) | DefUse.cs:142:68:142:69 | ie |
+| DefaultParam.cs:3:20:3:20 | b | DefaultParam.cs:3:20:3:20 | SSA param(b) | DefaultParam.cs:3:20:3:20 | b |
+| DefaultParam.cs:3:30:3:30 | s | DefaultParam.cs:3:30:3:30 | SSA param(s) | DefaultParam.cs:3:30:3:30 | s |
+| DefaultParam.cs:3:42:3:42 | i | DefaultParam.cs:3:42:3:42 | SSA param(i) | DefaultParam.cs:3:42:3:42 | i |
 | Example.cs:6:23:6:23 | i | Example.cs:6:23:6:23 | SSA param(i) | Example.cs:6:23:6:23 | i |
 | Example.cs:18:16:18:16 | p | Example.cs:18:16:18:16 | SSA param(p) | Example.cs:18:16:18:16 | p |
 | Example.cs:18:24:18:24 | b | Example.cs:18:24:18:24 | SSA param(b) | Example.cs:18:24:18:24 | b |

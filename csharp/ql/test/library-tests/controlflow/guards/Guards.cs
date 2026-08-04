@@ -35,10 +35,10 @@ public class Guards
         if (x == null || y == null) { }
         else Console.WriteLine(x + y); // null guarded
 
-        if (!(x == null || y == null)) // MISHANDLED, likely due to splitting
+        if (!(x == null || y == null))
             Console.WriteLine(x + y); // null guarded
 
-        if (!!!(x != null && y != null)) { } // MISHANDLED, likely due to splitting
+        if (!!!(x != null && y != null)) { }
         else Console.WriteLine(x + y); // null guarded
 
         if (Field != null)

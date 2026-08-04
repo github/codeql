@@ -50,6 +50,10 @@ module AccessAfterLifetimeConfig implements DataFlow::ConfigSig {
       result = [target.getLocation(), source.getLocation()]
     )
   }
+
+  DataFlow::FlowFeature getAFeature() {
+    result instanceof DataFlow::FeatureEscapesSourceCallContextOrEqualSourceSinkCallContext
+  }
 }
 
 module AccessAfterLifetimeFlow = TaintTracking::Global<AccessAfterLifetimeConfig>;
@@ -64,53 +68,22 @@ predicate sinkBlock(Sink s, BlockExpr be) {
   be = s.asExpr().getEnclosingBlock()
 }
 
-private predicate tcStep(BlockExpr a, BlockExpr b) {
-  // propagate through function calls
-  exists(Call call |
-    a = call.getEnclosingBlock() and
-    call.getARuntimeTarget() = b.getEnclosingCallable()
-  )
-}
-
-private predicate isTcSource(BlockExpr be) { sourceBlock(_, _, be) }
-
-private predicate isTcSink(BlockExpr be) { sinkBlock(_, be) }
-
-/**
- * Holds if block `a` contains block `b`, in the sense that a stack allocated variable in
- * `a` may still be on the stack during execution of `b`. This is interprocedural,
- * but is an overapproximation that doesn't accurately track call contexts
- * (for example if `f` and `g` both call `b`, then depending on the
- * caller a variable in `f` or `g` may or may-not be on the stack during `b`).
- */
-private predicate mayEncloseOnStack(BlockExpr a, BlockExpr b) =
-  doublyBoundedFastTC(tcStep/2, isTcSource/1, isTcSink/1)(a, b)
-
-/**
- * Holds if the pair `(source, sink)`, that represents a flow from a
- * pointer or reference to a dereference, has its dereference outside the
- * lifetime of the target variable `target`.
- */
-predicate dereferenceAfterLifetime(Source source, Sink sink, Variable target) {
-  AccessAfterLifetimeFlow::flow(source, sink) and
-  sourceValueScope(source, target, _) and
-  not exists(BlockExpr beSource, BlockExpr beSink |
-    sourceBlock(source, target, beSource) and
-    sinkBlock(sink, beSink)
-  |
-    beSource = beSink
-    or
-    mayEncloseOnStack(beSource, beSink)
-  )
-}
-
 from
   AccessAfterLifetimeFlow::PathNode sourceNode, AccessAfterLifetimeFlow::PathNode sinkNode,
-  Variable target
+  Source source, Sink sink, Variable target
 where
   // flow from a pointer or reference to the dereference
   AccessAfterLifetimeFlow::flowPath(sourceNode, sinkNode) and
-  // check that the dereference is outside the lifetime of the target
-  dereferenceAfterLifetime(sourceNode.getNode(), sinkNode.getNode(), target)
+  source = sourceNode.getNode() and
+  sink = sinkNode.getNode() and
+  sourceValueScope(source, target, _) and
+  // check that the dereference is outside the lifetime of the target, when the source
+  // and the sink are in the same callable
+  // (`FeatureEscapesSourceCallContextOrEqualSourceSinkCallContext` handles the case when
+  // they are not)
+  not exists(BlockExpr be |
+    sourceBlock(source, target, be) and
+    sinkBlock(sink, be)
+  )
 select sinkNode.getNode(), sourceNode, sinkNode,
   "Access of a pointer to $@ after its lifetime has ended.", target, target.toString()

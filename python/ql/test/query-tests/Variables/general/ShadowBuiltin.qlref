@@ -1,1 +1,2 @@
-Variables/ShadowBuiltin.ql
+query: Variables/ShadowBuiltin.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

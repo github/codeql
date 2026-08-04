@@ -114,6 +114,7 @@ private predicate parseArgument(string arg, string s, int i, Opcode opcode) {
 
 private Element getAChildScope(Element scope) { result.getParentScope() = scope }
 
+pragma[nomagic]
 private predicate hasAVariable(MacroInvocation mi, Stmt s, Element scope) {
   assertion0(mi, s, _) and
   s.getParent() = scope
@@ -121,15 +122,32 @@ private predicate hasAVariable(MacroInvocation mi, Stmt s, Element scope) {
   hasAVariable(mi, s, getAChildScope(scope))
 }
 
-private LocalScopeVariable getVariable(MacroInvocation mi, int i) {
-  exists(string operand, string arg, Stmt s |
+private predicate hasParentScope(Variable v, Element scope) { v.getParentScope() = scope }
+
+pragma[nomagic]
+private predicate hasAssertionOperand(MacroInvocation mi, int i, Stmt s, string operand) {
+  exists(string arg |
     assertion0(mi, s, arg) and
-    parseArgument(arg, operand, i, _) and
+    parseArgument(arg, operand, i, _)
+  )
+}
+
+pragma[nomagic]
+private predicate hasNameAndParentScope(string name, Element scope, Variable v) {
+  v.hasName(name) and
+  hasParentScope(v, scope)
+}
+
+pragma[nomagic]
+private LocalScopeVariable getVariable(MacroInvocation mi, int i) {
+  exists(string name, Stmt s |
+    hasAssertionOperand(mi, i, s, name) and
     result =
-      unique(Variable v |
+      unique(Variable v, Element parentScope |
+        hasAssertionOperand(mi, _, s, name) and
         v.getLocation().getStartLine() < s.getLocation().getStartLine() and
-        hasAVariable(mi, s, v.getParentScope()) and
-        v.hasName(operand)
+        hasAVariable(mi, s, parentScope) and
+        hasNameAndParentScope(name, parentScope, v)
       |
         v
       )

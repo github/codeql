@@ -767,12 +767,20 @@ newtype TTranslatedElement =
       expr = initList.getFieldExpr(field, position).getFullyConverted()
     )
     or
-    exists(ConstructorFieldInit init |
+    exists(ConstructorDirectFieldInit init |
       not ignoreExpr(init) and
       ast = init and
       field = init.getTarget() and
       expr = init.getExpr().getFullyConverted() and
       position = -1
+    )
+  } or
+  // The initialization of a field via a default member initializer.
+  TTranslatedDefaultFieldInitialization(Expr ast, Field field) {
+    exists(ConstructorDefaultFieldInit init |
+      not ignoreExpr(init) and
+      ast = init and
+      field = init.getTarget()
     )
   } or
   // The value initialization of a field due to an omitted member of an
@@ -871,7 +879,7 @@ newtype TTranslatedElement =
   // The declaration/initialization part of a `ConditionDeclExpr`
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
   // The side effects of a `Call`
-  TTranslatedCallSideEffects(CallOrAllocationExpr expr) {
+  TTranslatedCallSideEffects(ExprWithCallSideEffects expr) {
     not ignoreExpr(expr) and
     not ignoreSideEffects(expr)
   } or
@@ -910,15 +918,23 @@ newtype TTranslatedElement =
   } or
   // Constructor calls lack a qualifier (`this`) expression, so we need to handle the side effects
   // on `*this` without an `Expr`.
-  TTranslatedStructorQualifierSideEffect(Call call, SideEffectOpcode opcode) {
+  TTranslatedImplicitThisQualifierSideEffect(ExprWithCallSideEffects call, SideEffectOpcode opcode) {
     not ignoreExpr(call) and
     not ignoreSideEffects(call) and
-    call instanceof ConstructorCall and
-    opcode = getASideEffectOpcode(call, -1)
+    (
+      call instanceof ConstructorCall and
+      opcode = getASideEffectOpcode(call, -1)
+      or
+      call instanceof ConstructorFieldInit and
+      opcode = getDefaultFieldInitSideEffectOpcode()
+    )
   } or
   // The side effect that initializes newly-allocated memory.
   TTranslatedAllocationSideEffect(AllocationExpr expr) { not ignoreSideEffects(expr) } or
-  TTranslatedStaticStorageDurationVarInit(Variable var) { Raw::varHasIRFunc(var) } or
+  TTranslatedStaticStorageDurationVarInit(Variable var) {
+    Raw::varHasIRFunc(var) and not var instanceof Field
+  } or
+  TTranslatedNonStaticDataMemberVarInit(Field var) { Raw::varHasIRFunc(var) } or
   TTranslatedAssertionOperand(MacroInvocation mi, int index) { hasAssertionOperand(mi, index) }
 
 /**
@@ -1179,7 +1195,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * If the instruction specified by `tag` is a `FunctionInstruction`, gets the
    * `Function` for that instruction.
    */
-  Function getInstructionFunction(InstructionTag tag) { none() }
+  Declaration getInstructionFunction(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is a `VariableInstruction`, gets the
@@ -1297,5 +1313,7 @@ abstract class TranslatedRootElement extends TranslatedElement {
     this instanceof TTranslatedFunction
     or
     this instanceof TTranslatedStaticStorageDurationVarInit
+    or
+    this instanceof TTranslatedNonStaticDataMemberVarInit
   }
 }

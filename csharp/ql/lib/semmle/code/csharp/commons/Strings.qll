@@ -29,7 +29,7 @@ class ImplicitToStringExpr extends Expr {
       m = p.getCallable()
     |
       m = any(SystemTextStringBuilderClass c).getAMethod() and
-      m.getName().regexpMatch("Append(Line)?") and
+      m.getName() = "Append" and
       not p.getType() instanceof ArrayType
       or
       p instanceof StringFormatItemParameter and
@@ -47,6 +47,11 @@ class ImplicitToStringExpr extends Expr {
     exists(AddExpr add, Expr o | o = add.getAnOperand() |
       o.stripImplicit().getType() instanceof StringType and
       this = add.getOtherOperand(o).stripImplicit()
+    )
+    or
+    exists(AssignAddExpr add, Expr o | o = add.getLeftOperand() |
+      o.stripImplicit().getType() instanceof StringType and
+      this = add.getRightOperand().stripImplicit()
     )
     or
     this = any(InterpolatedStringExpr ise).getAnInsert().stripImplicit()

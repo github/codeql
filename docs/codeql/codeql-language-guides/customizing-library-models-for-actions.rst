@@ -24,26 +24,26 @@ The CodeQL library for GitHub Actions exposes the following extensible predicate
 
 Customizing data flow and taint tracking:
 
-- **actionsSourceModel**\(action, version, output, kind, provenance)
-- **actionsSinkModel**\(action, version, input, kind, provenance)
-- **actionsSummaryModel**\(action, version, input, output, kind, provenance)
+- ``actionsSourceModel(action, version, output, kind, provenance)``
+- ``actionsSinkModel(action, version, input, kind, provenance)``
+- ``actionsSummaryModel(action, version, input, output, kind, provenance)``
 
 Customizing Actions-specific analysis:
 
-- **argumentInjectionSinksDataModel**\(regexp, command_group, argument_group)
-- **contextTriggerDataModel**\(trigger, context_prefix)
-- **externallyTriggerableEventsDataModel**\(event)
-- **immutableActionsDataModel**\(action)
-- **poisonableActionsDataModel**\(action)
-- **poisonableCommandsDataModel**\(regexp)
-- **poisonableLocalScriptsDataModel**\(regexp, group)
-- **repositoryDataModel**\(visibility, default_branch_name)
-- **trustedActionsOwnerDataModel**\(owner)
-- **untrustedEventPropertiesDataModel**\(property, kind)
-- **untrustedGhCommandDataModel**\(cmd_regex, flag)
-- **untrustedGitCommandDataModel**\(cmd_regex, flag)
-- **vulnerableActionsDataModel**\(action, vulnerable_version, vulnerable_sha, fixed_version)
-- **workflowDataModel**\(path, trigger, job, secrets_source, permissions, runner)
+- ``argumentInjectionSinksDataModel(regexp, command_group, argument_group)``
+- ``contextTriggerDataModel(trigger, context_prefix)``
+- ``externallyTriggerableEventsDataModel(event)``
+- ``immutableActionsDataModel(action)``
+- ``poisonableActionsDataModel(action)``
+- ``poisonableCommandsDataModel(regexp)``
+- ``poisonableLocalScriptsDataModel(regexp, group)``
+- ``repositoryDataModel(visibility, default_branch_name)``
+- ``trustedActionsOwnerDataModel(owner)``
+- ``untrustedEventPropertiesDataModel(property, kind)``
+- ``untrustedGhCommandDataModel(cmd_regex, flag)``
+- ``untrustedGitCommandDataModel(cmd_regex, flag)``
+- ``vulnerableActionsDataModel(action, vulnerable_version, vulnerable_sha, fixed_version)``
+- ``workflowDataModel(path, trigger, job, secrets_source, permissions, runner)``
 
 Examples of custom model definitions
 ------------------------------------
@@ -62,9 +62,9 @@ To allow any Action from the publisher ``octodemo``, such as ``octodemo/3rd-part
    .. code-block:: yaml
 
       extensions:
-        - addsTo: 
+        - addsTo:
             pack: codeql/actions-all
-            extensible: trustedActionsOwnerDataModel 
+            extensible: trustedActionsOwnerDataModel
           data:
             - ["octodemo"]
 

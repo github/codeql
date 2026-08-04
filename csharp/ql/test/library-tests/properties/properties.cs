@@ -133,4 +133,64 @@ namespace Properties
             set { field = value; }
         }
     }
+
+    public ref struct S
+    {
+        private ref int x;
+
+        public S(ref int v)
+        {
+            x = ref v;
+        }
+
+        public ref int Prop
+        {
+            get { return ref x; }
+        }
+    }
+
+    public class TestRefReturns
+    {
+        public void M()
+        {
+            int a = 0;
+
+            S s = new S(ref a);
+            s.Prop = 1;
+            var x = s.Prop;
+        }
+    }
+
+    public class BaseClass
+    {
+        public virtual int Value
+        {
+            get { return field; }
+            set { field = value; }
+        }
+    }
+
+    public class DerivedClass1 : BaseClass
+    {
+        public override int Value
+        {
+            get { return 20; }
+        }
+    }
+
+    public class DerivedClass2 : BaseClass { }
+
+    public class TestPartialPropertyOverride
+    {
+        public void M()
+        {
+            var d1 = new DerivedClass1();
+            d1.Value = 11;
+            var test1 = d1.Value;
+
+            var d2 = new DerivedClass2();
+            d2.Value = 12;
+            var test2 = d2.Value;
+        }
+    }
 }

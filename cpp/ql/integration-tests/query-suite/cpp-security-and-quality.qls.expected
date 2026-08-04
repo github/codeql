@@ -160,6 +160,7 @@ ql/cpp/ql/src/Summary/LinesOfUserCode.ql
 ql/cpp/ql/src/Telemetry/CompilerErrors.ql
 ql/cpp/ql/src/Telemetry/DatabaseQuality.ql
 ql/cpp/ql/src/Telemetry/ExtractionMetrics.ql
+ql/cpp/ql/src/Telemetry/ExtractorInformation.ql
 ql/cpp/ql/src/Telemetry/MissingIncludes.ql
 ql/cpp/ql/src/Telemetry/SucceededIncludes.ql
 ql/cpp/ql/src/jsf/4.06 Pre-Processing Directives/AV Rule 32.ql

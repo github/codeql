@@ -1,1 +1,2 @@
-Likely Bugs/Comparison/EqualsUsesInstanceOf.ql
+query: Likely Bugs/Comparison/EqualsUsesInstanceOf.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

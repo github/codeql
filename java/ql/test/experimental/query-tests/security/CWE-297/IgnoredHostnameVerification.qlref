@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-297/IgnoredHostnameVerification.ql
+query: experimental/Security/CWE/CWE-297/IgnoredHostnameVerification.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

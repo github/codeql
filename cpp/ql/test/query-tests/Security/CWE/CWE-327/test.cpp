@@ -35,7 +35,7 @@ void my_implementation6(const char *str);
 
 void test_macros(void *data, size_t amount, const char *str)
 {
-	ENCRYPT_WITH_DES(data, amount); // BAD
+	ENCRYPT_WITH_DES(data, amount); // $ Alert // BAD
 	ENCRYPT_WITH_RC2(data, amount); // BAD
 	ENCRYPT_WITH_AES(data, amount); // GOOD (good algorithm)
 	ENCRYPT_WITH_3DES(data, amount); // BAD
@@ -43,10 +43,10 @@ void test_macros(void *data, size_t amount, const char *str)
 	ENCRYPT_WITH_RC20(data, amount); // GOOD (if there ever is an RC20 algorithm, we have no reason to believe it's weak)
 	ENCRYPT_WITH_DES_REMOVED(data, amount); // GOOD (implementation has been deleted)
 
-	DESENCRYPT(data, amount); // BAD [NOT DETECTED]
-	RC2ENCRYPT(data, amount); // BAD [NOT DETECTED]
+	DESENCRYPT(data, amount); // $ MISSING: Alert // BAD [NOT DETECTED]
+	RC2ENCRYPT(data, amount); // $ MISSING: Alert // BAD [NOT DETECTED]
 	AESENCRYPT(data, amount); // GOOD (good algorithm)
-	DES3ENCRYPT(data, amount); // BAD [NOT DETECTED]
+	DES3ENCRYPT(data, amount); // $ MISSING: Alert // BAD [NOT DETECTED]
 
 	DES_DO_ENCRYPTION(data, amount); // BAD
 	RUN_DES_ENCODING(data, amount); // BAD
@@ -91,16 +91,16 @@ void test_functions(void *data, size_t amount, const char *str)
 	encrypt3DES(data, amount); // BAD
 	encryptTripleDES(data, amount); // BAD
 
-	DESEncrypt(data, amount); // BAD [NOT DETECTED]
-	RC2Encrypt(data, amount); // BAD [NOT DETECTED]
+	DESEncrypt(data, amount); // $ MISSING: Alert // BAD [NOT DETECTED]
+	RC2Encrypt(data, amount); // $ MISSING: Alert // BAD [NOT DETECTED]
 	AESEncrypt(data, amount); // GOOD (good algorithm)
-	DES3Encrypt(data, amount); // BAD [NOT DETECTED]
+	DES3Encrypt(data, amount); // $ MISSING: Alert // BAD [NOT DETECTED]
 
-	DoDESEncryption(data, amount); // BAD [NOT DETECTED]
-	encryptDes(data, amount); // BAD [NOT DETECTED]
+	DoDESEncryption(data, amount); // $ MISSING: Alert // BAD [NOT DETECTED]
+	encryptDes(data, amount); // $ MISSING: Alert // BAD [NOT DETECTED]
 	do_des_encrypt(data, amount); // BAD
-	DES_Set_Key(str); // BAD [NOT DETECTED]
-	DESSetKey(str); // BAD [NOT DETECTED]
+	DES_Set_Key(str); // $ MISSING: Alert // BAD [NOT DETECTED]
+	DESSetKey(str); // $ MISSING: Alert // BAD [NOT DETECTED]
 
 	Des(); // GOOD (probably nothing to do with encryption)
 	Desmond(str); // GOOD (probably nothing to do with encryption)
@@ -118,8 +118,8 @@ void my_implementation8();
 
 void test_macros2()
 {
-	INIT_ENCRYPT_WITH_DES(); // BAD [NOT DETECTED]
+	INIT_ENCRYPT_WITH_DES(); // $ MISSING: Alert // BAD [NOT DETECTED]
 	INIT_ENCRYPT_WITH_AES(); // GOOD (good algorithm)
-	
+
 	// ...
 }

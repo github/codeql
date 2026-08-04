@@ -12,7 +12,7 @@ namespace ConstantDoCondition
             do
             {
                 break;
-            } while (ZERO == 1 - 1); // BAD
+            } while (ZERO == 1 - 1); // $ Alert
             do
             {
                 break;
@@ -29,7 +29,7 @@ namespace ConstantDoCondition
             do
             {
                 break;
-            } while (" " == " ");  // BAD
+            } while (" " == " ");  // $ Alert
             do
             {
                 break;

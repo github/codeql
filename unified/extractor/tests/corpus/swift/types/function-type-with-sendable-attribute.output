@@ -1,0 +1,66 @@
+let handler: @Sendable () -> Void = {}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    closureExpr
+                      leftBrace: {
+                      rightBrace: }
+                      statements:
+              pattern:
+                identifierPattern
+                  identifier: identifier "handler"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    attributedType
+                      attributes:
+                        attribute
+                          atSign: @
+                          attributeName:
+                            identifierType
+                              name: identifier "Sendable"
+                      baseType:
+                        functionType
+                          leftParen: (
+                          rightParen: )
+                          parameters:
+                          returnClause:
+                            returnClause
+                              arrow: ->
+                              type:
+                                identifierType
+                                  name: identifier "Void"
+                      lateSpecifiers:
+                      specifiers:
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "handler"
+          type: unsupported_node "@Sendable () -> Void"
+          value:
+            function_expr
+              body: block "{}"

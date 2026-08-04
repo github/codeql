@@ -16,7 +16,7 @@ func redact(kind, value string) string {
 	return value
 }
 
-func test() {
+func test(selector int) {
 	name := "user"
 	password := "P@ssw0rd" // $ Source
 	x := "horsebatterystapleincorrect"
@@ -29,7 +29,9 @@ func test() {
 
 	myLog(password)
 
-	log.Panic(password) // $ Alert
+	if selector == 1 {
+		log.Panic(password) // $ Alert
+	}
 
 	log.Println(name + ", " + password) // $ Alert
 

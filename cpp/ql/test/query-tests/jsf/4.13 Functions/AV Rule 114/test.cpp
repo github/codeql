@@ -15,7 +15,7 @@ MyValue g1()
 MyValue g2()
 {
 	// BAD
-}
+} // $ Alert
 
 MyValue g3()
 {
@@ -49,7 +49,7 @@ MyValue g7(bool c)
 	DONOTHING
 	DONOTHING
 	// BAD
-}
+} // $ Alert
 
 typedef void MYVOID;
 MYVOID g8()
@@ -73,7 +73,7 @@ TypePair<void, int>::first g9()
 TypePair<void, int>::second g10()
 {
 	// BAD (the return type amounts to int)
-}
+} // $ Alert
 
 template<class T>
 typename TypePair<void, T>::first g11()
@@ -85,7 +85,7 @@ template<class T>
 typename TypePair<void, T>::second g12()
 {
 	// BAD (the return type amounts to T / int)
-}
+} // $ Alert
 
 void instantiate()
 {
@@ -109,7 +109,7 @@ int g14(int x)
 	{
 		myThrow("fail"); // BAD (doesn't always throw)
 	}
-}
+} // $ Alert
 
 int g15(int x)
 {
@@ -131,14 +131,14 @@ void myConditionalThrow(bool condition, const char *error)
 
 int g16(int x)
 {
-	myConditionalThrow(x < 10, "fail"); // BAD (doesn't always throw)
+	myConditionalThrow(x < 10, "fail"); // $ Alert // BAD (doesn't always throw)
 }
 
 int g17(int x)
 {
 	try
 	{
-		myConditionalThrow(x < 10, "fail");
+		myConditionalThrow(x < 10, "fail"); // $ Alert
 	} catch (...) {
 		return x; // BAD (doesn't always reach this return)
 	}
@@ -181,12 +181,12 @@ public:
 
 int g22() {
 	Aborting x;
-	
+
 	x.a(); // GOOD
 }
 
 int g23() {
-	Aborting().a(); // GOOD [FALSE POSITIVE]
+	Aborting().a(); // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE]
 }
 
 [[__noreturn__]]

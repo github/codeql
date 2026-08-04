@@ -54,7 +54,7 @@ static int foo(size_t *size)
 {
   int bar;
 
-  if (*size <= MAX_VAL) // BAD (pointless comparison) [NO LONGER REPORTED]
+  if (*size <= MAX_VAL) // $ Alert[cpp/constant-comparison] // BAD (pointless comparison) [NO LONGER REPORTED]
     *size = MAX_VAL;
 }
 

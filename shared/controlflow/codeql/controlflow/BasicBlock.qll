@@ -177,6 +177,9 @@ module Make<LocationSig Location, InputSig<Location> Input> implements CfgSig<Lo
     /** Gets the CFG scope of this basic block. */
     CfgScope getScope() { result = nodeGetCfgScope(this.getFirstNode()) }
 
+    /** Gets the enclosing callable of this basic block. */
+    CfgScope getEnclosingCallable() { result = nodeGetCfgScope(this.getFirstNode()) }
+
     /** Gets the location of this basic block. */
     Location getLocation() { result = this.getFirstNode().getLocation() }
 

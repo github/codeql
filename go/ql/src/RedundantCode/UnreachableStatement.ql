@@ -26,7 +26,7 @@ ControlFlow::Node nonGuardPredecessor(ControlFlow::Node nd) {
  * Matches if `retval` is a constant or a struct composed wholly of constants.
  */
 predicate isAllowedReturnValue(Expr retval) {
-  retval = Builtin::nil().getAReference()
+  exprRefersToNil(retval)
   or
   retval = Builtin::true_().getAReference()
   or

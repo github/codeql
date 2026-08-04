@@ -109,6 +109,7 @@ module.exports = grammar({
     ),
 
     import_statement: $ => seq(
+      optional(field('is_lazy', 'lazy')),
       'import',
       $._import_list
     ),
@@ -131,6 +132,7 @@ module.exports = grammar({
     ),
 
     import_from_statement: $ => seq(
+      optional(field('is_lazy', 'lazy')),
       'from',
       field('module_name', choice(
         $.relative_import,
@@ -1029,28 +1031,28 @@ module.exports = grammar({
 
     list_comprehension: $ => seq(
       '[',
-      field('body', $.expression),
+      field('body', choice($.expression, $.list_splat)),
       $._comprehension_clauses,
       ']'
     ),
 
     dictionary_comprehension: $ => seq(
       '{',
-      field('body', $.pair),
+      field('body', choice($.pair, $.dictionary_splat)),
       $._comprehension_clauses,
       '}'
     ),
 
     set_comprehension: $ => seq(
       '{',
-      field('body', $.expression),
+      field('body', choice($.expression, $.list_splat)),
       $._comprehension_clauses,
       '}'
     ),
 
     generator_expression: $ => seq(
       '(',
-      field('body', $.expression),
+      field('body', choice($.expression, $.list_splat)),
       $._comprehension_clauses,
       ')'
     ),
@@ -1228,6 +1230,7 @@ module.exports = grammar({
         'await',
         'match',
         'type',
+        'lazy',
       ),
       $.identifier
     )),

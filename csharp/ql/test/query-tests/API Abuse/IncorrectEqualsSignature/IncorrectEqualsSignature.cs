@@ -3,7 +3,7 @@ using System;
 // BAD
 class Incorrect
 {
-    public bool Equals(Incorrect other) => false;
+    public bool Equals(Incorrect other) => false; // $ Alert
 }
 
 // GOOD

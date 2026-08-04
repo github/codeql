@@ -93,3 +93,4 @@
 | tst3.js:16:3:18:4 | pool.qu ... ts\\n  }) |
 | tst4.js:8:3:8:67 | db.get( ...  + '"') |
 | tst.js:10:3:10:65 | db.get( ...  + '"') |
+| vercel.ts:7:3:9:4 | conn.qu ... );\\n  }) |

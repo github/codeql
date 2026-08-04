@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>If untrusted input is included in a user-role prompt sent to an AI model, an attacker can inject
+instructions that manipulate the model's behavior. This is known as <i>indirect prompt injection</i>
+when the malicious content arrives through data the model processes, or <i>direct prompt injection</i>
+when the attacker controls the prompt directly.</p>
+
+<p>Unlike system prompt injection, user prompt injection targets the user-role messages. Although
+user messages are expected to carry user input, passing unsanitized data directly into structured
+prompt templates can still allow an attacker to override intended instructions, extract sensitive
+context, or trigger unintended tool calls.</p>
+</overview>
+
+<recommendation>
+<p>To mitigate user prompt injection:</p>
+<ul>
+<li>Ensure that all data flowing into user input is intended and necessary for the purpose of the AI system.</li>
+<li>Ensure the system prompt clearly describes the purpose, scope and boundaries of the AI system. Instruct the system to deny input that falls outside these boundaries.</li>
+<li>If creating a prompt out of multiple user-controlled values, assume that each of them can be malicious. Ensure the range of possible values is restricted and validated.
+For example, if a prompt includes a question and the intended language to respond in, validate that the language is one of the supported options.</li>
+<li>Consider using guardrails on the input like the OpenAI guardrails library to enforce constraints and prevent malicious content from being processed.</li>
+<li>Apply output filtering to detect and block responses that indicate prompt injection attempts.</li>
+</ul>
+</recommendation>
+
+<example>
+<p>In the following example, user-controlled data is inserted directly into a user-role prompt
+without any validation, allowing an attacker to inject arbitrary instructions.</p>
+<sample src="examples/user-prompt-injection.js" />
+
+<p>The following example applies multiple mitigations together, and only includes data that is
+necessary for the task in the prompt:</p>
+<ul>
+<li>The user-controlled value that selects behavior (the response language) is validated against a
+fixed allowlist before it is used in the prompt, restricting its possible values.</li>
+<li>The request is sent through a guarded client, so an input guardrail (here, the OpenAI guardrails
+library) inspects the user input and blocks prompt-injection attempts before the model sees it.</li>
+<li>The system prompt clearly describes the assistant's scope and instructs it to ignore embedded
+instructions and refuse anything outside that scope.</li>
+<li>Output filtering uses a separate LLM call to inspect the model's response and blocks it if it
+has leaked the system prompt or other internal instructions, complementing the input guardrail.</li>
+</ul>
+<sample src="examples/user-prompt-injection_fixed.js" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/">LLM01: Prompt Injection</a>.</li>
+<li>MITRE CWE: <a href="https://cwe.mitre.org/data/definitions/1427.html">CWE-1427: Improper Neutralization of Input Used for LLM Prompting</a>.</li>
+</references>
+
+</qhelp>

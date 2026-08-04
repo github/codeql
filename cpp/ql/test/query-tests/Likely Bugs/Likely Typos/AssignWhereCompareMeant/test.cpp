@@ -24,25 +24,25 @@ public:
 };
 
 void f(int x) {
-  if (x = 3) { // BAD
+  if (x = 3) { // $ Alert // BAD
   }
   if ((x = 3)) { // GOOD: explicitly bracketed
   }
-  if (!(x = 3)) { // BAD
+  if (!(x = 3)) { // $ Alert // BAD
   }
   if (!((x = 3))) { // GOOD: explicitly bracketed
   }
   do {
-  } while (x = 0); // BAD
+  } while (x = 0); // $ Alert // BAD
   do {
   } while ((x = 0)); // GOOD: explicitly bracketed
-  if ((x = 3) && (x = 4)) { // BAD (x2)
+  if ((x = 3) && (x = 4)) { // $ Alert // BAD (x2)
   }
   if (((x = 3)) && ((x = 4))) { // GOOD: explicitly bracketed
   }
-  x = (x = 3) ? 2 : 1; // BAD
+  x = (x = 3) ? 2 : 1; // $ Alert // BAD
   x = ((x = 3)) ? 2 : 1; // GOOD: explicitly bracketed
-  assert(x = 2); // BAD
+  assert(x = 2); // $ Alert // BAD
   assert((x = 2)); // GOOD: explicitly bracketed
 
   int y;
@@ -50,12 +50,12 @@ void f(int x) {
   if (y = 1) { // GOOD: y was not initialized so it is probably intentional.
   }
   y = 2;
-  if (y = 3) { // BAD: y has been initialized so it is probably a mistake.
+  if (y = 3) { // $ Alert // BAD: y has been initialized so it is probably a mistake.
   }
 
   int z = 1;
 
-  if (z = 2) { // BAD: z has been initialized so it is probably a mistake.
+  if (z = 2) { // $ Alert // BAD: z has been initialized so it is probably a mistake.
   }
   IntHolder holder1(x);
   IntHolder holder2(x);
@@ -73,15 +73,15 @@ void g(int *i_p, int cond) {
   int i, j, k, x, y;
   static int s, t = 0;
 
-  if (global = 0) { // BAD: this is unlikely to be a deliberate initialization of global
+  if (global = 0) { // $ Alert // BAD: this is unlikely to be a deliberate initialization of global
   }
-  if (*i_p = 0) { // BAD
+  if (*i_p = 0) { // $ Alert // BAD
   }
-  if (s = 0) { // BAD
+  if (s = 0) { // $ Alert // BAD
   }
-  if (s = 0) { // BAD
+  if (s = 0) { // $ Alert // BAD
   }
-  if (t = 0) { // BAD
+  if (t = 0) { // $ Alert // BAD
   }
 
   for (i = 0, j = 0; i < 10; i++) { // GOOD
@@ -89,7 +89,7 @@ void g(int *i_p, int cond) {
     }
   }
 
-  for (k = 0; !(k = 10); k++) { // BAD
+  for (k = 0; !(k = 10); k++) { // $ Alert // BAD
   }
 
   if (cond) {
@@ -110,7 +110,7 @@ void h() {
   }
 
   int z = 0;
-  if(z = 1) { // BAD
+  if(z = 1) { // $ Alert // BAD
   }
 }
 
@@ -131,26 +131,26 @@ void f3(int x, int y) {
                           // as an assignment
   }
 
-  if((x == 1) && (y = 2)) { // BAD
+  if((x == 1) && (y = 2)) { // $ Alert // BAD
   }
 
   long z = x;
-  if(((z == 42) || (y = 2)) && (x == 1)) { // BAD
+  if(((z == 42) || (y = 2)) && (x == 1)) { // $ Alert // BAD
   }
 
   if((y = 2) && (x == z || x == 1)) { // GOOD
   }
 
-  if(((x == 42) || x == 1) && (y = 2)) { // BAD
+  if(((x == 42) || x == 1) && (y = 2)) { // $ Alert // BAD
   }
 
   if(x == 10 || (x == 42 && x == 1) && (y = 2)) { // GOOD
   }
 
-  if(x == 10 || ((x == 42) && (y = 2)) && (z == 1)) { // BAD
+  if(x == 10 || ((x == 42) && (y = 2)) && (z == 1)) { // $ Alert // BAD
   }
 
-  if((x == 10) || ((z == z) && (x == 1)) && (y = 2)) { // BAD
+  if((x == 10) || ((z == z) && (x == 1)) && (y = 2)) { // $ Alert // BAD
   }
 }
 
@@ -163,11 +163,11 @@ void f4(int x, bool b) {
   if((x = 10) && use(x) && b) {} // GOOD: Same reason as above
   if((x = 10) && (use(x) && b)) {} // GOOD: Same reason as above
 
-  if(use(x) && b && (x = 10)) {} // BAD: The assignment is the last thing that happens in the comparison.
+  if(use(x) && b && (x = 10)) {} // $ Alert // BAD: The assignment is the last thing that happens in the comparison.
                                  // This doesn't match the usual pattern.
-  if((use(x) && b) && (x = 10)) {} // BAD: Same reason as above
-  if(use(x) && (b && (x = 10))) {} // BAD: Same reason as above
+  if((use(x) && b) && (x = 10)) {} // $ Alert // BAD: Same reason as above
+  if(use(x) && (b && (x = 10))) {} // $ Alert // BAD: Same reason as above
 
-  if((x = 10) || use(x)) {} // BAD: This doesn't follow the usual style of writing an assignment in
+  if((x = 10) || use(x)) {} // $ Alert // BAD: This doesn't follow the usual style of writing an assignment in
                             // a boolean check.
 }

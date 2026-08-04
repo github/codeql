@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-295/JxBrowserWithoutCertValidation.ql
+query: experimental/Security/CWE/CWE-295/JxBrowserWithoutCertValidation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

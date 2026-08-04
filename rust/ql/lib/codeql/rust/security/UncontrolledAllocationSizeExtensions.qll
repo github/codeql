@@ -6,6 +6,7 @@
 import rust
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 
 /**
@@ -30,6 +31,13 @@ module UncontrolledAllocationSize {
    */
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, ["alloc-size", "alloc-layout"]) }
+  }
+
+  /**
+   * A barrier for uncontrolled allocation size from model data.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() { barrierNode(this, ["alloc-size", "alloc-layout"]) }
   }
 
   /**
@@ -62,18 +70,5 @@ module UncontrolledAllocationSize {
         [cmp.getLhs(), cmp.getRhs()] = e and
         branch = false
       )
-  }
-
-  /**
-   * A barrier for uncontrolled allocation size flow into particular functions.
-   */
-  private class ModeledBarrier extends Barrier {
-    ModeledBarrier() {
-      exists(MethodCall c |
-        c.getStaticTarget().getCanonicalPath() =
-          ["<alloc::string::String>::split_off", "<alloc::vec::Vec>::split_off"] and
-        this.asExpr() = c.getAnArgument()
-      )
-    }
   }
 }

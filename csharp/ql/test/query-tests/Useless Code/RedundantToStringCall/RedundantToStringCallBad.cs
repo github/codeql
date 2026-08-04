@@ -4,6 +4,6 @@ class Bad
 {
     static string Hello(object o)
     {
-        return string.Format("Hello, {0}!", o.ToString());
+        return string.Format("Hello, {0}!", o.ToString()); // $ Alert
     }
 }

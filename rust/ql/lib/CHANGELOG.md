@@ -1,3 +1,60 @@
+## 0.2.18
+
+No user-facing changes.
+
+## 0.2.17
+
+No user-facing changes.
+
+## 0.2.16
+
+No user-facing changes.
+
+## 0.2.15
+
+### Minor Analysis Improvements
+
+* The sensitive data heuristics used to identify code that handles passwords and private data have been improved. Most of the changes permit more variations of established patterns, thereby finding more sensitive data. Queries that use the sensitive data library (for example `rust/cleartext-logging`) may find more correct results and fewer false positive results after these changes.
+
+## 0.2.14
+
+No user-facing changes.
+
+## 0.2.13
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions.
+
+## 0.2.12
+
+No user-facing changes.
+
+## 0.2.11
+
+No user-facing changes.
+
+## 0.2.10
+
+No user-facing changes.
+
+## 0.2.9
+
+No user-facing changes.
+
+## 0.2.8
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+* Added neutral models to inhibit spurious generated sink models for `map` and `from`. This fixes some false positive query results.
+
+## 0.2.7
+
+### Minor Analysis Improvements
+
+* Added support for neutral models (`extensible: neutralModel`) to control where generated source, sink and flow summary models apply.
+
 ## 0.2.6
 
 No user-facing changes.

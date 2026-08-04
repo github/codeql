@@ -271,35 +271,36 @@
 | ViableCallable.cs:311:9:311:15 | call to method M<Int32> | M`1 | C7`1 |
 | ViableCallable.cs:314:9:314:20 | call to method M<Int32> | M`1 | C7`1 |
 | ViableCallable.cs:317:9:317:20 | call to method M<Int32> | M`1 | C6`2 |
-| ViableCallable.cs:367:9:367:14 | dynamic call to method M | M | C11 |
-| ViableCallable.cs:369:9:369:18 | dynamic object creation of type C11 | C11 | C11 |
-| ViableCallable.cs:392:9:392:13 | call to method M | M | C13 |
-| ViableCallable.cs:425:9:425:18 | call to method M<Int32> | M`1 | A1 |
-| ViableCallable.cs:425:9:425:18 | call to method M<Int32> | M`1 | A4 |
-| ViableCallable.cs:425:9:425:18 | call to method M<Int32> | M`1 | A5 |
-| ViableCallable.cs:427:13:427:20 | object creation of type A3 | A3 | A3 |
-| ViableCallable.cs:429:9:429:19 | call to method M<Boolean> | M`1 | A1 |
-| ViableCallable.cs:431:13:431:20 | object creation of type A4 | A4 | A4 |
-| ViableCallable.cs:433:9:433:21 | call to method M<String> | M`1 | A4 |
-| ViableCallable.cs:437:9:437:21 | call to method M<String> | M`1 | A4 |
-| ViableCallable.cs:437:9:437:21 | call to method M<String> | M`1 | A5 |
-| ViableCallable.cs:492:9:492:14 | call to method M1 | M1 | C18 |
-| ViableCallable.cs:495:9:495:14 | call to method M2 | M2 | I2 |
-| ViableCallable.cs:509:18:509:22 | call to operator + | + | C19 |
-| ViableCallable.cs:512:26:512:30 | call to operator checked + | checked + | C19 |
-| ViableCallable.cs:515:18:515:23 | call to operator explicit conversion | explicit conversion | C19 |
-| ViableCallable.cs:518:26:518:31 | call to operator checked explicit conversion | checked explicit conversion | C19 |
-| ViableCallable.cs:559:18:559:22 | call to operator + | + | C20 |
-| ViableCallable.cs:562:26:562:30 | call to operator checked + | checked + | C20 |
-| ViableCallable.cs:565:18:565:22 | call to operator - | - | C20 |
-| ViableCallable.cs:568:26:568:30 | call to operator checked - | checked - | I3`1 |
-| ViableCallable.cs:571:18:571:22 | call to operator * | * | I3`1 |
-| ViableCallable.cs:574:26:574:30 | call to operator checked * | checked * | I3`1 |
-| ViableCallable.cs:577:18:577:22 | call to operator / | / | C20 |
-| ViableCallable.cs:577:18:577:22 | call to operator / | / | I3`1 |
-| ViableCallable.cs:580:26:580:30 | call to operator checked / | checked / | C20 |
-| ViableCallable.cs:580:26:580:30 | call to operator checked / | checked / | I3`1 |
-| ViableCallable.cs:583:9:583:15 | call to method M11 | M11 | C20 |
-| ViableCallable.cs:586:9:586:15 | call to method M12 | M12 | C20 |
-| ViableCallable.cs:586:9:586:15 | call to method M12 | M12 | I3`1 |
-| ViableCallable.cs:589:9:589:15 | call to method M13 | M13 | I3`1 |
+| ViableCallable.cs:366:9:366:15 | ... += ... | + | Int32 |
+| ViableCallable.cs:368:9:368:14 | dynamic call to method M | M | C11 |
+| ViableCallable.cs:370:9:370:18 | dynamic object creation of type C11 | C11 | C11 |
+| ViableCallable.cs:393:9:393:13 | call to method M | M | C13 |
+| ViableCallable.cs:426:9:426:18 | call to method M<Int32> | M`1 | A1 |
+| ViableCallable.cs:426:9:426:18 | call to method M<Int32> | M`1 | A4 |
+| ViableCallable.cs:426:9:426:18 | call to method M<Int32> | M`1 | A5 |
+| ViableCallable.cs:428:13:428:20 | object creation of type A3 | A3 | A3 |
+| ViableCallable.cs:430:9:430:19 | call to method M<Boolean> | M`1 | A1 |
+| ViableCallable.cs:432:13:432:20 | object creation of type A4 | A4 | A4 |
+| ViableCallable.cs:434:9:434:21 | call to method M<String> | M`1 | A4 |
+| ViableCallable.cs:438:9:438:21 | call to method M<String> | M`1 | A4 |
+| ViableCallable.cs:438:9:438:21 | call to method M<String> | M`1 | A5 |
+| ViableCallable.cs:493:9:493:14 | call to method M1 | M1 | C18 |
+| ViableCallable.cs:496:9:496:14 | call to method M2 | M2 | I2 |
+| ViableCallable.cs:510:18:510:22 | call to operator + | + | C19 |
+| ViableCallable.cs:513:26:513:30 | call to operator checked + | checked + | C19 |
+| ViableCallable.cs:516:18:516:23 | call to operator explicit conversion | explicit conversion | C19 |
+| ViableCallable.cs:519:26:519:31 | call to operator checked explicit conversion | checked explicit conversion | C19 |
+| ViableCallable.cs:560:18:560:22 | call to operator + | + | C20 |
+| ViableCallable.cs:563:26:563:30 | call to operator checked + | checked + | C20 |
+| ViableCallable.cs:566:18:566:22 | call to operator - | - | C20 |
+| ViableCallable.cs:569:26:569:30 | call to operator checked - | checked - | I3`1 |
+| ViableCallable.cs:572:18:572:22 | call to operator * | * | I3`1 |
+| ViableCallable.cs:575:26:575:30 | call to operator checked * | checked * | I3`1 |
+| ViableCallable.cs:578:18:578:22 | call to operator / | / | C20 |
+| ViableCallable.cs:578:18:578:22 | call to operator / | / | I3`1 |
+| ViableCallable.cs:581:26:581:30 | call to operator checked / | checked / | C20 |
+| ViableCallable.cs:581:26:581:30 | call to operator checked / | checked / | I3`1 |
+| ViableCallable.cs:584:9:584:15 | call to method M11 | M11 | C20 |
+| ViableCallable.cs:587:9:587:15 | call to method M12 | M12 | C20 |
+| ViableCallable.cs:587:9:587:15 | call to method M12 | M12 | I3`1 |
+| ViableCallable.cs:590:9:590:15 | call to method M13 | M13 | I3`1 |

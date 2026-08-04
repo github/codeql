@@ -174,7 +174,7 @@ module HashWithoutSaltConfig implements DataFlow::ConfigSig {
       mc.getAnArgument() = node.asExpr()
     )
     or
-    exists(AddExpr e | node.asExpr() = e.getAnOperand()) // password+salt
+    exists(AddOperation e | node.asExpr() = e.getAnOperand()) // password+salt
     or
     exists(InterpolatedStringExpr e | node.asExpr() = e.getAnInsert())
     or
@@ -187,10 +187,10 @@ module HashWithoutSaltConfig implements DataFlow::ConfigSig {
     or
     // a salt or key is included in subclasses of `KeyedHashAlgorithm`
     exists(MethodCall mc, Assignment a, ObjectCreation oc |
-      a.getRValue() = oc and
+      a.getRightOperand() = oc and
       oc.getObjectType().getABaseType+() instanceof KeyedHashAlgorithm and
       mc.getTarget() instanceof HashMethod and
-      a.getLValue() = mc.getQualifier().(VariableAccess).getTarget().getAnAccess() and
+      a.getLeftOperand() = mc.getQualifier().(VariableAccess).getTarget().getAnAccess() and
       mc.getArgument(0) = node.asExpr()
     )
   }

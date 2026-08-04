@@ -16,7 +16,7 @@ private import LegacyPointsTo
 
 from For loop, ControlFlowNodeWithPointsTo iter, Value v, ClassValue t, ControlFlowNode origin
 where
-  loop.getIter().getAFlowNode() = iter and
+  iter.getNode() = loop.getIter() and
   iter.pointsTo(_, v, origin) and
   v.getClass() = t and
   not t.isIterable() and

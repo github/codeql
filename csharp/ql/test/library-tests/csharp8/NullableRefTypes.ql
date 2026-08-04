@@ -11,10 +11,10 @@ query predicate nullableDataFlow(DataFlow::Node src, DataFlow::Node sink) {
 }
 
 query predicate nullableControlFlow(
-  ControlFlow::Node a, ControlFlow::Node b, ControlFlow::SuccessorType t
+  ControlFlowNode a, ControlFlowNode b, ControlFlow::SuccessorType t
 ) {
   a.getEnclosingCallable().hasName("TestSuppressNullableWarningExpr") and
-  b = a.getASuccessorByType(t)
+  b = a.getASuccessor(t)
 }
 
 query predicate nonNullExpressions(NonNullExpr e) {

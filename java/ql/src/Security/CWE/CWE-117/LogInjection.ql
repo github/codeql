@@ -4,7 +4,7 @@
  *              insertion of forged log entries by malicious users.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 7.8
+ * @security-severity 6.1
  * @precision medium
  * @id java/log-injection
  * @tags security

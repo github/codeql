@@ -97,7 +97,7 @@ fn test_log(harmless: String, password: String, encrypted_password: String) {
     info!("{}", m2); // $ Alert[rust/cleartext-logging]=m2
 
     let m3 = format!("message = {}", password); // $ Source[rust/cleartext-logging]=m3
-    info!("{}", m3); // $  Alert[rust/cleartext-logging]=m3
+    info!("{}", m3); // $ Alert[rust/cleartext-logging]=m3
 
     let mut m4 = String::new();
     write!(&mut m4, "message = {}", password); // $ MISSING: Source=m4

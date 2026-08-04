@@ -14,17 +14,17 @@ class Normal(object):
 
     # not ok
     @classmethod
-    def n_cmethod(self): # $shouldBeCls
+    def n_cmethod(self): # $ shouldBeCls
         pass
 
     # not ok
     @classmethod
-    def n_cmethod2(): # $shouldBeCls
+    def n_cmethod2(): # $ shouldBeCls
         pass
 
     @classmethod
     @id
-    def n_dec(any_name): # $shouldBeCls
+    def n_dec(any_name): # $ shouldBeCls
         pass
 
 
@@ -34,13 +34,13 @@ class Class(type):
     def __init__(cls):
         pass
 
-    def c_method(y):  # $shouldBeCls
+    def c_method(y):  # $ shouldBeCls
         pass
 
     def c_ok(cls):
         pass
 
-    # technically we could alert on mixing self for metaclasses with cls for metaclasses in the same codebase, 
+    # technically we could alert on mixing self for metaclasses with cls for metaclasses in the same codebase,
     # but it's probably not too significant.
     def c_self_ok(self):
         pass
@@ -48,13 +48,13 @@ class Class(type):
 
 class NonSelf(object):
 
-    def __init__(x): # $shouldBeSelf
+    def __init__(x): # $ shouldBeSelf
         pass
 
-    def s_method(y): # $shouldBeSelf
+    def s_method(y): # $ shouldBeSelf
         pass
 
-    def s_method2(): # $shouldBeSelf
+    def s_method2(): # $ shouldBeSelf
         pass
 
     def s_ok(self):
@@ -68,7 +68,7 @@ class NonSelf(object):
     def s_cmethod(cls):
         pass
 
-    # we allow methods that are used in class initialization, but only detect this case when they are called. 
+    # we allow methods that are used in class initialization, but only detect this case when they are called.
     def s_smethod2(ok): # $ SPURIOUS: shouldBeSelf
         pass
     s_smethod2 = staticmethod(s_smethod2)
@@ -123,7 +123,7 @@ Z().meth(0)
 def weird_decorator(f):
     def g(self):
         return f()
-    return g 
+    return g
 
 class B:
     @weird_decorator
@@ -152,7 +152,7 @@ class SpecialMethodNames(object):
 
 from dataclasses import dataclass, field
 
-@dataclass 
+@dataclass
 class A:
     # Lambdas used in initilisation aren't methods.
     x: int = field(default_factory = lambda: 2)

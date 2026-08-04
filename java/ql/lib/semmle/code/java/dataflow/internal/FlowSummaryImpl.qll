@@ -41,6 +41,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::JavaDataFlow> {
 
   class SinkBase = Void;
 
+  class FlowSummaryCallBase = Void;
+
   predicate neutralElement(
     Input::SummarizedCallableBase c, string kind, string provenance, boolean isExact
   ) {
@@ -144,6 +146,10 @@ private module TypesInput implements Impl::Private::TypesInputSig {
 }
 
 private module StepsInput implements Impl::Private::StepsInputSig {
+  Impl::Private::SummaryNode getSummaryNode(Node n) {
+    result = n.(FlowSummaryNode).getSummaryNode()
+  }
+
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     sc = viableCallable(result).asSummarizedCallable()
   }
@@ -282,7 +288,7 @@ module SourceSinkInterpretationInput implements
   }
 
   predicate barrierGuardElement(
-    Element e, string input, Public::AcceptingValue acceptingvalue, string kind,
+    Element e, string input, Public::AcceptingValue acceptingValue, string kind,
     Public::Provenance provenance, string model
   ) {
     exists(
@@ -290,7 +296,7 @@ module SourceSinkInterpretationInput implements
       SourceOrSinkElement baseBarrier, string originalInput
     |
       barrierGuardModel(namespace, type, subtypes, name, signature, ext, originalInput,
-        acceptingvalue, kind, provenance, model) and
+        acceptingValue, kind, provenance, model) and
       baseBarrier = interpretElement(namespace, type, subtypes, name, signature, ext, _) and
       (
         e = baseBarrier and input = originalInput

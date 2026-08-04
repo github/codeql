@@ -1,17 +1,17 @@
 
 void test1 (int x) {
 	char c;
-	for (c = 0; c < x; c++) {} //BAD
+	for (c = 0; c < x; c++) {} // $ Alert //BAD
 }
 
 void test2 (int x) {
 	char c;
-	for (c = 0; x > c; c++) {} // BAD
+	for (c = 0; x > c; c++) {} // $ Alert // BAD
 }
 
 void test3 (int x) {
 	short s;
-	for (s = 0; s < x; s++) {} //BAD
+	for (s = 0; s < x; s++) {} // $ Alert //BAD
 }
 
 void runner() { // get range analysis to give large values to x in tests
@@ -39,7 +39,7 @@ void test5 () {
 
 void test6() {
 	short  s1;
-	for (s1 = 0; s1 < 0x0000ffff; s1++) {} // BAD
+	for (s1 = 0; s1 < 0x0000ffff; s1++) {} // $ Alert // BAD
 }
 
 void test7(long long l) {
@@ -62,7 +62,7 @@ void test9(int x) {
 
 void test10(int x) {
 	short s;
-	for (s = 0; s < x; ) { // BAD
+	for (s = 0; s < x; ) { // $ Alert // BAD
 		do
 		{
 			s++;
@@ -84,27 +84,27 @@ void test12() {
 	unsigned int x;
 
 	x = get_a_uint();
-	for (c = 0; c < x; c++) {} // BAD
+	for (c = 0; c < x; c++) {} // $ Alert // BAD
 	x = get_a_uint();
 	for (c = 0; c < 0xFF; c++) {} // GOOD
 	x = get_a_uint();
-	for (c = 0; c < 0xFF00; c++) {} // BAD
+	for (c = 0; c < 0xFF00; c++) {} // $ Alert // BAD
 	x = get_a_uint();
-	for (c = 0; c < 0xFF0000; c++) {} // BAD
+	for (c = 0; c < 0xFF0000; c++) {} // $ Alert // BAD
 	x = get_a_uint();
-	for (c = 0; c < 0xFF000000; c++) {} // BAD
+	for (c = 0; c < 0xFF000000; c++) {} // $ Alert // BAD
 	x = get_a_uint();
 	for (c = 0; c < (x & 0xFF); c++) {} // GOOD
 	x = get_a_uint();
-	for (c = 0; c < (x & 0xFF00); c++) {} // BAD
+	for (c = 0; c < (x & 0xFF00); c++) {} // $ Alert // BAD
 	x = get_a_uint();
-	for (c = 0; c < (x & 0xFF0000); c++) {} // BAD
+	for (c = 0; c < (x & 0xFF0000); c++) {} // $ Alert // BAD
 	x = get_a_uint();
-	for (c = 0; c < (x & 0xFF000000); c++) {} // BAD
+	for (c = 0; c < (x & 0xFF000000); c++) {} // $ Alert // BAD
 	x = get_a_uint();
-	for (c = 0; c < (x >> 8); c++) {} // BAD
+	for (c = 0; c < (x >> 8); c++) {} // $ Alert // BAD
 	x = get_a_uint();
-	for (c = 0; c < (x >> 16); c++) {} // BAD
+	for (c = 0; c < (x >> 16); c++) {} // $ Alert // BAD
 	x = get_a_uint();
 	for (c = 0; c < (x >> 24); c++) {} // GOOD (assuming 32-bit ints)
 	x = get_a_uint();
@@ -125,7 +125,7 @@ void test13() {
 	ux = get_a_uint();
 	uy = get_a_uint();
 	sz = ux & uy;
-	for (uc = 0; uc < sz; uc++) {} // BAD
+	for (uc = 0; uc < sz; uc++) {} // $ Alert // BAD
 
 	ux = get_a_uint();
 	uy = get_a_uint();
@@ -136,7 +136,7 @@ void test13() {
 	sx = get_an_int();
 	sy = get_an_int();
 	sz = (unsigned)sx & (unsigned)sy;
-	for (uc = 0; uc < sz; uc++) {} // BAD
+	for (uc = 0; uc < sz; uc++) {} // $ Alert // BAD
 
 	sx = get_an_int();
 	sy = get_an_int();
@@ -153,7 +153,7 @@ void test14() {
 	// BAD: 's' is compared with a value of a wider type.
 	// 's' overflows before  reaching 'sx',
 	// causing an infinite loop
-	while (s < sx) {
+	while (s < sx) { // $ Alert
 		s += 1;
 	}
 

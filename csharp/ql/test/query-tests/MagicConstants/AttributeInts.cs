@@ -20,7 +20,7 @@ class IntAttributes
     void f2()
     {
         // BAD
-        var x = 555 +
+        var x = 555 + // $ Alert[cs/magic-number]
             555 + 555 + 555 + 555 + 555 + 555 + 555 + 555 + 555 + 555 +
             555 + 555 + 555 + 555 + 555 + 555 + 555 + 555 + 555 + 555;
     }

@@ -7,7 +7,7 @@ void *realloc(void *ptr, size_t size);
 void free(void* ptr);
 char *strdup(const char *s1);
 
-int *ID(int *x) 
+int *ID(int *x)
 {
 	return x;
 }
@@ -23,10 +23,10 @@ public:
 		c = d = new int; // GOOD (d is deleted)
 		e = local = new int; // BAD (e is not deleted) [NOT REPORTED]
 
-		f = new int; // GOOD (ID(f) is deleted) [FALSE POSITIVE]
+		f = new int; // $ SPURIOUS: Alert // GOOD (ID(f) is deleted) [FALSE POSITIVE]
 		g = ID(new int); // GOOD (g is deleted)
 	}
-	
+
 	~MyClass4()
 	{
 		delete a;
@@ -48,7 +48,7 @@ public:
 		c = (int *)realloc(0, 10 * sizeof(int)); // GOOD
 		d = strdup("string");
 	}
-	
+
 	~MyClass5()
 	{
 		delete [] a;
@@ -66,12 +66,12 @@ class MyClass6
 public:
 	MyClass6()
 	{
-		a = new int[10]; // BAD
-		b = (int *)calloc(10, sizeof(int)); // BAD
-		c = (int *)realloc(0, 10 * sizeof(int)); // BAD
-		d = strdup("string"); // BAD
+		a = new int[10]; // $ Alert // BAD
+		b = (int *)calloc(10, sizeof(int)); // $ Alert // BAD
+		c = (int *)realloc(0, 10 * sizeof(int)); // $ Alert // BAD
+		d = strdup("string"); // $ Alert // BAD
 	}
-	
+
 	~MyClass6()
 	{
 	}

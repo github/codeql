@@ -20,6 +20,9 @@ abstract class RemoteFlowSource extends FlowSource { }
 /** A data flow source of local user input. */
 abstract class LocalFlowSource extends FlowSource { }
 
+/** A data flow source that represents the access of a value from the Windows registry. */
+abstract class WindowsRegistrySource extends LocalFlowSource { }
+
 /**
  * A remote data flow source that is defined through a `RemoteFlowSourceFunction` model.
  */
@@ -28,8 +31,7 @@ private class RemoteModelSource extends RemoteFlowSource {
 
   RemoteModelSource() {
     exists(CallInstruction call, RemoteFlowSourceFunction func, FunctionOutput output |
-      call.getStaticCallTarget() = func and
-      func.hasRemoteFlowSource(output, sourceType) and
+      func.hasRemoteFlowSource(call.getConvertedResultExpression(), output, sourceType) and
       this = callOutput(call, output)
     )
   }
@@ -46,7 +48,7 @@ private class LocalModelSource extends LocalFlowSource {
   LocalModelSource() {
     exists(CallInstruction call, LocalFlowSourceFunction func, FunctionOutput output |
       call.getStaticCallTarget() = func and
-      func.hasLocalFlowSource(output, sourceType) and
+      func.hasLocalFlowSource(call.getConvertedResultExpression(), output, sourceType) and
       this = callOutput(call, output)
     )
   }
@@ -100,6 +102,12 @@ private class ExternalLocalFlowSource extends LocalFlowSource {
   ExternalLocalFlowSource() { sourceNode(this, "local") }
 
   override string getSourceType() { result = "external" }
+}
+
+private class ExternalWindowsRegistrySource extends WindowsRegistrySource {
+  ExternalWindowsRegistrySource() { sourceNode(this, "windows-registry") }
+
+  override string getSourceType() { result = "a value from the Windows registry" }
 }
 
 /** A remote data flow sink. */

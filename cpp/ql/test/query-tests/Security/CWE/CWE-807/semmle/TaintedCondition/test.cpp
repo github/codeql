@@ -15,13 +15,13 @@ extern const char* adminCookie;
 
 const char *currentUser;
 
-void processRequest() 
+void processRequest()
 {
-     const char *userName = getenv("USER_NAME");
+     const char *userName = getenv("USER_NAME"); // $ Source
 
      // BAD: the condition is controllable by the user, and
      // the body of the if makes a security decision.
-     if (!strcmp(userName, "admin")) {
+     if (!strcmp(userName, "admin")) { // $ Alert
         adminPrivileges = 1;
      }
 
@@ -38,14 +38,14 @@ void processRequest()
      // BAD (requires pointer analysis to catch) [NOT DETECTED]
      const char** userp = &currentUser;
      *userp = userName;
-     if (!strcmp(currentUser, "admin")) {
-       adminPrivileges = 1;     
+     if (!strcmp(currentUser, "admin")) { // $ MISSING: Alert
+       adminPrivileges = 1;
      }
 }
 
 void bugWithBinop() {
      const char *userName = getenv("USER_NAME");
-     
+
      // The following is tainted, but should not cause
      // the whole program to be considered tainted.
      int bytes = strlen(userName) + 1;

@@ -7,7 +7,10 @@ namespace ConstantIsNullOrEmpty
         static void Main(string[] args)
         {
             {
-                if (string.IsNullOrEmpty(nameof(args))) // $ Alert
+                // All of the IsNullOrEmpty constant checks have been descoped
+                // from the query as it didn't seem worth the effort to keep them.
+
+                if (string.IsNullOrEmpty(nameof(args))) // Missing Alert (always false)
                 {
                 }
 
@@ -43,15 +46,15 @@ namespace ConstantIsNullOrEmpty
                 {
                 }
 
-                if (string.IsNullOrEmpty(null)) // $ Alert
+                if (string.IsNullOrEmpty(null)) // Missing Alert
                 {
                 }
 
-                if (string.IsNullOrEmpty("")) // $ Alert
+                if (string.IsNullOrEmpty("")) // Missing Alert
                 {
                 }
 
-                if (string.IsNullOrEmpty(" ")) // $ Alert
+                if (string.IsNullOrEmpty(" ")) // Missing Alert
                 {
                 }
             }

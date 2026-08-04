@@ -153,8 +153,16 @@ class Function extends Function_, Scope, AstNode {
 
   override predicate contains(AstNode inner) { Scope.super.contains(inner) }
 
-  /** Gets a control flow node for a return value of this function */
-  ControlFlowNode getAReturnValueFlowNode() {
+  /**
+   * DEPRECATED: bind a `Return` node explicitly instead, e.g.
+   * `exists(Return ret | ret.getScope() = this and n.getNode() = ret.getValue())`.
+   * This API is being phased out together with `AstNode.getAFlowNode()` to
+   * untangle the AST and CFG hierarchies in preparation for migrating the
+   * dataflow library off the legacy CFG.
+   *
+   * Gets a control flow node for a return value of this function.
+   */
+  deprecated ControlFlowNode getAReturnValueFlowNode() {
     exists(Return ret |
       ret.getScope() = this and
       ret.getValue() = result.getNode()

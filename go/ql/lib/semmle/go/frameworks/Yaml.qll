@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with the [gopkg.in/yaml](https://pkg.go.dev/gopkg.in/yaml.v3) package.
  */
+overlay[local?]
+module;
 
 import go
 

@@ -14,7 +14,7 @@ struct test3
 	int x, y, z;
 };
 
-struct test4 // BAD
+struct test4 // $ Alert // BAD
 {
 	int a;
 	long long b;
@@ -26,7 +26,7 @@ struct test5
 	int b;
 };
 
-struct test6 // BAD
+struct test6 // $ Alert // BAD
 {
 	char as[4];
 	long long b;

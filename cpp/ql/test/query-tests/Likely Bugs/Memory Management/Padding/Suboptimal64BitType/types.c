@@ -8,7 +8,7 @@
 // - 6 bytes: char d[6]
 // - 2 bytes: trailing padding
 // Optimal layout removes 8 bytes padding, leaves 2 bytes trailing padding.
-typedef struct a {
+typedef struct a { // $ Alert
 	int a;
 	double b;
 	int c;

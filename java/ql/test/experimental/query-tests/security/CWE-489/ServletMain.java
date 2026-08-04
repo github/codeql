@@ -25,7 +25,7 @@ public class ServletMain implements Servlet {
 	}
 
 	// BAD - Implement a main method in servlet.
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception { // $ Alert[java/main-method-in-web-components]
 		// Connect to my server
 		URL url = new URL("https://www.example.com");
 		url.openConnection();

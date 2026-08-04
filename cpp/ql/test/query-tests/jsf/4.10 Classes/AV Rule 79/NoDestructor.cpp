@@ -7,7 +7,7 @@ public:
 	MyNumber() : value(0)
 	{
 	}
-	
+
 	MyNumber(int _value) : value(_value)
 	{
 	}
@@ -20,7 +20,7 @@ class MyClass5
 public:
 	MyClass5()
 	{
-		n = new MyNumber(); // BAD: not deleted
+		n = new MyNumber(); // $ Alert // BAD: not deleted
 	}
 
 private:
@@ -44,7 +44,7 @@ public:
 	MyClass7Base()
 	{
 	}
-	
+
 	virtual ~MyClass7Base()
 	{
 		if (n != NULL)

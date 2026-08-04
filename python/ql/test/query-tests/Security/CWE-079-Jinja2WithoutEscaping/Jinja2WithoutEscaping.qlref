@@ -1,1 +1,2 @@
-Security/CWE-079/Jinja2WithoutEscaping.ql
+query: Security/CWE-079/Jinja2WithoutEscaping.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

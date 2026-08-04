@@ -112,7 +112,7 @@ class BaseAccess extends Access, @base_access_expr {
 class MemberAccess extends Access, QualifiableExpr, @member_access_expr {
   override predicate hasImplicitThisQualifier() {
     QualifiableExpr.super.hasImplicitThisQualifier() and
-    not exists(MemberInitializer mi | mi.getLValue() = this)
+    not exists(MemberInitializer mi | mi.getLeftOperand() = this)
   }
 
   override Member getQualifiedDeclaration() { result = this.getTarget() }

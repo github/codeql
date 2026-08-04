@@ -1,0 +1,59 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+    <p>
+        Server-side request forgery (SSRF) guards frequently reject requests to internal
+        addresses by checking the request host against a denylist of private, loopback and
+        cloud-metadata IPv4 ranges. When such a guard inspects only the dotted-quad IPv4 form
+        and never unwraps IPv6-transition representations, it can be bypassed: the host
+        validator classifies the address as public, but the operating system routes the
+        connection to the embedded internal IPv4 endpoint.
+    </p>
+    <p>
+        The affected forms include IPv4-mapped IPv6 (<code>::ffff:169.254.169.254</code>),
+        NAT64 (<code>64:ff9b::a9fe:a9fe</code>) and 6to4 (<code>2002::</code>). A URL such as
+        <code>http://[::ffff:169.254.169.254]/</code> passes a dotted-quad denylist unchanged
+        while still reaching the internal address.
+    </p>
+</overview>
+
+<recommendation>
+    <p>
+        Normalize the host before validating it: parse the address with a transition-aware
+        library and unwrap IPv4-mapped, NAT64 and 6to4 forms to their embedded IPv4 address,
+        then apply the private-range check to the normalized value. Libraries such as
+        <code>ipaddr.js</code> classify these forms correctly via their range API, and
+        SSRF-protection libraries such as <code>request-filtering-agent</code> apply the check
+        after DNS resolution. Validate the resolved address rather than the textual host.
+    </p>
+</recommendation>
+
+<example>
+    <p>
+        The following guard rejects private IPv4 ranges using the <code>private-ip</code>
+        package, which inspects the textual IPv4 form only. An attacker supplies
+        <code>::ffff:169.254.169.254</code>, which the guard classifies as public, but the
+        request still reaches the internal metadata endpoint.
+    </p>
+
+    <sample src="examples/SsrfIpv6TransitionIncompleteGuardBad.js"/>
+
+    <p>
+        The following guard parses the host with a transition-aware classifier, so the
+        embedded internal IPv4 address is detected regardless of the transition form used.
+    </p>
+
+    <sample src="examples/SsrfIpv6TransitionIncompleteGuardGood.js"/>
+</example>
+
+<references>
+
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Server_Side_Request_Forgery">Server-Side Request Forgery</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/918.html">CWE-918</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/1389.html">CWE-1389</a>.</li>
+
+</references>
+</qhelp>

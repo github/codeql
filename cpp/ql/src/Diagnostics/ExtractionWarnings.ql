@@ -10,7 +10,9 @@ import ExtractionProblems
 
 from ExtractionProblem warning
 where
-  warning instanceof ExtractionRecoverableWarning and exists(warning.getFile().getRelativePath())
+  warning instanceof ExtractionRecoverableWarning and
+  exists(warning.getFile().getRelativePath()) and
+  not warning.getCompilation().buildModeNone()
   or
   warning instanceof ExtractionUnknownProblem
 select warning,

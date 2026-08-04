@@ -76,11 +76,12 @@ static void processFrontendOptions(codeql::SwiftExtractorState& state,
   }
 }
 
-static void turnOffSilVerifications(swift::SILOptions& options) {
+static void turnOffSilVerificationsAndStackProtection(swift::SILOptions& options) {
   options.VerifyAll = false;
   options.VerifyExclusivity = false;
   options.VerifyNone = true;
   options.VerifySILOwnership = false;
+  options.EnableStackProtection = false;  // Causes crashes on Linux
 }
 
 codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state);
@@ -98,7 +99,7 @@ class Observer : public swift::FrontendObserver {
     options.KeepASTContext = true;
     lockOutputSwiftModuleTraps(state, options);
     processFrontendOptions(state, options);
-    turnOffSilVerifications(invocation.getSILOptions());
+    turnOffSilVerificationsAndStackProtection(invocation.getSILOptions());
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {

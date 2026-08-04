@@ -26,7 +26,7 @@ bool PamAuthBad(const std::string &username_in,
         return false;
     }
 
-    err = pam_authenticate(pamh, 0);
+    err = pam_authenticate(pamh, 0); // $ Alert
     if (err != PAM_SUCCESS)
         return err;
 

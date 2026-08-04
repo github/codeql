@@ -179,12 +179,29 @@ class XmlInputFactory extends RefType {
   XmlInputFactory() { this.hasQualifiedName(javaxOrJakarta() + ".xml.stream", "XMLInputFactory") }
 }
 
-/** A call to `XMLInputFactory.createXMLStreamReader`. */
+/**
+ * The class `com.ctc.wstx.stax.WstxInputFactory` or its abstract supertype
+ * `org.codehaus.stax2.XMLInputFactory2` from the Woodstox StAX library.
+ */
+class WstxInputFactory extends RefType {
+  WstxInputFactory() {
+    this.hasQualifiedName("com.ctc.wstx.stax", "WstxInputFactory") or
+    this.hasQualifiedName("org.codehaus.stax2", "XMLInputFactory2")
+  }
+}
+
+/**
+ * A call to `XMLInputFactory.createXMLStreamReader` or the equivalent method on the
+ * Woodstox `WstxInputFactory`.
+ */
 class XmlInputFactoryStreamReader extends XmlParserCall {
   XmlInputFactoryStreamReader() {
     exists(Method m |
       this.getMethod() = m and
-      m.getDeclaringType() instanceof XmlInputFactory and
+      (
+        m.getDeclaringType() instanceof XmlInputFactory or
+        m.getDeclaringType() instanceof WstxInputFactory
+      ) and
       m.hasName("createXMLStreamReader")
     )
   }
@@ -212,7 +229,10 @@ class XmlInputFactoryEventReader extends XmlParserCall {
   XmlInputFactoryEventReader() {
     exists(Method m |
       this.getMethod() = m and
-      m.getDeclaringType() instanceof XmlInputFactory and
+      (
+        m.getDeclaringType() instanceof XmlInputFactory or
+        m.getDeclaringType() instanceof WstxInputFactory
+      ) and
       m.hasName("createXMLEventReader")
     )
   }
@@ -235,7 +255,10 @@ class XmlInputFactoryConfig extends ParserConfig {
   XmlInputFactoryConfig() {
     exists(Method m |
       m = this.getMethod() and
-      m.getDeclaringType() instanceof XmlInputFactory and
+      (
+        m.getDeclaringType() instanceof XmlInputFactory or
+        m.getDeclaringType() instanceof WstxInputFactory
+      ) and
       m.hasName("setProperty")
     )
   }

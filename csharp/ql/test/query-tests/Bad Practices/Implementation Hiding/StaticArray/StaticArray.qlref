@@ -1,1 +1,2 @@
-Bad Practices/Implementation Hiding/StaticArray.ql
+query: Bad Practices/Implementation Hiding/StaticArray.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

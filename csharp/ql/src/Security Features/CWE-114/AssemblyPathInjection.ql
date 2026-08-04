@@ -9,6 +9,7 @@
  * @security-severity 8.2
  * @precision high
  * @tags security
+ *       external/cwe/cwe-073
  *       external/cwe/cwe-114
  */
 

@@ -19,7 +19,7 @@ int test101() {
   int x = 0;
   // BAD: local address is written to a static variable, which could
   // be unsafe.
-  s101.p = &x;
+  s101.p = &x; // $ Alert
   return x;
 }
 
@@ -28,7 +28,7 @@ int test102() {
   static struct S100 s102;
   // BAD: local address is written to a local static variable, which could
   // be unsafe.
-  s102.p = &x;
+  s102.p = &x; // $ Alert
   return x;
 }
 
@@ -36,7 +36,7 @@ void test103(int *p) {
   static struct S100 s103;
   // BAD: address is written to a local static variable, which could
   // be unsafe.
-  s103.p = p;
+  s103.p = p; // $ Alert
 }
 
 // Helper for test103.
@@ -75,7 +75,7 @@ int test105() {
   p3++;
   // BAD: local address is written to a static variable, which could
   // be unsafe.
-  s101.p = p3;
+  s101.p = p3; // $ Alert
   return x;
 }
 
@@ -86,7 +86,7 @@ void test106() {
   S100 s;
   // BAD: local address is written to a static variable, which could
   // be unsafe.
-  s106.p = &(s.i);
+  s106.p = &(s.i); // $ Alert
 }
 
 // Test for reference types.
@@ -97,7 +97,7 @@ int test107() {
   r1++;
   // BAD: local address is written to a static variable, which could
   // be unsafe.
-  s101.p = &r1;
+  s101.p = &r1; // $ Alert
   return r1;
 }
 
@@ -124,7 +124,7 @@ int test201() {
   int x = 0;
   // BAD: local address is written to a static variable, which could
   // be unsafe.
-  s201.p = &x;
+  s201.p = &x; // $ Alert
   return x;
 }
 
@@ -133,7 +133,7 @@ int test202() {
   static struct S200 s202;
   // BAD: local address is written to a local static variable, which could
   // be unsafe.
-  s202.p = &x;
+  s202.p = &x; // $ Alert
   return x;
 }
 
@@ -142,7 +142,7 @@ static const int* xptr;
 
 void example1() {
   int x = 0;
-  xptr = &x; // BAD: address of local variable stored in non-local memory.
+  xptr = &x; // $ Alert // BAD: address of local variable stored in non-local memory.
 }
 
 void example2() {
@@ -166,27 +166,27 @@ void test301() {
   int b2[14][15];
   int b3[13][14][15];
 
-  s.p1 = b1;      // BAD: address of local variable stored in non-local memory.
-  s.p1 = &b1[1];  // BAD: address of local variable stored in non-local memory.
+  s.p1 = b1;      // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p1 = &b1[1];  // $ Alert // BAD: address of local variable stored in non-local memory.
 
-  s.p2 = b2;         // BAD: address of local variable stored in non-local memory.
-  s.p2 = &b2[1];     // BAD: address of local variable stored in non-local memory.
-  s.p1 = b2[1];      // BAD: address of local variable stored in non-local memory.
-  s.p1 = &b2[1][2];  // BAD: address of local variable stored in non-local memory.
+  s.p2 = b2;         // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p2 = &b2[1];     // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p1 = b2[1];      // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p1 = &b2[1][2];  // $ Alert // BAD: address of local variable stored in non-local memory.
 
-  s.p3 = b3;            // BAD: address of local variable stored in non-local memory.
-  s.p3 = &b3[1];        // BAD: address of local variable stored in non-local memory.
-  s.p2 = b3[1];         // BAD: address of local variable stored in non-local memory.
-  s.p2 = &b3[1][2];     // BAD: address of local variable stored in non-local memory.
-  s.p1 = b3[1][2];      // BAD: address of local variable stored in non-local memory.
-  s.p1 = &b3[1][2][3];  // BAD: address of local variable stored in non-local memory.
+  s.p3 = b3;            // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p3 = &b3[1];        // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p2 = b3[1];         // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p2 = &b3[1][2];     // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p1 = b3[1][2];      // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p1 = &b3[1][2][3];  // $ Alert // BAD: address of local variable stored in non-local memory.
 
-  s.pp[0] = b1;            // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = &b1[1];        // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = b2[1];         // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = &b2[1][2];     // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = b3[1][2];      // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = &b3[1][2][3];  // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = b1;            // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = &b1[1];        // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = b2[1];         // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = &b2[1][2];     // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = b3[1][2];      // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = &b3[1][2][3];  // $ Alert // BAD: address of local variable stored in non-local memory.
 }
 
 void test302() {
@@ -212,41 +212,41 @@ void test302() {
 
   // Even though s is local, we don't know that s.pp is local because
   // there is a pointer indirection involved.
-  s.pp[0] = b1;            // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = &b1[1];        // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = b2[1];         // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = &b2[1][2];     // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = b3[1][2];      // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = &b3[1][2][3];  // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = b1;            // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = &b1[1];        // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = b2[1];         // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = &b2[1][2];     // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = b3[1][2];      // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = &b3[1][2][3];  // $ Alert // BAD: address of local variable stored in non-local memory.
 }
 
 void test303() {
   static S300 s;
   S300 x;
 
-  s.p1 = x.a1;      // BAD: address of local variable stored in non-local memory.
-  s.p1 = &x.a1[1];  // BAD: address of local variable stored in non-local memory.
+  s.p1 = x.a1;      // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p1 = &x.a1[1];  // $ Alert // BAD: address of local variable stored in non-local memory.
 
-  s.p2 = x.a2;         // BAD: address of local variable stored in non-local memory.
-  s.p2 = &x.a2[1];     // BAD: address of local variable stored in non-local memory.
-  s.p1 = x.a2[1];      // BAD: address of local variable stored in non-local memory.
-  s.p1 = &x.a2[1][2];  // BAD: address of local variable stored in non-local memory.
+  s.p2 = x.a2;         // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p2 = &x.a2[1];     // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p1 = x.a2[1];      // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p1 = &x.a2[1][2];  // $ Alert // BAD: address of local variable stored in non-local memory.
 
-  s.p3 = x.a3;            // BAD: address of local variable stored in non-local memory.
-  s.p3 = &x.a3[1];        // BAD: address of local variable stored in non-local memory.
-  s.p2 = x.a3[1];         // BAD: address of local variable stored in non-local memory.
-  s.p2 = &x.a3[1][2];     // BAD: address of local variable stored in non-local memory.
-  s.p1 = x.a3[1][2];      // BAD: address of local variable stored in non-local memory.
-  s.p1 = &x.a3[1][2][3];  // BAD: address of local variable stored in non-local memory.
+  s.p3 = x.a3;            // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p3 = &x.a3[1];        // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p2 = x.a3[1];         // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p2 = &x.a3[1][2];     // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p1 = x.a3[1][2];      // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.p1 = &x.a3[1][2][3];  // $ Alert // BAD: address of local variable stored in non-local memory.
 
   // Even though s is local, we don't know that s.pp is local because
   // there is a pointer indirection involved.
-  s.pp[0] = x.a1;            // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = &x.a1[1];        // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = x.a2[1];         // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = &x.a2[1][2];     // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = x.a3[1][2];      // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = &x.a3[1][2][3];  // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = x.a1;            // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = &x.a1[1];        // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = x.a2[1];         // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = &x.a2[1][2];     // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = x.a3[1][2];      // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = &x.a3[1][2][3];  // $ Alert // BAD: address of local variable stored in non-local memory.
 }
 
 void test304() {
@@ -270,12 +270,12 @@ void test304() {
 
   // Even though s is local, we don't know that s.pp is local because
   // there is a pointer indirection involved.
-  s.pp[0] = x.a1;            // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = &x.a1[1];        // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = x.a2[1];         // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = &x.a2[1][2];     // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = x.a3[1][2];      // BAD: address of local variable stored in non-local memory.
-  s.pp[0] = &x.a3[1][2][3];  // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = x.a1;            // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = &x.a1[1];        // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = x.a2[1];         // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = &x.a2[1][2];     // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = x.a3[1][2];      // $ Alert // BAD: address of local variable stored in non-local memory.
+  s.pp[0] = &x.a3[1][2][3];  // $ Alert // BAD: address of local variable stored in non-local memory.
 }
 
 struct S400 {
@@ -309,11 +309,11 @@ int test400() {
   s.p0 = &x;           // GOOD: s.p0 is on the stack.
   s.p1[1] = &x;        // GOOD: s.p1 is on the stack.
   s.p2[1][2] = &x;     // GOOD: s.p1 is on the stack.
-  s.q1[1] = &x;        // BAD: pointer indirection to the heap.
-  s.q2[1][2] = &x;     // BAD: pointer indirection to the heap.
-  s.q3[1][2][3] = &x;  // BAD: pointer indirection to the heap.
-  s.r2[1][2] = &x;     // BAD: pointer indirection to the heap.
-  s.r3[1][2][3] = &x;  // BAD: pointer indirection to the heap.
+  s.q1[1] = &x;        // $ Alert // BAD: pointer indirection to the heap.
+  s.q2[1][2] = &x;     // $ Alert // BAD: pointer indirection to the heap.
+  s.q3[1][2][3] = &x;  // $ Alert // BAD: pointer indirection to the heap.
+  s.r2[1][2] = &x;     // $ Alert // BAD: pointer indirection to the heap.
+  s.r3[1][2][3] = &x;  // $ Alert // BAD: pointer indirection to the heap.
   return x;
 }
 

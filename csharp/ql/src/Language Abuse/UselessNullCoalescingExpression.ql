@@ -15,22 +15,30 @@
 import csharp
 import semmle.code.csharp.commons.StructuralComparison
 
-pragma[noinline]
-private predicate same(AssignableAccess x, AssignableAccess y) {
-  exists(NullCoalescingExpr nce |
-    x = nce.getLeftOperand() and
-    y = nce.getRightOperand().getAChildExpr*()
-  ) and
-  sameGvn(x, y)
+pragma[nomagic]
+private predicate relevant(Expr left, Expr right) {
+  exists(NullCoalescingOperation nce |
+    left = nce.getLeftOperand() and
+    right = nce.getRightOperand()
+  )
 }
 
-private predicate uselessNullCoalescingExpr(NullCoalescingExpr nce) {
+pragma[noinline]
+private predicate same(AssignableAccess x, AssignableAccess y) {
+  exists(Expr e |
+    relevant(x, e) and
+    y = e.getAChildExpr*() and
+    sameGvn(x, y)
+  )
+}
+
+private predicate uselessNullCoalescingOperation(NullCoalescingOperation nce) {
   exists(AssignableAccess x |
     nce.getLeftOperand() = x and
     forex(AssignableAccess y | same(x, y) | y instanceof AssignableRead and not y.isRefArgument())
   )
 }
 
-from NullCoalescingExpr nce
-where uselessNullCoalescingExpr(nce)
+from NullCoalescingOperation nce
+where uselessNullCoalescingOperation(nce)
 select nce, "Both operands of this null-coalescing expression access the same variable or property."

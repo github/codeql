@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with concepts in the Mux HTTP middleware library.
  */
+overlay[local?]
+module;
 
 import go
 

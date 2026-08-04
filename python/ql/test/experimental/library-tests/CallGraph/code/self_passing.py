@@ -24,7 +24,7 @@ class A(Base):
         self.bar() # $ pt,tt=A.bar
 
     def not_called(self):
-        self.bar() #$ pt,tt=A.bar
+        self.bar() # $ pt,tt=A.bar
 
     def bar(self):
         print("A.bar")

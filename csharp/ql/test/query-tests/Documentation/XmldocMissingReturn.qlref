@@ -1,1 +1,2 @@
-Documentation/XmldocMissingReturn.ql
+query: Documentation/XmldocMissingReturn.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

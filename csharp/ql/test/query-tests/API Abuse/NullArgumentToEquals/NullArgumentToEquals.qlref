@@ -1,1 +1,2 @@
-API Abuse/NullArgumentToEquals.ql
+query: API Abuse/NullArgumentToEquals.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

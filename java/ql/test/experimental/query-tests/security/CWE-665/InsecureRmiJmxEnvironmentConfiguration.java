@@ -9,12 +9,12 @@ public class InsecureRmiJmxEnvironmentConfiguration {
 
   public void initInsecureJmxDueToNullEnv() throws IOException {
     // Bad initializing env (arg1) with null
-    JMXConnectorServerFactory.newJMXConnectorServer(null, null, null);
+    JMXConnectorServerFactory.newJMXConnectorServer(null, null, null); // $ Alert
   }
 
   public void initInsecureRmiDueToNullEnv() throws IOException {
     // Bad initializing env (arg1) with null
-    new RMIConnectorServer(null, null, null, null);
+    new RMIConnectorServer(null, null, null, null); // $ Alert
   }
 
   public void initInsecureRmiDueToMissingEnvKeyValue() throws IOException {
@@ -22,7 +22,7 @@ public class InsecureRmiJmxEnvironmentConfiguration {
     // "jmx.remote.rmi.server.credential.types"
     Map<String, Object> env = new HashMap<>();
     env.put("jmx.remote.x.daemon", "true");
-    new RMIConnectorServer(null, env, null, null);
+    new RMIConnectorServer(null, env, null, null); // $ Alert
   }
 
   public void initInsecureJmxDueToMissingEnvKeyValue() throws IOException {
@@ -30,7 +30,7 @@ public class InsecureRmiJmxEnvironmentConfiguration {
     // "jmx.remote.rmi.server.credential.types"
     Map<String, Object> env = new HashMap<>();
     env.put("jmx.remote.x.daemon", "true");
-    JMXConnectorServerFactory.newJMXConnectorServer(null, env, null);
+    JMXConnectorServerFactory.newJMXConnectorServer(null, env, null); // $ Alert
   }
 
   public void secureJmxConnnectorServer() throws IOException {

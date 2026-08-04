@@ -1,1 +1,2 @@
-experimental/Security/CWE-091/XsltInjection.ql
+query: experimental/Security/CWE-091/XsltInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

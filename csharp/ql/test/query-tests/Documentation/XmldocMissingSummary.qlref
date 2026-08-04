@@ -1,1 +1,2 @@
-Documentation/XmldocMissingSummary.ql
+query: Documentation/XmldocMissingSummary.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

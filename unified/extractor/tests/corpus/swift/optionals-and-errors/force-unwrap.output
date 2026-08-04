@@ -1,0 +1,45 @@
+let n = opt!
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    forceUnwrapExpr
+                      expression:
+                        declReferenceExpr
+                          baseName: identifier "opt"
+                      exclamationMark: !
+              pattern:
+                identifierPattern
+                  identifier: identifier "n"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "n"
+          value:
+            unary_expr
+              operand:
+                name_expr
+                  identifier: identifier "opt"
+              operator: postfix_operator "!"

@@ -56,3 +56,13 @@ extensions:
       # Vec
       - ["alloc::vec::from_elem", "Argument[0]", "ReturnValue.Element", "value", "manual"]
       - ["<alloc::vec::Vec as core::ops::deref::Deref>::deref", "Argument[self].Reference.Element", "ReturnValue.Reference.Element", "value", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: neutralModel
+    data:
+      - ["<alloc::vec::Vec as core::convert::From>::from", "sink", "manual"]
+      - ["<alloc::collections::vec_deque::VecDeque as core::convert::From>::from", "sink", "manual"]
+      - ["<alloc::sync::Arc as core::convert::From>::from", "sink", "manual"]
+      - ["<alloc::rc::Rc as core::convert::From>::from", "sink", "manual"]
+      - ["<alloc::string::String>::split_off", "sink", "manual"]
+      - ["<alloc::vec::Vec>::split_off", "sink", "manual"]

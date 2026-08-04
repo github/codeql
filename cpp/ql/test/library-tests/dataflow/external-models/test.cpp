@@ -118,3 +118,109 @@ void test_callWithNonTypeTemplate() {
 	int y2 = callWithNonTypeTemplate<int, 10>(x);
 	ymlSink(y2); // $ ir
 }
+
+template<class T>
+struct TemplateClass1 {
+  template<class U>
+  U templateFunction(T, U);
+
+	template<class U, class V>
+  V templateFunction2(U, V);
+};
+
+void test_template_function_in_template_class() {
+	TemplateClass1<int> b;
+	int x = ymlSource();
+	auto y = b.templateFunction<unsigned long>(x, 0UL);
+	ymlSink(y); // $ ir
+}
+
+template<class S, class T>
+struct TemplateClass2 {
+	T function(T, S);
+};
+
+template<class V> using PartialInstantiationOfTemplateClass2 = TemplateClass2<int, V>;
+
+void test_partial_class_instantiation() {
+	int x = ymlSource();
+	PartialInstantiationOfTemplateClass2<unsigned long> y;
+	int z = y.function(0UL, x);
+	ymlSink(z); // $ ir
+}
+
+template<class V> struct DeriveFromFromPartialTemplateInstantiation : TemplateClass2<int, V> { };
+
+void test_inheritance() {
+	int x = ymlSource();
+	DeriveFromFromPartialTemplateInstantiation<long> y;
+	auto z = y.function(0L, x);
+	ymlSink(z); // $ ir
+}
+
+template<class T>
+struct Class1 : TemplateClass1<T> {
+  template<class U>
+  int templateFunction3(U u, int x) {
+    return TemplateClass1<T>::template templateFunction2<U, int>(u, x);
+  }
+};
+
+void test_class1() {
+	int x = ymlSource();
+	Class1<int> c;
+	auto y = c.templateFunction3<unsigned long>(0UL, x);
+	ymlSink(y); // $ ir
+}
+
+namespace MyNamespace {
+	struct MyStructInNamespace {
+		int myField;
+	};
+}
+
+int read_field_from_struct(MyNamespace::MyStructInNamespace* s);
+
+void test_fully_qualified_field_test() {
+	MyNamespace::MyStructInNamespace s;
+	s.myField = ymlSource();
+	int x = read_field_from_struct(&s);
+	ymlSink(x); // $ ir
+}
+
+struct MyGlobalStruct {
+	int myField;
+};
+
+int read_field_from_struct_2(MyGlobalStruct* s);
+
+void test_fully_qualified_field_test_2() {
+	MyGlobalStruct s;
+	s.myField = ymlSource();
+	int x = read_field_from_struct_2(&s);
+	ymlSink(x); // $ ir
+}
+
+struct ReverseFlow {
+	int value;
+	int& get_ptr();
+};
+
+struct MyString {
+	char& operator[](unsigned);
+};
+
+void test_reverse_flow(unsigned i, unsigned j) {
+	{
+		ReverseFlow rf;
+		rf.get_ptr() = ymlSource();
+		int x = rf.value;
+		ymlSink(x); // $ ir
+	}
+	{
+		MyString s;
+		s[i] = ymlSource();
+		char c = s[j];
+		ymlSink(c); // $ ir
+	}
+}

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with concepts relating to the [github.com/go-kit/kit](https://pkg.go.dev/github.com/go-kit/kit) package.
  */
+overlay[local?]
+module;
 
 import go
 

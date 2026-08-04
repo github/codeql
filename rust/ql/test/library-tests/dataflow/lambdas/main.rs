@@ -78,6 +78,30 @@ fn function_flows_through() {
     sink(b); // $ hasValueFlow=56
 }
 
+fn apply<F: Fn(i64)>(f: F, x: i64) {
+    f(x);
+}
+
+fn test_apply() {
+    let a = source(77);
+    apply(|x| sink(x), a); // $ hasValueFlow=77
+    let b = source(78);
+    apply(|x| sink(x), b); // $ hasValueFlow=78
+    apply(|x| sink(x), 0);
+}
+
+fn apply_wrap<F: Fn(i64)>(f: F, x: i64) {
+    apply(f, x);
+}
+
+fn test_apply_wrap() {
+    let a = source(79);
+    apply_wrap(|x| sink(x), a); // $ hasValueFlow=79 $ SPURIOUS: hasValueFlow=80
+    let b = source(80);
+    apply_wrap(|x| sink(x), b); // $ hasValueFlow=80 $ SPURIOUS: hasValueFlow=79
+    apply_wrap(|x| sink(x), 0);
+}
+
 fn main() {
     closure_flow_out();
     closure_flow_in();
@@ -86,4 +110,6 @@ fn main() {
     function_flow_in();
     function_flow_out();
     function_flows_through();
+    test_apply();
+    test_apply_wrap();
 }

@@ -43,7 +43,7 @@ use_repo(apphost_packs_extension, "dotnet.apphost_packs")
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "bazel_lib", version = "3.0.0")
-bazel_dep(name = "rules_shell", version = "0.5.0")
+bazel_dep(name = "rules_shell", version = "0.6.1")
 
 # Dev dependencies
 bazel_dep(name = "rules_pkg", version = "1.1.0", dev_dependency = True)

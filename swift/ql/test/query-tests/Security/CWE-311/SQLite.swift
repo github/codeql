@@ -116,64 +116,64 @@ func ==<V>(lhs: Expression<V>, rhs: V) -> Expression<Bool> { return Expression<B
 func test_sqlite_swift_api(db: Connection, id: Int, mobilePhoneNumber: String) throws {
 	// --- sensitive data in SQL (in practice these cases may also be SQL injection) ---
 
-	let insertQuery = "INSERT INTO CONTACTS(ID, NUMBER) VALUES(\(id), \(mobilePhoneNumber));"
-	let updateQuery = "UPDATE CONTACTS SET NUMBER=\(mobilePhoneNumber) WHERE ID=\(id);"
+	let insertQuery = "INSERT INTO CONTACTS(ID, NUMBER) VALUES(\(id), \(mobilePhoneNumber));" // $ Source[swift/cleartext-storage-database]
+	let updateQuery = "UPDATE CONTACTS SET NUMBER=\(mobilePhoneNumber) WHERE ID=\(id);" // $ Source[swift/cleartext-storage-database]
 	let deleteQuery = "DELETE FROM CONTACTS WHERE ID=\(id);"
 
-	try db.execute(insertQuery) // BAD (sensitive data)
-	try db.execute(updateQuery) // BAD (sensitive data)
+	try db.execute(insertQuery) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	try db.execute(updateQuery) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 	try db.execute(deleteQuery) // GOOD
 
-	_ = try db.prepare(insertQuery).run() // BAD (sensitive data)
-	_ = try db.prepare(updateQuery).run() // BAD (sensitive data)
+	_ = try db.prepare(insertQuery).run() // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try db.prepare(updateQuery).run() // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 	_ = try db.prepare(deleteQuery).run() // GOOD
 
-	_ = try db.run(insertQuery) // BAD (sensitive data)
-	_ = try db.run(updateQuery) // BAD (sensitive data)
+	_ = try db.run(insertQuery) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try db.run(updateQuery) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 	_ = try db.run(deleteQuery) // GOOD
 
-	_ = try db.scalar(insertQuery) // BAD (sensitive data)
-	_ = try db.scalar(updateQuery) // BAD (sensitive data)
+	_ = try db.scalar(insertQuery) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try db.scalar(updateQuery) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 	_ = try db.scalar(deleteQuery) // GOOD
 
-	_ = try Statement(db, insertQuery).run() // BAD (sensitive data)
-	_ = try Statement(db, updateQuery).run() // BAD (sensitive data)
+	_ = try Statement(db, insertQuery).run() // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try Statement(db, updateQuery).run() // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 	_ = try Statement(db, deleteQuery).run() // GOOD
 
 	// --- sensitive data in bindings ---
 
 	let varQuery1 = "UPDATE CONTACTS SET NUMBER=?;"
 
-	_ = try db.prepare(varQuery1, mobilePhoneNumber).run() // BAD (sensitive data)
-	_ = try db.run(varQuery1, mobilePhoneNumber) // BAD (sensitive data)
-	_ = try db.scalar(varQuery1, mobilePhoneNumber) // BAD (sensitive data)
+	_ = try db.prepare(varQuery1, mobilePhoneNumber).run() // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try db.run(varQuery1, mobilePhoneNumber) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try db.scalar(varQuery1, mobilePhoneNumber) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 
 	let stmt1 = try db.prepare(varQuery1) // GOOD
-	_ = try stmt1.bind(mobilePhoneNumber).run() // BAD (sensitive data)
-	_ = try stmt1.run(mobilePhoneNumber) // BAD (sensitive data)
-	_ = try stmt1.scalar(mobilePhoneNumber) // BAD (sensitive data)
+	_ = try stmt1.bind(mobilePhoneNumber).run() // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try stmt1.run(mobilePhoneNumber) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try stmt1.scalar(mobilePhoneNumber) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 
 	let varQuery2 = "UPDATE CONTACTS SET NUMBER=? WHERE ID=?;"
 
-	_ = try db.prepare(varQuery2, [mobilePhoneNumber, id]).run() // BAD (sensitive data)
-	_ = try db.run(varQuery2, [mobilePhoneNumber, id]) // BAD (sensitive data)
-	_ = try db.scalar(varQuery2, [mobilePhoneNumber, id]) // BAD (sensitive data)
+	_ = try db.prepare(varQuery2, [mobilePhoneNumber, id]).run() // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try db.run(varQuery2, [mobilePhoneNumber, id]) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try db.scalar(varQuery2, [mobilePhoneNumber, id]) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 
 	let stmt2 = try db.prepare(varQuery2) // GOOD
-	_ = try stmt2.bind([mobilePhoneNumber, id]).run() // BAD (sensitive data)
-	_ = try stmt2.run([mobilePhoneNumber, id]) // BAD (sensitive data)
-	_ = try stmt2.scalar([mobilePhoneNumber, id]) // BAD (sensitive data)
+	_ = try stmt2.bind([mobilePhoneNumber, id]).run() // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try stmt2.run([mobilePhoneNumber, id]) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try stmt2.scalar([mobilePhoneNumber, id]) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 
 	let varQuery3 = "UPDATE CONTACTS SET NUMBER=$number WHERE ID=$id;"
 
-	_ = try db.prepare(varQuery3, ["id": id, "number": mobilePhoneNumber]).run() // BAD (sensitive data)
-	_ = try db.run(varQuery3, ["id": id, "number": mobilePhoneNumber]) // BAD (sensitive data)
-	_ = try db.scalar(varQuery3, ["id": id, "number": mobilePhoneNumber]) // BAD (sensitive data)
+	_ = try db.prepare(varQuery3, ["id": id, "number": mobilePhoneNumber]).run() // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try db.run(varQuery3, ["id": id, "number": mobilePhoneNumber]) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try db.scalar(varQuery3, ["id": id, "number": mobilePhoneNumber]) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 
 	let stmt3 = try db.prepare(varQuery3) // GOOD
-	_ = try stmt3.bind(["id": id, "number": mobilePhoneNumber]).run() // BAD (sensitive data)
-	_ = try stmt3.run(["id": id, "number": mobilePhoneNumber]) // BAD (sensitive data)
-	_ = try stmt3.scalar(["id": id, "number": mobilePhoneNumber]) // BAD (sensitive data)
+	_ = try stmt3.bind(["id": id, "number": mobilePhoneNumber]).run() // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try stmt3.run(["id": id, "number": mobilePhoneNumber]) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
+	_ = try stmt3.scalar(["id": id, "number": mobilePhoneNumber]) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 
 	// --- higher level insert / update ---
 
@@ -183,20 +183,20 @@ func test_sqlite_swift_api(db: Connection, id: Int, mobilePhoneNumber: String) t
 	let filter = table.filter(idExpr == id) // GOOD
 
 	try db.run(table.insert(idExpr <- id, numberExpr <- "123")) // GOOD
-	try db.run(table.insert(idExpr <- id, numberExpr <- mobilePhoneNumber)) // BAD (sensitive data)
+	try db.run(table.insert(idExpr <- id, numberExpr <- mobilePhoneNumber)) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 
 	try db.run(table.update(numberExpr <- "123")) // GOOD
-	try db.run(table.update(numberExpr <- mobilePhoneNumber)) // BAD (sensitive data)
+	try db.run(table.update(numberExpr <- mobilePhoneNumber)) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 	try db.run(filter.update(numberExpr <- "123")) // GOOD
-	try db.run(filter.update(numberExpr <- mobilePhoneNumber)) // BAD (sensitive data)
+	try db.run(filter.update(numberExpr <- mobilePhoneNumber)) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 	try db.run(table.update(numberExpr <- numberExpr.replace("123", with: "456"))) // GOOD
-	try db.run(table.update(numberExpr <- numberExpr.replace("123", with: mobilePhoneNumber))) // BAD (sensitive data)
+	try db.run(table.update(numberExpr <- numberExpr.replace("123", with: mobilePhoneNumber))) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 	// (much more complex query construction is possible in SQLite.swift)
 
 	let goodMany = [[numberExpr <- "456"]]
-	let badMany = [[numberExpr <- mobilePhoneNumber]]
+	let badMany = [[numberExpr <- mobilePhoneNumber]] // $ Source[swift/cleartext-storage-database]
 	try db.run(table.insertMany(goodMany)) // GOOD
-	try db.run(table.insertMany(badMany)) // BAD (sensitive data)
+	try db.run(table.insertMany(badMany)) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 	try db.run(table.insertMany(or: OnConflict.replace, goodMany)) // GOOD
-	try db.run(table.insertMany(or: OnConflict.replace, badMany)) // BAD (sensitive data)
+	try db.run(table.insertMany(or: OnConflict.replace, badMany)) // $ Alert[swift/cleartext-storage-database] // BAD (sensitive data)
 }

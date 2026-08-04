@@ -29,12 +29,12 @@ func _() {
 func _() {
 	var x int
 	_ = x
-	x = deadStore() // BAD
+	x = deadStore() // $ Alert // BAD
 }
 
 func _() {
 	var x int
-	x = deadStore() // BAD
+	x = deadStore() // $ Alert // BAD
 	x = 0
 	_ = x
 }
@@ -58,13 +58,13 @@ func _() {
 }
 
 func _() {
-	x := deadStore2() // BAD
+	x := deadStore2() // $ Alert // BAD
 	x = "def"
 	_ = x
 }
 
 func _() {
-	x := deadStore() // BAD
+	x := deadStore() // $ Alert // BAD
 	x = 0
 	_ = x
 }
@@ -96,18 +96,18 @@ func _() {
 }
 
 func _() {
-	x := deadStore() // BAD
+	x := deadStore() // $ Alert // BAD
 	if b {
-		x = deadStore() // BAD
+		x = deadStore() // $ Alert // BAD
 	}
 	x = 0
 	_ = x
 }
 
 func _() {
-	x := deadStore() // BAD
+	x := deadStore() // $ Alert // BAD
 	for b {
-		x = deadStore() // BAD
+		x = deadStore() // $ Alert // BAD
 	}
 	x = 0
 	_ = x
@@ -125,13 +125,13 @@ func _() {
 }
 
 func _() {
-	x := deadStore() // BAD
+	x := deadStore() // $ Alert // BAD
 	if b {
-		x = deadStore() // BAD
-		x = deadStore() // BAD
+		x = deadStore() // $ Alert // BAD
+		x = deadStore() // $ Alert // BAD
 	}
 	if b {
-		x = deadStore() // BAD
+		x = deadStore() // $ Alert // BAD
 	}
 	x = 0
 	_ = x
@@ -140,7 +140,7 @@ func _() {
 func _() {
 	x := 0
 	if b {
-		x = deadStore() // BAD
+		x = deadStore() // $ Alert // BAD
 		x = 0
 	}
 	if b {
@@ -161,7 +161,7 @@ func _() {
 	x := 0
 	for {
 		_ = x
-		x = deadStore() // BAD
+		x = deadStore() // $ Alert // BAD
 		x = 0
 	}
 }
@@ -169,7 +169,7 @@ func _() {
 func _() {
 	x := 0
 	for {
-		x += deadStore() // BAD
+		x += deadStore() // $ Alert // BAD
 		x = 0
 	}
 }
@@ -177,7 +177,7 @@ func _() {
 func _() {
 	x := 0
 	for {
-		x++ // BAD
+		x++ // $ Alert // BAD
 		x = 0
 	}
 }
@@ -198,7 +198,7 @@ func _() {
 func _() {
 	x := struct{ f int }{42}
 	_ = x.f
-	x = struct{ f int }{23}
+	x = struct{ f int }{23} // $ Alert
 }
 
 func _() {
@@ -259,13 +259,13 @@ func _() (x int) {
 }
 
 func _() (x int) {
-	x = deadStore() // BAD
+	x = deadStore() // $ Alert // BAD
 	x = 0
 	return
 }
 
 func _() (x int) {
-	x = deadStore() // BAD
+	x = deadStore() // $ Alert // BAD
 	return 0
 }
 
@@ -306,7 +306,7 @@ func _(a float32, b float32) (x int) {
 
 func _(a float32, b float32) (x int) {
 	x = 1
-	a /= b
+	a /= b // $ Alert
 	return 2
 }
 
@@ -318,7 +318,7 @@ func _(a int, b int) (x int) {
 
 func _(a int, b int) (x int) {
 	x = 1
-	a %= b
+	a %= b // $ Alert
 	return 2
 }
 
@@ -384,7 +384,7 @@ func _() {
 	case true:
 		_ = x
 	default:
-		x = deadStore() // BAD
+		x = deadStore() // $ Alert // BAD
 		fallthrough
 	case b:
 	}
@@ -429,16 +429,16 @@ func _() {
 	var ch chan int
 	select {
 	case ch <- 0:
-		x = deadStore() // BAD
+		x = deadStore() // $ Alert // BAD
 	case <-ch:
-		x = deadStore() // BAD
+		x = deadStore() // $ Alert // BAD
 	default:
 		_ = x
 	}
 }
 
 func _() {
-	x := deadStore() // BAD
+	x := deadStore() // $ Alert // BAD
 	var ch chan int
 	select {
 	case ch <- 0:
@@ -485,7 +485,7 @@ func _() {
 func _() {
 	var x int
 	if b {
-		x = deadStore() // BAD
+		x = deadStore() // $ Alert // BAD
 	}
 	if x = 0; b {
 
@@ -539,7 +539,7 @@ func _() {
 func _() {
 	x := 0
 	for x < 0 {
-		x = deadStore() // BAD
+		x = deadStore() // $ Alert // BAD
 		if b {
 			break
 		}
@@ -577,7 +577,7 @@ func _() {
 	var x int
 	for {
 		if b {
-			x = deadStore() // BAD
+			x = deadStore() // $ Alert // BAD
 			break
 		}
 		_ = x
@@ -626,7 +626,7 @@ func _(v1, v2 int32) (int32, int32) {
 
 func _(v1, v2 int32) (int32, int32) {
 	if v1 > v2 {
-		v1, _ = v2, v1
+		v1, _ = v2, v1 // $ Alert
 	}
 	v1, v2 = 0, 0
 	return v1, v2

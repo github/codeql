@@ -1,13 +1,9 @@
 /** Provides classes and predicates to reason about path injection vulnerabilities. */
 
 import rust
-private import codeql.rust.controlflow.BasicBlocks
-private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.dataflow.DataFlow
-private import codeql.rust.dataflow.TaintTracking
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.internal.DataFlowImpl
-private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 
 /**
  * Provides default sources, sinks and barriers for detecting path injection
@@ -46,6 +42,11 @@ module TaintedPath {
   /** A sink for path-injection from model data. */
   private class ModelsAsDataSinks extends Sink {
     ModelsAsDataSinks() { sinkNode(this, "path-injection") }
+  }
+
+  /** A barrier for path-injection from model data. */
+  private class ModelsAsDataBarriers extends Barrier {
+    ModelsAsDataBarriers() { barrierNode(this, "path-injection") }
   }
 }
 

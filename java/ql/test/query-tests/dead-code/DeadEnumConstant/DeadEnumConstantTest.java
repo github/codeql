@@ -5,8 +5,8 @@ public class DeadEnumConstantTest {
   public @interface MyAnnotation{};
 
   public static enum E1{
-    unused1,
-    unused2,
+    unused1, // $ Alert
+    unused2, // $ Alert
 
     @MyAnnotation
     ok1,                                  // constants with reflective annotations should be ignored

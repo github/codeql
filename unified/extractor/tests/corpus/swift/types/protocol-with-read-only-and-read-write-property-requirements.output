@@ -1,0 +1,105 @@
+protocol P {
+  var foo: Int { get }
+  var bar: String { get set }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        protocolDecl
+          attributes:
+          name: identifier "P"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "foo"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                accessorDecl
+                                  accessorSpecifier: get
+                                  attributes:
+                              leftBrace: {
+                              rightBrace: }
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: var
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "bar"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "String"
+                          accessorBlock:
+                            accessorBlock
+                              accessors:
+                                accessorDecl
+                                  accessorSpecifier: get
+                                  attributes:
+                                accessorDecl
+                                  accessorSpecifier: set
+                                  attributes:
+                              leftBrace: {
+                              rightBrace: }
+          modifiers:
+          protocolKeyword: protocol
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "protocol"
+          name: identifier "P"
+          member:
+            accessor_declaration
+              name: identifier "foo"
+              accessor_kind: accessor_kind "get"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+            accessor_declaration
+              name: identifier "bar"
+              accessor_kind: accessor_kind "get"
+              type:
+                named_type_expr
+                  name: identifier "String"
+            accessor_declaration
+              modifier: modifier "chained_declaration"
+              name: identifier "bar"
+              accessor_kind: accessor_kind "set"
+              type:
+                named_type_expr
+                  name: identifier "String"

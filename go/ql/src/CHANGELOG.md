@@ -1,3 +1,56 @@
+## 1.6.7
+
+No user-facing changes.
+
+## 1.6.6
+
+No user-facing changes.
+
+## 1.6.5
+
+### Minor Analysis Improvements
+
+* The query `go/unhandled-writable-file-close` ("Writable file handle closed without error handling") now produces fewer false positives. A deferred call to `Close` that is preceded on every execution path by a handled call to `Sync` on the same file handle is no longer flagged.
+
+## 1.6.4
+
+No user-facing changes.
+
+## 1.6.3
+
+No user-facing changes.
+
+## 1.6.2
+
+No user-facing changes.
+
+## 1.6.1
+
+No user-facing changes.
+
+## 1.6.0
+
+### Query Metadata Changes
+
+* The `@security-severity` metadata of `go/log-injection` has been reduced from 7.8 (high) to 6.1 (medium).
+* The `@security-severity` metadata of `go/html-template-escaping-bypass-xss`, `go/reflected-xss` and `go/stored-xss` has been increased from 6.1 (medium) to 7.8 (high).
+
+## 1.5.10
+
+No user-facing changes.
+
+## 1.5.9
+
+No user-facing changes.
+
+## 1.5.8
+
+No user-facing changes.
+
+## 1.5.7
+
+No user-facing changes.
+
 ## 1.5.6
 
 No user-facing changes.

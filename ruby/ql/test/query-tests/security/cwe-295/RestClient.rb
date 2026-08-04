@@ -2,21 +2,21 @@ require "rest-client"
 
 # BAD
 resource = RestClient::Resource.new("https://example.com", verify_ssl: OpenSSL::SSL::VERIFY_NONE)
-response = resource.get
+response = resource.get # $ Alert
 
 # BAD
 resource = RestClient::Resource.new("https://example.com", { verify_ssl: OpenSSL::SSL::VERIFY_NONE })
-response = resource.get
+response = resource.get # $ Alert
 
 # BAD
 options = { verify_ssl: OpenSSL::SSL::VERIFY_NONE }
 resource = RestClient::Resource.new("https://example.com", options)
-response = resource.get
+response = resource.get # $ Alert
 
 # BAD
 value = OpenSSL::SSL::VERIFY_NONE
 resource = RestClient::Resource.new("https://example.com", verify_ssl: value)
-response = resource.get
+response = resource.get # $ Alert
 
 # GOOD
 RestClient.get("https://example.com")

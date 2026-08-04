@@ -1,3 +1,6 @@
+// referenceClass, referenceFunctions, referenceProperties are deprecated since Kotlin 2.3.20
+@file:Suppress("DEPRECATION")
+
 package com.github.codeql.utils
 
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext

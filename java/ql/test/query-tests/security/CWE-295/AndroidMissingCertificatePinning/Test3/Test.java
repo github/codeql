@@ -11,7 +11,7 @@ class Test {
                 new OkHttpClient.Builder().certificatePinner(certificatePinner).build();
 
         client.newCall(new Request.Builder().url("https://good.example.com").build()).execute();
-        client.newCall(new Request.Builder().url("https://bad.example.com").build()).execute(); // $hasUntrustedResult
+        client.newCall(new Request.Builder().url("https://bad.example.com").build()).execute(); // $ hasUntrustedResult
         client.newCall(new Request.Builder().url("classpath:example/directory/test.class").build())
                 .execute();
         client.newCall(new Request.Builder().url("file:///example/file").build()).execute();

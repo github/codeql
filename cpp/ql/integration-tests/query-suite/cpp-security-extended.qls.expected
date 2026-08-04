@@ -93,5 +93,6 @@ ql/cpp/ql/src/Summary/LinesOfUserCode.ql
 ql/cpp/ql/src/Telemetry/CompilerErrors.ql
 ql/cpp/ql/src/Telemetry/DatabaseQuality.ql
 ql/cpp/ql/src/Telemetry/ExtractionMetrics.ql
+ql/cpp/ql/src/Telemetry/ExtractorInformation.ql
 ql/cpp/ql/src/Telemetry/MissingIncludes.ql
 ql/cpp/ql/src/Telemetry/SucceededIncludes.ql

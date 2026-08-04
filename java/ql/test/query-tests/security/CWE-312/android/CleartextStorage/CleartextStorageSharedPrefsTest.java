@@ -100,13 +100,13 @@ public class CleartextStorageSharedPrefsTest extends Activity {
 		SharedPreferences sharedPrefs =
 				context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
 		sharedPrefs.edit().putString("name", name).apply(); // Safe
-		sharedPrefs.edit().putString("password", password).apply(); // $hasCleartextStorageSharedPrefs
+		sharedPrefs.edit().putString("password", password).apply(); // $ hasCleartextStorageSharedPrefs
 	}
 
 	public void testSetSharedPrefs7(Context context, EditText name, EditText password) {
 		SharedPreferences sharedPrefs =
 				context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
 		sharedPrefs.edit().putString("name", name.getText().toString()).apply(); // Safe
-		sharedPrefs.edit().putString("password", password.getText().toString()).apply(); // $hasCleartextStorageSharedPrefs
+		sharedPrefs.edit().putString("password", password.getText().toString()).apply(); // $ hasCleartextStorageSharedPrefs
 	}
 }

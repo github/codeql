@@ -8,14 +8,14 @@ class RandomTest
 {
     void f()
     {
-        new Random().Next();  // BAD
+        new Random().Next();  // $ Alert // BAD
 
         byte[] buffer = new byte[10];
-        new Random().NextBytes(buffer); // BAD
+        new Random().NextBytes(buffer); // $ Alert // BAD
 
-        new Random().NextDouble();  // BAD
-        new Random().Next(10);      // BAD
-        new Random().Next(10, 20);   // BAD
+        new Random().NextDouble();  // $ Alert // BAD
+        new Random().Next(10);      // $ Alert // BAD
+        new Random().Next(10, 20);   // $ Alert // BAD
 
         new Random().Equals(null);  // GOOD
     }

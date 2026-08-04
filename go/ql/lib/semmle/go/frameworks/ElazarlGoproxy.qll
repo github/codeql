@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with concepts relating to the [github.com/elazarl/goproxy](https://pkg.go.dev/github.com/elazarl/goproxy) package.
  */
+overlay[local?]
+module;
 
 import go
 

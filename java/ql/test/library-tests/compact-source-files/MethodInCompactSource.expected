@@ -1,5 +1,5 @@
-| Test.java:1:1:1:1 | <clinit> | in compact source |
-| Test.java:1:1:1:1 | <obinit> | in compact source |
+| Test.java:1:1:29:1 | <clinit> | in compact source |
+| Test.java:1:1:29:1 | <obinit> | in compact source |
 | Test.java:5:6:5:9 | main | in compact source |
 | Test.java:11:6:11:16 | processData | in compact source |
 | Test.java:16:14:16:31 | updatePrivateField | in compact source |

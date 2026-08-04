@@ -18,14 +18,14 @@ public class TestSources extends SliceProvider {
     // "androidx.slice;SliceProvider;true;onBindSlice;;;Parameter[0];contentprovider;manual",
     @Override
     public Slice onBindSlice(Uri sliceUri) {
-        sink(sliceUri); // $hasValueFlow
+        sink(sliceUri); // $ hasValueFlow
         return null;
     }
 
     // "androidx.slice;SliceProvider;true;onCreatePermissionRequest;;;Parameter[0];contentprovider;manual",
     @Override
     public PendingIntent onCreatePermissionRequest(Uri sliceUri, String callingPackage) {
-        sink(sliceUri); // $hasValueFlow
+        sink(sliceUri); // $ hasValueFlow
         sink(callingPackage); // Safe
         return null;
     }
@@ -33,18 +33,18 @@ public class TestSources extends SliceProvider {
     // "androidx.slice;SliceProvider;true;onMapIntentToUri;;;Parameter[0];contentprovider;manual",
     @Override
     public Uri onMapIntentToUri(Intent intent) {
-        sink(intent); // $hasValueFlow
+        sink(intent); // $ hasValueFlow
         return null;
     }
 
     // "androidx.slice;SliceProvider;true;onSlicePinned;;;Parameter[0];contentprovider;manual",
     public void onSlicePinned(Uri sliceUri) {
-        sink(sliceUri); // $hasValueFlow
+        sink(sliceUri); // $ hasValueFlow
     }
 
     // "androidx.slice;SliceProvider;true;onSliceUnpinned;;;Parameter[0];contentprovider;manual"
     public void onSliceUnpinned(Uri sliceUri) {
-        sink(sliceUri); // $hasValueFlow
+        sink(sliceUri); // $ hasValueFlow
     }
 
     // Methods needed for compilation

@@ -291,7 +291,7 @@ def create_placeholder_args(cls):
     if cls in (ast.Raise, ast.Ellipsis):
         return {}
     fields = ast_fields[cls]
-    args = {field: None for field in fields if field != "is_async"}
+    args = {field: None for field in fields if field not in ("is_async", "is_lazy")}
     for field in list_fields.get(cls, ()):
         args[field] = []
     if cls in (ast.GeneratorExp, ast.ListComp, ast.SetComp, ast.DictComp):

@@ -1,4 +1,6 @@
 /** Provides classes for working with WebSocket-related APIs. */
+overlay[local?]
+module;
 
 import go
 

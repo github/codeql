@@ -39,10 +39,10 @@ public class Guards {
         chk(); // $ guarded='s:match "bar"' guarded='s:bar'
         break;
       case "foo":
-        chk(); // $ guarded='s:match "foo"' guarded='s:foo' guarded=g(3):false
+        chk(); // $ guarded='s:non-match "bar"' guarded='s:not bar' guarded='s:match "foo"' guarded='s:foo' guarded=g(3):false
         break;
       default:
-        chk(); // $ guarded='s:non-match "bar"' guarded='s:non-match "foo"' guarded='s:not bar' guarded='s:not foo' guarded='s:match default' guarded=g(3):false
+        chk(); // $ guarded='s:non-match "bar"' guarded='s:non-match "foo"' guarded='s:not bar' guarded='s:not foo' guarded=g(3):false
         break;
     }
 
@@ -92,10 +92,10 @@ public class Guards {
         chk(); // $ guarded='x:match E1' guarded='x:E1' guarded=g(1):true guarded=g(2):false guarded=g(Alt2):false guarded=g(3):false
         break;
       case E2:
-        chk(); // $ guarded='x:match E2' guarded='x:E2' guarded=g(3):false
+        chk(); // $ guarded='x:non-match E1' guarded='x:not E1' guarded='x:match E2' guarded='x:E2' guarded=g(3):false
         break;
       case E3:
-        chk(); // $ guarded='x:match E3' guarded='x:E3' guarded=g(3):true
+        chk(); // $ guarded='x:non-match E1' guarded='x:non-match E2' guarded='x:not E1' guarded='x:not E2' guarded='x:match E3' guarded='x:E3' guarded=g(3):true
         break;
     }
     Object o = g(4) ? new Object() : null;
@@ -198,7 +198,7 @@ public class Guards {
         chk(); // $ guarded='testEnumWrapper(...):SUCCESS' guarded='testEnumWrapper(...):match SUCCESS' guarded=g(1):true
         break;
       case FAILURE:
-        chk(); // $ guarded='testEnumWrapper(...):FAILURE' guarded='testEnumWrapper(...):match FAILURE' guarded=g(1):false
+        chk(); // $ guarded='testEnumWrapper(...):not SUCCESS' guarded='testEnumWrapper(...):non-match SUCCESS' guarded='testEnumWrapper(...):FAILURE' guarded='testEnumWrapper(...):match FAILURE' guarded=g(1):false
         break;
     }
   }

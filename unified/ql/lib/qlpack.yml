@@ -1,0 +1,12 @@
+name: codeql/unified-all
+version: 0.0.1-dev
+groups: unified
+dbscheme: unified.dbscheme
+extractor: unified
+library: true
+upgrades: upgrades
+dependencies:
+  codeql/util: ${workspace}
+  codeql/namebinding: ${workspace}
+warnOnImplicitThis: true
+compileForOverlayEval: true

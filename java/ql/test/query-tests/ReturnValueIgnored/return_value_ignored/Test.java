@@ -38,7 +38,7 @@ public class Test implements I {
 		foo = test3.getI();
 		foo = test1.getI();
 		foo = test2.getI();
-		test3.getI();
+		test3.getI(); // $ Alert
 		
 		// test setter; shouldn't flag last call
 		Test test;
@@ -86,6 +86,6 @@ public class Test implements I {
 		t = s.trim();
 		t = s.trim();
 		t = s.trim();
-		s.trim();
+		s.trim(); // $ Alert
 	}
 }

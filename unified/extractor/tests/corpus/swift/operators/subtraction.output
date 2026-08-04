@@ -1,0 +1,34 @@
+a - b
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "-"
+          leftOperand:
+            declReferenceExpr
+              baseName: identifier "a"
+          rightOperand:
+            declReferenceExpr
+              baseName: identifier "b"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        binary_expr
+          left:
+            name_expr
+              identifier: identifier "a"
+          operator: infix_operator "-"
+          right:
+            name_expr
+              identifier: identifier "b"

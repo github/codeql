@@ -6,28 +6,28 @@ import java.io.File;
 
 public class A {
   void f_string() {
-    String.format("%s%s", ""); // missing
+    String.format("%s%s", ""); // $ Alert[java/missing-format-argument] // missing
   }
 
   void f_formatter(Formatter x) {
-    x.format("%s%s", ""); // missing
+    x.format("%s%s", ""); // $ Alert[java/missing-format-argument] // missing
   }
 
   void f_printstream(PrintStream x) {
-    x.format("%s%s", ""); // missing
-    x.printf("%s%s", ""); // missing
+    x.format("%s%s", ""); // $ Alert[java/missing-format-argument] // missing
+    x.printf("%s%s", ""); // $ Alert[java/missing-format-argument] // missing
   }
 
   void f_printwriter(PrintWriter x) {
-    x.format("%s%s", ""); // missing
-    x.printf("%s%s", ""); // missing
+    x.format("%s%s", ""); // $ Alert[java/missing-format-argument] // missing
+    x.printf("%s%s", ""); // $ Alert[java/missing-format-argument] // missing
   }
 
   void f_console(Console x) {
-    x.format("%s%s", ""); // missing
-    x.printf("%s%s", ""); // missing
-    x.readLine("%s%s", ""); // missing
-    x.readPassword("%s%s", ""); // missing
+    x.format("%s%s", ""); // $ Alert[java/missing-format-argument] // missing
+    x.printf("%s%s", ""); // $ Alert[java/missing-format-argument] // missing
+    x.readLine("%s%s", ""); // $ Alert[java/missing-format-argument] // missing
+    x.readPassword("%s%s", ""); // $ Alert[java/missing-format-argument] // missing
   }
 
   void custom_format(Object o, String fmt, Object... args) {
@@ -35,20 +35,20 @@ public class A {
   }
 
   void f_wrapper() {
-    custom_format(new Object(), "%s%s", ""); // missing
+    custom_format(new Object(), "%s%s", ""); // $ Alert[java/missing-format-argument] // missing
   }
 
   void f() {
-    String.format("%s", "", ""); // unused
-    String.format("s", ""); // unused
-    String.format("%2$s %2$s", "", ""); // unused
+    String.format("%s", "", ""); // $ Alert[java/unused-format-argument] // unused
+    String.format("s", ""); // $ Alert[java/unused-format-argument] // unused
+    String.format("%2$s %2$s", "", ""); // $ Alert[java/unused-format-argument] // unused
     String.format("%2$s %1$s", "", ""); // ok
-    String.format("%2$s %s", ""); // missing
-    String.format("%s%<s", "", ""); // unused
-    String.format("%s%%%%%%%%s%n", "", ""); // unused
+    String.format("%2$s %s", ""); // $ Alert[java/missing-format-argument] // missing
+    String.format("%s%<s", "", ""); // $ Alert[java/unused-format-argument] // unused
+    String.format("%s%%%%%%%%s%n", "", ""); // $ Alert[java/unused-format-argument] // unused
     String.format("%s%%%%%%%%s%n", ""); // ok
     String.format("%s%%%%%%%s%n", "", ""); // ok
-    String.format("%s%%%%%%%s%n", ""); // missing
+    String.format("%s%%%%%%%s%n", ""); // $ Alert[java/missing-format-argument] // missing
     String.format("%2$s %% %n %1$s %<s %s %<s %s %1$s", "", ""); // ok
   }
 
@@ -58,36 +58,36 @@ public class A {
 
   void g(boolean b, int i) {
     String fmt1 = "%s" + (b ? "%s" : ""); 
-    String.format(fmt1, ""); // missing
+    String.format(fmt1, ""); // $ Alert[java/missing-format-argument] // missing
     String.format(fmt1, "", ""); // ok
-    String.format(fmt1, "", "", ""); // unused
+    String.format(fmt1, "", "", ""); // $ Alert[java/unused-format-argument] // unused
 
     String fmt2 = "%s%" + i + "s%n"; 
-    String.format(fmt2, ""); // missing
+    String.format(fmt2, ""); // $ Alert[java/missing-format-argument] // missing
     String.format(fmt2, "", ""); // ok
-    String.format(fmt2, "", "", ""); // unused
+    String.format(fmt2, "", "", ""); // $ Alert[java/unused-format-argument] // unused
 
-    String.format(f_fmt3, "", ""); // missing
+    String.format(f_fmt3, "", ""); // $ Alert[java/missing-format-argument] // missing
     String.format(f_fmt3, "", "", ""); // ok
-    String.format(f_fmt3, "", "", "", ""); // unused
+    String.format(f_fmt3, "", "", "", ""); // $ Alert[java/unused-format-argument] // unused
 
-    String.format("%s%s", new Object[] { "a" }); // missing
+    String.format("%s%s", new Object[] { "a" }); // $ Alert[java/missing-format-argument] // missing
     String.format("%s%s", new Object[] { "a", "b" }); // ok
-    String.format("%s%s", new Object[] { "a", "b", "c" }); // unused
+    String.format("%s%s", new Object[] { "a", "b", "c" }); // $ Alert[java/unused-format-argument] // unused
 
     Object[] a1 = new Object[] { "a", "b" };
-    String.format("%s%s%s", a1); // missing
+    String.format("%s%s%s", a1); // $ Alert[java/missing-format-argument] // missing
     String.format("%s%s", a1); // ok
-    String.format("%s", a1); // unused
+    String.format("%s", a1); // $ Alert[java/unused-format-argument] // unused
 
     Object[] a2 = new Object[2];
-    String.format("%s%s%s", a2); // missing
+    String.format("%s%s%s", a2); // $ Alert[java/missing-format-argument] // missing
     String.format("%s%s", a2); // ok
-    String.format("%s", a2); // unused
+    String.format("%s", a2); // $ Alert[java/unused-format-argument] // unused
   }
 
   void formatted() {
-    "%s%s".formatted(""); // missing
-    "%s".formatted("", ""); // unused
+    "%s%s".formatted(""); // $ Alert[java/missing-format-argument] // missing
+    "%s".formatted("", ""); // $ Alert[java/unused-format-argument] // unused
   }
 }

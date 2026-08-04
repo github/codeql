@@ -1,6 +1,8 @@
 /**
  * Provides classes modeling security-relevant aspects of the `encoding/asn1` package.
  */
+overlay[local?]
+module;
 
 import go
 

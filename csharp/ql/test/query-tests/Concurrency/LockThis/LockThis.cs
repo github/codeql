@@ -6,7 +6,7 @@ class Program
 
     void f()
     {
-        lock (this)  // Not OK
+        lock (this)  // $ Alert // Not OK
         {
         }
 

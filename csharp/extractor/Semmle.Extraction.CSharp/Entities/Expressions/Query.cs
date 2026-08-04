@@ -94,11 +94,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     child
                     );
 
-                Expression.Create(cx, Expr, decl, 0);
-
                 var nameLoc = cx.CreateLocation(name.GetLocation());
-                var access = new Expression(new ExpressionInfo(cx, type, nameLoc, ExprKind.LOCAL_VARIABLE_ACCESS, decl, 1, isCompilerGenerated: false, null));
+                var access = new Expression(new ExpressionInfo(cx, type, nameLoc, ExprKind.LOCAL_VARIABLE_ACCESS, decl, 0, isCompilerGenerated: false, null));
                 cx.TrapWriter.Writer.expr_access(access, LocalVariable.Create(cx, variableSymbol));
+
+                Expression.Create(cx, Expr, decl, 1);
 
                 return decl;
             }

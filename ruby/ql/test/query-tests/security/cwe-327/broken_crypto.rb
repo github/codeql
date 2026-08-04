@@ -1,19 +1,19 @@
 require 'openssl'
 
 # BAD: creating a cipher using a weak scheme
-weak = OpenSSL::Cipher.new('des3')
+weak = OpenSSL::Cipher.new('des3') # $ Alert[rb/weak-cryptographic-algorithm]
 weak.encrypt
 weak.random_key
 # BAD: encrypting data using a weak cipher
-weak.update('foo')
+weak.update('foo') # $ Alert[rb/weak-cryptographic-algorithm]
 weak.final
 
 # BAD: creating a cipher using a weak block mode
-weak = OpenSSL::Cipher::AES.new(128, 'ecb')
+weak = OpenSSL::Cipher::AES.new(128, 'ecb') # $ Alert[rb/weak-cryptographic-algorithm]
 weak.encrypt
 weak.random_key
 # BAD: encrypting data using a weak block mode
-weak.update('foo')
+weak.update('foo') # $ Alert[rb/weak-cryptographic-algorithm]
 weak.final
 
 # GOOD: creating a cipher using a strong scheme
@@ -25,7 +25,7 @@ strong.update('bar')
 strong.final
 
 # BAD: weak block mode
-OpenSSL::Cipher::AES.new(128, :ecb)
+OpenSSL::Cipher::AES.new(128, :ecb) # $ Alert[rb/weak-cryptographic-algorithm]
 # GOOD: strong encryption algorithm
 OpenSSL::Cipher::AES.new(128, 'cbc')
 # GOOD: strong encryption algorithm
@@ -34,49 +34,49 @@ OpenSSL::Cipher::AES.new('128-cbc')
 # GOOD: strong encryption algorithm
 OpenSSL::Cipher::AES128.new
 # BAD: weak block mode
-OpenSSL::Cipher::AES128.new 'ecb'
+OpenSSL::Cipher::AES128.new 'ecb' # $ Alert[rb/weak-cryptographic-algorithm]
 
 # GOOD: strong encryption algorithm
 OpenSSL::Cipher::AES192.new
 # BAD: weak block mode
-OpenSSL::Cipher::AES192.new 'ecb'
+OpenSSL::Cipher::AES192.new 'ecb' # $ Alert[rb/weak-cryptographic-algorithm]
 
 # GOOD: strong encryption algorithm
 OpenSSL::Cipher::AES256.new
 # BAD: weak block mode
-OpenSSL::Cipher::AES256.new 'ecb'
+OpenSSL::Cipher::AES256.new 'ecb' # $ Alert[rb/weak-cryptographic-algorithm]
 
 # GOOD: strong encryption algorithm
 OpenSSL::Cipher::BF.new
 # BAD: weak block mode
-OpenSSL::Cipher::BF.new 'ecb'
+OpenSSL::Cipher::BF.new 'ecb' # $ Alert[rb/weak-cryptographic-algorithm]
 
 # GOOD: strong encryption algorithm
 OpenSSL::Cipher::CAST5.new
 # BAD: weak block mode
-OpenSSL::Cipher::CAST5.new 'ecb'
+OpenSSL::Cipher::CAST5.new 'ecb' # $ Alert[rb/weak-cryptographic-algorithm]
 
 # BAD: weak encryption algorithm
-OpenSSL::Cipher::DES.new
+OpenSSL::Cipher::DES.new # $ Alert[rb/weak-cryptographic-algorithm]
 # BAD: weak encryption algorithm
-OpenSSL::Cipher::DES.new 'cbc'
+OpenSSL::Cipher::DES.new 'cbc' # $ Alert[rb/weak-cryptographic-algorithm]
 
 # GOOD: strong encryption algorithm
 OpenSSL::Cipher::IDEA.new
 # BAD: weak block mode
-OpenSSL::Cipher::IDEA.new 'ecb'
+OpenSSL::Cipher::IDEA.new 'ecb' # $ Alert[rb/weak-cryptographic-algorithm]
 
 # BAD: weak encryption algorithm
-OpenSSL::Cipher::RC2.new
+OpenSSL::Cipher::RC2.new # $ Alert[rb/weak-cryptographic-algorithm]
 # BAD: weak encryption algorithm
-OpenSSL::Cipher::RC2.new 'ecb'
+OpenSSL::Cipher::RC2.new 'ecb' # $ Alert[rb/weak-cryptographic-algorithm]
 
 # BAD: weak encryption algorithm
-OpenSSL::Cipher::RC4.new
+OpenSSL::Cipher::RC4.new # $ Alert[rb/weak-cryptographic-algorithm]
 # BAD: weak encryption algorithm
-OpenSSL::Cipher::RC4.new '40'
+OpenSSL::Cipher::RC4.new '40' # $ Alert[rb/weak-cryptographic-algorithm]
 # BAD: weak encryption algorithm
-OpenSSL::Cipher::RC4.new 'hmac-md5'
+OpenSSL::Cipher::RC4.new 'hmac-md5' # $ Alert[rb/weak-cryptographic-algorithm]
 
 Digest::MD5.hexdigest('foo') # OK: don't report hash algorithm even if it is weak
 Digest::SHA256.hexdigest('foo') # GOOD: strong hash algorithm

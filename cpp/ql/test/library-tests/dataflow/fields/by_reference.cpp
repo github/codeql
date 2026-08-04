@@ -48,25 +48,25 @@ struct S {
 void test_setDirectly() {
   S s;
   s.setDirectly(user_input());
-  sink(s.getDirectly()); // $ast ir
+  sink(s.getDirectly()); // $ ast ir
 }
 
 void test_setIndirectly() {
   S s;
   s.setIndirectly(user_input());
-  sink(s.getIndirectly()); // $ast ir
+  sink(s.getIndirectly()); // $ ast ir
 }
 
 void test_setThroughNonMember() {
   S s;
   s.setThroughNonMember(user_input());
-  sink(s.getThroughNonMember()); // $ast ir
+  sink(s.getThroughNonMember()); // $ ast ir
 }
 
 void test_nonMemberSetA() {
   S s;
   nonMemberSetA(&s, user_input());
-  sink(nonMemberGetA(&s)); // $ast,ir
+  sink(nonMemberGetA(&s)); // $ ast,ir
 }
 
 ////////////////////
@@ -112,7 +112,7 @@ void test_outer_with_ptr(Outer *pouter) {
   sink(outer.a); // $ ast,ir
 
   sink(pouter->inner_nested.a); // $ ast,ir
-  sink(pouter->inner_ptr->a); // $ast,ir
+  sink(pouter->inner_ptr->a); // $ ast,ir
   sink(pouter->a); // $ ast,ir
 }
 

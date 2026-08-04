@@ -1,1 +1,2 @@
-Likely Bugs/Conversion/CastArrayPointerArithmetic.ql
+query: Likely Bugs/Conversion/CastArrayPointerArithmetic.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -4,7 +4,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["java.util.zip", "GZIPInputStream", False, "GZIPInputStream", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
-      - ["java.util.zip", "ZipEntry", True, "ZipEntry", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
+      - ["java.util.zip", "ZipEntry", True, "ZipEntry", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
       - ["java.util.zip", "ZipFile", True, "ZipFile", "(File)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.util.zip", "ZipFile", True, "ZipFile", "(File,Charset)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.util.zip", "ZipFile", True, "ZipFile", "(File,int)", "", "Argument[0]", "Argument[this]", "taint", "manual"]

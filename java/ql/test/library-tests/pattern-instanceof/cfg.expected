@@ -1,8 +1,8 @@
-| Test.java:1:14:1:17 | Exceptional Exit | Test.java:1:14:1:17 | Exit |
+| Test.java:1:14:1:17 | Entry | Test.java:1:14:1:17 | { ... } |
 | Test.java:1:14:1:17 | Normal Exit | Test.java:1:14:1:17 | Exit |
 | Test.java:1:14:1:17 | super(...) | Test.java:1:14:1:17 | Normal Exit |
 | Test.java:1:14:1:17 | { ... } | Test.java:1:14:1:17 | super(...) |
-| Test.java:3:22:3:25 | Exceptional Exit | Test.java:3:22:3:25 | Exit |
+| Test.java:3:22:3:25 | Entry | Test.java:3:40:20:3 | { ... } |
 | Test.java:3:22:3:25 | Normal Exit | Test.java:3:22:3:25 | Exit |
 | Test.java:3:40:20:3 | { ... } | Test.java:5:5:5:34 | var ...; |
 | Test.java:5:5:5:34 | var ...; | Test.java:5:26:5:33 | source(...) |
@@ -50,35 +50,39 @@
 | Test.java:17:7:17:26 | sink(...) | Test.java:3:22:3:25 | Normal Exit |
 | Test.java:17:7:17:27 | <Expr>; | Test.java:17:12:17:25 | alsoNotTainted |
 | Test.java:17:12:17:25 | alsoNotTainted | Test.java:17:7:17:26 | sink(...) |
-| Test.java:22:24:22:29 | Exceptional Exit | Test.java:22:24:22:29 | Exit |
+| Test.java:22:24:22:29 | Entry | Test.java:22:33:22:53 | { ... } |
 | Test.java:22:24:22:29 | Normal Exit | Test.java:22:24:22:29 | Exit |
 | Test.java:22:33:22:53 | { ... } | Test.java:22:42:22:50 | "tainted" |
 | Test.java:22:35:22:51 | return ... | Test.java:22:24:22:29 | Normal Exit |
 | Test.java:22:42:22:50 | "tainted" | Test.java:22:35:22:51 | return ... |
-| Test.java:23:22:23:25 | Exceptional Exit | Test.java:23:22:23:25 | Exit |
+| Test.java:23:22:23:25 | Entry | Test.java:23:40:23:42 | { ... } |
 | Test.java:23:22:23:25 | Normal Exit | Test.java:23:22:23:25 | Exit |
 | Test.java:23:40:23:42 | { ... } | Test.java:23:22:23:25 | Normal Exit |
 | Test.java:27:8:27:12 | ...=... | Test.java:27:8:27:12 | <Expr>; |
 | Test.java:27:8:27:12 | ...=... | Test.java:27:8:27:12 | Normal Exit |
 | Test.java:27:8:27:12 | <Expr>; | Test.java:27:8:27:12 | this |
 | Test.java:27:8:27:12 | <Expr>; | Test.java:27:8:27:12 | this |
-| Test.java:27:8:27:12 | Exceptional Exit | Test.java:27:8:27:12 | Exit |
+| Test.java:27:8:27:12 | Entry | Test.java:27:8:27:12 | { ... } |
 | Test.java:27:8:27:12 | Normal Exit | Test.java:27:8:27:12 | Exit |
 | Test.java:27:8:27:12 | i | Test.java:27:8:27:12 | ...=... |
 | Test.java:27:8:27:12 | otherField | Test.java:27:8:27:12 | ...=... |
 | Test.java:27:8:27:12 | super(...) | Test.java:27:8:27:12 | <Expr>; |
-| Test.java:27:8:27:12 | this | Test.java:27:8:27:12 | i |
-| Test.java:27:8:27:12 | this | Test.java:27:8:27:12 | otherField |
+| Test.java:27:8:27:12 | this | Test.java:27:8:27:12 | this.i |
+| Test.java:27:8:27:12 | this | Test.java:27:8:27:12 | this.otherField |
+| Test.java:27:8:27:12 | this.i | Test.java:27:8:27:12 | i |
+| Test.java:27:8:27:12 | this.otherField | Test.java:27:8:27:12 | otherField |
 | Test.java:27:8:27:12 | { ... } | Test.java:27:8:27:12 | super(...) |
 | Test.java:28:8:28:12 | ...=... | Test.java:28:8:28:12 | <Expr>; |
 | Test.java:28:8:28:12 | ...=... | Test.java:28:8:28:12 | Normal Exit |
 | Test.java:28:8:28:12 | <Expr>; | Test.java:28:8:28:12 | this |
 | Test.java:28:8:28:12 | <Expr>; | Test.java:28:8:28:12 | this |
-| Test.java:28:8:28:12 | Exceptional Exit | Test.java:28:8:28:12 | Exit |
+| Test.java:28:8:28:12 | Entry | Test.java:28:8:28:12 | { ... } |
 | Test.java:28:8:28:12 | Normal Exit | Test.java:28:8:28:12 | Exit |
 | Test.java:28:8:28:12 | nonTaintedField | Test.java:28:8:28:12 | ...=... |
 | Test.java:28:8:28:12 | super(...) | Test.java:28:8:28:12 | <Expr>; |
 | Test.java:28:8:28:12 | taintedField | Test.java:28:8:28:12 | ...=... |
-| Test.java:28:8:28:12 | this | Test.java:28:8:28:12 | nonTaintedField |
-| Test.java:28:8:28:12 | this | Test.java:28:8:28:12 | taintedField |
+| Test.java:28:8:28:12 | this | Test.java:28:8:28:12 | this.nonTaintedField |
+| Test.java:28:8:28:12 | this | Test.java:28:8:28:12 | this.taintedField |
+| Test.java:28:8:28:12 | this.nonTaintedField | Test.java:28:8:28:12 | nonTaintedField |
+| Test.java:28:8:28:12 | this.taintedField | Test.java:28:8:28:12 | taintedField |
 | Test.java:28:8:28:12 | { ... } | Test.java:28:8:28:12 | super(...) |

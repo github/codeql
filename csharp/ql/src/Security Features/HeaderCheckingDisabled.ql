@@ -17,12 +17,12 @@ from Element l
 where
   // header checking is disabled programmatically in the code
   exists(Assignment a, PropertyAccess pa |
-    a.getLValue() = pa and
+    a.getLeftOperand() = pa and
     pa.getTarget().hasName("EnableHeaderChecking") and
     pa.getTarget()
         .getDeclaringType()
         .hasFullyQualifiedName("System.Web.Configuration", "HttpRuntimeSection") and
-    a.getRValue().getValue() = "false" and
+    a.getRightOperand().getValue() = "false" and
     a = l
   )
   or

@@ -1,1 +1,2 @@
-queries/Security/CWE-134/UncontrolledFormatString.ql
+query: queries/Security/CWE-134/UncontrolledFormatString.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

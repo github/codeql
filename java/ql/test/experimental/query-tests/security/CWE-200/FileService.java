@@ -42,7 +42,7 @@ public class FileService extends Service {
 
             try {
                 String[] uris = (String[]) params[1];
-                outputStream = new FileOutputStream(uris[0]);
+                outputStream = new FileOutputStream(uris[0]); // $ Alert[java/sensitive-android-file-leak]
                 return "success";
             } catch (Exception e) {
             }

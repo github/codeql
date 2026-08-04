@@ -13,7 +13,7 @@ int sscanf(const char *s, const char *format, ...);
 
 //// Test code /////
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[]) // $ Source[cpp/unbounded-write]
 {
 	if (argc < 1)
 	{
@@ -25,13 +25,13 @@ int main(int argc, char *argv[])
 		char buffer100[100];
 		int i;
 
-		sprintf(buffer100, argv[0]); // BAD: argv[0] could be more than 100 characters
-		sprintf(buffer100, "%s", argv[0]); // BAD: argv[0] could be more than 100 characters
+		sprintf(buffer100, argv[0]); // $ Alert[cpp/unbounded-write] // BAD: argv[0] could be more than 100 characters
+		sprintf(buffer100, "%s", argv[0]); // $ Alert[cpp/unbounded-write] // BAD: argv[0] could be more than 100 characters
 
-		scanf("%s", buffer100); // BAD: the input could be more than 100 characters
+		scanf("%s", buffer100); // $ Alert[cpp/unbounded-write] // BAD: the input could be more than 100 characters
 		scanf("%i", i); // GOOD: no problems with non-strings
-		scanf("%i %s", i, buffer100); // BAD: second format parameter may overflow
-		sscanf(argv[0], "%s", buffer100); // BAD: argv[0] could be more than 100 characters
+		scanf("%i %s", i, buffer100); // $ Alert[cpp/unbounded-write] // BAD: second format parameter may overflow
+		sscanf(argv[0], "%s", buffer100); // $ Alert[cpp/unbounded-write] // BAD: argv[0] could be more than 100 characters
 	}
 
 	// Test cases for BadlyBoundedWrite.ql
@@ -40,27 +40,27 @@ int main(int argc, char *argv[])
 
 		snprintf(buffer110, 109, argv[0]); // GOOD
 		snprintf(buffer110, 110, argv[0]); // GOOD
-		snprintf(buffer110, 111, argv[0]); // BAD: this could still overrun the 110 character buffer
+		snprintf(buffer110, 111, argv[0]); // $ Alert[cpp/badly-bounded-write] // BAD: this could still overrun the 110 character buffer
 		snprintf(buffer110, 109, "%s", argv[0]); // GOOD
 		snprintf(buffer110, 110, "%s", argv[0]); // GOOD
-		snprintf(buffer110, 111, "%s", argv[0]); // BAD: this could still overrun the 110 character buffer
+		snprintf(buffer110, 111, "%s", argv[0]); // $ Alert[cpp/badly-bounded-write] // BAD: this could still overrun the 110 character buffer
 	}
-	
+
 	// Test cases for OverrunWrite.ql
 	{
 		char buffer10[10];
 
 		sprintf(buffer10, "123456789"); // GOOD
-		sprintf(buffer10, "1234567890"); // BAD: the null terminator of this string overruns the buffer
+		sprintf(buffer10, "1234567890"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: the null terminator of this string overruns the buffer
 		sprintf(buffer10, "%.9s", "123456789"); // GOOD
 		sprintf(buffer10, "%.9s", "1234567890"); // GOOD
 		sprintf(buffer10, "%.10s", "123456789"); // GOOD
-		sprintf(buffer10, "%.10s", "1234567890"); // BAD: the precision specified is too large for this buffer
+		sprintf(buffer10, "%.10s", "1234567890"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: the precision specified is too large for this buffer
 
 		scanf("%8s", buffer10); // GOOD: restricted to 8 characters + null
 		scanf("%9s", buffer10); // GOOD: restricted to 9 characters + null
-		scanf("%10s", buffer10); // BAD: null can overflow
-		scanf("%11s", buffer10); // BAD: string can overflow
+		scanf("%10s", buffer10); // $ Alert[cpp/very-likely-overrunning-write] // BAD: null can overflow
+		scanf("%11s", buffer10); // $ Alert[cpp/very-likely-overrunning-write] // BAD: string can overflow
 	}
 
 	// More complex tests for OverrunWrite.ql
@@ -83,14 +83,14 @@ int main(int argc, char *argv[])
 		{
 			str35 = "12345";
 		}
-		strcpy(buffer5, str35); // BAD: if str35 is "12345", it overflows the buffer
+		strcpy(buffer5, str35); // $ Alert[cpp/very-likely-overrunning-write] // BAD: if str35 is "12345", it overflows the buffer
 
 		str35 = "abc";
 		strcpy(buffer5, str35); // GOOD: str35 is guaranteed to fit now
 
 		strcpy(buffer5, (argc == 2) ? "1234" : "abcd"); // GOOD: both of the strings fit
 
-		strcpy(buffer5, (argc == 2) ? "1234" : "abcde"); // BAD: "abcde" overflows the buffer
+		strcpy(buffer5, (argc == 2) ? "1234" : "abcde"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: "abcde" overflows the buffer
 	}
 
 	// Test cases for OverrunWriteFloat.ql
@@ -100,9 +100,9 @@ int main(int argc, char *argv[])
 		double bigval = 1e304;
 
 		sprintf(buffer256, "%e", bigval); // GOOD
-		sprintf(buffer256, "%f", bigval); // BAD: this %f representation may need more than 256 characters
+		sprintf(buffer256, "%f", bigval); // $ Alert[cpp/overrunning-write-with-float] // BAD: this %f representation may need more than 256 characters
 		sprintf(buffer256, "%g", bigval); // GOOD
-		sprintf(buffer256, "%e%f%g", bigval, bigval, bigval); // BAD: the %f representation may need more than 256 characters
+		sprintf(buffer256, "%e%f%g", bigval, bigval, bigval); // $ Alert[cpp/overrunning-write-with-float] // BAD: the %f representation may need more than 256 characters
 
 		// GOOD: a 999 character buffer is sufficient in all of these cases
 		sprintf(buffer999, "%e", bigval); // GOOD
@@ -117,8 +117,8 @@ int main(int argc, char *argv[])
 		char buffer16[16];
 		char buffer17[17];
 		char buffer49[49];
-		sprintf(buffer1, "%p", argv); // BAD
-		sprintf(buffer16, "%p", argv); // BAD
+		sprintf(buffer1, "%p", argv); // $ Alert[cpp/very-likely-overrunning-write] // BAD
+		sprintf(buffer16, "%p", argv); // $ Alert[cpp/very-likely-overrunning-write] // BAD
 		sprintf(buffer17, "%p", argv); // GOOD
 		sprintf(buffer49, "%p and then a few more words", argv); // GOOD
 	}
@@ -133,7 +133,7 @@ void test_fn2()
 	MyCharArray myBuffer10;
 
 	sprintf(myBuffer10, "%s", "123456789"); // GOOD
-	sprintf(myBuffer10, "%s", "1234567890"); // BAD: buffer overflow
+	sprintf(myBuffer10, "%s", "1234567890"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: buffer overflow
 }
 
 // ---
@@ -183,10 +183,10 @@ void tesHexBounds(int x) {
 	}
 
 	if (x < 16) {
-		sprintf(buffer2, "%x", x); // BAD:  negative values
+		sprintf(buffer2, "%x", x); // $ Alert[cpp/very-likely-overrunning-write] // BAD:  negative values
 	}
 	if (x <= 16 && x > 0) {
-		sprintf(buffer2, "%x", x); // BAD: bound too loose
+		sprintf(buffer2, "%x", x); // $ Alert[cpp/very-likely-overrunning-write] // BAD: bound too loose
 	}
 
 	if(x < 0x10000 && x > 0) {

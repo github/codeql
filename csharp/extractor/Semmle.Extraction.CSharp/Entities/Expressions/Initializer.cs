@@ -83,8 +83,22 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 {
                     var assignmentInfo = new ExpressionNodeInfo(Context, init, this, child++).SetKind(ExprKind.SIMPLE_ASSIGN);
                     var assignmentEntity = new Expression(assignmentInfo);
+                    var target = Context.GetSymbolInfo(assignment.Left);
+
+                    // If the target is null, then assume that this is an array initializer (of the form `[...] = ...`)
+                    var access = target.Symbol is null ?
+                        new Expression(new ExpressionNodeInfo(Context, assignment.Left, assignmentEntity, 0).SetKind(ExprKind.ARRAY_ACCESS)) :
+                        Access.Create(new ExpressionNodeInfo(Context, assignment.Left, assignmentEntity, 0), target.Symbol, false, Context.CreateEntity(target.Symbol));
+
+                    if (assignment.Left is ImplicitElementAccessSyntax iea)
+                    {
+                        // An array/indexer initializer of the form `[...] = ...`
+                        access.PopulateArguments(trapFile, iea.ArgumentList.Arguments, 0);
+                    }
+
                     var typeInfoRight = Context.GetTypeInfo(assignment.Right);
                     if (typeInfoRight.Type is null)
+                    {
                         // The type may be null for nested initializers such as
                         // ```csharp
                         // new ClassWithArrayField() { As = { [0] = a } }
@@ -92,21 +106,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         // In this case we take the type from the assignment
                         // `As = { [0] = a }` instead
                         typeInfoRight = assignmentInfo.TypeInfo;
-                    CreateFromNode(new ExpressionNodeInfo(Context, assignment.Right, assignmentEntity, 0, typeInfoRight));
-
-                    var target = Context.GetSymbolInfo(assignment.Left);
-
-                    // If the target is null, then assume that this is an array initializer (of the form `[...] = ...`)
-
-                    var access = target.Symbol is null ?
-                        new Expression(new ExpressionNodeInfo(Context, assignment.Left, assignmentEntity, 1).SetKind(ExprKind.ARRAY_ACCESS)) :
-                        Access.Create(new ExpressionNodeInfo(Context, assignment.Left, assignmentEntity, 1), target.Symbol, false, Context.CreateEntity(target.Symbol));
-
-                    if (assignment.Left is ImplicitElementAccessSyntax iea)
-                    {
-                        // An array/indexer initializer of the form `[...] = ...`
-                        access.PopulateArguments(trapFile, iea.ArgumentList.Arguments, 0);
                     }
+                    CreateFromNode(new ExpressionNodeInfo(Context, assignment.Right, assignmentEntity, 1, typeInfoRight));
                 }
                 else
                 {

@@ -148,7 +148,8 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
   final override Declaration getFunction() {
     result = getEnclosingFunction(expr) or
     result = getEnclosingVariable(expr).(GlobalOrNamespaceVariable) or
-    result = getEnclosingVariable(expr).(StaticInitializedStaticLocalVariable)
+    result = getEnclosingVariable(expr).(StaticInitializedStaticLocalVariable) or
+    result = getEnclosingVariable(expr).(Field)
   }
 
   final override Locatable getAst() { result = expr }
@@ -514,8 +515,8 @@ TranslatedFieldInitialization getTranslatedConstructorFieldInitialization(Constr
 }
 
 /**
- * Represents the IR translation of the initialization of a field from an
- * element of an initializer list.
+ * The IR translation of the initialization of a field from an element of
+ * an initializer list.
  */
 abstract class TranslatedFieldInitialization extends TranslatedElement {
   Expr ast;
@@ -528,19 +529,31 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
   final override Declaration getFunction() {
     result = getEnclosingFunction(ast) or
     result = getEnclosingVariable(ast).(GlobalOrNamespaceVariable) or
-    result = getEnclosingVariable(ast).(StaticInitializedStaticLocalVariable)
+    result = getEnclosingVariable(ast).(StaticInitializedStaticLocalVariable) or
+    result = getEnclosingVariable(ast).(Field)
   }
 
-  final override Instruction getFirstInstruction(EdgeKind kind) {
-    result = this.getInstruction(this.getFieldAddressTag()) and
-    kind instanceof GotoEdge
-  }
+  final Field getField() { result = field }
 
   /**
    * Gets the zero-based index describing the order in which this field is to be
    * initialized relative to the other fields in the class.
    */
   final int getOrder() { result = field.getInitializationOrder() }
+
+  /** Gets the position in the initializer list, or `-1` if the initialization is implicit. */
+  int getPosition() { result = -1 }
+}
+
+/**
+ * The IR translation of the initialization of a field from an element of an initializer
+ * list where default initialization is not used.
+ */
+abstract class TranslatedNonDefaultFieldInitialization extends TranslatedFieldInitialization {
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(this.getFieldAddressTag()) and
+    kind instanceof GotoEdge
+  }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = this.getFieldAddressTag() and
@@ -559,18 +572,13 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
   }
 
   final InstructionTag getFieldAddressTag() { result = InitializerFieldAddressTag() }
-
-  final Field getField() { result = field }
-
-  /** Gets the position in the initializer list, or `-1` if the initialization is implicit. */
-  int getPosition() { result = -1 }
 }
 
 /**
- * Represents the IR translation of the initialization of a field from an
- * explicit element in an initializer list.
+ * The IR translation of the initialization of a field from an explicit element in
+ * an initializer list.
  */
-class TranslatedExplicitFieldInitialization extends TranslatedFieldInitialization,
+class TranslatedExplicitFieldInitialization extends TranslatedNonDefaultFieldInitialization,
   InitializationContext, TTranslatedExplicitFieldInitialization
 {
   Expr expr;
@@ -610,15 +618,81 @@ class TranslatedExplicitFieldInitialization extends TranslatedFieldInitializatio
   override int getPosition() { result = position }
 }
 
+/**
+ * The IR translation of the initialization of a field from an element of an initializer
+ * list where default initialization is used.
+ */
+class TranslatedDefaultFieldInitialization extends TranslatedFieldInitialization,
+  TTranslatedDefaultFieldInitialization
+{
+  TranslatedDefaultFieldInitialization() {
+    this = TTranslatedDefaultFieldInitialization(ast, field)
+  }
+
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(CallTargetTag()) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getSideEffects().getALastInstruction()
+  }
+
+  override TranslatedElement getLastChild() { result = this.getSideEffects() }
+
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = CallTargetTag() and
+    result = this.getInstruction(CallTag())
+    or
+    tag = CallTag() and
+    result = this.getSideEffects().getFirstInstruction(kind)
+  }
+
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    child = this.getSideEffects() and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = CallTargetTag() and
+    opcode instanceof Opcode::FunctionAddress and
+    resultType = getFunctionGLValueType()
+    or
+    tag = CallTag() and
+    opcode instanceof Opcode::Call and
+    resultType = getVoidType()
+  }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = CallTag() and
+    (
+      operandTag instanceof CallTargetOperandTag and
+      result = this.getInstruction(CallTargetTag())
+      or
+      operandTag instanceof ThisArgumentOperandTag and
+      result = getTranslatedFunction(this.getFunction()).getLoadThisInstruction()
+    )
+  }
+
+  override Declaration getInstructionFunction(InstructionTag tag) {
+    tag = CallTargetTag() and
+    result = field
+  }
+
+  override TranslatedElement getChild(int id) { id = 0 and result = this.getSideEffects() }
+
+  final TranslatedSideEffects getSideEffects() { result.getExpr() = ast }
+}
+
 private string getZeroValue(Type type) {
   if type instanceof FloatingPointType then result = "0.0" else result = "0"
 }
 
 /**
- * Represents the IR translation of the initialization of a field without a
- * corresponding element in the initializer list.
+ * The IR translation of the initialization of a field without a corresponding
+ * element in the initializer list.
  */
-class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
+class TranslatedFieldValueInitialization extends TranslatedNonDefaultFieldInitialization,
   TTranslatedFieldValueInitialization
 {
   TranslatedFieldValueInitialization() { this = TTranslatedFieldValueInitialization(ast, field) }
@@ -628,7 +702,7 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
-    TranslatedFieldInitialization.super.hasInstruction(opcode, tag, resultType)
+    TranslatedNonDefaultFieldInitialization.super.hasInstruction(opcode, tag, resultType)
     or
     tag = this.getFieldDefaultValueTag() and
     opcode instanceof Opcode::Constant and
@@ -659,7 +733,8 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
-    result = TranslatedFieldInitialization.super.getInstructionRegisterOperand(tag, operandTag)
+    result =
+      TranslatedNonDefaultFieldInitialization.super.getInstructionRegisterOperand(tag, operandTag)
     or
     tag = this.getFieldDefaultValueStoreTag() and
     (
@@ -683,8 +758,8 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
 }
 
 /**
- * Represents the IR translation of the initialization of an array element from
- * an element of an initializer list.
+ * The IR translation of the initialization of an array element from an element
+ * of an initializer list.
  */
 abstract class TranslatedElementInitialization extends TranslatedElement {
   ArrayOrVectorAggregateLiteral initList;
@@ -701,6 +776,8 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = getEnclosingVariable(initList).(GlobalOrNamespaceVariable)
     or
     result = getEnclosingVariable(initList).(StaticInitializedStaticLocalVariable)
+    or
+    result = getEnclosingVariable(initList).(Field)
   }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
@@ -759,8 +836,8 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
 }
 
 /**
- * Represents the IR translation of the initialization of an array element from
- * an explicit element in an initializer list.
+ * The IR translation of the initialization of an array element from an explicit
+ * element in an initializer list.
  */
 class TranslatedExplicitElementInitialization extends TranslatedElementInitialization,
   TTranslatedExplicitElementInitialization, InitializationContext
@@ -808,8 +885,8 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
 }
 
 /**
- * Represents the IR translation of the initialization of a range of array
- * elements without corresponding elements in the initializer list.
+ * The IR translation of the initialization of a range of array elements without
+ * corresponding elements in the initializer list.
  */
 class TranslatedElementValueInitialization extends TranslatedElementInitialization,
   TTranslatedElementValueInitialization

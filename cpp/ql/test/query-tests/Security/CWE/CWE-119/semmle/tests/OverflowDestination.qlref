@@ -1,1 +1,2 @@
-Critical/OverflowDestination.ql
+query: Critical/OverflowDestination.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

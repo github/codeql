@@ -1,14 +1,14 @@
-private import csharp as Cs
+private import csharp as CS
 private import codeql.mad.test.InlineMadTest
 
 private module InlineMadTestLang implements InlineMadTestLangSig {
-  class Callable = Cs::Callable;
+  class Callable = CS::Callable;
 
   string getComment(Callable c) {
-    exists(Cs::CommentBlock block, Cs::Element after | after = block.getAfter() |
+    exists(CS::CommentBlock block, CS::Element after | after = block.getAfter() |
       (
         after = c or
-        after = c.(Cs::Accessor).getDeclaration()
+        after = c.(CS::Accessor).getDeclaration()
       ) and
       result = block.getALine()
     )

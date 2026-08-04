@@ -110,11 +110,46 @@ fn let_pattern4() {
 }
 
 fn let_pattern5() {
-    let s1 = Some(String::from("Hello!")); // s1
+    let s = Some(String::from("Hello!")); // s1
 
-    while let Some(ref s2) // s2
-        = s1 { // $ read_access=s1
-        print_str(s2); // $ read_access=s2
+    while let Some(ref s) // s2
+        = s { // $ read_access=s1
+        print_str(s); // $ read_access=s2
+    }
+}
+
+#[rustfmt::skip]
+fn let_pattern6() {
+    if let Some(x) = Some(43) // x1
+        && let Ok(x) = // x2
+            Ok::<_, ()>(x) // $ read_access=x1
+    {
+        print_i64(x); // $ read_access=x2
+    }
+}
+
+#[rustfmt::skip]
+fn let_pattern7() {
+    let x = 1; // x1
+    if let x = // x2
+        x + 1 // $ read_access=x1
+    && let x = // x3
+        x + 1 // $ read_access=x2
+    && let x = // x4
+        x + 1 // $ read_access=x3
+    && let x = // x5
+        x + 1 // $ read_access=x4
+    && let x = // x6
+        x + 1 // $ read_access=x5
+    && let x = // x7
+        x + 1 // $ read_access=x6
+    && let x = // x8
+        x + 1 // $ read_access=x7
+    {
+        print_i64(x); // $ read_access=x8
+    }
+    else {
+        print_i64(x); // $ read_access=x1
     }
 }
 
@@ -373,7 +408,8 @@ fn match_pattern16() {
     let x = Some(32);
     match x { // $ read_access=x
         Some(y) // y1
-            if let Some(y) = // y2
+            if y > 0 && // $ read_access=y1
+            let Some(y) = // y2
                 Some(y) // $ read_access=y1
             => print_i64(y), // $ read_access=y2
         _ => {},
@@ -798,6 +834,18 @@ mod patterns {
     }
 }
 
+fn let_in_block_in_cond() {
+    let x = 1; // x1
+    if {
+        let x = 1; // x2
+        x > 0 // $ read_access=x2
+    } {
+        print_i64(x); // $ read_access=x1
+    } else {
+        print_i64(x); // $ read_access=x1
+    }
+}
+
 fn main() {
     immutable_variable();
     mutable_variable();
@@ -808,6 +856,8 @@ fn main() {
     let_pattern2();
     let_pattern3();
     let_pattern4();
+    let_pattern5();
+    let_pattern6();
     match_pattern1();
     match_pattern2();
     match_pattern3();
@@ -842,4 +892,5 @@ fn main() {
     ref_methodcall_receiver();
     macro_invocation();
     capture_phi();
+    let_in_block_in_cond();
 }

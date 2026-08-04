@@ -1,4 +1,6 @@
 /** Provides the `VariableWithFields` class, for working with variables with a chain of field or element accesses chained to it. */
+overlay[local]
+module;
 
 import go
 

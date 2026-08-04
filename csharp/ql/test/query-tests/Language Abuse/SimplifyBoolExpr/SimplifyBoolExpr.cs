@@ -6,36 +6,36 @@ class Test
         bool b = false;
         int x = 0, y = 0;
 
-        if (b == true) ;
-        if (b == false) ;
-        if (true == b) ;
-        if (false == b) ;
-        if (b != true) ;
-        if (b != false) ;
-        if (true != b) ;
-        if (false != b) ;
-        if (b && true) ;
-        if (b && false) ;
-        if (true && b) ;
-        if (false && b) ;
-        if (b || true) ;
-        if (b || false) ;
-        if (true || b) ;
-        if (false || b) ;
-        if (!(x == y)) ;
-        if (!(x != y)) ;
-        if (!(x < y)) ;
-        if (!(x <= y)) ;
-        if (!(x >= y)) ;
-        if (!(x > y)) ;
-        if (b ? true : false) ;
-        if (b ? true : true) ;
-        if (b ? false : true) ;
-        if (b ? true : true) ;
-        if (b ? b : false) ;
-        if (b ? b : true) ;
-        if (b ? false : b) ;
-        if (b ? true : b) ;
+        if (b == true) ; // $ Alert
+        if (b == false) ; // $ Alert
+        if (true == b) ; // $ Alert
+        if (false == b) ; // $ Alert
+        if (b != true) ; // $ Alert
+        if (b != false) ; // $ Alert
+        if (true != b) ; // $ Alert
+        if (false != b) ; // $ Alert
+        if (b && true) ; // $ Alert
+        if (b && false) ; // $ Alert
+        if (true && b) ; // $ Alert
+        if (false && b) ; // $ Alert
+        if (b || true) ; // $ Alert
+        if (b || false) ; // $ Alert
+        if (true || b) ; // $ Alert
+        if (false || b) ; // $ Alert
+        if (!(x == y)) ; // $ Alert
+        if (!(x != y)) ; // $ Alert
+        if (!(x < y)) ; // $ Alert
+        if (!(x <= y)) ; // $ Alert
+        if (!(x >= y)) ; // $ Alert
+        if (!(x > y)) ; // $ Alert
+        if (b ? true : false) ; // $ Alert
+        if (b ? true : true) ; // $ Alert
+        if (b ? false : true) ; // $ Alert
+        if (b ? true : true) ; // $ Alert
+        if (b ? b : false) ; // $ Alert
+        if (b ? b : true) ; // $ Alert
+        if (b ? false : b) ; // $ Alert
+        if (b ? true : b) ; // $ Alert
 
         // BAD
         if (true ? b : b) ;

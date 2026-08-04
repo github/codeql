@@ -132,7 +132,21 @@ private predicate inBitwiseAnd(Expr exp) {
 /** Holds if overflow/underflow is irrelevant for this expression. */
 predicate overflowIrrelevant(Expr exp) {
   inBitwiseAnd(exp) or
-  exp.getEnclosingCallable() instanceof HashCodeMethod
+  exp.getEnclosingCallable() instanceof HashCodeMethod or
+  arithmeticUsedInBoundsCheck(exp)
+}
+
+/**
+ * Holds if `exp` is an arithmetic expression used directly as an operand of a
+ * comparison in an `if`-condition, indicating it is part of a bounds check
+ * rather than a vulnerable computation. For example, in
+ * `if (off + len > array.length)`, the addition is the bounds check itself.
+ */
+private predicate arithmeticUsedInBoundsCheck(ArithExpr exp) {
+  exists(ComparisonExpr comp |
+    comp.getAnOperand() = exp and
+    comp.getEnclosingStmt() instanceof IfStmt
+  )
 }
 
 /**

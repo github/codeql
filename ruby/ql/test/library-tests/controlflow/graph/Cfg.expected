@@ -649,7 +649,7 @@
 | cfg.rb:39:1:39:4 | self | cfg.rb:39:11:39:12 | 42 |  |
 | cfg.rb:39:1:39:12 | call to puts | cfg.rb:41:6:41:7 | 10 |  |
 | cfg.rb:39:11:39:12 | 42 | cfg.rb:39:1:39:12 | call to puts |  |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:8:48:8 | b |  |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:47:1:50:3 | true |  |
 | cfg.rb:41:6:41:7 | 10 | cfg.rb:42:8:42:8 | 1 |  |
 | cfg.rb:42:3:42:24 | [match] when ... | cfg.rb:42:15:42:24 | self | match |
 | cfg.rb:42:3:42:24 | [no-match] when ... | cfg.rb:43:8:43:8 | 2 | no-match |
@@ -679,26 +679,27 @@
 | cfg.rb:44:13:44:18 | "many" | cfg.rb:44:8:44:18 | call to puts |  |
 | cfg.rb:44:14:44:17 | many | cfg.rb:44:13:44:18 | "many" |  |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:52:1:52:7 | chained |  |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:49:8:49:8 | b | false |
-| cfg.rb:48:3:48:29 | [true] when ... | cfg.rb:48:20:48:29 | self | true |
+| cfg.rb:47:1:50:3 | true | cfg.rb:48:8:48:8 | b |  |
+| cfg.rb:48:3:48:29 | [match] when ... | cfg.rb:48:20:48:29 | self | match |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:49:8:49:8 | b | no-match |
 | cfg.rb:48:8:48:8 | b | cfg.rb:48:13:48:13 | 1 |  |
-| cfg.rb:48:8:48:13 | ... == ... | cfg.rb:48:3:48:29 | [false] when ... | false |
-| cfg.rb:48:8:48:13 | ... == ... | cfg.rb:48:3:48:29 | [true] when ... | true |
+| cfg.rb:48:8:48:13 | ... == ... | cfg.rb:48:3:48:29 | [match] when ... | match |
+| cfg.rb:48:8:48:13 | ... == ... | cfg.rb:48:3:48:29 | [no-match] when ... | no-match |
 | cfg.rb:48:13:48:13 | 1 | cfg.rb:48:8:48:13 | ... == ... |  |
 | cfg.rb:48:15:48:29 | then ... | cfg.rb:47:1:50:3 | case ... |  |
 | cfg.rb:48:20:48:29 | call to puts | cfg.rb:48:15:48:29 | then ... |  |
 | cfg.rb:48:20:48:29 | self | cfg.rb:48:26:48:28 | one |  |
 | cfg.rb:48:25:48:29 | "one" | cfg.rb:48:20:48:29 | call to puts |  |
 | cfg.rb:48:26:48:28 | one | cfg.rb:48:25:48:29 | "one" |  |
-| cfg.rb:49:3:49:37 | [false] when ... | cfg.rb:47:1:50:3 | case ... | false |
-| cfg.rb:49:3:49:37 | [true] when ... | cfg.rb:49:27:49:37 | self | true |
+| cfg.rb:49:3:49:37 | [match] when ... | cfg.rb:49:27:49:37 | self | match |
+| cfg.rb:49:3:49:37 | [no-match] when ... | cfg.rb:47:1:50:3 | case ... | no-match |
 | cfg.rb:49:8:49:8 | b | cfg.rb:49:13:49:13 | 0 |  |
-| cfg.rb:49:8:49:13 | ... == ... | cfg.rb:49:3:49:37 | [true] when ... | true |
-| cfg.rb:49:8:49:13 | ... == ... | cfg.rb:49:16:49:16 | b | false |
+| cfg.rb:49:8:49:13 | ... == ... | cfg.rb:49:3:49:37 | [match] when ... | match |
+| cfg.rb:49:8:49:13 | ... == ... | cfg.rb:49:16:49:16 | b | no-match |
 | cfg.rb:49:13:49:13 | 0 | cfg.rb:49:8:49:13 | ... == ... |  |
 | cfg.rb:49:16:49:16 | b | cfg.rb:49:20:49:20 | 1 |  |
-| cfg.rb:49:16:49:20 | ... > ... | cfg.rb:49:3:49:37 | [false] when ... | false |
-| cfg.rb:49:16:49:20 | ... > ... | cfg.rb:49:3:49:37 | [true] when ... | true |
+| cfg.rb:49:16:49:20 | ... > ... | cfg.rb:49:3:49:37 | [match] when ... | match |
+| cfg.rb:49:16:49:20 | ... > ... | cfg.rb:49:3:49:37 | [no-match] when ... | no-match |
 | cfg.rb:49:20:49:20 | 1 | cfg.rb:49:16:49:20 | ... > ... |  |
 | cfg.rb:49:22:49:37 | then ... | cfg.rb:47:1:50:3 | case ... |  |
 | cfg.rb:49:27:49:37 | call to puts | cfg.rb:49:22:49:37 | then ... |  |

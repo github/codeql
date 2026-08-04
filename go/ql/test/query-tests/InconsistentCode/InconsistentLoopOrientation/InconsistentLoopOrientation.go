@@ -7,7 +7,7 @@ func zeroOutExceptBad(a []int, lower int, upper int) {
 	}
 
 	// zero out everything above index `upper`
-	for i := upper + 1; i < len(a); i-- { // NOT OK
+	for i := upper + 1; i < len(a); i-- { // $ Alert // NOT OK
 		a[i] = 0
 	}
 }

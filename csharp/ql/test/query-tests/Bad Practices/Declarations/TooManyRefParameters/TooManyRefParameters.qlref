@@ -1,1 +1,2 @@
-Bad Practices/Declarations/TooManyRefParameters.ql
+query: Bad Practices/Declarations/TooManyRefParameters.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

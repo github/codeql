@@ -197,18 +197,6 @@ Expr basicNullGuard(Expr e, boolean branch, boolean isnull) {
 }
 
 /**
- * DEPRECATED: Use `basicNullGuard` instead.
- *
- * Gets an expression that directly tests whether a given expression, `e`, is null or not.
- *
- * If `result` evaluates to `branch`, then `e` is guaranteed to be null if `isnull`
- * is true, and non-null if `isnull` is false.
- */
-deprecated Expr basicOrCustomNullGuard(Expr e, boolean branch, boolean isnull) {
-  result = basicNullGuard(e, branch, isnull)
-}
-
-/**
  * Gets an expression that directly tests whether a given SSA variable is null or not.
  *
  * If `result` evaluates to `branch`, then `v` is guaranteed to be null if `isnull`
@@ -216,18 +204,6 @@ deprecated Expr basicOrCustomNullGuard(Expr e, boolean branch, boolean isnull) {
  */
 Expr directNullGuard(SsaDefinition v, boolean branch, boolean isnull) {
   result = basicNullGuard(sameValue(v, _), branch, isnull)
-}
-
-/**
- * DEPRECATED: Use `nullGuardControls`/`nullGuardControlsBranchEdge` instead.
- *
- * Gets a `Guard` that tests (possibly indirectly) whether a given SSA variable is null or not.
- *
- * If `result` evaluates to `branch`, then `v` is guaranteed to be null if `isnull`
- * is true, and non-null if `isnull` is false.
- */
-deprecated Guard nullGuard(SsaDefinition v, boolean branch, boolean isnull) {
-  result = directNullGuard(v, branch, isnull)
 }
 
 /**

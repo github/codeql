@@ -22,9 +22,9 @@ void test_wchar4(char c, const char cc, wchar_t wc, const wchar_t wcc) {
     printf("%c", c);               // GOOD
     printf("%c", cc);              // GOOD
     printf("%c", 'c');             // GOOD
-    printf("%c", "c");             // BAD
+    printf("%c", "c");             // $ Alert // BAD
     printf("%wc", wc);             // GOOD
     printf("%wc", wcc);            // GOOD
     printf("%wc", L'c');           // GOOD
-    printf("%wc", L"c");           // BAD
+    printf("%wc", L"c");           // $ Alert // BAD
 }

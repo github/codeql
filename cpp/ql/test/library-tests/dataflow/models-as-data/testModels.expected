@@ -1,0 +1,365 @@
+uniqueEnclosingCallable
+uniqueCallEnclosingCallable
+uniqueType
+uniqueNodeLocation
+missingLocation
+uniqueNodeToString
+parameterCallable
+localFlowIsLocal
+readStepIsLocal
+storeStepIsLocal
+compatibleTypesReflexive
+unreachableNodeCCtx
+localCallNodes
+postIsNotPre
+postHasUniquePre
+uniquePostUpdate
+postIsInSameCallable
+reverseRead
+argHasPostUpdate
+postWithInFlow
+viableImplInCallContextTooLarge
+uniqueParameterNodeAtPosition
+uniqueParameterNodePosition
+uniqueContentApprox
+identityLocalStep
+missingArgumentCall
+multipleArgumentCall
+lambdaCallEnclosingCallableMismatch
+speculativeStepAlreadyHasModel
+testFailures
+summaryCalls
+| file://:0:0:0:0 | [summary] call to [summary param] 0 in madCallArg0ReturnToReturn in madCallArg0ReturnToReturn |
+| file://:0:0:0:0 | [summary] call to [summary param] 0 in madCallArg0ReturnToReturnFirst in madCallArg0ReturnToReturnFirst |
+| file://:0:0:0:0 | [summary] call to [summary param] 0 in madCallArg0WithValue in madCallArg0WithValue |
+summarizedCallables
+| tests.cpp:127:5:127:19 | madArg0ToReturn |
+| tests.cpp:128:6:128:28 | madArg0ToReturnIndirect |
+| tests.cpp:130:5:130:28 | madArg0ToReturnValueFlow |
+| tests.cpp:131:5:131:27 | madArg0IndirectToReturn |
+| tests.cpp:132:5:132:33 | madArg0DoubleIndirectToReturn |
+| tests.cpp:133:5:133:30 | madArg0NotIndirectToReturn |
+| tests.cpp:134:6:134:26 | madArg0ToArg1Indirect |
+| tests.cpp:135:6:135:34 | madArg0IndirectToArg1Indirect |
+| tests.cpp:136:5:136:18 | madArgsComplex |
+| tests.cpp:137:5:137:14 | madArgsAny |
+| tests.cpp:138:5:138:28 | madAndImplementedComplex |
+| tests.cpp:143:5:143:24 | madArg0FieldToReturn |
+| tests.cpp:144:5:144:32 | madArg0IndirectFieldToReturn |
+| tests.cpp:145:5:145:32 | madArg0FieldIndirectToReturn |
+| tests.cpp:146:13:146:32 | madArg0ToReturnField |
+| tests.cpp:147:14:147:41 | madArg0ToReturnIndirectField |
+| tests.cpp:148:13:148:40 | madArg0ToReturnFieldIndirect |
+| tests.cpp:250:7:250:19 | madArg0ToSelf |
+| tests.cpp:251:6:251:20 | madSelfToReturn |
+| tests.cpp:253:7:253:20 | madArg0ToField |
+| tests.cpp:254:6:254:21 | madFieldToReturn |
+| tests.cpp:277:7:277:30 | namespaceMadSelfToReturn |
+| tests.cpp:392:5:392:29 | madCallArg0ReturnToReturn |
+| tests.cpp:393:9:393:38 | madCallArg0ReturnToReturnFirst |
+| tests.cpp:394:6:394:25 | madCallArg0WithValue |
+| tests.cpp:395:5:395:36 | madCallReturnValueIgnoreFunction |
+| tests.cpp:417:5:417:31 | parameter_ref_to_return_ref |
+| tests.cpp:429:5:429:17 | receive_array |
+sourceCallables
+| tests.cpp:3:5:3:10 | source |
+| tests.cpp:4:6:4:14 | sourcePtr |
+| tests.cpp:5:6:5:19 | sourceIndirect |
+| tests.cpp:6:6:6:9 | sink |
+| tests.cpp:6:15:6:17 | val |
+| tests.cpp:7:6:7:9 | sink |
+| tests.cpp:7:16:7:18 | ptr |
+| tests.cpp:11:5:11:18 | localMadSource |
+| tests.cpp:12:5:12:19 | remoteMadSource |
+| tests.cpp:13:5:13:14 | notASource |
+| tests.cpp:14:5:14:22 | localMadSourceVoid |
+| tests.cpp:15:5:15:25 | localMadSourceHasBody |
+| tests.cpp:16:6:16:28 | remoteMadSourceIndirect |
+| tests.cpp:17:7:17:35 | remoteMadSourceDoubleIndirect |
+| tests.cpp:18:6:18:32 | remoteMadSourceIndirectArg0 |
+| tests.cpp:18:39:18:39 | x |
+| tests.cpp:18:47:18:47 | y |
+| tests.cpp:19:6:19:32 | remoteMadSourceIndirectArg1 |
+| tests.cpp:19:39:19:39 | x |
+| tests.cpp:19:47:19:47 | y |
+| tests.cpp:23:7:23:30 | namespace2LocalMadSource |
+| tests.cpp:26:6:26:19 | localMadSource |
+| tests.cpp:28:5:28:27 | namespaceLocalMadSource |
+| tests.cpp:30:6:30:17 | test_sources |
+| tests.cpp:45:6:45:6 | v |
+| tests.cpp:46:7:46:16 | v_indirect |
+| tests.cpp:47:6:47:13 | v_direct |
+| tests.cpp:58:6:58:6 | a |
+| tests.cpp:58:9:58:9 | b |
+| tests.cpp:58:12:58:12 | c |
+| tests.cpp:58:15:58:15 | d |
+| tests.cpp:67:6:67:6 | e |
+| tests.cpp:75:6:75:26 | remoteMadSourceParam0 |
+| tests.cpp:75:32:75:32 | x |
+| tests.cpp:82:6:82:16 | madSinkArg0 |
+| tests.cpp:82:22:82:22 | x |
+| tests.cpp:83:6:83:13 | notASink |
+| tests.cpp:83:19:83:19 | x |
+| tests.cpp:84:6:84:16 | madSinkArg1 |
+| tests.cpp:84:22:84:22 | x |
+| tests.cpp:84:29:84:29 | y |
+| tests.cpp:85:6:85:17 | madSinkArg01 |
+| tests.cpp:85:23:85:23 | x |
+| tests.cpp:85:30:85:30 | y |
+| tests.cpp:85:37:85:37 | z |
+| tests.cpp:86:6:86:17 | madSinkArg02 |
+| tests.cpp:86:23:86:23 | x |
+| tests.cpp:86:30:86:30 | y |
+| tests.cpp:86:37:86:37 | z |
+| tests.cpp:87:6:87:24 | madSinkIndirectArg0 |
+| tests.cpp:87:31:87:31 | x |
+| tests.cpp:88:6:88:30 | madSinkDoubleIndirectArg0 |
+| tests.cpp:88:38:88:38 | x |
+| tests.cpp:92:6:92:15 | test_sinks |
+| tests.cpp:106:6:106:6 | a |
+| tests.cpp:107:7:107:11 | a_ptr |
+| tests.cpp:115:6:115:18 | madSinkParam0 |
+| tests.cpp:115:24:115:24 | x |
+| tests.cpp:121:8:121:8 | operator= |
+| tests.cpp:121:8:121:8 | operator= |
+| tests.cpp:121:8:121:18 | MyContainer |
+| tests.cpp:122:6:122:10 | value |
+| tests.cpp:123:6:123:11 | value2 |
+| tests.cpp:124:7:124:9 | ptr |
+| tests.cpp:127:5:127:19 | madArg0ToReturn |
+| tests.cpp:127:25:127:25 | x |
+| tests.cpp:128:6:128:28 | madArg0ToReturnIndirect |
+| tests.cpp:128:34:128:34 | x |
+| tests.cpp:129:5:129:15 | notASummary |
+| tests.cpp:129:21:129:21 | x |
+| tests.cpp:130:5:130:28 | madArg0ToReturnValueFlow |
+| tests.cpp:130:34:130:34 | x |
+| tests.cpp:131:5:131:27 | madArg0IndirectToReturn |
+| tests.cpp:131:34:131:34 | x |
+| tests.cpp:132:5:132:33 | madArg0DoubleIndirectToReturn |
+| tests.cpp:132:41:132:41 | x |
+| tests.cpp:133:5:133:30 | madArg0NotIndirectToReturn |
+| tests.cpp:133:37:133:37 | x |
+| tests.cpp:134:6:134:26 | madArg0ToArg1Indirect |
+| tests.cpp:134:32:134:32 | x |
+| tests.cpp:134:40:134:40 | y |
+| tests.cpp:135:6:135:34 | madArg0IndirectToArg1Indirect |
+| tests.cpp:135:47:135:47 | x |
+| tests.cpp:135:55:135:55 | y |
+| tests.cpp:136:5:136:18 | madArgsComplex |
+| tests.cpp:136:25:136:25 | a |
+| tests.cpp:136:33:136:33 | b |
+| tests.cpp:136:40:136:40 | c |
+| tests.cpp:136:47:136:47 | d |
+| tests.cpp:137:5:137:14 | madArgsAny |
+| tests.cpp:137:20:137:20 | a |
+| tests.cpp:137:28:137:28 | b |
+| tests.cpp:138:5:138:28 | madAndImplementedComplex |
+| tests.cpp:138:34:138:34 | a |
+| tests.cpp:138:41:138:41 | b |
+| tests.cpp:138:48:138:48 | c |
+| tests.cpp:143:5:143:24 | madArg0FieldToReturn |
+| tests.cpp:143:38:143:39 | mc |
+| tests.cpp:144:5:144:32 | madArg0IndirectFieldToReturn |
+| tests.cpp:144:47:144:48 | mc |
+| tests.cpp:145:5:145:32 | madArg0FieldIndirectToReturn |
+| tests.cpp:145:46:145:47 | mc |
+| tests.cpp:146:13:146:32 | madArg0ToReturnField |
+| tests.cpp:146:38:146:38 | x |
+| tests.cpp:147:14:147:41 | madArg0ToReturnIndirectField |
+| tests.cpp:147:47:147:47 | x |
+| tests.cpp:148:13:148:40 | madArg0ToReturnFieldIndirect |
+| tests.cpp:148:46:148:46 | x |
+| tests.cpp:150:6:150:19 | test_summaries |
+| tests.cpp:153:6:153:6 | a |
+| tests.cpp:153:9:153:9 | b |
+| tests.cpp:153:12:153:12 | c |
+| tests.cpp:153:15:153:15 | d |
+| tests.cpp:153:18:153:18 | e |
+| tests.cpp:154:7:154:11 | a_ptr |
+| tests.cpp:197:14:197:16 | mc1 |
+| tests.cpp:197:19:197:21 | mc2 |
+| tests.cpp:216:15:216:18 | rtn1 |
+| tests.cpp:219:14:219:17 | rtn2 |
+| tests.cpp:220:7:220:14 | rtn2_ptr |
+| tests.cpp:233:7:233:7 | operator= |
+| tests.cpp:233:7:233:7 | operator= |
+| tests.cpp:233:7:233:13 | MyClass |
+| tests.cpp:236:6:236:26 | memberRemoteMadSource |
+| tests.cpp:237:7:237:39 | memberRemoteMadSourceIndirectArg0 |
+| tests.cpp:237:46:237:46 | x |
+| tests.cpp:239:7:239:21 | qualifierSource |
+| tests.cpp:240:7:240:26 | qualifierFieldSource |
+| tests.cpp:243:7:243:23 | memberMadSinkArg0 |
+| tests.cpp:243:29:243:29 | x |
+| tests.cpp:245:7:245:19 | qualifierSink |
+| tests.cpp:246:7:246:23 | qualifierArg0Sink |
+| tests.cpp:246:29:246:29 | x |
+| tests.cpp:247:7:247:24 | qualifierFieldSink |
+| tests.cpp:250:7:250:19 | madArg0ToSelf |
+| tests.cpp:250:25:250:25 | x |
+| tests.cpp:251:6:251:20 | madSelfToReturn |
+| tests.cpp:252:6:252:16 | notASummary |
+| tests.cpp:253:7:253:20 | madArg0ToField |
+| tests.cpp:253:26:253:26 | x |
+| tests.cpp:254:6:254:21 | madFieldToReturn |
+| tests.cpp:256:6:256:8 | val |
+| tests.cpp:259:7:259:7 | MyDerivedClass |
+| tests.cpp:259:7:259:7 | operator= |
+| tests.cpp:259:7:259:7 | operator= |
+| tests.cpp:259:7:259:20 | MyDerivedClass |
+| tests.cpp:261:6:261:28 | subtypeRemoteMadSource1 |
+| tests.cpp:262:6:262:21 | subtypeNonSource |
+| tests.cpp:263:6:263:28 | subtypeRemoteMadSource2 |
+| tests.cpp:266:9:266:15 | source2 |
+| tests.cpp:267:6:267:9 | sink |
+| tests.cpp:267:19:267:20 | mc |
+| tests.cpp:270:8:270:8 | operator= |
+| tests.cpp:270:8:270:8 | operator= |
+| tests.cpp:270:8:270:14 | MyClass |
+| tests.cpp:273:8:273:33 | namespaceMemberMadSinkArg0 |
+| tests.cpp:273:39:273:39 | x |
+| tests.cpp:274:15:274:46 | namespaceStaticMemberMadSinkArg0 |
+| tests.cpp:274:52:274:52 | x |
+| tests.cpp:277:7:277:30 | namespaceMadSelfToReturn |
+| tests.cpp:281:22:281:28 | source3 |
+| tests.cpp:283:6:283:23 | test_class_members |
+| tests.cpp:284:10:284:11 | mc |
+| tests.cpp:284:14:284:16 | mc2 |
+| tests.cpp:284:19:284:21 | mc3 |
+| tests.cpp:284:24:284:26 | mc4 |
+| tests.cpp:284:29:284:31 | mc5 |
+| tests.cpp:284:34:284:36 | mc6 |
+| tests.cpp:284:39:284:41 | mc7 |
+| tests.cpp:284:44:284:46 | mc8 |
+| tests.cpp:284:49:284:51 | mc9 |
+| tests.cpp:284:54:284:57 | mc10 |
+| tests.cpp:284:60:284:63 | mc11 |
+| tests.cpp:285:11:285:13 | ptr |
+| tests.cpp:285:17:285:23 | mc4_ptr |
+| tests.cpp:286:17:286:19 | mdc |
+| tests.cpp:287:23:287:25 | mnc |
+| tests.cpp:287:28:287:31 | mnc2 |
+| tests.cpp:288:24:288:31 | mnc2_ptr |
+| tests.cpp:294:6:294:6 | a |
+| tests.cpp:387:8:387:8 | operator= |
+| tests.cpp:387:8:387:8 | operator= |
+| tests.cpp:387:8:387:14 | intPair |
+| tests.cpp:388:6:388:10 | first |
+| tests.cpp:389:6:389:11 | second |
+| tests.cpp:392:5:392:29 | madCallArg0ReturnToReturn |
+| tests.cpp:392:37:392:43 | fun_ptr |
+| tests.cpp:393:9:393:38 | madCallArg0ReturnToReturnFirst |
+| tests.cpp:393:46:393:52 | fun_ptr |
+| tests.cpp:394:6:394:25 | madCallArg0WithValue |
+| tests.cpp:394:34:394:40 | fun_ptr |
+| tests.cpp:394:53:394:57 | value |
+| tests.cpp:395:5:395:36 | madCallReturnValueIgnoreFunction |
+| tests.cpp:395:45:395:51 | fun_ptr |
+| tests.cpp:395:64:395:68 | value |
+| tests.cpp:397:5:397:14 | getTainted |
+| tests.cpp:398:6:398:13 | useValue |
+| tests.cpp:398:19:398:19 | x |
+| tests.cpp:399:6:399:17 | dontUseValue |
+| tests.cpp:399:23:399:23 | x |
+| tests.cpp:401:6:401:27 | test_function_pointers |
+| tests.cpp:414:19:414:19 | X |
+| tests.cpp:415:8:415:35 | StructWithTypedefInParameter<X> |
+| tests.cpp:415:8:415:35 | StructWithTypedefInParameter<int> |
+| tests.cpp:416:12:416:15 | Type |
+| tests.cpp:417:5:417:31 | parameter_ref_to_return_ref |
+| tests.cpp:417:5:417:31 | parameter_ref_to_return_ref |
+| tests.cpp:417:45:417:45 | x |
+| tests.cpp:417:45:417:45 | x |
+| tests.cpp:420:6:420:37 | test_parameter_ref_to_return_ref |
+| tests.cpp:421:6:421:6 | x |
+| tests.cpp:422:36:422:36 | s |
+| tests.cpp:423:6:423:6 | y |
+| tests.cpp:427:7:427:9 | INT |
+| tests.cpp:429:5:429:17 | receive_array |
+| tests.cpp:429:23:429:23 | a |
+| tests.cpp:431:6:431:23 | test_receive_array |
+| tests.cpp:432:6:432:6 | x |
+| tests.cpp:433:6:433:10 | array |
+| tests.cpp:434:6:434:6 | y |
+flowSummaryNode
+| tests.cpp:127:5:127:19 | [summary param] 0 in madArg0ToReturn | ParameterNode | madArg0ToReturn | madArg0ToReturn |
+| tests.cpp:127:5:127:19 | [summary] to write: ReturnValue in madArg0ToReturn | ReturnNode | madArg0ToReturn | madArg0ToReturn |
+| tests.cpp:128:6:128:28 | [summary param] 0 in madArg0ToReturnIndirect | ParameterNode | madArg0ToReturnIndirect | madArg0ToReturnIndirect |
+| tests.cpp:128:6:128:28 | [summary] to write: ReturnValue[*] in madArg0ToReturnIndirect | ReturnNode | madArg0ToReturnIndirect | madArg0ToReturnIndirect |
+| tests.cpp:130:5:130:28 | [summary param] 0 in madArg0ToReturnValueFlow | ParameterNode | madArg0ToReturnValueFlow | madArg0ToReturnValueFlow |
+| tests.cpp:130:5:130:28 | [summary] to write: ReturnValue in madArg0ToReturnValueFlow | ReturnNode | madArg0ToReturnValueFlow | madArg0ToReturnValueFlow |
+| tests.cpp:131:5:131:27 | [summary param] *0 in madArg0IndirectToReturn | ParameterNode | madArg0IndirectToReturn | madArg0IndirectToReturn |
+| tests.cpp:131:5:131:27 | [summary] to write: ReturnValue in madArg0IndirectToReturn | ReturnNode | madArg0IndirectToReturn | madArg0IndirectToReturn |
+| tests.cpp:132:5:132:33 | [summary param] **0 in madArg0DoubleIndirectToReturn | ParameterNode | madArg0DoubleIndirectToReturn | madArg0DoubleIndirectToReturn |
+| tests.cpp:132:5:132:33 | [summary] to write: ReturnValue in madArg0DoubleIndirectToReturn | ReturnNode | madArg0DoubleIndirectToReturn | madArg0DoubleIndirectToReturn |
+| tests.cpp:133:5:133:30 | [summary param] 0 in madArg0NotIndirectToReturn | ParameterNode | madArg0NotIndirectToReturn | madArg0NotIndirectToReturn |
+| tests.cpp:133:5:133:30 | [summary] to write: ReturnValue in madArg0NotIndirectToReturn | ReturnNode | madArg0NotIndirectToReturn | madArg0NotIndirectToReturn |
+| tests.cpp:134:6:134:26 | [summary param] 0 in madArg0ToArg1Indirect | ParameterNode | madArg0ToArg1Indirect | madArg0ToArg1Indirect |
+| tests.cpp:134:6:134:26 | [summary param] *1 in madArg0ToArg1Indirect | ParameterNode | madArg0ToArg1Indirect | madArg0ToArg1Indirect |
+| tests.cpp:134:6:134:26 | [summary] to write: Argument[*1] in madArg0ToArg1Indirect | PostUpdateNode | madArg0ToArg1Indirect | madArg0ToArg1Indirect |
+| tests.cpp:135:6:135:34 | [summary param] *0 in madArg0IndirectToArg1Indirect | ParameterNode | madArg0IndirectToArg1Indirect | madArg0IndirectToArg1Indirect |
+| tests.cpp:135:6:135:34 | [summary param] *1 in madArg0IndirectToArg1Indirect | ParameterNode | madArg0IndirectToArg1Indirect | madArg0IndirectToArg1Indirect |
+| tests.cpp:135:6:135:34 | [summary] to write: Argument[*1] in madArg0IndirectToArg1Indirect | PostUpdateNode | madArg0IndirectToArg1Indirect | madArg0IndirectToArg1Indirect |
+| tests.cpp:136:5:136:18 | [summary param] 2 in madArgsComplex | ParameterNode | madArgsComplex | madArgsComplex |
+| tests.cpp:136:5:136:18 | [summary param] *0 in madArgsComplex | ParameterNode | madArgsComplex | madArgsComplex |
+| tests.cpp:136:5:136:18 | [summary param] *1 in madArgsComplex | ParameterNode | madArgsComplex | madArgsComplex |
+| tests.cpp:136:5:136:18 | [summary] to write: ReturnValue in madArgsComplex | ReturnNode | madArgsComplex | madArgsComplex |
+| tests.cpp:138:5:138:28 | [summary param] 2 in madAndImplementedComplex | ParameterNode | madAndImplementedComplex | madAndImplementedComplex |
+| tests.cpp:138:5:138:28 | [summary] to write: ReturnValue in madAndImplementedComplex | ReturnNode | madAndImplementedComplex | madAndImplementedComplex |
+| tests.cpp:143:5:143:24 | [summary param] 0 in madArg0FieldToReturn | ParameterNode | madArg0FieldToReturn | madArg0FieldToReturn |
+| tests.cpp:143:5:143:24 | [summary] read: Argument[0].Field[MyContainer::value]/Field[value] in madArg0FieldToReturn |  | madArg0FieldToReturn | madArg0FieldToReturn |
+| tests.cpp:143:5:143:24 | [summary] to write: ReturnValue in madArg0FieldToReturn | ReturnNode | madArg0FieldToReturn | madArg0FieldToReturn |
+| tests.cpp:144:5:144:32 | [summary param] *0 in madArg0IndirectFieldToReturn | ParameterNode | madArg0IndirectFieldToReturn | madArg0IndirectFieldToReturn |
+| tests.cpp:144:5:144:32 | [summary] read: Argument[*0].Field[MyContainer::value]/Field[value] in madArg0IndirectFieldToReturn |  | madArg0IndirectFieldToReturn | madArg0IndirectFieldToReturn |
+| tests.cpp:144:5:144:32 | [summary] to write: ReturnValue in madArg0IndirectFieldToReturn | ReturnNode | madArg0IndirectFieldToReturn | madArg0IndirectFieldToReturn |
+| tests.cpp:145:5:145:32 | [summary param] 0 in madArg0FieldIndirectToReturn | ParameterNode | madArg0FieldIndirectToReturn | madArg0FieldIndirectToReturn |
+| tests.cpp:145:5:145:32 | [summary] read: Argument[0].Field[*MyContainer::ptr]/Field[*ptr] in madArg0FieldIndirectToReturn |  | madArg0FieldIndirectToReturn | madArg0FieldIndirectToReturn |
+| tests.cpp:145:5:145:32 | [summary] to write: ReturnValue in madArg0FieldIndirectToReturn | ReturnNode | madArg0FieldIndirectToReturn | madArg0FieldIndirectToReturn |
+| tests.cpp:146:13:146:32 | [summary param] 0 in madArg0ToReturnField | ParameterNode | madArg0ToReturnField | madArg0ToReturnField |
+| tests.cpp:146:13:146:32 | [summary] to write: ReturnValue in madArg0ToReturnField | ReturnNode | madArg0ToReturnField | madArg0ToReturnField |
+| tests.cpp:146:13:146:32 | [summary] to write: ReturnValue.Field[MyContainer::value]/Field[value] in madArg0ToReturnField |  | madArg0ToReturnField | madArg0ToReturnField |
+| tests.cpp:147:14:147:41 | [summary param] 0 in madArg0ToReturnIndirectField | ParameterNode | madArg0ToReturnIndirectField | madArg0ToReturnIndirectField |
+| tests.cpp:147:14:147:41 | [summary] to write: ReturnValue[*] in madArg0ToReturnIndirectField | ReturnNode | madArg0ToReturnIndirectField | madArg0ToReturnIndirectField |
+| tests.cpp:147:14:147:41 | [summary] to write: ReturnValue[*].Field[MyContainer::value]/Field[value] in madArg0ToReturnIndirectField |  | madArg0ToReturnIndirectField | madArg0ToReturnIndirectField |
+| tests.cpp:148:13:148:40 | [summary param] 0 in madArg0ToReturnFieldIndirect | ParameterNode | madArg0ToReturnFieldIndirect | madArg0ToReturnFieldIndirect |
+| tests.cpp:148:13:148:40 | [summary] to write: ReturnValue in madArg0ToReturnFieldIndirect | ReturnNode | madArg0ToReturnFieldIndirect | madArg0ToReturnFieldIndirect |
+| tests.cpp:148:13:148:40 | [summary] to write: ReturnValue.Field[*MyContainer::ptr]/Field[*ptr] in madArg0ToReturnFieldIndirect |  | madArg0ToReturnFieldIndirect | madArg0ToReturnFieldIndirect |
+| tests.cpp:250:7:250:19 | [summary param] 0 in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
+| tests.cpp:250:7:250:19 | [summary param] this in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
+| tests.cpp:250:7:250:19 | [summary] to write: Argument[this] in madArg0ToSelf | PostUpdateNode | madArg0ToSelf | madArg0ToSelf |
+| tests.cpp:251:6:251:20 | [summary param] this in madSelfToReturn | ParameterNode | madSelfToReturn | madSelfToReturn |
+| tests.cpp:251:6:251:20 | [summary] to write: ReturnValue in madSelfToReturn | ReturnNode | madSelfToReturn | madSelfToReturn |
+| tests.cpp:253:7:253:20 | [summary param] 0 in madArg0ToField | ParameterNode | madArg0ToField | madArg0ToField |
+| tests.cpp:253:7:253:20 | [summary param] this in madArg0ToField | ParameterNode | madArg0ToField | madArg0ToField |
+| tests.cpp:253:7:253:20 | [summary] to write: Argument[this] in madArg0ToField | PostUpdateNode | madArg0ToField | madArg0ToField |
+| tests.cpp:253:7:253:20 | [summary] to write: Argument[this].Field[MyClass::val]/Field[val] in madArg0ToField |  | madArg0ToField | madArg0ToField |
+| tests.cpp:254:6:254:21 | [summary param] this in madFieldToReturn | ParameterNode | madFieldToReturn | madFieldToReturn |
+| tests.cpp:254:6:254:21 | [summary] read: Argument[this].Field[MyClass::val]/Field[val] in madFieldToReturn |  | madFieldToReturn | madFieldToReturn |
+| tests.cpp:254:6:254:21 | [summary] to write: ReturnValue in madFieldToReturn | ReturnNode | madFieldToReturn | madFieldToReturn |
+| tests.cpp:277:7:277:30 | [summary param] this in namespaceMadSelfToReturn | ParameterNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
+| tests.cpp:277:7:277:30 | [summary] to write: ReturnValue in namespaceMadSelfToReturn | ReturnNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
+| tests.cpp:392:5:392:29 | [summary param] 0 in madCallArg0ReturnToReturn | ParameterNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:392:5:392:29 | [summary] read: Argument[0].Parameter[this pointer] in madCallArg0ReturnToReturn | PostUpdateNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:392:5:392:29 | [summary] read: Argument[0].ReturnValue in madCallArg0ReturnToReturn | OutNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:392:5:392:29 | [summary] to write: Argument[0].Parameter[this pointer] in madCallArg0ReturnToReturn | ArgumentNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:392:5:392:29 | [summary] to write: ReturnValue in madCallArg0ReturnToReturn | ReturnNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:393:9:393:38 | [summary param] 0 in madCallArg0ReturnToReturnFirst | ParameterNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
+| tests.cpp:393:9:393:38 | [summary] read: Argument[0].Parameter[this pointer] in madCallArg0ReturnToReturnFirst | PostUpdateNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
+| tests.cpp:393:9:393:38 | [summary] read: Argument[0].ReturnValue in madCallArg0ReturnToReturnFirst | OutNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
+| tests.cpp:393:9:393:38 | [summary] to write: Argument[0].Parameter[this pointer] in madCallArg0ReturnToReturnFirst | ArgumentNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
+| tests.cpp:393:9:393:38 | [summary] to write: ReturnValue in madCallArg0ReturnToReturnFirst | ReturnNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
+| tests.cpp:393:9:393:38 | [summary] to write: ReturnValue.Field[first]/Field[intPair::first] in madCallArg0ReturnToReturnFirst |  | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
+| tests.cpp:394:6:394:25 | [summary param] 0 in madCallArg0WithValue | ParameterNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:394:6:394:25 | [summary param] 1 in madCallArg0WithValue | ParameterNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:394:6:394:25 | [summary] read: Argument[0].Parameter[0] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:394:6:394:25 | [summary] read: Argument[0].Parameter[this pointer] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:394:6:394:25 | [summary] to write: Argument[0].Parameter[0] in madCallArg0WithValue | ArgumentNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:394:6:394:25 | [summary] to write: Argument[0].Parameter[this pointer] in madCallArg0WithValue | ArgumentNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:394:6:394:25 | [summary] to write: Argument[1] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:395:5:395:36 | [summary param] 1 in madCallReturnValueIgnoreFunction | ParameterNode | madCallReturnValueIgnoreFunction | madCallReturnValueIgnoreFunction |
+| tests.cpp:395:5:395:36 | [summary] to write: ReturnValue in madCallReturnValueIgnoreFunction | ReturnNode | madCallReturnValueIgnoreFunction | madCallReturnValueIgnoreFunction |
+| tests.cpp:417:5:417:31 | [summary param] *0 in parameter_ref_to_return_ref | ParameterNode | parameter_ref_to_return_ref | parameter_ref_to_return_ref |
+| tests.cpp:417:5:417:31 | [summary] to write: ReturnValue[*] in parameter_ref_to_return_ref | ReturnNode | parameter_ref_to_return_ref | parameter_ref_to_return_ref |
+| tests.cpp:429:5:429:17 | [summary param] *0 in receive_array | ParameterNode | receive_array | receive_array |
+| tests.cpp:429:5:429:17 | [summary] to write: ReturnValue in receive_array | ReturnNode | receive_array | receive_array |

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with AST nodes.
  */
+overlay[local]
+module;
 
 import go
 

@@ -1,18 +1,14 @@
 import csharp
 import ControlFlow
 
-query predicate conditionBlock(
-  BasicBlocks::ConditionBlock cb, BasicBlock controlled, boolean testIsTrue
-) {
+query predicate conditionBlock(BasicBlock cb, BasicBlock controlled, boolean testIsTrue) {
   cb.edgeDominates(controlled, any(ConditionalSuccessor s | testIsTrue = s.getValue()))
 }
 
-ControlFlow::Node successor(ControlFlow::Node node, boolean kind) {
-  kind = true and result = node.getATrueSuccessor()
-  or
-  kind = false and result = node.getAFalseSuccessor()
+ControlFlowNode successor(ControlFlowNode node, boolean kind) {
+  result = node.getASuccessor(any(BooleanSuccessor s | s.getValue() = kind))
 }
 
-query predicate conditionFlow(ControlFlow::Node node, ControlFlow::Node successor, boolean kind) {
+query predicate conditionFlow(ControlFlowNode node, ControlFlowNode successor, boolean kind) {
   successor = successor(node, kind)
 }

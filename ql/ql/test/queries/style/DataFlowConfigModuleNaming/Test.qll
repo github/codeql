@@ -8,14 +8,14 @@ module EmptyConfig implements DataFlow::ConfigSig {
 }
 
 // BAD - does not end with "Config"
-module EmptyConfiguration implements DataFlow::ConfigSig {
+module EmptyConfiguration implements DataFlow::ConfigSig { // $ Alert
   predicate isSource(DataFlow::Node src) { none() }
 
   predicate isSink(DataFlow::Node sink) { none() }
 }
 
 // BAD - does not end with "Config"
-module EmptyFlow implements DataFlow::ConfigSig {
+module EmptyFlow implements DataFlow::ConfigSig { // $ Alert
   predicate isSource(DataFlow::Node src) { none() }
 
   predicate isSink(DataFlow::Node sink) { none() }

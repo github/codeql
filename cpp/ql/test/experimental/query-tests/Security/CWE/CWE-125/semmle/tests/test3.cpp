@@ -13,7 +13,7 @@ static size_t badTest1(unsigned char *src){
   int cb = 0;
   unsigned char dst[50];
   while( cb < sizeof(dst) )
-    dst[cb++]=*src++; // BAD
+    dst[cb++]=*src++; // $ Alert // BAD
   return _mbclen(dst);
 }
 static void goodTest2(unsigned char *src){
@@ -33,7 +33,7 @@ static void badTest2(unsigned char *src){
   unsigned char dst[50];
   while( cb < sizeof(dst) )
   {
-    _mbccpy(dst+cb,src); // BAD
+    _mbccpy(dst+cb,src); // $ Alert // BAD
     cb+=_mbclen(src);
     src=_mbsinc(src);
   }
@@ -44,5 +44,5 @@ static void goodTest3(){
 }
 static void badTest3(){
   wchar_t name[50];
-  name[sizeof(name) - 1] = L'\0'; // BAD
+  name[sizeof(name) - 1] = L'\0'; // $ Alert // BAD
 }

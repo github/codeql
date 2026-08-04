@@ -8,7 +8,7 @@ def ignore(*args, **kwargs): pass
 ensure_tainted = ensure_not_tainted = ignore
 
 @view_config(route_name="test1") # $ routeSetup
-def test1(request): # $ requestHandler 
+def test1(request): # $ requestHandler
     ensure_tainted(
         request,                   # $ tainted
 
@@ -26,7 +26,7 @@ def test1(request): # $ requestHandler
         request.host_url,          # $ tainted
         request.if_match,          # $ tainted
         request.if_none_match,     # $ tainted
-        request.if_range,          # $ tainted   
+        request.if_range,          # $ tainted
         request.pragma,            # $ tainted
         request.range,             # $ tainted
         request.referer,           # $ tainted
@@ -71,11 +71,11 @@ def test1(request): # $ requestHandler
         request.copy_get(),         # $ tainted
         request.copy().GET['a'],    # $ tainted
         request.copy_get().body     # $ tainted
-        ) 
+        )
 
     return Response("Ok") # $ HttpResponse responseBody="Ok" mimetype=text/html
 
-def test2(request): # $ requestHandler 
+def test2(request): # $ requestHandler
     ensure_tainted(request) # $ tainted
 
     resp = Response("Ok", content_type="text/plain") # $ HttpResponse responseBody="Ok" mimetype=text/plain
@@ -83,7 +83,7 @@ def test2(request): # $ requestHandler
     return resp
 
 @view_config(route_name="test3", renderer="string") # $ routeSetup
-def test3(ctx, req): # $ requestHandler 
+def test3(ctx, req): # $ requestHandler
     ensure_tainted(req) # $ tainted
     resp = req.response # $ HttpResponse mimetype=text/html
     resp.set_cookie("hi", "there") # $ CookieWrite CookieName="hi" CookieValue="there" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax
@@ -93,13 +93,13 @@ def test3(ctx, req): # $ requestHandler
 
 @view_config(route_name="test4", renderer="string") # $ routeSetup
 def test4(request): # $ requestHandler
-    a = HTTPMultipleChoices("redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
-    b = HTTPMovedPermanently(location="redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
-    c = HTTPFound(location="redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
-    d = HTTPSeeOther(location="redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
-    e = HTTPUseProxy(location="redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
-    f = HTTPTemporaryRedirect(location="redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
-    g = HTTPPermanentRedirect(location="redirect") # $HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    a = HTTPMultipleChoices("redirect") # $ HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    b = HTTPMovedPermanently(location="redirect") # $ HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    c = HTTPFound(location="redirect") # $ HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    d = HTTPSeeOther(location="redirect") # $ HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    e = HTTPUseProxy(location="redirect") # $ HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    f = HTTPTemporaryRedirect(location="redirect") # $ HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
+    g = HTTPPermanentRedirect(location="redirect") # $ HttpResponse mimetype=text/html HttpRedirectResponse redirectLocation="redirect"
     raise a
 
 # Unsupported cases
@@ -121,7 +121,7 @@ class Test6:
         self.req = request
 
     def test6method(self): # $ MISSING: requestHandler
-        ensure_not_tainted(self) 
+        ensure_not_tainted(self)
         ensure_tainted(self.req) # $ MISSING: tainted
         return "Ok" # $ MISSING: HttpResponse mimetype=text/html responseBody="Ok"
 
@@ -132,7 +132,7 @@ class Test6:
         self.req = request
 
     def __call__(self): # $ MISSING: requestHandler
-        ensure_not_tainted(self) 
+        ensure_not_tainted(self)
         ensure_tainted(self.req) # $ MISSING: tainted
         return "Ok" # $ MISSING: HttpResponse mimetype=text/html responseBody="Ok"
 

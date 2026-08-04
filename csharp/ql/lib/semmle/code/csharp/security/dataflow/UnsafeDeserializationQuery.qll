@@ -126,16 +126,16 @@ private module TypeNameTrackingConfig implements DataFlow::ConfigSig {
     or
     node1.getType() instanceof TypeNameHandlingEnum and
     exists(PropertyWrite pw, Property p, Assignment a |
-      a.getLValue() = pw and
+      a.getLeftOperand() = pw and
       pw.getProperty() = p and
       p.getDeclaringType() instanceof JsonSerializerSettingsClass and
       p.hasName("TypeNameHandling") and
       (
-        node1.asExpr() = a.getRValue() and
+        node1.asExpr() = a.getRightOperand() and
         node2.asExpr() = pw.getQualifier()
         or
         exists(ObjectInitializer oi |
-          node1.asExpr() = oi.getAMemberInitializer().getRValue() and
+          node1.asExpr() = oi.getAMemberInitializer().getRightOperand() and
           node2.asExpr() = oi
         )
       )

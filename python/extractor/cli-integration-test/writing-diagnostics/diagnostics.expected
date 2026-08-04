@@ -17,13 +17,13 @@
     ]
   },
   "location": {
-    "file": "<test-root-directory>/repo_dir/syntaxerror3.py",
+    "file": "syntaxerror3.py",
     "startColumn": 0,
     "endColumn": 0,
     "startLine": 1,
     "endLine": 1
   },
-  "markdownMessage": "A parse error occurred while processing `<test-root-directory>/repo_dir/syntaxerror3.py`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.",
+  "markdownMessage": "A parse error occurred while processing `syntaxerror3.py`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.",
   "severity": "warning",
   "source": {
     "extractorName": "python",
@@ -56,13 +56,13 @@
     ]
   },
   "location": {
-    "file": "<test-root-directory>/repo_dir/syntaxerror1.py",
+    "file": "syntaxerror1.py",
     "startColumn": 0,
     "endColumn": 0,
     "startLine": 3,
     "endLine": 3
   },
-  "markdownMessage": "A parse error occurred while processing `<test-root-directory>/repo_dir/syntaxerror1.py`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.",
+  "markdownMessage": "A parse error occurred while processing `syntaxerror1.py`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.",
   "severity": "warning",
   "source": {
     "extractorName": "python",
@@ -95,13 +95,13 @@
     ]
   },
   "location": {
-    "file": "<test-root-directory>/repo_dir/syntaxerror2.py",
+    "file": "syntaxerror2.py",
     "startColumn": 0,
     "endColumn": 0,
     "startLine": 5,
     "endLine": 5
   },
-  "markdownMessage": "A parse error occurred while processing `<test-root-directory>/repo_dir/syntaxerror2.py`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.",
+  "markdownMessage": "A parse error occurred while processing `syntaxerror2.py`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.",
   "severity": "warning",
   "source": {
     "extractorName": "python",
@@ -145,7 +145,7 @@
     ]
   },
   "location": {
-    "file": "<test-root-directory>/repo_dir/recursion_error.py"
+    "file": "recursion_error.py"
   },
   "plaintextMessage": "maximum recursion depth exceeded while calling a Python object",
   "severity": "error",

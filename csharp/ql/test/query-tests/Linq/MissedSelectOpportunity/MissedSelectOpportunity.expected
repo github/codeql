@@ -1,0 +1,1 @@
+| MissedSelectOpportunity.cs:11:9:15:9 | foreach (... ... in ...) ... | This foreach loop immediately $@ - consider mapping the sequence explicitly using '.Select(...)'. | MissedSelectOpportunity.cs:13:13:13:26 | ... ...; | maps its iteration variable to another variable |

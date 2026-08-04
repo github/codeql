@@ -71,14 +71,21 @@ module Flask {
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask.
    */
   module FlaskApp {
-    /** Gets a reference to the `flask.Flask` class. */
-    API::Node classRef() {
-      result = API::moduleImport("flask").getMember("Flask") or
+    /**
+     * Gets a reference to the `flask.Flask` class or any subclass.
+     *
+     * Deprecated: Use `subclassRef()` instead, this predicate always returned some subclasses.
+     */
+    deprecated API::Node classRef() { result = subclassRef() }
+
+    /** Gets a reference to the `flask.Flask` class or any subclass. */
+    API::Node subclassRef() {
+      result = API::moduleImport("flask").getMember("Flask").getASubclass*() or
       result = ModelOutput::getATypeNode("flask.Flask~Subclass").getASubclass*()
     }
 
     /** Gets a reference to an instance of `flask.Flask` (a flask application). */
-    API::Node instance() { result = classRef().getReturn() }
+    API::Node instance() { result = subclassRef().getReturn() }
   }
 
   /**
@@ -132,7 +139,7 @@ module Flask {
     API::Node classRef() {
       result = API::moduleImport("flask").getMember("Response")
       or
-      result = [FlaskApp::classRef(), FlaskApp::instance()].getMember("response_class")
+      result = [FlaskApp::subclassRef(), FlaskApp::instance()].getMember("response_class")
       or
       result = ModelOutput::getATypeNode("flask.Response~Subclass").getASubclass*()
     }
@@ -371,7 +378,7 @@ module Flask {
       result in [this.getArg(0), this.getArgByName("rule")]
     }
 
-    override Function getARequestHandler() { result.getADecorator().getAFlowNode() = node }
+    override Function getARequestHandler() { node.getNode() = result.getADecorator() }
   }
 
   /**
@@ -536,7 +543,7 @@ module Flask {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
         routeHandler = any(FlaskRouteSetup rs).getARequestHandler() and
-        node = routeHandler.getAReturnValueFlowNode() and
+        exists(Return ret | ret.getScope() = routeHandler and node.getNode() = ret.getValue()) and
         not this instanceof Flask::Response::InstanceSource
       )
     }

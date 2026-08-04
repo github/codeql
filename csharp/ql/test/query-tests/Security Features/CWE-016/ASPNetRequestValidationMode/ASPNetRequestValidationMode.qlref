@@ -1,1 +1,2 @@
-Security Features/CWE-016/ASPNetRequestValidationMode.ql
+query: Security Features/CWE-016/ASPNetRequestValidationMode.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

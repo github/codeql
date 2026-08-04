@@ -6,17 +6,17 @@ void functionWork(char aA[10],unsigned int aUI) {
   int aI;
 
   aI = (aUI*8)/10; // GOOD
-  aI = aUI*8; // BAD
+  aI = aUI*8; // $ Alert // BAD
   aP = aA+aI;
   aI = (int)aUI*8; // GOOD
-  
-  aL = (unsigned long)(aI*aI); // BAD
+
+  aL = (unsigned long)(aI*aI); // $ Alert // BAD
   aL = ((unsigned long)aI*aI); // GOOD
-  
-  testCall((unsigned long)(aI*aI)); // BAD
+
+  testCall((unsigned long)(aI*aI)); // $ Alert // BAD
   testCall(((unsigned long)aI*aI)); // GOOD
-  
-  if((unsigned long)(aI*aI) > aL) // BAD
+
+  if((unsigned long)(aI*aI) > aL) // $ Alert // BAD
     return;
   if(((unsigned long)aI*aI) > aL) // GOOD
     return;

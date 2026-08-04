@@ -1,1 +1,2 @@
-jsf/4.06 Pre-Processing Directives/AV Rule 32.ql
+query: jsf/4.06 Pre-Processing Directives/AV Rule 32.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

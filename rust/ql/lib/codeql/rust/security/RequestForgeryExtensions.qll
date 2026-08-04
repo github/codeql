@@ -5,6 +5,7 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.Concepts
@@ -45,5 +46,12 @@ module RequestForgery {
    */
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, "request-url") }
+  }
+
+  /**
+   * A barrier for request forgery from model data.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() { barrierNode(this, "request-url") }
   }
 }

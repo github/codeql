@@ -7,5 +7,6 @@ import pytest
 def test(codeql, swift, xcode_16):
     codeql.database.create(
         command="xcodebuild build "
-        "CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO",
+        "CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO "
+        "SWIFT_USE_INTEGRATED_DRIVER=NO",
     )

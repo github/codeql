@@ -3,7 +3,7 @@ import csharp
 private predicate getLambda(
   LocalVariableDeclAndInitExpr e, string type, LocalVariable v, LambdaExpr lexp
 ) {
-  lexp = e.getRValue() and
+  lexp = e.getRightOperand() and
   v = e.getTargetVariable() and
   type = e.getType().toStringWithTypes()
 }

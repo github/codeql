@@ -20,36 +20,36 @@ numberOfTypeParameters
 | genericFunctions.go:152:6:152:36 | multipleAnonymousTypeParamsType | 3 |
 | genericFunctions.go:154:51:154:51 | f | 3 |
 #select
-| codeql-go-tests/function.EdgeConstraint | 0 | Node | interface { } |
-| codeql-go-tests/function.Element | 0 | S | interface { } |
-| codeql-go-tests/function.GenericFunctionInAnotherFile | 0 | T | interface { } |
-| codeql-go-tests/function.GenericFunctionOneTypeParam | 0 | T | interface { } |
-| codeql-go-tests/function.GenericFunctionTwoTypeParams | 0 | K | comparable |
-| codeql-go-tests/function.GenericFunctionTwoTypeParams | 1 | V | interface { int64 \| float64 } |
-| codeql-go-tests/function.GenericStruct1 | 0 | T | interface { } |
-| codeql-go-tests/function.GenericStruct1.f1 | 0 | TF1 | interface { } |
-| codeql-go-tests/function.GenericStruct1.g1 | 0 | TG1 | interface { } |
-| codeql-go-tests/function.GenericStruct2 | 0 | S | interface { } |
-| codeql-go-tests/function.GenericStruct2 | 1 | T | interface { } |
-| codeql-go-tests/function.GenericStruct2.f2 | 0 | SF2 | interface { } |
-| codeql-go-tests/function.GenericStruct2.f2 | 1 | TF2 | interface { } |
-| codeql-go-tests/function.GenericStruct2.g2 | 0 | SG2 | interface { } |
-| codeql-go-tests/function.GenericStruct2.g2 | 1 | TG2 | interface { } |
-| codeql-go-tests/function.Graph | 0 | Node | NodeConstraint |
-| codeql-go-tests/function.Graph | 1 | Edge | EdgeConstraint |
-| codeql-go-tests/function.Graph.ShortestPath | 0 | Node | NodeConstraint |
-| codeql-go-tests/function.Graph.ShortestPath | 1 | Edge | EdgeConstraint |
-| codeql-go-tests/function.List | 0 | T | interface { } |
-| codeql-go-tests/function.List.MyLen | 0 | U | interface { } |
-| codeql-go-tests/function.New | 0 | Node | NodeConstraint |
-| codeql-go-tests/function.New | 1 | Edge | EdgeConstraint |
-| codeql-go-tests/function.NodeConstraint | 0 | Edge | interface { } |
-| codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 0 | _ | interface { } |
-| codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 1 | _ | interface { string } |
-| codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 2 | _ | interface { } |
-| codeql-go-tests/function.multipleAnonymousTypeParamsType | 0 | _ | interface { } |
-| codeql-go-tests/function.multipleAnonymousTypeParamsType | 1 | _ | interface { string } |
-| codeql-go-tests/function.multipleAnonymousTypeParamsType | 2 | _ | interface { } |
-| codeql-go-tests/function.multipleAnonymousTypeParamsType.f | 0 | _ | interface { } |
-| codeql-go-tests/function.multipleAnonymousTypeParamsType.f | 1 | _ | interface { string } |
-| codeql-go-tests/function.multipleAnonymousTypeParamsType.f | 2 | _ | interface { } |
+| codeql-go-tests/function.EdgeConstraint | 0 |  | Node | interface { } |
+| codeql-go-tests/function.Element | 0 |  | S | interface { } |
+| codeql-go-tests/function.GenericFunctionInAnotherFile | 0 |  | T | interface { } |
+| codeql-go-tests/function.GenericFunctionOneTypeParam | 0 |  | T | interface { } |
+| codeql-go-tests/function.GenericFunctionTwoTypeParams | 0 |  | K | comparable |
+| codeql-go-tests/function.GenericFunctionTwoTypeParams | 1 |  | V | interface { int64 \| float64 } |
+| codeql-go-tests/function.GenericStruct1 | 0 |  | T | interface { } |
+| codeql-go-tests/function.GenericStruct1.f1 | 0 | from receiver | TF1 | interface { } |
+| codeql-go-tests/function.GenericStruct1.g1 | 0 | from receiver | TG1 | interface { } |
+| codeql-go-tests/function.GenericStruct2 | 0 |  | S | interface { } |
+| codeql-go-tests/function.GenericStruct2 | 1 |  | T | interface { } |
+| codeql-go-tests/function.GenericStruct2.f2 | 0 | from receiver | SF2 | interface { } |
+| codeql-go-tests/function.GenericStruct2.f2 | 1 | from receiver | TF2 | interface { } |
+| codeql-go-tests/function.GenericStruct2.g2 | 0 | from receiver | SG2 | interface { } |
+| codeql-go-tests/function.GenericStruct2.g2 | 1 | from receiver | TG2 | interface { } |
+| codeql-go-tests/function.Graph | 0 |  | Node | NodeConstraint |
+| codeql-go-tests/function.Graph | 1 |  | Edge | EdgeConstraint |
+| codeql-go-tests/function.Graph.ShortestPath | 0 | from receiver | Node | NodeConstraint |
+| codeql-go-tests/function.Graph.ShortestPath | 1 | from receiver | Edge | EdgeConstraint |
+| codeql-go-tests/function.List | 0 |  | T | interface { } |
+| codeql-go-tests/function.List.MyLen | 0 | from receiver | U | interface { } |
+| codeql-go-tests/function.New | 0 |  | Node | NodeConstraint |
+| codeql-go-tests/function.New | 1 |  | Edge | EdgeConstraint |
+| codeql-go-tests/function.NodeConstraint | 0 |  | Edge | interface { } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 0 |  | _ | interface { } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 1 |  | _ | interface { string } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsFunc | 2 |  | _ | interface { } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsType | 0 |  | _ | interface { } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsType | 1 |  | _ | interface { string } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsType | 2 |  | _ | interface { } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsType.f | 0 | from receiver | _ | interface { } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsType.f | 1 | from receiver | _ | interface { string } |
+| codeql-go-tests/function.multipleAnonymousTypeParamsType.f | 2 | from receiver | _ | interface { } |

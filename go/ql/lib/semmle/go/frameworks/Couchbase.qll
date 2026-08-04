@@ -1,6 +1,8 @@
 /**
  * Provides models of commonly used functions in the official Couchbase Go SDK library.
  */
+overlay[local?]
+module;
 
 import go
 

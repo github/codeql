@@ -5,5 +5,5 @@ class Foo extends string {
 
   string getBar() { result = "bar" }
 
-  string getBarWithoutThis() { result = getBar() }
+  string getBarWithoutThis() { result = getBar() } // $ Alert
 }

@@ -126,7 +126,7 @@ private class SystemDiagnosticsFormatMethods extends FormatMethodImpl {
 
 pragma[nomagic]
 private predicate parameterReadPostDominatesEntry(ParameterRead pr) {
-  pr.getAControlFlowNode().postDominates(pr.getEnclosingCallable().getEntryPoint()) and
+  pr.getControlFlowNode().postDominates(pr.getEnclosingCallable().getEntryPoint()) and
   getParameterType(pr.getTarget()) instanceof ObjectType
 }
 

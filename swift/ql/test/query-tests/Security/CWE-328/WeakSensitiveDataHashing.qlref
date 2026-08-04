@@ -1,1 +1,2 @@
-queries/Security/CWE-328/WeakSensitiveDataHashing.ql
+query: queries/Security/CWE-328/WeakSensitiveDataHashing.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

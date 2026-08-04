@@ -1,12 +1,12 @@
 # test of other content types than attributes
 
 def test_tuple(index_arg):
-    tup = (tracked, other) # $tracked
+    tup = (tracked, other) # $ tracked
 
     tup[0] # $ tracked
     tup[1]
 
-    a,b = tup # $tracked
+    a,b = tup # $ tracked
     a # $ tracked
     b
 
@@ -22,7 +22,7 @@ def test_tuple(index_arg):
 
 
     # nested tuples
-    nested_tuples = ((tracked, other), (other, tracked)) # $tracked
+    nested_tuples = ((tracked, other), (other, tracked)) # $ tracked
 
     nested_tuples[0][0] # $ MISSING: tracked
     nested_tuples[0][1]
@@ -44,7 +44,7 @@ def test_tuple(index_arg):
 
 
 def test_dict(key_arg):
-    d1 = {"t": tracked, "o": other} # $tracked
+    d1 = {"t": tracked, "o": other} # $ tracked
     d1["t"] # $ tracked
     d1.get("t") # $ MISSING: tracked
     d1.setdefault("t") # $ MISSING: tracked
@@ -84,7 +84,7 @@ def test_dict(key_arg):
 
 
 def test_list(index_arg):
-    l = [tracked, other] # $tracked
+    l = [tracked, other] # $ tracked
 
     l[0] # $ MISSING: tracked
     l[1]

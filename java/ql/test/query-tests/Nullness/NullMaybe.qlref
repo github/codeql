@@ -1,1 +1,2 @@
-Likely Bugs/Nullness/NullMaybe.ql
+query: Likely Bugs/Nullness/NullMaybe.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

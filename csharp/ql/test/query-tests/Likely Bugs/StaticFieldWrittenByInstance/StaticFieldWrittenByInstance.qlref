@@ -1,1 +1,2 @@
-Likely Bugs/StaticFieldWrittenByInstance.ql
+query: Likely Bugs/StaticFieldWrittenByInstance.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,1 +1,2 @@
-Critical/FileNeverClosed.ql
+query: Critical/FileNeverClosed.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

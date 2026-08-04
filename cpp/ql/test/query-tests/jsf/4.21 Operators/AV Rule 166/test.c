@@ -19,8 +19,8 @@ void f(void) {
     sizeof(vi);
     sizeof(*ip);
     sizeof(*vip);
-    sizeof(global++);
+    sizeof(global++); // $ Alert
     sizeof(pure());
-    sizeof(impure());
+    sizeof(impure()); // $ Alert
 }
 

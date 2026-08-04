@@ -19,7 +19,7 @@ private predicate candidate(AssignExpr ae) {
   not ae instanceof MemberInitializer and
   // Enum field initializers are never self assignments. `enum E { A = 42 }`
   not ae.getParent().(Field).getDeclaringType() instanceof Enum and
-  forall(Expr e | e = ae.getLValue().getAChildExpr*() |
+  forall(Expr e | e = ae.getLeftOperand().getAChildExpr*() |
     // Non-trivial property accesses may have side-effects,
     // so these are not considered
     e instanceof PropertyAccess implies e instanceof TrivialPropertyAccess
@@ -28,7 +28,7 @@ private predicate candidate(AssignExpr ae) {
 
 private predicate selfAssignExpr(AssignExpr ae) {
   candidate(ae) and
-  sameGvn(ae.getLValue(), ae.getRValue())
+  sameGvn(ae.getLeftOperand(), ae.getRightOperand())
 }
 
 private Declaration getDeclaration(Expr e) {
@@ -40,5 +40,5 @@ private Declaration getDeclaration(Expr e) {
 }
 
 from AssignExpr ae, Declaration target
-where selfAssignExpr(ae) and target = getDeclaration(ae.getLValue())
+where selfAssignExpr(ae) and target = getDeclaration(ae.getLeftOperand())
 select ae, "This assignment assigns $@ to itself.", target, target.getName()

@@ -1,4 +1,19 @@
 {
+  "attributes": {},
+  "markdownMessage": "Internal telemetry for the Java extractor.\n\nNo action needed.",
+  "severity": "note",
+  "source": {
+    "extractorName": "java",
+    "id": "java/extractor/summary",
+    "name": "Java extractor telemetry"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
   "markdownMessage": "Because no usable build tool (Gradle, Maven, etc) was found, build scripts could not be queried for guidance about the appropriate JDK version for the code being extracted, or precise dependency information. The default JDK will be used, and external dependencies will be inferred from the Java package names used.",
   "severity": "unknown",
   "source": {

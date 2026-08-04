@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with remote flow sources from the `github.com/revel/revel` package.
  */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.security.OpenUrlRedirectCustomizations

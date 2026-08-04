@@ -29,16 +29,16 @@ class Test
         // Arrays
 
         // NOT OK: always true
-        b = args.Length >= 0;
+        b = args.Length >= 0; // $ Alert
 
         // NOT OK: always true
-        b = 0 <= args.Length;
+        b = 0 <= args.Length; // $ Alert
 
         // NOT OK: always false
-        b = args.Length < 0;
+        b = args.Length < 0; // $ Alert
 
         // NOT OK: always false
-        b = 0 > args.Length;
+        b = 0 > args.Length; // $ Alert
 
         // OK: sometimes could be false
         b = args.Length > 0;
@@ -58,12 +58,12 @@ class Test
         var ys = new Stack<string>();
 
         // NOT OK
-        b = xs.Count >= 0;
-        b = 0 <= xs.Count;
-        b = 0 <= ys.Count;
+        b = xs.Count >= 0; // $ Alert
+        b = 0 <= xs.Count; // $ Alert
+        b = 0 <= ys.Count; // $ Alert
 
-        b = xs.Count < 0;
-        b = 0 > ys.Count;
+        b = xs.Count < 0; // $ Alert
+        b = 0 > ys.Count; // $ Alert
 
         // OK
         b = xs.Count >= -1;
@@ -74,15 +74,15 @@ class Test
         /////////
         // missed in java, but not here
 
-        b = xs.Count >= (short)0;
-        b = xs.Count >= (byte)0;
+        b = xs.Count >= (short)0; // $ Alert
+        b = xs.Count >= (byte)0; // $ Alert
 
         /////////
         // missed cases
 
         // NOT OK
-        b = xs.Count >= 0 + 0;
-        b = xs.Count >= 0 - 0;
+        b = xs.Count >= 0 + 0; // $ Alert
+        b = xs.Count >= 0 - 0; // $ Alert
 
         b = args.LongLength >= 0L;
 
@@ -91,24 +91,24 @@ class Test
         var zs = new MyList<List<string>>();
 
         // NOT OK
-        b = zs.Count >= 0;
-        b = zs.Count < 0;
+        b = zs.Count >= 0; // $ Alert
+        b = zs.Count < 0; // $ Alert
 
         // NOT OK
-        b = zs[0].Count >= 0;
+        b = zs[0].Count >= 0; // $ Alert
 
         // NOT OK
-        b = zs[0][0].Length >= 0;
+        b = zs[0][0].Length >= 0; // $ Alert
 
         /////////
         // Dictionaries
         var ws = new Dictionary<int, string>();
 
         // NOT OK: Always true
-        b = ws.Count >= 0;
+        b = ws.Count >= 0; // $ Alert
 
         // NOT OK: Always true
-        b = 0 <= ws.Count;
+        b = 0 <= ws.Count; // $ Alert
 
         // OK: can be false
         b = ws.Count >= -1;
@@ -123,12 +123,12 @@ class Test
         var vs = new System.Collections.BitArray(1);
 
         // NOT OK: Always true
-        b = us.Count >= 0;
-        b = 0 > vs.Count;
+        b = us.Count >= 0; // $ Alert
+        b = 0 > vs.Count; // $ Alert
 
         // NOT OK: Always true
-        b = 0 <= us.Count;
-        b = vs.Count < 0;
+        b = 0 <= us.Count; // $ Alert
+        b = vs.Count < 0; // $ Alert
 
         // OK: can be false
         b = us.Count >= -1;
@@ -144,13 +144,13 @@ class Test
         bool b;
 
         // NOT OK
-        b = xs.Count >= 0;
-        b = 0 <= xs.Count;
-        b = 0 <= ys.Count;
+        b = xs.Count >= 0; // $ Alert
+        b = 0 <= xs.Count; // $ Alert
+        b = 0 <= ys.Count; // $ Alert
 
-        b = xs.Count < 0;
-        b = ys.Count < 0;
-        b = 0 > xs.Count;
+        b = xs.Count < 0; // $ Alert
+        b = ys.Count < 0; // $ Alert
+        b = 0 > xs.Count; // $ Alert
 
         return b;
     }
@@ -158,6 +158,6 @@ class Test
     static bool DebugAssert(ICollection<int> c)
     {
         Debug.Assert(c.Count >= 0);  // OK
-        return c.Count >= 0;  // NOT OK
+        return c.Count >= 0;  // $ Alert // NOT OK
     }
 }

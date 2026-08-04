@@ -15,12 +15,12 @@ import java.util.zip.ZipFile;
 class CloseReader {
 
 	void test1() throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader("C:\\test.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("C:\\test.txt")); // $ Alert
 		System.out.println(br.readLine());
 	}
 
 	void test2() throws IOException {
-		InputStream in = new FileInputStream("file.bin");
+		InputStream in = new FileInputStream("file.bin"); // $ Alert
 		in.read();
 	}
 
@@ -30,7 +30,7 @@ class CloseReader {
 			// InputStreamReader may throw an exception, in which case the ...
 			reader = new InputStreamReader(
 					// ... FileInputStream is not closed by the finally block
-					new FileInputStream("C:\\test.txt"), "UTF-8");
+					new FileInputStream("C:\\test.txt"), "UTF-8"); // $ Alert
 			System.out.println(reader.read());
 		}
 		finally {
@@ -40,7 +40,7 @@ class CloseReader {
 	}
 
 	void test4() throws IOException {
-		ZipFile zipFile = new ZipFile("file.zip");
+		ZipFile zipFile = new ZipFile("file.zip"); // $ Alert
 		System.out.println(zipFile.getComment());
 	}
 

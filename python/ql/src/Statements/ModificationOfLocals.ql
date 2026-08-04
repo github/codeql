@@ -12,10 +12,20 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.ApiGraphs
+private import semmle.python.dataflow.new.DataFlow
 
-predicate originIsLocals(ControlFlowNodeWithPointsTo n) {
-  n.pointsTo(_, _, Value::named("locals").getACall())
+predicate originIsLocals(ControlFlowNode n) {
+  // Only consider the `locals()` dictionary within the scope that called `locals()`.
+  // Once the dictionary is passed to another scope (e.g. as an argument or via an
+  // instance attribute) it is just an ordinary mapping, and modifying it is both
+  // meaningful and effective. Restricting to local (intraprocedural) flow ensures we
+  // only report modifications in the scope where the `locals()` gotcha actually applies.
+  exists(DataFlow::LocalSourceNode src, DataFlow::Node use |
+    src = API::builtin("locals").getReturn().asSource() and
+    src.flowsTo(use) and
+    use.asCfgNode() = n
+  )
 }
 
 predicate modification_of_locals(ControlFlowNode f) {
@@ -37,5 +47,8 @@ where
   // in module level scope `locals() == globals()`
   // see https://docs.python.org/3/library/functions.html#locals
   // FP report in https://github.com/github/codeql/issues/6674
-  not a.getScope() instanceof ModuleScope
+  not a.getScope() instanceof Module and
+  // in class level scope `locals()` reflects the class namespace,
+  // so modifications do take effect.
+  not a.getScope() instanceof Class
 select a, "Modification of the locals() dictionary will have no effect on the local variables."

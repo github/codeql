@@ -9,6 +9,6 @@ class Bad
         this.id = Id;
     }
 
-    public bool Equals(Bad b) =>
+    public bool Equals(Bad b) => // $ Alert
       this.id == b.id;
 }

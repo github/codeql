@@ -1,9 +1,9 @@
 
 class PotatoController < ActionController::Base
   def unsafe_action
-    name = params[:user_name]
+    name = params[:user_name] # $ Source
     # BAD: SQL statement constructed from user input
-    sql = Arel.sql("SELECT * FROM users WHERE name = #{name}")
-    sql = Arel::Nodes::SqlLiteral.new("SELECT * FROM users WHERE name = #{name}")
+    sql = Arel.sql("SELECT * FROM users WHERE name = #{name}") # $ Alert
+    sql = Arel::Nodes::SqlLiteral.new("SELECT * FROM users WHERE name = #{name}") # $ Alert
   end
 end

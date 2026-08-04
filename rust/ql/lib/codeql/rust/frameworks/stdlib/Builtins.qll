@@ -19,6 +19,13 @@ private class BuiltinsTypesFile extends File {
   }
 }
 
+private class BuiltinsImplsFile extends File {
+  BuiltinsImplsFile() {
+    this.getBaseName() = "impls.rs" and
+    this.getParentContainer() instanceof BuiltinsFolder
+  }
+}
+
 /**
  * A builtin type, such as `bool` and `i32`.
  *
@@ -220,4 +227,9 @@ class TupleType extends BuiltinType {
       result = "(" + commas + ")"
     )
   }
+}
+
+/** A builtin implementation. */
+class BuiltinImpl extends Impl {
+  BuiltinImpl() { this.getFile() instanceof BuiltinsImplsFile }
 }

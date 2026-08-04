@@ -6,7 +6,7 @@ class RecursiveEquals
         public override bool Equals(object rhs)
         {
             if (rhs.GetType() != this.GetType()) return false;
-            return Equals(rhs);
+            return Equals(rhs); // $ Alert
         }
 
         public bool Equals(Bad rhs)

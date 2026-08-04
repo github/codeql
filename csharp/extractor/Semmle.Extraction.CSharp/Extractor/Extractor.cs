@@ -210,7 +210,7 @@ namespace Semmle.Extraction.CSharp
                             TracingAnalyser.GetOutputName(compilation, args),
                             compilation,
                             generatedSyntaxTrees,
-                            Path.Combine(compilationIdentifierPath, diagnosticName),
+                            Path.Join(compilationIdentifierPath, diagnosticName),
                             options),
                         () => { });
 
@@ -377,7 +377,7 @@ namespace Semmle.Extraction.CSharp
                 else
                 {
                     var composed = referencePaths.Value
-                        .Select(path => Path.Combine(path, clref.Reference))
+                        .Select(path => Path.Join(path, clref.Reference))
                         .Where(path => File.Exists(path))
                         .Select(path => analyser.PathCache.GetCanonicalPath(path))
                         .FirstOrDefault();
@@ -559,13 +559,13 @@ namespace Semmle.Extraction.CSharp
         /// Gets the path to the `csharp.log` file written to by the C# extractor.
         /// </summary>
         public static string GetCSharpLogPath() =>
-            Path.Combine(GetCSharpLogDirectory(), "csharp.log");
+            Path.Join(GetCSharpLogDirectory(), "csharp.log");
 
         /// <summary>
         /// Gets the path to a `csharp.{hash}.txt` file written to by the C# extractor.
         /// </summary>
         public static string GetCSharpArgsLogPath(string hash) =>
-            Path.Combine(GetCSharpLogDirectory(), $"csharp.{hash}.txt");
+            Path.Join(GetCSharpLogDirectory(), $"csharp.{hash}.txt");
 
         /// <summary>
         /// Gets a list of all `csharp.{hash}.txt` files currently written to the log directory.

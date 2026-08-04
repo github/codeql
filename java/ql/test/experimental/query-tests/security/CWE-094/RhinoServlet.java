@@ -25,11 +25,11 @@ public class RhinoServlet extends HttpServlet {
     // BAD: allow arbitrary Java and JavaScript code to be executed
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
-        String code = request.getParameter("code");
+        String code = request.getParameter("code"); // $ Source[java/unsafe-eval]
         Context ctx = Context.enter();
         try {
             Scriptable scope = ctx.initStandardObjects();
-            Object result = ctx.evaluateString(scope, code, "<code>", 1, null);
+            Object result = ctx.evaluateString(scope, code, "<code>", 1, null); // $ Alert[java/unsafe-eval]
             response.getWriter().print(Context.toString(result));
         } catch(RhinoException ex) {
             response.getWriter().println(ex.getMessage());
@@ -78,14 +78,14 @@ public class RhinoServlet extends HttpServlet {
 
     // BAD: allow arbitrary code to be compiled for subsequent execution
     protected void doGet2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String code = request.getParameter("code");
+        String code = request.getParameter("code"); // $ Source[java/unsafe-eval]
         ClassCompiler compiler = new ClassCompiler(new CompilerEnvirons());
-        Object[] objs = compiler.compileToClassFiles(code, "/sourceLocation", 1, "mainClassName");
+        Object[] objs = compiler.compileToClassFiles(code, "/sourceLocation", 1, "mainClassName"); // $ Alert[java/unsafe-eval]
     }
 
     // BAD: allow arbitrary code to be loaded for subsequent execution
     protected void doPost2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String code = request.getParameter("code");
-        Class clazz = new DefiningClassLoader().defineClass("Powerfunc", code.getBytes());
+        String code = request.getParameter("code"); // $ Source[java/unsafe-eval]
+        Class clazz = new DefiningClassLoader().defineClass("Powerfunc", code.getBytes()); // $ Alert[java/unsafe-eval]
     }
 }

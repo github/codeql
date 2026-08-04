@@ -120,6 +120,14 @@ private class DefaultSensitiveLoggerBarrier extends SensitiveLoggerBarrier {
   }
 }
 
+/**
+ * A barrier for sensitive data that has been hashed, encrypted, or digested before logging.
+ * This is consistent with the treatment of encryption in `CleartextStorageQuery.qll` (CWE-312).
+ */
+private class EncryptionBarrier extends SensitiveLoggerBarrier {
+  EncryptionBarrier() { this.asExpr() instanceof EncryptedSensitiveMethodCall }
+}
+
 /** A data-flow configuration for identifying potentially-sensitive data flowing to a log output. */
 module SensitiveLoggerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof SensitiveLoggerSource }

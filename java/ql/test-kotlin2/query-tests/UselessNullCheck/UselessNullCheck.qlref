@@ -1,1 +1,2 @@
-Language Abuse/UselessNullCheck.ql
+query: Language Abuse/UselessNullCheck.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

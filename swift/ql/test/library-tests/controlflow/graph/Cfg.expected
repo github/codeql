@@ -474,7 +474,8 @@
 | cfg.swift:138:12:138:12 | 0 | cfg.swift:138:16:138:16 | 10 |  |
 | cfg.swift:138:12:138:12 | $generator | cfg.swift:138:12:138:12 | .makeIterator() | match |
 | cfg.swift:138:12:138:12 | .makeIterator() | cfg.swift:138:13:138:13 | ....(_:_:) |  |
-| cfg.swift:138:12:138:12 | call to makeIterator() | file://:0:0:0:0 | var ... = ... |  |
+| cfg.swift:138:12:138:12 | call to makeIterator() | cfg.swift:138:12:138:12 | var ... = ... |  |
+| cfg.swift:138:12:138:12 | var ... = ... | cfg.swift:138:3:138:3 | .next() |  |
 | cfg.swift:138:12:138:16 | ... ....(_:_:) ... | cfg.swift:138:12:138:12 | call to makeIterator() |  |
 | cfg.swift:138:13:138:13 | ....(_:_:) | cfg.swift:138:13:138:13 | Int.Type |  |
 | cfg.swift:138:13:138:13 | Int.Type | cfg.swift:138:12:138:12 | 0 |  |
@@ -2023,7 +2024,8 @@
 | cfg.swift:526:26:526:26 | 1 | cfg.swift:526:30:526:30 | 100 |  |
 | cfg.swift:526:26:526:26 | $i$generator | cfg.swift:526:26:526:26 | .makeIterator() | match |
 | cfg.swift:526:26:526:26 | .makeIterator() | cfg.swift:526:27:526:27 | ....(_:_:) |  |
-| cfg.swift:526:26:526:26 | call to makeIterator() | file://:0:0:0:0 | var ... = ... |  |
+| cfg.swift:526:26:526:26 | call to makeIterator() | cfg.swift:526:26:526:26 | var ... = ... |  |
+| cfg.swift:526:26:526:26 | var ... = ... | cfg.swift:526:17:526:17 | .next() |  |
 | cfg.swift:526:26:526:30 | ... ....(_:_:) ... | cfg.swift:526:26:526:26 | call to makeIterator() |  |
 | cfg.swift:526:27:526:27 | ....(_:_:) | cfg.swift:526:27:526:27 | Int.Type |  |
 | cfg.swift:526:27:526:27 | Int.Type | cfg.swift:526:26:526:26 | 1 |  |
@@ -2048,8 +2050,9 @@
 | cfg.swift:533:24:533:24 | $i$generator | cfg.swift:533:24:533:24 | .makeAsyncIterator() | match |
 | cfg.swift:533:24:533:24 | (AsyncStream<Int>) ... | cfg.swift:533:24:533:24 | call to makeAsyncIterator() |  |
 | cfg.swift:533:24:533:24 | .makeAsyncIterator() | cfg.swift:533:24:533:24 | stream |  |
-| cfg.swift:533:24:533:24 | call to makeAsyncIterator() | file://:0:0:0:0 | var ... = ... |  |
+| cfg.swift:533:24:533:24 | call to makeAsyncIterator() | cfg.swift:533:24:533:24 | var ... = ... |  |
 | cfg.swift:533:24:533:24 | stream | cfg.swift:533:24:533:24 | (AsyncStream<Int>) ... |  |
+| cfg.swift:533:24:533:24 | var ... = ... | cfg.swift:533:5:533:5 | .next(isolation:) |  |
 | cfg.swift:534:9:534:9 | print(_:separator:terminator:) | cfg.swift:534:15:534:15 | i |  |
 | cfg.swift:534:9:534:16 | call to print(_:separator:terminator:) | cfg.swift:533:5:533:5 | .next(isolation:) |  |
 | cfg.swift:534:14:534:14 | default separator | cfg.swift:534:14:534:14 | default terminator |  |
@@ -2350,6 +2353,3 @@
 | file://:0:0:0:0 | value | file://:0:0:0:0 |  ... = ... |  |
 | file://:0:0:0:0 | value | file://:0:0:0:0 |  ... = ... |  |
 | file://:0:0:0:0 | value | file://:0:0:0:0 |  ... = ... |  |
-| file://:0:0:0:0 | var ... = ... | cfg.swift:138:3:138:3 | .next() |  |
-| file://:0:0:0:0 | var ... = ... | cfg.swift:526:17:526:17 | .next() |  |
-| file://:0:0:0:0 | var ... = ... | cfg.swift:533:5:533:5 | .next(isolation:) |  |

@@ -1,0 +1,67 @@
+func read() throws -> String {
+  return ""
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      expression:
+                        stringLiteralExpr
+                          closingQuote: "
+                          openingQuote: "
+                          segments:
+                            stringSegment
+                              content: stringSegment
+                      returnKeyword: return
+          name: identifier "read"
+          modifiers:
+          signature:
+            functionSignature
+              effectSpecifiers:
+                functionEffectSpecifiers
+                  throwsClause:
+                    throwsClause
+                      throwsSpecifier: throws
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+              returnClause:
+                returnClause
+                  arrow: ->
+                  type:
+                    identifierType
+                      name: identifier "String"
+          funcKeyword: func
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          name: identifier "read"
+          return_type:
+            named_type_expr
+              name: identifier "String"
+          body:
+            block
+              stmt:
+                return_expr
+                  value: string_literal "\"\""

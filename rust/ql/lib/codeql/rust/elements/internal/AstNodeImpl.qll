@@ -48,15 +48,29 @@ module Impl {
       )
     }
 
+    pragma[nomagic]
+    private predicate isConstOrStatic(File f) {
+      f = this.getFile() and
+      (
+        this instanceof Const
+        or
+        this instanceof Static
+      )
+    }
+
     /** Gets the CFG scope that encloses this node, if any. */
     cached
     CfgScope getEnclosingCfgScope() {
       exists(AstNode p | p = this.getParentNode() |
-        result = p
+        result = p and
+        not result instanceof SourceFile
         or
         not p instanceof CfgScope and
+        not this.isConstOrStatic(_) and
         result = p.getEnclosingCfgScope()
       )
+      or
+      this.isConstOrStatic(result.(SourceFile).getFile())
     }
 
     /** Holds if this node is inside a CFG scope. */

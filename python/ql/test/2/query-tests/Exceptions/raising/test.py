@@ -5,11 +5,11 @@ def ok():
 
 def bad1():
     ex = Exception, "message"
-    raise ex
+    raise ex # $ Alert
 
 def bad2():
-    raise (Exception, "message")
+    raise (Exception, "message") # $ Alert
 
 def bad3():
     ex = Exception, 
-    raise ex, "message"
+    raise ex, "message" # $ Alert

@@ -31,5 +31,19 @@ public class TrustBoundaryViolations extends HttpServlet {
             }
         } catch (Exception e) {
         }
+
+        // GOOD: A direct String.matches(...) regex check constrains the input before it is written to the session.
+        String input4 = request.getParameter("input4");
+        if (input4.matches("[a-zA-Z0-9]+")) {
+            request.getSession().setAttribute("input4", input4);
+        }
+    }
+
+    @javax.validation.constraints.Pattern(regexp = "^[a-zA-Z0-9]+$")
+    String validatedField;
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+        // GOOD: The field is constrained by a @Pattern annotation.
+        request.getSession().setAttribute("validated", validatedField);
     }
 }

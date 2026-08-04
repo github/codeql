@@ -2,4 +2,4 @@
 
 # General Config
 FLASK_DEBUG = True
-SECRET_KEY = "CHANGEME5"
+SECRET_KEY = "CHANGEME5" # $ Alert

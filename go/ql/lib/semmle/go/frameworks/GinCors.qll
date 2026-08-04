@@ -1,6 +1,8 @@
 /**
  * Provides classes for modeling the `github.com/gin-contrib/cors` package.
  */
+overlay[local?]
+module;
 
 import go
 

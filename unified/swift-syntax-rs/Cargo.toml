@@ -1,0 +1,14 @@
+[package]
+name = "swift-syntax-rs"
+description = "Rust wrapper around the swift-syntax package for parsing Swift source"
+version = "0.1.0"
+authors = ["GitHub"]
+edition = "2024"
+
+[lib]
+name = "swift_syntax_rs"
+path = "src/lib.rs"
+
+[[bin]]
+name = "swift-syntax-parse"
+path = "src/main.rs"

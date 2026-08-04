@@ -1,1 +1,2 @@
-API Abuse/IncorrectCompareToSignature.ql
+query: API Abuse/IncorrectCompareToSignature.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

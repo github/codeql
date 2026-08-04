@@ -1,7 +1,7 @@
 | DeadStoreOfLocal.cs:12:13:12:20 | Int32 x = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:12:13:12:13 | x | x |
 | DeadStoreOfLocal.cs:19:21:19:25 | ... = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:18:13:18:13 | x | x |
 | DeadStoreOfLocal.cs:44:13:44:20 | Int32 x = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:44:13:44:13 | x | x |
-| DeadStoreOfLocal.cs:50:9:50:14 | ... = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:49:13:49:13 | x | x |
+| DeadStoreOfLocal.cs:50:9:50:14 | ... += ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:49:13:49:13 | x | x |
 | DeadStoreOfLocal.cs:56:9:56:11 | ...++ | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:55:13:55:13 | x | x |
 | DeadStoreOfLocal.cs:82:22:82:24 | String val | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:82:22:82:24 | val | val |
 | DeadStoreOfLocal.cs:101:13:101:37 | ... = ... | This assignment to $@ is useless, since its value is never read. | DeadStoreOfLocal.cs:94:40:94:44 | extra | extra |

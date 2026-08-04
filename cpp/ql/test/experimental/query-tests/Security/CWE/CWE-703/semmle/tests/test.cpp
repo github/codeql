@@ -32,13 +32,13 @@ void funcTest2()
 
 void funcTest3()
 {
-  std::runtime_error("msg error"); // BAD
+  std::runtime_error("msg error"); // $ Alert // BAD
   throw std::runtime_error("msg error"); // GOOD
 }
 
 void TestFunc()
 {
-  funcTest1();
-  DllMain();
+  funcTest1(); // $ Alert
+  DllMain(); // $ Alert
   funcTest2();
 }

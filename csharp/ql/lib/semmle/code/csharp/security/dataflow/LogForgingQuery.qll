@@ -52,9 +52,17 @@ private class HtmlSanitizer extends Sanitizer {
 }
 
 /**
- * An argument to a call to a method on a logger class.
+ * An argument to a call to a method on a logger class, excluding extension methods
+ * with source code which are analyzed interprocedurally.
  */
-private class LogForgingLogMessageSink extends Sink, LogMessageSink { }
+private class LogForgingLogMessageSink extends Sink, LogMessageSink {
+  LogForgingLogMessageSink() {
+    not exists(ExtensionMethodCall mc |
+      this.getExpr() = mc.getAnArgument() and
+      mc.getTarget().fromSource()
+    )
+  }
+}
 
 /**
  * An argument to a call to a method on a trace class.

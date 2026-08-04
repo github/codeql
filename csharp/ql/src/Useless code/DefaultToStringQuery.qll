@@ -30,7 +30,7 @@ predicate invokesToString(Expr e, ValueOrRefType t) {
 
 pragma[nomagic]
 private predicate parameterReadPostDominatesEntry(ParameterRead pr) {
-  pr.getAControlFlowNode().postDominates(pr.getEnclosingCallable().getEntryPoint())
+  pr.getControlFlowNode().postDominates(pr.getEnclosingCallable().getEntryPoint())
 }
 
 pragma[nomagic]

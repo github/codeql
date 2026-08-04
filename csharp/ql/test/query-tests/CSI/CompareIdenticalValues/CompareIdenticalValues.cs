@@ -11,54 +11,54 @@ class CompareIdenticalValues : Super
 {
     public void M()
     {
-        if (this.Foo == Foo) ;
-        if (base.Foo == Foo) ;
+        if (this.Foo == Foo) ; // $ Alert[cs/comparison-of-identical-expressions]
+        if (base.Foo == Foo) ; // $ Alert[cs/comparison-of-identical-expressions]
         if (Foo == new CompareIdenticalValues().Foo) ;
 
         var x = "Abc";
         if (x == "Abc") ;
-        var temp = x == x; // BAD: but flagged by cs/constant-comparison
+        var temp = x == x; // $ Alert[cs/constant-condition]
 
         double d = double.NaN;
-        if (d == d) ; // !double.IsNan(d)
-        if (d <= d) ; // !double.IsNan(d), but unlikely to be intentional
-        if (d >= d) ; // !double.IsNan(d), but unlikely to be intentional
-        if (d != d) ; // double.IsNan(d)
-        if (d > d) ; // always false
-        if (d < d) ; // always false
+        if (d == d) ; // $ Alert[cs/comparison-of-identical-expressions] // !double.IsNan(d)
+        if (d <= d) ; // $ Alert[cs/comparison-of-identical-expressions] // !double.IsNan(d), but unlikely to be intentional
+        if (d >= d) ; // $ Alert[cs/comparison-of-identical-expressions] // !double.IsNan(d), but unlikely to be intentional
+        if (d != d) ; // $ Alert[cs/comparison-of-identical-expressions] // double.IsNan(d)
+        if (d > d) ; // $ Alert[cs/comparison-of-identical-expressions] // always false
+        if (d < d) ; // $ Alert[cs/comparison-of-identical-expressions] // always false
 
         float f = float.NaN;
-        if (f == f) ; // !float.IsNan(f)
-        if (f <= f) ; // !float.IsNan(f), but unlikely to be intentional
-        if (f >= f) ; // !float.IsNan(f), but unlikely to be intentional
-        if (f != f) ; // float.IsNan(f)
-        if (f > f) ; // always false
-        if (f < f) ; // always false
+        if (f == f) ; // $ Alert[cs/comparison-of-identical-expressions] // !float.IsNan(f)
+        if (f <= f) ; // $ Alert[cs/comparison-of-identical-expressions] // !float.IsNan(f), but unlikely to be intentional
+        if (f >= f) ; // $ Alert[cs/comparison-of-identical-expressions] // !float.IsNan(f), but unlikely to be intentional
+        if (f != f) ; // $ Alert[cs/comparison-of-identical-expressions] // float.IsNan(f)
+        if (f > f) ; // $ Alert[cs/comparison-of-identical-expressions] // always false
+        if (f < f) ; // $ Alert[cs/comparison-of-identical-expressions] // always false
 
         int i = 0;
-        if (i == i) ;  // BAD: but flagged by cs/constant-condition
-        if (i != i) ;  // BAD: but flagged by cs/constant-condition
+        if (i == i) ; // $ Alert[cs/constant-condition]
+        if (i != i) ; // $ Alert[cs/constant-condition]
 
         CompareIdenticalValues c = null;
-        c.Prop.Equals(c.Prop);
-        Equals(c.Prop.Prop.Prop.Foo + 2, c.Prop.Prop.Prop.Foo + 2);
+        c.Prop.Equals(c.Prop); // $ Alert[cs/comparison-of-identical-expressions]
+        Equals(c.Prop.Prop.Prop.Foo + 2, c.Prop.Prop.Prop.Foo + 2); // $ Alert[cs/comparison-of-identical-expressions]
         Equals(c.Prop.Prop.Prop.Foo, c.Prop.Prop.Foo);
 
         if (base.Bar == Bar) ;
-        if (Bar == this.Bar) ;
-        Equals(this);
+        if (Bar == this.Bar) ; // $ Alert[cs/comparison-of-identical-expressions]
+        Equals(this); // $ Alert[cs/comparison-of-identical-expressions]
 
-        if (1 + 1 == 2) ;  // BAD: but flagged by cs/constant-condition
-        if (1 + 1 == 3) ;
-        if (0 == 1) ;
+        if (1 + 1 == 2) ; // $ Alert[cs/constant-condition]
+        if (1 + 1 == 3) ; // $ Alert[cs/constant-condition]
+        if (0 == 1) ; // $ Alert[cs/constant-condition]
 
         var a = new int[0];
-        if (a[0] == a[0]) ;
+        if (a[0] == a[0]) ; // $ Alert[cs/comparison-of-identical-expressions]
 
-        if (this.Bar[0] == Bar[1 - 1]) ;
+        if (this.Bar[0] == Bar[1 - 1]) ; // $ Alert[cs/comparison-of-identical-expressions]
         if (this.Bar[0] == Bar[1]) ;
 
-        if (this.Prop[Foo] == Prop[this.Foo]) ;
+        if (this.Prop[Foo] == Prop[this.Foo]) ; // $ Alert[cs/comparison-of-identical-expressions]
         if (this.Prop[0] == Prop[1]) ;
     }
 
@@ -73,17 +73,17 @@ class CompareIdenticalValues : Super
 
     public void IsBoxedWrong1<T>(T x) where T : struct
     {
-        ReferenceEquals(x, x);
+        ReferenceEquals(x, x); // $ Alert[cs/comparison-of-identical-expressions]
     }
 
     public void IsBoxedWrong2<T>(T x) where T : class
     {
-        ReferenceEquals(x, x);
+        ReferenceEquals(x, x); // $ Alert[cs/comparison-of-identical-expressions]
     }
 
     public void IsBoxedWrong3<T>(T x) where T : Super
     {
-        ReferenceEquals(x, x);
+        ReferenceEquals(x, x); // $ Alert[cs/comparison-of-identical-expressions]
     }
 
     public int this[int i] { get { return 0; } }

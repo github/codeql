@@ -11,7 +11,7 @@ public class ProfileController : Controller {
 
     // BAD: The AllowAnonymous attribute overrides the Authorize attribute on the class.
     [AllowAnonymous]
-    public ActionResult Edit2(int profileId, string text) {
+    public ActionResult Edit2(int profileId, string text) { // $ Alert
         editProfileName(profileId, text);
         return View();
     }

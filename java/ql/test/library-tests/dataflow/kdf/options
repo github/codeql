@@ -1,1 +1,1 @@
-//semmle-extractor-options: --javac-args --enable-preview --release 25
+//semmle-extractor-options: --javac-args --release 25

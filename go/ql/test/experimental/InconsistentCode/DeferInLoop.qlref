@@ -1,1 +1,2 @@
-experimental/InconsistentCode/DeferInLoop.ql
+query: experimental/InconsistentCode/DeferInLoop.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

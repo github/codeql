@@ -1,47 +1,47 @@
 class UsersController < ApplicationController
   def createLikeCall
-    new_password = "043697b96909e03ca907599d6420555f"
+    new_password = "043697b96909e03ca907599d6420555f" # $ Source[rb/clear-text-storage-sensitive-data]
     # BAD: plaintext password stored to database
-    User.create(name: "U1", password: new_password)
+    User.create(name: "U1", password: new_password) # $ Alert[rb/clear-text-storage-sensitive-data]
     # BAD: plaintext password stored to database
-    User.create({ name: "U1", password: new_password })
+    User.create({ name: "U1", password: new_password }) # $ Alert[rb/clear-text-storage-sensitive-data]
   end
 
   def updateLikeClassMethodCall
-    new_password = "083c9e1da4cc0c2f5480bb4dbe6ff141"
+    new_password = "083c9e1da4cc0c2f5480bb4dbe6ff141" # $ Source[rb/clear-text-storage-sensitive-data]
     # BAD: plaintext password stored to database
-    User.update(1, name: "U1", password: new_password)
+    User.update(1, name: "U1", password: new_password) # $ Alert[rb/clear-text-storage-sensitive-data]
     # BAD: plaintext password stored to database
-    User.update([1, 2], [{name: "U1", password: new_password}, {name: "U2", password: new_password}])
+    User.update([1, 2], [{name: "U1", password: new_password}, {name: "U2", password: new_password}]) # $ Alert[rb/clear-text-storage-sensitive-data]
   end
 
   def insertAllLikeCall
-    new_password = "504d224a806cf8073cd14ef08242d422"
+    new_password = "504d224a806cf8073cd14ef08242d422" # $ Source[rb/clear-text-storage-sensitive-data]
     # BAD: plaintext password stored to database
-    User.insert_all([{name: "U1", password: new_password}, {name: "U2", password: new_password}])
+    User.insert_all([{name: "U1", password: new_password}, {name: "U2", password: new_password}]) # $ Alert[rb/clear-text-storage-sensitive-data]
   end
 
   def updateLikeInstanceMethodCall
     user = User.find(1)
-    new_password = "7d6ae08394c3f284506dca70f05995f6"
+    new_password = "7d6ae08394c3f284506dca70f05995f6" # $ Source[rb/clear-text-storage-sensitive-data]
     # BAD: plaintext password stored to database
-    user.update(password: new_password)
+    user.update(password: new_password) # $ Alert[rb/clear-text-storage-sensitive-data]
     # BAD: plaintext password stored to database
-    user.update({password: new_password})
+    user.update({password: new_password}) # $ Alert[rb/clear-text-storage-sensitive-data]
   end
 
   def updateAttributeCall
     user = User.find(1)
-    new_password = "ff295f8648a406c37fbe378377320e4c"
+    new_password = "ff295f8648a406c37fbe378377320e4c" # $ Source[rb/clear-text-storage-sensitive-data]
     # BAD: plaintext password stored to database
-    user.update_attribute("password", new_password)
+    user.update_attribute("password", new_password) # $ Alert[rb/clear-text-storage-sensitive-data]
   end
 
   def assignAttributeCall
     user = User.find(1)
-    new_password = "78ffbec583b546bd073efd898f833184"
+    new_password = "78ffbec583b546bd073efd898f833184" # $ Source[rb/clear-text-storage-sensitive-data]
     # BAD: plaintext password assigned to database field
-    user.password = new_password
+    user.password = new_password # $ Alert[rb/clear-text-storage-sensitive-data]
     user.save
   end
 
@@ -55,13 +55,13 @@ class UsersController < ApplicationController
   end
 
   def fileWrites
-    new_password = "0157af7c38cbdd24f1616de4e5321861"
+    new_password = "0157af7c38cbdd24f1616de4e5321861" # $ Source[rb/clear-text-storage-sensitive-data]
 
     # BAD: plaintext password stored to disk
-    IO.write("foo.txt", "password: #{new_password}\n")
+    IO.write("foo.txt", "password: #{new_password}\n") # $ Alert[rb/clear-text-storage-sensitive-data]
 
     # BAD: plaintext password stored to disk
-    File.new("bar.txt", "a").puts("password: #{new_password}")
+    File.new("bar.txt", "a").puts("password: #{new_password}") # $ Alert[rb/clear-text-storage-sensitive-data]
   end
 
   def randomPasswordAssign
@@ -76,15 +76,15 @@ class UsersController < ApplicationController
     info = [
       {
         name: "U1", 
-        password: "aaaaaaaaaa",
-        credit_card_number: "0000-0000-0000-0000",
-        SSN: "000-00-00000"
+        password: "aaaaaaaaaa", # $ Source[rb/clear-text-storage-sensitive-data]
+        credit_card_number: "0000-0000-0000-0000", # $ Source[rb/clear-text-storage-sensitive-data]
+        SSN: "000-00-00000" # $ Source[rb/clear-text-storage-sensitive-data]
       }, 
-      {name: "U2", password: "bbbbbbb"}
+      {name: "U2", password: "bbbbbbb"} # $ Source[rb/clear-text-storage-sensitive-data]
     ]
     info.each do |inf|
       # BAD: Plaintext password, SSN, and CCN stored to database.
-      User.create!(inf)
+      User.create!(inf) # $ Alert[rb/clear-text-storage-sensitive-data]
     end
   end
 end

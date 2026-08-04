@@ -2,6 +2,6 @@
 
 <html>
 <body>
-<p>2 + 3 = <%Response.Write(2 + 3)%></p>
+<p>2 + 3 = <%Response.Write(2 + 3)%></p> <%-- $ Alert[cs/asp/response-write] --%>
 </body>
 </html>

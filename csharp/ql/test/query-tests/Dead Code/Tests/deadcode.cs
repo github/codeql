@@ -21,7 +21,7 @@ sealed class Exported : Interface1
 }
 
 // BAD: Class is dead
-sealed class Dead2
+sealed class Dead2 // $ Alert[cs/unused-reftype]
 {
 }
 
@@ -82,7 +82,7 @@ namespace MainTests
 
 public struct S
 {
-    C Field; // dead
+    C Field; // $ Alert[cs/unused-field] // dead
     class C { } // not dead
 }
 

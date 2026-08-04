@@ -40,7 +40,7 @@ void CWE114_Process_Control__w32_char_environment_82_bad::action(char * data)
         HMODULE hModule;
         /* POTENTIAL FLAW: If the path to the library is not specified, an attacker may be able to
          * replace his own file with the intended library */
-        hModule = LoadLibraryA(data);
+        hModule = LoadLibraryA(data); // $ Alert
         if (hModule != NULL)
         {
             FreeLibrary(hModule);
@@ -61,7 +61,7 @@ void bad()
     {
         /* Append input from an environment variable to data */
         size_t dataLen = strlen(data);
-        char * environment = GETENV(ENV_VARIABLE);
+        char * environment = GETENV(ENV_VARIABLE); // $ Source
         /* If there is data in the environment variable */
         if (environment != NULL)
         {

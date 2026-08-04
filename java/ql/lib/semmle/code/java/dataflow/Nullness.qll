@@ -17,6 +17,7 @@ private import NullGuards
 private import semmle.code.java.Collections
 private import semmle.code.java.controlflow.internal.Preconditions
 private import semmle.code.java.controlflow.ControlFlowReachability
+private import codeql.controlflow.SuccessorType
 
 /** Gets an expression that may be `null`. */
 Expr nullExpr() { result = nullExpr(_) }
@@ -52,8 +53,6 @@ private predicate unboxed(Expr e) {
       assign.getDest().getType() instanceof PrimitiveType and assign.getSource() = e
     )
     or
-    exists(AssignOp assign | assign.getSource() = e and assign.getType() instanceof PrimitiveType)
-    or
     exists(EqualityTest eq |
       eq.getAnOperand() = e and eq.getAnOperand().getType() instanceof PrimitiveType
     )
@@ -61,6 +60,7 @@ private predicate unboxed(Expr e) {
     exists(BinaryExpr bin |
       bin.getAnOperand() = e and
       not bin instanceof EqualityTest and
+      not bin instanceof AssignExpr and
       bin.getType() instanceof PrimitiveType
     )
     or
@@ -230,14 +230,8 @@ private Expr nonEmptyExpr() {
 
 /** The control flow edge that exits an enhanced for loop if the `Iterable` is empty. */
 private predicate enhancedForEarlyExit(EnhancedForStmt for, ControlFlowNode n1, ControlFlowNode n2) {
-  exists(Expr forExpr |
-    n1.getANormalSuccessor() = n2 and
-    for.getExpr() = forExpr and
-    forExpr.getAChildExpr*() = n1.asExpr() and
-    not forExpr.getAChildExpr*() = n2.asExpr() and
-    n1.getANormalSuccessor().asExpr() = for.getVariable() and
-    not n2.asExpr() = for.getVariable()
-  )
+  n1.getASuccessor(any(EmptinessSuccessor t | t.isEmpty())) = n2 and
+  for.getExpr().getControlFlowNode() = n1
 }
 
 /** A control flow edge that cannot be taken. */

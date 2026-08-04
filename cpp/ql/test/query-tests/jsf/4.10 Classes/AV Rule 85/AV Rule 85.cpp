@@ -1,12 +1,12 @@
 
-class MyClass1 {
+class MyClass1 { // $ Alert
 public:
     int i;
     bool operator< (const MyClass1 &rhs){ return i < rhs.i; }
     // BAD: operator>= missing
 };
 
-class MyClass2 {
+class MyClass2 { // $ Alert
 public:
     int i;
     bool operator< (const MyClass2 &rhs){ return i < rhs.i; }
@@ -22,7 +22,7 @@ public:
     // GOOD
 };
 
-class MyClass4 {
+class MyClass4 { // $ Alert
 public:
     int i;
     bool operator< (const MyClass4 &rhs){ return i < rhs.i; }
@@ -76,7 +76,7 @@ public:
 MyClass7<int> myClass7;
 
 template <typename T>
-class MyClass8 {
+class MyClass8 { // $ Alert
 public:
     int i;
     template <typename U>
@@ -100,7 +100,7 @@ void f8(void) {
 }
 
 template <typename T>
-class MyClass9 {
+class MyClass9 { // $ Alert
 public:
     int i;
     template <typename U>

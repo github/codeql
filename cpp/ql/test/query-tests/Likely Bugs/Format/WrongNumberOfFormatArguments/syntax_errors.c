@@ -12,7 +12,7 @@ void test_syntax_error() {
         (UNDEFINED_MACRO)2);
 
     // GOOD [FALSE POSITIVE]
-    printf("%d%d"
+    printf("%d%d" // $ SPURIOUS: Alert[cpp/wrong-number-format-arguments]
         UNDEFINED_MACRO,
         1, 2);
 }

@@ -1,0 +1,18 @@
+3.14
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        floatLiteralExpr
+          literal: floatLiteral "3.14"
+
+---
+
+top_level
+  body:
+    block
+      stmt: float_literal "3.14"

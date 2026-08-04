@@ -1,0 +1,92 @@
+extension Int {
+  func squared() -> Int { return self * self }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        extensionDecl
+          attributes:
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    functionDecl
+                      attributes:
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
+                            codeBlockItem
+                              item:
+                                returnStmt
+                                  expression:
+                                    infixOperatorExpr
+                                      operator:
+                                        binaryOperatorExpr
+                                          operator: binaryOperator "*"
+                                      leftOperand:
+                                        declReferenceExpr
+                                          baseName: self
+                                      rightOperand:
+                                        declReferenceExpr
+                                          baseName: self
+                                  returnKeyword: return
+                      name: identifier "squared"
+                      modifiers:
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                          returnClause:
+                            returnClause
+                              arrow: ->
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                      funcKeyword: func
+          modifiers:
+          extendedType:
+            identifierType
+              name: identifier "Int"
+          extensionKeyword: extension
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "extension"
+          name: identifier "Int"
+          member:
+            function_declaration
+              name: identifier "squared"
+              return_type:
+                named_type_expr
+                  name: identifier "Int"
+              body:
+                block
+                  stmt:
+                    return_expr
+                      value:
+                        binary_expr
+                          left:
+                            name_expr
+                              identifier: identifier "self"
+                          operator: infix_operator "*"
+                          right:
+                            name_expr
+                              identifier: identifier "self"

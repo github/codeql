@@ -8,7 +8,7 @@ def break_in_finally(seq, x):
         try:
             x()
         finally:
-            break
+            break # $ Alert[py/exit-from-finally]
     return 0
 
 def return_in_finally(seq, x):
@@ -16,7 +16,7 @@ def return_in_finally(seq, x):
         try:
             x()
         finally:
-            return 1
+            return 1 # $ Alert[py/exit-from-finally]
     return 0
 
 #Break in loop in finally
@@ -34,11 +34,11 @@ def return_in_loop_in_finally(f, seq):
         f()
     finally:
         for i in seq:
-            return
+            return # $ Alert[py/exit-from-finally]
 
 def unnecessary_pass(arg):
     print (arg)
-    pass
+    pass # $ Alert[py/unnecessary-pass]
 
 #Non-iterator in for loop
 
@@ -95,12 +95,12 @@ for z in D():
 
 def modification_of_locals():
     x = 0
-    locals()['x'] = 1
+    locals()['x'] = 1 # $ Alert[py/modification-of-locals]
     l = locals()
-    l.update({'x':1, 'y':2})
-    l.pop('y')
-    del l['x']
-    l.clear()
+    l.update({'x':1, 'y':2}) # $ Alert[py/modification-of-locals]
+    l.pop('y') # $ Alert[py/modification-of-locals]
+    del l['x'] # $ Alert[py/modification-of-locals]
+    l.clear() # $ Alert[py/modification-of-locals]
     return x
 
 
@@ -112,16 +112,16 @@ locals()['foo'] = 43 # technically OK
 
 #C-style things
 
-if (cond):
+if (cond): # $ Alert[py/c-style-parentheses]
     pass
 
-while (cond):
+while (cond): # $ Alert[py/c-style-parentheses]
     pass
 
-assert (test)
+assert (test) # $ Alert[py/c-style-parentheses]
 
 def parens(x):
-    return (x)
+    return (x) # $ Alert[py/c-style-parentheses]
 
 
 #ODASA-2038
@@ -165,7 +165,23 @@ def no_with():
         f.write("Hello ")
         f.write(" World\n")
     finally:
-        f.close()
+        f.close() # $ Alert[py/should-use-with]
+
+# Should not use a 'with' statement here: the resource is held in an instance
+# attribute, so its lifetime spans the enclosing instance and cannot be expressed
+# with a 'with' statement. Instance-attribute type tracking can launder the
+# instance out of the field, but this must not be reported.
+class HoldsCM(object):
+
+    def __init__(self):
+        self.f = CM()
+
+    def no_with_attribute(self):
+        try:
+            self.f.write("Hello ")
+            self.f.write(" World\n")
+        finally:
+            self.f.close()  # No alert: re-exposes a field, not a local resource.
 
 #Assert without side-effect
 def assert_ok(seq):
@@ -174,3 +190,47 @@ def assert_ok(seq):
 # False positive. ODASA-8042. Fixed in PR #2401.
 class false_positive:
     e = (x for x in [])
+
+# In class-level scope `locals()` reflects the class namespace,
+# so modifications do take effect.
+class MyClass:
+    locals()['x'] = 43  # OK
+    y = x
+
+
+# Once a `locals()` dictionary is passed out of the scope that created it, it is
+# just an ordinary mapping. Modifying it in a different scope is meaningful and
+# effective, so these modifications must NOT be flagged: the "no effect on local
+# variables" gotcha only applies within the scope that called `locals()`.
+def modify_passed_dict(ns):
+    ns['k'] = 1  # OK: `ns` is a parameter here, not this scope's locals()
+    ns.update({'j': 2})  # OK
+    ns.pop('k')  # OK
+    del ns['j']  # OK
+    ns.clear()  # OK
+
+
+def pass_locals_to_function():
+    y = 1
+    modify_passed_dict(locals())
+    return y
+
+
+# The same situation, but where the `locals()` dictionary is laundered through an
+# instance attribute (as instance-attribute type tracking now models). These must
+# also not be flagged.
+class NamespaceHolder(object):
+
+    def __init__(self, ns):
+        self.ns = ns
+
+    def populate(self):
+        self.ns['extra'] = 1  # OK: different scope from the `locals()` call
+        self.ns.update({'more': 2})  # OK
+
+
+def launder_locals_through_instance():
+    x = 1
+    holder = NamespaceHolder(locals())
+    holder.populate()
+    return x

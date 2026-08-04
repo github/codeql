@@ -1,1 +1,2 @@
-Likely Bugs/Likely Typos/ShortCircuitBitMask.ql
+query: Likely Bugs/Likely Typos/ShortCircuitBitMask.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

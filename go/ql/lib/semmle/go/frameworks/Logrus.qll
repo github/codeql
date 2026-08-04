@@ -1,4 +1,6 @@
 /** Provides models of commonly used functions in the `github.com/sirupsen/logrus` package. */
+overlay[local?]
+module;
 
 import go
 
@@ -24,6 +26,12 @@ module Logrus {
       exists(string name | name = getALogResultName() or name = getAnEntryUpdatingMethodName() |
         this.hasQualifiedName(packagePath(), name) or
         this.(Method).hasQualifiedName(packagePath(), ["Entry", "Logger"], name)
+      )
+    }
+
+    override predicate mayReturnNormally() {
+      not exists(string level, string suffix | level = ["Fatal", "Panic"] |
+        this.getName() = level + suffix
       )
     }
   }

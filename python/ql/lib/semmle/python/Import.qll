@@ -17,6 +17,10 @@ private predicate valid_module_name(string name) {
   exists(Module m | m.getName() = name)
   or
   exists(Builtin cmod | cmod.getClass() = Builtin::special("ModuleType") and cmod.getName() = name)
+  or
+  // Namespace packages may not have a corresponding Module entity,
+  // but their names are still valid for the purpose of import resolution.
+  name = moduleNameFromFile(any(Folder f))
 }
 
 /** An artificial expression representing an import */
@@ -159,7 +163,7 @@ class ImportMember extends ImportMember_ {
     result = this.getModule().(ImportExpr).getImportedModuleName() + "." + this.getName()
   }
 
-  override ImportMemberNode getAFlowNode() { result = super.getAFlowNode() }
+  deprecated override ImportMemberNode getAFlowNode() { result = super.getAFlowNode() }
 }
 
 /** An import statement */

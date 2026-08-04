@@ -18,12 +18,12 @@ int main()
 				{
 				}
 
-				for (s1.b = 0; s1.b < 10; s1.b++) // BAD: same loop variable as a surrounding loop
+				for (s1.b = 0; s1.b < 10; s1.b++) // $ Alert[cpp/nested-loops-with-same-variable] // BAD: same loop variable as a surrounding loop
 				{
 				}
 
 				s2.b++; // GOOD
-				s1.b++; // BAD: modifies loop counter of a surrounding loop
+				s1.b++; // $ Alert[cpp/loop-variable-changed] // BAD: modifies loop counter of a surrounding loop
 			}
 		}
 	}

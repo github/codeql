@@ -1,3 +1,57 @@
+## 2.4.2
+
+No user-facing changes.
+
+## 2.4.1
+
+No user-facing changes.
+
+## 2.4.0
+
+### New Queries
+
+* Added a new query, `js/system-prompt-injection`, to detect cases where untrusted, user-provided values flow into the system prompt of an AI model, allowing an attacker to manipulate the model's behavior.
+* Added a new experimental query, `javascript/ssrf-ipv6-transition-incomplete-guard`, to detect SSRF host-validation guards that reject private IPv4 ranges but fail to unwrap IPv6-transition forms (IPv4-mapped `::ffff:`, NAT64 `64:ff9b::`, 6to4 `2002::`), allowing the guard to be bypassed by wrapping an internal IPv4 address in a transition literal.
+
+## 2.3.11
+
+No user-facing changes.
+
+## 2.3.10
+
+No user-facing changes.
+
+## 2.3.9
+
+No user-facing changes.
+
+## 2.3.8
+
+### Minor Analysis Improvements
+
+* The query `js/missing-rate-limiting` now takes Fastify per-route
+  rate limiting into account.
+
+## 2.3.7
+
+No user-facing changes.
+
+## 2.3.6
+
+No user-facing changes.
+
+## 2.3.5
+
+No user-facing changes.
+
+## 2.3.4
+
+No user-facing changes.
+
+## 2.3.3
+
+No user-facing changes.
+
 ## 2.3.2
 
 No user-facing changes.

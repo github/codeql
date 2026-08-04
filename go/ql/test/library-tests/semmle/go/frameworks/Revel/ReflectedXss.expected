@@ -1,16 +1,16 @@
 #select
-| EndToEnd.go:37:24:37:26 | buf | EndToEnd.go:36:18:36:25 | selection of Params | EndToEnd.go:37:24:37:26 | buf | Cross-site scripting vulnerability due to $@. | EndToEnd.go:36:18:36:25 | selection of Params | user-provided value | EndToEnd.go:0:0:0:0 | EndToEnd.go |  |
-| EndToEnd.go:69:22:69:51 | call to Get | EndToEnd.go:69:22:69:29 | selection of Params | EndToEnd.go:69:22:69:51 | call to Get | Cross-site scripting vulnerability due to $@. | EndToEnd.go:69:22:69:29 | selection of Params | user-provided value | EndToEnd.go:0:0:0:0 | EndToEnd.go |  |
+| EndToEnd.go:38:24:38:26 | buf | EndToEnd.go:37:18:37:25 | selection of Params | EndToEnd.go:38:24:38:26 | buf | Cross-site scripting vulnerability due to $@. | EndToEnd.go:37:18:37:25 | selection of Params | user-provided value | EndToEnd.go:0:0:0:0 | EndToEnd.go |  |
+| EndToEnd.go:70:22:70:51 | call to Get | EndToEnd.go:70:22:70:29 | selection of Params | EndToEnd.go:70:22:70:51 | call to Get | Cross-site scripting vulnerability due to $@. | EndToEnd.go:70:22:70:29 | selection of Params | user-provided value | EndToEnd.go:0:0:0:0 | EndToEnd.go |  |
 | Revel.go:70:22:70:35 | selection of Query | Revel.go:70:22:70:29 | selection of Params | Revel.go:70:22:70:35 | selection of Query | Cross-site scripting vulnerability due to $@. The value is $@. | Revel.go:70:22:70:29 | selection of Params | user-provided value | views/myAppController/rawRead.html:1:1:2:9 | {{raw .Foo}}\n{{.Bar}}\n | instantiated as a raw template |
 | examples/booking/app/init.go:36:44:36:53 | selection of Path | examples/booking/app/init.go:36:44:36:48 | selection of URL | examples/booking/app/init.go:36:44:36:53 | selection of Path | Cross-site scripting vulnerability due to $@. | examples/booking/app/init.go:36:44:36:48 | selection of URL | user-provided value | examples/booking/app/init.go:0:0:0:0 | examples/booking/app/init.go |  |
 | examples/booking/app/init.go:40:49:40:58 | selection of Path | examples/booking/app/init.go:40:49:40:53 | selection of URL | examples/booking/app/init.go:40:49:40:58 | selection of Path | Cross-site scripting vulnerability due to $@. | examples/booking/app/init.go:40:49:40:53 | selection of URL | user-provided value | examples/booking/app/init.go:0:0:0:0 | examples/booking/app/init.go |  |
 edges
-| EndToEnd.go:36:2:36:4 | buf [postupdate] | EndToEnd.go:37:24:37:26 | buf | provenance |  |
-| EndToEnd.go:36:18:36:25 | selection of Params | EndToEnd.go:36:18:36:30 | selection of Form | provenance | Src:MaD:1  |
-| EndToEnd.go:36:18:36:30 | selection of Form | EndToEnd.go:36:18:36:47 | call to Get | provenance | MaD:4 |
-| EndToEnd.go:36:18:36:47 | call to Get | EndToEnd.go:36:2:36:4 | buf [postupdate] | provenance | MaD:3 |
-| EndToEnd.go:69:22:69:29 | selection of Params | EndToEnd.go:69:22:69:34 | selection of Form | provenance | Src:MaD:1  |
-| EndToEnd.go:69:22:69:34 | selection of Form | EndToEnd.go:69:22:69:51 | call to Get | provenance | MaD:4 |
+| EndToEnd.go:37:2:37:4 | buf [postupdate] | EndToEnd.go:38:24:38:26 | buf | provenance |  |
+| EndToEnd.go:37:18:37:25 | selection of Params | EndToEnd.go:37:18:37:30 | selection of Form | provenance | Src:MaD:1  |
+| EndToEnd.go:37:18:37:30 | selection of Form | EndToEnd.go:37:18:37:47 | call to Get | provenance | MaD:4 |
+| EndToEnd.go:37:18:37:47 | call to Get | EndToEnd.go:37:2:37:4 | buf [postupdate] | provenance | MaD:3 |
+| EndToEnd.go:70:22:70:29 | selection of Params | EndToEnd.go:70:22:70:34 | selection of Form | provenance | Src:MaD:1  |
+| EndToEnd.go:70:22:70:34 | selection of Form | EndToEnd.go:70:22:70:51 | call to Get | provenance | MaD:4 |
 | Revel.go:70:22:70:29 | selection of Params | Revel.go:70:22:70:35 | selection of Query | provenance | Src:MaD:1  |
 | examples/booking/app/init.go:36:44:36:48 | selection of URL | examples/booking/app/init.go:36:44:36:53 | selection of Path | provenance | Src:MaD:2  |
 | examples/booking/app/init.go:40:49:40:53 | selection of URL | examples/booking/app/init.go:40:49:40:58 | selection of Path | provenance | Src:MaD:2  |
@@ -20,14 +20,14 @@ models
 | 3 | Summary: io; StringWriter; true; WriteString; ; ; Argument[0]; Argument[receiver]; taint; manual |
 | 4 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
 nodes
-| EndToEnd.go:36:2:36:4 | buf [postupdate] | semmle.label | buf [postupdate] |
-| EndToEnd.go:36:18:36:25 | selection of Params | semmle.label | selection of Params |
-| EndToEnd.go:36:18:36:30 | selection of Form | semmle.label | selection of Form |
-| EndToEnd.go:36:18:36:47 | call to Get | semmle.label | call to Get |
-| EndToEnd.go:37:24:37:26 | buf | semmle.label | buf |
-| EndToEnd.go:69:22:69:29 | selection of Params | semmle.label | selection of Params |
-| EndToEnd.go:69:22:69:34 | selection of Form | semmle.label | selection of Form |
-| EndToEnd.go:69:22:69:51 | call to Get | semmle.label | call to Get |
+| EndToEnd.go:37:2:37:4 | buf [postupdate] | semmle.label | buf [postupdate] |
+| EndToEnd.go:37:18:37:25 | selection of Params | semmle.label | selection of Params |
+| EndToEnd.go:37:18:37:30 | selection of Form | semmle.label | selection of Form |
+| EndToEnd.go:37:18:37:47 | call to Get | semmle.label | call to Get |
+| EndToEnd.go:38:24:38:26 | buf | semmle.label | buf |
+| EndToEnd.go:70:22:70:29 | selection of Params | semmle.label | selection of Params |
+| EndToEnd.go:70:22:70:34 | selection of Form | semmle.label | selection of Form |
+| EndToEnd.go:70:22:70:51 | call to Get | semmle.label | call to Get |
 | Revel.go:70:22:70:29 | selection of Params | semmle.label | selection of Params |
 | Revel.go:70:22:70:35 | selection of Query | semmle.label | selection of Query |
 | examples/booking/app/init.go:36:44:36:48 | selection of URL | semmle.label | selection of URL |

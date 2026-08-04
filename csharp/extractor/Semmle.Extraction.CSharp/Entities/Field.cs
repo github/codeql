@@ -116,9 +116,9 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var type = Symbol.GetAnnotatedType();
             var simpleAssignExpr = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.SIMPLE_ASSIGN, this, child++, isCompilerGenerated: true, constValue));
-            Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer, simpleAssignExpr, 0));
-            var access = new Expression(new ExpressionInfo(Context, type, Location, ExprKind.FIELD_ACCESS, simpleAssignExpr, 1, isCompilerGenerated: true, constValue));
+            var access = new Expression(new ExpressionInfo(Context, type, Location, ExprKind.FIELD_ACCESS, simpleAssignExpr, 0, isCompilerGenerated: true, constValue));
             trapFile.expr_access(access, this);
+            Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer, simpleAssignExpr, 1));
             return access;
         }
 

@@ -1,3 +1,62 @@
+## 1.8.7
+
+No user-facing changes.
+
+## 1.8.6
+
+No user-facing changes.
+
+## 1.8.5
+
+### Minor Analysis Improvements
+
+* The `py/modification-of-locals` query no longer flags modifications of a `locals()` dictionary that has been passed out of the scope in which `locals()` was called (for example, by passing it to another function or storing it in an instance attribute). In such cases the dictionary is used as an ordinary mapping and modifying it is meaningful, so these were false positives. The "modification has no effect" claim only applies within the scope that called `locals()`, which is now the only case reported.
+
+## 1.8.4
+
+No user-facing changes.
+
+## 1.8.3
+
+No user-facing changes.
+
+## 1.8.2
+
+No user-facing changes.
+
+## 1.8.1
+
+### Minor Analysis Improvements
+
+- The `py/bind-socket-all-network-interfaces` query now uses the global data-flow library, leading to better precision and more results. Also, wrappers of `socket.socket` in the `eventlet` and `gevent` libraries are now also recognized as socket binding operations.
+
+## 1.8.0
+
+### Query Metadata Changes
+
+* The `@security-severity` metadata of `py/log-injection` has been reduced from 7.8 (high) to 6.1 (medium).
+* The `@security-severity` metadata of `py/jinja2/autoescape-false` and `py/reflective-xss` has been increased from 6.1 (medium) to 7.8 (high).
+
+### Major Analysis Improvements
+
+- Several quality queries have been ported away from using the legacy points-to library. This may lead to changes in alerts.
+
+## 1.7.11
+
+No user-facing changes.
+
+## 1.7.10
+
+No user-facing changes.
+
+## 1.7.9
+
+No user-facing changes.
+
+## 1.7.8
+
+No user-facing changes.
+
 ## 1.7.7
 
 No user-facing changes.

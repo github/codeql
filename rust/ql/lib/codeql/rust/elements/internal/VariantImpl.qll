@@ -32,6 +32,12 @@ module Impl {
       result.getName().getText() = name
     }
 
+    /** Gets the `i`th struct field, if any. */
+    pragma[nomagic]
+    StructField getNthStructField(int i) {
+      result = this.getFieldList().(StructFieldList).getField(i)
+    }
+
     /** Gets the `i`th tuple field, if any. */
     pragma[nomagic]
     TupleField getTupleField(int i) { result = this.getFieldList().(TupleFieldList).getField(i) }

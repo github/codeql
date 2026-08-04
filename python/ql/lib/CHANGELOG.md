@@ -1,3 +1,88 @@
+## 7.2.2
+
+No user-facing changes.
+
+## 7.2.1
+
+### Minor Analysis Improvements
+
+* `Flask::FlaskApp::instance()` will now also return instances of subclasses defined in the source tree. Previously, these were filtered out. `Flask::FlaskApp::classRef()` has been deprecated in favor of `Flask::FlaskApp::subclassRef()` since it already returned some subclasses.
+
+## 7.2.0
+
+### Deprecated APIs
+
+* The `Function.getAReturnValueFlowNode()` predicate has been deprecated. Bind a `Return` node explicitly instead — `exists(Return ret | ret.getScope() = f and n.getNode() = ret.getValue())`. This is a preparatory step towards migrating the dataflow library off the legacy CFG; it has no semantic effect.
+* The `AstNode.getAFlowNode()` predicate has been deprecated. Use `ControlFlowNode.getNode()` from the other direction instead: replace `e.getAFlowNode() = n` with `n.getNode() = e`. This is a preparatory step towards migrating the dataflow library off the legacy CFG; it has no semantic effect.
+
+### Minor Analysis Improvements
+
+* Python type tracking now follows values stored in instance attributes such as `self.attr` across instance methods, including across a class hierarchy (for example, a value stored on `self.attr` in a base class and read in a subclass, or vice versa). As a result, analysis is more likely to recognize user-defined objects that are stored on `self` and used later in other methods, which may produce additional results.
+* Simplified the internal predicates that detect `@staticmethod`, `@classmethod` and `@property` decorators to match the decorator's AST `Name` directly, rather than going through the CFG and requiring the name to resolve globally. Code that shadows these three builtin decorators at the module-scope will now be classified by the decorator name alone; in practice, shadowing these names is extremely rare and the call-graph results are unchanged.
+* Python taint tracking is now more precise for values flowing through container contents, such as list, set, tuple, and dictionary elements. This may remove some false positive alerts.
+
+## 7.1.2
+
+### Minor Analysis Improvements
+
+* The sensitive data heuristics used to identify code that handles passwords and private data have been improved. Most of the changes permit more variations of established patterns, thereby finding more sensitive data. Queries that use the sensitive data library (for example `py/clear-text-logging-sensitive-data`) may find more correct results and fewer false positive results after these changes.
+
+## 7.1.1
+
+No user-facing changes.
+
+## 7.1.0
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for Python](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-python/).
+
+### Minor Analysis Improvements
+
+- The Python extractor now supports unpacking in comprehensions, e.g. `[*x for x in nested]` (as defined in [PEP-798](https://peps.python.org/pep-0798/)) that will be part of Python 3.15.
+
+## 7.0.5
+
+### Minor Analysis Improvements
+
+- The Python extractor now supports the new `lazy import ...` and `lazy from ... import ...` (as defined in [PEP-810](https://peps.python.org/pep-0810/)) that will be part of Python 3.15.
+
+## 7.0.4
+
+### Bug Fixes
+
+- Fixed the resolution of relative imports such as `from . import helper` inside namespace packages (directories without an `__init__.py` file), which previously did not work correctly, leading to missing flow.
+
+## 7.0.3
+
+No user-facing changes.
+
+## 7.0.2
+
+No user-facing changes.
+
+## 7.0.1
+
+### Minor Analysis Improvements
+
+- The call graph resolution no longer considers methods marked using [`@typing.overload`](https://typing.python.org/en/latest/spec/overload.html#overloads) as valid targets. This ensures that only the method that contains the actual implementation gets resolved as a target.
+* Inline expectations test comments, which are of the form `# $ tag` or `# $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 7.0.0
+
+### Breaking Changes
+
+- The `Metrics` library no longer contains code that depends on the points-to analysis. The removed functionality has instead been moved to the `LegacyPointsTo` module, to classes like `ModuleMetricsWithPointsTo` etc. If you depend on any of these classes, you must now remember to import `LegacyPointsTo`, and use the appropriate types in order to use the points-to-based functionality.
+
+### Major Analysis Improvements
+
+- The CodeQL Python libraries have been updated to be compatible with overlay evaluation. This should result in a significant speedup on analyses for which a base database already exists. Note that it may be necessary to add `overlay[local?] module;` to user-managed libraries that extend classes that are now marked as `overlay[local]`.
+
+### Minor Analysis Improvements
+
+* Added new full SSRF sanitization barrier from the new AntiSSRF library. 
+* When a guard such as `isSafe(x)` is defined, we now also automatically handle `isSafe(x) == true` and `isSafe(x) != false`.
+
 ## 6.1.1
 
 ### Minor Analysis Improvements
@@ -7,7 +92,7 @@
 
 ### Bug Fixes
 
-- Using `=` as a fill character in a format specifier (e.g `f"{x:=^20}"`) now no longer results in a syntax error during parsing.
+- Using `=` as a fill character in a format specifier (e.g. `f"{x:=^20}"`) now no longer results in a syntax error during parsing.
 
 ## 6.1.0
 

@@ -4,6 +4,6 @@ class Bad
 {
     void M()
     {
-        GC.Collect();
+        GC.Collect(); // $ Alert
     }
 }

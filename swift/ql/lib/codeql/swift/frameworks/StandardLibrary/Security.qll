@@ -1,5 +1,5 @@
 /**
- * Provides models for standard library Swift classses related to security
+ * Provides models for standard library Swift classes related to security
  * (certificate, key and trust services).
  */
 

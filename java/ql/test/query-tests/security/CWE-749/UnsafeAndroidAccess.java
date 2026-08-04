@@ -31,7 +31,7 @@ public class UnsafeAndroidAccess extends Activity {
 		});
 
 		String thisUrl = getIntent().getExtras().getString("url");
-		wv.loadUrl(thisUrl); // $hasUnsafeAndroidAccess
+		wv.loadUrl(thisUrl); // $ hasUnsafeAndroidAccess
 	}
 
 	// Test onCreate with both JavaScript and cross-origin resource access enabled while taking
@@ -55,7 +55,7 @@ public class UnsafeAndroidAccess extends Activity {
 		});
 
 		String thisUrl = getIntent().getStringExtra("url");
-		wv.loadUrl(thisUrl); // $hasUnsafeAndroidAccess
+		wv.loadUrl(thisUrl); // $ hasUnsafeAndroidAccess
 	}
 
 	// Test onCreate with both JavaScript and cross-origin resource access disabled by default while
@@ -99,7 +99,7 @@ public class UnsafeAndroidAccess extends Activity {
 		});
 
 		String thisUrl = getIntent().getStringExtra("url");
-		wv.loadUrl(thisUrl); // $hasUnsafeAndroidAccess
+		wv.loadUrl(thisUrl); // $ hasUnsafeAndroidAccess
 	}
 
 	// Test onCreate with both JavaScript and cross-origin resource access enabled while not taking

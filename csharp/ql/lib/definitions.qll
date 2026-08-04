@@ -96,7 +96,7 @@ private class MethodUse extends Use, QualifiableExpr {
 private class AccessUse extends Access, Use {
   AccessUse() {
     not this.getTarget().(Parameter).getCallable() instanceof Accessor and
-    not this = any(LocalVariableDeclAndInitExpr d).getLValue() and
+    not this = any(LocalVariableDeclAndInitExpr d).getLeftOperand() and
     not this.isImplicit() and
     not this instanceof MethodAccess and // handled by `MethodUse`
     not this instanceof TypeAccess and // handled by `TypeMentionUse`

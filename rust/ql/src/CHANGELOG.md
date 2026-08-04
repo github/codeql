@@ -1,3 +1,58 @@
+## 0.1.39
+
+No user-facing changes.
+
+## 0.1.38
+
+### Minor Analysis Improvements
+
+* The `rust/hard-coded-cryptographic-value` query now treats arithmetic and bitwise operations, including string append operations, as barriers. This addresses false positive results where hard-coded constants are combined with non-constant data, such as incrementing a nonce or appending variable data to a constant prefix.
+
+## 0.1.37
+
+No user-facing changes.
+
+## 0.1.36
+
+No user-facing changes.
+
+## 0.1.35
+
+No user-facing changes.
+
+## 0.1.34
+
+No user-facing changes.
+
+## 0.1.33
+
+No user-facing changes.
+
+## 0.1.32
+
+### Query Metadata Changes
+
+* The `@security-severity` metadata of `rust/log-injection` has been increased from 2.6 (low) to 6.1 (medium).
+* The `@security-severity` metadata of `rust/xss` has been increased from 6.1 (medium) to 7.8 (high).
+
+## 0.1.31
+
+No user-facing changes.
+
+## 0.1.30
+
+No user-facing changes.
+
+## 0.1.29
+
+No user-facing changes.
+
+## 0.1.28
+
+### Minor Analysis Improvements
+
+* The macro resolution metric has been removed from `rust/diagnostic/database-quality`. This metric was found to be an unreliable indicator of database quality in many cases, leading to false alarms on the tool status page.
+
 ## 0.1.27
 
 No user-facing changes.

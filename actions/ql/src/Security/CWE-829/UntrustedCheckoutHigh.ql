@@ -1,5 +1,5 @@
 /**
- * @name Checkout of untrusted code in trusted context
+ * @name Checkout of untrusted code in a privileged context
  * @description Privileged workflows have read/write access to the base repository and access to secrets.
  *              By explicitly checking out and running the build script from a fork the untrusted code is running in an environment
  *              that is able to push to the base repository and to access secrets.
@@ -34,13 +34,14 @@ where
         check instanceof AssociationCheck or
         check instanceof PermissionCheck
       ) and
-      check.dominates(checkout) and
-      date_check.dominates(checkout)
+      check.dominates(checkout, event) and
+      date_check.dominates(checkout, event)
     )
     or
     // not issue_comment triggered workflows
     not event.getName() = "issue_comment" and
     not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout"))
   )
-select checkout, "Potential execution of untrusted code on a privileged workflow ($@)", event,
-  event.getName()
+select checkout,
+  "Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@).",
+  event, event.getName()

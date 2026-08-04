@@ -164,8 +164,8 @@ closures.swift:
 #   31|                   getArgument(0): [Argument] : ... .!=(_:_:) ...
 #   31|                     getExpr(): [BinaryExpr] ... .!=(_:_:) ...
 #   31|                       getFunction(): [MethodLookupExpr] .!=(_:_:)
-#   31|                         getBase(): [TypeExpr] Optional<Int>.Type
-#   31|                           getTypeRepr(): [TypeRepr] Optional<Int>
+#   31|                         getBase(): [TypeExpr] Int?.Type
+#   31|                           getTypeRepr(): [TypeRepr] Int?
 #   31|                         getMethodRef(): [DeclRefExpr] !=(_:_:)
 #   31|                       getArgument(0): [Argument] : x
 #   31|                         getExpr(): [DeclRefExpr] x

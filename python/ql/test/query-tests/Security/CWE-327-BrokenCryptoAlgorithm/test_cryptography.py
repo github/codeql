@@ -10,7 +10,7 @@ cipher = Cipher(algorithm, mode=None)
 secret_message = b"secret message"
 
 encryptor = cipher.encryptor()
-encrypted = encryptor.update(secret_message) # NOT OK
+encrypted = encryptor.update(secret_message) # $ Alert # NOT OK
 encrypted += encryptor.finalize()
 
 print(secret_message, encrypted)
@@ -19,7 +19,7 @@ algorithm = algorithms.AES(key)
 cipher = Cipher(algorithm, mode=modes.ECB())
 
 encryptor = cipher.encryptor()
-encrypted = encryptor.update(secret_message + b'\x80\x00') # NOT OK
+encrypted = encryptor.update(secret_message + b'\x80\x00') # $ Alert # NOT OK
 encrypted += encryptor.finalize()
 
 print(secret_message, encrypted)

@@ -9,5 +9,5 @@
 import csharp
 
 from IntegerLiteral literal
-where literal.getValue().toInt() = 0
+where literal.getIntValue() = 0
 select literal

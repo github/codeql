@@ -6,6 +6,6 @@ public class AndroidExposedObject {
 
     @JavascriptInterface
     public void test(String arg) {
-        sink(arg); // $hasRemoteValueFlow
+        sink(arg); // $ hasRemoteValueFlow
     }
 }

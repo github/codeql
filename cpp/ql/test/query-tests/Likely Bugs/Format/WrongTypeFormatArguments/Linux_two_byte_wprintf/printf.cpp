@@ -40,12 +40,12 @@ void test2() {
 void test3() {
 	char string[20];
 
-	sprintf(string, "test %s", u"test"); // BAD: `char16_t` string parameter read as `char` string
+	sprintf(string, "test %s", u"test"); // $ Alert // BAD: `char16_t` string parameter read as `char` string
 }
 
 
 void test4() {
 	char string[20];
 
-	sprintf(string, "test %S", L"test"); // BAD: `wchar_t` string parameter read as `char16_t` string
+	sprintf(string, "test %S", L"test"); // $ Alert // BAD: `wchar_t` string parameter read as `char16_t` string
 }

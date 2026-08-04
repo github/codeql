@@ -5,13 +5,13 @@ class Test
     void Test1(string[] args)
     {
         // BAD: Loop upper bound is off-by-one
-        for (int i = 0; i <= args.Length; i++)
+        for (int i = 0; i <= args.Length; i++) // $ Alert
         {
             Console.WriteLine(args[i]);
         }
 
         // BAD: Loop upper bound is off-by-one
-        for (int i = 0; args.Length >= i; i++)
+        for (int i = 0; args.Length >= i; i++) // $ Alert
         {
             Console.WriteLine(args[i]);
         }
@@ -24,13 +24,13 @@ class Test
 
         int j = 0;
         // BAD: Off-by-one on index validity check
-        if (j <= args.Length)
+        if (j <= args.Length) // $ Alert
         {
             Console.WriteLine(args[j]);
         }
 
         // BAD: Off-by-one on index validity check
-        if (args.Length >= j)
+        if (args.Length >= j) // $ Alert
         {
             Console.WriteLine(args[j]);
         }

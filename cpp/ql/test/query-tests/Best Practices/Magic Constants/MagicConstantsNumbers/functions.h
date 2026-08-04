@@ -1,6 +1,6 @@
 
 int myFunction1(int x =
-	102 + 102 + 102 +
+	102 + 102 + 102 + // $ Alert
 	102 + 102 + 102 +
 	102 + 102 + 102 +
 	102 + 102 + 102 +
@@ -9,7 +9,7 @@ int myFunction1(int x =
 	102 + 102 + 102);
 
 void myFunction2(
-	int p1 = 103,
+	int p1 = 103, // $ Alert
 	int p2 = 103,
 	int p3 = 103,
 	int p4 = 103,

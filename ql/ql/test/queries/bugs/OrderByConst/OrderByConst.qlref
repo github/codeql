@@ -1,1 +1,2 @@
-queries/bugs/OrderByConst.ql
+query: queries/bugs/OrderByConst.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

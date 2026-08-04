@@ -5,9 +5,9 @@ class TestController < ActionController::Base
   def tarReaderUnsafe
     path = params[:path]
     file_stream = IO.new(IO.sysopen(path))
-    tarfile = Gem::Package::TarReader.new(file_stream)
+    tarfile = Gem::Package::TarReader.new(file_stream) # $ Source
     tarfile.each do |entry|
-      ::File.open(entry.full_name, "wb") do |os|
+      ::File.open(entry.full_name, "wb") do |os| # $ Alert
         entry.read
       end
     end
@@ -17,9 +17,9 @@ class TestController < ActionController::Base
   def tarReaderBlockUnsafe
     path = params[:path]
     file_stream = IO.new(IO.sysopen(path))
-    Gem::Package::TarReader.new(file_stream) do |tarfile|
+    Gem::Package::TarReader.new(file_stream) do |tarfile| # $ Source
       tarfile.each_entry do |entry|
-        ::File.open(entry.full_name, "wb") do |os|
+        ::File.open(entry.full_name, "wb") do |os| # $ Alert
           entry.read
         end
       end
@@ -43,8 +43,8 @@ class TestController < ActionController::Base
   # BAD
   def zipFileUnsafe
     path = params[:path]
-    Zip::File.open(path).each do |entry|
-      File.open(entry.name, "wb") do |os|
+    Zip::File.open(path).each do |entry| # $ Source
+      File.open(entry.name, "wb") do |os| # $ Alert
         entry.read
       end
     end
@@ -53,9 +53,9 @@ class TestController < ActionController::Base
   # BAD
   def zipFileBlockUnsafe
     path = params[:path]
-    Zip::File.open(path) do |zip_file|
+    Zip::File.open(path) do |zip_file| # $ Source
       zip_file.each do |entry|
-        File.open(entry.name, "wb") do |os|
+        File.open(entry.name, "wb") do |os| # $ Alert
           entry.read
         end
       end
@@ -87,7 +87,7 @@ class TestController < ActionController::Base
   end
   
   def get_compressed_file_stream(compressed_file_path)
-    gzip = Zlib::GzipReader.open(compressed_file_path)
+    gzip = Zlib::GzipReader.open(compressed_file_path) # $ Source
     yield(gzip)
   end
   
@@ -97,7 +97,7 @@ class TestController < ActionController::Base
     get_compressed_file_stream(path) do |compressed_file|
       compressed_file.each do |entry|
         entry_path = entry.full_name
-        ::File.open(entry_path, 'wb') do |os|
+        ::File.open(entry_path, 'wb') do |os| # $ Alert
           entry.read
         end
       end
@@ -120,10 +120,10 @@ class TestController < ActionController::Base
   def gzipReaderUnsafeNewInstance
     path = params[:path]
     File.open(path, 'rb') do |f|
-      gz = Zlib::GzipReader.new(f)
+      gz = Zlib::GzipReader.new(f) # $ Source
       gz.each do |entry|
         entry_path = entry.full_name
-        ::File.open(entry_path, 'wb') do |os|
+        ::File.open(entry_path, 'wb') do |os| # $ Alert
           entry.read
         end
       end

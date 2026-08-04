@@ -84,9 +84,9 @@ where
   not f.getDeclaringType() instanceof Enum and
   not f.getType() instanceof Struct and
   not exists(Assignment ae, Field g |
-    ae.getLValue().(FieldAccess).getTarget() = g and
+    ae.getLeftOperand().(FieldAccess).getTarget() = g and
     g.getUnboundDeclaration() = f and
-    not ae.getRValue() instanceof NullLiteral
+    not ae.getRightOperand() instanceof NullLiteral
   ) and
   not exists(MethodCall mc, int i, Field g |
     exists(Parameter p | mc.getTarget().getParameter(i) = p | p.isOut() or p.isRef()) and
@@ -101,7 +101,7 @@ where
     not init instanceof NullLiteral
   ) and
   not exists(AssignOperation ua, Field g |
-    ua.getLValue().(FieldAccess).getTarget() = g and
+    ua.getLeftOperand().(FieldAccess).getTarget() = g and
     g.getUnboundDeclaration() = f
   ) and
   not exists(MutatorOperation op |

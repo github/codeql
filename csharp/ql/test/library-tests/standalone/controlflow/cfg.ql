@@ -11,6 +11,6 @@ class UnknownCall extends Call {
   override string toString() { result = "Call (unknown target)" }
 }
 
-query predicate edges(ControlFlow::Node n1, ControlFlow::Node n2) {
+query predicate edges(ControlFlowNode n1, ControlFlowNode n2) {
   not n1.getAstNode().fromLibrary() and n2 = n1.getASuccessor()
 }

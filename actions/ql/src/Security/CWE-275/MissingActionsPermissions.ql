@@ -26,10 +26,23 @@ string permissionsForJob(Job job) {
     "{" + concat(string permission | permission = jobNeedsPermission(job) | permission, ", ") + "}"
 }
 
+predicate jobHasPermissions(Job job) {
+  exists(job.getPermissions())
+  or
+  exists(job.getEnclosingWorkflow().getPermissions())
+  or
+  // The workflow is reusable and cannot be triggered in any other way; check callers
+  exists(ReusableWorkflow r | r = job.getEnclosingWorkflow() |
+    not exists(Event e | e = r.getOn().getAnEvent() | e.getName() != "workflow_call") and
+    forall(Job caller | caller = job.getEnclosingWorkflow().(ReusableWorkflow).getACaller() |
+      jobHasPermissions(caller)
+    )
+  )
+}
+
 from Job job, string permissions
 where
-  not exists(job.getPermissions()) and
-  not exists(job.getEnclosingWorkflow().getPermissions()) and
+  not jobHasPermissions(job) and
   // exists a trigger event that is not a workflow_call
   exists(Event e |
     e = job.getATriggerEvent() and

@@ -11,8 +11,8 @@ public class SqlEncode
         var user = WebUtility.UrlDecode(ctx.Request.QueryString["user"]);
         using (var connection = new SqlConnection(""))
         {
-            var query = "select * from Users where Name='" + user.Replace("\"", "\"\"") + "'";
-            var adapter = new SqlDataAdapter(query, connection);
+            var query = "select * from Users where Name='" + user.Replace("\"", "\"\"") + "'"; // $ Source=r11
+            var adapter = new SqlDataAdapter(query, connection); // $ Alert=r11
             var result = new DataSet();
             adapter.Fill(result);
             return result;

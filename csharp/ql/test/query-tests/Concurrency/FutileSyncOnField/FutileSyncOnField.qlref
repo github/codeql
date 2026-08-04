@@ -1,1 +1,2 @@
-Concurrency/FutileSyncOnField.ql
+query: Concurrency/FutileSyncOnField.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

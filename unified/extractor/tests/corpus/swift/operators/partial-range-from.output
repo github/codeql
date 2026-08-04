@@ -1,0 +1,40 @@
+let range = 3...
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    postfixOperatorExpr
+                      expression:
+                        integerLiteralExpr
+                          literal: integerLiteral "3"
+                      operator: postfixOperator "..."
+              pattern:
+                identifierPattern
+                  identifier: identifier "range"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "range"
+          value: unsupported_node "3..."

@@ -33,7 +33,7 @@ public:
 	{
 		void *buffer_ptr = buffer;
 
-		p1 = new MyClassForPlacementNew(1); // BAD: not released
+		p1 = new MyClassForPlacementNew(1); // $ Alert // BAD: not released
 		p2 = new (std::nothrow) MyClassForPlacementNew(2); // BAD: not released [NOT DETECTED]
 		p3 = new (buffer_ptr) MyClassForPlacementNew(3); // GOOD: placement new, not an allocation
 	}

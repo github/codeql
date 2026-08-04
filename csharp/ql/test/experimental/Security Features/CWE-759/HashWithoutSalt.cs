@@ -15,9 +15,9 @@ public class Test
     // BAD - Hash without a salt.
     public static String HashPassword(string password, string strAlgName ="SHA256")
     {
-        IBuffer passBuff = CryptographicBuffer.ConvertStringToBinary(password, BinaryStringEncoding.Utf8);
+        IBuffer passBuff = CryptographicBuffer.ConvertStringToBinary(password, BinaryStringEncoding.Utf8); // $ Source
         HashAlgorithmProvider algProvider = HashAlgorithmProvider.OpenAlgorithm(strAlgName);
-        IBuffer hashBuff = algProvider.HashData(passBuff);
+        IBuffer hashBuff = algProvider.HashData(passBuff); // $ Alert
         return CryptographicBuffer.EncodeToBase64String(hashBuff);
     }
 
@@ -35,8 +35,8 @@ public class Test
     public static string HashPassword(string password)
     {
         SHA256 sha256Hash = SHA256.Create();
-        byte[] passBytes = System.Text.Encoding.ASCII.GetBytes(password);
-        byte[] hashBytes = sha256Hash.ComputeHash(passBytes);
+        byte[] passBytes = System.Text.Encoding.ASCII.GetBytes(password); // $ Source
+        byte[] hashBytes = sha256Hash.ComputeHash(passBytes); // $ Alert
         return Convert.ToBase64String(hashBytes);
     }
 
@@ -47,11 +47,11 @@ public class Test
         byte[] saltBytes = GenerateSalt();
 
         // Add the salt to the hash.
-        byte[] rawSalted  = new byte[passBytes.Length + saltBytes.Length]; 
+        byte[] rawSalted  = new byte[passBytes.Length + saltBytes.Length];
         passBytes.CopyTo(rawSalted, 0);
         saltBytes.CopyTo(rawSalted, passBytes.Length);
 
-        //Create the salted hash.         
+        //Create the salted hash.
         SHA256 sha256 = SHA256.Create();
         byte[] saltedPassBytes = sha256.ComputeHash(rawSalted);
 
@@ -67,8 +67,8 @@ public class Test
     public static string HashPassword3(string password)
     {
         HashAlgorithm hashAlg = new SHA256CryptoServiceProvider();
-        byte[] passBytes = System.Text.Encoding.ASCII.GetBytes(password);
-        byte[] hashBytes = hashAlg.ComputeHash(passBytes);
+        byte[] passBytes = System.Text.Encoding.ASCII.GetBytes(password); // $ Source
+        byte[] hashBytes = hashAlg.ComputeHash(passBytes); // $ Alert
         return Convert.ToBase64String(hashBytes);
     }
 
@@ -164,7 +164,7 @@ public class Test
         StringBuilder sb = new StringBuilder ();
         foreach (byte b in result)
             sb.Append (b.ToString ("x2"));
-        
+
         return sb.ToString ();
     }
 

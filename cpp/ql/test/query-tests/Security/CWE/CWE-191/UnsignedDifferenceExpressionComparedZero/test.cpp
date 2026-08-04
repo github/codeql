@@ -3,11 +3,11 @@ int getAnInt();
 bool cond();
 
 void test(unsigned x, unsigned y, bool unknown) {
-	if(x - y > 0) { } // BAD
+	if(x - y > 0) { } // $ Alert // BAD
 
 	unsigned total = getAnInt();
 	unsigned limit = getAnInt();
-	while(limit - total > 0) { // BAD
+	while(limit - total > 0) { // $ Alert // BAD
 		total += getAnInt();
 	}
 
@@ -59,7 +59,7 @@ void test(unsigned x, unsigned y, bool unknown) {
 		if(unknown) { ++y; }
 	}
 
-	if(x - y > 0) { } // GOOD [FALSE POSITIVE]
+	if(x - y > 0) { } // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE]
 
 	x = y;
 	while(cond()) {
@@ -72,7 +72,7 @@ void test(unsigned x, unsigned y, bool unknown) {
 	if (n > x - y) { n = x - y; }
 	if (n > 0) {
   	y += n; // NOTE: `n` is at most `x - y` at this point.
-  	if (x - y > 0) {} // GOOD [FALSE POSITIVE]
+  	if (x - y > 0) {} // $ SPURIOUS: Alert // GOOD [FALSE POSITIVE]
 	}
 }
 
@@ -98,7 +98,7 @@ void test4() {
 	unsigned int a = getAnInt();
 	unsigned int b = a + 1;
 
-	if (a - b > 0) { // BAD
+	if (a - b > 0) { // $ Alert // BAD
 		// ...
 	}
 }
@@ -125,7 +125,7 @@ void test7() {
 	unsigned int b = getAnInt();
 	unsigned int a = b - 1;
 
-	if (a - b > 0) { // BAD
+	if (a - b > 0) { // $ Alert // BAD
 		// ...
 	}
 }
@@ -134,7 +134,7 @@ void test8() {
 	unsigned int a = getAnInt();
 	unsigned int b = getAnInt();
 
-	if (a - b > 0) { // BAD
+	if (a - b > 0) { // $ Alert // BAD
 		// ...
 	}
 
@@ -143,13 +143,13 @@ void test8() {
 			// ...
 		}
 	} else {
-		if (a - b > 0) { // BAD
+		if (a - b > 0) { // $ Alert // BAD
 			// ...
 		}
 	}
 
 	if (b >= a) { // GOOD
-		if (a - b > 0) { // BAD
+		if (a - b > 0) { // $ Alert // BAD
 			// ...
 		}
 	} else {
@@ -179,7 +179,7 @@ void test9() {
 		b = 0;
 	}
 
-	if (a - b > 0) { // GOOD (as a >= b) [FALSE POSITIVE]
+	if (a - b > 0) { // $ SPURIOUS: Alert // GOOD (as a >= b) [FALSE POSITIVE]
 		// ...
 	}
 }
@@ -205,7 +205,7 @@ void test11() {
 
 	b = getAnInt();
 
-	if (a - b > 0) { // BAD
+	if (a - b > 0) { // $ Alert // BAD
 		// ...
 	}
 }
@@ -249,7 +249,7 @@ int test14() {
 		return 0;
 	} // b != 0
 
-	return (a - b > 0); // BAD
+	return (a - b > 0); // $ Alert // BAD
 }
 
 struct Numbers
@@ -263,7 +263,7 @@ int test15(Numbers *n) {
 		return 0;
 	}
 
-	return (n->a - n->b > 0); // BAD
+	return (n->a - n->b > 0); // $ Alert // BAD
 }
 
 int test16() {
@@ -273,7 +273,7 @@ int test16() {
 	if (!b) {
 		return 0;
 	} else {
-		return (a - b > 0); // BAD
+		return (a - b > 0); // $ Alert // BAD
 	}
 }
 
@@ -285,7 +285,7 @@ int test17() {
 		return 0;
 	} // b != 0
 
-	return (a - b > 0); // BAD
+	return (a - b > 0); // $ Alert // BAD
 }
 
 int test18() {
@@ -309,7 +309,7 @@ void test19() {
 	uint32_t limit = get_limit();
 	uint32_t total = 0;
 
-	while (limit - total > 0) { // BAD: if `total` is greater than `limit` this will underflow and continue executing the loop.
+	while (limit - total > 0) { // $ Alert // BAD: if `total` is greater than `limit` this will underflow and continue executing the loop.
 		total += get_data();
 	}
 
@@ -359,7 +359,7 @@ void test21(unsigned long a)
       if(a - b > 0) { } // GOOD
     }
     int64_t b = (int64_t)a + c;
-    if(a - b > 0) { } // BAD
+    if(a - b > 0) { } // $ Alert // BAD
   }
 
   {

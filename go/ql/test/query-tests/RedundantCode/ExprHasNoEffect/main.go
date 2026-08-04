@@ -23,10 +23,10 @@ func div(x int, y int) int {
 }
 
 func main() {
-	f1(42)     // NOT OK
+	f1(42)     // $ Alert // NOT OK
 	f2(42)     // OK
-	f1(f2(42)) // NOT OK
-	abs(-2)    // NOT OK
+	f1(f2(42)) // $ Alert // NOT OK
+	abs(-2)    // $ Alert // NOT OK
 	div(1, 0)  // OK
 	dostuff()  // OK
 	cleanup()  // OK

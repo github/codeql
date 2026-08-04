@@ -12,10 +12,12 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.ApiGraphs
 
 from CallNode call, string name
-where call.getFunction().(ControlFlowNodeWithPointsTo).pointsTo(Value::siteQuitter(name))
+where
+  name = ["exit", "quit"] and
+  call = API::builtin(name).getACall().asCfgNode()
 select call,
   "The '" + name +
     "' site.Quitter object may not exist if the 'site' module is not loaded or is modified."

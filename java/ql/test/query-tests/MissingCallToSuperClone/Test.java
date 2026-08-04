@@ -7,7 +7,7 @@ class IAmAGoodCloneable implements Cloneable {
 class Sub1 extends IAmAGoodCloneable { public Object clone() throws CloneNotSupportedException { return super.clone(); } }
 
 class IAmABadCloneable implements Cloneable {
-	public Object clone() {
+	public Object clone() { // $ Alert
 		return null;
 	}
 }

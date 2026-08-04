@@ -131,7 +131,7 @@ class SystemXmlSchemaXmlSchemaValidationFlags extends EnumConstant {
   }
 }
 
-private Expr getBitwiseOrOperand(Expr e) { result = e.(BitwiseOrExpr).getAnOperand() }
+private Expr getBitwiseOrOperand(Expr e) { result = e.(BitwiseOrOperation).getAnOperand() }
 
 /** A creation of an instance of `System.Xml.XmlReaderSettings`. */
 class XmlReaderSettingsCreation extends ObjectCreation {

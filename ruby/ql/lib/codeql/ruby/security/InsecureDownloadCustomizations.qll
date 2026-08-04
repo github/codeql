@@ -163,7 +163,7 @@ module InsecureDownload {
       //
       // ```rb
       // f = File.open("foo.exe")
-      // f.write(Excon.get(...).body) # $BAD=
+      // f.write(Excon.get(...).body) # $ BAD=
       // ```
       //
       // `f` is the `FileSystemAccess` and the call `f.write` is the `IO::FileWriter`.

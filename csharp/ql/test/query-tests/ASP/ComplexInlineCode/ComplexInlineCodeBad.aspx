@@ -15,6 +15,6 @@
   } else {
     ec.Emit (Response, OpCodes.Ldloca, builder);
   }
-%>
+%> <%-- $ Alert[cs/asp/complex-inline-code] --%>
 </body>
 </html>

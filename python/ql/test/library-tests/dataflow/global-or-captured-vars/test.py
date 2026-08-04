@@ -1,4 +1,4 @@
-import threading 
+import threading
 import time
 
 # Test 1
@@ -7,11 +7,11 @@ foo1 = None
 
 def bar1():
     time.sleep(1)
-    ensure_tainted(foo1) # $tainted
+    ensure_tainted(foo1) # $ tainted
 
-# The intent of these tests is to test how dataflow is handled through shared state accessed by different threads; 
+# The intent of these tests is to test how dataflow is handled through shared state accessed by different threads;
 # but the presense or absense of the actual call to start a thread does not affect the results (there is no special modelling for Thread)
-# threading.Thread(target=bar).start() 
+# threading.Thread(target=bar).start()
 
 foo1 = TAINTED_STRING
 
@@ -21,7 +21,7 @@ foo2 = []
 
 def bar2():
     time.sleep(1)
-    ensure_tainted(foo2[0]) # $MISSING:tainted
+    ensure_tainted(foo2[0]) # $ MISSING:tainted
 
 threading.Thread(target=bar2).start()
 
@@ -33,7 +33,7 @@ foo3 = []
 
 def bar3():
     time.sleep(1)
-    ensure_tainted(foo2[0]) # $MISSING:tainted
+    ensure_tainted(foo2[0]) # $ MISSING:tainted
 
 foo3.append(TAINTED_STRING)
 bar3()
@@ -42,16 +42,16 @@ bar3()
 # TP - Sanity check: Flow is found through a ListElement directly without a call
 foo4 = []
 foo4.append(TAINTED_STRING)
-ensure_tainted(foo4[0]) # $tainted
+ensure_tainted(foo4[0]) # $ tainted
 
 # Test 5
 # FN - Flow is *not* tracked through a shared captured but non-global variable
 def test5():
-    foo5 = None 
+    foo5 = None
 
     def bar5():
         time.sleep(1)
-        ensure_tainted(foo5) # $MISSING:tainted
+        ensure_tainted(foo5) # $ MISSING:tainted
 
     threading.Thread(target=bar5).start() # Only the presense of this thread call makes this an FN rather than a TN
 
@@ -64,7 +64,7 @@ def test6():
 
     def bar6():
         time.sleep(1)
-        ensure_tainted(foo6[0]) # $tainted
+        ensure_tainted(foo6[0]) # $ tainted
 
     foo6.append(TAINTED_STRING)
     bar6()
@@ -78,7 +78,7 @@ foo7 = []
 
 def bar7():
     time.sleep(1)
-    ensure_tainted(foo7[0]) # $MISSING: tainted
+    ensure_tainted(foo7[0]) # $ MISSING: tainted
 
 def baz7(loc_foo):
     loc_foo.append(TAINTED_STRING)
@@ -88,13 +88,13 @@ threading.Thread(target=bar7).start()
 baz7(foo7)
 
 # Test 8
-# FN - Flow is also *not* found in the above case through a direct call 
+# FN - Flow is also *not* found in the above case through a direct call
 
 foo8 = []
 
 def bar8():
     time.sleep(1)
-    ensure_tainted(foo8[0]) # $MISSING: tainted
+    ensure_tainted(foo8[0]) # $ MISSING: tainted
 
 def baz8(loc_foo):
     loc_foo.append(TAINTED_STRING)
@@ -109,7 +109,7 @@ def test9():
     foo9 = []
     def bar9():
         time.sleep(1)
-        ensure_tainted(foo9[0]) # $tainted
+        ensure_tainted(foo9[0]) # $ tainted
 
     def baz9(loc_foo):
         loc_foo.append(TAINTED_STRING)

@@ -70,7 +70,7 @@ jobs:
             SHORTNAME=`basename $DATABASE`
             python misc/scripts/models-as-data/generate_mad.py --language java --with-summaries --with-sinks $DATABASE $SHORTNAME/$QL_VARIANT
             mkdir -p $MODELS/$SHORTNAME
-            mv java/ql/lib/ext/generated/$SHORTNAME/$QL_VARIANT $MODELS/$SHORTNAME
+            mv java/ql/lib/ext/generated/modelgenerator/$SHORTNAME/$QL_VARIANT $MODELS/$SHORTNAME
             cd ..
           }
 

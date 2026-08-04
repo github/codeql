@@ -211,7 +211,7 @@ module RequestForgery {
   }
 
   private predicate stringConcatStep(DataFlow::Node prev, DataFlow::Node succ) {
-    exists(AddExpr a |
+    exists(AddOperation a |
       a.getLeftOperand() = prev.asExpr()
       or
       a.getRightOperand() = prev.asExpr() and

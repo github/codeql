@@ -12,7 +12,7 @@ class Test {
 
     class A extends ChannelInboundHandlerAdapter {
         public void channelRead(ChannelHandlerContext ctx, Object msg) {
-            sink(msg); // $hasTaintFlow
+            sink(msg); // $ hasTaintFlow
         }
     }
 
@@ -21,7 +21,7 @@ class Test {
             ByteBuf bb = (ByteBuf) msg;
             byte[] data = new byte[1024];
             bb.readBytes(data);
-            sink(data); // $hasTaintFlow
+            sink(data); // $ hasTaintFlow
         }
     }
 

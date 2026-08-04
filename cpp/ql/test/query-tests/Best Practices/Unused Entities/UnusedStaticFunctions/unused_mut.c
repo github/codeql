@@ -2,11 +2,11 @@
 static void mut_unused_function(void);
 static void mut_unused_function2(void);
 
-static void mut_unused_function(void) {
+static void mut_unused_function(void) { // $ Alert
     mut_unused_function2();
 }
 
-static void mut_unused_function2(void) {
+static void mut_unused_function2(void) { // $ Alert
     mut_unused_function();
 }
 

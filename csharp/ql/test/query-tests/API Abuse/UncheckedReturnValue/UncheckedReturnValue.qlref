@@ -1,1 +1,2 @@
-API Abuse/UncheckedReturnValue.ql
+query: API Abuse/UncheckedReturnValue.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

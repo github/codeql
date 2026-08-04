@@ -1,1 +1,2 @@
-Security Features/CWE-119/LocalUnvalidatedArithmetic.ql
+query: Security Features/CWE-119/LocalUnvalidatedArithmetic.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -156,9 +156,6 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
     result = this.getProducesExpr().(CompileTimeConstantExpr).getStringValue()
   }
 
-  /** DEPRECATED: Use `getAValue()` instead. */
-  deprecated string getValue() { result = requestMappingAnnotation.getStringValue("value") }
-
   /**
    * Gets a "value" @RequestMapping annotation string value, if present.
    *

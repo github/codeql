@@ -167,6 +167,14 @@ module Make<LocationSig Location, InputSig<Location> Input> {
      */
     bindingset[this]
     UnboundList getAPrefix() { result = [this, this.getAProperPrefix()] }
+
+    /**
+     * Holds if this list is a prefix of `other`.
+     *
+     * This is equivalent to `this = other.getAPrefix()`, but more performant.
+     */
+    bindingset[this, other]
+    predicate isPrefixOf(UnboundList other) { this = other.prefix(this.stringLength()) }
   }
 
   /** Provides predicates for constructing `UnboundList`s. */

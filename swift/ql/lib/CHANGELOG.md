@@ -1,3 +1,75 @@
+## 6.8.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.3.3.
+
+## 6.7.2
+
+No user-facing changes.
+
+## 6.7.1
+
+No user-facing changes.
+
+## 6.7.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.3.2.
+
+### Minor Analysis Improvements
+
+* The sensitive data heuristics used to identify code that handles passwords and private data have been improved. Most of the changes permit more variations of established patterns, thereby finding more sensitive data. Queries that use the sensitive data library (for example `swift/cleartext-logging`) may find more correct results and fewer false positive results after these changes.
+
+## 6.6.0
+
+### New Features
+
+* The `TypeDecl` class now defines a `getDeclaredInterfaceType` predicate, which yields the declared interface type of the type declaration.
+
+## 6.5.0
+
+### New Features
+
+* The `BuiltinFixedArrayType` class now defines the predicates `getSize` and `getElementType`, which yield the size of the array and the type of elements stored in the array, respectively.
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.3.1.
+
+## 6.4.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.3.
+
+## 6.3.3
+
+No user-facing changes.
+
+## 6.3.2
+
+No user-facing changes.
+
+## 6.3.1
+
+No user-facing changes.
+
+## 6.3.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.2.4.
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 6.2.3
+
+No user-facing changes.
+
 ## 6.2.2
 
 No user-facing changes.

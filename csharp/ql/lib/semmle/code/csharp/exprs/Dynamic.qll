@@ -96,13 +96,7 @@ class DynamicMethodCall extends DynamicExpr, MethodCall {
  * Unlike an ordinary call to a user-defined operator (`OperatorCall`), the
  * target operator may not be known at compile-time (as in the example above).
  */
-class DynamicOperatorCall extends DynamicExpr, OperatorCall {
-  override string toString() {
-    result = "dynamic call to operator " + this.getLateBoundTargetName()
-  }
-
-  override string getAPrimaryQlClass() { result = "DynamicOperatorCall" }
-}
+class DynamicOperatorCall extends DynamicExpr, OperatorCall { }
 
 /**
  * A call to a user-defined mutator operator where the operand is a `dynamic`

@@ -9,10 +9,10 @@ import org.apache.shiro.subject.Subject;
 class TaintedPermissionsCheckTest {
 	public static void main(HttpServletRequest request) throws Exception {
 		// Apache Shiro permissions system
-		String action = request.getParameter("action");
+		String action = request.getParameter("action"); // $ Source[java/tainted-permissions-check]
 		Subject subject = SecurityUtils.getSubject();
 		// BAD: permissions decision made using tainted data
-		if (subject.isPermitted("domain:sublevel:" + action))
+		if (subject.isPermitted("domain:sublevel:" + action)) // $ Alert[java/tainted-permissions-check]
 			doIt();
 
 		// GOOD: use fixed checks

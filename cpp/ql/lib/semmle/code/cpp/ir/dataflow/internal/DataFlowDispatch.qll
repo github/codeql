@@ -238,7 +238,12 @@ private module TrackVirtualDispatch<methodDispatchSig/1 virtualDispatch0> {
 
   private import TypeTracking<Location, TtInput>::TypeTrack<qualifierSource/1>::Graph<qualifierOfVirtualCall/1>
 
-  private predicate edgePlus(PathNode n1, PathNode n2) = fastTC(edges/2)(n1, n2)
+  private predicate isSource(PathNode n) { n.isSource() }
+
+  private predicate isSink(PathNode n) { n.isSink() }
+
+  private predicate edgePlus(PathNode n1, PathNode n2) =
+    doublyBoundedFastTC(edges/2, isSource/1, isSink/1)(n1, n2)
 
   /**
    * Gets the most specific implementation of `mf` that may be called when the
@@ -255,6 +260,15 @@ private module TrackVirtualDispatch<methodDispatchSig/1 virtualDispatch0> {
     )
   }
 
+  pragma[nomagic]
+  private MemberFunction mostSpecificForSource(PathNode p1, MemberFunction mf) {
+    p1.isSource() and
+    exists(Class derived |
+      qualifierSourceImpl(p1.getNode(), derived) and
+      result = mostSpecific(mf, derived)
+    )
+  }
+
   /**
    * Gets a possible pair of end-points `(p1, p2)` where:
    * - `p1` is a derived-to-base conversion that converts from some
@@ -264,16 +278,16 @@ private module TrackVirtualDispatch<methodDispatchSig/1 virtualDispatch0> {
    * - `callable` is the most specific implementation that may be called when
    * the qualifier has type `derived`.
    */
+  bindingset[p1, p2]
+  pragma[inline_late]
   private predicate pairCand(
     PathNode p1, PathNode p2, DataFlowPrivate::DataFlowCallable callable,
     DataFlowPrivate::DataFlowCall call
   ) {
-    exists(Class derived, MemberFunction mf |
-      qualifierSourceImpl(p1.getNode(), derived) and
+    p2.isSink() and
+    exists(MemberFunction mf |
       qualifierOfVirtualCallImpl(p2.getNode(), call.asCallInstruction(), mf) and
-      p1.isSource() and
-      p2.isSink() and
-      callable.asSourceCallable() = mostSpecific(mf, derived)
+      callable.asSourceCallable() = mostSpecificForSource(p1, mf)
     )
   }
 

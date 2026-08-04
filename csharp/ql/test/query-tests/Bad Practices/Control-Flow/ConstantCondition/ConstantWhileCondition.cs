@@ -13,7 +13,7 @@ namespace ConstantWhileCondition
             {
                 break;
             }
-            while (false) // $ Alert
+            while (false) // Silly, but likely intentional
             {
                 break;
             }

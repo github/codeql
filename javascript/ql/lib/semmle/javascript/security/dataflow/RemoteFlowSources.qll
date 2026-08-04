@@ -43,53 +43,65 @@ import Cached
 
 /**
  * A type of remote flow source that is specific to the browser environment.
+ *
+ * The underlying string also corresponds to a source kind.
  */
 class ClientSideRemoteFlowKind extends string {
   ClientSideRemoteFlowKind() {
-    this = ["query", "fragment", "path", "url", "name", "message-event"]
+    this =
+      [
+        "browser", "browser-url-query", "browser-url-fragment", "browser-url-path", "browser-url",
+        "browser-window-name", "browser-message-event"
+      ]
   }
 
   /**
-   * Holds if this is the `query` kind, describing sources derived from the query parameters of the browser URL,
+   * Holds if this is the `browser` kind, indicating a remote source in a browser context, that does not fit into one
+   * of the more specific kinds.
+   */
+  predicate isGenericBrowserSourceKind() { this = "browser" }
+
+  /**
+   * Holds if this is the `browser-url-query` kind, describing sources derived from the query parameters of the browser URL,
    * such as `location.search`.
    */
-  predicate isQuery() { this = "query" }
+  predicate isQuery() { this = "browser-url-query" }
 
   /**
-   * Holds if this is the `frgament` kind, describing sources derived from the fragment part of the browser URL,
+   * Holds if this is the `browser-url-fragment` kind, describing sources derived from the fragment part of the browser URL,
    * such as `location.hash`.
    */
-  predicate isFragment() { this = "fragment" }
+  predicate isFragment() { this = "browser-url-fragment" }
 
   /**
-   * Holds if this is the `path` kind, describing sources derived from the pathname of the browser URL,
+   * Holds if this is the `browser-url-path` kind, describing sources derived from the pathname of the browser URL,
    * such as `location.pathname`.
    */
-  predicate isPath() { this = "path" }
+  predicate isPath() { this = "browser-url-path" }
 
   /**
-   * Holds if this is the `url` kind, describing sources derived from the browser URL,
+   * Holds if this is the `browser-url` kind, describing sources derived from the browser URL,
    * where the untrusted part of the URL is prefixed by trusted data, such as the scheme and hostname.
    */
-  predicate isUrl() { this = "url" }
+  predicate isUrl() { this = "browser-url" }
 
-  /** Holds if this is the `query` or `fragment` kind. */
+  /** Holds if this is the `browser-url-query` or `browser-url-fragment` kind. */
   predicate isQueryOrFragment() { this.isQuery() or this.isFragment() }
 
-  /** Holds if this is the `path`, `query`, or `fragment` kind. */
+  /** Holds if this is the `browser-url-path`, `browser-url-query`, or `browser-url-fragment` kind. */
   predicate isPathOrQueryOrFragment() { this.isPath() or this.isQuery() or this.isFragment() }
 
-  /** Holds if this is the `path` or `url` kind. */
+  /** Holds if this is the `browser-url-path` or `browser-url` kind. */
   predicate isPathOrUrl() { this.isPath() or this.isUrl() }
 
-  /** Holds if this is the `name` kind, describing sources derived from the window name, such as `window.name`. */
-  predicate isWindowName() { this = "name" }
+  /** Holds if this is the `browser-window-name` kind, describing sources derived from the window name, such as `window.name`. */
+  predicate isWindowName() { this = "browser-window-name" }
 
   /**
-   * Holds if this is the `message-event` kind, describing sources derived from cross-window message passing,
+   * Holds if this is the `browser-message-event` kind, describing sources derived from cross-window message passing,
    * such as `event` in `window.onmessage = event => {...}`.
    */
-  predicate isMessageEvent() { this = "message-event" }
+  predicate isMessageEvent() { this = "browser-message-event" }
 }
 
 /**

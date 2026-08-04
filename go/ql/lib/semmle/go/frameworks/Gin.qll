@@ -1,6 +1,8 @@
 /**
  * Provides classes for modeling the `github.com/gin-gonic/gin` package.
  */
+overlay[local?]
+module;
 
 import go
 import semmle.go.concepts.HTTP

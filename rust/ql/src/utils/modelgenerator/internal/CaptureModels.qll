@@ -26,7 +26,7 @@ private newtype TCallable =
       or
       // If a method implements a public trait it is exposed through the trait.
       // We overapproximate this by including all trait method implementations.
-      exists(R::Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
+      exists(R::Impl impl | impl.hasTraitTy() and impl.getAssocItemList().getAssocItem(_) = api)
     )
   }
 
@@ -138,7 +138,10 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
 
   Parameter asParameter(NodeExtended node) { result = node.asParameter() }
 
-  predicate isAdditionalContentFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) { none() }
+  predicate isAdditionalContentFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    RustTaintTracking::defaultAdditionalTaintStep(nodeFrom, nodeTo, _) and
+    not RustDataFlow::readStep(nodeFrom, _, nodeTo)
+  }
 
   predicate isField(DataFlow::ContentSet c) {
     c.(SingletonContentSet).getContent() instanceof FieldContent

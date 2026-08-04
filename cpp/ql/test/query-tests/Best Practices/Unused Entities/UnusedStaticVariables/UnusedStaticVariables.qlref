@@ -1,1 +1,2 @@
-Best Practices/Unused Entities/UnusedStaticVariables.ql
+query: Best Practices/Unused Entities/UnusedStaticVariables.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

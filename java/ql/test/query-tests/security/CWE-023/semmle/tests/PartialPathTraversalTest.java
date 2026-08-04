@@ -10,14 +10,14 @@ import java.net.Socket;
 
 public class PartialPathTraversalTest {
     public void esapiExample(File parent) throws IOException {
-        if (!dir().getCanonicalPath().startsWith(parent.getCanonicalPath())) { // $ Alert
+        if (!dir().getCanonicalPath().startsWith(parent.getCanonicalPath())) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     void foo1(File parent) throws IOException {
-        (dir().getCanonicalPath()).startsWith((parent.getCanonicalPath())); // $ Alert
+        (dir().getCanonicalPath()).startsWith((parent.getCanonicalPath())); // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
     }
 
     void foo2(File parent) throws IOException {
@@ -29,31 +29,31 @@ public class PartialPathTraversalTest {
 
     void foo3(File parent) throws IOException {
         String parentPath = parent.getCanonicalPath();
-        if (!dir().getCanonicalPath().startsWith(parentPath)) { // $ Alert
+        if (!dir().getCanonicalPath().startsWith(parentPath)) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
     }
 
     void foo4() throws IOException {
-        if (!dir().getCanonicalPath().startsWith("/usr" + "/dir")) { // $ Alert
+        if (!dir().getCanonicalPath().startsWith("/usr" + "/dir")) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
     }
 
     void foo5(File parent) throws IOException {
         String canonicalPath = dir().getCanonicalPath();
-        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { // $ Alert
+        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
     }
 
     void foo6(File parent) throws IOException {
         String canonicalPath = dir().getCanonicalPath();
-        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { // $ Alert
+        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
         String canonicalPath2 = dir().getCanonicalPath();
-        if (!canonicalPath2.startsWith(parent.getCanonicalPath())) { // $ Alert
+        if (!canonicalPath2.startsWith(parent.getCanonicalPath())) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
     }
@@ -61,10 +61,10 @@ public class PartialPathTraversalTest {
     void foo7(File dir, File parent) throws IOException {
         String canonicalPath = dir().getCanonicalPath();
         String canonicalPath2 = dir().getCanonicalPath();
-        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { // $ Alert
+        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
-        if (!canonicalPath2.startsWith(parent.getCanonicalPath())) { // $ Alert
+        if (!canonicalPath2.startsWith(parent.getCanonicalPath())) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
     }
@@ -75,7 +75,7 @@ public class PartialPathTraversalTest {
 
     void foo8(File parent) throws IOException {
         String canonicalPath = getChild().getCanonicalPath();
-        if (!canonicalPath.startsWith(parent.getCanonicalPath())) {
+        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { // $ Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + getChild().getCanonicalPath());
         }
     }
@@ -94,7 +94,7 @@ public class PartialPathTraversalTest {
 
     void foo11(File parent) throws IOException {
         String parentCanonical = parent.getCanonicalPath();
-        if (!dir().getCanonicalPath().startsWith(parentCanonical)) { // $ Alert
+        if (!dir().getCanonicalPath().startsWith(parentCanonical)) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
     }
@@ -102,10 +102,10 @@ public class PartialPathTraversalTest {
     void foo12(File parent) throws IOException {
         String parentCanonical = parent.getCanonicalPath();
         String parentCanonical2 = parent.getCanonicalPath();
-        if (!dir().getCanonicalPath().startsWith(parentCanonical)) { // $ Alert
+        if (!dir().getCanonicalPath().startsWith(parentCanonical)) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
-        if (!dir().getCanonicalPath().startsWith(parentCanonical2)) { // $ Alert
+        if (!dir().getCanonicalPath().startsWith(parentCanonical2)) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
     }
@@ -173,7 +173,7 @@ public class PartialPathTraversalTest {
 
     void foo19(File parent) throws IOException {
         String parentCanonical = parent.getCanonicalPath() + "/potato";
-        if (!dir().getCanonicalPath().startsWith(parentCanonical)) { // $ Alert
+        if (!dir().getCanonicalPath().startsWith(parentCanonical)) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
     }
@@ -191,7 +191,7 @@ public class PartialPathTraversalTest {
         String filePath = sb.toString();
         File encodedFile = new File(filePath);
         try {
-            if (!encodedFile.getCanonicalPath().startsWith(cacheDir.getCanonicalPath())) { // $ Alert
+            if (!encodedFile.getCanonicalPath().startsWith(cacheDir.getCanonicalPath())) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
                 return null;
             }
             return Files.newInputStream(encodedFile.toPath());
@@ -209,7 +209,7 @@ public class PartialPathTraversalTest {
 
     void foo22(File dir2, File parent, boolean conditional) throws IOException {
         String canonicalPath = conditional ? dir().getCanonicalPath() : dir2.getCanonicalPath();
-        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { // $ Alert
+        if (!canonicalPath.startsWith(parent.getCanonicalPath())) { // $ Alert[java/partial-path-traversal-from-remote] Alert[java/partial-path-traversal]
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
     }
@@ -224,6 +224,14 @@ public class PartialPathTraversalTest {
     void foo24(File parent) throws IOException {
         String parentCanonical = parent.getCanonicalPath();
         if (!dir().getCanonicalPath().startsWith(parentCanonical + '/')) {
+            throw new IOException("Invalid directory: " + dir().getCanonicalPath());
+        }
+    }
+
+    void foo25(File parent) throws IOException {
+        String path = parent.getCanonicalPath();
+        path += File.separator;
+        if (!dir().getCanonicalPath().startsWith(path)) {
             throw new IOException("Invalid directory: " + dir().getCanonicalPath());
         }
     }

@@ -9,22 +9,22 @@ void f(char *s, int i, unsigned char *us, const char *cs, signed char *ss, char 
     const char cc = 'x';
 
     printf("%s: %d\n", s, i);      // ok
-    printf("%s: %f\n", s, i);      // not ok (int -> float)
+    printf("%s: %f\n", s, i);      // $ Alert // not ok (int -> float)
     printf("%s", us);              // ok
     printf("%s", cs);              // ok
     printf("%s", ss);              // ok
 
     printf("%p", cs);              // ok
-    printf("%p", i);               // not ok (int -> void *)
+    printf("%p", i);               // $ Alert // not ok (int -> void *)
     printf("%p", &f);              // ok
 
     printf("%*s", i, cs);          // ok
     printf("%*s", mi, cs);         // ok
     printf("%*s", c, cs);          // ok
     printf("%*s", cc, cs);         // ok
-    printf("%*s", i, i);           // not ok (int -> char *)
+    printf("%*s", i, i);           // $ Alert // not ok (int -> char *)
     printf("%d %% %*s", i, i, cs); // ok
-    printf("%*s", cs, cs);         // not ok (the width argument should be integer)
+    printf("%*s", cs, cs);         // $ Alert // not ok (the width argument should be integer)
 
     printf("%c", 10);              // ok
     printf("%c", 1000);            // not ok [NOT DETECTED]
@@ -35,15 +35,15 @@ void f(char *s, int i, unsigned char *us, const char *cs, signed char *ss, char 
     printf("%u", 1000);            // ok
 
     printf("%i", MYONETHOUSAND);     // ok
-    printf("%s", MYONETHOUSAND);     // not ok (enum -> char *)
+    printf("%s", MYONETHOUSAND);     // $ Alert // not ok (enum -> char *)
     printf("%c", MYONETHOUSAND);     // not ok (enum -> char) [NOT DETECTED]
 
     printf("%i", mi);                // ok
     printf("%u", mi);                // not ok (int -> unsigned int) [NOT DETECTED]
 
-    printf("%d", ull);               // not ok (unsigned long long -> int)
-    printf("%u", ull);               // not ok (unsigned long long -> unsigned int)
-    printf("%x", ull);               // not ok (unsigned long long -> unsigned int)
+    printf("%d", ull);               // $ Alert // not ok (unsigned long long -> int)
+    printf("%u", ull);               // $ Alert // not ok (unsigned long long -> unsigned int)
+    printf("%x", ull);               // $ Alert // not ok (unsigned long long -> unsigned int)
     printf("%Lx", ull);              // ok
     printf("%llx", ull);             // ok
 }
@@ -127,7 +127,7 @@ void fun3(void *p1, VOIDPTR p2, FUNPTR p3, char *p4)
   printf("%p\n", p3); // GOOD
   printf("%p\n", p4); // GOOD
   printf("%p\n", p4 + 1); // GOOD
-  printf("%p\n", 0); // GOOD [FALSE POSITIVE]
+  printf("%p\n", 0); // $ Alert // GOOD [FALSE POSITIVE]
 }
 
 typedef unsigned int wint_t;
@@ -165,8 +165,8 @@ void fun4()
   long long ll;
   unsigned long long ull;
 
-  printf("%qi\n", i); // BAD
-  printf("%qu\n", ui); // BAD
+  printf("%qi\n", i); // $ Alert // BAD
+  printf("%qu\n", ui); // $ Alert // BAD
   printf("%qi\n", l); // GOOD
   printf("%qu\n", ul); // GOOD
   printf("%qi\n", ll); // GOOD

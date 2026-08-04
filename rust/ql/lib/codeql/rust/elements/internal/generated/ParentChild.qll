@@ -2328,7 +2328,7 @@ private module Impl {
   private Element getImmediateChildOfImpl(Impl e, int index, string partialPredicateCall) {
     exists(
       int n, int nAttributeMacroExpansion, int nAssocItemList, int nAttr, int nGenericParamList,
-      int nSelfTy, int nTrait, int nVisibility, int nWhereClause
+      int nSelfTy, int nTraitTy, int nVisibility, int nWhereClause
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
@@ -2336,8 +2336,8 @@ private module Impl {
       nAttr = nAssocItemList + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nSelfTy = nGenericParamList + 1 and
-      nTrait = nSelfTy + 1 and
-      nVisibility = nTrait + 1 and
+      nTraitTy = nSelfTy + 1 and
+      nVisibility = nTraitTy + 1 and
       nWhereClause = nVisibility + 1 and
       (
         none()
@@ -2359,9 +2359,9 @@ private module Impl {
         or
         index = nGenericParamList and result = e.getSelfTy() and partialPredicateCall = "SelfTy()"
         or
-        index = nSelfTy and result = e.getTrait() and partialPredicateCall = "Trait()"
+        index = nSelfTy and result = e.getTraitTy() and partialPredicateCall = "TraitTy()"
         or
-        index = nTrait and result = e.getVisibility() and partialPredicateCall = "Visibility()"
+        index = nTraitTy and result = e.getVisibility() and partialPredicateCall = "Visibility()"
         or
         index = nVisibility and
         result = e.getWhereClause() and

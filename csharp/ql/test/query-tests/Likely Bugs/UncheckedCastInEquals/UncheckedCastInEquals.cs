@@ -4,6 +4,6 @@ public class Test
 
     public override bool Equals(object other)
     {
-        return ((Test)other).Field == this.Field;
+        return ((Test)other).Field == this.Field; // $ Alert
     }
 }

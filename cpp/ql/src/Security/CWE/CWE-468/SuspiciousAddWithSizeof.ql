@@ -6,7 +6,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 8.8
- * @precision medium
+ * @precision high
  * @id cpp/suspicious-add-sizeof
  * @tags security
  *       external/cwe/cwe-468
@@ -18,7 +18,8 @@ import IncorrectPointerScalingCommon
 private predicate isCharSzPtrExpr(Expr e) {
   exists(PointerType pt | pt = e.getFullyConverted().getUnspecifiedType() |
     pt.getBaseType() instanceof CharType or
-    pt.getBaseType() instanceof VoidType
+    pt.getBaseType() instanceof VoidType or
+    pt.getBaseType() instanceof ErroneousType // this could be char / void type in a successful compilation
   )
 }
 

@@ -6,7 +6,7 @@ import csharp
 
 from Assignment assign, LambdaExpr e
 where
-  assign.getLValue().(VariableAccess).getTarget().hasName("f6") and
+  assign.getLeftOperand().(VariableAccess).getTarget().hasName("f6") and
   e.getParent+() = assign and
   e.getNumberOfParameters() = 0 and
   e.getType().(DelegateType).hasName("Unit") and

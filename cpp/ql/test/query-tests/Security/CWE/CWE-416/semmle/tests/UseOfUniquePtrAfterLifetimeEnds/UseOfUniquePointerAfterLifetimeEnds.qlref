@@ -1,1 +1,2 @@
-Security/CWE/CWE-416/UseOfUniquePointerAfterLifetimeEnds.ql
+query: Security/CWE/CWE-416/UseOfUniquePointerAfterLifetimeEnds.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

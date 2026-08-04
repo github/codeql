@@ -14,49 +14,49 @@ public class Test  {
     public class A extends TextWebSocketHandler {
         @Override
         public void handleMessage(WebSocketSession s, WebSocketMessage<?> m) {
-            sink(s); // $hasTaintFlow
-            sink(s.getAcceptedProtocol()); // $hasTaintFlow
-            sink(s.getHandshakeHeaders()); // $hasTaintFlow
-            sink(s.getPrincipal()); // $hasTaintFlow
-            sink(s.getUri()); // $hasTaintFlow
+            sink(s); // $ hasTaintFlow
+            sink(s.getAcceptedProtocol()); // $ hasTaintFlow
+            sink(s.getHandshakeHeaders()); // $ hasTaintFlow
+            sink(s.getPrincipal()); // $ hasTaintFlow
+            sink(s.getUri()); // $ hasTaintFlow
 
-            sink(m); // $hasTaintFlow
-            sink(m.getPayload()); // $hasTaintFlow
+            sink(m); // $ hasTaintFlow
+            sink(m.getPayload()); // $ hasTaintFlow
 
         }
 
-        @Override 
+        @Override
         protected void handleTextMessage(WebSocketSession s, TextMessage m) {
-            sink(s);  // $hasTaintFlow
-            sink(m);  // $hasTaintFlow
-            sink(m.asBytes()); // $hasTaintFlow
+            sink(s);  // $ hasTaintFlow
+            sink(m);  // $ hasTaintFlow
+            sink(m.asBytes()); // $ hasTaintFlow
         }
 
-        @Override 
+        @Override
         protected void handleBinaryMessage(WebSocketSession s, BinaryMessage m) {
-            sink(s); // $hasTaintFlow
-            sink(m); // $hasTaintFlow
+            sink(s); // $ hasTaintFlow
+            sink(m); // $ hasTaintFlow
         }
 
         @Override
         protected void handlePongMessage(WebSocketSession s, PongMessage m) {
-            sink(s); // $hasTaintFlow
-            sink(m); // $hasTaintFlow
+            sink(s); // $ hasTaintFlow
+            sink(m); // $ hasTaintFlow
         }
 
         @Override
         public void afterConnectionEstablished(WebSocketSession s) {
-            sink(s); // $hasTaintFlow
+            sink(s); // $ hasTaintFlow
         }
 
-        @Override 
+        @Override
         public void afterConnectionClosed(WebSocketSession s, CloseStatus c) {
-            sink(s); // $hasTaintFlow
+            sink(s); // $ hasTaintFlow
         }
 
-        @Override 
-        public void handleTransportError(WebSocketSession s, Throwable exc) { 
-            sink(s);  // $hasTaintFlow
+        @Override
+        public void handleTransportError(WebSocketSession s, Throwable exc) {
+            sink(s);  // $ hasTaintFlow
         }
 
     }

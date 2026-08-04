@@ -9,28 +9,28 @@ namespace JapaneseDates
         static void Main(string[] args)
         {
             // BAD: hard-coded era start date
-            var henseiStart = new DateTime(1989, 1, 8);
+            var henseiStart = new DateTime(1989, 1, 8); // $ Alert
 
             // BAD: hard-coded era start dates, list
-            List<DateTime> listOfEraStart = new List<DateTime> { new DateTime(1989, 1, 8) };
+            List<DateTime> listOfEraStart = new List<DateTime> { new DateTime(1989, 1, 8) }; // $ Alert
 
             // BAD: hardcoded era name
             string currentEra = "Heisei";
 
             DateTimeOffset dateNow = DateTimeOffset.Now;
 
-            DateTimeOffset dateThisEra = new DateTimeOffset(1989, 1, 8, 0, 0, 0, 0, TimeSpan.Zero);
+            DateTimeOffset dateThisEra = new DateTimeOffset(1989, 1, 8, 0, 0, 0, 0, TimeSpan.Zero); // $ Alert
 
             CultureInfo japaneseCulture = CultureInfo.GetCultureInfo("ja-JP");
 
             JapaneseCalendar jk = new JapaneseCalendar();
 
             // BAD: datetime is created from constant year in the current era, and the result will change with era change
-            var datejkCurrentEra  = jk.ToDateTime(32, 2, 1, 9, 9, 9, 9);
+            var datejkCurrentEra  = jk.ToDateTime(32, 2, 1, 9, 9, 9, 9); // $ Alert
             Console.WriteLine("Date for datejkCurrentEra {0} and year {1}",  datejkCurrentEra.ToString(japaneseCulture), jk.GetYear (datejkCurrentEra));
 
             // BAD: datetime is created from constant year in the current era, and the result will change with era change
-            var datejk  = jk.ToDateTime(32, 2, 1, 9, 9, 9, 9, 0);
+            var datejk  = jk.ToDateTime(32, 2, 1, 9, 9, 9, 9, 0); // $ Alert
             Console.WriteLine("Date for jk {0} and year {1}", datejk.ToString(japaneseCulture), jk.GetYear (datejk));
 
             // OK: datetime is created from constant year in the specific era, and the result will not change with era change
@@ -46,7 +46,7 @@ namespace JapaneseDates
             Console.WriteLine("Which converts to year {0}", realYear);
 
             // BAD: creating DateTime using specified Japanese era date. This may yield a different date when era changes
-            DateTime val = new DateTime(32, 2, 1, new JapaneseCalendar());
+            DateTime val = new DateTime(32, 2, 1, new JapaneseCalendar()); // $ Alert
             Console.WriteLine("DateTime from constructor {0}", val);
 
             // OK: variable data for Year, not necessarily hard-coded and can come from adjusted source

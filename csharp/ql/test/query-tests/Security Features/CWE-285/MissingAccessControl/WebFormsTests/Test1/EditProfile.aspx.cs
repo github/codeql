@@ -7,7 +7,7 @@ class EditProfile : System.Web.UI.Page {
     private bool isAuthorized() { return false; }
 
     // BAD: The class name indicates that this may be an Edit method, but there is no auth check
-    protected void btn1_Click(object sender, EventArgs e) {
+    protected void btn1_Click(object sender, EventArgs e) { // $ Alert
         doThings();
     }
 

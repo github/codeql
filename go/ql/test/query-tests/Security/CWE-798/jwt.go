@@ -39,14 +39,14 @@ func gjwtt() (interface{}, error) {
 	}
 
 	token := gjwt.NewWithClaims(nil, claims)
-	return token.SignedString(mySigningKey) // BAD
+	return token.SignedString(mySigningKey) // $ Alert // BAD
 }
 
 func gin_jwt() (interface{}, error) {
 	var identityKey = "id"
 	return jwt.New(&jwt.GinJWTMiddleware{
 		Realm:       "test zone",
-		Key:         []byte("key2"), // BAD
+		Key:         []byte("key2"), // $ Alert // BAD
 		Timeout:     time.Hour,
 		MaxRefresh:  time.Hour,
 		IdentityKey: identityKey,
@@ -65,12 +65,12 @@ func gin_jwt() (interface{}, error) {
 
 func cristalhq() (interface{}, error) {
 	key := []byte(`key3`)
-	return cristal.NewSignerHS(cristal.HS256, key) // BAD
+	return cristal.NewSignerHS(cristal.HS256, key) // $ Alert // BAD
 }
 
 func josev3() (interface{}, error) {
 	key := []byte("key4")
-	return jose_v3.NewSigner(jose_v3.SigningKey{Algorithm: "", Key: key}, nil) // BAD
+	return jose_v3.NewSigner(jose_v3.SigningKey{Algorithm: "", Key: key}, nil) // $ Alert // BAD
 }
 func josev3_2() (interface{}, error) {
 	key2 := []byte("key5")
@@ -78,7 +78,7 @@ func josev3_2() (interface{}, error) {
 		"",
 		jose_v3.Recipient{
 			Algorithm: "",
-			Key:       key2, // BAD
+			Key:       key2, // $ Alert // BAD
 		},
 		nil)
 }
@@ -88,14 +88,14 @@ func josev2() (interface{}, error) {
 
 	return jose_v2.NewEncrypter(
 		"",
-		jose_v2.Recipient{Algorithm: "", Key: key}, // BAD
+		jose_v2.Recipient{Algorithm: "", Key: key}, // $ Alert // BAD
 		nil,
 	)
 }
 func jose_v2_2() (interface{}, error) {
 	key2 := []byte("key7")
 
-	return jose_v2.NewSigner(jose_v2.SigningKey{Algorithm: "", Key: key2}, nil) // BAD
+	return jose_v2.NewSigner(jose_v2.SigningKey{Algorithm: "", Key: key2}, nil) // $ Alert // BAD
 }
 
 func go_kit() interface{} {
@@ -106,24 +106,24 @@ func go_kit() interface{} {
 		mapClaims = gjwt.MapClaims{"user": "go-kit"}
 	)
 
-	return gokit.NewSigner(kid, key, nil, mapClaims) // BAD
+	return gokit.NewSigner(kid, key, nil, mapClaims) // $ Alert // BAD
 }
 
 func lejwt() (interface{}, error) {
 	sharedKey := []byte("key9")
-	return le.New(sharedKey) // BAD
+	return le.New(sharedKey) // $ Alert // BAD
 }
 
 var sharedKeyglobal = []byte("key10")
 
 func lejwt2() (interface{}, error) {
-	return le.New(sharedKeyglobal) // BAD
+	return le.New(sharedKeyglobal) // $ Alert // BAD
 }
 
 func gogfjwt() interface{} {
 	return &gogf.GfJWTMiddleware{
 		Realm:           "test zone",
-		Key:             []byte("key11"), // BAD
+		Key:             []byte("key11"), // $ Alert // BAD
 		Timeout:         time.Minute * 5,
 		MaxRefresh:      time.Minute * 5,
 		IdentityKey:     "id",
@@ -140,7 +140,7 @@ func gogfjwt() interface{} {
 func irisjwt() interface{} {
 	key := []byte("key12")
 	token := iris.NewTokenWithClaims(nil, nil)
-	tokenString, _ := token.SignedString(key) // BAD
+	tokenString, _ := token.SignedString(key) // $ Alert // BAD
 	return tokenString
 }
 
@@ -149,7 +149,7 @@ func iris12jwt2() interface{} {
 
 	s := &iris12.Signer{
 		Alg:    nil,
-		Key:    key, // BAD
+		Key:    key, // $ Alert // BAD
 		MaxAge: 3 * time.Second,
 	}
 	return s
@@ -157,31 +157,31 @@ func iris12jwt2() interface{} {
 
 func irisjwt3() interface{} {
 	key := []byte("key14")
-	signer := iris12.NewSigner(nil, key, 3*time.Second) // BAD
+	signer := iris12.NewSigner(nil, key, 3*time.Second) // $ Alert // BAD
 	return signer
 }
 
 func katarasJwt() interface{} {
 	key := []byte("key15")
-	token, _ := kataras.Sign(nil, key, nil, nil) // BAD
+	token, _ := kataras.Sign(nil, key, nil, nil) // $ Alert // BAD
 	return token
 }
 
 func katarasJwt2() interface{} {
 	key := []byte("key16")
-	token, _ := kataras.SignEncrypted(nil, key, nil, nil) // BAD
+	token, _ := kataras.SignEncrypted(nil, key, nil, nil) // $ Alert // BAD
 	return token
 }
 
 func katarasJwt3() interface{} {
 	key := []byte("key17")
-	token, _ := kataras.SignEncryptedWithHeader(nil, key, nil, nil, nil) // BAD
+	token, _ := kataras.SignEncryptedWithHeader(nil, key, nil, nil, nil) // $ Alert // BAD
 	return token
 }
 
 func katarasJwt4() interface{} {
 	key := []byte("key18")
-	token, _ := kataras.SignWithHeader(nil, key, nil, nil) // BAD
+	token, _ := kataras.SignWithHeader(nil, key, nil, nil) // $ Alert // BAD
 	return token
 }
 
@@ -189,5 +189,5 @@ func katarasJwt5() {
 	key := []byte("key19")
 	var keys kataras.Keys
 	var alg kataras.Alg
-	keys.Register(alg, "api", nil, key) // BAD
+	keys.Register(alg, "api", nil, key) // $ Alert // BAD
 }

@@ -28,6 +28,38 @@ module;
 
 private import codeql.util.Boolean
 
+private newtype TConditionKind =
+  TBooleanCondition() or
+  TNullnessCondition() or
+  TMatchingCondition() or
+  TEmptinessCondition()
+
+/** A condition kind. This is used to classify different `ConditionalSuccessor`s. */
+class ConditionKind extends TConditionKind {
+  /** Gets a textual representation of this condition kind. */
+  string toString() {
+    this instanceof TBooleanCondition and result = "Boolean"
+    or
+    this instanceof TNullnessCondition and result = "Nullness"
+    or
+    this instanceof TMatchingCondition and result = "Matching"
+    or
+    this instanceof TEmptinessCondition and result = "Emptiness"
+  }
+
+  /** Holds if this condition kind identifies `BooleanSuccessor`s. */
+  predicate isBoolean() { this instanceof TBooleanCondition }
+
+  /** Holds if this condition kind identifies `NullnessSuccessor`s. */
+  predicate isNullness() { this instanceof TNullnessCondition }
+
+  /** Holds if this condition kind identifies `MatchingSuccessor`s. */
+  predicate isMatching() { this instanceof TMatchingCondition }
+
+  /** Holds if this condition kind identifies `EmptinessSuccessor`s. */
+  predicate isEmptiness() { this instanceof TEmptinessCondition }
+}
+
 private newtype TSuccessorType =
   TDirectSuccessor() or
   TBooleanSuccessor(Boolean branch) or
@@ -83,6 +115,18 @@ private class TConditionalSuccessor =
 abstract private class ConditionalSuccessorImpl extends NormalSuccessorImpl, TConditionalSuccessor {
   /** Gets the Boolean value of this successor. */
   abstract boolean getValue();
+
+  /** Gets the condition kind of this conditional successor. */
+  abstract ConditionKind getKind();
+
+  /**
+   * Gets the dual of this conditional successor. That is, the conditional
+   * successor of the same kind but with the opposite value.
+   */
+  ConditionalSuccessor getDual() {
+    this.getValue().booleanNot() = result.getValue() and
+    this.getKind() = result.getKind()
+  }
 }
 
 final class ConditionalSuccessor = ConditionalSuccessorImpl;
@@ -115,6 +159,8 @@ final class ConditionalSuccessor = ConditionalSuccessorImpl;
  */
 class BooleanSuccessor extends ConditionalSuccessorImpl, TBooleanSuccessor {
   override boolean getValue() { this = TBooleanSuccessor(result) }
+
+  override ConditionKind getKind() { result = TBooleanCondition() }
 
   override string toString() { result = this.getValue().toString() }
 }
@@ -150,6 +196,8 @@ class NullnessSuccessor extends ConditionalSuccessorImpl, TNullnessSuccessor {
   predicate isNull() { this = TNullnessSuccessor(true) }
 
   override boolean getValue() { this = TNullnessSuccessor(result) }
+
+  override ConditionKind getKind() { result = TNullnessCondition() }
 
   override string toString() { if this.isNull() then result = "null" else result = "non-null" }
 }
@@ -192,6 +240,8 @@ class MatchingSuccessor extends ConditionalSuccessorImpl, TMatchingSuccessor {
 
   override boolean getValue() { this = TMatchingSuccessor(result) }
 
+  override ConditionKind getKind() { result = TMatchingCondition() }
+
   override string toString() { if this.isMatch() then result = "match" else result = "no-match" }
 }
 
@@ -232,6 +282,8 @@ class EmptinessSuccessor extends ConditionalSuccessorImpl, TEmptinessSuccessor {
   predicate isEmpty() { this = TEmptinessSuccessor(true) }
 
   override boolean getValue() { this = TEmptinessSuccessor(result) }
+
+  override ConditionKind getKind() { result = TEmptinessCondition() }
 
   override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
 }

@@ -185,6 +185,10 @@ source
 | System.IO;StreamWriter;StreamWriter;(System.String,System.IO.FileStreamOptions);Argument[this];file-write;manual |
 | System.IO;StreamWriter;StreamWriter;(System.String,System.Text.Encoding,System.IO.FileStreamOptions);Argument[this];file-write;manual |
 | System.Net.Sockets;TcpClient;GetStream;();ReturnValue;remote;manual |
+| System.Net.WebSockets;ClientWebSocket;ReceiveAsync;(System.ArraySegment<System.Byte>,System.Threading.CancellationToken);Argument[0];remote;manual |
+| System.Net.WebSockets;ClientWebSocket;ReceiveAsync;(System.Memory<System.Byte>,System.Threading.CancellationToken);Argument[0];remote;manual |
+| System.Net.WebSockets;WebSocket;ReceiveAsync;(System.ArraySegment<System.Byte>,System.Threading.CancellationToken);Argument[0];remote;manual |
+| System.Net.WebSockets;WebSocket;ReceiveAsync;(System.Memory<System.Byte>,System.Threading.CancellationToken);Argument[0];remote;manual |
 | System;Console;Read;();ReturnValue;stdin;manual |
 | System;Console;ReadKey;();ReturnValue;stdin;manual |
 | System;Console;ReadKey;(System.Boolean);ReturnValue;stdin;manual |

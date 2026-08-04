@@ -2,6 +2,6 @@ using System;
 
 class Bad
 {
-    interface IsPrintable { }
+    interface IsPrintable { } // $ Alert
     class Form1 : IsPrintable { }
 }

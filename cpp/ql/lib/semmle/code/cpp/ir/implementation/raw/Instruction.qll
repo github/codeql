@@ -495,7 +495,7 @@ class FieldInstruction extends Instruction {
  * `FunctionAddress` instruction.
  */
 class FunctionInstruction extends Instruction {
-  Language::Function funcSymbol;
+  Language::Declaration funcSymbol;
 
   FunctionInstruction() { funcSymbol = Raw::getInstructionFunction(this) }
 
@@ -504,7 +504,7 @@ class FunctionInstruction extends Instruction {
   /**
    * Gets the function that this instruction references.
    */
-  final Language::Function getFunctionSymbol() { result = funcSymbol }
+  final Language::Declaration getFunctionSymbol() { result = funcSymbol }
 }
 
 /**
@@ -1678,7 +1678,7 @@ class CallInstruction extends Instruction {
   /**
    * Gets the `Function` that the call targets, if this is statically known.
    */
-  final Language::Function getStaticCallTarget() {
+  final Language::Declaration getStaticCallTarget() {
     result = this.getCallTarget().(FunctionAddressInstruction).getFunctionSymbol()
   }
 

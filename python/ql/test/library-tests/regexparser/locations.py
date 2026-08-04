@@ -10,7 +10,7 @@ import re
 # Comments indicate the found locations relative to the call to `compile`.
 
 # plain string
-re.compile( # $location=1:2
+re.compile( # $ location=1:2
 '[this] is a test'
 )
 

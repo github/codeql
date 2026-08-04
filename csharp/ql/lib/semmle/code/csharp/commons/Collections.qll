@@ -54,20 +54,43 @@ private string genericCollectionTypeName() {
     ]
 }
 
-/** A collection type. */
-class CollectionType extends RefType {
-  CollectionType() {
-    exists(RefType base | base = this.getABaseType*() |
-      base.hasFullyQualifiedName(collectionNamespaceName(), collectionTypeName())
-      or
-      base.(ConstructedType)
-          .getUnboundGeneric()
-          .hasFullyQualifiedName(genericCollectionNamespaceName(), genericCollectionTypeName())
-    )
-    or
-    this instanceof ArrayType
+/** A collection type */
+abstract private class CollectionTypeImpl extends RefType {
+  /**
+   * Gets the element type of this collection, for example `int` in `List<int>`.
+   */
+  abstract Type getElementType();
+}
+
+private class GenericCollectionType extends CollectionTypeImpl {
+  private ConstructedType base;
+
+  GenericCollectionType() {
+    base = this.getABaseType*() and
+    base.getUnboundGeneric()
+        .hasFullyQualifiedName(genericCollectionNamespaceName(), genericCollectionTypeName())
+  }
+
+  override Type getElementType() {
+    result = base.getTypeArgument(0) and base.getNumberOfTypeArguments() = 1
   }
 }
+
+private class NonGenericCollectionType extends CollectionTypeImpl {
+  NonGenericCollectionType() {
+    exists(RefType base | base = this.getABaseType*() |
+      base.hasFullyQualifiedName(collectionNamespaceName(), collectionTypeName())
+    )
+  }
+
+  override Type getElementType() { none() }
+}
+
+private class ArrayCollectionType extends CollectionTypeImpl instanceof ArrayType {
+  override Type getElementType() { result = ArrayType.super.getElementType() }
+}
+
+final class CollectionType = CollectionTypeImpl;
 
 /**
  * A collection type that can be used as a `params` parameter type.

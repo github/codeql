@@ -1,1 +1,2 @@
-Critical/NewDeleteArrayMismatch.ql
+query: Critical/NewDeleteArrayMismatch.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

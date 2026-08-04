@@ -32,7 +32,7 @@ private predicate branchingExpr(Expr expr) {
   expr instanceof ConditionalExpr or
   expr instanceof LogicalAndExpr or
   expr instanceof LogicalOrExpr or
-  expr instanceof NullCoalescingExpr
+  expr instanceof NullCoalescingOperation
 }
 
 /**

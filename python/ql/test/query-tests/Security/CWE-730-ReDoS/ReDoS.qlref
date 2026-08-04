@@ -1,1 +1,2 @@
-Security/CWE-730/ReDoS.ql
+query: Security/CWE-730/ReDoS.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

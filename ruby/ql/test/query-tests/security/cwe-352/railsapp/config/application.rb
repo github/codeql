@@ -13,6 +13,6 @@ module Railsapp
     config.load_defaults 5.1
 
     # BAD: Disabling forgery protection may open the application to CSRF attacks
-    config.action_controller.allow_forgery_protection = false
+    config.action_controller.allow_forgery_protection = false # $ Alert[rb/csrf-protection-disabled]
   end
 end

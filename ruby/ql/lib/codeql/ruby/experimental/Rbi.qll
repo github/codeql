@@ -83,11 +83,7 @@ module Rbi {
       /**
        * Gets the type aliased by this call.
        */
-      RbiType getAliasedType() {
-        exists(ExprNodes::MethodCallCfgNode n | n.getExpr() = this |
-          result = n.getBlock().(ExprNodes::StmtSequenceCfgNode).getLastStmt().getExpr()
-        )
-      }
+      RbiType getAliasedType() { result = this.getBlock().getBody().getLastStmt() }
     }
 
     /**
@@ -304,7 +300,7 @@ module Rbi {
     private MethodSignatureCall sigCall;
 
     MethodSignatureDefiningCall() {
-      exists(MethodCall c | c = sigCall.getBlock().getAChild() |
+      exists(MethodCall c | c = sigCall.getBlock().getBody().getAChild() |
         // The typical pattern for the contents of a `sig` block is something
         // like `params(<param defs>).returns(<return type>)` - we want to
         // pick up both of these calls.

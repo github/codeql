@@ -32,7 +32,8 @@ module Impl {
      * Gets the `index`th type bound of this type parameter, if any.
      *
      * This includes type bounds directly on this type parameter and bounds from
-     * any `where` clauses for this type parameter.
+     * any `where` clauses for this type parameter, but restricted to `where`
+     * clauses from the item that declares this type parameter.
      */
     TypeBound getTypeBound(int index) {
       result =
@@ -43,12 +44,35 @@ module Impl {
      * Gets a type bound of this type parameter.
      *
      * This includes type bounds directly on this type parameter and bounds from
-     * any `where` clauses for this type parameter.
+     * any `where` clauses for this type parameter, but restricted to `where`
+     * clauses from the item that declares this type parameter.
      */
     TypeBound getATypeBound() { result = this.getTypeBound(_) }
 
     /** Holds if this type parameter has at least one type bound. */
     predicate hasTypeBound() { exists(this.getATypeBound()) }
+
+    /**
+     * Gets the `index`th additional type bound of this type parameter,
+     * which applies to `constrainingItem`, if any.
+     *
+     * For example, in
+     *
+     * ```rust
+     * impl<T> SomeType<T> where T: Clone {
+     *     fn foo() where T: Debug { }
+     * }
+     * ```
+     *
+     * The constraint `Debug` additionally applies to `T` in `foo`.
+     */
+    TypeBound getAdditionalTypeBound(Item constrainingItem, int index) {
+      result =
+        rank[index + 1](int i, int j |
+          |
+          this.(TypeParamItemNode).getAdditionalTypeBoundAt(constrainingItem, i, j) order by i, j
+        )
+    }
 
     override string toAbbreviatedString() { result = this.getName().getText() }
 

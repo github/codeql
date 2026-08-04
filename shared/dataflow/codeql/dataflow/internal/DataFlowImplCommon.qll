@@ -3,6 +3,7 @@ module;
 
 private import codeql.dataflow.DataFlow
 private import codeql.typetracking.TypeTracking as Tt
+private import codeql.util.Boolean
 private import codeql.util.Location
 private import codeql.util.Option
 private import codeql.util.Unit
@@ -26,30 +27,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   private import Aliases
 
   module DataFlowImplCommonPublic {
-    /**
-     * DEPRECATED: Generally, a custom `FlowState` type should be used instead,
-     * but `string` can of course still be used without referring to this
-     * module.
-     *
-     * Provides `FlowState = string`.
-     */
-    deprecated module FlowStateString {
-      /** A state value to track during data flow. */
-      deprecated class FlowState = string;
-
-      /**
-       * The default state, which is used when the state is unspecified for a source
-       * or a sink.
-       */
-      deprecated class FlowStateEmpty extends FlowState {
-        FlowStateEmpty() { this = "" }
-      }
-    }
-
     private newtype TFlowFeature =
       TFeatureHasSourceCallContext() or
       TFeatureHasSinkCallContext() or
-      TFeatureEqualSourceSinkCallContext()
+      TFeatureEqualSourceSinkCallContext() or
+      TFeatureEscapesSourceCallContext() or
+      TFeatureEscapesSourceCallContextOrEqualSourceSinkCallContext()
 
     /** A flow configuration feature for use in `Configuration::getAFeature()`. */
     class FlowFeature extends TFlowFeature {
@@ -78,6 +61,28 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      */
     class FeatureEqualSourceSinkCallContext extends FlowFeature, TFeatureEqualSourceSinkCallContext {
       override string toString() { result = "FeatureEqualSourceSinkCallContext" }
+    }
+
+    /**
+     * A flow configuration feature that implies that the sink must be reached from
+     * the source by escaping the source call context, that is, flow must either
+     * return from the callable containing the source or use a jump-step before reaching
+     * the sink.
+     */
+    class FeatureEscapesSourceCallContext extends FlowFeature, TFeatureEscapesSourceCallContext {
+      override string toString() { result = "FeatureEscapesSourceCallContext" }
+    }
+
+    /**
+     * A flow configuration feature that is the disjunction of `FeatureEscapesSourceCallContext`
+     * and `FeatureEqualSourceSinkCallContext`.
+     */
+    class FeatureEscapesSourceCallContextOrEqualSourceSinkCallContext extends FlowFeature,
+      TFeatureEscapesSourceCallContextOrEqualSourceSinkCallContext
+    {
+      override string toString() {
+        result = "FeatureEscapesSourceCallContextOrEqualSourceSinkCallContext"
+      }
     }
 
     /**
@@ -1868,6 +1873,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   signature module TypeFlowInput {
     predicate enableTypeFlow();
 
+    /** Holds if `p` is a parameter of a callable with a source node that has a call context. */
+    predicate isParameterNodeInSourceCallContext(ParamNode p);
+
     /** Holds if the edge is possibly needed in the direction `call` to `c`. */
     predicate relevantCallEdgeIn(Call call, Callable c);
 
@@ -1928,6 +1936,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     /**
      * Holds if a sequence of calls may propagate the value of `arg` to some
      * argument-to-parameter call edge that strengthens the static type.
+     *
+     * This predicate is a reverse flow computation, starting at calls that
+     * strengthen the type and then following relevant call edges backwards.
      */
     pragma[nomagic]
     private predicate trackedArgTypeCand(ArgNode arg) {
@@ -1962,6 +1973,9 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * Holds if `p` is part of a value-propagating call path where the
      * end-points have stronger types than the intermediate parameter and
      * argument nodes.
+     *
+     * This predicate is a forward flow computation, intersecting with the
+     * reverse flow computation done in `trackedArgTypeCand`.
      */
     private predicate trackedParamType(ParamNode p) {
       exists(Call call1, Callable c1, ArgNode argOut, Call call2, Callable c2, ArgNode argIn |
@@ -1987,6 +2001,8 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         relevantCallEdge(_, _, arg, p) and
         typeStrongerThanFilter(at, pt)
       )
+      or
+      Input::isParameterNodeInSourceCallContext(p)
       or
       exists(ArgNode arg |
         trackedArgType(arg) and
@@ -2079,8 +2095,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * context.
      */
     private predicate typeFlowParamType(ParamNode p, Type t, boolean cc) {
-      exists(Callable c |
-        Input::dataFlowNonCallEntry(c, cc) and
+      exists(Callable c | Input::dataFlowNonCallEntry(c, cc) |
+        cc = true and
+        nodeEnclosingCallable(p, c) and
+        t = getSourceContextParameterNodeType(p)
+        or
+        (cc = false or not exists(getSourceContextParameterNodeType(p))) and
         trackedParamWithType(p, t, c)
       )
       or

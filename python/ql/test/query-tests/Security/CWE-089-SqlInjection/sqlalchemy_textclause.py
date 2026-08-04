@@ -20,15 +20,15 @@ class User(Base):
 
 
 @app.route("/users/<username>")
-def show_user(username):
+def show_user(username): # $ Source
     session = sqlalchemy.orm.Session(engine)
 
     # BAD, normal SQL injection
-    stmt = sqlalchemy.text("SELECT * FROM users WHERE username = '{}'".format(username))
+    stmt = sqlalchemy.text("SELECT * FROM users WHERE username = '{}'".format(username)) # $ Alert
     results = session.execute(stmt).fetchall()
 
     # BAD, allows SQL injection
-    username_formatted_for_sql = sqlalchemy.text("'{}'".format(username))
+    username_formatted_for_sql = sqlalchemy.text("'{}'".format(username)) # $ Alert
     stmt = sqlalchemy.select(User).where(User.username == username_formatted_for_sql)
     results = session.execute(stmt).scalars().all()
 
@@ -38,14 +38,14 @@ def show_user(username):
 
 
     # All of these should be flagged by query
-    t1 = sqlalchemy.text(username)
-    t2 = sqlalchemy.text(text=username)
-    t3 = sqlalchemy.sql.text(username)
-    t4 = sqlalchemy.sql.text(text=username)
-    t5 = sqlalchemy.sql.expression.text(username)
-    t6 = sqlalchemy.sql.expression.text(text=username)
-    t7 = sqlalchemy.sql.expression.TextClause(username)
-    t8 = sqlalchemy.sql.expression.TextClause(text=username)
+    t1 = sqlalchemy.text(username) # $ Alert
+    t2 = sqlalchemy.text(text=username) # $ Alert
+    t3 = sqlalchemy.sql.text(username) # $ Alert
+    t4 = sqlalchemy.sql.text(text=username) # $ Alert
+    t5 = sqlalchemy.sql.expression.text(username) # $ Alert
+    t6 = sqlalchemy.sql.expression.text(text=username) # $ Alert
+    t7 = sqlalchemy.sql.expression.TextClause(username) # $ Alert
+    t8 = sqlalchemy.sql.expression.TextClause(text=username) # $ Alert
 
-    t9 = db.text(username)
-    t10 = db.text(text=username)
+    t9 = db.text(username) # $ Alert
+    t10 = db.text(text=username) # $ Alert

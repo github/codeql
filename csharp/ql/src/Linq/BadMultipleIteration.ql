@@ -50,7 +50,7 @@ predicate potentiallyConsumingAccess(VariableAccess va) {
 Expr sequenceSource(IEnumerableSequence seq) {
   result = seq.getInitializer()
   or
-  exists(Assignment a | a.getLValue() = seq.getAnAccess() and result = a.getRValue())
+  exists(Assignment a | a.getLeftOperand() = seq.getAnAccess() and result = a.getRightOperand())
 }
 
 from IEnumerableSequence seq, VariableAccess va

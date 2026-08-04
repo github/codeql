@@ -12,8 +12,8 @@ cached
 predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
   TaintTracking::AdditionalTaintStep::step(node1, node2)
   or
-  FlowSummaryPrivate::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
-    node2.(FlowSummaryNode).getSummaryNode(), false, _) // TODO: preserve 'model' parameter
+  FlowSummaryPrivate::Steps::summaryLocalStep(node1, node2.(FlowSummaryNode).getSummaryNode(),
+    false, _) // TODO: preserve 'model' parameter
   or
   // Convert steps out of array elements to plain taint steps
   FlowSummaryPrivate::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(),

@@ -17,7 +17,7 @@ class Node extends TNode {
    * Gets the expression corresponding to this node, at control flow node `cfn`,
    * if any.
    */
-  Expr asExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
+  Expr asExprAtNode(ControlFlowNodes::ElementNode cfn) {
     result = this.(ExprNode).getExprAtNode(cfn)
   }
 
@@ -31,7 +31,7 @@ class Node extends TNode {
    * Gets the definition corresponding to this node, at control flow node `cfn`,
    * if any.
    */
-  AssignableDefinition asDefinitionAtNode(ControlFlow::Node cfn) {
+  AssignableDefinition asDefinitionAtNode(ControlFlowNode cfn) {
     result = this.(AssignableDefinitionNode).getDefinitionAtNode(cfn)
   }
 
@@ -44,7 +44,7 @@ class Node extends TNode {
   }
 
   /** Gets the control flow node corresponding to this node, if any. */
-  final ControlFlow::Node getControlFlowNode() { result = this.(NodeImpl).getControlFlowNodeImpl() }
+  final ControlFlowNode getControlFlowNode() { result = this.(NodeImpl).getControlFlowNodeImpl() }
 
   /** Gets a textual representation of this node. */
   final string toString() { result = this.(NodeImpl).toStringImpl() }
@@ -71,7 +71,7 @@ class Node extends TNode {
  *
  * Note that because of control-flow splitting, one `Expr` may correspond
  * to multiple `ExprNode`s, just like it may correspond to multiple
- * `ControlFlow::Node`s.
+ * `ControlFlowNode`s.
  */
 class ExprNode extends Node, TExprNode {
   /** Gets the expression corresponding to this node. */
@@ -81,9 +81,9 @@ class ExprNode extends Node, TExprNode {
    * Gets the expression corresponding to this node, at control flow node `cfn`,
    * if any.
    */
-  Expr getExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
+  Expr getExprAtNode(ControlFlowNodes::ElementNode cfn) {
     this = TExprNode(cfn) and
-    result = cfn.getAstNode()
+    result = cfn.asExpr()
   }
 }
 
@@ -113,7 +113,7 @@ class AssignableDefinitionNode extends Node instanceof AssignableDefinitionNodeI
   AssignableDefinition getDefinition() { result = super.getDefinition() }
 
   /** Gets the underlying definition, at control flow node `cfn`, if any. */
-  AssignableDefinition getDefinitionAtNode(ControlFlow::Node cfn) {
+  AssignableDefinition getDefinitionAtNode(ControlFlowNode cfn) {
     result = super.getDefinitionAtNode(cfn)
   }
 }
@@ -133,12 +133,14 @@ AssignableDefinitionNode assignableDefinitionNode(AssignableDefinition def) {
 
 predicate localFlowStep = localFlowStepImpl/2;
 
+private predicate localFlowStepPlus(Node source, Node sink) = fastTC(localFlowStep/2)(source, sink)
+
 /**
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
 pragma[inline]
-predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
+predicate localFlow(Node source, Node sink) { localFlowStepPlus(source, sink) or source = sink }
 
 /**
  * Holds if data can flow from `e1` to `e2` in zero or more

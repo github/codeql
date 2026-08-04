@@ -439,11 +439,11 @@ class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
  */
 class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypeParameter {
   private Trait trait;
-  private TypeAlias typeAlias;
+  private AssocType typeAlias;
 
   AssociatedTypeTypeParameter() { this = TAssociatedTypeTypeParameter(trait, typeAlias) }
 
-  TypeAlias getTypeAlias() { result = typeAlias }
+  AssocType getTypeAlias() { result = typeAlias }
 
   /** Gets the trait that contains this associated type declaration. */
   TraitItemNode getTrait() { result = trait }
@@ -457,7 +457,13 @@ class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypePara
   override ItemNode getDeclaringItem() { result = trait }
 
   override string toString() {
-    result = typeAlias.getName().getText() + "[" + trait.getName().toString() + "]"
+    exists(string fromString, TraitItemNode trait2 |
+      result = typeAlias.getName().getText() + "[" + trait.getName() + fromString + "]" and
+      trait2 = typeAlias.getTrait() and
+      if trait = trait2
+      then fromString = ""
+      else fromString = " (inherited from " + trait2.getName() + ")"
+    )
   }
 
   override Location getLocation() { result = typeAlias.getLocation() }

@@ -3,9 +3,9 @@ reverseRead
 | LogInjection.go:33:14:33:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | LogInjection.go:34:18:34:20 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
 | LogInjection.go:35:14:35:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-| LogInjection.go:447:14:447:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-| LogInjection.go:455:14:455:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-| LogInjection.go:463:14:463:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-| LogInjection.go:498:14:498:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-| LogInjection.go:499:14:499:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
-| LogInjection.go:724:12:724:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| LogInjection.go:551:14:551:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| LogInjection.go:559:14:559:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| LogInjection.go:567:14:567:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| LogInjection.go:602:14:602:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| LogInjection.go:603:14:603:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| LogInjection.go:828:12:828:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

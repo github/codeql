@@ -1,19 +1,19 @@
 require "httparty"
 
 # BAD
-HTTParty.get("http://example.com/", verify: false)
+HTTParty.get("http://example.com/", verify: false) # $ Alert
 
 # BAD
-HTTParty.get("http://example.com/", verify_peer: false)
+HTTParty.get("http://example.com/", verify_peer: false) # $ Alert
 
 # BAD
-HTTParty.get("http://example.com/", { verify_peer: false })
+HTTParty.get("http://example.com/", { verify_peer: false }) # $ Alert
 
 # BAD
-HTTParty.post("http://example.com/", body: "some_data", verify: false)
+HTTParty.post("http://example.com/", body: "some_data", verify: false) # $ Alert
 
 # BAD
-HTTParty.post("http://example.com/", { body: "some_data", verify: false })
+HTTParty.post("http://example.com/", { body: "some_data", verify: false }) # $ Alert
 
 # GOOD
 HTTParty.get("http://example.com/")

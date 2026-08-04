@@ -15,19 +15,19 @@ public class ExposureOfPrivateInformationHandler : IHttpHandler
     public void ProcessRequest(HttpContext ctx)
     {
         // BAD: Setting a cookie value or values with private data.
-        ctx.Response.Cookies["MyCookie"].Value = ctx.Request.QueryString["postcode"];
+        ctx.Response.Cookies["MyCookie"].Value = ctx.Request.QueryString["postcode"]; // $ Alert
         Person p = new Person();
-        ctx.Response.Cookies["MyCookie"].Value = p.getTelephone();
+        ctx.Response.Cookies["MyCookie"].Value = p.getTelephone(); // $ Alert
 
         // BAD: Logging private data
         ILogger logger = new ILogger();
-        logger.Warn(p.getTelephone());
+        logger.Warn(p.getTelephone()); // $ Alert
 
         // BAD: Storing sensitive data in unencrypted local file 
         using (var writeStream = File.Open("telephones.txt", FileMode.Create))
         {
             var writer = new StreamWriter(writeStream);
-            writer.Write(p.getTelephone());
+            writer.Write(p.getTelephone()); // $ Alert
             writer.Close();
         }
 
@@ -59,7 +59,7 @@ public class ExposureOfPrivateInformationHandler : IHttpHandler
     void OnButtonClicked()
     {
         ILogger logger = new ILogger();
-        logger.Warn(postcode.Text);
+        logger.Warn(postcode.Text); // $ Alert
     }
 }
 

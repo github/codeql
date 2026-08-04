@@ -7,7 +7,7 @@ import (
 
 const (
 	user     = "dbuser"
-	password = "s3cretp4ssword"
+	password = "s3cretp4ssword" // $ Alert
 )
 
 func connect() *sql.DB {

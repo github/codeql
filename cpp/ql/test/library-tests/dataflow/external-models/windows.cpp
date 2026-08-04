@@ -735,3 +735,442 @@ void test_winhttp_crack_url() {
     sink(*urlComponents.lpszExtraInfo); // $ ir
   }
 }
+
+using HTTP_REQUEST_ID = ULONGLONG;
+using HTTP_CONNECTION_ID = ULONGLONG;
+using HTTP_URL_CONTEXT = ULONGLONG;
+using HTTP_RAW_CONNECTION_ID = ULONGLONG;
+
+typedef struct _HTTP_VERSION {
+  USHORT MajorVersion;
+  USHORT MinorVersion;
+} HTTP_VERSION, *PHTTP_VERSION;
+
+typedef enum _HTTP_VERB {
+  HttpVerbUnparsed = 0
+} HTTP_VERB, *PHTTP_VERB;
+
+typedef struct _HTTP_COOKED_URL {
+  USHORT FullUrlLength;
+  USHORT HostLength;
+  USHORT AbsPathLength;
+  USHORT QueryStringLength;
+  PCWSTR pFullUrl;
+  PCWSTR pHost;
+  PCWSTR pAbsPath;
+  PCWSTR pQueryString;
+} HTTP_COOKED_URL, *PHTTP_COOKED_URL;
+
+typedef struct _HTTP_TRANSPORT_ADDRESS {
+  struct sockaddr* pRemoteAddress;
+  struct sockaddr* pLocalAddress;
+} HTTP_TRANSPORT_ADDRESS, *PHTTP_TRANSPORT_ADDRESS;
+
+typedef struct _HTTP_KNOWN_HEADER {
+  USHORT RawValueLength;
+  PCSTR  pRawValue;
+} HTTP_KNOWN_HEADER, *PHTTP_KNOWN_HEADER;
+
+typedef struct _HTTP_UNKNOWN_HEADER {
+  USHORT NameLength;
+  USHORT RawValueLength;
+  PCSTR  pName;
+  PCSTR  pRawValue;
+} HTTP_UNKNOWN_HEADER, *PHTTP_UNKNOWN_HEADER;
+
+typedef struct _HTTP_REQUEST_HEADERS {
+  USHORT               UnknownHeaderCount;
+  PHTTP_UNKNOWN_HEADER pUnknownHeaders;
+  USHORT               TrailerCount;
+  PHTTP_UNKNOWN_HEADER pTrailers;
+  HTTP_KNOWN_HEADER    KnownHeaders[41];
+} HTTP_REQUEST_HEADERS, *PHTTP_REQUEST_HEADERS;
+
+typedef struct _HTTP_BYTE_RANGE {
+  ULONGLONG StartingOffset;
+  ULONGLONG Length;
+} HTTP_BYTE_RANGE, *PHTTP_BYTE_RANGE;
+
+typedef struct _HTTP_DATA_CHUNK {
+  int DataChunkType;
+  union {
+    struct {
+      PVOID pBuffer;
+      ULONG BufferLength;
+    } FromMemory;
+    struct {
+      HTTP_BYTE_RANGE ByteRange;
+      HANDLE          FileHandle;
+    } FromFileHandle;
+    struct {
+      USHORT FragmentNameLength;
+      PCWSTR pFragmentName;
+    } FromFragmentCache;
+    struct {
+      HTTP_BYTE_RANGE ByteRange;
+      PCWSTR          pFragmentName;
+    } FromFragmentCacheEx;
+    struct {
+      USHORT               TrailerCount;
+      PHTTP_UNKNOWN_HEADER pTrailers;
+    } Trailers;
+  };
+} HTTP_DATA_CHUNK, *PHTTP_DATA_CHUNK;
+
+typedef struct _HTTP_SSL_CLIENT_CERT_INFO {
+  ULONG  CertFlags;
+  ULONG  CertEncodedSize;
+  char*  pCertEncoded;
+  HANDLE Token;
+  BOOL   CertDeniedByMapper;
+} HTTP_SSL_CLIENT_CERT_INFO, *PHTTP_SSL_CLIENT_CERT_INFO;
+
+typedef struct _HTTP_SSL_INFO {
+  USHORT                      ServerCertKeySize;
+  USHORT                      ConnectionKeySize;
+  ULONG                       ServerCertIssuerSize;
+  ULONG                       ServerCertSubjectSize;
+  PCSTR                       pServerCertIssuer;
+  PCSTR                       pServerCertSubject;
+  PHTTP_SSL_CLIENT_CERT_INFO  pClientCertInfo;
+  ULONG                       SslClientCertNegotiated;
+} HTTP_SSL_INFO, *PHTTP_SSL_INFO;
+
+typedef struct _HTTP_REQUEST_V1 {
+  ULONG                    Flags;
+  HTTP_CONNECTION_ID       ConnectionId;
+  HTTP_REQUEST_ID          RequestId;
+  HTTP_URL_CONTEXT         UrlContext;
+  HTTP_VERSION             Version;
+  HTTP_VERB                Verb;
+  USHORT                   UnknownVerbLength;
+  USHORT                   RawUrlLength;
+  PCSTR                    pUnknownVerb;
+  PCSTR                    pRawUrl;
+  HTTP_COOKED_URL          CookedUrl;
+  HTTP_TRANSPORT_ADDRESS   Address;
+  HTTP_REQUEST_HEADERS     Headers;
+  ULONGLONG                BytesReceived;
+  USHORT                   EntityChunkCount;
+  PHTTP_DATA_CHUNK         pEntityChunks;
+  HTTP_RAW_CONNECTION_ID   RawConnectionId;
+  PHTTP_SSL_INFO           pSslInfo;
+} HTTP_REQUEST_V1, *PHTTP_REQUEST_V1;
+
+using HTTP_REQUEST = HTTP_REQUEST_V1;
+using PHTTP_REQUEST = PHTTP_REQUEST_V1;
+
+ULONG HttpReceiveHttpRequest(
+  HANDLE          RequestQueueHandle,
+  HTTP_REQUEST_ID RequestId,
+  ULONG           Flags,
+  PHTTP_REQUEST   RequestBuffer,
+  ULONG           RequestBufferLength,
+  PULONG          BytesReturned,
+  LPOVERLAPPED    Overlapped
+);
+
+ULONG HttpReceiveRequestEntityBody(
+  HANDLE          RequestQueueHandle,
+  HTTP_REQUEST_ID RequestId,
+  ULONG           Flags,
+  PVOID           EntityBuffer,
+  ULONG           EntityBufferLength,
+  PULONG          BytesReturned,
+  LPOVERLAPPED    Overlapped
+);
+
+ULONG HttpReceiveClientCertificate(
+  HANDLE                     RequestQueueHandle,
+  HTTP_CONNECTION_ID         ConnectionId,
+  ULONG                      Flags,
+  PHTTP_SSL_CLIENT_CERT_INFO SslClientCertInfo,
+  ULONG                      SslClientCertInfoSize,
+  PULONG                     BytesReceived,
+  LPOVERLAPPED               Overlapped
+);
+
+void sink(PCWSTR);
+void sink(HANDLE);
+
+void test_http_server_api(HANDLE hRequestQueue) {
+  {
+    HTTP_REQUEST requestBuffer;
+    ULONG bytesReturned;
+    ULONG result = HttpReceiveHttpRequest(hRequestQueue, 0, 0, &requestBuffer, sizeof(requestBuffer), &bytesReturned, nullptr);
+    char* p = reinterpret_cast<char*>(&requestBuffer);
+    sink(p);
+    sink(*p); // $ ir
+    sink(requestBuffer.pRawUrl);
+    sink(*requestBuffer.pRawUrl); // $ ir
+    sink(requestBuffer.CookedUrl.pFullUrl);
+    sink(*requestBuffer.CookedUrl.pFullUrl); // $ ir
+    sink(requestBuffer.Headers.KnownHeaders[0].pRawValue);
+    sink(*requestBuffer.Headers.KnownHeaders[0].pRawValue); // $ ir
+    sink(requestBuffer.Headers.pUnknownHeaders[0].pRawValue);
+    sink(*requestBuffer.Headers.pUnknownHeaders[0].pRawValue); // $ ir
+    sink(requestBuffer.pEntityChunks->FromFileHandle.FileHandle); // $ ir
+    sink(requestBuffer.pEntityChunks->FromFragmentCache.pFragmentName);
+    sink(*requestBuffer.pEntityChunks->FromFragmentCache.pFragmentName); // $ ir
+    sink(requestBuffer.pEntityChunks->FromFragmentCacheEx.pFragmentName);
+    sink(*requestBuffer.pEntityChunks->FromFragmentCacheEx.pFragmentName); // $ ir
+    sink(requestBuffer.pEntityChunks->FromMemory.pBuffer);
+    sink(*(char*)requestBuffer.pEntityChunks->FromMemory.pBuffer); // $ ir
+    sink(requestBuffer.pSslInfo->pServerCertIssuer);
+    sink(*requestBuffer.pSslInfo->pServerCertIssuer); // $ ir
+    sink(requestBuffer.pSslInfo->pServerCertSubject);
+    sink(*requestBuffer.pSslInfo->pServerCertSubject); // $ ir
+    sink(requestBuffer.pSslInfo->pClientCertInfo->pCertEncoded);
+    sink(*requestBuffer.pSslInfo->pClientCertInfo->pCertEncoded); // $ ir
+  }
+  {
+    char buffer[1024];
+    ULONG bytesReturned;
+    ULONG result = HttpReceiveRequestEntityBody(hRequestQueue, 0, 0, buffer, sizeof(buffer), &bytesReturned, nullptr);
+    sink(buffer);
+    sink(*buffer); // $ ir
+  }
+  {
+    HTTP_SSL_CLIENT_CERT_INFO certInfo;
+    ULONG bytesReceived;
+    ULONG result = HttpReceiveClientCertificate(hRequestQueue, 0, 0, &certInfo, sizeof(certInfo), &bytesReceived, nullptr);
+    char* p = reinterpret_cast<char*>(&certInfo);
+    sink(p);
+    sink(*p); // $ ir
+    sink(certInfo.pCertEncoded);
+    sink(*certInfo.pCertEncoded); // $ ir
+  }
+}
+
+using HKEY = void*;
+using BYTE = unsigned char;
+using LPBYTE = BYTE*;
+using PLONG = LONG*;
+
+typedef struct value_entA {
+  LPSTR ve_valuename;
+  DWORD ve_valuelen;
+  DWORD_PTR ve_valueptr;
+  DWORD ve_type;
+} VALENTA, *PVALENTA;
+
+typedef struct value_entW {
+  LPWSTR ve_valuename;
+  DWORD ve_valuelen;
+  DWORD_PTR ve_valueptr;
+  DWORD ve_type;
+} VALENTW, *PVALENTW;
+
+LONG RegQueryValueA(HKEY hKey, LPCSTR lpSubKey, LPSTR lpData, PLONG lpcbData);
+LONG RegQueryValueW(HKEY hKey, LPCWSTR lpSubKey, LPWSTR lpData, PLONG lpcbData);
+
+LONG RegQueryValueExA(
+  HKEY hKey, LPCSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, LPBYTE lpData,
+  LPDWORD lpcbData
+);
+
+LONG RegQueryValueExW(
+  HKEY hKey, LPCWSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, LPBYTE lpData,
+  LPDWORD lpcbData
+);
+
+LONG RegGetValueA(
+  HKEY hKey, LPCSTR lpSubKey, LPCSTR lpValue, DWORD flags, LPDWORD lpType, PVOID lpData,
+  LPDWORD lpcbData
+);
+
+LONG RegGetValueW(
+  HKEY hKey, LPCWSTR lpSubKey, LPCWSTR lpValue, DWORD flags, LPDWORD lpType, PVOID lpData,
+  LPDWORD lpcbData
+);
+
+LONG RegQueryMultipleValuesA(
+  HKEY hKey, PVALENTA valList, DWORD numVals, LPSTR valueBuffer, LPDWORD totalSize
+);
+
+LONG RegQueryMultipleValuesW(
+  HKEY hKey, PVALENTW valList, DWORD numVals, LPWSTR valueBuffer, LPDWORD totalSize
+);
+
+LONG RegEnumValueA(
+  HKEY hKey, DWORD dwIndex, LPSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpReserved,
+  LPDWORD lpType, LPBYTE lpData, LPDWORD lpcbData
+);
+
+LONG RegEnumValueW(
+  HKEY hKey, DWORD dwIndex, LPWSTR lpValueName, LPDWORD lpcchValueName, LPDWORD lpReserved,
+  LPDWORD lpType, LPBYTE lpData, LPDWORD lpcbData
+);
+
+void test_registry_queries(HKEY hKey) {
+  {
+    char data[256];
+    LONG dataSize = sizeof(data);
+    RegQueryValueA(hKey, "value", data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    wchar_t data[256];
+    LONG dataSize = sizeof(data);
+    RegQueryValueW(hKey, L"value", data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegQueryValueExA(hKey, "value", nullptr, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegQueryValueExW(hKey, L"value", nullptr, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    VALENTA values[1];
+    char data[256];
+    DWORD dataSize = sizeof(data);
+    RegQueryMultipleValuesA(hKey, values, 1, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    VALENTW values[1];
+    wchar_t data[256];
+    DWORD dataSize = sizeof(data);
+    RegQueryMultipleValuesW(hKey, values, 1, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegGetValueA(hKey, "subkey", "value", 0, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+
+  {
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegGetValueW(hKey, L"subkey", L"value", 0, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+  }
+  {
+    char valueName[256];
+    DWORD valueNameSize = sizeof(valueName);
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegEnumValueA(hKey, 0, valueName, &valueNameSize, nullptr, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+    sink(valueName); // clean
+    sink(*valueName); // $ ir
+  }
+  {
+    wchar_t valueName[256];
+    DWORD valueNameSize = sizeof(valueName) / sizeof(*valueName);
+    BYTE data[256];
+    DWORD dataSize = sizeof(data);
+    DWORD type;
+    RegEnumValueW(hKey, 0, valueName, &valueNameSize, nullptr, &type, data, &dataSize);
+    sink(data); // clean
+    sink(*data); // $ ir
+    sink(valueName); // clean
+    sink(*valueName); // $ ir
+  }
+}
+
+using LPCOLESTR = const char*;
+using LPOLESTR = char*;
+using GUID = int;
+using CLSID = GUID;
+using IID = GUID;
+using REFIID = const IID&;
+using REFCLSID = const CLSID&;
+using REFGUID = const GUID&;
+using LPIID = IID*;
+using LPCLSID = CLSID*;
+using HRESULT = long;
+
+HRESULT IIDFromString(LPCOLESTR lpsz, LPIID lpiid);
+HRESULT StringFromIID(REFIID rclsid, LPOLESTR* lplpsz);
+HRESULT ProgIDFromCLSID(REFCLSID clsid, LPOLESTR* lplpszProgID);
+HRESULT CLSIDFromProgID(LPCOLESTR lpszProgID, LPCLSID lpclsid);
+HRESULT CLSIDFromString(LPCOLESTR lpsz, LPCLSID pclsid);
+HRESULT StringFromCLSID(REFCLSID rclsid, LPOLESTR* lplpsz);
+int GUIDFromString(LPCOLESTR psz, GUID* pguid);
+int StringFromGUID2(REFGUID rguid, LPOLESTR lpsz, int cchMax);
+
+void sink(GUID);
+void sink(GUID*);
+
+void test_com_string_conversions() {
+  {
+    char str[256];
+    str[0] = (char)source();
+    IID iid;
+    IIDFromString(str, &iid);
+    sink(iid); // $ ir
+  }
+  {
+    IID iid = source();
+    LPOLESTR str = nullptr;
+    StringFromIID(iid, &str);
+    sink(str);
+    sink(*str); // $ ir
+  }
+  {
+    CLSID clsid = source();
+    LPOLESTR str = nullptr;
+    ProgIDFromCLSID(clsid, &str);
+    sink(str);
+    sink(*str); // $ ir
+  }
+  {
+    char progID[256];
+    progID[0] = (char)source();
+    CLSID clsid;
+    CLSIDFromProgID(progID, &clsid);
+    sink(clsid); // $ ir
+  }
+  {
+    char str[256];
+    str[0] = (char)source();
+    CLSID clsid;
+    CLSIDFromString(str, &clsid);
+    sink(clsid); // $ ir
+  }
+  {
+    CLSID clsid = source();
+    LPOLESTR str = nullptr;
+    StringFromCLSID(clsid, &str);
+    sink(str);
+    sink(*str); // $ ir
+  }
+  {
+    char str[256];
+    str[0] = (char)source();
+    GUID guid;
+    GUIDFromString(str, &guid);
+    sink(guid); // $ ir
+  }
+  {
+    GUID guid = source();
+    char str[256];
+    StringFromGUID2(guid, str, 256);
+    sink(str);
+    sink(*str); // $ ir
+  }
+}

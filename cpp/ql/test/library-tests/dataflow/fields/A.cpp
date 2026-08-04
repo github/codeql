@@ -46,7 +46,7 @@ public:
   {
     C *c = new C();
     B *b = B::make(c);
-    sink(b->c); // $ast,ir
+    sink(b->c); // $ ast,ir
   }
 
   void f2()

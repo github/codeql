@@ -10,8 +10,8 @@ class Program
         var x1 = "";
         for (var i = 0; i < 1000; i++)
         {
-            x0 += "" + i; // BAD
-            x1 = x1 + i; // BAD
+            x0 += "" + i; // $ Alert // BAD
+            x1 = x1 + i; // $ Alert // BAD
             var x2 = "";
             x2 += x1; // GOOD
         }

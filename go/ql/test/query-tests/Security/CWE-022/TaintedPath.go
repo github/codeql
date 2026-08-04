@@ -12,19 +12,19 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	tainted_path := r.URL.Query()["path"][0]
+	tainted_path := r.URL.Query()["path"][0] // $ Source[go/path-injection]
 
 	// BAD: This could read any file on the file system
-	data, _ := ioutil.ReadFile(tainted_path)
+	data, _ := ioutil.ReadFile(tainted_path) // $ Alert[go/path-injection]
 	w.Write(data)
 
 	// BAD: This could still read any file on the file system
-	data, _ = ioutil.ReadFile(filepath.Join("/home/user/", tainted_path))
+	data, _ = ioutil.ReadFile(filepath.Join("/home/user/", tainted_path)) // $ Alert[go/path-injection]
 	w.Write(data)
 
-	// GOOD: This can only read inside the provided safe path
+	// BAD: This could still read any file on the file system
 	sanitized_filepath, _ := filepath.Rel("/home/user/safepath", tainted_path)
-	data, _ = ioutil.ReadFile(sanitized_filepath)
+	data, _ = ioutil.ReadFile(sanitized_filepath) // $ Alert[go/path-injection]
 	w.Write(data)
 
 	// GOOD: This can only read inside the provided safe path
@@ -37,10 +37,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	data, _ = ioutil.ReadFile(strings.ReplaceAll(tainted_path, "..", ""))
 	w.Write(data)
 
-	// GOOD: This can only read inside the provided safe path
+	// BAD: This could still read any file on the file system
 	_, err := filepath.Rel("/home/user/safepath", tainted_path)
 	if err == nil {
-		data, _ = ioutil.ReadFile(tainted_path)
+		data, _ = ioutil.ReadFile(tainted_path) // $ Alert[go/path-injection]
 		w.Write(data)
 	}
 
@@ -71,7 +71,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	// BAD: Sanitized by path.Clean with a prepended '/' forcing interpretation
 	// as an absolute path, however is not sufficient for Windows paths.
-	data, _ = ioutil.ReadFile(path.Clean("/" + tainted_path))
+	data, _ = ioutil.ReadFile(path.Clean("/" + tainted_path)) // $ Alert[go/path-injection]
 	w.Write(data)
 
 	// GOOD: Multipart.Form.FileHeader.Filename sanitized by filepath.Base when calling ParseMultipartForm

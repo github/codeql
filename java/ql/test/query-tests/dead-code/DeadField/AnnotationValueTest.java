@@ -8,7 +8,7 @@ public class AnnotationValueTest {
 	public static String liveField = "";
 
 	@TestAnnotation(value = AnnotationValueUtil.DEAD_STRING_CONSTANT_FIELD)
-	public static String deadField = "";
+	public static String deadField = ""; // $ Alert
 
 	@TestAnnotation(value = { AnnotationValueUtil.LIVE_STRING_CONSTANT_METHOD })
 	public static void liveMethod() {

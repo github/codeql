@@ -6,7 +6,7 @@ class C1
     object mutex = new Object();
 
     // BAD: getter is unlocked
-    int BadProperty1
+    int BadProperty1 // $ Alert
     {
         get
         {
@@ -20,7 +20,7 @@ class C1
     }
 
     // BAD: getter is not properly locked
-    int BadProperty2
+    int BadProperty2 // $ Alert
     {
         get
         {
@@ -87,6 +87,27 @@ class C1
         set
         {
             lock (mutex) GoodProperty3 = value;
+        }
+    }
+
+    // GOOD: both getter and setter are locked.
+    int? property2;
+    int? GoodProperty5
+    {
+        get
+        {
+            lock (mutex)
+            {
+                property2 ??= 0;
+                return property2;
+            }
+        }
+        set
+        {
+            lock (mutex)
+            {
+                property2 = value;
+            }
         }
     }
 }

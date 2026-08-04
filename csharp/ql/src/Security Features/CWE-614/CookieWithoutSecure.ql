@@ -31,8 +31,8 @@ predicate cookieAppendSecureByDefault() {
 
 predicate secureFalse(ObjectCreation oc) {
   exists(Assignment a |
-    getAValueForProp(oc, a, "Secure") = a.getRValue() and
-    a.getRValue().getValue() = "false"
+    getAValueForProp(oc, a, "Secure") = a.getRightOperand() and
+    a.getRightOperand().getValue() = "false"
   )
 }
 
@@ -96,8 +96,8 @@ predicate insecureSecurePolicyAssignment(Assignment a, Expr val) {
         MicrosoftAspNetCoreAuthenticationCookiesCookieAuthenticationOptions
     ) and
     pw.getProperty().getName() = "SecurePolicy" and
-    a.getLValue() = pw and
-    DataFlow::localExprFlow(val, a.getRValue()) and
+    a.getLeftOperand() = pw and
+    DataFlow::localExprFlow(val, a.getRightOperand()) and
     val.getValue() = "2" // None
   )
 }
@@ -107,7 +107,7 @@ where
   insecureCookieCall(secureSink)
   or
   exists(Assignment a |
-    secureSink = a.getRValue() and
+    secureSink = a.getRightOperand() and
     insecureSecurePolicyAssignment(a, _)
   )
 select secureSink, "Cookie attribute 'Secure' is not set to true."

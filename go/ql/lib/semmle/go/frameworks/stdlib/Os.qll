@@ -1,6 +1,8 @@
 /**
  * Provides classes modeling security-relevant aspects of the `os` package.
  */
+overlay[local?]
+module;
 
 import go
 

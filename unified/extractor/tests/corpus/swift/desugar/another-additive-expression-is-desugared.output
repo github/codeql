@@ -1,0 +1,34 @@
+foo + bar
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        infixOperatorExpr
+          operator:
+            binaryOperatorExpr
+              operator: binaryOperator "+"
+          leftOperand:
+            declReferenceExpr
+              baseName: identifier "foo"
+          rightOperand:
+            declReferenceExpr
+              baseName: identifier "bar"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        binary_expr
+          left:
+            name_expr
+              identifier: identifier "foo"
+          operator: infix_operator "+"
+          right:
+            name_expr
+              identifier: identifier "bar"

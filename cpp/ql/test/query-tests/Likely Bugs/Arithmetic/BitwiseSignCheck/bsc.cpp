@@ -1,9 +1,9 @@
 bool is_bit_set_v1(int x, int bitnum) {
-  return (x & (1 << bitnum)) > 0; // BAD
+  return (x & (1 << bitnum)) > 0; // $ Alert // BAD
 }
 
 bool is_bit_set_v2(int x, int bitnum) {
-  return ((1 << bitnum) & x) > 0; // BAD
+  return ((1 << bitnum) & x) > 0; // $ Alert // BAD
 }
 
 bool plain_wrong(int x, int bitnum) {
@@ -15,11 +15,11 @@ bool is_bit24_set(int x) {
 }
 
 bool is_bit31_set_bad_v1(int x) {
-  return (x & (1 << 31)) > 0; // BAD
+  return (x & (1 << 31)) > 0; // $ Alert // BAD
 }
 
 bool is_bit31_set_bad_v2(int x) {
-  return 0 < (x & (1 << 31)); // BAD
+  return 0 < (x & (1 << 31)); // $ Alert // BAD
 }
 
 bool is_bit31_set_good(int x) {
@@ -39,5 +39,5 @@ bool is_bit_set_v3(int x, int bitnum) {
 }
 
 bool is_bit_set_v4(int x, int bitnum) {
-  return (x & (1 << bitnum)) >= 1; // BAD [NOT DETECTED]
+  return (x & (1 << bitnum)) >= 1; // $ MISSING: Alert // BAD [NOT DETECTED]
 }

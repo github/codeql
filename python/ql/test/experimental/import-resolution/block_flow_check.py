@@ -5,7 +5,7 @@ class SOURCE(object):
     @staticmethod
     def block_flow(): pass
 
-check("SOURCE", SOURCE, SOURCE, globals()) #$ prints=SOURCE
+check("SOURCE", SOURCE, SOURCE, globals()) # $ prints=SOURCE
 
 SOURCE.block_flow()
 

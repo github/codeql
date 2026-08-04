@@ -1,0 +1,11 @@
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  pages: write
+
+jobs:
+  call-workflow:
+    uses: ./.github/workflows/perms11.yml

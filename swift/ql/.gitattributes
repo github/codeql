@@ -543,6 +543,7 @@
 /lib/codeql/swift/elements/type/BuiltinExecutorType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinFixedArrayType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinFloatType.qll linguist-generated
+/lib/codeql/swift/elements/type/BuiltinGenericType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinIntegerLiteralType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinIntegerType.qll linguist-generated
 /lib/codeql/swift/elements/type/BuiltinJobType.qll linguist-generated
@@ -625,6 +626,7 @@
 /lib/codeql/swift/elements/type/internal/BuiltinFixedArrayTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinFloatTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinFloatTypeImpl.qll linguist-generated
+/lib/codeql/swift/elements/type/internal/BuiltinGenericTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinIntegerLiteralTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinIntegerLiteralTypeImpl.qll linguist-generated
 /lib/codeql/swift/elements/type/internal/BuiltinIntegerTypeConstructor.qll linguist-generated
@@ -982,6 +984,7 @@
 /lib/codeql/swift/generated/type/BuiltinExecutorType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinFixedArrayType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinFloatType.qll linguist-generated
+/lib/codeql/swift/generated/type/BuiltinGenericType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinIntegerLiteralType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinIntegerType.qll linguist-generated
 /lib/codeql/swift/generated/type/BuiltinJobType.qll linguist-generated
@@ -1189,6 +1192,7 @@
 /test/extractor-tests/generated/type/BoundGenericClassType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/BoundGenericEnumType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/BoundGenericStructType/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/type/BuiltinFixedArrayType/BuiltinFixedArrayType.ql linguist-generated
 /test/extractor-tests/generated/type/BuiltinIntegerType/BuiltinIntegerType.ql linguist-generated
 /test/extractor-tests/generated/type/BuiltinType/BuiltinType.ql linguist-generated
 /test/extractor-tests/generated/type/ClassType/MISSING_SOURCE.txt linguist-generated

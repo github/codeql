@@ -10,7 +10,7 @@ char *fgets(char *s, int n, FILE *stream);
 void test1()
 {
 	FILE *f;
-	
+
 	// fopen, always fclose (GOOD)
 	f = fopen("myFile.txt", "wt");
 	fclose(f);
@@ -21,7 +21,7 @@ void test2(int cond)
 	FILE *f;
 
 	// fopen, always fclose, but with two paths (GOOD)
-	
+
 	f = fopen("myFile1.bin", "rb");
 	if (cond > 0)
 	{
@@ -37,7 +37,7 @@ void test3()
 	FILE *f, *g;
 
 	// fopen, always fclose, but via assignment (GOOD)
-	
+
 	f = fopen("myFile1.bin", "rb");
 	g = f;
 	fclose(g);
@@ -48,7 +48,7 @@ void test4()
 	FILE *f;
 
 	// fopen, never fclose (BAD: f is never closed)
-	f = fopen("myFile.txt", "wt");
+	f = fopen("myFile.txt", "wt"); // $ Alert[cpp/file-never-closed]
 }
 
 void test5(int cond)
@@ -56,7 +56,7 @@ void test5(int cond)
 	FILE *f;
 
 	// fopen, sometimes fclose (BAD: f is not always closed)
-	f = fopen("myFile.txt", "wt");
+	f = fopen("myFile.txt", "wt"); // $ Alert[cpp/file-may-not-be-closed]
 	if (cond == 0)
 	{
 		fclose(f);
@@ -66,13 +66,13 @@ void test5(int cond)
 void test6(int cond)
 {
 	// fopen, sometimes fclose (BAD: f is not always closed)
-	FILE *f = fopen("myFile.txt", "wt");
+	FILE *f = fopen("myFile.txt", "wt"); // $ Alert[cpp/file-may-not-be-closed]
 
 	if (cond == 0)
 	{
 		return;
 	}
-	
+
 	fclose(f);
 }
 
@@ -82,7 +82,7 @@ void test7()
 
 	// fopen, assign, close f twice (BAD: g is never closed)
 	f = fopen("myFile.txt", "wt");
-	g = fopen("myFile.txt", "wt");
+	g = fopen("myFile.txt", "wt"); // $ Alert[cpp/file-may-not-be-closed]
 	g = f;
 	fclose(g);
 	fclose(f);
@@ -110,12 +110,12 @@ void test8(int cond)
 	// ...
 
 	test8_close(f);
-	
+
 	// fopen, don't close (BAD: g is never closed)
-	g = test8_open();
-	
+	g = test8_open(); // $ Alert[cpp/file-may-not-be-closed]
+
 	// fopen, sometimes fclose (BAD: h is not always closed)
-	h = test8_open();
+	h = test8_open(); // $ Alert[cpp/file-may-not-be-closed]
 	if (cond == 0)
 	{
 		return;
@@ -130,9 +130,9 @@ public:
 	{
 		a = fopen("myFile1.txt", "rt"); // closed in destructor (GOOD)
 		b = fopen("myFile2.txt", "rt"); // unreliably closed in destructor (BAD) [NOT REPORTED]
-		c = fopen("myFile3.txt", "rt"); // never closed in destructor (BAD)
+		c = fopen("myFile3.txt", "rt"); // $ Alert[cpp/file-never-closed] // never closed in destructor (BAD)
 	}
-	
+
 	void myOpenMethod(const char *filename)
 	{
 		if (d != NULL)
@@ -165,7 +165,7 @@ private:
 void test9()
 {
 	myClass9 mc9;
-	
+
 	mc9.myOpenMethod("myFile4.txt");
 	mc9.myOpenMethod("myFile5.txt");
 }
@@ -181,7 +181,7 @@ void test11()
 	FILE *f, *g;
 
 	// fopen, assign, but do not close (BAD)
-	f = fopen("myFile1.bin", "rb");
+	f = fopen("myFile1.bin", "rb"); // $ Alert[cpp/file-never-closed]
 	g = f;
 }
 
@@ -218,7 +218,7 @@ void test13(int cond)
 
 void test14()
 {
-	FILE *f = fopen("f.txt", "rt"); // fopen, forget, don't close (BAD)
+	FILE *f = fopen("f.txt", "rt"); // $ Alert[cpp/file-may-not-be-closed] // fopen, forget, don't close (BAD)
 
 	f = 0;
 	fclose(f);
@@ -237,7 +237,7 @@ void test15()
 void test16()
 {
 	FILE *f = fopen("f.txt", "rt"); // fopen, always close in loop (GOOD)
-	FILE *g = fopen("g.txt", "rt"); // fopen, don't close in loop (BAD)
+	FILE *g = fopen("g.txt", "rt"); // $ Alert[cpp/file-may-not-be-closed] // fopen, don't close in loop (BAD)
 	int i;
 
 	for (i = 0; i < 1; i++)
@@ -250,7 +250,7 @@ void test16()
 
 void test17()
 {
-	FILE *f = fopen("f.txt", "rt"); // fopen, don't close in loop (BAD)
+	FILE *f = fopen("f.txt", "rt"); // $ Alert[cpp/file-may-not-be-closed] // fopen, don't close in loop (BAD)
 	int i;
 
 	for (i = 0; i < 0; i++)
@@ -273,7 +273,7 @@ void test18()
 
 void test19()
 {
-	FILE *f = fopen("f.txt", "rt"); // fopen, return in loop, don't close (BAD)
+	FILE *f = fopen("f.txt", "rt"); // $ Alert[cpp/file-may-not-be-closed] // fopen, return in loop, don't close (BAD)
 	int i;
 
 	for (i = 0; i < 1; i++)
@@ -296,7 +296,7 @@ void test20()
 
 void test21()
 {
-	FILE *f = fopen("f.txt", "rt"); // fopen, don't close in loop increment (BAD)
+	FILE *f = fopen("f.txt", "rt"); // $ Alert[cpp/file-may-not-be-closed] // fopen, don't close in loop increment (BAD)
 	int i;
 
 	for (i = 0; i < 0; fclose(f))
@@ -307,7 +307,7 @@ void test21()
 void test22()
 {
 	FILE *f = fopen("f.txt", "rt"); // fopen, close in condition inside loop (GOOD)
-	FILE *g = fopen("g.txt", "rt"); // fopen, don't close in condition inside loop (BAD)
+	FILE *g = fopen("g.txt", "rt"); // $ Alert[cpp/file-may-not-be-closed] // fopen, don't close in condition inside loop (BAD)
 	bool b = true;
 
 	while (b)
@@ -317,7 +317,7 @@ void test22()
 		} else {
 			fclose(g);
 		}
-		
+
 		b = false;
 	}
 }
@@ -353,7 +353,7 @@ void test24()
 
 void test25()
 {
-	FILE *f = fopen("f.txt", "rt"); // fopen, don't close in nested loops (BAD)
+	FILE *f = fopen("f.txt", "rt"); // $ Alert[cpp/file-may-not-be-closed] // fopen, don't close in nested loops (BAD)
 	int i, j, k;
 
 	for (i = 0; i < 1; i++)
@@ -381,7 +381,7 @@ void test26()
 
 void test27()
 {
-    FILE *f = fopen("f.txt", "rt"); // fopen, don't close after loop (BAD)
+    FILE *f = fopen("f.txt", "rt"); // $ Alert[cpp/file-may-not-be-closed] // fopen, don't close after loop (BAD)
     int i;
 
     for (i = 0; i < 10; i++)
@@ -418,7 +418,7 @@ test28_struct *test28_open()
 	// open, call function to put in a struct, return it (GOOD)
 	f = fopen("a.txt", "rt");
 	s = mk_test28(f);
-	
+
 	return s;
 }
 
@@ -460,7 +460,7 @@ void test29()
 void test30()
 {
 	// cases that do not involve a variable
-	fopen("myFile.txt", "wt"); // BAD: not closed
+	fopen("myFile.txt", "wt"); // $ Alert[cpp/file-never-closed] // BAD: not closed
 	fclose(fopen("myFile.txt", "wt")); // GOOD
 }
 

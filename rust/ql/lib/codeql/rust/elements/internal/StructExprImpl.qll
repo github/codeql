@@ -50,5 +50,10 @@ module Impl {
       or
       result = this.getVariant().getStructField(name)
     }
+
+    /** Gets the `i`th struct field of the instantiated struct or variant. */
+    StructField getNthStructField(int i) {
+      result = [this.getStruct().getNthStructField(i), this.getVariant().getNthStructField(i)]
+    }
   }
 }

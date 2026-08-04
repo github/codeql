@@ -33,13 +33,13 @@ abstract class Test {
 			Statement statement = connection.createStatement();
 			String query1 = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ category + "' ORDER BY PRICE";
-			ResultSet results = statement.executeQuery(query1);
+			ResultSet results = statement.executeQuery(query1); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 		}
 		// BAD: don't use user input when building a prepared call
 		{
 			String id = args[1];
 			String query2 = "{ call get_product_by_id('" + id + "',?,?,?) }";
-			PreparedStatement statement = connection.prepareCall(query2);
+			PreparedStatement statement = connection.prepareCall(query2); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 			ResultSet results = statement.executeQuery();
 		}
 		// BAD: don't use user input when building a prepared query
@@ -47,7 +47,7 @@ abstract class Test {
 			String category = args[1];
 			String query3 = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ category + "' ORDER BY PRICE";
-			PreparedStatement statement = connection.prepareStatement(query3);
+			PreparedStatement statement = connection.prepareStatement(query3); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 			ResultSet results = statement.executeQuery();
 		}
 		// BAD: an injection using a StringBuilder instead of string append 
@@ -59,7 +59,7 @@ abstract class Test {
 			querySb.append("' ORDER BY PRICE");
 			String querySbToString = querySb.toString();
 			Statement statement = connection.createStatement();
-			ResultSet results = statement.executeQuery(querySbToString);
+			ResultSet results = statement.executeQuery(querySbToString); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 		}
 		// BAD: executeUpdate
 		{
@@ -67,7 +67,7 @@ abstract class Test {
 			String price = args[2];
 			Statement statement = connection.createStatement();
 			String query = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
-			int count = statement.executeUpdate(query);
+			int count = statement.executeUpdate(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 		}
 		// BAD: executeUpdate
 		{
@@ -75,7 +75,7 @@ abstract class Test {
 			String price = args[2];
 			Statement statement = connection.createStatement();
 			String query = "UPDATE PRODUCT SET PRICE='" + price + "' WHERE ITEM='" + item + "'";
-			long count = statement.executeLargeUpdate(query);
+			long count = statement.executeLargeUpdate(query); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 		}
 
 		// OK: validate the input first
@@ -95,7 +95,7 @@ abstract class Test {
 			Statement statement = connection.createStatement();
 			String queryFromField = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
 					+ categoryName + "' ORDER BY PRICE";
-			ResultSet results = statement.executeQuery(queryFromField);
+			ResultSet results = statement.executeQuery(queryFromField); // $ Alert[java/concatenated-sql-query]
 		}
 		// BAD: unescaped code using a StringBuilder 
 		{
@@ -105,7 +105,7 @@ abstract class Test {
 			querySb.append("' ORDER BY PRICE");
 			String querySbToString = querySb.toString();
 			Statement statement = connection.createStatement();
-			ResultSet results = statement.executeQuery(querySbToString);
+			ResultSet results = statement.executeQuery(querySbToString); // $ Alert[java/concatenated-sql-query]
 		}
 		// BAD: a StringBuilder with appends of + operations 
 		{
@@ -115,7 +115,7 @@ abstract class Test {
 			querySb2.append("ORDER BY PRICE");
 			String querySb2ToString = querySb2.toString();
 			Statement statement = connection.createStatement();
-			ResultSet results = statement.executeQuery(querySb2ToString);
+			ResultSet results = statement.executeQuery(querySb2ToString); // $ Alert[java/concatenated-sql-query]
 		}
 	}
 	
@@ -206,7 +206,7 @@ abstract class Test {
 			String queryWithUserTableName = "SELECT ITEM,PRICE FROM "
 					+ userTabName
 					+ " WHERE ITEM_CATEGORY='Biscuits' ORDER BY PRICE";
-			ResultSet results = statement.executeQuery(queryWithUserTableName);
+			ResultSet results = statement.executeQuery(queryWithUserTableName); // $ Alert[java/sql-injection]
 		}
 	}
 
@@ -218,13 +218,13 @@ abstract class Test {
 			String prefix = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='";
 			String suffix = "' ORDER BY PRICE";
 			switch(prefix) {
-				case String prefixAlias when prefix.length() > 10 -> statement.executeQuery(prefixAlias + category + suffix);
+				case String prefixAlias when prefix.length() > 10 -> statement.executeQuery(prefixAlias + category + suffix); // $ Alert[java/sql-injection] Alert[java/concatenated-sql-query]
 				default -> { }
 			}
 		}
 	}
 
-	public static void main(String[] args) throws IOException, SQLException {
+	public static void main(String[] args) throws IOException, SQLException { // $ Source[java/sql-injection]
 		tainted(args);
 		unescaped();
 		good(args);

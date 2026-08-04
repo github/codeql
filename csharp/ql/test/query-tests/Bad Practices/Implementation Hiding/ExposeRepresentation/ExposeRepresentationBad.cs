@@ -15,7 +15,7 @@ class Bad
             }
         }
 
-        public int[] Get() => rarray;
+        public int[] Get() => rarray; // $ Alert
     }
 
     public static void Main(string[] args)

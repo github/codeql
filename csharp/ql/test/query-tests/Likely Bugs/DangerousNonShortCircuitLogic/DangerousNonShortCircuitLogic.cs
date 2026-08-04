@@ -12,10 +12,10 @@ class Test
         if (c != null ^ this.Field > 0) ; // GOOD
         if (c != null && c.Field > 0) ; // GOOD
 
-        if (c != null & c.Field > 0) ; // BAD
-        if (c == null | c.Property == "") ; // BAD
-        if (c == null | c[0]) ; // BAD
-        if (c == null | c.Method()) ; // BAD
+        if (c != null & c.Field > 0) ; // $ Alert // BAD
+        if (c == null | c.Property == "") ; // $ Alert // BAD
+        if (c == null | c[0]) ; // $ Alert // BAD
+        if (c == null | c.Method()) ; // $ Alert // BAD
 
         var b = true;
         b &= c.Method(); // GOOD
@@ -34,4 +34,3 @@ class Test
         public bool Method(out int x) { x = 0; return false; }
     }
 }
-

@@ -229,7 +229,7 @@ class InstanceAccessExt extends TInstanceAccessExt {
   /** Gets the control flow node associated with this instance access. */
   ControlFlowNode getCfgNode() {
     exists(ExprParent e | e = this.getAssociatedExprOrStmt() |
-      result.asCall() = e
+      result = e.(Call).getControlFlowNode()
       or
       e.(InstanceAccess).getControlFlowNode() = result
       or

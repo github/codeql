@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-377/InsecureTemporaryFile.ql
+query: experimental/Security/CWE/CWE-377/InsecureTemporaryFile.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,4 +1,4 @@
-fn source(i: i64) -> i64 {
+const fn source(i: i64) -> i64 {
     1000 + i
 }
 
@@ -417,6 +417,25 @@ mod not_trait_dispatch {
 
         let n5 = TwentyTwo::get_default();
         sink(n5); // $ hasValueFlow=1
+    }
+}
+
+mod const_static {
+    use super::{sink, source};
+
+    const CONST_VALUE: i64 = source(42);
+    static mut STATIC_VALUE: i64 = source(43);
+
+    fn test_const_static() {
+        const CONST_VALUE2: i64 = CONST_VALUE;
+        sink(CONST_VALUE2); // $ hasValueFlow=42
+        unsafe {
+            let static_value = STATIC_VALUE;
+            sink(static_value); // $ hasValueFlow=43 $ SPURIOUS: hasValueFlow=44 (statics are not control-flow sensitive)
+
+            STATIC_VALUE = source(44);
+            sink(STATIC_VALUE); // $ hasValueFlow=44 $ SPURIOUS: hasValueFlow=43 (statics are not control-flow sensitive)
+        }
     }
 }
 

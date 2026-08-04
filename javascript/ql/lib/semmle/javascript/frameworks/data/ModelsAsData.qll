@@ -35,6 +35,18 @@ private class RemoteFlowSourceFromMaD extends RemoteFlowSource {
   override string getSourceType() { result = "Remote flow" }
 }
 
+private class ClientSideRemoteFlowSourceFromMaD extends ClientSideRemoteFlowSource {
+  private ClientSideRemoteFlowKind kind;
+
+  ClientSideRemoteFlowSourceFromMaD() { ModelOutput::sourceNode(this, kind) }
+
+  override ClientSideRemoteFlowKind getKind() { result = kind }
+
+  override string getSourceType() {
+    result = "Source node (" + this.getThreatModel() + ") [from data-extension]"
+  }
+}
+
 /**
  * A threat-model flow source originating from a data extension.
  */

@@ -9451,7 +9451,7 @@ pub struct Impl {
     pub is_default: bool,
     pub is_unsafe: bool,
     pub self_ty: Option<trap::Label<TypeRepr>>,
-    pub trait_: Option<trap::Label<TypeRepr>>,
+    pub trait_ty: Option<trap::Label<TypeRepr>>,
     pub visibility: Option<trap::Label<Visibility>>,
     pub where_clause: Option<trap::Label<WhereClause>>,
 }
@@ -9484,8 +9484,8 @@ impl trap::TrapEntry for Impl {
         if let Some(v) = self.self_ty {
             out.add_tuple("impl_self_ties", vec![id.into(), v.into()]);
         }
-        if let Some(v) = self.trait_ {
-            out.add_tuple("impl_traits", vec![id.into(), v.into()]);
+        if let Some(v) = self.trait_ty {
+            out.add_tuple("impl_trait_ties", vec![id.into(), v.into()]);
         }
         if let Some(v) = self.visibility {
             out.add_tuple("impl_visibilities", vec![id.into(), v.into()]);

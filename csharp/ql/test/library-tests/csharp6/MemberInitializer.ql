@@ -12,7 +12,7 @@ query predicate indexerCalls(IndexerCall indexer, int arg, Expr value) {
 query predicate elementAssignments(
   ElementWrite write, Assignment assignment, int index, Expr indexer
 ) {
-  write = assignment.getLValue() and indexer = write.getIndex(index)
+  write = assignment.getLeftOperand() and indexer = write.getIndex(index)
 }
 
 query predicate arrayQualifiers(ElementAccess access, Expr qualifier) {

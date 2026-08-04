@@ -1,0 +1,94 @@
+# Models for strsafe.h safe string functions
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sourceModel
+    data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
+      # StringCchGets: (pszDest, cchDest)
+      - ["", "", False, "StringCchGetsA", "", "", "Argument[*0]", "local", "manual"]
+      - ["", "", False, "StringCchGetsW", "", "", "Argument[*0]", "local", "manual"]
+      # StringCbGets: (pszDest, cbDest)
+      - ["", "", False, "StringCbGetsA", "", "", "Argument[*0]", "local", "manual"]
+      - ["", "", False, "StringCbGetsW", "", "", "Argument[*0]", "local", "manual"]
+      # StringCchGetsEx: (pszDest, cchDest, ppszDestEnd, pcchRemaining, dwFlags)
+      - ["", "", False, "StringCchGetsExA", "", "", "Argument[*0]", "local", "manual"]
+      - ["", "", False, "StringCchGetsExW", "", "", "Argument[*0]", "local", "manual"]
+      # StringCbGetsEx: (pszDest, cbDest, ppszDestEnd, pcbRemaining, dwFlags)
+      - ["", "", False, "StringCbGetsExA", "", "", "Argument[*0]", "local", "manual"]
+      - ["", "", False, "StringCbGetsExW", "", "", "Argument[*0]", "local", "manual"]
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      # StringCchCopy: (pszDest, cchDest, pszSrc)
+      - ["", "", False, "StringCchCopyA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCchCopyW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCbCopy: (pszDest, cbDest, pszSrc)
+      - ["", "", False, "StringCbCopyA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCbCopyW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCchCopyEx: (pszDest, cchDest, pszSrc, ppszDestEnd, pcchRemaining, dwFlags)
+      - ["", "", False, "StringCchCopyExA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCchCopyExW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCbCopyEx: (pszDest, cbDest, pszSrc, ppszDestEnd, pcbRemaining, dwFlags)
+      - ["", "", False, "StringCbCopyExA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCbCopyExW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCchCopyN: (pszDest, cchDest, pszSrc, cchToCopy)
+      - ["", "", False, "StringCchCopyNA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCchCopyNW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCbCopyN: (pszDest, cbDest, pszSrc, cbToCopy)
+      - ["", "", False, "StringCbCopyNA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCbCopyNW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCchCopyNEx: (pszDest, cchDest, pszSrc, cchToCopy, ppszDestEnd, pcchRemaining, dwFlags)
+      - ["", "", False, "StringCchCopyNExA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCchCopyNExW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCbCopyNEx: (pszDest, cbDest, pszSrc, cbToCopy, ppszDestEnd, pcbRemaining, dwFlags)
+      - ["", "", False, "StringCbCopyNExA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCbCopyNExW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCchCat: (pszDest, cchDest, pszSrc)
+      - ["", "", False, "StringCchCatA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCchCatW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCbCat: (pszDest, cbDest, pszSrc)
+      - ["", "", False, "StringCbCatA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCbCatW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCchCatEx: (pszDest, cchDest, pszSrc, ppszDestEnd, pcchRemaining, dwFlags)
+      - ["", "", False, "StringCchCatExA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCchCatExW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCbCatEx: (pszDest, cbDest, pszSrc, ppszDestEnd, pcbRemaining, dwFlags)
+      - ["", "", False, "StringCbCatExA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCbCatExW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCchCatN: (pszDest, cchDest, pszSrc, cchToAppend)
+      - ["", "", False, "StringCchCatNA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCchCatNW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCbCatN: (pszDest, cbDest, pszSrc, cbToAppend)
+      - ["", "", False, "StringCbCatNA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCbCatNW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCchCatNEx: (pszDest, cchDest, pszSrc, cchToAppend, ppszDestEnd, pcchRemaining, dwFlags)
+      - ["", "", False, "StringCchCatNExA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCchCatNExW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCbCatNEx: (pszDest, cbDest, pszSrc, cbToAppend, ppszDestEnd, pcbRemaining, dwFlags)
+      - ["", "", False, "StringCbCatNExA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCbCatNExW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCchPrintf: (pszDest, cchDest, pszFormat, ...)
+      - ["", "", False, "StringCchPrintfA", "", "", "Argument[*2..8]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCchPrintfW", "", "", "Argument[*2..8]", "Argument[*0]", "taint", "manual"]
+      # StringCbPrintf: (pszDest, cbDest, pszFormat, ...)
+      - ["", "", False, "StringCbPrintfA", "", "", "Argument[*2..8]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCbPrintfW", "", "", "Argument[*2..8]", "Argument[*0]", "taint", "manual"]
+      # StringCchPrintfEx: (pszDest, cchDest, ppszDestEnd, pcchRemaining, dwFlags, pszFormat, ...)
+      - ["", "", False, "StringCchPrintfExA", "", "", "Argument[*5..11]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCchPrintfExW", "", "", "Argument[*5..11]", "Argument[*0]", "taint", "manual"]
+      # StringCbPrintfEx: (pszDest, cbDest, ppszDestEnd, pcbRemaining, dwFlags, pszFormat, ...)
+      - ["", "", False, "StringCbPrintfExA", "", "", "Argument[*5..11]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCbPrintfExW", "", "", "Argument[*5..11]", "Argument[*0]", "taint", "manual"]
+      # StringCchVPrintf: (pszDest, cchDest, pszFormat, argList)
+      - ["", "", False, "StringCchVPrintfA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCchVPrintfW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCbVPrintf: (pszDest, cbDest, pszFormat, argList)
+      - ["", "", False, "StringCbVPrintfA", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCbVPrintfW", "", "", "Argument[*2]", "Argument[*0]", "taint", "manual"]
+      # StringCchVPrintfEx: (pszDest, cchDest, ppszDestEnd, pcchRemaining, dwFlags, pszFormat, argList)
+      - ["", "", False, "StringCchVPrintfExA", "", "", "Argument[*5]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCchVPrintfExW", "", "", "Argument[*5]", "Argument[*0]", "taint", "manual"]
+      # StringCbVPrintfEx: (pszDest, cbDest, ppszDestEnd, pcbRemaining, dwFlags, pszFormat, argList)
+      - ["", "", False, "StringCbVPrintfExA", "", "", "Argument[*5]", "Argument[*0]", "taint", "manual"]
+      - ["", "", False, "StringCbVPrintfExW", "", "", "Argument[*5]", "Argument[*0]", "taint", "manual"]

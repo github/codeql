@@ -1,1 +1,2 @@
-Security Features/InsufficientKeySize.ql
+query: Security Features/InsufficientKeySize.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -8,7 +8,7 @@ load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_filegroup", "pkg_fil
 load("@rules_pkg//pkg:pkg.bzl", "pkg_zip")
 load("@rules_pkg//pkg:providers.bzl", "PackageFilegroupInfo", "PackageFilesInfo")
 load("@rules_python//python:defs.bzl", "py_binary", "py_test")
-load("//misc/bazel:os.bzl", "OS_DETECTION_ATTRS", "os_select")
+load("//misc/bazel:os.bzl", "OS_DETECTION_ATTRS", "codeql_platform_select")
 
 def _make_internal(name):
     def internal(suffix = "internal", *args):
@@ -26,7 +26,13 @@ def _expand_path(path, platform):
     return ("common", path)
 
 def _detect_platform(ctx = None):
-    return os_select(ctx, linux = "linux64", macos = "osx64", windows = "win64")
+    return codeql_platform_select(
+        ctx,
+        linux64 = "linux64",
+        linux_arm64 = "linux-arm64",
+        osx64 = "osx64",
+        win64 = "win64",
+    )
 
 def codeql_pkg_files(
         *,
@@ -458,12 +464,12 @@ def codeql_pack(
     `zips` is a map from `.zip` files to prefixes to import.
     The distinction between arch-specific and common contents is made based on whether the paths (including possible
     prefixes added by rules) contain the special `{CODEQL_PLATFORM}` placeholder, which in case it is present will also
-    be replaced by the appropriate platform (`linux64`, `win64` or `osx64`).
+    be replaced by the appropriate platform (`linux64`, `linux-arm64`, `win64` or `osx64`).
     Specific file paths can be placed in the arch-specific package by adding them to `arch_overrides`, even if their
     path doesn't contain the `CODEQL_PLATFORM` placeholder.
 
     The codeql pack rules will expand the `{CODEQL_PLATFORM}` marker in paths, and use that to split the files into a common and an arch-specific part.
-    This placeholder will be replaced by the appropriate platform (`linux64`, `win64` or `osx64`).
+    This placeholder will be replaced by the appropriate platform (`linux64`, `linux-arm64`, `win64` or `osx64`).
     `arch_overrides` is a list of files that should be included in the arch-specific bits of the pack, even if their path doesn't
     contain the `{CODEQL_PLATFORM}` marker.
     All files in the pack will be prefixed with `name`, unless `pack_prefix` is set, then is used instead.

@@ -1,0 +1,70 @@
+models
+edges
+| NullCoalescing.cs:5:13:5:13 | access to local variable i : Nullable<Int32> | NullCoalescing.cs:7:9:7:9 | access to local variable x : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:5:13:5:13 | access to local variable i : Nullable<Int32> | NullCoalescing.cs:7:9:7:9 | access to local variable x : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:5:17:5:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:5:13:5:13 | access to local variable i : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:5:17:5:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:5:13:5:13 | access to local variable i : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:7:9:7:9 | access to local variable x : Nullable<Int32> | NullCoalescing.cs:8:14:8:14 | (...) ... | provenance |  |
+| NullCoalescing.cs:7:9:7:9 | access to local variable x : Nullable<Int32> | NullCoalescing.cs:8:14:8:14 | (...) ... | provenance |  |
+| NullCoalescing.cs:13:13:13:13 | access to local variable i : Nullable<Int32> | NullCoalescing.cs:15:9:15:9 | access to local variable x : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:13:13:13:13 | access to local variable i : Nullable<Int32> | NullCoalescing.cs:15:9:15:9 | access to local variable x : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:13:17:13:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:13:13:13:13 | access to local variable i : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:13:17:13:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:13:13:13:13 | access to local variable i : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:15:9:15:9 | access to local variable x : Nullable<Int32> | NullCoalescing.cs:16:14:16:14 | (...) ... | provenance |  |
+| NullCoalescing.cs:15:9:15:9 | access to local variable x : Nullable<Int32> | NullCoalescing.cs:16:14:16:14 | (...) ... | provenance |  |
+| NullCoalescing.cs:21:13:21:13 | access to local variable i : Nullable<Int32> | NullCoalescing.cs:22:9:22:9 | access to parameter x : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:21:13:21:13 | access to local variable i : Nullable<Int32> | NullCoalescing.cs:22:9:22:9 | access to parameter x : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:21:17:21:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:21:13:21:13 | access to local variable i : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:21:17:21:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:21:13:21:13 | access to local variable i : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:22:9:22:9 | access to parameter x : Nullable<Int32> | NullCoalescing.cs:23:14:23:14 | (...) ... | provenance |  |
+| NullCoalescing.cs:22:9:22:9 | access to parameter x : Nullable<Int32> | NullCoalescing.cs:23:14:23:14 | (...) ... | provenance |  |
+| NullCoalescing.cs:28:13:28:13 | access to local variable i : Nullable<Int32> | NullCoalescing.cs:29:9:29:9 | access to parameter x : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:28:13:28:13 | access to local variable i : Nullable<Int32> | NullCoalescing.cs:29:9:29:9 | access to parameter x : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:28:17:28:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:28:13:28:13 | access to local variable i : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:28:17:28:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:28:13:28:13 | access to local variable i : Nullable<Int32> | provenance |  |
+| NullCoalescing.cs:29:9:29:9 | access to parameter x : Nullable<Int32> | NullCoalescing.cs:30:14:30:14 | (...) ... | provenance |  |
+| NullCoalescing.cs:29:9:29:9 | access to parameter x : Nullable<Int32> | NullCoalescing.cs:30:14:30:14 | (...) ... | provenance |  |
+nodes
+| NullCoalescing.cs:5:13:5:13 | access to local variable i : Nullable<Int32> | semmle.label | access to local variable i : Nullable<Int32> |
+| NullCoalescing.cs:5:13:5:13 | access to local variable i : Nullable<Int32> | semmle.label | access to local variable i : Nullable<Int32> |
+| NullCoalescing.cs:5:17:5:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | semmle.label | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:5:17:5:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | semmle.label | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:7:9:7:9 | access to local variable x : Nullable<Int32> | semmle.label | access to local variable x : Nullable<Int32> |
+| NullCoalescing.cs:7:9:7:9 | access to local variable x : Nullable<Int32> | semmle.label | access to local variable x : Nullable<Int32> |
+| NullCoalescing.cs:8:14:8:14 | (...) ... | semmle.label | (...) ... |
+| NullCoalescing.cs:8:14:8:14 | (...) ... | semmle.label | (...) ... |
+| NullCoalescing.cs:13:13:13:13 | access to local variable i : Nullable<Int32> | semmle.label | access to local variable i : Nullable<Int32> |
+| NullCoalescing.cs:13:13:13:13 | access to local variable i : Nullable<Int32> | semmle.label | access to local variable i : Nullable<Int32> |
+| NullCoalescing.cs:13:17:13:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | semmle.label | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:13:17:13:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | semmle.label | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:15:9:15:9 | access to local variable x : Nullable<Int32> | semmle.label | access to local variable x : Nullable<Int32> |
+| NullCoalescing.cs:15:9:15:9 | access to local variable x : Nullable<Int32> | semmle.label | access to local variable x : Nullable<Int32> |
+| NullCoalescing.cs:16:14:16:14 | (...) ... | semmle.label | (...) ... |
+| NullCoalescing.cs:16:14:16:14 | (...) ... | semmle.label | (...) ... |
+| NullCoalescing.cs:21:13:21:13 | access to local variable i : Nullable<Int32> | semmle.label | access to local variable i : Nullable<Int32> |
+| NullCoalescing.cs:21:13:21:13 | access to local variable i : Nullable<Int32> | semmle.label | access to local variable i : Nullable<Int32> |
+| NullCoalescing.cs:21:17:21:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | semmle.label | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:21:17:21:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | semmle.label | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:22:9:22:9 | access to parameter x : Nullable<Int32> | semmle.label | access to parameter x : Nullable<Int32> |
+| NullCoalescing.cs:22:9:22:9 | access to parameter x : Nullable<Int32> | semmle.label | access to parameter x : Nullable<Int32> |
+| NullCoalescing.cs:23:14:23:14 | (...) ... | semmle.label | (...) ... |
+| NullCoalescing.cs:23:14:23:14 | (...) ... | semmle.label | (...) ... |
+| NullCoalescing.cs:28:13:28:13 | access to local variable i : Nullable<Int32> | semmle.label | access to local variable i : Nullable<Int32> |
+| NullCoalescing.cs:28:13:28:13 | access to local variable i : Nullable<Int32> | semmle.label | access to local variable i : Nullable<Int32> |
+| NullCoalescing.cs:28:17:28:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | semmle.label | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:28:17:28:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | semmle.label | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:29:9:29:9 | access to parameter x : Nullable<Int32> | semmle.label | access to parameter x : Nullable<Int32> |
+| NullCoalescing.cs:29:9:29:9 | access to parameter x : Nullable<Int32> | semmle.label | access to parameter x : Nullable<Int32> |
+| NullCoalescing.cs:30:14:30:14 | (...) ... | semmle.label | (...) ... |
+| NullCoalescing.cs:30:14:30:14 | (...) ... | semmle.label | (...) ... |
+subpaths
+testFailures
+#select
+| NullCoalescing.cs:8:14:8:14 | (...) ... | NullCoalescing.cs:5:17:5:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:8:14:8:14 | (...) ... | $@ | NullCoalescing.cs:5:17:5:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:8:14:8:14 | (...) ... | NullCoalescing.cs:5:17:5:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:8:14:8:14 | (...) ... | $@ | NullCoalescing.cs:5:17:5:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:16:14:16:14 | (...) ... | NullCoalescing.cs:13:17:13:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:16:14:16:14 | (...) ... | $@ | NullCoalescing.cs:13:17:13:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:16:14:16:14 | (...) ... | NullCoalescing.cs:13:17:13:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:16:14:16:14 | (...) ... | $@ | NullCoalescing.cs:13:17:13:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:23:14:23:14 | (...) ... | NullCoalescing.cs:21:17:21:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:23:14:23:14 | (...) ... | $@ | NullCoalescing.cs:21:17:21:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:23:14:23:14 | (...) ... | NullCoalescing.cs:21:17:21:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:23:14:23:14 | (...) ... | $@ | NullCoalescing.cs:21:17:21:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:30:14:30:14 | (...) ... | NullCoalescing.cs:28:17:28:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:30:14:30:14 | (...) ... | $@ | NullCoalescing.cs:28:17:28:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | call to method Source<Nullable<Int32>> : Nullable<Int32> |
+| NullCoalescing.cs:30:14:30:14 | (...) ... | NullCoalescing.cs:28:17:28:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | NullCoalescing.cs:30:14:30:14 | (...) ... | $@ | NullCoalescing.cs:28:17:28:31 | call to method Source<Nullable<Int32>> : Nullable<Int32> | call to method Source<Nullable<Int32>> : Nullable<Int32> |

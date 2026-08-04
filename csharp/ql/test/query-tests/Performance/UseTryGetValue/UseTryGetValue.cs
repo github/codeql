@@ -16,24 +16,24 @@ class Test
         dict.TryGetValue(2, out x);
 
         // These are BAD
-        if (dict.ContainsKey(1)) x = dict[1];
-        if (dict.ContainsKey(1) && dict[1] == 2) ;
-        if (!dict.ContainsKey(1) && dict[1] == 2) ;
-        if (!dict.ContainsKey(1) || dict[1] == 2) ;
-        if (dict.ContainsKey(1) || dict[1] == 2) ;
+        if (dict.ContainsKey(1)) x = dict[1]; // $ Alert
+        if (dict.ContainsKey(1) && dict[1] == 2) ; // $ Alert
+        if (!dict.ContainsKey(1) && dict[1] == 2) ; // $ Alert
+        if (!dict.ContainsKey(1) || dict[1] == 2) ; // $ Alert
+        if (dict.ContainsKey(1) || dict[1] == 2) ; // $ Alert
 
-        if (dict.ContainsKey(1))
+        if (dict.ContainsKey(1)) // $ Alert
             x = dict[1];
         else
             x = dict[1];
-        if (!dict.ContainsKey(1))
+        if (!dict.ContainsKey(1)) // $ Alert
             x = dict[1];
         else
             x = dict[1];
 
-        x = dict.ContainsKey(1) ? dict[1] : dict[1];
-        x = !dict.ContainsKey(1) ? dict[1] : dict[1];
-        x = true && !dict.ContainsKey(1) ? dict[1] : dict[1];
+        x = dict.ContainsKey(1) ? dict[1] : dict[1]; // $ Alert
+        x = !dict.ContainsKey(1) ? dict[1] : dict[1]; // $ Alert
+        x = true && !dict.ContainsKey(1) ? dict[1] : dict[1]; // $ Alert
 
         // GOOD: Different index
         if (dict.ContainsKey(0)) x = dict[1];

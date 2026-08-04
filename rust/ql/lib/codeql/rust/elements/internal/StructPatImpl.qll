@@ -42,6 +42,13 @@ module Impl {
       )
     }
 
+    /** Gets the `i`th struct field of the instantiated struct or variant. */
+    StructField getNthStructField(int i) {
+      exists(PathResolution::ItemNode item | item = this.getResolvedPath(_) |
+        result = [item.(Struct).getNthStructField(i), item.(Variant).getNthStructField(i)]
+      )
+    }
+
     /** Gets the struct pattern for the field `name`. */
     pragma[nomagic]
     StructPatField getPatField(string name) {

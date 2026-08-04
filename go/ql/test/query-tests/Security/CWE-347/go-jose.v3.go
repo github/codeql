@@ -22,7 +22,7 @@ func jose(r *http.Request) {
 	verifyJWT(signedToken)
 
 	// NOT OK: no verification
-	signedToken = r.URL.Query().Get("signedToken")
+	signedToken = r.URL.Query().Get("signedToken") // $ Source
 	notVerifyJWT(signedToken)
 }
 
@@ -30,7 +30,7 @@ func notVerifyJWT(signedToken string) {
 	fmt.Println("only decoding JWT")
 	DecodedToken, _ := jwt.ParseSigned(signedToken)
 	out := CustomerInfo{}
-	if err := DecodedToken.UnsafeClaimsWithoutVerification(&out); err != nil {
+	if err := DecodedToken.UnsafeClaimsWithoutVerification(&out); err != nil { // $ Alert
 		panic(err)
 	}
 	fmt.Printf("%v\n", out)

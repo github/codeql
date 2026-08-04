@@ -38,7 +38,7 @@ def test_captured_field():
     foo.setFoo(NONSOURCE)
 
     def test():
-        SINK(foo.getFoo()) #$ captured
+        SINK(foo.getFoo()) # $ captured
 
     def read():
         return foo.getFoo()
@@ -48,4 +48,4 @@ def test_captured_field():
     foo.setFoo(SOURCE)
     test()
 
-    SINK(read()) #$ captured
+    SINK(read()) # $ captured

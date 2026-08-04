@@ -11,10 +11,6 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/SignAnalysisCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SignAnalysisCommon.qll"
   ],
-  "Bound Java/C#": [
-    "java/ql/lib/semmle/code/java/dataflow/Bound.qll",
-    "csharp/ql/lib/semmle/code/csharp/dataflow/Bound.qll"
-  ],
   "ModulusAnalysis Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/ModulusAnalysis.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/ModulusAnalysis.qll"
@@ -171,10 +167,6 @@
   "C++ IR PrintDominance": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/reachability/PrintDominance.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/reachability/PrintDominance.qll"
-  ],
-  "C# ControlFlowReachability": [
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/ControlFlowReachability.qll",
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/ControlFlowReachability.qll"
   ],
   "C++ ExternalAPIs": [
     "cpp/ql/src/Security/CWE/CWE-020/ExternalAPIs.qll",

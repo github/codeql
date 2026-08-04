@@ -45,4 +45,11 @@ module CleartextStorageDatabase {
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, ["sql-injection", "database-store"]) }
   }
+
+  /**
+   * A barrier for cleartext storage vulnerabilities from model data.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() { barrierNode(this, ["sql-injection", "database-store"]) }
+  }
 }

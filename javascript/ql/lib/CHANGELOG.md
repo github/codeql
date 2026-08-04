@@ -1,3 +1,70 @@
+## 2.8.2
+
+No user-facing changes.
+
+## 2.8.1
+
+### Minor Analysis Improvements
+
+* Added support for Angular's `@HostListener('window:message', ...)` and `@HostListener('document:message', ...)` decorators as `postMessage` event handlers. The decorated method's event parameter is now recognized as a client-side remote flow source, and is considered by the `js/missing-origin-check` query.
+
+## 2.8.0
+
+### New Features
+
+* Added `UseMemoDirective` and `UseNoMemoDirective` classes to model the React compiler directives `"use memo"` and `"use no memo"`.
+
+### Minor Analysis Improvements
+
+* Added more prompt-injection sinks for the OpenAI, Anthropic, and Google GenAI SDKs: OpenAI `videos.create`/`edit`/`extend`/`remix` (Sora) prompts and `beta.realtime.sessions.create` instructions, Anthropic legacy `completions.create` prompts, and Google GenAI `caches.create` cached contents and system instructions.
+* The OpenAI legacy `completions.create` prompt is now treated as a user-prompt-injection sink instead of a system-prompt-injection sink, since the legacy `/v1/completions` endpoint takes a single free-form prompt with no role separation.
+
+## 2.7.2
+
+### Minor Analysis Improvements
+
+* The sensitive data heuristics used to identify code that handles passwords and private data have been improved. Most of the changes permit more variations of established patterns, thereby finding more sensitive data. Queries that use the sensitive data library (for example `js/clear-text-logging`) may find more correct results and fewer false positive results after these changes.
+
+## 2.7.1
+
+No user-facing changes.
+
+## 2.7.0
+
+### New Features
+
+* Added support for [`@vercel/node`](https://www.npmjs.com/package/@vercel/node) Vercel serverless functions. Handlers are recognized via the `VercelRequest`/`VercelResponse` TypeScript parameter types, and standard security queries (`js/reflected-xss`, `js/request-forgery`, `js/sql-injection`, `js/command-line-injection`, etc.) now detect vulnerabilities in Vercel API route files.
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for JavaScript](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-javascript/).
+
+## 2.6.28
+
+No user-facing changes.
+
+## 2.6.27
+
+No user-facing changes.
+
+## 2.6.26
+
+No user-facing changes.
+
+## 2.6.25
+
+No user-facing changes.
+
+## 2.6.24
+
+### Minor Analysis Improvements
+
+* Added support for browser-specific source kinds (`browser`, `browser-url-query`, `browser-url-fragment`, `browser-url-path`, `browser-url`, `browser-window-name`, `browser-message-event`) that can be used in data extensions to model sources in browser environments.
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 2.6.23
+
+### Minor Analysis Improvements
+
+* Added support for React components wrapped by `observer` from `mobx-react` and `mobx-react-lite`.
+
 ## 2.6.22
 
 No user-facing changes.

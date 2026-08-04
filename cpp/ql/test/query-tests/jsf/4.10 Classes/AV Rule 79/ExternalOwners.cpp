@@ -46,7 +46,7 @@ class MyScreen
 public:
 	MyScreen()
 	{
-		a = new MyWidget(); // BAD (not deleted)
+		a = new MyWidget(); // $ Alert // BAD (not deleted)
 
 		b = new MyWidget(); // GOOD (deleted in widgets destructor)
 		widgets.add(b);
@@ -67,7 +67,7 @@ void externalOwnersMain()
 	// do stuff
 	{
 		MyScreen myScreen;
-		
+
 		// ...
 	}
 

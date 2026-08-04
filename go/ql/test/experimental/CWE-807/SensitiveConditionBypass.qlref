@@ -1,1 +1,2 @@
-experimental/CWE-807/SensitiveConditionBypass.ql
+query: experimental/CWE-807/SensitiveConditionBypass.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

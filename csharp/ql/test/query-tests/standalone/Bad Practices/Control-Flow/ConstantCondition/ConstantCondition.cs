@@ -12,7 +12,7 @@ class ConstantMatching
     void M1()
     {
         var c1 = new C1();
-        if (c1.Prop is int) // $ Alert
+        if (c1.Prop is int) // Descoped, no longer reported by the query.
         {
         }
 

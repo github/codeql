@@ -1,1 +1,2 @@
-Imports/ImportStarUsed.ql
+query: Imports/ImportStarUsed.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -49,7 +49,7 @@ void bad()
 {
 	char buffer[BUFFER_SIZE];
 	// BAD: Use of 'cin' without specifying the length of the input.
-	cin >> buffer;
+	cin >> buffer; // $ Alert
 	buffer[BUFFER_SIZE-1] = '\0';
 }
 

@@ -1432,7 +1432,7 @@ def rewrite_comp(node):
         elt = node.elt
         del node.elt
     else:
-        elt = ast.Tuple([node.value, node.key], LOAD)
+        elt = ast.Tuple([node.key, node.value], LOAD)
         elt.lineno = node.key.lineno
         elt.col_offset = node.key.col_offset
         elt._end = node.value._end

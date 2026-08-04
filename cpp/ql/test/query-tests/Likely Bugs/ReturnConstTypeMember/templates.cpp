@@ -10,7 +10,7 @@ class TC1 {
 template <typename T>
 class TC2 {
     public:
-    T fun() const {
+    T fun() const { // $ Alert
         return 5;
     }
 };

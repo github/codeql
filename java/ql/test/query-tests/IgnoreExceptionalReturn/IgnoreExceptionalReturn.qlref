@@ -1,1 +1,2 @@
-Violations of Best Practice/Exception Handling/IgnoreExceptionalReturn.ql
+query: Violations of Best Practice/Exception Handling/IgnoreExceptionalReturn.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

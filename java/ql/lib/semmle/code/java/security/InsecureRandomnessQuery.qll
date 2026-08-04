@@ -73,7 +73,8 @@ module InsecureRandomnessConfig implements DataFlow::ConfigSig {
   predicate isBarrierOut(DataFlow::Node n) { isSink(n) }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-    n1.asExpr() = n2.asExpr().(BinaryExpr).getAnOperand()
+    n1.asExpr() = n2.asExpr().(BinaryExpr).getAnOperand() and
+    not n2.asExpr() instanceof AssignExpr
     or
     n1.asExpr() = n2.asExpr().(UnaryExpr).getOperand()
     or

@@ -1,1 +1,2 @@
-Compatibility/JDK9/UnderscoreIdentifier.ql
+query: Compatibility/JDK9/UnderscoreIdentifier.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

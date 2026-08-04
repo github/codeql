@@ -1,2 +1,2 @@
-
-Likely Bugs/Comparison/DefineEqualsWhenAddingFields.ql
+query: Likely Bugs/Comparison/DefineEqualsWhenAddingFields.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

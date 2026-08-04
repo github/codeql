@@ -101,17 +101,10 @@ Expr overFlowCand() {
   |
     bin instanceof AddExpr or
     bin instanceof MulExpr or
-    bin instanceof LeftShiftExpr
-  )
-  or
-  exists(AssignOp op |
-    result = op and
-    positive(op.getDest()) and
-    positive(op.getRhs())
-  |
-    op instanceof AssignAddExpr or
-    op instanceof AssignMulExpr or
-    op instanceof AssignLeftShiftExpr
+    bin instanceof LeftShiftExpr or
+    bin instanceof AssignAddExpr or
+    bin instanceof AssignMulExpr or
+    bin instanceof AssignLeftShiftExpr
   )
   or
   exists(AddExpr add, CompileTimeConstantExpr c |

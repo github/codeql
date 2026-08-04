@@ -15,10 +15,10 @@ where
   cc.hasName("Point") and
   i = e.getInitializer() and
   a = i.getMemberInitializer(0) and
-  a.getLValue().(PropertyAccess).getTarget().hasName("X") and
-  a.getRValue().getValue() = "2" and
+  a.getLeftOperand().(PropertyAccess).getTarget().hasName("X") and
+  a.getRightOperand().getValue() = "2" and
   b = i.getMemberInitializer(1) and
-  b.getLValue().(PropertyAccess).getTarget().hasName("Y") and
-  b.getRValue().getValue() = "3" and
+  b.getLeftOperand().(PropertyAccess).getTarget().hasName("Y") and
+  b.getRightOperand().getValue() = "3" and
   i.getNumberOfMemberInitializers() = 2
 select i, a, b

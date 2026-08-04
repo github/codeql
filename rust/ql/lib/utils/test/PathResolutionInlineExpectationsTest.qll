@@ -14,7 +14,7 @@ private module ResolveTest implements TestSig {
     i.getLocation().hasLocationInfo(filepath, _, _, line, _)
   }
 
-  private predicate commmentAt(string text, string filepath, int line) {
+  private predicate commentAt(string text, string filepath, int line) {
     exists(Comment c |
       c.getLocation().hasLocationInfo(filepath, line, _, _, _) and
       c.getCommentText().trim() = text and
@@ -28,9 +28,9 @@ private module ResolveTest implements TestSig {
       if i instanceof SourceFile
       then value = i.getFile().getBaseName()
       else (
-        commmentAt(value, filepath, line)
+        commentAt(value, filepath, line)
         or
-        not commmentAt(_, filepath, line) and
+        not commentAt(_, filepath, line) and
         value = i.getName()
       )
     )

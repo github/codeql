@@ -31,8 +31,8 @@ int main()
 	{
 		int i;
 
-		scanf("%d", &i);
-		use(i); // BAD: may not have written `i`
+		scanf("%d", &i); // $ Source[cpp/missing-check-scanf]
+		use(i); // $ Alert[cpp/missing-check-scanf] // BAD: may not have written `i`
 	}
 
 	{
@@ -64,8 +64,8 @@ int main()
 	{
 		int i; // Reused variable
 
-		scanf("%d", &i);
-		use(i); // BAD
+		scanf("%d", &i); // $ Source[cpp/missing-check-scanf]
+		use(i); // $ Alert[cpp/missing-check-scanf] // BAD
 
 		if (scanf("%d", &i) == 1)
 		{
@@ -76,8 +76,8 @@ int main()
 	{
 		int i; // Reset variable
 
-		scanf("%d", &i);
-		use(i); // BAD
+		scanf("%d", &i); // $ Source[cpp/missing-check-scanf]
+		use(i); // $ Alert[cpp/missing-check-scanf] // BAD
 
 		i = 1;
 		use(i); // GOOD
@@ -86,16 +86,16 @@ int main()
 	{
 		int *i = (int*)malloc(sizeof(int)); // Allocated variable
 
-		scanf("%d", i);
-		use(*i); // BAD
+		scanf("%d", i); // $ Source[cpp/missing-check-scanf]
+		use(*i); // $ Alert[cpp/missing-check-scanf] // BAD
 		free(i); // GOOD
 	}
 
 	{
 		int *i = new int; // Allocated variable
 
-		scanf("%d", i);
-		use(*i); // BAD
+		scanf("%d", i); // $ Source[cpp/missing-check-scanf]
+		use(*i); // $ Alert[cpp/missing-check-scanf] // BAD
 		delete i; // GOOD
 	}
 
@@ -104,15 +104,15 @@ int main()
 	{
 		int i;
 
-		fscanf(get_a_stream(), "%d", &i);
-		use(i); // BAD: may not have written `i`
+		fscanf(get_a_stream(), "%d", &i); // $ Source[cpp/missing-check-scanf]
+		use(i); // $ Alert[cpp/missing-check-scanf] // BAD: may not have written `i`
 	}
 
 	{
 		int i;
 
-		sscanf(get_a_string(), "%d", &i);
-		use(i); // BAD: may not have written `i`
+		sscanf(get_a_string(), "%d", &i); // $ Source[cpp/missing-check-scanf]
+		use(i); // $ Alert[cpp/missing-check-scanf] // BAD: may not have written `i`
 	}
 
 	{
@@ -159,7 +159,7 @@ int main()
 	{
 		int i;
 
-		if (scanf("%d", &i) != 0)
+		if (scanf("%d", &i) != 0) // $ Alert[cpp/incorrectly-checked-scanf]
 		{
 			use(i); // BAD: scanf can return EOF
 		}
@@ -168,7 +168,7 @@ int main()
 	{
 		int i;
 
-		if (scanf("%d", &i) == 0)
+		if (scanf("%d", &i) == 0) // $ Alert[cpp/incorrectly-checked-scanf]
 		{
 			use(i); // BAD: checks return value incorrectly
 		}
@@ -190,7 +190,7 @@ int main()
 		bool b;
 		int i;
 
-		b = scanf("%d", &i);
+		b = scanf("%d", &i); // $ Alert[cpp/incorrectly-checked-scanf]
 
 		if (b >= 1)
 		{
@@ -201,7 +201,7 @@ int main()
 	{
 		int i;
 
-		if (scanf("%d", &i))
+		if (scanf("%d", &i)) // $ Alert[cpp/incorrectly-checked-scanf]
 			use(i); // BAD
 	}
 
@@ -218,10 +218,10 @@ int main()
 	{
 		int i, j;
 
-		if (scanf("%d %d", &i, &j) >= 1)
+		if (scanf("%d %d", &i, &j) >= 1) // $ Source[cpp/missing-check-scanf]
 		{
 			use(i); // GOOD
-			use(j); // BAD: checks return value incorrectly
+			use(j); // $ Alert[cpp/missing-check-scanf] // BAD: checks return value incorrectly
 		}
 	}
 
@@ -243,13 +243,13 @@ int main()
 			if (maybe()) {
 				break;
 			}
-			else if (maybe() && (scanf("%5c %d", c, &d) == 1)) { // GOOD
+			else if (maybe() && (scanf("%5c %d", c, &d) == 1)) { // $ Source[cpp/missing-check-scanf] // GOOD
 				use(*(int *)c); // GOOD
-				use(d); // BAD
+				use(d); // $ Alert[cpp/missing-check-scanf] // BAD
 			}
-			else if ((scanf("%5c %d", c, &d) == 1) && maybe()) { // GOOD
+			else if ((scanf("%5c %d", c, &d) == 1) && maybe()) { // $ Source[cpp/missing-check-scanf] // GOOD
 				use(*(int *)c); // GOOD
-				use(d); // BAD
+				use(d); // $ Alert[cpp/missing-check-scanf] // BAD
 			}
 		}
 	}
@@ -268,16 +268,16 @@ int main()
 		int i;
 
 		set_by_ref(i);
-		scanf("%d", &i);
-		use(i); // GOOD [FALSE POSITIVE]
+		scanf("%d", &i); // $ Source[cpp/missing-check-scanf]
+		use(i); // $ SPURIOUS: Alert[cpp/missing-check-scanf] // GOOD [FALSE POSITIVE]
 	}
 
 	{
 		int i;
 
 		set_by_ptr(&i);
-		scanf("%d", &i);
-		use(i); // GOOD [FALSE POSITIVE]
+		scanf("%d", &i); // $ Source[cpp/missing-check-scanf]
+		use(i); // $ SPURIOUS: Alert[cpp/missing-check-scanf] // GOOD [FALSE POSITIVE]
 	}
 
 	{
@@ -288,8 +288,8 @@ int main()
 			i = 0;
 		}
 
-		scanf("%d", &i);
-		use(i); // BAD: `i` may not have been initialized
+		scanf("%d", &i); // $ Source[cpp/missing-check-scanf]
+		use(i); // $ Alert[cpp/missing-check-scanf] // BAD: `i` may not have been initialized
 	}
 
 	// --- different use ---
@@ -299,7 +299,7 @@ int main()
 		int *ptr_i = &i;
 
 		scanf("%d", &i);
-		use(*ptr_i); // BAD [NOT DETECTED]: may not have written `i`
+		use(*ptr_i); // $ MISSING: Alert // BAD [NOT DETECTED]: may not have written `i`
 	}
 
 	{
@@ -307,7 +307,7 @@ int main()
 		int *ptr_i = &i;
 
 		scanf("%d", ptr_i);
-		use(i); // BAD [NOT DETECTED]: may not have written `*ptr_i`
+		use(i); // $ MISSING: Alert // BAD [NOT DETECTED]: may not have written `*ptr_i`
 	}
 
 	{
@@ -380,7 +380,7 @@ void my_scan_int_test()
 	use(i); // GOOD: used before scanf
 
 	my_scan_int(i);
-	use(i); // BAD [NOT DETECTED]
+	use(i); // $ MISSING: Alert // BAD [NOT DETECTED]
 
 	if (my_scan_int(i))
 	{
@@ -400,8 +400,8 @@ char *my_string_copy() {
 
     for (int i = 0; i < len; i += 2) {
 		unsigned int u;
-	    sscanf(src + i, "%2x", &u);
-        *ptr++ = (char) u; // GOOD [FALSE POSITIVE]? src+i+{0,1} are always valid %x digits, so this should be OK.
+	    sscanf(src + i, "%2x", &u); // $ Source[cpp/missing-check-scanf]
+        *ptr++ = (char) u; // $ SPURIOUS: Alert[cpp/missing-check-scanf] // GOOD [FALSE POSITIVE]? src+i+{0,1} are always valid %x digits, so this should be OK.
     }
 	*ptr++ = 0;
 	return DST_STRING;
@@ -410,17 +410,17 @@ char *my_string_copy() {
 void scan_and_write() {
 	{
 		int i;
-		if (scanf("%d", &i) < 1) {
+		if (scanf("%d", &i) < 1) { // $ Source[cpp/missing-check-scanf]
 			i = 0;
 		}
-		use(i);  // GOOD [FALSE POSITIVE]: variable is overwritten with a default value when scanf fails
+		use(i);  // $ SPURIOUS: Alert[cpp/missing-check-scanf] // GOOD [FALSE POSITIVE]: variable is overwritten with a default value when scanf fails
 	}
 	{
 		int i;
-		if (scanf("%d", &i) != 1) {
+		if (scanf("%d", &i) != 1) { // $ Source[cpp/missing-check-scanf]
 			i = 0;
 		}
-		use(i);  // GOOD [FALSE POSITIVE]: variable is overwritten with a default value when scanf fails
+		use(i);  // $ SPURIOUS: Alert[cpp/missing-check-scanf] // GOOD [FALSE POSITIVE]: variable is overwritten with a default value when scanf fails
 	}
 }
 
@@ -433,14 +433,14 @@ void scan_and_static_variable() {
 void bad_check() {
 	{
 		int i = 0;
-		if (scanf("%d", &i) != 0) {
+		if (scanf("%d", &i) != 0) { // $ Alert[cpp/incorrectly-checked-scanf]
 			return;
 		}
 		use(i);  // GOOD [FALSE POSITIVE]: Technically no security issue, but code is incorrect.
 	}
 	{
 		int i = 0;
-		int r = scanf("%d", &i);
+		int r = scanf("%d", &i); // $ Alert[cpp/incorrectly-checked-scanf]
 		if (!r) {
 			return;
 		}
@@ -452,47 +452,47 @@ void bad_check() {
 
 void disjunct_boolean_condition(const char* modifier_data) {
 	long value;
-	auto rc = sscanf(modifier_data, "%lx", &value);
+	auto rc = sscanf(modifier_data, "%lx", &value); // $ Source[cpp/missing-check-scanf]
 
 	if((rc == EOF) || (rc == 0)) {
 		return;
 	}
-	use(value); // GOOD
+	use(value); // $ Alert[cpp/missing-check-scanf] // GOOD
 }
 
 void check_for_negative_test() {
 	int res;
 	int value;
 
-	res = scanf("%d", &value); // GOOD
+	res = scanf("%d", &value); // $ Source[cpp/missing-check-scanf] // GOOD
 	if(res == 0) {
 		return;
 	}
 	if (res < 0) {
 		return;
 	}
-	use(value);
+	use(value); // $ Alert[cpp/missing-check-scanf]
 }
 
 void multiple_checks() {
 	{
 		int i;
-		int res = scanf("%d", &i);
+		int res = scanf("%d", &i); // $ Source[cpp/missing-check-scanf]
 
 		if (res >= 0) {
 			if (res != 0) {
-				use(i); // GOOD: checks return value [FALSE POSITIVE]
+				use(i); // $ SPURIOUS: Alert[cpp/missing-check-scanf] // GOOD: checks return value [FALSE POSITIVE]
 			}
 		}
 	}
 
 	{
 		int i;
-		int res = scanf("%d", &i);
+		int res = scanf("%d", &i); // $ Source[cpp/missing-check-scanf]
 
 		if (res < 0) return;
 		if (res != 0) {
-			use(i); // GOOD: checks return value [FALSE POSITIVE]
+			use(i); // $ SPURIOUS: Alert[cpp/missing-check-scanf] // GOOD: checks return value [FALSE POSITIVE]
 		}
 	}
 
@@ -538,11 +538,11 @@ void switch_cases(const char *data) {
 
 	float d, e, f;
 
-	switch (sscanf(data, "%f %f %f", &d, &e, &f)) {
+	switch (sscanf(data, "%f %f %f", &d, &e, &f)) { // $ Source[cpp/missing-check-scanf]
 		case 2:
 			use(d); // GOOD
 			use(e); // GOOD
-			use(f); // BAD
+			use(f); // $ Alert[cpp/missing-check-scanf] // BAD
 			break;
 		case 3:
 			use(d); // GOOD

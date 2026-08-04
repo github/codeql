@@ -1,1 +1,2 @@
-experimental/Security Features/Serialization/UnsafeTypeUsedDataContractSerializer.ql
+query: experimental/Security Features/Serialization/UnsafeTypeUsedDataContractSerializer.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

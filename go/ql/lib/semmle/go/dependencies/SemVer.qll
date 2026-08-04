@@ -1,6 +1,8 @@
 /**
  * Provides classes for dealing with semantic versions, for dependency versions.
  */
+overlay[local?]
+module;
 
 import semmle.go.dependencies.Dependencies
 

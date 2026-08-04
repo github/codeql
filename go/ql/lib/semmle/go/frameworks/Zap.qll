@@ -1,6 +1,8 @@
 /**
  * Provides models of commonly used functions in the `go.uber.org/zap` package.
  */
+overlay[local?]
+module;
 
 import go
 
@@ -45,7 +47,7 @@ module Zap {
   }
 
   /** A Zap logging function which always panics. */
-  private class FatalLogMethod extends Method {
+  private class FatalLogMethod extends ZapFunction {
     FatalLogMethod() {
       this.hasQualifiedName(packagePath(), "Logger", "Fatal")
       or
@@ -56,7 +58,7 @@ module Zap {
   }
 
   /** A Zap logging function which always panics. */
-  private class MustPanicLogMethod extends Method {
+  private class MustPanicLogMethod extends ZapFunction {
     MustPanicLogMethod() {
       this.hasQualifiedName(packagePath(), "Logger", "Panic")
       or

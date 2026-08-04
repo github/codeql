@@ -1,1 +1,2 @@
-Security Features/CWE-352/MissingAntiForgeryTokenValidation.ql
+query: Security Features/CWE-352/MissingAntiForgeryTokenValidation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -28,7 +28,7 @@ char *asctime(const struct tm *timeptr);
 // Code under test
 
 int is_morning() {
-    struct tm *now = gmtime(time(NULL)); // BAD: gmtime uses shared state
+    struct tm *now = gmtime(time(NULL)); // $ Alert[cpp/potentially-dangerous-function] // BAD: gmtime uses shared state
     return (now->tm_hour < 12);
 }
 
@@ -39,13 +39,13 @@ void testGets() {
 	char *buf2 = malloc(1024);
 	char *s;
 
-	gets(buf1); // BAD: use of gets
-	s = gets(buf2); // BAD: use of gets
+	gets(buf1); // $ Alert[cpp/dangerous-function-overflow] // BAD: use of gets
+	s = gets(buf2); // $ Alert[cpp/dangerous-function-overflow] // BAD: use of gets
 }
 
 void testTime()
 {
-	struct tm *now = localtime(time(NULL)); // BAD: localtime uses shared state
-	char *time_string = ctime(time(NULL)); // BAD: localtime uses shared state
-	char *time_string2 = asctime(now); // BAD: localtime uses shared state
+	struct tm *now = localtime(time(NULL)); // $ Alert[cpp/potentially-dangerous-function] // BAD: localtime uses shared state
+	char *time_string = ctime(time(NULL)); // $ Alert[cpp/potentially-dangerous-function] // BAD: localtime uses shared state
+	char *time_string2 = asctime(now); // $ Alert[cpp/potentially-dangerous-function] // BAD: localtime uses shared state
 }

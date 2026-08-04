@@ -16,7 +16,7 @@ def useofapply():
 
   # This use of `apply` is a reference to the builtin function and so SHOULD be
   # caught by the query.
-  apply(foo, [1])
+  apply(foo, [1]) # $ Alert[py/use-of-apply]
 
 
 

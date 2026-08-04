@@ -41,11 +41,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 var loc = Context.CreateLocation(init.GetLocation());
 
                 var assignment = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.SIMPLE_ASSIGN, objectInitializer, child++, isCompilerGenerated: false, null));
-                Create(Context, init.Expression, assignment, 0);
                 Property.Create(Context, property);
-
-                var access = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.PROPERTY_ACCESS, assignment, 1, isCompilerGenerated: false, null));
+                var access = new Expression(new ExpressionInfo(Context, type, loc, ExprKind.PROPERTY_ACCESS, assignment, 0, isCompilerGenerated: false, null));
                 trapFile.expr_access(access, propEntity);
+
+                Create(Context, init.Expression, assignment, 1);
             }
         }
     }

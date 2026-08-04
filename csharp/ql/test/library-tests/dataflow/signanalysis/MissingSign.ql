@@ -1,7 +1,7 @@
 import csharp
 import semmle.code.csharp.dataflow.internal.rangeanalysis.SignAnalysisCommon
 
-from ControlFlow::Nodes::ExprNode e
+from ControlFlowNodes::ExprNode e
 where
   not exists(exprSign(e)) and
   not e.getExpr() instanceof TypeAccess and
