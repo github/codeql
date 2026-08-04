@@ -5,8 +5,23 @@ extensions:
     data:
       - ["org.springframework.r2dbc.core", "DatabaseClient", True, "sql", "(String)", "", "Argument[0]", "sql-injection", "manual"]
       - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "fetch", "", "", "Argument[this]", "sql-injection", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "then", "", "", "Argument[this]", "sql-injection", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "map", "(java.util.function.Function)", "", "Argument[this]", "sql-injection", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "map", "(java.util.function.BiFunction)", "", "Argument[this]", "sql-injection", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "mapValue", "(Class)", "", "Argument[this]", "sql-injection", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "mapProperties", "(Class)", "", "Argument[this]", "sql-injection", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "flatMap", "(java.util.function.Function)", "", "Argument[this]", "sql-injection", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
     data:
       - ["org.springframework.r2dbc.core", "DatabaseClient", True, "sql", "(java.util.function.Supplier)", "", "Argument[0].ReturnValue", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "bind", "(int,Object)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "bind", "(String,Object)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "bindNull", "(int,Class)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "bindNull", "(String,Class)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "bindValues", "(List)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "bindValues", "(Map)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "bindProperties", "(Object)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "filter", "(java.util.function.Function)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "filter", "(org.springframework.r2dbc.core.StatementFilterFunction)", "", "Argument[this]", "ReturnValue", "taint", "manual"]

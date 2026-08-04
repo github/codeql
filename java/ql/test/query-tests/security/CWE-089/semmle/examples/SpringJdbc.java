@@ -87,6 +87,23 @@ public class SpringJdbc {
   public static void testR2dbc(DatabaseClient client, Connection connection, Batch batch) {
     client.sql(source()); // $ sqlInjection
     client.sql((Supplier<String>) SpringJdbc::source).fetch(); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).then(); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).map(row -> row); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).map((row, metadata) -> row); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).flatMap(row -> row); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).mapValue(String.class); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).mapProperties(String.class); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source)
+        .bind(0, "value")
+        .bind("name", "value")
+        .bindNull(0, String.class)
+        .bindNull("name", String.class)
+        .bindValues(java.util.List.of("value"))
+        .bindValues(java.util.Map.of("name", "value"))
+        .bindProperties(new Object())
+        .filter(statement -> statement)
+        .filter((org.springframework.r2dbc.core.StatementFilterFunction) null) // $ sqlInjection
+        .fetch();
     connection.createStatement(source()); // $ sqlInjection
     batch.add(source()); // $ sqlInjection
   }
