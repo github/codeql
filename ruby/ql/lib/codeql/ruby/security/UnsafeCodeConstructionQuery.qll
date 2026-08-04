@@ -13,7 +13,10 @@ private import codeql.ruby.TaintTracking
 private import codeql.ruby.dataflow.BarrierGuards
 
 private module UnsafeCodeConstructionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSource(DataFlow::Node source) {
+    source instanceof Source and
+    not source instanceof LibraryInputAsSource
+  }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
@@ -22,7 +25,25 @@ private module UnsafeCodeConstructionConfig implements DataFlow::ConfigSig {
     node instanceof StringConstArrayInclusionCallBarrier
   }
 
-  // override to require the path doesn't have unmatched return steps
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getCodeSink().getLocation()
+  }
+}
+
+private module UnsafeCodeConstructionLibraryInputConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof LibraryInputAsSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof StringConstCompareBarrier or
+    node instanceof StringConstArrayInclusionCallBarrier
+  }
+
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 
   predicate observeDiffInformedIncrementalMode() { any() }
@@ -37,4 +58,21 @@ private module UnsafeCodeConstructionConfig implements DataFlow::ConfigSig {
 /**
  * Taint-tracking for detecting code constructed from library input vulnerabilities.
  */
-module UnsafeCodeConstructionFlow = TaintTracking::Global<UnsafeCodeConstructionConfig>;
+private module UnsafeCodeConstructionDefaultFlow =
+  TaintTracking::Global<UnsafeCodeConstructionConfig>;
+
+private module UnsafeCodeConstructionLibraryInputFlow =
+  TaintTracking::Global<UnsafeCodeConstructionLibraryInputConfig>;
+
+module UnsafeCodeConstructionFlow =
+  DataFlow::MergePathGraph<UnsafeCodeConstructionDefaultFlow::PathNode,
+    UnsafeCodeConstructionLibraryInputFlow::PathNode, UnsafeCodeConstructionDefaultFlow::PathGraph,
+    UnsafeCodeConstructionLibraryInputFlow::PathGraph>;
+
+predicate unsafeCodeConstructionFlowPath(
+  UnsafeCodeConstructionFlow::PathNode source, UnsafeCodeConstructionFlow::PathNode sink
+) {
+  UnsafeCodeConstructionDefaultFlow::flowPath(source.asPathNode1(), sink.asPathNode1())
+  or
+  UnsafeCodeConstructionLibraryInputFlow::flowPath(source.asPathNode2(), sink.asPathNode2())
+}

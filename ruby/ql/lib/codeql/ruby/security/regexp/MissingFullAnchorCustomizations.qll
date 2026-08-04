@@ -39,8 +39,8 @@ module MissingFullAnchor {
 
   private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
 
-  private class LibrayInputAsSource extends Source {
-    LibrayInputAsSource() { this = Gem::getALibraryInput() }
+  class LibraryInputAsSource extends Source {
+    LibraryInputAsSource() { this = Gem::getALibraryInput() }
 
     override string describe() { result = "library input" }
   }

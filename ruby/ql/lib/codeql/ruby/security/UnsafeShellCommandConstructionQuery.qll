@@ -14,7 +14,10 @@ private import CommandInjectionCustomizations::CommandInjection as CommandInject
 private import codeql.ruby.dataflow.BarrierGuards
 
 private module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSource(DataFlow::Node source) {
+    source instanceof Source and
+    not source instanceof LibraryInputAsSource
+  }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
@@ -24,7 +27,28 @@ private module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigS
     node instanceof StringConstArrayInclusionCallBarrier
   }
 
-  // override to require the path doesn't have unmatched return steps
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.(Sink).getLocation()
+    or
+    result = sink.(Sink).getStringConstruction().getLocation()
+    or
+    result = sink.(Sink).getCommandExecution().getLocation()
+  }
+}
+
+private module UnsafeShellCommandConstructionLibraryInputConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof LibraryInputAsSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof CommandInjection::Sanitizer or // using all sanitizers from `rb/command-injection`
+    node instanceof StringConstCompareBarrier or
+    node instanceof StringConstArrayInclusionCallBarrier
+  }
+
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 
   predicate observeDiffInformedIncrementalMode() { any() }
@@ -41,5 +65,23 @@ private module UnsafeShellCommandConstructionConfig implements DataFlow::ConfigS
 /**
  * Taint-tracking for detecting shell command constructed from library input vulnerabilities.
  */
-module UnsafeShellCommandConstructionFlow =
+private module UnsafeShellCommandConstructionDefaultFlow =
   TaintTracking::Global<UnsafeShellCommandConstructionConfig>;
+
+private module UnsafeShellCommandConstructionLibraryInputFlow =
+  TaintTracking::Global<UnsafeShellCommandConstructionLibraryInputConfig>;
+
+module UnsafeShellCommandConstructionFlow =
+  DataFlow::MergePathGraph<UnsafeShellCommandConstructionDefaultFlow::PathNode,
+    UnsafeShellCommandConstructionLibraryInputFlow::PathNode,
+    UnsafeShellCommandConstructionDefaultFlow::PathGraph,
+    UnsafeShellCommandConstructionLibraryInputFlow::PathGraph>;
+
+predicate unsafeShellCommandConstructionFlowPath(
+  UnsafeShellCommandConstructionFlow::PathNode source,
+  UnsafeShellCommandConstructionFlow::PathNode sink
+) {
+  UnsafeShellCommandConstructionDefaultFlow::flowPath(source.asPathNode1(), sink.asPathNode1())
+  or
+  UnsafeShellCommandConstructionLibraryInputFlow::flowPath(source.asPathNode2(), sink.asPathNode2())
+}

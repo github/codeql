@@ -19,7 +19,7 @@ module UnsafeShellCommandConstruction {
   abstract class Source extends DataFlow::Node { }
 
   /** An input parameter to a gem seen as a source. */
-  private class LibraryInputAsSource extends Source instanceof DataFlow::ParameterNode {
+  class LibraryInputAsSource extends Source instanceof DataFlow::ParameterNode {
     LibraryInputAsSource() {
       this = Gem::getALibraryInput() and
       // we exclude arguments named `cmd` or similar, as they seem to execute commands on purpose

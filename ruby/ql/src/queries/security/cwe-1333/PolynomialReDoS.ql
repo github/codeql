@@ -21,7 +21,7 @@ from
   PolynomialReDoSFlow::PathNode source, PolynomialReDoSFlow::PathNode sink, PR::Sink sinkNode,
   PR::PolynomialBackTrackingTerm regexp
 where
-  PolynomialReDoSFlow::flowPath(source, sink) and
+  polynomialReDoSFlowPath(source, sink) and
   sinkNode = sink.getNode() and
   regexp = sinkNode.getRegExp()
 select sinkNode.getHighlight(), source, sink,

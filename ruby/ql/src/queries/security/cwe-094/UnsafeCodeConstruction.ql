@@ -19,7 +19,7 @@ import UnsafeCodeConstructionFlow::PathGraph
 from
   UnsafeCodeConstructionFlow::PathNode source, UnsafeCodeConstructionFlow::PathNode sink,
   Sink sinkNode
-where UnsafeCodeConstructionFlow::flowPath(source, sink) and sinkNode = sink.getNode()
+where unsafeCodeConstructionFlowPath(source, sink) and sinkNode = sink.getNode()
 select sink.getNode(), source, sink,
   "This " + sinkNode.getSinkType() + " which depends on $@ is later $@.", source.getNode(),
   "library input", sinkNode.getCodeSink(), "interpreted as code"

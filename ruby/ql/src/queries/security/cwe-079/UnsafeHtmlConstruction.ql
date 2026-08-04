@@ -18,7 +18,7 @@ import UnsafeHtmlConstructionFlow::PathGraph
 from
   UnsafeHtmlConstructionFlow::PathNode source, UnsafeHtmlConstructionFlow::PathNode sink,
   Sink sinkNode
-where UnsafeHtmlConstructionFlow::flowPath(source, sink) and sink.getNode() = sinkNode
+where unsafeHtmlConstructionFlowPath(source, sink) and sink.getNode() = sinkNode
 select sinkNode, source, sink,
   "This " + sinkNode.getSinkType() + " which depends on $@ might later allow $@.", source.getNode(),
   "library input", sinkNode.getXssSink(), "cross-site scripting"

@@ -15,7 +15,7 @@ import codeql.ruby.security.regexp.MissingFullAnchorQuery
 import MissingFullAnchorFlow::PathGraph
 
 from MissingFullAnchorFlow::PathNode source, MissingFullAnchorFlow::PathNode sink, Sink sinkNode
-where MissingFullAnchorFlow::flowPath(source, sink) and sink.getNode() = sinkNode
+where missingFullAnchorFlowPath(source, sink) and sink.getNode() = sinkNode
 select sink, source, sink, "This value depends on $@, and is $@ against a $@.", source.getNode(),
   source.getNode().(Source).describe(), sinkNode.getCallNode(), "checked", sinkNode.getRegex(),
   "badly anchored regular expression"
