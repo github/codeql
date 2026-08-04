@@ -1,0 +1,10 @@
+models
+edges
+| implicit_return.rb:12:3:12:11 | call to source | implicit_return.rb:15:6:15:11 | call to m_body | provenance |  |
+nodes
+| implicit_return.rb:12:3:12:11 | call to source | semmle.label | call to source |
+| implicit_return.rb:15:6:15:11 | call to m_body | semmle.label | call to m_body |
+subpaths
+testFailures
+#select
+| implicit_return.rb:15:6:15:11 | call to m_body | implicit_return.rb:12:3:12:11 | call to source | implicit_return.rb:15:6:15:11 | call to m_body | $@ | implicit_return.rb:12:3:12:11 | call to source | call to source |
