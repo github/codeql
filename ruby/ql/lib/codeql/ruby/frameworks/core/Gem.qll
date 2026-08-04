@@ -114,7 +114,7 @@ module Gem {
   /** Holds if `name` is a vendored gem in this codebase. */
   predicate isVendoredGem(string name) {
     exists(GemSpec spec |
-      spec.getParentContainer().getBaseName() = "vendor" and
+      spec.getParentContainer+().getBaseName() = "vendor" and
       spec.getName() = name
     )
   }
