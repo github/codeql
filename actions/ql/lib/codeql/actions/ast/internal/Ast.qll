@@ -1459,6 +1459,15 @@ class UsesStepImpl extends StepImpl, UsesImpl {
     )
   }
 
+  /**
+   * Gets the callable name for a `$/xyz` self-call. The `$/` prefix identifies the repository of
+   * the enclosing composite action and is not part of the action path.
+   *
+   * The argument to `suffix` is a zero-based start offset. In the two-character `$/` prefix, `$`
+   * is at offset 0 and `/` at offset 1, so `suffix(2)` starts at the first character of the
+   * repository-relative action path. For example, `$/.github/actions/leaf` becomes
+   * `.github/actions/leaf`, and `$/action` becomes `action`.
+   */
   private string getSelfCallableName() {
     exists(CompositeActionImpl action, string owner, string repo, string requested_ref |
       action = this.getEnclosingCompositeAction() and
