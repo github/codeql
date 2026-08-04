@@ -1,5 +1,8 @@
 import java.sql.ResultSet;
 import java.util.Map;
+import java.util.function.Supplier;
+import io.r2dbc.spi.Batch;
+import io.r2dbc.spi.Connection;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -13,6 +16,7 @@ import org.springframework.jdbc.object.MappingSqlQueryWithParameters;
 import org.springframework.jdbc.object.SqlFunction;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.object.UpdatableSqlQuery;
+import org.springframework.r2dbc.core.DatabaseClient;
 
 public class SpringJdbc {
 
@@ -78,6 +82,13 @@ public class SpringJdbc {
     namedParamTemplate.update(source(), (SqlParameterSource) null); // $ sqlInjection
     namedParamTemplate.update(source(), null, null); // $ sqlInjection
     namedParamTemplate.update(source(), null, null, null); // $ sqlInjection
+  }
+
+  public static void testR2dbc(DatabaseClient client, Connection connection, Batch batch) {
+    client.sql(source()); // $ sqlInjection
+    client.sql((Supplier<String>) SpringJdbc::source).fetch(); // $ sqlInjection
+    connection.createStatement(source()); // $ sqlInjection
+    batch.add(source()); // $ sqlInjection
   }
 
 }

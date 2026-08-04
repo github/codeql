@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.springframework.r2dbc.core", "DatabaseClient", True, "sql", "(String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.springframework.r2dbc.core", "DatabaseClient$GenericExecuteSpec", True, "fetch", "", "", "Argument[this]", "sql-injection", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.springframework.r2dbc.core", "DatabaseClient", True, "sql", "(java.util.function.Supplier)", "", "Argument[0].ReturnValue", "ReturnValue", "taint", "manual"]
