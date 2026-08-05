@@ -78,4 +78,5 @@ typealias Alias<TypeParamAlias> =
 func foo<FooT>(x: FooT) // $ access=FooT
     -> D<FooT> { // $ access=D access=FooT
     let x: FooT = nil // $ access=FooT
+    return D<FooT>() // $ access=D access=FooT
 }
