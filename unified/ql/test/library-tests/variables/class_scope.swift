@@ -36,15 +36,15 @@ class A {
 class Base {} // name=top.Base
 
 // Base types and type parameter bounds can't see members in the class body
-class C : Base { // $ MISSING: access=top.Base SPURIOUS: access=C.Base
+class C : Base { // $ access=top.Base
     class Base {} // name=C.Base
 }
 
-class D<T : Base> { // $ MISSING: access=top.Base SPURIOUS: access=D.Base
+class D<T : Base> { // $ access=top.Base
     class Base {} // name=D.Base
 }
 
-class E<T> where T : Base { // $ access=T MISSING: access=top.Base SPURIOUS: access=E.Base
+class E<T> where T : Base { // $ access=T access=top.Base
     class Base {} // name=E.Base
 }
 
