@@ -20,8 +20,6 @@ fn main() {
     ] {
         println!("cargo:rerun-if-changed={}", input.display());
     }
-    println!("cargo:rerun-if-env-changed=SWIFT");
-    println!("cargo:rerun-if-env-changed=SWIFTC");
 
     // Build the Swift FFI package as a release dynamic library.
     //
@@ -33,7 +31,7 @@ fn main() {
     // then fail — at link time, which is fair: they genuinely need Swift (and CI
     // builds go through Bazel anyway). A Swift toolchain that *is* present but
     // whose build fails is still surfaced as a hard error below.
-    let mut command = Command::new(swift_bin());
+    let mut command = Command::new("swift");
     command
         .args(["build", "-c", "release"])
         .current_dir(&swift_dir);
@@ -42,12 +40,11 @@ fn main() {
         Ok(status) => status,
         Err(e) => {
             println!(
-                "cargo:warning=skipping the Swift FFI build: failed to run `{swift} build`: {e}. \
-                 Install a Swift toolchain (see https://www.swift.org/install/, e.g. via swiftly) \
-                 and ensure `swift` is on PATH, or set the `SWIFT` environment variable, to build \
-                 or test this crate. `cargo check`/`fmt`/`clippy` work without it. The pinned \
-                 version is in `.swift-version`.",
-                swift = swift_bin(),
+                "cargo:warning=skipping the Swift FFI build: failed to run `swift build`: {e}. \
+                 Install a Swift toolchain (see https://www.swift.org/install/, e.g. via \
+                 swiftly) and ensure `swift` is on PATH to build or test this crate. \
+                 `cargo check`/`fmt`/`clippy` work without it. The pinned version is in \
+                 `.swift-version`."
             );
             return;
         }
@@ -70,7 +67,7 @@ fn main() {
 /// Query the active Swift toolchain for the directory containing its runtime
 /// shared libraries (e.g. `libswiftCore.so`).
 fn swift_runtime_dir() -> Option<PathBuf> {
-    let output = Command::new(swiftc_bin())
+    let output = Command::new("swiftc")
         .arg("-print-target-info")
         .output()
         .ok()?;
@@ -92,19 +89,6 @@ fn swift_runtime_dir() -> Option<PathBuf> {
     let resource_path = &value_start[..close];
 
     Some(PathBuf::from(resource_path).join(if cfg!(target_os = "macos") { "macosx" } else { "linux" }))
-}
-
-/// The `swift` driver to invoke: `$SWIFT` if set, otherwise `swift` from `PATH`.
-/// This keeps the build tool-agnostic — any Swift install works; no particular
-/// version manager is required.
-fn swift_bin() -> String {
-    env::var("SWIFT").unwrap_or_else(|_| "swift".to_string())
-}
-
-/// The `swiftc` compiler to invoke: `$SWIFTC` if set, otherwise `swiftc` from
-/// `PATH`.
-fn swiftc_bin() -> String {
-    env::var("SWIFTC").unwrap_or_else(|_| "swiftc".to_string())
 }
 
 /// Some environments (notably GitHub Codespaces) inject
