@@ -71,3 +71,11 @@ class I<
 class J<TypeParamI> {
     let x: TypeParamI; // $ access=TypeParamI
 }
+
+typealias Alias<TypeParamAlias> =
+    D<TypeParamAlias>; // $ access=D access=TypeParamAlias
+
+func foo<FooT>(x: FooT) // $ access=FooT
+    -> D<FooT> { // $ access=D access=FooT
+    let x: FooT = nil // $ access=FooT
+}
