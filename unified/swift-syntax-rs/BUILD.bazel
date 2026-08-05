@@ -1,6 +1,7 @@
 load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 load("//misc/bazel:pkg.bzl", "codeql_pkg_runfiles")
+load("//unified:platforms.bzl", "UNIFIED_SUPPORTED_PLATFORMS")
 load(":swift_runtime.bzl", "swift_runtime_libs")
 load(":xcode_transition.bzl", "xcode_transition_swift_library")
 
@@ -11,23 +12,13 @@ swift_runtime_libs(
     toolchain = "@swift_toolchain_ubuntu22.04//:files",
 )
 
-# Targets in this package require a Swift toolchain (Linux or macOS).
-# `select()` gives us OR-of-OSes; other platforms get marked incompatible
-# so `bazel build/test //...` skips them cleanly.
-#
-_SWIFT_SUPPORTED_PLATFORMS = select({
-    "@platforms//os:linux": [],
-    "@platforms//os:macos": [],
-    "//conditions:default": ["@platforms//:incompatible"],
-})
-
 # Swift FFI shim: wraps swift-syntax and exposes a small C ABI. The Rust
 # targets below link against its `CcInfo`.
 xcode_transition_swift_library(
     name = "swift_syntax_ffi",
     srcs = ["swift/Sources/SwiftSyntaxFFI/SwiftSyntaxFFI.swift"],
     module_name = "SwiftSyntaxFFI",
-    target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
     deps = [
         "@swift-syntax//:SwiftOperators",
         "@swift-syntax//:SwiftParser",
@@ -44,7 +35,7 @@ rust_library(
         exclude = ["src/main.rs"],
     ),
     edition = "2024",
-    target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
     deps = [
         ":swift_syntax_ffi",
     ],
@@ -68,7 +59,7 @@ rust_binary(
         "@platforms//os:linux": [":swift_runtime_libs"],
     }),
     edition = "2024",
-    target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
     deps = [":swift_syntax_rs"],
 )
 
@@ -79,7 +70,7 @@ sh_binary(
     name = "swift-syntax-parse",
     srcs = ["swift-syntax-parse.sh"],
     data = [":swift-syntax-parse.real"],
-    target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
 )
 
 # Packaged form for the extractor pack: the wrapper (as `swift-syntax-parse`),
@@ -90,7 +81,7 @@ codeql_pkg_runfiles(
     # original filename.
     excludes = ["swift-syntax-parse.sh"],
     exes = [":swift-syntax-parse"],
-    target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
     visibility = ["//unified:__pkg__"],
 )
 
@@ -103,5 +94,5 @@ rust_test(
         "@platforms//os:linux": [":swift_runtime_libs"],
     }),
     edition = "2024",
-    target_compatible_with = _SWIFT_SUPPORTED_PLATFORMS,
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
 )
