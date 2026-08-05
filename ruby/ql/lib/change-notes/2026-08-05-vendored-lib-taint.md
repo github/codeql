@@ -1,0 +1,4 @@
+---
+category: minorAnalysis
+---
+* Removed library input to vendored gems from the set of taint sources. This should reduce false positives for `rb/polynomial-redos`, `rb/regex/badly-anchored-regexp`, `rb/unsafe-code-construction`, `rb/html-constructed-from-input`, and `rb/shell-command-constructed-from-input` whenever vendoring is used.
