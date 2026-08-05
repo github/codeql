@@ -343,7 +343,7 @@ enum E38 {
 }
 
 // Switch with a multi-pattern case that binds 'x' in each pattern
-func t38(value: E38) {
+func t38(value: E38) { // $ access=E38
     switch value { // $ access=value
     case .a(let x), // $ access=x1 // name=x1
          .b(let x): // $ access=x1
