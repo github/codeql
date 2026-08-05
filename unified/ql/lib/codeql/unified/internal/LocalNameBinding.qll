@@ -251,6 +251,11 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       pattern = imprt.getPattern()
     )
     or
+    exists(NamePattern p |
+      bindingContext(p, scope) and
+      pattern = p.getIdentifier()
+    )
+    or
     bindingContext(pattern.(Pattern).getEnclosingPattern(), scope)
   }
 
@@ -270,18 +275,21 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     result = getEnclosingOrPattern(p.getEnclosingPattern())
   }
 
+  private OrPattern getEnclosingOrPatternFromIdentifier(Identifier id) {
+    exists(NamePattern p |
+      id = p.getIdentifier() and
+      result = getEnclosingOrPattern(p)
+    )
+  }
+
   predicate declInScope(AstNode definingNode, string name, AstNode scope) {
     exists(AstNode pattern |
       bindingContext(pattern, scope) and
+      pattern.(Identifier).getValue() = name and
       (
-        pattern.(NamePattern).getIdentifier().getValue() = name
+        definingNode = getEnclosingOrPatternFromIdentifier(pattern)
         or
-        pattern.(Identifier).getValue() = name
-      ) and
-      (
-        definingNode = getEnclosingOrPattern(pattern)
-        or
-        not exists(getEnclosingOrPattern(pattern)) and
+        not exists(getEnclosingOrPatternFromIdentifier(pattern)) and
         definingNode = pattern
       )
     )
@@ -292,19 +300,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     // TODO: self
   }
 
-  predicate accessCand(AstNode n, string name) {
-    n.(NameExpr).getIdentifier().getValue() = name
-    or
-    n.(NamePattern).getIdentifier().getValue() = name
-    or
-    exists(NamedTypeExpr expr | n = expr |
-      not exists(expr.getQualifier()) and
-      expr.getName().getValue() = name
-    )
-    or
-    n = any(LocalFunctionDeclaration f).getName() and
-    n.(Identifier).getValue() = name
-  }
+  predicate accessCand(AstNode n, string name) { n.(PotentialLocalNameAccess).getName() = name }
 }
 
 module LocalNameBindingOutput = LocalNameBinding<Location, LocalNameBindingInput>;
@@ -329,7 +325,7 @@ module Public {
 }
 
 /**
- * An AST node that is a possibly reference to a local name, but could also refer to a member
+ * An identifier node that is a possibly reference to a local name, but could also refer to a member
  * visible through imports or inheritance.
  *
  * For example, the type annotation `C` below is a potential access to `class C`, but could
@@ -341,16 +337,19 @@ module Public {
  * }
  * ```
  */
-class PotentialLocalNameAccess extends LocalNameBindingOutput::LocalAccess {
-  LocalName getLocalName() { result = super.getLocal() }
-
-  Identifier getIdentifier() {
-    result = this.(NameExpr).getIdentifier()
+class PotentialLocalNameAccess extends Identifier {
+  PotentialLocalNameAccess() {
+    this = any(NameExpr e).getIdentifier()
     or
-    result = this.(NamePattern).getIdentifier()
+    this = any(NamePattern e).getIdentifier()
     or
-    result = this
+    this = any(NamedTypeExpr e | not exists(e.getQualifier())).getName()
+    or
+    this = any(FunctionDeclaration f).getName()
+    // TODO: include other declaration kinds here
   }
 
-  string getName() { result = this.getIdentifier().getValue() }
+  LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
+
+  string getName() { result = this.getValue() }
 }
