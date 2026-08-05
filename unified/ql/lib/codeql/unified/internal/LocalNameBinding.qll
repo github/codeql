@@ -1,5 +1,5 @@
 /**
- * Provides classes for reasoning about lexically scoped variables and references to these.
+ * Provides classes for reasoning about lexically scoped names and references to these.
  */
 
 private import unified
