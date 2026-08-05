@@ -322,7 +322,7 @@ module Public {
 }
 
 /**
- * An identifier node that is a possibly reference to a local name, but could also refer to a member
+ * An identifier node that is possibly a reference to a local name, but could also refer to a member
  * visible through imports or inheritance.
  *
  * For example, the type annotation `C` below is a potential access to `class C`, but could
