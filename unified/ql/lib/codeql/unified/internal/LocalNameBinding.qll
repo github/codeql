@@ -316,9 +316,6 @@ module Public {
     /** Gets the location of this local name's first declaration */
     Location getLocation() { result = super.getLocation() }
 
-    /** Gets the AST node defining this local name. */
-    AstNode getDefiningNode() { result = super.getDefiningNode() }
-
     /** Gets the name of this local, as a string. */
     string getName() { result = super.getName() }
   }

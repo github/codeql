@@ -37,10 +37,15 @@ module VariableAccessTest implements TestSig {
     )
   }
 
+  private PotentialLocalNameAccess getUniqueDeclarationSite(LocalName name) {
+    result =
+      unique(PotentialLocalNameAccess ac | ac.isDeclarationSite() and ac.getLocalName() = name)
+  }
+
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(PotentialLocalNameAccess va, LocalName v |
       v = va.getLocalName() and
-      not va = v.getDefiningNode() and
+      not va = getUniqueDeclarationSite(v) and // no need to annotate declaration site, if there is only one
       location = va.getLocation() and
       element = va.toString() and
       decl(v, value) and
