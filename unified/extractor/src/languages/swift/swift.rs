@@ -1065,19 +1065,51 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A nominal type's `inheritanceClause` (`: Base, Proto`) becomes a list
         // of `base_type`s, one per inherited type. Each declaration keyword
         // gets its own rule; the bodies are identical but for the keyword.
+        rule!(
+            (genericParameter
+                attributes: _* @attrs
+                specifier: _? @@spec
+                name: @@name
+                inheritedType: _? @bound)
+            =>
+            (type_parameter
+                modifier: {attrs}
+                modifier: (modifier #{spec})?
+                name: (identifier #{name})
+                bound: {bound})
+        ),
+        rule!(
+            (genericRequirement
+                requirement: (conformanceRequirement leftType: @ty rightType: @bound))
+            =>
+            (bound_type_constraint type: {ty} bound: {bound})
+        ),
+        rule!(
+            (genericRequirement
+                requirement: (sameTypeRequirement leftType: @left rightType: @right))
+            =>
+            (equality_type_constraint left: {left} right: {right})
+        ),
         // Class declaration with body containing members
         rule!(
             (classDecl
                 classKeyword: @kind
                 modifiers: _* @mods
                 name: @name
+                genericParameterClause: (genericParameterClause
+                    parameters: _* @params
+                    genericWhereClause: (genericWhereClause requirements: _* @parameter_constraints)?)?
                 inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                genericWhereClause: (genericWhereClause requirements: _* @declaration_constraints)?
                 memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
+                type_parameter: {params}
+                type_constraint: {parameter_constraints}
+                type_constraint: {declaration_constraints}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
@@ -1087,13 +1119,20 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 enumKeyword: @kind
                 modifiers: _* @mods
                 name: @name
+                genericParameterClause: (genericParameterClause
+                    parameters: _* @params
+                    genericWhereClause: (genericWhereClause requirements: _* @parameter_constraints)?)?
                 inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                genericWhereClause: (genericWhereClause requirements: _* @declaration_constraints)?
                 memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
+                type_parameter: {params}
+                type_constraint: {parameter_constraints}
+                type_constraint: {declaration_constraints}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
@@ -1103,13 +1142,20 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 structKeyword: @kind
                 modifiers: _* @mods
                 name: @name
+                genericParameterClause: (genericParameterClause
+                    parameters: _* @params
+                    genericWhereClause: (genericWhereClause requirements: _* @parameter_constraints)?)?
                 inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                genericWhereClause: (genericWhereClause requirements: _* @declaration_constraints)?
                 memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
+                type_parameter: {params}
+                type_constraint: {parameter_constraints}
+                type_constraint: {declaration_constraints}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
@@ -1119,13 +1165,17 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 protocolKeyword: @kind
                 modifiers: _* @mods
                 name: @name
+                genericParameterClause: (genericParameterClause parameters: _* @params)?
                 inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
+                genericWhereClause: (genericWhereClause requirements: _* @declaration_constraints)?
                 memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
                 name: (identifier #{name})
+                type_parameter: {params}
+                type_constraint: {declaration_constraints}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
