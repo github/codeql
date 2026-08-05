@@ -184,7 +184,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     override AstNode getElse() { none() }
   }
 
-  private predicate bindingContext(AstNode pattern, AstNode scope) {
+  additional predicate bindingContext(AstNode pattern, AstNode scope) {
     exists(SiblingShadowingDecl decl |
       scope = decl and
       pattern = decl.getPattern()
@@ -345,11 +345,13 @@ class PotentialLocalNameAccess extends Identifier {
     or
     this = any(NamedTypeExpr e | not exists(e.getQualifier())).getName()
     or
-    this = any(FunctionDeclaration f).getName()
-    // TODO: include other declaration kinds here
+    LocalNameBindingInput::bindingContext(this, _)
   }
 
   LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
 
   string getName() { result = this.getValue() }
+
+  /** Holds if this is one of the declaration sites for a name, such as the `x` in `let x = 123`. */
+  predicate isDeclarationSite() { LocalNameBindingInput::bindingContext(this, _) }
 }
