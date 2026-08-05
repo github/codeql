@@ -1,5 +1,6 @@
 import unified
 import utils.test.InlineExpectationsTest
+import codeql.unified.internal.LocalNameBinding
 
 /** Holds if a comment with `text` appears at `filepath:line`, excluding the text in a `$` section. */
 predicate plainCommentAt(string filepath, int line, string text) {
@@ -23,11 +24,11 @@ predicate keyValueCommentAt(string filepath, int line, string key, string value)
 module VariableAccessTest implements TestSig {
   string getARelevantTag() { result = "access" }
 
-  additional predicate declAt(Variable v, string filepath, int line) {
+  additional predicate declAt(LocalName v, string filepath, int line) {
     v.getLocation().hasLocationInfo(filepath, line, _, _, _)
   }
 
-  private predicate decl(Variable v, string alias) {
+  private predicate decl(LocalName v, string alias) {
     exists(string filepath, int line | declAt(v, filepath, line) |
       keyValueCommentAt(filepath, line, "name", alias)
       or
@@ -37,8 +38,8 @@ module VariableAccessTest implements TestSig {
   }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(VariableAccess va, Variable v |
-      v = va.getVariable() and
+    exists(PotentialLocalNameAccess va, LocalName v |
+      v = va.getLocalName() and
       not va = v.getDefiningNode() and
       location = va.getLocation() and
       element = va.toString() and
@@ -50,12 +51,12 @@ module VariableAccessTest implements TestSig {
 
 import MakeTest<VariableAccessTest>
 
-private Variable getVariableAt(string name, string filepath, int line) {
+private LocalName getVariableAt(string name, string filepath, int line) {
   VariableAccessTest::declAt(result, filepath, line) and
   result.getName() = name
 }
 
-query predicate ambiguousVariable(Variable v, string name, string filepath, int line) {
+query predicate ambiguousVariable(LocalName v, string name, string filepath, int line) {
   v = getVariableAt(name, filepath, line) and
   strictcount(getVariableAt(name, filepath, line)) >= 2
 }

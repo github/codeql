@@ -311,26 +311,46 @@ module LocalNameBindingOutput = LocalNameBinding<Location, LocalNameBindingInput
 
 module Public {
   /**
-   * A local variable.
+   * A representative for a lexically scoped entity, such as a local variable, type name, or module name.
    */
-  class Variable extends LocalNameBindingOutput::Local {
-    VariableAccess getAnAccess() { result.getVariable() = this }
+  class LocalName instanceof LocalNameBindingOutput::Local {
+    /** Gets the name of this local, as a string. */
+    string toString() { result = super.toString() }
+
+    /** Gets the location of this local name's first declaration */
+    Location getLocation() { result = super.getLocation() }
+
+    /** Gets the AST node defining this local name. */
+    AstNode getDefiningNode() { result = super.getDefiningNode() }
+
+    /** Gets the name of this local, as a string. */
+    string getName() { result = super.getName() }
+  }
+}
+
+/**
+ * An AST node that is a possibly reference to a local name, but could also refer to a member
+ * visible through imports or inheritance.
+ *
+ * For example, the type annotation `C` below is a potential access to `class C`, but could
+ * also refer to `B.C` if such a class exists:
+ * ```swift
+ * class C {}
+ * class A : B {
+ *   let x : C
+ * }
+ * ```
+ */
+class PotentialLocalNameAccess extends LocalNameBindingOutput::LocalAccess {
+  LocalName getLocalName() { result = super.getLocal() }
+
+  Identifier getIdentifier() {
+    result = this.(NameExpr).getIdentifier()
+    or
+    result = this.(NamePattern).getIdentifier()
+    or
+    result = this
   }
 
-  /**
-   * An AST node that is a reference to a local variable.
-   */
-  class VariableAccess extends AstNode instanceof LocalNameBindingOutput::LocalAccess {
-    Variable getVariable() { result = super.getLocal() }
-
-    Identifier getIdentifier() {
-      result = this.(NameExpr).getIdentifier()
-      or
-      result = this.(NamePattern).getIdentifier()
-      or
-      result = this
-    }
-
-    string getName() { result = this.getIdentifier().getValue() }
-  }
+  string getName() { result = this.getIdentifier().getValue() }
 }
