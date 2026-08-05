@@ -130,6 +130,8 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
   }
 
   abstract class SiblingShadowingDecl extends AstNode {
+    abstract AstNode getPattern();
+
     /**
      * Gets the right-hand side of this declaration.
      *
@@ -149,6 +151,10 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   private class LocalVariableDeclarationSiblingShadowingDecl extends SiblingShadowingDecl instanceof LocalVariableDeclaration
   {
+    LocalVariableDeclarationSiblingShadowingDecl() { not this instanceof TopLevelStmt }
+
+    override Pattern getPattern() { result = LocalVariableDeclaration.super.getPattern() }
+
     override AstNode getRhs() { result = LocalVariableDeclaration.super.getValue() }
 
     override AstNode getElse() { none() }
@@ -156,19 +162,27 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   private class PatternGuardExprSiblingShadowingDecl extends SiblingShadowingDecl instanceof PatternGuardExpr
   {
+    override Pattern getPattern() { result = PatternGuardExpr.super.getPattern() }
+
     override AstNode getRhs() { result = PatternGuardExpr.super.getValue() }
 
     override AstNode getElse() { none() }
   }
 
   private predicate bindingContext(AstNode pattern, AstNode scope) {
-    exists(LocalVariableDeclaration decl |
-      scope = decl and // LocalVariableDeclaration is a ShadowingSiblingDecl, it must use itself as the scope
+    exists(SiblingShadowingDecl decl |
+      scope = decl and
       pattern = decl.getPattern()
     )
     or
-    exists(LocalFunctionDeclaration func |
-      scope = func.getDeclaringBlock() and
+    exists(VariableDeclaration decl |
+      not decl instanceof SiblingShadowingDecl and
+      getChild(scope, _) = decl and
+      pattern = decl.getPattern()
+    )
+    or
+    exists(FunctionDeclaration func |
+      getChild(scope, _) = func and
       pattern = func.getName()
     )
     or
@@ -192,12 +206,37 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       pattern = stmt.getPattern()
     )
     or
-    bindingContext(pattern.(Pattern).getEnclosingPattern(), scope)
-    or
-    exists(PatternGuardExpr expr |
-      pattern = expr.getPattern() and
-      scope = expr
+    exists(ClassLikeDeclaration cls |
+      getChild(scope, _) = cls and
+      pattern = cls.getName()
     )
+    or
+    exists(TypeAliasDeclaration decl |
+      getChild(scope, _) = decl and
+      pattern = decl.getName()
+    )
+    or
+    exists(TypeParameter param |
+      scope = param.getParent() and
+      pattern = param.getName()
+    )
+    or
+    exists(AssociatedTypeDeclaration decl |
+      getChild(scope, _) = decl and
+      pattern = decl.getName()
+    )
+    or
+    exists(AccessorDeclaration decl |
+      getChild(scope, _) = decl and
+      pattern = decl.getName()
+    )
+    or
+    exists(ImportDeclaration imprt |
+      getChild(scope, _) = imprt and
+      pattern = imprt.getPattern()
+    )
+    or
+    bindingContext(pattern.(Pattern).getEnclosingPattern(), scope)
   }
 
   /**
@@ -242,6 +281,11 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     n.(NameExpr).getIdentifier().getValue() = name
     or
     n.(NamePattern).getIdentifier().getValue() = name
+    or
+    exists(NamedTypeExpr expr | n = expr |
+      not exists(expr.getQualifier()) and
+      expr.getName().getValue() = name
+    )
     or
     n = any(LocalFunctionDeclaration f).getName() and
     n.(Identifier).getValue() = name
