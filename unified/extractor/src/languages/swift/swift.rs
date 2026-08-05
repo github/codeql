@@ -185,6 +185,20 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // the target AST has no expression-level discard (only `ignore_pattern`,
         // which is a pattern), so it becomes a `name_expr` over the `_` token.
         rule!((discardAssignmentExpr wildcard: @@w) => (name_expr identifier: (identifier #{w}))),
+        // A generic specialization in expression position (`C<Foo>`,
+        // `Array<Int>`) is represented by swift-syntax as a
+        // `genericSpecializationExpr`. When used as a call target
+        // (`C<Foo>()`), this should become a `call_expr` whose callee is a
+        // `generic_type_expr`, so we map it directly to that shape.
+        rule!(
+            (genericSpecializationExpr
+                expression: (declReferenceExpr baseName: @name)
+                genericArgumentClause: (genericArgumentClause arguments: (genericArgument argument: @args)*))
+            =>
+            (generic_type_expr
+                base: (named_type_expr name: (identifier #{name}))
+                type_argument: {args})
+        ),
         // ---- Operators ----
         // The parser front-end folds operator chains into nested
         // `infixOperatorExpr`s by precedence (see swift-syntax-rs), so

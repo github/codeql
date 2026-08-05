@@ -1,10 +1,44 @@
-let numbers = Array<Int>()
+class Foo {}
+class C<T> {}
+let x = C<Foo>()
 
 ---
 
 sourceFile
   endOfFileToken: endOfFile
   statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Foo"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+          modifiers:
+          classKeyword: class
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "C"
+          genericParameterClause:
+            genericParameterClause
+              parameters:
+                genericParameter
+                  attributes:
+                  name: identifier "T"
+              leftAngle: <
+              rightAngle: >
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+          modifiers:
+          classKeyword: class
     codeBlockItem
       item:
         variableDecl
@@ -26,19 +60,19 @@ sourceFile
                         genericSpecializationExpr
                           expression:
                             declReferenceExpr
-                              baseName: identifier "Array"
+                              baseName: identifier "C"
                           genericArgumentClause:
                             genericArgumentClause
                               arguments:
                                 genericArgument
                                   argument:
                                     identifierType
-                                      name: identifier "Int"
+                                      name: identifier "Foo"
                               leftAngle: <
                               rightAngle: >
               pattern:
                 identifierPattern
-                  identifier: identifier "numbers"
+                  identifier: identifier "x"
 
 ---
 
@@ -46,18 +80,27 @@ top_level
   body:
     block
       stmt:
+        class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Foo"
+        class_like_declaration
+          modifier: modifier "class"
+          name: identifier "C"
+          type_parameter:
+            type_parameter
+              name: identifier "T"
         variable_declaration
           modifier: modifier "let"
           pattern:
             name_pattern
-              identifier: identifier "numbers"
+              identifier: identifier "x"
           value:
             call_expr
               callee:
                 generic_type_expr
                   base:
                     named_type_expr
-                      name: identifier "Array"
+                      name: identifier "C"
                   type_argument:
                     named_type_expr
-                      name: identifier "Int"
+                      name: identifier "Foo"
