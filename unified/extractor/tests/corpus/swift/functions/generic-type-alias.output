@@ -1,0 +1,77 @@
+typealias Box<T: Equatable, U> = Dictionary<T, U>
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        typeAliasDecl
+          attributes:
+          name: identifier "Box"
+          genericParameterClause:
+            genericParameterClause
+              parameters:
+                genericParameter
+                  colon: :
+                  attributes:
+                  name: identifier "T"
+                  trailingComma: ,
+                  inheritedType:
+                    identifierType
+                      name: identifier "Equatable"
+                genericParameter
+                  attributes:
+                  name: identifier "U"
+              leftAngle: <
+              rightAngle: >
+          modifiers:
+          initializer:
+            typeInitializerClause
+              equal: =
+              value:
+                identifierType
+                  name: identifier "Dictionary"
+                  genericArgumentClause:
+                    genericArgumentClause
+                      arguments:
+                        genericArgument
+                          trailingComma: ,
+                          argument:
+                            identifierType
+                              name: identifier "T"
+                        genericArgument
+                          argument:
+                            identifierType
+                              name: identifier "U"
+                      leftAngle: <
+                      rightAngle: >
+          typealiasKeyword: typealias
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        type_alias_declaration
+          name: identifier "Box"
+          type_parameter:
+            type_parameter
+              name: identifier "T"
+              bound:
+                named_type_expr
+                  name: identifier "Equatable"
+            type_parameter
+              name: identifier "U"
+          type:
+            generic_type_expr
+              base:
+                named_type_expr
+                  name: identifier "Dictionary"
+              type_argument:
+                named_type_expr
+                  name: identifier "T"
+                named_type_expr
+                  name: identifier "U"

@@ -568,6 +568,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (functionDecl
                 name: @name
+                genericParameterClause: (genericParameterClause parameters: _* @type_params)?
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params)
                     returnClause: (returnClause type: @ret)?)
@@ -575,6 +576,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (function_declaration
                 name: (identifier #{name})
+                type_parameter: {type_params}
                 parameter: {params}
                 return_type: {ret}
                 body: (block stmt: {body}))
@@ -582,12 +584,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (functionDecl
                 name: @name
+                genericParameterClause: (genericParameterClause parameters: _* @type_params)?
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params)
                     returnClause: (returnClause type: @ret)?))
             =>
             (function_declaration
                 name: (identifier #{name})
+                type_parameter: {type_params}
                 parameter: {params}
                 return_type: {ret}
                 body: (block))
@@ -1230,11 +1234,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (typeAliasDecl
                 modifiers: _* @mods
                 name: @@name
+                genericParameterClause: (genericParameterClause parameters: _* @type_params)?
                 initializer: (typeInitializerClause value: @val))
             =>
             (type_alias_declaration
                 modifier: {mods}
                 name: (identifier #{name})
+                type_parameter: {type_params}
                 r#type: {val})
         ),
         // Associated type declaration (with optional bound)
