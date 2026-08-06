@@ -106,6 +106,14 @@ private predicate is_only_scope_statement(Stmt s) {
   forex(Stmt scope_stmt | scope_stmt = s.getScope().getAStmt() | scope_stmt = s)
 }
 
+private Function getAnOverload() {
+  exists(Expr e |
+    e = API::moduleImport("typing").getMember("overload").getAValueReachableFromSource().asExpr()
+  |
+    e = result.getADecorator()
+  )
+}
+
 ClassDef getAProtocolDef() {
   exists(Expr e |
     e =
