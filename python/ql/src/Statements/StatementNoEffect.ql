@@ -126,6 +126,8 @@ predicate python2_print(Expr e) {
 predicate no_effect(Expr e) {
   // strings can be used as comments
   not e instanceof StringLiteral and
+  // await triggers actions and switches coroutines
+  not e instanceof Await and
   not e.hasSideEffects() and
   forall(Expr sub | sub = e.getASubExpression*() |
     not side_effecting_binary(sub) and
