@@ -17,6 +17,14 @@ module Unified {
         mod.getValue() = text
       )
     }
+
+    /** Gets the nearest enclosing class declaration, possibly this node itself. */
+    ClassLikeDeclaration getEnclosingClass() {
+      result = this
+      or
+      not this instanceof ClassLikeDeclaration and
+      result = this.getParent().getEnclosingClass()
+    }
   }
 
   /** The base class for all patterns. */
