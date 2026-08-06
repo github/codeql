@@ -58,9 +58,11 @@ edges
 | main.rs:109:13:109:22 | source(...) | main.rs:110:26:110:36 | \|...\| ... : ... => .. [captured a] | provenance |  |
 | main.rs:109:13:109:22 | source(...) | main.rs:111:26:111:36 | \|...\| ... : ... => .. [captured a] | provenance |  |
 | main.rs:109:13:109:22 | source(...) | main.rs:112:26:112:36 | \|...\| ... : ... => .. [captured a] | provenance |  |
+| main.rs:109:13:109:22 | source(...) | main.rs:113:26:113:36 | \|...\| ... : ... => .. [captured a] | provenance |  |
 | main.rs:110:26:110:36 | \|...\| ... : ... => .. [captured a] | main.rs:110:35:110:35 | a | provenance | heuristic-callback |
 | main.rs:111:26:111:36 | \|...\| ... : ... => .. [captured a] | main.rs:111:35:111:35 | a | provenance | heuristic-callback |
 | main.rs:112:26:112:36 | \|...\| ... : ... => .. [captured a] | main.rs:112:35:112:35 | a | provenance | heuristic-callback |
+| main.rs:113:26:113:36 | \|...\| ... : ... => .. [captured a] | main.rs:113:35:113:35 | a | provenance | heuristic-callback |
 nodes
 | main.rs:10:20:10:52 | if cond {...} else {...} | semmle.label | if cond {...} else {...} |
 | main.rs:10:30:10:39 | source(...) | semmle.label | source(...) |
@@ -134,6 +136,8 @@ nodes
 | main.rs:111:35:111:35 | a | semmle.label | a |
 | main.rs:112:26:112:36 | \|...\| ... : ... => .. [captured a] | semmle.label | \|...\| ... : ... => .. [captured a] |
 | main.rs:112:35:112:35 | a | semmle.label | a |
+| main.rs:113:26:113:36 | \|...\| ... : ... => .. [captured a] | semmle.label | \|...\| ... : ... => .. [captured a] |
+| main.rs:113:35:113:35 | a | semmle.label | a |
 subpaths
 | main.rs:29:21:29:21 | a | main.rs:27:20:27:23 | ... | main.rs:27:26:27:52 | if cond {...} else {...} | main.rs:29:13:29:22 | f(...) |
 | main.rs:77:21:77:21 | a | main.rs:66:24:66:32 | ...: i64 | main.rs:66:42:72:1 | { ... } | main.rs:77:13:77:22 | f(...) |
@@ -156,3 +160,4 @@ testFailures
 | main.rs:110:35:110:35 | a | main.rs:109:13:109:22 | source(...) | main.rs:110:35:110:35 | a | $@ | main.rs:109:13:109:22 | source(...) | source(...) |
 | main.rs:111:35:111:35 | a | main.rs:109:13:109:22 | source(...) | main.rs:111:35:111:35 | a | $@ | main.rs:109:13:109:22 | source(...) | source(...) |
 | main.rs:112:35:112:35 | a | main.rs:109:13:109:22 | source(...) | main.rs:112:35:112:35 | a | $@ | main.rs:109:13:109:22 | source(...) | source(...) |
+| main.rs:113:35:113:35 | a | main.rs:109:13:109:22 | source(...) | main.rs:113:35:113:35 | a | $@ | main.rs:109:13:109:22 | source(...) | source(...) |

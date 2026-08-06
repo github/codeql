@@ -110,6 +110,7 @@ fn test_external_call() {
     may_invoke_callback1(|x| sink(a)); // $ hasValueFlow=81
     may_invoke_callback2(|x| sink(a)); // $ hasValueFlow=81
     may_invoke_callback3(|x| sink(a)); // $ hasValueFlow=81
+    may_invoke_callback4(|x| sink(a)); // $ hasValueFlow=81
 }
 
 fn main() {
