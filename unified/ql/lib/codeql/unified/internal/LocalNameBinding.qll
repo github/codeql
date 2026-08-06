@@ -314,6 +314,15 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
   }
 
   predicate accessCand(AstNode n, string name) { n.(PotentialLocalNameAccess).getName() = name }
+
+  predicate uncertainScope(AstNode scope) {
+    // Classes can have uncertain members due to unqualified access to inherited members.
+    // Instead of marking the whole class scope as uncertain, we mark its individual members, for two reasons:
+    // - Base types and type parameter constraints will then not resolve through the uncertain scope.
+    // - It becomes easy to determine if a given uncertain lookup appears in instance context or static context
+    //   because the associated uncertain scope is a Member, from which we can check static-ness.
+    scope = any(ClassLikeDeclaration cls).getAMember()
+  }
 }
 
 import LocalNameBindingInput

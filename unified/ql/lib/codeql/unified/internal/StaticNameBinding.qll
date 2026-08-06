@@ -9,7 +9,8 @@ private import codeql.unified.internal.NameBindingPlugin
 private newtype TNameBindingNode =
   TIdentifier(Identifier n) or
   TLocalName(LocalName local) or
-  TExportedNamespace(ClassLikeDeclaration cls)
+  TExportedNamespace(ClassLikeDeclaration cls) or
+  TLocalNamespace(ClassLikeDeclaration cls)
 
 /**
  * A node in a graph, in which name-binding rules are represented as edges between nodes.
@@ -24,6 +25,9 @@ class NameBindingNode extends TNameBindingNode {
   /** Holds if this represents the set of static members available in the given namespace (currently restricted to classes) */
   predicate isExportedNamespace(ClassLikeDeclaration cls) { this = TExportedNamespace(cls) }
 
+  /** Holds if this represents the set of members that can be accessed unqualified within the given scope (currently restricted to classes) */
+  predicate isLocalNamespace(ClassLikeDeclaration cls) { this = TLocalNamespace(cls) }
+
   string toString() {
     exists(Identifier n | this.isIdentifier(n) and result = "Identifier(" + n + ")")
     or
@@ -31,6 +35,10 @@ class NameBindingNode extends TNameBindingNode {
     or
     exists(ClassLikeDeclaration cls |
       this.isExportedNamespace(cls) and result = "ExportedNamespace(" + cls + ")"
+    )
+    or
+    exists(ClassLikeDeclaration cls |
+      this.isLocalNamespace(cls) and result = "LocalNamespace(" + cls + ")"
     )
   }
 
@@ -40,6 +48,8 @@ class NameBindingNode extends TNameBindingNode {
     exists(LocalName local | this.isLocalName(local) and result = local.getLocation())
     or
     exists(ClassLikeDeclaration cls | this.isExportedNamespace(cls) and result = cls.getLocation())
+    or
+    exists(ClassLikeDeclaration cls | this.isLocalNamespace(cls) and result = cls.getLocation())
   }
 }
 
@@ -55,6 +65,14 @@ Identifier getIdentifierFromRef(AstNode n) {
 
 NameBindingNode getNodeFromRef(AstNode n) { result.isIdentifier(getIdentifierFromRef(n)) }
 
+/** Gets the name-binding node associated with the given uncertain scope node. */
+private NameBindingNode getNodeFromUncertainScope(AstNode n) {
+  exists(ClassLikeDeclaration cls |
+    n = cls.getAMember() and // note: must align with LocalNameBindingInput::uncertainScope
+    result.isLocalNamespace(cls)
+  )
+}
+
 predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
   exists(MemberAccessExpr expr |
     node1 = getNodeFromRef(expr.getBase()) and
@@ -66,6 +84,12 @@ predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
     node1 = getNodeFromRef(expr.getQualifier()) and
     name = expr.getName().getValue() and
     node2 = getNodeFromRef(expr)
+  )
+  or
+  exists(PotentialLocalNameAccess access |
+    name = access.getName() and
+    node1 = getNodeFromUncertainScope(LocalNameBindingOutput::getAnUncertainScope(access, name)) and
+    node2.isIdentifier(access)
   )
 }
 
@@ -95,6 +119,11 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   exists(ClassLikeDeclaration cls |
     node1.isExportedNamespace(cls) and
     node2.isIdentifier(cls.getName())
+  )
+  or
+  exists(ClassLikeDeclaration cls |
+    node1.isExportedNamespace(cls) and
+    node2.isLocalNamespace(cls)
   )
 }
 
