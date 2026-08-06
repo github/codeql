@@ -1014,9 +1014,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // A named type (`Int`). `identifierType.name` is the type-name token.
         rule!((identifierType name: @@n) => (named_type_expr name: (identifier #{n}))),
         // A qualified type (`Outer.Inner`, `NSString.CompareOptions`). swift-syntax
-        // nests these as `memberType` nodes; we keep the whole dotted path as the
-        // opaque `named_type_expr` name.
-        rule!((memberType) @ty => (named_type_expr name: (identifier #{ty}))),
+        // nests these as `memberType` nodes; preserve the nesting in the
+        // named_type_expr qualifier field.
+        rule!(
+            (memberType baseType: @base name: @@name)
+            =>
+            (named_type_expr qualifier: {base} name: (identifier #{name}))
+        ),
         // Sugared types desugar to `generic_type_expr`: `T?` -> Optional<T>,
         // `[T]` -> Array<T>, `[K: V]` -> Dictionary<K, V>.
         rule!(
