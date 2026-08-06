@@ -95,6 +95,13 @@ private string special_method() {
   result = any(BinaryExpr b).getOp().getSpecialMethodName()
 }
 
+/*
+ * utilities for detection `...` typing ellipsis expression statements
+ *
+ * Various Python typing constructs merely define class/function signatures.
+ * In this case, the body is commonly a single `...` expression statement.
+ */
+
 private predicate is_only_scope_statement(Stmt s) {
   forex(Stmt scope_stmt | scope_stmt = s.getScope().getAStmt() | scope_stmt = s)
 }
