@@ -1,0 +1,15 @@
+| AspNetCore.cs:16:14:16:27 | HomeController | AspNetCore.cs:18:19:18:23 | Index |
+| AspNetCore.cs:25:14:25:28 | HomeController1 | AspNetCore.cs:27:19:27:23 | Index |
+| AspNetCore.cs:34:14:34:28 | HomeController2 | AspNetCore.cs:36:19:36:23 | Index |
+| AspNetCore.cs:44:14:44:28 | HomeController3 | AspNetCore.cs:46:19:46:23 | Index |
+| AspNetCore.cs:54:14:54:28 | HomeController4 | AspNetCore.cs:56:19:56:23 | Index |
+| AspNetCore.cs:63:14:63:28 | HomeController5 | AspNetCore.cs:56:19:56:23 | Index |
+| AspNetCore.cs:63:14:63:28 | HomeController5 | AspNetCore.cs:65:19:65:23 | Index |
+| AspNetCore.cs:118:14:118:32 | LowerCasecontroller | AspNetCore.cs:120:17:120:22 | Action |
+| AspNetCore.cs:124:14:124:21 | Products | AspNetCore.cs:126:17:126:20 | List |
+| AspNetCore.cs:139:14:139:28 | PlainController | AspNetCore.cs:141:17:141:26 | BaseAction |
+| AspNetCore.cs:155:14:155:36 | ClosedGenericController | AspNetCore.cs:152:17:152:33 | GenericBaseAction |
+| AspNetCore.cs:155:14:155:36 | ClosedGenericController | AspNetCore.cs:157:17:157:28 | ClosedAction |
+| AspNetCore.cs:171:14:171:35 | ConcreteActionEndpoint | AspNetCore.cs:165:17:165:31 | InheritedAction |
+| AspNetCore.cs:171:14:171:35 | ConcreteActionEndpoint | AspNetCore.cs:173:26:173:39 | AbstractAction |
+| AspNetCore.cs:178:14:178:34 | ActionCasesController | AspNetCore.cs:180:17:180:28 | PublicAction |

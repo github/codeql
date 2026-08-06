@@ -2,6 +2,8 @@
 
 import csharp
 import semmle.code.csharp.frameworks.Microsoft
+private import semmle.code.csharp.commons.Compilation
+private import semmle.code.csharp.frameworks.System
 
 /** The `Microsoft.AspNetCore` namespace. */
 class MicrosoftAspNetCoreNamespace extends Namespace {
@@ -189,49 +191,211 @@ class MicrosoftAspNetCoreMvcControllerBaseClass extends Class {
   }
 }
 
-/**
- * A valid ASP.NET Core controller according to:
- * https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/actions?view=aspnetcore-3.1
- * https://github.com/dotnet/aspnetcore/blob/b3c93967ba508b8ef139add27132d9483c1a9eb4/src/Mvc/Mvc.Core/src/Controllers/ControllerFeatureProvider.cs#L39-L75
- */
-class MicrosoftAspNetCoreMvcController extends Class {
-  MicrosoftAspNetCoreMvcController() {
+private predicate isPotentialMicrosoftAspNetCoreMvcController(Class controller) {
+  controller =
+    any(Class c |
+      (
+        exists(Assembly a |
+          a.getName() = ["Microsoft.AspNetCore.Mvc.Core", "Microsoft.AspNetCore.Mvc.ViewFeatures"]
+        ) or
+        exists(UsingNamespaceDirective ns |
+          ns.getImportedNamespace() instanceof MicrosoftAspNetCoreMvcNamespace
+        )
+      ) and
+      c.isPublic() and
+      not c instanceof Generic and
+      (
+        c.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
+        or
+        c.getABaseType*().getName().matches("%Controller")
+        or
+        c.getABaseType*()
+            .getAnAttribute()
+            .getType()
+            .getABaseType*()
+            // ApiControllerAttribute is derived from ControllerAttribute
+            .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "ControllerAttribute")
+      ) and
+      not c.getABaseType*().getAnAttribute() instanceof MicrosoftAspNetCoreMvcNonControllerAttribute
+    )
+}
+
+private Compilation getACompilationFor(Element element) {
+  result.getAFileCompiled() = element.getFile()
+}
+
+private Assembly getAnAssemblyFor(Type type) {
+  result = getACompilationFor(type).getOutputAssembly()
+}
+
+private predicate isMicrosoftAspNetCoreMvcRegistration(MethodCall call) {
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.Extensions.DependencyInjection",
+        ["MvcServiceCollectionExtensions", "MvcCoreServiceCollectionExtensions"],
+        ["AddControllers", "AddControllersWithViews", "AddMvc", "AddMvcCore"])
+}
+
+private predicate isMicrosoftAspNetCoreMvcApplication(Compilation compilation) {
+  exists(MethodCall registration |
+    isMicrosoftAspNetCoreMvcRegistration(registration) and
+    compilation.getAFileCompiled() = registration.getFile()
+  )
+}
+
+private predicate isMicrosoftAspNetCoreMvcAddApplicationPart(MethodCall call) {
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.Extensions.DependencyInjection",
+        ["MvcCoreMvcBuilderExtensions", "MvcCoreMvcCoreBuilderExtensions"], "AddApplicationPart")
+}
+
+private predicate isMicrosoftAspNetCoreMvcApplicationPart(Compilation application, Assembly part) {
+  part = application.getOutputAssembly()
+  or
+  exists(AssemblyAttribute attr, StringLiteral assemblyName |
+    application.getAFileCompiled() = attr.getFile() and
+    attr.getType()
+        .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.ApplicationParts",
+          "ApplicationPartAttribute") and
+    assemblyName = attr.getArgument(0) and
+    assemblyName.getValue() = part.getName()
+  )
+  or
+  exists(MethodCall addPart, PropertyAccess assemblyAccess, TypeofExpr typeOf, Type partType |
+    application.getAFileCompiled() = addPart.getFile() and
+    isMicrosoftAspNetCoreMvcAddApplicationPart(addPart) and
+    assemblyAccess = addPart.getArgumentForName("assembly") and
+    assemblyAccess.getTarget().hasName("Assembly") and
+    assemblyAccess.getQualifier() = typeOf and
+    partType = typeOf.getTypeAccess().getTarget() and
+    part = getAnAssemblyFor(partType)
+  )
+}
+
+private predicate isInMicrosoftAspNetCoreMvcApplication(Class controller, Compilation application) {
+  isMicrosoftAspNetCoreMvcApplication(application) and
+  isMicrosoftAspNetCoreMvcApplicationPart(application, getAnAssemblyFor(controller))
+}
+
+private predicate hasMicrosoftAspNetCoreMvcAttributeRoute(Class controller) {
+  exists(Attribute attr |
     (
-      exists(Assembly a |
-        a.getName() = ["Microsoft.AspNetCore.Mvc.Core", "Microsoft.AspNetCore.Mvc.ViewFeatures"]
-      ) or
-      exists(UsingNamespaceDirective ns |
-        ns.getImportedNamespace() instanceof MicrosoftAspNetCoreMvcNamespace
+      attr = controller.getABaseType*().getAnAttribute()
+      or
+      exists(Method method |
+        controller.hasMember(method) and
+        attr = method.getOverridee*().getAnAttribute()
       )
     ) and
-    this.isPublic() and
-    not this instanceof Generic and
+    attr.getType()
+        .getABaseType*()
+        .getABaseInterface*()
+        .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.Routing", "IRouteTemplateProvider")
+  )
+}
+
+private predicate isMicrosoftAspNetCoreMvcConventionalEndpointMapping(MethodCall call) {
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder",
+        "ControllerEndpointRouteBuilderExtensions",
+        [
+          "MapAreaControllerRoute", "MapControllerRoute", "MapDefaultControllerRoute",
+          "MapDynamicControllerRoute"
+        ])
+  or
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder", "MvcApplicationBuilderExtensions",
+        "UseMvcWithDefaultRoute")
+  or
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder", "MvcApplicationBuilderExtensions",
+        "UseMvc") and
+  exists(call.getArgumentForName("configureRoutes"))
+  or
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder", "MvcAreaRouteBuilderExtensions",
+        "MapAreaRoute")
+}
+
+private predicate isMicrosoftAspNetCoreMvcAttributeEndpointMapping(MethodCall call) {
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder",
+        "ControllerEndpointRouteBuilderExtensions", "MapControllers")
+  or
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder", "MvcApplicationBuilderExtensions",
+        "UseMvc") and
+  not exists(call.getArgumentForName("configureRoutes"))
+}
+
+private predicate isMicrosoftAspNetCoreMvcFallbackEndpointMapping(MethodCall call, Class controller) {
+  call.getTarget()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Builder",
+        "ControllerEndpointRouteBuilderExtensions",
+        ["MapFallbackToAreaController", "MapFallbackToController"]) and
+  call.getArgumentForName("controller").getValue().toLowerCase() + "controller" =
+    controller.getName().toLowerCase() and
+  (
+    call.getTarget().hasName("MapFallbackToController")
+    or
+    call.getTarget().hasName("MapFallbackToAreaController") and
+    exists(Attribute area |
+      area = controller.getABaseType*().getAnAttribute() and
+      area.getType().hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "AreaAttribute") and
+      area.getArgument(0).getValue().toLowerCase() =
+        call.getArgumentForName("area").getValue().toLowerCase()
+    )
+  )
+}
+
+private predicate hasMicrosoftAspNetCoreMvcEndpointMapping(Compilation application, Class controller) {
+  isInMicrosoftAspNetCoreMvcApplication(controller, application) and
+  exists(MethodCall mapping |
+    application.getAFileCompiled() = mapping.getFile() and
     (
-      this.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
+      isMicrosoftAspNetCoreMvcConventionalEndpointMapping(mapping)
       or
-      this.getABaseType*().getName().matches("%Controller")
+      isMicrosoftAspNetCoreMvcAttributeEndpointMapping(mapping) and
+      hasMicrosoftAspNetCoreMvcAttributeRoute(controller)
       or
-      this.getABaseType*()
-          .getAnAttribute()
-          .getType()
-          .getABaseType*()
-          // ApiControllerAttribute is derived from ControllerAttribute
-          .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "ControllerAttribute")
-    ) and
-    not this.getABaseType*().getAnAttribute() instanceof
-      MicrosoftAspNetCoreMvcNonControllerAttribute
+      isMicrosoftAspNetCoreMvcFallbackEndpointMapping(mapping, controller)
+    )
+  )
+}
+
+private predicate hasMicrosoftAspNetCoreMvcControllerIdentity(Class controller) {
+  controller.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass
+  or
+  controller
+      .getABaseType*()
+      .getAnAttribute()
+      .getType()
+      .getABaseType*()
+      .hasFullyQualifiedName("Microsoft.AspNetCore.Mvc", "ControllerAttribute")
+}
+
+private predicate isDefaultMicrosoftAspNetCoreMvcController(Class controller) {
+  controller instanceof NonNestedType and
+  controller.isPublic() and
+  not controller.isAbstract() and
+  not controller instanceof Generic and
+  (
+    hasMicrosoftAspNetCoreMvcControllerIdentity(controller)
+    or
+    controller.getName().toLowerCase().matches("%controller") and
+    hasMicrosoftAspNetCoreMvcEndpointMapping(_, controller)
+  ) and
+  not controller.getABaseType*().getAnAttribute() instanceof
+    MicrosoftAspNetCoreMvcNonControllerAttribute
+}
+
+/** A class treated as an owner of ASP.NET Core MVC controller helper methods. */
+class MicrosoftAspNetCoreMvcControllerHelperClass extends Class {
+  MicrosoftAspNetCoreMvcControllerHelperClass() {
+    isPotentialMicrosoftAspNetCoreMvcController(this)
   }
 
-  /** Gets an action method for this controller. */
-  Method getAnActionMethod() {
-    result = this.getAMethod() and
-    result.isPublic() and
-    not result.isStatic() and
-    not result.getAnAttribute() instanceof MicrosoftAspNetCoreMvcNonActionAttribute
-  }
-
-  /** Gets a `Redirect*` method. */
-  Method getARedirectMethod() {
+  /** Gets a `Redirect*`, `Accepted*`, or `Created*` method. */
+  Method getAResponseMethod() {
     result = this.getAMethod() and
     (
       result.getName().matches("Redirect%")
@@ -240,6 +404,35 @@ class MicrosoftAspNetCoreMvcController extends Class {
       or
       result.getName().matches("Created%")
     )
+  }
+}
+
+/**
+ * An ASP.NET Core MVC controller, as described by:
+ * https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/actions
+ * https://learn.microsoft.com/en-us/aspnet/core/mvc/advanced/app-parts
+ * https://learn.microsoft.com/en-us/aspnet/core/mvc/controllers/routing
+ * https://github.com/dotnet/aspnetcore/blob/747d2cdb584079a0c7309115979f13c331fb7df7/src/Mvc/Mvc.Core/src/Controllers/ControllerFeatureProvider.cs#L20-L75
+ * https://github.com/dotnet/aspnetcore/blob/747d2cdb584079a0c7309115979f13c331fb7df7/src/Mvc/Mvc.Core/src/ApplicationModels/DefaultApplicationModelProvider.cs#L410-L459
+ */
+class MicrosoftAspNetCoreMvcController extends Class {
+  MicrosoftAspNetCoreMvcController() { isDefaultMicrosoftAspNetCoreMvcController(this) }
+
+  /** Gets an action method for this controller. */
+  Method getAnActionMethod() {
+    this.hasMember(result) and
+    result.isPublic() and
+    not result.isStatic() and
+    not result.isAbstract() and
+    not result.getUnboundDeclaration() instanceof UnboundGenericMethod and
+    not result.getOverridee*().getAnAttribute() instanceof MicrosoftAspNetCoreMvcNonActionAttribute and
+    not result.getOverridee*().getDeclaringType() instanceof ObjectType and
+    not result instanceof DisposeMethod
+  }
+
+  /** Gets a `Redirect*`, `Accepted*`, or `Created*` method. */
+  Method getARedirectMethod() {
+    result = this.(MicrosoftAspNetCoreMvcControllerHelperClass).getAResponseMethod()
   }
 }
 
