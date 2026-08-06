@@ -2,7 +2,7 @@
 
 ### Minor Analysis Improvements
 
-* Removed library input to vendored gems from the set of taint sources. This should reduce false positives for `rb/polynomial-redos`, `rb/regex/badly-anchored-regexp`, `rb/unsafe-code-construction`, `rb/html-constructed-from-input`, and `rb/shell-command-constructed-from-input` whenever vendoring is used.
+* Parameters of methods exported by vendored gems are no longer treated as flow sources, since such methods are only called from within the codebase. This should reduce false positives for `rb/polynomial-redos`, `rb/regex/badly-anchored-regexp`, `rb/unsafe-code-construction`, `rb/html-constructed-from-input`, and `rb/shell-command-constructed-from-input` in codebases that vendor their dependencies.
 
 ## 6.0.2
 
