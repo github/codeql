@@ -793,12 +793,6 @@ impl<'a> Translator<'a> {
             for (i, expanded) in expanded.into_iter().enumerate() {
                 let label = if let Some(expanded) = expanded {
                     self.process_item_macro_expansion(&node, expanded)
-                } else if let Some(expander) = resolved
-                    .get(i)
-                    .and_then(|m| m.as_ref())
-                    .and_then(|m| find_builtin_derive(&m.name(semantics.db)))
-                {
-                    self.emit_builtin_derive_expansion(&node, expander)
                 } else {
                     None
                 };
