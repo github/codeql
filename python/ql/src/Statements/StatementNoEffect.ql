@@ -95,6 +95,10 @@ private string special_method() {
   result = any(BinaryExpr b).getOp().getSpecialMethodName()
 }
 
+private predicate is_only_scope_statement(Stmt s) {
+  forex(Stmt scope_stmt | scope_stmt = s.getScope().getAStmt() | scope_stmt = s)
+}
+
 ClassDef getAProtocolDef() {
   exists(Expr e |
     e =
