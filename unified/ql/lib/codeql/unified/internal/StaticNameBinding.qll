@@ -101,6 +101,8 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
 signature module TrackInputSig {
   /** Holds if the forward-flow of `node` should be tracked. */
   predicate shouldTrack(NameBindingNode node);
+
+  default predicate additionalValueStep(NameBindingNode node1, NameBindingNode node2) { none() }
 }
 
 /** Creates a module for tracking flow through the name-binding graph. */
@@ -114,6 +116,16 @@ module Track<TrackInputSig Input> {
     or
     exists(NameBindingNode prev | prev = track(node) | valueStepEx(prev, result))
   }
+
+  /** Holds if there is an effective value step `node1 -> node2`. */
+  pragma[inline]
+  private predicate valueStepEx(NameBindingNode node1, NameBindingNode node2) {
+    valueStep(node1, node2)
+    or
+    derivedStoreReadStep(node1, node2)
+    or
+    additionalValueStep(node1, node2)
+  }
 }
 
 /**
@@ -125,14 +137,6 @@ private predicate derivedStoreReadStep(NameBindingNode node1, NameBindingNode no
     node1 = namespace.getMember(name) and
     readStep(namespace.ref(), name, node2)
   )
-}
-
-/** Holds if there is an effective value step `node1 -> node2`. */
-pragma[inline]
-private predicate valueStepEx(NameBindingNode node1, NameBindingNode node2) {
-  valueStep(node1, node2)
-  or
-  derivedStoreReadStep(node1, node2)
 }
 
 /** A name-binding node that has members. */
@@ -148,6 +152,14 @@ class NamespaceNode extends NameBindingNode {
 
 private module TrackNamespaceInput implements TrackInputSig {
   predicate shouldTrack(NameBindingNode node) { node instanceof NamespaceNode }
+
+  predicate additionalValueStep(NameBindingNode node1, NameBindingNode node2) {
+    // Namespace-tracking goes through aliases, but declaration-tracking does not
+    exists(TypeAliasDeclaration decl |
+      node1 = getNodeFromRef(decl.getType()) and
+      node2.isIdentifier(decl.getName())
+    )
+  }
 }
 
 private module TrackNamespace = Track<TrackNamespaceInput>;

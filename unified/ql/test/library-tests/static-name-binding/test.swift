@@ -42,3 +42,12 @@ class F {
         F.b // $ access=F access=F.b
     }
 }
+
+typealias G = A // $ access=A
+
+// Members can be accessed through aliases, but references to the alias itself do not bypass the alias.
+class H {
+    let x1: G = nil; // $ access=G
+    let x2: G.B = nil; // $ access=G access=A.B
+    let x3: G.B.C = nil; // $ access=G access=A.B access=A.B.C
+}
