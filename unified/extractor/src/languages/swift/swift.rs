@@ -158,12 +158,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // swift-syntax does not distinguish the lexical integer/string forms
         // (hex/binary/octal, single- vs multi-line, raw): each is a single
         // `*LiteralExpr` kind, so one rule per literal type suffices.
-        rule!((integerLiteralExpr) => (int_literal)),
-        rule!((floatLiteralExpr) => (float_literal)),
-        rule!((booleanLiteralExpr) => (boolean_literal)),
-        rule!((nilLiteralExpr) => (builtin_expr)),
-        rule!((stringLiteralExpr) => (string_literal)),
-        rule!((regexLiteralExpr) => (regex_literal)),
+        rule!((integerLiteralExpr) @@node => (int_literal #{node})),
+        rule!((floatLiteralExpr) @@node => (float_literal #{node})),
+        rule!((booleanLiteralExpr) @@node => (boolean_literal #{node})),
+        rule!((nilLiteralExpr) @@node => (builtin_expr #{node})),
+        rule!((stringLiteralExpr) @@node => (string_literal #{node})),
+        rule!((regexLiteralExpr) @@node => (regex_literal #{node})),
         // ---- Names ----
         // A function reference spelled with argument labels (`f(x:y:z:)`) is a
         // `declReferenceExpr` carrying `argumentNames`. Mark it unsupported for

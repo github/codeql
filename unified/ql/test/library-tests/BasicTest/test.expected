@@ -36,4 +36,4 @@ nameExpr
 | test.swift:87:49:87:57 | NameExpr | transform |
 unsupported
 stringValue
-| strings.swift:1:9:1:15 |  |  |
+| strings.swift:1:9:1:15 | "hello" | "hello" |
