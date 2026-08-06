@@ -12,12 +12,12 @@ predicate guardControlsBlock(CfgNodes::AstCfgNode guard, BasicBlock bb, boolean 
     conditionBlock.edgeDominates(bb, s)
   )
   or
-  exists(BasicBlock whenBlock, ConditionalSuccessor s, ControlFlowNode guardNode, int i |
-    guardNode.isAfter(guard.(CfgNodes::ExprNodes::WhenClauseCfgNode).getAstNode()) and
-    whenBlock.getNode(i) = guardNode and
-    i != 0 and
-    guardNode = any(ControlFlowNode n).getASuccessor(s) and
+  exists(ConditionalSuccessor s, ControlFlowNode guardNode |
+    guardNode.isAfter(guard.getAstNode()) and
+    forall(ControlFlowNode pred | pred = guardNode.getAPredecessor() |
+      pred.getASuccessor(s) = guardNode
+    ) and
     s.getValue() = branch and
-    whenBlock.dominates(bb)
+    guardNode.getBasicBlock().dominates(bb)
   )
 }
