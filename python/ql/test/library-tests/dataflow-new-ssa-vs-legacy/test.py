@@ -51,3 +51,7 @@ GLOBAL = 1
 
 def read_global():
     return GLOBAL
+
+
+def constants():
+    return True, False, None
