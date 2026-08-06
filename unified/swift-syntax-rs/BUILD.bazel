@@ -1,6 +1,5 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
-load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
-load("//misc/bazel:pkg.bzl", "codeql_pkg_runfiles")
 load("//unified:platforms.bzl", "UNIFIED_SUPPORTED_PLATFORMS")
 load(":swift_runtime.bzl", "swift_runtime_libs")
 load(":xcode_transition.bzl", "xcode_transition_swift_library")
@@ -12,8 +11,18 @@ swift_runtime_libs(
     toolchain = "@swift_toolchain_ubuntu22.04//:files",
 )
 
-# Swift FFI shim: wraps swift-syntax and exposes a small C ABI. The Rust
-# targets below link against its `CcInfo`.
+# The `$ORIGIN` runpath makes an executable look beside itself instead, so
+# we find the Swift runtime libraries we bundle with the extractor.
+cc_library(
+    name = "swift_runtime_rpath",
+    linkopts = select({
+        "@platforms//os:linux": ["-Wl,-rpath,$$ORIGIN"],
+        "//conditions:default": [],
+    }),
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
+)
+
+# Swift FFI shim: wraps swift-syntax and exposes a small C ABI.
 xcode_transition_swift_library(
     name = "swift_syntax_ffi",
     srcs = ["swift/Sources/SwiftSyntaxFFI/SwiftSyntaxFFI.swift"],
@@ -27,7 +36,7 @@ xcode_transition_swift_library(
 )
 
 # Safe Rust bindings on top of the C ABI. Under Bazel the Swift side comes
-# from `:swift_syntax_ffi`; `build.rs` is only used by the `cargo` workflow.
+# from `:swift_syntax_ffi`.
 rust_library(
     name = "swift_syntax_rs",
     srcs = glob(
@@ -37,52 +46,24 @@ rust_library(
     edition = "2024",
     target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
     deps = [
+        ":swift_runtime_rpath",
         ":swift_syntax_ffi",
     ],
 )
 
-# The Swift front-end parser. We ship it like `//swift/extractor`: a small shell
-# wrapper (`swift-syntax-parse`) sets `LD_LIBRARY_PATH`/`DYLD_LIBRARY_PATH` to its
-# own directory and execs the real binary (`swift-syntax-parse.real`); the Swift
-# runtime shared libraries are packaged alongside them. `parse.rs` resolves the
-# wrapper as a sibling of the extractor executable.
+# A debugging aid, for looking at the raw swift-syntax JSON for some input:
+#
+#     echo 'let x = 1' | bazel run //unified/swift-syntax-rs:swift-syntax-parse
 rust_binary(
-    name = "swift-syntax-parse.real",
+    name = "swift-syntax-parse",
     srcs = ["src/main.rs"],
-    # Target name carries `.real` (invalid in a crate name), so set it explicitly.
-    crate_name = "swift_syntax_parse",
-    # On Linux, carry the toolchain's runtime shared libraries as runfiles so
-    # they get packaged next to the binary. On macOS the OS provides the Swift
-    # runtime, so nothing extra is bundled.
     data = select({
-        "@platforms//os:macos": [],
         "@platforms//os:linux": [":swift_runtime_libs"],
+        "//conditions:default": [],
     }),
     edition = "2024",
     target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
     deps = [":swift_syntax_rs"],
-)
-
-# `swift-syntax-parse` wrapper (see `swift-syntax-parse.sh`). Its runfiles carry
-# the real binary and the runtime libraries; packaging flattens them into one
-# directory.
-sh_binary(
-    name = "swift-syntax-parse",
-    srcs = ["swift-syntax-parse.sh"],
-    data = [":swift-syntax-parse.real"],
-    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
-)
-
-# Packaged form for the extractor pack: the wrapper (as `swift-syntax-parse`),
-# the real binary, and the runtime libraries, flattened into one directory.
-codeql_pkg_runfiles(
-    name = "swift-syntax-parse-pkg",
-    # The `.sh` source is shipped as `swift-syntax-parse` (the wrapper); drop the
-    # original filename.
-    excludes = ["swift-syntax-parse.sh"],
-    exes = [":swift-syntax-parse"],
-    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
-    visibility = ["//unified:__pkg__"],
 )
 
 rust_test(
@@ -90,8 +71,8 @@ rust_test(
     size = "small",
     crate = ":swift_syntax_rs",
     data = select({
-        "@platforms//os:macos": [],
         "@platforms//os:linux": [":swift_runtime_libs"],
+        "//conditions:default": [],
     }),
     edition = "2024",
     target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
