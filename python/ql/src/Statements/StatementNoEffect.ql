@@ -114,7 +114,7 @@ private Function getAnOverload() {
   )
 }
 
-ClassDef getAProtocolDef() {
+private ClassDef getAProtocolDef() {
   exists(Expr e |
     e =
       API::moduleImport("typing")
