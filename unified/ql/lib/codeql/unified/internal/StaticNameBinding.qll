@@ -98,6 +98,14 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   )
 }
 
+predicate inheritanceStep(NameBindingNode supertype, NameBindingNode subtype) {
+  exists(ClassLikeDeclaration cls, BaseType base |
+    base = cls.getABaseType() and
+    supertype = getNodeFromRef(base.getType()) and
+    subtype.isExportedNamespace(cls)
+  )
+}
+
 signature module TrackInputSig {
   /** Holds if the forward-flow of `node` should be tracked. */
   predicate shouldTrack(NameBindingNode node);
@@ -141,13 +149,31 @@ private predicate derivedStoreReadStep(NameBindingNode node1, NameBindingNode no
 
 /** A name-binding node that has members. */
 class NamespaceNode extends NameBindingNode {
-  NamespaceNode() { storeStep(_, _, this) }
+  NamespaceNode() { storeStep(_, _, this) or inheritanceStep(_, this) }
 
   /** Gets a name-binding node that may refer to this namespace. */
   NameBindingNode ref() { result = TrackNamespace::track(this) }
 
+  /** Gets an own (non-inherited) member of this namespace of the given name. */
+  NameBindingNode getOwnMember(string name) { storeStep(result, name, this) }
+
+  /** Holds if this namespace has an own-member of the given name */
+  predicate hasOwnMember(string name) { exists(this.getOwnMember(name)) }
+
+  /** Gets a namespace from which this namespace inherits directly. */
+  NamespaceNode getAnInheritanceParent() { inheritanceStep(result.ref(), this) }
+
+  /** Gets a namespace that directly inherits from this one. */
+  NamespaceNode getAnInheritanceChild() { result.getAnInheritanceParent() = this }
+
   /** Gets a member of this namespace of the given name. */
-  NameBindingNode getMember(string name) { storeStep(result, name, this) }
+  pragma[nomagic]
+  NameBindingNode getMember(string name) {
+    result = this.getOwnMember(name)
+    or
+    not this.hasOwnMember(name) and
+    result = this.getAnInheritanceParent().getMember(name)
+  }
 }
 
 private module TrackNamespaceInput implements TrackInputSig {
@@ -204,6 +230,9 @@ module DebugGraph<relevantFileSig/1 relevantFile> {
         storeStep(node1, name, node2) and
         value = "store(" + name + ")"
       )
+      or
+      inheritanceStep(node1, node2) and
+      value = "inheritedBy"
     )
   }
 }
