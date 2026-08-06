@@ -52,4 +52,10 @@ where
   kind = "def-only-old" and
   sig = legacyDefSig(_) and
   not sig = newDefSig(_)
+  or
+  kind = "constant-variable" and
+  exists(NewSsa::SsaSourceVariable v |
+    v.getVariable().getALoad() instanceof NameConstant and
+    sig = v.getName()
+  )
 select kind, sig

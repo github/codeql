@@ -45,24 +45,27 @@ private import codeql.controlflow.BasicBlock as BB
  */
 private newtype TSsaSourceVariable =
   TPyVar(Py::Variable v) {
-    // Has a use somewhere — read-relevant for SSA.
-    exists(Cfg::NameNode n | n.uses(v))
-    or
-    // Or has a deletion (treated as a write that destroys the value).
-    exists(Cfg::NameNode n | n.deletes(v))
-    or
-    // Or is a module-scope global written in this module — must be
-    // tracked even if never read locally, because importers may read
-    // it as an attribute on the module object.
-    v.getScope() instanceof Py::Module and
-    exists(Cfg::NameNode n | n.defines(v))
-    or
-    // Or is a parameter — parameters must always have a
-    // `ParameterDefinition` for dataflow argument-routing to work,
-    // even if the parameter is never read in its scope. Mirrors
-    // legacy ESSA's `ParameterDefinition` (which fired for every
-    // parameter binding regardless of liveness).
-    exists(Py::Parameter p | p.asName() = v.getAStore())
+    not v.getALoad() instanceof Py::NameConstant and
+    (
+      // Has a use somewhere — read-relevant for SSA.
+      exists(Cfg::NameNode n | n.uses(v))
+      or
+      // Or has a deletion (treated as a write that destroys the value).
+      exists(Cfg::NameNode n | n.deletes(v))
+      or
+      // Or is a module-scope global written in this module — must be
+      // tracked even if never read locally, because importers may read
+      // it as an attribute on the module object.
+      v.getScope() instanceof Py::Module and
+      exists(Cfg::NameNode n | n.defines(v))
+      or
+      // Or is a parameter — parameters must always have a
+      // `ParameterDefinition` for dataflow argument-routing to work,
+      // even if the parameter is never read in its scope. Mirrors
+      // legacy ESSA's `ParameterDefinition` (which fired for every
+      // parameter binding regardless of liveness).
+      exists(Py::Parameter p | p.asName() = v.getAStore())
+    )
   }
 
 /**
