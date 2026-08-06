@@ -10,8 +10,8 @@ by Apple's swift-syntax rather than by tree-sitter.
 ## Swift Parser
 - Swift source is parsed by the `swift-syntax-rs` crate, which wraps Apple's
   swift-syntax. The extractor calls `swift_syntax_rs::parse_to_json` in-process
-  to obtain the parse tree as JSON — there is no separate parser binary and no
-  grammar in this repository to edit.
+  to obtain the parse tree as JSON; the extractor does not invoke a separate
+  parser binary, and there is no grammar in this repository to edit.
 
 - `extractor/src/languages/swift/adapter.rs` converts that JSON into a yeast AST.
 
