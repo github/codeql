@@ -96,11 +96,30 @@ fn collect_corpus_stems(dir: &Path, out: &mut Vec<std::path::PathBuf>) {
     }
 }
 
+#[cfg(bazel)]
+fn corpus_dir() -> std::path::PathBuf {
+    let base = std::path::PathBuf::from(
+         std::env::var("RUNFILES_DIR").expect("RUNFILES_DIR not set"),
+    );
+    std::fs::read_dir(&base)
+        .expect("failed to read RUNFILES_DIR")
+        .filter_map(Result::ok)
+        .map(|entry| entry.path().join("unified/extractor/tests/corpus"))
+        .find(|path| path.exists())
+        .expect("corpus not found under any runfiles repo root")
+}
+
+#[cfg(not(bazel))]
+fn corpus_dir() -> std::path::PathBuf {
+    std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/corpus")
+}
+
+
 #[test]
 fn test_corpus() {
     let update_mode = update_mode_enabled();
     let all_languages = languages::all_language_specs();
-    let corpus_dir = Path::new("tests/corpus");
+    let corpus_dir = corpus_dir();
 
     for lang in all_languages {
         let output_schema = yeast::node_types_yaml::schema_from_yaml(languages::OUTPUT_AST_SCHEMA)
