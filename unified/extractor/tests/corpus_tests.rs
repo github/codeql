@@ -114,7 +114,6 @@ fn corpus_dir() -> std::path::PathBuf {
     std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/corpus")
 }
 
-
 #[test]
 fn test_corpus() {
     let update_mode = update_mode_enabled();

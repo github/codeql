@@ -1,4 +1,6 @@
 fn main() {
+    println!("cargo:rustc-check-cfg=cfg(bazel)");
+
     if let Ok(dir) = std::env::var("DEP_SWIFTSYNTAXFFI_LIBDIR") {
         println!("cargo:rustc-link-search=native={dir}");
         println!("cargo:rustc-link-lib=dylib=SwiftSyntaxFFI");
