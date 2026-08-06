@@ -8,9 +8,10 @@ by Apple's swift-syntax rather than by tree-sitter.
 - To build the extractor, run `scripts/create-extractor-pack.sh`
 
 ## Swift Parser
-- Swift source is parsed by `swift-syntax-parse`, a small Swift/Rust binary in
-  `swift-syntax-rs` that wraps Apple's swift-syntax and emits the parse tree as
-  JSON. There is no grammar in this repository to edit.
+- Swift source is parsed by the `swift-syntax-rs` crate, which wraps Apple's
+  swift-syntax. The extractor calls `swift_syntax_rs::parse_to_json` in-process
+  to obtain the parse tree as JSON — there is no separate parser binary and no
+  grammar in this repository to edit.
 
 - `extractor/src/languages/swift/adapter.rs` converts that JSON into a yeast AST.
 
@@ -23,10 +24,9 @@ by Apple's swift-syntax rather than by tree-sitter.
 - The mapping from the parse tree to the target AST is found in `extractor/src/languages/swift/swift.rs`
 
 - To run tests for the parser and mapping, run `cargo test` in the `extractor`
-  directory. The tests need the `swift-syntax-parse` binary: point
-  `CODEQL_EXTRACTOR_UNIFIED_SWIFT_SYNTAX_PARSE` at it, or put it on `PATH`.
-  Corpus tests skip themselves when it cannot be found, so check for skips
-  before concluding a change is clean.
+  directory. Since the parser is linked in-process, this needs a working Swift
+  toolchain (so `swift-syntax-rs` can build). The tests can also be run under
+  Bazel via `bazel test //unified/extractor:all_tests`.
 
 - Extractor test cases are located at `extractor/tests/corpus/swift/*/*.swift`.
 
