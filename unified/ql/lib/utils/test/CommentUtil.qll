@@ -12,7 +12,7 @@ predicate plainCommentAt(string filepath, int line, string text) {
 predicate keyValueCommentAt(string filepath, int line, string key, string value) {
   exists(string text, string regexp, string match |
     plainCommentAt(filepath, line, text) and
-    regexp = "(\\w+)=([\\w.]+)" and
+    regexp = "(\\w+)=([\\w.0-9]+)" and
     match = text.regexpFind(regexp, _, _) and
     key = match.regexpCapture(regexp, 1) and
     value = match.regexpCapture(regexp, 2)
