@@ -128,6 +128,18 @@ private ClassDef getAProtocolDef() {
   )
 }
 
+predicate is_typing_ellipsis(ExprStmt s) {
+  s.getValue() instanceof Ellipsis and
+  s.getScope() instanceof Function and
+  is_only_scope_statement(s) and
+  (
+    s.getScope() = getAnOverload()
+    or
+    s.getScope().getScope() instanceof Class and
+    s.getScope().getScope() = getAProtocolDef().getDefinedClass()
+  )
+}
+
 predicate is_notebook(File f) {
   exists(Comment c | c.getLocation().getFile() = f |
     c.getText().regexpMatch("#\\s*<nbformat>.+</nbformat>\\s*")
@@ -173,5 +185,5 @@ predicate no_effect(Expr e) {
 }
 
 from ExprStmt stmt
-where no_effect(stmt.getValue())
+where no_effect(stmt.getValue()) and not is_typing_ellipsis(stmt)
 select stmt, "This statement has no effect."
