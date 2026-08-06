@@ -1,5 +1,5 @@
 /**
- * Provides classes for reasoning about lexically scoped variables and references to these.
+ * Provides classes for reasoning about lexically scoped names and references to these.
  */
 
 private import unified
@@ -90,6 +90,20 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       or
       index = 2 and result = decl.getValue()
     )
+    or
+    index = 0 and
+    relocatedClassMember(n, result)
+  }
+
+  /**
+   * Holds if `member` is moved onto a child of `className` instead of the class itself,
+   * so the member name is not in scope in the base types and type parameter constraints.
+   */
+  private predicate relocatedClassMember(Identifier className, Member member) {
+    exists(ClassLikeDeclaration cls |
+      className = cls.getName() and
+      member = cls.getAMember()
+    )
   }
 
   AstNode getChild(AstNode n, int index) {
@@ -98,6 +112,7 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     not exists(getChild1(n, _)) and
     not n instanceof LogicalAndExpr and // also ignore intermediate nodes within a 'logical and' tree
     not n instanceof GuardIfStmt and
+    not relocatedClassMember(_, result) and
     index = 0 and
     result = n.getAFieldOrChild()
   }
@@ -130,6 +145,8 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
   }
 
   abstract class SiblingShadowingDecl extends AstNode {
+    abstract AstNode getPattern();
+
     /**
      * Gets the right-hand side of this declaration.
      *
@@ -149,6 +166,10 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   private class LocalVariableDeclarationSiblingShadowingDecl extends SiblingShadowingDecl instanceof LocalVariableDeclaration
   {
+    LocalVariableDeclarationSiblingShadowingDecl() { not this instanceof TopLevelStmt }
+
+    override Pattern getPattern() { result = LocalVariableDeclaration.super.getPattern() }
+
     override AstNode getRhs() { result = LocalVariableDeclaration.super.getValue() }
 
     override AstNode getElse() { none() }
@@ -156,19 +177,27 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
 
   private class PatternGuardExprSiblingShadowingDecl extends SiblingShadowingDecl instanceof PatternGuardExpr
   {
+    override Pattern getPattern() { result = PatternGuardExpr.super.getPattern() }
+
     override AstNode getRhs() { result = PatternGuardExpr.super.getValue() }
 
     override AstNode getElse() { none() }
   }
 
-  private predicate bindingContext(AstNode pattern, AstNode scope) {
-    exists(LocalVariableDeclaration decl |
-      scope = decl and // LocalVariableDeclaration is a ShadowingSiblingDecl, it must use itself as the scope
+  additional predicate bindingContext(AstNode pattern, AstNode scope) {
+    exists(SiblingShadowingDecl decl |
+      scope = decl and
       pattern = decl.getPattern()
     )
     or
-    exists(LocalFunctionDeclaration func |
-      scope = func.getDeclaringBlock() and
+    exists(VariableDeclaration decl |
+      not decl instanceof SiblingShadowingDecl and
+      getChild(scope, _) = decl and
+      pattern = decl.getPattern()
+    )
+    or
+    exists(FunctionDeclaration func |
+      getChild(scope, _) = func and
       pattern = func.getName()
     )
     or
@@ -192,12 +221,42 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
       pattern = stmt.getPattern()
     )
     or
-    bindingContext(pattern.(Pattern).getEnclosingPattern(), scope)
-    or
-    exists(PatternGuardExpr expr |
-      pattern = expr.getPattern() and
-      scope = expr
+    exists(ClassLikeDeclaration cls |
+      getChild(scope, _) = cls and
+      pattern = cls.getName()
     )
+    or
+    exists(TypeAliasDeclaration decl |
+      getChild(scope, _) = decl and
+      pattern = decl.getName()
+    )
+    or
+    exists(TypeParameter param |
+      scope = param.getParent() and
+      pattern = param.getName()
+    )
+    or
+    exists(AssociatedTypeDeclaration decl |
+      getChild(scope, _) = decl and
+      pattern = decl.getName()
+    )
+    or
+    exists(AccessorDeclaration decl |
+      getChild(scope, _) = decl and
+      pattern = decl.getName()
+    )
+    or
+    exists(ImportDeclaration imprt |
+      getChild(scope, _) = imprt and
+      pattern = imprt.getPattern()
+    )
+    or
+    exists(NamePattern p |
+      bindingContext(p, scope) and
+      pattern = p.getIdentifier()
+    )
+    or
+    bindingContext(pattern.(Pattern).getEnclosingPattern(), scope)
   }
 
   /**
@@ -216,18 +275,21 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     result = getEnclosingOrPattern(p.getEnclosingPattern())
   }
 
+  private OrPattern getEnclosingOrPatternFromIdentifier(Identifier id) {
+    exists(NamePattern p |
+      id = p.getIdentifier() and
+      result = getEnclosingOrPattern(p)
+    )
+  }
+
   predicate declInScope(AstNode definingNode, string name, AstNode scope) {
     exists(AstNode pattern |
       bindingContext(pattern, scope) and
+      pattern.(Identifier).getValue() = name and
       (
-        pattern.(NamePattern).getIdentifier().getValue() = name
+        definingNode = getEnclosingOrPatternFromIdentifier(pattern)
         or
-        pattern.(Identifier).getValue() = name
-      ) and
-      (
-        definingNode = getEnclosingOrPattern(pattern)
-        or
-        not exists(getEnclosingOrPattern(pattern)) and
+        not exists(getEnclosingOrPatternFromIdentifier(pattern)) and
         definingNode = pattern
       )
     )
@@ -238,40 +300,55 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     // TODO: self
   }
 
-  predicate accessCand(AstNode n, string name) {
-    n.(NameExpr).getIdentifier().getValue() = name
-    or
-    n.(NamePattern).getIdentifier().getValue() = name
-    or
-    n = any(LocalFunctionDeclaration f).getName() and
-    n.(Identifier).getValue() = name
-  }
+  predicate accessCand(AstNode n, string name) { n.(PotentialLocalNameAccess).getName() = name }
 }
 
 module LocalNameBindingOutput = LocalNameBinding<Location, LocalNameBindingInput>;
 
 module Public {
   /**
-   * A local variable.
+   * A representative for a lexically scoped entity, such as a local variable, type name, or module name.
    */
-  class Variable extends LocalNameBindingOutput::Local {
-    VariableAccess getAnAccess() { result.getVariable() = this }
+  class LocalName instanceof LocalNameBindingOutput::Local {
+    /** Gets a textual representation of this local entity. */
+    string toString() { result = super.toString() }
+
+    /** Gets the location of this local name's first declaration */
+    Location getLocation() { result = super.getLocation() }
+
+    /** Gets the name of this local, as a string. */
+    string getName() { result = super.getName() }
+  }
+}
+
+/**
+ * An identifier node that is possibly a reference to a local name, but could also refer to a member
+ * visible through imports or inheritance.
+ *
+ * For example, the type annotation `C` below is a potential access to `class C`, but could
+ * also refer to `B.C` if such a class exists:
+ * ```swift
+ * class C {}
+ * class A : B {
+ *   let x : C
+ * }
+ * ```
+ */
+class PotentialLocalNameAccess extends Identifier {
+  PotentialLocalNameAccess() {
+    this = any(NameExpr e).getIdentifier()
+    or
+    this = any(NamePattern e).getIdentifier()
+    or
+    this = any(NamedTypeExpr e | not exists(e.getQualifier())).getName()
+    or
+    LocalNameBindingInput::bindingContext(this, _)
   }
 
-  /**
-   * An AST node that is a reference to a local variable.
-   */
-  class VariableAccess extends AstNode instanceof LocalNameBindingOutput::LocalAccess {
-    Variable getVariable() { result = super.getLocal() }
+  LocalName getLocalName() { result = this.(LocalNameBindingOutput::LocalAccess).getLocal() }
 
-    Identifier getIdentifier() {
-      result = this.(NameExpr).getIdentifier()
-      or
-      result = this.(NamePattern).getIdentifier()
-      or
-      result = this
-    }
+  string getName() { result = this.getValue() }
 
-    string getName() { result = this.getIdentifier().getValue() }
-  }
+  /** Holds if this is one of the declaration sites for a name, such as the `x` in `let x = 123`. */
+  predicate isDeclarationSite() { LocalNameBindingInput::bindingContext(this, _) }
 }

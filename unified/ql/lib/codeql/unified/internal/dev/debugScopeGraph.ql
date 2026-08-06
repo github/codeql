@@ -6,7 +6,7 @@
  */
 
 private import unified
-private import codeql.unified.internal.Variables
+private import codeql.unified.internal.LocalNameBinding
 
 /**
  * Holds if `node` should be shown in the graph.
