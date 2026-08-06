@@ -1,6 +1,6 @@
 /**
- * @name Unpinned tag for a non-immutable Action in workflow or composite action
- * @description Using a tag for a non-immutable Action that is not pinned to a commit can lead to executing an untrusted Action through a supply chain attack.
+ * @name Unpinned tag for a non-immutable Action or reusable workflow
+ * @description Using a mutable reference for a non-immutable Action or reusable workflow can lead to executing untrusted code through a supply chain attack.
  * @kind problem
  * @security-severity 5.0
  * @problem.severity warning
@@ -33,7 +33,7 @@ private predicate isPinnedContainer(string version) {
 bindingset[nwo]
 private predicate isContainerImage(string nwo) { nwo.regexpMatch("^docker://.+") }
 
-private predicate getStepContainerName(UsesStep uses, string name) {
+private predicate hasUsesContainerName(Uses uses, string name) {
   exists(Workflow workflow |
     uses.getEnclosingWorkflow() = workflow and
     (
@@ -43,20 +43,32 @@ private predicate getStepContainerName(UsesStep uses, string name) {
     )
   )
   or
-  exists(CompositeAction action |
-    uses.getEnclosingCompositeAction() = action and
+  exists(UsesStep step, CompositeAction action |
+    uses = step and
+    step.getEnclosingCompositeAction() = action and
     name = action.getLocation().getFile().getBaseName()
   )
 }
 
-from UsesStep uses, string nwo, string version, string name
+from Uses uses, string nwo, string version, string name, string message
 where
   uses.getCallee() = nwo and
-  getStepContainerName(uses, name) and
+  hasUsesContainerName(uses, name) and
   uses.getVersion() = version and
   not isTrustedOwner(nwo) and
-  not (if isContainerImage(nwo) then isPinnedContainer(version) else isPinnedCommit(version)) and
-  not isImmutableAction(uses, nwo)
-select uses.getCalleeNode(),
-  "Unpinned 3rd party Action '" + name + "' step $@ uses '" + nwo + "' with ref '" + version +
-    "', not a pinned commit hash", uses, uses.toString()
+  not (
+    if uses instanceof UsesStep and isContainerImage(nwo)
+    then isPinnedContainer(version)
+    else isPinnedCommit(version)
+  ) and
+  not exists(UsesStep step | uses = step and isImmutableAction(step, nwo)) and
+  if uses instanceof ExternalJob
+  then
+    message =
+      "Job $@ in '" + name + "' uses reusable workflow '" + nwo + "' with ref '" + version +
+        "', not a pinned commit hash"
+  else
+    message =
+      "Unpinned 3rd party Action '" + name + "' step $@ uses '" + nwo + "' with ref '" + version +
+        "', not a pinned commit hash"
+select uses.getCalleeNode(), message, uses, uses.toString()
