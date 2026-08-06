@@ -102,6 +102,16 @@ fn test_apply_wrap() {
     apply_wrap(|x| sink(x), 0);
 }
 
+mod external_file;
+use external_file::*;
+
+fn test_external_call() {
+    let a = source(81);
+    may_invoke_callback1(|x| sink(a)); // $ MISSING: hasValueFlow=81
+    may_invoke_callback2(|x| sink(a)); // $ MISSING: hasValueFlow=81
+    may_invoke_callback3(|x| sink(a)); // $ MISSING: hasValueFlow=81
+}
+
 fn main() {
     closure_flow_out();
     closure_flow_in();
