@@ -10,7 +10,13 @@ private newtype TNameBindingNode =
   TIdentifier(Identifier n) or
   TLocalName(LocalName local) or
   TExportedNamespace(ClassLikeDeclaration cls) or
-  TLocalNamespace(ClassLikeDeclaration cls)
+  TLocalNamespace(AstNode n) {
+    n = any(TopLevel t) or // Module names come in scope here
+    n = any(TopLevel t).getBody() or // Imported names come in scope here (shadowing module names)
+    n instanceof ClassLikeDeclaration
+  } or
+  TModuleScope(ModuleScopeRepr repr) or
+  TModuleRoot()
 
 /**
  * A node in a graph, in which name-binding rules are represented as edges between nodes.
@@ -25,8 +31,14 @@ class NameBindingNode extends TNameBindingNode {
   /** Holds if this represents the set of static members available in the given namespace (currently restricted to classes) */
   predicate isExportedNamespace(ClassLikeDeclaration cls) { this = TExportedNamespace(cls) }
 
-  /** Holds if this represents the set of members that can be accessed unqualified within the given scope (currently restricted to classes) */
-  predicate isLocalNamespace(ClassLikeDeclaration cls) { this = TLocalNamespace(cls) }
+  /** Holds if this represents the set of members that can be accessed unqualified within the given scope. */
+  predicate isLocalNamespace(AstNode n) { this = TLocalNamespace(n) }
+
+  /** Holds if this represents the given module scope. */
+  predicate isModuleScopeNode(ModuleScopeRepr repr) { this = TModuleScope(repr) }
+
+  /** Holds if this represents the root namespace in which all named modules are members. */
+  predicate isModuleRoot() { this = TModuleRoot() }
 
   string toString() {
     exists(Identifier n | this.isIdentifier(n) and result = "Identifier(" + n + ")")
@@ -40,6 +52,12 @@ class NameBindingNode extends TNameBindingNode {
     exists(ClassLikeDeclaration cls |
       this.isLocalNamespace(cls) and result = "LocalNamespace(" + cls + ")"
     )
+    or
+    exists(ModuleScopeRepr repr |
+      this.isModuleScopeNode(repr) and result = "ModuleScope(" + repr + ")"
+    )
+    or
+    this.isModuleRoot() and result = "ModuleRoot"
   }
 
   Location getLocation() {
@@ -50,6 +68,11 @@ class NameBindingNode extends TNameBindingNode {
     exists(ClassLikeDeclaration cls | this.isExportedNamespace(cls) and result = cls.getLocation())
     or
     exists(ClassLikeDeclaration cls | this.isLocalNamespace(cls) and result = cls.getLocation())
+    or
+    exists(ModuleScopeRepr repr | this.isModuleScopeNode(repr) and result = repr.getLocation())
+    or
+    this.isModuleRoot() and
+    exists(ModuleScopeRepr repr | result = repr.getLocation())
   }
 }
 
@@ -65,12 +88,21 @@ Identifier getIdentifierFromRef(AstNode n) {
 
 NameBindingNode getNodeFromRef(AstNode n) { result.isIdentifier(getIdentifierFromRef(n)) }
 
+NameBindingNode getModuleNodeFromFile(File f) {
+  exists(ModuleScopeRepr mod |
+    mod.getAnIncludedFile() = f and
+    result.isModuleScopeNode(mod)
+  )
+}
+
 /** Gets the name-binding node associated with the given uncertain scope node. */
 private NameBindingNode getNodeFromUncertainScope(AstNode n) {
   exists(ClassLikeDeclaration cls |
     n = cls.getAMember() and // note: must align with LocalNameBindingInput::uncertainScope
     result.isLocalNamespace(cls)
   )
+  or
+  result.isLocalNamespace(n)
 }
 
 predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
@@ -104,6 +136,22 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
     name = nameDecl.getName() and
     node2.isExportedNamespace(cls)
   )
+  or
+  exists(TopLevel top, Stmt stmt, NameDeclaration nameDecl |
+    stmt = top.getBody().getAStmt() and
+    not isPrivateToLocalScope(stmt) and
+    nameDecl.getDeclaration() = stmt
+  |
+    node1.isIdentifier(nameDecl) and
+    name = nameDecl.getName() and
+    node2 = getModuleNodeFromFile(top.getFile())
+  )
+  or
+  exists(ModuleScopeRepr mod |
+    node1.isModuleScopeNode(mod) and
+    mod.hasImportableName(name) and
+    node2.isModuleRoot()
+  )
 }
 
 predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
@@ -124,6 +172,14 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   exists(ClassLikeDeclaration cls |
     node1.isExportedNamespace(cls) and
     node2.isLocalNamespace(cls)
+  )
+  or
+  exists(TopLevel top |
+    node1.isModuleRoot() and
+    node2.isLocalNamespace(top) // module names in outermost scope
+    or
+    node1 = getModuleNodeFromFile(top.getFile()) and
+    node2.isLocalNamespace(top.getBody()) // implicitly import own module
   )
 }
 

@@ -4,12 +4,17 @@
 overlay[local?]
 module;
 
+private import codeql.files.FileSystem
+
 module Unified {
   private import Ast::Unified as G
   import G
 
   /** The base class for all AST nodes. */
   class AstNode extends G::AstNode {
+    /** Gets the file containing this AST node. */
+    File getFile() { result = this.getLocation().getFile() }
+
     /** Holds if this AST node has a modifier with the given text. */
     predicate hasModifier(string text) {
       exists(Modifier mod |
@@ -24,6 +29,28 @@ module Unified {
       or
       not this instanceof ClassLikeDeclaration and
       result = this.getParent().getEnclosingClass()
+    }
+  }
+
+  /** An expression */
+  class Expr extends G::Expr {
+    /** Gets the string value of this expression, if it is a known string constant. */
+    string getStringValue() {
+      // TODO: we'll want to cook the string literals extractor-side, but for now
+      // just strip the quotes here and ignore escape sequences.
+      result = this.(StringLiteral).getValue().regexpCapture("\"(.*)\"", 1)
+    }
+  }
+
+  /** A function call */
+  class CallExpr extends G::CallExpr {
+    /** Gets the named argument with the given `name`. */
+    Expr getNamedArgument(string name) {
+      exists(Argument arg |
+        arg = this.getAnArgument() and
+        arg.getName().getValue() = name and
+        result = arg.getValue()
+      )
     }
   }
 

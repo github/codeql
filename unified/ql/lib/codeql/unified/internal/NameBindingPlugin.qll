@@ -35,3 +35,44 @@ predicate isInstanceMember(Member member) {
 predicate isPrivateToLocalScope(Member member) {
   any(NameBindingPlugin p).isPrivateToLocalScope(member)
 }
+
+/**
+ * Representative for a module scope.
+ *
+ * Module scopes can encompass a set of files, and is the canonical representative
+ * for the top-level members collectively exported from those files.
+ */
+abstract class ModuleScopeRepr extends AstNode {
+  /**
+   * Holds if files matched by `path` should be part of this module;
+   * `path` is resolved relative to `c` and may use globs.
+   *
+   * For each file in the module:
+   * - Top-level exported members become members of this module, and
+   * - This module is implicitly imported at the top-level
+   */
+  predicate shouldInclude(Container c, string path) { none() }
+
+  /**
+   * Holds if this module scope can be referenced by an unqualified identifier `name`.
+   */
+  predicate hasImportableName(string name) { none() }
+
+  /** Gets one of the files included due to the `shouldInclude` predicate. */
+  final File getAnIncludedFile() {
+    exists(Container c, string path |
+      this.shouldInclude(c, path) and
+      result = FileResolver::resolve(c, path)
+    )
+  }
+}
+
+private module FileResolverInput implements Folder::ResolveSig {
+  predicate shouldResolve(Container base, string path) {
+    any(ModuleScopeRepr r).shouldInclude(base, path)
+  }
+
+  predicate allowGlobs() { any() }
+}
+
+private module FileResolver = Folder::Resolve<FileResolverInput>;
