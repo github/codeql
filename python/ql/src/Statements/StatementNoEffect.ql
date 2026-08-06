@@ -114,12 +114,18 @@ private Function getAnOverload() {
   )
 }
 
+private API::Node getATypedSubclass(API::Node base) {
+  // class Result(base, ...)
+  result = base.getASubclass()
+  or
+  // Result = base[...]
+  result = base.getASubscript()
+}
+
 private ClassDef getAProtocolDef() {
   exists(Expr e |
     e =
-      API::moduleImport("typing")
-          .getMember("Protocol")
-          .getASubclass*()
+      getATypedSubclass*(API::moduleImport("typing").getMember("Protocol"))
           .getAValueReachableFromSource()
           .asExpr()
   |
