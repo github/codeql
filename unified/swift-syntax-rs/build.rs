@@ -56,11 +56,13 @@ fn main() {
     println!("cargo:rustc-link-search=native={}", build_dir.display());
     println!("cargo:rustc-link-lib=dylib=SwiftSyntaxFFI");
     println!("cargo:rustc-link-arg=-Wl,-rpath,{}", build_dir.display());
+    println!("cargo:libdir={}", build_dir.display());
 
     // The executable also needs to find the Swift runtime libraries at run time.
     if let Some(runtime) = swift_runtime_dir() {
         println!("cargo:rustc-link-search=native={}", runtime.display());
         println!("cargo:rustc-link-arg=-Wl,-rpath,{}", runtime.display());
+        println!("cargo:runtimedir={}", runtime.display());
     }
 }
 
