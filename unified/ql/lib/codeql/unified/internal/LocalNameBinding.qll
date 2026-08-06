@@ -310,7 +310,7 @@ module Public {
    * A representative for a lexically scoped entity, such as a local variable, type name, or module name.
    */
   class LocalName instanceof LocalNameBindingOutput::Local {
-    /** Gets the name of this local, as a string. */
+    /** Gets a textual representation of this local entity. */
     string toString() { result = super.toString() }
 
     /** Gets the location of this local name's first declaration */
