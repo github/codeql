@@ -14,6 +14,7 @@
 
 import python
 private import LegacyPointsTo
+import semmle.python.ApiGraphs
 
 predicate understood_attribute(Attribute attr, ClassValue cls, ClassValue attr_cls) {
   exists(string name | attr.getName() = name |
@@ -92,6 +93,20 @@ private string special_method() {
   result = any(Cmpop c).getSpecialMethodName()
   or
   result = any(BinaryExpr b).getOp().getSpecialMethodName()
+}
+
+ClassDef getAProtocolDef() {
+  exists(Expr e |
+    e =
+      API::moduleImport("typing")
+          .getMember("Protocol")
+          .getASubclass*()
+          .getAValueReachableFromSource()
+          .asExpr()
+  |
+    e instanceof ClassExpr and
+    e = result.getValue()
+  )
 }
 
 predicate is_notebook(File f) {
