@@ -1234,8 +1234,7 @@ arg
 | local_dataflow.rb:9:12:9:12 | 2 | local_dataflow.rb:9:9:9:15 | call to [] | position 1 |
 | local_dataflow.rb:9:14:9:14 | 3 | local_dataflow.rb:9:9:9:15 | call to [] | position 2 |
 | local_dataflow.rb:10:5:13:3 | { ... } | local_dataflow.rb:10:5:13:3 | call to each | block |
-| local_dataflow.rb:10:9:10:9 | defined? ... | local_dataflow.rb:10:9:10:9 | [false] ! ... | self |
-| local_dataflow.rb:10:9:10:9 | defined? ... | local_dataflow.rb:10:9:10:9 | [true] ! ... | self |
+| local_dataflow.rb:10:9:10:9 | defined? ... | local_dataflow.rb:10:9:10:9 | ! ... | self |
 | local_dataflow.rb:10:9:10:9 | x | local_dataflow.rb:10:9:10:9 | defined? ... | self |
 | local_dataflow.rb:10:14:10:18 | array | local_dataflow.rb:10:5:13:3 | call to each | self |
 | local_dataflow.rb:11:1:11:2 | self | local_dataflow.rb:11:1:11:2 | call to do | self |
@@ -1243,13 +1242,11 @@ arg
 | local_dataflow.rb:12:3:12:5 | synthetic splat argument | local_dataflow.rb:12:3:12:5 | call to p | synthetic * |
 | local_dataflow.rb:12:5:12:5 | x | local_dataflow.rb:12:3:12:5 | call to p | position 0 |
 | local_dataflow.rb:15:1:17:3 | { ... } | local_dataflow.rb:15:1:17:3 | call to each | block |
-| local_dataflow.rb:15:5:15:5 | defined? ... | local_dataflow.rb:15:5:15:5 | [false] ! ... | self |
-| local_dataflow.rb:15:5:15:5 | defined? ... | local_dataflow.rb:15:5:15:5 | [true] ! ... | self |
+| local_dataflow.rb:15:5:15:5 | defined? ... | local_dataflow.rb:15:5:15:5 | ! ... | self |
 | local_dataflow.rb:15:5:15:5 | x | local_dataflow.rb:15:5:15:5 | defined? ... | self |
 | local_dataflow.rb:15:10:15:14 | array | local_dataflow.rb:15:1:17:3 | call to each | self |
 | local_dataflow.rb:19:1:21:3 | { ... } | local_dataflow.rb:19:1:21:3 | call to each | block |
-| local_dataflow.rb:19:5:19:5 | defined? ... | local_dataflow.rb:19:5:19:5 | [false] ! ... | self |
-| local_dataflow.rb:19:5:19:5 | defined? ... | local_dataflow.rb:19:5:19:5 | [true] ! ... | self |
+| local_dataflow.rb:19:5:19:5 | defined? ... | local_dataflow.rb:19:5:19:5 | ! ... | self |
 | local_dataflow.rb:19:5:19:5 | x | local_dataflow.rb:19:5:19:5 | defined? ... | self |
 | local_dataflow.rb:19:10:19:14 | array | local_dataflow.rb:19:1:21:3 | call to each | self |
 | local_dataflow.rb:20:6:20:6 | x | local_dataflow.rb:20:6:20:10 | ... > ... | self |
@@ -1445,15 +1442,12 @@ arg
 | local_dataflow.rb:132:6:132:11 | self | local_dataflow.rb:132:6:132:11 | call to use | self |
 | local_dataflow.rb:132:6:132:11 | synthetic splat argument | local_dataflow.rb:132:6:132:11 | call to use | synthetic * |
 | local_dataflow.rb:132:10:132:10 | x | local_dataflow.rb:132:6:132:11 | call to use | position 0 |
-| local_dataflow.rb:133:8:133:13 | call to use | local_dataflow.rb:133:8:133:23 | [false] ... \|\| ... | self |
-| local_dataflow.rb:133:8:133:13 | call to use | local_dataflow.rb:133:8:133:23 | [true] ... \|\| ... | self |
+| local_dataflow.rb:133:8:133:13 | call to use | local_dataflow.rb:133:8:133:23 | ... \|\| ... | self |
 | local_dataflow.rb:133:8:133:13 | self | local_dataflow.rb:133:8:133:13 | call to use | self |
 | local_dataflow.rb:133:8:133:13 | synthetic splat argument | local_dataflow.rb:133:8:133:13 | call to use | synthetic * |
-| local_dataflow.rb:133:8:133:23 | synthetic splat argument | local_dataflow.rb:133:8:133:23 | [false] ... \|\| ... | synthetic * |
-| local_dataflow.rb:133:8:133:23 | synthetic splat argument | local_dataflow.rb:133:8:133:23 | [true] ... \|\| ... | synthetic * |
+| local_dataflow.rb:133:8:133:23 | synthetic splat argument | local_dataflow.rb:133:8:133:23 | ... \|\| ... | synthetic * |
 | local_dataflow.rb:133:12:133:12 | x | local_dataflow.rb:133:8:133:13 | call to use | position 0 |
-| local_dataflow.rb:133:18:133:23 | call to use | local_dataflow.rb:133:8:133:23 | [false] ... \|\| ... | position 0 |
-| local_dataflow.rb:133:18:133:23 | call to use | local_dataflow.rb:133:8:133:23 | [true] ... \|\| ... | position 0 |
+| local_dataflow.rb:133:18:133:23 | call to use | local_dataflow.rb:133:8:133:23 | ... \|\| ... | position 0 |
 | local_dataflow.rb:133:18:133:23 | self | local_dataflow.rb:133:18:133:23 | call to use | self |
 | local_dataflow.rb:133:18:133:23 | synthetic splat argument | local_dataflow.rb:133:18:133:23 | call to use | synthetic * |
 | local_dataflow.rb:133:22:133:22 | x | local_dataflow.rb:133:18:133:23 | call to use | position 0 |
@@ -1463,55 +1457,39 @@ arg
 | local_dataflow.rb:136:7:136:12 | self | local_dataflow.rb:136:7:136:12 | call to use | self |
 | local_dataflow.rb:136:7:136:12 | synthetic splat argument | local_dataflow.rb:136:7:136:12 | call to use | synthetic * |
 | local_dataflow.rb:136:11:136:11 | x | local_dataflow.rb:136:7:136:12 | call to use | position 0 |
-| local_dataflow.rb:137:10:137:15 | call to use | local_dataflow.rb:137:10:137:26 | [false] ... && ... | self |
-| local_dataflow.rb:137:10:137:15 | call to use | local_dataflow.rb:137:10:137:26 | [true] ... && ... | self |
+| local_dataflow.rb:137:10:137:15 | call to use | local_dataflow.rb:137:10:137:26 | ... && ... | self |
 | local_dataflow.rb:137:10:137:15 | self | local_dataflow.rb:137:10:137:15 | call to use | self |
 | local_dataflow.rb:137:10:137:15 | synthetic splat argument | local_dataflow.rb:137:10:137:15 | call to use | synthetic * |
-| local_dataflow.rb:137:10:137:26 | synthetic splat argument | local_dataflow.rb:137:10:137:26 | [false] ... && ... | synthetic * |
-| local_dataflow.rb:137:10:137:26 | synthetic splat argument | local_dataflow.rb:137:10:137:26 | [true] ... && ... | synthetic * |
+| local_dataflow.rb:137:10:137:26 | synthetic splat argument | local_dataflow.rb:137:10:137:26 | ... && ... | synthetic * |
 | local_dataflow.rb:137:14:137:14 | x | local_dataflow.rb:137:10:137:15 | call to use | position 0 |
-| local_dataflow.rb:137:20:137:26 | [false] ! ... | local_dataflow.rb:137:10:137:26 | [false] ... && ... | position 0 |
-| local_dataflow.rb:137:20:137:26 | [true] ! ... | local_dataflow.rb:137:10:137:26 | [true] ... && ... | position 0 |
-| local_dataflow.rb:137:21:137:26 | call to use | local_dataflow.rb:137:20:137:26 | [false] ! ... | self |
-| local_dataflow.rb:137:21:137:26 | call to use | local_dataflow.rb:137:20:137:26 | [true] ! ... | self |
+| local_dataflow.rb:137:20:137:26 | ! ... | local_dataflow.rb:137:10:137:26 | ... && ... | position 0 |
+| local_dataflow.rb:137:21:137:26 | call to use | local_dataflow.rb:137:20:137:26 | ! ... | self |
 | local_dataflow.rb:137:21:137:26 | self | local_dataflow.rb:137:21:137:26 | call to use | self |
 | local_dataflow.rb:137:21:137:26 | synthetic splat argument | local_dataflow.rb:137:21:137:26 | call to use | synthetic * |
 | local_dataflow.rb:137:25:137:25 | x | local_dataflow.rb:137:21:137:26 | call to use | position 0 |
-| local_dataflow.rb:141:8:141:14 | [false] ! ... | local_dataflow.rb:141:8:141:37 | [false] ... \|\| ... | self |
-| local_dataflow.rb:141:8:141:14 | [false] ! ... | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... | self |
-| local_dataflow.rb:141:8:141:14 | [true] ! ... | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... | self |
-| local_dataflow.rb:141:8:141:37 | synthetic splat argument | local_dataflow.rb:141:8:141:37 | [false] ... \|\| ... | synthetic * |
-| local_dataflow.rb:141:8:141:37 | synthetic splat argument | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... | synthetic * |
-| local_dataflow.rb:141:9:141:14 | call to use | local_dataflow.rb:141:8:141:14 | [false] ! ... | self |
-| local_dataflow.rb:141:9:141:14 | call to use | local_dataflow.rb:141:8:141:14 | [true] ! ... | self |
+| local_dataflow.rb:141:8:141:14 | ! ... | local_dataflow.rb:141:8:141:37 | ... \|\| ... | self |
+| local_dataflow.rb:141:8:141:37 | synthetic splat argument | local_dataflow.rb:141:8:141:37 | ... \|\| ... | synthetic * |
+| local_dataflow.rb:141:9:141:14 | call to use | local_dataflow.rb:141:8:141:14 | ! ... | self |
 | local_dataflow.rb:141:9:141:14 | self | local_dataflow.rb:141:9:141:14 | call to use | self |
 | local_dataflow.rb:141:9:141:14 | synthetic splat argument | local_dataflow.rb:141:9:141:14 | call to use | synthetic * |
 | local_dataflow.rb:141:13:141:13 | x | local_dataflow.rb:141:9:141:14 | call to use | position 0 |
-| local_dataflow.rb:141:19:141:37 | [false] ( ... ) | local_dataflow.rb:141:8:141:37 | [false] ... \|\| ... | position 0 |
-| local_dataflow.rb:141:19:141:37 | [true] ( ... ) | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... | position 0 |
-| local_dataflow.rb:141:20:141:25 | call to use | local_dataflow.rb:141:20:141:36 | [false] ... && ... | self |
-| local_dataflow.rb:141:20:141:25 | call to use | local_dataflow.rb:141:20:141:36 | [true] ... && ... | self |
+| local_dataflow.rb:141:19:141:37 | ( ... ) | local_dataflow.rb:141:8:141:37 | ... \|\| ... | position 0 |
+| local_dataflow.rb:141:20:141:25 | call to use | local_dataflow.rb:141:20:141:36 | ... && ... | self |
 | local_dataflow.rb:141:20:141:25 | self | local_dataflow.rb:141:20:141:25 | call to use | self |
 | local_dataflow.rb:141:20:141:25 | synthetic splat argument | local_dataflow.rb:141:20:141:25 | call to use | synthetic * |
-| local_dataflow.rb:141:20:141:36 | synthetic splat argument | local_dataflow.rb:141:20:141:36 | [false] ... && ... | synthetic * |
-| local_dataflow.rb:141:20:141:36 | synthetic splat argument | local_dataflow.rb:141:20:141:36 | [true] ... && ... | synthetic * |
+| local_dataflow.rb:141:20:141:36 | synthetic splat argument | local_dataflow.rb:141:20:141:36 | ... && ... | synthetic * |
 | local_dataflow.rb:141:24:141:24 | x | local_dataflow.rb:141:20:141:25 | call to use | position 0 |
-| local_dataflow.rb:141:30:141:36 | [false] ! ... | local_dataflow.rb:141:20:141:36 | [false] ... && ... | position 0 |
-| local_dataflow.rb:141:30:141:36 | [true] ! ... | local_dataflow.rb:141:20:141:36 | [true] ... && ... | position 0 |
-| local_dataflow.rb:141:31:141:36 | call to use | local_dataflow.rb:141:30:141:36 | [false] ! ... | self |
-| local_dataflow.rb:141:31:141:36 | call to use | local_dataflow.rb:141:30:141:36 | [true] ! ... | self |
+| local_dataflow.rb:141:30:141:36 | ! ... | local_dataflow.rb:141:20:141:36 | ... && ... | position 0 |
+| local_dataflow.rb:141:31:141:36 | call to use | local_dataflow.rb:141:30:141:36 | ! ... | self |
 | local_dataflow.rb:141:31:141:36 | self | local_dataflow.rb:141:31:141:36 | call to use | self |
 | local_dataflow.rb:141:31:141:36 | synthetic splat argument | local_dataflow.rb:141:31:141:36 | call to use | synthetic * |
 | local_dataflow.rb:141:35:141:35 | x | local_dataflow.rb:141:31:141:36 | call to use | position 0 |
-| local_dataflow.rb:143:11:143:16 | call to use | local_dataflow.rb:143:11:143:26 | [false] ... \|\| ... | self |
-| local_dataflow.rb:143:11:143:16 | call to use | local_dataflow.rb:143:11:143:26 | [true] ... \|\| ... | self |
+| local_dataflow.rb:143:11:143:16 | call to use | local_dataflow.rb:143:11:143:26 | ... \|\| ... | self |
 | local_dataflow.rb:143:11:143:16 | self | local_dataflow.rb:143:11:143:16 | call to use | self |
 | local_dataflow.rb:143:11:143:16 | synthetic splat argument | local_dataflow.rb:143:11:143:16 | call to use | synthetic * |
-| local_dataflow.rb:143:11:143:26 | synthetic splat argument | local_dataflow.rb:143:11:143:26 | [false] ... \|\| ... | synthetic * |
-| local_dataflow.rb:143:11:143:26 | synthetic splat argument | local_dataflow.rb:143:11:143:26 | [true] ... \|\| ... | synthetic * |
+| local_dataflow.rb:143:11:143:26 | synthetic splat argument | local_dataflow.rb:143:11:143:26 | ... \|\| ... | synthetic * |
 | local_dataflow.rb:143:15:143:15 | x | local_dataflow.rb:143:11:143:16 | call to use | position 0 |
-| local_dataflow.rb:143:21:143:26 | call to use | local_dataflow.rb:143:11:143:26 | [false] ... \|\| ... | position 0 |
-| local_dataflow.rb:143:21:143:26 | call to use | local_dataflow.rb:143:11:143:26 | [true] ... \|\| ... | position 0 |
+| local_dataflow.rb:143:21:143:26 | call to use | local_dataflow.rb:143:11:143:26 | ... \|\| ... | position 0 |
 | local_dataflow.rb:143:21:143:26 | self | local_dataflow.rb:143:21:143:26 | call to use | self |
 | local_dataflow.rb:143:21:143:26 | synthetic splat argument | local_dataflow.rb:143:21:143:26 | call to use | synthetic * |
 | local_dataflow.rb:143:25:143:25 | x | local_dataflow.rb:143:21:143:26 | call to use | position 0 |
