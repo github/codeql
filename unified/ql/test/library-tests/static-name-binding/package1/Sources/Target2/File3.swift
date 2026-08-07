@@ -1,5 +1,5 @@
-class A {} // name=Target2.A
+public class A {} // name=Target2.A
 
-class B { // name=Target2.B
-    class C {} // name=Target2.B.C
+public class B { // name=Target2.B
+    public class C {} // name=Target2.B.C
 }
