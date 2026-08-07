@@ -1,0 +1,160 @@
+switch event {
+case let .received(.some(value), timestamp):
+  print(value, timestamp)
+default:
+  break
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            switchExpr
+              leftBrace: {
+              rightBrace: }
+              cases:
+                switchCase
+                  label:
+                    switchCaseLabel
+                      colon: :
+                      caseKeyword: case
+                      caseItems:
+                        switchCaseItem
+                          pattern:
+                            valueBindingPattern
+                              pattern:
+                                expressionPattern
+                                  expression:
+                                    functionCallExpr
+                                      leftParen: (
+                                      rightParen: )
+                                      arguments:
+                                        labeledExpr
+                                          expression:
+                                            functionCallExpr
+                                              leftParen: (
+                                              rightParen: )
+                                              arguments:
+                                                labeledExpr
+                                                  expression:
+                                                    patternExpr
+                                                      pattern:
+                                                        identifierPattern
+                                                          identifier: identifier "value"
+                                              additionalTrailingClosures:
+                                              calledExpression:
+                                                memberAccessExpr
+                                                  period: .
+                                                  declName:
+                                                    declReferenceExpr
+                                                      baseName: identifier "some"
+                                          trailingComma: ,
+                                        labeledExpr
+                                          expression:
+                                            patternExpr
+                                              pattern:
+                                                identifierPattern
+                                                  identifier: identifier "timestamp"
+                                      additionalTrailingClosures:
+                                      calledExpression:
+                                        memberAccessExpr
+                                          period: .
+                                          declName:
+                                            declReferenceExpr
+                                              baseName: identifier "received"
+                              bindingSpecifier: let
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "value"
+                              trailingComma: ,
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "timestamp"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+                switchCase
+                  label:
+                    switchDefaultLabel
+                      colon: :
+                      defaultKeyword: default
+                  statements:
+                    codeBlockItem
+                      item:
+                        breakStmt
+                          breakKeyword: break
+              subject:
+                declReferenceExpr
+                  baseName: identifier "event"
+              switchKeyword: switch
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        switch_expr
+          value:
+            name_expr
+              identifier: identifier "event"
+          case:
+            switch_case
+              pattern:
+                constructor_pattern
+                  constructor:
+                    member_access_expr
+                      base: inferred_type_expr "."
+                      member: identifier "received"
+                  element:
+                    pattern_element
+                      pattern:
+                        constructor_pattern
+                          constructor:
+                            member_access_expr
+                              base: inferred_type_expr "."
+                              member: identifier "some"
+                          element:
+                            pattern_element
+                              pattern:
+                                name_pattern
+                                  identifier: identifier "value"
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "timestamp"
+              body:
+                block
+                  stmt:
+                    call_expr
+                      callee:
+                        name_expr
+                          identifier: identifier "print"
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "value"
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "timestamp"
+            switch_case
+              body:
+                block
+                  stmt: break_expr "break"
