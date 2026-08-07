@@ -1,0 +1,2 @@
+extractionWarning
+| test.rs:221:7:221:10 | macro expansion failed for 'panic' |

@@ -1,0 +1,4 @@
+nonUniqueCertainType
+| test.rs:23:26:23:52 | ...::get(...) | dyn(Output).T |
+| test.rs:26:26:26:52 | ...::get(...) | dyn(Output).T |
+| test.rs:29:24:29:50 | ...::get(...) | dyn(Output).T |
