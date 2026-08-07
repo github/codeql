@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/jakartaee/rest.git#8617779abb277aa1a37cdcd1deeb4cbadc5e0d96 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["jakarta.ws.rs", "RedirectionException", True, "RedirectionException", "(Response$Status,URI)", "", "Argument[1]", "url-redirection", "ai-generated"]
+      - ["jakarta.ws.rs", "RedirectionException", True, "RedirectionException", "(Response)", "", "Argument[0]", "url-redirection", "ai-generated"]
+      - ["jakarta.ws.rs", "RedirectionException", True, "RedirectionException", "(String,Response$Status,URI)", "", "Argument[2]", "url-redirection", "ai-generated"]
+      - ["jakarta.ws.rs", "RedirectionException", True, "RedirectionException", "(String,Response)", "", "Argument[1]", "url-redirection", "ai-generated"]
+      - ["jakarta.ws.rs", "RedirectionException", True, "RedirectionException", "(String,int,URI)", "", "Argument[2]", "url-redirection", "ai-generated"]
+      - ["jakarta.ws.rs", "RedirectionException", True, "RedirectionException", "(int,URI)", "", "Argument[1]", "url-redirection", "ai-generated"]
