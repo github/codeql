@@ -89,6 +89,9 @@ std::regex r_posix4("[:digit:]");
 // unicode
 std::regex r_uni("\\u0061");
 
+// hex
+std::regex r_hex("\\x61");
+
 // control escapes
 std::regex r_ctrl1("\\cA");
 std::regex r_ctrl2("[\\cZ]");

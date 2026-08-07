@@ -462,91 +462,60 @@ regexp.cpp:
 
 #   90| [RegExpConstant, RegExpEscape] \u0061
 
-#   93| [RegExpConstant, RegExpEscape] \cA
+#   93| [RegExpConstant, RegExpEscape] \x61
 
-#   94| [RegExpCharacterClass] [\cZ]
+#   96| [RegExpConstant, RegExpEscape] \cA
+
+#   97| [RegExpCharacterClass] [\cZ]
 #-----| 0 -> [RegExpConstant, RegExpEscape] \cZ
 
-#   94| [RegExpConstant, RegExpEscape] \cZ
+#   97| [RegExpConstant, RegExpEscape] \cZ
 
-#   97| [RegExpConstant, RegExpEscape] \0
+#  100| [RegExpConstant, RegExpEscape] \0
 
-#   98| [RegExpCharacterClass] [\0]
+#  101| [RegExpCharacterClass] [\0]
 #-----| 0 -> [RegExpConstant, RegExpEscape] \0
 
-#   98| [RegExpConstant, RegExpEscape] \0
+#  101| [RegExpConstant, RegExpEscape] \0
 
-#  101| [RegExpConstant, RegExpNormalChar] a
+#  104| [RegExpConstant, RegExpNormalChar] a
 
-#  101| [RegExpStar] a*?
+#  104| [RegExpStar] a*?
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a
 
-#  102| [RegExpConstant, RegExpNormalChar] b
+#  105| [RegExpConstant, RegExpNormalChar] b
 
-#  102| [RegExpPlus] b+?
+#  105| [RegExpPlus] b+?
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] b
 
-#  103| [RegExpConstant, RegExpNormalChar] c
+#  106| [RegExpConstant, RegExpNormalChar] c
 
-#  103| [RegExpOpt] c??
+#  106| [RegExpOpt] c??
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] c
 
-#  104| [RegExpConstant, RegExpNormalChar] d
+#  107| [RegExpConstant, RegExpNormalChar] d
 
-#  104| [RegExpQuantifier] d{2,3}?
+#  107| [RegExpQuantifier] d{2,3}?
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] d
 
-#  105| [RegExpConstant, RegExpEscape] \f
+#  108| [RegExpConstant, RegExpEscape] \f
 
-#  105| [RegExpSequence] \f\v
+#  108| [RegExpSequence] \f\v
 #-----| 0 -> [RegExpConstant, RegExpEscape] \f
 #-----| 1 -> [RegExpConstant, RegExpEscape] \v
 
-#  105| [RegExpConstant, RegExpEscape] \v
+#  108| [RegExpConstant, RegExpEscape] \v
 
-#  108| [RegExpConstant, RegExpNormalChar] a
+#  111| [RegExpConstant, RegExpNormalChar] a
 
-#  108| [RegExpSequence] a\nb
+#  111| [RegExpSequence] a\nb
 #-----| 0 -> [RegExpConstant, RegExpNormalChar] a
 #-----| 1 -> [RegExpConstant, RegExpEscape] \n
 #-----| 2 -> [RegExpConstant, RegExpNormalChar] b
 
-#  108| [RegExpConstant, RegExpEscape] \n
-
-#  108| [RegExpConstant, RegExpNormalChar] b
-
-#  109| [RegExpConstant, RegExpNormalChar] a
-
-#  109| [RegExpSequence] a\nc
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
-#-----| 1 -> [RegExpConstant, RegExpEscape] \n
-#-----| 2 -> [RegExpConstant, RegExpNormalChar] c
-
-#  109| [RegExpConstant, RegExpEscape] \n
-
-#  109| [RegExpConstant, RegExpNormalChar] c
-
-#  110| [RegExpConstant, RegExpNormalChar] a
-
-#  110| [RegExpSequence] a\nc
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
-#-----| 1 -> [RegExpConstant, RegExpEscape] \n
-#-----| 2 -> [RegExpConstant, RegExpNormalChar] c
-
-#  110| [RegExpConstant, RegExpEscape] \n
-
-#  110| [RegExpConstant, RegExpNormalChar] c
-
-#  111| [RegExpConstant, RegExpNormalChar] a
-
-#  111| [RegExpSequence] a\nc
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
-#-----| 1 -> [RegExpConstant, RegExpEscape] \n
-#-----| 2 -> [RegExpConstant, RegExpNormalChar] c
-
 #  111| [RegExpConstant, RegExpEscape] \n
 
-#  111| [RegExpConstant, RegExpNormalChar] c
+#  111| [RegExpConstant, RegExpNormalChar] b
 
 #  112| [RegExpConstant, RegExpNormalChar] a
 
@@ -635,3 +604,36 @@ regexp.cpp:
 #  119| [RegExpConstant, RegExpEscape] \n
 
 #  119| [RegExpConstant, RegExpNormalChar] c
+
+#  120| [RegExpConstant, RegExpNormalChar] a
+
+#  120| [RegExpSequence] a\nc
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpEscape] \n
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] c
+
+#  120| [RegExpConstant, RegExpEscape] \n
+
+#  120| [RegExpConstant, RegExpNormalChar] c
+
+#  121| [RegExpConstant, RegExpNormalChar] a
+
+#  121| [RegExpSequence] a\nc
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpEscape] \n
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] c
+
+#  121| [RegExpConstant, RegExpEscape] \n
+
+#  121| [RegExpConstant, RegExpNormalChar] c
+
+#  122| [RegExpConstant, RegExpNormalChar] a
+
+#  122| [RegExpSequence] a\nc
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpEscape] \n
+#-----| 2 -> [RegExpConstant, RegExpNormalChar] c
+
+#  122| [RegExpConstant, RegExpEscape] \n
+
+#  122| [RegExpConstant, RegExpNormalChar] c
