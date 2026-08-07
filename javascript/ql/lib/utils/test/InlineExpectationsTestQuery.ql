@@ -18,4 +18,12 @@ private module Input implements T::TestPostProcessing::InputSig<Impl> {
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
   }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // JavaScript databases can also contain HTML, whose (block) comment syntax is not yet
+    // supported, so we only render for the line-comment source files.
+    relativePath.regexpMatch(".*\\.(js|cjs|mjs|jsx|ts|cts|mts|tsx)") and
+    result = "//"
+  }
 }
