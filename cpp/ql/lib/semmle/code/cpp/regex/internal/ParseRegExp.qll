@@ -100,9 +100,7 @@ abstract class RegExp extends StringLiteral {
         (this.nonEscapedCharAt(p) = "[" or this.nonEscapedCharAt(p) = "]") and
         // Brackets that are part of POSIX expressions should not count as
         // char-set delimiters.
-        not exists(int x, int y |
-          this.posixStyleNamedCharacterProperty(x, y, _) and pos >= x and pos < y
-        )
+        not exists(int x, int y | this.posixStyleProperty(x, y, _, _) and pos >= x and pos < y)
       ) and
     (
       this.nonEscapedCharAt(pos) = "[" and result = true
@@ -132,9 +130,7 @@ abstract class RegExp extends StringLiteral {
         min(int e |
           e > innerStart and
           this.nonEscapedCharAt(e) = "]" and
-          not exists(int x, int y |
-            this.posixStyleNamedCharacterProperty(x, y, _) and e >= x and e < y
-          )
+          not exists(int x, int y | this.posixStyleProperty(x, y, _, _) and e >= x and e < y)
         |
           e
         )
@@ -160,7 +156,7 @@ abstract class RegExp extends StringLiteral {
     (
       this.escapedCharacter(start, end)
       or
-      this.namedCharacterProperty(start, end, _)
+      this.namedCharacterProperty(start, end, _, _)
       or
       exists(this.nonEscapedCharAt(start)) and end = start + 1
     )
@@ -169,7 +165,7 @@ abstract class RegExp extends StringLiteral {
     (
       this.escapedCharacter(start, end)
       or
-      this.namedCharacterProperty(start, end, _)
+      this.namedCharacterProperty(start, end, _, _)
       or
       exists(this.nonEscapedCharAt(start)) and
       end = start + 1 and
@@ -282,28 +278,34 @@ abstract class RegExp extends StringLiteral {
     )
   }
 
-  /** Matches named character properties such as `[[:digit:]]`. */
-  predicate namedCharacterProperty(int start, int end, string name) {
-    this.posixStyleNamedCharacterProperty(start, end, name)
+  /** Matches named character properties such as `[:digit:]`. */
+  predicate namedCharacterProperty(int start, int end, string symbol, string name) {
+    this.posixStyleProperty(start, end, symbol, name)
   }
 
   /** Gets the name of the character property in start,end */
   string getCharacterPropertyName(int start, int end) {
-    this.namedCharacterProperty(start, end, result)
+    this.namedCharacterProperty(start, end, _, result)
+  }
+
+  /** Gets the symbol of the character property in start,end */
+  string getCharacterPropertySymbol(int start, int end) {
+    this.namedCharacterProperty(start, end, result, _)
   }
 
   /** Matches a POSIX bracket expression such as `[:alnum:]` within a character class. */
-  private predicate posixStyleNamedCharacterProperty(int start, int end, string name) {
+  private predicate posixStyleProperty(int start, int end, string symbol, string name) {
     this.getChar(start) = "[" and
-    this.getChar(start + 1) = ":" and
+    this.getChar(start + 1) = symbol and
     end =
       min(int e |
         e > start and
-        this.getChar(e - 2) = ":" and
+        this.getChar(e - 2) = symbol and
         this.getChar(e - 1) = "]"
       |
         e
       ) and
+    symbol in [":", ".", "="] and
     name = this.getText().substring(start + 2, end - 2)
   }
 
@@ -348,9 +350,7 @@ abstract class RegExp extends StringLiteral {
    * Holds if the character at `index` is inside a posix bracket.
    */
   predicate inPosixBracket(int index) {
-    exists(int x, int y |
-      this.posixStyleNamedCharacterProperty(x, y, _) and index in [x + 1 .. y - 2]
-    )
+    exists(int x, int y | this.posixStyleProperty(x, y, _, _) and index in [x + 1 .. y - 2])
   }
 
   /**
@@ -361,7 +361,7 @@ abstract class RegExp extends StringLiteral {
     not this.charSet(start, _) and
     not this.charSet(_, start + 1) and
     not exists(int x, int y |
-      this.posixStyleNamedCharacterProperty(x, y, _) and
+      this.posixStyleProperty(x, y, _, _) and
       start >= x and
       end <= y
     ) and
@@ -731,7 +731,7 @@ abstract class RegExp extends StringLiteral {
     this.isGroupStart(start) or
     this.charSet(start, _) or
     this.backreference(start, _) or
-    this.namedCharacterProperty(start, _, _)
+    this.namedCharacterProperty(start, _, _, _)
   }
 
   private predicate itemEnd(int end) {

@@ -397,36 +397,15 @@ regexp.cpp:
 
 #   75| [RegExpConstant, RegExpNormalChar] f
 
-#   78| [RegExpCharacterClass] [[.a.]
-#-----| 0 -> [RegExpConstant, RegExpNormalChar] [
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] .
-#-----| 2 -> [RegExpConstant, RegExpNormalChar] a
-#-----| 3 -> [RegExpConstant, RegExpNormalChar] .
+#   78| [RegExpCharacterClass] [[.a.]]
+#-----| 0 -> [RegExpNamedCharacterProperty] [.a.]
 
-#   78| [RegExpSequence] [[.a.]]
-#-----| 0 -> [RegExpCharacterClass] [[.a.]
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] ]
+#   78| [RegExpNamedCharacterProperty] [.a.]
 
-#   78| [RegExpConstant, RegExpNormalChar] [
-
-#   78| [RegExpConstant, RegExpNormalChar] .
-
-#   78| [RegExpConstant, RegExpNormalChar] a
-
-#   78| [RegExpConstant, RegExpNormalChar] .
-
-#   78| [RegExpConstant, RegExpNormalChar] ]
-
-#   79| [RegExpCharacterClass] [A-F[.b.]
+#   79| [RegExpCharacterClass] [A-F[.b.]a-f]
 #-----| 0 -> [RegExpCharacterRange] A-F
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] [
-#-----| 2 -> [RegExpConstant, RegExpNormalChar] .
-#-----| 3 -> [RegExpConstant, RegExpNormalChar] b
-#-----| 4 -> [RegExpConstant, RegExpNormalChar] .
-
-#   79| [RegExpSequence] [A-F[.b.]a-f]
-#-----| 0 -> [RegExpCharacterClass] [A-F[.b.]
-#-----| 1 -> [RegExpConstant, RegExpNormalChar] a-f]
+#-----| 1 -> [RegExpNamedCharacterProperty] [.b.]
+#-----| 2 -> [RegExpCharacterRange] a-f
 
 #   79| [RegExpConstant, RegExpNormalChar] A
 
@@ -436,15 +415,15 @@ regexp.cpp:
 
 #   79| [RegExpConstant, RegExpNormalChar] F
 
-#   79| [RegExpConstant, RegExpNormalChar] [
+#   79| [RegExpNamedCharacterProperty] [.b.]
 
-#   79| [RegExpConstant, RegExpNormalChar] .
+#   79| [RegExpConstant, RegExpNormalChar] a
 
-#   79| [RegExpConstant, RegExpNormalChar] b
+#   79| [RegExpCharacterRange] a-f
+#-----| 0 -> [RegExpConstant, RegExpNormalChar] a
+#-----| 1 -> [RegExpConstant, RegExpNormalChar] f
 
-#   79| [RegExpConstant, RegExpNormalChar] .
-
-#   79| [RegExpConstant, RegExpNormalChar] a-f]
+#   79| [RegExpConstant, RegExpNormalChar] f
 
 #   82| [RegExpNamedCharacterProperty] [:digit:]
 

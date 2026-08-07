@@ -50,7 +50,7 @@ private newtype TRegExpParent =
   TRegExpBackRef(RegExp re, int start, int end) { re.backreference(start, end) } or
   /** A named character property */
   TRegExpNamedCharacterProperty(RegExp re, int start, int end) {
-    re.namedCharacterProperty(start, end, _)
+    re.namedCharacterProperty(start, end, [":", "."], _)
   }
 
 /** An implementation that satisfies the RegexTreeView signature. */
@@ -1098,7 +1098,7 @@ private module Impl implements RegexTreeViewSig {
 
   /**
    * A named character property. For example, the POSIX bracket expression
-   * `[[:digit:]]`.
+   * `[:digit:]`.
    */
   additional class RegExpNamedCharacterProperty extends RegExpTerm, TRegExpNamedCharacterProperty {
     RegExpNamedCharacterProperty() { this = TRegExpNamedCharacterProperty(re, start, end) }
@@ -1108,10 +1108,16 @@ private module Impl implements RegexTreeViewSig {
     override string getAPrimaryQlClass() { result = "RegExpNamedCharacterProperty" }
 
     /**
-     * Gets the property name. For example, in `[[:digit:]]`, the result is
+     * Gets the property name. For example, in `[:digit:]`, the result is
      * `"digit"`.
      */
     string getName() { result = re.getCharacterPropertyName(start, end) }
+
+    /**
+     * Gets the property symbol. For example, in `[:digit:]`, the result is
+     * `":"`.
+     */
+    string getSymbol() { result = re.getCharacterPropertySymbol(start, end) }
   }
 
   class Top = RegExpParent;
