@@ -28,7 +28,7 @@ class NameBindingNode extends TNameBindingNode {
 
   predicate isLocalName(LocalName local) { this = TLocalName(local) }
 
-  /** Holds if this represents the set of static members available in the given namespace (currently restricted to classes) */
+  /** Holds if this represents the set of static members available in the given namespace. */
   predicate isExportedNamespace(ClassLikeDeclaration cls) { this = TExportedNamespace(cls) }
 
   /** Holds if this represents the set of members that can be accessed unqualified within the given scope. */
