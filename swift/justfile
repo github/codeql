@@ -1,0 +1,17 @@
+import '../lib.just'
+import "../../ql/swift/ql/justfile"
+
+install: (_bazel "run" "@codeql//swift:install")
+
+[group('build')]
+build: (_build_dist "swift")
+
+generate: (_bazel "run" "@codeql//swift/codegen")
+
+format ARGS=".": (_format_cpp ARGS)
+
+[group('test')]
+language-tests *EXTRA_ARGS: (_language_tests EXTRA_ARGS source_dir() 'ql/test')
+
+[group('test')]
+extra-tests: (_sembuild "target/test/check-queries-swift") (_sembuild "target/test/check-db-upgrades-swift") (_sembuild "target/test/check-db-downgrades-swift")
