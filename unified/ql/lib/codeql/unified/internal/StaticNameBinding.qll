@@ -75,9 +75,6 @@ class NameBindingNode extends TNameBindingNode {
     exists(AstNode n | this.isLocalNamespace(n) and result = n.getLocation())
     or
     exists(ModuleScopeRepr repr | this.isModuleScopeNode(repr) and result = repr.getLocation())
-    or
-    this.isModuleRoot() and
-    exists(ModuleScopeRepr repr | result = repr.getLocation())
   }
 }
 
