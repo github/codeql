@@ -27,7 +27,7 @@ def foo
 
 	convert1({ hostname: 'test.example.com$' }); # $ Alert // NOT OK
 
-	domains = [ { hostname: 'test.example.com$' } ]; # $ MISSING: Alert # NOT OK - but not flagged due to limitations of TypeTracking.
+	domains = [ { hostname: 'test.example.com$' } ]; # $ Alert // NOT OK
 
 
 
