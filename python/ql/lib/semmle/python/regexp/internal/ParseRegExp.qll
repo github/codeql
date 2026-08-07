@@ -3,6 +3,7 @@
  */
 
 import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts as Concepts
 private import semmle.python.regex
@@ -78,7 +79,7 @@ private module FindRegexMode {
     t.start() and
     exists(API::Node flag | flag_name = canonical_name(flag) and result = flag.asSource())
     or
-    exists(BinaryExprNode binop, DataFlow::Node operand |
+    exists(Cfg::BinaryExprNode binop, DataFlow::Node operand |
       operand.getALocalSource() = re_flag_tracker(flag_name, t.continue()) and
       operand.asCfgNode() = binop.getAnOperand() and
       (binop.getOp() instanceof BitOr or binop.getOp() instanceof Add) and

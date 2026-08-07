@@ -1,4 +1,5 @@
 import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TypeTracking
 import utils.test.InlineExpectationsTest
@@ -10,7 +11,7 @@ import TestSummaries
 // -----------------------------------------------------------------------------
 private DataFlow::TypeTrackingNode tracked(TypeTracker t) {
   t.start() and
-  result.asCfgNode() = any(NameNode n | n.getId() = "tracked")
+  result.asCfgNode() = any(Cfg::NameNode n | n.getId() = "tracked")
   or
   exists(TypeTracker t2 | result = tracked(t2).track(t2, t))
 }
