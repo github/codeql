@@ -98,7 +98,7 @@ abstract class RegExp extends StringLiteral {
     pos =
       rank[index](int p |
         (this.nonEscapedCharAt(p) = "[" or this.nonEscapedCharAt(p) = "]") and
-        // Brackets that art part of POSIX expressions should not count as
+        // Brackets that are part of POSIX expressions should not count as
         // char-set delimiters.
         not exists(int x, int y |
           this.posixStyleNamedCharacterProperty(x, y, _) and pos >= x and pos < y
