@@ -1,0 +1,15 @@
+aggregate_field_init(@"an_aggregate_literal", @"init1", @"a_field")
+aggregate_array_init(@"an_aggregate_literal", @"init2", 42)
+
+files(@"file", "dummy file")
+locations_expr(@"loc", @"file", 0, 0, 0, 0)
+
+exprs(@"an_aggregate_literal", 127, @"loc")
+exprs(@"init1", 1, @"loc")
+exprs(@"init2", 1, @"loc")
+
+membervariables(@"a_field", @"a_type", "my_field")
+usertypes(@"a_type", "MyType", 1)
+
+exprparents(@"init1", 3, @"an_aggregate_literal")
+exprparents(@"init2", 17, @"an_aggregate_literal")
