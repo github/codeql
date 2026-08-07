@@ -12,8 +12,7 @@ private newtype TNameBindingNode =
   TLocalName(LocalName local) or
   TExportedNamespace(ClassLikeDeclaration cls) or
   TLocalNamespace(AstNode n) {
-    n = any(TopLevel t) or // Module names come in scope here
-    n = any(TopLevel t).getBody() or // Imported names come in scope here (shadowing module names)
+    n = any(TopLevel t).getBody() or // Imported names come in scope here
     n instanceof ClassLikeDeclaration
   } or
   TModuleScope(ModuleScopeRepr repr) or
@@ -129,6 +128,13 @@ predicate readStep(NameBindingNode node1, string name, NameBindingNode node2) {
     node1 = getNodeFromUncertainScope(LocalNameBindingOutput::getAnUncertainScope(access, name)) and
     node2.isIdentifier(access)
   )
+  or
+  exists(NameExpr expr |
+    isImportPrefix(expr) and
+    node1.isModuleRoot() and
+    name = expr.getIdentifier().getValue() and
+    node2 = getNodeFromRef(expr)
+  )
 }
 
 predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
@@ -181,9 +187,6 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   )
   or
   exists(TopLevel top |
-    node1.isModuleRoot() and
-    node2.isLocalNamespace(top) // module names in outermost scope
-    or
     node1 = getModuleNodeFromFile(top.getFile()) and
     node2.isLocalNamespace(top.getBody()) // implicitly import own module
   )
@@ -205,6 +208,20 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
       not isPrivateToLocalScope(declaration) and
       node2 = getModuleNodeFromFile(top.getFile())
     )
+  )
+  or
+  exists(NamePattern p |
+    node1 = getNodeFromRef(p) and
+    node2 = getNodeFromRef(p.getSubPattern())
+  )
+}
+
+private predicate isImportPrefix(Expr e) {
+  e = any(ImportDeclaration impr).getImportedExpr()
+  or
+  exists(MemberAccessExpr member |
+    isImportPrefix(member) and
+    e = member.getBase()
   )
 }
 
