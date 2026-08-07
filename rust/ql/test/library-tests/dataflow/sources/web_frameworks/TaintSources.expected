@@ -3,14 +3,14 @@
 | test.rs:48:14:48:30 | MyStruct {...} | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:58:14:58:15 | ms | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:68:15:68:15 | a | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:121:5:121:20 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:121:5:121:20 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:121:5:121:20 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:121:5:121:20 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:121:5:121:20 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:121:5:121:20 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:121:5:121:20 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
-| test.rs:121:5:121:20 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:121:7:121:19 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:121:7:121:19 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:121:7:121:19 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:121:7:121:19 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:121:7:121:19 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:121:7:121:19 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:121:7:121:19 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
+| test.rs:121:7:121:19 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:131:41:131:42 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:131:41:131:42 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |
 | test.rs:131:41:131:42 | to | Flow source 'RemoteSource' of type remote (DEFAULT). |

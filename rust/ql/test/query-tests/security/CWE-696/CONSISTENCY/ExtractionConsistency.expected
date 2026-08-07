@@ -1,0 +1,22 @@
+extractionWarning
+| test.rs:16:10:19:5 | macro expansion failed for 'compile_error' |
+| test.rs:23:17:24:9 | macro expansion failed for 'compile_error' |
+| test.rs:28:3:28:12 | macro expansion failed for 'compile_error' |
+| test.rs:33:3:33:12 | macro expansion failed for 'compile_error' |
+| test.rs:39:3:39:12 | macro expansion failed for 'compile_error' |
+| test.rs:50:3:50:6 | macro expansion failed for 'compile_error' |
+| test.rs:55:3:55:6 | macro expansion failed for 'compile_error' |
+| test.rs:60:3:60:6 | macro expansion failed for 'compile_error' |
+| test.rs:65:3:65:6 | macro expansion failed for 'compile_error' |
+| test.rs:73:3:73:6 | macro expansion failed for 'compile_error' |
+| test.rs:78:3:78:6 | macro expansion failed for 'compile_error' |
+| test.rs:87:3:87:6 | macro expansion failed for 'compile_error' |
+| test.rs:94:3:94:6 | macro expansion failed for 'compile_error' |
+| test.rs:99:3:99:12 | macro expansion failed for 'compile_error' |
+| test.rs:104:3:104:12 | macro expansion failed for 'compile_error' |
+| test.rs:112:3:112:12 | macro expansion failed for 'compile_error' |
+| test.rs:128:3:128:6 | macro expansion failed for 'compile_error' |
+| test.rs:139:3:139:6 | macro expansion failed for 'compile_error' |
+| test.rs:144:3:144:6 | macro expansion failed for 'compile_error' |
+| test.rs:150:3:150:6 | macro expansion failed for 'compile_error' |
+| test.rs:168:3:168:6 | macro expansion failed for 'compile_error' |

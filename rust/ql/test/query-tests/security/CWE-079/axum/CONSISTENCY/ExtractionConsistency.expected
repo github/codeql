@@ -1,0 +1,2 @@
+extractionWarning
+| main.rs:19:46:19:46 | macro expansion failed for 'panic' |
