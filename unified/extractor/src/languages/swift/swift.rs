@@ -699,6 +699,20 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // `declReferenceExpr`; pull its `baseName` out as the member identifier.
         // A leading-dot access (`.foo`) has no explicit base — the base is an
         // `inferred_type_expr`. The base-ful form is matched first.
+        // A bracketed generic array type used as a metatype or static-member
+        // base (`[T].self`) is parsed as an `arrayExpr`; preserve its type
+        // meaning as `Array<T>` rather than an array literal.
+        rule!(
+            (memberAccessExpr
+                base: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
+                declName: (declReferenceExpr baseName: @member))
+            =>
+            (member_access_expr
+                base: (generic_type_expr
+                    base: (named_type_expr name: (identifier "Array"))
+                    type_argument: {element})
+                member: (identifier #{member}))
+        ),
         rule!(
             (memberAccessExpr base: @base declName: (declReferenceExpr baseName: @member))
             =>
