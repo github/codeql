@@ -633,6 +633,22 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     default: {val}))
             }
         ),
+        // Swift's `[T](...)` array-type constructor syntax is parsed as a call
+        // whose callee is an `arrayExpr` containing `T`. For a generic `T`,
+        // translating that callee as an array literal would place a type
+        // expression in an expression-only element field. Normalize it to an
+        // `Array<T>` generic type constructor instead.
+        rule!(
+            (functionCallExpr
+                calledExpression: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
+                arguments: _* @args)
+            =>
+            (call_expr
+                callee: (generic_type_expr
+                    base: (named_type_expr name: (identifier "Array"))
+                    type_argument: {element})
+                argument: {args})
+        ),
         // A function/method call (`foo(1, 2)`). `calledExpression` is the callee
         // and `arguments` is an (elided) list of `labeledExpr`, each translated
         // to an `argument` below. A trailing closure (`xs.map { … }`) becomes a
