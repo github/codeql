@@ -51,8 +51,19 @@ import org.jetbrains.kotlin.load.java.structure.JavaTypeParameter
 import org.jetbrains.kotlin.load.java.structure.JavaTypeParameterListOwner
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
+import org.jetbrains.kotlin.psi.KtClass
+import org.jetbrains.kotlin.psi.KtClassOrObject
+import org.jetbrains.kotlin.psi.KtConstructor
+import org.jetbrains.kotlin.psi.KtDestructuringDeclaration
+import org.jetbrains.kotlin.psi.KtParameter
+import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.psi.KtPropertyAccessor
+import org.jetbrains.kotlin.psi.KtVariableDeclaration
+import org.jetbrains.kotlin.psi.psiUtil.endOffset
+import org.jetbrains.kotlin.psi.psiUtil.startOffset
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
 
 open class KotlinFileExtractor(
@@ -82,6 +93,27 @@ open class KotlinFileExtractor(
     val usesK2 = usesK2(pluginContext)
     val metaAnnotationSupport = MetaAnnotationSupport(logger, pluginContext, this)
 
+    private var currentIrFile: IrFile? = null
+
+    // Set only while extracting the compiler-generated accessor artifacts of a local delegated
+    // property (declared inside a function body). Used to recognise the synthetic `thisRef`
+    // argument of that property's forwarding get/set, which under K1 gets a bogus location.
+    private var currentLocalDelegatedProperty: IrLocalDelegatedProperty? = null
+
+    // Set only while extracting the branches of an `IrWhen`. Holds that `when`'s source
+    // location, used as a fallback location for the compiler-generated
+    // `throw NoWhenBranchMatchedException(...)` of an exhaustive `when`. Under K2 that
+    // synthetic call carries the `when`'s offsets, but under K1 it has undefined offsets
+    // (yielding a `0:0:0:0` location); this makes both frontends anchor it to the `when`.
+    private var currentSyntheticWhenLocation: Label<DbLocation>? = null
+
+    // Set only while extracting the statements of a desugared increment/decrement block
+    // (`x++`, `--x`, ...). Holds the block's induction temporary and the canonical name to
+    // emit for it. The K2 frontend names this temp with the uniform special name `<unary>`,
+    // whereas K1 names it `tmp<N>` using a per-scope counter that cannot be reproduced
+    // faithfully under K2. Emitting `<unary>` from both frontends makes the output converge.
+    private var currentDesugarTemp: Pair<IrVariable, String>? = null
+
     private inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
         val name =
             when (element) {
@@ -108,7 +140,9 @@ open class KotlinFileExtractor(
 
     fun extractFileContents(file: IrFile, id: Label<DbFile>) {
         with("file", file) {
-            val locId = tw.getWholeFileLocation()
+            currentIrFile = file
+            try {
+                val locId = tw.getWholeFileLocation()
             val pkg = file.packageFqName.asString()
             val pkgId = extractPackage(pkg)
             tw.writeHasLocation(id, locId)
@@ -158,6 +192,9 @@ open class KotlinFileExtractor(
             linesOfCode?.linesOfCodeInFile(id)
 
             externalClassExtractor.writeStubTrapFile(file)
+            } finally {
+                currentIrFile = null
+            }
         }
     }
 
@@ -672,7 +709,8 @@ open class KotlinFileExtractor(
         val stmtId = tw.getFreshIdLabel<DbLocaltypedeclstmt>()
         tw.writeStmts_localtypedeclstmt(stmtId, parent, idx, callable)
         tw.writeIsLocalClassOrInterface(id, stmtId)
-        val locId = tw.getLocation(locElement)
+        val locId = if (usesK2) getPsiBasedLocation(locElement) ?: tw.getLocation(locElement)
+                    else tw.getLocation(locElement)
         tw.writeHasLocation(stmtId, locId)
     }
 
@@ -691,7 +729,8 @@ open class KotlinFileExtractor(
         )
         tw.writeMethodsKotlinType(obinitId, returnType.kotlinResult.id)
 
-        val locId = tw.getLocation(c)
+        val locId = if (usesK2) getPsiBasedLocation(c) ?: tw.getLocation(c)
+                    else tw.getLocation(c)
         tw.writeHasLocation(obinitId, locId)
 
         addModifiers(obinitId, "private")
@@ -954,7 +993,8 @@ open class KotlinFileExtractor(
                     }
                 }
 
-                val locId = tw.getLocation(c)
+                val locId = if (usesK2) getPsiBasedLocation(c) ?: tw.getLocation(c)
+                            else tw.getLocation(c)
                 tw.writeHasLocation(id, locId)
 
                 extractEnclosingClass(c.parent, id, c, locId, listOf())
@@ -1300,6 +1340,35 @@ open class KotlinFileExtractor(
     private fun hasSynthesizedParameterNames(f: IrFunction) =
         f.descriptor.hasSynthesizedParameterNames()
 
+    /**
+     * Returns the location of the primary-constructor parameter corresponding to a generated
+     * data-class `copy` value parameter, or null if [vp] is not such a parameter.
+     *
+     * A data class's generated `copy(...)` has one value parameter per primary-constructor
+     * property, defaulting to the current value. K1 records these parameters at the source
+     * location of the corresponding property; K2 leaves them with undefined offsets (a
+     * `0:0:0:0` location). To keep the richer K1 information under both frontends, we recover
+     * the property location from the primary constructor via the IR.
+     *
+     * Guards ensure this only affects the K2 case (K1 parameters already carry real offsets)
+     * and only `copy`-style parameters (matched by name against the primary-constructor
+     * parameter at the same index), so members such as `equals(other)` are left untouched.
+     */
+    private fun getGeneratedDataClassCopyParamLocation(
+        vp: IrValueParameter,
+        idx: Int
+    ): Label<DbLocation>? {
+        if (vp.startOffset >= 0) return null
+        val fn = vp.parent as? IrFunction ?: return null
+        if (fn.origin != IrDeclarationOrigin.GENERATED_DATA_CLASS_MEMBER) return null
+        val ctorParam =
+            fn.parentClassOrNull?.primaryConstructor?.codeQlValueParameters?.getOrNull(idx)
+                ?: return null
+        if (ctorParam.name.asString() != vp.name.asString() || ctorParam.startOffset < 0)
+            return null
+        return tw.getLocation(ctorParam)
+    }
+
     private fun extractValueParameter(
         vp: IrValueParameter,
         parent: Label<out DbCallable>,
@@ -1311,7 +1380,12 @@ open class KotlinFileExtractor(
         locOverride: Label<DbLocation>? = null
     ): TypeResults {
         with("value parameter", vp) {
-            val location = locOverride ?: getLocation(vp, classTypeArgsIncludingOuterClasses)
+            val location =
+                locOverride
+                    ?: getGeneratedDataClassCopyParamLocation(vp, idx)
+                    ?: getPsiBasedSyntheticParameterLocation(vp)
+                    ?: getPsiBasedValueParameterLocation(vp)
+                    ?: getLocation(vp, classTypeArgsIncludingOuterClasses)
             val maybeAlteredType =
                 (vp.parent as? IrFunction)?.let {
                     if (overridesCollectionsMethodWithAlteredParameterTypes(it))
@@ -1343,7 +1417,8 @@ open class KotlinFileExtractor(
                 extractTypeAccessRecursive(substitutedType, location, id, -1)
             }
             val syntheticParameterNames =
-                vp.origin == IrDeclarationOrigin.UNDERSCORE_PARAMETER ||
+                (vp.origin == IrDeclarationOrigin.UNDERSCORE_PARAMETER &&
+                    vp.name.asString() != "_") ||
                     ((vp.parent as? IrFunction)?.let { hasSynthesizedParameterNames(it) } ?: true)
             val javaParameter =
                 when (val callable = (vp.parent as? IrFunction)?.let { getJavaCallable(it) }) {
@@ -1364,7 +1439,7 @@ open class KotlinFileExtractor(
             return extractValueParameter(
                 id,
                 substitutedType,
-                vp.name.asString(),
+                getConvergedValueParameterName(vp),
                 location,
                 parent,
                 idx,
@@ -1536,7 +1611,7 @@ open class KotlinFileExtractor(
 
             val expr = initializer.expression
 
-            val declLocId = tw.getLocation(f)
+            val declLocId = (f as? IrField)?.let { getDelegateFieldLocation(it) } ?: tw.getLocation(f)
             extractExpressionStmt(
                     declLocId,
                     blockAndFunctionId.first,
@@ -1734,7 +1809,8 @@ open class KotlinFileExtractor(
         extractMethodAndParameterTypeAccesses: Boolean,
         extractAnnotations: Boolean,
         typeSubstitution: TypeSubstitution?,
-        classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?
+        classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,
+        overriddenAttributes: OverriddenFunctionAttributes? = null
     ) =
         if (isFake(f)) {
             if (needsInterfaceForwarder(f))
@@ -1752,8 +1828,18 @@ open class KotlinFileExtractor(
             // specifically in interfaces loaded from Java classes show up like fake overrides.
             val overriddenVisibility =
                 if (f.isFakeOverride && isJavaBinaryObjectMethodRedeclaration(f))
-                    OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC)
+                    DescriptorVisibilities.PUBLIC
                 else null
+            // Merge caller-supplied overrides with the internal visibility adjustment.
+            val mergedAttributes = when {
+                overriddenAttributes == null && overriddenVisibility == null -> null
+                overriddenAttributes == null -> OverriddenFunctionAttributes(visibility = overriddenVisibility)
+                overriddenVisibility == null -> overriddenAttributes
+                else -> overriddenAttributes.copy(
+                    visibility = overriddenVisibility.takeUnless { overriddenAttributes.visibility != null }
+                        ?: overriddenAttributes.visibility
+                )
+            }
             forceExtractFunction(
                     f,
                     parentId,
@@ -1762,7 +1848,7 @@ open class KotlinFileExtractor(
                     extractAnnotations,
                     typeSubstitution,
                     classTypeArgsIncludingOuterClasses,
-                    overriddenAttributes = overriddenVisibility
+                    overriddenAttributes = mergedAttributes
                 )
                 .also {
                     // The defaults-forwarder function is a static utility, not a member, so we only
@@ -2435,6 +2521,9 @@ open class KotlinFileExtractor(
 
                 val locId =
                     overriddenAttributes?.sourceLoc
+                        ?: (if (f.origin == IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR) getPsiBasedDelegatedAccessorLocation(f) else null)
+                        ?: (if (usesK2) getPsiBasedLocation(f) else null)
+                        ?: (if (f.symbol is IrConstructorSymbol && typeSubstitution == null) getPsiBasedImplicitConstructorLocation(f) else null)
                         ?: getLocation(f, classTypeArgsIncludingOuterClasses)
 
                 if (f.symbol is IrConstructorSymbol) {
@@ -2490,7 +2579,21 @@ open class KotlinFileExtractor(
                             "Type substitution should only be used to extract a function prototype, not the body",
                             f
                         )
-                    extractBody(body, id)
+                    val remap =
+                        when (f.origin) {
+                            IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR ->
+                                getDelegateExpressionOffsetRemap(f)
+                            IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR ->
+                                getDefaultAccessorBodyOffsetRemap(f)
+                            else -> null
+                        }
+                    val previousRemap = tw.scopedOffsetRemap
+                    if (remap != null) tw.scopedOffsetRemap = remap
+                    try {
+                        extractBody(body, id)
+                    } finally {
+                        tw.scopedOffsetRemap = previousRemap
+                    }
                 }
 
                 extractVisibility(f, id, overriddenAttributes?.visibility ?: f.visibility)
@@ -2568,12 +2671,26 @@ open class KotlinFileExtractor(
                     if (isAnnotationClassField(f)) kClassToJavaClass(f.type) else f.type
                 val id = useField(f)
                 extractAnnotations(f, id, extractAnnotationEnumTypeAccesses)
+                // A plain backing field's location should match its property's location
+                // (the `val`/`var` keyword to the end of the declaration), rather than the
+                // raw IR offset, which includes leading modifiers under -language-version
+                // 1.9 but not 2.0. Anchoring on the property keeps the two consistent.
+                // Delegated properties are excluded: their field is the `$delegate` storage,
+                // whose location is the delegate expression, not the property declaration.
+                val locId =
+                    f.correspondingPropertySymbol
+                        ?.owner
+                        ?.takeUnless { it.isDelegated }
+                        ?.let { getPsiBasedLocation(it) }
+                        ?: getDelegateFieldLocation(f)
+                        ?: getClassDelegateFieldLocation(f)
+                        ?: tw.getLocation(f)
                 return extractField(
                     id,
                     "${f.name.asString()}$fNameSuffix",
                     extractType,
                     parentId,
-                    tw.getLocation(f),
+                    locId,
                     f.visibility,
                     f,
                     isExternalDeclaration(f),
@@ -2644,13 +2761,30 @@ open class KotlinFileExtractor(
 
             DeclarationStackAdjuster(p).use {
                 val id = useProperty(p, parentId, classTypeArgsIncludingOuterClasses)
-                val locId = getLocation(p, classTypeArgsIncludingOuterClasses)
+                // PSI location is only used for the primary (unspecialised) extraction. Specialised
+                // generic instances defer to getLocation so that the backing binary-file location is
+                // preserved, keeping specialised properties absent from fromSource() queries.
+                val locId =
+                    if (classTypeArgsIncludingOuterClasses.isNullOrEmpty())
+                        getPsiBasedLocation(p) ?: getLocation(p, classTypeArgsIncludingOuterClasses)
+                    else
+                        getLocation(p, classTypeArgsIncludingOuterClasses)
                 tw.writeKtProperties(id, p.name.asString())
                 tw.writeHasLocation(id, locId)
 
                 val bf = p.backingField
                 val getter = p.getter
                 val setter = p.setter
+
+                // Synthesised (DEFAULT_PROPERTY_ACCESSOR) getters and setters should
+                // match the span the K2 frontend emits natively (see
+                // getPsiBasedAccessorLocation): the keyword token for a bare `get`/`set`,
+                // or the property signature for a fully synthesised accessor.
+                fun accessorOverride(f: IrFunction) =
+                    (if (f.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR)
+                        getPsiBasedAccessorLocation(p, f)
+                    else getPsiBasedAnnotatedAccessorLocation(p, f))
+                        ?.let { OverriddenFunctionAttributes(sourceLoc = it) }
 
                 if (getter == null) {
                     if (!isExternalDeclaration(p)) {
@@ -2665,7 +2799,8 @@ open class KotlinFileExtractor(
                                 extractMethodAndParameterTypeAccesses = extractFunctionBodies,
                                 extractAnnotations = extractAnnotations,
                                 typeSubstitution,
-                                classTypeArgsIncludingOuterClasses
+                                classTypeArgsIncludingOuterClasses,
+                                overriddenAttributes = accessorOverride(getter)
                             )
                             ?.cast<DbMethod>()
                     if (getterId != null) {
@@ -2695,7 +2830,8 @@ open class KotlinFileExtractor(
                                 extractMethodAndParameterTypeAccesses = extractFunctionBodies,
                                 extractAnnotations = extractAnnotations,
                                 typeSubstitution,
-                                classTypeArgsIncludingOuterClasses
+                                classTypeArgsIncludingOuterClasses,
+                                overriddenAttributes = accessorOverride(setter)
                             )
                             ?.cast<DbMethod>()
                     if (setterId != null) {
@@ -2822,12 +2958,40 @@ open class KotlinFileExtractor(
 
     private fun extractBlockBody(b: IrBlockBody, callable: Label<out DbCallable>) {
         with("block body", b) {
-            extractBlockBody(callable, tw.getLocation(b)).also {
+            extractBlockBody(callable, getPsiBasedConstructorBodyLocation(b) ?: tw.getLocation(b)).also {
                 for ((sIdx, stmt) in b.statements.withIndex()) {
                     extractStatement(stmt, callable, it, sIdx)
                 }
             }
         }
+    }
+
+    /**
+     * Returns a PSI-based location for a constructor body block that starts at the
+     * `constructor` keyword rather than at any leading modifiers.
+     *
+     * For a constructor declared with a visibility modifier (for example
+     * `internal constructor(...) { }`), the K1 frontend's [IrBlockBody] offsets start
+     * at the modifier (`3:3`); the K2 frontend starts at the `constructor` keyword
+     * (`3:12`), consistent with how declarations exclude leading modifiers from their
+     * own span. We converge K1 onto the K2 form.
+     *
+     * The end offset is left as the block body's own [IrBlockBody.endOffset]. For a
+     * constructor without modifiers the keyword already coincides with the block start,
+     * so this is a no-op there. Returns null under K2 (where [getKtFile] is unavailable
+     * and the raw offsets already exclude the modifier), for non-constructor bodies, and
+     * when the constructor has no `constructor` keyword (an implicit primary
+     * constructor).
+     */
+    private fun getPsiBasedConstructorBodyLocation(b: IrBlockBody): Label<DbLocation>? {
+        if (b.startOffset < 0 || b.endOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktCtor = getPsi2Ir()?.getKtFile(file)
+            ?.findElementAt(b.startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtConstructor<*>>().firstOrNull() }
+            ?: return null
+        val keyword = ktCtor.getConstructorKeyword() ?: return null
+        return tw.getLocation(keyword.startOffset, b.endOffset)
     }
 
     private fun extractSyntheticBody(b: IrSyntheticBody, callable: Label<out DbCallable>) {
@@ -2874,6 +3038,720 @@ open class KotlinFileExtractor(
         return v
     }
 
+    private fun getPsiBasedLocation(element: IrElement): Label<DbLocation>? {
+        val file = currentIrFile ?: return null
+        val psi2Ir = getPsi2Ir() ?: return null
+        val psiElement = psi2Ir.findPsiElement(element, file) ?: return null
+        return tw.getLocation(psiElement.startOffset, psiElement.endOffset)
+    }
+
+    /**
+     * Returns the PSI-based location for a local variable declaration.
+     *
+     * In K2 mode, [IrVariable.startOffset] points to the `val`/`var` keyword
+     * and [IrVariable.endOffset] points past the initialiser, giving the full
+     * declaration span without annotations. In K1 mode the IR records only the
+     * name identifier's range.
+     *
+     * To produce the same span in K1 we look up the leaf PSI element at
+     * [IrVariable.startOffset] (the name), walk up to the enclosing
+     * [KtVariableDeclaration], and then use the `val`/`var` keyword position as
+     * the start rather than the declaration's raw textRange start (which would
+     * include any leading annotations).
+     */
+    private fun getPsiBasedLocation(v: IrVariable): Label<DbLocation>? {
+        val startOffset = v.startOffset
+        if (startOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val nameElement = ktFile.findElementAt(startOffset) ?: return null
+        val declaration = generateSequence(nameElement) { it.parent }
+            .filterIsInstance<KtVariableDeclaration>()
+            .firstOrNull() ?: return null
+        // Use the val/var keyword as the start to avoid including leading annotations
+        // in the location (KtProperty.textRange starts before annotations).
+        val declStart = (declaration as? KtProperty)?.valOrVarKeyword?.startOffset
+            ?: declaration.startOffset
+        return tw.getLocation(declStart, declaration.endOffset)
+    }
+
+    /**
+     * Returns the PSI-based location for a property declaration, spanning from
+     * the `val`/`var` keyword to the end of the full property declaration (including
+     * any explicit getter/setter body).
+     *
+     * IR offsets are inconsistent across K1 and K2:
+     * - K1 [IrProperty.startOffset] includes leading modifiers (private, abstract,
+     *   lateinit, @Annotation) in the span start. K2 starts at `val`/`var`.
+     * - K1 [IrProperty.endOffset] stops at the end of the declaration line and
+     *   does not include an explicit getter/setter body on a subsequent line. K2
+     *   includes the getter/setter body.
+     *
+     * Both are resolved by walking the PSI tree: the [KtProperty] node covers the
+     * full declaration including getter/setter, and [KtProperty.valOrVarKeyword]
+     * gives the correct start, excluding modifiers.
+     */
+    private fun getPsiBasedLocation(p: IrProperty): Label<DbLocation>? {
+        if (p.startOffset < 0 || p.endOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val ktProperty = ktFile.findElementAt(p.startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtProperty>().firstOrNull() }
+            ?: return null
+        val declStart = ktProperty.valOrVarKeyword.startOffset
+        val declEnd = ktProperty.endOffset
+        return tw.getLocation(declStart, declEnd)
+    }
+
+    /**
+     * When a *synthetic* property access (e.g. the `this.prop` read the compiler generates
+     * inside a default getter or a primary-constructor field initialiser) carries IR offsets
+     * that span the whole property declaration, returns the property *signature* span (the
+     * `val`/`var` keyword to the end of the type, or to the end of the name when the type is
+     * inferred), matching the location the K2 frontend records for the same synthetic access;
+     * otherwise returns null.
+     *
+     * K1 and K2 offset these synthetic accesses differently: K1 runs through the initialiser
+     * (`val prop: Int = 1` -> `3:5:3:21`) while K2 stops at the type (`3:5:3:17`). Under K1 the
+     * access resolves (via [findPsiElement]) to the enclosing [KtProperty], from which we recover
+     * the K2 signature span. Returns null under K2 (no PSI; the raw offset already gives the
+     * signature span) and for every ordinary, source-written access, whose PSI is the reference
+     * expression rather than the whole property declaration.
+     */
+    private fun getPsiBasedPropertySignatureAccessLocation(e: IrElement): Label<DbLocation>? {
+        val file = currentIrFile ?: return null
+        val psi2Ir = getPsi2Ir() ?: return null
+        val ktProperty = psi2Ir.findPsiElement(e, file) as? KtProperty ?: return null
+        val declStart = ktProperty.valOrVarKeyword.startOffset
+        val declEnd = (ktProperty.typeReference ?: ktProperty.nameIdentifier)?.endOffset
+            ?: return null
+        return tw.getLocation(declStart, declEnd)
+    }
+
+    // Matches the K1 frontend's synthetic name for the temporary holding the subject of a
+    // destructuring declaration (`val (a, b) = subject`), which is `tmp<N>_container`. K2 names
+    // the same temporary with the special name `<destruct>`.
+    private val destructuringContainerK1NameRegex = Regex("tmp\\d+_container")
+
+    /**
+     * A destructuring declaration `val (a, b) = subject` introduces a temporary holding the
+     * subject, from which each component is read via `componentN()`. K1 names this temporary
+     * `tmp<N>_container`; K2 names it `<destruct>`. The uniform K2 name identifies the construct
+     * and is frontend-independent, so we emit `<destruct>` from both frontends (see also the
+     * location convergence in [getPsiBasedDestructuringContainerLocation]).
+     */
+    private fun isDestructuringContainerVariable(v: IrVariable): Boolean =
+        v.name.asString() == "<destruct>" ||
+            destructuringContainerK1NameRegex.matches(v.name.asString())
+
+    /**
+     * Location for the destructuring-container temporary spanning the whole
+     * [KtDestructuringDeclaration] (`val (a, b) = subject`).
+     *
+     * Under K2 the temporary already carries the full declaration span. Under K1 its IR offsets
+     * point only at the subject expression, so we recover the declaration span from the PSI: look
+     * up the leaf at the temporary's start offset and walk up to the enclosing
+     * [KtDestructuringDeclaration]. Returns null under K2 (no PSI back-mapping), where the IR
+     * offsets are already correct.
+     */
+    private fun getPsiBasedDestructuringContainerLocation(v: IrVariable): Label<DbLocation>? {
+        val startOffset = v.startOffset
+        if (startOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val element = ktFile.findElementAt(startOffset) ?: return null
+        val destructuring = generateSequence(element) { it.parent }
+            .filterIsInstance<KtDestructuringDeclaration>()
+            .firstOrNull() ?: return null
+        return tw.getLocation(destructuring.startOffset, destructuring.endOffset)
+    }
+
+    /**
+     * Location for a primary-constructor `val`/`var` value parameter that excludes any
+     * leading modifiers, spanning from the `val`/`var` keyword to the parameter's end.
+     *
+     * For a property parameter declared with modifiers (for example
+     * `public vararg val s: String`), the K1 frontend's [IrValueParameter] offsets start at
+     * the first modifier (`public`), whereas K2 starts at the `val`/`var` keyword, consistent
+     * with how declarations exclude leading modifiers from their own span (annotations and
+     * modifiers carry their own locations). We converge K1 onto the K2 form.
+     *
+     * Returns null under K2 (where [getKtFile] is unavailable and the raw offsets already
+     * exclude the modifiers), and for any parameter without a `val`/`var` keyword (an ordinary
+     * value parameter), where the start already coincides with the parameter and there is no
+     * modifier span to strip.
+     */
+    private fun getPsiBasedValueParameterLocation(vp: IrValueParameter): Label<DbLocation>? {
+        if (vp.startOffset < 0 || vp.endOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val ktParam = ktFile.findElementAt(vp.startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtParameter>().firstOrNull() }
+            ?: return null
+        val keyword = ktParam.valOrVarKeyword ?: return null
+        // Only converge when leading modifiers (e.g. `vararg`, visibility) precede the
+        // `val`/`var` keyword: there the raw K1 offset starts at the first modifier while
+        // K2 starts at the keyword. When the keyword is already the parameter start there
+        // is nothing to exclude, and rewriting the end offset would diverge from K2.
+        if (keyword.startOffset <= vp.startOffset) return null
+        return tw.getLocation(keyword.startOffset, vp.endOffset)
+    }
+
+    /**
+     * Returns the name to record for a value parameter, converging the two frontends where they
+     * disagree.
+     *
+     * A property's synthetic setter has a single implicit value parameter. The K2 frontend names
+     * it `<set-?>`; the K1 frontend does the same for a
+     * member property's setter but names a *delegated* property's setter parameter `value`. That
+     * parameter is always compiler-synthesised (a delegated-property accessor carries no
+     * source-written parameters), so renaming it can never affect a user-written `value` parameter
+     * (for example the `value` parameter of a hand-written `ReadWriteProperty.setValue`, whose
+     * function has origin `DEFINED`). We therefore converge the delegated-setter parameter onto the
+     * canonical `<set-?>` name (the `SpecialNames.IMPLICIT_SETTER_PARAMETER` constant is not present
+     * in every supported compiler version, so the literal is used directly).
+     *
+     * The rename is guarded on the K1 source name `value` so it targets *only* the setter value
+     * parameter: a delegated accessor's other parameters are receivers (`<this>` for an extension
+     * property, `<dispatchReceiver>` for a member property), which must keep their names. Under K2
+     * the setter parameter is already `<set-?>` and the receivers are `<this>`, so none match and
+     * the canonical K2 output is left untouched.
+     */
+    private fun getConvergedValueParameterName(vp: IrValueParameter): String {
+        if (
+            (vp.parent as? IrFunction)?.origin == IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR &&
+                vp.name.asString() == "value"
+        ) {
+            return "<set-?>"
+        }
+        return vp.name.asString()
+    }
+
+    /**
+     * Returns the PSI-based location for a *synthesised* value parameter that has no source
+     * token of its own, matching the span the K2 frontend emits natively, or null to leave the
+     * raw IR offset in place.
+     *
+     * Two synthetic members carry such parameters:
+     *  - the compiler-generated setter of a *delegated* property (its `<set-?>` parameter): the
+     *    K1 frontend anchors it at the delegate expression (`8:32:11:5`) while K2 spans the whole
+     *    property declaration (`8:5:11:5`); and
+     *  - the enum `valueOf` special member (its `value` parameter): the K1 frontend has no offsets
+     *    at all and emits the null `0:0:0:0` location while K2 attributes it to the enum-class
+     *    declaration (`1:1:4:1`).
+     *
+     * In both cases the parameter is compiler-synthesised, so the K2 span (the owning declaration)
+     * is a real, navigable location and strictly more useful than either the delegate-expression
+     * fragment or the null `0:0` K1 records. As with the other convergence helpers we recover that
+     * span from the PSI under K1; the method returns null under K2 (where [getKtFile] is
+     * unavailable and the raw offsets already carry the owning-declaration span) and for every
+     * ordinary, source-backed parameter.
+     */
+    private fun getPsiBasedSyntheticParameterLocation(vp: IrValueParameter): Label<DbLocation>? {
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val fn = vp.parent as? IrSimpleFunction ?: return null
+
+        val property = fn.correspondingPropertySymbol?.owner
+        if (property != null && property.isDelegated && property.setter?.symbol == fn.symbol) {
+            val ktProperty = getEnclosingKtProperty(property) ?: return null
+            return tw.getLocation(ktProperty.startOffset, ktProperty.endOffset)
+        }
+
+        if (
+            fn.origin == IrDeclarationOrigin.ENUM_CLASS_SPECIAL_MEMBER &&
+                fn.name.asString() == "valueOf"
+        ) {
+            val enumClass = fn.parentClassOrNull ?: return null
+            if (enumClass.startOffset < 0) return null
+            val ktClass = ktFile.findElementAt(enumClass.startOffset)
+                ?.let { leaf ->
+                    generateSequence(leaf) { it.parent }
+                        .filterIsInstance<KtClassOrObject>()
+                        .firstOrNull()
+                }
+                ?: return null
+            return tw.getLocation(ktClass.startOffset, ktClass.endOffset)
+        }
+        return null
+    }
+
+    /**
+     * Returns the PSI-based location for a synthesised (`DEFAULT_PROPERTY_ACCESSOR`)
+     * getter or setter, matching the span the K2 frontend emits natively.
+     *
+     * Under K2 the extractor has no PSI back-mapping for these accessors
+     * ([getKtFile] returns null), so it falls back to the raw IR offsets, which are:
+     *  - for a *bare* accessor (an explicit `get`/`set` keyword with no body): the
+     *    keyword token itself; and
+     *  - for a fully *synthesised* accessor (no accessor written in source): the
+     *    property signature from the `val`/`var` keyword through the type annotation
+     *    (or the name identifier when there is no explicit type), excluding the
+     *    initialiser.
+     *
+     * K2 cannot recover the property-name-end PSI location, so rather than converge
+     * on a value K2 cannot produce we converge K1 onto these K2-native spans. This
+     * helper returns null under K2 (where the raw offsets already produce them) and
+     * reproduces them from the PSI under K1.
+     */
+    private fun getPsiBasedAccessorLocation(p: IrProperty, accessor: IrFunction): Label<DbLocation>? {
+        if (p.startOffset < 0 || p.endOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val ktProperty = ktFile.findElementAt(p.startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtProperty>().firstOrNull() }
+            ?: return null
+        val isGetter = p.getter?.symbol == accessor.symbol
+        val ktAccessor: KtPropertyAccessor? = if (isGetter) ktProperty.getter else ktProperty.setter
+        if (ktAccessor != null) {
+            // An explicit accessor with a body is located at its body elsewhere; only
+            // bare `get`/`set` keywords are handled here, pointing at the keyword token.
+            if (ktAccessor.hasBody()) return null
+            val keyword = ktAccessor.namePlaceholder
+            return tw.getLocation(keyword.startOffset, keyword.endOffset)
+        }
+        // Fully synthesised accessor: span the property signature, excluding the initialiser.
+        val declStart = ktProperty.valOrVarKeyword.startOffset
+        val declEnd = ktProperty.typeReference?.endOffset
+            ?: ktProperty.nameIdentifier?.endOffset
+            ?: ktProperty.valOrVarKeyword.endOffset
+        return tw.getLocation(declStart, declEnd)
+    }
+
+    /**
+     * Returns the PSI-based location for the synthetic delegating *super*-constructor
+     * call generated for a class's primary constructor, spanning the full
+     * [KtClassOrObject] text range (including any leading modifiers such as `open`).
+     *
+     * A primary constructor's call to its superclass is written in source only as the
+     * supertype-list entry (for example `: ClassThree()`), so it has no `super(...)`
+     * token of its own. The K1 frontend records the synthetic call at that supertype
+     * call expression (`12:23:12:34`); the K2 frontend records it at the whole class
+     * declaration (`12:1:15:1`). Neither is a real `super(...)` statement, and K2's
+     * whole-construct span is the agreed canonical form, so we converge K1 onto it by
+     * recovering the enclosing class span from the PSI.
+     *
+     * Applies to primary constructors only (both explicit `()` and fully implicit): a
+     * super call written explicitly in a secondary constructor keeps its own
+     * `super(...)` location, which both frontends already record identically. Returns
+     * null under K2 (where [getKtFile] is unavailable and the raw offsets already carry
+     * the class span) and when [callable] is not a primary constructor.
+     */
+    private fun getPsiBasedPrimaryCtorSuperCallLocation(callable: IrDeclaration): Label<DbLocation>? {
+        val ctor = callable as? IrConstructor ?: return null
+        if (!ctor.isPrimary) return null
+        val c = ctor.parentAsClass
+        val startOffset = c.startOffset
+        if (startOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktClass = getPsi2Ir()?.getKtFile(file)
+            ?.findElementAt(startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtClassOrObject>().firstOrNull() }
+            ?: return null
+        return tw.getLocation(ktClass.startOffset, ktClass.endOffset)
+    }
+
+    /**
+     * Returns the PSI-based location for the *implicit* (compiler-synthesised)
+     *
+     * When a class has no primary constructor written in source (for example
+     * `open class C0<V> {}`), the compiler synthesises one. The K2 frontend records
+     * that constructor with the class declaration's raw IR offsets, which include
+     * the leading modifier keywords. The K1 frontend's raw offsets for the same
+     * synthesised constructor start at the `class` keyword and omit the modifiers.
+     * K1 retains the PSI, so we recover the modifier-inclusive span from the
+     * enclosing [KtClassOrObject] to match K2.
+     *
+     * This deliberately does *not* apply to an *explicit* primary constructor
+     * (e.g. `class C1(val t: T)` or `class C2()`): those keep their own
+     * parameter-list location, which both frontends already record identically from
+     * raw IR offsets. It returns null when the [KtFile] is unavailable (as under K2,
+     * where the raw offsets already carry the class span) or when the enclosing
+     * class declares an explicit primary constructor.
+     */
+    private fun getPsiBasedImplicitConstructorLocation(f: IrFunction): Label<DbLocation>? {
+        if ((f as? IrConstructor)?.isPrimary != true) return null
+        val c = f.parentAsClass
+        val startOffset = c.startOffset
+        if (startOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktClass = getPsi2Ir()?.getKtFile(file)
+            ?.findElementAt(startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtClassOrObject>().firstOrNull() }
+            ?: return null
+        // An explicit primary constructor keeps its own (parameter-list) location.
+        if ((ktClass as? KtClass)?.primaryConstructor != null) return null
+        return tw.getLocation(ktClass.startOffset, ktClass.endOffset)
+    }
+
+    /**
+     * Returns the PSI-based location for an *explicit* property accessor that carries
+     * its own annotation(s) (for example `@JvmName("getX_prop") get() = 15`), spanning
+     * from the leading annotation through the end of the accessor.
+     *
+     * The K2 frontend records such an accessor with raw IR offsets that already include
+     * the leading annotation; the K1 frontend's raw offsets start at the `get`/`set`
+     * keyword and omit the annotation. We converge K1 onto the annotation-inclusive K2
+     * span by recovering it from the [KtPropertyAccessor] PSI node, whose text range
+     * begins at its modifier list (the annotations).
+     *
+     * Returns null under K2 (where [getKtFile] is unavailable and the raw offsets
+     * already carry the annotation) and for accessors that declare no annotations of
+     * their own (which both frontends already record identically).
+     */
+    private fun getPsiBasedAnnotatedAccessorLocation(p: IrProperty, accessor: IrFunction): Label<DbLocation>? {
+        if (p.startOffset < 0 || p.endOffset < 0) return null
+        val file = currentIrFile ?: return null
+        val ktFile = getPsi2Ir()?.getKtFile(file) ?: return null
+        val ktProperty = ktFile.findElementAt(p.startOffset)
+            ?.let { leaf -> generateSequence(leaf) { it.parent }.filterIsInstance<KtProperty>().firstOrNull() }
+            ?: return null
+        val isGetter = p.getter?.symbol == accessor.symbol
+        val ktAccessor: KtPropertyAccessor = (if (isGetter) ktProperty.getter else ktProperty.setter)
+            ?: return null
+        if (ktAccessor.annotationEntries.isEmpty()) return null
+        return tw.getLocation(ktAccessor.startOffset, ktAccessor.endOffset)
+    }
+
+    /**
+     * Returns the PSI-based location for the synthesised getter/setter of a
+     * enclosing property declaration from its `val`/`var` keyword through the end of
+     * the delegate expression.
+     *
+     * For a delegated property such as `val prop1: Int by lazy { ... }` the compiler
+     * synthesises a getter (and, for `var`, a setter) whose body forwards to the
+     * delegate's `getValue`/`setValue`. The K2 frontend records these accessors with
+     * raw IR offsets spanning the whole property declaration (the `val`/`var` keyword
+     * through the delegate expression). The K1 frontend's raw offsets (and its
+     * [findPsiElement]-based location) instead cover only the delegate expression, so
+     * the two frontends disagree on the accessor's start column.
+     *
+     * K1 retains the PSI, so we recover the K2-native span from the enclosing
+     * [KtProperty]: the [findPsiElement] mapping resolves the accessor to a node
+     * within the property's delegate, from which we walk up to the [KtProperty].
+     * [KtProperty.valOrVarKeyword] then gives the start (excluding any leading
+     * modifiers, matching the default-accessor and property spans) and
+     * [KtProperty.endOffset] gives the end (past the delegate expression).
+     *
+     * This is deliberately not gated on [usesK2]: it must apply to the K1 frontends
+     * (which retain PSI) to converge them onto the K2-native span, and it returns null
+     * under K2 (where [findPsiElement] finds no PSI and the raw offsets already carry
+     * this span). It applies uniformly to both getter and setter, and to both
+     * member-level and local delegated properties.
+     */
+    private fun getPsiBasedDelegatedAccessorLocation(f: IrFunction): Label<DbLocation>? {
+        val file = currentIrFile ?: return null
+        val psiElement = getPsi2Ir()?.findPsiElement(f, file) ?: return null
+        val ktProperty = generateSequence(psiElement) { it.parent }
+            .filterIsInstance<KtProperty>().firstOrNull()
+            ?: return null
+        return tw.getLocation(ktProperty.valOrVarKeyword.startOffset, ktProperty.endOffset)
+    }
+
+    /**
+     * For a synthetic `thisRef` argument in a compiler-generated *delegated*-property accessor
+     * body (origin `DELEGATED_PROPERTY_ACCESSOR`), returns the location to use, or null to leave
+     * the raw location in place.
+     *
+     * The synthesised getter/setter body forwards to the delegate's `getValue`/`setValue`,
+     * passing the accessor's dispatch/extension receiver (a `this` access) as the `thisRef`
+     * argument, or `null` when the property has no receiver (e.g. a local delegated property).
+     * These arguments have no dedicated source token. The K2 frontend records them so that:
+     * - a receiver `this` access takes the delegate *expression*'s source range (e.g. the
+     *   `ResourceDelegate()` in `by ResourceDelegate()`), and
+     * - a `null` argument has undefined offsets, so `tw.getLocation` maps it to the whole-file
+     *   location (`file:0:0:0:0`).
+     *
+     * The K1 frontend instead gives both real-but-meaningless offsets that resolve (via
+     * `findPsiElement`) to an unrelated token near the top of the file (e.g. an `import`),
+     * producing a bogus non-zero location. Recognise these arguments by their enclosing accessor's
+     * origin, their shape (the accessor's own dispatch/extension receiver, or a `null` constant),
+     * and the fact that their offsets fall outside the enclosing property's PSI text range (a real
+     * receiver access could only occur within the delegate expression, i.e. inside that range).
+     * Emit the K2-native location so K1 converges: the delegate expression's range for a `this`
+     * receiver, or the whole-file location for `null`.
+     *
+     * This is not gated on [usesK2]: it must fire under K1 (which retains PSI and produces the
+     * bogus offsets) and is a no-op under K2 (where [getPsi2Ir] is null, so it returns null and
+     * the raw location is already used).
+     */
+    private fun getDelegatedAccessorSyntheticArgumentLocation(e: IrElement): Label<DbLocation>? {
+        val enclosing = declarationStack.peek().first as? IrFunction ?: return null
+        if (enclosing.origin != IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR) return null
+        val isNull =
+            when (e) {
+                is IrGetValue -> {
+                    val owner = e.symbol.owner
+                    val isReceiver =
+                        owner is IrValueParameter &&
+                            owner.parent == enclosing &&
+                            (isDispatchReceiver(owner) ||
+                                owner == enclosing.codeQlExtensionReceiverParameter)
+                    if (!isReceiver) return null
+                    false
+                }
+                is CodeQLIrConst<*> -> {
+                    if (e.value != null) return null
+                    true
+                }
+                else -> return null
+            }
+        val file = currentIrFile ?: return null
+        val psiElement = getPsi2Ir()?.findPsiElement(enclosing, file) ?: return null
+        val ktProperty = generateSequence(psiElement) { it.parent }
+            .filterIsInstance<KtProperty>().firstOrNull()
+            ?: return null
+        val start = e.startOffset
+        val end = e.endOffset
+        if (start < 0 || end < 0) return null
+        // In-range offsets could be a genuine receiver access within the delegate expression;
+        // only treat offsets outside the whole property declaration as the synthetic thisRef.
+        if (start >= ktProperty.startOffset && end <= ktProperty.endOffset) return null
+        if (isNull) return tw.getWholeFileLocation()
+        val delegateExpression = ktProperty.delegate?.expression ?: return null
+        return tw.getLocation(delegateExpression.startOffset, delegateExpression.endOffset)
+    }
+
+    /**
+     * For the synthetic `thisRef` argument of a *local* delegated property (declared inside a
+     * function body), returns the location to use, or null to leave the raw location in place.
+     *
+     * A local delegated property's forwarding get/set is inlined into the enclosing function
+     * rather than materialised as a `DELEGATED_PROPERTY_ACCESSOR` (so
+     * [getDelegatedAccessorSyntheticArgumentLocation] does not apply). Because a local property
+     * has no dispatch/extension receiver, its synthetic `thisRef` is always a `null` constant
+     * with no source token. K2 records it at the whole-file location (`file:0:0:0:0`); K1 gives
+     * it a bogus non-zero location that resolves to an unrelated top-of-file token.
+     *
+     * This only fires while [currentLocalDelegatedProperty] is being extracted, and only for a
+     * `null` constant whose offsets fall outside that property's PSI text range (so a genuine
+     * source `null` inside the delegate expression, e.g. `by foo(null)`, is never moved). It is a
+     * no-op under K2, where [getPsi2Ir] is null.
+     */
+    private fun getLocalDelegatedPropertySyntheticNullLocation(e: IrElement): Label<DbLocation>? {
+        val property = currentLocalDelegatedProperty ?: return null
+        if (e !is CodeQLIrConst<*> || e.value != null) return null
+        val start = e.startOffset
+        val end = e.endOffset
+        if (start < 0 || end < 0) return null
+        val file = currentIrFile ?: return null
+        val psiElement = getPsi2Ir()?.findPsiElement(property, file) ?: return null
+        val ktProperty = generateSequence(psiElement) { it.parent }
+            .filterIsInstance<KtProperty>().firstOrNull()
+            ?: return null
+        // A genuine `null` inside the delegate expression lies within the property's range; only
+        // treat offsets outside the whole property declaration as the synthetic thisRef.
+        if (start >= ktProperty.startOffset && end <= ktProperty.endOffset) return null
+        return tw.getWholeFileLocation()
+    }
+
+    /**
+     * For a delegated-property accessor (origin `DELEGATED_PROPERTY_ACCESSOR`), returns the
+     * offset remapping to apply while extracting its body, or null if it cannot be computed.
+     *
+     * The synthesised accessor body forwards to the delegate's `getValue`/`setValue`, and its
+     * expressions (the `get`/`getValue`/`setValue`/`invoke` calls, the `<prop>$delegate`
+     * access, type accesses, etc.) carry the source range of the whole `KtPropertyDelegate`
+     * node. The K1 frontend's range starts at the `by` keyword; K2 starts at the delegate
+     * expression itself (e.g. `lazy { ... }`). The `by` keyword is syntactic glue, not part of
+     * the expression being evaluated, so K2's narrower range is the more intuitive one.
+     *
+     * K1 retains the PSI, so we recover the delegate expression's range from the enclosing
+     * [KtProperty] and map the `by`-inclusive delegate range onto it. The remap matches the
+     * full delegate range exactly, so only the synthesised body expressions that span the
+     * whole `by <expr>` are affected. It returns null under K2 (no PSI), where the raw offsets
+     * already exclude the `by` keyword.
+     */
+    private fun getDelegateExpressionOffsetRemap(
+        f: IrFunction
+    ): Pair<Pair<Int, Int>, Pair<Int, Int>>? {
+        return getEnclosingKtProperty(f)?.let { getDelegateExpressionOffsetRemap(it) }
+    }
+
+    /**
+     * Maps the whole `by <expr>` delegate range (which the K1 frontend records for the
+     * synthesised delegate expressions) onto the delegate expression's own range (the `by`
+     * keyword excluded, as K2 records natively). Returns null when [ktProperty] has no delegate
+     * or the delegate has no expression.
+     */
+    private fun getDelegateExpressionOffsetRemap(
+        ktProperty: KtProperty
+    ): Pair<Pair<Int, Int>, Pair<Int, Int>>? {
+        val delegate = ktProperty.delegate ?: return null
+        val expression = delegate.expression ?: return null
+        return Pair(
+            Pair(delegate.startOffset, delegate.endOffset),
+            Pair(expression.startOffset, expression.endOffset)
+        )
+    }
+
+    /**
+     * Maps the property-declaration range (which the K1 frontend records for the synthesised
+     * body expressions of a compiler-generated default `get`/`set` accessor, running through the
+     * property initialiser) onto the property *signature* range (the `val`/`var` keyword through
+     * the type, or through the name when the type is inferred), which K2 records natively.
+     *
+     * A `DEFAULT_PROPERTY_ACCESSOR` has no source body, so the K1 frontend anchors its synthesised
+     * `field = value` / `return field` expressions (and their `<set-?>`/field/`this` sub-accesses)
+     * at the whole [KtProperty], whose end offset runs through the initialiser
+     * (`var topLevelInt: Int = 0` -> `60:1:60:24`). K2 has no PSI for these accessors and falls
+     * back to the raw signature span, which stops at the type (`60:1:60:20`) or, when the type is
+     * inferred, at the name (`var curValue = 0` -> `26:13:26:24`). The initialiser is not part of
+     * the accessor body, so K2's narrower signature span is the more intuitive one; we converge K1
+     * onto it via a scoped offset remap set only while extracting the accessor body. The remap
+     * matches the property range exactly, so no unrelated location is affected.
+     *
+     * Returns null under K2 (no PSI, [getEnclosingKtProperty] returns null) and when the property
+     * has no initialiser past the signature to exclude.
+     */
+    private fun getDefaultAccessorBodyOffsetRemap(
+        f: IrFunction
+    ): Pair<Pair<Int, Int>, Pair<Int, Int>>? {
+        val property = (f as? IrSimpleFunction)?.correspondingPropertySymbol?.owner ?: return null
+        if (property.startOffset < 0 || property.endOffset < 0) return null
+        val ktProperty = getEnclosingKtProperty(property) ?: return null
+        val declEnd = ktProperty.typeReference?.endOffset
+            ?: ktProperty.nameIdentifier?.endOffset
+            ?: return null
+        if (property.endOffset <= declEnd) return null
+        return Pair(
+            Pair(property.startOffset, property.endOffset),
+            Pair(property.startOffset, declEnd)
+        )
+    }
+
+    /**
+     * Returns the [KtProperty] enclosing the PSI element that back-maps from IR element [e],
+     * or null when no PSI is available (as under K2, where [getKtFile]/[findPsiElement] return
+     * null) or [e] is not within a property.
+     */
+    private fun getEnclosingKtProperty(e: IrElement): KtProperty? {
+        val file = currentIrFile ?: return null
+        val psiElement = getPsi2Ir()?.findPsiElement(e, file) ?: return null
+        return generateSequence(psiElement) { it.parent }
+            .filterIsInstance<KtProperty>().firstOrNull()
+    }
+
+    /**
+     * Returns the PSI-based location for a delegated property's `$delegate` backing field, or
+     * null to leave the raw IR offset in place.
+     *
+     * The `$delegate` field stores the delegate object, so its natural location is the delegate
+     * expression (e.g. `ResourceDelegate()` in `by ResourceDelegate()`). The K1 frontend's raw
+     * offset for this field starts at the `by` keyword; K2 starts at the delegate expression.
+     * The `by` keyword is syntactic glue, not part of the stored expression, so K2's narrower
+     * range is the more intuitive one.
+     *
+     * This fires only for a delegated property's own backing field (`isDelegated` and
+     * `backingField === f`), and returns null under K2 (no PSI) and for specialised/binary
+     * extractions (no PSI), where the raw offset already excludes the `by` keyword.
+     */
+    private fun getDelegateFieldLocation(f: IrField): Label<DbLocation>? {
+        val property = f.correspondingPropertySymbol?.owner ?: return null
+        if (!property.isDelegated || property.backingField !== f) return null
+        val ktProperty = getEnclosingKtProperty(property) ?: return null
+        val expression = ktProperty.delegate?.expression ?: return null
+        return tw.getLocation(expression.startOffset, expression.endOffset)
+    }
+
+    /**
+     * Returns the location for an interface-delegation `$$delegate_0` backing field, or null to
+     * leave the raw IR offset in place.
+     *
+     * For `class C : Intf by <expr>` the compiler synthesises a `$$delegate_0` field that stores
+     * `<expr>`, so its natural location is that delegate expression. The K1 frontend's raw offset
+     * already spans the expression (`intfDelegate.kt:7:26:9:1`, the `object : Intf { ... }`); the
+     * K2 frontend's raw offset starts at the delegated supertype and so includes the `Intf by `
+     * glue (`7:18:9:1`). As with a delegated property's `$delegate` field, the `by` clause is
+     * syntactic glue rather than part of the stored expression, so we converge on the narrower
+     * delegate-expression span by anchoring the field on its own initialiser.
+     *
+     * This uses the field initialiser's raw offsets (available under both frontends), so it is
+     * frontend-stable: under K1 it reproduces the offset already recorded, and under K2 it trims
+     * the leading `Intf by `. It fires only for class-delegation fields (`IrDeclarationOrigin.DELEGATE`),
+     * which have no corresponding property and would otherwise fall through to the raw IR offset.
+     */
+    private fun getClassDelegateFieldLocation(f: IrField): Label<DbLocation>? {
+        if (f.origin != IrDeclarationOrigin.DELEGATE) return null
+        val expression = f.initializer?.expression ?: return null
+        if (expression.startOffset < 0 || expression.endOffset < 0) return null
+        return tw.getLocation(expression.startOffset, expression.endOffset)
+    }
+
+    /**
+     * Reconstructs the location of an `if`/`when` branch [b] (of the enclosing [IrWhen] [w])
+     * from the branch's own condition/result offsets, or null to leave the raw location in
+     * place.
+     *
+     * The K1 frontend lowers `if`/`when` branches with their raw IR offsets collapsed onto the
+     * whole enclosing expression, so every branch reports the same span as [w]. K2 records
+     * per-branch spans: the condition start through the result end, or (for an `else` branch,
+     * whose condition is a synthetic `true`) just the result span. Reconstruct that per-branch
+     * span from the branch's condition/result offsets.
+     *
+     * This only fires when the raw branch span is collapsed onto [w] (as under K1); under K2 the
+     * raw per-branch offsets already differ from [w], so it returns null and the raw location is
+     * kept. It also returns null when the reconstructed offsets are undefined, synthetic,
+     * inverted, or fall outside [w], so it is a strict no-op except for the collapsed case.
+     */
+    private fun getWhenBranchLocation(w: IrWhen, b: IrBranch): Label<DbLocation>? {
+        if (b.startOffset != w.startOffset || b.endOffset != w.endOffset) return null
+        val start = if (b is IrElseBranch) b.result.startOffset else b.condition.startOffset
+        val end = correctedEndOffset(b.result)
+        if (start == UNDEFINED_OFFSET || end == UNDEFINED_OFFSET) return null
+        if (start == SYNTHETIC_OFFSET || end == SYNTHETIC_OFFSET) return null
+        if (start > end || start < w.startOffset || end > w.endOffset) return null
+        return tw.getLocation(start, end)
+    }
+
+    /**
+     * Returns the end offset of [e], correcting for the K1 frontend recording an assignment's
+     * raw end offset at its left-hand side rather than past its right-hand value. When [e] is an
+     * `IrSetValue`/`IrSetField` whose assigned value ends later than the assignment's own raw
+     * end (as under K1), the value's end offset is used; otherwise the raw end offset is kept, so
+     * this is a no-op under K2 (where the assignment already spans its value).
+     */
+    private fun correctedEndOffset(e: IrExpression): Int {
+        val valueEnd =
+            when (e) {
+                is IrSetValue -> e.value.endOffset
+                is IrSetField -> e.value.endOffset
+                else -> UNDEFINED_OFFSET
+            }
+        return correctedEndOffset(e.endOffset, valueEnd)
+    }
+
+    /**
+     * Returns [rawEnd], or [valueEnd] when the latter is a valid offset lying past [rawEnd]. This
+     * widens an assignment's raw end offset (which the K1 frontend records at the left-hand side)
+     * to include its right-hand value; under K2 the raw end already spans the value, so [valueEnd]
+     * is not past [rawEnd] and this is a no-op. Undefined/synthetic [valueEnd] offsets are ignored.
+     */
+    private fun correctedEndOffset(rawEnd: Int, valueEnd: Int): Int {
+        return if (
+            valueEnd != UNDEFINED_OFFSET && valueEnd != SYNTHETIC_OFFSET && valueEnd > rawEnd
+        )
+            valueEnd
+        else rawEnd
+    }
+
+    /**
+     * Returns the location for the `ExprStmt` wrapper synthesised around a statement-position
+     * expression [e].
+     *
+     * The K1 frontend records an assignment's raw end offset at its left-hand side rather than
+     * past its right-hand value, so a bare assignment statement (`z = 4`) yields a zero-width
+     * wrapper location collapsed onto the LHS. K2 spans the whole assignment. Widen the wrapper to
+     * end past the assigned value (matching the inner `AssignExpr` location, which already uses
+     * `e.startOffset .. rhsValue.endOffset`). This is a no-op for non-assignments and under K2,
+     * where the assignment already spans its value, so `correctedEndOffset` returns the raw end.
+     */
+    private fun getExpressionStmtLocation(e: IrExpression): Label<DbLocation> {
+        val correctedEnd = correctedEndOffset(e)
+        return if (correctedEnd != e.endOffset) tw.getLocation(e.startOffset, correctedEnd)
+        else tw.getLocation(e)
+    }
+
     private fun extractVariable(
         v: IrVariable,
         callable: Label<out DbCallable>,
@@ -2882,7 +3760,7 @@ open class KotlinFileExtractor(
     ) {
         with("variable", v) {
             val stmtId = tw.getFreshIdLabel<DbLocalvariabledeclstmt>()
-            val locId = tw.getLocation(getVariableLocationProvider(v))
+            val locId = getPsiBasedLocation(v) ?: tw.getLocation(getVariableLocationProvider(v))
             tw.writeStmts_localvariabledeclstmt(stmtId, parent, idx, callable)
             tw.writeHasLocation(stmtId, locId)
             extractVariableExpr(v, callable, stmtId, 1, stmtId)
@@ -2900,9 +3778,26 @@ open class KotlinFileExtractor(
         with("variable expr", v) {
             val varId = useVariable(v)
             val exprId = tw.getFreshIdLabel<DbLocalvariabledeclexpr>()
-            val locId = tw.getLocation(getVariableLocationProvider(v))
+            val isDestructContainer = isDestructuringContainerVariable(v)
+            val locId =
+                (if (isDestructContainer) getPsiBasedDestructuringContainerLocation(v) else null)
+                    ?: getPsiBasedLocation(v)
+                    ?: tw.getLocation(getVariableLocationProvider(v))
             val type = useType(v.type)
-            tw.writeLocalvars(varId, v.name.asString(), type.javaResult.id, exprId)
+            // K2 names a source `_` (unused) local/catch variable with the synthetic
+            // SpecialNames.UNDERSCORE_FOR_UNUSED_VAR (`<unused var>`), whereas K1 keeps the
+            // source spelling `_`. Emit `_` so both frontends produce the same, source-faithful
+            // name (D15). The desugar temporaries for increment/decrement (`<unary>`) and
+            // destructuring (`<destruct>`) are likewise normalised onto the uniform K2 names.
+            val desugarTemp = currentDesugarTemp
+            val varName =
+                when {
+                    desugarTemp != null && desugarTemp.first === v -> desugarTemp.second
+                    isDestructContainer -> "<destruct>"
+                    v.name == SpecialNames.UNDERSCORE_FOR_UNUSED_VAR -> "_"
+                    else -> v.name.asString()
+                }
+            tw.writeLocalvars(varId, varName, type.javaResult.id, exprId)
             tw.writeLocalvarsKotlinType(varId, type.kotlinResult.id)
             tw.writeHasLocation(varId, locId)
             tw.writeExprs_localvariabledeclexpr(exprId, type.javaResult.id, parent, idx)
@@ -2972,7 +3867,7 @@ open class KotlinFileExtractor(
                 }
                 is IrLocalDelegatedProperty -> {
                     val blockId = tw.getFreshIdLabel<DbBlock>()
-                    val locId = tw.getLocation(s)
+                    val locId = getPsiBasedLocation(s) ?: tw.getLocation(s)
                     tw.writeStmts_block(blockId, parent, idx, callable)
                     tw.writeHasLocation(blockId, locId)
                     // For Kotlin < 2.3, s.delegate is not-nullable, but for Kotlin >= 2.3
@@ -2982,25 +3877,43 @@ open class KotlinFileExtractor(
                     val delegate: IrVariable? = s.delegate as IrVariable?
                     val propId = tw.getFreshIdLabel<DbKt_property>()
 
-                    if (delegate == null) {
-                        // This is not expected to happen, as the plugin hooks into the pipeline before IR lowering.
-                        logger.errorElement("Local delegated property is missing delegate", s)
-                    } else {
-                        extractVariable(delegate, callable, blockId, 0)
-                        tw.writeKtProperties(propId, s.name.asString())
-                        tw.writeHasLocation(propId, locId)
-                        tw.writeKtPropertyDelegates(propId, useVariable(delegate))
-                    }
-                    // Getter:
-                    extractStatement(s.getter, callable, blockId, 1)
-                    val getterLabel = getLocallyVisibleFunctionLabels(s.getter).function
-                    tw.writeKtPropertyGetters(propId, getterLabel)
+                    val prevLocalDelegatedProperty = currentLocalDelegatedProperty
+                    currentLocalDelegatedProperty = s
+                    try {
+                        if (delegate == null) {
+                            // This is not expected to happen, as the plugin hooks into the pipeline before IR lowering.
+                            logger.errorElement("Local delegated property is missing delegate", s)
+                        } else {
+                            // The synthesised `provideDelegate(...)` call and its `KProperty`
+                            // argument in the delegate variable's initializer span the whole
+                            // `by <expr>` range under K1; remap them onto the delegate
+                            // expression (the `by` keyword excluded, as K2 records natively).
+                            val delegateRemap =
+                                getEnclosingKtProperty(s)?.let { getDelegateExpressionOffsetRemap(it) }
+                            val previousRemap = tw.scopedOffsetRemap
+                            if (delegateRemap != null) tw.scopedOffsetRemap = delegateRemap
+                            try {
+                                extractVariable(delegate, callable, blockId, 0)
+                            } finally {
+                                tw.scopedOffsetRemap = previousRemap
+                            }
+                            tw.writeKtProperties(propId, s.name.asString())
+                            tw.writeHasLocation(propId, locId)
+                            tw.writeKtPropertyDelegates(propId, useVariable(delegate))
+                        }
+                        // Getter:
+                        extractStatement(s.getter, callable, blockId, 1)
+                        val getterLabel = getLocallyVisibleFunctionLabels(s.getter).function
+                        tw.writeKtPropertyGetters(propId, getterLabel)
 
-                    val setter = s.setter
-                    if (setter != null) {
-                        extractStatement(setter, callable, blockId, 2)
-                        val setterLabel = getLocallyVisibleFunctionLabels(setter).function
-                        tw.writeKtPropertySetters(propId, setterLabel)
+                        val setter = s.setter
+                        if (setter != null) {
+                            extractStatement(setter, callable, blockId, 2)
+                            val setterLabel = getLocallyVisibleFunctionLabels(setter).function
+                            tw.writeKtPropertySetters(propId, setterLabel)
+                        }
+                    } finally {
+                        currentLocalDelegatedProperty = prevLocalDelegatedProperty
                     }
                 }
                 else -> {
@@ -3059,9 +3972,10 @@ open class KotlinFileExtractor(
         id: Label<out DbExpr>,
         c: IrCall,
         callable: Label<out DbCallable>,
-        enclosingStmt: Label<out DbStmt>
+        enclosingStmt: Label<out DbStmt>,
+        customLocId: Label<DbLocation>? = null
     ) {
-        val locId = tw.getLocation(c)
+        val locId = customLocId ?: tw.getLocation(c)
         extractExprContext(id, locId, callable, enclosingStmt)
 
         val dr = c.dispatchReceiver
@@ -4072,6 +4986,40 @@ open class KotlinFileExtractor(
             else -> false
         }
 
+    /**
+     * For a property/delegated-property setter [IrCall] desugared from an assignment
+     * `lhs = rhs` (origin [IrStatementOrigin.EQ]), returns the end offset of the assigned
+     * value (the call's last value argument) when it extends past the call's own end offset,
+     * or null otherwise.
+     *
+     * The K1 frontend records such a setter call (and its synthetic implicit-`this` receiver
+     * and synthetic reflection arguments) at the assignment's left-hand side only
+     * (`varResource0 = 3` -> `37:9:37:20`), whereas K2 spans the whole assignment through the
+     * assigned value (`37:9:37:24`). The setter call *is* the desugaring of the whole
+     * assignment, so K2's span is the more intuitive one; we converge K1 onto it. Returns null
+     * under K2 (where the call already spans the assigned value, so no widening is needed) and
+     * for any non-assignment call.
+     */
+    private fun getSetterCallAssignedValueEndOffset(c: IrCall): Int? {
+        if (c.origin != IrStatementOrigin.EQ) return null
+        val n = c.codeQlValueArgumentsCount
+        if (n == 0) return null
+        val assignedValue = c.codeQlGetValueArgument(n - 1) ?: return null
+        val valueEnd = assignedValue.endOffset
+        if (
+            valueEnd == UNDEFINED_OFFSET ||
+                valueEnd == SYNTHETIC_OFFSET ||
+                c.startOffset == UNDEFINED_OFFSET ||
+                c.startOffset == SYNTHETIC_OFFSET ||
+                c.endOffset == UNDEFINED_OFFSET ||
+                c.endOffset == SYNTHETIC_OFFSET
+        ) {
+            return null
+        }
+        if (valueEnd <= c.endOffset) return null
+        return valueEnd
+    }
+
     private fun extractCall(
         c: IrCall,
         callable: Label<out DbCallable>,
@@ -4391,6 +5339,55 @@ open class KotlinFileExtractor(
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     unaryopDisp(id)
                 }
+                // Fold unaryMinus applied to a numeric constant into a single negative literal.
+                // In K2 mode, `-123L` is emitted as IrCall(unaryMinus, IrConst(123L)) rather than
+                // IrConst(-123L) as in K1. Folding restores K1 behaviour and makes negative
+                // numeric literals directly queryable in both modes.
+                isNumericFunction(target, "unaryMinus") && dr is CodeQLIrConst<*> -> {
+                    val receiver = dr
+                    val v = receiver.value
+                    val type = useType(c.type)
+                    // In K2 the IrCall's startOffset equals the receiver's startOffset, so the
+                    // minus sign (one character before the literal) must be recovered from the source.
+                    val locId =
+                        if (receiver.startOffset > 0)
+                            tw.getLocation(receiver.startOffset - 1, c.endOffset)
+                        else
+                            tw.getLocation(c)
+                    when (v) {
+                        is Int ->
+                            extractConstantInteger(-v, locId, parent, idx, callable, enclosingStmt)
+                        is Short ->
+                            extractConstantInteger(-v.toInt(), locId, parent, idx, callable, enclosingStmt)
+                        is Byte ->
+                            extractConstantInteger(-v.toInt(), locId, parent, idx, callable, enclosingStmt)
+                        is Long ->
+                            exprIdOrFresh<DbLongliteral>(null).also { id ->
+                                tw.writeExprs_longliteral(id, type.javaResult.id, parent, idx)
+                                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                                extractExprContext(id, locId, callable, enclosingStmt)
+                                tw.writeNamestrings((-v).toString(), (-v).toString(), id)
+                            }
+                        is Float ->
+                            exprIdOrFresh<DbFloatingpointliteral>(null).also { id ->
+                                tw.writeExprs_floatingpointliteral(id, type.javaResult.id, parent, idx)
+                                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                                extractExprContext(id, locId, callable, enclosingStmt)
+                                tw.writeNamestrings((-v).toString(), (-v).toString(), id)
+                            }
+                        is Double ->
+                            exprIdOrFresh<DbDoubleliteral>(null).also { id ->
+                                tw.writeExprs_doubleliteral(id, type.javaResult.id, parent, idx)
+                                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                                extractExprContext(id, locId, callable, enclosingStmt)
+                                tw.writeNamestrings((-v).toString(), (-v).toString(), id)
+                            }
+                        else ->
+                            logger.errorElement(
+                                "Unexpected constant type for unaryMinus folding: ${v?.javaClass}", c
+                            )
+                    }
+                }
                 isNumericFunction(target, "inv", "unaryMinus", "unaryPlus") -> {
                     val type = useType(c.type)
                     val id: Label<out DbExpr> =
@@ -4510,7 +5507,12 @@ open class KotlinFileExtractor(
                     val type = useType(c.type)
                     tw.writeExprs_notnullexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    unaryOp(id, c, callable, enclosingStmt)
+                    // In K1 mode the IrCall.startOffset for !! points to the '!' character rather
+                    // than the start of the operand. Use the operand's startOffset instead so that
+                    // the NotNullExpr spans from the operand to the end of '!!'.
+                    val operandStart = c.codeQlGetValueArgument(0)?.startOffset?.takeIf { it >= 0 }
+                    val notNullLocId = if (operandStart != null && c.endOffset >= 0) tw.getLocation(operandStart, c.endOffset) else null
+                    unaryOp(id, c, callable, enclosingStmt, notNullLocId)
                 }
                 isBuiltinCallInternal(c, "THROW_CCE") -> {
                     // TODO
@@ -4522,7 +5524,12 @@ open class KotlinFileExtractor(
                 }
                 isBuiltinCallInternal(c, "noWhenBranchMatchedException") -> {
                     kotlinNoWhenBranchMatchedConstructor?.let {
-                        val locId = tw.getLocation(c)
+                        // Under K1 this synthetic call has undefined offsets (a `0:0:0:0`
+                        // location); fall back to the enclosing `when`'s location, matching K2.
+                        val locId =
+                            if (c.startOffset == UNDEFINED_OFFSET || c.endOffset == UNDEFINED_OFFSET)
+                                currentSyntheticWhenLocation ?: tw.getLocation(c)
+                            else tw.getLocation(c)
                         val thrownType = useSimpleTypeClass(it.parentAsClass, listOf(), false)
                         val stmtParent = stmtExprParent.stmt(c, callable)
                         val throwId = tw.getFreshIdLabel<DbThrowstmt>()
@@ -4831,7 +5838,11 @@ open class KotlinFileExtractor(
 
                     if (array != null && arrayIdx != null && assignedValue != null) {
 
-                        val locId = tw.getLocation(c)
+                        // The K1 frontend records the set-operation's end offset at the left-hand
+                        // side array access (`a[i]`), whereas K2 spans through the assigned value.
+                        // Widen the end to include the assigned value so both frontends agree.
+                        val locId =
+                            tw.getLocation(c, correctedEndOffset(c.endOffset, assignedValue.endOffset))
                         extractAssignExpr(c.type, locId, parent, idx, callable, enclosingStmt)
                             .also { assignId ->
                                 tw.getFreshIdLabel<DbArrayaccess>().also { arrayAccessId ->
@@ -5000,7 +6011,29 @@ open class KotlinFileExtractor(
                     }
                 }
                 else -> {
-                    extractMethodAccess(target, true, true)
+                    // A property/delegated-property setter call desugared from an assignment
+                    // `lhs = rhs` is anchored by K1 at the left-hand side only, while K2 spans the
+                    // whole assignment through the assigned value. Widen the K1 span to match by
+                    // remapping the call's exact offset pair (which its synthetic implicit-`this`
+                    // receiver and synthetic reflection arguments also carry) onto one that runs
+                    // through the assigned value. Real source arguments have their own offsets and
+                    // are unaffected; the remap is a no-op under K2 (helper returns null).
+                    val assignedValueEnd = getSetterCallAssignedValueEndOffset(c)
+                    if (assignedValueEnd != null) {
+                        val previousRemap = tw.scopedOffsetRemap
+                        tw.scopedOffsetRemap =
+                            Pair(
+                                Pair(c.startOffset, c.endOffset),
+                                Pair(c.startOffset, assignedValueEnd)
+                            )
+                        try {
+                            extractMethodAccess(target, true, true)
+                        } finally {
+                            tw.scopedOffsetRemap = previousRemap
+                        }
+                    } else {
+                        extractMethodAccess(target, true, true)
+                    }
                 }
             }
         }
@@ -5319,7 +6352,7 @@ open class KotlinFileExtractor(
         override fun stmt(e: IrExpression, callable: Label<out DbCallable>) = this
 
         override fun expr(e: IrExpression, callable: Label<out DbCallable>) =
-            extractExpressionStmt(tw.getLocation(e), parent, idx, callable).let { id ->
+            extractExpressionStmt(getExpressionStmtLocation(e), parent, idx, callable).let { id ->
                 ExprParent(id, 0, id)
             }
     }
@@ -5353,6 +6386,105 @@ open class KotlinFileExtractor(
             IrStatementOrigin.PERCEQ -> "rem"
             else -> null
         }
+
+    /**
+     * For a desugared in-place update such as `v += e` (represented as `v = get(v).op(e)`),
+     * returns the `IrGetValue` receiver that reads `v`. Its source span is the left-hand-side
+     * variable reference (the identifier only) in both the K1 and K2 frontends, so it provides a
+     * frontend-independent location for the update's LHS `VarAccess`. Returns null when [e] is not
+     * such an in-place update, in which case callers keep the raw location.
+     */
+    private fun getUpdateInPlaceReceiver(e: IrSetValue): IrGetValue? {
+        val op = getStatementOriginOperator(e.origin) ?: return null
+        val rhs = e.value
+        if (rhs !is IrCall || !isNumericFunction(rhs.symbol.owner, op)) return null
+        val receiver = rhs.dispatchReceiver
+        return if (receiver is IrGetValue && receiver.symbol.owner == e.symbol.owner) receiver
+        else null
+    }
+
+    /**
+     * Kotlin's hard keywords, which cannot be used as an identifier without backtick-quoting. When
+     * a declaration's name equals one of these, its source occurrence is the backtick-quoted form
+     * (e.g. `` `is` ``), so the source token is longer than the name and offset-plus-name-length
+     * arithmetic would misplace the identifier's end. Such names are therefore excluded from the
+     * plain-assignment LHS narrowing below.
+     */
+    private val hardKeywords =
+        setOf(
+            "as",
+            "break",
+            "class",
+            "continue",
+            "do",
+            "else",
+            "false",
+            "for",
+            "fun",
+            "if",
+            "in",
+            "interface",
+            "is",
+            "null",
+            "object",
+            "package",
+            "return",
+            "super",
+            "this",
+            "throw",
+            "true",
+            "try",
+            "typealias",
+            "typeof",
+            "val",
+            "var",
+            "when",
+            "while"
+        )
+
+    /**
+     * Returns true when [name] is an unquoted simple Kotlin identifier: it is non-empty, starts
+     * with a letter or underscore, contains only letters, digits and underscores, and is not a
+     * hard keyword. For such a name the source occurrence contains exactly [name] with no
+     * backtick-quoting, so its character length matches the source token's length.
+     */
+    private fun isUnquotedSimpleIdentifier(name: String): Boolean {
+        if (name.isEmpty()) return false
+        if (!(name[0].isLetter() || name[0] == '_')) return false
+        if (!name.all { it.isLetterOrDigit() || it == '_' }) return false
+        return name !in hardKeywords
+    }
+
+    /**
+     * For a plain assignment `x = v` (an `IrSetValue` that is not a desugared in-place update), the
+     * K2 frontend records the set operation's end offset past the assigned value, so
+     * `getLocation(e)` spans the whole `x = v` rather than just the target identifier `x`; K1's set
+     * end offset already stops at the identifier. This returns a location covering only the target
+     * identifier so both frontends agree.
+     *
+     * The identifier's end offset is derived as `startOffset + name.length`, which is safe only
+     * when the target's name is an unquoted simple identifier (so the source token equals the name
+     * with no backtick-quoting and no leading receiver). Returns null in every other case - special
+     * or backtick-requiring names, invalid/synthetic offsets, or an end running into the assigned
+     * value - so callers keep the raw location. Deliberately gated on [usesK2]: under K1 the raw
+     * location is already identifier-only, so this must not perturb it.
+     */
+    private fun getPlainSetValueLhsIdentifierLocation(e: IrSetValue): Label<DbLocation>? {
+        if (!usesK2) return null
+        val start = e.startOffset
+        if (start == UNDEFINED_OFFSET || start == SYNTHETIC_OFFSET) return null
+        val name = e.symbol.owner.name
+        if (name.isSpecial) return null
+        val text = name.asString()
+        if (!isUnquotedSimpleIdentifier(text)) return null
+        val end = start + text.length
+        val valueStart = e.value.startOffset
+        if (
+            valueStart != UNDEFINED_OFFSET && valueStart != SYNTHETIC_OFFSET && end > valueStart
+        )
+            return null
+        return tw.getLocation(start, end)
+    }
 
     private fun getUpdateInPlaceRHS(
         origin: IrStatementOrigin?,
@@ -5605,7 +6737,15 @@ open class KotlinFileExtractor(
                                         val exprParent = parent.expr(e, callable)
                                         val assignId = tw.getFreshIdLabel<DbAssignexpr>()
                                         val type = useType(arrayVarInitializer.type)
-                                        val locId = tw.getLocation(e)
+                                        // The K1 frontend records the compound-assignment block's
+                                        // end offset at the left-hand side array access (`a[i]`),
+                                        // whereas K2 spans through the right-hand value. Widen the
+                                        // end to include the value so both frontends agree.
+                                        val locId =
+                                            tw.getLocation(
+                                                e,
+                                                correctedEndOffset(e.endOffset, updateRhs.endOffset)
+                                            )
                                         tw.writeExprsKotlinType(assignId, type.kotlinResult.id)
                                         extractExprContext(
                                             assignId,
@@ -5846,7 +6986,11 @@ open class KotlinFileExtractor(
                         )
                     }
 
-                    val locId = tw.getLocation(e)
+                    val locId =
+                        (if (delegatingClass != currentClass)
+                            getPsiBasedPrimaryCtorSuperCallLocation(irCallable)
+                        else null)
+                            ?: tw.getLocation(e)
                     val methodId = useFunction<DbConstructor>(e.symbol.owner)
                     if (methodId == null) {
                         logger.errorElement("Cannot get ID for delegating constructor", e)
@@ -6038,7 +7182,8 @@ open class KotlinFileExtractor(
                         extractVariableAccess(
                             useValueDeclaration(owner),
                             extractType,
-                            tw.getLocation(e),
+                            getDelegatedAccessorSyntheticArgumentLocation(e)
+                                ?: getPsiBasedLocation(e) ?: tw.getLocation(e),
                             exprParent.parent,
                             exprParent.idx,
                             callable,
@@ -6049,7 +7194,7 @@ open class KotlinFileExtractor(
                 is IrGetField -> {
                     val exprParent = parent.expr(e, callable)
                     val owner = tryReplaceAndroidSyntheticField(e.symbol.owner)
-                    val locId = tw.getLocation(e)
+                    val locId = getPsiBasedPropertySignatureAccessLocation(e) ?: tw.getLocation(e)
                     val fieldType =
                         if (isAnnotationClassField(owner)) kClassToJavaClass(e.type) else e.type
                     extractVariableAccess(
@@ -6114,7 +7259,26 @@ open class KotlinFileExtractor(
                     extractExprContext(id, locId, callable, exprParent.enclosingStmt)
 
                     val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-                    val lhsLocId = tw.getLocation(e)
+                    // For a desugared in-place update (`v += e`) the K2 frontend records the set
+                    // operation's end offset past the whole assignment, so `getLocation(e)` would
+                    // span `v += e` rather than just `v`. Locate the LHS `VarAccess` at the update's
+                    // receiver read of `v` instead, whose span is the identifier in both frontends.
+                    // For a plain assignment (`v = e`) K2 similarly spans the whole assignment, so
+                    // narrow to the target identifier via `getPlainSetValueLhsIdentifierLocation`.
+                    // Fall back to the raw location when neither applies or lacks a usable span.
+                    val lhsLocId =
+                        (e as? IrSetValue)
+                            ?.let { setValue ->
+                                getUpdateInPlaceReceiver(setValue)
+                                    ?.takeIf {
+                                        it.startOffset != UNDEFINED_OFFSET &&
+                                            it.endOffset != UNDEFINED_OFFSET &&
+                                            it.startOffset != SYNTHETIC_OFFSET &&
+                                            it.endOffset != SYNTHETIC_OFFSET
+                                    }
+                                    ?.let { tw.getLocation(it) }
+                                    ?: getPlainSetValueLhsIdentifierLocation(setValue)
+                            } ?: tw.getLocation(e)
                     extractExprContext(lhsId, lhsLocId, callable, exprParent.enclosingStmt)
 
                     when (e) {
@@ -6252,7 +7416,7 @@ open class KotlinFileExtractor(
                                 )
                                 id
                             }
-                        val locId = tw.getLocation(e)
+                        val locId = getPsiBasedLocation(e) ?: tw.getLocation(e)
 
                         tw.writeExprsKotlinType(id, type.kotlinResult.id)
                         extractExprContext(id, locId, callable, exprParent.enclosingStmt)
@@ -6280,7 +7444,7 @@ open class KotlinFileExtractor(
                     val exprParent = parent.expr(e, callable)
                     val id = tw.getFreshIdLabel<DbWhenexpr>()
                     val type = useType(e.type)
-                    val locId = tw.getLocation(e)
+                    val locId = getPsiBasedLocation(e) ?: tw.getLocation(e)
                     tw.writeExprs_whenexpr(
                         id,
                         type.javaResult.id,
@@ -6294,11 +7458,20 @@ open class KotlinFileExtractor(
                     }
                     e.branches.forEachIndexed { i, b ->
                         val bId = tw.getFreshIdLabel<DbWhenbranch>()
-                        val bLocId = tw.getLocation(b)
+                        val bLocId =
+                            getWhenBranchLocation(e, b)
+                                ?: getPsiBasedLocation(b)
+                                ?: tw.getLocation(b)
                         tw.writeStmts_whenbranch(bId, id, i, callable)
                         tw.writeHasLocation(bId, bLocId)
                         extractExpressionExpr(b.condition, callable, bId, 0, bId)
-                        extractExpressionStmt(b.result, callable, bId, 1)
+                        val prevSyntheticWhenLocation = currentSyntheticWhenLocation
+                        currentSyntheticWhenLocation = locId
+                        try {
+                            extractExpressionStmt(b.result, callable, bId, 1)
+                        } finally {
+                            currentSyntheticWhenLocation = prevSyntheticWhenLocation
+                        }
                         if (b is IrElseBranch) {
                             tw.writeWhen_branch_else(bId)
                         }
@@ -6401,7 +7574,7 @@ open class KotlinFileExtractor(
                      **/
 
                     val ids = getLocallyVisibleFunctionLabels(e.function)
-                    val locId = tw.getLocation(e)
+                    val locId = getPsiBasedLocation(e) ?: tw.getLocation(e)
 
                     val ext = e.function.codeQlExtensionReceiverParameter
                     val parameters =
@@ -6522,11 +7695,32 @@ open class KotlinFileExtractor(
         callable: Label<out DbCallable>
     ) {
         val id = tw.getFreshIdLabel<DbBlock>()
-        val locId = tw.getLocation(e)
+        val locId = getPsiBasedLocation(e) ?: tw.getLocation(e)
         tw.writeStmts_block(id, parent, idx, callable)
         tw.writeHasLocation(id, locId)
-        statements.forEachIndexed { i, s -> extractStatement(s, callable, id, i) }
+        // A desugared increment/decrement (`x++`, `--x`, ...) is an IrBlock whose induction
+        // temporary is named `tmp<N>` under K1 but `<unary>` under K2. K1's counter-based name
+        // cannot be reproduced under K2, so emit the uniform `<unary>` from both frontends.
+        val prevDesugarTemp = currentDesugarTemp
+        val inductionTemp =
+            (e as? IrContainerExpression)?.takeIf { isUnaryDesugarOrigin(it.origin) }
+                ?.statements
+                ?.firstOrNull() as? IrVariable
+        if (inductionTemp != null) {
+            currentDesugarTemp = Pair(inductionTemp, "<unary>")
+        }
+        try {
+            statements.forEachIndexed { i, s -> extractStatement(s, callable, id, i) }
+        } finally {
+            currentDesugarTemp = prevDesugarTemp
+        }
     }
+
+    private fun isUnaryDesugarOrigin(origin: IrStatementOrigin?) =
+        origin == IrStatementOrigin.PREFIX_INCR ||
+            origin == IrStatementOrigin.PREFIX_DECR ||
+            origin == IrStatementOrigin.POSTFIX_INCR ||
+            origin == IrStatementOrigin.POSTFIX_DECR
 
     private inline fun <D : DeclarationDescriptor, reified B : IrSymbolOwner> getBoundSymbolOwner(
         symbol: IrBindableSymbol<D, B>,
@@ -6586,7 +7780,9 @@ open class KotlinFileExtractor(
         callable: Label<out DbCallable>
     ) {
         val containingDeclaration = declarationStack.peek().first
-        val locId = tw.getLocation(e)
+        val locId = getDelegatedAccessorSyntheticArgumentLocation(e)
+            ?: getPsiBasedPropertySignatureAccessLocation(e)
+            ?: getPsiBasedLocation(e) ?: tw.getLocation(e)
 
         if (
             containingDeclaration.shouldExtractAsStatic &&
@@ -6953,7 +8149,7 @@ open class KotlinFileExtractor(
             v is String -> {
                 exprIdOrFresh<DbStringliteral>(overrideId).also { id ->
                     val type = useType(e.type)
-                    val locId = tw.getLocation(e)
+                    val locId = getPsiBasedLocation(e) ?: tw.getLocation(e)
                     tw.writeExprs_stringliteral(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     extractExprContext(id, locId, enclosingCallable, enclosingStmt)
@@ -6963,7 +8159,9 @@ open class KotlinFileExtractor(
             v == null -> {
                 extractNull(
                     e.type,
-                    tw.getLocation(e),
+                    getDelegatedAccessorSyntheticArgumentLocation(e)
+                        ?: getLocalDelegatedPropertySyntheticNullLocation(e)
+                        ?: tw.getLocation(e),
                     parent,
                     idx,
                     enclosingCallable,
@@ -9115,11 +10313,21 @@ open class KotlinFileExtractor(
         with("generated class", localFunction) {
             val ids = getLocallyVisibleFunctionLabels(localFunction)
 
+            // For a delegated property's synthesised accessor the generated wrapper class
+            // (and its constructor and super-call) must share the accessor's declaration
+            // span so that, like the K2 frontend, the constructor still sorts before the
+            // getter/setter rather than after it (the raw K1 offset would place the class
+            // at the delegate expression, past the accessor's own start column).
+            val classLocId =
+                (if (localFunction.origin == IrDeclarationOrigin.DELEGATED_PROPERTY_ACCESSOR)
+                    getPsiBasedDelegatedAccessorLocation(localFunction) else null)
+                    ?: tw.getLocation(localFunction)
+
             val id =
                 extractGeneratedClass(
                     ids,
                     superTypes,
-                    tw.getLocation(localFunction),
+                    classLocId,
                     localFunction,
                     localFunction.parent,
                     compilerGeneratedKindOverride = compilerGeneratedKindOverride
