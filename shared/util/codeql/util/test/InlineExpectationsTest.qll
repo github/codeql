@@ -635,6 +635,28 @@ module TestPostProcessing {
 
   signature module InputSig<InlineExpectationsTestSig Input> {
     string getRelativeUrl(Input::Location location);
+
+    /**
+     * Gets the marker that starts a line comment (for example `"//"` or `"#"`) in the source
+     * file with the given `relativePath`, provided that `codeql test run --learn` is able to
+     * render inline expectations for that file. Files for which this has no result are left
+     * untouched by `--learn`.
+     *
+     * This is keyed on the file rather than on the analyzed language because a single database
+     * may contain source files in several languages with different comment syntaxes (for
+     * example Java together with XML). `relativePath` is the path reported by `getRelativeUrl`.
+     */
+    bindingset[relativePath]
+    string getStartCommentMarker(string relativePath);
+
+    /**
+     * Gets the marker that ends a comment (for example `"-->"`) in the source file with the
+     * given `relativePath`. Defaults to the empty string, which is correct for languages whose
+     * inline expectations use line comments; block-comment languages can override it so that
+     * `--learn` renders a closing marker.
+     */
+    bindingset[relativePath]
+    default string getEndCommentMarker(string relativePath) { result = "" }
   }
 
   module Make<InlineExpectationsTestSig Input, InputSig<Input> Input2> {
@@ -1010,6 +1032,160 @@ module TestPostProcessing {
       or
       Test::testFailures(_, _) and
       relation = "testFailures"
+    }
+
+    /**
+     * Gets the inline expectation comment (including the comment markers, but with no leading
+     * whitespace) that renders a plain `tag` expectation in the file with the given `relativePath`,
+     * or has no result if that file's comment syntax is not supported. For example `// $ Alert` for
+     * a language whose line comments start with `//`.
+     *
+     * This form is used when rewriting an existing comment in place, starting at its comment
+     * marker, so it must not carry the leading separator space that `renderExpectationComment`
+     * adds for appending after code.
+     */
+    bindingset[relativePath, tag]
+    private string renderInlineComment(string relativePath, string tag) {
+      exists(string startMarker, string endMarker, string endSuffix |
+        startMarker = Input2::getStartCommentMarker(relativePath) and
+        endMarker = Input2::getEndCommentMarker(relativePath) and
+        (
+          endMarker = "" and endSuffix = ""
+          or
+          endMarker != "" and endSuffix = " " + endMarker
+        ) and
+        result = startMarker + " $ " + tag + endSuffix
+      )
+    }
+
+    /**
+     * Gets the fully rendered inline expectation comment (including the comment markers) that
+     * `--learn` should append for a new `tag` expectation in the file with the given
+     * `relativePath`, or has no result if that file's comment syntax is not supported.
+     *
+     * The leading space separates the comment from any existing content on the line.
+     */
+    bindingset[relativePath, tag]
+    private string renderExpectationComment(string relativePath, string tag) {
+      result = " " + renderInlineComment(relativePath, tag)
+    }
+
+    /**
+     * Holds if `expectation` is the only inline expectation carried by its comment, so `--learn`
+     * can rewrite or delete the comment as a whole without disturbing a sibling expectation.
+     * Comments that additionally carry an invalid (unparseable) expectation are excluded, to avoid
+     * corrupting text the library could not fully understand.
+     */
+    private predicate isSoleExpectationOnComment(Test::FailureLocatable expectation) {
+      count(Test::FailureLocatable other |
+        other.getLocation() = expectation.getLocation() and
+        (
+          other instanceof Test::GoodTestExpectation or
+          other instanceof Test::FalsePositiveTestExpectation or
+          other instanceof Test::FalseNegativeTestExpectation
+        )
+      ) = 1 and
+      not exists(Test::InvalidTestExpectation invalid |
+        invalid.getLocation() = expectation.getLocation()
+      )
+    }
+
+    /**
+     * Holds if `codeql test run --learn` should edit the source file `file` so that its inline
+     * expectations match the current query results. Each row asks the test runner to change
+     * `line`, where `operation` is either:
+     *
+     * - `"append"`: add `text` (a fully rendered comment) at the end of the line; `startColumn`
+     *   and `endColumn` are both 0.
+     * - `"replace"`: replace the 1-based inclusive column range `[startColumn, endColumn]` with
+     *   `text` (the empty string deletes the range).
+     *
+     * Only a deliberately reliable subset is emitted so far, restricted to the plain `Alert`
+     * tag with no value or query-id annotation, on comments that carry a single expectation:
+     *
+     * - an actual result with no matching expectation gets a new `// $ Alert` comment appended
+     *   (an *unexpected result*);
+     * - a comment whose sole expectation is a plain `// $ Alert` whose result is now missing, or a
+     *   `// $ SPURIOUS: Alert` whose result no longer fires, is removed (a *missing result* or a
+     *   *fixed spurious result*); and
+     * - a comment whose sole expectation is `// $ MISSING: Alert` whose result now appears is
+     *   promoted to a plain `// $ Alert` (a *fixed missing result*).
+     *
+     * Cases that need sub-comment column information (editing one tag among several on a comment
+     * that carries multiple expectations) are intentionally left for a follow-up.
+     */
+    query predicate learnEdits(
+      string file, int line, string operation, int startColumn, int endColumn, string text
+    ) {
+      // Unexpected result: append a new `// $ Alert` comment on the alert's line. The comment
+      // must go on the result's *end* line, because an expectation matches a result when the
+      // expectation's start line equals the result's end line (see `onSameLine`). For most
+      // languages a result spans a single line, but some (e.g. Rust) include leading trivia in
+      // the location, so the start and end lines differ.
+      exists(Test::ActualTestResult actualResult, string relativePath, int el, string comment |
+        actualResult.getTag() = "Alert" and
+        actualResult.getValue() = "" and
+        not actualResult.isOptional() and
+        not exists(
+          Test::getAMatchingExpectation(actualResult.getLocation(), actualResult.toString(),
+            actualResult.getTag(), actualResult.getValue(), false)
+        ) and
+        parseLocationString(actualResult.getLocation().getRelativeUrl(), relativePath, _, _, el, _) and
+        comment = renderExpectationComment(relativePath, "Alert") and
+        file = relativePath and
+        line = el and
+        operation = "append" and
+        startColumn = 0 and
+        endColumn = 0 and
+        text = comment
+      )
+      or
+      // Obsolete expectation: remove a comment whose sole expectation is either a plain
+      // `// $ Alert` that no longer matches any result (a *missing result*), or a
+      // `// $ SPURIOUS: Alert` whose result no longer fires, so the known false positive is fixed
+      // (a *fixed spurious result*). In both cases the whole comment is deleted.
+      exists(Test::FailureLocatable expectation, string relativePath, int sl, int sc |
+        (
+          expectation instanceof Test::GoodTestExpectation or
+          expectation instanceof Test::FalsePositiveTestExpectation
+        ) and
+        expectation.getTag() = "Alert" and
+        expectation.getValue() = "" and
+        not expectation = Test::getAMatchingExpectation(_, _, _, _, _) and
+        isSoleExpectationOnComment(expectation) and
+        parseLocationString(expectation.getLocation().getRelativeUrl(), relativePath, sl, sc, _, _) and
+        file = relativePath and
+        line = sl and
+        operation = "replace" and
+        startColumn = sc and
+        // A trailing inline expectation comment always runs to the end of its line, so delete from
+        // the comment marker to the end of the line. `endColumn = 0` is the engine's "to end of
+        // line" convention (it also trims the whitespace gap the removed comment leaves behind);
+        // using it avoids depending on how each extractor reports a line comment's end column
+        // (e.g. Swift reports it as ending at column 1 of the next line).
+        endColumn = 0 and
+        text = ""
+      )
+      or
+      // Fixed missing result: a comment whose sole expectation is `// $ MISSING: Alert` now has a
+      // matching result, so promote it to a plain `// $ Alert`. The whole comment is rewritten in
+      // place, from its comment marker to the end of the line, with a freshly rendered plain
+      // comment. Rewriting wholesale is reliable for a single-expectation comment and avoids
+      // editing individual columns within the comment. The replacement text is non-empty, so
+      // unlike the removal case the whitespace before the comment is preserved.
+      exists(Test::FalseNegativeTestExpectation expectation, string relativePath, int sl, int sc |
+        expectation.getTag() = "Alert" and
+        expectation.getValue() = "" and
+        expectation = Test::getAMatchingExpectation(_, _, _, _, _) and
+        isSoleExpectationOnComment(expectation) and
+        parseLocationString(expectation.getLocation().getRelativeUrl(), relativePath, sl, sc, _, _) and
+        file = relativePath and
+        line = sl and
+        operation = "replace" and
+        startColumn = sc and
+        endColumn = 0 and
+        text = renderInlineComment(relativePath, "Alert")
+      )
     }
   }
 }
