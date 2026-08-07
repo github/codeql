@@ -609,7 +609,7 @@ private module Impl implements RegexTreeViewSig {
     /**
      * Holds if this is a unicode escape.
      */
-    private predicate isUnicode() { this.getText().prefix(2) = ["\\u", "\\U"] }
+    private predicate isUnicode() { this.getText().prefix(2) = "\\u" }
 
     /**
      * Gets the unicode char for this escape.
