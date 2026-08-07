@@ -54,7 +54,8 @@ abstract class ModuleScopeRepr extends AstNode {
   predicate shouldInclude(Container c, string path) { none() }
 
   /**
-   * Holds if this module scope can be referenced by an unqualified identifier `name`.
+   * Holds if this module scope can be referenced by an identifier `name`
+   * appearing as the leading identifier of an import path.
    */
   predicate hasImportableName(string name) { none() }
 

@@ -323,8 +323,6 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     //   because the associated uncertain scope is a Member, from which we can check static-ness.
     scope = any(ClassLikeDeclaration cls).getAMember()
     or
-    scope = any(TopLevel t) // Global module names are in scope here
-    or
     scope = any(TopLevel t).getBody() // Imported names are in scope here
     or
     // Scopes with a bulk-import have uncertain members

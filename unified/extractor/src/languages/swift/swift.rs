@@ -1023,13 +1023,12 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 path: (importPathComponent name: @@parts)*)
             =>
             import_declaration {
-                let pattern = match kind {
-                    Some(_) => {
-                        let last = *parts.last().ok_or("import has no path")?;
-                        tree!((name_pattern identifier: (identifier #{last})))
-                    }
-                    None => tree!((bulk_importing_pattern)),
+                let bulk_import = match kind {
+                    None => Some(tree!((bulk_importing_pattern))),
+                    Some(_) => None, // scoped import, no bulk import
                 };
+                let last = *parts.last().ok_or("import has no path")?;
+                let pattern = tree!((name_pattern identifier: (identifier #{last}) sub_pattern: {bulk_import}));
                 tree!((import_declaration
                     modifier: (modifier #{kind})?
                     modifier: {attrs}
