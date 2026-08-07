@@ -574,6 +574,7 @@ private module Impl implements RegexTreeViewSig {
      */
     override string getValue() {
       not this.isUnicode() and
+      not this.isControl() and
       this.isIdentityEscape() and
       result = this.getUnescaped()
       or
@@ -591,11 +592,16 @@ private module Impl implements RegexTreeViewSig {
       or
       this.isUnicode() and
       result = this.getUnicode()
+      or
+      this.isControl() and
+      result = this.getControl()
     }
 
     /** Holds if this terms name is given by the part following the escape character. */
     predicate isIdentityEscape() {
-      not this.getUnescaped() in ["n", "r", "t", "f", "v", "0"] and not this.isUnicode()
+      not this.getUnescaped() in ["n", "r", "t", "f", "v", "0"] and
+      not this.isUnicode() and
+      not this.isControl()
     }
 
     override string getAPrimaryQlClass() { result = "RegExpEscape" }
@@ -620,6 +626,22 @@ private module Impl implements RegexTreeViewSig {
     private string getUnicode() {
       this.isUnicode() and
       result = parseHexInt(this.getText().suffix(2)).toUnicode()
+    }
+
+    /**
+     * Holds if this is a `\cX` escape.
+     */
+    private predicate isControl() { this.getText().prefix(2) = "\\c" }
+
+    /**
+     * Gets the unicode char for this escape.
+     * E.g. for `\cA` this returns "a".
+     */
+    private string getControl() {
+      this.isControl() and
+      exists(string letter | letter = this.getText().suffix(2).toUpperCase() |
+        result = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(letter).toUnicode()
+      )
     }
   }
 

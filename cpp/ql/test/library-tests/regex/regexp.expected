@@ -174,8 +174,8 @@ term
 | regexp.cpp:90:19:90:24 | \\u0061 | RegExpConstant,RegExpEscape |
 | regexp.cpp:93:19:93:22 | \\x61 | RegExpConstant,RegExpEscape |
 | regexp.cpp:96:21:96:23 | \\cA | RegExpConstant,RegExpEscape |
-| regexp.cpp:97:21:97:25 | [\\cZ] | RegExpCharacterClass |
-| regexp.cpp:97:22:97:24 | \\cZ | RegExpConstant,RegExpEscape |
+| regexp.cpp:97:21:97:25 | [\\cz] | RegExpCharacterClass |
+| regexp.cpp:97:22:97:24 | \\cz | RegExpConstant,RegExpEscape |
 | regexp.cpp:100:20:100:21 | \\0 | RegExpConstant,RegExpEscape |
 | regexp.cpp:101:20:101:23 | [\\0] | RegExpCharacterClass |
 | regexp.cpp:101:21:101:22 | \\0 | RegExpConstant,RegExpEscape |
@@ -316,8 +316,8 @@ regExpNormalCharValue
 | regexp.cpp:84:39:84:39 | f | f |
 | regexp.cpp:90:19:90:24 | \\u0061 | a |
 | regexp.cpp:93:19:93:22 | \\x61 | x61 |
-| regexp.cpp:96:21:96:23 | \\cA | cA |
-| regexp.cpp:97:22:97:24 | \\cZ | cZ |
+| regexp.cpp:96:21:96:23 | \\cA | \u0000 |
+| regexp.cpp:97:22:97:24 | \\cz | \u0019 |
 | regexp.cpp:100:20:100:21 | \\0 | \u0000 |
 | regexp.cpp:101:21:101:22 | \\0 | \u0000 |
 | regexp.cpp:104:21:104:21 | a | a |

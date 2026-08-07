@@ -466,10 +466,10 @@ regexp.cpp:
 
 #   96| [RegExpConstant, RegExpEscape] \cA
 
-#   97| [RegExpCharacterClass] [\cZ]
-#-----| 0 -> [RegExpConstant, RegExpEscape] \cZ
+#   97| [RegExpCharacterClass] [\cz]
+#-----| 0 -> [RegExpConstant, RegExpEscape] \cz
 
-#   97| [RegExpConstant, RegExpEscape] \cZ
+#   97| [RegExpConstant, RegExpEscape] \cz
 
 #  100| [RegExpConstant, RegExpEscape] \0
 

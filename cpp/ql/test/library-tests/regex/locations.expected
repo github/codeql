@@ -41,7 +41,7 @@
 | regexp.cpp:90:19:90:24 | \\u0061 | regexp.cpp | 90 | 19 | 90 | 24 |
 | regexp.cpp:93:19:93:22 | \\x61 | regexp.cpp | 93 | 19 | 93 | 22 |
 | regexp.cpp:96:21:96:23 | \\cA | regexp.cpp | 96 | 21 | 96 | 23 |
-| regexp.cpp:97:21:97:25 | [\\cZ] | regexp.cpp | 97 | 21 | 97 | 25 |
+| regexp.cpp:97:21:97:25 | [\\cz] | regexp.cpp | 97 | 21 | 97 | 25 |
 | regexp.cpp:100:20:100:21 | \\0 | regexp.cpp | 100 | 20 | 100 | 21 |
 | regexp.cpp:101:20:101:23 | [\\0] | regexp.cpp | 101 | 20 | 101 | 23 |
 | regexp.cpp:104:21:104:23 | a*? | regexp.cpp | 104 | 21 | 104 | 23 |

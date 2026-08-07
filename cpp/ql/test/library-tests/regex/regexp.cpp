@@ -94,7 +94,7 @@ std::regex r_hex("\\x61");
 
 // control escapes
 std::regex r_ctrl1("\\cA");
-std::regex r_ctrl2("[\\cZ]");
+std::regex r_ctrl2("[\\cz]");
 
 // NUL escape
 std::regex r_nul1("\\0");
