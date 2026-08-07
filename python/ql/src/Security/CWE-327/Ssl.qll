@@ -33,9 +33,12 @@ class SslDefaultContextCreation extends ContextCreation {
     this = API::moduleImport("ssl").getMember("create_default_context").getACall()
   }
 
-  // Allowed insecure versions are "TLSv1" and "TLSv1_1"
+  // Since Python 3.10, `ssl.create_default_context` returns a context whose
+  // `minimum_version` defaults to `TLSVersion.TLSv1_2`, so TLSv1 and TLSv1_1 are not allowed.
+  // (Earlier Python versions also allowed TLSv1 and TLSv1_1.)
   // see https://docs.python.org/3/library/ssl.html#context-creation
-  override ProtocolVersion getProtocol() { result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"] }
+  // and https://docs.python.org/3/whatsnew/3.10.html#ssl
+  override ProtocolVersion getProtocol() { result in ["TLSv1_2", "TLSv1_3"] }
 }
 
 /** Gets a reference to an `ssl.Context` instance. */
