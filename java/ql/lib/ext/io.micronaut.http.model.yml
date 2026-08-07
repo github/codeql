@@ -1,0 +1,59 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.micronaut.http", "HttpRequest", True, "getBody", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getContentLength", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getContentType", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getCookies", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getHeaders", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getMethodName", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getParameters", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getPath", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getUri", "", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.micronaut.core.convert.value", "ConvertibleMultiValues", True, "get", "", "", "Argument[this].Element.MapValue", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleMultiValues", True, "getAll", "", "", "Argument[this].Element.MapValue", "ReturnValue", "value", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleMultiValues", True, "getFirst", "", "", "Argument[this].Element.MapValue", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "asMap", "", "", "Argument[this].Element.MapValue", "ReturnValue.MapValue", "taint", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "asProperties", "", "", "Argument[this].Element.MapValue", "ReturnValue.MapValue", "taint", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "getValue", "", "", "Argument[this].Element.MapValue", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "subMap", "", "", "Argument[this].Element.MapValue", "ReturnValue.MapValue", "taint", "manual"]
+      - ["io.micronaut.core.convert.value", "ConvertibleValues", True, "values", "", "", "Argument[this].Element.MapValue", "ReturnValue.Element", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "DELETE", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "DELETE", "(String,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "DELETE", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "DELETE", "(URI,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "GET", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "GET", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "HEAD", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "HEAD", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "OPTIONS", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "OPTIONS", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "PATCH", "(String,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "PATCH", "(URI,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "POST", "(String,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "POST", "(URI,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "PUT", "(String,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "PUT", "(URI,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookie", True, "getDomain", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookie", True, "getName", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookie", True, "getPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookie", True, "getValue", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookies", True, "findCookie", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookies", True, "get", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookies", True, "getAll", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.micronaut.http", "HttpResponse", True, "permanentRedirect", "(URI)", "", "Argument[0]", "url-redirection", "manual"]
+      - ["io.micronaut.http", "HttpResponse", True, "redirect", "(URI)", "", "Argument[0]", "url-redirection", "manual"]
+      - ["io.micronaut.http", "HttpResponse", True, "seeOther", "(URI)", "", "Argument[0]", "url-redirection", "manual"]
+      - ["io.micronaut.http", "HttpResponse", True, "temporaryRedirect", "(URI)", "", "Argument[0]", "url-redirection", "manual"]
+      - ["io.micronaut.http", "MutableHttpResponse", True, "header", "(CharSequence,CharSequence)", "", "Argument[1]", "response-splitting", "manual"]
+      - ["io.micronaut.http", "MutableHttpResponse", True, "headers", "(Map)", "", "Argument[0]", "response-splitting", "manual"]
