@@ -1112,12 +1112,6 @@ private module Impl implements RegexTreeViewSig {
      * `"digit"`.
      */
     string getName() { result = re.getCharacterPropertyName(start, end) }
-
-    /**
-     * Holds if the property is inverted. For example, it holds for `[[:^digit:]]`,
-     * which matches non-digits.
-     */
-    predicate isInverted() { re.namedCharacterPropertyIsInverted(start, end) }
   }
 
   class Top = RegExpParent;
@@ -1132,13 +1126,13 @@ private module Impl implements RegexTreeViewSig {
     // TODO: expand to cover more properties
     exists(RegExpNamedCharacterProperty escape | term = escape |
       escape.getName().toLowerCase() = "digit" and
-      if escape.isInverted() then clazz = "D" else clazz = "d"
+      clazz = "d"
       or
       escape.getName().toLowerCase() = "space" and
-      if escape.isInverted() then clazz = "S" else clazz = "s"
+      clazz = "s"
       or
       escape.getName().toLowerCase() = "word" and
-      if escape.isInverted() then clazz = "W" else clazz = "w"
+      clazz = "w"
     )
   }
 

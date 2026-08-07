@@ -304,23 +304,7 @@ abstract class RegExp extends StringLiteral {
       |
         e
       ) and
-    exists(int nameStart |
-      this.getChar(start + 2) = "^" and nameStart = start + 3
-      or
-      not this.getChar(start + 2) = "^" and nameStart = start + 2
-    |
-      name = this.getText().substring(nameStart, end - 2)
-    )
-  }
-
-  /**
-   * Holds if the named character property is inverted. This, e.g., holds for `[[:^digit:]]`.
-   *
-   * This does not hold for, e.g., `[[:alnum:]]`.
-   */
-  predicate namedCharacterPropertyIsInverted(int start, int end) {
-    this.posixStyleNamedCharacterProperty(start, end, _) and
-    this.getChar(start + 3) = "^"
+    name = this.getText().substring(start + 2, end - 2)
   }
 
   /**
