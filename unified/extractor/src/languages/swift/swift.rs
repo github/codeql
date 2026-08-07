@@ -719,9 +719,9 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (member_access_expr base: {base} member: (identifier #{member}))
         ),
         rule!(
-            (memberAccessExpr declName: (declReferenceExpr baseName: @member))
+            (memberAccessExpr period: @dot declName: (declReferenceExpr baseName: @member))
             =>
-            (member_access_expr base: (inferred_type_expr) member: (identifier #{member}))
+            (member_access_expr base: (inferred_type_expr #{dot}) member: (identifier #{member}))
         ),
         // Control transfer, one rule per keyword. `return` carries an optional
         // value; `break` / `continue` an optional target label; `throw` its
