@@ -51,6 +51,12 @@ signature module FlowFromFreeParamSig {
    */
   bindingset[source, sink]
   default predicate sourceSinkIsRelated(DataFlow::Node source, DataFlow::Node sink) { any() }
+
+  /**
+   * Gets a data flow configuration feature to add restrictions to the set of
+   * valid flow paths.
+   */
+  default DataFlow::FlowFeature getAFeature() { none() }
 }
 
 /**
@@ -96,6 +102,8 @@ module FlowFromFree<FlowFromFreeParamSig P> {
       or
       [n.asExpr(), n.asIndirectExpr()] instanceof ArrayExpr
     }
+
+    DataFlow::FlowFeature getAFeature() { result = P::getAFeature() }
   }
 
   import DataFlow::GlobalWithState<FlowFromFreeConfig>
