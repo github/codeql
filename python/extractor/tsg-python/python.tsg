@@ -1282,9 +1282,7 @@
     attr (@class.inner_scope -> @stmt.node) body = (named-child-index @stmt)
 }
 
-; Class.bases - using `(_  !value !name)` as a proxy for all non-keyword arguments.
-; In particular, `keyword_argument` nodes have a `name` field, and `dictionary_splat`
-; nodes have a `value` field.
+; Class.bases
 (class_definition
     superclasses: (argument_list element: (_) @arg)
 ) @class
