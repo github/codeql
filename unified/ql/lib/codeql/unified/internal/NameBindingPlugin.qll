@@ -20,7 +20,7 @@ class NameBindingPlugin extends Unit {
    * Need only be implemented for members that occur in the context of class or top-level, as other
    * contexts are considered local already.
    */
-  predicate isPrivateToLocalScope(Member member) { none() }
+  predicate isPrivateToLocalScope(Stmt member) { none() }
 }
 
 /** Holds if `member` is an instance member. */
@@ -32,7 +32,7 @@ predicate isInstanceMember(Member member) {
 }
 
 /** Holds if `member` is only visible in its local scope. */
-predicate isPrivateToLocalScope(Member member) {
+predicate isPrivateToLocalScope(Stmt member) {
   any(NameBindingPlugin p).isPrivateToLocalScope(member)
 }
 

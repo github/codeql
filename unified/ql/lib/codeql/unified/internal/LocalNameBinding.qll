@@ -326,6 +326,9 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
     scope = any(TopLevel t) // Global module names are in scope here
     or
     scope = any(TopLevel t).getBody() // Imported names are in scope here
+    or
+    // Scopes with a bulk-import have uncertain members
+    bindingContext(any(BulkImportingPattern b), scope, _)
   }
 }
 

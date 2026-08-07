@@ -8,6 +8,7 @@ private import codeql.unified.internal.NameBindingPlugin
 
 private newtype TNameBindingNode =
   TIdentifier(Identifier n) or
+  TBulkImport(BulkImportingPattern p) or
   TLocalName(LocalName local) or
   TExportedNamespace(ClassLikeDeclaration cls) or
   TLocalNamespace(AstNode n) {
@@ -26,6 +27,8 @@ class NameBindingNode extends TNameBindingNode {
 
   Identifier asIdentifier() { this.isIdentifier(result) }
 
+  predicate isBulkImport(BulkImportingPattern p) { this = TBulkImport(p) }
+
   predicate isLocalName(LocalName local) { this = TLocalName(local) }
 
   /** Holds if this represents the set of static members available in the given namespace. */
@@ -42,6 +45,8 @@ class NameBindingNode extends TNameBindingNode {
 
   string toString() {
     exists(Identifier n | this.isIdentifier(n) and result = "Identifier(" + n + ")")
+    or
+    exists(BulkImportingPattern p | this.isBulkImport(p) and result = "BulkImport(" + p + ")")
     or
     exists(LocalName local | this.isLocalName(local) and result = "LocalName(" + local + ")")
     or
@@ -62,6 +67,8 @@ class NameBindingNode extends TNameBindingNode {
 
   Location getLocation() {
     exists(Identifier n | this.isIdentifier(n) and result = n.getLocation())
+    or
+    exists(BulkImportingPattern p | this.isBulkImport(p) and result = p.getLocation())
     or
     exists(LocalName local | this.isLocalName(local) and result = local.getLocation())
     or
@@ -86,7 +93,11 @@ Identifier getIdentifierFromRef(AstNode n) {
   result = n.(NamedTypeExpr).getName()
 }
 
-NameBindingNode getNodeFromRef(AstNode n) { result.isIdentifier(getIdentifierFromRef(n)) }
+NameBindingNode getNodeFromRef(AstNode n) {
+  result.isIdentifier(getIdentifierFromRef(n))
+  or
+  result.isBulkImport(n)
+}
 
 NameBindingNode getModuleNodeFromFile(File f) {
   exists(ModuleScopeRepr mod |
@@ -185,6 +196,20 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
   exists(ImportDeclaration imprt |
     node1 = getNodeFromRef(imprt.getImportedExpr()) and
     node2 = getNodeFromRef(imprt.getPattern())
+  )
+  or
+  exists(BulkImportingPattern p, AstNode scope, AstNode declaration |
+    bindingContext(p, scope, declaration) and
+    node1 = getNodeFromRef(p)
+  |
+    node2 = getNodeFromUncertainScope(scope)
+    or
+    // Bulk re-exporting declarations
+    exists(TopLevel top |
+      declaration = top.getBody().getAStmt() and
+      not isPrivateToLocalScope(declaration) and
+      node2 = getModuleNodeFromFile(top.getFile())
+    )
   )
 }
 
