@@ -426,9 +426,14 @@ regexp.cpp:
 #   79| [RegExpConstant, RegExpNormalChar] f
 
 #   82| [RegExpCharacterClass] [[=a=]]
+#-----| 0 -> [RegExpNamedCharacterProperty] [=a=]
+
+#   82| [RegExpNamedCharacterProperty] [=a=]
 
 #   83| [RegExpCharacterClass] [A-F[=b=]a-f]
 #-----| 0 -> [RegExpCharacterRange] A-F
+#-----| 1 -> [RegExpNamedCharacterProperty] [=b=]
+#-----| 2 -> [RegExpCharacterRange] a-f
 
 #   83| [RegExpConstant, RegExpNormalChar] A
 
@@ -437,6 +442,8 @@ regexp.cpp:
 #-----| 1 -> [RegExpConstant, RegExpNormalChar] F
 
 #   83| [RegExpConstant, RegExpNormalChar] F
+
+#   83| [RegExpNamedCharacterProperty] [=b=]
 
 #   83| [RegExpConstant, RegExpNormalChar] a
 

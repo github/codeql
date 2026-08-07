@@ -50,7 +50,7 @@ private newtype TRegExpParent =
   TRegExpBackRef(RegExp re, int start, int end) { re.backreference(start, end) } or
   /** A named character property */
   TRegExpNamedCharacterProperty(RegExp re, int start, int end) {
-    re.namedCharacterProperty(start, end, [":", "."], _)
+    re.namedCharacterProperty(start, end, _, _)
   }
 
 /** An implementation that satisfies the RegexTreeView signature. */

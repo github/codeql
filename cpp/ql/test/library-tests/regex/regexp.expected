@@ -159,10 +159,12 @@ term
 | regexp.cpp:79:36:79:38 | a-f | RegExpCharacterRange |
 | regexp.cpp:79:38:79:38 | f | RegExpConstant,RegExpNormalChar |
 | regexp.cpp:82:28:82:34 | [[=a=]] | RegExpCharacterClass |
+| regexp.cpp:82:29:82:33 | [=a=] | RegExpNamedCharacterProperty |
 | regexp.cpp:83:28:83:40 | [A-F[=b=]a-f] | RegExpCharacterClass |
 | regexp.cpp:83:29:83:29 | A | RegExpConstant,RegExpNormalChar |
 | regexp.cpp:83:29:83:31 | A-F | RegExpCharacterRange |
 | regexp.cpp:83:31:83:31 | F | RegExpConstant,RegExpNormalChar |
+| regexp.cpp:83:32:83:36 | [=b=] | RegExpNamedCharacterProperty |
 | regexp.cpp:83:37:83:37 | a | RegExpConstant,RegExpNormalChar |
 | regexp.cpp:83:37:83:39 | a-f | RegExpCharacterRange |
 | regexp.cpp:83:39:83:39 | f | RegExpConstant,RegExpNormalChar |
