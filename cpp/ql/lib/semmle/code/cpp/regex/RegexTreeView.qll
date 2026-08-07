@@ -654,12 +654,12 @@ private module Impl implements RegexTreeViewSig {
 
     /**
      * Gets the unicode char for this escape.
-     * E.g. for `\cA` this returns "a".
+     * E.g. for `\cA` this returns `0x01`.
      */
     private string getControl() {
       this.isControl() and
       exists(string letter | letter = this.getText().suffix(2).toUpperCase() |
-        result = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(letter).toUnicode()
+        result = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(letter) + 1).toUnicode()
       )
     }
   }
