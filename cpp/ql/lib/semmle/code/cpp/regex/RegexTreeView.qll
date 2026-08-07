@@ -622,7 +622,7 @@ private module Impl implements RegexTreeViewSig {
     /**
      * Holds if this is a unicode escape.
      */
-    private predicate isUnicode() { this.getText().prefix(2) = "\\u" }
+    private predicate isUnicode() { this.getText().matches("\\u%") }
 
     /**
      * Gets the unicode char for this escape.
@@ -636,7 +636,7 @@ private module Impl implements RegexTreeViewSig {
     /**
      * Holds if this is a hex escape.
      */
-    private predicate isHex() { this.getText().prefix(2) = "\\x" }
+    private predicate isHex() { this.getText().matches("\\x%") }
 
     /**
      * Gets the unicode char for this escape.
@@ -650,7 +650,7 @@ private module Impl implements RegexTreeViewSig {
     /**
      * Holds if this is a `\cX` escape.
      */
-    private predicate isControl() { this.getText().prefix(2) = "\\c" }
+    private predicate isControl() { this.getText().matches("\\c%") }
 
     /**
      * Gets the unicode char for this escape.
