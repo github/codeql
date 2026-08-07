@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core.git#b7e6711279d38b7f0db3e648888de5154729e9a8 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.transport.tcp", "TCPTransportSender", True, "sendMessage", "(MessageContext,String,OutTransportInfo)", "", "Argument[1]", "request-forgery", "ai-generated"]
