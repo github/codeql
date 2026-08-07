@@ -29,6 +29,21 @@ private module FlowTestImpl implements InputSig<Location, RustDataFlow> {
     any(CallExpr call | callTargetName(call, "sink")).getASyntacticArgument() = sink.asExpr()
   }
 
+  private string getSummaryNodeArgString(AstNode n) {
+    exists(Call call |
+      n = call
+      or
+      not n instanceof Call and
+      n = call.getASyntacticArgument() // `n` is a callback
+    |
+      result = call.getPositionalArgument(0).toString()
+    )
+    or
+    result = n.(Call).getPositionalArgument(0).toString()
+    or
+    result = n.(Param).getPat().(IdentPat).getName().getText()
+  }
+
   private string getSourceArgString(DataFlow::Node src) {
     defaultSource(src) and
     exists(Expr arg | arg = src.asExpr().(Call).getPositionalArgument(0) |
@@ -38,9 +53,11 @@ private module FlowTestImpl implements InputSig<Location, RustDataFlow> {
       result = arg.(ArrayListExpr).getExpr(0).toString()
     )
     or
-    sourceNode(src, _) and
-    result =
-      src.(Node::FlowSummaryNode).getSourceElement().getCall().getPositionalArgument(0).toString() and
+    exists(AstNode n |
+      sourceNode(src, _) and
+      n = src.(Node::FlowSummaryNode).getSummaryNode().getSourceSinkReportingElement() and
+      result = getSummaryNodeArgString(n)
+    ) and
     // Don't use the result if it contains spaces
     not result.matches("% %")
   }
