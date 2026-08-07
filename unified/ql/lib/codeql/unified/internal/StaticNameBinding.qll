@@ -181,6 +181,11 @@ predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
     node1 = getModuleNodeFromFile(top.getFile()) and
     node2.isLocalNamespace(top.getBody()) // implicitly import own module
   )
+  or
+  exists(ImportDeclaration imprt |
+    node1 = getNodeFromRef(imprt.getImportedExpr()) and
+    node2 = getNodeFromRef(imprt.getPattern())
+  )
 }
 
 predicate inheritanceStep(NameBindingNode supertype, NameBindingNode subtype) {
