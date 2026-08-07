@@ -770,7 +770,7 @@ private module Bcrypt {
       super.getArgument(0) = input
     }
 
-    override DataFlow::Node getInitialization() { result = init.asSource() }
+    override DataFlow::Node getInitialization() { result = this }
 
     override DataFlow::Node getAnInput() { result = input }
 
