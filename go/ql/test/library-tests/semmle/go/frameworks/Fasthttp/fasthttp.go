@@ -162,10 +162,10 @@ func fasthttpServer() {
 		requestCtx.Request.Host()                         // $ RemoteFlowSource="call to Host"
 		requestCtx.Request.Body()                         // $ RemoteFlowSource="call to Body"
 		requestCtx.Request.RequestURI()                   // $ RemoteFlowSource="call to RequestURI"
-		body1, _ := requestCtx.Request.BodyGunzip()       // $ RemoteFlowSource="... := ...[0]"
-		body2, _ := requestCtx.Request.BodyInflate()      // $ RemoteFlowSource="... := ...[0]"
-		body3, _ := requestCtx.Request.BodyUnbrotli()     // $ RemoteFlowSource="... := ...[0]"
-		body4, _ := requestCtx.Request.BodyUncompressed() // $ RemoteFlowSource="... := ...[0]"
+		body1, _ := requestCtx.Request.BodyGunzip()       // $ RemoteFlowSource="extract:0 ... := ..."
+		body2, _ := requestCtx.Request.BodyInflate()      // $ RemoteFlowSource="extract:0 ... := ..."
+		body3, _ := requestCtx.Request.BodyUnbrotli()     // $ RemoteFlowSource="extract:0 ... := ..."
+		body4, _ := requestCtx.Request.BodyUncompressed() // $ RemoteFlowSource="extract:0 ... := ..."
 		fmt.Println(body1, body2, body3, body4)
 		requestCtx.Request.BodyStream() // $ RemoteFlowSource="call to BodyStream"
 

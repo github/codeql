@@ -1,0 +1,12 @@
+consistencyOverview
+| deadEnd | 9 |
+deadEnd
+| main.go:17:2:17:10 | select statement |
+| main.go:109:2:109:10 | select statement |
+| main.go:115:2:115:10 | select statement |
+| main.go:126:2:126:10 | select statement |
+| main.go:132:2:132:10 | select statement |
+| main.go:138:2:138:10 | select statement |
+| main.go:145:2:145:10 | select statement |
+| main.go:151:2:151:10 | select statement |
+| main.go:157:2:157:10 | select statement |

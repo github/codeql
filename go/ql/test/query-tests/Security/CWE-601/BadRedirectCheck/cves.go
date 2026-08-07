@@ -11,11 +11,11 @@ func isValidRedirect(url string) bool {
 	return len(url) >= 2 && url[0] == '/' && url[1] != '/' // $ Alert // NOT OK
 }
 
-func alsoABadRedirect(url string, rw http.ResponseWriter, req *http.Request) { // $ Source
+func alsoABadRedirect(url string, rw http.ResponseWriter, req *http.Request) {
 	if isValidRedirect(url) {
 		http.Redirect(rw, req, url, 302) // $ Sink
 	}
-}
+} // $ Source
 
 func isValidRedirectGood(url string) bool {
 	return len(url) >= 2 && url[0] == '/' && url[1] != '/' && url[1] != '\\' // OK

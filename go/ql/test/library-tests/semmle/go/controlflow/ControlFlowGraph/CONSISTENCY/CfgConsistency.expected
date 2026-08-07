@@ -1,0 +1,16 @@
+consistencyOverview
+| deadEnd | 1 |
+| multipleSuccessors | 10 |
+deadEnd
+| stmts.go:61:2:61:10 | select statement |
+multipleSuccessors
+| stmts2.go:16:2:26:2 | select statement | successor | stmts2.go:17:2:17:15 | comm clause |
+| stmts2.go:16:2:26:2 | select statement | successor | stmts2.go:18:2:19:10 | comm clause |
+| stmts2.go:16:2:26:2 | select statement | successor | stmts2.go:20:2:24:10 | comm clause |
+| stmts2.go:16:2:26:2 | select statement | successor | stmts2.go:25:2:25:18 | comm clause |
+| stmts.go:50:2:59:2 | select statement | successor | stmts.go:51:2:52:31 | comm clause |
+| stmts.go:50:2:59:2 | select statement | successor | stmts.go:53:2:55:16 | comm clause |
+| stmts.go:50:2:59:2 | select statement | successor | stmts.go:56:2:57:15 | comm clause |
+| stmts.go:50:2:59:2 | select statement | successor | stmts.go:58:2:58:16 | comm clause |
+| stmts.go:71:2:71:10 | return statement | successor | stmts.go:67:9:67:35 | defer-invoke function call |
+| stmts.go:71:2:71:10 | return statement | successor | stmts.go:69:9:69:36 | defer-invoke function call |
