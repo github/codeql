@@ -54,9 +54,7 @@ class NameBindingNode extends TNameBindingNode {
       this.isExportedNamespace(cls) and result = "ExportedNamespace(" + cls + ")"
     )
     or
-    exists(ClassLikeDeclaration cls |
-      this.isLocalNamespace(cls) and result = "LocalNamespace(" + cls + ")"
-    )
+    exists(AstNode n | this.isLocalNamespace(n) and result = "LocalNamespace(" + n + ")")
     or
     exists(ModuleScopeRepr repr |
       this.isModuleScopeNode(repr) and result = "ModuleScope(" + repr + ")"
@@ -74,7 +72,7 @@ class NameBindingNode extends TNameBindingNode {
     or
     exists(ClassLikeDeclaration cls | this.isExportedNamespace(cls) and result = cls.getLocation())
     or
-    exists(ClassLikeDeclaration cls | this.isLocalNamespace(cls) and result = cls.getLocation())
+    exists(AstNode n | this.isLocalNamespace(n) and result = n.getLocation())
     or
     exists(ModuleScopeRepr repr | this.isModuleScopeNode(repr) and result = repr.getLocation())
     or
