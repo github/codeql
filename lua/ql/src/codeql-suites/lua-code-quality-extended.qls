@@ -1,0 +1,4 @@
+- description: Extended code-quality queries for Lua
+- queries: .
+- apply: code-quality-extended-selectors.yml
+  from: codeql/suite-helpers

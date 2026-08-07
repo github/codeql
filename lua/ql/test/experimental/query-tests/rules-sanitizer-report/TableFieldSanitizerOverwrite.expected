@@ -1,0 +1,4 @@
+| table-field-sanitizer-overwrite/dynamic-key.luac | dynamic-key replacement remains active |
+| table-field-sanitizer-overwrite/optional-branch.luac | optional same-field replacement remains active |
+| table-field-sanitizer-overwrite/same-field.luac | same static field replacement is sanitized only |
+| table-field-sanitizer-overwrite/unrelated-field.luac | unrelated static field replacement remains active |
