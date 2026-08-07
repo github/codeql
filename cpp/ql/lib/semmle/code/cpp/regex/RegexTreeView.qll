@@ -587,13 +587,15 @@ private module Impl implements RegexTreeViewSig {
       or
       this.getUnescaped() = "v" and result = 11.toUnicode()
       or
+      this.getUnescaped() = "0" and result = 0.toUnicode()
+      or
       this.isUnicode() and
       result = this.getUnicode()
     }
 
     /** Holds if this terms name is given by the part following the escape character. */
     predicate isIdentityEscape() {
-      not this.getUnescaped() in ["n", "r", "t", "f", "v"] and not this.isUnicode()
+      not this.getUnescaped() in ["n", "r", "t", "f", "v", "0"] and not this.isUnicode()
     }
 
     override string getAPrimaryQlClass() { result = "RegExpEscape" }

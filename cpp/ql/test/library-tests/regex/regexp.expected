@@ -318,8 +318,8 @@ regExpNormalCharValue
 | regexp.cpp:93:19:93:22 | \\x61 | x61 |
 | regexp.cpp:96:21:96:23 | \\cA | cA |
 | regexp.cpp:97:22:97:24 | \\cZ | cZ |
-| regexp.cpp:100:20:100:21 | \\0 | 0 |
-| regexp.cpp:101:21:101:22 | \\0 | 0 |
+| regexp.cpp:100:20:100:21 | \\0 | \u0000 |
+| regexp.cpp:101:21:101:22 | \\0 | \u0000 |
 | regexp.cpp:104:21:104:21 | a | a |
 | regexp.cpp:105:21:105:21 | b | b |
 | regexp.cpp:106:21:106:21 | c | c |
