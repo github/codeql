@@ -574,6 +574,7 @@ private module Impl implements RegexTreeViewSig {
      */
     override string getValue() {
       not this.isUnicode() and
+      not this.isHex() and
       not this.isControl() and
       this.isIdentityEscape() and
       result = this.getUnescaped()
@@ -593,6 +594,9 @@ private module Impl implements RegexTreeViewSig {
       this.isUnicode() and
       result = this.getUnicode()
       or
+      this.isHex() and
+      result = this.getHex()
+      or
       this.isControl() and
       result = this.getControl()
     }
@@ -601,6 +605,7 @@ private module Impl implements RegexTreeViewSig {
     predicate isIdentityEscape() {
       not this.getUnescaped() in ["n", "r", "t", "f", "v", "0"] and
       not this.isUnicode() and
+      not this.isHex() and
       not this.isControl()
     }
 
@@ -625,6 +630,20 @@ private module Impl implements RegexTreeViewSig {
      */
     private string getUnicode() {
       this.isUnicode() and
+      result = parseHexInt(this.getText().suffix(2)).toUnicode()
+    }
+
+    /**
+     * Holds if this is a hex escape.
+     */
+    private predicate isHex() { this.getText().prefix(2) = "\\x" }
+
+    /**
+     * Gets the unicode char for this escape.
+     * E.g. for `\x61` this returns "a".
+     */
+    private string getHex() {
+      this.isHex() and
       result = parseHexInt(this.getText().suffix(2)).toUnicode()
     }
 

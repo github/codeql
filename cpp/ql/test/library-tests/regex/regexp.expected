@@ -315,7 +315,7 @@ regExpNormalCharValue
 | regexp.cpp:84:37:84:37 | a | a |
 | regexp.cpp:84:39:84:39 | f | f |
 | regexp.cpp:90:19:90:24 | \\u0061 | a |
-| regexp.cpp:93:19:93:22 | \\x61 | x61 |
+| regexp.cpp:93:19:93:22 | \\x61 | a |
 | regexp.cpp:96:21:96:23 | \\cA | \u0000 |
 | regexp.cpp:97:22:97:24 | \\cz | \u0019 |
 | regexp.cpp:100:20:100:21 | \\0 | \u0000 |
