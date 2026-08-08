@@ -1,0 +1,15 @@
+name: PR Comment Triage
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: AI inference on comment
+        uses: actions/ai-inference@v1
+        with:
+          prompt: |
+            Analyze the following comment:
+            ${{ github.event.comment.body }}
