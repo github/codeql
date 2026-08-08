@@ -1,125 +1,63 @@
 /**
  * Provides shared functionality for computing type inference in QL.
  *
- * The code examples in this file use C# syntax, but the concepts should carry
- * over to other languages as well.
+ * The library is initialized in three phases:
  *
- * The library is initialized in two phases: `Make1`, which constructs the
- * `TypePath` type, and `Make2`, which (using `TypePath` in the input signature)
- * constructs the `Matching` and `IsInstantiationOf` modules.
+ * 1. `Make1`, which takes as input a definition of atomic types (including type
+ *    parameters) and constructs the `TypePath` type used to represent paths into
+ *    compound types.
  *
- * The intended use of this library is to define a predicate
+ * 2. `Make2`, which (using the `TypePath` type) takes as input a definition of type
+ *    mentions as well as the type hierarchy and type constraints, and constructs the
+ *    `Matching` and `IsInstantiationOf` modules, which are core building blocks for
+ *    matching type instantiations against type parameters, taking the type hierarchy
+ *    and type constraints into account.
  *
- * ```ql
- * Type inferType(AstNode n, TypePath path)
+ * 3. `Make3`, which takes as input a definition of AST nodes, including common concepts
+ *    such as calls and callables, as well as language-specific typing rules, and
+ *    constructs the `inferType` predicate for recursively inferring the types of AST
+ *    nodes.
+ *
+ * Unlike unification-based type inference, this library does directed/bottom-up type
+ * inference by default, but allowing for contextual/top-down type inference when
+ * explicitly needed.
+ *
+ * For example, in order to infer the type of a conditional expression,
+ * `if cond { e1 } else { e2 }`, we propagate type information from either of the
+ * branches `e1` and `e2` into the conditional expression (for simplicity, we do not
+ * attempt to calculate least-upper-bound types or similar). This corresponds to the
+ * two bottom-up type inference rules:
+ *
+ * ```text
+ *             e1: T
+ * ------------------------------- (cond-then)
+ * if cond { e1 } else { e2 } : T
+ *
+ *
+ *             e2: T
+ * ------------------------------- (cond-else)
+ * if cond { e1 } else { e2 } : T
  * ```
  *
- * for recursively inferring the type-path-indexed types of AST nodes. For example,
- * one may have a base case for literals like
+ * Now, if we have a conditional expression like
  *
- * ```ql
- * Type inferType(AstNode n, TypePath path) {
- *   ...
- *   n instanceof IntegerLiteral and
- *   result instanceof IntType and
- *   path.isEmpty()
- *   ...
- * }
+ * ```rust
+ * if cond { 42i64 } else { Default::default() }
  * ```
  *
- * and recursive cases for local variables like
+ * where the type of `Default::default()` needs to be inferred from the context, we
  *
- * ```ql
- * Type inferType(AstNode n, TypePath path) {
- *   ...
- *   exists(LocalVariable v |
- *     // propagate type information from the initializer to any access
- *     n = v.getAnAccess() and
- *     result = inferType(v.getInitializer(), path)
- *     or
- *     // propagate type information from any access back to the initializer; note
- *     // that this case may not be relevant for all languages, but e.g. in Rust
- *     // it is
- *     n = v.getInitializer() and
- *     result = inferType(v.getAnAccess(), path)
- *   )
- *   ...
- * }
- * ```
+ * 1. conclude that the conditional has type `i64`, using the `cond-then` rule,
+ * 2. assign `Default::default()` the special `UnknownType`, and
+ * 3. since the `else` branch has `UnknownType`, we apply the `cond-else` rule _backwards_
+ *    to infer that `Default::default()` has type `i64`.
  *
- * The `Matching` module is used when an AST node references a potentially generic
- * declaration, where the type of the node depends on the type of some of its sub
- * nodes. For example, if we have a generic method like `T Identity<T>(T t)`, then
- * the type of `Identity(42)` should be `int`, while the type of `Identity("foo")`
- * should be `string`; in both cases it should _not_ be `T`.
+ * Note that `UnknownType` can propagate bottom-up like any other type, which is needed
+ * in cases like for example
  *
- * In order to infer the type of method calls, one would define something like
- *
- * ```ql
- * private module MethodCallMatchingInput implements MatchingInputSig {
- *   private newtype TDeclarationPosition =
- *     TSelfDeclarationPosition() or
- *     TPositionalDeclarationPosition(int pos) { ... } or
- *     TReturnDeclarationPosition()
- *
- *   // A position inside a method with a declared type.
- *   class DeclarationPosition extends TDeclarationPosition {
- *     ...
- *   }
- *
- *   class Declaration extends MethodCall {
- *     // Gets a type parameter at `tppos` belonging to this method.
- *     //
- *     // For example, if this method is `T Identity<T>(T t)`, then `T`
- *     // is at position `0`.
- *     TypeParameter getTypeParameter(TypeParameterPosition tppos) { ... }
- *
- *     // Gets the declared type of this method at `dpos` and `path`.
- *     //
- *     // For example, if this method is `T Identity<T>(T t)`, then both the
- *     // the return type and parameter position `0` is `T` with `path.isEmpty()`.
- *     Type getDeclaredType(DeclarationPosition dpos, TypePath path) { ... }
- *   }
- *
- *   // A position inside a method call with an inferred type
- *   class AccessPosition = DeclarationPosition;
- *
- *   class Access extends MethodCall {
- *     AstNode getNodeAt(AccessPosition apos) { ... }
- *
- *     // Gets the inferred type of the node at `apos` and `path`.
- *     //
- *     // For example, if this method call is `Identity(42)`, then the type
- *     // at argument position `0` is `int` with `path.isEmpty()"`.
- *     Type getInferredType(AccessPosition apos, TypePath path) {
- *       result = inferType(this.getNodeAt(apos), path)
- *     }
- *
- *     // Gets the method that this method call resolves to.
- *     //
- *     // This will typically be defined in mutual recursion with the `inferType`
- *     // predicate, as we need to know the type of the receiver in order to
- *     // resolve calls to instance methods.
- *     Declaration getTarget() { ... }
- *   }
- *
- *   predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
- *     apos = dpos
- *   }
- * }
- *
- * private module MethodCallMatching = Matching<MethodCallMatchingInput>;
- *
- * Type inferType(AstNode n, TypePath path) {
- *   ...
- *   exists(MethodCall mc, MethodCallMatchingInput::AccessPosition apos |
- *     // Some languages may want to restrict `apos` to be the return position, but in
- *     // e.g. Rust type information can flow out of all positions
- *     n = a.getNodeAt(apos) and
- *     result = MethodCallMatching::inferAccessType(a, apos, path)
- *   )
- *   ...
- * }
+ * ```rust
+ * let x = if cond { Default::default() } else { Default::default() };
+ * let y : i64 = x;
  * ```
  */
 overlay[local?]
@@ -146,10 +84,10 @@ signature module InputSig1<LocationSig Location> {
   }
 
   /**
-   * Holds if `t` is a pseudo type. Pseudo types are skipped when checking for
-   * non-instantiations in `isNotInstantiationOf`.
+   * A pseudo type. Pseudo types are skipped when checking for non-instantiations
+   * in `isNotInstantiationOf`.
    */
-  predicate isPseudoType(Type t);
+  class PseudoType extends Type;
 
   /** A type parameter. */
   class TypeParameter extends Type;
@@ -188,35 +126,6 @@ signature module InputSig1<LocationSig Location> {
    * identifiers.
    */
   int getTypeParameterId(TypeParameter tp);
-
-  /**
-   * A type argument position, for example an integer.
-   *
-   * Type argument positions are used when type arguments are supplied explicitly,
-   * for example in a method call like `M<int>()` the type argument `int` is at
-   * position `0`.
-   */
-  bindingset[this]
-  class TypeArgumentPosition {
-    /** Gets the textual representation of this position. */
-    bindingset[this]
-    string toString();
-  }
-
-  /** A type parameter position, for example an integer. */
-  bindingset[this]
-  class TypeParameterPosition {
-    /** Gets the textual representation of this position. */
-    bindingset[this]
-    string toString();
-  }
-
-  /** Holds if `tapos` and `tppos` match. */
-  bindingset[tapos]
-  bindingset[tppos]
-  predicate typeArgumentParameterPositionMatch(
-    TypeArgumentPosition tapos, TypeParameterPosition tppos
-  );
 
   /**
    * Gets the limit on the length of type paths. Set to `none()` if there should
@@ -647,7 +556,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       private Type getNonPseudoTypeAt(App app, TypePath path) {
-        result = app.getTypeAt(path) and not isPseudoType(result)
+        result = app.getTypeAt(path) and
+        not result instanceof PseudoType
       }
 
       pragma[nomagic]
@@ -1258,8 +1168,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         /** Gets the location of this declaration. */
         Location getLocation();
 
-        /** Gets the type parameter at position `tppos` of this declaration, if any. */
-        TypeParameter getTypeParameter(TypeParameterPosition tppos);
+        /** Gets the type parameter at position `pos` of this declaration, if any. */
+        TypeParameter getTypeParameter(int pos);
 
         /**
          * Gets the declared type of this declaration at `path` for position `dpos`.
@@ -1309,13 +1219,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Location getLocation();
 
         /**
-         * Gets the type at `path` for the type argument at position `tapos` of
+         * Gets the type at `path` for the type argument at position `pos` of
          * this access, if any.
          *
          * For example, in a method call like `M<int>()`, `int` is an explicit
          * type argument at position `0`.
          */
-        Type getTypeArgument(TypeArgumentPosition tapos, TypePath path);
+        Type getTypeArgument(int pos, TypePath path);
 
         /**
          * Gets the inferred type at `path` for the position `apos` and environment `e`
@@ -1346,14 +1256,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     module MatchingWithEnvironment<MatchingWithEnvironmentInputSig Input> {
       private import Input
 
-      pragma[nomagic]
-      private TypeParameter getDeclTypeParameter(Declaration decl, TypeArgumentPosition tapos) {
-        exists(TypeParameterPosition tppos |
-          result = decl.getTypeParameter(tppos) and
-          typeArgumentParameterPositionMatch(tapos, tppos)
-        )
-      }
-
       /**
        * Gets the type of the type argument at `path` in `a` that corresponds to
        * the type parameter `tp` in `target`, if any.
@@ -1365,10 +1267,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       bindingset[a, target]
       pragma[inline_late]
       Type getTypeArgument(Access a, Declaration target, TypeParameter tp, TypePath path) {
-        exists(TypeArgumentPosition tapos |
-          result = a.getTypeArgument(tapos, path) and
-          tp = getDeclTypeParameter(target, tapos) and
-          not isPseudoType(result)
+        exists(int pos |
+          result = a.getTypeArgument(pos, path) and
+          tp = target.getTypeParameter(pos) and
+          not result instanceof PseudoType
         )
       }
 
@@ -1646,8 +1548,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate typeParameterHasConstraint(
         Declaration target, TypeParameter constrainedTp, TypeMention constraint
       ) {
-        constrainedTp = target.getTypeParameter(_) and
-        constraint = getATypeParameterConstraint(constrainedTp, target)
+        constraint = getATypeParameterConstraint(constrainedTp, target) and
+        (
+          constrainedTp = target.getTypeParameter(_)
+          or
+          // a declaration may reference type parameters that are not declared on it,
+          // for example type parameters from the enclosing type
+          constrainedTp = target.getDeclaredType(_, _)
+        )
       }
 
       /**
@@ -1674,7 +1582,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         TypeParameter tp
       ) {
         typeParameterHasConstraint(target, constrainedTp, constraint) and
-        tp = target.getTypeParameter(_) and
         tp = constraint.getTypeAt(pathToTp) and
         constrainedTp != tp
       }
@@ -1691,8 +1598,12 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
+      /**
+       * Holds if type parameter `tp`, which is in scope in `target`, can be matched
+       * to have type `t` at `path` via the inferred argument types of `a`.
+       */
       pragma[inline]
-      private predicate typeMatch(
+      predicate typeMatch(
         Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
       ) {
         // A type given at the access corresponds directly to the type parameter
@@ -1869,8 +1780,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         /** Gets the location of this declaration. */
         Location getLocation();
 
-        /** Gets the type parameter at position `tppos` of this declaration, if any. */
-        TypeParameter getTypeParameter(TypeParameterPosition tppos);
+        /** Gets the type parameter at position `pos` of this declaration, if any. */
+        TypeParameter getTypeParameter(int pos);
 
         /**
          * Gets the declared type of this declaration at `path` for position `dpos`.
@@ -1912,13 +1823,13 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         Location getLocation();
 
         /**
-         * Gets the type at `path` for the type argument at position `tapos` of
+         * Gets the type at `path` for the type argument at position `pos` of
          * this access, if any.
          *
          * For example, in a method call like `M<int>()`, `int` is an explicit
          * type argument at position `0`.
          */
-        Type getTypeArgument(TypeArgumentPosition tapos, TypePath path);
+        Type getTypeArgument(int pos, TypePath path);
 
         /**
          * Gets the inferred type at `path` for the position `apos` of this access.
@@ -1994,6 +1905,1523 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       query predicate illFormedTypeMention(TypeMention tm) {
         not exists(tm.getTypeAt(TypePath::nil())) and exists(tm.getLocation())
+      }
+    }
+
+    private module Consistency2 = Consistency;
+
+    /**
+     * Provides the input to `Make3`.
+     */
+    signature module InputSig3 {
+      /**
+       * Reverse references to the cached predicates that reference
+       * `CachedStage::ref()`.
+       */
+      default predicate cacheRevRef() { none() }
+
+      /**
+       * This predicate must be implemented as an alias for the the `inferType` predicate
+       * defined in this module, and is needed in order to provide default implementations
+       * inside this signature.
+       */
+      Type inferTypeForDefaults(AstNode n, TypePath path);
+
+      /**
+       * A special pseudo type used to represent cases where the actual type needs
+       * to be inferred using contextual information. For example, in
+       *
+       * ```rust
+       * let x = Vec::new();
+       * x.push(42);
+       * ```
+       *
+       * the element type of `x` is assigned an unknown type, which allows for type
+       * information to flow into `x` from the call to `push`.
+       */
+      class UnknownType extends PseudoType;
+
+      /** A boolean type. */
+      class BoolType extends Type;
+
+      /** An AST node. */
+      class AstNode {
+        /** Gets a textual representation of this AST node. */
+        string toString();
+
+        /** Gets the location of this AST node. */
+        Location getLocation();
+      }
+
+      /** An expression. */
+      class Expr extends AstNode;
+
+      /** A cast expression. */
+      class Cast extends Expr {
+        /** Gets the type being cast to. */
+        TypeMention getType();
+      }
+
+      /**
+       * A switch.
+       */
+      class Switch extends AstNode {
+        /**
+         * Gets the expression being switched on.
+         */
+        Expr getExpr();
+
+        /** Gets the case at the specified (zero-based) `index`. */
+        Case getCase(int index);
+      }
+
+      /** A case in a switch. */
+      class Case extends AstNode {
+        /** Gets a pattern being matched by this case. */
+        AstNode getAPattern();
+
+        /** Gets the body of this case. */
+        AstNode getBody();
+      }
+
+      /** A ternary conditional expression. */
+      class ConditionalExpr extends Expr {
+        /** Gets the condition of this expression. */
+        Expr getCondition();
+
+        /** Gets the true branch of this expression. */
+        Expr getThen();
+
+        /** Gets the false branch of this expression. */
+        Expr getElse();
+      }
+
+      /** A binary expression. */
+      class BinaryExpr extends Expr {
+        /** Gets the left operand of this binary expression. */
+        Expr getLeftOperand();
+
+        /** Gets the right operand of this binary expression. */
+        Expr getRightOperand();
+      }
+
+      /** A short-circuiting logical AND expression. */
+      class LogicalAndExpr extends BinaryExpr;
+
+      /** A short-circuiting logical OR expression. */
+      class LogicalOrExpr extends BinaryExpr;
+
+      /**
+       * An assignment expression, either compound or simple.
+       *
+       * Examples:
+       *
+       * ```
+       * x = y
+       * sum += element
+       * ```
+       */
+      class Assignment extends BinaryExpr;
+
+      /** A simple assignment expression, for example `x = y`. */
+      class AssignExpr extends Assignment;
+
+      /** A parenthesized expression. */
+      class ParenExpr extends Expr {
+        Expr getExpr();
+      }
+
+      /**
+       * A variable, or an entity that behaves like a variable with respect to
+       * type inference, for example a local variable, `const`, or `static` in Rust.
+       */
+      class Variable {
+        /** Gets the AST node that defines this variable. */
+        AstNode getDefiningNode();
+
+        /** Gets an access to this variable. */
+        Expr getAnAccess();
+
+        /** Gets a textual representation of this variable. */
+        string toString();
+
+        /** Gets the location of this variable. */
+        Location getLocation();
+      }
+
+      /** A declaration. */
+      class Declaration extends AstNode {
+        /**
+         * Gets the type at `path` of the entity that declares this element, if any.
+         *
+         * This type will be used to match against type qualifiers at invocations, and
+         * it may coincide with the types of (possibly implicit) `this`/`self` parameters,
+         * but in for example Rust those types can differ.
+         *
+         * Local variable declarations will not have a declaring type (but they may have
+         * a _declared_ type).
+         */
+        TypeMention getDeclaringType();
+
+        /**
+         * Gets the declared type of this declaration, if any.
+         *
+         * This can for example be the type of a variable or field, or the return type of
+         * a function.
+         */
+        TypeMention getType();
+      }
+
+      /**
+       * A declaration of one or more variables, for example a `let` statement
+       * in Rust.
+       */
+      class VariableDeclaration extends Declaration {
+        /**
+         * Holds if this declaration is a coercion site, meaning that the type of the
+         * initializer may have to be coerced to match the pattern.
+         */
+        predicate isCoercionSite();
+
+        /**
+         * Gets the pattern of this declaration.
+         *
+         * Any variable declared by this declaration will have its defining node in the
+         * pattern, for example in `let Some(x) = opt`, the defining node of `x` is under
+         * the `Some` pattern.
+         */
+        AstNode getPattern();
+
+        /** Gets the initializer of this declaration, if any. */
+        AstNode getInitializer();
+      }
+
+      /** A field. */
+      class Field extends Declaration;
+
+      /** A field access expression, for example `x.f`. */
+      class FieldAccess extends Expr {
+        /* Gets the receiver of this field access. */
+        Expr getReceiver();
+
+        /** Gets the field being accessed. */
+        Field getField();
+      }
+
+      /**
+       * Gets the inferred type of the receiver of `fa` at `path`, to be used when
+       * propagating type information out of the field access via the field declaration.
+       *
+       * By default, this is the inferred type of `fa.getReceiver()`, but for example in
+       * Rust, implicit dereferencing may have to be taken into account
+       */
+      default Type inferFieldAccessReceiverType(FieldAccess fa, TypePath path) {
+        result = inferTypeForDefaults(fa.getReceiver(), path)
+      }
+
+      /**
+       * Gets the contextually inferred type of field access receiver `receiver`
+       * at `path`. The context used is the field being accessed, for example in
+       *
+       * ```rust
+       * let tuple = (Default::default(), "hello");
+       * let x : i32 = tuple.0;
+       * ```
+       *
+       * we will be able to infer that the type of `Default::default()` is `i32`.
+       *
+       * This predicate must be implemented using `inferFieldAccessReceiverTypeContextualDefault`,
+       * performing the dual post-processing of `inferFieldAccessReceiverType`.
+       *
+       * When no post-processing is needed, simply implement this predicate as
+       * `result = inferFieldAccessReceiverTypeContextualDefault(_, receiver, path)`.
+       */
+      Type inferFieldAccessReceiverTypeContextual(Expr receiver, TypePath path);
+
+      /** A node that returns a value from a callable. */
+      class Return extends AstNode {
+        /** Gets the expression being returned, if any. */
+        Expr getExpr();
+      }
+
+      /** A parameter. */
+      class Parameter extends VariableDeclaration;
+
+      /** A parameterizable element, such as a function or a variant constructor. */
+      class Parameterizable extends Declaration {
+        /**
+         * Gets the type parameter at position `pos` of this element, if any.
+         *
+         * This should only include type parameters declared directly on the element
+         * itself; any type parameters that are in scope from the declaring element
+         * are handled via `getDeclaringType`:
+         *
+         * ```rust
+         * impl<T> MyThing<T> {
+         * //      ^^^^^^^^^^ declaring type of `foo`; `T` is in scope, but not a type parameter of `foo`
+         *     fn foo<U>(self, x: U, y: T) { ... }
+         * //         ^ `U` is the `0`th type parameter of `foo`
+         * }
+         * ```
+         */
+        TypeParameter getTypeParameter(int pos);
+
+        /**
+         * Gets an additional type parameter constraint for the given type parameter,
+         * which applies to this element. For example, in Rust, a function can apply
+         * additional constraints on type parameters belonging to the `impl` block
+         * that the function is defined in:
+         *
+         * ```rust
+         * impl<T> MyThing<T> {
+         *     fn foo(self) where T: MyTrait { ... }
+         * //                        ^^^^^^^ additional constraint on `T` that applies to `foo`
+         * }
+         */
+        TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp);
+
+        /**
+         * Gets the `i`th parameter of this element.
+         *
+         * This should also include (possibly implicit) `this`/`self` parameters.
+         */
+        Parameter getParameter(int i);
+      }
+
+      /** A callable. */
+      class Callable extends Parameterizable {
+        /** Gets the body of this callable, if any. */
+        AstNode getBody();
+      }
+
+      /** Gets the immediately enclosing callable that contains `node`, if any. */
+      Callable getEnclosingCallable(AstNode node);
+
+      /**
+       * Gets the return type of `c` at `path`.
+       *
+       * By default, this is the declared type of `c` at `path`, but in for example Rust,
+       * `async` functions must have their return type wrapped in a `Future` type.
+       */
+      default Type getCallableReturnType(Callable c, TypePath path) {
+        result = c.getType().getTypeAt(path)
+      }
+
+      /**
+       * A context needed for resolving invocations.
+       *
+       * For example, in Rust a context is needed to resolve method calls, because of
+       * implicit dereferencing and borrowing. When not needed, simply use `Unit`.
+       */
+      bindingset[this]
+      class ResolutionContext {
+        /** Gets a textual representation of this context. */
+        bindingset[this]
+        string toString();
+      }
+
+      /** An invocation expression, for example a call or a variant construction. */
+      class Invocation extends Expr {
+        /**
+         * Gets the explicit type qualifier at `path` for this invocation, if any.
+         *
+         * When present, this type qualifier will be matched against the declaring
+         * type of the target.
+         *
+         * Example:
+         *
+         * ```rust
+         * let opt = Option::<i32>::None;
+         * //        ^^^^^^^^^^^^^ type qualifier
+         * ```
+         */
+        Type getTypeQualifier(TypePath path);
+
+        /**
+         * Gets the explicit type argument at position `pos` and `path` for this
+         * invocation, if any.
+         *
+         * This should only include type arguments that are supplied for type
+         * parameters belonging to the target of the invocation, and not type
+         * arguments that are part a type qualifier (those should be handled via
+         * `getTypeQualifier`).
+         *
+         * Example:
+         *
+         * ```rust
+         * let x = Foo::<i32>::bar::<i64>();
+         * //      ^^^^^^^^^^ type qualifier
+         * //                        ^^^ type argument 0
+         * ```
+         */
+        Type getTypeArgument(int pos, TypePath path);
+
+        /**
+         * Gets the `i`th argument of this invocation.
+         *
+         * This should include the receiver argument for method calls.
+         */
+        Expr getArgument(int i);
+
+        /**
+         * Gets the target of this invocation in the given resolution context.
+         *
+         * This predicate may depend on the `inferType` predicate, for example,
+         * in order to resolve a method call one needs to know the type of the
+         * receiver.
+         */
+        Parameterizable getTarget(ResolutionContext ctx);
+
+        /**
+         * Gets a target (candidate) of this invocation which will be used to
+         * match the type qualifier of this call against type parameters of the
+         * declaring type of the target (candidate).
+         *
+         * Unlike `getTarget`, this predicate cannot depend on the `inferType`
+         * predicate.
+         */
+        Parameterizable getATargetForTypeQualifierMatching();
+      }
+
+      /**
+       * Gets the inferred type of the `i`th argument of `invocation` at `path` in context
+       * `ctx`, to be used when propagating type information out of the invocation via the
+       * target.
+       *
+       * By default, this is the inferred type of `invocation.getArgument(i)`, but in for
+       * example Rust, the inferred type of the receiver of a method call needs to take the
+       * resolution context into account, in order to use the correct candidate receiver type.
+       */
+      bindingset[ctx]
+      default Type inferInvocationArgumentType(
+        Invocation invocation, ResolutionContext ctx, int i, TypePath path
+      ) {
+        result = inferTypeForDefaults(invocation.getArgument(i), path) and
+        exists(ctx)
+      }
+
+      /**
+       * Gets the contextually inferred type of invocation argument `arg` at `path`.
+       * The context used is the target of the invocation, for example in
+       *
+       * ```rust
+       * let x = Vec::new();
+       * x.push(42);
+       * ```
+       *
+       * the `push` context allows us to infer that the type of `x` is `Vec<i32>`.
+       *
+       * This predicate must be implemented using `inferInvocationArgumentTypeContextualDefault`,
+       * performing the dual post-processing of `inferInvocationArgumentType`.
+       *
+       * When no post-processing is needed, simply implement this predicate as
+       * `result = inferInvocationArgumentTypeContextualDefault(_, _, _, arg, path)`.
+       */
+      Type inferInvocationArgumentTypeContextual(Expr arg, TypePath path);
+
+      /**
+       * Gets the inferred type of `invocation`, found by propagating type information
+       * out of the invocation via the target.
+       *
+       * When no post-processing is needed, simply implement this predicate as
+       * `result = inferInvocationTypeDefault(invocation, _, path)`.
+       */
+      Type inferInvocationType(Invocation invocation, TypePath path);
+
+      /**
+       * Gets the contextually inferred type of `invocation`, to be used when propagating
+       * type information out of the invocation via the declared type of the target.
+       *
+       * For example, in
+       *
+       * ```rust
+       * fn id<T>(x: T) -> T { x }
+       * let x = Default::default();
+       * let y : i32 = id(x);
+       * ```
+       *
+       * knowing that the return type of `id(x)` is `i32` allows us to infer that
+       * the type of `x` is also `i32`.
+       *
+       * This predicate should perform the dual post-processing of `inferInvocationType`.
+       */
+      default Type inferInvocationTypeContextual(Invocation invocation, TypePath path) {
+        result = inferTypeForDefaults(invocation, path)
+      }
+
+      /** A closure/lambda expression. */
+      class Closure extends Callable, Expr;
+
+      /**
+       * A special pseudo type representing a particular closure parameter.
+       *
+       * This is needed in cases where the type of a closure parameter must be
+       * inferred from the inferred _return type_ of the closure. For example,
+       * in
+       *
+       * ```rust
+       * let c = |x| x;
+       * let r: i32 = c(Default::default());
+       * ```
+       *
+       * We
+       *
+       * 1. assign `x` the pseudo type `T_x`,
+       * 2. infer that the return type of `c` is `T_x` and hence that `c` has type
+       *    `Fn(<missing>) -> T_x`,
+       * 3. this enables us to detect that contextual inference is needed, so we also
+       *    assign `c` the type `Fn(<missing>) -> UnknownType`,
+       * 4. infer that `c(42)` must have `UnknownType`,
+       * 5. infer, using contextual inference, that `c` has type `Fn(<missing>) -> i32`,
+       *    and finally
+       * 6. since `c` also has type `Fn(<missing>) -> T_x`, we conclude that `x` has type
+       *    `i32` and hence that `c` has type `Fn(i32) -> i32`.
+       *
+       * Note that steps 2, 4, and 5 are standard inference steps.
+       */
+      class ClosureParameterPseudoType extends PseudoType {
+        /** Gets the closure parameter that this type represents. */
+        Parameter getParameter();
+      }
+
+      /** Gets the root type of closure `c`, for example `Fn` in Rust or `Func` in C#. */
+      bindingset[c]
+      Type getClosureType(Closure c);
+
+      /**
+       * Gets the type path corresponding to closure parameter `p`. This should be
+       * a path into the `getClosureType(c)` type, where `c` is the closure that `p`
+       * belongs to.
+       */
+      TypePath getClosureParameterTypePath(Parameter p);
+
+      /**
+       * Gets the type path corresponding to the return type of closure `c`. This should be
+       * a path into the `getClosureType(c)` type.
+       */
+      bindingset[c]
+      TypePath getClosureReturnTypePath(Closure c);
+
+      /**
+       * Holds if `n1` having certain type `t` at `prefix1.suffix` implies that `n2` has
+       * certain type `t` at `prefix2.suffix`, for any `suffix`, but not necessarily
+       * the other way around.
+       *
+       * Any tuples included in this predicate will also automatically be included
+       * in `inferStep`; if in doubt, use `inferStep` instead.
+       */
+      default predicate inferStepCertain(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+        none()
+      }
+
+      /**
+       * Gets the inferred certain type of `n` at `path`.
+       *
+       * Use this predicate to implement any bespoke inference logic, but only for
+       * nodes where `inferStepCertain` cannot be used, such as leaf nodes in the AST.
+       *
+       * Any tuples included in this predicate will also automatically be included
+       * in `inferType`; if in doubt, use `inferType` instead.
+       */
+      default Type inferTypeCertainSpecific(AstNode n, TypePath path) { none() }
+
+      /**
+       * Holds if `n1` having type `t` at `prefix1.suffix` implies that `n2` has type
+       * `t` at `prefix2.suffix`, for any `suffix`, but not necessarily the other way
+       * around.
+       */
+      predicate inferStep(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2);
+
+      /**
+       * Gets the inferred type of `n` at `path`.
+       *
+       * Use this predicate to implement any bespoke inference logic, but only for
+       * nodes where `inferStep` cannot be used, such as leaf nodes in the AST.
+       */
+      Type inferTypeSpecific(AstNode n, TypePath path);
+    }
+
+    module Make3<InputSig3 Input3> {
+      private import Input3
+
+      private predicate closureStep(AstNode pattern, TypePath prefix1, Closure c, TypePath prefix2) {
+        exists(Parameter p |
+          pattern = p.getPattern() and
+          p = c.getParameter(_) and
+          prefix1.isEmpty() and
+          prefix2 = getClosureParameterTypePath(p)
+        )
+      }
+
+      /**
+       * Provides logic for inferring certain type information.
+       *
+       * Unlike `inferType`, which may in general infer multiple types for a given node,
+       * `inferTypeCertain` will (ideally) only infer a single type for a given node, and
+       * `inferType` will not be allowed to infer types that are in conflict with known
+       * certain type information.
+       */
+      private module Certain {
+        /** Gets the type of `n`, which has an explicit type annotation. */
+        pragma[nomagic]
+        private Type inferAnnotatedType(AstNode n, TypePath path) {
+          exists(TypeMention tm | result = tm.getTypeAt(path) |
+            tm = n.(Cast).getType()
+            or
+            exists(VariableDeclaration decl |
+              tm = decl.getType() and
+              n = decl.getPattern()
+            )
+            or
+            exists(Parameter p |
+              n = p.getPattern() and
+              tm = p.getType()
+            )
+          )
+          or
+          exists(Closure c, TypePath suffix |
+            n = c and
+            result = getCallableReturnType(c, suffix) and
+            path = getClosureReturnTypePath(c).append(suffix)
+          )
+        }
+
+        predicate stepCertain(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+          inferStepCertain(n1, prefix1, n2, prefix2)
+          or
+          prefix1.isEmpty() and
+          prefix2.isEmpty() and
+          (
+            exists(Variable v | n1 = v.getDefiningNode() and n2 = v.getAnAccess())
+            or
+            exists(VariableDeclaration decl |
+              not decl.isCoercionSite() and
+              n1 = decl.getInitializer() and
+              n2 = decl.getPattern()
+            )
+            or
+            n1 = n2.(ParenExpr).getExpr()
+          )
+        }
+
+        pragma[nomagic]
+        private Type inferTypeFromStepCertain(AstNode n, TypePath path) {
+          exists(TypePath prefix1, AstNode n2, TypePath prefix2, TypePath suffix |
+            result = inferTypeCertain(n2, prefix2.appendInverse(suffix)) and
+            path = prefix1.append(suffix)
+          |
+            stepCertain(n2, prefix2, n, prefix1)
+            or
+            closureStep(n2, prefix2, n, prefix1)
+          )
+        }
+
+        private Type inferLogicalOperationType(AstNode n, TypePath path) {
+          (
+            exists(LogicalAndExpr lae | n = [lae, lae.getLeftOperand(), lae.getRightOperand()]) or
+            exists(LogicalOrExpr loe | n = [loe, loe.getLeftOperand(), loe.getRightOperand()])
+          ) and
+          result instanceof BoolType and
+          path.isEmpty()
+        }
+
+        /** Gets the inferred certain type of `n` at `path`. */
+        cached
+        Type inferTypeCertain(AstNode n, TypePath path) {
+          (
+            CachedStage::ref() and
+            result = Input3::inferTypeCertainSpecific(n, path)
+            or
+            result = inferAnnotatedType(n, path)
+            or
+            result = inferTypeFromStepCertain(n, path)
+            or
+            result = inferLogicalOperationType(n, path)
+            or
+            result = getClosureType(n) and
+            path.isEmpty()
+            or
+            infersCertainTypeAt(n, path, result.getATypeParameter())
+          ) and
+          // type annotation may for example include unknown types, such as
+          // `x : Vec<_>` in Rust
+          not result instanceof PseudoType
+        }
+
+        /**
+         * Holds if `n` has complete and certain type information at `path`.
+         */
+        pragma[nomagic]
+        predicate hasInferredCertainType(AstNode n, TypePath path) {
+          exists(inferTypeCertain(n, path))
+        }
+
+        /**
+         * Holds if `n` has complete and certain type information at the type path
+         * `prefix.tp`. This entails that the type at `prefix` must be the type
+         * that declares `tp`.
+         */
+        pragma[nomagic]
+        private predicate infersCertainTypeAt(AstNode n, TypePath prefix, TypeParameter tp) {
+          exists(TypePath path |
+            hasInferredCertainType(n, path) and
+            not path.isEmpty() and // implied by `isSnoc` below, but improves performance slightly
+            path.isSnoc(prefix, tp)
+          )
+        }
+
+        /**
+         * Holds if `n` having type `t` at `path` conflicts with certain type information
+         * at `prefix`.
+         */
+        bindingset[n, prefix, path, t]
+        pragma[inline_late]
+        predicate certainTypeConflict(AstNode n, TypePath prefix, TypePath path, Type t) {
+          inferTypeCertain(n, path) != t
+          or
+          // If we infer that `n` has _some_ type at `T1.T2....Tn`, and we also
+          // know that `n` certainly has type `certainType` at `T1.T2...Ti`, `0 <= i < n`,
+          // then it must be the case that `T(i+1)` is a type parameter of `certainType`,
+          // otherwise there is a conflict.
+          //
+          // Below, `prefix` is `T1.T2...Ti` and `tp` is `T(i+1)`.
+          exists(TypePath suffix, TypeParameter tp, Type certainType |
+            path = prefix.appendInverse(suffix) and
+            tp = suffix.getHead() and
+            inferTypeCertain(n, prefix) = certainType and
+            not certainType.getATypeParameter() = tp
+          )
+        }
+      }
+
+      predicate inferTypeCertain = Certain::inferTypeCertain/2;
+
+      private predicate step(AstNode n1, TypePath prefix1, AstNode n2, TypePath prefix2) {
+        inferStep(n1, prefix1, n2, prefix2)
+        or
+        Certain::stepCertain(n1, prefix1, n2, prefix2)
+        or
+        prefix1.isEmpty() and
+        prefix2.isEmpty() and
+        (
+          exists(AssignExpr ae |
+            n1 = ae.getRightOperand() and
+            n2 = ae.getLeftOperand()
+          )
+          or
+          exists(VariableDeclaration decl |
+            n1 = decl.getInitializer() and
+            n2 = decl.getPattern()
+          )
+          or
+          exists(Switch switch |
+            n1 = switch.getExpr() and
+            n2 = switch.getCase(_).getAPattern()
+          )
+          or
+          n1 = n2.(Switch).getCase(_).getBody()
+          or
+          n2 = any(ConditionalExpr ce | n1 = [ce.getThen(), ce.getElse()])
+          or
+          exists(Return ret, Callable c |
+            n1 = ret.getExpr() and
+            c = getEnclosingCallable(ret) and
+            n2 = c.getBody()
+          )
+        )
+        or
+        exists(Closure c |
+          n1 = c.getBody() and
+          n2 = c and
+          prefix1.isEmpty() and
+          prefix2 = getClosureReturnTypePath(n2)
+        )
+      }
+
+      pragma[nomagic]
+      private Type inferTypeFromStep(AstNode n, TypePath path) {
+        exists(TypePath prefix1, AstNode n2, TypePath prefix2, TypePath suffix |
+          result = inferType(n2, prefix2.appendInverse(suffix)) and
+          path = prefix1.append(suffix)
+        |
+          step(n2, prefix2, n, prefix1)
+          or
+          closureStep(n2, prefix2, n, prefix1) and
+          // prevent closure parameter pseudo types from escaping the closure
+          not result.(ClosureParameterPseudoType).getParameter() = n.(Closure).getParameter(_)
+        )
+      }
+
+      /**
+       * A matching configuration for resolving types of field accesses like `x.field`.
+       */
+      private module FieldAccessMatchingInput implements MatchingInputSig {
+        private newtype TDeclarationPosition =
+          TReceiverPosition() or
+          TFieldPosition()
+
+        class DeclarationPosition extends TDeclarationPosition {
+          predicate isReceiver() { this = TReceiverPosition() }
+
+          predicate isField() { this = TFieldPosition() }
+
+          string toString() {
+            this.isReceiver() and
+            result = "receiver"
+            or
+            this.isField() and
+            result = "field"
+          }
+        }
+
+        final private class FieldFinal = Field;
+
+        class Declaration extends FieldFinal {
+          TypeParameter getTypeParameter(int pos) { none() }
+
+          Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+            dpos.isReceiver() and
+            result = this.getDeclaringType().getTypeAt(path)
+            or
+            dpos.isField() and
+            result = this.getType().getTypeAt(path)
+          }
+        }
+
+        class AccessPosition = DeclarationPosition;
+
+        predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
+          apos = dpos
+        }
+
+        final private class FieldAccessFinal = FieldAccess;
+
+        class Access extends FieldAccessFinal {
+          Type getTypeArgument(int pos, TypePath path) { none() }
+
+          Type getInferredType(AccessPosition apos, TypePath path) {
+            apos.isReceiver() and
+            result = inferFieldAccessReceiverType(this, path)
+            or
+            apos.isField() and
+            result = inferType(this, path)
+          }
+
+          Declaration getTarget() { result = this.getField() }
+        }
+      }
+
+      private module FieldAccessMatching = Matching<FieldAccessMatchingInput>;
+
+      pragma[nomagic]
+      private Type inferFieldAccessType(FieldAccess fa, TypePath path) {
+        exists(FieldAccessMatchingInput::DeclarationPosition pos |
+          result = FieldAccessMatching::inferAccessType(fa, pos, path) and
+          pos.isField()
+        )
+      }
+
+      /**
+       * Gets the contextually inferred type of field access receiver `receiver`
+       * at `path`. For more info, see the QL doc of
+       * `InputSig3::inferFieldAccessReceiverTypeContextual`.
+       */
+      pragma[nomagic]
+      Type inferFieldAccessReceiverTypeContextualDefault(
+        FieldAccess fa, Expr receiver, TypePath path
+      ) {
+        exists(FieldAccessMatchingInput::DeclarationPosition pos |
+          result = FieldAccessMatching::inferAccessType(fa, pos, path) and
+          pos.isReceiver() and
+          receiver = fa.getReceiver() and
+          // `inferTypeContextualCand2` performs the proper check for contextual
+          // typing, but we can already rule out cases where receivers don't have
+          // an unknown type anywhere
+          ContextualTyping::hasUnknownType(receiver)
+        )
+      }
+
+      private Type getParameterizableReturnType(Parameterizable p, TypePath path) {
+        (
+          result = getCallableReturnType(p, path)
+          or
+          not p instanceof Callable and
+          result = p.getType().getTypeAt(path)
+        )
+      }
+
+      final private class ParameterizableFinal = Parameterizable;
+
+      final private class InvocationFinal = Invocation;
+
+      /**
+       * A matching configuration for matching type qualifiers against type parameters
+       * of declaring types.
+       *
+       * While the type arguments of type qualifiers may often have to be matched
+       * directly against the corresponding type parameters, this need not always be the
+       * case. For example, in Rust, functions are not defined inside the type definitions,
+       * but rather inside `impl` blocks that will have their own type parameters:
+       *
+       * ```rust
+       * struct MyThing<T> { ... }
+       *
+       * impl<A> MyThing<A> {
+       *     fn foo(self) { ... }
+       * }
+       *
+       * MyThing::<i32>::foo();
+       * //        ^^^ should be matched against `A`, not `T`
+       * ```
+       */
+      private module InvocationTypeQualifierMatchingInput implements MatchingInputSig {
+        private import codeql.util.Unit
+
+        class DeclarationPosition = Unit;
+
+        class AccessPosition = Unit;
+
+        predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
+          apos = dpos
+        }
+
+        class Declaration extends ParameterizableFinal {
+          Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+            result = this.getDeclaringType().getTypeAt(path) and
+            exists(dpos)
+          }
+        }
+
+        bindingset[decl]
+        TypeMention getATypeParameterConstraint(TypeParameter tp, Declaration decl) {
+          result = Input2::getATypeParameterConstraint(tp) and
+          exists(decl)
+          or
+          result = decl.getAdditionalTypeParameterConstraint(tp)
+        }
+
+        class Access extends InvocationFinal {
+          Access() { exists(this.getTypeQualifier(_)) }
+
+          Type getInferredType(AccessPosition apos, TypePath path) {
+            result = this.getTypeQualifier(path) and
+            exists(apos)
+          }
+
+          Declaration getTarget() { result = this.getATargetForTypeQualifierMatching() }
+        }
+      }
+
+      private module InvocationTypeQualifierMatching =
+        Matching<InvocationTypeQualifierMatchingInput>;
+
+      /**
+       * A matching configuration for matching types of arguments against types of
+       * parameters.
+       */
+      private module InvocationMatchingInput implements MatchingWithEnvironmentInputSig {
+        import InvocationTypeQualifierMatchingInput
+
+        class DeclarationPosition = int;
+
+        class AccessPosition = DeclarationPosition;
+
+        bindingset[apos]
+        bindingset[dpos]
+        predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
+          apos = dpos
+        }
+
+        /** Gets the position used to represent the return type of an invocation. */
+        additional int getReturnPosition() {
+          result = min(int i | i = 0 or exists(any(Parameterizable p).getParameter(i)) | i) - 1
+        }
+
+        private int getFirstTypeParameterPosition() {
+          result = min(int i | i = 0 or exists(any(Parameterizable p).getTypeParameter(i)) | i)
+        }
+
+        private predicate typeQualifierMatch(
+          Invocation invocation, Parameterizable target, TypePath path, Type t, TypeParameter tp,
+          int pos
+        ) {
+          InvocationTypeQualifierMatching::typeMatch(invocation, _, target, path, t, tp) and
+          pos = getFirstTypeParameterPosition() - getRank(tp) - 2
+        }
+
+        class Declaration extends ParameterizableFinal {
+          TypeParameter getTypeParameter(int pos) {
+            // include type parameters that are matched via a type qualifier
+            typeQualifierMatch(_, this, _, _, result, pos)
+            or
+            // blanket implementations in Rust have a declaring type that is itself a
+            // type parameter; those should be matched against the entire type qualifier
+            result = this.getDeclaringType().getTypeAt(TypePath::nil()) and
+            pos = getFirstTypeParameterPosition() - 1
+            or
+            result = super.getTypeParameter(pos)
+          }
+
+          Type getDeclaredType(DeclarationPosition dpos, TypePath path) {
+            result = this.getParameter(dpos).getType().getTypeAt(path)
+            or
+            dpos = getReturnPosition() and
+            result = getParameterizableReturnType(this, path)
+          }
+        }
+
+        bindingset[decl]
+        TypeMention getATypeParameterConstraint(TypeParameter tp, Declaration decl) {
+          result = InvocationTypeQualifierMatchingInput::getATypeParameterConstraint(tp, decl)
+        }
+
+        class AccessEnvironment = ResolutionContext;
+
+        class Access extends InvocationFinal {
+          Type getTypeArgument(int pos, TypePath path) {
+            // A type argument found by matching the type qualifier against the declaring
+            // type of the target
+            typeQualifierMatch(this, _, path, result, _, pos)
+            or
+            pos = getFirstTypeParameterPosition() - 1 and
+            result = this.getTypeQualifier(path)
+            or
+            result = super.getTypeArgument(pos, path)
+          }
+
+          pragma[nomagic]
+          private Type getInferredReturnType(AccessPosition apos, TypePath path) {
+            result = inferInvocationTypeContextual(this, path) and
+            apos = getReturnPosition()
+          }
+
+          bindingset[e]
+          Type getInferredType(AccessEnvironment e, AccessPosition apos, TypePath path) {
+            result = inferInvocationArgumentType(this, e, apos, path)
+            or
+            result = this.getInferredReturnType(apos, path) and
+            exists(e)
+          }
+
+          Declaration getTarget(AccessEnvironment e) { result = super.getTarget(e) }
+        }
+      }
+
+      private module InvocationMatching = MatchingWithEnvironment<InvocationMatchingInput>;
+
+      /**
+       * Gets the inferred type of `invocation`, found by propagating type information
+       * out of the invocation via the target. For more info, see the QL doc of
+       * `InputSig3::inferInvocationType`.
+       */
+      pragma[nomagic]
+      Type inferInvocationTypeDefault(Invocation invocation, ResolutionContext ctx, TypePath path) {
+        result =
+          InvocationMatching::inferAccessType(invocation, ctx,
+            InvocationMatchingInput::getReturnPosition(), path)
+      }
+
+      /**
+       * Gets the contextually inferred type of call argument `arg` at `path`. For more info,
+       * see the QL doc of `InputSig3::inferInvocationArgumentTypeContextual`.
+       */
+      pragma[nomagic]
+      Type inferInvocationArgumentTypeContextualDefault(
+        Invocation invocation, ResolutionContext ctx, int pos, Expr arg, TypePath path
+      ) {
+        arg = invocation.getArgument(pos) and
+        result = InvocationMatching::inferAccessType(invocation, ctx, pos, path) and
+        // `inferTypeContextualCand2` performs the proper check for contextual
+        // typing, but we can already rule out cases where arguments don't have
+        // an unknown type anywhere
+        ContextualTyping::hasUnknownType(arg)
+      }
+
+      /**
+       * Provides logic related to contextual typing. By default, types are inferred
+       * bottom-up, but when AST nodes have an explicit `UnknownType`, contextual typing is
+       * allowed.
+       *
+       * This module identifies calls where the return type may need to be inferred from the
+       * context, and also implements logic for performing contextual inference.
+       */
+      private module ContextualTyping {
+        pragma[nomagic]
+        private TypeParameter getAConstrained(TypeParameter tp) {
+          result = getATypeParameterConstraint(tp).getTypeAt(_)
+        }
+
+        /**
+         * Holds if parameterizable `p` mentions type parameter `tp` at some parameter,
+         * possibly via a constraint on another mentioned type parameter.
+         */
+        pragma[nomagic]
+        private predicate mentionsTypeParameterAtParameter(Parameterizable p, TypeParameter tp) {
+          tp = getAConstrained*(p.getParameter(_).getType().getTypeAt(_))
+        }
+
+        /**
+         * Holds if the return type of the parameterizable `p` at `path` is type parameter
+         * `tp`, and `tp` does not appear in the type of any parameter of `p`.
+         *
+         * In this case, the context in which `p` is called may be needed to infer
+         * the instantiation of `tp`.
+         *
+         * This covers functions like `Default::default` and `Vec::new` in Rust.
+         */
+        pragma[nomagic]
+        private predicate parameterizableReturnContextTypedAt(
+          Parameterizable p, TypePath path, TypeParameter tp
+        ) {
+          tp = getParameterizableReturnType(p, path) and
+          not mentionsTypeParameterAtParameter(p, tp)
+        }
+
+        bindingset[invocation, target]
+        pragma[inline_late]
+        private predicate hasTypeArgument(
+          Invocation invocation, Parameterizable target, TypeParameter tp
+        ) {
+          exists(Type t |
+            InvocationTypeQualifierMatching::typeMatch(invocation, _, _, _, t, tp) and
+            not t instanceof PseudoType
+          )
+          or
+          exists(InvocationMatching::getTypeArgument(invocation, target, tp, _))
+        }
+
+        /**
+         * Holds if `invocation` resolves to some target where the return type at `path`
+         * may have to be inferred from the context.
+         */
+        pragma[nomagic]
+        predicate needsContextualTyping(Invocation invocation, TypePath path) {
+          exists(Parameterizable target, TypeParameter tp |
+            target = invocation.getATargetForTypeQualifierMatching()
+            or
+            target = invocation.getTarget(_)
+          |
+            parameterizableReturnContextTypedAt(target, path, tp) and
+            // check that no explicit type arguments have been supplied that bind `tp`
+            not exists(TypeParameter supplied |
+              tp = getAConstrained*(supplied) and
+              hasTypeArgument(invocation, target, supplied)
+            )
+          )
+        }
+
+        pragma[nomagic]
+        private predicate hasUnknownTypeAt(AstNode n, TypePath path) {
+          inferType(n, path) instanceof UnknownType
+        }
+
+        pragma[nomagic]
+        predicate hasUnknownType(AstNode n) { hasUnknownTypeAt(n, _) }
+
+        pragma[nomagic]
+        private Type inferTypeContextualCand0(AstNode n, TypePath path) {
+          exists(Callable c |
+            n = c.getBody() and
+            result = getCallableReturnType(c, path)
+          )
+          or
+          result = inferInvocationArgumentTypeContextual(n, path)
+          or
+          result = inferFieldAccessReceiverTypeContextual(n, path)
+          or
+          // steps are reversed in contextual typing
+          exists(TypePath path1, AstNode n2, TypePath path2, TypePath suffix |
+            result = inferType(n2, path2.appendInverse(suffix)) and
+            path = path1.append(suffix)
+          |
+            step(n, path1, n2, path2)
+            or
+            closureStep(n, path1, n2, path2)
+          )
+        }
+
+        pragma[nomagic]
+        private Type inferTypeContextualCand1(AstNode n, TypePath prefix, TypePath path) {
+          result = inferTypeContextualCand0(n, path) and
+          hasUnknownType(n) and
+          prefix = path.getAPrefix() and
+          // no need to propagate `UnknownType`s contextually; `n` must already have an
+          // `UnknownType` at some prefix of `path`
+          not result instanceof UnknownType
+        }
+
+        pragma[nomagic]
+        private Type inferTypeContextualCand2(AstNode n, TypePath path) {
+          exists(TypePath prefix |
+            result = inferTypeContextualCand1(n, prefix, path) and
+            hasUnknownTypeAt(n, prefix)
+          )
+        }
+
+        /**
+         * Holds if `n` has `UnknownType` at some prefix of non-empty path `path`, and
+         * contextual inference is allowed at `path`. This is the case only if `path` is
+         * compatible with an already inferred type (contextually or not).
+         */
+        pragma[nomagic]
+        private predicate isValidContextualNonEmptyPath(AstNode n, TypePath path) {
+          hasUnknownType(n) and
+          exists(TypePath prefix, TypeParameter tp |
+            tp = inferType(n, prefix).getATypeParameter() and
+            path = TypePath::snoc(prefix, tp)
+          )
+        }
+
+        /**
+         * Gets the contextually inferred type of `n` at `path`, if any. This is only
+         * allowed when `n` has `UnknownType` at some prefix of `path`, and furthermore
+         * if `path` is non-empty, then it must be compatible with an already inferred
+         * type (contextually or not).
+         */
+        pragma[nomagic]
+        Type inferTypeContextual(AstNode n, TypePath path) {
+          result = inferTypeContextualCand2(n, path) and
+          (
+            path.isEmpty()
+            or
+            isValidContextualNonEmptyPath(n, path)
+          )
+        }
+      }
+
+      private module ClosureTyping {
+        pragma[nomagic]
+        private predicate hasClosureParameterPseudoType(AstNode n, Parameter p, TypePath path) {
+          // use `inferTypeCand` to also detect propagation into enclosing closure
+          p = inferTypeCand(n, path).(ClosureParameterPseudoType).getParameter()
+        }
+
+        pragma[nomagic]
+        private predicate hasClosureParameterPseudoType(AstNode n) {
+          hasClosureParameterPseudoType(n, _, _)
+        }
+
+        pragma[nomagic]
+        private predicate hasTypeAt(AstNode n, TypePath path) { exists(inferType(n, path)) }
+
+        pragma[nomagic]
+        private predicate hasTypeAtPrefix(AstNode n, TypePath prefix, TypePath path) {
+          hasTypeAt(n, path) and
+          hasClosureParameterPseudoType(n) and
+          prefix = path.getAPrefix()
+        }
+
+        pragma[nomagic]
+        private predicate hasClosureParameterPseudoType(
+          AstNode n, TypePath path, AstNode pattern, TypePath suffix
+        ) {
+          exists(Parameter p, TypePath prefix |
+            hasClosureParameterPseudoType(n, p, prefix) and
+            hasTypeAtPrefix(n, prefix, path) and
+            path = prefix.appendInverse(suffix) and
+            pattern = p.getPattern()
+          )
+        }
+
+        pragma[nomagic]
+        private Type inferClosureParameterTypeCand(AstNode n, TypePath path) {
+          result = inferType(n, path) and
+          hasClosureParameterPseudoType(n) and
+          not result instanceof UnknownType
+        }
+
+        private Type inferClosureParameterPseudoType(AstNode n, TypePath path) {
+          // The `case X` comments below refer to the cases in the QL doc for
+          // `ClosureParameterPseudoType`.
+          exists(Closure c, Parameter p | p = c.getParameter(_) |
+            // case 1
+            n = p.getPattern() and
+            path.isEmpty() and
+            not exists(p.getType()) and
+            result.(ClosureParameterPseudoType).getParameter() = p
+            or
+            // case 3
+            hasClosureParameterPseudoType(c, p, path) and
+            n = c and
+            result instanceof UnknownType
+          )
+          or
+          // case 6
+          exists(AstNode n0, TypePath path0 |
+            hasClosureParameterPseudoType(n0, path0, n, path) and
+            result = inferClosureParameterTypeCand(n0, path0)
+          )
+        }
+
+        Type inferClosureType(AstNode n, TypePath path) {
+          result = inferClosureParameterPseudoType(n, path)
+          or
+          exists(Closure c, Parameter p |
+            p = c.getParameter(_) and
+            not exists(p.getType())
+          |
+            n = c and
+            path = getClosureParameterTypePath(p) and
+            result instanceof UnknownType
+            or
+            n = p.getPattern() and
+            result = inferType(c, getClosureParameterTypePath(p).appendInverse(path)) and
+            not result instanceof UnknownType
+          )
+        }
+      }
+
+      private Type inferTypeCand(AstNode n, TypePath path) {
+        result = Input3::inferTypeSpecific(n, path)
+        or
+        result = inferTypeFromStep(n, path)
+        or
+        result = inferInvocationType(n, path)
+        or
+        result = inferFieldAccessType(n, path)
+        or
+        result = ClosureTyping::inferClosureType(n, path)
+        or
+        (
+          ContextualTyping::needsContextualTyping(n, path)
+          or
+          exists(VariableDeclaration decl |
+            n = decl.getPattern() and
+            not exists(decl.getInitializer()) and
+            not exists(decl.getType()) and
+            path.isEmpty()
+          )
+        ) and
+        result instanceof UnknownType
+        or
+        result = ContextualTyping::inferTypeContextual(n, path)
+      }
+
+      /**
+       * Gets the inferred type of `n` at `path`.
+       */
+      cached
+      Type inferType(AstNode n, TypePath path) {
+        CachedStage::ref() and
+        result = inferTypeCertain(n, path)
+        or
+        result = inferTypeCand(n, path) and
+        // Don't propagate type information into a node which conflicts with certain
+        // type information.
+        forall(TypePath prefix |
+          Certain::hasInferredCertainType(n, prefix) and
+          prefix.isPrefixOf(path)
+        |
+          not Certain::certainTypeConflict(n, prefix, path, result)
+          or
+          // propagate closure parameter pseudo types even when there is certain information
+          result instanceof ClosureParameterPseudoType
+        ) and
+        // prevent closure parameter pseudo types from escaping from the closure
+        not result.(ClosureParameterPseudoType).getParameter() = n.(Closure).getParameter(_)
+        or
+        // If `n` has an explicitly unknown type at `prefix` and at the same time a certain
+        // type at `prefix.suffix`, then extend the unknown type information to any path
+        // extending `prefix.suffix` where there is not also certain type information
+        exists(TypePath prefix, TypePath suffix, Type certain, TypeParameter tp |
+          inferTypeCand(n, prefix) instanceof UnknownType and
+          certain = inferTypeCertain(n, prefix.appendInverse(suffix)) and
+          tp = certain.getATypeParameter() and
+          path = prefix.append(suffix).append(TypePath::singleton(tp)) and
+          not exists(inferTypeCertain(n, path)) and
+          result instanceof UnknownType
+        )
+        or
+        infersTypeAt(n, path, result.getATypeParameter())
+      }
+
+      /**
+       * Holds if `n` has type information at the type path `prefix.tp`. This entails
+       * that the type at `prefix` must be the type that declares `tp`.
+       */
+      pragma[nomagic]
+      private predicate infersTypeAt(AstNode n, TypePath prefix, TypeParameter tp) {
+        exists(TypePath path |
+          exists(inferType(n, path)) and
+          not path.isEmpty() and // implied by `isSnoc` below, but improves performance slightly
+          path.isSnoc(prefix, tp)
+        )
+      }
+
+      /**
+       * Gets the inferred root type of `n`, if any.
+       */
+      pragma[nomagic]
+      Type inferType(AstNode n) { result = inferType(n, TypePath::nil()) }
+
+      /**
+       * The cached stage of this module.
+       *
+       * Should not be exposed.
+       */
+      cached
+      module CachedStage {
+        /** Reference to the cached stage of this module. */
+        cached
+        predicate ref() { any() }
+
+        /** Reverse references to the predicates that reference `ref()`. */
+        cached
+        predicate revRef() {
+          any()
+          or
+          cacheRevRef()
+          or
+          (exists(inferTypeCertain(_, _)) implies any())
+          or
+          (exists(inferType(_, _)) implies any())
+        }
+      }
+
+      /**
+       * Provides consistency checks, including those from `Make2::Consistency`.
+       */
+      module Consistency {
+        import Consistency2
+
+        query predicate nonUniqueUnknownType() { strictcount(UnknownType t) > 1 }
+
+        query predicate closureParameterPseudoTypeOverlyBroad(ClosureParameterPseudoType t) {
+          t.getParameter() =
+            any(Parameter p |
+              exists(p.getType())
+              or
+              not p = any(Closure c).getParameter(_)
+            )
+        }
+
+        query predicate closureParameterPseudoTypeMissing(Closure c, Parameter p) {
+          p = c.getParameter(_) and
+          not exists(p.getType()) and
+          not p = any(ClosureParameterPseudoType t).getParameter()
+        }
+
+        query predicate nonUniqueCertainType(AstNode n, TypePath path) {
+          strictcount(inferTypeCertain(n, path)) > 1
+        }
+
+        /**
+         * Checks that `Input3::inferTypeForDefaults` is an alias for `inferType`.
+         */
+        query predicate inferTypeForDefaultsMismatch(AstNode n, TypePath path, Type t) {
+          inferType(n, path) = t and
+          not Input3::inferTypeForDefaults(n, path) = t
+          or
+          Input3::inferTypeForDefaults(n, path) = t and
+          not inferType(n, path) = t
+        }
+      }
+
+      /**
+       * Holds if the the textual representation `repr` should be used for `n` in
+       * `TypeTest`.
+       */
+      signature predicate typeTestAstNodeReprSig(AstNode n, string repr);
+
+      /**
+       * Provides an inline testing configuration for type inference. Each inline
+       * expectation is optional and of the form
+       *
+       * ```
+       * {type,certainType}=<ast node representation>[@<type path>]:<type>
+       * ```
+       *
+       * Omitting `@<type path>` means the empty type path.
+       *
+       * For example, the following expectations assert that the type of `x` is `bool`
+       * and that the type of `vec` is `Vec<bool>`:
+       *
+       * ```rust
+       * let x = true; // type=x:bool
+       * let vec = Vec::new(); // type=vec@Vec<T>:bool
+       * vec.push(x);
+       * ```
+       *
+       * Note that the annotation `type=vec:Vec`, while valid, is redundant since it
+       * is implied by the annotation above.
+       */
+      module TypeTest<typeTestAstNodeReprSig/2 typeTestAstNodeRepr> {
+        string getARelevantTag() { result = ["type", "certainType"] }
+
+        predicate hasActualResult(Location location, string element, string tag, string value) {
+          none()
+        }
+
+        predicate hasOptionalResult(Location location, string element, string tag, string value) {
+          exists(AstNode n, TypePath path, Type t, string at |
+            location = n.getLocation() and
+            (if path.isEmpty() then at = "" else at = "@" + TypePath::printTypePathVerbose(path)) and
+            value = element + at + ":" + t.toString() and
+            typeTestAstNodeRepr(n, element)
+          |
+            t = inferType(n, path) and
+            tag = "type"
+            or
+            t = inferTypeCertain(n, path) and
+            tag = "certainType"
+          )
+        }
+      }
+
+      /** Provides various debugging predicates. */
+      module Debug {
+        /**
+         * Holds if `n` has reached the type path limit. This is usually indicative
+         * of an unintended type inference explosion.
+         */
+        pragma[nomagic]
+        predicate atLimit(AstNode n) {
+          exists(TypePath path0 |
+            exists(inferType(n, path0)) and path0.length() >= getTypePathLimit()
+          )
+        }
+
+        Type inferTypeForNodeAtLimit(AstNode n, TypePath path) {
+          result = inferType(n, path) and
+          atLimit(n)
+        }
+
+        predicate countTypesForNodeAtLimit(AstNode n, int c) {
+          c = strictcount(Type t, TypePath path | t = inferTypeForNodeAtLimit(n, path))
+        }
+
+        pragma[nomagic]
+        private int countTypesAtPath(AstNode n, TypePath path, Type t) {
+          t = inferType(n, path) and
+          result = strictcount(Type t0 | t0 = inferType(n, path))
+        }
+
+        predicate maxTypes(AstNode n, TypePath path, Type t, int c) {
+          c = countTypesAtPath(n, path, t) and
+          c = max(countTypesAtPath(_, _, _))
+        }
+
+        pragma[nomagic]
+        private predicate typePathLength(AstNode n, TypePath path, Type t, int len) {
+          t = inferType(n, path) and
+          len = path.length()
+        }
+
+        predicate maxTypePath(AstNode n, TypePath path, Type t, int len) {
+          typePathLength(n, path, t, len) and
+          len = max(int i | typePathLength(_, _, _, i))
+        }
+
+        pragma[nomagic]
+        private int countTypePaths(AstNode n, TypePath path, Type t) {
+          t = inferType(n, path) and
+          result = strictcount(TypePath path0, Type t0 | t0 = inferType(n, path0))
+        }
+
+        predicate maxTypePaths(AstNode n, TypePath path, Type t, int c) {
+          c = countTypePaths(n, path, t) and
+          c = max(countTypePaths(_, _, _))
+        }
       }
     }
   }
