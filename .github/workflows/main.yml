@@ -1,0 +1,43 @@
+name: CypherTube CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Run code linting & security audit
+        run: |
+          npm run lint --if-present
+          npm audit --audit-level=high --if-present
+
+      - name: Run test suite
+        run: npm test --if-present
+
+      - name: Build production artifacts
+        run: npm run build --if-present
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: dist/ # Adjust to 'build/' or public directory depending on your framework
+          retention-days: 7
