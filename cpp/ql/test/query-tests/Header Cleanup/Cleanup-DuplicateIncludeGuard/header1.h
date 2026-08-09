@@ -1,6 +1,6 @@
 // header1.h
 
-#ifndef INCLUDED_HEADER1
+#ifndef INCLUDED_HEADER1 // $ Alert
 #define INCLUDED_HEADER1
 
 	// ...

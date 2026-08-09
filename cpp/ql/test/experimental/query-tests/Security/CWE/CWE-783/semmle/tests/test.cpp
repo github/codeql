@@ -1,14 +1,14 @@
 void testFunction(int i1, int i2, int i3, bool b1, bool b2, bool b3, char c1)
 {
-  
-  if(b1||b2&&b3) //BAD
+
+  if(b1||b2&&b3) // $ Alert //BAD
     return;
   if((b1||b2)&&b3) //GOOD
     return;
   if(b1||(b2&&b3)) //GOOD
     return;
 
-  if(b1||b2&i1) //BAD
+  if(b1||b2&i1) // $ Alert //BAD
     return;
   if((b1||b2)&i1) //GOOD
     return;
@@ -16,28 +16,28 @@ void testFunction(int i1, int i2, int i3, bool b1, bool b2, bool b3, char c1)
     return;
   if(b1&&b2&0) //GOOD
     return;
-  if(b1||b2|i1) //BAD
+  if(b1||b2|i1) // $ Alert //BAD
     return;
   if((b1||b2)|i1) //GOOD
     return;
 
-  if(i1|i2&c1) //BAD
+  if(i1|i2&c1) // $ Alert //BAD
     return;
   if((i1|i2)&i3) //GOOD
     return;
-  if(i1^i2&c1) //BAD
+  if(i1^i2&c1) // $ Alert //BAD
     return;
   if((i1^i2)&i3) //GOOD
     return;
-  
-  if(i1|i2^c1) //BAD
+
+  if(i1|i2^c1) // $ Alert //BAD
     return;
   if((i1|i2)^i3) //GOOD
     return;
-  
-  if(b1|b2^b3) //BAD
+
+  if(b1|b2^b3) // $ Alert //BAD
     return;
   if((b1|b2)^b3) //GOOD
     return;
-  
+
 }

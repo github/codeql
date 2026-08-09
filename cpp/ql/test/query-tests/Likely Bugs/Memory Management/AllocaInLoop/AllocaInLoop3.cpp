@@ -42,7 +42,7 @@ char *baz(int count) {
 	char *buf;
 	do {
 		buf = ({
-				char *b = (char *)alloca(32); // BAD
+				char *b = (char *)alloca(32); // $ Alert // BAD
 				sprintf(b, "Value is %d\n", count);
 				b;
 			});

@@ -1,1 +1,2 @@
-Dead Code/UnusedField.ql
+query: Dead Code/UnusedField.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

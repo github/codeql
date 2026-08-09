@@ -19,11 +19,11 @@ void test_send(const char *password1, const char *password2, const char *passwor
 	{
 		LogonUserA(val(), val(), password1, val(), val(), val()); // proof `password1` is plaintext
 
-		send(val(), password1, strlen(password1), val()); // BAD: `password1` is sent plaintext (certainly)
+		send(val(), password1, strlen(password1), val()); // $ Alert[cpp/cleartext-transmission] // BAD: `password1` is sent plaintext (certainly)
 	}
 
 	{
-		send(val(), password2, strlen(password2), val()); // BAD: `password2` is sent plaintext (probably)
+		send(val(), password2, strlen(password2), val()); // $ Alert[cpp/cleartext-transmission] // BAD: `password2` is sent plaintext (probably)
 	}
 
 	{
@@ -44,7 +44,7 @@ void test_receive()
 	{
 		char password[256];
 
-		recv(val(), password, 256, val()); // BAD: `password` is received plaintext (certainly)
+		recv(val(), password, 256, val()); // $ Alert[cpp/cleartext-transmission] // BAD: `password` is received plaintext (certainly)
 
 		LogonUserA(val(), val(), password, val(), val(), val()); // (proof `password` is plaintext)
 	}
@@ -52,7 +52,7 @@ void test_receive()
 	{
 		char password[256];
 
-		recv(val(), password, 256, val()); // BAD: `password` is received plaintext (probably)
+		recv(val(), password, 256, val()); // $ Alert[cpp/cleartext-transmission] // BAD: `password` is received plaintext (probably)
 	}
 
 	{
@@ -71,16 +71,16 @@ void test_receive()
 void test_dataflow(const char *password1)
 {
 	{
-		const char *ptr = password1;
+		const char *ptr = password1; // $ Source[cpp/cleartext-transmission]
 
-		send(val(), ptr, strlen(ptr), val()); // BAD: `password` is sent plaintext
+		send(val(), ptr, strlen(ptr), val()); // $ Alert[cpp/cleartext-transmission] // BAD: `password` is sent plaintext
 	}
 
 	{
 		char password[256];
-		char *ptr = password;
+		char *ptr = password; // $ Source[cpp/cleartext-transmission]
 
-		recv(val(), ptr, 256, val()); // BAD: `password` is received plaintext
+		recv(val(), ptr, 256, val()); // $ Alert[cpp/cleartext-transmission] // BAD: `password` is received plaintext
 	}
 
 	{
@@ -98,7 +98,7 @@ void test_read()
 		char password[256];
 		int fd = val();
 
-		read(fd, password, 256); // BAD: `password` is received plaintext
+		read(fd, password, 256); // $ Alert[cpp/cleartext-transmission] // BAD: `password` is received plaintext
 	}
 
 	{
@@ -111,7 +111,7 @@ void test_read()
 
 void my_recv(char *buffer, size_t bufferSize)
 {
-	recv(val(), buffer, bufferSize, val());
+	recv(val(), buffer, bufferSize, val()); // $ Alert[cpp/cleartext-transmission]
 }
 
 const char *id(const char *buffer)
@@ -123,7 +123,7 @@ char *global_password;
 
 char *get_global_str()
 {
-	return global_password;
+	return global_password; // $ Source[cpp/cleartext-transmission]
 }
 
 void test_interprocedural(const char *password1)
@@ -131,19 +131,19 @@ void test_interprocedural(const char *password1)
 	{
 		char password[256];
 
-		my_recv(password, 256); // BAD: `password` is received plaintext [detected in `my_recv`]
+		my_recv(password, 256); // $ Source[cpp/cleartext-transmission] // BAD: `password` is received plaintext [detected in `my_recv`]
 	}
 
 	{
-		const char *ptr = id(password1);
+		const char *ptr = id(password1); // $ Source[cpp/cleartext-transmission]
 
-		send(val(), ptr, strlen(ptr), val()); // BAD: `password1` is sent plaintext
+		send(val(), ptr, strlen(ptr), val()); // $ Alert[cpp/cleartext-transmission] // BAD: `password1` is sent plaintext
 	}
 
 	{
 		char *data = get_global_str();
 
-		send(val(), data, strlen(data), val()); // BAD: `global_password` is sent plaintext
+		send(val(), data, strlen(data), val()); // $ Alert[cpp/cleartext-transmission] // BAD: `global_password` is sent plaintext
 	}
 }
 
@@ -154,9 +154,9 @@ void test_taint(const char *password)
 	{
 		char buffer[16];
 
-		strncpy(buffer, password, 16);
+		strncpy(buffer, password, 16); // $ Source[cpp/cleartext-transmission]
 		buffer[15] = 0;
-		send(val(), buffer, 16, val()); // BAD: `password` is (partially) sent plaintext
+		send(val(), buffer, 16, val()); // $ Alert[cpp/cleartext-transmission] // BAD: `password` is (partially) sent plaintext
 	}
 }
 
@@ -225,7 +225,7 @@ int get_socket(int from);
 void test_more_stdio(const char *password)
 {
 	send(get_socket(1), password, 128, val()); // GOOD: `getsocket(1)` is probably standard output
-	send(get_socket(val()), password, 128, val()); // BAD
+	send(get_socket(val()), password, 128, val()); // $ Alert[cpp/cleartext-transmission] // BAD
 }
 
 typedef struct {} FILE;
@@ -238,7 +238,7 @@ void test_fgets(FILE *stream)
 {
 	char password[128];
 
-	fgets(password, 128, stream); // BAD
+	fgets(password, 128, stream); // $ Alert[cpp/cleartext-transmission] // BAD
 	fgets(password, 128, STDIN_STREAM); // GOOD: `STDIN_STREAM` is probably standard input
 }
 
@@ -267,9 +267,9 @@ void test_crypt_more()
 	{
 		char data[256], password[256];
 
-		strcpy(data, password); // not proof of anything
+		strcpy(data, password); // $ Source[cpp/cleartext-transmission] // not proof of anything
 
-		send(val(), data, strlen(data), val()); // BAD: password is sent plaintext
+		send(val(), data, strlen(data), val()); // $ Alert[cpp/cleartext-transmission] // BAD: password is sent plaintext
 	}
 }
 
@@ -287,17 +287,17 @@ void target2(char *data)
 
 void target3(char *data)
 {
-	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password
+	send(val(), data, strlen(data), val()); // $ Alert[cpp/cleartext-transmission] // BAD: data is a plaintext password
 }
 
 void target4(char *data)
 {
-	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password
+	send(val(), data, strlen(data), val()); // $ Alert[cpp/cleartext-transmission] // BAD: data is a plaintext password
 }
 
 void target5(char *data)
 {
-	send(val(), data, strlen(data), val()); // BAD: from one source this is a plaintext password
+	send(val(), data, strlen(data), val()); // $ Alert[cpp/cleartext-transmission] // BAD: from one source this is a plaintext password
 }
 
 void target6(char *data)
@@ -314,12 +314,12 @@ void test_multiple_sources_source(char *password1, char *password2)
 		target2(password1);
 	} else {
 		target2(password1);
-		target3(password1);
+		target3(password1); // $ Source[cpp/cleartext-transmission]
 	}
 
 	if (cond())
 	{
-		char *data = password2;
+		char *data = password2; // $ Source[cpp/cleartext-transmission]
 
 		target4(data);
 		target5(data);
@@ -338,8 +338,8 @@ void test_loops()
 		{
 			char password[256];
 
-			recv(val(), password, 256, val()); // BAD: not encrypted
-			
+			recv(val(), password, 256, val()); // $ Alert[cpp/cleartext-transmission] // BAD: not encrypted
+
 			// ...
 		}
 	}
@@ -351,7 +351,7 @@ void test_loops()
 
 			recv(val(), password, 256, val()); // GOOD: password is encrypted
 			decrypt_inplace(password); // proof that `password` was in fact encrypted
-			
+
 			// ...
 		}
 	}
@@ -385,7 +385,7 @@ void test_more_clues()
 	{
 		char password[256];
 
-		recv(val(), password, 256, val()); // BAD: not encrypted
+		recv(val(), password, 256, val()); // $ Alert[cpp/cleartext-transmission] // BAD: not encrypted
 	}
 
 	{
@@ -411,13 +411,13 @@ void test_member_password()
 	{
 		packet p;
 
-		recv(val(), p.password, 256, val()); // BAD: not encrypted
+		recv(val(), p.password, 256, val()); // $ Alert[cpp/cleartext-transmission] // BAD: not encrypted
 	}
 
 	{
 		packet p;
 
-		recv(val(), p.password, 256, val()); // GOOD: password is encrypted [FALSE POSITIVE]
+		recv(val(), p.password, 256, val()); // $ SPURIOUS: Alert[cpp/cleartext-transmission] // GOOD: password is encrypted [FALSE POSITIVE]
 		decrypt_inplace(p.password); // proof that `password` was in fact encrypted
 	}
 }
@@ -428,7 +428,7 @@ void test_stdin_param(FILE *stream)
 {
 	char password[128];
 
-	fgets(password, 128, stream); // GOOD: from standard input (see call below) [FALSE POSITIVE]
+	fgets(password, 128, stream); // $ SPURIOUS: Alert[cpp/cleartext-transmission] // GOOD: from standard input (see call below) [FALSE POSITIVE]
 }
 
 void test_stdin()
@@ -504,18 +504,18 @@ struct person_info
 void tests2(person_info *pi)
 {
 	// direct cases
-	send(val(), pi->social_security_number, strlen(pi->social_security_number), val()); // BAD
-	send(val(), pi->socialSecurityNo, strlen(pi->socialSecurityNo), val()); // BAD
-	send(val(), pi->homePostCode, strlen(pi->homePostCode), val()); // BAD
-	send(val(), pi->my_zip_code, strlen(pi->my_zip_code), val()); // BAD
-	send(val(), pi->telephone, strlen(pi->telephone), val()); // BAD
-	send(val(), pi->mobile_phone_number, strlen(pi->mobile_phone_number), val()); // BAD
-	send(val(), pi->email, strlen(pi->email), val()); // BAD
-	send(val(), pi->my_credit_card_number, strlen(pi->my_credit_card_number), val()); // BAD
-	send(val(), pi->my_bank_account_no, strlen(pi->my_bank_account_no), val()); // BAD
-	send(val(), pi->employerName, strlen(pi->employerName), val()); // BAD
-	send(val(), pi->medical_info, strlen(pi->medical_info), val()); // BAD
-	send(val(), pi->license_key, strlen(pi->license_key), val()); // BAD
+	send(val(), pi->social_security_number, strlen(pi->social_security_number), val()); // $ Alert[cpp/cleartext-transmission] // BAD
+	send(val(), pi->socialSecurityNo, strlen(pi->socialSecurityNo), val()); // $ Alert[cpp/cleartext-transmission] // BAD
+	send(val(), pi->homePostCode, strlen(pi->homePostCode), val()); // $ Alert[cpp/cleartext-transmission] // BAD
+	send(val(), pi->my_zip_code, strlen(pi->my_zip_code), val()); // $ Alert[cpp/cleartext-transmission] // BAD
+	send(val(), pi->telephone, strlen(pi->telephone), val()); // $ Alert[cpp/cleartext-transmission] // BAD
+	send(val(), pi->mobile_phone_number, strlen(pi->mobile_phone_number), val()); // $ Alert[cpp/cleartext-transmission] // BAD
+	send(val(), pi->email, strlen(pi->email), val()); // $ Alert[cpp/cleartext-transmission] // BAD
+	send(val(), pi->my_credit_card_number, strlen(pi->my_credit_card_number), val()); // $ Alert[cpp/cleartext-transmission] // BAD
+	send(val(), pi->my_bank_account_no, strlen(pi->my_bank_account_no), val()); // $ Alert[cpp/cleartext-transmission] // BAD
+	send(val(), pi->employerName, strlen(pi->employerName), val()); // $ Alert[cpp/cleartext-transmission] // BAD
+	send(val(), pi->medical_info, strlen(pi->medical_info), val()); // $ Alert[cpp/cleartext-transmission] // BAD
+	send(val(), pi->license_key, strlen(pi->license_key), val()); // $ Alert[cpp/cleartext-transmission] // BAD
 	send(val(), pi->license_key_hash, strlen(pi->license_key_hash), val()); // GOOD
 	send(val(), pi->my_zip_file, strlen(pi->my_zip_file), val()); // GOOD
 
@@ -523,40 +523,40 @@ void tests2(person_info *pi)
 	{
 		char buffer[1024];
 
-		snprintf(buffer, 1024, "lat = %f\n", pi->my_latitude);
-		send(val(), buffer, strlen(buffer), val()); // BAD
+		snprintf(buffer, 1024, "lat = %f\n", pi->my_latitude); // $ Source[cpp/cleartext-transmission]
+		send(val(), buffer, strlen(buffer), val()); // $ Alert[cpp/cleartext-transmission] // BAD
 	}
 	{
 		char buffer[1024];
 
-		snprintf(buffer, 1024, "long = %f\n", pi->home_longitude);
-		send(val(), buffer, strlen(buffer), val()); // BAD
+		snprintf(buffer, 1024, "long = %f\n", pi->home_longitude); // $ Source[cpp/cleartext-transmission]
+		send(val(), buffer, strlen(buffer), val()); // $ Alert[cpp/cleartext-transmission] // BAD
 	}
 	{
 		char buffer[1024];
 
 		snprintf(buffer, 1024, "salary = %i\n", pi->newSalary);
-		send(val(), buffer, strlen(buffer), val()); // BAD [NOT DETECTED]
+		send(val(), buffer, strlen(buffer), val()); // $ MISSING: Alert // BAD [NOT DETECTED]
 	}
 	{
 		char buffer[1024];
 		int sal = pi->newSalary;
 
 		snprintf(buffer, 1024, "salary = %i\n", sal);
-		send(val(), buffer, strlen(buffer), val()); // BAD [NOT DETECTED]
+		send(val(), buffer, strlen(buffer), val()); // $ MISSING: Alert // BAD [NOT DETECTED]
 	}
 	{
 		char buffer[1024];
 
-		snprintf(buffer, 1024, "salary = %s\n", pi->salaryString);
-		send(val(), buffer, strlen(buffer), val()); // BAD
+		snprintf(buffer, 1024, "salary = %s\n", pi->salaryString); // $ Source[cpp/cleartext-transmission]
+		send(val(), buffer, strlen(buffer), val()); // $ Alert[cpp/cleartext-transmission] // BAD
 	}
 	{
 		char buffer[1024];
-		char *sal = pi->salaryString;
+		char *sal = pi->salaryString; // $ Source[cpp/cleartext-transmission]
 
 		snprintf(buffer, 1024, "salary = %s\n", sal);
-		send(val(), buffer, strlen(buffer), val()); // BAD
+		send(val(), buffer, strlen(buffer), val()); // $ Alert[cpp/cleartext-transmission] // BAD
 	}
 }
 
@@ -568,12 +568,19 @@ void tests3()
 {
 	const char *str;
 
-	str = get_home_phone();
-	send(val(), str, strlen(str), val()); // BAD
+	str = get_home_phone(); // $ Source[cpp/cleartext-transmission]
+	send(val(), str, strlen(str), val()); // $ Alert[cpp/cleartext-transmission] // BAD
 
 	str = get_home();
 	send(val(), str, strlen(str), val()); // GOOD (probably not personal info)
 
-	str = get_home_address();
-	send(val(), str, strlen(str), val()); // BAD
+	str = get_home_address(); // $ Source[cpp/cleartext-transmission]
+	send(val(), str, strlen(str), val()); // $ Alert[cpp/cleartext-transmission] // BAD
+}
+
+int fscanf(FILE* stream, const char* format, ... );
+
+void test_scanf() {
+	char password[256];
+	fscanf(stdin, "%255s", password); // GOOD: this is not a remote source
 }

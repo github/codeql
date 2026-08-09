@@ -18,27 +18,27 @@ public class JinJavaSSTI {
 
 	@GetMapping(value = "bad1")
 	public void bad1(HttpServletRequest request) {
-		String template = request.getParameter("template"); // $ Source
+		String template = request.getParameter("template"); // $ Source[java/server-side-template-injection]
 		Jinjava jinjava = new Jinjava();
 		Map<String, Object> context = new HashMap<>();
-		String renderedTemplate = jinjava.render(template, context); // $ Alert
+		String renderedTemplate = jinjava.render(template, context); // $ Alert[java/server-side-template-injection]
 	}
 
 	@GetMapping(value = "bad2")
 	public void bad2(HttpServletRequest request) {
-		String template = request.getParameter("template"); // $ Source
+		String template = request.getParameter("template"); // $ Source[java/server-side-template-injection]
 		Jinjava jinjava = new Jinjava();
 		Map<String, Object> bindings = new HashMap<>();
-		RenderResult renderResult = jinjava.renderForResult(template, bindings); // $ Alert
+		RenderResult renderResult = jinjava.renderForResult(template, bindings); // $ Alert[java/server-side-template-injection]
 	}
 
 	@GetMapping(value = "bad3")
 	public void bad3(HttpServletRequest request) {
-		String template = request.getParameter("template"); // $ Source
+		String template = request.getParameter("template"); // $ Source[java/server-side-template-injection]
 		Jinjava jinjava = new Jinjava();
 		Map<String, Object> bindings = new HashMap<>();
 		JinjavaConfig renderConfig = new JinjavaConfig();
 
-		RenderResult renderResult = jinjava.renderForResult(template, bindings, renderConfig); // $ Alert
+		RenderResult renderResult = jinjava.renderForResult(template, bindings, renderConfig); // $ Alert[java/server-side-template-injection]
 	}
 }

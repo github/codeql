@@ -6,7 +6,7 @@ public class Test {
 	public Test() {
 		myThread = new Thread("myThread");
 		// BAD
-		myThread.start();
+		myThread.start(); // $ Alert
 	}
 	
 	public static final class Final {

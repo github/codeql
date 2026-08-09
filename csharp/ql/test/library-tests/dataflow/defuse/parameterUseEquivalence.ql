@@ -23,9 +23,8 @@ predicate parameterUsePair(Parameter p, AssignableRead read) {
 private LocalScopeVariableRead getAReachableUncertainRead(
   AssignableDefinitions::ImplicitParameterDefinition p
 ) {
-  exists(Ssa::Definition ssaDef |
-    p.getParameter() =
-      ssaDef.getAnUltimateDefinition().(Ssa::ImplicitParameterDefinition).getParameter()
+  exists(SsaDefinition ssaDef |
+    p.getParameter() = ssaDef.getAnUltimateDefinition().(SsaParameterInit).getParameter()
   |
     result = ssaDef.getARead()
   )

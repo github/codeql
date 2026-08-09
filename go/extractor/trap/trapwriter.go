@@ -17,16 +17,15 @@ import (
 
 // A Writer provides methods for writing data to a TRAP file
 type Writer struct {
-	zip             *gzip.Writer
-	wzip            *bufio.Writer
-	wfile           *bufio.Writer
-	file            *os.File
-	Labeler         *Labeler
-	path            string
-	trapFilePath    string
-	Package         *packages.Package
-	TypesOverride   map[ast.Expr]types.Type
-	ObjectsOverride map[types.Object]types.Object
+	zip           *gzip.Writer
+	wzip          *bufio.Writer
+	wfile         *bufio.Writer
+	file          *os.File
+	Labeler       *Labeler
+	path          string
+	trapFilePath  string
+	Package       *packages.Package
+	TypesOverride map[ast.Expr]types.Type
 }
 
 func FileFor(path string) (string, error) {
@@ -67,7 +66,6 @@ func NewWriter(path string, pkg *packages.Package) (*Writer, error) {
 		trapFilePath,
 		pkg,
 		make(map[ast.Expr]types.Type),
-		make(map[types.Object]types.Object),
 	}
 	tw.Labeler = newLabeler(tw)
 	return tw, nil
@@ -167,6 +165,8 @@ func (tw *Writer) Emit(table string, values []interface{}) error {
 			fmt.Fprintf(tw.wzip, "%d", value)
 		case float64:
 			fmt.Fprintf(tw.wzip, "%e", value)
+		case bool:
+			fmt.Fprintf(tw.wzip, "%t", value)
 		default:
 			return errors.New("Cannot emit value")
 		}

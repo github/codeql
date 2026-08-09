@@ -3,7 +3,7 @@ typedef uint8_t U8;
 typedef U8 something_else;
 void test1(U8* xptr) { }
 void test2(U8 x) { }
-void test3(unsigned char x) { }
+void test3(unsigned char x) { } // $ Alert
 void test4(uint8_t x){ }
 void test5(something_else x){ }
 static U8 test6;

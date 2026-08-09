@@ -436,6 +436,32 @@ module Directive {
   }
 
   /**
+   * A `use memo` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "use memo";
+   * ```
+   */
+  class UseMemoDirective extends KnownDirective {
+    UseMemoDirective() { this.getDirectiveText() = "use memo" }
+  }
+
+  /**
+   * A `use no memo` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "use no memo";
+   * ```
+   */
+  class UseNoMemoDirective extends KnownDirective {
+    UseNoMemoDirective() { this.getDirectiveText() = "use no memo" }
+  }
+
+  /**
    * A `use cache` directive.
    *
    * Examples:

@@ -10,16 +10,16 @@
             var dataInStringLiteral = "{{ dataInStringLiteral }}";
             var dataInStringLiteralRaw = "{{ dataInStringLiteralRaw | safe }}";
 
-            var dataInGeneratedCode = {{ dataInGeneratedCode }};
-            var dataInGeneratedCodeRaw = {{ dataInGeneratedCodeRaw | safe }};
+            var dataInGeneratedCode = {{ dataInGeneratedCode }}; // $ Alert
+            var dataInGeneratedCodeRaw = {{ dataInGeneratedCodeRaw | safe }}; // $ Alert
             var dataInGeneratedCodeJsonRaw = {{ dataInGeneratedCodeJsonRaw | json | safe }};
 
-            init("{{ backslashSink1 }}", "{{ backslashSink2 }}");
+            init("{{ backslashSink1 }}", "{{ backslashSink2 }}"); // $ Alert
 
             var ejs = "<%= rawHtml %>";
         </script>
 
-        <button onclick="doSomething('{{ dataInEventHandlerString }}')">Click me</button>
-        <button onclick="doSomething('{{ dataInEventHandlerStringRaw | safe }}')">Click me</button>
+        <button onclick="doSomething('{{ dataInEventHandlerString }}')">Click me</button> <!-- $ Alert -->
+        <button onclick="doSomething('{{ dataInEventHandlerStringRaw | safe }}')">Click me</button> <!-- $ Alert -->
     </body>
 </html>

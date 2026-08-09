@@ -30,6 +30,6 @@ class DifferentTypes2 {
     int j6;
     int j7;
     int j8;
-    int j9;
+    int j9; // $ Alert
 };
 

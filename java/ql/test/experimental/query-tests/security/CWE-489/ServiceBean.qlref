@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-489/EJBMain.ql
+query: experimental/Security/CWE/CWE-489/EJBMain.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

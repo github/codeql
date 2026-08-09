@@ -31,7 +31,7 @@ const _ = twirp.TwirpPackageMinVersion_8_1_0
 // NotesService Interface
 // ======================
 
-type NotesService interface { // test: serviceInterface
+type NotesService interface { // $ serviceInterface
 	CreateNote(context.Context, *CreateNoteParams) (*Note, error)
 
 	GetAllNotes(context.Context, *GetAllNotesParams) (*GetAllNotesResult, error)
@@ -41,7 +41,7 @@ type NotesService interface { // test: serviceInterface
 // NotesService Protobuf Client
 // ============================
 
-type notesServiceProtobufClient struct { // test: serviceClient
+type notesServiceProtobufClient struct { // $ serviceClient
 	client      HTTPClient
 	urls        [2]string
 	interceptor twirp.Interceptor
@@ -50,7 +50,7 @@ type notesServiceProtobufClient struct { // test: serviceClient
 
 // NewNotesServiceProtobufClient creates a Protobuf client that implements the NotesService interface.
 // It communicates using Protobuf and can be configured with a custom HTTPClient.
-func NewNotesServiceProtobufClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) NotesService { // test: clientConstructor
+func NewNotesServiceProtobufClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) NotesService { // $ clientConstructor
 	if c, ok := client.(*http.Client); ok {
 		client = withoutRedirects(c)
 	}
@@ -84,7 +84,7 @@ func NewNotesServiceProtobufClient(baseURL string, client HTTPClient, opts ...tw
 	}
 }
 
-func (c *notesServiceProtobufClient) CreateNote(ctx context.Context, in *CreateNoteParams) (*Note, error) { // test: !handler
+func (c *notesServiceProtobufClient) CreateNote(ctx context.Context, in *CreateNoteParams) (*Note, error) { // not handler
 	ctx = ctxsetters.WithPackageName(ctx, "gotwirprpcexample.rpc.notes")
 	ctx = ctxsetters.WithServiceName(ctx, "NotesService")
 	ctx = ctxsetters.WithMethodName(ctx, "CreateNote")
@@ -113,7 +113,7 @@ func (c *notesServiceProtobufClient) CreateNote(ctx context.Context, in *CreateN
 	return caller(ctx, in)
 }
 
-func (c *notesServiceProtobufClient) callCreateNote(ctx context.Context, in *CreateNoteParams) (*Note, error) { // test: !handler
+func (c *notesServiceProtobufClient) callCreateNote(ctx context.Context, in *CreateNoteParams) (*Note, error) { // not handler
 	out := new(Note)
 	ctx, err := doProtobufRequest(ctx, c.client, c.opts.Hooks, c.urls[0], in, out)
 	if err != nil {
@@ -130,7 +130,7 @@ func (c *notesServiceProtobufClient) callCreateNote(ctx context.Context, in *Cre
 	return out, nil
 }
 
-func (c *notesServiceProtobufClient) GetAllNotes(ctx context.Context, in *GetAllNotesParams) (*GetAllNotesResult, error) { // test: !handler
+func (c *notesServiceProtobufClient) GetAllNotes(ctx context.Context, in *GetAllNotesParams) (*GetAllNotesResult, error) { // not handler
 	ctx = ctxsetters.WithPackageName(ctx, "gotwirprpcexample.rpc.notes")
 	ctx = ctxsetters.WithServiceName(ctx, "NotesService")
 	ctx = ctxsetters.WithMethodName(ctx, "GetAllNotes")
@@ -159,7 +159,7 @@ func (c *notesServiceProtobufClient) GetAllNotes(ctx context.Context, in *GetAll
 	return caller(ctx, in)
 }
 
-func (c *notesServiceProtobufClient) callGetAllNotes(ctx context.Context, in *GetAllNotesParams) (*GetAllNotesResult, error) { // test: !handler
+func (c *notesServiceProtobufClient) callGetAllNotes(ctx context.Context, in *GetAllNotesParams) (*GetAllNotesResult, error) { // not handler
 	out := new(GetAllNotesResult)
 	ctx, err := doProtobufRequest(ctx, c.client, c.opts.Hooks, c.urls[1], in, out)
 	if err != nil {
@@ -180,7 +180,7 @@ func (c *notesServiceProtobufClient) callGetAllNotes(ctx context.Context, in *Ge
 // NotesService JSON Client
 // ========================
 
-type notesServiceJSONClient struct { // test: serviceClient
+type notesServiceJSONClient struct { // $ serviceClient
 	client      HTTPClient
 	urls        [2]string
 	interceptor twirp.Interceptor
@@ -189,7 +189,7 @@ type notesServiceJSONClient struct { // test: serviceClient
 
 // NewNotesServiceJSONClient creates a JSON client that implements the NotesService interface.
 // It communicates using JSON and can be configured with a custom HTTPClient.
-func NewNotesServiceJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) NotesService { // test: clientConstructor
+func NewNotesServiceJSONClient(baseURL string, client HTTPClient, opts ...twirp.ClientOption) NotesService { // $ clientConstructor
 	if c, ok := client.(*http.Client); ok {
 		client = withoutRedirects(c)
 	}
@@ -223,7 +223,7 @@ func NewNotesServiceJSONClient(baseURL string, client HTTPClient, opts ...twirp.
 	}
 }
 
-func (c *notesServiceJSONClient) CreateNote(ctx context.Context, in *CreateNoteParams) (*Note, error) { // test: !handler
+func (c *notesServiceJSONClient) CreateNote(ctx context.Context, in *CreateNoteParams) (*Note, error) { // not handler
 	ctx = ctxsetters.WithPackageName(ctx, "gotwirprpcexample.rpc.notes")
 	ctx = ctxsetters.WithServiceName(ctx, "NotesService")
 	ctx = ctxsetters.WithMethodName(ctx, "CreateNote")
@@ -252,7 +252,7 @@ func (c *notesServiceJSONClient) CreateNote(ctx context.Context, in *CreateNoteP
 	return caller(ctx, in)
 }
 
-func (c *notesServiceJSONClient) callCreateNote(ctx context.Context, in *CreateNoteParams) (*Note, error) { // test: !handler
+func (c *notesServiceJSONClient) callCreateNote(ctx context.Context, in *CreateNoteParams) (*Note, error) { // not handler
 	out := new(Note)
 	ctx, err := doJSONRequest(ctx, c.client, c.opts.Hooks, c.urls[0], in, out)
 	if err != nil {
@@ -269,7 +269,7 @@ func (c *notesServiceJSONClient) callCreateNote(ctx context.Context, in *CreateN
 	return out, nil
 }
 
-func (c *notesServiceJSONClient) GetAllNotes(ctx context.Context, in *GetAllNotesParams) (*GetAllNotesResult, error) { // test: !handler
+func (c *notesServiceJSONClient) GetAllNotes(ctx context.Context, in *GetAllNotesParams) (*GetAllNotesResult, error) { // not handler
 	ctx = ctxsetters.WithPackageName(ctx, "gotwirprpcexample.rpc.notes")
 	ctx = ctxsetters.WithServiceName(ctx, "NotesService")
 	ctx = ctxsetters.WithMethodName(ctx, "GetAllNotes")
@@ -298,7 +298,7 @@ func (c *notesServiceJSONClient) GetAllNotes(ctx context.Context, in *GetAllNote
 	return caller(ctx, in)
 }
 
-func (c *notesServiceJSONClient) callGetAllNotes(ctx context.Context, in *GetAllNotesParams) (*GetAllNotesResult, error) { // test: !handler
+func (c *notesServiceJSONClient) callGetAllNotes(ctx context.Context, in *GetAllNotesParams) (*GetAllNotesResult, error) { // not handler
 	out := new(GetAllNotesResult)
 	ctx, err := doJSONRequest(ctx, c.client, c.opts.Hooks, c.urls[1], in, out)
 	if err != nil {
@@ -319,7 +319,7 @@ func (c *notesServiceJSONClient) callGetAllNotes(ctx context.Context, in *GetAll
 // NotesService Server Handler
 // ===========================
 
-type notesServiceServer struct { // test: serviceServer
+type notesServiceServer struct { // $ serviceServer
 	NotesService
 	interceptor      twirp.Interceptor
 	hooks            *twirp.ServerHooks
@@ -331,7 +331,7 @@ type notesServiceServer struct { // test: serviceServer
 // NewNotesServiceServer builds a TwirpServer that can be used as an http.Handler to handle
 // HTTP requests that are routed to the right method in the provided svc implementation.
 // The opts are twirp.ServerOption modifiers, for example twirp.WithServerHooks(hooks).
-func NewNotesServiceServer(svc NotesService, opts ...interface{}) TwirpServer { // test: serverConstructor
+func NewNotesServiceServer(svc NotesService, opts ...interface{}) TwirpServer { // $ serverConstructor
 	serverOpts := newServerOpts(opts)
 
 	// Using ReadOpt allows backwards and forwards compatibility with new options in the future
@@ -535,7 +535,7 @@ func (s *notesServiceServer) serveCreateNoteProtobuf(ctx context.Context, resp h
 		return
 	}
 
-	buf, err := io.ReadAll(req.Body)
+	buf, err := io.ReadAll(req.Body) // $ Source
 	if err != nil {
 		s.handleRequestBodyError(ctx, resp, "failed to read request body", err)
 		return
@@ -812,7 +812,7 @@ func (s *notesServiceServer) PathPrefix() string {
 // automatically disabled if *(net/http).Client is passed to client
 // constructors. See the withoutRedirects function in this file for more
 // details.
-type HTTPClient interface {
+type HTTPClient interface { // $ SPURIOUS: serviceInterface // not serviceInterface
 	Do(req *http.Request) (*http.Response, error)
 }
 
@@ -820,7 +820,7 @@ type HTTPClient interface {
 // HTTP handlers with additional methods for accessing metadata about the
 // service. Those accessors are a low-level API for building reflection tools.
 // Most people can think of TwirpServers as just http.Handlers.
-type TwirpServer interface {
+type TwirpServer interface { // $ SPURIOUS: serviceInterface // not serviceInterface
 	http.Handler
 
 	// ServiceDescriptor returns gzipped bytes describing the .proto file that

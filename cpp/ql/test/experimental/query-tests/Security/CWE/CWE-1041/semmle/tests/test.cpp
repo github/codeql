@@ -20,7 +20,7 @@ void myFclose(FILE * fmy)
 int main(int argc, char *argv[])
 {
   fe = fopen("myFile.txt", "wt");
-  fclose(fe); // BAD
+  fclose(fe); // $ Alert // BAD
   fe = fopen("myFile.txt", "wt");
   myFclose(fe); // GOOD
   return 0;

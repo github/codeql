@@ -1,8 +1,8 @@
 public class BasicTest {
-	private static String deadStaticField = "Dead";
+	private static String deadStaticField = "Dead"; // $ Alert
 	private static String liveStaticField = "Live";
-	private String deadField;
-	private String deadCycleField;
+	private String deadField; // $ Alert
+	private String deadCycleField; // $ Alert
 	private String liveField;
 
 	public BasicTest(String deadField, String liveField) {

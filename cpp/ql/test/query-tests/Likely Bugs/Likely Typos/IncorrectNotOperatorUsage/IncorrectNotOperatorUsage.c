@@ -3,7 +3,7 @@
 
 void C6317_positive(int i)
 {
-    if (i & !FLAGS) // BUG 
+    if (i & !FLAGS) // $ Alert // BUG
     {
     }
 }
@@ -28,10 +28,10 @@ void bitwiseAndUsage(unsigned int l, unsigned int r)
     unsigned int x;
     unsigned z = 0;
 
-    x = l & !r;         //BUG
-    x = !FLAGS & r;     //BUG
-    x = !FLAGS & !!r;   //BUG
-    
+    x = l & !r;         // $ Alert //BUG
+    x = !FLAGS & r;     // $ Alert //BUG
+    x = !FLAGS & !!r;   // $ Alert //BUG
+
     x = !!l & r;        // Not a bug - double negation
     x = !!!l & r;       // Not a bug - double negation
     x = !!FLAGS & r;    // Not a bug - double negation
@@ -44,9 +44,9 @@ void bitwiseOrUsage(unsigned int l, unsigned int r)
 {
     unsigned int x;
 
-    x = l | !r;         //BUG
-    x = !FLAGS | r;     //BUG
-    x = !FLAGS | !!r;   //BUG
+    x = l | !r;         // $ Alert //BUG
+    x = !FLAGS | r;     // $ Alert //BUG
+    x = !FLAGS | !!r;   // $ Alert //BUG
 
     x = !!l | r;        // Not a bug - double negation
     x = !!!l | r;       // Not a bug - double negation
@@ -67,7 +67,7 @@ void bitwiseOperatorsNotCovered(unsigned int l, unsigned int r)
 
 void macroUsage(unsigned int arg1, unsigned int arg2)
 {
-    if (((!cap_valid(arg1)) | arg2)) {   // BUG
+    if (((!cap_valid(arg1)) | arg2)) {   // $ Alert // BUG
 
     }
 }

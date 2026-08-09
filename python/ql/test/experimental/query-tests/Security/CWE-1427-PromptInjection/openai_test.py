@@ -34,7 +34,7 @@ async def get_input_openai():
                     }
                 ]
             }
-        ]
+        ]  # $ Alert[py/prompt-injection]
     )
 
     response3 = await async_client.responses.create(

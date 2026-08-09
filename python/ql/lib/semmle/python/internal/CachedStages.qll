@@ -77,7 +77,7 @@ module Stages {
       or
       exists(any(AstExtended::AstNode n).getParentNode())
       or
-      exists(any(AstExtended::AstNode n).getAFlowNode())
+      exists(PyFlow::ControlFlowNode cfg, AstExtended::AstNode n | cfg.getNode() = n)
       or
       exists(any(PyFlow::BasicBlock b).getImmediateDominator())
       or

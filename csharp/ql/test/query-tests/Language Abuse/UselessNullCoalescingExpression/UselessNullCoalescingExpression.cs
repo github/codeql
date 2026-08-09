@@ -6,14 +6,14 @@ class Tests
     {
         int? a = 5, b;
 
-        a = a ?? a;              // BAD
-        a = a ?? (b = a);          // BAD
-        a = Prop ?? Prop;        // BAD
-        a = param ?? param;      // BAD
-        a = a ?? use(a);         // BAD
-        a = Field ?? this.Field; // BAD
-        a ??= a;                 // BAD
-        a ??= b = a;             // BAD
+        a = a ?? a;              // $ Alert // BAD
+        a = a ?? (b = a);          // $ Alert // BAD
+        a = Prop ?? Prop;        // $ Alert // BAD
+        a = param ?? param;      // $ Alert // BAD
+        a = a ?? use(a);         // $ Alert // BAD
+        a = Field ?? this.Field; // $ Alert // BAD
+        a ??= a;                 // $ Alert // BAD
+        a ??= b = a;             // $ Alert // BAD
 
         a = a ?? cache(ref a);   // GOOD
         a = a ?? store(out a);   // GOOD

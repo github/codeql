@@ -2,12 +2,12 @@ import java.util.*;
 
 class Test {
   public void f() {
-    Boolean done = false; // bad
+    Boolean done = false; // $ Alert // bad
     while (!done) {
       done = true;
     }
 
-    Integer sum = 0; // bad
+    Integer sum = 0; // $ Alert // bad
     for (int i = 0; i < 10; i++)
       sum += i;
     useBoxed(sum);
@@ -15,7 +15,7 @@ class Test {
     Integer box = 42; // ok; only boxed usages
     useBoxed(box);
 
-    Integer badbox = 17; // bad
+    Integer badbox = 17; // $ Alert // bad
     useBoxed(badbox);
     usePrim(badbox);
 
@@ -23,7 +23,7 @@ class Test {
     usePrim(x);
     x = null;
 
-    Long y = getPrim(); // bad
+    Long y = getPrim(); // $ Alert // bad
     y = 15L;
     y = getPrim();
     boolean dummy = y > 0;
@@ -39,7 +39,7 @@ class Test {
 
     for (Integer okix : l) sum += okix; // ok; has boxed assignment
 
-    for (Integer badix : a) sum += badix; // bad
+    for (Integer badix : a) sum += badix; // $ Alert // bad
   }
 
   void usePrim(int i) { }

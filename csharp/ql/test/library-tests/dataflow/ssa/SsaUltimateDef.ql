@@ -1,6 +1,6 @@
 import csharp
 
-from Ssa::SourceVariable v, Ssa::Definition def, Ssa::Definition u
+from Ssa::SourceVariable v, SsaDefinition def, SsaDefinition u
 where
   u = def.getAnUltimateDefinition() and
   v = def.getSourceVariable()

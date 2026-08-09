@@ -18,20 +18,20 @@ import org.thymeleaf.context.Context;
 public class ThymeleafSSTI {
 	@GetMapping(value = "bad1")
 	public void bad1(HttpServletRequest request) {
-		String code = request.getParameter("code"); // $ Source
+		String code = request.getParameter("code"); // $ Source[java/server-side-template-injection]
 		try {
 			TemplateEngine templateEngine = new TemplateEngine();
-			templateEngine.process(code, (Set<String>) null, (Context) null); // $ Alert
-			templateEngine.process(code, (Set<String>) null, (Context) null, (Writer) null); // $ Alert
-			templateEngine.process(code, (Context) null); // $ Alert
-			templateEngine.process(code, (Context) null, (Writer) null); // $ Alert
-			templateEngine.processThrottled(code, (Set<String>) null, (Context) null); // $ Alert
-			templateEngine.processThrottled(code, (Context) null); // $ Alert
+			templateEngine.process(code, (Set<String>) null, (Context) null); // $ Alert[java/server-side-template-injection]
+			templateEngine.process(code, (Set<String>) null, (Context) null, (Writer) null); // $ Alert[java/server-side-template-injection]
+			templateEngine.process(code, (Context) null); // $ Alert[java/server-side-template-injection]
+			templateEngine.process(code, (Context) null, (Writer) null); // $ Alert[java/server-side-template-injection]
+			templateEngine.processThrottled(code, (Set<String>) null, (Context) null); // $ Alert[java/server-side-template-injection]
+			templateEngine.processThrottled(code, (Context) null); // $ Alert[java/server-side-template-injection]
 
 			TemplateSpec spec = new TemplateSpec(code, "");
-			templateEngine.process(spec, (Context) null); // $ Alert
-			templateEngine.process(spec, (Context) null, (Writer) null); // $ Alert
-			templateEngine.processThrottled(spec, (Context) null); // $ Alert
+			templateEngine.process(spec, (Context) null); // $ Alert[java/server-side-template-injection]
+			templateEngine.process(spec, (Context) null, (Writer) null); // $ Alert[java/server-side-template-injection]
+			templateEngine.processThrottled(spec, (Context) null); // $ Alert[java/server-side-template-injection]
 		} catch (Exception e) {
 		}
 	}

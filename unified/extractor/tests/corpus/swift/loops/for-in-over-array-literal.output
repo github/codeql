@@ -1,0 +1,84 @@
+for x in [1, 2, 3] {
+  print(x)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        forStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          expression:
+                            declReferenceExpr
+                              baseName: identifier "x"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "print"
+          pattern:
+            identifierPattern
+              identifier: identifier "x"
+          inKeyword: in
+          forKeyword: for
+          sequence:
+            arrayExpr
+              elements:
+                arrayElement
+                  expression:
+                    integerLiteralExpr
+                      literal: integerLiteral "1"
+                  trailingComma: ,
+                arrayElement
+                  expression:
+                    integerLiteralExpr
+                      literal: integerLiteral "2"
+                  trailingComma: ,
+                arrayElement
+                  expression:
+                    integerLiteralExpr
+                      literal: integerLiteral "3"
+              leftSquare: [
+              rightSquare: ]
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        for_each_stmt
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          iterable:
+            array_literal
+              element:
+                int_literal "1"
+                int_literal "2"
+                int_literal "3"
+          body:
+            block
+              stmt:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"

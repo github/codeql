@@ -11,14 +11,14 @@ public class LeakFileActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == GetFileActivity.REQUEST_CODE__SELECT_CONTENT_FROM_APPS &&
                 resultCode == RESULT_OK) {
-            loadOfContentFromApps(data, resultCode);
+            loadOfContentFromApps(data, resultCode); // $ Source[java/sensitive-android-file-leak]
         }
     }
 
     private void loadOfContentFromApps(Intent contentIntent, int resultCode) {
         Uri streamsToUpload = contentIntent.getData();
         try {
-            RandomAccessFile file = new RandomAccessFile(streamsToUpload.getPath(), "r");
+            RandomAccessFile file = new RandomAccessFile(streamsToUpload.getPath(), "r"); // $ Alert[java/sensitive-android-file-leak]
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -50,15 +50,15 @@ private predicate maybeUsedInElfHashFunction(Variable v, Operation xor, Operatio
   |
     add instanceof AddOperation and
     e1.getAChild*() = add.getAnOperand() and
-    e1 instanceof BinaryBitwiseOperation and
-    e2 = e1.(BinaryBitwiseOperation).getLeftOperand() and
+    e1 instanceof BinaryBitwiseExpr and
+    e2 = e1.(BinaryBitwiseExpr).getLeftOperand() and
     v = addAssign.getTargetVariable() and
     addAssign.getAChild*() = add and
     (xor instanceof BitwiseXorExpr or xor instanceof AssignXorExpr) and
     addAssign.getControlFlowNode().getASuccessor*() = xor.getControlFlowNode() and
     xorAssign.getAChild*() = xor and
     v = xorAssign.getTargetVariable() and
-    (notOp instanceof UnaryBitwiseOperation or notOp instanceof AssignBitwiseOperation) and
+    (notOp instanceof UnaryBitwiseOperation or notOp instanceof AssignBitwiseExpr) and
     xor.getControlFlowNode().getASuccessor*() = notOp.getControlFlowNode() and
     notAssign.getAChild*() = notOp and
     v = notAssign.getTargetVariable() and

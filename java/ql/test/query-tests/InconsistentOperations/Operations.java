@@ -36,7 +36,7 @@ public class Operations implements AutoCloseable {
 		{ Operations ops = open(); if (ops.isOpen()) ops.close(); }
 		{ Operations ops = open(); if (ops.isOpen()) ops.close(); }
 		{ Operations ops = open(); if (ops.isOpen()) ops.close(); }
-		{ Operations ops = open(); if (ops.isOpen()) ops.open(); }
+		{ Operations ops = open(); if (ops.isOpen()) ops.open(); } // $ Alert[java/inconsistent-call-on-result]
 	}
 	
 	public void missingAdd() {
@@ -83,7 +83,7 @@ public class Operations implements AutoCloseable {
 		System.out.println(this.toString());
 		System.out.println(this.toString());
 		System.out.println(this.toString());
-		this.toString();
+		this.toString(); // $ Alert[java/return-value-ignored]
 	}
 
 	public void designedForChaining() {

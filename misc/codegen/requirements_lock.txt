@@ -12,9 +12,11 @@ packaging==24.2
     # via pytest
 pluggy==1.5.0
     # via pytest
+pygments==2.20.0
+    # via pytest
 pystache==0.6.8
     # via -r misc/codegen/requirements_in.txt
-pytest==8.3.5
+pytest==9.1.1
     # via -r misc/codegen/requirements_in.txt
 pyyaml==6.0.2
     # via -r misc/codegen/requirements_in.txt

@@ -4,7 +4,9 @@ import TestUtils
 
 query predicate instances(
   ClassDecl x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
-  Type getInterfaceType, string getName__label, string getName, string getType__label, Type getType
+  Type getInterfaceType, string getName__label, string getName,
+  string getDeclaredInterfaceType__label, Type getDeclaredInterfaceType, string getType__label,
+  Type getType
 ) {
   toBeTested(x) and
   not x.isUnknown() and
@@ -14,6 +16,8 @@ query predicate instances(
   getInterfaceType = x.getInterfaceType() and
   getName__label = "getName:" and
   getName = x.getName() and
+  getDeclaredInterfaceType__label = "getDeclaredInterfaceType:" and
+  getDeclaredInterfaceType = x.getDeclaredInterfaceType() and
   getType__label = "getType:" and
   getType = x.getType()
 }

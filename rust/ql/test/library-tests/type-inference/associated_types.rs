@@ -131,9 +131,9 @@ mod default_method_using_associated_type {
         println!("{:?}", y);
 
         let x5 = S2;
-        println!("{:?}", x5.m1()); // $ target=m1 type=x5.m1():A.S2
+        println!("{:?}", x5.m1()); // $ target=m1 type=x5.m1()@Wrapper<A>:S2
         let x6 = S2;
-        println!("{:?}", x6.m2()); // $ target=m2 type=x6.m2():A.S2
+        println!("{:?}", x6.m2()); // $ target=m2 type=x6.m2()@Wrapper<A>:S2
     }
 }
 
@@ -400,10 +400,10 @@ mod generic_associated_type {
     pub fn test() {
         let s = S;
         // Call to the method in `impl` block
-        let _g1 = s.put(1i32); // $ target=S::put type=_g1:A.i32
+        let _g1 = s.put(1i32); // $ target=S::put type=_g1@Wrapper<A>:i32
 
         // Call to default implementation in `trait` block
-        let _g2 = s.put_two(true, false); // $ target=MyTraitAssoc2::put_two MISSING: type=_g2:A.bool
+        let _g2 = s.put_two(true, false); // $ target=MyTraitAssoc2::put_two MISSING: type=_g2@Wrapper<A>:bool
     }
 }
 
@@ -534,12 +534,12 @@ mod generic_associated_type_name_clash {
         type Output = Result<Output, Output>;
 
         fn get(&self) -> Self::Output {
-            Ok(self.0) // $ fieldof=ST type=Ok(...):Result type=Ok(...):T.Output type=Ok(...):E.Output
+            Ok(self.0) // $ fieldof=ST type=Ok(...)@Result<T>:Output type=Ok(...)@Result<E>:Output
         }
     }
 
     pub fn test() {
-        let _y = ST(true).get(); // $ type=_y:Result type=_y:T.bool type=_y:E.bool target=get
+        let _y = ST(true).get(); // $ type=_y@Result<T>:bool type=_y@Result<E>:bool target=get
     }
 }
 

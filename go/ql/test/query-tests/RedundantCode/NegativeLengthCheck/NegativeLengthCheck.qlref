@@ -1,1 +1,2 @@
-RedundantCode/NegativeLengthCheck.ql
+query: RedundantCode/NegativeLengthCheck.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

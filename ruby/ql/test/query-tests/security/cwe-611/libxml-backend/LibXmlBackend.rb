@@ -13,11 +13,11 @@ end
 
 class LibXmlRubyXXE < ApplicationController
   def foo
-    content = params[:xml]
+    content = params[:xml] # $ Source
 
-    LibXML::XML::Parser.file(content, { options: 2048 })
-    Hash.from_xml(content)
-    Hash.from_trusted_xml(content)
-    ActiveSupport::XmlMini.parse(content)
+    LibXML::XML::Parser.file(content, { options: 2048 }) # $ Alert
+    Hash.from_xml(content) # $ Alert
+    Hash.from_trusted_xml(content) # $ Alert
+    ActiveSupport::XmlMini.parse(content) # $ Alert
   end
 end

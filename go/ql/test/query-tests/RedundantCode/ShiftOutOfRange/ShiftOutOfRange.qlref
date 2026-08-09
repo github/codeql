@@ -1,1 +1,2 @@
-RedundantCode/ShiftOutOfRange.ql
+query: RedundantCode/ShiftOutOfRange.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

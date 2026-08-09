@@ -1,1 +1,2 @@
-meta/analysis-quality/UnpromotedRouteSetupCandidate.ql
+query: meta/analysis-quality/UnpromotedRouteSetupCandidate.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -52,7 +52,7 @@ public class ServiceBean implements SessionBean {
     }
 
     /** Local unit testing code */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception { // $ Alert[java/main-method-in-enterprise-bean]
         ServiceBean b = new ServiceBean();
         b.doService();
     }

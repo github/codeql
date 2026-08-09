@@ -5,6 +5,7 @@ use std::fmt;
 pub enum TopLevel<'a> {
     Class(Class<'a>),
     Import(Import<'a>),
+    ModuleAlias(ModuleAlias<'a>),
     Module(Module<'a>),
     Predicate(Predicate<'a>),
 }
@@ -14,6 +15,7 @@ impl fmt::Display for TopLevel<'_> {
         match self {
             TopLevel::Import(imp) => write!(f, "{imp}"),
             TopLevel::Class(cls) => write!(f, "{cls}"),
+            TopLevel::ModuleAlias(alias) => write!(f, "{alias}"),
             TopLevel::Module(m) => write!(f, "{m}"),
             TopLevel::Predicate(pred) => write!(f, "{pred}"),
         }
@@ -21,13 +23,33 @@ impl fmt::Display for TopLevel<'_> {
 }
 
 #[derive(Clone, Eq, PartialEq, Hash)]
+pub struct ModuleAlias<'a> {
+    pub is_private: bool,
+    pub name: &'a str,
+    pub target: &'a str,
+}
+
+impl fmt::Display for ModuleAlias<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        if self.is_private {
+            write!(f, "private ")?;
+        }
+        write!(f, "module {} = {};", self.name, self.target)
+    }
+}
+
+#[derive(Clone, Eq, PartialEq, Hash)]
 pub struct Import<'a> {
+    pub is_private: bool,
     pub module: &'a str,
     pub alias: Option<&'a str>,
 }
 
 impl fmt::Display for Import<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        if self.is_private {
+            write!(f, "private ")?;
+        }
         write!(f, "import {}", &self.module)?;
         if let Some(name) = &self.alias {
             write!(f, " as {name}")?;
@@ -40,15 +62,28 @@ pub struct Class<'a> {
     pub qldoc: Option<String>,
     pub name: &'a str,
     pub is_abstract: bool,
+    pub is_final: bool,
+    pub is_private: bool,
     pub supertypes: BTreeSet<Type<'a>>,
     pub characteristic_predicate: Option<Expression<'a>>,
     pub predicates: Vec<Predicate<'a>>,
+    pub alias: Option<String>,
 }
 
 impl fmt::Display for Class<'_> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         if let Some(qldoc) = &self.qldoc {
             write!(f, "/** {qldoc} */")?;
+        }
+        if self.is_final {
+            write!(f, "final ")?;
+        }
+        if self.is_private {
+            write!(f, "private ")?;
+        }
+        if let Some(alias) = &self.alias {
+            write!(f, "class {} = {alias};", &self.name)?;
+            return Ok(());
         }
         if self.is_abstract {
             write!(f, "abstract ")?;
@@ -133,6 +168,9 @@ pub enum Type<'a> {
 
     /// A user-defined type.
     Normal(&'a str),
+
+    /// A normal type with an `F::` prefix.
+    Facade(&'a str),
 }
 
 impl fmt::Display for Type<'_> {
@@ -142,6 +180,7 @@ impl fmt::Display for Type<'_> {
             Type::String => write!(f, "string"),
             Type::Normal(name) => write!(f, "{name}"),
             Type::At(name) => write!(f, "@{name}"),
+            Type::Facade(name) => write!(f, "F::{name}"),
         }
     }
 }
@@ -150,12 +189,14 @@ impl fmt::Display for Type<'_> {
 pub enum Expression<'a> {
     Var(&'a str),
     String(&'a str),
-    Integer(usize),
+    Integer(i64),
     Pred(&'a str, Vec<Expression<'a>>),
     And(Vec<Expression<'a>>),
     Or(Vec<Expression<'a>>),
     Equals(Box<Expression<'a>>, Box<Expression<'a>>),
     Dot(Box<Expression<'a>>, &'a str, Vec<Expression<'a>>),
+    /// A type cast, rendered as `x.(Type)`.
+    Cast(Box<Expression<'a>>, &'a str),
     Aggregate {
         name: &'a str,
         vars: Vec<FormalParameter<'a>>,
@@ -219,6 +260,7 @@ impl fmt::Display for Expression<'_> {
                 }
                 write!(f, ")")
             }
+            Expression::Cast(x, type_name) => write!(f, "{x}.({type_name})"),
             Expression::Aggregate {
                 name,
                 vars,

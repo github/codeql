@@ -11,7 +11,7 @@ def django_response(request):
       https://github.com/django/django/blob/ca9872905559026af82000e46cde6f7dedc897b6/django/core/mail/__init__.py#L64
       """
     send_mail("Subject", "plain-text body", "from@example.com",
-              ["to@example.com"], html_message=django.http.request.GET.get("html"))
+              ["to@example.com"], html_message=django.http.request.GET.get("html")) # $ Alert
 
 
 def django_response(request):
@@ -20,6 +20,6 @@ def django_response(request):
     https://github.com/django/django/blob/ca9872905559026af82000e46cde6f7dedc897b6/django/core/mail/__init__.py#L90-L121
     """
     mail_admins("Subject", "plain-text body",
-                html_message=django.http.request.GET.get("html"))
+                html_message=django.http.request.GET.get("html")) # $ Alert
     mail_managers("Subject", "plain-text body",
-                  html_message=django.http.request.GET.get("html"))
+                  html_message=django.http.request.GET.get("html")) # $ Alert

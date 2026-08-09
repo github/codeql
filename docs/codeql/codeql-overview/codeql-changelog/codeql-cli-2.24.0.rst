@@ -152,9 +152,9 @@ C#
 *   When a code-scanning configuration specifies the :code:`paths:` and/or :code:`paths-ignore:` settings, these are now taken into account by the C# extractor's search for :code:`.config`, :code:`.props`, XML and project files.
 *   Updated the generated .NET “models as data” runtime models to cover .NET 10.
 *   C# 14: Support for *implicit* span conversions in the QL library.
-*   Basic extractor support for .NET 10 is now available. Extraction is supported for .NET 10 projects in both traced mode and :code:`build mode: none`. However, code that uses language features new to C# 14 is not yet fully supported for extraction and analysis.
+*   Basic extractor support for .NET 10 is now available. Extraction is supported for .NET 10 projects in both traced mode and :code:`build-mode: none`. However, code that uses language features new to C# 14 is not yet fully supported for extraction and analysis.
 *   Added autobuilder and :code:`build-mode: none` support for :code:`.slnx` solution files.
-*   In :code:`build mode: none`, .NET 10 is now used by default unless a specific .NET version is specified elsewhere.
+*   In :code:`build-mode: none`, .NET 10 is now used by default unless a specific .NET version is specified elsewhere.
 *   Added implicit reads of :code:`System.Collections.Generic.KeyValuePair.Value` at taint-tracking sinks and at inputs to additional taint steps. As a result, taint-tracking queries will now produce more results when a container is tainted.
 
 Golang

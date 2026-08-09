@@ -1,4 +1,4 @@
-overlay[local]
+overlay[local?]
 module;
 
 private import go
@@ -488,6 +488,7 @@ module Public {
      * For virtual calls, we look up possible targets in all types that implement the receiver
      * interface type.
      */
+    overlay[global]
     Callable getACalleeIncludingExternals() {
       result = this.getACalleeWithoutVirtualDispatch()
       or
@@ -504,6 +505,7 @@ module Public {
      * As `getACalleeIncludingExternals`, except excluding external functions (those for which
      * we lack a definition, such as standard library functions).
      */
+    overlay[global]
     pragma[nomagic]
     FuncDef getACallee() { result = this.getACalleeIncludingExternals().getFuncDef() }
 
@@ -921,15 +923,20 @@ module Public {
   /**
    * A node whose value is returned as a result from a function.
    *
-   * This can either be a node corresponding to an expression in a return statement,
-   * or a node representing the current value of a named result variable at the exit
-   * of the function.
+   * If the function declares named result variables, this is a node representing
+   * the current value of one of those variables at function exit. Otherwise, this
+   * is a node corresponding to an expression in a return statement.
    */
   class ResultNode extends InstructionNode {
     int i;
 
     ResultNode() {
       exists(FuncDef fd |
+        // If the function has named result variables, then the
+        // `IR::ReadResultInstruction` nodes at the end of the function are
+        // the correct result nodes. Otherwise, the returned expressions are
+        // the result nodes.
+        not exists(fd.getAResultVar()) and
         exists(IR::ReturnInstruction ret | ret.getRoot() = fd | insn = ret.getResult(i))
         or
         insn.(IR::ReadResultInstruction).reads(fd.getResultVar(i))

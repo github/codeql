@@ -48,9 +48,11 @@ class CheckClass extends ClassObject {
         self_dict = sub.getObject()
         or
         /* Indirect assignment via temporary variable */
-        exists(SsaVariable v |
-          v.getAUse() = sub.getObject().getAFlowNode() and
-          v.getDefinition().(DefinitionNode).getValue() = self_dict.getAFlowNode()
+        exists(SsaVariable v, ControlFlowNode subObjCfg, ControlFlowNode selfDictCfg |
+          subObjCfg.getNode() = sub.getObject() and selfDictCfg.getNode() = self_dict
+        |
+          v.getAUse() = subObjCfg and
+          v.getDefinition().(DefinitionNode).getValue() = selfDictCfg
         )
       ) and
       a.getATarget() = sub and
@@ -62,9 +64,10 @@ class CheckClass extends ClassObject {
 
   pragma[nomagic]
   private predicate monkeyPatched(string name) {
-    exists(Attribute a |
+    exists(Attribute a, ControlFlowNode objCfg |
+      objCfg.getNode() = a.getObject() and
       a.getCtx() instanceof Store and
-      PointsTo::points_to(a.getObject().getAFlowNode(), _, this, _, _) and
+      PointsTo::points_to(objCfg, _, this, _, _) and
       a.getName() = name
     )
   }
@@ -84,9 +87,9 @@ class CheckClass extends ClassObject {
   }
 
   predicate interestingUndefined(SelfAttributeRead a) {
-    exists(string name | name = a.getName() |
+    exists(string name, ControlFlowNode aCfg | name = a.getName() and aCfg.getNode() = a |
       this.interestingContext(a, name) and
-      not this.definedInBlock(a.getAFlowNode().getBasicBlock(), name)
+      not this.definedInBlock(aCfg.getBasicBlock(), name)
     )
   }
 
@@ -109,8 +112,9 @@ class CheckClass extends ClassObject {
 
   pragma[nomagic]
   private predicate definitionInBlock(BasicBlock b, string name) {
-    exists(SelfAttributeStore sa |
-      sa.getAFlowNode().getBasicBlock() = b and
+    exists(SelfAttributeStore sa, ControlFlowNode saCfg |
+      saCfg.getNode() = sa and
+      saCfg.getBasicBlock() = b and
       sa.getName() = name and
       sa.getClass() = this.getPyClass()
     )

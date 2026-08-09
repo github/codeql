@@ -91,7 +91,7 @@ void CWE134_Uncontrolled_Format_String__char_connect_socket_w32_vsnprintf_01_bad
             /* Abort on error or the connection was closed, make sure to recv one
              * less char than is in the recv_buf in order to append a terminator */
             /* Abort on error or the connection was closed */
-            recvResult = recv(connectSocket, (char *)(data + dataLen), sizeof(char) * (100 - dataLen - 1), 0);
+            recvResult = recv(connectSocket, (char *)(data + dataLen), sizeof(char) * (100 - dataLen - 1), 0); // $ Source
             if (recvResult == SOCKET_ERROR || recvResult == 0)
             {
                 break;
@@ -122,5 +122,5 @@ void CWE134_Uncontrolled_Format_String__char_connect_socket_w32_vsnprintf_01_bad
         }
 #endif
     }
-    badVaSink(data, data);
+    badVaSink(data, data); // $ Alert
 }

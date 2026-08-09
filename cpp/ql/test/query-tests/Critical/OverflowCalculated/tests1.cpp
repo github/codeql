@@ -23,7 +23,7 @@ void tests1(int case_num)
 	switch (case_num)
 	{
 		case 1:
-			buffer = (char *)malloc(strlen(str)); // BAD
+			buffer = (char *)malloc(strlen(str)); // $ Alert[cpp/no-space-for-terminator] // BAD
 			strcpy(buffer, str);
 			break;
 
@@ -33,7 +33,7 @@ void tests1(int case_num)
 			break;
 
 		case 3:
-			buffer = (char *)malloc(strlen(str) * sizeof(char)); // BAD
+			buffer = (char *)malloc(strlen(str) * sizeof(char)); // $ Alert[cpp/no-space-for-terminator] // BAD
 			strcpy(buffer, str);
 			break;
 
@@ -43,7 +43,7 @@ void tests1(int case_num)
 			break;
 
 		case 5:
-			buffer = (char *)calloc(strlen(str), sizeof(char)); // BAD [NOT DETECTED]
+			buffer = (char *)calloc(strlen(str), sizeof(char)); // $ MISSING: Alert // BAD [NOT DETECTED]
 			strcpy(buffer, str);
 			break;
 
@@ -53,7 +53,7 @@ void tests1(int case_num)
 			break;
 
 		case 7:
-			buffer = (char *)realloc(buffer, strlen(str)); // BAD
+			buffer = (char *)realloc(buffer, strlen(str)); // $ Alert[cpp/no-space-for-terminator] // BAD
 			strcpy(buffer, str);
 			break;
 
@@ -64,7 +64,7 @@ void tests1(int case_num)
 
 		case 9:
 			int len1 = strlen(str);
-			buffer = (char *)malloc(len1); // BAD
+			buffer = (char *)malloc(len1); // $ Alert[cpp/no-space-for-terminator] // BAD
 			strcpy(buffer, str);
 			break;
 
@@ -81,32 +81,32 @@ void tests1(int case_num)
 			break;
 
 		case 12:
-			buffer = (char *)malloc(strlen(str) + 0); // BAD [NOT DETECTED]
+			buffer = (char *)malloc(strlen(str) + 0); // $ MISSING: Alert // BAD [NOT DETECTED]
 			strcpy(buffer, str);
 			break;
 
 		case 101:
-			wbuffer = (wchar_t *)malloc(wcslen(wstr)); // BAD
+			wbuffer = (wchar_t *)malloc(wcslen(wstr)); // $ Alert[cpp/no-space-for-terminator] // BAD
 			wcscpy(wbuffer, wstr);
 			break;
 
 		case 102:
-			wbuffer = (wchar_t *)malloc(wcslen(wstr) + 1); // BAD (no sizeof) [NOT DETECTED]
+			wbuffer = (wchar_t *)malloc(wcslen(wstr) + 1); // $ MISSING: Alert // BAD (no sizeof) [NOT DETECTED]
 			wcscpy(wbuffer, wstr);
 			break;
 
 		case 103:
-			wbuffer = (wchar_t *)calloc(wcslen(wstr), sizeof(char)); // BAD [NOT DETECTED]
+			wbuffer = (wchar_t *)calloc(wcslen(wstr), sizeof(char)); // $ MISSING: Alert // BAD [NOT DETECTED]
 			wcscpy(wbuffer, wstr);
 			break;
 
 		case 104:
-			wbuffer = (wchar_t *)calloc(wcslen(wstr) + 1, sizeof(char)); // BAD (wrong sizeof) [NOT DETECTED]
+			wbuffer = (wchar_t *)calloc(wcslen(wstr) + 1, sizeof(char)); // $ MISSING: Alert // BAD (wrong sizeof) [NOT DETECTED]
 			wcscpy(wbuffer, wstr);
 			break;
 
 		case 105:
-			wbuffer = (wchar_t *)malloc(wcslen(wstr) * sizeof(wchar_t)); // BAD
+			wbuffer = (wchar_t *)malloc(wcslen(wstr) * sizeof(wchar_t)); // $ Alert[cpp/no-space-for-terminator] // BAD
 			wcscpy(wbuffer, wstr);
 			break;
 
@@ -116,7 +116,7 @@ void tests1(int case_num)
 			break;
 
 		case 107:
-			wbuffer = (wchar_t *)calloc(wcslen(wstr), sizeof(wchar_t)); // BAD [NOT DETECTED]
+			wbuffer = (wchar_t *)calloc(wcslen(wstr), sizeof(wchar_t)); // $ MISSING: Alert // BAD [NOT DETECTED]
 			wcscpy(wbuffer, wstr);
 			break;
 
@@ -125,7 +125,7 @@ void tests1(int case_num)
 			wcscpy(wbuffer, wstr);
 			break;
 	}
-	
+
 	if (buffer != 0)
 	{
 		free(buffer);

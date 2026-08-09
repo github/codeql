@@ -9,7 +9,7 @@
     Response.write(3 + 2);
   }
   End If
-%></p>
+%></p> <%-- $ Alert[cs/asp/complex-inline-code] --%>
 <p>2 + 3 = <%=2 + 3%></p>
 </body>
 </html>

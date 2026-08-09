@@ -24,7 +24,7 @@ namespace std
 	class basic_string {
 	public:
 		explicit basic_string(const Allocator& a = Allocator());
-		basic_string(const charT* s, const Allocator& a = Allocator()); 
+		basic_string(const charT* s, const Allocator& a = Allocator());
 	};
 
 	// std::string
@@ -109,7 +109,7 @@ char *test1()
 {
 	static char buffer[1024];
 
-	return gets(buffer); // BAD: use of gets
+	return gets(buffer); // $ Alert[cpp/dangerous-function-overflow] // BAD: use of gets
 }
 
 typedef char MYCHAR;
@@ -126,17 +126,17 @@ void test2()
 		char *buffer4 = buffer1;
 		std::istream &input = std::cin;
 
-		std::cin >> buffer1; // BAD: use of operator>> into a statically-allocated character array
-		std::cin >> buffer2; // BAD: use of operator>> into a statically-allocated character array
-		std::cin >> buffer3; // BAD: use of operator>> into a statically-allocated character array
-		std::cin >> buffer4; // BAD: use of operator>> into a statically-allocated character array
+		std::cin >> buffer1; // $ Alert[cpp/dangerous-cin] // BAD: use of operator>> into a statically-allocated character array
+		std::cin >> buffer2; // $ Alert[cpp/dangerous-cin] // BAD: use of operator>> into a statically-allocated character array
+		std::cin >> buffer3; // $ Alert[cpp/dangerous-cin] // BAD: use of operator>> into a statically-allocated character array
+		std::cin >> buffer4; // $ Alert[cpp/dangerous-cin] // BAD: use of operator>> into a statically-allocated character array
 		input >> buffer1; // BAD: use of operator>> into a statically-allocated character array (NOT DETECTED)
 	}
 
 	{
 		std::string str;
 		int i;
-	
+
 		std::cin >> i; // GOOD: destination is not a character array
 		std::cin >> str; // GOOD: destination is not statically sized
 	}
@@ -148,22 +148,22 @@ void test2()
 		ss.str("Hello, world!");
 		ss >> buffer; // GOOD: input has known length
 	}
-	
+
 	{
 		char buffer[100];
 		int i, j, k;
 
 		std::cin >> i >> j >> k; // GOOD: destinations are not character arrays
-		std::cin >> i >> buffer >> k; // BAD: use of operator>> into a statically-allocated character array
-		
+		std::cin >> i >> buffer >> k; // $ Alert[cpp/dangerous-cin] // BAD: use of operator>> into a statically-allocated character array
+
 	}
-	
+
 	{
 		static wchar_t wbuf[1024];
 		static char buf[1024];
 		static int i;
 
-		std::wcin >> wbuf; // BAD: use of operator>> into a statically-allocated character array
+		std::wcin >> wbuf; // $ Alert[cpp/dangerous-cin] // BAD: use of operator>> into a statically-allocated character array
 		std::wcin >> i; // GOOD: destination is not a character array
 	}
 
@@ -174,12 +174,12 @@ void test2()
 		char buf[4096];
 		int i;
 
-		my_ifstream >> buf; // BAD: use of operator>> into a statically-allocated character array
+		my_ifstream >> buf; // $ Alert[cpp/dangerous-cin] // BAD: use of operator>> into a statically-allocated character array
 		my_ifstream >> i; // GOOD: destination is not a character array
-		my_wifstream >> wbuf; // BAD: use of operator>> into a statically-allocated character array
+		my_wifstream >> wbuf; // $ Alert[cpp/dangerous-cin] // BAD: use of operator>> into a statically-allocated character array
 		my_wifstream >> i; // GOOD: destination is not a character array
 	}
-	
+
 	{
 		wchar_t wbuf[10];
 		char buf1[10], buf2[10];
@@ -187,54 +187,54 @@ void test2()
 
 		std::cin.width(10);
 		std::cin >> buf1; // GOOD: controlled by width()
-		std::cin >> buf2; // BAD: uncontrolled by width()
+		std::cin >> buf2; // $ Alert[cpp/dangerous-cin] // BAD: uncontrolled by width()
 
 		std::cin.width(10);
-		std::cin >> buf1 >> buf2; // BAD: buf2 is uncontrolled by width()
+		std::cin >> buf1 >> buf2; // $ Alert[cpp/dangerous-cin] // BAD: buf2 is uncontrolled by width()
 
 		std::cin.width(10);
 		std::cin >> i; // GOOD: destination is not a character array
 		std::cin >> buf1; // GOOD: controlled by width()
-		
+
 		std::cin.width(10);
 		std::cin >> i >> buf1; // GOOD: controlled by width()
 
 		std::cin.width(20);
-		std::cin >> buf1; // BAD: specified width is too large
+		std::cin >> buf1; // $ Alert[cpp/dangerous-cin] // BAD: specified width is too large
 
 		std::cin.width(int_func());
 		std::cin >> buf1; // GOOD: controlled by width()
 
 		std::wcin.width(10);
-		std::cin >> buf2; // BAD: uncontrolled by width()
+		std::cin >> buf2; // $ Alert[cpp/dangerous-cin] // BAD: uncontrolled by width()
 		std::wcin >> wbuf; // GOOD: controlled by width()
 
 		std::cin >> std::setw(10) >> buf1; // GOOD: controlled by setw
-		std::cin >> std::setw(10) >> buf1 >> buf2; // BAD: buf2 is uncontrolled
-		std::cin >> std::setw(20) >> buf1; // BAD: specified width is too large
-		
+		std::cin >> std::setw(10) >> buf1 >> buf2; // $ Alert[cpp/dangerous-cin] // BAD: buf2 is uncontrolled
+		std::cin >> std::setw(20) >> buf1; // $ Alert[cpp/dangerous-cin] // BAD: specified width is too large
+
 		std::cin.width(20);
 		std::cin.width(10);
 		std::cin >> buf2; // GOOD: controlled by width()
 	}
-	
+
 	{
 		char buf[10];
 		int i;
 
-		(std::cin >> i) >> buf; // BAD: use of operator>> into a statically-allocated character array
-		
+		(std::cin >> i) >> buf; // $ Alert[cpp/dangerous-cin] // BAD: use of operator>> into a statically-allocated character array
+
 		(std::cin >> i).width(10);
 		std::cin >> buf; // GOOD: controlled by width()
-		
+
 		((std::cin >> i) >> std::setw(10)) >> buf; // GOOD: controlled by setw()
 	}
-	
+
 	{
 		char buf[10];
 		std::string str;
 
-		std::cin >> std::setw(10) >> str >> buf; // BAD: buf is uncontrolled
+		std::cin >> std::setw(10) >> str >> buf; // $ Alert[cpp/dangerous-cin] // BAD: buf is uncontrolled
 	}
 }
 
@@ -246,8 +246,8 @@ void test3(char c, int val, char *str)
 	char buffer10[10];
 	MyCharArray myBuffer10;
 
-	gets(buffer10); // BAD: use of gets
-	gets(myBuffer10); // BAD: use of gets
+	gets(buffer10); // $ Alert[cpp/dangerous-function-overflow] // BAD: use of gets
+	gets(myBuffer10); // $ Alert[cpp/dangerous-function-overflow] // BAD: use of gets
 
 	sprintf(buffer10, "%c", c); // GOOD
 	sprintf(myBuffer10, "%c", c); // GOOD
@@ -255,8 +255,8 @@ void test3(char c, int val, char *str)
 	sprintf(buffer10, "%s", str); // BAD: potential buffer overflow [NOT DETECTED]
 	sprintf(myBuffer10, "%s", str); // BAD: potential buffer overflow [NOT DETECTED]
 
-	sprintf(buffer10, "val: %i", val); // BAD: potential buffer overflow
-	sprintf(myBuffer10, "val: %i", val); // BAD: potential buffer overflow
+	sprintf(buffer10, "val: %i", val); // $ Alert[cpp/overrunning-write] // BAD: potential buffer overflow
+	sprintf(myBuffer10, "val: %i", val); // $ Alert[cpp/overrunning-write] // BAD: potential buffer overflow
 }
 
 void test3_caller()
@@ -269,8 +269,8 @@ void test4()
 	char buffer8[8];
 	char *buffer8_ptr = buffer8;
 
-	sprintf(buffer8, "12345678"); // BAD: buffer overflow
-	sprintf(buffer8_ptr, "12345678"); // BAD: buffer overflow
+	sprintf(buffer8, "12345678"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: buffer overflow
+	sprintf(buffer8_ptr, "12345678"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: buffer overflow
 }
 
 typedef void *va_list;
@@ -284,7 +284,7 @@ void test5(va_list args, float f)
 	vsprintf(buffer10, "123456789", args); // GOOD
 	vsprintf(buffer10, "1234567890", args); // BAD: buffer overflow [NOT DETECTED]
 
-	sprintf(buffer64, "%f", f); // BAD: potential buffer overflow
+	sprintf(buffer64, "%f", f); // $ Alert[cpp/overrunning-write-with-float] // BAD: potential buffer overflow
 
 	vsprintf(buffer4, "123", args); // GOOD
 	vsprintf(buffer4, "1234", args); // BAD: buffer overflow [NOT DETECTED]
@@ -305,28 +305,28 @@ namespace custom_sprintf_impl {
 	void regression_test1()
 	{
 		char buffer8[8];
-		sprintf(buffer8, "12345678"); // BAD: potential buffer overflow
+		sprintf(buffer8, "12345678"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: potential buffer overflow
 	}
 }
 
 void test6(unsigned unsigned_value, int value) {
 	char buffer2[2], buffer3[3], buffer4[4], buffer5[5];
-	
-	sprintf(buffer4, "%u", unsigned_value); // BAD: buffer overflow
-	sprintf(buffer4, "%d", unsigned_value); // BAD: buffer overflow
+
+	sprintf(buffer4, "%u", unsigned_value); // $ Alert[cpp/overrunning-write] // BAD: buffer overflow
+	sprintf(buffer4, "%d", unsigned_value); // $ Alert[cpp/overrunning-write] // BAD: buffer overflow
 	if (unsigned_value < 1000) {
 		sprintf(buffer4, "%u", unsigned_value); // GOOD
 	}
 
-	sprintf(buffer4, "%u", -100); // BAD: buffer overflow
+	sprintf(buffer4, "%u", -100); // $ Alert[cpp/very-likely-overrunning-write] // BAD: buffer overflow
 
 	if(unsigned_value == (unsigned)-100) {
-		sprintf(buffer4, "%u", unsigned_value); // BAD: buffer overflow
+		sprintf(buffer4, "%u", unsigned_value); // $ Alert[cpp/very-likely-overrunning-write] // BAD: buffer overflow
 	}
 
-	sprintf(buffer4, "%d", value); // BAD: buffer overflow
+	sprintf(buffer4, "%d", value); // $ Alert[cpp/overrunning-write] // BAD: buffer overflow
 	if (value < 1000) {
-		sprintf(buffer4, "%d", value); // BAD: buffer overflow
+		sprintf(buffer4, "%d", value); // $ Alert[cpp/overrunning-write] // BAD: buffer overflow
 
 		if(value > -100) {
 			sprintf(buffer4, "%d", value); // GOOD
@@ -338,28 +338,28 @@ void test6(unsigned unsigned_value, int value) {
 	sprintf(buffer2, "%u", 5); // GOOD
 	sprintf(buffer2, "%d", 5); // GOOD
 
-	sprintf(buffer2, "%d", -1); // BAD
+	sprintf(buffer2, "%d", -1); // $ Alert[cpp/very-likely-overrunning-write] // BAD
 	sprintf(buffer2, "%d", 9); // GOOD
-	sprintf(buffer2, "%d", 10); // BAD
+	sprintf(buffer2, "%d", 10); // $ Alert[cpp/very-likely-overrunning-write] // BAD
 
-	sprintf(buffer2, "%u", -1); // BAD
+	sprintf(buffer2, "%u", -1); // $ Alert[cpp/very-likely-overrunning-write] // BAD
 	sprintf(buffer2, "%u", 9); // GOOD
-	sprintf(buffer2, "%u", 10); // BAD
+	sprintf(buffer2, "%u", 10); // $ Alert[cpp/very-likely-overrunning-write] // BAD
 
 	unsigned char unsigned_char = unsigned_value;
-	sprintf(buffer3, "%u", (unsigned)unsigned_char); // BAD
+	sprintf(buffer3, "%u", (unsigned)unsigned_char); // $ Alert[cpp/overrunning-write] // BAD
 	sprintf(buffer4, "%u", (unsigned)unsigned_char); // GOOD: 0..255 fits
 
 	unsigned small = unsigned_value >> (sizeof(unsigned_value) * 8 - 9);  // in range 0..511
-	sprintf(buffer3, "%u", small); // BAD
+	sprintf(buffer3, "%u", small); // $ Alert[cpp/very-likely-overrunning-write] // BAD
 	sprintf(buffer4, "%u", small); // GOOD
 
 	small = unsigned_value & ((1u << 9) - 1);  // in range 0..511
-	sprintf(buffer3, "%u", small); // BAD
+	sprintf(buffer3, "%u", small); // $ Alert[cpp/very-likely-overrunning-write] // BAD
 	sprintf(buffer4, "%u", small); // GOOD: 0..511 fits
 
 	char c = value;
 
-	sprintf(buffer4, "%d", (int)c); // BAD: e.g. -127 does not fit
+	sprintf(buffer4, "%d", (int)c); // $ Alert[cpp/overrunning-write] // BAD: e.g. -127 does not fit
 	sprintf(buffer5, "%d", (int)c); // GOOD: -127..128 fits
 }

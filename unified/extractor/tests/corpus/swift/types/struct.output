@@ -1,0 +1,83 @@
+struct Point {
+  let x: Int
+  let y: Int
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        structDecl
+          attributes:
+          name: identifier "Point"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                memberBlockItem
+                  decl:
+                    variableDecl
+                      attributes:
+                      modifiers:
+                      bindingSpecifier: let
+                      bindings:
+                        patternBinding
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "y"
+                          typeAnnotation:
+                            typeAnnotation
+                              colon: :
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+          modifiers:
+          structKeyword: struct
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "struct"
+          name: identifier "Point"
+          member:
+            variable_declaration
+              modifier: modifier "let"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+            variable_declaration
+              modifier: modifier "let"
+              pattern:
+                name_pattern
+                  identifier: identifier "y"
+              type:
+                named_type_expr
+                  name: identifier "Int"

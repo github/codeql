@@ -10,7 +10,7 @@ void printWrapper(char *correct) {
 	printf(correct);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) { // $ Source
 	// GOOD: constant format
 	printf("Correct");
 	printWrapper("Correct");
@@ -92,63 +92,63 @@ int main(int argc, char **argv) {
 	printWrapper((char *) c10);
 
 	// BAD: format comes from argv
-	printf(argv[1]);
-	printWrapper(argv[1]);
+	printf(argv[1]); // $ Alert
+	printWrapper(argv[1]); // $ Alert
 
 	// BAD: i1 value comes from argv
 	char *i1;
 	i1 = argv[1];
-	printf(i1);
-	printWrapper(i1);
+	printf(i1); // $ Alert
+	printWrapper(i1); // $ Alert
 
 	// BAD: i2 value comes from argv
 	char **i2 = argv;
-	printf(i2[0]);
-	printWrapper(i2[0]);
+	printf(i2[0]); // $ Alert
+	printWrapper(i2[0]); // $ Alert
 
 	// BAD: i2 value comes from argv
-	printf(*i2);
-	printWrapper(*i2);
+	printf(*i2); // $ Alert
+	printWrapper(*i2); // $ Alert
 
 	// BAD: i3 value comes from argv
 	char i3[5012];
 	memcpy(i3, argv[1], 5012);
-	printf(i3);
-	printWrapper(i3);
+	printf(i3); // $ Alert
+	printWrapper(i3); // $ Alert
 
 	// BAD: i4 value comes from argv
 	char *i4 = i3;
-	printf(i4);
-	printWrapper(i4);
+	printf(i4); // $ Alert
+	printWrapper(i4); // $ Alert
 
 	// BAD: i5 value comes from argv
 	char i5[5012];
 	i5[0] = argv[1][0];
-	printf(i5);
-	printWrapper(i5);
+	printf(i5); // $ Alert
+	printWrapper(i5); // $ Alert
 	
 	// BAD: i5 value comes from argv
-	printf(i5 + 1);
-	printWrapper(i5 + 1);
+	printf(i5 + 1); // $ Alert
+	printWrapper(i5 + 1); // $ Alert
 	
 	// BAD: i4 value comes from argv
-	printf(i4++);
-	printWrapper(--i4);
+	printf(i4++); // $ Alert
+	printWrapper(--i4); // $ Alert
 
 	// BAD: i5 value comes from argv, so in some cases the format come from argv
-	printf(argv[1] ? "a" : i5);
-	printWrapper(argv[1] ? "a" : i5);
+	printf(argv[1] ? "a" : i5); // $ Alert
+	printWrapper(argv[1] ? "a" : i5); // $ Alert
 
 	// BAD: i7 receives the value of i1, which comes from argv
 	char *i7 = (argv[1] , i1);
-	printf(i7);
-	printWrapper(i7);
+	printf(i7); // $ Alert
+	printWrapper(i7); // $ Alert
 
 	// BAD: i8 value comes from argv
 	char *i8;
 	*(&i8) = argv[1];
-	printf(i8);
-	printWrapper(i8);
+	printf(i8); // $ Alert
+	printWrapper(i8); // $ Alert
 
 	// BAD: i9 value comes from argv [NOT DETECTED]
 	char i9buf[32];

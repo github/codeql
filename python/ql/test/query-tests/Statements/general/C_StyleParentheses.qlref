@@ -1,1 +1,2 @@
-Statements/C_StyleParentheses.ql
+query: Statements/C_StyleParentheses.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

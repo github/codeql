@@ -1,12 +1,12 @@
 int test1(int x) {
-	goto label; // BAD
+	goto label; // $ Alert // BAD
 	x++;
 	label: return x;
 }
 
 int test2(int x) {
 	do {
-		break; // BAD
+		break; // $ Alert // BAD
 		x++;
 	} while(false);
 	return x;
@@ -34,7 +34,7 @@ int test5(int x, int y) {
 		goto label; // GOOD
 		break;
 	case 2:
-		break; // BAD
+		break; // $ Alert // BAD
 		return x;
 	case 3:
 		return x;

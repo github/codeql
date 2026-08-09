@@ -105,7 +105,7 @@ rust_library(
     }),
     version = "0.0.301",
     deps = [
-        "@vendor_ts__indexmap-2.11.4//:indexmap",
+        "@vendor_ts__indexmap-2.14.0//:indexmap",
         "@vendor_ts__ra_ap_intern-0.0.301//:ra_ap_intern",
         "@vendor_ts__ra_ap_paths-0.0.301//:ra_ap_paths",
         "@vendor_ts__ra_ap_span-0.0.301//:ra_ap_span",

@@ -1,1 +1,2 @@
-Documentation/XmldocExtraParam.ql
+query: Documentation/XmldocExtraParam.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -3,7 +3,7 @@ bool check_pointer_overflow(P *ptr) {
     // x86-64 gcc 9.2 -O2: deleted
     // x86-64 clang 9.9.9 -O2: deleted
     // x64 msvc v19.22 /O2: not deleted
-    return ptr + 0x12345678 < ptr; // BAD
+    return ptr + 0x12345678 < ptr; // $ Alert // BAD
 }
 bool check_pointer_overflow(P *ptr, P *ptr_end) {
     // x86-64 gcc 9.2 -O2: not deleted
@@ -22,7 +22,7 @@ struct Q {
 void foo(int untrusted_int) {
 	Q q;
     if (q.begin() + untrusted_int > q.end() || // GOOD (for the purpose of this test)
-          q.begin() + untrusted_int < q.begin()) // BAD [NOT DETECTED]
+          q.begin() + untrusted_int < q.begin()) // $ MISSING: Alert // BAD [NOT DETECTED]
       throw q;
 }
 
@@ -30,7 +30,7 @@ typedef unsigned long size_t;
 
 bool not_in_range_bad(Q *ptr, Q *ptr_end, size_t a) {
     return ptr + a >= ptr_end || // GOOD (for the purpose of this test)
-        ptr + a < ptr; // BAD
+        ptr + a < ptr; // $ Alert // BAD
 }
 
 bool not_in_range_good(Q *ptr, Q *ptr_end, size_t a) {
@@ -46,9 +46,9 @@ extern "C" void abort(void);
 #define MYASSERT(cond) if (cond) abort()
 
 void assert_not_in_range_bad(Q *ptr, Q *ptr_end, size_t a) {
-    MYASSERT(ptr + a >= ptr_end || ptr + a < ptr); // BAD
+    MYASSERT(ptr + a >= ptr_end || ptr + a < ptr); // $ Alert // BAD
     MYASSERT(ptr + a >= ptr_end); // GOOD (for the purpose of this test)
-    MYASSERT(ptr + a < ptr); // BAD
+    MYASSERT(ptr + a < ptr); // $ Alert // BAD
 }
 
 #define IS_LESS_THAN(lhs, rhs) ((lhs) < (rhs))

@@ -1,0 +1,18 @@
+nil
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        nilLiteralExpr
+          nilKeyword: nil
+
+---
+
+top_level
+  body:
+    block
+      stmt: builtin_expr "nil"

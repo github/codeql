@@ -14,29 +14,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 class Test {
   public static void basic() {
-    String userProperty = System.getProperty("userProperty");
+    String userProperty = System.getProperty("userProperty"); // $ Source
     // BAD User provided value as format string for String.format
-    String.format(userProperty);
+    String.format(userProperty); // $ Alert
     // BAD User provided value as format string for PrintStream.format
-    System.out.format(userProperty);
+    System.out.format(userProperty); // $ Alert
     // BAD User provided value as format string for PrintStream.printf
-    System.out.printf(userProperty);
+    System.out.printf(userProperty); // $ Alert
     // BAD User provided value as format string for Formatter.format
-    new Formatter().format(userProperty);
+    new Formatter().format(userProperty); // $ Alert
     // BAD User provided value as format string for Formatter.format
-    new Formatter().format(Locale.ENGLISH, userProperty);
+    new Formatter().format(Locale.ENGLISH, userProperty); // $ Alert
   }
   
   public class FileUploadServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      String userParameter = request.getParameter("userProvidedParameter");
+      String userParameter = request.getParameter("userProvidedParameter"); // $ Source
       formatString(userParameter);
     }
     
     private void formatString(String format) {
       // BAD This is used with user provided parameter
-      System.out.format(format);
+      System.out.format(format); // $ Alert
     }
   }
 }

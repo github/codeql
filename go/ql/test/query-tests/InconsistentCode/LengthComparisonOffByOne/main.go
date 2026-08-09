@@ -3,8 +3,8 @@ package main
 import "regexp"
 
 func f1(i int, a []int) int {
-	if i <= len(a) { // NOT OK
-		return a[i]
+	if i <= len(a) { // $ Alert // NOT OK
+		return a[i] // $ Source
 	}
 	return -1
 }
@@ -26,8 +26,8 @@ func f3(i int, a []int) int {
 }
 
 func f4(i int, a []int) int {
-	if len(a) > 0 { // NOT OK
-		return a[1]
+	if len(a) > 0 { // $ Alert // NOT OK
+		return a[1] // $ Source
 	}
 	return -1
 }

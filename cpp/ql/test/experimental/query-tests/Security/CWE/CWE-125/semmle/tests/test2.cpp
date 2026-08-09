@@ -12,11 +12,11 @@ size_t mbsrtowcs(wchar_t *wcstr,const char *mbstr,size_t count, mbstate_t *mbsta
 
 
 static void badTest1(void *src,  int size) {
-    mbstowcs((wchar_t*)src,(char*)src,size); // BAD
+    mbstowcs((wchar_t*)src,(char*)src,size); // $ Alert // BAD
     _locale_t locale;
-    _mbstowcs_l((wchar_t*)src,(char*)src,size,locale); // BAD
+    _mbstowcs_l((wchar_t*)src,(char*)src,size,locale); // $ Alert // BAD
     mbstate_t *mbstate;
-    mbsrtowcs((wchar_t*)src,(char*)src,size,mbstate); // BAD
+    mbsrtowcs((wchar_t*)src,(char*)src,size,mbstate); // $ Alert // BAD
 }
 static void goodTest2(){
   char src[] = "0123456789ABCDEF";
@@ -32,7 +32,7 @@ static void goodTest2(){
 static void badTest2(){
   char src[] = "0123456789ABCDEF";
   wchar_t dst[16];
-  mbstowcs(dst, src,16); // BAD
+  mbstowcs(dst, src,16); // $ Alert // BAD
   printf("%s\n", dst);
 }
 static void goodTest3(){
@@ -45,7 +45,7 @@ static void badTest3(){
   char src[] = "0123456789ABCDEF";
   int size = mbstowcs(NULL, src,NULL);
   wchar_t * dst = (wchar_t*)calloc(size + 1, 1);
-  mbstowcs(dst, src,size+1); // BAD
+  mbstowcs(dst, src,size+1); // $ Alert // BAD
 }
 static void goodTest4(){
   char src[] = "0123456789ABCDEF";
@@ -57,13 +57,13 @@ static void badTest4(){
   char src[] = "0123456789ABCDEF";
   int size = mbstowcs(NULL, src,NULL);
   wchar_t * dst = (wchar_t*)malloc(size + 1);
-  mbstowcs(dst, src,size+1); // BAD
+  mbstowcs(dst, src,size+1); // $ Alert // BAD
 }
 static int goodTest5(void *src){
   return mbstowcs(NULL, (char*)src,NULL); // GOOD
 }
 static int badTest5 (void *src) {
-  return mbstowcs(NULL, (char*)src,3); // BAD
+  return mbstowcs(NULL, (char*)src,3); // $ Alert // BAD
 }
 static void goodTest6(void *src){
   wchar_t dst[5];
@@ -77,6 +77,6 @@ static void goodTest6(void *src){
 }
 static void badTest6(void *src){
   wchar_t dst[5];
-  mbstowcs(dst, (char*)src,260); // BAD
+  mbstowcs(dst, (char*)src,260); // $ Alert // BAD
   printf("%s\n", dst);
 }

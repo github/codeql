@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-489/WebComponentMain.ql
+query: experimental/Security/CWE/CWE-489/WebComponentMain.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

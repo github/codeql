@@ -16,14 +16,14 @@ public:
 	MyTest2Class()
 	{
 		int *a = new int;
-		free(a); // BAD
+		free(a); // $ Alert[cpp/new-free-mismatch] // BAD
 
 		int *ptr_b = (int *)malloc(sizeof(int));
 		int *b = new(ptr_b) int;
 		free(b); // GOOD
 
 		c = new int;
-		free(c); // BAD
+		free(c); // $ Alert[cpp/new-free-mismatch] // BAD
 
 		int *ptr_d = (int *)malloc(sizeof(int));
 		d = new(ptr_d) int;
@@ -48,13 +48,13 @@ void test_operator_new()
 
 	delete ptr_new; // GOOD
 	::operator delete(ptr_new); // GOOD
-	free(ptr_new); // BAD
+	free(ptr_new); // $ Alert[cpp/new-free-mismatch] // BAD
 
 	delete ptr_opnew; // GOOD
 	::operator delete(ptr_opnew); // GOOD
-	free(ptr_opnew); // BAD
+	free(ptr_opnew); // $ Alert[cpp/new-free-mismatch] // BAD
 
-	delete ptr_malloc; // BAD
-	::operator delete(ptr_malloc); // BAD
+	delete ptr_malloc; // $ Alert[cpp/new-free-mismatch] // BAD
+	::operator delete(ptr_malloc); // $ Alert[cpp/new-free-mismatch] // BAD
 	free(ptr_malloc); // GOOD
 }

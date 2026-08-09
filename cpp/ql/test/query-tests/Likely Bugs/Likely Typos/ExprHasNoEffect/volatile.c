@@ -6,20 +6,19 @@ char *pc;
 volatile char *pv;
 
 void f(void) {
-    c; // BAD
+    c; // $ Alert // BAD
     v; // (accesses to volatile variables are considered impure)
 
-    pc[5]; // BAD
+    pc[5]; // $ Alert // BAD
     pv[5];
     ((volatile char *)pc)[5];
 
-    *pc; // BAD
+    *pc; // $ Alert // BAD
     *pv;
     *((volatile char *)pc);
 
-    *(pc + 5); // BAD
+    *(pc + 5); // $ Alert // BAD
     *(pv + 5);
     *((volatile char *)(pc + 5));
     *(((volatile char *)pc) + 5);
 }
-

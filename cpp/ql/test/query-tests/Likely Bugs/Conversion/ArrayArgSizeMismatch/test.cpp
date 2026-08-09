@@ -21,11 +21,11 @@ void test(float f3[3], float f4[4], float f5[5], float *fp)
 	f(arr3); // GOOD
 	f(arr4); // GOOD
 	f(arr5); // GOOD
-	g(arr3); // BAD
+	g(arr3); // $ Alert // BAD
 	g(arr4); // GOOD
 	g(arr5); // GOOD
 
-	h(f3); // BAD [NOT DETECTED]
+	h(f3); // $ MISSING: Alert // BAD [NOT DETECTED]
 	h(f4); // GOOD
 	h(f5); // GOOD
 	h(fp); // GOOD
@@ -39,11 +39,11 @@ void test(float f3[3], float f4[4], float f5[5], float *fp)
 		ms->data[0] = ms->data[1] = ms->data[2] = ms->data[3] = 0;
 		h(ms->data); // GOOD
 	}
-	
+
 	{
 		// char array
 		char ca[4 * sizeof(int)];
-		
+
 		g((int *)ca); // GOOD
 	}
 };

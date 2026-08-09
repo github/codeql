@@ -1,1 +1,2 @@
-Likely Bugs/Memory Management/SuspiciousCallToMemset.ql
+query: Likely Bugs/Memory Management/SuspiciousCallToMemset.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -14,8 +14,8 @@
 | MultiCatch.java:12:11:12:27 | new IOException(...) | MultiCatch.java:12:5:12:28 | throw ... |
 | MultiCatch.java:14:5:14:29 | throw ... | MultiCatch.java:15:5:15:37 | catch (...) |
 | MultiCatch.java:14:11:14:28 | new SQLException(...) | MultiCatch.java:14:5:14:29 | throw ... |
-| MultiCatch.java:15:5:15:37 | catch (...) | MultiCatch.java:7:14:7:23 | Exceptional Exit |
 | MultiCatch.java:15:5:15:37 | catch (...) | MultiCatch.java:15:36:15:36 | e |
+| MultiCatch.java:15:36:15:36 | e | MultiCatch.java:7:14:7:23 | Exceptional Exit |
 | MultiCatch.java:15:36:15:36 | e | MultiCatch.java:16:3:19:3 | { ... } |
 | MultiCatch.java:16:3:19:3 | { ... } | MultiCatch.java:17:4:17:23 | <Expr>; |
 | MultiCatch.java:17:4:17:4 | e | MultiCatch.java:17:4:17:22 | printStackTrace(...) |
@@ -41,8 +41,8 @@
 | MultiCatch.java:29:11:29:28 | new SQLException(...) | MultiCatch.java:29:5:29:29 | throw ... |
 | MultiCatch.java:30:4:30:25 | throw ... | MultiCatch.java:31:5:31:37 | catch (...) |
 | MultiCatch.java:30:10:30:24 | new Exception(...) | MultiCatch.java:30:4:30:25 | throw ... |
-| MultiCatch.java:31:5:31:37 | catch (...) | MultiCatch.java:22:14:22:24 | Exceptional Exit |
 | MultiCatch.java:31:5:31:37 | catch (...) | MultiCatch.java:31:36:31:36 | e |
+| MultiCatch.java:31:36:31:36 | e | MultiCatch.java:22:14:22:24 | Exceptional Exit |
 | MultiCatch.java:31:36:31:36 | e | MultiCatch.java:32:3:32:4 | { ... } |
 | MultiCatch.java:32:3:32:4 | { ... } | MultiCatch.java:22:14:22:24 | Normal Exit |
 | MultiCatch.java:35:14:35:26 | Entry | MultiCatch.java:36:2:42:2 | { ... } |

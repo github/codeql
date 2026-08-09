@@ -26,13 +26,13 @@ class Bad
         if (DoPrint("I"))
             Console.WriteLine("I");
 
-        DoPrint("J");
+        DoPrint("J"); // $ Alert
     }
 
     void IgnoreRead(string path)
     {
         var file = new byte[10];
         using (var f = new FileStream(path, FileMode.Open))
-            f.Read(file, 0, file.Length);
+            f.Read(file, 0, file.Length); // $ Alert
     }
 }

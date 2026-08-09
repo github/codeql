@@ -1,1 +1,2 @@
-Functions/InitIsGenerator.ql
+query: Functions/InitIsGenerator.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

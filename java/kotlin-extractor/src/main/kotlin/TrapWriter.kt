@@ -1,6 +1,7 @@
 package com.github.codeql
 
 import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
+import com.github.codeql.utils.versions.codeQlExtensionReceiver
 import com.semmle.extractor.java.PopulateFile
 import com.semmle.util.unicode.UTF8Util
 import java.io.BufferedWriter
@@ -331,7 +332,7 @@ open class FileTrapWriter(
             is IrCall -> {
                 // Calls have incorrect startOffset, so we adjust them:
                 val dr = e.dispatchReceiver?.let { getStartOffset(it) }
-                val er = e.extensionReceiver?.let { getStartOffset(it) }
+                val er = e.codeQlExtensionReceiver?.let { getStartOffset(it) }
                 offsetMinOf(e.startOffset, dr, er)
             }
             else -> e.startOffset

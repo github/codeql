@@ -20,9 +20,9 @@ void test1()
 	char bigbuffer[20];
 
 	memcpy(bigbuffer, smallbuffer, sizeof(smallbuffer)); // GOOD
-	memcpy(bigbuffer, smallbuffer, sizeof(bigbuffer)); // BAD: over-read
+	memcpy(bigbuffer, smallbuffer, sizeof(bigbuffer)); // $ Alert[cpp/overflow-buffer] // BAD: over-read
 	memcpy(smallbuffer, bigbuffer, sizeof(smallbuffer)); // GOOD
-	memcpy(smallbuffer, bigbuffer, sizeof(bigbuffer)); // BAD: over-write
+	memcpy(smallbuffer, bigbuffer, sizeof(bigbuffer)); // $ Alert[cpp/overflow-buffer] Alert[cpp/static-buffer-overflow] // BAD: over-write
 }
 
 void test2()
@@ -31,9 +31,9 @@ void test2()
 	char *bigbuffer = (char *)malloc(sizeof(char) * 20);
 
 	memcpy(bigbuffer, smallbuffer, sizeof(char) * 10); // GOOD
-	memcpy(bigbuffer, smallbuffer, sizeof(char) * 20); // BAD: over-read
+	memcpy(bigbuffer, smallbuffer, sizeof(char) * 20); // $ Alert[cpp/overflow-buffer] // BAD: over-read
 	memcpy(smallbuffer, bigbuffer, sizeof(char) * 10); // GOOD
-	memcpy(smallbuffer, bigbuffer, sizeof(char) * 20); // BAD: over-write
+	memcpy(smallbuffer, bigbuffer, sizeof(char) * 20); // $ Alert[cpp/overflow-buffer] // BAD: over-write
 
 	free(bigbuffer);
 	free(smallbuffer);
@@ -47,9 +47,9 @@ void test3()
 	bigbuffer = new char[20];
 
 	memcpy(bigbuffer, smallbuffer, sizeof(char[10])); // GOOD
-	memcpy(bigbuffer, smallbuffer, sizeof(char[20])); // BAD: over-read
+	memcpy(bigbuffer, smallbuffer, sizeof(char[20])); // $ Alert[cpp/overflow-buffer] // BAD: over-read
 	memcpy(smallbuffer, bigbuffer, sizeof(char[10])); // GOOD
-	memcpy(smallbuffer, bigbuffer, sizeof(char[20])); // BAD: over-write
+	memcpy(smallbuffer, bigbuffer, sizeof(char[20])); // $ Alert[cpp/overflow-buffer] // BAD: over-write
 
 	delete [] bigbuffer;
 	delete [] smallbuffer;
@@ -160,8 +160,8 @@ void test6(bool cond)
 
 	for (k = 0; k <= 100; k++)
 	{
-		buffer[k] = 'x'; // BAD: over-write
-		ch = buffer[k]; // BAD: over-read
+		buffer[k] = 'x'; // $ Alert[cpp/static-buffer-overflow] // BAD: over-write
+		ch = buffer[k]; // $ Alert[cpp/static-buffer-overflow] // BAD: over-read
 	}
 }
 
@@ -169,11 +169,11 @@ void test7()
 {
 	char *names[] = {"tom", "dick", "harry"};
 
-	printf("name: %s\n", names[-1]); // BAD: under-read
+	printf("name: %s\n", names[-1]); // $ Alert[cpp/overflow-buffer] // BAD: under-read
 	printf("name: %s\n", names[0]); // GOOD
 	printf("name: %s\n", names[1]); // GOOD
 	printf("name: %s\n", names[2]); // GOOD
-	printf("name: %s\n", names[3]); // BAD: over-read
+	printf("name: %s\n", names[3]); // $ Alert[cpp/overflow-buffer] // BAD: over-read
 }
 
 void test8(int unbounded)
@@ -219,16 +219,16 @@ void test9(int param)
 		buffer4 = buffer3;
 
 		memset(buffer1, 0, 32); // GOOD
-		memset(buffer1, 0, 33); // BAD: overrun write of buffer1
+		memset(buffer1, 0, 33); // $ Alert[cpp/overflow-buffer] // BAD: overrun write of buffer1
 		memset(buffer2, 0, 32); // GOOD
-		memset(buffer2, 0, 33); // BAD: overrun write of buffer2
+		memset(buffer2, 0, 33); // $ Alert[cpp/overflow-buffer] // BAD: overrun write of buffer2
 		memset(buffer3, 0, 32); // GOOD
-		memset(buffer3, 0, 33); // BAD: overrun write of buffer3
+		memset(buffer3, 0, 33); // $ Alert[cpp/overflow-buffer] // BAD: overrun write of buffer3
 		memset(buffer4, 0, 32); // GOOD
-		memset(buffer4, 0, 33); // BAD: overrun write of buffer4 (buffer3)
+		memset(buffer4, 0, 33); // $ Alert[cpp/overflow-buffer] // BAD: overrun write of buffer4 (buffer3)
 
 		memcmp(buffer1, buffer2, 32); // GOOD
-		memcmp(buffer1, buffer2, 33); // BAD: overrun read of buffer1, buffer2
+		memcmp(buffer1, buffer2, 33); // $ Alert[cpp/overflow-buffer] // BAD: overrun read of buffer1, buffer2
 	}
 
 	{
@@ -236,13 +236,13 @@ void test9(int param)
 		char *str2 = "abcdefgh";
 
 		strncpy(str1, str2, strlen(str1) + 1); // GOOD
-		strncpy(str1, str2, strlen(str2) + 1); // BAD: overrun write of str1
-		strncpy(str2, str1, strlen(str1) + 1); // DUBIOUS (detected)
+		strncpy(str1, str2, strlen(str2) + 1); // $ Alert[cpp/bad-strncpy-size] // BAD: overrun write of str1
+		strncpy(str2, str1, strlen(str1) + 1); // $ Alert[cpp/bad-strncpy-size] // DUBIOUS (detected)
 		strncpy(str2, str1, strlen(str2) + 1); // BAD: overrun read of str1 [NOT REPORTED]
 	}
 
-	memmove(global_array_6, global_array_5, 6); // BAD: overrun read of global_array_5
-	memmove(global_array_5, global_array_6, 6); // BAD: overrun write of global_array_5
+	memmove(global_array_6, global_array_5, 6); // $ Alert[cpp/overflow-buffer] // BAD: overrun read of global_array_5
+	memmove(global_array_5, global_array_6, 6); // $ Alert[cpp/overflow-buffer] Alert[cpp/static-buffer-overflow] // BAD: overrun write of global_array_5
 
 	if (param > 0)
 	{
@@ -262,8 +262,8 @@ void test10()
 
 
 	wmemset(buffer1, 0, 32); // GOOD
-	wmemset(buffer1, 0, 33); // BAD: overrun write of buffer1
-	wmemset((wchar_t *)buffer2, 0, 32); // BAD: overrun write of buffer2
+	wmemset(buffer1, 0, 33); // $ Alert[cpp/overflow-buffer] // BAD: overrun write of buffer1
+	wmemset((wchar_t *)buffer2, 0, 32); // $ Alert[cpp/overflow-buffer] // BAD: overrun write of buffer2
 }
 
 void test11()
@@ -272,7 +272,7 @@ void test11()
 		char *string = "Hello, world!";
 
 		memset(string, 0, 14); // GOOD
-		memset(string, 0, 15); // BAD: overrun write of string
+		memset(string, 0, 15); // $ Alert[cpp/overflow-buffer] // BAD: overrun write of string
 	}
 
 	{
@@ -282,14 +282,14 @@ void test11()
 
 		buffer = new char[64];
 
-		memset(buffer, 0, 128); // BAD: overrun write of buffer
+		memset(buffer, 0, 128); // $ Alert[cpp/overflow-buffer] // BAD: overrun write of buffer
 	}
 
 	{
 		char array[10] = "123";
 
 		memset(array, 0, 10); // GOOD
-		memset(array, 0, 11); // BAD: overrun write of array
+		memset(array, 0, 11); // $ Alert[cpp/overflow-buffer] // BAD: overrun write of array
 	}
 }
 
@@ -307,11 +307,11 @@ void test12()
 	dbuf = new char[16];
 
 	memset(&myVar, 0, sizeof(myVar)); // GOOD
-	memset(&myVar, 0, sizeof(myVar) + 1); // BAD: overrun write of myVar
+	memset(&myVar, 0, sizeof(myVar) + 1); // $ Alert[cpp/overflow-buffer] // BAD: overrun write of myVar
 	memset(myVar.buffer, 0, 16); // GOOD
 	memset(myVar.buffer, 0, 17); // DUBIOUS: overrun write of myVar.buffer, but not out of myVar itself [NOT DETECTED]
 	memset(&(myVar.field), 0, sizeof(int)); // GOOD
-	memset(&(myVar.field), 0, sizeof(int) * 2); // BAD: overrun write of myVar.field
+	memset(&(myVar.field), 0, sizeof(int) * 2); // $ Alert[cpp/overflow-buffer] // BAD: overrun write of myVar.field
 
 	memset(buf + 8, 0, 8); // GOOD
 	memset(buf + 8, 0, 9); // BAD: overrun write of buf [NOT DETECTED]
@@ -345,33 +345,33 @@ void test13(char *argArray)
 	char *ptrArray = charArray;
 	char *ptrArrayOffset = charArray + 1;
 
-	charArray[-1] = 1; // BAD: underrun write
+	charArray[-1] = 1; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
 	charArray[0] = 1; // GOOD
 	charArray[9] = 1; // GOOD
-	charArray[10] = 1; // BAD: overrun write
-	charArray[5] = charArray[10]; // BAD: overrun read
+	charArray[10] = 1; // $ Alert[cpp/overflow-buffer] Alert[cpp/static-buffer-overflow] // BAD: overrun write
+	charArray[5] = charArray[10]; // $ Alert[cpp/overflow-buffer] Alert[cpp/static-buffer-overflow] // BAD: overrun read
 
-	intArray[-1] = 1; // BAD: underrun write
+	intArray[-1] = 1; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
 	intArray[0] = 1; // GOOD
 	intArray[9] = 1; // GOOD
-	intArray[10] = 1; // BAD: overrun write
-	intArray[5] = intArray[10]; // BAD: overrun read
+	intArray[10] = 1; // $ Alert[cpp/overflow-buffer] // BAD: overrun write
+	intArray[5] = intArray[10]; // $ Alert[cpp/overflow-buffer] // BAD: overrun read
 
-	structArray[-1].field = 1; // BAD: underrun write
+	structArray[-1].field = 1; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
 	structArray[0].field = 1; // GOOD
 	structArray[9].field = 1; // GOOD
-	structArray[10].field = 1; // BAD: overrun write
-	structArray[5].field = structArray[10].field; // BAD: overrun read
+	structArray[10].field = 1; // $ Alert[cpp/overflow-buffer] // BAD: overrun write
+	structArray[5].field = structArray[10].field; // $ Alert[cpp/overflow-buffer] // BAD: overrun read
 
 	charArray[9] = (char)intArray[9]; // GOOD
-	charArray[9] = (char)intArray[10]; // BAD: overrun read
+	charArray[9] = (char)intArray[10]; // $ Alert[cpp/overflow-buffer] // BAD: overrun read
 
-	ptrArray[-2] = 1; // BAD: underrun write
-	ptrArray[-1] = 1; // BAD: underrun write
+	ptrArray[-2] = 1; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
+	ptrArray[-1] = 1; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
 	ptrArray[0] = 1; // GOOD
 	ptrArray[8] = 1; // GOOD
 	ptrArray[9] = 1; // GOOD
-	ptrArray[10] = 1; // BAD: overrun write
+	ptrArray[10] = 1; // $ Alert[cpp/overflow-buffer] // BAD: overrun write
 
 	ptrArrayOffset[-2] = 1; // BAD: underrun write [NOT DETECTED]
 	ptrArrayOffset[-1] = 1; // GOOD (there is room for this)
@@ -391,10 +391,10 @@ void test13(char *argArray)
 
 		buffer1[0] = 0xFFFF;
 		buffer1[49] = 0xFFFF;
-		buffer1[50] = 0xFFFF; // BAD: overrun write
+		buffer1[50] = 0xFFFF; // $ Alert[cpp/overflow-buffer] // BAD: overrun write
 		buffer2[0] = 0xFFFF;
 		buffer2[49] = 0xFFFF;
-		buffer2[50] = 0xFFFF; // BAD: overrun write
+		buffer2[50] = 0xFFFF; // $ Alert[cpp/overflow-buffer] // BAD: overrun write
 	}
 }
 
@@ -464,7 +464,7 @@ void test17(long long *longArray)
 	{
 		int intArray[5];
 
-		((char *)intArray)[-3] = 0; // BAD: underrun write
+		((char *)intArray)[-3] = 0; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
 	}
 
 	{
@@ -472,14 +472,14 @@ void test17(long long *longArray)
 
 		multi[5][5] = 0; // GOOD
 
-		multi[-5][5] = 0; // BAD: underrun write [INCORRECT MESSAGE]
+		multi[-5][5] = 0; // $ Alert[cpp/overflow-buffer] // BAD: underrun write [INCORRECT MESSAGE]
 		multi[5][-5] = 0; // DUBIOUS: underrun write (this one is still within the bounds of the whole array)
-		multi[-5][-5] = 0; // BAD: underrun write [INCORRECT MESSAGE]
+		multi[-5][-5] = 0; // $ Alert[cpp/overflow-buffer] // BAD: underrun write [INCORRECT MESSAGE]
 		multi[0][-5] = 0; // BAD: underrun write [NOT DETECTED]
 
-		multi[15][5] = 0; // BAD: overrun write
+		multi[15][5] = 0; // $ Alert[cpp/overflow-buffer] // BAD: overrun write
 		multi[5][15] = 0; // DUBIOUS: overrun write (this one is still within the bounds of the whole array)
-		multi[15][15] = 0; // BAD: overrun write
+		multi[15][15] = 0; // $ Alert[cpp/overflow-buffer] // BAD: overrun write
 	}
 }
 
@@ -494,22 +494,22 @@ void test18()
 	char *p4 = (char *)malloc(128);
 	char *p5 = (char *)malloc(128);
 
-	p1[-1] = 0; // BAD: underrun write
-	p2[-1] = 0; // BAD: underrun write
+	p1[-1] = 0; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
+	p2[-1] = 0; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
 	p2++;
 	p2[-1] = 0; // GOOD
 
-	p3[-1] = 0; // BAD
+	p3[-1] = 0; // $ Alert[cpp/overflow-buffer] // BAD
 	while (*p3 != 0) {
 		p3 = update(p3);
 	}
 	p3[-1] = 0; // GOOD
 
-	p4[-1] = 0; // BAD: underrun write
+	p4[-1] = 0; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
 	p4++;
 	p4[-1] = 0; // GOOD
 
-	p5[-1] = 0; // BAD
+	p5[-1] = 0; // $ Alert[cpp/overflow-buffer] // BAD
 	while (*p5 != 0) {
 		p5 = update(p5);
 	}
@@ -537,7 +537,7 @@ void test19(bool b)
 
 	if (b)
 	{
-		memset(p1, 0, 20); // BAD
+		memset(p1, 0, 20); // $ Alert[cpp/overflow-buffer] // BAD
 		memset(p2, 0, 20); // GOOD
 		memset(p3, 0, 20); // GOOD
 	}
@@ -559,12 +559,12 @@ void test20()
 		// ...
 	}
 
-	if (fread(charBuffer, sizeof(char), 101, fileSource) > 0) // BAD
+	if (fread(charBuffer, sizeof(char), 101, fileSource) > 0) // $ Alert[cpp/overflow-buffer] // BAD
 	{
 		// ...
 	}
 
-	if (fread(charBuffer, sizeof(int), 100, fileSource) > 0) // BAD
+	if (fread(charBuffer, sizeof(int), 100, fileSource) > 0) // $ Alert[cpp/overflow-buffer] // BAD
 	{
 		// ...
 	}
@@ -575,7 +575,7 @@ void test20()
 	}
 
 	num = 101;
-	if (fread(intBuffer, sizeof(int), num, fileSource) > 0) // BAD [NOT DETECTED]
+	if (fread(intBuffer, sizeof(int), num, fileSource) > 0) // $ MISSING: Alert // BAD [NOT DETECTED]
 	{
 		// ...
 	}
@@ -587,7 +587,7 @@ void test21(bool cond)
 	char *ptr;
 	int i;
 
-	if (buffer[-1] == 0) { return; } // BAD: accesses buffer[-1]
+	if (buffer[-1] == 0) { return; } // $ Alert[cpp/overflow-buffer] // BAD: accesses buffer[-1]
 
 	ptr = buffer;
 	if (cond)
@@ -595,7 +595,7 @@ void test21(bool cond)
 		ptr++;
 		if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[0]
 	} else {
-		if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1]
+		if (ptr[-1] == 0) { return; } // $ Alert[cpp/overflow-buffer] // BAD: accesses buffer[-1]
 	}
 	if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1] or buffer[0] [NOT DETECTED]
 
@@ -633,7 +633,7 @@ char* strcpy(char *, const char *);
 
 void test24(char* source) {
 	char buffer[100];
-	strcpy(buffer, source); // BAD
+	strcpy(buffer, source); // $ Alert[cpp/unbounded-write] // BAD
 }
 
 struct my_struct {
@@ -646,7 +646,7 @@ void test25(char* source) {
 	s.home = source;
 
 	char buf[100];
-	strcpy(buf, s.home); // BAD
+	strcpy(buf, s.home); // $ Alert[cpp/unbounded-write] // BAD
 }
 
 void test26(bool cond)
@@ -655,7 +655,7 @@ void test26(bool cond)
 	char *ptr;
 	int i;
 
-	if (buffer[-1] == 0) { return; } // BAD: accesses buffer[-1]
+	if (buffer[-1] == 0) { return; } // $ Alert[cpp/overflow-buffer] // BAD: accesses buffer[-1]
 
 	ptr = buffer;
 	if (cond)
@@ -663,7 +663,7 @@ void test26(bool cond)
 		ptr += 1;
 		if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[0]
 	} else {
-		if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1]
+		if (ptr[-1] == 0) { return; } // $ Alert[cpp/overflow-buffer] // BAD: accesses buffer[-1]
 	}
 	if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1] or buffer[0] [NOT DETECTED]
 
@@ -726,15 +726,15 @@ struct HasSomeFields {
 	};
 
 	void test32() {
-		memset(&c, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // BAD
+		memset(&c, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // $ Alert[cpp/overflow-buffer] // BAD
 	};
 
 	void test33() {
-		memset(&c, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, b)); // BAD
+		memset(&c, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, b)); // $ Alert[cpp/overflow-buffer] // BAD
 	};
 
 	void test34() {
-		memset(&b, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // BAD
+		memset(&b, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // $ Alert[cpp/overflow-buffer] // BAD
 	};
 
 	void test35() {
@@ -745,7 +745,7 @@ struct HasSomeFields {
 void test36() {
 	HasSomeFields hsf;
 	memset(&hsf.a, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // GOOD
-	memset(&hsf.c, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // BAD
+	memset(&hsf.c, 0, sizeof(HasSomeFields) - offsetof(HasSomeFields, a)); // $ Alert[cpp/overflow-buffer] // BAD
 }
 
 struct AnonUnionInStruct
@@ -771,18 +771,18 @@ struct AnonUnionInStruct
     memset(&a_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_2)); // GOOD
     memset(&a_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, d)); // GOOD
 
-    memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_1)); // BAD
+    memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_1)); // $ Alert[cpp/overflow-buffer] // BAD
     memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_1)); // GOOD
     memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, c_1)); // GOOD
-    memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_2)); // BAD
+    memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_2)); // $ Alert[cpp/overflow-buffer] // BAD
     memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_2)); // GOOD
     memset(&b_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, d)); // GOOD
 
-    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_1)); // BAD
-    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_1)); // BAD
+    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_1)); // $ Alert[cpp/overflow-buffer] // BAD
+    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_1)); // $ Alert[cpp/overflow-buffer] // BAD
     memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, c_1)); // GOOD
-    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_2)); // BAD
-    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_2)); // GOOD
+    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_2)); // $ Alert[cpp/overflow-buffer] // BAD
+    memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_2)); // $ Alert[cpp/overflow-buffer] // GOOD
     memset(&c_1, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, d)); // GOOD
 
     memset(&a_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_1)); // GOOD
@@ -792,10 +792,10 @@ struct AnonUnionInStruct
     memset(&a_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_2)); // GOOD
     memset(&a_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, d)); // GOOD
 
-    memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_1)); // BAD
+    memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_1)); // $ Alert[cpp/overflow-buffer] // BAD
     memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_1)); // GOOD
     memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, c_1)); // GOOD
-    memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_2)); // BAD
+    memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, a_2)); // $ Alert[cpp/overflow-buffer] // BAD
     memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, b_2)); // GOOD
     memset(&b_2, 0, sizeof(AnonUnionInStruct) - offsetof(AnonUnionInStruct, d)); // GOOD
   };
@@ -813,7 +813,7 @@ struct UnionWithoutStruct
   void test37() {
     memset(&a, 0, sizeof(UnionWithoutStruct) - offsetof(UnionWithoutStruct, a)); // GOOD
     memset(&a, 0, sizeof(UnionWithoutStruct) - offsetof(UnionWithoutStruct, b)); // GOOD
-    memset(&b, 0, sizeof(UnionWithoutStruct) - offsetof(UnionWithoutStruct, a)); // BAD
+    memset(&b, 0, sizeof(UnionWithoutStruct) - offsetof(UnionWithoutStruct, a)); // $ Alert[cpp/overflow-buffer] // BAD
   };
 };
 
@@ -840,20 +840,20 @@ struct S2 {
     memset(&f.inner.a, 0, sizeof(S2) - offsetof(S2, f)); // GOOD
     memset(&f.inner.a, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
 
-    memset(&f.inner.b, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // BAD
+    memset(&f.inner.b, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // $ Alert[cpp/overflow-buffer] // BAD
     memset(&f.inner.b, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // GOOD
     memset(&f.inner.b, 0, sizeof(S2) - offsetof(ThreeUInts, c)); // GOOD
-    memset(&f.inner.b, 0, sizeof(S2) - offsetof(FourUInts, inner)); // BAD
+    memset(&f.inner.b, 0, sizeof(S2) - offsetof(FourUInts, inner)); // $ Alert[cpp/overflow-buffer] // BAD
     memset(&f.inner.b, 0, sizeof(S2) - offsetof(FourUInts, x)); // GOOD
-    memset(&f.inner.b, 0, sizeof(S2) - offsetof(S2, f)); // BAD
+    memset(&f.inner.b, 0, sizeof(S2) - offsetof(S2, f)); // $ Alert[cpp/overflow-buffer] // BAD
     memset(&f.inner.b, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
 
-    memset(&f.inner.c, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // BAD
-    memset(&f.inner.c, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // BAD
+    memset(&f.inner.c, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // $ Alert[cpp/overflow-buffer] // BAD
+    memset(&f.inner.c, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // $ Alert[cpp/overflow-buffer] // BAD
     memset(&f.inner.c, 0, sizeof(S2) - offsetof(ThreeUInts, c)); // GOOD
-    memset(&f.inner.c, 0, sizeof(S2) - offsetof(FourUInts, inner)); // BAD
+    memset(&f.inner.c, 0, sizeof(S2) - offsetof(FourUInts, inner)); // $ Alert[cpp/overflow-buffer] // BAD
     memset(&f.inner.c, 0, sizeof(S2) - offsetof(FourUInts, x)); // GOOD
-    memset(&f.inner.c, 0, sizeof(S2) - offsetof(S2, f)); // BAD
+    memset(&f.inner.c, 0, sizeof(S2) - offsetof(S2, f)); // $ Alert[cpp/overflow-buffer] // BAD
     memset(&f.inner.c, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
 
     memset(&f.inner, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // GOOD
@@ -864,12 +864,12 @@ struct S2 {
     memset(&f.inner, 0, sizeof(S2) - offsetof(S2, f)); // GOOD
     memset(&f.inner, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
 
-    memset(&f.x, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // BAD
-    memset(&f.x, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // BAD
-    memset(&f.x, 0, sizeof(S2) - offsetof(ThreeUInts, c)); // BAD
-    memset(&f.x, 0, sizeof(S2) - offsetof(FourUInts, inner)); // BAD
+    memset(&f.x, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // $ Alert[cpp/overflow-buffer] // BAD
+    memset(&f.x, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // $ Alert[cpp/overflow-buffer] // BAD
+    memset(&f.x, 0, sizeof(S2) - offsetof(ThreeUInts, c)); // $ Alert[cpp/overflow-buffer] // BAD
+    memset(&f.x, 0, sizeof(S2) - offsetof(FourUInts, inner)); // $ Alert[cpp/overflow-buffer] // BAD
     memset(&f.x, 0, sizeof(S2) - offsetof(FourUInts, x)); // GOOD
-    memset(&f.x, 0, sizeof(S2) - offsetof(S2, f)); // GOOD
+    memset(&f.x, 0, sizeof(S2) - offsetof(S2, f)); // $ Alert[cpp/overflow-buffer] // GOOD
     memset(&f.x, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
 
     memset(&f, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // GOOD
@@ -880,12 +880,12 @@ struct S2 {
     memset(&f, 0, sizeof(S2) - offsetof(S2, f)); // GOOD
     memset(&f, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
 
-    memset(&u, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // BAD
-    memset(&u, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // BAD
-    memset(&u, 0, sizeof(S2) - offsetof(ThreeUInts, c)); // BAD
-    memset(&u, 0, sizeof(S2) - offsetof(FourUInts, inner)); // BAD
-    memset(&u, 0, sizeof(S2) - offsetof(FourUInts, x)); // BAD
-    memset(&u, 0, sizeof(S2) - offsetof(S2, f)); // BAD
+    memset(&u, 0, sizeof(S2) - offsetof(ThreeUInts, a)); // $ Alert[cpp/overflow-buffer] // BAD
+    memset(&u, 0, sizeof(S2) - offsetof(ThreeUInts, b)); // $ Alert[cpp/overflow-buffer] // BAD
+    memset(&u, 0, sizeof(S2) - offsetof(ThreeUInts, c)); // $ Alert[cpp/overflow-buffer] // BAD
+    memset(&u, 0, sizeof(S2) - offsetof(FourUInts, inner)); // $ Alert[cpp/overflow-buffer] // BAD
+    memset(&u, 0, sizeof(S2) - offsetof(FourUInts, x)); // $ Alert[cpp/overflow-buffer] // BAD
+    memset(&u, 0, sizeof(S2) - offsetof(S2, f)); // $ Alert[cpp/overflow-buffer] // BAD
     memset(&u, 0, sizeof(S2) - offsetof(S2, u)); // GOOD
   }
 };
@@ -981,24 +981,24 @@ void test28() {
 	int arr[10];
 
 	int *ptr1 = arr;
-	ptr1[-1] = 0; // BAD: underrun write
+	ptr1[-1] = 0; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
 	ptr1++;
 	ptr1[-1] = 0; // GOOD
 
 	int *ptr2 = arr;
-	ptr2[-1] = 0; // BAD: underrun write
+	ptr2[-1] = 0; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
 	*ptr2++;
 	ptr2[-1] = 0; // GOOD
 
 	int *ptr3 = arr;
-	ptr3[-1] = 0; // BAD: underrun write
+	ptr3[-1] = 0; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
 	if (cond()) {
 		ptr3++;
 	}
 	ptr3[-1] = 0; // GOOD (depending what cond() does)
 
 	int *ptr4 = arr;
-	ptr4[-1] = 0; // BAD: underrun write
+	ptr4[-1] = 0; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
 	while (true) {
 		ptr4++;
 		if (cond()) break;
@@ -1006,7 +1006,7 @@ void test28() {
 	ptr4[-1] = 0; // GOOD
 
 	int *ptr5 = arr;
-	ptr5[-1] = 0; // BAD: underrun write
+	ptr5[-1] = 0; // $ Alert[cpp/overflow-buffer] // BAD: underrun write
 	while (true) {
 		if (cond()) ptr5++;
 		if (cond()) break;
@@ -1028,7 +1028,7 @@ void test29() {
 	memset(ptr->arr1, 0, sizeof(ptr->arr1) + sizeof(ptr->arr2)); // GOOD (overwrites arr1, arr2)
 	memset(&(ptr->arr1[0]), 0, sizeof(ptr->arr1) + sizeof(ptr->arr2)); // GOOD (overwrites arr1, arr2)
 
-	memset(ptr->arr1, 0, sizeof(ptr->arr1) + sizeof(ptr->arr2) + 10); // BAD
+	memset(ptr->arr1, 0, sizeof(ptr->arr1) + sizeof(ptr->arr2) + 10); // $ Alert[cpp/overflow-buffer] // BAD
 }
 
 struct UnionStruct {
@@ -1047,14 +1047,14 @@ void test30() {
 	UnionStruct us;
 
 	memset(us.buffer1, 0, sizeof(us.buffer1)); // GOOD
-	memset(us.buffer1, 0, sizeof(us)); // BAD
+	memset(us.buffer1, 0, sizeof(us)); // $ Alert[cpp/overflow-buffer] // BAD
 	memset(us.buffer2, 0, sizeof(us.buffer2)); // GOOD
-	memset(us.buffer2, 0, sizeof(us)); // BAD
+	memset(us.buffer2, 0, sizeof(us)); // $ Alert[cpp/overflow-buffer] // BAD
 
 	strncpy(us.buffer1, "", sizeof(us.buffer1) - 1); // GOOD
-	strncpy(us.buffer1, "", sizeof(us) - 1); // BAD
+	strncpy(us.buffer1, "", sizeof(us) - 1); // $ Alert[cpp/badly-bounded-write] Alert[cpp/overflow-buffer] Alert[cpp/static-buffer-overflow] // BAD
 	strncpy(us.buffer2, "", sizeof(us.buffer2) - 1); // GOOD
-	strncpy(us.buffer2, "", sizeof(us) - 1); // BAD
+	strncpy(us.buffer2, "", sizeof(us) - 1); // $ Alert[cpp/badly-bounded-write] Alert[cpp/overflow-buffer] Alert[cpp/static-buffer-overflow] // BAD
 }
 
 struct S_Size16 {

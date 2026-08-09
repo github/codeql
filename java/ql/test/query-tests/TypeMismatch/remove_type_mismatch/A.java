@@ -4,12 +4,12 @@ import java.util.Collection;
 
 public class A {
 	void test1(Collection<StringBuffer> c, String s, StringBuffer b) {
-		c.remove(s);
+		c.remove(s); // $ Alert[java/type-mismatch-modification]
 		c.remove(b);
 	}
 	
 	void test2(Collection<? extends CharSequence> c, A a, String b) {
-		c.remove(a);
+		c.remove(a); // $ Alert[java/type-mismatch-modification]
 		c.remove(b);
 	}
 }
@@ -20,7 +20,7 @@ class TestB {
 	Collection<? extends java.util.List> coll2 = null;
 	Collection<RunnableList> coll3;
 	{
-		coll3.remove("");
+		coll3.remove(""); // $ Alert[java/type-mismatch-modification]
 	}
 }
 
@@ -30,7 +30,7 @@ class MyIntList extends java.util.LinkedList<Integer> {
 class TestC {
 	MyIntList mil;
 	{
-		mil.remove("");
+		mil.remove(""); // $ Alert[java/type-mismatch-modification]
 	}
 }
 
@@ -40,6 +40,6 @@ class MyOtherIntList<T> extends java.util.LinkedList<Integer> {
 class TestD {
 	MyOtherIntList<Runnable> moil;
 	{
-		moil.remove("");
+		moil.remove(""); // $ Alert[java/type-mismatch-modification]
 	}
 }

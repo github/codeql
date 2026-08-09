@@ -13,9 +13,19 @@
 
 import python
 private import semmle.python.ApiGraphs
+private import semmle.python.dataflow.new.DataFlow
 
 predicate originIsLocals(ControlFlowNode n) {
-  API::builtin("locals").getReturn().getAValueReachableFromSource().asCfgNode() = n
+  // Only consider the `locals()` dictionary within the scope that called `locals()`.
+  // Once the dictionary is passed to another scope (e.g. as an argument or via an
+  // instance attribute) it is just an ordinary mapping, and modifying it is both
+  // meaningful and effective. Restricting to local (intraprocedural) flow ensures we
+  // only report modifications in the scope where the `locals()` gotcha actually applies.
+  exists(DataFlow::LocalSourceNode src, DataFlow::Node use |
+    src = API::builtin("locals").getReturn().asSource() and
+    src.flowsTo(use) and
+    use.asCfgNode() = n
+  )
 }
 
 predicate modification_of_locals(ControlFlowNode f) {

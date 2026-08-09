@@ -63,10 +63,7 @@ private predicate unresolvedIdentifier(Ident id, string name) {
 /**
  * An SSA variable.
  */
-class SsaVariable extends TSsaDefinition {
-  /** Gets the source variable corresponding to this SSA variable. */
-  SsaSourceVariable getSourceVariable() { result = this.(SsaDefinition).getSourceVariable() }
-
+class SsaVariable extends Definition {
   /** Gets the (unique) definition of this SSA variable. */
   SsaDefinition getDefinition() { result = this }
 
@@ -74,21 +71,16 @@ class SsaVariable extends TSsaDefinition {
   Type getType() { result = this.getSourceVariable().getType() }
 
   /** Gets a use in basic block `bb` that refers to this SSA variable. */
-  IR::Instruction getAUseIn(ReachableBasicBlock bb) {
+  IR::Instruction getAUseIn(BasicBlock bb) {
     exists(int i, SsaSourceVariable v | v = this.getSourceVariable() |
       result = bb.getNode(i) and
-      this = getDefinition(bb, i, v)
+      ssaDefReachesRead(v, this, bb, i) and
+      useAt(bb, i, v)
     )
   }
 
   /** Gets a use that refers to this SSA variable. */
   IR::Instruction getAUse() { result = this.getAUseIn(_) }
-
-  /** Gets a textual representation of this element. */
-  string toString() { result = this.getDefinition().prettyPrintRef() }
-
-  /** Gets the location of this SSA variable. */
-  Location getLocation() { result = this.getDefinition().getLocation() }
 
   /**
    * DEPRECATED: Use `getLocation()` instead.
@@ -109,50 +101,20 @@ class SsaVariable extends TSsaDefinition {
 /**
  * An SSA definition.
  */
-class SsaDefinition extends TSsaDefinition {
+class SsaDefinition extends Definition {
   /** Gets the SSA variable defined by this definition. */
   SsaVariable getVariable() { result = this }
-
-  /** Gets the source variable defined by this definition. */
-  abstract SsaSourceVariable getSourceVariable();
-
-  /**
-   * Gets the basic block to which this definition belongs.
-   */
-  abstract ReachableBasicBlock getBasicBlock();
-
-  /**
-   * INTERNAL: Use `getBasicBlock()` and `getSourceVariable()` instead.
-   *
-   * Holds if this is a definition of source variable `v` at index `idx` in basic block `bb`.
-   *
-   * Phi nodes are considered to be at index `-1`, all other definitions at the index of
-   * the control flow node they correspond to.
-   */
-  abstract predicate definesAt(ReachableBasicBlock bb, int idx, SsaSourceVariable v);
-
-  /**
-   * INTERNAL: Use `toString()` instead.
-   *
-   * Gets a pretty-printed representation of this SSA definition.
-   */
-  abstract string prettyPrintDef();
-
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Gets a pretty-printed representation of a reference to this SSA definition.
-   */
-  abstract string prettyPrintRef();
 
   /** Gets the innermost function or file to which this SSA definition belongs. */
   ControlFlow::Root getRoot() { result = this.getBasicBlock().getScope() }
 
-  /** Gets a textual representation of this element. */
-  string toString() { result = this.prettyPrintDef() }
-
-  /** Gets the source location for this element. */
-  abstract Location getLocation();
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Gets a short string identifying the kind of this SSA definition,
+   * used in reference formatting (e.g., `"def"`, `"capture"`, `"phi"`).
+   */
+  string getKind() { none() }
 
   /**
    * DEPRECATED: Use `getLocation()` instead.
@@ -180,32 +142,23 @@ class SsaDefinition extends TSsaDefinition {
 /**
  * An SSA definition that corresponds to an explicit assignment or other variable definition.
  */
-class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
+class SsaExplicitDefinition extends SsaDefinition, WriteDefinition {
+  SsaExplicitDefinition() {
+    exists(BasicBlock bb, int i, SsaSourceVariable v |
+      this.definesAt(v, bb, i) and
+      defAt(bb, i, v)
+    )
+  }
+
   /** Gets the instruction where the definition happens. */
   IR::Instruction getInstruction() {
-    exists(BasicBlock bb, int i | this = TExplicitDef(bb, i, _) | result = bb.getNode(i))
+    exists(BasicBlock bb, int i | this.definesAt(_, bb, i) | result = bb.getNode(i))
   }
 
   /** Gets the right-hand side of the definition. */
   IR::Instruction getRhs() { this.getInstruction().writes(_, result) }
 
-  override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-    this = TExplicitDef(bb, i, v)
-  }
-
-  override ReachableBasicBlock getBasicBlock() { this.definesAt(result, _, _) }
-
-  override SsaSourceVariable getSourceVariable() { this = TExplicitDef(_, _, result) }
-
-  override string prettyPrintRef() {
-    exists(Location loc | loc = this.getLocation() |
-      result = "def@" + loc.getStartLine() + ":" + loc.getStartColumn()
-    )
-  }
-
-  override string prettyPrintDef() { result = "definition of " + this.getSourceVariable() }
-
-  override Location getLocation() { result = this.getInstruction().getLocation() }
+  override string getKind() { result = "def" }
 }
 
 /** Provides a helper predicate for working with explicit SSA definitions. */
@@ -219,22 +172,7 @@ module SsaExplicitDefinition {
 /**
  * An SSA definition that does not correspond to an explicit variable definition.
  */
-abstract class SsaImplicitDefinition extends SsaDefinition {
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Gets the definition kind to include in `prettyPrintRef`.
-   */
-  abstract string getKind();
-
-  override string prettyPrintRef() {
-    exists(Location loc | loc = this.getLocation() |
-      result = this.getKind() + "@" + loc.getStartLine() + ":" + loc.getStartColumn()
-    )
-  }
-
-  override Location getLocation() { result = this.getBasicBlock().getLocation() }
-}
+abstract class SsaImplicitDefinition extends SsaDefinition { }
 
 /**
  * An SSA definition representing the capturing of an SSA-convertible variable
@@ -243,24 +181,8 @@ abstract class SsaImplicitDefinition extends SsaDefinition {
  * Capturing definitions appear at the beginning of such functions, as well as
  * at any function call that may affect the value of the variable.
  */
-class SsaVariableCapture extends SsaImplicitDefinition, TCapture {
-  override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-    this = TCapture(bb, i, v)
-  }
-
-  override ReachableBasicBlock getBasicBlock() { this.definesAt(result, _, _) }
-
-  override SsaSourceVariable getSourceVariable() { this.definesAt(_, _, result) }
-
+class SsaVariableCapture extends SsaImplicitDefinition, UncertainWriteDefinition {
   override string getKind() { result = "capture" }
-
-  override string prettyPrintDef() { result = "capture variable " + this.getSourceVariable() }
-
-  override Location getLocation() {
-    exists(ReachableBasicBlock bb, int i | this.definesAt(bb, i, _) |
-      result = bb.getNode(i).getLocation()
-    )
-  }
 }
 
 /**
@@ -272,12 +194,6 @@ abstract class SsaPseudoDefinition extends SsaImplicitDefinition {
    * Gets an input of this pseudo-definition.
    */
   abstract SsaVariable getAnInput();
-
-  /**
-   * Gets a textual representation of the inputs of this pseudo-definition
-   * in lexicographical order.
-   */
-  string ppInputs() { result = concat(this.getAnInput().getDefinition().prettyPrintRef(), ", ") }
 }
 
 /**
@@ -285,26 +201,10 @@ abstract class SsaPseudoDefinition extends SsaImplicitDefinition {
  * in the flow graph where otherwise two or more definitions for the variable
  * would be visible.
  */
-class SsaPhiNode extends SsaPseudoDefinition, TPhi {
-  override SsaVariable getAnInput() {
-    result = getDefReachingEndOf(this.getBasicBlock().getAPredecessor(_), this.getSourceVariable())
-  }
-
-  override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {
-    bb = this.getBasicBlock() and v = this.getSourceVariable() and i = -1
-  }
-
-  override ReachableBasicBlock getBasicBlock() { this = TPhi(result, _) }
-
-  override SsaSourceVariable getSourceVariable() { this = TPhi(_, result) }
+class SsaPhiNode extends SsaPseudoDefinition, PhiNode {
+  override SsaVariable getAnInput() { phiHasInputFromBlock(this, result, _) }
 
   override string getKind() { result = "phi" }
-
-  override string prettyPrintDef() {
-    result = this.getSourceVariable() + " = phi(" + this.ppInputs() + ")"
-  }
-
-  override Location getLocation() { result = this.getBasicBlock().getLocation() }
 }
 
 /**

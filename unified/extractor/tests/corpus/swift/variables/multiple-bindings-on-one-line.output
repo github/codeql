@@ -1,0 +1,56 @@
+let x = 1, y = 2
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              trailingComma: ,
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    integerLiteralExpr
+                      literal: integerLiteral "1"
+              pattern:
+                identifierPattern
+                  identifier: identifier "x"
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    integerLiteralExpr
+                      literal: integerLiteral "2"
+              pattern:
+                identifierPattern
+                  identifier: identifier "y"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          value: int_literal "1"
+        variable_declaration
+          modifier:
+            modifier "let"
+            modifier "chained_declaration"
+          pattern:
+            name_pattern
+              identifier: identifier "y"
+          value: int_literal "2"

@@ -1,2 +1,2 @@
-import folder.A
+import folder.A // $ Alert
 import folder.B

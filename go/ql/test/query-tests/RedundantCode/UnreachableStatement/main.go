@@ -10,16 +10,16 @@ func reachable() {}
 
 func test1() {
 	return
-	unreachable() // NOT OK
+	unreachable() // $ Alert // NOT OK
 }
 
 func test2() {
 	select {}
-	unreachable() // NOT OK
+	unreachable() // $ Alert // NOT OK
 }
 
 func test3() {
-	for i := 0; i < 10; unreachable() { // NOT OK
+	for i := 0; i < 10; unreachable() { // $ Alert // NOT OK
 		return
 	}
 }
@@ -27,7 +27,7 @@ func test3() {
 func test4() {
 	for true {
 	}
-	unreachable() // NOT OK
+	unreachable() // $ Alert // NOT OK
 }
 
 func test5(cond bool) {
@@ -46,15 +46,15 @@ func test6(cond bool) {
 		}
 		reachable()
 	}
-	unreachable() // NOT OK
+	unreachable() // $ Alert // NOT OK
 }
 
 func test7(cond bool) {
 	for true {
 		continue
-		unreachable() // NOT OK
+		unreachable() // $ Alert // NOT OK
 	}
-	unreachable() // NOT OK
+	unreachable() // $ Alert // NOT OK
 }
 
 func test8() {
@@ -138,25 +138,25 @@ func test16() *mystruct {
 	select {}
 	// Flagged, as `return nil` is possible and preferable when the
 	// return site is unreachable.
-	return &mystruct{0, true}
+	return &mystruct{0, true} // $ Alert
 }
 
 func test17() int {
 	select {}
 	// Flagged, as a nontrivial unreachable return
-	return test10(1)
+	return test10(1) // $ Alert
 }
 
 func test18() bool {
 	select {}
 	// Flagged, as a nontrivial unreachable return
-	return test10(1) == 1
+	return test10(1) == 1 // $ Alert
 }
 
 func test19() mystruct {
 	select {}
 	// Flagged, as a nontrivial unreachable return
-	return mystruct{test10(1), test10(2) == 2}
+	return mystruct{test10(1), test10(2) == 2} // $ Alert
 }
 
 func main() {}

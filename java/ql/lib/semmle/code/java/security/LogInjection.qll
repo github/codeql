@@ -90,13 +90,6 @@ private predicate logInjectionSanitizer(Expr e) {
       target.getStringValue() = ["\n", "\r", "\\n", "\\r", "\\R"]
     )
   )
-  or
-  exists(RegexMatch rm, CompileTimeConstantExpr target |
-    rm instanceof Annotation and
-    e = rm.getASanitizedExpr() and
-    target = rm.getRegex() and
-    regexPreventsLogInjection(target.getStringValue(), true)
-  )
 }
 
 /**
@@ -113,7 +106,6 @@ private predicate logInjectionGuard(Guard g, Expr e, boolean branch) {
   or
   exists(RegexMatch rm, CompileTimeConstantExpr target |
     rm = g and
-    not rm instanceof Annotation and
     target = rm.getRegex() and
     e = rm.getASanitizedExpr()
   |

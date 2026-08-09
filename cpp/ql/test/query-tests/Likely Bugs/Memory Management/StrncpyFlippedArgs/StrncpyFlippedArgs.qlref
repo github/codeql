@@ -1,1 +1,2 @@
-Likely Bugs/Memory Management/StrncpyFlippedArgs.ql
+query: Likely Bugs/Memory Management/StrncpyFlippedArgs.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

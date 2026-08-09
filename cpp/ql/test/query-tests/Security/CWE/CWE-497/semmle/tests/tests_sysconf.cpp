@@ -21,7 +21,7 @@ void test_sc_1()
 	int value = sysconf(_SC_CHILD_MAX);
 
 	printf("_SC_CHILD_MAX = %i\n", _SC_CHILD_MAX); // GOOD
-	printf("_SC_CHILD_MAX = %i\n", value); // $ MISSING: Alert
+	printf("_SC_CHILD_MAX = %i\n", value); // $ MISSING: Alert[cpp/system-data-exposure]
 }
 
 void test_sc_2()
@@ -33,9 +33,9 @@ void test_sc_2()
 	pathbuf = (char *)malloc(n);
 	if (pathbuf != NULL)
 	{
-		confstr(_CS_PATH, pathbuf, n); // $ Source
+		confstr(_CS_PATH, pathbuf, n); // $ Source[cpp/system-data-exposure]
 
-		printf("path: %s", pathbuf); // $ MISSING: Alert
-		write(get_fd(), pathbuf, strlen(pathbuf)); // $ Alert
+		printf("path: %s", pathbuf); // $ MISSING: Alert[cpp/system-data-exposure]
+		write(get_fd(), pathbuf, strlen(pathbuf)); // $ Alert[cpp/system-data-exposure]
 	}
 }

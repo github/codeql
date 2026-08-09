@@ -1,1 +1,2 @@
-Architecture/FeatureEnvy.ql
+query: Architecture/FeatureEnvy.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

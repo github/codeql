@@ -381,19 +381,26 @@ private module Crypto {
     }
 
     private class StreamReader extends EncryptionOperation {
+      DataFlow::Node encryptionFlowTarget;
+      DataFlow::Node inputNode;
+
       StreamReader() {
         lookThroughPointerType(this.getType()).hasQualifiedName("crypto/cipher", "StreamReader") and
-        exists(DataFlow::Write w, DataFlow::Node base, Field f |
-          f.hasQualifiedName("crypto/cipher", "StreamReader", "S") and
-          w.writesField(base, f, encryptionFlowTarget) and
-          DataFlow::localFlow(base, this)
+        exists(DataFlow::Write wS, DataFlow::Node baseS, Field fS |
+          fS.hasQualifiedName("crypto/cipher", "StreamReader", "S") and
+          wS.writesField(baseS, fS, encryptionFlowTarget) and
+          DataFlow::localFlow(baseS, this)
         ) and
-        exists(DataFlow::Write w, DataFlow::Node base, Field f |
-          f.hasQualifiedName("crypto/cipher", "StreamReader", "R") and
-          w.writesField(base, f, inputNode) and
-          DataFlow::localFlow(base, this)
+        exists(DataFlow::Write wR, DataFlow::Node baseR, Field fR |
+          fR.hasQualifiedName("crypto/cipher", "StreamReader", "R") and
+          wR.writesField(baseR, fR, inputNode) and
+          DataFlow::localFlow(baseR, this)
         )
       }
+
+      override DataFlow::Node getEncryptionFlowTarget() { result = encryptionFlowTarget }
+
+      override DataFlow::Node getAnInput() { result = inputNode }
     }
 
     /**
@@ -402,9 +409,10 @@ private module Crypto {
      * so it only works within one function.
      */
     private class StreamWriter extends EncryptionOperation {
+      DataFlow::Node encryptionFlowTarget;
+
       StreamWriter() {
         lookThroughPointerType(this.getType()).hasQualifiedName("crypto/cipher", "StreamWriter") and
-        inputNode = this and
         exists(DataFlow::Write w, DataFlow::Node base, Field f |
           w.writesField(base, f, encryptionFlowTarget) and
           f.hasQualifiedName("crypto/cipher", "StreamWriter", "S")
@@ -413,6 +421,10 @@ private module Crypto {
           TaintTracking::localTaint(base, this.(DataFlow::PostUpdateNode).getPreUpdateNode())
         )
       }
+
+      override DataFlow::Node getEncryptionFlowTarget() { result = encryptionFlowTarget }
+
+      override DataFlow::Node getAnInput() { result = this }
     }
   }
 }

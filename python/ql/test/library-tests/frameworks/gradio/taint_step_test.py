@@ -2,15 +2,15 @@ import gradio as gr
 import os
 
 with gr.Blocks() as demo:
-    path = gr.Textbox(label="Path") # $ source=gr.Textbox(..)
-    file = gr.Textbox(label="File") # $ source=gr.Textbox(..)
+    path = gr.Textbox(label="Path") # $ Source source=gr.Textbox(..)
+    file = gr.Textbox(label="File") # $ Source source=gr.Textbox(..)
     output = gr.Textbox(label="Output Box")
 
 
 	# path injection sink
     def fileread(path, file):
         filepath = os.path.join(path, file)
-        with open(filepath, "r") as f:
+        with open(filepath, "r") as f:  # $ Alert
                 return f.read()
 
 

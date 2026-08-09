@@ -28,6 +28,12 @@ module Logrus {
         this.(Method).hasQualifiedName(packagePath(), ["Entry", "Logger"], name)
       )
     }
+
+    override predicate mayReturnNormally() {
+      not exists(string level, string suffix | level = ["Fatal", "Panic"] |
+        this.getName() = level + suffix
+      )
+    }
   }
 
   private class StringFormatters extends StringOps::Formatting::Range instanceof LogFunction {

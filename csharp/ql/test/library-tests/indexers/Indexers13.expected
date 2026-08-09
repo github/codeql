@@ -1,0 +1,4 @@
+| indexers.cs:24:21:24:24 | Item | indexers.cs:62:22:62:29 | access to indexer | indexers.cs:26:13:26:15 | get_Item |
+| indexers.cs:24:21:24:24 | Item | indexers.cs:65:25:65:32 | access to indexer | indexers.cs:34:13:34:15 | set_Item |
+| indexers.cs:143:24:143:27 | Item | indexers.cs:156:13:156:16 | access to indexer | indexers.cs:145:13:145:15 | get_Item |
+| indexers.cs:143:24:143:27 | Item | indexers.cs:157:21:157:24 | access to indexer | indexers.cs:145:13:145:15 | get_Item |

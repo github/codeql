@@ -1,0 +1,54 @@
+let result = try? foo()
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    tryExpr
+                      expression:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "foo"
+                      questionOrExclamationMark: ?
+                      tryKeyword: try
+              pattern:
+                identifierPattern
+                  identifier: identifier "result"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "result"
+          value:
+            unary_expr
+              operand:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "foo"
+              operator: prefix_operator "try?"

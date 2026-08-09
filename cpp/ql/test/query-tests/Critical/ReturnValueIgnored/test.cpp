@@ -29,7 +29,7 @@ int main()
 
 	check(myFunction()); // GOOD
 
-	myFunction(); // BAD (return value is ignored)
+	myFunction(); // $ Alert // BAD (return value is ignored)
 
 	(void)myFunction(); // GOOD
 }

@@ -1,1 +1,2 @@
-Bad Practices/Magic Constants/MagicStringsUseConstant.ql
+query: Bad Practices/Magic Constants/MagicStringsUseConstant.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

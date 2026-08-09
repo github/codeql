@@ -2,15 +2,15 @@
 
 int test_const_init()
 {
-	int v1; // BAD: unused
+	int v1; // $ Alert // BAD: unused
 	int v2; // GOOD
-	int v3 = 0; // BAD: unused
+	int v3 = 0; // $ Alert // BAD: unused
 	int v4 = 0; // GOOD
-	const int v5 = 0; // BAD: unused [NOT DETECTED]
+	const int v5 = 0; // $ MISSING: Alert // BAD: unused [NOT DETECTED]
 	const int v6 = 0; // GOOD
-	constexpr int v7 = 0; // BAD: unused
+	constexpr int v7 = 0; // $ Alert // BAD: unused
 	constexpr int v8 = 0; // GOOD
-	
+
 	return v2 + v4 + v6 + v8;
 }
 
@@ -23,7 +23,7 @@ void myFunction()
 
 void test_template_parameter()
 {
-	constexpr int v1 = 0; // BAD: unused
+	constexpr int v1 = 0; // $ Alert // BAD: unused
 	constexpr int v2 = 0; // GOOD: used as a template parameter below
 
 	myFunction<v2>();
@@ -39,10 +39,10 @@ public:
 
 void test_unused()
 {
-	MyBuffer myVar1; // BAD: unused
+	MyBuffer myVar1; // $ Alert // BAD: unused
 	MyBuffer myVar2; // GOOD: used in deliberate void cast below
 	MyBuffer myVar3 __attribute((__unused__)); // GOOD: unused but acknowledged
-	
+
 	(void)myVar2;
 }
 
@@ -61,7 +61,7 @@ void test_expect()
 	{
 		int v1 = getter(); // GOOD: v1 is used
 		int v2 = getter(); // GOOD: v2 is used
-		int v3 = getter(); // BAD: unused
+		int v3 = getter(); // $ Alert // BAD: unused
 
 		if (unlikely(v1 < 0))
 		{
@@ -99,13 +99,13 @@ void output(int value);
 void test_range_based_for()
 {
 	MyContainer<int> myContainer;
-	
+
 	for (int v1 : myContainer) // GOOD: v1 is used
 	{
 		output(v1);
 	}
-	
-	for (int v2 : myContainer) // BAD: v2 is not used
+
+	for (int v2 : myContainer) // $ Alert // BAD: v2 is not used
 	{
 	}
 }
@@ -125,8 +125,8 @@ int test_lambdas1()
 
 int test_lambdas2()
 {
-	int a, b; // BAD: b is not used
-	auto myLambda = [=]() -> int // BAD: myLambda is not used [NOT DETECTED] (due to containing a Constructor)
+	int a, b; // $ Alert // BAD: b is not used
+	auto myLambda = [=]() -> int // $ MISSING: Alert // BAD: myLambda is not used [NOT DETECTED] (due to containing a Constructor)
 	{
 		return a;
 	};

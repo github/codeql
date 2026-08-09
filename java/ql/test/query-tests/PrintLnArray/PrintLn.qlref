@@ -1,1 +1,2 @@
-Violations of Best Practice/Undesirable Calls/PrintLnArray.ql
+query: Violations of Best Practice/Undesirable Calls/PrintLnArray.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -30,7 +30,10 @@ abstract private class ScanfFunctionModel extends ArrayFunction, TaintFunction, 
     (
       if exists(this.getLengthParameterIndex())
       then result = this.getLengthParameterIndex() + 2
-      else result = 2
+      else
+        if exists(this.(ScanfFunction).getInputParameterIndex())
+        then result = 2
+        else result = 1
     )
   }
 
@@ -69,13 +72,24 @@ abstract private class ScanfFunctionModel extends ArrayFunction, TaintFunction, 
   }
 }
 
+private predicate hasFlowSource(
+  ScanfFunction func, ScanfFunctionCall call, FunctionOutput output, string description
+) {
+  exists(int n, Expr arg |
+    call.getScanfFunction() = func and
+    call.getOutputArgument(_) = arg and
+    call.getArgument(n) = arg and
+    output.isParameterDeref(n) and
+    description = "value read by " + func.getName()
+  )
+}
+
 /**
  * The standard function `scanf` and its assorted variants
  */
 private class ScanfModel extends ScanfFunctionModel, LocalFlowSourceFunction instanceof Scanf {
-  override predicate hasLocalFlowSource(FunctionOutput output, string description) {
-    output.isParameterDeref(any(int i | i >= this.getArgsStartPosition())) and
-    description = "value read by " + this.getName()
+  override predicate hasLocalFlowSource(Call call, FunctionOutput output, string description) {
+    hasFlowSource(this, call, output, description)
   }
 }
 
@@ -83,9 +97,12 @@ private class ScanfModel extends ScanfFunctionModel, LocalFlowSourceFunction ins
  * The standard function `fscanf` and its assorted variants
  */
 private class FscanfModel extends ScanfFunctionModel, RemoteFlowSourceFunction instanceof Fscanf {
-  override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
-    output.isParameterDeref(any(int i | i >= this.getArgsStartPosition())) and
-    description = "value read by " + this.getName()
+  override predicate hasRemoteFlowSource(Call call, FunctionOutput output, string description) {
+    hasFlowSource(this, call, output, description)
+  }
+
+  override predicate hasSocketInput(FunctionInput input) {
+    input.isParameterDeref(super.getInputParameterIndex())
   }
 }
 

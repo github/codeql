@@ -1,0 +1,2 @@
+query: experimental/Security/CWE-918/SsrfIpv6TransitionIncompleteGuard.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

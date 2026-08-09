@@ -9,13 +9,13 @@ int chdir(char *path);
 void exit(int status);
 
 int funTest1(){
-  if (chroot("/myFold/myTmp") == -1) {  // BAD
+  if (chroot("/myFold/myTmp") == -1) {  // $ Alert // BAD
     exit(-1);
   }
   return 0;
 }
 
-int funTest2(){  
+int funTest2(){
   if (chdir("/myFold/myTmp") == -1) { // GOOD
     exit(-1);
   }
@@ -25,8 +25,8 @@ int funTest2(){
   return 0;
 }
 
-int funTest3(){  
-  chdir("/myFold/myTmp"); // BAD
+int funTest3(){
+  chdir("/myFold/myTmp"); // $ Alert // BAD
   return 0;
 }
 int main(int argc, char *argv[])

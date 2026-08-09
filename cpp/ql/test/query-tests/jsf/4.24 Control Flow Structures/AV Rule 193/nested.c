@@ -17,12 +17,12 @@ void nested1(int i) {
 
 void nested2(int i) {
     switch (i) {
-        case 1:
+        case 1: // $ Alert
             i = 1;
             break;
         {
             ; ; ; ; ; ; ;
-            default:
+            default: // $ Alert
                 i = 3;
         }
         case 2:

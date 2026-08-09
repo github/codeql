@@ -1,3 +1,7 @@
+| inconsistency2.cpp:3:3:3:5 | T:: | inconsistency2.cpp:3:3:3:6 | x | inconsistency2.cpp:2:20:2:20 | T |
+| inconsistency2.cpp:3:3:3:11 | const s:: | inconsistency2.cpp:3:3:3:6 | x | file://:0:0:0:0 | const s |
+| inconsistency.cpp:7:20:7:22 | S:: | inconsistency.cpp:7:20:7:23 | (int)... | inconsistency.cpp:4:8:4:8 | S |
+| inconsistency.cpp:7:20:7:22 | S:: | inconsistency.cpp:7:20:7:23 | A | inconsistency.cpp:4:8:4:8 | S |
 | name_qualifiers.cpp:29:7:29:8 | :: | name_qualifiers.cpp:29:7:29:9 | x | file://:0:0:0:0 | (global namespace) |
 | name_qualifiers.cpp:31:7:31:10 | N1:: | name_qualifiers.cpp:31:7:31:12 | nx | name_qualifiers.cpp:4:11:4:12 | N1 |
 | name_qualifiers.cpp:34:7:34:8 | :: | name_qualifiers.cpp:34:9:34:12 | N1:: | file://:0:0:0:0 | (global namespace) |

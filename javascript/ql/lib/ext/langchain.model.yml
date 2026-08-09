@@ -1,0 +1,48 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["langchain.ChatModel", "@langchain/openai", "Member[ChatOpenAI].Instance"]
+      - ["langchain.ChatModel", "@langchain/anthropic", "Member[ChatAnthropic].Instance"]
+      - ["langchain.ChatModel", "@langchain/google-genai", "Member[ChatGoogleGenerativeAI].Instance"]
+      - ["langchain.ChatModel", "@langchain/mistralai", "Member[ChatMistralAI].Instance"]
+      - ["langchain.ChatModel", "@langchain/groq", "Member[ChatGroq].Instance"]
+      - ["langchain.ChatModel", "@langchain/cohere", "Member[ChatCohere].Instance"]
+      - ["langchain.ChatModel", "@langchain/community/chat_models/fireworks", "Member[ChatFireworks].Instance"]
+      - ["langchain.ChatModel", "@langchain/ollama", "Member[ChatOllama].Instance"]
+      - ["langchain.ChatModel", "@langchain/aws", "Member[BedrockChat,ChatBedrockConverse].Instance"]
+      - ["langchain.ChatModel", "@langchain/community/chat_models/togetherai", "Member[ChatTogetherAI].Instance"]
+      - ["langchain.ChatModel", "@langchain/xai", "Member[ChatXAI].Instance"]
+      - ["langchain.ChatModel", "@langchain/openrouter", "Member[ChatOpenRouter].Instance"]
+      - ["langchain.ChatModel", "langchain", "Member[initChatModel].ReturnValue.Awaited"]
+      - ["langchain.AgentExecutor", "langchain/agents", "Member[AgentExecutor].Instance"]
+      - ["langchain.AgentExecutor", "langchain/agents", "Member[AgentExecutor].Member[fromAgentAndTools].ReturnValue"]
+      - ["langchain.Agent", "langchain", "Member[createAgent].ReturnValue"]
+      - ["langchain.LLMChain", "langchain/chains", "Member[LLMChain].Instance"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["@langchain/core/messages", "Member[HumanMessage].Argument[0]", "user-prompt-injection"]
+      - ["@langchain/core/messages", "Member[HumanMessage].Argument[0].Member[content]", "user-prompt-injection"]
+      - ["langchain", "Member[HumanMessage].Argument[0]", "user-prompt-injection"]
+      - ["langchain", "Member[HumanMessage].Argument[0].Member[content]", "user-prompt-injection"]
+      - ["@langchain/core/messages", "Member[SystemMessage].Argument[0]", "system-prompt-injection"]
+      - ["@langchain/core/messages", "Member[SystemMessage].Argument[0].Member[content]", "system-prompt-injection"]
+      - ["langchain", "Member[SystemMessage].Argument[0]", "system-prompt-injection"]
+      - ["langchain", "Member[SystemMessage].Argument[0].Member[content]", "system-prompt-injection"]
+      - ["langchain.ChatModel", "Member[invoke].Argument[0]", "user-prompt-injection"]
+      - ["langchain.ChatModel", "Member[stream].Argument[0]", "user-prompt-injection"]
+      - ["langchain.ChatModel", "Member[call].Argument[0]", "user-prompt-injection"]
+      - ["langchain.ChatModel", "Member[predict].Argument[0]", "user-prompt-injection"]
+      - ["langchain.ChatModel", "Member[batch].Argument[0].ArrayElement", "user-prompt-injection"]
+      - ["langchain.ChatModel", "Member[generate].Argument[0].ArrayElement.ArrayElement", "user-prompt-injection"]
+      - ["langchain.AgentExecutor", "Member[invoke].Argument[0].Member[input]", "user-prompt-injection"]
+      - ["langchain.Agent", "Member[invoke].Argument[0].Member[messages].ArrayElement.Member[content]", "user-prompt-injection"]
+      - ["langchain.Agent", "Member[stream].Argument[0].Member[messages].ArrayElement.Member[content]", "user-prompt-injection"]
+      - ["langchain", "Member[createAgent].Argument[0].Member[systemPrompt]", "system-prompt-injection"]
+      - ["langchain.LLMChain", "Member[call,invoke].Argument[0].Member[input]", "user-prompt-injection"]
+      - ["@langchain/core/prompts", "Member[ChatPromptTemplate].Member[fromMessages].Argument[0].ArrayElement.ArrayElement", "user-prompt-injection"]
+      - ["@langchain/core/prompts", "Member[PromptTemplate].Instance.Member[format].Argument[0]", "user-prompt-injection"]

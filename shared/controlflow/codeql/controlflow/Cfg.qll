@@ -253,18 +253,7 @@ module MakeWithSplitting<
     }
 
     /** Gets the first child node of this element. */
-    deprecated final AstNode getFirstChildNode() { result = this.getChildTreeRanked(0) }
-
-    /** Gets the first child node of this element. */
     final ControlFlowTree getFirstChildTree() { result = this.getChildTreeRanked(0) }
-
-    /** Gets the last child node of this node. */
-    deprecated final AstNode getLastChildElement() {
-      exists(int last |
-        result = this.getChildTreeRanked(last) and
-        not exists(this.getChildTreeRanked(last + 1))
-      )
-    }
 
     /** Gets the last child node of this node. */
     final ControlFlowTree getLastChildTree() {

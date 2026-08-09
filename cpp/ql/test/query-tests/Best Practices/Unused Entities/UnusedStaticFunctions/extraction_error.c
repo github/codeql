@@ -2,7 +2,7 @@
 
 static void my_function1_called() {} // GOOD
 static void my_function2_called_after_error() {} // GOOD
-static void my_function3_not_called() {} // BAD [NOT DETECTED]
+static void my_function3_not_called() {} // $ MISSING: Alert // BAD [NOT DETECTED]
 
 int main(void) {
 	my_function1_called();

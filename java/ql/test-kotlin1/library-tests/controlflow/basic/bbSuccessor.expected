@@ -20,16 +20,16 @@
 | Test.kt:82:21:89:1 | { ... } | Test.kt:86:4:88:2 | catch (...) |
 | Test.kt:84:7:84:7 | x | Test.kt:82:1:89:1 | Normal Exit |
 | Test.kt:86:4:88:2 | catch (...) | Test.kt:82:1:89:1 | Exceptional Exit |
-| Test.kt:86:4:88:2 | catch (...) | Test.kt:86:11:86:31 | e |
-| Test.kt:86:11:86:31 | e | Test.kt:82:1:89:1 | Normal Exit |
+| Test.kt:86:4:88:2 | catch (...) | Test.kt:86:34:88:2 | { ... } |
+| Test.kt:86:34:88:2 | { ... } | Test.kt:82:1:89:1 | Normal Exit |
 | Test.kt:91:1:98:1 | Exceptional Exit | Test.kt:91:1:98:1 | Exit |
 | Test.kt:91:1:98:1 | Normal Exit | Test.kt:91:1:98:1 | Exit |
 | Test.kt:91:22:98:1 | { ... } | Test.kt:93:7:93:7 | x |
 | Test.kt:91:22:98:1 | { ... } | Test.kt:95:4:97:2 | catch (...) |
 | Test.kt:93:7:93:7 | x | Test.kt:91:1:98:1 | Normal Exit |
 | Test.kt:95:4:97:2 | catch (...) | Test.kt:91:1:98:1 | Exceptional Exit |
-| Test.kt:95:4:97:2 | catch (...) | Test.kt:95:11:95:33 | e |
-| Test.kt:95:11:95:33 | e | Test.kt:91:1:98:1 | Normal Exit |
+| Test.kt:95:4:97:2 | catch (...) | Test.kt:95:36:97:2 | { ... } |
+| Test.kt:95:36:97:2 | { ... } | Test.kt:91:1:98:1 | Normal Exit |
 | Test.kt:100:1:110:1 | Normal Exit | Test.kt:100:1:110:1 | Exit |
 | Test.kt:100:25:110:1 | { ... } | Test.kt:101:9:101:17 | After ... (value equals) ... [false] |
 | Test.kt:100:25:110:1 | { ... } | Test.kt:101:22:101:22 | y |

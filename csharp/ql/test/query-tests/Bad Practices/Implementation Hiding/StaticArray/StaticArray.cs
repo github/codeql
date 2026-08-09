@@ -10,13 +10,13 @@ class Program
 
     public static readonly int[] EmptyArray4; // GOOD: empty
 
-    public static readonly int[] NonEmptyArray1 = new int[] { 42 }; // BAD
+    public static readonly int[] NonEmptyArray1 = new int[] { 42 }; // $ Alert // BAD
 
     static readonly int[] NonEmptyArray2 = new int[] { 42 }; // GOOD: private
 
-    public static readonly int[] NonEmptyArray3; // BAD
+    public static readonly int[] NonEmptyArray3; // $ Alert // BAD
 
-    public static readonly int[] Array = new int[new Random().Next()]; // BAD
+    public static readonly int[] Array = new int[new Random().Next()]; // $ Alert // BAD
 
     static Program()
     {

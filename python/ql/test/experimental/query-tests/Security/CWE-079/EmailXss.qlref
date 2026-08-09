@@ -1,1 +1,2 @@
-experimental/Security/CWE-079/EmailXss.ql
+query: experimental/Security/CWE-079/EmailXss.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,6 +1,6 @@
 public class WhitespaceContradictsPrecedence {
 	int bad(int x) {
-		return x + x>>1; 
+		return x + x>>1;  // $ Alert
 	}
 
 	int ok1(int x) {

@@ -9,13 +9,13 @@
 </script>
 
 <script>
-<%= Request %>
+<%= Request %> <%-- $ Alert[cs/web/xss]=r12 $ Alert[cs/web/xss]=r12 --%>
 </script>
 
 <script>
-<%= Request.QueryString["name"] %>
+<%= Request.QueryString["name"] %> <%-- $ Alert[cs/web/xss]=r13 $ Alert[cs/web/xss]=r13 --%>
 </script>
 
 <script>
-<%= Request.QueryString["name"].Trim() %>
+<%= Request.QueryString["name"].Trim() %> <%-- $ Alert[cs/web/xss]=r14 $ Alert[cs/web/xss]=r14 --%>
 </script>

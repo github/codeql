@@ -1,1 +1,1 @@
-function handler(request, h){}
+function handler(request, h){} // $ Alert[js/unpromoted-route-handler-candidate]

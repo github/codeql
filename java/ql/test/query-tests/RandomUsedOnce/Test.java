@@ -4,7 +4,7 @@ public class Test {
 
   public static void test() {
 
-    (new Random()).nextInt();
+    (new Random()).nextInt(); // $ Alert
 
   }
 

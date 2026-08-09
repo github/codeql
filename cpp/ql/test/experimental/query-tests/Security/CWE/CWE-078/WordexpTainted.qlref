@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-078/WordexpTainted.ql
+query: experimental/Security/CWE/CWE-078/WordexpTainted.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

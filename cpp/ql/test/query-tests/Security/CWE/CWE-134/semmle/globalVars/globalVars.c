@@ -20,14 +20,14 @@ void printWrapper(char *str) {
 	printf(str);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) { // $ Source
 	copyArgv(argv);
 
 	// BAD: format comes from argv through copy
-	printf(copy);
+	printf(copy); // $ Alert
 
 	// BAD: format comes from argv through copy
-	printWrapper(copy);
+	printWrapper(copy); // $ Alert
 
 	// GOOD: constant format
 	printf("%s", copy);
@@ -35,10 +35,10 @@ int main(int argc, char **argv) {
 	setCopy2(copy);
 
 	// BAD: format comes from argv through copy2 (that is set to copy that is set to argv[1])
-	printf(copy2);
+	printf(copy2); // $ Alert
 
 	// BAD: format comes from argv through copy2 (that is set to copy that is set to argv[1])
-	printWrapper(copy2);
+	printWrapper(copy2); // $ Alert
 
 	// GOOD: constant format
 	printf("%s", copy2);
@@ -47,5 +47,5 @@ int main(int argc, char **argv) {
 
 	// Should be GOOD because copy2 has value "asdf"
 	// But we flag this case because once a global variable gets tainted we mark all usages as tainted
-	printf(copy2);
+	printf(copy2); // $ Alert
 }

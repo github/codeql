@@ -57,6 +57,17 @@ private module Ast implements AstSig<Location> {
 
   AstNode callableGetBody(Callable c) { result = c.getBody() }
 
+  // TODO: Implement in order to include parameters in the CFG
+  class Parameter extends AstNode {
+    Parameter() { none() }
+
+    AstNode getPattern() { none() }
+
+    Expr getDefaultValue() { none() }
+  }
+
+  Parameter callableGetParameter(Callable c, int i) { result = c.getParameter(i) }
+
   class Stmt = J::Stmt;
 
   class Expr = J::Expr;
@@ -75,7 +86,17 @@ private module Ast implements AstSig<Location> {
 
   class DoStmt = J::DoStmt;
 
-  class ForStmt = J::ForStmt;
+  class UntilStmt extends LoopStmt {
+    UntilStmt() { none() }
+  }
+
+  final private class FinalForStmt = J::ForStmt;
+
+  class ForStmt extends FinalForStmt {
+    AstNode getInit(int index) { result = super.getInit(index) }
+
+    AstNode getUpdate(int index) { result = super.getUpdate(index) }
+  }
 
   final private class FinalEnhancedForStmt = J::EnhancedForStmt;
 
@@ -102,19 +123,24 @@ private module Ast implements AstSig<Location> {
   final private class FinalTryStmt = J::TryStmt;
 
   class TryStmt extends FinalTryStmt {
-    Stmt getBody() { result = super.getBlock() }
+    AstNode getBody(int index) {
+      result = super.getResource(index)
+      or
+      index = count(super.getAResource()) and
+      result = super.getBlock()
+    }
 
     CatchClause getCatch(int index) { result = super.getCatchClause(index) }
 
     Stmt getFinally() { result = super.getFinally() }
   }
 
-  AstNode getTryInit(TryStmt try, int index) { result = try.getResource(index) }
-
   final private class FinalCatchClause = J::CatchClause;
 
   class CatchClause extends FinalCatchClause {
-    AstNode getVariable() { result = super.getVariable() }
+    AstNode getPattern() { result = super.getVariable() }
+
+    AstNode getVariable() { none() }
 
     Expr getCondition() { none() }
 
@@ -144,10 +170,10 @@ private module Ast implements AstSig<Location> {
   }
 
   class Case extends AstNode instanceof J::SwitchCase {
-    /** Gets a pattern being matched by this case. */
-    AstNode getAPattern() {
-      result = this.(PatternCase).getAPattern() or
-      result = this.(ConstCase).getValue(_)
+    /** Gets the pattern being matched by this case at the specified (zero-based) `index`. */
+    AstNode getPattern(int index) {
+      result = this.(PatternCase).getPattern(index) or
+      result = this.(ConstCase).getValue(index)
     }
 
     /** Gets the guard expression of this case, if any. */
@@ -380,7 +406,9 @@ private module NonReturningCalls {
     }
 
     /** Gets a `MethodCall` that calls this method. */
-    MethodCall getAnAccess() { result.getMethod().getAPossibleImplementation() = this }
+    MethodCall getAnAccess() {
+      result.getMethod().getAPossibleImplementation() = pragma[only_bind_out](this)
+    }
   }
 
   /** Holds if a call to `m` indicates that `m` is expected to return. */
@@ -468,6 +496,7 @@ private module NonReturningCalls {
 
 private module Input implements InputSig1, InputSig2 {
   private import java as J
+  private import codeql.util.Void
 
   predicate cfgCachedStageRef() { CfgCachedStage::ref() }
 
@@ -532,6 +561,8 @@ private module Input implements InputSig1, InputSig2 {
     or
     l = TYield() and n instanceof SwitchExpr
   }
+
+  class CallableContext = Void;
 
   predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
     kind.isBoolean() and

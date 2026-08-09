@@ -1,1 +1,2 @@
-experimental/weak-params/WeakParams.ql
+query: experimental/weak-params/WeakParams.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

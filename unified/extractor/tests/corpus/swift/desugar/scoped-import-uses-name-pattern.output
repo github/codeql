@@ -1,0 +1,38 @@
+import struct Foundation.Date
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        importDecl
+          attributes:
+          modifiers:
+          importKeyword: import
+          importKindSpecifier: struct
+          path:
+            importPathComponent
+              name: identifier "Foundation"
+              trailingPeriod: .
+            importPathComponent
+              name: identifier "Date"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        import_declaration
+          modifier: modifier "struct"
+          imported_expr:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "Foundation"
+              member: identifier "Date"
+          pattern:
+            name_pattern
+              identifier: identifier "Date"

@@ -485,7 +485,7 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
 
   /** Gets a node that reads this variable, excluding reads that happen through `from ... import *`. */
   Node getALocalRead() {
-    result.asCfgNode() = var.getALoad().getAFlowNode() and
+    result.asCfgNode().getNode() = var.getALoad() and
     not result.getScope() = mod
   }
 
@@ -901,16 +901,75 @@ class CapturedVariableContent extends Content, TCapturedVariableContent {
 /**
  * An entity that represents a set of `Content`s.
  *
+ * Most `ContentSet`s are singletons (i.e. they consist of a single `Content`),
+ * but `AnyDictionaryElement` and `AnyTupleElement` act as wildcards on the
+ * read side: a read at such a `ContentSet` matches any specific dictionary
+ * key / tuple index store, as well as (for dictionaries) the
+ * "unknown-bucket" Content `DictionaryElementAnyContent`.
+ *
+ * Keeping these as wildcard `ContentSet`s (rather than enumerating one
+ * `ContentSet` per key/index) keeps the dataflow `readSetEx` relation small
+ * when implicit reads are used (e.g. at sinks via `defaultImplicitTaintRead`).
+ */
+private newtype TContentSet =
+  TSingletonContent(Content c) or
+  TAnyTupleElement() or
+  TAnyDictionaryElement() or
+  TAnyTupleOrDictionaryElement()
+
+/**
+ * An entity that represents a set of `Content`s.
+ *
  * The set may be interpreted differently depending on whether it is
  * stored into (`getAStoreContent`) or read from (`getAReadContent`).
  */
-class ContentSet instanceof Content {
+class ContentSet extends TContentSet {
+  /** Holds if this content set is the singleton `{c}`. */
+  predicate isSingleton(Content c) { this = TSingletonContent(c) }
+
+  /** Holds if this content set is the wildcard for all tuple elements. */
+  predicate isAnyTupleElement() { this = TAnyTupleElement() }
+
+  /** Holds if this content set is the wildcard for all dictionary elements. */
+  predicate isAnyDictionaryElement() { this = TAnyDictionaryElement() }
+
+  /** Holds if this content set is the wildcard for all tuple elements or dictionary elements. */
+  predicate isAnyTupleOrDictionaryElement() { this = TAnyTupleOrDictionaryElement() }
+
   /** Gets a content that may be stored into when storing into this set. */
-  Content getAStoreContent() { result = this }
+  Content getAStoreContent() { this = TSingletonContent(result) }
 
   /** Gets a content that may be read from when reading from this set. */
-  Content getAReadContent() { result = this }
+  Content getAReadContent() {
+    this = TSingletonContent(result)
+    or
+    // Wildcard expansion: a read at "any tuple element" matches a store at any
+    // specific tuple index. (Stores always target a specific index, so we don't
+    // need a `TupleElementAnyContent` Content kind here.)
+    this = TAnyTupleElement() and result instanceof TupleElementContent
+    or
+    this = TAnyDictionaryElement() and
+    (result instanceof DictionaryElementContent or result instanceof DictionaryElementAnyContent)
+    or
+    this = TAnyTupleOrDictionaryElement() and
+    (
+      result instanceof TupleElementContent or
+      result instanceof DictionaryElementContent or
+      result instanceof DictionaryElementAnyContent
+    )
+  }
 
   /** Gets a textual representation of this content set. */
-  string toString() { result = super.toString() }
+  string toString() {
+    exists(Content c | this = TSingletonContent(c) | result = c.toString())
+    or
+    this = TAnyTupleElement() and result = "Any tuple element"
+    or
+    this = TAnyDictionaryElement() and result = "Any dictionary element"
+    or
+    this = TAnyTupleOrDictionaryElement() and result = "Any tuple or dictionary element"
+  }
 }
+
+/** Gets the singleton `ContentSet` wrapping the `Content` `c`. */
+ContentSet singleton(Content c) { result = TSingletonContent(c) }

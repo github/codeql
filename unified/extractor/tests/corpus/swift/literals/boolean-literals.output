@@ -1,0 +1,25 @@
+true
+false
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        booleanLiteralExpr
+          literal: true
+    codeBlockItem
+      item:
+        booleanLiteralExpr
+          literal: false
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        boolean_literal "true"
+        boolean_literal "false"

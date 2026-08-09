@@ -11,7 +11,7 @@ void called2()
 	x++;
 }
 
-void not_called()
+void not_called() // $ Alert
 {
 	x++; // BAD: unreachable
 }
@@ -29,7 +29,7 @@ int main(int argc, const char* argv[])
 		while (1) {
 			x++;
 		}
-		x++; // BAD: unreachable
+		x++; // $ Alert // BAD: unreachable
 	} else if (argc > 4) {
 		x++; // BAD: unreachable [NOT DETECTED]
 	} else if (argc > 5) {

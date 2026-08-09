@@ -1,0 +1,65 @@
+xs.map { $0 * 2 }
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionCallExpr
+          arguments:
+          additionalTrailingClosures:
+          calledExpression:
+            memberAccessExpr
+              period: .
+              declName:
+                declReferenceExpr
+                  baseName: identifier "map"
+              base:
+                declReferenceExpr
+                  baseName: identifier "xs"
+          trailingClosure:
+            closureExpr
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    infixOperatorExpr
+                      operator:
+                        binaryOperatorExpr
+                          operator: binaryOperator "*"
+                      leftOperand:
+                        declReferenceExpr
+                          baseName: dollarIdentifier "$0"
+                      rightOperand:
+                        integerLiteralExpr
+                          literal: integerLiteral "2"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        call_expr
+          callee:
+            member_access_expr
+              base:
+                name_expr
+                  identifier: identifier "xs"
+              member: identifier "map"
+          argument:
+            argument
+              value:
+                function_expr
+                  body:
+                    block
+                      stmt:
+                        binary_expr
+                          left:
+                            name_expr
+                              identifier: identifier "$0"
+                          operator: infix_operator "*"
+                          right: int_literal "2"

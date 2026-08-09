@@ -3,6 +3,6 @@ void workFunction_0(char *s) {
   char buf[80], buf1[8];
   if(len<0) return;
   memset(buf,0,len); //GOOD
-  memset(buf1,0,len1); //BAD
+  memset(buf1,0,len1); // $ Alert //BAD
   if(len1<0) return;
 }

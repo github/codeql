@@ -9,14 +9,14 @@ class CatchOfGenericException
         }
         catch (Exception)
         { // BAD
-        }
+        } // $ Alert
 
         try
         {
         }
         catch
         { // BAD
-        }
+        } // $ Alert
 
         try
         {
@@ -53,6 +53,6 @@ class CatchOfGenericException
         { // BAD
           // division by zero, return 0
             return 0;
-        }
+        } // $ Alert
     }
 }

@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func callRecover1() {
-	if recover() != nil {
+	if recover() != nil { // $ Alert
 		fmt.Printf("recovered")
 	}
 }

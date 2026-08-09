@@ -1,1 +1,2 @@
-experimental/Security Features/Serialization/XmlDeserializationWithDataSet.ql
+query: experimental/Security Features/Serialization/XmlDeserializationWithDataSet.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

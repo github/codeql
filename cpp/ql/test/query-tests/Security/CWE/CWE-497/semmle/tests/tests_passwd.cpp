@@ -13,9 +13,9 @@ void test6(char *username)
 {
 	passwd *pwd;
 
-	pwd = getpwnam(username);
+	pwd = getpwnam(username); // $ Source[cpp/potential-system-data-exposure]
 
-	printf("pw_passwd = %s\n", pwd->pw_passwd); // BAD
-	printf("pw_dir = %s\n", pwd->pw_dir); // BAD
+	printf("pw_passwd = %s\n", pwd->pw_passwd); // $ Alert[cpp/potential-system-data-exposure] // BAD
+	printf("pw_dir = %s\n", pwd->pw_dir); // $ Alert[cpp/potential-system-data-exposure] // BAD
 	printf("sizeof(passwd) = %i\n", sizeof(passwd)); // GOOD
 }

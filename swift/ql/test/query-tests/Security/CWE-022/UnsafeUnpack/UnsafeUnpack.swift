@@ -59,12 +59,12 @@ func testCommandInjectionQhelpExamples() {
     let source  = URL(fileURLWithPath: "/sourcePath")
     let destination = URL(fileURLWithPath: "/destination")
 
-    try Data(contentsOf: remoteURL, options: []).write(to: source) 
+    try Data(contentsOf: remoteURL, options: []).write(to: source)  // $ Source
     do {
-        try Zip.unzipFile(source, destination: destination, overwrite: true, password: nil) // BAD
+        try Zip.unzipFile(source, destination: destination, overwrite: true, password: nil) // $ Alert
 
         let fileManager = FileManager()
-        try fileManager.unzipItem(at: source, to: destination) // BAD
+        try fileManager.unzipItem(at: source, to: destination) // $ Alert
     } catch {
         print("Error: \(error)")
     }

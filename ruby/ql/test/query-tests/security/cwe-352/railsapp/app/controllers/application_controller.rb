@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
 
   # BAD: `protect_from_forgery` without `with: :exception` can expose an
   # application to CSRF attacks in some circumstances
-  protect_from_forgery
+  protect_from_forgery # $ Alert[rb/csrf-protection-disabled]
 
   before_action authz_guard
 

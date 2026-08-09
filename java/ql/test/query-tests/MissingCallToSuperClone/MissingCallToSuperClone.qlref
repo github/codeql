@@ -1,1 +1,2 @@
-Likely Bugs/Cloning/MissingCallToSuperClone.ql
+query: Likely Bugs/Cloning/MissingCallToSuperClone.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

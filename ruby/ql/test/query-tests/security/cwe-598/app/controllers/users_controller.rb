@@ -1,17 +1,17 @@
 class UsersController < ApplicationController
 
   def login_get_1
-    foo = params[:password] # BAD: route handler uses GET query parameters to receive sensitive data
+    foo = params[:password] # $ Alert // BAD: route handler uses GET query parameters to receive sensitive data
     authenticate_user(params[:username], foo)
   end
 
   def login_get_2
-    password = params[:foo] # BAD: route handler uses GET query parameters to receive sensitive data
+    password = params[:foo] # $ Alert // BAD: route handler uses GET query parameters to receive sensitive data
     authenticate_user(params[:username], password)
   end
 
   def login_get_3
-    @password = params[:foo] # BAD: route handler uses GET query parameters to receive sensitive data
+    @password = params[:foo] # $ Alert // BAD: route handler uses GET query parameters to receive sensitive data
     authenticate_user(params[:username], @password)
   end
 

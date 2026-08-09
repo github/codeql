@@ -5,5 +5,5 @@ type counter struct {
 }
 
 func (w counter) reset() {
-	w.val = 0 // NOT OK
+	w.val = 0 // $ Alert // NOT OK
 }

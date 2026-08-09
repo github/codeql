@@ -1,1 +1,2 @@
-Security/CWE/CWE-1104/MavenPomDependsOnBintray.ql
+query: Security/CWE/CWE-1104/MavenPomDependsOnBintray.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

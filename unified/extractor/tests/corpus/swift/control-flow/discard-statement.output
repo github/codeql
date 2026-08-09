@@ -1,0 +1,81 @@
+struct Resource: ~Copyable {
+  consuming func close() {
+    discard self
+  }
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        structDecl
+          attributes:
+          name: identifier "Resource"
+          inheritanceClause:
+            inheritanceClause
+              colon: :
+              inheritedTypes:
+                inheritedType
+                  type:
+                    suppressedType
+                      type:
+                        identifierType
+                          name: identifier "Copyable"
+                      withoutTilde: prefixOperator "~"
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+                memberBlockItem
+                  decl:
+                    functionDecl
+                      attributes:
+                      body:
+                        codeBlock
+                          leftBrace: {
+                          rightBrace: }
+                          statements:
+                            codeBlockItem
+                              item:
+                                discardStmt
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: self
+                                  discardKeyword: discard
+                      name: identifier "close"
+                      modifiers:
+                        declModifier
+                          name: consuming
+                      signature:
+                        functionSignature
+                          parameterClause:
+                            functionParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                      funcKeyword: func
+          modifiers:
+          structKeyword: struct
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "struct"
+          name: identifier "Resource"
+          base_type:
+            base_type
+              type: unsupported_node "~Copyable"
+          member:
+            function_declaration
+              name: identifier "close"
+              body:
+                block
+                  stmt: unsupported_node "discard self"

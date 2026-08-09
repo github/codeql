@@ -1,18 +1,38 @@
-import csharp
+private import csharp as CS
 
 /**
  * Provides a simple SSA implementation for local scope variables.
  */
 module BaseSsa {
+  private import BaseSsaImpl
+
+  class SimpleLocalScopeVariable = BaseSsaImpl::SimpleLocalScopeVariable;
+
+  module Ssa = SsaImpl::MakeSsa<SsaInput>;
+
+  import Ssa
+}
+
+private module BaseSsaImpl {
+  private import CS
   private import AssignableDefinitions
   private import codeql.ssa.Ssa as SsaImplCommon
+
+  cached
+  private module BaseSsaStage {
+    cached
+    predicate ref() { any() }
+
+    cached
+    predicate backref() { (exists(any(BaseSsa::SsaDefinition def).getARead()) implies any()) }
+  }
 
   /**
    * Holds if the `i`th node of basic block `bb` is assignable definition `def`,
    * targeting local scope variable `v`.
    */
   private predicate definitionAt(
-    AssignableDefinition def, BasicBlock bb, int i, SsaInput::SourceVariable v
+    AssignableDefinition def, BasicBlock bb, int i, SsaImplInput::SourceVariable v
   ) {
     bb.getNode(i) = def.getExpr().getControlFlowNode() and
     v = def.getTarget() and
@@ -24,7 +44,7 @@ module BaseSsa {
     )
   }
 
-  private predicate implicitEntryDef(Callable c, EntryBasicBlock bb, SsaInput::SourceVariable v) {
+  private predicate entryDef(Callable c, BasicBlock bb, SsaImplInput::SourceVariable v) {
     exists(EntryBasicBlock entry |
       c = entry.getEnclosingCallable() and
       // In case `c` has multiple bodies, we want each body to get its own implicit
@@ -79,16 +99,17 @@ module BaseSsa {
     }
   }
 
-  private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
+  private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
     class SourceVariable = SimpleLocalScopeVariable;
 
     predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+      BaseSsaStage::ref() and
       exists(AssignableDefinition def |
         definitionAt(def, bb, i, v) and
         if def.isCertain() then certain = true else certain = false
       )
       or
-      implicitEntryDef(_, bb, v) and
+      entryDef(_, bb, v) and
       i = -1 and
       certain = true
     }
@@ -102,54 +123,29 @@ module BaseSsa {
     }
   }
 
-  private module SsaImpl = SsaImplCommon::Make<Location, Cfg, SsaInput>;
+  module SsaImpl = SsaImplCommon::Make<Location, Cfg, SsaImplInput>;
 
-  class Definition extends SsaImpl::Definition {
-    final AssignableRead getARead() {
-      exists(BasicBlock bb, int i |
-        SsaImpl::ssaDefReachesRead(_, this, bb, i) and
-        result.getControlFlowNode() = bb.getNode(i)
-      )
+  module SsaInput implements SsaImpl::SsaInputSig {
+    class Expr = CS::Expr;
+
+    class Parameter = CS::Parameter;
+
+    class VariableWrite extends AssignableDefinition {
+      Expr asExpr() { result = this.getExpr() }
+
+      Expr getValue() { result = this.getSource() }
+
+      predicate isParameterInit(Parameter p) {
+        this.(ImplicitParameterDefinition).getParameter() = p
+      }
     }
 
-    final AssignableDefinition getDefinition() {
-      exists(BasicBlock bb, int i, SsaInput::SourceVariable v |
-        this.definesAt(v, bb, i) and
-        definitionAt(result, bb, i, v)
-      )
-    }
-
-    final predicate isImplicitEntryDefinition(SsaInput::SourceVariable v) {
-      exists(BasicBlock bb |
-        this.definesAt(v, bb, -1) and
-        implicitEntryDef(_, bb, v)
-      )
-    }
-
-    private Definition getAPhiInputOrPriorDefinition() {
-      result = this.(PhiNode).getAnInput() or
-      SsaImpl::uncertainWriteDefinitionInput(this, result)
-    }
-
-    final Definition getAnUltimateDefinition() {
-      result = this.getAPhiInputOrPriorDefinition*() and
-      not result instanceof PhiNode
-    }
-
-    override Location getLocation() {
-      result = this.getDefinition().getLocation()
+    predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, SsaImplInput::SourceVariable v) {
+      definitionAt(w, bb, i, v)
       or
-      exists(Callable c, BasicBlock bb, SsaInput::SourceVariable v |
-        this.definesAt(v, bb, -1) and
-        implicitEntryDef(c, bb, v) and
-        result = c.getLocation()
-      )
+      entryDef(_, bb, v) and
+      i = -1 and
+      w.isParameterInit(v)
     }
-  }
-
-  class PhiNode extends SsaImpl::PhiNode, Definition {
-    override Location getLocation() { result = this.getBasicBlock().getLocation() }
-
-    final Definition getAnInput() { SsaImpl::phiHasInputFromBlock(this, result, _) }
   }
 }

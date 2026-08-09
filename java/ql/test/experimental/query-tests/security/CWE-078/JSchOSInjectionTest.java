@@ -11,7 +11,7 @@ public class JSchOSInjectionTest extends HttpServlet {
             String host = "sshHost";
             String user = "user";
             String password = "password";
-            String command = request.getParameter("command");
+            String command = request.getParameter("command"); // $ Source[java/command-line-injection-experimental]
 
             java.util.Properties config = new java.util.Properties();
             config.put("StrictHostKeyChecking", "no");
@@ -24,7 +24,7 @@ public class JSchOSInjectionTest extends HttpServlet {
                 session.connect();
 
                 Channel channel = session.openChannel("exec");
-                ((ChannelExec) channel).setCommand("ping " + command);
+                ((ChannelExec) channel).setCommand("ping " + command); // $ Alert[java/command-line-injection-experimental]
                 channel.setInputStream(null);
                 ((ChannelExec) channel).setErrStream(System.err);
 
@@ -37,7 +37,7 @@ public class JSchOSInjectionTest extends HttpServlet {
             String host = "sshHost";
             String user = "user";
             String password = "password";
-            String command = request.getParameter("command");
+            String command = request.getParameter("command"); // $ Source[java/command-line-injection-experimental]
 
             java.util.Properties config = new java.util.Properties();
             config.put("StrictHostKeyChecking", "no");
@@ -50,7 +50,7 @@ public class JSchOSInjectionTest extends HttpServlet {
                 session.connect();
 
                 ChannelExec channel = (ChannelExec)session.openChannel("exec");
-                channel.setCommand("ping " + command);
+                channel.setCommand("ping " + command); // $ Alert[java/command-line-injection-experimental]
                 channel.setInputStream(null);
                 channel.setErrStream(System.err);
 

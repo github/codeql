@@ -8,14 +8,14 @@ void workFunction_0(char *s) {
   char *buf;
   buf = (char *) malloc(intSize);
   free(buf); // GOOD
-  if(buf) free(buf); // BAD
+  if(buf) free(buf); // $ Alert // BAD
 }
 void workFunction_1(char *s) {
   int intSize = 10;
   char *buf;
   buf = (char *) malloc(intSize);
   free(buf); // GOOD
-  free(buf); // BAD
+  free(buf); // $ Alert // BAD
 }
 void workFunction_2(char *s) {
   int intSize = 10;
@@ -54,7 +54,7 @@ void workFunction_5(char *s, int intFlag) {
   if(intFlag) {
     free(buf); // GOOD
   }
-  free(buf); // BAD
+  free(buf); // $ Alert // BAD
 }
 void workFunction_6(char *s, int intFlag) {
   int intSize = 10;
@@ -75,7 +75,7 @@ void workFunction_7(char *s) {
   char *buf1;
   buf = (char *) malloc(intSize);
   buf1 = (char *) realloc(buf,intSize*4);
-  free(buf); // BAD
+  free(buf); // $ Alert // BAD
 }
 void workFunction_8(char *s) {
   int intSize = 10;

@@ -1,1 +1,2 @@
-Security/CWE/CWE-835/InfiniteLoopWithUnsatisfiableExitCondition.ql
+query: Security/CWE/CWE-835/InfiniteLoopWithUnsatisfiableExitCondition.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -43,12 +43,12 @@ const char *const_wash(char *str) {
   return str;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) { // $ Source
   const char *message = messages[2];
   printf(choose_message(argc - 1), argc - 1); // GOOD
   printf(messages[1]); // GOOD
   printf(message); // GOOD
-  printf(make_message(argc - 1)); // BAD [NOT DETECTED]
+  printf(make_message(argc - 1)); // $ MISSING: Alert // BAD [NOT DETECTED]
   printf("Hello, World\n"); // GOOD
   printf(_("Hello, World\n")); // GOOD
   {
@@ -111,9 +111,9 @@ int main(int argc, char **argv) {
   }
   {
     const char *hello = "Hello, World\n";
-    const char *const *p = &hello; 
+    const char *const *p = &hello;
     printf(hello); // GOOD
-    hello++; 
+    hello++;
   }
   printf(argc > 2 ? "More than one\n" : _("Only one\n")); // GOOD
 
@@ -127,7 +127,7 @@ int main(int argc, char **argv) {
 	char buffer[1024];
 
 	MYSPRINTF(buffer, "constant"); // GOOD
-	MYSPRINTF(buffer, argv[0]); // BAD
+	MYSPRINTF(buffer, argv[0]); // $ Alert // BAD
   }
 }
 
@@ -164,10 +164,10 @@ void fmt_with_assignment() {
   printf(y); // GOOD
 }
 
-void fmt_via_strcpy_bad(char *data) {
-    char res[100]; 
+void fmt_via_strcpy_bad(char *data) { // $ Source
+    char res[100];
     strcpy(res, data);
-    printf(res); // BAD
+    printf(res); // $ Alert // BAD
 }
 
 
@@ -180,71 +180,71 @@ void StringCchPrintfW(
   STRSAFE_LPWSTR  pszDest,
   size_t          cchDest,
   STRSAFE_LPCWSTR pszFormat,
-   ...             
+   ...
 );
 
 void wchar_t_test_good(){
   wchar_t wstr[100];
   StringCchPrintfW(wstr, 100, L"STRING"); // GOOD
 
-  wprintf(wstr); // GOOD 
+  wprintf(wstr); // GOOD
 }
 
-void wchar_t_test_bad(wchar_t* str){
+void wchar_t_test_bad(wchar_t* str){ // $ Source
   wchar_t wstr[100];
-  StringCchPrintfW(wstr, 100, str); // BAD
+  StringCchPrintfW(wstr, 100, str); // $ Alert // BAD
 
-  wprintf(wstr); // BAD
+  wprintf(wstr); // $ Alert // BAD
 }
 
 char* get_string();
 
 void pointer_arithmetic_test_on_bad_string(){
    {
-    const char *hello = get_string();
-    printf(hello + 1); // BAD
-    printf(hello); // BAD
+    const char *hello = get_string(); // $ Source
+    printf(hello + 1); // $ Alert // BAD
+    printf(hello); // $ Alert // BAD
   }
   {
-    const char *hello = get_string();
+    const char *hello = get_string(); // $ Source
     hello += 1;
-    printf(hello); // BAD
+    printf(hello); // $ Alert // BAD
   }
   {
     // Same as above block but using "x = x + 1" syntax
-    const char *hello = get_string();
+    const char *hello = get_string(); // $ Source
     hello = hello + 1;
-    printf(hello); // BAD
+    printf(hello); // $ Alert // BAD
   }
   {
     // Same as above block but using "x++" syntax
-    const char *hello = get_string();
+    const char *hello = get_string(); // $ Source
     hello++;
-    printf(hello); // BAD
+    printf(hello); // $ Alert // BAD
   }
   {
     // Same as above block but using "++x" as subexpression
-    const char *hello = get_string();
-    printf(++hello); // BAD
+    const char *hello = get_string(); // $ Source
+    printf(++hello); // $ Alert // BAD
   }
   {
     // Same as above block but through a pointer
-    const char *hello = get_string();
+    const char *hello = get_string(); // $ Source
     const char **p = &hello;
     (*p)++;
-    printf(hello); // BAD
+    printf(hello); // $ Alert // BAD
   }
   {
     // Same as above block but through a C++ reference
-    const char *hello = get_string();
+    const char *hello = get_string(); // $ Source
     const char *&p = hello;
     p++;
-    printf(hello); // BAD
+    printf(hello); // $ Alert // BAD
   }
   {
-    const char *hello = get_string();
-    const char *const *p = &hello; 
-    printf(hello); // BAD
+    const char *hello = get_string(); // $ Source
+    const char *const *p = &hello;
+    printf(hello); // $ Alert // BAD
   }
 }
 

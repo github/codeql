@@ -1,0 +1,64 @@
+guard let value = optional else { return }
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        guardStmt
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      returnKeyword: return
+          conditions:
+            conditionElement
+              condition:
+                optionalBindingCondition
+                  initializer:
+                    initializerClause
+                      equal: =
+                      value:
+                        declReferenceExpr
+                          baseName: identifier "optional"
+                  pattern:
+                    identifierPattern
+                      identifier: identifier "value"
+                  bindingSpecifier: let
+          elseKeyword: else
+          guardKeyword: guard
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        guard_if_stmt
+          condition:
+            pattern_guard_expr
+              pattern:
+                constructor_pattern
+                  constructor:
+                    member_access_expr
+                      base:
+                        named_type_expr
+                          name: identifier "Optional"
+                      member: identifier "some"
+                  element:
+                    pattern_element
+                      pattern:
+                        name_pattern
+                          identifier: identifier "value"
+              value:
+                name_expr
+                  identifier: identifier "optional"
+          else:
+            block
+              stmt: return_expr "return"

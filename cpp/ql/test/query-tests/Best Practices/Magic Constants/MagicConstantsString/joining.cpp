@@ -36,7 +36,7 @@ void fn(const string &str1);
 
 void joining_test(const string &x, const string &y) \
 {
-	fn("testrepo.git"); // BAD: "testrepo.git"
+	fn("testrepo.git"); // $ Alert // BAD: "testrepo.git"
 	fn("testrepo.git");
 	fn("testrepo.git");
 	fn("testrepo.git");
@@ -104,7 +104,7 @@ void joining_test(const string &x, const string &y) \
 
 	ostream os;
 
-	os << "NO T_VOID CONSTRUCT"; // BAD: "NO T_VOID CONSTRUCT"
+	os << "NO T_VOID CONSTRUCT"; // $ Alert // BAD: "NO T_VOID CONSTRUCT"
 	os << "NO T_VOID CONSTRUCT";
 	os << "NO T_VOID CONSTRUCT";
 	os << "NO T_VOID CONSTRUCT";
@@ -147,7 +147,7 @@ void joining_test(const string &x, const string &y) \
 	os << "{" << x << "} else {" << y << "}";
 	os << "{" << x << "} else {" << y << "}";
 	os << "{" << x << "} else {" << y << "}"; // (21 times)
-	
+
 	os << "writeString(" << x << ")"; // GOOD
 	os << "writeString(" << x << ")";
 	os << "writeString(" << x << ")";
@@ -170,7 +170,7 @@ void joining_test(const string &x, const string &y) \
 	os << "writeString(" << x << ")";
 	os << "writeString(" << x << ")"; // (21 times)
 
-	os << "compiler error: no const of base type " + x; // BAD: "compiler error: no const of base type "
+	os << "compiler error: no const of base type " + x; // $ Alert // BAD: "compiler error: no const of base type "
 	os << "compiler error: no const of base type " + x;
 	os << "compiler error: no const of base type " + x;
 	os << "compiler error: no const of base type " + x;

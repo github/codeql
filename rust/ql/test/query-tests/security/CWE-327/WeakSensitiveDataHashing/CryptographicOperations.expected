@@ -1,0 +1,12 @@
+| test.rs:19:9:19:34 | ...::compute(...) | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:20:9:20:40 | ...::compute(...) | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:21:9:21:34 | ...::compute(...) | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:22:9:22:44 | ...::compute(...) | HashingAlgorithm MD5 WEAK inputs:1 |
+| test.rs:67:26:67:40 | ...::new(...) | HashingAlgorithm MD5 WEAK  |
+| test.rs:73:9:73:23 | ...::new(...) | HashingAlgorithm MD5 WEAK  |
+| test.rs:74:9:74:23 | ...::new(...) | HashingAlgorithm MD5 WEAK  |
+| test.rs:133:26:133:40 | ...::new(...) | HashingAlgorithm MD5 WEAK  |
+| test.rs:156:26:156:40 | ...::new(...) | HashingAlgorithm MD5 WEAK  |
+| test.rs:176:13:176:24 | ...::new(...) | EncryptionAlgorithm SEED   |
+| test.rs:199:22:199:32 | ...::new(...) | HashingAlgorithm SHA1 WEAK  |
+| test.rs:211:13:211:35 | ...::compute(...) | HashingAlgorithm MD5 WEAK inputs:1 |

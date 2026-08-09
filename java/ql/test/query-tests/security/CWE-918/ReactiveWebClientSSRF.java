@@ -46,4 +46,27 @@ public class ReactiveWebClientSSRF extends HttpServlet {
             // Ignore
         }
     }
+
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        try {
+            WebClient webClient = WebClient.create("https://example.com");
+
+            String p = request.getParameter("uri"); // $ Source
+            webClient.get()
+                    .uri(p) // $ Alert
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+
+            String p2 = request.getParameter("uri"); // $ Source
+            webClient.get()
+                    .uri(java.net.URI.create("https://example.com" + p2)) // $ Alert
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        } catch (Exception e) {
+            // Ignore
+        }
+    }
 }

@@ -15,6 +15,6 @@ int __attribute__((__weak__)) myWeakNothingFunction()
 }
 
 void testWeak() {
-	myNothingFunction(); // BAD
+	myNothingFunction(); // $ Alert // BAD
 	myWeakNothingFunction(); // GOOD
 }

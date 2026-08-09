@@ -12,7 +12,10 @@ edges
 | test.cpp:46:27:46:30 | **argv | test.cpp:130:20:130:26 | *access to array | provenance |  |
 | test.cpp:167:31:167:34 | *data | test.cpp:170:12:170:14 | *res | provenance | DataFlowFunction |
 | test.cpp:193:32:193:34 | *str | test.cpp:195:31:195:33 | *str | provenance |  |
+| test.cpp:193:32:193:34 | *str | test.cpp:195:31:195:33 | *str | provenance |  |
 | test.cpp:193:32:193:34 | *str | test.cpp:197:11:197:14 | *wstr | provenance | TaintFunction |
+| test.cpp:195:20:195:23 | StringCchPrintfW output argument | test.cpp:197:11:197:14 | *wstr | provenance |  |
+| test.cpp:195:31:195:33 | *str | test.cpp:195:20:195:23 | StringCchPrintfW output argument | provenance | MaD:403 |
 | test.cpp:204:25:204:36 | *call to get_string | test.cpp:204:25:204:36 | *call to get_string | provenance |  |
 | test.cpp:204:25:204:36 | *call to get_string | test.cpp:205:12:205:20 | *... + ... | provenance |  |
 | test.cpp:204:25:204:36 | *call to get_string | test.cpp:206:12:206:16 | *hello | provenance |  |
@@ -56,6 +59,8 @@ nodes
 | test.cpp:167:31:167:34 | *data | semmle.label | *data |
 | test.cpp:170:12:170:14 | *res | semmle.label | *res |
 | test.cpp:193:32:193:34 | *str | semmle.label | *str |
+| test.cpp:195:20:195:23 | StringCchPrintfW output argument | semmle.label | StringCchPrintfW output argument |
+| test.cpp:195:31:195:33 | *str | semmle.label | *str |
 | test.cpp:195:31:195:33 | *str | semmle.label | *str |
 | test.cpp:197:11:197:14 | *wstr | semmle.label | *wstr |
 | test.cpp:204:25:204:36 | *call to get_string | semmle.label | *call to get_string |

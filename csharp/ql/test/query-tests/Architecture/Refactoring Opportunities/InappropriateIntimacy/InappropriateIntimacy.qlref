@@ -1,1 +1,2 @@
-Architecture/Refactoring Opportunities/InappropriateIntimacy.ql
+query: Architecture/Refactoring Opportunities/InappropriateIntimacy.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -34,23 +34,26 @@ cfg
 | obinit.cs:7:16:7:16 | A | obinit.cs:7:16:7:16 | call to method <object initializer> | obinit.cs:7:16:7:16 | After call to method <object initializer> | successor | 3 |
 | obinit.cs:7:16:7:16 | A | obinit.cs:7:16:7:16 | this access | obinit.cs:7:16:7:16 | call to method <object initializer> | successor | 2 |
 | obinit.cs:7:16:7:16 | A | obinit.cs:7:20:7:22 | {...} | obinit.cs:7:16:7:16 | Normal Exit | successor | 8 |
-| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | After call to constructor Object | obinit.cs:9:25:9:27 | {...} | successor | 7 |
-| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | After call to method <object initializer> | obinit.cs:9:16:9:16 | Before call to constructor Object | successor | 4 |
-| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | Before call to constructor Object | obinit.cs:9:16:9:16 | call to constructor Object | successor | 5 |
-| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | Before call to method <object initializer> | obinit.cs:9:16:9:16 | this access | successor | 1 |
-| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | Entry | obinit.cs:9:16:9:16 | Before call to method <object initializer> | successor | 0 |
-| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | Normal Exit | obinit.cs:9:16:9:16 | Exit | successor | 9 |
-| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | call to constructor Object | obinit.cs:9:16:9:16 | After call to constructor Object | successor | 6 |
-| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | call to method <object initializer> | obinit.cs:9:16:9:16 | After call to method <object initializer> | successor | 3 |
-| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | this access | obinit.cs:9:16:9:16 | call to method <object initializer> | successor | 2 |
-| obinit.cs:9:16:9:16 | A | obinit.cs:9:25:9:27 | {...} | obinit.cs:9:16:9:16 | Normal Exit | successor | 8 |
-| obinit.cs:11:16:11:16 | A | obinit.cs:11:16:11:16 | Entry | obinit.cs:11:34:11:37 | Before call to constructor A | successor | 0 |
-| obinit.cs:11:16:11:16 | A | obinit.cs:11:16:11:16 | Normal Exit | obinit.cs:11:16:11:16 | Exit | successor | 6 |
-| obinit.cs:11:16:11:16 | A | obinit.cs:11:34:11:37 | After call to constructor A | obinit.cs:11:42:11:44 | {...} | successor | 4 |
-| obinit.cs:11:16:11:16 | A | obinit.cs:11:34:11:37 | Before call to constructor A | obinit.cs:11:39:11:39 | access to parameter y | successor | 1 |
-| obinit.cs:11:16:11:16 | A | obinit.cs:11:34:11:37 | call to constructor A | obinit.cs:11:34:11:37 | After call to constructor A | successor | 3 |
-| obinit.cs:11:16:11:16 | A | obinit.cs:11:39:11:39 | access to parameter y | obinit.cs:11:34:11:37 | call to constructor A | successor | 2 |
-| obinit.cs:11:16:11:16 | A | obinit.cs:11:42:11:44 | {...} | obinit.cs:11:16:11:16 | Normal Exit | successor | 5 |
+| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | After call to constructor Object | obinit.cs:9:25:9:27 | {...} | successor | 8 |
+| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | After call to method <object initializer> | obinit.cs:9:16:9:16 | Before call to constructor Object | successor | 5 |
+| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | Before call to constructor Object | obinit.cs:9:16:9:16 | call to constructor Object | successor | 6 |
+| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | Before call to method <object initializer> | obinit.cs:9:16:9:16 | this access | successor | 2 |
+| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | Entry | obinit.cs:9:22:9:22 | y | successor | 0 |
+| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | Normal Exit | obinit.cs:9:16:9:16 | Exit | successor | 10 |
+| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | call to constructor Object | obinit.cs:9:16:9:16 | After call to constructor Object | successor | 7 |
+| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | call to method <object initializer> | obinit.cs:9:16:9:16 | After call to method <object initializer> | successor | 4 |
+| obinit.cs:9:16:9:16 | A | obinit.cs:9:16:9:16 | this access | obinit.cs:9:16:9:16 | call to method <object initializer> | successor | 3 |
+| obinit.cs:9:16:9:16 | A | obinit.cs:9:22:9:22 | y | obinit.cs:9:16:9:16 | Before call to method <object initializer> | successor | 1 |
+| obinit.cs:9:16:9:16 | A | obinit.cs:9:25:9:27 | {...} | obinit.cs:9:16:9:16 | Normal Exit | successor | 9 |
+| obinit.cs:11:16:11:16 | A | obinit.cs:11:16:11:16 | Entry | obinit.cs:11:22:11:22 | y | successor | 0 |
+| obinit.cs:11:16:11:16 | A | obinit.cs:11:16:11:16 | Normal Exit | obinit.cs:11:16:11:16 | Exit | successor | 8 |
+| obinit.cs:11:16:11:16 | A | obinit.cs:11:22:11:22 | y | obinit.cs:11:29:11:29 | z | successor | 1 |
+| obinit.cs:11:16:11:16 | A | obinit.cs:11:29:11:29 | z | obinit.cs:11:34:11:37 | Before call to constructor A | successor | 2 |
+| obinit.cs:11:16:11:16 | A | obinit.cs:11:34:11:37 | After call to constructor A | obinit.cs:11:42:11:44 | {...} | successor | 6 |
+| obinit.cs:11:16:11:16 | A | obinit.cs:11:34:11:37 | Before call to constructor A | obinit.cs:11:39:11:39 | access to parameter y | successor | 3 |
+| obinit.cs:11:16:11:16 | A | obinit.cs:11:34:11:37 | call to constructor A | obinit.cs:11:34:11:37 | After call to constructor A | successor | 5 |
+| obinit.cs:11:16:11:16 | A | obinit.cs:11:39:11:39 | access to parameter y | obinit.cs:11:34:11:37 | call to constructor A | successor | 4 |
+| obinit.cs:11:16:11:16 | A | obinit.cs:11:42:11:44 | {...} | obinit.cs:11:16:11:16 | Normal Exit | successor | 7 |
 | obinit.cs:15:16:15:16 | B | obinit.cs:15:16:15:16 | After call to method <object initializer> | obinit.cs:15:22:15:25 | Before call to constructor A | successor | 4 |
 | obinit.cs:15:16:15:16 | B | obinit.cs:15:16:15:16 | Before call to method <object initializer> | obinit.cs:15:16:15:16 | this access | successor | 1 |
 | obinit.cs:15:16:15:16 | B | obinit.cs:15:16:15:16 | Entry | obinit.cs:15:16:15:16 | Before call to method <object initializer> | successor | 0 |

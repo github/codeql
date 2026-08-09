@@ -142,6 +142,10 @@ string encodeArgumentPosition(ArgumentPosition pos) {
 ReturnKind getStandardReturnValueKind() { result = MkNormalReturnKind() and Stage::ref() }
 
 private module FlowSummaryStepInput implements Private::StepsInputSig {
+  Private::SummaryNode getSummaryNode(DataFlow::Node n) {
+    result = n.(FlowSummaryNode).getSummaryNode()
+  }
+
   overlay[global]
   DataFlowCall getACall(SummarizedCallable sc) {
     exists(LibraryCallable callable | callable = sc |

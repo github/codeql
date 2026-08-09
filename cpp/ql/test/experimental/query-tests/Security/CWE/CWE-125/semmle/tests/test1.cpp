@@ -25,8 +25,8 @@ void* calloc (size_t num, size_t size);
 void* malloc (size_t size);
 
 static void badTest1(void *src,  int size) {
-    WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)src, -1, (LPSTR)src, size, 0, 0); // BAD
-    MultiByteToWideChar(CP_ACP, 0, (LPCSTR)src, -1, (LPCWSTR)src, 30); // BAD
+    WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)src, -1, (LPSTR)src, size, 0, 0); // $ Alert // BAD
+    MultiByteToWideChar(CP_ACP, 0, (LPCSTR)src, -1, (LPCWSTR)src, 30); // $ Alert // BAD
 }
 void goodTest2(){
   wchar_t src[] = L"0123456789ABCDEF";
@@ -42,7 +42,7 @@ void goodTest2(){
 static void badTest2(){
   wchar_t src[] = L"0123456789ABCDEF";
   char dst[16];
-  WideCharToMultiByte(CP_UTF8, 0, src, -1, dst, 16, NULL, NULL); // BAD
+  WideCharToMultiByte(CP_UTF8, 0, src, -1, dst, 16, NULL, NULL); // $ Alert // BAD
   printf("%s\n", dst);
 }
 static void goodTest3(){
@@ -55,7 +55,7 @@ static void badTest3(){
   char src[] = "0123456789ABCDEF";
   int size = MultiByteToWideChar(CP_UTF8, 0, src,sizeof(src),NULL,0);
   wchar_t * dst = (wchar_t*)calloc(size + 1, 1);
-  MultiByteToWideChar(CP_UTF8, 0, src, -1, dst, size+1); // BAD
+  MultiByteToWideChar(CP_UTF8, 0, src, -1, dst, size+1); // $ Alert // BAD
 }
 static void goodTest4(){
   char src[] = "0123456789ABCDEF";
@@ -67,13 +67,13 @@ static void badTest4(){
   char src[] = "0123456789ABCDEF";
   int size = MultiByteToWideChar(CP_UTF8, 0, src,sizeof(src),NULL,0);
   wchar_t * dst = (wchar_t*)malloc(size + 1);
-  MultiByteToWideChar(CP_UTF8, 0, src, -1, dst, size+1); // BAD
+  MultiByteToWideChar(CP_UTF8, 0, src, -1, dst, size+1); // $ Alert // BAD
 }
 static int goodTest5(void *src){
   return WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)src, -1, 0, 0, 0, 0); // GOOD
 }
 static int badTest5 (void *src) {
-  return WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)src, -1, 0, 3, 0, 0);  // BAD
+  return WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)src, -1, 0, 3, 0, 0);  // $ Alert // BAD
 }
 static void goodTest6(WCHAR *src)
 {
@@ -90,6 +90,6 @@ static void goodTest6(WCHAR *src)
 static void badTest6(WCHAR *src)
 {
     char dst[5] ="";
-    WideCharToMultiByte(CP_ACP, 0, src, -1, dst, 260, 0, 0); // BAD
+    WideCharToMultiByte(CP_ACP, 0, src, -1, dst, 260, 0, 0); // $ Alert // BAD
     printf("%s\n", dst);
 }

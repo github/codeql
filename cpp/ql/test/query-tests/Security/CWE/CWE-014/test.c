@@ -13,30 +13,30 @@ extern void use_pw(char *pw);
 // x86-64 gcc 9.2: deleted
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.14 (WINE): deleted
-int func1(void) { 
+int func1(void) {
 	char pw1[PW_SIZE];
 	use_pw(pw1);
-	memset(pw1, 0, PW_SIZE); // BAD [NOT DETECTED]
+	memset(pw1, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
 	return 0;
 }
 
 // x86-64 gcc 9.2: deleted
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.14 (WINE): not deleted
-int func1a(void) {  
+int func1a(void) {
 	char pw1a[PW_SIZE];
 	use_pw(pw1a);
-	__builtin_memset(pw1a, 0, PW_SIZE); // BAD [NOT DETECTED]
+	__builtin_memset(pw1a, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
 	return 0;
 }
 
 // x86-64 gcc 9.2: deleted
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.14 (WINE): deleted
-char *func1b(void) {  
+char *func1b(void) {
 	char pw1b[PW_SIZE];
 	use_pw(pw1b);
-	memset(pw1b, 0, PW_SIZE); // BAD [NOT DETECTED]
+	memset(pw1b, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
 	pw1b[0] = pw1b[3] = 'a';
 	return 0;
 }
@@ -44,7 +44,7 @@ char *func1b(void) {
 // x86-64 gcc 9.2: not deleted
 // x86-64 clang 9.0.0: not deleted
 // x64 msvc v19.14 (WINE): not deleted
-int func1c(char pw1c[PW_SIZE]) {  
+int func1c(char pw1c[PW_SIZE]) {
 	use_pw(pw1c);
 	memset(pw1c, 0, PW_SIZE); // GOOD
 	return 0;
@@ -54,7 +54,7 @@ int func1c(char pw1c[PW_SIZE]) {
 // x86-64 clang 9.0.0: not deleted
 // x64 msvc v19.14 (WINE): not deleted
 char pw1d[PW_SIZE];
-int func1d() {  
+int func1d() {
 	use_pw(pw1d);
 	memset(pw1d, 0, PW_SIZE); // GOOD
 	return 0;
@@ -62,47 +62,47 @@ int func1d() {
 // x86-64 gcc 9.2: deleted
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.14 (WINE): deleted
-char *func2(void) {  
+char *func2(void) {
 	char pw2[PW_SIZE];
 	use_pw(pw2);
-	memset(pw2, 1, PW_SIZE); // BAD [NOT DETECTED]
+	memset(pw2, 1, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
 	return pw2;
 }
 
 // x86-64 gcc 9.2: deleted
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.14 (WINE): partially deleted
-int func3(void) { 
+int func3(void) {
 	char pw3[PW_SIZE];
 	use_pw(pw3);
-	memset(pw3, 4, PW_SIZE); // BAD [NOT DETECTED]
+	memset(pw3, 4, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
 	return pw3[2];
 }
 
 // x86-64 gcc 9.2: deleted
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.14 (WINE): not deleted
-int func4(void) { 
+int func4(void) {
 	char pw1a[PW_SIZE];
 	use_pw(pw1a);
-	__builtin_memset(pw1a + 3, 0, PW_SIZE - 3); // BAD [NOT DETECTED]
+	__builtin_memset(pw1a + 3, 0, PW_SIZE - 3); // $ MISSING: Alert // BAD [NOT DETECTED]
 	return 0;
 }
 
 // x86-64 gcc 9.2: deleted
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.14 (WINE): not deleted
-int func6(void) { 
+int func6(void) {
 	char pw1a[PW_SIZE];
 	use_pw(pw1a);
-	__builtin_memset(&pw1a[3], 0, PW_SIZE - 3); // BAD [NOT DETECTED]
+	__builtin_memset(&pw1a[3], 0, PW_SIZE - 3); // $ MISSING: Alert // BAD [NOT DETECTED]
 	return pw1a[2];
 }
 
 // x86-64 gcc 9.2: deleted
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.14 (WINE): not deleted
-int func5(void) { 
+int func5(void) {
 	char pw1a[PW_SIZE];
 	use_pw(pw1a);
 	__builtin_memset(pw1a + 3, 0, PW_SIZE - 4); // GOOD
@@ -112,17 +112,17 @@ int func5(void) {
 // x86-64 gcc 9.2: deleted
 // x86-64 clang 9.0.0: deleted
 // x64 msvc v19.14 (WINE): not deleted
-int func7(void) { 
+int func7(void) {
 	char pw1a[PW_SIZE];
 	use_pw(pw1a);
-	__builtin_memset(&pw1a[3], 0, PW_SIZE - 5); // BAD [NOT DETECTED]
+	__builtin_memset(&pw1a[3], 0, PW_SIZE - 5); // $ MISSING: Alert // BAD [NOT DETECTED]
 	return 0;
 }
 
 // x86-64 gcc 9.2: not deleted
 // x86-64 clang 9.0.0: not deleted
 // x64 msvc v19.14 (WINE): not deleted
-int func8(void) { 
+int func8(void) {
 	char pw1a[PW_SIZE];
 	use_pw(pw1a);
 	__builtin_memset(pw1a + pw1a[3], 0, PW_SIZE - 4); // GOOD
@@ -135,6 +135,6 @@ int func8(void) {
 char *func9(void) {
 	char pw1[PW_SIZE];
 	use_pw(pw1);
-	memset(pw1, 0, PW_SIZE); // BAD [NOT DETECTED]
+	memset(pw1, 0, PW_SIZE); // $ MISSING: Alert // BAD [NOT DETECTED]
 	return 0;
 }

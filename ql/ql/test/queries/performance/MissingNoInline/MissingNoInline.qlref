@@ -1,1 +1,2 @@
-queries/performance/MissingNoinline.ql
+query: queries/performance/MissingNoinline.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

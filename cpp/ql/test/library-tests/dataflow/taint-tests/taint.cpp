@@ -866,3 +866,136 @@ void test_iconv(size_t size) {
 	iconv(0, &s, &size, &p, &size_out);
 	sink(*p); // $ ast,ir
 }
+
+using va_list = void*;
+
+long StringCchCopyA(char *, size_t, const char *);
+long StringCchCopyW(wchar_t *, size_t, const wchar_t *);
+long StringCbCopyA(char *, size_t, const char *);
+long StringCchCopyExA(char *, size_t, const char *, char **, size_t *, unsigned long);
+long StringCchCopyNA(char *, size_t, const char *, size_t);
+long StringCchCopyNExA(char *, size_t, const char *, size_t, char **, size_t *, unsigned long);
+long StringCchCatA(char *, size_t, const char *);
+long StringCchCatW(wchar_t *, size_t, const wchar_t *);
+long StringCbCatA(char *, size_t, const char *);
+long StringCchCatExA(char *, size_t, const char *, char **, size_t *, unsigned long);
+long StringCchCatNA(char *, size_t, const char *, size_t);
+long StringCchCatNExA(char *, size_t, const char *, size_t, char **, size_t *, unsigned long);
+long StringCchPrintfA(char *, size_t, const char *, ...);
+long StringCchPrintfW(wchar_t *, size_t, const wchar_t *, ...);
+long StringCbPrintfA(char *, size_t, const char *, ...);
+long StringCchPrintfExA(char *, size_t, char **, size_t *, unsigned long, const char *, ...);
+long StringCchVPrintfA(char *, size_t, const char *, va_list);
+long StringCchVPrintfExA(char *, size_t, char **, size_t *, unsigned long, const char *, va_list);
+
+void test_strsafe() {
+	char *source = indirect_source();
+	wchar_t *wsource = (wchar_t *)indirect_source();
+
+	{
+		char dest[256] = {0};
+		StringCchCopyA(dest, sizeof(dest), source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		wchar_t dest[256] = {0};
+		StringCchCopyW(dest, sizeof(dest), wsource);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		StringCbCopyA(dest, sizeof(dest), source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		char *end;
+		size_t remaining;
+		StringCchCopyExA(dest, sizeof(dest), source, &end, &remaining, 0);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		StringCchCopyNA(dest, sizeof(dest), source, 128);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		char *end;
+		size_t remaining;
+		StringCchCopyNExA(dest, sizeof(dest), source, 128, &end, &remaining, 0);
+		sink(dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = "prefix";
+		StringCchCatA(dest, sizeof(dest), source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		wchar_t dest[256] = L"prefix";
+		StringCchCatW(dest, sizeof(dest), wsource);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = "prefix";
+		StringCbCatA(dest, sizeof(dest), source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = "prefix";
+		char *end;
+		size_t remaining;
+		StringCchCatExA(dest, sizeof(dest), source, &end, &remaining, 0);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = "prefix";
+		StringCchCatNA(dest, sizeof(dest), source, 128);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = "prefix";
+		char *end;
+		size_t remaining;
+		StringCchCatNExA(dest, sizeof(dest), source, 128, &end, &remaining, 0);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		StringCchPrintfA(dest, sizeof(dest), "%s", source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		wchar_t dest[256] = {0};
+		StringCchPrintfW(dest, sizeof(dest), L"%s", wsource);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		StringCbPrintfA(dest, sizeof(dest), "%s", source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		char *end;
+		size_t remaining;
+		StringCchPrintfExA(dest, sizeof(dest), &end, &remaining, 0, "%s", source);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		char *fmt = indirect_source();
+		StringCchPrintfA(dest, sizeof(dest), fmt);
+		sink(*dest); // $ ir MISSING: ast
+	}
+	{
+		char dest[256] = {0};
+		StringCchPrintfA(dest, sizeof(dest), "%d", 42);
+		sink(*dest); // clean
+	}
+	{
+		char dest[256] = {0};
+		StringCchCopyA(dest, sizeof(dest), "hello");
+		sink(*dest); // clean
+	}
+}

@@ -41,7 +41,7 @@ public class JwtNoVerifier extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         // NOT OK:  only decode, no verification
-        String JwtToken1 = request.getParameter("JWT2");
+        String JwtToken1 = request.getParameter("JWT2"); // $ Source
         String userName = decodeToken(JwtToken1);
         if (Objects.equals(userName, "Admin")) {
             out.println("<html><body>");
@@ -55,7 +55,7 @@ public class JwtNoVerifier extends HttpServlet {
         JWT.decode(JwtToken2);
 
         // NOT OK:  only decode, no verification
-        String JwtToken3 = (String) authToken.getCredentials();
+        String JwtToken3 = (String) authToken.getCredentials(); // $ Source
         userName = decodeToken(JwtToken3);
         if (Objects.equals(userName, "Admin")) {
             out.println("<html><body>");
@@ -88,7 +88,7 @@ public class JwtNoVerifier extends HttpServlet {
 
     public static String decodeToken(final String token) {
         DecodedJWT jwt = JWT.decode(token);
-        return Optional.of(jwt).map(item -> item.getClaim("userName").asString()).orElse("");
+        return Optional.of(jwt).map(item -> item.getClaim("userName").asString()).orElse(""); // $ Alert
     }
 
 

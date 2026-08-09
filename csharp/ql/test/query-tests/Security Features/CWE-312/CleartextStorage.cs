@@ -12,10 +12,10 @@ public class ClearTextStorageHandler : IHttpHandler
     public void ProcessRequest(HttpContext ctx)
     {
         // BAD: Setting a cookie value or values with sensitive data.
-        ctx.Response.Cookies["MyCookie"].Value = accountKey;
-        ctx.Response.Cookies["MyOtherCookie"]["Sensitive"] = GetPassword();
-        ctx.Response.Cookies["MyOtherCookie"].Values["Sensitive"] = GetPassword();
-        ctx.Response.Cookies["MyCookie"].Value = GetAccountID();
+        ctx.Response.Cookies["MyCookie"].Value = accountKey; // $ Alert
+        ctx.Response.Cookies["MyOtherCookie"]["Sensitive"] = GetPassword(); // $ Alert
+        ctx.Response.Cookies["MyOtherCookie"].Values["Sensitive"] = GetPassword(); // $ Alert
+        ctx.Response.Cookies["MyCookie"].Value = GetAccountID(); // $ Alert
         // GOOD: Encoding the value before setting it.
         ctx.Response.Cookies["MyCookie"].Value = Encode(accountKey, "Account key");
 
@@ -23,15 +23,15 @@ public class ClearTextStorageHandler : IHttpHandler
         ctx.Response.Cookies["MyCookie"].Value = GetAccountName();
         ILogger logger = new ILogger();
         // BAD: Logging sensitive data
-        logger.Warn(GetPassword());
+        logger.Warn(GetPassword()); // $ Alert
         // GOOD: Logging encrypted sensitive data
         logger.Warn(Encode(GetPassword(), "Password"));
 
-        // BAD: Storing sensitive data in local file 
+        // BAD: Storing sensitive data in local file
         using (var writeStream = File.Open("passwords.txt", FileMode.Create))
         {
             var writer = new StreamWriter(writeStream);
-            writer.Write(GetPassword());
+            writer.Write(GetPassword()); // $ Alert
             writer.Close();
         }
 
@@ -91,9 +91,9 @@ class MyForm : Form
     {
         box1.PasswordChar = '*';
         box2.UseSystemPasswordChar = true;
-        logger.Warn(password.Text);  // BAD
-        logger.Warn(box1.Text);  // BAD
-        logger.Warn(box2.Text);  // BAD
+        logger.Warn(password.Text);  // $ Alert // BAD
+        logger.Warn(box1.Text);  // $ Alert // BAD
+        logger.Warn(box2.Text);  // $ Alert // BAD
         logger.Warn(box3.Text);  // GOOD
     }
 }

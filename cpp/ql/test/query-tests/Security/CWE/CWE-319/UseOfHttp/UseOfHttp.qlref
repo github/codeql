@@ -1,1 +1,2 @@
-Security/CWE/CWE-319/UseOfHttp.ql
+query: Security/CWE/CWE-319/UseOfHttp.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

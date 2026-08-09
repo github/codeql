@@ -4,7 +4,7 @@ public class HomeController : Controller
 {
     // BAD: Anti forgery token has been forgotten
     [HttpPost]
-    public ActionResult Login()
+    public ActionResult Login() // $ Alert
     {
         return View();
     }
@@ -55,7 +55,7 @@ public class DerivedUnprotectedController : UnprotectedBaseController
 {
     // BAD: No antiforgery validation on this or any base class
     [HttpPost]
-    public ActionResult NoInheritedValidation()
+    public ActionResult NoInheritedValidation() // $ Alert
     {
         return View();
     }

@@ -1,0 +1,10 @@
+on:
+  issue_comment: {}
+
+jobs:
+  modeled-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: ${{ github.event.comment.body }}

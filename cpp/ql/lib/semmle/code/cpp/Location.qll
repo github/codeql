@@ -148,28 +148,3 @@ class UnknownLocation extends Location {
     this.getFile().getAbsolutePath() = "" and locations_default(this, _, 0, 0, 0, 0)
   }
 }
-
-/**
- * A dummy location which is used when something doesn't have a location in
- * the source code but needs to have a `Location` associated with it.
- *
- * DEPRECATED: use `UnknownLocation`
- */
-deprecated class UnknownDefaultLocation extends UnknownLocation { }
-
-/**
- * A dummy location which is used when an expression doesn't have a
- * location in the source code but needs to have a `Location` associated
- * with it.
- *
- * DEPRECATED: use `UnknownLocation`
- */
-deprecated class UnknownExprLocation extends UnknownLocation { }
-
-/**
- * A dummy location which is used when a statement doesn't have a location
- * in the source code but needs to have a `Location` associated with it.
- *
- * DEPRECATED: use `UnknownLocation`
- */
-deprecated class UnknownStmtLocation extends UnknownLocation { }

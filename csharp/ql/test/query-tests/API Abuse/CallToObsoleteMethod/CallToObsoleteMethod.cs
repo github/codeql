@@ -16,7 +16,7 @@ class Program
     static void Main(string[] args)
     {
         // BAD: Call to obsolete method
-        ObsoleteMethod();
+        ObsoleteMethod(); // $ Alert
 
         // GOOD: Call to non-obsolete method
         NotObsoleteMethod();

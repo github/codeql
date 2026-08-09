@@ -7,10 +7,10 @@ void test1()
 	void *ptr;
 
 	printf("%ld\n", l); // GOOD
-	printf("%d\n", l); // BAD
+	printf("%d\n", l); // $ Alert // BAD
 
 	printf("%p\n", ptr); // GOOD
-	printf("%d\n", ptr); // BAD
-	printf("%u\n", ptr); // BAD
-	printf("%x\n", ptr); // BAD
+	printf("%d\n", ptr); // $ Alert // BAD
+	printf("%u\n", ptr); // $ Alert // BAD
+	printf("%x\n", ptr); // $ Alert // BAD
 }

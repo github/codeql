@@ -127,15 +127,18 @@ private predicate sideEffectCfg(ControlFlow::Node src, ControlFlow::Node dst) {
 
 /**
  * Holds if `dominator` is the immediate dominator of `node` in
- * the side-effect CFG.
+ * the side-effect CFG belonging to `entry`.
  */
-private predicate iDomEffect(ControlFlow::Node dominator, ControlFlow::Node node) =
-  idominance(entryNode/1, sideEffectCfg/2)(_, dominator, node)
+private predicate iDomEffect(
+  ControlFlow::Node entry, ControlFlow::Node dominator, ControlFlow::Node node
+) = idominance(entryNode/1, sideEffectCfg/2)(entry, dominator, node)
 
 /**
  * Gets the most recent side effect. To be more precise, `result` is a
  * dominator of `node` and no side-effects can occur between `result` and
  * `node`.
+ *
+ * `entry` is the entry node for the function containing `node` and `result`.
  *
  * `sideEffectCFG` has an edge from the function entry to every node with a
  * side-effect. This means that every node with a side-effect has the
@@ -180,14 +183,24 @@ private predicate iDomEffect(ControlFlow::Node dominator, ControlFlow::Node node
  *
  * The immediate dominator path to line 015 is 000 - 009 - 012 - 015.
  * Therefore, the most recent side effect for line 015 is line 009.
+ * (Note that line 009 is not a side-effect itself. Instead, it is the
+ * point where the control flow paths from the side-effects at 004 and 007
+ * merge. Because its immediate dominator is the entry node 000, it serves
+ * as the safe root for expressions evaluated after those side-effects.)
  */
-cached
-private ControlFlow::Node mostRecentSideEffect(ControlFlow::Node node) {
-  exists(ControlFlow::Node entry |
-    entryNode(entry) and
-    iDomEffect(entry, result) and
-    iDomEffect*(result, node)
+private ControlFlow::Node mostRecentSideEffect(ControlFlow::Node entry, ControlFlow::Node node) {
+  iDomEffect(entry, entry, result) and
+  result = node
+  or
+  exists(ControlFlow::Node mid |
+    result = mostRecentSideEffect(entry, mid) and
+    iDomEffect(entry, mid, node)
   )
+}
+
+cached
+private ControlFlow::Node mostRecentSideEffectUnique(ControlFlow::Node node) {
+  result = unique( | | mostRecentSideEffect(_, node))
 }
 
 /** Used to represent the "global value number" of an expression. */
@@ -369,10 +382,12 @@ private predicate mkMethodAccess(DataFlow::Node access, GVN qualifier, Method m)
   )
 }
 
-private predicate analyzableFieldRead(Read fread, DataFlow::Node base, Field f) {
+private predicate analyzableFieldRead(
+  Read fread, DataFlow::Node base, Field f, ControlFlow::Node dominator
+) {
   exists(IR::ReadInstruction r | r = fread.asInstruction() |
     r.readsField(base.asInstruction(), f) and
-    strictcount(mostRecentSideEffect(r)) = 1 and
+    dominator = mostRecentSideEffectUnique(r) and
     not r.isConst()
   )
 }
@@ -381,9 +396,8 @@ private predicate mkFieldRead(
   DataFlow::Node fread, GVN qualifier, Field v, ControlFlow::Node dominator
 ) {
   exists(DataFlow::Node base |
-    analyzableFieldRead(fread, base, v) and
-    qualifier = globalValueNumber(base) and
-    dominator = mostRecentSideEffect(fread.asInstruction())
+    analyzableFieldRead(fread, base, v, dominator) and
+    qualifier = globalValueNumber(base)
   )
 }
 
@@ -421,18 +435,17 @@ private predicate incompleteSsa(ValueEntity v) {
 /**
  * Holds if `access` is an access to a variable `target` for which SSA information is incomplete.
  */
-private predicate analyzableOtherVariable(DataFlow::Node access, ValueEntity target) {
+private predicate analyzableOtherVariable(
+  DataFlow::Node access, ValueEntity target, ControlFlow::Node dominator
+) {
   access.asInstruction().reads(target) and
   incompleteSsa(target) and
-  strictcount(mostRecentSideEffect(access.asInstruction())) = 1 and
+  dominator = mostRecentSideEffectUnique(access.asInstruction()) and
   not access.isConst() and
   not target instanceof Function
 }
 
-private predicate mkOtherVariable(DataFlow::Node access, ValueEntity x, ControlFlow::Node dominator) {
-  analyzableOtherVariable(access, x) and
-  dominator = mostRecentSideEffect(access.asInstruction())
-}
+private predicate mkOtherVariable = analyzableOtherVariable/3;
 
 private predicate analyzableBinaryOp(
   DataFlow::BinaryOperationNode op, string opname, DataFlow::Node lhs, DataFlow::Node rhs
@@ -463,29 +476,29 @@ private predicate mkUnaryOp(DataFlow::UnaryOperationNode op, GVN child, string o
   opname = op.getOperator()
 }
 
-private predicate analyzableIndexExpr(DataFlow::ElementReadNode ae) {
-  strictcount(mostRecentSideEffect(ae.asInstruction())) = 1 and
+private predicate analyzableIndexExpr(DataFlow::ElementReadNode ae, ControlFlow::Node dominator) {
+  dominator = mostRecentSideEffectUnique(ae.asInstruction()) and
   not ae.isConst()
 }
 
 private predicate mkIndex(
   DataFlow::ElementReadNode ae, GVN base, GVN offset, ControlFlow::Node dominator
 ) {
-  analyzableIndexExpr(ae) and
+  analyzableIndexExpr(ae, dominator) and
   base = globalValueNumber(ae.getBase()) and
-  offset = globalValueNumber(ae.getIndex()) and
-  dominator = mostRecentSideEffect(ae.asInstruction())
+  offset = globalValueNumber(ae.getIndex())
 }
 
-private predicate analyzablePointerDereferenceExpr(DataFlow::PointerDereferenceNode deref) {
-  strictcount(mostRecentSideEffect(deref.asInstruction())) = 1 and
+private predicate analyzablePointerDereferenceExpr(
+  DataFlow::PointerDereferenceNode deref, ControlFlow::Node dominator
+) {
+  dominator = mostRecentSideEffectUnique(deref.asInstruction()) and
   not deref.isConst()
 }
 
 private predicate mkDeref(DataFlow::PointerDereferenceNode deref, GVN p, ControlFlow::Node dominator) {
-  analyzablePointerDereferenceExpr(deref) and
-  p = globalValueNumber(deref.getOperand()) and
-  dominator = mostRecentSideEffect(deref.asInstruction())
+  analyzablePointerDereferenceExpr(deref, dominator) and
+  p = globalValueNumber(deref.getOperand())
 }
 
 private predicate ssaInit(SsaExplicitDefinition ssa, DataFlow::Node rhs) {
@@ -587,12 +600,12 @@ private predicate analyzableExpr(DataFlow::Node e) {
   analyzableConst(e) or
   any(DataFlow::SsaNode ssa).getAUse() = e or
   e instanceof DataFlow::SsaNode or
-  analyzableOtherVariable(e, _) or
+  analyzableOtherVariable(e, _, _) or
   analyzableMethodAccess(e, _, _) or
-  analyzableFieldRead(e, _, _) or
+  analyzableFieldRead(e, _, _, _) or
   analyzableCall(e, _) or
   analyzableBinaryOp(e, _, _, _) or
   analyzableUnaryOp(e) or
-  analyzableIndexExpr(e) or
-  analyzablePointerDereferenceExpr(e)
+  analyzableIndexExpr(e, _) or
+  analyzablePointerDereferenceExpr(e, _)
 }

@@ -1,1 +1,2 @@
-Performance/InnerClassCouldBeStatic.ql
+query: Performance/InnerClassCouldBeStatic.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

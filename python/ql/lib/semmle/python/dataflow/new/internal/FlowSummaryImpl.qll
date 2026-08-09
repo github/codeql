@@ -20,6 +20,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow>
 
   class SinkBase = Void;
 
+  class FlowSummaryCallBase = Void;
+
   predicate callableFromSource(SummarizedCallableBase c) { none() }
 
   ArgumentPosition callbackSelfParameterPosition() { result.isLambdaSelf() }
@@ -66,22 +68,32 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow>
   }
 
   string encodeContent(ContentSet cs, string arg) {
-    cs = TListElementContent() and result = "ListElement" and arg = ""
-    or
-    cs = TSetElementContent() and result = "SetElement" and arg = ""
-    or
-    exists(int index |
-      cs = TTupleElementContent(index) and result = "TupleElement" and arg = index.toString()
+    exists(Content c | cs.isSingleton(c) |
+      c = TListElementContent() and result = "ListElement" and arg = ""
+      or
+      c = TSetElementContent() and result = "SetElement" and arg = ""
+      or
+      exists(int index |
+        c = TTupleElementContent(index) and result = "TupleElement" and arg = index.toString()
+      )
+      or
+      exists(string key |
+        c = TDictionaryElementContent(key) and result = "DictionaryElement" and arg = key
+      )
+      or
+      c = TDictionaryElementAnyContent() and result = "DictionaryElementAny" and arg = ""
+      or
+      exists(string attr | c = TAttributeContent(attr) and result = "Attribute" and arg = attr)
     )
     or
-    exists(string key |
-      cs = TDictionaryElementContent(key) and result = "DictionaryElement" and arg = key
-    )
+    cs.isAnyTupleElement() and result = "AnyTupleElement" and arg = ""
     or
-    cs = TDictionaryElementAnyContent() and result = "DictionaryElementAny" and arg = ""
+    cs.isAnyDictionaryElement() and result = "AnyDictionaryElement" and arg = ""
     or
-    exists(string attr | cs = TAttributeContent(attr) and result = "Attribute" and arg = attr)
+    cs.isAnyTupleOrDictionaryElement() and result = "AnyTupleOrDictionaryElement" and arg = ""
   }
+
+  string encodeWithContent(ContentSet c, string arg) { result = "With" + encodeContent(c, arg) }
 
   bindingset[token]
   ParameterPosition decodeUnknownParameterPosition(AccessPath::AccessPathTokenBase token) {
@@ -101,6 +113,10 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow>
 private import Make<Location, DataFlowImplSpecific::PythonDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
+  Impl::Private::SummaryNode getSummaryNode(Node n) {
+    result = n.(FlowSummaryNode).getSummaryNode()
+  }
+
   overlay[global]
   DataFlowCall getACall(Public::SummarizedCallable sc) {
     result =
@@ -139,27 +155,29 @@ module Private {
     predicate withContent = SC::withContent/1;
 
     /** Gets a summary component that represents a list element. */
-    SummaryComponent listElement() { result = content(any(ListElementContent c)) }
+    SummaryComponent listElement() { result = content(singleton(any(ListElementContent c))) }
 
     /** Gets a summary component that represents a set element. */
-    SummaryComponent setElement() { result = content(any(SetElementContent c)) }
+    SummaryComponent setElement() { result = content(singleton(any(SetElementContent c))) }
 
     /** Gets a summary component that represents a tuple element. */
     SummaryComponent tupleElement(int index) {
-      exists(TupleElementContent c | c.getIndex() = index and result = content(c))
+      exists(TupleElementContent c | c.getIndex() = index and result = content(singleton(c)))
     }
 
     /** Gets a summary component that represents a dictionary element. */
     SummaryComponent dictionaryElement(string key) {
-      exists(DictionaryElementContent c | c.getKey() = key and result = content(c))
+      exists(DictionaryElementContent c | c.getKey() = key and result = content(singleton(c)))
     }
 
     /** Gets a summary component that represents a dictionary element at any key. */
-    SummaryComponent dictionaryElementAny() { result = content(any(DictionaryElementAnyContent c)) }
+    SummaryComponent dictionaryElementAny() {
+      result = content(singleton(any(DictionaryElementAnyContent c)))
+    }
 
     /** Gets a summary component that represents an attribute element. */
     SummaryComponent attribute(string attr) {
-      exists(AttributeContent c | c.getAttribute() = attr and result = content(c))
+      exists(AttributeContent c | c.getAttribute() = attr and result = content(singleton(c)))
     }
 
     /** Gets a summary component that represents the return value of a call. */

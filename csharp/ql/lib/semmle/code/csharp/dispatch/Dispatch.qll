@@ -73,6 +73,19 @@ class DispatchCall extends Internal::TDispatchCall {
   }
 }
 
+abstract private class InstanceOperatorCall extends OperatorCall {
+  abstract Expr getQualifier();
+}
+
+private class InstanceCompoundAssignment extends InstanceOperatorCall instanceof CompoundAssignmentOperatorCall
+{
+  override Expr getQualifier() { result = CompoundAssignmentOperatorCall.super.getQualifier() }
+}
+
+private class InstanceMutator extends InstanceOperatorCall instanceof InstanceMutatorOperatorCall {
+  override Expr getQualifier() { result = InstanceMutatorOperatorCall.super.getQualifier() }
+}
+
 /** Internal implementation details. */
 private module Internal {
   private import OverridableCallable
@@ -99,7 +112,11 @@ private module Internal {
         or
         ac instanceof AssignableWrite and isRead = false
       } or
-      TDispatchOperatorCall(OperatorCall oc) { not oc.isLateBound() } or
+      TDispatchOperatorCall(OperatorCall oc) {
+        not oc.isLateBound() and
+        not oc instanceof InstanceOperatorCall
+      } or
+      TDispatchInstanceOperatorCall(InstanceOperatorCall ioc) or
       TDispatchReflectionCall(MethodCall mc, string name, Expr object, Expr qualifier, int args) {
         isReflectionCall(mc, name, object, qualifier, args)
       } or
@@ -107,9 +124,7 @@ private module Internal {
       TDispatchDynamicOperatorCall(DynamicOperatorCall doc) or
       TDispatchDynamicMemberAccess(DynamicMemberAccess dma) or
       TDispatchDynamicElementAccess(DynamicElementAccess dea) or
-      TDispatchDynamicEventAccess(
-        AssignArithmeticOperation aao, DynamicMemberAccess dma, string name
-      ) {
+      TDispatchDynamicEventAccess(AssignArithmeticExpr aao, DynamicMemberAccess dma, string name) {
         isPotentialEventCall(aao, dma, name)
       } or
       TDispatchDynamicObjectCreation(DynamicObjectCreation doc) or
@@ -213,7 +228,7 @@ private module Internal {
    * accessor.
    */
   private predicate isPotentialEventCall(
-    AssignArithmeticOperation aao, DynamicMemberAccess dma, string name
+    AssignArithmeticExpr aao, DynamicMemberAccess dma, string name
   ) {
     aao instanceof DynamicOperatorCall and
     dma = aao.getLeftOperand() and
@@ -355,8 +370,8 @@ private module Internal {
       1 < strictcount(this.getADynamicTarget().getUnboundDeclaration()) and
       c = this.getCall().getEnclosingCallable().getUnboundDeclaration() and
       (
-        exists(BaseSsa::Definition def, Parameter p |
-          def.isImplicitEntryDefinition(p) and
+        exists(BaseSsa::SsaParameterInit def, Parameter p |
+          def.getParameter() = p and
           this.getSyntheticQualifier() = def.getARead() and
           p.getPosition() = i and
           c.getAParameter() = p and
@@ -886,6 +901,18 @@ private module Internal {
     override Operator getAStaticTarget() { result = this.getCall().getTarget() }
   }
 
+  private class DispatchInstanceOperatorCall extends DispatchOverridableCall,
+    TDispatchInstanceOperatorCall
+  {
+    override InstanceOperatorCall getCall() { this = TDispatchInstanceOperatorCall(result) }
+
+    override Expr getArgument(int i) { result = this.getCall().getArgument(i) }
+
+    override Expr getQualifier() { result = this.getCall().getQualifier() }
+
+    override Operator getAStaticTarget() { result = this.getCall().getTarget() }
+  }
+
   /**
    * A call to an accessor.
    *
@@ -1368,9 +1395,7 @@ private module Internal {
   private class DispatchDynamicEventAccess extends DispatchReflectionOrDynamicCall,
     TDispatchDynamicEventAccess
   {
-    override AssignArithmeticOperation getCall() {
-      this = TDispatchDynamicEventAccess(result, _, _)
-    }
+    override AssignArithmeticExpr getCall() { this = TDispatchDynamicEventAccess(result, _, _) }
 
     override string getName() { this = TDispatchDynamicEventAccess(_, _, result) }
 

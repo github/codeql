@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
   //umask(0022);
   FILE *fp;
-  fp = fopen("myFile.txt","w"); // BAD
+  fp = fopen("myFile.txt","w"); // $ Alert // BAD
   //chmod("myFile.txt",0644);
   fprintf(fp,"%s\n","data to file");
   fclose(fp);

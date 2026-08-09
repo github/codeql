@@ -3,16 +3,16 @@
 def f(w, x, y, z):
     if x < 0 or z < 0:
         raise Exception()
-    if x >= 0: # Useless test due to x < 0 being false
+    if x >= 0: # $ Alert # Useless test due to x < 0 being false
         y += 1
-    if z >= 0: # Useless test due to z < 0 being false 
+    if z >= 0: # $ Alert # Useless test due to z < 0 being false
         y += 1
     while w >= 0:
         if y < 10:
             z += 1
-            if y == 15: # Useless test due to y < 10 being true
+            if y == 15: # $ Alert # Useless test due to y < 10 being true
                 z += 1
-        elif y > 7: # Useless test 
+        elif y > 7: # $ Alert # Useless test
             y -= 1
     if y < 10:
         y += 1
@@ -24,10 +24,10 @@ def f(w, x, y, z):
 def g(w, x, y, z):
     if w < x or y < z+2:
         raise Exception()
-    if w >= x: # Useless test due to w < x being false
+    if w >= x: # $ Alert # Useless test due to w < x being false
         pass
     if cond:
-        if z > y-2: # Useless test due to y < z+2 being false 
+        if z > y-2: # $ Alert # Useless test due to y < z+2 being false
             y += 1
     else:
         if z >= y-2: # Not a useless test.
@@ -46,7 +46,7 @@ def validate_series(start, end):
 def medium1(x, y):
     if x + 1000000000000000 > y + 1000000000000000:
         return
-    if x > y: # Redundant
+    if x > y: # $ Alert # Redundant
         pass
 
 def medium2(x, y):
@@ -70,19 +70,19 @@ def big2(x, y):
 def odasa6782_v1(protocol):
     if protocol < 0:
         protocol = HIGHEST_PROTOCOL
-    elif not 0 <= protocol:
+    elif not 0 <= protocol: # $ Alert
         raise ValueError()
 
 def odasa6782_v2(protocol):
     if protocol < 0:
         protocol = HIGHEST_PROTOCOL
-    elif not 0 <= protocol <= HIGHEST_PROTOCOL:
+    elif not 0 <= protocol <= HIGHEST_PROTOCOL: # $ Alert
         raise ValueError()
 
 def odasa6782_v3(protocol):
     if protocol < 0:
         protocol = HIGHEST_PROTOCOL
-    elif 0 <= protocol <= HIGHEST_PROTOCOL:
+    elif 0 <= protocol <= HIGHEST_PROTOCOL: # $ Alert
         pass
     else:
         raise ValueError()

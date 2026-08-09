@@ -10,8 +10,8 @@ public class NFEAndroidDoS extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(-1);
 
-		String minPriceStr = getIntent().getStringExtra("priceMin");
-		double minPrice = Double.parseDouble(minPriceStr);
+		String minPriceStr = getIntent().getStringExtra("priceMin"); // $ Source
+		double minPrice = Double.parseDouble(minPriceStr); // $ Alert
 	}
 
 	// BAD - parse string extra to integer
@@ -19,11 +19,11 @@ public class NFEAndroidDoS extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(-1);
 
-		String widthStr = getIntent().getStringExtra("width");
-		int width = Integer.parseInt(widthStr);
+		String widthStr = getIntent().getStringExtra("width"); // $ Source
+		int width = Integer.parseInt(widthStr); // $ Alert
 
-		String heightStr = getIntent().getStringExtra("height");
-		int height = Integer.parseInt(heightStr);
+		String heightStr = getIntent().getStringExtra("height"); // $ Source
+		int height = Integer.parseInt(heightStr); // $ Alert
 	}	
 
 	// GOOD - parse int extra to integer
@@ -40,11 +40,11 @@ public class NFEAndroidDoS extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(-1);
 	
-		String minPriceStr = getIntent().getStringExtra("priceMin");
-		double minPrice = new Double(minPriceStr);
+		String minPriceStr = getIntent().getStringExtra("priceMin"); // $ Source
+		double minPrice = new Double(minPriceStr); // $ Alert
 
 		String maxPriceStr = getIntent().getStringExtra("priceMax");
-		double maxPrice = Double.valueOf(minPriceStr);
+		double maxPrice = Double.valueOf(minPriceStr); // $ Alert
 	}	
 
 	// GOOD - parse string extra to double with caught NFE

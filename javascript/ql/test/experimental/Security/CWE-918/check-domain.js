@@ -13,8 +13,8 @@ const app = express();
 
 app.get('/check-with-axios', req => {
   // without validation
-  const url = req.query.url;
-  axios.get(url); //SSRF
+  const url = req.query.url; // $ Source
+  axios.get(url); // $ Alert // SSRF
 
   // validating domain only
   const decodedURI = decodeURIComponent(req.query.url);
@@ -22,8 +22,8 @@ app.get('/check-with-axios', req => {
 
   const { hostname } = url.parse(decodedURI);
 
-  if (isValidDomain(hostname, validDomains)) {
-    axios.get(req.query.url); //SSRF
+  if (isValidDomain(hostname, VALID_DOMAINS)) {
+    axios.get(req.query.url); // $ Alert // SSRF
   }
 });
 

@@ -37,11 +37,14 @@ class SimpleTypeSanitizer extends DataFlow::Node {
  *
  * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
  *
- * Use this if you want to define a derived `DataFlow::BarrierGuard` without
- * make the type recursive. Otherwise use `RegexpCheckBarrier`.
+ * This holds for both method-call and annotation regular-expression matches.
+ * Method-call matches yield barrier nodes via ordinary control-flow dominance,
+ * while annotation matches are treated as direct barriers by
+ * `DataFlow::BarrierGuard`, since an annotation does not dominate the
+ * expression it constrains.
  */
 predicate regexpMatchGuardChecks(Guard guard, Expr e, boolean branch) {
-  exists(RegexMatch rm | not rm instanceof Annotation |
+  exists(RegexMatch rm |
     guard = rm and
     e = rm.getASanitizedExpr() and
     branch = true
@@ -56,10 +59,16 @@ predicate regexpMatchGuardChecks(Guard guard, Expr e, boolean branch) {
 class RegexpCheckBarrier extends DataFlow::Node {
   RegexpCheckBarrier() {
     this = DataFlow::BarrierGuard<regexpMatchGuardChecks/3>::getABarrierNode()
-    or
-    // Annotations don't fit into the model of barrier guards because the
-    // annotation doesn't dominate the sanitized expression, so we instead
-    // treat them as barriers directly.
-    exists(RegexMatch rm | rm instanceof Annotation | this.asExpr() = rm.getString())
+  }
+}
+
+/**
+ * A method call for encrypting, hashing, or digesting sensitive information. As there are various
+ * implementations of encryption (reversible and non-reversible) from both JDK and third parties,
+ * this class simply checks the method name to take a best guess to reduce false positives.
+ */
+class EncryptedSensitiveMethodCall extends MethodCall {
+  EncryptedSensitiveMethodCall() {
+    this.getMethod().getName().toLowerCase().matches(["%encrypt%", "%hash%", "%digest%"])
   }
 }

@@ -17,7 +17,7 @@ public class Test {
 
     void vulnerableFileCreateTempFile() throws IOException {
         // VULNERABLE VERSION:
-        File tempVuln = File.createTempFile("random", "file");
+        File tempVuln = File.createTempFile("random", "file"); // $ Alert
 
         // TO MAKE SAFE REWRITE TO:
         File tempSafe = Files.createTempFile("random", "file").toFile();
@@ -25,7 +25,7 @@ public class Test {
 
     void vulnerableFileCreateTempFileNull() throws IOException {
         // VULNERABLE VERSION:
-        File tempVuln = File.createTempFile("random", "file", null);
+        File tempVuln = File.createTempFile("random", "file", null); // $ Alert
 
         // TO MAKE SAFE REWRITE TO:
         File tempSafe = Files.createTempFile("random", "file").toFile();
@@ -33,10 +33,10 @@ public class Test {
 
     void vulnerableFileCreateTempFileTainted() throws IOException {
         // GIVEN:
-        File tempDir = new File(System.getProperty("java.io.tmpdir"));
+        File tempDir = new File(System.getProperty("java.io.tmpdir")); // $ Alert
 
         // VULNERABLE VERSION:
-        File tempVuln = File.createTempFile("random", "file", tempDir);
+        File tempVuln = File.createTempFile("random", "file", tempDir); // $ Sink
 
         // TO MAKE SAFE REWRITE TO (v1):
         File tempSafe1 = Files.createTempFile(tempDir.toPath(), "random", "file").toFile();
@@ -47,10 +47,10 @@ public class Test {
 
     void vulnerableFileCreateTempFileChildTainted() throws IOException {
         // GIVEN:
-        File tempDirChild = new File(new File(System.getProperty("java.io.tmpdir")), "/child");
+        File tempDirChild = new File(new File(System.getProperty("java.io.tmpdir")), "/child"); // $ Alert
 
         // VULNERABLE VERSION:
-        File tempVuln = File.createTempFile("random", "file", tempDirChild);
+        File tempVuln = File.createTempFile("random", "file", tempDirChild); // $ Sink
 
         // TO MAKE SAFE REWRITE TO:
         File tempSafe = Files.createTempFile(tempDirChild.toPath(), "random", "file").toFile();
@@ -58,10 +58,10 @@ public class Test {
 
     void vulnerableFileCreateTempFileCanonical() throws IOException {
         // GIVEN:
-        File tempDir = new File(System.getProperty("java.io.tmpdir")).getCanonicalFile();
+        File tempDir = new File(System.getProperty("java.io.tmpdir")).getCanonicalFile(); // $ Alert
 
         // VULNERABLE VERSION:
-        File tempVuln = File.createTempFile("random", "file", tempDir);
+        File tempVuln = File.createTempFile("random", "file", tempDir); // $ Sink
 
         // TO MAKE SAFE REWRITE TO (v1):
         File tempSafe1 = Files.createTempFile(tempDir.toPath(), "random", "file").toFile();
@@ -72,10 +72,10 @@ public class Test {
 
     void vulnerableFileCreateTempFileAbsolute() throws IOException {
         // GIVEN:
-        File tempDir = new File(System.getProperty("java.io.tmpdir")).getAbsoluteFile();
+        File tempDir = new File(System.getProperty("java.io.tmpdir")).getAbsoluteFile(); // $ Alert
 
         // VULNERABLE VERSION:
-        File tempVuln = File.createTempFile("random", "file", tempDir);
+        File tempVuln = File.createTempFile("random", "file", tempDir); // $ Sink
 
         // TO MAKE SAFE REWRITE TO (v1):
         File tempSafe1 = Files.createTempFile(tempDir.toPath(), "random", "file").toFile();
@@ -94,7 +94,7 @@ public class Test {
 
     void vulnerableGuavaFilesCreateTempDir() {
         // VULNERABLE VERSION:
-        File tempDir = com.google.common.io.Files.createTempDir();
+        File tempDir = com.google.common.io.Files.createTempDir(); // $ Alert
 
         // TO MAKE SAFE REWRITE TO:
         File tempSafe;
@@ -107,10 +107,10 @@ public class Test {
 
     void vulnerableFileCreateTempFileMkdirTainted() {
         // GIVEN:
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child");
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child"); // $ Alert
 
         // VULNERABLE VERSION:
-        tempDirChild.mkdir();
+        tempDirChild.mkdir(); // $ Sink
 
         // TO MAKE SAFE REWRITE TO (v1):
         File tempSafe1;
@@ -131,10 +131,10 @@ public class Test {
 
     void vulnerableFileCreateTempFileMkdirsTainted() {
         // GIVEN:
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child");
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child"); // $ Alert
         
         // VULNERABLE VERSION:
-        tempDirChild.mkdirs();
+        tempDirChild.mkdirs(); // $ Sink
 
         // TO MAKE SAFE REWRITE TO (v1):
         File tempSafe1;
@@ -155,8 +155,8 @@ public class Test {
 
     void vulnerableFileCreateTempFilesWrite1() throws IOException {
         // VULNERABLE VERSION:
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child.txt");
-        Files.write(tempDirChild.toPath(), Arrays.asList("secret"), StandardCharsets.UTF_8, StandardOpenOption.CREATE);
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child.txt"); // $ Alert
+        Files.write(tempDirChild.toPath(), Arrays.asList("secret"), StandardCharsets.UTF_8, StandardOpenOption.CREATE); // $ Sink
 
         // TO MAKE SAFE REWRITE TO (v1):
         // Use this version if you care that the file has the exact path of `[java.io.tmpdir]/child.txt`
@@ -184,8 +184,8 @@ public class Test {
         byte[] byteArrray = secret.getBytes();
         
         // VULNERABLE VERSION:
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child.txt");
-        Files.write(tempDirChild.toPath(), byteArrray, StandardOpenOption.CREATE);
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child.txt"); // $ Alert
+        Files.write(tempDirChild.toPath(), byteArrray, StandardOpenOption.CREATE); // $ Sink
         
         // TO MAKE SAFE REWRITE TO (v1):
         // Use this version if you care that the file has the exact path of `[java.io.tmpdir]/child.txt`
@@ -201,10 +201,10 @@ public class Test {
 
     void vulnerableFileCreateTempFilesNewBufferedWriter() throws IOException {
         // GIVEN:
-        Path tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-buffered-writer.txt").toPath();
+        Path tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-buffered-writer.txt").toPath(); // $ Alert
         
         // VULNERABLE VERSION:
-        Files.newBufferedWriter(tempDirChild);
+        Files.newBufferedWriter(tempDirChild); // $ Sink
 
         // TO MAKE SAFE REWRITE TO:
         Files.createFile(tempDirChild, PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)));
@@ -213,10 +213,10 @@ public class Test {
 
     void vulnerableFileCreateTempFilesNewOutputStream() throws IOException {
         // GIVEN:
-        Path tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-output-stream.txt").toPath();
+        Path tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-output-stream.txt").toPath(); // $ Alert
         
         // VULNERABLE VERSION:
-        Files.newOutputStream(tempDirChild).close();
+        Files.newOutputStream(tempDirChild).close(); // $ Sink
 
         // TO MAKE SAFE REWRITE TO:
         Files.createFile(tempDirChild, PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)));
@@ -225,10 +225,10 @@ public class Test {
 
     void vulnerableFileCreateTempFilesCreateFile() throws IOException {
         // GIVEN:
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-file.txt");
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-file.txt"); // $ Alert
         
         // VULNERABLE VERSION:
-        Files.createFile(tempDirChild.toPath());
+        Files.createFile(tempDirChild.toPath()); // $ Sink
 
         // TO MAKE SAFE REWRITE TO:
         Files.createFile(tempDirChild.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)));
@@ -246,10 +246,10 @@ public class Test {
 
     void vulnerableFileCreateDirectory() throws IOException {
         // GIVEN:
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory"); // $ Alert
 
         // VULNERABLE VERSION:
-        Files.createDirectory(tempDirChild.toPath()); // Creates with permissions 'drwxr-xr-x'
+        Files.createDirectory(tempDirChild.toPath()); // $ Sink // Creates with permissions 'drwxr-xr-x'
         
         // TO MAKE SAFE REWRITE TO:
         Files.createDirectory(tempDirChild.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)));
@@ -257,10 +257,10 @@ public class Test {
 
     void vulnerableFileCreateDirectories() throws IOException {
         // GIVEN:
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directories/child");
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directories/child"); // $ Alert
         
         // VULNERABLE VERSION:
-        Files.createDirectories(tempDirChild.toPath()); // Creates with permissions 'drwxr-xr-x'
+        Files.createDirectories(tempDirChild.toPath()); // $ Sink // Creates with permissions 'drwxr-xr-x'
 
         // TO MAKE SAFE REWRITE TO:
         Files.createDirectories(tempDirChild.toPath(), PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE)));
@@ -291,11 +291,11 @@ public class Test {
 
     void vulnerableBecauseInvertedPosixCheck() throws IOException {
         // GIVEN:
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory"); // $ Alert
 
         // Oops, this check should be inverted
         if (tempDirChild.toPath().getFileSystem().supportedFileAttributeViews().contains("posix")) {
-            Files.createDirectory(tempDirChild.toPath()); // Creates with permissions 'drwxr-xr-x'
+            Files.createDirectory(tempDirChild.toPath()); // $ Sink // Creates with permissions 'drwxr-xr-x'
         }
     }
 
@@ -310,20 +310,20 @@ public class Test {
 
     void vulnerableBecauseCheckingForNotLinux() throws IOException {
         // GIVEN:
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory"); // $ Alert
 
         if (!SystemUtils.IS_OS_LINUX) {
-            Files.createDirectory(tempDirChild.toPath());
+            Files.createDirectory(tempDirChild.toPath()); // $ Sink
         }
     }
 
     void vulnerableBecauseInvertedFileSeparatorCheck() throws IOException {
         // GIVEN:
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory"); // $ Alert
 
         // Oops, this check should be inverted
         if (File.separatorChar != '\\') {
-            Files.createDirectory(tempDirChild.toPath()); // Creates with permissions 'drwxr-xr-x'
+            Files.createDirectory(tempDirChild.toPath()); // $ Sink // Creates with permissions 'drwxr-xr-x'
         }
     }
 
@@ -347,23 +347,23 @@ public class Test {
 
     void vulnerableBecauseFileSeparatorCheckElseCase() throws IOException {
         // GIVEN:
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory"); // $ Alert
 
         if (File.separatorChar == '\\') {
             Files.createDirectory(tempDirChild.toPath()); // Safe
         } else {
-            Files.createDirectory(tempDirChild.toPath()); // Vulnerable
+            Files.createDirectory(tempDirChild.toPath()); // $ Sink // Vulnerable
         }
     }
 
     void vulnerableBecauseInvertedFileSeperatorCheckElseCase() throws IOException {
         // GIVEN:
-        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory");
+        File tempDirChild = new File(System.getProperty("java.io.tmpdir"), "/child-create-directory"); // $ Alert
 
         if (File.separatorChar != '/') {
             Files.createDirectory(tempDirChild.toPath()); // Safe
         } else {
-            Files.createDirectory(tempDirChild.toPath()); // Vulnerable
+            Files.createDirectory(tempDirChild.toPath()); // $ Sink // Vulnerable
         }
     }
 }

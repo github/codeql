@@ -9,7 +9,7 @@ module Private {
 
   class SsaVariable = SU::SsaVariable;
 
-  class SsaPhiNode = CS::Ssa::PhiNode;
+  class SsaPhiNode = CS::SsaPhiDefinition;
 
   class Expr = CS::ControlFlowNodes::ExprNode;
 

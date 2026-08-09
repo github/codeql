@@ -381,4 +381,9 @@ public class LocalDataFlow
             x = "not tainted";
         Check(x);
     }
+
+    void DefaultParamFlow(string s = "taint source")
+    {
+        Check(s);
+    }
 }

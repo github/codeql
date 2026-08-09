@@ -1,0 +1,91 @@
+if case let x = x + 10 {
+  print(x)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        expressionStmt
+          expression:
+            ifExpr
+              body:
+                codeBlock
+                  leftBrace: {
+                  rightBrace: }
+                  statements:
+                    codeBlockItem
+                      item:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: identifier "x"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "print"
+              conditions:
+                conditionElement
+                  condition:
+                    matchingPatternCondition
+                      initializer:
+                        initializerClause
+                          equal: =
+                          value:
+                            infixOperatorExpr
+                              operator:
+                                binaryOperatorExpr
+                                  operator: binaryOperator "+"
+                              leftOperand:
+                                declReferenceExpr
+                                  baseName: identifier "x"
+                              rightOperand:
+                                integerLiteralExpr
+                                  literal: integerLiteral "10"
+                      pattern:
+                        valueBindingPattern
+                          pattern:
+                            identifierPattern
+                              identifier: identifier "x"
+                          bindingSpecifier: let
+                      caseKeyword: case
+              ifKeyword: if
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        if_expr
+          condition:
+            pattern_guard_expr
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+              value:
+                binary_expr
+                  left:
+                    name_expr
+                      identifier: identifier "x"
+                  operator: infix_operator "+"
+                  right: int_literal "10"
+          then:
+            block
+              stmt:
+                call_expr
+                  callee:
+                    name_expr
+                      identifier: identifier "print"
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"

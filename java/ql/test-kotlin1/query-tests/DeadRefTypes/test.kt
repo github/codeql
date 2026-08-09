@@ -1,4 +1,4 @@
-private class C1 { }
+private class C1 { } // $ Alert
 
 private class C2 { }
 

@@ -33,7 +33,7 @@ class SimpleParameterRealImpl extends SimpleParameterImpl, TSimpleParameterReal 
 
   SimpleParameterRealImpl() { this = TSimpleParameterReal(g) }
 
-  override LocalVariable getVariableImpl() { result = TLocalVariableReal(_, _, g) }
+  override LocalVariable getVariableImpl() { result.(LocalVariableReal).getDefiningNode() = g }
 
   override string getNameImpl() { result = g.getValue() }
 }

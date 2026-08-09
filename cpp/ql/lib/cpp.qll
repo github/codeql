@@ -32,7 +32,6 @@ import semmle.code.cpp.Class
 import semmle.code.cpp.Struct
 import semmle.code.cpp.Union
 import semmle.code.cpp.Enum
-import semmle.code.cpp.Member
 import semmle.code.cpp.Field
 import semmle.code.cpp.Function
 import semmle.code.cpp.MemberFunction

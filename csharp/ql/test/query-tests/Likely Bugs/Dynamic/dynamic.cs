@@ -43,17 +43,17 @@ class Class1
         x.M5(1, new string[1]);
 
         // These are BAD:
-        x.M1(1);
-        x.M2();
-        x.M2("", 1);
-        x.M2(1, "", 2.0);
-        x.M3();
-        x.M3(1, 2, 3, 4);
-        x.M4();
-        x.M4(1, 2);
-        x.M4("");
-        x.M4(1, new object[1]);
-        x.M6();
+        x.M1(1); // $ Alert
+        x.M2(); // $ Alert
+        x.M2("", 1); // $ Alert
+        x.M2(1, "", 2.0); // $ Alert
+        x.M3(); // $ Alert
+        x.M3(1, 2, 3, 4); // $ Alert
+        x.M4(); // $ Alert
+        x.M4(1, 2); // $ Alert
+        x.M4(""); // $ Alert
+        x.M4(1, new object[1]); // $ Alert
+        x.M6(); // $ Alert
 
         // These are GOOD:
         x.M7(2);
@@ -61,8 +61,8 @@ class Class1
         x.M5(1, new string[] { "abc" }, new string[] { "def" });
 
         // These are BAD:
-        x.M7(2, "abc");
-        x.M8(1, new string[] { "abc" }, new string[] { "def" });
+        x.M7(2, "abc"); // $ Alert
+        x.M8(1, new string[] { "abc" }, new string[] { "def" }); // $ Alert
 
         // These are GOOD:
         if ("" + "" == "") ;
@@ -73,7 +73,7 @@ class Class1
         d -= 10;
 
         // These are BAD:
-        x = x + x;
+        x = x + x; // $ Alert
 
         // These are GOOD:
         dynamic d2 = GetI();
@@ -81,7 +81,7 @@ class Class1
 
         // These are BAD:
         dynamic d3 = GetI();
-        d3.M();
+        d3.M(); // $ Alert
 
         // These are GOOD
         dynamic d4 = "";

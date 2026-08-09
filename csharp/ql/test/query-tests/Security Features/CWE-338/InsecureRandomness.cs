@@ -9,9 +9,9 @@ public class InsecureRandomness
     public void RandomTest()
     {
         // BAD: Using insecure RNG to generate password
-        string password = InsecureRandomString(10);
-        password = InsecureRandomStringFromSelection(10);
-        password = InsecureRandomStringFromIndexer(10);
+        string password = InsecureRandomString(10); // $ Alert=r1
+        password = InsecureRandomStringFromSelection(10); // $ Alert=r2
+        password = InsecureRandomStringFromIndexer(10); // $ Alert=r3
         // IGNORE - do not track further than the first assignment to a tainted variable
         string passwd = password;
         // GOOD: Use cryptographically secure RNG
@@ -25,7 +25,7 @@ public class InsecureRandomness
         byte[] data = new byte[1];
         while (result.Length < length)
         {
-            data[0] = (byte)r.Next(97, 122);
+            data[0] = (byte)r.Next(97, 122); // $ Source=r1
             result.Append(new ASCIIEncoding().GetString(data));
         }
         return result.ToString();
@@ -57,7 +57,7 @@ public class InsecureRandomness
         Random r = new Random();
         while (result.Length < length)
         {
-            result += letters[r.Next(3)];
+            result += letters[r.Next(3)]; // $ Source=r2
         }
         return result.ToString();
     }
@@ -69,7 +69,7 @@ public class InsecureRandomness
         Random r = new Random();
         while (result.Length < length)
         {
-            result += letters[r.Next(3)];
+            result += letters[r.Next(3)]; // $ Source=r3
         }
         return result;
     }
@@ -77,7 +77,7 @@ public class InsecureRandomness
     public static string BiasPasswordGeneration()
     {
         // BAD: Membership.GeneratePassword generates a password with a bias
-        string password =  System.Web.Security.Membership.GeneratePassword(12, 3);
+        string password =  System.Web.Security.Membership.GeneratePassword(12, 3); // $ Alert=r4 $ Alert=r4
         return password;
     }
 

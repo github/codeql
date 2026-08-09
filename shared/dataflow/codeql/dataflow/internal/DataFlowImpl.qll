@@ -2531,36 +2531,6 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
               /** Holds if this node is a sink. */
               final predicate isSink() { this instanceof PathNodeSink }
-
-              /**
-               * Holds if this element is at the specified location.
-               * The location spans column `startcolumn` of line `startline` to
-               * column `endcolumn` of line `endline` in file `filepath`.
-               * For more information, see
-               * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-               */
-              overlay[caller?]
-              pragma[inline]
-              deprecated final predicate hasLocationInfo(
-                string filepath, int startline, int startcolumn, int endline, int endcolumn
-              ) {
-                this.getLocation()
-                    .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-              }
-
-              /**
-               * DEPRECATED: This functionality is no longer available.
-               *
-               * Holds if this node is a grouping of source nodes.
-               */
-              deprecated final predicate isSourceGroup(string group) { none() }
-
-              /**
-               * DEPRECATED: This functionality is no longer available.
-               *
-               * Holds if this node is a grouping of sink nodes.
-               */
-              deprecated final predicate isSinkGroup(string group) { none() }
             }
 
             /** Holds if `n1.getASuccessor() = n2` and `n2` can reach a sink. */

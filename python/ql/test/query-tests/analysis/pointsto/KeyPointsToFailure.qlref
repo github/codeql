@@ -1,1 +1,2 @@
-analysis/KeyPointsToFailure.ql
+query: analysis/KeyPointsToFailure.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

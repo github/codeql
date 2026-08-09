@@ -32,16 +32,23 @@
 | main.go:95:22:95:28 | initialization of wrapper | main.go:95:22:95:28 | wrapper | main.go:95:22:95:28 | argument corresponding to wrapper |
 | main.go:96:2:96:2 | assignment to x | main.go:96:2:96:2 | x | main.go:96:7:96:7 | 0 |
 | main.go:98:3:98:3 | assignment to x | main.go:96:2:96:2 | x | main.go:98:7:98:7 | 1 |
-| main.go:110:6:110:6 | assignment to p | main.go:110:6:110:6 | p | main.go:110:6:110:6 | zero value for p |
-| main.go:112:3:112:3 | assignment to p | main.go:110:6:110:6 | p | main.go:112:7:112:24 | struct literal |
-| main.go:112:9:112:9 | init of 2 | main.go:104:2:104:2 | a | main.go:112:9:112:9 | 2 |
-| main.go:112:12:112:18 | init of struct literal | main.go:105:2:105:2 | b | main.go:112:12:112:18 | struct literal |
-| main.go:112:14:112:14 | init of 1 | main.go:89:2:89:2 | a | main.go:112:14:112:14 | 1 |
-| main.go:112:17:112:17 | init of 5 | main.go:90:2:90:2 | b | main.go:112:17:112:17 | 5 |
-| main.go:112:21:112:23 | init of 'n' | main.go:106:2:106:2 | c | main.go:112:21:112:23 | 'n' |
-| main.go:114:3:114:3 | assignment to p | main.go:110:6:110:6 | p | main.go:114:7:114:24 | struct literal |
-| main.go:114:9:114:9 | init of 3 | main.go:104:2:104:2 | a | main.go:114:9:114:9 | 3 |
-| main.go:114:12:114:18 | init of struct literal | main.go:105:2:105:2 | b | main.go:114:12:114:18 | struct literal |
-| main.go:114:14:114:14 | init of 4 | main.go:89:2:89:2 | a | main.go:114:14:114:14 | 4 |
-| main.go:114:17:114:17 | init of 5 | main.go:90:2:90:2 | b | main.go:114:17:114:17 | 5 |
-| main.go:114:21:114:23 | init of '2' | main.go:106:2:106:2 | c | main.go:114:21:114:23 | '2' |
+| main.go:103:20:103:26 | initialization of wrapper | main.go:103:20:103:26 | wrapper | main.go:103:20:103:26 | argument corresponding to wrapper |
+| main.go:104:2:104:2 | assignment to x | main.go:104:2:104:2 | x | main.go:104:7:104:7 | 0 |
+| main.go:106:3:106:3 | assignment to y | main.go:106:3:106:3 | y | main.go:106:8:106:8 | x |
+| main.go:112:29:112:35 | initialization of wrapper | main.go:112:29:112:35 | wrapper | main.go:112:29:112:35 | argument corresponding to wrapper |
+| main.go:113:2:113:2 | assignment to x | main.go:113:2:113:2 | x | main.go:113:7:113:7 | 0 |
+| main.go:115:3:115:3 | assignment to y | main.go:115:3:115:3 | y | main.go:115:8:115:12 | ...+... |
+| main.go:116:3:116:3 | assignment to x | main.go:113:2:113:2 | x | main.go:116:7:116:7 | y |
+| main.go:128:6:128:6 | assignment to p | main.go:128:6:128:6 | p | main.go:128:6:128:6 | zero value for p |
+| main.go:130:3:130:3 | assignment to p | main.go:128:6:128:6 | p | main.go:130:7:130:24 | struct literal |
+| main.go:130:9:130:9 | init of 2 | main.go:122:2:122:2 | a | main.go:130:9:130:9 | 2 |
+| main.go:130:12:130:18 | init of struct literal | main.go:123:2:123:2 | b | main.go:130:12:130:18 | struct literal |
+| main.go:130:14:130:14 | init of 1 | main.go:89:2:89:2 | a | main.go:130:14:130:14 | 1 |
+| main.go:130:17:130:17 | init of 5 | main.go:90:2:90:2 | b | main.go:130:17:130:17 | 5 |
+| main.go:130:21:130:23 | init of 'n' | main.go:124:2:124:2 | c | main.go:130:21:130:23 | 'n' |
+| main.go:132:3:132:3 | assignment to p | main.go:128:6:128:6 | p | main.go:132:7:132:24 | struct literal |
+| main.go:132:9:132:9 | init of 3 | main.go:122:2:122:2 | a | main.go:132:9:132:9 | 3 |
+| main.go:132:12:132:18 | init of struct literal | main.go:123:2:123:2 | b | main.go:132:12:132:18 | struct literal |
+| main.go:132:14:132:14 | init of 4 | main.go:89:2:89:2 | a | main.go:132:14:132:14 | 4 |
+| main.go:132:17:132:17 | init of 5 | main.go:90:2:90:2 | b | main.go:132:17:132:17 | 5 |
+| main.go:132:21:132:23 | init of '2' | main.go:124:2:124:2 | c | main.go:132:21:132:23 | '2' |

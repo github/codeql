@@ -1,59 +1,5 @@
 import semmle.code.cpp.Type
 
-/** For upgraded databases without mangled name info. */
-pragma[noinline]
-private string getTopLevelClassName(@usertype c) {
-  not mangled_name(_, _, _) and
-  isClass(c) and
-  usertypes(c, result, _) and
-  not namespacembrs(_, c) and // not in a namespace
-  not member(_, _, c) and // not in some structure
-  not class_instantiation(c, _) // not a template instantiation
-}
-
-/**
- * For upgraded databases without mangled name info.
- * Holds if `d` is a unique complete class named `name`.
- */
-pragma[noinline]
-private predicate existsCompleteWithName(string name, @usertype d) {
-  not mangled_name(_, _, _) and
-  is_complete(d) and
-  name = getTopLevelClassName(d) and
-  onlyOneCompleteClassExistsWithName(name)
-}
-
-/** For upgraded databases without mangled name info. */
-pragma[noinline]
-private predicate onlyOneCompleteClassExistsWithName(string name) {
-  not mangled_name(_, _, _) and
-  strictcount(@usertype c | is_complete(c) and getTopLevelClassName(c) = name) = 1
-}
-
-/**
- * For upgraded databases without mangled name info.
- * Holds if `c` is an incomplete class named `name`.
- */
-pragma[noinline]
-private predicate existsIncompleteWithName(string name, @usertype c) {
-  not mangled_name(_, _, _) and
-  not is_complete(c) and
-  name = getTopLevelClassName(c)
-}
-
-/**
- * For upgraded databases without mangled name info.
- * Holds if `c` is an incomplete class, and there exists a unique complete class `d`
- * with the same name.
- */
-private predicate oldHasCompleteTwin(@usertype c, @usertype d) {
-  not mangled_name(_, _, _) and
-  exists(string name |
-    existsIncompleteWithName(name, c) and
-    existsCompleteWithName(name, d)
-  )
-}
-
 pragma[noinline]
 private @mangledname getClassMangledName(@usertype c) {
   isClass(c) and
@@ -103,10 +49,7 @@ private module Cached {
   @usertype resolveClass(@usertype c) {
     hasCompleteTwin(c, result)
     or
-    oldHasCompleteTwin(c, result)
-    or
     not hasCompleteTwin(c, _) and
-    not oldHasCompleteTwin(c, _) and
     result = c
   }
 

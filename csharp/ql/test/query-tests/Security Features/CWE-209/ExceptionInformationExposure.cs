@@ -16,11 +16,11 @@ public class StackTraceHandler : IHttpHandler
         catch (Exception ex)
         {
             // BAD: printing a stack trace back to the response
-            ctx.Response.Write(ex.ToString());
+            ctx.Response.Write(ex.ToString()); // $ Alert=r1 $ Alert=r1
             // BAD: implicitly printing a stack trace back to the response
-            ctx.Response.Write(ex);
+            ctx.Response.Write(ex); // $ Alert=r2 $ Alert=r2
             // BAD: writing StackTrace property to response
-            ctx.Response.Write(ex.StackTrace);
+            ctx.Response.Write(ex.StackTrace); // $ Alert=r3 $ Alert=r3
             // GOOD: writing Message property to response
             ctx.Response.Write(ex.Message);
             return;
@@ -36,15 +36,15 @@ public class StackTraceHandler : IHttpHandler
             log("Exception occurred", ex);
             ctx.Response.Write("Exception occurred");
 
-            textBox.Text = ex.InnerException.StackTrace; // BAD
-            textBox.Text = ex.StackTrace; // BAD
-            textBox.Text = ex.ToString(); // BAD
+            textBox.Text = ex.InnerException.StackTrace; // $ Alert=r4 $ Alert=r4 // BAD
+            textBox.Text = ex.StackTrace; // $ Alert=r5 $ Alert=r5 // BAD
+            textBox.Text = ex.ToString(); // $ Alert=r6 $ Alert=r6 // BAD
             textBox.Text = ex.Message; // GOOD
             return;
         }
 
         // BAD: printing a stack trace back to the response for a custom exception
-        ctx.Response.Write(new MyException().ToString());
+        ctx.Response.Write(new MyException().ToString()); // $ Alert=r7 $ Alert=r7
     }
 
     class MyException : Exception

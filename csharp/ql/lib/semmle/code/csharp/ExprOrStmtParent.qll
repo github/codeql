@@ -13,7 +13,7 @@ private import internal.Location
  * An element that can have a child statement or expression.
  */
 class ExprOrStmtParent extends Element, @exprorstmt_parent {
-  final override ControlFlowElement getChild(int i) {
+  override ControlFlowElement getChild(int i) {
     result = this.getChildExpr(i) or
     result = this.getChildStmt(i)
   }
@@ -42,14 +42,8 @@ class ExprOrStmtParent extends Element, @exprorstmt_parent {
  *
  * An element that can have a child top-level expression.
  */
-class TopLevelExprParent extends Element, @top_level_expr_parent {
+class TopLevelExprParent extends ExprOrStmtParent, @top_level_expr_parent {
   final override Expr getChild(int i) { result = this.getChildExpr(i) }
-
-  /** Gets the `i`th child expression of this element (zero-based). */
-  final Expr getChildExpr(int i) { expr_parent_top_level_adjusted(result, i, this) }
-
-  /** Gets a child expression of this element, if any. */
-  final Expr getAChildExpr() { result = this.getChildExpr(_) }
 }
 
 /** INTERNAL: Do not use. */

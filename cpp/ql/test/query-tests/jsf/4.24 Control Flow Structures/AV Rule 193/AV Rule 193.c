@@ -7,7 +7,7 @@ void m(enum color value) {
 	switch(value) {
 	case red:						// compliant
 	case green:						// compliant
-	case blue:						// non-compliant
+	case blue:						// $ Alert // non-compliant
 		f(value);
 	case cyan:						// compliant
 	case magenta:					// compliant
@@ -33,7 +33,7 @@ void m(enum color value) {
 	case green:				// COMPLIANT
 		f(value);
 		break;
-	default:				// NON-COMPLIANT
+	default:				// $ Alert // NON-COMPLIANT
 		g(value);
 	case cyan:				// COMPLIANT
 		g(value);

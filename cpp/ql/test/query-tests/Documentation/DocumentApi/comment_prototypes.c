@@ -26,12 +26,12 @@ void proto5(void) {
     int i2;
     int i3;
 }
-void proto6(void) {
+void proto6(void) { // $ Alert
     int i1;
     int i2;
     int i3;
 }
-void proto7(void) {
+void proto7(void) { // $ Alert
     int i1;
     int i2;
     int i3;
@@ -42,17 +42,17 @@ void proto8(void) {
     int i2;
     int i3;
 }
-void proto9(void) {
+void proto9(void) { // $ Alert
     int i1;
     int i2;
     int i3;
 }
-void proto10(void) {
+void proto10(void) { // $ Alert
     int i1;
     int i2;
     int i3;
 }
-void proto11(void) {
+void proto11(void) { // $ Alert
     int i1;
     int i2;
     int i3;
@@ -63,7 +63,7 @@ void proto12(void) {
     int i2;
     int i3;
 }
-void proto13(void) {
+void proto13(void) { // $ Alert
     int i1;
     int i2;
     int i3;

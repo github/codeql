@@ -1,0 +1,22 @@
+"hello"
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "hello"
+
+---
+
+top_level
+  body:
+    block
+      stmt: string_literal "\"hello\""

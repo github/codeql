@@ -29,7 +29,7 @@ class External
 
     void TestDangerousNativeFunctionCall()
     {
-        InitiateSystemShutdownExW(null, null, 0U, true, true, 2147745794U); // BUG : DangerousNativeFunctionCall
+        InitiateSystemShutdownExW(null, null, 0U, true, true, 2147745794U); // $ Alert[cs/backdoor/dangerous-native-functions] // BUG : DangerousNativeFunctionCall
     }
 
     ulong GetFvnHash(string s)
@@ -66,12 +66,12 @@ class External
 
     void TestTimeBomb()
     {
-        DateTime lastWriteTime = System.IO.File.GetLastWriteTime("someFile");
+        DateTime lastWriteTime = System.IO.File.GetLastWriteTime("someFile"); // $ Source[cs/backdoor/potential-time-bomb]
         int num = new Random().Next(288, 336);
-        if (DateTime.Now.CompareTo(lastWriteTime.AddHours((double)num)) >= 0) // BUG : Potential time bomb, currently not detected
+        if (DateTime.Now.CompareTo(lastWriteTime.AddHours((double)num)) >= 0) // $ Sink[cs/backdoor/potential-time-bomb] // BUG : Potential time bomb, currently not detected
         {
             // Some code here
-        }
+        } // $ Alert[cs/backdoor/potential-time-bomb]
     }
 
 }

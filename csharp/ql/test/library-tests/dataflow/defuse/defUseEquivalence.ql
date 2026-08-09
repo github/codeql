@@ -5,7 +5,16 @@ private import semmle.code.csharp.dataflow.internal.BaseSSA
 predicate defReaches(
   AssignableDefinition def, BaseSsa::SimpleLocalScopeVariable v, ControlFlowNode cfn
 ) {
-  def.getTarget() = v and cfn = def.getExpr().getControlFlowNode().getASuccessor()
+  def.getTarget() = v and
+  cfn =
+    [
+      def.getExpr().getControlFlowNode(),
+      def.(AssignableDefinitions::ImplicitParameterDefinition).getParameter().getControlFlowNode()
+    ].getASuccessor()
+  or
+  def.getTarget() = v and
+  cfn =
+    def.(AssignableDefinitions::ImplicitParameterDefinition).getEnclosingCallable().getEntryPoint()
   or
   exists(ControlFlowNode mid | defReaches(def, v, mid) |
     not mid =
@@ -24,8 +33,8 @@ predicate defUsePair(AssignableDefinition def, AssignableRead read) {
 }
 
 private LocalScopeVariableRead getAReachableUncertainRead(AssignableDefinition def) {
-  exists(Ssa::Definition ssaDef |
-    def = ssaDef.getAnUltimateDefinition().(Ssa::ExplicitDefinition).getADefinition()
+  exists(SsaDefinition ssaDef |
+    def = ssaDef.getAnUltimateDefinition().(SsaExplicitWrite).getDefinition()
   |
     result = ssaDef.getARead()
   )

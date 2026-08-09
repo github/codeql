@@ -1,1 +1,2 @@
-Statements/UnnecessaryElseClause.ql
+query: Statements/UnnecessaryElseClause.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

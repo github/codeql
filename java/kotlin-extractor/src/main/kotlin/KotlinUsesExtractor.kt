@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.*
-import org.jetbrains.kotlin.ir.types.addAnnotations
+import com.github.codeql.utils.versions.codeQlAddAnnotations
 import org.jetbrains.kotlin.ir.types.classFqName
 import org.jetbrains.kotlin.ir.types.classifierOrNull
 import org.jetbrains.kotlin.ir.types.classOrNull
@@ -355,7 +355,7 @@ open class KotlinUsesExtractor(
     }
 
     private fun propertySignature(p: IrProperty) =
-        ((p.getter ?: p.setter)?.extensionReceiverParameter?.let {
+        ((p.getter ?: p.setter)?.codeQlExtensionReceiverParameter?.let {
             useType(erase(it.type)).javaResult.signature
         } ?: "")
 
@@ -368,7 +368,7 @@ open class KotlinUsesExtractor(
                 // useDeclarationParent -> useFunction
                 // -> extractFunctionLaterIfExternalFileMember, which would result for `fun <T> f(t:
                 // T) { ... }` for example.
-                (listOfNotNull(d.extensionReceiverParameter) + d.valueParameters)
+                (listOfNotNull(d.codeQlExtensionReceiverParameter) + d.codeQlValueParameters)
                     .map { useType(erase(it.type)).javaResult.signature }
                     .joinToString(separator = ",", prefix = "(", postfix = ")")
             is IrProperty -> propertySignature(d) + externalClassExtractor.propertySignature
@@ -488,8 +488,8 @@ open class KotlinUsesExtractor(
             val result =
                 replacementClass.declarations.findSubType<IrSimpleFunction> { replacementDecl ->
                     replacementDecl.name == f.name &&
-                        replacementDecl.valueParameters.size == f.valueParameters.size &&
-                        replacementDecl.valueParameters.zip(f.valueParameters).all {
+                        replacementDecl.codeQlValueParameters.size == f.codeQlValueParameters.size &&
+                        replacementDecl.codeQlValueParameters.zip(f.codeQlValueParameters).all {
                             erase(it.first.type) == erase(it.second.type)
                         }
                 }
@@ -1265,7 +1265,7 @@ open class KotlinUsesExtractor(
     private fun getWildcardSuppressionDirective(t: IrAnnotationContainer): Boolean? =
         t.getAnnotation(jvmWildcardSuppressionAnnotation)?.let {
             @Suppress("USELESS_CAST") // `as? Boolean` is not needed for Kotlin < 2.1
-            (it.getValueArgument(0) as? CodeQLIrConst<Boolean>)?.value as? Boolean ?: true
+            (it.codeQlGetValueArgument(0) as? CodeQLIrConst<Boolean>)?.value as? Boolean ?: true
         }
 
     private fun addJavaLoweringArgumentWildcards(
@@ -1376,9 +1376,9 @@ open class KotlinUsesExtractor(
             f.parent,
             parentId,
             getFunctionShortName(f).nameInDB,
-            (maybeParameterList ?: f.valueParameters).map { it.type },
+            (maybeParameterList ?: f.codeQlValueParameters).map { it.type },
             getAdjustedReturnType(f),
-            f.extensionReceiverParameter?.type,
+            f.codeQlExtensionReceiverParameter?.type,
             getFunctionTypeParameters(f),
             classTypeArgsIncludingOuterClasses,
             overridesCollectionsMethodWithAlteredParameterTypes(f),
@@ -1401,12 +1401,12 @@ open class KotlinUsesExtractor(
         // The name of the function; normally f.name.asString().
         name: String,
         // The types of the value parameters that the functions takes; normally
-        // f.valueParameters.map { it.type }.
+        // f.codeQlValueParameters.map { it.type }.
         parameterTypes: List<IrType>,
         // The return type of the function; normally f.returnType.
         returnType: IrType,
         // The extension receiver of the function, if any; normally
-        // f.extensionReceiverParameter?.type.
+        // f.codeQlExtensionReceiverParameter?.type.
         extensionParamType: IrType?,
         // The type parameters of the function. This does not include type parameters of enclosing
         // classes.
@@ -1579,7 +1579,7 @@ open class KotlinUsesExtractor(
                 parentClass.fqNameWhenAvailable?.asString() !=
                     "java.util.concurrent.ConcurrentHashMap" ||
                 getFunctionShortName(f).nameInDB != "keySet" ||
-                f.valueParameters.isNotEmpty() ||
+                f.codeQlValueParameters.isNotEmpty() ||
                 f.returnType.classFqName?.asString() != "kotlin.collections.MutableSet"
         ) {
             return f.returnType
@@ -1587,7 +1587,7 @@ open class KotlinUsesExtractor(
 
         val otherKeySet =
             parentClass.declarations.findSubType<IrFunction> {
-                it.name.asString() == "keySet" && it.valueParameters.size == 1
+                it.name.asString() == "keySet" && it.codeQlValueParameters.size == 1
             } ?: return f.returnType
 
         return otherKeySet.returnType.codeQlWithHasQuestionMark(false)
@@ -1695,8 +1695,8 @@ open class KotlinUsesExtractor(
                         javaClass.declarations.findSubType<IrFunction> { decl ->
                             !decl.isFakeOverride &&
                                 decl.name.asString() == jvmName &&
-                                decl.valueParameters.size == f.valueParameters.size &&
-                                decl.valueParameters.zip(f.valueParameters).all { p ->
+                                decl.codeQlValueParameters.size == f.codeQlValueParameters.size &&
+                                decl.codeQlValueParameters.zip(f.codeQlValueParameters).all { p ->
                                     erase(p.first.type).classifierOrNull ==
                                         erase(p.second.type).classifierOrNull
                                 }
@@ -2125,7 +2125,7 @@ open class KotlinUsesExtractor(
                 }
 
                 return if (t.arguments.isNotEmpty())
-                    t.addAnnotations(listOf(RawTypeAnnotation.annotationConstructor))
+                    t.codeQlAddAnnotations(listOf(RawTypeAnnotation.annotationConstructor))
                 else t
             }
         }
@@ -2153,7 +2153,7 @@ open class KotlinUsesExtractor(
         val idxOffset =
             if (
                 declarationParent is IrFunction &&
-                    declarationParent.extensionReceiverParameter != null
+                    declarationParent.codeQlExtensionReceiverParameter != null
             )
             // For extension functions increase the index to match what the java extractor sees:
             1
@@ -2187,7 +2187,7 @@ open class KotlinUsesExtractor(
     // Gets a field's corresponding property's extension receiver type, if any
     fun getExtensionReceiverType(f: IrField) =
         f.correspondingPropertySymbol?.owner?.let {
-            (it.getter ?: it.setter)?.extensionReceiverParameter?.type
+            (it.getter ?: it.setter)?.codeQlExtensionReceiverParameter?.type
         }
 
     fun getFieldLabel(f: IrField): String {
@@ -2222,14 +2222,14 @@ open class KotlinUsesExtractor(
         val setter = p.setter
 
         val func = getter ?: setter
-        val ext = func?.extensionReceiverParameter
+        val ext = func?.codeQlExtensionReceiverParameter
 
         return if (ext == null) {
             "@\"property;{$parentId};${p.name.asString()}\""
         } else {
             val returnType =
                 getter?.returnType
-                    ?: setter?.valueParameters?.singleOrNull()?.type
+                    ?: setter?.codeQlValueParameters?.singleOrNull()?.type
                     ?: pluginContext.irBuiltIns.unitType
             val typeParams = getFunctionTypeParameters(func)
 

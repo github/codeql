@@ -6,7 +6,7 @@ struct A {
     const int int_member = 0;
     A(int n) : int_member(n) {
         if(int_member <= 10) {
-                    
+
         }
     }
 };
@@ -33,13 +33,13 @@ int extreme_values(void)
 	unsigned long long int x = 0xFFFFFFFFFFFFFFFF;
 	unsigned long long int y = 0xFFFFFFFFFFFF;
 
-	if (x >> 1 >= 0xFFFFFFFFFFFFFFFF) {} // always false
+	if (x >> 1 >= 0xFFFFFFFFFFFFFFFF) {} // $ Alert[cpp/constant-comparison] // always false
 	if (x >> 1 >= 0x8000000000000000) {} // always false [NOT DETECTED]
 	if (x >> 1 >= 0x7FFFFFFFFFFFFFFF) {} // always true [NOT DETECTED]
 	if (x >> 1 >= 0xFFFFFFFFFFFFFFF) {} // always true [NOT DETECTED]
 
-	if (y >> 1 >= 0xFFFFFFFFFFFF) {} // always false
-	if (y >> 1 >= 0x800000000000) {} // always false
-	if (y >> 1 >= 0x7FFFFFFFFFFF) {} // always true
-	if (y >> 1 >= 0xFFFFFFFFFFF) {} // always true
+	if (y >> 1 >= 0xFFFFFFFFFFFF) {} // $ Alert[cpp/constant-comparison] // always false
+	if (y >> 1 >= 0x800000000000) {} // $ Alert[cpp/constant-comparison] // always false
+	if (y >> 1 >= 0x7FFFFFFFFFFF) {} // $ Alert[cpp/constant-comparison] // always true
+	if (y >> 1 >= 0xFFFFFFFFFFF) {} // $ Alert[cpp/constant-comparison] // always true
 }

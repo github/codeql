@@ -1,3 +1,33 @@
+## 1.8.8
+
+No user-facing changes.
+
+## 1.8.7
+
+No user-facing changes.
+
+## 1.8.6
+
+No user-facing changes.
+
+## 1.8.5
+
+### Minor Analysis Improvements
+
+* The `py/modification-of-locals` query no longer flags modifications of a `locals()` dictionary that has been passed out of the scope in which `locals()` was called (for example, by passing it to another function or storing it in an instance attribute). In such cases the dictionary is used as an ordinary mapping and modifying it is meaningful, so these were false positives. The "modification has no effect" claim only applies within the scope that called `locals()`, which is now the only case reported.
+
+## 1.8.4
+
+No user-facing changes.
+
+## 1.8.3
+
+No user-facing changes.
+
+## 1.8.2
+
+No user-facing changes.
+
 ## 1.8.1
 
 ### Minor Analysis Improvements

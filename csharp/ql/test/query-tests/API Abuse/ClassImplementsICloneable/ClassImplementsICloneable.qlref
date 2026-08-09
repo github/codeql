@@ -1,1 +1,2 @@
-API Abuse/ClassImplementsICloneable.ql
+query: API Abuse/ClassImplementsICloneable.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

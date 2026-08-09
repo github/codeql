@@ -63,11 +63,31 @@ The CodeQL library for Java and Kotlin analysis exposes the following extensible
 - ``sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)``. This is used to model sources of potentially tainted data. The ``kind`` of the sources defined using this predicate determine which threat model they are associated with. Different threat models can be used to customize the sources used in an analysis. For more information, see ":ref:`Threat models <threat-models-java>`."
 - ``sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)``. This is used to model sinks where tainted data maybe used in a way that makes the code vulnerable.
 - ``summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)``. This is used to model flow through elements.
-- ``barrierModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)``. This is used to model barriers, which are elements that stop the flow of taint.
-- ``barrierGuardModel(namespace, type, subtypes, name, signature, ext, input, acceptingValue, kind, provenance)``. This is used to model barrier guards, which are elements that can stop the flow of taint depending on a conditional check.
+- ``barrierModel(package, type, subtypes, name, signature, ext, output, kind, provenance)``. This is used to model barriers, which are elements that stop the flow of taint.
+- ``barrierGuardModel(package, type, subtypes, name, signature, ext, input, acceptingValue, kind, provenance)``. This is used to model barrier guards, which are elements that can stop the flow of taint depending on a conditional check.
 - ``neutralModel(package, type, name, signature, kind, provenance)``. This is similar to a summary model but used to model the flow of values that have only a minor impact on the dataflow analysis. Manual neutral models (those with a provenance such as ``manual`` or ``ai-manual``) override generated summary models (those with a provenance such as ``df-generated``) so that the summary will be ignored. Other than that, neutral models have a slight impact on the dataflow dispatch logic, which is out of scope for this documentation.
 
 The extensible predicates are populated using the models defined in data extension files.
+
+Specifying types in Java and Kotlin models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Nested and inner classes** are denoted by joining the enclosing type and the nested type with a dollar sign (``$``), for example ``Outer$Inner``. This applies both to the type column and to nested types in a signature. For example, the ``Level`` enum nested inside the ``Logger`` interface, nested inside the ``System`` class, is written as ``System$Logger$Level``:
+
+.. code-block:: yaml
+
+   - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String)", "", "Argument[1]", "log-injection", "manual"]
+
+**Generics** are erased, so type parameters are removed:
+
+- In the type column, leave out any type parameters, so ``List<E>`` becomes ``List``.
+- In the signature, replace each type parameter with its upper bound, or ``Object`` if it has none. So ``T`` from ``<T>`` becomes ``Object``, and ``T`` from ``<T extends Number>`` becomes ``Number``.
+
+For example, ``forEach`` on ``Iterable<T>`` takes a ``Consumer<? super T>`` argument, so the type is ``Iterable`` and the signature is ``(Consumer)``:
+
+.. code-block:: yaml
+
+   - ["java.lang", "Iterable", True, "forEach", "(Consumer)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
 
 Examples of custom model definitions
 ------------------------------------

@@ -1,1 +1,2 @@
-Statements/ExecUsed.ql
+query: Statements/ExecUsed.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

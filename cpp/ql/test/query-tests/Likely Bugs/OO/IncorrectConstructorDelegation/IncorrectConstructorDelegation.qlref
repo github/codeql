@@ -1,1 +1,2 @@
-Likely Bugs/OO/IncorrectConstructorDelegation.ql
+query: Likely Bugs/OO/IncorrectConstructorDelegation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

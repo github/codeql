@@ -156,12 +156,3 @@ nodes
 | websocketXss.go:54:3:54:38 | ... := ...[1] | semmle.label | ... := ...[1] |
 | websocketXss.go:55:24:55:31 | gorilla3 | semmle.label | gorilla3 |
 subpaths
-testFailures
-| websocketXss.go:30:32:30:60 | comment | Missing result: Source[go/reflected-xss] |
-| websocketXss.go:31:11:31:14 | xnet [postupdate] | Unexpected result: Source |
-| websocketXss.go:34:30:34:58 | comment | Missing result: Source[go/reflected-xss] |
-| websocketXss.go:35:21:35:25 | xnet2 [postupdate] | Unexpected result: Source |
-| websocketXss.go:46:38:46:66 | comment | Missing result: Source[go/reflected-xss] |
-| websocketXss.go:47:26:47:35 | gorillaMsg [postupdate] | Unexpected result: Source |
-| websocketXss.go:50:33:50:61 | comment | Missing result: Source[go/reflected-xss] |
-| websocketXss.go:51:17:51:24 | gorilla2 [postupdate] | Unexpected result: Source |

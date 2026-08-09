@@ -6,11 +6,11 @@ class Test
     void f()
     {
         // BAD
-        var bad1 = (int)1;
-        var bad2 = (Test)this;
-        var bad3 = this as Test;
-        func = (Func<int, int?>)(x => x); // MISSING
-        exprFunc = (Expression<Func<int, int?>>)(x => x);
+        var bad1 = (int)1; // $ Alert
+        var bad2 = (Test)this; // $ Alert
+        var bad3 = this as Test; // $ Alert
+        func = (Func<int, int?>)(x => x); // $ MISSING: Alert
+        exprFunc = (Expression<Func<int, int?>>)(x => x); // $ Alert
 
         // GOOD
         var good1 = (object)1;
@@ -22,16 +22,16 @@ class Test
         var good7 = (Action<int>)((int x) => { });
         func = x => x;
         exprFunc = x => x;
-        exprFuncUntyped = (Expression<Func<int, int?>>)(x => x); // FP
+        exprFuncUntyped = (Expression<Func<int, int?>>)(x => x); // $ SPURIOUS: Alert
     }
 
     enum Enum
     {
         A = 2,
         B = 1 | A,
-        C = 1 | (int)A, // BAD
+        C = 1 | (int)A, // $ Alert // BAD
         D = 9 | (32 << A),
-        E = 9 | (32 << (int)A) // BAD
+        E = 9 | (32 << (int)A) // $ Alert // BAD
     }
 
     private Func<int, int?> func;

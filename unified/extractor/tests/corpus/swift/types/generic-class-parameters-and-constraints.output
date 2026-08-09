@@ -1,0 +1,94 @@
+class Box<T: Equatable, U> where U: Equatable, U == T {
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        classDecl
+          attributes:
+          name: identifier "Box"
+          genericParameterClause:
+            genericParameterClause
+              parameters:
+                genericParameter
+                  colon: :
+                  attributes:
+                  name: identifier "T"
+                  trailingComma: ,
+                  inheritedType:
+                    identifierType
+                      name: identifier "Equatable"
+                genericParameter
+                  attributes:
+                  name: identifier "U"
+              leftAngle: <
+              rightAngle: >
+          genericWhereClause:
+            genericWhereClause
+              requirements:
+                genericRequirement
+                  trailingComma: ,
+                  requirement:
+                    conformanceRequirement
+                      colon: :
+                      leftType:
+                        identifierType
+                          name: identifier "U"
+                      rightType:
+                        identifierType
+                          name: identifier "Equatable"
+                genericRequirement
+                  requirement:
+                    sameTypeRequirement
+                      equal: binaryOperator "=="
+                      leftType:
+                        identifierType
+                          name: identifier "U"
+                      rightType:
+                        identifierType
+                          name: identifier "T"
+              whereKeyword: where
+          memberBlock:
+            memberBlock
+              leftBrace: {
+              rightBrace: }
+              members:
+          modifiers:
+          classKeyword: class
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        class_like_declaration
+          modifier: modifier "class"
+          name: identifier "Box"
+          type_parameter:
+            type_parameter
+              name: identifier "T"
+              bound:
+                named_type_expr
+                  name: identifier "Equatable"
+            type_parameter
+              name: identifier "U"
+          type_constraint:
+            bound_type_constraint
+              type:
+                named_type_expr
+                  name: identifier "U"
+              bound:
+                named_type_expr
+                  name: identifier "Equatable"
+            equality_type_constraint
+              left:
+                named_type_expr
+                  name: identifier "U"
+              right:
+                named_type_expr
+                  name: identifier "T"

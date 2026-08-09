@@ -1,0 +1,79 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_rust//rust:defs.bzl", "rust_binary", "rust_library", "rust_test")
+load("//unified:platforms.bzl", "UNIFIED_SUPPORTED_PLATFORMS")
+load(":swift_runtime.bzl", "swift_runtime_libs")
+load(":xcode_transition.bzl", "xcode_transition_swift_library")
+
+package(default_visibility = ["//visibility:public"])
+
+swift_runtime_libs(
+    name = "swift_runtime_libs",
+    toolchain = "@swift_toolchain_ubuntu22.04//:files",
+)
+
+# The `$ORIGIN` runpath makes an executable look beside itself instead, so
+# we find the Swift runtime libraries we bundle with the extractor.
+cc_library(
+    name = "swift_runtime_rpath",
+    linkopts = select({
+        "@platforms//os:linux": ["-Wl,-rpath,$$ORIGIN"],
+        "//conditions:default": [],
+    }),
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
+)
+
+# Swift FFI shim: wraps swift-syntax and exposes a small C ABI.
+xcode_transition_swift_library(
+    name = "swift_syntax_ffi",
+    srcs = ["swift/Sources/SwiftSyntaxFFI/SwiftSyntaxFFI.swift"],
+    module_name = "SwiftSyntaxFFI",
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
+    deps = [
+        "@swift-syntax//:SwiftOperators",
+        "@swift-syntax//:SwiftParser",
+        "@swift-syntax//:SwiftSyntax",
+    ],
+)
+
+# Safe Rust bindings on top of the C ABI. Under Bazel the Swift side comes
+# from `:swift_syntax_ffi`.
+rust_library(
+    name = "swift_syntax_rs",
+    srcs = glob(
+        ["src/**/*.rs"],
+        exclude = ["src/main.rs"],
+    ),
+    edition = "2024",
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
+    deps = [
+        ":swift_runtime_rpath",
+        ":swift_syntax_ffi",
+    ],
+)
+
+# A debugging aid, for looking at the raw swift-syntax JSON for some input:
+#
+#     echo 'let x = 1' | bazel run //unified/swift-syntax-rs:swift-syntax-parse
+rust_binary(
+    name = "swift-syntax-parse",
+    srcs = ["src/main.rs"],
+    data = select({
+        "@platforms//os:linux": [":swift_runtime_libs"],
+        "//conditions:default": [],
+    }),
+    edition = "2024",
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
+    deps = [":swift_syntax_rs"],
+)
+
+rust_test(
+    name = "swift_syntax_rs_test",
+    size = "small",
+    crate = ":swift_syntax_rs",
+    data = select({
+        "@platforms//os:linux": [":swift_runtime_libs"],
+        "//conditions:default": [],
+    }),
+    edition = "2024",
+    target_compatible_with = UNIFIED_SUPPORTED_PLATFORMS,
+)

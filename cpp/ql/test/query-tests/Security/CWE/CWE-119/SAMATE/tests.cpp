@@ -168,8 +168,8 @@ void CWE122_Heap_Based_Buffer_Overflow__c_CWE805_char_memcpy_01_bad()
         memset(source, 'C', 100-1); /* fill with 'C's */
         source[100-1] = '\0'; /* null terminate */
         /* POTENTIAL FLAW: Possible buffer overflow if source is larger than data */
-        memcpy(data, source, 100*sizeof(char));
-        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */
+        memcpy(data, source, 100*sizeof(char)); // $ Alert[cpp/overflow-buffer]
+        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */ // $ Alert[cpp/overflow-buffer]
         printLine(data);
         free(data);
     }
@@ -189,8 +189,8 @@ void CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_01_bad()
         memset(source, 'C', 100-1); /* fill with 'C's */
         source[100-1] = '\0'; /* null terminate */
         /* POTENTIAL FLAW: Possible buffer overflow if the size of data is less than the length of source */
-        memcpy(data, source, 100*sizeof(char));
-        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */
+        memcpy(data, source, 100*sizeof(char)); // $ Alert[cpp/overflow-buffer]
+        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */ // $ Alert[cpp/overflow-buffer]
         printLine(data);
     }
 }
@@ -209,8 +209,8 @@ void CWE121_Stack_Based_Buffer_Overflow__CWE805_char_alloca_memcpy_01_bad()
         memset(source, 'C', 100-1); /* fill with 'C's */
         source[100-1] = '\0'; /* null terminate */
         /* POTENTIAL FLAW: Possible buffer overflow if the size of data is less than the length of source */
-        memcpy(data, source, 100*sizeof(char));
-        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */
+        memcpy(data, source, 100*sizeof(char)); // $ Alert[cpp/overflow-buffer]
+        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */ // $ Alert[cpp/overflow-buffer]
         printLine(data);
     }
 }
@@ -234,7 +234,7 @@ void CWE121_Stack_Based_Buffer_Overflow__CWE805_char_alloca_loop_01_bad()
         {
             data[i] = source[i];
         }
-        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */
+        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */ // $ Alert[cpp/overflow-buffer]
         printLine(data);
     }
 }
@@ -258,7 +258,7 @@ void CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_loop_01_bad()
         {
             data[i] = source[i];
         }
-        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */
+        data[100-1] = '\0'; /* Ensure the destination buffer is null terminated */ // $ Alert[cpp/overflow-buffer]
         printLine(data);
     }
 }
@@ -287,7 +287,7 @@ namespace CWE122_Heap_Based_Buffer_Overflow__cpp_CWE193_wchar_t_ncpy_01
             wchar_t source[10+1] = SRC_STRING;
             /* Copy length + 1 to include NUL terminator from source */
             /* POTENTIAL FLAW: data may not have enough space to hold source */
-            wcsncpy(data, source, wcslen(source) + 1);
+            wcsncpy(data, source, wcslen(source) + 1); // $ Alert[cpp/bad-strncpy-size]
             printWLine(data);
             delete [] data;
         }
@@ -303,7 +303,7 @@ namespace CWE122_Heap_Based_Buffer_Overflow__cpp_CWE193_wchar_t_ncpy_01
 			wchar_t source[10+1] = SRC_STRING;
 			/* Copy length + 1 to include NUL terminator from source */
 			/* POTENTIAL FLAW: data may not have enough space to hold source */
-			wcsncpy(data, source, wcslen(source) + 1); // [FALSE POSITIVE RESULT] (debatable)
+			wcsncpy(data, source, wcslen(source) + 1); // $ SPURIOUS: Alert[cpp/bad-strncpy-size] // [FALSE POSITIVE RESULT] (debatable)
 			printWLine(data);
 			delete [] data;
 		}
@@ -347,7 +347,7 @@ namespace CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_char_ncat_01
             memset(source, 'C', 100-1); /* fill with 'C's */
             source[100-1] = '\0'; /* null terminate */
             /* POTENTIAL FLAW: Possible buffer overflow if source is larger than sizeof(data)-strlen(data) */
-            strncat(data, source, 100);
+            strncat(data, source, 100); // $ Alert[cpp/badly-bounded-write]
             printLine(data);
             delete [] data;
         }
@@ -381,7 +381,7 @@ void CWE121_Stack_Based_Buffer_Overflow__CWE131_memcpy_01_bad()
     {
         int source[10] = {0};
         /* POTENTIAL FLAW: Possible buffer overflow if data was not allocated correctly in the source */
-        memcpy(data, source, 10*sizeof(int));
+        memcpy(data, source, 10*sizeof(int)); // $ Alert[cpp/overflow-buffer]
         printIntLine(data[0]);
     }
 }
@@ -431,7 +431,7 @@ void CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_wchar_t_loop_01_bad()
         {
             data[i] = source[i];
         }
-        data[100-1] = L'\0'; /* Ensure the destination buffer is null terminated */
+        data[100-1] = L'\0'; /* Ensure the destination buffer is null terminated */ // $ Alert[cpp/overflow-buffer]
         printWLine(data);
         delete [] data;
     }
@@ -449,8 +449,8 @@ void CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_wchar_t_ncpy_01_bad()
         wmemset(source, L'C', 100-1); /* fill with L'C's */
         source[100-1] = L'\0'; /* null terminate */
         /* POTENTIAL FLAW: Possible buffer overflow if source is larger than data */
-        wcsncpy(data, source, 100-1);
-        data[100-1] = L'\0'; /* Ensure the destination buffer is null terminated */
+        wcsncpy(data, source, 100-1); // $ Alert[cpp/bad-strncpy-size] Alert[cpp/badly-bounded-write]
+        data[100-1] = L'\0'; /* Ensure the destination buffer is null terminated */ // $ Alert[cpp/overflow-buffer]
         printWLine(data);
         delete [] data;
     }
@@ -478,7 +478,7 @@ void CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_wchar_t_snprintf_01_bad()
         wmemset(source, L'C', 100-1); /* fill with L'C's */
         source[100-1] = L'\0'; /* null terminate */
         /* POTENTIAL FLAW: Possible buffer overflow if source is larger than data */
-        SNPRINTF(data, 100, L"%s", source);
+        SNPRINTF(data, 100, L"%s", source); // $ Alert[cpp/badly-bounded-write]
         printWLine(data);
         delete [] data;
     }
@@ -627,7 +627,7 @@ void CWE122_Heap_Based_Buffer_Overflow__cpp_CWE805_wchar_t_snprintf_31_bad()
             wmemset(source, L'C', 100-1); /* fill with L'C's */
             source[100-1] = L'\0'; /* null terminate */
             /* POTENTIAL FLAW: Possible buffer overflow if source is larger than data */
-            SNPRINTF(data, 100, L"%s", source);
+            SNPRINTF(data, 100, L"%s", source); // $ Alert[cpp/badly-bounded-write]
             printWLine(data);
             delete [] data;
         }

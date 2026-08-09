@@ -26,7 +26,7 @@ void f() {
   int* x7 = maybe_null_func();
   if (x7) *x7 = 0;
   
-  int* x8 = maybe_null_func();
+  int* x8 = maybe_null_func(); // $ Alert
   *x8 = 0;
   
   int* x9 = maybe_null_func();

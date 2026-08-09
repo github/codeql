@@ -1,6 +1,6 @@
 
 #Bad Octal literal
-017
+017 # $ Alert
 #Good Octal literal
 0o17
 #Special case file permissions

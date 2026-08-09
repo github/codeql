@@ -303,7 +303,7 @@ _NORMAL_DEPENDENCIES = {
             "serde_json": Label("@vendor_ts__serde_json-1.0.145//:serde_json"),
             "tracing": Label("@vendor_ts__tracing-0.1.41//:tracing"),
             "tracing-subscriber": Label("@vendor_ts__tracing-subscriber-0.3.20//:tracing_subscriber"),
-            "tree-sitter": Label("@vendor_ts__tree-sitter-0.25.9//:tree_sitter"),
+            "tree-sitter": Label("@vendor_ts__tree-sitter-0.26.8//:tree_sitter"),
             "tree-sitter-embedded-template": Label("@vendor_ts__tree-sitter-embedded-template-0.25.0//:tree_sitter_embedded_template"),
             "tree-sitter-ruby": Label("@vendor_ts__tree-sitter-ruby-0.23.1//:tree_sitter_ruby"),
         },
@@ -381,8 +381,49 @@ _NORMAL_DEPENDENCIES = {
             "serde_json": Label("@vendor_ts__serde_json-1.0.145//:serde_json"),
             "tracing": Label("@vendor_ts__tracing-0.1.41//:tracing"),
             "tracing-subscriber": Label("@vendor_ts__tracing-subscriber-0.3.20//:tracing_subscriber"),
-            "tree-sitter": Label("@vendor_ts__tree-sitter-0.25.9//:tree_sitter"),
+            "tree-sitter": Label("@vendor_ts__tree-sitter-0.26.8//:tree_sitter"),
             "zstd": Label("@vendor_ts__zstd-0.13.3//:zstd"),
+        },
+    },
+    "shared/yeast": {
+        _COMMON_CONDITION: {
+            "clap": Label("@vendor_ts__clap-4.5.48//:clap"),
+            "serde": Label("@vendor_ts__serde-1.0.228//:serde"),
+            "serde_json": Label("@vendor_ts__serde_json-1.0.145//:serde_json"),
+            "serde_yaml": Label("@vendor_ts__serde_yaml-0.9.34-deprecated//:serde_yaml"),
+            "tree-sitter": Label("@vendor_ts__tree-sitter-0.26.8//:tree_sitter"),
+            "tree-sitter-python": Label("@vendor_ts__tree-sitter-python-0.23.6//:tree_sitter_python"),
+            "tree-sitter-ruby": Label("@vendor_ts__tree-sitter-ruby-0.23.1//:tree_sitter_ruby"),
+        },
+    },
+    "shared/yeast-macros": {
+        _COMMON_CONDITION: {
+            "proc-macro2": Label("@vendor_ts__proc-macro2-1.0.101//:proc_macro2"),
+            "quote": Label("@vendor_ts__quote-1.0.41//:quote"),
+            "syn": Label("@vendor_ts__syn-2.0.106//:syn"),
+        },
+    },
+    "shared/yeast-schema": {
+        _COMMON_CONDITION: {
+            "serde": Label("@vendor_ts__serde-1.0.228//:serde"),
+            "serde_json": Label("@vendor_ts__serde_json-1.0.145//:serde_json"),
+            "serde_yaml": Label("@vendor_ts__serde_yaml-0.9.34-deprecated//:serde_yaml"),
+        },
+    },
+    "unified/extractor": {
+        _COMMON_CONDITION: {
+            "clap": Label("@vendor_ts__clap-4.5.48//:clap"),
+            "encoding": Label("@vendor_ts__encoding-0.2.33//:encoding"),
+            "lazy_static": Label("@vendor_ts__lazy_static-1.5.0//:lazy_static"),
+            "rayon": Label("@vendor_ts__rayon-1.11.0//:rayon"),
+            "regex": Label("@vendor_ts__regex-1.11.3//:regex"),
+            "serde_json": Label("@vendor_ts__serde_json-1.0.145//:serde_json"),
+            "tracing": Label("@vendor_ts__tracing-0.1.41//:tracing"),
+            "tracing-subscriber": Label("@vendor_ts__tracing-subscriber-0.3.20//:tracing_subscriber"),
+        },
+    },
+    "unified/swift-syntax-rs": {
+        _COMMON_CONDITION: {
         },
     },
 }
@@ -411,6 +452,26 @@ _NORMAL_ALIASES = {
         _COMMON_CONDITION: {
         },
     },
+    "shared/yeast": {
+        _COMMON_CONDITION: {
+        },
+    },
+    "shared/yeast-macros": {
+        _COMMON_CONDITION: {
+        },
+    },
+    "shared/yeast-schema": {
+        _COMMON_CONDITION: {
+        },
+    },
+    "unified/extractor": {
+        _COMMON_CONDITION: {
+        },
+    },
+    "unified/swift-syntax-rs": {
+        _COMMON_CONDITION: {
+        },
+    },
 }
 
 _NORMAL_DEV_DEPENDENCIES = {
@@ -431,6 +492,16 @@ _NORMAL_DEV_DEPENDENCIES = {
             "tree-sitter-ql": Label("@vendor_ts__tree-sitter-ql-0.23.1//:tree_sitter_ql"),
         },
     },
+    "shared/yeast": {
+    },
+    "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
+    },
+    "unified/extractor": {
+    },
+    "unified/swift-syntax-rs": {
+    },
 }
 
 _NORMAL_DEV_ALIASES = {
@@ -448,6 +519,16 @@ _NORMAL_DEV_ALIASES = {
         _COMMON_CONDITION: {
         },
     },
+    "shared/yeast": {
+    },
+    "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
+    },
+    "unified/extractor": {
+    },
+    "unified/swift-syntax-rs": {
+    },
 }
 
 _PROC_MACRO_DEPENDENCIES = {
@@ -462,6 +543,16 @@ _PROC_MACRO_DEPENDENCIES = {
     "rust/extractor/macros": {
     },
     "shared/tree-sitter-extractor": {
+    },
+    "shared/yeast": {
+    },
+    "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
+    },
+    "unified/extractor": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -478,6 +569,16 @@ _PROC_MACRO_ALIASES = {
     },
     "shared/tree-sitter-extractor": {
     },
+    "shared/yeast": {
+    },
+    "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
+    },
+    "unified/extractor": {
+    },
+    "unified/swift-syntax-rs": {
+    },
 }
 
 _PROC_MACRO_DEV_DEPENDENCIES = {
@@ -492,6 +593,16 @@ _PROC_MACRO_DEV_DEPENDENCIES = {
     "rust/extractor/macros": {
     },
     "shared/tree-sitter-extractor": {
+    },
+    "shared/yeast": {
+    },
+    "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
+    },
+    "unified/extractor": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -510,6 +621,16 @@ _PROC_MACRO_DEV_ALIASES = {
         _COMMON_CONDITION: {
         },
     },
+    "shared/yeast": {
+    },
+    "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
+    },
+    "unified/extractor": {
+    },
+    "unified/swift-syntax-rs": {
+    },
 }
 
 _BUILD_DEPENDENCIES = {
@@ -524,6 +645,16 @@ _BUILD_DEPENDENCIES = {
     "rust/extractor/macros": {
     },
     "shared/tree-sitter-extractor": {
+    },
+    "shared/yeast": {
+    },
+    "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
+    },
+    "unified/extractor": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -540,6 +671,16 @@ _BUILD_ALIASES = {
     },
     "shared/tree-sitter-extractor": {
     },
+    "shared/yeast": {
+    },
+    "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
+    },
+    "unified/extractor": {
+    },
+    "unified/swift-syntax-rs": {
+    },
 }
 
 _BUILD_PROC_MACRO_DEPENDENCIES = {
@@ -555,6 +696,16 @@ _BUILD_PROC_MACRO_DEPENDENCIES = {
     },
     "shared/tree-sitter-extractor": {
     },
+    "shared/yeast": {
+    },
+    "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
+    },
+    "unified/extractor": {
+    },
+    "unified/swift-syntax-rs": {
+    },
 }
 
 _BUILD_PROC_MACRO_ALIASES = {
@@ -569,6 +720,16 @@ _BUILD_PROC_MACRO_ALIASES = {
     "rust/extractor/macros": {
     },
     "shared/tree-sitter-extractor": {
+    },
+    "shared/yeast": {
+    },
+    "shared/yeast-macros": {
+    },
+    "shared/yeast-schema": {
+    },
+    "unified/extractor": {
+    },
+    "unified/swift-syntax-rs": {
     },
 }
 
@@ -923,12 +1084,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__cc-1.2.37",
-        sha256 = "65193589c6404eb80b450d618eaf9a2cafaaafd57ecce47370519ef674a7bd44",
+        name = "vendor_ts__cc-1.2.61",
+        sha256 = "d16d90359e986641506914ba71350897565610e87ce0ad9e6f28569db3dd5c6d",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/cc/1.2.37/download"],
-        strip_prefix = "cc-1.2.37",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cc-1.2.37.bazel"),
+        urls = ["https://static.crates.io/crates/cc/1.2.61/download"],
+        strip_prefix = "cc-1.2.61",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.cc-1.2.61.bazel"),
     )
 
     maybe(
@@ -1373,12 +1534,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__find-msvc-tools-0.1.1",
-        sha256 = "7fd99930f64d146689264c637b5af2f0233a933bef0d8570e2526bf9e083192d",
+        name = "vendor_ts__find-msvc-tools-0.1.9",
+        sha256 = "5baebc0774151f905a1a2cc41989300b1e6fbb29aff0ceffa1064fdd3088d582",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/find-msvc-tools/0.1.1/download"],
-        strip_prefix = "find-msvc-tools-0.1.1",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.find-msvc-tools-0.1.1.bazel"),
+        urls = ["https://static.crates.io/crates/find-msvc-tools/0.1.9/download"],
+        strip_prefix = "find-msvc-tools-0.1.9",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.find-msvc-tools-0.1.9.bazel"),
     )
 
     maybe(
@@ -1519,6 +1680,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/hashbrown/0.15.5/download"],
         strip_prefix = "hashbrown-0.15.5",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.hashbrown-0.15.5.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__hashbrown-0.17.1",
+        sha256 = "ed5909b6e89a2db4456e54cd5f673791d7eca6732202bbf2a9cc504fe2f9b84a",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/hashbrown/0.17.1/download"],
+        strip_prefix = "hashbrown-0.17.1",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.hashbrown-0.17.1.bazel"),
     )
 
     maybe(
@@ -1703,12 +1874,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__indexmap-2.11.4",
-        sha256 = "4b0f83760fb341a774ed326568e19f5a863af4a952def8c39f9ab92fd95b88e5",
+        name = "vendor_ts__indexmap-2.14.0",
+        sha256 = "d466e9454f08e4a911e14806c24e16fba1b4c121d1ea474396f396069cf949d9",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/indexmap/2.11.4/download"],
-        strip_prefix = "indexmap-2.11.4",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.indexmap-2.11.4.bazel"),
+        urls = ["https://static.crates.io/crates/indexmap/2.14.0/download"],
+        strip_prefix = "indexmap-2.14.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.indexmap-2.14.0.bazel"),
     )
 
     maybe(
@@ -2913,12 +3084,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__semver-1.0.26",
-        sha256 = "56e6fa9c48d24d85fb3de5ad847117517440f6beceb7798af16b4a87d616b8d0",
+        name = "vendor_ts__semver-1.0.28",
+        sha256 = "8a7852d02fc848982e0c167ef163aaff9cd91dc640ba85e263cb1ce46fae51cd",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/semver/1.0.26/download"],
-        strip_prefix = "semver-1.0.26",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.semver-1.0.26.bazel"),
+        urls = ["https://static.crates.io/crates/semver/1.0.28/download"],
+        strip_prefix = "semver-1.0.28",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.semver-1.0.28.bazel"),
     )
 
     maybe(
@@ -3153,22 +3324,22 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__thiserror-2.0.16",
-        sha256 = "3467d614147380f2e4e374161426ff399c91084acd2363eaf549172b3d5e60c0",
+        name = "vendor_ts__thiserror-2.0.18",
+        sha256 = "4288b5bcbc7920c07a1149a35cf9590a2aa808e0bc1eafaade0b80947865fbc4",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/thiserror/2.0.16/download"],
-        strip_prefix = "thiserror-2.0.16",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thiserror-2.0.16.bazel"),
+        urls = ["https://static.crates.io/crates/thiserror/2.0.18/download"],
+        strip_prefix = "thiserror-2.0.18",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thiserror-2.0.18.bazel"),
     )
 
     maybe(
         http_archive,
-        name = "vendor_ts__thiserror-impl-2.0.16",
-        sha256 = "6c5e1be1c48b9172ee610da68fd9cd2770e7a4056cb3fc98710ee6906f0c7960",
+        name = "vendor_ts__thiserror-impl-2.0.18",
+        sha256 = "ebc4ee7f67670e9b64d05fa4253e753e016c6c95ff35b89b7941d6b856dec1d5",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/thiserror-impl/2.0.16/download"],
-        strip_prefix = "thiserror-impl-2.0.16",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thiserror-impl-2.0.16.bazel"),
+        urls = ["https://static.crates.io/crates/thiserror-impl/2.0.18/download"],
+        strip_prefix = "thiserror-impl-2.0.18",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.thiserror-impl-2.0.18.bazel"),
     )
 
     maybe(
@@ -3273,12 +3444,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__toml_parser-1.0.3",
-        sha256 = "4cf893c33be71572e0e9aa6dd15e6677937abd686b066eac3f8cd3531688a627",
+        name = "vendor_ts__toml_parser-1.1.2-spec-1.1.0",
+        sha256 = "a2abe9b86193656635d2411dc43050282ca48aa31c2451210f4202550afb7526",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/toml_parser/1.0.3/download"],
-        strip_prefix = "toml_parser-1.0.3",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.toml_parser-1.0.3.bazel"),
+        urls = ["https://static.crates.io/crates/toml_parser/1.1.2+spec-1.1.0/download"],
+        strip_prefix = "toml_parser-1.1.2+spec-1.1.0",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.toml_parser-1.1.2+spec-1.1.0.bazel"),
     )
 
     maybe(
@@ -3363,12 +3534,12 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__tree-sitter-0.25.9",
-        sha256 = "ccd2a058a86cfece0bf96f7cce1021efef9c8ed0e892ab74639173e5ed7a34fa",
+        name = "vendor_ts__tree-sitter-0.26.8",
+        sha256 = "887bd495d0582c5e3e0d8ece2233666169fa56a9644d172fc22ad179ab2d0538",
         type = "tar.gz",
-        urls = ["https://static.crates.io/crates/tree-sitter/0.25.9/download"],
-        strip_prefix = "tree-sitter-0.25.9",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tree-sitter-0.25.9.bazel"),
+        urls = ["https://static.crates.io/crates/tree-sitter/0.26.8/download"],
+        strip_prefix = "tree-sitter-0.26.8",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tree-sitter-0.26.8.bazel"),
     )
 
     maybe(
@@ -3399,6 +3570,16 @@ def crate_repositories():
         urls = ["https://static.crates.io/crates/tree-sitter-language/0.1.5/download"],
         strip_prefix = "tree-sitter-language-0.1.5",
         build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tree-sitter-language-0.1.5.bazel"),
+    )
+
+    maybe(
+        http_archive,
+        name = "vendor_ts__tree-sitter-python-0.23.6",
+        sha256 = "3d065aaa27f3aaceaf60c1f0e0ac09e1cb9eb8ed28e7bcdaa52129cffc7f4b04",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/tree-sitter-python/0.23.6/download"],
+        strip_prefix = "tree-sitter-python-0.23.6",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tree-sitter-python-0.23.6.bazel"),
     )
 
     maybe(
@@ -3963,6 +4144,16 @@ def crate_repositories():
 
     maybe(
         http_archive,
+        name = "vendor_ts__winnow-1.0.2",
+        sha256 = "2ee1708bef14716a11bae175f579062d4554d95be2c6829f518df847b7b3fdd0",
+        type = "tar.gz",
+        urls = ["https://static.crates.io/crates/winnow/1.0.2/download"],
+        strip_prefix = "winnow-1.0.2",
+        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.winnow-1.0.2.bazel"),
+    )
+
+    maybe(
+        http_archive,
         name = "vendor_ts__wit-bindgen-0.45.1",
         sha256 = "5c573471f125075647d03df72e026074b7203790d41351cd6edc96f46bcccd36",
         type = "tar.gz",
@@ -4152,13 +4343,15 @@ def crate_repositories():
         struct(repo = "vendor_ts__serde-1.0.228", is_dev_dep = False),
         struct(repo = "vendor_ts__serde_json-1.0.145", is_dev_dep = False),
         struct(repo = "vendor_ts__serde_with-3.14.1", is_dev_dep = False),
+        struct(repo = "vendor_ts__serde_yaml-0.9.34-deprecated", is_dev_dep = False),
         struct(repo = "vendor_ts__syn-2.0.106", is_dev_dep = False),
         struct(repo = "vendor_ts__toml-0.9.7", is_dev_dep = False),
         struct(repo = "vendor_ts__tracing-0.1.41", is_dev_dep = False),
         struct(repo = "vendor_ts__tracing-flame-0.2.0", is_dev_dep = False),
         struct(repo = "vendor_ts__tracing-subscriber-0.3.20", is_dev_dep = False),
-        struct(repo = "vendor_ts__tree-sitter-0.25.9", is_dev_dep = False),
+        struct(repo = "vendor_ts__tree-sitter-0.26.8", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-embedded-template-0.25.0", is_dev_dep = False),
+        struct(repo = "vendor_ts__tree-sitter-python-0.23.6", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-ruby-0.23.1", is_dev_dep = False),
         struct(repo = "vendor_ts__triomphe-0.1.14", is_dev_dep = False),
         struct(repo = "vendor_ts__ungrammar-1.16.1", is_dev_dep = False),

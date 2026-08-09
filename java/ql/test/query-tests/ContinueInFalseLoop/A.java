@@ -11,7 +11,7 @@ public class A {
 
     do {
       if (c.cond())
-        continue; // BAD
+        continue; // $ Alert // BAD
       if (c.cond())
         break;
     } while (false);
@@ -51,7 +51,7 @@ public class A {
     do {
       do {
         if (c.cond())
-          continue; // BAD
+          continue; // $ Alert // BAD
         if (c.cond())
           break;
       } while (false);
@@ -76,7 +76,7 @@ public class A {
       default:
         // do [2]
         // break out of the loop entirely, skipping [3]
-        continue; // BAD; labelled break is better
+        continue; // $ Alert // BAD; labelled break is better
       };
       // do [3]
     } while (false);

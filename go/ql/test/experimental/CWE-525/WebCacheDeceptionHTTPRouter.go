@@ -18,7 +18,7 @@ func Hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 func badHTTPRouter() {
 	router := httprouter.New()
-	router.GET("/test/*test", Index)
+	router.GET("/test/*test", Index) // $ Alert
 	router.GET("/hello/:name", Hello)
 
 	log.Fatal(http.ListenAndServe(":8082", router))

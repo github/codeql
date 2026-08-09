@@ -1,1 +1,2 @@
-experimental/Security Features/backdoor/PotentialTimeBomb.ql
+query: experimental/Security Features/backdoor/PotentialTimeBomb.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

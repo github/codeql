@@ -1,0 +1,112 @@
+func sum(_ values: Int...) -> Int {
+  return values.reduce(0, +)
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      expression:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                            labeledExpr
+                              expression:
+                                integerLiteralExpr
+                                  literal: integerLiteral "0"
+                              trailingComma: ,
+                            labeledExpr
+                              expression:
+                                declReferenceExpr
+                                  baseName: binaryOperator "+"
+                          additionalTrailingClosures:
+                          calledExpression:
+                            memberAccessExpr
+                              period: .
+                              declName:
+                                declReferenceExpr
+                                  baseName: identifier "reduce"
+                              base:
+                                declReferenceExpr
+                                  baseName: identifier "values"
+                      returnKeyword: return
+          name: identifier "sum"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "Int"
+                      ellipsis: ...
+                      firstName: _
+                      secondName: identifier "values"
+              returnClause:
+                returnClause
+                  arrow: ->
+                  type:
+                    identifierType
+                      name: identifier "Int"
+          funcKeyword: func
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          name: identifier "sum"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              type:
+                named_type_expr
+                  name: identifier "Int"
+              pattern:
+                name_pattern
+                  identifier: identifier "values"
+          return_type:
+            named_type_expr
+              name: identifier "Int"
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    call_expr
+                      callee:
+                        member_access_expr
+                          base:
+                            name_expr
+                              identifier: identifier "values"
+                          member: identifier "reduce"
+                      argument:
+                        argument
+                          value: int_literal "0"
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "+"

@@ -7,7 +7,7 @@ void f_error(void) {
 }
 
 void g_error(void) {
-    int x, y, z;
+    int x, y, z; // $ Alert
     // This one should be reported despite the error in another function.
     z = y + y;
 }

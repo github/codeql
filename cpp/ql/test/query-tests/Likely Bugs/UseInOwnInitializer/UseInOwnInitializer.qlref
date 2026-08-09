@@ -1,1 +1,2 @@
-Likely Bugs/UseInOwnInitializer.ql
+query: Likely Bugs/UseInOwnInitializer.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

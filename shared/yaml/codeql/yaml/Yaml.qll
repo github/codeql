@@ -134,6 +134,23 @@ signature module InputSig {
      */
     string getMessage();
   }
+
+  /**
+   * A base class for comments.
+   *
+   * Typically `@yaml_comment`.
+   */
+  class CommentBase extends LocatableBase {
+    /**
+     * Gets the text of this comment, not including delimiters.
+     */
+    string getText();
+
+    /**
+     * Gets a textual representation of this comment.
+     */
+    string toString();
+  }
 }
 
 /** Provides a class hierarchy for working with YAML files. */
@@ -605,6 +622,26 @@ module Make<InputSig Input> {
      * Get the string representation of this error.
      */
     string toString() { result = super.getMessage() }
+  }
+
+  /**
+   * A YAML comment.
+   *
+   * Example:
+   *
+   * ```
+   * # here is a comment
+   * ```
+   */
+  class YamlComment instanceof Input::CommentBase {
+    /** Gets the `Location` of this comment. */
+    Input::Location getLocation() { result = super.getLocation() }
+
+    /** Gets the text of this comment, not including delimiters. */
+    string getText() { result = super.getText() }
+
+    /** Gets a textual representation of this comment. */
+    string toString() { result = super.toString() }
   }
 
   /**

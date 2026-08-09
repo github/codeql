@@ -7,17 +7,17 @@ void f1(unsigned int x) {
 }
 
 void f2(unsigned int x) {
-    unsigned int y = x + 1; // BAD: 'y' is unused
-    unsigned int z = x + 2; // BAD: 'z' is unused
+    unsigned int y = x + 1; // $ Alert // BAD: 'y' is unused
+    unsigned int z = x + 2; // $ Alert // BAD: 'z' is unused
 }
 
 #define my_int int
 #define COMPLEX_MACRO do { int z = 3; } while(0)
 
 void f3() {
-  int x = 1; // BAD: 'x' is unused
-  my_int y = 2; // BAD: 'y' is unused
-  COMPLEX_MACRO; // GOOD: unused locals declared in macros are considered OK. 
+  int x = 1; // $ Alert // BAD: 'x' is unused
+  my_int y = 2; // $ Alert // BAD: 'y' is unused
+  COMPLEX_MACRO; // GOOD: unused locals declared in macros are considered OK.
 }
 
 void write_ptr(int *ptr) {
@@ -27,7 +27,7 @@ void write_ptr(int *ptr) {
 #define ZERO(x) x = 0
 
 int f4() {
-	int a, b, c, d, e, f, g, h, i, j, k, l, m, n; // BAD: 'n' is unused
+	int a, b, c, d, e, f, g, h, i, j, k, l, m, n; // $ Alert // BAD: 'n' is unused
 
 	a = b;
 	c++;
@@ -38,20 +38,20 @@ int f4() {
 	write_ptr(&g);
 	h = (i) ? (j) : (k);
 	ZERO(l);
-	
+
 	return m;
 }
 
 void f5() {
-	int x; // BAD: 'x' is unused
-	
+	int x; // $ Alert // BAD: 'x' is unused
+
 	{
 		int x;
-		
+
 		{
-			int x; // BAD: 'x' is unused
+			int x; // $ Alert // BAD: 'x' is unused
 		}
-		
+
 		x = 12;
 	}
 }
@@ -64,7 +64,7 @@ void f6() {
 	int arr2[10];
 	int arr3[10];
 	int arr4[10];
-	int arr5[10]; // BAD: 'arr5' is unused
+	int arr5[10]; // $ Alert // BAD: 'arr5' is unused
 	int *ptr;
 	int x;
 

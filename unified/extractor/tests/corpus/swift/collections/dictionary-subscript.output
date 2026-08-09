@@ -1,0 +1,60 @@
+// TODO: same parser issue as the array subscript case above —
+// `d["key"]` is parsed as `call_expression(d, ("key"))`.
+let v = d["key"]
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    subscriptCallExpr
+                      leftSquare: [
+                      rightSquare: ]
+                      arguments:
+                        labeledExpr
+                          expression:
+                            stringLiteralExpr
+                              closingQuote: "
+                              openingQuote: "
+                              segments:
+                                stringSegment
+                                  content: stringSegment "key"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        declReferenceExpr
+                          baseName: identifier "d"
+              pattern:
+                identifierPattern
+                  identifier: identifier "v"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "v"
+          value:
+            call_expr
+              callee:
+                name_expr
+                  identifier: identifier "d"
+              argument:
+                argument
+                  value: string_literal "\"key\""

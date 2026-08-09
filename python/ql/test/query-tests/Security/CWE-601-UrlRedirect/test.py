@@ -1,11 +1,11 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect # $ Source
 
 app = Flask(__name__)
 
 @app.route('/')
 def hello():
     target = request.args.get('target', '')
-    return redirect(target, code=302)
+    return redirect(target, code=302) # $ Alert
 
 
 # Check for safe prefixes
@@ -29,21 +29,21 @@ def ok2():
 def ok3():
     untrusted = request.args.get('target', '')
     safe = "https://safe.com/{}".format(untrusted)
-    return redirect(safe, code=302) # FP
+    return redirect(safe, code=302) # $ SPURIOUS: Alert # FP
 
 
 @app.route('/ok4')
 def ok4():
     untrusted = request.args.get('target', '')
     safe = f"https://safe.com/{untrusted}"
-    return redirect(safe, code=302) # FP
+    return redirect(safe, code=302) # $ SPURIOUS: Alert # FP
 
 
 @app.route('/ok5')
 def ok5():
     untrusted = request.args.get('target', '')
     safe = "https://safe.com/%s" % untrusted
-    return redirect(safe, code=302) # FP
+    return redirect(safe, code=302) # $ SPURIOUS: Alert # FP
 
 
 @app.route('/const-str-compare')
@@ -59,41 +59,41 @@ def const_str_compare():
 def not_ok1():
     untrusted = request.args.get('target', '')
     unsafe = untrusted + "?login=success"
-    return redirect(unsafe, code=302)
+    return redirect(unsafe, code=302) # $ Alert
 
 
 @app.route('/not_ok2')
 def not_ok2():
     untrusted = request.args.get('target', '')
     unsafe = "{}?login=success".format(untrusted)
-    return redirect(unsafe, code=302)
+    return redirect(unsafe, code=302) # $ Alert
 
 
 @app.route('/not_ok3')
 def not_ok3():
     untrusted = request.args.get('target', '')
     unsafe = f"{untrusted}?login=success"
-    return redirect(unsafe, code=302)
+    return redirect(unsafe, code=302) # $ Alert
 
 
 @app.route('/not_ok4')
 def not_ok4():
     untrusted = request.args.get('target', '')
     unsafe = "%s?login=success" % untrusted
-    return redirect(unsafe, code=302)
+    return redirect(unsafe, code=302) # $ Alert
 
 from django.utils.http import url_has_allowed_host_and_scheme
-import math 
+import math
 
 @app.route('/ok6')
 def ok6():
     untrusted = request.args.get('target', '')
-    # random chance. 
+    # random chance.
     if math.random() > 0.5:
-        redirect(untrusted, code=302) # NOT OK
+        redirect(untrusted, code=302) # $ Alert # NOT OK
     if url_has_allowed_host_and_scheme(untrusted, allowed_hosts=None):
         return redirect(untrusted, code=302) # OK
-    
+
     return redirect("https://example.com", code=302) # OK
 
 import yarl
@@ -111,7 +111,7 @@ def not_ok5():
     untrusted = request.args.get('target', '')
     # no backslash replace
     if not yarl.URL(untrusted).is_absolute():
-        return redirect(untrusted, code=302) # NOT OK
+        return redirect(untrusted, code=302) # $ Alert # NOT OK
     return redirect("/", code=302)
 
 from urllib.parse import urlparse
@@ -137,7 +137,7 @@ def not_ok6():
     untrusted = request.args.get('target', '')
     # no backslash replace
     if not urlparse(untrusted).netloc:
-        return redirect(untrusted, code=302) # NOT OK
+        return redirect(untrusted, code=302) # $ Alert # NOT OK
     return redirect("/", code=302)
 
 @app.route('/not_ok7')
@@ -145,7 +145,7 @@ def not_ok7():
     untrusted = request.args.get('target', '')
     # wrong check
     if urlparse(untrusted).netloc != "":
-        return redirect(untrusted, code=302) # NOT OK
+        return redirect(untrusted, code=302) # $ Alert # NOT OK
     return redirect("/", code=302)
 
 @app.route('/ok10')

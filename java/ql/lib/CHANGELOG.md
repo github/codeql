@@ -1,3 +1,59 @@
+## 9.2.3
+
+No user-facing changes.
+
+## 9.2.2
+
+### Minor Analysis Improvements
+
+* Kotlin versions up to 2.4.10 are now supported.
+* `java.io.File.getName()` is no longer treated as a complete sanitizer for `java/path-injection`, since it does not remove a `..` path component (for example `new File("..").getName()` returns `".."`). It is now only recognized as a sanitizer when combined with a subsequent check for `..` components, which may result in new alerts.
+
+## 9.2.1
+
+### Minor Analysis Improvements
+
+* Regular expression checks via annotation with `@javax.validation.constraints.Pattern` are now recognized as sanitizers for `java/path-injection`.
+* Added summary and LLM-generated source and sink models for `org.apache.poi`.
+* The first argument of the `uri` method of `WebClient$UriSpec` in `org.springframework.web.reactive.function.client` is now considered a request forgery sink. Previously only the first arguments of the `WebClient.create` and `WebClient$Builder.baseUrl` methods were considered. This may lead to more alerts for the query `java/ssrf` (Server-side request forgery).
+
+## 9.2.0
+
+### New Features
+
+* Kotlin 2.4.0 can now be analysed.
+
+### Minor Analysis Improvements
+
+* Improved modeling of Apache HttpClient `execute` method sinks for `java/ssrf` and `java/non-https-url`.
+
+## 9.1.2
+
+### Minor Analysis Improvements
+
+* Added LLM-generated source and sink models for `org.apache.avro`.
+
+## 9.1.1
+
+### Minor Analysis Improvements
+
+* Introduced a new sink kind `path-injection[read]` for Models-as-Data rows that only read from a path (such as `ClassLoader.getResource`, `FileInputStream`, `FileReader`, `Files.readAllBytes`, and related APIs). The general `java/path-injection` query continues to consider both `path-injection` and `path-injection[read]` sinks.
+
+## 9.1.0
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for Java and Kotlin](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-java-and-kotlin/).
+
+### Minor Analysis Improvements
+
+* Added `sql-injection` sink models for the Hibernate `org.hibernate.query.QueryProducer` methods `createNativeMutationQuery`, `createMutationQuery`, and `createSelectionQuery`.
+* The `java/partial-path-traversal` and `java/partial-path-traversal-from-remote` queries now correctly recognize file separator appends using `+=`.
+* The `java/path-injection` and `java/zipslip` queries now recognize `Path.toRealPath()` as a path normalization sanitizer, consistent with the existing treatment of `Path.normalize()` and `File.getCanonicalPath()`. This reduces false positives for code that uses the NIO.2 API for path canonicalization.
+* The `java/sensitive-log` query now excludes additional common variable naming patterns that do not hold sensitive data, reducing false positives. This includes pagination/iteration tokens (`nextToken`, `pageToken`, `continuationToken`), token metadata (`tokenType`, `tokenEndpoint`, `tokenCount`), and secret metadata (`secretName`, `secretId`, `secretVersion`).
+* The `java/sensitive-log` query now treats method calls whose names contain "encrypt", "hash", or "digest" as sanitizers, consistent with the existing treatment in `java/cleartext-storage-in-log`. This reduces false positives when sensitive data is hashed or encrypted before logging.
+* The `java/trust-boundary-violation` query now recognizes regular expression checks (including `String.matches()` guards and `@javax.validation.constraints.Pattern` annotations) as sanitizers, consistent with the existing treatment of ESAPI validators. This reduces false positives when input is validated against a pattern before being stored in a session.
+
 ## 9.0.4
 
 ### Minor Analysis Improvements

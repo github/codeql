@@ -28,7 +28,7 @@ int main()
 {
     // BAD: Creation of tm stuct corresponding to the beginning of Heisei era
     tm *timeTm = new tm();
-    timeTm->tm_year = 1989;
+    timeTm->tm_year = 1989; // $ Alert
     timeTm->tm_mon = 1;
     timeTm->tm_mday = 8;
 
@@ -43,7 +43,7 @@ int main()
     SYSTEMTIME st;
     st.wDay = 8;
     st.wMonth = 1;
-    st.wYear = 1989;
+    st.wYear = 1989; // $ Alert
 
 
     // GOOD: Creation of SYSTEMTIME stuct with a different date
@@ -57,7 +57,7 @@ int main()
     SYSTEMTIME st2;
     st2.wDay = 1;
     st2.wMonth = 5;
-    st2.wYear = 2019;
+    st2.wYear = 2019; // $ Alert
 
     return 0;
 }

@@ -256,9 +256,12 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
  */
 overlay[local]
 predicate isStaticmethod(Function func) {
-  exists(NameNode id | id.getId() = "staticmethod" and id.isGlobal() |
-    func.getADecorator() = id.getNode()
-  )
+  // The decorator is *syntactically* a `Name` "staticmethod" — we don't
+  // care which variable it resolves to. `staticmethod` is a builtin and
+  // is almost never shadowed in a module-level scope; even if a class
+  // redefines `staticmethod` in its body, the class body has not started
+  // executing yet at the decorator position, so Python uses the builtin.
+  func.getADecorator().(Name).getId() = "staticmethod"
 }
 
 /**
@@ -268,9 +271,9 @@ predicate isStaticmethod(Function func) {
  */
 overlay[local]
 predicate isClassmethod(Function func) {
-  exists(NameNode id | id.getId() = "classmethod" and id.isGlobal() |
-    func.getADecorator() = id.getNode()
-  )
+  // See `isStaticmethod` for the rationale for matching on the AST `Name`
+  // rather than going via the CFG and `isGlobal()`.
+  func.getADecorator().(Name).getId() = "classmethod"
   or
   exists(Class cls |
     cls.getAMethod() = func and
@@ -285,9 +288,8 @@ predicate isClassmethod(Function func) {
 /** Holds if the function `func` has a `property` decorator. */
 overlay[local]
 predicate hasPropertyDecorator(Function func) {
-  exists(NameNode id | id.getId() = "property" and id.isGlobal() |
-    func.getADecorator() = id.getNode()
-  )
+  // See `isStaticmethod` for the rationale for matching on the AST `Name`.
+  func.getADecorator().(Name).getId() = "property"
 }
 
 /**
@@ -1911,8 +1913,8 @@ abstract class ReturnNode extends Node {
 class ExtractedReturnNode extends ReturnNode, CfgNode {
   // See `TaintTrackingImplementation::returnFlowStep`
   ExtractedReturnNode() {
-    node = any(Return ret).getValue().getAFlowNode() or
-    node = any(Yield yield).getAFlowNode()
+    node.getNode() = any(Return ret).getValue() or
+    node.getNode() = any(Yield yield)
   }
 
   override ReturnKind getKind() { any() }
@@ -1930,7 +1932,7 @@ class ExtractedReturnNode extends ReturnNode, CfgNode {
 class YieldNodeInContextManagerFunction extends ReturnNode, CfgNode {
   YieldNodeInContextManagerFunction() {
     hasContextmanagerDecorator(node.getScope()) and
-    node = any(Yield yield).getValue().getAFlowNode()
+    node.getNode() = any(Yield yield).getValue()
   }
 
   override ReturnKind getKind() { any() }

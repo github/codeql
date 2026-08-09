@@ -1,6 +1,6 @@
 // Test for BadAdditionOverflowCheck.
 bool checkOverflow1(unsigned short a, unsigned short b) {
-  return (a + b < a);  // BAD: comparison always false (due to promotion).
+  return (a + b < a);  // $ Alert[cpp/bad-addition-overflow-check] // BAD: comparison always false (due to promotion).
 }
 
 // Test for BadAdditionOverflowCheck.
@@ -10,7 +10,7 @@ bool checkOverflow2(unsigned short a, unsigned short b) {
 
 // Test for PointlessSelfComparison.
 bool selfCmp1(int x) {
-  return (x == (int)x);  // BAD: always returns true.
+  return (x == (int)x);  // $ Alert[cpp/comparison-of-identical-expressions] // BAD: always returns true.
 }
 
 // Test for PointlessSelfComparison.
@@ -26,8 +26,8 @@ bool isnan(double x) {
 // Tests for ComparisonWithCancelingSubExpr.
 void cmpWithCancelingVar1(unsigned short x, unsigned short y, unsigned short z) {
   bool b;
-  b = x + y < x + z;  // BAD: x can be canceled
-  b = x + y - x < z;  // BAD: x can be canceled
+  b = x + y < x + z;  // $ Alert[cpp/comparison-canceling-subexpr] // BAD: x can be canceled
+  b = x + y - x < z;  // $ Alert[cpp/comparison-canceling-subexpr] // BAD: x can be canceled
   b = 2*x + y < 2*x + z;  // BAD: x can be canceled
   b = 3*x + y - 2*x < z + x;  // BAD: x can be canceled
   b = (-x) - (+x) < z - 2*x;  // BAD: x can be canceled
@@ -76,18 +76,18 @@ bool cmpWithCancelingVar3(int x) {
 
 bool selfCmp3(unsigned short x) {
   x++;
-  return (x == (unsigned short)x);  // BAD: always returns true.
+  return (x == (unsigned short)x);  // $ Alert[cpp/comparison-of-identical-expressions] // BAD: always returns true.
 }
 
 bool selfCmp4(int x) {
-  while (x == x) // BAD: always returns true.
+  while (x == x) // $ Alert[cpp/comparison-of-identical-expressions] // BAD: always returns true.
   {
     x = x + 1;
   }
 }
 
 bool selfCmp5(int x) {
-  while (x == x) // BAD: always returns true. [NOT DETECTED]
+  while (x == x) // $ Alert[cpp/comparison-of-identical-expressions] // BAD: always returns true. [NOT DETECTED]
   {
     x++;
   }
@@ -105,7 +105,7 @@ bool checkOverflow3(unsigned int a, unsigned short b) {
     return false;
   }
 
-  return (a + b < a);  // GOOD: b is automatically promoted to unsigned int
+  return (a + b < a);  // $ Alert[cpp/comparison-canceling-subexpr] // GOOD: b is automatically promoted to unsigned int
 }
 
 // We imagine that the next two lines come from a platform-specific header.
@@ -115,7 +115,7 @@ typedef unsigned long long size_t;
 int isSmallEnough(unsigned long long x) {
   // The cast is to the same syntactic type, and there is no macro involved.
   // That makes the cast redundant, and therefore the comparison is redundant.
-  if ((unsigned long long)x != x) { // BAD
+  if ((unsigned long long)x != x) { // $ Alert[cpp/comparison-of-identical-expressions] // BAD
     return 0;
   }
   // These comparisons are pointless on the platform where this test runs, but
@@ -148,5 +148,5 @@ void useMarkRange(int offs) {
 #define MY_MACRO(x) (x)
 
 void myMacroTest(int x) {
-	MY_MACRO(x == x); // BAD
+	MY_MACRO(x == x); // $ Alert[cpp/comparison-of-identical-expressions] // BAD
 }

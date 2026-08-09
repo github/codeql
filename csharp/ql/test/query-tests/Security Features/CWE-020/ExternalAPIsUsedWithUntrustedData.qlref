@@ -1,1 +1,1 @@
-Security Features/CWE-020/ExternalAPIsUsedWithUntrustedData.ql
+query: Security Features/CWE-020/ExternalAPIsUsedWithUntrustedData.ql

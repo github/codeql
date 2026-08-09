@@ -51,6 +51,7 @@ public interface WebClient {
 
 	interface UriSpec<S extends RequestHeadersSpec<?>> {
 		S uri(String uri, Object... uriVariables);
+		S uri(java.net.URI uri);
 	}
 
 	interface RequestBodySpec extends RequestHeadersSpec<RequestBodySpec> {

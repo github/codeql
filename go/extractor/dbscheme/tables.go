@@ -1241,4 +1241,5 @@ var TypeParamTable = NewTable("typeparam",
 	EntityColumn(CompositeType, "bound"),
 	EntityColumn(TypeParamParentObjectType, "parent"),
 	IntColumn("idx"),
-).KeySet("parent", "idx")
+	BooleanColumn("is_from_recv"),
+).KeySet("parent", "idx", "is_from_recv")

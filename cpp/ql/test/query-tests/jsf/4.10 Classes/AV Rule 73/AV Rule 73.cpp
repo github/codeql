@@ -1,7 +1,7 @@
 
 class MyClass1 {
 public:
-	MyClass1() { // BAD
+	MyClass1() { // $ Alert // BAD
 		x = 1;
 	}
 

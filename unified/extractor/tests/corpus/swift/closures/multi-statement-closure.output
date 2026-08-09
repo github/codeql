@@ -1,0 +1,140 @@
+let f = { (x: Int) -> Int in
+  let y = x + 1
+  return y * 2
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    closureExpr
+                      leftBrace: {
+                      rightBrace: }
+                      signature:
+                        closureSignature
+                          attributes:
+                          inKeyword: in
+                          parameterClause:
+                            closureParameterClause
+                              leftParen: (
+                              rightParen: )
+                              parameters:
+                                closureParameter
+                                  colon: :
+                                  attributes:
+                                  modifiers:
+                                  type:
+                                    identifierType
+                                      name: identifier "Int"
+                                  firstName: identifier "x"
+                          returnClause:
+                            returnClause
+                              arrow: ->
+                              type:
+                                identifierType
+                                  name: identifier "Int"
+                      statements:
+                        codeBlockItem
+                          item:
+                            variableDecl
+                              attributes:
+                              modifiers:
+                              bindingSpecifier: let
+                              bindings:
+                                patternBinding
+                                  initializer:
+                                    initializerClause
+                                      equal: =
+                                      value:
+                                        infixOperatorExpr
+                                          operator:
+                                            binaryOperatorExpr
+                                              operator: binaryOperator "+"
+                                          leftOperand:
+                                            declReferenceExpr
+                                              baseName: identifier "x"
+                                          rightOperand:
+                                            integerLiteralExpr
+                                              literal: integerLiteral "1"
+                                  pattern:
+                                    identifierPattern
+                                      identifier: identifier "y"
+                        codeBlockItem
+                          item:
+                            returnStmt
+                              expression:
+                                infixOperatorExpr
+                                  operator:
+                                    binaryOperatorExpr
+                                      operator: binaryOperator "*"
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "y"
+                                  rightOperand:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "2"
+                              returnKeyword: return
+              pattern:
+                identifierPattern
+                  identifier: identifier "f"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "f"
+          value:
+            function_expr
+              parameter:
+                parameter
+                  type:
+                    named_type_expr
+                      name: identifier "Int"
+                  pattern:
+                    name_pattern
+                      identifier: identifier "x"
+              return_type:
+                named_type_expr
+                  name: identifier "Int"
+              body:
+                block
+                  stmt:
+                    variable_declaration
+                      modifier: modifier "let"
+                      pattern:
+                        name_pattern
+                          identifier: identifier "y"
+                      value:
+                        binary_expr
+                          left:
+                            name_expr
+                              identifier: identifier "x"
+                          operator: infix_operator "+"
+                          right: int_literal "1"
+                    return_expr
+                      value:
+                        binary_expr
+                          left:
+                            name_expr
+                              identifier: identifier "y"
+                          operator: infix_operator "*"
+                          right: int_literal "2"

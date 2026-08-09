@@ -32,8 +32,12 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var assembly = Assembly.CreateOutputAssembly(Context);
 
-            trapFile.compilations(this, FileUtils.ConvertToUnix(cwd));
+            var path = Context.ExtractionContext.PathTransformer.Transform(cwd);
+            trapFile.compilations(this, path.Value);
             trapFile.compilation_assembly(this, assembly);
+
+            // Ensure that a `Folder` entity exists
+            Folder.Create(Context, path);
 
             // Arguments
             var expandedIndex = 0;

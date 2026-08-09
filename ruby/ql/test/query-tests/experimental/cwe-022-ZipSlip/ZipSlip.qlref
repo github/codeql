@@ -1,1 +1,2 @@
-experimental/cwe-022-zipslip/ZipSlip.ql
+query: experimental/cwe-022-zipslip/ZipSlip.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

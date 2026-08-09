@@ -12,35 +12,35 @@ public class A {
       x++;
       if (x - 1 == 2) return;
       x--;
-      if (x >= 2) unreachable(); // useless test
+      if (x >= 2) unreachable(); // $ Alert // useless test
     }
 
     if (y > 0) {
       int z = (x >= 0) ? x : y;
-      if (z < 0) unreachable(); // useless test
+      if (z < 0) unreachable(); // $ Alert // useless test
     }
 
     int k;
     while ((k = getInt()) >= 0) {
-      if (k < 0) unreachable(); // useless test
+      if (k < 0) unreachable(); // $ Alert // useless test
     }
 
     if (x > 0) {
       int z = x & y;
-      if (!(z <= x)) unreachable(); // useless test
+      if (!(z <= x)) unreachable(); // $ Alert // useless test
     }
 
     if (x % 2 == 0) {
       for (int i = 0; i < x; i+=2) {
-        if (i + 1 >= x) unreachable(); // useless test
+        if (i + 1 >= x) unreachable(); // $ Alert // useless test
       }
     }
 
     int r = new Random().nextInt(x);
-    if (r >= x) unreachable(); // useless test
+    if (r >= x) unreachable(); // $ Alert // useless test
 
-    if (x > Math.max(x, y)) unreachable(); // useless test
-    if (x < Math.min(x, y)) unreachable(); // useless test
+    if (x > Math.max(x, y)) unreachable(); // $ Alert // useless test
+    if (x < Math.min(x, y)) unreachable(); // $ Alert // useless test
 
     int w;
     if (x > 7) {
@@ -52,17 +52,17 @@ public class A {
     }
     w--;
     w -= 2;
-    if (w <= 5) unreachable(); // useless test
+    if (w <= 5) unreachable(); // $ Alert // useless test
 
     while ((w--) > 0) {
-      if (w < 0) unreachable(); // useless test
+      if (w < 0) unreachable(); // $ Alert // useless test
     }
-    if (w != -1) unreachable(); // useless test
+    if (w != -1) unreachable(); // $ Alert // useless test
 
     if (x > 20) {
       int i;
       for (i = x; i > 0; i--) { }
-      if (i != 0) unreachable(); // useless test
+      if (i != 0) unreachable(); // $ Alert // useless test
     }
 
     if (getInt() > 0) {
@@ -73,7 +73,7 @@ public class A {
       } else {
         if (z >= 4) return;
       }
-      if (z >= 4) unreachable(); // useless test
+      if (z >= 4) unreachable(); // $ Alert // useless test
     }
 
     int length = getInt();
@@ -81,11 +81,11 @@ public class A {
       int cnt = getInt();
       length -= cnt;
     }
-    for (int i = 0; i < length; ++i) { } // useless test
+    for (int i = 0; i < length; ++i) { } // $ Alert // useless test
 
     int b = getInt();
     if (b > 4) b = 8;
-    if (b > 8) unreachable(); // useless test
+    if (b > 8) unreachable(); // $ Alert // useless test
 
     int sz = getInt();
     if (0 < x && x < sz) {

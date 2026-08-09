@@ -30,6 +30,12 @@ signature module TypeFlowInput<LocationSig Location> {
   }
 
   /**
+   * Gets an identifier for node `n`, if any. When no identifier is provided for `n`,
+   * the library falls back to location-based ranking.
+   */
+  default int getTypeFlowNodeId(TypeFlowNode n) { none() }
+
+  /**
    * Holds if data can flow from `n1` to `n2` in one step.
    *
    * For a given `n2`, this predicate must include all possible `n1` that can flow to `n2`.

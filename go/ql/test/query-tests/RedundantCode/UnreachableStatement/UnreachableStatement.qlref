@@ -1,1 +1,2 @@
-RedundantCode/UnreachableStatement.ql
+query: RedundantCode/UnreachableStatement.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -14,12 +14,12 @@ import java.util.zip.ZipFile;
 class CloseWriter {
 
 	void test1() throws IOException {
-		BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\test.txt"));
+		BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\test.txt")); // $ Alert
 		bw.write("test");
 	}
 
 	void test2() throws IOException {
-		OutputStream out = new FileOutputStream("test.bin");
+		OutputStream out = new FileOutputStream("test.bin"); // $ Alert
 		out.write(1);
 	}
 
@@ -29,7 +29,7 @@ class CloseWriter {
 			// OutputStreamWriter may throw an exception, in which case the ...
 			writer = new OutputStreamWriter(
 					// ... FileOutputStream is not closed by the finally block
-					new FileOutputStream("C:\\test.txt"), "UTF-8");
+					new FileOutputStream("C:\\test.txt"), "UTF-8"); // $ Alert
 			writer.write("test");
 		}
 		finally {

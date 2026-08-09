@@ -175,6 +175,18 @@ private module ThisFlow {
     result = strictcount(int primaryParamPos | primaryConstructorThisAccess(_, bb, primaryParamPos))
   }
 
+  private module BodyNearestLocationInput implements NearestLocationInputSig {
+    class C = ControlFlowElement;
+
+    predicate relevantLocations(ControlFlowElement body, Location l1, Location l2) {
+      exists(DataFlowCallable c |
+        any(InstanceParameterNode p).isParameterOf(c, _) and
+        body = c.asCallable(l1).getBody() and
+        l2 = body.getLocation()
+      )
+    }
+  }
+
   private predicate thisAccess(Node n, BasicBlock bb, int i) {
     thisAccess(n, bb.getNode(i))
     or
@@ -183,21 +195,29 @@ private module ThisFlow {
       i = ppos - numberOfPrimaryConstructorParameters(bb)
     )
     or
-    exists(DataFlowCallable c, EntryBasicBlock entry |
-      n.(InstanceParameterNode).isParameterOf(c, _) and
-      exists(ControlFlowNode succ |
-        succ = c.getAControlFlowNode() and
-        succ = entry.getFirstNode().getASuccessor() and
+    exists(Callable c, InstanceParameterNode p, Location l |
+      p = n and
+      c = p.getCallable(l) and
+      (
         // In case `c` has multiple bodies, we want each body to gets its own implicit
-        // entry definition. In case `c` doesn't have multiple bodies, the line below
-        // is simply the same as `bb = entry`, because `entry.getFirstNode().getASuccessor()`
-        // will be in the entry block.
-        bb = succ.getBasicBlock()
-      |
-        i = -1 - numberOfPrimaryConstructorParameters(bb)
+        // entry definition.
+        exists(ControlFlowElement body |
+          body = c.getBody() and
+          bb.getANode().isBefore(body) and
+          NearestLocation<BodyNearestLocationInput>::nearestLocation(body, l, _)
+        )
         or
-        not exists(numberOfPrimaryConstructorParameters(bb)) and i = -1
+        not c.hasBody() and
+        exists(EntryBasicBlock entry, ControlFlowNode succ |
+          succ = p.getEnclosingCallableImpl().getAControlFlowNode() and
+          succ = entry.getFirstNode().getASuccessor() and
+          bb = succ.getBasicBlock()
+        )
       )
+    |
+      i = -1 - numberOfPrimaryConstructorParameters(bb)
+      or
+      not exists(numberOfPrimaryConstructorParameters(bb)) and i = -1
     )
   }
 
@@ -250,10 +270,10 @@ module VariableCapture {
   private predicate closureFlowStep(ControlFlowNodes::ExprNode e1, ControlFlowNodes::ExprNode e2) {
     e1.getExpr() = LocalFlow::getALastEvalNode(e2.getExpr())
     or
-    exists(Ssa::Definition def, AssignableDefinition adef |
+    exists(SsaDefinition def, AssignableDefinition adef |
       LocalFlow::defAssigns(adef, _, _, e1) and
-      def.getAnUltimateDefinition().(Ssa::ExplicitDefinition).getADefinition() = adef and
-      exists(def.getAReadAtNode(e2))
+      def.getAnUltimateDefinition().(SsaExplicitWrite).getDefinition() = adef and
+      def.getARead().getControlFlowNode() = e2
     )
   }
 
@@ -580,8 +600,8 @@ module LocalFlow {
     or
     ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
     or
-    exists(AssignableDefinition def, ControlFlowNode cfn, Ssa::ExplicitDefinition ssaDef |
-      ssaDef.getADefinition() = def and
+    exists(AssignableDefinition def, ControlFlowNode cfn, SsaExplicitWrite ssaDef |
+      ssaDef.getDefinition() = def and
       ssaDef.getControlFlowNode() = cfn and
       nodeFrom = TAssignableDefinitionNode(def, cfn) and
       nodeTo.(SsaDefinitionNode).getDefinition() = ssaDef
@@ -694,7 +714,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
   ) and
   model = ""
   or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom,
     nodeTo.(FlowSummaryNode).getSummaryNode(), true, model)
 }
 
@@ -918,8 +938,6 @@ private Gvn::GvnType getANonTypeParameterSubTypeRestricted(RelevantGvnType t) {
 
 /** A callable with an implicit `this` parameter. */
 private class InstanceCallable extends Callable {
-  private Location l;
-
   InstanceCallable() {
     not this.(Modifiable).isStatic() and
     // local functions and delegate capture `this` and should therefore
@@ -927,8 +945,6 @@ private class InstanceCallable extends Callable {
     not this instanceof LocalFunction and
     not this instanceof AnonymousFunctionExpr
   }
-
-  Location getARelevantLocation() { result = l }
 }
 
 /**
@@ -1019,8 +1035,7 @@ private module Cached {
     } or
     TInstanceParameterNode(InstanceCallable c, Location l) {
       c = any(DataFlowCallable dfc).asCallable(l) and
-      c instanceof CallableUsedInSource and
-      l = c.getARelevantLocation()
+      c instanceof CallableUsedInSource
     } or
     TDelegateSelfReferenceNode(Callable c) { lambdaCreationExpr(_, c) } or
     TLocalFunctionCreationNode(ControlFlowNodes::ElementNode cfn, Boolean isPostUpdate) {
@@ -1229,7 +1244,7 @@ class SsaNode extends NodeImpl, TSsaNode {
 class SsaDefinitionNode extends SsaNode {
   override SsaImpl::DataFlowIntegration::SsaDefinitionNode node;
 
-  Ssa::Definition getDefinition() { result = node.getDefinition() }
+  SsaDefinition getDefinition() { result = node.getDefinition() }
 
   override ControlFlowNode getControlFlowNodeImpl() {
     result = this.getDefinition().getControlFlowNode()
@@ -1287,12 +1302,6 @@ private module NearestLocationInputParamAfterCallable implements NearestLocation
 }
 
 private module ParameterNodes {
-  pragma[nomagic]
-  private predicate ssaParamDef(Ssa::ImplicitParameterDefinition ssaDef, Parameter p, Location l) {
-    p = ssaDef.getParameter() and
-    l = ssaDef.getLocation()
-  }
-
   private module NearestLocationInputParamBeforeCallable implements NearestLocationInputSig {
     class C = Parameter;
 
@@ -1343,11 +1352,9 @@ private module ParameterNodes {
     }
 
     /** Gets the SSA definition corresponding to this parameter, if any. */
-    Ssa::ImplicitParameterDefinition getSsaDefinition() {
-      exists(Parameter p, Location l |
-        l = this.getParameterLocation(p) and
-        ssaParamDef(result, p, l)
-      )
+    SsaParameterInit getSsaDefinition() {
+      result.getParameter() = parameter and
+      result.getBasicBlock() = callable.getABasicBlock()
     }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
@@ -1423,7 +1430,7 @@ private module ParameterNodes {
   }
 
   /** An implicit entry definition for a captured variable. */
-  class SsaCapturedEntryDefinition extends Ssa::ImplicitEntryDefinition {
+  deprecated class SsaCapturedEntryDefinition extends Ssa::ImplicitEntryDefinition {
     private LocalScopeVariable v;
 
     SsaCapturedEntryDefinition() { this.getSourceVariable().getAssignable() = v }
@@ -1598,7 +1605,7 @@ private module ReturnNodes {
 
     OutRefReturnNode() {
       exists(Parameter p |
-        this.getDefinition().isLiveOutRefParameterDefinition(p) and
+        SsaImpl::isLiveOutRefParameterDefinition(this.getDefinition(), p) and
         kind.getPosition() = p.getPosition()
       |
         p.isOut() and kind instanceof OutReturnKind
@@ -2001,12 +2008,9 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
    * SSA updates.
    */
   predicate hasNonlocalValue() {
-    exists(Ssa::Definition def, Ssa::ImplicitDefinition idef |
+    exists(SsaDefinition def |
       def.getARead() = this and
-      idef = def.getAnUltimateDefinition()
-    |
-      idef instanceof Ssa::ImplicitEntryDefinition or
-      idef instanceof Ssa::ImplicitCallDefinition
+      def.getAnUltimateDefinition() instanceof SsaImplicitWrite
     )
   }
 }
@@ -2205,12 +2209,11 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
   c instanceof ElementContent
   or
   exists(
-    ForeachStmt fs, Ssa::ExplicitDefinition def,
-    AssignableDefinitions::LocalVariableDefinition defTo
+    ForeachStmt fs, SsaExplicitWrite def, AssignableDefinitions::LocalVariableDefinition defTo
   |
     node1.asExpr() = fs.getIterableExpr() and
     defTo.getDeclaration() = fs.getVariableDeclExpr() and
-    def.getADefinition() = defTo and
+    def.getDefinition() = defTo and
     node2.(SsaDefinitionNode).getDefinition() = def and
     c instanceof ElementContent
   )

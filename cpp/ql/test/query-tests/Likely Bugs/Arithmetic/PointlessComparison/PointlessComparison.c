@@ -4,19 +4,19 @@ void myFunction1() {
 
   for (i = 0;; i = i+1) {
 
-    if (i < 20) result++;
-    if (i <= 20) result++;
-    if (i > 20) result++;
-    if (i >= 20) result++;
-    if (i == 20) result++;
-    if (i != 20) result++;
+    if (i < 20) result++; // $ Alert[cpp/constant-comparison]
+    if (i <= 20) result++; // $ Alert[cpp/constant-comparison]
+    if (i > 20) result++; // $ Alert[cpp/constant-comparison]
+    if (i >= 20) result++; // $ Alert[cpp/constant-comparison]
+    if (i == 20) result++; // $ Alert[cpp/constant-comparison]
+    if (i != 20) result++; // $ Alert[cpp/constant-comparison]
 
-    if (i < -1) result++;
-    if (i <= -1) result++;
-    if (i > -1) result++;
-    if (i >= -1) result++;
-    if (i == -1) result++;
-    if (i != -1) result++;
+    if (i < -1) result++; // $ Alert[cpp/constant-comparison]
+    if (i <= -1) result++; // $ Alert[cpp/constant-comparison]
+    if (i > -1) result++; // $ Alert[cpp/constant-comparison]
+    if (i >= -1) result++; // $ Alert[cpp/constant-comparison]
+    if (i == -1) result++; // $ Alert[cpp/constant-comparison]
+    if (i != -1) result++; // $ Alert[cpp/constant-comparison]
 
     if (i < 5) result++;
     if (i <= 5) result++;
@@ -35,19 +35,19 @@ void myFunction2() {
 
   for (i = 0;; i++) {
 
-    if (i < 20) result++;
-    if (i <= 20) result++;
-    if (i > 20) result++;
-    if (i >= 20) result++;
-    if (i == 20) result++;
-    if (i != 20) result++;
+    if (i < 20) result++; // $ Alert[cpp/constant-comparison]
+    if (i <= 20) result++; // $ Alert[cpp/constant-comparison]
+    if (i > 20) result++; // $ Alert[cpp/constant-comparison]
+    if (i >= 20) result++; // $ Alert[cpp/constant-comparison]
+    if (i == 20) result++; // $ Alert[cpp/constant-comparison]
+    if (i != 20) result++; // $ Alert[cpp/constant-comparison]
 
-    if (i < -1) result++;
-    if (i <= -1) result++;
-    if (i > -1) result++;
-    if (i >= -1) result++;
-    if (i == -1) result++;
-    if (i != -1) result++;
+    if (i < -1) result++; // $ Alert[cpp/constant-comparison]
+    if (i <= -1) result++; // $ Alert[cpp/constant-comparison]
+    if (i > -1) result++; // $ Alert[cpp/constant-comparison]
+    if (i >= -1) result++; // $ Alert[cpp/constant-comparison]
+    if (i == -1) result++; // $ Alert[cpp/constant-comparison]
+    if (i != -1) result++; // $ Alert[cpp/constant-comparison]
 
     if (i < 5) result++;
     if (i <= 5) result++;
@@ -62,7 +62,7 @@ void myFunction2() {
 
 int myFunction3(int i) {
   if (i < 4) {
-    if (i < 5) {
+    if (i < 5) { // $ Alert[cpp/constant-comparison]
       return 1;
     }
   }
@@ -100,11 +100,11 @@ int myFunction4() {
 
 // Pointless checks for unsigned values being negative
 int unsignedBounds(unsigned int a, unsigned long b, unsigned long long c) {
-  if (a < 0) {
+  if (a < 0) { // $ Alert[cpp/constant-comparison]
     return 1;
   }
-  if (b >= 0) { // UnsignedGEZero
-    if (b > 0 && c < 0) { // Only the test of c is bad here
+  if (b >= 0) { // $ Alert[cpp/unsigned-comparison-zero] // UnsignedGEZero
+    if (b > 0 && c < 0) { // $ Alert[cpp/constant-comparison] // Only the test of c is bad here
       return 1;
     }
   }
@@ -113,20 +113,20 @@ int unsignedBounds(unsigned int a, unsigned long b, unsigned long long c) {
 
 int twoReasons(int a, int b) {
   if (a <= 0 && b > 5) {
-    return a < b;
+    return a < b; // $ Alert[cpp/constant-comparison]
   }
   if (a <= 100 && b > 105) { // BUG [Not detected - this clause is always false]
-    return a > b;
+    return a > b; // $ Alert[cpp/constant-comparison]
   }
   return 0;
 }
 
 int repeatedComparisons(int a) {
   if (a >= 20) {
-    return a >= 20;
+    return a >= 20; // $ Alert[cpp/constant-comparison]
   }
   if (a <= 3) {
-    return a > 3;
+    return a > 3; // $ Alert[cpp/constant-comparison]
   }
   return 0;
 }
@@ -194,7 +194,7 @@ int myFunction5(int x) {
     i++;
   }
   d = i;
-  if (x < 0) {  // Comparison is always false.
+  if (x < 0) {  // $ Alert[cpp/constant-comparison] // Comparison is always false.
     if (d > -x) {  // Unreachable code.
       return 1;
     }
@@ -239,7 +239,7 @@ void macroExpansionTest() {
   int x;
 
   MAYBE_DO(x = 1); // GOOD (the problem is in the macro)
-  MAYBE_DO(if (global_setting >= 0) {x = 2;}); // BAD (the problem is in the invocation)
+  MAYBE_DO(if (global_setting >= 0) {x = 2;}); // $ Alert[cpp/unsigned-comparison-zero] // BAD (the problem is in the invocation)
 }
 
 int overeager_wraparound(unsigned int u32bound, unsigned long long u64bound) {
@@ -247,12 +247,12 @@ int overeager_wraparound(unsigned int u32bound, unsigned long long u64bound) {
   unsigned long long u64idx;
 
   for (u32idx = 1; u32idx < u32bound; u32idx++) {
-    if (u32idx == 0) // BAD [NOT DETECTED]
+    if (u32idx == 0) // $ MISSING: Alert // BAD [NOT DETECTED]
       return 0;
   }
 
   for (u64idx = 1; u64idx < u64bound; u64idx++) {
-    if (u64idx == 0) // BAD [NOT DETECTED]
+    if (u64idx == 0) // $ MISSING: Alert // BAD [NOT DETECTED]
       return 0;
   }
 
@@ -261,7 +261,7 @@ int overeager_wraparound(unsigned int u32bound, unsigned long long u64bound) {
 
 int negative_zero(double dbl) {
   if (dbl >= 0) {
-    return dbl >= -dbl; // GOOD [FALSE POSITIVE]
+    return dbl >= -dbl; // $ SPURIOUS: Alert[cpp/constant-comparison] // GOOD [FALSE POSITIVE]
   }
   return 0;
 }
@@ -270,7 +270,7 @@ typedef unsigned char u8;
 
 int widening_cast1(u8 c) {
   if (c == 0) {
-    if ((int)c > 0) { // BAD
+    if ((int)c > 0) { // $ Alert[cpp/constant-comparison] // BAD
       return 1;
     }
   }
@@ -280,7 +280,7 @@ int widening_cast1(u8 c) {
 int widening_cast2(u8 c) {
   if (c <= 10)
     return -1;
-  else if ((c >= 11) /* BAD */ && (c <= 47))
+  else if ((c >= 11) /* BAD */ && (c <= 47)) // $ Alert[cpp/constant-comparison]
     return 0;
   else
     return 1;
@@ -291,7 +291,7 @@ int unsigned_implicit_conversion(unsigned int ui1) {
   // implicit signedness conversion is on the constants (0 and 5), not on the
   // variables (ui1).
   if (ui1 == 0) {
-    if (ui1 >= 5) { // BAD
+    if (ui1 >= 5) { // $ Alert[cpp/constant-comparison] // BAD
       return 1;
     }
   }
@@ -300,7 +300,7 @@ int unsigned_implicit_conversion(unsigned int ui1) {
 
 int signedness_cast1(u8 c) {
   if ((signed char)c == 0) {
-    if (c >= 5) { // BAD
+    if (c >= 5) { // $ Alert[cpp/constant-comparison] // BAD
       return 1;
     }
   }
@@ -309,7 +309,7 @@ int signedness_cast1(u8 c) {
 
 int signedness_cast2(signed char c) {
   if ((u8)c == 0) {
-    if (c >= 5) { // BAD
+    if (c >= 5) { // $ Alert[cpp/constant-comparison] // BAD
       return 1;
     }
   }
@@ -334,7 +334,7 @@ int nan2(double x) {
     if (x < 0.0) {
       return 100;
     }
-    else if (x >= 0.0) { // BAD [Always true]
+    else if (x >= 0.0) { // $ Alert[cpp/constant-comparison] // BAD [Always true]
       return 200;
     }
     else {
@@ -369,8 +369,8 @@ void shifts(void)
 {
 	unsigned int x = 3;
 
-	if (x >> 1 >= 1) {} // always true
-	if (x >> 1 >= 2) {} // always false
+	if (x >> 1 >= 1) {} // $ Alert[cpp/constant-comparison] // always true
+	if (x >> 1 >= 2) {} // $ Alert[cpp/constant-comparison] // always false
 	if (x >> 1 == 1) {} // always true [NOT DETECTED]
 }
 
@@ -380,15 +380,15 @@ void bitwise_ands()
 
 	if ((x & 2) >= 1) {}
 	if ((x & 2) >= 2) {}
-	if ((x & 2) >= 3) {} // always false
+	if ((x & 2) >= 3) {} // $ Alert[cpp/constant-comparison] // always false
 }
 
 void unsigned_mult(unsigned int x, unsigned int y) {
   if(x < 13 && y < 35) {
-      if(x * y > 1024) {} // always false
+      if(x * y > 1024) {} // $ Alert[cpp/constant-comparison] // always false
       if(x * y < 204) {}
       if(x >= 3 && y >= 2) {
-        if(x * y < 5) {} // always false
+        if(x * y < 5) {} // $ Alert[cpp/constant-comparison] // always false
       }
   }
 }
@@ -411,7 +411,7 @@ void mult_overflow() {
   // to 64-bit unsigned.
   x = 274177UL;
   y = 67280421310721UL;
-  if (x * y == 1) {} // always true [BUG: reported as always false]
+  if (x * y == 1) {} // $ Alert[cpp/constant-comparison] // always true [BUG: reported as always false]
 
   // This bug appears to be caused by
   // `RangeAnalysisUtils::typeUpperBound(unsigned long)` having a result of

@@ -1,0 +1,2 @@
+query: ResultNode.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

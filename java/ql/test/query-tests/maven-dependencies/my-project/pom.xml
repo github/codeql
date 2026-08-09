@@ -18,16 +18,16 @@
       <groupId>com.semmle</groupId>
       <artifactId>another-project</artifactId>
       <version>${project.version}</version>
-    </dependency>
+    </dependency> <!-- $ Alert[java/unused-maven-source-dependency] -->
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
 
-    </dependency>
+    </dependency> <!-- $ Alert[java/unused-maven-binary-dependency] -->
     <dependency>
       <groupId>semmle-test</groupId>
       <artifactId>semmle-test</artifactId>
       <version>1.0</version>
-    </dependency>
+    </dependency> <!-- $ Alert[java/unused-maven-binary-dependency] -->
   </dependencies>
 </project>

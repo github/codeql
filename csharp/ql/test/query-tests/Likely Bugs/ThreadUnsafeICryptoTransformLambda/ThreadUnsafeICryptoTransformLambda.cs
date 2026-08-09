@@ -23,7 +23,7 @@ class DirectUsagePositiveCase
 
         // BUG expected
         var threads = Enumerable.Range(0, threadCount)
-                                .Select(_ => new ThreadStart(start))
+                                .Select(_ => new ThreadStart(start)) // $ Alert
                                 .Select(x => new Thread(x))
                                 .ToList();
         foreach (var t in threads) t.Start();
@@ -85,7 +85,7 @@ class IndirectUsagePositiveCase
             }
         };
         var threads = Enumerable.Range(0, threadCount)
-                                .Select(_ => new ThreadStart(start))
+                                .Select(_ => new ThreadStart(start)) // $ Alert
                                 .Select(x => new Thread(x))
                                 .ToList();
         foreach (var t in threads) t.Start();
@@ -143,12 +143,12 @@ class ParallelInvoke
                 {
                     var bytes = new byte[4];
                     Convert.ToBase64String(sha1.ComputeHash(bytes));
-                },
+                }, // $ Alert
                 () =>
                 {
                     var bytes = new byte[4];
                     Convert.ToBase64String(sha1.ComputeHash(bytes));
-                }
+                } // $ Alert
             );
 
         }

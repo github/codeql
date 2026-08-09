@@ -11,8 +11,8 @@ public class Test {
     // BAD: compare MACs using a not-constant time method
     public boolean unsafeMacCheck(byte[] expectedMac, byte[] data) throws Exception {
         Mac mac = Mac.getInstance("HmacSHA256");
-        byte[] actualMac = mac.doFinal(data);
-        return Arrays.equals(expectedMac, actualMac);
+        byte[] actualMac = mac.doFinal(data); // $ Source
+        return Arrays.equals(expectedMac, actualMac); // $ Alert
     }
 
     // GOOD: compare MACs using a constant time method
@@ -27,8 +27,8 @@ public class Test {
         Signature engine = Signature.getInstance("SHA256withRSA");
         engine.initSign(key);
         engine.update(data);
-        byte[] signature = engine.sign();
-        return Arrays.equals(expected, signature);
+        byte[] signature = engine.sign(); // $ Source
+        return Arrays.equals(expected, signature); // $ Alert
     }
 
     // GOOD: compare signatures using a constant time method
@@ -44,8 +44,8 @@ public class Test {
     public boolean unsafeCheckCustomMac(byte[] expected, byte[] plaintext, Key key) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] tag = cipher.doFinal(plaintext);
-        return Arrays.equals(expected, tag);
+        byte[] tag = cipher.doFinal(plaintext); // $ Source
+        return Arrays.equals(expected, tag); // $ Alert
     }
 
     // GOOD: compare ciphertexts using a constant time method

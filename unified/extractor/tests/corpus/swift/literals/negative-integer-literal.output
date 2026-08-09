@@ -1,0 +1,24 @@
+-7
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        prefixOperatorExpr
+          expression:
+            integerLiteralExpr
+              literal: integerLiteral "7"
+          operator: prefixOperator "-"
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        unary_expr
+          operand: int_literal "7"
+          operator: prefix_operator "-"

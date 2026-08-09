@@ -1,5 +1,5 @@
 # BAD, do not start class or interface name with lowercase letter
-class badName:
+class badName: # $ Alert
 
     def hello(self):
         print("hello")

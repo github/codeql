@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             else
             {
                 // Type conversion
-                OperatorCall(trapFile, Syntax);
+                AddOperatorCall(trapFile, Syntax);
                 TypeMention.Create(Context, Syntax.Type, this, Type);
             }
         }

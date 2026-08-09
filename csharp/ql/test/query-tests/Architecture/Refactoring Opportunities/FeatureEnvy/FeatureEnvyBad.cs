@@ -13,7 +13,7 @@ class Bad
 
     class Basket
     {
-        decimal GetTotalPrice(Item i)
+        decimal GetTotalPrice(Item i) // $ Alert
         {
             if (i.IsOutOfStock)
                 throw new Exception("Item ${i} is out of stock.");

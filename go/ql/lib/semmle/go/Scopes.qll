@@ -1,7 +1,7 @@
 /**
  * Provides classes for working with scopes and declared objects.
  */
-overlay[local]
+overlay[local?]
 module;
 
 import go
@@ -418,6 +418,7 @@ class Function extends ValueEntity, @functionobject {
    * This includes calls that target this function indirectly, by calling an
    * interface method that this function implements.
    */
+  overlay[global]
   pragma[nomagic]
   DataFlow::CallNode getACall() { this = result.getACalleeIncludingExternals().asFunction() }
 

@@ -2,7 +2,7 @@
 
 <html>
 <body>
-<% If ShouldWarn() Then %>
+<% If ShouldWarn() Then %> <%-- $ Alert[cs/asp/split-control-structure] --%>
 <p>WARNING: <%=warning()%></p>
 <% End If %>
 </body>

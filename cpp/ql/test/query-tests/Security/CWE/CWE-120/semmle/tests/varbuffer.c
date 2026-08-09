@@ -12,16 +12,16 @@ void testMyVarStruct()
     MyVarStruct *ptr1 = (MyVarStruct*)malloc(sizeof(MyVarStruct));
     ptr1->len = 0;
     strcpy(ptr1->buffer, ""); // GOOD
-    strcpy(ptr1->buffer, "1"); // BAD: length 2, but destination only has length 1
-    strcpy(ptr1->buffer, "123456789"); // BAD: length 10, but destination only has length 1
+    strcpy(ptr1->buffer, "1"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: length 2, but destination only has length 1
+    strcpy(ptr1->buffer, "123456789"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: length 10, but destination only has length 1
     // ...
 
     MyVarStruct *ptr2 = (MyVarStruct*)malloc(sizeof(MyVarStruct) + (sizeof(char) * 10));
     ptr2->len = 10;
     strcpy(ptr2->buffer, "123456789"); // GOOD
     strcpy(ptr2->buffer, "1234567890"); // GOOD
-    strcpy(ptr2->buffer, "1234567890a"); // BAD: length 12, but destination only has length 11
-    strcpy(ptr2->buffer, "1234567890abcdef"); // BAD: length 17, but destination only has length 11
+    strcpy(ptr2->buffer, "1234567890a"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: length 12, but destination only has length 11
+    strcpy(ptr2->buffer, "1234567890abcdef"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: length 17, but destination only has length 11
     // ...
 }
 
@@ -36,14 +36,14 @@ void testMyFixedStruct()
     ptr1->len = 1;
     strcpy(ptr1->buffer, ""); // GOOD
     strcpy(ptr1->buffer, "1"); // GOOD
-    strcpy(ptr1->buffer, "12"); // BAD: length 3, but destination only has length 2
-    strcpy(ptr1->buffer, "123456789"); // BAD: length 10, but destination only has length 2
+    strcpy(ptr1->buffer, "12"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: length 3, but destination only has length 2
+    strcpy(ptr1->buffer, "123456789"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: length 10, but destination only has length 2
     // ...
 
     MyFixedStruct1 *ptr2 = (MyFixedStruct1*)malloc(sizeof(MyFixedStruct1) + (sizeof(char) * 10));
     ptr2->len = 11;
-    strcpy(ptr2->buffer, "123456789"); // BAD / DUBIOUS: length 10, but destination only has length 2
-    strcpy(ptr2->buffer, "1234567890abcdef"); // BAD: length 17, but destination only has length 2
+    strcpy(ptr2->buffer, "123456789"); // $ Alert[cpp/very-likely-overrunning-write] // BAD / DUBIOUS: length 10, but destination only has length 2
+    strcpy(ptr2->buffer, "1234567890abcdef"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: length 17, but destination only has length 2
     // ...
 }
 
@@ -57,13 +57,13 @@ void testMyFixedStruct2()
     MyFixedStruct2 *ptr1 = (MyFixedStruct2 *)malloc(sizeof(MyFixedStruct2));
     ptr1->len = 1;
     strcpy(ptr1->buffer, ""); // GOOD
-    strcpy(ptr1->buffer, "1"); // BAD: length 2, but destination only has length 1
-    strcpy(ptr1->buffer, "123456789"); // BAD: length 10, but destination only has length 1
+    strcpy(ptr1->buffer, "1"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: length 2, but destination only has length 1
+    strcpy(ptr1->buffer, "123456789"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: length 10, but destination only has length 1
     // ...
 
     MyFixedStruct2 *ptr2 = (MyFixedStruct2*)malloc(sizeof(MyFixedStruct2) + (sizeof(char) * 10));
     ptr2->len = 11;
     strcpy(ptr2->buffer, "123456789"); // BAD: length 10, but destination only has length 1 [NOT DETECTED]
-    strcpy(ptr2->buffer, "1234567890abcdef"); // BAD: length 17, but destination only has length 1
+    strcpy(ptr2->buffer, "1234567890abcdef"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: length 17, but destination only has length 1
     // ...
 }

@@ -19,9 +19,9 @@ public:
 		auto deleter3 = [&r = r3]() {
 			delete [] r;
 		};
-		deleter3(); 
+		deleter3();
 
-		r4 = new char[4096]; // BAD
+		r4 = new char[4096]; // $ Alert // BAD
 
 		r5 = new char[4096]; // GOOD
 		deleter5 = &deleter_for_r5;

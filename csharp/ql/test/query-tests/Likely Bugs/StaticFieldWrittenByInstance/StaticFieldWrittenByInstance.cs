@@ -12,7 +12,7 @@ class StaticFields
 
     StaticFields()
     {
-        staticField = 0;    // BAD
+        staticField = 0;    // $ Alert // BAD
         instanceField = 0;  // OK
     }
 
@@ -23,7 +23,7 @@ class StaticFields
 
     void InstanceTest()
     {
-        staticField = 0;    // BAD
+        staticField = 0;    // $ Alert // BAD
         instanceField = 0;  // OK
     }
 
@@ -40,7 +40,7 @@ class StaticFields
     {
         get
         {
-            return backingField ?? (backingField = new object()); // BAD
+            return backingField ?? (backingField = new object()); // $ Alert // BAD
         }
     }
 }

@@ -23,7 +23,7 @@ myClass1 :: myClass1()
 	array1 = (int *)malloc(sizeof(int) * 100);
 	array2 = (int *)malloc(sizeof(int) * 100);
 	array3 = (int *)malloc(sizeof(int) * 100);
-	array4 = (int *)malloc(sizeof(int) * 100); // never freed
+	array4 = (int *)malloc(sizeof(int) * 100); // $ Alert[cpp/memory-never-freed] // never freed
 
 	free(array1);
 }
@@ -39,7 +39,7 @@ void myClass1 :: method1()
 	array5 = (int *)malloc(sizeof(int) * 100);
 	array6 = (int *)malloc(sizeof(int) * 100);
 	array7 = (int *)malloc(sizeof(int) * 100);
-	array8 = (int *)malloc(sizeof(int) * 100); // never freed
+	array8 = (int *)malloc(sizeof(int) * 100); // $ Alert[cpp/memory-never-freed] // never freed
 
 	free(array3);
 	free(array5);
@@ -70,7 +70,7 @@ myClass2 :: myClass2()
 	array1 = (int *)malloc(sizeof(int) * 100);
 	array2 = (int *)malloc(sizeof(int) * 100);
 	array3 = (int *)malloc(sizeof(int) * 100);
-	array4 = (int *)malloc(sizeof(int) * 100); // never freed
+	array4 = (int *)malloc(sizeof(int) * 100); // $ Alert[cpp/memory-never-freed] // never freed
 
 	free(array1);
 }
@@ -86,7 +86,7 @@ void myClass2 :: method1()
 	array5 = (int *)malloc(sizeof(int) * 100);
 	array6 = (int *)malloc(sizeof(int) * 100);
 	array7 = (int *)malloc(sizeof(int) * 100);
-	array8 = (int *)malloc(sizeof(int) * 100); // never freed
+	array8 = (int *)malloc(sizeof(int) * 100); // $ Alert[cpp/memory-never-freed] // never freed
 
 	free(array3);
 	free(array5);
@@ -153,8 +153,8 @@ int overloadedNew() {
   new(buf) int[1]; // GOOD
   *(int*)buf = 4;
 
-  new(std::nothrow) int(3); // BAD
-  new(std::nothrow) int[2]; // BAD
+  new(std::nothrow) int(3); // $ Alert[cpp/memory-never-freed] // BAD
+  new(std::nothrow) int[2]; // $ Alert[cpp/memory-never-freed] // BAD
 
   return 0;
 }
@@ -166,7 +166,7 @@ void output_msg(const char *msg);
 
 void test_strdup() {
 	char msg[] = "OctoCat";
-	char *cpy = strdup(msg); // BAD
+	char *cpy = strdup(msg); // $ Alert[cpp/memory-never-freed] // BAD
 
 	output_msg(cpy);
 }
@@ -182,7 +182,7 @@ void test_strdupa_no_dealloc() {
 void test_strdupa_dealloc() {
 	char msg[] = "OctoCat";
 	char *cpy = strdupa(msg);
-    free(cpy); // BAD [NOT DETECTED]
+    free(cpy); // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 // --- strndupa ---
@@ -196,7 +196,7 @@ void test_strndupa_no_dealloc() {
 void test_strndupa_dealloc() {
 	char msg[] = "OctoCat";
 	char *cpy = strndupa(msg, 4);
-    free(cpy); // BAD [NOT DETECTED]
+    free(cpy); // $ MISSING: Alert // BAD [NOT DETECTED]
 }
 
 // ---
@@ -210,14 +210,14 @@ void test_reassignment() {
 	char *a = (char *)malloc(128);
 	char *b = (char *)malloc(128);
 
-	free(a);
-	a[0] = 0; // BAD
+	free(a); // $ Source[cpp/use-after-free]
+	a[0] = 0; // $ Alert[cpp/use-after-free] // BAD
 
 	a = b;
 	a[0] = 0; // GOOD
 
-	free(a);
-	a[0] = 0; // BAD
+	free(a); // $ Source[cpp/use-after-free]
+	a[0] = 0; // $ Alert[cpp/use-after-free] // BAD
 
 	DataPair p;
 	p.data1 = new char[128];
@@ -225,8 +225,8 @@ void test_reassignment() {
 	p.data1[0] = 0; // GOOD
 	p.data2[0] = 0; // GOOD
 
-	delete [] p.data1;
-	p.data1[0] = 0; // BAD
+	delete [] p.data1; // $ Source[cpp/use-after-free]
+	p.data1[0] = 0; // $ Alert[cpp/use-after-free] // BAD
 	p.data2[0] = 0; // GOOD
 
 	p.data1 = new char[128];

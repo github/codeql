@@ -1,0 +1,51 @@
+func doWork() {}
+unsafe doWork()
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+          name: identifier "doWork"
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+          funcKeyword: func
+    codeBlockItem
+      item:
+        unsafeExpr
+          expression:
+            functionCallExpr
+              leftParen: (
+              rightParen: )
+              arguments:
+              additionalTrailingClosures:
+              calledExpression:
+                declReferenceExpr
+                  baseName: identifier "doWork"
+          unsafeKeyword: unsafe
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          name: identifier "doWork"
+          body: block "func doWork() {}"
+        unsupported_node "unsafe doWork()"

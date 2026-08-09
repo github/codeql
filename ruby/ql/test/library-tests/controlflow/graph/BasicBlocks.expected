@@ -1022,11 +1022,11 @@ dominates
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:43:21:43:31 | self |
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:44:8:44:18 | self |
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:48:20:48:29 | self |
-| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:8:49:8 | b |
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:16:49:16 | b |
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:27:49:37 | self |
@@ -1085,11 +1085,11 @@ dominates
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:43:21:43:31 | self |
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:44:8:44:18 | self |
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:32:9:32:9 | 1 | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:32:9:32:9 | 1 | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:32:9:32:9 | 1 | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:32:9:32:9 | 1 | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:48:20:48:29 | self |
-| cfg.rb:32:9:32:9 | 1 | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:32:9:32:9 | 1 | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:32:9:32:9 | 1 | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:32:9:32:9 | 1 | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:49:8:49:8 | b |
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:49:16:49:16 | b |
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:49:27:49:37 | self |
@@ -1145,11 +1145,11 @@ dominates
 | cfg.rb:35:1:37:3 | if ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:35:1:37:3 | if ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:35:1:37:3 | if ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:35:1:37:3 | if ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:35:1:37:3 | if ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:35:1:37:3 | if ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:35:1:37:3 | if ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:35:1:37:3 | if ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:35:1:37:3 | if ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:35:1:37:3 | if ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:35:1:37:3 | if ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:35:1:37:3 | if ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:35:1:37:3 | if ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:35:1:37:3 | if ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:35:1:37:3 | if ... | cfg.rb:49:27:49:37 | self |
@@ -1194,11 +1194,11 @@ dominates
 | cfg.rb:35:1:37:3 | if ... | cfg.rb:205:4:205:5 | if ... |
 | cfg.rb:41:1:45:3 | case ... | cfg.rb:41:1:45:3 | case ... |
 | cfg.rb:41:1:45:3 | case ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:41:1:45:3 | case ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:41:1:45:3 | case ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:41:1:45:3 | case ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:41:1:45:3 | case ... | cfg.rb:49:27:49:37 | self |
@@ -1312,24 +1312,24 @@ dominates
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:205:1:205:3 | __synth__0__1 |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:205:1:205:3 | nil |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:205:4:205:5 | if ... |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:49:3:49:37 | [true] when ... |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:49:8:49:8 | b |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:49:16:49:16 | b |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:49:27:49:37 | self |
-| cfg.rb:48:3:48:29 | [true] when ... | cfg.rb:48:3:48:29 | [true] when ... |
-| cfg.rb:48:3:48:29 | [true] when ... | cfg.rb:48:20:48:29 | self |
+| cfg.rb:48:3:48:29 | [match] when ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:48:3:48:29 | [match] when ... | cfg.rb:48:20:48:29 | self |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:48:3:48:29 | [no-match] when ... |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:49:3:49:37 | [no-match] when ... |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:49:8:49:8 | b |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:49:16:49:16 | b |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:49:27:49:37 | self |
 | cfg.rb:48:20:48:29 | self | cfg.rb:48:20:48:29 | self |
-| cfg.rb:49:3:49:37 | [false] when ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:49:3:49:37 | [true] when ... | cfg.rb:49:3:49:37 | [true] when ... |
-| cfg.rb:49:3:49:37 | [true] when ... | cfg.rb:49:27:49:37 | self |
-| cfg.rb:49:8:49:8 | b | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:49:8:49:8 | b | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:49:3:49:37 | [match] when ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:49:3:49:37 | [match] when ... | cfg.rb:49:27:49:37 | self |
+| cfg.rb:49:3:49:37 | [no-match] when ... | cfg.rb:49:3:49:37 | [no-match] when ... |
+| cfg.rb:49:8:49:8 | b | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:49:8:49:8 | b | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:49:8:49:8 | b | cfg.rb:49:8:49:8 | b |
 | cfg.rb:49:8:49:8 | b | cfg.rb:49:16:49:16 | b |
 | cfg.rb:49:8:49:8 | b | cfg.rb:49:27:49:37 | self |
-| cfg.rb:49:16:49:16 | b | cfg.rb:49:3:49:37 | [false] when ... |
+| cfg.rb:49:16:49:16 | b | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:49:16:49:16 | b | cfg.rb:49:16:49:16 | b |
 | cfg.rb:49:27:49:37 | self | cfg.rb:49:27:49:37 | self |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:60:17:60:40 | ... ? ... : ... |
@@ -2771,24 +2771,24 @@ postDominance
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:47:1:50:3 | case ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:47:1:50:3 | case ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:47:1:50:3 | case ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:47:1:50:3 | case ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:47:1:50:3 | case ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:47:1:50:3 | case ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:47:1:50:3 | case ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:47:1:50:3 | case ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:49:27:49:37 | self |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:48:3:48:29 | [true] when ... | cfg.rb:48:3:48:29 | [true] when ... |
-| cfg.rb:48:20:48:29 | self | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:48:3:48:29 | [match] when ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:48:3:48:29 | [no-match] when ... |
+| cfg.rb:48:20:48:29 | self | cfg.rb:48:3:48:29 | [match] when ... |
 | cfg.rb:48:20:48:29 | self | cfg.rb:48:20:48:29 | self |
-| cfg.rb:49:3:49:37 | [false] when ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:49:3:49:37 | [true] when ... | cfg.rb:49:3:49:37 | [true] when ... |
-| cfg.rb:49:8:49:8 | b | cfg.rb:48:3:48:29 | [false] when ... |
+| cfg.rb:49:3:49:37 | [match] when ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:49:3:49:37 | [no-match] when ... | cfg.rb:49:3:49:37 | [no-match] when ... |
+| cfg.rb:49:8:49:8 | b | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:49:8:49:8 | b | cfg.rb:49:8:49:8 | b |
 | cfg.rb:49:16:49:16 | b | cfg.rb:49:16:49:16 | b |
-| cfg.rb:49:27:49:37 | self | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:49:27:49:37 | self | cfg.rb:49:3:49:37 | [match] when ... |
 | cfg.rb:49:27:49:37 | self | cfg.rb:49:27:49:37 | self |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:1:1:221:1 | enter cfg.rb |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:32:9:32:9 | 1 |
@@ -2805,11 +2805,11 @@ postDominance
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:49:27:49:37 | self |
@@ -2835,11 +2835,11 @@ postDominance
 | cfg.rb:75:1:75:47 | if ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:75:1:75:47 | if ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:75:1:75:47 | if ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:75:1:75:47 | if ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:75:1:75:47 | if ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:75:1:75:47 | if ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:75:1:75:47 | if ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:75:1:75:47 | if ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:75:1:75:47 | if ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:75:1:75:47 | if ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:75:1:75:47 | if ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:75:1:75:47 | if ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:75:1:75:47 | if ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:75:1:75:47 | if ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:75:1:75:47 | if ... | cfg.rb:49:27:49:37 | self |
@@ -2882,11 +2882,11 @@ postDominance
 | cfg.rb:90:5:90:5 | if ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:90:5:90:5 | if ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:90:5:90:5 | if ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:90:5:90:5 | if ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:90:5:90:5 | if ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:90:5:90:5 | if ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:90:5:90:5 | if ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:90:5:90:5 | if ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:90:5:90:5 | if ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:90:5:90:5 | if ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:90:5:90:5 | if ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:90:5:90:5 | if ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:90:5:90:5 | if ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:90:5:90:5 | if ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:90:5:90:5 | if ... | cfg.rb:49:27:49:37 | self |
@@ -2928,11 +2928,11 @@ postDominance
 | cfg.rb:113:1:113:19 | ... if ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:113:1:113:19 | ... if ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:113:1:113:19 | ... if ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:113:1:113:19 | ... if ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:113:1:113:19 | ... if ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:113:1:113:19 | ... if ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:113:1:113:19 | ... if ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:113:1:113:19 | ... if ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:113:1:113:19 | ... if ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:113:1:113:19 | ... if ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:113:1:113:19 | ... if ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:113:1:113:19 | ... if ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:113:1:113:19 | ... if ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:113:1:113:19 | ... if ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:113:1:113:19 | ... if ... | cfg.rb:49:27:49:37 | self |
@@ -2967,11 +2967,11 @@ postDominance
 | cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:136:1:136:29 | ... rescue ... | cfg.rb:49:27:49:37 | self |
@@ -3011,11 +3011,11 @@ postDominance
 | cfg.rb:172:1:172:49 | unless ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:172:1:172:49 | unless ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:172:1:172:49 | unless ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:172:1:172:49 | unless ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:172:1:172:49 | unless ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:172:1:172:49 | unless ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:172:1:172:49 | unless ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:172:1:172:49 | unless ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:172:1:172:49 | unless ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:172:1:172:49 | unless ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:172:1:172:49 | unless ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:172:1:172:49 | unless ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:172:1:172:49 | unless ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:172:1:172:49 | unless ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:172:1:172:49 | unless ... | cfg.rb:49:27:49:37 | self |
@@ -3057,11 +3057,11 @@ postDominance
 | cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:174:1:174:23 | ... unless ... | cfg.rb:49:27:49:37 | self |
@@ -3102,11 +3102,11 @@ postDominance
 | cfg.rb:176:1:176:41 | until ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:176:1:176:41 | until ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:176:1:176:41 | until ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:176:1:176:41 | until ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:176:1:176:41 | until ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:176:1:176:41 | until ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:176:1:176:41 | until ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:176:1:176:41 | until ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:176:1:176:41 | until ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:176:1:176:41 | until ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:176:1:176:41 | until ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:176:1:176:41 | until ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:176:1:176:41 | until ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:176:1:176:41 | until ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:176:1:176:41 | until ... | cfg.rb:49:27:49:37 | self |
@@ -3150,11 +3150,11 @@ postDominance
 | cfg.rb:176:7:176:7 | x | cfg.rb:43:21:43:31 | self |
 | cfg.rb:176:7:176:7 | x | cfg.rb:44:8:44:18 | self |
 | cfg.rb:176:7:176:7 | x | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:176:7:176:7 | x | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:176:7:176:7 | x | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:176:7:176:7 | x | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:176:7:176:7 | x | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:176:7:176:7 | x | cfg.rb:48:20:48:29 | self |
-| cfg.rb:176:7:176:7 | x | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:176:7:176:7 | x | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:176:7:176:7 | x | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:176:7:176:7 | x | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:176:7:176:7 | x | cfg.rb:49:8:49:8 | b |
 | cfg.rb:176:7:176:7 | x | cfg.rb:49:16:49:16 | b |
 | cfg.rb:176:7:176:7 | x | cfg.rb:49:27:49:37 | self |
@@ -3198,11 +3198,11 @@ postDominance
 | cfg.rb:179:1:179:36 | ... until ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:179:1:179:36 | ... until ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:179:1:179:36 | ... until ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:179:1:179:36 | ... until ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:179:1:179:36 | ... until ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:179:1:179:36 | ... until ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:179:1:179:36 | ... until ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:179:1:179:36 | ... until ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:179:1:179:36 | ... until ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:179:1:179:36 | ... until ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:179:1:179:36 | ... until ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:179:1:179:36 | ... until ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:179:1:179:36 | ... until ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:179:1:179:36 | ... until ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:179:1:179:36 | ... until ... | cfg.rb:49:27:49:37 | self |
@@ -3250,11 +3250,11 @@ postDominance
 | cfg.rb:179:30:179:30 | i | cfg.rb:43:21:43:31 | self |
 | cfg.rb:179:30:179:30 | i | cfg.rb:44:8:44:18 | self |
 | cfg.rb:179:30:179:30 | i | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:179:30:179:30 | i | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:179:30:179:30 | i | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:179:30:179:30 | i | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:179:30:179:30 | i | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:179:30:179:30 | i | cfg.rb:48:20:48:29 | self |
-| cfg.rb:179:30:179:30 | i | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:179:30:179:30 | i | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:179:30:179:30 | i | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:179:30:179:30 | i | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:179:30:179:30 | i | cfg.rb:49:8:49:8 | b |
 | cfg.rb:179:30:179:30 | i | cfg.rb:49:16:49:16 | b |
 | cfg.rb:179:30:179:30 | i | cfg.rb:49:27:49:37 | self |
@@ -3300,11 +3300,11 @@ postDominance
 | cfg.rb:182:1:186:3 | while ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:182:1:186:3 | while ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:182:1:186:3 | while ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:182:1:186:3 | while ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:182:1:186:3 | while ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:182:1:186:3 | while ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:182:1:186:3 | while ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:182:1:186:3 | while ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:182:1:186:3 | while ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:182:1:186:3 | while ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:182:1:186:3 | while ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:182:1:186:3 | while ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:182:1:186:3 | while ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:182:1:186:3 | while ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:182:1:186:3 | while ... | cfg.rb:49:27:49:37 | self |
@@ -3356,11 +3356,11 @@ postDominance
 | cfg.rb:182:7:182:7 | x | cfg.rb:43:21:43:31 | self |
 | cfg.rb:182:7:182:7 | x | cfg.rb:44:8:44:18 | self |
 | cfg.rb:182:7:182:7 | x | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:182:7:182:7 | x | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:182:7:182:7 | x | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:182:7:182:7 | x | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:182:7:182:7 | x | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:182:7:182:7 | x | cfg.rb:48:20:48:29 | self |
-| cfg.rb:182:7:182:7 | x | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:182:7:182:7 | x | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:182:7:182:7 | x | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:182:7:182:7 | x | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:182:7:182:7 | x | cfg.rb:49:8:49:8 | b |
 | cfg.rb:182:7:182:7 | x | cfg.rb:49:16:49:16 | b |
 | cfg.rb:182:7:182:7 | x | cfg.rb:49:27:49:37 | self |
@@ -3417,11 +3417,11 @@ postDominance
 | cfg.rb:188:1:188:35 | ... while ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:188:1:188:35 | ... while ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:188:1:188:35 | ... while ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:188:1:188:35 | ... while ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:188:1:188:35 | ... while ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:188:1:188:35 | ... while ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:188:1:188:35 | ... while ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:188:1:188:35 | ... while ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:188:1:188:35 | ... while ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:188:1:188:35 | ... while ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:188:1:188:35 | ... while ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:188:1:188:35 | ... while ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:188:1:188:35 | ... while ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:188:1:188:35 | ... while ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:188:1:188:35 | ... while ... | cfg.rb:49:27:49:37 | self |
@@ -3477,11 +3477,11 @@ postDominance
 | cfg.rb:188:30:188:30 | i | cfg.rb:43:21:43:31 | self |
 | cfg.rb:188:30:188:30 | i | cfg.rb:44:8:44:18 | self |
 | cfg.rb:188:30:188:30 | i | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:188:30:188:30 | i | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:188:30:188:30 | i | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:188:30:188:30 | i | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:188:30:188:30 | i | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:188:30:188:30 | i | cfg.rb:48:20:48:29 | self |
-| cfg.rb:188:30:188:30 | i | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:188:30:188:30 | i | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:188:30:188:30 | i | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:188:30:188:30 | i | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:188:30:188:30 | i | cfg.rb:49:8:49:8 | b |
 | cfg.rb:188:30:188:30 | i | cfg.rb:49:16:49:16 | b |
 | cfg.rb:188:30:188:30 | i | cfg.rb:49:27:49:37 | self |
@@ -3542,11 +3542,11 @@ postDominance
 | cfg.rb:205:4:205:5 | if ... | cfg.rb:43:21:43:31 | self |
 | cfg.rb:205:4:205:5 | if ... | cfg.rb:44:8:44:18 | self |
 | cfg.rb:205:4:205:5 | if ... | cfg.rb:47:1:50:3 | case ... |
-| cfg.rb:205:4:205:5 | if ... | cfg.rb:48:3:48:29 | [false] when ... |
-| cfg.rb:205:4:205:5 | if ... | cfg.rb:48:3:48:29 | [true] when ... |
+| cfg.rb:205:4:205:5 | if ... | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:205:4:205:5 | if ... | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:205:4:205:5 | if ... | cfg.rb:48:20:48:29 | self |
-| cfg.rb:205:4:205:5 | if ... | cfg.rb:49:3:49:37 | [false] when ... |
-| cfg.rb:205:4:205:5 | if ... | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:205:4:205:5 | if ... | cfg.rb:49:3:49:37 | [match] when ... |
+| cfg.rb:205:4:205:5 | if ... | cfg.rb:49:3:49:37 | [no-match] when ... |
 | cfg.rb:205:4:205:5 | if ... | cfg.rb:49:8:49:8 | b |
 | cfg.rb:205:4:205:5 | if ... | cfg.rb:49:16:49:16 | b |
 | cfg.rb:205:4:205:5 | if ... | cfg.rb:49:27:49:37 | self |
@@ -4295,14 +4295,14 @@ immediateDominator
 | cfg.rb:43:21:43:31 | self | cfg.rb:43:3:43:31 | [match] when ... |
 | cfg.rb:44:8:44:18 | self | cfg.rb:43:3:43:31 | [no-match] when ... |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:41:1:45:3 | case ... |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:41:1:45:3 | case ... |
-| cfg.rb:48:3:48:29 | [true] when ... | cfg.rb:41:1:45:3 | case ... |
-| cfg.rb:48:20:48:29 | self | cfg.rb:48:3:48:29 | [true] when ... |
-| cfg.rb:49:3:49:37 | [false] when ... | cfg.rb:49:16:49:16 | b |
-| cfg.rb:49:3:49:37 | [true] when ... | cfg.rb:49:8:49:8 | b |
-| cfg.rb:49:8:49:8 | b | cfg.rb:48:3:48:29 | [false] when ... |
+| cfg.rb:48:3:48:29 | [match] when ... | cfg.rb:41:1:45:3 | case ... |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:41:1:45:3 | case ... |
+| cfg.rb:48:20:48:29 | self | cfg.rb:48:3:48:29 | [match] when ... |
+| cfg.rb:49:3:49:37 | [match] when ... | cfg.rb:49:8:49:8 | b |
+| cfg.rb:49:3:49:37 | [no-match] when ... | cfg.rb:49:16:49:16 | b |
+| cfg.rb:49:8:49:8 | b | cfg.rb:48:3:48:29 | [no-match] when ... |
 | cfg.rb:49:16:49:16 | b | cfg.rb:49:8:49:8 | b |
-| cfg.rb:49:27:49:37 | self | cfg.rb:49:3:49:37 | [true] when ... |
+| cfg.rb:49:27:49:37 | self | cfg.rb:49:3:49:37 | [match] when ... |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:47:1:50:3 | case ... |
 | cfg.rb:60:27:60:31 | hello | cfg.rb:47:1:50:3 | case ... |
 | cfg.rb:60:37:60:39 | bye | cfg.rb:47:1:50:3 | case ... |
@@ -5310,11 +5310,11 @@ controls
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:43:21:43:31 | self | true |
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:44:8:44:18 | self | true |
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:47:1:50:3 | case ... | true |
-| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:48:3:48:29 | [false] when ... | true |
-| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:48:3:48:29 | [true] when ... | true |
+| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:48:3:48:29 | [match] when ... | true |
+| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:48:3:48:29 | [no-match] when ... | true |
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:48:20:48:29 | self | true |
-| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:3:49:37 | [false] when ... | true |
-| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:3:49:37 | [true] when ... | true |
+| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:3:49:37 | [match] when ... | true |
+| cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:3:49:37 | [no-match] when ... | true |
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:8:49:8 | b | true |
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:16:49:16 | b | true |
 | cfg.rb:1:1:221:1 | enter cfg.rb | cfg.rb:49:27:49:37 | self | true |
@@ -5370,11 +5370,11 @@ controls
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:43:21:43:31 | self | false |
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:44:8:44:18 | self | false |
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:47:1:50:3 | case ... | false |
-| cfg.rb:32:9:32:9 | 1 | cfg.rb:48:3:48:29 | [false] when ... | false |
-| cfg.rb:32:9:32:9 | 1 | cfg.rb:48:3:48:29 | [true] when ... | false |
+| cfg.rb:32:9:32:9 | 1 | cfg.rb:48:3:48:29 | [match] when ... | false |
+| cfg.rb:32:9:32:9 | 1 | cfg.rb:48:3:48:29 | [no-match] when ... | false |
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:48:20:48:29 | self | false |
-| cfg.rb:32:9:32:9 | 1 | cfg.rb:49:3:49:37 | [false] when ... | false |
-| cfg.rb:32:9:32:9 | 1 | cfg.rb:49:3:49:37 | [true] when ... | false |
+| cfg.rb:32:9:32:9 | 1 | cfg.rb:49:3:49:37 | [match] when ... | false |
+| cfg.rb:32:9:32:9 | 1 | cfg.rb:49:3:49:37 | [no-match] when ... | false |
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:49:8:49:8 | b | false |
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:49:16:49:16 | b | false |
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:49:27:49:37 | self | false |
@@ -5427,14 +5427,14 @@ controls
 | cfg.rb:35:1:37:3 | if ... | cfg.rb:43:14:43:14 | 4 | no-match |
 | cfg.rb:35:1:37:3 | if ... | cfg.rb:43:21:43:31 | self | no-match |
 | cfg.rb:35:1:37:3 | if ... | cfg.rb:44:8:44:18 | self | no-match |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:3:48:29 | [false] when ... | false |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:3:48:29 | [true] when ... | true |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:20:48:29 | self | true |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:3:49:37 | [false] when ... | false |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:3:49:37 | [true] when ... | false |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:8:49:8 | b | false |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:16:49:16 | b | false |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:27:49:37 | self | false |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:3:48:29 | [match] when ... | match |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:3:48:29 | [no-match] when ... | no-match |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:20:48:29 | self | match |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:3:49:37 | [match] when ... | no-match |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:3:49:37 | [no-match] when ... | no-match |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:8:49:8 | b | no-match |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:16:49:16 | b | no-match |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:49:27:49:37 | self | no-match |
 | cfg.rb:42:3:42:24 | [match] when ... | cfg.rb:42:15:42:24 | self | match |
 | cfg.rb:42:3:42:24 | [no-match] when ... | cfg.rb:43:3:43:31 | [match] when ... | no-match |
 | cfg.rb:42:3:42:24 | [no-match] when ... | cfg.rb:43:3:43:31 | [no-match] when ... | no-match |
@@ -5456,16 +5456,16 @@ controls
 | cfg.rb:43:14:43:14 | 4 | cfg.rb:44:8:44:18 | self | no-match |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:60:27:60:31 | hello | true |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:60:37:60:39 | bye | false |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:49:3:49:37 | [false] when ... | false |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:49:3:49:37 | [true] when ... | false |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:49:8:49:8 | b | false |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:49:16:49:16 | b | false |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:49:27:49:37 | self | false |
-| cfg.rb:48:3:48:29 | [true] when ... | cfg.rb:48:20:48:29 | self | true |
-| cfg.rb:49:3:49:37 | [true] when ... | cfg.rb:49:27:49:37 | self | true |
-| cfg.rb:49:8:49:8 | b | cfg.rb:49:3:49:37 | [false] when ... | false |
-| cfg.rb:49:8:49:8 | b | cfg.rb:49:16:49:16 | b | false |
-| cfg.rb:49:16:49:16 | b | cfg.rb:49:3:49:37 | [false] when ... | false |
+| cfg.rb:48:3:48:29 | [match] when ... | cfg.rb:48:20:48:29 | self | match |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:49:3:49:37 | [match] when ... | no-match |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:49:3:49:37 | [no-match] when ... | no-match |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:49:8:49:8 | b | no-match |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:49:16:49:16 | b | no-match |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:49:27:49:37 | self | no-match |
+| cfg.rb:49:3:49:37 | [match] when ... | cfg.rb:49:27:49:37 | self | match |
+| cfg.rb:49:8:49:8 | b | cfg.rb:49:3:49:37 | [no-match] when ... | no-match |
+| cfg.rb:49:8:49:8 | b | cfg.rb:49:16:49:16 | b | no-match |
+| cfg.rb:49:16:49:16 | b | cfg.rb:49:3:49:37 | [no-match] when ... | no-match |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:75:15:75:15 | 0 | true |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:75:17:75:43 | elsif ... | false |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:75:23:75:23 | x | false |
@@ -6010,8 +6010,8 @@ successor
 | cfg.rb:32:9:32:9 | 1 | cfg.rb:35:1:37:3 | if ... | false |
 | cfg.rb:35:1:37:3 | if ... | cfg.rb:42:3:42:24 | [match] when ... | match |
 | cfg.rb:35:1:37:3 | if ... | cfg.rb:42:3:42:24 | [no-match] when ... | no-match |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:3:48:29 | [false] when ... | false |
-| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:3:48:29 | [true] when ... | true |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:3:48:29 | [match] when ... | match |
+| cfg.rb:41:1:45:3 | case ... | cfg.rb:48:3:48:29 | [no-match] when ... | no-match |
 | cfg.rb:42:3:42:24 | [match] when ... | cfg.rb:42:15:42:24 | self | match |
 | cfg.rb:42:3:42:24 | [no-match] when ... | cfg.rb:43:8:43:8 | 2 | no-match |
 | cfg.rb:43:3:43:31 | [match] when ... | cfg.rb:43:21:43:31 | self | match |
@@ -6024,14 +6024,14 @@ successor
 | cfg.rb:43:14:43:14 | 4 | cfg.rb:43:3:43:31 | [no-match] when ... | no-match |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:60:27:60:31 | hello | true |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:60:37:60:39 | bye | false |
-| cfg.rb:48:3:48:29 | [false] when ... | cfg.rb:49:8:49:8 | b | false |
-| cfg.rb:48:3:48:29 | [true] when ... | cfg.rb:48:20:48:29 | self | true |
-| cfg.rb:49:3:49:37 | [false] when ... | cfg.rb:47:1:50:3 | case ... | false |
-| cfg.rb:49:3:49:37 | [true] when ... | cfg.rb:49:27:49:37 | self | true |
-| cfg.rb:49:8:49:8 | b | cfg.rb:49:3:49:37 | [true] when ... | true |
-| cfg.rb:49:8:49:8 | b | cfg.rb:49:16:49:16 | b | false |
-| cfg.rb:49:16:49:16 | b | cfg.rb:49:3:49:37 | [false] when ... | false |
-| cfg.rb:49:16:49:16 | b | cfg.rb:49:3:49:37 | [true] when ... | true |
+| cfg.rb:48:3:48:29 | [match] when ... | cfg.rb:48:20:48:29 | self | match |
+| cfg.rb:48:3:48:29 | [no-match] when ... | cfg.rb:49:8:49:8 | b | no-match |
+| cfg.rb:49:3:49:37 | [match] when ... | cfg.rb:49:27:49:37 | self | match |
+| cfg.rb:49:3:49:37 | [no-match] when ... | cfg.rb:47:1:50:3 | case ... | no-match |
+| cfg.rb:49:8:49:8 | b | cfg.rb:49:3:49:37 | [match] when ... | match |
+| cfg.rb:49:8:49:8 | b | cfg.rb:49:16:49:16 | b | no-match |
+| cfg.rb:49:16:49:16 | b | cfg.rb:49:3:49:37 | [match] when ... | match |
+| cfg.rb:49:16:49:16 | b | cfg.rb:49:3:49:37 | [no-match] when ... | no-match |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:75:15:75:15 | 0 | true |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:75:23:75:23 | x | false |
 | cfg.rb:75:1:75:47 | if ... | cfg.rb:90:5:90:5 | [false] ! ... | true |
@@ -6365,10 +6365,10 @@ joinBlockPredecessor
 | cfg.rb:43:3:43:31 | [match] when ... | cfg.rb:43:11:43:11 | 3 | 1 |
 | cfg.rb:43:3:43:31 | [match] when ... | cfg.rb:43:14:43:14 | 4 | 2 |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:48:20:48:29 | self | 0 |
-| cfg.rb:47:1:50:3 | case ... | cfg.rb:49:3:49:37 | [false] when ... | 1 |
+| cfg.rb:47:1:50:3 | case ... | cfg.rb:49:3:49:37 | [no-match] when ... | 1 |
 | cfg.rb:47:1:50:3 | case ... | cfg.rb:49:27:49:37 | self | 2 |
-| cfg.rb:49:3:49:37 | [true] when ... | cfg.rb:49:8:49:8 | b | 0 |
-| cfg.rb:49:3:49:37 | [true] when ... | cfg.rb:49:16:49:16 | b | 1 |
+| cfg.rb:49:3:49:37 | [match] when ... | cfg.rb:49:8:49:8 | b | 0 |
+| cfg.rb:49:3:49:37 | [match] when ... | cfg.rb:49:16:49:16 | b | 1 |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:60:27:60:31 | hello | 0 |
 | cfg.rb:60:17:60:40 | ... ? ... : ... | cfg.rb:60:37:60:39 | bye | 1 |
 | cfg.rb:75:1:75:47 | if ... | cfg.rb:75:15:75:15 | 0 | 0 |

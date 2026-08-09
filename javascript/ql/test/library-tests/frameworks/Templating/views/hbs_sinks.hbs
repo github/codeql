@@ -22,15 +22,15 @@
             var dataInStringLiteral = "{{ dataInStringLiteral }}";
             var dataInStringLiteralRaw = "{{{ dataInStringLiteralRaw }}}";
 
-            var dataInGeneratedCode = {{ dataInGeneratedCode }};
+            var dataInGeneratedCode = {{ dataInGeneratedCode }}; // $ Alert
             var dataInGeneratedCodeRaw = {{{ dataInGeneratedCodeRaw }}};
 
-            init("{{ backslashSink1 }}", "{{ backslashSink2 }}");
+            init("{{ backslashSink1 }}", "{{ backslashSink2 }}"); // $ Alert
 
             var ejs = "<%= rawHtml %>";
         </script>
 
-        <button onclick="doSomething('{{ dataInEventHandlerString }}')">Click me</button>
+        <button onclick="doSomething('{{ dataInEventHandlerString }}')">Click me</button> <!-- $ Alert -->
         <button onclick="doSomething('{{{ dataInEventHandlerStringRaw }}}')">Click me</button>
     </body>
 </html>

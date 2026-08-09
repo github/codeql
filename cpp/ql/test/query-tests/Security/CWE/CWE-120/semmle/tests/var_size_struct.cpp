@@ -5,7 +5,7 @@
 // library types, functions etc
 typedef unsigned long size_t;
 void *malloc(size_t size);
-char *strcpy(char *s1, const char *s2); 
+char *strcpy(char *s1, const char *s2);
 
 // --- Semmle tests ---
 
@@ -19,5 +19,5 @@ void testVarStruct() {
 
   vs->size = 9;
   strcpy(vs->data, "12345678"); // GOOD
-  strcpy(vs->data, "123456789"); // BAD: buffer overflow
+  strcpy(vs->data, "123456789"); // $ Alert[cpp/very-likely-overrunning-write] // BAD: buffer overflow
 }

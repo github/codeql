@@ -13,23 +13,23 @@ def server_bad():
     try:
         do_computation()
     except Exception:
-        return traceback.format_exc()  # $ exceptionInfo
+        return traceback.format_exc()  # $ Alert exceptionInfo
 
 # BAD
 @app.route('/bad/direct')
 def server_bad_direct():
     try:
         do_computation()
-    except Exception as e:  # $ exceptionInfo
-        return e
+    except Exception as e:  # $ Source exceptionInfo
+        return e # $ Alert
 
 # BAD
 @app.route('/bad/traceback')
 def server_bad_traceback():
     try:
         do_computation()
-    except Exception as e:  # $ exceptionInfo
-        return e.__traceback__
+    except Exception as e:  # $ Source exceptionInfo
+        return e.__traceback__ # $ Alert
 
 # GOOD
 @app.route('/good')
@@ -46,8 +46,8 @@ def server_bad_flow():
     try:
         do_computation()
     except Exception:
-        err = traceback.format_exc()  # $ exceptionInfo
-        return format_error(err)
+        err = traceback.format_exc()  # $ Source exceptionInfo
+        return format_error(err) # $ Alert
 
 def format_error(msg):
     return "[ERROR] " + msg
@@ -62,8 +62,8 @@ def maybe_xss():
 def bad_jsonify():
     try:
         do_computation()
-    except Exception as e: # $ exceptionInfo
-        return jsonify({"error": str(e)})
+    except Exception as e: # $ Source exceptionInfo
+        return jsonify({"error": str(e)}) # $ Alert
 
 
 if __name__ == "__main__":

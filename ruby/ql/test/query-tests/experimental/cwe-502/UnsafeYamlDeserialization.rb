@@ -7,15 +7,15 @@ require "yaml"
 class UsersController < ActionController::Base
   # BAD before psych version 4.0.0 and 
   def route1
-    yaml_data = params[:key]
-    object = Psych.load yaml_data
+    yaml_data = params[:key] # $ Source
+    object = Psych.load yaml_data # $ Alert
     object = Psych.load_file yaml_data
   end
 
   # GOOD In psych version 4.0.0 and above
   def route2
-    yaml_data = params[:key]
-    object = Psych.load yaml_data
+    yaml_data = params[:key] # $ Source
+    object = Psych.load yaml_data # $ Alert
     object = Psych.load_file yaml_data
   end
 
@@ -29,14 +29,14 @@ class UsersController < ActionController::Base
 
   # BAD
   def route4
-    yaml_data = params[:key]
-    object = Psych.unsafe_load(yaml_data)
-    object = Psych.unsafe_load_file(yaml_data)
-    object = Psych.load_stream(yaml_data)
+    yaml_data = params[:key] # $ Source
+    object = Psych.unsafe_load(yaml_data) # $ Alert
+    object = Psych.unsafe_load_file(yaml_data) # $ Alert
+    object = Psych.load_stream(yaml_data) # $ Alert
     parse_output = Psych.parse_stream(yaml_data)
-    object = parse_output.to_ruby
-    object = Psych.parse(yaml_data).to_ruby
-    object = Psych.parse_file(yaml_data).to_ruby
+    object = parse_output.to_ruby # $ Alert
+    object = Psych.parse(yaml_data).to_ruby # $ Alert
+    object = Psych.parse_file(yaml_data).to_ruby # $ Alert
     parsed_yaml = Psych.parse_stream(yaml_data)
     parsed_yaml.children.each do |child|
       object = child.to_ruby
@@ -46,7 +46,7 @@ class UsersController < ActionController::Base
     end
     object = parsed_yaml.children.first.to_ruby
     content = parsed_yaml.children[0].children[0].children
-    object = parsed_yaml.to_ruby[0]
+    object = parsed_yaml.to_ruby[0] # $ Alert
     object = content.to_ruby[0]
     object = Psych.parse(yaml_data).children[0].to_ruby
   end
@@ -58,18 +58,18 @@ class UsersController < ActionController::Base
   end
 
   def stdin
-    object = YAML.load $stdin.read
+    object = YAML.load $stdin.read # $ Alert
 
     # STDIN
-    object = YAML.load STDIN.gets
+    object = YAML.load STDIN.gets # $ Alert
 
     # ARGF
-    object = YAML.load ARGF.read
+    object = YAML.load ARGF.read # $ Alert
 
     # Kernel.gets
-    object = YAML.load gets
+    object = YAML.load gets # $ Alert
 
     # Kernel.readlines
-    object = YAML.load readlines
+    object = YAML.load readlines # $ Alert
   end
 end

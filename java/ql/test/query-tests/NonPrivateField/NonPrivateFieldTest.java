@@ -5,15 +5,15 @@ public class NonPrivateFieldTest {
   public @interface Rule {}              // JUnit-like annotation
 
   public static class Fields{
-    public static String problematic1 = "value";
-    public final int problematic2 = 0;
-    public final int problematic3;
+    public static String problematic1 = "value"; // $ Alert
+    public final int problematic2 = 0; // $ Alert
+    public final int problematic3; // $ Alert
 
-    final int problematic4 = 9;          // omitted access descriptor
-    static int problematic5 = 0;         
-    public int problematic6 = 0;
-    protected Double problematic7 = 0.0; // protected but not used in derived classes
-    static int[] problematic8;
+    final int problematic4 = 9;          // $ Alert // omitted access descriptor
+    static int problematic5 = 0;          // $ Alert
+    public int problematic6 = 0; // $ Alert
+    protected Double problematic7 = 0.0; // $ Alert // protected but not used in derived classes
+    static int[] problematic8; // $ Alert
 
     public static final int ok1 = 0;     // public static finals are usually fine, even if not accessed by anything from outside
     public static int ok2 = 0;           // foreign write access

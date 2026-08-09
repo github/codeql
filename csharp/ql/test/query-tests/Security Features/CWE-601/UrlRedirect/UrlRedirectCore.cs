@@ -10,50 +10,50 @@ namespace Testing.Controllers
         private static string SomeValue = "HeaderValue";
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] string value) // $ Source=r9 Source=r10 Source=r11 Source=r12 Source=r13 Source=r14 Source=r15
         {
             // BAD: straight up controller redirect
-            Redirect(value);
+            Redirect(value); // $ Alert=r9 Alert=r10 Alert=r11 Alert=r12 Alert=r13 Alert=r14 Alert=r15
 
             // BAD: Setting response headers collection, location = redirect
-            Response.Headers["location"] = value;
+            Response.Headers["location"] = value; // $ Alert=r10 Alert=r11 Alert=r12 Alert=r13 Alert=r14 Alert=r15 Alert=r9
 
             // GOOD: Setting response header to a constant value
             Response.Headers["location"] = SomeValue;
 
             // BAD: Setting response headers collection, location = redirect via add method
-            Response.Headers.Add("location", value);
+            Response.Headers.Add("location", value); // $ Alert=r11 Alert=r10 Alert=r12 Alert=r13 Alert=r14 Alert=r15 Alert=r9
 
             // GOOD: Setting response header to a constant value
             Response.Headers.Add("location", "foo");
 
             // BAD: redirect via location
-            Response.Headers.SetCommaSeparatedValues("location", value);
+            Response.Headers.SetCommaSeparatedValues("location", value); // $ Alert=r12 Alert=r10 Alert=r11 Alert=r13 Alert=r14 Alert=r15 Alert=r9
 
             // BAD = redirect via setting location value from tainted source
-            Response.Headers.Append("location", value);
+            Response.Headers.Append("location", value); // $ Alert=r13 Alert=r10 Alert=r11 Alert=r12 Alert=r14 Alert=r15 Alert=r9
 
             // BAD: redirect via setting location header from comma-separated values
-            Response.Headers.AppendCommaSeparatedValues("location", value);
+            Response.Headers.AppendCommaSeparatedValues("location", value); // $ Alert=r14 Alert=r10 Alert=r11 Alert=r12 Alert=r13 Alert=r15 Alert=r9
 
             // BAD: tainted redirect to Action
-            RedirectToActionPermanent("Error" + value);
+            RedirectToActionPermanent("Error" + value); // $ Alert=r15 Alert=r10 Alert=r11 Alert=r12 Alert=r13 Alert=r14 Alert=r9
         }
 
         // PUT: api/Some/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] string value) // $ Source=r16 Source=r17 Source=r18
         {
 
-            RedirectToPage(value);
+            RedirectToPage(value); // $ Alert=r16 Alert=r17 Alert=r18
 
             var headers = new ResponseHeaders(Response.Headers);
 
             // BAD: redirect via header helper class
-            headers.Location = new Uri(value);
+            headers.Location = new Uri(value); // $ Alert=r17 Alert=r16 Alert=r18
 
             // BAD: response redirect
-            Response.Redirect(value);
+            Response.Redirect(value); // $ Alert=r18 Alert=r16 Alert=r17
 
             // GOOD: whitelisted redirect
             if(Url.IsLocalUrl(value))

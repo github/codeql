@@ -1,1 +1,2 @@
-Exceptions/UnguardedNextInGenerator.ql
+query: Exceptions/UnguardedNextInGenerator.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

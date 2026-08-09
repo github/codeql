@@ -4,7 +4,7 @@ predicate test1(int a) {
   a = 1 or // BAD
   a = 2 or
   a = 3 or
-  a = 4
+  a = 4 // $ Alert
 }
 
 predicate test2(int a) {
@@ -30,7 +30,7 @@ predicate test5() {
   test1(1) or // BAD
   test1(2) or
   test1(3) or
-  test1(4)
+  test1(4) // $ Alert
 }
 
 predicate test6() {
@@ -44,7 +44,7 @@ int test7() {
   1 = result or // BAD
   2 = result or
   3 = result or
-  4 = result
+  4 = result // $ Alert
 }
 
 predicate test8() {
@@ -62,19 +62,19 @@ class MyTest8Class extends int {
       this = 1 or // BAD
       this = 2 or
       this = 3 or
-      this = 4
+      this = 4 // $ Alert
     ) and
     (
       s = "1" or // BAD
       s = "2" or
       s = "3" or
-      s = "4"
+      s = "4" // $ Alert
     ) and
     exists(float f |
       f = 1.0 or // BAD
       f = 1.5 or
       f = 2.0 or
-      f = 2.5
+      f = 2.5 // $ Alert
     )
   }
 
@@ -89,7 +89,7 @@ predicate test9(MyTest8Class c) {
   c.is(1) or // BAD
   c.is(2) or
   c.is(3) or
-  c.is(4)
+  c.is(4) // $ Alert
 }
 
 predicate test10(MyTest8Class c) {
@@ -133,5 +133,5 @@ predicate test14(int a) {
     (a = 2 or a = 3)
     or
     a = 4
-  )
+  ) // $ Alert
 }

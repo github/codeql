@@ -21,7 +21,7 @@ int g(C *c, int i) {
     return -1;
   }
 
-  if (i > 0) { // BAD
+  if (i > 0) { // $ Alert[cpp/constant-comparison] // BAD
     return 1;
   } else {
     return 0;

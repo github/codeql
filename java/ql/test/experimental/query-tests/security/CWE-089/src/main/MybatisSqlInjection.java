@@ -16,55 +16,55 @@ public class MybatisSqlInjection {
 	private MybatisSqlInjectionService mybatisSqlInjectionService;
 
 	@GetMapping(value = "msi1")
-	public List<Test> bad1(@RequestParam String name) {
+	public List<Test> bad1(@RequestParam String name) { // $ Source[java/mybatis-xml-sql-injection]
 		List<Test> result = mybatisSqlInjectionService.bad1(name);
 		return result;
 	}
 
 	@GetMapping(value = "msi2")
-	public List<Test> bad2(@RequestParam String name) {
+	public List<Test> bad2(@RequestParam String name) { // $ Source[java/mybatis-xml-sql-injection]
 		List<Test> result = mybatisSqlInjectionService.bad2(name);
 		return result;
 	}
 
 	@GetMapping(value = "msi3")
-	public List<Test> bad3(@ModelAttribute Test test) {
+	public List<Test> bad3(@ModelAttribute Test test) { // $ Source[java/mybatis-xml-sql-injection]
 		List<Test> result = mybatisSqlInjectionService.bad3(test);
 		return result;
 	}
 
 	@RequestMapping(value = "msi4", method = RequestMethod.POST, produces = "application/json")
-	public void bad4(@RequestBody Test test) {
+	public void bad4(@RequestBody Test test) { // $ Source[java/mybatis-xml-sql-injection]
 		mybatisSqlInjectionService.bad4(test);
 	}
 
 	@RequestMapping(value = "msi5", method = RequestMethod.PUT, produces = "application/json")
-	public void bad5(@RequestBody Test test) {
+	public void bad5(@RequestBody Test test) { // $ Source[java/mybatis-xml-sql-injection]
 		mybatisSqlInjectionService.bad5(test);
 	}
 
 	@RequestMapping(value = "msi6", method = RequestMethod.POST, produces = "application/json")
-	public void bad6(@RequestBody Map<String, String> params) {
+	public void bad6(@RequestBody Map<String, String> params) { // $ Source[java/mybatis-xml-sql-injection]
 		mybatisSqlInjectionService.bad6(params);
 	}
 
 	@RequestMapping(value = "msi7", method = RequestMethod.POST, produces = "application/json")
-	public void bad7(@RequestBody List<String> params) {
+	public void bad7(@RequestBody List<String> params) { // $ Source[java/mybatis-xml-sql-injection]
 		mybatisSqlInjectionService.bad7(params);
 	}
 
 	@RequestMapping(value = "msi8", method = RequestMethod.POST, produces = "application/json")
-	public void bad8(@RequestBody String[] params) {
+	public void bad8(@RequestBody String[] params) { // $ Source[java/mybatis-xml-sql-injection]
 		mybatisSqlInjectionService.bad8(params);
 	}
 
 	@GetMapping(value = "msi9")
-	public void bad9(@RequestParam String name) {
+	public void bad9(@RequestParam String name) { // $ Source[java/mybatis-annotation-sql-injection]
 		mybatisSqlInjectionService.bad9(name);
 	}
 
 	@GetMapping(value = "msi10")
-	public void bad10(@RequestParam Integer id, @RequestParam String name) {
+	public void bad10(@RequestParam Integer id, @RequestParam String name) { // $ Source[java/mybatis-annotation-sql-injection]
 		mybatisSqlInjectionService.bad10(id, name);
 	}
 

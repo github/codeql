@@ -1,3 +1,46 @@
+## 0.5.0
+
+### Breaking Changes
+
+* The `codeql.actions.security.SelfHostedQuery` module has been removed because runner labels do not reliably distinguish self-hosted runners from managed runners.
+
+### Minor Analysis Improvements
+
+* GitHub Actions analysis now recognizes untrusted data in `github.event.merge_group` for workflows triggered by the `merge_group` event.
+
+## 0.4.40
+
+### Minor Analysis Improvements
+
+* Altered the logic of `EnvironmentCheck` to make sure it is a check that protects only for non-toctou. This change will result in more results being found by the queries: `actions/untrusted-checkout-toctou/high` and `actions/untrusted-checkout-toctou/critical`.
+
+## 0.4.39
+
+No user-facing changes.
+
+## 0.4.38
+
+### Bug Fixes
+
+* GitHub Actions queries now better account for permission checks on jobs that call reusable workflows.
+* The query `actions/pr-on-self-hosted-runner` was updated to the latest standard runner labels reducing false positive results.
+
+## 0.4.37
+
+### Minor Analysis Improvements
+
+* The GitHub Actions analysis now recognizes more Bash regex checks that restrict a value to alphanumeric characters, including regexes like `^[0-9a-zA-Z]{40}([0-9a-zA-Z]{24})?$` which check for a SHA-1 or SHA-256 hash. This may reduce false positive results where command output is validated with grouped or optional alphanumeric patterns before being used.
+
+## 0.4.36
+
+### Minor Analysis Improvements
+
+* Altered 2 patterns in the `poisonable_steps` modelling. Extra sinks are detected in the following cases: scripts executed via python modules and `go run` in directories are detected as potential mechanisms of injection. For the go execution pattern, the pattern is updated to now ignore flags that occur between go and the specific command. This change may lead to more results being detected by the following queries: `actions/untrusted-checkout/high`, `actions/untrusted-checkout/critical`, `actions/untrusted-checkout-toctou/high`, `actions/untrusted-checkout-toctou/critical`, `actions/cache-poisoning/poisonable-step`, `actions/cache-poisoning/direct-cache` and `actions/artifact-poisoning/path-traversal`.
+
+## 0.4.35
+
+No user-facing changes.
+
 ## 0.4.34
 
 ### Minor Analysis Improvements

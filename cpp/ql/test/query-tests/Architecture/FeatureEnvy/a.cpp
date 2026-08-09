@@ -7,7 +7,7 @@ void local3(void) { }
 void local4(void) { }
 void local5(void) { }
 
-void f1(void) {
+void f1(void) { // $ Alert
     g();
     h();
     i();
@@ -15,7 +15,7 @@ void f1(void) {
     k();
 }
 
-void f2(void) {
+void f2(void) { // $ Alert
     local1();
     g();
     h();
@@ -45,7 +45,7 @@ void f4(void) {
     j();
 }
 
-void f5(void) {
+void f5(void) { // $ Alert
     MyClass m;
 
     m.mg();

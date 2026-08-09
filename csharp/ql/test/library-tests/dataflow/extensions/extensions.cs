@@ -86,6 +86,14 @@ public static class MyExtensions
         }
     }
 
+    extension(C c)
+    {
+        public void operator *=(C c1)
+        {
+            c.Prop = c1.Prop;
+        }
+    }
+
     extension<T>(T t) where T : class
     {
         public void GenericM1()
@@ -236,8 +244,26 @@ public class A
         Sink(b3); // $ hasValueFlow=14
     }
 
+    public void Test15()
+    {
+        var c1 = new C();
+        c1.Prop = Source<object>(15);
+        var c2 = new C();
+        c2 *= c1;
+        Sink(c2.Prop); // $ hasValueFlow=15
+
+        var c3 = new C();
+        MyExtensions.op_MultiplicationAssignment(c3, c1);
+        Sink(c3.Prop); // $ hasValueFlow=15
+    }
+
     public static T Source<T>(object source) => throw null;
     public static void Sink(object o) { }
 }
 
 public class B { }
+
+public class C
+{
+    public object Prop { get; set; }
+}

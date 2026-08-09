@@ -1,1 +1,2 @@
-CSI/CompareIdenticalValues.ql
+query: CSI/CompareIdenticalValues.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

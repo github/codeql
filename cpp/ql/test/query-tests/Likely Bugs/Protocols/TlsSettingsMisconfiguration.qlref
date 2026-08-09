@@ -1,1 +1,2 @@
-Likely Bugs/Protocols/TlsSettingsMisconfiguration.ql
+query: Likely Bugs/Protocols/TlsSettingsMisconfiguration.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

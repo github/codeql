@@ -4,8 +4,10 @@ import TestUtils
 
 query predicate instances(
   ModuleDecl x, string getModule__label, ModuleDecl getModule, string getInterfaceType__label,
-  Type getInterfaceType, string getName__label, string getName, string isBuiltinModule__label,
-  string isBuiltinModule, string isSystemModule__label, string isSystemModule
+  Type getInterfaceType, string getName__label, string getName,
+  string getDeclaredInterfaceType__label, Type getDeclaredInterfaceType,
+  string isBuiltinModule__label, string isBuiltinModule, string isSystemModule__label,
+  string isSystemModule
 ) {
   toBeTested(x) and
   not x.isUnknown() and
@@ -15,6 +17,8 @@ query predicate instances(
   getInterfaceType = x.getInterfaceType() and
   getName__label = "getName:" and
   getName = x.getName() and
+  getDeclaredInterfaceType__label = "getDeclaredInterfaceType:" and
+  getDeclaredInterfaceType = x.getDeclaredInterfaceType() and
   isBuiltinModule__label = "isBuiltinModule:" and
   (if x.isBuiltinModule() then isBuiltinModule = "yes" else isBuiltinModule = "no") and
   isSystemModule__label = "isSystemModule:" and

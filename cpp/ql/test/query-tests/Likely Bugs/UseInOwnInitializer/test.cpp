@@ -1,11 +1,11 @@
 typedef long size_t;
 
 void test1() {
-	int x = x; // BAD
+	int x = x; // $ Alert // BAD
 }
 
 void test2() {
-	int x = x = 2; // BAD
+	int x = x = 2; // $ Alert // BAD
 }
 
 void test3() {
@@ -54,11 +54,11 @@ void test9() {
 }
 
 void test10() {
-	int x = x + 1; // BAD: x is evaluated on the right hand side
+	int x = x + 1; // $ Alert // BAD: x is evaluated on the right hand side
 }
 
 void test11() {
-	int x = uninitialized(x) + 1; // BAD: x is evaluated on the right hand side
+	int x = uninitialized(x) + 1; // $ Alert // BAD: x is evaluated on the right hand side
 }
 
 #define self_initialize(t, x) t x = x
@@ -87,5 +87,5 @@ namespace ns3
 {
 	const int v5 = ns1::v6 + 1; // GOOD
 	const int v6 = ns1::v6 + 1; // GOOD  [produces INVALID_KEY trap warning]
-	const int v7 = ns3::v7; // BAD [NOT DETECTED]
+	const int v7 = ns3::v7; // $ MISSING: Alert // BAD [NOT DETECTED]
 };

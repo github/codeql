@@ -17,12 +17,17 @@ abstract class AstNode extends AstNode_ {
   abstract Scope getScope();
 
   /**
+   * DEPRECATED: use `ControlFlowNode.getNode()` from the other direction instead;
+   * that is, replace `e.getAFlowNode() = n` with `n.getNode() = e`. This API is
+   * being removed to untangle the AST and CFG hierarchies in preparation for
+   * migrating the dataflow library off the legacy CFG.
+   *
    * Gets a flow node corresponding directly to this node.
    * NOTE: For some statements and other purely syntactic elements,
-   * there may not be a `ControlFlowNode`
+   * there may not be a `ControlFlowNode`.
    */
   cached
-  ControlFlowNode getAFlowNode() {
+  deprecated ControlFlowNode getAFlowNode() {
     Stages::AST::ref() and
     py_flow_bb_node(result, this, _, _)
   }

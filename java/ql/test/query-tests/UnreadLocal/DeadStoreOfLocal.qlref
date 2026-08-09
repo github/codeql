@@ -1,1 +1,2 @@
-Violations of Best Practice/Dead Code/DeadStoreOfLocal.ql
+query: Violations of Best Practice/Dead Code/DeadStoreOfLocal.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

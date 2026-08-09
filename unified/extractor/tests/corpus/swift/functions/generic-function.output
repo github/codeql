@@ -1,0 +1,89 @@
+func identity<T>(_ x: T) -> T {
+  return x
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    returnStmt
+                      expression:
+                        declReferenceExpr
+                          baseName: identifier "x"
+                      returnKeyword: return
+          name: identifier "identity"
+          genericParameterClause:
+            genericParameterClause
+              parameters:
+                genericParameter
+                  attributes:
+                  name: identifier "T"
+              leftAngle: <
+              rightAngle: >
+          modifiers:
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        identifierType
+                          name: identifier "T"
+                      firstName: _
+                      secondName: identifier "x"
+              returnClause:
+                returnClause
+                  arrow: ->
+                  type:
+                    identifierType
+                      name: identifier "T"
+          funcKeyword: func
+
+---
+
+top_level
+  body:
+    block
+      stmt:
+        function_declaration
+          name: identifier "identity"
+          type_parameter:
+            type_parameter
+              name: identifier "T"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              type:
+                named_type_expr
+                  name: identifier "T"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+          return_type:
+            named_type_expr
+              name: identifier "T"
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    name_expr
+                      identifier: identifier "x"

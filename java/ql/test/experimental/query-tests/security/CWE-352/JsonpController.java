@@ -30,79 +30,79 @@ public class JsonpController {
     @ResponseBody
     public String bad1(HttpServletRequest request) {
         String resultStr = null;
-        String jsonpCallback = request.getParameter("jsonpCallback");
+        String jsonpCallback = request.getParameter("jsonpCallback"); // $ Source
         Gson gson = new Gson();
         String result = gson.toJson(hashMap);
         resultStr = jsonpCallback + "(" + result + ")";
-        return resultStr;
+        return resultStr; // $ Alert
     }
 
     @GetMapping(value = "jsonp2")
     @ResponseBody
     public String bad2(HttpServletRequest request) {
         String resultStr = null;
-        String jsonpCallback = request.getParameter("jsonpCallback");
+        String jsonpCallback = request.getParameter("jsonpCallback"); // $ Source
         resultStr = jsonpCallback + "(" + JSONObject.toJSONString(hashMap) + ")";
-        return resultStr;
+        return resultStr; // $ Alert
     }
 
     @GetMapping(value = "jsonp3")
     @ResponseBody
     public String bad3(HttpServletRequest request) {
         String resultStr = null;
-        String jsonpCallback = request.getParameter("jsonpCallback");
+        String jsonpCallback = request.getParameter("jsonpCallback"); // $ Source
         String jsonStr = getJsonStr(hashMap);
         resultStr = jsonpCallback + "(" + jsonStr + ")";
-        return resultStr;
+        return resultStr; // $ Alert
     }
 
     @GetMapping(value = "jsonp4")
     @ResponseBody
     public String bad4(HttpServletRequest request) {
         String resultStr = null;
-        String jsonpCallback = request.getParameter("jsonpCallback");
+        String jsonpCallback = request.getParameter("jsonpCallback"); // $ Source
         String restr = JSONObject.toJSONString(hashMap);
         resultStr = jsonpCallback + "(" + restr + ");";
-        return resultStr;
+        return resultStr; // $ Alert
     }
 
     @GetMapping(value = "jsonp5")
     @ResponseBody
     public void bad5(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        String jsonpCallback = request.getParameter("jsonpCallback");
+        String jsonpCallback = request.getParameter("jsonpCallback"); // $ Source
         PrintWriter pw = null;
         Gson gson = new Gson();
         String result = gson.toJson(hashMap);
         String resultStr = null;
         pw = response.getWriter();
         resultStr = jsonpCallback + "(" + result + ")";
-        pw.println(resultStr);
+        pw.println(resultStr); // $ Alert
     }
 
     @GetMapping(value = "jsonp6")
     @ResponseBody
     public void bad6(HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        String jsonpCallback = request.getParameter("jsonpCallback");
+        String jsonpCallback = request.getParameter("jsonpCallback"); // $ Source
         PrintWriter pw = null;
         ObjectMapper mapper = new ObjectMapper();
         String result = mapper.writeValueAsString(hashMap);
         String resultStr = null;
         pw = response.getWriter();
         resultStr = jsonpCallback + "(" + result + ")";
-        pw.println(resultStr);
+        pw.println(resultStr); // $ Alert
     }
 
     @RequestMapping(value = "jsonp7", method = RequestMethod.GET)
     @ResponseBody
     public String bad7(HttpServletRequest request) {
         String resultStr = null;
-        String jsonpCallback = request.getParameter("jsonpCallback");
+        String jsonpCallback = request.getParameter("jsonpCallback"); // $ Source
         Gson gson = new Gson();
         String result = gson.toJson(hashMap);
         resultStr = jsonpCallback + "(" + result + ")";
-        return resultStr;
+        return resultStr; // $ Alert
     }
 
     @RequestMapping(value = "jsonp11")

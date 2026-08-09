@@ -10,7 +10,7 @@ struct ThrowsDirectly {
 
     ~ThrowsDirectly() noexcept(false) {
         if (i == 0) {
-            throw exception(); // BAD
+            throw exception(); // $ Alert // BAD
 
         } else if (i == 1) {
             try {
@@ -45,14 +45,14 @@ struct ThrowsDirectly {
         } else if (i == 5) {
             try {
                 if (i == 5)
-                    throw exception(); // BAD
+                    throw exception(); // $ Alert // BAD
             } catch (const specific_exception &) {
             }
 
         } else if (i == 6) {
             try {
                 if (i == 6)
-                    throw exception(); // BAD
+                    throw exception(); // $ Alert // BAD
             } catch (const other_throwable &) {
             }
         }

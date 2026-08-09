@@ -1,8 +1,8 @@
 #encoding: utf-8
 def dup_key():
-    return { 1: -1,
+    return { 1: -1, # $ Alert[py/duplicate-key-dict-literal]
              1: -2,
-             u'a' : u'A',
+             u'a' : u'A', # $ Alert[py/duplicate-key-dict-literal]
              u'a' : u'B'
             }
 
@@ -34,7 +34,7 @@ def call_non_callable(arg):
     dont_know() # Not a violation
 
 #Explicit call to __del__
-x.__del__()
+x.__del__() # $ Alert[py/explicit-call-to-delete]
 
 #Unhashable object
 def func():
@@ -112,7 +112,7 @@ def is_container():
 #Equals none
 
 def x(arg):
-    return arg == None
+    return arg == None # $ Alert[py/test-equals-none]
 
 class NotMyDict(object):
     
@@ -130,7 +130,7 @@ class SubTest(Test):
         # This is permitted and required.
         Test.__del__(self)
         # This is a violation.
-        self.__del__()
+        self.__del__() # $ Alert[py/explicit-call-to-delete]
         # This is an alternate syntax for the super() call, and hence OK.
         super(SubTest, self).__del__()
         # This is the Python 3 spelling of the same.

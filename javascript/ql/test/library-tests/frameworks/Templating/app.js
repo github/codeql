@@ -12,11 +12,11 @@ app.get('/ejs', (req, res) => {
         },
         dataInStringLiteral: req.query.dataInStringLiteral,
         dataInStringLiteralRaw: req.query.dataInStringLiteralRaw,
-        dataInGeneratedCode: req.query.dataInGeneratedCode,
+        dataInGeneratedCode: req.query.dataInGeneratedCode, // $ Source
         dataInGeneratedCodeRaw: req.query.dataInGeneratedCodeRaw,
-        backslashSink1: req.query.backslashSink1,
+        backslashSink1: req.query.backslashSink1, // $ Source
         backslashSink2: req.query.backslashSink2,
-        dataInEventHandlerString: req.query.dataInEventHandlerString,
+        dataInEventHandlerString: req.query.dataInEventHandlerString, // $ Source
         dataInEventHandlerStringRaw: req.query.dataInEventHandlerStringRaw,
     });
 });
@@ -31,11 +31,11 @@ app.get('/hbs', (req, res) => {
         },
         dataInStringLiteral: req.query.dataInStringLiteral,
         dataInStringLiteralRaw: req.query.dataInStringLiteralRaw,
-        dataInGeneratedCode: req.query.dataInGeneratedCode,
+        dataInGeneratedCode: req.query.dataInGeneratedCode, // $ Source
         dataInGeneratedCodeRaw: req.query.dataInGeneratedCodeRaw,
-        backslashSink1: req.query.backslashSink1,
+        backslashSink1: req.query.backslashSink1, // $ Source
         backslashSink2: req.query.backslashSink2,
-        dataInEventHandlerString: req.query.dataInEventHandlerString,
+        dataInEventHandlerString: req.query.dataInEventHandlerString, // $ Source
         dataInEventHandlerStringRaw: req.query.dataInEventHandlerStringRaw,
     });
 });
@@ -50,20 +50,20 @@ app.get('/njk', (req, res) => {
         },
         dataInStringLiteral: req.query.dataInStringLiteral,
         dataInStringLiteralRaw: req.query.dataInStringLiteralRaw,
-        dataInGeneratedCode: req.query.dataInGeneratedCode,
-        dataInGeneratedCodeRaw: req.query.dataInGeneratedCodeRaw,
+        dataInGeneratedCode: req.query.dataInGeneratedCode, // $ Source
+        dataInGeneratedCodeRaw: req.query.dataInGeneratedCodeRaw, // $ Source
         dataInGeneratedCodeJsonRaw: req.query.dataInGeneratedCodeJsonRaw,
-        backslashSink1: req.query.backslashSink1,
+        backslashSink1: req.query.backslashSink1, // $ Source
         backslashSink2: req.query.backslashSink2,
-        dataInEventHandlerString: req.query.dataInEventHandlerString,
-        dataInEventHandlerStringRaw: req.query.dataInEventHandlerStringRaw,
+        dataInEventHandlerString: req.query.dataInEventHandlerString, // $ Source
+        dataInEventHandlerStringRaw: req.query.dataInEventHandlerStringRaw, // $ Source
     });
 });
 
 app.get('/angularjs', (req, res) => {
     res.render('angularjs_sinks', {
-        escapedHtml: req.query.escapedHtml,
-        rawHtml: req.query.rawHtml,
+        escapedHtml: req.query.escapedHtml, // $ Source
+        rawHtml: req.query.rawHtml, // $ Source
     });
 });
 

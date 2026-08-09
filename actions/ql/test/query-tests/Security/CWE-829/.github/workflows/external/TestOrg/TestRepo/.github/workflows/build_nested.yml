@@ -1,0 +1,13 @@
+on:
+  workflow_call:
+    inputs:
+      COMMIT_SHA:
+        type: string
+
+jobs:
+  build:
+    uses: TestOrg/TestRepo/.github/workflows/build.yml@main
+    with:
+      COMMIT_SHA: ${{ inputs.COMMIT_SHA }}
+
+      

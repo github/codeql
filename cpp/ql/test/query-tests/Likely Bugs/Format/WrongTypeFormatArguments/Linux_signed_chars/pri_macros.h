@@ -11,6 +11,6 @@ void test_PRI_macros() {
 
 	printf("my_u64 = %" PRIu64 "\n", my_u64); // GOOD
 	printf("my_u64 = %" PRIx64 "\n", my_u64); // GOOD
-	printf("my_u64 = %" PRIi64 "\n", my_u64); // BAD: uint64_t read as int64_t [NOT DETECTED]
-	printf("my_u64 = %" PRIu32 "\n", my_u64); // BAD: uint64_t read as uint32_t
+	printf("my_u64 = %" PRIi64 "\n", my_u64); // $ MISSING: Alert // BAD: uint64_t read as int64_t [NOT DETECTED]
+	printf("my_u64 = %" PRIu32 "\n", my_u64); // $ Alert // BAD: uint64_t read as uint32_t
 }

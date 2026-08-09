@@ -4,10 +4,10 @@ class DubiousTypeTestOfThis
     {
         public int add(int x)
         {
-            if (this is FiveAdder)
+            if (this is FiveAdder) // $ Alert
                 return x + 5;
 
-            if (this is TenAdder)
+            if (this is TenAdder) // $ Alert
                 return x + 10;
 
             return 0;

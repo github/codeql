@@ -29,7 +29,7 @@ class UseBraces
         g();  // BAD
 
         if (1 == 1)
-            f(); g();  // BAD
+            f(); g();  // $ Alert // BAD
 
         // If-then-else statement
 
@@ -63,7 +63,7 @@ class UseBraces
             f();
         }
         else
-            f(); g();  // BAD
+            f(); g();  // $ Alert // BAD
 
         // While statement
 
@@ -83,7 +83,7 @@ class UseBraces
         g();    // GOOD
 
         while (x > 1)
-            f(); g();    // BAD
+            f(); g();    // $ Alert // BAD
 
         while (x > 1)
             if (x != null) x = 1;
@@ -111,7 +111,7 @@ class UseBraces
         g();        // BAD
 
         for (int i = 0; i < 10; ++i)
-            f(); g();     // BAD
+            f(); g();     // $ Alert // BAD
 
         // Foreach statement
 
@@ -130,7 +130,7 @@ class UseBraces
         g();      // BAD
 
         foreach (var b in branches)
-            f(); g();   // BAD
+            f(); g();   // $ Alert // BAD
 
         // Nested ifs
         if (x > 1)

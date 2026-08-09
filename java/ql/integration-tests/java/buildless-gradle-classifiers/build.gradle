@@ -8,7 +8,9 @@
 apply plugin: 'java-library'
 
 repositories {
-  mavenCentral()
+  maven {
+    url = 'https://maven-central.storage-download.googleapis.com/maven2/'
+  }
 }
 
 dependencies {

@@ -12,5 +12,5 @@ import python
 private import LegacyPointsTo
 
 from Expr e
-where exists(ControlFlowNodeWithPointsTo f | f = e.getAFlowNode() | not f.refersTo(_))
+where exists(ControlFlowNodeWithPointsTo f | f.getNode() = e | not f.refersTo(_))
 select e, "Expression does not 'point-to' any object."

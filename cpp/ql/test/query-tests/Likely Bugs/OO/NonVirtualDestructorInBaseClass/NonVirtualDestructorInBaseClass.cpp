@@ -53,7 +53,7 @@ struct Base_Virtual_VirtualDtor
     virtual void VirtualFunction();
 };
 
-struct Base_Virtual_NonVirtualDtor
+struct Base_Virtual_NonVirtualDtor // $ Alert
 {
     ~Base_Virtual_NonVirtualDtor();
     virtual void VirtualFunction();
@@ -65,7 +65,7 @@ struct Base_Virtual_ImplicitDtor
     virtual void VirtualFunction();
 };
 
-struct Base_Virtual_NonVirtualDtorWithDefinition
+struct Base_Virtual_NonVirtualDtorWithDefinition // $ Alert
 {
     ~Base_Virtual_NonVirtualDtorWithDefinition();
     virtual void VirtualFunction();
@@ -75,7 +75,7 @@ Base_Virtual_NonVirtualDtorWithDefinition::~Base_Virtual_NonVirtualDtorWithDefin
 {
 }
 
-struct Base_Virtual_NonVirtualDtorWithInlineDefinition
+struct Base_Virtual_NonVirtualDtorWithInlineDefinition // $ Alert
 {
     ~Base_Virtual_NonVirtualDtorWithInlineDefinition()
     {

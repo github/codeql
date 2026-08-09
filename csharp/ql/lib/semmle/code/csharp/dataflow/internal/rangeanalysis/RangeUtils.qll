@@ -19,7 +19,7 @@ private module Impl {
   }
 
   /** Holds if SSA definition `def` equals `e + delta`. */
-  predicate ssaUpdateStep(ExplicitDefinition def, ExprNode e, int delta) {
+  predicate ssaUpdateStep(SsaExplicitWrite def, ExprNode e, int delta) {
     exists(ControlFlowNode cfn | cfn = def.getControlFlowNode() |
       e = cfn.(ExprNode::Assignment).getRightOperand() and
       delta = 0 and
@@ -106,7 +106,7 @@ private module Impl {
    * - `isEq = true`  : `def == e + delta`
    * - `isEq = false` : `def != e + delta`
    */
-  Guard eqFlowCond(Definition def, ExprNode e, int delta, boolean isEq, boolean testIsTrue) {
+  Guard eqFlowCond(SsaDefinition def, ExprNode e, int delta, boolean isEq, boolean testIsTrue) {
     exists(boolean eqpolarity |
       result.isEquality(ssaRead(def, delta), e, eqpolarity) and
       testIsTrue = [false, true] and

@@ -10,6 +10,8 @@ nodeEnclosing
 | AccessorCalls.cs:1:7:1:19 | call to method <object initializer> | AccessorCalls.cs:1:7:1:19 | AccessorCalls |
 | AccessorCalls.cs:1:7:1:19 | this access | AccessorCalls.cs:1:7:1:19 | AccessorCalls |
 | AccessorCalls.cs:1:7:1:19 | {...} | AccessorCalls.cs:1:7:1:19 | AccessorCalls |
+| AccessorCalls.cs:5:18:5:18 | i | AccessorCalls.cs:5:23:5:25 | get_Item |
+| AccessorCalls.cs:5:18:5:18 | i | AccessorCalls.cs:5:33:5:35 | set_Item |
 | AccessorCalls.cs:5:23:5:25 | Entry | AccessorCalls.cs:5:23:5:25 | get_Item |
 | AccessorCalls.cs:5:23:5:25 | Exit | AccessorCalls.cs:5:23:5:25 | get_Item |
 | AccessorCalls.cs:5:23:5:25 | Normal Exit | AccessorCalls.cs:5:23:5:25 | get_Item |
@@ -17,18 +19,22 @@ nodeEnclosing
 | AccessorCalls.cs:5:33:5:35 | Entry | AccessorCalls.cs:5:33:5:35 | set_Item |
 | AccessorCalls.cs:5:33:5:35 | Exit | AccessorCalls.cs:5:33:5:35 | set_Item |
 | AccessorCalls.cs:5:33:5:35 | Normal Exit | AccessorCalls.cs:5:33:5:35 | set_Item |
+| AccessorCalls.cs:5:33:5:35 | value | AccessorCalls.cs:5:33:5:35 | set_Item |
 | AccessorCalls.cs:5:37:5:39 | {...} | AccessorCalls.cs:5:33:5:35 | set_Item |
 | AccessorCalls.cs:7:32:7:34 | Entry | AccessorCalls.cs:7:32:7:34 | add_Event |
 | AccessorCalls.cs:7:32:7:34 | Exit | AccessorCalls.cs:7:32:7:34 | add_Event |
 | AccessorCalls.cs:7:32:7:34 | Normal Exit | AccessorCalls.cs:7:32:7:34 | add_Event |
+| AccessorCalls.cs:7:32:7:34 | value | AccessorCalls.cs:7:32:7:34 | add_Event |
 | AccessorCalls.cs:7:36:7:38 | {...} | AccessorCalls.cs:7:32:7:34 | add_Event |
 | AccessorCalls.cs:7:40:7:45 | Entry | AccessorCalls.cs:7:40:7:45 | remove_Event |
 | AccessorCalls.cs:7:40:7:45 | Exit | AccessorCalls.cs:7:40:7:45 | remove_Event |
 | AccessorCalls.cs:7:40:7:45 | Normal Exit | AccessorCalls.cs:7:40:7:45 | remove_Event |
+| AccessorCalls.cs:7:40:7:45 | value | AccessorCalls.cs:7:40:7:45 | remove_Event |
 | AccessorCalls.cs:7:47:7:49 | {...} | AccessorCalls.cs:7:40:7:45 | remove_Event |
 | AccessorCalls.cs:10:10:10:11 | Entry | AccessorCalls.cs:10:10:10:11 | M1 |
 | AccessorCalls.cs:10:10:10:11 | Exit | AccessorCalls.cs:10:10:10:11 | M1 |
 | AccessorCalls.cs:10:10:10:11 | Normal Exit | AccessorCalls.cs:10:10:10:11 | M1 |
+| AccessorCalls.cs:10:26:10:26 | e | AccessorCalls.cs:10:10:10:11 | M1 |
 | AccessorCalls.cs:11:5:17:5 | After {...} | AccessorCalls.cs:10:10:10:11 | M1 |
 | AccessorCalls.cs:11:5:17:5 | {...} | AccessorCalls.cs:10:10:10:11 | M1 |
 | AccessorCalls.cs:12:9:12:12 | this access | AccessorCalls.cs:10:10:10:11 | M1 |
@@ -95,6 +101,7 @@ nodeEnclosing
 | AccessorCalls.cs:19:10:19:11 | Entry | AccessorCalls.cs:19:10:19:11 | M2 |
 | AccessorCalls.cs:19:10:19:11 | Exit | AccessorCalls.cs:19:10:19:11 | M2 |
 | AccessorCalls.cs:19:10:19:11 | Normal Exit | AccessorCalls.cs:19:10:19:11 | M2 |
+| AccessorCalls.cs:19:26:19:26 | e | AccessorCalls.cs:19:10:19:11 | M2 |
 | AccessorCalls.cs:20:5:26:5 | After {...} | AccessorCalls.cs:19:10:19:11 | M2 |
 | AccessorCalls.cs:20:5:26:5 | {...} | AccessorCalls.cs:19:10:19:11 | M2 |
 | AccessorCalls.cs:21:9:21:12 | this access | AccessorCalls.cs:19:10:19:11 | M2 |
@@ -370,6 +377,7 @@ nodeEnclosing
 | AccessorCalls.cs:56:10:56:11 | Entry | AccessorCalls.cs:56:10:56:11 | M7 |
 | AccessorCalls.cs:56:10:56:11 | Exit | AccessorCalls.cs:56:10:56:11 | M7 |
 | AccessorCalls.cs:56:10:56:11 | Normal Exit | AccessorCalls.cs:56:10:56:11 | M7 |
+| AccessorCalls.cs:56:17:56:17 | i | AccessorCalls.cs:56:10:56:11 | M7 |
 | AccessorCalls.cs:57:5:59:5 | After {...} | AccessorCalls.cs:56:10:56:11 | M7 |
 | AccessorCalls.cs:57:5:59:5 | {...} | AccessorCalls.cs:56:10:56:11 | M7 |
 | AccessorCalls.cs:58:9:58:45 | (..., ...) | AccessorCalls.cs:56:10:56:11 | M7 |
@@ -420,6 +428,7 @@ nodeEnclosing
 | AccessorCalls.cs:61:10:61:11 | Entry | AccessorCalls.cs:61:10:61:11 | M8 |
 | AccessorCalls.cs:61:10:61:11 | Exit | AccessorCalls.cs:61:10:61:11 | M8 |
 | AccessorCalls.cs:61:10:61:11 | Normal Exit | AccessorCalls.cs:61:10:61:11 | M8 |
+| AccessorCalls.cs:61:17:61:17 | i | AccessorCalls.cs:61:10:61:11 | M8 |
 | AccessorCalls.cs:62:5:64:5 | After {...} | AccessorCalls.cs:61:10:61:11 | M8 |
 | AccessorCalls.cs:62:5:64:5 | {...} | AccessorCalls.cs:61:10:61:11 | M8 |
 | AccessorCalls.cs:63:9:63:51 | (..., ...) | AccessorCalls.cs:61:10:61:11 | M8 |
@@ -488,6 +497,9 @@ nodeEnclosing
 | AccessorCalls.cs:66:10:66:11 | Entry | AccessorCalls.cs:66:10:66:11 | M9 |
 | AccessorCalls.cs:66:10:66:11 | Exit | AccessorCalls.cs:66:10:66:11 | M9 |
 | AccessorCalls.cs:66:10:66:11 | Normal Exit | AccessorCalls.cs:66:10:66:11 | M9 |
+| AccessorCalls.cs:66:20:66:20 | o | AccessorCalls.cs:66:10:66:11 | M9 |
+| AccessorCalls.cs:66:27:66:27 | i | AccessorCalls.cs:66:10:66:11 | M9 |
+| AccessorCalls.cs:66:43:66:43 | e | AccessorCalls.cs:66:10:66:11 | M9 |
 | AccessorCalls.cs:67:5:74:5 | After {...} | AccessorCalls.cs:66:10:66:11 | M9 |
 | AccessorCalls.cs:67:5:74:5 | {...} | AccessorCalls.cs:66:10:66:11 | M9 |
 | AccessorCalls.cs:68:9:68:22 | ... ...; | AccessorCalls.cs:66:10:66:11 | M9 |
@@ -663,6 +675,7 @@ nodeEnclosing
 | Assert.cs:7:10:7:11 | Exceptional Exit | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:7:10:7:11 | Exit | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:7:10:7:11 | Normal Exit | Assert.cs:7:10:7:11 | M1 |
+| Assert.cs:7:18:7:18 | b | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:8:5:12:5 | After {...} | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:8:5:12:5 | {...} | Assert.cs:7:10:7:11 | M1 |
 | Assert.cs:9:9:9:33 | ... ...; | Assert.cs:7:10:7:11 | M1 |
@@ -701,6 +714,7 @@ nodeEnclosing
 | Assert.cs:14:10:14:11 | Exceptional Exit | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:14:10:14:11 | Exit | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:14:10:14:11 | Normal Exit | Assert.cs:14:10:14:11 | M2 |
+| Assert.cs:14:18:14:18 | b | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:15:5:19:5 | After {...} | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:15:5:19:5 | {...} | Assert.cs:14:10:14:11 | M2 |
 | Assert.cs:16:9:16:33 | ... ...; | Assert.cs:14:10:14:11 | M2 |
@@ -735,6 +749,7 @@ nodeEnclosing
 | Assert.cs:21:10:21:11 | Exceptional Exit | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:21:10:21:11 | Exit | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:21:10:21:11 | Normal Exit | Assert.cs:21:10:21:11 | M3 |
+| Assert.cs:21:18:21:18 | b | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:22:5:26:5 | After {...} | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:22:5:26:5 | {...} | Assert.cs:21:10:21:11 | M3 |
 | Assert.cs:23:9:23:33 | ... ...; | Assert.cs:21:10:21:11 | M3 |
@@ -769,6 +784,7 @@ nodeEnclosing
 | Assert.cs:28:10:28:11 | Exceptional Exit | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:28:10:28:11 | Exit | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:28:10:28:11 | Normal Exit | Assert.cs:28:10:28:11 | M4 |
+| Assert.cs:28:18:28:18 | b | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:29:5:33:5 | After {...} | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:29:5:33:5 | {...} | Assert.cs:28:10:28:11 | M4 |
 | Assert.cs:30:9:30:33 | ... ...; | Assert.cs:28:10:28:11 | M4 |
@@ -807,6 +823,7 @@ nodeEnclosing
 | Assert.cs:35:10:35:11 | Exceptional Exit | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:35:10:35:11 | Exit | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:35:10:35:11 | Normal Exit | Assert.cs:35:10:35:11 | M5 |
+| Assert.cs:35:18:35:18 | b | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:36:5:40:5 | After {...} | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:36:5:40:5 | {...} | Assert.cs:35:10:35:11 | M5 |
 | Assert.cs:37:9:37:33 | ... ...; | Assert.cs:35:10:35:11 | M5 |
@@ -845,6 +862,7 @@ nodeEnclosing
 | Assert.cs:42:10:42:11 | Exceptional Exit | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:42:10:42:11 | Exit | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:42:10:42:11 | Normal Exit | Assert.cs:42:10:42:11 | M6 |
+| Assert.cs:42:18:42:18 | b | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:43:5:47:5 | After {...} | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:43:5:47:5 | {...} | Assert.cs:42:10:42:11 | M6 |
 | Assert.cs:44:9:44:33 | ... ...; | Assert.cs:42:10:42:11 | M6 |
@@ -883,6 +901,7 @@ nodeEnclosing
 | Assert.cs:49:10:49:11 | Exceptional Exit | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:49:10:49:11 | Exit | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:49:10:49:11 | Normal Exit | Assert.cs:49:10:49:11 | M7 |
+| Assert.cs:49:18:49:18 | b | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:50:5:54:5 | After {...} | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:50:5:54:5 | {...} | Assert.cs:49:10:49:11 | M7 |
 | Assert.cs:51:9:51:33 | ... ...; | Assert.cs:49:10:49:11 | M7 |
@@ -921,6 +940,7 @@ nodeEnclosing
 | Assert.cs:56:10:56:11 | Exceptional Exit | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:56:10:56:11 | Exit | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:56:10:56:11 | Normal Exit | Assert.cs:56:10:56:11 | M8 |
+| Assert.cs:56:18:56:18 | b | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:57:5:61:5 | After {...} | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:57:5:61:5 | {...} | Assert.cs:56:10:56:11 | M8 |
 | Assert.cs:58:9:58:33 | ... ...; | Assert.cs:56:10:56:11 | M8 |
@@ -963,6 +983,7 @@ nodeEnclosing
 | Assert.cs:63:10:63:11 | Exceptional Exit | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:63:10:63:11 | Exit | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:63:10:63:11 | Normal Exit | Assert.cs:63:10:63:11 | M9 |
+| Assert.cs:63:18:63:18 | b | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:64:5:68:5 | After {...} | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:64:5:68:5 | {...} | Assert.cs:63:10:63:11 | M9 |
 | Assert.cs:65:9:65:33 | ... ...; | Assert.cs:63:10:63:11 | M9 |
@@ -1005,6 +1026,7 @@ nodeEnclosing
 | Assert.cs:70:10:70:12 | Exceptional Exit | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:70:10:70:12 | Exit | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:70:10:70:12 | Normal Exit | Assert.cs:70:10:70:12 | M10 |
+| Assert.cs:70:19:70:19 | b | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:71:5:75:5 | After {...} | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:71:5:75:5 | {...} | Assert.cs:70:10:70:12 | M10 |
 | Assert.cs:72:9:72:33 | ... ...; | Assert.cs:70:10:70:12 | M10 |
@@ -1047,6 +1069,7 @@ nodeEnclosing
 | Assert.cs:77:10:77:12 | Exceptional Exit | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:77:10:77:12 | Exit | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:77:10:77:12 | Normal Exit | Assert.cs:77:10:77:12 | M11 |
+| Assert.cs:77:19:77:19 | b | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:78:5:82:5 | After {...} | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:78:5:82:5 | {...} | Assert.cs:77:10:77:12 | M11 |
 | Assert.cs:79:9:79:33 | ... ...; | Assert.cs:77:10:77:12 | M11 |
@@ -1089,6 +1112,7 @@ nodeEnclosing
 | Assert.cs:84:10:84:12 | Exceptional Exit | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:84:10:84:12 | Exit | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:84:10:84:12 | Normal Exit | Assert.cs:84:10:84:12 | M12 |
+| Assert.cs:84:19:84:19 | b | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:85:5:129:5 | After {...} | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:85:5:129:5 | {...} | Assert.cs:84:10:84:12 | M12 |
 | Assert.cs:86:9:86:33 | ... ...; | Assert.cs:84:10:84:12 | M12 |
@@ -1458,11 +1482,17 @@ nodeEnclosing
 | Assert.cs:131:18:131:32 | Entry | Assert.cs:131:18:131:32 | AssertTrueFalse |
 | Assert.cs:131:18:131:32 | Exit | Assert.cs:131:18:131:32 | AssertTrueFalse |
 | Assert.cs:131:18:131:32 | Normal Exit | Assert.cs:131:18:131:32 | AssertTrueFalse |
+| Assert.cs:132:74:132:83 | condition1 | Assert.cs:131:18:131:32 | AssertTrueFalse |
+| Assert.cs:133:73:133:82 | condition2 | Assert.cs:131:18:131:32 | AssertTrueFalse |
+| Assert.cs:134:17:134:28 | nonCondition | Assert.cs:131:18:131:32 | AssertTrueFalse |
 | Assert.cs:135:5:136:5 | {...} | Assert.cs:131:18:131:32 | AssertTrueFalse |
 | Assert.cs:138:10:138:12 | Entry | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:138:10:138:12 | Exceptional Exit | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:138:10:138:12 | Exit | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:138:10:138:12 | Normal Exit | Assert.cs:138:10:138:12 | M13 |
+| Assert.cs:138:19:138:20 | b1 | Assert.cs:138:10:138:12 | M13 |
+| Assert.cs:138:28:138:29 | b2 | Assert.cs:138:10:138:12 | M13 |
+| Assert.cs:138:37:138:38 | b3 | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:139:5:142:5 | {...} | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:140:9:140:35 | After call to method AssertTrueFalse | Assert.cs:138:10:138:12 | M13 |
 | Assert.cs:140:9:140:35 | Before call to method AssertTrueFalse | Assert.cs:138:10:138:12 | M13 |
@@ -1551,10 +1581,14 @@ nodeEnclosing
 | Assignments.cs:14:18:14:35 | Entry | Assignments.cs:14:18:14:35 | (...) => ... |
 | Assignments.cs:14:18:14:35 | Exit | Assignments.cs:14:18:14:35 | (...) => ... |
 | Assignments.cs:14:18:14:35 | Normal Exit | Assignments.cs:14:18:14:35 | (...) => ... |
+| Assignments.cs:14:19:14:24 | sender | Assignments.cs:14:18:14:35 | (...) => ... |
+| Assignments.cs:14:27:14:27 | e | Assignments.cs:14:18:14:35 | (...) => ... |
 | Assignments.cs:14:33:14:35 | {...} | Assignments.cs:14:18:14:35 | (...) => ... |
 | Assignments.cs:17:40:17:40 | Entry | Assignments.cs:17:40:17:40 | + |
 | Assignments.cs:17:40:17:40 | Exit | Assignments.cs:17:40:17:40 | + |
 | Assignments.cs:17:40:17:40 | Normal Exit | Assignments.cs:17:40:17:40 | + |
+| Assignments.cs:17:54:17:54 | x | Assignments.cs:17:40:17:40 | + |
+| Assignments.cs:17:69:17:69 | y | Assignments.cs:17:40:17:40 | + |
 | Assignments.cs:18:5:20:5 | {...} | Assignments.cs:17:40:17:40 | + |
 | Assignments.cs:19:9:19:17 | Before return ...; | Assignments.cs:17:40:17:40 | + |
 | Assignments.cs:19:9:19:17 | return ...; | Assignments.cs:17:40:17:40 | + |
@@ -1562,6 +1596,7 @@ nodeEnclosing
 | Assignments.cs:27:10:27:23 | Entry | Assignments.cs:27:10:27:23 | SetParamSingle |
 | Assignments.cs:27:10:27:23 | Exit | Assignments.cs:27:10:27:23 | SetParamSingle |
 | Assignments.cs:27:10:27:23 | Normal Exit | Assignments.cs:27:10:27:23 | SetParamSingle |
+| Assignments.cs:27:33:27:33 | x | Assignments.cs:27:10:27:23 | SetParamSingle |
 | Assignments.cs:28:5:30:5 | After {...} | Assignments.cs:27:10:27:23 | SetParamSingle |
 | Assignments.cs:28:5:30:5 | {...} | Assignments.cs:27:10:27:23 | SetParamSingle |
 | Assignments.cs:29:9:29:9 | access to parameter x | Assignments.cs:27:10:27:23 | SetParamSingle |
@@ -1574,6 +1609,9 @@ nodeEnclosing
 | Assignments.cs:32:10:32:22 | Entry | Assignments.cs:32:10:32:22 | SetParamMulti |
 | Assignments.cs:32:10:32:22 | Exit | Assignments.cs:32:10:32:22 | SetParamMulti |
 | Assignments.cs:32:10:32:22 | Normal Exit | Assignments.cs:32:10:32:22 | SetParamMulti |
+| Assignments.cs:32:32:32:32 | x | Assignments.cs:32:10:32:22 | SetParamMulti |
+| Assignments.cs:32:42:32:42 | o | Assignments.cs:32:10:32:22 | SetParamMulti |
+| Assignments.cs:32:56:32:56 | y | Assignments.cs:32:10:32:22 | SetParamMulti |
 | Assignments.cs:33:5:36:5 | After {...} | Assignments.cs:32:10:32:22 | SetParamMulti |
 | Assignments.cs:33:5:36:5 | {...} | Assignments.cs:32:10:32:22 | SetParamMulti |
 | Assignments.cs:34:9:34:9 | access to parameter x | Assignments.cs:32:10:32:22 | SetParamMulti |
@@ -1656,6 +1694,7 @@ nodeEnclosing
 | BreakInTry.cs:3:10:3:11 | Entry | BreakInTry.cs:3:10:3:11 | M1 |
 | BreakInTry.cs:3:10:3:11 | Exit | BreakInTry.cs:3:10:3:11 | M1 |
 | BreakInTry.cs:3:10:3:11 | Normal Exit | BreakInTry.cs:3:10:3:11 | M1 |
+| BreakInTry.cs:3:22:3:25 | args | BreakInTry.cs:3:10:3:11 | M1 |
 | BreakInTry.cs:4:5:18:5 | After {...} | BreakInTry.cs:3:10:3:11 | M1 |
 | BreakInTry.cs:4:5:18:5 | {...} | BreakInTry.cs:3:10:3:11 | M1 |
 | BreakInTry.cs:5:9:17:9 | After try {...} ... | BreakInTry.cs:3:10:3:11 | M1 |
@@ -1695,6 +1734,7 @@ nodeEnclosing
 | BreakInTry.cs:20:10:20:11 | Entry | BreakInTry.cs:20:10:20:11 | M2 |
 | BreakInTry.cs:20:10:20:11 | Exit | BreakInTry.cs:20:10:20:11 | M2 |
 | BreakInTry.cs:20:10:20:11 | Normal Exit | BreakInTry.cs:20:10:20:11 | M2 |
+| BreakInTry.cs:20:22:20:25 | args | BreakInTry.cs:20:10:20:11 | M2 |
 | BreakInTry.cs:21:5:36:5 | After {...} | BreakInTry.cs:20:10:20:11 | M2 |
 | BreakInTry.cs:21:5:36:5 | {...} | BreakInTry.cs:20:10:20:11 | M2 |
 | BreakInTry.cs:22:9:34:9 | After foreach (... ... in ...) ... | BreakInTry.cs:20:10:20:11 | M2 |
@@ -1735,6 +1775,7 @@ nodeEnclosing
 | BreakInTry.cs:38:10:38:11 | Entry | BreakInTry.cs:38:10:38:11 | M3 |
 | BreakInTry.cs:38:10:38:11 | Exit | BreakInTry.cs:38:10:38:11 | M3 |
 | BreakInTry.cs:38:10:38:11 | Normal Exit | BreakInTry.cs:38:10:38:11 | M3 |
+| BreakInTry.cs:38:22:38:25 | args | BreakInTry.cs:38:10:38:11 | M3 |
 | BreakInTry.cs:39:5:54:5 | After {...} | BreakInTry.cs:38:10:38:11 | M3 |
 | BreakInTry.cs:39:5:54:5 | {...} | BreakInTry.cs:38:10:38:11 | M3 |
 | BreakInTry.cs:40:9:52:9 | After try {...} ... | BreakInTry.cs:38:10:38:11 | M3 |
@@ -1776,6 +1817,7 @@ nodeEnclosing
 | BreakInTry.cs:56:10:56:11 | Entry | BreakInTry.cs:56:10:56:11 | M4 |
 | BreakInTry.cs:56:10:56:11 | Exit | BreakInTry.cs:56:10:56:11 | M4 |
 | BreakInTry.cs:56:10:56:11 | Normal Exit | BreakInTry.cs:56:10:56:11 | M4 |
+| BreakInTry.cs:56:22:56:25 | args | BreakInTry.cs:56:10:56:11 | M4 |
 | BreakInTry.cs:57:5:71:5 | After {...} | BreakInTry.cs:56:10:56:11 | M4 |
 | BreakInTry.cs:57:5:71:5 | {...} | BreakInTry.cs:56:10:56:11 | M4 |
 | BreakInTry.cs:58:9:70:9 | After try {...} ... | BreakInTry.cs:56:10:56:11 | M4 |
@@ -1848,6 +1890,7 @@ nodeEnclosing
 | CompileTimeOperators.cs:20:12:20:17 | Entry | CompileTimeOperators.cs:20:12:20:17 | Nameof |
 | CompileTimeOperators.cs:20:12:20:17 | Exit | CompileTimeOperators.cs:20:12:20:17 | Nameof |
 | CompileTimeOperators.cs:20:12:20:17 | Normal Exit | CompileTimeOperators.cs:20:12:20:17 | Nameof |
+| CompileTimeOperators.cs:20:23:20:23 | i | CompileTimeOperators.cs:20:12:20:17 | Nameof |
 | CompileTimeOperators.cs:21:5:23:5 | {...} | CompileTimeOperators.cs:20:12:20:17 | Nameof |
 | CompileTimeOperators.cs:22:9:22:25 | Before return ...; | CompileTimeOperators.cs:20:12:20:17 | Nameof |
 | CompileTimeOperators.cs:22:9:22:25 | return ...; | CompileTimeOperators.cs:20:12:20:17 | Nameof |
@@ -1909,6 +1952,7 @@ nodeEnclosing
 | ConditionalAccess.cs:3:12:3:13 | Entry | ConditionalAccess.cs:3:12:3:13 | M1 |
 | ConditionalAccess.cs:3:12:3:13 | Exit | ConditionalAccess.cs:3:12:3:13 | M1 |
 | ConditionalAccess.cs:3:12:3:13 | Normal Exit | ConditionalAccess.cs:3:12:3:13 | M1 |
+| ConditionalAccess.cs:3:20:3:20 | i | ConditionalAccess.cs:3:12:3:13 | M1 |
 | ConditionalAccess.cs:3:26:3:26 | After access to parameter i [non-null] | ConditionalAccess.cs:3:12:3:13 | M1 |
 | ConditionalAccess.cs:3:26:3:26 | After access to parameter i [null] | ConditionalAccess.cs:3:12:3:13 | M1 |
 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | ConditionalAccess.cs:3:12:3:13 | M1 |
@@ -1922,6 +1966,7 @@ nodeEnclosing
 | ConditionalAccess.cs:5:10:5:11 | Entry | ConditionalAccess.cs:5:10:5:11 | M2 |
 | ConditionalAccess.cs:5:10:5:11 | Exit | ConditionalAccess.cs:5:10:5:11 | M2 |
 | ConditionalAccess.cs:5:10:5:11 | Normal Exit | ConditionalAccess.cs:5:10:5:11 | M2 |
+| ConditionalAccess.cs:5:20:5:20 | s | ConditionalAccess.cs:5:10:5:11 | M2 |
 | ConditionalAccess.cs:5:26:5:26 | After access to parameter s [non-null] | ConditionalAccess.cs:5:10:5:11 | M2 |
 | ConditionalAccess.cs:5:26:5:26 | After access to parameter s [null] | ConditionalAccess.cs:5:10:5:11 | M2 |
 | ConditionalAccess.cs:5:26:5:26 | access to parameter s | ConditionalAccess.cs:5:10:5:11 | M2 |
@@ -1931,6 +1976,8 @@ nodeEnclosing
 | ConditionalAccess.cs:7:10:7:11 | Entry | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:7:10:7:11 | Exit | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:7:10:7:11 | Normal Exit | ConditionalAccess.cs:7:10:7:11 | M3 |
+| ConditionalAccess.cs:7:20:7:21 | s1 | ConditionalAccess.cs:7:10:7:11 | M3 |
+| ConditionalAccess.cs:7:31:7:32 | s2 | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:7:38:7:55 | After access to property Length | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:7:38:7:55 | Before access to property Length | ConditionalAccess.cs:7:10:7:11 | M3 |
 | ConditionalAccess.cs:7:38:7:55 | access to property Length | ConditionalAccess.cs:7:10:7:11 | M3 |
@@ -1946,6 +1993,7 @@ nodeEnclosing
 | ConditionalAccess.cs:9:9:9:10 | Entry | ConditionalAccess.cs:9:9:9:10 | M4 |
 | ConditionalAccess.cs:9:9:9:10 | Exit | ConditionalAccess.cs:9:9:9:10 | M4 |
 | ConditionalAccess.cs:9:9:9:10 | Normal Exit | ConditionalAccess.cs:9:9:9:10 | M4 |
+| ConditionalAccess.cs:9:19:9:19 | s | ConditionalAccess.cs:9:9:9:10 | M4 |
 | ConditionalAccess.cs:9:25:9:25 | After access to parameter s [non-null] | ConditionalAccess.cs:9:9:9:10 | M4 |
 | ConditionalAccess.cs:9:25:9:25 | After access to parameter s [null] | ConditionalAccess.cs:9:9:9:10 | M4 |
 | ConditionalAccess.cs:9:25:9:25 | access to parameter s | ConditionalAccess.cs:9:9:9:10 | M4 |
@@ -1959,6 +2007,7 @@ nodeEnclosing
 | ConditionalAccess.cs:11:9:11:10 | Entry | ConditionalAccess.cs:11:9:11:10 | M5 |
 | ConditionalAccess.cs:11:9:11:10 | Exit | ConditionalAccess.cs:11:9:11:10 | M5 |
 | ConditionalAccess.cs:11:9:11:10 | Normal Exit | ConditionalAccess.cs:11:9:11:10 | M5 |
+| ConditionalAccess.cs:11:19:11:19 | s | ConditionalAccess.cs:11:9:11:10 | M5 |
 | ConditionalAccess.cs:12:5:17:5 | {...} | ConditionalAccess.cs:11:9:11:10 | M5 |
 | ConditionalAccess.cs:13:9:16:21 | if (...) ... | ConditionalAccess.cs:11:9:11:10 | M5 |
 | ConditionalAccess.cs:13:13:13:13 | After access to parameter s [non-null] | ConditionalAccess.cs:11:9:11:10 | M5 |
@@ -1984,6 +2033,8 @@ nodeEnclosing
 | ConditionalAccess.cs:19:12:19:13 | Entry | ConditionalAccess.cs:19:12:19:13 | M6 |
 | ConditionalAccess.cs:19:12:19:13 | Exit | ConditionalAccess.cs:19:12:19:13 | M6 |
 | ConditionalAccess.cs:19:12:19:13 | Normal Exit | ConditionalAccess.cs:19:12:19:13 | M6 |
+| ConditionalAccess.cs:19:22:19:23 | s1 | ConditionalAccess.cs:19:12:19:13 | M6 |
+| ConditionalAccess.cs:19:33:19:34 | s2 | ConditionalAccess.cs:19:12:19:13 | M6 |
 | ConditionalAccess.cs:19:40:19:41 | After access to parameter s1 [non-null] | ConditionalAccess.cs:19:12:19:13 | M6 |
 | ConditionalAccess.cs:19:40:19:41 | After access to parameter s1 [null] | ConditionalAccess.cs:19:12:19:13 | M6 |
 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 | ConditionalAccess.cs:19:12:19:13 | M6 |
@@ -1994,6 +2045,7 @@ nodeEnclosing
 | ConditionalAccess.cs:21:10:21:11 | Entry | ConditionalAccess.cs:21:10:21:11 | M7 |
 | ConditionalAccess.cs:21:10:21:11 | Exit | ConditionalAccess.cs:21:10:21:11 | M7 |
 | ConditionalAccess.cs:21:10:21:11 | Normal Exit | ConditionalAccess.cs:21:10:21:11 | M7 |
+| ConditionalAccess.cs:21:17:21:17 | i | ConditionalAccess.cs:21:10:21:11 | M7 |
 | ConditionalAccess.cs:22:5:26:5 | After {...} | ConditionalAccess.cs:21:10:21:11 | M7 |
 | ConditionalAccess.cs:22:5:26:5 | {...} | ConditionalAccess.cs:21:10:21:11 | M7 |
 | ConditionalAccess.cs:23:9:23:39 | ... ...; | ConditionalAccess.cs:21:10:21:11 | M7 |
@@ -2040,6 +2092,7 @@ nodeEnclosing
 | ConditionalAccess.cs:30:10:30:12 | Entry | ConditionalAccess.cs:30:10:30:12 | Out |
 | ConditionalAccess.cs:30:10:30:12 | Exit | ConditionalAccess.cs:30:10:30:12 | Out |
 | ConditionalAccess.cs:30:10:30:12 | Normal Exit | ConditionalAccess.cs:30:10:30:12 | Out |
+| ConditionalAccess.cs:30:22:30:22 | i | ConditionalAccess.cs:30:10:30:12 | Out |
 | ConditionalAccess.cs:30:28:30:28 | access to parameter i | ConditionalAccess.cs:30:10:30:12 | Out |
 | ConditionalAccess.cs:30:28:30:32 | ... = ... | ConditionalAccess.cs:30:10:30:12 | Out |
 | ConditionalAccess.cs:30:28:30:32 | After ... = ... | ConditionalAccess.cs:30:10:30:12 | Out |
@@ -2048,6 +2101,8 @@ nodeEnclosing
 | ConditionalAccess.cs:32:10:32:11 | Entry | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:32:10:32:11 | Exit | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:32:10:32:11 | Normal Exit | ConditionalAccess.cs:32:10:32:11 | M8 |
+| ConditionalAccess.cs:32:18:32:18 | b | ConditionalAccess.cs:32:10:32:11 | M8 |
+| ConditionalAccess.cs:32:29:32:29 | i | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:33:5:36:5 | After {...} | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:33:5:36:5 | {...} | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:34:9:34:9 | access to parameter i | ConditionalAccess.cs:32:10:32:11 | M8 |
@@ -2068,6 +2123,8 @@ nodeEnclosing
 | ConditionalAccess.cs:35:9:35:25 | ...; | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:35:9:35:25 | After ...; | ConditionalAccess.cs:32:10:32:11 | M8 |
 | ConditionalAccess.cs:35:23:35:23 | access to parameter i | ConditionalAccess.cs:32:10:32:11 | M8 |
+| ConditionalAccess.cs:40:21:40:25 | index | ConditionalAccess.cs:42:9:42:11 | get_Item |
+| ConditionalAccess.cs:40:21:40:25 | index | ConditionalAccess.cs:43:9:43:11 | set_Item |
 | ConditionalAccess.cs:42:9:42:11 | Entry | ConditionalAccess.cs:42:9:42:11 | get_Item |
 | ConditionalAccess.cs:42:9:42:11 | Exit | ConditionalAccess.cs:42:9:42:11 | get_Item |
 | ConditionalAccess.cs:42:9:42:11 | Normal Exit | ConditionalAccess.cs:42:9:42:11 | get_Item |
@@ -2078,10 +2135,12 @@ nodeEnclosing
 | ConditionalAccess.cs:43:9:43:11 | Entry | ConditionalAccess.cs:43:9:43:11 | set_Item |
 | ConditionalAccess.cs:43:9:43:11 | Exit | ConditionalAccess.cs:43:9:43:11 | set_Item |
 | ConditionalAccess.cs:43:9:43:11 | Normal Exit | ConditionalAccess.cs:43:9:43:11 | set_Item |
+| ConditionalAccess.cs:43:9:43:11 | value | ConditionalAccess.cs:43:9:43:11 | set_Item |
 | ConditionalAccess.cs:43:13:43:15 | {...} | ConditionalAccess.cs:43:9:43:11 | set_Item |
 | ConditionalAccess.cs:46:10:46:11 | Entry | ConditionalAccess.cs:46:10:46:11 | M9 |
 | ConditionalAccess.cs:46:10:46:11 | Exit | ConditionalAccess.cs:46:10:46:11 | M9 |
 | ConditionalAccess.cs:46:10:46:11 | Normal Exit | ConditionalAccess.cs:46:10:46:11 | M9 |
+| ConditionalAccess.cs:46:31:46:32 | ca | ConditionalAccess.cs:46:10:46:11 | M9 |
 | ConditionalAccess.cs:47:5:55:5 | After {...} | ConditionalAccess.cs:46:10:46:11 | M9 |
 | ConditionalAccess.cs:47:5:55:5 | {...} | ConditionalAccess.cs:46:10:46:11 | M9 |
 | ConditionalAccess.cs:48:9:48:10 | After access to parameter ca [non-null] | ConditionalAccess.cs:46:10:46:11 | M9 |
@@ -2180,6 +2239,8 @@ nodeEnclosing
 | ConditionalAccess.cs:60:26:60:38 | Entry | ConditionalAccess.cs:60:26:60:38 | CommaJoinWith |
 | ConditionalAccess.cs:60:26:60:38 | Exit | ConditionalAccess.cs:60:26:60:38 | CommaJoinWith |
 | ConditionalAccess.cs:60:26:60:38 | Normal Exit | ConditionalAccess.cs:60:26:60:38 | CommaJoinWith |
+| ConditionalAccess.cs:60:52:60:53 | s1 | ConditionalAccess.cs:60:26:60:38 | CommaJoinWith |
+| ConditionalAccess.cs:60:63:60:64 | s2 | ConditionalAccess.cs:60:26:60:38 | CommaJoinWith |
 | ConditionalAccess.cs:60:70:60:71 | access to parameter s1 | ConditionalAccess.cs:60:26:60:38 | CommaJoinWith |
 | ConditionalAccess.cs:60:70:60:78 | ... + ... | ConditionalAccess.cs:60:26:60:38 | CommaJoinWith |
 | ConditionalAccess.cs:60:70:60:78 | After ... + ... | ConditionalAccess.cs:60:26:60:38 | CommaJoinWith |
@@ -2203,6 +2264,8 @@ nodeEnclosing
 | Conditions.cs:3:10:3:19 | Entry | Conditions.cs:3:10:3:19 | IncrOrDecr |
 | Conditions.cs:3:10:3:19 | Exit | Conditions.cs:3:10:3:19 | IncrOrDecr |
 | Conditions.cs:3:10:3:19 | Normal Exit | Conditions.cs:3:10:3:19 | IncrOrDecr |
+| Conditions.cs:3:26:3:28 | inc | Conditions.cs:3:10:3:19 | IncrOrDecr |
+| Conditions.cs:3:39:3:39 | x | Conditions.cs:3:10:3:19 | IncrOrDecr |
 | Conditions.cs:4:5:9:5 | After {...} | Conditions.cs:3:10:3:19 | IncrOrDecr |
 | Conditions.cs:4:5:9:5 | {...} | Conditions.cs:3:10:3:19 | IncrOrDecr |
 | Conditions.cs:5:9:6:16 | After if (...) ... | Conditions.cs:3:10:3:19 | IncrOrDecr |
@@ -2233,6 +2296,7 @@ nodeEnclosing
 | Conditions.cs:11:9:11:10 | Entry | Conditions.cs:11:9:11:10 | M1 |
 | Conditions.cs:11:9:11:10 | Exit | Conditions.cs:11:9:11:10 | M1 |
 | Conditions.cs:11:9:11:10 | Normal Exit | Conditions.cs:11:9:11:10 | M1 |
+| Conditions.cs:11:17:11:17 | b | Conditions.cs:11:9:11:10 | M1 |
 | Conditions.cs:12:5:20:5 | {...} | Conditions.cs:11:9:11:10 | M1 |
 | Conditions.cs:13:9:13:18 | ... ...; | Conditions.cs:11:9:11:10 | M1 |
 | Conditions.cs:13:9:13:18 | After ... ...; | Conditions.cs:11:9:11:10 | M1 |
@@ -2280,6 +2344,8 @@ nodeEnclosing
 | Conditions.cs:22:9:22:10 | Entry | Conditions.cs:22:9:22:10 | M2 |
 | Conditions.cs:22:9:22:10 | Exit | Conditions.cs:22:9:22:10 | M2 |
 | Conditions.cs:22:9:22:10 | Normal Exit | Conditions.cs:22:9:22:10 | M2 |
+| Conditions.cs:22:17:22:18 | b1 | Conditions.cs:22:9:22:10 | M2 |
+| Conditions.cs:22:26:22:27 | b2 | Conditions.cs:22:9:22:10 | M2 |
 | Conditions.cs:23:5:31:5 | {...} | Conditions.cs:22:9:22:10 | M2 |
 | Conditions.cs:24:9:24:18 | ... ...; | Conditions.cs:22:9:22:10 | M2 |
 | Conditions.cs:24:9:24:18 | After ... ...; | Conditions.cs:22:9:22:10 | M2 |
@@ -2321,6 +2387,7 @@ nodeEnclosing
 | Conditions.cs:33:9:33:10 | Entry | Conditions.cs:33:9:33:10 | M3 |
 | Conditions.cs:33:9:33:10 | Exit | Conditions.cs:33:9:33:10 | M3 |
 | Conditions.cs:33:9:33:10 | Normal Exit | Conditions.cs:33:9:33:10 | M3 |
+| Conditions.cs:33:17:33:18 | b1 | Conditions.cs:33:9:33:10 | M3 |
 | Conditions.cs:34:5:44:5 | {...} | Conditions.cs:33:9:33:10 | M3 |
 | Conditions.cs:35:9:35:18 | ... ...; | Conditions.cs:33:9:33:10 | M3 |
 | Conditions.cs:35:9:35:18 | After ... ...; | Conditions.cs:33:9:33:10 | M3 |
@@ -2376,6 +2443,8 @@ nodeEnclosing
 | Conditions.cs:46:9:46:10 | Entry | Conditions.cs:46:9:46:10 | M4 |
 | Conditions.cs:46:9:46:10 | Exit | Conditions.cs:46:9:46:10 | M4 |
 | Conditions.cs:46:9:46:10 | Normal Exit | Conditions.cs:46:9:46:10 | M4 |
+| Conditions.cs:46:17:46:17 | b | Conditions.cs:46:9:46:10 | M4 |
+| Conditions.cs:46:24:46:24 | x | Conditions.cs:46:9:46:10 | M4 |
 | Conditions.cs:47:5:55:5 | {...} | Conditions.cs:46:9:46:10 | M4 |
 | Conditions.cs:48:9:48:18 | ... ...; | Conditions.cs:46:9:46:10 | M4 |
 | Conditions.cs:48:9:48:18 | After ... ...; | Conditions.cs:46:9:46:10 | M4 |
@@ -2415,6 +2484,8 @@ nodeEnclosing
 | Conditions.cs:57:9:57:10 | Entry | Conditions.cs:57:9:57:10 | M5 |
 | Conditions.cs:57:9:57:10 | Exit | Conditions.cs:57:9:57:10 | M5 |
 | Conditions.cs:57:9:57:10 | Normal Exit | Conditions.cs:57:9:57:10 | M5 |
+| Conditions.cs:57:17:57:17 | b | Conditions.cs:57:9:57:10 | M5 |
+| Conditions.cs:57:24:57:24 | x | Conditions.cs:57:9:57:10 | M5 |
 | Conditions.cs:58:5:68:5 | {...} | Conditions.cs:57:9:57:10 | M5 |
 | Conditions.cs:59:9:59:18 | ... ...; | Conditions.cs:57:9:57:10 | M5 |
 | Conditions.cs:59:9:59:18 | After ... ...; | Conditions.cs:57:9:57:10 | M5 |
@@ -2465,6 +2536,7 @@ nodeEnclosing
 | Conditions.cs:70:9:70:10 | Entry | Conditions.cs:70:9:70:10 | M6 |
 | Conditions.cs:70:9:70:10 | Exit | Conditions.cs:70:9:70:10 | M6 |
 | Conditions.cs:70:9:70:10 | Normal Exit | Conditions.cs:70:9:70:10 | M6 |
+| Conditions.cs:70:21:70:22 | ss | Conditions.cs:70:9:70:10 | M6 |
 | Conditions.cs:71:5:84:5 | {...} | Conditions.cs:70:9:70:10 | M6 |
 | Conditions.cs:72:9:72:30 | ... ...; | Conditions.cs:70:9:70:10 | M6 |
 | Conditions.cs:72:9:72:30 | After ... ...; | Conditions.cs:70:9:70:10 | M6 |
@@ -2539,6 +2611,7 @@ nodeEnclosing
 | Conditions.cs:86:9:86:10 | Entry | Conditions.cs:86:9:86:10 | M7 |
 | Conditions.cs:86:9:86:10 | Exit | Conditions.cs:86:9:86:10 | M7 |
 | Conditions.cs:86:9:86:10 | Normal Exit | Conditions.cs:86:9:86:10 | M7 |
+| Conditions.cs:86:21:86:22 | ss | Conditions.cs:86:9:86:10 | M7 |
 | Conditions.cs:87:5:100:5 | {...} | Conditions.cs:86:9:86:10 | M7 |
 | Conditions.cs:88:9:88:30 | ... ...; | Conditions.cs:86:9:86:10 | M7 |
 | Conditions.cs:88:9:88:30 | After ... ...; | Conditions.cs:86:9:86:10 | M7 |
@@ -2613,6 +2686,7 @@ nodeEnclosing
 | Conditions.cs:102:12:102:13 | Entry | Conditions.cs:102:12:102:13 | M8 |
 | Conditions.cs:102:12:102:13 | Exit | Conditions.cs:102:12:102:13 | M8 |
 | Conditions.cs:102:12:102:13 | Normal Exit | Conditions.cs:102:12:102:13 | M8 |
+| Conditions.cs:102:20:102:20 | b | Conditions.cs:102:12:102:13 | M8 |
 | Conditions.cs:103:5:111:5 | {...} | Conditions.cs:102:12:102:13 | M8 |
 | Conditions.cs:104:9:104:29 | ... ...; | Conditions.cs:102:12:102:13 | M8 |
 | Conditions.cs:104:9:104:29 | After ... ...; | Conditions.cs:102:12:102:13 | M8 |
@@ -2668,6 +2742,7 @@ nodeEnclosing
 | Conditions.cs:113:10:113:11 | Entry | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:113:10:113:11 | Exit | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:113:10:113:11 | Normal Exit | Conditions.cs:113:10:113:11 | M9 |
+| Conditions.cs:113:22:113:25 | args | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:114:5:124:5 | After {...} | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:114:5:124:5 | {...} | Conditions.cs:113:10:113:11 | M9 |
 | Conditions.cs:115:9:115:24 | ... ...; | Conditions.cs:113:10:113:11 | M9 |
@@ -2783,6 +2858,7 @@ nodeEnclosing
 | Conditions.cs:143:10:143:12 | Entry | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:143:10:143:12 | Exit | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:143:10:143:12 | Normal Exit | Conditions.cs:143:10:143:12 | M11 |
+| Conditions.cs:143:19:143:19 | b | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:144:5:150:5 | After {...} | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:144:5:150:5 | {...} | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:145:9:145:30 | ... ...; | Conditions.cs:143:10:143:12 | M11 |
@@ -2829,6 +2905,47 @@ nodeEnclosing
 | Conditions.cs:149:44:149:46 | Before {...} | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:149:44:149:46 | {...} | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:149:45:149:45 | access to local variable s | Conditions.cs:143:10:143:12 | M11 |
+| DefaultParam.cs:1:7:1:18 | After call to constructor Object | DefaultParam.cs:1:7:1:18 | DefaultParam |
+| DefaultParam.cs:1:7:1:18 | After call to method <object initializer> | DefaultParam.cs:1:7:1:18 | DefaultParam |
+| DefaultParam.cs:1:7:1:18 | Before call to constructor Object | DefaultParam.cs:1:7:1:18 | DefaultParam |
+| DefaultParam.cs:1:7:1:18 | Before call to method <object initializer> | DefaultParam.cs:1:7:1:18 | DefaultParam |
+| DefaultParam.cs:1:7:1:18 | Entry | DefaultParam.cs:1:7:1:18 | DefaultParam |
+| DefaultParam.cs:1:7:1:18 | Exit | DefaultParam.cs:1:7:1:18 | DefaultParam |
+| DefaultParam.cs:1:7:1:18 | Normal Exit | DefaultParam.cs:1:7:1:18 | DefaultParam |
+| DefaultParam.cs:1:7:1:18 | call to constructor Object | DefaultParam.cs:1:7:1:18 | DefaultParam |
+| DefaultParam.cs:1:7:1:18 | call to method <object initializer> | DefaultParam.cs:1:7:1:18 | DefaultParam |
+| DefaultParam.cs:1:7:1:18 | this access | DefaultParam.cs:1:7:1:18 | DefaultParam |
+| DefaultParam.cs:1:7:1:18 | {...} | DefaultParam.cs:1:7:1:18 | DefaultParam |
+| DefaultParam.cs:3:12:3:13 | Entry | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:12:3:13 | Exit | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:12:3:13 | Normal Exit | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:20:3:20 | b | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:30:3:30 | After s [match] | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:30:3:30 | After s [no-match] | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:30:3:30 | s | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:34:3:35 | "" | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:42:3:42 | After i [match] | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:42:3:42 | After i [no-match] | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:42:3:42 | i | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:46:3:46 | 0 | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:4:5:6:5 | {...} | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:9:5:25 | Before return ...; | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:9:5:25 | return ...; | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:16:5:16 | (...) ... | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:16:5:16 | After (...) ... | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:16:5:16 | Before (...) ... | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:16:5:16 | access to parameter b | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:16:5:20 | ... + ... | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:16:5:20 | After ... + ... | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:16:5:20 | Before ... + ... | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:16:5:24 | ... + ... | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:16:5:24 | After ... + ... | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:16:5:24 | Before ... + ... | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:20:5:20 | access to parameter s | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:24:5:24 | (...) ... | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:24:5:24 | After (...) ... | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:24:5:24 | Before (...) ... | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:5:24:5:24 | access to parameter i | DefaultParam.cs:3:12:3:13 | M1 |
 | ExitMethods.cs:6:7:6:17 | After call to constructor Object | ExitMethods.cs:6:7:6:17 | ExitMethods |
 | ExitMethods.cs:6:7:6:17 | After call to method <object initializer> | ExitMethods.cs:6:7:6:17 | ExitMethods |
 | ExitMethods.cs:6:7:6:17 | Before call to constructor Object | ExitMethods.cs:6:7:6:17 | ExitMethods |
@@ -2899,15 +3016,19 @@ nodeEnclosing
 | ExitMethods.cs:42:13:42:30 | call to method ErrorAlways | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:42:13:42:31 | ...; | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:42:25:42:29 | false | ExitMethods.cs:38:10:38:11 | M6 |
-| ExitMethods.cs:44:9:47:9 | After catch (...) {...} [match] | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:44:9:47:9 | catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [match] | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:44:16:44:32 | access to type ArgumentException | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:45:9:47:9 | {...} | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:46:13:46:19 | Before return ...; | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:46:13:46:19 | return ...; | ExitMethods.cs:38:10:38:11 | M6 |
-| ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:48:9:51:9 | After catch (...) {...} [no-match] | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:48:9:51:9 | catch (...) {...} | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [match] | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [no-match] | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:48:16:48:24 | access to type Exception | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:49:9:51:9 | {...} | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:50:13:50:19 | Before return ...; | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:50:13:50:19 | return ...; | ExitMethods.cs:38:10:38:11 | M6 |
@@ -2929,6 +3050,7 @@ nodeEnclosing
 | ExitMethods.cs:66:17:66:26 | Exceptional Exit | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
 | ExitMethods.cs:66:17:66:26 | Exit | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
 | ExitMethods.cs:66:17:66:26 | Normal Exit | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
+| ExitMethods.cs:66:33:66:33 | b | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
 | ExitMethods.cs:67:5:70:5 | After {...} | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
 | ExitMethods.cs:67:5:70:5 | {...} | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
 | ExitMethods.cs:68:9:69:34 | After if (...) ... | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
@@ -2944,6 +3066,7 @@ nodeEnclosing
 | ExitMethods.cs:72:17:72:27 | Entry | ExitMethods.cs:72:17:72:27 | ErrorAlways |
 | ExitMethods.cs:72:17:72:27 | Exceptional Exit | ExitMethods.cs:72:17:72:27 | ErrorAlways |
 | ExitMethods.cs:72:17:72:27 | Exit | ExitMethods.cs:72:17:72:27 | ErrorAlways |
+| ExitMethods.cs:72:34:72:34 | b | ExitMethods.cs:72:17:72:27 | ErrorAlways |
 | ExitMethods.cs:73:5:78:5 | {...} | ExitMethods.cs:72:17:72:27 | ErrorAlways |
 | ExitMethods.cs:74:9:77:45 | if (...) ... | ExitMethods.cs:72:17:72:27 | ErrorAlways |
 | ExitMethods.cs:74:13:74:13 | After access to parameter b [false] | ExitMethods.cs:72:17:72:27 | ErrorAlways |
@@ -3017,6 +3140,7 @@ nodeEnclosing
 | ExitMethods.cs:110:13:110:21 | Exceptional Exit | ExitMethods.cs:110:13:110:21 | ThrowExpr |
 | ExitMethods.cs:110:13:110:21 | Exit | ExitMethods.cs:110:13:110:21 | ThrowExpr |
 | ExitMethods.cs:110:13:110:21 | Normal Exit | ExitMethods.cs:110:13:110:21 | ThrowExpr |
+| ExitMethods.cs:110:31:110:35 | input | ExitMethods.cs:110:13:110:21 | ThrowExpr |
 | ExitMethods.cs:111:5:113:5 | {...} | ExitMethods.cs:110:13:110:21 | ThrowExpr |
 | ExitMethods.cs:112:9:112:77 | Before return ...; | ExitMethods.cs:110:13:110:21 | ThrowExpr |
 | ExitMethods.cs:112:9:112:77 | return ...; | ExitMethods.cs:110:13:110:21 | ThrowExpr |
@@ -3048,6 +3172,7 @@ nodeEnclosing
 | ExitMethods.cs:115:16:115:34 | Entry | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
 | ExitMethods.cs:115:16:115:34 | Exit | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
 | ExitMethods.cs:115:16:115:34 | Normal Exit | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
+| ExitMethods.cs:115:43:115:43 | s | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
 | ExitMethods.cs:116:5:118:5 | {...} | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
 | ExitMethods.cs:117:9:117:39 | Before return ...; | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
 | ExitMethods.cs:117:9:117:39 | return ...; | ExitMethods.cs:115:16:115:34 | ExtensionMethodCall |
@@ -3081,6 +3206,7 @@ nodeEnclosing
 | ExitMethods.cs:132:10:132:20 | Exceptional Exit | ExitMethods.cs:132:10:132:20 | AssertFalse |
 | ExitMethods.cs:132:10:132:20 | Exit | ExitMethods.cs:132:10:132:20 | AssertFalse |
 | ExitMethods.cs:132:10:132:20 | Normal Exit | ExitMethods.cs:132:10:132:20 | AssertFalse |
+| ExitMethods.cs:132:27:132:27 | b | ExitMethods.cs:132:10:132:20 | AssertFalse |
 | ExitMethods.cs:132:33:132:49 | After call to method IsFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
 | ExitMethods.cs:132:33:132:49 | Before call to method IsFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
 | ExitMethods.cs:132:33:132:49 | call to method IsFalse | ExitMethods.cs:132:10:132:20 | AssertFalse |
@@ -3097,6 +3223,8 @@ nodeEnclosing
 | ExitMethods.cs:140:17:140:42 | Entry | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
 | ExitMethods.cs:140:17:140:42 | Exceptional Exit | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
 | ExitMethods.cs:140:17:140:42 | Exit | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:140:49:140:49 | b | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
+| ExitMethods.cs:140:70:140:70 | e | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
 | ExitMethods.cs:141:5:147:5 | {...} | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
 | ExitMethods.cs:142:9:145:53 | if (...) ... | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
 | ExitMethods.cs:142:13:142:13 | After access to parameter b [false] | ExitMethods.cs:140:17:140:42 | ExceptionDispatchInfoThrow |
@@ -3116,6 +3244,7 @@ nodeEnclosing
 | Extensions.cs:5:23:5:29 | Entry | Extensions.cs:5:23:5:29 | ToInt32 |
 | Extensions.cs:5:23:5:29 | Exit | Extensions.cs:5:23:5:29 | ToInt32 |
 | Extensions.cs:5:23:5:29 | Normal Exit | Extensions.cs:5:23:5:29 | ToInt32 |
+| Extensions.cs:5:43:5:43 | s | Extensions.cs:5:23:5:29 | ToInt32 |
 | Extensions.cs:6:5:8:5 | {...} | Extensions.cs:5:23:5:29 | ToInt32 |
 | Extensions.cs:7:9:7:30 | Before return ...; | Extensions.cs:5:23:5:29 | ToInt32 |
 | Extensions.cs:7:9:7:30 | return ...; | Extensions.cs:5:23:5:29 | ToInt32 |
@@ -3126,6 +3255,8 @@ nodeEnclosing
 | Extensions.cs:10:24:10:29 | Entry | Extensions.cs:10:24:10:29 | ToBool |
 | Extensions.cs:10:24:10:29 | Exit | Extensions.cs:10:24:10:29 | ToBool |
 | Extensions.cs:10:24:10:29 | Normal Exit | Extensions.cs:10:24:10:29 | ToBool |
+| Extensions.cs:10:43:10:43 | s | Extensions.cs:10:24:10:29 | ToBool |
+| Extensions.cs:10:65:10:65 | f | Extensions.cs:10:24:10:29 | ToBool |
 | Extensions.cs:11:5:13:5 | {...} | Extensions.cs:10:24:10:29 | ToBool |
 | Extensions.cs:12:9:12:20 | Before return ...; | Extensions.cs:10:24:10:29 | ToBool |
 | Extensions.cs:12:9:12:20 | return ...; | Extensions.cs:10:24:10:29 | ToBool |
@@ -3144,6 +3275,7 @@ nodeEnclosing
 | Extensions.cs:20:17:20:20 | Entry | Extensions.cs:20:17:20:20 | Main |
 | Extensions.cs:20:17:20:20 | Exit | Extensions.cs:20:17:20:20 | Main |
 | Extensions.cs:20:17:20:20 | Normal Exit | Extensions.cs:20:17:20:20 | Main |
+| Extensions.cs:20:29:20:29 | s | Extensions.cs:20:17:20:20 | Main |
 | Extensions.cs:21:5:26:5 | After {...} | Extensions.cs:20:17:20:20 | Main |
 | Extensions.cs:21:5:26:5 | {...} | Extensions.cs:20:17:20:20 | Main |
 | Extensions.cs:22:9:22:9 | access to parameter s | Extensions.cs:20:17:20:20 | Main |
@@ -3230,18 +3362,20 @@ nodeEnclosing
 | Finally.cs:23:31:23:36 | "Try2" | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:24:13:24:19 | Before return ...; | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:24:13:24:19 | return ...; | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [match] | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:26:38:26:39 | After IOException ex [match] | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:26:38:26:39 | After IOException ex [no-match] | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:26:38:26:39 | IOException ex | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:26:48:26:51 | After true [true] | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:26:48:26:51 | true | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:27:9:29:9 | {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:28:13:28:18 | Before throw ...; | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:28:13:28:18 | throw ...; | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:30:9:40:9 | After catch (...) {...} [match] | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:30:9:40:9 | catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [match] | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:30:41:30:42 | ArgumentException ex | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:31:9:40:9 | {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:32:13:39:13 | try {...} ... | Finally.cs:19:10:19:11 | M2 |
@@ -3258,11 +3392,12 @@ nodeEnclosing
 | Finally.cs:38:23:38:43 | Before object creation of type Exception | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:38:23:38:43 | object creation of type Exception | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:38:37:38:42 | "Boo!" | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:41:9:43:9 | After catch (...) {...} [match] | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:41:9:43:9 | catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:41:16:41:24 | After access to type Exception [match] | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:41:16:41:24 | After access to type Exception [no-match] | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:41:16:41:24 | access to type Exception | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:42:9:43:9 | {...} | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:44:9:47:9 | After catch {...} [match] | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:44:9:47:9 | catch {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:45:9:47:9 | {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:46:13:46:19 | Before return ...; | Finally.cs:19:10:19:11 | M2 |
@@ -3292,18 +3427,20 @@ nodeEnclosing
 | Finally.cs:58:31:58:36 | "Try3" | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:59:13:59:19 | Before return ...; | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:59:13:59:19 | return ...; | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [match] | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:61:38:61:39 | After IOException ex [match] | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:61:38:61:39 | After IOException ex [no-match] | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:61:38:61:39 | IOException ex | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:61:48:61:51 | After true [true] | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:61:48:61:51 | true | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:62:9:64:9 | {...} | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:63:13:63:18 | Before throw ...; | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:63:13:63:18 | throw ...; | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:65:9:67:9 | After catch (...) {...} [match] | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:65:9:67:9 | catch (...) {...} | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:65:26:65:26 | After Exception e [match] | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:65:26:65:26 | After Exception e [no-match] | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:65:26:65:26 | Exception e | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:65:35:65:35 | access to local variable e | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:65:35:65:43 | After access to property Message | Finally.cs:54:10:54:11 | M3 |
@@ -3548,6 +3685,7 @@ nodeEnclosing
 | Finally.cs:147:10:147:11 | Exceptional Exit | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:147:10:147:11 | Exit | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:147:10:147:11 | Normal Exit | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:147:22:147:25 | args | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:148:5:170:5 | After {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:148:5:170:5 | {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:149:9:169:9 | After try {...} ... | Finally.cs:147:10:147:11 | M8 |
@@ -3590,9 +3728,10 @@ nodeEnclosing
 | Finally.cs:159:27:159:44 | Before object creation of type Exception | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:27:159:44 | object creation of type Exception | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:41:159:43 | "1" | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | After catch (...) {...} [match] | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:30:161:30 | After Exception e [match] | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:30:161:30 | After Exception e [no-match] | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:30:161:30 | Exception e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:39 | access to local variable e | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:47 | After access to property Message | Finally.cs:147:10:147:11 | M8 |
@@ -3615,7 +3754,6 @@ nodeEnclosing
 | Finally.cs:163:35:163:41 | Before access to array element | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:163:35:163:41 | access to array element | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:163:40:163:40 | 0 | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:165:13:168:13 | After catch {...} [match] | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:165:13:168:13 | catch {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:166:13:168:13 | After {...} | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:166:13:168:13 | {...} | Finally.cs:147:10:147:11 | M8 |
@@ -3662,6 +3800,8 @@ nodeEnclosing
 | Finally.cs:176:10:176:11 | Exceptional Exit | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:176:10:176:11 | Exit | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:176:10:176:11 | Normal Exit | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:176:18:176:19 | b1 | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:176:27:176:28 | b2 | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:177:5:193:5 | After {...} | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:177:5:193:5 | {...} | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:178:9:192:9 | After try {...} ... | Finally.cs:176:10:176:11 | M9 |
@@ -3694,9 +3834,11 @@ nodeEnclosing
 | Finally.cs:186:31:186:46 | After object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:31:186:46 | Before object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:31:186:46 | object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:13:191:13 | After catch (...) {...} [no-match] | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [no-match] | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:20:188:29 | access to type ExceptionB | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [false] | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [true] | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:38:188:39 | access to parameter b2 | Finally.cs:176:10:176:11 | M9 |
@@ -3716,6 +3858,9 @@ nodeEnclosing
 | Finally.cs:195:10:195:12 | Exceptional Exit | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:195:10:195:12 | Exit | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:195:10:195:12 | Normal Exit | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:195:19:195:20 | b1 | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:195:28:195:29 | b2 | Finally.cs:195:10:195:12 | M10 |
+| Finally.cs:195:37:195:38 | b3 | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:196:5:214:5 | After {...} | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:196:5:214:5 | {...} | Finally.cs:195:10:195:12 | M10 |
 | Finally.cs:197:9:212:9 | After try {...} ... | Finally.cs:195:10:195:12 | M10 |
@@ -3795,7 +3940,6 @@ nodeEnclosing
 | Finally.cs:220:13:220:37 | ...; | Finally.cs:216:10:216:12 | M11 |
 | Finally.cs:220:13:220:37 | After ...; | Finally.cs:216:10:216:12 | M11 |
 | Finally.cs:220:31:220:35 | "Try" | Finally.cs:216:10:216:12 | M11 |
-| Finally.cs:222:9:225:9 | After catch {...} [match] | Finally.cs:216:10:216:12 | M11 |
 | Finally.cs:222:9:225:9 | catch {...} | Finally.cs:216:10:216:12 | M11 |
 | Finally.cs:223:9:225:9 | After {...} | Finally.cs:216:10:216:12 | M11 |
 | Finally.cs:223:9:225:9 | {...} | Finally.cs:216:10:216:12 | M11 |
@@ -3823,6 +3967,8 @@ nodeEnclosing
 | Finally.cs:233:10:233:12 | Exceptional Exit | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:233:10:233:12 | Exit | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:233:10:233:12 | Normal Exit | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:233:19:233:20 | b1 | Finally.cs:233:10:233:12 | M12 |
+| Finally.cs:233:28:233:29 | b2 | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:234:5:261:5 | After {...} | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:234:5:261:5 | {...} | Finally.cs:233:10:233:12 | M12 |
 | Finally.cs:235:9:259:9 | After try {...} ... | Finally.cs:233:10:233:12 | M12 |
@@ -3891,6 +4037,7 @@ nodeEnclosing
 | Finally.cs:263:10:263:12 | Exceptional Exit | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:263:10:263:12 | Exit | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:263:10:263:12 | Normal Exit | Finally.cs:263:10:263:12 | M13 |
+| Finally.cs:263:18:263:18 | i | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:264:5:274:5 | After {...} | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:264:5:274:5 | {...} | Finally.cs:263:10:263:12 | M13 |
 | Finally.cs:265:9:273:9 | After try {...} ... | Finally.cs:263:10:263:12 | M13 |
@@ -3932,6 +4079,7 @@ nodeEnclosing
 | Foreach.cs:6:10:6:11 | Entry | Foreach.cs:6:10:6:11 | M1 |
 | Foreach.cs:6:10:6:11 | Exit | Foreach.cs:6:10:6:11 | M1 |
 | Foreach.cs:6:10:6:11 | Normal Exit | Foreach.cs:6:10:6:11 | M1 |
+| Foreach.cs:6:22:6:25 | args | Foreach.cs:6:10:6:11 | M1 |
 | Foreach.cs:7:5:10:5 | After {...} | Foreach.cs:6:10:6:11 | M1 |
 | Foreach.cs:7:5:10:5 | {...} | Foreach.cs:6:10:6:11 | M1 |
 | Foreach.cs:8:9:9:13 | After foreach (... ... in ...) ... | Foreach.cs:6:10:6:11 | M1 |
@@ -3945,6 +4093,7 @@ nodeEnclosing
 | Foreach.cs:12:10:12:11 | Entry | Foreach.cs:12:10:12:11 | M2 |
 | Foreach.cs:12:10:12:11 | Exit | Foreach.cs:12:10:12:11 | M2 |
 | Foreach.cs:12:10:12:11 | Normal Exit | Foreach.cs:12:10:12:11 | M2 |
+| Foreach.cs:12:22:12:25 | args | Foreach.cs:12:10:12:11 | M2 |
 | Foreach.cs:13:5:16:5 | After {...} | Foreach.cs:12:10:12:11 | M2 |
 | Foreach.cs:13:5:16:5 | {...} | Foreach.cs:12:10:12:11 | M2 |
 | Foreach.cs:14:9:15:13 | After foreach (... ... in ...) ... | Foreach.cs:12:10:12:11 | M2 |
@@ -3958,6 +4107,7 @@ nodeEnclosing
 | Foreach.cs:18:10:18:11 | Entry | Foreach.cs:18:10:18:11 | M3 |
 | Foreach.cs:18:10:18:11 | Exit | Foreach.cs:18:10:18:11 | M3 |
 | Foreach.cs:18:10:18:11 | Normal Exit | Foreach.cs:18:10:18:11 | M3 |
+| Foreach.cs:18:33:18:33 | e | Foreach.cs:18:10:18:11 | M3 |
 | Foreach.cs:19:5:22:5 | After {...} | Foreach.cs:18:10:18:11 | M3 |
 | Foreach.cs:19:5:22:5 | {...} | Foreach.cs:18:10:18:11 | M3 |
 | Foreach.cs:20:9:21:11 | After foreach (... ... in ...) ... | Foreach.cs:18:10:18:11 | M3 |
@@ -3982,6 +4132,7 @@ nodeEnclosing
 | Foreach.cs:24:10:24:11 | Entry | Foreach.cs:24:10:24:11 | M4 |
 | Foreach.cs:24:10:24:11 | Exit | Foreach.cs:24:10:24:11 | M4 |
 | Foreach.cs:24:10:24:11 | Normal Exit | Foreach.cs:24:10:24:11 | M4 |
+| Foreach.cs:24:40:24:43 | args | Foreach.cs:24:10:24:11 | M4 |
 | Foreach.cs:25:5:28:5 | After {...} | Foreach.cs:24:10:24:11 | M4 |
 | Foreach.cs:25:5:28:5 | {...} | Foreach.cs:24:10:24:11 | M4 |
 | Foreach.cs:26:9:27:11 | After foreach (... ... in ...) ... | Foreach.cs:24:10:24:11 | M4 |
@@ -3999,6 +4150,7 @@ nodeEnclosing
 | Foreach.cs:30:10:30:11 | Entry | Foreach.cs:30:10:30:11 | M5 |
 | Foreach.cs:30:10:30:11 | Exit | Foreach.cs:30:10:30:11 | M5 |
 | Foreach.cs:30:10:30:11 | Normal Exit | Foreach.cs:30:10:30:11 | M5 |
+| Foreach.cs:30:40:30:43 | args | Foreach.cs:30:10:30:11 | M5 |
 | Foreach.cs:31:5:34:5 | After {...} | Foreach.cs:30:10:30:11 | M5 |
 | Foreach.cs:31:5:34:5 | {...} | Foreach.cs:30:10:30:11 | M5 |
 | Foreach.cs:32:9:33:11 | After foreach (... ... in ...) ... | Foreach.cs:30:10:30:11 | M5 |
@@ -4016,6 +4168,7 @@ nodeEnclosing
 | Foreach.cs:36:10:36:11 | Entry | Foreach.cs:36:10:36:11 | M6 |
 | Foreach.cs:36:10:36:11 | Exit | Foreach.cs:36:10:36:11 | M6 |
 | Foreach.cs:36:10:36:11 | Normal Exit | Foreach.cs:36:10:36:11 | M6 |
+| Foreach.cs:36:40:36:43 | args | Foreach.cs:36:10:36:11 | M6 |
 | Foreach.cs:37:5:40:5 | After {...} | Foreach.cs:36:10:36:11 | M6 |
 | Foreach.cs:37:5:40:5 | {...} | Foreach.cs:36:10:36:11 | M6 |
 | Foreach.cs:38:9:39:11 | After foreach (... ... in ...) ... | Foreach.cs:36:10:36:11 | M6 |
@@ -4082,6 +4235,7 @@ nodeEnclosing
 | Initializers.cs:10:5:10:16 | call to constructor Object | Initializers.cs:10:5:10:16 | Initializers |
 | Initializers.cs:10:5:10:16 | call to method <object initializer> | Initializers.cs:10:5:10:16 | Initializers |
 | Initializers.cs:10:5:10:16 | this access | Initializers.cs:10:5:10:16 | Initializers |
+| Initializers.cs:10:25:10:25 | s | Initializers.cs:10:5:10:16 | Initializers |
 | Initializers.cs:10:28:10:30 | {...} | Initializers.cs:10:5:10:16 | Initializers |
 | Initializers.cs:12:10:12:10 | Entry | Initializers.cs:12:10:12:10 | M |
 | Initializers.cs:12:10:12:10 | Exit | Initializers.cs:12:10:12:10 | M |
@@ -4202,6 +4356,7 @@ nodeEnclosing
 | Initializers.cs:33:9:33:11 | Entry | Initializers.cs:33:9:33:11 | Sub |
 | Initializers.cs:33:9:33:11 | Exit | Initializers.cs:33:9:33:11 | Sub |
 | Initializers.cs:33:9:33:11 | Normal Exit | Initializers.cs:33:9:33:11 | Sub |
+| Initializers.cs:33:17:33:17 | i | Initializers.cs:33:9:33:11 | Sub |
 | Initializers.cs:33:22:33:25 | After call to constructor Sub | Initializers.cs:33:9:33:11 | Sub |
 | Initializers.cs:33:22:33:25 | Before call to constructor Sub | Initializers.cs:33:9:33:11 | Sub |
 | Initializers.cs:33:22:33:25 | call to constructor Sub | Initializers.cs:33:9:33:11 | Sub |
@@ -4227,6 +4382,8 @@ nodeEnclosing
 | Initializers.cs:35:9:35:11 | call to constructor NoConstructor | Initializers.cs:35:9:35:11 | Sub |
 | Initializers.cs:35:9:35:11 | call to method <object initializer> | Initializers.cs:35:9:35:11 | Sub |
 | Initializers.cs:35:9:35:11 | this access | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:35:17:35:17 | i | Initializers.cs:35:9:35:11 | Sub |
+| Initializers.cs:35:24:35:24 | j | Initializers.cs:35:9:35:11 | Sub |
 | Initializers.cs:35:27:35:40 | After {...} | Initializers.cs:35:9:35:11 | Sub |
 | Initializers.cs:35:27:35:40 | {...} | Initializers.cs:35:9:35:11 | Sub |
 | Initializers.cs:35:29:35:29 | After access to field I | Initializers.cs:35:9:35:11 | Sub |
@@ -4268,6 +4425,7 @@ nodeEnclosing
 | Initializers.cs:51:10:51:13 | Entry | Initializers.cs:51:10:51:13 | Test |
 | Initializers.cs:51:10:51:13 | Exit | Initializers.cs:51:10:51:13 | Test |
 | Initializers.cs:51:10:51:13 | Normal Exit | Initializers.cs:51:10:51:13 | Test |
+| Initializers.cs:51:19:51:19 | i | Initializers.cs:51:10:51:13 | Test |
 | Initializers.cs:52:5:66:5 | After {...} | Initializers.cs:51:10:51:13 | Test |
 | Initializers.cs:52:5:66:5 | {...} | Initializers.cs:51:10:51:13 | Test |
 | Initializers.cs:54:9:54:96 | ... ...; | Initializers.cs:51:10:51:13 | Test |
@@ -4524,6 +4682,7 @@ nodeEnclosing
 | LoopUnrolling.cs:7:10:7:11 | Entry | LoopUnrolling.cs:7:10:7:11 | M1 |
 | LoopUnrolling.cs:7:10:7:11 | Exit | LoopUnrolling.cs:7:10:7:11 | M1 |
 | LoopUnrolling.cs:7:10:7:11 | Normal Exit | LoopUnrolling.cs:7:10:7:11 | M1 |
+| LoopUnrolling.cs:7:22:7:25 | args | LoopUnrolling.cs:7:10:7:11 | M1 |
 | LoopUnrolling.cs:8:5:13:5 | After {...} | LoopUnrolling.cs:7:10:7:11 | M1 |
 | LoopUnrolling.cs:8:5:13:5 | {...} | LoopUnrolling.cs:7:10:7:11 | M1 |
 | LoopUnrolling.cs:9:9:10:19 | After if (...) ... | LoopUnrolling.cs:7:10:7:11 | M1 |
@@ -4589,6 +4748,7 @@ nodeEnclosing
 | LoopUnrolling.cs:22:10:22:11 | Entry | LoopUnrolling.cs:22:10:22:11 | M3 |
 | LoopUnrolling.cs:22:10:22:11 | Exit | LoopUnrolling.cs:22:10:22:11 | M3 |
 | LoopUnrolling.cs:22:10:22:11 | Normal Exit | LoopUnrolling.cs:22:10:22:11 | M3 |
+| LoopUnrolling.cs:22:20:22:23 | args | LoopUnrolling.cs:22:10:22:11 | M3 |
 | LoopUnrolling.cs:23:5:27:5 | After {...} | LoopUnrolling.cs:22:10:22:11 | M3 |
 | LoopUnrolling.cs:23:5:27:5 | {...} | LoopUnrolling.cs:22:10:22:11 | M3 |
 | LoopUnrolling.cs:24:9:26:40 | After foreach (... ... in ...) ... | LoopUnrolling.cs:22:10:22:11 | M3 |
@@ -4740,6 +4900,7 @@ nodeEnclosing
 | LoopUnrolling.cs:55:10:55:11 | Entry | LoopUnrolling.cs:55:10:55:11 | M7 |
 | LoopUnrolling.cs:55:10:55:11 | Exit | LoopUnrolling.cs:55:10:55:11 | M7 |
 | LoopUnrolling.cs:55:10:55:11 | Normal Exit | LoopUnrolling.cs:55:10:55:11 | M7 |
+| LoopUnrolling.cs:55:18:55:18 | b | LoopUnrolling.cs:55:10:55:11 | M7 |
 | LoopUnrolling.cs:56:5:65:5 | After {...} | LoopUnrolling.cs:55:10:55:11 | M7 |
 | LoopUnrolling.cs:56:5:65:5 | {...} | LoopUnrolling.cs:55:10:55:11 | M7 |
 | LoopUnrolling.cs:57:9:57:48 | ... ...; | LoopUnrolling.cs:55:10:55:11 | M7 |
@@ -4792,6 +4953,7 @@ nodeEnclosing
 | LoopUnrolling.cs:67:10:67:11 | Entry | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:67:10:67:11 | Exit | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:67:10:67:11 | Normal Exit | LoopUnrolling.cs:67:10:67:11 | M8 |
+| LoopUnrolling.cs:67:26:67:29 | args | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:68:5:74:5 | After {...} | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:68:5:74:5 | {...} | LoopUnrolling.cs:67:10:67:11 | M8 |
 | LoopUnrolling.cs:69:9:70:19 | After if (...) ... | LoopUnrolling.cs:67:10:67:11 | M8 |
@@ -4948,6 +5110,7 @@ nodeEnclosing
 | MultiImplementationA.cs:7:41:7:43 | Exceptional Exit | MultiImplementationA.cs:7:41:7:43 | set_P2 |
 | MultiImplementationA.cs:7:41:7:43 | Exit | MultiImplementationA.cs:7:41:7:43 | set_P2 |
 | MultiImplementationA.cs:7:41:7:43 | Normal Exit | MultiImplementationA.cs:7:41:7:43 | set_P2 |
+| MultiImplementationA.cs:7:41:7:43 | value | MultiImplementationA.cs:7:41:7:43 | set_P2 |
 | MultiImplementationA.cs:7:45:7:59 | {...} | MultiImplementationA.cs:7:41:7:43 | set_P2 |
 | MultiImplementationA.cs:7:47:7:57 | Before throw ...; | MultiImplementationA.cs:7:41:7:43 | set_P2 |
 | MultiImplementationA.cs:7:47:7:57 | throw ...; | MultiImplementationA.cs:7:41:7:43 | set_P2 |
@@ -4970,11 +5133,14 @@ nodeEnclosing
 | MultiImplementationA.cs:13:16:13:20 | After ... = ... | MultiImplementationA.cs:11:7:11:8 | <object initializer> |
 | MultiImplementationA.cs:13:16:13:20 | Before ... = ... | MultiImplementationA.cs:11:7:11:8 | <object initializer> |
 | MultiImplementationA.cs:13:20:13:20 | 0 | MultiImplementationA.cs:11:7:11:8 | <object initializer> |
+| MultiImplementationA.cs:14:25:14:25 | i | MultiImplementationA.cs:14:31:14:31 | get_Item |
 | MultiImplementationA.cs:14:31:14:31 | Entry | MultiImplementationA.cs:14:31:14:31 | get_Item |
 | MultiImplementationA.cs:14:31:14:31 | Exceptional Exit | MultiImplementationA.cs:14:31:14:31 | get_Item |
 | MultiImplementationA.cs:14:31:14:31 | Exit | MultiImplementationA.cs:14:31:14:31 | get_Item |
 | MultiImplementationA.cs:14:31:14:31 | Normal Exit | MultiImplementationA.cs:14:31:14:31 | get_Item |
 | MultiImplementationA.cs:14:31:14:31 | access to parameter i | MultiImplementationA.cs:14:31:14:31 | get_Item |
+| MultiImplementationA.cs:15:31:15:31 | s | MultiImplementationA.cs:15:36:15:38 | get_Item |
+| MultiImplementationA.cs:15:31:15:31 | s | MultiImplementationA.cs:15:54:15:56 | set_Item |
 | MultiImplementationA.cs:15:36:15:38 | Entry | MultiImplementationA.cs:15:36:15:38 | get_Item |
 | MultiImplementationA.cs:15:36:15:38 | Exceptional Exit | MultiImplementationA.cs:15:36:15:38 | get_Item |
 | MultiImplementationA.cs:15:36:15:38 | Exit | MultiImplementationA.cs:15:36:15:38 | get_Item |
@@ -4986,10 +5152,12 @@ nodeEnclosing
 | MultiImplementationA.cs:15:54:15:56 | Entry | MultiImplementationA.cs:15:54:15:56 | set_Item |
 | MultiImplementationA.cs:15:54:15:56 | Exit | MultiImplementationA.cs:15:54:15:56 | set_Item |
 | MultiImplementationA.cs:15:54:15:56 | Normal Exit | MultiImplementationA.cs:15:54:15:56 | set_Item |
+| MultiImplementationA.cs:15:54:15:56 | value | MultiImplementationA.cs:15:54:15:56 | set_Item |
 | MultiImplementationA.cs:15:58:15:60 | {...} | MultiImplementationA.cs:15:54:15:56 | set_Item |
 | MultiImplementationA.cs:16:17:16:18 | Entry | MultiImplementationA.cs:16:17:16:18 | M1 |
 | MultiImplementationA.cs:16:17:16:18 | Exit | MultiImplementationA.cs:16:17:16:18 | M1 |
 | MultiImplementationA.cs:16:17:16:18 | Normal Exit | MultiImplementationA.cs:16:17:16:18 | M1 |
+| MultiImplementationA.cs:16:24:16:24 | i | MultiImplementationA.cs:16:17:16:18 | M1 |
 | MultiImplementationA.cs:17:5:19:5 | After {...} | MultiImplementationA.cs:16:17:16:18 | M1 |
 | MultiImplementationA.cs:17:5:19:5 | {...} | MultiImplementationA.cs:16:17:16:18 | M1 |
 | MultiImplementationA.cs:18:9:18:22 | Entry | MultiImplementationA.cs:18:9:18:22 | M2 |
@@ -5008,6 +5176,7 @@ nodeEnclosing
 | MultiImplementationA.cs:20:12:20:13 | call to constructor Object | MultiImplementationA.cs:20:12:20:13 | C2 |
 | MultiImplementationA.cs:20:12:20:13 | call to method <object initializer> | MultiImplementationA.cs:20:12:20:13 | C2 |
 | MultiImplementationA.cs:20:12:20:13 | this access | MultiImplementationA.cs:20:12:20:13 | C2 |
+| MultiImplementationA.cs:20:19:20:19 | i | MultiImplementationA.cs:20:12:20:13 | C2 |
 | MultiImplementationA.cs:20:22:20:31 | After {...} | MultiImplementationA.cs:20:12:20:13 | C2 |
 | MultiImplementationA.cs:20:22:20:31 | {...} | MultiImplementationA.cs:20:12:20:13 | C2 |
 | MultiImplementationA.cs:20:24:20:24 | After access to field F | MultiImplementationA.cs:20:12:20:13 | C2 |
@@ -5037,6 +5206,7 @@ nodeEnclosing
 | MultiImplementationA.cs:23:28:23:35 | Exceptional Exit | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
 | MultiImplementationA.cs:23:28:23:35 | Exit | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
 | MultiImplementationA.cs:23:28:23:35 | Normal Exit | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
+| MultiImplementationA.cs:23:44:23:44 | i | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
 | MultiImplementationA.cs:23:50:23:53 | null | MultiImplementationA.cs:23:28:23:35 | implicit conversion |
 | MultiImplementationA.cs:24:16:24:16 | After access to property P | MultiImplementationA.cs:11:7:11:8 | <object initializer> |
 | MultiImplementationA.cs:24:16:24:16 | Before access to property P | MultiImplementationA.cs:11:7:11:8 | <object initializer> |
@@ -5191,6 +5361,7 @@ nodeEnclosing
 | NullCoalescing.cs:3:9:3:10 | Entry | NullCoalescing.cs:3:9:3:10 | M1 |
 | NullCoalescing.cs:3:9:3:10 | Exit | NullCoalescing.cs:3:9:3:10 | M1 |
 | NullCoalescing.cs:3:9:3:10 | Normal Exit | NullCoalescing.cs:3:9:3:10 | M1 |
+| NullCoalescing.cs:3:17:3:17 | i | NullCoalescing.cs:3:9:3:10 | M1 |
 | NullCoalescing.cs:3:23:3:23 | After access to parameter i [non-null] | NullCoalescing.cs:3:9:3:10 | M1 |
 | NullCoalescing.cs:3:23:3:23 | After access to parameter i [null] | NullCoalescing.cs:3:9:3:10 | M1 |
 | NullCoalescing.cs:3:23:3:23 | access to parameter i | NullCoalescing.cs:3:9:3:10 | M1 |
@@ -5200,6 +5371,7 @@ nodeEnclosing
 | NullCoalescing.cs:5:9:5:10 | Entry | NullCoalescing.cs:5:9:5:10 | M2 |
 | NullCoalescing.cs:5:9:5:10 | Exit | NullCoalescing.cs:5:9:5:10 | M2 |
 | NullCoalescing.cs:5:9:5:10 | Normal Exit | NullCoalescing.cs:5:9:5:10 | M2 |
+| NullCoalescing.cs:5:18:5:18 | b | NullCoalescing.cs:5:9:5:10 | M2 |
 | NullCoalescing.cs:5:24:5:43 | ... ? ... : ... | NullCoalescing.cs:5:9:5:10 | M2 |
 | NullCoalescing.cs:5:24:5:43 | After ... ? ... : ... | NullCoalescing.cs:5:9:5:10 | M2 |
 | NullCoalescing.cs:5:25:5:25 | After access to parameter b [non-null] | NullCoalescing.cs:5:9:5:10 | M2 |
@@ -5215,6 +5387,8 @@ nodeEnclosing
 | NullCoalescing.cs:7:12:7:13 | Entry | NullCoalescing.cs:7:12:7:13 | M3 |
 | NullCoalescing.cs:7:12:7:13 | Exit | NullCoalescing.cs:7:12:7:13 | M3 |
 | NullCoalescing.cs:7:12:7:13 | Normal Exit | NullCoalescing.cs:7:12:7:13 | M3 |
+| NullCoalescing.cs:7:22:7:23 | s1 | NullCoalescing.cs:7:12:7:13 | M3 |
+| NullCoalescing.cs:7:33:7:34 | s2 | NullCoalescing.cs:7:12:7:13 | M3 |
 | NullCoalescing.cs:7:40:7:41 | After access to parameter s1 [non-null] | NullCoalescing.cs:7:12:7:13 | M3 |
 | NullCoalescing.cs:7:40:7:41 | After access to parameter s1 [null] | NullCoalescing.cs:7:12:7:13 | M3 |
 | NullCoalescing.cs:7:40:7:41 | access to parameter s1 | NullCoalescing.cs:7:12:7:13 | M3 |
@@ -5229,6 +5403,8 @@ nodeEnclosing
 | NullCoalescing.cs:9:12:9:13 | Entry | NullCoalescing.cs:9:12:9:13 | M4 |
 | NullCoalescing.cs:9:12:9:13 | Exit | NullCoalescing.cs:9:12:9:13 | M4 |
 | NullCoalescing.cs:9:12:9:13 | Normal Exit | NullCoalescing.cs:9:12:9:13 | M4 |
+| NullCoalescing.cs:9:20:9:20 | b | NullCoalescing.cs:9:12:9:13 | M4 |
+| NullCoalescing.cs:9:30:9:30 | s | NullCoalescing.cs:9:12:9:13 | M4 |
 | NullCoalescing.cs:9:36:9:58 | ... ?? ... | NullCoalescing.cs:9:12:9:13 | M4 |
 | NullCoalescing.cs:9:36:9:58 | After ... ?? ... | NullCoalescing.cs:9:12:9:13 | M4 |
 | NullCoalescing.cs:9:37:9:37 | After access to parameter b [false] | NullCoalescing.cs:9:12:9:13 | M4 |
@@ -5252,6 +5428,9 @@ nodeEnclosing
 | NullCoalescing.cs:11:9:11:10 | Entry | NullCoalescing.cs:11:9:11:10 | M5 |
 | NullCoalescing.cs:11:9:11:10 | Exit | NullCoalescing.cs:11:9:11:10 | M5 |
 | NullCoalescing.cs:11:9:11:10 | Normal Exit | NullCoalescing.cs:11:9:11:10 | M5 |
+| NullCoalescing.cs:11:18:11:19 | b1 | NullCoalescing.cs:11:9:11:10 | M5 |
+| NullCoalescing.cs:11:27:11:28 | b2 | NullCoalescing.cs:11:9:11:10 | M5 |
+| NullCoalescing.cs:11:36:11:37 | b3 | NullCoalescing.cs:11:9:11:10 | M5 |
 | NullCoalescing.cs:11:43:11:68 | ... ? ... : ... | NullCoalescing.cs:11:9:11:10 | M5 |
 | NullCoalescing.cs:11:43:11:68 | After ... ? ... : ... | NullCoalescing.cs:11:9:11:10 | M5 |
 | NullCoalescing.cs:11:44:11:45 | After access to parameter b1 [non-null] | NullCoalescing.cs:11:9:11:10 | M5 |
@@ -5274,6 +5453,7 @@ nodeEnclosing
 | NullCoalescing.cs:13:10:13:11 | Entry | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:13:10:13:11 | Exit | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:13:10:13:11 | Normal Exit | NullCoalescing.cs:13:10:13:11 | M6 |
+| NullCoalescing.cs:13:17:13:17 | i | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:14:5:18:5 | After {...} | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:14:5:18:5 | {...} | NullCoalescing.cs:13:10:13:11 | M6 |
 | NullCoalescing.cs:15:9:15:32 | ... ...; | NullCoalescing.cs:13:10:13:11 | M6 |
@@ -5329,6 +5509,7 @@ nodeEnclosing
 | PartialImplementationA.cs:3:12:3:18 | call to constructor Object | PartialImplementationA.cs:3:12:3:18 | Partial |
 | PartialImplementationA.cs:3:12:3:18 | call to method <object initializer> | PartialImplementationA.cs:3:12:3:18 | Partial |
 | PartialImplementationA.cs:3:12:3:18 | this access | PartialImplementationA.cs:3:12:3:18 | Partial |
+| PartialImplementationA.cs:3:24:3:24 | i | PartialImplementationA.cs:3:12:3:18 | Partial |
 | PartialImplementationA.cs:3:27:3:29 | {...} | PartialImplementationA.cs:3:12:3:18 | Partial |
 | PartialImplementationB.cs:3:16:3:16 | After access to field F | PartialImplementationA.cs:1:15:1:21 | <object initializer> |
 | PartialImplementationB.cs:3:16:3:16 | Before access to field F | PartialImplementationA.cs:1:15:1:21 | <object initializer> |
@@ -5445,11 +5626,15 @@ nodeEnclosing
 | Patterns.cs:22:13:22:23 | After case ...: [no-match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:22:13:22:23 | case ...: | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:22:18:22:22 | After "xyz" [match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:22:18:22:22 | After "xyz" [no-match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:23:17:23:22 | Before break; | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:24:13:24:36 | After case ...: [match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:24:13:24:36 | After case ...: [no-match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:18:24:23 | After Int32 i2 [match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:18:24:23 | After Int32 i2 [no-match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:5:10:5:11 | M1 |
@@ -5475,6 +5660,8 @@ nodeEnclosing
 | Patterns.cs:27:13:27:24 | After case ...: [match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:27:13:27:24 | After case ...: [no-match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:27:18:27:23 | After Int32 i3 [match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:27:18:27:23 | After Int32 i3 [no-match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:28:17:28:46 | After call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:28:17:28:46 | Before call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
@@ -5494,6 +5681,8 @@ nodeEnclosing
 | Patterns.cs:30:13:30:27 | After case ...: [match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:30:13:30:27 | After case ...: [no-match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:30:18:30:26 | After String s2 [match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:30:18:30:26 | After String s2 [no-match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:31:17:31:49 | After call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:31:17:31:49 | Before call to method WriteLine | Patterns.cs:5:10:5:11 | M1 |
@@ -5513,6 +5702,8 @@ nodeEnclosing
 | Patterns.cs:33:13:33:24 | After case ...: [match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:33:13:33:24 | After case ...: [no-match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:33:18:33:23 | After Object v2 [match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:33:18:33:23 | After Object v2 [no-match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:34:17:34:22 | Before break; | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:34:17:34:22 | break; | Patterns.cs:5:10:5:11 | M1 |
@@ -5532,6 +5723,7 @@ nodeEnclosing
 | Patterns.cs:47:24:47:25 | Entry | Patterns.cs:47:24:47:25 | M2 |
 | Patterns.cs:47:24:47:25 | Exit | Patterns.cs:47:24:47:25 | M2 |
 | Patterns.cs:47:24:47:25 | Normal Exit | Patterns.cs:47:24:47:25 | M2 |
+| Patterns.cs:47:32:47:32 | c | Patterns.cs:47:24:47:25 | M2 |
 | Patterns.cs:48:9:48:9 | access to parameter c | Patterns.cs:47:24:47:25 | M2 |
 | Patterns.cs:48:9:48:20 | ... is ... | Patterns.cs:47:24:47:25 | M2 |
 | Patterns.cs:48:9:48:20 | After ... is ... | Patterns.cs:47:24:47:25 | M2 |
@@ -5544,6 +5736,7 @@ nodeEnclosing
 | Patterns.cs:50:24:50:25 | Entry | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:50:24:50:25 | Exit | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:50:24:50:25 | Normal Exit | Patterns.cs:50:24:50:25 | M3 |
+| Patterns.cs:50:34:50:34 | c | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:51:9:51:9 | access to parameter c | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:51:9:51:21 | ... is ... | Patterns.cs:50:24:50:25 | M3 |
 | Patterns.cs:51:9:51:21 | After ... is ... [false] | Patterns.cs:50:24:50:25 | M3 |
@@ -5571,6 +5764,7 @@ nodeEnclosing
 | Patterns.cs:53:24:53:25 | Entry | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:53:24:53:25 | Exit | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:53:24:53:25 | Normal Exit | Patterns.cs:53:24:53:25 | M4 |
+| Patterns.cs:53:34:53:34 | c | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:54:9:54:9 | access to parameter c | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:54:9:54:37 | ... is ... | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:54:9:54:37 | After ... is ... | Patterns.cs:53:24:53:25 | M4 |
@@ -5591,13 +5785,15 @@ nodeEnclosing
 | Patterns.cs:56:26:56:27 | Entry | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:56:26:56:27 | Exit | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:56:26:56:27 | Normal Exit | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:56:33:56:33 | i | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:57:5:63:5 | {...} | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:58:9:62:10 | Before return ...; | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:58:9:62:10 | return ...; | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:58:16:58:16 | access to parameter i | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:58:16:62:9 | ... switch { ... } | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:58:16:62:9 | After ... switch { ... } | Patterns.cs:56:26:56:27 | M5 |
-| Patterns.cs:60:13:60:17 | After not ... | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:17 | After not ... [match] | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:17 | After not ... [no-match] | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:60:13:60:17 | Before not ... | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:60:13:60:17 | not ... | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:60:13:60:28 | ... => ... | Patterns.cs:56:26:56:27 | M5 |
@@ -5605,6 +5801,7 @@ nodeEnclosing
 | Patterns.cs:60:13:60:28 | After ... => ... [no-match] | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:60:17:60:17 | 1 | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:60:22:60:28 | "not 1" | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:61:13:61:13 | After _ [match] | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:61:13:61:13 | _ | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:61:13:61:24 | ... => ... | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:61:13:61:24 | After ... => ... [match] | Patterns.cs:56:26:56:27 | M5 |
@@ -5618,7 +5815,8 @@ nodeEnclosing
 | Patterns.cs:67:16:67:16 | 2 | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:67:16:71:9 | ... switch { ... } | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:67:16:71:9 | After ... switch { ... } | Patterns.cs:65:26:65:27 | M6 |
-| Patterns.cs:69:13:69:17 | After not ... | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:69:13:69:17 | After not ... [match] | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:69:13:69:17 | After not ... [no-match] | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:69:13:69:17 | Before not ... | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:69:13:69:17 | not ... | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:69:13:69:33 | ... => ... | Patterns.cs:65:26:65:27 | M6 |
@@ -5627,6 +5825,8 @@ nodeEnclosing
 | Patterns.cs:69:17:69:17 | 2 | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:69:22:69:33 | "impossible" | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:70:13:70:13 | 2 | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:13:70:13 | After 2 [match] | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:13:70:13 | After 2 [no-match] | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:70:13:70:27 | ... => ... | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:70:13:70:27 | After ... => ... [match] | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:70:13:70:27 | After ... => ... [no-match] | Patterns.cs:65:26:65:27 | M6 |
@@ -5634,6 +5834,7 @@ nodeEnclosing
 | Patterns.cs:74:26:74:27 | Entry | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:74:26:74:27 | Exit | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:74:26:74:27 | Normal Exit | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:74:33:74:33 | i | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:75:5:83:5 | {...} | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:76:9:82:10 | Before return ...; | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:76:9:82:10 | return ...; | Patterns.cs:74:26:74:27 | M7 |
@@ -5641,7 +5842,8 @@ nodeEnclosing
 | Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:76:16:82:9 | After ... switch { ... } | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:78:13:78:15 | > ... | Patterns.cs:74:26:74:27 | M7 |
-| Patterns.cs:78:13:78:15 | After > ... | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:78:13:78:15 | After > ... [match] | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:78:13:78:15 | After > ... [no-match] | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:78:13:78:15 | Before > ... | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:78:13:78:24 | ... => ... | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:78:13:78:24 | After ... => ... [match] | Patterns.cs:74:26:74:27 | M7 |
@@ -5649,7 +5851,8 @@ nodeEnclosing
 | Patterns.cs:78:15:78:15 | 1 | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:78:20:78:24 | "> 1" | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:79:13:79:15 | < ... | Patterns.cs:74:26:74:27 | M7 |
-| Patterns.cs:79:13:79:15 | After < ... | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:79:13:79:15 | After < ... [match] | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:79:13:79:15 | After < ... [no-match] | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:79:13:79:15 | Before < ... | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:79:13:79:24 | ... => ... | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:79:13:79:24 | After ... => ... [match] | Patterns.cs:74:26:74:27 | M7 |
@@ -5657,10 +5860,13 @@ nodeEnclosing
 | Patterns.cs:79:15:79:15 | 0 | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:79:20:79:24 | "< 0" | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:80:13:80:13 | 1 | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:80:13:80:13 | After 1 [match] | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:80:13:80:13 | After 1 [no-match] | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:80:13:80:20 | ... => ... | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:80:13:80:20 | After ... => ... [match] | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:80:13:80:20 | After ... => ... [no-match] | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:80:18:80:20 | "1" | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:81:13:81:13 | After _ [match] | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:81:13:81:13 | _ | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:81:13:81:20 | ... => ... | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:81:13:81:20 | After ... => ... [match] | Patterns.cs:74:26:74:27 | M7 |
@@ -5668,6 +5874,7 @@ nodeEnclosing
 | Patterns.cs:85:26:85:27 | Entry | Patterns.cs:85:26:85:27 | M8 |
 | Patterns.cs:85:26:85:27 | Exit | Patterns.cs:85:26:85:27 | M8 |
 | Patterns.cs:85:26:85:27 | Normal Exit | Patterns.cs:85:26:85:27 | M8 |
+| Patterns.cs:85:33:85:33 | i | Patterns.cs:85:26:85:27 | M8 |
 | Patterns.cs:85:39:85:39 | access to parameter i | Patterns.cs:85:26:85:27 | M8 |
 | Patterns.cs:85:39:85:53 | ... is ... | Patterns.cs:85:26:85:27 | M8 |
 | Patterns.cs:85:39:85:53 | After ... is ... [false] | Patterns.cs:85:26:85:27 | M8 |
@@ -5689,6 +5896,7 @@ nodeEnclosing
 | Patterns.cs:87:26:87:27 | Entry | Patterns.cs:87:26:87:27 | M9 |
 | Patterns.cs:87:26:87:27 | Exit | Patterns.cs:87:26:87:27 | M9 |
 | Patterns.cs:87:26:87:27 | Normal Exit | Patterns.cs:87:26:87:27 | M9 |
+| Patterns.cs:87:33:87:33 | i | Patterns.cs:87:26:87:27 | M9 |
 | Patterns.cs:87:39:87:39 | access to parameter i | Patterns.cs:87:26:87:27 | M9 |
 | Patterns.cs:87:39:87:54 | ... is ... | Patterns.cs:87:26:87:27 | M9 |
 | Patterns.cs:87:39:87:54 | After ... is ... [false] | Patterns.cs:87:26:87:27 | M9 |
@@ -5753,6 +5961,7 @@ nodeEnclosing
 | PostDominance.cs:5:10:5:11 | Entry | PostDominance.cs:5:10:5:11 | M1 |
 | PostDominance.cs:5:10:5:11 | Exit | PostDominance.cs:5:10:5:11 | M1 |
 | PostDominance.cs:5:10:5:11 | Normal Exit | PostDominance.cs:5:10:5:11 | M1 |
+| PostDominance.cs:5:20:5:20 | s | PostDominance.cs:5:10:5:11 | M1 |
 | PostDominance.cs:6:5:8:5 | After {...} | PostDominance.cs:5:10:5:11 | M1 |
 | PostDominance.cs:6:5:8:5 | {...} | PostDominance.cs:5:10:5:11 | M1 |
 | PostDominance.cs:7:9:7:28 | After call to method WriteLine | PostDominance.cs:5:10:5:11 | M1 |
@@ -5764,6 +5973,7 @@ nodeEnclosing
 | PostDominance.cs:10:10:10:11 | Entry | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:10:10:10:11 | Exit | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:10:10:10:11 | Normal Exit | PostDominance.cs:10:10:10:11 | M2 |
+| PostDominance.cs:10:20:10:20 | s | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:11:5:15:5 | After {...} | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:11:5:15:5 | {...} | PostDominance.cs:10:10:10:11 | M2 |
 | PostDominance.cs:12:9:13:19 | After if (...) ... | PostDominance.cs:10:10:10:11 | M2 |
@@ -5787,6 +5997,7 @@ nodeEnclosing
 | PostDominance.cs:17:10:17:11 | Exceptional Exit | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:17:10:17:11 | Exit | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:17:10:17:11 | Normal Exit | PostDominance.cs:17:10:17:11 | M3 |
+| PostDominance.cs:17:20:17:20 | s | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:18:5:22:5 | After {...} | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:18:5:22:5 | {...} | PostDominance.cs:17:10:17:11 | M3 |
 | PostDominance.cs:19:9:20:55 | After if (...) ... | PostDominance.cs:17:10:17:11 | M3 |
@@ -5992,6 +6203,7 @@ nodeEnclosing
 | Switch.cs:5:10:5:11 | Entry | Switch.cs:5:10:5:11 | M1 |
 | Switch.cs:5:10:5:11 | Exit | Switch.cs:5:10:5:11 | M1 |
 | Switch.cs:5:10:5:11 | Normal Exit | Switch.cs:5:10:5:11 | M1 |
+| Switch.cs:5:20:5:20 | o | Switch.cs:5:10:5:11 | M1 |
 | Switch.cs:6:5:8:5 | After {...} | Switch.cs:5:10:5:11 | M1 |
 | Switch.cs:6:5:8:5 | {...} | Switch.cs:5:10:5:11 | M1 |
 | Switch.cs:7:9:7:22 | After switch (...) {...} | Switch.cs:5:10:5:11 | M1 |
@@ -6001,6 +6213,7 @@ nodeEnclosing
 | Switch.cs:10:10:10:11 | Exceptional Exit | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:10:10:10:11 | Exit | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:10:10:10:11 | Normal Exit | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:10:20:10:20 | o | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:11:5:33:5 | {...} | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:12:9:32:9 | switch (...) {...} | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:12:17:12:17 | access to parameter o | Switch.cs:10:10:10:11 | M2 |
@@ -6008,12 +6221,16 @@ nodeEnclosing
 | Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:14:13:14:21 | case ...: | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:14:18:14:20 | "a" | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:14:18:14:20 | After "a" [match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:15:17:15:23 | Before return ...; | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:15:17:15:23 | return ...; | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:16:13:16:19 | After case ...: [match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:16:13:16:19 | case ...: | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:16:18:16:18 | 0 | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:16:18:16:18 | After 0 [match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:17:17:17:38 | Before throw ...; | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:17:17:17:38 | throw ...; | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:17:23:17:37 | After object creation of type Exception | Switch.cs:10:10:10:11 | M2 |
@@ -6022,12 +6239,16 @@ nodeEnclosing
 | Switch.cs:18:13:18:22 | After case ...: [match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:18:13:18:22 | case ...: | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:18:18:18:21 | After null [match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:18:18:18:21 | null | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:19:17:19:29 | Before goto default; | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:19:17:19:29 | goto default; | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:20:13:20:23 | After case ...: [match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:20:13:20:23 | After case ...: [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:20:13:20:23 | case ...: | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:20:18:20:22 | After Int32 i [match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:20:18:20:22 | After Int32 i [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:20:18:20:22 | Int32 i | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:21:17:22:27 | After if (...) ... | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:10:10:10:11 | M2 |
@@ -6045,6 +6266,8 @@ nodeEnclosing
 | Switch.cs:24:13:24:56 | After case ...: [match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:13:24:56 | After case ...: [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:13:24:56 | case ...: | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:24:18:24:25 | After String s [match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:24:18:24:25 | After String s [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:18:24:25 | String s | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:32:24:32 | access to local variable s | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:32:24:39 | After access to property Length | Switch.cs:10:10:10:11 | M2 |
@@ -6075,6 +6298,8 @@ nodeEnclosing
 | Switch.cs:27:13:27:39 | After case ...: [match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:27:13:27:39 | After case ...: [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:27:13:27:39 | case ...: | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:27:18:27:25 | After Double d [match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:27:18:27:25 | After Double d [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:27:18:27:25 | Double d | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:27:32:27:38 | Before call to method Throw | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:10:10:10:11 | M2 |
@@ -6095,6 +6320,7 @@ nodeEnclosing
 | Switch.cs:44:10:44:11 | Entry | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:44:10:44:11 | Exit | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:44:10:44:11 | Normal Exit | Switch.cs:44:10:44:11 | M4 |
+| Switch.cs:44:20:44:20 | o | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:45:5:53:5 | After {...} | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:45:5:53:5 | {...} | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:46:9:52:9 | After switch (...) {...} | Switch.cs:44:10:44:11 | M4 |
@@ -6103,12 +6329,16 @@ nodeEnclosing
 | Switch.cs:48:13:48:23 | After case ...: [match] | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:48:13:48:23 | After case ...: [no-match] | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:48:13:48:23 | case ...: | Switch.cs:44:10:44:11 | M4 |
+| Switch.cs:48:18:48:20 | After access to type Int32 [match] | Switch.cs:44:10:44:11 | M4 |
+| Switch.cs:48:18:48:20 | After access to type Int32 [no-match] | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:48:18:48:20 | access to type Int32 | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:49:17:49:22 | Before break; | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:49:17:49:22 | break; | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:50:13:50:39 | After case ...: [match] | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:50:13:50:39 | After case ...: [no-match] | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:50:13:50:39 | case ...: | Switch.cs:44:10:44:11 | M4 |
+| Switch.cs:50:18:50:21 | After access to type Boolean [match] | Switch.cs:44:10:44:11 | M4 |
+| Switch.cs:50:18:50:21 | After access to type Boolean [no-match] | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:50:18:50:21 | access to type Boolean | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:50:30:50:38 | ... != ... | Switch.cs:44:10:44:11 | M4 |
@@ -6134,17 +6364,22 @@ nodeEnclosing
 | Switch.cs:59:13:59:19 | After case ...: [no-match] | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:59:13:59:19 | case ...: | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:59:18:59:18 | 2 | Switch.cs:55:10:55:11 | M5 |
+| Switch.cs:59:18:59:18 | After 2 [match] | Switch.cs:55:10:55:11 | M5 |
+| Switch.cs:59:18:59:18 | After 2 [no-match] | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:60:17:60:22 | Before break; | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:60:17:60:22 | break; | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:61:13:61:19 | After case ...: [match] | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:61:13:61:19 | After case ...: [no-match] | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:61:13:61:19 | case ...: | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:61:18:61:18 | 3 | Switch.cs:55:10:55:11 | M5 |
+| Switch.cs:61:18:61:18 | After 3 [match] | Switch.cs:55:10:55:11 | M5 |
+| Switch.cs:61:18:61:18 | After 3 [no-match] | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:62:17:62:22 | Before break; | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:62:17:62:22 | break; | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:66:10:66:11 | Entry | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:66:10:66:11 | Exit | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:66:10:66:11 | Normal Exit | Switch.cs:66:10:66:11 | M6 |
+| Switch.cs:66:20:66:20 | s | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:67:5:75:5 | After {...} | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:67:5:75:5 | {...} | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:68:9:74:9 | After switch (...) {...} | Switch.cs:66:10:66:11 | M6 |
@@ -6156,6 +6391,8 @@ nodeEnclosing
 | Switch.cs:70:13:70:23 | After case ...: [match] | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:70:13:70:23 | After case ...: [no-match] | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:70:13:70:23 | case ...: | Switch.cs:66:10:66:11 | M6 |
+| Switch.cs:70:18:70:20 | After access to type Int32 [match] | Switch.cs:66:10:66:11 | M6 |
+| Switch.cs:70:18:70:20 | After access to type Int32 [no-match] | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:70:18:70:20 | access to type Int32 | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:71:17:71:22 | Before break; | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:71:17:71:22 | break; | Switch.cs:66:10:66:11 | M6 |
@@ -6163,11 +6400,15 @@ nodeEnclosing
 | Switch.cs:72:13:72:20 | After case ...: [no-match] | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:72:13:72:20 | case ...: | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:72:18:72:19 | "" | Switch.cs:66:10:66:11 | M6 |
+| Switch.cs:72:18:72:19 | After "" [match] | Switch.cs:66:10:66:11 | M6 |
+| Switch.cs:72:18:72:19 | After "" [no-match] | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:73:17:73:22 | Before break; | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:73:17:73:22 | break; | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:77:10:77:11 | Entry | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:77:10:77:11 | Exit | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:77:10:77:11 | Normal Exit | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:77:17:77:17 | i | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:77:24:77:24 | j | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:78:5:89:5 | {...} | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:79:9:87:9 | After switch (...) {...} | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:77:10:77:11 | M7 |
@@ -6176,6 +6417,8 @@ nodeEnclosing
 | Switch.cs:81:13:81:19 | After case ...: [no-match] | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:81:13:81:19 | case ...: | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:81:18:81:18 | 1 | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:81:18:81:18 | After 1 [match] | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:81:18:81:18 | After 1 [no-match] | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:82:17:82:28 | Before return ...; | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:82:17:82:28 | return ...; | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:82:24:82:27 | true | Switch.cs:77:10:77:11 | M7 |
@@ -6183,6 +6426,8 @@ nodeEnclosing
 | Switch.cs:83:13:83:19 | After case ...: [no-match] | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:83:13:83:19 | case ...: | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:83:18:83:18 | 2 | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:83:18:83:18 | After 2 [match] | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:83:18:83:18 | After 2 [no-match] | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:84:17:85:26 | After if (...) ... | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:84:17:85:26 | if (...) ... | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:84:21:84:21 | access to parameter j | Switch.cs:77:10:77:11 | M7 |
@@ -6202,6 +6447,7 @@ nodeEnclosing
 | Switch.cs:91:10:91:11 | Entry | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:91:10:91:11 | Exit | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:91:10:91:11 | Normal Exit | Switch.cs:91:10:91:11 | M8 |
+| Switch.cs:91:20:91:20 | o | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:92:5:99:5 | {...} | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:93:9:97:9 | After switch (...) {...} | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:93:9:97:9 | switch (...) {...} | Switch.cs:91:10:91:11 | M8 |
@@ -6209,6 +6455,8 @@ nodeEnclosing
 | Switch.cs:95:13:95:23 | After case ...: [match] | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:95:13:95:23 | After case ...: [no-match] | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:95:13:95:23 | case ...: | Switch.cs:91:10:91:11 | M8 |
+| Switch.cs:95:18:95:20 | After access to type Int32 [match] | Switch.cs:91:10:91:11 | M8 |
+| Switch.cs:95:18:95:20 | After access to type Int32 [no-match] | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:96:17:96:28 | Before return ...; | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:96:17:96:28 | return ...; | Switch.cs:91:10:91:11 | M8 |
@@ -6219,6 +6467,7 @@ nodeEnclosing
 | Switch.cs:101:9:101:10 | Entry | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:101:9:101:10 | Exit | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:101:9:101:10 | Normal Exit | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:101:19:101:19 | s | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:102:5:109:5 | {...} | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:103:9:107:9 | After switch (...) {...} | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:103:9:107:9 | switch (...) {...} | Switch.cs:101:9:101:10 | M9 |
@@ -6232,6 +6481,8 @@ nodeEnclosing
 | Switch.cs:105:13:105:19 | After case ...: [no-match] | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:105:13:105:19 | case ...: | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:105:18:105:18 | 0 | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:105:18:105:18 | After 0 [match] | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:105:18:105:18 | After 0 [no-match] | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:105:21:105:29 | Before return ...; | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:105:21:105:29 | return ...; | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:105:28:105:28 | 0 | Switch.cs:101:9:101:10 | M9 |
@@ -6239,6 +6490,8 @@ nodeEnclosing
 | Switch.cs:106:13:106:19 | After case ...: [no-match] | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:106:13:106:19 | case ...: | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:106:18:106:18 | 1 | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:106:18:106:18 | After 1 [match] | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:106:18:106:18 | After 1 [no-match] | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:106:21:106:29 | Before return ...; | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:106:21:106:29 | return ...; | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:106:28:106:28 | 1 | Switch.cs:101:9:101:10 | M9 |
@@ -6259,6 +6512,7 @@ nodeEnclosing
 | Switch.cs:113:9:113:11 | Entry | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:113:9:113:11 | Exit | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:113:9:113:11 | Normal Exit | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:113:20:113:20 | s | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:114:5:121:5 | {...} | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:115:9:119:9 | After switch (...) {...} | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:115:9:119:9 | switch (...) {...} | Switch.cs:113:9:113:11 | M10 |
@@ -6270,6 +6524,8 @@ nodeEnclosing
 | Switch.cs:117:13:117:35 | After case ...: [no-match] | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:117:13:117:35 | case ...: | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:117:18:117:18 | 3 | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:117:18:117:18 | After 3 [match] | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:117:18:117:18 | After 3 [no-match] | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:117:25:117:25 | access to parameter s | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:117:25:117:34 | ... == ... | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:117:25:117:34 | After ... == ... [false] | Switch.cs:113:9:113:11 | M10 |
@@ -6283,6 +6539,8 @@ nodeEnclosing
 | Switch.cs:118:13:118:34 | After case ...: [no-match] | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:118:13:118:34 | case ...: | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:118:18:118:18 | 2 | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:118:18:118:18 | After 2 [match] | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:118:18:118:18 | After 2 [no-match] | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:118:25:118:25 | access to parameter s | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:118:25:118:33 | ... == ... | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:118:25:118:33 | After ... == ... [false] | Switch.cs:113:9:113:11 | M10 |
@@ -6301,6 +6559,7 @@ nodeEnclosing
 | Switch.cs:123:10:123:12 | Entry | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:123:10:123:12 | Exit | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:123:10:123:12 | Normal Exit | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:123:21:123:21 | o | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:124:5:127:5 | After {...} | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:124:5:127:5 | {...} | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:9:126:19 | After if (...) ... | Switch.cs:123:10:123:12 | M11 |
@@ -6309,11 +6568,14 @@ nodeEnclosing
 | Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:13:125:48 | After ... switch { ... } [false] | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:13:125:48 | After ... switch { ... } [true] | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:24:125:29 | After Boolean b [match] | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:24:125:29 | After Boolean b [no-match] | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:24:125:29 | Boolean b | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:24:125:34 | ... => ... | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:24:125:34 | After ... => ... [match] | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:24:125:34 | After ... => ... [no-match] | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:37:125:37 | After _ [match] | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:37:125:37 | _ | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:37:125:46 | ... => ... | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:37:125:46 | After ... => ... [match] | Switch.cs:123:10:123:12 | M11 |
@@ -6323,6 +6585,7 @@ nodeEnclosing
 | Switch.cs:129:12:129:14 | Entry | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:129:12:129:14 | Exit | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:129:12:129:14 | Normal Exit | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:129:23:129:23 | o | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:130:5:132:5 | {...} | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:9:131:67 | Before return ...; | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:9:131:67 | return ...; | Switch.cs:129:12:129:14 | M12 |
@@ -6333,11 +6596,14 @@ nodeEnclosing
 | Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:17:131:53 | After ... switch { ... } [non-null] | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:17:131:53 | After ... switch { ... } [null] | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:28:131:35 | After String s [match] | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:28:131:35 | After String s [no-match] | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:28:131:35 | String s | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:28:131:40 | ... => ... | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:28:131:40 | After ... => ... [match] | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:28:131:40 | After ... => ... [no-match] | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:43:131:43 | After _ [match] | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:43:131:43 | _ | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:43:131:51 | ... => ... | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:43:131:51 | After ... => ... [match] | Switch.cs:129:12:129:14 | M12 |
@@ -6345,6 +6611,7 @@ nodeEnclosing
 | Switch.cs:134:9:134:11 | Entry | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:134:9:134:11 | Exit | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:134:9:134:11 | Normal Exit | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:134:17:134:17 | i | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:135:5:142:5 | {...} | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:136:9:141:9 | switch (...) {...} | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:136:17:136:17 | access to parameter i | Switch.cs:134:9:134:11 | M13 |
@@ -6360,6 +6627,8 @@ nodeEnclosing
 | Switch.cs:139:13:139:19 | After case ...: [no-match] | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:139:13:139:19 | case ...: | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:139:18:139:18 | 1 | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:139:18:139:18 | After 1 [match] | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:139:18:139:18 | After 1 [no-match] | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:139:21:139:29 | Before return ...; | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:139:21:139:29 | return ...; | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:139:28:139:28 | 1 | Switch.cs:134:9:134:11 | M13 |
@@ -6367,12 +6636,15 @@ nodeEnclosing
 | Switch.cs:140:13:140:19 | After case ...: [no-match] | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:140:13:140:19 | case ...: | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:140:18:140:18 | 2 | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:140:18:140:18 | After 2 [match] | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:140:18:140:18 | After 2 [no-match] | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:140:21:140:29 | Before return ...; | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:140:21:140:29 | return ...; | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:140:28:140:28 | 2 | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:144:9:144:11 | Entry | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:144:9:144:11 | Exit | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:144:9:144:11 | Normal Exit | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:144:17:144:17 | i | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:145:5:152:5 | {...} | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:146:9:151:9 | switch (...) {...} | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:146:17:146:17 | access to parameter i | Switch.cs:144:9:144:11 | M14 |
@@ -6380,6 +6652,8 @@ nodeEnclosing
 | Switch.cs:148:13:148:19 | After case ...: [no-match] | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:148:13:148:19 | case ...: | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:148:18:148:18 | 1 | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:148:18:148:18 | After 1 [match] | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:148:18:148:18 | After 1 [no-match] | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:148:21:148:29 | Before return ...; | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:148:21:148:29 | return ...; | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:148:28:148:28 | 1 | Switch.cs:144:9:144:11 | M14 |
@@ -6395,12 +6669,15 @@ nodeEnclosing
 | Switch.cs:150:13:150:19 | After case ...: [no-match] | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:150:13:150:19 | case ...: | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:150:18:150:18 | 2 | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:150:18:150:18 | After 2 [match] | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:150:18:150:18 | After 2 [no-match] | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:150:21:150:29 | Before return ...; | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:150:21:150:29 | return ...; | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:150:28:150:28 | 2 | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:154:10:154:12 | Entry | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:154:10:154:12 | Exit | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:154:10:154:12 | Normal Exit | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:154:19:154:19 | b | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:155:5:161:5 | After {...} | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:155:5:161:5 | {...} | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:9:156:55 | ... ...; | Switch.cs:154:10:154:12 | M15 |
@@ -6412,11 +6689,15 @@ nodeEnclosing
 | Switch.cs:156:17:156:17 | access to parameter b | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:17:156:54 | ... switch { ... } | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:17:156:54 | After ... switch { ... } | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:28:156:31 | After true [match] | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:28:156:31 | After true [no-match] | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:28:156:31 | true | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:28:156:38 | ... => ... | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:28:156:38 | After ... => ... [match] | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:28:156:38 | After ... => ... [no-match] | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:36:156:38 | "a" | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:41:156:45 | After false [match] | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:41:156:45 | After false [no-match] | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:41:156:45 | false | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:41:156:52 | ... => ... | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:41:156:52 | After ... => ... [match] | Switch.cs:154:10:154:12 | M15 |
@@ -6456,6 +6737,7 @@ nodeEnclosing
 | Switch.cs:163:10:163:12 | Entry | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:163:10:163:12 | Exit | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:163:10:163:12 | Normal Exit | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:163:18:163:18 | i | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:164:5:178:5 | After {...} | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:164:5:178:5 | {...} | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:165:9:177:9 | After switch (...) {...} | Switch.cs:163:10:163:12 | M16 |
@@ -6465,10 +6747,14 @@ nodeEnclosing
 | Switch.cs:167:13:167:19 | After case ...: [no-match] | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:167:13:167:19 | case ...: | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:167:18:167:18 | 1 | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:167:18:167:18 | After 1 [match] | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:167:18:167:18 | After 1 [no-match] | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:168:13:168:19 | After case ...: [match] | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:168:13:168:19 | After case ...: [no-match] | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:168:13:168:19 | case ...: | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:168:18:168:18 | 2 | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:168:18:168:18 | After 2 [match] | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:168:18:168:18 | After 2 [no-match] | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:169:17:169:50 | After call to method WriteLine | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:169:17:169:50 | Before call to method WriteLine | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:169:17:169:50 | call to method WriteLine | Switch.cs:163:10:163:12 | M16 |
@@ -6481,6 +6767,8 @@ nodeEnclosing
 | Switch.cs:171:13:171:19 | After case ...: [no-match] | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:171:13:171:19 | case ...: | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:171:18:171:18 | 3 | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:171:18:171:18 | After 3 [match] | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:171:18:171:18 | After 3 [no-match] | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:172:17:172:45 | After call to method WriteLine | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:172:17:172:45 | Before call to method WriteLine | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:172:17:172:45 | call to method WriteLine | Switch.cs:163:10:163:12 | M16 |
@@ -6513,6 +6801,7 @@ nodeEnclosing
 | TypeAccesses.cs:3:10:3:10 | Entry | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:3:10:3:10 | Exit | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:3:10:3:10 | Normal Exit | TypeAccesses.cs:3:10:3:10 | M |
+| TypeAccesses.cs:3:19:3:19 | o | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:4:5:9:5 | After {...} | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:4:5:9:5 | {...} | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:5:9:5:26 | ... ...; | TypeAccesses.cs:3:10:3:10 | M |
@@ -6566,6 +6855,7 @@ nodeEnclosing
 | VarDecls.cs:5:18:5:19 | Entry | VarDecls.cs:5:18:5:19 | M1 |
 | VarDecls.cs:5:18:5:19 | Exit | VarDecls.cs:5:18:5:19 | M1 |
 | VarDecls.cs:5:18:5:19 | Normal Exit | VarDecls.cs:5:18:5:19 | M1 |
+| VarDecls.cs:5:30:5:36 | strings | VarDecls.cs:5:18:5:19 | M1 |
 | VarDecls.cs:6:5:11:5 | {...} | VarDecls.cs:5:18:5:19 | M1 |
 | VarDecls.cs:7:9:10:9 | fixed(...) { ... } | VarDecls.cs:5:18:5:19 | M1 |
 | VarDecls.cs:7:22:7:23 | access to local variable c1 | VarDecls.cs:5:18:5:19 | M1 |
@@ -6602,6 +6892,7 @@ nodeEnclosing
 | VarDecls.cs:13:12:13:13 | Entry | VarDecls.cs:13:12:13:13 | M2 |
 | VarDecls.cs:13:12:13:13 | Exit | VarDecls.cs:13:12:13:13 | M2 |
 | VarDecls.cs:13:12:13:13 | Normal Exit | VarDecls.cs:13:12:13:13 | M2 |
+| VarDecls.cs:13:22:13:22 | s | VarDecls.cs:13:12:13:13 | M2 |
 | VarDecls.cs:14:5:17:5 | {...} | VarDecls.cs:13:12:13:13 | M2 |
 | VarDecls.cs:15:9:15:30 | ... ...; | VarDecls.cs:13:12:13:13 | M2 |
 | VarDecls.cs:15:9:15:30 | After ... ...; | VarDecls.cs:13:12:13:13 | M2 |
@@ -6625,6 +6916,7 @@ nodeEnclosing
 | VarDecls.cs:19:7:19:8 | Entry | VarDecls.cs:19:7:19:8 | M3 |
 | VarDecls.cs:19:7:19:8 | Exit | VarDecls.cs:19:7:19:8 | M3 |
 | VarDecls.cs:19:7:19:8 | Normal Exit | VarDecls.cs:19:7:19:8 | M3 |
+| VarDecls.cs:19:15:19:15 | b | VarDecls.cs:19:7:19:8 | M3 |
 | VarDecls.cs:20:5:26:5 | {...} | VarDecls.cs:19:7:19:8 | M3 |
 | VarDecls.cs:21:9:22:13 | After using (...) {...} | VarDecls.cs:19:7:19:8 | M3 |
 | VarDecls.cs:21:9:22:13 | using (...) {...} | VarDecls.cs:19:7:19:8 | M3 |
@@ -6674,6 +6966,7 @@ nodeEnclosing
 | cflow.cs:5:17:5:20 | Entry | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:5:17:5:20 | Exit | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:5:17:5:20 | Normal Exit | cflow.cs:5:17:5:20 | Main |
+| cflow.cs:5:31:5:34 | args | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:6:5:35:5 | After {...} | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:6:5:35:5 | {...} | cflow.cs:5:17:5:20 | Main |
 | cflow.cs:7:9:7:28 | ... ...; | cflow.cs:5:17:5:20 | Main |
@@ -6857,6 +7150,7 @@ nodeEnclosing
 | cflow.cs:37:17:37:22 | Exceptional Exit | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:37:17:37:22 | Exit | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:37:17:37:22 | Normal Exit | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:37:28:37:28 | a | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:38:5:68:5 | {...} | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:39:9:50:9 | After switch (...) {...} | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:39:9:50:9 | switch (...) {...} | cflow.cs:37:17:37:22 | Switch |
@@ -6865,6 +7159,8 @@ nodeEnclosing
 | cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:41:13:41:19 | case ...: | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:41:18:41:18 | 1 | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:41:18:41:18 | After 1 [match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:42:17:42:38 | After call to method WriteLine | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:42:17:42:38 | Before call to method WriteLine | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:42:17:42:38 | call to method WriteLine | cflow.cs:37:17:37:22 | Switch |
@@ -6878,6 +7174,8 @@ nodeEnclosing
 | cflow.cs:44:13:44:19 | After case ...: [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:44:13:44:19 | case ...: | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:44:18:44:18 | 2 | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:44:18:44:18 | After 2 [match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:44:18:44:18 | After 2 [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:45:17:45:38 | After call to method WriteLine | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:45:17:45:38 | Before call to method WriteLine | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:45:17:45:38 | call to method WriteLine | cflow.cs:37:17:37:22 | Switch |
@@ -6891,6 +7189,8 @@ nodeEnclosing
 | cflow.cs:47:13:47:19 | After case ...: [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:47:13:47:19 | case ...: | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:47:18:47:18 | 3 | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:47:18:47:18 | After 3 [match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:47:18:47:18 | After 3 [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:48:17:48:38 | After call to method WriteLine | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:48:17:48:38 | Before call to method WriteLine | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:48:17:48:38 | call to method WriteLine | cflow.cs:37:17:37:22 | Switch |
@@ -6906,6 +7206,8 @@ nodeEnclosing
 | cflow.cs:53:13:53:20 | After case ...: [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:53:13:53:20 | case ...: | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:53:18:53:19 | 42 | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:53:18:53:19 | After 42 [match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:53:18:53:19 | After 42 [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:54:17:54:47 | After call to method WriteLine | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:54:17:54:47 | Before call to method WriteLine | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:54:17:54:47 | call to method WriteLine | cflow.cs:37:17:37:22 | Switch |
@@ -6937,6 +7239,8 @@ nodeEnclosing
 | cflow.cs:62:13:62:19 | After case ...: [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:62:13:62:19 | case ...: | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:62:18:62:18 | 0 | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:62:18:62:18 | After 0 [match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:62:18:62:18 | After 0 [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:63:17:64:55 | After if (...) ... | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:63:17:64:55 | if (...) ... | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:63:21:63:34 | !... | cflow.cs:37:17:37:22 | Switch |
@@ -6964,6 +7268,7 @@ nodeEnclosing
 | cflow.cs:70:18:70:18 | Entry | cflow.cs:70:18:70:18 | M |
 | cflow.cs:70:18:70:18 | Exit | cflow.cs:70:18:70:18 | M |
 | cflow.cs:70:18:70:18 | Normal Exit | cflow.cs:70:18:70:18 | M |
+| cflow.cs:70:27:70:27 | s | cflow.cs:70:18:70:18 | M |
 | cflow.cs:71:5:82:5 | After {...} | cflow.cs:70:18:70:18 | M |
 | cflow.cs:71:5:82:5 | {...} | cflow.cs:70:18:70:18 | M |
 | cflow.cs:72:9:73:19 | After if (...) ... | cflow.cs:70:18:70:18 | M |
@@ -7006,6 +7311,7 @@ nodeEnclosing
 | cflow.cs:84:18:84:19 | Entry | cflow.cs:84:18:84:19 | M2 |
 | cflow.cs:84:18:84:19 | Exit | cflow.cs:84:18:84:19 | M2 |
 | cflow.cs:84:18:84:19 | Normal Exit | cflow.cs:84:18:84:19 | M2 |
+| cflow.cs:84:28:84:28 | s | cflow.cs:84:18:84:19 | M2 |
 | cflow.cs:85:5:88:5 | After {...} | cflow.cs:84:18:84:19 | M2 |
 | cflow.cs:85:5:88:5 | {...} | cflow.cs:84:18:84:19 | M2 |
 | cflow.cs:86:9:87:33 | After if (...) ... | cflow.cs:84:18:84:19 | M2 |
@@ -7038,6 +7344,7 @@ nodeEnclosing
 | cflow.cs:90:18:90:19 | Exceptional Exit | cflow.cs:90:18:90:19 | M3 |
 | cflow.cs:90:18:90:19 | Exit | cflow.cs:90:18:90:19 | M3 |
 | cflow.cs:90:18:90:19 | Normal Exit | cflow.cs:90:18:90:19 | M3 |
+| cflow.cs:90:28:90:28 | s | cflow.cs:90:18:90:19 | M3 |
 | cflow.cs:91:5:104:5 | After {...} | cflow.cs:90:18:90:19 | M3 |
 | cflow.cs:91:5:104:5 | {...} | cflow.cs:90:18:90:19 | M3 |
 | cflow.cs:92:9:93:49 | After if (...) ... | cflow.cs:90:18:90:19 | M3 |
@@ -7125,6 +7432,7 @@ nodeEnclosing
 | cflow.cs:106:18:106:19 | Entry | cflow.cs:106:18:106:19 | M4 |
 | cflow.cs:106:18:106:19 | Exit | cflow.cs:106:18:106:19 | M4 |
 | cflow.cs:106:18:106:19 | Normal Exit | cflow.cs:106:18:106:19 | M4 |
+| cflow.cs:106:28:106:28 | s | cflow.cs:106:18:106:19 | M4 |
 | cflow.cs:107:5:117:5 | After {...} | cflow.cs:106:18:106:19 | M4 |
 | cflow.cs:107:5:117:5 | {...} | cflow.cs:106:18:106:19 | M4 |
 | cflow.cs:108:9:115:9 | After if (...) ... | cflow.cs:106:18:106:19 | M4 |
@@ -7157,6 +7465,7 @@ nodeEnclosing
 | cflow.cs:119:20:119:21 | Entry | cflow.cs:119:20:119:21 | M5 |
 | cflow.cs:119:20:119:21 | Exit | cflow.cs:119:20:119:21 | M5 |
 | cflow.cs:119:20:119:21 | Normal Exit | cflow.cs:119:20:119:21 | M5 |
+| cflow.cs:119:30:119:30 | s | cflow.cs:119:20:119:21 | M5 |
 | cflow.cs:120:5:124:5 | {...} | cflow.cs:119:20:119:21 | M5 |
 | cflow.cs:121:9:121:18 | ... ...; | cflow.cs:119:20:119:21 | M5 |
 | cflow.cs:121:9:121:18 | After ... ...; | cflow.cs:119:20:119:21 | M5 |
@@ -7204,6 +7513,7 @@ nodeEnclosing
 | cflow.cs:127:62:127:64 | Entry | cflow.cs:127:62:127:64 | set_Prop |
 | cflow.cs:127:62:127:64 | Exit | cflow.cs:127:62:127:64 | set_Prop |
 | cflow.cs:127:62:127:64 | Normal Exit | cflow.cs:127:62:127:64 | set_Prop |
+| cflow.cs:127:62:127:64 | value | cflow.cs:127:62:127:64 | set_Prop |
 | cflow.cs:127:66:127:83 | After {...} | cflow.cs:127:62:127:64 | set_Prop |
 | cflow.cs:127:66:127:83 | {...} | cflow.cs:127:62:127:64 | set_Prop |
 | cflow.cs:127:68:127:72 | After access to field Field | cflow.cs:127:62:127:64 | set_Prop |
@@ -7226,6 +7536,7 @@ nodeEnclosing
 | cflow.cs:129:5:129:15 | call to constructor Object | cflow.cs:129:5:129:15 | ControlFlow |
 | cflow.cs:129:5:129:15 | call to method <object initializer> | cflow.cs:129:5:129:15 | ControlFlow |
 | cflow.cs:129:5:129:15 | this access | cflow.cs:129:5:129:15 | ControlFlow |
+| cflow.cs:129:24:129:24 | s | cflow.cs:129:5:129:15 | ControlFlow |
 | cflow.cs:130:5:132:5 | After {...} | cflow.cs:129:5:129:15 | ControlFlow |
 | cflow.cs:130:5:132:5 | {...} | cflow.cs:129:5:129:15 | ControlFlow |
 | cflow.cs:131:9:131:13 | After access to field Field | cflow.cs:129:5:129:15 | ControlFlow |
@@ -7241,6 +7552,7 @@ nodeEnclosing
 | cflow.cs:134:5:134:15 | Entry | cflow.cs:134:5:134:15 | ControlFlow |
 | cflow.cs:134:5:134:15 | Exit | cflow.cs:134:5:134:15 | ControlFlow |
 | cflow.cs:134:5:134:15 | Normal Exit | cflow.cs:134:5:134:15 | ControlFlow |
+| cflow.cs:134:21:134:21 | i | cflow.cs:134:5:134:15 | ControlFlow |
 | cflow.cs:134:26:134:29 | After call to constructor ControlFlow | cflow.cs:134:5:134:15 | ControlFlow |
 | cflow.cs:134:26:134:29 | Before call to constructor ControlFlow | cflow.cs:134:5:134:15 | ControlFlow |
 | cflow.cs:134:26:134:29 | call to constructor ControlFlow | cflow.cs:134:5:134:15 | ControlFlow |
@@ -7268,6 +7580,8 @@ nodeEnclosing
 | cflow.cs:138:40:138:40 | Entry | cflow.cs:138:40:138:40 | + |
 | cflow.cs:138:40:138:40 | Exit | cflow.cs:138:40:138:40 | + |
 | cflow.cs:138:40:138:40 | Normal Exit | cflow.cs:138:40:138:40 | + |
+| cflow.cs:138:54:138:54 | x | cflow.cs:138:40:138:40 | + |
+| cflow.cs:138:69:138:69 | y | cflow.cs:138:40:138:40 | + |
 | cflow.cs:139:5:142:5 | {...} | cflow.cs:138:40:138:40 | + |
 | cflow.cs:140:9:140:28 | After call to method WriteLine | cflow.cs:138:40:138:40 | + |
 | cflow.cs:140:9:140:28 | Before call to method WriteLine | cflow.cs:138:40:138:40 | + |
@@ -7278,6 +7592,8 @@ nodeEnclosing
 | cflow.cs:141:9:141:17 | Before return ...; | cflow.cs:138:40:138:40 | + |
 | cflow.cs:141:9:141:17 | return ...; | cflow.cs:138:40:138:40 | + |
 | cflow.cs:141:16:141:16 | access to parameter y | cflow.cs:138:40:138:40 | + |
+| cflow.cs:144:28:144:28 | i | cflow.cs:144:33:144:35 | get_Item |
+| cflow.cs:144:28:144:28 | i | cflow.cs:144:56:144:58 | set_Item |
 | cflow.cs:144:33:144:35 | Entry | cflow.cs:144:33:144:35 | get_Item |
 | cflow.cs:144:33:144:35 | Exit | cflow.cs:144:33:144:35 | get_Item |
 | cflow.cs:144:33:144:35 | Normal Exit | cflow.cs:144:33:144:35 | get_Item |
@@ -7295,6 +7611,7 @@ nodeEnclosing
 | cflow.cs:144:56:144:58 | Entry | cflow.cs:144:56:144:58 | set_Item |
 | cflow.cs:144:56:144:58 | Exit | cflow.cs:144:56:144:58 | set_Item |
 | cflow.cs:144:56:144:58 | Normal Exit | cflow.cs:144:56:144:58 | set_Item |
+| cflow.cs:144:56:144:58 | value | cflow.cs:144:56:144:58 | set_Item |
 | cflow.cs:144:60:144:62 | {...} | cflow.cs:144:56:144:58 | set_Item |
 | cflow.cs:146:10:146:12 | Entry | cflow.cs:146:10:146:12 | For |
 | cflow.cs:146:10:146:12 | Exit | cflow.cs:146:10:146:12 | For |
@@ -7456,6 +7773,7 @@ nodeEnclosing
 | cflow.cs:181:24:181:37 | After Func<Int32,Int32> y = ... | cflow.cs:179:10:179:16 | Lambdas |
 | cflow.cs:181:24:181:37 | Before Func<Int32,Int32> y = ... | cflow.cs:179:10:179:16 | Lambdas |
 | cflow.cs:181:24:181:37 | Func<Int32,Int32> y = ... | cflow.cs:179:10:179:16 | Lambdas |
+| cflow.cs:181:28:181:28 | x | cflow.cs:181:28:181:37 | (...) => ... |
 | cflow.cs:181:28:181:37 | (...) => ... | cflow.cs:179:10:179:16 | Lambdas |
 | cflow.cs:181:28:181:37 | Entry | cflow.cs:181:28:181:37 | (...) => ... |
 | cflow.cs:181:28:181:37 | Exit | cflow.cs:181:28:181:37 | (...) => ... |
@@ -7475,6 +7793,7 @@ nodeEnclosing
 | cflow.cs:182:28:182:61 | Exit | cflow.cs:182:28:182:61 | delegate(...) { ... } |
 | cflow.cs:182:28:182:61 | Normal Exit | cflow.cs:182:28:182:61 | delegate(...) { ... } |
 | cflow.cs:182:28:182:61 | delegate(...) { ... } | cflow.cs:179:10:179:16 | Lambdas |
+| cflow.cs:182:42:182:42 | x | cflow.cs:182:28:182:61 | delegate(...) { ... } |
 | cflow.cs:182:45:182:61 | {...} | cflow.cs:182:28:182:61 | delegate(...) { ... } |
 | cflow.cs:182:47:182:59 | Before return ...; | cflow.cs:182:28:182:61 | delegate(...) { ... } |
 | cflow.cs:182:47:182:59 | return ...; | cflow.cs:182:28:182:61 | delegate(...) { ... } |
@@ -7858,12 +8177,16 @@ nodeEnclosing
 | cflow.cs:248:13:248:19 | After case ...: [no-match] | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:248:13:248:19 | case ...: | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:248:18:248:18 | 0 | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:248:18:248:18 | After 0 [match] | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:248:18:248:18 | After 0 [no-match] | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:249:17:249:29 | Before goto default; | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:249:17:249:29 | goto default; | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:250:13:250:19 | After case ...: [match] | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:250:13:250:19 | After case ...: [no-match] | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:250:13:250:19 | case ...: | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:250:18:250:18 | 1 | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:250:18:250:18 | After 1 [match] | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:250:18:250:18 | After 1 [no-match] | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:251:17:251:36 | After call to method WriteLine | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:251:17:251:36 | Before call to method WriteLine | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:251:17:251:36 | call to method WriteLine | cflow.cs:240:10:240:13 | Goto |
@@ -7876,6 +8199,8 @@ nodeEnclosing
 | cflow.cs:253:13:253:19 | After case ...: [no-match] | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:253:13:253:19 | case ...: | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:253:18:253:18 | 2 | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:253:18:253:18 | After 2 [match] | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:253:18:253:18 | After 2 [no-match] | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:254:17:254:27 | Before goto ...; | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:254:17:254:27 | goto ...; | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:255:13:255:20 | After default: [match] | cflow.cs:240:10:240:13 | Goto |
@@ -7949,6 +8274,7 @@ nodeEnclosing
 | cflow.cs:284:5:284:18 | Entry | cflow.cs:284:5:284:18 | ControlFlowSub |
 | cflow.cs:284:5:284:18 | Exit | cflow.cs:284:5:284:18 | ControlFlowSub |
 | cflow.cs:284:5:284:18 | Normal Exit | cflow.cs:284:5:284:18 | ControlFlowSub |
+| cflow.cs:284:27:284:27 | s | cflow.cs:284:5:284:18 | ControlFlowSub |
 | cflow.cs:284:32:284:35 | After call to constructor ControlFlowSub | cflow.cs:284:5:284:18 | ControlFlowSub |
 | cflow.cs:284:32:284:35 | Before call to constructor ControlFlowSub | cflow.cs:284:5:284:18 | ControlFlowSub |
 | cflow.cs:284:32:284:35 | call to constructor ControlFlowSub | cflow.cs:284:5:284:18 | ControlFlowSub |
@@ -7956,6 +8282,7 @@ nodeEnclosing
 | cflow.cs:286:5:286:18 | Entry | cflow.cs:286:5:286:18 | ControlFlowSub |
 | cflow.cs:286:5:286:18 | Exit | cflow.cs:286:5:286:18 | ControlFlowSub |
 | cflow.cs:286:5:286:18 | Normal Exit | cflow.cs:286:5:286:18 | ControlFlowSub |
+| cflow.cs:286:24:286:24 | i | cflow.cs:286:5:286:18 | ControlFlowSub |
 | cflow.cs:286:29:286:32 | After call to constructor ControlFlowSub | cflow.cs:286:5:286:18 | ControlFlowSub |
 | cflow.cs:286:29:286:32 | Before call to constructor ControlFlowSub | cflow.cs:286:5:286:18 | ControlFlowSub |
 | cflow.cs:286:29:286:32 | call to constructor ControlFlowSub | cflow.cs:286:5:286:18 | ControlFlowSub |
@@ -7978,6 +8305,7 @@ nodeEnclosing
 | cflow.cs:291:12:291:12 | Entry | cflow.cs:291:12:291:12 | M |
 | cflow.cs:291:12:291:12 | Exit | cflow.cs:291:12:291:12 | M |
 | cflow.cs:291:12:291:12 | Normal Exit | cflow.cs:291:12:291:12 | M |
+| cflow.cs:291:32:291:32 | f | cflow.cs:291:12:291:12 | M |
 | cflow.cs:291:38:291:38 | access to parameter f | cflow.cs:291:12:291:12 | M |
 | cflow.cs:291:38:291:41 | After delegate call | cflow.cs:291:12:291:12 | M |
 | cflow.cs:291:38:291:41 | Before delegate call | cflow.cs:291:12:291:12 | M |
@@ -7993,10 +8321,16 @@ nodeEnclosing
 | cflow.cs:296:5:296:25 | call to constructor Object | cflow.cs:296:5:296:25 | NegationInConstructor |
 | cflow.cs:296:5:296:25 | call to method <object initializer> | cflow.cs:296:5:296:25 | NegationInConstructor |
 | cflow.cs:296:5:296:25 | this access | cflow.cs:296:5:296:25 | NegationInConstructor |
+| cflow.cs:296:32:296:32 | b | cflow.cs:296:5:296:25 | NegationInConstructor |
+| cflow.cs:296:39:296:39 | i | cflow.cs:296:5:296:25 | NegationInConstructor |
+| cflow.cs:296:49:296:49 | s | cflow.cs:296:5:296:25 | NegationInConstructor |
 | cflow.cs:296:52:296:54 | {...} | cflow.cs:296:5:296:25 | NegationInConstructor |
 | cflow.cs:298:10:298:10 | Entry | cflow.cs:298:10:298:10 | M |
 | cflow.cs:298:10:298:10 | Exit | cflow.cs:298:10:298:10 | M |
 | cflow.cs:298:10:298:10 | Normal Exit | cflow.cs:298:10:298:10 | M |
+| cflow.cs:298:16:298:16 | i | cflow.cs:298:10:298:10 | M |
+| cflow.cs:298:26:298:26 | s | cflow.cs:298:10:298:10 | M |
+| cflow.cs:298:34:298:34 | b | cflow.cs:298:10:298:10 | M |
 | cflow.cs:299:5:301:5 | After {...} | cflow.cs:298:10:298:10 | M |
 | cflow.cs:299:5:301:5 | {...} | cflow.cs:298:10:298:10 | M |
 | cflow.cs:300:9:300:72 | After object creation of type NegationInConstructor | cflow.cs:298:10:298:10 | M |
@@ -8040,6 +8374,8 @@ nodeEnclosing
 | cflow.cs:306:60:310:5 | Exit | cflow.cs:306:60:310:5 | get__getter |
 | cflow.cs:306:60:310:5 | Normal Exit | cflow.cs:306:60:310:5 | (...) => ... |
 | cflow.cs:306:60:310:5 | Normal Exit | cflow.cs:306:60:310:5 | get__getter |
+| cflow.cs:306:61:306:61 | o | cflow.cs:306:60:310:5 | (...) => ... |
+| cflow.cs:306:64:306:64 | n | cflow.cs:306:60:310:5 | (...) => ... |
 | cflow.cs:307:5:310:5 | {...} | cflow.cs:306:60:310:5 | (...) => ... |
 | cflow.cs:308:9:308:21 | ... ...; | cflow.cs:306:60:310:5 | (...) => ... |
 | cflow.cs:308:9:308:21 | After ... ...; | cflow.cs:306:60:310:5 | (...) => ... |
@@ -8487,6 +8823,14 @@ blockEnclosing
 | Conditions.cs:146:9:149:49 | After if (...) ... | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:146:13:146:13 | After access to parameter b [false] | Conditions.cs:143:10:143:12 | M11 |
 | Conditions.cs:146:13:146:13 | After access to parameter b [true] | Conditions.cs:143:10:143:12 | M11 |
+| DefaultParam.cs:1:7:1:18 | Entry | DefaultParam.cs:1:7:1:18 | DefaultParam |
+| DefaultParam.cs:3:12:3:13 | Entry | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:30:3:30 | After s [match] | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:30:3:30 | After s [no-match] | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:42:3:42 | After i [match] | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:42:3:42 | After i [no-match] | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:3:42:3:42 | i | DefaultParam.cs:3:12:3:13 | M1 |
+| DefaultParam.cs:4:5:6:5 | {...} | DefaultParam.cs:3:12:3:13 | M1 |
 | ExitMethods.cs:6:7:6:17 | Entry | ExitMethods.cs:6:7:6:17 | ExitMethods |
 | ExitMethods.cs:8:10:8:11 | Entry | ExitMethods.cs:8:10:8:11 | M1 |
 | ExitMethods.cs:14:10:14:11 | Entry | ExitMethods.cs:14:10:14:11 | M2 |
@@ -8496,10 +8840,10 @@ blockEnclosing
 | ExitMethods.cs:38:10:38:11 | Entry | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:38:10:38:11 | Exit | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:38:10:38:11 | Normal Exit | ExitMethods.cs:38:10:38:11 | M6 |
-| ExitMethods.cs:44:9:47:9 | After catch (...) {...} [match] | ExitMethods.cs:38:10:38:11 | M6 |
-| ExitMethods.cs:44:9:47:9 | After catch (...) {...} [no-match] | ExitMethods.cs:38:10:38:11 | M6 |
-| ExitMethods.cs:48:9:51:9 | After catch (...) {...} [match] | ExitMethods.cs:38:10:38:11 | M6 |
-| ExitMethods.cs:48:9:51:9 | After catch (...) {...} [no-match] | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [match] | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:44:16:44:32 | After access to type ArgumentException [no-match] | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [match] | ExitMethods.cs:38:10:38:11 | M6 |
+| ExitMethods.cs:48:16:48:24 | After access to type Exception [no-match] | ExitMethods.cs:38:10:38:11 | M6 |
 | ExitMethods.cs:54:10:54:11 | Entry | ExitMethods.cs:54:10:54:11 | M7 |
 | ExitMethods.cs:60:10:60:11 | Entry | ExitMethods.cs:60:10:60:11 | M8 |
 | ExitMethods.cs:66:17:66:26 | Entry | ExitMethods.cs:66:17:66:26 | ErrorMaybe |
@@ -8554,13 +8898,13 @@ blockEnclosing
 | Finally.cs:19:10:19:11 | Normal Exit | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:21:9:51:9 | After try {...} ... | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:23:13:23:37 | After call to method WriteLine | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [match] | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:26:9:29:9 | After catch (...) {...} [no-match] | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:26:9:29:9 | catch (...) {...} | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:30:9:40:9 | After catch (...) {...} [match] | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:30:9:40:9 | After catch (...) {...} [no-match] | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:41:9:43:9 | After catch (...) {...} [match] | Finally.cs:19:10:19:11 | M2 |
-| Finally.cs:41:9:43:9 | After catch (...) {...} [no-match] | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:26:38:26:39 | After IOException ex [match] | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:26:38:26:39 | After IOException ex [no-match] | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [match] | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:30:41:30:42 | After ArgumentException ex [no-match] | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:41:16:41:24 | After access to type Exception [match] | Finally.cs:19:10:19:11 | M2 |
+| Finally.cs:41:16:41:24 | After access to type Exception [no-match] | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:49:9:51:9 | {...} | Finally.cs:19:10:19:11 | M2 |
 | Finally.cs:54:10:54:11 | Entry | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:54:10:54:11 | Exceptional Exit | Finally.cs:54:10:54:11 | M3 |
@@ -8568,11 +8912,12 @@ blockEnclosing
 | Finally.cs:54:10:54:11 | Normal Exit | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:56:9:71:9 | After try {...} ... | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:58:13:58:37 | After call to method WriteLine | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [match] | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:61:9:64:9 | After catch (...) {...} [no-match] | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:61:9:64:9 | catch (...) {...} | Finally.cs:54:10:54:11 | M3 |
-| Finally.cs:65:9:67:9 | After catch (...) {...} [match] | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:61:38:61:39 | After IOException ex [match] | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:61:38:61:39 | After IOException ex [no-match] | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:65:9:67:9 | After catch (...) {...} [no-match] | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:65:26:65:26 | After Exception e [match] | Finally.cs:54:10:54:11 | M3 |
+| Finally.cs:65:26:65:26 | After Exception e [no-match] | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:65:35:65:51 | After ... != ... [false] | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:65:35:65:51 | After ... != ... [true] | Finally.cs:54:10:54:11 | M3 |
 | Finally.cs:69:9:71:9 | {...} | Finally.cs:54:10:54:11 | M3 |
@@ -8635,9 +8980,10 @@ blockEnclosing
 | Finally.cs:158:21:158:36 | After ... == ... [false] | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:158:21:158:36 | After ... == ... [true] | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:159:27:159:44 | After object creation of type Exception | Finally.cs:147:10:147:11 | M8 |
-| Finally.cs:161:13:164:13 | After catch (...) {...} [match] | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | After catch (...) {...} [no-match] | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:13:164:13 | catch (...) {...} | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:30:161:30 | After Exception e [match] | Finally.cs:147:10:147:11 | M8 |
+| Finally.cs:161:30:161:30 | After Exception e [no-match] | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:54 | After ... == ... [false] | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:161:39:161:54 | After ... == ... [true] | Finally.cs:147:10:147:11 | M8 |
 | Finally.cs:172:11:172:20 | Entry | Finally.cs:172:11:172:20 | ExceptionA |
@@ -8655,9 +9001,10 @@ blockEnclosing
 | Finally.cs:186:21:186:22 | After access to parameter b2 [false] | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:21:186:22 | After access to parameter b2 [true] | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:186:31:186:46 | After object creation of type ExceptionB | Finally.cs:176:10:176:11 | M9 |
-| Finally.cs:188:13:191:13 | After catch (...) {...} [match] | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:13:191:13 | After catch (...) {...} [no-match] | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:13:191:13 | catch (...) {...} | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [match] | Finally.cs:176:10:176:11 | M9 |
+| Finally.cs:188:20:188:29 | After access to type ExceptionB [no-match] | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [false] | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:188:38:188:39 | After access to parameter b2 [true] | Finally.cs:176:10:176:11 | M9 |
 | Finally.cs:190:21:190:22 | After access to parameter b1 [false] | Finally.cs:176:10:176:11 | M9 |
@@ -8968,19 +9315,19 @@ blockEnclosing
 | Patterns.cs:16:18:16:28 | After ... is ... [false] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:16:18:16:28 | [MatchTrue] ... is ... | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:20:9:38:9 | After switch (...) {...} | Patterns.cs:5:10:5:11 | M1 |
-| Patterns.cs:22:13:22:23 | After case ...: [match] | Patterns.cs:5:10:5:11 | M1 |
-| Patterns.cs:22:13:22:23 | After case ...: [no-match] | Patterns.cs:5:10:5:11 | M1 |
-| Patterns.cs:24:13:24:36 | After case ...: [match] | Patterns.cs:5:10:5:11 | M1 |
-| Patterns.cs:24:13:24:36 | After case ...: [no-match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:22:18:22:22 | After "xyz" [match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:22:18:22:22 | After "xyz" [no-match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:18:24:23 | After Int32 i2 [match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:24:18:24:23 | After Int32 i2 [no-match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:24:30:24:35 | After ... > ... [false] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:24:30:24:35 | After ... > ... [true] | Patterns.cs:5:10:5:11 | M1 |
-| Patterns.cs:27:13:27:24 | After case ...: [match] | Patterns.cs:5:10:5:11 | M1 |
-| Patterns.cs:27:13:27:24 | After case ...: [no-match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:5:10:5:11 | M1 |
-| Patterns.cs:30:13:30:27 | After case ...: [match] | Patterns.cs:5:10:5:11 | M1 |
-| Patterns.cs:30:13:30:27 | After case ...: [no-match] | Patterns.cs:5:10:5:11 | M1 |
-| Patterns.cs:33:13:33:24 | After case ...: [match] | Patterns.cs:5:10:5:11 | M1 |
-| Patterns.cs:33:13:33:24 | After case ...: [no-match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:27:18:27:23 | After Int32 i3 [match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:27:18:27:23 | After Int32 i3 [no-match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:30:18:30:26 | After String s2 [match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:30:18:30:26 | After String s2 [no-match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:33:18:33:23 | After Object v2 [match] | Patterns.cs:5:10:5:11 | M1 |
+| Patterns.cs:33:18:33:23 | After Object v2 [no-match] | Patterns.cs:5:10:5:11 | M1 |
 | Patterns.cs:47:24:47:25 | Entry | Patterns.cs:47:24:47:25 | M2 |
 | Patterns.cs:48:9:48:20 | After ... is ... | Patterns.cs:47:24:47:25 | M2 |
 | Patterns.cs:48:9:48:20 | [MatchTrue] ... is ... | Patterns.cs:47:24:47:25 | M2 |
@@ -8997,22 +9344,22 @@ blockEnclosing
 | Patterns.cs:54:9:54:37 | [MatchTrue] ... is ... | Patterns.cs:53:24:53:25 | M4 |
 | Patterns.cs:56:26:56:27 | Entry | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:58:16:62:9 | After ... switch { ... } | Patterns.cs:56:26:56:27 | M5 |
-| Patterns.cs:60:13:60:28 | After ... => ... [match] | Patterns.cs:56:26:56:27 | M5 |
-| Patterns.cs:60:13:60:28 | After ... => ... [no-match] | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:17 | After not ... [match] | Patterns.cs:56:26:56:27 | M5 |
+| Patterns.cs:60:13:60:17 | After not ... [no-match] | Patterns.cs:56:26:56:27 | M5 |
 | Patterns.cs:65:26:65:27 | Entry | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:67:16:71:9 | After ... switch { ... } | Patterns.cs:65:26:65:27 | M6 |
-| Patterns.cs:69:13:69:33 | After ... => ... [match] | Patterns.cs:65:26:65:27 | M6 |
-| Patterns.cs:69:13:69:33 | After ... => ... [no-match] | Patterns.cs:65:26:65:27 | M6 |
-| Patterns.cs:70:13:70:27 | After ... => ... [match] | Patterns.cs:65:26:65:27 | M6 |
-| Patterns.cs:70:13:70:27 | After ... => ... [no-match] | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:69:13:69:17 | After not ... [match] | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:69:13:69:17 | After not ... [no-match] | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:13:70:13 | After 2 [match] | Patterns.cs:65:26:65:27 | M6 |
+| Patterns.cs:70:13:70:13 | After 2 [no-match] | Patterns.cs:65:26:65:27 | M6 |
 | Patterns.cs:74:26:74:27 | Entry | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:76:16:82:9 | After ... switch { ... } | Patterns.cs:74:26:74:27 | M7 |
-| Patterns.cs:78:13:78:24 | After ... => ... [match] | Patterns.cs:74:26:74:27 | M7 |
-| Patterns.cs:78:13:78:24 | After ... => ... [no-match] | Patterns.cs:74:26:74:27 | M7 |
-| Patterns.cs:79:13:79:24 | After ... => ... [match] | Patterns.cs:74:26:74:27 | M7 |
-| Patterns.cs:79:13:79:24 | After ... => ... [no-match] | Patterns.cs:74:26:74:27 | M7 |
-| Patterns.cs:80:13:80:20 | After ... => ... [match] | Patterns.cs:74:26:74:27 | M7 |
-| Patterns.cs:80:13:80:20 | After ... => ... [no-match] | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:78:13:78:15 | After > ... [match] | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:78:13:78:15 | After > ... [no-match] | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:79:13:79:15 | After < ... [match] | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:79:13:79:15 | After < ... [no-match] | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:80:13:80:13 | After 1 [match] | Patterns.cs:74:26:74:27 | M7 |
+| Patterns.cs:80:13:80:13 | After 1 [no-match] | Patterns.cs:74:26:74:27 | M7 |
 | Patterns.cs:85:26:85:27 | Entry | Patterns.cs:85:26:85:27 | M8 |
 | Patterns.cs:85:39:85:53 | After ... is ... [false] | Patterns.cs:85:26:85:27 | M8 |
 | Patterns.cs:85:39:85:53 | [MatchTrue] ... is ... | Patterns.cs:85:26:85:27 | M8 |
@@ -9045,125 +9392,126 @@ blockEnclosing
 | Switch.cs:10:10:10:11 | Exceptional Exit | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:10:10:10:11 | Exit | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:10:10:10:11 | Normal Exit | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:14:13:14:21 | After case ...: [match] | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:14:18:14:20 | After "a" [match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:16:13:16:19 | After case ...: [match] | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:18:13:18:22 | After case ...: [match] | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:20:13:20:23 | After case ...: [match] | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:20:13:20:23 | After case ...: [no-match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:16:18:16:18 | After 0 [match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:18:18:18:21 | After null [match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:20:18:20:22 | After Int32 i [match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:20:18:20:22 | After Int32 i [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:21:21:21:29 | After ... == ... [false] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:21:21:21:29 | After ... == ... [true] | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:24:13:24:56 | After case ...: [match] | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:24:13:24:56 | After case ...: [no-match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:24:18:24:25 | After String s [match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:24:18:24:25 | After String s [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:32:24:43 | After ... > ... [false] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:32:24:43 | After ... > ... [true] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:32:24:55 | After ... && ... [false] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:48:24:55 | After ... != ... [false] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:24:48:24:55 | After ... != ... [true] | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:27:13:27:39 | After case ...: [match] | Switch.cs:10:10:10:11 | M2 |
-| Switch.cs:27:13:27:39 | After case ...: [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:27:13:27:39 | case ...: | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:27:18:27:25 | After Double d [match] | Switch.cs:10:10:10:11 | M2 |
+| Switch.cs:27:18:27:25 | After Double d [no-match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:30:13:30:20 | After default: [match] | Switch.cs:10:10:10:11 | M2 |
 | Switch.cs:35:10:35:11 | Entry | Switch.cs:35:10:35:11 | M3 |
 | Switch.cs:44:10:44:11 | Entry | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:46:9:52:9 | After switch (...) {...} | Switch.cs:44:10:44:11 | M4 |
-| Switch.cs:48:13:48:23 | After case ...: [match] | Switch.cs:44:10:44:11 | M4 |
-| Switch.cs:48:13:48:23 | After case ...: [no-match] | Switch.cs:44:10:44:11 | M4 |
-| Switch.cs:50:13:50:39 | After case ...: [match] | Switch.cs:44:10:44:11 | M4 |
-| Switch.cs:50:13:50:39 | After case ...: [no-match] | Switch.cs:44:10:44:11 | M4 |
+| Switch.cs:48:18:48:20 | After access to type Int32 [match] | Switch.cs:44:10:44:11 | M4 |
+| Switch.cs:48:18:48:20 | After access to type Int32 [no-match] | Switch.cs:44:10:44:11 | M4 |
+| Switch.cs:50:18:50:21 | After access to type Boolean [match] | Switch.cs:44:10:44:11 | M4 |
+| Switch.cs:50:18:50:21 | After access to type Boolean [no-match] | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:50:30:50:38 | After ... != ... [false] | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:50:30:50:38 | After ... != ... [true] | Switch.cs:44:10:44:11 | M4 |
 | Switch.cs:55:10:55:11 | Entry | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:57:9:63:9 | After switch (...) {...} | Switch.cs:55:10:55:11 | M5 |
-| Switch.cs:59:13:59:19 | After case ...: [match] | Switch.cs:55:10:55:11 | M5 |
-| Switch.cs:59:13:59:19 | After case ...: [no-match] | Switch.cs:55:10:55:11 | M5 |
-| Switch.cs:61:13:61:19 | After case ...: [match] | Switch.cs:55:10:55:11 | M5 |
-| Switch.cs:61:13:61:19 | After case ...: [no-match] | Switch.cs:55:10:55:11 | M5 |
+| Switch.cs:59:18:59:18 | After 2 [match] | Switch.cs:55:10:55:11 | M5 |
+| Switch.cs:59:18:59:18 | After 2 [no-match] | Switch.cs:55:10:55:11 | M5 |
+| Switch.cs:61:18:61:18 | After 3 [match] | Switch.cs:55:10:55:11 | M5 |
+| Switch.cs:61:18:61:18 | After 3 [no-match] | Switch.cs:55:10:55:11 | M5 |
 | Switch.cs:66:10:66:11 | Entry | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:68:9:74:9 | After switch (...) {...} | Switch.cs:66:10:66:11 | M6 |
-| Switch.cs:70:13:70:23 | After case ...: [match] | Switch.cs:66:10:66:11 | M6 |
-| Switch.cs:70:13:70:23 | After case ...: [no-match] | Switch.cs:66:10:66:11 | M6 |
-| Switch.cs:72:13:72:20 | After case ...: [match] | Switch.cs:66:10:66:11 | M6 |
-| Switch.cs:72:13:72:20 | After case ...: [no-match] | Switch.cs:66:10:66:11 | M6 |
+| Switch.cs:70:18:70:20 | After access to type Int32 [match] | Switch.cs:66:10:66:11 | M6 |
+| Switch.cs:70:18:70:20 | After access to type Int32 [no-match] | Switch.cs:66:10:66:11 | M6 |
+| Switch.cs:72:18:72:19 | After "" [match] | Switch.cs:66:10:66:11 | M6 |
+| Switch.cs:72:18:72:19 | After "" [no-match] | Switch.cs:66:10:66:11 | M6 |
 | Switch.cs:77:10:77:11 | Entry | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:77:10:77:11 | Normal Exit | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:79:9:87:9 | After switch (...) {...} | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:81:13:81:19 | After case ...: [match] | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:81:13:81:19 | After case ...: [no-match] | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:83:13:83:19 | After case ...: [match] | Switch.cs:77:10:77:11 | M7 |
-| Switch.cs:83:13:83:19 | After case ...: [no-match] | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:81:18:81:18 | After 1 [match] | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:81:18:81:18 | After 1 [no-match] | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:83:18:83:18 | After 2 [match] | Switch.cs:77:10:77:11 | M7 |
+| Switch.cs:83:18:83:18 | After 2 [no-match] | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:84:21:84:25 | After ... > ... [false] | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:84:21:84:25 | After ... > ... [true] | Switch.cs:77:10:77:11 | M7 |
 | Switch.cs:91:10:91:11 | Entry | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:91:10:91:11 | Normal Exit | Switch.cs:91:10:91:11 | M8 |
-| Switch.cs:95:13:95:23 | After case ...: [match] | Switch.cs:91:10:91:11 | M8 |
-| Switch.cs:95:13:95:23 | After case ...: [no-match] | Switch.cs:91:10:91:11 | M8 |
+| Switch.cs:95:18:95:20 | After access to type Int32 [match] | Switch.cs:91:10:91:11 | M8 |
+| Switch.cs:95:18:95:20 | After access to type Int32 [no-match] | Switch.cs:91:10:91:11 | M8 |
 | Switch.cs:101:9:101:10 | Entry | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:101:9:101:10 | Normal Exit | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:103:17:103:17 | After access to parameter s [non-null] | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:103:17:103:17 | After access to parameter s [null] | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:103:17:103:25 | After access to property Length | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:105:13:105:19 | After case ...: [match] | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:105:13:105:19 | After case ...: [no-match] | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:106:13:106:19 | After case ...: [match] | Switch.cs:101:9:101:10 | M9 |
-| Switch.cs:106:13:106:19 | After case ...: [no-match] | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:105:18:105:18 | After 0 [match] | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:105:18:105:18 | After 0 [no-match] | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:106:18:106:18 | After 1 [match] | Switch.cs:101:9:101:10 | M9 |
+| Switch.cs:106:18:106:18 | After 1 [no-match] | Switch.cs:101:9:101:10 | M9 |
 | Switch.cs:111:17:111:21 | Entry | Switch.cs:111:17:111:21 | Throw |
 | Switch.cs:113:9:113:11 | Entry | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:113:9:113:11 | Normal Exit | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:115:9:119:9 | After switch (...) {...} | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:117:13:117:35 | After case ...: [match] | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:117:13:117:35 | After case ...: [no-match] | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:117:18:117:18 | After 3 [match] | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:117:18:117:18 | After 3 [no-match] | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:117:25:117:34 | After ... == ... [false] | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:117:25:117:34 | After ... == ... [true] | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:118:13:118:34 | After case ...: [match] | Switch.cs:113:9:113:11 | M10 |
-| Switch.cs:118:13:118:34 | After case ...: [no-match] | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:118:13:118:34 | case ...: | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:118:18:118:18 | After 2 [match] | Switch.cs:113:9:113:11 | M10 |
+| Switch.cs:118:18:118:18 | After 2 [no-match] | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:118:25:118:33 | After ... == ... [false] | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:118:25:118:33 | After ... == ... [true] | Switch.cs:113:9:113:11 | M10 |
 | Switch.cs:123:10:123:12 | Entry | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:123:10:123:12 | Normal Exit | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:13:125:48 | After ... switch { ... } [false] | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:125:13:125:48 | After ... switch { ... } [true] | Switch.cs:123:10:123:12 | M11 |
-| Switch.cs:125:24:125:34 | After ... => ... [match] | Switch.cs:123:10:123:12 | M11 |
-| Switch.cs:125:24:125:34 | After ... => ... [no-match] | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:24:125:29 | After Boolean b [match] | Switch.cs:123:10:123:12 | M11 |
+| Switch.cs:125:24:125:29 | After Boolean b [no-match] | Switch.cs:123:10:123:12 | M11 |
 | Switch.cs:129:12:129:14 | Entry | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:16:131:66 | After call to method ToString | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:17:131:53 | After ... switch { ... } [non-null] | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:131:17:131:53 | After ... switch { ... } [null] | Switch.cs:129:12:129:14 | M12 |
-| Switch.cs:131:28:131:40 | After ... => ... [match] | Switch.cs:129:12:129:14 | M12 |
-| Switch.cs:131:28:131:40 | After ... => ... [no-match] | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:28:131:35 | After String s [match] | Switch.cs:129:12:129:14 | M12 |
+| Switch.cs:131:28:131:35 | After String s [no-match] | Switch.cs:129:12:129:14 | M12 |
 | Switch.cs:134:9:134:11 | Entry | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:134:9:134:11 | Normal Exit | Switch.cs:134:9:134:11 | M13 |
-| Switch.cs:139:13:139:19 | After case ...: [match] | Switch.cs:134:9:134:11 | M13 |
-| Switch.cs:139:13:139:19 | After case ...: [no-match] | Switch.cs:134:9:134:11 | M13 |
-| Switch.cs:140:13:140:19 | After case ...: [match] | Switch.cs:134:9:134:11 | M13 |
-| Switch.cs:140:13:140:19 | After case ...: [no-match] | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:139:18:139:18 | After 1 [match] | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:139:18:139:18 | After 1 [no-match] | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:140:18:140:18 | After 2 [match] | Switch.cs:134:9:134:11 | M13 |
+| Switch.cs:140:18:140:18 | After 2 [no-match] | Switch.cs:134:9:134:11 | M13 |
 | Switch.cs:144:9:144:11 | Entry | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:144:9:144:11 | Normal Exit | Switch.cs:144:9:144:11 | M14 |
-| Switch.cs:148:13:148:19 | After case ...: [match] | Switch.cs:144:9:144:11 | M14 |
-| Switch.cs:148:13:148:19 | After case ...: [no-match] | Switch.cs:144:9:144:11 | M14 |
-| Switch.cs:150:13:150:19 | After case ...: [match] | Switch.cs:144:9:144:11 | M14 |
-| Switch.cs:150:13:150:19 | After case ...: [no-match] | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:148:18:148:18 | After 1 [match] | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:148:18:148:18 | After 1 [no-match] | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:150:18:150:18 | After 2 [match] | Switch.cs:144:9:144:11 | M14 |
+| Switch.cs:150:18:150:18 | After 2 [no-match] | Switch.cs:144:9:144:11 | M14 |
 | Switch.cs:154:10:154:12 | Entry | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:156:17:156:54 | After ... switch { ... } | Switch.cs:154:10:154:12 | M15 |
-| Switch.cs:156:28:156:38 | After ... => ... [match] | Switch.cs:154:10:154:12 | M15 |
-| Switch.cs:156:28:156:38 | After ... => ... [no-match] | Switch.cs:154:10:154:12 | M15 |
-| Switch.cs:156:41:156:52 | After ... => ... [match] | Switch.cs:154:10:154:12 | M15 |
-| Switch.cs:156:41:156:52 | After ... => ... [no-match] | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:28:156:31 | After true [match] | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:28:156:31 | After true [no-match] | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:41:156:45 | After false [match] | Switch.cs:154:10:154:12 | M15 |
+| Switch.cs:156:41:156:45 | After false [no-match] | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:157:9:160:49 | After if (...) ... | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:157:13:157:13 | After access to parameter b [false] | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:157:13:157:13 | After access to parameter b [true] | Switch.cs:154:10:154:12 | M15 |
 | Switch.cs:163:10:163:12 | Entry | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:165:9:177:9 | After switch (...) {...} | Switch.cs:163:10:163:12 | M16 |
-| Switch.cs:167:13:167:19 | After case ...: [match] | Switch.cs:163:10:163:12 | M16 |
-| Switch.cs:167:13:167:19 | After case ...: [no-match] | Switch.cs:163:10:163:12 | M16 |
-| Switch.cs:168:13:168:19 | After case ...: [match] | Switch.cs:163:10:163:12 | M16 |
-| Switch.cs:168:13:168:19 | After case ...: [no-match] | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:167:18:167:18 | After 1 [match] | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:167:18:167:18 | After 1 [no-match] | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:168:18:168:18 | After 2 [match] | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:168:18:168:18 | After 2 [no-match] | Switch.cs:163:10:163:12 | M16 |
 | Switch.cs:169:17:169:51 | ...; | Switch.cs:163:10:163:12 | M16 |
-| Switch.cs:171:13:171:19 | After case ...: [match] | Switch.cs:163:10:163:12 | M16 |
-| Switch.cs:171:13:171:19 | After case ...: [no-match] | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:171:18:171:18 | After 3 [match] | Switch.cs:163:10:163:12 | M16 |
+| Switch.cs:171:18:171:18 | After 3 [no-match] | Switch.cs:163:10:163:12 | M16 |
 | TypeAccesses.cs:1:7:1:18 | Entry | TypeAccesses.cs:1:7:1:18 | TypeAccesses |
 | TypeAccesses.cs:3:10:3:10 | Entry | TypeAccesses.cs:3:10:3:10 | M |
 | TypeAccesses.cs:7:9:7:25 | After if (...) ... | TypeAccesses.cs:3:10:3:10 | M |
@@ -9207,17 +9555,19 @@ blockEnclosing
 | cflow.cs:37:17:37:22 | Exit | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:39:9:50:9 | After switch (...) {...} | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:41:13:41:19 | After case ...: [match] | cflow.cs:37:17:37:22 | Switch |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:41:18:41:18 | After 1 [match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:44:13:44:19 | After case ...: [match] | cflow.cs:37:17:37:22 | Switch |
-| cflow.cs:44:13:44:19 | After case ...: [no-match] | cflow.cs:37:17:37:22 | Switch |
-| cflow.cs:47:13:47:19 | After case ...: [match] | cflow.cs:37:17:37:22 | Switch |
-| cflow.cs:47:13:47:19 | After case ...: [no-match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:44:18:44:18 | After 2 [match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:44:18:44:18 | After 2 [no-match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:47:18:47:18 | After 3 [match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:47:18:47:18 | After 3 [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:51:9:59:9 | After switch (...) {...} | cflow.cs:37:17:37:22 | Switch |
-| cflow.cs:53:13:53:20 | After case ...: [match] | cflow.cs:37:17:37:22 | Switch |
-| cflow.cs:53:13:53:20 | After case ...: [no-match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:53:18:53:19 | After 42 [match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:53:18:53:19 | After 42 [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:60:9:66:9 | After switch (...) {...} | cflow.cs:37:17:37:22 | Switch |
-| cflow.cs:62:13:62:19 | After case ...: [match] | cflow.cs:37:17:37:22 | Switch |
-| cflow.cs:62:13:62:19 | After case ...: [no-match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:62:18:62:18 | After 0 [match] | cflow.cs:37:17:37:22 | Switch |
+| cflow.cs:62:18:62:18 | After 0 [no-match] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:63:23:63:33 | After ... == ... [false] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:63:23:63:33 | After ... == ... [true] | cflow.cs:37:17:37:22 | Switch |
 | cflow.cs:70:18:70:18 | Entry | cflow.cs:70:18:70:18 | M |
@@ -9342,12 +9692,12 @@ blockEnclosing
 | cflow.cs:244:13:244:28 | After ... > ... [false] | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:244:13:244:28 | After ... > ... [true] | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:246:9:258:9 | After switch (...) {...} | cflow.cs:240:10:240:13 | Goto |
-| cflow.cs:248:13:248:19 | After case ...: [match] | cflow.cs:240:10:240:13 | Goto |
-| cflow.cs:248:13:248:19 | After case ...: [no-match] | cflow.cs:240:10:240:13 | Goto |
-| cflow.cs:250:13:250:19 | After case ...: [match] | cflow.cs:240:10:240:13 | Goto |
-| cflow.cs:250:13:250:19 | After case ...: [no-match] | cflow.cs:240:10:240:13 | Goto |
-| cflow.cs:253:13:253:19 | After case ...: [match] | cflow.cs:240:10:240:13 | Goto |
-| cflow.cs:253:13:253:19 | After case ...: [no-match] | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:248:18:248:18 | After 0 [match] | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:248:18:248:18 | After 0 [no-match] | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:250:18:250:18 | After 1 [match] | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:250:18:250:18 | After 1 [no-match] | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:253:18:253:18 | After 2 [match] | cflow.cs:240:10:240:13 | Goto |
+| cflow.cs:253:18:253:18 | After 2 [no-match] | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:255:13:255:20 | After default: [match] | cflow.cs:240:10:240:13 | Goto |
 | cflow.cs:261:49:261:53 | Entry | cflow.cs:261:49:261:53 | Yield |
 | cflow.cs:261:49:261:53 | Exceptional Exit | cflow.cs:261:49:261:53 | Yield |

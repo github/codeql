@@ -25,7 +25,7 @@ func doSomething(password: String) { }
 func test1(password: String, passwordHash : String) {
 	let defaults = UserDefaults.standard
 
-	defaults.set(password, forKey: "myKey") // BAD
+	defaults.set(password, forKey: "myKey") // $ Alert[swift/cleartext-storage-preferences]
 	defaults.set(passwordHash, forKey: "myKey") // GOOD (not sensitive)
 }
 
@@ -38,27 +38,27 @@ func test3(x: String) {
 	// alternative evidence of sensitivity...
 
 	UserDefaults.standard.set(x, forKey: "myKey") // BAD [NOT REPORTED]
-	doSomething(password: x);
-	UserDefaults.standard.set(x, forKey: "myKey") // BAD
+	doSomething(password: x); // $ Source[swift/cleartext-storage-preferences]
+	UserDefaults.standard.set(x, forKey: "myKey") // $ Alert[swift/cleartext-storage-preferences]
 
-	let y = getPassword();
-	UserDefaults.standard.set(y, forKey: "myKey") // BAD
+	let y = getPassword(); // $ Source[swift/cleartext-storage-preferences]
+	UserDefaults.standard.set(y, forKey: "myKey") // $ Alert[swift/cleartext-storage-preferences]
 
 	let z = MyClass()
 	UserDefaults.standard.set(z.harmless, forKey: "myKey") // GOOD (not sensitive)
-	UserDefaults.standard.set(z.password, forKey: "myKey") // BAD
+	UserDefaults.standard.set(z.password, forKey: "myKey") // $ Alert[swift/cleartext-storage-preferences]
 }
 
 func test4(passwd: String) {
 	// sanitizers...
 
-	var x = passwd;
-	var y = passwd;
-	var z = passwd;
+	var x = passwd; // $ Source[swift/cleartext-storage-preferences]
+	var y = passwd; // $ Source[swift/cleartext-storage-preferences]
+	var z = passwd; // $ Source[swift/cleartext-storage-preferences]
 
-	UserDefaults.standard.set(x, forKey: "myKey") // BAD
-	UserDefaults.standard.set(y, forKey: "myKey") // BAD
-	UserDefaults.standard.set(z, forKey: "myKey") // BAD
+	UserDefaults.standard.set(x, forKey: "myKey") // $ Alert[swift/cleartext-storage-preferences]
+	UserDefaults.standard.set(y, forKey: "myKey") // $ Alert[swift/cleartext-storage-preferences]
+	UserDefaults.standard.set(z, forKey: "myKey") // $ Alert[swift/cleartext-storage-preferences]
 
 	x = encrypt(x);
 	hash(data: &y);
@@ -79,6 +79,6 @@ struct MyOuter {
 }
 
 func test5(mo : MyOuter) {
-	UserDefaults.standard.set(mo.password.value, forKey: "myKey") // BAD
+	UserDefaults.standard.set(mo.password.value, forKey: "myKey") // $ Alert[swift/cleartext-storage-preferences]
 	UserDefaults.standard.set(mo.harmless.value, forKey: "myKey") // GOOD
 }

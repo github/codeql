@@ -14,29 +14,29 @@ public class RuntimeExecTest {
     public static void test() {
         System.out.println("Command injection test");
 
-        String script = System.getenv("SCRIPTNAME");
+        String script = System.getenv("SCRIPTNAME"); // $ Source[java/command-line-injection-extra-local]
 
         if (script != null) {
             try {
                 // 1. array literal in the args
-                Runtime.getRuntime().exec(new String[]{"/bin/sh", script});
+                Runtime.getRuntime().exec(new String[]{"/bin/sh", script}); // $ Alert[java/command-line-injection-extra-local]
 
                 // 2. array literal with dataflow
                 String[] commandArray1 = new String[]{"/bin/sh", script};
-                Runtime.getRuntime().exec(commandArray1);
+                Runtime.getRuntime().exec(commandArray1); // $ Alert[java/command-line-injection-extra-local]
 
                 // 3. array assignment after it is created
                 String[] commandArray2 = new String[4];
                 commandArray2[0] = "/bin/sh";
                 commandArray2[1] = script;
-                Runtime.getRuntime().exec(commandArray2);
+                Runtime.getRuntime().exec(commandArray2); // $ Alert[java/command-line-injection-extra-local]
 
                 // 4. Stream concatenation
                 Runtime.getRuntime().exec(
-                    Stream.concat(
+                    Stream.concat( // $
                         Arrays.stream(new String[]{"/bin/sh"}),
                         Arrays.stream(new String[]{script})
-                    ).toArray(String[]::new)
+                    ).toArray(String[]::new) // $ Alert[java/command-line-injection-extra-local]
                 );
 
             } catch (Exception e) {
