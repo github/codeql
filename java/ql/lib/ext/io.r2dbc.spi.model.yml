@@ -3,9 +3,9 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["io.r2dbc.spi", "Connection", True, "createStatement", "(String)", "", "Argument[0]", "sql-injection", "manual"]
       - ["io.r2dbc.spi", "Batch", True, "add", "(String)", "", "Argument[0]", "sql-injection", "manual"]
       - ["io.r2dbc.spi", "Connection", True, "createSavepoint", "(String)", "", "Argument[0]", "sql-injection", "manual"]
+      - ["io.r2dbc.spi", "Connection", True, "createStatement", "(String)", "", "Argument[0]", "sql-injection", "manual"]
       - ["io.r2dbc.spi", "Connection", True, "releaseSavepoint", "(String)", "", "Argument[0]", "sql-injection", "manual"]
-      - ["io.r2dbc.spi", "Connection", True, "rollbackTransactionToSavepoint", "(String)", "", "Argument[0]", "sql-injection", "manual"]
       - ["io.r2dbc.spi", "Statement", True, "returnGeneratedValues", "(String[])", "", "Argument[0]", "sql-injection", "manual"]
+      - ["io.r2dbc.spi", "Connection", True, "rollbackTransactionToSavepoint", "(String)", "", "Argument[0]", "sql-injection", "manual"]
