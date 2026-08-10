@@ -1737,6 +1737,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
               not exists(trystmt.getFinally()) and beforeFinally.isAfter(trystmt)
             )
           |
+            not exists(trystmt.getBody(_)) and
+            n1.isBefore(trystmt) and
+            n2 = beforeElse
+            or
             exists(int i |
               n1.isAfter(trystmt.getBody(i)) and
               not exists(trystmt.getBody(i + 1)) and
