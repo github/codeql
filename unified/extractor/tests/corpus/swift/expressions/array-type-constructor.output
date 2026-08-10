@@ -1,4 +1,7 @@
 let values = [Result<Void>]()
+let initialized = [Result<Void>](unsafeUninitializedCapacity: 1) { _, count in
+	count = 0
+}
 
 ---
 
@@ -45,6 +48,79 @@ sourceFile
               pattern:
                 identifierPattern
                   identifier: identifier "values"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                        labeledExpr
+                          colon: :
+                          label: identifier "unsafeUninitializedCapacity"
+                          expression:
+                            integerLiteralExpr
+                              literal: integerLiteral "1"
+                      additionalTrailingClosures:
+                      calledExpression:
+                        arrayExpr
+                          elements:
+                            arrayElement
+                              expression:
+                                genericSpecializationExpr
+                                  expression:
+                                    declReferenceExpr
+                                      baseName: identifier "Result"
+                                  genericArgumentClause:
+                                    genericArgumentClause
+                                      arguments:
+                                        genericArgument
+                                          argument:
+                                            identifierType
+                                              name: identifier "Void"
+                                      leftAngle: <
+                                      rightAngle: >
+                          leftSquare: [
+                          rightSquare: ]
+                      trailingClosure:
+                        closureExpr
+                          leftBrace: {
+                          rightBrace: }
+                          signature:
+                            closureSignature
+                              attributes:
+                              inKeyword: in
+                              parameterClause:
+                                closureShorthandParameter
+                                  name: _
+                                  trailingComma: ,
+                                closureShorthandParameter
+                                  name: identifier "count"
+                          statements:
+                            codeBlockItem
+                              item:
+                                infixOperatorExpr
+                                  operator:
+                                    assignmentExpr
+                                      equal: =
+                                  leftOperand:
+                                    declReferenceExpr
+                                      baseName: identifier "count"
+                                  rightOperand:
+                                    integerLiteralExpr
+                                      literal: integerLiteral "0"
+              pattern:
+                identifierPattern
+                  identifier: identifier "initialized"
 
 ---
 
@@ -72,3 +148,47 @@ top_level
                       type_argument:
                         named_type_expr
                           name: identifier "Void"
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "initialized"
+          value:
+            call_expr
+              callee:
+                generic_type_expr
+                  base:
+                    named_type_expr
+                      name: identifier "Array"
+                  type_argument:
+                    generic_type_expr
+                      base:
+                        named_type_expr
+                          name: identifier "Result"
+                      type_argument:
+                        named_type_expr
+                          name: identifier "Void"
+              argument:
+                argument
+                  name: identifier "unsafeUninitializedCapacity"
+                  value: int_literal "1"
+                argument
+                  value:
+                    function_expr
+                      parameter:
+                        parameter
+                          pattern:
+                            name_pattern
+                              identifier: identifier "_"
+                        parameter
+                          pattern:
+                            name_pattern
+                              identifier: identifier "count"
+                      body:
+                        block
+                          stmt:
+                            assign_expr
+                              target:
+                                name_expr
+                                  identifier: identifier "count"
+                              value: int_literal "0"

@@ -624,6 +624,19 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!(
             (functionCallExpr
                 calledExpression: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
+                arguments: _* @args
+                trailingClosure: @tc)
+            =>
+            (call_expr
+                callee: (generic_type_expr
+                    base: (named_type_expr name: (identifier "Array"))
+                    type_argument: {element})
+                argument: {args}
+                argument: (argument value: {tc}))
+        ),
+        rule!(
+            (functionCallExpr
+                calledExpression: (arrayExpr elements: (arrayElement expression: (genericSpecializationExpr) @element))
                 arguments: _* @args)
             =>
             (call_expr
