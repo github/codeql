@@ -73,7 +73,7 @@ class SwiftPackageTarget extends ModuleScopeRepr, CallExpr {
       )
   }
 
-  /** Gets the source folder to use if no explicit `path:` if given, typically `Sources/<Target>` */
+  /** Gets the source folder to use if no explicit `path:` is given, typically `Sources/<Target>`. */
   Folder getDefaultSourceFolder() {
     exists(Folder subfolder | subfolder = this.getSourceMidFolder() |
       result = subfolder.getFolder(this.getName())
