@@ -11,6 +11,8 @@ private import codeql.rust.elements.internal.generated.Meta
  * be referenced directly.
  */
 module Impl {
+  private import rust
+
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A meta item in an attribute.
@@ -26,5 +28,15 @@ module Impl {
    * }
    * ```
    */
-  class Meta extends Generated::Meta { }
+  class Meta extends Generated::Meta {
+    /** Gets the path, if it exists. */
+    pragma[nomagic]
+    Path getMetaPath() {
+      result = this.(PathMeta).getPath()
+      or
+      result = this.(KeyValueMeta).getPath()
+      or
+      result = this.(TokenTreeMeta).getPath()
+    }
+  }
 }
