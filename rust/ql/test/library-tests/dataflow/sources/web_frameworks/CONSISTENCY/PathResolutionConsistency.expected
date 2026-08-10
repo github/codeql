@@ -1,5 +1,0 @@
-multiplePathResolutions
-| test.rs:40:7:40:25 | ...::fmt |
-| test.rs:40:7:40:25 | ...::fmt |
-| test.rs:217:7:217:17 | ...::main |
-| test.rs:267:9:267:12 | ...::runtime |

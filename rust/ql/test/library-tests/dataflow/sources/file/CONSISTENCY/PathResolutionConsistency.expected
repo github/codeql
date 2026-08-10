@@ -1,3 +1,0 @@
-multiplePathResolutions
-| test.rs:294:3:294:13 | ...::main |
-| test.rs:326:5:326:6 | ...::runtime |

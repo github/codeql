@@ -1,5 +1,3 @@
 multiplePathResolutions
 | test.rs:10:28:10:65 | Result::<...> |
 | test.rs:97:40:97:49 | Result::<...> |
-| test.rs:207:3:207:13 | ...::main |
-| test.rs:221:5:221:6 | ...::runtime |
