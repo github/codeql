@@ -58,6 +58,7 @@ private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSummary
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
+private import codeql.rust.internal.CachedStages
 private import codeql.rust.internal.typeinference.FunctionType
 private import codeql.rust.internal.typeinference.TypeMention
 private import codeql.rust.frameworks.stdlib.Stdlib
@@ -215,7 +216,9 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
  * add a flow model that achieves the effect of simulating that the callback is
  * invoked, which is needed for flow through captured variables to work.
  */
-private predicate mayInvokeCallback(Function f, int n) {
+cached
+predicate mayInvokeCallback(Function f, int n) {
+  Stages::TypeInferenceStage::ref() and
   exists(TypeMention tm, Trait trait |
     tm = f.getParam(n).getTypeRepr() and
     trait = getALookupTrait(f, tm.getType()) and
