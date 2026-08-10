@@ -2053,6 +2053,33 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             result = this.getASuccessor(any(ExceptionSuccessor t))
           }
 
+          /*
+           * Note that the following 3 predicates, `isAfterValue`,
+           * `isAfterTrue`, and `isAfterFalse`, shadow their counterparts in
+           * `PreControlFlowNode`, and that their semantics are slightly
+           * different.
+           *
+           * This is because, in `PreControlFlowNode`, during CFG construction,
+           * we need to identify the control flow node that results from the
+           * evaluation of an AST node to a certain value, but that control
+           * flow node may or may not encode that fact. In contrast, in
+           * `ControlFlowNode`, we instead want to know what the node actually
+           * encodes.
+           */
+
+          /** Holds if this node indicates that `n` evaluates to the value `t`. */
+          predicate isAfterValue(AstNode n, ConditionalSuccessor t) { this = TAfterValueNode(n, t) }
+
+          /** Holds if this node indicates that `n` evaluates to the value `true`. */
+          predicate isAfterTrue(AstNode n) {
+            this = TAfterValueNode(n, any(BooleanSuccessor b | b.getValue() = true))
+          }
+
+          /** Holds if this node indicates that `n` evaluates to the value `false`. */
+          predicate isAfterFalse(AstNode n) {
+            this = TAfterValueNode(n, any(BooleanSuccessor b | b.getValue() = false))
+          }
+
           /**
            * Holds if this node dominates `that` node.
            *

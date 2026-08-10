@@ -132,25 +132,20 @@ The build does not depend on any particular version manager. You need:
   (currently `6.3.2`), used to build `swift-syntax` `603.0.2`. Install it any way
   you like — [swift.org](https://www.swift.org/install/) or
   [swiftly](https://www.swift.org/swiftly/) (which reads `.swift-version`), or a
-  system package. Just make sure `swift` is on your `PATH` (or point `build.rs`
-  at it with the `SWIFT` environment variable).
+  system package. Just make sure `swift` (and `swiftc`) are on your `PATH` —
+  `build.rs` invokes them directly and does not read any environment variable
+  to locate them.
 
 On Debian/Ubuntu the Swift runtime also needs `libncurses6` (and related libs)
 available on the system.
 
 ## Building & testing
 
-With `cargo` and `swift` on `PATH`:
+With `cargo` and `swift`/`swiftc` on `PATH`:
 
 ```sh
 cargo build
 cargo test
-```
-
-If your `swift`/`swiftc` are not on `PATH`, point the build at them explicitly:
-
-```sh
-SWIFT=/path/to/swift SWIFTC=/path/to/swiftc cargo build
 ```
 
 The first build compiles `swift-syntax` and can take several minutes.
@@ -169,6 +164,10 @@ bazel build //unified/swift-syntax-rs:swift-syntax-parse
 bazel test  //unified/swift-syntax-rs:swift_syntax_rs_test
 bazel run   //unified/swift-syntax-rs:swift-syntax-parse < some.swift
 ```
+
+The `swift-syntax-parse` binary is a debugging aid for looking at the raw
+swift-syntax JSON for some input; it is not shipped as part of the extractor
+pack, which links `swift-syntax-rs` directly instead.
 
 Requirements:
 
@@ -221,9 +220,9 @@ echo 'let x = 1' | cargo run --bin swift-syntax-parse
 The JSON tree is consumed by the CodeQL extractor, which converts it into a
 [`yeast::Ast`](../../shared/yeast) — the in-memory format its rewrite rules
 operate on. That adapter is a pure-Rust module living in the extractor
-(`unified/extractor/src/languages/swift/adapter.rs`), so the extractor never
-needs the Swift toolchain: it consumes the JSON produced out-of-process by this
-crate's `parse_to_json` / the `swift-syntax-parse` binary.
+(`unified/extractor/src/languages/swift/adapter.rs`). The extractor links
+`swift-syntax-rs` directly and consumes the JSON produced in-process by this
+crate's `parse_to_json`.
 
 ## Layout
 

@@ -23,11 +23,11 @@
    Eclipse compiler for Java (ECJ) [7]_",``.java``
    Kotlin,"Kotlin 1.8.0 to 2.4.1\ *x*","kotlinc",``.kt``
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [8]_"
-   Python [9]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13",Not applicable,``.py``
+   Python [9]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13, 3.14",Not applicable,``.py``
    Ruby [10]_,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
    Rust [11]_,"Rust editions 2021 and 2024","Rust compiler","``.rs``, ``Cargo.toml``"
    Swift [12]_ [13]_,"Swift 5.4-6.3","Swift compiler","``.swift``"
-   TypeScript [14]_,"2.6-5.9",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
+   TypeScript [14]_,"2.6-7.0",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group
 

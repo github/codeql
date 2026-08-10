@@ -1,3 +1,9 @@
+## 12.0.2
+
+### Minor Analysis Improvements
+
+* Added flow source models for `RegQueryValue` and related functions from the `winreg.h` Windows header.
+
 ## 12.0.1
 
 No user-facing changes.
