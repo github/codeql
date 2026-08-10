@@ -2218,9 +2218,11 @@ module Make<
             )
           )
           or
-          exists(SourceElement source, SourceSinkReportingElement e |
-            n.(SourceOutputNode).isExit(source, _, e, _) and
-            result = getSourceSinkType(e)
+          exists(SourceElement source |
+            exists(SourceSinkReportingElement e |
+              n.(SourceOutputNode).isExit(source, _, e, _) and
+              result = getSourceSinkType(e)
+            )
             or
             exists(SummaryComponentStack s, ContentSet cont |
               n = sourceElementOutputState(source, _, s) and
