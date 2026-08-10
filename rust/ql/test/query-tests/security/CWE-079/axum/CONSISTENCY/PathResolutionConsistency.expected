@@ -1,0 +1,5 @@
+multiplePathResolutions
+| main.rs:3:3:3:28 | ...::fmt |
+| main.rs:3:3:3:28 | ...::fmt |
+| main.rs:13:3:13:13 | ...::main |
+| main.rs:19:5:19:8 | ...::runtime |

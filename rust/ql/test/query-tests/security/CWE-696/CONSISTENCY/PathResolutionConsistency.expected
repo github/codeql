@@ -1,0 +1,4 @@
+multiplePathResolutions
+| test.rs:14:3:14:12 | harmless1_3___rust_dtor___dtor |
+| test.rs:33:3:33:12 | bad1_2___rust_dtor___dtor |
+| test.rs:39:3:39:12 | bad1_3___rust_dtor___dtor |
