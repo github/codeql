@@ -26,7 +26,6 @@ query predicate multiplePathResolutions(Path p, ItemNode i) {
 
 /** Holds if `ie` has multiple resolved targets including `target`. */
 query predicate multipleResolvedTargets(InvocationExpr ie, Addressable target) {
-  not ie.(AstNode).isInMacroExpansion() and
   target = ie.getResolvedTarget() and
   strictcount(ie.getResolvedTarget()) > 1
 }
