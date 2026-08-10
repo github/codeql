@@ -111,6 +111,16 @@ public class SpringJdbc {
     connection.rollbackTransactionToSavepoint(source()); // $ sqlInjection
     connection.createStatement("INSERT INTO test VALUES (1)")
         .returnGeneratedValues(source()); // $ sqlInjection
+
+    client.sql(() -> "SELECT * FROM test WHERE value = :value").bind("value", source()).fetch();
+    client.sql(() -> "SELECT * FROM test").filter(statement -> source()).fetch();
+    client.sql(() -> "SELECT * FROM test").map(row -> source());
+    connection.createStatement("SELECT * FROM test");
+    batch.add("SELECT * FROM test");
+    connection.createSavepoint("savepoint");
+    connection.releaseSavepoint("savepoint");
+    connection.rollbackTransactionToSavepoint("savepoint");
+    connection.createStatement("INSERT INTO test VALUES (1)").returnGeneratedValues("id");
   }
 
 }
