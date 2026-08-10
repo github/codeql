@@ -1163,6 +1163,27 @@ private module Impl implements RegexTreeViewSig {
     string getSymbol() { result = re.getCharacterPropertySymbol(start, end) }
   }
 
+  /**
+   * A named POSIX character class. For example, `[:digit:]`.
+   */
+  additional class RegExpNamedCharacterClass extends RegExpNamedCharacterProperty {
+    RegExpNamedCharacterClass() { ":" = re.getCharacterPropertySymbol(start, end) }
+  }
+
+  /**
+   * A named POSIX collating element. For example, `[.tilde.]`.
+   */
+  additional class RegExpNamedCollatingElement extends RegExpNamedCharacterProperty {
+    RegExpNamedCollatingElement() { "." = re.getCharacterPropertySymbol(start, end) }
+  }
+
+  /**
+   * A POSIX character equivalence class. For example, `[=a=]`.
+   */
+  additional class RegExpCharacterEquivalenceClass extends RegExpNamedCharacterProperty {
+    RegExpCharacterEquivalenceClass() { "=" = re.getCharacterPropertySymbol(start, end) }
+  }
+
   class Top = RegExpParent;
 
   /**
@@ -1173,7 +1194,7 @@ private module Impl implements RegexTreeViewSig {
     exists(RegExpCharacterClassEscape escape | term = escape | escape.getValue() = clazz)
     or
     // TODO: expand to cover more properties
-    exists(RegExpNamedCharacterProperty escape | term = escape |
+    exists(RegExpNamedCharacterClass escape | term = escape |
       escape.getName().toLowerCase() = "digit" and
       clazz = "d"
       or
