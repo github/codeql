@@ -8,7 +8,7 @@ use ra_ap_hir::Semantics;
 use ra_ap_hir::db::ExpandDatabase;
 use ra_ap_hir_expand::builtin::{BuiltinDeriveExpander, find_builtin_derive};
 use ra_ap_hir_expand::span_map::ExpansionSpanMap;
-use ra_ap_hir_expand::{ExpandResult, ExpandTo, InFile, map_node_range_up_rooted};
+use ra_ap_hir_expand::{ExpandResult, ExpandTo, HirFileId, InFile, map_node_range_up_rooted};
 use ra_ap_ide_db::RootDatabase;
 use ra_ap_ide_db::line_index::{LineCol, LineIndex};
 use ra_ap_parser::{SyntaxKind, TopEntryPoint};
@@ -502,15 +502,26 @@ impl<'a> Translator<'a> {
                     None => return false,
                 };
                 let cfg_expr = ra_ap_cfg::CfgExpr::parse_from_ast(cfg_predicate);
-                let file_id = sema.hir_file_for(item.syntax());
-                let krate = match file_id
-                    .file_id()
-                    .and_then(|fid| sema.file_to_module_defs(fid.file_id(sema.db)).next())
-                {
-                    Some(module) => module.krate(sema.db),
-                    None => return false,
+                // Resolve the crate the item belongs to so its `cfg` options can be checked.
+                // Items originating from a macro expansion live in a `MacroFile` rather than a
+                // real file, so we recover their crate from the macro call; otherwise cfg'd-out
+                // items from expansions (e.g. tokio's `cfg(feature = "rt")` /
+                // `cfg(not(feature = "rt"))` cousins) would all be extracted, bloating the DB with
+                // contradictory entries.
+                let cfg_options = match sema.hir_file_for(item.syntax()) {
+                    HirFileId::FileId(fid) => {
+                        match sema.file_to_module_defs(fid.file_id(sema.db)).next() {
+                            Some(module) => module.krate(sema.db).cfg(sema.db),
+                            None => return false,
+                        }
+                    }
+                    HirFileId::MacroFile(macro_call) => sema
+                        .db
+                        .lookup_intern_macro_call(macro_call)
+                        .krate
+                        .cfg_options(sema.db),
                 };
-                krate.cfg(sema.db).check(&cfg_expr) == Some(false)
+                cfg_options.check(&cfg_expr) == Some(false)
             })
         })
     }
