@@ -317,7 +317,7 @@ private module Impl implements RegexTreeViewSig {
       result.getEnd() = part_end
     }
 
-    /** Hodls if this term may match an unlimited number of times. */
+    /** Holds if this term may match an unlimited number of times. */
     predicate mayRepeatForever() { may_repeat_forever = true }
 
     /** Gets the qualifier for this term. That is e.g "?" for "a?". */
