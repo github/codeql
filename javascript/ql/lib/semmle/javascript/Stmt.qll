@@ -477,7 +477,7 @@ module Directive {
   }
 
   /**
-   * A React Native Reanimated worklet directive.
+   * A React Native Worklets worklet directive.
    *
    * Example:
    *
