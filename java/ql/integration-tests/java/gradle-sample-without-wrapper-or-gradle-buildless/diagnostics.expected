@@ -1,7 +1,7 @@
 {
   "attributes": {
     "java_vendor": "__REDACTED__",
-    "java_version": "11.0.31"
+    "java_version": "__REDACTED__"
   },
   "markdownMessage": "Internal telemetry for the Java extractor.\n\nNo action needed.",
   "severity": "note",
