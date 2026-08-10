@@ -1,5 +1,5 @@
 /**
- * Library for parsing for C++ regular expressions.
+ * Library for parsing C++ regular expressions.
  *
  * N.B. does not yet handle stripping whitespace and comments in regexes with
  * the `x` (free-spacing) flag.
