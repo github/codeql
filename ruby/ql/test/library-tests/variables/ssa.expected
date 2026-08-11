@@ -38,7 +38,7 @@ definition
 | nested_scopes.rb:22:9:24:11 | self (show_a2) | nested_scopes.rb:22:9:24:11 | self |
 | nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a |
 | nested_scopes.rb:27:7:29:9 | self (show) | nested_scopes.rb:27:7:29:9 | self |
-| nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self |
+| nested_scopes.rb:30:7:33:9 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self |
 | nested_scopes.rb:31:11:31:11 | a | nested_scopes.rb:31:11:31:11 | a |
 | nested_scopes.rb:40:1:40:1 | d | nested_scopes.rb:40:1:40:1 | d |
 | parameters.rb:1:1:62:1 | self (parameters.rb) | parameters.rb:1:1:62:1 | self |
@@ -81,7 +81,7 @@ definition
 | parameters.rb:54:9:57:3 | <captured entry> x | parameters.rb:53:1:53:1 | x |
 | parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y |
 | parameters.rb:54:19:54:19 | x | parameters.rb:53:1:53:1 | x |
-| parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x |
+| parameters.rb:55:4:56:9 | phi | parameters.rb:53:1:53:1 | x |
 | parameters.rb:59:1:61:3 | self (tuples_nested) | parameters.rb:59:1:61:3 | self |
 | parameters.rb:59:20:59:20 | a | parameters.rb:59:20:59:20 | a |
 | parameters.rb:59:23:59:23 | b | parameters.rb:59:23:59:23 | b |
@@ -125,7 +125,7 @@ definition
 | ssa.rb:10:5:10:5 | i | ssa.rb:2:3:2:3 | i |
 | ssa.rb:18:1:23:3 | self (m1) | ssa.rb:18:1:23:3 | self |
 | ssa.rb:18:8:18:8 | x | ssa.rb:18:8:18:8 | x |
-| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x |
+| ssa.rb:19:3:22:5 | phi | ssa.rb:18:8:18:8 | x |
 | ssa.rb:21:5:21:5 | x | ssa.rb:18:8:18:8 | x |
 | ssa.rb:25:1:30:3 | <uninitialized> elem | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:25:1:30:3 | self (m2) | ssa.rb:25:1:30:3 | self |
@@ -227,7 +227,7 @@ read
 | nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:23:16:23:16 | a |
 | nested_scopes.rb:27:7:29:9 | self (show) | nested_scopes.rb:27:7:29:9 | self | nested_scopes.rb:28:11:28:16 | self |
 | nested_scopes.rb:27:7:29:9 | self (show) | nested_scopes.rb:27:7:29:9 | self | nested_scopes.rb:28:16:28:16 | self |
-| nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self | nested_scopes.rb:32:11:32:16 | self |
+| nested_scopes.rb:30:7:33:9 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self | nested_scopes.rb:32:11:32:16 | self |
 | nested_scopes.rb:31:11:31:11 | a | nested_scopes.rb:31:11:31:11 | a | nested_scopes.rb:32:16:32:16 | a |
 | nested_scopes.rb:40:1:40:1 | d | nested_scopes.rb:40:1:40:1 | d | nested_scopes.rb:41:1:41:1 | d |
 | parameters.rb:1:9:5:3 | <captured entry> self | parameters.rb:1:1:62:1 | self | parameters.rb:3:4:3:9 | self |
@@ -268,7 +268,7 @@ read
 | parameters.rb:54:9:57:3 | <captured entry> self | parameters.rb:1:1:62:1 | self | parameters.rb:55:4:55:9 | self |
 | parameters.rb:54:9:57:3 | <captured entry> self | parameters.rb:1:1:62:1 | self | parameters.rb:56:4:56:9 | self |
 | parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
-| parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
+| parameters.rb:55:4:56:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
 | parameters.rb:59:1:61:3 | self (tuples_nested) | parameters.rb:59:1:61:3 | self | parameters.rb:60:3:60:23 | self |
 | parameters.rb:59:20:59:20 | a | parameters.rb:59:20:59:20 | a | parameters.rb:60:11:60:11 | a |
 | parameters.rb:59:23:59:23 | b | parameters.rb:59:23:59:23 | b | parameters.rb:60:16:60:16 | b |
@@ -339,9 +339,9 @@ read
 | ssa.rb:10:5:10:5 | i | ssa.rb:2:3:2:3 | i | ssa.rb:11:10:11:10 | i |
 | ssa.rb:10:5:10:5 | i | ssa.rb:2:3:2:3 | i | ssa.rb:12:10:12:10 | i |
 | ssa.rb:18:1:23:3 | self (m1) | ssa.rb:18:1:23:3 | self | ssa.rb:20:5:20:10 | self |
-| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:19:9:19:9 | x |
-| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:20:10:20:10 | x |
-| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:21:5:21:5 | x |
+| ssa.rb:19:3:22:5 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:19:9:19:9 | x |
+| ssa.rb:19:3:22:5 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:20:10:20:10 | x |
+| ssa.rb:19:3:22:5 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:21:5:21:5 | x |
 | ssa.rb:25:1:30:3 | <uninitialized> elem | ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:25:1:30:3 | self (m2) | ssa.rb:25:1:30:3 | self | ssa.rb:29:3:29:11 | self |
 | ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements | ssa.rb:26:15:26:22 | elements |
@@ -430,7 +430,7 @@ firstRead
 | nested_scopes.rb:22:9:24:11 | self (show_a2) | nested_scopes.rb:22:9:24:11 | self | nested_scopes.rb:23:11:23:16 | self |
 | nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:22:21:22:21 | a | nested_scopes.rb:23:16:23:16 | a |
 | nested_scopes.rb:27:7:29:9 | self (show) | nested_scopes.rb:27:7:29:9 | self | nested_scopes.rb:28:11:28:16 | self |
-| nested_scopes.rb:30:16:30:19 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self | nested_scopes.rb:32:11:32:16 | self |
+| nested_scopes.rb:30:7:33:9 | self (class << ...) | nested_scopes.rb:30:7:33:9 | self | nested_scopes.rb:32:11:32:16 | self |
 | nested_scopes.rb:31:11:31:11 | a | nested_scopes.rb:31:11:31:11 | a | nested_scopes.rb:32:16:32:16 | a |
 | nested_scopes.rb:40:1:40:1 | d | nested_scopes.rb:40:1:40:1 | d | nested_scopes.rb:41:1:41:1 | d |
 | parameters.rb:1:9:5:3 | <captured entry> self | parameters.rb:1:1:62:1 | self | parameters.rb:3:4:3:9 | self |
@@ -467,7 +467,7 @@ firstRead
 | parameters.rb:49:15:49:15 | b | parameters.rb:49:15:49:15 | b | parameters.rb:50:16:50:16 | b |
 | parameters.rb:54:9:57:3 | <captured entry> self | parameters.rb:1:1:62:1 | self | parameters.rb:55:4:55:9 | self |
 | parameters.rb:54:14:54:14 | y | parameters.rb:54:14:54:14 | y | parameters.rb:56:9:56:9 | y |
-| parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
+| parameters.rb:55:4:56:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:55:9:55:9 | x |
 | parameters.rb:59:1:61:3 | self (tuples_nested) | parameters.rb:59:1:61:3 | self | parameters.rb:60:3:60:23 | self |
 | parameters.rb:59:20:59:20 | a | parameters.rb:59:20:59:20 | a | parameters.rb:60:11:60:11 | a |
 | parameters.rb:59:23:59:23 | b | parameters.rb:59:23:59:23 | b | parameters.rb:60:16:60:16 | b |
@@ -509,7 +509,7 @@ firstRead
 | ssa.rb:6:5:6:5 | i | ssa.rb:2:3:2:3 | i | ssa.rb:7:10:7:10 | i |
 | ssa.rb:10:5:10:5 | i | ssa.rb:2:3:2:3 | i | ssa.rb:11:10:11:10 | i |
 | ssa.rb:18:1:23:3 | self (m1) | ssa.rb:18:1:23:3 | self | ssa.rb:20:5:20:10 | self |
-| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:19:9:19:9 | x |
+| ssa.rb:19:3:22:5 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:19:9:19:9 | x |
 | ssa.rb:25:1:30:3 | <uninitialized> elem | ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:25:1:30:3 | self (m2) | ssa.rb:25:1:30:3 | self | ssa.rb:29:3:29:11 | self |
 | ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements | ssa.rb:26:15:26:22 | elements |
@@ -605,8 +605,8 @@ adjacentReads
 | ssa.rb:6:5:6:5 | i | ssa.rb:2:3:2:3 | i | ssa.rb:7:10:7:10 | i | ssa.rb:8:10:8:10 | i |
 | ssa.rb:10:5:10:5 | i | ssa.rb:2:3:2:3 | i | ssa.rb:11:10:11:10 | i | ssa.rb:12:10:12:10 | i |
 | ssa.rb:18:1:23:3 | self (m1) | ssa.rb:18:1:23:3 | self | ssa.rb:20:5:20:10 | self | ssa.rb:20:5:20:10 | self |
-| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:19:9:19:9 | x | ssa.rb:20:10:20:10 | x |
-| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:20:10:20:10 | x | ssa.rb:21:5:21:5 | x |
+| ssa.rb:19:3:22:5 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:19:9:19:9 | x | ssa.rb:20:10:20:10 | x |
+| ssa.rb:19:3:22:5 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:20:10:20:10 | x | ssa.rb:21:5:21:5 | x |
 | ssa.rb:38:1:42:3 | self (m4) | ssa.rb:38:1:42:3 | self | ssa.rb:39:3:39:9 | self | ssa.rb:39:8:39:9 | self |
 | ssa.rb:38:1:42:3 | self (m4) | ssa.rb:38:1:42:3 | self | ssa.rb:39:8:39:9 | self | ssa.rb:41:3:41:13 | self |
 | ssa.rb:66:11:70:5 | <captured entry> captured | ssa.rb:65:3:65:10 | captured | ssa.rb:68:10:68:17 | captured | ssa.rb:69:5:69:12 | captured |
@@ -624,12 +624,12 @@ phi
 | parameters.rb:37:3:37:18 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:35:16:35:16 | b |
 | parameters.rb:42:3:42:18 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:40:1:43:3 | <uninitialized> e |
 | parameters.rb:42:3:42:18 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:40:15:40:15 | e |
-| parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:54:9:57:3 | <captured entry> x |
-| parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:54:19:54:19 | x |
+| parameters.rb:55:4:56:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:54:9:57:3 | <captured entry> x |
+| parameters.rb:55:4:56:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:54:19:54:19 | x |
 | ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i | ssa.rb:6:5:6:5 | i |
 | ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i | ssa.rb:10:5:10:5 | i |
-| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:18:8:18:8 | x |
-| ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:21:5:21:5 | x |
+| ssa.rb:19:3:22:5 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:18:8:18:8 | x |
+| ssa.rb:19:3:22:5 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:21:5:21:5 | x |
 | ssa.rb:26:7:26:10 | phi | ssa.rb:26:7:26:10 | elem | ssa.rb:25:1:30:3 | <uninitialized> elem |
 | ssa.rb:26:7:26:10 | phi | ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:44:1:47:3 | <uninitialized> x |
@@ -637,28 +637,28 @@ phi
 | ssa.rb:50:3:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:49:1:51:3 | <uninitialized> y |
 | ssa.rb:50:3:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:49:14:49:14 | y |
 phiReadNode
-| parameters.rb:26:3:26:11 | SSA phi read(name) | parameters.rb:25:15:25:18 | name |
+| parameters.rb:26:3:27:13 | SSA phi read(name) | parameters.rb:25:15:25:18 | name |
 | ssa.rb:5:3:13:5 | SSA phi read(self) | ssa.rb:1:1:16:3 | self |
-| ssa.rb:19:9:19:9 | SSA phi read(self) | ssa.rb:18:1:23:3 | self |
+| ssa.rb:19:3:22:5 | SSA phi read(self) | ssa.rb:18:1:23:3 | self |
 | ssa.rb:92:3:96:5 | SSA phi read(self) | ssa.rb:90:1:103:3 | self |
 | ssa.rb:92:3:96:5 | SSA phi read(x) | ssa.rb:91:3:91:3 | x |
 | ssa.rb:94:3:95:10 | SSA phi read(self) | ssa.rb:90:1:103:3 | self |
 | ssa.rb:94:3:95:10 | SSA phi read(x) | ssa.rb:91:3:91:3 | x |
 phiReadNodeFirstRead
-| parameters.rb:26:3:26:11 | SSA phi read(name) | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
+| parameters.rb:26:3:27:13 | SSA phi read(name) | parameters.rb:25:15:25:18 | name | parameters.rb:26:8:26:11 | name |
 | ssa.rb:5:3:13:5 | SSA phi read(self) | ssa.rb:1:1:16:3 | self | ssa.rb:15:3:15:8 | self |
-| ssa.rb:19:9:19:9 | SSA phi read(self) | ssa.rb:18:1:23:3 | self | ssa.rb:20:5:20:10 | self |
+| ssa.rb:19:3:22:5 | SSA phi read(self) | ssa.rb:18:1:23:3 | self | ssa.rb:20:5:20:10 | self |
 | ssa.rb:92:3:96:5 | SSA phi read(self) | ssa.rb:90:1:103:3 | self | ssa.rb:99:5:99:10 | self |
 | ssa.rb:92:3:96:5 | SSA phi read(self) | ssa.rb:90:1:103:3 | self | ssa.rb:101:5:101:10 | self |
 | ssa.rb:92:3:96:5 | SSA phi read(x) | ssa.rb:91:3:91:3 | x | ssa.rb:99:10:99:10 | x |
 | ssa.rb:92:3:96:5 | SSA phi read(x) | ssa.rb:91:3:91:3 | x | ssa.rb:101:10:101:10 | x |
 phiReadInput
-| parameters.rb:26:3:26:11 | SSA phi read(name) | parameters.rb:25:15:25:18 | name |
-| parameters.rb:26:3:26:11 | SSA phi read(name) | parameters.rb:25:40:25:43 | SSA read(name) |
+| parameters.rb:26:3:27:13 | SSA phi read(name) | parameters.rb:25:15:25:18 | name |
+| parameters.rb:26:3:27:13 | SSA phi read(name) | parameters.rb:25:40:25:43 | SSA read(name) |
 | ssa.rb:5:3:13:5 | SSA phi read(self) | ssa.rb:8:5:8:14 | SSA read(self) |
 | ssa.rb:5:3:13:5 | SSA phi read(self) | ssa.rb:12:5:12:14 | SSA read(self) |
-| ssa.rb:19:9:19:9 | SSA phi read(self) | ssa.rb:18:1:23:3 | self (m1) |
-| ssa.rb:19:9:19:9 | SSA phi read(self) | ssa.rb:20:5:20:10 | SSA read(self) |
+| ssa.rb:19:3:22:5 | SSA phi read(self) | ssa.rb:18:1:23:3 | self (m1) |
+| ssa.rb:19:3:22:5 | SSA phi read(self) | ssa.rb:20:5:20:10 | SSA read(self) |
 | ssa.rb:92:3:96:5 | SSA phi read(self) | ssa.rb:93:5:93:10 | SSA read(self) |
 | ssa.rb:92:3:96:5 | SSA phi read(self) | ssa.rb:94:3:95:10 | SSA phi read(self) |
 | ssa.rb:92:3:96:5 | SSA phi read(x) | ssa.rb:93:10:93:10 | SSA read(x) |
